@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+2011-03-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* library/Ideal.lib: Fixed HardLimiter and Abs components.
+
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 2010-10-23  Stefan Jahn  <stefan@lkcc.org>
 
 	* symbolwidget.cpp (createSymbol): Adjusted symbol for new HICUM

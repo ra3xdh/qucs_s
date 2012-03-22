@@ -3,7 +3,11 @@
 -- 
 -- release instructions.
 -- 
+<<<<<<< HEAD
 -- Copyright (C) 2004, 2006 Stefan Jahn <stefan@lkcc.org>
+=======
+-- Copyright (C) 2004, 2006, 2011 Stefan Jahn <stefan@lkcc.org>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 -- 
 -- This is free software; you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -38,13 +42,21 @@ Distribution process:
     command `automake -a -f -c' with latest automake version installed.
   - Run `make distclean', `sh autogen.sh' and `make all'.
   - Run `make distcheck'.
+<<<<<<< HEAD
   - Check this status into CVS and tag it.
+=======
+  - Check this status into SVN and tag it.
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 * Bump up version.
   - Add a ChangeLog entry in toplevel directory.
   - Add new section in NEWS.
   - Bump up version number in `configure.ac'.
+<<<<<<< HEAD
   - Check into CVS.
+=======
+  - Check into SVN.
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 * Distribute the package. 
   - Upload the package to the SourceForge server and add a News item.

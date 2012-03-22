@@ -23,6 +23,10 @@ enum language_type {
   LANG_VHDL,
   LANG_VERILOG,
   LANG_VERILOGA,
+<<<<<<< HEAD
+=======
+  LANG_OCTAVE,
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 };
 
 enum textstate_type {

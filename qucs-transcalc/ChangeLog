@@ -1,3 +1,16 @@
+<<<<<<< HEAD
+=======
+2011-04-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* rectwaveguide.cpp (analyze): Fixed calculation of Z0 in
+	rectangular waveguide.
+
+2011-03-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* coax.cpp (alphac_coax): Fixed factor of 2 in conductor loss
+	calculation.
+
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 2009-05-14  Stefan Jahn  <stefan@lkcc.org>
 
 	* coax.cpp (show_results): Fixed computation of cut-off

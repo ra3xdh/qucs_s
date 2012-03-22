@@ -1,3 +1,78 @@
+<<<<<<< HEAD
+=======
+2011-03-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs.cpp (slotOpenContent): Allowing double click on .vhd files.
+
+	* schematic_file.cpp (saveSymbolCpp): Including terminal centers
+	into computation of the boundig box when exporting the C++ code
+	for the symbol.
+
+	* qucsdigilib.bat, qucsdigi.bat: Fixing digital simulation
+	scripts.
+
+2011-03-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* dialogs/settingsdialog.cpp (SettingsDialog): Fixed position of
+	data display and dataset input text fields.
+
+2011-03-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* diagrams/graph.cpp (getSelected): Fixed out-of-bounds access for
+	diagrams with invalid (empty) graphs clicking into the diagram for
+	selecting.
+
+2011-03-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* dialogs/settingsdialog.cpp (SettingsDialog): Added script
+	setting to simulations.  The script can be enabled to be run after
+	simulation.
+
+2011-03-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs.cpp (slotFileSettings), textdoc.cpp (createPopupMenu):
+	Disabling document settings dialog for Octave files.
+
+2011-03-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_de.ts: Updated German translations.
+
+2011-03-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* schematic_file.cpp (saveSymbolCpp): Fixed bounding box
+	calculation for generated C++ symbol code.
+
+	* syntax.cpp: Added syntax highlighting for Octave files.
+
+2011-03-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs.cpp (openProject): When changing projects, also change
+	Octave current directory.
+
+	* octave/getQucsVariable.m, octave/showQucsDataSet.m,
+	octave/loadQucsDataSet.m: Added default scripts.
+
+	* octave_window.cpp (OctaveWindow): Setting fixed-width font for
+	Octave window.  Adding Octave script path location for default
+	scripts.
+
+	* paintings/graphictext.cpp (saveCpp): Fixed text rotation of
+	generated Text() component.
+
+2011-03-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* octave_window.cpp (startOctave): First implementation of
+	GNU Octave connection to qucs.  Thank you very much Michael!
+
+2011-03-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs.cpp (QucsApp): Fixed usage for "qucs <filename>" on command
+	line.
+
+	* dialogs/simmessage.cpp (startSimulator): Avoid outputting file
+	names of library file include names into the netlist.
+
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 2010-04-14  Stefan Jahn  <stefan@lkcc.org>
 
 	* schematic.cpp (setName): Handling schematic etc. filenames with

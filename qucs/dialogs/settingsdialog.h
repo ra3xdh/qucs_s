@@ -45,9 +45,15 @@ public:
   QComboBox *Combo_Frame;
   QTextEdit *Input_Frame0;
   QLineEdit *Input_Frame1, *Input_Frame2, *Input_Frame3;
+<<<<<<< HEAD
   QLineEdit *Input_DataSet, *Input_DataDisplay;
   QLineEdit *Input_GridX, *Input_GridY;
   QCheckBox *Check_OpenDpl, *Check_GridOn;
+=======
+  QLineEdit *Input_DataSet, *Input_DataDisplay, *Input_Script;
+  QLineEdit *Input_GridX, *Input_GridY;
+  QCheckBox *Check_OpenDpl, *Check_GridOn, *Check_RunScript;
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
   QVBoxLayout *all;
   QRegExpValidator *valExpr;

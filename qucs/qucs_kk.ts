@@ -1370,6 +1370,16 @@ but is %1 !</source>
     </message>
 </context>
 <context>
+<<<<<<< HEAD
+=======
+    <name>OctaveWindow</name>
+    <message>
+        <source>ERROR: Cannot start Octave!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     <name>OptimizeDialog</name>
     <message>
         <source>Edit Optimization Properties</source>
@@ -6868,7 +6878,11 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <source>HICUM Level 0 v1.3 verilog device</source>
+<<<<<<< HEAD
         <translation type="obsolete">HICUM Level 0 v1.3 Verilog-моделі</translation>
+=======
+        <translation type="unfinished">HICUM Level 0 v1.3 Verilog-моделі</translation>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
     <message>
         <source>high-injection roll-off current</source>
@@ -6892,11 +6906,19 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <source>npn HICUM L0 v1.3</source>
+<<<<<<< HEAD
         <translation type="obsolete">npn типті HICUM L0 1.3 нұсқасы {0?}</translation>
     </message>
     <message>
         <source>pnp HICUM L0 v1.3</source>
         <translation type="obsolete">pnp типті HICUM L0 1.3 нұсқасы {0?}</translation>
+=======
+        <translation type="unfinished">npn типті HICUM L0 1.3 нұсқасы {0?}</translation>
+    </message>
+    <message>
+        <source>pnp HICUM L0 v1.3</source>
+        <translation type="unfinished">pnp типті HICUM L0 1.3 нұсқасы {0?}</translation>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
     <message>
         <source>HICUM Level 0 v1.2g verilog device</source>
@@ -6927,7 +6949,139 @@ Usage:  qucsedit [-r] file
         <translation type="unfinished"></translation>
     </message>
     <message>
+<<<<<<< HEAD
         <source>microchip lange coupler</source>
+=======
+        <source>hybrid (unsymmetrical 3dB coupler)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hybrid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>coupled transmission lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>characteristic impedance of even mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>characteristic impedance of odd mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>relative dielectric constant of even mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>relative dielectric constant of odd mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>attenuation factor per length of even mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>attenuation factor per length of odd mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Coupled Transmission Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>resonance tunnel diode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>peak current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>valley current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>valley voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>resonance energy in Ws</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fermi energy in Ws</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>resonance width in Ws</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>maximum of transmission</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>fitting factor for electron density</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>fitting factor for voltage drop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>fitting factor for diode current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>zero-bias depletion capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>life-time of electrons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tunnel Diode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flag for using third order solution for transfer current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bias dependence for reverse Early voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flag for turning temperature dependence of tef0 on and off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TC of Reverse Early voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TC of AVER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bandgap difference between base and BE-junction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frist-order TC of iqfh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Second-order TC of iqfh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>microstrip lange coupler</source>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9051,6 +9205,31 @@ Trolltech Qt жайлы</translation>
         <source>Cannot delete %1: &quot;%2&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
+<<<<<<< HEAD
+=======
+    <message>
+        <source>Octave Scripts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Octave</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Octave Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shows/hides the Octave dock window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Octave Window
+
+Shows/hides the Octave dock window</source>
+        <translation type="unfinished"></translation>
+    </message>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 </context>
 <context>
     <name>QucsAttenuator</name>
@@ -10440,6 +10619,17 @@ are included in the search.</source>
         <source>Cancel</source>
         <translation>Артқа қайтару</translation>
     </message>
+<<<<<<< HEAD
+=======
+    <message>
+        <source>Octave Script:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>run script after simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 </context>
 <context>
     <name>SimMessage</name>
@@ -10716,11 +10906,32 @@ VHDL объектісінің негізін қояды</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+<<<<<<< HEAD
         <source>Verilog entity
+=======
+        <source>Verilog module
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 Inserts the skeleton of a Verilog module</source>
         <translation type="unfinished"></translation>
     </message>
+<<<<<<< HEAD
+=======
+    <message>
+        <source>Octave function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inserts skeleton of Octave function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Octave function
+
+Inserts the skeleton of a Octave function</source>
+        <translation type="unfinished"></translation>
+    </message>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 </context>
 <context>
     <name>VASettingsDialog</name>

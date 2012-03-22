@@ -1,7 +1,11 @@
 ;
 ; freehdl.iss - inno Setup script file
 ;
+<<<<<<< HEAD
 ; Copyright (C) 2006, 2008 Stefan Jahn <stefan@lkcc.org>
+=======
+; Copyright (C) 2006, 2008, 2009, 2011 Stefan Jahn <stefan@lkcc.org>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 ;
 ; This is free software; you can redistribute it and/or modify
 ; it under the terms of the GNU General Public License as published by
@@ -23,10 +27,17 @@
 ; NOTE: additional files: bin/libregex.dll lib/libregex.a
 ;
 
+<<<<<<< HEAD
 #define RELEASE "0.0.7"
 #define BASENAME "freehdl"
 #define APPNAME "FreeHDL"
 #define APPVERNAME "FreeHDL 0.0.7 binary package for Win32"
+=======
+#define RELEASE "0.0.8"
+#define BASENAME "freehdl"
+#define APPNAME "FreeHDL"
+#define APPVERNAME "FreeHDL 0.0.8 binary package for Win32"
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 #define URL "http://www.freehdl.seul.org"
 #define TREE "C:\home\freetree"
 

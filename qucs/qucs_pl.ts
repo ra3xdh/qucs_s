@@ -1525,6 +1525,16 @@ a jest %1 !</translation>
     </message>
 </context>
 <context>
+<<<<<<< HEAD
+=======
+    <name>OctaveWindow</name>
+    <message>
+        <source>ERROR: Cannot start Octave!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     <name>OptimizeDialog</name>
     <message>
         <source>Edit Optimization Properties</source>
@@ -7222,7 +7232,11 @@ Stosowanie:  qucsedit [-r] plik
     </message>
     <message>
         <source>HICUM Level 0 v1.3 verilog device</source>
+<<<<<<< HEAD
         <translation type="obsolete">komponent HICUM Level 0 v1.3 veriloga</translation>
+=======
+        <translation type="unfinished">komponent HICUM Level 0 v1.3 veriloga</translation>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
     <message>
         <source>high-injection roll-off current</source>
@@ -7246,11 +7260,19 @@ Stosowanie:  qucsedit [-r] plik
     </message>
     <message>
         <source>npn HICUM L0 v1.3</source>
+<<<<<<< HEAD
         <translation type="obsolete">npn HICUM L0 v1.3</translation>
     </message>
     <message>
         <source>pnp HICUM L0 v1.3</source>
         <translation type="obsolete">pnp HICUM L0 v1.3</translation>
+=======
+        <translation type="unfinished">npn HICUM L0 v1.3</translation>
+    </message>
+    <message>
+        <source>pnp HICUM L0 v1.3</source>
+        <translation type="unfinished">pnp HICUM L0 v1.3</translation>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
     <message>
         <source>HICUM Level 0 v1.2g verilog device</source>
@@ -7281,7 +7303,139 @@ Stosowanie:  qucsedit [-r] plik
         <translation type="unfinished"></translation>
     </message>
     <message>
+<<<<<<< HEAD
         <source>microchip lange coupler</source>
+=======
+        <source>hybrid (unsymmetrical 3dB coupler)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hybrid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>coupled transmission lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>characteristic impedance of even mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>characteristic impedance of odd mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>relative dielectric constant of even mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>relative dielectric constant of odd mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>attenuation factor per length of even mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>attenuation factor per length of odd mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Coupled Transmission Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>resonance tunnel diode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>peak current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>valley current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>valley voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>resonance energy in Ws</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fermi energy in Ws</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>resonance width in Ws</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>maximum of transmission</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>fitting factor for electron density</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>fitting factor for voltage drop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>fitting factor for diode current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>zero-bias depletion capacitance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>life-time of electrons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tunnel Diode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flag for using third order solution for transfer current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bias dependence for reverse Early voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flag for turning temperature dependence of tef0 on and off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TC of Reverse Early voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TC of AVER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bandgap difference between base and BE-junction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frist-order TC of iqfh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Second-order TC of iqfh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>microstrip lange coupler</source>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9880,6 +10034,31 @@ Convert data file to various file formats</source>
         <source>Cannot delete %1: &quot;%2&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
+<<<<<<< HEAD
+=======
+    <message>
+        <source>Octave Scripts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Octave</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Octave Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shows/hides the Octave dock window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Octave Window
+
+Shows/hides the Octave dock window</source>
+        <translation type="unfinished"></translation>
+    </message>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 </context>
 <context>
     <name>QucsAttenuator</name>
@@ -12337,6 +12516,7 @@ otworzyć ten plik odpowiednim programem.</translation>
         <source>power matching</source>
         <translation type="obsolete">dopasowanie mocy</translation>
     </message>
+<<<<<<< HEAD
     <message>
         <source>Error</source>
         <translation type="obsolete">Błąd</translation>
@@ -12369,11 +12549,14 @@ otworzyć ten plik odpowiednim programem.</translation>
         <source>Wrong dependency!</source>
         <translation type="obsolete">Zła zależność!</translation>
     </message>
+=======
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 </context>
 <context>
     <name>SaveDialog</name>
     <message>
         <source>Modified Files</source>
+<<<<<<< HEAD
         <translation>Zmienione pliki</translation>
     </message>
     <message>
@@ -12399,12 +12582,40 @@ otworzyć ten plik odpowiednim programem.</translation>
     <message>
         <source>Don&apos;t Save</source>
         <translation>Nie zapisuj</translation>
+=======
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Untitled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save the modified files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select files to be saved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Abort Closing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don&apos;t Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Selected</source>
+        <translation type="unfinished"></translation>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
 </context>
 <context>
     <name>Schematic</name>
     <message>
         <source>Title</source>
+<<<<<<< HEAD
         <translation>Tytuł</translation>
     </message>
     <message>
@@ -12425,6 +12636,20 @@ otworzyć ten plik odpowiednim programem.</translation>
     </message>
     <message>
         <source>generic</source>
+=======
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drawn By:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Date:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Revision:</source>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12471,6 +12696,7 @@ Edytuj schemat</translation>
 Edits the symbol for this schematic</source>
         <translation type="unfinished"></translation>
     </message>
+<<<<<<< HEAD
 </context>
 <context>
     <name>SearchDialog</name>
@@ -12557,12 +12783,107 @@ uwzględniono wszystkie biblioteki.</translation>
     <message>
         <source>Replaced %1 occurrences!</source>
         <translation>Zamieniono %1 wystąpień!</translation>
+=======
+    <message>
+        <source>generic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: Cannot create library file &quot;%s&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SearchDialog</name>
+    <message>
+        <source>Text to search for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text to replace with</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask before replacing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From cursor position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Case sensitive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whole words only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search backwards</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Porzuć</translation>
+    </message>
+    <message>
+        <source>Replace Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replace...</source>
+        <translation type="unfinished">Zamień...</translation>
+    </message>
+    <message>
+        <source>Replace occurrence ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search...</source>
+        <translation type="unfinished">Szukaj...</translation>
+    </message>
+    <message>
+        <source>Search string not found!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replaced %1 occurrences!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The search result contains all components whose
+name contains the search string. All libraries
+are included in the search.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search string:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zamknij</translation>
+    </message>
+    <message>
+        <source>Search result</source>
+        <translation type="unfinished">Wyniki szukania</translation>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
 </context>
 <context>
     <name>SettingsDialog</name>
     <message>
         <source>Edit File Properties</source>
+<<<<<<< HEAD
         <translation>Edytuj właściwości pliku</translation>
     </message>
     <message>
@@ -12640,6 +12961,77 @@ uwzględniono wszystkie biblioteki.</translation>
     <message>
         <source>DIN A3 portrait</source>
         <translation>DIN A3 pionowo</translation>
+=======
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data Display:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data Set:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>open data display after simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Octave Script:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>run script after simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>show Grid</source>
+        <translation type="unfinished">pokaż siatkę</translation>
+    </message>
+    <message>
+        <source>horizontal Grid:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>vertical Grid:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished">Siatka</translation>
+    </message>
+    <message>
+        <source>no Frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN A5 landscape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN A5 portrait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN A4 landscape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN A4 portrait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN A3 landscape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN A3 portrait</source>
+        <translation type="unfinished"></translation>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
     <message>
         <source>Letter landscape</source>
@@ -12649,11 +13041,31 @@ uwzględniono wszystkie biblioteki.</translation>
         <source>Letter portrait</source>
         <translation type="unfinished"></translation>
     </message>
+<<<<<<< HEAD
+=======
+    <message>
+        <source>Frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished">Zastosuj</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Porzuć</translation>
+    </message>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 </context>
 <context>
     <name>SimMessage</name>
     <message>
         <source>Qucs Simulation Messages</source>
+<<<<<<< HEAD
         <translation>Komunikaty z symulacji Qucs</translation>
     </message>
     <message>
@@ -12791,18 +13203,52 @@ Błędy:
     <message>
         <source>Aborted.</source>
         <translation>Przerwano.</translation>
+=======
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Output:
--------</source>
-        <translation>Wynik:
-------</translation>
+        <source>Progress:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Errors:
--------</source>
-        <translation>Błędy:
--------</translation>
+        <source>Errors and Warnings:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Goto display page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Abort simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starting new simulation on %1 at %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: Simulator is still running!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>creating netlist... </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: Cannot write netlist file!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
+        <translation type="unfinished">BŁĄD: Nie można otworzyć pliku SPICE &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <source>ERROR: Cannot start QucsConv!</source>
+        <translation type="unfinished">BŁĄD: Nie można uruchomić QucsConv!</translation>
+    </message>
+    <message>
+        <source>done.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
@@ -12812,11 +13258,64 @@ Błędy:
         <source>ERROR: Cannot create &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>ERROR: Cannot start simulator!</source>
+        <translation type="unfinished">BŁĄD: Nie mogę uruchomić symulatora!</translation>
+    </message>
+    <message>
+        <source>Close window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Simulation ended on %1 at %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during simulation on %1 at %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aborted.</source>
+        <translation type="unfinished"></translation>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
+    </message>
+    <message>
+        <source>Output:
+-------</source>
+<<<<<<< HEAD
+        <translation>Wynik:
+------</translation>
+=======
+        <translation type="unfinished"></translation>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
+    </message>
+    <message>
+        <source>Errors:
+-------</source>
+<<<<<<< HEAD
+        <translation>Błędy:
+-------</translation>
+    </message>
+    <message>
+        <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: Cannot create &quot;%1&quot;!</source>
+=======
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SpiceDialog</name>
     <message>
         <source>Edit SPICE Component Properties</source>
+<<<<<<< HEAD
         <translation>Edytuj właściwości elementu SPICE</translation>
     </message>
     <message>
@@ -12926,33 +13425,153 @@ Błędy:
     <message>
         <source>Cannot execute &quot;%1&quot;.</source>
         <translation>Nie mozna wykonać &quot;%1&quot;.</translation>
+=======
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation type="unfinished">Nazwa:</translation>
+    </message>
+    <message>
+        <source>File:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browse</source>
+        <translation type="unfinished">Pokaż</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Edycja</translation>
+    </message>
+    <message>
+        <source>show file name in schematic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>include SPICE simulations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>preprocessor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SPICE net nodes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add &gt;&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;&lt; Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Component ports:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished">Zastosuj</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Porzuć</translation>
+    </message>
+    <message>
+        <source>SPICE netlist</source>
+        <translation type="unfinished">netlista w formacie SPICE</translation>
+    </message>
+    <message>
+        <source>All Files</source>
+        <translation type="unfinished">Wszystkie pliki</translation>
+    </message>
+    <message>
+        <source>Select a file</source>
+        <translation type="unfinished">Wybierz plik</translation>
+    </message>
+    <message>
+        <source>Info</source>
+        <translation type="unfinished">Informacja</translation>
+    </message>
+    <message>
+        <source>Preprocessing SPICE file &quot;%1&quot;.</source>
+        <translation type="unfinished">Preprocessing SPICE file &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Błąd</translation>
+    </message>
+    <message>
+        <source>Cannot save preprocessed SPICE file &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot execute &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SPICE Preprocessor Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Converting SPICE file &quot;%1&quot;.</source>
+        <translation type="unfinished">Konwersja pliku SPICE &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <source>QucsConv Error</source>
+        <translation type="unfinished"></translation>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
 </context>
 <context>
     <name>SweepDialog</name>
     <message>
         <source>Bias Points</source>
+<<<<<<< HEAD
         <translation>Punkty pracy</translation>
     </message>
     <message>
         <source>Close</source>
         <translation>Zamknij</translation>
+=======
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zamknij</translation>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
 </context>
 <context>
     <name>SymbolWidget</name>
     <message>
         <source>Symbol:</source>
+<<<<<<< HEAD
         <translation>Symbol:</translation>
     </message>
     <message>
         <source>! Drag n&apos;Drop me !</source>
         <translation>!Przeciągnij mnie i upuść!</translation>
+=======
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>! Drag n&apos;Drop me !</source>
+        <translation type="unfinished"></translation>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
 </context>
 <context>
     <name>TextDoc</name>
     <message>
+<<<<<<< HEAD
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
@@ -12965,6 +13584,8 @@ Błędy:
         <translation>Strona %1 z %2</translation>
     </message>
     <message>
+=======
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
         <source>Edit Text Symbol</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13003,11 +13624,16 @@ wstawia szkielet VHDL entity</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+<<<<<<< HEAD
         <source>Verilog entity
+=======
+        <source>Verilog module
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 Inserts the skeleton of a Verilog module</source>
         <translation type="unfinished"></translation>
     </message>
+<<<<<<< HEAD
 </context>
 <context>
     <name>VASettingsDialog</name>
@@ -13038,6 +13664,40 @@ Inserts the skeleton of a Verilog module</source>
     <message>
         <source>Error</source>
         <translation type="obsolete">Błąd</translation>
+=======
+    <message>
+        <source>Octave function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inserts skeleton of Octave function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Octave function
+
+Inserts the skeleton of a Octave function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Błąd</translation>
+    </message>
+    <message>
+        <source>There is no selection!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 of %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>VASettingsDialog</name>
+    <message>
+        <source>Document Settings</source>
+        <translation type="unfinished">Ustawienia dokumentu</translation>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
     <message>
         <source>Code Creation Settings</source>
@@ -13088,6 +13748,17 @@ Inserts the skeleton of a Verilog module</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+<<<<<<< HEAD
+=======
+        <source>Ok</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Porzuć</translation>
+    </message>
+    <message>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
         <source>PNG files</source>
         <translation type="unfinished"></translation>
     </message>

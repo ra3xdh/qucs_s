@@ -3,7 +3,11 @@
  * 
  * Copyright (C) 2001 Gopal Narayanan <gopal@astro.umass.edu>
  * Copyright (C) 2002 Claudio Girardi <claudio.girardi@ieee.org>
+<<<<<<< HEAD
  * Copyright (C) 2005, 2006, 2009 Stefan Jahn <stefan@lkcc.org>
+=======
+ * Copyright (C) 2005, 2006, 2009, 2011 Stefan Jahn <stefan@lkcc.org>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,7 +104,11 @@ double coax::alphac_coax ()
 {
   double ac, Rs;
   Rs = sqrt((M_PI * f * mur* MU0)/sigma);
+<<<<<<< HEAD
   ac = (0.5 * sqrt(er)) * (((1/din) + (1/dout))/log(dout/din)) * (Rs/ZF0);
+=======
+  ac = sqrt(er) * (((1/din) + (1/dout))/log(dout/din)) * (Rs/ZF0);
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   ac = ac * 20.0 / log(10.0);
   return ac;
 }

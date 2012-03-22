@@ -19,7 +19,11 @@
 # the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 # Boston, MA 02110-1301, USA.  
 #
+<<<<<<< HEAD
 # $Id: autodsp.sh,v 1.1 2007/02/25 17:04:18 ela Exp $
+=======
+# $Id$
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 #
 
 use strict;

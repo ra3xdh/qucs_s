@@ -43,7 +43,11 @@ rectwaveguide::~rectwaveguide()
 double rectwaveguide::kval ()
 {
   double kval;
+<<<<<<< HEAD
   kval = 2. * M_PI * f * sqrt(mur * er)/C0;
+=======
+  kval = 2.0 * M_PI * f * sqrt (mur * er) / C0;
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   return kval;
 }
  
@@ -54,7 +58,11 @@ double rectwaveguide::kval ()
 double rectwaveguide::kc (int m, int n)
 {
   double kcval;
+<<<<<<< HEAD
   kcval = sqrt(pow((m*M_PI/a),2.0) + pow((n*M_PI/b),2.0));
+=======
+  kcval = sqrt (pow ((m * M_PI / a), 2.0) + pow ((n * M_PI / b), 2.0));
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   return kcval;
 }
 
@@ -65,7 +73,11 @@ double rectwaveguide::kc (int m, int n)
 double rectwaveguide::fc (int m, int n)
 {
   double fcval;
+<<<<<<< HEAD
   fcval =  (kc(m, n) * C0)/ (2 * M_PI * sqrt(mur * er));
+=======
+  fcval =  kc (m, n) * C0 / (2.0 * M_PI * sqrt (mur * er));
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   return fcval;
 }
 
@@ -79,10 +91,17 @@ double rectwaveguide::alphac ()
   double ac;
   short m, n, mmax, nmax;
 
+<<<<<<< HEAD
   Rs = sqrt((M_PI * f * mur* MU0)/sigma);
   k = kval();
   ac = 0.0;
   mmax = (int) floor (f/fc(1,0));
+=======
+  Rs = sqrt ((M_PI * f * mur * MU0) / sigma);
+  k = kval ();
+  ac = 0.0;
+  mmax = (int) floor (f / fc (1,0));
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   nmax = mmax;
 
   /* below from Ramo, Whinnery & Van Duzer */
@@ -120,7 +139,11 @@ double rectwaveguide::alphac ()
     }
   }
   
+<<<<<<< HEAD
   ac = ac * 20.0 * log10(exp(1.)); /* convert from Np/m to db/m */
+=======
+  ac = ac * 20.0 * log10 (exp (1.0)); /* convert from Np/m to db/m */
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   return ac;
 }
 
@@ -130,8 +153,13 @@ double rectwaveguide::alphac ()
 double rectwaveguide::alphac_cutoff ()
 {
   double acc;
+<<<<<<< HEAD
   acc = sqrt(pow(kc(1,0),2.0) - pow(kval(),2.0));
   acc = 20 * log10(exp(1.0)) * acc;
+=======
+  acc = sqrt (pow (kc(1,0), 2.0) - pow (kval (), 2.0));
+  acc = 20 * log10 (exp (1.0)) * acc;
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   return acc;
 }
 
@@ -143,11 +171,19 @@ double rectwaveguide::alphad()
   double k, beta;
   double ad;
 
+<<<<<<< HEAD
   k = kval();
   beta = sqrt(pow(k,2.) - pow(kc(1,0),2.0));  
   
   ad = (pow(k,2.0) * tand)/(2.0 * beta);
   ad = ad * 20.0 * log10(exp(1.)); /* convert from Np/m to db/m */
+=======
+  k = kval ();
+  beta = sqrt (pow (k, 2.0) - pow (kc (1,0), 2.0));  
+  
+  ad = (pow (k, 2.0) * tand) / (2.0 * beta);
+  ad = ad * 20.0 * log10 (exp (1.0)); /* convert from Np/m to db/m */
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   return ad;
 }
   
@@ -186,7 +222,10 @@ void rectwaveguide::get_rectwaveguide_elec ()
   ang_l = getProperty ("Ang_l", UNIT_ANG, ANG_RAD);
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 /*
  * get_rectwaveguide_phys
  * get and assign rectwaveguide physical parameters
@@ -199,7 +238,10 @@ void rectwaveguide::get_rectwaveguide_phys ()
   l = getProperty ("L", UNIT_LENGTH, LENGTH_M);
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 /*
  * analyze - analysis function
  */
@@ -218,6 +260,7 @@ void rectwaveguide::analyze ()
   /* Get and assign physical parameters */
   get_rectwaveguide_phys();
 
+<<<<<<< HEAD
   k = kval();
       
   if (kc(1,0) <= k) {
@@ -236,6 +279,25 @@ void rectwaveguide::analyze ()
     er_eff = (1.0 - pow((fc(1,0)/f),2.0));
   } else { 
     /*evanascent modes */	
+=======
+  k = kval ();
+      
+  if (kc (1,0) <= k) {
+    /* propagating modes */
+    beta = sqrt (pow (k, 2.0) - pow (kc (1,0), 2.0));
+    lambda_g = 2.0 * M_PI / beta;
+    /* Z0 = (k * ZF0) / beta; */
+    Z0 = k * ZF0 / beta;
+
+    /* calculate electrical angle */
+    lambda_g = 2.0 * M_PI / beta;
+    ang_l = 2.0 * M_PI * l / lambda_g;    /* in radians */
+    atten_cond = alphac () * l;
+    atten_dielectric = alphad () * l;
+    er_eff = (1.0 - pow ((fc (1,0) / f), 2.0));
+  } else { 
+    /* evanascent modes */	
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     Z0 = 0;
     ang_l = 0;
     er_eff = 0;

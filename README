@@ -1,7 +1,11 @@
 --
 -- README
 -- 
+<<<<<<< HEAD
 -- Copyright (C) 2003, 2005 Stefan Jahn <stefan@lkcc.org>
+=======
+-- Copyright (C) 2003, 2005, 2011 Stefan Jahn <stefan@lkcc.org>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 -- 
 -- This is free software; you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -72,6 +76,7 @@ file INSTALL included in this distribution.
 Please note:  Users of the FreeBSD OS may use a GNU make (probably gmake)
 to compile and install the package.
 
+<<<<<<< HEAD
 Getting the latest CVS snapshot
 ===============================
 
@@ -81,6 +86,16 @@ version might not even compile.
 
     $ cvs -z3 -d:pserver:anonymous@qucs.cvs.sourceforge.net:/cvsroot/qucs \
       co qucs
+=======
+Getting the latest SVN snapshot
+===============================
+
+You can always get the latest Qucs version from our SVN repository.
+Please use an official release if you want to work with Qucs.  The SVN
+version might not even compile.
+
+    $ svn co https://qucs.svn.sourceforge.net/svnroot/qucs/trunk/qucs
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 Press 'Enter' when asked for a password.  Run `sh autogen.sh' and
 `configure' with the appropriate options.  Maintainance currently

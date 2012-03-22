@@ -1,7 +1,11 @@
 --
 -- NEWS
 --
+<<<<<<< HEAD
 -- Copyright (C) 2003-2010 Stefan Jahn <stefan@lkcc.org>
+=======
+-- Copyright (C) 2003-2011 Stefan Jahn <stefan@lkcc.org>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 --
 -- This is free software; you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -23,9 +27,20 @@ This file lists user visible changes that were made between releases.  For
 more verbose descriptions of these and internal changes see the ChangeLog
 files.
 
+<<<<<<< HEAD
 Version 0.0.16
 --------------
 
+=======
+Version 0.0.17
+--------------
+
+
+Version 0.0.16
+--------------
+
+ * implementation of interactive GNU Octave connection
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
  * support for C++ code export of symbol drawings associated with
    Verilog-A files
  * direct association of symbol drawings to Verilog-HDL, Verilog-A
@@ -33,7 +48,12 @@ Version 0.0.16
  * added Verilog-HDL and Verilog-A syntax highlighting in text documents
  * support for pre-compiled VHDL modules and libraries made from user
    written VHDL code
+<<<<<<< HEAD
  * new components: NIGBT, HICUM L2 v2.24, HICUM L0 v1.2g
+=======
+ * new components: NIGBT, HICUM L2 v2.24, HICUM L0 v1.2g, tunnel diode,
+   ideal coupled transmission line, hybrid, HICUM L0 v1.3
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
  * translation into Kazakh
  * allow equations in Verilog-HDL and VHDL subcircuits
 

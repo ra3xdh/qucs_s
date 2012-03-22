@@ -1,7 +1,11 @@
 #
 # qucs/components/libcomponents.ap - Autodsp input file.
 #
+<<<<<<< HEAD
 # Copyright (C) 2005-2010 Stefan Jahn <stefan@lkcc.org>
+=======
+# Copyright (C) 2005-2011 Stefan Jahn <stefan@lkcc.org>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 #
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -54,7 +58,11 @@ SOURCES = phaseshifter.cpp gyrator.cpp componentdialog.cpp    \
   pad2bit.cpp pad3bit.cpp pad4bit.cpp binarytogrey4bit.cpp vafile.cpp         \
   greytobinary4bit.cpp comp_1bit.cpp comp_2bit.cpp comp_4bit.cpp              \
   hpribin4bit.cpp msrstub.cpp phototransistor.cpp nigbt.cpp hicumL2V2p24.cpp  \
+<<<<<<< HEAD
   hicumL0V1p2g.cpp
+=======
+  hicumL0V1p2g.cpp hybrid.cpp ctline.cpp tunneldiode.cpp hicumL0V1p3.cpp
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 # List of special Qt files.
 MOCHEADERS = componentdialog.h spicedialog.h optimizedialog.h spicefile.h

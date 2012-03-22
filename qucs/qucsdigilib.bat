@@ -3,7 +3,11 @@
 REM
 REM qucsdigilib.bat - wrapper script for digital modules and libraries
 REM
+<<<<<<< HEAD
 REM Copyright (C) 2009 Stefan Jahn <stefan@lkcc.org>
+=======
+REM Copyright (C) 2009, 2011 Stefan Jahn <stefan@lkcc.org>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 REM
 REM This is free software; you can redistribute it and/or modify
 REM it under the terms of the GNU General Public License as published by
@@ -21,7 +25,11 @@ REM the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 REM Boston, MA 02110-1301, USA.  
 REM
 
+<<<<<<< HEAD
 if not exist "%4" goto usage
+=======
+if "X%4"=="X" goto usage
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 set NAME=%1
 set DIR=%2
@@ -51,7 +59,11 @@ echo compiling functions...
 %CXX% %CXXFLAGS% -c %NAME%.cc
 
 echo copying modules to VHDL directory...
+<<<<<<< HEAD
 copy %NAME%.o vhdl/%LIBRARY%
+=======
+copy %NAME%.o vhdl\%LIBRARY% > NUL
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 echo updating VHDL library...
 %AR% cru vhdl/lib%LIBRARY%.a vhdl/%LIBRARY%/*.o

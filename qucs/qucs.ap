@@ -1,7 +1,11 @@
 #
 # qucs/qucs.ap - Autodsp input file.
 #
+<<<<<<< HEAD
 # Copyright (C) 2005, 2006, 2009 Stefan Jahn <stefan@lkcc.org>
+=======
+# Copyright (C) 2005, 2006, 2009, 2011 Stefan Jahn <stefan@lkcc.org>
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 #
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,10 +31,17 @@ NAME = qucs
 SOURCES = node.cpp element.cpp qucsdoc.cpp wire.cpp mouseactions.cpp        \
   qucs.cpp main.cpp wirelabel.cpp qucs_init.cpp qucs_actions.cpp            \
   viewpainter.cpp mnemo.cpp schematic.cpp schematic_element.cpp textdoc.cpp \
+<<<<<<< HEAD
   schematic_file.cpp syntax.cpp module.cpp
 
 # List of special Qt files.
 MOCHEADERS = qucs.h schematic.h textdoc.h
+=======
+  schematic_file.cpp syntax.cpp module.cpp octave_window.cpp
+
+# List of special Qt files.
+MOCHEADERS = qucs.h schematic.h textdoc.h octave_window.h
+>>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 # Additional libraries.
 LIBS = -lcomponents -ldiagrams -lpaintings -ldialogs \
