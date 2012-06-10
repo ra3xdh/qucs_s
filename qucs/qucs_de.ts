@@ -7735,10 +7735,6 @@ Overwrite ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>microstrip lange coupler</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Others</source>
         <translation type="unfinished"></translation>
     </message>
