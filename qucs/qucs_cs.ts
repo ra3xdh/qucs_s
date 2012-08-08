@@ -9159,13 +9159,13 @@ Vybere všechny objekty v dokumentu</translation>
     </message>
     <message>
         <source>Rotates the selected component by 90&#xb0;</source>
-        <translation type="obsolete">Otočí vybrané komponenty o 90°</translation>
+        <translation>Otočí vybrané komponenty o 90°</translation>
     </message>
     <message>
         <source>Rotate
 
 Rotates the selected component by 90&#xb0; counter-clockwise</source>
-        <translation type="obsolete">Otočit
+        <translation>Otočit
 
 Otočí vybrané komponenty o 90° doleva</translation>
     </message>
@@ -10363,16 +10363,6 @@ Convert data file to various file formats</source>
         <source>Octave Window
 
 Shows/hides the Octave dock window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotates the selected component by 90B0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotate
-
-Rotates the selected component by 90B0 counter-clockwise</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -32,7 +32,6 @@
 #include "main.h"
 #include "qucs.h"
 #include "dialogs/vtabbeddockwidget.h"
-
 #include "octave_window.h"
 
 // ----------------------------------------------------------
@@ -408,9 +407,9 @@ void QucsApp::initActions()
   editRotate = new QAction(tr("Rotate"),
 		QIconSet(QImage(QucsSettings.BitmapDir + "rotate_ccw.png")),
 		tr("Rotate"), CTRL+Key_R, this);
-  editRotate->setStatusTip(tr("Rotates the selected component by 90\B0"));
+  editRotate->setStatusTip(tr("Rotates the selected component by 90°"));
   editRotate->setWhatsThis(
-    tr("Rotate\n\nRotates the selected component by 90\B0 counter-clockwise"));
+    tr("Rotate\n\nRotates the selected component by 90° counter-clockwise"));
   editRotate->setToggleAction(true);
   connect(editRotate, SIGNAL(toggled(bool)), SLOT(slotEditRotate(bool)));
 

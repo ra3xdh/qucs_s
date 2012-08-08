@@ -8706,13 +8706,13 @@ Selects all elements of the document</source>
     </message>
     <message>
         <source>Rotates the selected component by 90&#xb0;</source>
-        <translation type="obsolete">選択された部品を90°回転</translation>
+        <translation>選択された部品を90°回転</translation>
     </message>
     <message>
         <source>Rotate
 
 Rotates the selected component by 90&#xb0; counter-clockwise</source>
-        <translation type="obsolete">回転
+        <translation>回転
 
 選択された部品を時計周りに90°回転</translation>
     </message>
@@ -9895,16 +9895,6 @@ Convert data file to various file formats</source>
         <source>Octave Window
 
 Shows/hides the Octave dock window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotates the selected component by 90B0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotate
-
-Rotates the selected component by 90B0 counter-clockwise</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

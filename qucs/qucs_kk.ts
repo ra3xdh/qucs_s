@@ -8476,13 +8476,13 @@ Selects all diagram markers of the document</source>
     </message>
     <message>
         <source>Rotates the selected component by 90&#xb0;</source>
-        <translation type="obsolete">Ерекшеленген компонентті сағат тіліне қарсы 90°-қа бұрады</translation>
+        <translation>Ерекшеленген компонентті сағат тіліне қарсы 90°-қа бұрады</translation>
     </message>
     <message>
         <source>Rotate
 
 Rotates the selected component by 90&#xb0; counter-clockwise</source>
-        <translation type="obsolete">Бұру
+        <translation>Бұру
 
 Ерекшеленген компонентті сағат тіліне қарсы 90°-қа бұрады</translation>
     </message>
@@ -9206,16 +9206,6 @@ Trolltech Qt жайлы</translation>
         <source>Octave Window
 
 Shows/hides the Octave dock window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotates the selected component by 90B0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotate
-
-Rotates the selected component by 90B0 counter-clockwise</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -8657,13 +8657,13 @@ Selectează toate elementele din document</translation>
     </message>
     <message>
         <source>Rotates the selected component by 90&#xb0;</source>
-        <translation type="obsolete">Roteşte componenta curentă cu 90°</translation>
+        <translation type="unfinished">Roteşte componenta curentă cu 90°</translation>
     </message>
     <message>
         <source>Rotate
 
 Rotates the selected component by 90&#xb0; counter-clockwise</source>
-        <translation type="obsolete">Roteşte
+        <translation type="unfinished">Roteşte
 
 Roteşte componenta selectată cu 90° sens antiorar</translation>
     </message>
@@ -9763,16 +9763,6 @@ Convert data file to various file formats</source>
         <source>Octave Window
 
 Shows/hides the Octave dock window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotates the selected component by 90B0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotate
-
-Rotates the selected component by 90B0 counter-clockwise</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

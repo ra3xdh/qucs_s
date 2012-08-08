@@ -383,7 +383,7 @@ void SimMessage::startSimulator()
 
     isVerilog = ((Schematic*)DocWidget)->isVerilog;
     SimTime = ((Schematic*)DocWidget)->createNetlist(Stream, SimPorts);
-    if(SimTime.at(0) == '\A7') {
+    if(SimTime.at(0) == '§') {
       NetlistFile.close();
       ErrText->insert(SimTime.mid(1));
       FinishSimulation(-1);

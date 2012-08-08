@@ -8850,13 +8850,13 @@ Zaznacz wszystkie elementy w dokumencie</translation>
     </message>
     <message>
         <source>Rotates the selected component by 90&#xb0;</source>
-        <translation type="obsolete">Obraca wybrany elelement o 90 stopni</translation>
+        <translation>Obraca wybrany elelement o 90 stopni</translation>
     </message>
     <message>
         <source>Rotate
 
 Rotates the selected component by 90&#xb0; counter-clockwise</source>
-        <translation type="obsolete">Obróć
+        <translation>Obróć
 
 Obraca wybrany elelement o 90 stopni zgodnie z ruchem wskazówek zegara</translation>
     </message>
@@ -10035,16 +10035,6 @@ Convert data file to various file formats</source>
         <source>Octave Window
 
 Shows/hides the Octave dock window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotates the selected component by 90B0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotate
-
-Rotates the selected component by 90B0 counter-clockwise</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -9244,13 +9244,13 @@ Selects all elements of the document</source>
     </message>
     <message>
         <source>Rotates the selected component by 90&#xb0;</source>
-        <translation type="obsolete">Поворачивает выделенный компонент на 90°</translation>
+        <translation>Поворачивает выделенный компонент на 90°</translation>
     </message>
     <message>
         <source>Rotate
 
 Rotates the selected component by 90&#xb0; counter-clockwise</source>
-        <translation type="obsolete">Повернуть
+        <translation>Повернуть
 
 Поворачивает выделенный компонент на 90° против часовой стрелки</translation>
     </message>
@@ -10406,16 +10406,6 @@ Convert data file to various file formats</source>
         <source>Octave Window
 
 Shows/hides the Octave dock window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotates the selected component by 90B0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotate
-
-Rotates the selected component by 90B0 counter-clockwise</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

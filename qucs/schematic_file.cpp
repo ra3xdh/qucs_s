@@ -1357,7 +1357,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QTextEdit *ErrText,
       for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
 	if(pc->Model != "Eqn") {
 	  s = pc->get_Verilog_Code(NumPorts);
-	  if(s.at(0) == '\A7') {
+	  if(s.at(0) == '§') {
 	    ErrText->insert(s.mid(1));
 	  }
 	  else (*tstream) << s;
@@ -1424,7 +1424,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QTextEdit *ErrText,
       for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
 	if(pc->Model != "Eqn") {
 	  s = pc->get_VHDL_Code(NumPorts);
-	  if(s.at(0) == '\A7') {
+	  if(s.at(0) == '§') {
 	    ErrText->insert(s.mid(1));
 	  }
 	  else (*tstream) << s;
@@ -1641,7 +1641,7 @@ QString Schematic::createNetlist(QTextStream& stream, int NumPorts)
       } else {
 	s = pc->get_VHDL_Code(NumPorts);
       }
-      if(s.at(0) == '\A7') return s;   // return error
+      if(s.at(0) == '§') return s;   // return error
     }
     stream << s;
   }

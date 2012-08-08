@@ -8800,13 +8800,13 @@ Selecciona todos los elementos del documento</translation>
     </message>
     <message>
         <source>Rotates the selected component by 90&#xb0;</source>
-        <translation type="obsolete">Rota el elemento seleccionado 90º</translation>
+        <translation>Rota el elemento seleccionado 90º</translation>
     </message>
     <message>
         <source>Rotate
 
 Rotates the selected component by 90&#xb0; counter-clockwise</source>
-        <translation type="obsolete">Rotar
+        <translation>Rotar
 
 Rota el elemento seleccionado 90º en el sentido de las agujas del reloj</translation>
     </message>
@@ -9992,16 +9992,6 @@ Convert data file to various file formats</source>
         <source>Octave Window
 
 Shows/hides the Octave dock window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotates the selected component by 90B0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotate
-
-Rotates the selected component by 90B0 counter-clockwise</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
