@@ -1034,19 +1034,11 @@
     </message>
     <message>
         <source>Type</source>
-<<<<<<< HEAD
-        <translation type="unfinished">Typ</translation>
-    </message>
-    <message>
-        <source>Type:</source>
-        <translation type="unfinished">Typ:</translation>
-=======
         <translation>Typ</translation>
     </message>
     <message>
         <source>Type:</source>
         <translation>Typ:</translation>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
 </context>
 <context>
@@ -7637,12 +7629,17 @@ Verwendung:  qucsedit [-r] Datei
         <translation type="obsolete">Text</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <source>Rectangle</source>
         <translation type="obsolete">Rechteck</translation>
     </message>
     <message>
         <source>filled Rectangle</source>
         <translation type="obsolete">gefülltes Rechteck</translation>
+=======
+        <source>Others</source>
+        <translation type="unfinished"></translation>
+>>>>>>> b4ab12f2ac6cfbd5b300105abf64c2c0fc8adc30
     </message>
     <message>
         <source>wrong dependency</source>
