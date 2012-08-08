@@ -1,11 +1,8 @@
-<<<<<<< HEAD
-=======
 2011-03-11  Stefan Jahn  <stefan@lkcc.org>
 
 	* docs/en/octave.html: Added short description of Octave
 	interface.
 
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 2009-10-08  Stefan Jahn  <stefan@lkcc.org>
 
 	* docs/cs/index.html: Updated Czech translations of internal help

@@ -394,11 +394,7 @@ EDD:D1 _net2 gnd gnd _net0 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2"
   </Model>
   <Symbol>
     <Line -20 -20 0 40 #000080 2 1>
-<<<<<<< HEAD
-    <.PortSym 30 0 3 180>
-=======
     <.PortSym 30 0 2 180>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     <Line 30 0 -10 0 #000080 2 1>
     <Line -30 0 10 0 #000080 2 1>
     <Line -20 -20 40 0 #000080 2 1>
@@ -578,11 +574,7 @@ EDD:D1 _net2 gnd gnd _net0 I1="D1.I1" Q1="D1.Q1" I2="D1.I2" Q2="D1.Q2"
 .Def:End
   </Model>
   <Symbol>
-<<<<<<< HEAD
-    <.PortSym 30 0 3 180>
-=======
     <.PortSym 30 0 2 180>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     <Line -30 0 10 0 #000080 2 1>
     <.PortSym -30 0 1 0>
     <Line 20 0 10 0 #000080 2 1>

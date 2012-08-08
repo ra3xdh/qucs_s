@@ -56,10 +56,7 @@
 #include "vcvs.h"
 #include "ccvs.h"
 #include "tline.h"
-<<<<<<< HEAD
-=======
 #include "ctline.h"
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 #include "tline_4port.h"
 #include "twistedpair.h"
 #include "coaxialline.h"
@@ -91,10 +88,7 @@
 #include "mosfet.h"
 #include "mosfet_sub.h"
 #include "eqndefined.h"
-<<<<<<< HEAD
-=======
 #include "tunneldiode.h"
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 #include "dc_sim.h"
 #include "ac_sim.h"
 #include "tr_sim.h"
@@ -118,10 +112,7 @@
 #include "mutual.h"
 #include "mutual2.h"
 #include "coupler.h"
-<<<<<<< HEAD
-=======
 #include "hybrid.h"
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 #include "switch.h"
 #include "relais.h"
 #include "am_modulator.h"
@@ -158,10 +149,7 @@
 #include "EKV26MOS.h"
 #include "hicumL0V1p2.h"
 #include "hicumL0V1p2g.h"
-<<<<<<< HEAD
-=======
 #include "hicumL0V1p3.h"
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 #include "hicumL2V2p23.h"
 #include "hicumL2V2p24.h"
 #include "photodiode.h"

@@ -32,10 +32,8 @@
 #include "main.h"
 #include "qucs.h"
 #include "dialogs/vtabbeddockwidget.h"
-<<<<<<< HEAD
-=======
+
 #include "octave_window.h"
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 // ----------------------------------------------------------
 // initializes all QActions of the application
@@ -410,9 +408,9 @@ void QucsApp::initActions()
   editRotate = new QAction(tr("Rotate"),
 		QIconSet(QImage(QucsSettings.BitmapDir + "rotate_ccw.png")),
 		tr("Rotate"), CTRL+Key_R, this);
-  editRotate->setStatusTip(tr("Rotates the selected component by 90°"));
+  editRotate->setStatusTip(tr("Rotates the selected component by 90\B0"));
   editRotate->setWhatsThis(
-    tr("Rotate\n\nRotates the selected component by 90° counter-clockwise"));
+    tr("Rotate\n\nRotates the selected component by 90\B0 counter-clockwise"));
   editRotate->setToggleAction(true);
   connect(editRotate, SIGNAL(toggled(bool)), SLOT(slotEditRotate(bool)));
 
@@ -613,8 +611,6 @@ void QucsApp::initActions()
 	tr("Browse Window\n\nEnables/disables the browse dock window"));
   connect(viewBrowseDock, SIGNAL(toggled(bool)), SLOT(slotViewBrowseDock(bool)));
 
-<<<<<<< HEAD
-=======
   viewOctaveDock = new QAction(tr("&Octave Window"), 0, this, 0);
   viewOctaveDock->setToggleAction(true);
   viewOctaveDock->setStatusTip(tr("Shows/hides the Octave dock window"));
@@ -622,7 +618,6 @@ void QucsApp::initActions()
       tr("Octave Window\n\nShows/hides the Octave dock window"));
   connect(viewOctaveDock, SIGNAL(toggled(bool)), SLOT(slotViewOctaveDock(bool)));
 
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   helpIndex = new QAction("Help Index...", tr("Help Index..."), Key_F1, this);
   helpIndex->setStatusTip(tr("Index of Qucs Help"));
   helpIndex->setWhatsThis(tr("Help Index\n\nIndex of intern Qucs help"));
@@ -754,10 +749,7 @@ void QucsApp::initMenuBar()
   viewToolBar->addTo(viewMenu);
   viewStatusBar->addTo(viewMenu);
   viewBrowseDock->addTo(viewMenu);
-<<<<<<< HEAD
-=======
   viewOctaveDock->addTo(viewMenu);
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
   helpMenu = new QPopupMenu();  // menuBar entry helpMenu
   helpIndex->addTo(helpMenu);
@@ -928,8 +920,6 @@ void QucsApp::slotToggleDock(bool on)
 }
 
 // ----------------------------------------------------------
-<<<<<<< HEAD
-=======
 // turn Octave Dock Window on or off
 void QucsApp::slotViewOctaveDock(bool toggle)
 {
@@ -950,7 +940,6 @@ void QucsApp::slotToggleOctave(bool on)
 }
 
 // ----------------------------------------------------------
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 void QucsApp::slotHelpAbout()
 {
   QMessageBox::about(this, tr("About..."),

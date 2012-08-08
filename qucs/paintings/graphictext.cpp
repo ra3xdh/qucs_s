@@ -189,11 +189,7 @@ QString GraphicText::saveCpp()
     QString ("new Text (%1, %2, \"%3\", QColor (\"%4\"), %5, %6, %7)").
     arg(cx).arg(cy).arg(t).
     arg(Color.name()).arg(Font.pointSize()).
-<<<<<<< HEAD
-    arg(sin(M_PI * Angle / 180.0)).arg(cos(M_PI * Angle / 180.0));
-=======
     arg(cos(M_PI * Angle / 180.0)).arg(sin(M_PI * Angle / 180.0));
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   s = "Texts.append (" + s + ");";
   return s;
 }

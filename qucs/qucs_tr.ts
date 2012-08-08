@@ -1438,8 +1438,6 @@ olmalı fakat şu anda %1 !</translation>
     </message>
 </context>
 <context>
-<<<<<<< HEAD
-=======
     <name>OctaveWindow</name>
     <message>
         <source>ERROR: Cannot start Octave!</source>
@@ -1447,7 +1445,6 @@ olmalı fakat şu anda %1 !</translation>
     </message>
 </context>
 <context>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     <name>OptimizeDialog</name>
     <message>
         <source>Edit Optimization Properties</source>
@@ -7035,11 +7032,7 @@ Kullanım:  qucsedit [-r] kütük
     </message>
     <message>
         <source>HICUM Level 0 v1.3 verilog device</source>
-<<<<<<< HEAD
-        <translation type="obsolete">HICUM Seviyesi 0 v1.3 verilog devre elemanı</translation>
-=======
         <translation type="unfinished">HICUM Seviyesi 0 v1.3 verilog devre elemanı</translation>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
     <message>
         <source>high-injection roll-off current</source>
@@ -7063,19 +7056,11 @@ Kullanım:  qucsedit [-r] kütük
     </message>
     <message>
         <source>npn HICUM L0 v1.3</source>
-<<<<<<< HEAD
-        <translation type="obsolete">npn HICUM L0 v1.3</translation>
-    </message>
-    <message>
-        <source>pnp HICUM L0 v1.3</source>
-        <translation type="obsolete">pnp HICUM L0 v1.3</translation>
-=======
         <translation type="unfinished">npn HICUM L0 v1.3</translation>
     </message>
     <message>
         <source>pnp HICUM L0 v1.3</source>
         <translation type="unfinished">pnp HICUM L0 v1.3</translation>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     </message>
     <message>
         <source>HICUM Level 0 v1.2g verilog device</source>
@@ -7106,9 +7091,6 @@ Kullanım:  qucsedit [-r] kütük
         <translation type="unfinished"></translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <source>microchip lange coupler</source>
-=======
         <source>hybrid (unsymmetrical 3dB coupler)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7238,7 +7220,6 @@ Kullanım:  qucsedit [-r] kütük
     </message>
     <message>
         <source>microstrip lange coupler</source>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8567,13 +8548,13 @@ Belgenin tüm bilesenlerini seçer</translation>
     </message>
     <message>
         <source>Rotates the selected component by 90&#xb0;</source>
-        <translation>Seçili bilşeni 90° çevirir</translation>
+        <translation type="obsolete">Seçili bilşeni 90° çevirir</translation>
     </message>
     <message>
         <source>Rotate
 
 Rotates the selected component by 90&#xb0; counter-clockwise</source>
-        <translation>Döndür
+        <translation type="obsolete">Döndür
 
 Seçili bileşeni saatin tersi yönde 90° çevirir</translation>
     </message>
@@ -9744,8 +9725,6 @@ Convert data file to various file formats</source>
         <source>Cannot delete %1: &quot;%2&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
-<<<<<<< HEAD
-=======
     <message>
         <source>Octave Scripts</source>
         <translation type="unfinished"></translation>
@@ -9768,7 +9747,16 @@ Convert data file to various file formats</source>
 Shows/hides the Octave dock window</source>
         <translation type="unfinished"></translation>
     </message>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
+    <message>
+        <source>Rotates the selected component by 90B0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotate
+
+Rotates the selected component by 90B0 counter-clockwise</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QucsAttenuator</name>
@@ -12564,8 +12552,6 @@ Bütün kütüphaneler aranır.</translation>
         <source>Letter portrait</source>
         <translation type="unfinished"></translation>
     </message>
-<<<<<<< HEAD
-=======
     <message>
         <source>Octave Script:</source>
         <translation type="unfinished"></translation>
@@ -12574,7 +12560,6 @@ Bütün kütüphaneler aranır.</translation>
         <source>run script after simulation</source>
         <translation type="unfinished"></translation>
     </message>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 </context>
 <context>
     <name>SimMessage</name>
@@ -12929,17 +12914,11 @@ Bir VHDL varlığı iskeleti koyar</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <source>Verilog entity
-=======
         <source>Verilog module
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 Inserts the skeleton of a Verilog module</source>
         <translation type="unfinished"></translation>
     </message>
-<<<<<<< HEAD
-=======
     <message>
         <source>Octave function</source>
         <translation type="unfinished"></translation>
@@ -12954,7 +12933,6 @@ Inserts the skeleton of a Verilog module</source>
 Inserts the skeleton of a Octave function</source>
         <translation type="unfinished"></translation>
     </message>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 </context>
 <context>
     <name>VASettingsDialog</name>

@@ -79,15 +79,11 @@ QucsDoc::QucsDoc(QucsApp *App_, const QString& Name_)
     QString base = Info.baseName(true);
     QString ext = Info.extension(false);
 
-<<<<<<< HEAD
-    DataSet = base + ".dat";       // name of the default dataset
-=======
     if(ext == "m" || ext == "oct")
       SimTime = "1";
 
     DataSet = base + ".dat";       // name of the default dataset
     Script = base + ".m";          // name of the default script
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     if(ext != "dpl")
       DataDisplay = base + ".dpl"; // name of default data display
     else {
@@ -96,10 +92,7 @@ QucsDoc::QucsDoc(QucsApp *App_, const QString& Name_)
     }
   }
   SimOpenDpl = true;
-<<<<<<< HEAD
-=======
   SimRunScript = false;
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
   DocChanged = false;
   showBias = -1;  // don't show DC bias (currently for "Schematic" only)

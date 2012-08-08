@@ -184,10 +184,7 @@ void Module::registerModules (void) {
   REGISTER_LUMPED_1 (Gyrator);
   REGISTER_LUMPED_1 (Phaseshifter);
   REGISTER_LUMPED_1 (Coupler);
-<<<<<<< HEAD
-=======
   REGISTER_LUMPED_1 (Hybrid);
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   REGISTER_LUMPED_1 (iProbe);
   REGISTER_LUMPED_1 (vProbe);
   REGISTER_LUMPED_1 (Mutual);
@@ -230,10 +227,7 @@ void Module::registerModules (void) {
   // transmission lines
   REGISTER_TRANS_1 (TLine);
   REGISTER_TRANS_1 (TLine_4Port);
-<<<<<<< HEAD
-=======
   REGISTER_TRANS_1 (CoupledTLine);
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   REGISTER_TRANS_1 (TwistedPair);
   REGISTER_TRANS_1 (CoaxialLine);
   REGISTER_TRANS_1 (RectLine);
@@ -270,10 +264,7 @@ void Module::registerModules (void) {
   REGISTER_NONLINEAR_1 (Diac);
   REGISTER_NONLINEAR_1 (Triac);
   REGISTER_NONLINEAR_1 (Thyristor);
-<<<<<<< HEAD
-=======
   REGISTER_NONLINEAR_1 (TunnelDiode);
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
   // verilog-a devices
   REGISTER_VERILOGA_1 (hicumL2V2p1);
@@ -287,10 +278,7 @@ void Module::registerModules (void) {
   REGISTER_VERILOGA_2 (EKV26MOS, info, info_pmos);
   REGISTER_VERILOGA_2 (hicumL0V1p2, info, info_pnp);
   REGISTER_VERILOGA_2 (hicumL0V1p2g, info, info_pnp);
-<<<<<<< HEAD
-=======
   REGISTER_VERILOGA_2 (hicumL0V1p3, info, info_pnp);
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   REGISTER_VERILOGA_1 (hicumL2V2p23);
   REGISTER_VERILOGA_1 (hicumL2V2p24);
   REGISTER_VERILOGA_1 (photodiode);

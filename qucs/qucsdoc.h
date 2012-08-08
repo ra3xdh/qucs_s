@@ -51,24 +51,16 @@ public:
   QString DocName;
   QString DataSet;     // name of the default dataset
   QString DataDisplay; // name of the default data display
-<<<<<<< HEAD
-=======
   QString Script;
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   QString SimTime;     // used for VHDL simulation, but stored in datadisplay
   QDateTime lastSaved;
 
   float Scale;
   QucsApp *App;
   bool DocChanged;
-<<<<<<< HEAD
-  bool SimOpenDpl;  // open data display after simulation ?
-  int  showBias;    // -1=no, 0=calculation running, >0=show DC bias points
-=======
   bool SimOpenDpl;   // open data display after simulation ?
   bool SimRunScript; // run script after simulation ?
   int  showBias;     // -1=no, 0=calculation running, >0=show DC bias points
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   bool GridOn;
   int  tmpPosX, tmpPosY;
 };

@@ -51,19 +51,13 @@ SimMessage::SimMessage(QWidget *w, QWidget *parent)
 
   DocName = Doc->DocName;
   DataDisplay = Doc->DataDisplay;
-<<<<<<< HEAD
-=======
   Script = Doc->Script;
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   QFileInfo Info(DocName);
   DataSet = QDir::convertSeparators(Info.dirPath()) +
     QDir::separator() + Doc->DataSet;
   showBias = Doc->showBias;     // save some settings as the document...
   SimOpenDpl = Doc->SimOpenDpl; // ...could be closed during the simulation.
-<<<<<<< HEAD
-=======
   SimRunScript = Doc->SimRunScript;
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
   all = new QVBoxLayout(this);
   all->setSpacing(5);
@@ -378,14 +372,10 @@ void SimMessage::startSimulator()
     for(QStringList::Iterator it = Collect.begin();
 	it != Collect.end(); ++it) {
       // don't put library includes into netlist...
-<<<<<<< HEAD
-      if ((*it).right(4) != ".lst") {
-=======
       if ((*it).right(4) != ".lst" &&
 	  (*it).right(5) != ".vhdl" &&
 	  (*it).right(4) != ".vhd" &&
 	  (*it).right(2) != ".v") {
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 	Stream << *it << '\n';
       }
     }
@@ -393,7 +383,7 @@ void SimMessage::startSimulator()
 
     isVerilog = ((Schematic*)DocWidget)->isVerilog;
     SimTime = ((Schematic*)DocWidget)->createNetlist(Stream, SimPorts);
-    if(SimTime.at(0) == '§') {
+    if(SimTime.at(0) == '\A7') {
       NetlistFile.close();
       ErrText->insert(SimTime.mid(1));
       FinishSimulation(-1);

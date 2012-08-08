@@ -48,19 +48,6 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
 
   // ...........................................................
   QWidget *Tab1 = new QWidget(t);
-<<<<<<< HEAD
-  QGridLayout *gp = new QGridLayout(Tab1,4,2,5,5);
-
-  QLabel *l1 = new QLabel(tr("Data Display:"), Tab1);
-  gp->addWidget(l1,0,0);
-  Input_DataDisplay = new QLineEdit(Tab1);
-  gp->addWidget(Input_DataDisplay,0,1);
-
-  QLabel *l2 = new QLabel(tr("Data Set:"), Tab1);
-  gp->addWidget(l2,1,0);
-  Input_DataSet = new QLineEdit(Tab1);
-  gp->addWidget(Input_DataSet,1,1);
-=======
   QGridLayout *gp = new QGridLayout(Tab1,6,2,5,5);
 
   QLabel *l1 = new QLabel(tr("Data Display:"), Tab1);
@@ -72,14 +59,11 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
   gp->addWidget(l2,0,0);
   Input_DataSet = new QLineEdit(Tab1);
   gp->addWidget(Input_DataSet,0,1);
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
   Check_OpenDpl = new QCheckBox(tr("open data display after simulation"),
 				Tab1);
   gp->addMultiCellWidget(Check_OpenDpl,2,2,0,1);
 
-<<<<<<< HEAD
-=======
   QLabel *l20 = new QLabel(tr("Octave Script:"), Tab1);
   gp->addWidget(l20,3,0);
   Input_Script = new QLineEdit(Tab1);
@@ -89,7 +73,6 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
 				Tab1);
   gp->addMultiCellWidget(Check_RunScript,4,4,0,1);
 
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   t->addTab(Tab1, tr("Simulation"));
 
   // ...........................................................
@@ -165,13 +148,9 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
 
   Input_DataSet->setText(Doc->DataSet);
   Input_DataDisplay->setText(Doc->DataDisplay);
-<<<<<<< HEAD
-  Check_OpenDpl->setChecked(Doc->SimOpenDpl);
-=======
   Input_Script->setText(Doc->Script);
   Check_OpenDpl->setChecked(Doc->SimOpenDpl);
   Check_RunScript->setChecked(Doc->SimRunScript);
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   Check_GridOn->setChecked(Doc->GridOn);
   Input_GridX->setText(QString::number(Doc->GridX));
   Input_GridY->setText(QString::number(Doc->GridY));
@@ -218,27 +197,21 @@ void SettingsDialog::slotApply()
     changed = true;
   }
 
-<<<<<<< HEAD
-=======
   if(Doc->Script != Input_Script->text()) {
     Doc->Script = Input_Script->text();
     changed = true;
   }
 
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   if(Doc->SimOpenDpl != Check_OpenDpl->isChecked()) {
     Doc->SimOpenDpl = Check_OpenDpl->isChecked();
     changed = true;
   }
 
-<<<<<<< HEAD
-=======
   if(Doc->SimRunScript != Check_RunScript->isChecked()) {
     Doc->SimRunScript = Check_RunScript->isChecked();
     changed = true;
   }
 
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   if(Doc->GridOn != Check_GridOn->isChecked()) {
     Doc->GridOn = Check_GridOn->isChecked();
     changed = true;

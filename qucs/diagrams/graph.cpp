@@ -159,20 +159,13 @@ int Graph::getSelected(int x, int y)
     if(*pp <= BRANCHEND) z++;
     pp++;
     if(*pp <= BRANCHEND) {
-<<<<<<< HEAD
-=======
       if(*pp <= GRAPHEND)  return -1;   // not even one point ?
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
       z++;
       pp++;
       if(*pp < BRANCHEND)  return -1;   // not even one point ?
     }
   }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   if(Style >= GRAPHSTYLE_STAR) {
     // for graph symbols
     while(*pp > GRAPHEND) {
@@ -191,18 +184,9 @@ int Graph::getSelected(int x, int y)
         pp++;
       }
     }
-<<<<<<< HEAD
-
     return -1;
   }
 
-
-
-=======
-    return -1;
-  }
-
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   // for graph lines
   while(*pp > GRAPHEND) {
     while(*pp >= STROKEEND) {

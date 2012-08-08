@@ -94,14 +94,6 @@ TextDoc::~TextDoc()
 void TextDoc::setLanguage (const QString& FileName)
 {
   QFileInfo Info (FileName);
-<<<<<<< HEAD
-  if (Info.extension (false) == "vhd" || Info.extension (false) == "vhdl")
-    setLanguage (LANG_VHDL);
-  else if (Info.extension (false) == "v")
-    setLanguage (LANG_VERILOG);
-  else if (Info.extension (false) == "va")
-    setLanguage (LANG_VERILOGA);
-=======
   QString ext = Info.extension (false);
   if (ext == "vhd" || ext == "vhdl")
     setLanguage (LANG_VHDL);
@@ -111,7 +103,6 @@ void TextDoc::setLanguage (const QString& FileName)
     setLanguage (LANG_VERILOGA);
   else if (ext == "m" || ext == "oct")
     setLanguage (LANG_OCTAVE);
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   else
     setLanguage (LANG_NONE);
 }
@@ -200,11 +191,8 @@ void TextDoc::setName (const QString& Name_)
 
   DataSet = Info.baseName (true) + ".dat";
   DataDisplay = Info.baseName (true) + ".dpl";
-<<<<<<< HEAD
-=======
   if(Info.extension(false) == "m" || Info.extension(false) == "oct")
     SimTime = "1";
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 }
 
 // ---------------------------------------------------
@@ -240,9 +228,6 @@ void TextDoc::becomeCurrent (bool)
     App->insEntity->setMenuText (tr("Verilog module"));
     App->insEntity->setStatusTip (tr("Inserts skeleton of Verilog module"));
     App->insEntity->setWhatsThis (
-<<<<<<< HEAD
-	tr("Verilog entity\n\nInserts the skeleton of a Verilog module"));
-=======
 	tr("Verilog module\n\nInserts the skeleton of a Verilog module"));
   }
   else if (language == LANG_OCTAVE) {
@@ -250,7 +235,6 @@ void TextDoc::becomeCurrent (bool)
     App->insEntity->setStatusTip (tr("Inserts skeleton of Octave function"));
     App->insEntity->setWhatsThis (
 	tr("Octave function\n\nInserts the skeleton of a Octave function"));
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   }
   App->simulate->setEnabled (true);
   App->editActivate->setEnabled (true);
@@ -291,13 +275,9 @@ void TextDoc::slotSetChanged()
 QPopupMenu *TextDoc::createPopupMenu( const QPoint &pos )
 {
    QPopupMenu *popup = QTextEdit::createPopupMenu( pos );
-<<<<<<< HEAD
-   App->fileSettings->addTo(popup);
-=======
    if (language != LANG_OCTAVE) {
      App->fileSettings->addTo(popup);
    }
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
    return popup;
 }
 
@@ -451,12 +431,9 @@ void TextDoc::commentSelected ()
   case LANG_VERILOGA:
     co = "//"; cl = 2;
     break;
-<<<<<<< HEAD
-=======
   case LANG_OCTAVE:
     co = "%"; cl = 1;
     break;
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   default:
     co = ""; cl = 0;
     break;
@@ -486,12 +463,9 @@ void TextDoc::insertSkeleton ()
   else if (language == LANG_VERILOG)
     insert ("module  ( );\ninput ;\noutput ;\nbegin\n\nend\n"
 	    "endmodule\n\n");
-<<<<<<< HEAD
-=======
   else if (language == LANG_OCTAVE)
     insert ("function  =  ( )\n"
 	    "endfunction\n\n");
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 }
 
 // ---------------------------------------------------
@@ -513,14 +487,11 @@ QString TextDoc::getModuleName (void)
       VerilogA_File_Info VInfo (text ());
       return VInfo.ModuleName;
     }
-<<<<<<< HEAD
-=======
   case LANG_OCTAVE:
     {
       QFileInfo Info (DocName);
       return Info.baseName (true);
     }
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   default:
     return "";
   }

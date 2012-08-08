@@ -2,11 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.57)
-<<<<<<< HEAD
-AC_INIT(qucs,0.0.16,qucs-bugs@lists.sourceforge.net)
-=======
 AC_INIT(qucs,0.0.17,qucs-bugs@lists.sourceforge.net)
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 AC_CONFIG_SRCDIR([qucs/qucs.cpp])
 AC_CONFIG_HEADERS([config.h])
 
@@ -270,13 +266,10 @@ DOC_PATH="$prefix/share/qucs/docs/"
 AC_DEFINE_UNQUOTED([DOCDIR], ["$DOC_PATH"],
   [Where the documentation files go.])
 unset DOC_PATH
-<<<<<<< HEAD
-=======
 OCTAVE_PATH="$prefix/share/qucs/octave/"
 AC_DEFINE_UNQUOTED([OCTAVEDIR], ["$OCTAVE_PATH"],
   [Where the octave script files go.])
 unset OCTAVE_PATH
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 dnl Definitions at top of <config.h>.
 AH_TOP([
@@ -323,10 +316,7 @@ AC_CONFIG_FILES([Makefile
 		 qucs-attenuator/bitmaps/Makefile
 		 qucs/Makefile
 		 qucs/bitmaps/Makefile
-<<<<<<< HEAD
-=======
 		 qucs/octave/Makefile
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 		 qucs/components/Makefile
 		 qucs/diagrams/Makefile
 		 qucs/paintings/Makefile

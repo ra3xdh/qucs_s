@@ -1464,8 +1464,6 @@ but is %1 !</source>
     </message>
 </context>
 <context>
-<<<<<<< HEAD
-=======
     <name>OctaveWindow</name>
     <message>
         <source>ERROR: Cannot start Octave!</source>
@@ -1473,7 +1471,6 @@ but is %1 !</source>
     </message>
 </context>
 <context>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     <name>OptimizeDialog</name>
     <message>
         <source>Edit Optimization Properties</source>
@@ -7158,9 +7155,6 @@ Folosire:  qucsedit [-r] file
         <translation type="unfinished"></translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <source>microchip lange coupler</source>
-=======
         <source>hybrid (unsymmetrical 3dB coupler)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7302,7 +7296,6 @@ Folosire:  qucsedit [-r] file
     </message>
     <message>
         <source>microstrip lange coupler</source>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8664,13 +8657,13 @@ Selectează toate elementele din document</translation>
     </message>
     <message>
         <source>Rotates the selected component by 90&#xb0;</source>
-        <translation type="unfinished">Roteşte componenta curentă cu 90°</translation>
+        <translation type="obsolete">Roteşte componenta curentă cu 90°</translation>
     </message>
     <message>
         <source>Rotate
 
 Rotates the selected component by 90&#xb0; counter-clockwise</source>
-        <translation type="unfinished">Roteşte
+        <translation type="obsolete">Roteşte
 
 Roteşte componenta selectată cu 90° sens antiorar</translation>
     </message>
@@ -9750,8 +9743,6 @@ Convert data file to various file formats</source>
         <source>Cannot delete %1: &quot;%2&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
-<<<<<<< HEAD
-=======
     <message>
         <source>Octave Scripts</source>
         <translation type="unfinished"></translation>
@@ -9774,7 +9765,16 @@ Convert data file to various file formats</source>
 Shows/hides the Octave dock window</source>
         <translation type="unfinished"></translation>
     </message>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
+    <message>
+        <source>Rotates the selected component by 90B0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotate
+
+Rotates the selected component by 90B0 counter-clockwise</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QucsAttenuator</name>
@@ -12369,8 +12369,6 @@ are included in the search.</source>
         <source>Letter portrait</source>
         <translation type="unfinished"></translation>
     </message>
-<<<<<<< HEAD
-=======
     <message>
         <source>Octave Script:</source>
         <translation type="unfinished"></translation>
@@ -12379,7 +12377,6 @@ are included in the search.</source>
         <source>run script after simulation</source>
         <translation type="unfinished"></translation>
     </message>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 </context>
 <context>
     <name>SimMessage</name>
@@ -12728,17 +12725,11 @@ Inserts the skeleton of a VHDL entity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <source>Verilog entity
-=======
         <source>Verilog module
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 Inserts the skeleton of a Verilog module</source>
         <translation type="unfinished"></translation>
     </message>
-<<<<<<< HEAD
-=======
     <message>
         <source>Octave function</source>
         <translation type="unfinished"></translation>
@@ -12753,7 +12744,6 @@ Inserts the skeleton of a Verilog module</source>
 Inserts the skeleton of a Octave function</source>
         <translation type="unfinished"></translation>
     </message>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 </context>
 <context>
     <name>VASettingsDialog</name>

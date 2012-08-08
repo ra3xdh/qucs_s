@@ -207,18 +207,6 @@ int Schematic::saveSymbolCpp (void)
   stream << "  // symbol drawing code\n";
   for (pp = SymbolPaints.first (); pp != 0; pp = SymbolPaints.next ()) {
     if (pp->Name == ".ID ") continue;
-<<<<<<< HEAD
-    pp->Bounding (x1, y1, x2, y2);
-    if (x1 < xmin) xmin = x1;
-    if (x2 > xmax) xmax = x2;
-    if (y1 < ymin) ymin = y1;
-    if (y2 > ymax) ymax = y2;
-    if (pp->Name == ".PortSym ") {
-      if (((PortSymbol*)pp)->numberStr.toInt() > maxNum)
-	maxNum = ((PortSymbol*)pp)->numberStr.toInt();
-      continue;
-    }
-=======
     if (pp->Name == ".PortSym ") {
       if (((PortSymbol*)pp)->numberStr.toInt() > maxNum)
 	maxNum = ((PortSymbol*)pp)->numberStr.toInt();
@@ -235,7 +223,6 @@ int Schematic::saveSymbolCpp (void)
     if (x2 > xmax) xmax = x2;
     if (y1 < ymin) ymin = y1;
     if (y2 > ymax) ymax = y2;
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     stream << "  " << pp->saveCpp () << "\n";
   }
 
@@ -292,11 +279,8 @@ int Schematic::saveDocument()
   stream << "  <DataSet=" << DataSet << ">\n";
   stream << "  <DataDisplay=" << DataDisplay << ">\n";
   stream << "  <OpenDisplay=" << SimOpenDpl << ">\n";
-<<<<<<< HEAD
-=======
   stream << "  <Script=" << Script << ">\n";
   stream << "  <RunScript=" << SimRunScript << ">\n";
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   stream << "  <showFrame=" << showFrame << ">\n";
 
   QString t;
@@ -396,13 +380,10 @@ bool Schematic::loadProperties(QTextStream *stream)
     else if(cstr == "OpenDisplay")
 		if(nstr.toInt(&ok) == 0) SimOpenDpl = false;
 		else SimOpenDpl = true;
-<<<<<<< HEAD
-=======
     else if(cstr == "Script") Script = nstr;
     else if(cstr == "RunScript")
 		if(nstr.toInt(&ok) == 0) SimRunScript = false;
 		else SimRunScript = true;
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     else if(cstr == "showFrame")
 		showFrame = nstr.at(0).latin1() - '0';
     else if(cstr == "FrameText0") convert2Unicode(Frame_Text0 = nstr);
@@ -1376,7 +1357,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QTextEdit *ErrText,
       for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
 	if(pc->Model != "Eqn") {
 	  s = pc->get_Verilog_Code(NumPorts);
-	  if(s.at(0) == '§') {
+	  if(s.at(0) == '\A7') {
 	    ErrText->insert(s.mid(1));
 	  }
 	  else (*tstream) << s;
@@ -1443,7 +1424,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QTextEdit *ErrText,
       for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
 	if(pc->Model != "Eqn") {
 	  s = pc->get_VHDL_Code(NumPorts);
-	  if(s.at(0) == '§') {
+	  if(s.at(0) == '\A7') {
 	    ErrText->insert(s.mid(1));
 	  }
 	  else (*tstream) << s;
@@ -1660,7 +1641,7 @@ QString Schematic::createNetlist(QTextStream& stream, int NumPorts)
       } else {
 	s = pc->get_VHDL_Code(NumPorts);
       }
-      if(s.at(0) == '§') return s;   // return error
+      if(s.at(0) == '\A7') return s;   // return error
     }
     stream << s;
   }

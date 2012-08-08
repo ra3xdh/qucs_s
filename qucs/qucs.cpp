@@ -83,10 +83,7 @@
 #include "dialogs/simmessage.h"
 #include "dialogs/vtabwidget.h"
 #include "dialogs/vtabbeddockwidget.h"
-<<<<<<< HEAD
-=======
 #include "octave_window.h"
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 extern const char *empty_xpm[];
 
@@ -133,10 +130,7 @@ QucsApp::QucsApp()
     tr("VHDL Sources")+" (*.vhdl *.vhd);;"+
     tr("Verilog Sources")+" (*.v);;"+
     tr("Verilog-A Sources")+" (*.va);;"+
-<<<<<<< HEAD
-=======
     tr("Octave Scripts")+" (*.m *.oct);;"+
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     tr("Any File")+" (*)";
   QucsWorkDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
@@ -144,14 +138,11 @@ QucsApp::QucsApp()
   move  (QucsSettings.x,  QucsSettings.y);
   resize(QucsSettings.dx, QucsSettings.dy);
 
-<<<<<<< HEAD
-=======
   MouseMoveAction = 0;
   MousePressAction = 0;
   MouseReleaseAction = 0;
   MouseDoubleClickAction = 0;
 
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   initView();
   initActions();
   initMenuBar();
@@ -160,10 +151,7 @@ QucsApp::QucsApp()
   viewToolBar->setOn(true);
   viewStatusBar->setOn(true);
   viewBrowseDock->setOn(true);
-<<<<<<< HEAD
-=======
   slotViewOctaveDock(false);
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   initCursorMenu();
   HierarchyHistory.setAutoDelete(true);
   Module::registerModules ();
@@ -191,11 +179,6 @@ QucsApp::QucsApp()
     QString arg = qApp->argv()[z];
     if(*(arg) != '-') {
       // allow uri's: file:/home/linuxuser/Desktop/example.sch
-<<<<<<< HEAD
-      QString f = QDir::convertSeparators(QUriDrag::uriToLocalFile(arg));
-      if(f.isEmpty()) f = arg;
-      gotoPage(f);
-=======
       if(arg.contains(":/")) {
         QString f = QDir::convertSeparators(QUriDrag::uriToLocalFile(arg));
         if(f.isEmpty()) f = arg;
@@ -203,7 +186,6 @@ QucsApp::QucsApp()
       } else {
         gotoPage(arg);
       }
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     }
   }
 }
@@ -226,10 +208,7 @@ void QucsApp::initContentListView()
   ConOthers     = new QListViewItem(Content, tr("Others"));
   ConDatasets   = new QListViewItem(Content, tr("Datasets"));
   ConDisplays   = new QListViewItem(Content, tr("Data Displays"));
-<<<<<<< HEAD
-=======
   ConOctave     = new QListViewItem(Content, tr("Octave"));
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   ConVerilog    = new QListViewItem(Content, tr("Verilog"));
   ConVerilogA   = new QListViewItem(Content, tr("Verilog-A"));
   ConSources    = new QListViewItem(Content, tr("VHDL"));
@@ -322,8 +301,6 @@ void QucsApp::initView()
   moveDockWindow(dock,DockLeft);
   TabView->setCurrentPage(0);
 
-<<<<<<< HEAD
-=======
   // ----------------------------------------------------------
   // Octave docking window
   octDock = new QDockWindow(QDockWindow::InDock, this);
@@ -332,7 +309,6 @@ void QucsApp::initView()
   octave = new OctaveWindow(octDock);
   moveDockWindow(octDock, Qt::DockBottom);
 
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   // ............................................
   readProjects(); // reads all projects and inserts them into the ListBox
 }
@@ -796,11 +772,8 @@ void QucsApp::readProjectFiles()
     delete ConVerilogA->firstChild();
   while(ConOthers->firstChild())
     delete ConOthers->firstChild();
-<<<<<<< HEAD
-=======
   while(ConOctave->firstChild())
     delete ConOctave->firstChild();
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
   int n;
   // put all files into "Content"-ListView
@@ -828,11 +801,8 @@ void QucsApp::readProjectFiles()
       new QListViewItem(ConVerilog, (*it).ascii());
     else if(Str == "va")
       new QListViewItem(ConVerilogA, (*it).ascii());
-<<<<<<< HEAD
-=======
     else if((Str == "m") || (Str == "oct"))
       new QListViewItem(ConOctave, (*it).ascii());
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     else
       new QListViewItem(ConOthers, (*it).ascii());
   }
@@ -857,10 +827,7 @@ void QucsApp::openProject(const QString& Path, const QString& Name)
     return;
   }
   QucsWorkDir.setPath(ProjDir.path());
-<<<<<<< HEAD
-=======
   octave->adjustDirectory();
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
   Content->setColumnText(0,tr("Content of '")+Name+tr("'")); // column text
   ConSchematics->setOpen(false); // get sure to have it closed
@@ -925,10 +892,7 @@ void QucsApp::slotMenuCloseProject()
   slotResetWarnings();
   setCaption("Qucs " PACKAGE_VERSION + tr(" - Project: "));
   QucsWorkDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
-<<<<<<< HEAD
-=======
   octave->adjustDirectory();
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
   Content->setColumnText(0,tr("Content of")); // column text
   initContentListView();
@@ -1183,21 +1147,14 @@ bool QucsApp::saveAs()
     }
 
     // list of known file extensions
-<<<<<<< HEAD
-    QString ext = "vhdl;vhd;v;va;sch;dpl";
-=======
     QString ext = "vhdl;vhd;v;va;sch;dpl;m;oct";
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     QStringList extlist = QStringList::split (';', ext);
 
     if(isTextDocument (w))
       Filter = tr("VHDL Sources")+" (*.vhdl *.vhd);;" +
 	       tr("Verilog Sources")+" (*.v);;"+
 	       tr("Verilog-A Sources")+" (*.va);;"+
-<<<<<<< HEAD
-=======
 	       tr("Octave Scripts")+" (*.m *.oct);;"+
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 	       tr("Any File")+" (*)";
     else
       Filter = QucsFileFilter;
@@ -1255,11 +1212,8 @@ bool QucsApp::saveAs()
           Content->setSelected(new QListViewItem(ConVerilog, s), true);
         else if(ext == "va")
           Content->setSelected(new QListViewItem(ConVerilogA, s), true);
-<<<<<<< HEAD
-=======
         else if(ext == "m" || ext == "oct")
           Content->setSelected(new QListViewItem(ConOctave, s), true);
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
         else
           Content->setSelected(new QListViewItem(ConOthers, s), true);
       }
@@ -1428,17 +1382,12 @@ void QucsApp::slotFileSettings ()
   QWidget * w = DocumentTab->currentPage ();
   if (isTextDocument (w)) {
     QucsDoc * Doc = (QucsDoc *) ((TextDoc *) w);
-<<<<<<< HEAD
-    // Verilog-A properties
-    if (Doc->fileSuffix () == "va") {
-=======
     QString ext = Doc->fileSuffix ();
     // Octave properties
     if (ext == "m" || ext == "oct") {
     }
     // Verilog-A properties
     else if (ext == "va") {
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
       VASettingsDialog * d = new VASettingsDialog ((TextDoc *) w);
       d->exec ();
     }
@@ -1743,13 +1692,8 @@ void QucsApp::slotSimulate()
     if(!saveAs()) return;    // ... save schematic before
 
   // Perhaps the document was modified from another program ?
-<<<<<<< HEAD
-  if(Doc->lastSaved.isValid()) {
-    QFileInfo Info(Doc->DocName);
-=======
   QFileInfo Info(Doc->DocName);
   if(Doc->lastSaved.isValid()) {
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     if(Doc->lastSaved < Info.lastModified()) {
       int No = QMessageBox::warning(this, tr("Warning"),
                tr("The document was modified by another program !") + '\n' +
@@ -1761,8 +1705,6 @@ void QucsApp::slotSimulate()
   }
 
   slotResetWarnings();
-<<<<<<< HEAD
-=======
 
   if(Info.extension(false) == "m" || Info.extension(false) == "oct") {
     // It is an Octave script.
@@ -1773,7 +1715,6 @@ void QucsApp::slotSimulate()
     return;
   }
 
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
   SimMessage *sim = new SimMessage(w, this);
   // disconnect is automatically performed, if one of the involved objects
   // is destroyed !
@@ -1811,17 +1752,6 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
       Dia->show();
     }
   }
-<<<<<<< HEAD
-  else if(sim->SimOpenDpl) {
-    // switch to data display
-    slotChangePage(sim->DocName, sim->DataDisplay);
-    sim->slotClose();   // close and delete simulation window
-  }
-  else
-    if(w) if(!isTextDocument (sim->DocWidget))
-      // load recent simulation data (if document is still open)
-      ((Schematic*)sim->DocWidget)->reloadGraphs();
-=======
   else {
     if(sim->SimRunScript) {
       // run script
@@ -1844,7 +1774,6 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
 	// load recent simulation data (if document is still open)
 	((Schematic*)sim->DocWidget)->reloadGraphs();
   }
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
   if(!isTextDocument (sim->DocWidget))
     ((Schematic*)sim->DocWidget)->viewport()->update();
@@ -1880,12 +1809,8 @@ void QucsApp::slotChangePage(QString& DocName, QString& DataDisplay)
     DocumentTab->setCurrentPage(z);
   else {   // no open page found ?
     QString ext = QucsDoc::fileSuffix (DataDisplay);
-<<<<<<< HEAD
-    if (ext != "vhd" && ext != "vhdl" && ext != "v" && ext != "va")
-=======
     if (ext != "vhd" && ext != "vhdl" && ext != "v" && ext != "va" && 
 	ext != "oct" && ext != "m")
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
       d = new Schematic (this, Name);
     else
       d = new TextDoc (this, Name);
@@ -1937,15 +1862,11 @@ void QucsApp::slotToPage()
     return;
   }
 
-<<<<<<< HEAD
-  slotChangePage(d->DocName, d->DataDisplay);
-=======
   if(d->DocName.right(2) == ".m" ||
      d->DocName.right(4) == ".oct")
     slotViewOctaveDock(true);
   else
     slotChangePage(d->DocName, d->DataDisplay);
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 }
 
 // -------------------------------------------------------------------
@@ -1971,12 +1892,8 @@ void QucsApp::slotOpenContent(QListViewItem *item)
   QString Suffix = Info.extension(false);
 
   if (Suffix == "sch" || Suffix == "dpl" || Suffix == "vhdl" ||
-<<<<<<< HEAD
-      Suffix == "v" || Suffix == "va") {
-=======
       Suffix == "vhd" || Suffix == "v" || Suffix == "va" ||
       Suffix == "m" || Suffix == "oct") {
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
     gotoPage(Info.absFilePath());
 
     if(item->text(1).isEmpty())     // is subcircuit ?

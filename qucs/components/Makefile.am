@@ -4,11 +4,7 @@
 #
 # Automake input file.
 #
-<<<<<<< HEAD
-# Copyright (C) 2004, 2007, 2008, 2009, 2010 Stefan Jahn <stefan@lkcc.org>
-=======
 # Copyright (C) 2004-2011 Stefan Jahn <stefan@lkcc.org>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 #
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -61,11 +57,7 @@ libcomponents_a_SOURCES = phaseshifter.cpp gyrator.cpp componentdialog.cpp    \
   pad2bit.cpp pad3bit.cpp pad4bit.cpp binarytogrey4bit.cpp vafile.cpp         \
   greytobinary4bit.cpp comp_1bit.cpp comp_2bit.cpp comp_4bit.cpp              \
   hpribin4bit.cpp msrstub.cpp phototransistor.cpp nigbt.cpp hicumL2V2p24.cpp  \
-<<<<<<< HEAD
-  hicumL0V1p2g.cpp
-=======
   hicumL0V1p2g.cpp hybrid.cpp ctline.cpp tunneldiode.cpp hicumL0V1p3.cpp
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 nodist_libcomponents_a_SOURCES = $(MOCFILES)
 
@@ -93,12 +85,8 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
   andor4x4.h dmux2to4.h dmux3to8.h dmux4to16.h ha1b.h fa1b.h fa2b.h pad2bit.h \
   pad3bit.h pad4bit.h binarytogrey4bit.h greytobinary4bit.h comp_1bit.h       \
   comp_2bit.h comp_4bit.h hpribin4bit.h msrstub.h phototransistor.h nigbt.h   \
-<<<<<<< HEAD
-  vafile.h hicumL2V2p24.h hicumL0V1p2g.h
-=======
   vafile.h hicumL2V2p24.h hicumL0V1p2g.h hybrid.h ctline.h tunneldiode.h      \
   hicumL0V1p3.h
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 INCLUDES = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 

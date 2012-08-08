@@ -1,11 +1,8 @@
-<<<<<<< HEAD
-=======
 2011-03-18  Stefan Jahn  <stefan@lkcc.org>
 
 	* configure.ac: Released version 0.0.16 and bumped up to version
 	0.0.17.
 
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 2009-04-27  Stefan Jahn  <stefan@lkcc.org>
 
 	* qucs-filter-v2: Added preliminary 2nd version of qucs-filter

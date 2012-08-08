@@ -4,11 +4,7 @@
 #
 # Automake input file.
 #
-<<<<<<< HEAD
-# Copyright (C) 2004, 2005, 2006, 2007, 2008 Stefan Jahn <stefan@lkcc.org>
-=======
 # Copyright (C) 2004-2011 Stefan Jahn <stefan@lkcc.org>
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 #
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,11 +22,7 @@
 # Boston, MA 02110-1301, USA.  
 #
 
-<<<<<<< HEAD
-SUBDIRS = bitmaps components diagrams paintings dialogs
-=======
 SUBDIRS = bitmaps components diagrams paintings dialogs octave
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 if COND_WIN32
 bin_SCRIPTS = qucsdigi.bat qucsveri.bat qucsdigilib.bat
@@ -40,21 +32,13 @@ endif
 
 bin_PROGRAMS = qucs
 
-<<<<<<< HEAD
-MOCHEADERS = qucs.h schematic.h textdoc.h
-=======
 MOCHEADERS = qucs.h schematic.h textdoc.h octave_window.h
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
 qucs_SOURCES = node.cpp element.cpp qucsdoc.cpp wire.cpp mouseactions.cpp   \
   qucs.cpp main.cpp wirelabel.cpp qucs_init.cpp qucs_actions.cpp            \
   viewpainter.cpp mnemo.cpp schematic.cpp schematic_element.cpp textdoc.cpp \
-<<<<<<< HEAD
-  schematic_file.cpp syntax.cpp module.cpp
-=======
   schematic_file.cpp syntax.cpp module.cpp octave_window.cpp
->>>>>>> 80028cb8206ee83926db69b5bd20c9a3c932403d
 
 nodist_qucs_SOURCES = $(MOCFILES)
 
