@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>ArrowDialog</name>
     <message>
@@ -7281,11 +7283,11 @@ Stosowanie:  qucsedit [-r] plik
     </message>
     <message>
         <source>npn HICUM L0 v1.2g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">npn HICUM L2 v1.2g {0 ?}</translation>
     </message>
     <message>
         <source>pnp HICUM L0 v1.2g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">pnp HICUM L2 v1.2g {0 ?}</translation>
     </message>
     <message>
         <source>hybrid (unsymmetrical 3dB coupler)</source>
@@ -8849,13 +8851,13 @@ Zaznacz wszystkie elementy w dokumencie</translation>
         <translation>Obróć</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation>Obraca wybrany elelement o 90 stopni</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation>Obróć
 
 Obraca wybrany elelement o 90 stopni zgodnie z ruchem wskazówek zegara</translation>
@@ -10947,13 +10949,13 @@ Zaznacz wszystkie elementy w dokumencie</translation>
         <translation type="obsolete">Obróć</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation type="obsolete">Obraca wybrany elelement o 90 stopni</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation type="obsolete">Obróć
 
 Obraca wybrany elelement o 90 stopni zgodnie z ruchem wskazówek zegara</translation>
@@ -12710,7 +12712,7 @@ are included in the search.</source>
     </message>
     <message>
         <source>Simulation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Symulacja</translation>
     </message>
     <message>
         <source>show Grid</source>

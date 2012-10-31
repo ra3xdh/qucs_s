@@ -15,7 +15,7 @@
  * any later version.
  * 
  */
-
+#include <QtGui>
 #include "binarytogrey4bit.h"
 #include "node.h"
 #include "main.h"
@@ -57,34 +57,34 @@ Element * binarytogrey4bit::info(QString& Name, char * &BitmapFile, bool getNewO
 
 void binarytogrey4bit::createSymbol()
 {
-  Lines.append(new Line(-30, -60, 30,-60,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30, -60, 30, 40,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,  40,-30, 40,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30,  40,-30, -60,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30, -60, 30,-60,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30, -60, 30, 40,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,  40,-30, 40,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30,  40,-30, -60,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-50,-30,-30,-30,QPen(QPen::darkBlue,2)));  // B0
-  Lines.append(new Line(-50,-10,-30,-10,QPen(QPen::darkBlue,2)));  // B1
-  Lines.append(new Line(-50, 10,-30, 10,QPen(QPen::darkBlue,2)));  // B2
-  Lines.append(new Line(-50, 30,-30, 30,QPen(QPen::darkBlue,2)));  // B3
+  Lines.append(new Line(-50,-30,-30,-30,QPen(Qt::darkBlue,2)));  // B0
+  Lines.append(new Line(-50,-10,-30,-10,QPen(Qt::darkBlue,2)));  // B1
+  Lines.append(new Line(-50, 10,-30, 10,QPen(Qt::darkBlue,2)));  // B2
+  Lines.append(new Line(-50, 30,-30, 30,QPen(Qt::darkBlue,2)));  // B3
 
-  Lines.append(new Line( 30, 30, 50, 30,QPen(QPen::darkBlue,2)));  // G3
-  Lines.append(new Line( 30, 10, 50, 10,QPen(QPen::darkBlue,2)));  // G2
-  Lines.append(new Line( 30,-10, 50,-10,QPen(QPen::darkBlue,2)));  // G1
-  Lines.append(new Line( 30,-30, 50,-30,QPen(QPen::darkBlue,2)));  // G0
+  Lines.append(new Line( 30, 30, 50, 30,QPen(Qt::darkBlue,2)));  // G3
+  Lines.append(new Line( 30, 10, 50, 10,QPen(Qt::darkBlue,2)));  // G2
+  Lines.append(new Line( 30,-10, 50,-10,QPen(Qt::darkBlue,2)));  // G1
+  Lines.append(new Line( 30,-30, 50,-30,QPen(Qt::darkBlue,2)));  // G0
  
-  Texts.append(new Text(-16,-59, "B", QPen::darkBlue, 12.0));
-  Texts.append(new Text( -2,-59, "/", QPen::darkBlue, 12.0));
-  Texts.append(new Text(  5,-59, "G", QPen::darkBlue, 12.0));
+  Texts.append(new Text(-16,-59, "B", Qt::darkBlue, 12.0));
+  Texts.append(new Text( -2,-59, "/", Qt::darkBlue, 12.0));
+  Texts.append(new Text(  5,-59, "G", Qt::darkBlue, 12.0));
 
-  Texts.append(new Text(-25,-43, "0", QPen::darkBlue, 12.0));
-  Texts.append(new Text(-25,-23, "1", QPen::darkBlue, 12.0));
-  Texts.append(new Text(-25, -3, "2", QPen::darkBlue, 12.0));
-  Texts.append(new Text(-25, 17, "3", QPen::darkBlue, 12.0));
+  Texts.append(new Text(-25,-43, "0", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25,-23, "1", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25, -3, "2", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25, 17, "3", Qt::darkBlue, 12.0));
 
-  Texts.append(new Text( 15,-43, "0", QPen::darkBlue, 12.0));
-  Texts.append(new Text( 15,-23, "1", QPen::darkBlue, 12.0));
-  Texts.append(new Text( 15, -3, "2", QPen::darkBlue, 12.0));
-  Texts.append(new Text( 15, 17, "3", QPen::darkBlue, 12.0));
+  Texts.append(new Text( 15,-43, "0", Qt::darkBlue, 12.0));
+  Texts.append(new Text( 15,-23, "1", Qt::darkBlue, 12.0));
+  Texts.append(new Text( 15, -3, "2", Qt::darkBlue, 12.0));
+  Texts.append(new Text( 15, 17, "3", Qt::darkBlue, 12.0));
 
   Ports.append(new Port(-50,-30));  // B0
   Ports.append(new Port(-50,-10));  // B1

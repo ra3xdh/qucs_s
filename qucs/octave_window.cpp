@@ -2,22 +2,25 @@
     copyright            : (C) 2010 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
  ***************************************************************************/
-
+#include <QtGui>
 #include "octave_window.h"
 #include "main.h"
 
 #include <qsize.h>
-#include <qvbox.h>
+#include <q3vbox.h>
 #include <qcolor.h>
-#include <qaccel.h>
+#include <q3accel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
-#include <qdockwindow.h>
+#include <q3textedit.h>
+#include <q3dockwindow.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
+#include <QKeyEvent>
 
 extern QDir QucsWorkDir;  // current project path
 
-OctaveWindow::OctaveWindow(QDockWindow *parent_): QWidget(parent_, 0)
+OctaveWindow::OctaveWindow(Q3DockWindow *parent_): QWidget(parent_, 0)
 {
   QFont font;
   font = QFont("Courier New");
@@ -26,14 +29,14 @@ OctaveWindow::OctaveWindow(QDockWindow *parent_): QWidget(parent_, 0)
   font.setFixedPitch(true);
   setFont(font);
 
-  vBox = new QVBoxLayout(this);
+  vBox = new Q3VBoxLayout(this);
 
-  output = new QTextEdit(this);
+  output = new Q3TextEdit(this);
   output->setReadOnly(true);
   output->setUndoRedoEnabled(false);
   output->setTextFormat(Qt::LogText);
   output->setMaxLogLines(2000);
-  output->setWordWrap(QTextEdit::NoWrap);
+  output->setWordWrap(Q3TextEdit::NoWrap);
   output->setPaletteBackgroundColor(QucsSettings.BGColor);
   vBox->addWidget(output, 10);
 
@@ -164,7 +167,7 @@ void OctaveWindow::slotDisplayMsg()
 void OctaveWindow::slotDisplayErr()
 {
   if(!isVisible())
-    ((QDockWindow*)parent())->show();  // always show an error
+    ((Q3DockWindow*)parent())->show();  // always show an error
 
   int par = output->paragraphs() - 1;
   int idx = output->paragraphLength(par);

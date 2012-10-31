@@ -1,3 +1,5 @@
+//Added by qt3to4:
+#include <Q3PtrList>
 /***************************************************************************
                                module.h
                               ----------
@@ -33,7 +35,7 @@ class Module
   static Component * getComponent (QString);
 
  public:
-  static QDict<Module> Modules;
+  static Q3Dict<Module> Modules;
 
  public:
   static void registerModules (void);
@@ -52,16 +54,16 @@ class Category
   ~Category ();
 
  public:
-  static QPtrList<Category> Categories;
+  static Q3PtrList<Category> Categories;
 
  public:
   static QStringList getCategories (void);
-  static QPtrList<Module> getModules (QString);
+  static Q3PtrList<Module> getModules (QString);
   static int getModulesNr (QString);
 
  public:
   QString Name;
-  QPtrList<Module> Content;
+  Q3PtrList<Module> Content;
 };
 
 #endif /* __MODULE_H__ */

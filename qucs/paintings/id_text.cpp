@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "id_text.h"
 #include "id_dialog.h"
 
@@ -39,28 +39,28 @@ ID_Text::~ID_Text()
 void ID_Text::paint(ViewPainter *p)
 {
   int x, y;
-  p->Painter->setPen(QPen(QPen::black,1));
+  p->Painter->setPen(QPen(Qt::black,1));
   p->map(cx, cy, x, y);
 
   QRect r;
-  p->Painter->drawText(x, y, 0, 0, Qt::DontClip, Prefix, -1, &r);
+  p->Painter->drawText(x, y, 0, 0, Qt::TextDontClip, Prefix, -1, &r);
   x2 = r.width();
   y2 = p->LineSpacing;
 
-  p->Painter->drawText(x, y+y2, 0, 0, Qt::DontClip, "File=name", -1, &r);
+  p->Painter->drawText(x, y+y2, 0, 0, Qt::TextDontClip, "File=name", -1, &r);
   if(x2 < r.width())  x2 = r.width();
   y2 += p->LineSpacing;
 
   SubParameter *pp;
   for(pp = Parameter.first(); pp != 0; pp = Parameter.next())
     if(pp->display) {
-      p->Painter->drawText(x, y+y2, 0, 0, Qt::DontClip, pp->Name, -1, &r);
+      p->Painter->drawText(x, y+y2, 0, 0, Qt::TextDontClip, pp->Name, -1, &r);
       if(x2 < r.width())  x2 = r.width();
       y2 += p->LineSpacing;
     }
 
   if(isSelected) {
-    p->Painter->setPen(QPen(QPen::darkGray,3));
+    p->Painter->setPen(QPen(Qt::darkGray,3));
     p->Painter->drawRoundRect(x-4, y-4, x2+8, y2+8);
   }
 

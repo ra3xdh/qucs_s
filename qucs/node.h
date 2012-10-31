@@ -20,7 +20,7 @@
 
 #include "element.h"
 
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 
 class ViewPainter;
 class WireLabel;
@@ -36,7 +36,7 @@ public:
   bool  getSelected(int, int);
   void  setName(const QString&, const QString&, int x_=0, int y_=0);
 
-  QPtrList<Element> Connections;
+  Q3PtrList<Element> Connections;
   QString Name;  // node name used by creation of netlist
   QString DType; // type of node (used by digital files)
   int State;	 // remember some things during some operations

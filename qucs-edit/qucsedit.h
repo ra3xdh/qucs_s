@@ -19,9 +19,12 @@
 #define QUCSEDIT_H
 
 #include <qdialog.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QLabel>
 
 class QLabel;
-class QTextEdit;
+class Q3TextEdit;
 
 
 struct tQucsSettings {
@@ -54,7 +57,7 @@ private:
   bool closeFile();
 
   QString FileName;
-  QTextEdit *text;
+  Q3TextEdit *text;
   QLabel *PosText;
 };
 

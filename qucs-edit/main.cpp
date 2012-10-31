@@ -26,7 +26,7 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 #include <qfile.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qmessagebox.h>
 #include <qdir.h>
 #include <qfont.h>
@@ -42,10 +42,10 @@ bool loadSettings()
   bool result = true;
 
   QFile file(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/editrc"));
-  if(!file.open(IO_ReadOnly))
+  if(!file.open(QIODevice::ReadOnly))
     result = false; // settings file doesn't exist
   else {
-    QTextStream stream(&file);
+    Q3TextStream stream(&file);
     QString Line, Setting;
     while(!stream.atEnd()) {
       Line = stream.readLine();
@@ -62,10 +62,10 @@ bool loadSettings()
   }
 
   file.setName(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/qucsrc"));
-  if(!file.open(IO_ReadOnly))
+  if(!file.open(QIODevice::ReadOnly))
     result = true; // qucs settings not necessary
   else {
-    QTextStream stream(&file);
+    Q3TextStream stream(&file);
     QString Line, Setting;
     while(!stream.atEnd()) {
       Line = stream.readLine();
@@ -93,14 +93,14 @@ bool saveApplSettings(QucsEdit *qucs)
 
 
   QFile file(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/editrc"));
-  if(!file.open(IO_WriteOnly)) {
+  if(!file.open(QIODevice::WriteOnly)) {
     QMessageBox::warning(0, QObject::tr("Warning"),
 			QObject::tr("Cannot save settings !"));
     return false;
   }
 
   QString Line;
-  QTextStream stream(&file);
+  Q3TextStream stream(&file);
 
   stream << "Settings file, Qucs Editor " PACKAGE_VERSION "\n"
 	 << "EditWindow=" << qucs->x() << ',' << qucs->y() << ','

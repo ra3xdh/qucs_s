@@ -18,24 +18,36 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-
+#include <QtGui>
 #include <stdlib.h>
 #include <limits.h>
 
 #include <qimage.h>
 #include <qaction.h>
 #include <qregexp.h>
-#include <qiconset.h>
+#include <qicon.h>
 #include <qprinter.h>
 #include <qlineedit.h>
 #include <qfileinfo.h>
-#include <qiconview.h>
+#include <q3iconview.h>
 #include <qtabwidget.h>
-#include <qdragobject.h>
-#include <qpaintdevicemetrics.h>
+#include <q3dragobject.h>
+#include <q3paintdevicemetrics.h>
 #include <qdir.h>
 
 #include "qucs.h"
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <QDragLeaveEvent>
+#include <Q3StrList>
+#include <Q3PtrList>
+#include <QPixmap>
+#include <QDragEnterEvent>
+#include <QDragMoveEvent>
+#include <QDropEvent>
+#include <QMouseEvent>
+#include <QEvent>
+#include <QWheelEvent>
 #include "main.h"
 #include "node.h"
 #include "schematic.h"
@@ -49,10 +61,10 @@
 #include "components/vafile.h"
 
 // just dummies for empty lists
-QPtrList<Wire>      SymbolWires;
-QPtrList<Node>      SymbolNodes;
-QPtrList<Diagram>   SymbolDiags;
-QPtrList<Component> SymbolComps;
+Q3PtrList<Wire>      SymbolWires;
+Q3PtrList<Node>      SymbolNodes;
+Q3PtrList<Diagram>   SymbolDiags;
+Q3PtrList<Component> SymbolComps;
 
 
 Schematic::Schematic(QucsApp *App_, const QString& Name_)
@@ -105,8 +117,8 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
     Frame_Text2 = tr("Date:");
     Frame_Text3 = tr("Revision:");
 
-    setVScrollBarMode(QScrollView::AlwaysOn);
-    setHScrollBarMode(QScrollView::AlwaysOn);
+    setVScrollBarMode(Q3ScrollView::AlwaysOn);
+    setHScrollBarMode(Q3ScrollView::AlwaysOn);
     viewport()->setPaletteBackgroundColor(QucsSettings.BGColor);
     viewport()->setMouseTracking(true);
     viewport()->setAcceptDrops(true);  // enable drag'n drop
@@ -156,25 +168,25 @@ bool Schematic::createSubcircuitSymbol()
   SymbolPaints.prepend(new ID_Text(-20, h+4));
 
   SymbolPaints.append(
-     new GraphicLine(-20, -h, 40,  0, QPen(QPen::darkBlue,2)));
+     new GraphicLine(-20, -h, 40,  0, QPen(Qt::darkBlue,2)));
   SymbolPaints.append(
-     new GraphicLine( 20, -h,  0,2*h, QPen(QPen::darkBlue,2)));
+     new GraphicLine( 20, -h,  0,2*h, QPen(Qt::darkBlue,2)));
   SymbolPaints.append(
-     new GraphicLine(-20,  h, 40,  0, QPen(QPen::darkBlue,2)));
+     new GraphicLine(-20,  h, 40,  0, QPen(Qt::darkBlue,2)));
   SymbolPaints.append(
-     new GraphicLine(-20, -h,  0,2*h, QPen(QPen::darkBlue,2)));
+     new GraphicLine(-20, -h,  0,2*h, QPen(Qt::darkBlue,2)));
 
   unsigned int i=0, y = 10-h;
   while(i<countPort) {
     i++;
     SymbolPaints.append(
-       new GraphicLine(-30, y, 10, 0, QPen(QPen::darkBlue,2)));
+       new GraphicLine(-30, y, 10, 0, QPen(Qt::darkBlue,2)));
     SymbolPaints.at(i)->setCenter(-30,  y);
 
     if(i == countPort)  break;
     i++;
     SymbolPaints.append(
-       new GraphicLine( 20, y, 10, 0, QPen(QPen::darkBlue,2)));
+       new GraphicLine( 20, y, 10, 0, QPen(Qt::darkBlue,2)));
     SymbolPaints.at(i)->setCenter(30,  y);
     y += 60;
   }
@@ -363,7 +375,7 @@ void Schematic::paintFrame(ViewPainter *p)
   for(z=step/2+5; z<xall; z+=step) {
     p->drawText(Letter, z, 3, 0);
     p->map(z, yall+3, x2_, y2_);
-    p->Painter->drawText(x2_, y2_-d, 0, 0, Qt::DontClip, Letter);
+    p->Painter->drawText(x2_, y2_-d, 0, 0, Qt::TextDontClip, Letter);
     Letter[0]++;
   }
 
@@ -377,7 +389,7 @@ void Schematic::paintFrame(ViewPainter *p)
   for(z=step/2+5; z<yall; z+=step) {
     p->drawText(Letter, 5, z, 0);
     p->map(xall+5, z, x2_, y2_);
-    p->Painter->drawText(x2_-d, y2_, 0, 0, Qt::DontClip, Letter);
+    p->Painter->drawText(x2_-d, y2_, 0, 0, Qt::TextDontClip, Letter);
     Letter[0]++;
   }
 
@@ -390,15 +402,15 @@ void Schematic::paintFrame(ViewPainter *p)
   z = int(200.0 * p->Scale);
   y1_ -= p->LineSpacing + d;
   p->Painter->drawLine(x1_, y1_, x2_, y1_);
-  p->Painter->drawText(x1_+d, y1_+(d>>1), 0, 0, Qt::DontClip, Frame_Text2);
+  p->Painter->drawText(x1_+d, y1_+(d>>1), 0, 0, Qt::TextDontClip, Frame_Text2);
   p->Painter->drawLine(x1_+z, y1_, x1_+z, y1_ + p->LineSpacing+d);
-  p->Painter->drawText(x1_+d+z, y1_+(d>>1), 0, 0, Qt::DontClip, Frame_Text3);
+  p->Painter->drawText(x1_+d+z, y1_+(d>>1), 0, 0, Qt::TextDontClip, Frame_Text3);
   y1_ -= p->LineSpacing + d;
   p->Painter->drawLine(x1_, y1_, x2_, y1_);
-  p->Painter->drawText(x1_+d, y1_+(d>>1), 0, 0, Qt::DontClip, Frame_Text1);
-  y1_ -= (Frame_Text0.contains('\n')+1) * p->LineSpacing + d;
+  p->Painter->drawText(x1_+d, y1_+(d>>1), 0, 0, Qt::TextDontClip, Frame_Text1);
+  y1_ -= (Frame_Text0.count('\n')+1) * p->LineSpacing + d;
   p->Painter->drawRect(x2_, y2_, x1_-x2_-1, y1_-y2_-1);
-  p->Painter->drawText(x1_+d, y1_+(d>>1), 0, 0, Qt::DontClip, Frame_Text0);
+  p->Painter->drawText(x1_+d, y1_+(d>>1), 0, 0, Qt::TextDontClip, Frame_Text0);
 }
 
 // -----------------------------------------------------------
@@ -450,9 +462,9 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
         else x += 4;
       }
       if(z & 0x10)
-        Painter.Painter->setPen(QPen::darkGreen);  // green for currents
+        Painter.Painter->setPen(Qt::darkGreen);  // green for currents
       else
-        Painter.Painter->setPen(QPen::blue);   // blue for voltages
+        Painter.Painter->setPen(Qt::blue);   // blue for voltages
       Painter.drawText(pn->Name, x, y);
     }
   }
@@ -507,13 +519,13 @@ void Schematic::contentsMouseDoubleClickEvent(QMouseEvent *Event)
 // -----------------------------------------------------------
 void Schematic::print(QPrinter*, QPainter *Painter, bool printAll, bool fitToPage)
 {
-  QPaintDeviceMetrics pmetrics(Painter->device());
+  Q3PaintDeviceMetrics pmetrics(Painter->device());
   float printerDpiX = (float)pmetrics.logicalDpiX();
   float printerDpiY = (float)pmetrics.logicalDpiY();
   float printerW = (float)pmetrics.width();
   float printerH = (float)pmetrics.height();
   QPainter pa(viewport());
-  QPaintDeviceMetrics smetrics(pa.device());
+  Q3PaintDeviceMetrics smetrics(pa.device());
   float screenDpiX = (float)smetrics.logicalDpiX();
   float screenDpiY = (float)smetrics.logicalDpiY();
   float PrintScale = 0.5;
@@ -766,7 +778,7 @@ void Schematic::paintGrid(ViewPainter *p, int cX, int cY, int Width, int Height)
 {
   if(!GridOn) return;
 
-  p->Painter->setPen(QPen(QPen::black,0));
+  p->Painter->setPen(QPen(Qt::black,0));
   int dx = -int(Scale*float(ViewX1)) - cX;
   int dy = -int(Scale*float(ViewY1)) - cY;
   p->Painter->drawLine(-3+dx, dy, 4+dx, dy); // small cross at origin
@@ -921,7 +933,7 @@ bool Schematic::rotateElements()
 
   int x1=INT_MAX, y1=INT_MAX;
   int x2=INT_MIN, y2=INT_MIN;
-  QPtrList<Element> ElementCache;
+  Q3PtrList<Element> ElementCache;
   copyLabels(x1, y1, x2, y2, &ElementCache);   // must be first of all !
   copyComponents(x1, y1, x2, y2, &ElementCache);
   copyWires(x1, y1, x2, y2, &ElementCache);
@@ -1017,7 +1029,7 @@ bool Schematic::mirrorXComponents()
   Components->setAutoDelete(false);
 
   int x1, y1, x2, y2;
-  QPtrList<Element> ElementCache;
+  Q3PtrList<Element> ElementCache;
   if(!copyComps2WiresPaints(x1, y1, x2, y2, &ElementCache))
     return false;
   Wires->setAutoDelete(true);
@@ -1086,7 +1098,7 @@ bool Schematic::mirrorYComponents()
   Components->setAutoDelete(false);
 
   int x1, y1, x2, y2;
-  QPtrList<Element> ElementCache;
+  Q3PtrList<Element> ElementCache;
   if(!copyComps2WiresPaints(x1, y1, x2, y2, &ElementCache))
     return false;
   Wires->setAutoDelete(true);
@@ -1166,7 +1178,7 @@ QString Schematic::copySelected(bool cut)
 
 // ---------------------------------------------------
 // Performs paste function from clipboard
-bool Schematic::paste(QTextStream *stream, QPtrList<Element> *pe)
+bool Schematic::paste(Q3TextStream *stream, Q3PtrList<Element> *pe)
 {
   return pasteFromClipboard(stream, pe);
 }
@@ -1188,10 +1200,10 @@ bool Schematic::load()
   UndoSymbol.clear();
   symbolMode = true;
   setChanged(false, true); // "not changed" state, but put on undo stack
-  UndoSymbol.current()->at(1) = 'i';
+  UndoSymbol.current()->replace(1,1,'i');
   symbolMode = false;
   setChanged(false, true); // "not changed" state, but put on undo stack
-  UndoStack.current()->at(1) = 'i';  // state of being unchanged
+  UndoStack.current()->replace(1,1,'i');// state of being unchanged
 
   // The undo stack of the circuit symbol is initialized when first
   // entering its edit mode.
@@ -1222,14 +1234,14 @@ int Schematic::save()
     setChanged(false);
     QString *p, *ps = UndoStack.current();
     for(p = UndoStack.first(); p != 0; p = UndoStack.next())
-      p->at(1) = ' ';  // state of being changed
-    ps->at(1) = 'i';   // state of being unchanged
+      p->replace(1,1,' ');//at(1) = ' ';  // state of being changed
+    ps->replace(1,1,'i');//(1) = 'i';   // state of being unchanged
     UndoStack.findRef(ps);  // back to current
 
     ps = UndoSymbol.current();
     for(p = UndoSymbol.first(); p != 0; p = UndoSymbol.next())
-      p->at(1) = ' ';  // state of being changed
-    ps->at(1) = 'i';   // state of being unchanged
+      p->replace(1,1,' ');//at(1) = ' ';  // state of being changed
+    ps->replace(1,1,'i');//at(1) = 'i';   // state of being unchanged
     UndoSymbol.findRef(ps);  // back to current
   }
   return result;
@@ -1568,7 +1580,7 @@ bool Schematic::elementsOnGrid()
   bool count = false;
   Port *pp;
   WireLabel *pl, *pLabel;
-  QPtrList<WireLabel> LabelCache;
+  Q3PtrList<WireLabel> LabelCache;
 
   // test all components
   Components->setAutoDelete(false);
@@ -1733,15 +1745,15 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
   int delta = Event->delta() >> 1;     // use smaller steps
 
   // ...................................................................
-  if((Event->state() & Qt::ShiftButton) ||
-     (Event->orientation() == Horizontal)) { // scroll horizontally ?
+  if((Event->state() & Qt::ShiftModifier) ||
+     (Event->orientation() == Qt::Horizontal)) { // scroll horizontally ?
       if(delta > 0) { if(scrollLeft(delta)) scrollBy(-delta, 0); }
       else { if(scrollRight(delta)) scrollBy(-delta, 0); }
       viewport()->update(); // because QScrollView thinks nothing has changed
       App->view->drawn = false;
   }
   // ...................................................................
-  else if(Event->state() & Qt::ControlButton) {  // use mouse wheel to zoom ?
+  else if(Event->state() & Qt::ControlModifier) {  // use mouse wheel to zoom ?
       float Scaling;
       if(delta < 0) Scaling = float(delta)/-60.0/1.1;
       else Scaling = 1.1*60.0/float(delta);
@@ -1914,8 +1926,8 @@ void Schematic::slotScrollRight()
 void Schematic::contentsDropEvent(QDropEvent *Event)
 {
   if(dragIsOkay) {
-    QStrList List;
-    QUriDrag::decode(Event, List);
+    Q3StrList List;
+    Q3UriDrag::decode(Event, List);
 
     // do not close untitled document to avoid segfault
     QucsDoc *d = QucsMain->getDoc(0);
@@ -1924,7 +1936,7 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
 
     // URI:  file:/home/linuxuser/Desktop/example.sch
     for(unsigned int i=0; i < List.count(); i++)
-      App->gotoPage(QDir::convertSeparators(QUriDrag::uriToLocalFile(List.at(i))));
+      App->gotoPage(QDir::convertSeparators(Q3UriDrag::uriToLocalFile(List.at(i))));
 
     d->DocChanged = changed;
     return;
@@ -1953,7 +1965,7 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
 
   // file dragged in ?
   if(Event->provides("text/uri-list"))
-    if(QUriDrag::canDecode(Event)) {
+    if(Q3UriDrag::canDecode(Event)) {
       dragIsOkay = true;
       Event->accept();
       return;
@@ -1962,7 +1974,7 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
   // drag library component
   if(Event->provides("text/plain")) {
     QString s;
-    if(QTextDrag::decode(Event, s))
+    if(Q3TextDrag::decode(Event, s))
       if(s.left(15) == "QucsComponent:<") {
         s = s.mid(14);
         App->view->selElem = getComponentFromName(s);
@@ -1980,7 +1992,7 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
 
     // drag component from listview
     if(Event->provides("application/x-qiconlist")) {
-      QIconViewItem *Item = App->CompComps->currentItem();
+      Q3IconViewItem *Item = App->CompComps->currentItem();
       if(Item) {
         formerAction = App->activeAction;
         App->slotSelectComponent(Item);  // also sets drawn=false

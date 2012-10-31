@@ -177,14 +177,14 @@ Element * MESFET::info(QString& Name, char * &BitmapFile, bool getNewOne)
 void MESFET::createSymbol()
 {
   // put in here symbol drawing code and terminal definitions
-  Lines.append(new Line(-10,-15,-10, 15,QPen(QPen::darkBlue,3)));
-  Lines.append(new Line(-30,  0,-10,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-10,-10,  0,-10,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0,-10,  0,-30,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-10, 10,  0, 10,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, 10,  0, 30,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line(-30,  0,-10,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-10,-10,  0,-10,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0,-10,  0,-30,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-10, 10,  0, 10,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, 10,  0, 30,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line( -4, 24,  4, 20,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line( -4, 24,  4, 20,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(  0,-30));
   Ports.append(new Port(-30,  0));

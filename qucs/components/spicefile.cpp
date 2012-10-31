@@ -22,13 +22,13 @@
 #if HAVE_UNISTD_H
 # include <unistd.h>
 #endif
-
+#include <QtGui>
 #include <qregexp.h>
-#include <qprocess.h>
+#include <q3process.h>
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qmessagebox.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qfile.h>
 #include <qdir.h>
 #include <qfileinfo.h>
@@ -87,14 +87,14 @@ void SpiceFile::createSymbol()
 
   int No = 0;
   QString tmp, PortNames = Props.at(1)->Value;
-  if(!PortNames.isEmpty())  No = PortNames.contains(',') + 1;
+  if(!PortNames.isEmpty())  No = PortNames.count(',') + 1;
 
   #define HALFWIDTH  17
   int h = 30*((No-1)/2) + 15;
-  Lines.append(new Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( HALFWIDTH, -h, HALFWIDTH,  h,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( HALFWIDTH, -h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
 
   int w, i = fHeight/2;
   if(withSim) {
@@ -111,7 +111,7 @@ void SpiceFile::createSymbol()
   i = 0;
   int y = 15-h;
   while(i<No) {
-    Lines.append(new Line(-30,  y,-HALFWIDTH,  y,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-30,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30,  y));
     tmp = PortNames.section(',', i, i).mid(4);
     w = metrics.width(tmp);
@@ -119,7 +119,7 @@ void SpiceFile::createSymbol()
     i++;
 
     if(i == No) break;
-    Lines.append(new Line(HALFWIDTH,  y, 30,  y,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(HALFWIDTH,  y, 30,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 30,  y));
     tmp = PortNames.section(',', i, i).mid(4);
     Texts.append(new Text( 20, y-fHeight-2, tmp));
@@ -128,7 +128,7 @@ void SpiceFile::createSymbol()
   }
 
   if(No > 0) {
-    Lines.append(new Line( 0, h, 0,h+15,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line( 0, h, 0,h+15,QPen(Qt::darkBlue,2)));
     Texts.append(new Text( 4, h,"Ref"));
     Ports.append(new Port( 0, h+15));    // 'Ref' port
   }
@@ -166,7 +166,7 @@ QString SpiceFile::getSubcircuitFile()
 }
 
 // -------------------------------------------------------------------------
-bool SpiceFile::createSubNetlist(QTextStream *stream)
+bool SpiceFile::createSubNetlist(Q3TextStream *stream)
 {
   // check file name
   QString FileName = Props.first()->Value;
@@ -180,7 +180,7 @@ bool SpiceFile::createSubNetlist(QTextStream *stream)
   QFile SpiceFile, ConvFile;
   FileName = getSubcircuitFile();
   SpiceFile.setName(FileName);
-  if(!SpiceFile.open(IO_ReadOnly)) {
+  if(!SpiceFile.open(QIODevice::ReadOnly)) {
     ErrText += QObject::tr("ERROR: Cannot open SPICE file \"%1\".").
       arg(FileName);
     return false;
@@ -193,14 +193,14 @@ bool SpiceFile::createSubNetlist(QTextStream *stream)
   // re-create converted file if necessary
   if(changed || !ConvFile.exists() ||
      (lastLoaded.isValid() && lastLoaded < Info.lastModified())) {
-    if(!ConvFile.open(IO_WriteOnly)) {
+    if(!ConvFile.open(QIODevice::WriteOnly)) {
       ErrText +=
 	QObject::tr("ERROR: Cannot save converted SPICE file \"%1\".").
 	arg(FileName + ".lst");
       return false;
     }
     outstream = stream;
-    filstream = new QTextStream(&ConvFile);
+    filstream = new Q3TextStream(&ConvFile);
     QString SpiceName = SpiceFile.name();
     bool ret = recreateSubNetlist(&SpiceName, &FileName);
     ConvFile.close();
@@ -209,7 +209,7 @@ bool SpiceFile::createSubNetlist(QTextStream *stream)
   }
 
   // load old file and stuff into stream
-  if(!ConvFile.open(IO_ReadOnly)) {
+  if(!ConvFile.open(QIODevice::ReadOnly)) {
     ErrText +=
       QObject::tr("ERROR: Cannot open converted SPICE file \"%1\".").
       arg(FileName + ".lst");
@@ -259,7 +259,7 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
       piping = false;
     }
     script = QucsSettings.BinDir + script;
-    SpicePrep = new QProcess(this);
+    SpicePrep = new Q3Process(this);
     SpicePrep->addArgument(interpreter);
     SpicePrep->addArgument(script);
     SpicePrep->addArgument(*SpiceFile);
@@ -285,13 +285,13 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
 
     if (piping) {
       PrepFile.setName(PrepName);
-      if(!PrepFile.open(IO_WriteOnly)) {
+      if(!PrepFile.open(QIODevice::WriteOnly)) {
 	ErrText +=
 	  QObject::tr("ERROR: Cannot save preprocessed SPICE file \"%1\".").
 	  arg(PrepName);
 	return false;
       }
-      prestream = new QTextStream(&PrepFile);
+      prestream = new Q3TextStream(&PrepFile);
     }
 
     if(!SpicePrep->start()) {
@@ -333,7 +333,7 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
   NetText += "\n";
 
   // startup SPICE conversion process
-  QucsConv = new QProcess(this);
+  QucsConv = new Q3Process(this);
   QucsConv->setArguments(com);
   connect(QucsConv, SIGNAL(readyReadStdout()), SLOT(slotGetNetlist()));
   connect(QucsConv, SIGNAL(readyReadStderr()), SLOT(slotGetError()));

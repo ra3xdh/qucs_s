@@ -1,5 +1,6 @@
-<!DOCTYPE TS><TS>
-<defaultcodec></defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>ArrowDialog</name>
     <message>
@@ -7249,11 +7250,11 @@ Invocation :  qucsedit [-r] fichier
     </message>
     <message>
         <source>npn HICUM L0 v1.2g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">NPN Hicum L2 v 1.2g {0 ?}</translation>
     </message>
     <message>
         <source>pnp HICUM L0 v1.2g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PNP Hicum L2 v 1.2g {0 ?}</translation>
     </message>
     <message>
         <source>hybrid (unsymmetrical 3dB coupler)</source>
@@ -8865,13 +8866,13 @@ Sélectionne tous les éléments de la page</translation>
         <translation>Pivoter</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation>Fait pivoter le composant sélectionné de 90°</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation>Pivoter
 
 Tourne le composant sélectionné de 90° dans le sens direct</translation>
@@ -10956,13 +10957,13 @@ Sélectionne tous les éléments de la page</translation>
         <translation type="obsolete">Pivoter</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation type="obsolete">Fait pivoter le composant sélectionné de 90°</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation type="obsolete">Pivoter
 
 Tourne le composant sélectionné de 90° dans le sens direct</translation>

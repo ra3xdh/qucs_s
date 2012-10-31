@@ -1,5 +1,6 @@
-<!DOCTYPE TS><TS>
-<defaultcodec></defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>ArrowDialog</name>
     <message>
@@ -4848,7 +4849,7 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>C-E breakdown exponent, (0 == disables collector break-down)</source>
@@ -8705,13 +8706,13 @@ Selects all elements of the document</source>
         <translation>回転</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation>選択された部品を90°回転</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation>回転
 
 選択された部品を時計周りに90°回転</translation>
@@ -10958,13 +10959,13 @@ Selects all elements of the document</source>
         <translation type="obsolete">回転</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation type="obsolete">選択された部品を90°回転</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation type="obsolete">回転
 
 選択された部品を時計周りに90°回転</translation>

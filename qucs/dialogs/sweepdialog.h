@@ -20,14 +20,16 @@
 
 #include <qdialog.h>
 #include <qregexp.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qspinbox.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
 
 #include "node.h"
 
 class Graph;
 class Schematic;
-class QGridLayout;
+class Q3GridLayout;
 
 
 class mySpinBox : public QSpinBox {
@@ -56,13 +58,13 @@ private slots:
 private:
   Graph* setBiasPoints();
 
-  QGridLayout *all;   // the mother of all widgets
-  QPtrList<mySpinBox> BoxList;
+  Q3GridLayout *all;   // the mother of all widgets
+  Q3PtrList<mySpinBox> BoxList;
 
   Graph *pGraph;
   Schematic *Doc;
-  QPtrList<Node> NodeList;
-  QPtrList<double> ValueList;
+  Q3PtrList<Node> NodeList;
+  Q3PtrList<double> ValueList;
 };
 
 #endif

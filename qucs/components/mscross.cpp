@@ -68,26 +68,26 @@ Element* MScross::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 void MScross::createSymbol()
 {
-  Lines.append(new Line(-30,  0,-18,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 18,  0, 30,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, 18,  0, 30,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0,-30,  0,-18,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, 18,  0, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0,-30,  0,-18,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-18, -8, -8, -8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-18,  8, -8,  8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-18, -8,-18,  8,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-18, -8, -8, -8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-18,  8, -8,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-18, -8,-18,  8,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(  8, -8, 18, -8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  8,  8, 18,  8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 18, -8, 18,  8,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(  8, -8, 18, -8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  8,  8, 18,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 18, -8, 18,  8,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line( -8,  8, -8, 18,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  8,  8,  8, 18,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -8, 18,  8, 18,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line( -8,  8, -8, 18,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  8,  8,  8, 18,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -8, 18,  8, 18,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line( -8,-18, -8, -8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  8,-18,  8, -8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -8,-18,  8,-18,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line( -8,-18, -8, -8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  8,-18,  8, -8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -8,-18,  8,-18,QPen(Qt::darkBlue,2)));
 
   if(Props.getLast()->Value.at(0) != 'n') {
     Texts.append(new Text(-26,  3, "1"));

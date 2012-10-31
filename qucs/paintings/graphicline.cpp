@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "graphicline.h"
 #include "filldialog.h"
 
@@ -45,12 +45,12 @@ GraphicLine::~GraphicLine()
 void GraphicLine::paint(ViewPainter *p)
 {
   if(isSelected) {
-    p->Painter->setPen(QPen(QPen::darkGray,Pen.width()+5));
+    p->Painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
     p->drawLine(cx, cy, cx+x2, cy+y2);
-    p->Painter->setPen(QPen(QPen::white, Pen.width(), Pen.style()));
+    p->Painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
     p->drawLine(cx, cy, cx+x2, cy+y2);
 
-    p->Painter->setPen(QPen(QPen::darkRed,2));
+    p->Painter->setPen(QPen(Qt::darkRed,2));
     p->drawResizeRect(cx, cy);  // markers for changing the size
     p->drawResizeRect(cx+x2, cy+y2);
     return;

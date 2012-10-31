@@ -18,14 +18,17 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-
+#include <QtGui>
 #include <qmessagebox.h>
 #include <qdir.h>
 #include <qstringlist.h>
 #include <qregexp.h>
-#include <qprocess.h>
-#include <qtextedit.h>
-#include <qptrlist.h>
+#include <q3process.h>
+#include <q3textedit.h>
+#include <q3ptrlist.h>
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3ValueList>
 
 #include "main.h"
 #include "node.h"
@@ -100,7 +103,7 @@ QString Schematic::createClipboardFile()
 
 // -------------------------------------------------------------
 // Only read fields without loading them.
-bool Schematic::loadIntoNothing(QTextStream *stream)
+bool Schematic::loadIntoNothing(Q3TextStream *stream)
 {
   QString Line, cstr;
   while(!stream->atEnd()) {
@@ -115,7 +118,7 @@ bool Schematic::loadIntoNothing(QTextStream *stream)
 
 // -------------------------------------------------------------
 // Paste from clipboard.
-bool Schematic::pasteFromClipboard(QTextStream *stream, QPtrList<Element> *pe)
+bool Schematic::pasteFromClipboard(Q3TextStream *stream, Q3PtrList<Element> *pe)
 {
   QString Line;
 
@@ -145,7 +148,7 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, QPtrList<Element> *pe)
         if(!loadIntoNothing(stream)) return false; }
       else
       if(Line == "<Paintings>") {
-        if(!loadPaintings(stream, (QPtrList<Painting>*)pe)) return false; }
+        if(!loadPaintings(stream, (Q3PtrList<Painting>*)pe)) return false; }
       else {
         QMessageBox::critical(0, QObject::tr("Error"),
 		   QObject::tr("Clipboard Format Error:\nUnknown field!"));
@@ -160,16 +163,16 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, QPtrList<Element> *pe)
   while(!stream->atEnd()) {
     Line = stream->readLine();
     if(Line == "<Components>") {
-      if(!loadComponents(stream, (QPtrList<Component>*)pe)) return false; }
+      if(!loadComponents(stream, (Q3PtrList<Component>*)pe)) return false; }
     else
     if(Line == "<Wires>") {
       if(!loadWires(stream, pe)) return false; }
     else
     if(Line == "<Diagrams>") {
-      if(!loadDiagrams(stream, (QPtrList<Diagram>*)pe)) return false; }
+      if(!loadDiagrams(stream, (Q3PtrList<Diagram>*)pe)) return false; }
     else
     if(Line == "<Paintings>") {
-      if(!loadPaintings(stream, (QPtrList<Painting>*)pe)) return false; }
+      if(!loadPaintings(stream, (Q3PtrList<Painting>*)pe)) return false; }
     else {
       QMessageBox::critical(0, QObject::tr("Error"),
 		   QObject::tr("Clipboard Format Error:\nUnknown field!"));
@@ -187,13 +190,13 @@ int Schematic::saveSymbolCpp (void)
   QString cppfile = info.dirPath () + QDir::separator() + DataSet;
   QFile file (cppfile);
 
-  if (!file.open (IO_WriteOnly)) {
+  if (!file.open (QIODevice::WriteOnly)) {
     QMessageBox::critical (0, QObject::tr("Error"),
 		   QObject::tr("Cannot save C++ file \"%1\"!").arg(cppfile));
     return -1;
   }
 
-  QTextStream stream (&file);
+  Q3TextStream stream (&file);
 
   // automatically compute boundings of drawing
   int xmin = INT_MAX;
@@ -253,13 +256,13 @@ int Schematic::saveSymbolCpp (void)
 int Schematic::saveDocument()
 {
   QFile file(DocName);
-  if(!file.open(IO_WriteOnly)) {
+  if(!file.open(QIODevice::WriteOnly)) {
     QMessageBox::critical(0, QObject::tr("Error"),
 				QObject::tr("Cannot save document!"));
     return -1;
   }
 
-  QTextStream stream(&file);
+  Q3TextStream stream(&file);
 
   stream << "<Qucs Schematic " << PACKAGE_VERSION << ">\n";
 
@@ -338,7 +341,7 @@ int Schematic::saveDocument()
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadProperties(QTextStream *stream)
+bool Schematic::loadProperties(Q3TextStream *stream)
 {
   bool ok = true;
   QString Line, cstr, nstr;
@@ -446,7 +449,7 @@ void Schematic::simpleInsertComponent(Component *c)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadComponents(QTextStream *stream, QPtrList<Component> *List)
+bool Schematic::loadComponents(Q3TextStream *stream, Q3PtrList<Component> *List)
 {
   QString Line, cstr;
   Component *c;
@@ -515,7 +518,7 @@ void Schematic::simpleInsertWire(Wire *pw)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadWires(QTextStream *stream, QPtrList<Element> *List)
+bool Schematic::loadWires(Q3TextStream *stream, Q3PtrList<Element> *List)
 {
   Wire *w;
   QString Line;
@@ -552,7 +555,7 @@ bool Schematic::loadWires(QTextStream *stream, QPtrList<Element> *List)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadDiagrams(QTextStream *stream, QPtrList<Diagram> *List)
+bool Schematic::loadDiagrams(Q3TextStream *stream, Q3PtrList<Diagram> *List)
 {
   Diagram *d;
   QString Line, cstr;
@@ -595,7 +598,7 @@ bool Schematic::loadDiagrams(QTextStream *stream, QPtrList<Diagram> *List)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadPaintings(QTextStream *stream, QPtrList<Painting> *List)
+bool Schematic::loadPaintings(Q3TextStream *stream, Q3PtrList<Painting> *List)
 {
   Painting *p=0;
   QString Line, cstr;
@@ -645,14 +648,14 @@ bool Schematic::loadPaintings(QTextStream *stream, QPtrList<Painting> *List)
 bool Schematic::loadDocument()
 {
   QFile file(DocName);
-  if(!file.open(IO_ReadOnly)) {
+  if(!file.open(QIODevice::ReadOnly)) {
     QMessageBox::critical(0, QObject::tr("Error"),
                  QObject::tr("Cannot load document: ")+DocName);
     return false;
   }
 
   QString Line;
-  QTextStream stream(&file);
+  Q3TextStream stream(&file);
 
   // read header **************************
   do {
@@ -730,7 +733,7 @@ QString Schematic::createUndoString(char Op)
 
   // Build element document.
   QString s = "  \n";
-  s.at(0) = Op;
+  s.replace(0,1,Op);
   for(pc = DocComps.first(); pc != 0; pc = DocComps.next())
     s += pc->save()+"\n";
   s += "</>\n";  // short end flag
@@ -761,7 +764,7 @@ QString Schematic::createSymbolUndoString(char Op)
 
   // Build element document.
   QString s = "  \n";
-  s.at(0) = Op;
+  s.replace(0,1,Op);
   s += "</>\n";  // short end flag for components
   s += "</>\n";  // short end flag for wires
   s += "</>\n";  // short end flag for diagrams
@@ -785,7 +788,7 @@ bool Schematic::rebuild(QString *s)
   DocPaints.clear();
 
   QString Line;
-  QTextStream stream(s, IO_ReadOnly);
+  Q3TextStream stream(s, QIODevice::ReadOnly);
   Line = stream.readLine();  // skip identity byte
 
   // read content *************************
@@ -804,7 +807,7 @@ bool Schematic::rebuildSymbol(QString *s)
   SymbolPaints.clear();	// delete whole document
 
   QString Line;
-  QTextStream stream(s, IO_ReadOnly);
+  Q3TextStream stream(s, QIODevice::ReadOnly);
   Line = stream.readLine();  // skip identity byte
 
   // read content *************************
@@ -883,7 +886,7 @@ void Schematic::propagateNode(QStringList& Collect,
 			      int& countInit, Node *pn)
 {
   bool setName=false;
-  QPtrList<Node> Cons;
+  Q3PtrList<Node> Cons;
   Node *p2;
   Wire *pw;
   Element *pe;
@@ -922,14 +925,14 @@ void Schematic::propagateNode(QStringList& Collect,
 // --------------------------------------------------- 
 // Goes through all schematic components and allows special component
 // handling, e.g. like subcircuit netlisting.
-bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
-                   QStringList& Collect, QTextEdit *ErrText, int NumPorts)
+bool Schematic::throughAllComps(Q3TextStream *stream, int& countInit,
+                   QStringList& Collect, Q3TextEdit *ErrText, int NumPorts)
 {
   bool r;
   QString s;
 
   // give the ground nodes the name "gnd", and insert subcircuits etc.
-  QPtrListIterator<Component> it(DocComps);
+  Q3PtrListIterator<Component> it(DocComps);
   Component *pc;
   while((pc = it.current()) != 0) {
     ++it;
@@ -1095,8 +1098,8 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
 // Follows the wire lines in order to determine the node names for
 // each component. Output into "stream", NodeSets are collected in
 // "Collect" and counted with "countInit".
-bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
-                   QStringList& Collect, QTextEdit *ErrText, int NumPorts)
+bool Schematic::giveNodeNames(Q3TextStream *stream, int& countInit,
+                   QStringList& Collect, Q3TextEdit *ErrText, int NumPorts)
 {
   // delete the node names
   for(Node *pn = DocNodes.first(); pn != 0; pn = DocNodes.next()) {
@@ -1136,7 +1139,7 @@ bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
 }
 
 // ---------------------------------------------------
-bool Schematic::createLibNetlist(QTextStream *stream, QTextEdit *ErrText,
+bool Schematic::createLibNetlist(Q3TextStream *stream, Q3TextEdit *ErrText,
 				 int NumPorts)
 {
   int countInit = 0;
@@ -1177,7 +1180,7 @@ bool Schematic::createLibNetlist(QTextStream *stream, QTextEdit *ErrText,
 #define VHDL_LIBRARIES   "\nlibrary ieee;\nuse ieee.std_logic_1164.all;\n"
 
 // ---------------------------------------------------
-void Schematic::createSubNetlistPlain(QTextStream *stream, QTextEdit *ErrText,
+void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
 				      int NumPorts)
 {
   int i, z;
@@ -1187,21 +1190,23 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QTextEdit *ErrText,
   QStringList InPorts;
   QStringList OutPorts;
   QStringList InOutPorts;
-  QStringList::Iterator it_name;
-  QStringList::Iterator it_type;
+  QStringList::iterator it_name;
+  QStringList::iterator it_type;
+  QString* _name;
+  QString* _type;
   Component *pc;
 
   // probably creating a library currently
-  QTextStream * tstream = stream;
+  Q3TextStream * tstream = stream;
   QFile ofile;
   if(creatingLib) {
     QString f = properAbsFileName(DocName) + ".lst";
     ofile.setName(f);
-    if(!ofile.open(IO_WriteOnly)) {
+    if(!ofile.open(QIODevice::WriteOnly)) {
       ErrText->insert(tr("ERROR: Cannot create library file \"%s\".").arg(f));
       return;
     }
-    tstream = new QTextStream(&ofile);
+    tstream = new Q3TextStream(&ofile);
   }
 
   // collect subcircuit ports and sort their node names into
@@ -1219,13 +1224,13 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QTextEdit *ErrText,
 	SubcircuitPortNames.append(" ");
 	SubcircuitPortTypes.append(" ");
       }
-      it_name = SubcircuitPortNames.at(i-1);
-      it_type = SubcircuitPortTypes.at(i-1);
-      (*it_name) = pc->Ports.getFirst()->Connection->Name;
-      DigMap::Iterator it = Signals.find(*it_name);
+      _name = (QString*)&SubcircuitPortNames.at(i-1);
+      _type = (QString*)&SubcircuitPortTypes.at(i-1);
+      (*_name) = pc->Ports.getFirst()->Connection->Name;
+      DigMap::Iterator it = Signals.find(*_name);
       (*it_type) = it.data().Type;
       // propagate type to port symbol
-      pc->Ports.getFirst()->Connection->DType = *it_type;
+      pc->Ports.getFirst()->Connection->DType = *_type;
 
       if(!isAnalog) {
 	if (isVerilog) {
@@ -1318,8 +1323,8 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QTextEdit *ErrText,
 
       // subcircuit connections
       if(!Signals.isEmpty()) {
-	QValueList<DigSignal> values = Signals.values();
-	QValueList<DigSignal>::iterator it;
+	Q3ValueList<DigSignal> values = Signals.values();
+	Q3ValueList<DigSignal>::iterator it;
 	for (it = values.begin(); it != values.end(); ++it) {
 	  (*tstream) << "  wire " << (*it).Name << ";\n";
 	}
@@ -1396,8 +1401,8 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QTextEdit *ErrText,
 		 << " is\n";
 
       if(!Signals.isEmpty()) {
-	QValueList<DigSignal> values = Signals.values();
-	QValueList<DigSignal>::iterator it;
+	Q3ValueList<DigSignal> values = Signals.values();
+	Q3ValueList<DigSignal>::iterator it;
 	for (it = values.begin(); it != values.end(); ++it) {
 	  (*tstream) << "  signal " << (*it).Name << " : " 
 		     << ((*it).Type.isEmpty() ? 
@@ -1444,8 +1449,8 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QTextEdit *ErrText,
 
 // ---------------------------------------------------
 // Write the netlist as subcircuit to the text stream 'stream'.
-bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
-                     QStringList& Collect, QTextEdit *ErrText, int NumPorts)
+bool Schematic::createSubNetlist(Q3TextStream *stream, int& countInit,
+                     QStringList& Collect, Q3TextEdit *ErrText, int NumPorts)
 {
 //  int Collect_count = Collect.count();   // position for this subcircuit
 
@@ -1470,8 +1475,8 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
 
 // ---------------------------------------------------
 // Determines the node names and writes subcircuits into netlist file.
-int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
-                              QTextEdit *ErrText)
+int Schematic::prepareNetlist(Q3TextStream& stream, QStringList& Collect,
+                              Q3TextEdit *ErrText)
 {
   if(showBias > 0) showBias = -1;  // do not show DC bias anymore
 
@@ -1563,20 +1568,20 @@ int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
 
 // ---------------------------------------------------
 // Write the beginning of digital netlist to the text stream 'stream'.
-void Schematic::beginNetlistDigital(QTextStream& stream)
+void Schematic::beginNetlistDigital(Q3TextStream& stream)
 {
   if (isVerilog) {
     stream << "module TestBench ();\n";
-    QValueList<DigSignal> values = Signals.values();
-    QValueList<DigSignal>::iterator it;
+    Q3ValueList<DigSignal> values = Signals.values();
+    Q3ValueList<DigSignal>::iterator it;
     for (it = values.begin(); it != values.end(); ++it) {
       stream << "  wire " << (*it).Name << ";\n";
     }
     stream << "\n";
   } else {
     stream << "architecture Arch_TestBench of TestBench is\n";
-    QValueList<DigSignal> values = Signals.values();
-    QValueList<DigSignal>::iterator it;
+    Q3ValueList<DigSignal> values = Signals.values();
+    Q3ValueList<DigSignal>::iterator it;
     for (it = values.begin(); it != values.end(); ++it) {
       stream << "  signal " << (*it).Name << " : "
 	     << ((*it).Type.isEmpty() ?
@@ -1596,7 +1601,7 @@ void Schematic::beginNetlistDigital(QTextStream& stream)
 
 // ---------------------------------------------------
 // Write the end of digital netlist to the text stream 'stream'.
-void Schematic::endNetlistDigital(QTextStream& stream)
+void Schematic::endNetlistDigital(Q3TextStream& stream)
 {
   if (isVerilog) {
   } else {
@@ -1606,7 +1611,7 @@ void Schematic::endNetlistDigital(QTextStream& stream)
 
 // ---------------------------------------------------
 // write all components with node names into the netlist file
-QString Schematic::createNetlist(QTextStream& stream, int NumPorts)
+QString Schematic::createNetlist(Q3TextStream& stream, int NumPorts)
 {
   if(!isAnalog) {
     beginNetlistDigital(stream);

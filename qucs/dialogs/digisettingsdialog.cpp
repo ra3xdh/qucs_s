@@ -15,18 +15,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qvalidator.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qradiobutton.h>
-#include <qvgroupbox.h>
+#include <q3vgroupbox.h>
 #include <qstring.h>
 #include <qstringlist.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 #include "digisettingsdialog.h"
 #include "textdoc.h"
@@ -42,17 +44,17 @@ DigiSettingsDialog::DigiSettingsDialog(TextDoc *Doc_)
   Expr.setPattern("[0-9][0-9a-zA-Z ]+"); // valid expression for LineEdit
   Validator = new QRegExpValidator(Expr, this);
 
-  QVBoxLayout *all = new QVBoxLayout(this);
+  Q3VBoxLayout *all = new Q3VBoxLayout(this);
   all->setMargin(5);
 
-  QVGroupBox *setGroup = new QVGroupBox(tr("Digital Simulation Settings"), this);
+  Q3VGroupBox *setGroup = new Q3VGroupBox(tr("Digital Simulation Settings"), this);
   all->addWidget(setGroup);
 
-  QButtonGroup *toggleGroup = new QButtonGroup();
+  Q3ButtonGroup *toggleGroup = new Q3ButtonGroup();
   simRadio = new QRadioButton(tr("Simulation"), setGroup);
   simRadio->setChecked(Doc->simulation);
 
-  QHBox *hb1 = new QHBox(setGroup);
+  Q3HBox *hb1 = new Q3HBox(setGroup);
   hb1->setSpacing(5);
   TimeLabel = new QLabel(tr("Duration of Simulation:"), hb1);
   Doc->loadSimulationTime(SimTime);
@@ -65,14 +67,14 @@ DigiSettingsDialog::DigiSettingsDialog(TextDoc *Doc_)
   toggleGroup->insert(comRadio);
   connect(toggleGroup, SIGNAL(clicked(int)), SLOT(slotChangeMode(int)));
 
-  QHBox *hb3 = new QHBox(setGroup);
+  Q3HBox *hb3 = new Q3HBox(setGroup);
   hb3->setSpacing(5);
   NameLabel = new QLabel(tr("Library Name:"), hb3);
   NameEdit = new QLineEdit(hb3);
   NameEdit->setText(Doc->Library);
 
   setGroup->addSpace(15);
-  QHBox *hb2 = new QHBox(setGroup);
+  Q3HBox *hb2 = new Q3HBox(setGroup);
   hb2->setSpacing(5);
   LibLabel = new QLabel(tr("Libraries:"), hb2);
   LibEdit = new QLineEdit(hb2);
@@ -80,7 +82,7 @@ DigiSettingsDialog::DigiSettingsDialog(TextDoc *Doc_)
 
   all->addSpacing(5);
   all->addStretch();
-  QHBox *Buttons = new QHBox(this);
+  Q3HBox *Buttons = new Q3HBox(this);
   all->addWidget(Buttons);
   QPushButton *ButtonOk = new QPushButton(tr("Ok"), Buttons);
   QPushButton *ButtonCancel = new QPushButton(tr("Cancel"), Buttons);

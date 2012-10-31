@@ -18,7 +18,7 @@
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
-
+#include <QtGui>
 #include <math.h>
 #include <float.h>
 #ifdef __MINGW32__
@@ -168,7 +168,7 @@ if(xAxis.log) {
       w = metrics.width(tmp);  // width of text
 
       Texts.append(new Text(z-(w>>1), -y1, tmp));
-      Lines.append(new Line(z, 5, z, -5, QPen(QPen::black,0)));  // x marks
+      Lines.append(new Line(z, 5, z, -5, QPen(Qt::black,0)));  // x marks
     }
 
     zD += zDstep;
@@ -199,7 +199,7 @@ else {  // not logarithmical
 
     if(xAxis.GridOn)  if(z < x2)  if(z > 0)
       Lines.prepend(new Line(z, y2, z, 0, GridPen)); // x grid
-    Lines.append(new Line(z, 5, z, -5, QPen(QPen::black,0)));   // x marks
+    Lines.append(new Line(z, 5, z, -5, QPen(Qt::black,0)));   // x marks
     zD += zDstep;
     z = int(zD);
   }
@@ -213,10 +213,10 @@ else {  // not logarithmical
 
 Frame:
   // outer frame
-  Lines.append(new Line(0,  y2, x2, y2, QPen(QPen::black,0)));
-  Lines.append(new Line(x2, y2, x2,  0, QPen(QPen::black,0)));
-  Lines.append(new Line(0,   0, x2,  0, QPen(QPen::black,0)));
-  Lines.append(new Line(0,  y2,  0,  0, QPen(QPen::black,0)));
+  Lines.append(new Line(0,  y2, x2, y2, QPen(Qt::black,0)));
+  Lines.append(new Line(x2, y2, x2,  0, QPen(Qt::black,0)));
+  Lines.append(new Line(0,   0, x2,  0, QPen(Qt::black,0)));
+  Lines.append(new Line(0,  y2,  0,  0, QPen(Qt::black,0)));
   return valid;
 }
 

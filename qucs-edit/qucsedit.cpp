@@ -21,18 +21,22 @@
 
 #include "qucsedit.h"
 
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qpushbutton.h>
 #include <qfile.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qmessagebox.h>
 #include <qtoolbutton.h>
 #include <qimage.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qfont.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <Q3VBoxLayout>
+#include <QCloseEvent>
 
 
 QucsEdit::QucsEdit(const QString& FileName_, bool readOnly)
@@ -41,19 +45,19 @@ QucsEdit::QucsEdit(const QString& FileName_, bool readOnly)
   setIcon (QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
   setCaption("Qucs Editor " PACKAGE_VERSION " - " + tr("File: "));
 
-  QVBoxLayout *v = new QVBoxLayout(this);
+  Q3VBoxLayout *v = new Q3VBoxLayout(this);
 
-  QHBox *h = new QHBox(this);
+  Q3HBox *h = new Q3HBox(this);
   v->addWidget(h);
 
   QToolButton *ButtLoad = new QToolButton(h);
   ButtLoad->setIconSet(
-	    QIconSet(QImage(QucsSettings.BitmapDir + "fileopen.png")));
+	    QIcon((QucsSettings.BitmapDir + "fileopen.png")));
   connect(ButtLoad, SIGNAL(clicked()), SLOT(slotLoad()));
 
   QToolButton *ButtSave = new QToolButton(h);
   ButtSave->setIconSet(
-            QIconSet(QImage(QucsSettings.BitmapDir + "filesave.png")));
+            QIcon((QucsSettings.BitmapDir + "filesave.png")));
   connect(ButtSave, SIGNAL(clicked()), SLOT(slotSave()));
   ButtSave->setDisabled(readOnly);
 
@@ -74,10 +78,10 @@ QucsEdit::QucsEdit(const QString& FileName_, bool readOnly)
   fedit.setStyleHint(QFont::Courier);
   fedit.setFixedPitch(true);
 
-  text = new QTextEdit(this);
+  text = new Q3TextEdit(this);
   text->setTextFormat(Qt::PlainText);
   text->setReadOnly(readOnly);
-  text->setWordWrap(QTextEdit::NoWrap);
+  text->setWordWrap(Q3TextEdit::NoWrap);
   text->setMinimumSize(300,200);
   text->setFont(fedit);
   text->setCurrentFont(fedit);
@@ -116,7 +120,7 @@ void QucsEdit::slotLoad()
 {
   static QString lastDir;  // to remember last directory and file
 
-  QString s = QFileDialog::getOpenFileName(
+  QString s = Q3FileDialog::getOpenFileName(
     lastDir.isEmpty() ? QString(".") : lastDir,
     "*", this, "", tr("Enter a Filename"));
   if(s.isEmpty()) return;
@@ -129,19 +133,19 @@ void QucsEdit::slotLoad()
 void QucsEdit::slotSave()
 {
   if(FileName.isEmpty()) {
-    FileName = QFileDialog::getSaveFileName(".", QString::null,
+    FileName = Q3FileDialog::getSaveFileName(".", QString::null,
 	this, "", tr("Enter a Document Name"));
     if(FileName.isEmpty())  return;
   }
 
   QFile file(FileName);
-  if(!file.open(IO_WriteOnly)) {
+  if(!file.open(QIODevice::WriteOnly)) {
     QMessageBox::critical(this, tr("Error"),
 		tr("Cannot write file: ")+FileName);
     return;
   }
 
-  QTextStream stream(&file);
+  Q3TextStream stream(&file);
   stream << text->text();
   text->setModified(false);
   file.close();
@@ -173,13 +177,13 @@ bool QucsEdit::loadFile(const QString& Name)
 {
   if(Name.isEmpty()) return false;
   QFile file(Name);
-  if(!file.open(IO_ReadOnly)) {
+  if(!file.open(QIODevice::ReadOnly)) {
     QMessageBox::critical(this, tr("Error"),
 		tr("Cannot read file: ")+Name);
     return false;
   }
 
-  QTextStream stream(&file);
+  Q3TextStream stream(&file);
   text->setText(stream.read());
   file.close();
 

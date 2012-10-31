@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>ArrowDialog</name>
     <message>
@@ -4757,7 +4759,7 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>C-E breakdown exponent, (0 == disables collector break-down)</source>
@@ -8570,13 +8572,13 @@ Selects all elements of the document</source>
         <translation type="unfinished">סובב</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation type="unfinished">מסובב את הרכיב הנבחר ב90 מעלות</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation type="unfinished">סובב
 
 מסובב את האלמנט הנבחר ב90 מעלות</translation>
@@ -10750,13 +10752,13 @@ Selects all elements of the document</source>
         <translation type="obsolete">סובב</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation type="obsolete">מסובב את הרכיב הנבחר ב90 מעלות</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation type="obsolete">סובב
 
 מסובב את האלמנט הנבחר ב90 מעלות</translation>

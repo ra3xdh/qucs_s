@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "marker.h"
 #include "diagram.h"
 #include "graph.h"
@@ -359,11 +359,11 @@ void Marker::paint(ViewPainter *p, int x0, int y0)
   // Workaround for bug in Qt: If WorldMatrix is turned off, \n in the
   // text creates a terrible mess.
   p->Painter->setWorldXForm(true);
-  QWMatrix wm = p->Painter->worldMatrix();
-  p->Painter->setWorldMatrix(QWMatrix());
+  QMatrix wm = p->Painter->worldMatrix();
+  p->Painter->setWorldMatrix(QMatrix());
 
   int x2_, y2_;
-  p->Painter->setPen(QPen(QPen::black,1));
+  p->Painter->setPen(QPen(Qt::black,1));
   x2_ = p->drawText(Text, x0+x1+3, y0+y1+3, &y2_);
   x2_ += int(6.0*p->Scale);
   y2_ += int(6.0*p->Scale);
@@ -374,7 +374,7 @@ void Marker::paint(ViewPainter *p, int x0, int y0)
   p->Painter->setWorldMatrix(wm);
   p->Painter->setWorldXForm(false);
 
-  p->Painter->setPen(QPen(QPen::darkMagenta,0));
+  p->Painter->setPen(QPen(Qt::darkMagenta,0));
   p->drawRectD(x0+x1, y0+y1, x2_, y2_);
 
   x2 = int(float(x2_) / p->Scale);
@@ -398,7 +398,7 @@ void Marker::paint(ViewPainter *p, int x0, int y0)
   p->Painter->drawLine(x1_, y1_, TO_INT(fx2), TO_INT(fy2));
 
   if(isSelected) {
-    p->Painter->setPen(QPen(QPen::darkGray,3));
+    p->Painter->setPen(QPen(Qt::darkGray,3));
     p->drawRoundRect(x0+x1-3, y0+y1-3, x2+6, y2+6);
   }
 }
@@ -460,7 +460,8 @@ QString Marker::save()
 
   for(int i=0; i<nVarPos; i++)
     s += QString::number(VarPos[i])+"/";
-  s.at(s.length()-1) = ' ';
+  s.replace(s.length()-1,1,' ');
+  //s.at(s.length()-1) = (const QChar&)' ';
 
   s += QString::number(x1) +" "+ QString::number(y1) +" "
       +QString::number(Precision) +" "+ QString::number(numMode);
@@ -487,7 +488,7 @@ bool Marker::load(const QString& _s)
   QString n = s.section(' ',1,1);    // VarPos
 
   nVarPos = 0;
-  j = (n.contains('/') + 3) * sizeof(double);
+  j = (n.count('/') + 3) * sizeof(double);
   if(VarPos)
     VarPos = (double*)realloc(VarPos, j);
   else

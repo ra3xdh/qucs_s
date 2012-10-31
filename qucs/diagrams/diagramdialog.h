@@ -17,7 +17,7 @@
 
 #ifndef DIAGRAMDIALOG_H
 #define DIAGRAMDIALOG_H
-
+#include <QtGui>
 #include "diagram.h"
 #include "node.h"
 
@@ -27,17 +27,21 @@
 
 #include <qdialog.h>
 #include <qregexp.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
+#include <QLabel>
+#include <Q3PtrList>
 
 class Cross3D;
 class QLabel;
-class QListBox;
+class Q3ListBox;
 class QLineEdit;
 class QCheckBox;
-class QListView;
-class QListViewItem;
+class Q3ListView;
+class Q3ListViewItem;
 class QComboBox;
-class QListBoxItem;
-class QVBoxLayout;
+class Q3ListBoxItem;
+class Q3VBoxLayout;
 class QDoubleValidator;
 class QIntValidator;
 class QRegExpValidator;
@@ -56,9 +60,9 @@ public:
 
 private slots:
   void slotReadVars(int);
-  void slotTakeVar(QListViewItem*);
+  void slotTakeVar(Q3ListViewItem*);
 //  void slotSelectGraph(int index);
-  void slotSelectGraph(QListBoxItem*);
+  void slotSelectGraph(Q3ListBoxItem*);
   void slotNewGraph();
   void slotDeleteGraph();
   void slotOK();
@@ -99,10 +103,10 @@ private:
   QRegExpValidator *Validator;
 
   QComboBox *ChooseData;
-  QListView *ChooseVars;
-  QListBox  *GraphList;
+  Q3ListView *ChooseVars;
+  Q3ListBox  *GraphList;
 
-  QVBoxLayout *all;   // the mother of all widgets
+  Q3VBoxLayout *all;   // the mother of all widgets
   QLineEdit   *GraphInput, *Property2, *xLabel, *ylLabel, *yrLabel;
   QCheckBox   *GridOn, *GridLogX, *GridLogY, *GridLogZ;
   QCheckBox   *manualX, *manualY, *manualZ, *hideInvisible;
@@ -116,7 +120,7 @@ private:
   QSlider     *SliderRotX, *SliderRotY, *SliderRotZ;
   Cross3D     *DiagCross;
   bool changed, transfer, toTake;
-  QPtrList<Graph>  Graphs;
+  Q3PtrList<Graph>  Graphs;
 };
 
 #endif

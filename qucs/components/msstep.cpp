@@ -22,18 +22,18 @@ MSstep::MSstep()
 {
   Description = QObject::tr("microstrip impedance step");
 
-  Lines.append(new Line(-30,  0,-18,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 18,  0, 30,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-18,-12,  0,-12,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-18, 12,  0, 12,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-18,-12,-18, 12,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, -7, 18, -7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0,  7, 18,  7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 18, -7, 18,  7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0,-12,  0, -7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0,  7,  0, 12,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-18,-12,  0,-12,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-18, 12,  0, 12,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-18,-12,-18, 12,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, -7, 18, -7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0,  7, 18,  7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 18, -7, 18,  7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0,-12,  0, -7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0,  7,  0, 12,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-22, -4,-26,  4,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-22, -4,-26,  4,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30, 0));
   Ports.append(new Port( 30, 0));

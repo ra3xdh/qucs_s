@@ -14,13 +14,15 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "arrow.h"
 #include "arrowdialog.h"
 
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <Q3PointArray>
 
 #include <math.h>
 
@@ -48,36 +50,36 @@ Arrow::~Arrow()
 // --------------------------------------------------------------------------
 void Arrow::paint(ViewPainter *p)
 {
-  QPointArray Points;
+  Q3PointArray Points;
   int x1_, y1_, x2_, y2_, x3_, y3_;
   if(isSelected) {
-    p->Painter->setPen(QPen(QPen::darkGray,Pen.width()+5));
+    p->Painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
     p->drawLine(cx, cy, cx+x2, cy+y2);
     p->drawLine(cx+x2, cy+y2, cx+xp1, cy+yp1);
     p->drawLine(cx+x2, cy+y2, cx+xp2, cy+yp2);
     if(Style == 0) {   // arrow head with two lines ?
-      p->Painter->setPen(QPen(QPen::white, Pen.width(), Pen.style()));
+      p->Painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
       p->drawLine(cx, cy, cx+x2, cy+y2);
-      p->Painter->setPen(QPen(QPen::white, Pen.width(), Qt::SolidLine));
+      p->Painter->setPen(QPen(Qt::white, Pen.width(), Qt::SolidLine));
       p->drawLine(cx+x2, cy+y2, cx+xp1, cy+yp1);
       p->drawLine(cx+x2, cy+y2, cx+xp2, cy+yp2);
     }
     else {   // filled arrow head
       p->drawLine(cx+xp1, cy+yp1, cx+xp2, cy+yp2);
-      p->Painter->setPen(QPen(QPen::white, Pen.width(), Pen.style()));
+      p->Painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
       p->drawLine(cx, cy, cx+x2, cy+y2);
 
-      p->Painter->setPen(QPen(QPen::white, Pen.width(), Qt::SolidLine));
-      p->Painter->setBrush(QPen::white);
+      p->Painter->setPen(QPen(Qt::white, Pen.width(), Qt::SolidLine));
+      p->Painter->setBrush(Qt::white);
       p->map(cx+xp1, cy+yp1, x1_, y1_);
       p->map(cx+x2, cy+y2, x2_, y2_);
       p->map(cx+xp2, cy+yp2, x3_, y3_);
       Points.setPoints(3, x1_, y1_, x2_, y2_, x3_, y3_);
       p->Painter->drawConvexPolygon(Points);
-      p->Painter->setBrush(QBrush::NoBrush); // no filling for next paintings
+      p->Painter->setBrush(Qt::NoBrush); // no filling for next paintings
     }
 
-    p->Painter->setPen(QPen(QPen::darkRed,2));
+    p->Painter->setPen(QPen(Qt::darkRed,2));
     p->drawResizeRect(cx, cy);  // markers for changing the size
     p->drawResizeRect(cx+x2, cy+y2);
     return;
@@ -96,7 +98,7 @@ void Arrow::paint(ViewPainter *p)
     p->map(cx+xp2, cy+yp2, x3_, y3_);
     Points.setPoints(3, x1_, y1_, x2_, y2_, x3_, y3_);
     p->Painter->drawConvexPolygon(Points);
-    p->Painter->setBrush(QBrush::NoBrush); // no filling for next paintings
+    p->Painter->setBrush(Qt::NoBrush); // no filling for next paintings
   }
 }
 

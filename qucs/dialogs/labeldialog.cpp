@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "labeldialog.h"
 #include "../wirelabel.h"
 
@@ -23,6 +23,8 @@
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qvalidator.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
 
 
 LabelDialog::LabelDialog(WireLabel *pl, QWidget *parent)
@@ -31,7 +33,7 @@ LabelDialog::LabelDialog(WireLabel *pl, QWidget *parent)
   setCaption(tr("Insert Nodename"));
 
   pLabel = pl;
-  gbox = new QGridLayout(this,4,3,5,5);
+  gbox = new Q3GridLayout(this,4,3,5,5);
 
   // valid expression for LineEdit: alpha-numeric, but must start with
   // letter and never two "_" together

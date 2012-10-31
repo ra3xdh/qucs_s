@@ -20,11 +20,13 @@
 
 #include <qdialog.h>
 #include <qregexp.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
 
 class Schematic;
 class QLineEdit;
 class QComboBox;
-class QGridLayout;
+class Q3GridLayout;
 class QRegExpValidator;
 
 
@@ -41,7 +43,7 @@ private:
   bool matches(const QString&);
 
   Schematic *Doc;
-  QGridLayout *all;   // the mother of all widgets
+  Q3GridLayout *all;   // the mother of all widgets
   QRegExpValidator  *Validator, *ValRestrict;
   QRegExp     Expr;
   QLineEdit   *CompNameEdit, *NewValueEdit;

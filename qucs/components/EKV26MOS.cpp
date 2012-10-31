@@ -7,7 +7,7 @@
  * any later version.
  * 
  */
-
+#include <QtGui>
 #include "node.h"
 #include "EKV26MOS.h"
 
@@ -223,44 +223,44 @@ Element * EKV26MOS::info_pmos(QString& Name, char * &BitmapFile, bool getNewOne)
 void EKV26MOS::createSymbol()
 {
   // put in here symbol drawing code and terminal definitions
-  Lines.append(new Line(-14,-13,-14, 13,QPen(QPen::darkBlue,3)));
-  Lines.append(new Line(-30,  0,-14,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-10,-11,  0,-11,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0,-11,  0,-30,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-14,-13,-14, 13,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-10,-11,  0,-11,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0,-11,  0,-30,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line(-10, 11,  0, 11,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, 11,  0, 30,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-10,  0, 20,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-10,-16,-10, -7,QPen(QPen::darkBlue,3)));
+  Lines.append(new Line(-10, 11,  0, 11,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, 11,  0, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-10,  0, 20,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-10,-16,-10, -7,QPen(Qt::darkBlue,3)));
   
-  Lines.append(new Line(-10,  7,-10, 16,QPen(QPen::darkBlue,3)));
-  Lines.append(new Line( -4, 24,  4, 20,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-10,  7,-10, 16,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line( -4, 24,  4, 20,QPen(Qt::darkBlue,2)));
 
   // arrow
   if(getProperty("Type")->Value == "nmos") {
-    Lines.append(new Line( -9,  0, -4, -5,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( -9,  0, -4,  5,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line( -9,  0, -4, -5,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( -9,  0, -4,  5,QPen(Qt::darkBlue,2)));
   } else {
-    Lines.append(new Line( -5,  5,  0,   0,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( -5,  -5, 0,  0,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line( -5,  5,  0,   0,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( -5,  -5, 0,  0,QPen(Qt::darkBlue,2)));
   }
   
-  Lines.append(new Line(-10, -3,-10,  3,QPen(QPen::darkBlue,3)));
-  Lines.append(new Line(-10, -8,-10, -6,QPen(QPen::darkBlue,3)));
-  Lines.append(new Line(-10,  8,-10,  6,QPen(QPen::darkBlue,3)));
+  Lines.append(new Line(-10, -3,-10,  3,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line(-10, -8,-10, -6,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line(-10,  8,-10,  6,QPen(Qt::darkBlue,3)));
 
   // E
-  Lines.append(new Line(-30,-30,-30,-24,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-30,-30,-26,-30,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-30,-27,-26,-27,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-30,-24,-26,-24,QPen(QPen::darkBlue,1)));
+  Lines.append(new Line(-30,-30,-30,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-30,-30,-26,-30,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-30,-27,-26,-27,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-30,-24,-26,-24,QPen(Qt::darkBlue,1)));
   // K
-  Lines.append(new Line(-24,-30,-24,-24,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-24,-27,-20,-30,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-24,-27,-20,-24,QPen(QPen::darkBlue,1)));
+  Lines.append(new Line(-24,-30,-24,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-24,-27,-20,-30,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-24,-27,-20,-24,QPen(Qt::darkBlue,1)));
   // V
-  Lines.append(new Line(-18,-30,-16,-24,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-14,-30,-16,-24,QPen(QPen::darkBlue,1)));
+  Lines.append(new Line(-18,-30,-16,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-14,-30,-16,-24,QPen(Qt::darkBlue,1)));
 
   Ports.append(new Port(  0,-30)); // drain
   Ports.append(new Port(-30,  0)); // gate

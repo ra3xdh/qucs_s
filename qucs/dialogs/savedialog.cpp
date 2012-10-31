@@ -24,14 +24,18 @@
 
 #include <qvariant.h>
 #include <qlabel.h>
-#include <qheader.h>
-#include <qlistview.h>
+#include <q3header.h>
+#include <q3listview.h>
 #include <qpushbutton.h>
 #include <qlayout.h>
 #include <qtooltip.h>
-#include <qwhatsthis.h>
+#include <q3whatsthis.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
+#include <Q3VBoxLayout>
+#include <Q3PtrList>
 
-SaveDialog::SaveDialog( QWidget* parent, const char* name, bool modal, WFlags fl )
+SaveDialog::SaveDialog( QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
    : QDialog( parent, name, modal, fl ),unsavedDocs()
 {
    if ( !name )
@@ -52,19 +56,19 @@ void SaveDialog::setApp(QucsApp *a)
 void SaveDialog::initDialog()
 {
    setSizeGripEnabled( FALSE );
-   SaveDialogLayout = new QVBoxLayout( this, 11, 6, "SaveDialogLayout"); 
+   SaveDialogLayout = new Q3VBoxLayout( this, 11, 6, "SaveDialogLayout"); 
 
    label = new QLabel( this, "label" );
    SaveDialogLayout->addWidget( label );
 
-   filesView = new QListView( this, "filesView" );
+   filesView = new Q3ListView( this, "filesView" );
    filesView->addColumn( tr( "Modified Files" ) );
    filesView->header()->setResizeEnabled( FALSE, filesView->header()->count() - 1 );
    filesView->setItemMargin( 1 );
-   filesView->setResizeMode( QListView::AllColumns );
+   filesView->setResizeMode( Q3ListView::AllColumns );
    SaveDialogLayout->addWidget( filesView );
 
-   buttonsLayout = new QHBoxLayout( 0, 0, 6, "buttonsLayout"); 
+   buttonsLayout = new Q3HBoxLayout( 0, 0, 6, "buttonsLayout"); 
 
    abortClosingButton = new QPushButton( this, "abortClosingButton" );
    buttonsLayout->addWidget( abortClosingButton );
@@ -80,7 +84,8 @@ void SaveDialog::initDialog()
    SaveDialogLayout->addLayout( buttonsLayout );
    languageChange();
    resize( QSize(500, 300).expandedTo(minimumSizeHint()) );
-   clearWState( WState_Polished );
+   //clearWState( Qt::WA_WState_Polished );
+   setAttribute(Qt::WA_WState_Polished, false);
 
    connect(abortClosingButton,SIGNAL(clicked()),this,SLOT(reject()));
    connect(dontSaveButton,SIGNAL(clicked()),this,SLOT(dontSaveClicked()));
@@ -90,9 +95,9 @@ void SaveDialog::initDialog()
 void SaveDialog::addUnsavedDoc(QucsDoc *doc)
 {
    QString text = (doc->DocName).isEmpty() ? tr("Untitled") : doc->DocName;
-   QCheckListItem *item = new QCheckListItem(filesView,
+   Q3CheckListItem *item = new Q3CheckListItem(filesView,
                                              text,
-                                             QCheckListItem::CheckBox );
+                                             Q3CheckListItem::CheckBox );
    item->setOn( true );
    unsavedDocs.insert( doc, item );
 }
@@ -114,8 +119,8 @@ void SaveDialog::dontSaveClicked()
 
 void SaveDialog::saveSelectedClicked()
 {
-   QPtrList<QucsDoc> unsavables;
-   QMap<QucsDoc*,QCheckListItem*>::iterator it(unsavedDocs.begin());
+   Q3PtrList<QucsDoc> unsavables;
+   QMap<QucsDoc*,Q3CheckListItem*>::iterator it(unsavedDocs.begin());
    for ( ; it != unsavedDocs.end(); ++it)
    {
       if ( it.data()->isOn() )

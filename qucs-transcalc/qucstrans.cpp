@@ -18,40 +18,46 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
+#include <QDate>
+#include <QTime>
 
 #include <qlayout.h>
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qpushbutton.h>
 #include <qfile.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qmessagebox.h>
 #include <qtoolbutton.h>
 #include <qimage.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qmenubar.h>
 #include <qaction.h>
-#include <qpopupmenu.h>
-#include <qhgroupbox.h>
-#include <qvgroupbox.h>
+#include <q3popupmenu.h>
+#include <q3hgroupbox.h>
+#include <q3vgroupbox.h>
 #include <qcombobox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qimage.h>
-#include <qiconset.h>
-#include <qscrollview.h>
+#include <qicon.h>
+#include <q3scrollview.h>
 #include <qtooltip.h>
 #include <qradiobutton.h>
 #include <qstatusbar.h>
 #include <qdir.h>
-#include <qbuttongroup.h>
-#include <qwidgetstack.h>
+#include <q3buttongroup.h>
+#include <q3widgetstack.h>
 #include <qregexp.h>
 #include <qvalidator.h>
 #include <qclipboard.h>
 #include <qapplication.h>
 
 #include "qucstrans.h"
+//Added by qt3to4:
+#include <QPixmap>
+#include <Q3VBoxLayout>
+#include <QCloseEvent>
 #include "helpdialog.h"
 #include "optionsdialog.h"
 #include "transline.h"
@@ -257,50 +263,50 @@ QucsTranscalc::QucsTranscalc() {
   QMenuBar * menuBar = new QMenuBar (this);
 
   // create file menu
-  QPopupMenu * fileMenu = new QPopupMenu ();
+  Q3PopupMenu * fileMenu = new Q3PopupMenu ();
   QAction * fileLoad =
-    new QAction (tr("Load"), tr("&Load"), CTRL+Key_L, this);
+    new QAction (tr("&Load"), Qt::CTRL+Qt::Key_L, this,"");
   fileLoad->addTo (fileMenu);
   connect(fileLoad, SIGNAL(activated()), SLOT(slotFileLoad()));
   QAction * fileSave =
-    new QAction (tr("Save"), tr("&Save"), CTRL+Key_S, this);
+    new QAction (tr("&Save"), Qt::CTRL+Qt::Key_S, this,"");
   fileSave->addTo (fileMenu);
   connect(fileSave, SIGNAL(activated()), SLOT(slotFileSave()));
   fileMenu->insertSeparator ();
   QAction * fileOption =
-    new QAction (tr("Options"), tr("&Options"), CTRL+Key_O, this);
+    new QAction (tr("&Options"), Qt::CTRL+Qt::Key_O, this,"");
   fileOption->addTo (fileMenu);
   connect(fileOption, SIGNAL(activated()), SLOT(slotOptions()));
   fileMenu->insertSeparator ();
   QAction * fileQuit =
-    new QAction (tr("Quit"), tr("&Quit"), CTRL+Key_Q, this);
+    new QAction (tr("&Quit"), Qt::CTRL+Qt::Key_Q, this,"");
   fileQuit->addTo (fileMenu);
   connect(fileQuit, SIGNAL(activated()), SLOT(slotQuit()));
 
   // create execute menu
-  QPopupMenu * execMenu = new QPopupMenu ();
+  Q3PopupMenu * execMenu = new Q3PopupMenu ();
   QAction * execCopy =
-    new QAction (tr("Copy to Clipboard"),
-		 tr("&Copy to Clipboard"), Key_F2, this);
+    new QAction (
+		 tr("&Copy to Clipboard"), Qt::Key_F2, this,"");
   execCopy->addTo (execMenu);
   connect(execCopy, SIGNAL(activated()), SLOT(slotCopyToClipBoard()));
   QAction * execAnalyze =
-    new QAction (tr("Analyze"), tr("&Analyze"), Key_F3, this);
+    new QAction (tr("&Analyze"), Qt::Key_F3, this,"");
   execAnalyze->addTo (execMenu);
   connect(execAnalyze, SIGNAL(activated()), SLOT(slotAnalyze()));
   QAction * execSynthesize =
-    new QAction (tr("Synthesize"), tr("&Synthesize"), Key_F4, this);
+    new QAction (tr("&Synthesize"), Qt::Key_F4, this,"");
   execSynthesize->addTo (execMenu);
   connect(execSynthesize, SIGNAL(activated()), SLOT(slotSynthesize()));
 
   // create help menu
-  QPopupMenu * helpMenu = new QPopupMenu ();
+  Q3PopupMenu * helpMenu = new Q3PopupMenu ();
   QAction * helpHelp =
-    new QAction (tr("Help"), tr("&Help"), Key_F1, this);
+    new QAction ( tr("&Help"), Qt::Key_F1, this,"");
   helpHelp->addTo (helpMenu);
   connect(helpHelp, SIGNAL(activated()), SLOT(slotHelpIntro()));
   QAction * helpAbout =
-    new QAction (tr("About"), tr("About"), 0, helpMenu);
+    new QAction ( tr("About"), 0, helpMenu,"");
   helpAbout->addTo (helpMenu);
   connect(helpAbout, SIGNAL(activated()), SLOT(slotAbout()));
 
@@ -311,7 +317,7 @@ QucsTranscalc::QucsTranscalc() {
   menuBar->insertItem (tr("&Help"), helpMenu);
 
   // main box
-  QVBoxLayout * v = new QVBoxLayout (this);
+  Q3VBoxLayout * v = new Q3VBoxLayout (this);
   v->setSpacing (0);
   v->setMargin (0);
 
@@ -321,7 +327,7 @@ QucsTranscalc::QucsTranscalc() {
   v->addWidget (Space);
 
   // main layout
-  QHBox * h = new QHBox (this);
+  Q3HBox * h = new Q3HBox (this);
   h->setSpacing (5);
   v->addWidget (h);
 
@@ -330,7 +336,7 @@ QucsTranscalc::QucsTranscalc() {
   sl->setFixedWidth (2);
 
   // transmission line type choice
-  QVGroupBox * lineGroup = new QVGroupBox (tr("Transmission Line Type"), h);
+  Q3VGroupBox * lineGroup = new Q3VGroupBox (tr("Transmission Line Type"), h);
   tranType = new QComboBox (lineGroup);
   tranType->insertItem (tr("Microstrip Line"));
   tranType->insertItem (tr("Coplanar Waveguide"));
@@ -344,9 +350,9 @@ QucsTranscalc::QucsTranscalc() {
   pix->setPixmap (QPixmap (QImage (QucsSettings.BitmapDir +
 				   "microstrip.png")));
 
-  QVBox * vm = new QVBox (h);
+  Q3VBox * vm = new Q3VBox (h);
   vm->setSpacing (3);
-  QVBox * vr = new QVBox (h);
+  Q3VBox * vr = new Q3VBox (h);
   vr->setSpacing (3);
 
   // right margin
@@ -360,19 +366,19 @@ QucsTranscalc::QucsTranscalc() {
   mode = ModeMicrostrip;
 
   // substrate parameter box
-  QHGroupBox * substrate = new QHGroupBox (tr("Substrate Parameters"), vm);
+  Q3HGroupBox * substrate = new Q3HGroupBox (tr("Substrate Parameters"), vm);
   createPropItems (substrate, TRANS_SUBSTRATE);
 
   // component parameter box
-  QHGroupBox * component = new QHGroupBox (tr("Component Parameters"), vm);
+  Q3HGroupBox * component = new Q3HGroupBox (tr("Component Parameters"), vm);
   createPropItems (component, TRANS_COMPONENT);
 
   // physical parameter box
-  QHGroupBox * physical = new QHGroupBox (tr("Physical Parameters"), vr);
+  Q3HGroupBox * physical = new Q3HGroupBox (tr("Physical Parameters"), vr);
   createPropItems (physical, TRANS_PHYSICAL);
 
   // analyze/synthesize buttons
-  QHBox * h2 = new QHBox (vr);
+  Q3HBox * h2 = new Q3HBox (vr);
   QPushButton * analyze = new QPushButton (tr("Analyze"), h2);
   QToolTip::add (analyze, tr("Derive Electrical Parameters"));
   connect(analyze, SIGNAL(clicked()), SLOT(slotAnalyze()));
@@ -381,10 +387,10 @@ QucsTranscalc::QucsTranscalc() {
   connect(synthesize, SIGNAL(clicked()), SLOT(slotSynthesize()));
 
   // electrical parameter box
-  QHGroupBox * electrical = new QHGroupBox (tr("Electrical Parameters"), vr);
+  Q3HGroupBox * electrical = new Q3HGroupBox (tr("Electrical Parameters"), vr);
   createPropItems (electrical, TRANS_ELECTRICAL);
 
-  calculated = new QHGroupBox (tr("Calculated Results"), vr);
+  calculated = new Q3HGroupBox (tr("Calculated Results"), vr);
 
   // status line
   statBar = new QStatusBar (this);
@@ -553,8 +559,8 @@ void QucsTranscalc::setupTranslations () {
 
 /* Creates a property item 'val' in a parameter category specified by
    its 'box'. */
-void QucsTranscalc::createPropItem (QVBox ** parentRows, TransValue * val,
-				    int box, QButtonGroup * group) {
+void QucsTranscalc::createPropItem (Q3VBox ** parentRows, TransValue * val,
+				    int box, Q3ButtonGroup * group) {
   QRadioButton * r = NULL;
   QLabel * l;
   QLineEdit * e;
@@ -596,7 +602,7 @@ void QucsTranscalc::createPropItem (QVBox ** parentRows, TransValue * val,
 
   // special synthesize-computation choice
   if (box == TRANS_PHYSICAL) {
-    QWidgetStack * s = new QWidgetStack(parentRows[3]);
+    Q3WidgetStack * s = new Q3WidgetStack(parentRows[3]);
     s->setFixedSize (val->lineedit->height()-10, val->lineedit->height()-10);
     r = new QRadioButton (s);
     QWidget * spacer = new QWidget (s);
@@ -710,18 +716,18 @@ void QucsTranscalc::updateSelection () {
 
 /* The function creates the property items for the given category of
    transmission line parameters. */
-void QucsTranscalc::createPropItems (QHGroupBox * parent, int box) {
+void QucsTranscalc::createPropItems (Q3HGroupBox * parent, int box) {
   struct TransValue * val, * dup;
   int last = 0, idx = getTypeIndex ();
   val = TransLineTypes[idx].array[box].item;
 
-  QVBox *rows[4];
-  QButtonGroup * group = new QButtonGroup();
+  Q3VBox *rows[4];
+  Q3ButtonGroup * group = new Q3ButtonGroup();
   connect(group, SIGNAL(pressed(int)), SLOT(slotRadioChecked(int)));
-  rows[0] = new QVBox (parent);
-  rows[1] = new QVBox (parent);
-  rows[2] = new QVBox (parent);
-  rows[3] = new QVBox (parent);
+  rows[0] = new Q3VBox (parent);
+  rows[1] = new Q3VBox (parent);
+  rows[2] = new Q3VBox (parent);
+  rows[3] = new Q3VBox (parent);
 
   parent->layout()->setSpacing (2);
   rows[0]->setSpacing (2);
@@ -756,7 +762,7 @@ void QucsTranscalc::createPropItems (QHGroupBox * parent, int box) {
 }
 
 /* Creates a single result item. */
-void QucsTranscalc::createResultItem (QVBox ** parentRows, TransResult * res) {
+void QucsTranscalc::createResultItem (Q3VBox ** parentRows, TransResult * res) {
   QLabel * n =
       new QLabel (res->name ? *(res->name) + ":" : QString(), parentRows[0]);
   n->setAlignment (Qt::AlignRight);
@@ -783,14 +789,14 @@ void QucsTranscalc::updateResultItem (TransResult * res) {
 }
 
 /* Creates all the result items. */
-void QucsTranscalc::createResultItems (QHGroupBox * parent) {
+void QucsTranscalc::createResultItems (Q3HGroupBox * parent) {
   struct TransResult * res, * dup;
   int idx = getTypeIndex ();
   res = & TransLineTypes[idx].result[0];
 
-  QVBox *rows[2];
-  rows[0] = new QVBox (parent);
-  rows[1] = new QVBox (parent);
+  Q3VBox *rows[2];
+  rows[0] = new Q3VBox (parent);
+  rows[1] = new Q3VBox (parent);
 
   parent->layout()->setSpacing (2);
   rows[0]->setSpacing (2);
@@ -982,9 +988,9 @@ void QucsTranscalc::slotValueChanged()
 // Load transmission line values from the given file.
 bool QucsTranscalc::loadFile(QString fname, int * _mode) {
   QFile file(QDir::convertSeparators (fname));
-  if(!file.open(IO_ReadOnly)) return false; // file doesn't exist
+  if(!file.open(QIODevice::ReadOnly)) return false; // file doesn't exist
 
-  QTextStream stream(&file);
+  Q3TextStream stream(&file);
   QString Line, Name, Unit;
   double Value;
 
@@ -1024,8 +1030,8 @@ bool QucsTranscalc::loadFile(QString fname, int * _mode) {
 // Saves current transmission line values into the given file.
 bool QucsTranscalc::saveFile(QString fname) {
   QFile file (QDir::convertSeparators (fname));
-  if(!file.open (IO_WriteOnly)) return false; // file not writable
-  QTextStream stream (&file);
+  if(!file.open (QIODevice::WriteOnly)) return false; // file not writable
+  Q3TextStream stream (&file);
 
   // some lines of documentation
   stream << "# QucsTranscalc " << PACKAGE_VERSION << "  " << fname << "\n";
@@ -1042,7 +1048,7 @@ bool QucsTranscalc::saveFile(QString fname) {
 
 /* Writes the transmission line values for the current modes into the
    given stream. */
-void QucsTranscalc::saveMode(QTextStream& stream) {
+void QucsTranscalc::saveMode(Q3TextStream& stream) {
   struct TransType * t = &TransLineTypes[getTypeIndex ()];
   struct TransValue * val = NULL;
   stream << "<" << t->description << ">\n";
@@ -1058,7 +1064,7 @@ void QucsTranscalc::saveMode(QTextStream& stream) {
 }
 
 // Writes the transmission line values for all modes into the given stream.
-void QucsTranscalc::saveModes(QTextStream& stream) {
+void QucsTranscalc::saveModes(Q3TextStream& stream) {
   int oldmode = mode;
   for (int i = 0; i < MAX_TRANS_TYPES; i++) {
     mode = TransLineTypes[i].type;
@@ -1096,7 +1102,7 @@ void QucsTranscalc::slotFileLoad()
 {
   statBar->message(tr("Loading file..."));
   int _mode = 0;
-  QString s = QFileDialog::getOpenFileName(QucsWorkDir.path(),
+  QString s = Q3FileDialog::getOpenFileName(QucsWorkDir.path(),
    tr("Transcalc File")+" (*.trc)", this, "", tr("Enter a Filename"));
   if (!s.isEmpty())  {
     QucsWorkDir.setPath(QDir::cleanDirPath(s));
@@ -1114,7 +1120,7 @@ void QucsTranscalc::slotFileSave()
 {
   statBar->message(tr("Saving file..."));
 
-  QString s = QFileDialog::getSaveFileName(QucsWorkDir.path(),
+  QString s = Q3FileDialog::getSaveFileName(QucsWorkDir.path(),
    tr("Transcalc File")+" (*.trc)", this, "", tr("Enter a Filename"));
   if (!s.isEmpty())  {
     QucsWorkDir.setPath(QDir::cleanDirPath(s));

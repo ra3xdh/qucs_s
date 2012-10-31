@@ -22,14 +22,16 @@
 #include "vtabwidget.h"
 
 #include <qlayout.h>
-#include <qwidgetstack.h>
+#include <q3widgetstack.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
 
 VTabWidget::VTabWidget(VTabPosition p,QWidget* parent, const char* name): QWidget(parent, name)
 {
   m_position = p;
-  QHBoxLayout *layout = new QHBoxLayout(this);
+  Q3HBoxLayout *layout = new Q3HBoxLayout(this);
   m_bar = new VTabBar(p,this);
-  m_wStack = new QWidgetStack(this);
+  m_wStack = new Q3WidgetStack(this);
   layout->addWidget(m_bar,0);
   layout->addWidget(m_wStack,5);
   m_autoIndexer = 0;
@@ -139,7 +141,7 @@ void VTabWidget::setPosition(VTabPosition p)
   if(m_position == p)
     return;
   m_position = p;
-  QHBoxLayout *l = (QHBoxLayout*)layout();
+  Q3HBoxLayout *l = (Q3HBoxLayout*)layout();
   if(!l)
     {
       qWarning( "Error layout is null");

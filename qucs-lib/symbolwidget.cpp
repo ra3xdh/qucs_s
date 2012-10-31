@@ -19,8 +19,13 @@
 #include <limits.h>
 
 #include <qpainter.h>
-#include <qdragobject.h>
-#include <qtextstream.h>
+#include <q3dragobject.h>
+#include <q3textstream.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QPixmap>
+#include <QMouseEvent>
+#include <QTextIStream>
 
 #include "symbolwidget.h"
 #include "qucslib.h"
@@ -61,7 +66,7 @@ QString SymbolWidget::theModel()
 {
   // single component line
   if(!ModelString.isEmpty())
-    if(ModelString.contains('\n') < 2)
+    if(ModelString.count('\n') < 2)
       return ModelString.remove('\n');
 
   // real library component
@@ -74,7 +79,7 @@ QString SymbolWidget::theModel()
 // ************************************************************
 void SymbolWidget::mouseMoveEvent(QMouseEvent*)
 {
-  myDragObject = new QTextDrag("QucsComponent:"+theModel(), this);
+  myDragObject = new Q3TextDrag("QucsComponent:"+theModel(), this);
   myDragObject->setPixmap( QPixmap(empty_xpm), QPoint(0, 0) );
   myDragObject->dragCopy();
 }
@@ -83,11 +88,11 @@ void SymbolWidget::mouseMoveEvent(QMouseEvent*)
 void SymbolWidget::paintEvent(QPaintEvent*)
 {
   QPainter Painter(this);
-  Painter.drawText(2, 2, 0, 0, Qt::AlignAuto | Qt::DontClip, PaintText);
+  Painter.drawText(2, 2, 0, 0, Qt::AlignLeft | Qt::TextDontClip, PaintText);
 
   int dx = (x2-x1)/2 + TextWidth - DragNDropWidth/2;
   if(dx < 2)  dx = 2;
-  Painter.drawText(dx, y2-y1+2, 0, 0, Qt::AlignAuto | Qt::DontClip, DragNDropText);
+  Painter.drawText(dx, y2-y1+2, 0, 0, Qt::AlignLeft | Qt::TextDontClip, DragNDropText);
 
   // paint all lines
   for(Line *pl = Lines.first(); pl != 0; pl = Lines.next()) {
@@ -116,7 +121,7 @@ void SymbolWidget::paintEvent(QPaintEvent*)
     Painter.drawEllipse(cx+pa->x, cy+pa->y, pa->w, pa->h);
   }
 
-  Painter.setPen(QPen(QPen::black,1));
+  Painter.setPen(QPen(Qt::black,1));
   QFont Font = Painter.font();   // save current font
   Font.setWeight(QFont::Light);
   // write all text
@@ -124,7 +129,7 @@ void SymbolWidget::paintEvent(QPaintEvent*)
     Font.setPointSizeFloat(pt->Size);
     Painter.setFont(Font);
     Painter.setPen(pt->Color);
-    Painter.drawText(cx+pt->x, cy+pt->y, 0, 0, Qt::DontClip, pt->s);
+    Painter.drawText(cx+pt->x, cy+pt->y, 0, 0, Qt::TextDontClip, pt->s);
   }
 }
 
@@ -147,114 +152,114 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
   QString FirstProp = ModelString.section('"', 1,1);
 
   if(Comp == "_BJT") {
-    Lines.append(new Line(-10,-15,-10, 15,QPen(QPen::darkBlue,3)));
-    Lines.append(new Line(-30,  0,-10,  0,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-10, -5,  0,-15,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(  0,-15,  0,-30,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-10,  5,  0, 15,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(  0, 15,  0, 30,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkBlue,3)));
+    Lines.append(new Line(-30,  0,-10,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-10, -5,  0,-15,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(  0,-15,  0,-30,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-10,  5,  0, 15,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(  0, 15,  0, 30,QPen(Qt::darkBlue,2)));
 
     if(FirstProp == "npn") {
-      Lines.append(new Line( -6, 15,  0, 15,QPen(QPen::darkBlue,2)));
-      Lines.append(new Line(  0,  9,  0, 15,QPen(QPen::darkBlue,2)));
+      Lines.append(new Line( -6, 15,  0, 15,QPen(Qt::darkBlue,2)));
+      Lines.append(new Line(  0,  9,  0, 15,QPen(Qt::darkBlue,2)));
     }
     else {
-      Lines.append(new Line( -5, 10, -5, 16,QPen(QPen::darkBlue,2)));
-      Lines.append(new Line( -5, 10,  1, 10,QPen(QPen::darkBlue,2)));
+      Lines.append(new Line( -5, 10, -5, 16,QPen(Qt::darkBlue,2)));
+      Lines.append(new Line( -5, 10,  1, 10,QPen(Qt::darkBlue,2)));
     }
 
     Arcs.append(new struct Arc(-34, -4, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1)));
+                               QPen(Qt::red,1)));
     Arcs.append(new struct Arc(-4, -34, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1)));
+                               QPen(Qt::red,1)));
     Arcs.append(new struct Arc(-4, 26, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1)));
+                               QPen(Qt::red,1)));
 
     PortNo = 3;
     x1 = -34; y1 = -34;
     x2 =   4; y2 =  34;
   }
   else if(Comp == "JFET") {
-    Lines.append(new Line(-10,-15,-10, 15,QPen(QPen::darkBlue,3)));
-    Lines.append(new Line(-30,  0,-10,  0,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-10,-10,  0,-10,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(  0,-10,  0,-30,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-10, 10,  0, 10,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(  0, 10,  0, 30,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkBlue,3)));
+    Lines.append(new Line(-30,  0,-10,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-10,-10,  0,-10,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(  0,-10,  0,-30,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-10, 10,  0, 10,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(  0, 10,  0, 30,QPen(Qt::darkBlue,2)));
 
-    Lines.append(new Line( -4, 24,  4, 20,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line( -4, 24,  4, 20,QPen(Qt::darkBlue,2)));
 
     if(FirstProp == "nfet") {
-      Lines.append(new Line(-16, -5,-11,  0,QPen(QPen::darkBlue,2)));
-      Lines.append(new Line(-16,  5,-11,  0,QPen(QPen::darkBlue,2)));
+      Lines.append(new Line(-16, -5,-11,  0,QPen(Qt::darkBlue,2)));
+      Lines.append(new Line(-16,  5,-11,  0,QPen(Qt::darkBlue,2)));
     }
     else {
-      Lines.append(new Line(-18, 0,-13, -5,QPen(QPen::darkBlue,2)));
-      Lines.append(new Line(-18, 0,-13,  5,QPen(QPen::darkBlue,2)));
+      Lines.append(new Line(-18, 0,-13, -5,QPen(Qt::darkBlue,2)));
+      Lines.append(new Line(-18, 0,-13,  5,QPen(Qt::darkBlue,2)));
     }
 
     Arcs.append(new struct Arc(-34, -4, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1)));
+                               QPen(Qt::red,1)));
     Arcs.append(new struct Arc(-4, -34, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1)));
+                               QPen(Qt::red,1)));
     Arcs.append(new struct Arc(-4, 26, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1)));
+                               QPen(Qt::red,1)));
 
     PortNo = 3;
     x1 = -30; y1 = -30;
     x2 =   4; y2 =  30;
   }
   else if(Comp == "_MOSFET") {
-    Lines.append(new Line(-14,-13,-14, 13,QPen(QPen::darkBlue,3)));
-    Lines.append(new Line(-30,  0,-14,  0,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-14,-13,-14, 13,QPen(Qt::darkBlue,3)));
+    Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
 
-    Lines.append(new Line(-10,-11,  0,-11,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(  0,-11,  0,-30,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-10, 11,  0, 11,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(  0,  0,  0, 30,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-10,  0,  0,  0,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-10,-11,  0,-11,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(  0,-11,  0,-30,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-10, 11,  0, 11,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(  0,  0,  0, 30,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-10,  0,  0,  0,QPen(Qt::darkBlue,2)));
 
-    Lines.append(new Line(-10,-16,-10, -7,QPen(QPen::darkBlue,3)));
-    Lines.append(new Line(-10,  7,-10, 16,QPen(QPen::darkBlue,3)));
+    Lines.append(new Line(-10,-16,-10, -7,QPen(Qt::darkBlue,3)));
+    Lines.append(new Line(-10,  7,-10, 16,QPen(Qt::darkBlue,3)));
 
     if(FirstProp == "nfet") {
-      Lines.append(new Line( -9,  0, -4, -5,QPen(QPen::darkBlue,2)));
-      Lines.append(new Line( -9,  0, -4,  5,QPen(QPen::darkBlue,2)));
+      Lines.append(new Line( -9,  0, -4, -5,QPen(Qt::darkBlue,2)));
+      Lines.append(new Line( -9,  0, -4,  5,QPen(Qt::darkBlue,2)));
     }
     else {
-      Lines.append(new Line( -1,  0, -6, -5,QPen(QPen::darkBlue,2)));
-      Lines.append(new Line( -1,  0, -6,  5,QPen(QPen::darkBlue,2)));
+      Lines.append(new Line( -1,  0, -6, -5,QPen(Qt::darkBlue,2)));
+      Lines.append(new Line( -1,  0, -6,  5,QPen(Qt::darkBlue,2)));
     }
 
     // depletion or enhancement MOSFET ?
     if((ModelString.section('"', 3,3).stripWhiteSpace().at(0) == '-') ==
        (FirstProp == "nfet"))
-      Lines.append(new Line(-10, -8,-10,  8,QPen(QPen::darkBlue,3)));
+      Lines.append(new Line(-10, -8,-10,  8,QPen(Qt::darkBlue,3)));
     else
-      Lines.append(new Line(-10, -4,-10,  4,QPen(QPen::darkBlue,3)));
+      Lines.append(new Line(-10, -4,-10,  4,QPen(Qt::darkBlue,3)));
 
     Arcs.append(new struct Arc(-34, -4, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1)));
+                               QPen(Qt::red,1)));
     Arcs.append(new struct Arc(-4, -34, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1)));
+                               QPen(Qt::red,1)));
     Arcs.append(new struct Arc(-4, 26, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1)));
+                               QPen(Qt::red,1)));
 
     PortNo = 3;
     x1 = -34; y1 = -34;
     x2 =   4; y2 =  34;
   }
   else if(Comp == "Diode") {
-    Lines.append(new Line(-30,  0, 30,  0,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( -6, -9, -6,  9,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(  6, -9,  6,  9,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( -6,  0,  6, -9,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( -6,  0,  6,  9,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-30,  0, 30,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( -6, -9, -6,  9,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(  6, -9,  6,  9,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( -6,  0,  6, -9,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( -6,  0,  6,  9,QPen(Qt::darkBlue,2)));
 
     Arcs.append(new struct Arc(-34, -4, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1)));
+                               QPen(Qt::red,1)));
     Arcs.append(new struct Arc(26, -4, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1)));
+                               QPen(Qt::red,1)));
 
     PortNo = 2;
     x1 = -34; y1 = -9;
@@ -265,92 +270,92 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
 	  Comp == "hicumL2V2p23" || Comp == "hicumL2V2p24" ||
 	  Comp == "hicumL0V1p2g" || Comp == "hicumL0V1p3") {
     // normal bipolar
-    Lines.append(new Line(-10,-15,-10, 15,QPen(QPen::darkBlue,3)));
-    Lines.append(new Line(-30,  0,-10,  0,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-10, -5,  0,-15,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(  0,-15,  0,-30,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-10,  5,  0, 15,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(  0, 15,  0, 30,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkBlue,3)));
+    Lines.append(new Line(-30,  0,-10,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-10, -5,  0,-15,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(  0,-15,  0,-30,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-10,  5,  0, 15,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(  0, 15,  0, 30,QPen(Qt::darkBlue,2)));
 
     // substrate node
-    Lines.append(new Line(  9,  0, 30,  0,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(  9, -7,  9,  7,QPen(QPen::darkBlue,3)));
+    Lines.append(new Line(  9,  0, 30,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(  9, -7,  9,  7,QPen(Qt::darkBlue,3)));
 
     // thermal node
-    Lines.append(new Line(-30, 20,-20, 20,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-20, 17,-20, 23,QPen(QPen::darkBlue,2)));  
+    Lines.append(new Line(-30, 20,-20, 20,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-20, 17,-20, 23,QPen(Qt::darkBlue,2)));  
 
     // arrow
     if(FirstProp == "npn" || Comp == "hic2_full" || Comp == "hicumL2V2p23" ||
        Comp == "hicumL2V2p1") {
-      Lines.append(new Line( -6, 15,  0, 15,QPen(QPen::darkBlue,2)));
-      Lines.append(new Line(  0,  9,  0, 15,QPen(QPen::darkBlue,2)));
+      Lines.append(new Line( -6, 15,  0, 15,QPen(Qt::darkBlue,2)));
+      Lines.append(new Line(  0,  9,  0, 15,QPen(Qt::darkBlue,2)));
     } else {
-      Lines.append(new Line( -5, 10, -5, 16,QPen(QPen::darkBlue,2)));
-      Lines.append(new Line( -5, 10,  1, 10,QPen(QPen::darkBlue,2)));
+      Lines.append(new Line( -5, 10, -5, 16,QPen(Qt::darkBlue,2)));
+      Lines.append(new Line( -5, 10,  1, 10,QPen(Qt::darkBlue,2)));
     }
 
     // H
-    Lines.append(new Line(-30,-30,-30,-24,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line(-30,-27,-26,-27,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line(-26,-30,-26,-24,QPen(QPen::darkBlue,1)));
+    Lines.append(new Line(-30,-30,-30,-24,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line(-30,-27,-26,-27,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line(-26,-30,-26,-24,QPen(Qt::darkBlue,1)));
     // I
-    Lines.append(new Line(-24,-30,-24,-24,QPen(QPen::darkBlue,1)));
+    Lines.append(new Line(-24,-30,-24,-24,QPen(Qt::darkBlue,1)));
     // C
-    Lines.append(new Line(-22,-30,-22,-24,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line(-22,-30,-19,-30,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line(-22,-24,-19,-24,QPen(QPen::darkBlue,1)));
+    Lines.append(new Line(-22,-30,-22,-24,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line(-22,-30,-19,-30,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line(-22,-24,-19,-24,QPen(Qt::darkBlue,1)));
     // U
-    Lines.append(new Line(-17,-30,-17,-24,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line(-14,-30,-14,-24,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line(-17,-24,-14,-24,QPen(QPen::darkBlue,1)));
+    Lines.append(new Line(-17,-30,-17,-24,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line(-14,-30,-14,-24,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line(-17,-24,-14,-24,QPen(Qt::darkBlue,1)));
     // M
-    Lines.append(new Line(-12,-30,-12,-24,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line( -8,-30, -8,-24,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line(-12,-30,-10,-28,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line( -8,-30,-10,-28,QPen(QPen::darkBlue,1)));
+    Lines.append(new Line(-12,-30,-12,-24,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line( -8,-30, -8,-24,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line(-12,-30,-10,-28,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line( -8,-30,-10,-28,QPen(Qt::darkBlue,1)));
 
     // terminal definitions
     Arcs.append(new struct Arc( -4, -34, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1))); // collector
+                               QPen(Qt::red,1))); // collector
     Arcs.append(new struct Arc(-34, -4, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1))); // base
+                               QPen(Qt::red,1))); // base
     Arcs.append(new struct Arc( -4, 26, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1))); // emitter
+                               QPen(Qt::red,1))); // emitter
     Arcs.append(new struct Arc( 26, -4, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1))); // substrate
+                               QPen(Qt::red,1))); // substrate
     Arcs.append(new struct Arc(-34, 16, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1))); // thermal node
+                               QPen(Qt::red,1))); // thermal node
 
     // relative boundings
     x1 = -34; y1 = -34;
     x2 =  34; y2 =  34;
   }
   else if(Comp == "SUBST") {
-    Lines.append(new Line(-30,-16, 30,-16,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-30,-12, 30,-12,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-30, 16, 30, 16,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-30, 12, 30, 12,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-30,-16,-30, 16,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 30,-16, 30, 16,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-30,-16, 30,-16,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-30,-12, 30,-12,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-30, 16, 30, 16,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-30, 12, 30, 12,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-30,-16,-30, 16,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 30,-16, 30, 16,QPen(Qt::darkBlue,2)));
 
-    Lines.append(new Line(-30,-16, 16,-40,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 30,-16, 80,-40,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 30,-12, 80,-36,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 30, 12, 80,-16,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 30, 16, 80,-12,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 16,-40, 80,-40,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 80,-40, 80,-12,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-30,-16, 16,-40,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 30,-16, 80,-40,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 30,-12, 80,-36,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 30, 12, 80,-16,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 30, 16, 80,-12,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 16,-40, 80,-40,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 80,-40, 80,-12,QPen(Qt::darkBlue,2)));
   
-    Lines.append(new Line(-30,  0,-18,-12,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line(-22, 12,  2,-12,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line( -2, 12, 22,-12,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line( 18, 12, 30,  0,QPen(QPen::darkBlue,1)));
+    Lines.append(new Line(-30,  0,-18,-12,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line(-22, 12,  2,-12,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line( -2, 12, 22,-12,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line( 18, 12, 30,  0,QPen(Qt::darkBlue,1)));
 
-    Lines.append(new Line( 30,  1, 37,  8,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line( 37,-15, 52,  0,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line( 52,-22, 66, -8,QPen(QPen::darkBlue,1)));
-    Lines.append(new Line( 66,-30, 80,-16,QPen(QPen::darkBlue,1)));
+    Lines.append(new Line( 30,  1, 37,  8,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line( 37,-15, 52,  0,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line( 52,-22, 66, -8,QPen(Qt::darkBlue,1)));
+    Lines.append(new Line( 66,-30, 80,-16,QPen(Qt::darkBlue,1)));
 
     PortNo = 0;
     x1 = -34; y1 =-44;
@@ -442,7 +447,7 @@ int SymbolWidget::analyseLine(const QString& Row)
   if(s == ".PortSym") {  // here: ports are open nodes
     if(!getIntegers(Row, &i1, &i2, &i3))  return -1;
     Arcs.append(new struct Arc(i1-4, i2-4, 8, 8, 0, 16*360,
-                               QPen(QPen::red,1)));
+                               QPen(Qt::red,1)));
 
     if((i1-4) < x1)  x1 = i1-4;  // keep track of component boundings
     if((i1+4) > x2)  x2 = i1+4;
@@ -672,7 +677,7 @@ bool SymbolWidget::getBrush(const QString& s, QBrush& Brush, int i)
 
   i++;
   n = s.section(' ',i,i);    // filled
-  if(n.toInt(&ok) == 0) Brush.setStyle(QBrush::NoBrush);
+  if(n.toInt(&ok) == 0) Brush.setStyle(Qt::NoBrush);
   if(!ok) return false;
 
   return true;

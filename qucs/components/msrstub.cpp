@@ -21,12 +21,12 @@ MSrstub::MSrstub()
 {
   Description = QObject::tr("microstrip radial stub");
 
-  Arcs.append(new Arc( -26, -26, 52, 52,16*45, 16*90,QPen(QPen::darkBlue,2)));
+  Arcs.append(new Arc( -26, -26, 52, 52,16*45, 16*90,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-5,   0,  5,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-5,   0,-18,-18,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 5,   0, 18,-18,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 0,   0,  0, 10,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-5,   0,  5,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-5,   0,-18,-18,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 5,   0, 18,-18,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 0,   0,  0, 10,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(0, 10));
 

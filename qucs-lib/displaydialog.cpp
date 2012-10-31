@@ -22,49 +22,51 @@
 #include "displaydialog.h"
 
 #include <qlayout.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qpushbutton.h>
-#include <qtextedit.h>
-#include <qvgroupbox.h>
+#include <q3textedit.h>
+#include <q3vgroupbox.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 
 DisplayDialog::DisplayDialog(QWidget *parent, bool helper)
                      : QDialog(parent, 0, false, Qt::WDestructiveClose)
 {
-  vLayout = new QVBoxLayout(this);
+  vLayout = new Q3VBoxLayout(this);
   vLayout->setMargin(3);
 
   if(helper) {
-    Text = new QTextEdit(this);
+    Text = new Q3TextEdit(this);
     Text->setTextFormat(Qt::PlainText);
     Text->setReadOnly(true);
     Text->setMinimumSize(200, 100);
     vLayout->addWidget(Text);
   }
   else {
-    QVGroupBox *Analog = new QVGroupBox (tr("Analogue"), this);
-    Text = new QTextEdit(Analog);
+    Q3VGroupBox *Analog = new Q3VGroupBox (tr("Analogue"), this);
+    Text = new Q3TextEdit(Analog);
     Text->setTextFormat(Qt::PlainText);
     Text->setReadOnly(true);
     Text->setMinimumSize(200, 80);
     vLayout->addWidget(Analog);
 
-    QVGroupBox *VHDL = new QVGroupBox (tr("VHDL"), this);
-    VHDLText = new QTextEdit(VHDL);
+    Q3VGroupBox *VHDL = new Q3VGroupBox (tr("VHDL"), this);
+    VHDLText = new Q3TextEdit(VHDL);
     VHDLText->setTextFormat(Qt::PlainText);
     VHDLText->setReadOnly(true);
     VHDLText->setMinimumSize(200, 80);
     vLayout->addWidget(VHDL);
 
-    QVGroupBox *Verilog = new QVGroupBox (tr("Verilog"), this);
-    VerilogText = new QTextEdit(Verilog);
+    Q3VGroupBox *Verilog = new Q3VGroupBox (tr("Verilog"), this);
+    VerilogText = new Q3TextEdit(Verilog);
     VerilogText->setTextFormat(Qt::PlainText);
     VerilogText->setReadOnly(true);
     VerilogText->setMinimumSize(200, 80);
     vLayout->addWidget(Verilog);
   }
 
-  QHBox *h = new QHBox(this);
+  Q3HBox *h = new Q3HBox(this);
   vLayout->addWidget(h);
 
   h->setStretchFactor(new QWidget(h),5); // stretchable placeholder

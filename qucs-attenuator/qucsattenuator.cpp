@@ -16,12 +16,16 @@
 
 #include "attenuatorfunc.h"
 #include "qucsattenuator.h"
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <QPixmap>
+#include <Q3VBoxLayout>
 #include "helpdialog.h"
 
-#include <qvgroupbox.h>
-#include <qvbox.h>
+#include <q3vgroupbox.h>
+#include <q3vbox.h>
 #include <qmenubar.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qmessagebox.h>
 #include <qlayout.h>
 #include <qlabel.h>
@@ -39,11 +43,11 @@ QucsAttenuator::QucsAttenuator()
   setIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
   setCaption("Qucs Attenuator " PACKAGE_VERSION);
 
-  QPopupMenu *fileMenu = new QPopupMenu();
-  fileMenu->insertItem(tr("E&xit"), this, SLOT(slotQuit()), CTRL+Key_Q);
+  Q3PopupMenu *fileMenu = new Q3PopupMenu();
+  fileMenu->insertItem(tr("E&xit"), this, SLOT(slotQuit()), Qt::CTRL+Qt::Key_Q);
 
-  QPopupMenu *helpMenu = new QPopupMenu();
-  helpMenu->insertItem(tr("Help..."), this, SLOT(slotHelpIntro()), Key_F1);
+  Q3PopupMenu *helpMenu = new Q3PopupMenu();
+  helpMenu->insertItem(tr("Help..."), this, SLOT(slotHelpIntro()), Qt::Key_F1);
   helpMenu->insertSeparator();
   helpMenu->insertItem(
             tr("&About QucsAttenuator..."), this, SLOT(slotHelpAbout()), 0);
@@ -54,8 +58,8 @@ QucsAttenuator::QucsAttenuator()
   bar->insertSeparator ();
   bar->insertItem(tr("&Help"), helpMenu);
 
-  QVBoxLayout * v2 = new QVBoxLayout (this);
-  QVBox * vm = new QVBox (this);
+  Q3VBoxLayout * v2 = new Q3VBoxLayout (this);
+  Q3VBox * vm = new Q3VBox (this);
   vm->setSpacing(0);
   v2->setSpacing(2);
 
@@ -63,15 +67,15 @@ QucsAttenuator::QucsAttenuator()
   Space->setFixedSize(5, bar->height());
   v2->addWidget(Space);
 
-  QHBox * h1 = new QHBox (this);
+  Q3HBox * h1 = new Q3HBox (this);
   v2->addWidget(h1);
   h1->setSpacing(2);
   h1->setMargin(5);
-  QVBox * v1 = new QVBox (h1);
+  Q3VBox * v1 = new Q3VBox (h1);
   v1->setSpacing(2);
 
-  QGroupBox * TopoGroup = new QGroupBox (tr("Topology"), v1);
-  QGridLayout * tbox = new QGridLayout(TopoGroup, 3,1,5,5);
+  Q3GroupBox * TopoGroup = new Q3GroupBox (tr("Topology"), v1);
+  Q3GridLayout * tbox = new Q3GridLayout(TopoGroup, 3,1,5,5);
 
   QWidget *Space2 = new QWidget(TopoGroup);
   Space2->setFixedSize(8, 8);
@@ -88,11 +92,11 @@ QucsAttenuator::QucsAttenuator()
   pixTopology->setPixmap(QPixmap (QImage (QucsSettings.BitmapDir + "att_pi.png")));
   tbox->addMultiCellWidget(pixTopology,2,2,0,0);
 
-  QVBox * vb = new QVBox (h1);
+  Q3VBox * vb = new Q3VBox (h1);
   vb->setSpacing(2);
 
-  QGroupBox * InputGroup = new QGroupBox (tr("Input"), vb);
-  QGridLayout * ibox = new QGridLayout(InputGroup, 5,3,5,5);
+  Q3GroupBox * InputGroup = new Q3GroupBox (tr("Input"), vb);
+  Q3GridLayout * ibox = new Q3GridLayout(InputGroup, 5,3,5,5);
   ibox->addMultiCellWidget(Space2,0,0,0,2);
 
   IntVal = new QIntValidator(this);
@@ -130,8 +134,8 @@ QucsAttenuator::QucsAttenuator()
   Calculate = new QPushButton(tr("Calculate and put into Clipboard"), vb);
   connect(Calculate, SIGNAL(clicked()), SLOT(slotCalculate()));
 
-  QGroupBox * OutputGroup = new QGroupBox (tr("Output"), vb);
-  QGridLayout * obox = new QGridLayout(OutputGroup, 5,3,5,5);
+  Q3GroupBox * OutputGroup = new Q3GroupBox (tr("Output"), vb);
+  Q3GridLayout * obox = new Q3GridLayout(OutputGroup, 5,3,5,5);
   obox->addMultiCellWidget(Space2,0,0,0,2);
 
   LabelR1 = new QLabel(tr("R1:"), OutputGroup);

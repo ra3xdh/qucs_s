@@ -116,36 +116,36 @@ Element * phototransistor::info(QString& Name, char * &BitmapFile, bool getNewOn
 
 void phototransistor::createSymbol()
 {
-  Arcs.append(new Arc(-25,-20, 40, 40,  0,16*360,QPen(QPen::red,2)));
-  Lines.append(new Line(-10,-15,-10, 15,QPen(QPen::darkBlue,3)));
-  Lines.append(new Line(-30,  0,-10,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-10, -5,  0,-15,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0,-15,  0,-30,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-10,  5,  0, 15,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, 15,  0, 30,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -6, 15,  0, 15,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0,  9,  0, 15,QPen(QPen::darkBlue,2)));
+  Arcs.append(new Arc(-25,-20, 40, 40,  0,16*360,QPen(Qt::red,2)));
+  Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line(-30,  0,-10,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-10, -5,  0,-15,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0,-15,  0,-30,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-10,  5,  0, 15,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, 15,  0, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -6, 15,  0, 15,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0,  9,  0, 15,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-50, -50, -40, -50,QPen(QPen::green,2)));
-  Lines.append(new Line(-40, -50, -40, -30,QPen(QPen::green,2)));
-  Lines.append(new Line(-40, -30, -50, -30,QPen(QPen::green,2)));
+  Lines.append(new Line(-50, -50, -40, -50,QPen(Qt::green,2)));
+  Lines.append(new Line(-40, -50, -40, -30,QPen(Qt::green,2)));
+  Lines.append(new Line(-40, -30, -50, -30,QPen(Qt::green,2)));
 
   // green arrow
-  Lines.append(new Line(-40, -40, -16, -16,QPen(QPen::green,2)));
-  Lines.append(new Line(-16, -16, -16, -23,QPen(QPen::green,2)));
-  Lines.append(new Line(-16, -16, -23, -16,QPen(QPen::green,2)));
+  Lines.append(new Line(-40, -40, -16, -16,QPen(Qt::green,2)));
+  Lines.append(new Line(-16, -16, -16, -23,QPen(Qt::green,2)));
+  Lines.append(new Line(-16, -16, -23, -16,QPen(Qt::green,2)));
 
   // P
-  Lines.append(new Line(-60, -55, -60, -65,QPen(QPen::black,2)));
-  Lines.append(new Line(-60, -65, -55, -65,QPen(QPen::black,2)));
-  Lines.append(new Line(-55, -65, -55, -60,QPen(QPen::black,2)));
-  Lines.append(new Line(-60, -60, -55, -60,QPen(QPen::black,2)));
+  Lines.append(new Line(-60, -55, -60, -65,QPen(Qt::black,2)));
+  Lines.append(new Line(-60, -65, -55, -65,QPen(Qt::black,2)));
+  Lines.append(new Line(-55, -65, -55, -60,QPen(Qt::black,2)));
+  Lines.append(new Line(-60, -60, -55, -60,QPen(Qt::black,2)));
 
   // W
-  Lines.append(new Line(-63, -40, -60, -35,QPen(QPen::black,2)));
-  Lines.append(new Line(-60, -35, -57, -40,QPen(QPen::black,2)));
-  Lines.append(new Line(-57, -40, -54, -35,QPen(QPen::black,2)));
-  Lines.append(new Line(-54, -35, -51, -40,QPen(QPen::black,2)));
+  Lines.append(new Line(-63, -40, -60, -35,QPen(Qt::black,2)));
+  Lines.append(new Line(-60, -35, -57, -40,QPen(Qt::black,2)));
+  Lines.append(new Line(-57, -40, -54, -35,QPen(Qt::black,2)));
+  Lines.append(new Line(-54, -35, -51, -40,QPen(Qt::black,2)));
 
   Ports.append(new Port(  0,-30)); // Collector
   Ports.append(new Port(-30,  0)); // Base

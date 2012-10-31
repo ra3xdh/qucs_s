@@ -1,5 +1,6 @@
-<!DOCTYPE TS><TS>
-<defaultcodec></defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>ArrowDialog</name>
     <message>
@@ -5113,7 +5114,7 @@ Použití:  qucsedit [-r] soubor
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>C-E breakdown exponent, (0 == disables collector break-down)</source>
@@ -9158,13 +9159,13 @@ Vybere všechny objekty v dokumentu</translation>
         <translation>Otočit</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation>Otočí vybrané komponenty o 90°</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation>Otočit
 
 Otočí vybrané komponenty o 90° doleva</translation>
@@ -10752,13 +10753,13 @@ Vybrání všech elementů v dokumentu</translation>
         <translation type="obsolete">Otočit</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation type="obsolete">Otočí vybrané komponenten o 90°</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation type="obsolete">Otočit
 
 Otočí vybrané komponenty o 90° ve směru hod. ručiček</translation>
@@ -12817,13 +12818,13 @@ Vybere všechny elementy v dokumentu</translation>
         <translation type="obsolete">Otočit</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation type="obsolete">Otočí vybrané komponenty o 90°</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation type="obsolete">Otočit
 
 Otočí vybrané komponenty o 90° proti směru hod. ručiček</translation>

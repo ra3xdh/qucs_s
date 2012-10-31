@@ -23,7 +23,7 @@
 class QucsApp;
 class QLineEdit;
 class QCheckBox;
-class QVGroupBox;
+class Q3VGroupBox;
 class QPushButton;
 
 
@@ -43,7 +43,7 @@ private:
   QucsApp *App;
   QLineEdit *SearchEdit, *ReplaceEdit;
   QCheckBox *PositionBox, *CaseBox, *WordBox, *BackwardBox, *AskBox;
-  QVGroupBox *ReplaceGroup;
+  Q3VGroupBox *ReplaceGroup;
 };
 
 #endif

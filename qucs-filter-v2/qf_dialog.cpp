@@ -19,7 +19,7 @@
 # include <config.h>
 #endif
 
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qmenubar.h>
 #include <qlayout.h>
 #include <qtabwidget.h>
@@ -28,12 +28,15 @@
 #include <qlabel.h>
 #include <qcheckbox.h>
 #include <qradiobutton.h>
-#include <qvbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qpushbutton.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qmessagebox.h>
 
 #include "qf_dialog.h"
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <Q3VBoxLayout>
 
 FilterDialog::FilterDialog (QWidget * parent) : QDialog (parent)
 {
@@ -41,13 +44,13 @@ FilterDialog::FilterDialog (QWidget * parent) : QDialog (parent)
   ///setIcon (QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
   setCaption("Qucs Filter " PACKAGE_VERSION);
 
-  all = new QVBoxLayout(this);
+  all = new Q3VBoxLayout(this);
 
   // --------  create menubar  -------------------
-  QPopupMenu *fileMenu = new QPopupMenu();
-  fileMenu->insertItem(tr("E&xit"), this, SLOT(slotQuit()), CTRL+Key_Q);
+  Q3PopupMenu *fileMenu = new Q3PopupMenu();
+  fileMenu->insertItem(tr("E&xit"), this, SLOT(slotQuit()), Qt::CTRL+Qt::Key_Q);
 
-  QPopupMenu *helpMenu = new QPopupMenu();
+  Q3PopupMenu *helpMenu = new Q3PopupMenu();
   helpMenu->insertItem(
                 tr("&About Qucs Filter..."), this, SLOT(slotHelpAbout()), 0);
   helpMenu->insertItem(tr("About Qt..."), this, SLOT(slotHelpAboutQt()), 0);
@@ -66,7 +69,7 @@ FilterDialog::FilterDialog (QWidget * parent) : QDialog (parent)
 
   // ...........................................................
   QWidget *Tab1 = new QWidget(t);
-  QGridLayout *gp1 = new QGridLayout(Tab1,12,6,5,5);
+  Q3GridLayout *gp1 = new Q3GridLayout(Tab1,12,6,5,5);
 
   FilterName = new QComboBox(FALSE, Tab1);
   gp1->addWidget(FilterName,0,0);
@@ -75,7 +78,7 @@ FilterDialog::FilterDialog (QWidget * parent) : QDialog (parent)
 
   OrderBox = new QCheckBox(tr("Specify order"), Tab1);
   gp1->addWidget(OrderBox,1,0);
-  QHBox *h1 = new QHBox(Tab1);
+  Q3HBox *h1 = new Q3HBox(Tab1);
   h1->setSpacing (5);
   OrderCombo = new QComboBox(FALSE, h1);
   OrderCombo->setEnabled(TRUE);
@@ -171,13 +174,13 @@ FilterDialog::FilterDialog (QWidget * parent) : QDialog (parent)
   UseCrossBox->setEnabled(FALSE);
   gp1->addMultiCellWidget(UseCrossBox,9,9,3,5);
 
-  Cboxes = new QVButtonGroup(tr("Optimize C"),Tab1);
+  Cboxes = new Q3VButtonGroup(tr("Optimize C"),Tab1);
   Cmin = new QRadioButton(tr("Cmin"),Cboxes);
   Cmax = new QRadioButton(tr("Cmax"),Cboxes);
   NoC = new QRadioButton(tr("noC"),Cboxes);
   gp1->addMultiCellWidget(Cboxes,11,11,0,2);
 
-  Lboxes = new QVButtonGroup(tr("Optimize L"),Tab1);
+  Lboxes = new Q3VButtonGroup(tr("Optimize L"),Tab1);
   Lmin = new QRadioButton(tr("Lmin"),Lboxes);
   Lmax = new QRadioButton(tr("Lmax"),Lboxes);
   NoL = new QRadioButton(tr("noL"),Lboxes);
@@ -198,7 +201,7 @@ FilterDialog::FilterDialog (QWidget * parent) : QDialog (parent)
 
   // ...........................................................
   // buttons on the bottom of the dialog (independent of the TabWidget)
-  QHBox *Butts = new QHBox(this);
+  Q3HBox *Butts = new Q3HBox(this);
   Butts->setSpacing(3);
   Butts->setMargin(3);
   all->addWidget(Butts);

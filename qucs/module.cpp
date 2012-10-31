@@ -14,10 +14,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
-#include <qdict.h>
+#include <QtGui>
+#include <q3dict.h>
 #include <qstring.h>
 #include <qstringlist.h>
+//Added by qt3to4:
+#include <Q3PtrList>
 
 #include "element.h"
 #include "components/component.h"
@@ -27,8 +29,8 @@
 #include "module.h"
 
 // Global category and component lists.
-QDict<Module> Module::Modules;
-QPtrList<Category> Category::Categories;
+Q3Dict<Module> Module::Modules;
+Q3PtrList<Category> Category::Categories;
 
 // Constructor creates instance of module object.
 Module::Module () {
@@ -405,8 +407,8 @@ QStringList Category::getCategories (void) {
 // The function returns the registered modules in the given category
 // as a pointer list.  The pointer list is empty if there is no such
 // category available.
-QPtrList<Module> Category::getModules (QString category) {
-  QPtrList<Module> res;
+Q3PtrList<Module> Category::getModules (QString category) {
+  Q3PtrList<Module> res;
   Category * cat = Categories.first ();
   for (; cat; cat = Categories.next ()) {
     if (category == cat->Name)

@@ -7,14 +7,14 @@
 #include "qf_box.h"
 #include "qf_dialog.h"
 
-#include <qbutton.h>
+#include <q3button.h>
 #include <qcombobox.h>
 #include <qlineedit.h>
 #include <qcheckbox.h>
 #include <qlabel.h>
 #include <qvalidator.h>
 #include <qpushbutton.h>
-#include <qvbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qradiobutton.h>
 
 // static  QButton::ToggleState  OrderBoxState = QButton::Off;
@@ -175,10 +175,10 @@ bool  qf_box::semanticCheck (void) {
   if (spec. r2 == 0) spec.r2 = spec.r1;
     
 
-  spec. dual = (DualBox -> state () == QButton::On);
-  spec. all_ind_equal = (EqualInductorBox -> state () == QButton::On);
-  spec. use_cross = (UseCrossBox -> state () == QButton::On);
-  spec. stop_is_pole = (CauerPoleBox -> state () == QButton::On);
+  spec. dual = (DualBox -> state () == QCheckBox::On);
+  spec. all_ind_equal = (EqualInductorBox -> state () == QCheckBox::On);
+  spec. use_cross = (UseCrossBox -> state () == QCheckBox::On);
+  spec. stop_is_pole = (CauerPoleBox -> state () == QCheckBox::On);
 
   // Optimization subdialog
   if ((spec. optc = OptimizeCauerBox -> isChecked ())) {
@@ -254,7 +254,7 @@ void  qf_box::updateDialog (void) {
   // The capacity flags are the logical OR of general capacity flags
   // and the flags corresponding to the current order (if selected)
 
-  if (OrderBox -> state () == QButton::Off ||
+  if (OrderBox -> state () == QCheckBox::Off ||
       ! (cflags & CAN_ORDER)) {
     fflags |= fapi -> if_no_order;
     tflags |= tapi -> if_no_order;
@@ -306,7 +306,7 @@ void  qf_box::updateDialog (void) {
   }
 
   if (cflags & CAN_ORDER_ONLY) {
-    if (OrderBox -> state () == QButton::Off)
+    if (OrderBox -> state () == QCheckBox::Off)
       OrderBox -> setChecked (true);
     OrderBox -> setEnabled (false);
   }
@@ -509,7 +509,7 @@ void qf_box::on_SubOrderCombo_activated (int type) {
 
 void  qf_box::on_OrderBox_stateChanged (int state) {
 
-  if ((state == QButton::On) && (cflags & CAN_ORDER)) {
+  if ((state == QCheckBox::On) && (cflags & CAN_ORDER)) {
     OrderCombo -> setEnabled (true);
     on_OrderCombo_activated (OrderCombo -> currentItem ());
   }

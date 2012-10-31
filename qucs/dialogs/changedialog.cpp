@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "changedialog.h"
 #include "node.h"
 #include "schematic.h"
@@ -22,15 +22,19 @@
 
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qvalidator.h>
 #include <qpushbutton.h>
-#include <qscrollview.h>
-#include <qvbox.h>
+#include <q3scrollview.h>
+#include <q3vbox.h>
 #include <qcheckbox.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <Q3PtrList>
+#include <Q3VBoxLayout>
 
 
 ChangeDialog::ChangeDialog(Schematic *Doc_)
@@ -46,7 +50,7 @@ ChangeDialog::ChangeDialog(Schematic *Doc_)
 
 
   // ...........................................................
-  all = new QGridLayout(this, 6,2,3,3);
+  all = new Q3GridLayout(this, 6,2,3,3);
   all->setMargin(5);
 
   all->addWidget(new QLabel(tr("Components:"), this), 0,0);
@@ -83,7 +87,7 @@ ChangeDialog::ChangeDialog(Schematic *Doc_)
 //  connect(NewValueEdit, SIGNAL(returnPressed()), SLOT(slotButtReplace()));
 
   // ...........................................................
-  QHBox *h0 = new QHBox(this);
+  Q3HBox *h0 = new Q3HBox(this);
   h0->setSpacing(5);
   all->setRowStretch(4,5);
   all->addMultiCellWidget(h0, 5,5, 0,1);
@@ -140,19 +144,19 @@ void ChangeDialog::slotButtReplace()
   // create dialog showing all found components
   QDialog *Dia = new QDialog(this);
   Dia->setCaption(tr("Found Components"));
-  QVBoxLayout *Dia_All = new QVBoxLayout(Dia);
+  Q3VBoxLayout *Dia_All = new Q3VBoxLayout(Dia);
   Dia_All->setSpacing(3);
   Dia_All->setMargin(5);
-  QScrollView *Dia_Scroll = new QScrollView(Dia);
+  Q3ScrollView *Dia_Scroll = new Q3ScrollView(Dia);
   Dia_Scroll->setMargin(5);
   Dia_All->addWidget(Dia_Scroll);
-  QVBox *Dia_Box = new QVBox(Dia_Scroll->viewport());
+  Q3VBox *Dia_Box = new Q3VBox(Dia_Scroll->viewport());
   Dia_Scroll->addChild(Dia_Box);
   QLabel *Dia_Label = new QLabel(tr("Change properties of\n")
                                + tr("these components ?"), Dia);
   Dia_All->addWidget(Dia_Label);
   
-  QHBox *Dia_h = new QHBox(Dia);
+  Q3HBox *Dia_h = new Q3HBox(Dia);
   Dia_h->setSpacing(5);
   Dia_All->addWidget(Dia_h);
   QPushButton *YesButton = new QPushButton(tr("Yes"), Dia_h);
@@ -162,7 +166,7 @@ void ChangeDialog::slotButtReplace()
 	  Dia, SLOT(reject()));
 
 
-  QPtrList<QCheckBox> pList;
+  Q3PtrList<QCheckBox> pList;
   QCheckBox *pb;
   Component *pc;
   QStringList List;

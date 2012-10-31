@@ -22,9 +22,11 @@
 #include "helpdialog.h"
 
 #include <qlayout.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qpushbutton.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 
 HelpDialog::HelpDialog(QWidget *parent)
@@ -49,16 +51,16 @@ HelpDialog::HelpDialog(QWidget *parent)
   // --------  create dialog widgets  ------------
   resize(250, 230);
 
-  vLayout = new QVBoxLayout(this);
+  vLayout = new Q3VBoxLayout(this);
 
-  Text = new QTextEdit(s, QString::null, this);
+  Text = new Q3TextEdit(s, QString::null, this);
   Text->setTextFormat(Qt::PlainText);
   Text->setReadOnly(true);
 //  Text->setWordWrap(QTextEdit::NoWrap);
   Text->setMinimumSize(200,200);
   vLayout->addWidget(Text);
 
-  QHBox *h = new QHBox(this);
+  Q3HBox *h = new Q3HBox(this);
   vLayout->addWidget(h);
 
   h->setStretchFactor(new QWidget(h),5); // stretchable placeholder

@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "wire.h"
 
 
@@ -108,13 +108,13 @@ void Wire::paintScheme(QPainter *p)
 void Wire::paint(ViewPainter *p)
 {
   if(isSelected) {
-    p->Painter->setPen(QPen(QPen::darkGray,6));
+    p->Painter->setPen(QPen(Qt::darkGray,6));
     p->drawLine(x1, y1, x2, y2);
-    p->Painter->setPen(QPen(QPen::lightGray,2));
+    p->Painter->setPen(QPen(Qt::lightGray,2));
     p->drawLine(x1, y1, x2, y2);
   }
   else {
-    p->Painter->setPen(QPen(QPen::darkBlue,2));
+    p->Painter->setPen(QPen(Qt::darkBlue,2));
     p->drawLine(x1, y1, x2, y2);
   }
 }

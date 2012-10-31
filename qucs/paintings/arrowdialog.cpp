@@ -19,12 +19,14 @@
 
 #include <qlayout.h>
 #include <qlabel.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qvalidator.h>
 #include <qcolordialog.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
 
 
 ArrowDialog::ArrowDialog(QWidget *parent, const char *name)
@@ -33,7 +35,7 @@ ArrowDialog::ArrowDialog(QWidget *parent, const char *name)
   setCaption(tr("Edit Arrow Properties"));
   val100 = new QIntValidator(0, 100, this);
 
-  all = new QGridLayout(this, 5,4,3,3);
+  all = new Q3GridLayout(this, 5,4,3,3);
   all->setMargin(3);
 
   all->addWidget(new QLabel(tr("Head Length: "), this), 0,0);
@@ -83,7 +85,7 @@ ArrowDialog::ArrowDialog(QWidget *parent, const char *name)
   all->addMultiCellWidget(ArrowStyleBox, 3,3,1,2);
 
 
-  QHBox *h1 = new QHBox(this);
+  Q3HBox *h1 = new Q3HBox(this);
   all->addMultiCellWidget(h1, 4,4,0,3);
   QPushButton *ButtOK = new QPushButton(tr("OK"), h1);
   connect(ButtOK, SIGNAL(clicked()), SLOT(accept()));

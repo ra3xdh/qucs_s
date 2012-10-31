@@ -22,6 +22,7 @@
 #include <qstyle.h>
 #include <qpainter.h>
 #include <qapplication.h>
+ #include <QStyleOption>
 
 VTab::VTab(VTabPosition pos,int p_id,QWidget *p,const char* n) : QPushButton(p,n)
 {
@@ -66,17 +67,21 @@ QSize VTab::sizeHint() const
   QFontMetrics fm = this->fontMetrics();
   int w = fm.height()+5;
   int h = 24+fm.width(_text);
-  return style().sizeFromContents(QStyle::CT_ToolButton, this,
-				  QSize(w, h)).expandedTo(QApplication::globalStrut());
+  QStyleOption *so= new QStyleOption();
+  so->initFrom(this);
+  QSize sz=style()->sizeFromContents(
+                                   QStyle::CT_ToolButton, 
+                                   so,  QSize(w, h).expandedTo(QApplication::globalStrut()));
+	return sz;
 }
 
 void VTab::drawButton(QPainter *p)
 {
   p->save();
-  QStyle::SFlags st = QStyle::Style_Default | QStyle::Style_Enabled;
+  QStyle::State st = QStyle::State_None | QStyle::State_Enabled;
   if (isOn()) {
-    st |= QStyle::Style_On;
-    st |= QStyle::Style_Down;
+    st |= QStyle::State_On;
+    st |= QStyle::State_DownArrow;
   }
 
   QRect r(0, 0, height(), width());
@@ -89,9 +94,10 @@ void VTab::drawButton(QPainter *p)
     p->translate(width(), 0);
     p->rotate(90);
   }
-
-  style().drawControl(QStyle::CE_PushButton, p, this, r, colorGroup(), st);
-  style().drawControl(QStyle::CE_PushButtonLabel, p, this, r, colorGroup(), st);
+QStyleOption *so= new QStyleOption();
+  so->initFrom(this);
+  style()->drawControl(QStyle::CE_PushButton, so,p);//, r);//, colorGroup(), st);
+  style()->drawControl(QStyle::CE_PushButtonLabel, so,p);//, colorGroup(), st);
 
   p->restore();
 }

@@ -14,9 +14,11 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "vhdlfile.h"
 #include "qucs.h"
+//Added by qt3to4:
+#include <Q3TextStream>
 #include "main.h"
 #include "schematic.h"
 
@@ -102,10 +104,10 @@ QString VHDL_File::loadFile()
     File = QucsWorkDir.filePath(File);
 
   QFile f(File);
-  if(!f.open(IO_ReadOnly))
+  if(!f.open(QIODevice::ReadOnly))
     return QString("");
 
-  QTextStream stream(&f);
+  Q3TextStream stream(&f);
   File = stream.read();   // QString is better for "find" function
   f.close();
 
@@ -129,14 +131,14 @@ void VHDL_File::createSymbol()
   TypeNames = "";
   QString tmp, PortNames = loadFile();
   if(!PortNames.isEmpty())
-    No = PortNames.contains(',') + 1;
+    No = PortNames.count(',') + 1;
 
   #define HALFWIDTH  17
   int h = 30*((No-1)/2) + 15;
-  Lines.append(new Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( HALFWIDTH, -h, HALFWIDTH,  h,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( HALFWIDTH, -h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
 
   tmp = QObject::tr("vhdl");
   int w = metrics.width(tmp);
@@ -145,7 +147,7 @@ void VHDL_File::createSymbol()
   int y = 15-h, i = 0;
   Port *pp;
   while(i<No) {
-    Lines.append(new Line(-30,  y,-HALFWIDTH,  y,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-30,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
     pp = new Port(-30,  y);
     Ports.append(pp);
     pp->Type = TypeNames.section(',', i, i);
@@ -155,7 +157,7 @@ void VHDL_File::createSymbol()
     i++;
 
     if(i == No) break;
-    Lines.append(new Line(HALFWIDTH,  y, 30,  y,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(HALFWIDTH,  y, 30,  y,QPen(Qt::darkBlue,2)));
     pp = new Port( 30,  y);
     Ports.append(pp);
     pp->Type = TypeNames.section(',', i, i);
@@ -173,7 +175,7 @@ void VHDL_File::createSymbol()
   // now create/modify properties
   No = 0;
   if(!GenNames.isEmpty())
-    No = GenNames.contains(',') + 1;
+    No = (GenNames.count(',')) + 1;
   Property * pr = Props.at(1);
   for(i=0; i<No; i++) {
     if (!pr) {
@@ -207,7 +209,7 @@ QString VHDL_File::getSubcircuitFile()
 }
 
 // -------------------------------------------------------
-bool VHDL_File::createSubNetlist(QTextStream *stream)
+bool VHDL_File::createSubNetlist(Q3TextStream *stream)
 {
   ErrText = "";
 
@@ -224,7 +226,7 @@ bool VHDL_File::createSubNetlist(QTextStream *stream)
 
   // open file for reading
   QFile f(FileName);
-  if(!f.open(IO_ReadOnly)) {
+  if(!f.open(QIODevice::ReadOnly)) {
     ErrText += QObject::tr("ERROR: Cannot open %1 file \"%2\".").
       arg(Model).arg(FileName);
     return false;
@@ -255,7 +257,7 @@ VHDL_File_Info::VHDL_File_Info(QString File, bool isfile)
 {
   if (isfile) {
     QFile f(File);
-    if(!f.open(IO_ReadOnly))
+    if(!f.open(QIODevice::ReadOnly))
       File = "";
     else {
       QByteArray FileContent = f.readAll();
@@ -368,7 +370,7 @@ QString VHDL_File_Info::parsePorts(QString s, int j)
       t = t.mid(k+1);
     t = t.simplifyWhiteSpace();
     k = s.find(';',l+2);
-    k = s.mid(l,k-l).contains(',') + 1;
+    k = (s.mid(l,k-l).count(',')) + 1;
     while (k-->0) types = types + t + ",";
     i--;
     l = i;
@@ -447,7 +449,7 @@ QString VHDL_File_Info::parseGenerics(QString s, int j)
       t = t.mid(k+1);
     t = t.simplifyWhiteSpace();
     k = s.find(';',l+2);
-    k = s.mid(l,k-l).contains(',') + 1;
+    k = (s.mid(l,k-l).count(',')) + 1;
     while (k-->0) {
       types = types + t + ",";
       defs = defs + d + ",";

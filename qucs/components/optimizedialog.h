@@ -20,16 +20,18 @@
 
 #include <qdialog.h>
 #include <qregexp.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 class Schematic;
 class Optimize_Sim;
-class QListView;
-class QListViewItem;
+class Q3ListView;
+class Q3ListViewItem;
 class QCheckBox;
 class QComboBox;
 class QLineEdit;
 class QPushButton;
-class QVBoxLayout;
+class Q3VBoxLayout;
 class QRegExpValidator;
 class QDoubleValidator;
 class QIntValidator;
@@ -49,8 +51,8 @@ private slots:
   void slotDeleteVariable();
   void slotAddGoal();
   void slotDeleteGoal();
-  void slotEditGoal(QListViewItem*);
-  void slotEditVariable(QListViewItem*);
+  void slotEditGoal(Q3ListViewItem*);
+  void slotEditVariable(Q3ListViewItem*);
   void slotChangeVarName(const QString&);
   void slotChangeVarActive(bool);
   void slotChangeVarInit(const QString&);
@@ -69,7 +71,7 @@ public:
   Schematic *Doc;
   bool changed;
 
-  QVBoxLayout *all;
+  Q3VBoxLayout *all;
   QLineEdit *NameEdit, *VarNameEdit,
             *VarInitEdit, *VarMinEdit, *VarMaxEdit,
             *IterEdit, *RefreshEdit, *ParentsEdit, *ConstEdit, *CrossEdit,
@@ -77,7 +79,7 @@ public:
             *GoalNameEdit, *GoalNumEdit;
   QCheckBox *VarActiveCheck;
   QComboBox *SimEdit, *GoalTypeCombo, *MethodCombo, *VarTypeCombo;
-  QListView *VarList, *GoalList;
+  Q3ListView *VarList, *GoalList;
 
   QRegExp Expr;
   QRegExpValidator *Validator;

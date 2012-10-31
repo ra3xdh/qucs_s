@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>ArrowDialog</name>
     <message>
@@ -8228,12 +8230,12 @@ Selects all elements of the document</source>
         <translation>Повернути</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation>Повертає виділений компонент на 90°</translation>
     </message>
     <message>
         <source>Rotate
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation type="obsolete">Повернути
 Повертає виділений компонент на 90° проти годинниковий стрілки</translation>
     </message>
@@ -9507,7 +9509,7 @@ Selects all diagram markers of the document</source>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation>Повернути
 
 Повертає виділений компонент на 90° проти годинникової стрілки</translation>

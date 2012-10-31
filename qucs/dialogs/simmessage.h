@@ -19,14 +19,17 @@
 #define SIMMESSAGE_H
 
 #include <qdialog.h>
-#include <qprocess.h>
+#include <q3process.h>
 #include <qstringlist.h>
 #include <qfile.h>
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3VBoxLayout>
 
-class QTextEdit;
-class QVBoxLayout;
+class Q3TextEdit;
+class Q3VBoxLayout;
 class QPushButton;
-class QProgressBar;
+class Q3ProgressBar;
 
 class Component;
 class Schematic;
@@ -80,11 +83,11 @@ public:
   bool SimRunScript;
   QString DocName, DataSet, DataDisplay, Script;
 
-  QProcess      SimProcess;
-  QTextEdit    *ProgText, *ErrText;
+  Q3Process      SimProcess;
+  Q3TextEdit    *ProgText, *ErrText;
   bool          wasLF;   // linefeed for "ProgText"
   QPushButton  *Display, *Abort;
-  QProgressBar *SimProgress;
+  Q3ProgressBar *SimProgress;
   QString       ProgressText;
 
   Component    *SimOpt;
@@ -92,9 +95,9 @@ public:
   bool          makeSubcircuit, insertSim;
   QStringList   Collect;
   QFile         NetlistFile;
-  QTextStream   Stream;
+  Q3TextStream   Stream;
 
-  QVBoxLayout  *all;
+  Q3VBoxLayout  *all;
 };
 
 #endif

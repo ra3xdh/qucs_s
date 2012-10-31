@@ -19,9 +19,11 @@
 #define ARROWDIALOG_H
 
 #include <qdialog.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
 
 class QLineEdit;
-class QGridLayout;
+class Q3GridLayout;
 class QPushButton;
 class QComboBox;
 class QIntValidator;
@@ -45,7 +47,7 @@ public:
   QComboBox    *StyleBox, *ArrowStyleBox;
   Qt::PenStyle LineStyle;
 
-  QGridLayout   *all;
+  Q3GridLayout   *all;
   QIntValidator *val100;
 };
 

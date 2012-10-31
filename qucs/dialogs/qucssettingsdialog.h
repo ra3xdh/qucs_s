@@ -23,12 +23,14 @@
 #include <qdialog.h>
 #include <qfont.h>
 #include <qregexp.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
-class QListView;
-class QListViewItem;
+class Q3ListView;
+class Q3ListViewItem;
 class QLineEdit;
 class QCheckBox;
-class QVBoxLayout;
+class Q3VBoxLayout;
 class QPushButton;
 class QComboBox;
 class QIntValidator;
@@ -49,7 +51,7 @@ private slots:
   void slotDefaultValues();
   void slotAdd();
   void slotRemove();
-  void slotEditSuffix(QListViewItem*);
+  void slotEditSuffix(Q3ListViewItem*);
   void slotColorComment();
   void slotColorString();
   void slotColorInteger();
@@ -68,12 +70,12 @@ public:
   QComboBox *LanguageCombo;
   QPushButton *FontButton, *BGColorButton;
   QLineEdit *undoNumEdit, *editorEdit, *Input_Suffix, *Input_Program;
-  QListView *List_Suffix;
+  Q3ListView *List_Suffix;
   QPushButton *ColorComment, *ColorString, *ColorInteger,
        *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
        *ColorDirective, *ColorTask;
 
-  QVBoxLayout *all;
+  Q3VBoxLayout *all;
   QIntValidator *val200;
   QRegExp Expr;
   QRegExpValidator *Validator;

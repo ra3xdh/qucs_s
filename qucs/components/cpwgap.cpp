@@ -22,32 +22,32 @@ CPWgap::CPWgap()
 {
   Description = QObject::tr("coplanar gap");
 
-  Lines.append(new Line(-30,  0,-18,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 18,  0, 30,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-13, -8,  2, -8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  8, -8, 23, -8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-23,  8, -8,  8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -2,  8, 13,  8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-13, -8,-23,  8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  2, -8, -8,  8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  8, -8, -2,  8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 23, -8, 13,  8,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-13, -8,  2, -8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  8, -8, 23, -8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-23,  8, -8,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -2,  8, 13,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-13, -8,-23,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  2, -8, -8,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  8, -8, -2,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 23, -8, 13,  8,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-25,-13, 25,-13,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 16,-21, 24,-13,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  8,-21, 16,-13,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0,-21,  8,-13,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -8,-21,  0,-13,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-16,-21, -8,-13,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-24,-21,-16,-13,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-25,-13, 25,-13,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 16,-21, 24,-13,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  8,-21, 16,-13,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0,-21,  8,-13,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -8,-21,  0,-13,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-16,-21, -8,-13,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-24,-21,-16,-13,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line(-25, 13, 25, 13,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-24, 13,-16, 21,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-16, 13, -8, 21,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -8, 13,  0, 21,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, 13,  8, 21,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  8, 13, 16, 21,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 16, 13, 24, 21,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-25, 13, 25, 13,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-24, 13,-16, 21,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-16, 13, -8, 21,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -8, 13,  0, 21,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, 13,  8, 21,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  8, 13, 16, 21,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 16, 13, 24, 21,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30, 0));
   Ports.append(new Port( 30, 0));

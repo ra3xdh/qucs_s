@@ -26,11 +26,11 @@
 #include <qaction.h>
 #include <qpixmap.h>
 #include <qfile.h>
-#include <qtextstream.h>
-#include <qpopupmenu.h>
+#include <q3textstream.h>
+#include <q3popupmenu.h>
 #include <qmenubar.h>
 #include <qapplication.h>
-#include <qlistview.h>
+#include <q3listview.h>
 
 
 
@@ -61,25 +61,25 @@ QucsHelp::~QucsHelp()
 
 void QucsHelp::setupActions()
 {
-  QToolBar *toolbar = new QToolBar(this,"main_toolbar");
+  Q3ToolBar *toolbar = new Q3ToolBar(this,"main_toolbar");
   QMenuBar *bar = menuBar();
   statusBar();
 
   const QKeySequence ks = QKeySequence();
 
-  QAction *quitAction = new QAction(QIconSet(QPixmap(QucsSettings.BitmapDir + "quit.png")),
-                                    tr("&Quit"), CTRL+Key_Q, this);
-  QAction *backAction = new QAction(QIconSet(QPixmap(QucsSettings.BitmapDir + "back.png")),
-                                    tr("&Back"), ALT+Key_Left, this);
-  QAction *forwardAction = new QAction(QIconSet(QPixmap(QucsSettings.BitmapDir + "forward.png")),
-                                       tr("&Forward"), ALT+Key_Right, this);
-  QAction *homeAction = new QAction(QIconSet(QPixmap(QucsSettings.BitmapDir + "home.png")),
-                                    tr("&Home"),CTRL+Key_H,this);
-  previousAction = new QAction(QIconSet(QPixmap(QucsSettings.BitmapDir + "previous.png")),tr("&Previous"),
-                               ks, this);
-  nextAction = new QAction(QIconSet(QPixmap(QucsSettings.BitmapDir + "next.png")),
-                           tr("&Next"), ks, this);
-  viewBrowseDock = new QAction(tr("&Table of Contents"), 0, this);
+  QAction *quitAction = new QAction(QIcon((QucsSettings.BitmapDir + "quit.png")),
+                                    tr("&Quit"), (const QKeySequence&)Qt::CTRL+Qt::Key_Q, this,"");
+  QAction *backAction = new QAction(QIcon((QucsSettings.BitmapDir + "back.png")),
+                                    tr("&Back"), Qt::ALT+Qt::Key_Left, this,"");
+  QAction *forwardAction = new QAction(QIcon((QucsSettings.BitmapDir + "forward.png")),
+                                       tr("&Forward"), Qt::ALT+Qt::Key_Right, this,"");
+  QAction *homeAction = new QAction(QIcon((QucsSettings.BitmapDir + "home.png")),
+                                    tr("&Home"),Qt::CTRL+Qt::Key_H,this,"");
+  previousAction = new QAction(QIcon((QucsSettings.BitmapDir + "previous.png")),tr("&Previous"),
+                               ks, this,"");
+  nextAction = new QAction(QIcon((QucsSettings.BitmapDir + "next.png")),
+                           tr("&Next"), ks, this,"");
+  viewBrowseDock = new QAction(tr("&Table of Contents"), 0, this,"");
   viewBrowseDock->setToggleAction(true);
   viewBrowseDock->setOn(true);
   viewBrowseDock->setStatusTip(tr("Enables/disables the table of contents"));
@@ -109,10 +109,10 @@ void QucsHelp::setupActions()
   toolbar->addSeparator();
   quitAction->addTo(toolbar);
 
-  QPopupMenu *fileMenu = new QPopupMenu(this);
+  Q3PopupMenu *fileMenu = new Q3PopupMenu(this);
   quitAction->addTo(fileMenu);
 
-  QPopupMenu *viewMenu = new QPopupMenu(this);
+  Q3PopupMenu *viewMenu = new Q3PopupMenu(this);
   backAction->addTo(viewMenu);
   forwardAction->addTo(viewMenu);
   homeAction->addTo(viewMenu);
@@ -121,7 +121,7 @@ void QucsHelp::setupActions()
   viewMenu->insertSeparator();
   viewBrowseDock->addTo(viewMenu);
 
-  QPopupMenu *helpMenu = new QPopupMenu(this);
+  Q3PopupMenu *helpMenu = new Q3PopupMenu(this);
   helpMenu->insertItem(tr("&About Qt"),qApp,SLOT(aboutQt()));
 
   bar->insertItem(tr("&File"), fileMenu );
@@ -134,26 +134,26 @@ void QucsHelp::setupActions()
 
 void QucsHelp::createSidebar()
 {
-  dock = new QDockWindow(QDockWindow::InDock,this);
+  dock = new Q3DockWindow(Q3DockWindow::InDock,this);
   dock->setResizeEnabled(true);
-  dock->setCloseMode(QDockWindow::Always);
+  dock->setCloseMode(Q3DockWindow::Always);
   connect(dock,SIGNAL(visibilityChanged(bool)),this,SLOT(slotToggleSidebarAction(bool)));
 
-  chaptersView = new QListView(dock,"chapters_view");
+  chaptersView = new Q3ListView(dock,"chapters_view");
   chaptersView->setRootIsDecorated(false);
   chaptersView->addColumn(tr("Contents"));
   chaptersView->setSorting(-1);
-  chaptersView->setSelectionMode(QListView::Single);
+  chaptersView->setSelectionMode(Q3ListView::Single);
 
   dock->setWidget(chaptersView);
-  moveDockWindow(dock,QDockWindow::Left);
+  moveDockWindow(dock,Qt::Left);
 
 
   QStringList l = dataFetcher->fetchChapterTexts(QucsHelpDir.filePath("index.html"));
   for(int i=l.count()-1;i>=0;i--)
-    chaptersView->insertItem(new QListViewItem(chaptersView,l[i],QString::number(i+1)));
+    chaptersView->insertItem(new Q3ListViewItem(chaptersView,l[i],QString::number(i+1)));
 
-  QListViewItem *curItem = new QListViewItem(chaptersView,tr("Home"),QString::number(0));
+  Q3ListViewItem *curItem = new Q3ListViewItem(chaptersView,tr("Home"),QString::number(0));
   chaptersView->insertItem(curItem);
   chaptersView->setSelected(curItem,true);
 
@@ -194,7 +194,7 @@ void QucsHelp::slotSourceChanged(const QString& _str)
          temp = chaptersView->selectedItem()->text(1);
       if(temp.toUInt() != i)
       {
-        QListViewItem *item = chaptersView->findItem(QString::number(i),1);
+        Q3ListViewItem *item = chaptersView->findItem(QString::number(i),1);
         if(item != 0l)
         {
           chaptersView->blockSignals(true);

@@ -19,8 +19,11 @@
 #define QUCSFILTER_H
 
 #include <qdialog.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <QLabel>
 
-class QGridLayout;
+class Q3GridLayout;
 class QComboBox;
 class QLineEdit;
 class QLabel;
@@ -61,7 +64,7 @@ private:
 
   int ResultState;
 
-  QGridLayout *gbox;
+  Q3GridLayout *gbox;
   QComboBox *ComboType, *ComboClass, *ComboCorner, *ComboStop, *ComboBandStop;
   QLineEdit *EditOrder, *EditCorner, *EditStop, *EditRipple, *EditImpedance;
   QLineEdit *EditAtten, *EditBandStop;

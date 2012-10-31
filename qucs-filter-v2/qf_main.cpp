@@ -3,10 +3,10 @@
 #endif
 
 #include <qbuffer.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qobject.h>
 #include <qapplication.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qdir.h>
 #include <qtextcodec.h>
 #include <qclipboard.h>
@@ -22,8 +22,10 @@
 #include "qf_tform.h"
 #include "qf_box.h"
 #include "qf_settings.h"
+//Added by qt3to4:
+#include <QTranslator>
 
-void compute_lumped (qf_spec* spec_p, QTextStream& out) {
+void compute_lumped (qf_spec* spec_p, Q3TextStream& out) {
 
   qf_tform* T = qf_tform_apis [spec_p -> tform] -> cons (spec_p);
 
@@ -97,10 +99,10 @@ int main (int argc, char * argv []) {
     spec_p = Filterbox. get_spec ();
 
     QByteArray	buf;
-    QTextStream s (buf, IO_ReadWrite);
+    Q3TextStream s (buf, QIODevice::ReadWrite);
 
     compute_lumped (spec_p, s);
-    s. device () -> flush ();
+#warning s. device () -> flush ();
 
     QClipboard *cb = QApplication::clipboard();
     cb->setText(buf);

@@ -19,15 +19,17 @@
 #include "textdoc.h"
 #include "qucs.h"
 
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qcheckbox.h>
 #include <qlineedit.h>
 #include <qtabwidget.h>
-#include <qvgroupbox.h>
+#include <q3vgroupbox.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 
 SearchDialog::SearchDialog(QucsApp *App_)
@@ -35,14 +37,14 @@ SearchDialog::SearchDialog(QucsApp *App_)
 {
   App = App_;
 
-  QVBoxLayout *all = new QVBoxLayout(this);
+  Q3VBoxLayout *all = new Q3VBoxLayout(this);
   all->setMargin(5);
 
-  QVGroupBox *g1 = new QVGroupBox(tr("Text to search for"), this);
+  Q3VGroupBox *g1 = new Q3VGroupBox(tr("Text to search for"), this);
   all->addWidget(g1);
   SearchEdit = new QLineEdit(g1);
 
-  ReplaceGroup = new QVGroupBox(tr("Text to replace with"), this);
+  ReplaceGroup = new Q3VGroupBox(tr("Text to replace with"), this);
   all->addWidget(ReplaceGroup);
   ReplaceEdit = new QLineEdit(ReplaceGroup);
 
@@ -58,7 +60,7 @@ SearchDialog::SearchDialog(QucsApp *App_)
   BackwardBox = new QCheckBox(tr("Search backwards"), this);
   all->addWidget(BackwardBox);
 
-  QHBox *Buttons = new QHBox(this);
+  Q3HBox *Buttons = new Q3HBox(this);
   all->addWidget(Buttons);
   QPushButton *ButtonSearch = new QPushButton(tr("Search"), Buttons);
   connect(ButtonSearch, SIGNAL(clicked()), SLOT(slotSearch()));

@@ -18,7 +18,7 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-
+#include <QtGui>
 #include <stdlib.h>
 #include <ctype.h>
 #include <math.h>
@@ -30,7 +30,7 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 #include <qfile.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qmessagebox.h>
 #include <qregexp.h>
 
@@ -50,9 +50,9 @@ QString lastDir;    // to remember last directory for several dialogs
 bool loadSettings()
 {
   QFile file(QucsHomeDir.filePath("qucsrc"));
-  if(!file.open(IO_ReadOnly)) return false; // settings file doesn't exist
+  if(!file.open(QIODevice::ReadOnly)) return false; // settings file doesn't exist
 
-  QTextStream stream(&file);
+  Q3TextStream stream(&file);
   QString Line, Setting;
 
   bool ok;
@@ -107,13 +107,13 @@ bool loadSettings()
 bool saveApplSettings(QucsApp *qucs)
 {
   QFile file(QucsHomeDir.filePath("qucsrc"));
-  if(!file.open(IO_WriteOnly)) {    // settings file cannot be created
+  if(!file.open(QIODevice::WriteOnly)) {    // settings file cannot be created
     QMessageBox::warning(0, QObject::tr("Warning"),
 			QObject::tr("Cannot save settings !"));
     return false;
   }
 
-  QTextStream stream(&file);
+  Q3TextStream stream(&file);
 
   stream << "Settings file, Qucs " PACKAGE_VERSION "\n"
     << "Position=" << qucs->x() << "," << qucs->y() << "\n"
@@ -151,7 +151,7 @@ QString complexRect(double real, double imag, int Precision)
   else {
     Text = QString::number(imag,'g',Precision);
     if(Text.at(0) == '-') {
-      Text.at(0) = 'j';
+      Text.replace(0,1,'j');
       Text = '-'+Text;
     }
     else  Text = "+j"+Text;
@@ -513,10 +513,10 @@ bool checkVersion(QString& Line)
   QStringList ll = QStringList::split('.',Line);
   if (ll.count() != 3 || sl.count() != 3)
     return false;
-  int sv = (*sl.at(1)).toInt() * 10000 + (*sl.at(2)).toInt() * 100 +
-    (*sl.at(3)).toInt();
-  int lv = (*ll.at(1)).toInt() * 10000 + (*ll.at(2)).toInt() * 100 +
-    (*ll.at(3)).toInt();
+  int sv = (sl.at(1)).toInt() * 10000 + (sl.at(2)).toInt() * 100 +
+    (sl.at(3)).toInt();
+  int lv = (ll.at(1)).toInt() * 10000 + (ll.at(2)).toInt() * 100 +
+    (ll.at(3)).toInt();
   if(lv > sv) // wrong version number ? (only backward compatible)
     return false;
   return true;

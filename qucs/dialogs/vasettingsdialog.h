@@ -20,6 +20,8 @@
 
 #include <qdialog.h>
 #include <qregexp.h>
+//Added by qt3to4:
+#include <QLabel>
 
 class TextDoc;
 class QLineEdit;
@@ -27,7 +29,7 @@ class QPushButton;
 class QRegExpValidator;
 class QLabel;
 class QCheckBox;
-class QButtonGroup;
+class Q3ButtonGroup;
 
 class VASettingsDialog : public QDialog  {
 Q_OBJECT
@@ -40,7 +42,7 @@ public:
   QPushButton * BrowseButt;
   QLabel * IconButt;
   QCheckBox * RecreateCheck;
-  QButtonGroup * toggleGroupDev, * toggleGroupTyp;
+  Q3ButtonGroup * toggleGroupDev, * toggleGroupTyp;
 
 private slots:
   void slotOk ();

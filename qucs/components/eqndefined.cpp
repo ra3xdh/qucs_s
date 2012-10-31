@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "eqndefined.h"
 #include "main.h"
 #include "schematic.h"
@@ -135,29 +135,29 @@ void EqnDefined::createSymbol()
 
   // draw symbol
   int h = (PortDistance/2)*((Num-1)) + PortDistance/2;
-  Lines.append(new Line(-15, -h, 15, -h,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 15, -h, 15,  h,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-15,  h, 15,  h,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-15, -h,-15,  h,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-15, -h, 15, -h,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 15, -h, 15,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-15,  h, 15,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-15, -h,-15,  h,QPen(Qt::darkBlue,2)));
 
 
   i=0;
   int y = PortDistance/2-h, yh;
   while(i<Num) {
     i++;
-    Lines.append(new Line(-30, y,-15, y,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-30, y,-15, y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30, y));
 
-    Lines.append(new Line( 7,y-3, 10, y,QPen(QPen::black,1)));
-    Lines.append(new Line( 7,y+3, 10, y,QPen(QPen::black,1)));
-    Lines.append(new Line(-10, y, 10, y,QPen(QPen::black,1)));
+    Lines.append(new Line( 7,y-3, 10, y,QPen(Qt::black,1)));
+    Lines.append(new Line( 7,y+3, 10, y,QPen(Qt::black,1)));
+    Lines.append(new Line(-10, y, 10, y,QPen(Qt::black,1)));
 
     if (i > 1) {
       yh = y-PortDistance/2;
-      Lines.append(new Line(-15, yh, 15, yh, QPen(QPen::darkBlue,2)));
+      Lines.append(new Line(-15, yh, 15, yh, QPen(Qt::darkBlue,2)));
     }
 
-    Lines.append(new Line( 15, y, 30, y,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line( 15, y, 30, y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 30, y));
     Texts.append(new Text( 19,y-14,QString::number(i)));
     y += PortDistance;

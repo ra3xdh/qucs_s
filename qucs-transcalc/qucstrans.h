@@ -21,19 +21,25 @@
 #include <qdialog.h>
 #include <qfont.h>
 #include <qstring.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <Q3TextStream>
+#include <Q3VBoxLayout>
+#include <QLabel>
+#include <QCloseEvent>
 
 class QComboBox;
 class QLineEdit;
 class QLabel;
-class QHGroupBox;
-class QVBox;
-class QVBoxLayout;
+class Q3HGroupBox;
+class Q3VBox;
+class Q3VBoxLayout;
 class QRadioButton;
-class QGridLayout;
+class Q3GridLayout;
 class QStatusBar;
-class QTextStream;
-class QButtonGroup;
-class QWidgetStack;
+class Q3TextStream;
+class Q3ButtonGroup;
+class Q3WidgetStack;
 
 class transline;
 
@@ -81,7 +87,7 @@ struct TransValue {
   QLineEdit * lineedit;  // Qt value widget
   QComboBox * combobox;  // Qt unit widget
   QRadioButton * radio;  // Qt fixed widget
-  QWidgetStack * stack;  // Qt fixed stack
+  Q3WidgetStack * stack;  // Qt fixed stack
 };
 
 // Array of transmission line values.
@@ -141,8 +147,8 @@ public:
   void    setResult (int, const char *);
   bool    isSelected (QString);
 
-  void    saveMode (QTextStream&);
-  void    saveModes (QTextStream&);
+  void    saveMode (Q3TextStream&);
+  void    saveModes (Q3TextStream&);
   bool    loadFile (QString, int * _mode = 0);
   QString getMode (void);
   void    setMode (QString);
@@ -164,12 +170,12 @@ private slots:
 
 private:
   void updateSelection ();
-  void createPropItem (QVBox **, TransValue *, int, QButtonGroup *);
-  void createResultItem (QVBox **, TransResult *);
+  void createPropItem (Q3VBox **, TransValue *, int, Q3ButtonGroup *);
+  void createResultItem (Q3VBox **, TransResult *);
   void updateResultItem (TransResult *);
-  void createResultItems (QHGroupBox *);
+  void createResultItems (Q3HGroupBox *);
   void updateResultItems ();
-  void createPropItems (QHGroupBox *, int);
+  void createPropItems (Q3HGroupBox *, int);
   int getTypeIndex ();
   void updatePropItem (TransValue *);
   void setMode (int);
@@ -187,7 +193,7 @@ private:
   QStatusBar * statBar;
   QLabel * pix;
   QComboBox * tranType;
-  QHGroupBox * calculated;
+  Q3HGroupBox * calculated;
   int mode;
 };
 

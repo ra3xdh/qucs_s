@@ -21,6 +21,8 @@
 
 #include "qf_box.h"
 #include "qf_settings.h"
+//Added by qt3to4:
+#include <Q3TextStream>
 
 struct tQucsSettings QucsSettings;
 
@@ -31,10 +33,10 @@ bool loadSettings (void)
   bool result = true;
 
   QFile file(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/filterrc"));
-  if(!file.open(IO_ReadOnly))
+  if(!file.open(QIODevice::ReadOnly))
     result = false; // settings file doesn't exist
   else {
-    QTextStream stream(&file);
+    Q3TextStream stream(&file);
     QString Line, Setting;
     while(!stream.atEnd()) {
       Line = stream.readLine();
@@ -55,10 +57,10 @@ bool loadSettings (void)
   }  
 
   file.setName(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/qucsrc"));
-  if(!file.open(IO_ReadOnly))
+  if(!file.open(QIODevice::ReadOnly))
     result = true; // qucs settings not necessary
   else {
-    QTextStream stream(&file);
+    Q3TextStream stream(&file);
     QString Line, Setting;
     while(!stream.atEnd()) {
       Line = stream.readLine();
@@ -84,14 +86,14 @@ bool saveSettings(qf_box *qucs)
 
 
   QFile file(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/filterrc"));
-  if(!file.open(IO_WriteOnly)) {
+  if(!file.open(QIODevice::WriteOnly)) {
     QMessageBox::warning(0, QObject::tr("Warning"),
 			QObject::tr("Cannot save settings !"));
     return false;
   }
 
   QString Line;
-  QTextStream stream(&file);
+  Q3TextStream stream(&file);
 
   stream << "Settings file, Qucs Filter " PACKAGE_VERSION "\n"
 	 << "FilterWindow=" << qucs->x() << ',' << qucs->y() << '\n';
@@ -155,14 +157,14 @@ bool saveXmlSettings (qf_box * qucs)
   rt.appendChild (gr);
 
   QFile file (QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/filterrc"));
-  if (!file.open (IO_WriteOnly)) {
+  if (!file.open (QIODevice::WriteOnly)) {
     QMessageBox::warning (0,
 			  QObject::tr("Warning"),
 			  QObject::tr("Cannot save settings file !"));
     return false;
   }
 
-  QTextStream str (&file);
+  Q3TextStream str (&file);
   str << doc.toString ();
   file.close ();
   return true;
@@ -229,16 +231,17 @@ bool loadXmlSettings (void)
   bool result = true;
 
   QFile file (QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/filterrc"));
-  if (!file.open(IO_ReadOnly))
+  if (!file.open(QIODevice::ReadOnly))
     result = false; // settings file doesn't exist
   else {
     QDomDocument doc;
     QString errmsg;
     int line, col;
     if (!doc.setContent(&file, true, &errmsg, &line, &col)) {
-      cerr << file.name () << ":" << line << ":" << col
-	   << ": " << errmsg << endl;
-      cerr << doc.toCString ();
+		
+      cerr << (const char*)file.fileName().toUtf8() << ":" << line << ":" << col
+	   << ": " << (const char*)errmsg.toUtf8() << endl;
+      cerr << (const char*)doc.toString ().toUtf8();
       file.close();
       return false;
     }

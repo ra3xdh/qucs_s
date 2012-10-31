@@ -72,29 +72,29 @@ Element * potentiometer::info(QString& Name, char * &BitmapFile, bool getNewOne)
 void potentiometer::createSymbol()
 {
   // frame
-  Lines.append(new Line(-30,-13,-30, 10,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30, 10, 30, 10,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30, 10, 30,-13,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,-13,-30,-13,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,-13,-30, 10,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30, 10, 30, 10,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30, 10, 30,-13,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,-13,-30,-13,QPen(Qt::darkBlue,2)));
 
   // resistor
-  Lines.append(new Line(-40,  0, -25, 0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-25,  0, -20,-5,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20, -5, -15, 0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-15,  0, -10,-5,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-10, -5, -5,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -5,  0,  0, -5,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, -5,  5,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  5,  0, 10, -5,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 10, -5, 15,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 15,  0, 20, -5,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 20, -5, 25,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 25,  0, 40,  0,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-40,  0, -25, 0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-25,  0, -20,-5,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20, -5, -15, 0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-15,  0, -10,-5,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-10, -5, -5,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -5,  0,  0, -5,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, -5,  5,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  5,  0, 10, -5,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 10, -5, 15,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 15,  0, 20, -5,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 20, -5, 25,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 25,  0, 40,  0,QPen(Qt::darkBlue,2)));
 
   // arrow
-  Lines.append(new Line( -4, -9,  0, -5,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  4, -9,  0, -5,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, -5,  0,-20,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line( -4, -9,  0, -5,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  4, -9,  0, -5,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, -5,  0,-20,QPen(Qt::darkBlue,2)));
 
   Texts.append(new Text(-23,   0, QObject::tr("B"), Qt::black, 6.0, 1.0, 0.0));
   Texts.append(new Text( 18,   0, QObject::tr("T"), Qt::black, 6.0, 1.0, 0.0));

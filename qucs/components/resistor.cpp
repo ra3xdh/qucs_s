@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "resistor.h"
 #include "node.h"
 #include "schematic.h"
@@ -57,23 +57,23 @@ Component* Resistor::newOne()
 void Resistor::createSymbol()
 {
   if(Props.getLast()->Value != "US") {
-    Lines.append(new Line(-18, -9, 18, -9,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 18, -9, 18,  9,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 18,  9,-18,  9,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-18,  9,-18, -9,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-30,  0,-18,  0,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 18,  0, 30,  0,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-18, -9, 18, -9,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 18, -9, 18,  9,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 18,  9,-18,  9,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-18,  9,-18, -9,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
   }
   else {
-    Lines.append(new Line(-30,  0,-18,  0,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-18,  0,-15, -7,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-15, -7, -9,  7,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( -9,  7, -3, -7,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( -3, -7,  3,  7,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(  3,  7,  9, -7,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(  9, -7, 15,  7,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 15,  7, 18,  0,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 18,  0, 30,  0,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-18,  0,-15, -7,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-15, -7, -9,  7,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( -9,  7, -3, -7,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( -3, -7,  3,  7,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(  3,  7,  9, -7,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(  9, -7, 15,  7,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 15,  7, 18,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
   }
 
   Ports.append(new Port(-30,  0));

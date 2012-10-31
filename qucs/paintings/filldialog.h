@@ -19,8 +19,11 @@
 #define FILLDIALOG_H
 
 #include <qdialog.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <Q3VBoxLayout>
 
-class QVBoxLayout;
+class Q3VBoxLayout;
 class QLabel;
 class QIntValidator;
 class QCheckBox;
@@ -52,7 +55,7 @@ public:
   QPushButton   *ColorButt, *FillColorButt;
   QComboBox     *StyleBox, *FillStyleBox;
 
-  QVBoxLayout   *all;
+  Q3VBoxLayout   *all;
   QIntValidator *val100;
 };
 

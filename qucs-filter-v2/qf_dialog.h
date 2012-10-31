@@ -19,14 +19,17 @@
 #define FILTERDIALOG_H
 
 #include <qdialog.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
+#include <QLabel>
 
-class QVBoxLayout;
+class Q3VBoxLayout;
 class QLineEdit;
 class QComboBox;
 class QLabel;
 class QCheckBox;
 class QRadioButton;
-class QVButtonGroup;
+class Q3VButtonGroup;
 class QPushButton;
 class QWidget;
 
@@ -48,7 +51,7 @@ public:
  QPushButton * okButton, * cancelButton; 
  QLineEdit * EnterCutoff, * EnterZin, * EnterZout, * EnterStopband,
   * EnterAngle, * EnterBandwidth, * EnterAttenuation, * EnterRipple;
- QVBoxLayout * all;
+ Q3VBoxLayout * all;
  QComboBox * CutoffCombo, * StopbandCombo, * FilterName, * TformName,
    * OrderCombo, * SubOrderCombo, * BandwidthCombo;
  QLabel * CutoffLabel, * ZinLabel, * OhmLabel, * ZoutLabel, * OhmLabel_2,
@@ -57,7 +60,7 @@ public:
  QCheckBox * OrderBox, * DualBox, * CauerPoleBox, * OptimizeCauerBox,
    * EqualInductorBox, * UseCrossBox;
  QRadioButton * Cmax, * Cmin, * NoC, * Lmin, * NoL, * Lmax;
- QVButtonGroup * Lboxes, * Cboxes;
+ Q3VButtonGroup * Lboxes, * Cboxes;
 };
 
 #endif

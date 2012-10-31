@@ -19,9 +19,11 @@
 
 #include <qlayout.h>
 #include <qlabel.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qpushbutton.h>
 #include <qvalidator.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
 
 
 MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
@@ -30,7 +32,7 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   setCaption(tr("Edit Marker Properties"));
   pMarker = pm_;
 
-  QGridLayout *g = new QGridLayout(this, 5,2,5,5);
+  Q3GridLayout *g = new Q3GridLayout(this, 5,2,5,5);
 
   g->addWidget(new QLabel(tr("Precision: "), this), 0,0);
   Precision = new QLineEdit(this);
@@ -50,7 +52,7 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   TransBox->setChecked(pMarker->transparent);
   g->addMultiCellWidget(TransBox,3,3,0,1);
 
-  QHBox *b = new QHBox(this);
+  Q3HBox *b = new Q3HBox(this);
   b->setSpacing(5);
   g->addMultiCellWidget(b,4,4,0,1);
 

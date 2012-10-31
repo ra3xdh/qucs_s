@@ -7,19 +7,22 @@
 #define OCTAVE_WINDOW_H
 
 #include <qwidget.h>
-#include <qprocess.h>
+#include <q3process.h>
 #include <qstringlist.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <Q3VBoxLayout>
 
 class QLineEdit;
-class QTextEdit;
-class QVBoxLayout;
-class QDockWindow;
+class Q3TextEdit;
+class Q3VBoxLayout;
+class Q3DockWindow;
 
 
 class OctaveWindow : public QWidget {
   Q_OBJECT
 public:
-  OctaveWindow(QDockWindow*);
+  OctaveWindow(Q3DockWindow*);
  ~OctaveWindow();
 
   QSize sizeHint();
@@ -38,11 +41,11 @@ protected:
   void keyPressEvent(QKeyEvent*);
 
 private:
-  QVBoxLayout *vBox;
-  QTextEdit *output;
+  Q3VBoxLayout *vBox;
+  Q3TextEdit *output;
   QLineEdit *input;
 
-  QProcess octProcess;
+  Q3Process octProcess;
 
   QStringList cmdHistory;
   QStringList::Iterator histIterator;

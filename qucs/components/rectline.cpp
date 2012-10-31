@@ -21,19 +21,19 @@ RectLine::RectLine()
 {
   Description = QObject::tr("Rectangular Waveguide");
 
-  Lines.append(new Line(-30,  0,-17,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 18,  0, 30,  0,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,  0,-17,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-14, -7, 18, -7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-14, -7,-14, 11,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-14, 11, 18, 11,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 18, -7, 18, 11,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20,-13, 12,-13,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20,-13,-20,  5,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-14, -7, 18, -7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-14, -7,-14, 11,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-14, 11, 18, 11,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 18, -7, 18, 11,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20,-13, 12,-13,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20,-13,-20,  5,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-20,-13,-14, -7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 12,-13, 18, -7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20,  5,-14, 11,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-20,-13,-14, -7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 12,-13, 18, -7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20,  5,-14, 11,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30, 0));
   Ports.append(new Port( 30, 0));

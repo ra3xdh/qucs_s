@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "sparamfile.h"
 #include "main.h"
 #include "schematic.h"
@@ -149,29 +149,29 @@ void SParamFile::createSymbol()
   Props.getLast()->Value = QString::number(Num);
 
   int h = (PortDistance/2)*((Num-1)/2) + 15;
-  Lines.append(new Line(-15, -h, 15, -h,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 15, -h, 15,  h,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-15,  h, 15,  h,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-15, -h,-15,  h,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-15, -h, 15, -h,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 15, -h, 15,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-15,  h, 15,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-15, -h,-15,  h,QPen(Qt::darkBlue,2)));
   Texts.append(new Text( -9, -6,QObject::tr("file")));
 
 
   int i=0, y = 15-h;
   while(i<Num) {
     i++;
-    Lines.append(new Line(-30, y,-15, y,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-30, y,-15, y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30, y));
     Texts.append(new Text(-25,y-14,QString::number(i)));
 
     if(i == Num) break;
     i++;
-    Lines.append(new Line( 15, y, 30, y,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line( 15, y, 30, y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 30, y));
     Texts.append(new Text( 19,y-14,QString::number(i)));
     y += PortDistance;
   }
 
-  Lines.append(new Line( 0, h, 0,h+15,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line( 0, h, 0,h+15,QPen(Qt::darkBlue,2)));
   Texts.append(new Text( 4, h,"Ref"));
   Ports.append(new Port( 0,h+15));    // 'Ref' port
 

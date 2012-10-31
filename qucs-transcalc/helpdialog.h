@@ -19,9 +19,11 @@
 #define HELPDIALOG_H
 
 #include <qdialog.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
-class QTextEdit;
-class QVBoxLayout;
+class Q3TextEdit;
+class Q3VBoxLayout;
 
 /**
   *@author Stefan Jahn
@@ -37,8 +39,8 @@ private slots:
   void slotClose();
 
 private:
-  QVBoxLayout *vLayout;
-  QTextEdit *Text;
+  Q3VBoxLayout *vLayout;
+  Q3TextEdit *Text;
 };
 
 #endif

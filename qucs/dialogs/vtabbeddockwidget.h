@@ -21,14 +21,14 @@
 #define VTABBEDDOCKWIDGET_H
 
 #include "vtabglobal.h"
-#include <qdockwindow.h>
+#include <q3dockwindow.h>
 
 class VTabWidget;
 
 /**
     @author Gopala Krishna A <krishna.ggk@gmail.com>
 */
-class VTabbedDockWidget : public QDockWindow,public VTabInterface
+class VTabbedDockWidget : public Q3DockWindow,public VTabInterface
 {
   Q_OBJECT
 public:
@@ -43,7 +43,7 @@ private:
 private slots:
   void slotStackShown();
   void slotStackHidden();
-  void updatePosition(QDockWindow::Place p);
+  void updatePosition(Q3DockWindow::Place p);
 };
 
 #endif

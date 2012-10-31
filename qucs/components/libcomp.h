@@ -19,6 +19,8 @@
 #define LIBCOMP_H
 
 #include "component.h"
+//Added by qt3to4:
+#include <Q3TextStream>
 
 
 class LibComp : public MultiViewComponent  {
@@ -27,7 +29,7 @@ public:
  ~LibComp() {};
   Component* newOne();
 
-  bool createSubNetlist(QTextStream*, QStringList&, int type=1);
+  bool createSubNetlist(Q3TextStream*, QStringList&, int type=1);
   QString getSubcircuitFile();
 
 protected:

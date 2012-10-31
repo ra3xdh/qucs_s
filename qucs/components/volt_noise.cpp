@@ -22,14 +22,14 @@ Volt_noise::Volt_noise()
 {
   Description = QObject::tr("noise voltage source");
 
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30,  0,-12,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 12,  0,QPen(QPen::darkBlue,2)));
+  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-12,  1,  1,-12,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-10,  6,  6,-10,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -7, 10, 10, -7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -2, 12, 12, -2,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-12,  1,  1,-12,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-10,  6,  6,-10,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -7, 10, 10, -7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -2, 12, 12, -2,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

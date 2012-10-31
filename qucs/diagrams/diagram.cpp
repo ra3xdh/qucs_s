@@ -18,7 +18,7 @@
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
-
+#include <QtGui>
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
@@ -27,10 +27,12 @@
 #endif
 #include <locale.h>
 
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qmessagebox.h>
 #include <qregexp.h>
 #include <qdatetime.h>
+//Added by qt3to4:
+#include <Q3CString>
 
 #include "diagram.h"
 #include "qucs.h"
@@ -51,7 +53,7 @@ static double strtod_faster (char * pPos, char ** pEnd) {
     (*pEnd)++;
   if ((**pEnd == 'j') || (**pEnd == 'i'))
     (*pEnd)--;
-  QCString str = QCString (pPos, *pEnd - pPos + 1);
+  Q3CString str = Q3CString (pPos, *pEnd - pPos + 1);
   bool ok;
   double x = str.toDouble (&ok);
   if (!ok) *pEnd = pPos;
@@ -91,7 +93,7 @@ Diagram::Diagram(int _cx, int _cy)
 
   Type = isDiagram;
   isSelected = false;
-  GridPen = QPen(QPen::lightGray,0);
+  GridPen = QPen(Qt::lightGray,0);
   Graphs.setAutoDelete(true);
   Arcs.setAutoDelete(true);
   Lines.setAutoDelete(true);
@@ -125,10 +127,10 @@ void Diagram::paint(ViewPainter *p)
 
 
   // write whole text (axis label inclusively)
-  QWMatrix wm = p->Painter->worldMatrix();
+  QMatrix wm = p->Painter->worldMatrix();
   for(Text *pt = Texts.first(); pt != 0; pt = Texts.next()) {
     p->Painter->setWorldMatrix(
-        QWMatrix(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
+        QMatrix(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
                  p->DX + float(cx+pt->x) * p->Scale,
                  p->DY + float(cy-pt->y) * p->Scale));
 
@@ -151,9 +153,9 @@ void Diagram::paint(ViewPainter *p)
     fx_ = float(x2)*p->Scale + 10;
     fy_ = float(y2)*p->Scale + 10;
 
-    p->Painter->setPen(QPen(QPen::darkGray,3));
+    p->Painter->setPen(QPen(Qt::darkGray,3));
     p->Painter->drawRect(x_-5, y_-5, TO_INT(fx_), TO_INT(fy_));
-    p->Painter->setPen(QPen(QPen::darkRed,2));
+    p->Painter->setPen(QPen(Qt::darkRed,2));
     p->drawResizeRect(cx, cy-y2);  // markers for changing the size
     p->drawResizeRect(cx, cy);
     p->drawResizeRect(cx+x2, cy-y2);
@@ -879,7 +881,7 @@ int Diagram::loadVarData(const QString& fileName, Graph *g)
       return 0;  // digital variables only for tabulars and ziming diagram
 
 
-  if(!file.open(IO_ReadOnly))  return 0;
+  if(!file.open(QIODevice::ReadOnly))  return 0;
 
   // *****************************************************************
   // To strongly speed up the file read operation the whole file is
@@ -1174,9 +1176,9 @@ int Diagram::checkColumnWidth(const QString& Str,
     colWidth = w;
     if((x+colWidth) >= x2) {    // enough space for text ?
       // mark lack of space with a small arrow
-      Lines.append(new Line(x2-6, y-4, x2+7, y-4, QPen(QPen::red,2)));
-      Lines.append(new Line(x2,   y-7, x2+6, y-4, QPen(QPen::red,2)));
-      Lines.append(new Line(x2,   y-1, x2+6, y-4, QPen(QPen::red,2)));
+      Lines.append(new Line(x2-6, y-4, x2+7, y-4, QPen(Qt::red,2)));
+      Lines.append(new Line(x2,   y-7, x2+6, y-4, QPen(Qt::red,2)));
+      Lines.append(new Line(x2,   y-1, x2+6, y-4, QPen(Qt::red,2)));
       return -1;
     }
   }
@@ -1254,7 +1256,7 @@ QString Diagram::save()
 }
 
 // ------------------------------------------------------------
-bool Diagram::load(const QString& Line, QTextStream *stream)
+bool Diagram::load(const QString& Line, Q3TextStream *stream)
 {
   bool ok;
   QString s = Line;
@@ -1544,7 +1546,7 @@ void Diagram::createSmithChart(Axis *Axis, int Mode)
   if(Axis->up > 1.0) {  // draw circle with |r|=1 ?
     x = (x2-R1) >> 1;
     y = (x2+R1) >> 1;
-    Arcs.append(new struct Arc(x, y, R1, R1, beta, theta, QPen(QPen::black,0)));
+    Arcs.append(new struct Arc(x, y, R1, R1, beta, theta, QPen(Qt::black,0)));
 
     // vertical line Re(r)=1 (visible only if |r|>1)
     if(Zplane)  x = y;
@@ -1658,7 +1660,7 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
   phi = int(16.0*180.0/M_PI*atan(double(2*tHeight)/double(x2)));
   if(!Below)  tmp = phi;
   else  tmp = 0;
-  Arcs.append(new struct Arc(0, y2, x2, y2, tmp, 16*360-phi, QPen(QPen::black,0)));
+  Arcs.append(new struct Arc(0, y2, x2, y2, tmp, 16*360-phi, QPen(Qt::black,0)));
 
   QFontMetrics  metrics(QucsSettings.font);
   QSize r = metrics.size(0, Texts.current()->s);  // width of text
@@ -1920,7 +1922,7 @@ if(Axis->log) {
         Texts.append(new Text(-w-7, z-6, tmp)); // text aligned right
 
       // y marks
-      Lines.append(new Line(x0-5, z, x0+5, z, QPen(QPen::black,0)));
+      Lines.append(new Line(x0-5, z, x0+5, z, QPen(Qt::black,0)));
     }
 
     zD += zDstep;
@@ -1956,7 +1958,7 @@ else {  // not logarithmical
 
     if(Axis->GridOn)  if(z < y2)  if(z > 0)
       Lines.prepend(new Line(0, z, x2, z, GridPen));  // y grid
-    Lines.append(new Line(x0-5, z, x0+5, z, QPen(QPen::black,0))); // y marks
+    Lines.append(new Line(x0-5, z, x0+5, z, QPen(Qt::black,0))); // y marks
     zD += zDstep;
     z = int(zD);
   }

@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "truthdiagram.h"
 #include "main.h"
 
@@ -60,11 +60,11 @@ int TruthDiagram::calcDiagram()
   y = y2 - tHeight - 6;
 
   // outer frame
-  Lines.append(new Line(0, y2, x2, y2, QPen(QPen::black,0)));
-  Lines.append(new Line(0, y2, 0, 0, QPen(QPen::black,0)));
-  Lines.append(new Line(x2, y2, x2, 0, QPen(QPen::black,0)));
-  Lines.append(new Line(0, 0, x2, 0, QPen(QPen::black,0)));
-  Lines.append(new Line(0, y+2, x2, y+2, QPen(QPen::black,2)));
+  Lines.append(new Line(0, y2, x2, y2, QPen(Qt::black,0)));
+  Lines.append(new Line(0, y2, 0, 0, QPen(Qt::black,0)));
+  Lines.append(new Line(x2, y2, x2, 0, QPen(Qt::black,0)));
+  Lines.append(new Line(0, 0, x2, 0, QPen(Qt::black,0)));
+  Lines.append(new Line(0, y+2, x2, y+2, QPen(Qt::black,2)));
 
   if(xAxis.limit_min < 0.0)
     xAxis.limit_min = 0.0;
@@ -133,7 +133,7 @@ if(g) if(!g->cPointsX.isEmpty()) {
     }
     x = startWriting + 15;
   }
-  Lines.append(new Line(x-8, y2, x-8, 0, QPen(QPen::black,2)));
+  Lines.append(new Line(x-8, y2, x-8, 0, QPen(Qt::black,2)));
 
 }  // of "if no data in graphs"
 
@@ -220,7 +220,7 @@ if(g) if(!g->cPointsX.isEmpty()) {
     }
     x += colWidth+15;
     if(g != Graphs.getLast())   // do not paint last line
-      Lines.append(new Line(x-8, y2, x-8, 0, QPen(QPen::black,0)));
+      Lines.append(new Line(x-8, y2, x-8, 0, QPen(Qt::black,0)));
   }
 
 funcEnd:

@@ -18,7 +18,7 @@
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
-
+#include <QtGui>
 #include <math.h>
 #include <float.h>
 #ifdef __MINGW32__
@@ -41,7 +41,7 @@ PolarDiagram::PolarDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
   x3 = 207;    // with some distance for right axes text
   Name = "Polar";
 
-  Arcs.append(new struct Arc(0, y2, x2, y2, 0, 16*360, QPen(QPen::black,0)));
+  Arcs.append(new struct Arc(0, y2, x2, y2, 0, 16*360, QPen(Qt::black,0)));
 //  calcDiagram();
 }
 

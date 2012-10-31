@@ -23,7 +23,7 @@
 #include "element.h"
 
 #include <qcolor.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qdatetime.h>
 
 
@@ -68,7 +68,7 @@ public:
 
   QDateTime lastLoaded;  // when it was loaded into memory
   int     yAxisNo;       // which y axis is used
-  QPtrList<DataX>  cPointsX;
+  Q3PtrList<DataX>  cPointsX;
   double *cPointsY;
   float  *ScrPoints; // data in screen coordinates
   int     countY;    // number of curves
@@ -76,7 +76,7 @@ public:
   QColor  Color;
   int     Thick;
   int     Style;
-  QPtrList<Marker> Markers;
+  Q3PtrList<Marker> Markers;
 
   // for tabular diagram
   int  Precision;   // number of digits to show

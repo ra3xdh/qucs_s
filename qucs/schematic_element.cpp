@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include <stdlib.h>
 #include <limits.h>
 
@@ -24,6 +24,8 @@
 #include "diagrams/diagram.h"
 #include "paintings/painting.h"
 #include "components/component.h"
+//Added by qt3to4:
+#include <Q3PtrList>
 
 
 
@@ -755,7 +757,7 @@ void Schematic::deleteWire(Wire *w)
 
 // ---------------------------------------------------
 int Schematic::copyWires(int& x1, int& y1, int& x2, int& y2,
-			QPtrList<Element> *ElementCache)
+			Q3PtrList<Element> *ElementCache)
 {
   int count=0;
   Node *pn;
@@ -835,7 +837,7 @@ Marker* Schematic::setMarker(int x, int y)
 
 // ---------------------------------------------------
 // Moves the marker pointer left/right on the graph.
-void Schematic::markerLeftRight(bool left, QPtrList<Element> *Elements)
+void Schematic::markerLeftRight(bool left, Q3PtrList<Element> *Elements)
 {
   Marker *pm;
   bool acted = false;
@@ -850,7 +852,7 @@ void Schematic::markerLeftRight(bool left, QPtrList<Element> *Elements)
 
 // ---------------------------------------------------
 // Moves the marker pointer up/down on the more-dimensional graph.
-void Schematic::markerUpDown(bool up, QPtrList<Element> *Elements)
+void Schematic::markerUpDown(bool up, Q3PtrList<Element> *Elements)
 {
   Marker *pm;
   bool acted = false;
@@ -1185,7 +1187,7 @@ void Schematic::selectMarkers()
 // For moving elements: If the moving element is connected to a not
 // moving element, insert two wires. If the connected element is already
 // a wire, use this wire. Otherwise create new wire.
-void Schematic::newMovingWires(QPtrList<Element> *p, Node *pn, int pos)
+void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
 {
   Element *pe;
 
@@ -1296,7 +1298,7 @@ void Schematic::newMovingWires(QPtrList<Element> *p, Node *pn, int pos)
 // ---------------------------------------------------
 // For moving of elements: Copies all selected elements into the
 // list 'p' and deletes them from the document.
-int Schematic::copySelectedElements(QPtrList<Element> *p)
+int Schematic::copySelectedElements(Q3PtrList<Element> *p)
 {
   int i, count = 0;
   Port      *pp;
@@ -1439,7 +1441,7 @@ int Schematic::copySelectedElements(QPtrList<Element> *p)
 
 // ---------------------------------------------------
 bool Schematic::copyComps2WiresPaints(int& x1, int& y1, int& x2, int& y2,
-			QPtrList<Element> *ElementCache)
+			Q3PtrList<Element> *ElementCache)
 {
   x1=INT_MAX;
   y1=INT_MAX;
@@ -1457,7 +1459,7 @@ bool Schematic::copyComps2WiresPaints(int& x1, int& y1, int& x2, int& y2,
 // ---------------------------------------------------
 // Used in "aligning()", "distributeHorizontal()", "distributeVertical()".
 int Schematic::copyElements(int& x1, int& y1, int& x2, int& y2,
-			QPtrList<Element> *ElementCache)
+			Q3PtrList<Element> *ElementCache)
 {
   int bx1, by1, bx2, by2;
   Wires->setAutoDelete(false);
@@ -1598,7 +1600,7 @@ bool Schematic::aligning(int Mode)
 {
   int x1, y1, x2, y2;
   int bx1, by1, bx2, by2, *bx=0, *by=0, *ax=0, *ay=0;
-  QPtrList<Element> ElementCache;
+  Q3PtrList<Element> ElementCache;
   int count = copyElements(x1, y1, x2, y2, &ElementCache);
   if(count < 1) return false;
 
@@ -1720,7 +1722,7 @@ bool Schematic::distributeHorizontal()
 {
   int x1, y1, x2, y2;
   int bx1, by1, bx2, by2;
-  QPtrList<Element> ElementCache;
+  Q3PtrList<Element> ElementCache;
   int count = copyElements(x1, y1, x2, y2, &ElementCache);
   if(count < 1) return false;
 
@@ -1820,7 +1822,7 @@ bool Schematic::distributeVertical()
 {
   int x1, y1, x2, y2;
   int bx1, by1, bx2, by2;
-  QPtrList<Element> ElementCache;
+  Q3PtrList<Element> ElementCache;
   int count = copyElements(x1, y1, x2, y2, &ElementCache);
   if(count < 1) return false;
 
@@ -1956,7 +1958,7 @@ void Schematic::insertComponentNodes(Component *c, bool noOptimize)
 
   Node    *pn;
   Element *pe, *pe1;
-  QPtrList<Element> *pL;
+  Q3PtrList<Element> *pL;
   // if component over wire then delete this wire
   c->Ports.first();  // omit the first element
   for(pp = c->Ports.next(); pp != 0; pp = c->Ports.next()) {
@@ -2183,7 +2185,7 @@ void Schematic::setCompPorts(Component *pc)
 {
   Port *pp;
   WireLabel *pl;
-  QPtrList<WireLabel> LabelCache;
+  Q3PtrList<WireLabel> LabelCache;
 
   for(pp = pc->Ports.first(); pp!=0; pp = pc->Ports.next()) {
     pp->Connection->Connections.removeRef((Element*)pc);// delete connections
@@ -2288,7 +2290,7 @@ void Schematic::deleteComp(Component *c)
 
 // ---------------------------------------------------
 int Schematic::copyComponents(int& x1, int& y1, int& x2, int& y2,
-			QPtrList<Element> *ElementCache)
+			Q3PtrList<Element> *ElementCache)
 {
   Component *pc;
   int bx1, by1, bx2, by2, count=0;
@@ -2329,7 +2331,7 @@ int Schematic::copyComponents(int& x1, int& y1, int& x2, int& y2,
 
 // ---------------------------------------------------
 void Schematic::copyComponents2(int& x1, int& y1, int& x2, int& y2,
-			QPtrList<Element> *ElementCache)
+			Q3PtrList<Element> *ElementCache)
 {
   Component *pc;
   // find bounds of all selected components
@@ -2377,7 +2379,7 @@ void Schematic::oneLabel(Node *n1)
   Element *pe;
   WireLabel *pl = 0;
   bool named=false;   // wire line already named ?
-  QPtrList<Node> Cons;
+  Q3PtrList<Node> Cons;
 
   for(pn = Nodes->first(); pn!=0; pn = Nodes->next())
     pn->y1 = 0;   // mark all nodes as not checked
@@ -2471,7 +2473,7 @@ Element* Schematic::getWireLabel(Node *pn_)
   Wire *pw;
   Node *pn, *pNode;
   Element *pe;
-  QPtrList<Node> Cons;
+  Q3PtrList<Node> Cons;
 
   for(pn = Nodes->first(); pn!=0; pn = Nodes->next())
     pn->y1 = 0;   // mark all nodes as not checked
@@ -2531,7 +2533,7 @@ void Schematic::insertNodeLabel(WireLabel *pl)
 
 // ---------------------------------------------------
 void Schematic::copyLabels(int& x1, int& y1, int& x2, int& y2,
-			QPtrList<Element> *ElementCache)
+			Q3PtrList<Element> *ElementCache)
 {
   WireLabel *pl;
   // find bounds of all selected wires
@@ -2580,7 +2582,7 @@ Painting* Schematic::selectedPainting(float fX, float fY)
 
 // ---------------------------------------------------
 void Schematic::copyPaintings(int& x1, int& y1, int& x2, int& y2,
-			QPtrList<Element> *ElementCache)
+			Q3PtrList<Element> *ElementCache)
 {
   Painting *pp;
   int bx1, by1, bx2, by2;

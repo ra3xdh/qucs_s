@@ -21,16 +21,19 @@
 #include <qdialog.h>
 #include <qregexp.h>
 #include <qdir.h>
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3VBoxLayout>
 
 class Schematic;
 class SpiceFile;
 class QLineEdit;
 class QPushButton;
-class QListBox;
-class QListBoxItem;
+class Q3ListBox;
+class Q3ListBoxItem;
 class QCheckBox;
-class QVBoxLayout;
-class QProcess;
+class Q3VBoxLayout;
+class Q3Process;
 class QRegExpValidator;
 class QComboBox;
 
@@ -53,8 +56,8 @@ private slots:
 
   void slotButtAdd();
   void slotButtRemove();
-  void slotAddPort(QListBoxItem*);
-  void slotRemovePort(QListBoxItem*);
+  void slotAddPort(Q3ListBoxItem*);
+  void slotRemovePort(Q3ListBoxItem*);
 
   void slotGetNetlist();
   void slotGetError();
@@ -71,10 +74,10 @@ protected slots:
 private:
   bool loadSpiceNetList(const QString&);
 
-  QVBoxLayout *all;   // the mother of all widgets
+  Q3VBoxLayout *all;   // the mother of all widgets
   QRegExpValidator  *Validator, *ValRestrict;
   QRegExp     Expr;
-  QListBox    *NodesList, *PortsList;
+  Q3ListBox    *NodesList, *PortsList;
   QCheckBox   *FileCheck, *SimCheck;
   QLineEdit   *FileEdit, *CompNameEdit;
   QPushButton *ButtBrowse, *ButtEdit, *ButtAdd, *ButtRemove;
@@ -84,8 +87,8 @@ private:
   bool        changed;
   int         currentPrep;
 
-  QTextStream *prestream;
-  QProcess *QucsConv, *SpicePrep;
+  Q3TextStream *prestream;
+  Q3Process *QucsConv, *SpicePrep;
   QString Line, Error;  // to store the text read from QucsConv
   int textStatus; // to store with text data QucsConv will sent next
 };

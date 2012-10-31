@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include <stdlib.h>
 
 #include <qdir.h>
@@ -25,7 +25,7 @@
 #include <qtabwidget.h>
 #include <qmessagebox.h>
 #include <qdom.h>
-#include <qdict.h>
+#include <q3dict.h>
 
 #include "components.h"
 #include "node.h"
@@ -195,12 +195,12 @@ void Component::paint(ViewPainter *p)
     p->Painter->setFont(newFont);
     p->map(cx, cy, x, y);
 
-    p->Painter->setPen(QPen(QPen::darkBlue,2));
+    p->Painter->setPen(QPen(Qt::darkBlue,2));
     a = b = 0;
     QRect r, t;
     for(pt = Texts.first(); pt != 0; pt = Texts.next()) {
       t.setRect(x, y+b, 0, 0);
-      p->Painter->drawText(t, Qt::AlignLeft|Qt::DontClip, pt->s, -1, &r);
+      p->Painter->drawText(t, Qt::AlignLeft|Qt::TextDontClip, pt->s, -1, &r);
       b += r.height();
       if(a < r.width())  a = r.width();
     }
@@ -247,14 +247,14 @@ void Component::paint(ViewPainter *p)
       p->Painter->setBrush(pa->Brush);
       p->drawEllipse(cx+pa->x, cy+pa->y, pa->w, pa->h);
     }
-    p->Painter->setBrush(QBrush::NoBrush);
+    p->Painter->setBrush(Qt::NoBrush);
 
     newFont.setWeight(QFont::Light);
-    QWMatrix wm = p->Painter->worldMatrix();
+    QMatrix wm = p->Painter->worldMatrix();
     // write all text
     for(pt = Texts.first(); pt != 0; pt = Texts.next()) {
       p->Painter->setWorldMatrix(
-          QWMatrix(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
+          QMatrix(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
                    p->DX + float(cx+pt->x) * p->Scale,
                    p->DY + float(cy+pt->y) * p->Scale));
       newFont.setPointSizeFloat(p->Scale * pt->Size);
@@ -263,7 +263,7 @@ void Component::paint(ViewPainter *p)
       p->Painter->setFont(newFont);
       p->Painter->setPen(pt->Color);
       if (0) {
-	p->Painter->drawText(0, 0, 0, 0, Qt::AlignLeft|Qt::DontClip, pt->s);
+	p->Painter->drawText(0, 0, 0, 0, Qt::AlignLeft|Qt::TextDontClip, pt->s);
       } else {
 	int w, h;
 	w = p->drawTextMapped (pt->s, 0, 0, &h);
@@ -276,23 +276,23 @@ void Component::paint(ViewPainter *p)
   // restore old font
   p->Painter->setFont(f);
 
-  p->Painter->setPen(QPen(QPen::black,1));
+  p->Painter->setPen(QPen(Qt::black,1));
   p->map(cx+tx, cy+ty, x, y);
   if(showName) {
-    p->Painter->drawText(x, y, 0, 0, Qt::DontClip, Name);
+    p->Painter->drawText(x, y, 0, 0, Qt::TextDontClip, Name);
     y += p->LineSpacing;
   }
   // write all properties
   for(Property *p4 = Props.first(); p4 != 0; p4 = Props.next())
     if(p4->display) {
-      p->Painter->drawText(x, y, 0, 0, Qt::DontClip, p4->Name+"="+p4->Value);
+      p->Painter->drawText(x, y, 0, 0, Qt::TextDontClip, p4->Name+"="+p4->Value);
       y += p->LineSpacing;
     }
 
   if(isActive == COMP_IS_OPEN)
-    p->Painter->setPen(QPen(QPen::red,0));
+    p->Painter->setPen(QPen(Qt::red,0));
   else if(isActive & COMP_IS_SHORTEN)
-    p->Painter->setPen(QPen(QPen::darkGreen,0));
+    p->Painter->setPen(QPen(Qt::darkGreen,0));
   if(isActive != COMP_IS_ACTIVE) {
     p->drawRect(cx+x1, cy+y1, x2-x1+1, y2-y1+1);
     p->drawLine(cx+x1, cy+y1, cx+x2, cy+y2);
@@ -300,7 +300,7 @@ void Component::paint(ViewPainter *p)
   }
 
   if(isSelected) {
-    p->Painter->setPen(QPen(QPen::darkGray,3));
+    p->Painter->setPen(QPen(Qt::darkGray,3));
     p->drawRoundRect(cx+x1, cy+y1, x2-x1, y2-y1);
   }
 }
@@ -792,7 +792,7 @@ bool Component::load(const QString& _s)
 
   tx = ttx; ty = tty; // restore text position (was changed by rotate/mirror)
 
-  unsigned int z=0, counts = s.contains('"');
+  unsigned int z=0, counts = s.count('"');
   if(Model == "Sub")
     tmp = 2;   // first property (File) already exists
   else if(Model == "Lib")
@@ -1180,7 +1180,7 @@ bool Component::getBrush(const QString& s, QBrush& Brush, int i)
 
   i++;
   n = s.section(' ',i,i);    // filled
-  if(n.toInt(&ok) == 0) Brush.setStyle(QBrush::NoBrush);
+  if(n.toInt(&ok) == 0) Brush.setStyle(Qt::NoBrush);
   if(!ok) return false;
 
   return true;
@@ -1432,29 +1432,29 @@ void GateComponent::createSymbol()
   if(Props.getLast()->Value.at(0) == 'D') {  // DIN symbol
     xl = -15;
     xr =  15;
-    Lines.append(new Line( 15,-y, 15, y,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-15,-y, 15,-y,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-15, y, 15, y,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-15,-y,-15, y,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 15, 0, 30, 0,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line( 15,-y, 15, y,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-15,-y, 15,-y,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-15, y, 15, y,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-15,-y,-15, y,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 15, 0, 30, 0,QPen(Qt::darkBlue,2)));
 
     if(Model.at(z) == 'O') {
-      Lines.append(new Line(-11, 6-y,-6, 9-y,QPen(QPen::darkBlue,0)));
-      Lines.append(new Line(-11,12-y,-6, 9-y,QPen(QPen::darkBlue,0)));
-      Lines.append(new Line(-11,14-y,-6,14-y,QPen(QPen::darkBlue,0)));
-      Lines.append(new Line(-11,16-y,-6,16-y,QPen(QPen::darkBlue,0)));
-      Texts.append(new Text( -4, 3-y, "1", QPen::darkBlue, 15.0));
+      Lines.append(new Line(-11, 6-y,-6, 9-y,QPen(Qt::darkBlue,0)));
+      Lines.append(new Line(-11,12-y,-6, 9-y,QPen(Qt::darkBlue,0)));
+      Lines.append(new Line(-11,14-y,-6,14-y,QPen(Qt::darkBlue,0)));
+      Lines.append(new Line(-11,16-y,-6,16-y,QPen(Qt::darkBlue,0)));
+      Texts.append(new Text( -4, 3-y, "1", Qt::darkBlue, 15.0));
     }
     else if(Model.at(z) == 'A')
-      Texts.append(new Text( -10, 3-y, "&", QPen::darkBlue, 15.0));
+      Texts.append(new Text( -10, 3-y, "&", Qt::darkBlue, 15.0));
     else if(Model.at(0) == 'X') {
       if(Model.at(1) == 'N') {
 	Ellips.append(new Area(xr,-4, 8, 8,
-                  QPen(QPen::darkBlue,0), QBrush(QPen::darkBlue)));
-        Texts.append(new Text( -11, 3-y, "=1", QPen::darkBlue, 15.0));
+                  QPen(Qt::darkBlue,0), QBrush(Qt::darkBlue)));
+        Texts.append(new Text( -11, 3-y, "=1", Qt::darkBlue, 15.0));
       }
       else
-        Texts.append(new Text( -11, 3-y, "=1", QPen::darkBlue, 15.0));
+        Texts.append(new Text( -11, 3-y, "=1", Qt::darkBlue, 15.0));
     }
   }
   else {   // old symbol
@@ -1462,28 +1462,28 @@ void GateComponent::createSymbol()
     if(Model.at(z) == 'O')  xl = 10;
     else  xl = -10;
     xr = 10;
-    Lines.append(new Line(-10,-y,-10, y,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 10, 0, 30, 0,QPen(QPen::darkBlue,2)));
-    Arcs.append(new Arc(-30,-y, 40, 30, 0, 16*90,QPen(QPen::darkBlue,2)));
-    Arcs.append(new Arc(-30,y-30, 40, 30, 0,-16*90,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 10,15-y, 10, y-15,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-10,-y,-10, y,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 10, 0, 30, 0,QPen(Qt::darkBlue,2)));
+    Arcs.append(new Arc(-30,-y, 40, 30, 0, 16*90,QPen(Qt::darkBlue,2)));
+    Arcs.append(new Arc(-30,y-30, 40, 30, 0,-16*90,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 10,15-y, 10, y-15,QPen(Qt::darkBlue,2)));
 
     if(Model.at(0) == 'X') {
-      Lines.append(new Line(-5, 0, 5, 0,QPen(QPen::darkBlue,1)));
+      Lines.append(new Line(-5, 0, 5, 0,QPen(Qt::darkBlue,1)));
       if(Model.at(1) == 'N') {
-        Lines.append(new Line(-5,-3, 5,-3,QPen(QPen::darkBlue,1)));
-        Lines.append(new Line(-5, 3, 5, 3,QPen(QPen::darkBlue,1)));
+        Lines.append(new Line(-5,-3, 5,-3,QPen(Qt::darkBlue,1)));
+        Lines.append(new Line(-5, 3, 5, 3,QPen(Qt::darkBlue,1)));
       }
       else {
-        Arcs.append(new Arc(-5,-5, 10, 10, 0, 16*360,QPen(QPen::darkBlue,1)));
-        Lines.append(new Line( 0,-5, 0, 5,QPen(QPen::darkBlue,1)));
+        Arcs.append(new Arc(-5,-5, 10, 10, 0, 16*360,QPen(Qt::darkBlue,1)));
+        Lines.append(new Line( 0,-5, 0, 5,QPen(Qt::darkBlue,1)));
       }
     }
   }
 
   if(Model.at(0) == 'N')
     Ellips.append(new Area(xr,-4, 8, 8,
-                  QPen(QPen::darkBlue,0), QBrush(QPen::darkBlue)));
+                  QPen(Qt::darkBlue,0), QBrush(Qt::darkBlue)));
 
   Ports.append(new Port( 30,  0));
   y += 10;
@@ -1491,10 +1491,10 @@ void GateComponent::createSymbol()
     y -= 20;
     Ports.append(new Port(-30, y));
     if(xl == 10) if((z == 0) || (z == Num-1)) {
-      Lines.append(new Line(-30, y, 9, y,QPen(QPen::darkBlue,2)));
+      Lines.append(new Line(-30, y, 9, y,QPen(Qt::darkBlue,2)));
       continue;
     }
-    Lines.append(new Line(-30, y, xl, y,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-30, y, xl, y,QPen(Qt::darkBlue,2)));
   }
 }
 

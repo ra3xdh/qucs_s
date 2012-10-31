@@ -19,6 +19,8 @@
 #define VERILOGFILE_H
 
 #include "component.h"
+//Added by qt3to4:
+#include <Q3TextStream>
 
 
 class Verilog_File : public MultiViewComponent  {
@@ -28,7 +30,7 @@ public:
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
 
-  bool createSubNetlist(QTextStream *);
+  bool createSubNetlist(Q3TextStream *);
   QString getErrorText() { return ErrText; }
   QString getSubcircuitFile();
 

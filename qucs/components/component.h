@@ -18,7 +18,7 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qpen.h>
 #include <qpoint.h>
 #include <qwidget.h>
@@ -62,12 +62,12 @@ public:
 
   virtual QString getSubcircuitFile() { return ""; }
 
-  QPtrList<Line>     Lines;
-  QPtrList<struct Arc>      Arcs;
-  QPtrList<Area>     Rects, Ellips;
-  QPtrList<Port>     Ports;
-  QPtrList<Text>     Texts;
-  QPtrList<Property> Props;
+  Q3PtrList<Line>     Lines;
+  Q3PtrList<struct Arc>      Arcs;
+  Q3PtrList<Area>     Rects, Ellips;
+  Q3PtrList<Port>     Ports;
+  Q3PtrList<Text>     Texts;
+  Q3PtrList<Property> Props;
 
   #define COMP_IS_OPEN    0
   #define COMP_IS_ACTIVE  1

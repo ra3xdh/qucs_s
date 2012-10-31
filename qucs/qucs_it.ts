@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>ArrowDialog</name>
     <message>
@@ -4680,7 +4682,7 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>C-E breakdown exponent, (0 == disables collector break-down)</source>
@@ -8081,13 +8083,13 @@ Seleziona tutti gli elementi del documento</translation>
         <translation>Ruota</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation>Ruota il componente selezionato di 90°</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation>Ruota
 
 Ruota il componente selezionato di 90° in senso antiorario</translation>
@@ -11335,13 +11337,13 @@ Seleziona tutti gli elementi</translation>
         <translation type="obsolete">Ruota</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation type="obsolete">Ruota il componente selezionato di 90°</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation type="obsolete">Ruota
 
 Ruota il componente selezionato di 90° in senso antiorario</translation>

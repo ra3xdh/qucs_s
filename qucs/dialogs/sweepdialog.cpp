@@ -14,10 +14,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "sweepdialog.h"
 #include "schematic.h"
 #include "qucs.h"
+//Added by qt3to4:
+#include <Q3GridLayout>
 #include "main.h"
 #include "../diagrams/graph.h"
 
@@ -32,7 +34,8 @@ mySpinBox::mySpinBox(int Min, int Max, int Step, double *Val, QWidget *Parent)
           : QSpinBox(Min, Max, Step, Parent)
 {
   Values = Val;
-  editor()->setReadOnly(true);
+  //editor()->
+		setReadOnly(true);
 }
 
 QString mySpinBox::mapValueToText(int Val)
@@ -65,7 +68,7 @@ SweepDialog::SweepDialog(Schematic *Doc_)
 
   int i = 0;
   // ...........................................................
-  QGridLayout *all = new QGridLayout(this, pGraph->cPointsX.count()+2,2,3,3);
+  Q3GridLayout *all = new Q3GridLayout(this, pGraph->cPointsX.count()+2,2,3,3);
   all->setMargin(5);
   all->setSpacing(5);
   all->setColStretch(1,5);

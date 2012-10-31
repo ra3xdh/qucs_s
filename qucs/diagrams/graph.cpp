@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "graph.h"
 
 #include <math.h>
@@ -56,10 +56,10 @@ void Graph::paint(ViewPainter *p, int x0, int y0)
     return;
 
   if(isSelected) {
-    p->Painter->setPen(QPen(QPen::darkGray,Thick*p->PrintScale+4));
+    p->Painter->setPen(QPen(Qt::darkGray,Thick*p->PrintScale+4));
     paintLines(p, x0, y0);
 
-    p->Painter->setPen(QPen(QPen::white, Thick*p->PrintScale, Qt::SolidLine));
+    p->Painter->setPen(QPen(Qt::white, Thick*p->PrintScale, Qt::SolidLine));
     paintLines(p, x0, y0);
     return;
   }

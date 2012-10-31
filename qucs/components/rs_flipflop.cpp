@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "rs_flipflop.h"
 #include "node.h"
 #include "main.h"
@@ -26,20 +26,20 @@ RS_FlipFlop::RS_FlipFlop()
 
   Props.append(new Property("t", "0", false, QObject::tr("delay time")));
 
-  Lines.append(new Line(-20,-20, 20,-20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20, 20, 20, 20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20,-20,-20, 20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 20,-20, 20, 20,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-20,-20, 20,-20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20, 20, 20, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20,-20,-20, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 20,-20, 20, 20,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-30,-10,-20,-10,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30, 10,-20, 10,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,-10, 20,-10,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30, 10, 20, 10,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,-10,-20,-10,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30, 10,-20, 10,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,-10, 20,-10,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30, 10, 20, 10,QPen(Qt::darkBlue,2)));
 
-  Texts.append(new Text(-18,-21, "R", QPen::darkBlue, 12.0));
-  Texts.append(new Text(-18, -1, "S", QPen::darkBlue, 12.0));
-  Texts.append(new Text(  6,-21, "Q", QPen::darkBlue, 12.0));
-  Texts.append(new Text(  6, -1, "Q", QPen::darkBlue, 12.0));
+  Texts.append(new Text(-18,-21, "R", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-18, -1, "S", Qt::darkBlue, 12.0));
+  Texts.append(new Text(  6,-21, "Q", Qt::darkBlue, 12.0));
+  Texts.append(new Text(  6, -1, "Q", Qt::darkBlue, 12.0));
   Texts.current()->over=true;
 
   Ports.append(new Port(-30,-10));  // R

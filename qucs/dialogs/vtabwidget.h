@@ -23,7 +23,7 @@
 #include "vtabglobal.h"
 #include <qwidget.h>
 
-class QWidgetStack;
+class Q3WidgetStack;
 class VTabBar;
 
 /**
@@ -59,7 +59,7 @@ signals:
 private:
   VTabPosition m_position;
   VTabBar* m_bar;
-  QWidgetStack* m_wStack;
+  Q3WidgetStack* m_wStack;
   int m_autoIndexer;
 
 };

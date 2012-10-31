@@ -22,8 +22,8 @@
 #include "librarydialog.h"
 #include "qucslib.h"
 
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qfile.h>
 #include <qlabel.h>
 #include <qlayout.h>
@@ -31,9 +31,12 @@
 #include <qvalidator.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-#include <qscrollview.h>
+#include <q3scrollview.h>
 #include <qradiobutton.h>
-#include <qvbuttongroup.h>
+#include <q3buttongroup.h>
+#include <q3button.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 
 LibraryDialog::LibraryDialog(QWidget *App_)
@@ -45,26 +48,26 @@ LibraryDialog::LibraryDialog(QWidget *App_)
   Validator = new QRegExpValidator(Expr, this);
 
   // ...........................................................
-  QVBoxLayout *all = new QVBoxLayout(this);
+  Q3VBoxLayout *all = new Q3VBoxLayout(this);
   all->setMargin(5);
   all->setSpacing(6);
 
-  Group = new QVButtonGroup(tr("Choose library:"), this);
+  Group = new Q3VButtonGroup(tr("Choose library:"), this);
   all->addWidget(Group);
   
-  QScrollView *Dia_Scroll = new QScrollView(Group);
+  Q3ScrollView *Dia_Scroll = new Q3ScrollView(Group);
   Dia_Scroll->setMargin(5);
-  Dia_Box = new QVBox(Dia_Scroll->viewport());
+  Dia_Box = new Q3VBox(Dia_Scroll->viewport());
   Dia_Scroll->addChild(Dia_Box);
 
-  QHBox *h1 = new QHBox(this);
+  Q3HBox *h1 = new Q3HBox(this);
   all->addWidget(h1);
   theLabel = new QLabel(tr("New Name:"), h1);
   NameEdit = new QLineEdit(h1);
   NameEdit->setValidator(Validator);
 
   // ...........................................................
-  QHBox *h2 = new QHBox(this);
+  Q3HBox *h2 = new Q3HBox(this);
   all->addWidget(h2);
   ButtDelete = new QPushButton(tr("Delete"), h2);
   connect(ButtDelete, SIGNAL(clicked()), SLOT(slotDelete()));
@@ -78,7 +81,7 @@ LibraryDialog::LibraryDialog(QWidget *App_)
   // insert all user libraries
   QStringList LibFiles = UserLibDir.entryList("*.lib", QDir::Files, QDir::Name);
 
-  toggleGroup = new QVButtonGroup();  // only to handle exclusive toggling
+  toggleGroup = new Q3VButtonGroup();  // only to handle exclusive toggling
 
   previousLib = 0;
   QStringList::iterator it;
@@ -87,7 +90,7 @@ LibraryDialog::LibraryDialog(QWidget *App_)
     toggleGroup->insert(new QRadioButton((*it).left((*it).length()-4), Dia_Box));
 
   QColor theColor;
-  QButton *rButton = toggleGroup->find(0);
+  QAbstractButton *rButton = toggleGroup->find(0);
   if(rButton)
     theColor = rButton->paletteBackgroundColor();
   else {
@@ -142,7 +145,7 @@ void LibraryDialog::slotRename()
   }
 
   QFile LibFile(oldName + ".lib");
-  if(!LibFile.open(IO_ReadOnly)) {
+  if(!LibFile.open(QIODevice::ReadOnly)) {
     QMessageBox::critical(this, tr("Error"), tr("Cannot open library!"));
     return;
   }
@@ -162,7 +165,7 @@ void LibraryDialog::slotRename()
     p = strstr(Name, "\">");
     if(p == 0) break;
 
-    if(!NewLibFile.open(IO_WriteOnly)) {
+    if(!NewLibFile.open(QIODevice::WriteOnly)) {
       QMessageBox::critical(this, tr("Error"), tr("No permission to modify library!"));
       return;
     }

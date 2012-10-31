@@ -33,7 +33,7 @@ VerilogA_File_Info::VerilogA_File_Info (QString File, bool isfile)
 {
   if (isfile) {
     QFile f (File);
-    if (!f.open (IO_ReadOnly))
+    if (!f.open (QIODevice::ReadOnly))
       File = "";
     else {
       QByteArray FileContent = f.readAll ();

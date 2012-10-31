@@ -22,14 +22,14 @@ Ampere_ac::Ampere_ac()
 {
   Description = QObject::tr("ideal ac current source");
 
-  Arcs.append(new Arc(-12,-12, 24, 24,  0, 16*360,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30,  0,-12,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 12,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -7,  0,  7,  0,QPen(QPen::darkBlue,3)));
-  Lines.append(new Line(  6,  0,  0, -4,QPen(QPen::darkBlue,3)));
-  Lines.append(new Line(  6,  0,  0,  4,QPen(QPen::darkBlue,3)));
-  Arcs.append(new Arc( 12,  5,  6,  6,16*270, 16*180,QPen(QPen::darkBlue,2)));
-  Arcs.append(new Arc( 12, 11,  6,  6, 16*90, 16*180,QPen(QPen::darkBlue,2)));
+  Arcs.append(new Arc(-12,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::darkBlue,3)));
+  Arcs.append(new Arc( 12,  5,  6,  6,16*270, 16*180,QPen(Qt::darkBlue,2)));
+  Arcs.append(new Arc( 12, 11,  6,  6, 16*90, 16*180,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

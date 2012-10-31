@@ -19,11 +19,14 @@
 #define IMPORTDIALOG_H
 
 #include <qdialog.h>
-#include <qprocess.h>
+#include <q3process.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <QLabel>
 
-class QTextEdit;
+class Q3TextEdit;
 class QLineEdit;
-class QGridLayout;
+class Q3GridLayout;
 class QPushButton;
 class QComboBox;
 class QLabel;
@@ -48,11 +51,11 @@ private:
   void startSimulator();
 
 public:
-  QGridLayout *all;
+  Q3GridLayout *all;
 
   QLabel *OutputLabel;
-  QProcess Process;
-  QTextEdit *MsgText;
+  Q3Process Process;
+  Q3TextEdit *MsgText;
   QLineEdit *ImportEdit, *OutputEdit, *OutputData;
   QPushButton *ImportButt, *CancelButt, *AbortButt;
   QComboBox *OutType;

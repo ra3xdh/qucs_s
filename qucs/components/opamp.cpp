@@ -22,17 +22,17 @@ OpAmp::OpAmp()
 {
   Description = QObject::tr("operational amplifier");
 
-  Lines.append(new Line(-30,-20,-20,-20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30, 20,-20, 20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 40,  0,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,-20,-20,-20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30, 20,-20, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,  0, 40,  0,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-20,-35,-20, 35,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20,-35, 30,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20, 35, 30,  0,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-20,-35,-20, 35,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20,-35, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20, 35, 30,  0,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-16, 19, -9, 19,QPen(QPen::black,1)));
-  Lines.append(new Line(-16,-19, -9,-19,QPen(QPen::red,1)));
-  Lines.append(new Line(-13,-22,-13,-15,QPen(QPen::red,1)));
+  Lines.append(new Line(-16, 19, -9, 19,QPen(Qt::black,1)));
+  Lines.append(new Line(-16,-19, -9,-19,QPen(Qt::red,1)));
+  Lines.append(new Line(-13,-22,-13,-15,QPen(Qt::red,1)));
 
   Ports.append(new Port(-30, 20));
   Ports.append(new Port(-30,-20));

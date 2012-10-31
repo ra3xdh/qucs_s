@@ -14,8 +14,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "qucs.h"
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3PtrList>
+#include <QMouseEvent>
 #include "main.h"
 #include "node.h"
 #include "schematic.h"
@@ -35,7 +39,7 @@
 #include <qclipboard.h>
 #include <qapplication.h>
 #include <qmessagebox.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qevent.h>
 #include <qaction.h>
 #include <qtabwidget.h>
@@ -63,7 +67,7 @@ MouseActions::MouseActions()
 
   // ...............................................................
   // initialize menu appearing by right mouse button click on component
-  ComponentMenu = new QPopupMenu(QucsMain);
+  ComponentMenu = new Q3PopupMenu(QucsMain);
   focusMEvent   = new QMouseEvent(QEvent::MouseButtonPress, QPoint(0,0),
 				  Qt::NoButton, Qt::NoButton);
 }
@@ -83,7 +87,7 @@ void MouseActions::setPainter(Schematic *Doc, QPainter *p)
   p->scale(Doc->Scale, Doc->Scale);
   p->translate(-Doc->ViewX1, -Doc->ViewY1);
   p->setPen(Qt::DotLine);
-  p->setRasterOp(Qt::NotROP);  // background should not be erased
+#warning  p->setRasterOp(Qt::NotROP);  // background should not be erased
 }
 
 // -----------------------------------------------------------
@@ -91,7 +95,7 @@ bool MouseActions::pasteElements(Schematic *Doc)
 {
   QClipboard *cb = QApplication::clipboard();   // get system clipboard
   QString s = cb->text(QClipboard::Clipboard);
-  QTextStream stream(&s, IO_ReadOnly);
+  Q3TextStream stream(&s, QIODevice::ReadOnly);
   movingElements.clear();
   if(!Doc->paste(&stream, &movingElements)) return false;
 
@@ -168,7 +172,7 @@ void MouseActions::editLabel(Schematic *Doc, WireLabel *pl)
 
 // -----------------------------------------------------------
 // Reinserts all elements (moved by the user) back into the schematic.
-void MouseActions::endElementMoving(Schematic *Doc, QPtrList<Element> *movElements)
+void MouseActions::endElementMoving(Schematic *Doc, Q3PtrList<Element> *movElements)
 {
   Element *pe;
   for(pe = movElements->first(); pe!=0; pe = movElements->next()) {
@@ -223,7 +227,7 @@ void MouseActions::endElementMoving(Schematic *Doc, QPtrList<Element> *movElemen
 
 // -----------------------------------------------------------
 // Moves elements in "movElements" by x/y
-void MouseActions::moveElements(QPtrList<Element> *movElements, int x, int y)
+void MouseActions::moveElements(Q3PtrList<Element> *movElements, int x, int y)
 {
   Wire *pw;
   Element *pe;
@@ -278,7 +282,7 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
 
   if(selElem->Type == isPainting) {
     QPainter paintUnscaled(Doc->viewport());
-    paintUnscaled.setRasterOp(Qt::NotROP); // not erasing background
+#warning paintUnscaled.setRasterOp(Qt::NotROP); // not erasing background
 
     x -= Doc->contentsX();
     y -= Doc->contentsY();
@@ -334,7 +338,7 @@ void MouseActions::MMoveWire1(Schematic *Doc, QMouseEvent *Event)
 {
   QPainter painter(Doc->viewport());
   painter.setPen(Qt::DotLine);
-  painter.setRasterOp(Qt::NotROP);  // background should not be erased
+#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
 
   if(drawn) {
     painter.drawLine(0, MAy3, MAx2, MAy3); // erase old
@@ -459,7 +463,7 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
 //          ((Wire*)pe)->Label->paintScheme(&painter);
 
   drawn = true;
-  if((Event->state() & Qt::ControlButton) == 0)
+  if((Event->state() & Qt::ControlModifier) == 0)
     Doc->setOnGrid(MAx2, MAy2);  // use grid only if CTRL key not pressed
   MAx1 = MAx2 - MAx1;
   MAy1 = MAy2 - MAy1;
@@ -521,7 +525,7 @@ void MouseActions::MMoveScrollBar(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveDelete(Schematic *Doc, QMouseEvent *Event)
 {
   QPainter painter(Doc->viewport());
-  painter.setRasterOp(Qt::NotROP);  // background should not be erased
+#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
 
   if(drawn) {
     painter.drawLine(MAx3-15, MAy3-15, MAx3+15, MAy3+15); // erase old
@@ -541,7 +545,7 @@ void MouseActions::MMoveDelete(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveLabel(Schematic *Doc, QMouseEvent *Event)
 {
   QPainter painter(Doc->viewport());
-  painter.setRasterOp(Qt::NotROP);  // background should not be erased
+#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
 
   if(drawn) {
     painter.drawLine(MAx3, MAy3, MAx3+10, MAy3-10); // erase old
@@ -571,7 +575,7 @@ void MouseActions::MMoveLabel(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveMarker(Schematic *Doc, QMouseEvent *Event)
 {
   QPainter painter(Doc->viewport());
-  painter.setRasterOp(Qt::NotROP);  // background should not be erased
+#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
 
   if(drawn) {
     painter.drawLine(MAx3, MAy3-2, MAx3-8, MAy3-10); // erase old
@@ -594,7 +598,7 @@ void MouseActions::MMoveMarker(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveMirrorY(Schematic *Doc, QMouseEvent *Event)
 {
   QPainter painter(Doc->viewport());
-  painter.setRasterOp(Qt::NotROP);  // background should not be erased
+#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
 
   if(drawn) {
     painter.drawLine(MAx3-11, MAy3-4, MAx3-9, MAy3-9); // erase old
@@ -621,7 +625,7 @@ void MouseActions::MMoveMirrorY(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveMirrorX(Schematic *Doc, QMouseEvent *Event)
 {
   QPainter painter(Doc->viewport());
-  painter.setRasterOp(Qt::NotROP);  // background should not be erased
+#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
 
   if(drawn) {
     painter.drawLine(MAx3-4, MAy3-11, MAx3-9, MAy3-9); // erase old
@@ -647,7 +651,7 @@ void MouseActions::MMoveMirrorX(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveRotate(Schematic *Doc, QMouseEvent *Event)
 {
   QPainter painter(Doc->viewport());
-  painter.setRasterOp(Qt::NotROP);  // background should not be erased
+#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
 
   if(drawn) {
     painter.drawLine(MAx3-6, MAy3+8, MAx3-6, MAy3+1); // erase old
@@ -669,7 +673,7 @@ void MouseActions::MMoveRotate(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveActivate(Schematic *Doc, QMouseEvent *Event)
 {
   QPainter painter(Doc->viewport());
-  painter.setRasterOp(Qt::NotROP);  // background should not be erased
+#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
 
   if(drawn) {
     painter.drawRect(MAx3, MAy3-9, 14, 10); // erase old
@@ -691,7 +695,7 @@ void MouseActions::MMoveActivate(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveOnGrid(Schematic *Doc, QMouseEvent *Event)
 {
   QPainter painter(Doc->viewport());
-  painter.setRasterOp(Qt::NotROP);  // background should not be erased
+#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
 
   if(drawn) {
     painter.drawLine(MAx3+10, MAy3+ 3, MAx3+25, MAy3+3); // erase old
@@ -719,7 +723,7 @@ void MouseActions::MMoveOnGrid(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveMoveTextB(Schematic *Doc, QMouseEvent *Event)
 {
   QPainter painter(Doc->viewport());
-  painter.setRasterOp(Qt::NotROP);  // background should not be erased
+#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
 
   if(drawn) {
     painter.drawLine(MAx3+14, MAy3   , MAx3+16, MAy3); // erase old
@@ -771,7 +775,7 @@ void MouseActions::MMoveMoveText(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::MMoveZoomIn(Schematic *Doc, QMouseEvent *Event)
 {
   QPainter painter(Doc->viewport());
-  painter.setRasterOp(Qt::NotROP);  // background should not be erased
+#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
 
   if(drawn) {
     painter.drawLine(MAx3+14, MAy3   , MAx3+22, MAy3); // erase old
@@ -957,7 +961,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent*, float fX, float fY)
 void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, float fY)
 {
   bool Ctrl;
-  if(Event->state() & Qt::ControlButton) Ctrl = true;
+  if(Event->state() & Qt::ControlModifier) Ctrl = true;
   else Ctrl = false;
 
   int No=0;
@@ -1310,7 +1314,7 @@ void MouseActions::MPressWire1(Schematic *Doc, QMouseEvent*, float fX, float fY)
 {
   QPainter painter(Doc->viewport());
   painter.setPen(Qt::DotLine);
-  painter.setRasterOp(Qt::NotROP);  // background should not be erased
+#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
 
   if(drawn) {
     painter.drawLine(0, MAy3, MAx2, MAy3); // erase old mouse cross
@@ -1485,7 +1489,7 @@ void MouseActions::MPressZoomIn(Schematic *Doc, QMouseEvent*, float fX, float fY
 void MouseActions::MReleaseSelect(Schematic *Doc, QMouseEvent *Event)
 {
   bool ctrl;
-  if(Event->state() & Qt::ControlButton) ctrl = true;
+  if(Event->state() & Qt::ControlModifier) ctrl = true;
   else ctrl = false;
 
   if(!ctrl) Doc->deselectElements(focusElement);
@@ -1512,7 +1516,7 @@ void MouseActions::MReleaseSelect2(Schematic *Doc, QMouseEvent *Event)
   if(Event->button() != Qt::LeftButton) return;
 
   bool Ctrl;
-  if(Event->state() & Qt::ControlButton) Ctrl = true;
+  if(Event->state() & Qt::ControlModifier) Ctrl = true;
   else Ctrl = false;
 
   // selects all elements within the rectangle

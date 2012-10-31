@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "rectangle.h"
 #include "filldialog.h"
 
@@ -28,7 +28,7 @@ Rectangle::Rectangle(bool _filled)
   Name = "Rectangle ";
   isSelected = false;
   Pen = QPen(QColor());
-  Brush = QBrush(QPen::lightGray);
+  Brush = QBrush(Qt::lightGray);
   filled = _filled;
   cx = cy = 0;
   x1 = x2 = 0;
@@ -43,14 +43,14 @@ Rectangle::~Rectangle()
 void Rectangle::paint(ViewPainter *p)
 {
   if(isSelected) {
-    p->Painter->setPen(QPen(QPen::darkGray,Pen.width()+5));
+    p->Painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
     if(filled)  p->Painter->setBrush(Brush);
     p->drawRect(cx, cy, x2, y2);
-    p->Painter->setPen(QPen(QPen::white, Pen.width(), Pen.style()));
-    p->Painter->setBrush(QBrush::NoBrush);
+    p->Painter->setPen(QPen(Qt::white, Pen.width(), Pen.style()));
+    p->Painter->setBrush(Qt::NoBrush);
     p->drawRect(cx, cy, x2, y2);
 
-    p->Painter->setPen(QPen(QPen::darkRed,2));
+    p->Painter->setPen(QPen(Qt::darkRed,2));
     p->drawResizeRect(cx, cy+y2);  // markers for changing the size
     p->drawResizeRect(cx, cy);
     p->drawResizeRect(cx+x2, cy+y2);
@@ -60,7 +60,7 @@ void Rectangle::paint(ViewPainter *p)
   p->Painter->setPen(Pen);
   if(filled)  p->Painter->setBrush(Brush);
   p->drawRect(cx, cy, x2, y2);
-  p->Painter->setBrush(QBrush::NoBrush); // no filling for the next paintings
+  p->Painter->setBrush(Qt::NoBrush); // no filling for the next paintings
 }
 
 // --------------------------------------------------------------------------

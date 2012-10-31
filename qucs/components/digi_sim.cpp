@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "digi_sim.h"
 #include "main.h"
 
@@ -28,9 +28,9 @@ Digi_Sim::Digi_Sim()
   int a = s.find(" ");
   if (a != -1) s[a] = '\n';  // break line before the word "simulation"
 
-  Texts.append(new Text(0, 0, s.left(a), QPen::darkBlue, QucsSettings.largeFontSize));
+  Texts.append(new Text(0, 0, s.left(a), Qt::darkBlue, QucsSettings.largeFontSize));
   if (a != -1)
-    Texts.append(new Text(0, 0, s.mid(a+1), QPen::darkBlue, QucsSettings.largeFontSize));
+    Texts.append(new Text(0, 0, s.mid(a+1), Qt::darkBlue, QucsSettings.largeFontSize));
 
   x1 = -10; y1 = -9;
   x2 = x1+120; y2 = y1+59;

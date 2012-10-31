@@ -17,14 +17,16 @@
 
 #ifndef SPICEFILE_H
 #define SPICEFILE_H
-
+#include <QtGui>
 #include "component.h"
 
 #include <qobject.h>
 #include <qdatetime.h>
+//Added by qt3to4:
+#include <Q3TextStream>
 
-class QProcess;
-class QTextStream;
+class Q3Process;
+class Q3TextStream;
 class QString;
 
 class SpiceFile : public QObject, public MultiViewComponent  {
@@ -36,7 +38,7 @@ public:
   static Element* info(QString&, char* &, bool getNewOne=false);
 
   bool withSim;
-  bool createSubNetlist(QTextStream *);
+  bool createSubNetlist(Q3TextStream *);
   QString getErrorText() { return ErrText; }
   QString getSubcircuitFile();
 
@@ -44,9 +46,9 @@ private:
   bool makeSubcircuit;
   bool insertSim;
   bool changed;
-  QProcess *QucsConv, *SpicePrep;
+  Q3Process *QucsConv, *SpicePrep;
   QString NetText, ErrText, NetLine, SimText;
-  QTextStream *outstream, *filstream, *prestream;
+  Q3TextStream *outstream, *filstream, *prestream;
   QDateTime lastLoaded;
   bool recreateSubNetlist(QString *, QString *);
 

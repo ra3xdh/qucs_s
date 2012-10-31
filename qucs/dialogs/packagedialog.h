@@ -20,20 +20,23 @@
 
 #include <qfile.h>
 #include <qdialog.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qstringlist.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
+#include <qdir.h>
 
 class QucsApp;
 class QString;
 class QLineEdit;
-class QTextEdit;
+class Q3TextEdit;
 class QCheckBox;
-class QVBoxLayout;
+class Q3VBoxLayout;
 class QDataStream;
 class QPushButton;
-class QListViewItem;
-class QVButtonGroup;
+class Q3ListViewItem;
+class Q3VButtonGroup;
 
 
 class PackageDialog : public QDialog {
@@ -57,12 +60,12 @@ private:
   int extractDirectory(QFile&, Q_UINT32, QDir&);
   int extractLibrary(QFile&, Q_UINT32);
 
-  QVBoxLayout *all;   // the mother of all widgets
+  Q3VBoxLayout *all;   // the mother of all widgets
   QLineEdit *NameEdit;
-  QTextEdit *MsgText;
+  Q3TextEdit *MsgText;
   QCheckBox *LibraryCheck;
-  QVButtonGroup *Group;
-  QPtrList<QCheckBox> BoxList;
+  Q3VButtonGroup *Group;
+  Q3PtrList<QCheckBox> BoxList;
 
   QPushButton *ButtClose;
 };

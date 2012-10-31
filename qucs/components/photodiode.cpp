@@ -100,13 +100,13 @@ Element * photodiode::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void photodiode::createSymbol()
 {
-  Arcs.append(new Arc(-12,-12, 24, 24, 0, 16*360,QPen(QPen::red,2)));
-  Lines.append(new Line(-30,  0, 30,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -6, -9, -6,  9,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  6, -9,  6,  9,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -6,  0,  6, -9,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -6,  0,  6,  9,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, 12,  0,  30,QPen(QPen::green,2)));
+  Arcs.append(new Arc(-12,-12, 24, 24, 0, 16*360,QPen(Qt::red,2)));
+  Lines.append(new Line(-30,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -6, -9, -6,  9,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  6, -9,  6,  9,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -6,  0,  6, -9,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -6,  0,  6,  9,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, 12,  0,  30,QPen(Qt::green,2)));
 
   Ports.append(new Port( 30, 0));
   Ports.append(new Port(-30, 0));

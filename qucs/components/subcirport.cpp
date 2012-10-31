@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "subcirport.h"
 #include "node.h"
 #include "schematic.h"
@@ -47,34 +47,34 @@ void SubCirPort::createSymbol()
   x2 =   0; y2 =  8;
 
   if(Props.at(1)->Value.at(0) == 'a') {
-    Arcs.append(new Arc(-25, -6, 12, 12,  0, 16*360,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-13,  0,  0,  0,QPen(QPen::darkBlue,2)));
+    Arcs.append(new Arc(-25, -6, 12, 12,  0, 16*360,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-13,  0,  0,  0,QPen(Qt::darkBlue,2)));
   }
   else {
-    Lines.append(new Line( -9,  0,  0,  0,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line( -9,  0,  0,  0,QPen(Qt::darkBlue,2)));
     if(Props.at(1)->Value == "out") {
-      Lines.append(new Line(-20, -5,-25,  0,QPen(QPen::red,2)));
-      Lines.append(new Line(-20,  5,-25,  0,QPen(QPen::red,2)));
-      Lines.append(new Line(-20, -5, -9, -5,QPen(QPen::red,2)));
-      Lines.append(new Line(-20,  5, -9,  5,QPen(QPen::red,2)));
-      Lines.append(new Line( -9, -5, -9,  5,QPen(QPen::red,2)));
+      Lines.append(new Line(-20, -5,-25,  0,QPen(Qt::red,2)));
+      Lines.append(new Line(-20,  5,-25,  0,QPen(Qt::red,2)));
+      Lines.append(new Line(-20, -5, -9, -5,QPen(Qt::red,2)));
+      Lines.append(new Line(-20,  5, -9,  5,QPen(Qt::red,2)));
+      Lines.append(new Line( -9, -5, -9,  5,QPen(Qt::red,2)));
     }
     else {
-      Lines.append(new Line(-14, -5, -9,  0,QPen(QPen::darkGreen,2)));
-      Lines.append(new Line(-14,  5, -9,  0,QPen(QPen::darkGreen,2)));
+      Lines.append(new Line(-14, -5, -9,  0,QPen(Qt::darkGreen,2)));
+      Lines.append(new Line(-14,  5, -9,  0,QPen(Qt::darkGreen,2)));
       if(Props.at(1)->Value == "in") {
-        Lines.append(new Line(-25, -5,-14, -5,QPen(QPen::darkGreen,2)));
-        Lines.append(new Line(-25,  5,-14,  5,QPen(QPen::darkGreen,2)));
-        Lines.append(new Line(-25, -5,-25,  5,QPen(QPen::darkGreen,2)));
+        Lines.append(new Line(-25, -5,-14, -5,QPen(Qt::darkGreen,2)));
+        Lines.append(new Line(-25,  5,-14,  5,QPen(Qt::darkGreen,2)));
+        Lines.append(new Line(-25, -5,-25,  5,QPen(Qt::darkGreen,2)));
       }
       else {
         x1 = -30;
-        Lines.append(new Line(-18, -5,-14, -5,QPen(QPen::darkGreen,2)));
-        Lines.append(new Line(-18,  5,-14,  5,QPen(QPen::darkGreen,2)));
-        Lines.append(new Line(-23, -5,-28,  0,QPen(QPen::red,2)));
-        Lines.append(new Line(-23,  5,-28,  0,QPen(QPen::red,2)));
-        Lines.append(new Line(-23, -5,-18, -5,QPen(QPen::red,2)));
-        Lines.append(new Line(-23,  5,-18,  5,QPen(QPen::red,2)));
+        Lines.append(new Line(-18, -5,-14, -5,QPen(Qt::darkGreen,2)));
+        Lines.append(new Line(-18,  5,-14,  5,QPen(Qt::darkGreen,2)));
+        Lines.append(new Line(-23, -5,-28,  0,QPen(Qt::red,2)));
+        Lines.append(new Line(-23,  5,-28,  0,QPen(Qt::red,2)));
+        Lines.append(new Line(-23, -5,-18, -5,QPen(Qt::red,2)));
+        Lines.append(new Line(-23,  5,-18,  5,QPen(Qt::red,2)));
       }
     }
   }

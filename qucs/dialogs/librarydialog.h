@@ -19,29 +19,32 @@
 #define LIBRARYDIALOG_H
 
 #include <qregexp.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qstringlist.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qdialog.h>
 #include <qfile.h>
 #include <qdir.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
+#include <QLabel>
 
 class QLabel;
 class QucsApp;
 class QLineEdit;
-class QTextEdit;
+class Q3TextEdit;
 class QPushButton;
-class QVBoxLayout;
-class QListViewItem;
-class QVButtonGroup;
+class Q3VBoxLayout;
+class Q3ListViewItem;
+class Q3VButtonGroup;
 class QRegExpValidator;
 
 
 class LibraryDialog : public QDialog {
    Q_OBJECT
 public:
-  LibraryDialog(QucsApp*, QListViewItem*);
+  LibraryDialog(QucsApp*, Q3ListViewItem*);
  ~LibraryDialog();
 
 private slots:
@@ -51,17 +54,17 @@ private slots:
   void slotSelectAll();
 
 private:
-  void intoStream(QTextStream&, QString&, const char*);
+  void intoStream(Q3TextStream&, QString&, const char*);
   int intoFile(QString&, QString&,  QStringList&);
 
 private:
-  QVBoxLayout *all;   // the mother of all widgets
+  Q3VBoxLayout *all;   // the mother of all widgets
   QLabel *theLabel;
   QLineEdit *NameEdit;
-  QTextEdit *ErrText;
-  QVButtonGroup *Group;
+  Q3TextEdit *ErrText;
+  Q3VButtonGroup *Group;
   QPushButton *ButtCreate, *ButtCancel, *ButtSelectAll, *ButtSelectNone;
-  QPtrList<QCheckBox> BoxList;
+  Q3PtrList<QCheckBox> BoxList;
   QStringList Descriptions;
 
   QucsApp *App;

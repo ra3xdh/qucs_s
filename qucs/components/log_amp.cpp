@@ -89,16 +89,16 @@ Element * log_amp::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void log_amp::createSymbol()
 {
-  Lines.append(new Line(-30,-20,-20,-20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30, 20,-20, 20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 40,  0,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,-20,-20,-20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30, 20,-20, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,  0, 40,  0,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-20,-35,-20, 35,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20,-35, 30,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20, 35, 30,  0,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-20,-35,-20, 35,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20,-35, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20, 35, 30,  0,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-5, -10, -5, 10,QPen(QPen::red,2)));
-  Lines.append(new Line(-5,  10,  5,  10,QPen(QPen::red,2)));
+  Lines.append(new Line(-5, -10, -5, 10,QPen(Qt::red,2)));
+  Lines.append(new Line(-5,  10,  5,  10,QPen(Qt::red,2)));
 
   Texts.append(new Text(-17, -26, QObject::tr("I"), Qt::black, 10.0, 1.0, 0.0));
   Texts.append(new Text(-17,  14, QObject::tr("R"), Qt::black, 10.0, 1.0, 0.0));

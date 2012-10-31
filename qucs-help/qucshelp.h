@@ -18,8 +18,8 @@
 #ifndef QUCSHELP_H
 #define QUCSHELP_H
 
-#include <qmainwindow.h>
-#include <qtextbrowser.h>
+#include <q3mainwindow.h>
+#include <q3textbrowser.h>
 #include <qdir.h>
 #include <qfont.h>
 #include <qstringlist.h>
@@ -36,27 +36,27 @@ struct tQucsSettings {
 extern tQucsSettings QucsSettings;
 extern QDir QucsHelpDir;
 class QAction;
-class QListViewItem;
-class QListView;
+class Q3ListViewItem;
+class Q3ListView;
 class HtmlDataFetcher;
-class QDockWindow;
+class Q3DockWindow;
 
-class TextBrowser : public QTextBrowser
+class TextBrowser : public Q3TextBrowser
 {
    Q_OBJECT
    public:
-      TextBrowser(QWidget *parent = 0) : QTextBrowser(parent)
+      TextBrowser(QWidget *parent = 0) : Q3TextBrowser(parent)
       {}
    public slots:
       void setSource(const QString& name)
       {
          // Dont do anything if the clicked link is web url
          if(!name.startsWith("http://"))
-            QTextBrowser::setSource(name);
+            Q3TextBrowser::setSource(name);
       }
 };
 
-class QucsHelp : public QMainWindow  {
+class QucsHelp : public Q3MainWindow  {
   Q_OBJECT
   public:
     QucsHelp(const QString& page);
@@ -80,8 +80,8 @@ class QucsHelp : public QMainWindow  {
     QAction *previousAction;
     QAction *nextAction;
     QAction *viewBrowseDock;
-    QListView *chaptersView;
-    QDockWindow *dock;
+    Q3ListView *chaptersView;
+    Q3DockWindow *dock;
     HtmlDataFetcher *dataFetcher;
     QString currentSource;
     QString cachedSelectedText;

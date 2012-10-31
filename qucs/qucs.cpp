@@ -18,45 +18,49 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-
+#include <QtGui>
 #include <limits.h>
 
-#include <qaccel.h>
+#include <q3accel.h>
 #include <qimage.h>
 #include <qsplitter.h>
-#include <qvbox.h>
-#include <qhbox.h>
+#include <q3vbox.h>
+#include <q3hbox.h>
 #include <qlabel.h>
 #include <qmessagebox.h>
 #include <qdir.h>
 #include <qpainter.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qinputdialog.h>
 #include <qapplication.h>
 #include <qclipboard.h>
 #include <qfont.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qcheckbox.h>
 #include <qaction.h>
 #include <qtabwidget.h>
 #include <qcombobox.h>
-#include <qiconview.h>
+#include <q3iconview.h>
 #include <qpushbutton.h>
-#include <qlistview.h>
-#include <qlistbox.h>
+#include <q3listview.h>
+#include <q3listbox.h>
 #include <qprinter.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qpixmap.h>
 #include <qtoolbutton.h>
 #include <qstatusbar.h>
-#include <qtoolbar.h>
-#include <qpopupmenu.h>
+#include <q3toolbar.h>
+#include <q3popupmenu.h>
 #include <qmenubar.h>
-#include <qprocess.h>
+#include <q3process.h>
 #include <qlineedit.h>
 #include <qstringlist.h>
-#include <qdragobject.h>
-#include <qsyntaxhighlighter.h>
+#include <q3dragobject.h>
+#include <q3syntaxhighlighter.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <Q3TextStream>
+#include <Q3PtrList>
 
 #include "main.h"
 #include "qucs.h"
@@ -92,21 +96,21 @@ QDir QucsHomeDir;  // Qucs user directory where all projects are located
 
 
 // IconView without dragging icon bitmap
-class myIconView : public QIconView
+class myIconView : public Q3IconView
 {
 public:
-  myIconView(QWidget* parent_) : QIconView(parent_, 0, 0) {};
+  myIconView(QWidget* parent_) : Q3IconView(parent_, 0, 0) {};
  ~myIconView() {};
 
 protected:
-  QDragObject *dragObject() {
-    QIconViewItem *Item = currentItem();
+  Q3DragObject *dragObject() {
+    Q3IconViewItem *Item = currentItem();
     if(!Item) return 0;
 
     // no picture during dragging, but bounding rectangles in QListView
-    QIconDrag *DragPic = new QIconDrag( viewport() );
+    Q3IconDrag *DragPic = new Q3IconDrag( viewport() );
     DragPic->setPixmap( QPixmap(empty_xpm), QPoint(0, 0) );
-    DragPic->append( QIconDragItem(),
+    DragPic->append( Q3IconDragItem(),
         QRect( Item->pixmapRect().width() / -2,
                Item->pixmapRect().height() / -2,
                Item->pixmapRect().width(), Item->pixmapRect().height() ),
@@ -180,7 +184,7 @@ QucsApp::QucsApp()
     if(*(arg) != '-') {
       // allow uri's: file:/home/linuxuser/Desktop/example.sch
       if(arg.contains(":/")) {
-        QString f = QDir::convertSeparators(QUriDrag::uriToLocalFile(arg));
+        QString f = QDir::convertSeparators(Q3UriDrag::uriToLocalFile(arg));
         if(f.isEmpty()) f = arg;
         gotoPage(f);
       } else {
@@ -205,14 +209,14 @@ QucsApp::~QucsApp()
 void QucsApp::initContentListView()
 {
   Content->clear();   // remove all documents
-  ConOthers     = new QListViewItem(Content, tr("Others"));
-  ConDatasets   = new QListViewItem(Content, tr("Datasets"));
-  ConDisplays   = new QListViewItem(Content, tr("Data Displays"));
-  ConOctave     = new QListViewItem(Content, tr("Octave"));
-  ConVerilog    = new QListViewItem(Content, tr("Verilog"));
-  ConVerilogA   = new QListViewItem(Content, tr("Verilog-A"));
-  ConSources    = new QListViewItem(Content, tr("VHDL"));
-  ConSchematics = new QListViewItem(Content, tr("Schematics"));
+  ConOthers     = new Q3ListViewItem(Content, tr("Others"));
+  ConDatasets   = new Q3ListViewItem(Content, tr("Datasets"));
+  ConDisplays   = new Q3ListViewItem(Content, tr("Data Displays"));
+  ConOctave     = new Q3ListViewItem(Content, tr("Octave"));
+  ConVerilog    = new Q3ListViewItem(Content, tr("Verilog"));
+  ConVerilogA   = new Q3ListViewItem(Content, tr("Verilog-A"));
+  ConSources    = new Q3ListViewItem(Content, tr("VHDL"));
+  ConSchematics = new Q3ListViewItem(Content, tr("Schematics"));
 }
 
 void QucsApp::initView()
@@ -225,7 +229,7 @@ void QucsApp::initView()
   connect(DocumentTab,
           SIGNAL(currentChanged(QWidget*)), SLOT(slotChangeView(QWidget*)));
 
-  dock = new VTabbedDockWidget(QDockWindow::InDock, this);
+  dock = new VTabbedDockWidget(Q3DockWindow::InDock, this);
   TabView = new VTabWidget(VTabInterface::TabLeft,dock);  // tabs on the left side
   
   
@@ -244,8 +248,8 @@ void QucsApp::initView()
 
   // ----------------------------------------------------------
   // "Project Tab" of the left QTabWidget
-  QVBox *ProjGroup = new QVBox(this);
-  QHBox *ProjButts = new QHBox(ProjGroup);
+  Q3VBox *ProjGroup = new Q3VBox(this);
+  Q3HBox *ProjButts = new Q3HBox(ProjGroup);
   QPushButton *ProjNew   = new QPushButton(tr("New"),ProjButts);
   connect(ProjNew, SIGNAL(clicked()), SLOT(slotProjNewButt()));
   QPushButton *ProjOpen  = new QPushButton(tr("Open"),ProjButts);
@@ -253,38 +257,38 @@ void QucsApp::initView()
   QPushButton *ProjDel   = new QPushButton(tr("Delete"),ProjButts);
   connect(ProjDel, SIGNAL(clicked()), SLOT(slotProjDelButt()));
 
-  Projects = new QListBox(ProjGroup);
+  Projects = new Q3ListBox(ProjGroup);
   TabView->addPage(ProjGroup, tr("Projects"));
   TabView->setTabToolTip(TabView->id(ProjGroup),
 			 tr("content of project directory"));
 
-  connect(Projects, SIGNAL(doubleClicked(QListBoxItem*)),
-		    SLOT(slotOpenProject(QListBoxItem*)));
+  connect(Projects, SIGNAL(doubleClicked(Q3ListBoxItem*)),
+		    SLOT(slotOpenProject(Q3ListBoxItem*)));
 
   // ----------------------------------------------------------
   // "Content Tab" of the left QTabWidget
-  Content = new QListView(this);
+  Content = new Q3ListView(this);
   Content->setRootIsDecorated(true); // open/close decoration for root items
   Content->setSorting(-1);    // no sorting
   Content->addColumn(tr("Content of"));
   Content->addColumn(tr("Note"));
-  Content->setColumnWidthMode(0,QListView::Manual);
+  Content->setColumnWidthMode(0,Q3ListView::Manual);
   Content->setColumnWidth(0, 150);
 
   initContentListView();
   TabView->addPage(Content,tr("Content"));
   TabView->setTabToolTip(TabView->id(Content), tr("content of current project"));
 
-  connect(Content, SIGNAL(doubleClicked(QListViewItem*)),
-		   SLOT(slotOpenContent(QListViewItem*)));
-  connect(Content, SIGNAL(clicked(QListViewItem*)),
-		   SLOT(slotSelectSubcircuit(QListViewItem*)));
-  connect(Content, SIGNAL(expanded(QListViewItem*)),
-		   SLOT(slotExpandContentList(QListViewItem*)));
+  connect(Content, SIGNAL(doubleClicked(Q3ListViewItem*)),
+		   SLOT(slotOpenContent(Q3ListViewItem*)));
+  connect(Content, SIGNAL(clicked(Q3ListViewItem*)),
+		   SLOT(slotSelectSubcircuit(Q3ListViewItem*)));
+  connect(Content, SIGNAL(expanded(Q3ListViewItem*)),
+		   SLOT(slotExpandContentList(Q3ListViewItem*)));
 
   // ----------------------------------------------------------
   // "Component Tab" of the left QTabWidget
-  QVBox *CompGroup  = new QVBox(this);
+  Q3VBox *CompGroup  = new Q3VBox(this);
   CompChoose = new QComboBox(CompGroup);
   CompComps  = new myIconView(CompGroup);
   TabView->addPage(CompGroup,tr("Components"));
@@ -293,18 +297,18 @@ void QucsApp::initView()
 
   slotSetCompView(0);
   connect(CompChoose, SIGNAL(activated(int)), SLOT(slotSetCompView(int)));
-  connect(CompComps, SIGNAL(clicked(QIconViewItem*)),
-		     SLOT(slotSelectComponent(QIconViewItem*)));
+  connect(CompComps, SIGNAL(clicked(Q3IconViewItem*)),
+		     SLOT(slotSelectComponent(Q3IconViewItem*)));
   dock->setWidget(TabView);
-  setDockEnabled(dock,DockTop,false);
-  setDockEnabled(dock,DockBottom,false);
-  moveDockWindow(dock,DockLeft);
+  setDockEnabled(dock,Qt::DockTop,false);
+  setDockEnabled(dock,Qt::DockBottom,false);
+  moveDockWindow(dock,Qt::DockLeft);
   TabView->setCurrentPage(0);
 
   // ----------------------------------------------------------
   // Octave docking window
-  octDock = new QDockWindow(QDockWindow::InDock, this);
-  octDock->setCloseMode(QDockWindow::Always);
+  octDock = new Q3DockWindow(Q3DockWindow::InDock, this);
+  octDock->setCloseMode(Q3DockWindow::Always);
   connect(octDock, SIGNAL(visibilityChanged(bool)), SLOT(slotToggleOctave(bool)));
   octave = new OctaveWindow(octDock);
   moveDockWindow(octDock, Qt::DockBottom);
@@ -354,7 +358,7 @@ QucsDoc * QucsApp::findDoc (QString File, int * Pos)
 // only put the paintings in it, because of "symbol painting mode".
 void QucsApp::fillComboBox (bool setAll)
 {
-  CompChoose->setSizeLimit (11); // Increase this if you add items below.
+ CompChoose->setMaxVisibleItems (11); // Increase this if you add items below.
   CompChoose->clear ();
 
   QStringList cats = Category::getCategories ();
@@ -373,7 +377,7 @@ void QucsApp::slotSetCompView (int index)
 {
   editText->setHidden (true); // disable text edit of component property
 
-  QPtrList<Module> Comps;
+  Q3PtrList<Module> Comps;
   CompComps->clear ();   // clear the IconView
   if (CompChoose->count () <= 0) return;
   QString item = CompChoose->text (index);
@@ -388,15 +392,15 @@ void QucsApp::slotSetCompView (int index)
   for (Mod = Comps.first(); Mod; Mod = Comps.next ()) {
     if (Mod->info) {
       *(Mod->info) (Name, File, false);
-      new QIconViewItem (CompComps, Name,
-		QImage (QucsSettings.BitmapDir + QString (File) + ".png"));
+      new Q3IconViewItem (CompComps,CompComps->currentItem(), Name,
+		QPixmap (QucsSettings.BitmapDir + QString (File) + ".png"));
     }
   }
 }
 
 // ------------------------------------------------------------------
 // Is called when the mouse is clicked within the Component QIconView.
-void QucsApp::slotSelectComponent(QIconViewItem *item)
+void QucsApp::slotSelectComponent(Q3IconViewItem *item)
 {
   editText->setHidden(true); // disable text edit of component property
 
@@ -410,7 +414,7 @@ void QucsApp::slotSelectComponent(QIconViewItem *item)
   }
 
   if(view->drawn)
-    ((QScrollView*)DocumentTab->currentPage())->viewport()->update();
+    ((Q3ScrollView*)DocumentTab->currentPage())->viewport()->update();
   view->drawn = false;
 
   // toggle last toolbar button off
@@ -428,7 +432,7 @@ void QucsApp::slotSelectComponent(QIconViewItem *item)
 
   pInfoFunc Infos = 0;
   int i = CompComps->index (item);
-  QPtrList<Module> Comps;
+  Q3PtrList<Module> Comps;
   if((CompChoose->currentItem()+1) >= CompChoose->count())
     // the only one in "symbol-painting" mode
     Comps = Category::getModules (QObject::tr("paintings"));
@@ -449,20 +453,20 @@ void QucsApp::slotSelectComponent(QIconViewItem *item)
 
 void QucsApp::initCursorMenu()
 {
-  ContentMenu = new QPopupMenu(Content);
+  ContentMenu = new Q3PopupMenu(Content);
   ContentMenu->insertItem(tr("Open"), this, SLOT(slotCMenuOpen()));
   ContentMenu->insertItem(tr("Rename"), this, SLOT(slotCMenuRename()));
   ContentMenu->insertItem(tr("Delete"), this, SLOT(slotCMenuDelete()));
   ContentMenu->insertItem(tr("Delete Group"), this, SLOT(slotCMenuDelGroup()));
 
   connect(Content,
-	  SIGNAL(contextMenuRequested(QListViewItem*, const QPoint&, int)),
-	  SLOT(slotShowContentMenu(QListViewItem*, const QPoint&, int)));
+	  SIGNAL(contextMenuRequested(Q3ListViewItem*, const QPoint&, int)),
+	  SLOT(slotShowContentMenu(Q3ListViewItem*, const QPoint&, int)));
 }
 
 // ----------------------------------------------------------
 // Shows the menu.
-void QucsApp::slotShowContentMenu(QListViewItem *item, const QPoint& point, int)
+void QucsApp::slotShowContentMenu(Q3ListViewItem *item, const QPoint& point, int)
 {
   if(item)
     if(item->parent() != 0) {   // no component, but item "schematic", ...
@@ -477,7 +481,7 @@ void QucsApp::slotShowContentMenu(QListViewItem *item, const QPoint& point, int)
 // ----------------------------------------------------------
 void QucsApp::slotCMenuOpen()
 {
-  QListViewItem *Item = Content->selectedItem();
+  Q3ListViewItem *Item = Content->selectedItem();
   if(Item == 0) return;
 
   slotOpenContent(Item);
@@ -486,7 +490,7 @@ void QucsApp::slotCMenuOpen()
 // ----------------------------------------------------------
 void QucsApp::slotCMenuRename()
 {
-  QListViewItem *Item = Content->selectedItem();
+  Q3ListViewItem *Item = Content->selectedItem();
   if(!Item) return;
 
   QString Name = Item->text(0);
@@ -522,7 +526,7 @@ void QucsApp::slotCMenuRename()
 // ----------------------------------------------------------
 void QucsApp::slotCMenuDelete()
 {
-  QListViewItem *item = Content->selectedItem();
+  Q3ListViewItem *item = Content->selectedItem();
   if(item == 0) return;
   QString FileName = QucsWorkDir.filePath(item->text(0));
 
@@ -577,7 +581,7 @@ QString QucsApp::fileType (const QString& Ext)
 // Deletes all files with that name (and suffix sch, dpl, dat, vhdl, etc.).
 void QucsApp::slotCMenuDelGroup ()
 {
-  QListViewItem * item = Content->selectedItem ();
+  Q3ListViewItem * item = Content->selectedItem ();
   if (item == 0)
     return;
   QString s = item->text (0);
@@ -696,7 +700,7 @@ void QucsApp::slotProjNewButt()
 int QucsApp::testFile(const QString& DocName)
 {
   QFile file(DocName);
-  if(!file.open(IO_ReadOnly)) {
+  if(!file.open(QIODevice::ReadOnly)) {
     return -1;
   }
 
@@ -704,10 +708,10 @@ int QucsApp::testFile(const QString& DocName)
   // .........................................
   // To strongly speed up the file read operation the whole file is
   // read into the memory in one piece.
-  QTextStream ReadWhole(&file);
+  Q3TextStream ReadWhole(&file);
   QString FileString = ReadWhole.read();
   file.close();
-  QTextStream stream(&FileString, IO_ReadOnly);
+  Q3TextStream stream(&FileString, QIODevice::ReadOnly);
 
 
   // read header ........................
@@ -786,25 +790,25 @@ void QucsApp::readProjectFiles()
       n = testFile(QucsWorkDir.filePath((*it).ascii()));
       if(n >= 0) {
         if(n > 0)
-          new QListViewItem(ConSchematics, (*it).ascii(),
+          new Q3ListViewItem(ConSchematics, (*it).ascii(),
                             QString::number(n)+tr("-port"));
-        else new QListViewItem(ConSchematics, (*it).ascii());
+        else new Q3ListViewItem(ConSchematics, (*it).ascii());
       }
     }
     else if(Str == "dpl")
-      new QListViewItem(ConDisplays, (*it).ascii());
+      new Q3ListViewItem(ConDisplays, (*it).ascii());
     else if(Str == "dat")
-      new QListViewItem(ConDatasets, (*it).ascii());
+      new Q3ListViewItem(ConDatasets, (*it).ascii());
     else if((Str == "vhdl") || (Str == "vhd"))
-      new QListViewItem(ConSources, (*it).ascii());
+      new Q3ListViewItem(ConSources, (*it).ascii());
     else if(Str == "v")
-      new QListViewItem(ConVerilog, (*it).ascii());
+      new Q3ListViewItem(ConVerilog, (*it).ascii());
     else if(Str == "va")
-      new QListViewItem(ConVerilogA, (*it).ascii());
+      new Q3ListViewItem(ConVerilogA, (*it).ascii());
     else if((Str == "m") || (Str == "oct"))
-      new QListViewItem(ConOctave, (*it).ascii());
+      new Q3ListViewItem(ConOctave, (*it).ascii());
     else
-      new QListViewItem(ConOthers, (*it).ascii());
+      new Q3ListViewItem(ConOthers, (*it).ascii());
   }
 }
 
@@ -844,10 +848,10 @@ void QucsApp::openProject(const QString& Path, const QString& Name)
 // Is called when the open project menu is called.
 void QucsApp::slotMenuOpenProject()
 {
-  QFileDialog *d = new QFileDialog(QucsHomeDir.path());
+  Q3FileDialog *d = new Q3FileDialog(QucsHomeDir.path());
   d->setCaption(tr("Choose Project Directory for Opening"));
   d->setShowHiddenFiles(true);
-  d->setMode(QFileDialog::DirectoryOnly);
+  d->setMode(Q3FileDialog::DirectoryOnly);
   if(d->exec() != QDialog::Accepted) return;
 
   QString s = d->selectedFile();
@@ -866,7 +870,7 @@ void QucsApp::slotProjOpenButt()
 {
   editText->setHidden(true); // disable text edit of component property
 
-  QListBoxItem *item = Projects->selectedItem();
+  Q3ListBoxItem *item = Projects->selectedItem();
   if(item) slotOpenProject(item);
   else QMessageBox::information(this, tr("Info"),
 				tr("No project is selected !"));
@@ -874,7 +878,7 @@ void QucsApp::slotProjOpenButt()
 
 // ----------------------------------------------------------
 // Is called when project is double-clicked to open it.
-void QucsApp::slotOpenProject(QListBoxItem *item)
+void QucsApp::slotOpenProject(Q3ListBoxItem *item)
 {
   openProject(QucsHomeDir.filePath(item->text()+"_prj"), item->text());
 }
@@ -968,10 +972,10 @@ bool QucsApp::deleteProject(const QString& Path, const QString& Name)
 // Is called, when "Delete Project" menu is activated.
 void QucsApp::slotMenuDelProject()
 {
-  QFileDialog *d = new QFileDialog(QucsHomeDir.path());
+  Q3FileDialog *d = new Q3FileDialog(QucsHomeDir.path());
   d->setCaption(tr("Choose Project Directory for Deleting"));
   d->setShowHiddenFiles(true);
-  d->setMode(QFileDialog::DirectoryOnly);
+  d->setMode(Q3FileDialog::DirectoryOnly);
   if(d->exec() != QDialog::Accepted) return;
 
   QString s = d->selectedFile();
@@ -989,7 +993,7 @@ void QucsApp::slotMenuDelProject()
 // Is called, when "Delete Project" button is pressed.
 void QucsApp::slotProjDelButt()
 {
-  QListBoxItem *item = Projects->selectedItem();
+  Q3ListBoxItem *item = Projects->selectedItem();
   if(!item) {
     QMessageBox::information(this, tr("Info"),
 			     tr("No project is selected !"));
@@ -1077,7 +1081,7 @@ void QucsApp::slotFileOpen()
 
   statusBar()->message(tr("Opening file..."));
 
-  QString s = QFileDialog::getOpenFileName(
+  QString s = Q3FileDialog::getOpenFileName(
 	lastDirOpenSave.isEmpty() ? QString(".") : lastDirOpenSave,
 	QucsFileFilter, this, 0, tr("Enter a Schematic Name"));
 
@@ -1158,7 +1162,7 @@ bool QucsApp::saveAs()
 	       tr("Any File")+" (*)";
     else
       Filter = QucsFileFilter;
-    s = QFileDialog::getSaveFileName(s, Filter,
+    s = Q3FileDialog::getSaveFileName(s, Filter,
                      this, "", tr("Enter a Document Name"));
     if(s.isEmpty())  return false;
     Info.setFile(s);               // try to guess the best extension ...
@@ -1201,21 +1205,21 @@ bool QucsApp::saveAs()
         s = Info.fileName();  // remove path from file name
 	QString ext = Info.extension (false);
         if(ext == "sch")
-          Content->setSelected(new QListViewItem(ConSchematics, s), true);
+          Content->setSelected(new Q3ListViewItem(ConSchematics, s), true);
         else if(ext == "dpl")
-          Content->setSelected(new QListViewItem(ConDisplays, s), true);
+          Content->setSelected(new Q3ListViewItem(ConDisplays, s), true);
         else if(ext == "dat")
-          Content->setSelected(new QListViewItem(ConDatasets, s), true);
+          Content->setSelected(new Q3ListViewItem(ConDatasets, s), true);
         else if((ext == "vhdl") || (ext == "vhd"))
-          Content->setSelected(new QListViewItem(ConSources, s), true);
+          Content->setSelected(new Q3ListViewItem(ConSources, s), true);
         else if(ext == "v")
-          Content->setSelected(new QListViewItem(ConVerilog, s), true);
+          Content->setSelected(new Q3ListViewItem(ConVerilog, s), true);
         else if(ext == "va")
-          Content->setSelected(new QListViewItem(ConVerilogA, s), true);
+          Content->setSelected(new Q3ListViewItem(ConVerilogA, s), true);
         else if(ext == "m" || ext == "oct")
-          Content->setSelected(new QListViewItem(ConOctave, s), true);
+          Content->setSelected(new Q3ListViewItem(ConOctave, s), true);
         else
-          Content->setSelected(new QListViewItem(ConOthers, s), true);
+          Content->setSelected(new Q3ListViewItem(ConOthers, s), true);
       }
   }
 
@@ -1262,7 +1266,7 @@ void QucsApp::slotFileSaveAll()
 
   DocumentTab->blockSignals(false);
   // Call update() to update subcircuit symbols in current document.
-  ((QScrollView*)DocumentTab->currentPage())->viewport()->update();
+  ((Q3ScrollView*)DocumentTab->currentPage())->viewport()->update();
   view->drawn = false;
   statusBar()->message(tr("Ready."));
 }
@@ -1430,7 +1434,7 @@ void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
     Model = "Sub";
 
     // enter new port number into ListView
-    QListViewItem *p;
+    Q3ListViewItem *p;
     for(p = ConSchematics->firstChild(); p!=0; p = p->nextSibling()) {
       if(p->text(0) == Name) {
         if(No == 0) p->setText(1,"");
@@ -1816,7 +1820,7 @@ void QucsApp::slotChangePage(QString& DocName, QString& DataDisplay)
       d = new TextDoc (this, Name);
 
     QFile file(Name);
-    if(file.open(IO_ReadOnly)) {      // try to load document
+    if(file.open(QIODevice::ReadOnly)) {      // try to load document
       file.close();
       if(!d->load()) {
         delete d;
@@ -1825,8 +1829,8 @@ void QucsApp::slotChangePage(QString& DocName, QString& DataDisplay)
       }
     }
     else {
-      if(file.open(IO_ReadWrite)) {  // if document doesn't exist, create
-        new QListViewItem(ConDisplays, DataDisplay); // add new name
+      if(file.open(QIODevice::ReadWrite)) {  // if document doesn't exist, create
+        new Q3ListViewItem(ConDisplays, DataDisplay); // add new name
         d->DataDisplay = Info.fileName();
       }
       else {
@@ -1871,7 +1875,7 @@ void QucsApp::slotToPage()
 
 // -------------------------------------------------------------------
 // Is called when a double-click is made in the content ListView.
-void QucsApp::slotOpenContent(QListViewItem *item)
+void QucsApp::slotOpenContent(Q3ListViewItem *item)
 {
   editText->setHidden(true); // disable text edit of component property
 
@@ -1925,7 +1929,7 @@ void QucsApp::slotOpenContent(QListViewItem *item)
     if(Suffix == (*it).section('/',0,0)) {
       com = QStringList::split(" ", (*it).section('/',1,1));
       com << Info.absFilePath();
-      QProcess *Program = new QProcess(com);
+      Q3Process *Program = new Q3Process(com);
       Program->setCommunication(0);
       if(!Program->start()) {
         QMessageBox::critical(this, tr("Error"),
@@ -1943,7 +1947,7 @@ void QucsApp::slotOpenContent(QListViewItem *item)
 
 // ---------------------------------------------------------
 // Is called when the mouse is clicked within the Content QListView.
-void QucsApp::slotSelectSubcircuit(QListViewItem *item)
+void QucsApp::slotSelectSubcircuit(Q3ListViewItem *item)
 {
   editText->setHidden(true); // disable text edit of component property
 
@@ -1991,7 +1995,7 @@ void QucsApp::slotSelectSubcircuit(QListViewItem *item)
   view->selElem = Comp;
 
   if(view->drawn)
-    ((QScrollView*)DocumentTab->currentPage())->viewport()->update();
+    ((Q3ScrollView*)DocumentTab->currentPage())->viewport()->update();
   view->drawn = false;
   MouseMoveAction = &MouseActions::MMoveElement;
   MousePressAction = &MouseActions::MPressElement;
@@ -2002,7 +2006,7 @@ void QucsApp::slotSelectSubcircuit(QListViewItem *item)
 // ---------------------------------------------------------
 // Is called when one of the Content ListView parents was expanded
 // to show the files. It re-reads all files.
-void QucsApp::slotExpandContentList(QListViewItem*)
+void QucsApp::slotExpandContentList(Q3ListViewItem*)
 {
   readProjectFiles();
 }

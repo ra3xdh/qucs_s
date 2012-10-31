@@ -17,24 +17,26 @@
 
 #ifndef COMPONENTDIALOG_H
 #define COMPONENTDIALOG_H
-
+#include <QtGui>
 #include "component.h"
-
 #include <qlabel.h>
 #include <qdialog.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qlineedit.h>
 #include <qcheckbox.h>
 #include <qregexp.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qdir.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <Q3VBoxLayout>
 
 class Schematic;
-class QGridLayout;
+class Q3GridLayout;
 class QValidator;
-class QVBoxLayout;
+class Q3VBoxLayout;
 class QIntValidator;
 class QRegExpValidator;
 
@@ -50,7 +52,7 @@ public:
 private slots:
   void slotButtOK();
   void slotButtCancel();
-  void slotSelectProperty(QListViewItem *item);
+  void slotSelectProperty(Q3ListViewItem *item);
   void slotApplyInput();
   void slotApplyState(int State);
   void slotBrowseFile();
@@ -78,11 +80,11 @@ protected slots:
     void reject();
 
 private:
-  QVBoxLayout *all;   // the mother of all widgets
+  Q3VBoxLayout *all;   // the mother of all widgets
   QValidator  *Validator, *ValRestrict, *Validator2;
   QRegExp     Expr;
   QIntValidator *ValInteger;
-  QListView   *prop;
+  Q3ListView   *prop;
   QLineEdit   *edit, *NameEdit, *CompNameEdit;
   QComboBox   *ComboEdit;
   QLabel      *Name, *Description;

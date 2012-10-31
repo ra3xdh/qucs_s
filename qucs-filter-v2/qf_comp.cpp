@@ -21,6 +21,8 @@
 
 #include "qf_common.h"
 #include "qf_comp.h"
+//Added by qt3to4:
+#include <Q3TextStream>
 
 // DUMP functions and utilities
 static QString valstr (qf_double_t num) {
@@ -51,7 +53,7 @@ static QString valstr (qf_double_t num) {
   }
 
   QString buffer;
-  QTextStream str (& buffer, IO_WriteOnly);
+  Q3TextStream str (& buffer, QIODevice::WriteOnly);
 
   str. precision (3);
 
@@ -63,7 +65,7 @@ static QString valstr (qf_double_t num) {
 }
 
 void qf_cmp1::dump (unsigned n1, unsigned n2,
-		    QTextStream& com, QTextStream& wir) {
+		    Q3TextStream& com, Q3TextStream& wir) {
 
   // type of component
   if (name == "CAP")
@@ -105,7 +107,7 @@ void qf_cmp1::dump (unsigned n1, unsigned n2,
 }
 
 void qf_cmplc::dump (unsigned n1, unsigned n2,
-		     QTextStream& com, QTextStream& wir) {
+		     Q3TextStream& com, Q3TextStream& wir) {
 
   if (name == "PLC") {
     // parallel L and C to ground
@@ -236,14 +238,14 @@ void qf_cmplc::dump (unsigned n1, unsigned n2,
 }
 
 void  qf_pslc::dump (unsigned n1, unsigned n2,
-		     QTextStream& s, QTextStream& wir) {
+		     Q3TextStream& s, Q3TextStream& wir) {
   qf_slc (vC, vL, shnt, gnd). dump (n1, n2, s, wir);
   qf_slc (vC2, vL2, shnt, gnd). dump (n1, n2, s, wir);
 }
 
 // Dumps the whole filter structure
 int qf_lcmp::dump_node (int& p, list <qf_cmp*>::iterator& i,
-			  QTextStream& com, QTextStream& wir) {
+			  Q3TextStream& com, Q3TextStream& wir) {
 
   int n = p + 1;
   int g = 0;
@@ -289,7 +291,7 @@ int qf_lcmp::dump_node (int& p, list <qf_cmp*>::iterator& i,
   return -n;
 }
 
-void qf_lcmp::dump_all (QTextStream& out) {
+void qf_lcmp::dump_all (Q3TextStream& out) {
 
   if (lst.size () == 0) {
     return;
@@ -297,8 +299,8 @@ void qf_lcmp::dump_all (QTextStream& out) {
 
   int node = 1;
   QByteArray  buf1, buf2;
-  QTextStream com (buf1, IO_ReadWrite);
-  QTextStream wir (buf2, IO_ReadWrite);
+  Q3TextStream com (buf1, QIODevice::ReadWrite);
+  Q3TextStream wir (buf2, QIODevice::ReadWrite);
 
   x = 0;
   y = 0;

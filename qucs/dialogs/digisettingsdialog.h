@@ -20,6 +20,8 @@
 
 #include <qdialog.h>
 #include <qregexp.h>
+//Added by qt3to4:
+#include <QLabel>
 
 class TextDoc;
 class QLineEdit;

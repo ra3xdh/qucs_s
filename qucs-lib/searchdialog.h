@@ -19,8 +19,10 @@
 #define SEARCHDIALOG_H
 
 #include <qdialog.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
-class QVBoxLayout;
+class Q3VBoxLayout;
 class QLineEdit;
 class QucsLib;
 
@@ -36,7 +38,7 @@ private slots:
   void slotSearch();
 
 private:
-  QVBoxLayout *all;
+  Q3VBoxLayout *all;
   QLineEdit *SearchEdit;
   QucsLib   *ParentDialog;
 };

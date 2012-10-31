@@ -19,13 +19,15 @@
 #define SETTINGSDIALOG_H
 
 #include <qdialog.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 class Schematic;
 class QLineEdit;
-class QTextEdit;
+class Q3TextEdit;
 class QCheckBox;
 class QComboBox;
-class QVBoxLayout;
+class Q3VBoxLayout;
 class QRegExpValidator;
 
 
@@ -43,13 +45,13 @@ public:
   Schematic *Doc;
 
   QComboBox *Combo_Frame;
-  QTextEdit *Input_Frame0;
+  Q3TextEdit *Input_Frame0;
   QLineEdit *Input_Frame1, *Input_Frame2, *Input_Frame3;
   QLineEdit *Input_DataSet, *Input_DataDisplay, *Input_Script;
   QLineEdit *Input_GridX, *Input_GridY;
   QCheckBox *Check_OpenDpl, *Check_GridOn, *Check_RunScript;
 
-  QVBoxLayout *all;
+  Q3VBoxLayout *all;
   QRegExpValidator *valExpr;
 };
 

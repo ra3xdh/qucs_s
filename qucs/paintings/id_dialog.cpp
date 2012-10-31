@@ -14,21 +14,23 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "id_dialog.h"
 #include "id_text.h"
 
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qcheckbox.h>
 #include <qlineedit.h>
-#include <qvgroupbox.h>
+#include <q3vgroupbox.h>
 #include <qvalidator.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 
 ID_Dialog::ID_Dialog(ID_Text *idText_)
@@ -36,11 +38,11 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
   idText = idText_;
   setCaption(tr("Edit Subcircuit Properties"));
 
-  v = new QVBoxLayout(this);
+  v = new Q3VBoxLayout(this);
   v->setSpacing(5);
   v->setMargin(5);
 
-  QHBox *h0 = new QHBox(this);
+  Q3HBox *h0 = new Q3HBox(this);
   h0->setSpacing(5);
   v->addWidget(h0);
 
@@ -52,9 +54,9 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
   Prefix->setText(idText->Prefix);
 
 
-  QVGroupBox *ParamBox = new QVGroupBox(tr("Parameters"), this);
+  Q3VGroupBox *ParamBox = new Q3VGroupBox(tr("Parameters"), this);
   v->addWidget(ParamBox);
-  ParamList = new QListView(ParamBox);
+  ParamList = new Q3ListView(ParamBox);
   ParamList->addColumn(tr("display"));
   ParamList->addColumn(tr("Name"));
   ParamList->addColumn(tr("Default"));
@@ -64,25 +66,25 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
 
   SubParameter *pp;
   for(pp = idText->Parameter.last(); pp!=0; pp = idText->Parameter.prev())
-    new QListViewItem(ParamList,
+    new Q3ListViewItem(ParamList,
       pp->display ? tr("yes") : tr("no"), pp->Name.section('=', 0,0),
       pp->Name.section('=', 1,1), pp->Description, pp->Type);
 
-  connect(ParamList, SIGNAL(selectionChanged(QListViewItem*)),
-                     SLOT(slotEditParameter(QListViewItem*)));
+  connect(ParamList, SIGNAL(selectionChanged(Q3ListViewItem*)),
+                     SLOT(slotEditParameter(Q3ListViewItem*)));
 
   showCheck = new QCheckBox(tr("display in schematic"), ParamBox);
   showCheck->setChecked(true);
   connect(showCheck, SIGNAL(toggled(bool)), SLOT(slotToggleShow(bool)));
 
-  QHBox *h1 = new QHBox(ParamBox);
-  QVBox *v1 = new QVBox(h1);
+  Q3HBox *h1 = new Q3HBox(ParamBox);
+  Q3VBox *v1 = new Q3VBox(h1);
   new QLabel(tr("Name:"), v1);
   new QLabel(tr("Default Value:"), v1);
   new QLabel(tr("Description:"), v1);
   new QLabel(tr("Type:"), v1);
 
-  QVBox *v2 = new QVBox(h1);
+  Q3VBox *v2 = new Q3VBox(h1);
 
   Expr.setPattern("[\\w_]+");
   NameVal = new QRegExpValidator(Expr, this);
@@ -112,14 +114,14 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
   connect(TypeEdit, SIGNAL(textChanged(const QString&)),
           SLOT(slotTypeChanged(const QString&)));
 
-  QHBox *h2 = new QHBox(ParamBox);
+  Q3HBox *h2 = new Q3HBox(ParamBox);
   h2->setStretchFactor(new QWidget(h2), 10);
   QPushButton *ButtAdd = new QPushButton(tr("Add"), h2);
   connect(ButtAdd, SIGNAL(clicked()), SLOT(slotAddParameter()));
   QPushButton *ButtRemove = new QPushButton(tr("Remove"), h2);
   connect(ButtRemove, SIGNAL(clicked()), SLOT(slotRemoveParameter()));
 
-  QHBox *h3 = new QHBox(this);
+  Q3HBox *h3 = new Q3HBox(this);
   h3->setSpacing(5);
   v->addWidget(h3);
 
@@ -142,7 +144,7 @@ ID_Dialog::~ID_Dialog()
 }
 
 // -----------------------------------------------------------
-void ID_Dialog::slotEditParameter(QListViewItem *Item)
+void ID_Dialog::slotEditParameter(Q3ListViewItem *Item)
 {
   if(Item == 0) {
     ParamList->clearSelection();
@@ -173,7 +175,7 @@ void ID_Dialog::slotAddParameter()
     return;
   }
 
-  QListViewItem *item, *lastItem=0;
+  Q3ListViewItem *item, *lastItem=0;
   for(item = ParamList->firstChild(); item!=0; item = item->itemBelow()) {
     if(item->text(1) == ParamNameEdit->text()) {
       QMessageBox::critical(this, tr("Error"),
@@ -184,7 +186,7 @@ void ID_Dialog::slotAddParameter()
   }
 
 
-  new QListViewItem(ParamList, lastItem,
+  new Q3ListViewItem(ParamList, lastItem,
       showCheck->isChecked() ? tr("yes") : tr("no"), ParamNameEdit->text(),
       ValueEdit->text(), DescriptionEdit->text(), TypeEdit->text());
 
@@ -195,9 +197,9 @@ void ID_Dialog::slotAddParameter()
 // -----------------------------------------------------------
 void ID_Dialog::slotRemoveParameter()
 {
-  QListViewItem *nextItem = 0;
+  Q3ListViewItem *nextItem = 0;
 
-  QListViewItem *Item = ParamList->selectedItem();
+  Q3ListViewItem *Item = ParamList->selectedItem();
   if(Item) {
     nextItem = Item->itemBelow();
     if(nextItem == 0)  nextItem = Item->itemAbove();
@@ -211,7 +213,7 @@ void ID_Dialog::slotRemoveParameter()
 // -----------------------------------------------------------
 void ID_Dialog::slotToggleShow(bool On)
 {
-  QListViewItem *Item = ParamList->selectedItem();
+  Q3ListViewItem *Item = ParamList->selectedItem();
   if(Item == 0) return;
 
   Item->setText(0, On ? tr("yes") : tr("no"));
@@ -220,7 +222,7 @@ void ID_Dialog::slotToggleShow(bool On)
 // -----------------------------------------------------------
 void ID_Dialog::slotNameChanged(const QString& text)
 {
-  QListViewItem *Item = ParamList->selectedItem();
+  Q3ListViewItem *Item = ParamList->selectedItem();
   if(Item == 0) return;
 
   Item->setText(1, text);
@@ -229,7 +231,7 @@ void ID_Dialog::slotNameChanged(const QString& text)
 // -----------------------------------------------------------
 void ID_Dialog::slotValueChanged(const QString& text)
 {
-  QListViewItem *Item = ParamList->selectedItem();
+  Q3ListViewItem *Item = ParamList->selectedItem();
   if(Item == 0) return;
 
   Item->setText(2, text);
@@ -238,7 +240,7 @@ void ID_Dialog::slotValueChanged(const QString& text)
 // -----------------------------------------------------------
 void ID_Dialog::slotDescrChanged(const QString& text)
 {
-  QListViewItem *Item = ParamList->selectedItem();
+  Q3ListViewItem *Item = ParamList->selectedItem();
   if(Item == 0) return;
 
   Item->setText(3, text);
@@ -247,7 +249,7 @@ void ID_Dialog::slotDescrChanged(const QString& text)
 // -----------------------------------------------------------
 void ID_Dialog::slotTypeChanged(const QString& text)
 {
-  QListViewItem *Item = ParamList->selectedItem();
+  Q3ListViewItem *Item = ParamList->selectedItem();
   if(Item == 0) return;
 
   Item->setText(4, text);
@@ -265,7 +267,7 @@ void ID_Dialog::slotOk()
     }
 
   QString s;
-  QListViewItem *item;
+  Q3ListViewItem *item;
   SubParameter *pp = idText->Parameter.first();
   for(item = ParamList->firstChild(); item != 0; item = item->itemBelow()) {
     s = item->text(1) + "=" + item->text(2);

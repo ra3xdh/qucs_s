@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "main.h"
 #include "logical_buf.h"
 #include "schematic.h"
@@ -91,24 +91,24 @@ void Logical_Buf::createSymbol()
   int xr;
 
   if(Props.getLast()->Value.at(0) == 'D') {  // DIN symbol
-    Lines.append(new Line( 15,-20, 15, 20,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-15,-20, 15,-20,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-15, 20, 15, 20,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-15,-20,-15, 20,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line( 15,-20, 15, 20,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-15,-20, 15,-20,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-15, 20, 15, 20,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-15,-20,-15, 20,QPen(Qt::darkBlue,2)));
 
-    Texts.append(new Text(-11,-17, "1", QPen::darkBlue, 15.0));
+    Texts.append(new Text(-11,-17, "1", Qt::darkBlue, 15.0));
     xr =  15;
   }
   else {   // old symbol
-    Lines.append(new Line(-10,-20,-10,20, QPen(QPen::darkBlue,2)));
-    Arcs.append(new Arc(-30,-20, 40, 30,  0, 16*90,QPen(QPen::darkBlue,2)));
-    Arcs.append(new Arc(-30,-10, 40, 30,  0,-16*90,QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 10,-5, 10, 5,QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-10,-20,-10,20, QPen(Qt::darkBlue,2)));
+    Arcs.append(new Arc(-30,-20, 40, 30,  0, 16*90,QPen(Qt::darkBlue,2)));
+    Arcs.append(new Arc(-30,-10, 40, 30,  0,-16*90,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 10,-5, 10, 5,QPen(Qt::darkBlue,2)));
     xr =  10;
   }
 
-  Lines.append(new Line( xr, 0, 30, 0, QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30, 0,-xr, 0, QPen(QPen::darkBlue,2)));
+  Lines.append(new Line( xr, 0, 30, 0, QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30, 0,-xr, 0, QPen(Qt::darkBlue,2)));
   Ports.append(new Port( 30, 0));
   Ports.append(new Port(-30, 0));
 

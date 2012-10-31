@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "viewpainter.h"
 #include "diagrams/graph.h"
 
@@ -295,7 +295,7 @@ int ViewPainter::drawText(const QString& Text, int x1, int y1, int *Height)
   y1 = TO_INT(z);
 
   QRect r;
-  Painter->drawText(x1, y1, 0, 0, Qt::DontClip, Text, -1, &r);
+  Painter->drawText(x1, y1, 0, 0, Qt::TextDontClip, Text, -1, &r);
 
   if(Height)  *Height = r.height();
   return r.width();
@@ -336,7 +336,7 @@ int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1,
       Painter->drawText(x1+x,
 			y1+y + (is_sub ? +0.6 : -0.3) *
 			fbak.pointSizeFloat() * scale,
-			0, 0, Qt::DontClip,
+			0, 0, Qt::TextDontClip,
 			Text.mid(i, len ? len : 1), -1, &r);
       Painter->setFont(fbak);
       x += r.width();
@@ -350,7 +350,7 @@ int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1,
 	     Text[i+len].latin1() != '^' && Text[i+len].latin1() != '\n')
 	len++;
       Painter->drawText(x1+x, y1+y,
-			0, 0, Qt::DontClip, Text.mid(i, len), -1, &r);
+			0, 0, Qt::TextDontClip, Text.mid(i, len), -1, &r);
       if (h < r.height()) {
         h = r.height();
       }

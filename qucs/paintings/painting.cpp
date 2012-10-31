@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "painting.h"
 
 Painting::Painting()
@@ -74,7 +74,7 @@ QString Painting::toBrushString (int brush) {
   case Qt::BDiagPattern: return "Qt::BDiagPattern";
   case Qt::FDiagPattern: return "Qt::FDiagPattern";
   case Qt::DiagCrossPattern: return "Qt::DiagCrossPattern";
-  case Qt::CustomPattern : return "Qt::CustomPattern ";
+  case Qt::TexturePattern : return "Qt::CustomPattern ";
   }
   return "Qt::NoBrush";
 }

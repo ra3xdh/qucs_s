@@ -22,15 +22,15 @@ Phaseshifter::Phaseshifter()
 {
   Description = QObject::tr("phase shifter");
 
-  Lines.append(new Line(-14,-14, 14,-14,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-14, 14, 14, 14,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-14,-14,-14, 14,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 14,-14, 14, 14,QPen(QPen::darkBlue,2)));
-  Arcs.append(new Arc( -9, -9, 17, 17, 0, 16*360,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-10, 10, 10,-10,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-14,-14, 14,-14,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-14, 14, 14, 14,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-14,-14,-14, 14,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 14,-14, 14, 14,QPen(Qt::darkBlue,2)));
+  Arcs.append(new Arc( -9, -9, 17, 17, 0, 16*360,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-10, 10, 10,-10,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-30,  0,-14,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 14,  0, 30,  0,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 14,  0, 30,  0,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30,  0));
   Ports.append(new Port( 30,  0));

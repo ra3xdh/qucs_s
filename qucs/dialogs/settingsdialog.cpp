@@ -14,21 +14,24 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "settingsdialog.h"
 
 #include "node.h"
 #include "qucs.h"
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <Q3VBoxLayout>
 #include "mnemo.h"
 #include "schematic.h"
 
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qlabel.h>
 #include <qwidget.h>
 #include <qlayout.h>
 #include <qregexp.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qtabwidget.h>
@@ -42,13 +45,13 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
   Doc = Doc_;
   setCaption(tr("Edit File Properties"));
 
-  all = new QVBoxLayout(this); // to provide the neccessary size
+  all = new Q3VBoxLayout(this); // to provide the neccessary size
   QTabWidget *t = new QTabWidget(this);
   all->addWidget(t);
 
   // ...........................................................
   QWidget *Tab1 = new QWidget(t);
-  QGridLayout *gp = new QGridLayout(Tab1,6,2,5,5);
+  Q3GridLayout *gp = new Q3GridLayout(Tab1,6,2,5,5);
 
   QLabel *l1 = new QLabel(tr("Data Display:"), Tab1);
   gp->addWidget(l1,1,0);
@@ -77,7 +80,7 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
 
   // ...........................................................
   QWidget *Tab2 = new QWidget(t);
-  QGridLayout *gp2 = new QGridLayout(Tab2,4,2,5,5);
+  Q3GridLayout *gp2 = new Q3GridLayout(Tab2,4,2,5,5);
   Check_GridOn = new QCheckBox(tr("show Grid"),Tab2);
   gp2->addMultiCellWidget(Check_GridOn,0,0,0,1);
 
@@ -99,7 +102,7 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
 
   // ...........................................................
   QWidget *Tab3 = new QWidget(t);
-  QGridLayout *gp3 = new QGridLayout(Tab3,5,2,5,5);
+  Q3GridLayout *gp3 = new Q3GridLayout(Tab3,5,2,5,5);
   Combo_Frame = new QComboBox(Tab3);
   Combo_Frame->insertItem(tr("no Frame"));
   Combo_Frame->insertItem(tr("DIN A5 landscape"));
@@ -112,9 +115,9 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
   Combo_Frame->insertItem(tr("Letter portrait"));
   gp3->addMultiCellWidget(Combo_Frame,0,0,0,1);
 
-  Input_Frame0 = new QTextEdit(Tab3);
+  Input_Frame0 = new Q3TextEdit(Tab3);
   Input_Frame0->setTextFormat(Qt::PlainText);
-  Input_Frame0->setWordWrap(QTextEdit::NoWrap);
+  Input_Frame0->setWordWrap(Q3TextEdit::NoWrap);
   gp3->addMultiCellWidget(Input_Frame0,1,2,0,1);
 
   Input_Frame1 = new QLineEdit(Tab3);
@@ -129,7 +132,7 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
 
   // ...........................................................
   // buttons on the bottom of the dialog (independent of the TabWidget)
-  QHBox *Butts = new QHBox(this);
+  Q3HBox *Butts = new Q3HBox(this);
   Butts->setSpacing(5);
   Butts->setMargin(5);
   all->addWidget(Butts);
@@ -217,12 +220,12 @@ void SettingsDialog::slotApply()
     changed = true;
   }
 
-  if(Doc->GridX != Input_GridX->text()) {
+  if(Doc->GridX != Input_GridX->text().toInt()) {
     Doc->GridX = Input_GridX->text().toInt();
     changed = true;
   }
 
-  if(Doc->GridY != Input_GridY->text()) {
+  if(Doc->GridY != Input_GridY->text().toInt()) {
     Doc->GridY = Input_GridY->text().toInt();
     changed = true;
   }

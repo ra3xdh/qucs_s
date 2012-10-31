@@ -18,9 +18,16 @@
 #ifndef QUCS_H
 #define QUCS_H
 
-#include <qmainwindow.h>
+#include <q3mainwindow.h>
 #include <qstring.h>
 #include <qdir.h>
+//Added by qt3to4:
+#include <q3accel.h>
+#include <QLabel>
+#include <Q3PtrList>
+#include <Q3PopupMenu>
+#include <QMouseEvent>
+#include <QCloseEvent>
 
 class QucsDoc;
 class Schematic;
@@ -30,17 +37,17 @@ class SearchDialog;
 class QLabel;
 class QAction;
 class QPrinter;
-class QToolBar;
+class Q3ToolBar;
 class QLineEdit;
 class QComboBox;
 class QTabWidget;
-class QPopupMenu;
-class QListBox;
-class QListBoxItem;
-class QListView;
-class QListViewItem;
-class QIconView;
-class QIconViewItem;
+class Q3PopupMenu;
+class Q3ListBox;
+class Q3ListBoxItem;
+class Q3ListView;
+class Q3ListViewItem;
+class Q3IconView;
+class Q3IconViewItem;
 class VTabbedDockWidget;
 class VTabWidget;
 class OctaveWindow;
@@ -53,7 +60,7 @@ extern QDir QucsWorkDir;
 extern QDir QucsHomeDir;
 
 
-class QucsApp : public QMainWindow {
+class QucsApp : public Q3MainWindow {
   Q_OBJECT
 public:
   QucsApp();
@@ -105,14 +112,14 @@ public slots:
   void slotZoomOut(); // Zoom out by 2
 
   void slotToPage();
-  void slotSelectComponent(QIconViewItem*);
+  void slotSelectComponent(Q3IconViewItem*);
 
   void slotEditElement();
   void slotPowerMatching();
   void slot2PortMatching();
 
   // for menu that appears by right click in content ListView
-  void slotShowContentMenu(QListViewItem*, const QPoint&, int);
+  void slotShowContentMenu(Q3ListViewItem*, const QPoint&, int);
   void slotCMenuOpen();
   void slotCMenuRename();
   void slotCMenuDelete();
@@ -120,11 +127,11 @@ public slots:
 
 private slots:
   void slotMenuOpenProject();
-  void slotOpenProject(QListBoxItem*);
+  void slotOpenProject(Q3ListBoxItem*);
   void slotMenuCloseProject();
-  void slotSelectSubcircuit(QListViewItem*);
-  void slotExpandContentList(QListViewItem*);
-  void slotOpenContent(QListViewItem*);
+  void slotSelectSubcircuit(Q3ListViewItem*);
+  void slotExpandContentList(Q3ListViewItem*);
+  void slotOpenContent(Q3ListViewItem*);
   void slotSetCompView(int);
   void slotProjNewButt();
   void slotProjOpenButt();
@@ -144,10 +151,10 @@ signals:
 public:
   MouseActions *view;
   QTabWidget *DocumentTab;
-  QIconView  *CompComps;
+  Q3IconView  *CompComps;
 
   // menu appearing by right mouse button click on content listview
-  QPopupMenu *ContentMenu;
+  Q3PopupMenu *ContentMenu;
 
   QAction *fileNew, *textNew, *fileNewDpl, *fileOpen, *fileSave, *fileSaveAs,
           *fileSaveAll, *fileClose, *fileSettings, *filePrint, *fileQuit,
@@ -163,18 +170,18 @@ private:
 // ********* Widgets on the main area **********************************
   VTabbedDockWidget   *dock;
   VTabWidget    *TabView;
-  QDockWindow   *octDock;
+  Q3DockWindow   *octDock;
   OctaveWindow  *octave;
 
-  QListBox      *Projects;
-  QListView     *Content;
-  QListViewItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
+  Q3ListBox      *Projects;
+  Q3ListView     *Content;
+  Q3ListViewItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
                 *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
 
   QComboBox     *CompChoose;
 
 // ********** Properties ************************************************
-  QPtrList<QString> HierarchyHistory; // keeps track of "go into subcircuit"
+  Q3PtrList<QString> HierarchyHistory; // keeps track of "go into subcircuit"
   QString  QucsFileFilter;
 
 // ********** Methods ***************************************************
@@ -228,12 +235,12 @@ private:
           *viewBrowseDock, *viewOctaveDock;
 
   // menus contain the items of their menubar
-  QPopupMenu *fileMenu, *editMenu, *insMenu, *projMenu, *simMenu, *viewMenu,
+  Q3PopupMenu *fileMenu, *editMenu, *insMenu, *projMenu, *simMenu, *viewMenu,
              *helpMenu, *alignMenu, *toolMenu;
 
-  QToolBar *fileToolbar, *editToolbar, *viewToolbar, *workToolbar;
+  Q3ToolBar *fileToolbar, *editToolbar, *viewToolbar, *workToolbar;
 
-  QAccel *mainAccel;     // to set more than one key to one action
+  Q3Accel *mainAccel;     // to set more than one key to one action
   QLabel *WarningLabel, *PositionLabel;  // labels in status bar
 
 

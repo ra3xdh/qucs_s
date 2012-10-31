@@ -14,10 +14,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include <qdir.h>
 #include <qfile.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qregexp.h>
 #include <qstring.h>
 #include <qstringlist.h>
@@ -30,7 +30,7 @@ Optimize_Sim::Optimize_Sim()
 {
   Description = QObject::tr("Optimization");
 
-  Texts.append(new Text(0, 0, Description, QPen::darkBlue, QucsSettings.largeFontSize));
+  Texts.append(new Text(0, 0, Description, Qt::darkBlue, QucsSettings.largeFontSize));
 
   x1 = -10; y1 = -9;
   x2 = x1+128; y2 = y1+41;
@@ -82,8 +82,8 @@ bool Optimize_Sim::createASCOFiles()
 {
   Property* pp;
   QFile afile(QucsHomeDir.filePath("asco_netlist.cfg"));
-  if(afile.open(IO_WriteOnly)) {
-    QTextStream stream(&afile);
+  if(afile.open(QIODevice::WriteOnly)) {
+    Q3TextStream stream(&afile);
     stream << "*\n";
     stream << "* ASCO configuration file for '" << Name << "'\n";
     stream << "*\n\n";
@@ -177,8 +177,8 @@ bool Optimize_Sim::createASCOFiles()
     if(pp->Name == "Goal") {
       QString VarName = pp->Value.section('|',0,0);
       QFile efile(ExtractDir.filePath(VarName));
-      if(efile.open(IO_WriteOnly)) {
-	QTextStream stream(&efile);
+      if(efile.open(QIODevice::WriteOnly)) {
+	Q3TextStream stream(&efile);
 	stream << "# Info #\n";
 	stream << "#\n\n";
 	stream << "# Commands #\n";
@@ -208,10 +208,10 @@ bool Optimize_Sim::createASCOnetlist()
 
   QFile infile(QucsHomeDir.filePath("netlist.txt"));
   QFile outfile(QucsHomeDir.filePath("asco_netlist.txt"));
-  if(!infile.open(IO_ReadOnly)) return false;
-  if(!outfile.open(IO_WriteOnly)) return false;
-  QTextStream instream(&infile);
-  QTextStream outstream(&outfile);
+  if(!infile.open(QIODevice::ReadOnly)) return false;
+  if(!outfile.open(QIODevice::WriteOnly)) return false;
+  Q3TextStream instream(&infile);
+  Q3TextStream outstream(&outfile);
   QString Line;
   while(!instream.atEnd()) {
     Line = instream.readLine();
@@ -239,8 +239,8 @@ bool Optimize_Sim::loadASCOout()
   }
 
   QFile infile(QucsHomeDir.filePath("asco_out.log"));
-  if(!infile.open(IO_ReadOnly)) return false;
-  QTextStream instream(&infile);
+  if(!infile.open(QIODevice::ReadOnly)) return false;
+  Q3TextStream instream(&infile);
   QString Line;
   while(!instream.atEnd()) Line = instream.readLine();
   infile.close();

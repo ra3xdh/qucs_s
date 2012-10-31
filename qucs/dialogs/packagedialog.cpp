@@ -18,22 +18,24 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-
+#include <QtGui>
 #include <stdlib.h>
 
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qcheckbox.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-#include <qscrollview.h>
+#include <q3scrollview.h>
 #include <qdatastream.h>
-#include <qvbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 #include "packagedialog.h"
 #include "qucs.h"
@@ -51,16 +53,16 @@
 PackageDialog::PackageDialog(QWidget *parent_, bool create_)
 			: QDialog(parent_, 0, TRUE, Qt::WDestructiveClose)
 {
-  all = new QVBoxLayout(this);
+  all = new Q3VBoxLayout(this);
   all->setMargin(5);
   all->setSpacing(6);
 
-  QHBox *h2 = new QHBox(this);
+  Q3HBox *h2 = new Q3HBox(this);
 
   if(create_) {  // create or extract package ?
     setCaption(tr("Create Project Package"));
 
-    QHBox *h1 = new QHBox(this);
+    Q3HBox *h1 = new Q3HBox(this);
     all->addWidget(h1);
     new QLabel(tr("Package:"), h1);
     NameEdit = new QLineEdit(h1);
@@ -70,12 +72,12 @@ PackageDialog::PackageDialog(QWidget *parent_, bool create_)
     LibraryCheck = new QCheckBox(tr("include user libraries"), this);
     all->addWidget(LibraryCheck);
 
-    Group = new QVButtonGroup(tr("Choose projects:"), this);
+    Group = new Q3VButtonGroup(tr("Choose projects:"), this);
     all->addWidget(Group);
   
-    QScrollView *Dia_Scroll = new QScrollView(Group);
+    Q3ScrollView *Dia_Scroll = new Q3ScrollView(Group);
     Dia_Scroll->setMargin(5);
-    QVBox *Dia_Box = new QVBox(Dia_Scroll->viewport());
+    Q3VBox *Dia_Box = new Q3VBox(Dia_Scroll->viewport());
     Dia_Scroll->addChild(Dia_Box);
 
     // ...........................................................
@@ -107,9 +109,9 @@ PackageDialog::PackageDialog(QWidget *parent_, bool create_)
   else {  // of "if(create_)"
     setCaption(tr("Extract Project Package"));
 
-    MsgText = new QTextEdit(this);
+    MsgText = new Q3TextEdit(this);
     MsgText->setTextFormat(Qt::PlainText);
-    MsgText->setWordWrap(QTextEdit::NoWrap);
+    MsgText->setWordWrap(Q3TextEdit::NoWrap);
     MsgText->setReadOnly(true);
     all->addWidget(MsgText);
 
@@ -131,7 +133,7 @@ PackageDialog::~PackageDialog()
 // ---------------------------------------------------------------
 void PackageDialog::slotBrowse()
 {
-  QString s = QFileDialog::getSaveFileName(
+  QString s = Q3FileDialog::getSaveFileName(
      lastDir.isEmpty() ? QString(".") : lastDir,
      tr("Qucs Packages")+" (*.qucs);;"+
      tr("Any File")+" (*)",
@@ -155,7 +157,7 @@ int PackageDialog::insertFile(const QString& FileName, QFile& File,
 {
   QByteArray FileContent;
 
-  if(!File.open(IO_ReadOnly)) {
+  if(!File.open(QIODevice::ReadOnly)) {
     QMessageBox::critical(this, tr("Error"),
                     tr("Cannot open \"%1\"!").arg(FileName));
     return -1;
@@ -255,7 +257,7 @@ void PackageDialog::slotCreate()
           tr("&Yes"), tr("&No"), 0,1,1))
       return;
 
-  if(!PkgFile.open(IO_ReadWrite)) {
+  if(!PkgFile.open(QIODevice::ReadWrite)) {
     QMessageBox::critical(this, tr("Error"), tr("Cannot create package!"));
     return;
   }
@@ -311,7 +313,7 @@ void PackageDialog::slotCreate()
 
 void PackageDialog::extractPackage()
 {
-  QString s = QFileDialog::getOpenFileName(
+  QString s = Q3FileDialog::getOpenFileName(
      lastDir.isEmpty() ? QString(".") : lastDir,
      tr("Qucs Packages")+" (*.qucs);;"+
      tr("Any File")+" (*)",
@@ -326,10 +328,10 @@ void PackageDialog::extractPackage()
   lastDir = Info.dirPath(true);  // remember last directory
 
   QFile PkgFile(s);
-  if(!PkgFile.open(IO_ReadOnly)) {
+  if(!PkgFile.open(QIODevice::ReadOnly)) {
     if(Info.extension().isEmpty()) s += ".qucs";
     PkgFile.setName(s);
-    if(!PkgFile.open(IO_ReadOnly)) {
+    if(!PkgFile.open(QIODevice::ReadOnly)) {
       MsgText->append(tr("ERROR: Cannot open package!"));
       ButtClose->setDisabled(false);
       return;
@@ -435,7 +437,7 @@ int PackageDialog::extractFile(QFile& PkgFile, Q_UINT32 Count, QDir& currDir)
 
   p = Content.data();
   QFile File(currDir.absFilePath(QString(p)));
-  if(!File.open(IO_WriteOnly)) {
+  if(!File.open(QIODevice::WriteOnly)) {
     MsgText->append(tr("ERROR: Cannot create file \"%1\"!").arg(QString(p)));
     return -1;
   }
@@ -462,7 +464,7 @@ int PackageDialog::extractLibrary(QFile& PkgFile, Q_UINT32 Count)
     return -1;
   }
 
-  if(!File.open(IO_WriteOnly)) {
+  if(!File.open(QIODevice::WriteOnly)) {
     MsgText->append(tr("ERROR: Cannot create library \"%1\"!").arg(QString(p)));
     return -1;
   }

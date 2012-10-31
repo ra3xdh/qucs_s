@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "main.h"
 #include "portsymbol.h"
 
@@ -45,7 +45,7 @@ PortSymbol::~PortSymbol()
 // --------------------------------------------------------------------------
 void PortSymbol::paint(ViewPainter *p)
 {
-  p->Painter->setPen(QPen(QPen::red,1));  // like open node
+  p->Painter->setPen(QPen(Qt::red,1));  // like open node
   p->drawEllipse(cx-4, cy-4, 8, 8);
 
 
@@ -56,8 +56,8 @@ void PortSymbol::paint(ViewPainter *p)
   x2 = Unit - x1;
   y2 = r.height() + Unit;
 
-  QWMatrix wm = p->Painter->worldMatrix();
-  QWMatrix Mat(1.0, 0.0, 0.0, 1.0, p->DX + float(cx) * p->Scale,
+  QMatrix wm = p->Painter->worldMatrix();
+  QMatrix Mat(1.0, 0.0, 0.0, 1.0, p->DX + float(cx) * p->Scale,
 				   p->DY + float(cy) * p->Scale);
   p->Painter->setWorldMatrix(Mat);
 
@@ -84,7 +84,7 @@ void PortSymbol::paint(ViewPainter *p)
   }
 
   p->Painter->setPen(Qt::black);
-  p->Painter->drawText(tx, ty, 0, 0, Qt::DontClip, nameStr);
+  p->Painter->drawText(tx, ty, 0, 0, Qt::TextDontClip, nameStr);
 
 
   p->Painter->setWorldMatrix(wm);
@@ -98,7 +98,7 @@ void PortSymbol::paint(ViewPainter *p)
   p->drawRect(cx+x1, cy+y1, x2, y2);
 
   if(isSelected) {
-    p->Painter->setPen(QPen(QPen::darkGray,3));
+    p->Painter->setPen(QPen(Qt::darkGray,3));
     p->drawRoundRect(cx+x1-4, cy+y1-4, x2+8, y2+8);
   }
 }

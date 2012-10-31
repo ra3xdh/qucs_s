@@ -1,4 +1,4 @@
-/***************************************************************************
+/**************************************************************************
                                qucslib.cpp
                               -------------
     begin                : Sat May 28 2005
@@ -21,20 +21,25 @@
 
 #include <qmenubar.h>
 #include <qaction.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qcombobox.h>
 #include <qclipboard.h>
 #include <qapplication.h>
 #include <qlayout.h>
-#include <qhbox.h>
-#include <qvgroupbox.h>
+#include <q3hbox.h>
+#include <q3vgroupbox.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
-#include <qtextedit.h>
-#include <qlistbox.h>
+#include <q3textedit.h>
+#include <q3listbox.h>
 #include <qregexp.h>
 
 #include "qucslib.h"
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <QCloseEvent>
+#include <QPixmap>
+#include <Q3VBoxLayout>
 #include "librarydialog.h"
 #include "displaydialog.h"
 #include "symbolwidget.h"
@@ -51,27 +56,27 @@ QucsLib::QucsLib()
   QMenuBar * menuBar = new QMenuBar (this);
 
   // create file menu
-  QPopupMenu * fileMenu = new QPopupMenu ();
+  Q3PopupMenu * fileMenu = new Q3PopupMenu ();
   QAction * manageLib =
-    new QAction ("Manage User Libraries...", tr("Manage User &Libraries..."), CTRL+Key_M, this);
+    new QAction (tr("Manage User &Libraries..."), Qt::CTRL+Qt::Key_M, this,"");
   manageLib->addTo (fileMenu);
   connect(manageLib, SIGNAL(activated()), SLOT(slotManageLib()));
 
   fileMenu->insertSeparator();
 
   QAction * fileQuit =
-    new QAction ("Quit", tr("&Quit"), CTRL+Key_Q, this);
+    new QAction (tr("&Quit"), Qt::CTRL+Qt::Key_Q, this,"");
   fileQuit->addTo (fileMenu);
   connect(fileQuit, SIGNAL(activated()), SLOT(slotQuit()));
 
   // create help menu
-  QPopupMenu * helpMenu = new QPopupMenu ();
+  Q3PopupMenu * helpMenu = new Q3PopupMenu ();
   QAction * helpHelp =
-    new QAction (tr("Help"), tr("&Help"), Key_F1, this);
+    new QAction (tr("&Help"), Qt::Key_F1, this,"");
   helpHelp->addTo (helpMenu);
   connect(helpHelp, SIGNAL(activated()), SLOT(slotHelp()));
   QAction * helpAbout =
-    new QAction (tr("About"), tr("About"), 0, helpMenu);
+    new QAction (tr("About"), 0, helpMenu,"");
   helpAbout->addTo (helpMenu);
   connect(helpAbout, SIGNAL(activated()), SLOT(slotAbout()));
 
@@ -81,7 +86,7 @@ QucsLib::QucsLib()
   menuBar->insertItem (tr("&Help"), helpMenu);
 
   // main box
-  QVBoxLayout * all = new QVBoxLayout (this);
+  Q3VBoxLayout * all = new Q3VBoxLayout (this);
   all->setSpacing (0);
   all->setMargin (0);
 
@@ -91,35 +96,35 @@ QucsLib::QucsLib()
   all->addWidget (Space);
 
   // main layout
-  QHBox * h = new QHBox (this);
+  Q3HBox * h = new Q3HBox (this);
   h->setSpacing (5);
   h->setMargin (3);
   all->addWidget (h);
 
   // library and component choice
-  QVGroupBox * LibGroup = new QVGroupBox (tr("Component Selection"), h);
+  Q3VGroupBox * LibGroup = new Q3VGroupBox (tr("Component Selection"), h);
   Library = new QComboBox (LibGroup);
   connect(Library, SIGNAL(activated(int)), SLOT(slotSelectLibrary(int)));
-  CompList = new QListBox(LibGroup);
-  connect(CompList, SIGNAL(highlighted(QListBoxItem*)),
-	SLOT(slotShowComponent(QListBoxItem*)));
+  CompList = new Q3ListBox(LibGroup);
+  connect(CompList, SIGNAL(highlighted(Q3ListBoxItem*)),
+	SLOT(slotShowComponent(Q3ListBoxItem*)));
 
-  QHBox * h1 = new QHBox (LibGroup);
+  Q3HBox * h1 = new Q3HBox (LibGroup);
   QPushButton * SearchButton = new QPushButton (tr("Search..."), h1);
   connect(SearchButton, SIGNAL(clicked()), SLOT(slotSearchComponent()));
   h1->setStretchFactor(new QWidget(h1), 5); // stretchable placeholder
 
 
   // component display
-  QVGroupBox *CompGroup = new QVGroupBox (tr("Component"), h);
-  CompDescr = new QTextEdit(CompGroup);
+  Q3VGroupBox *CompGroup = new Q3VGroupBox (tr("Component"), h);
+  CompDescr = new Q3TextEdit(CompGroup);
   CompDescr->setTextFormat(Qt::PlainText);
   CompDescr->setReadOnly(true);
-  CompDescr->setWordWrap(QTextEdit::NoWrap);
+  CompDescr->setWordWrap(Q3TextEdit::NoWrap);
 
   Symbol = new SymbolWidget (CompGroup);
 
-  QHBox * h2 = new QHBox (CompGroup);
+  Q3HBox * h2 = new Q3HBox (CompGroup);
   QPushButton * CopyButton = new QPushButton (tr("Copy to clipboard"), h2);
   connect(CopyButton, SIGNAL(clicked()), SLOT(slotCopyToClipBoard()));
   QPushButton * ShowButton = new QPushButton (tr("Show Model"), h2);
@@ -244,11 +249,11 @@ void QucsLib::slotShowModel()
   d->setCaption(tr("Model"));
   d->resize(500, 150);
   d->Text->setText(Symbol->ModelString);
-  d->Text->setWordWrap(QTextEdit::NoWrap);
+  d->Text->setWordWrap(Q3TextEdit::NoWrap);
   d->VHDLText->setText(Symbol->VHDLModelString);
-  d->VHDLText->setWordWrap(QTextEdit::NoWrap);
+  d->VHDLText->setWordWrap(Q3TextEdit::NoWrap);
   d->VerilogText->setText(Symbol->VerilogModelString);
-  d->VerilogText->setWordWrap(QTextEdit::NoWrap);
+  d->VerilogText->setWordWrap(Q3TextEdit::NoWrap);
   d->show();
 }
 
@@ -273,14 +278,14 @@ void QucsLib::slotSelectLibrary(int Index)
   else
     file.setName(QucsSettings.LibDir + Library->text(Index) + ".lib");
 
-  if(!file.open(IO_ReadOnly)) {
+  if(!file.open(QIODevice::ReadOnly)) {
     QMessageBox::critical(this, tr("Error"),
         tr("Cannot open \"%1\".").arg(
            QucsSettings.LibDir + Library->text(Index) + ".lib"));
     return;
   }
 
-  QTextStream ReadWhole(&file);
+  Q3TextStream ReadWhole(&file);
   QString LibraryString = ReadWhole.read();
   file.close();
 
@@ -338,12 +343,12 @@ void QucsLib::slotSearchComponent()
 }
 
 // ----------------------------------------------------
-void QucsLib::slotShowComponent(QListBoxItem *Item)
+void QucsLib::slotShowComponent(Q3ListBoxItem *Item)
 {
   if(!Item) return;
 
-  QStringList::Iterator CompString = LibraryComps.at(CompList->index(Item));
-  QString LibName = (*CompString).section('\n', 0, 0);
+  QString CompString = LibraryComps.at(CompList->index(Item));
+  QString LibName = (CompString).section('\n', 0, 0);
   CompDescr->setText("Name: " + Item->text());
   CompDescr->append("Library: " + LibName);
   CompDescr->append("----------------------------");
@@ -352,25 +357,25 @@ void QucsLib::slotShowComponent(QListBoxItem *Item)
     LibName = UserLibDir.absPath() + QDir::separator() + LibName;
 
   QString content;
-  if(!getSection("Description", *CompString, content))
+  if(!getSection("Description", CompString, content))
     return;
   CompDescr->append(content);
 
-  if(!getSection("Model", *CompString, content))
+  if(!getSection("Model", CompString, content))
     return;
   Symbol->ModelString = content;
-  if(Symbol->ModelString.contains('\n') < 2)
+  if(Symbol->ModelString.count('\n') < 2)
     Symbol->createSymbol(LibName, Item->text());
 
-  if(!getSection("VHDLModel", *CompString, content))
+  if(!getSection("VHDLModel", CompString, content))
     return;
   Symbol->VHDLModelString = content;
 
-  if(!getSection("VerilogModel", *CompString, content))
+  if(!getSection("VerilogModel", CompString, content))
     return;
   Symbol->VerilogModelString = content;
 
-  if(!getSection("Symbol", *CompString, content))
+  if(!getSection("Symbol", CompString, content))
     return;
   if(!content.isEmpty())
     Symbol->setSymbol(content, LibName, Item->text());

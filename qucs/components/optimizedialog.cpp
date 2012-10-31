@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -23,17 +23,20 @@
 #include "opt_sim.h"
 #include "schematic.h"
 
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qcheckbox.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qtabwidget.h>
 #include <qvalidator.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <Q3VBoxLayout>
 
 
 OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
@@ -49,13 +52,13 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   numVal = new QDoubleValidator(this);
   intVal = new QIntValidator(this);
 
-  all = new QVBoxLayout(this); // to provide the neccessary size
+  all = new Q3VBoxLayout(this); // to provide the neccessary size
   QTabWidget *t = new QTabWidget(this);
   all->addWidget(t);
 
   // ...........................................................
   QWidget *Tab1 = new QWidget(t);
-  QGridLayout *gp1 = new QGridLayout(Tab1,3,2,3,3);
+  Q3GridLayout *gp1 = new Q3GridLayout(Tab1,3,2,3,3);
 
   gp1->addWidget(new QLabel(tr("Name:"), Tab1), 0,0);
   NameEdit = new QLineEdit(Tab1);
@@ -71,7 +74,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
 
   // ...........................................................
   QWidget *Tab4 = new QWidget(t);
-  QGridLayout *gp4 = new QGridLayout(Tab4,11,2,3,3);
+  Q3GridLayout *gp4 = new Q3GridLayout(Tab4,11,2,3,3);
 
   gp4->addWidget(new QLabel(tr("Method:"), Tab4), 0,0);
   MethodCombo = new QComboBox(Tab4);
@@ -136,9 +139,9 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
 
   // ...........................................................
   QWidget *Tab2 = new QWidget(t);
-  QGridLayout *gp2 = new QGridLayout(Tab2,5,3,3,3);
+  Q3GridLayout *gp2 = new Q3GridLayout(Tab2,5,3,3,3);
 
-  VarList = new QListView(Tab2);
+  VarList = new Q3ListView(Tab2);
   VarList->addColumn(tr("Name"));
   VarList->addColumn(tr("active"));
   VarList->addColumn(tr("initial"));
@@ -147,10 +150,10 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   VarList->addColumn(tr("Type"));
   VarList->setSorting(-1);   // no sorting
   gp2->addMultiCellWidget(VarList,0,0,0,2);
-  connect(VarList, SIGNAL(selectionChanged(QListViewItem*)),
-                   SLOT(slotEditVariable(QListViewItem*)));
+  connect(VarList, SIGNAL(selectionChanged(Q3ListViewItem*)),
+                   SLOT(slotEditVariable(Q3ListViewItem*)));
 
-  QHBox *VarLine = new QHBox(Tab2);
+  Q3HBox *VarLine = new Q3HBox(Tab2);
   VarLine->setSpacing(3);
   gp2->addMultiCellWidget(VarLine, 1,1,0,2);
 
@@ -183,7 +186,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   connect(VarMaxEdit, SIGNAL(textChanged(const QString&)),
           SLOT(slotChangeVarMax(const QString&)));
 
-  QHBox *VarButtons = new QHBox(Tab2);
+  Q3HBox *VarButtons = new Q3HBox(Tab2);
   VarButtons->setSpacing(3);
   gp2->addMultiCellWidget(VarButtons, 4,4,0,2);
 
@@ -206,16 +209,16 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
 
   // ...........................................................
   QWidget *Tab3 = new QWidget(t);
-  QGridLayout *gp3 = new QGridLayout(Tab3,4,3,3,3);
+  Q3GridLayout *gp3 = new Q3GridLayout(Tab3,4,3,3,3);
 
-  GoalList = new QListView(Tab3);
+  GoalList = new Q3ListView(Tab3);
   GoalList->addColumn(tr("Name"));
   GoalList->addColumn(tr("Type"));
   GoalList->addColumn(tr("Value"));
   GoalList->setSorting(-1);   // no sorting
   gp3->addMultiCellWidget(GoalList,0,0,0,2);
-  connect(GoalList, SIGNAL(selectionChanged(QListViewItem*)),
-                    SLOT(slotEditGoal(QListViewItem*)));
+  connect(GoalList, SIGNAL(selectionChanged(Q3ListViewItem*)),
+                    SLOT(slotEditGoal(Q3ListViewItem*)));
 
   gp3->addWidget(new QLabel(tr("Name:"), Tab3), 1,0);
   GoalNameEdit = new QLineEdit(Tab3);
@@ -242,7 +245,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   connect(GoalTypeCombo, SIGNAL(activated(const QString&)),
           SLOT(slotChangeGoalType(const QString&)));
 
-  QHBox *GoalButtons = new QHBox(Tab3);
+  Q3HBox *GoalButtons = new Q3HBox(Tab3);
   GoalButtons->setSpacing(3);
   gp3->addMultiCellWidget(GoalButtons, 3,3,0,2);
 
@@ -256,7 +259,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
 
   // ...........................................................
   // buttons on the bottom of the dialog (independent of the TabWidget)
-  QHBox *Butts = new QHBox(this);
+  Q3HBox *Butts = new Q3HBox(this);
   Butts->setSpacing(3);
   Butts->setMargin(3);
   all->addWidget(Butts);
@@ -301,7 +304,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
 
   for(pp = Comp->Props.at(2); pp != 0; pp = Comp->Props.next()) {
     if(pp->Name == "Var") {
-      new QListViewItem(VarList, pp->Value.section('|',0,0),
+      new Q3ListViewItem(VarList, pp->Value.section('|',0,0),
         pp->Value.section('|',1,1) == "yes" ? tr("yes") : tr("no"),
 	pp->Value.section('|',2,2),
         pp->Value.section('|',3,3), pp->Value.section('|',4,4),
@@ -311,7 +314,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
 	 tr("logarithmic integer")))));
     }
     if(pp->Name == "Goal") {
-      new QListViewItem(GoalList, pp->Value.section('|',0,0),
+      new Q3ListViewItem(GoalList, pp->Value.section('|',0,0),
         ((pp->Value.section('|',1,1) == "MIN") ? tr("minimize") :
         ((pp->Value.section('|',1,1) == "MAX") ? tr("maximize") :
         ((pp->Value.section('|',1,1) == "LE") ? tr("less") :
@@ -334,7 +337,7 @@ OptimizeDialog::~OptimizeDialog()
 }
 
 // -----------------------------------------------------------
-void OptimizeDialog::slotEditVariable(QListViewItem *Item)
+void OptimizeDialog::slotEditVariable(Q3ListViewItem *Item)
 {
   VarNameEdit->blockSignals(true);
 
@@ -368,7 +371,7 @@ void OptimizeDialog::slotAddVariable()
     return;
   }
 
-  QListViewItem *item;
+  Q3ListViewItem *item;
   for(item = VarList->firstChild(); item != 0; item = item->itemBelow())
     if(item->text(0) == VarNameEdit->text()) {
       QMessageBox::critical(this, tr("Error"),
@@ -377,7 +380,7 @@ void OptimizeDialog::slotAddVariable()
     }
 
 
-  new QListViewItem(VarList, VarNameEdit->text(),
+  new Q3ListViewItem(VarList, VarNameEdit->text(),
       VarActiveCheck->isChecked() ? tr("yes") : tr("no"),
       VarInitEdit->text(), VarMinEdit->text(), VarMaxEdit->text(),
       VarTypeCombo->currentText());
@@ -389,9 +392,9 @@ void OptimizeDialog::slotAddVariable()
 // -----------------------------------------------------------
 void OptimizeDialog::slotDeleteVariable()
 {
-  QListViewItem *next_item = 0;
+  Q3ListViewItem *next_item = 0;
 
-  QListViewItem *Item = VarList->selectedItem();
+  Q3ListViewItem *Item = VarList->selectedItem();
   if(Item) {
     next_item = Item->itemBelow();
     if(next_item == 0) next_item = Item->itemAbove();
@@ -405,7 +408,7 @@ void OptimizeDialog::slotDeleteVariable()
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeVarActive(bool On)
 {
-  QListViewItem *Item = VarList->selectedItem();
+  Q3ListViewItem *Item = VarList->selectedItem();
   if(Item == 0) return;
 
   Item->setText(1, On ? tr("yes") : tr("no"));
@@ -420,7 +423,7 @@ void OptimizeDialog::slotChangeVarName(const QString&)
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeVarInit(const QString& Text)
 {
-  QListViewItem *Item = VarList->selectedItem();
+  Q3ListViewItem *Item = VarList->selectedItem();
   if(Item == 0) return;
 
   Item->setText(2, Text);
@@ -429,7 +432,7 @@ void OptimizeDialog::slotChangeVarInit(const QString& Text)
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeVarMin(const QString& Text)
 {
-  QListViewItem *Item = VarList->selectedItem();
+  Q3ListViewItem *Item = VarList->selectedItem();
   if(Item == 0) return;
 
   Item->setText(3, Text);
@@ -438,7 +441,7 @@ void OptimizeDialog::slotChangeVarMin(const QString& Text)
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeVarMax(const QString& Text)
 {
-  QListViewItem *Item = VarList->selectedItem();
+  Q3ListViewItem *Item = VarList->selectedItem();
   if(Item == 0) return;
 
   Item->setText(4, Text);
@@ -447,14 +450,14 @@ void OptimizeDialog::slotChangeVarMax(const QString& Text)
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeVarType(const QString& Text)
 {
-  QListViewItem *Item = VarList->selectedItem();
+  Q3ListViewItem *Item = VarList->selectedItem();
   if(Item == 0) return;
 
   Item->setText(5, Text);
 }
 
 // -----------------------------------------------------------
-void OptimizeDialog::slotEditGoal(QListViewItem *Item)
+void OptimizeDialog::slotEditGoal(Q3ListViewItem *Item)
 {
   GoalNameEdit->blockSignals(true);
 
@@ -481,7 +484,7 @@ void OptimizeDialog::slotAddGoal()
     return;
   }
 
-  QListViewItem *item;
+  Q3ListViewItem *item;
   for(item = GoalList->firstChild(); item != 0; item = item->itemBelow())
     if(item->text(0) == GoalNameEdit->text()) {
       QMessageBox::critical(this, tr("Error"),
@@ -490,7 +493,7 @@ void OptimizeDialog::slotAddGoal()
     }
 
 
-  new QListViewItem(GoalList, GoalNameEdit->text(),
+  new Q3ListViewItem(GoalList, GoalNameEdit->text(),
       GoalTypeCombo->currentText(), GoalNumEdit->text());
 
   slotEditGoal(0);    // clear entry fields
@@ -500,9 +503,9 @@ void OptimizeDialog::slotAddGoal()
 // -----------------------------------------------------------
 void OptimizeDialog::slotDeleteGoal()
 {
-  QListViewItem *next_item = 0;
+  Q3ListViewItem *next_item = 0;
 
-  QListViewItem *Item = GoalList->selectedItem();
+  Q3ListViewItem *Item = GoalList->selectedItem();
   if(Item) {
     next_item = Item->itemBelow();
     if(next_item == 0) next_item = Item->itemAbove();
@@ -522,7 +525,7 @@ void OptimizeDialog::slotChangeGoalName(const QString&)
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeGoalType(const QString& Text)
 {
-  QListViewItem *Item = GoalList->selectedItem();
+  Q3ListViewItem *Item = GoalList->selectedItem();
   if(Item == 0) return;
 
   Item->setText(1, Text);
@@ -531,7 +534,7 @@ void OptimizeDialog::slotChangeGoalType(const QString& Text)
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeGoalNum(const QString& Text)
 {
-  QListViewItem *Item = GoalList->selectedItem();
+  Q3ListViewItem *Item = GoalList->selectedItem();
   if(Item == 0) return;
 
   Item->setText(2, Text);
@@ -583,7 +586,7 @@ void OptimizeDialog::slotApply()
     changed = true;
   }
 
-  QListViewItem *item;
+  Q3ListViewItem *item;
   Property *pp = Comp->Props.at(2);
   // apply all the new property values in the ListView
   for(item = VarList->firstChild(); item != 0; item = item->itemBelow()) {

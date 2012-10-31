@@ -23,15 +23,20 @@
 #include <qvariant.h>
 #include <qdialog.h>
 #include <qmap.h>
-#include <qlistview.h>
+#include <q3listview.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
+#include <Q3GridLayout>
+#include <Q3HBoxLayout>
+#include <QLabel>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
+class Q3VBoxLayout;
+class Q3HBoxLayout;
+class Q3GridLayout;
 class QSpacerItem;
 class QLabel;
-class QListView;
-class QListViewItem;
+class Q3ListView;
+class Q3ListViewItem;
 class QPushButton;
 class QucsDoc;
 class QucsApp;
@@ -46,7 +51,7 @@ class SaveDialog : public QDialog
          SaveSelected
       };
             
-      SaveDialog(QWidget* p = 0, const char* n = 0, bool modal = true, WFlags fl = 0 );
+      SaveDialog(QWidget* p = 0, const char* n = 0, bool modal = true, Qt::WFlags fl = 0 );
       ~SaveDialog();
       void addUnsavedDoc(QucsDoc *doc);
       void setApp(QucsApp *a);
@@ -61,15 +66,15 @@ class SaveDialog : public QDialog
    private:
       void initDialog();
       
-      QMap<QucsDoc*,QCheckListItem*> unsavedDocs;
+      QMap<QucsDoc*,Q3CheckListItem*> unsavedDocs;
             
       QLabel* label;
-      QListView* filesView;
+      Q3ListView* filesView;
       QPushButton* abortClosingButton;
       QPushButton* dontSaveButton;
       QPushButton* saveSelectedButton;
-      QVBoxLayout* SaveDialogLayout;
-      QHBoxLayout* buttonsLayout;
+      Q3VBoxLayout* SaveDialogLayout;
+      Q3HBoxLayout* buttonsLayout;
       QSpacerItem* spacer;
       QucsApp *app;
 };

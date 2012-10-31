@@ -18,9 +18,11 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-
+#include <QtGui>
 #include "libcomp.h"
 #include "qucs.h"
+//Added by qt3to4:
+#include <Q3TextStream>
 #include "main.h"
 #include "schematic.h"
 
@@ -73,10 +75,10 @@ void LibComp::createSymbol()
   }
   else {
     // only paint a rectangle
-    Lines.append(new Line(-15, -15, 15, -15, QPen(QPen::darkBlue,2)));
-    Lines.append(new Line( 15, -15, 15,  15, QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-15,  15, 15,  15, QPen(QPen::darkBlue,2)));
-    Lines.append(new Line(-15, -15,-15,  15, QPen(QPen::darkBlue,2)));
+    Lines.append(new Line(-15, -15, 15, -15, QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 15, -15, 15,  15, QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-15,  15, 15,  15, QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(-15, -15,-15,  15, QPen(Qt::darkBlue,2)));
 
     x1 = -18; y1 = -18;
     x2 =  18; y2 =  18;
@@ -93,10 +95,10 @@ int LibComp::loadSection(const QString& Name, QString& Section,
 {
   QDir Directory(QucsSettings.LibDir);
   QFile file(Directory.absFilePath(Props.first()->Value + ".lib"));
-  if(!file.open(IO_ReadOnly))
+  if(!file.open(QIODevice::ReadOnly))
     return -1;
 
-  QTextStream ReadWhole(&file);
+  Q3TextStream ReadWhole(&file);
   Section = ReadWhole.read();
   file.close();
 
@@ -203,7 +205,7 @@ int LibComp::loadSymbol()
   x1 = y1 = INT_MAX;
   x2 = y2 = INT_MIN;
 
-  QTextStream stream(&FileString, IO_ReadOnly);
+  Q3TextStream stream(&FileString, QIODevice::ReadOnly);
   while(!stream.atEnd()) {
     Line = stream.readLine();
     Line = Line.stripWhiteSpace();
@@ -230,7 +232,7 @@ QString LibComp::getSubcircuitFile()
 }
 
 // -------------------------------------------------------
-bool LibComp::createSubNetlist(QTextStream *stream, QStringList &FileList,
+bool LibComp::createSubNetlist(Q3TextStream *stream, QStringList &FileList,
 			       int type)
 {
   int r = -1;
@@ -255,7 +257,7 @@ bool LibComp::createSubNetlist(QTextStream *stream, QStringList &FileList,
 
     // load file and stuff into stream
     QFile file(s);
-    if(!file.open(IO_ReadOnly)) {
+    if(!file.open(QIODevice::ReadOnly)) {
       error++;
     } else {
       QByteArray FileContent = file.readAll();

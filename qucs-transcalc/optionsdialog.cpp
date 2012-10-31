@@ -20,12 +20,14 @@
 #endif
 
 #include <qlayout.h>
-#include <qhbox.h>
-#include <qhgroupbox.h>
+#include <q3hbox.h>
+#include <q3hgroupbox.h>
 #include <qpushbutton.h>
-#include <qvbox.h>
+#include <q3vbox.h>
 #include <qlabel.h>
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 #include "optionsdialog.h"
 #include "qucstrans.h"
@@ -38,13 +40,13 @@ OptionsDialog::OptionsDialog(QWidget *parent)
   setCaption("QucsTranscalc "+tr("Options"));
 
   // --------  create dialog widgets  ------------
-  vLayout = new QVBoxLayout(this);
+  vLayout = new Q3VBoxLayout(this);
   vLayout->setMargin(3);
   vLayout->setSpacing(3);
 
-  QHGroupBox * h = new QHGroupBox(tr("Units"), this);
+  Q3HGroupBox * h = new Q3HGroupBox(tr("Units"), this);
   vLayout->addWidget(h);
-  QVBox * l = new QVBox(h);
+  Q3VBox * l = new Q3VBox(h);
   l->setSpacing(3);
   QLabel * lfr = new QLabel(tr("Frequency"),l);
   lfr->setAlignment (Qt::AlignRight);
@@ -54,7 +56,7 @@ OptionsDialog::OptionsDialog(QWidget *parent)
   lre->setAlignment (Qt::AlignRight);
   QLabel * lan = new QLabel(tr("Angle"),l);
   lan->setAlignment (Qt::AlignRight);
-  QVBox * r = new QVBox(h);
+  Q3VBox * r = new Q3VBox(h);
   r->setSpacing(3);
   for (int j = 0; j < 4; j++) {
     units[j] = new QComboBox(r);
@@ -66,7 +68,7 @@ OptionsDialog::OptionsDialog(QWidget *parent)
   units[2]->setCurrentItem (QucsSettings.res_unit);
   units[3]->setCurrentItem (QucsSettings.ang_unit);
   
-  QHBox * h2 = new QHBox(this);
+  Q3HBox * h2 = new Q3HBox(this);
   vLayout->addWidget(h2);
 
   QPushButton *ButtonSave = new QPushButton(tr("Save as Default"), h2);

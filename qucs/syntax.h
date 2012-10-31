@@ -31,7 +31,7 @@ enum textstate_type {
   STATE_COMMENT = 100,
 };
 
-class SyntaxHighlighter : public QSyntaxHighlighter {
+class SyntaxHighlighter : public Q3SyntaxHighlighter {
 public:
  SyntaxHighlighter(TextDoc*);
  virtual ~SyntaxHighlighter();

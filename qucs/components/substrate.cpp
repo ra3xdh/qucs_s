@@ -22,30 +22,30 @@ Substrate::Substrate()
 {
   Description = QObject::tr("substrate definition");
 
-  Lines.append(new Line(-30,-16, 30,-16,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30,-12, 30,-12,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30, 16, 30, 16,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30, 12, 30, 12,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30,-16,-30, 16,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,-16, 30, 16,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,-16, 30,-16,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30,-12, 30,-12,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30, 16, 30, 16,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30, 12, 30, 12,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30,-16,-30, 16,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,-16, 30, 16,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-30,-16, 16,-40,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,-16, 80,-40,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,-12, 80,-36,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30, 12, 80,-16,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30, 16, 80,-12,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 16,-40, 80,-40,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 80,-40, 80,-12,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,-16, 16,-40,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,-16, 80,-40,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,-12, 80,-36,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30, 12, 80,-16,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30, 16, 80,-12,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 16,-40, 80,-40,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 80,-40, 80,-12,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line(-30,  0,-18,-12,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-22, 12,  2,-12,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line( -2, 12, 22,-12,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line( 18, 12, 30,  0,QPen(QPen::darkBlue,1)));
+  Lines.append(new Line(-30,  0,-18,-12,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-22, 12,  2,-12,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line( -2, 12, 22,-12,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line( 18, 12, 30,  0,QPen(Qt::darkBlue,1)));
 
-  Lines.append(new Line( 30,  1, 37,  8,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line( 37,-15, 52,  0,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line( 52,-22, 66, -8,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line( 66,-30, 80,-16,QPen(QPen::darkBlue,1)));
+  Lines.append(new Line( 30,  1, 37,  8,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line( 37,-15, 52,  0,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line( 52,-22, 66, -8,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line( 66,-30, 80,-16,QPen(Qt::darkBlue,1)));
 
   x1 = -34; y1 =-44;
   x2 =  84; y2 = 20;

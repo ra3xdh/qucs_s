@@ -22,21 +22,21 @@ iRect::iRect()
 {
   Description = QObject::tr("ideal rectangle current source");
 
-  Arcs.append(new Arc(-12,-12, 24, 24,  0, 16*360,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30,  0,-12,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 12,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -7,  0,  7,  0,QPen(QPen::darkBlue,3)));
-  Lines.append(new Line(  6,  0,  0, -4,QPen(QPen::darkBlue,3)));
-  Lines.append(new Line(  6,  0,  0,  4,QPen(QPen::darkBlue,3)));
+  Arcs.append(new Arc(-12,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::darkBlue,3)));
 
   // little rectangle symbol
-  Lines.append(new Line( 19,  5, 19,  7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 13,  7, 19,  7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 13,  7, 13, 11,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 13, 11, 19, 11,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 19, 11, 19, 15,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 13, 15, 19, 15,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 13, 15, 13, 17,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line( 19,  5, 19,  7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 13,  7, 19,  7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 13,  7, 13, 11,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 13, 11, 19, 11,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 19, 11, 19, 15,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 13, 15, 19, 15,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 13, 15, 13, 17,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

@@ -14,17 +14,19 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
-#include <qhbox.h>
+#include <QtGui>
+#include <q3hbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
-#include <qvgroupbox.h>
+#include <q3textedit.h>
+#include <q3vgroupbox.h>
 #include <qcombobox.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
 
 #include "importdialog.h"
 #include "main.h"
@@ -36,12 +38,12 @@ ImportDialog::ImportDialog(QWidget *parent)
 {
   setCaption(tr("Convert Data File..."));
 
-  all = new QGridLayout(this, 4, 3, 5, 3);
+  all = new Q3GridLayout(this, 4, 3, 5, 3);
 
-  QVGroupBox *Group2 = new QVGroupBox(tr("File specification"),this);
+  Q3VGroupBox *Group2 = new Q3VGroupBox(tr("File specification"),this);
   all->addMultiCellWidget(Group2, 0,1, 0,2);
   QWidget *f = new QWidget(Group2);
-  QGridLayout *file = new QGridLayout(f, 3, 3, 5);
+  Q3GridLayout *file = new Q3GridLayout(f, 3, 3, 5);
   file->addWidget(new QLabel(tr("Input File:"), f), 0, 0);
   ImportEdit = new QLineEdit(f);
   file->addWidget(ImportEdit, 0, 1);
@@ -67,16 +69,16 @@ ImportDialog::ImportDialog(QWidget *parent)
   connect(OutType, SIGNAL(activated(int)), SLOT(slotType(int)));
   file->addWidget(OutType, 2, 2);
   
-  QVGroupBox *Group1 = new QVGroupBox(tr("Messages"),this);
+  Q3VGroupBox *Group1 = new Q3VGroupBox(tr("Messages"),this);
   all->addMultiCellWidget(Group1, 2,2, 0,2);
 
-  MsgText = new QTextEdit(Group1);
+  MsgText = new Q3TextEdit(Group1);
   MsgText->setTextFormat(Qt::PlainText);
   MsgText->setReadOnly(true);
-  MsgText->setWordWrap(QTextEdit::NoWrap);
+  MsgText->setWordWrap(Q3TextEdit::NoWrap);
   MsgText->setMinimumSize(250, 60);
 
-  QHBox *Butts = new QHBox(this);
+  Q3HBox *Butts = new Q3HBox(this);
   all->addMultiCellWidget(Butts, 3,3, 0,2);
 
   Butts->setStretchFactor(new QWidget(Butts), 5); // stretchable placeholder
@@ -99,7 +101,7 @@ ImportDialog::~ImportDialog()
 // ------------------------------------------------------------------------
 void ImportDialog::slotBrowse()
 {
-  QString s = QFileDialog::getOpenFileName(
+  QString s = Q3FileDialog::getOpenFileName(
      lastDir.isEmpty() ? QString(".") : lastDir,
      tr("All known")+
      " (*.s?p *.csv *.citi *.cit *.asc *.mdl *.vcd *.dat *.cir);;"+

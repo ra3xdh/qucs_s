@@ -19,15 +19,17 @@
 
 #include "qucs.h"
 
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qvalidator.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 #include <qcolordialog.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 
 GraphicTextDialog::GraphicTextDialog(QWidget *parent, const char *name)
@@ -35,7 +37,7 @@ GraphicTextDialog::GraphicTextDialog(QWidget *parent, const char *name)
 {
   setCaption(tr("Edit Text Properties"));
 
-  vert = new QVBoxLayout(this);
+  vert = new Q3VBoxLayout(this);
   vert->setMargin(3);
   vert->setSpacing(3);
 
@@ -45,22 +47,22 @@ GraphicTextDialog::GraphicTextDialog(QWidget *parent, const char *name)
 		   tr("Use _{..} and ^{..} for sub- and super-positions."),
 		   this));
 
-  text = new QTextEdit(this);
+  text = new Q3TextEdit(this);
   text->setTextFormat(Qt::PlainText);
-  text->setWordWrap(QTextEdit::NoWrap);
+  text->setWordWrap(Q3TextEdit::NoWrap);
   text->setMinimumSize(350,150);
   vert->addWidget(text);
 
-  QHBox *h1 = new QHBox(this);
+  Q3HBox *h1 = new Q3HBox(this);
   h1->setSpacing(5);
   vert->addWidget(h1);
 
 
-  QHBox *h2 = new QHBox(this);
+  Q3HBox *h2 = new Q3HBox(this);
   h2->setSpacing(5);
   vert->addWidget(h2);
 
-  QHBox *h3 = new QHBox(this);
+  Q3HBox *h3 = new Q3HBox(this);
   h2->setSpacing(5);
   vert->addWidget(h3);
 

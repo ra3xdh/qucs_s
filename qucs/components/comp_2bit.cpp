@@ -15,7 +15,7 @@
  * any later version.
  * 
  */
-
+#include <QtGui>
 #include "comp_2bit.h"
 #include "node.h"
 #include "main.h"
@@ -57,32 +57,32 @@ Element * comp_2bit::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void comp_2bit::createSymbol()
 {
-  Lines.append(new Line(-40, -50, 40,-50,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 40, -50, 40, 60,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 40,  60,-40, 60,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-40,  60,-40, -50,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-40, -50, 40,-50,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 40, -50, 40, 60,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 40,  60,-40, 60,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-40,  60,-40, -50,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-60,-10,-40,-10,QPen(QPen::darkBlue,2)));  // X0
-  Lines.append(new Line(-60, 10,-40, 10,QPen(QPen::darkBlue,2)));  // X1
-  Lines.append(new Line(-60, 30,-40, 30,QPen(QPen::darkBlue,2)));  // Y0
-  Lines.append(new Line(-60, 50,-40, 50,QPen(QPen::darkBlue,2)));  // Y1
-  Lines.append(new Line( 40, 30, 60, 30,QPen(QPen::darkBlue,2)));  // L
-  Lines.append(new Line( 40, 10, 60, 10,QPen(QPen::darkBlue,2)));  // G
-  Lines.append(new Line( 40,-10, 60,-10,QPen(QPen::darkBlue,2)));  // E
+  Lines.append(new Line(-60,-10,-40,-10,QPen(Qt::darkBlue,2)));  // X0
+  Lines.append(new Line(-60, 10,-40, 10,QPen(Qt::darkBlue,2)));  // X1
+  Lines.append(new Line(-60, 30,-40, 30,QPen(Qt::darkBlue,2)));  // Y0
+  Lines.append(new Line(-60, 50,-40, 50,QPen(Qt::darkBlue,2)));  // Y1
+  Lines.append(new Line( 40, 30, 60, 30,QPen(Qt::darkBlue,2)));  // L
+  Lines.append(new Line( 40, 10, 60, 10,QPen(Qt::darkBlue,2)));  // G
+  Lines.append(new Line( 40,-10, 60,-10,QPen(Qt::darkBlue,2)));  // E
 
-  Texts.append(new Text(-25,-45, "COMP", QPen::darkBlue, 12.0));
+  Texts.append(new Text(-25,-45, "COMP", Qt::darkBlue, 12.0));
 
-  Texts.append(new Text(-25,-20,   "{",  QPen::darkBlue, 16.0));
-  Texts.append(new Text(-15,-15,   "X",  QPen::darkBlue, 12.0));
-  Texts.append(new Text(-35,-23,   "0",  QPen::darkBlue, 12.0));
-  Texts.append(new Text(-35, -3,   "1",  QPen::darkBlue, 12.0));
-  Texts.append(new Text(-25, 22,   "{",  QPen::darkBlue, 16.0));
-  Texts.append(new Text(-15, 27,   "Y",  QPen::darkBlue, 12.0));
-  Texts.append(new Text(-35, 17,   "0",  QPen::darkBlue, 12.0));
-  Texts.append(new Text(-35, 37,   "1",  QPen::darkBlue, 12.0));
-  Texts.append(new Text(  5, 17, "X<Y",  QPen::darkBlue, 12.0));
-  Texts.append(new Text(  5, -3, "X>Y", QPen::darkBlue, 12.0));
-  Texts.append(new Text(  5,-23, "X=Y", QPen::darkBlue, 12.0));
+  Texts.append(new Text(-25,-20,   "{",  Qt::darkBlue, 16.0));
+  Texts.append(new Text(-15,-15,   "X",  Qt::darkBlue, 12.0));
+  Texts.append(new Text(-35,-23,   "0",  Qt::darkBlue, 12.0));
+  Texts.append(new Text(-35, -3,   "1",  Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25, 22,   "{",  Qt::darkBlue, 16.0));
+  Texts.append(new Text(-15, 27,   "Y",  Qt::darkBlue, 12.0));
+  Texts.append(new Text(-35, 17,   "0",  Qt::darkBlue, 12.0));
+  Texts.append(new Text(-35, 37,   "1",  Qt::darkBlue, 12.0));
+  Texts.append(new Text(  5, 17, "X<Y",  Qt::darkBlue, 12.0));
+  Texts.append(new Text(  5, -3, "X>Y", Qt::darkBlue, 12.0));
+  Texts.append(new Text(  5,-23, "X=Y", Qt::darkBlue, 12.0));
 
   Ports.append(new Port(-60,-10));  // X0
   Ports.append(new Port(-60, 10));  // X1

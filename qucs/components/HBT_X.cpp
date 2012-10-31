@@ -177,35 +177,35 @@ HBT_X::HBT_X()
 
 
   // normal bipolar
-  Lines.append(new Line(-10,-15,-10, 15,QPen(QPen::darkBlue,3)));
-  Lines.append(new Line(-30,  0,-10,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-10, -5,  0,-15,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0,-15,  0,-30,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-10,  5,  0, 15,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, 15,  0, 30,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line(-30,  0,-10,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-10, -5,  0,-15,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0,-15,  0,-30,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-10,  5,  0, 15,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, 15,  0, 30,QPen(Qt::darkBlue,2)));
 
   // thermal node
-  Lines.append(new Line(-30, 20,-20, 20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20, 17,-20, 23,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30, 20,-20, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20, 17,-20, 23,QPen(Qt::darkBlue,2)));
   
   // arrow
-  Lines.append(new Line( -6, 15,  0, 15,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0,  9,  0, 15,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line( -6, 15,  0, 15,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0,  9,  0, 15,QPen(Qt::darkBlue,2)));
 
   // H
-  Lines.append(new Line(-30,-30,-30,-24,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-30,-27,-26,-27,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-26,-30,-26,-24,QPen(QPen::darkBlue,1)));
+  Lines.append(new Line(-30,-30,-30,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-30,-27,-26,-27,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-26,-30,-26,-24,QPen(Qt::darkBlue,1)));
   // B
-  Lines.append(new Line(-23,-30,-23,-24,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-24,-30,-20,-30,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-23,-27,-20,-27,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-24,-24,-20,-24,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-20,-30,-20,-27,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-20,-27,-20,-24,QPen(QPen::darkBlue,1)));
+  Lines.append(new Line(-23,-30,-23,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-24,-30,-20,-30,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-23,-27,-20,-27,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-24,-24,-20,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-20,-30,-20,-27,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-20,-27,-20,-24,QPen(Qt::darkBlue,1)));
   // T
-  Lines.append(new Line(-18,-30,-14,-30,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-16,-30,-16,-24,QPen(QPen::darkBlue,1)));
+  Lines.append(new Line(-18,-30,-14,-30,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-16,-30,-16,-24,QPen(Qt::darkBlue,1)));
 
   Ports.append(new Port(  0,-30)); // collector
   Ports.append(new Port(-30,  0)); // base

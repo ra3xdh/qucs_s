@@ -15,7 +15,7 @@
  * any later version.
  * 
  */
-
+#include <QtGui>
 #include "jkff_SR.h"
 #include "node.h"
 #include "main.h"
@@ -60,34 +60,34 @@ Element * jkff_SR::info(QString& Name, char * &BitmapFile, bool getNewOne)
 void jkff_SR::createSymbol()
 {
   // put in here symbol drawing code and terminal definitions
-  Lines.append(new Line(-30,-40, 30,-40,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,-40, 30, 40,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30, 40,-30, 40,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30, 40,-30,-40,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,-40, 30,-40,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,-40, 30, 40,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30, 40,-30, 40,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30, 40,-30,-40,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-50,-20,-30,-20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-50, 20,-30, 20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30, 20, 50, 20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,-20, 50,-20,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-50,-20,-30,-20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-50, 20,-30, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30, 20, 50, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,-20, 50,-20,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-50,  0,-30,  0,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-50,  0,-30,  0,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-30,-10,-20,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30, 10,-20,  0,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,-10,-20,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30, 10,-20,  0,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(  0,-50,  0,-60,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, 50,  0, 60,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(  0,-50,  0,-60,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, 50,  0, 60,QPen(Qt::darkBlue,2)));
 
-  Arcs.append(new Arc(  -5, -50, 10, 10, 0, 16*360, QPen(QPen::darkBlue,2)));
-  Arcs.append(new Arc(  -5,  40, 10, 10, 0, 16*360, QPen(QPen::darkBlue,2)));
+  Arcs.append(new Arc(  -5, -50, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
+  Arcs.append(new Arc(  -5,  40, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
 
-  Texts.append(new Text(-25,-32, "J", QPen::darkBlue, 12.0));
-  Texts.append(new Text(-25,  7, "K", QPen::darkBlue, 12.0));
-  Texts.append(new Text( 11,-32, "Q", QPen::darkBlue, 12.0));
-  Texts.append(new Text( -5,-39, "S", QPen::darkBlue, 12.0));
-  Texts.append(new Text( 11,  7, "Q", QPen::darkBlue, 12.0));
+  Texts.append(new Text(-25,-32, "J", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25,  7, "K", Qt::darkBlue, 12.0));
+  Texts.append(new Text( 11,-32, "Q", Qt::darkBlue, 12.0));
+  Texts.append(new Text( -5,-39, "S", Qt::darkBlue, 12.0));
+  Texts.append(new Text( 11,  7, "Q", Qt::darkBlue, 12.0));
   Texts.current()->over=true;
-  Texts.append(new Text( -5, 17, "R", QPen::darkBlue, 12.0));
+  Texts.append(new Text( -5, 17, "R", Qt::darkBlue, 12.0));
  
   Ports.append(new Port(  0,-60));  // S
   Ports.append(new Port(-50,-20));  // J

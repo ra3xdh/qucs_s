@@ -21,14 +21,14 @@
 // **********                                             **********
 // *****************************************************************
 
-#include <qsyntaxhighlighter.h>
+#include <q3syntaxhighlighter.h>
 
 #include "textdoc.h"
 #include "syntax.h"
 #include "main.h"
 
 SyntaxHighlighter::SyntaxHighlighter(TextDoc *textEdit) 
-                 : QSyntaxHighlighter(textEdit)
+                 : Q3SyntaxHighlighter(textEdit)
 {
   Doc = textEdit;
   language = LANG_NONE;
@@ -52,7 +52,7 @@ int SyntaxHighlighter::highlightParagraph(const QString& text, int state)
   int  iString=-1, iWord=-1, iNumber=-1, iExpo=-1, i=0, iComment=-1;
   QFont font = Doc->TextFont;
   font.setPointSize((int)Doc->Scale);
-  setFormat(0, text.length(), font, QPen::black);
+  setFormat(0, text.length(), font, Qt::black);
 
   if (state < 0)
     state = STATE_NONE;

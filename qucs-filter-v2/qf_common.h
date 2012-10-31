@@ -16,7 +16,7 @@
 #include <iomanip>
 #include <string>
 #include <typeinfo>
-#include <qtextstream.h>
+#include <q3textstream.h>
 
 using namespace std;
 

@@ -38,7 +38,7 @@ if test "$enable_debug" = yes; then
   QT_DEF=""
 else
   AC_DEFINE(NDEBUG, 1, [Define if debug code should be suppressed.])
-  QT_DEF="-DQT_NO_DEBUG -DQT_NO_CHECK"
+  QT_DEF="-DQT_NO_DEBUG"
   if test "x$GCC" = xyes; then
     CFLAGS="`echo $CFLAGS | sed -e 's/\-g //g'`"
     CXXFLAGS="`echo $CXXFLAGS | sed -e 's/\-g //g'`"
@@ -99,12 +99,12 @@ dnl Release specific. Uncomment these as required.
 AC_SUBST(RELEASEDIRS)
 
 dnl Check for language support.
-AC_PATH_PROGS(LRELEASE, lrelease-qt3 lrelease, :, [$QTDIR/bin:$PATH])
-AC_PATH_PROGS(LUPDATE, lupdate-qt3 lupdate, :, [$QTDIR/bin:$PATH])
+AC_PATH_PROGS(LRELEASE, lrelease-qt4 lrelease, :, [$QTDIR/bin:$PATH])
+AC_PATH_PROGS(LUPDATE, lupdate-qt4 lupdate, :, [$QTDIR/bin:$PATH])
 
 dnl Check for MOC/UIC support.
-AC_PATH_PROGS(MOC, moc-qt3 moc, :, [$QTDIR/bin:$PATH])
-AC_PATH_PROGS(UIC, uic-qt3 uic, :, [$QTDIR/bin:$PATH])
+AC_PATH_PROGS(MOC, moc-qt4 moc, :, [$QTDIR/bin:$PATH])
+AC_PATH_PROGS(UIC, uic-qt4 uic, :, [$QTDIR/bin:$PATH])
 if test "$MOC" = ":"; then
   AC_MSG_WARN([
   The $PACKAGE package needs the 'Qt Meta Object Compiler' to compile properly.
@@ -128,16 +128,14 @@ dnl Check include path to Qt.
 QT_INCLUDES=""
 QT_VER=2
 AC_MSG_CHECKING([for Qt headers])
-paths="$QTDIR/include /usr/local/qt/include /usr/include/qt /usr/include/qt3 \
-  /usr/include /usr/X11R6/include/X11/qt /usr/X11R6/include/X11/qt \
-  /usr/X11R6/include/qt /usr/X11R6/include /sw/include/qt \
-  /usr/X11R6/include/qt2 $prefix/include/qt3"
+paths="$QTDIR/include /usr/local/qt4/include /usr/include/qt4 /usr/include/qt4 \
+  /usr/include /usr/X11R6/include/X11/qt4 /usr/X11R6/include/X11/qt4 \
+  /usr/X11R6/include/qt4 /usr/X11R6/include /sw/include/qt4 \
+  /usr/X11R6/include/qt4 $prefix/include/qt4"
 for path in $paths; do
-  if test -f "$path/qapplication.h"; then
-    QT_INCLUDES=$path
-    if test -f "$path/qmemarray.h"; then
-      QT_VER=3
-    fi
+  if test -f "$path/Qt/qapplication.h"; then
+    QT_INCLUDES="$path -I$path/Qt -I$path/QtGui -I$path/QtCore -I$path/Qt3Support"
+    QT_VER=4
     break
   fi
 done
@@ -154,15 +152,15 @@ AC_ARG_ENABLE([mt],
   AC_HELP_STRING([--disable-mt],
                  [link to non-threaded Qt (deprecated)]),
   enable_mt="$enableval",
-  [if test $QT_VER = 3; then
+  [if test $QT_VER = 4; then
      enable_mt="yes"
    else
      enable_mt="no"
    fi])
 if test "$enable_mt" = yes; then
   QT_LDF=""
-  QT_LIB="-lqt-mt"
-  QT_INC="$QT_DEF -DQT_THREAD_SUPPORT -D_REENTRANT"
+  QT_LIB="-lQtCore -lQtGui -lQt3Support"
+  QT_INC="$QT_DEF -DQT3_SUPPORT -DQT_THREAD_SUPPORT -D_REENTRANT"
   [case $host_os in
     *freebsd4*) QT_LIB="$QT_LIB -pthread" ;;
     *freebsd[567]*) QT_LIB="$QT_LIB -lpthread" ;;
@@ -171,13 +169,13 @@ if test "$enable_mt" = yes; then
   QT_MTS="multi-threaded"
 else
   QT_LDF=""
-  QT_LIB="-lqt"
+  QT_LIB="-lQtCore -lQtGui -lQt3Support"
   QT_INC="$QT_DEF"
   QT_MTS="non-threaded"
 fi
 case $host_os in
   *mingw*)
-	QT_LIB="$QT_LIB -lqtmain"
+	QT_LIB="$QT_LIB  -lQtCore -lQtGui -lQt3Support"
 	QT_INC="$QT_INC -DQT_DLL -DUNICODE"
 	QT_LDF="$QT_LDF -mwindows"
 	;;
@@ -189,9 +187,9 @@ QT_LDFLAGS=""
 QT_LIBS=""
 AC_MSG_RESULT([checking for Qt... $QT_VER ($QT_MTS)])
 AC_MSG_CHECKING([for Qt library])
-paths="$QTDIR/lib $QTDIR/lib64 /usr/local/qt/lib /usr/lib/qt /usr/lib \
-  /usr/X11R6/lib/X11/qt /usr/X11R6/lib/X11/qt /usr/X11R6/lib/qt \
-  /usr/X11R6/lib /sw/lib /usr/lib64/qt /usr/X11R6/lib/qt2"
+paths="$QTDIR/lib $QTDIR/lib64 /usr/local/qt4/lib /usr/lib/qt4 /usr/lib/qt4/Qtconf /usr/lib \
+  /usr/X11R6/lib/X11/qt4 /usr/X11R6/lib/X11/qt4 /usr/X11R6/lib/qt4 \
+  /usr/X11R6/lib /sw/lib /usr/lib64/qt4 /usr/X11R6/lib/qt2"
 AC_LANG(C++)
 for path in $paths; do
   save_LIBS="$LIBS"
@@ -201,7 +199,7 @@ for path in $paths; do
   LDFLAGS="$LDFLAGS $X11_LDFLAGS -L$path $QT_LDF"
   CXXFLAGS="$CXXFLAGS $X11_INCLUDES $QT_INCLUDES $QT_INC"
   AC_LINK_IFELSE(
-    [#include <qapplication.h>
+    [#include <Qt/qapplication.h>
      int main (int argc, char ** argv) {
      QApplication a (argc, argv); a.exec (); return 0; }],
     [QT_LDFLAGS="$path";

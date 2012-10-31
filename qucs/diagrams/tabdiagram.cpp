@@ -14,11 +14,13 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "tabdiagram.h"
 #include "main.h"
 
 #include <math.h>
+//Added by qt3to4:
+#include <Q3PointArray>
 
 
 TabDiagram::TabDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
@@ -48,14 +50,14 @@ void TabDiagram::paint(ViewPainter *p)
 
   if(x1 > 0) {  // paint scroll bar ?
     int   x, y, dx, dy;
-    QPointArray Points;
+    Q3PointArray Points;
     y = y2 - 20;
     // draw scroll bar
     int by = cy-y + yAxis.numGraphs;
     p->fillRect(cx-14, by+1, 12, zAxis.numGraphs-1, QColor(192, 192, 192));
 
     // draw frame for scroll bar
-    p->Painter->setPen(QPen(QPen::black,0));
+    p->Painter->setPen(QPen(Qt::black,0));
     p->drawLine(cx-17, cy-y2, cx-17, cy);
     p->drawLine(cx-17, cy-y2, cx, cy-y2);
     p->drawLine(cx-17, cy, cx, cy);
@@ -100,9 +102,9 @@ void TabDiagram::paint(ViewPainter *p)
 
 
   if(isSelected) {
-    p->Painter->setPen(QPen(QPen::darkGray,3));
+    p->Painter->setPen(QPen(Qt::darkGray,3));
     p->drawRect(cx-5, cy-y2-5, x2+10, y2+10);
-    p->Painter->setPen(QPen(QPen::darkRed,2));
+    p->Painter->setPen(QPen(Qt::darkRed,2));
     p->drawResizeRect(cx, cy-y2);  // markers for changing the size
     p->drawResizeRect(cx, cy);
     p->drawResizeRect(cx+x2, cy-y2);
@@ -133,11 +135,11 @@ int TabDiagram::calcDiagram()
   y = y2 - tHeight - 6;
 
   // outer frame
-  Lines.append(new Line(0, y2, x2, y2, QPen(QPen::black,0)));
-  Lines.append(new Line(0, y2, 0, 0, QPen(QPen::black,0)));
-  Lines.append(new Line(x2, y2, x2, 0, QPen(QPen::black,0)));
-  Lines.append(new Line(0, 0, x2, 0, QPen(QPen::black,0)));
-  Lines.append(new Line(0, y+2, x2, y+2, QPen(QPen::black,2)));
+  Lines.append(new Line(0, y2, x2, y2, QPen(Qt::black,0)));
+  Lines.append(new Line(0, y2, 0, 0, QPen(Qt::black,0)));
+  Lines.append(new Line(x2, y2, x2, 0, QPen(Qt::black,0)));
+  Lines.append(new Line(0, 0, x2, 0, QPen(Qt::black,0)));
+  Lines.append(new Line(0, y+2, x2, y+2, QPen(Qt::black,2)));
 
   if(xAxis.limit_min < 0.0)
     xAxis.limit_min = 0.0;
@@ -207,14 +209,14 @@ if(g) if(!g->cPointsX.isEmpty()) {
         }
 	if(pD == g->cPointsX.getFirst())   // only paint one time
 	  if(y >= tHeight) if(y < y2-tHeight-5)
-            Lines.append(new Line(0, y+1, x2, y+1, QPen(QPen::black,0)));
+            Lines.append(new Line(0, y+1, x2, y+1, QPen(Qt::black,0)));
       }
       lastCount *= pD->count;
     }
     x += colWidth+15;
-    Lines.append(new Line(x-8, y2, x-8, 0, QPen(QPen::black,0)));
+    Lines.append(new Line(x-8, y2, x-8, 0, QPen(Qt::black,0)));
   }
-  Lines.current()->style = QPen(QPen::black,2);
+  Lines.current()->style = QPen(Qt::black,2);
 
 }  // of "if no data in graphs"
 
@@ -300,7 +302,7 @@ if(g) if(!g->cPointsX.isEmpty()) {
     }
     x += colWidth+15;
     if(g != Graphs.getLast())   // do not paint last line
-      Lines.append(new Line(x-8, y2, x-8, 0, QPen(QPen::black,0)));
+      Lines.append(new Line(x-8, y2, x-8, 0, QPen(Qt::black,0)));
   }
 
 funcEnd:

@@ -22,11 +22,13 @@
 
 #include <qlayout.h>
 #include <qtooltip.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 VTabBar::VTabBar(VTabPosition p,QWidget* parent, const char* name): QWidget(parent, name)
 {
   m_position = p;
-  m_layout = new QVBoxLayout(this);
+  m_layout = new Q3VBoxLayout(this);
   m_layout->addStretch(800); //HACK to avoid spaces b/w buttons
   m_index = 0;
   m_tabsOff = true;

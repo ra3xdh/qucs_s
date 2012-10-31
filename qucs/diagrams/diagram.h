@@ -24,6 +24,9 @@
 #include "viewpainter.h"
 
 #include <qfile.h>
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3PtrList>
 
 #define MIN_SCROLLBAR_SIZE 8
 
@@ -73,7 +76,7 @@ public:
   bool    getSelected(int, int);
   bool    resizeTouched(float, float, float);
   QString save();
-  bool    load(const QString&, QTextStream*);
+  bool    load(const QString&, Q3TextStream*);
 
   void getAxisLimits(Graph*);
   void updateGraphData();
@@ -89,10 +92,10 @@ public:
   QString Name; // identity of diagram type (e.g. Polar), used for saving etc.
   QPen    GridPen;
 
-  QPtrList<Graph>  Graphs;
-  QPtrList<struct Arc>    Arcs;
-  QPtrList<Line>   Lines;
-  QPtrList<Text>   Texts;
+  Q3PtrList<Graph>  Graphs;
+  Q3PtrList<struct Arc>    Arcs;
+  Q3PtrList<Line>   Lines;
+  Q3PtrList<Text>   Texts;
 
   int x3, y3;
   Axis  xAxis, yAxis, zAxis;   // axes (x, y left, y right)

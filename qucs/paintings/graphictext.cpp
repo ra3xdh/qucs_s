@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "main.h"
 #include "mnemo.h"
 #include "viewpainter.h"
@@ -24,7 +24,7 @@
 #include <qwidget.h>
 #include <qpainter.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpushbutton.h>
 
 #include <math.h>
@@ -49,8 +49,8 @@ GraphicText::~GraphicText()
 // -----------------------------------------------------------------------
 void GraphicText::paint(ViewPainter *p)
 {
-  QWMatrix wm = p->Painter->worldMatrix();
-  QWMatrix Mat(1.0, 0.0, 0.0, 1.0, p->DX + float(cx) * p->Scale,
+  QMatrix wm = p->Painter->worldMatrix();
+  QMatrix Mat(1.0, 0.0, 0.0, 1.0, p->DX + float(cx) * p->Scale,
 				   p->DY + float(cy) * p->Scale);
   p->Painter->setWorldMatrix(Mat);
   p->Painter->rotate(-Angle);   // automatically enables transformation
@@ -70,7 +70,7 @@ void GraphicText::paint(ViewPainter *p)
   w = p->drawTextMapped(Text, 0, 0, &h);
 
   if(isSelected) {
-    p->Painter->setPen(QPen(QPen::darkGray,3));
+    p->Painter->setPen(QPen(Qt::darkGray,3));
     p->Painter->drawRect(-3, -2, w+6, h+5);
   }
 
@@ -85,8 +85,8 @@ void GraphicText::paint(ViewPainter *p)
 // -----------------------------------------------------------------------
 void GraphicText::paintScheme(QPainter *p)
 {
-  QWMatrix wm = p->worldMatrix();
-  QWMatrix Mat (wm.m11(), 0.0, 0.0, wm.m22(),
+  QMatrix wm = p->worldMatrix();
+  QMatrix Mat (wm.m11(), 0.0, 0.0, wm.m22(),
 		wm.dx() + double(cx) * wm.m11(),
 		wm.dy() + double(cy) * wm.m22());
   p->setWorldMatrix(Mat);

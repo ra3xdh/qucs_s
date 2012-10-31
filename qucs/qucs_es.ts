@@ -1,5 +1,6 @@
-<!DOCTYPE TS><TS>
-<defaultcodec></defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>ArrowDialog</name>
     <message>
@@ -7245,11 +7246,11 @@ Use:  qucsedit [-r] archivo
     </message>
     <message>
         <source>npn HICUM L0 v1.2g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">npn HICUM L0 v1.2g {0 ?}</translation>
     </message>
     <message>
         <source>pnp HICUM L0 v1.2g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">pnp HICUM L0 v1.2g {0 ?}</translation>
     </message>
     <message>
         <source>hybrid (unsymmetrical 3dB coupler)</source>
@@ -8799,13 +8800,13 @@ Selecciona todos los elementos del documento</translation>
         <translation>Rotar</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation>Rota el elemento seleccionado 90º</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation>Rotar
 
 Rota el elemento seleccionado 90º en el sentido de las agujas del reloj</translation>
@@ -11089,13 +11090,13 @@ Selecciona todos los elementos del documento</translation>
         <translation type="obsolete">Rotar</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation type="obsolete">Rota el elemento seleccionado 90º</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation type="obsolete">Rotar
 
 Rota el elemento seleccionado 90º en el sentido de las agujas del reloj</translation>

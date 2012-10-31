@@ -14,20 +14,23 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include <stdlib.h>
 
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qvgroupbox.h>
-#include <qhgroupbox.h>
-#include <qhbox.h>
+#include <q3vgroupbox.h>
+#include <q3hgroupbox.h>
+#include <q3hbox.h>
 #include <qtimer.h>
 #include <qpushbutton.h>
-#include <qprogressbar.h>
-#include <qtextedit.h>
+#include <q3progressbar.h>
+#include <q3textedit.h>
 #include <qdatetime.h>
 #include <qregexp.h>
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3VBoxLayout>
 
 #include "simmessage.h"
 #include "main.h"
@@ -59,37 +62,37 @@ SimMessage::SimMessage(QWidget *w, QWidget *parent)
   SimOpenDpl = Doc->SimOpenDpl; // ...could be closed during the simulation.
   SimRunScript = Doc->SimRunScript;
 
-  all = new QVBoxLayout(this);
+  all = new Q3VBoxLayout(this);
   all->setSpacing(5);
   all->setMargin(5);
-  QVGroupBox *Group1 = new QVGroupBox(tr("Progress:"),this);
+  Q3VGroupBox *Group1 = new Q3VGroupBox(tr("Progress:"),this);
   all->addWidget(Group1);
 
-  ProgText = new QTextEdit(Group1);
+  ProgText = new Q3TextEdit(Group1);
   ProgText->setTextFormat(Qt::PlainText);
   ProgText->setReadOnly(true);
-  ProgText->setWordWrap(QTextEdit::NoWrap);
+  ProgText->setWordWrap(Q3TextEdit::NoWrap);
   ProgText->setMinimumSize(400,80);
   wasLF = false;
 
-  QHGroupBox *HGroup = new QHGroupBox(this);
+  Q3HGroupBox *HGroup = new Q3HGroupBox(this);
   HGroup->setInsideMargin(5);
   HGroup->setInsideSpacing(5);
   all->addWidget(HGroup);
   new QLabel(tr("Progress:"), HGroup);
-  SimProgress = new QProgressBar(HGroup);
+  SimProgress = new Q3ProgressBar(HGroup);
 //  SimProgress->setPercentageVisible(false);
 
-  QVGroupBox *Group2 = new QVGroupBox(tr("Errors and Warnings:"),this);
+  Q3VGroupBox *Group2 = new Q3VGroupBox(tr("Errors and Warnings:"),this);
   all->addWidget(Group2);
 
-  ErrText = new QTextEdit(Group2);
+  ErrText = new Q3TextEdit(Group2);
   ErrText->setTextFormat(Qt::PlainText);
   ErrText->setReadOnly(true);
-  ErrText->setWordWrap(QTextEdit::NoWrap);
+  ErrText->setWordWrap(Q3TextEdit::NoWrap);
   ErrText->setMinimumSize(400,80);
 
-  QHBox *Butts = new QHBox(this);
+  Q3HBox *Butts = new Q3HBox(this);
   all->addWidget(Butts);
 
   Display = new QPushButton(tr("Goto display page"), Butts);
@@ -127,7 +130,7 @@ bool SimMessage::startProcess()
   Collect.clear();  // clear list for NodeSets, SPICE components etc.
   ProgText->insert(tr("creating netlist... "));
   NetlistFile.setName(QucsHomeDir.filePath("netlist.txt"));
-   if(!NetlistFile.open(IO_WriteOnly)) {
+   if(!NetlistFile.open(QIODevice::WriteOnly)) {
     ErrText->insert(tr("ERROR: Cannot write netlist file!"));
     FinishSimulation(-1);
     return false;
@@ -198,7 +201,7 @@ void SimMessage::nextSPICE()
     SpiceFile.setName(QucsWorkDir.path() + QDir::separator() + FileName);
   else
     SpiceFile.setName(FileName);
-  if(!SpiceFile.open(IO_ReadOnly)) {
+  if(!SpiceFile.open(QIODevice::ReadOnly)) {
     ErrText->insert(tr("ERROR: Cannot open SPICE file \"%1\".").arg(FileName));
     FinishSimulation(-1);
     return;
@@ -355,7 +358,7 @@ void SimMessage::startSimulator()
       vhdlDir.setPath(vhdlDir.path()+"/"+lib);
       QFile destFile;
       destFile.setName(vhdlDir.filePath(entity+".vhdl"));
-      if(!destFile.open(IO_WriteOnly)) {
+      if(!destFile.open(QIODevice::WriteOnly)) {
 	ErrText->insert(tr("ERROR: Cannot create \"%1\"!")
 			.arg(destFile.name()));
 	return;
@@ -554,9 +557,9 @@ void SimMessage::FinishSimulation(int Status)
   }
 
   QFile file(QucsHomeDir.filePath("log.txt"));  // save simulator messages
-  if(file.open(IO_WriteOnly)) {
+  if(file.open(QIODevice::WriteOnly)) {
     int z;
-    QTextStream stream(&file);
+    Q3TextStream stream(&file);
     stream << tr("Output:\n-------") << "\n\n";
     for(z=0; z<=ProgText->paragraphs(); z++)
       stream << ProgText->text(z) << "\n";
@@ -570,8 +573,8 @@ void SimMessage::FinishSimulation(int Status)
     if(SimOpt) { // save optimization data
       QFile ifile(QucsHomeDir.filePath("asco_out.dat"));
       QFile ofile(DataSet);
-      if(ifile.open(IO_ReadOnly)) {
-	if(ofile.open(IO_WriteOnly)) {
+      if(ifile.open(QIODevice::ReadOnly)) {
+	if(ofile.open(QIODevice::WriteOnly)) {
 	  QByteArray data = ifile.readAll();
 	  ofile.writeBlock(data);
 	  ofile.close();

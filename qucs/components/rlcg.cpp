@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "main.h"
 #include "rlcg.h"
 
@@ -22,17 +22,17 @@ RLCG::RLCG()
 {
   Description = QObject::tr("RLCG transmission line");
 
-  Lines.append(new Line(-30,  0, 30,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-28,  7, 28,  7,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-28,  7, 28,  7,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-28, 14,-21,  7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-21, 14,-14,  7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-14, 14, -7,  7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -7, 14,  0,  7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, 14,  7,  7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  7, 14, 14,  7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 14, 14, 21,  7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 21, 14, 28,  7,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-28, 14,-21,  7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-21, 14,-14,  7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-14, 14, -7,  7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -7, 14,  0,  7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, 14,  7,  7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  7, 14, 14,  7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 14, 14, 21,  7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 21, 14, 28,  7,QPen(Qt::darkBlue,2)));
 
   QFontMetrics  metrics(QucsSettings.font);
   int fHeight = metrics.lineSpacing();

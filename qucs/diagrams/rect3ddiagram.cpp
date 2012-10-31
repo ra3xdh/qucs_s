@@ -18,7 +18,7 @@
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
-
+#include <QtGui>
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
@@ -45,9 +45,9 @@ Rect3DDiagram::Rect3DDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
 
   Name = "Rect3D";
   // symbolic diagram painting
-  Lines.append(new Line(0, 0, cx,  0, QPen(QPen::black,0)));
-  Lines.append(new Line(0, 0,  0, cy, QPen(QPen::black,0)));
-  Lines.append(new Line(0, 0, cx/2, cy/2, QPen(QPen::black,0)));
+  Lines.append(new Line(0, 0, cx,  0, QPen(Qt::black,0)));
+  Lines.append(new Line(0, 0,  0, cy, QPen(Qt::black,0)));
+  Lines.append(new Line(0, 0, cx/2, cy/2, QPen(Qt::black,0)));
 }
 
 Rect3DDiagram::~Rect3DDiagram()
@@ -581,7 +581,7 @@ void Rect3DDiagram::removeHiddenCross(int x1_, int y1_, int x2_, int y2_,
   p = Mem+2;
   do {
     if(((p-1)->done & 4) == 0)
-      Lines.append(new Line((p-1)->x, (p-1)->y, p->x, p->y, QPen(QPen::black,0)));
+      Lines.append(new Line((p-1)->x, (p-1)->y, p->x, p->y, QPen(Qt::black,0)));
     p++;
   } while(p <= pMem);
 }
@@ -664,14 +664,14 @@ if(Axis->log) {
 
     xLen = int(ystepD * cos(phi) + 0.5) + x;
     yLen = int(ystepD * sin(phi) + 0.5) + y;
-    if(Right)
+    if(Qt::DockRight)
       Texts.append(new Text(xLen+3+gx, yLen-6+gy, tmp));
     else
       Texts.append(new Text(xLen-w-2-gx, yLen-6-gy, tmp));
 
     // short grid marks
     Lines.append(new Line(xLen-gx, yLen-gy, xLen+gx, yLen+gy,
-                          QPen(QPen::black,0)));
+                          QPen(Qt::black,0)));
     yD *= 10.0;
     ystepD += corr;
   }
@@ -697,14 +697,14 @@ else {  // not logarithmical
 
     w = metrics.width(tmp);  // width of text
     if(maxWidth < w) maxWidth = w;
-    if(Right)
+    if(Qt::DockRight)
       Texts.append(new Text(x+3+gx, y-6+gy, tmp)); // place text right
     else
       Texts.append(new Text(x-w-2-gx, y-6-gy, tmp)); // place left
     GridNum += GridStep;
 
     // short grid marks
-    Lines.append(new Line(x-gx, y-gy, x+gx, y+gy, QPen(QPen::black,0)));
+    Lines.append(new Line(x-gx, y-gy, x+gx, y+gy, QPen(Qt::black,0)));
     xD += xstepD;
     yD += ystepD;
   }
@@ -731,7 +731,7 @@ void Rect3DDiagram::createAxis(Axis *Axis, bool Right,
   cos_phi = sqrt(double(x*x) + double(y*y));
   phi = atan2(double(y), double(x));
   
-  valid = calcAxis(Axis, x1_, y1_, cos_phi, phi, Right); // axis numbering
+  valid = calcAxis(Axis, x1_, y1_, cos_phi, phi, Qt::DockRight); // axis numbering
   z = (int)cos_phi;
   cos_phi = cos(phi);
   sin_phi = sin(phi);
@@ -849,16 +849,16 @@ int Rect3DDiagram::calcDiagram()
 
   // =====  paint coordinate cross  ====================================
   // xy area
-  Lines.append(new Line(X[o^1], Y[o^1], X[o^3], Y[o^3], QPen(QPen::black,0)));
-  Lines.append(new Line(X[o^2], Y[o^2], X[o^3], Y[o^3], QPen(QPen::black,0)));
+  Lines.append(new Line(X[o^1], Y[o^1], X[o^3], Y[o^3], QPen(Qt::black,0)));
+  Lines.append(new Line(X[o^2], Y[o^2], X[o^3], Y[o^3], QPen(Qt::black,0)));
 
   // yz area
-  Lines.append(new Line(X[o^2], Y[o^2], X[o^6], Y[o^6], QPen(QPen::black,0)));
-  Lines.append(new Line(X[o^4], Y[o^4], X[o^6], Y[o^6], QPen(QPen::black,0)));
+  Lines.append(new Line(X[o^2], Y[o^2], X[o^6], Y[o^6], QPen(Qt::black,0)));
+  Lines.append(new Line(X[o^4], Y[o^4], X[o^6], Y[o^6], QPen(Qt::black,0)));
 
   // xz area
-  Lines.append(new Line(X[o^1], Y[o^1], X[o^5], Y[o^5], QPen(QPen::black,0)));
-  Lines.append(new Line(X[o^4], Y[o^4], X[o^5], Y[o^5], QPen(QPen::black,0)));
+  Lines.append(new Line(X[o^1], Y[o^1], X[o^5], Y[o^5], QPen(Qt::black,0)));
+  Lines.append(new Line(X[o^4], Y[o^4], X[o^5], Y[o^5], QPen(Qt::black,0)));
 
 
   // =====  create axis  =============================================
@@ -911,9 +911,9 @@ int Rect3DDiagram::calcDiagram()
     free(zBuffer);
   }
   else {
-    Lines.append(new Line(X[o], Y[o], X[o^1], Y[o^1], QPen(QPen::black,0)));
-    Lines.append(new Line(X[o], Y[o], X[o^2], Y[o^2], QPen(QPen::black,0)));
-    Lines.append(new Line(X[o], Y[o], X[o^4], Y[o^4], QPen(QPen::black,0)));
+    Lines.append(new Line(X[o], Y[o], X[o^1], Y[o^1], QPen(Qt::black,0)));
+    Lines.append(new Line(X[o], Y[o], X[o^2], Y[o^2], QPen(Qt::black,0)));
+    Lines.append(new Line(X[o], Y[o], X[o^4], Y[o^4], QPen(Qt::black,0)));
   }
 
   pMem = Mem;
@@ -921,10 +921,10 @@ int Rect3DDiagram::calcDiagram()
 
 
 Frame:   // jump here if error occurred (e.g. impossible log boundings)
-  Lines.append(new Line(0,  y2, x2, y2, QPen(QPen::black,0)));
-  Lines.append(new Line(x2, y2, x2,  0, QPen(QPen::black,0)));
-  Lines.append(new Line(0,   0, x2,  0, QPen(QPen::black,0)));
-  Lines.append(new Line(0,  y2,  0,  0, QPen(QPen::black,0)));
+  Lines.append(new Line(0,  y2, x2, y2, QPen(Qt::black,0)));
+  Lines.append(new Line(x2, y2, x2,  0, QPen(Qt::black,0)));
+  Lines.append(new Line(0,   0, x2,  0, QPen(Qt::black,0)));
+  Lines.append(new Line(0,  y2,  0,  0, QPen(Qt::black,0)));
   return 0;
 }
 

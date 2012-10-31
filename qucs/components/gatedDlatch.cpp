@@ -15,7 +15,7 @@
  * any later version.
  * 
  */
-
+#include <QtGui>
 #include "gatedDlatch.h"
 #include "node.h"
 #include "main.h"
@@ -59,22 +59,22 @@ Element * gatedDlatch::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void gatedDlatch::createSymbol()
 {
-  Lines.append(new Line(-30, -40, 30,-40,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30, -40, 30, 40,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,  40,-30, 40,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30, 40,-30, -40,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30, -40, 30,-40,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30, -40, 30, 40,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,  40,-30, 40,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30, 40,-30, -40,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-50,-20,-30,-20,QPen(QPen::darkBlue,2))); // D
-  Lines.append(new Line(-50, 20,-30, 20,QPen(QPen::darkBlue,2))); // C
-  Lines.append(new Line( 40, 20, 50, 20,QPen(QPen::darkBlue,2))); // QB
-  Lines.append(new Line( 30,-20, 50,-20,QPen(QPen::darkBlue,2))); // Q
+  Lines.append(new Line(-50,-20,-30,-20,QPen(Qt::darkBlue,2))); // D
+  Lines.append(new Line(-50, 20,-30, 20,QPen(Qt::darkBlue,2))); // C
+  Lines.append(new Line( 40, 20, 50, 20,QPen(Qt::darkBlue,2))); // QB
+  Lines.append(new Line( 30,-20, 50,-20,QPen(Qt::darkBlue,2))); // Q
 
-  Arcs.append(new Arc( 30, 15, 10, 10, 0, 16*360, QPen(QPen::darkBlue,2)));
+  Arcs.append(new Arc( 30, 15, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
 
-  Texts.append(new Text(-25,-32, "D", QPen::darkBlue, 12.0));
-  Texts.append(new Text(-25,  7, "C", QPen::darkBlue, 12.0));
-  Texts.append(new Text( 11,-32, "Q", QPen::darkBlue, 12.0));
-  Texts.append(new Text( 11,  7, "Q", QPen::darkBlue, 12.0));
+  Texts.append(new Text(-25,-32, "D", Qt::darkBlue, 12.0));
+  Texts.append(new Text(-25,  7, "C", Qt::darkBlue, 12.0));
+  Texts.append(new Text( 11,-32, "Q", Qt::darkBlue, 12.0));
+  Texts.append(new Text( 11,  7, "Q", Qt::darkBlue, 12.0));
   Texts.current()->over=true;
 
   Ports.append(new Port(-50,-20));  // D

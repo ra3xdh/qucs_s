@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "digi_source.h"
 #include "main.h"
 #include "node.h"
@@ -25,18 +25,18 @@ Digi_Source::Digi_Source()
   Type = isComponent;   // both analog and digital
   Description = QObject::tr("digital source");
 
-  Lines.append(new Line(-10,  0,  0,  0,QPen(QPen::darkGreen,2)));
-  Lines.append(new Line(-20,-10,-10,  0,QPen(QPen::darkGreen,2)));
-  Lines.append(new Line(-20, 10,-10,  0,QPen(QPen::darkGreen,2)));
-  Lines.append(new Line(-35,-10,-20,-10,QPen(QPen::darkGreen,2)));
-  Lines.append(new Line(-35, 10,-20, 10,QPen(QPen::darkGreen,2)));
-  Lines.append(new Line(-35,-10,-35, 10,QPen(QPen::darkGreen,2)));
+  Lines.append(new Line(-10,  0,  0,  0,QPen(Qt::darkGreen,2)));
+  Lines.append(new Line(-20,-10,-10,  0,QPen(Qt::darkGreen,2)));
+  Lines.append(new Line(-20, 10,-10,  0,QPen(Qt::darkGreen,2)));
+  Lines.append(new Line(-35,-10,-20,-10,QPen(Qt::darkGreen,2)));
+  Lines.append(new Line(-35, 10,-20, 10,QPen(Qt::darkGreen,2)));
+  Lines.append(new Line(-35,-10,-35, 10,QPen(Qt::darkGreen,2)));
 
-  Lines.append(new Line(-32, 5,-28, 5,QPen(QPen::darkGreen,2)));
-  Lines.append(new Line(-28,-5,-24,-5,QPen(QPen::darkGreen,2)));
-  Lines.append(new Line(-24, 5,-20, 5,QPen(QPen::darkGreen,2)));
-  Lines.append(new Line(-28,-5,-28, 5,QPen(QPen::darkGreen,2)));
-  Lines.append(new Line(-24,-5,-24, 5,QPen(QPen::darkGreen,2)));
+  Lines.append(new Line(-32, 5,-28, 5,QPen(Qt::darkGreen,2)));
+  Lines.append(new Line(-28,-5,-24,-5,QPen(Qt::darkGreen,2)));
+  Lines.append(new Line(-24, 5,-20, 5,QPen(Qt::darkGreen,2)));
+  Lines.append(new Line(-28,-5,-28, 5,QPen(Qt::darkGreen,2)));
+  Lines.append(new Line(-24,-5,-24, 5,QPen(Qt::darkGreen,2)));
 
   Ports.append(new Port(  0,  0));
 

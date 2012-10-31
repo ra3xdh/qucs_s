@@ -1,5 +1,6 @@
-<!DOCTYPE TS><TS>
-<defaultcodec></defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>ArrowDialog</name>
     <message>
@@ -7084,11 +7085,11 @@ Kullanım:  qucsedit [-r] kütük
     </message>
     <message>
         <source>npn HICUM L0 v1.2g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">npn HICUM L0 v1.2g {0 ?}</translation>
     </message>
     <message>
         <source>pnp HICUM L0 v1.2g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">pnp HICUM L0 v1.2g {0 ?}</translation>
     </message>
     <message>
         <source>hybrid (unsymmetrical 3dB coupler)</source>
@@ -8547,13 +8548,13 @@ Belgenin tüm bilesenlerini seçer</translation>
         <translation>Döndür</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation>Seçili bilşeni 90° çevirir</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation>Döndür
 
 Seçili bileşeni saatin tersi yönde 90° çevirir</translation>

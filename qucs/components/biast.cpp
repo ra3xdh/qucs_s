@@ -22,23 +22,23 @@ BiasT::BiasT()
 {
   Description = QObject::tr("bias t");
 
-  Arcs.append(new Arc( -3,  2, 6, 6, 16*270, 16*180,QPen(QPen::darkBlue,1)));
-  Arcs.append(new Arc( -3,  8, 6, 6, 16*270, 16*180,QPen(QPen::darkBlue,1)));
-  Arcs.append(new Arc( -3, 14, 6, 6, 16*270, 16*180,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-22,-10, 22,-10,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-22,-10,-22, 22,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-22, 22, 22, 22,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line( 22,-10, 22, 22,QPen(QPen::darkBlue,1)));
+  Arcs.append(new Arc( -3,  2, 6, 6, 16*270, 16*180,QPen(Qt::darkBlue,1)));
+  Arcs.append(new Arc( -3,  8, 6, 6, 16*270, 16*180,QPen(Qt::darkBlue,1)));
+  Arcs.append(new Arc( -3, 14, 6, 6, 16*270, 16*180,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-22,-10, 22,-10,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-22,-10,-22, 22,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-22, 22, 22, 22,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line( 22,-10, 22, 22,QPen(Qt::darkBlue,1)));
 
-  Lines.append(new Line(-13, -6,-13,  7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -9, -6, -9,  7,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( -9,  0, 22,  0,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-22,  0,-13,  0,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-30,  0,-22,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 22,  0, 30,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0,  0,  0,  2,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(  0, 20,  0, 22,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(  0, 22,  0, 30,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-13, -6,-13,  7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -9, -6, -9,  7,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( -9,  0, 22,  0,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-22,  0,-13,  0,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-30,  0,-22,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 22,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0,  0,  0,  2,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(  0, 20,  0, 22,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(  0, 22,  0, 30,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30,  0));
   Ports.append(new Port( 30,  0));

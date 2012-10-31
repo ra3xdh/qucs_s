@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>ArrowDialog</name>
     <message>
@@ -6927,11 +6929,11 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <source>npn HICUM L0 v1.2g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">npn типті HICUM L0 1.2g нұсқасы {0 ?}</translation>
     </message>
     <message>
         <source>pnp HICUM L0 v1.2g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">pnp типті HICUM L0 1.2g нұсқасы {0 ?}</translation>
     </message>
     <message>
         <source>hybrid (unsymmetrical 3dB coupler)</source>
@@ -8475,13 +8477,13 @@ Selects all diagram markers of the document</source>
         <translation>Бұру</translation>
     </message>
     <message>
-        <source>Rotates the selected component by 90&#xb0;</source>
+        <source>Rotates the selected component by 90°</source>
         <translation>Ерекшеленген компонентті сағат тіліне қарсы 90°-қа бұрады</translation>
     </message>
     <message>
         <source>Rotate
 
-Rotates the selected component by 90&#xb0; counter-clockwise</source>
+Rotates the selected component by 90° counter-clockwise</source>
         <translation>Бұру
 
 Ерекшеленген компонентті сағат тіліне қарсы 90°-қа бұрады</translation>

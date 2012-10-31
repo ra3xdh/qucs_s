@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "node.h"
 
 #include "viewpainter.h"
@@ -42,7 +42,7 @@ void Node::paint(ViewPainter *p)
     case 1:  if(Label)
                p->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue); // open but labeled
              else {
-               p->Painter->setPen(QPen(QPen::red,1));  // node is open
+               p->Painter->setPen(QPen(Qt::red,1));  // node is open
                p->drawEllipse(cx-4, cy-4, 8, 8);
              }
              return;
@@ -51,7 +51,7 @@ void Node::paint(ViewPainter *p)
              p->fillRect(cx-2, cy-2, 4, 4, Qt::darkBlue);
              break;
     default: p->Painter->setBrush(Qt::darkBlue);  // more than 2 connections
-	     p->Painter->setPen(QPen(QPen::darkBlue,1));
+	     p->Painter->setPen(QPen(Qt::darkBlue,1));
 	     p->drawEllipse(cx-3, cy-3, 6, 6);
 	     p->Painter->setBrush(Qt::NoBrush);
              break;

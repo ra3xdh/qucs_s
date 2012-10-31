@@ -20,11 +20,14 @@
 
 #include <qdialog.h>
 #include <qregexp.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <QLabel>
 
 class QLabel;
 class QLineEdit;
 class QPushButton;
-class QGridLayout;
+class Q3GridLayout;
 class QRegExpValidator;
 class WireLabel;
 
@@ -44,7 +47,7 @@ private slots:
 
 private:
   QPushButton *ButtonOk, *ButtonCancel, *ButtonMore;
-  QGridLayout *gbox;
+  Q3GridLayout *gbox;
   QRegExpValidator *Validator1, *Validator2;
   QRegExp      Expr1, Expr2;
   QLabel      *Label2;

@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "wirelabel.h"
 #include "viewpainter.h"
 #include "wire.h"
@@ -104,7 +104,7 @@ bool WireLabel::getSelected(int x, int y)
 // ----------------------------------------------------------------
 void WireLabel::paint(ViewPainter *p)
 {
-  p->Painter->setPen(QPen(QPen::black,1));
+  p->Painter->setPen(QPen(Qt::black,1));
   x2 = p->drawText(Name, x1, y1, &y2);
 
   int xpaint=0, ypaint=4, phi=0;
@@ -155,9 +155,9 @@ void WireLabel::paint(ViewPainter *p)
   }
 
   if(initValue.isEmpty())
-    p->Painter->setPen(QPen(QPen::darkMagenta,0));
+    p->Painter->setPen(QPen(Qt::darkMagenta,0));
   else
-    p->Painter->setPen(QPen(QPen::red,0));
+    p->Painter->setPen(QPen(Qt::red,0));
 
   if(phi)  p->drawArc(cx-4, cy-4, 8, 8, phi, 16*255);
   p->Painter->drawLine(a, b, c, b);
@@ -167,7 +167,7 @@ void WireLabel::paint(ViewPainter *p)
   x2 = int(double(x2) / p->Scale);
   y2 = int(double(y2) / p->Scale);
   if(isSelected) {
-    p->Painter->setPen(QPen(QPen::darkGray,3));
+    p->Painter->setPen(QPen(Qt::darkGray,3));
     p->drawRoundRect(x1-2, y1-2, x2+6, y2+5);
   }
 }

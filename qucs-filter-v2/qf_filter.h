@@ -22,7 +22,7 @@
 # define PACKAGE_VERSION "Qf test"
 # endif
 
-# include <qtextstream.h>
+# include <q3textstream.h>
 
 using namespace std;
 

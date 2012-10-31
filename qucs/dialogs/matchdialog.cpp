@@ -18,10 +18,12 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-
+#include <QtGui>
 #include "matchdialog.h"
 #include "main.h"
 #include "qucs.h"
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 #include "element.h"
 #include "../components/capacitor.h"
 #include "../components/inductor.h"
@@ -29,8 +31,8 @@
 
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
@@ -39,8 +41,8 @@
 #include <qmessagebox.h>
 #include <qapplication.h>
 #include <qclipboard.h>
-#include <qhgroupbox.h>
-#include <qvgroupbox.h>
+#include <q3hgroupbox.h>
+#include <q3vgroupbox.h>
 
 
 MatchDialog::MatchDialog(QWidget *parent)
@@ -49,7 +51,7 @@ MatchDialog::MatchDialog(QWidget *parent)
   setCaption(tr("Create Matching Circuit"));
   DoubleVal = new QDoubleValidator(this);
 
-  all = new QVBoxLayout(this, 3,3);
+  all = new Q3VBoxLayout(this, 3,3);
 
   TwoCheck = new QCheckBox(tr("calculate two-port matching"), this);
   all->addWidget(TwoCheck);
@@ -57,7 +59,7 @@ MatchDialog::MatchDialog(QWidget *parent)
   connect(TwoCheck, SIGNAL(toggled(bool)), SLOT(slotSetTwoPort(bool)));
 
   // ...........................................................
-  QHGroupBox *ImpBox = new QHGroupBox(tr("Reference Impedance"), this);
+  Q3HGroupBox *ImpBox = new Q3HGroupBox(tr("Reference Impedance"), this);
   all->addWidget(ImpBox);
   Port1Label = new QLabel(tr("Port 1"), ImpBox);
   Ref1Edit = new QLineEdit("50", ImpBox);
@@ -73,10 +75,10 @@ MatchDialog::MatchDialog(QWidget *parent)
 
 
   // ...........................................................
-  QVGroupBox *SParBox = new QVGroupBox(tr("S Parameter"), this);
+  Q3VGroupBox *SParBox = new Q3VGroupBox(tr("S Parameter"), this);
   all->addWidget(SParBox);
 
-  QHBox *h1 = new QHBox(SParBox);
+  Q3HBox *h1 = new Q3HBox(SParBox);
   h1->setSpacing(3);
   FormatLabel = new QLabel(tr("Input format"), h1);
   FormatCombo = new QComboBox(h1);
@@ -86,46 +88,46 @@ MatchDialog::MatchDialog(QWidget *parent)
   QWidget *place1 = new QWidget(h1); // stretchable placeholder
   h1->setStretchFactor(place1, 5);
 
-  QHBox *h3 = new QHBox(SParBox);
+  Q3HBox *h3 = new Q3HBox(SParBox);
   h3->setSpacing(3);
-  QVBox *VBox1 = new QVBox(h3);
+  Q3VBox *VBox1 = new Q3VBox(h3);
     S11Label = new QLabel(tr("S11"), VBox1);
     S21Label = new QLabel(tr("S21"), VBox1);
-  QVBox *VBox2 = new QVBox(h3);
+  Q3VBox *VBox2 = new Q3VBox(h3);
     S11magEdit = new QLineEdit("0.5", VBox2);
     S11magEdit->setValidator(DoubleVal);
     S21magEdit = new QLineEdit("0.5", VBox2);
     S21magEdit->setValidator(DoubleVal);
-  QVBox *VBox3 = new QVBox(h3);
+  Q3VBox *VBox3 = new Q3VBox(h3);
     S11sLabel = new QLabel("+j", VBox3);
     S21sLabel = new QLabel("+j", VBox3);
-  QVBox *VBox4 = new QVBox(h3);
+  Q3VBox *VBox4 = new Q3VBox(h3);
     S11degEdit = new QLineEdit("0", VBox4);
     S11degEdit->setValidator(DoubleVal);
     S21degEdit = new QLineEdit("0", VBox4);
     S21degEdit->setValidator(DoubleVal);
-  QVBox *VBox5 = new QVBox(h3);
+  Q3VBox *VBox5 = new Q3VBox(h3);
     S11uLabel = new QLabel(" ", VBox5);
     S21uLabel = new QLabel(" ", VBox5);
   QWidget *place4 = new QWidget(h3); // stretchable placeholder
   h3->setStretchFactor(place4, 5);
-  QVBox *VBox6 = new QVBox(h3);
+  Q3VBox *VBox6 = new Q3VBox(h3);
     S12Label = new QLabel(tr("S12"), VBox6);
     S22Label = new QLabel(tr("S22"), VBox6);
-  QVBox *VBox7 = new QVBox(h3);
+  Q3VBox *VBox7 = new Q3VBox(h3);
     S12magEdit = new QLineEdit("0", VBox7);
     S12magEdit->setValidator(DoubleVal);
     S22magEdit = new QLineEdit("0.5", VBox7);
     S22magEdit->setValidator(DoubleVal);
-  QVBox *VBox8 = new QVBox(h3);
+  Q3VBox *VBox8 = new Q3VBox(h3);
     S12sLabel = new QLabel("+j", VBox8);
     S22sLabel = new QLabel("+j", VBox8);
-  QVBox *VBox9 = new QVBox(h3);
+  Q3VBox *VBox9 = new Q3VBox(h3);
     S12degEdit = new QLineEdit("0", VBox9);
     S12degEdit->setValidator(DoubleVal);
     S22degEdit = new QLineEdit("0", VBox9);
     S22degEdit->setValidator(DoubleVal);
-  QVBox *VBox0 = new QVBox(h3);
+  Q3VBox *VBox0 = new Q3VBox(h3);
     S12uLabel = new QLabel(" ", VBox0);
     S22uLabel = new QLabel(" ", VBox0);
 
@@ -139,7 +141,7 @@ MatchDialog::MatchDialog(QWidget *parent)
 	  SLOT(slotReflexionChanged(const QString&)));
 
 
-  QHBox *h2 = new QHBox(SParBox);
+  Q3HBox *h2 = new Q3HBox(SParBox);
   h2->setSpacing(3);
   FrequencyLabel = new QLabel(tr("Frequency:"), h2);
   FrequencyEdit = new QLineEdit(h2);
@@ -153,7 +155,7 @@ MatchDialog::MatchDialog(QWidget *parent)
   h2->setStretchFactor(place2, 5);
 
   // ...........................................................
-  QHBox *h0 = new QHBox(this);
+  Q3HBox *h0 = new Q3HBox(this);
   h0->setSpacing(5);
   all->addWidget(h0);
   QWidget *place3 = new QWidget(h0); // stretchable placeholder

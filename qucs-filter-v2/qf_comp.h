@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <list>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qstring.h>
 
 using namespace std;
@@ -32,7 +32,7 @@ struct qf_cmp {
 					name (n), shnt(s), gnd (g) {}
   virtual	~qf_cmp	(void) {};
 
-  virtual void	dump	(unsigned, unsigned, QTextStream&, QTextStream&) = 0;
+  virtual void	dump	(unsigned, unsigned, Q3TextStream&, Q3TextStream&) = 0;
 
   // Denormalization according to the transformations implemented
   // By default, these do nothing
@@ -72,8 +72,8 @@ class qf_lcmp {
 
   bool		  isvoid    (void) {return lst. size () == 0;}
   int		  dump_node (int&, list <qf_cmp*>::iterator&,
-			     QTextStream&, QTextStream&);
-  void		  dump_all  (QTextStream&); 
+			     Q3TextStream&, Q3TextStream&);
+  void		  dump_all  (Q3TextStream&); 
 
 		  qf_lcmp   (void)  {};
 		  ~qf_lcmp  (void)  {clear ();}
@@ -91,7 +91,7 @@ struct qf_cmp1: public qf_cmp {
 				qf_cmp (n, s, g), val(v), unit (u) {}
   virtual	~qf_cmp1  (void) {};
 
-  virtual void	dump	  (unsigned, unsigned, QTextStream&, QTextStream&);
+  virtual void	dump	  (unsigned, unsigned, Q3TextStream&, Q3TextStream&);
 };
 
 // A generic class of either serial or parallel LC
@@ -106,7 +106,7 @@ struct qf_cmplc: public qf_cmp {
 			   qf_cmp (n, s, g), vC(vc), vL(vl) {}
   virtual	~qf_cmplc (void) {};
 
-  virtual void	dump	  (unsigned, unsigned, QTextStream&, QTextStream&);
+  virtual void	dump	  (unsigned, unsigned, Q3TextStream&, Q3TextStream&);
 };
 
 // Fake component to signal output
@@ -115,7 +115,7 @@ struct qf_end: public qf_cmp {
 
 		qf_end	  (void): qf_cmp ("END", false, false) {}
   inline	~qf_end   (void)  {}
-  void		dump	  (unsigned, unsigned, QTextStream&, QTextStream&) {};
+  void		dump	  (unsigned, unsigned, Q3TextStream&, Q3TextStream&) {};
 };
 
 // Inductor
@@ -219,7 +219,7 @@ struct qf_pslc : public qf_cmplc {
 			 vC2(vc2), vL2 (vl2) {}
   inline	~qf_pslc(void) {}; 
 
-  void		dump	(unsigned, unsigned, QTextStream&, QTextStream&);
+  void		dump	(unsigned, unsigned, Q3TextStream&, Q3TextStream&);
 };
 
 # endif //_QF_COMP_H

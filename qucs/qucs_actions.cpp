@@ -14,19 +14,22 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include <stdlib.h>
 #include <limits.h>
 
 #include <qaction.h>
-#include <qprocess.h>
+#include <q3process.h>
 #include <qlineedit.h>
 #include <qstatusbar.h>
 #include <qtabwidget.h>
 #include <qmessagebox.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qregexp.h>
 #include <qvalidator.h>
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3PtrList>
 
 #include "main.h"
 #include "qucs.h"
@@ -584,7 +587,7 @@ void QucsApp::editFile(const QString& File)
   QStringList com;
   com << QucsSettings.Editor;
   if (!File.isEmpty()) com << File;
-  QProcess *QucsEditor = new QProcess(com);
+  Q3Process *QucsEditor = new Q3Process(com);
   QucsEditor->setCommunication(0);
   if(!QucsEditor->start()) {
     QMessageBox::critical(this, tr("Error"), tr("Cannot start text editor!"));
@@ -621,8 +624,8 @@ void QucsApp::slotCallEditor()
 // Is called to start the filter synthesis program.
 void QucsApp::slotCallFilter()
 {
-  QProcess *QucsFilter =
-    new QProcess(QString(QucsSettings.BinDir + "qucsfilter"));
+  Q3Process *QucsFilter =
+    new Q3Process(QString(QucsSettings.BinDir + "qucsfilter"));
   if(!QucsFilter->start()) {
     QMessageBox::critical(this, tr("Error"),
                           tr("Cannot start filter synthesis program!"));
@@ -638,8 +641,8 @@ void QucsApp::slotCallFilter()
 // Is called to start the transmission line calculation program.
 void QucsApp::slotCallLine()
 {
-  QProcess *QucsLine =
-    new QProcess(QString(QucsSettings.BinDir + "qucstrans"));
+  Q3Process *QucsLine =
+    new Q3Process(QString(QucsSettings.BinDir + "qucstrans"));
   if(!QucsLine->start()) {
     QMessageBox::critical(this, tr("Error"),
                           tr("Cannot start line calculation program!"));
@@ -655,8 +658,8 @@ void QucsApp::slotCallLine()
 // Is called to start the component library program.
 void QucsApp::slotCallLibrary()
 {
-  QProcess *QucsLibrary =
-    new QProcess(QString(QucsSettings.BinDir + "qucslib"));
+  Q3Process *QucsLibrary =
+    new Q3Process(QString(QucsSettings.BinDir + "qucslib"));
   if(!QucsLibrary->start()) {
     QMessageBox::critical(this, tr("Error"),
                           tr("Cannot start library program!"));
@@ -680,8 +683,8 @@ void QucsApp::slotCallMatch()
 // Is called to start the attenuator calculation program.
 void QucsApp::slotCallAtt()
 {
-  QProcess *QucsAtt =
-    new QProcess(QString(QucsSettings.BinDir + "qucsattenuator"));
+  Q3Process *QucsAtt =
+    new Q3Process(QString(QucsSettings.BinDir + "qucsattenuator"));
   if(!QucsAtt->start()) {
     QMessageBox::critical(this, tr("Error"),
                           tr("Cannot start attenuator calculation program!"));
@@ -710,7 +713,7 @@ void QucsApp::showHTML(const QString& Page)
 {
   QStringList com;
   com << QucsSettings.BinDir + "qucshelp" << Page;
-  QProcess *QucsHelp = new QProcess(com);
+  Q3Process *QucsHelp = new Q3Process(com);
   QucsHelp->setCommunication(0);
   if(!QucsHelp->start()) {
     QMessageBox::critical(this, tr("Error"), tr("Cannot start qucshelp!"));
@@ -764,7 +767,7 @@ void QucsApp::slotAddToProject()
   }
 
 
-  QStringList List = QFileDialog::getOpenFileNames(
+  QStringList List = Q3FileDialog::getOpenFileNames(
 	QucsFileFilter, lastDir.isEmpty() ? QString(".") : lastDir,
 	this, 0, tr("Select files to copy"));
 
@@ -791,7 +794,7 @@ void QucsApp::slotAddToProject()
     destFile.setName(QucsWorkDir.absPath() + 
                      QDir::separator() + Info.fileName());
 
-    if(!origFile.open(IO_ReadOnly)) {
+    if(!origFile.open(QIODevice::ReadOnly)) {
       QMessageBox::critical(this, tr("Error"), tr("Cannot open \"%1\" !").arg(*it));
       it++;
       continue;
@@ -807,7 +810,7 @@ void QucsApp::slotAddToProject()
         continue;
       }
 
-    if(!destFile.open(IO_WriteOnly)) {
+    if(!destFile.open(QIODevice::WriteOnly)) {
       QMessageBox::critical(this, tr("Error"), tr("Cannot create \"%1\" !").arg(*it));
       origFile.close();
       it++;
@@ -843,7 +846,7 @@ void QucsApp::slotCursorLeft()
 {
   if(!editText->isHidden()) return;  // for edit of component property ?
 
-  QPtrList<Element> movingElements;
+  Q3PtrList<Element> movingElements;
   Schematic *Doc = (Schematic*)DocumentTab->currentPage();
   int markerCount = Doc->copySelectedElements(&movingElements);
 
@@ -872,7 +875,7 @@ void QucsApp::slotCursorRight()
 {
   if(!editText->isHidden()) return;  // for edit of component property ?
 
-  QPtrList<Element> movingElements;
+  Q3PtrList<Element> movingElements;
   Schematic *Doc = (Schematic*)DocumentTab->currentPage();
   int markerCount = Doc->copySelectedElements(&movingElements);
 
@@ -919,7 +922,7 @@ void QucsApp::slotCursorUp()
     return;
   }
 
-  QPtrList<Element> movingElements;
+  Q3PtrList<Element> movingElements;
   Schematic *Doc = (Schematic*)DocumentTab->currentPage();
   int markerCount = Doc->copySelectedElements(&movingElements);
 
@@ -968,7 +971,7 @@ void QucsApp::slotCursorDown()
     return;
   }
 
-  QPtrList<Element> movingElements;
+  Q3PtrList<Element> movingElements;
   Schematic *Doc = (Schematic*)DocumentTab->currentPage();
   int markerCount = Doc->copySelectedElements(&movingElements);
 
@@ -1154,7 +1157,7 @@ void QucsApp::slotExportGraphAsCsv()
     return;
   }
 
-  QString s = QFileDialog::getSaveFileName(
+  QString s = Q3FileDialog::getSaveFileName(
      lastDir.isEmpty() ? QString(".") : lastDir,
      tr("CSV file")+" (*.csv);;" + tr("Any File")+" (*)",
      this, 0, tr("Enter an Output File Name"));
@@ -1173,13 +1176,13 @@ void QucsApp::slotExportGraphAsCsv()
           tr("&Yes"), tr("&No"), 0,1,1))
       return;
 
-  if(!File.open(IO_WriteOnly)) {
+  if(!File.open(QIODevice::WriteOnly)) {
     QMessageBox::critical(this, QObject::tr("Error"),
                           QObject::tr("Cannot create output file!"));
     return;
   }
 
-  QTextStream Stream(&File);
+  Q3TextStream Stream(&File);
 
 
   DataX *pD;

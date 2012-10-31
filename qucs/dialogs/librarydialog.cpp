@@ -18,22 +18,24 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-
-#include <qhbox.h>
-#include <qvbox.h>
+#include <QtGui>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
-#include <qtextstream.h>
+#include <q3textedit.h>
+#include <q3textstream.h>
 #include <qdatastream.h>
 #include <qcheckbox.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qvalidator.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-#include <qscrollview.h>
-#include <qvbuttongroup.h>
+#include <q3scrollview.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 #include "librarydialog.h"
 #include "qucs.h"
@@ -42,7 +44,7 @@
 
 extern SubMap FileList;
 
-LibraryDialog::LibraryDialog(QucsApp *App_, QListViewItem *SchematicList)
+LibraryDialog::LibraryDialog(QucsApp *App_, Q3ListViewItem *SchematicList)
 			: QDialog(App_, 0, TRUE, Qt::WDestructiveClose)
 {
   App = App_;
@@ -52,40 +54,40 @@ LibraryDialog::LibraryDialog(QucsApp *App_, QListViewItem *SchematicList)
   Validator = new QRegExpValidator(Expr, this);
 
   // ...........................................................
-  all = new QVBoxLayout(this);
+  all = new Q3VBoxLayout(this);
   all->setMargin(5);
   all->setSpacing(6);
 
-  QHBox *h1 = new QHBox(this);
+  Q3HBox *h1 = new Q3HBox(this);
   all->addWidget(h1);
   theLabel = new QLabel(tr("Library Name:"), h1);
   NameEdit = new QLineEdit(h1);
   NameEdit->setValidator(Validator);
 
-  Group = new QVButtonGroup(tr("Choose subcircuits:"), this);
+  Group = new Q3VButtonGroup(tr("Choose subcircuits:"), this);
   all->addWidget(Group);
   
   // ...........................................................
-  QHBox *h3 = new QHBox(Group);
+  Q3HBox *h3 = new Q3HBox(Group);
   ButtSelectAll = new QPushButton(tr("Select All"), h3);
   connect(ButtSelectAll, SIGNAL(clicked()), SLOT(slotSelectAll()));
   ButtSelectNone = new QPushButton(tr("Deselect All"), h3);
   connect(ButtSelectNone, SIGNAL(clicked()), SLOT(slotSelectNone()));
 
   // ...........................................................
-  QScrollView *Dia_Scroll = new QScrollView(Group);
+  Q3ScrollView *Dia_Scroll = new Q3ScrollView(Group);
   Dia_Scroll->setMargin(5);
-  QVBox *Dia_Box = new QVBox(Dia_Scroll->viewport());
+  Q3VBox *Dia_Box = new Q3VBox(Dia_Scroll->viewport());
   Dia_Scroll->addChild(Dia_Box);
 
-  ErrText = new QTextEdit(this);
+  ErrText = new Q3TextEdit(this);
   ErrText->setHidden(true);
   ErrText->setTextFormat(Qt::PlainText);
-  ErrText->setWordWrap(QTextEdit::NoWrap);
+  ErrText->setWordWrap(Q3TextEdit::NoWrap);
   all->addWidget(ErrText);
   
   // ...........................................................
-  QHBox *h2 = new QHBox(this);
+  Q3HBox *h2 = new Q3HBox(this);
   all->addWidget(h2);
   ButtCancel = new QPushButton(tr("Cancel"), h2);
   connect(ButtCancel, SIGNAL(clicked()), SLOT(reject()));
@@ -95,7 +97,7 @@ LibraryDialog::LibraryDialog(QucsApp *App_, QListViewItem *SchematicList)
 
   // ...........................................................
   // insert all subcircuits of current project
-  QListViewItem *p = SchematicList->firstChild();
+  Q3ListViewItem *p = SchematicList->firstChild();
   while(p) {
     if(p->parent() == 0)
       break;
@@ -183,7 +185,7 @@ void LibraryDialog::slotCreate()
 }
 
 // ---------------------------------------------------------------
-void LibraryDialog::intoStream(QTextStream &Stream, QString &tmp,
+void LibraryDialog::intoStream(Q3TextStream &Stream, QString &tmp,
 			       const char *sec)
 {
   int i = tmp.find("TOP LEVEL MARK");
@@ -201,7 +203,7 @@ int LibraryDialog::intoFile(QString &ifn, QString &ofn, QStringList &IFiles)
 {
   int error = 0;
   QFile ifile(ifn);
-  if(!ifile.open(IO_ReadOnly)) {
+  if(!ifile.open(QIODevice::ReadOnly)) {
     ErrText->insert(QObject::tr("ERROR: Cannot open file \"%1\".\n").
 		    arg(ifn));
     error++;
@@ -225,7 +227,7 @@ int LibraryDialog::intoFile(QString &ifn, QString &ofn, QStringList &IFiles)
     IFiles.append(ofn);
     QFile ofile;
     ofile.setName(LibDirSub.absFilePath(ofn));
-    if(!ofile.open(IO_WriteOnly)) {
+    if(!ofile.open(QIODevice::WriteOnly)) {
       ErrText->insert(
         QObject::tr("ERROR: Cannot create file \"%1\".\n").arg(ofn));
       error++;
@@ -263,11 +265,11 @@ void LibraryDialog::slotNext()
   disconnect(ButtCreate, SIGNAL(clicked()), 0, 0);
   connect(ButtCreate, SIGNAL(clicked()), SLOT(accept()));
 
-  if(!LibFile.open(IO_WriteOnly)) {
+  if(!LibFile.open(QIODevice::WriteOnly)) {
     ErrText->append(tr("Error: Cannot create library!"));
     return;
   }
-  QTextStream Stream;
+  Q3TextStream Stream;
   Stream.setDevice(&LibFile);
   Stream << "<Qucs Library " PACKAGE_VERSION " \""
 	 << NameEdit->text() << "\">\n\n";
@@ -276,7 +278,7 @@ void LibraryDialog::slotNext()
   bool Success = true, ret;
   QStringList::Iterator it = Descriptions.begin();
   QString tmp;
-  QTextStream ts(&tmp, IO_WriteOnly);
+  Q3TextStream ts(&tmp, QIODevice::WriteOnly);
   for(p = BoxList.first(); p != 0; p = BoxList.next())
     if(p->isChecked()) {
       Stream << "<Component " + p->text().section('.',0,0) + ">\n"

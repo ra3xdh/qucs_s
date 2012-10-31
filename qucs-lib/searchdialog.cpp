@@ -23,14 +23,17 @@
 #include "qucslib.h"
 
 #include <qlayout.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qdir.h>
 #include <qfile.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3VBoxLayout>
 
 
 SearchDialog::SearchDialog(QucsLib *parent)
@@ -38,7 +41,7 @@ SearchDialog::SearchDialog(QucsLib *parent)
 {
   ParentDialog = parent;
 
-  all = new QVBoxLayout(this);
+  all = new Q3VBoxLayout(this);
   all->setMargin(5);
   all->setSpacing(5);
 
@@ -47,14 +50,14 @@ SearchDialog::SearchDialog(QucsLib *parent)
                   "name contains the search string. All libraries\n"
                   "are included in the search."), this) );
 
-  QHBox *h1 = new QHBox(this);
+  Q3HBox *h1 = new Q3HBox(this);
   all->addWidget(h1);
 
   new QLabel(tr("Search string:"), h1);
   SearchEdit = new QLineEdit(h1);
   connect(SearchEdit, SIGNAL(returnPressed()), SLOT(slotSearch()));
 
-  QHBox *h2 = new QHBox(this);
+  Q3HBox *h2 = new Q3HBox(this);
   all->addWidget(h2);
 
   h2->setStretchFactor(new QWidget(h2), 5); // stretchable placeholder
@@ -92,13 +95,13 @@ void SearchDialog::slotSearch()
   QStringList LibFiles = LibDir.entryList("*.lib", QDir::Files, QDir::Name);
 
   QFile File;
-  QTextStream ReadWhole;
+  Q3TextStream ReadWhole;
   QString LibraryString, LibName, CompName;
   QStringList::iterator it;
   int Start, End, NameStart, NameEnd;
   for(it = LibFiles.begin(); it != LibFiles.end(); it++) { // all library files
     File.setName(QucsSettings.LibDir + (*it));
-    if(!File.open(IO_ReadOnly))  continue;
+    if(!File.open(QIODevice::ReadOnly))  continue;
 
     ReadWhole.setDevice(&File);
     LibraryString = ReadWhole.read();

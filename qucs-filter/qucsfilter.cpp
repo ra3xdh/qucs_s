@@ -24,7 +24,7 @@
 #include <string>
 
 #include <qmenubar.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qmessagebox.h>
 #include <qlayout.h>
 #include <qlabel.h>
@@ -35,6 +35,9 @@
 #include <qtimer.h>
 #include <qclipboard.h>
 #include <qapplication.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <QPixmap>
 
 #include "lc_filter.h"
 #include "qf_poly.h"
@@ -51,11 +54,11 @@ QucsFilter::QucsFilter()
 
 
   // --------  create menubar  -------------------
-  QPopupMenu *fileMenu = new QPopupMenu();
-  fileMenu->insertItem(tr("E&xit"), this, SLOT(slotQuit()), CTRL+Key_Q);
+  Q3PopupMenu *fileMenu = new Q3PopupMenu();
+  fileMenu->insertItem(tr("E&xit"), this, SLOT(slotQuit()), Qt::CTRL+Qt::Key_Q);
 
-  QPopupMenu *helpMenu = new QPopupMenu();
-  helpMenu->insertItem(tr("Help..."), this, SLOT(slotHelpIntro()), Key_F1);
+  Q3PopupMenu *helpMenu = new Q3PopupMenu();
+  helpMenu->insertItem(tr("Help..."), this, SLOT(slotHelpIntro()), Qt::Key_F1);
   helpMenu->insertSeparator();
   helpMenu->insertItem(
                 tr("&About QucsFilter..."), this, SLOT(slotHelpAbout()), 0);
@@ -68,7 +71,7 @@ QucsFilter::QucsFilter()
 
 
   // -------  create main windows widgets --------
-  gbox = new QGridLayout(this, 10,3,5,5);
+  gbox = new Q3GridLayout(this, 10,3,5,5);
 
   QWidget *Space = new QWidget(this);   // reserve space for menubar
   Space->setFixedSize(5, bar->height());

@@ -23,26 +23,26 @@ Noise_vv::Noise_vv()
   Description = QObject::tr("correlated current sources");
 
   // left noise source
-  Arcs.append(new Arc(-42,-12, 24, 24,  0, 16*360,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30, 30,-30, 12,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30,-30,-30,-12,QPen(QPen::darkBlue,2)));
+  Arcs.append(new Arc(-42,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30, 30,-30, 12,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30,-30,-30,-12,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-29, 12,-42, -1,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-24, 10,-40, -6,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20,  7,-37,-10,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-18,  2,-32,-12,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-29, 12,-42, -1,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-24, 10,-40, -6,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20,  7,-37,-10,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-18,  2,-32,-12,QPen(Qt::darkBlue,2)));
 
   // right noise source
-  Arcs.append(new Arc( 18,-12, 24, 24,  0, 16*360,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30, 30, 30, 12,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,-30, 30,-12,QPen(QPen::darkBlue,2)));
+  Arcs.append(new Arc( 18,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30, 30, 30, 12,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,-30, 30,-12,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line( 31, 12, 18, -1,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 36, 10, 20, -6,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 40,  7, 23,-10,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 42,  2, 28,-12,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line( 31, 12, 18, -1,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 36, 10, 20, -6,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 40,  7, 23,-10,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 42,  2, 28,-12,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-18,  0, 18,  0,QPen(QPen::darkBlue,3)));
+  Lines.append(new Line(-18,  0, 18,  0,QPen(Qt::darkBlue,3)));
 
   Ports.append(new Port(-30,-30));
   Ports.append(new Port( 30,-30));

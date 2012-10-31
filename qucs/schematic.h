@@ -17,22 +17,30 @@
 
 #ifndef SCHEMATIC_H
 #define SCHEMATIC_H
-
+#include <QtGui>
 #include "wire.h"
 #include "diagrams/diagram.h"
 #include "paintings/painting.h"
 #include "components/component.h"
 #include "qucsdoc.h"
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <QDragMoveEvent>
+#include <QDropEvent>
+#include <QDragLeaveEvent>
+#include <QWheelEvent>
+#include <QMouseEvent>
+#include <QDragEnterEvent>
 #include "viewpainter.h"
 #include "node.h"
 
-#include <qscrollview.h>
+#include <q3scrollview.h>
 #include <qpainter.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qfile.h>
 #include <qstringlist.h>
 
-class QTextEdit;
+class Q3TextEdit;
 
 // digital signal data
 struct DigSignal {
@@ -55,7 +63,7 @@ struct SubFile {
 };
 typedef QMap<QString, SubFile> SubMap;
 
-class Schematic : public QScrollView, public QucsDoc {
+class Schematic : public Q3ScrollView, public QucsDoc {
   Q_OBJECT
 public: 
   Schematic(QucsApp*, const QString&);
@@ -85,7 +93,7 @@ public:
   bool  createSubcircuitSymbol();
 
   QString copySelected(bool);
-  bool    paste(QTextStream*, QPtrList<Element>*);
+  bool    paste(Q3TextStream*, Q3PtrList<Element>*);
   bool    load();
   int     save();
   int     saveSymbolCpp (void);
@@ -100,13 +108,13 @@ public:
 
   // The pointers points to the current lists, either to the schematic
   // elements "Doc..." or to the symbol elements "SymbolPaints".
-  QPtrList<Wire>      *Wires, DocWires;
-  QPtrList<Node>      *Nodes, DocNodes;
-  QPtrList<Diagram>   *Diagrams, DocDiags;
-  QPtrList<Painting>  *Paintings, DocPaints;
-  QPtrList<Component> *Components, DocComps;
+  Q3PtrList<Wire>      *Wires, DocWires;
+  Q3PtrList<Node>      *Nodes, DocNodes;
+  Q3PtrList<Diagram>   *Diagrams, DocDiags;
+  Q3PtrList<Painting>  *Paintings, DocPaints;
+  Q3PtrList<Component> *Components, DocComps;
 
-  QPtrList<Painting>  SymbolPaints;  // symbol definition for subcircuit
+  Q3PtrList<Painting>  SymbolPaints;  // symbol definition for subcircuit
   bool symbolMode;  // true if in symbol painting mode
 
 
@@ -123,8 +131,8 @@ public:
   int tmpViewX1, tmpViewY1, tmpViewX2, tmpViewY2;
   int tmpUsedX1, tmpUsedY1, tmpUsedX2, tmpUsedY2;
 
-  QPtrList<QString> UndoStack;
-  QPtrList<QString> UndoSymbol;    // undo stack for circuit symbol
+  Q3PtrList<QString> UndoStack;
+  Q3PtrList<QString> UndoSymbol;    // undo stack for circuit symbol
 
 protected:
   bool sizeOfFrame(int&, int&);
@@ -176,15 +184,15 @@ public:
   void  deleteWire(Wire*);
 
   Marker* setMarker(int, int);
-  void    markerLeftRight(bool, QPtrList<Element>*);
-  void    markerUpDown(bool, QPtrList<Element>*);
+  void    markerLeftRight(bool, Q3PtrList<Element>*);
+  void    markerUpDown(bool, Q3PtrList<Element>*);
 
   Element* selectElement(float, float, bool, int *index=0);
   void     deselectElements(Element*);
   int      selectElements(int, int, int, int, bool);
   void     selectMarkers();
-  void     newMovingWires(QPtrList<Element>*, Node*, int);
-  int      copySelectedElements(QPtrList<Element>*);
+  void     newMovingWires(Q3PtrList<Element>*, Node*, int);
+  int      copySelectedElements(Q3PtrList<Element>*);
   bool     deleteElements();
   bool     aligning(int);
   bool     distributeHorizontal();
@@ -207,18 +215,18 @@ public:
   int      placeNodeLabel(WireLabel*);
   Element* getWireLabel(Node*);
   void     insertNodeLabel(WireLabel*);
-  void     copyLabels(int&, int&, int&, int&, QPtrList<Element>*);
+  void     copyLabels(int&, int&, int&, int&, Q3PtrList<Element>*);
 
   Painting* selectedPainting(float, float);
-  void      copyPaintings(int&, int&, int&, int&, QPtrList<Element>*);
+  void      copyPaintings(int&, int&, int&, int&, Q3PtrList<Element>*);
 
 private:
   void insertComponentNodes(Component*, bool);
-  int  copyWires(int&, int&, int&, int&, QPtrList<Element>*);
-  int  copyComponents(int&, int&, int&, int&, QPtrList<Element>*);
-  void copyComponents2(int&, int&, int&, int&, QPtrList<Element>*);
-  bool copyComps2WiresPaints(int&, int&, int&, int&, QPtrList<Element>*);
-  int  copyElements(int&, int&, int&, int&, QPtrList<Element>*);
+  int  copyWires(int&, int&, int&, int&, Q3PtrList<Element>*);
+  int  copyComponents(int&, int&, int&, int&, Q3PtrList<Element>*);
+  void copyComponents2(int&, int&, int&, int&, Q3PtrList<Element>*);
+  bool copyComps2WiresPaints(int&, int&, int&, int&, Q3PtrList<Element>*);
+  int  copyElements(int&, int&, int&, int&, Q3PtrList<Element>*);
 
 
 /* ********************************************************************
@@ -228,27 +236,27 @@ private:
    ******************************************************************** */
 
 public:
-  bool createLibNetlist(QTextStream*, QTextEdit*, int);
-  bool createSubNetlist(QTextStream*, int&, QStringList&, QTextEdit*, int);
-  void createSubNetlistPlain(QTextStream*, QTextEdit*, int);
-  int  prepareNetlist(QTextStream&, QStringList&, QTextEdit*);
-  QString createNetlist(QTextStream&, int);
+  bool createLibNetlist(Q3TextStream*, Q3TextEdit*, int);
+  bool createSubNetlist(Q3TextStream*, int&, QStringList&, Q3TextEdit*, int);
+  void createSubNetlistPlain(Q3TextStream*, Q3TextEdit*, int);
+  int  prepareNetlist(Q3TextStream&, QStringList&, Q3TextEdit*);
+  QString createNetlist(Q3TextStream&, int);
   bool loadDocument();
 
 private:
   int  saveDocument();
 
-  bool loadProperties(QTextStream*);
+  bool loadProperties(Q3TextStream*);
   void simpleInsertComponent(Component*);
-  bool loadComponents(QTextStream*, QPtrList<Component> *List=0);
+  bool loadComponents(Q3TextStream*, Q3PtrList<Component> *List=0);
   void simpleInsertWire(Wire*);
-  bool loadWires(QTextStream*, QPtrList<Element> *List=0);
-  bool loadDiagrams(QTextStream*, QPtrList<Diagram>*);
-  bool loadPaintings(QTextStream*, QPtrList<Painting>*);
-  bool loadIntoNothing(QTextStream*);
+  bool loadWires(Q3TextStream*, Q3PtrList<Element> *List=0);
+  bool loadDiagrams(Q3TextStream*, Q3PtrList<Diagram>*);
+  bool loadPaintings(Q3TextStream*, Q3PtrList<Painting>*);
+  bool loadIntoNothing(Q3TextStream*);
 
   QString createClipboardFile();
-  bool    pasteFromClipboard(QTextStream*, QPtrList<Element>*);
+  bool    pasteFromClipboard(Q3TextStream*, Q3PtrList<Element>*);
 
   QString createUndoString(char);
   bool    rebuild(QString *);
@@ -259,10 +267,10 @@ private:
   void throughAllNodes(bool, QStringList&, int&);
   void propagateNode(QStringList&, int&, Node*);
   void collectDigitalSignals(void);
-  bool giveNodeNames(QTextStream*, int&, QStringList&, QTextEdit*, int);
-  void beginNetlistDigital(QTextStream&);
-  void endNetlistDigital(QTextStream&);
-  bool throughAllComps(QTextStream *, int&, QStringList&, QTextEdit *, int);
+  bool giveNodeNames(Q3TextStream*, int&, QStringList&, Q3TextEdit*, int);
+  void beginNetlistDigital(Q3TextStream&);
+  void endNetlistDigital(Q3TextStream&);
+  bool throughAllComps(Q3TextStream *, int&, QStringList&, Q3TextEdit *, int);
 
   DigMap Signals; // collecting node names for VHDL signal declarations
   QStringList PortTypes;

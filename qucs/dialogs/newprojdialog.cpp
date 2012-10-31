@@ -22,6 +22,8 @@
 #include <qlineedit.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
 
 
 NewProjDialog::NewProjDialog(QWidget *parent, const char *name)
@@ -29,7 +31,7 @@ NewProjDialog::NewProjDialog(QWidget *parent, const char *name)
 {
   setCaption(tr("Create new project"));
 
-  gbox = new QGridLayout(this,3,3,5,5);
+  gbox = new Q3GridLayout(this,3,3,5,5);
   QLabel *Label1 = new QLabel(tr("Project name:"),this);
   gbox->addWidget(Label1,0,0);
 

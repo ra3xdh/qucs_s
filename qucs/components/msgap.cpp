@@ -22,19 +22,19 @@ MSgap::MSgap()
 {
   Description = QObject::tr("microstrip gap");
 
-  Lines.append(new Line(-30,  0,-18,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 18,  0, 30,  0,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-13, -8,  0, -8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 10, -8, 23, -8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-23,  8,-10,  8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0,  8, 13,  8,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-13, -8,  0, -8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 10, -8, 23, -8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-23,  8,-10,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0,  8, 13,  8,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-13, -8,-23,  8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 23, -8, 13,  8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, -8,-10,  8,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 10, -8,  0,  8,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-13, -8,-23,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 23, -8, 13,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, -8,-10,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 10, -8,  0,  8,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-22, -4,-26,  4,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-22, -4,-26,  4,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30, 0));
   Ports.append(new Port( 30, 0));

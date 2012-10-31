@@ -20,14 +20,16 @@
 
 #include <qdialog.h>
 #include <qregexp.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
 
 class ID_Text;
-class QListView;
+class Q3ListView;
 class QLineEdit;
 class QCheckBox;
-class QVBoxLayout;
-class QListViewItem;
+class Q3VBoxLayout;
+class Q3ListViewItem;
 class QRegExpValidator;
 
 
@@ -40,10 +42,10 @@ public:
 private:
   ID_Text *idText;
 
-  QVBoxLayout *v;
+  Q3VBoxLayout *v;
   QLineEdit *Prefix;
 
-  QListView *ParamList;
+  Q3ListView *ParamList;
   QCheckBox *showCheck;
   QLineEdit *ParamNameEdit, *ValueEdit, *DescriptionEdit, *TypeEdit;
 
@@ -54,7 +56,7 @@ private slots:
   void slotOk();
   void slotAddParameter();
   void slotRemoveParameter();
-  void slotEditParameter(QListViewItem*);
+  void slotEditParameter(Q3ListViewItem*);
   void slotToggleShow(bool);
   void slotNameChanged(const QString&);
   void slotValueChanged(const QString&);

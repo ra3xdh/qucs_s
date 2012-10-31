@@ -20,7 +20,7 @@
 
 #include <qfont.h>
 #include <qcolor.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qstringlist.h>
 
 #include "wire.h"

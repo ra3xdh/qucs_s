@@ -14,33 +14,37 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "diagramdialog.h"
 #include "qucs.h"
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <Q3VBoxLayout>
+#include <QPaintEvent>
 #include "schematic.h"
 #include "rect3ddiagram.h"
 
 #include <math.h>
 
-#include <qvbox.h>
+#include <q3vbox.h>
 #include <qlayout.h>
-#include <qhbuttongroup.h>
-#include <qvbuttongroup.h>
-#include <qhgroupbox.h>
+//#include <q3hbuttongroup.h>
+#include <q3buttongroup.h>
+#include <q3hgroupbox.h>
 #include <qpushbutton.h>
 #include <qtabwidget.h>
 #include <qlabel.h>
 #include <qstringlist.h>
 #include <qmessagebox.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qvalidator.h>
 #include <qcolordialog.h>
 #include <qlineedit.h>
 #include <qcheckbox.h>
 #include <qslider.h>
 #include <qcombobox.h>
-#include <qlistview.h>
-#include <qlistbox.h>
+#include <q3listview.h>
+#include <q3listbox.h>
 
 
 #define CROSS3D_SIZE   30
@@ -75,15 +79,15 @@ private:
     cxx *= cos(rotY);
     cxy *= cos(rotY);
 
-    Painter.setPen(QPen(QPen::red,2));
+    Painter.setPen(QPen(Qt::red,2));
     Painter.drawLine(CROSS3D_SIZE, CROSS3D_SIZE,
 		     int(CROSS3D_SIZE * (1.0+cxx)),
 		     int(CROSS3D_SIZE * (1.0-cyx)));
-    Painter.setPen(QPen(QPen::green,2));
+    Painter.setPen(QPen(Qt::green,2));
     Painter.drawLine(CROSS3D_SIZE, CROSS3D_SIZE,
 		     int(CROSS3D_SIZE * (1.0-cxy)),
 		     int(CROSS3D_SIZE * (1.0-cyy)));
-    Painter.setPen(QPen(QPen::blue,2));
+    Painter.setPen(QPen(Qt::blue,2));
     Painter.drawLine(CROSS3D_SIZE, CROSS3D_SIZE,
 		     int(CROSS3D_SIZE * (1.0+cxz)),
 		     int(CROSS3D_SIZE * (1.0+cyz)));
@@ -142,12 +146,12 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   }
 
   
-  all = new QVBoxLayout(this); // to provide neccessary size
+  all = new Q3VBoxLayout(this); // to provide neccessary size
   QTabWidget *t = new QTabWidget(this);
   all->addWidget(t);
 
   // ...........................................................
-  QVBox *Tab1 = new QVBox(this);
+  Q3VBox *Tab1 = new Q3VBox(this);
   Tab1->setSpacing(5);
 
   Label4 = 0;     // different types with same content
@@ -158,12 +162,12 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   hideInvisible = 0;
   rotationX = rotationY = rotationZ = 0;
 
-  QVButtonGroup *InputGroup = new QVButtonGroup(tr("Graph Input"), Tab1);
+  Q3VButtonGroup *InputGroup = new Q3VButtonGroup(tr("Graph Input"), Tab1);
   GraphInput = new QLineEdit(InputGroup);
   GraphInput->setValidator(Validator);
   connect(GraphInput, SIGNAL(textChanged(const QString&)),
 		      SLOT(slotResetToTake(const QString&)));
-  QHBox *Box2 = new QHBox(InputGroup);
+  Q3HBox *Box2 = new Q3HBox(InputGroup);
   Box2->setSpacing(5);
 
   if(Diag->Name == "Tab") {
@@ -216,7 +220,7 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
 
     if((Diag->Name=="Rect") || (Diag->Name=="PS") || (Diag->Name=="SP") ||
        (Diag->Name=="Curve")) {
-      QHBox *Box3 = new QHBox(InputGroup);
+      Q3HBox *Box3 = new Q3HBox(InputGroup);
       Box3->setSpacing(5);
 
       Label4 = new QLabel(tr("y-Axis:"),Box3);
@@ -239,26 +243,26 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     Property2->setEnabled(false);
   }
 
-  QHBox *Box1 = new QHBox(Tab1);
+  Q3HBox *Box1 = new Q3HBox(Tab1);
   Box1->setSpacing(5);
 
-  QVButtonGroup *DataGroup = new QVButtonGroup(tr("Dataset"), Box1);
+  Q3VButtonGroup *DataGroup = new Q3VButtonGroup(tr("Dataset"), Box1);
   ChooseData = new QComboBox(false, DataGroup);
   ChooseData->setMinimumWidth(200);
   connect(ChooseData, SIGNAL(activated(int)), SLOT(slotReadVars(int)));
-  ChooseVars = new QListView(DataGroup);
+  ChooseVars = new Q3ListView(DataGroup);
   ChooseVars->addColumn(tr("Name"));
   ChooseVars->addColumn(tr("Type"));
   ChooseVars->addColumn(tr("Size"));
-  connect(ChooseVars, SIGNAL(doubleClicked(QListViewItem*)),
-		      SLOT(slotTakeVar(QListViewItem*)));
+  connect(ChooseVars, SIGNAL(doubleClicked(Q3ListViewItem*)),
+		      SLOT(slotTakeVar(Q3ListViewItem*)));
 
 
-  QVButtonGroup *GraphGroup = new QVButtonGroup(tr("Graph"), Box1);
-  GraphList = new QListBox(GraphGroup);
-  connect(GraphList, SIGNAL(clicked(QListBoxItem*)),
-		     SLOT(slotSelectGraph(QListBoxItem*)));
-  connect(GraphList, SIGNAL(doubleClicked(QListBoxItem*)),
+  Q3VButtonGroup *GraphGroup = new Q3VButtonGroup(tr("Graph"), Box1);
+  GraphList = new Q3ListBox(GraphGroup);
+  connect(GraphList, SIGNAL(clicked(Q3ListBoxItem*)),
+		     SLOT(slotSelectGraph(Q3ListBoxItem*)));
+  connect(GraphList, SIGNAL(doubleClicked(Q3ListBoxItem*)),
 		     SLOT(slotDeleteGraph()));
   QPushButton *NewButt = new QPushButton(tr("New Graph"), GraphGroup);
   connect(NewButt, SIGNAL(clicked()), SLOT(slotNewGraph()));
@@ -271,7 +275,7 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   int Row = 0;
   if(Diag->Name.at(0) != 'T') {  // not tabular or timing diagram
     QWidget *Tab2 = new QWidget(t);
-    QGridLayout *gp = new QGridLayout(Tab2,13,3,5,5);
+    Q3GridLayout *gp = new Q3GridLayout(Tab2,13,3,5,5);
 
     gp->addMultiCellWidget(new QLabel(tr("x-Axis Label:"), Tab2), Row,Row,0,0);
     xLabel = new QLineEdit(Tab2);
@@ -326,7 +330,7 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
       GridStyleBox->setCurrentItem(Diag->GridPen.style()-1);
     
       GridOn->setChecked(Diag->xAxis.GridOn);
-      if(!Diag->xAxis.GridOn) slotSetGridBox(QButton::Off);
+      if(!Diag->xAxis.GridOn) slotSetGridBox(0);
       connect(GridOn, SIGNAL(stateChanged(int)), SLOT(slotSetGridBox(int)));
     }
     else {
@@ -432,78 +436,78 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     t->addTab(Tab2, tr("Properties"));
 
   // ...........................................................
-    QVBox *Tab3 = new QVBox(this);
+    Q3VBox *Tab3 = new Q3VBox(this);
     Tab1->setSpacing(5);
 
-    QHGroupBox *axisX = new QHGroupBox(tr("x-Axis"), Tab3);
+    Q3HGroupBox *axisX = new Q3HGroupBox(tr("x-Axis"), Tab3);
 
-    QVBox *VBox1 = new QVBox(axisX);
+    Q3VBox *VBox1 = new Q3VBox(axisX);
     VBox1->setStretchFactor(new QWidget(VBox1),5); // stretchable placeholder
     manualX = new QCheckBox(tr("manual"), VBox1);
     connect(manualX, SIGNAL(stateChanged(int)), SLOT(slotManualX(int)));
 
-    QVBox *VBox2 = new QVBox(axisX);
+    Q3VBox *VBox2 = new Q3VBox(axisX);
     new QLabel(tr("start"), VBox2);
     startX = new QLineEdit(VBox2);
     startX->setValidator(ValDouble);
 
-    QVBox *VBox3 = new QVBox(axisX);
+    Q3VBox *VBox3 = new Q3VBox(axisX);
     new QLabel(tr("step"), VBox3);
     stepX = new QLineEdit(VBox3);
     stepX->setValidator(ValDouble);
 
-    QVBox *VBox4 = new QVBox(axisX);
+    Q3VBox *VBox4 = new Q3VBox(axisX);
     new QLabel(tr("stop"), VBox4);
     stopX = new QLineEdit(VBox4);
     stopX->setValidator(ValDouble);
 
 
-    QHGroupBox *axisY;
-    axisY = new QHGroupBox(NameY, Tab3);
+    Q3HGroupBox *axisY;
+    axisY = new Q3HGroupBox(NameY, Tab3);
 
-    QVBox *VBox5 = new QVBox(axisY);
+    Q3VBox *VBox5 = new Q3VBox(axisY);
     VBox5->setStretchFactor(new QWidget(VBox5),5); // stretchable placeholder
     manualY = new QCheckBox(tr("manual"), VBox5);
     connect(manualY, SIGNAL(stateChanged(int)), SLOT(slotManualY(int)));
 
-    QVBox *VBox6 = new QVBox(axisY);
+    Q3VBox *VBox6 = new Q3VBox(axisY);
     new QLabel(tr("start"), VBox6);
     startY = new QLineEdit(VBox6);
     startY->setValidator(ValDouble);
 
-    QVBox *VBox7 = new QVBox(axisY);
+    Q3VBox *VBox7 = new Q3VBox(axisY);
     if((Diag->Name=="Smith") || (Diag->Name=="ySmith") || (Diag->Name=="PS"))
       new QLabel(tr("number"), VBox7);
     else  new QLabel(tr("step"), VBox7);
     stepY = new QLineEdit(VBox7);
     stepY->setValidator(ValDouble);
 
-    QVBox *VBox8 = new QVBox(axisY);
+    Q3VBox *VBox8 = new Q3VBox(axisY);
     new QLabel(tr("stop"), VBox8);
     stopY = new QLineEdit(VBox8);
     stopY->setValidator(ValDouble);
 
 
-    QHGroupBox *axisZ;
-    axisZ = new QHGroupBox(NameZ, Tab3);
+    Q3HGroupBox *axisZ;
+    axisZ = new Q3HGroupBox(NameZ, Tab3);
 
-    QVBox *VBox9 = new QVBox(axisZ);
+    Q3VBox *VBox9 = new Q3VBox(axisZ);
     VBox9->setStretchFactor(new QWidget(VBox9),5); // stretchable placeholder
     manualZ = new QCheckBox(tr("manual"), VBox9);
     connect(manualZ, SIGNAL(stateChanged(int)), SLOT(slotManualZ(int)));
 
-    QVBox *VBox10 = new QVBox(axisZ);
+    Q3VBox *VBox10 = new Q3VBox(axisZ);
     new QLabel(tr("start"), VBox10);
     startZ = new QLineEdit(VBox10);
     startZ->setValidator(ValDouble);
 
-    QVBox *VBox11 = new QVBox(axisZ);
+    Q3VBox *VBox11 = new Q3VBox(axisZ);
     if(Diag->Name == "SP")  new QLabel(tr("number"), VBox11);
     else  new QLabel(tr("step"), VBox11);
     stepZ = new QLineEdit(VBox11);
     stepZ->setValidator(ValDouble);
 
-    QVBox *VBox12 = new QVBox(axisZ);
+    Q3VBox *VBox12 = new Q3VBox(axisZ);
     new QLabel(tr("stop"), VBox12);
     stopZ = new QLineEdit(VBox12);
     stopZ->setValidator(ValDouble);
@@ -515,11 +519,11 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
 
     // ...........................................................
     // transfer the diagram properties to the dialog
-    if(Diag->xAxis.autoScale)  slotManualX(QButton::Off);
+    if(Diag->xAxis.autoScale)  slotManualX(0);
     else  manualX->setChecked(true);
-    if(Diag->yAxis.autoScale)  slotManualY(QButton::Off);
+    if(Diag->yAxis.autoScale)  slotManualY(0);
     else  manualY->setChecked(true);
-    if(Diag->zAxis.autoScale)  slotManualZ(QButton::Off);
+    if(Diag->zAxis.autoScale)  slotManualZ(0);
     else  manualZ->setChecked(true);
 
     Diag->calcLimits();    // inserts auto-scale values if not manual
@@ -551,7 +555,7 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
 
   connect(t, SIGNAL(currentChanged(QWidget*)), SLOT(slotChangeTab(QWidget*)));
   // ...........................................................
-  QHBox *Butts = new QHBox(this);
+  Q3HBox *Butts = new Q3HBox(this);
   Butts->setSpacing(5);
   Butts->setMargin(5);
   all->addWidget(Butts);
@@ -613,7 +617,7 @@ void DiagramDialog::slotReadVars(int)
   QString DocName = ChooseData->currentText()+".dat";
 
   QFile file(Info.dirPath() + QDir::separator() + DocName);
-  if(!file.open(IO_ReadOnly)) {
+  if(!file.open(QIODevice::ReadOnly)) {
     return;
   }
 
@@ -638,11 +642,11 @@ void DiagramDialog::slotReadVars(int)
 
     if(Line.left(3) == "dep") {
       tmp = Line.section(' ', 2);
-      new QListViewItem(ChooseVars, Var, "dep", tmp.remove('>'));
+      new Q3ListViewItem(ChooseVars, Var, "dep", tmp.remove('>'));
     }
     else if(Line.left(5) == "indep") {
       tmp = Line.section(' ', 2, 2);
-      new QListViewItem(ChooseVars, Var, "indep", tmp.remove('>'));
+      new Q3ListViewItem(ChooseVars, Var, "indep", tmp.remove('>'));
     }
   } while(i > 0);
 }
@@ -651,7 +655,7 @@ void DiagramDialog::slotReadVars(int)
 // Inserts the double-clicked variable into the Graph Input Line at the
 // cursor position. If the Graph Input is empty, then the variable is
 // also inserted as graph.
-void DiagramDialog::slotTakeVar(QListViewItem *Item)
+void DiagramDialog::slotTakeVar(Q3ListViewItem *Item)
 {
   GraphInput->blockSignals(true);
   if(toTake) GraphInput->setText("");
@@ -713,7 +717,7 @@ void DiagramDialog::slotTakeVar(QListViewItem *Item)
 
 // --------------------------------------------------------------------------
 // Is called if a graph text is clicked in the BistBox.
-void DiagramDialog::slotSelectGraph(QListBoxItem *item)
+void DiagramDialog::slotSelectGraph(Q3ListBoxItem *item)
 {
   if(item == 0) {
     GraphList->clearSelection();
@@ -1084,7 +1088,7 @@ void DiagramDialog::slotSetNumMode(int Mode)
 // Is called when the "show grid" checkbox is changed.
 void DiagramDialog::slotSetGridBox(int state)
 {
-  if(state == QButton::On) {
+  if(state == 2) {
     GridColorButt->setEnabled(true);
     GridStyleBox->setEnabled(true);
     GridLabel1->setEnabled(true);
@@ -1135,7 +1139,7 @@ void DiagramDialog::slotSetYAxis(int axis)
 // --------------------------------------------------------------------------
 void DiagramDialog::slotManualX(int state)
 {
-  if(state == QButton::On) {
+  if(state == 2) {
     if((Diag->Name.left(4) == "Rect") || (Diag->Name == "Curve"))
       startX->setEnabled(true);
     stopX->setEnabled(true);
@@ -1152,7 +1156,7 @@ void DiagramDialog::slotManualX(int state)
 // --------------------------------------------------------------------------
 void DiagramDialog::slotManualY(int state)
 {
-  if(state == QButton::On) {
+  if(state == 2) {
     if((Diag->Name.left(4) == "Rect") || (Diag->Name == "Curve"))
       startY->setEnabled(true);
     stopY->setEnabled(true);
@@ -1169,7 +1173,7 @@ void DiagramDialog::slotManualY(int state)
 // --------------------------------------------------------------------------
 void DiagramDialog::slotManualZ(int state)
 {
-  if(state == QButton::On) {
+  if(state == 2) {
     if((Diag->Name.left(4) == "Rect") || (Diag->Name == "Curve"))
       startZ->setEnabled(true);
     stopZ->setEnabled(true);

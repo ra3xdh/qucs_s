@@ -19,7 +19,7 @@
 
 #include <qlayout.h>
 #include <qlabel.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qvalidator.h>
 #include <qcolordialog.h>
 #include <qtabwidget.h>
@@ -27,6 +27,9 @@
 #include <qpushbutton.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <Q3VBoxLayout>
 
 
 FillDialog::FillDialog(const QString& _Caption, bool show, QWidget *parent)
@@ -34,13 +37,13 @@ FillDialog::FillDialog(const QString& _Caption, bool show, QWidget *parent)
 {
   setCaption(_Caption);
 
-  all = new QVBoxLayout(this); // to provide the neccessary size
+  all = new Q3VBoxLayout(this); // to provide the neccessary size
   QTabWidget *t = new QTabWidget(this);
   all->addWidget(t);
 
   // ...........................................................
   QWidget *Tab1 = new QWidget(t);
-  QGridLayout *gp1 = new QGridLayout(Tab1,3,2,5,5);
+  Q3GridLayout *gp1 = new Q3GridLayout(Tab1,3,2,5,5);
 
   gp1->addWidget(new QLabel(tr("Line Width: "), Tab1), 0,0);
   val100 = new QIntValidator(0,100, this);
@@ -71,7 +74,7 @@ FillDialog::FillDialog(const QString& _Caption, bool show, QWidget *parent)
   // ...........................................................
 if(show) {
   QWidget *Tab2 = new QWidget(t);
-  QGridLayout *gp2 = new QGridLayout(Tab2,3,2,5,5);
+  Q3GridLayout *gp2 = new Q3GridLayout(Tab2,3,2,5,5);
 
   CheckFilled = new QCheckBox(tr("enable filling"),Tab2);
   connect(CheckFilled, SIGNAL(toggled(bool)), SLOT(slotCheckFilled(bool)));
@@ -109,7 +112,7 @@ if(show) {
   t->addTab(Tab2, tr("Filling Style"));
 }
   // ...........................................................
-  QHBox *Butts = new QHBox(this);
+  Q3HBox *Butts = new Q3HBox(this);
   Butts->setSpacing(5);
   Butts->setMargin(5);
   all->addWidget(Butts);

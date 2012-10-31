@@ -22,29 +22,29 @@ Coupler::Coupler()
 {
   Description = QObject::tr("ideal coupler");
 
-  Lines.append(new Line(-23,-24, 23,-24,QPen(QPen::darkGray,1)));
-  Lines.append(new Line( 23,-24, 23, 24,QPen(QPen::darkGray,1)));
-  Lines.append(new Line( 23, 24,-23, 24,QPen(QPen::darkGray,1)));
-  Lines.append(new Line(-23, 24,-23,-24,QPen(QPen::darkGray,1)));
+  Lines.append(new Line(-23,-24, 23,-24,QPen(Qt::darkGray,1)));
+  Lines.append(new Line( 23,-24, 23, 24,QPen(Qt::darkGray,1)));
+  Lines.append(new Line( 23, 24,-23, 24,QPen(Qt::darkGray,1)));
+  Lines.append(new Line(-23, 24,-23,-24,QPen(Qt::darkGray,1)));
 
-  Lines.append(new Line(-30,-20,-20,-20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,-20, 20,-20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20,-20, 20,-20,QPen(QPen::darkBlue,4)));
-  Lines.append(new Line(-30, 20,-20, 20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30, 20, 20, 20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-20, 20, 20, 20,QPen(QPen::darkBlue,4)));
+  Lines.append(new Line(-30,-20,-20,-20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,-20, 20,-20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20,-20, 20,-20,QPen(Qt::darkBlue,4)));
+  Lines.append(new Line(-30, 20,-20, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30, 20, 20, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20, 20, 20, 20,QPen(Qt::darkBlue,4)));
 
-  Lines.append(new Line( 14, 14,-14,-14,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-14,-14, -9,-14,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-14,-14,-14, -9,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(  9, 14, 14, 14,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line( 14,  9, 14, 14,QPen(QPen::darkBlue,1)));
+  Lines.append(new Line( 14, 14,-14,-14,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-14,-14, -9,-14,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-14,-14,-14, -9,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(  9, 14, 14, 14,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line( 14,  9, 14, 14,QPen(Qt::darkBlue,1)));
   
-  Lines.append(new Line( 14,-14,-14, 14,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line( 14,-14,  9,-14,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line( 14,-14, 14, -9,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-14, 14, -9, 14,QPen(QPen::darkBlue,1)));
-  Lines.append(new Line(-14, 14,-14,  9,QPen(QPen::darkBlue,1)));
+  Lines.append(new Line( 14,-14,-14, 14,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line( 14,-14,  9,-14,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line( 14,-14, 14, -9,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-14, 14, -9, 14,QPen(Qt::darkBlue,1)));
+  Lines.append(new Line(-14, 14,-14,  9,QPen(Qt::darkBlue,1)));
 
   Ports.append(new Port(-30,-20));
   Ports.append(new Port( 30,-20));

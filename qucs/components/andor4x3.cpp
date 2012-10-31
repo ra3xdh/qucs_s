@@ -15,7 +15,7 @@
  * any later version.
  * 
  */
-
+#include <QtGui>
 #include "andor4x3.h"
 #include "node.h"
 #include "main.h"
@@ -57,43 +57,43 @@ Element * andor4x3::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void andor4x3::createSymbol()
 {
-  Lines.append(new Line(-30, -60, 30,-60,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30, -60, 30, 100,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line( 30,  100,-30,100,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30,  100,-30,-60,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30, -60, 30,-60,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30, -60, 30, 100,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,  100,-30,100,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30,  100,-30,-60,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-30, -20,  0,-20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30,  20,  0, 20,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(-30,  60,  0, 60,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  0, -60,  0,100,QPen(QPen::darkBlue,2)));
+  Lines.append(new Line(-30, -20,  0,-20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30,  20,  0, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30,  60,  0, 60,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  0, -60,  0,100,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-50,-50,-30,-50,QPen(QPen::darkBlue,2)));   //A11
-  Lines.append(new Line(-50,-40,-30,-40,QPen(QPen::darkBlue,2)));   //A12
-  Lines.append(new Line(-50,-30,-30,-30,QPen(QPen::darkBlue,2)));   //A13
+  Lines.append(new Line(-50,-50,-30,-50,QPen(Qt::darkBlue,2)));   //A11
+  Lines.append(new Line(-50,-40,-30,-40,QPen(Qt::darkBlue,2)));   //A12
+  Lines.append(new Line(-50,-30,-30,-30,QPen(Qt::darkBlue,2)));   //A13
 
-  Lines.append(new Line(-50,-10,-30,-10,QPen(QPen::darkBlue,2)));   //A21
-  Lines.append(new Line(-50,  0,-30,  0,QPen(QPen::darkBlue,2)));   //A22
-  Lines.append(new Line(-50, 10,-30, 10,QPen(QPen::darkBlue,2)));   //A23
+  Lines.append(new Line(-50,-10,-30,-10,QPen(Qt::darkBlue,2)));   //A21
+  Lines.append(new Line(-50,  0,-30,  0,QPen(Qt::darkBlue,2)));   //A22
+  Lines.append(new Line(-50, 10,-30, 10,QPen(Qt::darkBlue,2)));   //A23
 
-  Lines.append(new Line(-50, 30, -30, 30,QPen(QPen::darkBlue,2)));  //A31
-  Lines.append(new Line(-50, 40, -30, 40,QPen(QPen::darkBlue,2)));  //A32
-  Lines.append(new Line(-50, 50,-30,  50,QPen(QPen::darkBlue,2)));   //A33
+  Lines.append(new Line(-50, 30, -30, 30,QPen(Qt::darkBlue,2)));  //A31
+  Lines.append(new Line(-50, 40, -30, 40,QPen(Qt::darkBlue,2)));  //A32
+  Lines.append(new Line(-50, 50,-30,  50,QPen(Qt::darkBlue,2)));   //A33
 
-  Lines.append(new Line(-50, 70, -30, 70,QPen(QPen::darkBlue,2)));  //A41
-  Lines.append(new Line(-50, 80, -30, 80,QPen(QPen::darkBlue,2)));  //A42
-  Lines.append(new Line(-50, 90,-30,  90,QPen(QPen::darkBlue,2)));   //A43
+  Lines.append(new Line(-50, 70, -30, 70,QPen(Qt::darkBlue,2)));  //A41
+  Lines.append(new Line(-50, 80, -30, 80,QPen(Qt::darkBlue,2)));  //A42
+  Lines.append(new Line(-50, 90,-30,  90,QPen(Qt::darkBlue,2)));   //A43
 
-  Lines.append(new Line( 30,  20, 50, 20,QPen(QPen::darkBlue,2)));  //Y
+  Lines.append(new Line( 30,  20, 50, 20,QPen(Qt::darkBlue,2)));  //Y
 
-  Texts.append(new Text( -20, -60, "&", QPen::darkBlue, 12.0));
-  Texts.append(new Text( -20, -20, "&", QPen::darkBlue, 12.0));
-  Texts.append(new Text( -20,  20, "&", QPen::darkBlue, 12.0));
-  Texts.append(new Text( -20,  60, "&", QPen::darkBlue, 12.0));
+  Texts.append(new Text( -20, -60, "&", Qt::darkBlue, 12.0));
+  Texts.append(new Text( -20, -20, "&", Qt::darkBlue, 12.0));
+  Texts.append(new Text( -20,  20, "&", Qt::darkBlue, 12.0));
+  Texts.append(new Text( -20,  60, "&", Qt::darkBlue, 12.0));
  
-  Lines.append(new Line(  7, -45, 17, -40,QPen(QPen::darkBlue,2))); 
-  Lines.append(new Line(  7, -35, 17, -40,QPen(QPen::darkBlue,2)));
-  Lines.append(new Line(  7, -30, 17, -35,QPen(QPen::darkBlue,2))); 
-  Lines.append(new Line( 22, -30, 22, -45,QPen(QPen::darkBlue,2)));  
+  Lines.append(new Line(  7, -45, 17, -40,QPen(Qt::darkBlue,2))); 
+  Lines.append(new Line(  7, -35, 17, -40,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  7, -30, 17, -35,QPen(Qt::darkBlue,2))); 
+  Lines.append(new Line( 22, -30, 22, -45,QPen(Qt::darkBlue,2)));  
 
   Ports.append(new Port(-50,-50));  // A11
   Ports.append(new Port(-50,-40));  // A12

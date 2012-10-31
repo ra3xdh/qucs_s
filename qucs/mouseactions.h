@@ -20,13 +20,16 @@
 
 #include "element.h"
 
-#include <qptrlist.h>
+#include <q3ptrlist.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <Q3PopupMenu>
 
 
 class Wire;
 class Schematic;
 class QPainter;
-class QPopupMenu;
+class Q3PopupMenu;
 class QMouseEvent;
 
 extern QAction *formerAction;
@@ -48,11 +51,11 @@ public:
   QMouseEvent *focusMEvent;
 
   int  MAx1, MAy1,MAx2, MAy2, MAx3, MAy3;  // cache for mouse movements
-  QPtrList<Element> movingElements;
+  Q3PtrList<Element> movingElements;
   int movingRotated;
 
   // menu appearing by right mouse button click on component
-  QPopupMenu *ComponentMenu;
+  Q3PopupMenu *ComponentMenu;
 
 private:
   bool isMoveEqual;
@@ -112,8 +115,8 @@ public:
   void paintElementsScheme(QPainter*);
   void rotateElements(Schematic*, int&, int&);
   void moveElements(Schematic*, int&, int&);
-  void moveElements(QPtrList<Element>*, int, int);
-  void endElementMoving(Schematic*, QPtrList<Element>*);
+  void moveElements(Q3PtrList<Element>*, int, int);
+  void endElementMoving(Schematic*, Q3PtrList<Element>*);
   void rightPressMenu(Schematic*, QMouseEvent*, float, float);
 };
 

@@ -19,9 +19,11 @@
 #define DISPLAYDIALOG_H
 
 #include <qdialog.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
-class QTextEdit;
-class QVBoxLayout;
+class Q3TextEdit;
+class Q3VBoxLayout;
 
 
 class DisplayDialog : public QDialog  {
@@ -30,13 +32,13 @@ public:
   DisplayDialog(QWidget *parent = 0, bool helper = true);
  ~DisplayDialog();
 
-  QTextEdit *Text, *VHDLText, *VerilogText;
+  Q3TextEdit *Text, *VHDLText, *VerilogText;
 
 private slots:
   void slotClose();
 
 private:
-  QVBoxLayout *vLayout;
+  Q3VBoxLayout *vLayout;
 };
 
 #endif

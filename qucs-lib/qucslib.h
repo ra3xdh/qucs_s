@@ -23,14 +23,17 @@
 #include <qfont.h>
 #include <qstring.h>
 #include <qstringlist.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
+#include <QCloseEvent>
 
 class SymbolWidget;
-class QTextEdit;
+class Q3TextEdit;
 class QComboBox;
-class QListBox;
-class QVGroupBox;
-class QVBoxLayout;
-class QListBoxItem;
+class Q3ListBox;
+class Q3VGroupBox;
+class Q3VBoxLayout;
+class Q3ListBoxItem;
 
 
 // Application settings.
@@ -52,7 +55,7 @@ public:
   QucsLib();
  ~QucsLib();
 
-  QListBox     *CompList;
+  Q3ListBox     *CompList;
   QStringList   LibraryComps;
   QComboBox    *Library;
   QString       DefaultSymbol;
@@ -65,7 +68,7 @@ private slots:
   void slotShowModel();
   void slotSelectLibrary(int);
   void slotSearchComponent();
-  void slotShowComponent(QListBoxItem*);
+  void slotShowComponent(Q3ListBoxItem*);
   void slotManageLib();
 
 private:
@@ -75,8 +78,8 @@ private:
 
   int UserLibCount;
   SymbolWidget *Symbol;
-  QTextEdit    *CompDescr;
-  QVBoxLayout  *all;
+  Q3TextEdit    *CompDescr;
+  Q3VBoxLayout  *all;
 
   QDir QucsHomeDir;  // Qucs user directory where all projects are located
 };

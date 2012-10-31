@@ -15,25 +15,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qvalidator.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qcheckbox.h>
-#include <qvgroupbox.h>
+#include <q3vgroupbox.h>
 #include <qstring.h>
 #include <qstringlist.h>
-#include <qbutton.h>
+#include <q3button.h>
 #include <qtoolbutton.h>
 #include <qpixmap.h>
 #include <qimage.h>
 #include <qradiobutton.h>
 #include <qfileinfo.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
 
 #include "vasettingsdialog.h"
 #include "textdoc.h"
@@ -51,12 +53,12 @@ VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
   Expr.setPattern("[0-9a-zA-Z /\\]+"); // valid expression for IconEdit
   Validator = new QRegExpValidator (Expr, this);
 
-  QGridLayout * box = new QGridLayout (this, 1, 1, 5);
+  Q3GridLayout * box = new Q3GridLayout (this, 1, 1, 5);
 
-  QVGroupBox * setGroup = new QVGroupBox (tr("Code Creation Settings"), this);
+  Q3VGroupBox * setGroup = new Q3VGroupBox (tr("Code Creation Settings"), this);
   box->addWidget (setGroup, 0, 0);
   QWidget * f = new QWidget (setGroup);
-  QGridLayout * all = new QGridLayout (f, 7, 5, 5);
+  Q3GridLayout * all = new Q3GridLayout (f, 7, 5, 5);
 
   if (Doc->Icon.isEmpty ())
     Doc->Icon = Module + ".png";
@@ -106,7 +108,7 @@ VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
   LongDescEdit->setText (Doc->LongDesc);
   all->addMultiCellWidget (LongDescEdit, 3, 3, 1, 4);
 
-  toggleGroupDev = new QButtonGroup ();
+  toggleGroupDev = new Q3ButtonGroup ();
   QRadioButton * nonRadio =
     new QRadioButton (tr("unspecified device"), f);
   QRadioButton * bjtRadio = 
@@ -126,7 +128,7 @@ VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
   all->addWidget (bjtRadio, 4, 2);
   all->addMultiCellWidget (mosRadio, 4, 4, 3, 4);
 
-  toggleGroupTyp = new QButtonGroup ();
+  toggleGroupTyp = new Q3ButtonGroup ();
   QRadioButton * anaRadio = 
     new QRadioButton (tr("analog only"), f);
   QRadioButton * digRadio =
@@ -146,7 +148,7 @@ VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
   all->addWidget (allRadio, 5, 2);
   all->addMultiCellWidget (digRadio, 5, 5, 3, 4);
 
-  QHBox * Buttons = new QHBox (f);
+  Q3HBox * Buttons = new Q3HBox (f);
   all->addMultiCellWidget (Buttons, 6, 6, 0, 4);
   QPushButton * ButtonOk = new QPushButton (tr("Ok"), Buttons);
   QPushButton * ButtonCancel = new QPushButton (tr("Cancel"), Buttons);
@@ -204,7 +206,7 @@ void VASettingsDialog::slotOk ()
 
 void VASettingsDialog::slotBrowse ()
 {
-  QString s = QFileDialog::getOpenFileName (
+  QString s = Q3FileDialog::getOpenFileName (
      lastDir.isEmpty () ? QString (".") : lastDir,
      tr("PNG files")+" (*.png);;"+
      tr("Any file")+" (*)",

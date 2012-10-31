@@ -18,7 +18,7 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-
+#include <QtGui>
 #include <qlabel.h>
 #include <qaction.h>
 #include <qpixmap.h>
@@ -26,10 +26,12 @@
 #include <qfileinfo.h>
 #include <qtabwidget.h>
 #include <qmessagebox.h>
-#include <qpaintdevicemetrics.h>
+#include <q3paintdevicemetrics.h>
 #include <qfont.h>
-#include <qpopupmenu.h>
-#include <qsyntaxhighlighter.h>
+#include <q3popupmenu.h>
+#include <q3syntaxhighlighter.h>
+//Added by qt3to4:
+#include <Q3TextStream>
 
 #include "main.h"
 #include "qucs.h"
@@ -71,7 +73,7 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QucsDoc(App_, Name_)
     App->DocumentTab->setCurrentPage(App->DocumentTab->indexOf(this));
     viewport()->setFocus();
 
-    setWordWrap(QTextEdit::NoWrap);
+    setWordWrap(Q3TextEdit::NoWrap);
     setPaletteBackgroundColor(QucsSettings.BGColor);
     connect(this, SIGNAL(textChanged()), SLOT(slotSetChanged()));
     connect(this, SIGNAL(cursorPositionChanged(int, int)),
@@ -117,10 +119,10 @@ void TextDoc::setLanguage (int lang)
 bool TextDoc::saveSettings (void)
 {
   QFile file (DocName + ".cfg");
-  if (!file.open (IO_WriteOnly))
+  if (!file.open (QIODevice::WriteOnly))
     return false;
 
-  QTextStream stream (&file);
+  Q3TextStream stream (&file);
   stream << "Textfile settings file, Qucs " PACKAGE_VERSION "\n"
 	 << "Simulation=" << simulation << "\n"
 	 << "Duration=" << SimTime << "\n"
@@ -142,10 +144,10 @@ bool TextDoc::saveSettings (void)
 bool TextDoc::loadSettings (void)
 {
   QFile file (DocName + ".cfg");
-  if (!file.open (IO_ReadOnly))
+  if (!file.open (QIODevice::ReadOnly))
     return false;
 
-  QTextStream stream (&file);
+  Q3TextStream stream (&file);
   QString Line, Setting;
 
   bool ok;
@@ -272,9 +274,9 @@ void TextDoc::slotSetChanged()
 }
 
 // ---------------------------------------------------
-QPopupMenu *TextDoc::createPopupMenu( const QPoint &pos )
+Q3PopupMenu *TextDoc::createPopupMenu( const QPoint &pos )
 {
-   QPopupMenu *popup = QTextEdit::createPopupMenu( pos );
+   Q3PopupMenu *popup = Q3TextEdit::createPopupMenu( pos );
    if (language != LANG_OCTAVE) {
      App->fileSettings->addTo(popup);
    }
@@ -285,11 +287,11 @@ QPopupMenu *TextDoc::createPopupMenu( const QPoint &pos )
 bool TextDoc::load ()
 {
   QFile file (DocName);
-  if (!file.open (IO_ReadOnly))
+  if (!file.open (QIODevice::ReadOnly))
     return false;
   setLanguage (DocName);
 
-  QTextStream stream (&file);
+  Q3TextStream stream (&file);
   setText (stream.read ());
   setModified (false);
   slotSetChanged ();
@@ -307,11 +309,11 @@ int TextDoc::save ()
   saveSettings ();
 
   QFile file (DocName);
-  if (!file.open (IO_WriteOnly))
+  if (!file.open (QIODevice::WriteOnly))
     return -1;
   setLanguage (DocName);
 
-  QTextStream stream (&file);
+  Q3TextStream stream (&file);
   stream << text ();
   setModified (false);
   slotSetChanged ();
@@ -329,8 +331,8 @@ void TextDoc::print(QPrinter *Printer, QPainter *Painter, bool printAll, bool)
 
   sync();   // formatting whole text
 
-  QPaintDeviceMetrics smetrics(QPainter(this).device());
-  QPaintDeviceMetrics pmetrics(Painter->device());
+  Q3PaintDeviceMetrics smetrics(QPainter(this).device());
+  Q3PaintDeviceMetrics pmetrics(Painter->device());
   int margin  = 54;    // margin at each side (unit is point)
   int marginX = margin * pmetrics.logicalDpiX() / smetrics.logicalDpiX();
   int marginY = margin * pmetrics.logicalDpiY() / smetrics.logicalDpiY();

@@ -14,11 +14,13 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "timingdiagram.h"
 #include "main.h"
 
 #include <math.h>
+//Added by qt3to4:
+#include <Q3PointArray>
 
 
 TimingDiagram::TimingDiagram(int _cx, int _cy) : TabDiagram(_cx, _cy)
@@ -54,13 +56,13 @@ void TimingDiagram::paint(ViewPainter *p)
 
   if(y1 > 0) {  // paint scroll bar ?
     int   x, y, dx, dy;
-    QPointArray Points;
+    Q3PointArray Points;
     // draw scroll bar
     p->fillRect(cx+yAxis.numGraphs, cy+2, zAxis.numGraphs, 14, QColor(192, 192, 192));
 
     int bx = cx+yAxis.numGraphs+zAxis.numGraphs;
     // draw frame for scroll bar
-    p->Painter->setPen(QPen(QPen::black,0));
+    p->Painter->setPen(QPen(Qt::black,0));
     p->drawLine(cx+xAxis.numGraphs, cy, cx+xAxis.numGraphs, cy+17);
     p->drawLine(cx+xAxis.numGraphs+17, cy, cx+xAxis.numGraphs+17, cy+17);
     p->drawLine(cx+xAxis.numGraphs, cy+17, cx+x2, cy+17);
@@ -97,9 +99,9 @@ void TimingDiagram::paint(ViewPainter *p)
 
 
   if(isSelected) {
-    p->Painter->setPen(QPen(QPen::darkGray,3));
+    p->Painter->setPen(QPen(Qt::darkGray,3));
     p->drawRect(cx-5, cy-y2-5, x2+10, y2+10);
-    p->Painter->setPen(QPen(QPen::darkRed,2));
+    p->Painter->setPen(QPen(Qt::darkRed,2));
     p->drawResizeRect(cx, cy-y2);  // markers for changing the size
     p->drawResizeRect(cx, cy);
     p->drawResizeRect(cx+x2, cy-y2);
@@ -129,11 +131,11 @@ int TimingDiagram::calcDiagram()
   y = y2 - tHeight - 6;
 
   // outer frame
-  Lines.append(new Line(0, y2, x2, y2, QPen(QPen::black,0)));
-  Lines.append(new Line(0, y2, 0, 0, QPen(QPen::black,0)));
-  Lines.append(new Line(x2, y2, x2, 0, QPen(QPen::black,0)));
-  Lines.append(new Line(0, 0, x2, 0, QPen(QPen::black,0)));
-  Lines.append(new Line(0, y+2, x2, y+2, QPen(QPen::black,0)));
+  Lines.append(new Line(0, y2, x2, y2, QPen(Qt::black,0)));
+  Lines.append(new Line(0, y2, 0, 0, QPen(Qt::black,0)));
+  Lines.append(new Line(x2, y2, x2, 0, QPen(Qt::black,0)));
+  Lines.append(new Line(0, 0, x2, 0, QPen(Qt::black,0)));
+  Lines.append(new Line(0, y+2, x2, y+2, QPen(Qt::black,0)));
 
   if(xAxis.limit_min < 0.0)
     xAxis.limit_min = 0.0;
@@ -217,7 +219,7 @@ if(!firstGraph->cPointsX.isEmpty()) {
   }
   x += colWidth + 13;
   xAxis.numGraphs = x -6;
-  Lines.append(new Line(x-6, y2, x-6, 0, QPen(QPen::black,0)));
+  Lines.append(new Line(x-6, y2, x-6, 0, QPen(Qt::black,0)));
   xStart = x;
 
 
@@ -242,7 +244,7 @@ if(!firstGraph->cPointsX.isEmpty()) {
     if(x+colWidth+2 >= x2)  break;
 
     Texts.append(new Text( x, y2-2, Str));
-    Lines.append(new Line(x+5, y, x+5, y-3, QPen(QPen::black,0)));
+    Lines.append(new Line(x+5, y, x+5, y-3, QPen(Qt::black,0)));
     x += TimeStepWidth;
   }
 
@@ -258,9 +260,9 @@ if(!firstGraph->cPointsX.isEmpty()) {
   for(g = Graphs.first(); g!=0; g = Graphs.next()) {
     if(y < tHeight) {
       // mark lack of space with a small arrow
-      Lines.append(new Line(4, 6, 4, -7, QPen(QPen::red,2)));
-      Lines.append(new Line(1, 0, 4, -7, QPen(QPen::red,2)));
-      Lines.append(new Line(7, 0, 4, -7, QPen(QPen::red,2)));
+      Lines.append(new Line(4, 6, 4, -7, QPen(Qt::red,2)));
+      Lines.append(new Line(1, 0, 4, -7, QPen(Qt::red,2)));
+      Lines.append(new Line(7, 0, 4, -7, QPen(Qt::red,2)));
       break;
     }
 
@@ -405,9 +407,9 @@ funcEnd:
   if(invisibleCount > 0) {  // could all values be displayed ?
     x  = x2 - xAxis.numGraphs - 37;
     if(x < MIN_SCROLLBAR_SIZE+2) {  // not enough space for scrollbar ?
-      Lines.append(new Line(x2, 0, x2, -17, QPen(QPen::red,0)));
-      Lines.append(new Line(xAxis.numGraphs, -17, x2, -17, QPen(QPen::red,0)));
-      Lines.append(new Line(xAxis.numGraphs, 0, xAxis.numGraphs, -17, QPen(QPen::red,0)));
+      Lines.append(new Line(x2, 0, x2, -17, QPen(Qt::red,0)));
+      Lines.append(new Line(xAxis.numGraphs, -17, x2, -17, QPen(Qt::red,0)));
+      Lines.append(new Line(xAxis.numGraphs, 0, xAxis.numGraphs, -17, QPen(Qt::red,0)));
       return 1;
     }
 

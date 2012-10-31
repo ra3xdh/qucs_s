@@ -8,7 +8,7 @@
  * 
  */
 #include <stdlib.h>
-
+#include <QtGui>
 #include "pad4bit.h"
 #include "node.h"
 #include "main.h"
@@ -47,20 +47,20 @@ Element * pad4bit::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void pad4bit::createSymbol()
 {
-  Lines.append(new Line(-60, -50, 30,-50,QPen(QPen::darkGreen,2)));
-  Lines.append(new Line( 30, -50, 30, 50,QPen(QPen::darkGreen,2)));
-  Lines.append(new Line( 30,  50,-60, 50,QPen(QPen::darkGreen,2)));
-  Lines.append(new Line(-60,  50,-60,-50,QPen(QPen::darkGreen,2)));
+  Lines.append(new Line(-60, -50, 30,-50,QPen(Qt::darkGreen,2)));
+  Lines.append(new Line( 30, -50, 30, 50,QPen(Qt::darkGreen,2)));
+  Lines.append(new Line( 30,  50,-60, 50,QPen(Qt::darkGreen,2)));
+  Lines.append(new Line(-60,  50,-60,-50,QPen(Qt::darkGreen,2)));
 
-  Lines.append(new Line( 40,-30, 30,-30,QPen(QPen::darkGreen,2)));  // A
-  Lines.append(new Line( 40,-10, 30,-10,QPen(QPen::darkGreen,2)));  // B
-  Lines.append(new Line( 40, 10, 30, 10,QPen(QPen::darkGreen,2))); // C
-  Lines.append(new Line( 40, 30, 30, 30,QPen(QPen::darkGreen,2))); // D
+  Lines.append(new Line( 40,-30, 30,-30,QPen(Qt::darkGreen,2)));  // A
+  Lines.append(new Line( 40,-10, 30,-10,QPen(Qt::darkGreen,2)));  // B
+  Lines.append(new Line( 40, 10, 30, 10,QPen(Qt::darkGreen,2))); // C
+  Lines.append(new Line( 40, 30, 30, 30,QPen(Qt::darkGreen,2))); // D
  
-  Texts.append(new Text(-58,-46, " 0   1   2    3", QPen::darkGreen, 12.0));
-  Texts.append(new Text(-58,-23, " 4   5   6    7", QPen::darkGreen, 12.0));
-  Texts.append(new Text(-58,  0, " 8   9  10 11", QPen::darkGreen, 12.0));
-  Texts.append(new Text(-58, 23, "12 13 14 15", QPen::darkGreen, 12.0));
+  Texts.append(new Text(-58,-46, " 0   1   2    3", Qt::darkGreen, 12.0));
+  Texts.append(new Text(-58,-23, " 4   5   6    7", Qt::darkGreen, 12.0));
+  Texts.append(new Text(-58,  0, " 8   9  10 11", Qt::darkGreen, 12.0));
+  Texts.append(new Text(-58, 23, "12 13 14 15", Qt::darkGreen, 12.0));
  
   Ports.append(new Port(40, 30));  // D
   Ports.append(new Port(40, 10));  // C

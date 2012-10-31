@@ -20,13 +20,13 @@
 #include "vtabbeddockwidget.h"
 #include "vtabwidget.h"
 #include <qapplication.h>
-#include <qmainwindow.h>
+#include <q3mainwindow.h>
 
-VTabbedDockWidget::VTabbedDockWidget(Place p, QWidget* parent, const char* name): QDockWindow(p, parent, name)
+VTabbedDockWidget::VTabbedDockWidget(Place p, QWidget* parent, const char* name): Q3DockWindow(p, parent, name)
 {
-  setOrientation(Vertical);
+  setOrientation(Qt::Vertical);
   m_tabWidget = 0l;
-  setCloseMode(QDockWindow::Always);
+  setCloseMode(Q3DockWindow::Always);
 }
 
 VTabbedDockWidget::~VTabbedDockWidget()
@@ -34,7 +34,7 @@ VTabbedDockWidget::~VTabbedDockWidget()
 
 void VTabbedDockWidget::setWidget(QWidget *w)
 {
-  QDockWindow::setWidget(w);
+  Q3DockWindow::setWidget(w);
   if(!(w->inherits("VTabWidget")))
     return;
   m_tabWidget = (VTabWidget*)w;
@@ -42,7 +42,7 @@ void VTabbedDockWidget::setWidget(QWidget *w)
   setHorizontallyStretchable(false);
   connect(m_tabWidget,SIGNAL(widgetStackHidden()),this,SLOT(slotStackHidden()));
   connect(m_tabWidget,SIGNAL(widgetStackShown()),this,SLOT(slotStackShown()));
-  connect(this,SIGNAL(placeChanged( QDockWindow::Place )),SLOT(updatePosition(QDockWindow::Place)));
+  connect(this,SIGNAL(placeChanged( Q3DockWindow::Place )),SLOT(updatePosition(Q3DockWindow::Place)));
 }
 
 /*!
@@ -68,23 +68,23 @@ void VTabbedDockWidget::slotStackHidden()
 /*!
     \fn VTabbedDockWidget::updatePosition()
  */
-void VTabbedDockWidget::updatePosition(QDockWindow::Place p)
+void VTabbedDockWidget::updatePosition(Q3DockWindow::Place p)
 {
   if(p==OutsideDock)
     return;
   if(!(qApp->mainWidget()->inherits("QMainWindow")))
     return;
-  QMainWindow *mainWin = (QMainWindow*)(qApp->mainWidget());
-  Dock dock;
+  Q3MainWindow *mainWin = (Q3MainWindow*)(qApp->mainWidget());
+  Qt::Dock dock;
   int ind,eo;//Not needed really
   bool nl;//Not needed really
 
   bool res = mainWin->getLocation ( this, dock, ind, nl, eo );
   if(res == false)
     return;
-  if(dock == QDockWindow::DockLeft)
+  if(dock == Qt::DockLeft)
     m_tabWidget->setPosition(TabLeft);
-  else if(dock == QDockWindow::DockRight)
+  else if(dock == Qt::DockRight)
     m_tabWidget->setPosition(TabRight);
   mainWin->lineUpDockWindows();
 }

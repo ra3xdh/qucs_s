@@ -24,9 +24,12 @@
 #include <qbrush.h>
 #include <qcolor.h>
 #include <qstring.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QPaintEvent>
 
-class QDragObject;
+class Q3DragObject;
 class QPaintEvent;
 class QSizePolicy;
 
@@ -94,15 +97,15 @@ private:
   bool getPen  (const QString&, QPen&, int);
   bool getBrush(const QString&, QBrush&, int);
 
-  QDragObject *myDragObject;
+  Q3DragObject *myDragObject;
 
   QString PaintText, DragNDropText;
   int TextWidth, DragNDropWidth, TextHeight;
   int cx, cy, x1, x2, y1, y2;
-  QPtrList<Line>       Lines;
-  QPtrList<struct Arc> Arcs;
-  QPtrList<Area>       Rects, Ellips;
-  QPtrList<Text>       Texts;
+  Q3PtrList<Line>       Lines;
+  Q3PtrList<struct Arc> Arcs;
+  Q3PtrList<Area>       Rects, Ellips;
+  Q3PtrList<Text>       Texts;
 };
 
 #endif

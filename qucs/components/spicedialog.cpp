@@ -14,24 +14,28 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "spicedialog.h"
 #include "spicefile.h"
 #include "main.h"
 #include "qucs.h"
+//Added by qt3to4:
+#include <Q3TextStream>
+#include <Q3GridLayout>
+#include <Q3VBoxLayout>
 #include "schematic.h"
 
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qlineedit.h>
 #include <qvalidator.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qcheckbox.h>
-#include <qprocess.h>
+#include <q3process.h>
 #include <qmessagebox.h>
 #include <qcombobox.h>
 
@@ -44,7 +48,7 @@ SpiceDialog::SpiceDialog(SpiceFile *c, Schematic *d)
   Comp = c;
   Doc  = d;
 
-  all = new QVBoxLayout(this); // to provide neccessary size
+  all = new Q3VBoxLayout(this); // to provide neccessary size
   QWidget *myParent = this;
 
   Expr.setPattern("[^\"=]+");  // valid expression for property 'edit' etc
@@ -54,7 +58,7 @@ SpiceDialog::SpiceDialog(SpiceFile *c, Schematic *d)
 
 
   // ...........................................................
-  QGridLayout *topGrid = new QGridLayout(0, 4,3,3,3);
+  Q3GridLayout *topGrid = new Q3GridLayout(0, 4,3,3,3);
   all->addLayout(topGrid);
 
   topGrid->addWidget(new QLabel(tr("Name:"), myParent), 0,0);
@@ -83,7 +87,7 @@ SpiceDialog::SpiceDialog(SpiceFile *c, Schematic *d)
   SimCheck = new QCheckBox(tr("include SPICE simulations"), myParent);
   topGrid->addWidget(SimCheck, 3,1);
 
-  QHBox *h1 = new QHBox(myParent);
+  Q3HBox *h1 = new Q3HBox(myParent);
   h1->setSpacing(5);
   PrepCombo = new QComboBox(h1);
   PrepCombo->insertItem("none");
@@ -96,16 +100,16 @@ SpiceDialog::SpiceDialog(SpiceFile *c, Schematic *d)
   connect(PrepCombo, SIGNAL(activated(int)), SLOT(slotPrepChanged(int)));
 
   // ...........................................................
-  QGridLayout *midGrid = new QGridLayout(0, 2,3,5,5);
+  Q3GridLayout *midGrid = new Q3GridLayout(0, 2,3,5,5);
   all->addLayout(midGrid);
 
   midGrid->addWidget(new QLabel(tr("SPICE net nodes:"), myParent), 0,0);
-  NodesList = new QListBox(myParent);
+  NodesList = new Q3ListBox(myParent);
   midGrid->addWidget(NodesList, 1,0);
-  connect(NodesList, SIGNAL(doubleClicked(QListBoxItem*)),
-	SLOT(slotAddPort(QListBoxItem*)));
+  connect(NodesList, SIGNAL(doubleClicked(Q3ListBoxItem*)),
+	SLOT(slotAddPort(Q3ListBoxItem*)));
   
-  QVBox *v0 = new QVBox(myParent);
+  Q3VBox *v0 = new Q3VBox(myParent);
   v0->setSpacing(5);
   midGrid->addWidget(v0, 1,1);
   ButtAdd = new QPushButton(tr("Add >>"), v0);
@@ -115,14 +119,14 @@ SpiceDialog::SpiceDialog(SpiceFile *c, Schematic *d)
   v0->setStretchFactor(new QWidget(v0), 5); // stretchable placeholder
 
   midGrid->addWidget(new QLabel(tr("Component ports:"), myParent), 0,2);
-  PortsList = new QListBox(myParent);
+  PortsList = new Q3ListBox(myParent);
   midGrid->addWidget(PortsList, 1,2);
-  connect(PortsList, SIGNAL(doubleClicked(QListBoxItem*)),
-	SLOT(slotRemovePort(QListBoxItem*)));
+  connect(PortsList, SIGNAL(doubleClicked(Q3ListBoxItem*)),
+	SLOT(slotRemovePort(Q3ListBoxItem*)));
   
 
   // ...........................................................
-  QHBox *h0 = new QHBox(this);
+  Q3HBox *h0 = new Q3HBox(this);
   h0->setSpacing(5);
   all->addWidget(h0);
   connect(new QPushButton(tr("OK"),h0), SIGNAL(clicked()),
@@ -245,7 +249,7 @@ void SpiceDialog::slotButtApply()
 // -------------------------------------------------------------------------
 void SpiceDialog::slotButtBrowse()
 {
-  QString s = QFileDialog::getOpenFileName(
+  QString s = Q3FileDialog::getOpenFileName(
 		lastDir.isEmpty() ? QString(".") : lastDir,
 		tr("SPICE netlist")+" (*.cir);;"+tr("All Files")+" (*.*)",
 		this, "", tr("Select a file"));
@@ -303,7 +307,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
       piping = false;
     }
     script = QucsSettings.BinDir + script;
-    SpicePrep = new QProcess(this);
+    SpicePrep = new Q3Process(this);
     SpicePrep->addArgument(interpreter);
     SpicePrep->addArgument(script);
     SpicePrep->addArgument(FileInfo.filePath());
@@ -330,13 +334,13 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
 
     if (piping) {
       PrepFile.setName(PrepName);
-      if(!PrepFile.open(IO_WriteOnly)) {
+      if(!PrepFile.open(QIODevice::WriteOnly)) {
 	QMessageBox::critical(this, tr("Error"),
           tr("Cannot save preprocessed SPICE file \"%1\".").
 	  arg(PrepName));
 	return false;
       }
-      prestream = new QTextStream(&PrepFile);
+      prestream = new Q3TextStream(&PrepFile);
     }
 
     if(!SpicePrep->start()) {
@@ -365,7 +369,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
   }
 
   // first call Qucsconv ............
-  QucsConv = new QProcess(this);
+  QucsConv = new Q3Process(this);
   QucsConv->addArgument(QucsSettings.BinDir + "qucsconv");
   QucsConv->addArgument("-if");
   QucsConv->addArgument("spice");
@@ -403,12 +407,12 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
   }
 
   QString tmp;
-  QListBoxItem *pi;
+  Q3ListBoxItem *pi;
   for(unsigned int i=0; i<PortsList->count(); i++) {
     tmp = PortsList->text(i).remove(0, 4);
     PortsList->changeItem(tmp, i);
 
-    pi = NodesList->findItem(tmp, Qt::CaseSensitive | Qt::ExactMatch);
+    pi = NodesList->findItem(tmp, Qt::CaseSensitive | QKeySequence::ExactMatch);
     if(pi) delete pi;
     else PortsList->removeItem(i--);
   }
@@ -527,14 +531,14 @@ void SpiceDialog::slotButtRemove()
 
 // -------------------------------------------------------------------------
 // Is called when double-click on NodesList-Box
-void SpiceDialog::slotAddPort(QListBoxItem *Item)
+void SpiceDialog::slotAddPort(Q3ListBoxItem *Item)
 {
   if(Item) slotButtAdd();
 }
 
 // -------------------------------------------------------------------------
 // Is called when double-click on PortsList-Box
-void SpiceDialog::slotRemovePort(QListBoxItem *Item)
+void SpiceDialog::slotRemovePort(Q3ListBoxItem *Item)
 {
   if(Item) slotButtRemove();
 }
