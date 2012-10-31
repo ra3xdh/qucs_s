@@ -11872,7 +11872,7 @@ Fájlok másolása a projekt könyvtárba</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Súgó</translation>
+        <translation type="obsolete">Súgó</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -12200,7 +12200,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
     <name>QucsTranscalc</name>
     <message>
         <source>Load</source>
-        <translation>Betölt</translation>
+        <translation type="obsolete">Betölt</translation>
     </message>
     <message>
         <source>&amp;Load</source>
@@ -12208,7 +12208,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Mentés</translation>
+        <translation type="obsolete">Mentés</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -12216,7 +12216,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation>Opciók</translation>
+        <translation type="obsolete">Opciók</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -12224,7 +12224,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation>Kilépés</translation>
+        <translation type="obsolete">Kilépés</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -12232,7 +12232,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
     </message>
     <message>
         <source>Copy to Clipboard</source>
-        <translation>Másolás a vágólapra</translation>
+        <translation type="obsolete">Másolás a vágólapra</translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -12256,7 +12256,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Súgó</translation>
+        <translation type="obsolete">Súgó</translation>
     </message>
     <message>
         <source>&amp;Help</source>

@@ -346,7 +346,8 @@ int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1,
     else
     {
       int len = 0;
-      while (!Text[i+len].isNull() && Text[i+len].latin1() != '_' &&
+      while (Text.length()>(i+len)
+             /*!Text[i+len].isNull()*/ && Text[i+len].latin1() != '_' &&
 	     Text[i+len].latin1() != '^' && Text[i+len].latin1() != '\n')
 	len++;
       Painter->drawText(x1+x, y1+y,

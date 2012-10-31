@@ -11587,7 +11587,7 @@ DCバイアス計算</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>ヘルプ</translation>
+        <translation type="obsolete">ヘルプ</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -11908,7 +11908,7 @@ open files with an appropriate program.</source>
     <name>QucsTranscalc</name>
     <message>
         <source>Load</source>
-        <translation>読み込み</translation>
+        <translation type="obsolete">読み込み</translation>
     </message>
     <message>
         <source>&amp;Load</source>
@@ -11916,7 +11916,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Save</source>
-        <translation>保存</translation>
+        <translation type="obsolete">保存</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -11924,7 +11924,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Options</source>
-        <translation>オプション</translation>
+        <translation type="obsolete">オプション</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -11932,7 +11932,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Quit</source>
-        <translation>閉じる</translation>
+        <translation type="obsolete">閉じる</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -11940,7 +11940,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Copy to Clipboard</source>
-        <translation>クリップボードにコピー</translation>
+        <translation type="obsolete">クリップボードにコピー</translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -11964,7 +11964,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Help</source>
-        <translation>ヘルプ</translation>
+        <translation type="obsolete">ヘルプ</translation>
     </message>
     <message>
         <source>&amp;Help</source>

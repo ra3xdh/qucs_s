@@ -11504,7 +11504,7 @@ Trolltech tarafından Qt hakkında</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Yardım</translation>
+        <translation type="obsolete">Yardım</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -11828,7 +11828,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
     <name>QucsTranscalc</name>
     <message>
         <source>Load</source>
-        <translation>Yükle</translation>
+        <translation type="obsolete">Yükle</translation>
     </message>
     <message>
         <source>&amp;Load</source>
@@ -11836,7 +11836,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Kaydet</translation>
+        <translation type="obsolete">Kaydet</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -11844,7 +11844,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation>Seçenekler</translation>
+        <translation type="obsolete">Seçenekler</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -11852,7 +11852,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation>Çıkış</translation>
+        <translation type="obsolete">Çıkış</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -11860,7 +11860,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
     </message>
     <message>
         <source>Copy to Clipboard</source>
-        <translation>Not Tahtasına Çoğalt</translation>
+        <translation type="obsolete">Not Tahtasına Çoğalt</translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -11884,7 +11884,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Yardım</translation>
+        <translation type="obsolete">Yardım</translation>
     </message>
     <message>
         <source>&amp;Help</source>

@@ -28,6 +28,7 @@
 #include <Q3PopupMenu>
 #include <QMouseEvent>
 #include <QCloseEvent>
+#include <Q3ScrollView>
 
 class QucsDoc;
 class Schematic;

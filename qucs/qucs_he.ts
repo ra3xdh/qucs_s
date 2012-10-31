@@ -11278,10 +11278,6 @@ About Qt by Trolltech</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Help</source>
         <translation type="unfinished">&amp;עזרה</translation>
     </message>
@@ -11600,24 +11596,16 @@ open files with an appropriate program.</source>
 <context>
     <name>QucsTranscalc</name>
     <message>
-        <source>Load</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">שמור</translation>
+        <translation type="obsolete">שמור</translation>
     </message>
     <message>
         <source>&amp;Save</source>
         <translation type="unfinished">&amp;שמור</translation>
-    </message>
-    <message>
-        <source>Options</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -11625,14 +11613,10 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="unfinished">צא</translation>
+        <translation type="obsolete">צא</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy to Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11653,10 +11637,6 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>&amp;Synthesize</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

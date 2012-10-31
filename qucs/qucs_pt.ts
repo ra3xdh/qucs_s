@@ -9607,10 +9607,6 @@ Ativar/desativar o sumário</translation>
         <translation type="unfinished">Sair(&amp;Q)</translation>
     </message>
     <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9921,16 +9917,12 @@ open files with an appropriate program.</source>
 <context>
     <name>QucsTranscalc</name>
     <message>
-        <source>Load</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Salvar</translation>
+        <translation type="obsolete">Salvar</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -9938,23 +9930,15 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">Opções</translation>
+        <translation type="obsolete">Opções</translation>
     </message>
     <message>
         <source>&amp;Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Quit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Quit</source>
         <translation type="unfinished">Sair(&amp;Q)</translation>
-    </message>
-    <message>
-        <source>Copy to Clipboard</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -9974,10 +9958,6 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>&amp;Synthesize</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

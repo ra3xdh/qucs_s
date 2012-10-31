@@ -9635,7 +9635,7 @@ Enables/disables the table of contents</source>
     </message>
     <message>
         <source>Help</source>
-        <translation>Көмек</translation>
+        <translation type="obsolete">Көмек</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -9952,7 +9952,7 @@ open files with an appropriate program.</source>
     <name>QucsTranscalc</name>
     <message>
         <source>Load</source>
-        <translation>Енгізу</translation>
+        <translation type="obsolete">Енгізу</translation>
     </message>
     <message>
         <source>&amp;Load</source>
@@ -9960,7 +9960,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Save</source>
-        <translation>Сақтау</translation>
+        <translation type="obsolete">Сақтау</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -9968,7 +9968,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Options</source>
-        <translation>Реттеулер</translation>
+        <translation type="obsolete">Реттеулер</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -9976,7 +9976,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Quit</source>
-        <translation>Шығу</translation>
+        <translation type="obsolete">Шығу</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -9984,7 +9984,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Copy to Clipboard</source>
-        <translation>Алмастыру буферіне көшіру</translation>
+        <translation type="obsolete">Алмастыру буферіне көшіру</translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -10008,7 +10008,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Help</source>
-        <translation>Көмек</translation>
+        <translation type="obsolete">Көмек</translation>
     </message>
     <message>
         <source>&amp;Help</source>

@@ -12315,7 +12315,7 @@ Copia file nella directory del progetto</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Aiuto</translation>
+        <translation type="obsolete">Aiuto</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -12647,7 +12647,7 @@ fine di aprirli utilizzando il programma appropriato.</translation>
     <name>QucsTranscalc</name>
     <message>
         <source>Load</source>
-        <translation>Carica</translation>
+        <translation type="obsolete">Carica</translation>
     </message>
     <message>
         <source>&amp;Load</source>
@@ -12655,7 +12655,7 @@ fine di aprirli utilizzando il programma appropriato.</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Salva</translation>
+        <translation type="obsolete">Salva</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -12663,7 +12663,7 @@ fine di aprirli utilizzando il programma appropriato.</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation>Opzioni</translation>
+        <translation type="obsolete">Opzioni</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -12671,7 +12671,7 @@ fine di aprirli utilizzando il programma appropriato.</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation>Esci</translation>
+        <translation type="obsolete">Esci</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -12679,7 +12679,7 @@ fine di aprirli utilizzando il programma appropriato.</translation>
     </message>
     <message>
         <source>Copy to Clipboard</source>
-        <translation>Copia negli Appunti</translation>
+        <translation type="obsolete">Copia negli Appunti</translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -12703,7 +12703,7 @@ fine di aprirli utilizzando il programma appropriato.</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Aiuto</translation>
+        <translation type="obsolete">Aiuto</translation>
     </message>
     <message>
         <source>&amp;Help</source>

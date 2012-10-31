@@ -10315,7 +10315,7 @@ Enables/disables the table of contents</source>
     </message>
     <message>
         <source>Help</source>
-        <translation>Довідка</translation>
+        <translation type="obsolete">Довідка</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -10648,7 +10648,7 @@ open files with an appropriate program.</source>
     <name>QucsTranscalc</name>
     <message>
         <source>Load</source>
-        <translation>Завантажити</translation>
+        <translation type="obsolete">Завантажити</translation>
     </message>
     <message>
         <source>&amp;Load</source>
@@ -10656,7 +10656,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Save</source>
-        <translation>Зберегти</translation>
+        <translation type="obsolete">Зберегти</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -10664,7 +10664,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Options</source>
-        <translation>Параметри</translation>
+        <translation type="obsolete">Параметри</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -10672,7 +10672,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Quit</source>
-        <translation>Вихід</translation>
+        <translation type="obsolete">Вихід</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -10680,7 +10680,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Copy to Clipboard</source>
-        <translation>Скопіювати в буфер обміну</translation>
+        <translation type="obsolete">Скопіювати в буфер обміну</translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -10704,7 +10704,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Help</source>
-        <translation>Довідка</translation>
+        <translation type="obsolete">Довідка</translation>
     </message>
     <message>
         <source>&amp;Help</source>

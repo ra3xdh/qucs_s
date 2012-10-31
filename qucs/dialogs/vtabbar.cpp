@@ -86,12 +86,14 @@ void VTabBar::removeTab(VTab *tab)
 	}
     }
 }
-
+#include <iostream>
+using namespace std;
 void VTabBar::removeTab(int _id)
 {
   VTab * c = m_tabs.first();
   for ( ; c; c = m_tabs.next() )
     {
+		cout<<c->id()<<endl;
       if(c->id() == _id)
 	{
 	  m_tabs.remove(c);

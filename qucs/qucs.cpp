@@ -1297,6 +1297,7 @@ void QucsApp::slotFileClose()
   statusBar()->message(tr("Ready."));
 }
 
+
 // --------------------------------------------------------------
 bool QucsApp::closeAllFiles()
 {
@@ -1311,13 +1312,12 @@ bool QucsApp::closeAllFiles()
   if(!sd->isEmpty())
      Result = sd->exec();
   delete sd;
-
   if(Result == SaveDialog::AbortClosing)
     return false;
-
   QucsDoc *doc = 0;
   while((doc = getDoc()) != 0)
-    delete doc;
+	delete doc;
+	
 
   switchEditMode(true);   // set schematic edit mode
   return true;
@@ -1328,7 +1328,6 @@ bool QucsApp::closeAllFiles()
 void QucsApp::slotChangeView(QWidget *w)
 {
   editText->setHidden (true); // disable text edit of component property
-
   QucsDoc * Doc;
 
   // for text documents

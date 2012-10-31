@@ -11367,10 +11367,6 @@ Mută proprietatea text al componentelor</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Help</source>
         <translation type="unfinished">A&amp;jutor</translation>
     </message>
@@ -11689,23 +11685,15 @@ open files with an appropriate program.</source>
 <context>
     <name>QucsTranscalc</name>
     <message>
-        <source>Load</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Salvează</translation>
+        <translation type="obsolete">Salvează</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11714,14 +11702,10 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="unfinished">Termină</translation>
+        <translation type="obsolete">Termină</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy to Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11742,10 +11726,6 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>&amp;Synthesize</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

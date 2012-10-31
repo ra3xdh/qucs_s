@@ -11723,7 +11723,7 @@ Quite Universal Circuit Simulator
     </message>
     <message>
         <source>Help</source>
-        <translation>Ajuda</translation>
+        <translation type="obsolete">Ajuda</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -12051,7 +12051,7 @@ abrir els fitxers amb el programa apropiado.</translation>
     <name>QucsTranscalc</name>
     <message>
         <source>Load</source>
-        <translation>Cargar</translation>
+        <translation type="obsolete">Cargar</translation>
     </message>
     <message>
         <source>&amp;Load</source>
@@ -12059,7 +12059,7 @@ abrir els fitxers amb el programa apropiado.</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Guardar</translation>
+        <translation type="obsolete">Guardar</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -12067,7 +12067,7 @@ abrir els fitxers amb el programa apropiado.</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation>Opciones</translation>
+        <translation type="obsolete">Opciones</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -12075,7 +12075,7 @@ abrir els fitxers amb el programa apropiado.</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation>Salir</translation>
+        <translation type="obsolete">Salir</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -12083,7 +12083,7 @@ abrir els fitxers amb el programa apropiado.</translation>
     </message>
     <message>
         <source>Copy to Clipboard</source>
-        <translation>Copiar al portapapeles</translation>
+        <translation type="obsolete">Copiar al portapapeles</translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -12107,7 +12107,7 @@ abrir els fitxers amb el programa apropiado.</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Ajuda</translation>
+        <translation type="obsolete">Ajuda</translation>
     </message>
     <message>
         <source>&amp;Help</source>

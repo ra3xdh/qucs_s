@@ -122,15 +122,15 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
     viewport()->setPaletteBackgroundColor(QucsSettings.BGColor);
     viewport()->setMouseTracking(true);
     viewport()->setAcceptDrops(true);  // enable drag'n drop
-
-    connect(horizontalScrollBar(),
+#warning removed those signals, crashes on it...
+    /*connect(horizontalScrollBar(),
 		SIGNAL(prevLine()), SLOT(slotScrollLeft()));
     connect(horizontalScrollBar(),
 		SIGNAL(nextLine()), SLOT(slotScrollRight()));
     connect(verticalScrollBar(),
 		SIGNAL(prevLine()), SLOT(slotScrollUp()));
     connect(verticalScrollBar(),
-		SIGNAL(nextLine()), SLOT(slotScrollDown()));
+		SIGNAL(nextLine()), SLOT(slotScrollDown()));*/
 
     // ...........................................................
 
@@ -148,10 +148,10 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
 
 Schematic::~Schematic()
 {
-  if(App) {
-    App->editText->reparent(App, 0, QPoint(0, 0));
-    App->DocumentTab->removePage(this);  // delete tab in TabBar
-  }
+	if(App) {
+		App->editText->reparent(App, 0, QPoint(0, 0));
+		App->DocumentTab->removePage(this);  // delete tab in TabBar
+	}
 }
 
 // ---------------------------------------------------

@@ -13787,7 +13787,7 @@ Zkopíruje soubory do adresáře projektu</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Nápověda</translation>
+        <translation type="obsolete">Nápověda</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -14120,7 +14120,7 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
     <name>QucsTranscalc</name>
     <message>
         <source>Load</source>
-        <translation>Otevřít</translation>
+        <translation type="obsolete">Otevřít</translation>
     </message>
     <message>
         <source>&amp;Load</source>
@@ -14128,7 +14128,7 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Uložit</translation>
+        <translation type="obsolete">Uložit</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -14136,7 +14136,7 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation>Možnosti</translation>
+        <translation type="obsolete">Možnosti</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -14144,7 +14144,7 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation>Ukončit</translation>
+        <translation type="obsolete">Ukončit</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -14152,7 +14152,7 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
     </message>
     <message>
         <source>Copy to Clipboard</source>
-        <translation>Zkopírovat do schránky</translation>
+        <translation type="obsolete">Zkopírovat do schránky</translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -14176,7 +14176,7 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Nápověda</translation>
+        <translation type="obsolete">Nápověda</translation>
     </message>
     <message>
         <source>&amp;Help</source>

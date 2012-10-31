@@ -9697,7 +9697,7 @@ Enables/disables the table of contents</source>
     </message>
     <message>
         <source>Help</source>
-        <translation>مساعدة</translation>
+        <translation type="obsolete">مساعدة</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -10017,7 +10017,7 @@ open files with an appropriate program.</source>
     <name>QucsTranscalc</name>
     <message>
         <source>Load</source>
-        <translation>حمل</translation>
+        <translation type="obsolete">حمل</translation>
     </message>
     <message>
         <source>&amp;Load</source>
@@ -10025,7 +10025,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Save</source>
-        <translation> حفظ</translation>
+        <translation type="obsolete"> حفظ</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -10033,7 +10033,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Options</source>
-        <translation>خيارات</translation>
+        <translation type="obsolete">خيارات</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -10041,7 +10041,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Quit</source>
-        <translation>خروج</translation>
+        <translation type="obsolete">خروج</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -10049,7 +10049,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Copy to Clipboard</source>
-        <translation>نسخة إلى الحافظة</translation>
+        <translation type="obsolete">نسخة إلى الحافظة</translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -10073,7 +10073,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Help</source>
-        <translation>مساعدة</translation>
+        <translation type="obsolete">مساعدة</translation>
     </message>
     <message>
         <source>&amp;Help</source>

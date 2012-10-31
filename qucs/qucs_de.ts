@@ -9888,7 +9888,7 @@ Enables/disables the table of contents</source>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Hilfe</translation>
+        <translation type="obsolete">Hilfe</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -10201,16 +10201,12 @@ open files with an appropriate program.</source>
 <context>
     <name>QucsTranscalc</name>
     <message>
-        <source>Load</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Speichern</translation>
+        <translation type="obsolete">Speichern</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -10218,22 +10214,14 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">Optionen</translation>
+        <translation type="obsolete">Optionen</translation>
     </message>
     <message>
         <source>&amp;Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Quit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy to Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -10258,7 +10246,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Hilfe</translation>
+        <translation type="obsolete">Hilfe</translation>
     </message>
     <message>
         <source>&amp;Help</source>

@@ -11433,7 +11433,7 @@ Kopierar filer till projektmapp</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Hjälp</translation>
+        <translation type="obsolete">Hjälp</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -11757,7 +11757,7 @@ open files with an appropriate program.</source>
     <name>QucsTranscalc</name>
     <message>
         <source>Load</source>
-        <translation>Ladda</translation>
+        <translation type="obsolete">Ladda</translation>
     </message>
     <message>
         <source>&amp;Load</source>
@@ -11765,7 +11765,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Save</source>
-        <translation>Spara</translation>
+        <translation type="obsolete">Spara</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -11773,7 +11773,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Options</source>
-        <translation>Valmöjligheter</translation>
+        <translation type="obsolete">Valmöjligheter</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -11781,7 +11781,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Quit</source>
-        <translation>Avsluta</translation>
+        <translation type="obsolete">Avsluta</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -11789,7 +11789,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Copy to Clipboard</source>
-        <translation>Kopiera till Urklipp</translation>
+        <translation type="obsolete">Kopiera till Urklipp</translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -11813,7 +11813,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Help</source>
-        <translation>Hjälp</translation>
+        <translation type="obsolete">Hjälp</translation>
     </message>
     <message>
         <source>&amp;Help</source>

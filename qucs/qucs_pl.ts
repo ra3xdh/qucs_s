@@ -11772,7 +11772,7 @@ Okno dialogowe tworzenia układu dopasowującego</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Pomoc</translation>
+        <translation type="obsolete">Pomoc</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -12100,7 +12100,7 @@ otworzyć ten plik odpowiednim programem.</translation>
     <name>QucsTranscalc</name>
     <message>
         <source>Load</source>
-        <translation>Otwórz</translation>
+        <translation type="obsolete">Otwórz</translation>
     </message>
     <message>
         <source>&amp;Load</source>
@@ -12108,7 +12108,7 @@ otworzyć ten plik odpowiednim programem.</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Zapisz</translation>
+        <translation type="obsolete">Zapisz</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -12116,7 +12116,7 @@ otworzyć ten plik odpowiednim programem.</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation>Opcje</translation>
+        <translation type="obsolete">Opcje</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -12124,7 +12124,7 @@ otworzyć ten plik odpowiednim programem.</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation>Wyjście</translation>
+        <translation type="obsolete">Wyjście</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -12132,7 +12132,7 @@ otworzyć ten plik odpowiednim programem.</translation>
     </message>
     <message>
         <source>Copy to Clipboard</source>
-        <translation>Kopiuj do schowka</translation>
+        <translation type="obsolete">Kopiuj do schowka</translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -12156,7 +12156,7 @@ otworzyć ten plik odpowiednim programem.</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Pomoc</translation>
+        <translation type="obsolete">Pomoc</translation>
     </message>
     <message>
         <source>&amp;Help</source>

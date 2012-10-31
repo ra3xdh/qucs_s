@@ -13828,7 +13828,7 @@ Copies files to project directory</source>
     </message>
     <message>
         <source>Help</source>
-        <translation>Справка</translation>
+        <translation type="obsolete">Справка</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -14164,7 +14164,7 @@ open files with an appropriate program.</source>
     <name>QucsTranscalc</name>
     <message>
         <source>Load</source>
-        <translation>Загрузить</translation>
+        <translation type="obsolete">Загрузить</translation>
     </message>
     <message>
         <source>&amp;Load</source>
@@ -14172,7 +14172,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Save</source>
-        <translation>Сохранить</translation>
+        <translation type="obsolete">Сохранить</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -14180,7 +14180,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Options</source>
-        <translation>Параметры</translation>
+        <translation type="obsolete">Параметры</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -14188,7 +14188,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Quit</source>
-        <translation>Закончить</translation>
+        <translation type="obsolete">Закончить</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -14196,7 +14196,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Copy to Clipboard</source>
-        <translation>Скопировать в буфер обмена</translation>
+        <translation type="obsolete">Скопировать в буфер обмена</translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -14220,7 +14220,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Help</source>
-        <translation>Справка</translation>
+        <translation type="obsolete">Справка</translation>
     </message>
     <message>
         <source>&amp;Help</source>

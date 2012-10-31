@@ -11946,7 +11946,7 @@ Copie les fichiers dans le répertoire du projet</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Aide</translation>
+        <translation type="obsolete">Aide</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -12274,7 +12274,7 @@ ouvrir ceux-ci avec le programme ad-hoc.</translation>
     <name>QucsTranscalc</name>
     <message>
         <source>Load</source>
-        <translation>Charger</translation>
+        <translation type="obsolete">Charger</translation>
     </message>
     <message>
         <source>&amp;Load</source>
@@ -12282,7 +12282,7 @@ ouvrir ceux-ci avec le programme ad-hoc.</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Enregistrer</translation>
+        <translation type="obsolete">Enregistrer</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -12290,7 +12290,7 @@ ouvrir ceux-ci avec le programme ad-hoc.</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation>Options</translation>
+        <translation type="obsolete">Options</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -12298,7 +12298,7 @@ ouvrir ceux-ci avec le programme ad-hoc.</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation>Terminer</translation>
+        <translation type="obsolete">Terminer</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -12306,7 +12306,7 @@ ouvrir ceux-ci avec le programme ad-hoc.</translation>
     </message>
     <message>
         <source>Copy to Clipboard</source>
-        <translation>Copier dans le presse-papiers</translation>
+        <translation type="obsolete">Copier dans le presse-papiers</translation>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
@@ -12330,7 +12330,7 @@ ouvrir ceux-ci avec le programme ad-hoc.</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Aide</translation>
+        <translation type="obsolete">Aide</translation>
     </message>
     <message>
         <source>&amp;Help</source>

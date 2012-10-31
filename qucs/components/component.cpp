@@ -188,7 +188,6 @@ void Component::paint(ViewPainter *p)
   int x, y, a, b, xb, yb;
   QFont f = p->Painter->font();   // save current font
   QFont newFont = f;
-
   if(Model.at(0) == '.') {   // is simulation component (dc, ac, ...)
     newFont.setPointSizeFloat(p->Scale * Texts.getFirst()->Size);
     newFont.setWeight(QFont::DemiBold);
