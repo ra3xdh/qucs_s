@@ -1190,10 +1190,9 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
   QStringList InPorts;
   QStringList OutPorts;
   QStringList InOutPorts;
-  QStringList::iterator it_name;
-  QStringList::iterator it_type;
-  QString* _name;
-  QString* _type;
+
+  QString _name;
+  QString _type;
   Component *pc;
 
   // probably creating a library currently
@@ -1224,60 +1223,58 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
 	SubcircuitPortNames.append(" ");
 	SubcircuitPortTypes.append(" ");
       }
-      _name = (QString*)&SubcircuitPortNames.at(i-1);
-      _type = (QString*)&SubcircuitPortTypes.at(i-1);
-      (*_name) = pc->Ports.getFirst()->Connection->Name;
-      DigMap::Iterator it = Signals.find(*_name);
-      (*it_type) = it.data().Type;
+      _name = SubcircuitPortNames.at(i-1);
+      _type = SubcircuitPortTypes.at(i-1);
+      _name = pc->Ports.getFirst()->Connection->Name;
+      DigMap::Iterator it = Signals.find(_name);
+      _type = it.data().Type;
       // propagate type to port symbol
-      pc->Ports.getFirst()->Connection->DType = *_type;
+      pc->Ports.getFirst()->Connection->DType = _type;
 
       if(!isAnalog) {
 	if (isVerilog) {
-	  Signals.erase(*it_name); // remove node name
+	  Signals.erase(_name); // remove node name
 	  switch(pc->Props.at(1)->Value.at(0).latin1()) {
           case 'a':
-	    InOutPorts.append(*it_name);
+	    InOutPorts.append(_name);
 	    break;
           case 'o':
-	    OutPorts.append(*it_name);
+	    OutPorts.append(_name);
 	    break;
           default:
-	    InPorts.append(*it_name);
+	    InPorts.append(_name);
 	  }
 	}
 	else {
 	  // remove node name of output port
-	  Signals.erase(*it_name);
+	  Signals.erase(_name);
 	  switch(pc->Props.at(1)->Value.at(0).latin1()) {
           case 'a':
-	    (*it_name) += " : inout";  // attribute "analog" is "inout"
+	    _name += " : inout";  // attribute "analog" is "inout"
 	    break;
           case 'o': // output ports need workaround
-	    Signals.insert(*it_name, DigSignal(*it_name, *it_type));
-	    (*it_name) = "net_out" + (*it_name);
+	    Signals.insert(_name, DigSignal(_name, _type));
+	    (_name) = "net_out" + (_name);
 	    // no "break;" here !!!
           default:
-	    (*it_name) += " : " + pc->Props.at(1)->Value;
+	    (_name) += " : " + pc->Props.at(1)->Value;
 	  }
-	  (*it_name) += " " + ((*it_type).isEmpty() ?
-			       VHDL_SIGNAL_TYPE : (*it_type));
+	  (_name) += " " + ((_type).isEmpty() ?
+			       VHDL_SIGNAL_TYPE : (_type));
 	}
       }
     }
   }
 
   // remove empty subcircuit ports (missing port numbers)
-  for(it_name = SubcircuitPortNames.begin(),
-      it_type = SubcircuitPortTypes.begin();
-      it_name != SubcircuitPortNames.end(); ) {
-    if(*it_name == " ") {
-      it_name = SubcircuitPortNames.remove(it_name);
-      it_type = SubcircuitPortTypes.remove(it_type);
+  for(int i = 0; _name != *SubcircuitPortNames.end(); i++) {
+    _name = SubcircuitPortNames.at(i);
+    _type = SubcircuitPortTypes.at(i);
+    if(_name == " ") {
+      _name = SubcircuitPortNames.remove(_name);
+      _type = SubcircuitPortTypes.remove(_type);
     } else {
-      PortTypes.append(*it_type);
-      it_name++;
-      it_type++;
+      PortTypes.append(_type);
     }
   }
 

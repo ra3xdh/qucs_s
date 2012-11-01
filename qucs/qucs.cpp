@@ -2099,10 +2099,9 @@ void QucsApp::changeSchematicSymbolMode(Schematic *Doc)
   else
     switchEditMode(true);
 }
-#include <iostream>
+
 // ---------------------------------------------------------
 bool QucsApp::isTextDocument(QWidget *w) {
-  std::cout<<"isTextDocument Start"<<(long)w<<std::endl;
   if (w->inherits("QTextEdit"))
     return true;
   return false;

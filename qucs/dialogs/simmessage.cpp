@@ -143,6 +143,7 @@ bool SimMessage::startProcess()
        ((Schematic*)DocWidget)->prepareNetlist(Stream, Collect, ErrText);
     if(SimPorts < -5) {
       NetlistFile.close();
+      ErrText->insert(tr("ERROR: Cannot simulate a text file!"));
       FinishSimulation(-1);
       return false;
     }
@@ -386,7 +387,7 @@ void SimMessage::startSimulator()
 
     isVerilog = ((Schematic*)DocWidget)->isVerilog;
     SimTime = ((Schematic*)DocWidget)->createNetlist(Stream, SimPorts);
-    if(SimTime.at(0) == '§') {
+    if(SimTime.length()>0&&SimTime.at(0) == '§') {
       NetlistFile.close();
       ErrText->insert(SimTime.mid(1));
       FinishSimulation(-1);
@@ -439,6 +440,7 @@ void SimMessage::startSimulator()
 #endif
   wasLF = false;
   ProgressText = "";
+  
   if(!SimProcess.start()) {
     ErrText->insert(tr("ERROR: Cannot start simulator!"));
     FinishSimulation(-1);

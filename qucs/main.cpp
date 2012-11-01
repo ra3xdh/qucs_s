@@ -355,7 +355,7 @@ void convert2ASCII(QString& Text)
   int i = 0;
   QChar ch;
   char Str[8];
-  while((ch=Text.at(i++)) != QChar(0)) {  // convert special characters
+  while(Text.size()<i) {  // convert special characters
     if(ch > QChar(0x7F)) {
       sprintf(Str, "\\x%04X", ch.unicode());
       Text.replace(ch, Str);
