@@ -1329,7 +1329,7 @@ void QucsApp::slotChangeView(QWidget *w)
 {
   editText->setHidden (true); // disable text edit of component property
   QucsDoc * Doc;
-
+  if(w==NULL)return;
   // for text documents
   if (isTextDocument (w)) {
     TextDoc *d = (TextDoc*)w;
@@ -2099,9 +2099,10 @@ void QucsApp::changeSchematicSymbolMode(Schematic *Doc)
   else
     switchEditMode(true);
 }
-
+#include <iostream>
 // ---------------------------------------------------------
 bool QucsApp::isTextDocument(QWidget *w) {
+  std::cout<<"isTextDocument Start"<<(long)w<<std::endl;
   if (w->inherits("QTextEdit"))
     return true;
   return false;
