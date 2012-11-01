@@ -993,6 +993,7 @@ bool Schematic::throughAllComps(Q3TextStream *stream, int& countInit,
 	i = 0;
 	// save in/out signal types of subcircuit
 	for(Port *pp = pc->Ports.first(); pp; pp = pc->Ports.next(), i++) {
+    if(d->PortTypes.size()<=i)break;
 	  pp->Type = d->PortTypes[i];
 	  pp->Connection->DType = pp->Type;
 	}
@@ -1227,9 +1228,12 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
       _type = SubcircuitPortTypes.at(i-1);
       _name = pc->Ports.getFirst()->Connection->Name;
       DigMap::Iterator it = Signals.find(_name);
-      _type = it.data().Type;
+      if(it!=Signals.end())
+      {
+        _type = it.data().Type;
       // propagate type to port symbol
-      pc->Ports.getFirst()->Connection->DType = _type;
+        pc->Ports.getFirst()->Connection->DType = _type;
+      }
 
       if(!isAnalog) {
 	if (isVerilog) {
@@ -1267,7 +1271,7 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
   }
 
   // remove empty subcircuit ports (missing port numbers)
-  for(int i = 0; _name != *SubcircuitPortNames.end(); i++) {
+  for(int i = 0; i< SubcircuitPortNames.size(); i++) {
     _name = SubcircuitPortNames.at(i);
     _type = SubcircuitPortTypes.at(i);
     if(_name == " ") {

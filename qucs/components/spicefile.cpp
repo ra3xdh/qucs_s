@@ -402,11 +402,11 @@ void SpiceFile::slotGetNetlist()
     s = NetLine.left(i);
     NetLine.remove(0, i+1);
     s = s.stripWhiteSpace();
-    if(s.at(0) == '#') {
+    if(s.size()>0&&s.at(0) == '#') {
       continue;
     } else if(s.isEmpty()) {
       continue;
-    } else if(s.at(0) == '.') {
+    } else if(s.size()>0&&s.at(0) == '.') {
       if(s.left(5) != ".Def:") {
 	if(insertSim) SimText += s + "\n";
 	continue;
