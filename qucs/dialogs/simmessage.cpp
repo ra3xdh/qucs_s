@@ -16,7 +16,8 @@
  ***************************************************************************/
 #include <QtGui>
 #include <stdlib.h>
-
+#include <iostream>
+using namespace std;
 #include <qlabel.h>
 #include <qlayout.h>
 #include <q3vgroupbox.h>
@@ -488,7 +489,7 @@ void SimMessage::slotDisplayMsg()
       ProgressText.remove(0, i+1);
     }
 
-    if(ProgressText.at(0).latin1() <= '\t')
+    if(ProgressText.size()>0&&ProgressText.at(0).latin1() <= '\t')
       return;
   }
   else {

@@ -23,6 +23,7 @@
 #include <qpainter.h>
 #include <qapplication.h>
  #include <QStyleOption>
+#include <QStylePainter>
 
 VTab::VTab(VTabPosition pos,int p_id,QWidget *p,const char* n) : QPushButton(p,n)
 {
@@ -114,4 +115,47 @@ void VTab::setText(const QString &s)
 void VTab::slotToggled(bool b)
 {
   emit toggled(m_id,b);
+}
+
+void VTab::paintEvent(QPaintEvent* event)
+{
+    Q_UNUSED(event);
+    QStylePainter p(this);
+
+    p.rotate(-90);
+    p.translate(-height(), 0);
+    //p.rotate(90);
+    //p.translate(0, -width());
+    
+    p.drawControl(QStyle::CE_PushButton, getStyleOption());
+}
+
+QStyleOptionButton VTab::getStyleOption() const
+{
+    QStyleOptionButton opt;
+    opt.initFrom(this);
+    
+    QSize size = opt.rect.size();
+    size.transpose();
+    opt.rect.setSize(size);
+    
+    opt.features = QStyleOptionButton::None;
+    if (isFlat())
+        opt.features |= QStyleOptionButton::Flat;
+    if (menu())
+        opt.features |= QStyleOptionButton::HasMenu;
+    if (autoDefault() || isDefault())
+        opt.features |= QStyleOptionButton::AutoDefaultButton;
+    if (isDefault())
+        opt.features |= QStyleOptionButton::DefaultButton;
+    if (isDown() )
+        opt.state |= QStyle::State_Sunken;
+    if (isChecked())
+        opt.state |= QStyle::State_On;
+    if (!isFlat() && !isDown())
+        opt.state |= QStyle::State_Raised;
+    opt.text = text();
+    opt.icon = icon();
+    opt.iconSize = iconSize();
+    return opt;
 }

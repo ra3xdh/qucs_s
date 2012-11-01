@@ -21,6 +21,7 @@
 #define VERTICALTABBUTTON_H
 
 #include <qpushbutton.h>
+#include <QStyleOptionButton>
 #include "vtabglobal.h"
 
 /**
@@ -48,8 +49,11 @@ public slots:
 
 signals:
  void toggled(int p_id,bool p_state);// internal signal
-
+protected:
+  void paintEvent(QPaintEvent* event);
+  
 private:
+  QStyleOptionButton getStyleOption() const;
  VTabPosition m_position;
  int m_id;
 
