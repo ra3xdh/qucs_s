@@ -921,7 +921,7 @@ void Schematic::propagateNode(QStringList& Collect,
   Cons.clear();
 }
 
-
+#include <iostream>
 // --------------------------------------------------- 
 // Goes through all schematic components and allows special component
 // handling, e.g. like subcircuit netlisting.
@@ -990,15 +990,19 @@ bool Schematic::throughAllComps(Q3TextStream *stream, int& countInit,
       d->creatingLib = creatingLib;
       r = d->createSubNetlist(stream, countInit, Collect, ErrText, NumPorts);
       if (r) {
-	i = 0;
-	// save in/out signal types of subcircuit
-	for(Port *pp = pc->Ports.first(); pp; pp = pc->Ports.next(), i++) {
-    if(d->PortTypes.size()<=i)break;
-	  pp->Type = d->PortTypes[i];
-	  pp->Connection->DType = pp->Type;
-	}
-	sub.PortTypes = d->PortTypes;
-	FileList.replace(f, sub);
+        std::cout<<"NumPorts: "<< NumPorts<<std::endl;
+	      i = 0;
+	      // save in/out signal types of subcircuit
+	      for(Port *pp = pc->Ports.first(); pp; pp = pc->Ports.next(), i++) {
+          std::cout<<i<<std::endl;
+          //if(i>=d->PortTypes.count())break;
+          std::cout<<d->PortTypes.count()<<std::endl;
+	        pp->Type = d->PortTypes[i];
+	        pp->Connection->DType = pp->Type;
+          std::cout<<i<<std::endl;
+	      }
+	      sub.PortTypes = d->PortTypes;
+	      FileList.replace(f, sub);
       }
       delete d;
       if(!r) return false;
@@ -1148,7 +1152,7 @@ bool Schematic::createLibNetlist(Q3TextStream *stream, Q3TextEdit *ErrText,
   Collect.clear();
   FileList.clear();
   Signals.clear();
-
+  std::cout<<"createLibNetlist:NumPorts: "<<NumPorts<<std::endl;
   // Apply node names and collect subcircuits and file include
   creatingLib = true;
   if(!giveNodeNames(stream, countInit, Collect, ErrText, NumPorts)) {
@@ -1221,9 +1225,10 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
     else if(pc->Model == "Port") {
       i = pc->Props.first()->Value.toInt();
       for(z=SubcircuitPortNames.size(); z<i; z++) { // add empty port names
-	SubcircuitPortNames.append(" ");
-	SubcircuitPortTypes.append(" ");
+	      SubcircuitPortNames.append(" ");
+	      SubcircuitPortTypes.append(" ");
       }
+      std::cout<<"i"<<i<<std::endl;
       _name = SubcircuitPortNames.at(i-1);
       _type = SubcircuitPortTypes.at(i-1);
       _name = pc->Ports.getFirst()->Connection->Name;
@@ -1277,7 +1282,9 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
     if(_name == " ") {
       _name = SubcircuitPortNames.remove(_name);
       _type = SubcircuitPortTypes.remove(_type);
+      std::cout<<"PortTypes remove"<<i<<(const char*)_name<<std::endl;
     } else {
+      std::cout<<"PortTypes append"<<(const char*)_type<<std::endl;
       PortTypes.append(_type);
     }
   }
@@ -1456,6 +1463,7 @@ bool Schematic::createSubNetlist(Q3TextStream *stream, int& countInit,
 //  int Collect_count = Collect.count();   // position for this subcircuit
 
   // TODO: NodeSets have to be put into the subcircuit block.
+  std::cout<<"createSubNetList:NumPorts"<<NumPorts<<std::endl;
   if(!giveNodeNames(stream, countInit, Collect, ErrText, NumPorts))
     return false;
 
@@ -1498,13 +1506,12 @@ int Schematic::prepareNetlist(Q3TextStream& stream, QStringList& Collect,
         }
         if(pc->Props.getFirst()->Value != "TimeList")
           isTruthTable = true;
-	if(pc->Props.getLast()->Value != "VHDL")
-	  isVerilog = true;
+	      if(pc->Props.getLast()->Value != "VHDL")
+	        isVerilog = true;
         allTypes |= isDigitalComponent;
-	isAnalog = false;
+	      isAnalog = false;
       }
       else allTypes |= isAnalogComponent;
-
       if((allTypes & isComponent) == isComponent) {
         ErrText->insert(
            QObject::tr("ERROR: Analog and digital simulations cannot be mixed."));
@@ -1533,6 +1540,7 @@ int Schematic::prepareNetlist(Q3TextStream& stream, QStringList& Collect,
     }
   }
   else {
+    std::cout<<"isAnalogComponent(else): "<<NumPorts<<std::endl;
     NumPorts = -1;
     isAnalog = true;
   }
