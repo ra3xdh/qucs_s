@@ -990,16 +990,12 @@ bool Schematic::throughAllComps(Q3TextStream *stream, int& countInit,
       d->creatingLib = creatingLib;
       r = d->createSubNetlist(stream, countInit, Collect, ErrText, NumPorts);
       if (r) {
-        std::cout<<"NumPorts: "<< NumPorts<<std::endl;
 	      i = 0;
 	      // save in/out signal types of subcircuit
 	      for(Port *pp = pc->Ports.first(); pp; pp = pc->Ports.next(), i++) {
-          std::cout<<i<<std::endl;
           //if(i>=d->PortTypes.count())break;
-          std::cout<<d->PortTypes.count()<<std::endl;
 	        pp->Type = d->PortTypes[i];
 	        pp->Connection->DType = pp->Type;
-          std::cout<<i<<std::endl;
 	      }
 	      sub.PortTypes = d->PortTypes;
 	      FileList.replace(f, sub);
@@ -1152,7 +1148,6 @@ bool Schematic::createLibNetlist(Q3TextStream *stream, Q3TextEdit *ErrText,
   Collect.clear();
   FileList.clear();
   Signals.clear();
-  std::cout<<"createLibNetlist:NumPorts: "<<NumPorts<<std::endl;
   // Apply node names and collect subcircuits and file include
   creatingLib = true;
   if(!giveNodeNames(stream, countInit, Collect, ErrText, NumPorts)) {
@@ -1186,7 +1181,7 @@ bool Schematic::createLibNetlist(Q3TextStream *stream, Q3TextEdit *ErrText,
 
 // ---------------------------------------------------
 void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
-				      int NumPorts)
+int NumPorts)
 {
   int i, z;
   QString s;
@@ -1195,9 +1190,8 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
   QStringList InPorts;
   QStringList OutPorts;
   QStringList InOutPorts;
-
-  QString _name;
-  QString _type;
+  QStringList::iterator it_name;
+  QStringList::iterator it_type;
   Component *pc;
 
   // probably creating a library currently
@@ -1206,7 +1200,7 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
   if(creatingLib) {
     QString f = properAbsFileName(DocName) + ".lst";
     ofile.setName(f);
-    if(!ofile.open(QIODevice::WriteOnly)) {
+    if(!ofile.open(IO_WriteOnly)) {
       ErrText->insert(tr("ERROR: Cannot create library file \"%s\".").arg(f));
       return;
     }
@@ -1217,7 +1211,7 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
   // "SubcircuitPortNames"
   PortTypes.clear();
   for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
-    if(pc->Model.at(0) == '.') {  // no simulations in subcircuits
+    if(pc->Model.at(0) == '.') { // no simulations in subcircuits
       ErrText->insert(
         QObject::tr("WARNING: Ignore simulation component in subcircuit \"%1\".").arg(DocName)+"\n");
       continue;
@@ -1225,67 +1219,69 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
     else if(pc->Model == "Port") {
       i = pc->Props.first()->Value.toInt();
       for(z=SubcircuitPortNames.size(); z<i; z++) { // add empty port names
-	      SubcircuitPortNames.append(" ");
-	      SubcircuitPortTypes.append(" ");
+        SubcircuitPortNames.append(" ");
+        SubcircuitPortTypes.append(" ");
       }
-      std::cout<<"i"<<i<<std::endl;
-      _name = SubcircuitPortNames.at(i-1);
-      _type = SubcircuitPortTypes.at(i-1);
-      _name = pc->Ports.getFirst()->Connection->Name;
-      DigMap::Iterator it = Signals.find(_name);
-      if(it!=Signals.end())
+      it_name = SubcircuitPortNames.begin();
+      it_type = SubcircuitPortTypes.begin();
+      for(int n=1;n<i;n++)
       {
-        _type = it.data().Type;
-      // propagate type to port symbol
-        pc->Ports.getFirst()->Connection->DType = _type;
+        it_name++;
+        it_type++;
       }
+      (*it_name) = pc->Ports.getFirst()->Connection->Name;
+      DigMap::Iterator it = Signals.find(*it_name);
+      if(it!=Signals.end())
+        (*it_type) = it.data().Type;
+      // propagate type to port symbol
+      pc->Ports.getFirst()->Connection->DType = *it_type;
 
       if(!isAnalog) {
-	if (isVerilog) {
-	  Signals.erase(_name); // remove node name
-	  switch(pc->Props.at(1)->Value.at(0).latin1()) {
-          case 'a':
-	    InOutPorts.append(_name);
-	    break;
-          case 'o':
-	    OutPorts.append(_name);
-	    break;
-          default:
-	    InPorts.append(_name);
-	  }
-	}
-	else {
-	  // remove node name of output port
-	  Signals.erase(_name);
-	  switch(pc->Props.at(1)->Value.at(0).latin1()) {
-          case 'a':
-	    _name += " : inout";  // attribute "analog" is "inout"
-	    break;
-          case 'o': // output ports need workaround
-	    Signals.insert(_name, DigSignal(_name, _type));
-	    (_name) = "net_out" + (_name);
-	    // no "break;" here !!!
-          default:
-	    (_name) += " : " + pc->Props.at(1)->Value;
-	  }
-	  (_name) += " " + ((_type).isEmpty() ?
-			       VHDL_SIGNAL_TYPE : (_type));
-	}
+        if (isVerilog) {
+          Signals.erase(*it_name); // remove node name
+          switch(pc->Props.at(1)->Value.at(0).latin1()) {
+            case 'a':
+              InOutPorts.append(*it_name);
+              break;
+            case 'o':
+              OutPorts.append(*it_name);
+              break;
+              default:
+                InPorts.append(*it_name);
+          }
+        }
+        else {
+          // remove node name of output port
+          Signals.erase(*it_name);
+          switch(pc->Props.at(1)->Value.at(0).latin1()) {
+            case 'a':
+              (*it_name) += " : inout"; // attribute "analog" is "inout"
+              break;
+            case 'o': // output ports need workaround
+              Signals.insert(*it_name, DigSignal(*it_name, *it_type));
+              (*it_name) = "net_out" + (*it_name);
+              // no "break;" here !!!
+            default:
+              (*it_name) += " : " + pc->Props.at(1)->Value;
+          }
+          (*it_name) += " " + ((*it_type).isEmpty() ?
+          VHDL_SIGNAL_TYPE : (*it_type));
+        }
       }
     }
   }
 
   // remove empty subcircuit ports (missing port numbers)
-  for(int i = 0; i< SubcircuitPortNames.size(); i++) {
-    _name = SubcircuitPortNames.at(i);
-    _type = SubcircuitPortTypes.at(i);
-    if(_name == " ") {
-      _name = SubcircuitPortNames.remove(_name);
-      _type = SubcircuitPortTypes.remove(_type);
-      std::cout<<"PortTypes remove"<<i<<(const char*)_name<<std::endl;
+  for(it_name = SubcircuitPortNames.begin(),
+      it_type = SubcircuitPortTypes.begin();
+      it_name != SubcircuitPortNames.end(); ) {
+    if(*it_name == " ") {
+      it_name = SubcircuitPortNames.remove(it_name);
+      it_type = SubcircuitPortTypes.remove(it_type);
     } else {
-      std::cout<<"PortTypes append"<<(const char*)_type<<std::endl;
-      PortTypes.append(_type);
+      PortTypes.append(*it_type);
+      it_name++;
+      it_type++;
     }
   }
 
@@ -1301,7 +1297,7 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
         SubParameter *pp;
         ID_Text *pid = (ID_Text*)pi;
         for(pp = pid->Parameter.first(); pp != 0; pp = pid->Parameter.next()) {
-          s = pp->Name;  // keep 'Name' unchanged
+          s = pp->Name; // keep 'Name' unchanged
           (*tstream) << " " << s.replace("=", "=\"") << '"';
         }
         break;
@@ -1319,62 +1315,62 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
     if (isVerilog) {
       // ..... digital subcircuit ...................................
       (*tstream) << "\nmodule Sub_" << Type << " ("
-		 << SubcircuitPortNames.join(", ") << ");\n";
+              << SubcircuitPortNames.join(", ") << ");\n";
 
       // subcircuit in/out connections
       if(!InPorts.isEmpty())
-	(*tstream) << "  input " << InPorts.join(", ") << ";\n";
+        (*tstream) << " input " << InPorts.join(", ") << ";\n";
       if(!OutPorts.isEmpty())
-	(*tstream) << "  output " << OutPorts.join(", ") << ";\n";
+        (*tstream) << " output " << OutPorts.join(", ") << ";\n";
       if(!InOutPorts.isEmpty())
-	(*tstream) << "  inout " << InOutPorts.join(", ") << ";\n";
+        (*tstream) << " inout " << InOutPorts.join(", ") << ";\n";
 
       // subcircuit connections
       if(!Signals.isEmpty()) {
-	Q3ValueList<DigSignal> values = Signals.values();
-	Q3ValueList<DigSignal>::iterator it;
-	for (it = values.begin(); it != values.end(); ++it) {
-	  (*tstream) << "  wire " << (*it).Name << ";\n";
-	}
+        Q3ValueList<DigSignal> values = Signals.values();
+        Q3ValueList<DigSignal>::iterator it;
+        for (it = values.begin(); it != values.end(); ++it) {
+          (*tstream) << " wire " << (*it).Name << ";\n";
+        }
       }
       (*tstream) << "\n";
 
       // subcircuit parameters
       for(pi = SymbolPaints.first(); pi != 0; pi = SymbolPaints.next())
-	if(pi->Name == ".ID ") {
-	  SubParameter *pp;
-	  ID_Text *pid = (ID_Text*)pi;
-	  if(pid->Parameter.first()) {
-	    for(pp = pid->Parameter.first(); pp != 0;) {
-	      s = pp->Name.section('=', 0,0);
-	      QString v = Verilog_Param(pp->Name.section('=', 1,1));
-	      (*tstream) << "  parameter " << s << " = " << v << ";\n";
-	      pp = pid->Parameter.next();
-	    }
-	    (*tstream) << "\n";
-	  }
-	  break;
-	}
+        if(pi->Name == ".ID ") {
+          SubParameter *pp;
+          ID_Text *pid = (ID_Text*)pi;
+          if(pid->Parameter.first()) {
+            for(pp = pid->Parameter.first(); pp != 0;) {
+              s = pp->Name.section('=', 0,0);
+              QString v = Verilog_Param(pp->Name.section('=', 1,1));
+              (*tstream) << " parameter " << s << " = " << v << ";\n";
+              pp = pid->Parameter.next();
+            }
+            (*tstream) << "\n";
+          }
+          break;
+        }
 
       // write all equations into netlist file
       for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
-	if(pc->Model == "Eqn") {
-	  (*tstream) << pc->get_Verilog_Code(NumPorts);
-	}
+        if(pc->Model == "Eqn") {
+          (*tstream) << pc->get_Verilog_Code(NumPorts);
+        }
       }
 
       if(Signals.find("gnd") != Signals.end())
-	(*tstream) << "  assign gnd = 0;\n";  // should appear only once
+      (*tstream) << " assign gnd = 0;\n"; // should appear only once
 
       // write all components into netlist file
       for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
-	if(pc->Model != "Eqn") {
-	  s = pc->get_Verilog_Code(NumPorts);
-	  if(s.at(0) == '§') {
-	    ErrText->insert(s.mid(1));
-	  }
-	  else (*tstream) << s;
-	}
+        if(pc->Model != "Eqn") {
+          s = pc->get_Verilog_Code(NumPorts);
+          if(s.at(0) == '§') {
+            ErrText->insert(s.mid(1));
+          }
+          else (*tstream) << s;
+        }
       }
 
       (*tstream) << "endmodule\n";
@@ -1382,66 +1378,66 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
       // ..... digital subcircuit ...................................
       (*tstream) << VHDL_LIBRARIES;
       (*tstream) << "entity Sub_" << Type << " is\n"
-		 << "  port ("
-		 << SubcircuitPortNames.join(";\n        ") << ");\n";
+                << " port ("
+                << SubcircuitPortNames.join(";\n ") << ");\n";
 
       for(pi = SymbolPaints.first(); pi != 0; pi = SymbolPaints.next())
-	if(pi->Name == ".ID ") {
-	  SubParameter *pp;
-	  ID_Text *pid = (ID_Text*)pi;
-	  if(pid->Parameter.first()) {
-	    (*tstream) << "  generic (";
-	    for(pp = pid->Parameter.first(); pp != 0;) {
-	      s = pp->Name;
-	      QString t = pp->Type.isEmpty() ? "real" : pp->Type;
-	      (*tstream) << s.replace("=", " : "+t+" := ");
-	      pp = pid->Parameter.next();
-	      if(pp) (*tstream) << ";\n           ";
-	    }
-	    (*tstream) << ");\n";
-	  }
-	  break;
-	}
+        if(pi->Name == ".ID ") {
+          SubParameter *pp;
+          ID_Text *pid = (ID_Text*)pi;
+          if(pid->Parameter.first()) {
+            (*tstream) << " generic (";
+            for(pp = pid->Parameter.first(); pp != 0;) {
+              s = pp->Name;
+              QString t = pp->Type.isEmpty() ? "real" : pp->Type;
+              (*tstream) << s.replace("=", " : "+t+" := ");
+              pp = pid->Parameter.next();
+              if(pp) (*tstream) << ";\n ";
+            }
+            (*tstream) << ");\n";
+          }
+          break;
+        }
 
       (*tstream) << "end entity;\n"
-		 << "use work.all;\n"
-		 << "architecture Arch_Sub_" << Type << " of Sub_" << Type
-		 << " is\n";
+                  << "use work.all;\n"
+                  << "architecture Arch_Sub_" << Type << " of Sub_" << Type
+                  << " is\n";
 
       if(!Signals.isEmpty()) {
-	Q3ValueList<DigSignal> values = Signals.values();
-	Q3ValueList<DigSignal>::iterator it;
-	for (it = values.begin(); it != values.end(); ++it) {
-	  (*tstream) << "  signal " << (*it).Name << " : " 
-		     << ((*it).Type.isEmpty() ? 
-			 VHDL_SIGNAL_TYPE : (*it).Type) << ";\n";
-	}
+        Q3ValueList<DigSignal> values = Signals.values();
+        Q3ValueList<DigSignal>::iterator it;
+        for (it = values.begin(); it != values.end(); ++it) {
+          (*tstream) << " signal " << (*it).Name << " : "
+          << ((*it).Type.isEmpty() ?
+          VHDL_SIGNAL_TYPE : (*it).Type) << ";\n";
+        }
       }
 
       // write all equations into netlist file
       for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
-	if(pc->Model == "Eqn") {
-	  ErrText->insert(
-            QObject::tr("WARNING: Equations in \"%1\" are 'time' typed.").
-	    arg(pc->Name));
-	  (*tstream) << pc->get_VHDL_Code(NumPorts);
-	}
+        if(pc->Model == "Eqn") {
+          ErrText->insert(
+                      QObject::tr("WARNING: Equations in \"%1\" are 'time' typed.").
+          arg(pc->Name));
+          (*tstream) << pc->get_VHDL_Code(NumPorts);
+        }
       }
 
       (*tstream) << "begin\n";
 
       if(Signals.find("gnd") != Signals.end())
-	(*tstream) << "  gnd <= '0';\n";  // should appear only once
+      (*tstream) << " gnd <= '0';\n"; // should appear only once
 
       // write all components into netlist file
       for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
-	if(pc->Model != "Eqn") {
-	  s = pc->get_VHDL_Code(NumPorts);
-	  if(s.at(0) == '§') {
-	    ErrText->insert(s.mid(1));
-	  }
-	  else (*tstream) << s;
-	}
+        if(pc->Model != "Eqn") {
+            s = pc->get_VHDL_Code(NumPorts);
+            if(s.at(0) == '§') {
+              ErrText->insert(s.mid(1));
+          }
+          else (*tstream) << s;
+        }
       }
 
       (*tstream) << "end architecture;\n";
@@ -1454,7 +1450,6 @@ void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
     delete tstream;
   }
 }
-
 // ---------------------------------------------------
 // Write the netlist as subcircuit to the text stream 'stream'.
 bool Schematic::createSubNetlist(Q3TextStream *stream, int& countInit,
@@ -1463,7 +1458,6 @@ bool Schematic::createSubNetlist(Q3TextStream *stream, int& countInit,
 //  int Collect_count = Collect.count();   // position for this subcircuit
 
   // TODO: NodeSets have to be put into the subcircuit block.
-  std::cout<<"createSubNetList:NumPorts"<<NumPorts<<std::endl;
   if(!giveNodeNames(stream, countInit, Collect, ErrText, NumPorts))
     return false;
 
@@ -1540,7 +1534,6 @@ int Schematic::prepareNetlist(Q3TextStream& stream, QStringList& Collect,
     }
   }
   else {
-    std::cout<<"isAnalogComponent(else): "<<NumPorts<<std::endl;
     NumPorts = -1;
     isAnalog = true;
   }
