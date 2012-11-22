@@ -638,7 +638,8 @@ void DiagramDialog::slotReadVars(int)
     i = FileString.find('<', j)+1;
 
     Var = Line.section(' ', 1, 1).remove('>');
-    if(Var.at(0) == '_')  continue;
+    if(Var.length()>0)
+      if(Var.at(0) == '_')  continue;
 
     if(Line.left(3) == "dep") {
       tmp = Line.section(' ', 2);
