@@ -1,7 +1,13 @@
+qucs (0.1.0-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Valentyn Pavliuchenko <valentyn.pavliuchenko@gmail.com>  Sat, 24 Nov 2012 20:13:29 +0200
+
 qucs (0.0.15-1) unstable; urgency=low
 
   * New upstream release. (Closes: #526954)
-  * Bumped Standards-Version to 3.8.1. No changes needed.
+  * Bumped Standards-Version to 3.8.1. No changes needed.  
 
  -- José L. Redrejo Rodríguez <jredrejo@debian.org>  Sun, 17 May 2009 15:45:34 +0200
 
