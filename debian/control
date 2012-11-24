@@ -2,17 +2,18 @@ Source: qucs
 Section: electronics
 Priority: optional
 Maintainer: José L. Redrejo Rodríguez <jredrejo@debian.org>
-Build-Depends: debhelper (>> 4.0.0), autotools-dev, libqt3-compat-headers, libqt3-mt-dev
-Standards-Version: 3.7.2
+Homepage: http://qucs.sourceforge.net
+Build-Depends: debhelper (>> 4.0.0),autotools-dev, libqtcore4, libqt4-qt3support
+Standards-Version: 3.8.1
 
 Package: qucs
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, perl
+Recommends: freehdl, verilog
 Description: Quite Universal Circuit Simulator
  Qucs is an integrated circuit simulator which means you are able
  to setup a circuit with a graphical user interface (GUI) and simulate
  the large-signal, small-signal and noise behaviour of the circuit.
  After that simulation has finished you can view the simulation
  results on a presentation page or window.
- .
-  Homepage: http://qucs.sourceforge.net
+  

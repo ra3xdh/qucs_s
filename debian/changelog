@@ -1,3 +1,42 @@
+qucs (0.0.15-1) unstable; urgency=low
+
+  * New upstream release. (Closes: #526954)
+  * Bumped Standards-Version to 3.8.1. No changes needed.
+
+ -- José L. Redrejo Rodríguez <jredrejo@debian.org>  Sun, 17 May 2009 15:45:34 +0200
+
+qucs (0.0.14-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- José L. Redrejo Rodríguez <jredrejo@debian.org>  Mon, 14 Apr 2008 21:32:12 +0200
+
+qucs (0.0.13-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Drop build dep on deprecated QT compat headers. (Closes: #464814)
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Wed, 02 Apr 2008 22:12:49 +0200
+
+qucs (0.0.13-1) unstable; urgency=low
+
+  * New upstream release (Closes: #437876).
+  * debian/control: Use new Homepage field and updated policy version.
+  * debian/qucs.desktop: fixed category according to freedesktop standards.
+  * contrib/Makefile.*: fixed man page name for ps2sp.pl
+  * contrib/ps2sp.1 renamed to contrib/ps2sp.pl.1 and removed whatis entry.
+
+ -- José L. Redrejo Rodríguez <jredrejo@debian.org>  Sun, 30 Dec 2007 18:19:37 +0100
+
+qucs (0.0.12-1) unstable; urgency=low
+
+  * New upstream release
+  * debian/control: added freehdl & verilog as recommendations and perl as
+    a dependency because of the new features/needs.
+  * README.debian updated
+
+ -- José L. Redrejo Rodríguez <jredrejo@debian.org>  Mon, 18 Jun 2007 01:09:10 +0200
+
 qucs (0.0.11-1) unstable; urgency=low
 
   * New upstream release

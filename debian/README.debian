@@ -28,4 +28,7 @@ possible, mathematical equations and use of a subcircuit hierarchy are
 available.  Anyway, a lot of work has to be done and thus we are
 looking for people who want to support the project.
 
+If you wants qucs to be able of doing digital simulations you'll have to install
+the freehdl package.
+
 José L. Redrejo Rodríguez <jredrejo@edu.juntextremadura.net>, Mon, 27 Sep 2004 11:38:18 +0200

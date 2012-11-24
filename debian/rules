@@ -37,7 +37,7 @@ clean:
 	rm -f build-stamp 
 	rm -f qucs/qucsdigi.bat
 
-	-$(MAKE) distclean
+	[ ! -f Makefile ] || $(MAKE) distclean
 ifneq "$(wildcard /usr/share/misc/config.sub)" ""
 	cp -f /usr/share/misc/config.sub config.sub
 endif
@@ -60,7 +60,7 @@ install: build
 		mandir=`pwd`/debian/qucs/usr/share/man
 	dh_install debian/qucs.desktop usr/share/applications
 	dh_install qucs/bitmaps/big.qucs.xpm usr/share/pixmaps
-
+	cp $(CURDIR)/debian/qucs.lintian-overrides $(CURDIR)/debian/qucs/usr/share/lintian/overrides/qucs
 
 # Build architecture-independent files here.
 binary-indep: build install
@@ -74,6 +74,7 @@ binary-arch: build install
 	dh_installmenu -a
 	dh_installman -a
 	dh_installchangelogs -a
+	dh_desktop -a
 	dh_strip -a
 	dh_compress -a 
 	dh_fixperms -a
