@@ -468,7 +468,36 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
       Painter.drawText(pn->Name, x, y);
     }
   }
+  for(int i=0;i<PostedPaintEvents.size();i++)
+  {
+    PostedPaintEvent p = PostedPaintEvents[i];
+    switch(p.pe)
+    {
+      case _NotRop:
+        break;
+      case _Rect: 
+        Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
+        break;
+      case _Line:
+        break;
+      case _Ellips:
+        break;
+      case _Arc:
+        break;
+    }
+    
+  }
+  PostedPaintEvents.clear();
+  
 }
+
+void Schematic::PostPaintEvent (PE pe, int& x1, int&y1, int& x2, int& y2)
+{
+  PostedPaintEvent p = {pe, x1,y1,x2,y2};
+  PostedPaintEvents.push_back(p);
+  viewport()->update();
+}
+
 
 // ---------------------------------------------------
 void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
