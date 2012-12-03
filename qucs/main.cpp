@@ -278,20 +278,26 @@ void str2num(const QString& s_, double& Number, QString& Unit, double& Factor)
 
   Number = str.left(i).toDouble();
   Unit   = str.mid(i).stripWhiteSpace();
-
-  switch(Unit.at(0).latin1()) {
-    case 'T': Factor = 1e12;  break;
-    case 'G': Factor = 1e9;   break;
-    case 'M': Factor = 1e6;   break;
-    case 'k': Factor = 1e3;   break;
-    case 'c': Factor = 1e-2;  break;
-    case 'm': Factor = 1e-3;  break;
-    case 'u': Factor = 1e-6;  break;
-    case 'n': Factor = 1e-9;  break;
-    case 'p': Factor = 1e-12; break;
-    case 'f': Factor = 1e-15; break;
-//    case 'd':
-    default:  Factor = 1.0;
+  if(Unit.length()>0)
+  {
+    switch(Unit.at(0).latin1()) {
+      case 'T': Factor = 1e12;  break;
+      case 'G': Factor = 1e9;   break;
+      case 'M': Factor = 1e6;   break;
+      case 'k': Factor = 1e3;   break;
+      case 'c': Factor = 1e-2;  break;
+      case 'm': Factor = 1e-3;  break;
+      case 'u': Factor = 1e-6;  break;
+      case 'n': Factor = 1e-9;  break;
+      case 'p': Factor = 1e-12; break;
+      case 'f': Factor = 1e-15; break;
+  //    case 'd':
+      default:  Factor = 1.0;
+    }
+  }
+  else
+  {
+    Factor = 1.0;
   }
 
   return;
