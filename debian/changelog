@@ -1,8 +1,8 @@
-qucs (0.0.17-1) unstable; urgency=low
+qucs (0.0.17-1) quantal; urgency=low
 
-  * New upstream release.
+  * Created Qucs Qt4 Port
 
- -- Valentyn Pavliuchenko <valentyn.pavliuchenko@gmail.com>  Sat, 24 Nov 2012 20:13:29 +0200
+ -- Frans Schreuder <info@schreuderelectronics.com>  Wed, 05 Dec 2012 11:47:32 +0100
 
 qucs (0.0.15-1) unstable; urgency=low
 
