@@ -22,6 +22,7 @@
 #include "viewpainter.h"
 
 class QPainter;
+class Schematic;
 
 
 class Painting : public Element  {
@@ -37,12 +38,12 @@ public:
   virtual QString save();
   virtual QString saveCpp();
   virtual void paint(ViewPainter*) {};
-  virtual void MouseMoving(QPainter*, int, int, int, int,
-                           QPainter*, int, int, bool) {};
+  virtual void MouseMoving(Schematic*, int, int, int, int,
+                           Schematic*, int, int, bool) {};
   virtual bool MousePressing() { return false; };
   virtual void Bounding(int&, int&, int&, int&);
   virtual bool resizeTouched(float, float, float) { return false; };
-  virtual void MouseResizeMoving(int, int, QPainter*) {};
+  virtual void MouseResizeMoving(int, int, Schematic*) {};
 
   virtual void rotate() {};
   virtual void mirrorX() {};

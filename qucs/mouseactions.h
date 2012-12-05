@@ -40,7 +40,7 @@ public:
   MouseActions();
   virtual ~MouseActions();
 
-  void setPainter(Schematic*, QPainter*);
+  void setPainter(Schematic*);
   bool pasteElements(Schematic*);
   void editElement(Schematic*, QMouseEvent*);
   void editLabel(Schematic*, WireLabel*);
@@ -112,7 +112,7 @@ public:
   void MReleaseMoveText(Schematic*, QMouseEvent*);
   void MReleaseZoomIn(Schematic*, QMouseEvent*);
 
-  void paintElementsScheme(QPainter*);
+  void paintElementsScheme(Schematic*);
   void rotateElements(Schematic*, int&, int&);
   void moveElements(Schematic*, int&, int&);
   void moveElements(Q3PtrList<Element>*, int, int);

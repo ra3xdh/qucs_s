@@ -41,7 +41,7 @@ public:
   QString get_VHDL_Code(int);
   QString get_Verilog_Code(int);
   void    paint(ViewPainter*);
-  void    paintScheme(QPainter*);
+  void    paintScheme(Schematic*);
   void    print(ViewPainter*, float);
   void    setCenter(int, int, bool relative=false);
   void    getCenter(int&, int&);

@@ -16,7 +16,7 @@
  ***************************************************************************/
 
 #include "element.h"
-
+//#include "schematic.h"
 Element::Element()
 {
   Type = isDummy;
@@ -28,7 +28,7 @@ Element::~Element()
 {
 }
 
-void Element::paintScheme(QPainter *)
+void Element::paintScheme(Schematic *)
 {
 }
 

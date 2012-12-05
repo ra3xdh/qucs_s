@@ -80,15 +80,16 @@ MouseActions::~MouseActions()
 }
 
 // -----------------------------------------------------------
-void MouseActions::setPainter(Schematic *Doc, QPainter *p)
+void MouseActions::setPainter(Schematic *Doc)
 {
   // contents to viewport transformation
-  p->translate(-Doc->contentsX(), -Doc->contentsY());
-  p->scale(Doc->Scale, Doc->Scale);
-  p->translate(-Doc->ViewX1, -Doc->ViewY1);
-  p->setPen(Qt::DotLine);
-#warning  p->setRasterOp(Qt::NotROP);  // background should not be erased
-  p->setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+  
+  Doc->PostPaintEvent(_Translate,-Doc->contentsX(), -Doc->contentsY());
+  Doc->PostPaintEvent(_Scale,Doc->Scale, Doc->Scale);
+  Doc->PostPaintEvent(_Translate,-Doc->ViewX1, -Doc->ViewY1);
+  Doc->PostPaintEvent(_DotLine);
+  Doc->PostPaintEvent(_NotRop);
+
 }
 
 // -----------------------------------------------------------
@@ -278,43 +279,43 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
   Doc->setOnGrid(gx, gy);
   
 
-  QPainter painter(Doc->viewport());
-  setPainter(Doc, &painter);
+  //QPainter painter(Doc->viewport());
+  setPainter(Doc);
 
   if(selElem->Type == isPainting) {
-    QPainter paintUnscaled(Doc->viewport());
-#warning paintUnscaled.setRasterOp(Qt::NotROP); // not erasing background
-    painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+    Doc->PostPaintEvent (_NotRop, 0,0,0,0);
     x -= Doc->contentsX();
     y -= Doc->contentsY();
-    ((Painting*)selElem)->MouseMoving(&painter, fx, fy, gx, gy,
-                                       &paintUnscaled, x, y, drawn);
+    ((Painting*)selElem)->MouseMoving(Doc, fx, fy, gx, gy,
+                                       Doc, x, y, drawn);
     drawn = true;
+    Doc->viewport()->update();
     return;
   }  // of "if(isPainting)"
 
 
   // ********** it is a component or diagram
-  if(drawn) selElem->paintScheme(&painter); // erase old scheme
+  if(drawn) selElem->paintScheme(Doc); // erase old scheme
   drawn = true;
   selElem->setCenter(gx, gy);
-  selElem->paintScheme(&painter); // paint scheme at new position
+  selElem->paintScheme(Doc); // paint scheme at new position
+  Doc->viewport()->update();
 }
 
 // -----------------------------------------------------------
 void MouseActions::MMoveWire2(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-  setPainter(Doc, &painter);
+  //QPainter painter(Doc->viewport());
+  //setPainter(Doc, &painter);
 
   if(drawn)
     if(MAx1 == 0) {
-      painter.drawLine(MAx3, MAy3, MAx3, MAy2); // erase old
-      painter.drawLine(MAx3, MAy2, MAx2, MAy2); // erase old
+      Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3, MAy2); // erase old
+      Doc->PostPaintEvent (_Line, MAx3, MAy2, MAx2, MAy2); // erase old
     }
     else {
-      painter.drawLine(MAx3, MAy3, MAx2, MAy3); // erase old
-      painter.drawLine(MAx2, MAy3, MAx2, MAy2); // erase old
+      Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx2, MAy3); // erase old
+      Doc->PostPaintEvent (_Line, MAx2, MAy3, MAx2, MAy2); // erase old
     }
   else drawn = true;
 
@@ -323,27 +324,27 @@ void MouseActions::MMoveWire2(Schematic *Doc, QMouseEvent *Event)
   Doc->setOnGrid(MAx2, MAy2);
 
   if(MAx1 == 0) {
-    painter.drawLine(MAx3, MAy3, MAx3, MAy2); // paint
-    painter.drawLine(MAx3, MAy2, MAx2, MAy2); // paint
+    Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3, MAy2); // paint
+    Doc->PostPaintEvent (_Line, MAx3, MAy2, MAx2, MAy2); // paint
   }
   else {
-    painter.drawLine(MAx3, MAy3, MAx2, MAy3); // paint
-    painter.drawLine(MAx2, MAy3, MAx2, MAy2); // paint
+    Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx2, MAy3); // paint
+    Doc->PostPaintEvent (_Line, MAx2, MAy3, MAx2, MAy2); // paint
   }
 
   QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickWire2;
+  Doc->viewport()->update();
 }
 
 // -----------------------------------------------------------
 void MouseActions::MMoveWire1(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-  painter.setPen(Qt::DotLine);
-#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
-  painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+  //QPainter painter(Doc->viewport());
+  Doc->PostPaintEvent (_DotLine);
+  Doc->PostPaintEvent (_NotRop);
   if(drawn) {
-    painter.drawLine(0, MAy3, MAx2, MAy3); // erase old
-    painter.drawLine(MAx3, 0, MAx3, MAy2);
+    Doc->PostPaintEvent (_Line, 0, MAy3, MAx2, MAy3); // erase old
+    Doc->PostPaintEvent (_Line, MAx3, 0, MAx3, MAy2);
   }
 
   MAx3 = DOC_X_POS(Event->pos().x());
@@ -356,19 +357,20 @@ void MouseActions::MMoveWire1(Schematic *Doc, QMouseEvent *Event)
   MAy2  = Doc->visibleHeight();
 
   drawn = true;
-  painter.drawLine(0, MAy3, MAx2, MAy3); // paint
-  painter.drawLine(MAx3, 0, MAx3, MAy2);
+  Doc->PostPaintEvent (_Line, 0, MAy3, MAx2, MAy3); // paint
+  Doc->PostPaintEvent (_Line, MAx3, 0, MAx3, MAy2);
+  Doc->viewport()->update();
 }
 
 // -----------------------------------------------------------
 // Paints a rectangle to select elements within it.
 void MouseActions::MMoveSelect(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-  setPainter(Doc, &painter);
+  //QPainter painter(Doc->viewport());
+  //setPainter(Doc, &painter);
 
   if(drawn) {
-    painter.drawRect(MAx1, MAy1, MAx2, MAy2); // erase old rectangle
+    Doc->PostPaintEvent (_Rect, MAx1, MAy1, MAx2, MAy2); // erase old rectangle
     Doc->PostPaintEvent (_Rect,MAx1, MAy1, MAx2, MAy2);
     
   }
@@ -381,29 +383,28 @@ void MouseActions::MMoveSelect(Schematic *Doc, QMouseEvent *Event)
     }
     else { if(MAy2<0) MAy2 = -abs(MAx2); else MAy2 = abs(MAx2); }
   }
-  painter.drawRect(MAx1, MAy1, MAx2, MAy2); // paint new rectangle
+  Doc->PostPaintEvent (_Rect, MAx1, MAy1, MAx2, MAy2); // paint new rectangle
   Doc->PostPaintEvent (_Rect, MAx1, MAy1, MAx2, MAy2);
-  Doc->repaint();
+  Doc->viewport()->update();
 }
 
 // -----------------------------------------------------------
 void MouseActions::MMoveResizePainting(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-  setPainter(Doc, &painter);
+  setPainter(Doc);
 
   MAx1 = DOC_X_POS(Event->pos().x());
   MAy1 = DOC_Y_POS(Event->pos().y());
   Doc->setOnGrid(MAx1, MAy1);
-  ((Painting*)focusElement)->MouseResizeMoving(MAx1, MAy1, &painter);
+  ((Painting*)focusElement)->MouseResizeMoving(MAx1, MAy1, Doc);
 }
 
 // -----------------------------------------------------------
 // Moves components by keeping the mouse button pressed.
 void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-  setPainter(Doc, &painter);
+  
+  setPainter(Doc);
 
   MAx2 = DOC_X_POS(Event->pos().x());
   MAy2 = DOC_Y_POS(Event->pos().y());
@@ -440,7 +441,7 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
     }
     else pe->setCenter(MAx1, MAy1, true);
 
-    pe->paintScheme(&painter);
+#warning pe->paintScheme(&painter);
   }
 
   drawn = true;
@@ -455,8 +456,7 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
 // Moves components by keeping the mouse button pressed.
 void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-  setPainter(Doc, &painter);
+  setPainter(Doc);
 
   MAx2 = DOC_X_POS(Event->pos().x());
   MAy2 = DOC_Y_POS(Event->pos().y());
@@ -464,7 +464,7 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
   Element *pe;
   if(drawn) // erase old scheme
     for(pe = movingElements.first(); pe != 0; pe = movingElements.next())
-      pe->paintScheme(&painter);
+      pe->paintScheme(Doc);
 //      if(pe->Type == isWire)  if(((Wire*)pe)->Label)
 //        if(!((Wire*)pe)->Label->isSelected)
 //          ((Wire*)pe)->Label->paintScheme(&painter);
@@ -480,7 +480,7 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
 
   // paint afterwards to avoid conflict between wire and label painting
   for(pe = movingElements.first(); pe != 0; pe = movingElements.next())
-    pe->paintScheme(&painter);
+    pe->paintScheme(Doc);
 //    if(pe->Type == isWire)  if(((Wire*)pe)->Label)
 //      if(!((Wire*)pe)->Label->isSelected)
 //        ((Wire*)pe)->Label->paintScheme(&painter);
@@ -493,13 +493,13 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
 // Moves components after paste from clipboard.
 void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-  setPainter(Doc, &painter);
+  //QPainter painter(Doc->viewport());
+  //setPainter(Doc);
 
   MAx1 = DOC_X_POS(Event->pos().x());
   MAy1 = DOC_Y_POS(Event->pos().y());
   moveElements(Doc,MAx1,MAy1);
-  paintElementsScheme(&painter);      
+  paintElementsScheme(Doc);      
 
   drawn = true;
   QucsMain->MouseMoveAction = &MouseActions::MMoveMoving2;
@@ -517,13 +517,13 @@ void MouseActions::MMoveScrollBar(Schematic *Doc, QMouseEvent *Event)
   if(d->scrollTo(MAx2, x - MAx1, y - MAy1)) {
     Doc->setChanged(true, true, 'm'); // 'm' = only the first time
 
-    QPainter p(Doc->viewport());
-    ViewPainter Painter;
-    Painter.init(&p, Doc->Scale, -Doc->ViewX1, -Doc->ViewY1,
-                 Doc->contentsX(), Doc->contentsY());
-    Painter.fillRect(d->cx-d->x1, d->cy-d->y2, d->x2+d->x1, d->y2+d->y1,
-                     QucsSettings.BGColor);
-    d->paint(&Painter);
+#warning QPainter p(Doc->viewport());
+    #warning ViewPainter Painter;
+    #warning Painter.init(&p, Doc->Scale, -Doc->ViewX1, -Doc->ViewY1,
+#warning                  Doc->contentsX(), Doc->contentsY());
+#warning     Painter.fillRect(d->cx-d->x1, d->cy-d->y2, d->x2+d->x1, d->y2+d->y1,
+#warning                      QucsSettings.BGColor);
+#warning     d->paint(&Painter);
   }
 }
 
@@ -531,73 +531,70 @@ void MouseActions::MMoveScrollBar(Schematic *Doc, QMouseEvent *Event)
 // Paints a cross under the mouse cursor to show the delete modus.
 void MouseActions::MMoveDelete(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
-  painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+  //QPainter painter(Doc->viewport());
+  Doc->PostPaintEvent (_NotRop);
 
   if(drawn) {
-    painter.drawLine(MAx3-15, MAy3-15, MAx3+15, MAy3+15); // erase old
-    painter.drawLine(MAx3-15, MAy3+15, MAx3+15, MAy3-15);
+    Doc->PostPaintEvent (_Line, MAx3-15, MAy3-15, MAx3+15, MAy3+15); // erase old
+    Doc->PostPaintEvent (_Line, MAx3-15, MAy3+15, MAx3+15, MAy3-15);
   }
   drawn = true;
 
   MAx3  = Event->pos().x() - Doc->contentsX();
   MAy3  = Event->pos().y() - Doc->contentsY();
 
-  painter.drawLine(MAx3-15, MAy3-15, MAx3+15, MAy3+15); // paint
-  painter.drawLine(MAx3-15, MAy3+15, MAx3+15, MAy3-15);
+  Doc->PostPaintEvent (_Line, MAx3-15, MAy3-15, MAx3+15, MAy3+15); // paint
+  Doc->PostPaintEvent (_Line, MAx3-15, MAy3+15, MAx3+15, MAy3-15);
 }
 
 // -----------------------------------------------------------
 // Paints a label above the mouse cursor to show the set wire label modus.
 void MouseActions::MMoveLabel(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
-  painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+  //QPainter painter(Doc->viewport());
+  Doc->PostPaintEvent (_NotRop, 0,0,0,0);
   if(drawn) {
-    painter.drawLine(MAx3, MAy3, MAx3+10, MAy3-10); // erase old
-    painter.drawLine(MAx3+10, MAy3-10, MAx3+20, MAy3-10);
-    painter.drawLine(MAx3+10, MAy3-10, MAx3+10, MAy3-17);
+    Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3+10, MAy3-10); // erase old
+    Doc->PostPaintEvent (_Line, MAx3+10, MAy3-10, MAx3+20, MAy3-10);
+    Doc->PostPaintEvent (_Line, MAx3+10, MAy3-10, MAx3+10, MAy3-17);
 
-    painter.drawLine(MAx3+12, MAy3-12, MAx3+15, MAy3-23);   // "A"
-    painter.drawLine(MAx3+14, MAy3-17, MAx3+17, MAy3-17);
-    painter.drawLine(MAx3+19, MAy3-12, MAx3+16, MAy3-23);
+    Doc->PostPaintEvent (_Line, MAx3+12, MAy3-12, MAx3+15, MAy3-23);   // "A"
+    Doc->PostPaintEvent (_Line, MAx3+14, MAy3-17, MAx3+17, MAy3-17);
+    Doc->PostPaintEvent (_Line, MAx3+19, MAy3-12, MAx3+16, MAy3-23);
   }
   drawn = true;
 
   MAx3  = Event->pos().x() - Doc->contentsX();
   MAy3  = Event->pos().y() - Doc->contentsY();
 
-  painter.drawLine(MAx3, MAy3, MAx3+10, MAy3-10); // paint new
-  painter.drawLine(MAx3+10, MAy3-10, MAx3+20, MAy3-10);
-  painter.drawLine(MAx3+10, MAy3-10, MAx3+10, MAy3-17);
+  Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3+10, MAy3-10); // paint new
+  Doc->PostPaintEvent (_Line, MAx3+10, MAy3-10, MAx3+20, MAy3-10);
+  Doc->PostPaintEvent (_Line, MAx3+10, MAy3-10, MAx3+10, MAy3-17);
 
-  painter.drawLine(MAx3+12, MAy3-12, MAx3+15, MAy3-23);   // "A"
-  painter.drawLine(MAx3+14, MAy3-17, MAx3+17, MAy3-17);
-  painter.drawLine(MAx3+19, MAy3-12, MAx3+16, MAy3-23);
+  Doc->PostPaintEvent (_Line, MAx3+12, MAy3-12, MAx3+15, MAy3-23);   // "A"
+  Doc->PostPaintEvent (_Line, MAx3+14, MAy3-17, MAx3+17, MAy3-17);
+  Doc->PostPaintEvent (_Line, MAx3+19, MAy3-12, MAx3+16, MAy3-23);
 }
 
 // -----------------------------------------------------------
 // Paints a triangle above the mouse cursor to show the set marker modus.
 void MouseActions::MMoveMarker(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
-  painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+  //QPainter painter(Doc->viewport());
+  Doc->PostPaintEvent (_NotRop, 0,0,0,0);
   if(drawn) {
-    painter.drawLine(MAx3, MAy3-2, MAx3-8, MAy3-10); // erase old
-    painter.drawLine(MAx3+1, MAy3-3, MAx3+8, MAy3-10);
-    painter.drawLine(MAx3-7, MAy3-10, MAx3+7, MAy3-10);
+    Doc->PostPaintEvent (_Line, MAx3, MAy3-2, MAx3-8, MAy3-10); // erase old
+    Doc->PostPaintEvent (_Line, MAx3+1, MAy3-3, MAx3+8, MAy3-10);
+    Doc->PostPaintEvent (_Line, MAx3-7, MAy3-10, MAx3+7, MAy3-10);
   }
   drawn = true;
 
   MAx3  = Event->pos().x() - Doc->contentsX();
   MAy3  = Event->pos().y() - Doc->contentsY();
 
-  painter.drawLine(MAx3, MAy3-2, MAx3-8, MAy3-10); // paint new
-  painter.drawLine(MAx3+1, MAy3-3, MAx3+8, MAy3-10);
-  painter.drawLine(MAx3-7, MAy3-10, MAx3+7, MAy3-10);
+  Doc->PostPaintEvent (_Line, MAx3, MAy3-2, MAx3-8, MAy3-10); // paint new
+  Doc->PostPaintEvent (_Line, MAx3+1, MAy3-3, MAx3+8, MAy3-10);
+  Doc->PostPaintEvent (_Line, MAx3-7, MAy3-10, MAx3+7, MAy3-10);
 }
 
 // -----------------------------------------------------------
@@ -605,26 +602,25 @@ void MouseActions::MMoveMarker(Schematic *Doc, QMouseEvent *Event)
 // "mirror about y axis" modus.
 void MouseActions::MMoveMirrorY(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
-  painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+  //QPainter painter(Doc->viewport());
+  Doc->PostPaintEvent (_NotRop, 0,0,0,0);
   if(drawn) {
-    painter.drawLine(MAx3-11, MAy3-4, MAx3-9, MAy3-9); // erase old
-    painter.drawLine(MAx3-11, MAy3-3, MAx3-6, MAy3-3);
-    painter.drawLine(MAx3+11, MAy3-4, MAx3+9, MAy3-9);
-    painter.drawLine(MAx3+11, MAy3-3, MAx3+6, MAy3-3);
-    painter.drawArc(MAx3-10, MAy3-8, 21, 10, 16*20, 16*140);
+    Doc->PostPaintEvent (_Line, MAx3-11, MAy3-4, MAx3-9, MAy3-9); // erase old
+    Doc->PostPaintEvent (_Line, MAx3-11, MAy3-3, MAx3-6, MAy3-3);
+    Doc->PostPaintEvent (_Line, MAx3+11, MAy3-4, MAx3+9, MAy3-9);
+    Doc->PostPaintEvent (_Line, MAx3+11, MAy3-3, MAx3+6, MAy3-3);
+    Doc->PostPaintEvent (_Arc, MAx3-10, MAy3-8, 21, 10, 16*20, 16*140);
   }
   drawn = true;
 
   MAx3  = Event->pos().x() - Doc->contentsX();
   MAy3  = Event->pos().y() - Doc->contentsY();
 
-  painter.drawLine(MAx3-11, MAy3-4, MAx3-9, MAy3-9); // paint new
-  painter.drawLine(MAx3-11, MAy3-3, MAx3-6, MAy3-3);
-  painter.drawLine(MAx3+11, MAy3-4, MAx3+9, MAy3-9);
-  painter.drawLine(MAx3+11, MAy3-3, MAx3+6, MAy3-3);
-  painter.drawArc(MAx3-10, MAy3-8, 21, 10, 16*20, 16*140);
+  Doc->PostPaintEvent (_Line, MAx3-11, MAy3-4, MAx3-9, MAy3-9); // paint new
+  Doc->PostPaintEvent (_Line, MAx3-11, MAy3-3, MAx3-6, MAy3-3);
+  Doc->PostPaintEvent (_Line, MAx3+11, MAy3-4, MAx3+9, MAy3-9);
+  Doc->PostPaintEvent (_Line, MAx3+11, MAy3-3, MAx3+6, MAy3-3);
+  Doc->PostPaintEvent (_Arc, MAx3-10, MAy3-8, 21, 10, 16*20, 16*140);
 }
 
 // -----------------------------------------------------------
@@ -632,140 +628,135 @@ void MouseActions::MMoveMirrorY(Schematic *Doc, QMouseEvent *Event)
 // "mirror about x axis" modus.
 void MouseActions::MMoveMirrorX(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
-  painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+  //QPainter painter(Doc->viewport());
+  Doc->PostPaintEvent (_NotRop, 0,0,0,0);
   if(drawn) {
-    painter.drawLine(MAx3-4, MAy3-11, MAx3-9, MAy3-9); // erase old
-    painter.drawLine(MAx3-3, MAy3-11, MAx3-3, MAy3-6);
-    painter.drawLine(MAx3-4, MAy3+11, MAx3-9, MAy3+9);
-    painter.drawLine(MAx3-3, MAy3+11, MAx3-3, MAy3+6);
-    painter.drawArc(MAx3-8, MAy3-10, 10, 21, 16*110, 16*140);
+    Doc->PostPaintEvent (_Line, MAx3-4, MAy3-11, MAx3-9, MAy3-9); // erase old
+    Doc->PostPaintEvent (_Line, MAx3-3, MAy3-11, MAx3-3, MAy3-6);
+    Doc->PostPaintEvent (_Line, MAx3-4, MAy3+11, MAx3-9, MAy3+9);
+    Doc->PostPaintEvent (_Line, MAx3-3, MAy3+11, MAx3-3, MAy3+6);
+    Doc->PostPaintEvent (_Arc, MAx3-8, MAy3-10, 10, 21, 16*110, 16*140);
   }
   drawn = true;
 
   MAx3  = Event->pos().x() - Doc->contentsX();
   MAy3  = Event->pos().y() - Doc->contentsY();
 
-  painter.drawLine(MAx3-4, MAy3-11, MAx3-9, MAy3-9); // paint new
-  painter.drawLine(MAx3-3, MAy3-11, MAx3-3, MAy3-6);
-  painter.drawLine(MAx3-4, MAy3+11, MAx3-9, MAy3+9);
-  painter.drawLine(MAx3-3, MAy3+11, MAx3-3, MAy3+6);
-  painter.drawArc(MAx3-8, MAy3-10, 10, 21, 16*110, 16*140);
+  Doc->PostPaintEvent (_Line, MAx3-4, MAy3-11, MAx3-9, MAy3-9); // paint new
+  Doc->PostPaintEvent (_Line, MAx3-3, MAy3-11, MAx3-3, MAy3-6);
+  Doc->PostPaintEvent (_Line, MAx3-4, MAy3+11, MAx3-9, MAy3+9);
+  Doc->PostPaintEvent (_Line, MAx3-3, MAy3+11, MAx3-3, MAy3+6);
+  Doc->PostPaintEvent (_Arc, MAx3-8, MAy3-10, 10, 21, 16*110, 16*140);
 }
 
 // -----------------------------------------------------------
 // Paints a rounded arrow above the mouse cursor to show the "rotate" modus.
 void MouseActions::MMoveRotate(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
-  painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+  //QPainter painter(Doc->viewport());
+  Doc->PostPaintEvent (_NotRop, 0,0,0,0);
   if(drawn) {
-    painter.drawLine(MAx3-6, MAy3+8, MAx3-6, MAy3+1); // erase old
-    painter.drawLine(MAx3-7, MAy3+8, MAx3-12, MAy3+8);
-    painter.drawArc(MAx3-10, MAy3-10, 21, 21, -16*20, 16*240);
+    Doc->PostPaintEvent (_Line, MAx3-6, MAy3+8, MAx3-6, MAy3+1); // erase old
+    Doc->PostPaintEvent (_Line, MAx3-7, MAy3+8, MAx3-12, MAy3+8);
+    Doc->PostPaintEvent (_Arc, MAx3-10, MAy3-10, 21, 21, -16*20, 16*240);
   }
   drawn = true;
 
   MAx3  = Event->pos().x() - Doc->contentsX();
   MAy3  = Event->pos().y() - Doc->contentsY();
 
-  painter.drawLine(MAx3-6, MAy3+8, MAx3-6, MAy3+1); // paint new
-  painter.drawLine(MAx3-7, MAy3+8, MAx3-12, MAy3+8);
-  painter.drawArc(MAx3-10, MAy3-10, 21, 21, -16*20, 16*240);
+  Doc->PostPaintEvent (_Line, MAx3-6, MAy3+8, MAx3-6, MAy3+1); // paint new
+  Doc->PostPaintEvent (_Line, MAx3-7, MAy3+8, MAx3-12, MAy3+8);
+  Doc->PostPaintEvent (_Arc, MAx3-10, MAy3-10, 21, 21, -16*20, 16*240);
 }
 
 // -----------------------------------------------------------
 // Paints a rectangle beside the mouse cursor to show the "activate" modus.
 void MouseActions::MMoveActivate(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
-  painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+  //QPainter painter(Doc->viewport());
+  Doc->PostPaintEvent (_NotRop, 0,0,0,0);
   if(drawn) {
-    painter.drawRect(MAx3, MAy3-9, 14, 10); // erase old
-    painter.drawLine(MAx3, MAy3-9, MAx3+13, MAy3);
-    painter.drawLine(MAx3, MAy3, MAx3+13, MAy3-9);
+    Doc->PostPaintEvent (_Rect, MAx3, MAy3-9, 14, 10); // erase old
+    Doc->PostPaintEvent (_Line, MAx3, MAy3-9, MAx3+13, MAy3);
+    Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3+13, MAy3-9);
   }
   drawn = true;
 
   MAx3  = Event->pos().x() - Doc->contentsX();
   MAy3  = Event->pos().y() - Doc->contentsY();
 
-  painter.drawRect(MAx3, MAy3-9, 14, 10); // paint new
-  painter.drawLine(MAx3, MAy3-9, MAx3+13, MAy3);
-  painter.drawLine(MAx3, MAy3, MAx3+13, MAy3-9);
+  Doc->PostPaintEvent (_Rect, MAx3, MAy3-9, 14, 10); // paint new
+  Doc->PostPaintEvent (_Line, MAx3, MAy3-9, MAx3+13, MAy3);
+  Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3+13, MAy3-9);
 }
 
 // -----------------------------------------------------------
 // Paints a grid beside the mouse cursor to show the "on grid" modus.
 void MouseActions::MMoveOnGrid(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
-  painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+  //QPainter painter(Doc->viewport());
+  Doc->PostPaintEvent (_NotRop, 0,0,0,0);
   if(drawn) {
-    painter.drawLine(MAx3+10, MAy3+ 3, MAx3+25, MAy3+3); // erase old
-    painter.drawLine(MAx3+10, MAy3+ 7, MAx3+25, MAy3+7);
-    painter.drawLine(MAx3+10, MAy3+11, MAx3+25, MAy3+11);
-    painter.drawLine(MAx3+13, MAy3, MAx3+13, MAy3+15);
-    painter.drawLine(MAx3+17, MAy3, MAx3+17, MAy3+15);
-    painter.drawLine(MAx3+21, MAy3, MAx3+21, MAy3+15);
+    Doc->PostPaintEvent (_Line, MAx3+10, MAy3+ 3, MAx3+25, MAy3+3); // erase old
+    Doc->PostPaintEvent (_Line, MAx3+10, MAy3+ 7, MAx3+25, MAy3+7);
+    Doc->PostPaintEvent (_Line, MAx3+10, MAy3+11, MAx3+25, MAy3+11);
+    Doc->PostPaintEvent (_Line, MAx3+13, MAy3, MAx3+13, MAy3+15);
+    Doc->PostPaintEvent (_Line, MAx3+17, MAy3, MAx3+17, MAy3+15);
+    Doc->PostPaintEvent (_Line, MAx3+21, MAy3, MAx3+21, MAy3+15);
   }
   drawn = true;
 
   MAx3  = Event->pos().x() - Doc->contentsX();
   MAy3  = Event->pos().y() - Doc->contentsY();
 
-  painter.drawLine(MAx3+10, MAy3+ 3, MAx3+25, MAy3+3); // paint new
-  painter.drawLine(MAx3+10, MAy3+ 7, MAx3+25, MAy3+7);
-  painter.drawLine(MAx3+10, MAy3+11, MAx3+25, MAy3+11);
-  painter.drawLine(MAx3+13, MAy3, MAx3+13, MAy3+15);
-  painter.drawLine(MAx3+17, MAy3, MAx3+17, MAy3+15);
-  painter.drawLine(MAx3+21, MAy3, MAx3+21, MAy3+15);
+  Doc->PostPaintEvent (_Line, MAx3+10, MAy3+ 3, MAx3+25, MAy3+3); // paint new
+  Doc->PostPaintEvent (_Line, MAx3+10, MAy3+ 7, MAx3+25, MAy3+7);
+  Doc->PostPaintEvent (_Line, MAx3+10, MAy3+11, MAx3+25, MAy3+11);
+  Doc->PostPaintEvent (_Line, MAx3+13, MAy3, MAx3+13, MAy3+15);
+  Doc->PostPaintEvent (_Line, MAx3+17, MAy3, MAx3+17, MAy3+15);
+  Doc->PostPaintEvent (_Line, MAx3+21, MAy3, MAx3+21, MAy3+15);
 }
 
 // -----------------------------------------------------------
 // Paints symbol beside the mouse to show the "move component text" modus.
 void MouseActions::MMoveMoveTextB(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
-  painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+  //QPainter painter(Doc->viewport());
+  Doc->PostPaintEvent (_NotRop, 0,0,0,0);
   if(drawn) {
-    painter.drawLine(MAx3+14, MAy3   , MAx3+16, MAy3); // erase old
-    painter.drawLine(MAx3+23, MAy3   , MAx3+25, MAy3);
-    painter.drawLine(MAx3+13, MAy3   , MAx3+13, MAy3+ 3);
-    painter.drawLine(MAx3+13, MAy3+ 7, MAx3+13, MAy3+10);
-    painter.drawLine(MAx3+14, MAy3+10, MAx3+16, MAy3+10);
-    painter.drawLine(MAx3+23, MAy3+10, MAx3+25, MAy3+10);
-    painter.drawLine(MAx3+26, MAy3   , MAx3+26, MAy3+ 3);
-    painter.drawLine(MAx3+26, MAy3+ 7, MAx3+26, MAy3+10);
+    Doc->PostPaintEvent (_Line, MAx3+14, MAy3   , MAx3+16, MAy3); // erase old
+    Doc->PostPaintEvent (_Line, MAx3+23, MAy3   , MAx3+25, MAy3);
+    Doc->PostPaintEvent (_Line, MAx3+13, MAy3   , MAx3+13, MAy3+ 3);
+    Doc->PostPaintEvent (_Line, MAx3+13, MAy3+ 7, MAx3+13, MAy3+10);
+    Doc->PostPaintEvent (_Line, MAx3+14, MAy3+10, MAx3+16, MAy3+10);
+    Doc->PostPaintEvent (_Line, MAx3+23, MAy3+10, MAx3+25, MAy3+10);
+    Doc->PostPaintEvent (_Line, MAx3+26, MAy3   , MAx3+26, MAy3+ 3);
+    Doc->PostPaintEvent (_Line, MAx3+26, MAy3+ 7, MAx3+26, MAy3+10);
   }
   drawn = true;
 
   MAx3 = Event->pos().x() - Doc->contentsX();
   MAy3 = Event->pos().y() - Doc->contentsY();
 
-  painter.drawLine(MAx3+14, MAy3   , MAx3+16, MAy3); // paint new
-  painter.drawLine(MAx3+23, MAy3   , MAx3+25, MAy3);
-  painter.drawLine(MAx3+13, MAy3   , MAx3+13, MAy3+ 3);
-  painter.drawLine(MAx3+13, MAy3+ 7, MAx3+13, MAy3+10);
-  painter.drawLine(MAx3+14, MAy3+10, MAx3+16, MAy3+10);
-  painter.drawLine(MAx3+23, MAy3+10, MAx3+25, MAy3+10);
-  painter.drawLine(MAx3+26, MAy3   , MAx3+26, MAy3+ 3);
-  painter.drawLine(MAx3+26, MAy3+ 7, MAx3+26, MAy3+10);
+  Doc->PostPaintEvent (_Line, MAx3+14, MAy3   , MAx3+16, MAy3); // paint new
+  Doc->PostPaintEvent (_Line, MAx3+23, MAy3   , MAx3+25, MAy3);
+  Doc->PostPaintEvent (_Line, MAx3+13, MAy3   , MAx3+13, MAy3+ 3);
+  Doc->PostPaintEvent (_Line, MAx3+13, MAy3+ 7, MAx3+13, MAy3+10);
+  Doc->PostPaintEvent (_Line, MAx3+14, MAy3+10, MAx3+16, MAy3+10);
+  Doc->PostPaintEvent (_Line, MAx3+23, MAy3+10, MAx3+25, MAy3+10);
+  Doc->PostPaintEvent (_Line, MAx3+26, MAy3   , MAx3+26, MAy3+ 3);
+  Doc->PostPaintEvent (_Line, MAx3+26, MAy3+ 7, MAx3+26, MAy3+10);
 }
 
 // -----------------------------------------------------------
 void MouseActions::MMoveMoveText(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-  setPainter(Doc, &painter);
+  //QPainter painter(Doc->viewport());
+  //setPainter(Doc, &painter);
 
   if(drawn)
-    painter.drawRect(MAx1, MAy1, MAx2, MAy2); // erase old
+    Doc->PostPaintEvent (_Rect, MAx1, MAy1, MAx2, MAy2); // erase old
   drawn = true;
 
   int newX = DOC_X_POS(Event->pos().x());
@@ -775,29 +766,29 @@ void MouseActions::MMoveMoveText(Schematic *Doc, QMouseEvent *Event)
   MAx3  = newX;
   MAy3  = newY;
 
-  painter.drawRect(MAx1, MAy1, MAx2, MAy2); // paint new
+  Doc->PostPaintEvent (_Rect, MAx1, MAy1, MAx2, MAy2); // paint new
 }
 
 // -----------------------------------------------------------
 // Paints symbol beside the mouse to show the "Zoom in" modus.
 void MouseActions::MMoveZoomIn(Schematic *Doc, QMouseEvent *Event)
 {
-  QPainter painter(Doc->viewport());
-#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
-  painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+  //QPainter painter(Doc->viewport());
+  Doc->PostPaintEvent (_NotRop, 0,0,0,0);
   if(drawn) {
-    painter.drawLine(MAx3+14, MAy3   , MAx3+22, MAy3); // erase old
-    painter.drawLine(MAx3+18, MAy3-4 , MAx3+18, MAy3+4);
-    painter.drawEllipse(MAx3+12, MAy3-6, 13, 13);
+    Doc->PostPaintEvent (_Line, MAx3+14, MAy3   , MAx3+22, MAy3); // erase old
+    Doc->PostPaintEvent (_Line, MAx3+18, MAy3-4 , MAx3+18, MAy3+4);
+    Doc->PostPaintEvent (_Ellipse, MAx3+12, MAy3-6, 13, 13);
   }
   drawn = true;
 
   MAx3 = Event->pos().x() - Doc->contentsX();
   MAy3 = Event->pos().y() - Doc->contentsY();
 
-  painter.drawLine(MAx3+14, MAy3   , MAx3+22, MAy3);  // paint new
-  painter.drawLine(MAx3+18, MAy3-4 , MAx3+18, MAy3+4);
-  painter.drawEllipse(MAx3+12, MAy3-6, 13, 13);
+  Doc->PostPaintEvent (_Line, MAx3+14, MAy3   , MAx3+22, MAy3);  // paint new
+  Doc->PostPaintEvent (_Line, MAx3+18, MAy3-4 , MAx3+18, MAy3+4);
+  Doc->PostPaintEvent (_Ellipse, MAx3+12, MAy3-6, 13, 13);
+  Doc->viewport()->update();
 }
 
 
@@ -1231,8 +1222,8 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent*, float fX, float fY
 void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, float)
 {
   if(selElem == 0) return;
-  QPainter painter(Doc->viewport());
-  setPainter(Doc, &painter);
+  //QPainter painter(Doc->viewport());
+  //setPainter(Doc, &painter);
 
   
   int x1, y1, x2, y2, rot;
@@ -1263,9 +1254,9 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
       case Qt::RightButton :  // right mouse button rotates the component
 	if(Comp->Ports.count() == 0)
 	  break;  // do not rotate components without ports
-	Comp->paintScheme(&painter); // erase old component scheme
+	Comp->paintScheme(Doc); // erase old component scheme
 	Comp->rotate();
-	Comp->paintScheme(&painter); // paint new component scheme
+	Comp->paintScheme(Doc); // paint new component scheme
 	break;
 
       default: ;   // avoids compiler warnings
@@ -1295,7 +1286,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
 
     Doc->viewport()->repaint();
     Diag = Diag->newOne(); // the component is used, so create a new one
-    Diag->paintScheme(&painter);
+    Diag->paintScheme(Doc);
     selElem = Diag;
     return;
   }  // of "if(isDiagram)"
@@ -1320,13 +1311,12 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
 // Is called if starting point of wire is pressed
 void MouseActions::MPressWire1(Schematic *Doc, QMouseEvent*, float fX, float fY)
 {
-  QPainter painter(Doc->viewport());
-  painter.setPen(Qt::DotLine);
-#warning  painter.setRasterOp(Qt::NotROP);  // background should not be erased
-  painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+  //QPainter painter(Doc->viewport());
+  Doc->PostPaintEvent (_DotLine);
+  Doc->PostPaintEvent (_NotRop);
   if(drawn) {
-    painter.drawLine(0, MAy3, MAx2, MAy3); // erase old mouse cross
-    painter.drawLine(MAx3, 0, MAx3, MAy2);
+    Doc->PostPaintEvent (_Line, 0, MAy3, MAx2, MAy3); // erase old mouse cross
+    Doc->PostPaintEvent (_Line, MAx3, 0, MAx3, MAy2);
   }
   drawn = false;
 
@@ -1340,14 +1330,15 @@ void MouseActions::MPressWire1(Schematic *Doc, QMouseEvent*, float fX, float fY)
   QucsMain->MousePressAction = &MouseActions::MPressWire2;
   // Double-click action is set in "MMoveWire2" to not initiate it
   // during "Wire1" actions.
+  Doc->viewport()->update();
 }
 
 // -----------------------------------------------------------
 // Is called if ending point of wire is pressed
 void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, float fY)
 {
-  QPainter painter(Doc->viewport());
-  setPainter(Doc, &painter);
+  //QPainter painter(Doc->viewport());
+  //setPainter(Doc, &painter);
 
   int set1 = 0, set2 = 0;
   switch(Event->button()) {
@@ -1392,12 +1383,12 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
 
   case Qt::RightButton :  // right mouse button changes the wire corner
     if(MAx1 == 0) {
-      painter.drawLine(MAx3, MAy3, MAx3, MAy2); // erase old
-      painter.drawLine(MAx3, MAy2, MAx2, MAy2); // erase old
+      Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3, MAy2); // erase old
+      Doc->PostPaintEvent (_Line, MAx3, MAy2, MAx2, MAy2); // erase old
     }
     else {
-      painter.drawLine(MAx3, MAy3, MAx2, MAy3); // erase old
-      painter.drawLine(MAx2, MAy3, MAx2, MAy2); // erase old
+      Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx2, MAy3); // erase old
+      Doc->PostPaintEvent (_Line, MAx2, MAy3, MAx2, MAy2); // erase old
     }
 
     MAx2  = int(fX);
@@ -1406,17 +1397,18 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
 
     MAx1 ^= 1;    // change the painting direction of wire corner
     if(MAx1 == 0) {
-      painter.drawLine(MAx3, MAy3, MAx3, MAy2); // paint
-      painter.drawLine(MAx3, MAy2, MAx2, MAy2); // paint
+      Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3, MAy2); // paint
+      Doc->PostPaintEvent (_Line, MAx3, MAy2, MAx2, MAy2); // paint
     }
     else {
-      painter.drawLine(MAx3, MAy3, MAx2, MAy3); // paint
-      painter.drawLine(MAx2, MAy3, MAx2, MAy2); // paint
+      Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx2, MAy3); // paint
+      Doc->PostPaintEvent (_Line, MAx2, MAy3, MAx2, MAy2); // paint
     }
     break;
 
   default: ;    // avoids compiler warnings
   }
+  Doc->viewport()->update();
 }
 
 // -----------------------------------------------------------
@@ -1640,7 +1632,7 @@ void MouseActions::MReleaseResizePainting(Schematic *Doc, QMouseEvent *Event)
 }
 
 // -----------------------------------------------------------
-void MouseActions::paintElementsScheme(QPainter *p)
+void MouseActions::paintElementsScheme(Schematic *p)
 {
   Element *pe;
   for(pe = movingElements.first(); pe != 0; pe = movingElements.next())
@@ -1705,7 +1697,7 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
 {
   int x1, y1, x2, y2, rot;
   QFileInfo Info(Doc->DocName);
-  QPainter painter(Doc->viewport());
+  //QPainter painter(Doc->viewport());
 
   Element *pe;
   switch(Event->button()) {
@@ -1764,16 +1756,16 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
 
   // ............................................................
   case Qt::RightButton :  // right button rotates the elements
-    setPainter(Doc, &painter);
+    //setPainter(Doc, &painter);
 
     if(drawn) // erase old scheme
-      paintElementsScheme(&painter);      
+      paintElementsScheme(Doc);      
     drawn = true;
 
     x1 = DOC_X_POS(Event->pos().x());
     y1 = DOC_Y_POS(Event->pos().y());
     rotateElements(Doc,x1,y1);
-    paintElementsScheme(&painter);      
+    paintElementsScheme(Doc);      
     // save rotation
     movingRotated++;
     movingRotated &= 3;

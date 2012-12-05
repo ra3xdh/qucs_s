@@ -21,10 +21,11 @@
 #include <qpen.h>
 #include <qbrush.h>
 
+
 class Node;
 class QPainter;
 class WireLabel;
-
+class Schematic;
 
 struct Line {
   Line(int _x1, int _y1, int _x2, int _y2, QPen _style)
@@ -121,7 +122,7 @@ public:
   Element();
   virtual ~Element();
 
-  virtual void paintScheme(QPainter*);
+  virtual void paintScheme(Schematic*);
   virtual void setCenter(int, int, bool relative=false);
   virtual void getCenter(int&, int&);
 

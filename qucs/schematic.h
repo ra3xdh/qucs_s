@@ -51,8 +51,8 @@ struct DigSignal {
   QString Type; // type of signal
 };
 typedef QMap<QString, DigSignal> DigMap;
-typedef enum {_NotRop, _Rect, _Line, _Ellips, _Arc}PE;
-typedef struct {PE pe; int x1; int y1;int x2;int y2;}PostedPaintEvent;
+typedef enum {_NotRop, _Rect, _Line, _Ellipse, _Arc, _DotLine, _Translate, _Scale}PE;
+typedef struct {PE pe; int x1; int y1;int x2;int y2;int a; int b;}PostedPaintEvent;
 
 // subcircuit, vhdl, etc. file structure
 struct SubFile {
@@ -75,7 +75,7 @@ public:
   void setChanged(bool, bool fillStack=false, char Op='*');
   void paintGrid(ViewPainter*, int, int, int, int);
   void print(QPrinter*, QPainter*, bool, bool);
-  void PostPaintEvent(PE pe, int&, int&, int&, int&);
+  void PostPaintEvent(PE pe, int x1=0, int y1=0, int x2=0, int y2=0, int a=0, int b=0);
 
   float textCorr();
   void  sizeOfAll(int&, int&, int&, int&);

@@ -468,21 +468,42 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
       Painter.drawText(pn->Name, x, y);
     }
   }
-  for(int i=0;i<PostedPaintEvents.size();i++)
+  
+  /*
+   * The following events used to be drawn from mouseactions.cpp, but since Qt4
+   * Paint actions can only be called from within the paint event, so they
+   * are put into a QList (PostedPaintEvents) and processed here
+   */
+  for(int i=0;i<PostedPaintEvents.size();i++) 
   {
     PostedPaintEvent p = PostedPaintEvents[i];
+    QPainter painter2(viewport());
     switch(p.pe)
     {
       case _NotRop:
+        Painter.Painter->setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
         break;
       case _Rect: 
         Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
         break;
       case _Line:
+        Painter.drawLine(p.x1, p.y1, p.x2, p.y2);
         break;
-      case _Ellips:
+      case _Ellipse:
+        Painter.drawEllipse(p.x1, p.y1, p.x2, p.y2);
         break;
       case _Arc:
+        Painter.drawArc(p.x1, p.y1, p.x2, p.y2, p.a, p.b);
+        break;
+      case _DotLine:
+        Painter.Painter->setPen(Qt::DotLine);
+        break;
+      case _Translate:
+        
+        painter2.translate(p.x1, p.y1);
+        break;
+      case _Scale:
+        painter2.scale(p.x1,p.y1);
         break;
     }
     
@@ -491,11 +512,12 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
   
 }
 
-void Schematic::PostPaintEvent (PE pe, int& x1, int&y1, int& x2, int& y2)
+void Schematic::PostPaintEvent (PE pe, int x1, int y1, int x2, int y2, int a, int b)
 {
-  PostedPaintEvent p = {pe, x1,y1,x2,y2};
+  PostedPaintEvent p = {pe, x1,y1,x2,y2,a,b};
   PostedPaintEvents.push_back(p);
   viewport()->update();
+  update();
 }
 
 
@@ -2045,8 +2067,8 @@ void Schematic::contentsDragLeaveEvent(QDragLeaveEvent*)
       if(App->view->drawn) {
 
         QPainter painter(viewport());
-        App->view->setPainter(this, &painter);
-        ((Component*)App->view->selElem)->paintScheme(&painter);
+        App->view->setPainter(this);
+        ((Component*)App->view->selElem)->paintScheme(this);
         App->view->drawn = false;
       }
 

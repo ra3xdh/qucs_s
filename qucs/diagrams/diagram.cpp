@@ -38,6 +38,7 @@
 #include "qucs.h"
 #include "main.h"
 #include "mnemo.h"
+#include "schematic.h"
 
 #include "rect3ddiagram.h"
 
@@ -164,9 +165,9 @@ void Diagram::paint(ViewPainter *p)
 }
 
 // ------------------------------------------------------------
-void Diagram::paintScheme(QPainter *p)
+void Diagram::paintScheme(Schematic *p)
 {
-  p->drawRect(cx, cy-y2, x2, y2);
+  p->PostPaintEvent(_Rect, cx, cy-y2, x2, y2);
 }
 
 // ------------------------------------------------------------
