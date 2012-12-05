@@ -441,7 +441,7 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
     }
     else pe->setCenter(MAx1, MAy1, true);
 
-#warning pe->paintScheme(&painter);
+  pe->paintScheme(Doc);
   }
 
   drawn = true;
