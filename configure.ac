@@ -202,13 +202,14 @@ for path in $paths; do
   LIBS="$LIBS $X11_LIBS $QT_LIB"
   LDFLAGS="$LDFLAGS $X11_LDFLAGS -L$path $QT_LDF"
   CXXFLAGS="$CXXFLAGS $X11_INCLUDES $QT_INCLUDES $QT_INC"
-  AC_LINK_IFELSE(
-    [#include <Qt/qapplication.h>
-     int main (int argc, char ** argv) {
-     QApplication a (argc, argv); a.exec (); return 0; }],
-    [QT_LDFLAGS="$path";
-     QT_INCLUDES="$QT_INCLUDES $QT_INC";
-     break;])
+#  AC_LINK_IFELSE(
+#    [#include <Qt/qapplication.h>
+#     int main (int argc, char ** argv) {
+#     QApplication a (argc, argv); a.exec (); return 0; }],
+#    [
+	QT_LDFLAGS="$path";
+    QT_INCLUDES="$QT_INCLUDES $QT_INC";
+    break;#])
   LIBS="$save_LIBS"
   LDFLAGS="$save_LDFLAGS"
   CXXFLAGS="$save_CXXFLAGS"
