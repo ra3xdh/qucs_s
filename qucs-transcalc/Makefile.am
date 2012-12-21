@@ -48,7 +48,9 @@ noinst_LIBRARIES = libtranscalc.a
 libtranscalc_a_SOURCES = microstrip.cpp transline.cpp coax.cpp \
 	rectwaveguide.cpp c_microstrip.cpp coplanar.cpp
 
-%.moc.cpp: %.h
+SUFFIXES = .moc.cpp
+
+.h.moc.cpp:
 	$(MOC) -o $@ $<
 
 CLEANFILES = *~

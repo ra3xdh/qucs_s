@@ -74,7 +74,9 @@ noinst_HEADERS = $(MOCHEADERS) \
        qf_settings.h\
        qf_zigzag.h
 
-%.moc.cpp: %.h
+SUFFIXES = .moc.cpp
+
+.h.moc.cpp:
 	$(MOC) -o $@ $<
 
 CLEANFILES = *~

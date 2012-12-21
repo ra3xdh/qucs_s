@@ -63,7 +63,9 @@ GENTRANSLATIONS = qtgeneric_untranslated.ts qtgeneric_de.ts qtgeneric_fr.ts \
   qtgeneric_ca.ts qtgeneric_ar.ts qtgeneric_kk.ts
 TRANSFILES = $(TRANSLATIONS:.ts=.qm)
 
-qucs_%.ts: $(qucs_SOURCES)
+SUFFIXES = .qm .ts .moc.cpp
+
+qucs_.ts: $(qucs_SOURCES)
 	@echo "Updating translations...";
 	@list='$(TRANSLATIONS)'; for file in $$list; do \
 	  $(LUPDATE) `$(PATHXFORM) $(srcdir)/*.cpp $(srcdir)/paintings/*.cpp \
@@ -75,7 +77,7 @@ qucs_%.ts: $(qucs_SOURCES)
 	  -ts $(srcdir)/$$file; \
 	done
 
-%.qm: %.ts
+.ts.qm:
 	@qucsfile=$<; \
 	genfile=`echo $< | sed -e 's/qucs_\(..\)\.ts/qtgeneric_\1\.ts/'`; \
 	ts_file=`echo $< | sed -e 's/\(.*\)qucs_\(..\)\.ts/tmp_\2\.ts/'`; \
@@ -100,7 +102,7 @@ EXTRA_DIST = $(TRANSLATIONS) $(GENTRANSLATIONS) README.translations \
 
 all-local: $(TRANSLATIONS) $(TRANSFILES)
 
-%.moc.cpp: %.h
+.h.moc.cpp:
 	$(MOC) -o $@ $<
 
 CLEANFILES = *~ *.rej *.orig

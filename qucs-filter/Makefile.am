@@ -41,7 +41,9 @@ qucsfilter_LDADD = $(X11_LIBS) $(QT_LIBS)
 noinst_HEADERS = $(MOCHEADERS) lc_filter.h qf_poly.h qf_filter.h qf_cauer.h \
   qf_matrix.h
 
-%.moc.cpp: %.h
+SUFFIXES = .moc.cpp
+
+.h.moc.cpp:
 	$(MOC) -o $@ $<
 
 CLEANFILES = *~

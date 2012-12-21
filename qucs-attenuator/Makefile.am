@@ -42,7 +42,9 @@ qucsattenuator_LDADD = $(X11_LIBS) $(QT_LIBS)
 
 noinst_HEADERS = $(MOCHEADERS) attenuatorfunc.h
 
-%.moc.cpp: %.h
+SUFFIXES = .moc.cpp
+
+.h.moc.cpp:
 	$(MOC) -o $@ $<
 
 CLEANFILES = *~

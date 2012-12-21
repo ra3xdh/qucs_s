@@ -41,7 +41,9 @@ qucshelp_LDADD = $(X11_LIBS) $(QT_LIBS)
 
 noinst_HEADERS = htmldatafetcher.h $(MOCHEADERS)
 
-%.moc.cpp: %.h
+SUFFIXES = .moc.cpp
+
+.h.moc.cpp:
 	$(MOC) -o $@ $<
 
 CLEANFILES = *~
