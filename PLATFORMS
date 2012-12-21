@@ -9,6 +9,7 @@ x86_64-mandriva-linux-gnu	gcc 4.3.2	Qt 3.3.8b	0.0.14	ok
 x86_64-unknown-linux-gnu	gcc 3.3.4	Qt 3.3.3	0.0.4	ok
 x86_64-pc-linux-gnu		gcc 3.4.3	Qt 3.3.4	0.0.5	ok
 x86_64-unknown-freebsd6.1	gcc 3.4.4	Qt 3.3.6	0.0.9	ok
+x86_64-apple-darwin12.2.0 	gcc 4.2.1 	Qt 4.8.3 	0.0.17 	ok
 i686-pc-cygwin			gcc 2.95.3-10	Qt 3.2.3	0.0.2	ok
 i386-pc-mingw32			gcc 3.4.5	Qt 3.3.5	0.0.9	ok
 i386-pc-solaris2.11		gcc 3.4.3	Qt 3.3.4	0.0.12	ok
