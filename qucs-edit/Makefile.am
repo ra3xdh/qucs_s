@@ -33,7 +33,7 @@ qucsedit_SOURCES = main.cpp qucsedit.cpp
 
 nodist_qucsedit_SOURCES = $(MOCFILES)
 
-INCLUDES = $(X11_INCLUDES) $(QT_INCLUDES)
+AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES)
 qucsedit_LDFLAGS = $(X11_LDFLAGS) $(QT_LDFLAGS)
 qucsedit_LDADD = $(X11_LIBS) $(QT_LIBS)
 

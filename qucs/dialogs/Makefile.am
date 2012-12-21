@@ -43,7 +43,7 @@ nodist_libdialogs_a_SOURCES = $(MOCFILES)
 
 noinst_HEADERS = newprojdialog.h vtabglobal.h $(MOCHEADERS)
 
-INCLUDES = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
+AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
 %.moc.cpp: %.h
 	$(MOC) -o $@ $<

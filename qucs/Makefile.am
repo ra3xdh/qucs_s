@@ -42,7 +42,7 @@ qucs_SOURCES = node.cpp element.cpp qucsdoc.cpp wire.cpp mouseactions.cpp   \
 
 nodist_qucs_SOURCES = $(MOCFILES)
 
-INCLUDES = $(X11_INCLUDES) $(QT_INCLUDES)
+AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES)
 qucs_LDFLAGS = $(X11_LDFLAGS) $(QT_LDFLAGS)
 qucs_LDADD = components/libcomponents.a diagrams/libdiagrams.a \
   paintings/libpaintings.a dialogs/libdialogs.a \

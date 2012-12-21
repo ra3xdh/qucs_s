@@ -50,7 +50,7 @@ qucsfilter_SOURCES = qf_api.cpp\
 
 nodist_qucsfilter_SOURCES = $(MOCFILES)
 
-INCLUDES = $(X11_INCLUDES) $(QT_INCLUDES)
+AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES)
 qucsfilter_LDFLAGS = $(X11_LDFLAGS) $(QT_LDFLAGS)
 qucsfilter_LDADD = $(X11_LIBS) $(QT_LIBS)
 

@@ -88,7 +88,7 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
   vafile.h hicumL2V2p24.h hicumL0V1p2g.h hybrid.h ctline.h tunneldiode.h      \
   hicumL0V1p3.h
 
-INCLUDES = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
+AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
 %.moc.cpp: %.h
 	$(MOC) -o $@ $<

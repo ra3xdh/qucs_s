@@ -38,7 +38,7 @@ noinst_HEADERS = $(MOCHEADERS) diagram.h graph.h polardiagram.h rectdiagram.h \
   smithdiagram.h tabdiagram.h diagrams.h marker.h psdiagram.h rect3ddiagram.h \
   curvediagram.h timingdiagram.h truthdiagram.h
 
-INCLUDES = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
+AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
 %.moc.cpp: %.h
 	$(MOC) -o $@ $<
