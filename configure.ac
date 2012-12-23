@@ -161,7 +161,7 @@ case $host_os in
        fi])
     if test "$enable_mt" = yes; then
       QT_LDF=""
-      QT_LIB="-lQtCore -lQtGui -lQt3Support"
+      QT_LIB="-lQtCore -lQtGui -lQtXml -lQt3Support"
       QT_INC="$QT_DEF -DQT3_SUPPORT -DQT_THREAD_SUPPORT -D_REENTRANT"
       [case $host_os in
         *freebsd4*) QT_LIB="$QT_LIB -pthread" ;;
@@ -171,13 +171,13 @@ case $host_os in
       QT_MTS="multi-threaded"
     else
       QT_LDF=""
-      QT_LIB="-lQtCore -lQtGui -lQt3Support"
+      QT_LIB="-lQtCore -lQtGui -lQtXml -lQt3Support"
       QT_INC="$QT_DEF"
       QT_MTS="non-threaded"
     fi
     case $host_os in
       *mingw*)
-      QT_LIB="$QT_LIB  -lQtCore -lQtGui -lQt3Support"
+      QT_LIB="$QT_LIB  -lQtCore -lQtGui -lQtXml -lQt3Support"
       QT_INC="$QT_INC -DQT_DLL -DUNICODE"
       QT_LDF="$QT_LDF -mwindows"
       ;;
