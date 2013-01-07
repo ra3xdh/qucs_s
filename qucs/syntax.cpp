@@ -49,7 +49,7 @@ int SyntaxHighlighter::highlightParagraph(const QString& text, int state)
 {
   QChar c;
   bool isFloat=false;
-  int  iString=-1, iWord=-1, iNumber=-1, iExpo=-1, i=0, iComment=-1;
+  int  iString=-1, iWord=-1, iNumber=-1, iExpo=-1, iComment=-1;
   QFont font = Doc->TextFont;
   font.setPointSize((int)Doc->Scale);
   setFormat(0, text.length(), font, Qt::black);
@@ -58,8 +58,10 @@ int SyntaxHighlighter::highlightParagraph(const QString& text, int state)
     state = STATE_NONE;
   if (state >= STATE_COMMENT)
     iComment = 0;
-
-  for(c = text.at(i); !c.isNull(); c = text.at(++i)) {
+  for(int i=0; i<text.size(); i++){
+	c = text.at(i);
+		
+  //for(c = text.at(i); !c.isNull(); c = text.at(++i)) {
     // ----- current text is a comment ---------------------------
     if (iComment >= 0) {
       setFormat (iComment, i-iComment+1, QucsSettings.Comment);

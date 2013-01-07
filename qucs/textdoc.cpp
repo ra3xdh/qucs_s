@@ -69,8 +69,7 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QucsDoc(App_, Name_)
     else
       App->DocumentTab->addTab(this, QPixmap(empty_xpm),
                             Info.fileName());
-    // calls indirectly "becomeCurrent"
-    App->DocumentTab->setCurrentPage(App->DocumentTab->indexOf(this));
+	App->DocumentTab->setCurrentPage(App->DocumentTab->indexOf(this));
     viewport()->setFocus();
 
     setWordWrap(Q3TextEdit::NoWrap);

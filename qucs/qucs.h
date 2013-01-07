@@ -96,6 +96,7 @@ public slots:
   void slotFileSaveAs();  // save a document under a different filename
   void slotFileSaveAll(); // save all open documents
   void slotFileClose();   // close the actual file
+  void slotFileClose (int); // close the file with given index
   void slotSymbolEdit();  // edit the symbol for the schematic
   void slotFileSettings();// open dialog to change file settings
   void slotFilePrint();   // print the current file
@@ -204,6 +205,7 @@ private:
   void changeSchematicSymbolMode(Schematic*);
   bool deleteDirectoryContent(QDir& Dir);
   bool isTextDocument(QWidget *);
+  void closeFile(int);
 
 
 /* **************************************************

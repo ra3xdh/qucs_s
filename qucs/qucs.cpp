@@ -88,7 +88,6 @@
 #include "dialogs/vtabwidget.h"
 #include "dialogs/vtabbeddockwidget.h"
 #include "octave_window.h"
-
 extern const char *empty_xpm[];
 
 QDir QucsWorkDir;  // current project path
@@ -226,8 +225,15 @@ void QucsApp::initView()
 
   DocumentTab = new QTabWidget(this);
   setCentralWidget(DocumentTab);
+
   connect(DocumentTab,
           SIGNAL(currentChanged(QWidget*)), SLOT(slotChangeView(QWidget*)));
+
+  // Give every tab a close button, and connect the button's signal to
+  // slotFileClose
+  DocumentTab->setTabsClosable(true);
+  connect(DocumentTab,
+          SIGNAL(tabCloseRequested(int)), SLOT(slotFileClose(int)));
 
   dock = new VTabbedDockWidget(Q3DockWindow::InDock, this);
   TabView = new VTabWidget(VTabInterface::TabLeft,dock);  // tabs on the left side
@@ -1272,29 +1278,48 @@ void QucsApp::slotFileSaveAll()
 }
 
 // --------------------------------------------------------------
+// Close the currently active file tab
 void QucsApp::slotFileClose()
 {
-  statusBar()->message(tr("Closing file..."));
-  editText->setHidden(true); // disable text edit of component property
+    // Using file index -1 closes the currently active file window
+    closeFile(-1);
+}
 
-  QucsDoc *Doc = getDoc();
-  if(Doc->DocChanged) {
-    switch(QMessageBox::warning(this,tr("Closing Qucs document"),
-      tr("The document contains unsaved changes!\n")+
-      tr("Do you want to save the changes before closing?"),
-      tr("&Save"), tr("&Discard"), tr("Cancel"), 0, 2)) {
-      case 0 : slotFileSave();
-               break;
-      case 2 : return;
+// --------------------------------------------------------------
+// Close the file tab specified by its index
+void QucsApp::slotFileClose(int index)
+{
+    // Call closeFile with a specific tab index
+    closeFile(index);
+}
+
+// --------------------------------------------------------------
+// Common function to close a file tab specified by its index
+// checking for changes in the file before doing so. If called
+// index == -1, the active document will be closed
+void QucsApp::closeFile(int index)
+{
+    statusBar()->message(tr("Closing file..."));
+    editText->setHidden(true); // disable text edit of component property
+
+    QucsDoc *Doc = getDoc(index);
+    if(Doc->DocChanged) {
+      switch(QMessageBox::warning(this,tr("Closing Qucs document"),
+        tr("The document contains unsaved changes!\n")+
+        tr("Do you want to save the changes before closing?"),
+        tr("&Save"), tr("&Discard"), tr("Cancel"), 0, 2)) {
+        case 0 : slotFileSave();
+                 break;
+        case 2 : return;
+      }
     }
-  }
 
-  delete Doc;
+    delete Doc;
 
-  if(DocumentTab->count() < 1)  // if no document left, create an untitled
-    new Schematic(this, "");
+    if(DocumentTab->count() < 1)  // if no document left, create an untitled
+      new Schematic(this, "");
 
-  statusBar()->message(tr("Ready."));
+    statusBar()->message(tr("Ready."));
 }
 
 
@@ -2102,7 +2127,7 @@ void QucsApp::changeSchematicSymbolMode(Schematic *Doc)
 
 // ---------------------------------------------------------
 bool QucsApp::isTextDocument(QWidget *w) {
-  if (w->inherits("QTextEdit"))
+  if (w->inherits("Q3TextEdit"))
     return true;
   return false;
 }
