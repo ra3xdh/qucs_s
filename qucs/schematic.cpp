@@ -478,22 +478,38 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
   {
     PostedPaintEvent p = PostedPaintEvents[i];
     QPainter painter2(viewport());
+    
     switch(p.pe)
     {
       case _NotRop:
-        Painter.Painter->setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+        if(p.PaintOnViewport)
+          painter2.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+        else
+          Painter.Painter->setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
         break;
       case _Rect: 
-        Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
+        if(p.PaintOnViewport)
+          painter2.drawRect(p.x1, p.y1, p.x2, p.y2);
+        else
+          Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
         break;
       case _Line:
-        Painter.drawLine(p.x1, p.y1, p.x2, p.y2);
+        if(p.PaintOnViewport)
+          painter2.drawLine(p.x1, p.y1, p.x2, p.y2);
+        else
+          Painter.drawLine(p.x1, p.y1, p.x2, p.y2);
         break;
       case _Ellipse:
-        Painter.drawEllipse(p.x1, p.y1, p.x2, p.y2);
+        if(p.PaintOnViewport)
+          painter2.drawEllipse(p.x1, p.y1, p.x2, p.y2);
+        else
+          Painter.drawEllipse(p.x1, p.y1, p.x2, p.y2);
         break;
       case _Arc:
-        Painter.drawArc(p.x1, p.y1, p.x2, p.y2, p.a, p.b);
+        if(p.PaintOnViewport)
+          painter2.drawArc(p.x1, p.y1, p.x2, p.y2, p.a, p.b);
+        else
+          Painter.drawArc(p.x1, p.y1, p.x2, p.y2, p.a, p.b);
         break;
       case _DotLine:
         Painter.Painter->setPen(Qt::DotLine);
@@ -512,9 +528,9 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
   
 }
 
-void Schematic::PostPaintEvent (PE pe, int x1, int y1, int x2, int y2, int a, int b)
+void Schematic::PostPaintEvent (PE pe, int x1, int y1, int x2, int y2, int a, int b, bool PaintOnViewport)
 {
-  PostedPaintEvent p = {pe, x1,y1,x2,y2,a,b};
+  PostedPaintEvent p = {pe, x1,y1,x2,y2,a,b,PaintOnViewport};
   PostedPaintEvents.push_back(p);
   viewport()->update();
   update();

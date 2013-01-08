@@ -99,15 +99,26 @@ function dataSet = loadQucsDataSet(dataSetFile)
             end
         else
             if idata > 0
-                [val,cnt] = sscanf(line,'%f');
-                if cnt ~= 1
-                    fprintf(1,'Invalid data in data set %s\n',dataSetFile);
-                    error = 1;
-                    break;
+                % check if number is complex
+                jloc = strfind(line, 'j');
+                if isempty(jloc)
+                    [val,cnt] = sscanf(line,'%f');
+                    if cnt ~= 1
+                        error('QUCS:laoddataset:badnum','Invalid data in data set %s\n', dataSetFile);
+                    end
+                else
+                    line(jloc) = line(jloc-1);
+                    line(jloc-1) = ' ';
+                    [val,cnt] = sscanf(line,'%f');
+                    if cnt ~= 2
+                        error('QUCS:laoddataset:badnum', 'Invalid data in data set %s\n', dataSetFile);
+                    end
+                    val = complex(val(1), val(2));
                 end
-                if idata > length(dataSet(idx).data)
-                    dataSet(idx).data = [dataSet(idx).data zeros(1,10000)];
-                end
+                
+%                 if idata > length(dataSet(idx).data)
+%                     dataSet(idx).data = [dataSet(idx).data zeros(1,10000)];
+%                 end
                 dataSet(idx).data(idata) = val;
                 idata = idata + 1;
             end
