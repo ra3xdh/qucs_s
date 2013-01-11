@@ -31,19 +31,33 @@
 
 
 mySpinBox::mySpinBox(int Min, int Max, int Step, double *Val, QWidget *Parent)
-          : QSpinBox(Min, Max, Step, Parent)
+          : QSpinBox(Parent)
 {
+  setMinimum(Min);
+  setMaximum(Max);
+  setSingleStep(Step); 
   Values = Val;
+  ValueSize = Max;
   //editor()->
-		setReadOnly(true);
+	//	setReadOnly(true);
 }
 
-QString mySpinBox::mapValueToText(int Val)
+
+#include <iostream>
+using namespace std;
+QString mySpinBox::textFromValue(int Val)
 {
+  cout<<"Values + Val"<<*(Values+Val)<<endl;
   return QString::number(*(Values+Val));
 }
 
-
+QValidator::State mySpinBox::validate ( QString & text, int & pos ) const
+{
+  if(pos>ValueSize)return QValidator::Invalid; 
+  if(QString::number(*(Values+pos))==text)
+  return QValidator::Acceptable;
+  else return QValidator::Invalid;
+}
 
 
 SweepDialog::SweepDialog(Schematic *Doc_)
@@ -75,11 +89,18 @@ SweepDialog::SweepDialog(Schematic *Doc_)
 
   DataX *pD;
   mySpinBox *Box;
+  
   for(pD = pGraph->cPointsX.first(); pD!=0; pD = pGraph->cPointsX.next()) {
     all->addWidget(new QLabel(pD->Var, this), i,0);
-
+  //cout<<"count: "<<pD->count-1<<", points: "<<*pD->Points<<endl;
+    //works only for linear:
+    /*double Min = pD->Points[0];
+    double Max = pD->Points[pD->count-1];
+    double Step = (Max-Min)/(pD->count);
+    cout<<"Min: "<<Min<<", Max: "<<Max<<", Step: "<<Step<<endl;
+    Box = new mySpinBox(Min, Max, Step, pD->Points, this);*/
     Box = new mySpinBox(0, pD->count-1, 1, pD->Points, this);
-    Box->setValue(0);  // call "mapValueToText()"
+    Box->setValue(0);  
     all->addWidget(Box, i++,1);
     connect(Box, SIGNAL(valueChanged(int)), SLOT(slotNewValue(int)));
     BoxList.append(Box);
@@ -90,6 +111,7 @@ SweepDialog::SweepDialog(Schematic *Doc_)
   QPushButton *ButtClose = new QPushButton(tr("Close"), this);
   all->addMultiCellWidget(ButtClose, i+1,i+1, 0,1);
   connect(ButtClose, SIGNAL(clicked()), SLOT(accept()));
+  show();
 }
 
 SweepDialog::~SweepDialog()
@@ -104,7 +126,6 @@ SweepDialog::~SweepDialog()
 void SweepDialog::slotNewValue(int)
 {
   DataX *pD = pGraph->cPointsX.first();
-
   int Factor = 1, Index = 0;
   for(mySpinBox *pb = BoxList.first(); pb!=0; pb = BoxList.next()) {
     Index  += pb->value() * Factor;

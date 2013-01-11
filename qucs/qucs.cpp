@@ -1777,7 +1777,7 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
     sim->slotClose();   // close and delete simulation window
     if(w) {  // schematic still open ?
       SweepDialog *Dia = new SweepDialog((Schematic*)sim->DocWidget);
-      Dia->show();
+      
     }
   }
   else {

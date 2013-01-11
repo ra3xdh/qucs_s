@@ -38,10 +38,12 @@ public:
   mySpinBox(int, int, int, double*, QWidget*);
 
 protected:
-  QString mapValueToText(int);
+  QString textFromValue(int);
+  QValidator::State validate ( QString & text, int & pos ) const;
 
 private:
   double *Values;
+  int ValueSize;
 };
 
 
