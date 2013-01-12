@@ -35,7 +35,7 @@ if test $USE_MAINTAINER_MODE = yes; then
 fi
 if test "$enable_debug" = yes; then
   AC_DEFINE(DEBUG, 1, [Define if debug output should be supported.])
-  QT_DEF=""
+  QT_DEF="-DQT_DEBUG"
 else
   AC_DEFINE(NDEBUG, 1, [Define if debug code should be suppressed.])
   QT_DEF="-DQT_NO_DEBUG"
@@ -50,6 +50,13 @@ else
   fi
 fi
 unset enable_debug
+
+dnl Check for Linux
+case $host_os in
+  *linux*) LINUX=yes ;;
+  *)       LINUX=no  ;;
+esac
+AM_CONDITIONAL(COND_LINUX, test x$LINUX = xyes)
 
 dnl Check for Win32.
 case $host_os in
@@ -114,7 +121,7 @@ if test "$MOC" = ":"; then
 fi
 
 dnl Check for X11
-if test x$WIN32 != "xyes" | x$MACOSX != "xyes"; then
+if test x$LINUX == "xyes"; then
   AC_PATH_XTRA
   X11_INCLUDES="$X_CFLAGS"
   X11_LDFLAGS=""
@@ -237,7 +244,7 @@ case $host_os in
 
     AC_LANG(C++)
     QT_LDFLAGS="$LDFLAGS"
-    CXXFLAGS="$CXXFLAGS $QT_CFLAGS $QT_INCLUDES "
+    CXXFLAGS="$CXXFLAGS $QT_CFLAGS $QT_INCLUDES $QT_DEF"
     ;;
 esac
 
