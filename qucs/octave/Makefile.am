@@ -5,6 +5,7 @@
 # Automake input file.
 #
 # Copyright (C) 2011 Stefan Jahn <stefan@lkcc.org>
+# Copyright (C) 2013 Mike Brinson mbrin72043@yahoo.co.uk
 #
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +25,8 @@
 
 # basic scripts
 BASICS = getQucsVariable.m loadQucsDataSet.m showQucsDataSet.m \
-	loadQucsVariable.m
+	loadQucsVariable.m plotCartesian2D.m plotCartesian2D2V.m\
+        plotFFT.m plotFFT2V.m plotTimeFFT.m
 
 EXTRA_DIST = $(BASICS)
 
