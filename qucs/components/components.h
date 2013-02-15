@@ -152,6 +152,7 @@
 #include "hicumL0V1p3.h"
 #include "hicumL2V2p23.h"
 #include "hicumL2V2p24.h"
+#include "hicumL2V2p31n.h" 
 #include "photodiode.h"
 #include "phototransistor.h"
 #include "nigbt.h"
