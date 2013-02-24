@@ -18,27 +18,25 @@
 #ifndef DISPLAYDIALOG_H
 #define DISPLAYDIALOG_H
 
-#include <qdialog.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QDialog>
+#include <QVBoxLayout>
 
-class Q3TextEdit;
-class Q3VBoxLayout;
+class QTextEdit;
+class QVBoxLayout;
 
 
 class DisplayDialog : public QDialog  {
    Q_OBJECT
 public:
-  DisplayDialog(QWidget *parent = 0, bool helper = true);
+  DisplayDialog(QWidget *parent = 0, QString Text="", QString VHDLText="", QString VerilogText="");
  ~DisplayDialog();
-
-  Q3TextEdit *Text, *VHDLText, *VerilogText;
 
 private slots:
   void slotClose();
 
 private:
-  Q3VBoxLayout *vLayout;
+  QVBoxLayout *vLayout;
+  QTextEdit *QText, *QVHDLText, *QVerilogText;
 };
 
 #endif

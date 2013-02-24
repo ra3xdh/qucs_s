@@ -37,6 +37,8 @@
 #include <QRegExp>
 #include <QCloseEvent>
 #include <QPixmap>
+#include <QModelIndex>
+
 
 #include "qucslib.h"
 #include "librarydialog.h"
@@ -230,11 +232,9 @@ void QucsLib::slotManageLib()
 // ----------------------------------------------------
 void QucsLib::slotHelp()
 {
-  DisplayDialog *d = new DisplayDialog(this);
-  d->setCaption(tr("QucsLib Help"));
-  d->resize(250, 325);
-  d->Text->setText(
-     tr("QucsLib is a program to manage Qucs component libraries. "
+  QMessageBox helpBox;
+  helpBox.setWindowTitle(tr("QucsLib Help"));
+  helpBox.setText(tr("QucsLib is a program to manage Qucs component libraries. "
 	"On the left side of the application window the available "
 	"libraries can be browsed to find the wanted component. "
 	"By clicking on the component name its description can be "
@@ -245,7 +245,7 @@ void QucsLib::slotHelp()
 	" (paste from clipboard).") + "\n" +
      tr("A more comfortable way: The component can also be placed "
         "onto the schematic by using Drag n'Drop."));
-  d->show();
+  helpBox.exec();
 }
 
 // ----------------------------------------------------
@@ -264,15 +264,9 @@ void QucsLib::slotCopyToClipBoard()
 // ----------------------------------------------------
 void QucsLib::slotShowModel()
 {
-  DisplayDialog *d = new DisplayDialog(this, false);
+  DisplayDialog *d = new DisplayDialog(this, Symbol->ModelString, Symbol->VHDLModelString, Symbol->VerilogModelString);
   d->setCaption(tr("Model"));
   d->resize(500, 150);
-  d->Text->setText(Symbol->ModelString);
-  d->Text->setWordWrap(Q3TextEdit::NoWrap);
-  d->VHDLText->setText(Symbol->VHDLModelString);
-  d->VHDLText->setWordWrap(Q3TextEdit::NoWrap);
-  d->VerilogText->setText(Symbol->VerilogModelString);
-  d->VerilogText->setWordWrap(Q3TextEdit::NoWrap);
   d->show();
 }
 
@@ -349,8 +343,8 @@ void QucsLib::slotSelectLibrary(int Index)
     Start = End;
   }
 
-  //CompList->setSelected(0, true);  // select first item
-  CompList->setCurrentRow(0);//, true);  // select first item
+  CompList->setCurrentRow(0); // select first item
+  slotShowComponent(CompList->item(0)); // and make the corresponding component info appear as well...
 }
 
 // ----------------------------------------------------

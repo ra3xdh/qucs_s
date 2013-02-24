@@ -21,61 +21,87 @@
 
 #include "displaydialog.h"
 
-#include <qlayout.h>
-#include <q3hbox.h>
-#include <qpushbutton.h>
-#include <q3textedit.h>
-#include <q3vgroupbox.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+//#include <qlayout.h>
+#include <QPushButton>
+#include <QTextEdit>
+#include <QGroupBox>
+#include <QVBoxLayout>
 
 
-DisplayDialog::DisplayDialog(QWidget *parent, bool helper)
+
+DisplayDialog::DisplayDialog(QWidget *parent, QString Text, QString VHDLText, QString VerilogText)
                      : QDialog(parent, 0, false, Qt::WDestructiveClose)
 {
-  vLayout = new Q3VBoxLayout(this);
+  vLayout = new QVBoxLayout(this);
   vLayout->setMargin(3);
 
-  if(helper) {
-    Text = new Q3TextEdit(this);
-    Text->setTextFormat(Qt::PlainText);
-    Text->setReadOnly(true);
-    Text->setMinimumSize(200, 100);
-    vLayout->addWidget(Text);
-  }
-  else {
-    Q3VGroupBox *Analog = new Q3VGroupBox (tr("Analogue"), this);
-    Text = new Q3TextEdit(Analog);
-    Text->setTextFormat(Qt::PlainText);
-    Text->setReadOnly(true);
-    Text->setMinimumSize(200, 80);
-    vLayout->addWidget(Analog);
+  QGroupBox *Analog = new QGroupBox (tr("Analogue"), this);
+  QVBoxLayout *AnalogLayout = new QVBoxLayout();
+  
+  QText = new QTextEdit();
+  QText->setText(Text);
+  QText->setTextFormat(Qt::PlainText);
+  QText->setReadOnly(true);
+  QText->setMinimumSize(200, 80);
+  QText->setLineWrapMode(QTextEdit::NoWrap);
+  
+  AnalogLayout->addWidget(QText);
+  Analog->setLayout(AnalogLayout);
+  
+  vLayout->addWidget(Analog);
 
-    Q3VGroupBox *VHDL = new Q3VGroupBox (tr("VHDL"), this);
-    VHDLText = new Q3TextEdit(VHDL);
-    VHDLText->setTextFormat(Qt::PlainText);
-    VHDLText->setReadOnly(true);
-    VHDLText->setMinimumSize(200, 80);
-    vLayout->addWidget(VHDL);
+  QGroupBox *VHDL = new QGroupBox (tr("VHDL"), this);
+  QVBoxLayout *VHDLLayout = new QVBoxLayout();
+  
+  QVHDLText = new QTextEdit(VHDL);
+  QVHDLText->setText(VHDLText);
+  QVHDLText->setTextFormat(Qt::PlainText);
+  QVHDLText->setReadOnly(true);
+  QVHDLText->setMinimumSize(200, 80);
+  QVHDLText->setLineWrapMode(QTextEdit::NoWrap);
 
-    Q3VGroupBox *Verilog = new Q3VGroupBox (tr("Verilog"), this);
-    VerilogText = new Q3TextEdit(Verilog);
-    VerilogText->setTextFormat(Qt::PlainText);
-    VerilogText->setReadOnly(true);
-    VerilogText->setMinimumSize(200, 80);
-    vLayout->addWidget(Verilog);
-  }
+  VHDLLayout->addWidget(QVHDLText);
+  VHDL->setLayout(VHDLLayout);
 
-  Q3HBox *h = new Q3HBox(this);
-  vLayout->addWidget(h);
+  vLayout->addWidget(VHDL);
 
-  h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
+  QGroupBox *Verilog = new QGroupBox (tr("Verilog"), this);
+  QVBoxLayout *VerilogLayout = new QVBoxLayout();
+  
+  QVerilogText = new QTextEdit(Verilog);
+  QVerilogText->setText(VerilogText);
+  QVerilogText->setTextFormat(Qt::PlainText);
+  QVerilogText->setReadOnly(true);
+  QVerilogText->setMinimumSize(200, 80);
+  QVerilogText->setLineWrapMode(QTextEdit::NoWrap);
 
-  QPushButton *ButtonClose = new QPushButton(tr("Close"), h);
+  VerilogLayout->addWidget(QVerilogText);
+  Verilog->setLayout(VerilogLayout);
+
+  vLayout->addWidget(Verilog);
+
+
+  QWidget *h = new QWidget(this);
+  //h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
+  QHBoxLayout *hLayout = new QHBoxLayout();
+  
+  QPushButton *ButtonClose = new QPushButton(tr("Close"));
   connect(ButtonClose, SIGNAL(clicked()), SLOT(slotClose()));
   ButtonClose->setFocus();
+  
+  QWidget *dummy1 = new QWidget();
+  hLayout->addWidget(dummy1);
 
-  h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
+  hLayout->addWidget(ButtonClose);
+
+  QWidget *dummy2 = new QWidget();
+  hLayout->addWidget(dummy2);
+  hLayout->setStretchFactor(dummy1, 5);
+  hLayout->setStretchFactor(dummy2, 5);
+  h->setLayout(hLayout);
+
+  vLayout->addWidget(h);
+
 }
 
 DisplayDialog::~DisplayDialog()
