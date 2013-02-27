@@ -18,18 +18,17 @@
 #ifndef SYMBOLWIDGET_H
 #define SYMBOLWIDGET_H
 
-#include <qwidget.h>
-#include <qsize.h>
-#include <qpen.h>
-#include <qbrush.h>
-#include <qcolor.h>
-#include <qstring.h>
-#include <q3ptrlist.h>
-//Added by qt3to4:
+#include <QWidget>
+#include <QSize>
+#include <QPen>
+#include <QBrush>
+#include <QColor>
+#include <QString>
+#include <QList>
 #include <QMouseEvent>
 #include <QPaintEvent>
 
-class Q3DragObject;
+
 class QPaintEvent;
 class QSizePolicy;
 
@@ -97,15 +96,20 @@ private:
   bool getPen  (const QString&, QPen&, int);
   bool getBrush(const QString&, QBrush&, int);
 
-  Q3DragObject *myDragObject;
+  //Q3DragObject *myDragObject;
+
 
   QString PaintText, DragNDropText;
   int TextWidth, DragNDropWidth, TextHeight;
   int cx, cy, x1, x2, y1, y2;
-  Q3PtrList<Line>       Lines;
-  Q3PtrList<struct Arc> Arcs;
-  Q3PtrList<Area>       Rects, Ellips;
-  Q3PtrList<Text>       Texts;
+  QList<Line *> Lines;
+  QList<Arc *> Arcs;
+  QList<Area *> Rects, Ellips;
+  QList<Text *>  Texts;
+  //Q3PtrList<Line>       Lines;
+  //Q3PtrList<struct Arc> Arcs;
+  //Q3PtrList<Area>       Rects, Ellips;
+  //Q3PtrList<Text>       Texts;
 };
 
 #endif
