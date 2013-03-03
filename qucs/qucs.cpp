@@ -235,9 +235,10 @@ void QucsApp::initView()
   connect(DocumentTab,
           SIGNAL(tabCloseRequested(int)), SLOT(slotFileClose(int)));
 
-  dock = new VTabbedDockWidget(Q3DockWindow::InDock, this);
-  TabView = new VTabWidget(VTabInterface::TabLeft,dock);  // tabs on the left side
-  
+  //dock = new VTabbedDockWidget(Q3DockWindow::InDock, this);
+  dock = new QDockWidget(this);
+  //TabView = new VTabWidget(VTabInterface::TabLeft,dock);  // tabs on the left side
+  TabView = new QTabWidget(this);
   
   connect(dock, SIGNAL(visibilityChanged(bool)), SLOT(slotToggleDock(bool)));
 
@@ -264,9 +265,10 @@ void QucsApp::initView()
   connect(ProjDel, SIGNAL(clicked()), SLOT(slotProjDelButt()));
 
   Projects = new Q3ListBox(ProjGroup);
-  TabView->addPage(ProjGroup, tr("Projects"));
-  TabView->setTabToolTip(TabView->id(ProjGroup),
-			 tr("content of project directory"));
+  //TabView->addPage(ProjGroup, tr("Projects"));
+  //TabView->setTabToolTip(TabView->id(ProjGroup),
+	//		 tr("content of project directory"));
+  TabView->addTab(ProjGroup, tr("Projects"));
 
   connect(Projects, SIGNAL(doubleClicked(Q3ListBoxItem*)),
 		    SLOT(slotOpenProject(Q3ListBoxItem*)));
@@ -282,8 +284,9 @@ void QucsApp::initView()
   Content->setColumnWidth(0, 150);
 
   initContentListView();
-  TabView->addPage(Content,tr("Content"));
-  TabView->setTabToolTip(TabView->id(Content), tr("content of current project"));
+  //TabView->addPage(Content,tr("Content"));
+  //TabView->setTabToolTip(TabView->id(Content), tr("content of current project"));
+  TabView->addTab(Content,tr("Content"));
 
   connect(Content, SIGNAL(doubleClicked(Q3ListViewItem*)),
 		   SLOT(slotOpenContent(Q3ListViewItem*)));
@@ -297,18 +300,22 @@ void QucsApp::initView()
   Q3VBox *CompGroup  = new Q3VBox(this);
   CompChoose = new QComboBox(CompGroup);
   CompComps  = new myIconView(CompGroup);
-  TabView->addPage(CompGroup,tr("Components"));
-  TabView->setTabToolTip(TabView->id(CompGroup), tr("components and diagrams"));
+  //TabView->addPage(CompGroup,tr("Components"));
+  //TabView->setTabToolTip(TabView->id(CompGroup), tr("components and diagrams"));
+  TabView->addTab(CompGroup,tr("Components"));
   fillComboBox(true);
 
   slotSetCompView(0);
   connect(CompChoose, SIGNAL(activated(int)), SLOT(slotSetCompView(int)));
   connect(CompComps, SIGNAL(clicked(Q3IconViewItem*)),
 		     SLOT(slotSelectComponent(Q3IconViewItem*)));
+
   dock->setWidget(TabView);
-  setDockEnabled(dock,Qt::DockTop,false);
-  setDockEnabled(dock,Qt::DockBottom,false);
-  moveDockWindow(dock,Qt::DockLeft);
+  dock->setAllowedAreas(Qt::LeftDockWidgetArea);
+  this->addDockWidget(Qt::LeftDockWidgetArea, dock);
+  //setDockEnabled(dock,Qt::DockTop,false);
+  //setDockEnabled(dock,Qt::DockBottom,false);
+  //moveDockWindow(dock,Qt::DockLeft);
   TabView->setCurrentPage(0);
 
   // ----------------------------------------------------------
@@ -317,7 +324,7 @@ void QucsApp::initView()
   octDock->setCloseMode(Q3DockWindow::Always);
   connect(octDock, SIGNAL(visibilityChanged(bool)), SLOT(slotToggleOctave(bool)));
   octave = new OctaveWindow(octDock);
-  moveDockWindow(octDock, Qt::DockBottom);
+  //moveDockWindow(octDock, Qt::DockBottom);
 
   // ............................................
   readProjects(); // reads all projects and inserts them into the ListBox
