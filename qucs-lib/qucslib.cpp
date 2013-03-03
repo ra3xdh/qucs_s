@@ -37,8 +37,8 @@
 #include <QRegExp>
 #include <QCloseEvent>
 #include <QPixmap>
-#include <QModelIndex>
-
+//#include <QModelIndex>
+#include <QBrush>
 
 #include "qucslib.h"
 #include "librarydialog.h"
@@ -58,12 +58,12 @@ QucsLib::QucsLib()
 
   // create file menu
   QMenu * fileMenu = new QMenu();
-  QAction * manageLib =
-    new QAction (tr("Manage User &Libraries..."), Qt::CTRL+Qt::Key_M, this,"");
-  manageLib->addTo (fileMenu);
-  connect(manageLib, SIGNAL(activated()), SLOT(slotManageLib()));
+  //QAction * manageLib =
+  //  new QAction (tr("Manage User &Libraries..."), Qt::CTRL+Qt::Key_M, this,"");
+  //manageLib->addTo (fileMenu);
+  //connect(manageLib, SIGNAL(activated()), SLOT(slotManageLib()));
 
-  fileMenu->insertSeparator();
+  //fileMenu->insertSeparator();
 
   QAction * fileQuit =
     new QAction (tr("&Quit"), Qt::CTRL+Qt::Key_Q, this,"");
@@ -173,15 +173,20 @@ void QucsLib::putLibrariesIntoCombobox()
     LibFiles = UserLibDir.entryList("*.lib", QDir::Files, QDir::Name);
     UserLibCount = LibFiles.count();
 
-    for(it = LibFiles.begin(); it != LibFiles.end(); it++)
-      Library->insertItem((*it).left((*it).length()-4));
+    for(it = LibFiles.begin(); it != LibFiles.end(); it++) {
+      Library->insertItem(QPixmap(QucsSettings.BitmapDir + "home.png"), (*it).left((*it).length()-4));
+    }
   }
+
+
+  // add a separator to distinguish between user libraries and system libs
+  Library->insertSeparator(LibFiles.size());
 
   QDir LibDir(QucsSettings.LibDir);
   LibFiles = LibDir.entryList("*.lib", QDir::Files, QDir::Name);
 
   for(it = LibFiles.begin(); it != LibFiles.end(); it++)
-    Library->insertItem((*it).left((*it).length()-4));
+    Library->insertItem(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"), (*it).left((*it).length()-4));
 
   slotSelectLibrary(0);
 }
@@ -223,12 +228,13 @@ void QucsLib::closeEvent(QCloseEvent *Event)
 }
 
 // ----------------------------------------------------
+/*
 void QucsLib::slotManageLib()
 {
   (new LibraryDialog(this))->exec();
   putLibrariesIntoCombobox();
 }
-
+*/
 // ----------------------------------------------------
 void QucsLib::slotHelp()
 {
