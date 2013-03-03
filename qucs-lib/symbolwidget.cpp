@@ -74,7 +74,7 @@ QString SymbolWidget::theModel()
 // ************************************************************
 void SymbolWidget::mouseMoveEvent(QMouseEvent*)
 {
-  // TODO: Is this all??
+
   QDrag *drag = new QDrag(this);
   QMimeData *mimeData = new QMimeData;
 
@@ -82,8 +82,7 @@ void SymbolWidget::mouseMoveEvent(QMouseEvent*)
   drag->setMimeData(mimeData);
   drag->setPixmap( QPixmap(empty_xpm));
   drag->setHotSpot(QPoint(drag->pixmap().width()/2,drag->pixmap().height()));
-
-  
+  drag->exec();
 
 }
 
