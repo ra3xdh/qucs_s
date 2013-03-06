@@ -2059,7 +2059,8 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
 
     // drag component from listview
     if(Event->provides("application/x-qiconlist")) {
-      Q3IconViewItem *Item = App->CompComps->currentItem();
+      //Q3IconViewItem *Item = App->CompComps->currentItem();
+      QListWidgetItem *Item = App->CompComps->currentItem();
       if(Item) {
         formerAction = App->activeAction;
         App->slotSelectComponent(Item);  // also sets drawn=false

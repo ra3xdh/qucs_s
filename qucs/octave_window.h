@@ -12,6 +12,7 @@
 //Added by qt3to4:
 #include <QKeyEvent>
 #include <Q3VBoxLayout>
+#include <QDockWidget>
 
 class QLineEdit;
 class Q3TextEdit;
@@ -22,7 +23,7 @@ class Q3DockWindow;
 class OctaveWindow : public QWidget {
   Q_OBJECT
 public:
-  OctaveWindow(Q3DockWindow*);
+  OctaveWindow(QDockWidget*);
  ~OctaveWindow();
 
   QSize sizeHint();

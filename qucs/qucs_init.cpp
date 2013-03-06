@@ -38,6 +38,7 @@
 #include "octave_window.h"
 
 
+/*
 QAction* Q3Action(QString a,QIcon b, QString c,unsigned int d, QObject* e)
 {
 	QAction* action=new QAction(b,c,e);
@@ -51,7 +52,7 @@ QAction* Q3Action(QString a, QString c, unsigned int d, QObject* e)
 	action->setShortcut((Qt::ShortcutContext)d);
 	return action;
 }
-
+*/
 
 
 

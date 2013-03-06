@@ -19,6 +19,7 @@
 # include <config.h>
 #endif
 #include <QtGui>
+#include <QDebug>
 #include <limits.h>
 
 #include <q3accel.h>
@@ -255,26 +256,37 @@ void QucsApp::initView()
 
   // ----------------------------------------------------------
   // "Project Tab" of the left QTabWidget
-  Q3VBox *ProjGroup = new Q3VBox(this);
-  Q3HBox *ProjButts = new Q3HBox(ProjGroup);
-  QPushButton *ProjNew   = new QPushButton(tr("New"),ProjButts);
+  QWidget *ProjGroup = new QWidget();
+  QVBoxLayout *ProjGroupLayout = new QVBoxLayout();
+  QWidget *ProjButts = new QWidget();
+  QPushButton *ProjNew = new QPushButton(tr("New"));
   connect(ProjNew, SIGNAL(clicked()), SLOT(slotProjNewButt()));
-  QPushButton *ProjOpen  = new QPushButton(tr("Open"),ProjButts);
+  QPushButton *ProjOpen = new QPushButton(tr("Open"));
   connect(ProjOpen, SIGNAL(clicked()), SLOT(slotProjOpenButt()));
-  QPushButton *ProjDel   = new QPushButton(tr("Delete"),ProjButts);
+  QPushButton *ProjDel = new QPushButton(tr("Delete"));
   connect(ProjDel, SIGNAL(clicked()), SLOT(slotProjDelButt()));
 
-  Projects = new Q3ListBox(ProjGroup);
-  //TabView->addPage(ProjGroup, tr("Projects"));
-  //TabView->setTabToolTip(TabView->id(ProjGroup),
-	//		 tr("content of project directory"));
-  TabView->addTab(ProjGroup, tr("Projects"));
+  QHBoxLayout *ProjButtsLayout = new QHBoxLayout();
+  ProjButtsLayout->addWidget(ProjNew);
+  ProjButtsLayout->addWidget(ProjOpen);
+  ProjButtsLayout->addWidget(ProjDel);
+  ProjButts->setLayout(ProjButtsLayout);
 
-  connect(Projects, SIGNAL(doubleClicked(Q3ListBoxItem*)),
-		    SLOT(slotOpenProject(Q3ListBoxItem*)));
+  ProjGroupLayout->addWidget(ProjButts);
+
+  Projects = new QListWidget();
+
+  ProjGroupLayout->addWidget(Projects);
+  ProjGroup->setLayout(ProjGroupLayout);
+
+  TabView->addTab(ProjGroup, tr("Projects"));
+  TabView->setTabToolTip(TabView->indexOf(ProjGroup), tr("content of project directory"));
+
+  connect(Projects, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(slotOpenProject(QListWidgetItem*)));
 
   // ----------------------------------------------------------
   // "Content Tab" of the left QTabWidget
+  // TODO: This should become a QTreeView
   Content = new Q3ListView(this);
   Content->setRootIsDecorated(true); // open/close decoration for root items
   Content->setSorting(-1);    // no sorting
@@ -284,9 +296,9 @@ void QucsApp::initView()
   Content->setColumnWidth(0, 150);
 
   initContentListView();
-  //TabView->addPage(Content,tr("Content"));
-  //TabView->setTabToolTip(TabView->id(Content), tr("content of current project"));
+
   TabView->addTab(Content,tr("Content"));
+  TabView->setTabToolTip(TabView->indexOf(Content), tr("content of current project"));
 
   connect(Content, SIGNAL(doubleClicked(Q3ListViewItem*)),
 		   SLOT(slotOpenContent(Q3ListViewItem*)));
@@ -297,35 +309,41 @@ void QucsApp::initView()
 
   // ----------------------------------------------------------
   // "Component Tab" of the left QTabWidget
-  Q3VBox *CompGroup  = new Q3VBox(this);
-  CompChoose = new QComboBox(CompGroup);
-  CompComps  = new myIconView(CompGroup);
-  //TabView->addPage(CompGroup,tr("Components"));
-  //TabView->setTabToolTip(TabView->id(CompGroup), tr("components and diagrams"));
+  QWidget *CompGroup  = new QWidget();
+  QVBoxLayout *CompGroupLayout = new QVBoxLayout();
+
+  CompChoose = new QComboBox(this);
+  CompComps = new QListWidget(this);
+  CompComps->setViewMode(QListView::IconMode);
+
+  CompGroupLayout->addWidget(CompChoose);
+  CompGroupLayout->addWidget(CompComps);
+  CompGroup->setLayout(CompGroupLayout);
+
   TabView->addTab(CompGroup,tr("Components"));
+  TabView->setTabToolTip(TabView->indexOf(CompGroup), tr("components and diagrams"));
   fillComboBox(true);
 
   slotSetCompView(0);
   connect(CompChoose, SIGNAL(activated(int)), SLOT(slotSetCompView(int)));
-  connect(CompComps, SIGNAL(clicked(Q3IconViewItem*)),
-		     SLOT(slotSelectComponent(Q3IconViewItem*)));
+  connect(CompComps, SIGNAL(itemActivated(QListWidgetItem*)), SLOT(slotSelectComponent(QListWidgetItem*)));
 
   dock->setWidget(TabView);
   dock->setAllowedAreas(Qt::LeftDockWidgetArea);
   this->addDockWidget(Qt::LeftDockWidgetArea, dock);
-  //setDockEnabled(dock,Qt::DockTop,false);
-  //setDockEnabled(dock,Qt::DockBottom,false);
-  //moveDockWindow(dock,Qt::DockLeft);
   TabView->setCurrentPage(0);
 
   // ----------------------------------------------------------
   // Octave docking window
-  octDock = new Q3DockWindow(Q3DockWindow::InDock, this);
-  octDock->setCloseMode(Q3DockWindow::Always);
+  //octDock = new Q3DockWindow(Q3DockWindow::InDock, this);
+  //octDock->setCloseMode(Q3DockWindow::Always);
+  octDock = new QDockWidget();
+  
   connect(octDock, SIGNAL(visibilityChanged(bool)), SLOT(slotToggleOctave(bool)));
   octave = new OctaveWindow(octDock);
-  //moveDockWindow(octDock, Qt::DockBottom);
-
+  this->addDockWidget(Qt::BottomDockWidgetArea, octDock);
+  this->setCorner(Qt::BottomLeftCorner  , Qt::LeftDockWidgetArea);
+  //| Qt::BottomRightCorner
   // ............................................
   readProjects(); // reads all projects and inserts them into the ListBox
 }
@@ -405,15 +423,15 @@ void QucsApp::slotSetCompView (int index)
   for (Mod = Comps.first(); Mod; Mod = Comps.next ()) {
     if (Mod->info) {
       *(Mod->info) (Name, File, false);
-      new Q3IconViewItem (CompComps,CompComps->currentItem(), Name,
-		QPixmap (QucsSettings.BitmapDir + QString (File) + ".png"));
+      QListWidgetItem *item = new QListWidgetItem(QPixmap(QucsSettings.BitmapDir + QString (File) + ".png"), Name);
+      CompComps->addItem(item);
     }
   }
 }
 
 // ------------------------------------------------------------------
 // Is called when the mouse is clicked within the Component QIconView.
-void QucsApp::slotSelectComponent(Q3IconViewItem *item)
+void QucsApp::slotSelectComponent(QListWidgetItem *item)
 {
   editText->setHidden(true); // disable text edit of component property
 
@@ -444,7 +462,7 @@ void QucsApp::slotSelectComponent(Q3IconViewItem *item)
   MouseDoubleClickAction = 0;
 
   pInfoFunc Infos = 0;
-  int i = CompComps->index (item);
+  int i = CompComps->row(item);
   Q3PtrList<Module> Comps;
   if((CompChoose->currentItem()+1) >= CompChoose->count())
     // the only one in "symbol-painting" mode
@@ -684,7 +702,7 @@ void QucsApp::readProjects()
   for(it = PrDirs.begin(); it != PrDirs.end(); it++)
      if ((*it).right(4) == "_prj") {  // project directories end with "_prj"
        (*it) = (*it).left((*it).length()-4); // remove "_prj" from name
-       Projects->insertItem(*it);
+       Projects->addItem(*it);
      }
 }
 
@@ -699,9 +717,9 @@ void QucsApp::slotProjNewButt()
 
   QDir projDir(QucsHomeDir.path());
   if(projDir.mkdir(d->ProjName->text()+"_prj")) {
-    Projects->insertItem(d->ProjName->text(),0);  // at first position
+    Projects->insertItem(0, d->ProjName->text());  // at first position
     if(d->OpenProj->isChecked())
-      slotOpenProject(Projects->firstItem());
+      slotOpenProject(Projects->item(0));
   }
   else QMessageBox::information(this, tr("Info"),
                     tr("Cannot create project directory !"));
@@ -883,7 +901,7 @@ void QucsApp::slotProjOpenButt()
 {
   editText->setHidden(true); // disable text edit of component property
 
-  Q3ListBoxItem *item = Projects->selectedItem();
+  QListWidgetItem *item = Projects->currentItem();
   if(item) slotOpenProject(item);
   else QMessageBox::information(this, tr("Info"),
 				tr("No project is selected !"));
@@ -891,7 +909,7 @@ void QucsApp::slotProjOpenButt()
 
 // ----------------------------------------------------------
 // Is called when project is double-clicked to open it.
-void QucsApp::slotOpenProject(Q3ListBoxItem *item)
+void QucsApp::slotOpenProject(QListWidgetItem *item)
 {
   openProject(QucsHomeDir.filePath(item->text()+"_prj"), item->text());
 }
@@ -1006,7 +1024,7 @@ void QucsApp::slotMenuDelProject()
 // Is called, when "Delete Project" button is pressed.
 void QucsApp::slotProjDelButt()
 {
-  Q3ListBoxItem *item = Projects->selectedItem();
+  QListWidgetItem *item = Projects->currentItem();
   if(!item) {
     QMessageBox::information(this, tr("Info"),
 			     tr("No project is selected !"));
@@ -1015,7 +1033,7 @@ void QucsApp::slotProjDelButt()
 
   if(!deleteProject(QucsHomeDir.filePath(item->text()+"_prj"),
 	item->text()))  return;
-  Projects->removeItem(Projects->currentItem());  // remove from project list
+  Projects->takeItem(Projects->currentRow());  // remove from project list
 }
 
 

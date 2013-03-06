@@ -20,7 +20,7 @@
 
 extern QDir QucsWorkDir;  // current project path
 
-OctaveWindow::OctaveWindow(Q3DockWindow *parent_): QWidget(parent_, 0)
+OctaveWindow::OctaveWindow(QDockWidget *parent_): QWidget(parent_, 0)
 {
   QFont font;
   font = QFont("Courier New");
@@ -46,8 +46,8 @@ OctaveWindow::OctaveWindow(Q3DockWindow *parent_): QWidget(parent_, 0)
 
   setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   parent_->setWidget(this);
-  parent_->setResizeEnabled(true);
-  parent_->setHorizontallyStretchable(true);
+  //parent_->setResizeEnabled(true);
+  //parent_->setHorizontallyStretchable(true);
 
   histIterator = cmdHistory.end();
 }

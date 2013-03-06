@@ -18,6 +18,7 @@
 #ifndef QUCS_H
 #define QUCS_H
 
+#include <QtGui>
 #include <q3mainwindow.h>
 #include <QMainWindow>
 #include <qstring.h>
@@ -35,6 +36,7 @@
 #include <QAction>
 #include <QTabWidget>
 #include <QDockWidget>
+//#include <QListWidget>
 
 class QucsDoc;
 class Schematic;
@@ -120,7 +122,7 @@ public slots:
   void slotZoomOut(); // Zoom out by 2
 
   void slotToPage();
-  void slotSelectComponent(Q3IconViewItem*);
+  void slotSelectComponent(QListWidgetItem*);
 
   void slotEditElement();
   void slotPowerMatching();
@@ -135,7 +137,7 @@ public slots:
 
 private slots:
   void slotMenuOpenProject();
-  void slotOpenProject(Q3ListBoxItem*);
+  void slotOpenProject(QListWidgetItem*);
   void slotMenuCloseProject();
   void slotSelectSubcircuit(Q3ListViewItem*);
   void slotExpandContentList(Q3ListViewItem*);
@@ -159,7 +161,8 @@ signals:
 public:
   MouseActions *view;
   QTabWidget *DocumentTab;
-  Q3IconView  *CompComps;
+  //Q3IconView  *CompComps;
+  QListWidget *CompComps;
 
   // menu appearing by right mouse button click on content listview
   Q3PopupMenu *ContentMenu;
@@ -180,10 +183,11 @@ private:
   QDockWidget *dock;
   //VTabWidget    *TabView;
   QTabWidget *TabView;
-  Q3DockWindow   *octDock;
+  //Q3DockWindow   *octDock;
+  QDockWidget *octDock;
   OctaveWindow  *octave;
 
-  Q3ListBox      *Projects;
+  QListWidget      *Projects;
   Q3ListView     *Content;
   Q3ListViewItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
                 *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
