@@ -37,10 +37,9 @@
 #include <q3button.h>
 //Added by qt3to4:
 #include <Q3VBoxLayout>
+#include <QDebug>
 
-
-LibraryDialog::LibraryDialog(QWidget *App_)
-			: QDialog(App_, 0, TRUE, Qt::WDestructiveClose)
+LibraryDialog::LibraryDialog(QWidget *App_) : QDialog(App_, 0, TRUE, Qt::WDestructiveClose)
 {
   setCaption(tr("Manage User Libraries"));
 
@@ -86,8 +85,16 @@ LibraryDialog::LibraryDialog(QWidget *App_)
   previousLib = 0;
   QStringList::iterator it;
   // inserts all project directories
-  for(it = LibFiles.begin(); it != LibFiles.end(); it++)
+  qDebug() << "Starting";
+  for(it = LibFiles.begin(); it != LibFiles.end(); it++) {
+    qDebug() << *it;
     toggleGroup->insert(new QRadioButton((*it).left((*it).length()-4), Dia_Box));
+  }
+
+  //for(int i=0; i<LibFiles.size(); i++) {
+  //  toggleGroup->insert(new QRadioButton(LibFiles.at(i)), Dia_Box);
+  //}
+
 
   QColor theColor;
   QAbstractButton *rButton = toggleGroup->find(0);

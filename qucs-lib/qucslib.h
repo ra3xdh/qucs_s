@@ -18,22 +18,18 @@
 #ifndef QUCSLIB_H
 #define QUCSLIB_H
 
-#include <qdialog.h>
-#include <qdir.h>
-#include <qfont.h>
-#include <qstring.h>
-#include <qstringlist.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QDialog>
+#include <QDir>
+#include <QFont>
+#include <QString>
+#include <QStringList>
+#include <QTextEdit>
 #include <QCloseEvent>
+#include <QListWidgetItem>
+#include <QVBoxLayout>
+#include <QComboBox>
 
-class SymbolWidget;
-class Q3TextEdit;
-class QComboBox;
-class Q3ListBox;
-class Q3VGroupBox;
-class Q3VBoxLayout;
-class Q3ListBoxItem;
+#include "symbolwidget.h"
 
 
 // Application settings.
@@ -55,7 +51,7 @@ public:
   QucsLib();
  ~QucsLib();
 
-  Q3ListBox     *CompList;
+  QListWidget     *CompList;
   QStringList   LibraryComps;
   QComboBox    *Library;
   QString       DefaultSymbol;
@@ -68,8 +64,8 @@ private slots:
   void slotShowModel();
   void slotSelectLibrary(int);
   void slotSearchComponent();
-  void slotShowComponent(Q3ListBoxItem*);
-  void slotManageLib();
+  void slotShowComponent(QListWidgetItem*);
+  //void slotManageLib();
 
 private:
   void closeEvent(QCloseEvent*);
@@ -78,8 +74,8 @@ private:
 
   int UserLibCount;
   SymbolWidget *Symbol;
-  Q3TextEdit    *CompDescr;
-  Q3VBoxLayout  *all;
+  QTextEdit    *CompDescr;
+  QVBoxLayout  *all;
 
   QDir QucsHomeDir;  // Qucs user directory where all projects are located
 };

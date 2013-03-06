@@ -19,21 +19,20 @@
 # include <config.h>
 #endif
 
+#include <QGroupBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QPushButton>
+#include <QLabel>
+#include <QLineEdit>
+#include <QDir>
+#include <QFile>
+#include <QTextStream>
+
+
 #include "searchdialog.h"
 #include "qucslib.h"
 
-#include <qlayout.h>
-#include <q3hbox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qdir.h>
-#include <qfile.h>
-#include <q3listbox.h>
-#include <qcombobox.h>
-//Added by qt3to4:
-#include <Q3TextStream>
-#include <Q3VBoxLayout>
 
 
 SearchDialog::SearchDialog(QucsLib *parent)
@@ -41,7 +40,7 @@ SearchDialog::SearchDialog(QucsLib *parent)
 {
   ParentDialog = parent;
 
-  all = new Q3VBoxLayout(this);
+  all = new QVBoxLayout(this);
   all->setMargin(5);
   all->setSpacing(5);
 
@@ -50,25 +49,34 @@ SearchDialog::SearchDialog(QucsLib *parent)
                   "name contains the search string. All libraries\n"
                   "are included in the search."), this) );
 
-  Q3HBox *h1 = new Q3HBox(this);
-  all->addWidget(h1);
-
-  new QLabel(tr("Search string:"), h1);
-  SearchEdit = new QLineEdit(h1);
+  QLabel *SearchString = new QLabel(tr("Search string:"));
+  SearchEdit = new QLineEdit();
   connect(SearchEdit, SIGNAL(returnPressed()), SLOT(slotSearch()));
 
-  Q3HBox *h2 = new Q3HBox(this);
-  all->addWidget(h2);
+  QGroupBox *h1 = new QGroupBox(this);
+  QHBoxLayout *h1Layout = new QHBoxLayout();
+  h1Layout->addWidget(SearchString);
+  h1Layout->addWidget(SearchEdit);
+  h1->setLayout(h1Layout);
+  
 
-  h2->setStretchFactor(new QWidget(h2), 5); // stretchable placeholder
-
-  QPushButton *ButtonSearch = new QPushButton(tr("Search"), h2);
+  QPushButton *ButtonSearch = new QPushButton(tr("Search"));
   connect(ButtonSearch, SIGNAL(clicked()), SLOT(slotSearch()));
-  QPushButton *ButtonClose = new QPushButton(tr("Close"), h2);
+  QPushButton *ButtonClose = new QPushButton(tr("Close"));
   connect(ButtonClose, SIGNAL(clicked()), SLOT(slotClose()));
   ButtonSearch->setFocus();
 
   SearchEdit->setFocus();
+  
+  QGroupBox *h2 = new QGroupBox(this);
+  QHBoxLayout *h2Layout = new QHBoxLayout();
+  h2Layout->addWidget(ButtonSearch);
+  h2Layout->addWidget(ButtonClose);
+  h2->setLayout(h2Layout);
+  
+  all->addWidget(h1);
+  all->addWidget(h2);
+  
 }
 
 SearchDialog::~SearchDialog()
@@ -95,7 +103,7 @@ void SearchDialog::slotSearch()
   QStringList LibFiles = LibDir.entryList("*.lib", QDir::Files, QDir::Name);
 
   QFile File;
-  Q3TextStream ReadWhole;
+  QTextStream ReadWhole;
   QString LibraryString, LibName, CompName;
   QStringList::iterator it;
   int Start, End, NameStart, NameEnd;
@@ -133,7 +141,8 @@ void SearchDialog::slotSearch()
           ParentDialog->LibraryComps.clear();
         }
         findComponent = true;
-        ParentDialog->CompList->insertItem(CompName);
+        //ParentDialog->CompList->insertItem(CompName);
+	ParentDialog->CompList->addItem(CompName);
         ParentDialog->LibraryComps.append(
 			LibName+'\n'+LibraryString.mid(Start, End-Start));
       }

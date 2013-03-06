@@ -19,6 +19,7 @@
 #define QUCS_H
 
 #include <q3mainwindow.h>
+#include <QMainWindow>
 #include <qstring.h>
 #include <qdir.h>
 //Added by qt3to4:
@@ -29,6 +30,11 @@
 #include <QMouseEvent>
 #include <QCloseEvent>
 #include <Q3ScrollView>
+#include <QMenu>
+#include <QToolBar>
+#include <QAction>
+#include <QTabWidget>
+#include <QDockWidget>
 
 class QucsDoc;
 class Schematic;
@@ -61,7 +67,7 @@ extern QDir QucsWorkDir;
 extern QDir QucsHomeDir;
 
 
-class QucsApp : public Q3MainWindow {
+class QucsApp : public QMainWindow {
   Q_OBJECT
 public:
   QucsApp();
@@ -170,8 +176,10 @@ private:
   QPrinter  *Printer; // printer is global (to remember the user settings)
 
 // ********* Widgets on the main area **********************************
-  VTabbedDockWidget   *dock;
-  VTabWidget    *TabView;
+  //VTabbedDockWidget   *dock;
+  QDockWidget *dock;
+  //VTabWidget    *TabView;
+  QTabWidget *TabView;
   Q3DockWindow   *octDock;
   OctaveWindow  *octave;
 
@@ -238,10 +246,10 @@ private:
           *viewBrowseDock, *viewOctaveDock;
 
   // menus contain the items of their menubar
-  Q3PopupMenu *fileMenu, *editMenu, *insMenu, *projMenu, *simMenu, *viewMenu,
+  QMenu *fileMenu, *editMenu, *insMenu, *projMenu, *simMenu, *viewMenu,
              *helpMenu, *alignMenu, *toolMenu;
 
-  Q3ToolBar *fileToolbar, *editToolbar, *viewToolbar, *workToolbar;
+  QToolBar *fileToolbar, *editToolbar, *viewToolbar, *workToolbar;
 
   Q3Accel *mainAccel;     // to set more than one key to one action
   QLabel *WarningLabel, *PositionLabel;  // labels in status bar

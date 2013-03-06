@@ -20,12 +20,13 @@
 
 #include <qpainter.h>
 #include <q3dragobject.h>
-#include <q3textstream.h>
 //Added by qt3to4:
 #include <QPaintEvent>
 #include <QPixmap>
 #include <QMouseEvent>
 #include <QTextIStream>
+#include <QMimeData>
+#include <QDrag>
 
 #include "symbolwidget.h"
 #include "qucslib.h"
@@ -37,12 +38,6 @@ const char *empty_xpm[] = {  // for drag n'drop
 
 SymbolWidget::SymbolWidget(QWidget *parent) : QWidget(parent)
 {
-  myDragObject = 0;
-  Arcs.setAutoDelete(true);
-  Lines.setAutoDelete(true);
-  Rects.setAutoDelete(true);
-  Ellips.setAutoDelete(true);
-  Texts.setAutoDelete(true);
 
   Text_x = Text_y = 0;
   PaintText = tr("Symbol:");
@@ -79,9 +74,16 @@ QString SymbolWidget::theModel()
 // ************************************************************
 void SymbolWidget::mouseMoveEvent(QMouseEvent*)
 {
-  myDragObject = new Q3TextDrag("QucsComponent:"+theModel(), this);
-  myDragObject->setPixmap( QPixmap(empty_xpm), QPoint(0, 0) );
-  myDragObject->dragCopy();
+
+  QDrag *drag = new QDrag(this);
+  QMimeData *mimeData = new QMimeData;
+
+  mimeData->setText("QucsComponent:"+theModel());
+  drag->setMimeData(mimeData);
+  drag->setPixmap( QPixmap(empty_xpm));
+  drag->setHotSpot(QPoint(drag->pixmap().width()/2,drag->pixmap().height()));
+  drag->exec();
+
 }
 
 // ************************************************************
@@ -95,27 +97,30 @@ void SymbolWidget::paintEvent(QPaintEvent*)
   Painter.drawText(dx, y2-y1+2, 0, 0, Qt::AlignLeft | Qt::TextDontClip, DragNDropText);
 
   // paint all lines
-  for(Line *pl = Lines.first(); pl != 0; pl = Lines.next()) {
+  for(int i=0; i<Lines.size(); i++) {
+    Line *pl = Lines.at(i);
     Painter.setPen(pl->style);
     Painter.drawLine(cx+pl->x1, cy+pl->y1, cx+pl->x2, cy+pl->y2);
   }
 
   // paint all arcs
-  for(Arc *pc = Arcs.first(); pc != 0; pc = Arcs.next()) {
+  for(int i=0; i<Arcs.size(); i++) {
+    Arc *pc = Arcs.at(i);
     Painter.setPen(pc->style);
     Painter.drawArc(cx+pc->x, cy+pc->y, pc->w, pc->h, pc->angle, pc->arclen);
   }
 
   // paint all rectangles
-  Area *pa;
-  for(pa = Rects.first(); pa != 0; pa = Rects.next()) {
+  for(int i=0; i<Rects.size(); i++) {
+    Area *pa = Rects.at(i);
     Painter.setPen(pa->Pen);
     Painter.setBrush(pa->Brush);
     Painter.drawRect(cx+pa->x, cy+pa->y, pa->w, pa->h);
   }
 
   // paint all ellipses
-  for(pa = Ellips.first(); pa != 0; pa = Ellips.next()) {
+  for(int i=0; i<Ellips.size(); i++) {
+    Area *pa = Ellips.at(i);
     Painter.setPen(pa->Pen);
     Painter.setBrush(pa->Brush);
     Painter.drawEllipse(cx+pa->x, cy+pa->y, pa->w, pa->h);
@@ -125,7 +130,8 @@ void SymbolWidget::paintEvent(QPaintEvent*)
   QFont Font = Painter.font();   // save current font
   Font.setWeight(QFont::Light);
   // write all text
-  for(Text *pt = Texts.first(); pt != 0; pt = Texts.next()) {
+  for(int i=0; i<Texts.size(); i++) {
+    Text *pt = Texts.at(i);
     Font.setPointSizeFloat(pt->Size);
     Painter.setFont(Font);
     Painter.setPen(pt->Color);
