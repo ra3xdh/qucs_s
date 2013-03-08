@@ -165,7 +165,7 @@ public:
   QListWidget *CompComps;
 
   // menu appearing by right mouse button click on content listview
-  Q3PopupMenu *ContentMenu;
+  QMenu *ContentMenu;
 
   QAction *fileNew, *textNew, *fileNewDpl, *fileOpen, *fileSave, *fileSaveAs,
           *fileSaveAll, *fileClose, *fileSettings, *filePrint, *fileQuit,

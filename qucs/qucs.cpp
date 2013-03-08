@@ -484,11 +484,23 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
 
 void QucsApp::initCursorMenu()
 {
-  ContentMenu = new Q3PopupMenu(Content);
-  ContentMenu->insertItem(tr("Open"), this, SLOT(slotCMenuOpen()));
-  ContentMenu->insertItem(tr("Rename"), this, SLOT(slotCMenuRename()));
-  ContentMenu->insertItem(tr("Delete"), this, SLOT(slotCMenuDelete()));
-  ContentMenu->insertItem(tr("Delete Group"), this, SLOT(slotCMenuDelGroup()));
+  ContentMenu = new QMenu(this);//Q3PopupMenu(Content);
+
+  QAction *ActionCMenuOpen = new QAction(tr("Open"), this);
+  connect(ActionCMenuOpen, SIGNAL(triggered()), this, SLOT(slotCMenuOpen()));
+  ContentMenu->addAction(ActionCMenuOpen);
+
+  QAction *ActionCMenuRename = new QAction(tr("Rename"), this);
+  connect(ActionCMenuRename, SIGNAL(triggered()), this, SLOT(slotCMenuRename()));
+  ContentMenu->addAction(ActionCMenuRename);
+
+  QAction *ActionCMenuDelete = new QAction(tr("Delete"), this);
+  connect(ActionCMenuDelete, SIGNAL(triggered()), this, SLOT(slotCMenuDelete()));
+  ContentMenu->addAction(ActionCMenuDelete);
+
+  QAction *ActionCMenuDelGroup = new QAction(tr("Delete Group"), this);
+  connect(ActionCMenuDelGroup, SIGNAL(triggered()), this, SLOT(slotCMenuDelGroup()));
+  ContentMenu->addAction(ActionCMenuDelGroup);
 
   connect(Content,
 	  SIGNAL(contextMenuRequested(Q3ListViewItem*, const QPoint&, int)),
