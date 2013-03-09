@@ -22,7 +22,6 @@
 #include <QDebug>
 #include <limits.h>
 
-#include <q3accel.h>
 #include <qimage.h>
 #include <qsplitter.h>
 #include <q3vbox.h>
@@ -31,7 +30,6 @@
 #include <qmessagebox.h>
 #include <qdir.h>
 #include <qpainter.h>
-#include <q3filedialog.h>
 #include <qinputdialog.h>
 #include <qapplication.h>
 #include <qclipboard.h>
@@ -51,7 +49,6 @@
 #include <qtoolbutton.h>
 #include <qstatusbar.h>
 #include <q3toolbar.h>
-#include <q3popupmenu.h>
 #include <qmenubar.h>
 #include <q3process.h>
 #include <qlineedit.h>
@@ -60,7 +57,6 @@
 #include <q3syntaxhighlighter.h>
 //Added by qt3to4:
 #include <QCloseEvent>
-#include <Q3TextStream>
 #include <Q3PtrList>
 
 #include "main.h"
@@ -96,6 +92,7 @@ QDir QucsHomeDir;  // Qucs user directory where all projects are located
 
 
 // IconView without dragging icon bitmap
+/*
 class myIconView : public Q3IconView
 {
 public:
@@ -120,7 +117,7 @@ protected:
     return DragPic;
   };
 };
-
+*/
 
 
 QucsApp::QucsApp()
@@ -751,10 +748,10 @@ int QucsApp::testFile(const QString& DocName)
   // .........................................
   // To strongly speed up the file read operation the whole file is
   // read into the memory in one piece.
-  Q3TextStream ReadWhole(&file);
+  QTextStream ReadWhole(&file);
   QString FileString = ReadWhole.read();
   file.close();
-  Q3TextStream stream(&FileString, QIODevice::ReadOnly);
+  QTextStream stream(&FileString, QIODevice::ReadOnly);
 
 
   // read header ........................
@@ -891,20 +888,18 @@ void QucsApp::openProject(const QString& Path, const QString& Name)
 // Is called when the open project menu is called.
 void QucsApp::slotMenuOpenProject()
 {
-  Q3FileDialog *d = new Q3FileDialog(QucsHomeDir.path());
-  d->setCaption(tr("Choose Project Directory for Opening"));
-  d->setShowHiddenFiles(true);
-  d->setMode(Q3FileDialog::DirectoryOnly);
-  if(d->exec() != QDialog::Accepted) return;
-
-  QString s = d->selectedFile();
+  QString d = QFileDialog::getExistingDirectory(this, tr("Choose Project Directory for Opening"),
+                                                 QucsHomeDir.path(),
+                                                 QFileDialog::ShowDirsOnly
+                                                 | QFileDialog::DontResolveSymlinks);
+  QString s = d;
   if(s.isEmpty()) return;
 
   s = s.left(s.length()-1);   // cut off trailing '/'
   int i = s.findRev('/');
   if(i > 0) s = s.mid(i+1);   // cut out the last subdirectory
   s.remove("_prj");
-  openProject(d->selectedFile(), s);
+  openProject(d, s);
 }
 
 // ----------------------------------------------------------
@@ -1015,20 +1010,20 @@ bool QucsApp::deleteProject(const QString& Path, const QString& Name)
 // Is called, when "Delete Project" menu is activated.
 void QucsApp::slotMenuDelProject()
 {
-  Q3FileDialog *d = new Q3FileDialog(QucsHomeDir.path());
-  d->setCaption(tr("Choose Project Directory for Deleting"));
-  d->setShowHiddenFiles(true);
-  d->setMode(Q3FileDialog::DirectoryOnly);
-  if(d->exec() != QDialog::Accepted) return;
 
-  QString s = d->selectedFile();
+  QString d = QFileDialog::getExistingDirectory(this, tr("Choose Project Directory for Deleting"),
+                                                 QucsHomeDir.path(),
+                                                 QFileDialog::ShowDirsOnly
+                                                 | QFileDialog::DontResolveSymlinks);
+  QString s = d;
+
   if(s.isEmpty()) return;
 
   s = s.left(s.length()-1);  // cut off trailing '/'
   int i = s.findRev('/');
   if(i > 0) s = s.mid(i+1);  // cut out the last subdirectory
   s = s.left(s.length()-4);  // remove "_prj" from name
-  deleteProject(d->selectedFile(), s);
+  deleteProject(d, s);
   readProjects();   // re-reads all projects and inserts them into the ListBox
 }
 

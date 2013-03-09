@@ -19,7 +19,7 @@
 #define QUCS_H
 
 #include <QtGui>
-#include <q3mainwindow.h>
+//#include <q3mainwindow.h>
 #include <QMainWindow>
 #include <qstring.h>
 #include <qdir.h>
@@ -27,7 +27,7 @@
 #include <q3accel.h>
 #include <QLabel>
 #include <Q3PtrList>
-#include <Q3PopupMenu>
+//#include <Q3PopupMenu>
 #include <QMouseEvent>
 #include <QCloseEvent>
 #include <Q3ScrollView>
@@ -46,19 +46,19 @@ class SearchDialog;
 class QLabel;
 class QAction;
 class QPrinter;
-class Q3ToolBar;
+//class Q3ToolBar;
 class QLineEdit;
 class QComboBox;
 class QTabWidget;
-class Q3PopupMenu;
-class Q3ListBox;
-class Q3ListBoxItem;
+//class Q3PopupMenu;
+//class Q3ListBox;
+//class Q3ListBoxItem;
 class Q3ListView;
 class Q3ListViewItem;
-class Q3IconView;
-class Q3IconViewItem;
-class VTabbedDockWidget;
-class VTabWidget;
+//class Q3IconView;
+//class Q3IconViewItem;
+//class VTabbedDockWidget;
+//class VTabWidget;
 class OctaveWindow;
 
 typedef bool (Schematic::*pToggleFunc) ();
@@ -181,9 +181,7 @@ private:
 // ********* Widgets on the main area **********************************
   //VTabbedDockWidget   *dock;
   QDockWidget *dock;
-  //VTabWidget    *TabView;
   QTabWidget *TabView;
-  //Q3DockWindow   *octDock;
   QDockWidget *octDock;
   OctaveWindow  *octave;
 
