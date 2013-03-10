@@ -129,7 +129,7 @@ public slots:
   void slot2PortMatching();
 
   // for menu that appears by right click in content ListView
-  void slotShowContentMenu(Q3ListViewItem*, const QPoint&, int);
+  //void slotShowContentMenu(Q3ListViewItem*, const QPoint&, int);
   void slotCMenuOpen();
   void slotCMenuRename();
   void slotCMenuDelete();
@@ -139,9 +139,8 @@ private slots:
   void slotMenuOpenProject();
   void slotOpenProject(QListWidgetItem*);
   void slotMenuCloseProject();
-  void slotSelectSubcircuit(Q3ListViewItem*);
-  void slotExpandContentList(Q3ListViewItem*);
-  void slotOpenContent(Q3ListViewItem*);
+  void slotSelectSubcircuit(QTreeWidgetItem*);
+  void slotOpenContent(QTreeWidgetItem*);
   void slotSetCompView(int);
   void slotProjNewButt();
   void slotProjOpenButt();
@@ -167,6 +166,9 @@ public:
   // menu appearing by right mouse button click on content listview
   QMenu *ContentMenu;
 
+  // corresponding actions
+  QAction *ActionCMenuOpen, *ActionCMenuRename, *ActionCMenuDelete, *ActionCMenuDelGroup;
+
   QAction *fileNew, *textNew, *fileNewDpl, *fileOpen, *fileSave, *fileSaveAs,
           *fileSaveAll, *fileClose, *fileSettings, *filePrint, *fileQuit,
           *projNew, *projOpen, *projDel, *projClose, *applSettings,
@@ -186,9 +188,13 @@ private:
   OctaveWindow  *octave;
 
   QListWidget      *Projects;
-  Q3ListView     *Content;
-  Q3ListViewItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
+  //Q3ListView     *Content;
+  QTreeWidget *Content;
+  //Q3ListViewItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
+  //              *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
+  QTreeWidgetItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
                 *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
+
 
   QComboBox     *CompChoose;
 
