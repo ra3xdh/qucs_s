@@ -858,6 +858,7 @@ void QucsApp::readProjectFiles()
         else {
           QTreeWidgetItem *temp = new QTreeWidgetItem(ConSchematics);
           temp->setText(0, (*it).ascii());
+        }
       }
     }
     else if(Str == "dpl") {
@@ -889,7 +890,6 @@ void QucsApp::readProjectFiles()
       temp->setText(0, (*it).ascii());  
     }
   }
-}
 }
 
 // ----------------------------------------------------------
