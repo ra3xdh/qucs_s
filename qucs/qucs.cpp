@@ -24,8 +24,8 @@
 
 #include <qimage.h>
 #include <qsplitter.h>
-#include <q3vbox.h>
-#include <q3hbox.h>
+//#include <q3vbox.h>
+//#include <q3hbox.h>
 #include <qlabel.h>
 #include <qmessagebox.h>
 #include <qdir.h>
@@ -34,26 +34,26 @@
 #include <qapplication.h>
 #include <qclipboard.h>
 #include <qfont.h>
-#include <q3textedit.h>
+//#include <q3textedit.h>
 #include <qcheckbox.h>
 #include <qaction.h>
 #include <qtabwidget.h>
 #include <qcombobox.h>
 #include <q3iconview.h>
 #include <qpushbutton.h>
-#include <q3listview.h>
-#include <q3listbox.h>
+//#include <q3listview.h>
+//#include <q3listbox.h>
 #include <qprinter.h>
-#include <q3filedialog.h>
+//#include <q3filedialog.h>
 #include <qpixmap.h>
 #include <qtoolbutton.h>
 #include <qstatusbar.h>
-#include <q3toolbar.h>
+//#include <q3toolbar.h>
 #include <qmenubar.h>
 #include <q3process.h>
 #include <qlineedit.h>
 #include <qstringlist.h>
-#include <q3dragobject.h>
+//#include <q3dragobject.h>
 #include <q3syntaxhighlighter.h>
 //Added by qt3to4:
 #include <QCloseEvent>
@@ -1164,9 +1164,8 @@ void QucsApp::slotFileOpen()
 
   statusBar()->message(tr("Opening file..."));
 
-  QString s = Q3FileDialog::getOpenFileName(
-	lastDirOpenSave.isEmpty() ? QString(".") : lastDirOpenSave,
-	QucsFileFilter, this, 0, tr("Enter a Schematic Name"));
+  QString s = QFileDialog::getOpenFileName(this, tr("Enter a Schematic Name"), 
+    lastDirOpenSave.isEmpty() ? QString(".") : lastDirOpenSave, QucsFileFilter);
 
   if(s.isEmpty())
     statusBar()->message(tr("Opening aborted"), 2000);
@@ -1245,8 +1244,8 @@ bool QucsApp::saveAs()
 	       tr("Any File")+" (*)";
     else
       Filter = QucsFileFilter;
-    s = Q3FileDialog::getSaveFileName(s, Filter,
-                     this, "", tr("Enter a Document Name"));
+      s = QFileDialog::getSaveFileName(this, tr("Enter a Document Name"),
+        QucsWorkDir.absPath(), Filter);
     if(s.isEmpty())  return false;
     Info.setFile(s);               // try to guess the best extension ...
     ext = Info.extension(false);
