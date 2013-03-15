@@ -15,20 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 #include <QtGui>
+#include <QtCore>
 #include <stdlib.h>
 #include <limits.h>
 
-#include <qaction.h>
 #include <q3process.h>
-#include <qlineedit.h>
-#include <qstatusbar.h>
-#include <qtabwidget.h>
-#include <qmessagebox.h>
-#include <q3filedialog.h>
-#include <qregexp.h>
-#include <qvalidator.h>
+
 //Added by qt3to4:
-#include <Q3TextStream>
 #include <Q3PtrList>
 
 #include "main.h"
@@ -767,9 +760,8 @@ void QucsApp::slotAddToProject()
   }
 
 
-  QStringList List = Q3FileDialog::getOpenFileNames(
-	QucsFileFilter, lastDir.isEmpty() ? QString(".") : lastDir,
-	this, 0, tr("Select files to copy"));
+  QStringList List = QFileDialog::getOpenFileNames(this, tr("Select files to copy"),
+    lastDir.isEmpty() ? QString(".") : lastDir, QucsFileFilter);
 
   if(List.isEmpty()) {
     statusBar()->message(tr("No files copied."), 2000);
@@ -1157,10 +1149,14 @@ void QucsApp::slotExportGraphAsCsv()
     return;
   }
 
-  QString s = Q3FileDialog::getSaveFileName(
+  /*QString s = Q3FileDialog::getSaveFileName(
      lastDir.isEmpty() ? QString(".") : lastDir,
      tr("CSV file")+" (*.csv);;" + tr("Any File")+" (*)",
      this, 0, tr("Enter an Output File Name"));
+     */
+  QString s = QFileDialog::getSaveFileName(this, tr("Enter an Output File Name"), 
+    lastDir.isEmpty() ? QString(".") : lastDir, tr("CSV file")+" (*.csv);;" + tr("Any File")+" (*)");
+
   if(s.isEmpty())
     return;
 
@@ -1182,7 +1178,7 @@ void QucsApp::slotExportGraphAsCsv()
     return;
   }
 
-  Q3TextStream Stream(&File);
+  QTextStream Stream(&File);
 
 
   DataX *pD;

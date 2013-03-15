@@ -19,17 +19,8 @@
 # include <config.h>
 #endif
 #include <QtGui>
-#include <qaction.h>
-#include <qmenubar.h>
-#include <qstatusbar.h>
-#include <qlabel.h>
-#include <qtimer.h>
-#include <qimage.h>
-#include <q3whatsthis.h>
-#include <qmessagebox.h>
-#include <qicon.h>
-//Added by qt3to4:
-#include <Q3PopupMenu>
+
+
 
 #include "main.h"
 #include "qucs.h"

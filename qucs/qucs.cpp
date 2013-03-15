@@ -20,43 +20,13 @@
 #endif
 #include <QtGui>
 #include <QDebug>
+#include <QtCore>
 #include <limits.h>
 
-#include <qimage.h>
-#include <qsplitter.h>
-//#include <q3vbox.h>
-//#include <q3hbox.h>
-#include <qlabel.h>
-#include <qmessagebox.h>
-#include <qdir.h>
-#include <qpainter.h>
-#include <qinputdialog.h>
-#include <qapplication.h>
-#include <qclipboard.h>
-#include <qfont.h>
-//#include <q3textedit.h>
-#include <qcheckbox.h>
-#include <qaction.h>
-#include <qtabwidget.h>
-#include <qcombobox.h>
-#include <q3iconview.h>
-#include <qpushbutton.h>
-//#include <q3listview.h>
-//#include <q3listbox.h>
-#include <qprinter.h>
-//#include <q3filedialog.h>
-#include <qpixmap.h>
-#include <qtoolbutton.h>
-#include <qstatusbar.h>
-//#include <q3toolbar.h>
-#include <qmenubar.h>
+
 #include <q3process.h>
-#include <qlineedit.h>
-#include <qstringlist.h>
-//#include <q3dragobject.h>
 #include <q3syntaxhighlighter.h>
 //Added by qt3to4:
-#include <QCloseEvent>
 #include <Q3PtrList>
 
 #include "main.h"
@@ -82,8 +52,8 @@
 #include "dialogs/labeldialog.h"
 #include "dialogs/matchdialog.h"
 #include "dialogs/simmessage.h"
-#include "dialogs/vtabwidget.h"
-#include "dialogs/vtabbeddockwidget.h"
+//#include "dialogs/vtabwidget.h"
+//#include "dialogs/vtabbeddockwidget.h"
 #include "octave_window.h"
 extern const char *empty_xpm[];
 
@@ -180,13 +150,14 @@ QucsApp::QucsApp()
     QString arg = qApp->argv()[z];
     if(*(arg) != '-') {
       // allow uri's: file:/home/linuxuser/Desktop/example.sch
-      if(arg.contains(":/")) {
-        QString f = QDir::convertSeparators(Q3UriDrag::uriToLocalFile(arg));
-        if(f.isEmpty()) f = arg;
-        gotoPage(f);
-      } else {
+      //TODO
+      //if(arg.contains(":/")) {
+        //QString f = QDir::convertSeparators(Q3UriDrag::uriToLocalFile(arg));
+      //  if(f.isEmpty()) f = arg;
+      //  gotoPage(f);
+      //} else {
         gotoPage(arg);
-      }
+      //}
     }
   }
 }
