@@ -24,7 +24,6 @@
 #include <qstring.h>
 #include <qdir.h>
 //Added by qt3to4:
-#include <q3accel.h>
 #include <QLabel>
 #include <Q3PtrList>
 //#include <Q3PopupMenu>
@@ -259,7 +258,10 @@ private:
 
   QToolBar *fileToolbar, *editToolbar, *viewToolbar, *workToolbar;
 
-  Q3Accel *mainAccel;     // to set more than one key to one action
+  // Shortcuts for scolling schematic / TextEdit
+  // This is rather cumbersome -> Make this with a QScrollView instead??
+  QShortcut *cursorUp, *cursorLeft, *cursorRight, *cursorDown;
+
   QLabel *WarningLabel, *PositionLabel;  // labels in status bar
 
 

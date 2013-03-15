@@ -1439,7 +1439,7 @@ void QucsApp::slotChangeView(QWidget *w)
     TextDoc *d = (TextDoc*)w;
     Doc = (QucsDoc*)d;
     // update menu entries, etc. if neccesary
-    if(mainAccel->isEnabled())
+    if(cursorLeft->isEnabled())
       switchSchematicDoc (false);
   }
   // for schematic documents
@@ -1447,7 +1447,7 @@ void QucsApp::slotChangeView(QWidget *w)
     Schematic *d = (Schematic*)w;
     Doc = (QucsDoc*)d;
     // already in schematic?
-    if(mainAccel->isEnabled()) {
+    if(cursorLeft->isEnabled()) {
       // which mode: schematic or symbol editor ?
       if((CompChoose->count() > 1) == d->symbolMode)
         changeSchematicSymbolMode (d);
@@ -2117,7 +2117,11 @@ void QucsApp::slotSelectSubcircuit(QTreeWidgetItem *item)
 // from schematic to text document or vice versa.
 void QucsApp::switchSchematicDoc (bool SchematicMode)
 {
-  mainAccel->setEnabled (SchematicMode);
+  // switch our scroll key actions on/off according to SchematicMode
+  cursorLeft->setEnabled(SchematicMode);
+  cursorRight->setEnabled(SchematicMode);
+  cursorUp->setEnabled(SchematicMode);
+  cursorDown->setEnabled(SchematicMode);
 
   // text document
   if (!SchematicMode) {
