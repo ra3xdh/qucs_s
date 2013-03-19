@@ -128,6 +128,7 @@ public slots:
   void slot2PortMatching();
 
   // for menu that appears by right click in content ListView
+  void slotShowContentMenu(const QPoint &);
   //void slotShowContentMenu(Q3ListViewItem*, const QPoint&, int);
   void slotCMenuOpen();
   void slotCMenuRename();

@@ -274,7 +274,9 @@ void QucsApp::initView()
   Content->setSortingEnabled(false);
   Content->setColumnWidth(0,150);
 
-  Content->setContextMenuPolicy(Qt::ActionsContextMenu);
+  // allow for a custom context menu
+  Content->setContextMenuPolicy(Qt::CustomContextMenu);
+
 
   initContentListView();
 
@@ -284,9 +286,10 @@ void QucsApp::initView()
 
   connect(Content, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
 		   SLOT(slotOpenContent(QTreeWidgetItem*)));
+
   #warning Which signal to connect to?
-  connect(Content, SIGNAL(clicked(QTreeWidgetItem*)),
-		   SLOT(slotSelectSubcircuit(QTreeWidgetItem*)));
+  //connect(Content, SIGNAL(clicked(QTreeWidgetItem*)),
+	//	   SLOT(slotSelectSubcircuit(QTreeWidgetItem*)));
 
   // ----------------------------------------------------------
   // "Component Tab" of the left QTabWidget
@@ -473,30 +476,38 @@ void QucsApp::initCursorMenu()
 
   ActionCMenuOpen = new QAction(tr("Open"), ContentMenu);
   connect(ActionCMenuOpen, SIGNAL(triggered()), this, SLOT(slotCMenuOpen()));
-  Content->addAction(ActionCMenuOpen);
+  ContentMenu->addAction(ActionCMenuOpen);
 
   ActionCMenuRename = new QAction(tr("Rename"), ContentMenu);
   connect(ActionCMenuRename, SIGNAL(triggered()), this, SLOT(slotCMenuRename()));
-  Content->addAction(ActionCMenuRename);
+  ContentMenu->addAction(ActionCMenuRename);
 
   ActionCMenuDelete = new QAction(tr("Delete"), ContentMenu);
   connect(ActionCMenuDelete, SIGNAL(triggered()), this, SLOT(slotCMenuDelete()));
-  Content->addAction(ActionCMenuDelete);
+  ContentMenu->addAction(ActionCMenuDelete);
 
   // TODO -> not implemented yet...
   //ActionCMenuDelGroup = new QAction(tr("Delete Group"), ContentMenu);
   //connect(ActionCMenuDelGroup, SIGNAL(triggered()), this, SLOT(slotCMenuDelGroup()));
   //Content->addAction(ActionCMenuDelGroup);
 
-//
-//  connect(Content,
-//	  SIGNAL(contextMenuRequested(Q3ListViewItem*, const QPoint&, int)),
-//	  SLOT(slotShowContentMenu(Q3ListViewItem*, const QPoint&, int)));
+
+  connect(Content, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotShowContentMenu(const QPoint&)));
 }
 
 // ----------------------------------------------------------
 // Shows the menu.
-/*
+void QucsApp::slotShowContentMenu(const QPoint& pos) {
+
+  QTreeWidgetItem *item = Content->currentItem();
+
+  // only show contentmenu when child is selected...
+  if(item->parent()!= 0) {
+    ContentMenu->popup(Content->mapToGlobal(pos));
+  }
+
+}
+/* OLD Version
 void QucsApp::slotShowContentMenu(Q3ListViewItem *item, const QPoint& point, int)
 {
   if(item)
