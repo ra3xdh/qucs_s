@@ -219,6 +219,7 @@ void QucsApp::initView()
   dock = new QDockWidget(this);
   //TabView = new VTabWidget(VTabInterface::TabLeft,dock);  // tabs on the left side
   TabView = new QTabWidget(this);
+  TabView->setTabPosition(QTabWidget::West);
   
   connect(dock, SIGNAL(visibilityChanged(bool)), SLOT(slotToggleDock(bool)));
 
