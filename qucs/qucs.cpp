@@ -296,6 +296,7 @@ void QucsApp::initView()
   CompChoose = new QComboBox(this);
   CompComps = new QListWidget(this);
   CompComps->setViewMode(QListView::IconMode);
+  CompComps->setGridSize(QSize(110,90));
 
   CompGroupLayout->addWidget(CompChoose);
   CompGroupLayout->addWidget(CompComps);
@@ -405,6 +406,7 @@ void QucsApp::slotSetCompView (int index)
     if (Mod->info) {
       *(Mod->info) (Name, File, false);
       QListWidgetItem *item = new QListWidgetItem(QPixmap(QucsSettings.BitmapDir + QString (File) + ".png"), Name);
+      item->setToolTip(Name);
       CompComps->addItem(item);
     }
   }
