@@ -18,6 +18,12 @@
 #ifndef SYNTAX_H
 #define SYNTAX_H
 
+#include <QtCore>
+#include <QtGui>
+
+#include "textdoc.h"
+//#include "main.h"
+
 enum language_type {
   LANG_NONE = 0,
   LANG_VHDL,
@@ -31,19 +37,33 @@ enum textstate_type {
   STATE_COMMENT = 100,
 };
 
-class SyntaxHighlighter : public Q3SyntaxHighlighter {
+class SyntaxHighlighter : public QSyntaxHighlighter {
 public:
  SyntaxHighlighter(TextDoc*);
  virtual ~SyntaxHighlighter();
 
  void setLanguage(int);
- int highlightParagraph(const QString&, int);
+ void highlightBlock(const QString&);
 
 private:
   int language;
   TextDoc *Doc;
-  void markWord(const QString&, int, int);
-  void markAttribute(const QString&, int, int);
+
+  struct HighlightingRule
+     {
+         QRegExp pattern;
+         QTextCharFormat format;
+     };
+  
+  QVector<HighlightingRule> highlightingRules;
+
+  QTextCharFormat reservedWordFormat;
+  QTextCharFormat unitFormat;
+  QTextCharFormat datatypeFormat;
+  QTextCharFormat directiveFormat;
+  QTextCharFormat functionFormat;
+  QTextCharFormat commentFormat;
+
 };
 
 #endif

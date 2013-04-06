@@ -103,16 +103,20 @@ void SearchDialog::searchText(bool fromCursor, int Offset)
   TextDoc *Doc = (TextDoc*)App->DocumentTab->currentPage();
 
   int Line=0, Column=0, count=0, i;
-  if(fromCursor)
-    Doc->getCursorPosition(&Line, &Column);
+  if(fromCursor) {
+    //Doc->getCursorPosition(&Line, &Column);
+    Line = Doc->textCursor().blockNumber();
+    Column = Doc->textCursor().columnNumber();
+  }
   else if(BackwardBox->isChecked())
-    Line = Doc->paragraphs();
+    Line = Doc->document()->blockCount();//Doc->paragraphs();
 
   if(!BackwardBox->isChecked())
     Column += Offset;
 
   if(SearchEdit->text().isEmpty())
     return;
+  /* TODO
   while(Doc->find(SearchEdit->text(), CaseBox->isChecked(),
          WordBox->isChecked(), !BackwardBox->isChecked(), &Line, &Column)) {
 
@@ -137,7 +141,7 @@ void SearchDialog::searchText(bool fromCursor, int Offset)
                break;
       default: return;
     }
-  }
+  }*/
 
   if(count == 0)
     QMessageBox::information(this, tr("Search..."),
