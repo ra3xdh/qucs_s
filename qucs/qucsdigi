@@ -78,8 +78,11 @@ echo -n "compiling main..."
 $CXX $CXXFLAGS -c $NAME._main_.cc
 echo " done."
 
-echo -n "linking..."
-$LIBTOOL --quiet --mode=link $CXX $NAME._main_.o $NAME.o -Lvhdl $VLIBS $LIBS $IEEELIBS -o $NAME
+echo "linking..."
+# $LIBTOOL --quiet --mode=link $CXX $NAME._main_.o $NAME.o -Lvhdl $VLIBS $LIBS $IEEELIBS -o $NAME
+
+$CXX -o $NAME $NAME._main_.o $NAME.o -L /usr/lib/freehdl -lfreehdl-kernel -lfreehdl-std -Lieee 
+
 echo " done."
 
 echo "simulating..."
@@ -87,5 +90,6 @@ echo "simulating..."
 wait $!
 
 echo -n "running VCD conversion..."
-$BINDIR/qucsconv $OPTION -if vcd -of qucsdata -i $NAME.vcd -o $NAMEOUT
+#$BINDIRqucsconv $OPTION -if vcd -of qucsdata -i $NAME.vcd -o $NAMEOUT
+qucsconv -if vcd -of qucsdata -i $NAME.vcd -o $NAMEOUT
 echo " done."
