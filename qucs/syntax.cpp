@@ -16,22 +16,39 @@
  ***************************************************************************/
 
 // *****************************************************************
-// **********                                             **********
-// **********  The class that do the syntax highlighting  **********
-// **********                                             **********
+// *********                                              **********
+// *********  The class that does the syntax highlighting **********
+// *********                                              **********
 // *****************************************************************
 #include <QtGui>
-#include <q3syntaxhighlighter.h>
 
 #include "textdoc.h"
 #include "syntax.h"
-#include "main.h"
 
-SyntaxHighlighter::SyntaxHighlighter(TextDoc *textEdit) 
-                 : Q3SyntaxHighlighter(textEdit)
+
+SyntaxHighlighter::SyntaxHighlighter(TextDoc *textEdit) : QSyntaxHighlighter(textEdit)
 {
   Doc = textEdit;
   language = LANG_NONE;
+
+  reservedWordFormat.setForeground(Qt::darkBlue);
+  reservedWordFormat.setFontWeight(QFont::Bold);
+
+  unitFormat.setForeground(Qt::darkRed);;
+  unitFormat.setFontWeight(QFont::StyleItalic);;
+
+  datatypeFormat.setForeground(Qt::darkBlue);;
+  datatypeFormat.setFontWeight(QFont::Bold);;
+
+  directiveFormat.setForeground(Qt::darkBlue);;
+  directiveFormat.setFontWeight(QFont::Bold);;
+
+  functionFormat.setForeground(Qt::darkGreen);;
+  functionFormat.setFontWeight(QFont::Bold);;
+
+  commentFormat.setForeground(Qt::gray);;
+  commentFormat.setFontWeight(QFont::StyleItalic);;
+
 }
 
 SyntaxHighlighter::~SyntaxHighlighter()
@@ -42,525 +59,204 @@ SyntaxHighlighter::~SyntaxHighlighter()
 void SyntaxHighlighter::setLanguage(int lang)
 {
   language = lang;
-}
 
-// ---------------------------------------------------
-int SyntaxHighlighter::highlightParagraph(const QString& text, int state)
-{
-  QChar c;
-  bool isFloat=false;
-  int  iString=-1, iWord=-1, iNumber=-1, iExpo=-1, iComment=-1;
-  QFont font = Doc->TextFont;
-  font.setPointSize((int)Doc->Scale);
-  setFormat(0, text.length(), font, Qt::black);
+  HighlightingRule rule;
 
-  if (state < 0)
-    state = STATE_NONE;
-  if (state >= STATE_COMMENT)
-    iComment = 0;
-  for(int i=0; i<text.size(); i++){
-	c = text.at(i);
-		
-  //for(c = text.at(i); !c.isNull(); c = text.at(++i)) {
-    // ----- current text is a comment ---------------------------
-    if (iComment >= 0) {
-      setFormat (iComment, i-iComment+1, QucsSettings.Comment);
-      if (i > 0 && c == ')' && text.at (i-1) == '*') {
-	if (--state < STATE_COMMENT) {
-	  state = STATE_NONE;
-	  iComment = -1;
-	}
-      }
-    }
-    // ----- current text is a string ----------------------------
-    else if(iString >= 0) {
-      setFormat(iString, i-iString+1, QucsSettings.String);
-      if (language == LANG_OCTAVE)
-	if(c == '\'')
-	  iString = -1;
-      if(c == '"')
-        iString = -1;
-      continue;
-    }
-    // ----- word that might become a reserved word --------------
-    else if(iWord >= 0) {
-      if(c.isLetterOrNumber())
-        continue;
-      if(c == '_')
-        continue;
-      do {
-        if(iWord > 0)
-          if(text.at(iWord-1) == '\'') {
-            markAttribute(text, iWord, i-iWord);
-            break;
-          }
-        markWord(text, iWord, i-iWord);
-      } while(false);
-      iWord = -1;
-    }
-    // ----- integer or floating point number --------------
-    else if(iNumber >= 0) {
-      if(c.isNumber())
-        continue;
-      if(c == '.') {
-        if(iExpo < 0) {
-          if(isFloat)
-            iNumber = -1;
-          isFloat = true;
-        }
-        else
-          iNumber = -1;
-        continue;
-      }
-      if((c == 'e') || (c == 'E')) {
-        if(iExpo < 0) {
-          iExpo = i;
-          isFloat = true;
-        }
-        else
-          iNumber = -1;
-        continue;
-      }
-      if((c == '-') || (c == '+')) {
-        if((iExpo+1) == i)
-          continue;
-      }
-      if(c != '_')
-        if(!c.isLetter()) {
-          if(isFloat)
-            setFormat(iNumber, i-iNumber, QucsSettings.Real);
-          else
-            setFormat(iNumber, i-iNumber, QucsSettings.Integer);
-        }
-      iNumber = -1;
-    }
-    // ----- maybe a VHDL comment -------------------------------
-    else if(language == LANG_VHDL && c == '-') {
-      if(i > 0)
-        if(text.at(i-1) == '-') {  // VHDL comment starts with --
-          setFormat(i-1, text.length()-i, QucsSettings.Comment);
-          return state;
-        }
-      continue;
-    }
-    // ----- maybe a Verilog comment -------------------------------
-    else if((language == LANG_VERILOG || language == LANG_VERILOGA)
-	    && c == '/') {
-      if(i > 0)
-        if(text.at(i-1) == '/') {  // Verilog comment starts with //
-          setFormat(i-1, text.length()-i, QucsSettings.Comment);
-          return state;
-        }
-      continue;
-    }
-    // ----- maybe a Octave comment -------------------------------
-    else if((language == LANG_OCTAVE) && (c == '%' || c == '#')) {
-      setFormat(i, text.length()-i+1, QucsSettings.Comment);
-      return state;
-    }
-    // ----- no special syntax yet (or anymore) --------------
-    else {
-      if((language == LANG_VERILOG || language == LANG_VERILOGA)
-	 && c == '`' && text.at(i+1).isLetter())
-	iWord = i;
-      else if((language == LANG_VERILOG || language == LANG_VERILOGA)
-	      && c == '$' && text.at(i+1).isLetter())
-	iWord = i;
-      else if(c.isLetter())
-        iWord = i;     // start a word
-      else if(c.isNumber()) {
-        iExpo = -1;
-        iNumber = i;   // start a number
-        isFloat = false;
-        c = text.at(i-1);
-/*        if((c == '-') || (c == '+'))  // include sign into number
-          iNumber--;*/
-      }
-    }
+  QStringList reservedWordPattern;
+  QStringList unitPattern;
+  QStringList datatypePattern;
+  QStringList directivePattern;
+  QStringList functionPattern;
+  QStringList commentPattern;
 
-    if (state < STATE_COMMENT) {
-      if(c == '\'' && language != LANG_OCTAVE) {
-	if(i > 1)
-	  if(text.at(i-2) == '\'')
-	    setFormat(i-2, 3, QucsSettings.Character);
-      }
-      else if(c == '"' || (c == '\'' && language == LANG_OCTAVE))
-	iString = i;
-    }
-    if ((language == LANG_VERILOG || language == LANG_VERILOGA)
-	&& i > 0 && c == '*' && text.at(i-1) == '(') {
-      if (state >= STATE_COMMENT) state++;
-      else state = STATE_COMMENT;
-      iComment = i-1;
-    }
-  }
-    
-  return state;
-}
-
-// ---------------------------------------------------
-typedef const char*  pChar;
-typedef const char** ppChar;
-
-// ---------------------------------------------------
-// reserved VHDL words in alphabetical order
-pChar VHD_List_A[] = {"abs", "access", "after", "alias", "all", "and",
-                      "architecture", "array", "assert", "attribute", 0};
-pChar VHD_List_B[] = {"begin", "block", "body", "buffer", "bus", 0};
-pChar VHD_List_C[] = {"case", "component", "configuration", "constant", 0};
-pChar VHD_List_D[] = {"disconnect", "downto", 0};
-pChar VHD_List_E[] = {"else", "elsif", "end", "entity", "exit", 0};
-pChar VHD_List_F[] = {"file", "for", "function", 0};
-pChar VHD_List_G[] = {"generate", "generic", "group", "guarded", 0};
-pChar VHD_List_I[] = {"if", "impure", "in", "inertial", "inout", "is", 0};
-pChar VHD_List_L[] = {"label", "library", "linkage", "literal", "loop", 0};
-pChar VHD_List_M[] = {"map", "mod", 0};
-pChar VHD_List_N[] = {"nand", "new", "next", "nor", "not", "null", 0};
-pChar VHD_List_O[] = {"of", "on", "open", "or", "others", "out", 0};
-pChar VHD_List_P[] = {"package", "port", "postponed", "procedure", "process",
-                      "pure", 0};
-pChar VHD_List_R[] = {"range", "record", "register", "reject", "rem", "report",
-                      "return", "rol", "ror", 0};
-pChar VHD_List_S[] = {"select", "severity", "shared", "signal", "sla", "sll",
-                      "sra", "srl", "subtype", 0};
-pChar VHD_List_T[] = {"then", "to", "transport", "type", 0};
-pChar VHD_List_U[] = {"unaffected", "units", "until", "use", 0};
-pChar VHD_List_V[] = {"variable", 0};
-pChar VHD_List_W[] = {"wait", "when", "while", "with", 0};
-pChar VHD_List_X[] = {"xnor", "xor", 0};
-
-ppChar VHD_WordList[] =
-  {(ppChar)&VHD_List_A, (ppChar)&VHD_List_B, (ppChar)&VHD_List_C,
-   (ppChar)&VHD_List_D, (ppChar)&VHD_List_E, (ppChar)&VHD_List_F,
-   (ppChar)&VHD_List_G, 0,                   (ppChar)&VHD_List_I,
-   0,                   0,                   (ppChar)&VHD_List_L,
-   (ppChar)&VHD_List_M, (ppChar)&VHD_List_N, (ppChar)&VHD_List_O,
-   (ppChar)&VHD_List_P, 0,                   (ppChar)&VHD_List_R,
-   (ppChar)&VHD_List_S, (ppChar)&VHD_List_T, (ppChar)&VHD_List_U,
-   (ppChar)&VHD_List_V, (ppChar)&VHD_List_W, (ppChar)&VHD_List_X,
-   0,                   0};
-
-pChar VHD_List_Units[] =
-  {"fs", "ps", "ns", "us", "ms", "sec", "min", "hr", 0};
-
-pChar VHD_List_DataTypes[] = {
-   "bit", "bit_vector", "boolean", "std_logic", "std_logic_vector",
-   "std_ulogic", "std_ulogic_vector", "signed", "unsigned", "integer",
-   "real", "time", "character", "natural", 0};
-
-// ---------------------------------------------------
-// reserved Verilog-HDL words in alphabetical order
-pChar V_List_A[] = {"always", "and", "assign", "attribute", 0};
-pChar V_List_B[] = {"begin", "buf", "bufif0", "bufif1", 0};
-pChar V_List_C[] = {"case", "casex", "casez", "cmos", 0};
-pChar V_List_D[] = {"deassign", "default", "defparam", "disable", 0};
-pChar V_List_E[] = {"edge", "else", "end", "endattribute", "endcase",
-		    "endfunction", "endmodule", "endprimitive", "endspecify",
-		    "endtable", "endtask", "event", 0};
-pChar V_List_F[] = {"for", "force", "forever", "fork", "function", 0};
-pChar V_List_H[] = {"highz0", "highz1", 0};
-pChar V_List_I[] = {"if", "ifnone", "initial", "inout", "input", 0};
-pChar V_List_J[] = {"join", 0};
-pChar V_List_L[] = {"large", 0};
-pChar V_List_M[] = {"medium", "module", "macromodule", 0};
-pChar V_List_N[] = {"nand", "negedge", "nmos", "nor", "not", "notif0",
-		    "notif1", 0};
-pChar V_List_O[] = {"or", "output", 0};
-pChar V_List_P[] = {"pmos", "posedge", "primitive", "pull0", "pull1",
-		    "pulldown", "pullup", 0};
-pChar V_List_R[] = {"rcmos", "release", "repeat",
-		    "rnmos", "rpmos", "rtran", "rtranif0", "rtranif1", 0};
-pChar V_List_S[] = {"scalared", "signed", "small", "specify", "strength",
-		    "strong0", "strong1", 0};
-pChar V_List_T[] = {"table", "task", "tran", "tranif0", "tranif1", 0};
-pChar V_List_U[] = {"unsigned", 0};
-pChar V_List_V[] = {"vectored", 0};
-pChar V_List_W[] = {"wait", "weak0", "weak1", "while", 0};
-pChar V_List_X[] = {"xnor", "xor", 0};
-
-ppChar V_WordList[] =
-  {(ppChar)&V_List_A, (ppChar)&V_List_B, (ppChar)&V_List_C, (ppChar)&V_List_D,
-   (ppChar)&V_List_E, (ppChar)&V_List_F, 0,                 (ppChar)&V_List_H,
-   (ppChar)&V_List_I, (ppChar)&V_List_J, 0,                 (ppChar)&V_List_L,
-   (ppChar)&V_List_M, (ppChar)&V_List_N, (ppChar)&V_List_O, (ppChar)&V_List_P,
-   0,                 (ppChar)&V_List_R, (ppChar)&V_List_S, (ppChar)&V_List_T,
-   (ppChar)&V_List_U, (ppChar)&V_List_V, (ppChar)&V_List_W, (ppChar)&V_List_X,
-   0,               0};
-
-pChar V_List_Directives[] =
-  {"reset_all", "timescale", "define", "include", "ifdef", "else", "endif",
-   "celldefine", "endcelldefine", "default_nettype", "unconnected_drive",
-   "nounconnected_drive", "delay_mode_zero", "delay_mode_unit",
-   "delay_mode_path", "delay_mode_distributed", "uselib", 0};
-
-pChar V_List_DataTypes[] = {
-   "reg", "integer", "time", "real", "realtime", "wire", "tri", "wor",
-   "trior", "wand", "triand", "tri0", "tri1", "supply0", "supply1", "trireg",
-   "parameter", "specparam", "event", 0};
-
-pChar V_List_Functions[] =
-  {"setup", "hold", "setuphold", "skew", "recovery", "period", "width",
-   "monitor", "display", "write", "strobe", "fopen", "fclose", "time",
-   "stime", "realtime", "timeformat", "printtimescale", "random", "readmemb",
-   "readmemh", "finish", "stop", 0};
-
-// ---------------------------------------------------
-// reserved Verilog-A words in alphabetical order
-pChar VA_List_A[] = {"abstol", "access", "analog", "ac_stim", "analysis", 0};
-pChar VA_List_B[] = {"begin", "branch", "bound_step", 0};
-pChar VA_List_C[] = {"case", 0};
-pChar VA_List_D[] = {"discipline", "ddt_nature", "ddt", "delay",
-		     "discontinuity", "default", 0 };
-pChar VA_List_E[] = {"enddiscipline", "else", "end", "endnature", "exclude",
-		     "endfunction", "endmodule", "electrical", "endcase", 0};
-pChar VA_List_F[] = {"for", "flow", "from", "final_step", "flicker_noise",
-		     "function", 0};
-pChar VA_List_G[] = {"generate", "ground", 0};
-pChar VA_List_I[] = {"if", "idt_nature", "inf", "idt", "initial_step",
-		     "input", "inout", 0};
-pChar VA_List_L[] = {"laplace_nd", "laplace_np", "laplace_zd", "laplace_zp",
-		     "last_crossing", 0};
-pChar VA_List_M[] = {"module", 0};
-pChar VA_List_N[] = {"nature", "noise_table", 0};
-pChar VA_List_P[] = {"potential", "parameter", 0};
-pChar VA_List_S[] = {"slew", 0};
-pChar VA_List_T[] = {"timer", "transition", 0};
-pChar VA_List_U[] = {"units", 0};
-pChar VA_List_W[] = {"white_noise", "while", 0};
-pChar VA_List_Z[] = {"zi_nd", "zi_np", "zi_zd", "zi_zp", 0};
-
-ppChar VA_WordList[] =
-  {(ppChar)&VA_List_A, (ppChar)&VA_List_B, (ppChar)&VA_List_C,
-   (ppChar)&VA_List_D, (ppChar)&VA_List_E, (ppChar)&VA_List_F,
-   (ppChar)&VA_List_G, 0,                  (ppChar)&VA_List_I,
-   0,                  0,                  (ppChar)&VA_List_L,
-   (ppChar)&VA_List_M, (ppChar)&VA_List_N, 0,
-   (ppChar)&VA_List_P, 0,                  0,
-   (ppChar)&VA_List_S, (ppChar)&VA_List_T, (ppChar)&VA_List_U,
-   0,                  (ppChar)&VA_List_W, 0,
-   0,                  (ppChar)&VA_List_Z };
-
-pChar VA_List_Units[] =
-  {"T", "G", "M", "K", "m", "u", "n", "p", "f", "a", 0};
-
-pChar VA_List_Directives[] =
-  {"define", "else", "undef", "ifdef", "endif", "include", "resetall", 0};
-
-pChar VA_List_DataTypes[] = {
-   "integer", "real", 0};
-
-pChar VA_List_Functions[] =
-  {"realtime", "temperature", "vt", "display", "strobe", 0};
-
-// ---------------------------------------------------
-// reserved Octave words in alphabetical order
-pChar OCT_List_C[] = {"case", "catch", 0};
-pChar OCT_List_E[] = {"else", "elseif", "end", "endfor", "endfunction",
-		      "endif", "endswitch", "end_try_catch", "endwhile",
-		      "end_unwind_protect", 0};
-pChar OCT_List_F[] = {"for", "function", 0};
-pChar OCT_List_I[] = {"if", 0};
-pChar OCT_List_O[] = {"otherwise", 0};
-pChar OCT_List_S[] = {"switch", 0};
-pChar OCT_List_T[] = {"try", 0};
-pChar OCT_List_U[] = {"unwind_protect", "unwind_protect_cleanup", 0};
-pChar OCT_List_W[] = {"while", 0};
-
-ppChar OCT_WordList[] =
-  {0,                   0,                   (ppChar)&OCT_List_C,
-   0,                   (ppChar)&OCT_List_E, (ppChar)&OCT_List_F,
-   0,                   0,                   (ppChar)&OCT_List_I,
-   0,                   0,                   0,
-   0,                   0,                   (ppChar)&OCT_List_O,
-   0,                   0,                   0,
-   (ppChar)&OCT_List_S, (ppChar)&OCT_List_T, (ppChar)&OCT_List_U,
-   0,                   (ppChar)&OCT_List_W, 0,
-   0,                   0};
-
-pChar OCT_List_DataTypes[] = {
-   "inf", "nan", "pi", 0};
-
-pChar OCT_List_Functions[] =
-  {"plot", 0};
-
-// ---------------------------------------------------
-void SyntaxHighlighter::markWord(const QString& text, int start, int len)
-{
-  pChar *List;
-  // apply font
-  QFont newFont = Doc->TextFont;
-  newFont.setPointSize((int)Doc->Scale);
-
-  // get word
-  QString Word = text.mid(start, len);
-
-  // switch case sensitivity
   switch (language) {
-  case LANG_VHDL:
-    Word = Word.lower();
-    break;
-  default:
-    break;
-  }
-
-  // get index into wordlist
-  int idx = (int)(Word.at(0).latin1() - 'a');
-  if(idx >= 0 && idx <= 25) {
-
-    // switch wordlist
-    switch (language) {
     case LANG_VHDL:
-      List = VHD_WordList[idx];
-      break;
-    case LANG_VERILOG:
-      List = V_WordList[idx];
-      break;
-    case LANG_OCTAVE:
-      List = OCT_WordList[idx];
-      break;
-    default:
-      List = VA_WordList[idx];;
-      break;
-    }
+        reservedWordPattern << "\\babs\\b" << "\\baccess\\b" << "\\bafter\\b" << "\\balias\\b" << "\\ball\\b" << "\\band\\b" <<
+                        "\\barchitecture\\b\\b"<< "\\barray\\b"<< "\\bassert\\b" << "\\battribute\\b"<<
+                        "\\bbegin\\b\\b"<< "\\bblock\\b"<< "\\bbody\\b"<< "\\bbuffer\\b"<< "\\bbus\\b"<<
+                        "\\bcase\\b"<< "\\bcomponent\\b"<< "\\bconfiguration\\b"<< "\\bconstant\\b"<<
+                        "\\bdisconnect\\b"<< "\\bdownto\\b"<<
+                        "\\belse\\b"<< "\\belsif\\b"<< "\\bend\\b"<< "\\bentity\\b"<< "\\bexit\\b"<<
+                        "\\bfile\\b"<< "\\bfor\\b"<< "\\bfunction"
+                        "\\bgenerate\\b"<< "\\bgeneric\\b"<< "\\bgroup\\b"<< "\\bguarded"
+                        "\\bif\\b"<< "\\bimpure\\b"<< "\\bin\\b"<< "\\binertial\\b"<< "\\binout\\b"<< "\\bis\\b"<<
+                        "\\blabel\\b"<< "\\blibrary\\b"<< "\\blinkage\\b"<< "\\bliteral\\b"<< "\\bloop\\b"<<
+                        "\\bmap\\b"<< "\\bmod\\b"<< 
+                        "\\bnand\\b"<< "\\bnew\\b"<< "\\bnext\\b"<< "\\bnor\\b"<< "\\bnot\\b"<< "\\bnull"
+                        "\\bof\\b"<< "\\bon\\b"<< "\\bopen\\b"<< "\\bor\\b"<< "\\bothers\\b"<< "\\bout\\b"<<
+                        "\\bpackage\\b"<< "\\bport\\b"<< "\\bpostponed\\b"<< "\\bprocedure\\b"<< "\\bprocess\\b"<< "\\bpure\\b"<<
+                        "\\brange\\b"<< "\\brecord\\b"<< "\\bregister\\b"<< "\\breject\\b"<< "\\brem\\b"<< "\\breport\\b"<< "\\breturn\\b"<< "\\brol\\b"<< "\\bror\\b"<<
+                        "\\bselect\\b"<< "\\bseverity\\b"<< "\\bshared\\b"<< "\\bsignal\\b"<< "\\bsla\\b"<< "\\bsll\\b"<< "\\bsra\\b"<< "\\bsrl\\b"<< "\\bsubtype\\b"<<
+                        "\\bthen\\b"<< "\\bto\\b"<< "\\btransport\\b"<< "\\btype\\b"<<
+                        "\\bunaffected\\b"<< "\\bunits\\b"<< "\\buntil\\b"<< "\\buse\\b"<<
+                        "\\bvariable\\b"<<
+                        "\\bwait\\b"<< "\\bwhen\\b"<< "\\bwhile\\b"<< "\\bwith\\b"<<
+                        "\\bxnor\\b"<< "\\bxor\\b";
 
-    // mark reserved words
-    if(List)
-      for( ; *List != 0; List++)
-	if(Word == *List) {
-	  newFont.setWeight(QFont::Bold);
-	  setFormat(start, len, newFont);
-	  return;
-	}
-  }
+          unitPattern <<  "\\bfs\\b"<< "\\bps\\b"<< "\\bns\\b"<< "\\bus\\b"<< "\\bms\\b"<< "\\bsec\\b"<< "\\bmin\\b"<< "\\bhr\\b";
 
-  // mark data types
-  switch (language) {
-  case LANG_VHDL:
-    List = VHD_List_DataTypes;
-    break;
+          datatypePattern << "\\bbit\\b"<< "\\bbit_vector\\b"<< "\\bboolean\\b"<< "\\bstd_logic\\b"<< "\\bstd_logic_vector\\b"<< "\\bstd_ulogic\\b"<< "\\bstd_ulogic_vector\\b"<< "\\bsigned\\b"<< "\\bunsigned\\b"<< "\\binteger\\b"<< "\\breal\\b"<< "\\btime\\b"<< "\\bcharacter\\b"<< "\\bnatural\\b";
+
+          directivePattern << "\\bactive\\b"<< "\\bascending\\b" <<
+                        "\\bbase\\b" <<
+                        "\\bdelayed\\b" <<
+                        "\\bevent\\b" <<
+                        "\\bhigh\\b" <<
+                        "\\bimage\\b" <<
+                        "\\blast_active\\b"<< "\\blast_event\\b"<< "\\blast_value\\b"<< "\\bleft\\b"<< "\\bleftof\\b"<< "\\blength\\b"<< "\\blow\\b" <<
+                        "\\bpos\\b"<< "\\bpred\\b"<<
+                        "\\bquiet\\b"<<
+                        "\\brange\\b"<< "\\breverse_range\\b"<< "\\bright\\b"<< "\\brightof\\b"<<
+                        "\\bstable\\b"<< "\\bsucc\\b"<<
+                        "\\btransaction\\b"<<
+                        "\\bval\\b"<< "\\bvalue\\b";
+
+          commentPattern << "--[^\n]*";
+
+        break;
+
   case LANG_VERILOG:
-    List = V_List_DataTypes;
+        reservedWordPattern << "\\balways\\b"<< "\\band\\b"<< "\\bassign\\b"<< "\\battribute\\b"<<
+                        "\\bbegin\\b"<< "\\bbuf\\b"<< "\\bbufif0\\b"<< "\\bbufif1\\b"<<
+                        "\\bcase\\b"<< "\\bcasex\\b"<< "\\bcasez\\b" <<  "\\bcmos\\b"<< 
+                        "\\bdeassign\\b"<< "\\bdefault\\b"<< "\\bdefparam\\b"<< "\\bdisable\\b"<<
+                        "\\bedge\\b"<< "\\belse\\b"<< "\\bend\\b"<< "\\bendattribute\\b"<< "\\bendcase\\b"<< "\\bendfunction\\b"<< "\\bendmodule\\b"<< "\\bendprimitive\\b"<< "\\bendspecify\\b"<< "\\bendtable\\b"<< "\\bendtask\\b"<< "\\bevent\\b"<<
+                        "\\bfor\\b"<< "\\bforce\\b"<< "\\bforever\\b"<< "\\bfork\\b"<< "\\bfunction\\b"<<
+                        "\\bhighz0\\b"<< "\\bhighz1\\b"<<
+                        "\\bif\\b"<< "\\bifnone\\b"<< "\\binitial\\b"<< "\\binout\\b"<< "\\binput\\b"<<
+                        "\\bjoin\\b"<<
+                        "\\blarge\\b"<<
+                        "\\bmedium\\b"<< "\\bmodule\\b"<< "\\bmacromodule\\b"<<
+                        "\\bnand\\b"<< "\\bnegedge\\b"<< "\\bnmos\\b"<< "\\bnor\\b"<< "\\bnot\\b"<< "\\bnotif0\\b"<< "\\bnotif1\\b"<<
+                        "\\bor\\b"<< "\\boutput\\b"<<
+                        "\\bpmos\\b"<< "\\bposedge\\b"<< "\\bprimitive\\b"<< "\\bpull0\\b"<< "\\bpull1\\b"<< "\\bpulldown\\b"<< "\\bpullup\\b"<<
+                        "\\brcmos\\b"<< "\\brelease\\b"<< "\\brepeat\\b"<< "\\brnmos\\b"<< "\\brpmos\\b"<< "\\brtran\\b"<< "\\brtranif0\\b"<< "\\brtranif1\\b"<<
+                        "\\bscalared\\b"<< "\\bsigned\\b"<< "\\bsmall\\b"<< "\\bspecify\\b"<< "\\bstrength\\b"<< "\\bstrong0\\b"<< "\\bstrong1\\b"<<
+                        "\\btable\\b"<< "\\btask\\b"<< "\\btran\\b"<< "\\btranif0\\b"<< "\\btranif1\\b"<<
+                        "\\bunsigned\\b"<<
+                        "\\bvectored\\b"<<
+                        "\\bwait\\b"<< "\\bweak0\\b"<< "\\bweak1\\b"<< "\\bwhile\\b"<<
+                        "\\bxnor\\b"<< "\\bxor\\b";
+
+        directivePattern << "\\breset_all\\b"<< "\\btimescale\\b"<< "\\bdefine\\b"<< "\\binclude\\b"<< "\\bifdef\\b"<< "\\belse\\b"<< "\\bendif\\b"<<
+                          "\\bcelldefine\\b"<< "\\bendcelldefine\\b"<< "\\bdefault_nettype\\b"<< "\\bunconnected_drive\\b"<<
+                          "\\bnounconnected_drive\\b"<< "\\bdelay_mode_zero\\b"<< "\\bdelay_mode_unit\\b"<<
+                          "\\bdelay_mode_path\\b"<< "\\bdelay_mode_distributed\\b"<< "\\buselib\\b";
+
+        datatypePattern << "\\breg\\b"<< "\\binteger\\b"<< "\\btime\\b"<< "\\breal\\b"<< "\\brealtime\\b"<< "\\bwire\\b"<< "\\btri\\b"<< "\\bwor\\b"<<
+                          "\\btrior\\b"<< "\\bwand\\b"<< "\\btriand\\b"<< "\\btri0\\b"<< "\\btri1\\b"<< "\\bsupply0\\b"<< "\\bsupply1\\b"<< "\\btrireg\\b"<<
+                          "\\bparameter\\b"<< "\\bspecparam\\b"<< "\\bevent\\b";
+
+        functionPattern <<  "\\bsetup\\b"<< "\\bhold\\b"<< "\\bsetuphold\\b"<< "\\bskew\\b"<< "\\brecovery\\b"<< "\\bperiod\\b"<< "\\bwidth\\b"<<
+                          "\\bmonitor\\b"<< "\\bdisplay\\b"<< "\\bwrite\\b"<< "\\bstrobe\\b"<< "\\bfopen\\b"<< "\\bfclose\\b"<< "\\btime\\b"<<
+                          "\\bstime\\b"<< "\\brealtime\\b"<< "\\btimeformat\\b"<< "\\bprinttimescale\\b"<< "\\brandom\\b"<< "\\breadmemb\\b"<<
+                          "\\breadmemh\\b"<< "\\bfinish\\b"<< "\\bstop\\b";
+
+        commentPattern << "//[^\n]*";
+
+    break;
+
+  case LANG_VERILOGA:
+
+        reservedWordPattern << "\\babstol\\b"<< "\\baccess\\b"<< "\\banalog\\b"<< "\\bac_stim\\b"<< "\\banalysis\\b"<<
+                          "\\bbegin\\b"<< "\\bbranch\\b"<< "\\bbound_step\\b"<<
+                          "\\bcase\\b"<<
+                          "\\bdiscipline\\b"<< "\\bddt_nature\\b"<< "\\bddt\\b"<< "\\bdelay\\b"<< "\\bdiscontinuity\\b"<< "\\bdefault\\b"<< 
+                          "\\benddiscipline\\b"<< "\\belse\\b"<< "\\bend\\b"<< "\\bendnature\\b"<< "\\bexclude\\b"<< "\\bendfunction\\b"<< "\\bendmodule\\b"<< "\\belectrical\\b"<< "\\bendcase\\b"<<
+                          "\\bfor\\b"<< "\\bflow\\b"<< "\\bfrom\\b"<< "\\bfinal_step\\b"<< "\\bflicker_noise\\b"<< "\\bfunction\\b"<<
+                          "\\bgenerate\\b"<< "\\bground\\b"<<
+                          "\\bif\\b"<< "\\bidt_nature\\b"<< "\\binf\\b"<< "\\bidt\\b"<< "\\binitial_step\\b"<< "\\binput\\b"<< "\\binout\\b"<<
+                          "\\blaplace_nd\\b"<< "\\blaplace_np\\b"<< "\\blaplace_zd\\b"<< "\\blaplace_zp\\b"<< "\\blast_crossing\\b"<<
+                          "\\bmodule\\b"<<
+                          "\\bnature\\b"<< "\\bnoise_table\\b"<<
+                          "\\bpotential\\b"<< "\\bparameter\\b"<<
+                          "\\bslew\\b"<<
+                          "\\btimer\\b"<< "\\btransition\\b"<<
+                          "\\bunits\\b"<<
+                          "\\bwhite_noise\\b"<< "\\bwhile\\b"<<
+                          "\\bzi_nd\\b"<< "\\bzi_np\\b"<< "\\bzi_zd\\b"<< "\\bzi_zp\\b";
+
+        unitPattern << "\\bT\\b"<< "\\bG\\b"<< "\\bM\\b"<< "\\bK\\b"<< "\\bm\\b"<< "\\bu\\b"<< "\\bn\\b"<< "\\bp\\b"<< "\\bf\\b"<< "\\ba\\b";
+
+        datatypePattern << "\\binteger\\b"<< "\\breal\\b";
+
+        directivePattern << "\\bdefine\\b"<< "\\belse\\b"<< "\\bundef\\b"<< "\\bifdef\\b"<< "\\bendif\\b"<< "\\binclude\\b"<< "\\bresetall\\b";
+
+        functionPattern << "\\brealtime\\b"<< "\\btemperature\\b"<< "\\bvt\\b"<< "\\bdisplay\\b"<< "\\bstrobe\\b";
+
+        commentPattern << "//[^\n]*";
+
     break;
   case LANG_OCTAVE:
-    List = OCT_List_DataTypes;
-    break;
-  default:
-    List = VA_List_DataTypes;
-    break;
-  }
-  if(List)
-    for( ; *List != 0; List++)
-      if(Word == *List) {
-	setFormat(start, len, QucsSettings.Type);
-	return;
-      }
+      
+        reservedWordPattern << "\\bcase\\b"<< "\\bcatch\\b"<<
+                          "\\belse\\b"<< "\\belseif\\b"<< "\\bend\\b"<< "\\bendfor\\b"<< "\\bendfunction\\b"<< "\\bendif\\b"<< "\\bendswitch\\b"<< "\\bend_try_catch\\b"<< "\\bendwhile\\b"<< "\\bend_unwind_protect\\b"
+                          "\\bfor\\b" << "\\bfunction\\b" <<
+                          "\\bif\\b" <<
+                          "\\botherwise\\b" <<
+                          "\\bswitch\\b" <<
+                          "\\btry\\b" <<
+                          "\\bunwind_protect\\b"<< "\\bunwind_protect_cleanup\\b" <<
+                          "\\bwhile\\b";
 
-  // mark units
-  switch (language) {
-  case LANG_VHDL:
-    List = VHD_List_Units;
-    break;
-  case LANG_VERILOGA:
-    List = VA_List_Units;
-    break;
-  default:
-    List = 0;
-    break;
-  }
-  if(List)
-    for( ; *List != 0; List++)
-      if(Word == *List) {
-	newFont.setWeight(QFont::Bold);
-	setFormat(start, len, newFont, QucsSettings.Real);
-	return;
-      }
+        datatypePattern << "\\binf\\b"<< "\\bnan\\b"<< "\\bpi\\b";
 
+        functionPattern << "\\bplot\\b";
 
-  if (Word.at(0) == '`' || Word.at(0) == '$') {
-    Word = Word.mid(1);
-    // mark directives
-    switch (language) {
-    case LANG_VERILOG:
-      List = V_List_Directives;
-      break;
-    case LANG_VERILOGA:
-      List = VA_List_Directives;
-      break;
-    default:
-      List = 0;
-      break;
+        commentPattern << "//[^\n]*";
+
+    break;
     }
-    if(List)
-      for( ; *List != 0; List++)
-	if(Word == *List) {
-	  newFont.setWeight(QFont::Bold);
-	  setFormat(start, len, newFont, QucsSettings.Directive);
-	  return;
-	}
 
-    // mark special functions
-    switch (language) {
-    case LANG_VERILOG:
-      List = V_List_Functions;
-      break;
-    case LANG_VERILOGA:
-      List = VA_List_Functions;
-      break;
-    case LANG_OCTAVE:
-      List = OCT_List_Functions;
-      break;
-    default:
-      List = 0;
-      break;
-    }
-    if(List)
-      for( ; *List != 0; List++)
-	if(Word == *List) {
-	  newFont.setWeight(QFont::Bold);
-	  setFormat(start, len, newFont, QucsSettings.Task);
-	  return;
-	}
+  foreach (const QString &pattern, reservedWordPattern) {
+    rule.pattern = QRegExp(pattern);
+    rule.format = reservedWordFormat;
+    highlightingRules.append(rule);
+  }
+
+  foreach (const QString &pattern, unitPattern) {
+    rule.pattern = QRegExp(pattern);
+    rule.format = unitFormat;
+    highlightingRules.append(rule);
+  }
+
+  foreach (const QString &pattern, datatypePattern) {
+    rule.pattern = QRegExp(pattern);
+    rule.format = datatypeFormat;
+    highlightingRules.append(rule);
+  }
+
+  foreach (const QString &pattern, directivePattern) {
+    rule.pattern = QRegExp(pattern);
+    rule.format = directiveFormat;
+    highlightingRules.append(rule);
+  }
+
+  foreach (const QString &pattern, functionPattern) {
+    rule.pattern = QRegExp(pattern);
+    rule.format = functionFormat;
+    highlightingRules.append(rule);
+  }
+
+  foreach (const QString &pattern, commentPattern) {
+    rule.pattern = QRegExp(pattern);
+    rule.format = commentFormat;
+    highlightingRules.append(rule);
   }
 }
 
 // ---------------------------------------------------
-// reserved VHDL attributes in alphabetical order
-pChar VHD_List_Attrib_A[] = {"active", "ascending", 0};
-pChar VHD_List_Attrib_B[] = {"base", 0};
-pChar VHD_List_Attrib_D[] = {"delayed", 0};
-pChar VHD_List_Attrib_E[] = {"event", 0};
-pChar VHD_List_Attrib_H[] = {"high", 0};
-pChar VHD_List_Attrib_I[] = {"image", 0};
-pChar VHD_List_Attrib_L[] = {"last_active", "last_event", "last_value", "left",
-			     "leftof", "length", "low", 0};
-pChar VHD_List_Attrib_P[] = {"pos", "pred", 0};
-pChar VHD_List_Attrib_Q[] = {"quiet", 0};
-pChar VHD_List_Attrib_R[] = {"range", "reverse_range", "right", "rightof", 0};
-pChar VHD_List_Attrib_S[] = {"stable", "succ", 0};
-pChar VHD_List_Attrib_T[] = {"transaction", 0};
-pChar VHD_List_Attrib_V[] = {"val", "value", 0};
+void SyntaxHighlighter::highlightBlock(const QString& text) {
 
-ppChar VHD_Attribute_List[] =
-  {(ppChar)&VHD_List_Attrib_A, (ppChar)&VHD_List_Attrib_B, 0,
-   (ppChar)&VHD_List_Attrib_D, (ppChar)&VHD_List_Attrib_E, 0,
-   0, (ppChar)&VHD_List_Attrib_H, (ppChar)&VHD_List_Attrib_I,
-   0, 0, (ppChar)&VHD_List_Attrib_L, 0, 0, 0,
-   (ppChar)&VHD_List_Attrib_P, (ppChar)&VHD_List_Attrib_Q,
-   (ppChar)&VHD_List_Attrib_R, (ppChar)&VHD_List_Attrib_S,
-   (ppChar)&VHD_List_Attrib_T, 0, (ppChar)&VHD_List_Attrib_V};
 
-void SyntaxHighlighter::markAttribute(const QString& text, int start, int len)
-{
-  QString Word = text.mid(start, len).lower();
-  int idx = (int)(Word.at(0).latin1() - 'a');
-  if(idx < 0 || idx > 22)
-    return;
-  pChar *List = VHD_Attribute_List[idx];
+foreach (const HighlightingRule &rule, highlightingRules) {
+         QRegExp expression(rule.pattern);
+         int index = expression.indexIn(text);
+         while (index >= 0) {
+             int length = expression.matchedLength();
+             setFormat(index, length, rule.format);
+             index = expression.indexIn(text, index + length);
+         }
+  }
 
-  if(List)
-    for(; *List != 0; List++)
-      if(Word == *List) {
-        setFormat(start-1, len+1, QucsSettings.Attribute);
-        return;
-      }
 }

@@ -18,12 +18,12 @@
 #ifndef TEXTDOC_H
 #define TEXTDOC_H
 
+
+#include <QTextEdit>
 #include <q3textedit.h>
 #include <qfont.h>
 
 #include "qucsdoc.h"
-//Added by qt3to4:
-#include <Q3PopupMenu>
 
 class SyntaxHighlighter;
 
@@ -40,7 +40,7 @@ extern const char *empty_xpm[];    // provides same height than "smallsave_xpm"
 #define DEV_MASK_TYP 0xFF00
 #define DEV_DEF      0x0200 // default value
 
-class TextDoc : public Q3TextEdit, public QucsDoc {
+class TextDoc : public QTextEdit, public QucsDoc {
   Q_OBJECT
 public: 
   TextDoc (QucsApp *, const QString&);
@@ -49,9 +49,7 @@ public:
   void  setName (const QString&);
   bool  load ();
   int   save ();
-  void  print (QPrinter*, QPainter*, bool, bool);
   float zoomBy (float);
-  void  showAll ();
   void  showNoZoom ();
   void  becomeCurrent (bool);
   bool  loadSimulationTime (QString&);
@@ -78,10 +76,10 @@ public:
   bool loadSettings (void);
   bool saveSettings (void);
 
-  Q3PopupMenu * createPopupMenu (const QPoint&);
+  QMenu* createStandardContextMenu(const QPoint&);
 
 public slots:
-  void slotCursorPosChanged (int, int);
+  void slotCursorPosChanged ();
   void slotSetChanged ();
 
 private:

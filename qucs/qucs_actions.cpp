@@ -127,7 +127,7 @@ void QucsApp::slotEditActivate (bool on)
 {
   TextDoc * Doc = (TextDoc *) DocumentTab->currentPage ();
   if (isTextDocument (Doc)) {
-    Doc->clearParagraphBackground (Doc->tmpPosX);
+    //TODO Doc->clearParagraphBackground (Doc->tmpPosX);
     Doc->commentSelected ();
 
     editActivate->blockSignals (true);
@@ -147,7 +147,8 @@ void QucsApp::slotEditDelete(bool on)
   TextDoc *Doc = (TextDoc*)DocumentTab->currentPage();
   if(Doc->inherits("QTextEdit")) {
     Doc->viewport()->setFocus();
-    Doc->del();
+    //Doc->del();
+    Doc->textCursor().deleteChar();
 
     editDelete->blockSignals(true);
     editDelete->setOn(false);  // release toolbar button
@@ -291,12 +292,14 @@ void QucsApp::slotInsertEntity ()
 {
   TextDoc * Doc = (TextDoc *) DocumentTab->currentPage ();
   Doc->viewport()->setFocus ();
-  Doc->clearParagraphBackground (Doc->tmpPosX);
+  //TODO Doc->clearParagraphBackground (Doc->tmpPosX);
   Doc->insertSkeleton ();
 
-  int x, y;
-  Doc->getCursorPosition (&x, &y);
-  Doc->slotCursorPosChanged (x, y);
+  //int x, y;
+  //Doc->getCursorPosition (&x, &y);
+  //x = Doc->textCursor().blockNumber();
+  //y = Doc->textCursor().columnNumber();
+  Doc->slotCursorPosChanged();
 }
   
 // -----------------------------------------------------------------------
@@ -551,7 +554,8 @@ void QucsApp::slotSelectAll()
   QWidget *Doc = DocumentTab->currentPage();
   if(Doc->inherits("QTextEdit")) {
     ((TextDoc*)Doc)->viewport()->setFocus();
-    ((TextDoc*)Doc)->selectAll(true);
+    //((TextDoc*)Doc)->selectAll(true);
+    ((TextDoc*)Doc)->selectAll();
   }
   else {
     ((Schematic*)Doc)->selectElements(INT_MIN, INT_MIN, INT_MAX, INT_MAX, true);

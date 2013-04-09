@@ -28,6 +28,7 @@
 #include <q3syntaxhighlighter.h>
 //Added by qt3to4:
 #include <Q3PtrList>
+#include <Q3TextEdit>
 
 #include "main.h"
 #include "qucs.h"
@@ -1094,7 +1095,6 @@ void QucsApp::slotTextNew()
 {
   statusBar()->message(tr("Creating new text editor..."));
   editText->setHidden(true); // disable text edit of component property
-
   new TextDoc(this, "");
 
   statusBar()->message(tr("Ready."));
@@ -1415,6 +1415,7 @@ bool QucsApp::closeAllFiles()
 // Is called when another document is selected via the TabBar.
 void QucsApp::slotChangeView(QWidget *w)
 {
+
   editText->setHidden (true); // disable text edit of component property
   QucsDoc * Doc;
   if(w==NULL)return;
@@ -1423,6 +1424,7 @@ void QucsApp::slotChangeView(QWidget *w)
     TextDoc *d = (TextDoc*)w;
     Doc = (QucsDoc*)d;
     // update menu entries, etc. if neccesary
+    magAll->setDisabled(true);
     if(cursorLeft->isEnabled())
       switchSchematicDoc (false);
   }
@@ -1430,6 +1432,7 @@ void QucsApp::slotChangeView(QWidget *w)
   else {
     Schematic *d = (Schematic*)w;
     Doc = (QucsDoc*)d;
+    magAll->setDisabled(false);
     // already in schematic?
     if(cursorLeft->isEnabled()) {
       // which mode: schematic or symbol editor ?
@@ -1568,14 +1571,26 @@ void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
 
 
 // --------------------------------------------------------------
+// TODO -> in case of textdocument, cast to qtextedit & print
 void QucsApp::printCurrentDocument(bool fitToPage)
 {
   statusBar()->message(tr("Printing..."));
   editText->setHidden(true); // disable text edit of component property
 
-  if(isTextDocument (DocumentTab->currentPage()))
-    Printer->setOrientation(QPrinter::Portrait);
-  else
+  if(isTextDocument (DocumentTab->currentPage())) {
+    QWidget *w;
+    w = DocumentTab->currentPage();
+    QTextEdit *temp =  (QTextEdit*)w;
+
+    QPrintDialog *dialog = new QPrintDialog(Printer, this);
+    dialog->setWindowTitle(tr("Print Document"));
+    dialog->addEnabledOption(QAbstractPrintDialog::PrintSelection);
+     if (dialog->exec() == QDialog::Accepted)
+         temp->print(Printer);
+
+  }
+    //Printer->setOrientation(QPrinter::Portrait);
+  else {
     Printer->setOrientation(QPrinter::Landscape);
 
   //Printer->setPrintRange(QPrinter::AllPages);
@@ -1597,7 +1612,7 @@ void QucsApp::printCurrentDocument(bool fitToPage)
           goto Error;
     }
   }
-
+  }
   statusBar()->message(tr("Ready."));
   return;
 
@@ -2192,7 +2207,7 @@ void QucsApp::changeSchematicSymbolMode(Schematic *Doc)
 
 // ---------------------------------------------------------
 bool QucsApp::isTextDocument(QWidget *w) {
-  if (w->inherits("Q3TextEdit"))
+  if (w->inherits("QTextEdit"))
     return true;
   return false;
 }

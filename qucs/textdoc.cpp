@@ -19,19 +19,7 @@
 # include <config.h>
 #endif
 #include <QtGui>
-#include <qlabel.h>
-#include <qaction.h>
-#include <qpixmap.h>
-#include <qprinter.h>
-#include <qfileinfo.h>
-#include <qtabwidget.h>
-#include <qmessagebox.h>
-#include <q3paintdevicemetrics.h>
-#include <qfont.h>
-#include <q3popupmenu.h>
-#include <q3syntaxhighlighter.h>
-//Added by qt3to4:
-#include <Q3TextStream>
+#include <QtCore>
 
 #include "main.h"
 #include "qucs.h"
@@ -41,14 +29,14 @@
 #include "components/verilogfile.h"
 #include "components/vafile.h"
 
-TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QucsDoc(App_, Name_)
+TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QucsDoc(App_, Name_), QTextEdit()
 {
   TextFont = QFont("Courier New");
   TextFont.setPointSize(QucsSettings.font.pointSize()-1);
   TextFont.setStyleHint(QFont::Courier);
   TextFont.setFixedPitch(true);
   setFont(TextFont);
-  setCurrentFont(TextFont);
+  //Removed, otherwise zoomIn/Out does not work setCurrentFont(TextFont);
 
   simulation = true;
   Library = "";
@@ -58,28 +46,29 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QucsDoc(App_, Name_)
 
   tmpPosX = tmpPosY = 1;  // set to 1 to trigger line highlighting
   Scale = (float)TextFont.pointSize();
-  setUndoDepth(QucsSettings.maxUndo);
+  //TODO (not supported) setUndoDepth(QucsSettings.maxUndo);
   setLanguage (Name_);
   QFileInfo Info (Name_);
-  
+
   if(App) {
-    if(Name_.isEmpty())
-      App->DocumentTab->addTab(this, QPixmap(empty_xpm),
-                            QObject::tr("untitled"));
-    else
-      App->DocumentTab->addTab(this, QPixmap(empty_xpm),
-                            Info.fileName());
-	App->DocumentTab->setCurrentPage(App->DocumentTab->indexOf(this));
+    if(Name_.isEmpty()) {
+      App->DocumentTab->addTab(this, QPixmap(empty_xpm), QObject::tr("untitled"));
+      }
+    else {
+      App->DocumentTab->addTab(this, QPixmap(empty_xpm), Info.fileName());
+    }
+    App->DocumentTab->setCurrentPage(App->DocumentTab->indexOf(this));
+
     viewport()->setFocus();
 
-    setWordWrap(Q3TextEdit::NoWrap);
+    setWordWrapMode(QTextOption::NoWrap);
     setPaletteBackgroundColor(QucsSettings.BGColor);
     connect(this, SIGNAL(textChanged()), SLOT(slotSetChanged()));
-    connect(this, SIGNAL(cursorPositionChanged(int, int)),
-            SLOT(slotCursorPosChanged(int, int)));
+    connect(this, SIGNAL(cursorPositionChanged()),
+            SLOT(slotCursorPosChanged()));
 
     syntaxHighlight = new SyntaxHighlighter(this);
-    syntaxHighlight->setLanguage (language);
+    syntaxHighlight->setLanguage(language);
   }
 }
 
@@ -200,8 +189,7 @@ void TextDoc::setName (const QString& Name_)
 void TextDoc::becomeCurrent (bool)
 {
   int x, y;
-  getCursorPosition (&x, &y);
-  slotCursorPosChanged (x, y);
+  slotCursorPosChanged();
   viewport()->setFocus ();
 
   if (isUndoAvailable ())
@@ -242,15 +230,21 @@ void TextDoc::becomeCurrent (bool)
 }
 
 // ---------------------------------------------------
-void TextDoc::slotCursorPosChanged(int x, int y)
+void TextDoc::slotCursorPosChanged()
 {
-  if(tmpPosX > x)
-    clearParagraphBackground(tmpPosX);
-  else
-    for(int z=tmpPosX; z<x; z++)
-      clearParagraphBackground(z);
-  if(tmpPosX != x)
-    setParagraphBackgroundColor(x, QColor(240, 240, 255));
+  QTextCursor pos = textCursor();
+  int x = pos.blockNumber();
+  int y = pos.columnNumber();
+
+  // TODO This seems to be difficult; maybe http://pepper.troll.no/s60prereleases/doc/widgets-codeeditor.html
+
+  //if(tmpPosX > x)
+    //TODO clearParagraphBackground(tmpPosX);
+  //else
+    //for(int z=tmpPosX; z<x; z++)
+      //TODO clearParagraphBackground(z);
+  //if(tmpPosX != x)
+    //TODO setParagraphBackgroundColor(x, QColor(240, 240, 255));
   App->printCursorPosition(x+1, y+1);
   tmpPosX = x;
   tmpPosY = y;
@@ -273,9 +267,10 @@ void TextDoc::slotSetChanged()
 }
 
 // ---------------------------------------------------
-Q3PopupMenu *TextDoc::createPopupMenu( const QPoint &pos )
+QMenu *TextDoc::createStandardContextMenu( const QPoint &pos )
 {
-   Q3PopupMenu *popup = Q3TextEdit::createPopupMenu( pos );
+  QMenu *popup = QTextEdit::createStandardContextMenu(pos);
+
    if (language != LANG_OCTAVE) {
      App->fileSettings->addTo(popup);
    }
@@ -285,18 +280,18 @@ Q3PopupMenu *TextDoc::createPopupMenu( const QPoint &pos )
 // ---------------------------------------------------
 bool TextDoc::load ()
 {
+  
   QFile file (DocName);
   if (!file.open (QIODevice::ReadOnly))
     return false;
   setLanguage (DocName);
 
-  Q3TextStream stream (&file);
+  QTextStream stream (&file);
   setText (stream.read ());
   setModified (false);
   slotSetChanged ();
   file.close ();
   lastSaved = QDateTime::currentDateTime ();
-
   loadSettings ();
   SimOpenDpl = simulation ? true : false;
   return true;
@@ -323,84 +318,28 @@ int TextDoc::save ()
   return 0;
 }
 
-// -----------------------------------------------------------
-void TextDoc::print(QPrinter *Printer, QPainter *Painter, bool printAll, bool)
-{
-  Painter->setFont(TextFont);
-
-  sync();   // formatting whole text
-
-  Q3PaintDeviceMetrics smetrics(QPainter(this).device());
-  Q3PaintDeviceMetrics pmetrics(Painter->device());
-  int margin  = 54;    // margin at each side (unit is point)
-  int marginX = margin * pmetrics.logicalDpiX() / smetrics.logicalDpiX();
-  int marginY = margin * pmetrics.logicalDpiY() / smetrics.logicalDpiY();
-  QRect printArea(
-        marginX, marginY, pmetrics.width() - 2*marginX,
-        pmetrics.height() - 2*marginY - Painter->fontMetrics().lineSpacing());
-
-  int linesPerPage = printArea.height() / Painter->fontMetrics().lineSpacing();
-
-  int PageCount, PageNo = 1;
-  QString s, printText;
-  if(printAll) {
-    printText = text();
-    PageCount = paragraphs();
-  }
-  else {
-    int line1, col1, line2, col2;
-    printText = selectedText();
-    getSelection(&line1, &col1, &line2, &col2);
-    if(line1 < 0) {
-      QMessageBox::critical(this, tr("Error"), tr("There is no selection!"));
-      return;
-    }
-    PageCount = line2 - line1 + 1;
-  }
-  PageCount = (PageCount + linesPerPage - 1) / linesPerPage;
-  
-  for(;;) {
-    if(Printer->aborted())
-      break;
-    Painter->drawText(printArea, 0, printText.section('\n', 0, linesPerPage-1));
-    printText = printText.section('\n', linesPerPage);
-
-    s = tr("Page %1 of %2").arg(PageNo).arg(PageCount);
-    Painter->drawText(printArea.right() - Painter->fontMetrics().width(s),
-               printArea.bottom() + Painter->fontMetrics().lineSpacing(), s);
-    if(printText.isEmpty())
-      break;
-    Printer->newPage();
-    PageNo++;
-  }
-}
 
 // ---------------------------------------------------
 float TextDoc::zoomBy(float s)
 {
-  if(s < 1.0f) s = -1.0f/s;
-  Scale += s;
-  if(Scale > 40.0f) Scale = 40.0f;
-  if(Scale <  4.0f) Scale =  4.0f;
-  zoomTo((int)(Scale+0.5f));
+  if(s == 2.0) {
+    this->zoomIn(2);
+  }
+  else {
+    this->zoomOut(2); 
+  }
   return Scale;
 }
 
-// ---------------------------------------------------
-void TextDoc::showAll()
-{
-  sync();
-  Scale *= float(visibleHeight()) / float(contentsHeight());
-  if(Scale > 40.0f) Scale = 40.0f;
-  if(Scale <  4.0f) Scale =  4.0f;
-  zoomTo((int)(Scale+0.5f));
-}
 
 // ---------------------------------------------------
 void TextDoc::showNoZoom()
 {
-  Scale = (float)TextFont.pointSize();
-  zoomTo(TextFont.pointSize());
+  TextFont = QFont("Courier New");
+  TextFont.setPointSize(QucsSettings.font.pointSize()-1);
+  TextFont.setStyleHint(QFont::Courier);
+  TextFont.setFixedPitch(true);
+  setFont(TextFont);
 }
 
 // ---------------------------------------------------
