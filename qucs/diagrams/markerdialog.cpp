@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include "markerdialog.h"
 
 #include <qlayout.h>
@@ -24,6 +24,7 @@
 #include <qvalidator.h>
 //Added by qt3to4:
 #include <Q3GridLayout>
+#include "diagram.h"
 
 
 MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
@@ -39,7 +40,13 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   Precision->setText(QString::number(pMarker->Precision));
   Precision->setValidator(new QIntValidator(0, 12, this));
   g->addWidget(Precision, 0, 1);
-
+	if(pMarker->Diag->Name=="Smith") //S parameter also displayed as Z, need Z0 here
+  {
+		g->addWidget(new QLabel(tr("Z0: "), this), 2,0);
+		SourceImpedance = new QLineEdit(this);
+  	SourceImpedance->setText(QString::number(pMarker->Z0));
+		g->addWidget(SourceImpedance,2,1);
+	}
   g->addWidget(new QLabel(tr("Number Notation: "), this), 1,0);
   NumberBox = new QComboBox(this);
   NumberBox->insertItem(tr("real/imaginary"));
@@ -47,10 +54,12 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   NumberBox->insertItem(tr("magnitude/angle (radian)"));
   NumberBox->setCurrentItem(pMarker->numMode);
   g->addWidget(NumberBox, 1, 1);
-
+  
   TransBox = new QCheckBox(tr("transparent"), this);
   TransBox->setChecked(pMarker->transparent);
   g->addMultiCellWidget(TransBox,3,3,0,1);
+
+  
 
   Q3HBox *b = new Q3HBox(this);
   b->setSpacing(5);
@@ -77,6 +86,15 @@ void MarkerDialog::slotAcceptValues()
     pMarker->Precision = tmp;
     changed = true;
   }
+	if(pMarker->Diag->Name=="Smith")
+	{
+			double SrcImp = SourceImpedance->text().toDouble();
+			if(SrcImp != pMarker->Z0)
+			{
+					pMarker->Z0 = SrcImp;
+					changed = true;
+			}
+	}
   if(NumberBox->currentItem() != pMarker->numMode) {
     pMarker->numMode = NumberBox->currentItem();
     changed = true;

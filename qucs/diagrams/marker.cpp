@@ -19,6 +19,7 @@
 #include "diagram.h"
 #include "graph.h"
 #include "main.h"
+#include "../dialogs/matchdialog.h" //For r2z function
 
 #include <qstring.h>
 #include <qwidget.h>
@@ -27,6 +28,7 @@
 #include <limits.h>
 #include <math.h>
 #include <stdlib.h>
+
 
 
 Marker::Marker(Diagram *Diag_, Graph *pg_, int _nn, int cx_, int cy_)
@@ -49,6 +51,7 @@ Marker::Marker(Diagram *Diag_, Graph *pg_, int _nn, int cx_, int cy_)
 
   x1 =  cx + 60;
   y1 = -cy - 60;
+	Z0 = 50;		//Used for Smith chart marker, to calculate impedance
 }
 
 Marker::~Marker()
@@ -210,11 +213,25 @@ void Marker::createText()
   Text += pGraph->Var + ": ";
   switch(numMode) {
     case 0: Text += complexRect(*pz, *(pz+1), Precision);
-            break;
+      break;
     case 1: Text += complexDeg(*pz, *(pz+1), Precision);
-            break;
+      break;
     case 2: Text += complexRad(*pz, *(pz+1), Precision);
-            break;
+      break;
+  }
+  if(Diag->Name=="Smith") //impedance is useful as well here
+  {
+	double Zr, Zi; 
+	Zr = *pz;
+	Zi = *(pz+1);
+	  
+	
+	MatchDialog::r2z(Zr, Zi, Z0);
+	QString Var = pGraph->Var;
+	if(Var.startsWith("S"))
+  		Text += "\n"+ Var.replace('S', 'Z')+": " +complexRect(Zr, Zi, Precision);
+	else
+		Text += "\nZ("+ Var+"): " +complexRect(Zr, Zi, Precision);
   }
   VarPos[nVarPos] = *pz;
   VarPos[nVarPos+1] = *(pz+1);

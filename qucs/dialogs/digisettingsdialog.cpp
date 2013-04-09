@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include <QtGui>
 #include <q3hbox.h>
 #include <qlabel.h>
 #include <qlayout.h>

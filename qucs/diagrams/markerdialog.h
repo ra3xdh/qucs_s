@@ -17,13 +17,13 @@
 
 #ifndef MARKERDIALOG_H
 #define MARKERDIALOG_H
-
+#include "marker.h"
 #include <qdialog.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
 
-#include "marker.h"
+
 
 
 class MarkerDialog : public QDialog  {
@@ -40,6 +40,7 @@ public:
 
   QComboBox  *NumberBox;
   QLineEdit  *Precision;
+  QLineEdit  *SourceImpedance;
   QCheckBox  *TransBox;
 };
 

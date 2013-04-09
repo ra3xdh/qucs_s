@@ -18,7 +18,7 @@
 #ifndef MARKER_H
 #define MARKER_H
 
-
+#include <QtGui>
 #include "element.h"
 #include "viewpainter.h"
 
@@ -61,6 +61,7 @@ public:
 
   int Precision; // number of digits to show
   int numMode;   // real/imag or polar (deg/rad)
+	double Z0;		//Only used in smith chart marker, to convert S to Z
 };
 
 #endif
