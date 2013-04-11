@@ -286,7 +286,10 @@ void QucsLib::slotSelectLibrary(int Index)
       Library->removeItem(End); // if search result still there -> remove it
     else  return;
   }
-
+  if(Library->text(0) == "")
+  {
+    Library->removeItem(0);
+  }
   CompList->clear();
   LibraryComps.clear();
   DefaultSymbol = "";
