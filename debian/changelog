@@ -1,3 +1,50 @@
+qucs (0.0.17.130502-2) quantal; urgency=low
+
+  * Added beginnings of m-code transient solver interface.
+  * remove first library in qucslib if empty
+  * Added impedance to marker in Smith Chart
+  * resolved some problems with freehdl simulation
+  * ported Textdoc
+  * Contextmenu for Content only available for children
+  * Improved the style of the component tab...
+  * Removed q3filedialogs
+  * removed q3accel
+  * Fixed error in readProjectFiles
+  * Fixed mailing list suggestion by Sepp Käsbauer 10-3-2013
+  * Ported Content to QTreeWidget...
+  * Ported Q3FileDialogs in qucs.cpp
+  * Changed ContextMenu of Content Tab
+  * Removing qt3support in qucs, part 1
+  * Merge branch 'ClemensFMN' into qucs-qt4-qt3support
+  * Merge branch 'MikeBrinson' into qucs-qt4-qt3support
+  * Modified build system to accomodate adms, now has --with-mkadms option
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 02 May 2013 08:45:27 +0200
+
+qucs (0.0.17.130502-1) precise; urgency=low
+
+  * Added beginnings of m-code transient solver interface.
+  * remove first library in qucslib if empty
+  * Added impedance to marker in Smith Chart
+  * resolved some problems with freehdl simulation
+  * ported Textdoc
+  * Contextmenu for Content only available for children
+  * Improved the style of the component tab...
+  * Removed q3filedialogs
+  * removed q3accel
+  * Fixed error in readProjectFiles
+  * Fixed mailing list suggestion by Sepp Käsbauer 10-3-2013
+  * Ported Content to QTreeWidget...
+  * Ported Q3FileDialogs in qucs.cpp
+  * Changed ContextMenu of Content Tab
+  * Removing qt3support in qucs, part 1
+  * Merge branch 'ClemensFMN' into qucs-qt4-qt3support
+  * Merge branch 'MikeBrinson' into qucs-qt4-qt3support
+  * Modified build system to accomodate adms, now has --with-mkadms option
+
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 02 May 2013 08:40:33 +0200
+
 qucs (0.0.17-1) quantal; urgency=low
 
   * Created Qucs Qt4 Port
