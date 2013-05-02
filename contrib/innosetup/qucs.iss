@@ -19,12 +19,12 @@
 ; Boston, MA 02110-1301, USA.
 ;
 
-#define RELEASE "0.0.16"
+#define RELEASE "0.0.17"
 #define BASENAME "qucs"
 #define APPNAME "Qucs"
 #define APPVERNAME "Quite Universal Circuit Simulator 0.0.16 binary package for Win32"
 #define URL "http://qucs.sourceforge.net"
-#define TREE "C:\home\qucstree"
+#define TREE "Z:\home\franss\qucs-git\release\qucs-win32-bin\"
 
 [Setup]
 AppName={# APPNAME}
@@ -49,6 +49,8 @@ ChangesEnvironment=yes
 Root: HKCU; Subkey: Environment; ValueType: string; ValueName: QUCSDIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
 Root: HKCU; Subkey: Environment; ValueType: string; ValueName: HOME; ValueData: {code:HomeDir}; Flags: createvalueifdoesntexist; MinVersion: 0,4.00.1381
 Root: HKCU; Subkey: Environment; ValueType: string; ValueName: ASCODIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
+Root: HKCU; Subkey: Environment; ValueName: "Path"; ValueType: "string"; ValueData: "{app}\bin;{olddata}"; Check: NotOnPathAlready(); Flags: preservestringtype;
+
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -102,3 +104,48 @@ begin
   Result := Dir;
 end;
 
+
+
+function NotOnPathAlready(): Boolean;
+var
+  BinDir, Path: String;
+begin
+  Log('Checking if Gtk2Hs\bin dir is already on the %PATH%');
+  if RegQueryStringValue(HKEY_CURRENT_USER, 'Environment', 'Path', Path) then
+  begin // Successfully read the value
+    Log('HKCU\Environment\PATH = ' + Path);
+    BinDir := ExpandConstant('{app}\bin');
+    Log('Looking for Gtk2Hs\bin dir in %PATH%: ' + BinDir + ' in ' + Path);
+    if Pos(LowerCase(BinDir), Lowercase(Path)) = 0 then
+    begin
+      Log('Did not find Gtk2Hs\bin dir in %PATH% so will add it');
+      Result := True;
+    end
+    else
+    begin
+      Log('Found Gtk2Hs bin dir in %PATH% so will not add it again');
+      Result := False;
+    end
+  end
+  else // The key probably doesn't exist
+  begin
+    Log('Could not access HKCU\Environment\PATH so assume it is ok to add it');
+    Result := True;
+  end;
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+  BinDir, Path: String;
+begin
+  if (CurUninstallStep = usPostUninstall)
+     and (RegQueryStringValue(HKEY_CURRENT_USER, 'Environment', 'PATH', Path)) then
+  begin
+    BinDir := ExpandConstant('{app}\bin');
+    if Pos(LowerCase(BinDir) + ';', Lowercase(Path)) <> 0 then
+    begin
+      StringChange(Path, BinDir + ';', '');
+      RegWriteStringValue(HKEY_CURRENT_USER, 'Environment', 'PATH', Path);
+    end;
+  end;
+end;
