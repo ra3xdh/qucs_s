@@ -101,8 +101,11 @@ unset osversion
 dnl Release specific. Uncomment these as required.
 # AC_CONFIG_SUBDIRS(qucs-core)
 # AC_CONFIG_SUBDIRS(freehdl)
+# AC_CONFIG_SUBDIRS(asco)
+
 # RELEASEDIRS="qucs-core"
 # RELEASEDIRS="$RELEASEDIRS freehdl"
+# RELEASEDIRS="$RELEASEDIRS asco"
 AC_SUBST(RELEASEDIRS)
 
 dnl Check for language support.
