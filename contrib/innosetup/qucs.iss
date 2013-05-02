@@ -22,9 +22,9 @@
 #define RELEASE "0.0.17"
 #define BASENAME "qucs"
 #define APPNAME "Qucs"
-#define APPVERNAME "Quite Universal Circuit Simulator 0.0.16 binary package for Win32"
+#define APPVERNAME "Quite Universal Circuit Simulator 0.0.17 binary package for Win32"
 #define URL "http://qucs.sourceforge.net"
-#define TREE "Z:\home\franss\qucs-git\release\qucs-win32-bin\"
+#define TREE "c:\qucs-git\release\qucs-win32-bin\"
 
 [Setup]
 AppName={# APPNAME}
@@ -61,6 +61,9 @@ Source: "{# TREE}\bin\*"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubd
 Source: "{# TREE}\share\*"; DestDir: "{app}\share"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{# TREE}\misc\*"; DestDir: "{app}\misc"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+Source: "{# TREE}\iverilog-0.9.6_setup.exe"; DestDir: "{tmp}"
+Source: "{# TREE}\freehdl-0.0.8-setup.exe"; DestDir: "{tmp}"
+Source: "{# TREE}\mingw32-g++-0.0.2-setup.exe"; DestDir: "{tmp}"
 
 [Icons]
 Name: "{group}\Quite Universal Circuit Simulator"; Filename: "{app}\bin\qucs.exe"; IconFilename: "{app}\misc\qucs64x64.ico"; WorkingDir: "{app}\bin"
@@ -70,7 +73,9 @@ Name: "{group}\{cm:UninstallProgram,Qucs}"; Filename: "{uninstallexe}"
 Name: "{userdesktop}\Qucs"; Filename: "{app}\bin\qucs.exe"; IconFilename: "{app}\misc\qucs64x64.ico"; WorkingDir: "{app}\bin"; Tasks: desktopicon
 
 [Run]
-; Filename: "{app}\bin\qucs.exe"; Description: "{cm:LaunchProgram,Qucs}"; Flags: nowait postinstall skipifsilent
+Filename: "{tmp}\iverilog-0.9.6_setup.exe"; Parameters: ""; Check: ShouldInstallVerilog 
+Filename: "{tmp}\mingw32-g++-0.0.2-setup.exe"; Parameters: ""; Check: ShouldInstallMingw
+Filename: "{tmp}\freehdl-0.0.8-setup.exe"; Parameters: ""; Check: ShouldInstallFreehdl 
 
 [Code]
 function HomeDir(Param: String): String;
@@ -149,3 +154,37 @@ begin
     end;
   end;
 end;
+
+
+
+function ShouldInstallVerilog: Boolean;
+begin
+  Result := False;
+  // Ask the user a Yes/No question
+  if MsgBox('Install iverilog?', mbConfirmation, MB_YESNO) = IDYES then
+  begin
+    Result := True;
+  end;
+
+
+end;
+
+function ShouldInstallFreehdl: Boolean;
+begin
+  Result := False;
+  if MsgBox('Install Freehdl?', mbConfirmation, MB_YESNO) = IDYES then
+  begin
+    Result := True;
+  end;
+end;
+
+function ShouldInstallMingw: Boolean;
+begin
+  Result := False;
+  if MsgBox('Install Mingw32? This package is required if you want to install Freehdl', mbConfirmation, MB_YESNO) = IDYES then
+  begin
+    Result := True;
+  end;
+end;
+
+
