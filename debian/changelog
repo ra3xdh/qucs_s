@@ -1,3 +1,15 @@
+qucs (0.0.17.130503-2) quantal; urgency=low
+
+  * Added asco
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Fri, 03 May 2013 10:00:47 +0200
+
+qucs (0.0.17.130503-1) precise; urgency=low
+
+  * Added asco
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Fri, 03 May 2013 09:43:08 +0200
+
 qucs (0.0.17.130502-2) quantal; urgency=low
 
   * Added beginnings of m-code transient solver interface.
