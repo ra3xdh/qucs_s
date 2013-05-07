@@ -94,7 +94,7 @@ done
 
 echo "Building mingw32"
 make clean
-INNOSETUP="/home/franss/.wine/drive_c/Program Files (x86)/Inno Setup 5/Compil32.exe"
+INNOSETUP="$HOME/.wine/drive_c/Program Files (x86)/Inno Setup 5/Compil32.exe"
 cd ..
 WINDIR=$PWD/qucs-win32-bin
 cd qucs-$RELEASE
@@ -121,6 +121,8 @@ cp $QTDIR/bin/QtCore4.dll  $WINDIR/bin
 cp $QTDIR/bin/QtGui4.dll  $WINDIR/bin
 cp $QTDIR/bin/QtNetwork4.dll  $WINDIR/bin
 cp $QTDIR/bin/QtXml4.dll  $WINDIR/bin
+cp $QTDIR/bin/QtSql4.dll  $WINDIR/bin
+
 cp /usr/lib/gcc/i586-mingw32msvc/4.2.1-sjlj/*.dll $WINDIR/bin
 
 wine "$INNOSETUP" /cc contrib/innosetup/qucs.iss
