@@ -279,6 +279,7 @@ void Module::registerModules (void) {
   REGISTER_VERILOGA_1 (MESFET);
   REGISTER_VERILOGA_2 (EKV26MOS, info, info_pmos);
   REGISTER_VERILOGA_1 (bsim3v34nMOS);
+  REGISTER_VERILOGA_1 (bsim3v34pMOS);
   REGISTER_VERILOGA_2 (hicumL0V1p2, info, info_pnp);
   REGISTER_VERILOGA_2 (hicumL0V1p2g, info, info_pnp);
   REGISTER_VERILOGA_2 (hicumL0V1p3, info, info_pnp);
