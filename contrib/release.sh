@@ -21,14 +21,25 @@ echo exporting git tree...
 git clone ./ release/
 mv release/examples release/qucs/examples/examples
 mv release/qucs-core release/qucs/
-mv release/qucs-doc release/qucs/
 mv release/qucs release/qucs-$RELEASE
 
 rm -rf release/.git
+cd release/qucs-doc
+./autogen.sh
+cd tutorial
+make tutorial
+make book
+cd ..
+cd technical
+make technical
+ps2pdf technical.ps
+cd ..
+
+find -name "*.pdf" |grep -v pics| xargs cp -t ../qucs-$RELEASE/qucs-doc
 
 
 #Include the asco archive
-cd release/qucs-$RELEASE
+cd ../qucs-$RELEASE
 wget https://downloads.sourceforge.net/project/asco/asco/0.4.8/ASCO-0.4.8.tar.gz
 tar -zxvf ASCO-0.4.8.tar.gz
 rm ASCO-0.4.8.tar.gz
