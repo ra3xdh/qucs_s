@@ -5,6 +5,7 @@
 # Automake input file.
 #
 # Copyright (C) 2004-2011 Stefan Jahn <stefan@lkcc.org>
+# New models added 2013 Mike Brinson mbrin72043@yahoo.co.uk
 #
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -54,7 +55,7 @@ XPMS = ac_voltage.png arrow.png capacitor.png dc_current.png dc_voltage.png   \
   pad4bit.png binarytogrey4bit.png greytobinary4bit.png comp_1bit.png         \
   comp_2bit.png comp_4bit.png hpribin4bit.png msrstub.png phototransistor.png \
   rlcg.png nigbt.png hybrid.png ctline.png tunneldiode.png hicumL2V2p31n.png  \
-  bsim3v34nMOS.png  
+  bsim3v34nMOS.png  bsim3v34pMOS.png  
 
 # toolbar pictures
 PNGS = fileopen.png filesave.png editdelete.png editcut.png editcopy.png      \

@@ -148,6 +148,7 @@
 #include "MESFET.h"
 #include "EKV26MOS.h"
 #include "bsim3v34nMOS.h"
+#include "bsim3v34pMOS.h"
 #include "hicumL0V1p2.h"
 #include "hicumL0V1p2g.h"
 #include "hicumL0V1p3.h"
