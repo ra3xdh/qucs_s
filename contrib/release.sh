@@ -37,9 +37,14 @@ cd ..
 
 find -name "*.pdf" |grep -v pics| xargs cp -t ../qucs-$RELEASE/qucs-doc
 
+#including pdf versions of qucs-doc in archives
+cd ../qucs-$RELEASE
+cd qucs-doc
+./autogen.sh
+make distclean
+cd ..
 
 #Include the asco archive
-cd ../qucs-$RELEASE
 wget https://downloads.sourceforge.net/project/asco/asco/0.4.8/ASCO-0.4.8.tar.gz
 tar -zxvf ASCO-0.4.8.tar.gz
 rm ASCO-0.4.8.tar.gz
