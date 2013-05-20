@@ -19,8 +19,11 @@ fi
 echo exporting git tree...
 
 git clone ./ release/
+mv release/examples release/qucs/examples/examples
 mv release/qucs-core release/qucs/
+mv release/qucs-doc release/qucs/
 mv release/qucs release/qucs-$RELEASE
+
 rm -rf release/.git
 
 
@@ -53,6 +56,11 @@ cd ..
 
 sed -i 's/# AC_CONFIG_SUBDIRS(qucs-core)/AC_CONFIG_SUBDIRS(qucs-core)/g' configure.ac
 sed -i 's/# RELEASEDIRS="qucs-core"/RELEASEDIRS="qucs-core"/g' configure.ac
+sed -i 's/# AC_CONFIG_SUBDIRS($RELEASEDIRS qucs-doc)/AC_CONFIG_SUBDIRS($RELEASEDIRS qucs-doc)/g' configure.ac
+sed -i 's/# RELEASEDIRS="qucs-doc"/RELEASEDIRS="qucs-doc"/g' configure.ac
+sed -i 's/# AC_CONFIG_SUBDIRS(examples)/AC_CONFIG_SUBDIRS(examples)/g' configure.ac
+sed -i 's/# RELEASEDIRS="$RELEASEDIRS examples"/RELEASEDIRS="$RELEASEDIRS examples"/g' configure.ac
+
 #sed -i 's/# AC_CONFIG_SUBDIRS(freehdl)/AC_CONFIG_SUBDIRS(freehdl)/g' configure.ac
 #sed -i 's/# RELEASEDIRS="$RELEASEDIRS freehdl"/RELEASEDIRS="$RELEASEDIRS freehdl"/g' configure.ac
 #sed -i 's/# AC_CONFIG_SUBDIRS(verilog)/AC_CONFIG_SUBDIRS(verilog)/g' configure.ac

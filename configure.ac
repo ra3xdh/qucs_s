@@ -99,15 +99,19 @@ fi
 unset osversion
 
 dnl Release specific. Uncomment these as required.
-# AC_CONFIG_SUBDIRS(qucs-core)
+AC_CONFIG_SUBDIRS(qucs-core)
+AC_CONFIG_SUBDIRS(qucs-doc)
 # AC_CONFIG_SUBDIRS(freehdl)
 # AC_CONFIG_SUBDIRS(verilog)
-# AC_CONFIG_SUBDIRS(asco)
+AC_CONFIG_SUBDIRS(asco)
+AC_CONFIG_SUBDIRS(examples)
 
-# RELEASEDIRS="qucs-core"
+RELEASEDIRS="qucs-core"
+RELEASEDIRS="$RELEASEDIRS qucs-doc"
 # RELEASEDIRS="$RELEASEDIRS freehdl"
 # RELEASEDIRS="$RELEASEDIRS verilog"
-# RELEASEDIRS="$RELEASEDIRS asco"
+RELEASEDIRS="$RELEASEDIRS asco"
+RELEASEDIRS="$RELEASEDIRS examples"
 AC_SUBST(RELEASEDIRS)
 
 dnl Check for language support.
