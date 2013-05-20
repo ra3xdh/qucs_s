@@ -67,15 +67,10 @@ cd ..
 
 sed -i 's/# AC_CONFIG_SUBDIRS(qucs-core)/AC_CONFIG_SUBDIRS(qucs-core)/g' configure.ac
 sed -i 's/# RELEASEDIRS="qucs-core"/RELEASEDIRS="qucs-core"/g' configure.ac
-sed -i 's/# AC_CONFIG_SUBDIRS($RELEASEDIRS qucs-doc)/AC_CONFIG_SUBDIRS($RELEASEDIRS qucs-doc)/g' configure.ac
-sed -i 's/# RELEASEDIRS="qucs-doc"/RELEASEDIRS="qucs-doc"/g' configure.ac
+sed -i 's/# AC_CONFIG_SUBDIRS(qucs-doc)/AC_CONFIG_SUBDIRS(qucs-doc)/g' configure.ac
+sed -i 's/# RELEASEDIRS="$RELEASEDIRS qucs-doc"/RELEASEDIRS="$RELEASEDIRS qucs-doc"/g' configure.ac
 sed -i 's/# AC_CONFIG_SUBDIRS(examples)/AC_CONFIG_SUBDIRS(examples)/g' configure.ac
 sed -i 's/# RELEASEDIRS="$RELEASEDIRS examples"/RELEASEDIRS="$RELEASEDIRS examples"/g' configure.ac
-
-#sed -i 's/# AC_CONFIG_SUBDIRS(freehdl)/AC_CONFIG_SUBDIRS(freehdl)/g' configure.ac
-#sed -i 's/# RELEASEDIRS="$RELEASEDIRS freehdl"/RELEASEDIRS="$RELEASEDIRS freehdl"/g' configure.ac
-#sed -i 's/# AC_CONFIG_SUBDIRS(verilog)/AC_CONFIG_SUBDIRS(verilog)/g' configure.ac
-#sed -i 's/# RELEASEDIRS="$RELEASEDIRS verilog"/RELEASEDIRS="$RELEASEDIRS verilog"/g' configure.ac
 sed -i 's/# AC_CONFIG_SUBDIRS(asco)/AC_CONFIG_SUBDIRS(asco)/g' configure.ac
 sed -i 's/# RELEASEDIRS="$RELEASEDIRS asco"/RELEASEDIRS="$RELEASEDIRS asco"/g' configure.ac
 
@@ -97,7 +92,7 @@ echo creating source archive...
 
 tar -zcvf qucs-$RELEASE.tar.gz qucs-$RELEASE
 
-DISTS="precise quantal"
+DISTS="precise quantal raring"
 
 cp qucs-$RELEASE.tar.gz qucs_$RELEASE.orig.tar.gz
 
