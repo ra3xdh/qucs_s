@@ -1411,6 +1411,7 @@ bool QucsApp::closeAllFiles()
   return true;
 }   
 
+
 void QucsApp::slotFileExamples()
 {
   statusBar()->message(tr("Open examples directory..."));
@@ -1421,14 +1422,23 @@ void QucsApp::slotFileExamples()
 
 void QucsApp::slotHelpTutorial()
 {
+  QString path = QDir::toNativeSeparators(QucsSettings.DocDir);
+  QUrl url = QUrl("file:///" + path + "tutorial/" + QObject::sender()->objectName());
+  QDesktopServices::openUrl(url);
 }
 
 void QucsApp::slotHelpTechnical()
 {
+  QString path = QDir::toNativeSeparators(QucsSettings.DocDir);
+  QUrl url = QUrl("file:///" + path + "technical/" + QObject::sender()->objectName());
+  QDesktopServices::openUrl(url);
 }
 
 void QucsApp::slotHelpReport()
 {
+  QString path = QDir::toNativeSeparators(QucsSettings.DocDir);
+  QUrl url = QUrl("file:///" + path + "report/" + QObject::sender()->objectName());
+  QDesktopServices::openUrl(url);
 }
 
 

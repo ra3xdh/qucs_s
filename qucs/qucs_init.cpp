@@ -643,8 +643,7 @@ void QucsApp::initActions()
   helpAboutQt->setWhatsThis(tr("About Qt\n\nAbout Qt by Trolltech"));
   connect(helpAboutQt, SIGNAL(activated()), SLOT(slotHelpAboutQt()));
 }
-#include <iostream>
-using namespace std;
+
 // ----------------------------------------------------------
 void QucsApp::initMenuBar()
 {
@@ -785,11 +784,13 @@ void QucsApp::initMenuBar()
     for(int i=0;i<entries.size();i++)
     {
       QAction* helpTechnicalActions = new QAction(entries[i], this);
+      helpTechnicalActions->setObjectName ( entries[i] );
       helpTechnicalActions->setStatusTip(tr("Open ")+entries[i]);
       helpTechnicalActions->setWhatsThis(tr(entries[i]+"\n\nOpen "+entries[i]));
       connect(helpTechnicalActions, SIGNAL(activated()), SLOT(slotHelpTechnical()));
       helpTechnical->addAction(helpTechnicalActions);
     }
+
   }
 
 //Fill submenu's with filenames of PDF documents
@@ -803,6 +804,7 @@ void QucsApp::initMenuBar()
     for(int i=0;i<entries.size();i++)
     {
       QAction* helpReportActions = new QAction(entries[i], this);
+      helpReportActions->setObjectName ( entries[i] );
       helpReportActions->setStatusTip(tr("Open ")+entries[i]);
       helpReportActions->setWhatsThis(tr(entries[i]+"\n\nOpen "+entries[i]));
       connect(helpReportActions, SIGNAL(activated()), SLOT(slotHelpReport()));
@@ -821,6 +823,7 @@ void QucsApp::initMenuBar()
     for(int i=0;i<entries.size();i++)
     {
       QAction* helpTutorialActions = new QAction(entries[i], this);
+      helpTutorialActions->setObjectName ( entries[i] );
       helpTutorialActions->setStatusTip(tr("Open ")+entries[i]);
       helpTutorialActions->setWhatsThis(tr(entries[i]+"\n\nOpen "+entries[i]));
       connect(helpTutorialActions, SIGNAL(activated()), SLOT(slotHelpTutorial()));
