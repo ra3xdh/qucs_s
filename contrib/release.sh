@@ -55,6 +55,11 @@ cd qucs-doc
 make distclean
 cd ..
 
+cd examples
+./autogen.sh
+make distclean
+cd ..
+
 #Include the asco archive
 wget https://downloads.sourceforge.net/project/asco/asco/0.4.8/ASCO-0.4.8.tar.gz
 tar -zxvf ASCO-0.4.8.tar.gz
