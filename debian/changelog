@@ -1,3 +1,21 @@
+qucs (0.0.17-130522-3) raring; urgency=low
+
+  * Added examples and qucs-doc pdf files to the menu
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Tue, 21 May 2013 21:46:06 +0200
+
+qucs (0.0.17-130522-2) quantal; urgency=low
+
+  * Added examples and qucs-doc pdf files to the menu
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Tue, 21 May 2013 21:44:52 +0200
+
+qucs (0.0.17-130522-1) precise; urgency=low
+
+  * Added examples and qucs-doc pdf files to the menu
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Tue, 21 May 2013 21:42:17 +0200
+
 qucs (0.0.17.130521-3) raring; urgency=low
 
   * Added BSIM3v34 pMOS model to Qucs-0.0.17
