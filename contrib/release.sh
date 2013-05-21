@@ -30,12 +30,23 @@ cd tutorial
 make tutorial
 make book
 cd ..
+cd report
+make report
+make book
+cd ..
 cd technical
 make technical
 ps2pdf technical.ps
 cd ..
 
-find -name "*.pdf" |grep -v pics| xargs cp -t ../qucs-$RELEASE/qucs-doc
+
+DOC_SUBDIRS="report technical tutorial"
+for DOC_SUBDIR in ${DOC_SUBDIRS} ; do
+	cd $DOC_SUBDIR
+	mkdir -p ../../qucs-$RELEASE/qucs-doc/$DOC_SUBDIR
+	find -name "*.pdf" |grep -v pics| xargs cp -t ../../qucs-$RELEASE/qucs-doc/$DOC_SUBDIR
+	cd ..
+done
 
 #including pdf versions of qucs-doc in archives
 cd ../qucs-$RELEASE
