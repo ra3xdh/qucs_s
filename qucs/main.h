@@ -55,6 +55,8 @@ struct tQucsSettings {
   QString LibDir;
   QString AscoDir;
   QString OctaveDir;
+  QString ExamplesDir;
+  QString DocDir;
 
   unsigned int NodeWiring;
 

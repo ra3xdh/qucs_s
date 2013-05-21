@@ -1411,6 +1411,28 @@ bool QucsApp::closeAllFiles()
   return true;
 }   
 
+void QucsApp::slotFileExamples()
+{
+  statusBar()->message(tr("Open examples directory..."));
+  QString path = QDir::toNativeSeparators(QucsSettings.ExamplesDir);
+  QDesktopServices::openUrl(QUrl("file:///" + path));
+  statusBar()->message(tr("Ready."));
+}
+
+void QucsApp::slotHelpTutorial()
+{
+}
+
+void QucsApp::slotHelpTechnical()
+{
+}
+
+void QucsApp::slotHelpReport()
+{
+}
+
+
+
 // --------------------------------------------------------------
 // Is called when another document is selected via the TabBar.
 void QucsApp::slotChangeView(QWidget *w)

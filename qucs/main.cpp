@@ -581,15 +581,20 @@ int main(int argc, char *argv[])
       QDir::convertSeparators (QucsDirStr + "/share/qucs/library/");
     QucsSettings.OctaveDir =
       QDir::convertSeparators (QucsDirStr + "/share/qucs/octave/");
+    QucsSettings.ExamplesDir = 
+      QDir::convertSeparators (QucsDirStr + "/share/qucs/doc/examples/");
+    QucsSettings.DocDir = 
+      QDir::convertSeparators (QucsDirStr + "/share/qucs/doc/");
   } else {
     QucsSettings.BinDir = BINARYDIR;
     QucsSettings.BitmapDir = BITMAPDIR;
     QucsSettings.LangDir = LANGUAGEDIR;
     QucsSettings.LibDir = LIBRARYDIR;
     QucsSettings.OctaveDir = OCTAVEDIR;
+    QucsSettings.ExamplesDir = QDir(DOCDIR).canonicalPath()+"/examples/";
+    QucsSettings.DocDir = DOCDIR;
   }
   QucsSettings.Editor = QucsSettings.BinDir + "qucsedit";
-
   QucsWorkDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   loadSettings();
