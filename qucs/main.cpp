@@ -582,9 +582,9 @@ int main(int argc, char *argv[])
     QucsSettings.OctaveDir =
       QDir::convertSeparators (QucsDirStr + "/share/qucs/octave/");
     QucsSettings.ExamplesDir = 
-      QDir::convertSeparators (QucsDirStr + "/share/qucs/doc/examples/");
+      QDir::convertSeparators (QucsDirStr + "/share/qucs/docs/examples/");
     QucsSettings.DocDir = 
-      QDir::convertSeparators (QucsDirStr + "/share/qucs/doc/");
+      QDir::convertSeparators (QucsDirStr + "/share/qucs/docs/");
   } else {
     QucsSettings.BinDir = BINARYDIR;
     QucsSettings.BitmapDir = BITMAPDIR;

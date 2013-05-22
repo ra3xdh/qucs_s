@@ -774,7 +774,10 @@ void QucsApp::initMenuBar()
 
 
   //Fill submenu's with filenames of PDF documents
-  QDir TechnicalDir = QDir(QucsSettings.DocDir);
+  QDir TechnicalDir = QDir(QucsSettings.DocDir.replace('\\','/'));
+  int ret = QMessageBox::warning(this, tr("TechnicalDir"),
+                                TechnicalDir.path(),
+                                QMessageBox::Ok);
   if(TechnicalDir.cd("technical"))
   {
     helpTechnical = new QMenu(tr("&Technical Papers"));
@@ -794,7 +797,7 @@ void QucsApp::initMenuBar()
   }
 
 //Fill submenu's with filenames of PDF documents
-  QDir ReportDir = QDir(QucsSettings.DocDir);
+  QDir ReportDir = QDir(QucsSettings.DocDir.replace('\\','/'));
   if(ReportDir.cd("report"))
   {
     helpReport = new QMenu(tr("Technical &Reports"));
@@ -813,7 +816,7 @@ void QucsApp::initMenuBar()
   }
 
 //Fill submenu's with filenames of PDF documents
-  QDir TutorialDir = QDir(QucsSettings.DocDir);
+  QDir TutorialDir = QDir(QucsSettings.DocDir.replace('\\','/'));
   if(TutorialDir.cd("tutorial"))
   {
     helpTutorial = new QMenu(tr("T&utorials"));
