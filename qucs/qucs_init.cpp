@@ -424,9 +424,9 @@ void QucsApp::initActions()
 
   editRotate = new QAction(QIcon((QucsSettings.BitmapDir + "rotate_ccw.png")), tr("Rotate"), this);
   editRotate->setShortcut(Qt::CTRL+Qt::Key_R);
-  editRotate->setStatusTip(tr("Rotates the selected component by 90\B0"));
+  editRotate->setStatusTip(tr("Rotates the selected component by 90\xB0"));
   editRotate->setWhatsThis(
-    tr("Rotate\n\nRotates the selected component by 90\B0 counter-clockwise"));
+    tr("Rotate\n\nRotates the selected component by 90\xB0 counter-clockwise"));
   editRotate->setToggleAction(true);
   connect(editRotate, SIGNAL(toggled(bool)), SLOT(slotEditRotate(bool)));
 
