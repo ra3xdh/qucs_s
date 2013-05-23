@@ -775,9 +775,7 @@ void QucsApp::initMenuBar()
 
   //Fill submenu's with filenames of PDF documents
   QDir TechnicalDir = QDir(QucsSettings.DocDir.replace('\\','/'));
-  int ret = QMessageBox::warning(this, tr("TechnicalDir"),
-                                TechnicalDir.path(),
-                                QMessageBox::Ok);
+
   if(TechnicalDir.cd("technical"))
   {
     helpTechnical = new QMenu(tr("&Technical Papers"));

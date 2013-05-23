@@ -325,12 +325,21 @@ void SimMessage::startSimulator()
     if (Doc->simulation) {
       SimTime = Doc->SimTime;
       QString libs = Doc->Libraries.lower();
+#ifdef __MINGW32__
       if(libs.isEmpty()) {
 	libs = "-Wl";
       } else {
 	libs.replace(" ",",-l");
 	libs = "-Wl,-l" + libs;
       }
+#else
+      if(libs.isEmpty()) {
+	libs = "-c";
+      } else {
+	libs.replace(" ",",-l");
+	libs = "-c,-l" + libs;
+      }
+#endif
       CommandLine << pathName(QucsSettings.BinDir + QucsDigi)
 		  << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
 		  << pathName(QucsSettings.BinDir) << libs;
@@ -388,7 +397,7 @@ void SimMessage::startSimulator()
 
     isVerilog = ((Schematic*)DocWidget)->isVerilog;
     SimTime = ((Schematic*)DocWidget)->createNetlist(Stream, SimPorts);
-    if(SimTime.length()>0&&SimTime.at(0) == '§') {
+    if(SimTime.length()>0&&SimTime.at(0) == '\xA7') {
       NetlistFile.close();
       ErrText->insert(SimTime.mid(1));
       FinishSimulation(-1);
@@ -422,9 +431,16 @@ void SimMessage::startSimulator()
 		    << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
 		    << pathName(QucsSettings.BinDir) << "-c";
       } else {
+#ifdef __MINGW32__
 	CommandLine << pathName(QucsSettings.BinDir + QucsDigi)
 		    << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
 		    << pathName(QucsSettings.BinDir) << "-Wl" << "-c";
+#else
+	CommandLine << pathName(QucsSettings.BinDir + QucsDigi)
+		    << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
+		    << pathName(QucsSettings.BinDir) << "-c";
+
+#endif
       }
     }
   }
