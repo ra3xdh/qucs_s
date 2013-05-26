@@ -25,6 +25,7 @@
 #include <QtDebug>
 #include <QGroupBox>
 #include <QTextStream>
+#include <QMenu>
 #include <QMenuBar>
 #include <QAction>
 #include <QComboBox>
@@ -57,22 +58,24 @@ QucsLib::QucsLib()
   QMenuBar * menuBar = new QMenuBar (this);
 
   // create file menu
-  QMenu * fileMenu = new QMenu(tr("&File"));
-  //QAction * manageLib =
-  //  new QAction (tr("Manage User &Libraries..."), Qt::CTRL+Qt::Key_M, this,"");
-  //manageLib->addTo (fileMenu);
-  //connect(manageLib, SIGNAL(activated()), SLOT(slotManageLib()));
+  fileMenu = new QMenu(tr("&File"));
 
-  //fileMenu->insertSeparator();
+  QAction * manageLib =new QAction (tr("Manage User &Libraries..."), this);
+  manageLib->setShortcut(Qt::CTRL+Qt::Key_M);
+  //connect(manageLib, SIGNAL(activated()), SLOT(slotManageLib()));
 
   QAction * fileQuit = new QAction(tr("&Quit"), this);
   fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
-  //fileQuit->addTo (fileMenu);
-  fileMenu->addAction(fileQuit);
   connect(fileQuit, SIGNAL(activated()), SLOT(slotQuit()));
 
+  fileMenu->addAction(manageLib);
+  fileMenu->insertSeparator();
+  fileMenu->addAction(fileQuit);
+
+
   // create help menu
-  QMenu *helpMenu = new QMenu();
+  helpMenu = new QMenu(tr("&Help"));
+
   QAction * helpHelp = new QAction(tr("&Help"), this);
   helpHelp->setShortcut(Qt::Key_F1);
   helpMenu->addAction(helpHelp);
@@ -84,8 +87,8 @@ QucsLib::QucsLib()
 
   // setup menu bar
   menuBar->addMenu(fileMenu); //insertItem (tr("&File"), fileMenu);
-  //menuBar->insertSeparator ();
-  //menuBar->insertItem (tr("&Help"), helpMenu);
+  menuBar->insertSeparator ();
+  menuBar->addMenu(helpMenu);
 
   // main box
   all = new QVBoxLayout (this);
@@ -231,13 +234,12 @@ void QucsLib::closeEvent(QCloseEvent *Event)
 }
 
 // ----------------------------------------------------
-/*
 void QucsLib::slotManageLib()
 {
   (new LibraryDialog(this))->exec();
   putLibrariesIntoCombobox();
 }
-*/
+
 // ----------------------------------------------------
 void QucsLib::slotHelp()
 {
