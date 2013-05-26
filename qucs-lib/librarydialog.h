@@ -18,19 +18,17 @@
 #ifndef LIBRARYDIALOG_H
 #define LIBRARYDIALOG_H
 
-#include <qdialog.h>
-#include <qregexp.h>
-#include <qstringlist.h>
+#include <QDialog>
+#include <QRegexp>
+#include <QStringList>
 #include <QLabel>
 #include <QVBoxLayout>
 
-class Q3VBox;
 class QLabel;
 class QLineEdit;
 class QPushButton;
 class QVBoxLayout;
 class QRadioButton;
-class Q3VButtonGroup; //->QGroupBox
 class QGroupBox;
 class QRegExpValidator;
 
@@ -46,14 +44,16 @@ private slots:
   void slotRename();
 
 private:
-  QRadioButton *previousLib;
+  //QRadioButton *previousLib;
+
+  QList <QRadioButton*>  radioButton;
 
   QVBoxLayout *all;   // the mother of all widgets
-  Q3VBox *Dia_Box;
+  //Q3VBox *Dia_Box;
   QLabel *theLabel;
   QLineEdit *NameEdit;
-  Q3VButtonGroup *Group, *toggleGroup;
-  //QGroupBox *Group, *toggleGroup;
+  //Q3VButtonGroup  *toggleGroup;
+  QGroupBox *Group;
   QPushButton *ButtDelete, *ButtRename, *ButtClose;
 
   QRegExp Expr;

@@ -62,14 +62,14 @@ QucsLib::QucsLib()
 
   QAction * manageLib =new QAction (tr("Manage User &Libraries..."), this);
   manageLib->setShortcut(Qt::CTRL+Qt::Key_M);
-  //connect(manageLib, SIGNAL(activated()), SLOT(slotManageLib()));
+  connect(manageLib, SIGNAL(activated()), SLOT(slotManageLib()));
 
   QAction * fileQuit = new QAction(tr("&Quit"), this);
   fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
   connect(fileQuit, SIGNAL(activated()), SLOT(slotQuit()));
 
   fileMenu->addAction(manageLib);
-  fileMenu->insertSeparator();
+  fileMenu->addSeparator();
   fileMenu->addAction(fileQuit);
 
 
@@ -81,13 +81,13 @@ QucsLib::QucsLib()
   helpMenu->addAction(helpHelp);
   connect(helpHelp, SIGNAL(activated()), SLOT(slotHelp()));
 
-  QAction * helpAbout = new QAction(tr("About"), this);//0, helpMenu,"");
+  QAction * helpAbout = new QAction(tr("About"), this);
   helpMenu->addAction(helpAbout);
   connect(helpAbout, SIGNAL(activated()), SLOT(slotAbout()));
 
   // setup menu bar
-  menuBar->addMenu(fileMenu); //insertItem (tr("&File"), fileMenu);
-  menuBar->insertSeparator ();
+  menuBar->addMenu(fileMenu);
+  menuBar->addSeparator();
   menuBar->addMenu(helpMenu);
 
   // main box
