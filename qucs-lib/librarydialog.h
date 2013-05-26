@@ -21,17 +21,17 @@
 #include <qdialog.h>
 #include <qregexp.h>
 #include <qstringlist.h>
-//Added by qt3to4:
 #include <QLabel>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 
 class Q3VBox;
 class QLabel;
 class QLineEdit;
 class QPushButton;
-class Q3VBoxLayout;
+class QVBoxLayout;
 class QRadioButton;
-class Q3VButtonGroup;
+class Q3VButtonGroup; //->QGroupBox
+class QGroupBox;
 class QRegExpValidator;
 
 
@@ -48,11 +48,12 @@ private slots:
 private:
   QRadioButton *previousLib;
 
-  Q3VBoxLayout *all;   // the mother of all widgets
+  QVBoxLayout *all;   // the mother of all widgets
   Q3VBox *Dia_Box;
   QLabel *theLabel;
   QLineEdit *NameEdit;
   Q3VButtonGroup *Group, *toggleGroup;
+  //QGroupBox *Group, *toggleGroup;
   QPushButton *ButtDelete, *ButtRename, *ButtClose;
 
   QRegExp Expr;

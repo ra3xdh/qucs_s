@@ -19,7 +19,7 @@
 #include <limits.h>
 
 #include <qpainter.h>
-#include <q3dragobject.h>
+//#include <q3dragobject.h>
 //Added by qt3to4:
 #include <QPaintEvent>
 #include <QPixmap>
@@ -27,6 +27,7 @@
 #include <QTextIStream>
 #include <QMimeData>
 #include <QDrag>
+#include <QTextStream>
 
 #include "symbolwidget.h"
 #include "qucslib.h"
@@ -48,7 +49,10 @@ SymbolWidget::SymbolWidget(QWidget *parent) : QWidget(parent)
   DragNDropWidth = metrics.width(DragNDropText);    // get size of text
   TextHeight = metrics.lineSpacing();
   
-  setPaletteBackgroundColor(Qt::white);
+  ///setPaletteBackgroundColor(Qt::white);
+  QPalette palette;
+  palette.setColor(backgroundRole(), Qt::white);
+  setPalette(palette);
   setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }
 
@@ -132,7 +136,7 @@ void SymbolWidget::paintEvent(QPaintEvent*)
   // write all text
   for(int i=0; i<Texts.size(); i++) {
     Text *pt = Texts.at(i);
-    Font.setPointSizeFloat(pt->Size);
+    Font.setPointSizeF(pt->Size);
     Painter.setFont(Font);
     Painter.setPen(pt->Color);
     Painter.drawText(cx+pt->x, cy+pt->y, 0, 0, Qt::TextDontClip, pt->s);
@@ -238,7 +242,7 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
     }
 
     // depletion or enhancement MOSFET ?
-    if((ModelString.section('"', 3,3).stripWhiteSpace().at(0) == '-') ==
+    if((ModelString.section('"', 3,3).trimmed().at(0) == '-') ==
        (FirstProp == "nfet"))
       Lines.append(new Line(-10, -8,-10,  8,QPen(Qt::darkBlue,3)));
     else
@@ -390,7 +394,7 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
 // ************************************************************
 // Loads the symbol for the component from the symbol field and
 // returns the number of painting elements.
-int SymbolWidget::setSymbol(const QString& SymbolString,
+int SymbolWidget::setSymbol( QString& SymbolString,
                             const QString& Lib_, const QString& Comp_)
 {
   Arcs.clear();
@@ -402,7 +406,8 @@ int SymbolWidget::setSymbol(const QString& SymbolString,
   ComponentName = Comp_;
 
   QString Line;
-  QTextIStream stream(&SymbolString);
+  ///QString foo = SymbolString;
+  QTextStream stream(&SymbolString, QIODevice::ReadOnly);
 
   x1 = y1 = INT_MAX;
   x2 = y2 = INT_MIN;
@@ -410,7 +415,7 @@ int SymbolWidget::setSymbol(const QString& SymbolString,
   int z=0, Result;
   while(!stream.atEnd()) {
     Line = stream.readLine();
-    Line = Line.stripWhiteSpace();
+    Line = Line.trimmed();
     if(Line.isEmpty()) continue;
 
     if(Line.at(0) != '<') return -1;
@@ -575,7 +580,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     Color.setNamedColor(Row.section(' ',4,4));
     if(!Color.isValid()) return -1;
 
-    s = Row.mid(Row.find('"')+1);    // Text (can contain " !!!)
+    s = Row.mid(Row.indexOf('"')+1);    // Text (can contain " !!!)
     s = s.left(s.length()-1);
     if(s.isEmpty()) return -1;
     s.replace("\\n", "\n");
@@ -584,7 +589,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     Texts.append(new Text(i1, i2, s, Color, float(i3)));
 
     QFont Font(QucsSettings.font);
-    Font.setPointSizeFloat(float(i3));
+    Font.setPointSizeF(float(i3));
     QFontMetrics  metrics(Font);
     QSize r = metrics.size(0, s);    // get size of text
     i3 = i1 + r.width();

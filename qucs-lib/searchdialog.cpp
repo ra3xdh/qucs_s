@@ -36,7 +36,8 @@
 
 
 SearchDialog::SearchDialog(QucsLib *parent)
-                     : QDialog(parent, 0, false, Qt::WDestructiveClose)
+                     //: QDialog(parent, 0, false, Qt::WDestructiveClose)
+    : QDialog(parent)
 {
   ParentDialog = parent;
 
@@ -100,7 +101,7 @@ void SearchDialog::slotSearch()
 
   bool findComponent = false;
   QDir LibDir(QucsSettings.LibDir);
-  QStringList LibFiles = LibDir.entryList("*.lib", QDir::Files, QDir::Name);
+  QStringList LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
 
   QFile File;
   QTextStream ReadWhole;
@@ -108,33 +109,33 @@ void SearchDialog::slotSearch()
   QStringList::iterator it;
   int Start, End, NameStart, NameEnd;
   for(it = LibFiles.begin(); it != LibFiles.end(); it++) { // all library files
-    File.setName(QucsSettings.LibDir + (*it));
+    File.setFileName(QucsSettings.LibDir + (*it));
     if(!File.open(QIODevice::ReadOnly))  continue;
 
     ReadWhole.setDevice(&File);
-    LibraryString = ReadWhole.read();
+    LibraryString = ReadWhole.readAll();
     File.close();
 
-    Start = LibraryString.find("<Qucs Library ");
+    Start = LibraryString.indexOf("<Qucs Library ");
     if(Start < 0)  continue;
-    End = LibraryString.find('>', Start);
+    End = LibraryString.indexOf('>', Start);
     if(End < 0)  continue;
     LibName = LibraryString.mid(Start, End-Start).section('"', 1, 1);
 
     // check all components of the current library
-    while((Start=LibraryString.find("\n<Component ", Start)) > 0) {
+    while((Start=LibraryString.indexOf("\n<Component ", Start)) > 0) {
       Start++;
       NameStart = Start + 11;
-      NameEnd = LibraryString.find('>', NameStart);
+      NameEnd = LibraryString.indexOf('>', NameStart);
       if(NameEnd < 0)  continue;
       CompName = LibraryString.mid(NameStart, NameEnd-NameStart);
 
-      End = LibraryString.find("\n</Component>", NameEnd);
+      End = LibraryString.indexOf("\n</Component>", NameEnd);
       if(End < 0)  continue;
       End += 13;
 
       // does search criterion match ?
-      if(CompName.find(SearchEdit->text()) >= 0) {
+      if(CompName.indexOf(SearchEdit->text()) >= 0) {
         if(!findComponent) {
           ParentDialog->DefaultSymbol = "";
           ParentDialog->CompList->clear();
@@ -152,9 +153,9 @@ void SearchDialog::slotSearch()
 
   if(findComponent) {
     End = ParentDialog->Library->count();
-    if(ParentDialog->Library->text(End-1) != tr("Search result"))
-      ParentDialog->Library->insertItem(tr("Search result"));
-    ParentDialog->Library->setCurrentItem(End);
+    if(ParentDialog->Library->itemText(End-1) != tr("Search result"))
+      ParentDialog->Library->addItem(tr("Search result"));
+    ParentDialog->Library->setCurrentIndex(End);
     reject();
   }
   else  accept();

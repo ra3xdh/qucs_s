@@ -31,23 +31,24 @@
 #include <qvalidator.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-#include <q3scrollview.h>
+#include <q3scrollview.h> //-->QAbstractScrollArea and QScrollArea
 #include <qradiobutton.h>
 #include <q3buttongroup.h>
 #include <q3button.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
-#include <QDebug>
 
-LibraryDialog::LibraryDialog(QWidget *App_) : QDialog(App_, 0, TRUE, Qt::WDestructiveClose)
+#include <QVBoxLayout>
+#include <QDebug>
+#include <QGroupBox>
+
+LibraryDialog::LibraryDialog(QWidget *App_) : QDialog(App_) //, 0, TRUE, Qt::WDestructiveClose)
 {
-  setCaption(tr("Manage User Libraries"));
+  setWindowTitle(tr("Manage User Libraries"));
 
   Expr.setPattern("[\\w_]+");
   Validator = new QRegExpValidator(Expr, this);
 
   // ...........................................................
-  Q3VBoxLayout *all = new Q3VBoxLayout(this);
+  QVBoxLayout *all = new QVBoxLayout(this);
   all->setMargin(5);
   all->setSpacing(6);
 
@@ -78,7 +79,7 @@ LibraryDialog::LibraryDialog(QWidget *App_) : QDialog(App_, 0, TRUE, Qt::WDestru
 
   // ...........................................................
   // insert all user libraries
-  QStringList LibFiles = UserLibDir.entryList("*.lib", QDir::Files, QDir::Name);
+  QStringList LibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
 
   toggleGroup = new Q3VButtonGroup();  // only to handle exclusive toggling
 
@@ -97,7 +98,7 @@ LibraryDialog::LibraryDialog(QWidget *App_) : QDialog(App_, 0, TRUE, Qt::WDestru
 
 
   QColor theColor;
-  QAbstractButton *rButton = toggleGroup->find(0);
+  QAbstractButton *rButton = toggleGroup->find(0); //?indexOf
   if(rButton)
     theColor = rButton->paletteBackgroundColor();
   else {

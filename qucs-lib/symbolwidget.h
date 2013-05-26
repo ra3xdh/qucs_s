@@ -76,7 +76,7 @@ public:
  ~SymbolWidget();
 
   QString theModel();
-  int setSymbol(const QString&, const QString&, const QString&);
+  int setSymbol( QString&, const QString&, const QString&);
   int createSymbol(const QString&, const QString&);
 
   // component properties
