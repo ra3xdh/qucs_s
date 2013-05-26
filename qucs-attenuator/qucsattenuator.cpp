@@ -16,47 +16,61 @@
 
 #include "attenuatorfunc.h"
 #include "qucsattenuator.h"
-//Added by qt3to4:
-#include <Q3GridLayout>
-#include <QPixmap>
-#include <Q3VBoxLayout>
 #include "helpdialog.h"
 
-#include <q3vgroupbox.h>
-#include <q3vbox.h>
-#include <qmenubar.h>
-#include <q3popupmenu.h>
-#include <qmessagebox.h>
-#include <qlayout.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qvalidator.h>
-#include <qtimer.h>
-#include <qclipboard.h>
-#include <qapplication.h>
-#include <qimage.h>
+#include <QGridLayout>
+#include <QPixmap>
+#include <QVBoxLayout>
+
+#include <Q3VBoxLayout>
+#include <Q3VBox>
+#include <Q3GroupBox>
+#include <Q3GridLayout>
+
+#include <QVBoxLayout>
+#include <QMenu>
+#include <QMenuBar>
+#include <QMessageBox>
+#include <QLayout>
+#include <QLabel>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QValidator>
+#include <QTimer>
+#include <QClipboard>
+#include <QApplication>
+#include <QImage>
 
 QucsAttenuator::QucsAttenuator()
 {
-  setIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
-  setCaption("Qucs Attenuator " PACKAGE_VERSION);
+  setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
+  setWindowTitle("Qucs Attenuator " PACKAGE_VERSION);
 
-  Q3PopupMenu *fileMenu = new Q3PopupMenu();
-  fileMenu->insertItem(tr("E&xit"), this, SLOT(slotQuit()), Qt::CTRL+Qt::Key_Q);
+  QMenu *fileMenu = new QMenu(tr("&File"));
 
-  Q3PopupMenu *helpMenu = new Q3PopupMenu();
-  helpMenu->insertItem(tr("Help..."), this, SLOT(slotHelpIntro()), Qt::Key_F1);
-  helpMenu->insertSeparator();
-  helpMenu->insertItem(
-            tr("&About QucsAttenuator..."), this, SLOT(slotHelpAbout()), 0);
-  helpMenu->insertItem(tr("About Qt..."), this, SLOT(slotHelpAboutQt()), 0);
+  QAction *fileQuit = new QAction(tr("&Quit"), this);
+  fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
+  connect(fileQuit, SIGNAL(activated()), SLOT(slotQuit()));
+
+  fileMenu->addAction(fileQuit);
+
+  QMenu *helpMenu = new QMenu(tr("&Help"));
+  QAction *helpHelp = new QAction(tr("&Help"), this);
+  helpHelp->setShortcut(Qt::Key_F1);
+  helpMenu->addAction(helpHelp);
+  connect(helpHelp, SIGNAL(activated()), SLOT(slotHelpIntro()));
+
+  helpMenu->addSeparator();
+
+  QAction *about = new QAction(tr("About Qt..."), this);
+  helpMenu->addAction(about);
+  connect(about, SIGNAL(activated()), SLOT(slotHelpAboutQt()));
 
   QMenuBar *bar = new QMenuBar(this);
-  bar->insertItem(tr("&File"), fileMenu);
-  bar->insertSeparator ();
-  bar->insertItem(tr("&Help"), helpMenu);
+  bar->addMenu(fileMenu);
+  bar->addSeparator();
+  bar->addMenu(helpMenu);
 
   Q3VBoxLayout * v2 = new Q3VBoxLayout (this);
   Q3VBox * vm = new Q3VBox (this);

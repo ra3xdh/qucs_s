@@ -21,18 +21,17 @@
 
 #include "helpdialog.h"
 
-#include <qlayout.h>
-#include <q3hbox.h>
-#include <qpushbutton.h>
-#include <q3textedit.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QLayout>
+#include <QPushButton>
+#include <QTextEdit>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 
 HelpDialog::HelpDialog(QWidget *parent)
-                     : QDialog(parent, 0, false, Qt::WDestructiveClose)
+                     : QDialog(parent)//, 0, false, Qt::WDestructiveClose)
 {
-  setCaption(tr("Qucs Attenuator Help"));
+  setWindowTitle(tr("Qucs Attenuator Help"));
 
 
   // --------  set help text into dialog  ------------
@@ -51,25 +50,26 @@ HelpDialog::HelpDialog(QWidget *parent)
   // --------  create dialog widgets  ------------
   resize(250, 230);
 
-  vLayout = new Q3VBoxLayout(this);
+  vLayout = new QVBoxLayout();
 
-  Text = new Q3TextEdit(s, QString::null, this);
-  Text->setTextFormat(Qt::PlainText);
+  Text = new QTextEdit(s, this);//?QString::null, this);
+  //Text->setTextFormat(Qt::PlainText);
   Text->setReadOnly(true);
-//  Text->setWordWrap(QTextEdit::NoWrap);
+  //Text->setWordWrap(QTextEdit::NoWrap);
   Text->setMinimumSize(200,200);
   vLayout->addWidget(Text);
 
-  Q3HBox *h = new Q3HBox(this);
-  vLayout->addWidget(h);
+  QHBoxLayout *h = new QHBoxLayout();
+  h->addLayout(vLayout);
 
-  h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
+  //h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
 
-  QPushButton *ButtonClose = new QPushButton(tr("Close"), h);
+  QPushButton *ButtonClose = new QPushButton(tr("Close"));
+  h->addWidget(ButtonClose);
   connect(ButtonClose, SIGNAL(clicked()), SLOT(slotClose()));
   ButtonClose->setFocus();
 
-  h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
+  //h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
 }
 
 HelpDialog::~HelpDialog()
