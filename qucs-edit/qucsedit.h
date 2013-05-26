@@ -18,13 +18,13 @@
 #ifndef QUCSEDIT_H
 #define QUCSEDIT_H
 
-#include <qdialog.h>
-//Added by qt3to4:
+#include <QMainWindow>
+#include <QApplication>
 #include <QCloseEvent>
 #include <QLabel>
 
 class QLabel;
-class Q3TextEdit;
+class QTextEdit;
 
 
 struct tQucsSettings {
@@ -38,18 +38,17 @@ struct tQucsSettings {
 extern tQucsSettings QucsSettings;
 
 
-class QucsEdit : public QDialog  {
+class QucsEdit : public QMainWindow  {
    Q_OBJECT
 public:
   QucsEdit(const QString&, bool readOnly=false);
- ~QucsEdit();
 
 private slots:
   void slotAbout();
   void slotLoad();
   void slotSave();
   void slotQuit();
-  void slotPrintCursorPosition(int, int);
+  void slotPrintCursorPosition();
 
 private:
   void closeEvent(QCloseEvent*);
@@ -57,7 +56,7 @@ private:
   bool closeFile();
 
   QString FileName;
-  Q3TextEdit *text;
+  QTextEdit *text;
   QLabel *PosText;
 };
 

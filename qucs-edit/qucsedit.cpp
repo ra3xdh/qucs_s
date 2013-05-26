@@ -21,56 +21,58 @@
 
 #include "qucsedit.h"
 
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <q3hbox.h>
-#include <qpushbutton.h>
-#include <qfile.h>
-#include <q3textstream.h>
-#include <qmessagebox.h>
-#include <qtoolbutton.h>
-#include <qimage.h>
-#include <q3filedialog.h>
-#include <qfont.h>
-//Added by qt3to4:
+#include <QApplication>
+#include <QLabel>
+#include <QPushButton>
+#include <QFile>
+#include <QTextStream>
+#include <QMessageBox>
+#include <QToolButton>
+#include <QImage>
+#include <QFont>
 #include <QPixmap>
-#include <Q3VBoxLayout>
 #include <QCloseEvent>
-
+#include <QToolBar>
+#include <QTextEdit>
+#include <QFileDialog>
+#include <QtGui>
 
 QucsEdit::QucsEdit(const QString& FileName_, bool readOnly)
 {
   // set application icon
-  setIcon (QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
-  setCaption("Qucs Editor " PACKAGE_VERSION " - " + tr("File: "));
+  setWindowIcon (QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
+  setWindowTitle("Qucs Editor " PACKAGE_VERSION " - " + tr("File: "));
 
-  Q3VBoxLayout *v = new Q3VBoxLayout(this);
-
-  Q3HBox *h = new Q3HBox(this);
-  v->addWidget(h);
-
-  QToolButton *ButtLoad = new QToolButton(h);
-  ButtLoad->setIconSet(
-	    QIcon((QucsSettings.BitmapDir + "fileopen.png")));
+  QToolButton *ButtLoad = new QToolButton;
+  ButtLoad->setIcon(QIcon((QucsSettings.BitmapDir + "fileopen.png")));
   connect(ButtLoad, SIGNAL(clicked()), SLOT(slotLoad()));
 
-  QToolButton *ButtSave = new QToolButton(h);
-  ButtSave->setIconSet(
-            QIcon((QucsSettings.BitmapDir + "filesave.png")));
+  QToolButton *ButtSave = new QToolButton;
+  ButtSave->setIcon(QIcon((QucsSettings.BitmapDir + "filesave.png")));
   connect(ButtSave, SIGNAL(clicked()), SLOT(slotSave()));
   ButtSave->setDisabled(readOnly);
 
-  h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
-  PosText = new QLabel(tr("Line: %1  -  Column: %2").arg(1).arg(1), h);
-  h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
+  PosText = new QLabel(tr("Line: %1  -  Column: %2").arg(1).arg(1));
 
-  QPushButton *ButtAbout = new QPushButton(tr("About"),h);
+  QPushButton *ButtAbout = new QPushButton(tr("About"));
   connect(ButtAbout, SIGNAL(clicked()), SLOT(slotAbout()));
 
-  QPushButton *ButtOK = new QPushButton(tr("Quit"),h);
+  QPushButton *ButtOK = new QPushButton(tr("Quit"));
   connect(ButtOK, SIGNAL(clicked()), SLOT(slotQuit()));
   ButtOK->setFocus();
+
+  QWidget *separator = new QWidget(this);
+  separator->setSizePolicy(QSizePolicy::Expanding,
+                           QSizePolicy::Expanding);
+
+  QToolBar *tool = addToolBar("main toolbar");
+
+  tool->addWidget(ButtLoad);
+  tool->addWidget(ButtSave);
+  tool->addWidget(separator);
+  tool->addWidget(PosText);
+  tool->addWidget(ButtAbout);
+  tool->addWidget(ButtOK);
 
   // try using same-sized mono-spaced font in the textarea
   QFont fedit = QFont("Courier New");
@@ -78,29 +80,28 @@ QucsEdit::QucsEdit(const QString& FileName_, bool readOnly)
   fedit.setStyleHint(QFont::Courier);
   fedit.setFixedPitch(true);
 
-  text = new Q3TextEdit(this);
-  text->setTextFormat(Qt::PlainText);
+  text = new QTextEdit(this);
+  //text->setTextFormat(Qt::PlainText);
   text->setReadOnly(readOnly);
-  text->setWordWrap(Q3TextEdit::NoWrap);
+  text->setWordWrapMode(QTextOption::NoWrap);
   text->setMinimumSize(300,200);
   text->setFont(fedit);
   text->setCurrentFont(fedit);
-  v->addWidget(text);
-  connect(text, SIGNAL(cursorPositionChanged(int, int)),
-          SLOT(slotPrintCursorPosition(int, int)));
+
+  setCentralWidget(text);
+
+  connect(text, SIGNAL(cursorPositionChanged()),
+          SLOT(slotPrintCursorPosition()));
 
   // .................................................
   loadFile(FileName_);
 }
 
-QucsEdit::~QucsEdit()
-{
-}
-
 // ************************************************************
-void QucsEdit::slotPrintCursorPosition(int Para, int Pos)
+void QucsEdit::slotPrintCursorPosition()
 {
-  PosText->setText(tr("Line: %1  -  Column: %2").arg(Para+1).arg(Pos+1));
+  QTextCursor cursor=text->textCursor();
+  PosText->setText(tr("Line: %1  -  Column: %2").arg(cursor.blockNumber()+1).arg(cursor.columnNumber()+1));
 }
 
 // ************************************************************
@@ -119,10 +120,8 @@ void QucsEdit::slotAbout()
 void QucsEdit::slotLoad()
 {
   static QString lastDir;  // to remember last directory and file
-
-  QString s = Q3FileDialog::getOpenFileName(
-    lastDir.isEmpty() ? QString(".") : lastDir,
-    "*", this, "", tr("Enter a Filename"));
+  QString s = QFileDialog::getOpenFileName(this, tr("Enter a Filename"),
+                                           lastDir.isEmpty() ? QString(".") : lastDir, "*");
   if(s.isEmpty()) return;
   lastDir = s;   // remember last directory and file
   if(!closeFile()) return;
@@ -133,8 +132,8 @@ void QucsEdit::slotLoad()
 void QucsEdit::slotSave()
 {
   if(FileName.isEmpty()) {
-    FileName = Q3FileDialog::getSaveFileName(".", QString::null,
-	this, "", tr("Enter a Document Name"));
+    FileName = QFileDialog::getSaveFileName(this, tr("Enter a Document Name"),
+                                            ".", QString::null);
     if(FileName.isEmpty())  return;
   }
 
@@ -145,9 +144,9 @@ void QucsEdit::slotSave()
     return;
   }
 
-  Q3TextStream stream(&file);
-  stream << text->text();
-  text->setModified(false);
+  QTextStream stream(&file);
+  stream << text->toPlainText();
+  text->document()->setModified(false);
   file.close();
 }
 
@@ -162,7 +161,8 @@ void QucsEdit::slotQuit()
   tmp = width();	// dialog !!!  Otherwise the frame of the window ...
   tmp = height();	// will not be recognized (a X11 problem).
 
-  accept();
+  qApp->quit();
+
 }
 
 // ************************************************************
@@ -183,14 +183,12 @@ bool QucsEdit::loadFile(const QString& Name)
     return false;
   }
 
-  Q3TextStream stream(&file);
-  text->setText(stream.read());
+  QTextStream stream(&file);
+  text->document()->setPlainText(stream.readAll());
   file.close();
 
   FileName = Name;
-//  QFileInfo info(Name);
-//  FileName = info.fileName();
-  setCaption("Qucs Editor " PACKAGE_VERSION " - " + tr("File: ")+FileName);
+  setWindowTitle("Qucs Editor " PACKAGE_VERSION " - " + tr("File: ")+FileName);
   return true;
 }
 
@@ -198,7 +196,7 @@ bool QucsEdit::loadFile(const QString& Name)
 // ************************************************************
 bool QucsEdit::closeFile()
 {
-  if(text->isModified()) {
+  if(text->document()->isModified()) {
     switch(QMessageBox::warning(this,tr("Closing document"),
       tr("The text contains unsaved changes!\n")+
       tr("Do you want to save the changes?"),

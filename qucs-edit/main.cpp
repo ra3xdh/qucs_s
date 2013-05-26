@@ -21,15 +21,15 @@
 
 #include <stdlib.h>
 
-#include <qapplication.h>
-#include <qstring.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qfile.h>
-#include <q3textstream.h>
-#include <qmessagebox.h>
-#include <qdir.h>
-#include <qfont.h>
+#include <QApplication>
+#include <QString>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QFile>
+#include <QTextStream>
+#include <QMessageBox>
+#include <QDir>
+#include <QFont>
 
 #include "qucsedit.h"
 
@@ -41,11 +41,11 @@ bool loadSettings()
 {
   bool result = true;
 
-  QFile file(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/editrc"));
+  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/editrc"));
   if(!file.open(QIODevice::ReadOnly))
     result = false; // settings file doesn't exist
   else {
-    Q3TextStream stream(&file);
+    QTextStream stream(&file);
     QString Line, Setting;
     while(!stream.atEnd()) {
       Line = stream.readLine();
@@ -61,16 +61,16 @@ bool loadSettings()
     file.close();
   }
 
-  file.setName(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/qucsrc"));
+  file.setFileName(QDir::homePath()+QDir::convertSeparators ("/.qucs/qucsrc"));
   if(!file.open(QIODevice::ReadOnly))
     result = true; // qucs settings not necessary
   else {
-    Q3TextStream stream(&file);
+    QTextStream stream(&file);
     QString Line, Setting;
     while(!stream.atEnd()) {
       Line = stream.readLine();
       Setting = Line.section('=',0,0);
-      Line = Line.section('=',1,1).stripWhiteSpace();
+      Line = Line.section('=',1,1).trimmed();
       if(Setting == "Font")
 	QucsSettings.font.fromString(Line);
       else if(Setting == "Language")
@@ -92,7 +92,7 @@ bool saveApplSettings(QucsEdit *qucs)
 	  return true;   // nothing has changed
 
 
-  QFile file(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/editrc"));
+  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/editrc"));
   if(!file.open(QIODevice::WriteOnly)) {
     QMessageBox::warning(0, QObject::tr("Warning"),
 			QObject::tr("Cannot save settings !"));
@@ -100,7 +100,7 @@ bool saveApplSettings(QucsEdit *qucs)
   }
 
   QString Line;
-  Q3TextStream stream(&file);
+  QTextStream stream(&file);
 
   stream << "Settings file, Qucs Editor " PACKAGE_VERSION "\n"
 	 << "EditWindow=" << qucs->x() << ',' << qucs->y() << ','
@@ -113,12 +113,12 @@ bool saveApplSettings(QucsEdit *qucs)
 // #########################################################################
 void showOptions()
 {
-  fprintf(stdout, QObject::tr("Qucs Editor Version ")+PACKAGE_VERSION+
+    fprintf(stdout, "%s", qPrintable( QObject::tr("Qucs Editor Version ")+PACKAGE_VERSION+
     QObject::tr("\nVery simple text editor for Qucs\n")+
     QObject::tr("Copyright (C) 2004, 2005 by Michael Margraf\n")+
     QObject::tr("\nUsage:  qucsedit [-r] file\n")+
     QObject::tr("    -h  display this help and exit\n")+
-    QObject::tr("    -r  open file read-only\n"));
+    QObject::tr("    -r  open file read-only\n")));
 }
 
 
@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
   QTranslator tor( 0 );
   QString lang = QucsSettings.Language;
   if(lang.isEmpty())
-    lang = QTextCodec::locale();
+    lang = QString(QLocale::system().name());
   tor.load( QString("qucs_") + lang, QucsSettings.LangDir);
   a.installTranslator( &tor );
 
@@ -169,35 +169,37 @@ int main(int argc, char *argv[])
     s = argv[i];
     if(s.at(0) == '-') {
       if(s.length() != 2) {
-	fprintf(stdout, QObject::tr("Too long command line argument!\n\n"));
+    fprintf(stdout, "%s", qPrintable(QObject::tr("Too long command line argument!\n\n")));
 	showOptions();
 	return -1;
       }
-      switch(s.at(1).latin1()) {
+      switch(s.at(1).toLatin1()) {
 	case 'r': readOnly = true;
 		  break;
 	case 'h': showOptions();
 		  return 0;
 	default :
-	  fprintf(stderr, QObject::tr("Wrong command line argument!\n\n"));
+      fprintf(stdout, "%s", qPrintable(QObject::tr("Wrong command line argument!\n\n")));
 	  showOptions();
 	  return -1;
       }
     }
     else  if(FileName.isEmpty())  FileName = s;
 	  else {
-	    fprintf(stderr, QObject::tr("Only one filename allowed!\n\n"));
+        fprintf(stdout, "%s", qPrintable(QObject::tr("Only one filename allowed!\n\n")));
 	    showOptions();
 	    return -1;
 	  }
   }
 
   QucsEdit *qucs = new QucsEdit(FileName, readOnly);
-  a.setMainWidget(qucs);
+  qucs->raise();
   qucs->resize(QucsSettings.dx, QucsSettings.dy); // size and position ...
   qucs->move(QucsSettings.x, QucsSettings.y);     // ... before "show" !!!
   qucs->show();
   int result = a.exec();
   saveApplSettings(qucs);
   return result;
+
+
 }
