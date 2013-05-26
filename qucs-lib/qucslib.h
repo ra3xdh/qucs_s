@@ -65,12 +65,14 @@ private slots:
   void slotSelectLibrary(int);
   void slotSearchComponent();
   void slotShowComponent(QListWidgetItem*);
-  //void slotManageLib();
+  void slotManageLib();
 
 private:
   void closeEvent(QCloseEvent*);
   void putLibrariesIntoCombobox();
   bool getSection(QString, QString &, QString &);
+
+  QMenu *fileMenu, *helpMenu;
 
   int UserLibCount;
   SymbolWidget *Symbol;

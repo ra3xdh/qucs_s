@@ -25,6 +25,7 @@
 #include <QtDebug>
 #include <QGroupBox>
 #include <QTextStream>
+#include <QMenu>
 #include <QMenuBar>
 #include <QAction>
 #include <QComboBox>
@@ -33,7 +34,7 @@
 #include <QLayout>
 #include <QPushButton>
 #include <QMessageBox>
-#include <q3textedit.h>
+#include <QTextEdit>
 #include <QRegExp>
 #include <QCloseEvent>
 #include <QPixmap>
@@ -51,40 +52,43 @@
 QucsLib::QucsLib()
 {
   // set application icon
-  setIcon (QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
-  setCaption("Qucs Library Tool " PACKAGE_VERSION);
+  setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
+  setWindowTitle("Qucs Library Tool " PACKAGE_VERSION);
 
   QMenuBar * menuBar = new QMenuBar (this);
 
   // create file menu
-  QMenu * fileMenu = new QMenu();
-  //QAction * manageLib =
-  //  new QAction (tr("Manage User &Libraries..."), Qt::CTRL+Qt::Key_M, this,"");
-  //manageLib->addTo (fileMenu);
-  //connect(manageLib, SIGNAL(activated()), SLOT(slotManageLib()));
+  fileMenu = new QMenu(tr("&File"));
 
-  //fileMenu->insertSeparator();
+  QAction * manageLib =new QAction (tr("Manage User &Libraries..."), this);
+  manageLib->setShortcut(Qt::CTRL+Qt::Key_M);
+  connect(manageLib, SIGNAL(activated()), SLOT(slotManageLib()));
 
-  QAction * fileQuit =
-    new QAction (tr("&Quit"), Qt::CTRL+Qt::Key_Q, this,"");
-  fileQuit->addTo (fileMenu);
+  QAction * fileQuit = new QAction(tr("&Quit"), this);
+  fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
   connect(fileQuit, SIGNAL(activated()), SLOT(slotQuit()));
 
+  fileMenu->addAction(manageLib);
+  fileMenu->addSeparator();
+  fileMenu->addAction(fileQuit);
+
+
   // create help menu
-  QMenu *helpMenu = new QMenu();
-  QAction * helpHelp =
-    new QAction (tr("&Help"), Qt::Key_F1, this,"");
-  helpHelp->addTo (helpMenu);
+  helpMenu = new QMenu(tr("&Help"));
+
+  QAction * helpHelp = new QAction(tr("&Help"), this);
+  helpHelp->setShortcut(Qt::Key_F1);
+  helpMenu->addAction(helpHelp);
   connect(helpHelp, SIGNAL(activated()), SLOT(slotHelp()));
-  QAction * helpAbout =
-    new QAction (tr("About"), 0, helpMenu,"");
-  helpAbout->addTo (helpMenu);
+
+  QAction * helpAbout = new QAction(tr("About"), this);
+  helpMenu->addAction(helpAbout);
   connect(helpAbout, SIGNAL(activated()), SLOT(slotAbout()));
 
   // setup menu bar
-  menuBar->insertItem (tr("&File"), fileMenu);
-  menuBar->insertSeparator ();
-  menuBar->insertItem (tr("&Help"), helpMenu);
+  menuBar->addMenu(fileMenu);
+  menuBar->addSeparator();
+  menuBar->addMenu(helpMenu);
 
   // main box
   all = new QVBoxLayout (this);
@@ -117,9 +121,10 @@ QucsLib::QucsLib()
   QGroupBox *CompGroup = new QGroupBox(tr("Component"));
   QVBoxLayout *CompGroupLayout = new QVBoxLayout();
   CompDescr = new QTextEdit();
-  CompDescr->setTextFormat(Qt::PlainText);
+  ///CompDescr->setTextFormat(Qt::PlainText);
   CompDescr->setReadOnly(true);
-  //CompDescr->setLineWrapMode(QTextEdit::NoWrap);
+  CompDescr->setWordWrapMode(QTextOption::NoWrap);
+
 
   Symbol = new SymbolWidget();
 
@@ -170,11 +175,12 @@ void QucsLib::putLibrariesIntoCombobox()
   QStringList LibFiles;
   QStringList::iterator it;
   if(UserLibDir.cd(".")) { // user library directory exists ?
-    LibFiles = UserLibDir.entryList("*.lib", QDir::Files, QDir::Name);
+    //LibFiles = UserLibDir.entryList("*.lib", QDir::Files, QDir::Name);
+    LibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
     UserLibCount = LibFiles.count();
 
     for(it = LibFiles.begin(); it != LibFiles.end(); it++) {
-      Library->insertItem(QPixmap(QucsSettings.BitmapDir + "home.png"), (*it).left((*it).length()-4));
+      Library->addItem(QPixmap(QucsSettings.BitmapDir + "home.png"), (*it).left((*it).length()-4));
     }
   }
 
@@ -183,10 +189,10 @@ void QucsLib::putLibrariesIntoCombobox()
   Library->insertSeparator(LibFiles.size());
 
   QDir LibDir(QucsSettings.LibDir);
-  LibFiles = LibDir.entryList("*.lib", QDir::Files, QDir::Name);
+  LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
 
   for(it = LibFiles.begin(); it != LibFiles.end(); it++)
-    Library->insertItem(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"), (*it).left((*it).length()-4));
+    Library->addItem(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"), (*it).left((*it).length()-4));
 
   slotSelectLibrary(0);
 }
@@ -228,13 +234,12 @@ void QucsLib::closeEvent(QCloseEvent *Event)
 }
 
 // ----------------------------------------------------
-/*
 void QucsLib::slotManageLib()
 {
   (new LibraryDialog(this))->exec();
   putLibrariesIntoCombobox();
 }
-*/
+
 // ----------------------------------------------------
 void QucsLib::slotHelp()
 {
@@ -271,7 +276,7 @@ void QucsLib::slotCopyToClipBoard()
 void QucsLib::slotShowModel()
 {
   DisplayDialog *d = new DisplayDialog(this, Symbol->ModelString, Symbol->VHDLModelString, Symbol->VerilogModelString);
-  d->setCaption(tr("Model"));
+  d->setWindowTitle(tr("Model"));
   d->resize(500, 150);
   d->show();
 }
@@ -281,12 +286,12 @@ void QucsLib::slotSelectLibrary(int Index)
 {
   int Start, End, NameStart, NameEnd;
   End = Library->count()-1;
-  if(Library->text(End) == tr("Search result")) {
+  if(Library->itemText(End) == tr("Search result")) {
     if(Index < End)
       Library->removeItem(End); // if search result still there -> remove it
     else  return;
   }
-  if(Library->text(0) == "")
+  if(Library->itemText(0) == "")
   {
     Library->removeItem(0);
   }
@@ -297,37 +302,37 @@ void QucsLib::slotSelectLibrary(int Index)
  
   QFile file;
   if(Index < UserLibCount)  // Is it user library ?
-    file.setName(UserLibDir.absPath() + QDir::separator() + Library->text(Index) + ".lib");
+    file.setFileName(UserLibDir.absolutePath() + QDir::separator() + Library->itemText(Index) + ".lib");
   else
-    file.setName(QucsSettings.LibDir + Library->text(Index) + ".lib");
+    file.setFileName(QucsSettings.LibDir + Library->itemText(Index) + ".lib");
 
   if(!file.open(QIODevice::ReadOnly)) {
     QMessageBox::critical(this, tr("Error"),
         tr("Cannot open \"%1\".").arg(
-           QucsSettings.LibDir + Library->text(Index) + ".lib"));
+           QucsSettings.LibDir + Library->itemText(Index) + ".lib"));
     return;
   }
 
   QTextStream ReadWhole(&file);
-  QString LibraryString = ReadWhole.read();
+  QString LibraryString = ReadWhole.readAll();
   file.close();
 
-  Start = LibraryString.find("<Qucs Library ");
+  Start = LibraryString.indexOf("<Qucs Library ");
   if(Start < 0) {
     QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
     return;
   }
-  End = LibraryString.find('>', Start);
+  End = LibraryString.indexOf('>', Start);
   if(End < 0) {
     QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
     return;
   }
   QString LibName = LibraryString.mid(Start, End-Start).section('"', 1, 1);
 
-  Start = LibraryString.find("\n<", End);
+  Start = LibraryString.indexOf("\n<", End);
   if(Start < 0) return;
   if(LibraryString.mid(Start+2, 14) == "DefaultSymbol>") {
-    End = LibraryString.find("\n</DefaultSymbol>");
+    End = LibraryString.indexOf("\n</DefaultSymbol>");
     if(End < 0) {
       QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
       return;
@@ -337,13 +342,13 @@ void QucsLib::slotSelectLibrary(int Index)
     Start = End + 3;
   }
 
-  while((Start=LibraryString.find("\n<Component ", Start)) > 0) {
+  while((Start=LibraryString.indexOf("\n<Component ", Start)) > 0) {
     Start++;
     NameStart = Start + 11;
-    NameEnd = LibraryString.find('>', NameStart);
+    NameEnd = LibraryString.indexOf('>', NameStart);
     if(NameEnd < 0)  continue;
 
-    End = LibraryString.find("\n</Component>", NameEnd);
+    End = LibraryString.indexOf("\n</Component>", NameEnd);
     if(End < 0)  continue;
     End += 13;
 
@@ -360,7 +365,7 @@ void QucsLib::slotSelectLibrary(int Index)
 void QucsLib::slotSearchComponent()
 {
   SearchDialog *d = new SearchDialog(this);
-  d->setCaption(tr("Search Library Component"));
+  d->setWindowTitle(tr("Search Library Component"));
   if(d->exec() == QDialog::Accepted)
     QMessageBox::information(this, tr("Result"),
                              tr("No appropriate component found."));
@@ -379,8 +384,8 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
   CompDescr->append("Library: " + LibName);
   CompDescr->append("----------------------------");
 
-  if(Library->currentItem() < UserLibCount)
-    LibName = UserLibDir.absPath() + QDir::separator() + LibName;
+  if(Library->currentIndex() < UserLibCount)
+    LibName = UserLibDir.absolutePath() + QDir::separator() + LibName;
 
   QString content;
   if(!getSection("Description", CompString, content))
@@ -415,11 +420,11 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
 bool QucsLib::getSection(QString section, QString &list, QString &content)
 {
   int Start, End;
-  Start = list.find("<"+section+">");
+  Start = list.indexOf("<"+section+">");
   content = "";
   if(Start > 0) {
     Start += section.length()+2;
-    End = list.find("</"+section+">", Start);
+    End = list.indexOf("</"+section+">", Start);
     if(End < 0) {
       QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
       return false;

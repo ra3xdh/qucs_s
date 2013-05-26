@@ -30,7 +30,8 @@
 
 
 DisplayDialog::DisplayDialog(QWidget *parent, QString Text, QString VHDLText, QString VerilogText)
-                     : QDialog(parent, 0, false, Qt::WDestructiveClose)
+                     //: QDialog(parent, 0, false, Qt::WDestructiveClose)
+    : QDialog(parent)
 {
   vLayout = new QVBoxLayout(this);
   vLayout->setMargin(3);
@@ -40,7 +41,7 @@ DisplayDialog::DisplayDialog(QWidget *parent, QString Text, QString VHDLText, QS
   
   QText = new QTextEdit();
   QText->setText(Text);
-  QText->setTextFormat(Qt::PlainText);
+  //QText->setTextFormat(Qt::PlainText);
   QText->setReadOnly(true);
   QText->setMinimumSize(200, 80);
   QText->setLineWrapMode(QTextEdit::NoWrap);
@@ -55,7 +56,7 @@ DisplayDialog::DisplayDialog(QWidget *parent, QString Text, QString VHDLText, QS
   
   QVHDLText = new QTextEdit(VHDL);
   QVHDLText->setText(VHDLText);
-  QVHDLText->setTextFormat(Qt::PlainText);
+  //QVHDLText->setTextFormat(Qt::PlainText);
   QVHDLText->setReadOnly(true);
   QVHDLText->setMinimumSize(200, 80);
   QVHDLText->setLineWrapMode(QTextEdit::NoWrap);
@@ -70,7 +71,7 @@ DisplayDialog::DisplayDialog(QWidget *parent, QString Text, QString VHDLText, QS
   
   QVerilogText = new QTextEdit(Verilog);
   QVerilogText->setText(VerilogText);
-  QVerilogText->setTextFormat(Qt::PlainText);
+  //QVerilogText->setTextFormat(Qt::PlainText);
   QVerilogText->setReadOnly(true);
   QVerilogText->setMinimumSize(200, 80);
   QVerilogText->setLineWrapMode(QTextEdit::NoWrap);
