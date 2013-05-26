@@ -52,7 +52,7 @@ HelpDialog::HelpDialog(QWidget *parent)
 
   vLayout = new QVBoxLayout();
 
-  Text = new QTextEdit(s, this);//?QString::null, this);
+  Text = new QTextEdit(s, this);
   //Text->setTextFormat(Qt::PlainText);
   Text->setReadOnly(true);
   //Text->setWordWrap(QTextEdit::NoWrap);
@@ -70,6 +70,8 @@ HelpDialog::HelpDialog(QWidget *parent)
   ButtonClose->setFocus();
 
   //h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
+
+  setLayout(h);
 }
 
 HelpDialog::~HelpDialog()

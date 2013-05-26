@@ -15,13 +15,9 @@
 #define QUCSATTENUATOR_H
 
 #include <QDialog>
-//Added by qt3to4:
-//#include <Q3GridLayout>
-#include <QGridLayout>
 #include <QLabel>
 #include "attenuatorfunc.h"
 
-class QGridLayout;
 class QComboBox;
 class QLineEdit;
 class QIntValidator;
