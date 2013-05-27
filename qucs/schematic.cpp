@@ -2027,6 +2027,8 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
 // ---------------------------------------------------
 void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
 {
+
+  //qDebug() << Event->mimeData()->formats();
   formerAction = 0;
   dragIsOkay = false;
 
@@ -2058,7 +2060,7 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
   if(Event->format(1) == 0) {  // only one MIME type ?
 
     // drag component from listview
-    if(Event->provides("application/x-qiconlist")) {
+    if(Event->provides("application/x-qabstractitemmodeldatalist")) {
       //Q3IconViewItem *Item = App->CompComps->currentItem();
       QListWidgetItem *Item = App->CompComps->currentItem();
       if(Item) {
