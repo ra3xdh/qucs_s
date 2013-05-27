@@ -24,7 +24,7 @@
 #include <string>
 
 #include <qmenubar.h>
-#include <q3popupmenu.h>
+#include <QMenu>
 #include <qmessagebox.h>
 #include <qlayout.h>
 #include <qlabel.h>
@@ -54,10 +54,10 @@ QucsFilter::QucsFilter()
 
 
   // --------  create menubar  -------------------
-  Q3PopupMenu *fileMenu = new Q3PopupMenu();
+  QMenu *fileMenu = new QMenu();
   fileMenu->insertItem(tr("E&xit"), this, SLOT(slotQuit()), Qt::CTRL+Qt::Key_Q);
 
-  Q3PopupMenu *helpMenu = new Q3PopupMenu();
+  QMenu *helpMenu = new QMenu();
   helpMenu->insertItem(tr("Help..."), this, SLOT(slotHelpIntro()), Qt::Key_F1);
   helpMenu->insertSeparator();
   helpMenu->insertItem(
