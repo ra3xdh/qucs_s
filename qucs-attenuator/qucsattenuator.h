@@ -16,6 +16,7 @@
 
 #include <QDialog>
 #include <QLabel>
+
 #include "attenuatorfunc.h"
 
 class QComboBox;

@@ -16,16 +16,15 @@
 
 #include <stdlib.h>
 
-#include <qapplication.h>
-#include <qstring.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qfile.h>
-#include <QTextstream>
-#include <qmessagebox.h>
-#include <qdir.h>
-#include <qfont.h>
-
+#include <QApplication>
+#include <QString>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QFile>
+#include <QTextStream>
+#include <QMessageBox>
+#include <QDir>
+#include <QFont>
 
 #include "qucsattenuator.h"
 

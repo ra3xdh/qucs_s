@@ -62,14 +62,14 @@ HelpDialog::HelpDialog(QWidget *parent)
   QHBoxLayout *h = new QHBoxLayout();
   h->addLayout(vLayout);
 
-  //h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
+  h->addStretch(5);
 
   QPushButton *ButtonClose = new QPushButton(tr("Close"));
   h->addWidget(ButtonClose);
   connect(ButtonClose, SIGNAL(clicked()), SLOT(slotClose()));
   ButtonClose->setFocus();
 
-  //h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
+  h->addStretch(5);
 
   setLayout(h);
 }
