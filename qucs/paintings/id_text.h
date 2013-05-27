@@ -40,7 +40,7 @@ public:
   ID_Text(int cx_=0, int cy_=0);
  ~ID_Text();
 
-  void paintScheme(QPainter*);
+  void paintScheme(Schematic*);
   void getCenter(int&, int&);
   void setCenter(int, int, bool relative=false);
 

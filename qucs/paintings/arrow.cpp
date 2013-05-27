@@ -17,13 +17,13 @@
 #include <QtGui>
 #include "arrow.h"
 #include "arrowdialog.h"
+#include "schematic.h"
 
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qcombobox.h>
 //Added by qt3to4:
 #include <Q3PointArray>
-
 #include <math.h>
 
 
@@ -103,11 +103,11 @@ void Arrow::paint(ViewPainter *p)
 }
 
 // --------------------------------------------------------------------------
-void Arrow::paintScheme(QPainter *p)
+void Arrow::paintScheme(Schematic *p)
 {
-  p->drawLine(cx, cy, cx+x2, cy+y2);
-  p->drawLine(cx+x2, cy+y2, cx+xp1, cy+yp1);
-  p->drawLine(cx+x2, cy+y2, cx+xp2, cy+yp2);
+  p->PostPaintEvent(_Line, cx, cy, cx+x2, cy+y2);
+  p->PostPaintEvent(_Line, cx+x2, cy+y2, cx+xp1, cy+yp1);
+  p->PostPaintEvent(_Line, cx+x2, cy+y2, cx+xp2, cy+yp2);
 }
 
 // --------------------------------------------------------------------------
@@ -243,7 +243,7 @@ bool Arrow::resizeTouched(float fX, float fY, float len)
 
 // --------------------------------------------------------------------------
 // Mouse move action during resize.
-void Arrow::MouseResizeMoving(int x, int y, QPainter *p)
+void Arrow::MouseResizeMoving(int x, int y, Schematic *p)
 {
   paintScheme(p);  // erase old painting
   if(State == 1) { x2 += cx-x; y2 += cy-y; cx = x; cy = y; } // moving shaft
@@ -271,8 +271,8 @@ void Arrow::calcArrowHead()
 // fx/fy are the precise coordinates, gx/gy are the coordinates set on grid.
 // x/y are coordinates without scaling.
 void Arrow::MouseMoving(
-	QPainter *paintScale, int, int, int gx, int gy,
-	QPainter *p, int x, int y, bool drawn)
+	Schematic *paintScale, int, int, int gx, int gy,
+	Schematic *p, int x, int y, bool drawn)
 {
   if(State > 0) {
     if(State > 1) {
@@ -288,17 +288,17 @@ void Arrow::MouseMoving(
   else { cx = gx; cy = gy; }
 
 
-  p->setPen(Qt::SolidLine);
+#warning  p->setPen(Qt::SolidLine);
   if(drawn) {
-    p->drawLine(x1+25, y1, x1+13, y1+12);  // erase old cursor symbol
-    p->drawLine(x1+18, y1+2, x1+25, y1);
-    p->drawLine(x1+23, y1+7, x1+25, y1);
+    p->PostPaintEvent(_Line, x1+25, y1, x1+13, y1+12);  // erase old cursor symbol
+    p->PostPaintEvent(_Line, x1+18, y1+2, x1+25, y1);
+    p->PostPaintEvent(_Line, x1+23, y1+7, x1+25, y1);
   }
   x1 = x;
   y1 = y;
-  p->drawLine(x1+25, y1, x1+13, y1+12);  // paint new cursor symbol
-  p->drawLine(x1+18, y1+2, x1+25, y1);
-  p->drawLine(x1+23, y1+7, x1+25, y1);
+  p->PostPaintEvent(_Line, x1+25, y1, x1+13, y1+12);  // paint new cursor symbol
+  p->PostPaintEvent(_Line, x1+18, y1+2, x1+25, y1);
+  p->PostPaintEvent(_Line, x1+23, y1+7, x1+25, y1);
 }
 
 // --------------------------------------------------------------------------

@@ -17,7 +17,7 @@
 #include <QtGui>
 #include "main.h"
 #include "portsymbol.h"
-
+#include "schematic.h"
 
 PortSymbol::PortSymbol(int cx_, int cy_, const QString& numberStr_,
                                          const QString& nameStr_)
@@ -104,10 +104,10 @@ void PortSymbol::paint(ViewPainter *p)
 }
 
 // --------------------------------------------------------------------------
-void PortSymbol::paintScheme(QPainter *p)
+void PortSymbol::paintScheme(Schematic *p)
 {
-  p->drawEllipse(cx-4, cy-4, 8, 8);
-  p->drawRect(cx+x1, cy+y1, x2, y2);
+  p->PostPaintEvent(_Ellipse, cx-4, cy-4, 8, 8);
+  p->PostPaintEvent(_Rect, cx+x1, cy+y1, x2, y2);
 }
 
 // --------------------------------------------------------------------------

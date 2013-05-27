@@ -18,7 +18,7 @@
 #include "ellipsearc.h"
 #include "filldialog.h"
 #include "main.h"
-
+#include "schematic.h"
 #include <qpushbutton.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
@@ -59,9 +59,9 @@ void EllipseArc::paint(ViewPainter *p)
 }
 
 // --------------------------------------------------------------------------
-void EllipseArc::paintScheme(QPainter *p)
+void EllipseArc::paintScheme(Schematic *p)
 {
-  p->drawArc(cx, cy, x2, y2, Angle, ArcLen);
+  p->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, ArcLen);
 }
 
 // --------------------------------------------------------------------------
@@ -190,7 +190,7 @@ bool EllipseArc::resizeTouched(float fX, float fY, float len)
 
 // --------------------------------------------------------------------------
 // Mouse move action during resize.
-void EllipseArc::MouseResizeMoving(int x, int y, QPainter *p)
+void EllipseArc::MouseResizeMoving(int x, int y, Schematic *p)
 {
   paintScheme(p);  // erase old painting
   switch(State) {
@@ -213,8 +213,8 @@ void EllipseArc::MouseResizeMoving(int x, int y, QPainter *p)
 // fx/fy are the precise coordinates, gx/gy are the coordinates set on grid.
 // x/y are coordinates without scaling.
 void EllipseArc::MouseMoving(
-	QPainter *paintScale, int fx, int fy, int gx, int gy,
-	QPainter *p, int x, int y, bool drawn)
+	Schematic *paintScale, int fx, int fy, int gx, int gy,
+	Schematic *p, int x, int y, bool drawn)
 {
   switch(State) {
     case 0 :
@@ -225,17 +225,17 @@ void EllipseArc::MouseMoving(
       State++;
       x2 = gx - cx;
       y2 = gy - cy;
-      paintScale->drawArc(cx, cy, x2, y2, 0, 16*360);  // paint new painting
+      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, 0, 16*360);  // paint new painting
       break;
     case 2 :
-      paintScale->drawArc(cx, cy, x2, y2, 0, 16*360);  // erase old painting
+      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, 0, 16*360);  // erase old painting
       x2 = gx - cx;
       y2 = gy - cy;
-      paintScale->drawArc(cx, cy, x2, y2, 0, 16*360);  // paint new painting
+      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, 0, 16*360);  // paint new painting
       break;
     case 3 :
       State++;
-      paintScale->drawArc(cx, cy, x2, y2, 0, 16*360);  // erase old painting
+      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, 0, 16*360);  // erase old painting
       if(x2 < 0) { cx += x2;  x2 *= -1; }
       if(y2 < 0) { cy += y2;  y2 *= -1; }
 
@@ -243,45 +243,45 @@ void EllipseArc::MouseMoving(
 		* atan2(double(x2*(cy+(y2>>1) - fy)),
 			double(y2*(fx - cx-(x2>>1)))));
       if(Angle < 0) Angle += 16*360;
-      paintScale->drawArc(cx, cy, x2, y2, Angle, 16*180); // new painting
+      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, 16*180); // new painting
       break;
     case 4 :
-      paintScale->drawArc(cx, cy, x2, y2, Angle, 16*180);// erase old painting
+      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, 16*180);// erase old painting
       Angle = int(16.0*180.0/M_PI
 		* atan2(double(x2*(cy+(y2>>1) - fy)),
 			double(y2*(fx - cx-(x2>>1)))));
       if(Angle < 0) Angle += 16*360;
-      paintScale->drawArc(cx, cy, x2, y2, Angle, 16*180);// paint new painting
+      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, 16*180);// paint new painting
       break;
     case 5 :
       State++;
-      paintScale->drawArc(cx, cy, x2, y2, Angle, 16*180);// erase old painting
+      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, 16*180);// erase old painting
       ArcLen = int(16.0*180.0/M_PI
 		* atan2(double(x2*(cy+(y2>>1) - fy)),
 			double(y2*(fx - cx-(x2>>1)))));
       ArcLen -= Angle;
       while(ArcLen < 0) ArcLen += 16*360;
-      paintScale->drawArc(cx, cy, x2, y2, Angle, ArcLen);// paint new painting
+      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, ArcLen);// paint new painting
       break;
     case 6 :
-      paintScale->drawArc(cx, cy, x2, y2, Angle, ArcLen);// erase old painting
+      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, ArcLen);// erase old painting
       ArcLen = int(16.0*180.0/M_PI
 		* atan2(double(x2*(cy+(y2>>1) - fy)),
 			double(y2*(fx - cx-(x2>>1)))));
       ArcLen -= Angle;
       while(ArcLen <= 32) ArcLen += 16*360;
-      paintScale->drawArc(cx, cy, x2, y2, Angle, ArcLen);// paint new painting
+      paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, ArcLen);// paint new painting
       break;
   }
 
 
-  p->setPen(Qt::SolidLine);
+  #warning p->setPen(Qt::SolidLine);
   if(drawn)
-    p->drawArc(x1+13, y1, 18, 12, 16*45, 16*200); // erase old cursor symbol
+    p->PostPaintEvent(_Arc, x1+13, y1, 18, 12, 16*45, 16*200); // erase old cursor symbol
 
   x1 = x;
   y1 = y;
-  p->drawArc(x1+13, y1, 18, 12, 16*45, 16*200);  // paint new cursor symbol
+  p->PostPaintEvent(_Arc, x1+13, y1, 18, 12, 16*45, 16*200);  // paint new cursor symbol
 }
 
 // --------------------------------------------------------------------------

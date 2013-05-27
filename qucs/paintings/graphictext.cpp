@@ -20,6 +20,7 @@
 #include "viewpainter.h"
 #include "graphictext.h"
 #include "graphictextdialog.h"
+#include "schematic.h"
 
 #include <qwidget.h>
 #include <qpainter.h>
@@ -83,17 +84,17 @@ void GraphicText::paint(ViewPainter *p)
 }
 
 // -----------------------------------------------------------------------
-void GraphicText::paintScheme(QPainter *p)
+void GraphicText::paintScheme(Schematic *p)
 {
-  QMatrix wm = p->worldMatrix();
-  QMatrix Mat (wm.m11(), 0.0, 0.0, wm.m22(),
-		wm.dx() + double(cx) * wm.m11(),
-		wm.dy() + double(cy) * wm.m22());
-  p->setWorldMatrix(Mat);
-  p->rotate(-Angle);
-  p->drawRect(0, 0, x2, y2);
+  #warning QMatrix wm = p->worldMatrix();
+  #warning QMatrix Mat (wm.m11(), 0.0, 0.0, wm.m22(),
+#warning 		wm.dx() + double(cx) * wm.m11(),
+#warning 		wm.dy() + double(cy) * wm.m22());
+  #warning p->setWorldMatrix(Mat);
+  #warning p->rotate(-Angle);
+  p->PostPaintEvent(_Rect, 0, 0, x2, y2);
 
-  p->setWorldMatrix(wm);
+  #warning p->setWorldMatrix(wm);
 }
 
 // ------------------------------------------------------------------------
@@ -198,20 +199,20 @@ QString GraphicText::saveCpp()
 // fx/fy are the precise coordinates, gx/gy are the coordinates set on grid.
 // x/y are coordinates without scaling.
 void GraphicText::MouseMoving(
-	QPainter*, int, int, int gx, int gy,
-	QPainter *p, int x, int y, bool drawn)
+	Schematic*, int, int, int gx, int gy,
+	Schematic *p, int x, int y, bool drawn)
 {
-  p->setPen(Qt::SolidLine);
+  #warning p->setPen(Qt::SolidLine);
   if(drawn) {
-    p->drawLine(x1+15, y1+15, x1+20, y1);  // erase old cursor symbol
-    p->drawLine(x1+26, y1+15, x1+21, y1);
-    p->drawLine(x1+17, y1+8,  x1+23, y1+8);
+    p->PostPaintEvent(_Line, x1+15, y1+15, x1+20, y1);  // erase old cursor symbol
+    p->PostPaintEvent(_Line, x1+26, y1+15, x1+21, y1);
+    p->PostPaintEvent(_Line, x1+17, y1+8,  x1+23, y1+8);
   }
   x1 = x;
   y1 = y;
-  p->drawLine(x1+15, y1+15, x1+20, y1);  // paint new cursor symbol
-  p->drawLine(x1+26, y1+15, x1+21, y1);
-  p->drawLine(x1+17, y1+8,  x1+23, y1+8);
+  p->PostPaintEvent(_Line, x1+15, y1+15, x1+20, y1);  // paint new cursor symbol
+  p->PostPaintEvent(_Line, x1+26, y1+15, x1+21, y1);
+  p->PostPaintEvent(_Line, x1+17, y1+8,  x1+23, y1+8);
 
   cx = gx;
   cy = gy;

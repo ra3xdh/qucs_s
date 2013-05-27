@@ -29,7 +29,7 @@ public:
  ~Arrow();
 
   void paint(ViewPainter*);
-  void paintScheme(QPainter*);
+  void paintScheme(Schematic*);
   void getCenter(int&, int&);
   void setCenter(int, int, bool relative=false);
 
@@ -38,12 +38,12 @@ public:
   bool load(const QString&);
   QString save();
   QString saveCpp();
-  void MouseMoving(QPainter*, int, int, int, int, QPainter*, int, int, bool);
+  void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int, bool);
   bool MousePressing();
   bool getSelected(float, float, float);
   void Bounding(int&, int&, int&, int&);
   bool resizeTouched(float, float, float);
-  void MouseResizeMoving(int, int, QPainter*);
+  void MouseResizeMoving(int, int, Schematic*);
 
   void rotate();
   void mirrorX();
