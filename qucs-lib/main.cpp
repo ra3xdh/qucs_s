@@ -26,7 +26,7 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 #include <qfile.h>
-#include <QTextstream>
+#include <QTextStream>
 #include <qmessagebox.h>
 #include <qdir.h>
 #include <qfont.h>

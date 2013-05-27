@@ -19,7 +19,7 @@
 #define LIBRARYDIALOG_H
 
 #include <QDialog>
-#include <QRegexp>
+#include <QRegExp>
 #include <QStringList>
 #include <QLabel>
 #include <QVBoxLayout>

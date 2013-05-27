@@ -24,12 +24,12 @@
 
 #include <QFile>
 #include <QLabel>
-#include <QLineedit>
+#include <QLineEdit>
 #include <QValidator>
-#include <QMessagebox>
-#include <QPushbutton>
+#include <QMessageBox>
+#include <QPushButton>
 //#include <q3scrollview.h> //-->QAbstractScrollArea and QScrollArea
-#include <QRadiobutton>
+#include <QRadioButton>
 #include <QButtonGroup>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
