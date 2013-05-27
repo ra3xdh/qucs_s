@@ -55,6 +55,11 @@ Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "iverilog"; Description: "Install iverilog 0.9.5"; GroupDescription: "Install bundled software"; Flags: checkedonce
+Name: "mingw32"; Description: "Install Mingw32 0.0.2 (Required for FreeHDL)"; GroupDescription: "Install bundled software"; Flags: checkedonce
+Name: "freehdl"; Description: "Install FreeHDL 0.0.8"; GroupDescription: "Install bundled software"; Flags: checkedonce
+Name: "octave"; Description: "Download Octave"; GroupDescription: "Install bundled software"; Flags: checkedonce
+
 
 [Files]
 Source: "{# TREE}\bin\*"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -74,9 +79,10 @@ Name: "{group}\{cm:UninstallProgram,Qucs}"; Filename: "{uninstallexe}"
 Name: "{userdesktop}\Qucs"; Filename: "{app}\bin\qucs.exe"; IconFilename: "{app}\misc\qucs64x64.ico"; WorkingDir: "{app}\bin"; Tasks: desktopicon
 
 [Run]
-Filename: "{tmp}\iverilog-0.9.5_setup.exe"; Parameters: ""; Check: ShouldInstallVerilog 
-Filename: "{tmp}\mingw32-g++-0.0.2-setup.exe"; Parameters: ""; Check: ShouldInstallMingw
-Filename: "{tmp}\freehdl-0.0.8-setup.exe"; Parameters: ""; Check: ShouldInstallFreehdl 
+Filename: "{tmp}\iverilog-0.9.5_setup.exe"; Parameters: ""; Tasks: iverilog 
+Filename: "{tmp}\mingw32-g++-0.0.2-setup.exe"; Parameters: ""; Tasks: mingw32
+Filename: "{tmp}\freehdl-0.0.8-setup.exe"; Parameters: ""; Tasks: freehdl
+
 
 [Code]
 function HomeDir(Param: String): String;
@@ -156,36 +162,29 @@ begin
   end;
 end;
 
-
-
-function ShouldInstallVerilog: Boolean;
+function DownloadOctave: Boolean;
+var
+  ErrCode: Integer;
 begin
-  Result := False;
-  // Ask the user a Yes/No question
-  if MsgBox('Install iverilog?', mbConfirmation, MB_YESNO) = IDYES then
-  begin
-    Result := True;
-  end;
-
-
+  MsgBox('A browser will be opened to download Octave 3.6.2 Setup', mbConfirmation, MB_OK);
+  Result := True;
+  ShellExec('open', 'http://sourceforge.net/projects/octave/files/Octave%20Windows%20binaries/Octave%203.6.2%20for%20Windows%20Microsoft%20Visual%20Studio/octave-3.6.2-vs2010-setup.exe/download',
+      '', '', SW_SHOW, ewNoWait, ErrCode);
 end;
 
-function ShouldInstallFreehdl: Boolean;
+
+function NextButtonClick(CurPageID: Integer): Boolean;
 begin
-  Result := False;
-  if MsgBox('Install Freehdl?', mbConfirmation, MB_YESNO) = IDYES then
+  Result := True;
+  if CurPageID = wpSelectTasks then
   begin
-    Result := True;
+    if WizardForm.TasksList.Checked[5] then
+      DownloadOctave;
   end;
 end;
 
-function ShouldInstallMingw: Boolean;
-begin
-  Result := False;
-  if MsgBox('Install Mingw32? This package is required if you want to install Freehdl', mbConfirmation, MB_YESNO) = IDYES then
-  begin
-    Result := True;
-  end;
-end;
+
+
+
 
 

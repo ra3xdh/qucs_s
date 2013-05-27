@@ -9,7 +9,7 @@ Standards-Version: 3.8.1
 Package: qucs
 Architecture: any
 Depends: ${shlibs:Depends}, perl, libqtcore4, libqt4-qt3support
-Recommends: freehdl, verilog
+Recommends: freehdl, verilog, octave
 Description: Quite Universal Circuit Simulator
  Qucs is an integrated circuit simulator which means you are able
  to setup a circuit with a graphical user interface (GUI) and simulate
