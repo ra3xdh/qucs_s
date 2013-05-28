@@ -31,7 +31,7 @@
 HelpDialog::HelpDialog(QWidget *parent)
                      : QDialog(parent) //, 0, false, Qt::WDestructiveClose)
 {
-  setCaption("Qucs Filter Help");
+  setWindowTitle("Qucs Filter Help");
 
 
   // --------  set help text into dialog  ------------

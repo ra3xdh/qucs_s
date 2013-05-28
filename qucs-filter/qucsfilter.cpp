@@ -23,20 +23,18 @@
 #include <stdlib.h>
 #include <string>
 
-#include <qmenubar.h>
 #include <QMenu>
-#include <qmessagebox.h>
-#include <qlayout.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qvalidator.h>
-#include <qtimer.h>
-#include <qclipboard.h>
-#include <qapplication.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
+#include <QMenuBar>
+#include <QMessageBox>
+#include <QLabel>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QValidator>
+#include <QTimer>
+#include <QClipboard>
+#include <QApplication>
+#include <QGridLayout>
 #include <QPixmap>
 
 #include "lc_filter.h"
@@ -49,29 +47,45 @@
 QucsFilter::QucsFilter()
 {
   // set application icon
-  setIcon (QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
-  setCaption("Qucs Filter " PACKAGE_VERSION);
-
+  setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
+  setWindowTitle("Qucs Filter " PACKAGE_VERSION);
 
   // --------  create menubar  -------------------
-  QMenu *fileMenu = new QMenu();
-  fileMenu->insertItem(tr("E&xit"), this, SLOT(slotQuit()), Qt::CTRL+Qt::Key_Q);
+  QMenu *fileMenu = new QMenu(tr("&File"));
 
-  QMenu *helpMenu = new QMenu();
-  helpMenu->insertItem(tr("Help..."), this, SLOT(slotHelpIntro()), Qt::Key_F1);
-  helpMenu->insertSeparator();
-  helpMenu->insertItem(
-                tr("&About QucsFilter..."), this, SLOT(slotHelpAbout()), 0);
-  helpMenu->insertItem(tr("About Qt..."), this, SLOT(slotHelpAboutQt()), 0);
+  QAction * fileQuit = new QAction(tr("E&xit"), this);
+  fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
+  connect(fileQuit, SIGNAL(activated()), SLOT(slotQuit()));
+
+  fileMenu->addAction(fileQuit);
+
+  QMenu *helpMenu = new QMenu(tr("&Help"), this);
+  QAction * helpHelp = new QAction(tr("Help..."), this);
+  helpHelp->setShortcut(Qt::Key_F1);
+  connect(helpHelp, SIGNAL(activated()), SLOT(slotHelpIntro()));
+
+  QAction * helpAbout = new QAction(tr("&About QucsFilter..."), this);
+  helpMenu->addAction(helpAbout);
+  connect(helpAbout, SIGNAL(activated()), SLOT(slotHelpAbout()));
+
+  QAction * helpAboutQt = new QAction(tr("About Qt..."), this);
+  helpMenu->addAction(helpAboutQt);
+  connect(helpAboutQt, SIGNAL(activated()), SLOT(slotHelpAboutQt()));
+
+  helpMenu->addAction(helpHelp);
+  helpMenu->addSeparator();
+  helpMenu->addAction(helpAbout);
+  helpMenu->addAction(helpAboutQt);
 
   QMenuBar *bar = new QMenuBar(this);
-  bar->insertItem(tr("&File"), fileMenu);
-  bar->insertSeparator ();
-  bar->insertItem(tr("&Help"), helpMenu);
+  bar->addMenu(fileMenu);
+  bar->addSeparator();
+  bar->addMenu(helpMenu);
 
 
   // -------  create main windows widgets --------
-  gbox = new Q3GridLayout(this, 10,3,5,5);
+  gbox = new QGridLayout(this);
+  gbox->setSpacing(3);
 
   QWidget *Space = new QWidget(this);   // reserve space for menubar
   Space->setFixedSize(5, bar->height());
@@ -80,20 +94,20 @@ QucsFilter::QucsFilter()
   QLabel *Label1 = new QLabel(tr("Filter type:"), this);
   gbox->addWidget(Label1, 1,0);
   ComboType = new QComboBox(this);
-  ComboType->insertItem("Bessel");
-  ComboType->insertItem("Butterworth");
-  ComboType->insertItem("Chebyshev");
-  ComboType->insertItem("Cauer");
+  ComboType->addItem("Bessel");
+  ComboType->addItem("Butterworth");
+  ComboType->addItem("Chebyshev");
+  ComboType->addItem("Cauer");
   gbox->addWidget(ComboType, 1,1);
   connect(ComboType, SIGNAL(activated(int)), SLOT(slotTypeChanged(int)));
 
   QLabel *Label2 = new QLabel(tr("Filter class:"), this);
   gbox->addWidget(Label2, 2,0);
   ComboClass = new QComboBox(this);
-  ComboClass->insertItem(tr("Low pass"));
-  ComboClass->insertItem(tr("High pass"));
-  ComboClass->insertItem(tr("Band pass"));
-  ComboClass->insertItem(tr("Band stop"));
+  ComboClass->addItem(tr("Low pass"));
+  ComboClass->addItem(tr("High pass"));
+  ComboClass->addItem(tr("Band pass"));
+  ComboClass->addItem(tr("Band stop"));
   gbox->addWidget(ComboClass, 2,1);
   connect(ComboClass, SIGNAL(activated(int)), SLOT(slotClassChanged(int)));
 
@@ -112,11 +126,11 @@ QucsFilter::QucsFilter()
   EditCorner->setValidator(DoubleVal);
   gbox->addWidget(EditCorner, 4,1);
   ComboCorner = new QComboBox(this);
-  ComboCorner->insertItem("Hz");
-  ComboCorner->insertItem("kHz");
-  ComboCorner->insertItem("MHz");
-  ComboCorner->insertItem("GHz");
-  ComboCorner->setCurrentItem(3);
+  ComboCorner->addItem("Hz");
+  ComboCorner->addItem("kHz");
+  ComboCorner->addItem("MHz");
+  ComboCorner->addItem("GHz");
+  ComboCorner->setCurrentIndex(3);
   gbox->addWidget(ComboCorner, 4,2);
 
   LabelStop = new QLabel(tr("Stop frequency:"), this);
@@ -125,11 +139,11 @@ QucsFilter::QucsFilter()
   EditStop->setValidator(DoubleVal);
   gbox->addWidget(EditStop, 5,1);
   ComboStop = new QComboBox(this);
-  ComboStop->insertItem("Hz");
-  ComboStop->insertItem("kHz");
-  ComboStop->insertItem("MHz");
-  ComboStop->insertItem("GHz");
-  ComboStop->setCurrentItem(3);
+  ComboStop->addItem("Hz");
+  ComboStop->addItem("kHz");
+  ComboStop->addItem("MHz");
+  ComboStop->addItem("GHz");
+  ComboStop->setCurrentIndex(3);
   gbox->addWidget(ComboStop, 5,2);
 
   LabelBandStop = new QLabel(tr("Stop band frequency:"), this);
@@ -138,11 +152,11 @@ QucsFilter::QucsFilter()
   EditBandStop->setValidator(DoubleVal);
   gbox->addWidget(EditBandStop, 6,1);
   ComboBandStop = new QComboBox(this);
-  ComboBandStop->insertItem("Hz");
-  ComboBandStop->insertItem("kHz");
-  ComboBandStop->insertItem("MHz");
-  ComboBandStop->insertItem("GHz");
-  ComboBandStop->setCurrentItem(3);
+  ComboBandStop->addItem("Hz");
+  ComboBandStop->addItem("kHz");
+  ComboBandStop->addItem("MHz");
+  ComboBandStop->addItem("GHz");
+  ComboBandStop->setCurrentIndex(3);
   gbox->addWidget(ComboBandStop, 6,2);
 
   LabelRipple = new QLabel(tr("Pass band ripple:"), this);
@@ -170,17 +184,15 @@ QucsFilter::QucsFilter()
   gbox->addWidget(Label10, 9,2);
 
 
-  QPushButton *ButtonGo =
-               new QPushButton(tr("Calculate and put into Clipboard"), this);
+  QPushButton *ButtonGo = new QPushButton(tr("Calculate and put into Clipboard"), this);
   connect(ButtonGo, SIGNAL(clicked()), SLOT(slotCalculate()));
-  gbox->addMultiCellWidget(ButtonGo, 10,10,0,2);
+  gbox->addWidget(ButtonGo, 10,0,1,3);
 
   LabelResult = new QLabel(this);
   ResultState = 100;
   slotShowResult();
   LabelResult->setAlignment(Qt::AlignHCenter);
-  gbox->addMultiCellWidget(LabelResult, 11,11,0,2);
-
+  gbox->addWidget(LabelResult, 11,0,1,3);
 
   // -------  finally set initial state  --------
   slotTypeChanged(0);
@@ -295,13 +307,13 @@ void QucsFilter::slotCalculate()
   double BandStopFreq = EditBandStop->text().toDouble();
 
   // add exponent
-  CornerFreq   *= pow(10, double(3*ComboCorner->currentItem()));
-  StopFreq     *= pow(10, double(3*ComboStop->currentItem()));
-  BandStopFreq *= pow(10, double(3*ComboBandStop->currentItem()));
+  CornerFreq   *= pow(10, double(3*ComboCorner->currentIndex()));
+  StopFreq     *= pow(10, double(3*ComboStop->currentIndex()));
+  BandStopFreq *= pow(10, double(3*ComboBandStop->currentIndex()));
 
   tFilter Filter;
-  Filter.Type = ComboType->currentItem();
-  Filter.Class = ComboClass->currentItem();
+  Filter.Type = ComboType->currentIndex();
+  Filter.Class = ComboClass->currentIndex();
   Filter.Order = EditOrder->text().toInt();
   Filter.Ripple = EditRipple->text().toDouble();
   Filter.Attenuation = EditAtten->text().toDouble();
@@ -350,12 +362,11 @@ void QucsFilter::slotShowResult()
     return;
   }
 
-
   int c;
   ResultState++;
   if(ResultState & 1)  c = 0xFF;
   else c = 0x80;
-  QString s = QString("<font color=\"#00%100\"><b>  ").arg(c, 2, 16);
+  QString s = QString("<font color=\"#00%1000\"><b>  ").arg(c, 2, 16);
   LabelResult->setText(tr("Result:") + s + tr("Successful") + "</b></font>");
 
   c = 500;
