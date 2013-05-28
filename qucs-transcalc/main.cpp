@@ -21,15 +21,15 @@
 
 #include <stdlib.h>
 
-#include <qapplication.h>
-#include <qstring.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qfile.h>
-#include <q3textstream.h>
-#include <qmessagebox.h>
-#include <qdir.h>
-#include <qfont.h>
+#include <QApplication>
+#include <QString>
+#include <QTextCodec>
+#include <QTranslator>
+#include <Qfile>
+#include <QTextStream>
+#include <QMessageBox>
+#include <QDir>
+#include <QFont>
 
 #include "qucstrans.h"
 
@@ -42,34 +42,34 @@ bool loadSettings()
 {
   bool result = true;
 
-  QFile file(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/transrc"));
+  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/transrc"));
   if(!file.open(QIODevice::ReadOnly))
     result = false; // settings file doesn't exist
   else {
-    Q3TextStream stream(&file);
+    QTextStream stream(&file);
     QString Line, Setting;
     while(!stream.atEnd()) {
       Line = stream.readLine();
       Setting = Line.section('=',0,0);
       Line = Line.section('=',1,1);
       if(Setting == "Mode") {
-	QucsSettings.Mode = Line.simplifyWhiteSpace();
+    QucsSettings.Mode = Line.simplified();
       }
       else if(Setting == "Frequency") {
-	Line = Line.simplifyWhiteSpace();
-	QucsSettings.freq_unit = QucsTranscalc::translateUnit(Line,0);
+    Line = Line.simplified();
+    QucsSettings.freq_unit = QucsTranscalc::translateUnit(Line.toAscii(),0);
       }
       else if(Setting == "Length") {
-	Line = Line.simplifyWhiteSpace();
-	QucsSettings.length_unit = QucsTranscalc::translateUnit(Line,1);
+    Line = Line.simplified();
+    QucsSettings.length_unit = QucsTranscalc::translateUnit(Line.toAscii(),1);
       }
       else if(Setting == "Resistance") {
-	Line = Line.simplifyWhiteSpace();
-	QucsSettings.res_unit = QucsTranscalc::translateUnit(Line,2);
+    Line = Line.simplified();
+    QucsSettings.res_unit = QucsTranscalc::translateUnit(Line.toAscii(),2);
       }
       else if(Setting == "Angle") {
-	Line = Line.simplifyWhiteSpace();
-	QucsSettings.ang_unit = QucsTranscalc::translateUnit(Line,3);
+    Line = Line.simplified();
+    QucsSettings.ang_unit = QucsTranscalc::translateUnit(Line.toAscii(),3);
       }
       else if(Setting == "TransWindow") {
 	QucsSettings.x  = Line.section(",",0,0).toInt();
@@ -82,16 +82,16 @@ bool loadSettings()
     file.close();
   }
 
-  file.setName(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/qucsrc"));
+  file.setFileName(QDir::homePath()+QDir::convertSeparators ("/.qucs/qucsrc"));
   if(!file.open(QIODevice::ReadOnly))
     result = true; // qucs settings not necessary
   else {
-    Q3TextStream stream(&file);
+    QTextStream stream(&file);
     QString Line, Setting;
     while(!stream.atEnd()) {
       Line = stream.readLine();
       Setting = Line.section('=',0,0);
-      Line = Line.section('=',1,1).stripWhiteSpace();
+      Line = Line.section('=',1,1).trimmed();
       if(Setting == "Font")
 	QucsSettings.font.fromString(Line);
       else if(Setting == "Language")
@@ -105,7 +105,7 @@ bool loadSettings()
 // Saves the settings in the settings file.
 bool saveApplSettings(QucsTranscalc *qucs)
 {
-  QFile file(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/transrc"));
+  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/transrc"));
   if(!file.open(QIODevice::WriteOnly)) {
     QMessageBox::warning(0, QObject::tr("Warning"),
 			QObject::tr("Cannot save settings !"));
@@ -113,7 +113,7 @@ bool saveApplSettings(QucsTranscalc *qucs)
   }
 
   QString Line;
-  Q3TextStream stream(&file);
+  QTextStream stream(&file);
 
   stream << "Settings file, QucsTranscalc " PACKAGE_VERSION "\n"
 	 << "Mode=" << qucs->getMode() << "\n"
@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
     QucsSettings.BitmapDir = BITMAPDIR;
     QucsSettings.LangDir = LANGUAGEDIR;
   }
-  QucsWorkDir.setPath (QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
+  QucsWorkDir.setPath (QDir::homePath()+QDir::convertSeparators ("/.qucs"));
   loadSettings();
 
   QApplication a(argc, argv);
@@ -170,17 +170,17 @@ int main(int argc, char *argv[])
   QTranslator tor( 0 );
   QString lang = QucsSettings.Language;
   if(lang.isEmpty())
-    lang = QTextCodec::locale();
+    lang = QString(QLocale::system().name());
   tor.load( QString("qucs_") + lang, QucsSettings.LangDir);
   a.installTranslator( &tor );
 
   QucsTranscalc *qucs = new QucsTranscalc();
-  a.setMainWidget(qucs);
+  qucs->raise();
   qucs->resize(QucsSettings.dx, QucsSettings.dy); // size and position ...
   qucs->move(QucsSettings.x, QucsSettings.y);     // ... before "show" !!!
   qucs->show();
 
-  qucs->loadFile(QDir::homeDirPath()+"/.qucs/transrc");
+  qucs->loadFile(QDir::homePath()+"/.qucs/transrc");
   qucs->setMode(QucsSettings.Mode);
 
   // optional file argument
