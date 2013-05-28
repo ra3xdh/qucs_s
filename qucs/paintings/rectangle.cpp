@@ -22,6 +22,7 @@
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
+#include "schematic.h"
 
 Rectangle::Rectangle(bool _filled)
 {
@@ -64,9 +65,9 @@ void Rectangle::paint(ViewPainter *p)
 }
 
 // --------------------------------------------------------------------------
-void Rectangle::paintScheme(QPainter *p)
+void Rectangle::paintScheme(Schematic *p)
 {
-  p->drawRect(cx, cy, x2, y2);
+  p->PostPaintEvent(_Rect, cx, cy, x2, y2);
 }
 
 // --------------------------------------------------------------------------
@@ -217,7 +218,7 @@ bool Rectangle::resizeTouched(float fX, float fY, float len)
 
 // --------------------------------------------------------------------------
 // Mouse move action during resize.
-void Rectangle::MouseResizeMoving(int x, int y, QPainter *p)
+void Rectangle::MouseResizeMoving(int x, int y, Schematic *p)
 {
   paintScheme(p);  // erase old painting
   switch(State) {
@@ -240,36 +241,36 @@ void Rectangle::MouseResizeMoving(int x, int y, QPainter *p)
 // fx/fy are the precise coordinates, gx/gy are the coordinates set on grid.
 // x/y are coordinates without scaling.
 void Rectangle::MouseMoving(
-	QPainter *paintScale, int, int, int gx, int gy,
-	QPainter *p, int x, int y, bool drawn)
+	Schematic *paintScale, int, int, int gx, int gy,
+	Schematic *p, int x, int y, bool drawn)
 {
   if(State > 0) {
     if(State > 1)
-      paintScale->drawRect(x1, y1, x2-x1, y2-y1);  // erase old painting
+      paintScale->PostPaintEvent(_Rect,x1, y1, x2-x1, y2-y1);  // erase old painting
     State++;
     x2 = gx;
     y2 = gy;
-    paintScale->drawRect(x1, y1, x2-x1, y2-y1);  // paint new rectangle
+    paintScale->PostPaintEvent(_Rect,x1, y1, x2-x1, y2-y1);  // paint new rectangle
   }
   else { x2 = gx; y2 = gy; }
 
 
-  p->setPen(Qt::SolidLine);
+  #warning p->setPen(Qt::SolidLine);
   if(drawn) {
-    p->drawRect(cx+13, cy, 18, 12);  // erase old cursor symbol
+    p->PostPaintEvent(_Rect, cx+13, cy, 18, 12);  // erase old cursor symbol
     if(filled) {   // hatched ?
-      p->drawLine(cx+14, cy+6, cx+19, cy+1);
-      p->drawLine(cx+26, cy+1, cx+17, cy+10);
-      p->drawLine(cx+29, cy+5, cx+24, cy+10);
+      p->PostPaintEvent(_Line, cx+14, cy+6, cx+19, cy+1);
+      p->PostPaintEvent(_Line, cx+26, cy+1, cx+17, cy+10);
+      p->PostPaintEvent(_Line, cx+29, cy+5, cx+24, cy+10);
     }
   }
   cx = x;
   cy = y;
-  p->drawRect(cx+13, cy, 18, 12);  // paint new cursor symbol
+  p->PostPaintEvent(_Rect,cx+13, cy, 18, 12);  // paint new cursor symbol
   if(filled) {   // hatched ?
-    p->drawLine(cx+14, cy+6, cx+19, cy+1);
-    p->drawLine(cx+26, cy+1, cx+17, cy+10);
-    p->drawLine(cx+29, cy+5, cx+24, cy+10);
+    p->PostPaintEvent(_Line, cx+14, cy+6, cx+19, cy+1);
+    p->PostPaintEvent(_Line, cx+26, cy+1, cx+17, cy+10);
+    p->PostPaintEvent(_Line, cx+29, cy+5, cx+24, cy+10);
   }
 }
 

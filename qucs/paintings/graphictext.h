@@ -26,7 +26,7 @@ public:
   GraphicText();
  ~GraphicText();
 
-  void paintScheme(QPainter*);
+  void paintScheme(Schematic*);
   void getCenter(int&, int&);
   void setCenter(int, int, bool relative=false);
 
@@ -36,7 +36,7 @@ public:
   QString save();
   QString saveCpp();
   void paint(ViewPainter*);
-  void MouseMoving(QPainter*, int, int, int, int, QPainter*, int, int, bool);
+  void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int, bool);
   bool MousePressing();
   bool getSelected(float, float, float);
   void Bounding(int&, int&, int&, int&);

@@ -17,7 +17,7 @@
 #include <QtGui>
 #include "ellipse.h"
 #include "filldialog.h"
-
+#include "schematic.h"
 #include <qpushbutton.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
@@ -65,9 +65,9 @@ void Ellipse::paint(ViewPainter *p)
 }
 
 // --------------------------------------------------------------------------
-void Ellipse::paintScheme(QPainter *p)
+void Ellipse::paintScheme(Schematic *p)
 {
-  p->drawEllipse(cx, cy, x2, y2);
+  p->PostPaintEvent(_Ellipse, cx, cy, x2, y2);
 }
 
 // --------------------------------------------------------------------------
@@ -218,7 +218,7 @@ bool Ellipse::resizeTouched(float fX, float fY, float len)
 
 // --------------------------------------------------------------------------
 // Mouse move action during resize.
-void Ellipse::MouseResizeMoving(int x, int y, QPainter *p)
+void Ellipse::MouseResizeMoving(int x, int y, Schematic *p)
 {
   paintScheme(p);  // erase old painting
   switch(State) {
@@ -241,36 +241,36 @@ void Ellipse::MouseResizeMoving(int x, int y, QPainter *p)
 // fx/fy are the precise coordinates, gx/gy are the coordinates set on grid.
 // x/y are coordinates without scaling.
 void Ellipse::MouseMoving(
-	QPainter *paintScale, int, int, int gx, int gy,
-	QPainter *p, int x, int y, bool drawn)
+	Schematic *paintScale, int, int, int gx, int gy,
+	Schematic *p, int x, int y, bool drawn)
 {
   if(State > 0) {
     if(State > 1)
-      paintScale->drawEllipse(x1, y1, x2-x1, y2-y1); // erase old painting
+      paintScale->PostPaintEvent(_Ellipse, x1, y1, x2-x1, y2-y1); // erase old painting
     State++;
     x2 = gx;
     y2 = gy;
-    paintScale->drawEllipse(x1, y1, x2-x1, y2-y1);  // paint new painting
+    paintScale->PostPaintEvent(_Ellipse, x1, y1, x2-x1, y2-y1);  // paint new painting
   }
   else { x2 = gx; y2 = gy; }
 
 
-  p->setPen(Qt::SolidLine);
+  #warning p->setPen(Qt::SolidLine);
   if(drawn) {
-    p->drawEllipse(cx+13, cy, 18, 12);  // erase old cursor symbol
+    p->PostPaintEvent(_Ellipse, cx+13, cy, 18, 12);  // erase old cursor symbol
     if(filled) {
-      p->drawLine(cx+14, cy+7, cx+20, cy+1);
-      p->drawLine(cx+25, cy+2, cx+18, cy+9);
-      p->drawLine(cx+29, cy+4, cx+23, cy+10);
+      p->PostPaintEvent(_Line, cx+14, cy+7, cx+20, cy+1);
+      p->PostPaintEvent(_Line, cx+25, cy+2, cx+18, cy+9);
+      p->PostPaintEvent(_Line, cx+29, cy+4, cx+23, cy+10);
     }
   }
   cx = x;
   cy = y;
-  p->drawEllipse(cx+13, cy, 18, 12);  // paint new cursor symbol
+  p->PostPaintEvent(_Ellipse, cx+13, cy, 18, 12);  // paint new cursor symbol
   if(filled) {
-    p->drawLine(cx+14, cy+7, cx+20, cy+1);
-    p->drawLine(cx+25, cy+2, cx+18, cy+9);
-    p->drawLine(cx+29, cy+4, cx+23, cy+10);
+    p->PostPaintEvent(_Line, cx+14, cy+7, cx+20, cy+1);
+    p->PostPaintEvent(_Line, cx+25, cy+2, cx+18, cy+9);
+    p->PostPaintEvent(_Line, cx+29, cy+4, cx+23, cy+10);
   }
 }
 

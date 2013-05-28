@@ -17,7 +17,7 @@
 #include <QtGui>
 #include "id_text.h"
 #include "id_dialog.h"
-
+#include "schematic.h"
 
 ID_Text::ID_Text(int cx_, int cy_)
 {
@@ -69,9 +69,9 @@ void ID_Text::paint(ViewPainter *p)
 }
 
 // --------------------------------------------------------------------------
-void ID_Text::paintScheme(QPainter *p)
+void ID_Text::paintScheme(Schematic *p)
 {
-  p->drawRect(cx, cy, x2, y2);
+  p->PostPaintEvent(_Rect, cx, cy, x2, y2);
 }
 
 // --------------------------------------------------------------------------

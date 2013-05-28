@@ -17,7 +17,7 @@
 #include <QtGui>
 #include "graphicline.h"
 #include "filldialog.h"
-
+#include "schematic.h"
 #include <qpushbutton.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
@@ -60,9 +60,9 @@ void GraphicLine::paint(ViewPainter *p)
 }
 
 // --------------------------------------------------------------------------
-void GraphicLine::paintScheme(QPainter *p)
+void GraphicLine::paintScheme(Schematic *p)
 {
-  p->drawLine(cx, cy, cx+x2, cy+y2);
+  p->PostPaintEvent(_Line, cx, cy, cx+x2, cy+y2);
 }
 
 // --------------------------------------------------------------------------
@@ -180,7 +180,7 @@ bool GraphicLine::resizeTouched(float fX, float fY, float len)
 
 // --------------------------------------------------------------------------
 // Mouse move action during resize.
-void GraphicLine::MouseResizeMoving(int x, int y, QPainter *p)
+void GraphicLine::MouseResizeMoving(int x, int y, Schematic *p)
 {
   paintScheme(p);  // erase old painting
   if(State == 1) { x2 += cx-x; y2 += cy-y; cx = x; cy = y; } // move beginning
@@ -193,31 +193,31 @@ void GraphicLine::MouseResizeMoving(int x, int y, QPainter *p)
 // fx/fy are the precise coordinates, gx/gy are the coordinates set on grid.
 // x/y are coordinates without scaling.
 void GraphicLine::MouseMoving(
-	QPainter *paintScale, int, int, int gx, int gy,
-	QPainter *p, int x, int y, bool drawn)
+	Schematic *paintScale, int, int, int gx, int gy,
+	Schematic *p, int x, int y, bool drawn)
 {
   if(State > 0) {
     if(State > 1)
-      paintScale->drawLine(cx, cy, cx+x2, cy+y2);  // erase old painting
+      paintScale->PostPaintEvent(_Line, cx, cy, cx+x2, cy+y2);  // erase old painting
     State++;
     x2 = gx-cx;
     y2 = gy-cy;
-    paintScale->drawLine(cx, cy, cx+x2, cy+y2);  // paint new painting
+    paintScale->PostPaintEvent(_Line, cx, cy, cx+x2, cy+y2);  // paint new painting
   }
   else { cx = gx; cy = gy; }
 
 
-  p->setPen(Qt::SolidLine);
+  #warning p->setPen(Qt::SolidLine);
   if(drawn) {
-    p->drawLine(x1+27, y1, x1+15, y1+12);  // erase old cursor symbol
-    p->drawLine(x1+25, y1-2, x1+29, y1+2);
-    p->drawLine(x1+13, y1+10, x1+17, y1+14);
+    p->PostPaintEvent(_Line, x1+27, y1, x1+15, y1+12);  // erase old cursor symbol
+    p->PostPaintEvent(_Line, x1+25, y1-2, x1+29, y1+2);
+    p->PostPaintEvent(_Line, x1+13, y1+10, x1+17, y1+14);
   }
   x1 = x;
   y1 = y;
-  p->drawLine(x1+27, y1, x1+15, y1+12);  // paint new cursor symbol
-  p->drawLine(x1+25, y1-2, x1+29, y1+2);
-  p->drawLine(x1+13, y1+10, x1+17, y1+14);
+  p->PostPaintEvent(_Line, x1+27, y1, x1+15, y1+12);  // paint new cursor symbol
+  p->PostPaintEvent(_Line, x1+25, y1-2, x1+29, y1+2);
+  p->PostPaintEvent(_Line, x1+13, y1+10, x1+17, y1+14);
 }
 
 // --------------------------------------------------------------------------

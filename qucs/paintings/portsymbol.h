@@ -27,7 +27,7 @@ public:
                                    const QString& nameStr_="");
  ~PortSymbol();
 
-  void paintScheme(QPainter*);
+  void paintScheme(Schematic*);
   void getCenter(int&, int&);
   void setCenter(int, int, bool relative=false);
 

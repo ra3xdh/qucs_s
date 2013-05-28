@@ -20,9 +20,8 @@
 
 #include "element.h"
 #include "viewpainter.h"
-
-class QPainter;
-class Schematic;
+//class QPainter;
+//class Schematic;
 
 
 class Painting : public Element  {
