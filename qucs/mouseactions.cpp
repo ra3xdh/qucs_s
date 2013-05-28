@@ -286,7 +286,7 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
     Doc->PostPaintEvent (_NotRop, 0,0,0,0);
     x -= Doc->contentsX();
     y -= Doc->contentsY();
-    ((Painting*)selElem)->MouseMoving(Doc, fx, fy, gx, gy,
+    ((Painting*)selElem)->MouseMoving(Doc, x, y, gx, gy,
                                        Doc, x, y, drawn);
     drawn = true;
     Doc->viewport()->update();
