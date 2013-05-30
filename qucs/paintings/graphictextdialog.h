@@ -18,14 +18,13 @@
 #ifndef GRAPHICTEXTDIALOG_H
 #define GRAPHICTEXTDIALOG_H
 
-#include <qdialog.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QDialog>
+#include <QVBoxLayout>
 
 class QLineEdit;
-class Q3TextEdit;
+class QTextEdit;
 class QPushButton;
-class Q3VBoxLayout;
+class QVBoxLayout;
 class QIntValidator;
 
 
@@ -42,9 +41,10 @@ private slots:
 public:
   QLineEdit   *TextSize, *Angle;
   QPushButton *ColorButt;
-  Q3TextEdit   *text;
+  QTextEdit   *text;
 
-  Q3VBoxLayout *vert;
+private:
+  QVBoxLayout *vert;
   QIntValidator *val50, *val360;
 };
 
