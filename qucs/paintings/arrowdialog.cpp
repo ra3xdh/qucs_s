@@ -17,16 +17,15 @@
 
 #include "arrowdialog.h"
 
-#include <qlayout.h>
-#include <qlabel.h>
-#include <q3hbox.h>
-#include <qvalidator.h>
-#include <qcolordialog.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qcombobox.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
+//#include <qlayout.h>
+#include <QLabel>
+#include <QValidator>
+#include <QColorDialog>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QComboBox>
+#include <QWidget>
+#include <QHBoxLayout>
 
 
 ArrowDialog::ArrowDialog(QWidget *parent, const char *name)
@@ -35,8 +34,10 @@ ArrowDialog::ArrowDialog(QWidget *parent, const char *name)
   setCaption(tr("Edit Arrow Properties"));
   val100 = new QIntValidator(0, 100, this);
 
-  all = new Q3GridLayout(this, 5,4,3,3);
+  all = new QGridLayout(this, 5,4,3,3);
   all->setMargin(3);
+
+
 
   all->addWidget(new QLabel(tr("Head Length: "), this), 0,0);
   HeadLength = new QLineEdit(this);
@@ -85,13 +86,20 @@ ArrowDialog::ArrowDialog(QWidget *parent, const char *name)
   all->addMultiCellWidget(ArrowStyleBox, 3,3,1,2);
 
 
-  Q3HBox *h1 = new Q3HBox(this);
-  all->addMultiCellWidget(h1, 4,4,0,3);
-  QPushButton *ButtOK = new QPushButton(tr("OK"), h1);
+  QWidget *h1 = new QWidget(this);
+  QHBoxLayout *h1Layout = new QHBoxLayout();
+
+  
+  QPushButton *ButtOK = new QPushButton(tr("OK"));
+  h1Layout->addWidget(ButtOK);
   connect(ButtOK, SIGNAL(clicked()), SLOT(accept()));
-  QPushButton *ButtCancel = new QPushButton(tr("Cancel"), h1);
+  QPushButton *ButtCancel = new QPushButton(tr("Cancel"));
+  h1Layout->addWidget(ButtCancel);
   connect(ButtCancel, SIGNAL(clicked()), SLOT(reject()));
   
+  h1->setLayout(h1Layout);
+  all->addMultiCellWidget(h1, 4,4,0,3);
+
   ButtOK->setFocus();
 }
 

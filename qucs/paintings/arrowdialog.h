@@ -18,12 +18,10 @@
 #ifndef ARROWDIALOG_H
 #define ARROWDIALOG_H
 
-#include <qdialog.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
+#include <QDialog>
 
 class QLineEdit;
-class Q3GridLayout;
+class QGridLayout;
 class QPushButton;
 class QComboBox;
 class QIntValidator;
@@ -42,12 +40,14 @@ private slots:
   void slotSetStyle(int);
 
 public:
+  // TODO: I'm not sure whether declaring all this as public is really a good idea :-(
+  // data encapsulation => make this stuff private & provide getter & setter methods...
   QLineEdit    *LineWidth, *HeadWidth, *HeadLength;
   QPushButton  *ColorButt;
   QComboBox    *StyleBox, *ArrowStyleBox;
   Qt::PenStyle LineStyle;
 
-  Q3GridLayout   *all;
+  QGridLayout   *all;
   QIntValidator *val100;
 };
 
