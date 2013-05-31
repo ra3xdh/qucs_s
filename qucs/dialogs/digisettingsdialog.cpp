@@ -15,20 +15,18 @@
  *                                                                         *
  ***************************************************************************/
 #include <QtGui>
-#include <q3hbox.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <qvalidator.h>
-#include <qpushbutton.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
-#include <qradiobutton.h>
-#include <q3vgroupbox.h>
-#include <qstring.h>
-#include <qstringlist.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QValidator>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QButtonGroup>
+#include <QRadioButton>
+#include <QGroupBox>
+#include <QString>
+#include <QStringList>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 #include "digisettingsdialog.h"
 #include "textdoc.h"
@@ -36,58 +34,75 @@
 
 
 DigiSettingsDialog::DigiSettingsDialog(TextDoc *Doc_)
-                  : QDialog(Doc_, 0, true, Qt::WDestructiveClose)
+                  : QDialog(Doc_) //, 0, true, Qt::WDestructiveClose)
 {
   Doc = Doc_;
-  setCaption(tr("Document Settings"));
+  setWindowTitle(tr("Document Settings"));
 
   Expr.setPattern("[0-9][0-9a-zA-Z ]+"); // valid expression for LineEdit
   Validator = new QRegExpValidator(Expr, this);
 
-  Q3VBoxLayout *all = new Q3VBoxLayout(this);
+  QVBoxLayout *all = new QVBoxLayout(this);
   all->setMargin(5);
 
-  Q3VGroupBox *setGroup = new Q3VGroupBox(tr("Digital Simulation Settings"), this);
+  QGroupBox *setGroup = new QGroupBox(tr("Digital Simulation Settings"));
   all->addWidget(setGroup);
-
-  Q3ButtonGroup *toggleGroup = new Q3ButtonGroup();
-  simRadio = new QRadioButton(tr("Simulation"), setGroup);
+ 
+  QVBoxLayout *group = new QVBoxLayout();
+  setGroup->setLayout(group);
+   
+  QButtonGroup *toggleGroup = new QButtonGroup();
+  simRadio = new QRadioButton(tr("Simulation"));
+  group->addWidget(simRadio);
   simRadio->setChecked(Doc->simulation);
 
-  Q3HBox *hb1 = new Q3HBox(setGroup);
+  QHBoxLayout *hb1 = new QHBoxLayout();
   hb1->setSpacing(5);
-  TimeLabel = new QLabel(tr("Duration of Simulation:"), hb1);
+  TimeLabel = new QLabel(tr("Duration of Simulation:"));
+  hb1->addWidget(TimeLabel);
   Doc->loadSimulationTime(SimTime);
-  TimeEdit = new QLineEdit(hb1);
+  TimeEdit = new QLineEdit();
+  hb1->addWidget(TimeEdit);
   TimeEdit->setValidator(Validator);
   TimeEdit->setText(SimTime);
+  group->addLayout(hb1);
 
-  QRadioButton *comRadio = new QRadioButton(tr("Precompile Module"), setGroup);
+  QRadioButton *comRadio = new QRadioButton(tr("Precompile Module"));
+  group->addWidget(comRadio);
   toggleGroup->insert(simRadio);
   toggleGroup->insert(comRadio);
-  connect(toggleGroup, SIGNAL(clicked(int)), SLOT(slotChangeMode(int)));
+  connect(toggleGroup, SIGNAL(buttonClicked(int)), SLOT(slotChangeMode(int)));
 
-  Q3HBox *hb3 = new Q3HBox(setGroup);
+  QHBoxLayout *hb3 = new QHBoxLayout();
   hb3->setSpacing(5);
-  NameLabel = new QLabel(tr("Library Name:"), hb3);
-  NameEdit = new QLineEdit(hb3);
+  NameLabel = new QLabel(tr("Library Name:"));
+  hb3->addWidget(NameLabel);
+  NameEdit = new QLineEdit();
+  hb3->addWidget(NameEdit);
   NameEdit->setText(Doc->Library);
+  group->addLayout(hb3);
 
-  setGroup->addSpace(15);
-  Q3HBox *hb2 = new Q3HBox(setGroup);
+  group->addSpacing(15);
+  
+  QHBoxLayout *hb2 = new QHBoxLayout();
   hb2->setSpacing(5);
-  LibLabel = new QLabel(tr("Libraries:"), hb2);
-  LibEdit = new QLineEdit(hb2);
+  LibLabel = new QLabel(tr("Libraries:"));
+  hb2->addWidget(LibLabel);
+  LibEdit = new QLineEdit();
+  hb2->addWidget(LibEdit);
   LibEdit->setText(Doc->Libraries);
+  group->addLayout(hb2);
 
   all->addSpacing(5);
   all->addStretch();
-  Q3HBox *Buttons = new Q3HBox(this);
-  all->addWidget(Buttons);
-  QPushButton *ButtonOk = new QPushButton(tr("Ok"), Buttons);
-  QPushButton *ButtonCancel = new QPushButton(tr("Cancel"), Buttons);
+  QHBoxLayout *Buttons = new QHBoxLayout();
+  QPushButton *ButtonOk = new QPushButton(tr("Ok"));
+  QPushButton *ButtonCancel = new QPushButton(tr("Cancel"));
+  Buttons->addWidget(ButtonOk);
+  Buttons->addWidget(ButtonCancel);
   connect(ButtonOk, SIGNAL(clicked()), SLOT(slotOk()));
   connect(ButtonCancel, SIGNAL(clicked()), SLOT(reject()));
+  all->addLayout(Buttons);
 
   simRadio->setChecked(Doc->simulation);
   Doc->SimOpenDpl = Doc->simulation ? true : false;
