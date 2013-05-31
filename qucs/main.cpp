@@ -174,7 +174,7 @@ QString complexDeg(double real, double imag, int Precision)
   if(fabs(imag) < 1e-250) Text = QString::number(real,'g',Precision);
   else {
     Text  = QString::number(sqrt(real*real+imag*imag),'g',Precision) + " / ";
-    Text += QString::number(180.0/M_PI*atan2(imag,real),'g',Precision) + '°';
+    Text += QString::number(180.0/M_PI*atan2(imag,real),'g',Precision) + QString::fromUtf8("Â°");
   }
   return Text;
 }
@@ -448,7 +448,7 @@ bool VHDL_Time(QString& t, const QString& Name)
       if(strcmp(p, "min") == 0) break;
       if(strcmp(p, "hr") == 0)  break;
     }
-    t = "§" + QObject::tr("Error: Wrong time format in \"%1\". Use positive number with units").arg(Name)
+    t = QString::fromUtf8("Â§")  + QObject::tr("Error: Wrong time format in \"%1\". Use positive number with units").arg(Name)
             + " fs, ps, ns, us, ms, sec, min, hr.\n";
     return false;
   }
@@ -511,7 +511,7 @@ bool Verilog_Time(QString& t, const QString& Name)
       if(strcmp(p, "min") == 0) { factor = 1e12*60; break; }
       if(strcmp(p, "hr") == 0)  { factor = 1e12*60*60; break; }
     }
-    t = "§" + QObject::tr("Error: Wrong time format in \"%1\". Use positive number with units").arg(Name)
+    t = QString::fromUtf8("Â§")  + QObject::tr("Error: Wrong time format in \"%1\". Use positive number with units").arg(Name)
             + " fs, ps, ns, us, ms, sec, min, hr.\n";
     return false;
   }
