@@ -36,6 +36,7 @@
 #include <q3buttongroup.h>
 //Added by qt3to4:
 #include <Q3VBoxLayout>
+#include <QDebug>
 
 #include "librarydialog.h"
 #include "qucs.h"
@@ -44,7 +45,7 @@
 
 extern SubMap FileList;
 
-LibraryDialog::LibraryDialog(QucsApp *App_, Q3ListViewItem *SchematicList)
+LibraryDialog::LibraryDialog(QucsApp *App_, QTreeWidgetItem *SchematicList)
 			: QDialog(App_, 0, TRUE, Qt::WDestructiveClose)
 {
   App = App_;
@@ -97,13 +98,18 @@ LibraryDialog::LibraryDialog(QucsApp *App_, Q3ListViewItem *SchematicList)
 
   // ...........................................................
   // insert all subcircuits of current project
-  Q3ListViewItem *p = SchematicList->firstChild();
-  while(p) {
+  
+  //iterator for this??
+  QTreeWidgetItem *p ;//= SchematicList->child(0); //firstChild();
+  //while(p) {
+  for(int i=0; i < SchematicList->childCount(); i++){
+    p = SchematicList->child(i); 
+    qDebug() << p->text(0) << p->text(1);
     if(p->parent() == 0)
       break;
     if(!p->text(1).isEmpty())
       BoxList.append(new QCheckBox(p->text(0), Dia_Box));
-    p = p->nextSibling();
+    //p = p->nextSibling();
   }
 
   QColor theColor;

@@ -36,7 +36,8 @@ class QLineEdit;
 class Q3TextEdit;
 class QPushButton;
 class Q3VBoxLayout;
-class Q3ListViewItem;
+//class Q3ListViewItem;
+class QTreeWidgetItem;
 class Q3VButtonGroup;
 class QRegExpValidator;
 
@@ -44,7 +45,8 @@ class QRegExpValidator;
 class LibraryDialog : public QDialog {
    Q_OBJECT
 public:
-  LibraryDialog(QucsApp*, Q3ListViewItem*);
+  //LibraryDialog(QucsApp*, Q3ListViewItem*);
+  LibraryDialog(QucsApp*, QTreeWidgetItem*);  
  ~LibraryDialog();
 
 private slots:
