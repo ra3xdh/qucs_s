@@ -15,18 +15,16 @@
  *                                                                         *
  ***************************************************************************/
 #include <QtGui>
-#include <q3hbox.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <q3textedit.h>
-#include <q3vgroupbox.h>
-#include <qcombobox.h>
-#include <q3filedialog.h>
-#include <qpushbutton.h>
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <QGroupBox>
+#include <QComboBox>
+#include <QFileDialog>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QGridLayout>
+#include <QDebug>
 
 #include "importdialog.h"
 #include "main.h"
@@ -34,74 +32,83 @@
 
 
 ImportDialog::ImportDialog(QWidget *parent)
-		: QDialog(parent, 0, FALSE, Qt::WDestructiveClose)
+		: QDialog(parent) //, 0, FALSE, Qt::WDestructiveClose)
 {
-  setCaption(tr("Convert Data File..."));
+  setWindowTitle(tr("Convert Data File..."));
 
-  all = new Q3GridLayout(this, 4, 3, 5, 3);
+  all = new QGridLayout(this);
 
-  Q3VGroupBox *Group2 = new Q3VGroupBox(tr("File specification"),this);
-  all->addMultiCellWidget(Group2, 0,1, 0,2);
-  QWidget *f = new QWidget(Group2);
-  Q3GridLayout *file = new Q3GridLayout(f, 3, 3, 5);
-  file->addWidget(new QLabel(tr("Input File:"), f), 0, 0);
-  ImportEdit = new QLineEdit(f);
+  QGroupBox *Group2 = new QGroupBox(tr("File specification"),this);
+  
+  QGridLayout *file = new QGridLayout();
+  file->addWidget(new QLabel(tr("Input File:")),0, 0);
+  ImportEdit = new QLineEdit();
   file->addWidget(ImportEdit, 0, 1);
-  QPushButton *BrowseButt = new QPushButton(tr("Browse"), f);
+  QPushButton *BrowseButt = new QPushButton(tr("Browse"));
   file->addWidget(BrowseButt, 0, 2);
   connect(BrowseButt, SIGNAL(clicked()), SLOT(slotBrowse()));
-  file->addWidget(new QLabel(tr("Output File:"), f), 1, 0);
-  OutputEdit = new QLineEdit(f);
+  file->addWidget(new QLabel(tr("Output File:")), 1, 0);
+  OutputEdit = new QLineEdit();
   file->addWidget(OutputEdit, 1, 1);
-  OutputLabel = new QLabel(tr("Output Data:"), f);
+  OutputLabel = new QLabel(tr("Output Data:"));
   OutputLabel->setEnabled(false);
   file->addWidget(OutputLabel, 2, 0);
-  OutputData = new QLineEdit(f);
+  OutputData = new QLineEdit();
   OutputData->setEnabled(false);
   file->addWidget(OutputData, 2, 1);
-  OutType = new QComboBox(f);
-  OutType->insertItem(tr("Qucs dataset"));
-  OutType->insertItem(tr("Touchstone"));
-  OutType->insertItem(tr("CSV"));
-  OutType->insertItem(tr("Qucs library"));
-  OutType->insertItem(tr("Qucs netlist"));
-  OutType->insertItem(tr("Matlab"));
+  OutType = new QComboBox();
+  OutType->addItem(tr("Qucs dataset"));
+  OutType->addItem(tr("Touchstone"));
+  OutType->addItem(tr("CSV"));
+  OutType->addItem(tr("Qucs library"));
+  OutType->addItem(tr("Qucs netlist"));
+  OutType->addItem(tr("Matlab"));
   connect(OutType, SIGNAL(activated(int)), SLOT(slotType(int)));
   file->addWidget(OutType, 2, 2);
   
-  Q3VGroupBox *Group1 = new Q3VGroupBox(tr("Messages"),this);
-  all->addMultiCellWidget(Group1, 2,2, 0,2);
-
-  MsgText = new Q3TextEdit(Group1);
+  Group2->setLayout(file);
+  all->addWidget(Group2, 0,0,1,1);
+  
+  QGroupBox *Group1 = new QGroupBox(tr("Messages"));
+  
+  QVBoxLayout *vMess = new QVBoxLayout();
+  MsgText = new QTextEdit();
+  vMess->addWidget(MsgText);
   MsgText->setTextFormat(Qt::PlainText);
   MsgText->setReadOnly(true);
-  MsgText->setWordWrap(Q3TextEdit::NoWrap);
+  MsgText->setWordWrapMode(QTextOption::NoWrap);
   MsgText->setMinimumSize(250, 60);
+  Group1->setLayout(vMess);
+  all->addWidget(Group1, 1,0,1,1);
 
-  Q3HBox *Butts = new Q3HBox(this);
-  all->addMultiCellWidget(Butts, 3,3, 0,2);
-
-  Butts->setStretchFactor(new QWidget(Butts), 5); // stretchable placeholder
+  QHBoxLayout *Butts = new QHBoxLayout();
   
-  ImportButt = new QPushButton(tr("Convert"), Butts);
+  Butts->addStretch(5);
+ 
+  ImportButt = new QPushButton(tr("Convert"));
   connect(ImportButt, SIGNAL(clicked()), SLOT(slotImport()));
-  AbortButt = new QPushButton(tr("Abort"), Butts);
+  AbortButt = new QPushButton(tr("Abort"));
   AbortButt->setDisabled(true);
   connect(AbortButt, SIGNAL(clicked()), SLOT(slotAbort()));
-  CancelButt = new QPushButton(tr("Close"), Butts);
+  CancelButt = new QPushButton(tr("Close"));
   connect(CancelButt, SIGNAL(clicked()), SLOT(reject()));
+  Butts->addWidget(ImportButt);
+  Butts->addWidget(AbortButt);
+  Butts->addWidget(CancelButt);
+  
+  all->addLayout(Butts,2,0,1,1);
 }
 
 ImportDialog::~ImportDialog()
 {
-  if(Process.isRunning())  Process.kill();
+  if(Process.Running)  Process.kill();
   delete all;
 }
 
 // ------------------------------------------------------------------------
 void ImportDialog::slotBrowse()
 {
-  QString s = Q3FileDialog::getOpenFileName(
+  QString s = QFileDialog::getOpenFileName(
      lastDir.isEmpty() ? QString(".") : lastDir,
      tr("All known")+
      " (*.s?p *.csv *.citi *.cit *.asc *.mdl *.vcd *.dat *.cir);;"+
@@ -172,8 +179,10 @@ void ImportDialog::slotImport()
 
   QFileInfo Info(ImportEdit->text());
   QString Suffix = Info.extension();
+  QString Program;
   QStringList CommandLine;
-  CommandLine << QucsSettings.BinDir + "qucsconv" << "-if";
+  Program = QucsSettings.BinDir + "qucsconv";
+  CommandLine  << "-if";
   
   if((Suffix == "citi") || (Suffix == "cit"))
     CommandLine << "citi";
@@ -234,19 +243,20 @@ void ImportDialog::slotImport()
   CommandLine << "-i" << ImportEdit->text()
               << "-o" << QucsWorkDir.filePath(OutputEdit->text());
 
-  Process.setArguments(CommandLine);
   Process.blockSignals(false);
 
   disconnect(&Process, 0, 0, 0);
-  connect(&Process, SIGNAL(readyReadStderr()), SLOT(slotDisplayErr()));
-  connect(&Process, SIGNAL(readyReadStdout()), SLOT(slotDisplayMsg()));
-  connect(&Process, SIGNAL(processExited()), SLOT(slotProcessEnded()));
+  connect(&Process, SIGNAL(readyReadStandardError()), SLOT(slotDisplayErr()));
+  connect(&Process, SIGNAL(readyReadStandardOutput()), SLOT(slotDisplayMsg()));
+  connect(&Process, SIGNAL(finished(int)), SLOT(slotProcessEnded(int)));
 
   MsgText->append(tr("Running command line:")+"\n");
-  MsgText->append(CommandLine.join(" "));
+  MsgText->append(Program + CommandLine.join(" "));
   MsgText->append("\n");
 
-  if(!Process.start())
+  Process.start(Program, CommandLine);
+  
+  if(!Process.Running)
     MsgText->append(tr("ERROR: Cannot start converter!"));
 }
 
@@ -276,7 +286,7 @@ void ImportDialog::slotType(int index)
 // ------------------------------------------------------------------------
 void ImportDialog::slotAbort()
 {
-  if(Process.isRunning())  Process.kill();
+  if(Process.Running)  Process.kill();
   AbortButt->setDisabled(true);
   ImportButt->setDisabled(false);
 }
@@ -285,30 +295,24 @@ void ImportDialog::slotAbort()
 // Is called when the process sends an output to stdout.
 void ImportDialog::slotDisplayMsg()
 {
-  int par = MsgText->paragraphs();
-  int idx = MsgText->paragraphLength(par-1);
-  MsgText->setCursorPosition(par-1,idx);
-  MsgText->insert(QString(Process.readStdout()));
+  MsgText->append(QString(Process.readAllStandardOutput()));
 }
 
 // ------------------------------------------------------------------------
 // Is called when the process sends an output to stderr.
 void ImportDialog::slotDisplayErr()
 {
-  int par = MsgText->paragraphs();
-  int idx = MsgText->paragraphLength(par-1);
-  MsgText->setCursorPosition(par-1,idx);
-  MsgText->insert(QString(Process.readStderr()));
+  MsgText->append(QString(Process.readAllStandardError()));
 }
 
 // ------------------------------------------------------------------------
 // Is called when the simulation process terminates.
-void ImportDialog::slotProcessEnded()
+void ImportDialog::slotProcessEnded(int status)
 {
   ImportButt->setDisabled(false);
   AbortButt->setDisabled(true);
 
-  if(Process.normalExit() && (Process.exitStatus() == 0)) {
+  if(status == 0) {    
     MsgText->append(tr("Successfully converted file!"));
 
     disconnect(CancelButt, SIGNAL(clicked()), 0, 0);
