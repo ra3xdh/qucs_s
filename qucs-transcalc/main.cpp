@@ -25,7 +25,7 @@
 #include <QString>
 #include <QTextCodec>
 #include <QTranslator>
-#include <Qfile>
+#include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
 #include <QDir>
