@@ -18,14 +18,13 @@
 #ifndef NEWPROJDIALOG_H
 #define NEWPROJDIALOG_H
 
-#include <qdialog.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
+#include <QDialog>
+#include <QGridLayout>
 
 class QLineEdit;
 class QCheckBox;
 class QPushButton;
-class Q3GridLayout;
+class QGridLayout;
 
 /**
   *@author Michael Margraf
@@ -41,7 +40,7 @@ public:
 
 private:
   QPushButton *ButtonOk, *ButtonCancel;
-  Q3GridLayout *gbox;
+  QGridLayout *gbox;
 };
 
 #endif
