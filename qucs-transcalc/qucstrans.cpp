@@ -252,6 +252,10 @@ struct TransUnit TransUnits[] = {
 
 /* Constructor setups the GUI. */
 QucsTranscalc::QucsTranscalc() {
+    
+  QWidget *centralWidget = new QWidget(this);  
+  setCentralWidget(centralWidget);
+  
   // set application icon
   setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
   setWindowTitle("Qucs Transcalc " PACKAGE_VERSION);
@@ -323,12 +327,6 @@ QucsTranscalc::QucsTranscalc() {
   // === left
   // seletion combo and figure
   QVBoxLayout *vl = new QVBoxLayout();
-/*
-  // reserve space for menubar
-  QWidget * Space = new QWidget (this);
-  Space->setFixedSize(5, menuBar->height() + 2);
-  v->addWidget (Space);
-*/
 
   // transmission line type choice
   QGroupBox * lineGroup = new QGroupBox (tr("Transmission Line Type"));
@@ -412,7 +410,7 @@ QucsTranscalc::QucsTranscalc() {
   statBar->setFixedHeight (statText->height ());
   delete statText;
 
-  QVBoxLayout *vmain = new QVBoxLayout(this);
+  QVBoxLayout *vmain = new QVBoxLayout();
 
   QHBoxLayout *hmain = new QHBoxLayout();
   hmain->addLayout(vl);
@@ -421,7 +419,9 @@ QucsTranscalc::QucsTranscalc() {
 
   vmain->addLayout(hmain);
   vmain->addWidget(statBar);
-
+  
+  centralWidget->setLayout(vmain);
+  
   // setup calculated result bix
   createResultItems (calculated);
   updateSelection ();
@@ -956,7 +956,7 @@ void QucsTranscalc::slotQuit()
   tmp = height();	// will not be recognized (a X11 problem).
 
   storeValues ();
-  accept();
+  qApp->quit();
 }
 
 void QucsTranscalc::closeEvent(QCloseEvent *Event)

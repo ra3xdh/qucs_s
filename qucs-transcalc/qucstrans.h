@@ -26,6 +26,8 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QCloseEvent>
+#include <QMainWindow>
+
 
 class QComboBox;
 class QLineEdit;
@@ -131,7 +133,7 @@ struct TransUnit {
   *@author Stefan Jahn
   */
 
-class QucsTranscalc : public QDialog  {
+class QucsTranscalc : public QMainWindow  {
    Q_OBJECT
 public:
   QucsTranscalc();
