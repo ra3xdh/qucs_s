@@ -20,22 +20,22 @@
 
 #include "qucs.h"
 
-#include <qdialog.h>
-#include <qfont.h>
-#include <qregexp.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QDialog>
+#include <QFont>
+#include <QRegExp>
+#include <QVBoxLayout>
 
-class Q3ListView;
-class Q3ListViewItem;
+class QListView;
+//class Q3ListViewItem;
 class QLineEdit;
 class QCheckBox;
-class Q3VBoxLayout;
+class QVBoxLayout;
 class QPushButton;
 class QComboBox;
 class QIntValidator;
 class QRegExpValidator;
-
+class QTableView;
+class QStandardItemModel;
 
 class QucsSettingsDialog : public QDialog  {
    Q_OBJECT
@@ -51,7 +51,8 @@ private slots:
   void slotDefaultValues();
   void slotAdd();
   void slotRemove();
-  void slotEditSuffix(Q3ListViewItem*);
+  //void slotEditSuffix(Q3ListViewItem*);
+  void slotEditSuffix2();
   void slotColorComment();
   void slotColorString();
   void slotColorInteger();
@@ -70,12 +71,14 @@ public:
   QComboBox *LanguageCombo;
   QPushButton *FontButton, *BGColorButton;
   QLineEdit *undoNumEdit, *editorEdit, *Input_Suffix, *Input_Program;
-  Q3ListView *List_Suffix;
+  //Q3ListView *List_Suffix;
+  QTableView *tableView;
+  QStandardItemModel *model;
   QPushButton *ColorComment, *ColorString, *ColorInteger,
        *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
        *ColorDirective, *ColorTask;
 
-  Q3VBoxLayout *all;
+  QVBoxLayout *all;
   QIntValidator *val200;
   QRegExp Expr;
   QRegExpValidator *Validator;

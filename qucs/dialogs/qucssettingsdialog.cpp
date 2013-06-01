@@ -20,45 +20,43 @@
 #endif
 
 #include "qucssettingsdialog.h"
-//Added by qt3to4:
-#include <Q3GridLayout>
-#include <Q3VBoxLayout>
+
+#include <QGridLayout>
+#include <QVBoxLayout>
 #include "main.h"
 #include "textdoc.h"
 #include "schematic.h"
 
-#include <qwidget.h>
-#include <qlabel.h>
-#include <q3hbox.h>
-#include <qtabwidget.h>
-#include <qlayout.h>
-#include <qcolordialog.h>
-#include <qfontdialog.h>
-#include <qvalidator.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <q3listview.h>
-#include <qcombobox.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
+#include <QWidget>
+#include <QLabel>
+#include <QTabWidget>
+#include <QLayout>
+#include <QColorDialog>
+#include <QFontDialog>
+#include <QValidator>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QMessageBox>
+#include <QCheckBox>
 
 
 QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
-			: QDialog(parent, name, TRUE, Qt::WDestructiveClose)
+			: QDialog(parent, name)// , TRUE, Qt::WDestructiveClose)
 {
   App = parent;
-  setCaption(tr("Edit Qucs Properties"));
+  setWindowTitle(tr("Edit Qucs Properties"));
 
   Expr.setPattern("[\\w_]+");
   Validator  = new QRegExpValidator(Expr, this);
 
-  all = new Q3VBoxLayout(this); // to provide the neccessary size
+  all = new QVBoxLayout(this); // to provide the neccessary size
   QTabWidget *t = new QTabWidget(this);
   all->addWidget(t);
 
   // ...........................................................
   QWidget *Tab1 = new QWidget(t);
-  Q3GridLayout *gp = new Q3GridLayout(Tab1,6,2,6,6);
+  QGridLayout *gp = new QGridLayout(Tab1);
 
   gp->addWidget(new QLabel(tr("Font (set after reload):"), Tab1), 0,0);
   FontButton = new QPushButton(Tab1);
@@ -113,7 +111,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
 
   // ...........................................................
   QWidget *Tab3 = new QWidget(t);
-  Q3GridLayout *gp3 = new Q3GridLayout(Tab3,5,3,5,5);
+  QGridLayout *gp3 = new QGridLayout(Tab3);
 
   gp3->addMultiCellWidget(new QLabel(tr("Colors for Syntax Highlighting:"), Tab3), 0,0,0,1);
 
@@ -175,25 +173,41 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
 
   // ...........................................................
   QWidget *Tab2 = new QWidget(t);
-  Q3GridLayout *gp2 = new Q3GridLayout(Tab2,5,3,3,3);
+  QGridLayout *gp2 = new QGridLayout(Tab2);//,5,3,3,3);
 
-  QLabel *l7 = new QLabel(
-     tr("Register filename extensions here in order to\nopen files with an appropriate program.")
-     , Tab2);
-  gp2->addMultiCellWidget(l7,0,0,0,2);
-
-  List_Suffix = new Q3ListView(Tab2);
+  QLabel *note = new QLabel(
+     tr("Register filename extensions here in order to\nopen files with an appropriate program."));
+  gp2->addWidget(note,0,0,1,2);
+/*
+  List_Suffix = new Q3ListView(Tab2);  //QListView on Qt4 only takes 1 column
   List_Suffix->addColumn(tr("Suffix"));
   List_Suffix->addColumn(tr("Program"));
   gp2->addMultiCellWidget(List_Suffix,1,4,0,0);
   connect(List_Suffix, SIGNAL(clicked(Q3ListViewItem*)),
 		SLOT(slotEditSuffix(Q3ListViewItem*)));
-
+*/
+  
+  tableView = new QTableView();
+  model = new QStandardItemModel( 0, 2);  // rows, cols
+  
+  model->setHorizontalHeaderItem( 0, new QStandardItem( QString(tr("Suffix")) ) );
+  model->setHorizontalHeaderItem( 1, new QStandardItem( QString(tr("Program")) ) ); 
+  tableView->setModel(model);
+  
+  //connect(tableView,SIGNAL(clicked(QModelIndex)), 
+  //        this, SLOT(slotEditSuffix2(const QModelIndex &)));
+  
+  connect(tableView, SIGNAL(clicked(QModelIndex)), this, SLOT(slotEditSuffix2()));
+  
+ // connect(table, SIGNAL(pressed(const QModelIndex &)), this, SLOT(rowClicked(const QModelindex &)));
+ 
+  gp2->addWidget(tableView,1,0,3,1);
+  
   // fill listview with already registered file extensions
   QStringList::Iterator it = QucsSettings.FileTypes.begin();
   while(it != QucsSettings.FileTypes.end()) {
-    new Q3ListViewItem(List_Suffix,
-        (*it).section('/',0,0), (*it).section('/',1,1));
+    //new Q3ListViewItem(List_Suffix,  //FIXME
+    //    (*it).section('/',0,0), (*it).section('/',1,1));
     it++;
   }
 
@@ -202,39 +216,41 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
   Input_Suffix = new QLineEdit(Tab2);
   Input_Suffix->setValidator(Validator);
   gp2->addWidget(Input_Suffix,1,2);
-//  connect(Input_Suffix, SIGNAL(returnPressed()), SLOT(slotGotoProgEdit()));
+//  connect(Input_Suffix, SIGNAL(returnPressed()), SLOT(slotGotoProgEdit())); //not implemented
 
   QLabel *l6 = new QLabel(tr("Program:"), Tab2);
   gp2->addWidget(l6,2,1);
   Input_Program = new QLineEdit(Tab2);
   gp2->addWidget(Input_Program,2,2);
 
-  Q3HBox *h = new Q3HBox(Tab2);
-  h->setSpacing(3);
-  gp2->addMultiCellWidget(h,3,3,1,2);
-
-  QPushButton *AddButt = new QPushButton(tr("Set"), h);
+  QPushButton *AddButt = new QPushButton(tr("Set"));
+  gp2->addWidget(AddButt,3,1);
   connect(AddButt, SIGNAL(clicked()), SLOT(slotAdd()));
-  QPushButton *RemoveButt = new QPushButton(tr("Remove"), h);
+  QPushButton *RemoveButt = new QPushButton(tr("Remove"));
+  gp2->addWidget(RemoveButt,3,2);
   connect(RemoveButt, SIGNAL(clicked()), SLOT(slotRemove()));
 
-  gp2->setRowStretch(4,5);
+  gp2->setRowStretch(3,4);
   t->addTab(Tab2, tr("File Types"));
 
   // ...........................................................
   // buttons on the bottom of the dialog (independent of the TabWidget)
-  Q3HBox *Butts = new Q3HBox(this);
+  QHBoxLayout *Butts = new QHBoxLayout(this);
   Butts->setSpacing(3);
   Butts->setMargin(3);
-  all->addWidget(Butts);
+  all->addLayout(Butts);
 
-  QPushButton *OkButt = new QPushButton(tr("OK"), Butts);
+  QPushButton *OkButt = new QPushButton(tr("OK"));
+  Butts->addWidget(OkButt);
   connect(OkButt, SIGNAL(clicked()), SLOT(slotOK()));
-  QPushButton *ApplyButt = new QPushButton(tr("Apply"), Butts);
+  QPushButton *ApplyButt = new QPushButton(tr("Apply"));
+  Butts->addWidget(ApplyButt);
   connect(ApplyButt, SIGNAL(clicked()), SLOT(slotApply()));
-  QPushButton *CancelButt = new QPushButton(tr("Cancel"), Butts);
+  QPushButton *CancelButt = new QPushButton(tr("Cancel"));
+  Butts->addWidget(CancelButt);
   connect(CancelButt, SIGNAL(clicked()), SLOT(reject()));
-  QPushButton *DefaultButt = new QPushButton(tr("Default Values"), Butts);
+  QPushButton *DefaultButt = new QPushButton(tr("Default Values"));
+  Butts->addWidget(DefaultButt);
   connect(DefaultButt, SIGNAL(clicked()), SLOT(slotDefaultValues()));
 
   OkButt->setDefault(true);
@@ -264,7 +280,7 @@ QucsSettingsDialog::~QucsSettingsDialog()
 }
 
 // -----------------------------------------------------------
-void QucsSettingsDialog::slotEditSuffix(Q3ListViewItem *Item)
+/*void QucsSettingsDialog::slotEditSuffix(Q3ListViewItem *Item)
 {
   if(Item) {
     Input_Suffix->setText(Item->text(0));
@@ -276,10 +292,29 @@ void QucsSettingsDialog::slotEditSuffix(Q3ListViewItem *Item)
     Input_Program->setText("");
   }
 }
+*/
+void QucsSettingsDialog::slotEditSuffix2()
+{
+    qDebug() << "clicked";
+    qDebug() << tableView->selectionModel()->selectedColumns();
+    
+}
 
 // -----------------------------------------------------------
 void QucsSettingsDialog::slotAdd()
 {
+    int rowCount = model->rowCount();
+    QStandardItem *suffix  = new QStandardItem(Input_Suffix->text());
+    QStandardItem *program = new QStandardItem(Input_Program->text());
+    model->setItem(rowCount, 0, suffix);
+    model->setItem(rowCount, 1, program);
+    qDebug() << model->rowCount();
+    
+    QMessageBox msgBox;
+    msgBox.setText("Feature not fully implemented!");
+    msgBox.exec();
+    
+    /*
   Q3ListViewItem *Item = List_Suffix->selectedItem();
   if(Item) {
     Item->setText(0, Input_Suffix->text());
@@ -300,12 +335,19 @@ void QucsSettingsDialog::slotAdd()
           Input_Suffix->text(), Input_Program->text()));
   Input_Suffix->setFocus();
   Input_Suffix->setText("");
-  Input_Program->setText("");
+  Input_Program->setText("");*/
 }
 
 // -----------------------------------------------------------
 void QucsSettingsDialog::slotRemove()
 {
+    model->removeRow(model->rowCount()-1); 
+    qDebug() << model->rowCount();
+    
+    QMessageBox msgBox;
+    msgBox.setText("Feature not fully implemented!");
+    msgBox.exec();
+    /*
   Q3ListViewItem *Item = List_Suffix->selectedItem();
   if(Item == 0) return;
 
@@ -313,7 +355,7 @@ void QucsSettingsDialog::slotRemove()
   delete Item;
 
   Input_Suffix->setText("");
-  Input_Program->setText("");
+  Input_Program->setText("");*/
 }
 
 // -----------------------------------------------------------
@@ -402,11 +444,12 @@ void QucsSettingsDialog::slotApply()
     changed = true;
   }
 
+  /* FIXME
   Q3ListViewItem *Item;
   QucsSettings.FileTypes.clear();
   for(Item = List_Suffix->firstChild(); Item!=0; Item = Item->itemBelow())
     QucsSettings.FileTypes.append(Item->text(0)+"/"+Item->text(1));
-
+*/
 
   saveApplSettings(App);  // also sets the small and large font
   if(changed)
