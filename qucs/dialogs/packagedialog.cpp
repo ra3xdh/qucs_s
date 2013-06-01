@@ -18,24 +18,22 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
+
 #include <QtGui>
 #include <stdlib.h>
 
-#include <q3hbox.h>
-#include <q3vbox.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <q3textedit.h>
-#include <qcheckbox.h>
-#include <q3filedialog.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <q3scrollview.h>
-#include <qdatastream.h>
-#include <q3buttongroup.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <QCheckBox>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QScrollArea>
+#include <QDataStream>
+#include <QButtonGroup>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 #include "packagedialog.h"
 #include "qucs.h"
@@ -51,40 +49,53 @@
 
 
 PackageDialog::PackageDialog(QWidget *parent_, bool create_)
-			: QDialog(parent_, 0, TRUE, Qt::WDestructiveClose)
+			: QDialog(parent_) //, 0, TRUE, Qt::WDestructiveClose)
 {
-  all = new Q3VBoxLayout(this);
+  all = new QVBoxLayout(this);
   all->setMargin(5);
   all->setSpacing(6);
 
-  Q3HBox *h2 = new Q3HBox(this);
+  QHBoxLayout *h2 = new QHBoxLayout();
 
   if(create_) {  // create or extract package ?
-    setCaption(tr("Create Project Package"));
+    setWindowTitle(tr("Create Project Package"));
 
-    Q3HBox *h1 = new Q3HBox(this);
-    all->addWidget(h1);
-    new QLabel(tr("Package:"), h1);
-    NameEdit = new QLineEdit(h1);
-    QPushButton *ButtBrowse = new QPushButton(tr("Browse"), h1);
+    QHBoxLayout *h1 = new QHBoxLayout();
+    all->addLayout(h1);
+    QLabel *packLabel = new QLabel(tr("Package:"));
+    NameEdit = new QLineEdit();
+    QPushButton *ButtBrowse = new QPushButton(tr("Browse"));
     connect(ButtBrowse, SIGNAL(clicked()), SLOT(slotBrowse()));
+    h1->addWidget(packLabel);
+    h1->addWidget(NameEdit);
+    h1->addWidget(ButtBrowse);
 
-    LibraryCheck = new QCheckBox(tr("include user libraries"), this);
+    LibraryCheck = new QCheckBox(tr("include user libraries"));
     all->addWidget(LibraryCheck);
 
-    Group = new Q3VButtonGroup(tr("Choose projects:"), this);
+    Group = new QGroupBox(tr("Choose projects:"));
     all->addWidget(Group);
-  
-    Q3ScrollView *Dia_Scroll = new Q3ScrollView(Group);
-    Dia_Scroll->setMargin(5);
-    Q3VBox *Dia_Box = new Q3VBox(Dia_Scroll->viewport());
-    Dia_Scroll->addChild(Dia_Box);
-
+    
+    QScrollArea *scrollArea = new QScrollArea(Group);
+    scrollArea->setWidgetResizable(true);
+    
+    QWidget *scrollWidget = new QWidget();
+    
+    QVBoxLayout *checkBoxLayout = new QVBoxLayout();
+    scrollWidget->setLayout(checkBoxLayout);
+    scrollArea->setWidget(scrollWidget);
+    
+    QVBoxLayout *areaLayout = new QVBoxLayout();
+    areaLayout->addWidget(scrollArea);
+    Group->setLayout(areaLayout);
+    
     // ...........................................................
-    all->addWidget(h2);
-    QPushButton *ButtCreate = new QPushButton(tr("Create"), h2);
+    all->addLayout(h2);
+    QPushButton *ButtCreate = new QPushButton(tr("Create"));
+    h2->addWidget(ButtCreate);
     connect(ButtCreate, SIGNAL(clicked()), SLOT(slotCreate()));
-    QPushButton *ButtCancel = new QPushButton(tr("Cancel"), h2);
+    QPushButton *ButtCancel = new QPushButton(tr("Cancel"));
+    h2->addWidget(ButtCancel);
     connect(ButtCancel, SIGNAL(clicked()), SLOT(reject()));
 
     // ...........................................................
@@ -92,32 +103,38 @@ PackageDialog::PackageDialog(QWidget *parent_, bool create_)
     QStringList PrDirs = QucsHomeDir.entryList("*", QDir::Dirs, QDir::Name);
     QStringList::iterator it;
     for(it = PrDirs.begin(); it != PrDirs.end(); it++)
-       if((*it).right(4) == "_prj")   // project directories end with "_prj"
-         BoxList.append(new QCheckBox((*it).left((*it).length()-4), Dia_Box));
-  
-    QColor theColor;
+       if((*it).right(4) == "_prj"){   // project directories end with "_prj"
+         QCheckBox *subCheck = new QCheckBox((*it).left((*it).length()-4));
+         checkBoxLayout->addWidget(subCheck);
+         BoxList.append(subCheck);
+       }
+    
+    //QColor theColor;
     if(BoxList.isEmpty()) {
       ButtCreate->setEnabled(false);
-      theColor =
-         (new QLabel(tr("No projects!"), Dia_Box))->paletteBackgroundColor();
+      //theColor =
+      //   (new QLabel(tr("No projects!"), Dia_Box))->paletteBackgroundColor();
+      QLabel *noProj = new QLabel(tr("No projects!"));
+      checkBoxLayout->addWidget(noProj);              
     }
-    else
-      theColor = BoxList.current()->paletteBackgroundColor();
-    Dia_Scroll->viewport()->setPaletteBackgroundColor(theColor);
+    //else
+    //  theColor = BoxList.current()->paletteBackgroundColor();
+    //Dia_Scroll->viewport()->setPaletteBackgroundColor(theColor);
   }
 
   else {  // of "if(create_)"
-    setCaption(tr("Extract Project Package"));
+    setWindowTitle(tr("Extract Project Package"));
 
-    MsgText = new Q3TextEdit(this);
+    MsgText = new QTextEdit(this);
     MsgText->setTextFormat(Qt::PlainText);
-    MsgText->setWordWrap(Q3TextEdit::NoWrap);
+    MsgText->setWordWrapMode(QTextOption::NoWrap);
     MsgText->setReadOnly(true);
     all->addWidget(MsgText);
 
-    all->addWidget(h2);
-    h2->setStretchFactor(new QWidget(h2), 5); // stretchable placeholder
-    ButtClose = new QPushButton(tr("Close"), h2);
+    all->addLayout(h2);
+    h2->addStretch(5);
+    ButtClose = new QPushButton(tr("Close"));
+    h2->addWidget(ButtClose);
     ButtClose->setDisabled(true);
     connect(ButtClose, SIGNAL(clicked()), SLOT(accept()));
 
@@ -133,7 +150,7 @@ PackageDialog::~PackageDialog()
 // ---------------------------------------------------------------
 void PackageDialog::slotBrowse()
 {
-  QString s = Q3FileDialog::getSaveFileName(
+  QString s = QFileDialog::getSaveFileName(
      lastDir.isEmpty() ? QString(".") : lastDir,
      tr("Qucs Packages")+" (*.qucs);;"+
      tr("Any File")+" (*)",
@@ -232,12 +249,15 @@ void PackageDialog::slotCreate()
   }
 
   QCheckBox *p;
+  QListIterator<QCheckBox *> i(BoxList);
   if(!LibraryCheck->isChecked()) {
     int count=0;
-    for(p = BoxList.first(); p != 0; p = BoxList.next())
+    while(i.hasNext()){
+      p = i.next();
       if(p->isChecked())
         count++;
-
+    }
+    
     if(count < 1) {
       QMessageBox::critical(this, tr("Error"), tr("Please choose at least one project!"));
       return;
@@ -271,7 +291,9 @@ void PackageDialog::slotCreate()
 
 
   // Write project files to package.
-  for(p = BoxList.first(); p != 0; p = BoxList.next())
+  i.toFront();
+  while(i.hasNext()) {
+    p = i.next();  
     if(p->isChecked()) {
       s = p->text() + "_prj";
       Stream << Q_UINT32(CODE_DIR) << s.latin1();
@@ -283,6 +305,7 @@ void PackageDialog::slotCreate()
       }
       Stream << Q_UINT32(CODE_DIR_END) << Q_UINT32(0);
     }
+  }
 
   // Write user libraries to package if desired.
   if(LibraryCheck->isChecked())
@@ -313,7 +336,7 @@ void PackageDialog::slotCreate()
 
 void PackageDialog::extractPackage()
 {
-  QString s = Q3FileDialog::getOpenFileName(
+  QString s = QFileDialog::getOpenFileName(
      lastDir.isEmpty() ? QString(".") : lastDir,
      tr("Qucs Packages")+" (*.qucs);;"+
      tr("Any File")+" (*)",
