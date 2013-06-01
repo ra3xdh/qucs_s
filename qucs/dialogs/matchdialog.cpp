@@ -18,118 +18,156 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
+
 #include <QtGui>
 #include "matchdialog.h"
 #include "main.h"
 #include "qucs.h"
-//Added by qt3to4:
-#include <Q3VBoxLayout>
 #include "element.h"
 #include "../components/capacitor.h"
 #include "../components/inductor.h"
 #include "../components/ground.h"
 
-#include <qlabel.h>
-#include <qlayout.h>
-#include <q3hbox.h>
-#include <q3vbox.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qvalidator.h>
-#include <qpushbutton.h>
-#include <qmessagebox.h>
-#include <qapplication.h>
-#include <qclipboard.h>
-#include <q3hgroupbox.h>
-#include <q3vgroupbox.h>
+#include <QLabel>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QValidator>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QApplication>
+#include <QClipboard>
+#include <QGroupBox>
 
 
 MatchDialog::MatchDialog(QWidget *parent)
-			: QDialog(parent, 0, TRUE, Qt::WDestructiveClose)
+			: QDialog(parent) //, 0, TRUE, Qt::WDestructiveClose)
 {
-  setCaption(tr("Create Matching Circuit"));
+  setWindowTitle(tr("Create Matching Circuit"));
   DoubleVal = new QDoubleValidator(this);
 
-  all = new Q3VBoxLayout(this, 3,3);
+  all = new QVBoxLayout(this);
 
-  TwoCheck = new QCheckBox(tr("calculate two-port matching"), this);
+  TwoCheck = new QCheckBox(tr("calculate two-port matching"));
   all->addWidget(TwoCheck);
   TwoCheck->setChecked(true);
   connect(TwoCheck, SIGNAL(toggled(bool)), SLOT(slotSetTwoPort(bool)));
 
   // ...........................................................
-  Q3HGroupBox *ImpBox = new Q3HGroupBox(tr("Reference Impedance"), this);
+  QGroupBox *ImpBox = new QGroupBox(tr("Reference Impedance"));
   all->addWidget(ImpBox);
-  Port1Label = new QLabel(tr("Port 1"), ImpBox);
-  Ref1Edit = new QLineEdit("50", ImpBox);
+  QHBoxLayout *ImpLayout = new QHBoxLayout();
+  Port1Label = new QLabel(tr("Port 1"));
+  Ref1Edit = new QLineEdit("50");
   Ref1Edit->setValidator(DoubleVal);
-  Ohm1Label = new QLabel(tr("ohms"), ImpBox);
+  Ohm1Label = new QLabel(tr("ohms"));
   connect(Ref1Edit, SIGNAL(textChanged(const QString&)),
 	  SLOT(slotImpedanceChanged(const QString&)));
-  ImpBox->addSpace(50);   // placeholder
-  Port2Label = new QLabel(tr("Port 2"), ImpBox);
-  Ref2Edit = new QLineEdit("50", ImpBox);
+  Port2Label = new QLabel(tr("Port 2"));
+  Ref2Edit = new QLineEdit("50");
   Ref2Edit->setValidator(DoubleVal);
-  Ohm2Label = new QLabel(tr("ohms"), ImpBox);
-
+  Ohm2Label = new QLabel(tr("ohms"));
+  ImpLayout->addWidget(Port1Label);
+  ImpLayout->addWidget(Ref1Edit);
+  ImpLayout->addWidget(Ohm1Label);
+  ImpLayout->addSpacing(50);
+  ImpLayout->addWidget(Port2Label);
+  ImpLayout->addWidget(Ref2Edit);
+  ImpLayout->addWidget(Ohm2Label);
+  ImpBox->setLayout(ImpLayout);
 
   // ...........................................................
-  Q3VGroupBox *SParBox = new Q3VGroupBox(tr("S Parameter"), this);
+  QGroupBox *SParBox = new QGroupBox(tr("S Parameter"));
   all->addWidget(SParBox);
+  QVBoxLayout *SParLayout = new QVBoxLayout();
+  SParBox->setLayout(SParLayout);
 
-  Q3HBox *h1 = new Q3HBox(SParBox);
+  QHBoxLayout *h1 = new QHBoxLayout();
   h1->setSpacing(3);
-  FormatLabel = new QLabel(tr("Input format"), h1);
-  FormatCombo = new QComboBox(h1);
+  FormatLabel = new QLabel(tr("Input format"));
+  h1->addWidget(FormatLabel);
+  FormatCombo = new QComboBox();
+  h1->addWidget(FormatCombo);
   FormatCombo->insertItem(tr("real/imag"));
   FormatCombo->insertItem(tr("mag/deg"));
   connect(FormatCombo, SIGNAL(activated(int)), SLOT(slotChangeMode(int)));
-  QWidget *place1 = new QWidget(h1); // stretchable placeholder
-  h1->setStretchFactor(place1, 5);
+  h1->addStretch(5);
+  SParLayout->addLayout(h1);
 
-  Q3HBox *h3 = new Q3HBox(SParBox);
+  QHBoxLayout *h3 = new QHBoxLayout();
   h3->setSpacing(3);
-  Q3VBox *VBox1 = new Q3VBox(h3);
-    S11Label = new QLabel(tr("S11"), VBox1);
-    S21Label = new QLabel(tr("S21"), VBox1);
-  Q3VBox *VBox2 = new Q3VBox(h3);
-    S11magEdit = new QLineEdit("0.5", VBox2);
+  QVBoxLayout *VBox1 = new QVBoxLayout();
+  h3->addLayout(VBox1);
+    S11Label = new QLabel(tr("S11"));
+    S21Label = new QLabel(tr("S21"));
+    VBox1->addWidget(S11Label);
+    VBox1->addWidget(S21Label);
+  QVBoxLayout *VBox2 = new QVBoxLayout();
+  h3->addLayout(VBox2);
+    S11magEdit = new QLineEdit("0.5");
     S11magEdit->setValidator(DoubleVal);
-    S21magEdit = new QLineEdit("0.5", VBox2);
+    S21magEdit = new QLineEdit("0.5");
     S21magEdit->setValidator(DoubleVal);
-  Q3VBox *VBox3 = new Q3VBox(h3);
-    S11sLabel = new QLabel("+j", VBox3);
-    S21sLabel = new QLabel("+j", VBox3);
-  Q3VBox *VBox4 = new Q3VBox(h3);
-    S11degEdit = new QLineEdit("0", VBox4);
+    VBox2->addWidget(S11magEdit);
+    VBox2->addWidget(S21magEdit);
+  QVBoxLayout *VBox3 = new QVBoxLayout();
+  h3->addLayout(VBox3);
+    S11sLabel = new QLabel("+j");
+    S21sLabel = new QLabel("+j");
+    VBox3->addWidget(S11sLabel);
+    VBox3->addWidget(S21sLabel);
+  QVBoxLayout *VBox4 = new QVBoxLayout();
+  h3->addLayout(VBox4);
+    S11degEdit = new QLineEdit("0");
     S11degEdit->setValidator(DoubleVal);
-    S21degEdit = new QLineEdit("0", VBox4);
+    S21degEdit = new QLineEdit("0");
     S21degEdit->setValidator(DoubleVal);
-  Q3VBox *VBox5 = new Q3VBox(h3);
-    S11uLabel = new QLabel(" ", VBox5);
-    S21uLabel = new QLabel(" ", VBox5);
-  QWidget *place4 = new QWidget(h3); // stretchable placeholder
-  h3->setStretchFactor(place4, 5);
-  Q3VBox *VBox6 = new Q3VBox(h3);
-    S12Label = new QLabel(tr("S12"), VBox6);
-    S22Label = new QLabel(tr("S22"), VBox6);
-  Q3VBox *VBox7 = new Q3VBox(h3);
-    S12magEdit = new QLineEdit("0", VBox7);
+    VBox4->addWidget(S11degEdit);
+    VBox4->addWidget(S21degEdit);
+  QVBoxLayout *VBox5 = new QVBoxLayout();
+  h3->addLayout(VBox5);
+    S11uLabel = new QLabel(" ");
+    S21uLabel = new QLabel(" ");
+    VBox5->addWidget(S11uLabel);
+    VBox5->addWidget(S21uLabel);
+  h3->addStretch(5);
+  QVBoxLayout *VBox6 = new QVBoxLayout();
+  h3->addLayout(VBox6);
+    S12Label = new QLabel(tr("S12"));
+    S22Label = new QLabel(tr("S22"));
+    VBox6->addWidget(S12Label);
+    VBox6->addWidget(S22Label);
+  QVBoxLayout *VBox7 = new QVBoxLayout();
+  h3->addLayout(VBox7);
+    S12magEdit = new QLineEdit("0");
     S12magEdit->setValidator(DoubleVal);
-    S22magEdit = new QLineEdit("0.5", VBox7);
+    S22magEdit = new QLineEdit("0.5");
     S22magEdit->setValidator(DoubleVal);
-  Q3VBox *VBox8 = new Q3VBox(h3);
-    S12sLabel = new QLabel("+j", VBox8);
-    S22sLabel = new QLabel("+j", VBox8);
-  Q3VBox *VBox9 = new Q3VBox(h3);
-    S12degEdit = new QLineEdit("0", VBox9);
+    VBox7->addWidget(S12magEdit);
+    VBox7->addWidget(S22magEdit);
+  QVBoxLayout *VBox8 = new QVBoxLayout();
+  h3->addLayout(VBox8);
+    S12sLabel = new QLabel("+j");
+    S22sLabel = new QLabel("+j");
+    VBox8->addWidget(S12sLabel);
+    VBox8->addWidget(S22sLabel);
+  QVBoxLayout *VBox9 = new QVBoxLayout();
+  h3->addLayout(VBox9);
+    S12degEdit = new QLineEdit("0");
     S12degEdit->setValidator(DoubleVal);
-    S22degEdit = new QLineEdit("0", VBox9);
+    S22degEdit = new QLineEdit("0");
     S22degEdit->setValidator(DoubleVal);
-  Q3VBox *VBox0 = new Q3VBox(h3);
-    S12uLabel = new QLabel(" ", VBox0);
-    S22uLabel = new QLabel(" ", VBox0);
+    VBox9->addWidget(S12degEdit);
+    VBox9->addWidget(S22degEdit);
+  QVBoxLayout *VBox0 = new QVBoxLayout();
+  h3->addLayout(VBox0);
+    S12uLabel = new QLabel(" ");
+    S22uLabel = new QLabel(" ");
+    VBox0->addWidget(S12uLabel);
+    VBox0->addWidget(S22uLabel);
+  SParLayout->addLayout(h3);
 
   connect(S21magEdit, SIGNAL(textChanged(const QString&)),
 	  SLOT(slotImpedanceChanged(const QString&)));
@@ -141,32 +179,35 @@ MatchDialog::MatchDialog(QWidget *parent)
 	  SLOT(slotReflexionChanged(const QString&)));
 
 
-  Q3HBox *h2 = new Q3HBox(SParBox);
+  QHBoxLayout *h2 = new QHBoxLayout();
   h2->setSpacing(3);
-  FrequencyLabel = new QLabel(tr("Frequency:"), h2);
-  FrequencyEdit = new QLineEdit(h2);
+  FrequencyLabel = new QLabel(tr("Frequency:"));
+  FrequencyEdit = new QLineEdit();
   FrequencyEdit->setValidator(DoubleVal);
-  UnitCombo = new QComboBox(h2);
+  h2->addWidget(FrequencyLabel);
+  h2->addWidget(FrequencyEdit);
+  UnitCombo = new QComboBox();
   UnitCombo->insertItem("Hz");
   UnitCombo->insertItem("kHz");
   UnitCombo->insertItem("MHz");
   UnitCombo->insertItem("GHz");
-  QWidget *place2 = new QWidget(h2); // stretchable placeholder
-  h2->setStretchFactor(place2, 5);
+  h2->addWidget(UnitCombo);
+  h2->addStretch(5);
+  SParLayout->addLayout(h2);
 
   // ...........................................................
-  Q3HBox *h0 = new Q3HBox(this);
+  QHBoxLayout *h0 = new QHBoxLayout();
   h0->setSpacing(5);
-  all->addWidget(h0);
-  QWidget *place3 = new QWidget(h0); // stretchable placeholder
-  h0->setStretchFactor(place3, 5);
-  connect(new QPushButton(tr("Create"),h0), SIGNAL(clicked()),
-	  SLOT(slotButtCreate()));
-  connect(new QPushButton(tr("Cancel"),h0), SIGNAL(clicked()),
-	  SLOT(reject()));
+  all->addLayout(h0);
+  h0->addStretch(5);
+  QPushButton *buttCreate = new QPushButton(tr("Create"));
+  QPushButton *buttCancel = new QPushButton(tr("Cancel"));
+  h0->addWidget(buttCreate);
+  h0->addWidget(buttCancel);
+  connect(buttCreate, SIGNAL(clicked()), SLOT(slotButtCreate()));
+  connect(buttCancel, SIGNAL(clicked()), SLOT(reject()));
 
-
-//  slotReflexionChanged("");  // calculate impedance
+  slotReflexionChanged("");  // calculate impedance
   setFrequency(1e9);  // set 1GHz
   resize(520, 100);
 }
@@ -241,10 +282,10 @@ void MatchDialog::slotChangeMode(int Index)
     S12sLabel->setText("/");
     S21sLabel->setText("/");
     S22sLabel->setText("/");
-    S11uLabel->setText("�");
-    S12uLabel->setText("�");
-    S21uLabel->setText("�");
-    S22uLabel->setText("�");
+    S11uLabel->setText(QString::fromUtf8("째"));
+    S12uLabel->setText(QString::fromUtf8("째"));
+    S21uLabel->setText(QString::fromUtf8("째"));
+    S22uLabel->setText(QString::fromUtf8("째"));
 
     double Real = S11magEdit->text().toDouble();
     double Imag = S11degEdit->text().toDouble();
