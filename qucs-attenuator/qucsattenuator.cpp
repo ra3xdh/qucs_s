@@ -16,7 +16,7 @@
 
 #include "attenuatorfunc.h"
 #include "qucsattenuator.h"
-#include "helpdialog.h"
+
 
 #include <QGridLayout>
 #include <QPixmap>
@@ -54,10 +54,16 @@ QucsAttenuator::QucsAttenuator()
   fileMenu->addAction(fileQuit);
 
   QMenu *helpMenu = new QMenu(tr("&Help"));
+
   QAction *helpHelp = new QAction(tr("&Help"), this);
   helpHelp->setShortcut(Qt::Key_F1);
   helpMenu->addAction(helpHelp);
   connect(helpHelp, SIGNAL(activated()), SLOT(slotHelpIntro()));
+
+  QAction *helpAbout = new QAction(tr("&About"), this);
+  helpMenu->addAction(helpAbout);
+  connect(helpAbout, SIGNAL(activated()), SLOT(slotHelpAbout()));
+
 
   helpMenu->addSeparator();
 
@@ -100,8 +106,8 @@ QucsAttenuator::QucsAttenuator()
   QGridLayout * inGrid = new QGridLayout();
   inGrid->setSpacing(1);
 
-  IntVal = new QIntValidator(this);
   DoubleVal = new QDoubleValidator(this);
+  DoubleVal->setBottom(0);
 
   LabelAtten = new QLabel(tr("Attenuation:"), InputGroup);
   inGrid ->addWidget(LabelAtten, 1,0);
@@ -188,14 +194,22 @@ QucsAttenuator::QucsAttenuator()
 
 QucsAttenuator::~QucsAttenuator()
 {
-  delete IntVal;
   delete DoubleVal;
 }
 
 void QucsAttenuator::slotHelpIntro()
 {
-  HelpDialog *d = new HelpDialog(this);
-  d->show();
+  QMessageBox::about(this, tr("Qucs Attenuator Help"), 
+    tr("QucsAttenuator is an attenuator synthesis program. "
+         "To create a attenuator, simply enter all "
+         "the input parameters and press the calculation button. "
+         "Immediatly, the "
+         "schematic of the attenuator is calculated and "
+         "put into the clipboard. Now go to Qucs, "
+         "open an schematic and press "
+         "CTRL-V (paste from clipboard). The attenuator "
+         "schematic can now be inserted. "
+         "Have lots of fun!"));
 }
 
 void QucsAttenuator::slotHelpAboutQt()
@@ -306,7 +320,7 @@ void QucsAttenuator::slotCalculate()
     }
     else
     {
-      LabelResult->setText(tr("Error: Set Attenuation more than %1 dB").arg(QString::number(Values.MinimumATT, 'f', 3)));
+      LabelResult->setText(tr("Error: Set Attenuation less than %1 dB").arg(QString::number(Values.MinimumATT, 'f', 3)));
       lineEdit_R1->setText("--");
       lineEdit_R2->setText("--");
       lineEdit_R3->setText("--");

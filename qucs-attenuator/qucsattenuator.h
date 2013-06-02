@@ -62,7 +62,6 @@ class QucsAttenuator : public QMainWindow
   QLineEdit *lineEdit_Attvalue, *lineEdit_Zin, *lineEdit_Zout;
   QLineEdit *lineEdit_R1, *lineEdit_R2, *lineEdit_R3, *lineEdit_Results;
   QPushButton *Calculate;
-  QIntValidator *IntVal;
   QDoubleValidator *DoubleVal;
 
 };
