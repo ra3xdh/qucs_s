@@ -1,0 +1,58 @@
+PROJECT(qucstrans CXX C)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+cmake_policy(VERSION 2.6)
+
+SET(BITMAPDIR TRUE)
+SET(BINARYDIR TRUE)
+SET(DOCDIR TRUE)
+SET(LANGUAGEDIR TRUE)
+SET(LIBRARYDIR TRUE)
+
+SET(CMAKE_BUILD_TYPE Debug)
+
+ADD_DEFINITIONS( -DHAVE_CONFIG_H )
+
+# configure the header config.h
+CONFIGURE_FILE (
+    "${PROJECT_SOURCE_DIR}/../config.h.cmake"
+    "${PROJECT_BINARY_DIR}/config.h"
+)
+
+INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
+
+FIND_PACKAGE( Qt4 REQUIRED )
+SET( QT_USE_QTGUI TRUE )
+#SET( QT_USE_QT3SUPPORT TRUE )
+
+INCLUDE( ${QT_USE_FILE} )
+
+ADD_DEFINITIONS(${QT_DEFINITIONS})
+
+SET(QUCSTRANS_SRCS
+main.cpp qucstrans.cpp helpdialog.cpp optionsdialog.cpp
+)
+
+SET(QUCSTRANS_MOC_HDRS
+qucstrans.h helpdialog.h optionsdialog.h
+)
+
+QT4_WRAP_CPP( QUCSTRANS_MOC_SRCS ${QUCSTRANS_MOC_HDRS} )
+
+SET( LIB_SRC
+microstrip.cpp transline.cpp coax.cpp
+rectwaveguide.cpp c_microstrip.cpp coplanar.cpp
+)
+
+ADD_LIBRARY(transcalc ${LIB_SRC} )
+
+ADD_EXECUTABLE(qucstrans ${QUCSTRANS_SRCS} ${QUCSTRANS_MOC_SRCS} )
+
+TARGET_LINK_LIBRARIES( qucstrans ${QT_LIBRARIES} transcalc )
+
+INSTALL(TARGETS qucstrans DESTINATION bin)
+
+ADD_SUBDIRECTORY( bitmaps )
+ADD_SUBDIRECTORY( examples )
+
+INSTALL( FILES qucstrans.1 DESTINATION share/man/man1 )
+
