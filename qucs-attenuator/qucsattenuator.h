@@ -14,7 +14,7 @@
 #ifndef QUCSATTENUATOR_H
 #define QUCSATTENUATOR_H
 
-#include <QDialog>
+#include <QMainWindow>
 #include <QLabel>
 
 #include "attenuatorfunc.h"
@@ -37,7 +37,7 @@ struct tQucsSettings
 
 extern struct tQucsSettings QucsSettings;
 
-class QucsAttenuator : public QDialog
+class QucsAttenuator : public QMainWindow
 {
  Q_OBJECT
  public:

@@ -33,11 +33,15 @@
 #include <QValidator>
 #include <QClipboard>
 #include <QApplication>
-#include <QTimer>
 #include <QDebug>
+
 
 QucsAttenuator::QucsAttenuator()
 {
+
+  QWidget *centralWidget = new QWidget(this);  
+  setCentralWidget(centralWidget);
+
   setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
   setWindowTitle("Qucs Attenuator " PACKAGE_VERSION);
 
@@ -61,16 +65,10 @@ QucsAttenuator::QucsAttenuator()
   helpMenu->addAction(about);
   connect(about, SIGNAL(activated()), SLOT(slotHelpAboutQt()));
 
-  QMenuBar *bar = new QMenuBar(this);
-  bar->addMenu(fileMenu);
-  bar->addSeparator();
-  bar->addMenu(helpMenu);
+  menuBar()->addMenu(fileMenu);
+  menuBar()->addSeparator();
+  menuBar()->addMenu(helpMenu);
 
-/*
-  QWidget *Space = new QWidget(this);   // reserve space for menubar
-  Space->setFixedSize(5, bar->height());
-  v2->addWidget(Space);
-*/
 
   //==========Left
   QVBoxLayout *vboxLeft = new QVBoxLayout();
@@ -94,11 +92,6 @@ QucsAttenuator::QucsAttenuator()
 
   vboxLeft->addWidget(TopoGroup);
 
-/*
-    QWidget *Space1 = new QWidget(this);   // reserve space for menubar
-    Space1->setFixedSize(5,5);
-    v2->addWidget(Space1);
-*/
 
   //==========Right
   QVBoxLayout *vboxRight = new QVBoxLayout();
@@ -185,9 +178,11 @@ QucsAttenuator::QucsAttenuator()
   LabelResult = new QLabel(tr("Result:"));
   LabelResult->setAlignment(Qt::AlignHCenter);
 
-  QVBoxLayout *vbox = new QVBoxLayout(this);
+  QVBoxLayout *vbox = new QVBoxLayout();
   vbox->addLayout(hbox);
   vbox->addWidget(LabelResult);
+
+  centralWidget->setLayout(vbox);
 
 }
 
@@ -230,8 +225,7 @@ void QucsAttenuator::slotQuit()
   tmp = width();
   tmp = height();
 
-  accept();
-  close();
+  qApp->quit();
 }
 
 void QucsAttenuator::slotSetText_Zin( const QString &text )
