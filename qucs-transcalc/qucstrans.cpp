@@ -260,8 +260,6 @@ QucsTranscalc::QucsTranscalc() {
   setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
   setWindowTitle("Qucs Transcalc " PACKAGE_VERSION);
 
-  QMenuBar *menuBar = new QMenuBar (this);
-
   // create file menu
   QMenu *fileMenu = new QMenu(tr("&File"));
 
@@ -319,10 +317,10 @@ QucsTranscalc::QucsTranscalc() {
   connect(helpAbout, SIGNAL(activated()), SLOT(slotAbout()));
 
   // setup menu bar
-  menuBar->addMenu(fileMenu);
-  menuBar->addMenu(execMenu);
-  menuBar->addSeparator();
-  menuBar->addMenu(helpMenu);
+  menuBar()->addMenu(fileMenu);
+  menuBar()->addMenu(execMenu);
+  menuBar()->addSeparator();
+  menuBar()->addMenu(helpMenu);
 
   // === left
   // seletion combo and figure
@@ -404,11 +402,11 @@ QucsTranscalc::QucsTranscalc() {
   vr->addWidget(calculated);
 
   // status line
-  statBar = new QStatusBar (this);
-  QLabel * statText = new QLabel ("Ready.", statBar);
-  statBar->showMessage (tr("Ready."));
-  statBar->setFixedHeight (statText->height ());
-  delete statText;
+  //statBar = new QStatusBar (this);
+  //QLabel * statText = new QLabel ("Ready.", statBar);
+  statusBar()->showMessage (tr("Ready."));
+  //statBar->setFixedHeight (statText->height ());
+  //delete statText;
 
   QVBoxLayout *vmain = new QVBoxLayout();
 
@@ -418,7 +416,7 @@ QucsTranscalc::QucsTranscalc() {
   hmain->addLayout(vr);
 
   vmain->addLayout(hmain);
-  vmain->addWidget(statBar);
+  //vmain->addWidget(statBar);
   
   centralWidget->setLayout(vmain);
   
@@ -975,26 +973,26 @@ void QucsTranscalc::slotSelectType (int Type)
 {
   pix->setPixmap(QPixmap(QucsSettings.BitmapDir + QString(TransLineTypes[Type].bitmap)));
   setMode (Type);
-  statBar->showMessage(tr("Ready."));
+  statusBar()->showMessage(tr("Ready."));
 }
 
 void QucsTranscalc::slotAnalyze()
 {
   if (TransLineTypes[getTypeIndex()].line)
     TransLineTypes[getTypeIndex()].line->analyze();
-  statBar->showMessage(tr("Values are consistent."));
+  statusBar()->showMessage(tr("Values are consistent."));
 }
 
 void QucsTranscalc::slotSynthesize()
 {
   if (TransLineTypes[getTypeIndex()].line)
     TransLineTypes[getTypeIndex()].line->synthesize();
-  statBar->showMessage(tr("Values are consistent."));
+  statusBar()->showMessage(tr("Values are consistent."));
 }
 
 void QucsTranscalc::slotValueChanged()
 {
-  statBar->showMessage(tr("Values are inconsistent."));
+  statusBar()->showMessage(tr("Values are inconsistent."));
 }
 
 // Load transmission line values from the given file.
@@ -1112,7 +1110,7 @@ void QucsTranscalc::storeValues (void) {
 
 void QucsTranscalc::slotFileLoad()
 {
-  statBar->showMessage(tr("Loading file..."));
+  statusBar()->showMessage(tr("Loading file..."));
   int _mode = 0;
   QString s = QFileDialog::getOpenFileName(this, tr("Enter a Filename"),
                            QucsWorkDir.path(),
@@ -1124,14 +1122,14 @@ void QucsTranscalc::slotFileLoad()
                  tr("Cannot load file:")+" '"+s+"'!");
     }
   }
-  else statBar->showMessage(tr("Loading aborted."), 2000);
+  else statusBar()->showMessage(tr("Loading aborted."), 2000);
 
-  statBar->showMessage(tr("Ready."));
+  statusBar()->showMessage(tr("Ready."));
 }
 
 void QucsTranscalc::slotFileSave()
 {
-  statBar->showMessage(tr("Saving file..."));
+  statusBar()->showMessage(tr("Saving file..."));
 
   QString s = QFileDialog::getSaveFileName(this, tr("Enter a Filename"),
                            QucsWorkDir.path(),
@@ -1143,9 +1141,9 @@ void QucsTranscalc::slotFileSave()
                  tr("Cannot save file:")+" '"+s+"'!");
     }
   }
-  else statBar->showMessage(tr("Saving aborted."), 2000);
+  else statusBar()->showMessage(tr("Saving aborted."), 2000);
 
-  statBar->showMessage(tr("Ready."));
+  statusBar()->showMessage(tr("Ready."));
 }
 
 // Returns the current textual mode.
@@ -1441,7 +1439,7 @@ void QucsTranscalc::slotCopyToClipBoard()
 
   // put a message into status line
   if (created)
-    statBar->showMessage(tr("Schematic copied into clipboard."), 2000);
+    statusBar()->showMessage(tr("Schematic copied into clipboard."), 2000);
   else
-    statBar->showMessage(tr("Transmission line type not available."), 2000);
+    statusBar()->showMessage(tr("Transmission line type not available."), 2000);
 }
