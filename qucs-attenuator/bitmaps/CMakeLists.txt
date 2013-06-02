@@ -13,7 +13,7 @@ att_bridge.png
 SET(ICONS
 )
 
-INSTALL(FILES ${XPMS} DESTINATION shared/qucs/bitmaps)
-INSTALL(FILES ${PNGS} DESTINATION shared/qucs/bitmaps)
-INSTALL(FILES ${ICONS} DESTINATION shared/qucs/bitmaps)
+INSTALL(FILES ${XPMS} DESTINATION share/qucs/bitmaps)
+INSTALL(FILES ${PNGS} DESTINATION share/qucs/bitmaps)
+INSTALL(FILES ${ICONS} DESTINATION share/qucs/bitmaps)
 
