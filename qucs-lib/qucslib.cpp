@@ -38,7 +38,7 @@
 #include <QRegExp>
 #include <QCloseEvent>
 #include <QPixmap>
-//#include <QModelIndex>
+#include <QWidget>
 #include <QBrush>
 
 #include "qucslib.h"
@@ -54,8 +54,6 @@ QucsLib::QucsLib()
   // set application icon
   setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
   setWindowTitle("Qucs Library Tool " PACKAGE_VERSION);
-
-  QMenuBar * menuBar = new QMenuBar (this);
 
   // create file menu
   fileMenu = new QMenu(tr("&File"));
@@ -86,19 +84,17 @@ QucsLib::QucsLib()
   connect(helpAbout, SIGNAL(activated()), SLOT(slotAbout()));
 
   // setup menu bar
-  menuBar->addMenu(fileMenu);
-  menuBar->addSeparator();
-  menuBar->addMenu(helpMenu);
+  menuBar()->addMenu(fileMenu);
+  menuBar()->addSeparator();
+  menuBar()->addMenu(helpMenu);
 
   // main box
-  all = new QVBoxLayout (this);
+  QWidget *main = new QWidget(this);
+  setCentralWidget(main);
+  all = new QVBoxLayout();
+  main->setLayout(all);
   all->setSpacing (0);
   all->setMargin (0);
-
-  // reserve space for menubar
-  QWidget * Space = new QWidget (this);
-  Space->setFixedSize(5, menuBar->height() + 2);
-  all->addWidget (Space);
 
 
   // library and component choice
@@ -121,7 +117,6 @@ QucsLib::QucsLib()
   QGroupBox *CompGroup = new QGroupBox(tr("Component"));
   QVBoxLayout *CompGroupLayout = new QVBoxLayout();
   CompDescr = new QTextEdit();
-  ///CompDescr->setTextFormat(Qt::PlainText);
   CompDescr->setReadOnly(true);
   CompDescr->setWordWrapMode(QTextOption::NoWrap);
 
@@ -218,7 +213,7 @@ void QucsLib::slotQuit()
   tmp = width();	// dialog !!!  Otherwise the frame of the window ...
   tmp = height();	// will not be recognized (a X11 problem).
 
-  accept();
+  qApp->quit();
 }
 
 // ----------------------------------------------------

@@ -142,10 +142,9 @@ void SearchDialog::slotSearch()
           ParentDialog->LibraryComps.clear();
         }
         findComponent = true;
-        //ParentDialog->CompList->insertItem(CompName);
-	ParentDialog->CompList->addItem(CompName);
+	      ParentDialog->CompList->addItem(CompName);
         ParentDialog->LibraryComps.append(
-			LibName+'\n'+LibraryString.mid(Start, End-Start));
+			  LibName+'\n'+LibraryString.mid(Start, End-Start));
       }
       Start = End;
     }
