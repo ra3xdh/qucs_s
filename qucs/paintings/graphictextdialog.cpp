@@ -19,17 +19,15 @@
 
 #include "qucs.h"
 
-#include <q3hbox.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <q3textedit.h>
-#include <qvalidator.h>
-#include <qpushbutton.h>
-#include <qmessagebox.h>
-#include <qcolordialog.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <QValidator>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QColorDialog>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 
 GraphicTextDialog::GraphicTextDialog(QWidget *parent, const char *name)
@@ -37,7 +35,7 @@ GraphicTextDialog::GraphicTextDialog(QWidget *parent, const char *name)
 {
   setCaption(tr("Edit Text Properties"));
 
-  vert = new Q3VBoxLayout(this);
+  vert = new QVBoxLayout(this);
   vert->setMargin(3);
   vert->setSpacing(3);
 
@@ -47,55 +45,59 @@ GraphicTextDialog::GraphicTextDialog(QWidget *parent, const char *name)
 		   tr("Use _{..} and ^{..} for sub- and super-positions."),
 		   this));
 
-  text = new Q3TextEdit(this);
+  text = new QTextEdit(this);
   text->setTextFormat(Qt::PlainText);
-  text->setWordWrap(Q3TextEdit::NoWrap);
+  text->setWordWrapMode(QTextOption::NoWrap);
   text->setMinimumSize(350,150);
   vert->addWidget(text);
 
-  Q3HBox *h1 = new Q3HBox(this);
-  h1->setSpacing(5);
+  QWidget *h1 = new QWidget(this);
+  QHBoxLayout *h1Layout = new QHBoxLayout();
+  h1Layout->setSpacing(5);
+  h1->setLayout(h1Layout);
   vert->addWidget(h1);
 
-
-  Q3HBox *h2 = new Q3HBox(this);
-  h2->setSpacing(5);
-  vert->addWidget(h2);
-
-  Q3HBox *h3 = new Q3HBox(this);
-  h2->setSpacing(5);
+  QWidget *h3 = new QWidget(this);
+  QHBoxLayout *h3Layout = new QHBoxLayout();
+  h3Layout->setSpacing(5);
+  h3->setLayout(h3Layout);
   vert->addWidget(h3);
 
   // first => activated by pressing RETURN
-  QPushButton *ButtOK = new QPushButton(tr("&OK"),h3);
+  QPushButton *ButtOK = new QPushButton(tr("&OK"));
+  h3Layout->addWidget(ButtOK);
   connect(ButtOK, SIGNAL(clicked()), SLOT(slotOkButton()));
-  QPushButton *ButtCancel = new QPushButton(tr("&Cancel"),h3);
+  QPushButton *ButtCancel = new QPushButton(tr("&Cancel"));
+  h3Layout->addWidget(ButtCancel);
   connect(ButtCancel, SIGNAL(clicked()), SLOT(reject()));
 
-  new QLabel(tr("Text color: "), h1);
-  ColorButt = new QPushButton("        ",h1);
+  QLabel *tc = new QLabel(tr("Text color: "));
+  ColorButt = new QPushButton("        ");
+  h1Layout->addWidget(tc);
+  h1Layout->addWidget(ColorButt);
   ColorButt->setPaletteBackgroundColor(QColor(0,0,0));
   connect(ColorButt, SIGNAL(clicked()), SLOT(slotSetColor()));
 
   QWidget *place1 = new QWidget(h1); // stretchable placeholder
-  h1->setStretchFactor(place1,5);
+  h1Layout->setStretchFactor(place1,5);
 
   val50 = new QIntValidator(1, 50, this);
-  new QLabel(tr("Text size: "), h1);
-  TextSize = new QLineEdit(h1);
+  QLabel *ts = new QLabel(tr("  Text size: "));
+  h1Layout->addWidget(ts);
+  TextSize = new QLineEdit(this);
   TextSize->setValidator(val50);
   TextSize->setMaximumWidth(35);
   TextSize->setText("12");
-
-  QWidget *place2 = new QWidget(h2); // stretchable placeholder
-  h2->setStretchFactor(place2,5);
+  h1Layout->addWidget(TextSize);
 
   val360 = new QIntValidator(0, 359, this);
-  new QLabel(tr("Rotation angle: "), h2);
-  Angle = new QLineEdit(h2);
+  QLabel *ra = new QLabel(tr("  Rotation angle: "));
+  h1Layout->addWidget(ra);
+  Angle = new QLineEdit(this);
   Angle->setValidator(val360);
   Angle->setMaximumWidth(35);
   Angle->setText("0");
+  h1Layout->addWidget(Angle);
 
   text->setFocus();
 }
@@ -117,7 +119,7 @@ void GraphicTextDialog::slotSetColor()
 // --------------------------------------------------------------------------
 void GraphicTextDialog::slotOkButton()
 {
-  if(text->length() < 1) {
+  if(text->toPlainText().size() < 1) {
     QMessageBox::critical(this, tr("Error"), tr("The text must not be empty!"));
     return;
   }

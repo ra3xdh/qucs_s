@@ -16,7 +16,7 @@
 
 #include "attenuatorfunc.h"
 #include "qucsattenuator.h"
-#include "helpdialog.h"
+
 
 #include <QGridLayout>
 #include <QPixmap>
@@ -33,11 +33,15 @@
 #include <QValidator>
 #include <QClipboard>
 #include <QApplication>
-#include <QTimer>
 #include <QDebug>
+
 
 QucsAttenuator::QucsAttenuator()
 {
+
+  QWidget *centralWidget = new QWidget(this);  
+  setCentralWidget(centralWidget);
+
   setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
   setWindowTitle("Qucs Attenuator " PACKAGE_VERSION);
 
@@ -50,10 +54,16 @@ QucsAttenuator::QucsAttenuator()
   fileMenu->addAction(fileQuit);
 
   QMenu *helpMenu = new QMenu(tr("&Help"));
+
   QAction *helpHelp = new QAction(tr("&Help"), this);
   helpHelp->setShortcut(Qt::Key_F1);
   helpMenu->addAction(helpHelp);
   connect(helpHelp, SIGNAL(activated()), SLOT(slotHelpIntro()));
+
+  QAction *helpAbout = new QAction(tr("&About"), this);
+  helpMenu->addAction(helpAbout);
+  connect(helpAbout, SIGNAL(activated()), SLOT(slotHelpAbout()));
+
 
   helpMenu->addSeparator();
 
@@ -61,16 +71,10 @@ QucsAttenuator::QucsAttenuator()
   helpMenu->addAction(about);
   connect(about, SIGNAL(activated()), SLOT(slotHelpAboutQt()));
 
-  QMenuBar *bar = new QMenuBar(this);
-  bar->addMenu(fileMenu);
-  bar->addSeparator();
-  bar->addMenu(helpMenu);
+  menuBar()->addMenu(fileMenu);
+  menuBar()->addSeparator();
+  menuBar()->addMenu(helpMenu);
 
-/*
-  QWidget *Space = new QWidget(this);   // reserve space for menubar
-  Space->setFixedSize(5, bar->height());
-  v2->addWidget(Space);
-*/
 
   //==========Left
   QVBoxLayout *vboxLeft = new QVBoxLayout();
@@ -94,11 +98,6 @@ QucsAttenuator::QucsAttenuator()
 
   vboxLeft->addWidget(TopoGroup);
 
-/*
-    QWidget *Space1 = new QWidget(this);   // reserve space for menubar
-    Space1->setFixedSize(5,5);
-    v2->addWidget(Space1);
-*/
 
   //==========Right
   QVBoxLayout *vboxRight = new QVBoxLayout();
@@ -107,8 +106,8 @@ QucsAttenuator::QucsAttenuator()
   QGridLayout * inGrid = new QGridLayout();
   inGrid->setSpacing(1);
 
-  IntVal = new QIntValidator(this);
   DoubleVal = new QDoubleValidator(this);
+  DoubleVal->setBottom(0);
 
   LabelAtten = new QLabel(tr("Attenuation:"), InputGroup);
   inGrid ->addWidget(LabelAtten, 1,0);
@@ -185,22 +184,32 @@ QucsAttenuator::QucsAttenuator()
   LabelResult = new QLabel(tr("Result:"));
   LabelResult->setAlignment(Qt::AlignHCenter);
 
-  QVBoxLayout *vbox = new QVBoxLayout(this);
+  QVBoxLayout *vbox = new QVBoxLayout();
   vbox->addLayout(hbox);
   vbox->addWidget(LabelResult);
+
+  centralWidget->setLayout(vbox);
 
 }
 
 QucsAttenuator::~QucsAttenuator()
 {
-  delete IntVal;
   delete DoubleVal;
 }
 
 void QucsAttenuator::slotHelpIntro()
 {
-  HelpDialog *d = new HelpDialog(this);
-  d->show();
+  QMessageBox::about(this, tr("Qucs Attenuator Help"), 
+    tr("QucsAttenuator is an attenuator synthesis program. "
+         "To create a attenuator, simply enter all "
+         "the input parameters and press the calculation button. "
+         "Immediatly, the "
+         "schematic of the attenuator is calculated and "
+         "put into the clipboard. Now go to Qucs, "
+         "open an schematic and press "
+         "CTRL-V (paste from clipboard). The attenuator "
+         "schematic can now be inserted. "
+         "Have lots of fun!"));
 }
 
 void QucsAttenuator::slotHelpAboutQt()
@@ -230,8 +239,7 @@ void QucsAttenuator::slotQuit()
   tmp = width();
   tmp = height();
 
-  accept();
-  close();
+  qApp->quit();
 }
 
 void QucsAttenuator::slotSetText_Zin( const QString &text )
@@ -312,7 +320,7 @@ void QucsAttenuator::slotCalculate()
     }
     else
     {
-      LabelResult->setText(tr("Error: Set Attenuation more than %1 dB").arg(QString::number(Values.MinimumATT, 'f', 3)));
+      LabelResult->setText(tr("Error: Set Attenuation less than %1 dB").arg(QString::number(Values.MinimumATT, 'f', 3)));
       lineEdit_R1->setText("--");
       lineEdit_R2->setText("--");
       lineEdit_R3->setText("--");

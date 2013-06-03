@@ -18,11 +18,10 @@
 #ifndef OPTIONSDIALOG_H
 #define OPTIONSDIALOG_H
 
-#include <qdialog.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QDialog>
+#include <QVBoxLayout>
 
-class Q3VBoxLayout;
+class QVBoxLayout;
 class QComboBox;
 
 /**
@@ -40,7 +39,7 @@ private slots:
   void slotSave();
 
 private:
-  Q3VBoxLayout *vLayout;
+  QVBoxLayout *vLayout;
   QComboBox *units[4];
 };
 

@@ -18,15 +18,14 @@
 #ifndef IMPORTDIALOG_H
 #define IMPORTDIALOG_H
 
-#include <qdialog.h>
-#include <q3process.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
+#include <QDialog>
+#include <QProcess>
+#include <QGridLayout>
 #include <QLabel>
 
-class Q3TextEdit;
+class QTextEdit;
 class QLineEdit;
-class Q3GridLayout;
+class QGridLayout;
 class QPushButton;
 class QComboBox;
 class QLabel;
@@ -41,7 +40,7 @@ public:
 private slots:
   void slotDisplayMsg();
   void slotDisplayErr();
-  void slotProcessEnded();
+  void slotProcessEnded(int status);
   void slotImport();
   void slotAbort();
   void slotBrowse();
@@ -51,11 +50,11 @@ private:
   void startSimulator();
 
 public:
-  Q3GridLayout *all;
+  QGridLayout *all;
 
   QLabel *OutputLabel;
-  Q3Process Process;
-  Q3TextEdit *MsgText;
+  QProcess Process;
+  QTextEdit *MsgText;
   QLineEdit *ImportEdit, *OutputEdit, *OutputData;
   QPushButton *ImportButt, *CancelButt, *AbortButt;
   QComboBox *OutType;

@@ -18,10 +18,8 @@
 #ifndef MATCHDIALOG_H
 #define MATCHDIALOG_H
 
-#include <qdialog.h>
-#include <q3ptrlist.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QDialog>
+#include <QVBoxLayout>
 #include <QLabel>
 
 class Element;
@@ -29,7 +27,7 @@ class QLabel;
 class QLineEdit;
 class QComboBox;
 class QCheckBox;
-class Q3VBoxLayout;
+class QVBoxLayout;
 class QDoubleValidator;
 
 
@@ -64,7 +62,7 @@ public slots:
   void slotChangeMode(int);
 
 private:
-  Q3VBoxLayout *all;   // the mother of all widgets
+  QVBoxLayout *all;   // the mother of all widgets
   QDoubleValidator  *DoubleVal;
   QLabel      *Port1Label, *Port2Label, *Ohm1Label, *Ohm2Label,
               *FormatLabel, *FrequencyLabel,

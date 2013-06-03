@@ -18,25 +18,23 @@
 #ifndef PACKAGEDIALOG_H
 #define PACKAGEDIALOG_H
 
-#include <qfile.h>
-#include <qdialog.h>
-#include <q3ptrlist.h>
-#include <qstringlist.h>
-#include <qcheckbox.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
-#include <qdir.h>
+#include <QFile>
+#include <QDialog>
+#include <QList>
+#include <QStringList>
+#include <QCheckBox>
+#include <QVBoxLayout>
+#include <QDir>
 
 class QucsApp;
 class QString;
 class QLineEdit;
-class Q3TextEdit;
+class QTextEdit;
 class QCheckBox;
-class Q3VBoxLayout;
+class QVBoxLayout;
 class QDataStream;
 class QPushButton;
-class Q3ListViewItem;
-class Q3VButtonGroup;
+class QGroupBox;
 
 
 class PackageDialog : public QDialog {
@@ -60,13 +58,12 @@ private:
   int extractDirectory(QFile&, Q_UINT32, QDir&);
   int extractLibrary(QFile&, Q_UINT32);
 
-  Q3VBoxLayout *all;   // the mother of all widgets
+  QVBoxLayout *all;   // the mother of all widgets
   QLineEdit *NameEdit;
-  Q3TextEdit *MsgText;
+  QTextEdit *MsgText;
   QCheckBox *LibraryCheck;
-  Q3VButtonGroup *Group;
-  Q3PtrList<QCheckBox> BoxList;
-
+  QGroupBox *Group;
+  QList<QCheckBox *> BoxList;
   QPushButton *ButtClose;
 };
 

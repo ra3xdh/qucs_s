@@ -19,23 +19,22 @@
 # include <config.h>
 #endif
 #include <QtGui>
-#include <q3hbox.h>
-#include <q3vbox.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <q3textedit.h>
-#include <q3textstream.h>
-#include <qdatastream.h>
-#include <qcheckbox.h>
-#include <q3listview.h>
-#include <qvalidator.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <q3scrollview.h>
-#include <q3buttongroup.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <QTextStream>
+
+#include <QDataStream>
+#include <QCheckBox>
+#include <QTreeWidgetItem>
+#include <QValidator>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QScrollArea>
+#include <QButtonGroup>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QDebug>
 
 #include "librarydialog.h"
 #include "qucs.h"
@@ -44,77 +43,101 @@
 
 extern SubMap FileList;
 
-LibraryDialog::LibraryDialog(QucsApp *App_, Q3ListViewItem *SchematicList)
-			: QDialog(App_, 0, TRUE, Qt::WDestructiveClose)
+LibraryDialog::LibraryDialog(QucsApp *App_, QTreeWidgetItem *SchematicList)
+			: QDialog(App_) //, 0, TRUE, Qt::WDestructiveClose)
 {
   App = App_;
-  setCaption(tr("Create Library"));
+  setWindowTitle(tr("Create Library"));
 
   Expr.setPattern("[\\w_]+");
   Validator = new QRegExpValidator(Expr, this);
 
   // ...........................................................
-  all = new Q3VBoxLayout(this);
+  all = new QVBoxLayout(this);
   all->setMargin(5);
   all->setSpacing(6);
 
-  Q3HBox *h1 = new Q3HBox(this);
-  all->addWidget(h1);
-  theLabel = new QLabel(tr("Library Name:"), h1);
-  NameEdit = new QLineEdit(h1);
+  QHBoxLayout *h1 = new QHBoxLayout(this);
+  all->addLayout(h1);
+  theLabel = new QLabel(tr("Library Name:"));
+  h1->addWidget(theLabel);
+  NameEdit = new QLineEdit();
+  h1->addWidget(NameEdit);
   NameEdit->setValidator(Validator);
 
-  Group = new Q3VButtonGroup(tr("Choose subcircuits:"), this);
+  // ...........................................................
+  Group = new QGroupBox(tr("Choose subcircuits:"));
   all->addWidget(Group);
+  QScrollArea *Dia_Scroll = new QScrollArea(Group);
+  //Dia_Scroll->setMargin(5);
+  QVBoxLayout *Dia_Box = new QVBoxLayout(Dia_Scroll->viewport());
+  Dia_Scroll->insertChild(Dia_Box);
+  
+  QVBoxLayout *areaLayout = new QVBoxLayout();
+  areaLayout->addWidget(Dia_Scroll);
+  
+  Group->setLayout(areaLayout);
   
   // ...........................................................
-  Q3HBox *h3 = new Q3HBox(Group);
-  ButtSelectAll = new QPushButton(tr("Select All"), h3);
+  QHBoxLayout *h3 = new QHBoxLayout();
+  ButtSelectAll = new QPushButton(tr("Select All"));
+  h3->addWidget(ButtSelectAll);
   connect(ButtSelectAll, SIGNAL(clicked()), SLOT(slotSelectAll()));
-  ButtSelectNone = new QPushButton(tr("Deselect All"), h3);
+  ButtSelectNone = new QPushButton(tr("Deselect All"));
+  h3->addWidget(ButtSelectNone);
   connect(ButtSelectNone, SIGNAL(clicked()), SLOT(slotSelectNone()));
 
-  // ...........................................................
-  Q3ScrollView *Dia_Scroll = new Q3ScrollView(Group);
-  Dia_Scroll->setMargin(5);
-  Q3VBox *Dia_Box = new Q3VBox(Dia_Scroll->viewport());
-  Dia_Scroll->addChild(Dia_Box);
 
-  ErrText = new Q3TextEdit(this);
+  ErrText = new QTextEdit(this);
   ErrText->setHidden(true);
   ErrText->setTextFormat(Qt::PlainText);
-  ErrText->setWordWrap(Q3TextEdit::NoWrap);
+  ErrText->setWordWrapMode(QTextOption::NoWrap);
   all->addWidget(ErrText);
   
   // ...........................................................
-  Q3HBox *h2 = new Q3HBox(this);
-  all->addWidget(h2);
-  ButtCancel = new QPushButton(tr("Cancel"), h2);
+  QHBoxLayout *h2 = new QHBoxLayout(this);
+  all->addLayout(h2);
+  ButtCancel = new QPushButton(tr("Cancel"));
+  h2->addWidget(ButtCancel);
   connect(ButtCancel, SIGNAL(clicked()), SLOT(reject()));
-  ButtCreate = new QPushButton(tr("Next >>"), h2);
+  ButtCreate = new QPushButton(tr("Next >>"));
+  h2->addWidget(ButtCreate);
   connect(ButtCreate, SIGNAL(clicked()), SLOT(slotCreate()));
   ButtCreate->setDefault(true);
 
   // ...........................................................
   // insert all subcircuits of current project
-  Q3ListViewItem *p = SchematicList->firstChild();
-  while(p) {
+  
+  //iterator for this??
+  QTreeWidgetItem *p ;//= SchematicList->child(0); //firstChild();
+  //while(p) {
+  for(int i=0; i < SchematicList->childCount(); i++){
+    p = SchematicList->child(i); 
     if(p->parent() == 0)
       break;
-    if(!p->text(1).isEmpty())
-      BoxList.append(new QCheckBox(p->text(0), Dia_Box));
-    p = p->nextSibling();
+    if(!p->text(1).isEmpty()){
+        QCheckBox *subCheck = new QCheckBox(p->text(0));
+        Dia_Box->addWidget(subCheck);
+      //BoxList.append(new QCheckBox(p->text(0), Dia_Box));
+        BoxList.append(subCheck);
+    }
+    //p = p->nextSibling();
   }
-
+/*
   QColor theColor;
   if(BoxList.isEmpty()) {
     ButtCreate->setEnabled(false);
     theColor =
-       (new QLabel(tr("No subcircuits!"), Dia_Box))->paletteBackgroundColor();
+       //(new QLabel(tr("No subcircuits!"), Dia_Box))->paletteBackgroundColor();
+       (new QLabel(tr("No subcircuits!"), Dia_Box))->paletteBackgroundColor();     
   }
   else
     theColor = BoxList.current()->paletteBackgroundColor();
-  Dia_Scroll->viewport()->setPaletteBackgroundColor(theColor);
+  Dia_Scroll->viewport()->setPaletteBackgroundColor(theColor);*/
+  
+  QMessageBox msgBox;
+  msgBox.setText("Dialog not fully implemented!");
+  msgBox.exec();
 }
 
 LibraryDialog::~LibraryDialog()
@@ -133,9 +156,13 @@ void LibraryDialog::slotCreate()
 
   int count=0;
   QCheckBox *p;
-  for(p = BoxList.first(); p != 0; p = BoxList.next())
+  QListIterator<QCheckBox *> i(BoxList);
+  //for(p = BoxList.first(); p != 0; p = BoxList.next())
+  while(i.hasNext()){
+    p = i.next();
     if(p->isChecked())
       count++;
+  }
 
   if(count < 1) {
     QMessageBox::critical(this, tr("Error"), tr("Please choose at least one subcircuit!"));
@@ -172,20 +199,30 @@ void LibraryDialog::slotCreate()
   disconnect(ButtCreate, SIGNAL(clicked()), 0, 0);
   connect(ButtCreate, SIGNAL(clicked()), SLOT(slotNext()));
 
-  for(p = BoxList.first(); p != 0; p = BoxList.next())
+  //QCheckBox *p;
+  //QListIterator<QCheckBox *> i(BoxList);
+  //for(p = BoxList.first(); p != 0; p = BoxList.next())
+  i.toFront();
+  while(i.hasNext()){
+    p = i.next();  
     if(p->isChecked())
       break;
+  }
   theLabel->setText(tr("Enter description for \"%1\":").arg(p->text()));
 
-  for(p = BoxList.next(); p != 0; p = BoxList.next())
+  //for(p = BoxList.next(); p != 0; p = BoxList.next())
+  i.toFront();
+  while(i.hasNext()){
+    p = i.next();    
     if(p->isChecked())
       break;
+  }
   if(p == 0)
     ButtCreate->setText(tr("Create"));
 }
 
 // ---------------------------------------------------------------
-void LibraryDialog::intoStream(Q3TextStream &Stream, QString &tmp,
+void LibraryDialog::intoStream(QTextStream &Stream, QString &tmp,
 			       const char *sec)
 {
   int i = tmp.find("TOP LEVEL MARK");
@@ -247,12 +284,17 @@ void LibraryDialog::slotNext()
   Descriptions.append(ErrText->text());
   ErrText->clear();
 
-  QCheckBox *p = BoxList.current();
+  QCheckBox *p;//= BoxList.current();
+  QListIterator<QCheckBox *> i(BoxList);
+  p = i.next();
   if(p) {
     theLabel->setText(tr("Enter description for \"%1\":").arg(p->text()));
-    for(p = BoxList.next(); p != 0; p = BoxList.next())
+    while(i.hasNext()){
+    //for(p = BoxList.next(); p != 0; p = BoxList.next())
+      p = i.next();  
       if(p->isChecked())
         break;
+    }   
     if(p == 0)
       ButtCreate->setText(tr("Create"));
     return;
@@ -269,7 +311,7 @@ void LibraryDialog::slotNext()
     ErrText->append(tr("Error: Cannot create library!"));
     return;
   }
-  Q3TextStream Stream;
+  QTextStream Stream;
   Stream.setDevice(&LibFile);
   Stream << "<Qucs Library " PACKAGE_VERSION " \""
 	 << NameEdit->text() << "\">\n\n";
@@ -278,8 +320,11 @@ void LibraryDialog::slotNext()
   bool Success = true, ret;
   QStringList::Iterator it = Descriptions.begin();
   QString tmp;
-  Q3TextStream ts(&tmp, QIODevice::WriteOnly);
-  for(p = BoxList.first(); p != 0; p = BoxList.next())
+  QTextStream ts(&tmp, QIODevice::WriteOnly);
+  i.toFront();
+  //for(p = BoxList.first(); p != 0; p = BoxList.next())
+  while(i.hasNext()){
+    p = i.next();
     if(p->isChecked()) {
       Stream << "<Component " + p->text().section('.',0,0) + ">\n"
              << "  <Description>\n"
@@ -299,7 +344,7 @@ void LibraryDialog::slotNext()
       // save analog model
       tmp.truncate(0);
       Doc->isAnalog = true;
-      ret = Doc->createLibNetlist(&ts, ErrText, -1);
+#warning      ///TODO ret = Doc->createLibNetlist(&ts, ErrText, -1);  //Schematic::createLibNetlist still on Q3TextStream
       if(ret) {
 	intoStream(Stream, tmp, "Model");
 	int error = 0;
@@ -331,7 +376,7 @@ void LibraryDialog::slotNext()
       tmp.truncate(0);
       Doc->isVerilog = true;
       Doc->isAnalog = false;
-      ret = Doc->createLibNetlist(&ts, ErrText, 0);
+#warning      ///TODO ret = Doc->createLibNetlist(&ts, ErrText, 0); //Schematic::createLibNetlist still on Q3TextStream
       if(ret) {
 	intoStream(Stream, tmp, "VerilogModel");
 	int error = 0;
@@ -364,7 +409,7 @@ void LibraryDialog::slotNext()
       tmp.truncate(0);
       Doc->isVerilog = false;
       Doc->isAnalog = false;
-      ret = Doc->createLibNetlist(&ts, ErrText, 0);
+#warning  ///TODO ret = Doc->createLibNetlist(&ts, ErrText, 0); ////Schematic::createLibNetlist still on Q3TextStream
       if(ret) {
 	intoStream(Stream, tmp, "VHDLModel");
 	int error = 0;
@@ -405,6 +450,7 @@ void LibraryDialog::slotNext()
       delete Doc;
       if(!Success) break;
     }
+  } //while
 
   LibFile.close();
   if(!Success) {
@@ -419,12 +465,22 @@ void LibraryDialog::slotNext()
 void LibraryDialog::slotSelectAll()
 {
   QCheckBox *p;
-  for(p = BoxList.first(); p != 0; p = BoxList.next()) p->setChecked(true);
+  QListIterator<QCheckBox *> i(BoxList);
+  while(i.hasNext()){
+    p = i.next();
+    p->setChecked(true);
+  }
+  //for(p = BoxList.first(); p != 0; p = BoxList.next()) p->setChecked(true);
 }
 
 // ---------------------------------------------------------------
 void LibraryDialog::slotSelectNone()
 {
   QCheckBox *p;
-  for(p = BoxList.first(); p != 0; p = BoxList.next()) p->setChecked(false);
+  QListIterator<QCheckBox *> i(BoxList);
+  while(i.hasNext()){
+    p = i.next();
+    p->setChecked(false);
+  }
+  //for(p = BoxList.first(); p != 0; p = BoxList.next()) p->setChecked(false);
 }

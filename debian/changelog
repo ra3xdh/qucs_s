@@ -1,4 +1,29 @@
+<<<<<<< HEAD
 qucs (0.0.17.130528-6) raring; urgency=low
+=======
+qucs (0.0.17.130601-3) raring; urgency=low
+
+  * Lots of porting / removing Q3Support
+  * Fixed bug #94
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Sat, 01 Jun 2013 23:14:32 +0200
+
+qucs (0.0.17.130601-2) quantal; urgency=low
+
+  * Lots of porting / removing Q3Support
+  * Fixed bug #94
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Sat, 01 Jun 2013 23:12:04 +0200
+
+qucs (0.0.17.130601-1) precise; urgency=low
+
+  * Lots of porting / removing Q3Support
+  * Fixed bug #94
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Sat, 01 Jun 2013 23:08:55 +0200
+
+qucs (0.0.17.130528-3) raring; urgency=low
+>>>>>>> 4ce1be2efb7a4285487a861202c272e4932658c5
 
   * Fixed cursor displacement while drawing paintings
 

@@ -19,20 +19,17 @@
 # include <config.h>
 #endif
 
-#include <qlayout.h>
-#include <q3hbox.h>
-#include <qpushbutton.h>
-#include <q3textedit.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QPushButton>
+#include <QTextEdit>
+#include <QVBoxLayout>
 
 #include "helpdialog.h"
 
 
 HelpDialog::HelpDialog(QWidget *parent)
-                     : QDialog(parent, 0, false, Qt::WDestructiveClose)
+                     : QDialog(parent) //, 0, false, Qt::WDestructiveClose)
 {
-  setCaption("QucsTranscalc "+tr("Help"));
+  setWindowTitle("QucsTranscalc "+tr("Help"));
 
   // --------  set help text into dialog  ------------
   QString s(tr("QucsTranscalc is an analysis and synthesis tool for "
@@ -48,12 +45,12 @@ HelpDialog::HelpDialog(QWidget *parent)
   // --------  create dialog widgets  ------------
   resize(350, 230);
 
-  vLayout = new Q3VBoxLayout(this);
+  vLayout = new QVBoxLayout(this);
   vLayout->setMargin(3);
   vLayout->setSpacing(3);
 
-  Text = new Q3TextEdit(s, QString::null, this);
-  Text->setTextFormat(Qt::PlainText);
+  Text = new QTextEdit(s, this);
+  //Text->setTextFormat(Qt::PlainText);
   Text->setReadOnly(true);
   Text->setMinimumSize(300,200);
   vLayout->addWidget(Text);

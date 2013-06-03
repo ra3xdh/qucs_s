@@ -18,15 +18,14 @@
 #ifndef CHANGEDIALOG_H
 #define CHANGEDIALOG_H
 
-#include <qdialog.h>
-#include <qregexp.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
+#include <QDialog>
+#include <QRegExp>
+#include <QGridLayout>
 
 class Schematic;
 class QLineEdit;
 class QComboBox;
-class Q3GridLayout;
+class QGridLayout;
 class QRegExpValidator;
 
 
@@ -43,7 +42,7 @@ private:
   bool matches(const QString&);
 
   Schematic *Doc;
-  Q3GridLayout *all;   // the mother of all widgets
+  QGridLayout *all;   // the mother of all widgets
   QRegExpValidator  *Validator, *ValRestrict;
   QRegExp     Expr;
   QLineEdit   *CompNameEdit, *NewValueEdit;

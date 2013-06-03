@@ -598,7 +598,7 @@ void qf_cauer::dump () {
     break;
   }
   std::cout << "of order " << ord << ", theta = "
-	    << ASIND (th) << "°, rho = " << rho << '\n';
+	    << ASIND (th) << "\x00B0, rho = " << rho << '\n';
   dump_cout ();
 }
 
@@ -614,7 +614,7 @@ void CC (void) {
     std::cout << "Reflexion (%) : ";
     std::cin >> r;
     r /= 100.0;
-    std::cout << "Angle (°) : ";
+    std::cout << "Angle (\x00B0) : ";
     std::cin >> t;
     t = M_PI * t / 180.0;
     qf_cauer F (o, r, t);

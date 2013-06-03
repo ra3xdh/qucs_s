@@ -28,10 +28,10 @@ SUBDIRS = bitmaps
 
 dist_man_MANS = qucsattenuator.1
 
-MOCHEADERS = qucsattenuator.h helpdialog.h
+MOCHEADERS = qucsattenuator.h
 MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
-qucsattenuator_SOURCES = main.cpp qucsattenuator.cpp helpdialog.cpp \
+qucsattenuator_SOURCES = main.cpp qucsattenuator.cpp \
   attenuatorfunc.cpp
 
 nodist_qucsattenuator_SOURCES = $(MOCFILES)

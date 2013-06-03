@@ -18,28 +18,28 @@
 #ifndef QUCSTRANS_H
 #define QUCSTRANS_H
 
-#include <qdialog.h>
-#include <qfont.h>
-#include <qstring.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
-#include <Q3TextStream>
-#include <Q3VBoxLayout>
+#include <QDialog>
+#include <QFont>
+#include <QString>
+#include <QGridLayout>
+#include <QTextStream>
+#include <QVBoxLayout>
 #include <QLabel>
 #include <QCloseEvent>
+#include <QMainWindow>
+
 
 class QComboBox;
 class QLineEdit;
 class QLabel;
-class Q3HGroupBox;
-class Q3VBox;
-class Q3VBoxLayout;
+class QGroupBox;
+class QVBoxLayout;
 class QRadioButton;
-class Q3GridLayout;
+class QGridLayout;
 class QStatusBar;
-class Q3TextStream;
-class Q3ButtonGroup;
-class Q3WidgetStack;
+class QTextStream;
+class QButtonGroup;
+class QStackedWidget;
 
 class transline;
 
@@ -87,7 +87,6 @@ struct TransValue {
   QLineEdit * lineedit;  // Qt value widget
   QComboBox * combobox;  // Qt unit widget
   QRadioButton * radio;  // Qt fixed widget
-  Q3WidgetStack * stack;  // Qt fixed stack
 };
 
 // Array of transmission line values.
@@ -134,7 +133,7 @@ struct TransUnit {
   *@author Stefan Jahn
   */
 
-class QucsTranscalc : public QDialog  {
+class QucsTranscalc : public QMainWindow  {
    Q_OBJECT
 public:
   QucsTranscalc();
@@ -147,8 +146,8 @@ public:
   void    setResult (int, const char *);
   bool    isSelected (QString);
 
-  void    saveMode (Q3TextStream&);
-  void    saveModes (Q3TextStream&);
+  void    saveMode (QTextStream&);
+  void    saveModes (QTextStream&);
   bool    loadFile (QString, int * _mode = 0);
   QString getMode (void);
   void    setMode (QString);
@@ -170,12 +169,12 @@ private slots:
 
 private:
   void updateSelection ();
-  void createPropItem (Q3VBox **, TransValue *, int, Q3ButtonGroup *);
-  void createResultItem (Q3VBox **, TransResult *);
+  void createPropItem (QGridLayout *, TransValue *, int, QButtonGroup *);
+  void createResultItem (QGridLayout *, TransResult *);
   void updateResultItem (TransResult *);
-  void createResultItems (Q3HGroupBox *);
+  void createResultItems (QGroupBox *);
   void updateResultItems ();
-  void createPropItems (Q3HGroupBox *, int);
+  void createPropItems (QGroupBox *, int);
   int getTypeIndex ();
   void updatePropItem (TransValue *);
   void setMode (int);
@@ -193,7 +192,7 @@ private:
   QStatusBar * statBar;
   QLabel * pix;
   QComboBox * tranType;
-  Q3HGroupBox * calculated;
+  QGroupBox * calculated;
   int mode;
 };
 

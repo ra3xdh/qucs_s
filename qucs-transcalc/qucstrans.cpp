@@ -18,46 +18,42 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
+
 #include <QDate>
 #include <QTime>
-
-#include <qlayout.h>
-#include <q3hbox.h>
-#include <q3vbox.h>
-#include <qpushbutton.h>
-#include <qfile.h>
-#include <q3textstream.h>
-#include <qmessagebox.h>
-#include <qtoolbutton.h>
-#include <qimage.h>
-#include <q3filedialog.h>
-#include <qmenubar.h>
-#include <qaction.h>
-#include <q3popupmenu.h>
-#include <q3hgroupbox.h>
-#include <q3vgroupbox.h>
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qimage.h>
-#include <qicon.h>
-#include <q3scrollview.h>
-#include <qtooltip.h>
-#include <qradiobutton.h>
-#include <qstatusbar.h>
-#include <qdir.h>
-#include <q3buttongroup.h>
-#include <q3widgetstack.h>
-#include <qregexp.h>
-#include <qvalidator.h>
-#include <qclipboard.h>
-#include <qapplication.h>
+#include <QLayout>
+#include <QPushButton>
+#include <QFile>
+#include <QTextStream>
+#include <QMessageBox>
+#include <QToolButton>
+#include <QImage>
+#include <QFileDialog>
+#include <QMenuBar>
+#include <QAction>
+#include <QGroupBox>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QImage>
+#include <QIcon>
+#include <QToolTip>
+#include <QRadioButton>
+#include <QStatusBar>
+#include <QDir>
+#include <QButtonGroup>
+#include <QStackedWidget>
+#include <QRegExp>
+#include <QValidator>
+#include <QClipboard>
+#include <QApplication>
+#include <QPixmap>
+#include <QVBoxLayout>
+#include <QCloseEvent>
+#include <QAction>
+#include <QDebug>
 
 #include "qucstrans.h"
-//Added by qt3to4:
-#include <QPixmap>
-#include <Q3VBoxLayout>
-#include <QCloseEvent>
 #include "helpdialog.h"
 #include "optionsdialog.h"
 #include "transline.h"
@@ -75,7 +71,7 @@ static const int TransMaxBox[MAX_TRANS_BOXES] = { 9, 1, 4, 3 };
 
 // Helper #defines for the below transmission line types.
 #define TRANS_RADIOS  { -1, -1, -1, -1 }
-#define TRANS_QOBJS   NULL, NULL, NULL, NULL, NULL
+#define TRANS_QOBJS   NULL, NULL, NULL, NULL
 #define TRANS_END     { NULL, 0, NULL, { NULL }, 0, TRANS_QOBJS }
 #define TRANS_RESULT  { NULL, NULL, NULL }
 #define TRANS_RESULTS { TRANS_RESULT }
@@ -256,108 +252,101 @@ struct TransUnit TransUnits[] = {
 
 /* Constructor setups the GUI. */
 QucsTranscalc::QucsTranscalc() {
+    
+  QWidget *centralWidget = new QWidget(this);  
+  setCentralWidget(centralWidget);
+  
   // set application icon
-  setIcon (QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
-  setCaption("Qucs Transcalc " PACKAGE_VERSION);
-
-  QMenuBar * menuBar = new QMenuBar (this);
+  setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
+  setWindowTitle("Qucs Transcalc " PACKAGE_VERSION);
 
   // create file menu
-  Q3PopupMenu * fileMenu = new Q3PopupMenu ();
-  QAction * fileLoad =
-    new QAction (tr("&Load"), Qt::CTRL+Qt::Key_L, this,"");
-  fileLoad->addTo (fileMenu);
+  QMenu *fileMenu = new QMenu(tr("&File"));
+
+  QAction *fileLoad = new QAction(tr("&Load"), this);
+  fileLoad->setShortcut(Qt::CTRL+Qt::Key_L);
+  fileMenu->addAction(fileLoad);
   connect(fileLoad, SIGNAL(activated()), SLOT(slotFileLoad()));
-  QAction * fileSave =
-    new QAction (tr("&Save"), Qt::CTRL+Qt::Key_S, this,"");
-  fileSave->addTo (fileMenu);
+
+  QAction *fileSave = new QAction (tr("&Save"), this);
+  fileSave->setShortcut(Qt::CTRL+Qt::Key_S);
+  fileMenu->addAction(fileSave);
   connect(fileSave, SIGNAL(activated()), SLOT(slotFileSave()));
-  fileMenu->insertSeparator ();
-  QAction * fileOption =
-    new QAction (tr("&Options"), Qt::CTRL+Qt::Key_O, this,"");
-  fileOption->addTo (fileMenu);
+
+  fileMenu->addSeparator();
+
+  QAction *fileOption = new QAction (tr("&Options"), this);
+  fileOption->setShortcut(Qt::CTRL+Qt::Key_O);
+  fileMenu->addAction(fileOption);
   connect(fileOption, SIGNAL(activated()), SLOT(slotOptions()));
-  fileMenu->insertSeparator ();
-  QAction * fileQuit =
-    new QAction (tr("&Quit"), Qt::CTRL+Qt::Key_Q, this,"");
-  fileQuit->addTo (fileMenu);
+
+  fileMenu->addSeparator();
+
+  QAction *fileQuit = new QAction (tr("&Quit"), this);
+  fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
+  fileMenu->addAction(fileQuit);
   connect(fileQuit, SIGNAL(activated()), SLOT(slotQuit()));
 
   // create execute menu
-  Q3PopupMenu * execMenu = new Q3PopupMenu ();
-  QAction * execCopy =
-    new QAction (
-		 tr("&Copy to Clipboard"), Qt::Key_F2, this,"");
-  execCopy->addTo (execMenu);
+  QMenu *execMenu = new QMenu(tr("&Execute"));
+
+  QAction *execCopy = new QAction(tr("&Copy to Clipboard"), this);
+  execCopy->setShortcut(Qt::Key_F2);
+  execMenu->addAction(execCopy);
   connect(execCopy, SIGNAL(activated()), SLOT(slotCopyToClipBoard()));
-  QAction * execAnalyze =
-    new QAction (tr("&Analyze"), Qt::Key_F3, this,"");
-  execAnalyze->addTo (execMenu);
+
+  QAction *execAnalyze = new QAction(tr("&Analyze"), this);
+  execAnalyze->setShortcut(Qt::Key_F3);
+  execMenu->addAction(execAnalyze);
   connect(execAnalyze, SIGNAL(activated()), SLOT(slotAnalyze()));
-  QAction * execSynthesize =
-    new QAction (tr("&Synthesize"), Qt::Key_F4, this,"");
-  execSynthesize->addTo (execMenu);
+
+  QAction *execSynthesize = new QAction (tr("&Synthesize"), this);
+  execSynthesize->setShortcut(Qt::Key_F4);
+  execMenu->addAction(execSynthesize);
   connect(execSynthesize, SIGNAL(activated()), SLOT(slotSynthesize()));
 
   // create help menu
-  Q3PopupMenu * helpMenu = new Q3PopupMenu ();
-  QAction * helpHelp =
-    new QAction ( tr("&Help"), Qt::Key_F1, this,"");
-  helpHelp->addTo (helpMenu);
+  QMenu *helpMenu = new QMenu(tr("&Help"));
+  QAction *helpHelp = new QAction(tr("&Help"), this);
+  helpHelp->setShortcut(Qt::Key_F1);
+  helpMenu->addAction(helpHelp);
   connect(helpHelp, SIGNAL(activated()), SLOT(slotHelpIntro()));
-  QAction * helpAbout =
-    new QAction ( tr("About"), 0, helpMenu,"");
-  helpAbout->addTo (helpMenu);
+
+  QAction *helpAbout = new QAction(tr("About"), this);
+  helpMenu->addAction(helpAbout);
   connect(helpAbout, SIGNAL(activated()), SLOT(slotAbout()));
 
   // setup menu bar
-  menuBar->insertItem (tr("&File"), fileMenu);
-  menuBar->insertItem (tr("&Execute"), execMenu);
-  menuBar->insertSeparator ();
-  menuBar->insertItem (tr("&Help"), helpMenu);
+  menuBar()->addMenu(fileMenu);
+  menuBar()->addMenu(execMenu);
+  menuBar()->addSeparator();
+  menuBar()->addMenu(helpMenu);
 
-  // main box
-  Q3VBoxLayout * v = new Q3VBoxLayout (this);
-  v->setSpacing (0);
-  v->setMargin (0);
-
-  // reserve space for menubar
-  QWidget * Space = new QWidget (this);
-  Space->setFixedSize(5, menuBar->height() + 2);
-  v->addWidget (Space);
-
-  // main layout
-  Q3HBox * h = new Q3HBox (this);
-  h->setSpacing (5);
-  v->addWidget (h);
-
-  // left margin
-  QWidget * sl = new QWidget (h);
-  sl->setFixedWidth (2);
+  // === left
+  // seletion combo and figure
+  QVBoxLayout *vl = new QVBoxLayout();
 
   // transmission line type choice
-  Q3VGroupBox * lineGroup = new Q3VGroupBox (tr("Transmission Line Type"), h);
+  QGroupBox * lineGroup = new QGroupBox (tr("Transmission Line Type"));
   tranType = new QComboBox (lineGroup);
-  tranType->insertItem (tr("Microstrip Line"));
-  tranType->insertItem (tr("Coplanar Waveguide"));
-  tranType->insertItem (tr("Grounded Coplanar"));
-  tranType->insertItem (tr("Rectangular Waveguide"));
-  tranType->insertItem (tr("Coaxial Line"));
-  tranType->insertItem (tr("Coupled Microstrip"));
+  tranType->insertItem (0, tr("Microstrip Line"));
+  tranType->insertItem (1, tr("Coplanar Waveguide"));
+  tranType->insertItem (2, tr("Grounded Coplanar"));
+  tranType->insertItem (3, tr("Rectangular Waveguide"));
+  tranType->insertItem (4, tr("Coaxial Line"));
+  tranType->insertItem (5, tr("Coupled Microstrip"));
   connect(tranType, SIGNAL(activated(int)), SLOT(slotSelectType(int)));
   // setup transmission line picture
   pix = new QLabel (lineGroup);
-  pix->setPixmap (QPixmap (QImage (QucsSettings.BitmapDir +
-				   "microstrip.png")));
+  pix->setPixmap(QPixmap(QucsSettings.BitmapDir+"microstrip.png"));
 
-  Q3VBox * vm = new Q3VBox (h);
-  vm->setSpacing (3);
-  Q3VBox * vr = new Q3VBox (h);
-  vr->setSpacing (3);
+  QVBoxLayout *vfig = new QVBoxLayout();
+  vfig->addWidget(tranType);
+  vfig->addWidget(pix);
+  vfig->setSpacing(3);
+  lineGroup->setLayout(vfig);
 
-  // right margin
-  QWidget * sr = new QWidget (h);
-  sr->setFixedWidth (2);
+  vl->addWidget(lineGroup);
 
   // init additional translations
   setupTranslations ();
@@ -365,46 +354,77 @@ QucsTranscalc::QucsTranscalc() {
   // set current mode
   mode = ModeMicrostrip;
 
+  // === middle
+  QVBoxLayout *vm = new QVBoxLayout();
+  vm->setSpacing (3);
+
   // substrate parameter box
-  Q3HGroupBox * substrate = new Q3HGroupBox (tr("Substrate Parameters"), vm);
+  QGroupBox * substrate = new QGroupBox (tr("Substrate Parameters"));
+  vm->addWidget(substrate);
+
+  // Pass the GroupBox > create Grid layout > Add widgets > set layout
   createPropItems (substrate, TRANS_SUBSTRATE);
 
   // component parameter box
-  Q3HGroupBox * component = new Q3HGroupBox (tr("Component Parameters"), vm);
+  QGroupBox * component = new QGroupBox (tr("Component Parameters"));
+  vm->addWidget(component);
   createPropItems (component, TRANS_COMPONENT);
 
+
+  // === right
+  QVBoxLayout *vr = new QVBoxLayout();
+  vr->setSpacing (3);
+
   // physical parameter box
-  Q3HGroupBox * physical = new Q3HGroupBox (tr("Physical Parameters"), vr);
+  QGroupBox * physical = new QGroupBox (tr("Physical Parameters"));
+  vr->addWidget(physical);
   createPropItems (physical, TRANS_PHYSICAL);
 
   // analyze/synthesize buttons
-  Q3HBox * h2 = new Q3HBox (vr);
-  QPushButton * analyze = new QPushButton (tr("Analyze"), h2);
-  QToolTip::add (analyze, tr("Derive Electrical Parameters"));
+  QHBoxLayout * h2 = new QHBoxLayout();
+  QPushButton * analyze = new QPushButton (tr("Analyze"));
+  h2->addWidget(analyze);
+  analyze->setToolTip(tr("Derive Electrical Parameters"));
   connect(analyze, SIGNAL(clicked()), SLOT(slotAnalyze()));
-  QPushButton * synthesize = new QPushButton (tr("Synthesize"), h2);
-  QToolTip::add (synthesize, tr("Compute Physical Parameters"));
+
+  QPushButton * synthesize = new QPushButton (tr("Synthesize"));
+  h2->addWidget(synthesize);
+  synthesize->setToolTip(tr("Compute Physical Parameters"));
   connect(synthesize, SIGNAL(clicked()), SLOT(slotSynthesize()));
+  vr->addLayout(h2);
 
   // electrical parameter box
-  Q3HGroupBox * electrical = new Q3HGroupBox (tr("Electrical Parameters"), vr);
+  QGroupBox * electrical = new QGroupBox (tr("Electrical Parameters"));
+  vr->addWidget(electrical);
   createPropItems (electrical, TRANS_ELECTRICAL);
 
-  calculated = new Q3HGroupBox (tr("Calculated Results"), vr);
+  calculated = new QGroupBox (tr("Calculated Results"));
+  vr->addWidget(calculated);
 
   // status line
-  statBar = new QStatusBar (this);
-  QLabel * statText = new QLabel ("Ready.", statBar);
-  statBar->message (tr("Ready."));
-  statBar->setFixedHeight (statText->height ());
-  v->addWidget (statBar);
-  delete statText;
+  //statBar = new QStatusBar (this);
+  //QLabel * statText = new QLabel ("Ready.", statBar);
+  statusBar()->showMessage (tr("Ready."));
+  //statBar->setFixedHeight (statText->height ());
+  //delete statText;
 
+  QVBoxLayout *vmain = new QVBoxLayout();
+
+  QHBoxLayout *hmain = new QHBoxLayout();
+  hmain->addLayout(vl);
+  hmain->addLayout(vm);
+  hmain->addLayout(vr);
+
+  vmain->addLayout(hmain);
+  //vmain->addWidget(statBar);
+  
+  centralWidget->setLayout(vmain);
+  
   // setup calculated result bix
   createResultItems (calculated);
   updateSelection ();
 
-  // intantiate transmission lines
+  // instantiate transmission lines
   TransLineTypes[0].line = new microstrip ();
   TransLineTypes[0].line->setApplication (this);
   TransLineTypes[1].line = new coplanar ();
@@ -559,8 +579,8 @@ void QucsTranscalc::setupTranslations () {
 
 /* Creates a property item 'val' in a parameter category specified by
    its 'box'. */
-void QucsTranscalc::createPropItem (Q3VBox ** parentRows, TransValue * val,
-				    int box, Q3ButtonGroup * group) {
+void QucsTranscalc::createPropItem (QGridLayout * parentGrid, TransValue * val,
+                    int box, QButtonGroup * group) {
   QRadioButton * r = NULL;
   QLabel * l;
   QLineEdit * e;
@@ -568,13 +588,16 @@ void QucsTranscalc::createPropItem (Q3VBox ** parentRows, TransValue * val,
   QDoubleValidator * v = new QDoubleValidator (this);
 
   // name label
-  l = new QLabel (val->name, parentRows[0]);
+  l = new QLabel (val->name);
+  parentGrid->addWidget(l, parentGrid->rowCount(), 0);
+
   l->setAlignment (Qt::AlignRight);
-  if (val->tip) QToolTip::add (l, *(val->tip));
+  if (val->tip) l->setToolTip(*(val->tip));
   val->label = l;
 
   // editable value text
-  e = new QLineEdit (parentRows[1]);
+  e = new QLineEdit ();
+  parentGrid->addWidget(e, parentGrid->rowCount()-1, 1);
   e->setText (QString::number (val->value));
   e->setAlignment (Qt::AlignRight);
   e->setValidator (v);
@@ -583,35 +606,31 @@ void QucsTranscalc::createPropItem (Q3VBox ** parentRows, TransValue * val,
   val->lineedit = e;
 
   // unit choice
-  c = new QComboBox (parentRows[2]);
+  c = new QComboBox ();
+  parentGrid->addWidget(c, parentGrid->rowCount()-1, 2);
   if (!val->units[0]) {
-    c->insertItem ("NA");
+    c->addItem ("NA");
     c->setDisabled(true);
   }
   else {
     int nounit = 0;
     for (int i = 0; val->units[i]; i++) {
-      c->insertItem (val->units[i]);
+      c->addItem (val->units[i]);
       if (!strcmp (val->units[i], "NA")) nounit++;
     }
     c->setDisabled (nounit != 0);
-    c->setCurrentItem (0);
+    c->setCurrentIndex (0);
   }
   connect(c, SIGNAL(activated(int)), SLOT(slotValueChanged()));
   val->combobox = c;
 
   // special synthesize-computation choice
   if (box == TRANS_PHYSICAL) {
-    Q3WidgetStack * s = new Q3WidgetStack(parentRows[3]);
-    s->setFixedSize (val->lineedit->height()-10, val->lineedit->height()-10);
-    r = new QRadioButton (s);
-    QWidget * spacer = new QWidget (s);
-    s->addWidget (r, 1);
-    s->addWidget (spacer, 2);
+    r = new QRadioButton ();
     r->setDisabled (true);
+    r->setHidden(true);
     val->radio = r;
-    val->stack = s;
-    group->insert(r);
+    parentGrid->addWidget(r, parentGrid->rowCount()-1, 3);
   }
 }
 
@@ -620,9 +639,7 @@ void QucsTranscalc::createPropItem (Q3VBox ** parentRows, TransValue * val,
 void QucsTranscalc::updatePropItem (TransValue * val) {
   // update label text
   val->label->setText (val->name);
-  QToolTip::remove (val->label);
-  if (val->tip) QToolTip::add (val->label, *(val->tip));
-
+  if (val->tip) val->label->setToolTip(*(val->tip));
   // update editable value text
   val->lineedit->setText (QString::number (val->value));
   val->lineedit->setDisabled (!val->name);
@@ -630,16 +647,16 @@ void QucsTranscalc::updatePropItem (TransValue * val) {
   // update unit choice
   val->combobox->clear();
   if (!val->units[0]) {
-    val->combobox->insertItem ("NA");
+    val->combobox->addItem ("NA");
     val->combobox->setDisabled (true);
   }
   else {
     int nounit = 0;
     for (int i = 0; val->units[i]; i++) {
-      val->combobox->insertItem (val->units[i]);
+      val->combobox->addItem (val->units[i]);
       if (!strcmp (val->units[i], "NA")) nounit++;
     }
-    val->combobox->setCurrentItem(val->unit);
+    val->combobox->setCurrentIndex(val->unit);
     val->combobox->setDisabled (nounit);
   }
 }
@@ -673,12 +690,12 @@ void QucsTranscalc::updateMode (void) {
       // fix uninitialized memory
       if (val->name == NULL) last++;
       if (last) {
-	val->name = NULL;
-	val->value = 0;
-	val->tip = NULL;
-	val->units[0] = NULL;
+    val->name = NULL;
+    val->value = 0;
+    val->tip = NULL;
+    val->units[0] = NULL;
       }
-      updatePropItem (val);
+        updatePropItem (val);
       val++;
     }
   }
@@ -690,22 +707,21 @@ void QucsTranscalc::updateSelection () {
   struct TransValue * val = TransLineTypes[idx].array[TRANS_PHYSICAL].item;
   for (int i = 0; i < TransMaxBox[TRANS_PHYSICAL]; i++) {
     if (TransLineTypes[idx].radio[i] != -1) {
-      val->stack->raiseWidget (1);
+      val->radio->setHidden(false);
       if (TransLineTypes[idx].radio[i] == 1) {
-	val->radio->setDown (true);
-	val->radio->setChecked (true);
-	QToolTip::add (val->radio, tr("Selected for Calculation"));
+    val->radio->setDown (true);
+    val->radio->setChecked (true);
+    val->radio->setToolTip(tr("Selected for Calculation"));
       }
       else {
-	val->radio->setDown (false);
-	val->radio->setChecked (false);
-	QToolTip::add (val->radio, tr("Check item for Calculation"));
+    val->radio->setDown (false);
+    val->radio->setChecked (false);
+    val->radio->setToolTip(tr("Check item for Calculation"));
       }
       val->radio->setDisabled (false);
     }
     else {
-      QToolTip::remove (val->radio);
-      val->stack->raiseWidget (2);
+      val->radio->setHidden(true);
       val->radio->setDown (false);
       val->radio->setChecked (false);
       val->radio->setDisabled (true);
@@ -716,24 +732,18 @@ void QucsTranscalc::updateSelection () {
 
 /* The function creates the property items for the given category of
    transmission line parameters. */
-void QucsTranscalc::createPropItems (Q3HGroupBox * parent, int box) {
+void QucsTranscalc::createPropItems (QGroupBox *parent, int box) {
   struct TransValue * val, * dup;
   int last = 0, idx = getTypeIndex ();
   val = TransLineTypes[idx].array[box].item;
 
-  Q3VBox *rows[4];
-  Q3ButtonGroup * group = new Q3ButtonGroup();
-  connect(group, SIGNAL(pressed(int)), SLOT(slotRadioChecked(int)));
-  rows[0] = new Q3VBox (parent);
-  rows[1] = new Q3VBox (parent);
-  rows[2] = new Q3VBox (parent);
-  rows[3] = new Q3VBox (parent);
+  QGridLayout *boxGrid = new QGridLayout();
 
-  parent->layout()->setSpacing (2);
-  rows[0]->setSpacing (2);
-  rows[1]->setSpacing (2);
-  rows[2]->setSpacing (2);
-  rows[3]->setSpacing (2);
+  QButtonGroup * group = new QButtonGroup();
+  connect(group, SIGNAL(buttonPressed(int)), SLOT(slotRadioChecked(int)));
+
+  boxGrid->setSpacing(2);
+  parent->setLayout(boxGrid);
 
   // go through each parameter category
   for (int i = 0; i < TransMaxBox[box]; i++) {
@@ -745,16 +755,18 @@ void QucsTranscalc::createPropItems (Q3HGroupBox * parent, int box) {
       val->tip = NULL;
       val->units[0] = NULL;
     }
-    createPropItem (rows, val, box, group);
+
+    createPropItem (boxGrid, val, box, group);
+
     // publish the newly created widgets to the other transmission lines
     for (int _mode = 0; _mode < MAX_TRANS_TYPES; _mode++) {
       if (idx != _mode) {
-	dup = & TransLineTypes[_mode].array[box].item[i];
-	dup->label = val->label;
-	dup->lineedit = val->lineedit;
-	dup->combobox = val->combobox;
-	dup->radio = val->radio;
-	dup->stack = val->stack;
+    dup = & TransLineTypes[_mode].array[box].item[i];
+    dup->label = val->label;
+    dup->lineedit = val->lineedit;
+    dup->combobox = val->combobox;
+    dup->radio = val->radio;
+    //dup->value = val->value;
       }
     }
     val++;
@@ -762,12 +774,14 @@ void QucsTranscalc::createPropItems (Q3HGroupBox * parent, int box) {
 }
 
 /* Creates a single result item. */
-void QucsTranscalc::createResultItem (Q3VBox ** parentRows, TransResult * res) {
-  QLabel * n =
-      new QLabel (res->name ? *(res->name) + ":" : QString(), parentRows[0]);
+void QucsTranscalc::createResultItem (QGridLayout * parentGrid, TransResult * res) {
+  QLabel * n = new QLabel (res->name ? *(res->name) + ":" : QString());
+  parentGrid->addWidget(n, parentGrid->count(),0,1,1);
   n->setAlignment (Qt::AlignRight);
   res->label = n;
-  QLabel * v = new QLabel (parentRows[1]);
+
+  QLabel * v = new QLabel ();
+  parentGrid->addWidget(v, parentGrid->count()-1,1,1,1);
   v->setAlignment (Qt::AlignLeft);
   res->value = v;
   if (!res->name) {
@@ -789,26 +803,23 @@ void QucsTranscalc::updateResultItem (TransResult * res) {
 }
 
 /* Creates all the result items. */
-void QucsTranscalc::createResultItems (Q3HGroupBox * parent) {
+void QucsTranscalc::createResultItems (QGroupBox * parent) {
   struct TransResult * res, * dup;
   int idx = getTypeIndex ();
   res = & TransLineTypes[idx].result[0];
 
-  Q3VBox *rows[2];
-  rows[0] = new Q3VBox (parent);
-  rows[1] = new Q3VBox (parent);
+  QGridLayout *boxGrid = new QGridLayout();
 
-  parent->layout()->setSpacing (2);
-  rows[0]->setSpacing (2);
-  rows[1]->setSpacing (2);
+  boxGrid->setSpacing(2);
+  parent->setLayout(boxGrid);
 
   for (int i = 0; i < MAX_TRANS_RESULTS; i++) {
-    createResultItem (rows, res);
+    createResultItem (boxGrid, res);
     for (int _mode = 0; _mode < MAX_TRANS_TYPES; _mode++) {
       if (idx != _mode) {
-	dup = & TransLineTypes[_mode].result[i];
-	dup->label = res->label;
-	dup->value = res->value;
+    dup = & TransLineTypes[_mode].result[i];
+    dup->label = res->label;
+    dup->value = res->value;
       }
     }
     res++;
@@ -880,14 +891,14 @@ void QucsTranscalc::setUnit (QString prop, const char * unit) {
   struct TransValue * val = findProperty (prop);
   if (val) {
     if (!unit) {
-      val->combobox->setCurrentItem (0);
+      val->combobox->setCurrentIndex (0);
       val->unit = 0;
     }
     else for (int i = 0; val->units[i]; i++) {
       if (!strcmp (unit, val->units[i])) {
-	val->combobox->setCurrentItem (i);
-	val->unit = i;
-	break;
+    val->combobox->setCurrentIndex (i);
+    val->unit = i;
+    break;
       }
     }
   }
@@ -900,8 +911,8 @@ char * QucsTranscalc::getUnit (QString prop) {
     QString str = val->combobox->currentText ();
     for (int i = 0; val->units[i]; i++) {
       if (str == val->units[i]) {
-	val->unit = i;
-	return (char *) val->units[i];
+    val->unit = i;
+    return (char *) val->units[i];
       }
     }
   }
@@ -914,7 +925,7 @@ bool QucsTranscalc::isSelected (QString prop) {
   if (val) {
     if (val->radio)
       if (val->radio->isChecked ()) {
-	return true;
+    return true;
       }
   }
   return false;
@@ -943,7 +954,7 @@ void QucsTranscalc::slotQuit()
   tmp = height();	// will not be recognized (a X11 problem).
 
   storeValues ();
-  accept();
+  qApp->quit();
 }
 
 void QucsTranscalc::closeEvent(QCloseEvent *Event)
@@ -960,29 +971,28 @@ void QucsTranscalc::closeEvent(QCloseEvent *Event)
 
 void QucsTranscalc::slotSelectType (int Type)
 {
-  pix->setPixmap (QPixmap (QImage (
-       QucsSettings.BitmapDir + QString(TransLineTypes[Type].bitmap))));
+  pix->setPixmap(QPixmap(QucsSettings.BitmapDir + QString(TransLineTypes[Type].bitmap)));
   setMode (Type);
-  statBar->message(tr("Ready."));
+  statusBar()->showMessage(tr("Ready."));
 }
 
 void QucsTranscalc::slotAnalyze()
 {
   if (TransLineTypes[getTypeIndex()].line)
     TransLineTypes[getTypeIndex()].line->analyze();
-  statBar->message(tr("Values are consistent."));
+  statusBar()->showMessage(tr("Values are consistent."));
 }
 
 void QucsTranscalc::slotSynthesize()
 {
   if (TransLineTypes[getTypeIndex()].line)
     TransLineTypes[getTypeIndex()].line->synthesize();
-  statBar->message(tr("Values are consistent."));
+  statusBar()->showMessage(tr("Values are consistent."));
 }
 
 void QucsTranscalc::slotValueChanged()
 {
-  statBar->message(tr("Values are inconsistent."));
+  statusBar()->showMessage(tr("Values are inconsistent."));
 }
 
 // Load transmission line values from the given file.
@@ -990,7 +1000,7 @@ bool QucsTranscalc::loadFile(QString fname, int * _mode) {
   QFile file(QDir::convertSeparators (fname));
   if(!file.open(QIODevice::ReadOnly)) return false; // file doesn't exist
 
-  Q3TextStream stream(&file);
+  QTextStream stream(&file);
   QString Line, Name, Unit;
   double Value;
 
@@ -999,25 +1009,25 @@ bool QucsTranscalc::loadFile(QString fname, int * _mode) {
     Line = stream.readLine();
     for (int i = 0; i < MAX_TRANS_TYPES; i++) {
       if (Line == "<" + QString(TransLineTypes[i].description) + ">") {
-	if (_mode) {
-	  *_mode = TransLineTypes[i].type;
-	  setMode (*_mode);
-	  updatePixmap (mode);
-	} else {
-	  mode = TransLineTypes[i].type;
-	}
-	while(!stream.atEnd()) {
-	  Line = stream.readLine();
-	  if (Line == "</" + QString(TransLineTypes[i].description) + ">")
-	    break;
-	  Line = Line.simplifyWhiteSpace();
-	  Name = Line.section(' ',0,0);
-	  Value = Line.section(' ',1,1).toDouble();
-	  Unit = Line.section(' ',2,2);
-	  setProperty (Name, Value);
-	  setUnit (Name, Unit);
-	}
-	break;
+    if (_mode) {
+      *_mode = TransLineTypes[i].type;
+      setMode (*_mode);
+      updatePixmap (mode);
+    } else {
+      mode = TransLineTypes[i].type;
+    }
+    while(!stream.atEnd()) {
+      Line = stream.readLine();
+      if (Line == "</" + QString(TransLineTypes[i].description) + ">")
+        break;
+      Line = Line.simplified();
+      Name = Line.section(' ',0,0);
+      Value = Line.section(' ',1,1).toDouble();
+      Unit = Line.section(' ',2,2);
+      setProperty (Name, Value);
+      setUnit (Name, Unit.toAscii());
+    }
+    break;
       }
     }
   }
@@ -1031,14 +1041,14 @@ bool QucsTranscalc::loadFile(QString fname, int * _mode) {
 bool QucsTranscalc::saveFile(QString fname) {
   QFile file (QDir::convertSeparators (fname));
   if(!file.open (QIODevice::WriteOnly)) return false; // file not writable
-  Q3TextStream stream (&file);
+  QTextStream stream (&file);
 
   // some lines of documentation
   stream << "# QucsTranscalc " << PACKAGE_VERSION << "  " << fname << "\n";
   stream << "#   Generated on " << QDate::currentDate().toString()
-	 << " at " << QTime::currentTime().toString() << ".\n";
+     << " at " << QTime::currentTime().toString() << ".\n";
   stream << "#   It is not suggested to edit the file, use QucsTranscalc "
-	 << "instead.\n\n";
+     << "instead.\n\n";
 
   storeValues ();
   saveMode (stream);
@@ -1048,7 +1058,7 @@ bool QucsTranscalc::saveFile(QString fname) {
 
 /* Writes the transmission line values for the current modes into the
    given stream. */
-void QucsTranscalc::saveMode(Q3TextStream& stream) {
+void QucsTranscalc::saveMode(QTextStream& stream) {
   struct TransType * t = &TransLineTypes[getTypeIndex ()];
   struct TransValue * val = NULL;
   stream << "<" << t->description << ">\n";
@@ -1056,7 +1066,7 @@ void QucsTranscalc::saveMode(Q3TextStream& stream) {
     val = t->array[box].item;
     while (val->name) {
       stream << "  " << val->name << " " << val->value << " "
-	     << val->units[val->unit] << "\n";
+         << val->units[val->unit] << "\n";
       val++;
     }
   }
@@ -1064,7 +1074,7 @@ void QucsTranscalc::saveMode(Q3TextStream& stream) {
 }
 
 // Writes the transmission line values for all modes into the given stream.
-void QucsTranscalc::saveModes(Q3TextStream& stream) {
+void QucsTranscalc::saveModes(QTextStream& stream) {
   int oldmode = mode;
   for (int i = 0; i < MAX_TRANS_TYPES; i++) {
     mode = TransLineTypes[i].type;
@@ -1084,13 +1094,13 @@ void QucsTranscalc::storeValues (void) {
       getProperty (val->name);
       getUnit (val->name);
       if (box == TRANS_PHYSICAL) {
-	if (val->radio->isEnabled()) {
-	  if (val->radio->isChecked())
-	    t->radio[i] = 1;
-	  else
-	    t->radio[i] = 0;
-	}
-	else t->radio[i] = -1;
+    if (val->radio->isEnabled()) {
+      if (val->radio->isChecked())
+        t->radio[i] = 1;
+      else
+        t->radio[i] = 0;
+    }
+    else t->radio[i] = -1;
       }
       i++;
       val++;
@@ -1100,38 +1110,40 @@ void QucsTranscalc::storeValues (void) {
 
 void QucsTranscalc::slotFileLoad()
 {
-  statBar->message(tr("Loading file..."));
+  statusBar()->showMessage(tr("Loading file..."));
   int _mode = 0;
-  QString s = Q3FileDialog::getOpenFileName(QucsWorkDir.path(),
-   tr("Transcalc File")+" (*.trc)", this, "", tr("Enter a Filename"));
+  QString s = QFileDialog::getOpenFileName(this, tr("Enter a Filename"),
+                           QucsWorkDir.path(),
+                           tr("Transcalc File") + " (*.trc)");
   if (!s.isEmpty())  {
-    QucsWorkDir.setPath(QDir::cleanDirPath(s));
+    QucsWorkDir.setPath(QDir::cleanPath(s));
     if (!loadFile (s, &_mode)) {
       QMessageBox::critical (this, tr("Error"),
-			     tr("Cannot load file:")+" '"+s+"'!");
+                 tr("Cannot load file:")+" '"+s+"'!");
     }
   }
-  else statBar->message(tr("Loading aborted."), 2000);
+  else statusBar()->showMessage(tr("Loading aborted."), 2000);
 
-  statBar->message(tr("Ready."));
+  statusBar()->showMessage(tr("Ready."));
 }
 
 void QucsTranscalc::slotFileSave()
 {
-  statBar->message(tr("Saving file..."));
+  statusBar()->showMessage(tr("Saving file..."));
 
-  QString s = Q3FileDialog::getSaveFileName(QucsWorkDir.path(),
-   tr("Transcalc File")+" (*.trc)", this, "", tr("Enter a Filename"));
+  QString s = QFileDialog::getSaveFileName(this, tr("Enter a Filename"),
+                           QucsWorkDir.path(),
+                           tr("Transcalc File") + " (*.trc)");
   if (!s.isEmpty())  {
-    QucsWorkDir.setPath(QDir::cleanDirPath(s));
+    QucsWorkDir.setPath(QDir::cleanPath(s));
     if (!saveFile (s)) {
       QMessageBox::critical (this, tr("Error"),
-			     tr("Cannot save file:")+" '"+s+"'!");
+                 tr("Cannot save file:")+" '"+s+"'!");
     }
   }
-  else statBar->message(tr("Saving aborted."), 2000);
+  else statusBar()->showMessage(tr("Saving aborted."), 2000);
 
-  statBar->message(tr("Ready."));
+  statusBar()->showMessage(tr("Ready."));
 }
 
 // Returns the current textual mode.
@@ -1152,9 +1164,8 @@ void QucsTranscalc::setMode (QString _mode) {
 
 // Updates the combobox and pixmap for the current mode.
 void QucsTranscalc::updatePixmap (int _mode) {
-  pix->setPixmap (QPixmap (QImage (
-       QucsSettings.BitmapDir + QString(TransLineTypes[_mode].bitmap))));
-  tranType->setCurrentItem(_mode);
+  pix->setPixmap(QPixmap(QucsSettings.BitmapDir + QString(TransLineTypes[_mode].bitmap)));
+  tranType->setCurrentIndex(_mode);
 }
 
 void QucsTranscalc::slotHelpIntro()
@@ -1185,7 +1196,7 @@ void QucsTranscalc::slotRadioChecked(int id)
     if (TransLineTypes[idx].radio[i] != -1) {
       TransLineTypes[idx].radio[i] = 0;
       if (i == id) {
-	TransLineTypes[idx].radio[i] = 1;
+    TransLineTypes[idx].radio[i] = 1;
       }
     }
   }
@@ -1216,20 +1227,20 @@ void QucsTranscalc::slotCopyToClipBoard()
     double freq = l->getProperty("Freq", UNIT_FREQ, FREQ_GHZ);
     if (freq > 0)
       s += QString("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
-	arg(freq / 10).arg(freq * 10);
+    arg(freq / 10).arg(freq * 10);
     else
       s += "\"lin\" 1 \"0 GHz\" 1 \"10 GHz\" 1 ";
     s += "\"51\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
     s += QString("  <MLIN MSTC1 1 180 100 -26 15 0 0 \"SubstTC1\" 1 \"%1 mm\" 1 \"%2 mm\" 1 \"Hammerstad\" 0 \"Kirschning\" 0 \"26.85\" 0>\n").
       arg(l->getProperty("W", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("L", UNIT_LENGTH, LENGTH_MM));
-    s += "  <Eqn EqnTC1 1 240 260 -23 12 0 0 \"A=twoport(S,'S','A')\" 1 \"ZL=real(sqrt(A[1,2]/A[2,1]))\" 1 \"yes\" 0>\n"; 
+    s += "  <Eqn EqnTC1 1 240 260 -23 12 0 0 \"A=twoport(S,'S','A')\" 1 \"ZL=real(sqrt(A[1,2]/A[2,1]))\" 1 \"yes\" 0>\n";
     s += "</Components>\n";
     s += "<Wires>\n";
     s += "  <90 100 150 100 \"\" 0 0 0 \"\">\n";
     s += "  <90 100 90 120 \"\" 0 0 0 \"\">\n";
     s += "  <210 100 270 100 \"\" 0 0 0 \"\">\n";
-    s += "  <270 100 270 120 \"\" 0 0 0 \"\">\n";
+//    s += "  <270 100 270 120 \"\" 0 0 0 \"\">\n";
     s += "</Wires>\n";
     created++;
   }
@@ -1257,7 +1268,7 @@ void QucsTranscalc::slotCopyToClipBoard()
     double freq = l->getProperty("Freq", UNIT_FREQ, FREQ_GHZ);
     if (freq > 0)
       s += QString("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
-	arg(freq / 10).arg(freq * 10);
+    arg(freq / 10).arg(freq * 10);
     else
       s += "\"lin\" 1 \"0 GHz\" 1 \"10 GHz\" 1 ";
     s += "\"51\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
@@ -1291,7 +1302,7 @@ void QucsTranscalc::slotCopyToClipBoard()
     double freq = l->getProperty("Freq", UNIT_FREQ, FREQ_GHZ);
     if (freq > 0)
       s += QString("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
-	arg(freq / 10).arg(freq * 10);
+    arg(freq / 10).arg(freq * 10);
     else
       s += "\"lin\" 1 \"0 GHz\" 1 \"10 GHz\" 1 ";
     s += "\"51\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
@@ -1331,7 +1342,7 @@ void QucsTranscalc::slotCopyToClipBoard()
     double freq = l->getProperty("Freq", UNIT_FREQ, FREQ_GHZ);
     if (freq > 0)
       s += QString("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
-	arg(freq / 10).arg(freq * 10);
+    arg(freq / 10).arg(freq * 10);
     else
       s += "\"lin\" 1 \"0 GHz\" 1 \"10 GHz\" 1 ";
     s += "\"51\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
@@ -1339,7 +1350,7 @@ void QucsTranscalc::slotCopyToClipBoard()
       arg(l->getProperty("W", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("S", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("L", UNIT_LENGTH, LENGTH_MM));
-    s += "  <Eqn EqnTC1 1 240 260 -23 12 0 0 \"A=twoport(S,'S','A')\" 1 \"ZL=real(sqrt(A[1,2]/A[2,1]))\" 1 \"yes\" 0>\n"; 
+    s += "  <Eqn EqnTC1 1 240 260 -23 12 0 0 \"A=twoport(S,'S','A')\" 1 \"ZL=real(sqrt(A[1,2]/A[2,1]))\" 1 \"yes\" 0>\n";
     s += "</Components>\n";
     s += "<Wires>\n";
     s += "  <90 100 150 100 \"\" 0 0 0 \"\">\n";
@@ -1368,7 +1379,7 @@ void QucsTranscalc::slotCopyToClipBoard()
     double freq = l->getProperty("Freq", UNIT_FREQ, FREQ_GHZ);
     if (freq > 0)
       s += QString("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
-	arg(freq / 10).arg(freq * 10);
+    arg(freq / 10).arg(freq * 10);
     else
       s += "\"lin\" 1 \"0 GHz\" 1 \"10 GHz\" 1 ";
     s += "\"51\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
@@ -1376,7 +1387,7 @@ void QucsTranscalc::slotCopyToClipBoard()
       arg(l->getProperty("W", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("S", UNIT_LENGTH, LENGTH_MM)).
       arg(l->getProperty("L", UNIT_LENGTH, LENGTH_MM));
-    s += "  <Eqn EqnTC1 1 240 260 -23 12 0 0 \"A=twoport(S,'S','A')\" 1 \"ZL=real(sqrt(A[1,2]/A[2,1]))\" 1 \"yes\" 0>\n"; 
+    s += "  <Eqn EqnTC1 1 240 260 -23 12 0 0 \"A=twoport(S,'S','A')\" 1 \"ZL=real(sqrt(A[1,2]/A[2,1]))\" 1 \"yes\" 0>\n";
     s += "</Components>\n";
     s += "<Wires>\n";
     s += "  <90 100 150 100 \"\" 0 0 0 \"\">\n";
@@ -1399,7 +1410,7 @@ void QucsTranscalc::slotCopyToClipBoard()
     double freq = l->getProperty("Freq", UNIT_FREQ, FREQ_GHZ);
     if (freq > 0)
       s += QString("\"log\" 1 \"%1 GHz\" 1 \"%2 GHz\" 1 ").
-	arg(freq / 10).arg(freq * 10);
+    arg(freq / 10).arg(freq * 10);
     else
       s += "\"lin\" 1 \"0 GHz\" 1 \"10 GHz\" 1 ";
     s += "\"51\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
@@ -1411,7 +1422,7 @@ void QucsTranscalc::slotCopyToClipBoard()
       arg(l->getProperty("Mur")).
       arg(l->getProperty("Tand")).
       arg(1 / l->getProperty("Cond"));
-    s += "  <Eqn EqnTC1 1 240 260 -23 12 0 0 \"A=twoport(S,'S','A')\" 1 \"ZL=real(sqrt(A[1,2]/A[2,1]))\" 1 \"yes\" 0>\n"; 
+    s += "  <Eqn EqnTC1 1 240 260 -23 12 0 0 \"A=twoport(S,'S','A')\" 1 \"ZL=real(sqrt(A[1,2]/A[2,1]))\" 1 \"yes\" 0>\n";
     s += "</Components>\n";
     s += "<Wires>\n";
     s += "  <90 100 150 100 \"\" 0 0 0 \"\">\n";
@@ -1428,7 +1439,7 @@ void QucsTranscalc::slotCopyToClipBoard()
 
   // put a message into status line
   if (created)
-    statBar->message(tr("Schematic copied into clipboard."), 2000);
+    statusBar()->showMessage(tr("Schematic copied into clipboard."), 2000);
   else
-    statBar->message(tr("Transmission line type not available."), 2000);
+    statusBar()->showMessage(tr("Transmission line type not available."), 2000);
 }

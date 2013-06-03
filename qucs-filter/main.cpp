@@ -21,15 +21,15 @@
 
 #include <stdlib.h>
 
-#include <qapplication.h>
-#include <qstring.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qfile.h>
-#include <q3textstream.h>
-#include <qmessagebox.h>
-#include <qdir.h>
-#include <qfont.h>
+#include <QApplication>
+#include <QString>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QFile>
+#include <QTextStream>
+#include <QMessageBox>
+#include <QDir>
+#include <QFont>
 
 #include "qucsfilter.h"
 
@@ -41,11 +41,11 @@ bool loadSettings()
 {
   bool result = true;
 
-  QFile file(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/filterrc"));
+  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/filterrc"));
   if(!file.open(QIODevice::ReadOnly))
     result = false; // settings file doesn't exist
   else {
-    Q3TextStream stream(&file);
+    QTextStream stream(&file);
     QString Line, Setting;
     while(!stream.atEnd()) {
       Line = stream.readLine();
@@ -60,16 +60,16 @@ bool loadSettings()
     file.close();
   }
 
-  file.setName(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/qucsrc"));
+  file.setFileName(QDir::homePath()+QDir::convertSeparators ("/.qucs/qucsrc"));
   if(!file.open(QIODevice::ReadOnly))
     result = true; // qucs settings not necessary
   else {
-    Q3TextStream stream(&file);
+    QTextStream stream(&file);
     QString Line, Setting;
     while(!stream.atEnd()) {
       Line = stream.readLine();
       Setting = Line.section('=',0,0);
-      Line = Line.section('=',1,1).stripWhiteSpace();
+      Line = Line.section('=',1,1).trimmed();
       if(Setting == "Font")
 	QucsSettings.font.fromString(Line);
       else if(Setting == "Language")
@@ -89,7 +89,7 @@ bool saveApplSettings(QucsFilter *qucs)
       return true;   // nothing has changed
 
 
-  QFile file(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs/filterrc"));
+  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/filterrc"));
   if(!file.open(QIODevice::WriteOnly)) {
     QMessageBox::warning(0, QObject::tr("Warning"),
 			QObject::tr("Cannot save settings !"));
@@ -97,7 +97,7 @@ bool saveApplSettings(QucsFilter *qucs)
   }
 
   QString Line;
-  Q3TextStream stream(&file);
+  QTextStream stream(&file);
 
   stream << "Settings file, Qucs Filter " PACKAGE_VERSION "\n"
 	 << "FilterWindow=" << qucs->x() << ',' << qucs->y() << '\n';
@@ -142,12 +142,12 @@ int main(int argc, char *argv[])
   QTranslator tor( 0 );
   QString lang = QucsSettings.Language;
   if(lang.isEmpty())
-    lang = QTextCodec::locale();
+    lang = QString(QLocale::system().name());
   tor.load( QString("qucs_") + lang, QucsSettings.LangDir);
   a.installTranslator( &tor );
 
   QucsFilter *qucs = new QucsFilter();
-  a.setMainWidget(qucs);
+  qucs->raise();
   qucs->move(QucsSettings.x, QucsSettings.y);  // position before "show" !!!
   qucs->show();
   int result = a.exec();

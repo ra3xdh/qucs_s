@@ -14,7 +14,7 @@
 #ifndef QUCSATTENUATOR_H
 #define QUCSATTENUATOR_H
 
-#include <QDialog>
+#include <QMainWindow>
 #include <QLabel>
 
 #include "attenuatorfunc.h"
@@ -37,7 +37,7 @@ struct tQucsSettings
 
 extern struct tQucsSettings QucsSettings;
 
-class QucsAttenuator : public QDialog
+class QucsAttenuator : public QMainWindow
 {
  Q_OBJECT
  public:
@@ -62,7 +62,6 @@ class QucsAttenuator : public QDialog
   QLineEdit *lineEdit_Attvalue, *lineEdit_Zin, *lineEdit_Zout;
   QLineEdit *lineEdit_R1, *lineEdit_R2, *lineEdit_R3, *lineEdit_Results;
   QPushButton *Calculate;
-  QIntValidator *IntVal;
   QDoubleValidator *DoubleVal;
 
 };

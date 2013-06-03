@@ -20,28 +20,26 @@
 #include "schematic.h"
 #include "components/component.h"
 
-#include <qlabel.h>
-#include <qlayout.h>
-#include <q3hbox.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qvalidator.h>
-#include <qpushbutton.h>
-#include <q3scrollview.h>
-#include <q3vbox.h>
-#include <qcheckbox.h>
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
-#include <Q3PtrList>
-#include <Q3VBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QValidator>
+#include <QPushButton>
+#include <QScrollArea>
+#include <QCheckBox>
+#include <QMessageBox>
+#include <QGridLayout>
+#include <QList>
+#include <QListIterator>
+#include <QVBoxLayout>
+#include <QDebug>
 
 
 ChangeDialog::ChangeDialog(Schematic *Doc_)
-			: QDialog(Doc_, 0, TRUE, Qt::WDestructiveClose)
+			: QDialog(Doc_) //, 0, TRUE, Qt::WDestructiveClose)
 {
   Doc = Doc_;
-  setCaption(tr("Change Component Properties"));
+  setWindowTitle(tr("Change Component Properties"));
 
   Expr.setPattern("[^\"=]+");  // valid expression for property value
   Validator = new QRegExpValidator(Expr, this);
@@ -50,7 +48,7 @@ ChangeDialog::ChangeDialog(Schematic *Doc_)
 
 
   // ...........................................................
-  all = new Q3GridLayout(this, 6,2,3,3);
+  all = new QGridLayout(this);//, 6,2,3,3);
   all->setMargin(5);
 
   all->addWidget(new QLabel(tr("Components:"), this), 0,0);
@@ -67,7 +65,7 @@ ChangeDialog::ChangeDialog(Schematic *Doc_)
   CompNameEdit->setValidator(Validator);
   CompNameEdit->setText("*");
   all->addWidget(CompNameEdit, 1,1);
-//  connect(CompNameEdit, SIGNAL(returnPressed()), SLOT(slotButtReplace()));
+  connect(CompNameEdit, SIGNAL(returnPressed()), SLOT(slotButtReplace()));
 
   all->addWidget(new QLabel(tr("Property Name:"), this), 2,0);
   PropNameEdit = new QComboBox(this);
@@ -77,24 +75,22 @@ ChangeDialog::ChangeDialog(Schematic *Doc_)
   PropNameEdit->insertItem("Subst");
   PropNameEdit->insertItem("Model");
   all->addWidget(PropNameEdit, 2,1);
-//  connect(PropNameEdit, SIGNAL(activated(int)), SLOT(slotButtReplace()));
+  connect(PropNameEdit, SIGNAL(activated(int)), SLOT(slotButtReplace()));
 
   all->addWidget(new QLabel(tr("New Value:"), this), 3,0);
   NewValueEdit = new QLineEdit(this);
   NewValueEdit->setValidator(Validator);
   NewValueEdit->setText("-273.15");
   all->addWidget(NewValueEdit, 3,1);
-//  connect(NewValueEdit, SIGNAL(returnPressed()), SLOT(slotButtReplace()));
+  connect(NewValueEdit, SIGNAL(returnPressed()), SLOT(slotButtReplace()));
 
   // ...........................................................
-  Q3HBox *h0 = new Q3HBox(this);
-  h0->setSpacing(5);
-  all->setRowStretch(4,5);
-  all->addMultiCellWidget(h0, 5,5, 0,1);
-  connect(new QPushButton(tr("Replace"),h0), SIGNAL(clicked()),
-	  SLOT(slotButtReplace()));
-  connect(new QPushButton(tr("Cancel"),h0), SIGNAL(clicked()),
-	  SLOT(reject()));
+  QPushButton *pushReplace = new QPushButton(tr("Replace"));
+  QPushButton *pushCancel = new QPushButton(tr("Cancel"));
+  all->addWidget(pushReplace, 4,0);
+  all->addWidget(pushCancel, 4,1);
+  connect(pushReplace, SIGNAL(clicked()), SLOT(slotButtReplace()));
+  connect(pushCancel, SIGNAL(clicked()), SLOT(reject()));
 }
 
 ChangeDialog::~ChangeDialog()
@@ -134,39 +130,41 @@ void ChangeDialog::slotButtReplace()
 {
   Expr.setWildcard(true);  // switch into wildcard mode
   Expr.setPattern(CompNameEdit->text());
-/*  if(!Expr.isValid()) {
+  if(!Expr.isValid()) {
     QMessageBox::critical(this, tr("Error"),
 	  tr("Regular expression for component name is invalid."));
     return;
-  }*/
-
+  }
 
   // create dialog showing all found components
   QDialog *Dia = new QDialog(this);
   Dia->setCaption(tr("Found Components"));
-  Q3VBoxLayout *Dia_All = new Q3VBoxLayout(Dia);
+  QVBoxLayout *Dia_All = new QVBoxLayout(Dia);
   Dia_All->setSpacing(3);
   Dia_All->setMargin(5);
-  Q3ScrollView *Dia_Scroll = new Q3ScrollView(Dia);
-  Dia_Scroll->setMargin(5);
+  
+  QScrollArea *Dia_Scroll = new QScrollArea(Dia);
+  //Dia_Scroll->setMargin(5);
   Dia_All->addWidget(Dia_Scroll);
-  Q3VBox *Dia_Box = new Q3VBox(Dia_Scroll->viewport());
-  Dia_Scroll->addChild(Dia_Box);
+  
+  QVBoxLayout *Dia_Box = new QVBoxLayout(Dia_Scroll->viewport());
+  Dia_Scroll->insertChild(Dia_Box);
   QLabel *Dia_Label = new QLabel(tr("Change properties of\n")
                                + tr("these components ?"), Dia);
   Dia_All->addWidget(Dia_Label);
   
-  Q3HBox *Dia_h = new Q3HBox(Dia);
+  QHBoxLayout *Dia_h = new QHBoxLayout(Dia);
   Dia_h->setSpacing(5);
-  Dia_All->addWidget(Dia_h);
-  QPushButton *YesButton = new QPushButton(tr("Yes"), Dia_h);
-  connect(YesButton, SIGNAL(clicked()),
-	  Dia, SLOT(accept()));
-  connect(new QPushButton(tr("Cancel"), Dia_h), SIGNAL(clicked()),
-	  Dia, SLOT(reject()));
+  QPushButton *YesButton = new QPushButton(tr("Yes"));
+  QPushButton *CancelButton = new QPushButton(tr("Cancel"));
+  Dia_h->addWidget(YesButton);
+  Dia_h->addWidget(CancelButton);
+  connect(YesButton, SIGNAL(clicked()), Dia, SLOT(accept()));
+  connect(CancelButton, SIGNAL(clicked()), Dia, SLOT(reject()));
+  
+  Dia_All->addLayout(Dia_h);
 
-
-  Q3PtrList<QCheckBox> pList;
+  QList<QCheckBox *> pList;
   QCheckBox *pb;
   Component *pc;
   QStringList List;
@@ -178,7 +176,8 @@ void ChangeDialog::slotButtReplace()
       if(Expr.search(pc->Name) >= 0)
         for(Property *pp = pc->Props.first(); pp!=0; pp = pc->Props.next())
           if(pp->Name == PropNameEdit->currentText()) {
-            pb = new QCheckBox(pc->Name, Dia_Box);
+            pb = new QCheckBox(pc->Name);
+            Dia_Box->addWidget(pb);   
             pList.append(pb);
             pb->setChecked(true);
             i1 = pp->Description.find('[');
@@ -198,7 +197,7 @@ void ChangeDialog::slotButtReplace()
           }
     }
   }
-
+/*
   QColor theColor;
   if(pList.isEmpty()) {
     YesButton->setEnabled(false);
@@ -206,8 +205,8 @@ void ChangeDialog::slotButtReplace()
        (new QLabel(tr("No match found!"), Dia_Box))->paletteBackgroundColor();
   }
   else  theColor = pList.current()->paletteBackgroundColor();
-
-  Dia_Scroll->viewport()->setPaletteBackgroundColor(theColor);
+*/
+  //Dia_Scroll->viewport()->setPaletteBackgroundColor(theColor);
   Dia->resize(50, 300);
 
 
@@ -218,7 +217,10 @@ void ChangeDialog::slotButtReplace()
 
   bool changed = false;
   // change property values
-  for(pb = pList.first(); pb!=0; pb = pList.next()) {
+  
+  QListIterator<QCheckBox *> i(pList);
+  while(i.hasNext()){
+    pb = i.next();
     if(!pb->isChecked())  continue;
 
     for(pc = Doc->Components->first(); pc!=0; pc = Doc->Components->next()) {

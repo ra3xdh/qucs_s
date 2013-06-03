@@ -1366,7 +1366,7 @@ int NumPorts)
       for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
         if(pc->Model != "Eqn") {
           s = pc->get_Verilog_Code(NumPorts);
-          if(s.at(0) == '§') {
+          if(s.at(0) == '\x00A7') {  //paragraph symbol
             ErrText->insert(s.mid(1));
           }
           else (*tstream) << s;
@@ -1433,7 +1433,7 @@ int NumPorts)
       for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
         if(pc->Model != "Eqn") {
             s = pc->get_VHDL_Code(NumPorts);
-            if(s.at(0) == '§') {
+            if(s.at(0) == '\x00A7') {  //paragraph symbol
               ErrText->insert(s.mid(1));
           }
           else (*tstream) << s;
@@ -1648,7 +1648,7 @@ QString Schematic::createNetlist(Q3TextStream& stream, int NumPorts)
       } else {
 	s = pc->get_VHDL_Code(NumPorts);
       }
-      if(s.at(0) == '§') return s;   // return error
+      if(s.at(0) == '\x00A7') return s;   // return error
     }
     stream << s;
   }

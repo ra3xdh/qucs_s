@@ -18,33 +18,33 @@
 #ifndef LIBRARYDIALOG_H
 #define LIBRARYDIALOG_H
 
-#include <qregexp.h>
-#include <q3ptrlist.h>
-#include <qstringlist.h>
-#include <q3textstream.h>
-#include <qdialog.h>
-#include <qfile.h>
-#include <qdir.h>
-#include <qcheckbox.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QRegExp>
+
+#include <QList>
+#include <QStringList>
+#include <QTextStream>
+#include <QDialog>
+#include <QFile>
+#include <QDir>
+#include <QCheckBox>
+#include <QVBoxLayout>
 #include <QLabel>
 
 class QLabel;
 class QucsApp;
 class QLineEdit;
-class Q3TextEdit;
+class QTextEdit;
 class QPushButton;
-class Q3VBoxLayout;
-class Q3ListViewItem;
-class Q3VButtonGroup;
+class QVBoxLayout;
+class QTreeWidgetItem;
+class QGroupBox;
 class QRegExpValidator;
 
 
 class LibraryDialog : public QDialog {
    Q_OBJECT
 public:
-  LibraryDialog(QucsApp*, Q3ListViewItem*);
+  LibraryDialog(QucsApp*, QTreeWidgetItem*);  
  ~LibraryDialog();
 
 private slots:
@@ -54,17 +54,18 @@ private slots:
   void slotSelectAll();
 
 private:
-  void intoStream(Q3TextStream&, QString&, const char*);
+  void intoStream(QTextStream&, QString&, const char*);
   int intoFile(QString&, QString&,  QStringList&);
 
 private:
-  Q3VBoxLayout *all;   // the mother of all widgets
+  QVBoxLayout *all;   // the mother of all widgets
   QLabel *theLabel;
   QLineEdit *NameEdit;
-  Q3TextEdit *ErrText;
-  Q3VButtonGroup *Group;
+  QTextEdit *ErrText;
+  QGroupBox *Group;
   QPushButton *ButtCreate, *ButtCancel, *ButtSelectAll, *ButtSelectNone;
-  Q3PtrList<QCheckBox> BoxList;
+  //Q3PtrList<QCheckBox> BoxList;
+  QList<QCheckBox *> BoxList;
   QStringList Descriptions;
 
   QucsApp *App;

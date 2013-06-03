@@ -18,16 +18,15 @@
 #ifndef LABELDIALOG_H
 #define LABELDIALOG_H
 
-#include <qdialog.h>
-#include <qregexp.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
+#include <QDialog>
+#include <QRegExp>
+#include <QGridLayout>
 #include <QLabel>
 
 class QLabel;
 class QLineEdit;
 class QPushButton;
-class Q3GridLayout;
+class QGridLayout;
 class QRegExpValidator;
 class WireLabel;
 
@@ -47,7 +46,7 @@ private slots:
 
 private:
   QPushButton *ButtonOk, *ButtonCancel, *ButtonMore;
-  Q3GridLayout *gbox;
+  QGridLayout *gbox;
   QRegExpValidator *Validator1, *Validator2;
   QRegExp      Expr1, Expr2;
   QLabel      *Label2;
