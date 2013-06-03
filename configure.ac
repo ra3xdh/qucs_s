@@ -252,7 +252,7 @@ case $host_os in
     AC_CHECK_HEADERS([QtGui/QtGui QtCore/QtCore QtXml/QtXml],[],[])
 
     AC_LANG(C++)
-    QT_LDFLAGS="$LDFLAGS"
+    QT_LDFLAGS="-Wl -headerpad_max_install_names"
     CXXFLAGS="$CXXFLAGS $QT_CFLAGS $QT_INCLUDES $QT_DEF"
     ;;
 esac
