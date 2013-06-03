@@ -634,11 +634,11 @@ void Schematic::print(QPrinter*, QPainter *Painter, bool printAll, bool fitToPag
     if(pc->isSelected || printAll) {
       selected = pc->isSelected;
       pc->isSelected = false;
-#ifdef __MINGW32__
-      pc->print(&p, 1.0);
-#else
+//#ifdef __MINGW32__
+//      pc->print(&p, 1.0);
+//#else
       pc->print(&p, screenDpiX / printerDpiX);
-#endif
+//#endif
       pc->isSelected = selected;
     }
 
