@@ -18,18 +18,18 @@
 #ifndef SWEEPDIALOG_H
 #define SWEEPDIALOG_H
 
-#include <qdialog.h>
-#include <qregexp.h>
+#include <QDialog>
+#include <QRegExp>
 #include <q3ptrlist.h>
-#include <qspinbox.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
+
+#include <QSpinBox>
+#include <QGridLayout>
 
 #include "node.h"
 
 class Graph;
 class Schematic;
-class Q3GridLayout;
+class QGridLayout;
 
 
 class mySpinBox : public QSpinBox {
@@ -60,7 +60,7 @@ private slots:
 private:
   Graph* setBiasPoints();
 
-  Q3GridLayout *all;   // the mother of all widgets
+  QGridLayout *all;   // the mother of all widgets
   Q3PtrList<mySpinBox> BoxList;
 
   Graph *pGraph;
