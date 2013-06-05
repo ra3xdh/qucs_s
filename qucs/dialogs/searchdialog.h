@@ -18,12 +18,12 @@
 #ifndef SEARCHDIALOG_H
 #define SEARCHDIALOG_H
 
-#include <qdialog.h>
+#include <QDialog>
 
 class QucsApp;
 class QLineEdit;
 class QCheckBox;
-class Q3VGroupBox;
+class QGroupBox;
 class QPushButton;
 
 
@@ -43,7 +43,7 @@ private:
   QucsApp *App;
   QLineEdit *SearchEdit, *ReplaceEdit;
   QCheckBox *PositionBox, *CaseBox, *WordBox, *BackwardBox, *AskBox;
-  Q3VGroupBox *ReplaceGroup;
+  QGroupBox *ReplaceGroup;
 };
 
 #endif
