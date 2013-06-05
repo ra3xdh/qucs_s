@@ -22,24 +22,18 @@
 #include "qucs.h"
 #include "qucsdoc.h"
 
-#include <qvariant.h>
-#include <qlabel.h>
-#include <q3header.h>
-#include <q3listview.h>
-#include <qpushbutton.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <q3whatsthis.h>
-//Added by qt3to4:
-#include <Q3HBoxLayout>
-#include <Q3VBoxLayout>
-#include <Q3PtrList>
+#include <QVariant>
+#include <QLabel>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QDebug>
 
 SaveDialog::SaveDialog( QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
    : QDialog( parent, name, modal, fl ),unsavedDocs()
 {
    if ( !name )
-      setName( "SaveDialog" );
+      setWindowTitle( tr( "Save the modified files" ) );
    app = 0l;
    initDialog();
 }
@@ -56,29 +50,30 @@ void SaveDialog::setApp(QucsApp *a)
 void SaveDialog::initDialog()
 {
    setSizeGripEnabled( FALSE );
-   SaveDialogLayout = new Q3VBoxLayout( this, 11, 6, "SaveDialogLayout"); 
+   SaveDialogLayout = new QVBoxLayout( this, 11, 6, "SaveDialogLayout"); 
 
-   label = new QLabel( this, "label" );
+   label = new QLabel( tr( "Select files to be saved" ) );
    SaveDialogLayout->addWidget( label );
 
-   filesView = new Q3ListView( this, "filesView" );
-   filesView->addColumn( tr( "Modified Files" ) );
-   filesView->header()->setResizeEnabled( FALSE, filesView->header()->count() - 1 );
-   filesView->setItemMargin( 1 );
-   filesView->setResizeMode( Q3ListView::AllColumns );
-   SaveDialogLayout->addWidget( filesView );
+   QGroupBox *group = new QGroupBox( tr( "Modified Files" ) );
+   QVBoxLayout *checkBoxLayout = new QVBoxLayout();
+   group->setLayout(checkBoxLayout);
+   
+   fileView = new QListWidget(this);
+   checkBoxLayout->addWidget(fileView);
+   SaveDialogLayout->addWidget(group);
+   
+   buttonsLayout = new QHBoxLayout( 0, 0, 6, "buttonsLayout"); 
 
-   buttonsLayout = new Q3HBoxLayout( 0, 0, 6, "buttonsLayout"); 
-
-   abortClosingButton = new QPushButton( this, "abortClosingButton" );
+   abortClosingButton = new QPushButton( tr( "Abort Closing" ) );
    buttonsLayout->addWidget( abortClosingButton );
    spacer = new QSpacerItem( 20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
    buttonsLayout->addItem( spacer );
 
-   dontSaveButton = new QPushButton( this, "dontSaveButton" );
+   dontSaveButton = new QPushButton( tr( "Don't Save" ) );
    buttonsLayout->addWidget( dontSaveButton );
 
-   saveSelectedButton = new QPushButton( this, "saveSelectedButton" );
+   saveSelectedButton = new QPushButton( tr( "Save Selected" ) );
    saveSelectedButton->setDefault(true);
    buttonsLayout->addWidget( saveSelectedButton );
    SaveDialogLayout->addLayout( buttonsLayout );
@@ -95,21 +90,12 @@ void SaveDialog::initDialog()
 void SaveDialog::addUnsavedDoc(QucsDoc *doc)
 {
    QString text = (doc->DocName).isEmpty() ? tr("Untitled") : doc->DocName;
-   Q3CheckListItem *item = new Q3CheckListItem(filesView,
-                                             text,
-                                             Q3CheckListItem::CheckBox );
-   item->setOn( true );
-   unsavedDocs.insert( doc, item );
-}
 
-void SaveDialog::languageChange()
-{
-   setCaption( tr( "Save the modified files" ) );
-   label->setText( tr( "Select files to be saved" ) );
-   filesView->header()->setLabel( 0, tr( "Modified Files" ) );
-   abortClosingButton->setText( tr( "Abort Closing" ) );
-   dontSaveButton->setText( tr( "Don't Save" ) );
-   saveSelectedButton->setText( tr( "Save Selected" ) );
+   QListWidgetItem *item = new QListWidgetItem(text, fileView);
+   item->setFlags( item->flags() | Qt::ItemIsUserCheckable );
+   item->setCheckState(Qt::Checked);
+   
+   unsavedDocs.insert(doc, item);
 }
 
 void SaveDialog::dontSaveClicked()
@@ -118,22 +104,22 @@ void SaveDialog::dontSaveClicked()
 }
 
 void SaveDialog::saveSelectedClicked()
-{
-   Q3PtrList<QucsDoc> unsavables;
-   QMap<QucsDoc*,Q3CheckListItem*>::iterator it(unsavedDocs.begin());
+{   
+   QList<QucsDoc*> unsavable;
+   QMap<QucsDoc*,QListWidgetItem*>::iterator it(unsavedDocs.begin());
    for ( ; it != unsavedDocs.end(); ++it)
    {
-      if ( it.data()->isOn() )
+      if ( it.value()->checkState() == Qt::Checked )
       {
          QucsDoc *doc = static_cast<QucsDoc*>(it.key());
          if(app->saveFile(doc) == false)
-            unsavables.append(doc);
+            unsavable.append(doc);
          else
             unsavedDocs.remove(it);
       }
    }
-   if(unsavables.isEmpty())
-      done(SaveSelected);
+   if(unsavable.isEmpty())
+       done(SaveSelected);
 }
 
 void SaveDialog::reject()
