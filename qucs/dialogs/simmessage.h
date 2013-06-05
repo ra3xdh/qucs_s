@@ -19,7 +19,6 @@
 #define SIMMESSAGE_H
 
 #include <QDialog>
-//#include <q3process.h>
 #include <QProcess>
 #include <QStringList>
 #include <QFile>
@@ -28,8 +27,6 @@
 
 class QTextEdit;
 class QTextStream;
-//class Q3TextStream;
-
 class QVBoxLayout;
 class QPushButton;
 class QProgressBar;

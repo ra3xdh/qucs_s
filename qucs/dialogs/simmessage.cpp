@@ -222,7 +222,6 @@ void SimMessage::nextSPICE()
     return;
   }
 
-
   if(makeSubcircuit) {
     Stream << "\n.Def:" << properName(FileName) << " ";
   
@@ -231,7 +230,6 @@ void SimMessage::nextSPICE()
     if(!Line.isEmpty()) Stream << " _ref";
   }
   Stream << "\n";
-
 
   ProgressText = "";
   
