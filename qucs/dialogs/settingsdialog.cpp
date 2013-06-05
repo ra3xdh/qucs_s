@@ -19,70 +19,70 @@
 
 #include "node.h"
 #include "qucs.h"
-//Added by qt3to4:
-#include <Q3GridLayout>
-#include <Q3VBoxLayout>
 #include "mnemo.h"
 #include "schematic.h"
 
-#include <q3hbox.h>
-#include <qlabel.h>
-#include <qwidget.h>
-#include <qlayout.h>
-#include <qregexp.h>
-#include <qlineedit.h>
-#include <q3textedit.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qtabwidget.h>
-#include <qvalidator.h>
-#include <qpushbutton.h>
+#include <QGridLayout>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QWidget>
+#include <QLayout>
+#include <QRegExp>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QTabWidget>
+#include <QValidator>
+#include <QPushButton>
 
 
 SettingsDialog::SettingsDialog(Schematic *Doc_)
-                : QDialog(Doc_, 0, TRUE, Qt::WDestructiveClose)
+                : QDialog(Doc_) //, 0, TRUE, Qt::WDestructiveClose)
 {
   Doc = Doc_;
-  setCaption(tr("Edit File Properties"));
+  setWindowTitle(tr("Edit File Properties"));
 
-  all = new Q3VBoxLayout(this); // to provide the neccessary size
-  QTabWidget *t = new QTabWidget(this);
+  all = new QVBoxLayout(this);
+  QTabWidget *t = new QTabWidget();
   all->addWidget(t);
 
   // ...........................................................
   QWidget *Tab1 = new QWidget(t);
-  Q3GridLayout *gp = new Q3GridLayout(Tab1,6,2,5,5);
-
-  QLabel *l1 = new QLabel(tr("Data Display:"), Tab1);
-  gp->addWidget(l1,1,0);
-  Input_DataDisplay = new QLineEdit(Tab1);
-  gp->addWidget(Input_DataDisplay,1,1);
+  QGridLayout *gp = new QGridLayout(Tab1);
+  Tab1->setLayout(gp);
 
   QLabel *l2 = new QLabel(tr("Data Set:"), Tab1);
   gp->addWidget(l2,0,0);
   Input_DataSet = new QLineEdit(Tab1);
-  gp->addWidget(Input_DataSet,0,1);
+  gp->addWidget(Input_DataSet,0,1,1,1);
+  
+  QLabel *l1 = new QLabel(tr("Data Display:"));
+  gp->addWidget(l1,1,0);
+  Input_DataDisplay = new QLineEdit(Tab1);
+  gp->addWidget(Input_DataDisplay,1,1,1,1);
 
   Check_OpenDpl = new QCheckBox(tr("open data display after simulation"),
 				Tab1);
-  gp->addMultiCellWidget(Check_OpenDpl,2,2,0,1);
+  gp->addWidget(Check_OpenDpl,2,0,1,2);
 
   QLabel *l20 = new QLabel(tr("Octave Script:"), Tab1);
   gp->addWidget(l20,3,0);
   Input_Script = new QLineEdit(Tab1);
-  gp->addWidget(Input_Script,3,1);
+  gp->addWidget(Input_Script,3,1,1,1);
 
   Check_RunScript = new QCheckBox(tr("run script after simulation"),
 				Tab1);
-  gp->addMultiCellWidget(Check_RunScript,4,4,0,1);
+  gp->addWidget(Check_RunScript,4,0,1,2);
 
   t->addTab(Tab1, tr("Simulation"));
 
   // ...........................................................
   QWidget *Tab2 = new QWidget(t);
-  Q3GridLayout *gp2 = new Q3GridLayout(Tab2,4,2,5,5);
-  Check_GridOn = new QCheckBox(tr("show Grid"),Tab2);
-  gp2->addMultiCellWidget(Check_GridOn,0,0,0,1);
+  QGridLayout *gp2 = new QGridLayout(Tab2);
+  Check_GridOn = new QCheckBox(tr("show Grid"), Tab2);
+  gp2->addWidget(Check_GridOn,0,0,1,1);
 
   valExpr = new QRegExpValidator(QRegExp("[1-9]\\d{0,2}"), this);
 
@@ -90,19 +90,19 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
   gp2->addWidget(l3,1,0);
   Input_GridX = new QLineEdit(Tab2);
   Input_GridX->setValidator(valExpr);
-  gp2->addWidget(Input_GridX,1,1);
+  gp2->addWidget(Input_GridX,1,1,1,1);
 
   QLabel *l4 = new QLabel(tr("vertical Grid:"), Tab2);
   gp2->addWidget(l4,2,0);
   Input_GridY = new QLineEdit(Tab2);
   Input_GridY->setValidator(valExpr);
-  gp2->addWidget(Input_GridY,2,1);
+  gp2->addWidget(Input_GridY,2,1,1,1);
 
   t->addTab(Tab2, tr("Grid"));
 
   // ...........................................................
   QWidget *Tab3 = new QWidget(t);
-  Q3GridLayout *gp3 = new Q3GridLayout(Tab3,5,2,5,5);
+  QGridLayout *gp3 = new QGridLayout(Tab3);
   Combo_Frame = new QComboBox(Tab3);
   Combo_Frame->insertItem(tr("no Frame"));
   Combo_Frame->insertItem(tr("DIN A5 landscape"));
@@ -113,15 +113,15 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
   Combo_Frame->insertItem(tr("DIN A3 portrait"));
   Combo_Frame->insertItem(tr("Letter landscape"));
   Combo_Frame->insertItem(tr("Letter portrait"));
-  gp3->addMultiCellWidget(Combo_Frame,0,0,0,1);
+  gp3->addWidget(Combo_Frame,0,0,1,2);
 
-  Input_Frame0 = new Q3TextEdit(Tab3);
+  Input_Frame0 = new QTextEdit(Tab3);
   Input_Frame0->setTextFormat(Qt::PlainText);
-  Input_Frame0->setWordWrap(Q3TextEdit::NoWrap);
-  gp3->addMultiCellWidget(Input_Frame0,1,2,0,1);
+  Input_Frame0->setWordWrapMode(QTextOption::NoWrap);
+  gp3->addWidget(Input_Frame0,1,0,2,2);
 
   Input_Frame1 = new QLineEdit(Tab3);
-  gp3->addMultiCellWidget(Input_Frame1,3,3,0,1);
+  gp3->addWidget(Input_Frame1,3,0,1,2);
 
   Input_Frame2 = new QLineEdit(Tab3);
   gp3->addWidget(Input_Frame2,4,0);
@@ -132,16 +132,19 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
 
   // ...........................................................
   // buttons on the bottom of the dialog (independent of the TabWidget)
-  Q3HBox *Butts = new Q3HBox(this);
+  QHBoxLayout *Butts = new QHBoxLayout();
   Butts->setSpacing(5);
   Butts->setMargin(5);
-  all->addWidget(Butts);
+  all->addLayout(Butts);
 
-  QPushButton *OkButt = new QPushButton(tr("OK"), Butts);
+  QPushButton *OkButt = new QPushButton(tr("OK"));
+  Butts->addWidget(OkButt);
   connect(OkButt, SIGNAL(clicked()), SLOT(slotOK()));
-  QPushButton *ApplyButt = new QPushButton(tr("Apply"), Butts);
+  QPushButton *ApplyButt = new QPushButton(tr("Apply"));
+  Butts->addWidget(ApplyButt);
   connect(ApplyButt, SIGNAL(clicked()), SLOT(slotApply()));
-  QPushButton *CancelButt = new QPushButton(tr("Cancel"), Butts);
+  QPushButton *CancelButt = new QPushButton(tr("Cancel"));
+  Butts->addWidget(CancelButt);
   connect(CancelButt, SIGNAL(clicked()), SLOT(reject()));
 
   OkButt->setDefault(true);
