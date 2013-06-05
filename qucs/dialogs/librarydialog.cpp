@@ -57,7 +57,7 @@ LibraryDialog::LibraryDialog(QucsApp *App_, QTreeWidgetItem *SchematicList)
   all->setMargin(5);
   all->setSpacing(6);
 
-  QHBoxLayout *h1 = new QHBoxLayout(this);
+  QHBoxLayout *h1 = new QHBoxLayout();
   all->addLayout(h1);
   theLabel = new QLabel(tr("Library Name:"));
   h1->addWidget(theLabel);
@@ -68,14 +68,18 @@ LibraryDialog::LibraryDialog(QucsApp *App_, QTreeWidgetItem *SchematicList)
   // ...........................................................
   Group = new QGroupBox(tr("Choose subcircuits:"));
   all->addWidget(Group);
-  QScrollArea *Dia_Scroll = new QScrollArea(Group);
-  //Dia_Scroll->setMargin(5);
-  QVBoxLayout *Dia_Box = new QVBoxLayout(Dia_Scroll->viewport());
-  Dia_Scroll->insertChild(Dia_Box);
+  
+  QScrollArea *scrollArea = new QScrollArea(Group);
+  scrollArea->setWidgetResizable(true);
+  
+  QWidget *scrollWidget = new QWidget();
+  
+  QVBoxLayout *checkBoxLayout = new QVBoxLayout();
+  scrollWidget->setLayout(checkBoxLayout);
+  scrollArea->setWidget(scrollWidget);
   
   QVBoxLayout *areaLayout = new QVBoxLayout();
-  areaLayout->addWidget(Dia_Scroll);
-  
+  areaLayout->addWidget(scrollArea);
   Group->setLayout(areaLayout);
   
   // ...........................................................
@@ -95,7 +99,7 @@ LibraryDialog::LibraryDialog(QucsApp *App_, QTreeWidgetItem *SchematicList)
   all->addWidget(ErrText);
   
   // ...........................................................
-  QHBoxLayout *h2 = new QHBoxLayout(this);
+  QHBoxLayout *h2 = new QHBoxLayout();
   all->addLayout(h2);
   ButtCancel = new QPushButton(tr("Cancel"));
   h2->addWidget(ButtCancel);
@@ -117,27 +121,23 @@ LibraryDialog::LibraryDialog(QucsApp *App_, QTreeWidgetItem *SchematicList)
       break;
     if(!p->text(1).isEmpty()){
         QCheckBox *subCheck = new QCheckBox(p->text(0));
-        Dia_Box->addWidget(subCheck);
-      //BoxList.append(new QCheckBox(p->text(0), Dia_Box));
+        checkBoxLayout->addWidget(subCheck);
         BoxList.append(subCheck);
     }
     //p = p->nextSibling();
   }
-/*
-  QColor theColor;
+
+//  QColor theColor;
   if(BoxList.isEmpty()) {
     ButtCreate->setEnabled(false);
-    theColor =
-       //(new QLabel(tr("No subcircuits!"), Dia_Box))->paletteBackgroundColor();
-       (new QLabel(tr("No subcircuits!"), Dia_Box))->paletteBackgroundColor();     
+//    theColor =
+//       (new QLabel(tr("No subcircuits!"), Dia_Box))->paletteBackgroundColor();
+    QLabel *noProj = new QLabel(tr("No projects!"));
+    checkBoxLayout->addWidget(noProj);
   }
-  else
-    theColor = BoxList.current()->paletteBackgroundColor();
-  Dia_Scroll->viewport()->setPaletteBackgroundColor(theColor);*/
-  
-  QMessageBox msgBox;
-  msgBox.setText("Dialog not fully implemented!");
-  msgBox.exec();
+//  else
+//    theColor = BoxList.current()->paletteBackgroundColor();
+//  Dia_Scroll->viewport()->setPaletteBackgroundColor(theColor);
 }
 
 LibraryDialog::~LibraryDialog()
