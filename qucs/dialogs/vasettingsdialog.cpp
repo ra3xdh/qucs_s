@@ -15,27 +15,21 @@
  *                                                                         *
  ***************************************************************************/
 #include <QtGui>
-#include <q3hbox.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <qvalidator.h>
-#include <qpushbutton.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
-#include <qcheckbox.h>
-#include <q3vgroupbox.h>
-#include <qstring.h>
-#include <qstringlist.h>
-#include <q3button.h>
-#include <qtoolbutton.h>
-#include <qpixmap.h>
-#include <qimage.h>
-#include <qradiobutton.h>
-#include <qfileinfo.h>
-#include <q3filedialog.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QValidator>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QButtonGroup>
+#include <QCheckBox>
+#include <QGroupBox>
+#include <QString>
+#include <QStringList>
+#include <QPushButton>
+#include <QFileDialog>
+#include <QGridLayout>
 
 #include "vasettingsdialog.h"
 #include "textdoc.h"
@@ -43,81 +37,84 @@
 
 
 VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
-  : QDialog (Doc_, 0, true, Qt::WDestructiveClose)
+  : QDialog (Doc_)
 {
   Doc = Doc_;
-  setCaption (tr("Document Settings"));
+  setWindowTitle(tr("Document Settings"));
 
   QString Module = Doc->getModuleName ();
 
   Expr.setPattern("[0-9a-zA-Z /\\]+"); // valid expression for IconEdit
   Validator = new QRegExpValidator (Expr, this);
 
-  Q3GridLayout * box = new Q3GridLayout (this, 1, 1, 5);
-
-  Q3VGroupBox * setGroup = new Q3VGroupBox (tr("Code Creation Settings"), this);
-  box->addWidget (setGroup, 0, 0);
-  QWidget * f = new QWidget (setGroup);
-  Q3GridLayout * all = new Q3GridLayout (f, 7, 5, 5);
-
+  vLayout = new QVBoxLayout(this);
+  
+  QGroupBox * codeGroup = new QGroupBox (tr("Code Creation Settings"));
+  vLayout->addWidget(codeGroup);
+  QVBoxLayout *vbox = new QVBoxLayout();
+  codeGroup->setLayout(vbox);
+  
+  QGridLayout * all = new QGridLayout ();
+  vbox->addLayout(all);
+  
   if (Doc->Icon.isEmpty ())
     Doc->Icon = Module + ".png";
 
-  IconButt = new QLabel (f);
+  IconButt = new QLabel ();
   IconButt->setPixmap (QPixmap (Doc->Icon));
-  all->addWidget (IconButt, 0, 0);
+  all->addWidget (IconButt, 0, 0, 1, 1);
 
-  IconEdit = new QLineEdit (f);
+  IconEdit = new QLineEdit ();
   IconEdit->setValidator (Validator);
   IconEdit->setText (Doc->Icon);
   IconEdit->setCursorPosition (0);
-  all->addMultiCellWidget (IconEdit, 0, 0, 1, 3);
+  all->addWidget (IconEdit, 0, 1, 1, 3);
   
-  BrowseButt = new QPushButton (tr("Browse"), f);
+  BrowseButt = new QPushButton (tr("Browse"));
   connect (BrowseButt, SIGNAL (clicked()), SLOT (slotBrowse()));
-  all->addWidget (BrowseButt, 0, 4);
+  all->addWidget (BrowseButt, 0, 4, 1, 1);
 
-  QLabel * l1 = new QLabel (tr("Output file:"), f);
+  QLabel * l1 = new QLabel (tr("Output file:"));
   l1->setAlignment (Qt::AlignRight);
-  all->addWidget (l1, 1, 0);
-  OutputEdit = new QLineEdit (f);
+  all->addWidget (l1, 1, 0, 1, 1);
+  OutputEdit = new QLineEdit ();
   OutputEdit->setText (Module + ".cpp");
-  all->addMultiCellWidget (OutputEdit, 1, 1, 1, 3);
+  all->addWidget (OutputEdit, 1, 1, 1, 3);
 
-  RecreateCheck = new QCheckBox (tr("Recreate"), f);
-  all->addWidget (RecreateCheck, 1, 4);
+  RecreateCheck = new QCheckBox (tr("Recreate"));
+  all->addWidget (RecreateCheck, 1, 4, 1, 1);
   RecreateCheck->setChecked (Doc->recreate);
 
   if (Doc->ShortDesc.isEmpty ())
     Doc->ShortDesc = Module;
 
-  QLabel * l2 = new QLabel (tr("Icon description:"), f);
+  QLabel * l2 = new QLabel (tr("Icon description:"));
   l2->setAlignment (Qt::AlignRight);
   all->addWidget (l2, 2, 0);
-  ShortDescEdit = new QLineEdit (f);
+  ShortDescEdit = new QLineEdit ();
   ShortDescEdit->setText (Doc->ShortDesc);
-  all->addMultiCellWidget (ShortDescEdit, 2, 2, 1, 4);
+  all->addWidget (ShortDescEdit, 2, 1, 1, 3);
   
   if (Doc->LongDesc.isEmpty ())
     Doc->LongDesc = Module + " verilog device";
 
-  QLabel * l3 = new QLabel (tr("Description:"), f);
+  QLabel * l3 = new QLabel (tr("Description:"));
   l3->setAlignment (Qt::AlignRight);
   all->addWidget (l3, 3, 0);
-  LongDescEdit = new QLineEdit (f);
+  LongDescEdit = new QLineEdit ();
   LongDescEdit->setText (Doc->LongDesc);
-  all->addMultiCellWidget (LongDescEdit, 3, 3, 1, 4);
+  all->addWidget (LongDescEdit, 3, 1, 1, 3);
 
-  toggleGroupDev = new Q3ButtonGroup ();
+  toggleGroupDev = new QButtonGroup ();
   QRadioButton * nonRadio =
-    new QRadioButton (tr("unspecified device"), f);
+    new QRadioButton (tr("unspecified device"));
   QRadioButton * bjtRadio = 
-    new QRadioButton (tr("NPN/PNP polarity"), f);
+    new QRadioButton (tr("NPN/PNP polarity"));
   QRadioButton * mosRadio =
-    new QRadioButton (tr("NMOS/PMOS polarity"), f);
-  toggleGroupDev->insert (nonRadio, 0);
-  toggleGroupDev->insert (bjtRadio, DEV_BJT);
-  toggleGroupDev->insert (mosRadio, DEV_MOS);
+    new QRadioButton (tr("NMOS/PMOS polarity"));
+  toggleGroupDev->addButton(nonRadio, 0);
+  toggleGroupDev->addButton(bjtRadio, DEV_BJT);
+  toggleGroupDev->addButton(mosRadio, DEV_MOS);
   if (Doc->devtype & DEV_BJT)
     bjtRadio->setChecked (true);
   else if (Doc->devtype & DEV_MOS)
@@ -128,16 +125,16 @@ VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
   all->addWidget (bjtRadio, 4, 2);
   all->addMultiCellWidget (mosRadio, 4, 4, 3, 4);
 
-  toggleGroupTyp = new Q3ButtonGroup ();
+  toggleGroupTyp = new QButtonGroup ();
   QRadioButton * anaRadio = 
-    new QRadioButton (tr("analog only"), f);
+    new QRadioButton (tr("analog only"));
   QRadioButton * digRadio =
-    new QRadioButton (tr("digital only"), f);
+    new QRadioButton (tr("digital only"));
   QRadioButton * allRadio =
-    new QRadioButton (tr("both"), f);
-  toggleGroupTyp->insert (digRadio, DEV_DIG);
-  toggleGroupTyp->insert (anaRadio, DEV_ANA);
-  toggleGroupTyp->insert (allRadio, DEV_ALL);
+    new QRadioButton (tr("both"));
+  toggleGroupTyp->addButton(digRadio, DEV_DIG);
+  toggleGroupTyp->addButton(anaRadio, DEV_ANA);
+  toggleGroupTyp->addButton(allRadio, DEV_ALL);
   if ((Doc->devtype & DEV_ALL) == DEV_ALL)
     allRadio->setChecked (true);
   else if (Doc->devtype & DEV_ANA)
@@ -148,13 +145,16 @@ VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
   all->addWidget (allRadio, 5, 2);
   all->addMultiCellWidget (digRadio, 5, 5, 3, 4);
 
-  Q3HBox * Buttons = new Q3HBox (f);
-  all->addMultiCellWidget (Buttons, 6, 6, 0, 4);
-  QPushButton * ButtonOk = new QPushButton (tr("Ok"), Buttons);
-  QPushButton * ButtonCancel = new QPushButton (tr("Cancel"), Buttons);
+  QHBoxLayout * Buttons = new QHBoxLayout ();
+  vbox->addLayout(Buttons);
+  QPushButton * ButtonOk = new QPushButton (tr("Ok"));
+  Buttons->addWidget(ButtonOk);
+  QPushButton * ButtonCancel = new QPushButton (tr("Cancel"));
+  Buttons->addWidget(ButtonCancel);
   connect (ButtonOk, SIGNAL(clicked()), SLOT(slotOk()));
   connect (ButtonCancel, SIGNAL(clicked()), SLOT(reject()));
   ButtonOk->setDefault(true);
+  
 }
 
 VASettingsDialog::~VASettingsDialog ()
@@ -186,14 +186,14 @@ void VASettingsDialog::slotOk ()
     Doc->recreate = RecreateCheck->isChecked ();
     changed = true;
   }
-  if ((Doc->devtype & DEV_MASK_TYP) != toggleGroupTyp->selectedId ()) {
+  if ((Doc->devtype & DEV_MASK_TYP) != toggleGroupTyp->checkedId()) {
     Doc->devtype &= ~DEV_MASK_TYP;
-    Doc->devtype |= toggleGroupTyp->selectedId ();
+    Doc->devtype |= toggleGroupTyp->checkedId();
     changed = true;
   }
-  if ((Doc->devtype & DEV_MASK_DEV) != toggleGroupDev->selectedId ()) {
+  if ((Doc->devtype & DEV_MASK_DEV) != toggleGroupDev->checkedId()) {
     Doc->devtype &= ~DEV_MASK_DEV;
-    Doc->devtype |= toggleGroupDev->selectedId ();
+    Doc->devtype |= toggleGroupDev->checkedId();
     changed = true;
   }
 
@@ -206,7 +206,7 @@ void VASettingsDialog::slotOk ()
 
 void VASettingsDialog::slotBrowse ()
 {
-  QString s = Q3FileDialog::getOpenFileName (
+  QString s = QFileDialog::getOpenFileName (
      lastDir.isEmpty () ? QString (".") : lastDir,
      tr("PNG files")+" (*.png);;"+
      tr("Any file")+" (*)",

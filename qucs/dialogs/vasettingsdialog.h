@@ -18,9 +18,8 @@
 #ifndef VASETTINGSDIALOG_H
 #define VASETTINGSDIALOG_H
 
-#include <qdialog.h>
-#include <qregexp.h>
-//Added by qt3to4:
+#include <QDialog>
+#include <QRegExp>
 #include <QLabel>
 
 class TextDoc;
@@ -29,7 +28,8 @@ class QPushButton;
 class QRegExpValidator;
 class QLabel;
 class QCheckBox;
-class Q3ButtonGroup;
+class QButtonGroup;
+class QVBoxLayout;
 
 class VASettingsDialog : public QDialog  {
 Q_OBJECT
@@ -42,7 +42,7 @@ public:
   QPushButton * BrowseButt;
   QLabel * IconButt;
   QCheckBox * RecreateCheck;
-  Q3ButtonGroup * toggleGroupDev, * toggleGroupTyp;
+  QButtonGroup * toggleGroupDev, * toggleGroupTyp;
 
 private slots:
   void slotOk ();
@@ -52,6 +52,7 @@ private:
   TextDoc * Doc;
   QRegExp Expr;
   QRegExpValidator * Validator;
+  QVBoxLayout *vLayout;
 };
 
 #endif
