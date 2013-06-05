@@ -1877,7 +1877,7 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
 {
   if(Status != 0) return;  // errors ocurred ?
 
-  if(sim->ErrText->lines() > 1)   // were there warnings ?
+  if(sim->ErrText->document()->lineCount() > 1)   // were there warnings ?
     slotShowWarnings();
 
   int i=0;

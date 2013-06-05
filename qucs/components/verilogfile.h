@@ -30,7 +30,7 @@ public:
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
 
-  bool createSubNetlist(Q3TextStream *);
+  bool createSubNetlist(QTextStream *);
   QString getErrorText() { return ErrText; }
   QString getSubcircuitFile();
 

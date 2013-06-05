@@ -25,6 +25,7 @@
 #include <qregexp.h>
 #include <q3process.h>
 #include <q3textedit.h>
+#include <QTextEdit>
 #include <q3ptrlist.h>
 //Added by qt3to4:
 #include <Q3TextStream>
@@ -925,9 +926,10 @@ void Schematic::propagateNode(QStringList& Collect,
 // --------------------------------------------------- 
 // Goes through all schematic components and allows special component
 // handling, e.g. like subcircuit netlisting.
-bool Schematic::throughAllComps(Q3TextStream *stream, int& countInit,
-                   QStringList& Collect, Q3TextEdit *ErrText, int NumPorts)
+bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
+                   QStringList& Collect, QTextEdit *ErrText, int NumPorts)
 {
+  qDebug() << "throughAllComps";
   bool r;
   QString s;
 
@@ -1099,8 +1101,8 @@ bool Schematic::throughAllComps(Q3TextStream *stream, int& countInit,
 // Follows the wire lines in order to determine the node names for
 // each component. Output into "stream", NodeSets are collected in
 // "Collect" and counted with "countInit".
-bool Schematic::giveNodeNames(Q3TextStream *stream, int& countInit,
-                   QStringList& Collect, Q3TextEdit *ErrText, int NumPorts)
+bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
+                   QStringList& Collect, QTextEdit *ErrText, int NumPorts)
 {
   // delete the node names
   for(Node *pn = DocNodes.first(); pn != 0; pn = DocNodes.next()) {
@@ -1140,7 +1142,7 @@ bool Schematic::giveNodeNames(Q3TextStream *stream, int& countInit,
 }
 
 // ---------------------------------------------------
-bool Schematic::createLibNetlist(Q3TextStream *stream, Q3TextEdit *ErrText,
+bool Schematic::createLibNetlist(QTextStream *stream, QTextEdit *ErrText,
 				 int NumPorts)
 {
   int countInit = 0;
@@ -1180,7 +1182,7 @@ bool Schematic::createLibNetlist(Q3TextStream *stream, Q3TextEdit *ErrText,
 #define VHDL_LIBRARIES   "\nlibrary ieee;\nuse ieee.std_logic_1164.all;\n"
 
 // ---------------------------------------------------
-void Schematic::createSubNetlistPlain(Q3TextStream *stream, Q3TextEdit *ErrText,
+void Schematic::createSubNetlistPlain(QTextStream *stream, QTextEdit *ErrText,
 int NumPorts)
 {
   int i, z;
@@ -1195,7 +1197,7 @@ int NumPorts)
   Component *pc;
 
   // probably creating a library currently
-  Q3TextStream * tstream = stream;
+  QTextStream * tstream = stream;
   QFile ofile;
   if(creatingLib) {
     QString f = properAbsFileName(DocName) + ".lst";
@@ -1204,7 +1206,7 @@ int NumPorts)
       ErrText->insert(tr("ERROR: Cannot create library file \"%s\".").arg(f));
       return;
     }
-    tstream = new Q3TextStream(&ofile);
+    tstream = new QTextStream(&ofile);
   }
 
   // collect subcircuit ports and sort their node names into
@@ -1452,8 +1454,8 @@ int NumPorts)
 }
 // ---------------------------------------------------
 // Write the netlist as subcircuit to the text stream 'stream'.
-bool Schematic::createSubNetlist(Q3TextStream *stream, int& countInit,
-                     QStringList& Collect, Q3TextEdit *ErrText, int NumPorts)
+bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
+                     QStringList& Collect, QTextEdit *ErrText, int NumPorts)
 {
 //  int Collect_count = Collect.count();   // position for this subcircuit
 
@@ -1478,8 +1480,8 @@ bool Schematic::createSubNetlist(Q3TextStream *stream, int& countInit,
 
 // ---------------------------------------------------
 // Determines the node names and writes subcircuits into netlist file.
-int Schematic::prepareNetlist(Q3TextStream& stream, QStringList& Collect,
-                              Q3TextEdit *ErrText)
+int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
+                              QTextEdit *ErrText)
 {
   if(showBias > 0) showBias = -1;  // do not show DC bias anymore
 
@@ -1570,7 +1572,7 @@ int Schematic::prepareNetlist(Q3TextStream& stream, QStringList& Collect,
 
 // ---------------------------------------------------
 // Write the beginning of digital netlist to the text stream 'stream'.
-void Schematic::beginNetlistDigital(Q3TextStream& stream)
+void Schematic::beginNetlistDigital(QTextStream& stream)
 {
   if (isVerilog) {
     stream << "module TestBench ();\n";
@@ -1603,7 +1605,7 @@ void Schematic::beginNetlistDigital(Q3TextStream& stream)
 
 // ---------------------------------------------------
 // Write the end of digital netlist to the text stream 'stream'.
-void Schematic::endNetlistDigital(Q3TextStream& stream)
+void Schematic::endNetlistDigital(QTextStream& stream)
 {
   if (isVerilog) {
   } else {
@@ -1613,7 +1615,7 @@ void Schematic::endNetlistDigital(Q3TextStream& stream)
 
 // ---------------------------------------------------
 // write all components with node names into the netlist file
-QString Schematic::createNetlist(Q3TextStream& stream, int NumPorts)
+QString Schematic::createNetlist(QTextStream& stream, int NumPorts)
 {
   if(!isAnalog) {
     beginNetlistDigital(stream);

@@ -18,20 +18,17 @@
 #include <stdlib.h>
 #include <iostream>
 using namespace std;
-#include <qlabel.h>
-#include <qlayout.h>
-#include <q3vgroupbox.h>
-#include <q3hgroupbox.h>
-#include <q3hbox.h>
-#include <qtimer.h>
-#include <qpushbutton.h>
-#include <q3progressbar.h>
-#include <q3textedit.h>
-#include <qdatetime.h>
-#include <qregexp.h>
-//Added by qt3to4:
-#include <Q3TextStream>
-#include <Q3VBoxLayout>
+#include <QLabel>
+#include <QGroupBox>
+#include <QTimer>
+#include <QPushButton>
+#include <QTextEdit>
+#include <QDateTime>
+#include <QRegExp>
+#include <QTextStream>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QProcess>
 
 #include "simmessage.h"
 #include "main.h"
@@ -43,9 +40,9 @@ using namespace std;
 
 
 SimMessage::SimMessage(QWidget *w, QWidget *parent)
-		: QDialog(parent, 0, FALSE, Qt::WDestructiveClose)
+		: QDialog(parent) //, 0, FALSE, Qt::WDestructiveClose)
 {
-  setCaption(tr("Qucs Simulation Messages"));
+  setWindowTitle(tr("Qucs Simulation Messages"));
   QucsDoc *Doc;
   DocWidget = w;
   if(DocWidget->inherits("QTextEdit"))
@@ -63,50 +60,62 @@ SimMessage::SimMessage(QWidget *w, QWidget *parent)
   SimOpenDpl = Doc->SimOpenDpl; // ...could be closed during the simulation.
   SimRunScript = Doc->SimRunScript;
 
-  all = new Q3VBoxLayout(this);
+  all = new QVBoxLayout(this);
   all->setSpacing(5);
   all->setMargin(5);
-  Q3VGroupBox *Group1 = new Q3VGroupBox(tr("Progress:"),this);
+  QGroupBox *Group1 = new QGroupBox(tr("Progress:"));
   all->addWidget(Group1);
+  QVBoxLayout *vbox1 = new QVBoxLayout();
+  Group1->setLayout(vbox1);
 
-  ProgText = new Q3TextEdit(Group1);
+  ProgText = new QTextEdit();
+  vbox1->addWidget(ProgText);
   ProgText->setTextFormat(Qt::PlainText);
   ProgText->setReadOnly(true);
-  ProgText->setWordWrap(Q3TextEdit::NoWrap);
+  //ProgText->setWordWrapMode(QTextOption::NoWrap);
   ProgText->setMinimumSize(400,80);
   wasLF = false;
 
-  Q3HGroupBox *HGroup = new Q3HGroupBox(this);
-  HGroup->setInsideMargin(5);
-  HGroup->setInsideSpacing(5);
+  QGroupBox *HGroup = new QGroupBox();
+  QHBoxLayout *hbox = new QHBoxLayout();
+  //HGroup->setInsideMargin(5);
+  //HGroup->setInsideSpacing(5);
   all->addWidget(HGroup);
-  new QLabel(tr("Progress:"), HGroup);
-  SimProgress = new Q3ProgressBar(HGroup);
+  QLabel *progr = new QLabel(tr("Progress:"));
+  hbox->addWidget(progr);
+  SimProgress = new QProgressBar();
+  hbox->addWidget(SimProgress);
 //  SimProgress->setPercentageVisible(false);
+  HGroup->setLayout(hbox);
 
-  Q3VGroupBox *Group2 = new Q3VGroupBox(tr("Errors and Warnings:"),this);
+  QGroupBox *Group2 = new QGroupBox(tr("Errors and Warnings:"));
   all->addWidget(Group2);
+  QVBoxLayout *vbox2 = new QVBoxLayout();
 
-  ErrText = new Q3TextEdit(Group2);
+  ErrText = new QTextEdit();
+  vbox2->addWidget(ErrText);
   ErrText->setTextFormat(Qt::PlainText);
   ErrText->setReadOnly(true);
-  ErrText->setWordWrap(Q3TextEdit::NoWrap);
+  ErrText->setWordWrapMode(QTextOption::NoWrap);
   ErrText->setMinimumSize(400,80);
+  Group2->setLayout(vbox2);
 
-  Q3HBox *Butts = new Q3HBox(this);
-  all->addWidget(Butts);
+  QHBoxLayout *Butts = new QHBoxLayout();
+  all->addLayout(Butts);
 
-  Display = new QPushButton(tr("Goto display page"), Butts);
+  Display = new QPushButton(tr("Goto display page"));
+  Butts->addWidget(Display);
   Display->setDisabled(true);
   connect(Display,SIGNAL(clicked()),SLOT(slotDisplayButton()));
 
-  Abort = new QPushButton(tr("Abort simulation"), Butts);
+  Abort = new QPushButton(tr("Abort simulation"));
+  Butts->addWidget(Abort);
   connect(Abort,SIGNAL(clicked()),SLOT(reject()));
 }
 
 SimMessage::~SimMessage()
 {
-  if(SimProcess.isRunning())  SimProcess.kill();
+  if(SimProcess.Running)  SimProcess.kill();
   delete all;
 }
 
@@ -120,14 +129,16 @@ bool SimMessage::startProcess()
     arg(QDate::currentDate().toString("ddd dd. MMM yyyy")).
     arg(QTime::currentTime().toString("hh:mm:ss"));
   ProgText->insert(txt + "\n\n");
-
+  
   SimProcess.blockSignals(false);
-  if(SimProcess.isRunning()) {
+ /* On Qt4 it shows as running even before we .start it. FIXME
+  if(SimProcess.Running) {
+    qDebug() << "running!";  
     ErrText->insert(tr("ERROR: Simulator is still running!"));
     FinishSimulation(-1);
     return false;
   }
-
+*/
   Collect.clear();  // clear list for NodeSets, SPICE components etc.
   ProgText->insert(tr("creating netlist... "));
   NetlistFile.setName(QucsHomeDir.filePath("netlist.txt"));
@@ -153,12 +164,12 @@ bool SimMessage::startProcess()
 
 
   disconnect(&SimProcess, 0, 0, 0);
-  connect(&SimProcess, SIGNAL(readyReadStderr()), SLOT(slotDisplayErr()));
-  connect(&SimProcess, SIGNAL(readyReadStdout()),
+  connect(&SimProcess, SIGNAL(readyReadStandardError()), SLOT(slotDisplayErr()));
+  connect(&SimProcess, SIGNAL(readyReadStandardOutput()),
                        SLOT(slotReadSpiceNetlist()));
-  connect(&SimProcess, SIGNAL(processExited()),
-                       SLOT(slotFinishSpiceNetlist()));
-
+  connect(&SimProcess, SIGNAL(finished(int)),
+                       SLOT(slotFinishSpiceNetlist(int)));
+ 
   nextSPICE();
   return true;
   // Since now, the Doc pointer may be obsolete, as the user could have
@@ -168,7 +179,7 @@ bool SimMessage::startProcess()
 // ---------------------------------------------------
 // Converts a spice netlist into Qucs format and outputs it.
 void SimMessage::nextSPICE()
-{
+{ 
   QString Line;
   for(;;) {  // search for next SPICE component
     Line = *(Collect.begin());
@@ -177,6 +188,8 @@ void SimMessage::nextSPICE()
       startSimulator(); // <<<<<================== go on ===
       return;
     }
+#warning SPICE section below not being covered?
+    qDebug() << "goin thru SPICE branch on simmmessage.cpp";
     if(Line.left(5) == "SPICE") {
       if(Line.at(5) != 'o') insertSim = true;
       else insertSim = false;
@@ -191,12 +204,12 @@ void SimMessage::nextSPICE()
   if(Line.isEmpty())  makeSubcircuit = false;
   else  makeSubcircuit = true;
 
+  QString prog;
   QStringList com;
-  com << (QucsSettings.BinDir + "qucsconv");
+  prog = QucsSettings.BinDir + "qucsconv";
   if(makeSubcircuit)
     com << "-g" << "_ref";
   com << "-if" << "spice" << "-of" << "qucs";
-  SimProcess.setArguments(com);
 
   QFile SpiceFile;
   if(FileName.find(QDir::separator()) < 0)  // add path ?
@@ -221,7 +234,11 @@ void SimMessage::nextSPICE()
 
 
   ProgressText = "";
-  if(!SimProcess.start()) {
+  
+  qDebug() << "start QucsConv" << prog << com.join(" ");
+  SimProcess.start(prog, com);
+  
+  if(!SimProcess.Running) {
     ErrText->insert(tr("ERROR: Cannot start QucsConv!"));
     FinishSimulation(-1);
     return;
@@ -229,14 +246,16 @@ void SimMessage::nextSPICE()
 
   QByteArray SpiceContent = SpiceFile.readAll();
   SpiceFile.close();
-  SimProcess.writeToStdin(SpiceContent);
+  QString command(SpiceContent); //to convert byte array to string
+  SimProcess.setStandardInputFile(command);  //? FIXME works?
+  qDebug() << command;
   connect(&SimProcess, SIGNAL(wroteToStdin()), SLOT(slotCloseStdin()));
 }
 
 // ------------------------------------------------------------------------
 void SimMessage::slotCloseStdin()
 {
-  SimProcess.closeStdin();
+  //SimProcess.closeStdin(); //? channel not available in Qt4?
   disconnect(&SimProcess, SIGNAL(wroteToStdin()), 0, 0);
 }
 
@@ -245,7 +264,7 @@ void SimMessage::slotReadSpiceNetlist()
 {
   int i;
   QString s;
-  ProgressText += QString(SimProcess.readStdout());
+  ProgressText += QString(SimProcess.readAllStandardOutput());
 
   while((i = ProgressText.find('\n')) >= 0) {
 
@@ -265,7 +284,7 @@ void SimMessage::slotReadSpiceNetlist()
 }
 
 // ------------------------------------------------------------------------
-void SimMessage::slotFinishSpiceNetlist()
+void SimMessage::slotFinishSpiceNetlist(int status )
 {
   if(makeSubcircuit)
     Stream << ".Def:End\n\n";
@@ -297,7 +316,8 @@ void SimMessage::startSimulator()
   // faster than the user (I have no other idea).
 
   QString SimTime;
-  QStringList CommandLine;
+  QString Program;
+  QStringList Arguments;
   QString SimPath = QDir::convertSeparators (QucsHomeDir.absPath());
 #ifdef __MINGW32__
   QString QucsDigiLib = "qucsdigilib.bat";
@@ -340,8 +360,8 @@ void SimMessage::startSimulator()
 	libs = "-c,-l" + libs;
       }
 #endif
-      CommandLine << pathName(QucsSettings.BinDir + QucsDigi)
-		  << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
+      Program = pathName(QucsSettings.BinDir + QucsDigi);
+	  Arguments  << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
 		  << pathName(QucsSettings.BinDir) << libs;
     }
     // Module.
@@ -376,8 +396,8 @@ void SimMessage::startSimulator()
       }
       destFile.writeBlock(text.ascii(), text.length());
       destFile.close();
-      CommandLine << pathName(QucsSettings.BinDir + QucsDigiLib)
-		  << "netlist.txt" << pathName(SimPath) << entity << lib;
+      Program = pathName(QucsSettings.BinDir + QucsDigiLib);
+	  Arguments << "netlist.txt" << pathName(SimPath) << entity << lib;
     }
   }
   // Simulate schematic window.
@@ -417,48 +437,53 @@ void SimMessage::startSimulator()
 
     if(SimPorts < 0) {
       if((SimOpt = findOptimization((Schematic*)DocWidget))) {
-	((Optimize_Sim*)SimOpt)->createASCOnetlist();
-	CommandLine << QucsSettings.AscoDir + "asco" << "-qucs" <<
-	  QucsHomeDir.filePath("asco_netlist.txt") << "-o" << "asco_out";
+	    ((Optimize_Sim*)SimOpt)->createASCOnetlist();
+	    Program = QucsSettings.AscoDir + "asco"; 
+        Arguments << "-qucs" << QucsHomeDir.filePath("asco_netlist.txt") 
+                  << "-o" << "asco_out";
       }
       else {
-	CommandLine << QucsSettings.BinDir + "qucsator" << "-b" << "-g"
-           << "-i" << QucsHomeDir.filePath("netlist.txt") << "-o" << DataSet;
+	    Program = QucsSettings.BinDir + "qucsator";
+        Arguments << "-b" << "-g" << "-i" 
+                  << QucsHomeDir.filePath("netlist.txt") 
+                  << "-o" << DataSet;
       }
     } else {
       if (isVerilog) {
-	CommandLine << pathName(QucsSettings.BinDir + QucsVeri)
-		    << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
-		    << pathName(QucsSettings.BinDir) << "-c";
+          Program = pathName(QucsSettings.BinDir + QucsVeri);
+		  Arguments << "netlist.txt" << DataSet 
+                    << SimTime << pathName(SimPath)
+                    << pathName(QucsSettings.BinDir) << "-c";
       } else {
 #ifdef __MINGW32__
-	CommandLine << pathName(QucsSettings.BinDir + QucsDigi)
-		    << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
-		    << pathName(QucsSettings.BinDir) << "-Wl" << "-c";
+	Program = pathName(QucsSettings.BinDir + QucsDigi);
+	Argumetns << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
+		      << pathName(QucsSettings.BinDir) << "-Wl" << "-c";
 #else
-	CommandLine << pathName(QucsSettings.BinDir + QucsDigi)
-		    << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
-		    << pathName(QucsSettings.BinDir) << "-c";
+	Program = pathName(QucsSettings.BinDir + QucsDigi);
+	Arguments << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
+		      << pathName(QucsSettings.BinDir) << "-c";
 
 #endif
       }
     }
   }
 
-  SimProcess.setArguments(CommandLine);
-
   disconnect(&SimProcess, 0, 0, 0);
-  connect(&SimProcess, SIGNAL(readyReadStderr()), SLOT(slotDisplayErr()));
-  connect(&SimProcess, SIGNAL(readyReadStdout()), SLOT(slotDisplayMsg()));
-  connect(&SimProcess, SIGNAL(processExited()), SLOT(slotSimEnded()));
+  connect(&SimProcess, SIGNAL(readyReadStandardError()), SLOT(slotDisplayErr()));
+  connect(&SimProcess, SIGNAL(readyReadStandardOutput()), SLOT(slotDisplayMsg()));
+  connect(&SimProcess, SIGNAL(finished(int)), SLOT(slotSimEnded(int)));
 
 #ifdef SPEEDUP_PROGRESSBAR
   waitForUpdate = false;
 #endif
   wasLF = false;
+  
   ProgressText = "";
   
-  if(!SimProcess.start()) {
+  SimProcess.start(Program, Arguments); // launch the program
+  
+  if(!SimProcess.Running) {
     ErrText->insert(tr("ERROR: Cannot start simulator!"));
     FinishSimulation(-1);
     return;
@@ -481,7 +506,7 @@ Component * SimMessage::findOptimization(Schematic *Doc) {
 void SimMessage::slotDisplayMsg()
 {
   int i;
-  ProgressText += QString(SimProcess.readStdout());
+  ProgressText += QString(SimProcess.readAllStandardOutput());
   if(wasLF) {
     i = ProgressText.findRev('\r');
 #ifdef __MINGW32__
@@ -498,9 +523,10 @@ void SimMessage::slotDisplayMsg()
         waitForUpdate = true;
       }
 #else
-      SimProgress->setProgress(
+      SimProgress->setMaximum(100);
+      SimProgress->setValue(
          10*int(ProgressText.at(i-2).latin1()-'0') +
-            int(ProgressText.at(i-1).latin1()-'0'), 100);
+            int(ProgressText.at(i-1).latin1()-'0'));
 #endif
       ProgressText.remove(0, i+1);
     }
@@ -536,18 +562,16 @@ void SimMessage::slotUpdateProgressBar()
 // Is called when the process sends an output to stderr.
 void SimMessage::slotDisplayErr()
 {
-  int par = ErrText->paragraphs();
-  int idx = ErrText->paragraphLength(par-1);
-  ErrText->setCursorPosition(par-1,idx);
-  ErrText->insert(QString(SimProcess.readStderr()));
+  QTextCursor cursor = ErrText->textCursor();
+  cursor.movePosition(QTextCursor::End);  
+  ErrText->insert(QString(SimProcess.readAllStandardError()));
 }
 
 // ------------------------------------------------------------------------
 // Is called when the simulation process terminates.
-void SimMessage::slotSimEnded()
-{
-  int stat = (!SimProcess.normalExit()) ? -1 : SimProcess.exitStatus();
-  FinishSimulation(stat);
+void SimMessage::slotSimEnded(int status)
+{ 
+  FinishSimulation(status); //0 - normal  | 1 - crash
 }
 
 // ------------------------------------------------------------------------
@@ -557,7 +581,7 @@ void SimMessage::FinishSimulation(int Status)
 {
   Abort->setText(tr("Close window"));
   Display->setDisabled(false);
-  SimProgress->setProgress(100, 100);   // progress bar to 100%
+  SimProgress->setValue(100);  // progress bar to 100%
 
   QDate d = QDate::currentDate();   // get date of today
   QTime t = QTime::currentTime();   // get time
@@ -578,13 +602,13 @@ void SimMessage::FinishSimulation(int Status)
   QFile file(QucsHomeDir.filePath("log.txt"));  // save simulator messages
   if(file.open(QIODevice::WriteOnly)) {
     int z;
-    Q3TextStream stream(&file);
+    QTextStream stream(&file);
     stream << tr("Output:\n-------") << "\n\n";
-    for(z=0; z<=ProgText->paragraphs(); z++)
-      stream << ProgText->text(z) << "\n";
+    for(z=0; z<=ProgText->document()->blockCount(); z++)
+      stream << ProgText->document()->findBlock(z).text() << "\n";
     stream << "\n\n\n" << tr("Errors:\n-------") << "\n\n";
-    for(z=0; z<ErrText->paragraphs(); z++)
-      stream << ErrText->text(z) << "\n";
+    for(z=0; z<ErrText->document()->blockCount(); z++)
+      stream << ErrText->document()->findBlock(z).text() << "\n";
     file.close();
   }
 

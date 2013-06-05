@@ -38,7 +38,7 @@ public:
   static Element* info(QString&, char* &, bool getNewOne=false);
 
   bool withSim;
-  bool createSubNetlist(Q3TextStream *);
+  bool createSubNetlist(QTextStream *);
   QString getErrorText() { return ErrText; }
   QString getSubcircuitFile();
 
@@ -48,7 +48,7 @@ private:
   bool changed;
   Q3Process *QucsConv, *SpicePrep;
   QString NetText, ErrText, NetLine, SimText;
-  Q3TextStream *outstream, *filstream, *prestream;
+  QTextStream *outstream, *filstream, *prestream;
   QDateTime lastLoaded;
   bool recreateSubNetlist(QString *, QString *);
 

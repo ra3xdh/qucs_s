@@ -90,7 +90,7 @@ LibraryDialog::LibraryDialog(QucsApp *App_, QTreeWidgetItem *SchematicList)
   ButtSelectNone = new QPushButton(tr("Deselect All"));
   h3->addWidget(ButtSelectNone);
   connect(ButtSelectNone, SIGNAL(clicked()), SLOT(slotSelectNone()));
-
+  all->addLayout(h3);
 
   ErrText = new QTextEdit(this);
   ErrText->setHidden(true);
@@ -112,9 +112,7 @@ LibraryDialog::LibraryDialog(QucsApp *App_, QTreeWidgetItem *SchematicList)
   // ...........................................................
   // insert all subcircuits of current project
   
-  //iterator for this??
-  QTreeWidgetItem *p ;//= SchematicList->child(0); //firstChild();
-  //while(p) {
+  QTreeWidgetItem *p ;
   for(int i=0; i < SchematicList->childCount(); i++){
     p = SchematicList->child(i); 
     if(p->parent() == 0)
@@ -124,10 +122,10 @@ LibraryDialog::LibraryDialog(QucsApp *App_, QTreeWidgetItem *SchematicList)
         checkBoxLayout->addWidget(subCheck);
         BoxList.append(subCheck);
     }
-    //p = p->nextSibling();
   }
 
 //  QColor theColor;
+  // never hapens, if there are subcircuits no?
   if(BoxList.isEmpty()) {
     ButtCreate->setEnabled(false);
 //    theColor =
@@ -157,7 +155,8 @@ void LibraryDialog::slotCreate()
   int count=0;
   QCheckBox *p;
   QListIterator<QCheckBox *> i(BoxList);
-  //for(p = BoxList.first(); p != 0; p = BoxList.next())
+  
+  // Count checked subcircuits
   while(i.hasNext()){
     p = i.next();
     if(p->isChecked())
@@ -169,7 +168,6 @@ void LibraryDialog::slotCreate()
     return;
   }
 
-
   LibDir = QDir(QucsHomeDir);
   if(!LibDir.cd("user_lib")) { // user library directory exists ?
     if(!LibDir.mkdir("user_lib")) { // no, then create it
@@ -179,7 +177,6 @@ void LibraryDialog::slotCreate()
     }
     LibDir.cd("user_lib");
   }
-
 
   LibFile.setName(QucsSettings.LibDir + NameEdit->text() + ".lib");
   if(LibFile.exists()) {
@@ -192,16 +189,24 @@ void LibraryDialog::slotCreate()
     QMessageBox::critical(this, tr("Error"), tr("A library with this name already exists!"));
     return;
   }
-
+  
   Group->setHidden(true);
   ErrText->setHidden(false);
   NameEdit->setHidden(true);
+  ButtSelectAll->setHidden(true);
+  ButtSelectNone->setHidden(true);
+  
+  theLabel->setText(theLabel->text() + NameEdit->text());
+  
   disconnect(ButtCreate, SIGNAL(clicked()), 0, 0);
   connect(ButtCreate, SIGNAL(clicked()), SLOT(slotNext()));
+  ButtCreate->setText(tr("Create"));
 
+  
   //QCheckBox *p;
   //QListIterator<QCheckBox *> i(BoxList);
   //for(p = BoxList.first(); p != 0; p = BoxList.next())
+  /*
   i.toFront();
   while(i.hasNext()){
     p = i.next();  
@@ -218,7 +223,7 @@ void LibraryDialog::slotCreate()
       break;
   }
   if(p == 0)
-    ButtCreate->setText(tr("Create"));
+    ButtCreate->setText(tr("Create"));*/
 }
 
 // ---------------------------------------------------------------
@@ -281,12 +286,30 @@ int LibraryDialog::intoFile(QString &ifn, QString &ofn, QStringList &IFiles)
 // ---------------------------------------------------------------
 void LibraryDialog::slotNext()
 {
-  Descriptions.append(ErrText->text());
+    qDebug() << "LibraryDialog::slotNext";
+    qDebug() << "errText" << ErrText->text();
+  //Descriptions.append(ErrText->text());
+  //Descriptions.append("some description");  
   ErrText->clear();
+  
+qDebug() << "description";
+qDebug() << BoxList.count();
+  
 
-  QCheckBox *p;//= BoxList.current();
+// it should loop over the the number of checked
+// subcircuits and append the Desciption
+  QCheckBox *p;
   QListIterator<QCheckBox *> i(BoxList);
-  p = i.next();
+  while(i.hasNext()){
+    p = i.next();
+    //theLabel->setText(tr("Enter description for \"%1\":").arg(p->text()));
+    Descriptions.append( "model " + p->text() );
+    
+    // should now return, wait for click and start with the next checked                        
+  }
+  
+/*  p=i.next();
+  qDebug() <<  p->text();
   if(p) {
     theLabel->setText(tr("Enter description for \"%1\":").arg(p->text()));
     while(i.hasNext()){
@@ -299,10 +322,11 @@ void LibraryDialog::slotNext()
       ButtCreate->setText(tr("Create"));
     return;
   }
-
-  theLabel->setShown(false);
+  */
+qDebug() << "update gui";
+//  theLabel->setShown(false);
   ErrText->setReadOnly(true);
-  ButtCancel->setEnabled(false);
+//  ButtCancel->setEnabled(false);
   ButtCreate->setText(tr("Close"));
   disconnect(ButtCreate, SIGNAL(clicked()), 0, 0);
   connect(ButtCreate, SIGNAL(clicked()), SLOT(accept()));
@@ -342,9 +366,10 @@ void LibraryDialog::slotNext()
       Success = false;
 
       // save analog model
+      qDebug() << "save analog model";
       tmp.truncate(0);
       Doc->isAnalog = true;
-#warning      ///TODO ret = Doc->createLibNetlist(&ts, ErrText, -1);  //Schematic::createLibNetlist still on Q3TextStream
+      ret = Doc->createLibNetlist(&ts, ErrText, -1);
       if(ret) {
 	intoStream(Stream, tmp, "Model");
 	int error = 0;
@@ -376,7 +401,7 @@ void LibraryDialog::slotNext()
       tmp.truncate(0);
       Doc->isVerilog = true;
       Doc->isAnalog = false;
-#warning      ///TODO ret = Doc->createLibNetlist(&ts, ErrText, 0); //Schematic::createLibNetlist still on Q3TextStream
+      ret = Doc->createLibNetlist(&ts, ErrText, 0);
       if(ret) {
 	intoStream(Stream, tmp, "VerilogModel");
 	int error = 0;
@@ -409,7 +434,7 @@ void LibraryDialog::slotNext()
       tmp.truncate(0);
       Doc->isVerilog = false;
       Doc->isAnalog = false;
-#warning  ///TODO ret = Doc->createLibNetlist(&ts, ErrText, 0); ////Schematic::createLibNetlist still on Q3TextStream
+      ret = Doc->createLibNetlist(&ts, ErrText, 0);
       if(ret) {
 	intoStream(Stream, tmp, "VHDLModel");
 	int error = 0;
@@ -470,7 +495,6 @@ void LibraryDialog::slotSelectAll()
     p = i.next();
     p->setChecked(true);
   }
-  //for(p = BoxList.first(); p != 0; p = BoxList.next()) p->setChecked(true);
 }
 
 // ---------------------------------------------------------------
@@ -482,5 +506,4 @@ void LibraryDialog::slotSelectNone()
     p = i.next();
     p->setChecked(false);
   }
-  //for(p = BoxList.first(); p != 0; p = BoxList.next()) p->setChecked(false);
 }
