@@ -37,7 +37,7 @@ app_PROGS = $(top_builddir)/qucs/qucs \
   $(top_builddir)/qucs-edit/qucsedit \
   $(top_builddir)/qucs-transcalc/qucstrans
 
-install-exec-hook: mac-install-apps mac-install-framework
+install-exec-hook: mac-install-apps mac-deploy-framework
 
 mac-install-apps:
 	@echo "Creating MacOSX applications...";
@@ -69,25 +69,13 @@ mac-install-apps:
 	chmod +x $(bindir)/$$app; \
 	done
 
-mac-install-framework:
+mac-deploy-framework:
 	@echo "Copying and setting up MacOSX/Qt framework...";
-	@if test -e "$(QTDIR)/lib/libqt.3.dylib"; then \
-	  qtlib="$(QTDIR)/lib/libqt.3.dylib"; fi && \
-	if test -e "$(QTDIR)/lib/libqt-mt.3.dylib"; then \
-	  qtlib="$(QTDIR)/lib/libqt-mt.3.dylib"; fi && \
-	if ! test -z "$$qtlib"; then \
-	  $(mkinstalldirs) "$(bindir)/qucs.app/Contents/Frameworks"; \
-	  cp "$$qtlib" "$(bindir)/qucs.app/Contents/Frameworks/"; \
-	  qtlib=`basename $$qtlib`; \
-	  install_name_tool -id "@executable_path/../Frameworks/$$qtlib" \
-	    "$(bindir)/qucs.app/Contents/Frameworks/$$qtlib"; \
-	  list='$(app_PROGS)'; for file in $$list; do \
-	  app=`basename $$file` && \
-	  install_name_tool -change $$qtlib \
-	    "@executable_path/../../../qucs.app/Contents/Frameworks/$$qtlib" \
-	    "$(bindir)/$$app.app/Contents/MacOS/$$app"; \
-	  done; \
-	fi
+	@list='$(app_PROGS)'; for file in $$list; do \
+	app=`basename $$file`; \
+	echo "running: macdeployqt $(bindir)/$${app}.app"; \
+	macdeployqt $(bindir)/$$app.app; \
+	done
 
 uninstall-hook:
 	@list='$(app_PROGS)'; for file in $$list; do \
