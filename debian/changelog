@@ -1,3 +1,21 @@
+qucs (0.0.17.130606-3) raring; urgency=low
+
+  * Fixed #91, print malformed on windows
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 06 Jun 2013 22:43:11 +0200
+
+qucs (0.0.17.130606-2) quantal; urgency=low
+
+  * Fixed #91, print malformed on windows
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 06 Jun 2013 22:41:52 +0200
+
+qucs (0.0.17.130606-1) precise; urgency=low
+
+  * Fixed #91, print malformed on windows
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 06 Jun 2013 22:34:40 +0200
+
 qucs (0.0.17.130601-3) raring; urgency=low
 
   * Lots of porting / removing Q3Support
