@@ -42,7 +42,7 @@
 
 
 QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
-			: QDialog(parent, name)// , TRUE, Qt::WDestructiveClose)
+			: QDialog(parent, name)
 {
   App = parent;
   setWindowTitle(tr("Edit Qucs Properties"));
@@ -51,7 +51,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
   Validator  = new QRegExpValidator(Expr, this);
 
   all = new QVBoxLayout(this); // to provide the neccessary size
-  QTabWidget *t = new QTabWidget(this);
+  QTabWidget *t = new QTabWidget();
   all->addWidget(t);
 
   // ...........................................................
@@ -169,45 +169,45 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
   connect(ColorTask, SIGNAL(clicked()), SLOT(slotColorTask()));
   gp3->addWidget(ColorTask,3,2);
 
+
   t->addTab(Tab3, tr("Source Code Editor"));
 
   // ...........................................................
   QWidget *Tab2 = new QWidget(t);
-  QGridLayout *gp2 = new QGridLayout(Tab2);//,5,3,3,3);
+  QGridLayout *gp2 = new QGridLayout(Tab2);
 
   QLabel *note = new QLabel(
      tr("Register filename extensions here in order to\nopen files with an appropriate program."));
   gp2->addWidget(note,0,0,1,2);
-/*
-  List_Suffix = new Q3ListView(Tab2);  //QListView on Qt4 only takes 1 column
-  List_Suffix->addColumn(tr("Suffix"));
-  List_Suffix->addColumn(tr("Program"));
-  gp2->addMultiCellWidget(List_Suffix,1,4,0,0);
-  connect(List_Suffix, SIGNAL(clicked(Q3ListViewItem*)),
-		SLOT(slotEditSuffix(Q3ListViewItem*)));
-*/
-  
-  tableView = new QTableView();
-  model = new QStandardItemModel( 0, 2);  // rows, cols
-  
-  model->setHorizontalHeaderItem( 0, new QStandardItem( QString(tr("Suffix")) ) );
-  model->setHorizontalHeaderItem( 1, new QStandardItem( QString(tr("Program")) ) ); 
-  tableView->setModel(model);
-  
-  //connect(tableView,SIGNAL(clicked(QModelIndex)), 
-  //        this, SLOT(slotEditSuffix2(const QModelIndex &)));
-  
-  connect(tableView, SIGNAL(clicked(QModelIndex)), this, SLOT(slotEditSuffix2()));
-  
- // connect(table, SIGNAL(pressed(const QModelIndex &)), this, SLOT(rowClicked(const QModelindex &)));
- 
-  gp2->addWidget(tableView,1,0,3,1);
-  
+
+  tableWidget = new QTableWidget(Tab2);
+  tableWidget->setColumnCount(2);
+
+  QTableWidgetItem *item1 = new QTableWidgetItem();
+  QTableWidgetItem *item2 = new QTableWidgetItem();
+
+  tableWidget->setHorizontalHeaderItem(0, item1);
+  tableWidget->setHorizontalHeaderItem(1, item2);
+
+  item1->setText(tr("Suffix"));
+  item2->setText(tr("Program"));
+
+  tableWidget->horizontalHeader()->setStretchLastSection(true);
+  tableWidget->verticalHeader()->hide();
+  connect(tableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotTableCliked(int,int)));
+  gp2->addWidget(tableWidget,1,0,3,1);
+
   // fill listview with already registered file extensions
   QStringList::Iterator it = QucsSettings.FileTypes.begin();
   while(it != QucsSettings.FileTypes.end()) {
-    //new Q3ListViewItem(List_Suffix,  //FIXME
-    //    (*it).section('/',0,0), (*it).section('/',1,1));
+    int row = tableWidget->rowCount();
+    tableWidget->setRowCount(row+1);
+    QTableWidgetItem *suffix = new QTableWidgetItem(QString((*it).section('/',0,0)));
+    QTableWidgetItem *program = new QTableWidgetItem(QString((*it).section('/',1,1)));
+    suffix->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    program->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    tableWidget->setItem(row, 0, suffix);
+    tableWidget->setItem(row, 1, program);
     it++;
   }
 
@@ -235,7 +235,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
 
   // ...........................................................
   // buttons on the bottom of the dialog (independent of the TabWidget)
-  QHBoxLayout *Butts = new QHBoxLayout(this);
+  QHBoxLayout *Butts = new QHBoxLayout();
   Butts->setSpacing(3);
   Butts->setMargin(3);
   all->addLayout(Butts);
@@ -257,7 +257,6 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
 
   // ...........................................................
   // fill the fields with the Qucs-Properties
-
   Font  = QucsSettings.font;
   FontButton->setText(Font.toString());
   BGColorButton->setPaletteBackgroundColor(QucsSettings.BGColor);
@@ -280,82 +279,51 @@ QucsSettingsDialog::~QucsSettingsDialog()
 }
 
 // -----------------------------------------------------------
-/*void QucsSettingsDialog::slotEditSuffix(Q3ListViewItem *Item)
-{
-  if(Item) {
-    Input_Suffix->setText(Item->text(0));
-    Input_Program->setText(Item->text(1));
-  }
-  else {
-    Input_Suffix->setFocus();
-    Input_Suffix->setText("");
-    Input_Program->setText("");
-  }
-}
-*/
-void QucsSettingsDialog::slotEditSuffix2()
-{
-    qDebug() << "clicked";
-    qDebug() << tableView->selectionModel()->selectedColumns();
-    
-}
-
-// -----------------------------------------------------------
 void QucsSettingsDialog::slotAdd()
 {
-    int rowCount = model->rowCount();
-    QStandardItem *suffix  = new QStandardItem(Input_Suffix->text());
-    QStandardItem *program = new QStandardItem(Input_Program->text());
-    model->setItem(rowCount, 0, suffix);
-    model->setItem(rowCount, 1, program);
-    qDebug() << model->rowCount();
-    
-    QMessageBox msgBox;
-    msgBox.setText("Feature not fully implemented!");
-    msgBox.exec();
-    
-    /*
-  Q3ListViewItem *Item = List_Suffix->selectedItem();
-  if(Item) {
-    Item->setText(0, Input_Suffix->text());
-    Item->setText(1, Input_Program->text());
-    return;
-  }
-
-
-  for(Item = List_Suffix->firstChild(); Item!=0; Item = Item->itemBelow())
-    if(Item->text(0) == Input_Suffix->text()) {
-      QMessageBox::critical(this, tr("Error"),
-			tr("This suffix is already registered!"));
+    QModelIndexList indexes = tableWidget->selectionModel()->selection().indexes();
+    if (indexes.count()){
+      tableWidget->item(indexes.at(0).row(),0)->setText(Input_Suffix->text());
+      tableWidget->item(indexes.at(0).row(),1)->setText(Input_Program->text());
+      tableWidget->selectionModel()->clear();
       return;
     }
 
-  List_Suffix->ensureItemVisible(
-      new Q3ListViewItem(List_Suffix, List_Suffix->lastItem(),
-          Input_Suffix->text(), Input_Program->text()));
-  Input_Suffix->setFocus();
-  Input_Suffix->setText("");
-  Input_Program->setText("");*/
+    //check before append
+    for(int r=0; r < tableWidget->rowCount(); r++)
+      if(tableWidget->item(r,0)->text() == Input_Suffix->text()) {
+        QMessageBox::critical(this, tr("Error"),
+              tr("This suffix is already registered!"));
+        return;
+      }
+
+    int row = tableWidget->rowCount();
+    tableWidget->setRowCount(row+1);
+
+    QTableWidgetItem *newSuffix = new QTableWidgetItem(QString(Input_Suffix->text()));
+    newSuffix->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    tableWidget->setItem(row, 0, newSuffix);
+
+    QTableWidgetItem *newProgram = new QTableWidgetItem(Input_Program->text());
+    tableWidget->setItem(row, 1, newProgram);
+    newProgram->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+
+    Input_Suffix->setFocus();
+    Input_Suffix->clear();
+    Input_Program->clear();
 }
 
 // -----------------------------------------------------------
 void QucsSettingsDialog::slotRemove()
 {
-    model->removeRow(model->rowCount()-1); 
-    qDebug() << model->rowCount();
-    
-    QMessageBox msgBox;
-    msgBox.setText("Feature not fully implemented!");
-    msgBox.exec();
-    /*
-  Q3ListViewItem *Item = List_Suffix->selectedItem();
-  if(Item == 0) return;
-
-  List_Suffix->takeItem(Item);   // remove from ListView
-  delete Item;
-
-  Input_Suffix->setText("");
-  Input_Program->setText("");*/
+    QModelIndexList indexes = tableWidget->selectionModel()->selection().indexes();
+    if (indexes.count()){
+      tableWidget->removeRow(indexes.at(0).row());
+      tableWidget->selectionModel()->clear();
+      Input_Suffix->setText("");
+      Input_Program->setText("");
+      return;
+    }
 }
 
 // -----------------------------------------------------------
@@ -444,12 +412,12 @@ void QucsSettingsDialog::slotApply()
     changed = true;
   }
 
-  /* FIXME
-  Q3ListViewItem *Item;
   QucsSettings.FileTypes.clear();
-  for(Item = List_Suffix->firstChild(); Item!=0; Item = Item->itemBelow())
-    QucsSettings.FileTypes.append(Item->text(0)+"/"+Item->text(1));
-*/
+  for (int row=0; row < tableWidget->rowCount(); row++){
+      QucsSettings.FileTypes.append(tableWidget->item(row,0)->text()
+                                    +"/"+
+                                    tableWidget->item(row,1)->text());
+  }
 
   saveApplSettings(App);  // also sets the small and large font
   if(changed)
@@ -577,5 +545,11 @@ void QucsSettingsDialog::slotColorTask()
   QColor c = QColorDialog::getColor(
 		ColorTask->paletteForegroundColor(), this);
   if(c.isValid())
-    ColorTask->setPaletteForegroundColor(c);
+      ColorTask->setPaletteForegroundColor(c);
+}
+
+void QucsSettingsDialog::slotTableCliked(int row, int col)
+{
+    Input_Suffix->setText(tableWidget->item(row,0)->text());
+    Input_Program->setText(tableWidget->item(row,1)->text());
 }
