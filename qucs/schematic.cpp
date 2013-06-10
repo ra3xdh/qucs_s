@@ -641,7 +641,6 @@ void Schematic::print(QPrinter*, QPainter *Painter, bool printAll, bool fitToPag
       selected = pc->isSelected;
       pc->isSelected = false;
       pc->print(&p, screenDpiX / printerDpiX);
-//#endif
       pc->isSelected = selected;
     }
 
