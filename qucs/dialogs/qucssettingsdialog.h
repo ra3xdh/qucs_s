@@ -51,8 +51,6 @@ private slots:
   void slotDefaultValues();
   void slotAdd();
   void slotRemove();
-  //void slotEditSuffix(Q3ListViewItem*);
-  void slotEditSuffix2();
   void slotColorComment();
   void slotColorString();
   void slotColorInteger();
@@ -62,6 +60,7 @@ private slots:
   void slotColorAttribute();
   void slotColorDirective();
   void slotColorTask();
+  void slotTableCliked(int,int);
 
 public:
   QucsApp *App;
@@ -71,8 +70,7 @@ public:
   QComboBox *LanguageCombo;
   QPushButton *FontButton, *BGColorButton;
   QLineEdit *undoNumEdit, *editorEdit, *Input_Suffix, *Input_Program;
-  //Q3ListView *List_Suffix;
-  QTableView *tableView;
+  QTableWidget *tableWidget;
   QStandardItemModel *model;
   QPushButton *ColorComment, *ColorString, *ColorInteger,
        *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
