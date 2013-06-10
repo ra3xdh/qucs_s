@@ -431,16 +431,16 @@ void SimMessage::startSimulator()
 		    << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
 		    << pathName(QucsSettings.BinDir) << "-c";
       } else {
-#ifdef __MINGW32__
+//#ifdef __MINGW32__
 	CommandLine << pathName(QucsSettings.BinDir + QucsDigi)
 		    << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
 		    << pathName(QucsSettings.BinDir) << "-Wl" << "-c";
-#else
+/*#else
 	CommandLine << pathName(QucsSettings.BinDir + QucsDigi)
 		    << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
 		    << pathName(QucsSettings.BinDir) << "-c";
 
-#endif
+#endif*/
       }
     }
   }
