@@ -427,6 +427,7 @@ void SimMessage::startSimulator()
                           << "-i" << QucsHomeDir.filePath("netlist.txt") << "-o" << DataSet;
           }
       } else {
+          ProgText->insert(tr("compiling netlist...")+"\n");
           if (isVerilog) {
               CommandLine << pathName(QucsSettings.BinDir + QucsVeri)
                           << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
