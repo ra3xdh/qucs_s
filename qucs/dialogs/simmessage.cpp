@@ -177,7 +177,8 @@ void SimMessage::nextSPICE()
       startSimulator(); // <<<<<================== go on ===
       return;
     }
-    if(Line.left(5) == "SPICE") {
+
+    if(Line.length()>=5 && Line.left(5) == "SPICE") {
       if(Line.at(5) != 'o') insertSim = true;
       else insertSim = false;
       break;
@@ -382,67 +383,67 @@ void SimMessage::startSimulator()
   }
   // Simulate schematic window.
   else {
-    // output NodeSets, SPICE simulations etc.
-    for(QStringList::Iterator it = Collect.begin();
-	it != Collect.end(); ++it) {
-      // don't put library includes into netlist...
-      if ((*it).right(4) != ".lst" &&
-	  (*it).right(5) != ".vhdl" &&
-	  (*it).right(4) != ".vhd" &&
-	  (*it).right(2) != ".v") {
-	Stream << *it << '\n';
+      // output NodeSets, SPICE simulations etc.
+      for(QStringList::Iterator it = Collect.begin();
+          it != Collect.end(); ++it) {
+          // don't put library includes into netlist...
+          if ((*it).right(4) != ".lst" &&
+                  (*it).right(5) != ".vhdl" &&
+                  (*it).right(4) != ".vhd" &&
+                  (*it).right(2) != ".v") {
+              Stream << *it << '\n';
+          }
       }
-    }
-    Stream << '\n';
+      Stream << '\n';
 
-    isVerilog = ((Schematic*)DocWidget)->isVerilog;
-    SimTime = ((Schematic*)DocWidget)->createNetlist(Stream, SimPorts);
-    if(SimTime.length()>0&&SimTime.at(0) == '\xA7') {
-      NetlistFile.close();
-      ErrText->insert(SimTime.mid(1));
-      FinishSimulation(-1);
-      return;
-    }
-    if (isVerilog) {
-      Stream << "\n"
-	     << "  initial begin\n"
-	     << "    $dumpfile(\"digi.vcd\");\n"
-	     << "    $dumpvars();\n"
-	     << "    #" << SimTime << " $finish;\n"
-	     << "  end\n\n"
-	     << "endmodule // TestBench\n";
-    }
-    NetlistFile.close();
-    ProgText->insert(tr("done.")+"\n");  // of "creating netlist... 
-
-    if(SimPorts < 0) {
-      if((SimOpt = findOptimization((Schematic*)DocWidget))) {
-	((Optimize_Sim*)SimOpt)->createASCOnetlist();
-	CommandLine << QucsSettings.AscoDir + "asco" << "-qucs" <<
-	  QucsHomeDir.filePath("asco_netlist.txt") << "-o" << "asco_out";
+      isVerilog = ((Schematic*)DocWidget)->isVerilog;
+      SimTime = ((Schematic*)DocWidget)->createNetlist(Stream, SimPorts);
+      if(SimTime.length()>0&&SimTime.at(0) == '\xA7') {
+          NetlistFile.close();
+          ErrText->insert(SimTime.mid(1));
+          FinishSimulation(-1);
+          return;
       }
-      else {
-	CommandLine << QucsSettings.BinDir + "qucsator" << "-b" << "-g"
-           << "-i" << QucsHomeDir.filePath("netlist.txt") << "-o" << DataSet;
-      }
-    } else {
       if (isVerilog) {
-	CommandLine << pathName(QucsSettings.BinDir + QucsVeri)
-		    << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
-		    << pathName(QucsSettings.BinDir) << "-c";
+          Stream << "\n"
+                 << "  initial begin\n"
+                 << "    $dumpfile(\"digi.vcd\");\n"
+                 << "    $dumpvars();\n"
+                 << "    #" << SimTime << " $finish;\n"
+                 << "  end\n\n"
+                 << "endmodule // TestBench\n";
+      }
+      NetlistFile.close();
+      ProgText->insert(tr("done.")+"\n");  // of "creating netlist...
+
+      if(SimPorts < 0) {
+          if((SimOpt = findOptimization((Schematic*)DocWidget))) {
+              ((Optimize_Sim*)SimOpt)->createASCOnetlist();
+              CommandLine << QucsSettings.AscoDir + "asco" << "-qucs" <<
+                             QucsHomeDir.filePath("asco_netlist.txt") << "-o" << "asco_out";
+          }
+          else {
+              CommandLine << QucsSettings.BinDir + "qucsator" << "-b" << "-g"
+                          << "-i" << QucsHomeDir.filePath("netlist.txt") << "-o" << DataSet;
+          }
       } else {
-//#ifdef __MINGW32__
-	CommandLine << pathName(QucsSettings.BinDir + QucsDigi)
-		    << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
-		    << pathName(QucsSettings.BinDir) << "-Wl" << "-c";
-/*#else
-	CommandLine << pathName(QucsSettings.BinDir + QucsDigi)
-		    << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
-		    << pathName(QucsSettings.BinDir) << "-c";
+          if (isVerilog) {
+              CommandLine << pathName(QucsSettings.BinDir + QucsVeri)
+                          << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
+                          << pathName(QucsSettings.BinDir) << "-c";
+          } else {
+              //#ifdef __MINGW32__
+              CommandLine << pathName(QucsSettings.BinDir + QucsDigi)
+                          << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
+                          << pathName(QucsSettings.BinDir) << "-Wl" << "-c";
+              /*#else
+    CommandLine << pathName(QucsSettings.BinDir + QucsDigi)
+            << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
+            << pathName(QucsSettings.BinDir) << "-c";
 
 #endif*/
+          }
       }
-    }
   }
 
   SimProcess.setArguments(CommandLine);
