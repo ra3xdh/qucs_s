@@ -55,7 +55,8 @@ XPMS = ac_voltage.png arrow.png capacitor.png dc_current.png dc_voltage.png   \
   pad4bit.png binarytogrey4bit.png greytobinary4bit.png comp_1bit.png         \
   comp_2bit.png comp_4bit.png hpribin4bit.png msrstub.png phototransistor.png \
   rlcg.png nigbt.png hybrid.png ctline.png tunneldiode.png hicumL2V2p31n.png  \
-  bsim3v34nMOS.png  bsim3v34pMOS.png  
+  bsim3v34nMOS.png  bsim3v34pMOS.png bsim4v30nMOS.png  bsim4v30pMOS.png  
+
 
 # toolbar pictures
 PNGS = fileopen.png filesave.png editdelete.png editcut.png editcopy.png      \
