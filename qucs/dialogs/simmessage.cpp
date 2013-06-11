@@ -164,7 +164,7 @@ bool SimMessage::startProcess()
   // Since now, the Doc pointer may be obsolete, as the user could have
   // closed the schematic !!!
 }
-  
+
 // ---------------------------------------------------
 // Converts a spice netlist into Qucs format and outputs it.
 void SimMessage::nextSPICE()
@@ -213,7 +213,7 @@ void SimMessage::nextSPICE()
 
   if(makeSubcircuit) {
     Stream << "\n.Def:" << properName(FileName) << " ";
-  
+
     Line.replace(',', ' ');
     Stream << Line;
     if(!Line.isEmpty()) Stream << " _ref";
@@ -320,7 +320,7 @@ void SimMessage::startSimulator()
     // Take VHDL file in memory as it could contain unsaved changes.
     Stream << Doc->text();
     NetlistFile.close();
-    ProgText->insert(tr("done.")+"\n");  // of "creating netlist... 
+    ProgText->insert(tr("done.")+"\n");  // of "creating netlist...
 
     // Simulation.
     if (Doc->simulation) {
@@ -459,7 +459,7 @@ void SimMessage::startSimulator()
 #endif
   wasLF = false;
   ProgressText = "";
-  
+
   if(!SimProcess.start()) {
     ErrText->insert(tr("ERROR: Cannot start simulator!"));
     FinishSimulation(-1);
