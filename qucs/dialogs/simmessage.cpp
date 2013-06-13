@@ -175,7 +175,7 @@ bool SimMessage::startProcess()
   // Since now, the Doc pointer may be obsolete, as the user could have
   // closed the schematic !!!
 }
-
+  
 // ---------------------------------------------------
 // Converts a spice netlist into Qucs format and outputs it.
 void SimMessage::nextSPICE()
@@ -190,7 +190,7 @@ void SimMessage::nextSPICE()
     }
 #warning SPICE section below not being covered?
     qDebug() << "goin thru SPICE branch on simmmessage.cpp";
-    if(Line.length()>=5 && Line.left(5) == "SPICE") {
+    if(Line.left(5) == "SPICE") {
       if(Line.at(5) != 'o') insertSim = true;
       else insertSim = false;
       break;
@@ -224,7 +224,7 @@ void SimMessage::nextSPICE()
 
   if(makeSubcircuit) {
     Stream << "\n.Def:" << properName(FileName) << " ";
-
+  
     Line.replace(',', ' ');
     Stream << Line;
     if(!Line.isEmpty()) Stream << " _ref";
@@ -337,7 +337,7 @@ void SimMessage::startSimulator()
     // Take VHDL file in memory as it could contain unsaved changes.
     Stream << Doc->text();
     NetlistFile.close();
-    ProgText->insert(tr("done.")+"\n");  // of "creating netlist...
+    ProgText->insert(tr("done.")+"\n");  // of "creating netlist... 
 
     // Simulation.
     if (Doc->simulation) {
@@ -400,16 +400,15 @@ void SimMessage::startSimulator()
   }
   // Simulate schematic window.
   else {
-      // output NodeSets, SPICE simulations etc.
-      for(QStringList::Iterator it = Collect.begin();
-          it != Collect.end(); ++it) {
-          // don't put library includes into netlist...
-          if ((*it).right(4) != ".lst" &&
-                  (*it).right(5) != ".vhdl" &&
-                  (*it).right(4) != ".vhd" &&
-                  (*it).right(2) != ".v") {
-              Stream << *it << '\n';
-          }
+    // output NodeSets, SPICE simulations etc.
+    for(QStringList::Iterator it = Collect.begin();
+	it != Collect.end(); ++it) {
+      // don't put library includes into netlist...
+      if ((*it).right(4) != ".lst" &&
+	  (*it).right(5) != ".vhdl" &&
+	  (*it).right(4) != ".vhd" &&
+	  (*it).right(2) != ".v") {
+	Stream << *it << '\n';
       }
     }
     Stream << '\n';
@@ -447,8 +446,8 @@ void SimMessage::startSimulator()
                   << QucsHomeDir.filePath("netlist.txt") 
                   << "-o" << DataSet;
       }
+    } else {
       if (isVerilog) {
-
           Program = pathName(QucsSettings.BinDir + QucsVeri);
 		  Arguments << "netlist.txt" << DataSet 
                     << SimTime << pathName(SimPath)
@@ -465,6 +464,7 @@ void SimMessage::startSimulator()
 
 #endif
       }
+    }
   }
 
   disconnect(&SimProcess, 0, 0, 0);
@@ -478,7 +478,6 @@ void SimMessage::startSimulator()
   wasLF = false;
   
   ProgressText = "";
-
   
   SimProcess.start(Program, Arguments); // launch the program
   
