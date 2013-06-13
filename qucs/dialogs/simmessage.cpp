@@ -460,7 +460,7 @@ void SimMessage::startSimulator()
 #else
 	Program = pathName(QucsSettings.BinDir + QucsDigi);
 	Arguments << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
-		      << pathName(QucsSettings.BinDir) << "-c";
+		      << pathName(QucsSettings.BinDir) << "-Wall" << "-c";
 
 #endif
       }
