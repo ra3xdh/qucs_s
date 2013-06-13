@@ -60,7 +60,7 @@ CXX=`freehdl-config --cxx`
 CXXFLAGS=`freehdl-config --cxxflags`
 LIBS=`freehdl-config --libtool`
 IEEELIBS=`freehdl-config --ieee`
-LDFLAGS=`freehdl-config --ldflags`
+LDFLAGS=`freehdl-config --ldflags|sed -e 's/ @LDFLAGS@/\/freehdl/g'|sed -e 's/@LIBS@//g'`
 LIBTOOL=`freehdl-config --linker`
 
 cp $NAME digi.vhdl
@@ -76,7 +76,7 @@ echo " done."
 
 echo -n "compiling main..."
 $CXX $CXXFLAGS -c $NAME._main_.cc
-echo " done."
+echo " done."cd
 
 echo -n "linking..."
 
@@ -86,7 +86,6 @@ LTFLAGS="--mode=link"
 if [ $LIBTOOL = "glibtool" ]; then
     LTFLAGS="$LTFLAGS --tag=CC"
 fi
-
 #$CXX -o $NAME $NAME._main_.o $NAME.o -L /usr/lib/freehdl -lfreehdl-kernel -lfreehdl-std -Lieee
 $LIBTOOL $LTFLAGS $CXX $NAME._main_.o $NAME.o $LDFLAGS $VLIBS $LIBS $IEEELIBS -o $NAME
 echo " done."
