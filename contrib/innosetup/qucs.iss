@@ -166,9 +166,9 @@ function DownloadOctave: Boolean;
 var
   ErrCode: Integer;
 begin
-  MsgBox('A browser will be opened to download Octave 3.6.2 Setup', mbConfirmation, MB_OK);
+  MsgBox('A browser will be opened to download Octave 3.6.4 Setup', mbConfirmation, MB_OK);
   Result := True;
-  ShellExec('open', 'http://sourceforge.net/projects/octave/files/Octave%20Windows%20binaries/Octave%203.6.2%20for%20Windows%20Microsoft%20Visual%20Studio/octave-3.6.2-vs2010-setup.exe/download',
+  ShellExec('open', 'http://sourceforge.net/projects/octave/files/Octave%20Windows%20binaries/Octave%203.6.4%20for%20Windows%20Microsoft%20Visual%20Studio/octave-3.6.4-vs2010-setup.exe/download',
       '', '', SW_SHOW, ewNoWait, ErrCode);
 end;
 
