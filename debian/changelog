@@ -1,3 +1,30 @@
+qucs (0.0.17.130613-3) raring; urgency=low
+
+  * Added BSIM4 models
+  * Added BSIM3 and BSIM4 examples
+  * Fixed Bug #98
+  * Fixed hybrid coupler #90
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 13 Jun 2013 23:50:10 +0200
+
+qucs (0.0.17.130613-2) quantal; urgency=low
+
+  * Added BSIM4 models
+  * Added BSIM3 and BSIM4 examples
+  * Fixed Bug #98
+  * Fixed hybrid coupler #90
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 13 Jun 2013 23:49:02 +0200
+
+qucs (0.0.17.130613-1) precise; urgency=low
+
+  * Added BSIM4 models
+  * Added BSIM3 and BSIM4 examples
+  * Fixed Bug #98
+  * Fixed hybrid coupler #90
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 13 Jun 2013 23:44:34 +0200
+
 qucs (0.0.17.130606-3) raring; urgency=low
 
   * Fixed #91, print malformed on windows
