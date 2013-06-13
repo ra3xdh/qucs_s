@@ -18,19 +18,20 @@
 #ifndef SIMMESSAGE_H
 #define SIMMESSAGE_H
 
-#include <qdialog.h>
-#include <q3process.h>
-#include <qstringlist.h>
-#include <qfile.h>
-//Added by qt3to4:
-#include <Q3TextStream>
-#include <Q3VBoxLayout>
+#include <QDialog>
+#include <QProcess>
+#include <QStringList>
+#include <QFile>
+#include <QTextStream>
+#include <QVBoxLayout>
 
-class Q3TextEdit;
-class Q3VBoxLayout;
+class QTextEdit;
+class QTextStream;
+class QVBoxLayout;
 class QPushButton;
-class Q3ProgressBar;
-
+class QProgressBar;
+class QProcess;
+class QFile;
 class Component;
 class Schematic;
 
@@ -56,11 +57,11 @@ private slots:
   void slotDisplayMsg();
   void slotDisplayErr();
   void slotCloseStdin();
-  void slotSimEnded();
+  void slotSimEnded(int status);
   void slotDisplayButton();
 
   void slotReadSpiceNetlist();
-  void slotFinishSpiceNetlist();
+  void slotFinishSpiceNetlist(int status);
 
 /* #ifdef SPEEDUP_PROGRESSBAR
   void slotUpdateProgressBar();
@@ -83,11 +84,11 @@ public:
   bool SimRunScript;
   QString DocName, DataSet, DataDisplay, Script;
 
-  Q3Process      SimProcess;
-  Q3TextEdit    *ProgText, *ErrText;
+  QProcess      SimProcess;
+  QTextEdit    *ProgText, *ErrText;
   bool          wasLF;   // linefeed for "ProgText"
   QPushButton  *Display, *Abort;
-  Q3ProgressBar *SimProgress;
+  QProgressBar *SimProgress;
   QString       ProgressText;
 
   Component    *SimOpt;
@@ -95,9 +96,9 @@ public:
   bool          makeSubcircuit, insertSim;
   QStringList   Collect;
   QFile         NetlistFile;
-  Q3TextStream   Stream;
+  QTextStream   Stream;
 
-  Q3VBoxLayout  *all;
+  QVBoxLayout  *all;
 };
 
 #endif

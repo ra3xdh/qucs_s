@@ -29,6 +29,7 @@
 #include <QCheckBox>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QStackedWidget>
 
 class QLabel;
 class QucsApp;
@@ -39,34 +40,47 @@ class QVBoxLayout;
 class QTreeWidgetItem;
 class QGroupBox;
 class QRegExpValidator;
+class QStackedWidget;
 
 
 class LibraryDialog : public QDialog {
    Q_OBJECT
 public:
-  LibraryDialog(QucsApp*, QTreeWidgetItem*);  
+  LibraryDialog(QucsApp*, QTreeWidgetItem*);
  ~LibraryDialog();
 
 private slots:
-  void slotCreate();
-  void slotNext();
+  void slotCreateNext();
+  void slotSave();
   void slotSelectNone();
   void slotSelectAll();
+  void slotCheckDescrChanged(int);
+  void slotPrevDescr();
+  void slotNextDescr();
+  void slotUpdateDescription();
 
 private:
   void intoStream(QTextStream&, QString&, const char*);
   int intoFile(QString&, QString&,  QStringList&);
 
 private:
+  int curDescr;
   QVBoxLayout *all;   // the mother of all widgets
+  QStackedWidget *stackedWidgets;
   QLabel *theLabel;
+  QLabel *checkedCktName;
+  QLabel *libSaveName;
   QLineEdit *NameEdit;
   QTextEdit *ErrText;
+  QTextEdit *textDescr;
   QGroupBox *Group;
-  QPushButton *ButtCreate, *ButtCancel, *ButtSelectAll, *ButtSelectNone;
-  //Q3PtrList<QCheckBox> BoxList;
+  QPushButton *ButtCreateNext, *ButtCancel, *ButtSelectAll, *ButtSelectNone;
+  QPushButton *prevButt, *nextButt;
+  QPushButton *createButt;
   QList<QCheckBox *> BoxList;
+  QStringList SelectedNames;
   QStringList Descriptions;
+  QCheckBox *checkDescr;
 
   QucsApp *App;
   QFile LibFile;

@@ -166,7 +166,7 @@ QString SpiceFile::getSubcircuitFile()
 }
 
 // -------------------------------------------------------------------------
-bool SpiceFile::createSubNetlist(Q3TextStream *stream)
+bool SpiceFile::createSubNetlist(QTextStream *stream)
 {
   // check file name
   QString FileName = Props.first()->Value;
@@ -200,7 +200,7 @@ bool SpiceFile::createSubNetlist(Q3TextStream *stream)
       return false;
     }
     outstream = stream;
-    filstream = new Q3TextStream(&ConvFile);
+    filstream = new QTextStream(&ConvFile);
     QString SpiceName = SpiceFile.name();
     bool ret = recreateSubNetlist(&SpiceName, &FileName);
     ConvFile.close();
@@ -217,7 +217,8 @@ bool SpiceFile::createSubNetlist(Q3TextStream *stream)
   }
   QByteArray FileContent = ConvFile.readAll();
   ConvFile.close();
-  stream->writeRawBytes(FileContent.data(), FileContent.size());
+  //? stream->writeRawBytes(FileContent.data(), FileContent.size());
+  (*stream) << FileContent.data();
   return true;
 }
 
@@ -291,7 +292,7 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
 	  arg(PrepName);
 	return false;
       }
-      prestream = new Q3TextStream(&PrepFile);
+      prestream = new QTextStream(&PrepFile);
     }
 
     if(!SpicePrep->start()) {

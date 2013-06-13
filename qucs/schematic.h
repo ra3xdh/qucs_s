@@ -41,6 +41,7 @@
 #include <qstringlist.h>
 
 class Q3TextEdit;
+class QTextEdit;
 
 // digital signal data
 struct DigSignal {
@@ -241,11 +242,11 @@ private:
    ******************************************************************** */
 
 public:
-  bool createLibNetlist(Q3TextStream*, Q3TextEdit*, int);
-  bool createSubNetlist(Q3TextStream*, int&, QStringList&, Q3TextEdit*, int);
-  void createSubNetlistPlain(Q3TextStream*, Q3TextEdit*, int);
-  int  prepareNetlist(Q3TextStream&, QStringList&, Q3TextEdit*);
-  QString createNetlist(Q3TextStream&, int);
+  bool createLibNetlist(QTextStream*, QTextEdit*, int);
+  bool createSubNetlist(QTextStream *, int&, QStringList&, QTextEdit*, int);
+  void createSubNetlistPlain(QTextStream*, QTextEdit*, int);
+  int  prepareNetlist(QTextStream&, QStringList&, QTextEdit*);
+  QString createNetlist(QTextStream&, int);
   bool loadDocument();
 
 private:
@@ -272,10 +273,10 @@ private:
   void throughAllNodes(bool, QStringList&, int&);
   void propagateNode(QStringList&, int&, Node*);
   void collectDigitalSignals(void);
-  bool giveNodeNames(Q3TextStream*, int&, QStringList&, Q3TextEdit*, int);
-  void beginNetlistDigital(Q3TextStream&);
-  void endNetlistDigital(Q3TextStream&);
-  bool throughAllComps(Q3TextStream *, int&, QStringList&, Q3TextEdit *, int);
+  bool giveNodeNames(QTextStream *, int&, QStringList&, QTextEdit*, int);
+  void beginNetlistDigital(QTextStream &);
+  void endNetlistDigital(QTextStream &);
+  bool throughAllComps(QTextStream *, int&, QStringList&, QTextEdit *, int);
 
   DigMap Signals; // collecting node names for VHDL signal declarations
   QStringList PortTypes;

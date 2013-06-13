@@ -29,7 +29,7 @@ public:
  ~LibComp() {};
   Component* newOne();
 
-  bool createSubNetlist(Q3TextStream*, QStringList&, int type=1);
+  bool createSubNetlist(QTextStream *, QStringList&, int type=1);
   QString getSubcircuitFile();
 
 protected:

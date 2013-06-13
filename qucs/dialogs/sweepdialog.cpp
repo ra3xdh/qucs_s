@@ -18,18 +18,17 @@
 #include "sweepdialog.h"
 #include "schematic.h"
 #include "qucs.h"
-//Added by qt3to4:
-#include <Q3GridLayout>
+
+#include <QGridLayout>
 #include "main.h"
 #include "../diagrams/graph.h"
 
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <qvalidator.h>
-#include <qpushbutton.h>
+#include <QLabel>
+#include <QLineEdit>
+#include <QValidator>
+#include <QPushButton>
 
-
+// SpinBoxes are used to show the calculated bias points at the given set of sweep points
 mySpinBox::mySpinBox(int Min, int Max, int Step, double *Val, QWidget *Parent)
           : QSpinBox(Parent)
 {
@@ -61,7 +60,7 @@ QValidator::State mySpinBox::validate ( QString & text, int & pos ) const
 
 
 SweepDialog::SweepDialog(Schematic *Doc_)
-			: QDialog(Doc_, 0, TRUE, Qt::WDestructiveClose)
+			: QDialog(Doc_)//, 0, TRUE, Qt::WDestructiveClose)
 {
   Doc = Doc_;
 
@@ -78,11 +77,11 @@ SweepDialog::SweepDialog(Schematic *Doc_)
     }
 
 
-  setCaption(tr("Bias Points"));
+  setWindowTitle(tr("Bias Points"));
 
   int i = 0;
   // ...........................................................
-  Q3GridLayout *all = new Q3GridLayout(this, pGraph->cPointsX.count()+2,2,3,3);
+  QGridLayout *all = new QGridLayout(this);//, pGraph->cPointsX.count()+2,2,3,3);
   all->setMargin(5);
   all->setSpacing(5);
   all->setColStretch(1,5);

@@ -18,7 +18,7 @@
 #ifndef QUCSLIB_H
 #define QUCSLIB_H
 
-#include <QDialog>
+#include <QMainWindow>
 #include <QDir>
 #include <QFont>
 #include <QString>
@@ -45,16 +45,16 @@ struct tQucsSettings {
 extern tQucsSettings QucsSettings;
 extern QDir UserLibDir;
 
-class QucsLib : public QDialog  {
+class QucsLib : public QMainWindow  {
    Q_OBJECT
 public:
   QucsLib();
- ~QucsLib();
+  ~QucsLib();
 
-  QListWidget     *CompList;
+  QListWidget *CompList;
   QStringList   LibraryComps;
   QComboBox    *Library;
-  QString       DefaultSymbol;
+  QString DefaultSymbol;
 
 private slots:
   void slotAbout();
@@ -78,8 +78,8 @@ private:
   SymbolWidget *Symbol;
   QTextEdit    *CompDescr;
   QVBoxLayout  *all;
-
   QDir QucsHomeDir;  // Qucs user directory where all projects are located
+
 };
 
 #endif /* QUCSLIB_H */

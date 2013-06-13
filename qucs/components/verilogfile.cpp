@@ -164,7 +164,7 @@ QString Verilog_File::getSubcircuitFile()
 }
 
 // -------------------------------------------------------
-bool Verilog_File::createSubNetlist(Q3TextStream *stream)
+bool Verilog_File::createSubNetlist(QTextStream *stream)
 {
   ErrText = "";
 
@@ -191,7 +191,8 @@ bool Verilog_File::createSubNetlist(Q3TextStream *stream)
   QByteArray FileContent = f.readAll();
   f.close();
   (*stream) << '\n';
-  stream->writeRawBytes(FileContent.data(), FileContent.size());
+  //?stream->writeRawBytes(FileContent.data(), FileContent.size());
+  (*stream) << FileContent.data();
   (*stream) << '\n';
   return true;
 }
