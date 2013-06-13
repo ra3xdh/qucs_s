@@ -455,7 +455,7 @@ void SimMessage::startSimulator()
       } else {
 #ifdef __MINGW32__
 	Program = pathName(QucsSettings.BinDir + QucsDigi);
-	Argumetns << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
+	Arguments << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
 		      << pathName(QucsSettings.BinDir) << "-Wl" << "-c";
 #else
 	Program = pathName(QucsSettings.BinDir + QucsDigi);
