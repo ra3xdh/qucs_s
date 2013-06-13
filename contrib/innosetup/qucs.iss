@@ -55,7 +55,7 @@ Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "iverilog"; Description: "Install iverilog 0.9.5"; GroupDescription: "Install bundled software"; Flags: checkedonce
+Name: "iverilog"; Description: "Install iverilog 0.9.6"; GroupDescription: "Install bundled software"; Flags: checkedonce
 Name: "mingw32"; Description: "Install Mingw32 0.0.2 (Required for FreeHDL)"; GroupDescription: "Install bundled software"; Flags: checkedonce
 Name: "freehdl"; Description: "Install FreeHDL 0.0.8"; GroupDescription: "Install bundled software"; Flags: checkedonce
 Name: "octave"; Description: "Download Octave"; GroupDescription: "Install bundled software"; Flags: checkedonce
@@ -67,7 +67,7 @@ Source: "{# TREE}\bin\*"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubd
 Source: "{# TREE}\share\*"; DestDir: "{app}\share"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{# TREE}\misc\*"; DestDir: "{app}\misc"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
-Source: "{# TREE}\iverilog-0.9.5_setup.exe"; DestDir: "{tmp}"
+Source: "{# TREE}\iverilog-0.9.6_setup.exe"; DestDir: "{tmp}"
 Source: "{# TREE}\freehdl-0.0.8-setup.exe"; DestDir: "{tmp}"
 Source: "{# TREE}\mingw32-g++-0.0.2-setup.exe"; DestDir: "{tmp}"
 
@@ -79,7 +79,7 @@ Name: "{group}\{cm:UninstallProgram,Qucs}"; Filename: "{uninstallexe}"
 Name: "{userdesktop}\Qucs"; Filename: "{app}\bin\qucs.exe"; IconFilename: "{app}\misc\qucs64x64.ico"; WorkingDir: "{app}\bin"; Tasks: desktopicon
 
 [Run]
-Filename: "{tmp}\iverilog-0.9.5_setup.exe"; Parameters: ""; Tasks: iverilog 
+Filename: "{tmp}\iverilog-0.9.6_setup.exe"; Parameters: ""; Tasks: iverilog 
 Filename: "{tmp}\mingw32-g++-0.0.2-setup.exe"; Parameters: ""; Tasks: mingw32
 Filename: "{tmp}\freehdl-0.0.8-setup.exe"; Parameters: ""; Tasks: freehdl
 
