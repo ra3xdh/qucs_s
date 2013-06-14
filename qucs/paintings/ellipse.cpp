@@ -257,20 +257,20 @@ void Ellipse::MouseMoving(
 
   #warning p->setPen(Qt::SolidLine);
   if(drawn) {
-    p->PostPaintEvent(_Ellipse, cx+13, cy, 18, 12);  // erase old cursor symbol
+    p->PostPaintEvent(_Ellipse, cx+13, cy, 18, 12,0,0,true);  // erase old cursor symbol
     if(filled) {
-      p->PostPaintEvent(_Line, cx+14, cy+7, cx+20, cy+1);
-      p->PostPaintEvent(_Line, cx+25, cy+2, cx+18, cy+9);
-      p->PostPaintEvent(_Line, cx+29, cy+4, cx+23, cy+10);
+      p->PostPaintEvent(_Line, cx+14, cy+7, cx+20, cy+1,0,0,true);
+      p->PostPaintEvent(_Line, cx+25, cy+2, cx+18, cy+9,0,0,true);
+      p->PostPaintEvent(_Line, cx+29, cy+4, cx+23, cy+10,0,0,true);
     }
   }
   cx = x;
   cy = y;
-  p->PostPaintEvent(_Ellipse, cx+13, cy, 18, 12);  // paint new cursor symbol
+  p->PostPaintEvent(_Ellipse, cx+13, cy, 18, 12,0,0,true);  // paint new cursor symbol
   if(filled) {
-    p->PostPaintEvent(_Line, cx+14, cy+7, cx+20, cy+1);
-    p->PostPaintEvent(_Line, cx+25, cy+2, cx+18, cy+9);
-    p->PostPaintEvent(_Line, cx+29, cy+4, cx+23, cy+10);
+    p->PostPaintEvent(_Line, cx+14, cy+7, cx+20, cy+1,0,0,true);
+    p->PostPaintEvent(_Line, cx+25, cy+2, cx+18, cy+9,0,0,true);
+    p->PostPaintEvent(_Line, cx+29, cy+4, cx+23, cy+10,0,0,true);
   }
 }
 

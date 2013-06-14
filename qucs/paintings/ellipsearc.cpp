@@ -277,11 +277,11 @@ void EllipseArc::MouseMoving(
 
   #warning p->setPen(Qt::SolidLine);
   if(drawn)
-    p->PostPaintEvent(_Arc, x1+13, y1, 18, 12, 16*45, 16*200); // erase old cursor symbol
+    p->PostPaintEvent(_Arc, x1+13, y1, 18, 12, 16*45, 16*200,true); // erase old cursor symbol
 
   x1 = x;
   y1 = y;
-  p->PostPaintEvent(_Arc, x1+13, y1, 18, 12, 16*45, 16*200);  // paint new cursor symbol
+  p->PostPaintEvent(_Arc, x1+13, y1, 18, 12, 16*45, 16*200,true);  // paint new cursor symbol
 }
 
 // --------------------------------------------------------------------------

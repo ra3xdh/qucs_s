@@ -257,20 +257,20 @@ void Rectangle::MouseMoving(
 
   #warning p->setPen(Qt::SolidLine);
   if(drawn) {
-    p->PostPaintEvent(_Rect, cx+13, cy, 18, 12);  // erase old cursor symbol
+    p->PostPaintEvent(_Rect, cx+13, cy, 18, 12,0,0,true);  // erase old cursor symbol
     if(filled) {   // hatched ?
-      p->PostPaintEvent(_Line, cx+14, cy+6, cx+19, cy+1);
-      p->PostPaintEvent(_Line, cx+26, cy+1, cx+17, cy+10);
-      p->PostPaintEvent(_Line, cx+29, cy+5, cx+24, cy+10);
+      p->PostPaintEvent(_Line, cx+14, cy+6, cx+19, cy+1,0,0,true);
+      p->PostPaintEvent(_Line, cx+26, cy+1, cx+17, cy+10,0,0,true);
+      p->PostPaintEvent(_Line, cx+29, cy+5, cx+24, cy+10,0,0,true);
     }
   }
   cx = x;
   cy = y;
-  p->PostPaintEvent(_Rect,cx+13, cy, 18, 12);  // paint new cursor symbol
+  p->PostPaintEvent(_Rect,cx+13, cy, 18, 12,0,0,true);  // paint new cursor symbol
   if(filled) {   // hatched ?
-    p->PostPaintEvent(_Line, cx+14, cy+6, cx+19, cy+1);
-    p->PostPaintEvent(_Line, cx+26, cy+1, cx+17, cy+10);
-    p->PostPaintEvent(_Line, cx+29, cy+5, cx+24, cy+10);
+    p->PostPaintEvent(_Line, cx+14, cy+6, cx+19, cy+1,0,0,true);
+    p->PostPaintEvent(_Line, cx+26, cy+1, cx+17, cy+10,0,0,true);
+    p->PostPaintEvent(_Line, cx+29, cy+5, cx+24, cy+10,0,0,true);
   }
 }
 
