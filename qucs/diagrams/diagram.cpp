@@ -177,7 +177,7 @@ void Diagram::createAxisLabels()
   Graph *pg;
   int   x, y, w, wmax = 0;
   QString Str;
-  QFontMetrics  metrics(QucsSettings.font);
+  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
   int LineSpacing = metrics.lineSpacing();
 
 
@@ -1172,7 +1172,8 @@ bool Diagram::sameDependencies(Graph *g1, Graph *g2)
 int Diagram::checkColumnWidth(const QString& Str,
 		const QFontMetrics& metrics, int colWidth, int x, int y)
 {
-  int w = metrics.width(Str);  // width of text
+    qDebug("%i", metrics.charWidth(Str,0));
+  int w = metrics.boundingRect(Str).width();  // width of text
   if(w > colWidth) {
     colWidth = w;
     if((x+colWidth) >= x2) {    // enough space for text ?
@@ -1663,7 +1664,7 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
   else  tmp = 0;
   Arcs.append(new struct Arc(0, y2, x2, y2, tmp, 16*360-phi, QPen(Qt::black,0)));
 
-  QFontMetrics  metrics(QucsSettings.font);
+  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
   QSize r = metrics.size(0, Texts.current()->s);  // width of text
   len = x2+r.width()-4;   // more space at the right
   if(len > x3)  x3 = len;
@@ -1894,7 +1895,7 @@ bool Diagram::calcYAxis(Axis *Axis, int x0)
   double GridStep, corr, zD, zDstep, GridNum;
 
   QString tmp;
-  QFontMetrics  metrics(QucsSettings.font);
+  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
   int maxWidth = 0;
 
   bool back = false;

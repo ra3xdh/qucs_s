@@ -19,6 +19,8 @@
 #include "main.h"
 
 #include <math.h>
+#include "qucs.h"
+#include "schematic.h"
 
 
 TruthDiagram::TruthDiagram(int _cx, int _cy) : TabDiagram(_cx, _cy)
@@ -47,7 +49,7 @@ int TruthDiagram::calcDiagram()
 
   x1 = 0;  // no scroll bar
   x3 = x2;
-  QFontMetrics  metrics(QucsSettings.font);
+  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
   int tHeight = metrics.lineSpacing();
   QString Str;
   int colWidth=0, x=6, y;

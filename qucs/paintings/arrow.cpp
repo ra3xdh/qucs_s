@@ -105,9 +105,9 @@ void Arrow::paint(ViewPainter *p)
 // --------------------------------------------------------------------------
 void Arrow::paintScheme(Schematic *p)
 {
-  p->PostPaintEvent(_Line, cx, cy, cx+x2, cy+y2);
-  p->PostPaintEvent(_Line, cx+x2, cy+y2, cx+xp1, cy+yp1);
-  p->PostPaintEvent(_Line, cx+x2, cy+y2, cx+xp2, cy+yp2);
+  p->PostPaintEvent(_Line, cx, cy, cx+x2, cy+y2,0,0,false);
+  p->PostPaintEvent(_Line, cx+x2, cy+y2, cx+xp1, cy+yp1,0,0,false);
+  p->PostPaintEvent(_Line, cx+x2, cy+y2, cx+xp2, cy+yp2,0,0,false);
 }
 
 // --------------------------------------------------------------------------

@@ -32,6 +32,8 @@
 
 #include "rect3ddiagram.h"
 #include "main.h"
+#include "qucs.h"
+#include "schematic.h"
 
 Rect3DDiagram::Rect3DDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
 {
@@ -631,7 +633,7 @@ int Rect3DDiagram::calcAxis(Axis *Axis, int x, int y,
   double xstepD, ystepD;
 
   QString tmp;
-  QFontMetrics  metrics(QucsSettings.font);
+  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
   int maxWidth = 0;
   int count, gx, gy, w;
 
@@ -724,7 +726,7 @@ void Rect3DDiagram::createAxis(Axis *Axis, bool Right,
   if(Axis == &yAxis)  Index = 1;
 
   QString s;
-  QFontMetrics  metrics(QucsSettings.font);
+  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
 
   x = x2_ - x1_;
   y = y2_ - y1_;
@@ -786,7 +788,7 @@ int Rect3DDiagram::calcDiagram()
   Arcs.clear();
 
   double GridStep, corr, zD, zDstep, GridNum;
-  QFontMetrics  metrics(QucsSettings.font);
+  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
 
   x3 = x2 + 7;
   int z, z2, o, w;

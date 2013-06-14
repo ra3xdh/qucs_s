@@ -21,7 +21,7 @@
 #include "graphictext.h"
 #include "graphictextdialog.h"
 #include "schematic.h"
-
+#include "qucs.h"
 #include <qwidget.h>
 #include <qpainter.h>
 #include <qlineedit.h>
@@ -159,7 +159,7 @@ bool GraphicText::load(const QString& s)
   if(Text.isEmpty()) return false;
 
   convert2Unicode(Text);
-  QFontMetrics  metrics(Font);
+  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
   QSize r = metrics.size(0, Text);    // get size of text
   x2 = r.width();
   y2 = r.height();
@@ -336,8 +336,8 @@ bool GraphicText::Dialog()
       Text = _Text;
       changed = true;
     }
-
-  QFontMetrics  m(f);
+  QFontMetrics  m(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
+#warning is this the right way? it was this: QFontMetrics  m(f);
   QSize s = m.size(0, Text);    // get size of text
   x2 = s.width();
   y2 = s.height();

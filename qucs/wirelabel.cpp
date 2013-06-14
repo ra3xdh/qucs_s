@@ -20,6 +20,9 @@
 #include "wire.h"
 #include "main.h"
 
+#include "qucs.h"
+#include "schematic.h"
+
 
 WireLabel::WireLabel(const QString& _Name, int _cx, int _cy,
                      int _x1, int _y1, int _Type)
@@ -177,7 +180,7 @@ void WireLabel::setName(const QString& Name_)
 {
   Name = Name_;
 
-  QFontMetrics  metrics(QucsSettings.font);    // get size of text
+  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
   QSize r = metrics.size(0, Name);
   x2 = r.width();
   y2 = r.height()-2;    // remember size of text

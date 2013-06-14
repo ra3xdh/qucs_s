@@ -30,6 +30,10 @@
 #include <stdlib.h>
 
 
+#include "qucs.h"
+#include "schematic.h"
+
+
 
 Marker::Marker(Diagram *Diag_, Graph *pg_, int _nn, int cx_, int cy_)
 {
@@ -277,7 +281,7 @@ void Marker::makeInvalid()
 // ---------------------------------------------------------------------
 void Marker::getTextSize(const QFont& Font)
 {
-  QFontMetrics  metrics(Font);
+  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
   QSize r = metrics.size(0, Text);
   x2 = r.width()+5;
   y2 = r.height()+5;

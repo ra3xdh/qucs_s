@@ -22,6 +22,8 @@
 //Added by qt3to4:
 #include <Q3PointArray>
 
+#include "qucs.h"
+#include "schematic.h"
 
 TimingDiagram::TimingDiagram(int _cx, int _cy) : TabDiagram(_cx, _cy)
 {
@@ -117,7 +119,7 @@ int TimingDiagram::calcDiagram()
 
   y1 = 0;  // no scroll bar
   x3 = x2;
-  QFontMetrics  metrics(QucsSettings.font);
+  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
   int tHeight = metrics.lineSpacing();
   QString Str;
   int colWidth=0, x=4, y, xStart = 0, z;
