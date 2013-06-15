@@ -1,1 +1,1 @@
-<pkg-contents spec="1.12"><f n="qucslib.app" o="root" g="admin" p="16877" pt="/usr/local/bin/qucslib.app" m="true" t="file"><f n="Contents" o="root" g="501" p="16877"><f n="Info.plist" o="root" g="501" p="33188"/><f n="MacOS" o="root" g="501" p="16877"><f n="qucslib" o="root" g="501" p="33261"/></f><f n="Resources" o="root" g="501" p="16877"><f n="application.icns" o="root" g="501" p="33188"/></f></f><mod>group</mod></f></pkg-contents>
+<pkg-contents spec="1.12"/>
