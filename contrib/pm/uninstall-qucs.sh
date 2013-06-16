@@ -137,7 +137,7 @@ echo "*** Removing receipts: /var/db/receipts/org.qucs.*"
 rm -f /var/db/receipts/org.qucs.*
 
 echo "*** Removing alias: /Application/qucs"
-rm -f /Application/qucs
+rm -f /Applications/qucs
 
 
 # Remove other installed packages
