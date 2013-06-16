@@ -479,6 +479,17 @@ void SimMessage::startSimulator()
   
   ProgressText = "";
   
+#ifdef __MINGW32__  
+  QString sep(";"); // path separator
+#else  
+  QString sep(":");
+#endif
+  
+  // append process PATH 
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+  env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
+  SimProcess.setProcessEnvironment(env); 
+  
   SimProcess.start(Program, Arguments); // launch the program
   
   if(!SimProcess.Running) {
