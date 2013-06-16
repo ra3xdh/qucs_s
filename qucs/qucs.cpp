@@ -508,11 +508,11 @@ void QucsApp::slotShowContentMenu(const QPoint& pos) {
   QTreeWidgetItem *item = Content->currentItem();
   if(item->text(1  ).contains(tr("-port")))
   {
-      ActionCMenuInsert->setEnabled(true);
+      ActionCMenuInsert->setVisible(true);
   }
   else
   {
-      ActionCMenuInsert->setEnabled(false);
+      ActionCMenuInsert->setVisible(false);
   }
 
   // only show contentmenu when child is selected...
