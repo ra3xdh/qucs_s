@@ -138,6 +138,7 @@ public slots:
   void slotCMenuRename();
   void slotCMenuDelete();
   void slotCMenuDelGroup();
+  void slotCMenuInsert();
 
 private slots:
   void slotMenuOpenProject();
@@ -171,7 +172,7 @@ public:
   QMenu *ContentMenu;
 
   // corresponding actions
-  QAction *ActionCMenuOpen, *ActionCMenuRename, *ActionCMenuDelete, *ActionCMenuDelGroup;
+  QAction *ActionCMenuOpen, *ActionCMenuRename, *ActionCMenuDelete, *ActionCMenuDelGroup, *ActionCMenuInsert;
 
   QAction *fileNew, *textNew, *fileNewDpl, *fileOpen, *fileSave, *fileSaveAs,
           *fileSaveAll, *fileClose, *fileExamples, *fileSettings, *filePrint, *fileQuit,
