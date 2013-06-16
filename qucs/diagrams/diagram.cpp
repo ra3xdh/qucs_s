@@ -1172,7 +1172,7 @@ bool Diagram::sameDependencies(Graph *g1, Graph *g2)
 int Diagram::checkColumnWidth(const QString& Str,
 		const QFontMetrics& metrics, int colWidth, int x, int y)
 {
-    qDebug("%i", metrics.charWidth(Str,0));
+    //qDebug("%i", metrics.charWidth(Str,0));
   int w = metrics.boundingRect(Str).width();  // width of text
   if(w > colWidth) {
     colWidth = w;

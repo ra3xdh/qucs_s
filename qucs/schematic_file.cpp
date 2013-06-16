@@ -929,7 +929,6 @@ void Schematic::propagateNode(QStringList& Collect,
 bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
                    QStringList& Collect, QTextEdit *ErrText, int NumPorts)
 {
-  qDebug() << "throughAllComps";
   bool r;
   QString s;
 
