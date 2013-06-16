@@ -489,6 +489,15 @@ void SimMessage::startSimulator()
   QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
   env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
   SimProcess.setProcessEnvironment(env); 
+
+  QFile file(Program);
+  if ( !file.exists() ){
+    ErrText->insert(tr("ERROR: Program not found: %1").arg(Program));
+    FinishSimulation(-1);
+    return;
+  }
+  else
+    file.close();
   
   SimProcess.start(Program, Arguments); // launch the program
   

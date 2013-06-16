@@ -628,8 +628,16 @@ int main(int argc, char *argv[])
     QString AscoDirStr = AscoDir.canonicalPath ();
     QucsSettings.AscoDir =
       QDir::convertSeparators (AscoDirStr + "/bin/");
-  } else {
-    QucsSettings.AscoDir = "";
+  } 
+  else {
+    QFile file("/usr/local/bin/asco");
+    if ( file.exists() ){
+      QucsSettings.AscoDir =
+          QDir::convertSeparators ("/usr/local/bin/");
+      file.close();
+    }
+    else
+      QucsSettings.AscoDir = "";
   }
 
   a.setFont(QucsSettings.font);
