@@ -1,5 +1,8 @@
 #!/bin/sh
 (( ${#} > 0 )) || {
+  echo ''
+  echo '*** Qucs uninstaller script for Machintosh ***'
+  echo ''
   echo 'DISCLAIMER: USE THIS SCRIPT AT YOUR OWN RISK!'
   echo 'THE AUTHOR TAKES NO RESPONSIBILITY FOR THE RESULTS OF THIS SCRIPT.'
   echo "Disclaimer aside, this worked for the author, for what that's worth."
@@ -58,7 +61,7 @@ man=(
 
 # Verify the bom exists, otherwise don't do anything
 [ -e  /var/db/receipts/org.qucs.qucs.qucs.pkg.bom ] || {
-  echo 'Nothing to do.'
+  echo 'Qucs bill of materials not found!'
   exit 0
 }
 
@@ -76,6 +79,22 @@ for bom in "${bin[@]}"; do
       echo "file not found: ${file}"
     fi
   done
+done
+
+# Remove app directories
+apps=(
+qucs.app
+qucsattenuator.app
+qucsedit.app
+qucsfilter.app
+qucshelp.app
+qucslib.app
+qucstrans.app
+)
+
+for dir in "${apps[@]}"; do
+  echo "*** Removing directory: /usr/local/bin/${dir}"
+  rm -rf /usr/local/bin/${dir}
 done
 
 # clear /usr/local/share/qucs/
@@ -111,14 +130,47 @@ for bom in "${man[@]}"; do
 done
 
 # Remove directories and files related to qucs
-echo "removing directory: /usr/local/share/qucs/"
+echo "*** Removing directory: /usr/local/share/qucs/"
 rm -rf /usr/local/share/qucs
 
-echo "removing receipts: /var/db/receipts/org.qucs.*"
+echo "*** Removing receipts: /var/db/receipts/org.qucs.*"
 rm -f /var/db/receipts/org.qucs.*
 
-echo "removing alias: /Application/qucs"
+echo "*** Removing alias: /Application/qucs"
 rm -f /Application/qucs
+
+
+# Remove other installed packages
+echo "*** Removing optional packages..."
+
+packages=(
+/var/db/receipts/org.icarus-verilog.pkg.bom
+)
+
+# clear files on flat package
+for bom in "${packages[@]}"; do
+  if [ ! -e ${bom} ]; then
+    echo "bom file not found: ${bom}"
+  else
+    #echo "found ${bom}"
+    lsbom -f -l -s -pf ${bom} \
+    | while read i; do
+      # Remove each file listed in the bom.
+      file="/usr/local/${i}"
+      if [ -e $file ]; then
+        echo "removing: ${file}"
+        rm $file
+      else
+        echo "file not found: ${file}"
+      fi
+    done
+  fi
+done
+
+echo "*** Removing receipts: /var/db/receipts/org.icarus-verilog.*"
+rm -f /var/db/receipts/org.icarus-verilog.*
+rm -rf /usr/local/include/iverilog
+rm -rf /usr/local/lib/ivl
 
 exit 0
 
