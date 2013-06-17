@@ -165,6 +165,8 @@ cp /usr/lib/gcc/i686-w64-mingw32/4.6/*.dll $WINDIR/bin
 wine "$INNOSETUP" /cc contrib/innosetup/qucs.iss
 mv contrib/innosetup/Output/qucs-0.0.17-setup.exe ../qucs-$RELEASE.exe
 
+cp debian/changelog ../../qucs/debian/changelog
+
 
 
 

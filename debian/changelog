@@ -1,3 +1,27 @@
+qucs (0.0.17.130617-3) raring; urgency=low
+
+  * Many Mac OSX specific release fixes
+  * Insert components on single click
+  * Insert subcircuit from project with single click and through popup menu
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Mon, 17 Jun 2013 21:39:30 +0200
+
+qucs (0.0.17.130617-2) quantal; urgency=low
+
+  * Many Mac OSX specific release fixes
+  * Insert components on single click
+  * Insert subcircuit from project with single click and through popup menu
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Mon, 17 Jun 2013 21:37:49 +0200
+
+qucs (0.0.17.130617-1) precise; urgency=low
+
+  * Many Mac OSX specific release fixes
+  * Insert components on single click
+  * Insert subcircuit from project with single click and through popup menu
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Mon, 17 Jun 2013 21:29:07 +0200
+
 qucs (0.0.17.130613-3) raring; urgency=low
 
   * Added BSIM4 models
