@@ -853,6 +853,7 @@ void QucsApp::readProjectFiles()
   QStringList Elements = QucsWorkDir.entryList("*", QDir::Files, QDir::Name);
   QStringList::iterator it;
   QString Str;
+  ConSchematics->setExpanded(true);
   for(it = Elements.begin(); it != Elements.end(); ++it) {
     Str = QucsDoc::fileSuffix (*it);
     if(Str == "sch") {
