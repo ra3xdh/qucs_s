@@ -38,6 +38,12 @@ using namespace std;
 #include "components/opt_sim.h"
 #include "components/vhdlfile.h"
 
+#ifdef __MINGW32__
+#define executablePostfix ".exe"
+#else
+#define executablePostfix ""
+#endif
+
 
 SimMessage::SimMessage(QWidget *w, QWidget *parent)
 		: QDialog(parent) //, 0, FALSE, Qt::WDestructiveClose)
@@ -436,12 +442,13 @@ void SimMessage::startSimulator()
     if(SimPorts < 0) {
       if((SimOpt = findOptimization((Schematic*)DocWidget))) {
 	    ((Optimize_Sim*)SimOpt)->createASCOnetlist();
-	    Program = QucsSettings.AscoDir + "asco"; 
+	    Program = QucsSettings.AscoDir + "asco"+ executablePostfix; 
         Arguments << "-qucs" << QucsHomeDir.filePath("asco_netlist.txt") 
                   << "-o" << "asco_out";
       }
       else {
-	    Program = QucsSettings.BinDir + "qucsator";
+	    Program = QucsSettings.BinDir + "qucsator" + executablePostfix;
+
         Arguments << "-b" << "-g" << "-i" 
                   << QucsHomeDir.filePath("netlist.txt") 
                   << "-o" << DataSet;
@@ -489,7 +496,6 @@ void SimMessage::startSimulator()
   QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
   env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
   SimProcess.setProcessEnvironment(env); 
-
   QFile file(Program);
   if ( !file.exists() ){
     ErrText->insert(tr("ERROR: Program not found: %1").arg(Program));
@@ -506,6 +512,7 @@ void SimMessage::startSimulator()
     FinishSimulation(-1);
     return;
   }
+	
 }
 
 // ------------------------------------------------------------------------
