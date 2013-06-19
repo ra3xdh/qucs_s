@@ -25,8 +25,8 @@
 #define APPVERNAME "Quite Universal Circuit Simulator 0.0.17 binary package for Win32"
 #define URL "http://qucs.sourceforge.net"
 #define TREE "c:\qucs-git\release\qucs-win32-bin\"
-#define octaveversion "octave-3.6.2"
-#define octavelink "http://sourceforge.net/projects/octave/files/Octave%20Windows%20binaries/Octave%203.6.4%20for%20Windows%20Microsoft%20Visual%20Studio/octave-3.6.4-vs2010-setup.exe/download"
+#define octaveversion "3.6.4"
+
 
 [Setup]
 AppName={# APPNAME}
@@ -50,7 +50,7 @@ Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: ASCODIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: OCTAVEDIR; ValueData: {app}\share\qucs\octave; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueName: "Path"; ValueType: "string"; ValueData: "{app}\bin;{olddata}"; Check: NotOnPathAlready(); Flags: preservestringtype;
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueName: "Path"; ValueType: "string"; ValueData: "{code:OctaveDir};{olddata}"; Check: OctaveNotOnPathAlready(); Flags: preservestringtype;
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueName: "Path"; ValueType: "string"; ValueData: "{code:OctaveDir};{olddata}"; Tasks: octave; Check: OctaveNotOnPathAlready(); Flags: preservestringtype;
 ;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: QUCSDIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
 ;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: HOME; ValueData: {code:HomeDir}; Flags: createvalueifdoesntexist; MinVersion: 0,4.00.1381
 ;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: ASCODIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
@@ -155,20 +155,20 @@ function OctaveNotOnPathAlready(): Boolean;
 var
   BinDir, Path: String;
 begin
-  Log('Checking if '+ {# octaveversion}+'\bin dir is already on the %PATH%');
+  Log('Checking if octave-{# octaveversion}\bin dir is already on the %PATH%');
   if RegQueryStringValue(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment', 'Path', Path) then
   begin // Successfully read the value
     Log('HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\PATH = ' + Path);
-    BinDir := ExpandConstant('{pf}\{# octaveversion}\bin');
-    Log('Looking for '+{# octaveversion}+'\bin dir in %PATH%: ' + BinDir + ' in ' + Path);
+    BinDir := ExpandConstant('{pf}\octave-{# octaveversion}\bin');
+    Log('Looking for octave-{# octaveversion}\bin dir in %PATH%: ' + BinDir + ' in ' + Path);
     if Pos(LowerCase(BinDir), Lowercase(Path)) = 0 then
     begin
-      Log('Did not find '+{# octaveversion}+'\bin dir in %PATH% so will add it');
+      Log('Did not find octave-{# octaveversion}\bin dir in %PATH% so will add it');
       Result := True;
     end
     else
     begin
-      Log('Found '+{# octaveversion}+' bin dir in %PATH% so will not add it again');
+      Log('Found octave-{# octaveversion} bin dir in %PATH% so will not add it again');
       Result := False;
     end
   end
@@ -200,9 +200,9 @@ function DownloadOctave: Boolean;
 var
   ErrCode: Integer;
 begin
-  MsgBox('A browser will be opened to download '+{# octaveversion}+' Setup', mbConfirmation, MB_OK);
+  MsgBox('A browser will be opened to download octave-{# octaveversion} Setup', mbConfirmation, MB_OK);
   Result := True;
-  ShellExec('open', {# octavelink},
+  ShellExec('open', 'http://sourceforge.net/projects/octave/files/Octave%20Windows%20binaries/Octave%203.6.4%20for%20Windows%20Microsoft%20Visual%20Studio/octave-3.6.4-vs2010-setup.exe/download',
       '', '', SW_SHOW, ewNoWait, ErrCode);
 end;
 
@@ -223,8 +223,6 @@ var Found : Boolean;
 begin
   Found := False;
 
-  while not Found do
-  begin
     BrowseForFolder('Please select a directory where octave ' +
                     'is installed, then click OK.', Dir, False);
     if DirExists (Dir) then
@@ -234,6 +232,13 @@ begin
         Found := True;
       end;
     end;
+  if Found = False then
+  begin
+    Dir := 'c:\Software\octave{# octaveversion}\bin';
+  end
+  else
+  begin
+    Dir := Dir + '\bin';
   end;
 
   Result := Dir;
