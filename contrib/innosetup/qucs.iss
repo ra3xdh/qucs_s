@@ -50,7 +50,7 @@ Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: ASCODIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: OCTAVEDIR; ValueData: {app}\share\qucs\octave; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueName: "Path"; ValueType: "string"; ValueData: "{app}\bin;{olddata}"; Check: NotOnPathAlready(); Flags: preservestringtype;
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueName: "Path"; ValueType: "string"; ValueData: "{pf}\{# octaveversion}\bin;{olddata}"; Check: OctaveNotOnPathAlready(); Flags: preservestringtype;
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueName: "Path"; ValueType: "string"; ValueData: "{code:OctaveDir};{olddata}"; Check: OctaveNotOnPathAlready(); Flags: preservestringtype;
 ;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: QUCSDIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
 ;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: HOME; ValueData: {code:HomeDir}; Flags: createvalueifdoesntexist; MinVersion: 0,4.00.1381
 ;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: ASCODIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
@@ -215,6 +215,28 @@ begin
     if WizardForm.TasksList.Checked[5] then
       DownloadOctave;
   end;
+end;
+
+function OctaveDir(Param: String): String;
+var Dir : String;
+var Found : Boolean;
+begin
+  Found := False;
+
+  while not Found do
+  begin
+    BrowseForFolder('Please select a directory where octave ' +
+                    'is installed, then click OK.', Dir, False);
+    if DirExists (Dir) then
+    begin
+      if FileExists(Dir + '\bin\octave.exe') then
+      begin
+        Found := True;
+      end;
+    end;
+  end;
+
+  Result := Dir;
 end;
 
 

@@ -102,7 +102,9 @@ rm -rf autom4te.cache
 
 cd qucs-core
 ./autogen.sh
+cd src/components/verilog 
 make
+cd ../../../
 ./configure
 make distclean
 rm -rf autom4te.cache
@@ -145,9 +147,9 @@ cp -r contrib/innosetup/misc $WINDIR
 wget http://bleyer.org/icarus/iverilog-0.9.6_setup.exe
 #wget http://bleyer.org/icarus/iverilog-0.9.5_setup.exe
 mv iverilog-0.9.6_setup.exe $WINDIR
-wget https://downloads.sourceforge.net/project/qucs/qucs-binary/0.0.16/freehdl-0.0.8-setup.exe
+wget https://downloads.sourceforge.net/project/qucs/freehdl/freehdl-0.0.8-setup.exe
 mv freehdl-0.0.8-setup.exe $WINDIR
-wget https://downloads.sourceforge.net/project/qucs/qucs-binary/0.0.15/mingw32-g%2B%2B-0.0.2-setup.exe
+wget https://downloads.sourceforge.net/project/qucs/freehdl/mingw32-g%2B%2B-0.0.2-setup.exe
 mv mingw32-g++-0.0.2-setup.exe $WINDIR
 
 cp $QTDIR/bin/mingwm10.dll $WINDIR/bin
