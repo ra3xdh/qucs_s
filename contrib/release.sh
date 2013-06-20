@@ -66,6 +66,7 @@ tar -zxvf ASCO-0.4.8.tar.gz
 rm ASCO-0.4.8.tar.gz
 mv ASCO-0.4.8 asco
 cd asco
+patch -p1 < ../../../qucs/contrib/patch_asco_unbuffer.diff
 touch NEWS
 tar -zxvf Autotools.tar.gz
 ./autogen.sh

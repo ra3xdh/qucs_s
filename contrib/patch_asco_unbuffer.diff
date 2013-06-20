@@ -1,0 +1,13 @@
+diff --git a/de36.c b/de36.c
+index b573d5c..5955197 100644
+--- a/de36.c
++++ b/de36.c
+@@ -475,6 +475,8 @@ int DE(int argc, char *argv[])
+ 	char laux[LONGSTRINGSIZE];
+ 	int ii;
+ 
++  setvbuf(stdout, NULL, _IONBF, 0); /* set unbuffered */
++
+ 	#ifdef MPI
+ 	double tmp_y[MAXPOP][MAXDIM], trial_cost_y[MAXPOP];
+ 	int k, m, count;
