@@ -102,7 +102,9 @@ rm -rf autom4te.cache
 
 cd qucs-core
 ./autogen.sh
-cd src/components/verilog 
+cd adms
+make
+cd ../src/components/verilog 
 make
 cd ../../../
 ./configure
