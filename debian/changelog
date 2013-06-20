@@ -1,20 +1,20 @@
-qucs (0.0.17.130619-3) raring; urgency=low
+qucs (0.0.17.130620-3) raring; urgency=low
 
   * fixed some windows paths
 
- -- Frans Schreuder <info@schreuderelectronics.com>  Wed, 19 Jun 2013 22:58:34 +0200
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 20 Jun 2013 09:05:02 +0200
 
-qucs (0.0.17.130619-2) quantal; urgency=low
-
-  * fixed some windows paths
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Wed, 19 Jun 2013 22:57:30 +0200
-
-qucs (0.0.17.130619-1) precise; urgency=low
+qucs (0.0.17.130620-2) quantal; urgency=low
 
   * fixed some windows paths
 
- -- Frans Schreuder <info@schreuderelectronics.com>  Wed, 19 Jun 2013 22:56:17 +0200
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 20 Jun 2013 08:59:08 +0200
+
+qucs (0.0.17.130620-1) precise; urgency=low
+
+  * fixed some windows paths
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 20 Jun 2013 08:55:41 +0200
 
 qucs (0.0.17.130617-3) raring; urgency=low
 
