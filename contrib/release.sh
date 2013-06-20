@@ -1,4 +1,8 @@
 #!/bin/bash
+source gpg_id
+echo "using gpg id: $GPG_ID"
+echo "Press any key..."
+read
 cd ../..
 
 if [ $# -ne 0 ]
@@ -103,7 +107,9 @@ rm -rf autom4te.cache
 
 cd qucs-core
 ./autogen.sh
-cd src/components/verilog 
+cd adms
+make
+cd ../src/components/verilog 
 make
 cd ../../../
 ./configure
@@ -125,7 +131,7 @@ COUNT=-0 #last version number in repository
 for DIST in ${DISTS} ; do
 	COUNT=$(($COUNT-1))
 	dch -D $DIST -m -v $RELEASE$COUNT -b
-	debuild -S -k8AD5905E
+	debuild -S -k$GPG_ID
 	./configure 
 done
 
