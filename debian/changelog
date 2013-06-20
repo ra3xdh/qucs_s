@@ -1,5 +1,23 @@
 qucs (0.0.17.130620-3) raring; urgency=low
 
+  * Fixed #103, applied a patch to asco
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 20 Jun 2013 22:05:20 +0200
+
+qucs (0.0.17.130620-2) quantal; urgency=low
+
+  * Fixed #103, applied a patch to asco
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 20 Jun 2013 22:03:11 +0200
+
+qucs (0.0.17.130620-1) precise; urgency=low
+
+  * Fixed #103, applied a patch to asco
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 20 Jun 2013 21:58:12 +0200
+
+qucs (0.0.17.130620-3) raring; urgency=low
+
   * fixed some windows paths
 
  -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 20 Jun 2013 09:05:02 +0200
