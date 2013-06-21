@@ -111,12 +111,12 @@ QString Digi_Source::vhdlCode(int NumPorts)
   int z = 0;
   char State;
   if(NumPorts <= 0) {  // time table simulation ?
-    if(Props.at(1)->Value == "low")
+    if(Props.at(0)->Value == "low")
       State = '0';
     else
       State = '1';
 
-    t = Props.next()->Value.section(';',z,z).stripWhiteSpace();
+    t = Props.at(2)->Value.section(';',z,z).stripWhiteSpace();
     while(!t.isEmpty()) {
       s += Out + State + "';";    // next value for signal
 
@@ -126,12 +126,12 @@ QString Digi_Source::vhdlCode(int NumPorts)
       s += t.replace("after","wait for") + ";\n";
       State ^= 1;
       z++;
-      t = Props.current()->Value.section(';',z,z).stripWhiteSpace();
+      t = Props.at(2)->Value.section(';',z,z).stripWhiteSpace();
     }
   }
   else {  // truth table simulation
     State = '0';
-    int Num = Props.getFirst()->Value.toInt() - 1;
+    int Num = Props.at(0)->Value.toInt() - 1;
     
     s += Out + State + "';";    // first value for signal
     s += "  wait for "+QString::number(1 << Num)+" ns;\n";
