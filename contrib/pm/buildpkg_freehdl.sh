@@ -31,6 +31,6 @@ command="pkgbuild \
          --install-location /usr/local \
          ./freehdl-${version}-${date}.pkg"
 
-#echo "${command}"
+echo "${command}"
 ${command}
 

@@ -159,3 +159,7 @@ for file in "${files[@]}"; do
   cp /usr/local/${file} ./${payload}/${file}
 done
 
+# strip extended attributes
+# otherwise a bunch of empy files starting with '._'
+# are added to the list of files
+xattr -c `find ${payload}`
