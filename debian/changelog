@@ -1,3 +1,45 @@
+qucs (0.0.17-3) raring; urgency=low
+
+  * Fixed hybrid coupler #90
+  * Added BSIM3 and BSIM4 nMOS and pMOS models and examples
+  * Added examples and qucs-doc pdf files to the menu
+  * Added example files
+  * Added examples directory
+  * Added qucs-doc to the distribution
+  * Added asco
+  * Added beginnings of m-code transient solver interface.
+  * Added impedance to marker in Smith Chart 
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Sun, 23 Jun 2013 08:16:27 +0200
+
+qucs (0.0.17-2) quantal; urgency=low
+
+  * Fixed hybrid coupler #90
+  * Added BSIM3 and BSIM4 nMOS and pMOS models and examples
+  * Added examples and qucs-doc pdf files to the menu
+  * Added example files
+  * Added examples directory
+  * Added qucs-doc to the distribution
+  * Added asco
+  * Added beginnings of m-code transient solver interface.
+  * Added impedance to marker in Smith Chart 
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Sun, 23 Jun 2013 08:14:14 +0200
+
+qucs (0.0.17-1) precise; urgency=low
+
+  * Fixed hybrid coupler #90
+  * Added BSIM3 and BSIM4 nMOS and pMOS models and examples
+  * Added examples and qucs-doc pdf files to the menu
+  * Added example files
+  * Added examples directory
+  * Added qucs-doc to the distribution
+  * Added asco
+  * Added beginnings of m-code transient solver interface.
+  * Added impedance to marker in Smith Chart 
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Sun, 23 Jun 2013 08:12:34 +0200
+
 qucs (0.0.16-1) unstable; urgency=low
 
   * debian/rules: ignore error in clean target. Thanks to Hideki Yamane
