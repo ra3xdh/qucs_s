@@ -145,9 +145,10 @@ echo "*** Removing optional packages..."
 
 packages=(
 /var/db/receipts/org.icarus-verilog.pkg.bom
+/var/db/receipts/org.freehdl.pkg.bom
 )
 
-# clear files on flat package
+# clear files from packages
 for bom in "${packages[@]}"; do
   if [ ! -e ${bom} ]; then
     echo "bom file not found: ${bom}"
@@ -171,6 +172,12 @@ echo "*** Removing receipts: /var/db/receipts/org.icarus-verilog.*"
 rm -f /var/db/receipts/org.icarus-verilog.*
 rm -rf /usr/local/include/iverilog
 rm -rf /usr/local/lib/ivl
+
+echo "*** Removing receipts: /var/db/receipts/org.freehdl.*"
+rm -f /var/db/receipts/org.freehdl.*
+rm -rf /usr/local/include/freehdl
+rm -rf /usr/local/lib/freehdl
+rm -rf /usr/local/share/freehdl
 
 exit 0
 
