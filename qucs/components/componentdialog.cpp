@@ -897,14 +897,16 @@ void ComponentDialog::slotNumberChanged(const QString&)
     str2num(editStart->text(), y, Unit, Factor);
     y *= Factor;
     x = (x - y) / (editNumber->text().toDouble() - 1.0);
+    
+    QString step = num2str(x);
 
-    str2num(editStep->text(), y, tmp, ftmp);
-    if(ftmp != 1.0) {
-      Unit = tmp;
-      Factor = ftmp;
-    }
+    str2num(step, x, Unit, Factor);
+    if(Factor == 1.0)  
+        Unit = "s";
+    else
+        Unit = Unit + "s";
 
-    Unit = QString::number(x/Factor) + " " + Unit;
+    Unit = QString::number(x) + " " + Unit;
   }
 
   editStep->blockSignals(true);  // do not calculate step again
