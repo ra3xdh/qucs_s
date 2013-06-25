@@ -258,7 +258,7 @@ $inputcirfile; # the name of the original cirfile from the commandline
 # spice units
 %units = ('f','1e-15','p','1e-12','n','1e-9','u','1e-6','mil','25.4e-6',
     'm','1e-3','k','1e3','meg','1e6','g','1e9','t','1e12');
-$* = 1;     # perl parameter Pattern match with multi-line strings. ---------- deprecated
+#$* = 1;     # perl parameter Pattern match with multi-line strings. ---------- deprecated
 
 # global vars for user defined pspice functions , pfunctions , parameters
 %param=();     # global Parameter hash for .param and params: lines
