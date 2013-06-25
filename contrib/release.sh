@@ -10,7 +10,7 @@ then
   RELEASE=$1
 else
   RELEASE=$(date +"%y%m%d")
-  RELEASE="0.0.17."${RELEASE:0:6}
+  RELEASE="0.0.18."${RELEASE:0:6}
 fi
 echo Building release: $RELEASE
 
@@ -70,6 +70,7 @@ tar -zxvf ASCO-0.4.8.tar.gz
 rm ASCO-0.4.8.tar.gz
 mv ASCO-0.4.8 asco
 cd asco
+patch -p1 < ../../../qucs/contrib/patch_asco_unbuffer.diff
 touch NEWS
 tar -zxvf Autotools.tar.gz
 ./autogen.sh
@@ -171,7 +172,7 @@ cp /usr/lib/gcc/i586-mingw32msvc/4.2.1-sjlj/*.dll $WINDIR/bin
 cp /usr/lib/gcc/i686-w64-mingw32/4.6/*.dll $WINDIR/bin
 
 wine "$INNOSETUP" /cc contrib/innosetup/qucs.iss
-mv contrib/innosetup/Output/qucs-0.0.17-setup.exe ../qucs-$RELEASE.exe
+mv contrib/innosetup/Output/qucs-0.0.18-setup.exe ../qucs-$RELEASE.exe
 
 cp debian/changelog ../../qucs/debian/changelog
 

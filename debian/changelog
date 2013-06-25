@@ -1,259 +1,51 @@
-qucs (0.0.17.130620-3) raring; urgency=low
+qucs (0.0.17-3) raring; urgency=low
 
-  * fixed some windows paths
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 20 Jun 2013 09:05:02 +0200
-
-qucs (0.0.17.130620-2) quantal; urgency=low
-
-  * fixed some windows paths
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 20 Jun 2013 08:59:08 +0200
-
-qucs (0.0.17.130620-1) precise; urgency=low
-
-  * fixed some windows paths
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 20 Jun 2013 08:55:41 +0200
-
-qucs (0.0.17.130617-3) raring; urgency=low
-
-  * Many Mac OSX specific release fixes
-  * Insert components on single click
-  * Insert subcircuit from project with single click and through popup menu
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Mon, 17 Jun 2013 21:39:30 +0200
-
-qucs (0.0.17.130617-2) quantal; urgency=low
-
-  * Many Mac OSX specific release fixes
-  * Insert components on single click
-  * Insert subcircuit from project with single click and through popup menu
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Mon, 17 Jun 2013 21:37:49 +0200
-
-qucs (0.0.17.130617-1) precise; urgency=low
-
-  * Many Mac OSX specific release fixes
-  * Insert components on single click
-  * Insert subcircuit from project with single click and through popup menu
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Mon, 17 Jun 2013 21:29:07 +0200
-
-qucs (0.0.17.130613-3) raring; urgency=low
-
-  * Added BSIM4 models
-  * Added BSIM3 and BSIM4 examples
-  * Fixed Bug #98
   * Fixed hybrid coupler #90
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 13 Jun 2013 23:50:10 +0200
-
-qucs (0.0.17.130613-2) quantal; urgency=low
-
-  * Added BSIM4 models
-  * Added BSIM3 and BSIM4 examples
-  * Fixed Bug #98
-  * Fixed hybrid coupler #90
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 13 Jun 2013 23:49:02 +0200
-
-qucs (0.0.17.130613-1) precise; urgency=low
-
-  * Added BSIM4 models
-  * Added BSIM3 and BSIM4 examples
-  * Fixed Bug #98
-  * Fixed hybrid coupler #90
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 13 Jun 2013 23:44:34 +0200
-
-qucs (0.0.17.130606-3) raring; urgency=low
-
-  * Fixed #91, print malformed on windows
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 06 Jun 2013 22:43:11 +0200
-
-qucs (0.0.17.130606-2) quantal; urgency=low
-
-  * Fixed #91, print malformed on windows
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 06 Jun 2013 22:41:52 +0200
-
-qucs (0.0.17.130606-1) precise; urgency=low
-
-  * Fixed #91, print malformed on windows
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 06 Jun 2013 22:34:40 +0200
-
-qucs (0.0.17.130601-3) raring; urgency=low
-
-  * Lots of porting / removing Q3Support
-  * Fixed bug #94
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Sat, 01 Jun 2013 23:14:32 +0200
-
-qucs (0.0.17.130601-2) quantal; urgency=low
-
-  * Lots of porting / removing Q3Support
-  * Fixed bug #94
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Sat, 01 Jun 2013 23:12:04 +0200
-
-qucs (0.0.17.130601-1) precise; urgency=low
-
-  * Lots of porting / removing Q3Support
-  * Fixed bug #94
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Sat, 01 Jun 2013 23:08:55 +0200
-
-qucs (0.0.17.130528-3) raring; urgency=low
-
-  * Fixed cursor displacement while drawing paintings
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Tue, 28 May 2013 11:35:34 +0200
-
-qucs (0.0.17.130528-5) quantal; urgency=low
-
-  * Fixed cursor displacement while drawing paintings
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Tue, 28 May 2013 11:34:19 +0200
-
-qucs (0.0.17.130528-4) precise; urgency=low
-
-  * Fixed cursor displacement while drawing paintings
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Tue, 28 May 2013 11:33:40 +0200
-
-qucs (0.0.17-130522-3) raring; urgency=low
-
+  * Added BSIM3 and BSIM4 nMOS and pMOS models and examples
   * Added examples and qucs-doc pdf files to the menu
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Tue, 21 May 2013 21:46:06 +0200
-
-qucs (0.0.17-130522-2) quantal; urgency=low
-
-  * Added examples and qucs-doc pdf files to the menu
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Tue, 21 May 2013 21:44:52 +0200
-
-qucs (0.0.17-130522-1) precise; urgency=low
-
-  * Added examples and qucs-doc pdf files to the menu
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Tue, 21 May 2013 21:42:17 +0200
-
-qucs (0.0.17.130521-3) raring; urgency=low
-
-  * Added BSIM3v34 pMOS model to Qucs-0.0.17
   * Added example files
-  * Added qucs-doc pdf files
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Tue, 21 May 2013 10:23:48 +0200
-
-qucs (0.0.17.130521-2) quantal; urgency=low
-
-  * Added BSIM3v34 pMOS model to Qucs-0.0.17
-  * Added example files
-  * Added qucs-doc pdf files
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Tue, 21 May 2013 10:23:01 +0200
-
-qucs (0.0.17.130521-1) precise; urgency=low
-
-  * Added BSIM3v34 pMOS model to Qucs-0.0.17
-  * Added example files
-  * Added qucs-doc pdf files
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Tue, 21 May 2013 10:21:02 +0200
-
-qucs (0.0.17.130517-2) quantal; urgency=low
-
-  * added qucs-doc/textdoc; translate via pdflatex textmode.tex
-  * Added m-interface code to code::blocks project file
-  * Added m-interface directory to configure.ac  
-  * Added m-interface directory to build if qucslib option true
-  * Added BSIM3v34 nMOS model to Qucs-0.0.17
   * Added examples directory
   * Added qucs-doc to the distribution
+  * Added asco
+  * Added beginnings of m-code transient solver interface.
+  * Added impedance to marker in Smith Chart 
 
- -- Frans Schreuder <info@schreuderelectronics.com>  Fri, 17 May 2013 15:24:17 +0200
+ -- Frans Schreuder <fransschreuder@gmail.com>  Sun, 23 Jun 2013 08:16:27 +0200
 
-qucs (0.0.17.130517-1) precise; urgency=low
+qucs (0.0.17-2) quantal; urgency=low
 
-  * added qucs-doc/textdoc; translate via pdflatex textmode.tex
-  * Added m-interface code to code::blocks project file
-  * Added m-interface directory to configure.ac  
-  * Added m-interface directory to build if qucslib option true
-  * Added BSIM3v34 nMOS model to Qucs-0.0.17
+  * Fixed hybrid coupler #90
+  * Added BSIM3 and BSIM4 nMOS and pMOS models and examples
+  * Added examples and qucs-doc pdf files to the menu
+  * Added example files
   * Added examples directory
   * Added qucs-doc to the distribution
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Fri, 17 May 2013 15:19:14 +0200
-
-qucs (0.0.17.130503-2) quantal; urgency=low
-
   * Added asco
+  * Added beginnings of m-code transient solver interface.
+  * Added impedance to marker in Smith Chart 
 
- -- Frans Schreuder <info@schreuderelectronics.com>  Fri, 03 May 2013 10:00:47 +0200
+ -- Frans Schreuder <fransschreuder@gmail.com>  Sun, 23 Jun 2013 08:14:14 +0200
 
-qucs (0.0.17.130503-1) precise; urgency=low
+qucs (0.0.17-1) precise; urgency=low
 
+  * Fixed hybrid coupler #90
+  * Added BSIM3 and BSIM4 nMOS and pMOS models and examples
+  * Added examples and qucs-doc pdf files to the menu
+  * Added example files
+  * Added examples directory
+  * Added qucs-doc to the distribution
   * Added asco
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Fri, 03 May 2013 09:43:08 +0200
-
-qucs (0.0.17.130502-2) quantal; urgency=low
-
   * Added beginnings of m-code transient solver interface.
-  * remove first library in qucslib if empty
-  * Added impedance to marker in Smith Chart
-  * resolved some problems with freehdl simulation
-  * ported Textdoc
-  * Contextmenu for Content only available for children
-  * Improved the style of the component tab...
-  * Removed q3filedialogs
-  * removed q3accel
-  * Fixed error in readProjectFiles
-  * Fixed mailing list suggestion by Sepp Käsbauer 10-3-2013
-  * Ported Content to QTreeWidget...
-  * Ported Q3FileDialogs in qucs.cpp
-  * Changed ContextMenu of Content Tab
-  * Removing qt3support in qucs, part 1
-  * Merge branch 'ClemensFMN' into qucs-qt4-qt3support
-  * Merge branch 'MikeBrinson' into qucs-qt4-qt3support
-  * Modified build system to accomodate adms, now has --with-mkadms option
+  * Added impedance to marker in Smith Chart 
 
- -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 02 May 2013 08:45:27 +0200
+ -- Frans Schreuder <fransschreuder@gmail.com>  Sun, 23 Jun 2013 08:12:34 +0200
 
-qucs (0.0.17.130502-1) precise; urgency=low
+qucs (0.0.16-1) unstable; urgency=low
 
-  * Added beginnings of m-code transient solver interface.
-  * remove first library in qucslib if empty
-  * Added impedance to marker in Smith Chart
-  * resolved some problems with freehdl simulation
-  * ported Textdoc
-  * Contextmenu for Content only available for children
-  * Improved the style of the component tab...
-  * Removed q3filedialogs
-  * removed q3accel
-  * Fixed error in readProjectFiles
-  * Fixed mailing list suggestion by Sepp Käsbauer 10-3-2013
-  * Ported Content to QTreeWidget...
-  * Ported Q3FileDialogs in qucs.cpp
-  * Changed ContextMenu of Content Tab
-  * Removing qt3support in qucs, part 1
-  * Merge branch 'ClemensFMN' into qucs-qt4-qt3support
-  * Merge branch 'MikeBrinson' into qucs-qt4-qt3support
-  * Modified build system to accomodate adms, now has --with-mkadms option
+  * debian/rules: ignore error in clean target. Thanks to Hideki Yamane
+   (Closes: #652801) 
 
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 02 May 2013 08:40:33 +0200
-
-qucs (0.0.17-1) quantal; urgency=low
-
-  * Created Qucs Qt4 Port
-
- -- Frans Schreuder <info@schreuderelectronics.com>  Wed, 05 Dec 2012 11:47:32 +0100
+ -- José L. Redrejo Rodríguez <jredrejo@debian.org>  Sun, 08 Jan 2012 11:11:03 +0100
 
 qucs (0.0.15-1) unstable; urgency=low
 

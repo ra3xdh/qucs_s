@@ -1,16 +1,23 @@
 #!/bin/sh
-
-# prepare icarus packaging
-# copy all icarus-verilog installed binaries to the 'payload' directory
 #
-# it has to come from the final prefix '/usr/local',
-# otherwise vvp cannot fint its libraries.
-# It coupld be provided as $vv[ -M /path/to/lib
-# but that is not nice.
+# Prepare icarus-verilog for packaging.
+# Copy all icarus installed binaries to the 'payload_icarus' directory
 #
-# this script is also not pretty, other ideas?
+# It should from the final prefix '/usr/local',
+# that is to avoid problems with harcode paths (created during configure).
+# ex. vvp cannot fint its libraries.
+#     It coupld be provided as $vv[ -M /path/to/lib (not nice)
+#
+# I got this list by installing icarus into an exclusive prefix '~/myIcarus'
+# and running 'find .'
+#
+# TODO automate this process of findind dirs and files
+#
+# This script is also not pretty, other ideas?
 
-mkdir payload
+payload="payload_icarus"
+
+mkdir ${payload}
 
 dirs=(
 ./bin
@@ -24,8 +31,9 @@ dirs=(
 ./share/man/man1
 )
 
+# create subdirs on payload
 for dir in "${dirs[@]}"; do
-  mkdir ./payload/${dir}
+  mkdir ./${payload}/${dir}
 done
 
 files=(
@@ -67,6 +75,7 @@ files=(
 ./share/man/man1/vvp.1
 )
 
+# copy files from prefix to payload
 for file in "${files[@]}"; do
-  cp /usr/local/${file} ./payload/${file}
+  cp /usr/local/${file} ./${payload}/${file}
 done

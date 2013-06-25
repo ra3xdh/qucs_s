@@ -1,47 +1,22 @@
 #!/bin/sh
-
-# Build a simple flat package for icarus-verilog
 #
-# ---------------------------------------
-# Configure and install icarus-verilog to
-# the 'payload' or 'root' directory.
-# You can also point the root to another prefix,
-# as long it only contains icarus related files.
+# Build a simple flat package for Icarus Verilog
 #
-# ex.
-#
-# ~/myIcarus/
-#    bin/
-#      iverilog
-#      iverilog-vpi
-#      vvp
-#    include/
-#    lib/
-#    share/
+# 1) Configure and install icarus to the final prefix '/usr/local'
+# 2) Run 'buildpkg_icarus_copy.sh' to copy from the above prefix
+#    to the 'payload_icarus' directory.
+# 3) This script will create a package out of the 'payload_icarus' directory
 #
 # TODO add welcome, info, license
 #
 
-# Install to a 'temporary' and exclusive location
-# configure to use the final 'system' lib and include 
-#./configure --prefix=/Users/guilherme/local/icarus/ --libdir=/usr/local/lib --includedir=/usr/local/include
-# point to this script to the 'temporary'
-
 if [ $# -eq 0 ]
   then
-    echo "*** No icarus-verilog root prefix supplied."
-    echo "Configure and install icarus-verilog to an exclusive prefix."
-    echo "Provide the prefix as root to build a flat-package."
+    echo "*** No FreeHDL payload prefix supplied."
+    echo "Provide the path to payload (copy from install prefix)"
     echo "ex.:"
-    echo "  \$build_pkg.sh --root /usr/home/myIcarus/"
+    echo "  \$buildpkg_freehdl.sh --root ~/git/qucs/qucs/contrib/pm/payload_icarus/"
     echo ''
-    echo "The directory myIcarus should contains only icarus related files."
-    echo "ex.:"
-    echo "   /usr/home/myIcarus/"
-    echo "      bin/"
-    echo "      lib/"
-    echo "      share/"
-
     exit
 fi
 
