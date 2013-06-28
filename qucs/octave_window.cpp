@@ -18,6 +18,12 @@
 #include <Q3VBoxLayout>
 #include <QKeyEvent>
 
+#ifdef __MINGW32__
+#define executableSuffix ".exe"
+#else
+#define executableSuffix ""
+#endif
+
 extern QDir QucsWorkDir;  // current project path
 
 OctaveWindow::OctaveWindow(QDockWidget *parent_): QWidget(parent_, 0)
@@ -77,22 +83,42 @@ bool OctaveWindow::startOctave()
   if(octProcess.state()==QProcess::Running)
     return true;
 
-  QStringList CommandLine;
-  CommandLine << "octave" << "--no-history" << "-i" << "-f" << "-p"
-	      << QDir::convertSeparators(QucsSettings.OctaveDir);
-  //octProcess.setArguments(CommandLine);
+  QString OctavePath;
+  char *var = getenv ("OCTAVE"); // env variable
+  if (var != NULL) {
+    QFileInfo info(QDir(var).absPath());
+    OctavePath = info.absolutePath();
+  }
+  else {
+    QString Octave = "/usr/local/bin/octave";  // linux/mac default
+    QFileInfo info(Octave);
+    if ( info.isFile() ){
+      OctavePath =  info.absolutePath();
+    }
+    else
+      OctavePath = "";  // same prefix as qucs
+  }
+
+  QString Program;
+  QStringList Arguments;
+
+  OctavePath = QDir::toNativeSeparators(OctavePath+"/"+"octave"+QString(executableSuffix));
+
+  Program = OctavePath;
+  Arguments << "--no-history" << "-i" << "-f" << "-p"
+            << QDir::toNativeSeparators(QucsSettings.OctaveDir); // m-files location
 
   disconnect(&octProcess, 0, 0, 0);
   connect(&octProcess, SIGNAL(readyReadStandardError()), SLOT(slotDisplayErr()));
   connect(&octProcess, SIGNAL(readyReadStandardOutput()), SLOT(slotDisplayMsg()));
-  connect(&octProcess, SIGNAL(finished()), SLOT(slotOctaveEnded()));
+  connect(&octProcess, SIGNAL(finished(int)), SLOT(slotOctaveEnded(int)));
 
   QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
   env.insert("PATH", env.value("PATH") );
   octProcess.setProcessEnvironment(env);
   output->clear();
-  QString cmd = CommandLine.join(" ");
-  octProcess.start(cmd);
+
+  octProcess.start(Program, Arguments);
 
   if(octProcess.state()!=QProcess::Running&&
           octProcess.state()!=QProcess::Starting) {
@@ -184,7 +210,8 @@ void OctaveWindow::slotDisplayErr()
 
 // ------------------------------------------------------------------------
 // Is called when the simulation process terminates.
-void OctaveWindow::slotOctaveEnded()
+void OctaveWindow::slotOctaveEnded(int status)
 {
+  qDebug() << "Octave ended status" << status;
   output->clear();
 }
