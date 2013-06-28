@@ -112,9 +112,15 @@ bool OctaveWindow::startOctave()
   connect(&octProcess, SIGNAL(readyReadStandardError()), SLOT(slotDisplayErr()));
   connect(&octProcess, SIGNAL(readyReadStandardOutput()), SLOT(slotDisplayMsg()));
   connect(&octProcess, SIGNAL(finished(int)), SLOT(slotOctaveEnded(int)));
+#ifdef __MINGW32__
+  QString sep(";"); // path separator
+#else
+  QString sep(":");
+#endif
 
+  // append process PATH, othewise Octave does not find gnuplot
   QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-  env.insert("PATH", env.value("PATH") );
+  env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
   octProcess.setProcessEnvironment(env);
   output->clear();
 
