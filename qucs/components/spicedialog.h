@@ -33,7 +33,7 @@ class Q3ListBox;
 class Q3ListBoxItem;
 class QCheckBox;
 class Q3VBoxLayout;
-class Q3Process;
+class QProcess;
 class QRegExpValidator;
 class QComboBox;
 
@@ -88,7 +88,7 @@ private:
   int         currentPrep;
 
   Q3TextStream *prestream;
-  Q3Process *QucsConv, *SpicePrep;
+  QProcess *QucsConv, *SpicePrep;
   QString Line, Error;  // to store the text read from QucsConv
   int textStatus; // to store with text data QucsConv will sent next
 };

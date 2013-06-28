@@ -7,7 +7,7 @@
 #define OCTAVE_WINDOW_H
 
 #include <qwidget.h>
-#include <q3process.h>
+#include <QProcess>
 #include <qstringlist.h>
 //Added by qt3to4:
 #include <QKeyEvent>
@@ -46,7 +46,7 @@ private:
   Q3TextEdit *output;
   QLineEdit *input;
 
-  Q3Process octProcess;
+  QProcess octProcess;
 
   QStringList cmdHistory;
   QStringList::Iterator histIterator;

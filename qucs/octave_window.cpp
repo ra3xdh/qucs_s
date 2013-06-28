@@ -55,7 +55,7 @@ OctaveWindow::OctaveWindow(QDockWidget *parent_): QWidget(parent_, 0)
 // -----------------------------------------------------------------
 OctaveWindow::~OctaveWindow()
 {
-  if(octProcess.isRunning())
+  if(octProcess.state()==QProcess::Running)
     octProcess.kill();
 }
 
@@ -74,22 +74,28 @@ QSize OctaveWindow::sizeHint()
 // ------------------------------------------------------------------------
 bool OctaveWindow::startOctave()
 {
-  if(octProcess.isRunning())
+  if(octProcess.state()==QProcess::Running)
     return true;
 
   QStringList CommandLine;
   CommandLine << "octave" << "--no-history" << "-i" << "-f" << "-p"
 	      << QDir::convertSeparators(QucsSettings.OctaveDir);
-  octProcess.setArguments(CommandLine);
+  //octProcess.setArguments(CommandLine);
 
   disconnect(&octProcess, 0, 0, 0);
-  connect(&octProcess, SIGNAL(readyReadStderr()), SLOT(slotDisplayErr()));
-  connect(&octProcess, SIGNAL(readyReadStdout()), SLOT(slotDisplayMsg()));
-  connect(&octProcess, SIGNAL(processExited()), SLOT(slotOctaveEnded()));
+  connect(&octProcess, SIGNAL(readyReadStandardError()), SLOT(slotDisplayErr()));
+  connect(&octProcess, SIGNAL(readyReadStandardOutput()), SLOT(slotDisplayMsg()));
+  connect(&octProcess, SIGNAL(finished()), SLOT(slotOctaveEnded()));
 
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+  env.insert("PATH", env.value("PATH") );
+  octProcess.setProcessEnvironment(env);
   output->clear();
+  QString cmd = CommandLine.join(" ");
+  octProcess.start(cmd);
 
-  if(!octProcess.start()) {
+  if(octProcess.state()!=QProcess::Running&&
+          octProcess.state()!=QProcess::Starting) {
     output->setText(tr("ERROR: Cannot start Octave!"));
     return false;
   }
@@ -112,7 +118,8 @@ void OctaveWindow::sendCommand(const QString& cmd)
   QString cmdstr = cmd + "\n";
   output->insertAt(cmdstr, par, idx);
   output->scrollToBottom();
-  octProcess.writeToStdin(cmdstr);
+  //octProcess.writeToStdin(cmdstr);
+  octProcess.write(cmdstr);
 }
 
 // ------------------------------------------------------------------------
@@ -158,7 +165,7 @@ void OctaveWindow::slotDisplayMsg()
 {
   int par = output->paragraphs() - 1;
   int idx = output->paragraphLength(par);
-  output->insertAt(QString(octProcess.readStdout()), par, idx);
+  output->insertAt(QString(octProcess.readAllStandardOutput()), par, idx);
   output->scrollToBottom();
 }
 
@@ -171,7 +178,7 @@ void OctaveWindow::slotDisplayErr()
 
   int par = output->paragraphs() - 1;
   int idx = output->paragraphLength(par);
-  output->insertAt(QString(octProcess.readStderr()), par, idx);
+  output->insertAt(QString(octProcess.readAllStandardError()), par, idx);
   output->scrollToBottom();
 }
 

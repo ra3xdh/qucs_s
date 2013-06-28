@@ -24,7 +24,7 @@
 #include <limits.h>
 
 
-#include <q3process.h>
+#include <QProcess>
 #include <q3syntaxhighlighter.h>
 //Added by qt3to4:
 #include <Q3PtrList>
@@ -2091,9 +2091,14 @@ void QucsApp::slotOpenContent(QTreeWidgetItem *item)
     if(Suffix == (*it).section('/',0,0)) {
       com = QStringList::split(" ", (*it).section('/',1,1));
       com << Info.absFilePath();
-      Q3Process *Program = new Q3Process(com);
-      Program->setCommunication(0);
-      if(!Program->start()) {
+      QProcess *Program = new QProcess();
+      //Program->setCommunication(0);
+      QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+      env.insert("PATH", env.value("PATH") );
+      Program->setProcessEnvironment(env);
+      Program->start(com.join(" "));
+      if(Program->state()!=QProcess::Running&&
+              Program->state()!=QProcess::Starting) {
         QMessageBox::critical(this, tr("Error"),
                tr("Cannot start \"%1\"!").arg(Info.absFilePath()));
         delete Program;

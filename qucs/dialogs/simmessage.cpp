@@ -121,7 +121,7 @@ SimMessage::SimMessage(QWidget *w, QWidget *parent)
 
 SimMessage::~SimMessage()
 {
-  if(SimProcess.Running)  SimProcess.kill();
+  if(SimProcess.state()==QProcess::Running)  SimProcess.kill();
   delete all;
 }
 
