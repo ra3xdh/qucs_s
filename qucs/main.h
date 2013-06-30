@@ -26,6 +26,7 @@
 #include "wire.h"
 #include "node.h"
 #include "diagrams/diagram.h"
+#include <QSettings>
 
 class QucsApp;
 class Component;
@@ -65,6 +66,7 @@ struct tQucsSettings {
 };
 
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used
+
 extern QFont savingFont;       // to remember which font to save in "qucsrc"
 
 extern QucsApp *QucsMain;  // the Qucs application itself

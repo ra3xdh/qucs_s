@@ -36,6 +36,7 @@
 #include <QTabWidget>
 #include <QDockWidget>
 //#include <QListWidget>
+#include <QSettings>
 
 class QucsDoc;
 class Schematic;
@@ -73,7 +74,7 @@ class QucsApp : public QMainWindow {
 public:
   QucsApp();
  ~QucsApp();
-
+  QSettings *qucsSettings;
   bool closeAllFiles();
   static int testFile(const QString&);
   bool gotoPage(const QString&);   // to load a document
@@ -158,7 +159,6 @@ private slots:
   void slotChangePage(QString&, QString&);
   void slotNextTab();
   void slotHideEdit();
-
 signals:
   void signalKillEmAll();
 

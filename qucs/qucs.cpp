@@ -1712,6 +1712,14 @@ void QucsApp::slotFileQuit()
 // To get all close events.
 void QucsApp::closeEvent(QCloseEvent* Event)
 {
+    qDebug()<<"x"<<pos().x()<<" ,y"<<pos().y();
+    qDebug()<<"dx"<<size().width()<<" ,dy"<<size().height();
+    QucsSettings.x=pos().x();
+    QucsSettings.y=pos().y();
+    QucsSettings.dx=size().width();
+    QucsSettings.dy=size().height();
+    saveApplSettings(this);
+
    if(closeAllFiles()) {
       emit signalKillEmAll();   // kill all subprocesses
       Event->accept();
