@@ -137,14 +137,14 @@ bool SimMessage::startProcess()
   ProgText->insert(txt + "\n\n");
   
   SimProcess.blockSignals(false);
- /* On Qt4 it shows as running even before we .start it. FIXME
-  if(SimProcess.Running) {
+ /* On Qt4 it shows as running even before we .start it. FIXME*/
+  if(SimProcess.state()==QProcess::Running ||SimProcess.state()==QProcess::Starting) {
     qDebug() << "running!";  
     ErrText->insert(tr("ERROR: Simulator is still running!"));
     FinishSimulation(-1);
     return false;
   }
-*/
+
   Collect.clear();  // clear list for NodeSets, SPICE components etc.
   ProgText->insert(tr("creating netlist... "));
   NetlistFile.setName(QucsHomeDir.filePath("netlist.txt"));
