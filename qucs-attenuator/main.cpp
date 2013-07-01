@@ -36,7 +36,7 @@ struct tQucsSettings QucsSettings;
 bool loadSettings()
 {
     QSettings settings("qucs","qucs");
-    settings.beginGroup("QucsAttennuator");
+    settings.beginGroup("QucsAttenuator");
     if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
     if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
     settings.endGroup();
@@ -97,9 +97,9 @@ bool loadSettings()
 bool saveApplSettings(QucsAttenuator *qucs)
 {
     QSettings settings ("qucs","qucs");
-    settings.beginGroup("QucsAttennuator");
-    settings.setValue("x", QucsSettings.x);
-    settings.setValue("y", QucsSettings.y);
+    settings.beginGroup("QucsAttenuator");
+    settings.setValue("x", qucs->x());
+    settings.setValue("y", qucs->y());
     settings.endGroup();
   return true;
 
