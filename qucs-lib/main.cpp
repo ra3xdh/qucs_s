@@ -30,77 +30,46 @@
 #include <qmessagebox.h>
 #include <qdir.h>
 #include <qfont.h>
-
+#include <QSettings>
 #include "qucslib.h"
 
 tQucsSettings QucsSettings;
 QDir UserLibDir;
 
+
+// #########################################################################
 // Loads the settings file and stores the settings.
 bool loadSettings()
 {
-  bool result = true;
+    QSettings settings("qucs","qucs");
+    settings.beginGroup("QucsLib");
+    if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
+    if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
+    if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
+    if(settings.contains("dy"))QucsSettings.dy=settings.value("dy").toInt();
+    settings.endGroup();
+    if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
+    if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
 
-  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/librc"));
-  if(!file.open(QIODevice::ReadOnly))
-    result = false; // settings file doesn't exist
-  else {
-    QTextStream stream(&file);
-    QString Line, Setting;
-    while(!stream.atEnd()) {
-      Line = stream.readLine();
-      Setting = Line.section('=',0,0);
-      Line = Line.section('=',1,1);
-      if(Setting == "Position") {
-	QucsSettings.x = Line.section(",",0,0).toInt();
-	QucsSettings.y = Line.section(",",1,1).toInt(); }
-      else if(Setting == "Size") {
-	QucsSettings.dx = Line.section(",",0,0).toInt();
-	QucsSettings.dy = Line.section(",",1,1).toInt(); }
-    }
-    file.close();
-  }
-
-  file.setFileName(QDir::homePath()+QDir::convertSeparators ("/.qucs/qucsrc"));
-  if(!file.open(QIODevice::ReadOnly))
-    result = true; // qucs settings not necessary
-  else {
-    QTextStream stream(&file);
-    QString Line, Setting;
-    while(!stream.atEnd()) {
-      Line = stream.readLine();
-      Setting = Line.section('=',0,0);
-      Line = Line.section('=',1,1).trimmed();
-      if(Setting == "Font")
-	QucsSettings.font.fromString(Line);
-      else if(Setting == "Language")
-	QucsSettings.Language = Line;
-    }
-    file.close();
-  }
-  return result;
+  return true;
 }
 
+
+// #########################################################################
 // Saves the settings in the settings file.
 bool saveApplSettings(QucsLib *qucs)
 {
-  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/librc"));
-  if(!file.open(QIODevice::WriteOnly)) {
-    QMessageBox::warning(0, QObject::tr("Warning"),
-			QObject::tr("Cannot save settings !"));
-    return false;
-  }
-
-  QString Line;
-  QTextStream stream(&file);
-
-  stream << "Settings file, QucsLib " PACKAGE_VERSION "\n"
-    << "Position=" << qucs->x() << "," << qucs->y() << "\n"
-    << "Size=" << qucs->width() << "," << qucs->height() << "\n";
-
-  file.close();
+    QSettings settings ("qucs","qucs");
+    settings.beginGroup("QucsLib");
+    settings.setValue("x", qucs->x());
+    settings.setValue("y", qucs->y());
+    settings.setValue("dx", qucs->width());
+    settings.setValue("dy", qucs->height());
+    settings.endGroup();
   return true;
+
 }
+
 
 // #########################################################################
 // ##########                                                     ##########

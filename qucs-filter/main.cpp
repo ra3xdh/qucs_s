@@ -30,81 +30,43 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QFont>
+#include <QSettings>
 
 #include "qucsfilter.h"
 
 struct tQucsSettings QucsSettings;
 
+
+
 // #########################################################################
 // Loads the settings file and stores the settings.
 bool loadSettings()
 {
-  bool result = true;
+    QSettings settings("qucs","qucs");
+    settings.beginGroup("QucsFilter");
+    if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
+    if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
+    settings.endGroup();
+    if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
+    if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
 
-  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/filterrc"));
-  if(!file.open(QIODevice::ReadOnly))
-    result = false; // settings file doesn't exist
-  else {
-    QTextStream stream(&file);
-    QString Line, Setting;
-    while(!stream.atEnd()) {
-      Line = stream.readLine();
-      Setting = Line.section('=',0,0);
-      Line = Line.section('=',1,1);
-      if(Setting == "FilterWindow") {
-	QucsSettings.x = Line.section(",",0,0).toInt();
-	QucsSettings.y = Line.section(",",1,1).toInt();
-	break;
-      }
-    }
-    file.close();
-  }
-
-  file.setFileName(QDir::homePath()+QDir::convertSeparators ("/.qucs/qucsrc"));
-  if(!file.open(QIODevice::ReadOnly))
-    result = true; // qucs settings not necessary
-  else {
-    QTextStream stream(&file);
-    QString Line, Setting;
-    while(!stream.atEnd()) {
-      Line = stream.readLine();
-      Setting = Line.section('=',0,0);
-      Line = Line.section('=',1,1).trimmed();
-      if(Setting == "Font")
-	QucsSettings.font.fromString(Line);
-      else if(Setting == "Language")
-	QucsSettings.Language = Line;
-    }
-    file.close();
-  }
-  return result;
+  return true;
 }
+
 
 // #########################################################################
 // Saves the settings in the settings file.
 bool saveApplSettings(QucsFilter *qucs)
 {
-  if(qucs->x() == QucsSettings.x)
-    if(qucs->y() == QucsSettings.y)
-      return true;   // nothing has changed
-
-
-  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/filterrc"));
-  if(!file.open(QIODevice::WriteOnly)) {
-    QMessageBox::warning(0, QObject::tr("Warning"),
-			QObject::tr("Cannot save settings !"));
-    return false;
-  }
-
-  QString Line;
-  QTextStream stream(&file);
-
-  stream << "Settings file, Qucs Filter " PACKAGE_VERSION "\n"
-	 << "FilterWindow=" << qucs->x() << ',' << qucs->y() << '\n';
-
-  file.close();
+    QSettings settings ("qucs","qucs");
+    settings.beginGroup("QucsFilter");
+    settings.setValue("x", qucs->x());
+    settings.setValue("y", qucs->y());
+    settings.endGroup();
   return true;
+
 }
+
 
 
 // #########################################################################

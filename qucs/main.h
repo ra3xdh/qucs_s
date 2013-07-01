@@ -67,8 +67,6 @@ struct tQucsSettings {
 
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used
 
-extern QFont savingFont;       // to remember which font to save in "qucsrc"
-
 extern QucsApp *QucsMain;  // the Qucs application itself
 extern QString lastDir;    // to remember last directory for several dialogs
 

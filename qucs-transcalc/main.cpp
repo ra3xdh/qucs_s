@@ -30,6 +30,7 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QFont>
+#include <QSettings>
 
 #include "qucstrans.h"
 
@@ -37,97 +38,51 @@ tQucsSettings QucsSettings;
 extern QDir QucsWorkDir;
 extern struct TransUnit TransUnits[];
 
+
+// #########################################################################
 // Loads the settings file and stores the settings.
 bool loadSettings()
 {
-  bool result = true;
+    QSettings settings("qucs","qucs");
+    settings.beginGroup("QucsTranscalc");
+    if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
+    if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
+    if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
+    if(settings.contains("dy"))QucsSettings.dy=settings.value("dy").toInt();
+    if(settings.contains("Mode"))QucsSettings.Mode=settings.value("Mode").toString();
+    if(settings.contains("FreqUnit"))QucsSettings.freq_unit=settings.value("FreqUnit").toInt();
+    if(settings.contains("LengthUnit"))QucsSettings.length_unit=settings.value("LengthUnit").toInt();
+    if(settings.contains("ResUnit"))QucsSettings.res_unit=settings.value("ResUnit").toInt();
+    if(settings.contains("AngUnit"))QucsSettings.ang_unit=settings.value("AngUnit").toInt();
 
-  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/transrc"));
-  if(!file.open(QIODevice::ReadOnly))
-    result = false; // settings file doesn't exist
-  else {
-    QTextStream stream(&file);
-    QString Line, Setting;
-    while(!stream.atEnd()) {
-      Line = stream.readLine();
-      Setting = Line.section('=',0,0);
-      Line = Line.section('=',1,1);
-      if(Setting == "Mode") {
-    QucsSettings.Mode = Line.simplified();
-      }
-      else if(Setting == "Frequency") {
-    Line = Line.simplified();
-    QucsSettings.freq_unit = QucsTranscalc::translateUnit(Line.toAscii(),0);
-      }
-      else if(Setting == "Length") {
-    Line = Line.simplified();
-    QucsSettings.length_unit = QucsTranscalc::translateUnit(Line.toAscii(),1);
-      }
-      else if(Setting == "Resistance") {
-    Line = Line.simplified();
-    QucsSettings.res_unit = QucsTranscalc::translateUnit(Line.toAscii(),2);
-      }
-      else if(Setting == "Angle") {
-    Line = Line.simplified();
-    QucsSettings.ang_unit = QucsTranscalc::translateUnit(Line.toAscii(),3);
-      }
-      else if(Setting == "TransWindow") {
-	QucsSettings.x  = Line.section(",",0,0).toInt();
-	QucsSettings.y  = Line.section(",",1,1).toInt();
-	QucsSettings.dx = Line.section(",",2,2).toInt();
-	QucsSettings.dy = Line.section(",",3,3).toInt();
-	break;
-      }
-    }
-    file.close();
-  }
+    settings.endGroup();
+    if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
+    if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
 
-  file.setFileName(QDir::homePath()+QDir::convertSeparators ("/.qucs/qucsrc"));
-  if(!file.open(QIODevice::ReadOnly))
-    result = true; // qucs settings not necessary
-  else {
-    QTextStream stream(&file);
-    QString Line, Setting;
-    while(!stream.atEnd()) {
-      Line = stream.readLine();
-      Setting = Line.section('=',0,0);
-      Line = Line.section('=',1,1).trimmed();
-      if(Setting == "Font")
-	QucsSettings.font.fromString(Line);
-      else if(Setting == "Language")
-	QucsSettings.Language = Line;
-    }
-    file.close();
-  }
-  return result;
+  return true;
 }
 
+
+// #########################################################################
 // Saves the settings in the settings file.
 bool saveApplSettings(QucsTranscalc *qucs)
 {
-  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/transrc"));
-  if(!file.open(QIODevice::WriteOnly)) {
-    QMessageBox::warning(0, QObject::tr("Warning"),
-			QObject::tr("Cannot save settings !"));
-    return false;
-  }
-
-  QString Line;
-  QTextStream stream(&file);
-
-  stream << "Settings file, QucsTranscalc " PACKAGE_VERSION "\n"
-	 << "Mode=" << qucs->getMode() << "\n"
-	 << "Frequency=" << TransUnits[0].units[QucsSettings.freq_unit] << "\n"
-	 << "Length=" << TransUnits[1].units[QucsSettings.length_unit] << "\n"
-	 << "Resistance=" << TransUnits[2].units[QucsSettings.res_unit] << "\n"
-	 << "Angle=" << TransUnits[3].units[QucsSettings.ang_unit] << "\n"
-	 << "TransWindow=" << qucs->x() << ',' << qucs->y() << ','
-	 << qucs->width() << ',' << qucs->height() << '\n';
-  qucs->saveModes(stream);
-
-  file.close();
+    QSettings settings ("qucs","qucs");
+    settings.beginGroup("QucsTranscalc");
+    settings.setValue("x", qucs->x());
+    settings.setValue("y", qucs->y());
+    settings.setValue("dx", qucs->width());
+    settings.setValue("dy", qucs->height());
+    settings.setValue("Mode", qucs->getMode());
+    settings.setValue("FreqUnit", TransUnits[0].units[QucsSettings.freq_unit]);
+    settings.setValue("LengthUnit", TransUnits[1].units[QucsSettings.length_unit]);
+    settings.setValue("ResUnit", TransUnits[2].units[QucsSettings.res_unit]);
+    settings.setValue("AngUnit", TransUnits[3].units[QucsSettings.ang_unit]);
+    settings.endGroup();
   return true;
+
 }
+
 
 // #########################################################################
 // ##########                                                     ##########

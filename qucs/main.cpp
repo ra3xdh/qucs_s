@@ -39,7 +39,6 @@
 #include "node.h"
 
 tQucsSettings QucsSettings;
-QFont savingFont;    // to remember which font to save in "qucsrc"
 
 QucsApp *QucsMain;  // the Qucs application itself
 QString lastDir;    // to remember last directory for several dialogs
