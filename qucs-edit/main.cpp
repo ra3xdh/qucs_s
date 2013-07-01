@@ -30,11 +30,46 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QFont>
+#include <QSettings>
 
 #include "qucsedit.h"
 
 tQucsSettings QucsSettings;
 
+// #########################################################################
+// Loads the settings file and stores the settings.
+bool loadSettings()
+{
+    QSettings settings("qucs","qucs");
+    settings.beginGroup("QucsEdit");
+    if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
+    if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
+    if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
+    if(settings.contains("dy"))QucsSettings.dy=settings.value("dy").toInt();
+    settings.endGroup();
+    if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
+    if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
+
+  return true;
+}
+
+
+// #########################################################################
+// Saves the settings in the settings file.
+bool saveApplSettings(QucsEdit *qucs)
+{
+    QSettings settings ("qucs","qucs");
+    settings.beginGroup("QucsEdit");
+    settings.setValue("x", qucs->x());
+    settings.setValue("y", qucs->y());
+    settings.setValue("dx", qucs->width());
+    settings.setValue("dy", qucs->height());
+    settings.endGroup();
+  return true;
+
+}
+
+/*
 // #########################################################################
 // Loads the settings file and stores the settings.
 bool loadSettings()
@@ -108,7 +143,7 @@ bool saveApplSettings(QucsEdit *qucs)
 
   file.close();
   return true;
-}
+}*/
 
 // #########################################################################
 void showOptions()

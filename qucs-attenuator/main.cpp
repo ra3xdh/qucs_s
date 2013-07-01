@@ -46,6 +46,20 @@ bool loadSettings()
   return true;
 }
 
+
+// #########################################################################
+// Saves the settings in the settings file.
+bool saveApplSettings(QucsAttenuator *qucs)
+{
+    QSettings settings ("qucs","qucs");
+    settings.beginGroup("QucsAttenuator");
+    settings.setValue("x", qucs->x());
+    settings.setValue("y", qucs->y());
+    settings.endGroup();
+  return true;
+
+}
+
 // #########################################################################
 // Loads the settings file and stores the settings.
 /*bool loadSettings()
@@ -92,18 +106,6 @@ bool loadSettings()
 }*/
 
 
-// #########################################################################
-// Saves the settings in the settings file.
-bool saveApplSettings(QucsAttenuator *qucs)
-{
-    QSettings settings ("qucs","qucs");
-    settings.beginGroup("QucsAttenuator");
-    settings.setValue("x", qucs->x());
-    settings.setValue("y", qucs->y());
-    settings.endGroup();
-  return true;
-
-}
 /*
 // #########################################################################
 // Saves the settings in the settings file.
