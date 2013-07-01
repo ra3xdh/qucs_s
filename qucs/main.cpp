@@ -49,30 +49,29 @@ QString lastDir;    // to remember last directory for several dialogs
 // Loads the settings file and stores the settings.
 bool loadSettings()
 {
-    QSettings* settings = new QSettings("qucs","qucs");
+    QSettings settings("qucs","qucs");
 
-    if(settings->contains("x"))QucsSettings.x=settings->value("x").toInt();
-    if(settings->contains("y"))QucsSettings.y=settings->value("y").toInt();
-    if(settings->contains("dx"))QucsSettings.dx=settings->value("dx").toInt();
-    if(settings->contains("dy"))QucsSettings.dy=settings->value("dy").toInt();
-    if(settings->contains("font"))QucsSettings.font.fromString(settings->value("font").toString());
-    if(settings->contains("largeFontSize"))QucsSettings.largeFontSize=settings->value("largeFontSize").toDouble();
-    if(settings->contains("maxUndo"))QucsSettings.maxUndo=settings->value("maxUndo").toInt();
-    if(settings->contains("NodeWiring"))QucsSettings.NodeWiring=settings->value("NodeWiring").toInt();
-    if(settings->contains("BGColor"))QucsSettings.BGColor.setNamedColor(settings->value("BGColor").toString());
-    if(settings->contains("Editor"))QucsSettings.Editor=settings->value("Editor").toString();
-    if(settings->contains("FileTypes"))QucsSettings.FileTypes=settings->value("FileTypes").toStringList();
-    if(settings->contains("Language"))QucsSettings.Language=settings->value("Language").toString();
-    if(settings->contains("Comment"))QucsSettings.Comment.setNamedColor(settings->value("Comment").toString());
-    if(settings->contains("String"))QucsSettings.String.setNamedColor(settings->value("String").toString());
-    if(settings->contains("Integer"))QucsSettings.Integer.setNamedColor(settings->value("Integer").toString());
-    if(settings->contains("Real"))QucsSettings.Real.setNamedColor(settings->value("Real").toString());
-    if(settings->contains("Character"))QucsSettings.Character.setNamedColor(settings->value("Character").toString());
-    if(settings->contains("Type"))QucsSettings.Type.setNamedColor(settings->value("Type").toString());
-    if(settings->contains("Attribute"))QucsSettings.Attribute.setNamedColor(settings->value("Attribute").toString());
-    if(settings->contains("Directive"))QucsSettings.Directive.setNamedColor(settings->value("Directive").toString());
-    if(settings->contains("Task"))QucsSettings.Comment.setNamedColor(settings->value("Task").toString());
-    delete settings;
+    if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
+    if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
+    if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
+    if(settings.contains("dy"))QucsSettings.dy=settings.value("dy").toInt();
+    if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
+    if(settings.contains("largeFontSize"))QucsSettings.largeFontSize=settings.value("largeFontSize").toDouble();
+    if(settings.contains("maxUndo"))QucsSettings.maxUndo=settings.value("maxUndo").toInt();
+    if(settings.contains("NodeWiring"))QucsSettings.NodeWiring=settings.value("NodeWiring").toInt();
+    if(settings.contains("BGColor"))QucsSettings.BGColor.setNamedColor(settings.value("BGColor").toString());
+    if(settings.contains("Editor"))QucsSettings.Editor=settings.value("Editor").toString();
+    if(settings.contains("FileTypes"))QucsSettings.FileTypes=settings.value("FileTypes").toStringList();
+    if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
+    if(settings.contains("Comment"))QucsSettings.Comment.setNamedColor(settings.value("Comment").toString());
+    if(settings.contains("String"))QucsSettings.String.setNamedColor(settings.value("String").toString());
+    if(settings.contains("Integer"))QucsSettings.Integer.setNamedColor(settings.value("Integer").toString());
+    if(settings.contains("Real"))QucsSettings.Real.setNamedColor(settings.value("Real").toString());
+    if(settings.contains("Character"))QucsSettings.Character.setNamedColor(settings.value("Character").toString());
+    if(settings.contains("Type"))QucsSettings.Type.setNamedColor(settings.value("Type").toString());
+    if(settings.contains("Attribute"))QucsSettings.Attribute.setNamedColor(settings.value("Attribute").toString());
+    if(settings.contains("Directive"))QucsSettings.Directive.setNamedColor(settings.value("Directive").toString());
+    if(settings.contains("Task"))QucsSettings.Comment.setNamedColor(settings.value("Task").toString());
   return true;
 }
 
@@ -80,30 +79,29 @@ bool loadSettings()
 // Saves the settings in the settings file.
 bool saveApplSettings(QucsApp *qucs)
 {
-    QSettings* settings = new QSettings("qucs","qucs");
+    QSettings settings ("qucs","qucs");
 
-    settings->setValue("x", QucsSettings.x);
-    settings->setValue("y", QucsSettings.y);
-    settings->setValue("dx", QucsSettings.dx);
-    settings->setValue("dy", QucsSettings.dy);
-    settings->setValue("font", QucsSettings.font.toString());
-    settings->setValue("largeFontSize", QucsSettings.largeFontSize);
-    settings->setValue("maxUndo", QucsSettings.maxUndo);
-    settings->setValue("NodeWiring", QucsSettings.NodeWiring);
-    settings->setValue("BGColor", QucsSettings.BGColor.name());
-    settings->setValue("Editor", QucsSettings.Editor);
-    settings->setValue("FileTypes", QucsSettings.FileTypes);
-    settings->setValue("Language", QucsSettings.Language);
-    settings->setValue("Comment", QucsSettings.Comment.name());
-    settings->setValue("String", QucsSettings.String.name());
-    settings->setValue("Integer", QucsSettings.Integer.name());
-    settings->setValue("Real", QucsSettings.Real.name());
-    settings->setValue("Character", QucsSettings.Character.name());
-    settings->setValue("Type", QucsSettings.Type.name());
-    settings->setValue("Attribute", QucsSettings.Attribute.name());
-    settings->setValue("Directive", QucsSettings.Directive.name());
-    settings->setValue("Task", QucsSettings.Comment.name());
-    delete settings;
+    settings.setValue("x", QucsSettings.x);
+    settings.setValue("y", QucsSettings.y);
+    settings.setValue("dx", QucsSettings.dx);
+    settings.setValue("dy", QucsSettings.dy);
+    settings.setValue("font", QucsSettings.font.toString());
+    settings.setValue("largeFontSize", QucsSettings.largeFontSize);
+    settings.setValue("maxUndo", QucsSettings.maxUndo);
+    settings.setValue("NodeWiring", QucsSettings.NodeWiring);
+    settings.setValue("BGColor", QucsSettings.BGColor.name());
+    settings.setValue("Editor", QucsSettings.Editor);
+    settings.setValue("FileTypes", QucsSettings.FileTypes);
+    settings.setValue("Language", QucsSettings.Language);
+    settings.setValue("Comment", QucsSettings.Comment.name());
+    settings.setValue("String", QucsSettings.String.name());
+    settings.setValue("Integer", QucsSettings.Integer.name());
+    settings.setValue("Real", QucsSettings.Real.name());
+    settings.setValue("Character", QucsSettings.Character.name());
+    settings.setValue("Type", QucsSettings.Type.name());
+    settings.setValue("Attribute", QucsSettings.Attribute.name());
+    settings.setValue("Directive", QucsSettings.Directive.name());
+    settings.setValue("Task", QucsSettings.Comment.name());
   return true;
 
 }

@@ -353,10 +353,7 @@ void QucsSettingsDialog::slotApply()
     changed = true;
   }
 
-  if(savingFont != Font) {
-    savingFont = Font;
-    changed = true;
-  }
+  QucsSettings.font=Font;
 
   QucsSettings.Language =
       LanguageCombo->currentText().section('(',1,1).remove(')');
@@ -447,7 +444,7 @@ void QucsSettingsDialog::slotBGColorDialog()
 // -----------------------------------------------------------
 void QucsSettingsDialog::slotDefaultValues()
 {
-  Font = QFont("Helvetica", 12);
+  //Font = QFont("Helvetica", 12);
   FontButton->setText(Font.toString());
   LanguageCombo->setCurrentItem(0);
   BGColorButton->setPaletteBackgroundColor(QColor(255,250,225));

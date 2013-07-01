@@ -25,15 +25,30 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QFont>
+#include <QSettings>
 
 #include "qucsattenuator.h"
 
 struct tQucsSettings QucsSettings;
 
-
 // #########################################################################
 // Loads the settings file and stores the settings.
 bool loadSettings()
+{
+    QSettings settings("qucs","qucs");
+    settings.beginGroup("QucsAttennuator");
+    if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
+    if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
+    settings.endGroup();
+    if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
+    if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
+
+  return true;
+}
+
+// #########################################################################
+// Loads the settings file and stores the settings.
+/*bool loadSettings()
 {
   bool result = true;
 
@@ -74,8 +89,22 @@ bool loadSettings()
     file.close();
   }
   return result;
-}
+}*/
 
+
+// #########################################################################
+// Saves the settings in the settings file.
+bool saveApplSettings(QucsAttenuator *qucs)
+{
+    QSettings settings ("qucs","qucs");
+    settings.beginGroup("QucsAttennuator");
+    settings.setValue("x", QucsSettings.x);
+    settings.setValue("y", QucsSettings.y);
+    settings.endGroup();
+  return true;
+
+}
+/*
 // #########################################################################
 // Saves the settings in the settings file.
 bool saveApplSettings(QucsAttenuator *qucs)
@@ -101,7 +130,7 @@ bool saveApplSettings(QucsAttenuator *qucs)
   file.close();
   return true;
 }
-
+*/
 
 
 int main( int argc, char ** argv )
