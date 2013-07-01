@@ -166,7 +166,7 @@ void ImportDialog::slotImport()
   ImportButt->setDisabled(true);
   AbortButt->setDisabled(false);
 
-  QFile File(QucsWorkDir.filePath(OutputEdit->text()));
+  QFile File(QucsSettings.QucsWorkDir.filePath(OutputEdit->text()));
   if(File.exists())
     if(QMessageBox::information(this, tr("Info"),
           tr("Output file already exists!")+"\n"+tr("Overwrite it?"),
@@ -241,7 +241,7 @@ void ImportDialog::slotImport()
   }
 
   CommandLine << "-i" << ImportEdit->text()
-              << "-o" << QucsWorkDir.filePath(OutputEdit->text());
+              << "-o" << QucsSettings.QucsWorkDir.filePath(OutputEdit->text());
 
   Process.blockSignals(false);
 

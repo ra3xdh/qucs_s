@@ -64,8 +64,6 @@
 #include "rectwaveguide.h"
 #include "c_microstrip.h"
 
-QDir QucsWorkDir;
-
 // Defines maximum number of entries in each property category.
 static const int TransMaxBox[MAX_TRANS_BOXES] = { 9, 1, 4, 3 };
 
@@ -1113,10 +1111,10 @@ void QucsTranscalc::slotFileLoad()
   statusBar()->showMessage(tr("Loading file..."));
   int _mode = 0;
   QString s = QFileDialog::getOpenFileName(this, tr("Enter a Filename"),
-                           QucsWorkDir.path(),
+                           QucsSettings.QucsWorkDir.path(),
                            tr("Transcalc File") + " (*.trc)");
   if (!s.isEmpty())  {
-    QucsWorkDir.setPath(QDir::cleanPath(s));
+    QucsSettings.QucsWorkDir.setPath(QDir::cleanPath(s));
     if (!loadFile (s, &_mode)) {
       QMessageBox::critical (this, tr("Error"),
                  tr("Cannot load file:")+" '"+s+"'!");
@@ -1132,10 +1130,10 @@ void QucsTranscalc::slotFileSave()
   statusBar()->showMessage(tr("Saving file..."));
 
   QString s = QFileDialog::getSaveFileName(this, tr("Enter a Filename"),
-                           QucsWorkDir.path(),
+                           QucsSettings.QucsWorkDir.path(),
                            tr("Transcalc File") + " (*.trc)");
   if (!s.isEmpty())  {
-    QucsWorkDir.setPath(QDir::cleanPath(s));
+    QucsSettings.QucsWorkDir.setPath(QDir::cleanPath(s));
     if (!saveFile (s)) {
       QMessageBox::critical (this, tr("Error"),
                  tr("Cannot save file:")+" '"+s+"'!");

@@ -147,7 +147,7 @@ bool SimMessage::startProcess()
 
   Collect.clear();  // clear list for NodeSets, SPICE components etc.
   ProgText->insert(tr("creating netlist... "));
-  NetlistFile.setName(QucsHomeDir.filePath("netlist.txt"));
+  NetlistFile.setName(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
    if(!NetlistFile.open(QIODevice::WriteOnly)) {
     ErrText->insert(tr("ERROR: Cannot write netlist file!"));
     FinishSimulation(-1);
@@ -219,7 +219,7 @@ void SimMessage::nextSPICE()
 
   QFile SpiceFile;
   if(FileName.find(QDir::separator()) < 0)  // add path ?
-    SpiceFile.setName(QucsWorkDir.path() + QDir::separator() + FileName);
+    SpiceFile.setName(QucsSettings.QucsWorkDir.path() + QDir::separator() + FileName);
   else
     SpiceFile.setName(FileName);
   if(!SpiceFile.open(QIODevice::ReadOnly)) {
@@ -322,7 +322,7 @@ void SimMessage::startSimulator()
   QString SimTime;
   QString Program;
   QStringList Arguments;
-  QString SimPath = QDir::convertSeparators (QucsHomeDir.absPath());
+  QString SimPath = QDir::convertSeparators (QucsSettings.QucsHomeDir.absPath());
 #ifdef __MINGW32__
   QString QucsDigiLib = "qucsdigilib.bat";
   QString QucsDigi = "qucsdigi.bat";
@@ -375,7 +375,7 @@ void SimMessage::startSimulator()
       QString entity = VInfo.EntityName.lower();
       QString lib = Doc->Library.lower();
       if (lib.isEmpty()) lib = "work";
-      QString dir = QDir::convertSeparators (QucsHomeDir.path());
+      QString dir = QDir::convertSeparators (QucsSettings.QucsHomeDir.path());
       QDir vhdlDir(dir);
       if(!vhdlDir.exists("vhdl"))
 	if(!vhdlDir.mkdir("vhdl")) {
@@ -443,14 +443,14 @@ void SimMessage::startSimulator()
       if((SimOpt = findOptimization((Schematic*)DocWidget))) {
 	    ((Optimize_Sim*)SimOpt)->createASCOnetlist();
 	    Program = QucsSettings.AscoDir + "asco"+ executablePostfix; 
-        Arguments << "-qucs" << QucsHomeDir.filePath("asco_netlist.txt") 
+        Arguments << "-qucs" << QucsSettings.QucsHomeDir.filePath("asco_netlist.txt")
                   << "-o" << "asco_out";
       }
       else {
 	    Program = QucsSettings.BinDir + "qucsator" + executablePostfix;
 
         Arguments << "-b" << "-g" << "-i" 
-                  << QucsHomeDir.filePath("netlist.txt") 
+                  << QucsSettings.QucsHomeDir.filePath("netlist.txt")
                   << "-o" << DataSet;
       }
     } else {
@@ -624,7 +624,7 @@ void SimMessage::FinishSimulation(int Status)
     ProgText->insert("\n" + txt + "\n" + tr("Aborted.") + "\n");
   }
 
-  QFile file(QucsHomeDir.filePath("log.txt"));  // save simulator messages
+  QFile file(QucsSettings.QucsHomeDir.filePath("log.txt"));  // save simulator messages
   if(file.open(QIODevice::WriteOnly)) {
     int z;
     QTextStream stream(&file);
@@ -639,7 +639,7 @@ void SimMessage::FinishSimulation(int Status)
 
   if(Status == 0) {
     if(SimOpt) { // save optimization data
-      QFile ifile(QucsHomeDir.filePath("asco_out.dat"));
+      QFile ifile(QucsSettings.QucsHomeDir.filePath("asco_out.dat"));
       QFile ofile(DataSet);
       if(ifile.open(QIODevice::ReadOnly)) {
 	if(ofile.open(QIODevice::WriteOnly)) {

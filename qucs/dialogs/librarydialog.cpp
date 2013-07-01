@@ -258,7 +258,7 @@ void LibraryDialog::slotCreateNext()
     return;
   }
 
-  LibDir = QDir(QucsHomeDir);
+  LibDir = QDir(QucsSettings.QucsHomeDir);
   if(!LibDir.cd("user_lib")) { // user library directory exists ?
     if(!LibDir.mkdir("user_lib")) { // no, then create it
       QMessageBox::warning(this, tr("Warning"),
@@ -441,7 +441,7 @@ void LibraryDialog::slotSave()
            << description
            << "\n  </Description>\n";
 
-    Schematic *Doc = new Schematic(0, QucsWorkDir.filePath(SelectedNames[i]));
+    Schematic *Doc = new Schematic(0, QucsSettings.QucsWorkDir.filePath(SelectedNames[i]));
     ErrText->insert(tr("Loading subcircuit \"%1\".\n").arg(SelectedNames[i]));
     if(!Doc->loadDocument()) {  // load document if possible
         delete Doc;

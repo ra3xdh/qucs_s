@@ -33,7 +33,6 @@
 #include <math.h>
 #include <limits.h>
 
-extern QDir QucsWorkDir;
 
 
 LibComp::LibComp()

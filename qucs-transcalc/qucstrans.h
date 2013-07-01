@@ -27,7 +27,7 @@
 #include <QLabel>
 #include <QCloseEvent>
 #include <QMainWindow>
-
+#include <QDir>
 
 class QComboBox;
 class QLineEdit;
@@ -72,6 +72,8 @@ struct tQucsSettings {
   int res_unit;        // default resistance unit
   int ang_unit;        // default angle unit
   QString Mode;        // current mode
+  QDir QucsWorkDir;
+  QDir QucsHomeDir;
 };
 
 extern tQucsSettings QucsSettings;

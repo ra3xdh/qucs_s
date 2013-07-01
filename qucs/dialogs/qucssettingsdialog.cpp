@@ -234,6 +234,32 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
   t->addTab(Tab2, tr("File Types"));
 
   // ...........................................................
+  QWidget *Tab4 = new QWidget(t);
+  QGridLayout *gp4 = new QGridLayout(Tab4);
+
+  QLabel *note2 = new QLabel(
+     tr("Edit the standard paths and external applications"));
+  gp4->addWidget(note2,0,0,1,2);
+  gp4->addWidget(new QLabel(tr("Octave path:"), Tab4) ,2,0);
+  octaveEdit = new QLineEdit(Tab4);
+  gp4->addWidget(octaveEdit,2,1);
+  QPushButton *OctaveButt = new QPushButton("...");
+  gp4->addWidget(OctaveButt, 2, 2);
+  connect(OctaveButt, SIGNAL(clicked()), SLOT(slotOctaveBrowse()));
+
+  gp4->addWidget(new QLabel(tr("Qucs Home:"), Tab4) ,3,0);
+  homeEdit = new QLineEdit(Tab4);
+  gp4->addWidget(homeEdit,3,1);
+  QPushButton *HomeButt = new QPushButton("...");
+  gp4->addWidget(HomeButt, 3, 2);
+  connect(HomeButt, SIGNAL(clicked()), SLOT(slotHomeDirBrowse()));
+
+
+
+  t->addTab(Tab4, tr("Locations"));
+  // ...........................................................
+
+
   // buttons on the bottom of the dialog (independent of the TabWidget)
   QHBoxLayout *Butts = new QHBoxLayout();
   Butts->setSpacing(3);
@@ -253,6 +279,8 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
   Butts->addWidget(DefaultButt);
   connect(DefaultButt, SIGNAL(clicked()), SLOT(slotDefaultValues()));
 
+
+
   OkButt->setDefault(true);
 
   // ...........................................................
@@ -267,6 +295,8 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
   for(int z=LanguageCombo->count()-1; z>=0; z--)
     if(LanguageCombo->text(z).section('(',1,1).remove(')') == QucsSettings.Language)
       LanguageCombo->setCurrentItem(z);
+  octaveEdit->setText(QucsSettings.OctaveBinDir.canonicalPath());
+  homeEdit->setText(QucsSettings.QucsHomeDir.canonicalPath());
 
   resize(300, 200);
 }
@@ -415,11 +445,39 @@ void QucsSettingsDialog::slotApply()
                                     +"/"+
                                     tableWidget->item(row,1)->text());
   }
+  QucsSettings.OctaveBinDir = octaveEdit->text();
+  QucsSettings.QucsHomeDir = homeEdit->text();
 
   saveApplSettings(App);  // also sets the small and large font
+
   if(changed)
-    App->repaint();
+  {
+      App->readProjects();
+      App->readProjectFiles();
+      App->repaint();
+  }
 }
+
+// -----------------------------------------------------------
+void QucsSettingsDialog::slotOctaveBrowse()
+{
+    QFileDialog fileDialog( this, tr("Select the octave bin directory"), octaveEdit->text() );
+    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
+    fileDialog.exec();
+    octaveEdit->setText(fileDialog.selectedFile());
+}
+
+// -----------------------------------------------------------
+void QucsSettingsDialog::slotHomeDirBrowse()
+{
+    QFileDialog fileDialog( this, tr("Select the home directory"), homeEdit->text() );
+    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
+    fileDialog.exec();
+    homeEdit->setText(fileDialog.selectedFile());
+}
+
 
 // -----------------------------------------------------------
 void QucsSettingsDialog::slotFontDialog()

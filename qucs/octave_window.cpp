@@ -24,7 +24,6 @@
 #define executableSuffix ""
 #endif
 
-extern QDir QucsWorkDir;  // current project path
 
 OctaveWindow::OctaveWindow(QDockWidget *parent_): QWidget(parent_, 0)
 {
@@ -83,21 +82,8 @@ bool OctaveWindow::startOctave()
   if(octProcess.state()==QProcess::Running)
     return true;
 
-  QString OctavePath;
-  char *var = getenv ("OCTAVE"); // env variable
-  if (var != NULL) {
-    QFileInfo info(QDir(var).absPath());
-    OctavePath = info.absolutePath();
-  }
-  else {
-    QString Octave = "/usr/local/bin/octave";  // linux/mac default
-    QFileInfo info(Octave);
-    if ( info.isFile() ){
-      OctavePath =  info.absolutePath();
-    }
-    else
-      OctavePath = "";  // same prefix as qucs
-  }
+  QString OctavePath=QucsSettings.OctaveBinDir.canonicalPath();
+
 
   QString Program;
   QStringList Arguments;
@@ -139,7 +125,7 @@ bool OctaveWindow::startOctave()
 // ------------------------------------------------------------------------
 void OctaveWindow::adjustDirectory()
 {
-  sendCommand("cd \"" + QucsWorkDir.absPath() + "\"");
+  sendCommand("cd \"" + QucsSettings.QucsWorkDir.absPath() + "\"");
 }
 
 // ------------------------------------------------------------------------

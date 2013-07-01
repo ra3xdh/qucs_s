@@ -40,6 +40,8 @@ struct tQucsSettings {
   QString LangDir;     // translation directory
   QString LibDir;      // library directory
   QString Language;
+  QDir QucsWorkDir;  // Qucs user directory where user works (usually same as QucsWorkDir
+  QDir QucsHomeDir;  // Qucs user directory where all projects are located
 };
 
 extern tQucsSettings QucsSettings;
@@ -78,7 +80,6 @@ private:
   SymbolWidget *Symbol;
   QTextEdit    *CompDescr;
   QVBoxLayout  *all;
-  QDir QucsHomeDir;  // Qucs user directory where all projects are located
 
 };
 

@@ -212,10 +212,9 @@ void QucsApp::slotSelect(bool on)
   QWidget *w = DocumentTab->currentPage();
   if(w->inherits("QTextEdit")) {
     ((TextDoc*)w)->viewport()->setFocus();
-
-    select->blockSignals(true);
-    select->setOn(true);
-    select->blockSignals(false);
+      select->blockSignals(true);
+      select->setOn(true);
+      select->blockSignals(false);
     return;
   }
 
@@ -600,14 +599,14 @@ void QucsApp::editFile(const QString& File)
 // Is called to show the output messages of the last simulation.
 void QucsApp::slotShowLastMsg()
 {
-  editFile(QucsHomeDir.filePath("log.txt"));
+  editFile(QucsSettings.QucsHomeDir.filePath("log.txt"));
 }
 
 // ------------------------------------------------------------------------
 // Is called to show the netlist of the last simulation.
 void QucsApp::slotShowLastNetlist()
 {
-  editFile(QucsHomeDir.filePath("netlist.txt"));
+  editFile(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
 }
 
 // ------------------------------------------------------------------------
@@ -787,7 +786,7 @@ void QucsApp::slotAddToProject()
   while(it != FileList.end()) {
     Info.setFile(*it);
     origFile.setName(*it);
-    destFile.setName(QucsWorkDir.absPath() + 
+    destFile.setName(QucsSettings.QucsWorkDir.absPath() +
                      QDir::separator() + Info.fileName());
 
     if(!origFile.open(QIODevice::ReadOnly)) {

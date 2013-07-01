@@ -21,7 +21,6 @@
 
 #include <qfileinfo.h>
 
-extern QDir QucsWorkDir;
 
 
 RFedd2P::RFedd2P()

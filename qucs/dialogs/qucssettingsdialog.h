@@ -61,6 +61,9 @@ private slots:
   void slotColorDirective();
   void slotColorTask();
   void slotTableCliked(int,int);
+  void slotOctaveBrowse();
+  void slotHomeDirBrowse();
+
 
 public:
   QucsApp *App;
@@ -69,7 +72,7 @@ public:
   QCheckBox *checkWiring;
   QComboBox *LanguageCombo;
   QPushButton *FontButton, *BGColorButton;
-  QLineEdit *undoNumEdit, *editorEdit, *Input_Suffix, *Input_Program;
+  QLineEdit *undoNumEdit, *editorEdit, *Input_Suffix, *Input_Program, *octaveEdit, *homeEdit;
   QTableWidget *tableWidget;
   QStandardItemModel *model;
   QPushButton *ColorComment, *ColorString, *ColorInteger,

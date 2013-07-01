@@ -751,7 +751,7 @@ void ComponentDialog::slotApplyInput()
 // -------------------------------------------------------------------------
 void ComponentDialog::slotBrowseFile()
 {
-  QString s = Q3FileDialog::getOpenFileName(QucsWorkDir.path(),
+  QString s = Q3FileDialog::getOpenFileName(QucsSettings.QucsWorkDir.path(),
           tr("All Files")+" (*.*);;"+tr("Touchstone files")+" (*.s?p);;"+
           tr("CSV files")+" (*.csv);;"+
           tr("SPICE files")+" (*.cir *.spi);;"+
@@ -761,8 +761,8 @@ void ComponentDialog::slotBrowseFile()
   if(!s.isEmpty()) {
     // snip path if file in current directory
     QFileInfo file(s);
-    if(QucsWorkDir.exists(file.fileName()) &&
-       QucsWorkDir.absPath() == file.dirPath(true)) s = file.fileName();
+    if(QucsSettings.QucsWorkDir.exists(file.fileName()) &&
+       QucsSettings.QucsWorkDir.absPath() == file.dirPath(true)) s = file.fileName();
     edit->setText(s);
   }
   prop->currentItem()->setText(1, s);
@@ -771,7 +771,7 @@ void ComponentDialog::slotBrowseFile()
 // -------------------------------------------------------------------------
 void ComponentDialog::slotEditFile()
 {
-  Doc->App->editFile(QucsWorkDir.filePath(edit->text()));
+  Doc->App->editFile(QucsSettings.QucsWorkDir.filePath(edit->text()));
 }
 
 // -------------------------------------------------------------------------

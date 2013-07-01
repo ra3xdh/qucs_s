@@ -21,8 +21,6 @@
 
 #include <qfileinfo.h>
 
-extern QDir QucsWorkDir;
-
 
 EqnDefined::EqnDefined()
 {

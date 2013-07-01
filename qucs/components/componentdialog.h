@@ -40,7 +40,6 @@ class Q3VBoxLayout;
 class QIntValidator;
 class QRegExpValidator;
 
-extern QDir QucsWorkDir;
 
 
 class ComponentDialog : public QDialog {

@@ -259,8 +259,8 @@ void SpiceDialog::slotButtBrowse()
   lastDir = Info.dirPath(true);  // remember last directory
 
   // snip path if file in current directory
-  if(QucsWorkDir.exists(Info.fileName()) &&
-     QucsWorkDir.absPath() == Info.dirPath(true)) s = Info.fileName();
+  if(QucsSettings.QucsWorkDir.exists(Info.fileName()) &&
+     QucsSettings.QucsWorkDir.absPath() == Info.dirPath(true)) s = Info.fileName();
   FileEdit->setText(s);
 
   Comp->Props.at(1)->Value = "";
@@ -282,7 +282,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
 {
   Comp->withSim = false;
   if(s.isEmpty()) return false;
-  QFileInfo FileInfo(QucsWorkDir, s);
+  QFileInfo FileInfo(QucsSettings.QucsWorkDir, s);
 
   NodesList->clear();
   PortsList->clear();
@@ -314,7 +314,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
     spiceCommand+=FileInfo.filePath()+" ";
 
     QFile PrepFile;
-    QFileInfo PrepInfo(QucsWorkDir, s + ".pre");
+    QFileInfo PrepInfo(QucsSettings.QucsWorkDir, s + ".pre");
     QString PrepName = PrepInfo.filePath();
 
     if (!piping) {
@@ -366,7 +366,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
       QMessageBox::critical(this, tr("SPICE Preprocessor Error"), Error);
       return false;
     }
-    FileInfo = QFileInfo(QucsWorkDir, s + ".pre");
+    FileInfo = QFileInfo(QucsSettings.QucsWorkDir, s + ".pre");
   }
 
   // first call Qucsconv ............
@@ -502,7 +502,7 @@ void SpiceDialog::slotGetNetlist()
 // -------------------------------------------------------------------------
 void SpiceDialog::slotButtEdit()
 {
-  Doc->App->editFile(QucsWorkDir.filePath(FileEdit->text()));
+  Doc->App->editFile(QucsSettings.QucsWorkDir.filePath(FileEdit->text()));
 }
 
 // -------------------------------------------------------------------------

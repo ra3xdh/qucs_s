@@ -42,8 +42,6 @@
 #include "components/libcomp.h"
 
 
-extern QDir QucsWorkDir;
-
 // Here the subcircuits, SPICE components etc are collected. It must be
 // global to also work within the subcircuits.
 SubMap FileList;
@@ -979,7 +977,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
 
       // load subcircuit schematic
       s = pc->Props.first()->Value;
-      Schematic *d = new Schematic(0, QucsWorkDir.filePath(s));
+      Schematic *d = new Schematic(0, QucsSettings.QucsWorkDir.filePath(s));
       if(!d->loadDocument()) {  // load document if possible
         delete d;
         ErrText->insert(QObject::tr("ERROR: Cannot load subcircuit \"%1\".").arg(s));

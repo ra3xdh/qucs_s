@@ -100,7 +100,7 @@ PackageDialog::PackageDialog(QWidget *parent_, bool create_)
 
     // ...........................................................
     // insert all projects
-    QStringList PrDirs = QucsHomeDir.entryList("*", QDir::Dirs, QDir::Name);
+    QStringList PrDirs = QucsSettings.QucsHomeDir.entryList("*", QDir::Dirs, QDir::Name);
     QStringList::iterator it;
     for(it = PrDirs.begin(); it != PrDirs.end(); it++)
        if((*it).right(4) == "_prj"){   // project directories end with "_prj"
@@ -228,7 +228,7 @@ int PackageDialog::insertDirectory(const QString& DirName,
 int PackageDialog::insertLibraries(QDataStream& Stream)
 {
   QFile File;
-  QDir myDir(QucsHomeDir.absPath() + QDir::separator() + "user_lib");
+  QDir myDir(QucsSettings.QucsHomeDir.absPath() + QDir::separator() + "user_lib");
   QStringList Entries = myDir.entryList("*", QDir::Files, QDir::Name);
   QStringList::iterator it;
   for(it = Entries.begin(); it != Entries.end(); ++it) {
@@ -297,7 +297,7 @@ void PackageDialog::slotCreate()
     if(p->isChecked()) {
       s = p->text() + "_prj";
       Stream << Q_UINT32(CODE_DIR) << s.latin1();
-      s = QucsHomeDir.absPath() + QDir::separator() + s;
+      s = QucsSettings.QucsHomeDir.absPath() + QDir::separator() + s;
       if(insertDirectory(s, Stream) < 0) {
         PkgFile.close();
         PkgFile.remove();
@@ -362,7 +362,7 @@ void PackageDialog::extractPackage()
   }
   QDataStream Stream(&PkgFile);
 
-  QDir currDir = QucsHomeDir;
+  QDir currDir = QucsSettings.QucsHomeDir;
   QString Version;
   Q_UINT16 Checksum;
   Q_UINT32 Code, Length;
@@ -480,7 +480,7 @@ int PackageDialog::extractLibrary(QFile& PkgFile, Q_UINT32 Count)
   free(p);
 
   p = Content.data();
-  QFile File(QucsHomeDir.absPath() +
+  QFile File(QucsSettings.QucsHomeDir.absPath() +
              QDir::convertSeparators("/user_lib/") + QString(p));
   if(File.exists()) {
     MsgText->append(tr("ERROR: User library \"%1\" already exists!").arg(QString(p)));

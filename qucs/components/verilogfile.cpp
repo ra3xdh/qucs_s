@@ -91,7 +91,7 @@ QString Verilog_File::loadFile()
   QString s, File(Props.getFirst()->Value);
   QFileInfo Info(File);
   if(Info.isRelative())
-    File = QucsWorkDir.filePath(File);
+    File = QucsSettings.QucsWorkDir.filePath(File);
 
   QFile f(File);
   if(!f.open(QIODevice::ReadOnly))

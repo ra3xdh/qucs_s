@@ -21,7 +21,6 @@
 
 #include <qfileinfo.h>
 
-extern QDir QucsWorkDir;
 
 
 SParamFile::SParamFile()

@@ -65,10 +65,6 @@ typedef bool (Schematic::*pToggleFunc) ();
 typedef void (MouseActions::*pMouseFunc) (Schematic*, QMouseEvent*);
 typedef void (MouseActions::*pMouseFunc2) (Schematic*, QMouseEvent*, float, float);
 
-extern QDir QucsWorkDir;
-extern QDir QucsHomeDir;
-
-
 class QucsApp : public QMainWindow {
   Q_OBJECT
 public:
@@ -215,8 +211,6 @@ private:
   void printCurrentDocument(bool);
   bool saveFile(QucsDoc *Doc=0);
   bool saveAs();
-  void readProjects();
-  void readProjectFiles();
   void openProject(const QString&, const QString&);
   bool deleteProject(const QString&, const QString&);
   void updatePortNumber(QucsDoc*, int);
@@ -227,7 +221,10 @@ private:
   bool deleteDirectoryContent(QDir& Dir);
   bool isTextDocument(QWidget *);
   void closeFile(int);
+public:
 
+  void readProjects();
+  void readProjectFiles();
 
 /* **************************************************
    *****  The following methods are located in  *****

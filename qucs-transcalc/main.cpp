@@ -35,7 +35,7 @@
 #include "qucstrans.h"
 
 tQucsSettings QucsSettings;
-extern QDir QucsWorkDir;
+
 extern struct TransUnit TransUnits[];
 
 
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
     QucsSettings.BitmapDir = BITMAPDIR;
     QucsSettings.LangDir = LANGUAGEDIR;
   }
-  QucsWorkDir.setPath (QDir::homePath()+QDir::convertSeparators ("/.qucs"));
+  QucsSettings.QucsWorkDir.setPath (QDir::homePath()+QDir::convertSeparators ("/.qucs"));
   loadSettings();
 
   QApplication a(argc, argv);

@@ -38,7 +38,6 @@ class QRegExpValidator;
 class QComboBox;
 
 
-extern QDir QucsWorkDir;
 
 
 class SpiceDialog : public QDialog {
