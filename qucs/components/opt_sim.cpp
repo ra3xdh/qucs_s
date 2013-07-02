@@ -215,12 +215,26 @@ bool Optimize_Sim::createASCOnetlist()
   while(!instream.atEnd()) {
     Line = instream.readLine();
     for(QStringList::Iterator it = vars.begin(); it != vars.end(); ++it ) {
-      QRegExp reg = QRegExp("=\"(" + *it + ")\"");
-      Line.replace(reg, "=\"#\\1#\"");
-      if(Line.contains("Eqn:")&&!Line.contains("#"))
+      if(Line.contains("Eqn:"))
       {
-          Line.replace(*it, "#"+*it+"#");
+          QStringList splitLine = Line.split("\"");
+
+          for(int i=1;i<splitLine.size()-3;i+=2)
+          {
+              if(splitLine[i].compare("yes")!=0 && splitLine[i].compare("no")!=0) //ignore last piece between quotes
+              {
+                  splitLine[i].replace(*it, "#"+*it+"#");
+              }
+          }
+          Line = splitLine.join("\"");
+
       }
+      else
+      {
+          QRegExp reg = QRegExp("=\"(" + *it + ")\"");
+          Line.replace(reg, "=\"#\\1#\"");
+      }
+
     }
     outstream << Line << "\n";
   }
