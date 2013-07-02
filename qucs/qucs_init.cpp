@@ -401,13 +401,12 @@ void QucsApp::initActions()
   magMinus->setWhatsThis(tr("Zoom out\n\nZooms out the current view"));
   connect(magMinus, SIGNAL(activated()), SLOT(slotZoomOut()));
 
+  QAction *escape = new QAction(this);
+  escape->setShortcut(Qt::Key_Escape);
+  connect(escape, SIGNAL(activated()), SLOT(slotEscape()));
+  this->addAction(escape);
+
   select = new QAction(QIcon((QucsSettings.BitmapDir + "pointer.png")), tr("Select"), this);
-  //QAction *esc = new QAction(this);
-  select->setShortcut(Qt::Key_Escape);
-/*
-  connect(esc, SIGNAL(triggered()), SLOT(slotSelect(false)));
-  this->addAction(esc);
-*/
   select->setStatusTip(tr("Activate select mode"));
   select->setWhatsThis(tr("Select\n\nActivates select mode"));
   select->setToggleAction(true);

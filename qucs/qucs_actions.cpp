@@ -205,6 +205,12 @@ void QucsApp::slotZoomIn(bool on)
 		&MouseActions::MMoveZoomIn, &MouseActions::MPressZoomIn);
 }
 
+
+void QucsApp::slotEscape()
+{
+    select->setChecked(true);
+}
+
 // -----------------------------------------------------------------------
 // Is called when the select toolbar button is pressed.
 void QucsApp::slotSelect(bool on)

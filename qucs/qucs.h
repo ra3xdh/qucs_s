@@ -301,6 +301,7 @@ public slots:
   void slotInsertPort(bool);
   void slotInsertEntity();
   void slotSetWire(bool);
+  void slotEscape();
   void slotSelect(bool);
   void slotEditActivate(bool);
   void slotInsertLabel(bool);
