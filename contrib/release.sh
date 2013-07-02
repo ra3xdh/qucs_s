@@ -107,11 +107,12 @@ rm -rf autom4te.cache
 
 cd qucs-core
 ./autogen.sh
-cd adms
 make
-cd ../src/components/verilog 
-make
-cd ../../../
+#cd adms
+#make
+#cd ../src/components/verilog 
+#make
+#cd ../../../
 ./configure
 make distclean
 rm -rf autom4te.cache
