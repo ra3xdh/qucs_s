@@ -217,6 +217,10 @@ bool Optimize_Sim::createASCOnetlist()
     for(QStringList::Iterator it = vars.begin(); it != vars.end(); ++it ) {
       QRegExp reg = QRegExp("=\"(" + *it + ")\"");
       Line.replace(reg, "=\"#\\1#\"");
+      if(Line.contains("Eqn:")&&!Line.contains("#"))
+      {
+          Line.replace(*it, "#"+*it+"#");
+      }
     }
     outstream << Line << "\n";
   }
