@@ -73,14 +73,14 @@ bool loadSettings()
     if(settings.contains("Task"))QucsSettings.Comment.setNamedColor(settings.value("Task").toString());
 
     if(settings.contains("Editor"))QucsSettings.Editor = settings.value("Editor").toString();
-    if(settings.contains("BinDir"))QucsSettings.BinDir = settings.value("BinDir").toString();
-    if(settings.contains("BitmapDir"))QucsSettings.BitmapDir = settings.value("BitmapDir").toString();
-    if(settings.contains("LangDir"))QucsSettings.LangDir = settings.value("LangDir").toString();
-    if(settings.contains("LibDir"))QucsSettings.LibDir = settings.value("LibDir").toString();
-    if(settings.contains("AscoDir"))QucsSettings.AscoDir = settings.value("AscoDir").toString();
-    if(settings.contains("OctaveDir"))QucsSettings.OctaveDir = settings.value("OctaveDir").toString();
-    if(settings.contains("ExamplesDir"))QucsSettings.ExamplesDir = settings.value("ExamplesDir").toString();
-    if(settings.contains("DocDir"))QucsSettings.DocDir = settings.value("DocDir").toString();
+    //if(settings.contains("BinDir"))QucsSettings.BinDir = settings.value("BinDir").toString();
+    //if(settings.contains("BitmapDir"))QucsSettings.BitmapDir = settings.value("BitmapDir").toString();
+    //if(settings.contains("LangDir"))QucsSettings.LangDir = settings.value("LangDir").toString();
+    //if(settings.contains("LibDir"))QucsSettings.LibDir = settings.value("LibDir").toString();
+    //if(settings.contains("AscoDir"))QucsSettings.AscoDir = settings.value("AscoDir").toString();
+    //if(settings.contains("OctaveDir"))QucsSettings.OctaveDir = settings.value("OctaveDir").toString();
+    //if(settings.contains("ExamplesDir"))QucsSettings.ExamplesDir = settings.value("ExamplesDir").toString();
+    //if(settings.contains("DocDir"))QucsSettings.DocDir = settings.value("DocDir").toString();
     if(settings.contains("OctaveBinDir"))QucsSettings.OctaveBinDir.setPath(settings.value("OctaveBinDir").toString());
     if(settings.contains("QucsHomeDir"))QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
     QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
@@ -115,14 +115,14 @@ bool saveApplSettings(QucsApp *qucs)
     settings.setValue("Directive", QucsSettings.Directive.name());
     settings.setValue("Task", QucsSettings.Comment.name());
     settings.setValue("Editor", QucsSettings.Editor);
-    settings.setValue("BinDir", QucsSettings.BinDir);
-    settings.setValue("BitmapDir", QucsSettings.BitmapDir);
-    settings.setValue("LangDir", QucsSettings.LangDir);
-    settings.setValue("LibDir", QucsSettings.LibDir);
-    settings.setValue("AscoDir", QucsSettings.AscoDir);
-    settings.setValue("OctaveDir", QucsSettings.OctaveDir);
-    settings.setValue("ExamplesDir", QucsSettings.ExamplesDir);
-    settings.setValue("DocDir", QucsSettings.DocDir);
+    //settings.setValue("BinDir", QucsSettings.BinDir);
+    //settings.setValue("BitmapDir", QucsSettings.BitmapDir);
+    //settings.setValue("LangDir", QucsSettings.LangDir);
+    //settings.setValue("LibDir", QucsSettings.LibDir);
+    //settings.setValue("AscoDir", QucsSettings.AscoDir);
+    //settings.setValue("OctaveDir", QucsSettings.OctaveDir);
+    //settings.setValue("ExamplesDir", QucsSettings.ExamplesDir);
+    //settings.setValue("DocDir", QucsSettings.DocDir);
     settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
     settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
   return true;
@@ -552,8 +552,18 @@ int main(int argc, char *argv[])
   QucsSettings.dx = w*3/4;
   QucsSettings.dy = h*3/4;
 
-  QString QucsApplicationPath = QCoreApplication::applicationFilePath();
-  QDir QucsDir = QDir(QCoreApplication::applicationDirPath().replace("/bin",""));
+  // check for relocation env variable
+  char* var = getenv("QUCSDIR");
+  QDir QucsDir;
+  if (var!= NULL)
+  {
+      QucsDir = QDir(var);
+  }
+  else
+  {
+     QString QucsApplicationPath = QCoreApplication::applicationFilePath();
+     QucsDir = QDir(QucsApplicationPath.replace("/bin",""));
+  }
 
   QucsSettings.BinDir = QucsDir.canonicalPath() + "/bin/";
   QucsSettings.BitmapDir = QucsDir.canonicalPath() + "/share/qucs/bitmaps/";
@@ -567,7 +577,7 @@ int main(int argc, char *argv[])
   QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
 
-  char* var = getenv("OCTAVEBINDIR");
+  var = getenv("OCTAVEBINDIR");
   if(var != NULL)
   {
       QucsSettings.OctaveBinDir.setPath(var);
