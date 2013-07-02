@@ -1,4 +1,4 @@
-qucs (0.0.18.130702-3) raring; urgency=low
+qucs (0.0.18.130703-3) raring; urgency=low
 
   * Fixed bugs #108, #114, #112
   * Fixed feature request #48
@@ -6,19 +6,9 @@ qucs (0.0.18.130702-3) raring; urgency=low
   * Possibility to relocate projects (QucsHome) using Qucs Settings
   * Possibility to chose octave path in Qucs Settings
 
- -- Frans Schreuder <fransschreuder@gmail.com>  Tue, 02 Jul 2013 23:36:13 +0200
+ -- Frans Schreuder <fransschreuder@gmail.com>  Wed, 03 Jul 2013 00:14:36 +0200
 
-qucs (0.0.18.130702-2) quantal; urgency=low
-
-  * Fixed bugs #108, #114, #112
-  * Fixed feature request #48
-  * Implemented QSettings (replaces .qucs/qucsrc)
-  * Possibility to relocate projects (QucsHome) using Qucs Settings
-  * Possibility to chose octave path in Qucs Settings
-
- -- Frans Schreuder <fransschreuder@gmail.com>  Tue, 02 Jul 2013 23:34:55 +0200
-
-qucs (0.0.18.130702-1) precise; urgency=low
+qucs (0.0.18.130703-2) quantal; urgency=low
 
   * Fixed bugs #108, #114, #112
   * Fixed feature request #48
@@ -26,7 +16,17 @@ qucs (0.0.18.130702-1) precise; urgency=low
   * Possibility to relocate projects (QucsHome) using Qucs Settings
   * Possibility to chose octave path in Qucs Settings
 
- -- Frans Schreuder <fransschreuder@gmail.com>  Tue, 02 Jul 2013 23:27:38 +0200
+ -- Frans Schreuder <fransschreuder@gmail.com>  Wed, 03 Jul 2013 00:13:05 +0200
+
+qucs (0.0.18.130703-1) precise; urgency=low
+
+  * Fixed bugs #108, #114, #112
+  * Fixed feature request #48
+  * Implemented QSettings (replaces .qucs/qucsrc)
+  * Possibility to relocate projects (QucsHome) using Qucs Settings
+  * Possibility to chose octave path in Qucs Settings
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Wed, 03 Jul 2013 00:11:29 +0200
 
 qucs (0.0.17-3) raring; urgency=low
 
