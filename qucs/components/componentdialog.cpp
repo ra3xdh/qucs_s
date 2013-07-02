@@ -901,10 +901,8 @@ void ComponentDialog::slotNumberChanged(const QString&)
     QString step = num2str(x);
 
     str2num(step, x, Unit, Factor);
-    if(Factor == 1.0)  
-        Unit = "s";
-    else
-        Unit = Unit + "s";
+    if(Factor == 1.0)
+        Unit = "";
 
     Unit = QString::number(x) + " " + Unit;
   }
