@@ -96,11 +96,12 @@ private:
 
 
 
-// standard colors: blue, red, magenta, green, cyan, yellow, black
-// (white is only a dummy)
+// standard colors: blue, red, magenta, green, cyan, yellow, grey, black
 static const QRgb DefaultColors[]
           = {0x0000ff, 0xff0000, 0xff00ff, 0x00ff00, 0x00ffff, 0xffff00,
-             0xffffff, 0x000000};
+             0x777777, 0x000000};
+
+static const int NumDefaultColors = 8;
 
 
 DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
@@ -599,7 +600,7 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   if(ColorButt)
     if(!currentGraph)
       ColorButt->setPaletteBackgroundColor
-	(QColor(DefaultColors[GraphList->count()]));
+    (QColor(DefaultColors[GraphList->count()%NumDefaultColors]));
 }
 
 DiagramDialog::~DiagramDialog()
@@ -680,7 +681,7 @@ void DiagramDialog::slotTakeVar(Q3ListViewItem *Item)
         g->Color = ColorButt->paletteBackgroundColor();
         g->Thick = Property2->text().toInt();
         ColorButt->setPaletteBackgroundColor(
-                   QColor(DefaultColors[GraphList->count()]));
+                   QColor(DefaultColors[GraphList->count()%NumDefaultColors]));
         if(g->Var.right(3) == ".Vb")   // harmonic balance output ?
           if(PropertyBox->count() >= GRAPHSTYLE_ARROW)
             PropertyBox->setCurrentItem(GRAPHSTYLE_ARROW);
@@ -779,7 +780,7 @@ void DiagramDialog::slotDeleteGraph()
   if(Diag->Name != "Tab") {
     if(Diag->Name != "Truth") {
       ColorButt->setPaletteBackgroundColor(
-		QColor(DefaultColors[GraphList->count()]));
+        QColor(DefaultColors[GraphList->count()%NumDefaultColors]));
       Property2->setText("0");
       if(yAxisBox) {
         yAxisBox->setCurrentItem(0);
