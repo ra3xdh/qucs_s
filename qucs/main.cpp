@@ -561,7 +561,7 @@ int main(int argc, char *argv[])
   else
   {
      QString QucsApplicationPath = QCoreApplication::applicationDirPath();
-     QucsDir = QDir(QucsApplicationPath.replace("/bin",""));
+     QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
   }
 
   QucsSettings.BinDir = QucsDir.canonicalPath() + "/bin/";
