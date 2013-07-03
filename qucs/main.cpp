@@ -533,7 +533,6 @@ bool checkVersion(QString& Line)
 // ##########                  Program Start                      ##########
 // ##########                                                     ##########
 // #########################################################################
-#include <iostream>
 int main(int argc, char *argv[])
 {
   // apply default settings
@@ -561,7 +560,7 @@ int main(int argc, char *argv[])
   }
   else
   {
-     QString QucsApplicationPath = QCoreApplication::applicationFilePath();
+     QString QucsApplicationPath = QCoreApplication::applicationDirPath();
      QucsDir = QDir(QucsApplicationPath.replace("/bin",""));
   }
 
