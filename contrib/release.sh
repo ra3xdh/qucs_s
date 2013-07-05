@@ -65,7 +65,13 @@ make distclean
 cd ..
 
 #Include the asco archive
-wget https://downloads.sourceforge.net/project/asco/asco/0.4.8/ASCO-0.4.8.tar.gz
+if [ -f ~/Downloads/ASCO-0.4.8.tar.gz ]
+then
+	cp ~/Downloads/ASCO-0.4.8.tar.gz .
+else
+	wget https://downloads.sourceforge.net/project/asco/asco/0.4.8/ASCO-0.4.8.tar.gz
+fi
+
 tar -zxvf ASCO-0.4.8.tar.gz
 rm ASCO-0.4.8.tar.gz
 mv ASCO-0.4.8 asco
@@ -152,12 +158,28 @@ make install
 
 cp contrib/innosetup/gpl.rtf $WINDIR
 cp -r contrib/innosetup/misc $WINDIR
-wget http://bleyer.org/icarus/iverilog-0.9.6_setup.exe
-#wget http://bleyer.org/icarus/iverilog-0.9.5_setup.exe
+if [ -f ~/Downloads/iverilog-0.9.6_setup.exe ]
+then
+	cp ~/Downloads/iverilog-0.9.6_setup.exe .
+else
+	wget http://bleyer.org/icarus/iverilog-0.9.6_setup.exe
+	#wget http://bleyer.org/icarus/iverilog-0.9.5_setup.exe
+fi
 mv iverilog-0.9.6_setup.exe $WINDIR
-wget https://downloads.sourceforge.net/project/qucs/freehdl/freehdl-0.0.8-setup.exe
+if [ -f ~/Downloads/freehdl-0.0.8-setup.exe ]
+then
+	cp ~/Downloads/freehdl-0.0.8-setup.exe .
+else
+	wget https://downloads.sourceforge.net/project/qucs/freehdl/freehdl-0.0.8-setup.exe
+fi
+
 mv freehdl-0.0.8-setup.exe $WINDIR
-wget https://downloads.sourceforge.net/project/qucs/freehdl/mingw32-g%2B%2B-0.0.2-setup.exe
+if [ -f ~/Downloads/mingw32-g++-0.0.2-setup.exe ]
+then
+	cp ~/Downloads/mingw32-g++-0.0.2-setup.exe .
+else
+	wget https://downloads.sourceforge.net/project/qucs/freehdl/mingw32-g%2B%2B-0.0.2-setup.exe
+fi
 mv mingw32-g++-0.0.2-setup.exe $WINDIR
 
 cp $QTDIR/bin/mingwm10.dll $WINDIR/bin
