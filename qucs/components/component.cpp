@@ -1247,8 +1247,14 @@ void MultiViewComponent::recreate(Schematic *Doc)
   
   bool mmir = mirroredX;
   int  rrot = rotated;
-  if(mmir)  mirrorX();   // mirror
-  for(int z=0; z<rrot; z++)  rotate(); // rotate
+  if (mmir && rrot==2) // mirrorX and rotate 180 = mirrorY
+    mirrorY(); 
+  else  {
+    if(mmir)
+      mirrorX();   // mirror
+    if (rrot)
+      for(int z=0; z<rrot; z++)  rotate(); // rotate
+  }
 
   rotated = rrot;   // restore properties (were changed by rotate/mirror)
   mirroredX = mmir;
