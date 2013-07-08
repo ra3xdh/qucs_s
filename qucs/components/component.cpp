@@ -378,7 +378,8 @@ void Component::print(ViewPainter *p, float FontScale)
 // Rotates the component 90 counter-clockwise around its center
 void Component::rotate()
 {
-  if (Model != "Sub") // skip port count for Subcircuit
+  // Port count only available after recreate, createSymbol
+  if ((Model != "Sub") && (Model !="VHDL") && (Model != "Verilog")) // skip port count
     if(Ports.count() < 1) return;  // do not rotate components without ports
   int tmp, dx, dy;
 
@@ -477,8 +478,9 @@ void Component::rotate()
 // Mirrors the component about the x-axis.
 void Component::mirrorX()
 {
- if (Model != "Sub") // skip port count for Subcircuit
-   if(Ports.count() < 1) return;  // do not rotate components without ports
+  // Port count only available after recreate, createSymbol
+  if ((Model != "Sub") && (Model !="VHDL") && (Model != "Verilog")) // skip port count
+    if(Ports.count() < 1) return;  // do not rotate components without ports
 
   // mirror all lines
   for(Line *p1 = Lines.first(); p1 != 0; p1 = Lines.next()) {
@@ -538,7 +540,8 @@ void Component::mirrorX()
 // Mirrors the component about the y-axis.
 void Component::mirrorY()
 {
-  if (Model != "Sub") // skip port count for Subcircuit
+  // Port count only available after recreate, createSymbol
+  if ((Model != "Sub") && (Model !="VHDL") && (Model != "Verilog")) // skip port count
     if(Ports.count() < 1) return;  // do not rotate components without ports
 
   // mirror all lines
