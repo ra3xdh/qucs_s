@@ -56,8 +56,6 @@ SET( QT_USE_QTCORE TRUE )
 SET( QT_USE_QTGUI TRUE )
 SET( QT_USE_QT3SUPPORT TRUE )
 
-#INCLUDE( ${QT_USE_FILE} )
-
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 INCLUDE( ${QT_USE_FILE} )
@@ -70,30 +68,64 @@ ADD_SUBDIRECTORY( octave )
 ADD_SUBDIRECTORY( paintings )
 
 SET(QUCS_SRCS
-element.cpp	octave_window.cpp	qucsdoc.cpp
-textdoc.cpp  main.cpp	schematic.cpp
-mnemo.cpp	qucs.cpp	viewpainter.cpp
-module.cpp	schematic_element.cpp	wire.cpp
-mouseactions.cpp qucs_actions.cpp	schematic_file.cpp
-wirelabel.cpp node.cpp qucs_init.cpp
-syntax.cpp
+  element.cpp	octave_window.cpp	qucsdoc.cpp
+  textdoc.cpp  main.cpp	schematic.cpp
+  mnemo.cpp	qucs.cpp	viewpainter.cpp
+  module.cpp	schematic_element.cpp	wire.cpp
+  mouseactions.cpp qucs_actions.cpp	schematic_file.cpp
+  wirelabel.cpp node.cpp qucs_init.cpp
+  syntax.cpp
 )
 
+#
+# files that have Q_OBJECT need to be MOC'ed
+#
 SET(QUCS_MOC_HDRS
-octave_window.h
-qucs.h
-schematic.h
-textdoc.h
+  octave_window.h
+  qucs.h
+  schematic.h
+  textdoc.h
 )
 
+#
 # headers that need to be moc'ed
+#
 QT4_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
 
-# generate rules for building source files from the resources
+#
+# generate rules for building source files from bitmap resources
+#
 SET(RESOURCES qucs.qrc)
 QT4_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
 
+
+#
+# Qucs translations
+#
+SET(QucsTRANSLATIONS qucs_de.ts qucs_pl.ts qucs_fr.ts qucs_it.ts qucs_ro.ts
+  qucs_pt.ts qucs_es.ts qucs_jp.ts qucs_hu.ts qucs_he.ts qucs_sv.ts
+  qucs_tr.ts qucs_uk.ts qucs_ru.ts qucs_cs.ts qucs_ca.ts qucs_ar.ts
+  qucs_kk.ts)
+
+#
+# Qt translation
+#
+set(QtTRANSLATIONS qtgeneric_untranslated.ts qtgeneric_de.ts qtgeneric_fr.ts
+  qtgeneric_es.ts qtgeneric_ro.ts qtgeneric_jp.ts qtgeneric_hu.ts
+  qtgeneric_it.ts qtgeneric_he.ts qtgeneric_sv.ts qtgeneric_pl.ts
+  qtgeneric_tr.ts qtgeneric_uk.ts qtgeneric_ru.ts qtgeneric_cs.ts
+  qtgeneric_ca.ts qtgeneric_ar.ts qtgeneric_kk.ts)
+
+QT4_CREATE_TRANSLATION(LANG_SRCS ${QucsTRANSLATIONS} ${QucsTRANSLATIONS})
+
+#IF( NOT APPLE )
+#  INSTALL( FILES ${LANG_SRCS} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/qucs/lang/)
+#ENDIF()
+
+
+#
 # configure Apple bundle information 
+#
 IF(APPLE)
   # set information on Info.plist file
 	SET(MACOSX_BUNDLE_INFO_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
@@ -103,13 +135,20 @@ IF(APPLE)
   SET(MACOSX_BUNDLE_COPYRIGHT "${PROJECT_COPYRIGHT_YEAR} ${PROJECT_VENDOR}")
   SET(MACOSX_BUNDLE_GUI_IDENTIFIER "${PROJECT_DOMAIN_SECOND}.${PROJECT_DOMAIN_FIRST}")
   SET(MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}")
+  SET(MACOSX_BUNDLE_COPYRIGHT "(C) 2013 Qucs team" )
   SET(MACOSX_BUNDLE_ICON_FILE qucs.icns) 
 
   # set where in the bundle to put the icns file
   SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_SOURCE_DIR}/bitmaps/qucs.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
   # include the icns file in the target
   SET(QUCS_SRCS ${QUCS_SRCS} ${CMAKE_CURRENT_SOURCE_DIR}/bitmaps/qucs.icns)
+
+  # This tells cmake where to place the translations inside the bundle
+  SET_SOURCE_FILES_PROPERTIES( ${LANG_SRCS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/lang )
+  # include the translation files in the target
+  SET(RESOURCES_SRCS ${RESOURCES_SRCS} ${LANG_SRCS})
 ENDIF(APPLE)
+
 
 #
 #  CMake's way of creating an executable
@@ -118,6 +157,7 @@ ADD_EXECUTABLE( qucs MACOSX_BUNDLE WIN32
   ${QUCS_SRCS}
   ${QUCS_MOC_SRCS}
   ${RESOURCES_SRCS} )
+  #${LANG_SRCS} )
 
 #
 # Tell CMake which libraries we need to link our executable against.
@@ -125,7 +165,7 @@ ADD_EXECUTABLE( qucs MACOSX_BUNDLE WIN32
 TARGET_LINK_LIBRARIES( qucs ${QT_LIBRARIES} components diagrams dialogs paintings )
 
 #
-# Now the installation stuff below
+# Prepare the installation
 #
 SET(plugin_dest_dir bin)
 SET(qtconf_dest_dir bin)
@@ -135,6 +175,7 @@ IF(APPLE)
   SET(qtconf_dest_dir ${PROJECT_NAME}.app/Contents/Resources)
   SET(APPS "${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.app")
 ENDIF(APPLE)
+
 IF(WIN32)
   SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}.exe")
 ENDIF(WIN32)
@@ -187,28 +228,12 @@ INSTALL(CODE "
 # To Create a package, one can run "cpack -G DragNDrop CPackConfig.cmake" on Mac OS X
 # where CPackConfig.cmake is created by including CPack
 # And then there's ways to customize this as well
-set(CPACK_BINARY_DRAGNDROP ON)
-include(CPack)
+#set(CPACK_BINARY_DRAGNDROP ON)
+#include(CPack)
 
 
 
 
-#--------------------------------------------------------------------------------
-# TODO rule to update Qucs strings
-# TODO add translatins as resource
-#SET(TRANSLATIONS qucs_de.ts qucs_pl.ts qucs_fr.ts qucs_it.ts qucs_ro.ts
-#  qucs_pt.ts qucs_es.ts qucs_jp.ts qucs_hu.ts qucs_he.ts qucs_sv.ts
-#  qucs_tr.ts qucs_uk.ts qucs_ru.ts qucs_cs.ts qucs_ca.ts qucs_ar.ts
-#  qucs_kk.ts)
 
-# TODO Include Qt strings
-#set(GENTRANSLATIONS qtgeneric_untranslated.ts qtgeneric_de.ts qtgeneric_fr.ts
-#  qtgeneric_es.ts qtgeneric_ro.ts qtgeneric_jp.ts qtgeneric_hu.ts
-#  qtgeneric_it.ts qtgeneric_he.ts qtgeneric_sv.ts qtgeneric_pl.ts
-#  qtgeneric_tr.ts qtgeneric_uk.ts qtgeneric_ru.ts qtgeneric_cs.ts
-#  qtgeneric_ca.ts qtgeneric_ar.ts qtgeneric_kk.ts)
-
-#QT4_ADD_TRANSLATION(LANG_SRCS ${LAN_FILES})
-#INSTALL( FILES ${LANG_SRCS} DESTINATION share/qucs/lang/)
 
 
