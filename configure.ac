@@ -118,9 +118,10 @@ dnl Check for language support.
 AC_PATH_PROGS(LRELEASE, lrelease-qt4 lrelease, :, [$QTDIR/bin:$PATH])
 AC_PATH_PROGS(LUPDATE, lupdate-qt4 lupdate, :, [$QTDIR/bin:$PATH])
 
-dnl Check for MOC/UIC support.
+dnl Check for MOC/UIC/RCC support.
 AC_PATH_PROGS(MOC, moc-qt4 moc, :, [$QTDIR/bin:$PATH])
 AC_PATH_PROGS(UIC, uic-qt4 uic, :, [$QTDIR/bin:$PATH])
+AC_PATH_PROGS(RCC, rcc, :, [$QTDIR/bin:$PATH])
 if test "$MOC" = ":"; then
   AC_MSG_WARN([
   The $PACKAGE package needs the 'Qt Meta Object Compiler' to compile properly.
@@ -282,7 +283,7 @@ esac
 AC_SUBST(PATHXFORM)
 
 dnl Create path info.
-BITMAP_PATH="$prefix/share/qucs/bitmaps/"
+dnl BitmapDir still used by qucs-edit
 AC_DEFINE_UNQUOTED([BITMAPDIR], ["$BITMAP_PATH"],
   [Where the data files go.])
 unset BITMAP_PATH
@@ -351,7 +352,6 @@ AC_CONFIG_FILES([Makefile
 		 qucs-attenuator/Makefile
 		 qucs-attenuator/bitmaps/Makefile
 		 qucs/Makefile
-		 qucs/bitmaps/Makefile
 		 qucs/octave/Makefile
 		 qucs/components/Makefile
 		 qucs/diagrams/Makefile
