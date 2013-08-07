@@ -1,17 +1,42 @@
+# To have CMake pick a Qt installation of your choice that won't be found
+# automatically, set the CMAKE_PREFIX_PATH environment variable.
+# For example: "export CMAKE_PREFIX_PATH=/usr/local/trolltech/qt4.3.5"
+
 PROJECT(qucs CXX C)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 cmake_policy(VERSION 2.6)
 
-SET(BITMAPDIR TRUE)
-SET(BINARYDIR TRUE)
-SET(DOCDIR TRUE)
-SET(LANGUAGEDIR TRUE)
-SET(LIBRARYDIR TRUE)
-SET(OCTAVEDIR TRUE)
+set(PROJECT_VERSION_MAJOR "0")
+set(PROJECT_VERSION_MINOR "0")
+set(PROJECT_VERSION_PATCH "18")
+set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
+set(PROJECT_VENDOR "Qucs team. This program is licensed under the GNU GPL")
+set(PROJECT_COPYRIGHT_YEAR "2013")
+set(PROJECT_DOMAIN_FIRST "qucs")
+set(PROJECT_DOMAIN_SECOND "org")
 
+#
 SET(CMAKE_BUILD_TYPE Debug)
 
+if(UNIX AND NOT APPLE)
+  #string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWERCASE)
+  #set(BIN_INSTALL_DIR "bin")
+  #set(DOC_INSTALL_DIR "share/doc/${PROJECT_NAME_LOWERCASE}/")
+else()
+  set(BIN_INSTALL_DIR ".")
+  set(DOC_INSTALL_DIR ".")
+endif()
+
+#
 ADD_DEFINITIONS( -DHAVE_CONFIG_H )
+
+# define variables
+SET(BINARYDIR "${CMAKE_INSTALL_PREFIX}/bin/")
+#SET(BITMAPDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/bitmaps/")
+SET(DOCDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/docs/")
+SET(LANGUAGEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/lang/")
+SET(LIBRARYDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/library/")
+SET(OCTAVEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/octave/")
 
 # configure the header config.h
 CONFIGURE_FILE (
@@ -31,13 +56,13 @@ SET( QT_USE_QTCORE TRUE )
 SET( QT_USE_QTGUI TRUE )
 SET( QT_USE_QT3SUPPORT TRUE )
 
-INCLUDE( ${QT_USE_FILE} )
+#INCLUDE( ${QT_USE_FILE} )
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 INCLUDE( ${QT_USE_FILE} )
 
-ADD_SUBDIRECTORY( bitmaps )
+#ADD_SUBDIRECTORY( bitmaps ) -> added as resources
 ADD_SUBDIRECTORY( components )
 ADD_SUBDIRECTORY( diagrams )
 ADD_SUBDIRECTORY( dialogs )
@@ -68,18 +93,27 @@ QT4_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
 SET(RESOURCES qucs.qrc)
 QT4_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
 
-# For Apple set the icns file containing icons
+# configure Apple bundle information 
 IF(APPLE)
-  # set how it shows up in the Info.plist file
+  # set information on Info.plist file
+	SET(MACOSX_BUNDLE_INFO_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
+  SET(MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_NAME} ${PROJECT_VERSION}")
+  SET(MACOSX_BUNDLE_LONG_VERSION_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
+  SET(MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
+  SET(MACOSX_BUNDLE_COPYRIGHT "${PROJECT_COPYRIGHT_YEAR} ${PROJECT_VENDOR}")
+  SET(MACOSX_BUNDLE_GUI_IDENTIFIER "${PROJECT_DOMAIN_SECOND}.${PROJECT_DOMAIN_FIRST}")
+  SET(MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}")
   SET(MACOSX_BUNDLE_ICON_FILE qucs.icns) 
+
   # set where in the bundle to put the icns file
   SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_SOURCE_DIR}/bitmaps/qucs.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
   # include the icns file in the target
   SET(QUCS_SRCS ${QUCS_SRCS} ${CMAKE_CURRENT_SOURCE_DIR}/bitmaps/qucs.icns)
 ENDIF(APPLE)
 
-
+#
 #  CMake's way of creating an executable
+#
 ADD_EXECUTABLE( qucs MACOSX_BUNDLE WIN32
   ${QUCS_SRCS}
   ${QUCS_MOC_SRCS}
@@ -161,6 +195,7 @@ include(CPack)
 
 #--------------------------------------------------------------------------------
 # TODO rule to update Qucs strings
+# TODO add translatins as resource
 #SET(TRANSLATIONS qucs_de.ts qucs_pl.ts qucs_fr.ts qucs_it.ts qucs_ro.ts
 #  qucs_pt.ts qucs_es.ts qucs_jp.ts qucs_hu.ts qucs_he.ts qucs_sv.ts
 #  qucs_tr.ts qucs_uk.ts qucs_ru.ts qucs_cs.ts qucs_ca.ts qucs_ar.ts
