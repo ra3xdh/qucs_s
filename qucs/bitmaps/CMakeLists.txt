@@ -37,6 +37,6 @@ SET(PNGS  fileopen.png filesave.png editdelete.png editcut.png editcopy.png
 # application images
 SET(ICONS  big.button.qucs.xpm big.qucs.xpm tiny.button.qucs.xpm tiny.qucs.xpm )
 
-INSTALL(FILES ${XPMS} DESTINATION share/qucs/bitmaps/)
-INSTALL(FILES ${PNGS} DESTINATION share/qucs/bitmaps/)
-INSTALL(FILES ${ICONS} DESTINATION share/qucs/bitmaps/)
+#INSTALL(FILES ${XPMS} DESTINATION share/qucs/bitmaps/)
+#INSTALL(FILES ${PNGS} DESTINATION share/qucs/bitmaps/)
+#INSTALL(FILES ${ICONS} DESTINATION share/qucs/bitmaps/)

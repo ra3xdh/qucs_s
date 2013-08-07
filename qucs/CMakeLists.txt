@@ -64,11 +64,26 @@ textdoc.h
 # headers that need to be moc'ed
 QT4_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
 
+# generate rules for building source files from the resources
+SET(RESOURCES qucs.qrc)
+QT4_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
+
+# For Apple set the icns file containing icons
+IF(APPLE)
+  # set how it shows up in the Info.plist file
+  SET(MACOSX_BUNDLE_ICON_FILE qucs.icns) 
+  # set where in the bundle to put the icns file
+  SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_SOURCE_DIR}/bitmaps/qucs.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+  # include the icns file in the target
+  SET(QUCS_SRCS ${QUCS_SRCS} ${CMAKE_CURRENT_SOURCE_DIR}/bitmaps/qucs.icns)
+ENDIF(APPLE)
+
 
 #  CMake's way of creating an executable
 ADD_EXECUTABLE( qucs MACOSX_BUNDLE WIN32
   ${QUCS_SRCS}
-  ${QUCS_MOC_SRCS} )
+  ${QUCS_MOC_SRCS}
+  ${RESOURCES_SRCS} )
 
 #
 # Tell CMake which libraries we need to link our executable against.
