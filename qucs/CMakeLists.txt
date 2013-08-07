@@ -117,7 +117,7 @@ set(QtTRANSLATIONS qtgeneric_untranslated.ts qtgeneric_de.ts qtgeneric_fr.ts
   qtgeneric_tr.ts qtgeneric_uk.ts qtgeneric_ru.ts qtgeneric_cs.ts
   qtgeneric_ca.ts qtgeneric_ar.ts qtgeneric_kk.ts)
 
-QT4_CREATE_TRANSLATION(LANG_SRCS ${QucsTRANSLATIONS} ${QucsTRANSLATIONS})
+QT4_CREATE_TRANSLATION(LANG_SRCS ${QucsTRANSLATIONS} ${QtTRANSLATIONS})
 
 #IF( NOT APPLE )
   INSTALL( FILES ${LANG_SRCS} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/qucs/lang/)
