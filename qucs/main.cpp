@@ -82,7 +82,9 @@ bool loadSettings()
     //if(settings.contains("ExamplesDir"))QucsSettings.ExamplesDir = settings.value("ExamplesDir").toString();
     //if(settings.contains("DocDir"))QucsSettings.DocDir = settings.value("DocDir").toString();
     if(settings.contains("OctaveBinDir"))QucsSettings.OctaveBinDir.setPath(settings.value("OctaveBinDir").toString());
-    if(settings.contains("QucsHomeDir"))QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
+    if(settings.contains("QucsHomeDir"))
+      if(settings.value("QucsHomeDir").toString() != "") 
+         QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
     QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
   return true;
 }
