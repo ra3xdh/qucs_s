@@ -29,7 +29,10 @@ dist_man_MANS = qucsedit.1
 MOCHEADERS = qucsedit.h
 MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
-qucsedit_SOURCES = main.cpp qucsedit.cpp
+qucsedit_SOURCES = main.cpp qucsedit.cpp qrc_qucsedit.cpp
+
+qrc_qucsedit.cpp: qucsedit.qrc
+	$(RCC) -o $@ $<
 
 nodist_qucsedit_SOURCES = $(MOCFILES)
 

@@ -102,12 +102,9 @@ int main(int argc, char *argv[])
   if (var != NULL) {
     QDir QucsDir = QDir (var);
     QString QucsDirStr = QucsDir.canonicalPath ();
-    QucsSettings.BitmapDir =
-      QDir::convertSeparators (QucsDirStr + "/share/qucs/bitmaps/");
     QucsSettings.LangDir =
       QDir::convertSeparators (QucsDirStr + "/share/qucs/lang/");
   } else {
-    QucsSettings.BitmapDir = BITMAPDIR;
     QucsSettings.LangDir = LANGUAGEDIR;
   }
 
