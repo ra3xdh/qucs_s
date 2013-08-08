@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>bitmaps/c_microstrip.png</file>
+        <file>bitmaps/coax.png</file>
+        <file>bitmaps/cpw_back.png</file>
+        <file>bitmaps/cpw.png</file>
+        <file>bitmaps/microstrip.png</file>
+        <file>bitmaps/rectwaveguide.png</file>
+    </qresource>
+</RCC>
