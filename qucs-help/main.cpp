@@ -135,13 +135,10 @@ int main(int argc, char *argv[])
     QString QucsDirStr = QucsDir.canonicalPath ();
     QucsSettings.DocDir =
       QDir::convertSeparators (QucsDirStr + "/share/qucs/docs/");
-    QucsSettings.BitmapDir =
-      QDir::convertSeparators (QucsDirStr + "/share/qucs/bitmaps/");
     QucsSettings.LangDir =
       QDir::convertSeparators (QucsDirStr + "/share/qucs/lang/");
   } else {
     QucsSettings.DocDir = DOCDIR;
-    QucsSettings.BitmapDir = BITMAPDIR;
     QucsSettings.LangDir = LANGUAGEDIR;
   }
 
