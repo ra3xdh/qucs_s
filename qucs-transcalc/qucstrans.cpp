@@ -255,7 +255,7 @@ QucsTranscalc::QucsTranscalc() {
   setCentralWidget(centralWidget);
   
   // set application icon
-  setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
+  setWindowIcon(QPixmap(":/bitmaps/big.qucs.xpm"));
   setWindowTitle("Qucs Transcalc " PACKAGE_VERSION);
 
   // create file menu
@@ -336,7 +336,7 @@ QucsTranscalc::QucsTranscalc() {
   connect(tranType, SIGNAL(activated(int)), SLOT(slotSelectType(int)));
   // setup transmission line picture
   pix = new QLabel (lineGroup);
-  pix->setPixmap(QPixmap(QucsSettings.BitmapDir+"microstrip.png"));
+  pix->setPixmap(QPixmap(":/bitmaps/microstrip.png"));
 
   QVBoxLayout *vfig = new QVBoxLayout();
   vfig->addWidget(tranType);
@@ -969,7 +969,7 @@ void QucsTranscalc::closeEvent(QCloseEvent *Event)
 
 void QucsTranscalc::slotSelectType (int Type)
 {
-  pix->setPixmap(QPixmap(QucsSettings.BitmapDir + QString(TransLineTypes[Type].bitmap)));
+  pix->setPixmap(QPixmap(":/bitmaps/" + QString(TransLineTypes[Type].bitmap)));
   setMode (Type);
   statusBar()->showMessage(tr("Ready."));
 }
@@ -1162,7 +1162,7 @@ void QucsTranscalc::setMode (QString _mode) {
 
 // Updates the combobox and pixmap for the current mode.
 void QucsTranscalc::updatePixmap (int _mode) {
-  pix->setPixmap(QPixmap(QucsSettings.BitmapDir + QString(TransLineTypes[_mode].bitmap)));
+  pix->setPixmap(QPixmap(":/bitmaps/" + QString(TransLineTypes[_mode].bitmap)));
   tranType->setCurrentIndex(_mode);
 }
 
