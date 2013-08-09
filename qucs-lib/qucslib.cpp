@@ -52,7 +52,7 @@
 QucsLib::QucsLib()
 {
   // set application icon
-  setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
+  setWindowIcon(QPixmap(":/bitmaps/big.qucs.xpm"));
   setWindowTitle("Qucs Library Tool " PACKAGE_VERSION);
 
   // create file menu
@@ -175,7 +175,7 @@ void QucsLib::putLibrariesIntoCombobox()
     UserLibCount = LibFiles.count();
 
     for(it = LibFiles.begin(); it != LibFiles.end(); it++) {
-      Library->addItem(QPixmap(QucsSettings.BitmapDir + "home.png"), (*it).left((*it).length()-4));
+      Library->addItem(QPixmap(":/bitmaps/home.png"), (*it).left((*it).length()-4));
     }
   }
 
@@ -187,7 +187,7 @@ void QucsLib::putLibrariesIntoCombobox()
   LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
 
   for(it = LibFiles.begin(); it != LibFiles.end(); it++)
-    Library->addItem(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"), (*it).left((*it).length()-4));
+    Library->addItem(QPixmap(":/bitmaps/big.qucs.xpm"), (*it).left((*it).length()-4));
 
   slotSelectLibrary(0);
 }
