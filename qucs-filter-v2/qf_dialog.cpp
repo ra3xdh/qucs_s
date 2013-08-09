@@ -41,7 +41,7 @@
 FilterDialog::FilterDialog (QWidget * parent) : QDialog (parent)
 {
   // set application icon
-  ///setIcon (QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
+  setIcon (QPixmap(":/bitmaps/big.qucs.xpm"));
   setCaption("Qucs Filter " PACKAGE_VERSION);
 
   all = new Q3VBoxLayout(this);

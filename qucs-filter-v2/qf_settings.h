@@ -26,7 +26,6 @@ struct tQucsSettings {
   double atten;
   QFont font;
   QString LangDir;
-  QString BitmapDir;
   QString Language;
 };
 

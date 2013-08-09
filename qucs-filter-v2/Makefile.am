@@ -46,7 +46,12 @@ qucsfilter_SOURCES = qf_api.cpp\
        qf_main.cpp\
        qf_settings.cpp\
        qf_dialog.cpp\
-       qf_box.cpp
+       qf_box.cpp\
+       qrc_qucsfilter.cpp
+
+
+qrc_qucsfilter.cpp: qucsfilter.qrc
+	$(RCC) -o $@ $<
 
 nodist_qucsfilter_SOURCES = $(MOCFILES)
 
