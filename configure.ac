@@ -284,9 +284,6 @@ AC_SUBST(PATHXFORM)
 
 dnl Create path info.
 dnl BitmapDir still used by qucs-edit
-AC_DEFINE_UNQUOTED([BITMAPDIR], ["$BITMAP_PATH"],
-  [Where the data files go.])
-unset BITMAP_PATH
 BIN_PATH="$prefix/bin/"
 AC_DEFINE_UNQUOTED([BINARYDIR], ["$BIN_PATH"],
   [Where the binary files go.])
