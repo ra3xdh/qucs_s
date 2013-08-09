@@ -50,7 +50,7 @@ QucsFilter::QucsFilter()
   setCentralWidget(centralWidget);
   
   // set application icon
-  setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
+  setWindowIcon(QPixmap(":/bitmaps/big.qucs.xpm"));
   setWindowTitle("Qucs Filter " PACKAGE_VERSION);
 
   // --------  create menubar  -------------------
