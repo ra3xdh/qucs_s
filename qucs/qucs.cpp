@@ -714,13 +714,13 @@ void QucsApp::slotCMenuInsert ()
 void QucsApp::readProjects()
 {
   QDir ProjDir(QucsSettings.QucsHomeDir);
-  if(!ProjDir.cd(QucsSettings.QucsHomeDir.canonicalPath())) { // work directory exists ?
-    if(!ProjDir.mkdir(QucsSettings.QucsHomeDir.canonicalPath())) { // no, then create it
+  if(!ProjDir.cd(QucsSettings.QucsHomeDir.absolutePath())) { // work directory exists ?
+    if(!ProjDir.mkdir(QucsSettings.QucsHomeDir.absolutePath())) { // no, then create it
       QMessageBox::warning(this, tr("Warning"),
                    tr("Cannot create work directory !"));
       return;
     }
-    ProjDir.cd(QucsSettings.QucsHomeDir.canonicalPath());
+    ProjDir.cd(QucsSettings.QucsHomeDir.absolutePath());
   }
 
   // get all directories
