@@ -371,7 +371,7 @@ QString properAbsFileName(const QString& Name)
   QString s = Name;
   QFileInfo Info(s);
   if(Info.isRelative()) s = QucsSettings.QucsWorkDir.filePath(s);
-  return QDir::cleanDirPath(s);
+  return QDir::cleanPath(s);
 }
 
 // #########################################################################
