@@ -18,6 +18,7 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
+#include <iostream>
 #include <QtGui>
 #include <QDebug>
 #include <QtCore>
@@ -103,6 +104,8 @@ QucsApp::QucsApp()
     tr("Any File")+" (*)";
   //QucsSettings.QucsWorkDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   //QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
+
+  updateSchNameHash();
 
   move  (QucsSettings.x,  QucsSettings.y);
   resize(QucsSettings.dx, QucsSettings.dy);
@@ -388,7 +391,7 @@ void QucsApp::fillComboBox (bool setAll)
 
 // ----------------------------------------------------------
 // Whenever the Component Library ComboBox is changed, this slot fills the
-// Component IconView with the appropriat components.
+// Component IconView with the appropriate components.
 void QucsApp::slotSetCompView (int index)
 {
   editText->setHidden (true); // disable text edit of component property
@@ -1337,6 +1340,9 @@ void QucsApp::slotFileSaveAs()
 
   DocumentTab->blockSignals(false);
   statusBar()->message(tr("Ready."));
+
+  // refresh the schematic file path
+  this->updateSchNameHash();
 }
 
 
@@ -1360,6 +1366,9 @@ void QucsApp::slotFileSaveAll()
   ((Q3ScrollView*)DocumentTab->currentPage())->viewport()->update();
   view->drawn = false;
   statusBar()->message(tr("Ready."));
+
+  // refresh the schematic file path
+  this->updateSchNameHash();
 }
 
 // --------------------------------------------------------------
@@ -1561,6 +1570,17 @@ void QucsApp::slotApplSettings()
   QucsSettingsDialog *d = new QucsSettingsDialog(this);
   d->exec();
   view->drawn = false;
+}
+
+
+// --------------------------------------------------------------
+void QucsApp::slotRefreshSchPath()
+{
+  this->updateSchNameHash();
+
+  QMessageBox msgBox;
+  msgBox.setText("The schematic file path has been refreshed.");
+  msgBox.exec();
 }
 
 
@@ -2462,4 +2482,72 @@ void QucsApp::slotEditElement()
 void QucsApp::slotHideEdit()
 {
   editText->setHidden(true);
+}
+
+// -----------------------------------------------------------
+// Searches the qucs path list for all schematic files and creates
+// a hash for lookup later
+void QucsApp::updateSchNameHash(void)
+{
+
+std::cout << "QucsApp::updateSchNameHash 2493: " << std::endl;
+
+    // update the list of paths to search in qucsPathList, this
+    // removes nonexisting entries
+    updatePathList();
+
+    // now go through the paths creating a map to all the schematic files
+    // found in the directories. Note that we go through the list of paths from
+    // first index to last index. Since keys are unique it means schematic files
+    // in directories at the end of the list take precendence over those at the
+    // start of the list, we should warn about shadowing of schematic files in
+    // this way in the future
+    QStringList nameFilter;
+    nameFilter << "*.sch";
+
+    // clear out any existing hash table entriess
+    schNameHash.clear();
+
+    foreach (QString qucspath, qucsPathList) {
+std::cout << "QucsApp::updateSchNameHash 2509: " << qucspath.toStdString() << std::endl;
+        QDir thispath(qucspath);
+        // get all the schematic files in the directory
+        QFileInfoList schfilesList = thispath.entryInfoList( nameFilter, QDir::Files );
+        // put each one in the hash table with the unique key the base name of
+        // the file, note this will overwrite the value if the key already exists
+        foreach (QFileInfo schfile, schfilesList) {
+            QString bn = schfile.completeBaseName();
+            std::cout << "QucsApp::updateSchNameHash 2516: " << bn.toStdString() << std::endl;
+            schNameHash[schfile.completeBaseName()] = schfile.absoluteFilePath();
+        }
+    }
+
+    // finally check the home directory
+    QDir thispath(QucsSettings.QucsWorkDir);
+    QFileInfoList schfilesList = thispath.entryInfoList( nameFilter, QDir::Files );
+    // put each one in the hash table with the unique key the base name of
+    // the file, note this will overwrite the value if the key already exists
+    foreach (QFileInfo schfile, schfilesList) {
+        schNameHash[schfile.completeBaseName()] = schfile.absoluteFilePath();
+    }
+}
+
+// -----------------------------------------------------------
+// update the list of paths, pruning non-existing paths
+void QucsApp::updatePathList(void)
+{
+    // check each path actually exists, if not remove it
+    QMutableListIterator<QString> i(qucsPathList);
+    while (i.hasNext()) {
+        i.next();
+        QDir thispath(i.value());
+        if (!thispath.exists())
+        {
+
+std::cout << "QucsApp::updatePathList 2542: " << i.value().toStdString() << std::endl;
+
+            // the path does not exist, remove it from the list
+            i.remove();
+        }
+    }
 }

@@ -38,11 +38,10 @@
 #include "main.h"
 #include "node.h"
 
-tQucsSettings QucsSettings;
-
 QucsApp *QucsMain;  // the Qucs application itself
+tQucsSettings QucsSettings;
 QString lastDir;    // to remember last directory for several dialogs
-
+QStringList qucsPathList;
 
 // #########################################################################
 // Loads the settings file and stores the settings.
@@ -86,7 +85,26 @@ bool loadSettings()
       if(settings.value("QucsHomeDir").toString() != "") 
          QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
     QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
-  return true;
+
+    // If present read in the list of directory paths in which Qucs should
+    //  search for subcircuit schematics
+    if(settings.contains("Path"))
+    {
+        int size = settings.beginReadArray("Path");
+        for (int i = 0; i < size; ++i)
+        {
+            settings.setArrayIndex(i);
+            QString apath = settings.value("path").toString();
+            qucsPathList.append(apath);
+        }
+        settings.endArray();
+    }
+
+    // TEST DEBUG TODO: remove
+    QString pathTest("/home/richard/");
+    qucsPathList.append(pathTest);
+
+    return true;
 }
 
 // #########################################################################
@@ -127,6 +145,19 @@ bool saveApplSettings(QucsApp *qucs)
     //settings.setValue("DocDir", QucsSettings.DocDir);
     settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
     settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
+
+    // Copy the list of directory paths in which Qucs should
+    // search for subcircuit schematics from qucsPathList
+    settings.remove("Path");
+    settings.beginWriteArray("Path");
+    int i = 0;
+    foreach(QString path, qucsPathList) {
+         settings.setArrayIndex(i);
+         settings.setValue("path", path);
+         i++;
+     }
+     settings.endArray();
+
   return true;
 
 }
@@ -366,11 +397,20 @@ void convert2ASCII(QString& Text)
 }
 
 // #########################################################################
+// Converts a path to an absolute path and resolves paths relative to the
+// Qucs home directory
 QString properAbsFileName(const QString& Name)
 {
   QString s = Name;
   QFileInfo Info(s);
-  if(Info.isRelative()) s = QucsSettings.QucsWorkDir.filePath(s);
+
+  if(Info.isRelative())
+  {
+      // if it's a relative file, look for it relative to the
+      // working directory (the qucs home directory)
+      s = QucsSettings.QucsWorkDir.filePath(s);
+  }
+  // return the clean path
   return QDir::cleanPath(s);
 }
 
@@ -579,7 +619,7 @@ int main(int argc, char *argv[])
   QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/qucs/docs/examples/";
   QucsSettings.DocDir = QucsDir.canonicalPath() + "/share/qucs/docs/";
 
-  QucsSettings.Editor = QucsSettings.BinDir + "qucsedit";
+  QucsSettings.Editor = "qucsedit";
   QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
 

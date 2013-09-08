@@ -581,24 +581,55 @@ void QucsApp::slotSelectMarker()
   view->drawn = false;
 }
 
+
+extern QString lastDirOpenSave; // to remember last directory and file
+
 // ------------------------------------------------------------------------
 // Is called by slotShowLastMsg(), by slotShowLastNetlist() and from the
 // component edit dialog.
 void QucsApp::editFile(const QString& File)
 {
-  QStringList com;
-  com << QucsSettings.Editor;
-  if (!File.isEmpty()) com << File;
-  Q3Process *QucsEditor = new Q3Process(com);
-  QucsEditor->setCommunication(0);
-  if(!QucsEditor->start()) {
-    QMessageBox::critical(this, tr("Error"), tr("Cannot start text editor!"));
-    delete QucsEditor;
-    return;
-  }
 
-  // to kill it before qucs ends
-  connect(this, SIGNAL(signalKillEmAll()), QucsEditor, SLOT(kill()));
+    if (QucsSettings.Editor == "qucsedit")
+    {
+        // is the Editor is 'qucsedit', open it in an editor tab
+        editText->setHidden(true); // disable text edit of component property
+
+        statusBar()->message(tr("Opening file..."));
+
+        QFileInfo finfo(File);
+
+        if(!finfo.exists())
+          statusBar()->message(tr("Opening aborted, file not found."), 2000);
+        else {
+          gotoPage(File);
+          lastDirOpenSave = File;   // remember last directory and file
+          statusBar()->message(tr("Ready."));
+        }
+    }
+    else
+    {
+      // use an external editor
+      QStringList com;
+
+      com << QucsSettings.Editor;
+
+      if (!File.isEmpty())
+      {
+          com << File;
+      }
+
+      Q3Process *QucsEditor = new Q3Process(com);
+      QucsEditor->setCommunication(0);
+      if(!QucsEditor->start()) {
+        QMessageBox::critical(this, tr("Error"), tr("Cannot start text editor!"));
+        delete QucsEditor;
+        return;
+      }
+
+      // to kill it before qucs ends
+      connect(this, SIGNAL(signalKillEmAll()), QucsEditor, SLOT(kill()));
+    }
 }
 
 // ------------------------------------------------------------------------

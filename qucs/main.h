@@ -15,8 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef QUCS_MAIN_H
+#define QUCS_MAIN_H
 
 #include <qfont.h>
 #include <qcolor.h>
@@ -68,9 +68,9 @@ struct tQucsSettings {
 };
 
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used
-
 extern QucsApp *QucsMain;  // the Qucs application itself
 extern QString lastDir;    // to remember last directory for several dialogs
+extern QStringList qucsPathList;
 
 bool saveApplSettings(QucsApp*);
 
@@ -93,4 +93,4 @@ bool    Verilog_Delay(QString&, const QString&);
 QString Verilog_Param(const QString);
 bool    checkVersion(QString&);
 
-#endif
+#endif // ifndef QUCS_MAIN_H

@@ -18,6 +18,7 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
+#include <iostream>
 #include <QtGui>
 #include "subcircuit.h"
 #include "qucs.h"
@@ -276,5 +277,61 @@ QString Subcircuit::getSubcircuitFile()
 {
   // construct full filename
   QString FileName = Props.getFirst()->Value;
-  return properAbsFileName(FileName);
+
+  std::cout << "p1: " << FileName.toStdString() << std::endl;
+
+  if (FileName.isEmpty())
+  {
+      return properAbsFileName(FileName);
+  }
+
+  QFileInfo FileInfo(FileName);
+
+  if (FileInfo.exists())
+  {
+      // the file must be an absolute path to a schematic file
+     return FileInfo.absoluteFilePath();
+  }
+  else
+  {
+    // look up the hash table for the schematic file as
+    // it does not seem to be an absolute path, this will also
+    // search the home directory which is always hashed
+    QString baseName = FileInfo.completeBaseName();
+
+    std::cout << "p2 basename: " << baseName.toStdString() << std::endl;
+
+    QMutex mutex;
+    mutex.lock();
+    QString hashsearchresult = QucsMain->schNameHash.value(baseName);
+    mutex.unlock();
+
+    std::cout << "p3 hashsearchresult: " << hashsearchresult.toStdString() << std::endl;
+
+    if (hashsearchresult.isEmpty())
+    {
+        // the schematic was not found in the hash table, return
+        // what would always have been returned in this case
+        return properAbsFileName(FileName);
+    }
+    else
+    {
+        // we found an entry in the hash table, check it actually still exists
+        FileInfo.setFile(hashsearchresult);
+
+        if (FileInfo.exists())
+        {
+            // it does exist so return the absolute file path
+            return FileInfo.absoluteFilePath();
+        }
+        else
+        {
+            // the schematic file does not actually exist, return
+            // what would always have been returned in this case
+            return properAbsFileName(FileName);
+        }
+    }
+
+  }
+
 }

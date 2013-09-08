@@ -147,6 +147,13 @@ void QucsApp::initActions()
 	tr("Qucs Settings\n\nSets properties of the application"));
   connect(applSettings, SIGNAL(activated()), SLOT(slotApplSettings()));
 
+  refreshSchPath = new QAction(tr("Refresh Path..."), this);
+  //refreshSchPath->setShortcut(Qt::CTRL+Qt::Key_Comma);
+  refreshSchPath->setStatusTip(tr("Refresh Path"));
+  refreshSchPath->setWhatsThis(
+    tr("Refresh Path\n\nRechecks the list of paths for files."));
+  connect(refreshSchPath, SIGNAL(activated()), SLOT(slotRefreshSchPath()));
+
   alignTop = new QAction(tr("Align top"), this);
   alignTop->setShortcut(Qt::CTRL+Qt::Key_T);
   alignTop->setStatusTip(tr("Align top selected elements"));
@@ -669,6 +676,7 @@ void QucsApp::initMenuBar()
   fileMenu->addAction(symEdit);
   fileMenu->insertSeparator();
   fileMenu->addAction(applSettings);
+  fileMenu->addAction(refreshSchPath);
   fileMenu->insertSeparator();
   fileMenu->addAction(fileQuit);
 

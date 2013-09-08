@@ -1500,24 +1500,35 @@ int Schematic::adjustPortNumbers()
     }
   }
   // handle schematic symbol
-  else {
-    // go through all components in a schematic
-    for(Component *pc = DocComps.first(); pc!=0; pc = DocComps.next())
-      if(pc->Model == "Port") {
-	countPort++;
+  else
+  {
+      // go through all components in a schematic
+      for(Component *pc = DocComps.first(); pc!=0; pc = DocComps.next())
+      {
+         if(pc->Model == "Port")
+         {
+             countPort++;
 
-	Str = pc->Props.getFirst()->Value;
-	// search for matching port symbol
-	for(pp = SymbolPaints.first(); pp!=0; pp = SymbolPaints.next())
-	  if(pp->Name == ".PortSym ")
-	    if(((PortSymbol*)pp)->numberStr == Str) break;
+             Str = pc->Props.getFirst()->Value;
+             // search for matching port symbol
+             for(pp = SymbolPaints.first(); pp!=0; pp = SymbolPaints.next())
+             {
+                 if(pp->Name == ".PortSym ")
+                 {
+                   if(((PortSymbol*)pp)->numberStr == Str) break;
+                 }
+             }
 
-	if(pp)
-	  ((PortSymbol*)pp)->nameStr = pc->Name;
-	else {
-	  SymbolPaints.append(new PortSymbol(x1, y2, Str, pc->Name));
-	  y2 += 40;
-	}
+             if(pp)
+             {
+                 ((PortSymbol*)pp)->nameStr = pc->Name;
+             }
+             else
+             {
+                 SymbolPaints.append(new PortSymbol(x1, y2, Str, pc->Name));
+                 y2 += 40;
+             }
+          }
       }
   }
 
