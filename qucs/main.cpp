@@ -100,10 +100,6 @@ bool loadSettings()
         settings.endArray();
     }
 
-    // TEST DEBUG TODO: remove
-    QString pathTest("/home/richard/");
-    qucsPathList.append(pathTest);
-
     return true;
 }
 

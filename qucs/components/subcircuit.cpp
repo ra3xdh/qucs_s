@@ -18,7 +18,6 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-#include <iostream>
 #include <QtGui>
 #include "subcircuit.h"
 #include "qucs.h"
@@ -278,8 +277,6 @@ QString Subcircuit::getSubcircuitFile()
   // construct full filename
   QString FileName = Props.getFirst()->Value;
 
-  std::cout << "p1: " << FileName.toStdString() << std::endl;
-
   if (FileName.isEmpty())
   {
       return properAbsFileName(FileName);
@@ -299,14 +296,10 @@ QString Subcircuit::getSubcircuitFile()
     // search the home directory which is always hashed
     QString baseName = FileInfo.completeBaseName();
 
-    std::cout << "p2 basename: " << baseName.toStdString() << std::endl;
-
     QMutex mutex;
     mutex.lock();
     QString hashsearchresult = QucsMain->schNameHash.value(baseName);
     mutex.unlock();
-
-    std::cout << "p3 hashsearchresult: " << hashsearchresult.toStdString() << std::endl;
 
     if (hashsearchresult.isEmpty())
     {

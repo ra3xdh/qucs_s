@@ -18,7 +18,6 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-#include <iostream>
 #include <QtGui>
 #include <QDebug>
 #include <QtCore>
@@ -2489,9 +2488,6 @@ void QucsApp::slotHideEdit()
 // a hash for lookup later
 void QucsApp::updateSchNameHash(void)
 {
-
-std::cout << "QucsApp::updateSchNameHash 2493: " << std::endl;
-
     // update the list of paths to search in qucsPathList, this
     // removes nonexisting entries
     updatePathList();
@@ -2509,7 +2505,6 @@ std::cout << "QucsApp::updateSchNameHash 2493: " << std::endl;
     schNameHash.clear();
 
     foreach (QString qucspath, qucsPathList) {
-std::cout << "QucsApp::updateSchNameHash 2509: " << qucspath.toStdString() << std::endl;
         QDir thispath(qucspath);
         // get all the schematic files in the directory
         QFileInfoList schfilesList = thispath.entryInfoList( nameFilter, QDir::Files );
@@ -2517,12 +2512,11 @@ std::cout << "QucsApp::updateSchNameHash 2509: " << qucspath.toStdString() << st
         // the file, note this will overwrite the value if the key already exists
         foreach (QFileInfo schfile, schfilesList) {
             QString bn = schfile.completeBaseName();
-            std::cout << "QucsApp::updateSchNameHash 2516: " << bn.toStdString() << std::endl;
             schNameHash[schfile.completeBaseName()] = schfile.absoluteFilePath();
         }
     }
 
-    // finally check the home directory
+    // finally check the home/working directory
     QDir thispath(QucsSettings.QucsWorkDir);
     QFileInfoList schfilesList = thispath.entryInfoList( nameFilter, QDir::Files );
     // put each one in the hash table with the unique key the base name of
@@ -2543,9 +2537,6 @@ void QucsApp::updatePathList(void)
         QDir thispath(i.value());
         if (!thispath.exists())
         {
-
-std::cout << "QucsApp::updatePathList 2542: " << i.value().toStdString() << std::endl;
-
             // the path does not exist, remove it from the list
             i.remove();
         }
