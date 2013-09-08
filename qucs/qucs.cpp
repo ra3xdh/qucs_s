@@ -1806,7 +1806,7 @@ void QucsApp::slotIntoHierarchy()
   QString *ps = new QString("*");
   HierarchyHistory.append(ps);    // sign not to clear HierarchyHistory
 
-  QString s = QucsSettings.QucsWorkDir.filePath(pc->Props.getFirst()->Value);
+  QString s = pc->getSubcircuitFile();
   if(!gotoPage(s)) {
     HierarchyHistory.remove();
     return;
