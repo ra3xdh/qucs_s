@@ -60,7 +60,8 @@ private slots:
   void slotColorAttribute();
   void slotColorDirective();
   void slotColorTask();
-  void slotTableCliked(int,int);
+  void slotTableClicked(int,int);
+  void slotPathTableClicked(int,int);
   void slotOctaveBrowse();
   void slotHomeDirBrowse();
 
@@ -73,7 +74,7 @@ public:
   QComboBox *LanguageCombo;
   QPushButton *FontButton, *BGColorButton;
   QLineEdit *undoNumEdit, *editorEdit, *Input_Suffix, *Input_Program, *octaveEdit, *homeEdit;
-  QTableWidget *tableWidget;
+  QTableWidget *tableWidget, *ptableWidget;
   QStandardItemModel *model;
   QPushButton *ColorComment, *ColorString, *ColorInteger,
        *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
