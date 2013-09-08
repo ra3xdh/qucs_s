@@ -41,8 +41,8 @@ Circulator::Circulator()
   x1 = -30; y1 = -16;
   x2 =  30; y2 =  30;
 
-  tx = x1+4;
-  ty = y1-QucsSettings.font.pointSize()-4;
+  tx = x1 + 4;
+  ty = y1 - QucsSettings.font.pointSize()-4;
   Model = "Circulator";
   Name  = "X";
 
