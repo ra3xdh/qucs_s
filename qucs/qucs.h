@@ -224,12 +224,14 @@ private:
   bool deleteDirectoryContent(QDir& Dir);
   bool isTextDocument(QWidget *);
   void closeFile(int);
-  void updateSchNameHash(void); // maps all schematic files in the path list
-  void updatePathList(void); // update the list of paths, pruning non-existing paths
+
 public:
 
   void readProjects();
   void readProjectFiles();
+  void updatePathList(void); // update the list of paths, pruning non-existing paths
+  void updatePathList(QStringList);
+  void updateSchNameHash(void); // maps all schematic files in the path list
 
 /* **************************************************
    *****  The following methods are located in  *****
@@ -264,7 +266,7 @@ private:
   QMenu *fileMenu, *editMenu, *insMenu, *projMenu, *simMenu, *viewMenu,
              *helpMenu, *alignMenu, *toolMenu;
 
-  // submenus for the PDF documents 
+  // submenus for the PDF documents
   QMenu *helpTechnical, *helpReport, *helpTutorial;
 
   QToolBar *fileToolbar, *editToolbar, *viewToolbar, *workToolbar;

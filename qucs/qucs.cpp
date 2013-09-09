@@ -222,7 +222,7 @@ void QucsApp::initView()
   //TabView = new VTabWidget(VTabInterface::TabLeft,dock);  // tabs on the left side
   TabView = new QTabWidget(this);
   TabView->setTabPosition(QTabWidget::West);
-  
+
   connect(dock, SIGNAL(visibilityChanged(bool)), SLOT(slotToggleDock(bool)));
 
   view = new MouseActions();
@@ -325,7 +325,7 @@ void QucsApp::initView()
   //octDock = new Q3DockWindow(Q3DockWindow::InDock, this);
   //octDock->setCloseMode(Q3DockWindow::Always);
   octDock = new QDockWidget();
-  
+
   connect(octDock, SIGNAL(visibilityChanged(bool)), SLOT(slotToggleOctave(bool)));
   octave = new OctaveWindow(octDock);
   this->addDockWidget(Qt::BottomDockWidgetArea, octDock);
@@ -788,7 +788,7 @@ int QucsApp::testFile(const QString& DocName)
     Line = stream.readLine();
     Line = Line.stripWhiteSpace();
   } while(Line.isEmpty());
-  
+
   if(Line.left(16) != "<Qucs Schematic ") {  // wrong file type ?
     file.close();
     return -3;
@@ -877,27 +877,27 @@ void QucsApp::readProjectFiles()
     }
     else if(Str == "dat") {
       QTreeWidgetItem *temp = new QTreeWidgetItem(ConDatasets);
-      temp->setText(0, (*it).ascii()); 
+      temp->setText(0, (*it).ascii());
     }
     else if((Str == "vhdl") || (Str == "vhd")) {
       QTreeWidgetItem *temp = new QTreeWidgetItem(ConSources);
-      temp->setText(0, (*it).ascii());  
+      temp->setText(0, (*it).ascii());
     }
     else if(Str == "v") {
       QTreeWidgetItem *temp = new QTreeWidgetItem(ConVerilog);
-      temp->setText(0, (*it).ascii());  
+      temp->setText(0, (*it).ascii());
     }
     else if(Str == "va") {
       QTreeWidgetItem *temp = new QTreeWidgetItem(ConVerilogA);
-      temp->setText(0, (*it).ascii());  
+      temp->setText(0, (*it).ascii());
     }
     else if((Str == "m") || (Str == "oct")) {
       QTreeWidgetItem *temp = new QTreeWidgetItem(ConOctave);
-      temp->setText(0, (*it).ascii());  
+      temp->setText(0, (*it).ascii());
     }
     else {
       QTreeWidgetItem *temp = new QTreeWidgetItem(ConOthers);
-      temp->setText(0, (*it).ascii());  
+      temp->setText(0, (*it).ascii());
     }
   }
 }
@@ -1141,7 +1141,7 @@ bool QucsApp::gotoPage(const QString& Name)
   }
 
   QFileInfo Info(Name);
-  if(Info.extension(false) == "sch" || Info.extension(false) == "dpl" || 
+  if(Info.extension(false) == "sch" || Info.extension(false) == "dpl" ||
      Info.extension(false) == "sym")
     d = new Schematic(this, Name);
   else
@@ -1173,7 +1173,7 @@ void QucsApp::slotFileOpen()
 
   statusBar()->message(tr("Opening file..."));
 
-  QString s = QFileDialog::getOpenFileName(this, tr("Enter a Schematic Name"), 
+  QString s = QFileDialog::getOpenFileName(this, tr("Enter a Schematic Name"),
     lastDirOpenSave.isEmpty() ? QString(".") : lastDirOpenSave, QucsFileFilter);
 
   if(s.isEmpty())
@@ -1435,11 +1435,11 @@ bool QucsApp::closeAllFiles()
   QucsDoc *doc = 0;
   while((doc = getDoc()) != 0)
 	delete doc;
-	
+
 
   switchEditMode(true);   // set schematic edit mode
   return true;
-}   
+}
 
 
 void QucsApp::slotFileExamples()
@@ -1782,7 +1782,7 @@ void QucsApp::slotEditCopy()
     ((TextDoc*)Doc)->copy();
     return;
   }
-  
+
   editText->setHidden(true); // disable text edit of component property
   QClipboard *cb = QApplication::clipboard();  // get system clipboard
 
@@ -1939,7 +1939,7 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
     sim->slotClose();   // close and delete simulation window
     if(w) {  // schematic still open ?
       SweepDialog *Dia = new SweepDialog((Schematic*)sim->DocWidget);
-      
+
     }
   }
   else {
@@ -1999,7 +1999,7 @@ void QucsApp::slotChangePage(QString& DocName, QString& DataDisplay)
     DocumentTab->setCurrentPage(z);
   else {   // no open page found ?
     QString ext = QucsDoc::fileSuffix (DataDisplay);
-    if (ext != "vhd" && ext != "vhdl" && ext != "v" && ext != "va" && 
+    if (ext != "vhd" && ext != "vhdl" && ext != "v" && ext != "va" &&
 	ext != "oct" && ext != "m")
       d = new Schematic (this, Name);
     else
@@ -2070,7 +2070,7 @@ void QucsApp::slotOpenContent(QTreeWidgetItem *item)
   if(item == 0) return;   // no item was double clicked
   if(item->parent() == 0) return; // no document, but item "schematic", ...
 
-/*  
+/*
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.path());
   QString p = ProjName+"_prj";
   if(!QucsSettings.QucsWorkDir.cd(p)) {
@@ -2542,3 +2542,19 @@ void QucsApp::updatePathList(void)
         }
     }
 }
+
+// replace the old path list with a new one
+void QucsApp::updatePathList(QStringList newPathList)
+{
+    // clear out the old path list
+    qucsPathList.clear();
+
+    // copy the new path into the path list
+    foreach(QString path, newPathList)
+    {
+        qucsPathList.append(path);
+    }
+    // do the normal path update operations
+    updatePathList();
+}
+
