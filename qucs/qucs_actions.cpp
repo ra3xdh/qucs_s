@@ -257,7 +257,7 @@ void QucsApp::slotEditPaste(bool on)
     editPaste->blockSignals(false);
     return;
   }
-  
+
   editText->setHidden(true); // disable text edit of component property
 
   if(!on) {
@@ -306,7 +306,7 @@ void QucsApp::slotInsertEntity ()
   //y = Doc->textCursor().columnNumber();
   Doc->slotCursorPosChanged();
 }
-  
+
 // -----------------------------------------------------------------------
 // Is called when the mouse is clicked upon the equation toolbar button.
 void QucsApp::slotInsertEquation(bool on)
@@ -416,9 +416,9 @@ void QucsApp::slotEditUndo()
     ((TextDoc*)Doc)->undo();
     return;
   }
-  
+
   editText->setHidden(true); // disable text edit of component property
-  
+
   Doc->undo();
   Doc->viewport()->update();
   view->drawn = false;
@@ -434,9 +434,9 @@ void QucsApp::slotEditRedo()
     ((TextDoc*)Doc)->redo();
     return;
   }
-  
+
   editText->setHidden(true); // disable text edit of component property
-  
+
   Doc->redo();
   Doc->viewport()->update();
   view->drawn = false;
@@ -590,9 +590,9 @@ extern QString lastDirOpenSave; // to remember last directory and file
 void QucsApp::editFile(const QString& File)
 {
 
-    if (QucsSettings.Editor == "qucsedit")
+    if (QucsSettings.Editor.toLower() == "qucs" | QucsSettings.Editor.isEmpty())
     {
-        // is the Editor is 'qucsedit', open it in an editor tab
+        // The Editor is 'qucs' or empty, open it in an editor tab
         editText->setHidden(true); // disable text edit of component property
 
         statusBar()->message(tr("Opening file..."));
@@ -867,7 +867,7 @@ void QucsApp::slotAddToProject()
     destFile.close();
     it++;
   }
-  
+
   free(Buffer);
   readProjectFiles();  // re-read the content ListView
   statusBar()->message(tr("Ready."));
@@ -1055,7 +1055,7 @@ void QucsApp::slotApplyCompText()
     if(pp->display) n++;   // is visible ?
     pp = pc->Props.next();
   }
-  
+
   pp = 0;
   if(view->MAx3 > 0)  pp = pc->Props.at(view->MAx3-1); // current property
   else s = pc->Name;
@@ -1195,7 +1195,7 @@ void QucsApp::slotExportGraphAsCsv()
      tr("CSV file")+" (*.csv);;" + tr("Any File")+" (*)",
      this, 0, tr("Enter an Output File Name"));
      */
-  QString s = QFileDialog::getSaveFileName(this, tr("Enter an Output File Name"), 
+  QString s = QFileDialog::getSaveFileName(this, tr("Enter an Output File Name"),
     lastDir.isEmpty() ? QString(".") : lastDir, tr("CSV file")+" (*.csv);;" + tr("Any File")+" (*)");
 
   if(s.isEmpty())

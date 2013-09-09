@@ -82,7 +82,7 @@ bool loadSettings()
     //if(settings.contains("DocDir"))QucsSettings.DocDir = settings.value("DocDir").toString();
     if(settings.contains("OctaveBinDir"))QucsSettings.OctaveBinDir.setPath(settings.value("OctaveBinDir").toString());
     if(settings.contains("QucsHomeDir"))
-      if(settings.value("QucsHomeDir").toString() != "") 
+      if(settings.value("QucsHomeDir").toString() != "")
          QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
     QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
 
@@ -354,7 +354,7 @@ QString num2str(double Num)
 
   QString Str = QString::number(Num);
   if(c)  Str += c;
-  
+
   return Str;
 }
 
@@ -615,7 +615,7 @@ int main(int argc, char *argv[])
   QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/qucs/docs/examples/";
   QucsSettings.DocDir = QucsDir.canonicalPath() + "/share/qucs/docs/";
 
-  QucsSettings.Editor = "qucsedit";
+  QucsSettings.Editor = "qucs";
   QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
 
