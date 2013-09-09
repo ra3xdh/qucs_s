@@ -732,6 +732,8 @@ void QucsSettingsDialog::makePathTable()
 {
     // remove all the paths from the table if present
     ptableWidget->clearContents();
+    ptableWidget->setRowCount(0);
+
     // fill listview with the list of paths
     foreach (QString pathstr, currentPaths)
     {
