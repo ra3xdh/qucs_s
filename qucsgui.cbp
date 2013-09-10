@@ -21,6 +21,7 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="Makefile.am" />
+		<Unit filename="autogen.sh" />
 		<Unit filename="config.h" />
 		<Unit filename="configure.ac" />
 		<Unit filename="contrib/Makefile.am" />
