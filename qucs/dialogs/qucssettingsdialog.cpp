@@ -20,7 +20,7 @@
 #endif
 
 #include "qucssettingsdialog.h"
-
+#include <iostream>
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include "main.h"
@@ -40,6 +40,7 @@
 #include <QMessageBox>
 #include <QCheckBox>
 
+using namespace std;
 
 QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     : QDialog(parent, name)
@@ -183,36 +184,36 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
         tr("Register filename extensions here in order to\nopen files with an appropriate program."));
     fileTypesGrid->addWidget(note,0,0,1,2);
 
-    // the tablewidget displays information on the file types
-    tableWidget = new QTableWidget(fileTypesTab);
-    tableWidget->setColumnCount(2);
+    // the fileTypesTableWidget displays information on the file types
+    fileTypesTableWidget = new QTableWidget(fileTypesTab);
+    fileTypesTableWidget->setColumnCount(2);
 
     QTableWidgetItem *item1 = new QTableWidgetItem();
     QTableWidgetItem *item2 = new QTableWidgetItem();
 
-    tableWidget->setHorizontalHeaderItem(0, item1);
-    tableWidget->setHorizontalHeaderItem(1, item2);
+    fileTypesTableWidget->setHorizontalHeaderItem(0, item1);
+    fileTypesTableWidget->setHorizontalHeaderItem(1, item2);
 
     item1->setText(tr("Suffix"));
     item2->setText(tr("Program"));
 
-    tableWidget->horizontalHeader()->setStretchLastSection(true);
-    tableWidget->verticalHeader()->hide();
-    connect(tableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotTableClicked(int,int)));
-    fileTypesGrid->addWidget(tableWidget,1,0,3,1);
+    fileTypesTableWidget->horizontalHeader()->setStretchLastSection(true);
+    fileTypesTableWidget->verticalHeader()->hide();
+    connect(fileTypesTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotTableClicked(int,int)));
+    fileTypesGrid->addWidget(fileTypesTableWidget,1,0,3,1);
 
     // fill listview with already registered file extensions
     QStringList::Iterator it = QucsSettings.FileTypes.begin();
     while(it != QucsSettings.FileTypes.end())
     {
-        int row = tableWidget->rowCount();
-        tableWidget->setRowCount(row+1);
+        int row = fileTypesTableWidget->rowCount();
+        fileTypesTableWidget->setRowCount(row+1);
         QTableWidgetItem *suffix = new QTableWidgetItem(QString((*it).section('/',0,0)));
         QTableWidgetItem *program = new QTableWidgetItem(QString((*it).section('/',1,1)));
         suffix->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         program->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-        tableWidget->setItem(row, 0, suffix);
-        tableWidget->setItem(row, 1, program);
+        fileTypesTableWidget->setItem(row, 0, suffix);
+        fileTypesTableWidget->setItem(row, 1, program);
         it++;
     }
 
@@ -230,10 +231,10 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
 
     QPushButton *AddButt = new QPushButton(tr("Set"));
     fileTypesGrid->addWidget(AddButt,3,1);
-    connect(AddButt, SIGNAL(clicked()), SLOT(slotAdd()));
+    connect(AddButt, SIGNAL(clicked()), SLOT(slotAddFileType()));
     QPushButton *RemoveButt = new QPushButton(tr("Remove"));
     fileTypesGrid->addWidget(RemoveButt,3,2);
-    connect(RemoveButt, SIGNAL(clicked()), SLOT(slotRemove()));
+    connect(RemoveButt, SIGNAL(clicked()), SLOT(slotRemoveFileType()));
 
     fileTypesGrid->setRowStretch(3,4);
     t->addTab(fileTypesTab, tr("File Types"));
@@ -261,28 +262,28 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     locationsGrid->addWidget(HomeButt, 2, 2);
     connect(HomeButt, SIGNAL(clicked()), SLOT(slotHomeDirBrowse()));
 
-    // the ptablewidget displays the path list
-    ptableWidget = new QTableWidget(locationsTab);
-    ptableWidget->setColumnCount(1);
+    // the pathsTableWidget displays the path list
+    pathsTableWidget = new QTableWidget(locationsTab);
+    pathsTableWidget->setColumnCount(1);
 
     QTableWidgetItem *pitem1 = new QTableWidgetItem();
 
-    ptableWidget->setHorizontalHeaderItem(0, pitem1);
+    pathsTableWidget->setHorizontalHeaderItem(0, pitem1);
 
-    item1->setText(tr("Path List"));
+    pitem1->setText(tr("Path List"));
 
-    ptableWidget->horizontalHeader()->setStretchLastSection(true);
-    ptableWidget->verticalHeader()->hide();
+    pathsTableWidget->horizontalHeader()->setStretchLastSection(true);
+    pathsTableWidget->verticalHeader()->hide();
     // allow multiple items to be selected
-    ptableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    connect(ptableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotPathTableClicked(int,int)));
-    locationsGrid->addWidget(ptableWidget,3,0,3,2);
+    pathsTableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    connect(pathsTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotPathTableClicked(int,int)));
+    locationsGrid->addWidget(pathsTableWidget,3,0,3,2);
 
     QPushButton *AddPathButt = new QPushButton("Add Path");
     locationsGrid->addWidget(AddPathButt, 3, 2);
     connect(AddPathButt, SIGNAL(clicked()), SLOT(slotAddPath()));
 
-    QPushButton *AddPathSubFolButt = new QPushButton("Add Path With SubFolders2");
+    QPushButton *AddPathSubFolButt = new QPushButton("Add Path With SubFolders");
     locationsGrid->addWidget(AddPathSubFolButt, 4, 2);
     connect(AddPathSubFolButt, SIGNAL(clicked()), SLOT(slotAddPathWithSubFolders()));
 
@@ -295,10 +296,10 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     makePathTable();
 
     t->addTab(locationsTab, tr("Locations"));
+
     // ...........................................................
-
-
     // buttons on the bottom of the dialog (independent of the TabWidget)
+
     QHBoxLayout *Butts = new QHBoxLayout();
     Butts->setSpacing(3);
     Butts->setMargin(3);
@@ -347,35 +348,35 @@ QucsSettingsDialog::~QucsSettingsDialog()
 }
 
 // -----------------------------------------------------------
-void QucsSettingsDialog::slotAdd()
+void QucsSettingsDialog::slotAddFileType()
 {
-    QModelIndexList indexes = tableWidget->selectionModel()->selection().indexes();
+    QModelIndexList indexes = fileTypesTableWidget->selectionModel()->selection().indexes();
     if (indexes.count())
     {
-        tableWidget->item(indexes.at(0).row(),0)->setText(Input_Suffix->text());
-        tableWidget->item(indexes.at(0).row(),1)->setText(Input_Program->text());
-        tableWidget->selectionModel()->clear();
+        fileTypesTableWidget->item(indexes.at(0).row(),0)->setText(Input_Suffix->text());
+        fileTypesTableWidget->item(indexes.at(0).row(),1)->setText(Input_Program->text());
+        fileTypesTableWidget->selectionModel()->clear();
         return;
     }
 
     //check before append
-    for(int r=0; r < tableWidget->rowCount(); r++)
-        if(tableWidget->item(r,0)->text() == Input_Suffix->text())
+    for(int r=0; r < fileTypesTableWidget->rowCount(); r++)
+        if(fileTypesTableWidget->item(r,0)->text() == Input_Suffix->text())
         {
             QMessageBox::critical(this, tr("Error"),
                                   tr("This suffix is already registered!"));
             return;
         }
 
-    int row = tableWidget->rowCount();
-    tableWidget->setRowCount(row+1);
+    int row = fileTypesTableWidget->rowCount();
+    fileTypesTableWidget->setRowCount(row+1);
 
     QTableWidgetItem *newSuffix = new QTableWidgetItem(QString(Input_Suffix->text()));
     newSuffix->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-    tableWidget->setItem(row, 0, newSuffix);
+    fileTypesTableWidget->setItem(row, 0, newSuffix);
 
     QTableWidgetItem *newProgram = new QTableWidgetItem(Input_Program->text());
-    tableWidget->setItem(row, 1, newProgram);
+    fileTypesTableWidget->setItem(row, 1, newProgram);
     newProgram->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     Input_Suffix->setFocus();
@@ -384,13 +385,13 @@ void QucsSettingsDialog::slotAdd()
 }
 
 // -----------------------------------------------------------
-void QucsSettingsDialog::slotRemove()
+void QucsSettingsDialog::slotRemoveFileType()
 {
-    QModelIndexList indexes = tableWidget->selectionModel()->selection().indexes();
+    QModelIndexList indexes = fileTypesTableWidget->selectionModel()->selection().indexes();
     if (indexes.count())
     {
-        tableWidget->removeRow(indexes.at(0).row());
-        tableWidget->selectionModel()->clear();
+        fileTypesTableWidget->removeRow(indexes.at(0).row());
+        fileTypesTableWidget->selectionModel()->clear();
         Input_Suffix->setText("");
         Input_Program->setText("");
         return;
@@ -398,6 +399,7 @@ void QucsSettingsDialog::slotRemove()
 }
 
 // -----------------------------------------------------------
+// Applies any changed settings and closes the dialog
 void QucsSettingsDialog::slotOK()
 {
     slotApply();
@@ -405,6 +407,7 @@ void QucsSettingsDialog::slotOK()
 }
 
 // -----------------------------------------------------------
+// Applies any changed settings
 void QucsSettingsDialog::slotApply()
 {
     bool changed = false;
@@ -494,11 +497,11 @@ void QucsSettingsDialog::slotApply()
     }
 
     QucsSettings.FileTypes.clear();
-    for (int row=0; row < tableWidget->rowCount(); row++)
+    for (int row=0; row < fileTypesTableWidget->rowCount(); row++)
     {
-        QucsSettings.FileTypes.append(tableWidget->item(row,0)->text()
+        QucsSettings.FileTypes.append(fileTypesTableWidget->item(row,0)->text()
                                       +"/"+
-                                      tableWidget->item(row,1)->text());
+                                      fileTypesTableWidget->item(row,1)->text());
     }
     QucsSettings.OctaveBinDir = octaveEdit->text();
     QucsSettings.QucsHomeDir = homeEdit->text();
@@ -645,8 +648,8 @@ void QucsSettingsDialog::slotColorTask()
 
 void QucsSettingsDialog::slotTableClicked(int row, int col)
 {
-    Input_Suffix->setText(tableWidget->item(row,0)->text());
-    Input_Program->setText(tableWidget->item(row,1)->text());
+    Input_Suffix->setText(fileTypesTableWidget->item(row,0)->text());
+    Input_Program->setText(fileTypesTableWidget->item(row,1)->text());
 }
 
 // -----------------------------------------------------------
@@ -673,7 +676,7 @@ void QucsSettingsDialog::slotHomeDirBrowse()
 
 void QucsSettingsDialog::slotPathTableClicked(int row, int col)
 {
-    //Input_Path->setText(tableWidget->item(row,0)->text());
+    //Input_Path->setText(fileTypesTableWidget->item(row,0)->text());
 }
 
 void QucsSettingsDialog::slotAddPath()
@@ -684,12 +687,7 @@ void QucsSettingsDialog::slotAddPath()
 
     if (fileDialog.exec())
     {
-        addedPaths.append(fileDialog.selectedFile());
         currentPaths.append(fileDialog.selectedFile());
-        // fileDialog.selectedFile()
-        //qucsPathList.append(fileDialog.selectedFile());
-        // update the list of paths
-        //QucsMain->updatePathList();
         // reconstruct the table again
         makePathTable();
     }
@@ -701,19 +699,49 @@ void QucsSettingsDialog::slotAddPath()
 
 void QucsSettingsDialog::slotAddPathWithSubFolders()
 {
+    // open a file dialog to select the top level directory
+    QFileDialog fileDialog( this, tr("Select a directory"), QucsSettings.QucsWorkDir.canonicalPath());
+    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
+
+    QString path;
+    QFileInfo pathfinfo;
+
+    if (fileDialog.exec())
+    {
+        // Iterate through the directories
+        QDirIterator pathIter(fileDialog.selectedFile(), QDirIterator::Subdirectories);
+        while (pathIter.hasNext())
+        {
+            path = pathIter.next();
+            pathfinfo = pathIter.fileInfo();
+
+            if (pathfinfo.isDir() & !pathfinfo.isSymLink() & !path.endsWith("."))
+            {
+                QDir thispath(path);
+                currentPaths.append(thispath.canonicalPath());
+            }
+        }
+        makePathTable();
+    }
+    else
+    {
+        // user cancelled
+    }
+
 
 }
 
 void QucsSettingsDialog::slotRemovePath()
 {
-    //Input_Path->setText(tableWidget->item(row,0)->text());
+    //Input_Path->setText(fileTypesTableWidget->item(row,0)->text());
     // get the selected items from the table
-    QList<QTableWidgetItem *> selectedPaths = ptableWidget->selectedItems();
+    QList<QTableWidgetItem *> selectedPaths = pathsTableWidget->selectedItems();
 
     foreach (QTableWidgetItem * item, selectedPaths)
     {
         QString path = item->text();
-        removedPaths.append(path);
+        //removedPaths.append(path);
         int pathind = currentPaths.indexOf(path,0);
         if (pathind != -1)
         {
@@ -731,16 +759,16 @@ void QucsSettingsDialog::slotRemovePath()
 void QucsSettingsDialog::makePathTable()
 {
     // remove all the paths from the table if present
-    ptableWidget->clearContents();
-    ptableWidget->setRowCount(0);
+    pathsTableWidget->clearContents();
+    pathsTableWidget->setRowCount(0);
 
     // fill listview with the list of paths
     foreach (QString pathstr, currentPaths)
     {
-        int row = ptableWidget->rowCount();
-        ptableWidget->setRowCount(row+1);
+        int row = pathsTableWidget->rowCount();
+        pathsTableWidget->setRowCount(row+1);
         QTableWidgetItem *path = new QTableWidgetItem(pathstr);
         path->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-        ptableWidget->setItem(row, 0, path);
+        pathsTableWidget->setItem(row, 0, path);
     }
 }

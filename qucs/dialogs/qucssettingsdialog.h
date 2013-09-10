@@ -50,8 +50,8 @@ private slots:
     void slotFontDialog();
     void slotBGColorDialog();
     void slotDefaultValues();
-    void slotAdd();
-    void slotRemove();
+    void slotAddFileType();
+    void slotRemoveFileType();
     void slotColorComment();
     void slotColorString();
     void slotColorInteger();
@@ -78,7 +78,7 @@ public:
     QComboBox *LanguageCombo;
     QPushButton *FontButton, *BGColorButton;
     QLineEdit *undoNumEdit, *editorEdit, *Input_Suffix, *Input_Program, *octaveEdit, *homeEdit;
-    QTableWidget *tableWidget, *ptableWidget;
+    QTableWidget *fileTypesTableWidget, *pathsTableWidget;
     QStandardItemModel *model;
     QPushButton *ColorComment, *ColorString, *ColorInteger,
                 *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
@@ -90,7 +90,7 @@ public:
     QRegExpValidator *Validator;
 
 private:
-    QStringList currentPaths, addedPaths, removedPaths;
+    QStringList currentPaths;
 
 private:
     void makePathTable();
