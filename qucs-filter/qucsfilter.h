@@ -18,7 +18,7 @@
 #ifndef QUCSFILTER_H
 #define QUCSFILTER_H
 
-#include <QDialog>
+#include <QMainWindow>
 #include <QLabel>
 
 class QGridLayout;
@@ -39,7 +39,7 @@ struct tQucsSettings {
 
 extern struct tQucsSettings QucsSettings;
 
-class QucsFilter : public QDialog
+class QucsFilter : public QMainWindow
 {
   Q_OBJECT
 public:

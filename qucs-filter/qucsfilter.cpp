@@ -46,6 +46,9 @@
 
 QucsFilter::QucsFilter()
 {
+  QWidget *centralWidget = new QWidget(this);  
+  setCentralWidget(centralWidget);
+  
   // set application icon
   setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
   setWindowTitle("Qucs Filter " PACKAGE_VERSION);
@@ -77,19 +80,16 @@ QucsFilter::QucsFilter()
   helpMenu->addAction(helpAbout);
   helpMenu->addAction(helpAboutQt);
 
-  QMenuBar *bar = new QMenuBar(this);
-  bar->addMenu(fileMenu);
-  bar->addSeparator();
-  bar->addMenu(helpMenu);
-
+  menuBar()->addMenu(fileMenu);
+  menuBar()->addSeparator();
+  menuBar()->addMenu(helpMenu);
 
   // -------  create main windows widgets --------
-  gbox = new QGridLayout(this);
+  gbox = new QGridLayout();
   gbox->setSpacing(3);
-
-  QWidget *Space = new QWidget(this);   // reserve space for menubar
-  Space->setFixedSize(5, bar->height());
-  gbox->addWidget(Space, 0,0);
+  
+  // assign layout to central widget
+  centralWidget->setLayout(gbox);
 
   QLabel *Label1 = new QLabel(tr("Filter type:"), this);
   gbox->addWidget(Label1, 1,0);
@@ -215,7 +215,7 @@ void QucsFilter::slotQuit()
   tmp = width();	// dialog !!!  Otherwise the frame of the window ...
   tmp = height();	// ... will not be recognized (a X11 problem).
 
-  accept();
+  qApp->quit();
 }
 
 // ************************************************************
