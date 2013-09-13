@@ -246,13 +246,39 @@ case $host_os in
     ;;
 
    *darwin* )
-    dnl Check for Qt packages, set QT_CFLAGS and QT_LIBS
-    PKG_CHECK_MODULES(QT, [QtCore QtGui QtXml Qt3Support])
-
-    dnl check Qt headers
-    AC_CHECK_HEADERS([QtGui/QtGui QtCore/QtCore QtXml/QtXml],[],[])
-
-    AC_LANG(C++)
+    with_qt=no
+    dnl Check for Qt with pkg-config
+    dnl Set QT_CFLAGS and QT_LIBS
+    PKG_CHECK_MODULES(QT, [QtCore QtGui QtXml Qt3Support],
+        [with_qt=yes
+        QT_MOC=`$PKG_CONFIG --variable=moc_location QtCore`],
+        AC_MSG_NOTICE([pkg-config could not find Qt]))
+    if test "x${with_qt}" = xyes ; then
+      AC_CHECK_HEADERS([QtGui/QtGui QtCore/QtCore QtXml/QtXml],[],[])
+    fi
+    dnl Official Qt has no pkg-config files on OSX
+    dnl Look on standart location
+    if test "x${with_qt}" = xno ; then
+      AC_MSG_NOTICE([checking for Qt OS X frameworks])
+      AC_LANG(C++)
+      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/QtCore.framework/Headers"
+      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/QtGui.framework/Headers"
+      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/QtXml.framework/Headers"
+      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/Qt3Support.framework/Headers"
+      AC_CHECK_HEADERS(QApplication, [with_qt=yes])
+      if test "x${with_qt}" = xyes ; then
+        AC_PATH_PROG(QT_MOC, moc)
+        if test "x$QT_MOC" = x ; then
+          echo moc not found
+          with_qt=no
+        else
+          QT_CFLAGS="$CPPFLAGS"
+          QT_LIBS="-framework QtGui -framework QtCore -framework QtXml -framework Qt3Support"
+          dnl Define Qt3Support
+          QT_DEF="$QT_DEF -DQT_SHARED -DQT3_SUPPORT"
+        fi
+      fi
+    fi
     QT_LDFLAGS="-Wl -headerpad_max_install_names"
     CXXFLAGS="$CXXFLAGS $QT_CFLAGS $QT_INCLUDES $QT_DEF"
     ;;
@@ -260,6 +286,7 @@ esac
 
 AC_SUBST(QT_LDFLAGS)
 AC_SUBST(QT_LIBS)
+AC_SUBST(QT_MOC)
 AC_LANG(C)
 
 dnl Check for additional header files.
