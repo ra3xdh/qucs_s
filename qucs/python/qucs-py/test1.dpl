@@ -1,0 +1,26 @@
+<Qucs Schematic 0.0.14>
+<Properties>
+  <View=0,-26,800,740,1,0,0>
+  <Grid=10,10,0>
+  <DataSet=test1.dat>
+  <DataDisplay=test1.sch>
+  <OpenDisplay=1>
+  <showFrame=0>
+  <FrameText0=Tytu\x0142>
+  <FrameText1=Stworzona przez:>
+  <FrameText2=Data:>
+  <FrameText3=Rewizja:>
+</Properties>
+<Symbol>
+</Symbol>
+<Components>
+</Components>
+<Wires>
+</Wires>
+<Diagrams>
+  <Rect 90 504 626 450 3 #c0c0c0 1 11 1 10 1 1e+07 1 0.003 1 1 1 -1 0.2 1 315 0 225 "" "" "">
+	<"Pr1.v" #ff0000 0 3 0 0 0>
+  </Rect>
+</Diagrams>
+<Paintings>
+</Paintings>
