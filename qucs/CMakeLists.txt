@@ -126,8 +126,10 @@ set(QtTRANSLATIONS qtgeneric_untranslated.ts qtgeneric_de.ts qtgeneric_fr.ts
 
 QT4_CREATE_TRANSLATION(LANG_SRCS ${QucsTRANSLATIONS} ${QtTRANSLATIONS})
 
+
+# apps look into the location below to find translations
 #IF( NOT APPLE )
-  INSTALL( FILES ${LANG_SRCS} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/qucs/lang/)
+INSTALL( FILES ${LANG_SRCS} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/qucs/lang/)
 #ENDIF()
 
 
@@ -164,8 +166,8 @@ ENDIF(APPLE)
 ADD_EXECUTABLE( qucs MACOSX_BUNDLE WIN32
   ${QUCS_SRCS}
   ${QUCS_MOC_SRCS}
-  ${RESOURCES_SRCS} )
-  #${LANG_SRCS} )
+  ${RESOURCES_SRCS}
+  ${LANG_SRCS} )
 
 #
 # Tell CMake which libraries we need to link our executable against.
