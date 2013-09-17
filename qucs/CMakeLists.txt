@@ -119,12 +119,12 @@ set(QtTRANSLATIONS qtgeneric_untranslated.ts qtgeneric_de.ts qtgeneric_fr.ts
 QT4_CREATE_TRANSLATION(LANG_SRCS ${QucsTRANSLATIONS} ${QucsTRANSLATIONS})
 
 #IF( NOT APPLE )
-#  INSTALL( FILES ${LANG_SRCS} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/qucs/lang/)
+  INSTALL( FILES ${LANG_SRCS} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/qucs/lang/)
 #ENDIF()
 
 
 #
-# configure Apple bundle information 
+# configure Apple bundle information
 #
 IF(APPLE)
   # set information on Info.plist file
@@ -136,7 +136,7 @@ IF(APPLE)
   SET(MACOSX_BUNDLE_GUI_IDENTIFIER "${PROJECT_DOMAIN_SECOND}.${PROJECT_DOMAIN_FIRST}")
   SET(MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}")
   SET(MACOSX_BUNDLE_COPYRIGHT "(C) 2013 Qucs team" )
-  SET(MACOSX_BUNDLE_ICON_FILE qucs.icns) 
+  SET(MACOSX_BUNDLE_ICON_FILE qucs.icns)
 
   # set where in the bundle to put the icns file
   SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_SOURCE_DIR}/bitmaps/qucs.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
@@ -144,9 +144,9 @@ IF(APPLE)
   SET(QUCS_SRCS ${QUCS_SRCS} ${CMAKE_CURRENT_SOURCE_DIR}/bitmaps/qucs.icns)
 
   # This tells cmake where to place the translations inside the bundle
-  SET_SOURCE_FILES_PROPERTIES( ${LANG_SRCS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/lang )
+  #SET_SOURCE_FILES_PROPERTIES( ${LANG_SRCS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/lang )
   # include the translation files in the target
-  SET(RESOURCES_SRCS ${RESOURCES_SRCS} ${LANG_SRCS})
+  #SET(RESOURCES_SRCS ${RESOURCES_SRCS} ${LANG_SRCS})
 ENDIF(APPLE)
 
 
@@ -184,7 +184,7 @@ ENDIF(WIN32)
 # Install the Qucs application, on Apple, the bundle is at the root of the
 # install tree, and on other platforms it'll go into the bin directory.
 #
-INSTALL(TARGETS qucs 
+INSTALL(TARGETS qucs
     BUNDLE DESTINATION . COMPONENT Runtime
     RUNTIME DESTINATION bin COMPONENT Runtime
     )
