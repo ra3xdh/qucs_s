@@ -79,3 +79,10 @@ INSTALL(TARGETS qucshelp
     RUNTIME DESTINATION bin COMPONENT Runtime
     )
 
+# man pages
+INSTALL( FILES qucshelp.1           DESTINATION share/man/man1 )
+INSTALL( FILES ./docs/qucs.1        DESTINATION share/man/man1 )
+INSTALL( FILES ./docs/qucsdigi.1    DESTINATION share/man/man1 )
+INSTALL( FILES ./docs/qucsdigilib.1 DESTINATION share/man/man1 )
+INSTALL( FILES ./docs/qucsveri.1    DESTINATION share/man/man1 )
+

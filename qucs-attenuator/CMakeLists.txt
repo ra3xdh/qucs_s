@@ -103,6 +103,8 @@ INSTALL(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION bin COMPONENT Runtime
     )
 
+# man pages
+INSTALL( FILES qucsattenuator.1 DESTINATION share/man/man1 )
 
 
 #
@@ -145,4 +147,5 @@ INSTALL(CODE "
     fixup_bundle(\"${APPS}\" \"\${QTPLUGINS}\" \"${DIRS}\")
     " COMPONENT Runtime)
 ENDIF()
+
 

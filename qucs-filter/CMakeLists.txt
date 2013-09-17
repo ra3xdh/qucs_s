@@ -82,4 +82,6 @@ INSTALL(TARGETS qucsfilter
     RUNTIME DESTINATION bin COMPONENT Runtime
     )
 
+# man pages
+INSTALL( FILES qucsfilter.1 DESTINATION share/man/man1 )
 
