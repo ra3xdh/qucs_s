@@ -180,10 +180,14 @@ void WireLabel::setName(const QString& Name_)
 {
   Name = Name_;
 
-  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
-  QSize r = metrics.size(0, Name);
-  x2 = r.width();
-  y2 = r.height()-2;    // remember size of text
+  // only set fonts if GUI is running
+  if ((Schematic*)QucsMain != 0) {
+    QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
+    QSize r = metrics.size(0, Name);
+    x2 = r.width();
+    y2 = r.height()-2;    // remember size of text
+  }
+
 }
 
 // ----------------------------------------------------------------

@@ -38,8 +38,12 @@
 #include "main.h"
 #include "node.h"
 
-QucsApp *QucsMain;  // the Qucs application itself
+#include "schematic.h"
+#include "module.h"
+
 tQucsSettings QucsSettings;
+
+QucsApp *QucsMain = 0;  // the Qucs application itself
 QString lastDir;    // to remember last directory for several dialogs
 QStringList qucsPathList;
 
@@ -565,7 +569,77 @@ bool checkVersion(QString& Line)
 // ##########                                                     ##########
 // #########################################################################
 
+int doNetlist(QString schematic, QString netlist)
+{
+  qDebug() << "*** try to load schematic :" << schematic;
 
+  QFile file(schematic);  // save simulator messages
+  if(file.open(QIODevice::ReadOnly)) {
+    file.close();
+  }
+  else {
+    fprintf(stderr, "Error: Could not load schematic %s\n", schematic.ascii());
+    return 1;
+  }
+
+  // populate Modules list
+  Module::registerModules ();
+
+  // new schematic from file
+  Schematic *sch = new Schematic(0, schematic);
+
+  // load schematic file if possible
+  if(!sch->loadDocument()) {
+    fprintf(stderr, "Error: Could not load schematic %s\n", schematic.ascii());
+    delete sch;
+    return 1;
+  }
+
+  qDebug() << "*** try to write netlist  :" << netlist;
+
+  QStringList Collect;
+  QTextEdit *ProgText = new QTextEdit(); //dummy, not used
+  QTextEdit *ErrText = new QTextEdit();  //dummy
+  QFile NetlistFile;
+  QTextStream   Stream;
+
+  Collect.clear();  // clear list for NodeSets, SPICE components etc.
+
+  NetlistFile.setName(netlist);
+  if(!NetlistFile.open(QIODevice::WriteOnly)) {
+    fprintf(stderr, "Error: Could not load netlist %s\n", netlist.ascii());
+    return -1;
+  }
+
+  Stream.setDevice(&NetlistFile);
+  int SimPorts = sch->prepareNetlist(Stream, Collect, ErrText);
+
+  if(SimPorts < -5) {
+    NetlistFile.close();
+    fprintf(stderr, "Error: Could not prepare the netlist...\n");
+    return 1;
+  }
+
+  // output NodeSets, SPICE simulations etc.
+  for(QStringList::Iterator it = Collect.begin();
+  it != Collect.end(); ++it) {
+    // don't put library includes into netlist...
+    if ((*it).right(4) != ".lst" &&
+    (*it).right(5) != ".vhdl" &&
+    (*it).right(4) != ".vhd" &&
+    (*it).right(2) != ".v") {
+      Stream << *it << '\n';
+    }
+  }
+
+  Stream << '\n';
+
+  QString SimTime = sch->createNetlist(Stream, SimPorts);
+
+  NetlistFile.close();
+
+  return 0;
+}
 
 
 // #########################################################################
@@ -616,7 +690,7 @@ int main(int argc, char *argv[])
   QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/qucs/docs/examples/";
   QucsSettings.DocDir = QucsDir.canonicalPath() + "/share/qucs/docs/";
 
-  QucsSettings.Editor = "qucs";
+  QucsSettings.Editor = QucsSettings.BinDir + "qucsedit";
   QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
 
@@ -675,6 +749,57 @@ int main(int argc, char *argv[])
   // This seems to be neccessary on a few system to make strtod()
   // work properly !???!
   setlocale (LC_NUMERIC, "C");
+
+  QString schematic;
+  QString netlist;
+
+  QString operation;
+
+  // simple command line parser
+  for (int i = 1; i < argc; ++i) {
+    if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
+      fprintf(stdout,
+  "Usage: %s [OPTION]...\n\n"
+  "  -h, --help     display this help and exit\n"
+  "  -v, --version  display version information and exit\n"
+  "  -n, --netlist  convert Qucs schematic into netlist\n"
+  "  -i FILENAME    use file as input schematic\n"
+  "  -o FILENAME    use file as output netlist\n"
+  , argv[0]);
+      return 0;
+    }
+    else if (!strcmp(argv[i], "-v") || !strcmp(argv[i], "--version")) {
+      fprintf(stdout, "Qucs " PACKAGE_VERSION "\n");
+      return 0;
+    }
+    else if (!strcmp(argv[i], "-n") || !strcmp(argv[i], "--netlist")) {
+      operation = "netlist";
+    }
+    else if (!strcmp(argv[i], "-i")) {
+      schematic = argv[++i];
+    }
+    else if (!strcmp(argv[i], "-o")) {
+      netlist = argv[++i];
+    }
+    else {
+      fprintf(stderr, "Error: Unknown option: %s\n", argv[i]);
+      return -1;
+    }
+  }
+
+  // check operation and its required arguments
+  if (operation == "netlist") {
+    if (schematic.isEmpty()) {
+      fprintf(stderr, "Error: Expected input schematic file.\n");
+      return -1;
+    }
+    if (netlist.isEmpty()) {
+      fprintf(stderr, "Error: Expected output netlist file.\n");
+      return -1;
+    }
+    // create netlist from schematic
+    return doNetlist(schematic, netlist);
+  }
 
   QucsMain = new QucsApp();
   a.setMainWidget(QucsMain);

@@ -158,6 +158,10 @@ QucsApp::QucsApp()
       //  if(f.isEmpty()) f = arg;
       //  gotoPage(f);
       //} else {
+        // get and set absolute path, QucsWorkDir now finds subcircuits
+        QFileInfo Info(arg);
+        QucsSettings.QucsWorkDir.setPath(Info.absoluteDir().absolutePath());
+        arg = QucsSettings.QucsWorkDir.filePath(Info.fileName());
         gotoPage(arg);
       //}
     }
