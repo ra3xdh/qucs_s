@@ -13,7 +13,7 @@ def parse_file(name):
     ind = 0
     shape = []
     variables = {}
-    
+
     for line in file:
         #print line
         if line.startswith('<'):
@@ -21,7 +21,7 @@ def parse_file(name):
                 #print line
                 r = re.match(r'\<(\w+) (\w+) (\d+)\>', line)
                 g = r.groups()
-                # there can be several independent variables -> numpoints keeps 
+                # there can be several independent variables -> numpoints keeps
                 # the total number of points
                 numpoints = numpoints * int(g[2])
                 name = g[1]
@@ -32,23 +32,23 @@ def parse_file(name):
                 shape = np.append(shape, int(g[2]))
                 # save that this variable is independent
                 variables[name] = 'indep'
-     
+
             if line.startswith('<dep'):
                 #print line
                 r = re.match(r'\<dep (\S+)', line)
                 g = r.groups()
                 name = g[0]
-                # reserve a complex matrix to be on the safe side 
+                # reserve a complex matrix to be on the safe side
                 data[name] = np.zeros(int(numpoints), np.complex128)
                 ind = 0
                 # store that this is a dependent variable
                 variables[name] = 'dep'
-    
+
         else:
             jind = line.find('j')
-            
+
             if(jind == -1):
-                # real number -> just parse it            
+                # real number -> just parse it
                 val = float(line)
             else:
                 # complex number -> break into re/im part
@@ -57,12 +57,12 @@ def parse_file(name):
                 val_im = sign + line[jind+1:-1]
                 # and convert it into a complex number
                 val = complex(float(val_re), float(val_im))
-    
+
             # store the extracted datapoint
             data[name][ind] = val
             ind = ind + 1
-    
-    
+
+
     data['variables'] = variables
     # reverse the shape variable in order to get the reshape operation (see below)
     # correct
@@ -77,5 +77,5 @@ def parse_file(name):
         if temp == 'dep':
             temp_data = data[key]
             data[key] = np.reshape(temp_data, shape)
-    
+
     return data
