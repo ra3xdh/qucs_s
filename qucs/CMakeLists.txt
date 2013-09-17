@@ -1,6 +1,13 @@
 # To have CMake pick a Qt installation of your choice that won't be found
 # automatically, set the CMAKE_PREFIX_PATH environment variable.
 # For example: "export CMAKE_PREFIX_PATH=/usr/local/trolltech/qt4.3.5"
+#
+# You can change the install location by 
+# running cmake like this:
+#   mkdir build; cd build
+#   cmake .. -DCMAKE_INSTALL_PREFIX=/new/install/prefix
+#
+# By default, the prefix is "/usr/local"
 
 PROJECT(qucs CXX C)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
@@ -194,16 +201,18 @@ INSTALL(TARGETS qucs
 # Install needed Qt plugins by copying directories from the qt installation
 # One can cull what gets copied by using 'REGEX "..." EXCLUDE'
 #
-INSTALL(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION ${plugin_dest_dir}/plugins COMPONENT Runtime)
-
+IF(APPLE)
+  INSTALL(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION ${plugin_dest_dir}/plugins COMPONENT Runtime)
+ENDIF()
 #
 # install a qt.conf file
 # this inserts some cmake code into the install script to write the file
 #
+IF(APPLE)
 INSTALL(CODE "
     file(WRITE \"\${CMAKE_INSTALL_PREFIX}/${qtconf_dest_dir}/qt.conf\" \"\")
     " COMPONENT Runtime)
-
+ENDIF()
 
 #--------------------------------------------------------------------------------
 # Use BundleUtilities to get all other dependencies for the application to work.
@@ -211,20 +220,23 @@ INSTALL(CODE "
 # for dependencies.  If they are not system dependencies, they are copied.
 
 # directories to look for dependencies
-SET(DIRS ${QT_LIBRARY_DIRS})
+IF(APPLE)
+  SET(DIRS ${QT_LIBRARY_DIRS})
+ENDIF()
 
 # Now the work of copying dependencies into the bundle/package
 # The quotes are escaped and variables to use at install time have their $ escaped
 # An alternative is the do a configure_file() on a script and use install(SCRIPT  ...).
 # Note that the image plugins depend on QtSvg and QtXml, and it got those copied
 # over.
+IF(APPLE)
 INSTALL(CODE "
     file(GLOB_RECURSE QTPLUGINS
       \"\${CMAKE_INSTALL_PREFIX}/${plugin_dest_dir}/plugins/*${CMAKE_SHARED_LIBRARY_SUFFIX}\")
     include(BundleUtilities)
     fixup_bundle(\"${APPS}\" \"\${QTPLUGINS}\" \"${DIRS}\")
     " COMPONENT Runtime)
-
+ENDIF()
 
 # To Create a package, one can run "cpack -G DragNDrop CPackConfig.cmake" on Mac OS X
 # where CPackConfig.cmake is created by including CPack
