@@ -1,3 +1,21 @@
+qucs (0.0.18.130915-3) raring; urgency=low
+
+  * snapshot
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Sun, 15 Sep 2013 20:15:03 +0200
+
+qucs (0.0.18.130915-2) quantal; urgency=low
+
+  * snapshot
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Sun, 15 Sep 2013 20:13:58 +0200
+
+qucs (0.0.18.130915-1) precise; urgency=low
+
+  * snapshot
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Sun, 15 Sep 2013 17:36:32 +0200
+
 qucs (0.0.18.130705-3) raring; urgency=low
 
   * Fixed output messages
