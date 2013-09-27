@@ -23,7 +23,6 @@
 #include <qdir.h>
 #include <qstringlist.h>
 #include <qregexp.h>
-#include <q3process.h>
 #include <q3textedit.h>
 #include <QTextEdit>
 #include <q3ptrlist.h>

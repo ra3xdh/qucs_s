@@ -25,7 +25,7 @@
 //Added by qt3to4:
 #include <Q3TextStream>
 
-class Q3Process;
+class QProcess;
 class Q3TextStream;
 class QString;
 
@@ -46,7 +46,7 @@ private:
   bool makeSubcircuit;
   bool insertSim;
   bool changed;
-  Q3Process *QucsConv, *SpicePrep;
+  QProcess *QucsConv, *SpicePrep;
   QString NetText, ErrText, NetLine, SimText;
   QTextStream *outstream, *filstream, *prestream;
   QDateTime lastLoaded;

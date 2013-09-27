@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
-#include <q3process.h>
+#include <QProcess>
 
 //Added by qt3to4:
 #include <Q3PtrList>
@@ -619,9 +619,19 @@ void QucsApp::editFile(const QString& File)
           com << File;
       }
 
-      Q3Process *QucsEditor = new Q3Process(com);
-      QucsEditor->setCommunication(0);
-      if(!QucsEditor->start()) {
+      QProcess *QucsEditor = new QProcess();
+
+      QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+      env.insert("PATH", env.value("PATH") );
+      QucsEditor->setProcessEnvironment(env);
+      QucsEditor->start(com.join(" "));
+      //QucsHelp->setCommunication(0);
+
+      if(QucsEditor->state()!=QProcess::Running&&
+              QucsEditor->state()!=QProcess::Starting) {
+
+
+//      QucsEditor->setCommunication(0);
         QMessageBox::critical(this, tr("Error"), tr("Cannot start text editor!"));
         delete QucsEditor;
         return;
@@ -657,9 +667,16 @@ void QucsApp::slotCallEditor()
 // Is called to start the filter synthesis program.
 void QucsApp::slotCallFilter()
 {
-  Q3Process *QucsFilter =
-    new Q3Process(QString(QucsSettings.BinDir + "qucsfilter"));
-  if(!QucsFilter->start()) {
+  QProcess *QucsFilter =
+    new QProcess();
+
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+  env.insert("PATH", env.value("PATH") );
+  QucsFilter->setProcessEnvironment(env);
+  QucsFilter->start("qucsfilter");
+
+  if(QucsFilter->state()!=QProcess::Running&&
+          QucsFilter->state()!=QProcess::Starting) {
     QMessageBox::critical(this, tr("Error"),
                           tr("Cannot start filter synthesis program!"));
     delete QucsFilter;
@@ -674,9 +691,16 @@ void QucsApp::slotCallFilter()
 // Is called to start the transmission line calculation program.
 void QucsApp::slotCallLine()
 {
-  Q3Process *QucsLine =
-    new Q3Process(QString(QucsSettings.BinDir + "qucstrans"));
-  if(!QucsLine->start()) {
+  QProcess *QucsLine =
+    new QProcess();
+
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+  env.insert("PATH", env.value("PATH") );
+  QucsLine->setProcessEnvironment(env);
+  QucsLine->start("qucstrans");
+
+  if(QucsLine->state()!=QProcess::Running&&
+          QucsLine->state()!=QProcess::Starting) {
     QMessageBox::critical(this, tr("Error"),
                           tr("Cannot start line calculation program!"));
     delete QucsLine;
@@ -691,9 +715,16 @@ void QucsApp::slotCallLine()
 // Is called to start the component library program.
 void QucsApp::slotCallLibrary()
 {
-  Q3Process *QucsLibrary =
-    new Q3Process(QString(QucsSettings.BinDir + "qucslib"));
-  if(!QucsLibrary->start()) {
+  QProcess *QucsLibrary =
+    new QProcess();
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+  env.insert("PATH", env.value("PATH") );
+  QucsLibrary->setProcessEnvironment(env);
+  QucsLibrary->start("qucslib");
+
+  if(QucsLibrary->state()!=QProcess::Running&&
+          QucsLibrary->state()!=QProcess::Starting) {
+
     QMessageBox::critical(this, tr("Error"),
                           tr("Cannot start library program!"));
     delete QucsLibrary;
@@ -716,9 +747,16 @@ void QucsApp::slotCallMatch()
 // Is called to start the attenuator calculation program.
 void QucsApp::slotCallAtt()
 {
-  Q3Process *QucsAtt =
-    new Q3Process(QString(QucsSettings.BinDir + "qucsattenuator"));
-  if(!QucsAtt->start()) {
+  QProcess *QucsAtt =
+    new QProcess();
+
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+  env.insert("PATH", env.value("PATH") );
+  QucsAtt->setProcessEnvironment(env);
+  QucsAtt->start("qucsattenuator");
+
+  if(QucsAtt->state()!=QProcess::Running&&
+          QucsAtt->state()!=QProcess::Starting) {
     QMessageBox::critical(this, tr("Error"),
                           tr("Cannot start attenuator calculation program!"));
     delete QucsAtt;
@@ -746,9 +784,16 @@ void QucsApp::showHTML(const QString& Page)
 {
   QStringList com;
   com << QucsSettings.BinDir + "qucshelp" << Page;
-  Q3Process *QucsHelp = new Q3Process(com);
-  QucsHelp->setCommunication(0);
-  if(!QucsHelp->start()) {
+  QProcess *QucsHelp = new QProcess();
+
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+  env.insert("PATH", env.value("PATH") );
+  QucsHelp->setProcessEnvironment(env);
+  QucsHelp->start(com.join(" "));
+  //QucsHelp->setCommunication(0);
+
+  if(QucsHelp->state()!=QProcess::Running&&
+          QucsHelp->state()!=QProcess::Starting) {
     QMessageBox::critical(this, tr("Error"), tr("Cannot start qucshelp!"));
     delete QucsHelp;
     return;

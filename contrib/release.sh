@@ -129,7 +129,7 @@ echo creating source archive...
 
 tar -zcvf qucs-$RELEASE.tar.gz qucs-$RELEASE
 
-DISTS="precise quantal raring"
+DISTS="precise quantal raring saucy"
 
 cp qucs-$RELEASE.tar.gz qucs_$RELEASE.orig.tar.gz
 
