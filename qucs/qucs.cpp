@@ -1218,6 +1218,9 @@ void QucsApp::slotFileSave()
 
   DocumentTab->blockSignals(false);
   statusBar()->message(tr("Ready."));
+
+  if(!ProjName.isEmpty())
+    readProjectFiles();  // re-read the content ListView
 }
 
 // --------------------------------------------------------------
@@ -1343,6 +1346,9 @@ void QucsApp::slotFileSaveAs()
 
   // refresh the schematic file path
   this->updateSchNameHash();
+
+  if(!ProjName.isEmpty())
+    readProjectFiles();  // re-read the content ListView
 }
 
 
