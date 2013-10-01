@@ -87,18 +87,15 @@ bool loadSettings()
     QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
 
     // If present read in the list of directory paths in which Qucs should
-    //  search for subcircuit schematics
-    if(settings.contains("Path"))
+    // search for subcircuit schematics
+    int npaths = settings.beginReadArray("Paths");
+    for (int i = 0; i < npaths; ++i)
     {
-        int size = settings.beginReadArray("Path");
-        for (int i = 0; i < size; ++i)
-        {
-            settings.setArrayIndex(i);
-            QString apath = settings.value("path").toString();
-            qucsPathList.append(apath);
-        }
-        settings.endArray();
+        settings.setArrayIndex(i);
+        QString apath = settings.value("path").toString();
+        qucsPathList.append(apath);
     }
+    settings.endArray();
 
     return true;
 }
@@ -144,8 +141,8 @@ bool saveApplSettings(QucsApp *qucs)
 
     // Copy the list of directory paths in which Qucs should
     // search for subcircuit schematics from qucsPathList
-    settings.remove("Path");
-    settings.beginWriteArray("Path");
+    settings.remove("Paths");
+    settings.beginWriteArray("Paths");
     int i = 0;
     foreach(QString path, qucsPathList) {
          settings.setArrayIndex(i);
