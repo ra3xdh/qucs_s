@@ -18,7 +18,7 @@
 #ifndef QUCSFILTER_H
 #define QUCSFILTER_H
 
-#include <QDialog>
+#include <QMainWindow>
 #include <QLabel>
 
 class QGridLayout;
@@ -33,13 +33,12 @@ struct tQucsSettings {
   int x, y;      // position of main window
   QFont font;
   QString LangDir;
-  QString BitmapDir;
   QString Language;
 };
 
 extern struct tQucsSettings QucsSettings;
 
-class QucsFilter : public QDialog
+class QucsFilter : public QMainWindow
 {
   Q_OBJECT
 public:

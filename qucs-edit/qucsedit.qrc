@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>bitmaps/big.qucs.xpm</file>
+        <file>bitmaps/fileopen.png</file>
+        <file>bitmaps/filesave.png</file>
+    </qresource>
+</RCC>

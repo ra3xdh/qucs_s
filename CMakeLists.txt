@@ -34,7 +34,7 @@ ADD_SUBDIRECTORY( qucs-attenuator )
 ADD_SUBDIRECTORY( qucs-edit )
 ADD_SUBDIRECTORY( qucs-filter )
 #ADD_SUBDIRECTORY( qucs-filter-v2 )  # v2 not completed?
-#ADD_SUBDIRECTORY( qucs-help )
+ADD_SUBDIRECTORY( qucs-help )
 ADD_SUBDIRECTORY( qucs-lib )
 ADD_SUBDIRECTORY( qucs-transcalc )
 

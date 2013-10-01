@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>bitmaps/att_bridge.png</file>
+        <file>bitmaps/att_pi.png</file>
+        <file>bitmaps/att_tee.png</file>
+        <file>bitmaps/big.qucs.xpm</file>
+    </qresource>
+</RCC>

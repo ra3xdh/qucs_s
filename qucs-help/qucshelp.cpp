@@ -40,7 +40,7 @@ QucsHelp::QucsHelp(const QString& page)
   dataFetcher = new HtmlDataFetcher();
   links = dataFetcher->fetchLinksToFiles(QucsHelpDir.filePath("index.html"));
   // set application icon
-  setIcon (QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
+  setIcon (QPixmap(":/bitmaps/big.qucs.xpm"));
   setCaption(tr("Qucs Help System"));
 
   textBrowser = new TextBrowser(this);
@@ -67,17 +67,17 @@ void QucsHelp::setupActions()
 
   const QKeySequence ks = QKeySequence();
 
-  QAction *quitAction = new QAction(QIcon((QucsSettings.BitmapDir + "quit.png")),
+  QAction *quitAction = new QAction(QIcon((":/bitmaps/quit.png")),
                                     tr("&Quit"), (const QKeySequence&)Qt::CTRL+Qt::Key_Q, this,"");
-  QAction *backAction = new QAction(QIcon((QucsSettings.BitmapDir + "back.png")),
+  QAction *backAction = new QAction(QIcon((":/bitmaps/back.png")),
                                     tr("&Back"), Qt::ALT+Qt::Key_Left, this,"");
-  QAction *forwardAction = new QAction(QIcon((QucsSettings.BitmapDir + "forward.png")),
+  QAction *forwardAction = new QAction(QIcon((":/bitmaps/forward.png")),
                                        tr("&Forward"), Qt::ALT+Qt::Key_Right, this,"");
-  QAction *homeAction = new QAction(QIcon((QucsSettings.BitmapDir + "home.png")),
+  QAction *homeAction = new QAction(QIcon((":/bitmaps/home.png")),
                                     tr("&Home"),Qt::CTRL+Qt::Key_H,this,"");
-  previousAction = new QAction(QIcon((QucsSettings.BitmapDir + "previous.png")),tr("&Previous"),
+  previousAction = new QAction(QIcon((":/bitmaps/previous.png")),tr("&Previous"),
                                ks, this,"");
-  nextAction = new QAction(QIcon((QucsSettings.BitmapDir + "next.png")),
+  nextAction = new QAction(QIcon((":/bitmaps/next.png")),
                            tr("&Next"), ks, this,"");
   viewBrowseDock = new QAction(tr("&Table of Contents"), 0, this,"");
   viewBrowseDock->setToggleAction(true);

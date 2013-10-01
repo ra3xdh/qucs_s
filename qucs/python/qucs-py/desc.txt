@@ -1,0 +1,29 @@
+
+
+The attached archive contains sources of the converter allowing to read the
+QUCS generated data into the Python program.
+The data read from a QUCS file are placed into a qucs_data object.
+This object contains two dictionaries:
+* deps - for dependent variables
+* indeps - for independent variables
+
+Entry for each independent variable contains just a vector with values
+of that variable
+Entry for each dependent variable is an object of the qucs_dep_var
+class, with the followinf fields:
+* val - multi-dimensional array with values of that variable
+* ind_vars - the vector with the names of the independent variables
+corresponding to indices of the "val" array
+
+The archive contains also source of the demo QUCS project (test1.sch
+and test1.dpl). If you run the simulation, you should get the test1.dat
+file. Then you can read it in the following way (below is the sample
+interactive ipython session):
+
+$ipython -pylab
+In [1]: import qucs
+In [2]: r=qucs.qucs_data("test1.dat")
+In [3]: r.deps["Pr1.v"].ind_vars
+Out[3]: ['acfrequency', 'Cctr', 'A1']
+In [4]: plot(log(abs(r.deps["Pr1.v"].val[:,2,:])))
+

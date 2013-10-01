@@ -31,7 +31,6 @@ struct tQucsSettings
   int x, y;      // position of main window
   QFont font;
   QString LangDir;
-  QString BitmapDir;
   QString Language;
 };
 

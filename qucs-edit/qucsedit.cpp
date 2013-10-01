@@ -40,15 +40,15 @@
 QucsEdit::QucsEdit(const QString& FileName_, bool readOnly)
 {
   // set application icon
-  setWindowIcon (QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
+  setWindowIcon (QPixmap(":/bitmaps/big.qucs.xpm"));
   setWindowTitle("Qucs Editor " PACKAGE_VERSION " - " + tr("File: "));
 
   QToolButton *ButtLoad = new QToolButton;
-  ButtLoad->setIcon(QIcon((QucsSettings.BitmapDir + "fileopen.png")));
+  ButtLoad->setIcon(QIcon((":/bitmaps/fileopen.png")));
   connect(ButtLoad, SIGNAL(clicked()), SLOT(slotLoad()));
 
   QToolButton *ButtSave = new QToolButton;
-  ButtSave->setIcon(QIcon((QucsSettings.BitmapDir + "filesave.png")));
+  ButtSave->setIcon(QIcon((":/bitmaps/filesave.png")));
   connect(ButtSave, SIGNAL(clicked()), SLOT(slotSave()));
   ButtSave->setDisabled(readOnly);
 

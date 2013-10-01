@@ -118,9 +118,10 @@ dnl Check for language support.
 AC_PATH_PROGS(LRELEASE, lrelease-qt4 lrelease, :, [$QTDIR/bin:$PATH])
 AC_PATH_PROGS(LUPDATE, lupdate-qt4 lupdate, :, [$QTDIR/bin:$PATH])
 
-dnl Check for MOC/UIC support.
+dnl Check for MOC/UIC/RCC support.
 AC_PATH_PROGS(MOC, moc-qt4 moc, :, [$QTDIR/bin:$PATH])
 AC_PATH_PROGS(UIC, uic-qt4 uic, :, [$QTDIR/bin:$PATH])
+AC_PATH_PROGS(RCC, rcc, :, [$QTDIR/bin:$PATH])
 if test "$MOC" = ":"; then
   AC_MSG_WARN([
   The $PACKAGE package needs the 'Qt Meta Object Compiler' to compile properly.
@@ -245,13 +246,39 @@ case $host_os in
     ;;
 
    *darwin* )
-    dnl Check for Qt packages, set QT_CFLAGS and QT_LIBS
-    PKG_CHECK_MODULES(QT, [QtCore QtGui QtXml Qt3Support])
-
-    dnl check Qt headers
-    AC_CHECK_HEADERS([QtGui/QtGui QtCore/QtCore QtXml/QtXml],[],[])
-
-    AC_LANG(C++)
+    with_qt=no
+    dnl Check for Qt with pkg-config
+    dnl Set QT_CFLAGS and QT_LIBS
+    PKG_CHECK_MODULES(QT, [QtCore QtGui QtXml Qt3Support],
+        [with_qt=yes
+        QT_MOC=`$PKG_CONFIG --variable=moc_location QtCore`],
+        AC_MSG_NOTICE([pkg-config could not find Qt]))
+    if test "x${with_qt}" = xyes ; then
+      AC_CHECK_HEADERS([QtGui/QtGui QtCore/QtCore QtXml/QtXml],[],[])
+    fi
+    dnl Official Qt has no pkg-config files on OSX
+    dnl Look on standart location
+    if test "x${with_qt}" = xno ; then
+      AC_MSG_NOTICE([checking for Qt OS X frameworks])
+      AC_LANG(C++)
+      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/QtCore.framework/Headers"
+      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/QtGui.framework/Headers"
+      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/QtXml.framework/Headers"
+      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/Qt3Support.framework/Headers"
+      AC_CHECK_HEADERS(QApplication, [with_qt=yes])
+      if test "x${with_qt}" = xyes ; then
+        AC_PATH_PROG(QT_MOC, moc)
+        if test "x$QT_MOC" = x ; then
+          echo moc not found
+          with_qt=no
+        else
+          QT_CFLAGS="$CPPFLAGS"
+          QT_LIBS="-framework QtGui -framework QtCore -framework QtXml -framework Qt3Support"
+          dnl Define Qt3Support
+          QT_DEF="$QT_DEF -DQT_SHARED -DQT3_SUPPORT"
+        fi
+      fi
+    fi
     QT_LDFLAGS="-Wl -headerpad_max_install_names"
     CXXFLAGS="$CXXFLAGS $QT_CFLAGS $QT_INCLUDES $QT_DEF"
     ;;
@@ -259,6 +286,7 @@ esac
 
 AC_SUBST(QT_LDFLAGS)
 AC_SUBST(QT_LIBS)
+AC_SUBST(QT_MOC)
 AC_LANG(C)
 
 dnl Check for additional header files.
@@ -282,10 +310,7 @@ esac
 AC_SUBST(PATHXFORM)
 
 dnl Create path info.
-BITMAP_PATH="$prefix/share/qucs/bitmaps/"
-AC_DEFINE_UNQUOTED([BITMAPDIR], ["$BITMAP_PATH"],
-  [Where the data files go.])
-unset BITMAP_PATH
+dnl BitmapDir still used by qucs-edit
 BIN_PATH="$prefix/bin/"
 AC_DEFINE_UNQUOTED([BINARYDIR], ["$BIN_PATH"],
   [Where the binary files go.])
@@ -344,14 +369,11 @@ AC_CONFIG_FILES([Makefile
 		 qucs-filter/Makefile
 		 qucs-filter-v2/Makefile
 		 qucs-transcalc/Makefile
-		 qucs-transcalc/bitmaps/Makefile
 		 qucs-transcalc/examples/Makefile
 		 qucs-lib/Makefile
 		 qucs-lib/library/Makefile
 		 qucs-attenuator/Makefile
-		 qucs-attenuator/bitmaps/Makefile
 		 qucs/Makefile
-		 qucs/bitmaps/Makefile
 		 qucs/octave/Makefile
 		 qucs/components/Makefile
 		 qucs/diagrams/Makefile

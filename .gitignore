@@ -36,3 +36,4 @@ debian/qucs.postinst.debhelper
 debian/qucs.postrm.debhelper
 debian/qucs.substvars
 debian/qucs/
+qrc_*.cpp

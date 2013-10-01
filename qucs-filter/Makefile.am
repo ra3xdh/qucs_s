@@ -30,7 +30,10 @@ MOCHEADERS = qucsfilter.h helpdialog.h
 MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
 qucsfilter_SOURCES = main.cpp qucsfilter.cpp helpdialog.cpp lc_filter.cpp \
-  qf_poly.cpp qf_filter.cpp qf_cauer.cpp
+  qf_poly.cpp qf_filter.cpp qf_cauer.cpp qrc_qucsfilter.cpp
+
+qrc_qucsfilter.cpp: qucsfilter.qrc
+	$(RCC) -o $@ $<
 
 nodist_qucsfilter_SOURCES = $(MOCFILES)
 

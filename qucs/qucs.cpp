@@ -203,7 +203,7 @@ void QucsApp::initView()
 
 
   // set application icon
-  setIcon (QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
+  setIcon (QPixmap(":/bitmaps/big.qucs.xpm"));
 
   DocumentTab = new QTabWidget(this);
   setCentralWidget(DocumentTab);
@@ -407,10 +407,11 @@ void QucsApp::slotSetCompView (int index)
   char * File;
   QString Name;
   Module * Mod;
+  // Populate list of component bitmaps
   for (Mod = Comps.first(); Mod; Mod = Comps.next ()) {
     if (Mod->info) {
       *(Mod->info) (Name, File, false);
-      QListWidgetItem *item = new QListWidgetItem(QPixmap(QucsSettings.BitmapDir + QString (File) + ".png"), Name);
+        QListWidgetItem *item = new QListWidgetItem(QPixmap(":/bitmaps/" + QString (File) + ".png"), Name);
       item->setToolTip(Name);
       CompComps->addItem(item);
     }
@@ -1217,6 +1218,9 @@ void QucsApp::slotFileSave()
 
   DocumentTab->blockSignals(false);
   statusBar()->message(tr("Ready."));
+
+  if(!ProjName.isEmpty())
+    readProjectFiles();  // re-read the content ListView
 }
 
 // --------------------------------------------------------------
@@ -1342,6 +1346,9 @@ void QucsApp::slotFileSaveAs()
 
   // refresh the schematic file path
   this->updateSchNameHash();
+
+  if(!ProjName.isEmpty())
+    readProjectFiles();  // re-read the content ListView
 }
 
 

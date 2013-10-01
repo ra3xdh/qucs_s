@@ -22,7 +22,7 @@
 # Boston, MA 02110-1301, USA.  
 #
 
-SUBDIRS = bitmaps components diagrams paintings dialogs octave
+SUBDIRS = components diagrams paintings dialogs octave
 
 if COND_WIN32
 bin_SCRIPTS = qucsdigi.bat qucsveri.bat qucsdigilib.bat
@@ -38,7 +38,10 @@ MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 qucs_SOURCES = node.cpp element.cpp qucsdoc.cpp wire.cpp mouseactions.cpp   \
   qucs.cpp main.cpp wirelabel.cpp qucs_init.cpp qucs_actions.cpp            \
   viewpainter.cpp mnemo.cpp schematic.cpp schematic_element.cpp textdoc.cpp \
-  schematic_file.cpp syntax.cpp module.cpp octave_window.cpp
+  schematic_file.cpp syntax.cpp module.cpp octave_window.cpp qrc_qucs.cpp
+
+qrc_qucs.cpp: qucs.qrc
+	$(RCC) -o $@ $<
 
 nodist_qucs_SOURCES = $(MOCFILES)
 

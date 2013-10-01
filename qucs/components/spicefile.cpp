@@ -24,7 +24,7 @@
 #endif
 #include <QtGui>
 #include <qregexp.h>
-#include <q3process.h>
+#include <QProcess>
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qmessagebox.h>
@@ -245,31 +245,30 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
   QString preprocessor = Props.at(3)->Value;
   if (preprocessor != "none") {
     bool piping = true;
-    QString script;
+    QStringList script;
 #ifdef __MINGW32__
     QString interpreter = "tinyperl.exe";
 #else
     QString interpreter = "perl";
 #endif
     if (preprocessor == "ps2sp") {
-      script = "ps2sp";
+      script << "ps2sp";
     } else if (preprocessor == "spicepp") {
-      script = "spicepp.pl";
+      script << "spicepp.pl";
     } else if (preprocessor == "spiceprm") {
-      script = "spiceprm";
+      script << "spiceprm";
       piping = false;
     }
-    script = QucsSettings.BinDir + script;
-    SpicePrep = new Q3Process(this);
-    SpicePrep->addArgument(interpreter);
-    SpicePrep->addArgument(script);
-    SpicePrep->addArgument(*SpiceFile);
+    SpicePrep = new QProcess(this);
+    script << interpreter;
+    script << script;
+    script << *SpiceFile;
 
     QFile PrepFile;
     QString PrepName = *SpiceFile + ".pre";
 
     if (!piping) {
-      SpicePrep->addArgument(PrepName);
+      script << PrepName;
       connect(SpicePrep, SIGNAL(readyReadStdout()), SLOT(slotSkipOut()));
       connect(SpicePrep, SIGNAL(readyReadStderr()), SLOT(slotGetPrepErr()));
     } else {
@@ -295,16 +294,23 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
       prestream = new QTextStream(&PrepFile);
     }
 
-    if(!SpicePrep->start()) {
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    env.insert("PATH", env.value("PATH") );
+    SpicePrep->setProcessEnvironment(env);
+    SpicePrep->start(script.join(" "));
+    //QucsHelp->setCommunication(0);
+
+    if(SpicePrep->state()!=QProcess::Running&&
+            SpicePrep->state()!=QProcess::Starting) {
       ErrText += QObject::tr("ERROR: Cannot execute \"%1\".").
-	arg(interpreter + " " + script + "\".");
+              arg(interpreter + " " + script.join(" ") + "\".");
       if (piping) {
 	PrepFile.close();
 	delete prestream;
       }
       return false;
     }
-    SpicePrep->closeStdin();
+    //SpicePrep->closeStdin();
 
     MBox->exec();
     delete SpicePrep;
@@ -334,18 +340,26 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
   NetText += "\n";
 
   // startup SPICE conversion process
-  QucsConv = new Q3Process(this);
-  QucsConv->setArguments(com);
+  QucsConv = new QProcess(this);
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+  env.insert("PATH", env.value("PATH") );
+  QucsConv->setProcessEnvironment(env);
+  QucsConv->start(com.join(" "));
+  //QucsHelp->setCommunication(0);
+
   connect(QucsConv, SIGNAL(readyReadStdout()), SLOT(slotGetNetlist()));
   connect(QucsConv, SIGNAL(readyReadStderr()), SLOT(slotGetError()));
   connect(QucsConv, SIGNAL(processExited()), SLOT(slotExited()));
-  if(!QucsConv->start()) {
+  QucsConv->start(com.join(" "));
+
+  if(QucsConv->state()!=QProcess::Running&&
+          QucsConv->state()!=QProcess::Starting) {
     ErrText += QObject::tr("ERROR: Cannot start QucsConv!");
     return false;
   }
   (*outstream) << NetText;
   (*filstream) << NetText;
-  QucsConv->closeStdin();
+#warning QucsConv->closeStdin();
 
   // waiting info dialog box
   QMessageBox *MBox = new QMessageBox(QObject::tr("Info"),
@@ -365,31 +379,33 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
 // -------------------------------------------------------------------------
 void SpiceFile::slotSkipErr()
 {
-  SpicePrep->readStderr();
+  SpicePrep->readAllStandardError();
+  //SpicePrep->readStderr();
 }
 
 // -------------------------------------------------------------------------
 void SpiceFile::slotSkipOut()
 {
-  SpicePrep->readStdout();
+    SpicePrep->readAllStandardOutput();
+  //SpicePrep->readStdout();
 }
 
 // -------------------------------------------------------------------------
 void SpiceFile::slotGetPrepErr()
 {
-  ErrText += QString(SpicePrep->readStderr());
+  ErrText += QString(SpicePrep->readAllStandardError());
 }
 
 // -------------------------------------------------------------------------
 void SpiceFile::slotGetPrepOut()
 {
-  (*prestream) << QString(SpicePrep->readStdout());
+  (*prestream) << QString(SpicePrep->readAllStandardOutput());
 }
 
 // -------------------------------------------------------------------------
 void SpiceFile::slotGetError()
 {
-  ErrText += QString(QucsConv->readStderr());
+  ErrText += QString(QucsConv->readAllStandardError());
 }
 
 // -------------------------------------------------------------------------
@@ -397,7 +413,7 @@ void SpiceFile::slotGetNetlist()
 {
   int i;
   QString s;
-  NetLine += QString(QucsConv->readStdout());
+  NetLine += QString(QucsConv->readAllStandardOutput());
 
   while((i = NetLine.find('\n')) >= 0) {
     s = NetLine.left(i);
@@ -425,7 +441,7 @@ void SpiceFile::slotGetNetlist()
 // -------------------------------------------------------------------------
 void SpiceFile::slotExited()
 {
-  if (!QucsConv->normalExit()) {
+  if (!QucsConv->exitStatus()==QProcess::NormalExit) {
     NetText = "";
   }
   else {

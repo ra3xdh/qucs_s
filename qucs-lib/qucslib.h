@@ -36,7 +36,6 @@
 struct tQucsSettings {
   int x, y, dx, dy;    // position and size of main window
   QFont font;          // font
-  QString BitmapDir;   // pixmap directory
   QString LangDir;     // translation directory
   QString LibDir;      // library directory
   QString Language;

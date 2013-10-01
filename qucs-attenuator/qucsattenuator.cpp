@@ -42,7 +42,7 @@ QucsAttenuator::QucsAttenuator()
   QWidget *centralWidget = new QWidget(this);  
   setCentralWidget(centralWidget);
 
-  setWindowIcon(QPixmap(QucsSettings.BitmapDir + "big.qucs.xpm"));
+  setWindowIcon(QPixmap(":/bitmaps/big.qucs.xpm"));
   setWindowTitle("Qucs Attenuator " PACKAGE_VERSION);
 
   QMenu *fileMenu = new QMenu(tr("&File"));
@@ -90,7 +90,7 @@ QucsAttenuator::QucsAttenuator()
   topoGrid->addWidget(ComboTopology, 1,0,1,2);
 
   pixTopology = new QLabel(TopoGroup);//====================Pixmap for Topology
-  pixTopology->setPixmap(QPixmap((QucsSettings.BitmapDir + "att_pi.png")));
+  pixTopology->setPixmap(QPixmap((":/bitmaps/att_pi.png")));
   topoGrid->addWidget(pixTopology,2,0,3,2);
 
   topoGrid->setSpacing(5);
@@ -265,21 +265,21 @@ void QucsAttenuator::slotTopologyChanged()
   switch(ComboTopology->currentIndex())
     {
     case PI_TYPE:
-      pixTopology->setPixmap(QPixmap((QucsSettings.BitmapDir + "att_pi.png")));
+      pixTopology->setPixmap(QPixmap((":/bitmaps/att_pi.png")));
       LabelR2->setText("R2:");
       LabelR3->show();
       lineEdit_R3->show();
       LabelR3_Ohm->show();
       break;
     case TEE_TYPE:
-      pixTopology->setPixmap(QPixmap((QucsSettings.BitmapDir + "att_tee.png")));
+      pixTopology->setPixmap(QPixmap((":/bitmaps/att_tee.png")));
       LabelR2->setText("R2:");
       LabelR3->show();
       lineEdit_R3->show();
       LabelR3_Ohm->show();
       break;
     case BRIDGE_TYPE:
-      pixTopology->setPixmap(QPixmap((QucsSettings.BitmapDir + "att_bridge.png")));
+      pixTopology->setPixmap(QPixmap((":/bitmaps/att_bridge.png")));
       LabelR2->setText("R4:");
       LabelR3->hide();
       lineEdit_R3->hide();

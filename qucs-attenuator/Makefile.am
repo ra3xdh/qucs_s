@@ -24,7 +24,7 @@
 
 bin_PROGRAMS = qucsattenuator
 
-SUBDIRS = bitmaps
+SUBDIRS =
 
 dist_man_MANS = qucsattenuator.1
 
@@ -32,7 +32,10 @@ MOCHEADERS = qucsattenuator.h
 MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
 qucsattenuator_SOURCES = main.cpp qucsattenuator.cpp \
-  attenuatorfunc.cpp
+  attenuatorfunc.cpp qrc_qucsattenuator.cpp
+
+qrc_qucsattenuator.cpp: qucsattenuator.qrc
+	$(RCC) -o $@ $<
 
 nodist_qucsattenuator_SOURCES = $(MOCFILES)
 

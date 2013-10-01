@@ -76,7 +76,7 @@ tar -zxvf ASCO-0.4.8.tar.gz
 rm ASCO-0.4.8.tar.gz
 mv ASCO-0.4.8 asco
 cd asco
-patch -p1 < ../../../qucs/contrib/patch_asco_unbuffer.diff
+#patch -p1 < ../../../qucs/contrib/patch_asco_unbuffer.diff
 touch NEWS
 tar -zxvf Autotools.tar.gz
 ./autogen.sh
@@ -129,7 +129,7 @@ echo creating source archive...
 
 tar -zcvf qucs-$RELEASE.tar.gz qucs-$RELEASE
 
-DISTS="precise quantal raring"
+DISTS="precise quantal raring saucy"
 
 cp qucs-$RELEASE.tar.gz qucs_$RELEASE.orig.tar.gz
 

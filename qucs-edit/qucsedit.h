@@ -30,7 +30,6 @@ class QTextEdit;
 struct tQucsSettings {
   int x, y, dx, dy;    // position and size of main window
   QFont font;
-  QString BitmapDir;
   QString LangDir;
   QString Language;
 };
