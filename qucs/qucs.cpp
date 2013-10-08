@@ -1368,8 +1368,12 @@ void QucsApp::slotFileSaveAll()
   }
 
   DocumentTab->blockSignals(false);
-  // Call update() to update subcircuit symbols in current document.
-  ((Q3ScrollView*)DocumentTab->currentPage())->viewport()->update();
+  // Call update() to update subcircuit symbols in current Schematic document.
+  // TextDoc has no viewport, it needs no update.
+  QString tabType = DocumentTab->currentWidget()->className();
+  if (tabType == "Schematic") {
+    ((Q3ScrollView*)DocumentTab->currentPage())->viewport()->update();
+  }
   view->drawn = false;
   statusBar()->message(tr("Ready."));
 
