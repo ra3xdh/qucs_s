@@ -112,11 +112,12 @@ rm -rf autom4te.cache
 
 
 cd qucs-core
-./autogen.sh
+./bootstrap.sh
+./configure --enable-maintainer-mode
 make
 #cd adms
 #make
-#cd ../src/components/verilog 
+#cd ../src/components/verilog
 #make
 #cd ../../../
 ./configure
@@ -139,7 +140,7 @@ for DIST in ${DISTS} ; do
 	COUNT=$(($COUNT-1))
 	dch -D $DIST -m -v $RELEASE$COUNT -b
 	debuild -S -k$GPG_ID
-	./configure 
+	./configure
 done
 
 
@@ -149,7 +150,7 @@ INNOSETUP="$HOME/.wine/drive_c/Program Files (x86)/Inno Setup 5/Compil32.exe"
 cd ..
 WINDIR=$PWD/qucs-win32-bin
 cd qucs-$RELEASE
-export QTDIR=~/.wine/drive_c/Qt/4.8.4/ 
+export QTDIR=~/.wine/drive_c/Qt/4.8.4/
 ./mingw-configure --prefix=$WINDIR
 sed -i 's/-fno-rtti/ /g' qucs-filter-v2/Makefile
 cp ../../qucs/qucs/qucsdigi.bat qucs #is deleted by the linux build for some reason

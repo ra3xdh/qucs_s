@@ -1,22 +1,22 @@
 --
 -- README
--- 
+--
 -- Copyright (C) 2003, 2005, 2011 Stefan Jahn <stefan@lkcc.org>
--- 
+--
 -- This is free software; you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
 -- the Free Software Foundation; either version 2, or (at your option)
 -- any later version.
--- 
+--
 -- This software is distributed in the hope that it will be useful,
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of
 -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 -- GNU General Public License for more details.
--- 
+--
 -- You should have received a copy of the GNU General Public License
 -- along with this package; see the file COPYING.  If not, write to
 -- the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
--- Boston, MA 02110-1301, USA.  
+-- Boston, MA 02110-1301, USA.
 --
 
 
@@ -34,8 +34,8 @@ http://qucs.sourceforge.net
 Requirements
 ============
 
-Qucs needs Qt(R) by Trolltech(R) <http://www.trolltech.com>.
-This current version is known to work with Qt 3.1 and later.
+Qucs needs Qt(R) by Digia(R) <http://www.digia.com>.
+This current version is known to work with Qt 4.6 and later.
 
 
 Installation
@@ -45,7 +45,7 @@ Unpack the distribution tarball:
 
     $ tar xvzf qucs-<version>.tar.gz               (using GNU tar)
     $ gzip -cd qucs-<version>.tar.gz | tar xvf -   (using another tar)
-  
+
 Change into the source directory:
 
     $ cd qucs-<version>
@@ -63,7 +63,7 @@ Install Qucs:
     $ make install
 
 You must have root privileges if you want to install the package in the
-standard location (/usr/local) or in any location that is only writable 
+standard location (/usr/local) or in any location that is only writable
 by root.
 
 For further information on installing the package, please consult the
@@ -72,15 +72,15 @@ file INSTALL included in this distribution.
 Please note:  Users of the FreeBSD OS may use a GNU make (probably gmake)
 to compile and install the package.
 
-Getting the latest SVN snapshot
+Getting the latest Git snapshot
 ===============================
 
-You can always get the latest Qucs version from our SVN repository.
-Please use an official release if you want to work with Qucs.  The SVN
+You can always get the latest Qucs version from our Git repository.
+Please use an official release if you want to work with Qucs.  The Git
 version might not even compile.
 
-    $ svn co https://qucs.svn.sourceforge.net/svnroot/qucs/trunk/qucs
+    $ git clone http://git.code.sf.net/p/qucs/git qucs-git
 
-Press 'Enter' when asked for a password.  Run `sh autogen.sh' and
+Press 'Enter' when asked for a password.  Run `sh bootstrap.sh' and
 `configure' with the appropriate options.  Maintainance currently
 requires Autoconf version 2.57 and GNU automake 1.7.0.
