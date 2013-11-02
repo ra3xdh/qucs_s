@@ -117,6 +117,7 @@ SimMessage::SimMessage(QWidget *w, QWidget *parent)
   Abort = new QPushButton(tr("Abort simulation"));
   Butts->addWidget(Abort);
   connect(Abort,SIGNAL(clicked()),SLOT(reject()));
+  connect(Abort,SIGNAL(clicked()),SLOT(AbortSim()));
 }
 
 SimMessage::~SimMessage()
@@ -669,4 +670,9 @@ void SimMessage::slotDisplayButton()
 {
   emit displayDataPage(DocName, DataDisplay);
   accept();
+}
+
+void SimMessage::AbortSim()
+{
+    SimProcess.kill();
 }
