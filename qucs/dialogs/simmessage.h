@@ -59,6 +59,7 @@ private slots:
   void slotCloseStdin();
   void slotSimEnded(int status);
   void slotDisplayButton();
+  void AbortSim();
 
   void slotReadSpiceNetlist();
   void slotFinishSpiceNetlist(int status);
