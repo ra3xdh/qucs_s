@@ -37,6 +37,9 @@ class Component;
 #define M_PI     3.1415926535897932384626433832795029
 #endif
 
+
+#define PACKAGE_VERSION "0.0.18"
+
 struct tQucsSettings {
   int x, y, dx, dy;    // position and size of main window
   QFont font;
@@ -64,6 +67,9 @@ struct tQucsSettings {
   QDir OctaveBinDir;
   // registered filename extensions with program to open the file
   QStringList FileTypes;
+
+  unsigned int numRecentDocs;
+  QList<QString> RecentDocs;
 };
 
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used

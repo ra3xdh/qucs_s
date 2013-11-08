@@ -1180,8 +1180,28 @@ void QucsApp::slotFileOpen()
   if(s.isEmpty())
     statusBar()->message(tr("Opening aborted"), 2000);
   else {
+
+
+
+
+    QSettings* settings = new QSettings("qucs","qucs");
+    QucsSettings.numRecentDocs++;
+    QucsSettings.RecentDocs.append(s);
+    qDebug()<<s;
+    settings->beginWriteArray("RecentDocs");
+    for (int i=0; i<QucsSettings.RecentDocs.size(); i++) {
+        settings->setArrayIndex(i);
+        settings->setValue("recent_sch",QucsSettings.RecentDocs.at(i));
+    }
+    settings->endArray();
+
+    delete settings;
+
+
     gotoPage(s);
     lastDirOpenSave = s;   // remember last directory and file
+
+
     statusBar()->message(tr("Ready."));
   }
 }
