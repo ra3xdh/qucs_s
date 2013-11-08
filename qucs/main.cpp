@@ -86,16 +86,10 @@ bool loadSettings()
     QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
 
 
-    int size = settings.beginReadArray("RecentDocs");
-    qDebug()<<size;
-    QucsSettings.numRecentDocs = size;
-    for (int i=0; i<size; i++) {
-        settings.setArrayIndex(i);
-        QString ss = settings.value("recent_sch").toString();
-        qDebug()<<ss;
-        QucsSettings.RecentDocs.append(ss);
-  //  }
-    settings.endArray();
+    QucsSettings.RecentDocs = settings.value("RecentDocs").toString().split("*",QString::SkipEmptyParts);
+    qDebug()<<QucsSettings.RecentDocs;
+    QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
+
 
     // If present read in the list of directory paths in which Qucs should
     // search for subcircuit schematics
@@ -109,9 +103,6 @@ bool loadSettings()
     settings.endArray();
 
     QucsSettings.numRecentDocs = 0;
-    //if (settings.contains("RecentDocs")) {
-
-    }
 
     return true;
 }

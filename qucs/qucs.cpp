@@ -1188,12 +1188,7 @@ void QucsApp::slotFileOpen()
     QucsSettings.numRecentDocs++;
     QucsSettings.RecentDocs.append(s);
     qDebug()<<s;
-    settings->beginWriteArray("RecentDocs");
-    for (int i=0; i<QucsSettings.RecentDocs.size(); i++) {
-        settings->setArrayIndex(i);
-        settings->setValue("recent_sch",QucsSettings.RecentDocs.at(i));
-    }
-    settings->endArray();
+    settings->setValue("RecentDocs",QucsSettings.RecentDocs.join("*"));
 
     delete settings;
 

@@ -69,7 +69,7 @@ struct tQucsSettings {
   QStringList FileTypes;
 
   unsigned int numRecentDocs;
-  QList<QString> RecentDocs;
+  QStringList RecentDocs;
 };
 
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used
