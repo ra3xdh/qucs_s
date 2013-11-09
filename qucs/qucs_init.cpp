@@ -680,6 +680,9 @@ void QucsApp::initMenuBar()
   fileMenu->insertSeparator();
   fileMenu->addAction(fileQuit);
 
+  recentfilesMenu = new QMenu(tr("Recent Documents"),fileMenu);
+  fileMenu->addMenu(recentfilesMenu);
+  this->slotUpdateRecentFiles();
 
   editMenu = new QMenu(tr("&Edit"));  // menuBar entry editMenu
   editMenu->addAction(undo);

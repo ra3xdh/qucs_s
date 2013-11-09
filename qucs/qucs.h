@@ -264,7 +264,7 @@ private:
 
   // menus contain the items of their menubar
   QMenu *fileMenu, *editMenu, *insMenu, *projMenu, *simMenu, *viewMenu,
-             *helpMenu, *alignMenu, *toolMenu;
+             *helpMenu, *alignMenu, *toolMenu, *recentfilesMenu;
 
   // submenus for the PDF documents
   QMenu *helpTechnical, *helpReport, *helpTutorial;
@@ -343,6 +343,7 @@ public slots:
   void slotChangeProps();
   void slotAddToProject();
   void slotApplyCompText();
+  void slotOpenRecent(int num);
 
 private slots:
   void slotCursorLeft();
@@ -355,6 +356,8 @@ private slots:
   void slotExportGraphAsCsv();
   void slotCreatePackage();
   void slotExtractPackage();
+  void slotUpdateRecentFiles();
+  void slotClearRecentFiles();
 
 private:
   void showHTML(const QString&);

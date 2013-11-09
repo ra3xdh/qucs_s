@@ -1186,12 +1186,19 @@ void QucsApp::slotFileOpen()
 
     QSettings* settings = new QSettings("qucs","qucs");
     QucsSettings.numRecentDocs++;
-    QucsSettings.RecentDocs.append(s);
+    if (!QucsSettings.RecentDocs.contains(s)) {
+        QucsSettings.RecentDocs.append(s);
+    } else {
+        QucsSettings.RecentDocs.remove(s);
+        QucsSettings.RecentDocs.append(s);
+    }
+    if (QucsSettings.RecentDocs.count()>8) {
+        QucsSettings.RecentDocs.removeFirst();
+    }
     qDebug()<<s;
     settings->setValue("RecentDocs",QucsSettings.RecentDocs.join("*"));
-
     delete settings;
-
+    slotUpdateRecentFiles();
 
     gotoPage(s);
     lastDirOpenSave = s;   // remember last directory and file

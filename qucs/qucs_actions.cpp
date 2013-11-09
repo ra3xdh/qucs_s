@@ -1310,3 +1310,40 @@ void QucsApp::slotExtractPackage()
   d->extractPackage();
   readProjects();
 }
+
+void QucsApp::slotOpenRecent(int num)
+{
+    qDebug()<<QucsSettings.RecentDocs.at(num);
+    gotoPage(QucsSettings.RecentDocs.at(num));
+}
+
+void QucsApp::slotUpdateRecentFiles()
+{
+
+    QSignalMapper* mapper = new QSignalMapper(this);
+    QList<QAction*> recent_docs;
+
+    QString file;
+    foreach (file,QucsSettings.RecentDocs) {
+        recent_docs.prepend(new QAction(file,this));
+        connect(recent_docs.first(),SIGNAL(triggered()),mapper,SLOT(map()));
+    }
+    recentfilesMenu->clear();
+    recentfilesMenu->addActions(recent_docs);
+
+    for (int i=0; i<recent_docs.count(); i++) {
+        mapper->setMapping(recent_docs.at(i),(recent_docs.count() - 1)-i);
+    }
+
+    connect(mapper,SIGNAL(mapped(int)),this,SLOT(slotOpenRecent(int)));
+
+    recentfilesMenu->insertSeparator();
+    recentfilesMenu->addAction(tr("Clear list"),this,SLOT(slotClearRecentFiles()));
+
+}
+
+void QucsApp::slotClearRecentFiles()
+{
+    QucsSettings.RecentDocs.clear();
+    slotUpdateRecentFiles();
+}
