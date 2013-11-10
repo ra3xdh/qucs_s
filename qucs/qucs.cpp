@@ -2592,7 +2592,7 @@ void QucsApp::updateRecentFilesList(QString s)
     if (QucsSettings.RecentDocs.count()>8) {
         QucsSettings.RecentDocs.removeFirst();
     }
-    qDebug()<<s;
+    //qDebug()<<s;
     settings->setValue("RecentDocs",QucsSettings.RecentDocs.join("*"));
     delete settings;
 }
