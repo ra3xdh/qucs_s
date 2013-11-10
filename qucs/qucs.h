@@ -225,6 +225,8 @@ private:
   bool isTextDocument(QWidget *);
   void closeFile(int);
 
+  void updateRecentFilesList(QString s);
+
 public:
 
   void readProjects();

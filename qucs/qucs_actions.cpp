@@ -1315,10 +1315,13 @@ void QucsApp::slotOpenRecent(int num)
 {
     qDebug()<<QucsSettings.RecentDocs.at(num);
     gotoPage(QucsSettings.RecentDocs.at(num));
+    updateRecentFilesList(QucsSettings.RecentDocs.at(num));
+    slotUpdateRecentFiles();
 }
 
 void QucsApp::slotUpdateRecentFiles()
 {
+
 
     QSignalMapper* mapper = new QSignalMapper(this);
     QList<QAction*> recent_docs;

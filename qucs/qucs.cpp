@@ -1184,20 +1184,7 @@ void QucsApp::slotFileOpen()
 
 
 
-    QSettings* settings = new QSettings("qucs","qucs");
-    QucsSettings.numRecentDocs++;
-    if (!QucsSettings.RecentDocs.contains(s)) {
-        QucsSettings.RecentDocs.append(s);
-    } else {
-        QucsSettings.RecentDocs.remove(s);
-        QucsSettings.RecentDocs.append(s);
-    }
-    if (QucsSettings.RecentDocs.count()>8) {
-        QucsSettings.RecentDocs.removeFirst();
-    }
-    qDebug()<<s;
-    settings->setValue("RecentDocs",QucsSettings.RecentDocs.join("*"));
-    delete settings;
+    updateRecentFilesList(s);
     slotUpdateRecentFiles();
 
     gotoPage(s);
@@ -2591,3 +2578,21 @@ void QucsApp::updatePathList(QStringList newPathList)
     updatePathList();
 }
 
+
+void QucsApp::updateRecentFilesList(QString s)
+{
+    QSettings* settings = new QSettings("qucs","qucs");
+    QucsSettings.numRecentDocs++;
+    if (!QucsSettings.RecentDocs.contains(s)) {
+        QucsSettings.RecentDocs.append(s);
+    } else {
+        QucsSettings.RecentDocs.remove(s);
+        QucsSettings.RecentDocs.append(s);
+    }
+    if (QucsSettings.RecentDocs.count()>8) {
+        QucsSettings.RecentDocs.removeFirst();
+    }
+    qDebug()<<s;
+    settings->setValue("RecentDocs",QucsSettings.RecentDocs.join("*"));
+    delete settings;
+}
