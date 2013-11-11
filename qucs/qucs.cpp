@@ -2107,6 +2107,8 @@ void QucsApp::slotOpenContent(QTreeWidgetItem *item)
       Suffix == "vhd" || Suffix == "v" || Suffix == "va" ||
       Suffix == "m" || Suffix == "oct") {
     gotoPage(Info.absFilePath());
+    updateRecentFilesList(Info.absFilePath());
+    slotUpdateRecentFiles();
 
     if(item->text(1).isEmpty())     // is subcircuit ?
       if(Suffix == "sch") return;
