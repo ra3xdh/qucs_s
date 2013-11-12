@@ -1969,3 +1969,8 @@ else {  // not logarithmical
   else  x3 = x2+maxWidth+14;
   return true;
 }
+
+void Diagram::test_print()
+{
+    qDebug()<<"Diagramm";
+}

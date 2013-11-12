@@ -2598,3 +2598,9 @@ void QucsApp::updateRecentFilesList(QString s)
     settings->setValue("RecentDocs",QucsSettings.RecentDocs.join("*"));
     delete settings;
 }
+
+void QucsApp::slotSaveDiagramToGraphicsFile()
+{
+    Diagram *dia = ((Diagram*)view->focusElement);
+    dia->test_print();
+}

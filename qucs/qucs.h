@@ -346,6 +346,7 @@ public slots:
   void slotAddToProject();
   void slotApplyCompText();
   void slotOpenRecent(int num);
+  void slotSaveDiagramToGraphicsFile();
 
 private slots:
   void slotCursorLeft();

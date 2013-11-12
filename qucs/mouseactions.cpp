@@ -837,6 +837,18 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
       QucsMain->editPaste->addTo(ComponentMenu);
     break;
   }
+
+  while (true) {
+      if (focusElement) {
+          if (focusElement->Type == isDiagram) {
+
+              ComponentMenu->insertItem(QObject::tr("Export Graphics"), QucsMain,
+                      SLOT(slotSaveDiagramToGraphicsFile()));
+          }
+      }
+      break;
+  }
+
   if(!QucsMain->editDelete->isOn())
     QucsMain->editDelete->addTo(ComponentMenu);
   if(focusElement) if(focusElement->Type == isMarker) {

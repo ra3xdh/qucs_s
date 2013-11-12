@@ -104,6 +104,7 @@ public:
   bool hideLines;       // for "Rect3D": hide invisible lines ?
   int rotX, rotY, rotZ; // for "Rect3D": rotation around x, y and z axis
 
+  void test_print();
 
 protected:
   void calcSmithAxisScale(Axis*, int&, int&);
