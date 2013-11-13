@@ -2606,11 +2606,13 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
     int x1,y1,x2,y2;
     int w,h;
     dia->Bounding(x1,y1,x2,y2);
+    dia->isSelected=false;
     w = abs(x2 - x1);
     h = abs(y2 - y1);
     qDebug()<<w<<h;
-    QImage* img = new QImage(w+100,h+100,QImage::Format_RGB888);
+    QImage* img = new QImage(w,h,QImage::Format_RGB888);
     QPainter* p = new QPainter(img);
+    p->fillRect(0,0,w,h,Qt::white);
     ViewPainter* vp = new ViewPainter(p);
     vp->init(p,1.0,0,0,0,0,1.0,1.0);
     dia->paint(vp);
