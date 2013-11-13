@@ -37,9 +37,6 @@ class Component;
 #define M_PI     3.1415926535897932384626433832795029
 #endif
 
-
-#define PACKAGE_VERSION "0.0.18"
-
 struct tQucsSettings {
   int x, y, dx, dy;    // position and size of main window
   QFont font;
