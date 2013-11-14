@@ -123,7 +123,7 @@ protected:
 
   virtual void calcData(Graph*);
 
-private:
+public:
   int Bounding_x1, Bounding_x2, Bounding_y1, Bounding_y2;
 };
 
