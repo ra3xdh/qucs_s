@@ -53,6 +53,7 @@
 #include "dialogs/labeldialog.h"
 #include "dialogs/matchdialog.h"
 #include "dialogs/simmessage.h"
+#include "dialogs/exportdiagramdialog.h"
 //#include "dialogs/vtabwidget.h"
 //#include "dialogs/vtabbeddockwidget.h"
 #include "octave_window.h"
@@ -2601,30 +2602,36 @@ void QucsApp::updateRecentFilesList(QString s)
 
 void QucsApp::slotSaveDiagramToGraphicsFile()
 {
-    Diagram* dia = ((Diagram*)view->focusElement);
+    ExportDiagramDialog* dlg = new ExportDiagramDialog(this);
 
-    int x1,y1,x2,y2,xc,yc;
-    dia->Bounding(x1,y1,x2,y2);
-    dia->isSelected=false;
-    dia->getCenter(xc,yc);
-    int w = abs(x2 - x1);
-    int h = abs(y2 - y1);
-    int dx = abs(((x2+x1)/2)-xc);
-    int dy = abs(((y1+y2)/2)-yc);
-    w = w + dx;
-    h = h + dy;
-    qDebug()<<w<<h<<xc<<yc;
+    if (dlg->exec()) {
+        Diagram* dia = ((Diagram*)view->focusElement);
 
-    QImage* img = new QImage(w,h,QImage::Format_RGB888);
-    QPainter* p = new QPainter(img);
-    p->fillRect(0,0,w,h,Qt::white);
-    ViewPainter* vp = new ViewPainter(p);
-    vp->init(p,1.0,0,0,x1,y1-dy,1.0,1.0);
-    dia->paint(vp);
-    img->save("/home/vvk/1.png");
+        int x1,y1,x2,y2,xc,yc;
+        dia->Bounding(x1,y1,x2,y2);
+        dia->isSelected=false;
+        dia->getCenter(xc,yc);
+        int w = abs(x2 - x1);
+        int h = abs(y2 - y1);
+        int dx = abs(((x2+x1)/2)-xc);
+        int dy = abs(((y1+y2)/2)-yc);
+        w = w + dx;
+        h = h + dy;
+        qDebug()<<w<<h<<xc<<yc;
 
-    delete vp;
-    delete p;
-    delete img;
+        QImage* img = new QImage(w,h,QImage::Format_RGB888);
+        QPainter* p = new QPainter(img);
+        p->fillRect(0,0,w,h,Qt::white);
+        ViewPainter* vp = new ViewPainter(p);
+        vp->init(p,1.0,0,0,x1,y1-dy,1.0,1.0);
+        dia->paint(vp);
+        img->save("/home/vvk/1.png");
+
+        delete vp;
+        delete p;
+        delete img;
+    }
+
+    delete dlg;
 
 }
