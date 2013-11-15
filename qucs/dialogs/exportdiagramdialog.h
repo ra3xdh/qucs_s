@@ -10,7 +10,7 @@ class ExportDiagramDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ExportDiagramDialog(QWidget *parent = 0);
+    explicit ExportDiagramDialog(int w, int h, QWidget *parent = 0);
     
 private:
     QPushButton* ExportButt;
@@ -22,6 +22,7 @@ private:
     QLabel *lblResolutionY;
 
     QCheckBox* cbResolution;
+    QCheckBox* cbRatio;
 
     QLineEdit* editFilename;
     QLineEdit* editResolutionX;
@@ -32,9 +33,11 @@ private:
     QHBoxLayout* lower3;
     QVBoxLayout* top;
 
+    int dwidth, dheight;
+
 public:
     QString FileToSave();
-    bool OriginalSize();
+    bool isOriginalSize();
     int Xpixels();
     int Ypixels();
 
@@ -42,6 +45,10 @@ signals:
     
 private slots:
     void setFileName();
+    void calcWidth();
+    void calcHeight();
+    void recalcRatio();
+    void restoreOriginalWtoH();
 
 public slots:
     

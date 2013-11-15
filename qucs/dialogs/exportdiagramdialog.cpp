@@ -1,11 +1,15 @@
+#include <math.h>
 #include "exportdiagramdialog.h"
 
-ExportDiagramDialog::ExportDiagramDialog(QWidget *parent) :
+ExportDiagramDialog::ExportDiagramDialog(int w, int h, QWidget *parent) :
     QDialog(parent)
 {
-    lblFilename = new QLabel(tr("Save to File (Graphics Format by Extension)"));
-    lblResolutionX = new QLabel(tr("X-axis size (pixels)"));
-    lblResolutionY = new QLabel(tr("X-axis size (pixels)"));
+    dwidth = w;
+    dheight = h;
+
+    lblFilename = new QLabel(tr("Save to file (Graphics format by extension)"));
+    lblResolutionX = new QLabel(tr("Width  in pixels"));
+    lblResolutionY = new QLabel(tr("Height in pixels"));
 
     ExportButt = new QPushButton(tr("Export"));
     connect(ExportButt,SIGNAL(clicked()),this,SLOT(accept()));
@@ -16,18 +20,27 @@ ExportDiagramDialog::ExportDiagramDialog(QWidget *parent) :
 
     editFilename = new QLineEdit("/home/vvk/1.png");
 
-    editResolutionX = new QLineEdit("400");
+    editResolutionX = new QLineEdit(QString::number(dwidth));
     QIntValidator *val = new QIntValidator(0,64000);
     editResolutionX->setValidator(val);
     editResolutionX->setEnabled(false);
-    editResolutionY = new QLineEdit("300");
+    editResolutionY = new QLineEdit(QString::number(dheight));
     editResolutionY->setValidator(val);
     editResolutionY->setEnabled(false);
 
-    cbResolution = new QCheckBox(tr("Original Resolution"));
+    cbRatio = new QCheckBox(tr("Original width to height ratio"));
+    cbRatio->setChecked(true);
+    connect(cbRatio,SIGNAL(toggled(bool)),this,SLOT(recalcRatio()));
+
+    cbResolution = new QCheckBox(tr("Original size"));
     connect(cbResolution,SIGNAL(toggled(bool)),editResolutionX,SLOT(setDisabled(bool)));
     connect(cbResolution,SIGNAL(toggled(bool)),editResolutionY,SLOT(setDisabled(bool)));
+    connect(cbResolution,SIGNAL(toggled(bool)),cbRatio,SLOT(setDisabled(bool)));
+    connect(cbResolution,SIGNAL(toggled(bool)),this,SLOT(restoreOriginalWtoH()));
     cbResolution->setChecked(true);
+
+    connect(editResolutionX,SIGNAL(textEdited(QString)),this,SLOT(calcHeight()));
+    connect(editResolutionY,SIGNAL(textEdited(QString)),this,SLOT(calcWidth()));
 
     top = new QVBoxLayout;
     lower1 = new QHBoxLayout;
@@ -39,6 +52,7 @@ ExportDiagramDialog::ExportDiagramDialog(QWidget *parent) :
     lower1->addWidget(SaveButt);
     top->addLayout(lower1);
     top->addWidget(cbResolution);
+    top->addWidget(cbRatio);
     top->addWidget(lblResolutionX);
     top->addWidget(editResolutionX);
     top->addWidget(lblResolutionY);
@@ -56,7 +70,7 @@ QString ExportDiagramDialog::FileToSave()
     return editFilename->text();
 }
 
-bool ExportDiagramDialog::OriginalSize()
+bool ExportDiagramDialog::isOriginalSize()
 {
     return cbResolution->isChecked();
 }
@@ -78,3 +92,37 @@ void ExportDiagramDialog::setFileName()
     editFilename->setText(nam);
 }
 
+void ExportDiagramDialog::calcWidth()
+{
+    if (cbRatio->isChecked()) {
+        float h = editResolutionY->text().toFloat();
+        float w =  round((h*dwidth)/dheight);
+        editResolutionX->setText(QString::number(w));
+    }
+}
+
+
+void ExportDiagramDialog::calcHeight()
+{
+    if (cbRatio->isChecked()) {
+        float w = editResolutionX->text().toFloat();
+        float h =  round((w*dheight)/dwidth);
+        editResolutionY->setText(QString::number(h));
+    }
+
+}
+
+void ExportDiagramDialog::recalcRatio()
+{
+    if (cbRatio->isChecked()) {
+        calcHeight();
+    }
+}
+
+void ExportDiagramDialog::restoreOriginalWtoH()
+{
+    if (cbResolution->isChecked()) {
+        editResolutionX->setText(QString::number(dwidth));
+        editResolutionY->setText(QString::number(dheight));
+    }
+}
