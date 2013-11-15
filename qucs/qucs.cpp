@@ -2602,27 +2602,27 @@ void QucsApp::updateRecentFilesList(QString s)
 void QucsApp::slotSaveDiagramToGraphicsFile()
 {
     Diagram* dia = ((Diagram*)view->focusElement);
-    dia->test_print();
+
     int x1,y1,x2,y2,xc,yc;
     dia->Bounding(x1,y1,x2,y2);
     dia->isSelected=false;
     dia->getCenter(xc,yc);
     int w = abs(x2 - x1);
     int h = abs(y2 - y1);
-    //qDebug()<<x1<<x2<<y1<<y2;
-    qDebug()<<w<<h<<xc<<yc;
     int dx = abs(((x2+x1)/2)-xc);
     int dy = abs(((y1+y2)/2)-yc);
-    qDebug()<<dx;
-    dia->setCenter(dx,h-dy);
+    w = w + dx;
+    h = h + dy;
+    qDebug()<<w<<h<<xc<<yc;
+
     QImage* img = new QImage(w,h,QImage::Format_RGB888);
     QPainter* p = new QPainter(img);
     p->fillRect(0,0,w,h,Qt::white);
     ViewPainter* vp = new ViewPainter(p);
-    vp->init(p,1.0,0,0,0,0,1.0,1.0);
+    vp->init(p,1.0,0,0,x1,y1-dy,1.0,1.0);
     dia->paint(vp);
-    dia->setCenter(xc,yc);
     img->save("/home/vvk/1.png");
+
     delete vp;
     delete p;
     delete img;
