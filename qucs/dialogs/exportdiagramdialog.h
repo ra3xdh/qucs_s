@@ -35,11 +35,14 @@ private:
 
     int dwidth, dheight;
 
+    bool svg;
+
 public:
     QString FileToSave();
     bool isOriginalSize();
     int Xpixels();
     int Ypixels();
+    bool isSvg();
 
 signals:
     
@@ -49,6 +52,7 @@ private slots:
     void calcHeight();
     void recalcRatio();
     void restoreOriginalWtoH();
+    void setSvg(QString filename);
 
 public slots:
     

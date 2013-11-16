@@ -21,6 +21,7 @@
 #include <QtGui>
 #include <QDebug>
 #include <QtCore>
+#include <QtSvg>
 #include <limits.h>
 
 
@@ -2604,6 +2605,8 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
 {
     float scal = 1.0;
 
+
+
     Diagram* dia = ((Diagram*)view->focusElement);
 
     int x1,y1,x2,y2,xc,yc;
@@ -2628,17 +2631,38 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
             h = round(h*scal);
         }
 
-        QImage* img = new QImage(w,h,QImage::Format_RGB888);
-        QPainter* p = new QPainter(img);
-        p->fillRect(0,0,w,h,Qt::white);
-        ViewPainter* vp = new ViewPainter(p);
-        vp->init(p,scal,0,0,x1,y1-dy,1.0,1.0);
-        dia->paint(vp);
-        img->save("/home/vvk/1.png");
 
-        delete vp;
-        delete p;
-        delete img;
+        if (!dlg->isSvg()) {
+            QImage* img = new QImage(w,h,QImage::Format_RGB888);
+            QPainter* p = new QPainter(img);
+            p->fillRect(0,0,w,h,Qt::white);
+            ViewPainter* vp = new ViewPainter(p);
+            vp->init(p,scal,0,0,x1*scal,(y1-dy)*scal,scal,scal);
+            dia->paint(vp);
+            img->save(dlg->FileToSave());
+
+            delete vp;
+            delete p;
+            delete img;
+
+        } else {
+
+            float ratio = 300 / (this->physicalDpiX());
+            QSvgGenerator* svg1 = new QSvgGenerator();
+            svg1->setResolution(300);
+            svg1->setFileName("/home/vvk/1.svg");
+            svg1->setSize(QSize(1.12*w*ratio,1.1*h*ratio));
+            QPainter *p = new QPainter(svg1);
+            p->fillRect(0,0,svg1->size().width(),svg1->size().height(),Qt::white);
+            ViewPainter *vp = new ViewPainter(p);
+            vp->init(p,1.0,0,0,x1,(y1-dy),1.0/ratio,1.0);
+            dia->paint(vp);
+
+            delete vp;
+            delete p;
+            delete svg1;
+
+        }
     }
 
     delete dlg;

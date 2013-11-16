@@ -6,6 +6,7 @@ ExportDiagramDialog::ExportDiagramDialog(int w, int h, QWidget *parent) :
 {
     dwidth = w;
     dheight = h;
+    svg = false;
 
     lblFilename = new QLabel(tr("Save to file (Graphics format by extension)"));
     lblResolutionX = new QLabel(tr("Width  in pixels"));
@@ -19,6 +20,7 @@ ExportDiagramDialog::ExportDiagramDialog(int w, int h, QWidget *parent) :
     connect(SaveButt,SIGNAL(clicked()),this,SLOT(setFileName()));
 
     editFilename = new QLineEdit("/home/vvk/1.png");
+    connect(editFilename,SIGNAL(textChanged(QString)),this,SLOT(setSvg(QString)));
 
     editResolutionX = new QLineEdit(QString::number(dwidth));
     QIntValidator *val = new QIntValidator(0,64000);
@@ -87,8 +89,11 @@ int ExportDiagramDialog::Ypixels()
 
 void ExportDiagramDialog::setFileName()
 {
-    QString nam = QFileDialog::getSaveFileName(this,tr("Export diagram to file"),"$HOME",
-                                               "Images (*.png *.jpg *.bmp *.gif)");
+    QString nam = QFileDialog::getSaveFileName(this,tr("Export diagram to file"),QDir::homeDirPath(),
+                                               "PNG images (*.png) ;;"
+                                               "JPEG images (*.jpg) ;;"
+                                               "GIF images (*.gif) ;;"
+                                               "SVG vector graphics (*.svg)");
     editFilename->setText(nam);
 }
 
@@ -124,5 +129,25 @@ void ExportDiagramDialog::restoreOriginalWtoH()
     if (cbResolution->isChecked()) {
         editResolutionX->setText(QString::number(dwidth));
         editResolutionY->setText(QString::number(dheight));
+    }
+}
+
+bool ExportDiagramDialog::isSvg()
+{
+    return svg;
+}
+
+void ExportDiagramDialog::setSvg(QString filename)
+{
+    QFileInfo graphics_file(filename);
+    QString ext = graphics_file.suffix();
+    if (ext=="svg") {
+        svg = true;
+        cbResolution->setChecked(true);
+        cbResolution->setDisabled(true);
+        cbRatio->setChecked(true);
+    } else {
+        svg = false;
+        cbResolution->setEnabled(true);
     }
 }
