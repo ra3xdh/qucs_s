@@ -54,7 +54,7 @@ ExportDiagramDialog::ExportDiagramDialog(int w, int h, QWidget *parent) :
     lower1->addWidget(SaveButt);
     top->addLayout(lower1);
     top->addWidget(cbResolution);
-    top->addWidget(cbRatio);
+    //top->addWidget(cbRatio);
     top->addWidget(lblResolutionX);
     top->addWidget(editResolutionX);
     top->addWidget(lblResolutionY);
@@ -64,7 +64,7 @@ ExportDiagramDialog::ExportDiagramDialog(int w, int h, QWidget *parent) :
     top->addLayout(lower2);
     this->setLayout(top);
 
-
+    this->layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
 
 QString ExportDiagramDialog::FileToSave()
@@ -90,10 +90,9 @@ int ExportDiagramDialog::Ypixels()
 void ExportDiagramDialog::setFileName()
 {
     QString nam = QFileDialog::getSaveFileName(this,tr("Export diagram to file"),QDir::homeDirPath(),
+                                               "SVG vector graphics (*.svg) ;;"
                                                "PNG images (*.png) ;;"
-                                               "JPEG images (*.jpg) ;;"
-                                               "GIF images (*.gif) ;;"
-                                               "SVG vector graphics (*.svg)");
+                                               "JPEG images (*.jpg *.jpeg)");
     editFilename->setText(nam);
 }
 
@@ -141,7 +140,7 @@ void ExportDiagramDialog::setSvg(QString filename)
 {
     QFileInfo graphics_file(filename);
     QString ext = graphics_file.suffix();
-    if (ext=="svg") {
+    if ((ext=="svg")||(ext=="SVG")) {
         svg = true;
         cbResolution->setChecked(true);
         cbResolution->setDisabled(true);

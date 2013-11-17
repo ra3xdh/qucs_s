@@ -87,7 +87,6 @@ bool loadSettings()
 
 
     QucsSettings.RecentDocs = settings.value("RecentDocs").toString().split("*",QString::SkipEmptyParts);
-    //qDebug()<<QucsSettings.RecentDocs;
     QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
 
 

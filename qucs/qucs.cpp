@@ -2596,7 +2596,7 @@ void QucsApp::updateRecentFilesList(QString s)
     if (QucsSettings.RecentDocs.count()>8) {
         QucsSettings.RecentDocs.removeFirst();
     }
-    //qDebug()<<s;
+
     settings->setValue("RecentDocs",QucsSettings.RecentDocs.join("*"));
     delete settings;
 }
@@ -2619,7 +2619,6 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
     int dy = abs(((y1+y2)/2)-yc);
     w = w + dx;
     h = h + dy;
-    qDebug()<<w<<h<<xc<<yc;
 
     ExportDiagramDialog* dlg = new ExportDiagramDialog(w,h,this);
 
@@ -2631,40 +2630,71 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
             h = round(h*scal);
         }
 
+        QString filename = dlg->FileToSave();
+        QStringList filetypes;
+        QFileInfo inf(filename);
+        filetypes<<"png"<<"svg"<<"jpeg"<<"jpg"<<"PNG"<<"JPG"<<"SVG"<<"JPEG";
 
-        if (!dlg->isSvg()) {
-            QImage* img = new QImage(w,h,QImage::Format_RGB888);
-            QPainter* p = new QPainter(img);
-            p->fillRect(0,0,w,h,Qt::white);
-            ViewPainter* vp = new ViewPainter(p);
-            vp->init(p,scal,0,0,x1*scal,(y1-dy)*scal,scal,scal);
-            dia->paint(vp);
-            img->save(dlg->FileToSave());
+        if (filetypes.contains(inf.suffix())) {
 
-            delete vp;
-            delete p;
-            delete img;
+            if (!dlg->isSvg()) {
+                QImage* img = new QImage(w,h,QImage::Format_RGB888);
+                QPainter* p = new QPainter(img);
+                p->fillRect(0,0,w,h,Qt::white);
+                ViewPainter* vp = new ViewPainter(p);
+                vp->init(p,scal,0,0,x1*scal,(y1-dy)*scal,scal,scal);
+                dia->paint(vp);
+                img->save(filename);
+
+                delete vp;
+                delete p;
+                delete img;
+
+            } else {
+
+                float ratio = 300 / (this->physicalDpiX());
+                QSvgGenerator* svg1 = new QSvgGenerator();
+                svg1->setResolution(300);
+                svg1->setFileName(filename);
+                svg1->setSize(QSize(1.12*w*ratio,1.1*h*ratio));
+                QPainter *p = new QPainter(svg1);
+                p->fillRect(0,0,svg1->size().width(),svg1->size().height(),Qt::white);
+                ViewPainter *vp = new ViewPainter(p);
+                vp->init(p,1.0,0,0,x1,(y1-dy),1.0/ratio,1.0);
+                dia->paint(vp);
+
+                delete vp;
+                delete p;
+                delete svg1;
+
+            }
+
+            if (inf.exists()) {
+                QMessageBox* msg =  new QMessageBox(QMessageBox::Information,"Export diagram to graphics",
+                                                "Sucessfully exported!",
+                                                QMessageBox::Ok);
+                msg->exec();
+                delete msg;
+            } else {
+                QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,"Export diagram to graphics",
+                                                "Disk write error!",
+                                                QMessageBox::Ok);
+                msg->exec();
+                delete msg;
+            }
 
         } else {
-
-            float ratio = 300 / (this->physicalDpiX());
-            QSvgGenerator* svg1 = new QSvgGenerator();
-            svg1->setResolution(300);
-            svg1->setFileName("/home/vvk/1.svg");
-            svg1->setSize(QSize(1.12*w*ratio,1.1*h*ratio));
-            QPainter *p = new QPainter(svg1);
-            p->fillRect(0,0,svg1->size().width(),svg1->size().height(),Qt::white);
-            ViewPainter *vp = new ViewPainter(p);
-            vp->init(p,1.0,0,0,x1,(y1-dy),1.0/ratio,1.0);
-            dia->paint(vp);
-
-            delete vp;
-            delete p;
-            delete svg1;
-
+            QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,"Export diagram to graphics",
+                                                "Unsupported format of graphics file. \n"
+                                                "Use PNG, JPEG or SVG graphics!",
+                                                QMessageBox::Ok);
+            msg->exec();
+            delete msg;
         }
+
     }
 
+    dia->isSelected=true;
     delete dlg;
 
 }
