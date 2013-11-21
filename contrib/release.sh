@@ -110,7 +110,7 @@ sed -i 's/# RELEASEDIRS="$RELEASEDIRS asco"/RELEASEDIRS="$RELEASEDIRS asco"/g' c
 make distclean
 rm -rf autom4te.cache
 
-
+libtoolize
 cd qucs-core
 ./bootstrap.sh
 ./configure --enable-maintainer-mode
@@ -128,7 +128,9 @@ cd ..
 
 echo creating source archive...
 
-tar -zcvf qucs-$RELEASE.tar.gz qucs-$RELEASE
+tar -zcvhf qucs-$RELEASE.tar.gz qucs-$RELEASE
+rm -rf qucs-$RELEASE
+tar -zxvf qucs-$RELEASE.tar.gz #make the symbolic links actual files
 
 DISTS="precise quantal raring saucy"
 

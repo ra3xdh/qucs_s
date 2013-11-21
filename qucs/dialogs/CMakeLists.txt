@@ -11,12 +11,14 @@ digisettingsdialog.cpp		qucssettingsdialog.cpp vtabbar.cpp
 importdialog.cpp		savedialog.cpp vtabbeddockwidget.cpp
 labeldialog.cpp			searchdialog.cpp vtabbutton.cpp
 librarydialog.cpp		settingsdialog.cpp vtabwidget.cpp
-matchdialog.cpp			simmessage.cpp newprojdialog.cpp		sweepdialog.cpp
+matchdialog.cpp			simmessage.cpp newprojdialog.cpp		
+sweepdialog.cpp         exportdiagramdialog.cpp
 )
 
 SET(DIALOGS_MOC_HDRS
 changedialog.h
 digisettingsdialog.h
+exportdiagramdialog.h
 importdialog.h
 labeldialog.h
 librarydialog.h

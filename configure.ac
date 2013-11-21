@@ -153,7 +153,7 @@ case $host_os in
       /usr/X11R6/include/qt4 $prefix/include/qt4"
     for path in $paths; do
       if test -f "$path/Qt/qapplication.h"; then
-        QT_INCLUDES="$path -I$path/Qt -I$path/QtGui -I$path/QtCore -I$path/Qt3Support"
+        QT_INCLUDES="$path -I$path/Qt -I$path/QtGui -I$path/QtCore -I$path/Qt3Support -I$path/QtSvg"
         QT_VER=4
         break
       fi
@@ -178,7 +178,7 @@ case $host_os in
        fi])
     if test "$enable_mt" = yes; then
       QT_LDF=""
-      QT_LIB="-lQtCore -lQtGui -lQtXml -lQt3Support"
+      QT_LIB="-lQtCore -lQtGui -lQtXml -lQt3Support -lQtSvg"
       QT_INC="$QT_DEF -DQT3_SUPPORT -DQT_THREAD_SUPPORT -D_REENTRANT"
       [case $host_os in
         *freebsd4*) QT_LIB="$QT_LIB -pthread" ;;
@@ -188,13 +188,13 @@ case $host_os in
       QT_MTS="multi-threaded"
     else
       QT_LDF=""
-      QT_LIB="-lQtCore -lQtGui -lQtXml -lQt3Support"
+      QT_LIB="-lQtCore -lQtGui -lQtXml -lQt3Support -lQtSvg"
       QT_INC="$QT_DEF"
       QT_MTS="non-threaded"
     fi
     case $host_os in
       *mingw*)
-      QT_LIB="$QT_LIB  -lQtCore -lQtGui -lQtXml -lQt3Support"
+      QT_LIB="$QT_LIB  -lQtCore -lQtGui -lQtXml -lQt3Support -lQtSvg"
       QT_INC="$QT_INC -DQT_DLL -DUNICODE"
       QT_LDF="$QT_LDF -mwindows"
       ;;
@@ -249,12 +249,12 @@ case $host_os in
     with_qt=no
     dnl Check for Qt with pkg-config
     dnl Set QT_CFLAGS and QT_LIBS
-    PKG_CHECK_MODULES(QT, [QtCore QtGui QtXml Qt3Support],
+    PKG_CHECK_MODULES(QT, [QtCore QtGui QtXml Qt3Support QtSvg],
         [with_qt=yes
         QT_MOC=`$PKG_CONFIG --variable=moc_location QtCore`],
         AC_MSG_NOTICE([pkg-config could not find Qt]))
     if test "x${with_qt}" = xyes ; then
-      AC_CHECK_HEADERS([QtGui/QtGui QtCore/QtCore QtXml/QtXml],[],[])
+      AC_CHECK_HEADERS([QtGui/QtGui QtCore/QtCore QtXml/QtXml QtSvg/QtSvg],[],[])
     fi
     dnl Official Qt has no pkg-config files on OSX
     dnl Look on standart location
@@ -265,6 +265,7 @@ case $host_os in
       CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/QtGui.framework/Headers"
       CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/QtXml.framework/Headers"
       CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/Qt3Support.framework/Headers"
+      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/QtSvg.framework/Headers"      
       AC_CHECK_HEADERS(QApplication, [with_qt=yes])
       if test "x${with_qt}" = xyes ; then
         AC_PATH_PROG(QT_MOC, moc)
@@ -273,7 +274,7 @@ case $host_os in
           with_qt=no
         else
           QT_CFLAGS="$CPPFLAGS"
-          QT_LIBS="-framework QtGui -framework QtCore -framework QtXml -framework Qt3Support"
+          QT_LIBS="-framework QtGui -framework QtCore -framework QtXml -framework Qt3Support  -framework QtSvg"
           dnl Define Qt3Support
           QT_DEF="$QT_DEF -DQT_SHARED -DQT3_SUPPORT"
         fi
