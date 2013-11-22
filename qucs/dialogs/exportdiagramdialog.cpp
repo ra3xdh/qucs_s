@@ -65,6 +65,7 @@ ExportDiagramDialog::ExportDiagramDialog(int w, int h, QWidget *parent) :
     this->setLayout(top);
 
     this->layout()->setSizeConstraint(QLayout::SetFixedSize);
+    this->setWindowTitle(tr("Export diagram to raster or vector image"));
 }
 
 QString ExportDiagramDialog::FileToSave()

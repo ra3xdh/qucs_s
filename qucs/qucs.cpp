@@ -2670,23 +2670,23 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
             }
 
             if (inf.exists()) {
-                QMessageBox* msg =  new QMessageBox(QMessageBox::Information,"Export diagram to graphics",
-                                                "Sucessfully exported!",
+                QMessageBox* msg =  new QMessageBox(QMessageBox::Information,tr("Export diagram to graphics"),
+                                                tr("Sucessfully exported!"),
                                                 QMessageBox::Ok);
                 msg->exec();
                 delete msg;
             } else {
-                QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,"Export diagram to graphics",
-                                                "Disk write error!",
+                QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Export diagram to graphics"),
+                                                tr("Disk write error!"),
                                                 QMessageBox::Ok);
                 msg->exec();
                 delete msg;
             }
 
         } else {
-            QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,"Export diagram to graphics",
-                                                "Unsupported format of graphics file. \n"
-                                                "Use PNG, JPEG or SVG graphics!",
+            QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Export diagram to graphics"),
+                                                tr("Unsupported format of graphics file. \n"
+                                                "Use PNG, JPEG or SVG graphics!"),
                                                 QMessageBox::Ok);
             msg->exec();
             delete msg;
