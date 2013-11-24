@@ -147,6 +147,8 @@ QucsApp::QucsApp()
   select->setOn(true);  // switch on the 'select' action
   switchSchematicDoc(true);  // "untitled" document is schematic
 
+  lastExportFilename = QDir::homePath() + QDir::separator() + "export.png";
+
   // load documents given as command line arguments
   for(int z=1; z<qApp->argc(); z++) {
     QString arg = qApp->argv()[z];
@@ -2620,7 +2622,7 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
     w = w + dx;
     h = h + dy;
 
-    ExportDiagramDialog* dlg = new ExportDiagramDialog(w,h,this);
+    ExportDiagramDialog* dlg = new ExportDiagramDialog(w,h,lastExportFilename,this);
 
     if (dlg->exec()) {
 
@@ -2631,6 +2633,7 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
         }
 
         QString filename = dlg->FileToSave();
+        lastExportFilename = filename;
         QStringList filetypes;
         QFileInfo inf(filename);
         filetypes<<"png"<<"svg"<<"jpeg"<<"jpg"<<"PNG"<<"JPG"<<"SVG"<<"JPEG";

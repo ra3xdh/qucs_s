@@ -1,12 +1,14 @@
 #include <math.h>
 #include "exportdiagramdialog.h"
 
-ExportDiagramDialog::ExportDiagramDialog(int w, int h, QWidget *parent) :
+ExportDiagramDialog::ExportDiagramDialog(int w, int h, QString filename_, QWidget *parent) :
     QDialog(parent)
 {
     dwidth = w;
     dheight = h;
     svg = false;
+
+    filename = filename_;
 
     lblFilename = new QLabel(tr("Save to file (Graphics format by extension)"));
     lblResolutionX = new QLabel(tr("Width  in pixels"));
@@ -19,7 +21,7 @@ ExportDiagramDialog::ExportDiagramDialog(int w, int h, QWidget *parent) :
     SaveButt = new QPushButton(tr("File"));
     connect(SaveButt,SIGNAL(clicked()),this,SLOT(setFileName()));
 
-    editFilename = new QLineEdit("/home/vvk/1.png");
+    editFilename = new QLineEdit(filename);
     connect(editFilename,SIGNAL(textChanged(QString)),this,SLOT(setSvg(QString)));
 
     editResolutionX = new QLineEdit(QString::number(dwidth));
@@ -90,7 +92,8 @@ int ExportDiagramDialog::Ypixels()
 
 void ExportDiagramDialog::setFileName()
 {
-    QString nam = QFileDialog::getSaveFileName(this,tr("Export diagram to file"),QDir::homeDirPath(),
+    QFileInfo inf(filename);
+    QString nam = QFileDialog::getSaveFileName(this,tr("Export diagram to file"),inf.absolutePath(),
                                                "SVG vector graphics (*.svg) ;;"
                                                "PNG images (*.png) ;;"
                                                "JPEG images (*.jpg *.jpeg)");
