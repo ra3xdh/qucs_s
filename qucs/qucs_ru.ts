@@ -1470,27 +1470,27 @@ Successfully created library.</source>
     </message>
     <message>
         <source>Add subcircuit description</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить описание подсхемы</translation>
     </message>
     <message>
         <source>Enter description for:</source>
-        <translation type="unfinished"></translation>
+        <translation>Введите описание для:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished">Описание:</translation>
+        <translation>Описание:</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation type="unfinished"></translation>
+        <translation>Предыдущий</translation>
     </message>
     <message>
         <source>Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Сообщение:</translation>
     </message>
     <message>
         <source>No projects!</source>
-        <translation type="unfinished">Нет проектов!</translation>
+        <translation>Нет проектов!</translation>
     </message>
     <message>
         <source>Next...</source>
@@ -1503,31 +1503,34 @@ Successfully created library.</source>
     <message>
         <source>Loading subcircuit &quot;%1&quot;.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузка подсхемы &quot;%1&quot;</translation>
     </message>
     <message>
         <source>Creating Qucs netlist.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Создание списка цепей Qucs
+</translation>
     </message>
     <message>
         <source>Error: Cannot create netlist for &quot;%1&quot;.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>ОШИБКА: Невозможно создать список цепей для &quot;%1&quot;</translation>
     </message>
     <message>
         <source>Creating Verilog netlist.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Создание списка цепей Verilog
+</translation>
     </message>
     <message>
         <source>Creating VHDL netlist.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Создание списка цепей VHDL
+</translation>
     </message>
     <message>
         <source>Error creating library.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка создания библиотеки</translation>
     </message>
 </context>
 <context>
@@ -1613,7 +1616,7 @@ Successfully created library.</source>
     </message>
     <message>
         <source>Z0: </source>
-        <translation type="unfinished"></translation>
+        <translation>Z0:</translation>
     </message>
 </context>
 <context>
@@ -1762,7 +1765,7 @@ but is %1 !</source>
     <name>OctaveWindow</name>
     <message>
         <source>ERROR: Cannot start Octave!</source>
-        <translation type="unfinished"></translation>
+        <translation>ОШИБКА: Невозможно запустить Octave</translation>
     </message>
 </context>
 <context>
@@ -7516,35 +7519,35 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <source>sources</source>
-        <translation type="unfinished">источники</translation>
+        <translation>источники</translation>
     </message>
     <message>
         <source>probes</source>
-        <translation type="unfinished">измерители</translation>
+        <translation>измерители</translation>
     </message>
     <message>
         <source>transmission lines</source>
-        <translation type="unfinished"></translation>
+        <translation>линии передачи</translation>
     </message>
     <message>
         <source>nonlinear components</source>
-        <translation type="unfinished">нелинейные компоненты</translation>
+        <translation>нелинейные компоненты</translation>
     </message>
     <message>
         <source>verilog-a devices</source>
-        <translation type="unfinished">устройства verilog-a</translation>
+        <translation>устройства verilog-a</translation>
     </message>
     <message>
         <source>digital components</source>
-        <translation type="unfinished">цифровые компоненты</translation>
+        <translation>цифровые компоненты</translation>
     </message>
     <message>
         <source>file components</source>
-        <translation type="unfinished">файловые компоненты</translation>
+        <translation>файловые компоненты</translation>
     </message>
     <message>
         <source>simulations</source>
-        <translation type="unfinished">виды моделирования</translation>
+        <translation>виды моделирования</translation>
     </message>
     <message>
         <source>diagrams</source>
@@ -10582,7 +10585,7 @@ Convert data file to various file formats</source>
     </message>
     <message>
         <source>schematic</source>
-        <translation type="unfinished"></translation>
+        <translation>Схема</translation>
     </message>
     <message>
         <source>symbol</source>
@@ -10652,7 +10655,7 @@ Shows/hides the Octave dock window</source>
     </message>
     <message>
         <source>Open examples directory...</source>
-        <translation type="unfinished"></translation>
+        <translation>Отрыть каталог с примерами</translation>
     </message>
     <message>
         <source>Print Document</source>
@@ -10660,7 +10663,7 @@ Shows/hides the Octave dock window</source>
     </message>
     <message>
         <source>Opening aborted, file not found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно открыть файл. Файл не найден</translation>
     </message>
     <message>
         <source>Clear list</source>
@@ -10668,7 +10671,7 @@ Shows/hides the Octave dock window</source>
     </message>
     <message>
         <source>&amp;Examples</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть примеры</translation>
     </message>
     <message>
         <source>Opens a file explorer with example documents</source>
@@ -10704,7 +10707,7 @@ Rechecks the list of paths for files.</source>
     </message>
     <message>
         <source>Open </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Открыть</translation>
     </message>
     <message>
         <source>Technical &amp;Reports</source>
@@ -14495,11 +14498,11 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Source Code Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактор исходных текстов</translation>
     </message>
     <message>
         <source>Edit the standard paths and external applications</source>
-        <translation type="unfinished"></translation>
+        <translation>Стандартные пути и пути к внешним приложениям</translation>
     </message>
     <message>
         <source>Octave path:</source>
@@ -14519,15 +14522,15 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Select the octave bin directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Выьрать каталог bin для Octave</translation>
     </message>
     <message>
         <source>Select the home directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать домашний каталог</translation>
     </message>
     <message>
         <source>Select a directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать каталог</translation>
     </message>
 </context>
 <context>
@@ -15026,51 +15029,52 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>generic</source>
-        <translation type="unfinished"></translation>
+        <translation>generic</translation>
     </message>
     <message>
         <source>Edit Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактировать текст</translation>
     </message>
     <message>
         <source>Edits the Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактирует текст</translation>
     </message>
     <message>
         <source>Edit Text
 
 Edits the text file</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактировать текст
+Редактируется текстовый файл</translation>
     </message>
     <message>
         <source>Edit Schematic</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить схему</translation>
     </message>
     <message>
         <source>Edits the schematic</source>
-        <translation type="unfinished">Правка схемы</translation>
+        <translation>Правка схемы</translation>
     </message>
     <message>
         <source>Edit Schematic
 
 Edits the schematic</source>
-        <translation type="unfinished">Изменить схему
+        <translation>Изменить схему
 
 Правка схемы</translation>
     </message>
     <message>
         <source>Edit Circuit Symbol</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Edits the symbol for this schematic</source>
-        <translation type="unfinished">Правка обозначения для этой схемы</translation>
+        <translation>Правка обозначения для этой схемы</translation>
     </message>
     <message>
         <source>Edit Circuit Symbol
 
 Edits the symbol for this schematic</source>
-        <translation type="unfinished">Изменить обозначение схемы
+        <translation>Изменить обозначение схемы
 
 Правка обозначения для этой схемы</translation>
     </message>
@@ -15260,11 +15264,11 @@ are included in the search.</source>
     </message>
     <message>
         <source>Octave Script:</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрипт Octave:</translation>
     </message>
     <message>
         <source>run script after simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>выполнить скрипт после моделирования</translation>
     </message>
 </context>
 <context>
@@ -15441,19 +15445,19 @@ Errors:
     </message>
     <message>
         <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
+        <translation>ОШИБКА: Невозможно создать каталог VHDL &quot;%1&quot;!</translation>
     </message>
     <message>
         <source>ERROR: Cannot create &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
+        <translation>ОШИБКА: Невозможно создать &quot;%1&quot;!</translation>
     </message>
     <message>
         <source>ERROR: Cannot simulate a text file!</source>
-        <translation type="unfinished"></translation>
+        <translation>ОШИБКА: Невозможно моделировать текстовый файл</translation>
     </message>
     <message>
         <source>ERROR: Program not found: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>ОШИБКА: Программа на найдена: %1</translation>
     </message>
 </context>
 <context>
@@ -15706,11 +15710,11 @@ Inserts the skeleton of a Octave function</source>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Отменить</translation>
+        <translation>Отменить</translation>
     </message>
     <message>
         <source>Error</source>
