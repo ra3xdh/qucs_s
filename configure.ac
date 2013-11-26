@@ -195,7 +195,7 @@ case $host_os in
     fi
     case $host_os in
       *mingw*)
-      QT_LIB="$QT_LIB  -lQtCore -lQtGui -lQtXml -lQt3Support -lQtSvg"
+      QT_LIB="$QT_LIB  -lQtCore4 -lQtGui4 -lQtXml4 -lQt3Support4 -lQtSvg4"
       QT_INC="$QT_INC -DQT_DLL -DUNICODE"
       QT_LDF="$QT_LDF -mwindows"
       ;;
@@ -205,7 +205,9 @@ case $host_os in
     if test "x$QTDIR" == "x"; then
       QTDIR="nonexistent"
     fi
+
     echo "QTDIR: .$QTDIR."
+
     dnl Check library path to Qt.
     QT_LDFLAGS=""
     QT_LIBS=""
