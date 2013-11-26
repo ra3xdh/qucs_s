@@ -246,42 +246,38 @@ case $host_os in
     ;;
 
    *darwin* )
+    dnl Check for Qt in:
+    dnl  * Digia default path: /Library/Frameworks
+    dnl  * User provided path: QTDIR
+    dnl  * Homebrew defaul:    /usr/local/lib
+    dnl  * MacpPorts default   /opt/local/lib
     with_qt=no
-    dnl Check for Qt with pkg-config
-    dnl Set QT_CFLAGS and QT_LIBS
-    PKG_CHECK_MODULES(QT, [QtCore QtGui QtXml Qt3Support QtSvg],
-        [with_qt=yes
-        QT_MOC=`$PKG_CONFIG --variable=moc_location QtCore`],
-        AC_MSG_NOTICE([pkg-config could not find Qt]))
-    if test "x${with_qt}" = xyes ; then
-      AC_CHECK_HEADERS([QtGui/QtGui QtCore/QtCore QtXml/QtXml QtSvg/QtSvg],[],[])
-    fi
-    dnl Official Qt has no pkg-config files on OSX
-    dnl Look on standart location
-    if test "x${with_qt}" = xno ; then
-      AC_MSG_NOTICE([checking for Qt OS X frameworks])
-      AC_LANG(C++)
-      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/QtCore.framework/Headers"
-      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/QtGui.framework/Headers"
-      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/QtXml.framework/Headers"
-      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/Qt3Support.framework/Headers"
-      CPPFLAGS="$CPPFLAGS -I/Library/Frameworks/QtSvg.framework/Headers"      
-      AC_CHECK_HEADERS(QApplication, [with_qt=yes])
-      if test "x${with_qt}" = xyes ; then
-        AC_PATH_PROG(QT_MOC, moc)
-        if test "x$QT_MOC" = x ; then
-          echo moc not found
-          with_qt=no
-        else
-          QT_CFLAGS="$CPPFLAGS"
-          QT_LIBS="-framework QtGui -framework QtCore -framework QtXml -framework Qt3Support  -framework QtSvg"
-          dnl Define Qt3Support
-          QT_DEF="$QT_DEF -DQT_SHARED -DQT3_SUPPORT"
-        fi
+    AC_MSG_CHECKING([for Qt OS X framework])
+    paths="$QTDIR/lib /Library/Frameworks /opt/local/lib /usr/local/lib"
+    for path in $paths; do
+      if test -f "$path/QtGui.framework/Headers/QApplication"; then
+        with_qt=yes
+        break
       fi
+    done
+
+    if test "x${with_qt}" = xyes ; then
+      AC_MSG_RESULT([found in $path])
+      QT_LIBS="-framework QtGui -framework QtCore -framework QtXml -framework Qt3Support -framework QtSvg"
+      CPPFLAGS="$CPPFLAGS -I$path/QtCore.framework/Headers"
+      CPPFLAGS="$CPPFLAGS -I$path/QtGui.framework/Headers"
+      CPPFLAGS="$CPPFLAGS -I$path/QtXml.framework/Headers"
+      CPPFLAGS="$CPPFLAGS -I$path/Qt3Support.framework/Headers"
+      CPPFLAGS="$CPPFLAGS -I$path/QtSvg.framework/Headers"
+      QT_CFLAGS="$CPPFLAGS"
+    else
+      AC_MSG_ERROR([not found])
     fi
+
+    dnl Define Qt3Support
+    QT_DEF="-DQT_SHARED -DQT3_SUPPORT"
     QT_LDFLAGS="-Wl -headerpad_max_install_names"
-    CXXFLAGS="$CXXFLAGS $QT_CFLAGS $QT_INCLUDES $QT_DEF"
+    CXXFLAGS="$CXXFLAGS $QT_CFLAGS $QT_DEF"
     ;;
 esac
 
