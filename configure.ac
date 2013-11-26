@@ -77,7 +77,7 @@ if test "x$GCC" = xyes; then
   CFLAGS="$CFLAGS -pipe"
   CXXFLAGS="$CXXFLAGS -pipe -fno-exceptions -fno-check-new"
   if test x$WIN32 = xyes; then
-    CXXFLAGS="$CXXFLAGS -fno-rtti"
+    CXXFLAGS="$CXXFLAGS"
   fi
   if test $USE_MAINTAINER_MODE = yes; then
     CFLAGS="$CFLAGS -W -Wall -Wmissing-prototypes"
