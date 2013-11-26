@@ -19,7 +19,7 @@
 
 #include "vtabbutton.h"
 #include <QString>
-#include <qstyle.h>
+#include <QStyle>
 #include <QPainter>
 #include <QApplication>
  #include <QStyleOption>

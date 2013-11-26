@@ -21,7 +21,7 @@
 #include "vtabbar.h"
 
 #include <QLayout>
-#include <qtooltip.h>
+#include <QToolTip>
 //Added by qt3to4:
 #include <Q3VBoxLayout>
 

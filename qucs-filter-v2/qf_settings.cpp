@@ -17,7 +17,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
-#include <QDom>
+#include <QtXml>
 
 #include "qf_box.h"
 #include "qf_settings.h"

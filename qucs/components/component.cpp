@@ -24,7 +24,7 @@
 #include <QPainter>
 #include <QTabWidget>
 #include <QMessageBox>
-#include <QDom>
+#include <QtXml>
 #include <Q3Dict>
 
 #include "components.h"

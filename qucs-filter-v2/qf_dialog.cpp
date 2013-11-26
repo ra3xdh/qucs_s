@@ -27,7 +27,7 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QCheckBox>
-#include <qradiobutton.h>
+#include <QRadioButton>
 #include <Q3ButtonGroup>
 #include <QPushButton>
 #include <Q3HBox>
