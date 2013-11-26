@@ -19,7 +19,7 @@
 # include <config.h>
 #endif
 
-#include <q3popupmenu.h>
+#include <Q3PopupMenu>
 #include <QMenuBar>
 #include <QLayout>
 #include <QTabWidget>
@@ -28,9 +28,9 @@
 #include <QLabel>
 #include <QCheckBox>
 #include <qradiobutton.h>
-#include <q3buttongroup.h>
+#include <Q3ButtonGroup>
 #include <QPushButton>
-#include <q3hbox.h>
+#include <Q3HBox>
 #include <QMessageBox>
 
 #include "qf_dialog.h"

@@ -20,7 +20,7 @@
 
 
 #include <QTextEdit>
-#include <q3textedit.h>
+#include <Q3TextEdit>
 #include <QFont>
 
 #include "qucsdoc.h"

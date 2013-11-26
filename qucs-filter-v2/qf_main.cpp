@@ -3,10 +3,10 @@
 #endif
 
 #include <QBuffer>
-#include <q3textstream.h>
+#include <Q3TextStream>
 #include <QObject>
 #include <QApplication>
-#include <q3textedit.h>
+#include <Q3TextEdit>
 #include <QDir>
 #include <QTextCodec>
 #include <QClipboard>

@@ -23,7 +23,7 @@
 
 #include <QPainter>
 #include <QString>
-#include <q3ptrlist.h>
+#include <Q3PtrList>
 
 class Wire;
 class Node;

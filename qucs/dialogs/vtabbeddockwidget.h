@@ -21,7 +21,7 @@
 #define VTABBEDDOCKWIDGET_H
 
 #include "vtabglobal.h"
-#include <q3dockwindow.h>
+#include <Q3DockWindow>
 
 class VTabWidget;
 

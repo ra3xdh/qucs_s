@@ -22,7 +22,7 @@
 #include "vtabwidget.h"
 
 #include <QLayout>
-#include <q3widgetstack.h>
+#include <Q3WidgetStack>
 //Added by qt3to4:
 #include <Q3HBoxLayout>
 

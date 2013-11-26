@@ -28,7 +28,7 @@
 #include <QString>
 #include <QStringList>
 #include <QMessageBox>
-#include <q3textstream.h>
+#include <Q3TextStream>
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>

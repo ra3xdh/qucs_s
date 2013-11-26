@@ -19,7 +19,7 @@
 #define QUCS_H
 
 #include <QtGui>
-//#include <q3mainwindow.h>
+//#include <Q3MainWindow>
 #include <QMainWindow>
 #include <QString>
 #include <QDir>

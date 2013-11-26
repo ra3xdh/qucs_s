@@ -19,7 +19,7 @@
 #include <limits.h>
 
 #include <QPainter>
-//#include <q3dragobject.h>
+//#include <Q3DragObject>
 //Added by qt3to4:
 #include <QPaintEvent>
 #include <QPixmap>

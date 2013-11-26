@@ -30,7 +30,7 @@
 #include <QTextCodec>
 #include <QTranslator>
 #include <QFile>
-#include <q3textstream.h>
+#include <Q3TextStream>
 #include <QMessageBox>
 #include <QRegExp>
 

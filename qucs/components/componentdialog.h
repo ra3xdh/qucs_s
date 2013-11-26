@@ -21,13 +21,13 @@
 #include "component.h"
 #include <QLabel>
 #include <QDialog>
-#include <q3listview.h>
+#include <Q3ListView>
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QRegExp>
 #include <QComboBox>
 #include <QPushButton>
-#include <q3ptrlist.h>
+#include <Q3PtrList>
 #include <QDir>
 //Added by qt3to4:
 #include <Q3GridLayout>

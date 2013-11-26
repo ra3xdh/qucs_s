@@ -25,7 +25,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QLineEdit>
-#include <q3textedit.h>
+#include <Q3TextEdit>
 #include <QPushButton>
 
 #include <math.h>

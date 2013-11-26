@@ -27,13 +27,13 @@
 
 #include <QLabel>
 #include <QLayout>
-#include <q3hbox.h>
-#include <q3vbox.h>
+#include <Q3HBox>
+#include <Q3VBox>
 #include <QLineEdit>
 #include <QValidator>
-#include <q3filedialog.h>
+#include <Q3FileDialog>
 #include <QPushButton>
-#include <q3listbox.h>
+#include <Q3ListBox>
 #include <QCheckBox>
 #include <QProcess>
 #include <QMessageBox>

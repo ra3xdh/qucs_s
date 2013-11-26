@@ -20,7 +20,7 @@
 
 #include "element.h"
 
-#include <q3ptrlist.h>
+#include <Q3PtrList>
 //Added by qt3to4:
 #include <QMouseEvent>
 #include <Q3PopupMenu>

@@ -19,7 +19,7 @@
 
 #include "htmldatafetcher.h"
 #include <QMimeData>
-#include <q3dragobject.h>
+#include <Q3DragObject>
 //Added by qt3to4:
 #include <Q3TextStream>
 #include <Q3MimeSourceFactory>

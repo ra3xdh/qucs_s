@@ -18,7 +18,7 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-#include <q3ptrlist.h>
+#include <Q3PtrList>
 #include <QPen>
 #include <QPoint>
 #include <QWidget>

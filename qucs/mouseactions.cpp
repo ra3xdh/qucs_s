@@ -39,7 +39,7 @@
 #include <QClipboard>
 #include <QApplication>
 #include <QMessageBox>
-#include <q3popupmenu.h>
+#include <Q3PopupMenu>
 #include <QEvent>
 #include <QAction>
 #include <QTabWidget>

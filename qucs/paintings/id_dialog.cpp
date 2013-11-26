@@ -18,14 +18,14 @@
 #include "id_dialog.h"
 #include "id_text.h"
 
-#include <q3hbox.h>
-#include <q3vbox.h>
+#include <Q3HBox>
+#include <Q3VBox>
 #include <QLabel>
 #include <QLayout>
-#include <q3listview.h>
+#include <Q3ListView>
 #include <QCheckBox>
 #include <QLineEdit>
-#include <q3vgroupbox.h>
+#include <Q3VGroupBox>
 #include <QValidator>
 #include <QPushButton>
 #include <QMessageBox>

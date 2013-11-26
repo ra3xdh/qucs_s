@@ -7,14 +7,14 @@
 #include "qf_box.h"
 #include "qf_dialog.h"
 
-#include <q3button.h>
+#include <Q3Button>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QLabel>
 #include <QValidator>
 #include <QPushButton>
-#include <q3buttongroup.h>
+#include <Q3ButtonGroup>
 #include <qradiobutton.h>
 
 // static  QButton::ToggleState  OrderBoxState = QButton::Off;

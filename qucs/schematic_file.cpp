@@ -23,9 +23,9 @@
 #include <QDir>
 #include <QStringList>
 #include <QRegExp>
-#include <q3textedit.h>
+#include <Q3TextEdit>
 #include <QTextEdit>
-#include <q3ptrlist.h>
+#include <Q3PtrList>
 //Added by qt3to4:
 #include <Q3TextStream>
 #include <Q3ValueList>

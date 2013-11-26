@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <list>
-#include <q3textstream.h>
+#include <Q3TextStream>
 #include <QString>
 
 using namespace std;

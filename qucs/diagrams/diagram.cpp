@@ -27,7 +27,7 @@
 #endif
 #include <locale.h>
 
-#include <q3textstream.h>
+#include <Q3TextStream>
 #include <QMessageBox>
 #include <QRegExp>
 #include <QDateTime>

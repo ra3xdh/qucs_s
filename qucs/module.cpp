@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 #include <QtGui>
-#include <q3dict.h>
+#include <Q3Dict>
 #include <QString>
 #include <QStringList>
 //Added by qt3to4:

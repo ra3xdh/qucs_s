@@ -17,7 +17,7 @@
 #include <QtGui>
 #include <QDir>
 #include <QFile>
-#include <q3textstream.h>
+#include <Q3TextStream>
 #include <QRegExp>
 #include <QString>
 #include <QStringList>

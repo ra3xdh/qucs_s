@@ -23,7 +23,7 @@
 #include "element.h"
 
 #include <QColor>
-#include <q3ptrlist.h>
+#include <Q3PtrList>
 #include <QDateTime>
 
 

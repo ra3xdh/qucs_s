@@ -28,7 +28,7 @@
 #include <QValidator>
 #include <QMessageBox>
 #include <QPushButton>
-//#include <q3scrollview.h> //-->QAbstractScrollArea and QScrollArea
+//#include <Q3ScrollView> //-->QAbstractScrollArea and QScrollArea
 #include <QRadioButton>
 #include <QButtonGroup>
 #include <QVBoxLayout>

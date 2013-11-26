@@ -20,7 +20,7 @@
 
 #include <QDialog>
 #include <QRegExp>
-#include <q3ptrlist.h>
+#include <Q3PtrList>
 
 #include <QSpinBox>
 #include <QGridLayout>

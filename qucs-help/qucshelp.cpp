@@ -26,11 +26,11 @@
 #include <QAction>
 #include <QPixmap>
 #include <QFile>
-#include <q3textstream.h>
-#include <q3popupmenu.h>
+#include <Q3TextStream>
+#include <Q3PopupMenu>
 #include <QMenuBar>
 #include <QApplication>
-#include <q3listview.h>
+#include <Q3ListView>
 
 
 

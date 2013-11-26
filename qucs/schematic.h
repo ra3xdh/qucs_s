@@ -34,9 +34,9 @@
 #include "viewpainter.h"
 #include "node.h"
 
-#include <q3scrollview.h>
+#include <Q3ScrollView>
 #include <QPainter>
-#include <q3ptrlist.h>
+#include <Q3PtrList>
 #include <QFile>
 #include <QStringList>
 

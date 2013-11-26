@@ -19,7 +19,7 @@
 
 #include <QLayout>
 #include <QLabel>
-#include <q3hbox.h>
+#include <Q3HBox>
 #include <QPushButton>
 #include <QValidator>
 //Added by qt3to4:

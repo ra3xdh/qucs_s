@@ -29,10 +29,10 @@
 #include <QPrinter>
 #include <QLineEdit>
 #include <QFileInfo>
-#include <q3iconview.h>
+#include <Q3IconView>
 #include <QTabWidget>
-#include <q3dragobject.h>
-#include <q3paintdevicemetrics.h>
+#include <Q3DragObject>
+#include <Q3PaintDeviceMetrics>
 #include <QDir>
 
 #include "qucs.h"

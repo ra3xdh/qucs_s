@@ -7,13 +7,13 @@
 #include "main.h"
 
 #include <QSize>
-#include <q3vbox.h>
+#include <Q3VBox>
 #include <QColor>
-#include <q3accel.h>
+#include <Q3Accel>
 #include <QLayout>
 #include <QLineEdit>
-#include <q3textedit.h>
-#include <q3dockwindow.h>
+#include <Q3TextEdit>
+#include <Q3DockWindow>
 //Added by qt3to4:
 #include <Q3VBoxLayout>
 #include <QKeyEvent>

@@ -25,7 +25,7 @@
 #include <QTabWidget>
 #include <QMessageBox>
 #include <QDom>
-#include <q3dict.h>
+#include <Q3Dict>
 
 #include "components.h"
 #include "node.h"

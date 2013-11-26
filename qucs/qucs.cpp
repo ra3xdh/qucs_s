@@ -26,7 +26,7 @@
 
 
 #include <QProcess>
-#include <q3syntaxhighlighter.h>
+#include <Q3SyntaxHighlighter>
 //Added by qt3to4:
 #include <Q3PtrList>
 #include <Q3TextEdit>

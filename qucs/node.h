@@ -20,7 +20,7 @@
 
 #include "element.h"
 
-#include <q3ptrlist.h>
+#include <Q3PtrList>
 
 class ViewPainter;
 class WireLabel;

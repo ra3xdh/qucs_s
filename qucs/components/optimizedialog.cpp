@@ -23,13 +23,13 @@
 #include "opt_sim.h"
 #include "schematic.h"
 
-#include <q3hbox.h>
+#include <Q3HBox>
 #include <QLabel>
 #include <QLayout>
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QComboBox>
-#include <q3listview.h>
+#include <Q3ListView>
 #include <QTabWidget>
 #include <QValidator>
 #include <QPushButton>

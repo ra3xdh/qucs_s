@@ -18,8 +18,8 @@
 #ifndef QUCSHELP_H
 #define QUCSHELP_H
 
-#include <q3mainwindow.h>
-#include <q3textbrowser.h>
+#include <Q3MainWindow>
+#include <Q3TextBrowser>
 #include <QDir>
 #include <QFont>
 #include <QStringList>

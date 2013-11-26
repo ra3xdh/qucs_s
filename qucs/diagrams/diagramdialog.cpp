@@ -26,25 +26,25 @@
 
 #include <math.h>
 
-#include <q3vbox.h>
+#include <Q3VBox>
 #include <QLayout>
-//#include <q3hbuttongroup.h>
-#include <q3buttongroup.h>
-#include <q3hgroupbox.h>
+//#include <Q3HButtonGroup>
+#include <Q3ButtonGroup>
+#include <Q3HGroupBox>
 #include <QPushButton>
 #include <QTabWidget>
 #include <QLabel>
 #include <QStringList>
 #include <QMessageBox>
-#include <q3ptrlist.h>
+#include <Q3PtrList>
 #include <QValidator>
 #include <QColorDialog>
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QSlider>
 #include <QComboBox>
-#include <q3listview.h>
-#include <q3listbox.h>
+#include <Q3ListView>
+#include <Q3ListBox>
 
 
 #define CROSS3D_SIZE   30
