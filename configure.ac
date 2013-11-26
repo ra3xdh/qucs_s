@@ -153,7 +153,8 @@ case $host_os in
       /usr/X11R6/include/qt4 $prefix/include/qt4"
     for path in $paths; do
       if test -f "$path/Qt/qapplication.h"; then
-        QT_INCLUDES="$path -I$path/Qt -I$path/QtGui -I$path/QtCore -I$path/Qt3Support -I$path/QtSvg"
+        QT_INCLUDES="$path -I$path/Qt -I$path/QtGui -I$path/QtCore -I$path/QtSvg -I$path/QtXml"
+        QT_INCLUDES="$QT_INCLUDES -I$path/Qt3Support"
         QT_VER=4
         break
       fi
