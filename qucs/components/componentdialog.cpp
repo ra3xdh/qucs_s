@@ -27,10 +27,10 @@
 
 #include <q3hbox.h>
 #include <q3vbox.h>
-#include <qlayout.h>
+#include <QLayout>
 #include <q3hgroupbox.h>
-#include <qvalidator.h>
-#include <qtabwidget.h>
+#include <QValidator>
+#include <QTabWidget>
 #include <q3filedialog.h>
 
 #include <math.h>

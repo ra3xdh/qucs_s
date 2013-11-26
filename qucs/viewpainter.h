@@ -18,7 +18,7 @@
 #ifndef VIEWPAINTER_H
 #define VIEWPAINTER_H
 
-#include <qpainter.h>
+#include <QPainter>
 
 #define TO_INT(f)   (f > 0.0 ? int(f + 0.5) : int(f - 0.5))
 

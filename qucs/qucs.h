@@ -21,8 +21,8 @@
 #include <QtGui>
 //#include <q3mainwindow.h>
 #include <QMainWindow>
-#include <qstring.h>
-#include <qdir.h>
+#include <QString>
+#include <QDir>
 //Added by qt3to4:
 #include <QLabel>
 #include <Q3PtrList>

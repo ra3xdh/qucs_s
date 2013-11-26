@@ -19,9 +19,9 @@
 #define COMPONENT_H
 
 #include <q3ptrlist.h>
-#include <qpen.h>
-#include <qpoint.h>
-#include <qwidget.h>
+#include <QPen>
+#include <QPoint>
+#include <QWidget>
 
 #include "element.h"
 

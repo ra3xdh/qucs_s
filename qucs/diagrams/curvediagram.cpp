@@ -28,7 +28,7 @@
 # include <ieeefp.h>
 #endif
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include "curvediagram.h"
 #include "main.h"

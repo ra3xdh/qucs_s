@@ -22,9 +22,9 @@
 #include "main.h"
 #include "schematic.h"
 
-#include <qregexp.h>
-#include <qdir.h>
-#include <qfileinfo.h>
+#include <QRegExp>
+#include <QDir>
+#include <QFileInfo>
 
 
 Verilog_File::Verilog_File()

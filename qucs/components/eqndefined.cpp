@@ -19,7 +19,7 @@
 #include "main.h"
 #include "schematic.h"
 
-#include <qfileinfo.h>
+#include <QFileInfo>
 
 
 EqnDefined::EqnDefined()

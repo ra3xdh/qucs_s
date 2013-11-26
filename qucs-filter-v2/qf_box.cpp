@@ -8,12 +8,12 @@
 #include "qf_dialog.h"
 
 #include <q3button.h>
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qcheckbox.h>
-#include <qlabel.h>
-#include <qvalidator.h>
-#include <qpushbutton.h>
+#include <QComboBox>
+#include <QLineEdit>
+#include <QCheckBox>
+#include <QLabel>
+#include <QValidator>
+#include <QPushButton>
 #include <q3buttongroup.h>
 #include <qradiobutton.h>
 

@@ -19,7 +19,7 @@
 # include <config.h>
 #endif
 
-#include <qfileinfo.h>
+#include <QFileInfo>
 
 #include "qucsdoc.h"
 #include "qucs.h"

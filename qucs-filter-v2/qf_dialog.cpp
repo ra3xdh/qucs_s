@@ -20,18 +20,18 @@
 #endif
 
 #include <q3popupmenu.h>
-#include <qmenubar.h>
-#include <qlayout.h>
-#include <qtabwidget.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
+#include <QMenuBar>
+#include <QLayout>
+#include <QTabWidget>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QLabel>
+#include <QCheckBox>
 #include <qradiobutton.h>
 #include <q3buttongroup.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 #include <q3hbox.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include "qf_dialog.h"
 //Added by qt3to4:
@@ -110,7 +110,7 @@ FilterDialog::FilterDialog (QWidget * parent) : QDialog (parent)
   gp1->addWidget(AngleLabel,3,3);
   EnterAngle = new QLineEdit(Tab1);
   gp1->addWidget(EnterAngle,3,4);
-  AngleUnitLabel = new QLabel(tr("°"),Tab1);
+  AngleUnitLabel = new QLabel(tr("Â°"),Tab1);
   gp1->addWidget(AngleUnitLabel,3,5);
 
   ZinLabel = new QLabel(tr("Zin"),Tab1);

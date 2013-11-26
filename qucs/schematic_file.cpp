@@ -19,10 +19,10 @@
 # include <config.h>
 #endif
 #include <QtGui>
-#include <qmessagebox.h>
-#include <qdir.h>
-#include <qstringlist.h>
-#include <qregexp.h>
+#include <QMessageBox>
+#include <QDir>
+#include <QStringList>
+#include <QRegExp>
 #include <q3textedit.h>
 #include <QTextEdit>
 #include <q3ptrlist.h>

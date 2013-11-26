@@ -35,14 +35,14 @@
 #include "diagrams/timingdiagram.h"
 #include "dialogs/labeldialog.h"
 
-#include <qinputdialog.h>
-#include <qclipboard.h>
-#include <qapplication.h>
-#include <qmessagebox.h>
+#include <QInputDialog>
+#include <QClipboard>
+#include <QApplication>
+#include <QMessageBox>
 #include <q3popupmenu.h>
-#include <qevent.h>
-#include <qaction.h>
-#include <qtabwidget.h>
+#include <QEvent>
+#include <QAction>
+#include <QTabWidget>
 
 #include <limits.h>
 #include <stdlib.h>

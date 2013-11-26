@@ -22,11 +22,11 @@
 #include "graphictextdialog.h"
 #include "schematic.h"
 #include "qucs.h"
-#include <qwidget.h>
-#include <qpainter.h>
-#include <qlineedit.h>
+#include <QWidget>
+#include <QPainter>
+#include <QLineEdit>
 #include <q3textedit.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 
 #include <math.h>
 

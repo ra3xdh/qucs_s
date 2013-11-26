@@ -27,22 +27,22 @@
 #include <math.h>
 
 #include <q3vbox.h>
-#include <qlayout.h>
+#include <QLayout>
 //#include <q3hbuttongroup.h>
 #include <q3buttongroup.h>
 #include <q3hgroupbox.h>
-#include <qpushbutton.h>
-#include <qtabwidget.h>
-#include <qlabel.h>
-#include <qstringlist.h>
-#include <qmessagebox.h>
+#include <QPushButton>
+#include <QTabWidget>
+#include <QLabel>
+#include <QStringList>
+#include <QMessageBox>
 #include <q3ptrlist.h>
-#include <qvalidator.h>
-#include <qcolordialog.h>
-#include <qlineedit.h>
-#include <qcheckbox.h>
-#include <qslider.h>
-#include <qcombobox.h>
+#include <QValidator>
+#include <QColorDialog>
+#include <QLineEdit>
+#include <QCheckBox>
+#include <QSlider>
+#include <QComboBox>
 #include <q3listview.h>
 #include <q3listbox.h>
 

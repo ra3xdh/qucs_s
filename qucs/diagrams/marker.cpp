@@ -21,9 +21,9 @@
 #include "main.h"
 #include "../dialogs/matchdialog.h" //For r2z function
 
-#include <qstring.h>
-#include <qwidget.h>
-#include <qpainter.h>
+#include <QString>
+#include <QWidget>
+#include <QPainter>
 
 #include <limits.h>
 #include <math.h>

@@ -24,16 +24,16 @@
 #include "schematic.h"
 
 #include <q3hbox.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qcheckbox.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
+#include <QLabel>
+#include <QLayout>
+#include <QCheckBox>
+#include <QLineEdit>
+#include <QComboBox>
 #include <q3listview.h>
-#include <qtabwidget.h>
-#include <qvalidator.h>
-#include <qpushbutton.h>
-#include <qmessagebox.h>
+#include <QTabWidget>
+#include <QValidator>
+#include <QPushButton>
+#include <QMessageBox>
 //Added by qt3to4:
 #include <Q3GridLayout>
 #include <Q3VBoxLayout>

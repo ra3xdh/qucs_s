@@ -18,7 +18,7 @@
 #ifndef FILLDIALOG_H
 #define FILLDIALOG_H
 
-#include <qdialog.h>
+#include <QDialog>
 #include <QLabel>
 #include <QVBoxLayout>
 

@@ -18,8 +18,8 @@
 #ifndef QUCSDOC_H
 #define QUCSDOC_H
 
-#include <qstring.h>
-#include <qdatetime.h>
+#include <QString>
+#include <QDateTime>
 
 class QucsApp;
 class QPrinter;

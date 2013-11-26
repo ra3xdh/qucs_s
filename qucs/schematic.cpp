@@ -22,18 +22,18 @@
 #include <stdlib.h>
 #include <limits.h>
 
-#include <qimage.h>
-#include <qaction.h>
-#include <qregexp.h>
-#include <qicon.h>
-#include <qprinter.h>
-#include <qlineedit.h>
-#include <qfileinfo.h>
+#include <QImage>
+#include <QAction>
+#include <QRegExp>
+#include <QIcon>
+#include <QPrinter>
+#include <QLineEdit>
+#include <QFileInfo>
 #include <q3iconview.h>
-#include <qtabwidget.h>
+#include <QTabWidget>
 #include <q3dragobject.h>
 #include <q3paintdevicemetrics.h>
-#include <qdir.h>
+#include <QDir>
 
 #include "qucs.h"
 //Added by qt3to4:

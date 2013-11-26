@@ -25,8 +25,8 @@
 #define M_PI 3.1415926535897932384626433832795029
 #endif
 
-#include <qdialog.h>
-#include <qregexp.h>
+#include <QDialog>
+#include <QRegExp>
 //Added by qt3to4:
 #include <Q3VBoxLayout>
 #include <QLabel>

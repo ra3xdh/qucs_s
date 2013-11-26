@@ -28,7 +28,7 @@
 # include <ieeefp.h>
 #endif
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include "rectdiagram.h"
 #include "main.h"

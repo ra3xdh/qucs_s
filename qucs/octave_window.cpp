@@ -6,12 +6,12 @@
 #include "octave_window.h"
 #include "main.h"
 
-#include <qsize.h>
+#include <QSize>
 #include <q3vbox.h>
-#include <qcolor.h>
+#include <QColor>
 #include <q3accel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
+#include <QLayout>
+#include <QLineEdit>
 #include <q3textedit.h>
 #include <q3dockwindow.h>
 //Added by qt3to4:

@@ -21,7 +21,7 @@
 #define VERTICALTABWIDGET_H
 
 #include "vtabglobal.h"
-#include <qwidget.h>
+#include <QWidget>
 
 class Q3WidgetStack;
 class VTabBar;

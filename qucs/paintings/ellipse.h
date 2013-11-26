@@ -20,7 +20,7 @@
 
 #include "painting.h"
 
-#include <qpen.h>
+#include <QPen>
 
 
 class Ellipse : public Painting  {

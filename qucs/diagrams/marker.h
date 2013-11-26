@@ -22,7 +22,7 @@
 #include "element.h"
 #include "viewpainter.h"
 
-#include <qpainter.h>
+#include <QPainter>
 #include <q3valuelist.h>
 
 class Diagram;

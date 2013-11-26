@@ -20,8 +20,8 @@
 #include <QtGui>
 #include "component.h"
 
-#include <qobject.h>
-#include <qdatetime.h>
+#include <QObject>
+#include <QDateTime>
 //Added by qt3to4:
 #include <Q3TextStream>
 

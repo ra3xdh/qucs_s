@@ -19,16 +19,16 @@
 #define COMPONENTDIALOG_H
 #include <QtGui>
 #include "component.h"
-#include <qlabel.h>
-#include <qdialog.h>
+#include <QLabel>
+#include <QDialog>
 #include <q3listview.h>
-#include <qlineedit.h>
-#include <qcheckbox.h>
-#include <qregexp.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
+#include <QLineEdit>
+#include <QCheckBox>
+#include <QRegExp>
+#include <QComboBox>
+#include <QPushButton>
 #include <q3ptrlist.h>
-#include <qdir.h>
+#include <QDir>
 //Added by qt3to4:
 #include <Q3GridLayout>
 #include <Q3VBoxLayout>

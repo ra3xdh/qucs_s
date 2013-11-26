@@ -17,7 +17,7 @@
 
 #include "arrowdialog.h"
 
-//#include <qlayout.h>
+//#include <QLayout>
 #include <QLabel>
 #include <QValidator>
 #include <QColorDialog>

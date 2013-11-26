@@ -19,9 +19,9 @@
 #include "arrowdialog.h"
 #include "schematic.h"
 
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qcombobox.h>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QComboBox>
 //Added by qt3to4:
 #include <Q3PointArray>
 #include <math.h>

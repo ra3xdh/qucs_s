@@ -26,9 +26,9 @@
 #include "main.h"
 #include "schematic.h"
 
-#include <qdir.h>
-#include <qfileinfo.h>
-#include <qregexp.h>
+#include <QDir>
+#include <QFileInfo>
+#include <QRegExp>
 
 #include <math.h>
 #include <limits.h>

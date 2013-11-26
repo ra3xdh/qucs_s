@@ -18,7 +18,7 @@
  ***************************************************************************/
 
 #include "htmldatafetcher.h"
-#include <qmime.h>
+#include <QMimeData>
 #include <q3dragobject.h>
 //Added by qt3to4:
 #include <Q3TextStream>

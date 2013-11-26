@@ -20,15 +20,15 @@
 
 #include <q3hbox.h>
 #include <q3vbox.h>
-#include <qlabel.h>
-#include <qlayout.h>
+#include <QLabel>
+#include <QLayout>
 #include <q3listview.h>
-#include <qcheckbox.h>
-#include <qlineedit.h>
+#include <QCheckBox>
+#include <QLineEdit>
 #include <q3vgroupbox.h>
-#include <qvalidator.h>
-#include <qpushbutton.h>
-#include <qmessagebox.h>
+#include <QValidator>
+#include <QPushButton>
+#include <QMessageBox>
 //Added by qt3to4:
 #include <Q3VBoxLayout>
 

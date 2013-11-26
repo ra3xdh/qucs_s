@@ -24,15 +24,15 @@
 #include <math.h>
 #include <locale.h>
 
-#include <qapplication.h>
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qfile.h>
+#include <QApplication>
+#include <QString>
+#include <QStringList>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QFile>
 #include <q3textstream.h>
-#include <qmessagebox.h>
-#include <qregexp.h>
+#include <QMessageBox>
+#include <QRegExp>
 
 #include "qucs.h"
 #include "main.h"

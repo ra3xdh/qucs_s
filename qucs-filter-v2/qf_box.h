@@ -1,7 +1,7 @@
 // API for the dialog box
 // We need those Qt headers in order to compile properly
-#include <qobject.h>
-#include <qapplication.h>
+#include <QObject>
+#include <QApplication>
 #include "qf_common.h"
 #include "qf_dialog.h"
 

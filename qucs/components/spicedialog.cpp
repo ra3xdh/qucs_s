@@ -25,19 +25,19 @@
 #include <Q3VBoxLayout>
 #include "schematic.h"
 
-#include <qlabel.h>
-#include <qlayout.h>
+#include <QLabel>
+#include <QLayout>
 #include <q3hbox.h>
 #include <q3vbox.h>
-#include <qlineedit.h>
-#include <qvalidator.h>
+#include <QLineEdit>
+#include <QValidator>
 #include <q3filedialog.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 #include <q3listbox.h>
-#include <qcheckbox.h>
+#include <QCheckBox>
 #include <QProcess>
-#include <qmessagebox.h>
-#include <qcombobox.h>
+#include <QMessageBox>
+#include <QComboBox>
 
 
 SpiceDialog::SpiceDialog(SpiceFile *c, Schematic *d)

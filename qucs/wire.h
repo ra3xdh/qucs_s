@@ -23,8 +23,8 @@
 #include "components/component.h"    // because of struct Port
 #include "wirelabel.h"
 
-#include <qpainter.h>
-#include <qstring.h>
+#include <QPainter>
+#include <QString>
 #include <q3ptrlist.h>
 
 

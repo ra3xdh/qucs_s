@@ -28,9 +28,9 @@
 #include <locale.h>
 
 #include <q3textstream.h>
-#include <qmessagebox.h>
-#include <qregexp.h>
-#include <qdatetime.h>
+#include <QMessageBox>
+#include <QRegExp>
+#include <QDateTime>
 //Added by qt3to4:
 #include <Q3CString>
 

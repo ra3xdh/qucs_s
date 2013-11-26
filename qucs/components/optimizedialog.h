@@ -18,8 +18,8 @@
 #ifndef OPTIMIZEDIALOG_H
 #define OPTIMIZEDIALOG_H
 
-#include <qdialog.h>
-#include <qregexp.h>
+#include <QDialog>
+#include <QRegExp>
 //Added by qt3to4:
 #include <Q3VBoxLayout>
 

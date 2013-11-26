@@ -21,7 +21,7 @@
 
 #include <QTextEdit>
 #include <q3textedit.h>
-#include <qfont.h>
+#include <QFont>
 
 #include "qucsdoc.h"
 

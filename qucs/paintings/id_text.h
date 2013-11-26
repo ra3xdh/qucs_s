@@ -20,7 +20,7 @@
 
 #include "painting.h"
 
-#include <qstring.h>
+#include <QString>
 #include <q3ptrlist.h>
 
 struct SubParameter {

@@ -18,10 +18,10 @@
  ***************************************************************************/
 
 #include "vtabbutton.h"
-#include <qstring.h>
+#include <QString>
 #include <qstyle.h>
-#include <qpainter.h>
-#include <qapplication.h>
+#include <QPainter>
+#include <QApplication>
  #include <QStyleOption>
 #include <QStylePainter>
 

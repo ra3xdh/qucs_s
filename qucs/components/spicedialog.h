@@ -18,9 +18,9 @@
 #ifndef SPICEDIALOG_H
 #define SPICEDIALOG_H
 
-#include <qdialog.h>
-#include <qregexp.h>
-#include <qdir.h>
+#include <QDialog>
+#include <QRegExp>
+#include <QDir>
 //Added by qt3to4:
 #include <Q3TextStream>
 #include <Q3VBoxLayout>

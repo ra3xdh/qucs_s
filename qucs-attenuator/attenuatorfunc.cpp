@@ -15,7 +15,7 @@
 
 #include "attenuatorfunc.h"
 
-#include <qstring.h>
+#include <QString>
 
 QUCS_Att::QUCS_Att(){}
 QUCS_Att::~QUCS_Att(){}

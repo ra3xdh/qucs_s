@@ -15,10 +15,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qstring.h>
-#include <qregexp.h>
-#include <qfile.h>
-#include <qfileinfo.h>
+#include <QString>
+#include <QRegExp>
+#include <QFile>
+#include <QFileInfo>
 
 #include "vafile.h"
 

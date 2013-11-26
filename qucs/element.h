@@ -18,8 +18,8 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
-#include <qpen.h>
-#include <qbrush.h>
+#include <QPen>
+#include <QBrush>
 
 
 class Node;

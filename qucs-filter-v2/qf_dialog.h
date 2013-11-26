@@ -18,7 +18,7 @@
 #ifndef FILTERDIALOG_H
 #define FILTERDIALOG_H
 
-#include <qdialog.h>
+#include <QDialog>
 //Added by qt3to4:
 #include <Q3VBoxLayout>
 #include <QLabel>

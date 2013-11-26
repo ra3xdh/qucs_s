@@ -20,7 +20,7 @@
 #ifndef VERTICALTABBUTTON_H
 #define VERTICALTABBUTTON_H
 
-#include <qpushbutton.h>
+#include <QPushButton>
 #include <QStyleOptionButton>
 #include "vtabglobal.h"
 

@@ -4,7 +4,7 @@
 #include <vector>
 #include <list>
 #include <q3textstream.h>
-#include <qstring.h>
+#include <QString>
 
 using namespace std;
 

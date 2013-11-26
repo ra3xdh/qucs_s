@@ -17,14 +17,14 @@
 #include <QtGui>
 #include <stdlib.h>
 
-#include <qdir.h>
-#include <qpen.h>
-#include <qpoint.h>
-#include <qstring.h>
-#include <qpainter.h>
-#include <qtabwidget.h>
-#include <qmessagebox.h>
-#include <qdom.h>
+#include <QDir>
+#include <QPen>
+#include <QPoint>
+#include <QString>
+#include <QPainter>
+#include <QTabWidget>
+#include <QMessageBox>
+#include <QDom>
 #include <q3dict.h>
 
 #include "components.h"

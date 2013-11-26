@@ -11,13 +11,13 @@
 # include <config.h>
 #endif
 
-#include <qfile.h>
-#include <qdir.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qdom.h>
+#include <QFile>
+#include <QDir>
+#include <QMessageBox>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QLineEdit>
+#include <QDom>
 
 #include "qf_box.h"
 #include "qf_settings.h"

@@ -21,7 +21,7 @@
 
 #include "displaydialog.h"
 
-//#include <qlayout.h>
+//#include <QLayout>
 #include <QPushButton>
 #include <QTextEdit>
 #include <QGroupBox>
