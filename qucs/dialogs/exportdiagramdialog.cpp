@@ -41,7 +41,7 @@ ExportDiagramDialog::ExportDiagramDialog(int w, int h, QWidget *parent) :
     connect(editFilename,SIGNAL(textChanged(QString)),this,SLOT(setSvg(QString)));
 
     editResolutionX = new QLineEdit(QString::number(dwidth));
-    QIntValidator *val = new QIntValidator(0,64000);
+    QIntValidator *val = new QIntValidator(0,64000,this);
     editResolutionX->setValidator(val);
     editResolutionX->setEnabled(false);
     editResolutionY = new QLineEdit(QString::number(dheight));
