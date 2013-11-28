@@ -1,3 +1,27 @@
+qucs (0.0.18.131128-4) saucy; urgency=low
+
+  * Some fixes in Graphics export dialog
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Thu, 28 Nov 2013 20:27:29 +0100
+
+qucs (0.0.18.131128-3) raring; urgency=low
+
+  * Some fixes in Graphics export dialog
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Thu, 28 Nov 2013 20:26:16 +0100
+
+qucs (0.0.18.131128-2) quantal; urgency=low
+
+  * Some fixes in Graphics export dialog
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Thu, 28 Nov 2013 20:25:04 +0100
+
+qucs (0.0.18.131128-1) precise; urgency=low
+
+  * Some fixes in Graphics export dialog
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Thu, 28 Nov 2013 20:22:58 +0100
+
 qucs (0.0.18.131121.1-4) saucy; urgency=low
 
   * Added required QSvg library
