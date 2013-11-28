@@ -20,6 +20,8 @@
 ExportDiagramDialog::ExportDiagramDialog(int w, int h, QWidget *parent) :
     QDialog(parent)
 {
+
+    setCaption(tr("Export graphics"));
     dwidth = w;
     dheight = h;
     svg = false;
@@ -105,11 +107,28 @@ int ExportDiagramDialog::Ypixels()
 
 void ExportDiagramDialog::setFileName()
 {
-    QString nam = QFileDialog::getSaveFileName(this,tr("Export diagram to file"),QDir::homeDirPath(),
-                                               "SVG vector graphics (*.svg) ;;"
-                                               "PNG images (*.png) ;;"
-                                               "JPEG images (*.jpg *.jpeg)");
-    editFilename->setText(nam);
+    /*QString nam = dialog.getSaveFileName(this,tr("Export diagram to file"),QDir::homeDirPath(),
+                                         "SVG vector graphics (*.svg) ;;"
+                                         "PNG images (*.png) ;;"
+                                         "JPEG images (*.jpg *.jpeg)");
+    */
+    QFileDialog dialog(this, tr("Export diagram to file"), QDir::homeDirPath(),
+                       "SVG vector graphics (*.svg) ;;"
+                       "PNG images (*.png) ;;"
+                       "JPEG images (*.jpg *.jpeg)" );
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    if(dialog.exec())
+    {
+        QString nam = dialog.selectedFile();
+        QString extension;
+        if(dialog.selectedNameFilter().contains("*.png")) extension=QString(".png");
+        if(dialog.selectedNameFilter().contains("*.jpg")) extension=QString(".jpg");
+        if(dialog.selectedNameFilter().contains("*.svg")) extension=QString(".svg");
+        if(nam.toLower().section("/",-1,-1).contains(".")) //has the user specified an extension?
+            editFilename->setText(nam); //yes, just leave unchanged
+        else
+            editFilename->setText(nam+extension); //no, add extension
+    }
 }
 
 void ExportDiagramDialog::calcWidth()
