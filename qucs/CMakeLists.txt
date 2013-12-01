@@ -30,8 +30,8 @@ if(UNIX AND NOT APPLE)
   #set(BIN_INSTALL_DIR "bin")
   #set(DOC_INSTALL_DIR "share/doc/${PROJECT_NAME_LOWERCASE}/")
 else()
-  set(BIN_INSTALL_DIR ".")
-  set(DOC_INSTALL_DIR ".")
+  #set(BIN_INSTALL_DIR ".")
+  #set(DOC_INSTALL_DIR ".")
 endif()
 
 #
@@ -54,18 +54,25 @@ CONFIGURE_FILE (
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR} )
 
-FIND_PACKAGE( Qt4 REQUIRED )
+FIND_PACKAGE( Qt4 4.6.3 REQUIRED QtCore QtGui Qt3Support QtSvg QtXml )
+INCLUDE( ${QT_USE_FILE} )
 
-SET( QT_USE_QT TRUE )
-SET( QT_USE_QTXML TRUE )
-SET( QT_USE_QTSVG TRUE )
-SET( QT_USE_QTCORE TRUE )
-SET( QT_USE_QTGUI TRUE )
-SET( QT_USE_QT3SUPPORT TRUE )
+MESSAGE("QT_LIBRARIES=[${QT_LIBRARIES}]")
+
+# For some reason, on Windows QT_LIBRARIES point to static(?) .a libs
+# which do not provide the needed symbols. They are found on
+# the .dll libraries.
+IF(WIN32)
+  LINK_DIRECTORIES("${QT_BINARY_DIR}")
+
+  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(QT_LIBRARIES QtCored4 QtGuid4 Qt3Supportd4 QtSvgd4 QtXmld4)
+  else()
+    set(QT_LIBRARIES QtCore4 QtGui4 Qt3Support4 QtSvg4 QtXml4)
+  ENDIF()
+ENDIF(WIN32)
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
-
-INCLUDE( ${QT_USE_FILE} )
 
 #ADD_SUBDIRECTORY( bitmaps ) -> added as resources
 ADD_SUBDIRECTORY( components )
