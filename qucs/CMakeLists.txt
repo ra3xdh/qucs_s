@@ -198,8 +198,8 @@ IF(WIN32)
 ENDIF(WIN32)
 
 #
-# Install the Qucs application, on Apple, the bundle is at the root of the
-# install tree, and on other platforms it'll go into the bin directory.
+# Install the Qucs application, on Apple, the bundle is
+# installed as on other platforms it'll go into the bin directory.
 #
 INSTALL(TARGETS qucs
     BUNDLE DESTINATION bin COMPONENT Runtime

@@ -103,7 +103,7 @@ SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}")
 IF(APPLE)
   SET(plugin_dest_dir ${PROJECT_NAME}.app/Contents/MacOS)
   SET(qtconf_dest_dir ${PROJECT_NAME}.app/Contents/Resources)
-  SET(APPS "${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.app")
+  SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}.app")
 ENDIF(APPLE)
 
 IF(WIN32)
@@ -115,7 +115,7 @@ ENDIF(WIN32)
 # install tree, and on other platforms it'll go into the bin directory.
 #
 INSTALL(TARGETS ${PROJECT_NAME} 
-    BUNDLE DESTINATION . COMPONENT Runtime
+    BUNDLE DESTINATION bin COMPONENT Runtime
     RUNTIME DESTINATION bin COMPONENT Runtime
     )
 
@@ -126,7 +126,7 @@ INSTALL(TARGETS ${PROJECT_NAME}
 # One can cull what gets copied by using 'REGEX "..." EXCLUDE'
 #
 IF(APPLE)
-  INSTALL(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION ${plugin_dest_dir}/plugins COMPONENT Runtime)
+  INSTALL(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION bin/${plugin_dest_dir}/plugins COMPONENT Runtime)
 ENDIF()
 #
 # install a qt.conf file
@@ -134,7 +134,7 @@ ENDIF()
 #
 IF(APPLE)
 INSTALL(CODE "
-    file(WRITE \"\${CMAKE_INSTALL_PREFIX}/${qtconf_dest_dir}/qt.conf\" \"\")
+    file(WRITE \"\${CMAKE_INSTALL_PREFIX}/bin/${qtconf_dest_dir}/qt.conf\" \"\")
     " COMPONENT Runtime)
 ENDIF()
 
@@ -156,7 +156,7 @@ ENDIF()
 IF(APPLE)
 INSTALL(CODE "
     file(GLOB_RECURSE QTPLUGINS
-      \"\${CMAKE_INSTALL_PREFIX}/${plugin_dest_dir}/plugins/*${CMAKE_SHARED_LIBRARY_SUFFIX}\")
+      \"\${CMAKE_INSTALL_PREFIX}/bin/${plugin_dest_dir}/plugins/*${CMAKE_SHARED_LIBRARY_SUFFIX}\")
     include(BundleUtilities)
     fixup_bundle(\"${APPS}\" \"\${QTPLUGINS}\" \"${DIRS}\")
     " COMPONENT Runtime)
