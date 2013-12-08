@@ -2676,19 +2676,7 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
 
             }
 
-            if (inf.exists()) {
-                QMessageBox* msg =  new QMessageBox(QMessageBox::Information,tr("Export diagram to graphics"),
-                                                tr("Sucessfully exported!"),
-                                                QMessageBox::Ok);
-                msg->exec();
-                delete msg;
-            } else {
-                QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Export diagram to graphics"),
-                                                tr("Disk write error!"),
-                                                QMessageBox::Ok);
-                msg->exec();
-                delete msg;
-            }
+        successExportMessages(inf.exists());
 
         } else {
             QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Export diagram to graphics"),
@@ -2704,4 +2692,45 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
     dia->isSelected=true;
     delete dlg;
 
+}
+
+void QucsApp::slotSaveSchematicToGraphicsFile()
+{
+    qDebug()<<"sch export";
+}
+
+
+void QucsApp::slotExportAsImage()
+{
+    QucsDoc *doc = getDoc();
+    QString name = doc->DocName;
+
+    if (view->focusElement) {
+            if (view->focusElement->Type == isDiagram) {
+                slotSaveDiagramToGraphicsFile();
+            }
+    } else {
+        if (!(name.endsWith(".dpl"))) {
+            slotSaveSchematicToGraphicsFile();
+        }
+    }
+
+
+}
+
+void QucsApp::successExportMessages(bool ok)
+{
+    if (ok) {
+        QMessageBox* msg =  new QMessageBox(QMessageBox::Information,tr("Export diagram to graphics"),
+                                        tr("Sucessfully exported!"),
+                                        QMessageBox::Ok);
+        msg->exec();
+        delete msg;
+    } else {
+        QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Export diagram to graphics"),
+                                        tr("Disk write error!"),
+                                        QMessageBox::Ok);
+        msg->exec();
+        delete msg;
+    }
 }

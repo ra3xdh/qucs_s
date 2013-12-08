@@ -842,7 +842,7 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
       if (focusElement) {
           if (focusElement->Type == isDiagram) {
 
-              ComponentMenu->insertItem(QObject::tr("Export Graphics"), QucsMain,
+              ComponentMenu->insertItem(QObject::tr("Export as image"), QucsMain,
                       SLOT(slotSaveDiagramToGraphicsFile()));
           }
       }

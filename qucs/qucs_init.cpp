@@ -278,6 +278,9 @@ void QucsApp::initActions()
   //mainAccel->connectItem(mainAccel->insertItem(Qt::Key_Backspace),
   //                       editDelete, SLOT(toggle()) );
 
+  exportAsImage = new QAction(tr("Export as image"),this);
+  connect(exportAsImage,SIGNAL(activated()),SLOT(slotExportAsImage()));
+
   // cursor left/right/up/down to move marker on a graph
   cursorLeft = new QShortcut(QKeySequence(Qt::Key_Left), this);
   connect(cursorLeft, SIGNAL(activated()), SLOT(slotCursorLeft()));
@@ -672,6 +675,7 @@ void QucsApp::initMenuBar()
   fileMenu->addAction(fileSave);
   fileMenu->addAction(fileSaveAll);
   fileMenu->addAction(fileSaveAs);
+  fileMenu->addAction(exportAsImage);
   fileMenu->addAction(filePrint);
   fileMenu->addAction(filePrintFit);
   fileMenu->insertSeparator();

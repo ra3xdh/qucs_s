@@ -179,6 +179,8 @@ public:
           *editCut, *editCopy, *magAll, *magOne, *magMinus, *filePrintFit,
           *symEdit, *intoH, *popH, *simulate, *dpl_sch, *undo, *redo, *dcbias;
 
+  QAction *exportAsImage;
+
   QAction *activeAction;    // pointer to the action selected by the user
 
 private:
@@ -226,6 +228,7 @@ private:
   void closeFile(int);
 
   void updateRecentFilesList(QString s);
+  void successExportMessages(bool ok);
 
 public:
 
@@ -346,7 +349,9 @@ public slots:
   void slotAddToProject();
   void slotApplyCompText();
   void slotOpenRecent(int num);
+  void slotExportAsImage();
   void slotSaveDiagramToGraphicsFile();
+  void slotSaveSchematicToGraphicsFile();
 
 private slots:
   void slotCursorLeft();
