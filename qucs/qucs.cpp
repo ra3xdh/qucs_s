@@ -2696,6 +2696,52 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
 
 void QucsApp::slotSaveSchematicToGraphicsFile()
 {
+    Schematic *sch = (Schematic*)DocumentTab->currentPage();
+
+    int xmin= INT_MAX,
+        ymin= INT_MAX,
+        xmax= INT_MIN,
+        ymax= INT_MIN;
+
+    float scal=1.0;
+
+    bool exportAll = true;
+
+    for(Component *pc = sch->Components->first(); pc != 0; pc = sch->Components->next()) {
+        int x1,y1,x2,y2,d;
+        pc->Bounding(x1,x2,y1,y2);
+
+        d = std::min(x1,x2);
+        if (d<xmin) xmin=d;
+        d = std::max(x2,x1);
+        if (d>xmax) xmax=d;
+        d = std::min(y1,y2);
+        if (d<ymin) ymin=d;
+        d = std::max(y2,y1);
+        if (d>xmax) ymax=d;
+    }
+
+    qDebug()<<xmin<<ymin<<xmax<<ymax;
+
+    int w = abs(xmax - xmin);
+    int h = abs(ymax - ymin);
+
+    qDebug()<<w<<h;
+
+    QImage* img = new QImage(w,h,QImage::Format_RGB888);
+    QPainter* p = new QPainter(img);
+    p->fillRect(0,0,w,h,Qt::white);
+    ViewPainter* vp = new ViewPainter(p);
+    vp->init(p,scal,0,0,0,0,scal,scal); // рассчитать смещение отн. нуля !!!
+
+    sch->paintSchToViewpainter(vp,exportAll,true);
+
+    img->save("/home/vvk/1.png");
+
+    delete vp;
+    delete p;
+    delete img;
+
     qDebug()<<"sch export";
 }
 

@@ -76,6 +76,9 @@ public:
   void setChanged(bool, bool fillStack=false, char Op='*');
   void paintGrid(ViewPainter*, int, int, int, int);
   void print(QPrinter*, QPainter*, bool, bool);
+
+  void paintSchToViewpainter(ViewPainter* p, bool printAll, bool toImage, int screenDpiX=96, int printerDpiX=300);
+
   void PostPaintEvent(PE pe, int x1=0, int y1=0, int x2=0, int y2=0, int a=0, int b=0,bool PaintOnViewport=false);
 
   float textCorr();

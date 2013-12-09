@@ -636,45 +636,7 @@ void Schematic::print(QPrinter*, QPainter *Painter, bool printAll, bool fitToPag
   if(!symbolMode)
     paintFrame(&p);
 
-  for(Component *pc = Components->first(); pc != 0; pc = Components->next())
-    if(pc->isSelected || printAll) {
-      selected = pc->isSelected;
-      pc->isSelected = false;
-      pc->print(&p, screenDpiX / printerDpiX);
-      pc->isSelected = selected;
-    }
-
-  for(Wire *pw = Wires->first(); pw != 0; pw = Wires->next()) {
-    if(pw->isSelected || printAll) {
-      selected = pw->isSelected;
-      pw->isSelected = false;
-      pw->paint(&p);   // paint all selected wires
-      pw->isSelected = selected;
-    }
-    if(pw->Label)
-      if(pw->Label->isSelected || printAll) {
-        selected = pw->Label->isSelected;
-        pw->Label->isSelected = false;
-        pw->Label->paint(&p);
-        pw->Label->isSelected = selected;
-      }
-  }
-
-  Element *pe;
-  for(Node *pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
-    for(pe = pn->Connections.first(); pe != 0; pe = pn->Connections.next())
-      if(pe->isSelected || printAll) {
-        pn->paint(&p); // paint all nodes with selected elements
-        break;
-      }
-    if(pn->Label)
-      if(pn->Label->isSelected || printAll) {
-        selected = pn->Label->isSelected;
-        pn->Label->isSelected = false;
-        pn->Label->paint(&p);
-        pn->Label->isSelected = selected;
-      }
-  }
+  paintSchToViewpainter(&p,printAll,false,screenDpiX,printerDpiX);
 
   Graph  *pg;
   Marker *pm;
@@ -715,6 +677,56 @@ void Schematic::print(QPrinter*, QPainter *Painter, bool printAll, bool fitToPag
     }
 
   Painter->setFont(oldFont);
+}
+
+
+void Schematic::paintSchToViewpainter(ViewPainter *p, bool printAll, bool toImage, int screenDpiX, int printerDpiX)
+{
+    bool selected;
+
+    for(Component *pc = Components->first(); pc != 0; pc = Components->next())
+      if(pc->isSelected || printAll) {
+        selected = pc->isSelected;
+        pc->isSelected = false;
+        if (toImage) {
+            pc->paint(p);
+        } else {
+            pc->print(p, screenDpiX / printerDpiX);
+        }
+        pc->isSelected = selected;
+      }
+
+    for(Wire *pw = Wires->first(); pw != 0; pw = Wires->next()) {
+      if(pw->isSelected || printAll) {
+        selected = pw->isSelected;
+        pw->isSelected = false;
+        pw->paint(p);   // paint all selected wires
+        pw->isSelected = selected;
+      }
+      if(pw->Label)
+        if(pw->Label->isSelected || printAll) {
+          selected = pw->Label->isSelected;
+          pw->Label->isSelected = false;
+          pw->Label->paint(p);
+          pw->Label->isSelected = selected;
+        }
+    }
+
+    Element *pe;
+    for(Node *pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
+      for(pe = pn->Connections.first(); pe != 0; pe = pn->Connections.next())
+        if(pe->isSelected || printAll) {
+          pn->paint(p); // paint all nodes with selected elements
+          break;
+        }
+      if(pn->Label)
+        if(pn->Label->isSelected || printAll) {
+          selected = pn->Label->isSelected;
+          pn->Label->isSelected = false;
+          pn->Label->paint(p);
+          pn->Label->isSelected = selected;
+        }
+    }
 }
 
 // -----------------------------------------------------------
