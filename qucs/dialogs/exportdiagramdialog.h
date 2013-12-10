@@ -26,7 +26,7 @@ class ExportDiagramDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ExportDiagramDialog(int w, int h, QWidget *parent = 0);
+    explicit ExportDiagramDialog(int w, int h, QString filename_, QWidget *parent = 0);
     
 private:
     QPushButton* ExportButt;
@@ -52,6 +52,8 @@ private:
     int dwidth, dheight;
 
     bool svg;
+
+    QString filename;
 
 public:
     QString FileToSave();

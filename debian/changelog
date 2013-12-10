@@ -1,3 +1,27 @@
+qucs (0.0.18.131202-4) saucy; urgency=low
+
+  * snapshot
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Mon, 02 Dec 2013 08:41:24 +0100
+
+qucs (0.0.18.131202-3) raring; urgency=low
+
+  * snapshot
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Mon, 02 Dec 2013 08:40:47 +0100
+
+qucs (0.0.18.131202-2) quantal; urgency=low
+
+  * snapshot
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Mon, 02 Dec 2013 08:40:15 +0100
+
+qucs (0.0.18.131202-1) precise; urgency=low
+
+  * snapshot
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Mon, 02 Dec 2013 08:06:52 +0100
+
 qucs (0.0.18.131128-4) saucy; urgency=low
 
   * Some fixes in Graphics export dialog
