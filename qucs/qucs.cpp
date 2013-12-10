@@ -2709,16 +2709,26 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
 
     for(Component *pc = sch->Components->first(); pc != 0; pc = sch->Components->next()) {
         int x1,y1,x2,y2,d;
-        pc->Bounding(x1,x2,y1,y2);
+        pc->entireBounds(x1,x2,y1,y2,sch->textCorr());
 
         d = std::min(x1,x2);
-        if (d<xmin) xmin=d;
+        if (d<xmin) xmin = d;
         d = std::max(x2,x1);
-        if (d>xmax) xmax=d;
+        if (d>xmax) xmax = d;
         d = std::min(y1,y2);
-        if (d<ymin) ymin=d;
+        if (d<ymin) ymin = d;
         d = std::max(y2,y1);
-        if (d>xmax) ymax=d;
+        if (d>ymax) ymax = d;
+    }
+
+    for(Wire *pw = sch->Wires->first(); pw != 0; pw = sch->Wires->next()) {
+        int xc,yc;
+        pw->getCenter(xc,yc);
+
+        if (xc<xmin) xmin = xc;
+        if (xc>xmax) xmax = xc;
+        if (yc<ymin) ymin = yc;
+        if (yc>ymax) ymax = yc;
     }
 
     qDebug()<<xmin<<ymin<<xmax<<ymax;
@@ -2732,7 +2742,7 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
     QPainter* p = new QPainter(img);
     p->fillRect(0,0,w,h,Qt::white);
     ViewPainter* vp = new ViewPainter(p);
-    vp->init(p,scal,0,0,0,0,scal,scal); // рассчитать смещение отн. нуля !!!
+    vp->init(p,scal,0,0,xmin,ymin,scal,scal); // рассчитать смещение отн. нуля !!!
 
     sch->paintSchToViewpainter(vp,exportAll,true);
 
