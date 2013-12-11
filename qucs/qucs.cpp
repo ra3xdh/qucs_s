@@ -2734,8 +2734,8 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
 
     qDebug()<<xmin<<ymin<<xmax<<ymax;
 
-    int w = abs(xmax - xmin) + 20;
-    int h = abs(ymax - ymin) + 20;
+    int w = abs(xmax - xmin) + 30;
+    int h = abs(ymax - ymin) + 30;
 
     qDebug()<<w<<h;
 
@@ -2743,7 +2743,7 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
     QPainter* p = new QPainter(img);
     p->fillRect(0,0,w,h,Qt::white);
     ViewPainter* vp = new ViewPainter(p);
-    vp->init(p,scal,0,0,xmin*scal,ymin*scal,scal,scal);
+    vp->init(p,scal,0,0,xmin*scal-15,ymin*scal-15,scal,scal);
 
     sch->paintSchToViewpainter(vp,exportAll,true);
 

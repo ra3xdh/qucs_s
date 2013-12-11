@@ -668,15 +668,7 @@ void Schematic::print(QPrinter*, QPainter *Painter, bool printAll, bool fitToPag
       }
     }
 
-  for(Painting *pp = Paintings->first(); pp != 0; pp = Paintings->next())
-    if(pp->isSelected || printAll) {
-      selected = pp->isSelected;
-      pp->isSelected = false;
-      pp->paint(&p);   // paint all selected paintings
-      pp->isSelected = selected;
-    }
-
-  Painter->setFont(oldFont);
+    Painter->setFont(oldFont);
 }
 
 
@@ -727,6 +719,14 @@ void Schematic::paintSchToViewpainter(ViewPainter *p, bool printAll, bool toImag
           pn->Label->isSelected = selected;
         }
     }
+
+    for(Painting *pp = Paintings->first(); pp != 0; pp = Paintings->next())
+      if(pp->isSelected || printAll) {
+        selected = pp->isSelected;
+        pp->isSelected = false;
+        pp->paint(p);   // paint all selected paintings
+        pp->isSelected = selected;
+      }
 }
 
 // -----------------------------------------------------------
