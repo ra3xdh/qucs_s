@@ -26,7 +26,7 @@ class ExportDiagramDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ExportDiagramDialog(int w, int h, QString filename_, QWidget *parent = 0);
+    explicit ExportDiagramDialog(int w, int h, QString filename_, bool diagram_=true, QWidget *parent = 0);
     
 private:
     QPushButton* ExportButt;
@@ -39,6 +39,7 @@ private:
 
     QCheckBox* cbResolution;
     QCheckBox* cbRatio;
+    QCheckBox* cbSelected;
 
     QLineEdit* editFilename;
     QLineEdit* editResolutionX;
@@ -51,13 +52,14 @@ private:
 
     int dwidth, dheight;
 
-    bool svg;
+    bool svg, diagram;
 
     QString filename;
 
 public:
     QString FileToSave();
     bool isOriginalSize();
+    bool isExportSelected();
     int Xpixels();
     int Ypixels();
     bool isSvg();

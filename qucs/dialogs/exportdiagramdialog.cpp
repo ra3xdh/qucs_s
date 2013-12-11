@@ -17,7 +17,7 @@
 #include <math.h>
 #include "exportdiagramdialog.h"
 
-ExportDiagramDialog::ExportDiagramDialog(int w, int h, QString filename_, QWidget *parent) :
+ExportDiagramDialog::ExportDiagramDialog(int w, int h, QString filename_, bool diagram_, QWidget *parent) :
     QDialog(parent)
 {
 
@@ -25,6 +25,7 @@ ExportDiagramDialog::ExportDiagramDialog(int w, int h, QString filename_, QWidge
     dwidth = w;
     dheight = h;
     svg = false;
+    diagram = diagram_;
 
     filename = filename_;
 
@@ -64,6 +65,14 @@ ExportDiagramDialog::ExportDiagramDialog(int w, int h, QString filename_, QWidge
     connect(editResolutionX,SIGNAL(textEdited(QString)),this,SLOT(calcHeight()));
     connect(editResolutionY,SIGNAL(textEdited(QString)),this,SLOT(calcWidth()));
 
+    cbSelected = new QCheckBox(tr("Export selected only"));
+    cbSelected->setChecked(false);
+
+    if (!diagram) {
+        cbResolution->setEnabled(false);
+        cbRatio->setEnabled(false);
+    }
+
     top = new QVBoxLayout;
     lower1 = new QHBoxLayout;
     lower2 = new QHBoxLayout;
@@ -79,6 +88,11 @@ ExportDiagramDialog::ExportDiagramDialog(int w, int h, QString filename_, QWidge
     top->addWidget(editResolutionX);
     top->addWidget(lblResolutionY);
     top->addWidget(editResolutionY);
+
+    if (!diagram) {
+        top->addWidget(cbSelected);
+    }
+
     lower2->addWidget(ExportButt);
     lower2->addWidget(CancelButt);
     top->addLayout(lower2);
@@ -175,6 +189,11 @@ bool ExportDiagramDialog::isSvg()
     return svg;
 }
 
+bool ExportDiagramDialog::isExportSelected()
+{
+    return cbSelected->isChecked();
+}
+
 void ExportDiagramDialog::setSvg(QString filename)
 {
     QFileInfo graphics_file(filename);
@@ -186,6 +205,8 @@ void ExportDiagramDialog::setSvg(QString filename)
         cbRatio->setChecked(true);
     } else {
         svg = false;
-        cbResolution->setEnabled(true);
+        if (diagram) {
+            cbResolution->setEnabled(true);
+        }
     }
 }
