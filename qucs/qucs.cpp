@@ -2709,7 +2709,7 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
 
     for(Component *pc = sch->Components->first(); pc != 0; pc = sch->Components->next()) {
         int x1,y1,x2,y2,d;
-        pc->entireBounds(x1,x2,y1,y2,sch->textCorr());
+        pc->entireBounds(x1,y1,x2,y2,sch->textCorr());
 
         d = std::min(x1,x2);
         if (d<xmin) xmin = d;
@@ -2719,6 +2719,7 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
         if (d<ymin) ymin = d;
         d = std::max(y2,y1);
         if (d>ymax) ymax = d;
+
     }
 
     for(Wire *pw = sch->Wires->first(); pw != 0; pw = sch->Wires->next()) {
@@ -2733,8 +2734,8 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
 
     qDebug()<<xmin<<ymin<<xmax<<ymax;
 
-    int w = abs(xmax - xmin);
-    int h = abs(ymax - ymin);
+    int w = abs(xmax - xmin) + 20;
+    int h = abs(ymax - ymin) + 20;
 
     qDebug()<<w<<h;
 
@@ -2742,7 +2743,7 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
     QPainter* p = new QPainter(img);
     p->fillRect(0,0,w,h,Qt::white);
     ViewPainter* vp = new ViewPainter(p);
-    vp->init(p,scal,0,0,xmin,ymin,scal,scal); // рассчитать смещение отн. нуля !!!
+    vp->init(p,scal,0,0,xmin*scal,ymin*scal,scal,scal);
 
     sch->paintSchToViewpainter(vp,exportAll,true);
 
