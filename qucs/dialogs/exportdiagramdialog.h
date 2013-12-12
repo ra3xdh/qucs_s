@@ -63,6 +63,7 @@ public:
     int Xpixels();
     int Ypixels();
     bool isSvg();
+    bool isValidFilename();
 
 signals:
     

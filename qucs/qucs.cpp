@@ -2638,11 +2638,8 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
 
         QString filename = dlg->FileToSave();
         lastExportFilename = filename;
-        QStringList filetypes;
-        QFileInfo inf(filename);
-        filetypes<<"png"<<"svg"<<"jpeg"<<"jpg"<<"PNG"<<"JPG"<<"SVG"<<"JPEG";
 
-        if (filetypes.contains(inf.suffix())) {
+        if (dlg->isValidFilename()) {
 
             if (!dlg->isSvg()) {
                 QImage* img = new QImage(w,h,QImage::Format_RGB888);
@@ -2676,7 +2673,7 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
 
             }
 
-        successExportMessages(inf.exists());
+            successExportMessages(QFile::exists(filename));
 
         } else {
             QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Export diagram to graphics"),
@@ -2706,6 +2703,8 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
     float scal=1.0;
 
     bool exportAll = true;
+
+
 
     for(Component *pc = sch->Components->first(); pc != 0; pc = sch->Components->next()) {
         int x1,y1,x2,y2,d;
@@ -2739,19 +2738,24 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
 
     qDebug()<<w<<h;
 
-    QImage* img = new QImage(w,h,QImage::Format_RGB888);
-    QPainter* p = new QPainter(img);
-    p->fillRect(0,0,w,h,Qt::white);
-    ViewPainter* vp = new ViewPainter(p);
-    vp->init(p,scal,0,0,xmin*scal-15,ymin*scal-15,scal,scal);
+    ExportDiagramDialog* dlg = new ExportDiagramDialog(w,h,lastExportFilename,false,this);
 
-    sch->paintSchToViewpainter(vp,exportAll,true);
+    if (dlg->exec()) {
+        QImage* img = new QImage(w,h,QImage::Format_RGB888);
+        QPainter* p = new QPainter(img);
+        p->fillRect(0,0,w,h,Qt::white);
+        ViewPainter* vp = new ViewPainter(p);
+        vp->init(p,scal,0,0,xmin*scal-15,ymin*scal-15,scal,scal);
 
-    img->save("/home/vvk/1.png");
+        sch->paintSchToViewpainter(vp,exportAll,true);
 
-    delete vp;
-    delete p;
-    delete img;
+        img->save("/home/vvk/1.png");
+
+        delete vp;
+        delete p;
+        delete img;
+    }
+
 
     qDebug()<<"sch export";
 }

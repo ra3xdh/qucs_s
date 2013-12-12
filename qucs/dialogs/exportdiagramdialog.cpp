@@ -210,3 +210,17 @@ void ExportDiagramDialog::setSvg(QString filename)
         }
     }
 }
+
+bool ExportDiagramDialog::isValidFilename()
+{
+    QString nam = editFilename->text();
+    QStringList filetypes;
+    QFileInfo inf(nam);
+    filetypes<<"png"<<"svg"<<"jpeg"<<"jpg"<<"PNG"<<"JPG"<<"SVG"<<"JPEG";
+
+    if (filetypes.contains(inf.suffix())) {
+        return true;
+    } else {
+        return false;
+    }
+}
