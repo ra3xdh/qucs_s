@@ -2655,16 +2655,14 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
                 delete img;
 
             } else {
-
-                float ratio = 300 / (this->physicalDpiX());
                 QSvgGenerator* svg1 = new QSvgGenerator();
-                svg1->setResolution(300);
+                svg1->setResolution(this->physicalDpiX());
                 svg1->setFileName(filename);
-                svg1->setSize(QSize(1.12*w*ratio,1.1*h*ratio));
+                svg1->setSize(QSize(1.12*w,1.1*h));
                 QPainter *p = new QPainter(svg1);
                 p->fillRect(0,0,svg1->size().width(),svg1->size().height(),Qt::white);
                 ViewPainter *vp = new ViewPainter(p);
-                vp->init(p,1.0,0,0,x1,(y1-dy),1.0/ratio,1.0);
+                vp->init(p,1.0,0,0,x1,(y1-dy),1.0,1.0);
                 dia->paint(vp);
 
                 delete vp;
@@ -2741,19 +2739,54 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
     ExportDiagramDialog* dlg = new ExportDiagramDialog(w,h,lastExportFilename,false,this);
 
     if (dlg->exec()) {
-        QImage* img = new QImage(w,h,QImage::Format_RGB888);
-        QPainter* p = new QPainter(img);
-        p->fillRect(0,0,w,h,Qt::white);
-        ViewPainter* vp = new ViewPainter(p);
-        vp->init(p,scal,0,0,xmin*scal-15,ymin*scal-15,scal,scal);
 
-        sch->paintSchToViewpainter(vp,exportAll,true);
+        QString filename = dlg->FileToSave();
+        lastExportFilename = filename;
 
-        img->save("/home/vvk/1.png");
+        if (dlg->isValidFilename()) {
+            if (!dlg->isSvg()) {
+                QImage* img = new QImage(w,h,QImage::Format_RGB888);
+                QPainter* p = new QPainter(img);
+                p->fillRect(0,0,w,h,Qt::white);
+                ViewPainter* vp = new ViewPainter(p);
+                vp->init(p,scal,0,0,xmin*scal-15,ymin*scal-15,scal,scal);
 
-        delete vp;
-        delete p;
-        delete img;
+                sch->paintSchToViewpainter(vp,exportAll,true);
+
+                img->save(filename);
+
+                delete vp;
+                delete p;
+                delete img;
+            } else {
+                QSvgGenerator* svg1 = new QSvgGenerator();
+                svg1->setResolution(this->physicalDpiX());
+                svg1->setFileName(filename);
+                svg1->setSize(QSize(1.12*w,1.1*h));
+                QPainter *p = new QPainter(svg1);
+                p->fillRect(0,0,svg1->size().width(),svg1->size().height(),Qt::white);
+                ViewPainter *vp = new ViewPainter(p);
+                vp->init(p,1.0,0,0,xmin-15,ymin-15,1.0,1.0);
+
+                sch->paintSchToViewpainter(vp,exportAll,true);
+
+                delete vp;
+                delete p;
+                delete svg1;
+            }
+
+            successExportMessages(QFile::exists(filename));
+
+        } else {
+            QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Export diagram to graphics"),
+                                                tr("Unsupported format of graphics file. \n"
+                                                "Use PNG, JPEG or SVG graphics!"),
+                                                QMessageBox::Ok);
+            msg->exec();
+            delete msg;
+        }
+
+
     }
 
 
