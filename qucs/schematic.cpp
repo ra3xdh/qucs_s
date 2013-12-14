@@ -612,7 +612,7 @@ void Schematic::print(QPrinter*, QPainter *Painter, bool printAll, bool fitToPag
   }
 
 
-  bool selected;
+  //bool selected;
   ViewPainter p;
   int StartX = UsedX1;
   int StartY = UsedY1;
@@ -637,36 +637,6 @@ void Schematic::print(QPrinter*, QPainter *Painter, bool printAll, bool fitToPag
     paintFrame(&p);
 
   paintSchToViewpainter(&p,printAll,false,screenDpiX,printerDpiX);
-
-  Graph  *pg;
-  Marker *pm;
-  for(Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
-    if(pd->isSelected || printAll) {
-      // if graph or marker is selected, deselect during printing
-      for(pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next()) {
-	if(pg->isSelected)  pg->Type |= 1;  // remember selection
-	pg->isSelected = false;
-	for(pm = pg->Markers.first(); pm != 0; pm = pg->Markers.next()) {
-	  if(pm->isSelected)  pm->Type |= 1;  // remember selection
-	  pm->isSelected = false;
-	}
-      }
-
-      selected = pd->isSelected;
-      pd->isSelected = false;
-      pd->paint(&p);  // paint all selected diagrams with graphs and markers
-      pd->isSelected = selected;
-
-      // revert selection of graphs and markers
-      for(pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next()) {
-	if(pg->Type & 1)  pg->isSelected = true;
-	pg->Type &= -2;
-	for(pm = pg->Markers.first(); pm != 0; pm = pg->Markers.next()) {
-	  if(pm->Type & 1)  pm->isSelected = true;
-	  pm->Type &= -2;
-	}
-      }
-    }
 
     Painter->setFont(oldFont);
 }
@@ -726,6 +696,36 @@ void Schematic::paintSchToViewpainter(ViewPainter *p, bool printAll, bool toImag
         pp->isSelected = false;
         pp->paint(p);   // paint all selected paintings
         pp->isSelected = selected;
+      }
+
+    Graph  *pg;
+    Marker *pm;
+    for(Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
+      if(pd->isSelected || printAll) {
+        // if graph or marker is selected, deselect during printing
+        for(pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next()) {
+      if(pg->isSelected)  pg->Type |= 1;  // remember selection
+      pg->isSelected = false;
+      for(pm = pg->Markers.first(); pm != 0; pm = pg->Markers.next()) {
+        if(pm->isSelected)  pm->Type |= 1;  // remember selection
+        pm->isSelected = false;
+      }
+        }
+
+        selected = pd->isSelected;
+        pd->isSelected = false;
+        pd->paint(p);  // paint all selected diagrams with graphs and markers
+        pd->isSelected = selected;
+
+        // revert selection of graphs and markers
+        for(pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next()) {
+      if(pg->Type & 1)  pg->isSelected = true;
+      pg->Type &= -2;
+      for(pm = pg->Markers.first(); pm != 0; pm = pg->Markers.next()) {
+        if(pm->Type & 1)  pm->isSelected = true;
+        pm->Type &= -2;
+      }
+        }
       }
 }
 

@@ -2729,6 +2729,26 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
         if (yc>ymax) ymax = yc;
     }
 
+    for(Diagram *pd = sch->Diagrams->first(); pd != 0; pd = sch->Diagrams->next()) {
+
+        int x1,y1,x2,y2,xc,yc,d;
+        pd->Bounding(x1,y1,x2,y2);
+        //pd->isSelected=false;
+        pd->getCenter(xc,yc);
+        //int dx = abs(((x2+x1)/2)-xc);
+        //int dy = abs(((y1+y2)/2)-yc);
+        //y1 = y1-dy;
+
+        d = std::min(x1,x2);
+        if (d<xmin) xmin = d;
+        d = std::max(x2,x1);
+        if (d>xmax) xmax = d;
+        d = std::min(y1,y2);
+        if (d<ymin) ymin = d;
+        d = std::max(y2,y1);
+        if (d>ymax) ymax = d;
+    }
+
     qDebug()<<xmin<<ymin<<xmax<<ymax;
 
     int w = abs(xmax - xmin) + 30;
@@ -2736,12 +2756,18 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
 
     qDebug()<<w<<h;
 
-    ExportDiagramDialog* dlg = new ExportDiagramDialog(w,h,lastExportFilename,false,this);
+    ExportDiagramDialog* dlg = new ExportDiagramDialog(w,h,lastExportFilename,this);
 
     if (dlg->exec()) {
 
         QString filename = dlg->FileToSave();
         lastExportFilename = filename;
+
+        if (!dlg->isOriginalSize()) {
+            scal = (float) dlg->Xpixels()/w;
+            w = round(w*scal);
+            h = round(h*scal);
+        }
 
         if (dlg->isValidFilename()) {
             if (!dlg->isSvg()) {
@@ -2796,18 +2822,18 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
 
 void QucsApp::slotExportAsImage()
 {
-    QucsDoc *doc = getDoc();
-    QString name = doc->DocName;
+    //QucsDoc *doc = getDoc();
+    //QString name = doc->DocName;
 
-    if (view->focusElement) {
-            if (view->focusElement->Type == isDiagram) {
-                slotSaveDiagramToGraphicsFile();
-            }
-    } else {
-        if (!(name.endsWith(".dpl"))) {
+    //if (view->focusElement) {
+      //      if (view->focusElement->Type == isDiagram) {
+        //        slotSaveDiagramToGraphicsFile();
+      //      }
+    //} else {
+        //if (!(name.endsWith(".dpl"))) {
             slotSaveSchematicToGraphicsFile();
-        }
-    }
+        //}
+    //}
 
 
 }
