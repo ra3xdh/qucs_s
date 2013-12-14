@@ -279,7 +279,7 @@ void QucsApp::initActions()
   //                       editDelete, SLOT(toggle()) );
 
   exportAsImage = new QAction(tr("Export as image"),this);
-  connect(exportAsImage,SIGNAL(activated()),SLOT(slotExportAsImage()));
+  connect(exportAsImage,SIGNAL(activated()),SLOT(slotSaveSchematicToGraphicsFile()));
 
   // cursor left/right/up/down to move marker on a graph
   cursorLeft = new QShortcut(QKeySequence(Qt::Key_Left), this);

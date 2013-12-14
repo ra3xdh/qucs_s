@@ -26,7 +26,7 @@ class ExportDiagramDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ExportDiagramDialog(int w, int h, QString filename_, bool diagram_=true, QWidget *parent = 0);
+    explicit ExportDiagramDialog(int w, int h, int wsel, int hsel, QString filename_, bool nosel_=true, QWidget *parent = 0);
     
 private:
     QPushButton* ExportButt;
@@ -52,7 +52,9 @@ private:
 
     int dwidth, dheight;
 
-    bool svg, diagram;
+    int dwidthsel, dheightsel;
+
+    bool svg, noselected;
 
     QString filename;
 
@@ -74,6 +76,7 @@ private slots:
     void recalcRatio();
     void restoreOriginalWtoH();
     void setSvg(QString filename);
+    void setSelectedWH();
 
 public slots:
     

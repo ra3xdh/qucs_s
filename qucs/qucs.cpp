@@ -2626,7 +2626,7 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
     w = w + dx;
     h = h + dy;
 
-    ExportDiagramDialog* dlg = new ExportDiagramDialog(w,h,lastExportFilename,this);
+    ExportDiagramDialog* dlg = new ExportDiagramDialog(w,h,31,31,lastExportFilename,true,this);
 
     if (dlg->exec()) {
 
@@ -2689,7 +2689,7 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
 
 }
 
-void QucsApp::slotSaveSchematicToGraphicsFile()
+void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
 {
     Schematic *sch = (Schematic*)DocumentTab->currentPage();
 
@@ -2698,11 +2698,10 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
         xmax= INT_MIN,
         ymax= INT_MIN;
 
-    float scal=1.0;
-
-    bool exportAll = true;
-
-
+    int xmin_sel= INT_MAX,
+        ymin_sel= INT_MAX,
+        xmax_sel= INT_MIN,
+        ymax_sel= INT_MIN;
 
     for(Component *pc = sch->Components->first(); pc != 0; pc = sch->Components->next()) {
         int x1,y1,x2,y2,d;
@@ -2710,12 +2709,24 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
 
         d = std::min(x1,x2);
         if (d<xmin) xmin = d;
+        if (pc->isSelected) {
+           if (d<xmin_sel) xmin_sel=d;
+        }
         d = std::max(x2,x1);
         if (d>xmax) xmax = d;
+        if (pc->isSelected) {
+           if (d>xmax_sel) xmax_sel=d;
+        }
         d = std::min(y1,y2);
         if (d<ymin) ymin = d;
+        if (pc->isSelected) {
+           if (d<ymin_sel) ymin_sel=d;
+        }
         d = std::max(y2,y1);
         if (d>ymax) ymax = d;
+        if (pc->isSelected) {
+           if (d>ymax_sel) ymax_sel=d;
+        }
 
     }
 
@@ -2724,49 +2735,86 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
         pw->getCenter(xc,yc);
 
         if (xc<xmin) xmin = xc;
+        if (pw->isSelected) {
+           if (xc<xmin_sel) xmin_sel=xc;
+        }
         if (xc>xmax) xmax = xc;
+        if (pw->isSelected) {
+           if (xc>xmax_sel) xmax_sel=xc;
+        }
         if (yc<ymin) ymin = yc;
+        if (pw->isSelected) {
+           if (yc<ymin_sel) ymin_sel=yc;
+        }
         if (yc>ymax) ymax = yc;
+        if (pw->isSelected) {
+           if (yc>ymax_sel) ymax_sel=yc;
+        }
     }
 
     for(Diagram *pd = sch->Diagrams->first(); pd != 0; pd = sch->Diagrams->next()) {
 
         int x1,y1,x2,y2,xc,yc,d;
         pd->Bounding(x1,y1,x2,y2);
-        //pd->isSelected=false;
         pd->getCenter(xc,yc);
-        //int dx = abs(((x2+x1)/2)-xc);
-        //int dy = abs(((y1+y2)/2)-yc);
-        //y1 = y1-dy;
 
         d = std::min(x1,x2);
         if (d<xmin) xmin = d;
+        if (pd->isSelected) {
+           if (d<xmin_sel) xmin_sel=d;
+        }
         d = std::max(x2,x1);
         if (d>xmax) xmax = d;
+        if (pd->isSelected) {
+           if (d>xmax_sel) xmax_sel=d;
+        }
         d = std::min(y1,y2);
         if (d<ymin) ymin = d;
+        if (pd->isSelected) {
+           if (d<ymin_sel) ymin_sel=d;
+        }
         d = std::max(y2,y1);
         if (d>ymax) ymax = d;
+        if (pd->isSelected) {
+           if (d>ymax_sel) ymax_sel=d;
+        }
     }
-
-    qDebug()<<xmin<<ymin<<xmax<<ymax;
 
     int w = abs(xmax - xmin) + 30;
     int h = abs(ymax - ymin) + 30;
 
-    qDebug()<<w<<h;
+    int wsel = abs(xmax_sel - xmin_sel) + 30;
+    int hsel = abs(ymax_sel - ymin_sel) + 30;
 
-    ExportDiagramDialog* dlg = new ExportDiagramDialog(w,h,lastExportFilename,this);
+    bool noselect;
+    if ((wsel==31)&&(hsel==31)) noselect = true;
+    else noselect = false;
+
+    ExportDiagramDialog* dlg = new ExportDiagramDialog(w,h,wsel,hsel,lastExportFilename,noselect,this);
 
     if (dlg->exec()) {
 
         QString filename = dlg->FileToSave();
         lastExportFilename = filename;
 
+        bool exportAll;
+        if (dlg->isExportSelected()) {
+            exportAll = false;
+            w=wsel;
+            h=hsel;
+            xmin = xmin_sel;
+            ymin = ymin_sel;
+        } else {
+            exportAll = true;
+        }
+
+        float scal;
         if (!dlg->isOriginalSize()) {
             scal = (float) dlg->Xpixels()/w;
             w = round(w*scal);
             h = round(h*scal);
+        } else {
+            scal = 1.0;
         }
 
         if (dlg->isValidFilename()) {
@@ -2815,28 +2863,9 @@ void QucsApp::slotSaveSchematicToGraphicsFile()
 
     }
 
-
-    qDebug()<<"sch export";
 }
 
 
-void QucsApp::slotExportAsImage()
-{
-    //QucsDoc *doc = getDoc();
-    //QString name = doc->DocName;
-
-    //if (view->focusElement) {
-      //      if (view->focusElement->Type == isDiagram) {
-        //        slotSaveDiagramToGraphicsFile();
-      //      }
-    //} else {
-        //if (!(name.endsWith(".dpl"))) {
-            slotSaveSchematicToGraphicsFile();
-        //}
-    //}
-
-
-}
 
 void QucsApp::successExportMessages(bool ok)
 {

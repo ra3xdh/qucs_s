@@ -349,9 +349,8 @@ public slots:
   void slotAddToProject();
   void slotApplyCompText();
   void slotOpenRecent(int num);
-  void slotExportAsImage();
   void slotSaveDiagramToGraphicsFile();
-  void slotSaveSchematicToGraphicsFile();
+  void slotSaveSchematicToGraphicsFile(bool diagram = false);
 
 private slots:
   void slotCursorLeft();

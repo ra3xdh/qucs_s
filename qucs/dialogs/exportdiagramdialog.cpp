@@ -17,15 +17,17 @@
 #include <math.h>
 #include "exportdiagramdialog.h"
 
-ExportDiagramDialog::ExportDiagramDialog(int w, int h, QString filename_, bool diagram_, QWidget *parent) :
+ExportDiagramDialog::ExportDiagramDialog(int w, int h, int wsel, int hsel, QString filename_, bool nosel_, QWidget *parent) :
     QDialog(parent)
 {
 
     setCaption(tr("Export graphics"));
     dwidth = w;
     dheight = h;
+    dwidthsel = wsel;
+    dheightsel = hsel;
     svg = false;
-    diagram = diagram_;
+    noselected = nosel_;
 
     filename = filename_;
 
@@ -66,12 +68,13 @@ ExportDiagramDialog::ExportDiagramDialog(int w, int h, QString filename_, bool d
     connect(editResolutionY,SIGNAL(textEdited(QString)),this,SLOT(calcWidth()));
 
     cbSelected = new QCheckBox(tr("Export selected only"));
+    connect(cbSelected,SIGNAL(toggled(bool)),this,SLOT(setSelectedWH()));
     cbSelected->setChecked(false);
+    if (noselected) cbSelected->setDisabled(true);
 
-    if (!diagram) {
-        cbResolution->setEnabled(false);
-        cbRatio->setEnabled(false);
-    }
+    //cbResolution->setEnabled(false);
+    cbRatio->setEnabled(false);
+
 
     top = new QVBoxLayout;
     lower1 = new QHBoxLayout;
@@ -88,10 +91,7 @@ ExportDiagramDialog::ExportDiagramDialog(int w, int h, QString filename_, bool d
     top->addWidget(editResolutionX);
     top->addWidget(lblResolutionY);
     top->addWidget(editResolutionY);
-
-    if (!diagram) {
-        top->addWidget(cbSelected);
-    }
+    top->addWidget(cbSelected);
 
     lower2->addWidget(ExportButt);
     lower2->addWidget(CancelButt);
@@ -205,9 +205,7 @@ void ExportDiagramDialog::setSvg(QString filename)
         cbRatio->setChecked(true);
     } else {
         svg = false;
-        if (diagram) {
-            cbResolution->setEnabled(true);
-        }
+        cbResolution->setEnabled(true);
     }
 }
 
@@ -222,5 +220,16 @@ bool ExportDiagramDialog::isValidFilename()
         return true;
     } else {
         return false;
+    }
+}
+
+void ExportDiagramDialog::setSelectedWH()
+{
+    if (cbSelected->isChecked()) {
+        editResolutionX->setText(QString::number(dwidthsel));
+        editResolutionY->setText(QString::number(dheightsel));
+    } else {
+        editResolutionX->setText(QString::number(dwidth));
+        editResolutionY->setText(QString::number(dheight));
     }
 }
