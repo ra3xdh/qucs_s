@@ -66,6 +66,7 @@ public:
     int Ypixels();
     bool isSvg();
     bool isValidFilename();
+    void setDiagram();
 
 signals:
     

@@ -99,7 +99,7 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     this->setLayout(top);
 
     this->layout()->setSizeConstraint(QLayout::SetFixedSize);
-    this->setWindowTitle(tr("Export diagram to raster or vector image"));
+    this->setWindowTitle(tr("Export schematic to raster or vector image"));
 }
 
 QString ExportDialog::FileToSave()
@@ -232,4 +232,11 @@ void ExportDialog::setSelectedWH()
         editResolutionX->setText(QString::number(dwidth));
         editResolutionY->setText(QString::number(dheight));
     }
+}
+
+void ExportDialog::setDiagram()
+{
+    cbSelected->setChecked(true);
+    cbSelected->setDisabled(true);
+    this->setWindowTitle(tr("Export diagram to raster or vector image"));
 }

@@ -2609,7 +2609,7 @@ void QucsApp::updateRecentFilesList(QString s)
 
 void QucsApp::slotSaveDiagramToGraphicsFile()
 {
-    float scal = 1.0;
+    /*float scal = 1.0;
 
 
 
@@ -2626,66 +2626,10 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
     w = w + dx;
     h = h + dy;
 
-    ExportDialog* dlg = new ExportDialog(w,h,31,31,lastExportFilename,true,this);
+    // init ViewPainter for SVG: vp->init(p,1.0,0,0,x1,(y1-dy),1.0,1.0);
+    */
 
-    if (dlg->exec()) {
-
-        if (!dlg->isOriginalSize()) {
-            scal = (float) dlg->Xpixels()/w;
-            w = round(w*scal);
-            h = round(h*scal);
-        }
-
-        QString filename = dlg->FileToSave();
-        lastExportFilename = filename;
-
-        if (dlg->isValidFilename()) {
-
-            if (!dlg->isSvg()) {
-                QImage* img = new QImage(w,h,QImage::Format_RGB888);
-                QPainter* p = new QPainter(img);
-                p->fillRect(0,0,w,h,Qt::white);
-                ViewPainter* vp = new ViewPainter(p);
-                vp->init(p,scal,0,0,x1*scal,(y1-dy)*scal,scal,scal);
-                dia->paint(vp);
-                img->save(filename);
-
-                delete vp;
-                delete p;
-                delete img;
-
-            } else {
-                QSvgGenerator* svg1 = new QSvgGenerator();
-                svg1->setResolution(this->physicalDpiX());
-                svg1->setFileName(filename);
-                svg1->setSize(QSize(1.12*w,1.1*h));
-                QPainter *p = new QPainter(svg1);
-                p->fillRect(0,0,svg1->size().width(),svg1->size().height(),Qt::white);
-                ViewPainter *vp = new ViewPainter(p);
-                vp->init(p,1.0,0,0,x1,(y1-dy),1.0,1.0);
-                dia->paint(vp);
-
-                delete vp;
-                delete p;
-                delete svg1;
-
-            }
-
-            successExportMessages(QFile::exists(filename));
-
-        } else {
-            QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Export diagram to graphics"),
-                                                tr("Unsupported format of graphics file. \n"
-                                                "Use PNG, JPEG or SVG graphics!"),
-                                                QMessageBox::Ok);
-            msg->exec();
-            delete msg;
-        }
-
-    }
-
-    dia->isSelected=true;
-    delete dlg;
+    slotSaveSchematicToGraphicsFile(true);
 
 }
 
@@ -2792,6 +2736,8 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
 
     ExportDialog* dlg = new ExportDialog(w,h,wsel,hsel,lastExportFilename,noselect,this);
 
+    if (diagram) dlg->setDiagram();
+
     if (dlg->exec()) {
 
         QString filename = dlg->FileToSave();
@@ -2852,7 +2798,7 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
             successExportMessages(QFile::exists(filename));
 
         } else {
-            QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Export diagram to graphics"),
+            QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Export to image"),
                                                 tr("Unsupported format of graphics file. \n"
                                                 "Use PNG, JPEG or SVG graphics!"),
                                                 QMessageBox::Ok);
@@ -2870,13 +2816,13 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
 void QucsApp::successExportMessages(bool ok)
 {
     if (ok) {
-        QMessageBox* msg =  new QMessageBox(QMessageBox::Information,tr("Export diagram to graphics"),
+        QMessageBox* msg =  new QMessageBox(QMessageBox::Information,tr("Export to image"),
                                         tr("Sucessfully exported!"),
                                         QMessageBox::Ok);
         msg->exec();
         delete msg;
     } else {
-        QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Export diagram to graphics"),
+        QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Export to image"),
                                         tr("Disk write error!"),
                                         QMessageBox::Ok);
         msg->exec();
