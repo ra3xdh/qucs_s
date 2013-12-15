@@ -14,19 +14,19 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#ifndef EXPORTDIAGRAMDIALOG_H
-#define EXPORTDIAGRAMDIALOG_H
+#ifndef EXPORTDIALOG_H
+#define EXPORTDIALOG_H
 
 #include <QObject>
 #include <QtGui>
 #include <QDialog>
 
 
-class ExportDiagramDialog : public QDialog
+class ExportDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ExportDiagramDialog(int w, int h, int wsel, int hsel, QString filename_, bool nosel_=true, QWidget *parent = 0);
+    explicit ExportDialog(int w, int h, int wsel, int hsel, QString filename_, bool nosel_=true, QWidget *parent = 0);
     
 private:
     QPushButton* ExportButt;
@@ -82,4 +82,4 @@ public slots:
     
 };
 
-#endif // EXPORTDIAGRAMDIALOG_H
+#endif // EXPORTDIALOG_H

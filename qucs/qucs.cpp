@@ -54,7 +54,7 @@
 #include "dialogs/labeldialog.h"
 #include "dialogs/matchdialog.h"
 #include "dialogs/simmessage.h"
-#include "dialogs/exportdiagramdialog.h"
+#include "dialogs/exportdialog.h"
 //#include "dialogs/vtabwidget.h"
 //#include "dialogs/vtabbeddockwidget.h"
 #include "octave_window.h"
@@ -2626,7 +2626,7 @@ void QucsApp::slotSaveDiagramToGraphicsFile()
     w = w + dx;
     h = h + dy;
 
-    ExportDiagramDialog* dlg = new ExportDiagramDialog(w,h,31,31,lastExportFilename,true,this);
+    ExportDialog* dlg = new ExportDialog(w,h,31,31,lastExportFilename,true,this);
 
     if (dlg->exec()) {
 
@@ -2790,7 +2790,7 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
     if ((wsel==31)&&(hsel==31)) noselect = true;
     else noselect = false;
 
-    ExportDiagramDialog* dlg = new ExportDiagramDialog(w,h,wsel,hsel,lastExportFilename,noselect,this);
+    ExportDialog* dlg = new ExportDialog(w,h,wsel,hsel,lastExportFilename,noselect,this);
 
     if (dlg->exec()) {
 

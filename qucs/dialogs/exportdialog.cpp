@@ -15,9 +15,9 @@
  *                                                                         *
  ***************************************************************************/
 #include <math.h>
-#include "exportdiagramdialog.h"
+#include "exportdialog.h"
 
-ExportDiagramDialog::ExportDiagramDialog(int w, int h, int wsel, int hsel, QString filename_, bool nosel_, QWidget *parent) :
+ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, bool nosel_, QWidget *parent) :
     QDialog(parent)
 {
 
@@ -102,27 +102,27 @@ ExportDiagramDialog::ExportDiagramDialog(int w, int h, int wsel, int hsel, QStri
     this->setWindowTitle(tr("Export diagram to raster or vector image"));
 }
 
-QString ExportDiagramDialog::FileToSave()
+QString ExportDialog::FileToSave()
 {
     return editFilename->text();
 }
 
-bool ExportDiagramDialog::isOriginalSize()
+bool ExportDialog::isOriginalSize()
 {
     return cbResolution->isChecked();
 }
 
-int ExportDiagramDialog::Xpixels()
+int ExportDialog::Xpixels()
 {
     return editResolutionX->text().toInt();
 }
 
-int ExportDiagramDialog::Ypixels()
+int ExportDialog::Ypixels()
 {
     return editResolutionY->text().toInt();
 }
 
-void ExportDiagramDialog::setFileName()
+void ExportDialog::setFileName()
 {
     /*QString nam = dialog.getSaveFileName(this,tr("Export diagram to file"),QDir::homeDirPath(),
                                          "SVG vector graphics (*.svg) ;;"
@@ -149,7 +149,7 @@ void ExportDiagramDialog::setFileName()
     }
 }
 
-void ExportDiagramDialog::calcWidth()
+void ExportDialog::calcWidth()
 {
     if (cbRatio->isChecked()) {
         float h = editResolutionY->text().toFloat();
@@ -159,7 +159,7 @@ void ExportDiagramDialog::calcWidth()
 }
 
 
-void ExportDiagramDialog::calcHeight()
+void ExportDialog::calcHeight()
 {
     if (cbRatio->isChecked()) {
         float w = editResolutionX->text().toFloat();
@@ -169,14 +169,14 @@ void ExportDiagramDialog::calcHeight()
 
 }
 
-void ExportDiagramDialog::recalcRatio()
+void ExportDialog::recalcRatio()
 {
     if (cbRatio->isChecked()) {
         calcHeight();
     }
 }
 
-void ExportDiagramDialog::restoreOriginalWtoH()
+void ExportDialog::restoreOriginalWtoH()
 {
     if (cbResolution->isChecked()) {
         editResolutionX->setText(QString::number(dwidth));
@@ -184,17 +184,17 @@ void ExportDiagramDialog::restoreOriginalWtoH()
     }
 }
 
-bool ExportDiagramDialog::isSvg()
+bool ExportDialog::isSvg()
 {
     return svg;
 }
 
-bool ExportDiagramDialog::isExportSelected()
+bool ExportDialog::isExportSelected()
 {
     return cbSelected->isChecked();
 }
 
-void ExportDiagramDialog::setSvg(QString filename)
+void ExportDialog::setSvg(QString filename)
 {
     QFileInfo graphics_file(filename);
     QString ext = graphics_file.suffix();
@@ -209,7 +209,7 @@ void ExportDiagramDialog::setSvg(QString filename)
     }
 }
 
-bool ExportDiagramDialog::isValidFilename()
+bool ExportDialog::isValidFilename()
 {
     QString nam = editFilename->text();
     QStringList filetypes;
@@ -223,7 +223,7 @@ bool ExportDiagramDialog::isValidFilename()
     }
 }
 
-void ExportDiagramDialog::setSelectedWH()
+void ExportDialog::setSelectedWH()
 {
     if (cbSelected->isChecked()) {
         editResolutionX->setText(QString::number(dwidthsel));
