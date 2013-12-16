@@ -34,6 +34,7 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     lblFilename = new QLabel(tr("Save to file (Graphics format by extension)"));
     lblResolutionX = new QLabel(tr("Width  in pixels"));
     lblResolutionY = new QLabel(tr("Height in pixels"));
+    lblRatio = new QLabel(tr("Scale factor: "));
 
     ExportButt = new QPushButton(tr("Export"));
     connect(ExportButt,SIGNAL(clicked()),this,SLOT(accept()));
@@ -52,6 +53,10 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     editResolutionY = new QLineEdit(QString::number(dheight));
     editResolutionY->setValidator(val);
     editResolutionY->setEnabled(false);
+    editScale = new QLineEdit(QString::number(1.0));
+    QDoubleValidator *val1 = new QDoubleValidator(0,20.0,2,this);
+    editScale->setValidator(val1);
+
 
     cbRatio = new QCheckBox(tr("Original width to height ratio"));
     cbRatio->setChecked(true);
@@ -61,11 +66,13 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     connect(cbResolution,SIGNAL(toggled(bool)),editResolutionX,SLOT(setDisabled(bool)));
     connect(cbResolution,SIGNAL(toggled(bool)),editResolutionY,SLOT(setDisabled(bool)));
     connect(cbResolution,SIGNAL(toggled(bool)),cbRatio,SLOT(setDisabled(bool)));
+    connect(cbResolution,SIGNAL(toggled(bool)),editScale,SLOT(setDisabled(bool)));
     connect(cbResolution,SIGNAL(toggled(bool)),this,SLOT(restoreOriginalWtoH()));
     cbResolution->setChecked(true);
 
     connect(editResolutionX,SIGNAL(textEdited(QString)),this,SLOT(calcHeight()));
     connect(editResolutionY,SIGNAL(textEdited(QString)),this,SLOT(calcWidth()));
+    connect(editScale,SIGNAL(textChanged(QString)),this,SLOT(recalcScale()));
 
     cbSelected = new QCheckBox(tr("Export selected only"));
     connect(cbSelected,SIGNAL(toggled(bool)),this,SLOT(setSelectedWH()));
@@ -87,6 +94,9 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     top->addLayout(lower1);
     top->addWidget(cbResolution);
     //top->addWidget(cbRatio);
+    lower3->addWidget(lblRatio);
+    lower3->addWidget(editScale);
+    top->addLayout(lower3);
     top->addWidget(lblResolutionX);
     top->addWidget(editResolutionX);
     top->addWidget(lblResolutionY);
@@ -179,6 +189,7 @@ void ExportDialog::recalcRatio()
 void ExportDialog::restoreOriginalWtoH()
 {
     if (cbResolution->isChecked()) {
+        editScale->setText(QString::number(1.0));
         editResolutionX->setText(QString::number(dwidth));
         editResolutionY->setText(QString::number(dheight));
     }
@@ -232,6 +243,7 @@ void ExportDialog::setSelectedWH()
         editResolutionX->setText(QString::number(dwidth));
         editResolutionY->setText(QString::number(dheight));
     }
+    recalcScale();
 }
 
 void ExportDialog::setDiagram()
@@ -239,4 +251,23 @@ void ExportDialog::setDiagram()
     cbSelected->setChecked(true);
     cbSelected->setDisabled(true);
     this->setWindowTitle(tr("Export diagram to raster or vector image"));
+}
+
+float ExportDialog::getScale()
+{
+    scale = editScale->text().toFloat();
+    return scale;
+}
+
+void ExportDialog::recalcScale()
+{
+    scale = editScale->text().toFloat();
+    if (cbSelected->isChecked()) {
+        editResolutionX->setText(QString::number(scale*dwidthsel));
+        editResolutionY->setText(QString::number(scale*dheightsel));
+    } else {
+        editResolutionX->setText(QString::number(scale*dwidth));
+        editResolutionY->setText(QString::number(scale*dheight));
+    }
+
 }

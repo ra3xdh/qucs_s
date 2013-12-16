@@ -34,8 +34,9 @@ private:
     QPushButton* SaveButt;
 
     QLabel* lblFilename;
-    QLabel *lblResolutionX;
-    QLabel *lblResolutionY;
+    QLabel* lblResolutionX;
+    QLabel* lblResolutionY;
+    QLabel* lblRatio;
 
     QCheckBox* cbResolution;
     QCheckBox* cbRatio;
@@ -44,6 +45,7 @@ private:
     QLineEdit* editFilename;
     QLineEdit* editResolutionX;
     QLineEdit* editResolutionY;
+    QLineEdit* editScale;
 
     QHBoxLayout* lower1;
     QHBoxLayout* lower2;
@@ -53,6 +55,8 @@ private:
     int dwidth, dheight;
 
     int dwidthsel, dheightsel;
+
+    float scale;
 
     bool svg, noselected;
 
@@ -67,6 +71,7 @@ public:
     bool isSvg();
     bool isValidFilename();
     void setDiagram();
+    float getScale();
 
 signals:
     
@@ -78,6 +83,7 @@ private slots:
     void restoreOriginalWtoH();
     void setSvg(QString filename);
     void setSelectedWH();
+    void recalcScale();
 
 public slots:
     
