@@ -2648,30 +2648,24 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
         ymax_sel= INT_MIN;
 
     for(Component *pc = sch->Components->first(); pc != 0; pc = sch->Components->next()) {
-        int x1,y1,x2,y2,d;
+        int x1,y1,x2,y2,d1,d2,d3,d4;
         pc->entireBounds(x1,y1,x2,y2,sch->textCorr());
 
-        d = std::min(x1,x2);
-        if (d<xmin) xmin = d;
-        if (pc->isSelected) {
-           if (d<xmin_sel) xmin_sel=d;
-        }
-        d = std::max(x2,x1);
-        if (d>xmax) xmax = d;
-        if (pc->isSelected) {
-           if (d>xmax_sel) xmax_sel=d;
-        }
-        d = std::min(y1,y2);
-        if (d<ymin) ymin = d;
-        if (pc->isSelected) {
-           if (d<ymin_sel) ymin_sel=d;
-        }
-        d = std::max(y2,y1);
-        if (d>ymax) ymax = d;
-        if (pc->isSelected) {
-           if (d>ymax_sel) ymax_sel=d;
-        }
+        d1 = std::min(x1,x2);
+        if (d1<xmin) xmin = d1;
+        d2 = std::max(x2,x1);
+        if (d2>xmax) xmax = d2;
+        d3 = std::min(y1,y2);
+        if (d3<ymin) ymin = d3;
+        d4 = std::max(y2,y1);
+        if (d4>ymax) ymax = d4;
 
+        if (pc->isSelected) {
+           if (d1<xmin_sel) xmin_sel=d1;
+           if (d2>xmax_sel) xmax_sel=d2;
+           if (d3<ymin_sel) ymin_sel=d3;
+           if (d4>ymax_sel) ymax_sel=d4;
+        }
     }
 
     for(Wire *pw = sch->Wires->first(); pw != 0; pw = sch->Wires->next()) {
@@ -2679,48 +2673,38 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
         pw->getCenter(xc,yc);
 
         if (xc<xmin) xmin = xc;
+        if (xc>xmax) xmax = xc;
+        if (yc<ymin) ymin = yc;
+        if (yc>ymax) ymax = yc;
+
         if (pw->isSelected) {
            if (xc<xmin_sel) xmin_sel=xc;
-        }
-        if (xc>xmax) xmax = xc;
-        if (pw->isSelected) {
            if (xc>xmax_sel) xmax_sel=xc;
-        }
-        if (yc<ymin) ymin = yc;
-        if (pw->isSelected) {
            if (yc<ymin_sel) ymin_sel=yc;
-        }
-        if (yc>ymax) ymax = yc;
-        if (pw->isSelected) {
            if (yc>ymax_sel) ymax_sel=yc;
         }
     }
 
     for(Diagram *pd = sch->Diagrams->first(); pd != 0; pd = sch->Diagrams->next()) {
 
-        int x1,y1,x2,y2,xc,yc,d;
+        int x1,y1,x2,y2,xc,yc,d1,d2,d3,d4;
         pd->Bounding(x1,y1,x2,y2);
         pd->getCenter(xc,yc);
 
-        d = std::min(x1,x2);
-        if (d<xmin) xmin = d;
+        d1 = std::min(x1,x2);
+        if (d1<xmin) xmin = d1;
+        d2 = std::max(x2,x1);
+        if (d2>xmax) xmax = d2;
+        d3 = std::min(y1,y2);
+        if (d3<ymin) ymin = d3;
+        d4 = std::max(y2,y1);
+        if (d4>ymax) ymax = d4;
+
         if (pd->isSelected) {
-           if (d<xmin_sel) xmin_sel=d;
-        }
-        d = std::max(x2,x1);
-        if (d>xmax) xmax = d;
-        if (pd->isSelected) {
-           if (d>xmax_sel) xmax_sel=d;
-        }
-        d = std::min(y1,y2);
-        if (d<ymin) ymin = d;
-        if (pd->isSelected) {
-           if (d<ymin_sel) ymin_sel=d;
-        }
-        d = std::max(y2,y1);
-        if (d>ymax) ymax = d;
-        if (pd->isSelected) {
-           if (d>ymax_sel) ymax_sel=d;
+           if (d1<xmin_sel) xmin_sel=d1;
+           if (d2>xmax_sel) xmax_sel=d2;
+           if (d3<ymin_sel) ymin_sel=d3;
+           if (d4>ymax_sel) ymax_sel=d4;
         }
     }
 
