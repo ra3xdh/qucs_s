@@ -2687,9 +2687,8 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
 
     for(Diagram *pd = sch->Diagrams->first(); pd != 0; pd = sch->Diagrams->next()) {
 
-        int x1,y1,x2,y2,xc,yc,d1,d2,d3,d4;
+        int x1,y1,x2,y2,d1,d2,d3,d4;
         pd->Bounding(x1,y1,x2,y2);
-        pd->getCenter(xc,yc);
 
         d1 = std::min(x1,x2);
         if (d1<xmin) xmin = d1;
@@ -2706,6 +2705,27 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
            if (d3<ymin_sel) ymin_sel=d3;
            if (d4>ymax_sel) ymax_sel=d4;
         }
+    }
+
+    for(Painting *pp = sch->Paintings->first(); pp != 0; pp = sch->Paintings->next()) {
+       int x1,y1,x2,y2,d1,d2,d3,d4;
+       pp->Bounding(x1,y1,x2,y2);
+
+       d1 = std::min(x1,x2);
+       if (d1<xmin) xmin = d1;
+       d2 = std::max(x2,x1);
+       if (d2>xmax) xmax = d2;
+       d3 = std::min(y1,y2);
+       if (d3<ymin) ymin = d3;
+       d4 = std::max(y2,y1);
+       if (d4>ymax) ymax = d4;
+
+       if (pp->isSelected) {
+          if (d1<xmin_sel) xmin_sel=d1;
+          if (d2>xmax_sel) xmax_sel=d2;
+          if (d3<ymin_sel) ymin_sel=d3;
+          if (d4>ymax_sel) ymax_sel=d4;
+       }
     }
 
     int w = abs(xmax - xmin) + 30;
