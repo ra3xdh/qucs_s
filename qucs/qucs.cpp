@@ -2769,7 +2769,17 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
 
         if (dlg->isValidFilename()) {
             if (!dlg->isSvg()) {
-                QImage* img = new QImage(w,h,QImage::Format_RGB888);
+
+                QImage* img;
+
+                switch (dlg->getImgFormat()) {
+                case ExportDialog::Coloured : img = new QImage(w,h,QImage::Format_RGB888);
+                    break;
+                case ExportDialog::Monochrome : img = new QImage(w,h,QImage::Format_Mono);
+                    break;
+                default : break;
+                }
+
                 QPainter* p = new QPainter(img);
                 p->fillRect(0,0,w,h,Qt::white);
                 ViewPainter* vp = new ViewPainter(p);

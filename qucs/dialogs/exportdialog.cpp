@@ -35,6 +35,7 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     lblResolutionX = new QLabel(tr("Width  in pixels"));
     lblResolutionY = new QLabel(tr("Height in pixels"));
     lblRatio = new QLabel(tr("Scale factor: "));
+    lblFormat = new QLabel(tr("Image format:"));
 
     ExportButt = new QPushButton(tr("Export"));
     connect(ExportButt,SIGNAL(clicked()),this,SLOT(accept()));
@@ -57,6 +58,10 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     QDoubleValidator *val1 = new QDoubleValidator(0,20.0,2,this);
     editScale->setValidator(val1);
 
+    cbxImgType = new QComboBox(this);
+    QStringList lst;
+    lst<<"Colour"<<"Monochrome";
+    cbxImgType->addItems(lst);
 
     cbRatio = new QCheckBox(tr("Original width to height ratio"));
     cbRatio->setChecked(true);
@@ -87,11 +92,15 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     lower1 = new QHBoxLayout;
     lower2 = new QHBoxLayout;
     lower3 = new QHBoxLayout;
+    lower4 = new QHBoxLayout;
 
     top->addWidget(lblFilename);
     lower1->addWidget(editFilename);
     lower1->addWidget(SaveButt);
     top->addLayout(lower1);
+    lower4->addWidget(lblFormat);
+    lower4->addWidget(cbxImgType);
+    top->addLayout(lower4);
     top->addWidget(cbResolution);
     //top->addWidget(cbRatio);
     lower3->addWidget(lblRatio);
@@ -270,4 +279,15 @@ void ExportDialog::recalcScale()
         editResolutionY->setText(QString::number(scale*dheight));
     }
 
+}
+
+ExportDialog::ImgFormat ExportDialog::getImgFormat()
+{
+    switch (cbxImgType->currentIndex()) {
+    case 0 : return ExportDialog::Coloured;
+        break;
+    case 1 : return ExportDialog::Monochrome;
+        break;
+    default : break;
+    }
 }

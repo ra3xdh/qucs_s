@@ -37,6 +37,7 @@ private:
     QLabel* lblResolutionX;
     QLabel* lblResolutionY;
     QLabel* lblRatio;
+    QLabel* lblFormat;
 
     QCheckBox* cbResolution;
     QCheckBox* cbRatio;
@@ -47,9 +48,12 @@ private:
     QLineEdit* editResolutionY;
     QLineEdit* editScale;
 
+    QComboBox* cbxImgType;
+
     QHBoxLayout* lower1;
     QHBoxLayout* lower2;
     QHBoxLayout* lower3;
+    QHBoxLayout* lower4;
     QVBoxLayout* top;
 
     int dwidth, dheight;
@@ -63,6 +67,9 @@ private:
     QString filename;
 
 public:
+
+    enum ImgFormat {Coloured, Monochrome};
+
     QString FileToSave();
     bool isOriginalSize();
     bool isExportSelected();
@@ -72,6 +79,8 @@ public:
     bool isValidFilename();
     void setDiagram();
     float getScale();
+
+    ExportDialog::ImgFormat getImgFormat();
 
 signals:
     
