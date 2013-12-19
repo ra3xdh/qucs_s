@@ -2609,33 +2609,14 @@ void QucsApp::updateRecentFilesList(QString s)
 
 void QucsApp::slotSaveDiagramToGraphicsFile()
 {
-    /*float scal = 1.0;
-
-
-
-    Diagram* dia = ((Diagram*)view->focusElement);
-
-    int x1,y1,x2,y2,xc,yc;
-    dia->Bounding(x1,y1,x2,y2);
-    dia->isSelected=false;
-    dia->getCenter(xc,yc);
-    int w = abs(x2 - x1);
-    int h = abs(y2 - y1);
-    int dx = abs(((x2+x1)/2)-xc);
-    int dy = abs(((y1+y2)/2)-yc);
-    w = w + dx;
-    h = h + dy;
-
-    // init ViewPainter for SVG: vp->init(p,1.0,0,0,x1,(y1-dy),1.0,1.0);
-    */
-
     slotSaveSchematicToGraphicsFile(true);
-
 }
 
 void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
 {
     Schematic *sch = (Schematic*)DocumentTab->currentPage();
+
+    const int bourder = 30;
 
     int xmin= INT_MAX,
         ymin= INT_MAX,
@@ -2728,14 +2709,14 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
        }
     }
 
-    int w = abs(xmax - xmin) + 30;
-    int h = abs(ymax - ymin) + 30;
+    int w = abs(xmax - xmin) + bourder;
+    int h = abs(ymax - ymin) + bourder;
 
-    int wsel = abs(xmax_sel - xmin_sel) + 30;
-    int hsel = abs(ymax_sel - ymin_sel) + 30;
+    int wsel = abs(xmax_sel - xmin_sel) + bourder;
+    int hsel = abs(ymax_sel - ymin_sel) + bourder;
 
     bool noselect;
-    if ((wsel==31)&&(hsel==31)) noselect = true;
+    if ((wsel==(bourder+1))&&(hsel==(bourder+1))) noselect = true;
     else noselect = false;
 
     ExportDialog* dlg = new ExportDialog(w,h,wsel,hsel,lastExportFilename,noselect,this);
@@ -2783,7 +2764,7 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
                 QPainter* p = new QPainter(img);
                 p->fillRect(0,0,w,h,Qt::white);
                 ViewPainter* vp = new ViewPainter(p);
-                vp->init(p,scal,0,0,xmin*scal-15,ymin*scal-15,scal,scal);
+                vp->init(p,scal,0,0,xmin*scal-bourder/2,ymin*scal-bourder/2,scal,scal);
 
                 sch->paintSchToViewpainter(vp,exportAll,true);
 
@@ -2800,7 +2781,7 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
                 QPainter *p = new QPainter(svg1);
                 p->fillRect(0,0,svg1->size().width(),svg1->size().height(),Qt::white);
                 ViewPainter *vp = new ViewPainter(p);
-                vp->init(p,1.0,0,0,xmin-15,ymin-15,1.0,1.0);
+                vp->init(p,1.0,0,0,xmin-bourder/2,ymin-bourder/2,1.0,1.0);
 
                 sch->paintSchToViewpainter(vp,exportAll,true);
 
