@@ -222,10 +222,12 @@ void ExportDialog::setSvg(QString filename)
         svg = true;
         cbResolution->setChecked(true);
         cbResolution->setDisabled(true);
+        cbxImgType->setDisabled(true);
         cbRatio->setChecked(true);
     } else {
         svg = false;
         cbResolution->setEnabled(true);
+        cbxImgType->setEnabled(true);
     }
 }
 

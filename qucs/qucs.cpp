@@ -2618,102 +2618,20 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
 
     const int bourder = 30;
 
-    int xmin= INT_MAX,
-        ymin= INT_MAX,
-        xmax= INT_MIN,
-        ymax= INT_MIN;
+    int w,h,wsel,hsel,
+        xmin, ymin, xmin_sel, ymin_sel;
 
-    int xmin_sel= INT_MAX,
-        ymin_sel= INT_MAX,
-        xmax_sel= INT_MIN,
-        ymax_sel= INT_MIN;
+    sch->getSchWidthAndHeight(w, h, xmin, ymin);
+    sch->getSelAreaWidthAndHeight(wsel, hsel, xmin_sel, ymin_sel);
+    w += bourder;
+    h += bourder;
+    wsel += bourder;
+    hsel += bourder;
+    //int w = abs(xmax - xmin) + bourder;
+    //int h = abs(ymax - ymin) + bourder;
 
-    for(Component *pc = sch->Components->first(); pc != 0; pc = sch->Components->next()) {
-        int x1,y1,x2,y2,d1,d2,d3,d4;
-        pc->entireBounds(x1,y1,x2,y2,sch->textCorr());
-
-        d1 = std::min(x1,x2);
-        if (d1<xmin) xmin = d1;
-        d2 = std::max(x2,x1);
-        if (d2>xmax) xmax = d2;
-        d3 = std::min(y1,y2);
-        if (d3<ymin) ymin = d3;
-        d4 = std::max(y2,y1);
-        if (d4>ymax) ymax = d4;
-
-        if (pc->isSelected) {
-           if (d1<xmin_sel) xmin_sel=d1;
-           if (d2>xmax_sel) xmax_sel=d2;
-           if (d3<ymin_sel) ymin_sel=d3;
-           if (d4>ymax_sel) ymax_sel=d4;
-        }
-    }
-
-    for(Wire *pw = sch->Wires->first(); pw != 0; pw = sch->Wires->next()) {
-        int xc,yc;
-        pw->getCenter(xc,yc);
-
-        if (xc<xmin) xmin = xc;
-        if (xc>xmax) xmax = xc;
-        if (yc<ymin) ymin = yc;
-        if (yc>ymax) ymax = yc;
-
-        if (pw->isSelected) {
-           if (xc<xmin_sel) xmin_sel=xc;
-           if (xc>xmax_sel) xmax_sel=xc;
-           if (yc<ymin_sel) ymin_sel=yc;
-           if (yc>ymax_sel) ymax_sel=yc;
-        }
-    }
-
-    for(Diagram *pd = sch->Diagrams->first(); pd != 0; pd = sch->Diagrams->next()) {
-
-        int x1,y1,x2,y2,d1,d2,d3,d4;
-        pd->Bounding(x1,y1,x2,y2);
-
-        d1 = std::min(x1,x2);
-        if (d1<xmin) xmin = d1;
-        d2 = std::max(x2,x1);
-        if (d2>xmax) xmax = d2;
-        d3 = std::min(y1,y2);
-        if (d3<ymin) ymin = d3;
-        d4 = std::max(y2,y1);
-        if (d4>ymax) ymax = d4;
-
-        if (pd->isSelected) {
-           if (d1<xmin_sel) xmin_sel=d1;
-           if (d2>xmax_sel) xmax_sel=d2;
-           if (d3<ymin_sel) ymin_sel=d3;
-           if (d4>ymax_sel) ymax_sel=d4;
-        }
-    }
-
-    for(Painting *pp = sch->Paintings->first(); pp != 0; pp = sch->Paintings->next()) {
-       int x1,y1,x2,y2,d1,d2,d3,d4;
-       pp->Bounding(x1,y1,x2,y2);
-
-       d1 = std::min(x1,x2);
-       if (d1<xmin) xmin = d1;
-       d2 = std::max(x2,x1);
-       if (d2>xmax) xmax = d2;
-       d3 = std::min(y1,y2);
-       if (d3<ymin) ymin = d3;
-       d4 = std::max(y2,y1);
-       if (d4>ymax) ymax = d4;
-
-       if (pp->isSelected) {
-          if (d1<xmin_sel) xmin_sel=d1;
-          if (d2>xmax_sel) xmax_sel=d2;
-          if (d3<ymin_sel) ymin_sel=d3;
-          if (d4>ymax_sel) ymax_sel=d4;
-       }
-    }
-
-    int w = abs(xmax - xmin) + bourder;
-    int h = abs(ymax - ymin) + bourder;
-
-    int wsel = abs(xmax_sel - xmin_sel) + bourder;
-    int hsel = abs(ymax_sel - ymin_sel) + bourder;
+    //int wsel = abs(xmax_sel - xmin_sel) + bourder;
+    //int hsel = abs(ymax_sel - ymin_sel) + bourder;
 
     bool noselect;
     if ((wsel==(bourder+1))&&(hsel==(bourder+1))) noselect = true;

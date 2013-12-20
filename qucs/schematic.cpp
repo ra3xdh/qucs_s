@@ -2135,3 +2135,145 @@ void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
 
   Event->accept();
 }
+
+void Schematic::getSchWidthAndHeight(int &w, int &h, int& xmin_, int& ymin_)
+{
+    int xmin= INT_MAX,
+        ymin= INT_MAX,
+        xmax= INT_MIN,
+        ymax= INT_MIN;
+
+    for(Component *pc = Components->first(); pc != 0; pc = Components->next()) {
+        int x1,y1,x2,y2,d1,d2,d3,d4;
+        pc->entireBounds(x1,y1,x2,y2,this->textCorr());
+
+        d1 = std::min(x1,x2);
+        if (d1<xmin) xmin = d1;
+        d2 = std::max(x2,x1);
+        if (d2>xmax) xmax = d2;
+        d3 = std::min(y1,y2);
+        if (d3<ymin) ymin = d3;
+        d4 = std::max(y2,y1);
+        if (d4>ymax) ymax = d4;
+    }
+
+    for(Wire *pw = Wires->first(); pw != 0; pw = Wires->next()) {
+        int xc,yc;
+        pw->getCenter(xc,yc);
+
+        if (xc<xmin) xmin = xc;
+        if (xc>xmax) xmax = xc;
+        if (yc<ymin) ymin = yc;
+        if (yc>ymax) ymax = yc;
+    }
+
+    for(Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next()) {
+
+        int x1,y1,x2,y2,d1,d2,d3,d4;
+        pd->Bounding(x1,y1,x2,y2);
+
+        d1 = std::min(x1,x2);
+        if (d1<xmin) xmin = d1;
+        d2 = std::max(x2,x1);
+        if (d2>xmax) xmax = d2;
+        d3 = std::min(y1,y2);
+        if (d3<ymin) ymin = d3;
+        d4 = std::max(y2,y1);
+        if (d4>ymax) ymax = d4;
+    }
+
+    for(Painting *pp = Paintings->first(); pp != 0; pp = Paintings->next()) {
+       int x1,y1,x2,y2,d1,d2,d3,d4;
+       pp->Bounding(x1,y1,x2,y2);
+
+       d1 = std::min(x1,x2);
+       if (d1<xmin) xmin = d1;
+       d2 = std::max(x2,x1);
+       if (d2>xmax) xmax = d2;
+       d3 = std::min(y1,y2);
+       if (d3<ymin) ymin = d3;
+       d4 = std::max(y2,y1);
+       if (d4>ymax) ymax = d4;
+    }
+
+    w = abs(xmax - xmin);
+    h = abs(ymax - ymin);
+    xmin_ = xmin;
+    ymin_ = ymin;
+}
+
+void Schematic::getSelAreaWidthAndHeight(int &wsel, int &hsel, int& xmin_sel_, int& ymin_sel_)
+{
+    int xmin= INT_MAX,
+        ymin= INT_MAX,
+        xmax= INT_MIN,
+        ymax= INT_MIN;
+
+     for(Component *pc = Components->first(); pc != 0; pc = Components->next()) {
+         if (pc->isSelected) {
+           int x1,y1,x2,y2,d1,d2,d3,d4;
+           pc->entireBounds(x1,y1,x2,y2,this->textCorr());
+           d1 = std::min(x1,x2);
+           if (d1<xmin) xmin = d1;
+           d2 = std::max(x2,x1);
+           if (d2>xmax) xmax = d2;
+           d3 = std::min(y1,y2);
+           if (d3<ymin) ymin = d3;
+           d4 = std::max(y2,y1);
+           if (d4>ymax) ymax = d4;
+         }
+    }
+
+    for(Wire *pw = Wires->first(); pw != 0; pw = Wires->next()) {
+
+        if (pw->isSelected) {
+            int xc,yc;
+            pw->getCenter(xc,yc);
+
+            if (xc<xmin) xmin = xc;
+            if (xc>xmax) xmax = xc;
+            if (yc<ymin) ymin = yc;
+            if (yc>ymax) ymax = yc;
+        }
+    }
+
+    for(Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next()) {
+
+
+
+        if (pd->isSelected) {
+            int x1,y1,x2,y2,d1,d2,d3,d4;
+            pd->Bounding(x1,y1,x2,y2);
+
+            d1 = std::min(x1,x2);
+            if (d1<xmin) xmin = d1;
+            d2 = std::max(x2,x1);
+            if (d2>xmax) xmax = d2;
+            d3 = std::min(y1,y2);
+            if (d3<ymin) ymin = d3;
+            d4 = std::max(y2,y1);
+            if (d4>ymax) ymax = d4;
+        }
+    }
+
+    for(Painting *pp = Paintings->first(); pp != 0; pp = Paintings->next()) {
+
+       if (pp->isSelected) {
+           int x1,y1,x2,y2,d1,d2,d3,d4;
+           pp->Bounding(x1,y1,x2,y2);
+           d1 = std::min(x1,x2);
+           if (d1<xmin) xmin = d1;
+           d2 = std::max(x2,x1);
+           if (d2>xmax) xmax = d2;
+           d3 = std::min(y1,y2);
+           if (d3<ymin) ymin = d3;
+           d4 = std::max(y2,y1);
+           if (d4>ymax) ymax = d4;
+       }
+    }
+
+    wsel = abs(xmax - xmin);
+    hsel = abs(ymax - ymin);
+    xmin_sel_ = xmin;
+    ymin_sel_ = ymin;
+}
