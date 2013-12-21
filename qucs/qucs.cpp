@@ -2627,11 +2627,6 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
     h += bourder;
     wsel += bourder;
     hsel += bourder;
-    //int w = abs(xmax - xmin) + bourder;
-    //int h = abs(ymax - ymin) + bourder;
-
-    //int wsel = abs(xmax_sel - xmin_sel) + bourder;
-    //int hsel = abs(ymax_sel - ymin_sel) + bourder;
 
     bool noselect;
     if ((wsel==(bourder+1))&&(hsel==(bourder+1))) noselect = true;
