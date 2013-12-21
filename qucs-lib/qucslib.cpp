@@ -104,6 +104,7 @@ QucsLib::QucsLib()
   connect(Library, SIGNAL(activated(int)), SLOT(slotSelectLibrary(int)));
   CompList = new QListWidget();
   connect(CompList, SIGNAL(itemActivated(QListWidgetItem*)), SLOT(slotShowComponent(QListWidgetItem*)));
+  connect(CompList,SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),SLOT(slotShowComponent(QListWidgetItem*)));
   QPushButton *SearchButton = new QPushButton (tr("Search..."));
   connect(SearchButton, SIGNAL(clicked()), SLOT(slotSearchComponent()));
 
