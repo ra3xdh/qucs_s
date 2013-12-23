@@ -1,6 +1,5 @@
 import re
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 def parse_file(name):
@@ -19,7 +18,7 @@ def parse_file(name):
         if line.startswith('<'):
             if line.startswith('<indep'):
                 #print line
-                r = re.match(r'\<(\w+) (\w+) (\d+)\>', line)
+                r = re.match(r'\<(\w+) (\S+) (\d+)\>', line)
                 g = r.groups()
                 # there can be several independent variables -> numpoints keeps
                 # the total number of points
