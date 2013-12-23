@@ -29,7 +29,7 @@ MOCHEADERS = settingsdialog.h simmessage.h qucssettingsdialog.h      \
      sweepdialog.h searchdialog.h librarydialog.h importdialog.h     \
      packagedialog.h savedialog.h vasettingsdialog.h                 \
      vtabbutton.h vtabbar.h vtabwidget.h vtabbeddockwidget.h        \
-     exportdiagramdialog.h
+     exportdialog.h
 
 MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
@@ -39,7 +39,7 @@ libdialogs_a_SOURCES = settingsdialog.cpp newprojdialog.cpp \
      librarydialog.cpp importdialog.cpp packagedialog.cpp \
      savedialog.cpp vasettingsdialog.cpp \
      vtabbutton.cpp vtabbar.cpp vtabwidget.cpp vtabbeddockwidget.cpp \
-     exportdiagramdialog.cpp
+     exportdialog.cpp
 
 nodist_libdialogs_a_SOURCES = $(MOCFILES)
 
