@@ -148,11 +148,14 @@ void ExportDialog::setFileName()
                                          "PNG images (*.png) ;;"
                                          "JPEG images (*.jpg *.jpeg)");
     */
-    QFileInfo inf(filename);
-    QFileDialog dialog(this, tr("Export diagram to file"), inf.absolutePath(),
+    //QFileInfo inf(filename);
+    QFileDialog dialog(this, tr("Export diagram to file"), editFilename->text(),
                        "SVG vector graphics (*.svg) ;;"
                        "PNG images (*.png) ;;"
-                       "JPEG images (*.jpg *.jpeg)" );
+                       "JPEG images (*.jpg *.jpeg) ;;"
+                       "PDF (*.pdf) ;;"
+                       "PDF + LaTeX (*.pdf_tex) ;;"
+                       "EPS Encapsulated Postscript (*.eps)");
     dialog.setAcceptMode(QFileDialog::AcceptSave);
     if(dialog.exec())
     {
@@ -161,6 +164,9 @@ void ExportDialog::setFileName()
         if(dialog.selectedNameFilter().contains("*.png")) extension=QString(".png");
         if(dialog.selectedNameFilter().contains("*.jpg")) extension=QString(".jpg");
         if(dialog.selectedNameFilter().contains("*.svg")) extension=QString(".svg");
+        if(dialog.selectedNameFilter().contains("*.pdf")) extension=QString(".pdf");
+        if(dialog.selectedNameFilter().contains("*.pdf_tex")) extension=QString(".pdf_tex");
+        if(dialog.selectedNameFilter().contains("*.eps")) extension=QString(".eps");
         if(nam.toLower().section("/",-1,-1).contains(".")) //has the user specified an extension?
             editFilename->setText(nam); //yes, just leave unchanged
         else
@@ -218,7 +224,8 @@ void ExportDialog::setSvg(QString filename)
 {
     QFileInfo graphics_file(filename);
     QString ext = graphics_file.suffix();
-    if ((ext=="svg")||(ext=="SVG")) {
+    ext = ext.toLower();
+    if ((ext=="svg")||(ext=="pdf")||(ext=="eps")||(ext=="pdf_tex")) {
         svg = true;
         cbResolution->setChecked(true);
         cbResolution->setDisabled(true);
@@ -236,13 +243,50 @@ bool ExportDialog::isValidFilename()
     QString nam = editFilename->text();
     QStringList filetypes;
     QFileInfo inf(nam);
-    filetypes<<"png"<<"svg"<<"jpeg"<<"jpg"<<"PNG"<<"JPG"<<"SVG"<<"JPEG";
+    filetypes<<"png"<<"svg"<<"jpeg"<<"jpg"<<"pdf"<<"pdf_tex"<<"eps"
+            <<"PNG"<<"JPG"<<"SVG"<<"JPEG"<<"PDF"
+            <<"PDF_TEX"<<"EPS";
 
     if (filetypes.contains(inf.suffix())) {
         return true;
     } else {
         return false;
     }
+}
+
+bool ExportDialog::needsInkscape()
+{
+    QString nam = editFilename->text();
+    QStringList filetypes;
+    QFileInfo inf(nam);
+    filetypes<<"pdf"<<"pdf_tex"<<"eps"<<"PDF"<<"PDF_TEX"<<"EPS";
+
+    if (filetypes.contains(inf.suffix())) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool ExportDialog::isPdf()
+{
+    QFileInfo inf(editFilename->text());
+    if (inf.suffix().toLower()=="pdf") return true;
+    else return false;
+}
+
+bool ExportDialog::isPdf_Tex()
+{
+    QFileInfo inf(editFilename->text());
+    if (inf.suffix().toLower()=="pdf_tex") return true;
+    else return false;
+}
+
+bool ExportDialog::isEps()
+{
+    QFileInfo inf(editFilename->text());
+    if (inf.suffix().toLower()=="eps") return true;
+    else return false;
 }
 
 void ExportDialog::setSelectedWH()

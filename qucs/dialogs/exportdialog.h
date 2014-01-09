@@ -76,7 +76,11 @@ public:
     int Xpixels();
     int Ypixels();
     bool isSvg();
+    bool needsInkscape();
     bool isValidFilename();
+    bool isPdf();
+    bool isPdf_Tex();
+    bool isEps();
     void setDiagram();
     float getScale();
 
