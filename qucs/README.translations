@@ -34,6 +34,12 @@ specifies the locale abbreviation (e.g. 'de' for German, or 'es' for
 Spanish).  This type translation files may change as the source code
 of Qucs changes as well.
 
+The TS files can be updated by running:
+  $ cd ~/git/qucs/qucs/qucs
+  $ make qucs_.ts
+
+This target will scan all source files and update the source text(s).
+
 The translation of Qt's standard dialogs (e.g. file dialog) is named
 'qtgeneric_xx.ts' with the same convention for 'xx' as the actual Qucs
 translation.  These file do not change during development.  If the
