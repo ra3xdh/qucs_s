@@ -30,7 +30,7 @@
 
 
 DisplayDialog::DisplayDialog(QWidget *parent, QString Text, QString VHDLText, QString VerilogText)
-                     //: QDialog(parent, 0, false, Qt::WDestructiveClose)
+                     // QDialog(parent, 0, false, Qt::WDestructiveClose)
     : QDialog(parent)
 {
   vLayout = new QVBoxLayout(this);

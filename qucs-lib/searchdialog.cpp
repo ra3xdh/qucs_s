@@ -36,7 +36,7 @@
 
 
 SearchDialog::SearchDialog(QucsLib *parent)
-                     //: QDialog(parent, 0, false, Qt::WDestructiveClose)
+                     // QDialog(parent, 0, false, Qt::WDestructiveClose)
     : QDialog(parent)
 {
   ParentDialog = parent;
