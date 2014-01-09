@@ -635,7 +635,7 @@ QString QucsApp::fileType (const QString& Ext)
     Type = tr("schematic");
   else if (Ext == "sym")
     Type = tr("symbol");
-  else if (Ext == "vhdl.cfg" || Ext == "vhdl.cfg")
+  else if (Ext == "vhdl.cfg" || Ext == "vhd.cfg")
     Type = tr("VHDL configuration");
   else if (Ext == "cfg")
     Type = tr("configuration");
