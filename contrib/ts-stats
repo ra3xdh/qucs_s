@@ -1,0 +1,121 @@
+#!/bin/bash
+#
+# script originally by Pedro Lopez-Cabanillas; adapted to Qt4 by D. Michael
+# McIntyre
+#
+# no license was specified, so GPL is assumed
+#
+# Modified version taken from ROSEGARDEN Project, adapted to Qucs by G.B. Torri
+# http://rosegardenmusic.com/wiki/translator:add_or_update_translation
+
+unset LC_MESSAGES
+unset LANG
+
+puke() {
+    echo $1
+    exit 1
+}
+
+#cd data/locale || puke "This script must run from the rosegarden/ directory."
+
+#if [ "x$(basename $(pwd))" != "xlocale" -o $(ls *.ts 2>/dev/null|wc -w) -eq 0 ]; then
+if [  $(ls *.ts 2>/dev/null|wc -w) -eq 0 ]; then
+    echo "Current directory doesn't seem to have any translations."
+    echo "Please, use this script from inside the ~/git/qucs/qucs/qucs directory."
+    exit 1
+fi
+
+STATS=""
+TRANSLATED=0
+UNFINISHED=0
+UNTRANSLATED=0
+COMPLETION=0
+TOTAL=0
+OBSOLETE=0
+
+function getValues() {
+    # analyze the file's strings with grep and friends, since I can't find a
+    # program whose output to parse to produce these statistics the way Pedro's
+    # original version of this script used msgfmt
+
+    # Ah.  When the translation is exactly the same as the original (a lot of
+    # "%1 %2" kind of stuff, and "Solo" in English and Spanish) then no
+    # translation is stored, so these were counting as untranslated unfairly.
+    #
+    # Anything with <translation></translation> should be translated and
+    # finished, but anything with <translation type="unfinished"></translation>
+    # is unfinished.  That settles that, I think.  I hope.
+
+    UNTRANSLATED=$(grep "<translation.*></translation>" $1 | wc -l )
+
+    UNFINISHED=$(grep "<translation type=\"unfinished\">" $1 | wc -l )
+
+    TRANSLATED=$(grep "<translation.*>.\+<" $1 | wc -l )
+
+    TOTAL=$(grep "</translation>" $1 | wc -l )
+
+    COMPLETION=$((($UNFINISHED*5)/$TOTAL))
+    ((COMPLETION = 5 - COMPLETION - 1))
+
+    OBSOLETE=$(grep "<translation" $1 | grep obsolete | wc -l )
+
+    ((TOTAL -= OBSOLETE))
+}
+
+getValues "qucs_ar.ts"
+TS=$TOTAL
+
+cat << EOF
+
+----------------------------------------------------------------------------------------------
+                         TRANSLATION STATUS REPORT FOR THE QUCS PROJECT
+----------------------------------------------------------------------------------------------
+
+                                 qucs_*.ts contains $TS messages
+
+Language                   Total     Translated  Untranslated   Unfinished   Obsolete  Status
+--------                   -----     ----------  ------------   ----------   --------  -------
+EOF
+
+
+for P in *.ts; do
+    # skip rosegarden.ts since it is the baseline, not a translation
+    #[ "$P" == "rosegarden.ts" ] && continue
+
+    getValues $P
+    BAR='['
+    COUNT=0
+
+    # a little hack so that 95% complete doesn't get five bars
+    [ $UNFINISHED == 0 ]&&COMPLETION=5
+
+    while [ "$COUNT" -lt "$COMPLETION" ]; do
+	BAR="$BAR"'%'
+	COUNT=$(($COUNT+1))
+    done
+    while [ "$COUNT" -lt 5 ]; do
+	BAR="${BAR}-"
+	COUNT=$(($COUNT+1))
+    done
+    BAR="$BAR]$MSG"
+    printf "%-22s     %-5d     %-5d       %-5d          %-5d        %-5d     %-10s  \n" ${P/.ts/} $TOTAL $TRANSLATED $UNTRANSLATED $UNFINISHED $OBSOLETE $BAR
+done | sort -k 5,5n -k 1
+
+
+cat << EOF
+
+Total:        total strings that are not obsolete
+
+Translated:   strings that have been translated
+
+Untranslated: strings that have no translation (may be finished)
+
+Unfinished:   strings that have not been marked as finished (may or
+              may not have a translation)
+
+Obsolete:     strings were translated, but these translations are no
+              longer used in the source (frequently happens after
+              someone edits a text to make a correction)
+
+Report produced on $(date)
+EOF
