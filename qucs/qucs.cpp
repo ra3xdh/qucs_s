@@ -24,7 +24,6 @@
 #include <QtSvg>
 #include <limits.h>
 
-
 #include <QProcess>
 #include <Q3SyntaxHighlighter>
 //Added by qt3to4:
@@ -384,7 +383,7 @@ QucsDoc * QucsApp::findDoc (QString File, int * Pos)
 // only put the paintings in it, because of "symbol painting mode".
 void QucsApp::fillComboBox (bool setAll)
 {
- CompChoose->setMaxVisibleItems (11); // Increase this if you add items below.
+  CompChoose->setMaxVisibleItems (12); // Increase this if you add items below.
   CompChoose->clear ();
 
   QStringList cats = Category::getCategories ();
@@ -406,11 +405,19 @@ void QucsApp::slotSetCompView (int index)
   Q3PtrList<Module> Comps;
   CompComps->clear ();   // clear the IconView
   if (CompChoose->count () <= 0) return;
+
   QString item = CompChoose->text (index);
+  // The following test is used as only paintings are allowed in
+  // symbol editing mode, but it means any new categories must
+  // always be added before the paintings category in modules.cpp
   if ((index + 1) >= CompChoose->count ()) // because of symbol edit mode
+  {
     Comps = Category::getModules (QObject::tr("paintings"));
+  }
   else
+  {
     Comps = Category::getModules (item);
+  }
 
   char * File;
   QString Name;

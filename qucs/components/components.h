@@ -156,7 +156,7 @@
 #include "hicumL0V1p3.h"
 #include "hicumL2V2p23.h"
 #include "hicumL2V2p24.h"
-#include "hicumL2V2p31n.h" 
+#include "hicumL2V2p31n.h"
 #include "photodiode.h"
 #include "phototransistor.h"
 #include "nigbt.h"
@@ -190,5 +190,8 @@
 #include "comp_2bit.h"
 #include "comp_4bit.h"
 #include "hpribin4bit.h"
+
+// external simulation components
+#include "etr_sim.h"
 
 #endif

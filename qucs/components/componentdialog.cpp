@@ -65,7 +65,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   // if simulation component
   if((Comp->Model[0] == '.') &&
      (Comp->Model != ".DC") && (Comp->Model != ".HB") &&
-     (Comp->Model != ".Digi")) {
+     (Comp->Model != ".Digi") && (Comp->Model != ".ETR")) {
     QTabWidget *t = new QTabWidget(this);
     all->addWidget(t);
 
@@ -897,7 +897,7 @@ void ComponentDialog::slotNumberChanged(const QString&)
     str2num(editStart->text(), y, Unit, Factor);
     y *= Factor;
     x = (x - y) / (editNumber->text().toDouble() - 1.0);
-    
+
     QString step = num2str(x);
 
     str2num(step, x, Unit, Factor);

@@ -152,7 +152,6 @@
 		<Unit filename="qucs-transcalc/transline.h" />
 		<Unit filename="qucs-transcalc/units.h" />
 		<Unit filename="qucs/Makefile.am" />
-		<Unit filename="qucs/bitmaps/Makefile.am" />
 		<Unit filename="qucs/components/DLS_1ton.cpp" />
 		<Unit filename="qucs/components/DLS_1ton.h" />
 		<Unit filename="qucs/components/DLS_nto1.cpp" />
@@ -222,7 +221,6 @@
 		<Unit filename="qucs/components/component.h" />
 		<Unit filename="qucs/components/componentdialog.cpp" />
 		<Unit filename="qucs/components/componentdialog.h" />
-		<Unit filename="qucs/components/componentdialog.moc.cpp" />
 		<Unit filename="qucs/components/components.h" />
 		<Unit filename="qucs/components/coplanar.cpp" />
 		<Unit filename="qucs/components/coplanar.h" />
@@ -266,6 +264,8 @@
 		<Unit filename="qucs/components/eqndefined.h" />
 		<Unit filename="qucs/components/equation.cpp" />
 		<Unit filename="qucs/components/equation.h" />
+		<Unit filename="qucs/components/etr_sim.cpp" />
+		<Unit filename="qucs/components/etr_sim.h" />
 		<Unit filename="qucs/components/fa1b.cpp" />
 		<Unit filename="qucs/components/fa1b.h" />
 		<Unit filename="qucs/components/fa2b.cpp" />
@@ -617,6 +617,7 @@
 		<Unit filename="qucs/paintings/rectangle.h" />
 		<Unit filename="qucs/qucs.cpp" />
 		<Unit filename="qucs/qucs.h" />
+		<Unit filename="qucs/qucs.qrc" />
 		<Unit filename="qucs/qucs_actions.cpp" />
 		<Unit filename="qucs/qucs_init.cpp" />
 		<Unit filename="qucs/qucsdoc.cpp" />
@@ -641,6 +642,16 @@
 			<debugger>
 				<search_path add="/home/richard/src/qucs-git/qucs/qucs" />
 			</debugger>
+			<envvars />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
