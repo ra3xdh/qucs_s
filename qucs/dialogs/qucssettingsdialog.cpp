@@ -270,7 +270,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
 
     pathsTableWidget->setHorizontalHeaderItem(0, pitem1);
 
-    pitem1->setText(tr("Path List"));
+    pitem1->setText(tr("Subcircuit Search Path List"));
 
     pathsTableWidget->horizontalHeader()->setStretchLastSection(true);
     pathsTableWidget->verticalHeader()->hide();
