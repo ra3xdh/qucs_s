@@ -2504,32 +2504,32 @@ porém é %1 !</translation>
     <message>
         <location line="-220"/>
         <source>Create Project Package</source>
-        <translation type="unfinished"></translation>
+        <translation>Criar Pacote do Projeto</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Package:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pacote:</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>include user libraries</source>
-        <translation type="unfinished"></translation>
+        <translation>incluir bibliotecas do usuário</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Choose projects:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ecolher projetos:</translation>
     </message>
     <message>
         <location line="+41"/>
         <source>No projects!</source>
-        <translation type="unfinished">Sem projetos!</translation>
+        <translation>Sem projetos!</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Extract Project Package</source>
-        <translation type="unfinished"></translation>
+        <translation>Extrair Projeto do Pacote</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2540,28 +2540,28 @@ porém é %1 !</translation>
         <location line="+19"/>
         <location line="+186"/>
         <source>Qucs Packages</source>
-        <translation type="unfinished"></translation>
+        <translation>Pacotes Qucs</translation>
     </message>
     <message>
         <location line="-184"/>
         <location line="+186"/>
         <source>Enter a Package File Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserir um Nome para o Pacote</translation>
     </message>
     <message>
         <location line="-164"/>
         <source>Cannot open &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
+        <translation>Não é possível abrir &quot;%1&quot;!</translation>
     </message>
     <message>
         <location line="+68"/>
         <source>Please insert a package name!</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, inserir um nome de pacote!</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Please choose at least one project!</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor selecione ao menos um projeto!</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2571,7 +2571,7 @@ porém é %1 !</translation>
     <message>
         <location line="+51"/>
         <source>Successfully created Qucs package!</source>
-        <translation type="unfinished"></translation>
+        <translation>Pacote Qucs criato com sucesso!</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2581,17 +2581,17 @@ porém é %1 !</translation>
     <message>
         <location line="+15"/>
         <source>ERROR: File contains wrong header!</source>
-        <translation type="unfinished"></translation>
+        <translation>ERRO: Arquivo contém cabeçalho errado!</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>ERROR: Wrong version number!</source>
-        <translation type="unfinished"></translation>
+        <translation>ERRO: Número de versão errado!</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>ERROR: Checksum mismatch!</source>
-        <translation type="unfinished"></translation>
+        <translation>ERRO: Chechsum não combina!</translation>
     </message>
     <message>
         <location line="+17"/>
