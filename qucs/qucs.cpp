@@ -2689,7 +2689,13 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
             } else {
                 QSvgGenerator* svg1 = new QSvgGenerator();
                 svg1->setResolution(this->physicalDpiX());
-                svg1->setFileName(filename);
+
+                if (dlg->needsInkscape()) {
+                    svg1->setFileName(filename+".tmp.svg");
+                } else {
+                    svg1->setFileName(filename);
+                }
+
                 svg1->setSize(QSize(1.12*w,1.1*h));
                 QPainter *p = new QPainter(svg1);
                 p->fillRect(0,0,svg1->size().width(),svg1->size().height(),Qt::white);
@@ -2701,6 +2707,33 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
                 delete vp;
                 delete p;
                 delete svg1;
+
+                if (dlg->needsInkscape()) {
+                    QString cmd = "inkscape -z -D --file=";
+                    cmd += filename+".tmp.svg ";
+                      //      --export-pdf=#1.pdf --export-latex";
+                    if (dlg->isPdf_Tex()) {
+                        QString tmp = filename;
+                        tmp.chop(4);
+                        cmd = cmd + "--export-pdf="+ tmp + " --export-latex";
+                        qDebug()<<cmd;
+                        QProcess::execute(cmd);
+                    }
+
+                    if (dlg->isPdf()) {
+                        cmd = cmd + "--export-pdf=" + filename;
+                        qDebug()<<cmd;
+                        QProcess::execute(cmd);
+                    }
+
+                    if (dlg->isEps()) {
+                        cmd = cmd + "--export-eps=" + filename;
+                        qDebug()<<cmd;
+                        QProcess::execute(cmd);
+                    }
+
+                    QFile::remove(filename+".tmp.svg");
+                }
             }
 
             successExportMessages(QFile::exists(filename));
