@@ -674,10 +674,21 @@ bool Schematic::loadDocument()
 
   Line = Line.mid(16, Line.length()-17);
   if(!checkVersion(Line)) { // wrong version number ?
-    file.close();
-    QMessageBox::critical(0, QObject::tr("Error"),
-		 QObject::tr("Wrong document version: ")+Line);
-    return false;
+
+    QMessageBox::StandardButton result;
+    result = QMessageBox::warning(0,
+                                  QObject::tr("Warning"),
+                                  QObject::tr("Wrong document version \n"
+                                              "Try to open it anyway?"),
+                                  QMessageBox::Yes|QMessageBox::No);
+
+    if (result==QMessageBox::No) {
+        file.close();
+        return false;
+    }
+
+    //QMessageBox::critical(0, QObject::tr("Error"),
+        // QObject::tr("Wrong document version: ")+Line);
   }
 
   // read content *************************
