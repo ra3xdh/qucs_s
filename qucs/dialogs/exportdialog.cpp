@@ -60,7 +60,7 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
 
     cbxImgType = new QComboBox(this);
     QStringList lst;
-    lst<<"Colour"<<"Monochrome";
+    lst<<tr("Colour")<<tr("Monochrome");
     cbxImgType->addItems(lst);
 
     cbRatio = new QCheckBox(tr("Original width to height ratio"));
@@ -149,7 +149,7 @@ void ExportDialog::setFileName()
                                          "JPEG images (*.jpg *.jpeg)");
     */
     //QFileInfo inf(filename);
-    QFileDialog dialog(this, tr("Export diagram to file"), editFilename->text(),
+    QFileDialog dialog(this, tr("Export to image"), editFilename->text(),
                        "SVG vector graphics (*.svg) ;;"
                        "PNG images (*.png) ;;"
                        "JPEG images (*.jpg *.jpeg) ;;"

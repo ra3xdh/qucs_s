@@ -700,7 +700,54 @@
     <name>ExportDiagramDialog</name>
     <message>
         <source>Save to file (Graphics format by extension)</source>
-        <translation>Сохранить диаграмму (формат файла по расширению)</translation>
+        <translation type="obsolete">Сохранить диаграмму (формат файла по расширению)</translation>
+    </message>
+    <message>
+        <source>Width  in pixels</source>
+        <translation type="obsolete">Ширина в пикселах</translation>
+    </message>
+    <message>
+        <source>Height in pixels</source>
+        <translation type="obsolete">Высота в пикселах</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="obsolete">Экспортировать</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="obsolete">Отменить</translation>
+    </message>
+    <message>
+        <source>File</source>
+        <translation type="obsolete">Файл</translation>
+    </message>
+    <message>
+        <source>Original width to height ratio</source>
+        <translation type="obsolete">Сохранить соотношение сторон</translation>
+    </message>
+    <message>
+        <source>Original size</source>
+        <translation type="obsolete">Сохранить размер</translation>
+    </message>
+    <message>
+        <source>Export diagram to file</source>
+        <translation type="obsolete">Экспорт диаграммы</translation>
+    </message>
+    <message>
+        <source>Export diagram to raster or vector image</source>
+        <translation type="obsolete">Сохранить диаграмму как изображение</translation>
+    </message>
+</context>
+<context>
+    <name>ExportDialog</name>
+    <message>
+        <source>Export graphics</source>
+        <translation>Экспорт в графический формат</translation>
+    </message>
+    <message>
+        <source>Save to file (Graphics format by extension)</source>
+        <translation>Сохранить как изображение (формат файла по расширению)</translation>
     </message>
     <message>
         <source>Width  in pixels</source>
@@ -709,6 +756,14 @@
     <message>
         <source>Height in pixels</source>
         <translation>Высота в пикселах</translation>
+    </message>
+    <message>
+        <source>Scale factor: </source>
+        <translation>Масштаб</translation>
+    </message>
+    <message>
+        <source>Image format:</source>
+        <translation>Тип изображения</translation>
     </message>
     <message>
         <source>Export</source>
@@ -731,12 +786,28 @@
         <translation>Сохранить размер</translation>
     </message>
     <message>
-        <source>Export diagram to file</source>
-        <translation>Экспорт диаграммы</translation>
+        <source>Export selected only</source>
+        <translation>Экспорт только выделенного</translation>
+    </message>
+    <message>
+        <source>Export schematic to raster or vector image</source>
+        <translation>Сохранить  как изображение</translation>
+    </message>
+    <message>
+        <source>Export to image</source>
+        <translation>Сохранить как изображение</translation>
     </message>
     <message>
         <source>Export diagram to raster or vector image</source>
         <translation>Сохранить диаграмму как изображение</translation>
+    </message>
+    <message>
+        <source>Colour</source>
+        <translation>Цветной</translation>
+    </message>
+    <message>
+        <source>Monochrome</source>
+        <translation>Монохромный</translation>
     </message>
 </context>
 <context>
@@ -7867,7 +7938,11 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <source>Export Graphics</source>
-        <translation>Экспорт в графический формат</translation>
+        <translation type="obsolete">Экспорт в графический формат</translation>
+    </message>
+    <message>
+        <source>Export as image</source>
+        <translation type="unfinished">Сохранить как изображение</translation>
     </message>
 </context>
 <context>
@@ -10735,7 +10810,7 @@ Rechecks the list of paths for files.</source>
     </message>
     <message>
         <source>Export diagram to graphics</source>
-        <translation>Экспорт диаграммы</translation>
+        <translation type="obsolete">Экспорт диаграммы</translation>
     </message>
     <message>
         <source>Sucessfully exported!</source>
@@ -10750,6 +10825,18 @@ Rechecks the list of paths for files.</source>
 Use PNG, JPEG or SVG graphics!</source>
         <translation>Графиеский формат не поддерживается. 
 Используйте форматы SVG, PNG или JPEG!</translation>
+    </message>
+    <message>
+        <source>Export to image</source>
+        <translation>Сохранить как изображение</translation>
+    </message>
+    <message>
+        <source>Inkscape start error!</source>
+        <translation>Ошибка запуска Inkscape!</translation>
+    </message>
+    <message>
+        <source>Export as image</source>
+        <translation>Сохранить как изображение</translation>
     </message>
 </context>
 <context>
