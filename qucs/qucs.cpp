@@ -2711,27 +2711,30 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
                 if (dlg->needsInkscape()) {
                     QString cmd = "inkscape -z -D --file=";
                     cmd += filename+".tmp.svg ";
-                      //      --export-pdf=#1.pdf --export-latex";
+
                     if (dlg->isPdf_Tex()) {
                         QString tmp = filename;
                         tmp.chop(4);
                         cmd = cmd + "--export-pdf="+ tmp + " --export-latex";
-                        qDebug()<<cmd;
-                        QProcess::execute(cmd);
                     }
 
                     if (dlg->isPdf()) {
                         cmd = cmd + "--export-pdf=" + filename;
-                        qDebug()<<cmd;
-                        QProcess::execute(cmd);
                     }
 
                     if (dlg->isEps()) {
-                        cmd = cmd + "--export-eps=" + filename;
-                        qDebug()<<cmd;
-                        QProcess::execute(cmd);
+                        cmd = cmd + "--export-eps=" + filename;   
                     }
 
+                    int result = QProcess::execute(cmd);
+
+                    if (result!=0) {
+                        QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Export to image"),
+                                                            tr("Inkscape start error!"),
+                                                            QMessageBox::Ok);
+                        msg->exec();
+                        delete msg;
+                    }
                     QFile::remove(filename+".tmp.svg");
                 }
             }
