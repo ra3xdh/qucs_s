@@ -109,6 +109,11 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     appSettingsGrid->addWidget(checkWiring,5,1);
 
 
+    appSettingsGrid->addWidget(new QLabel(tr("Load documents from future versions ")));
+    checkLoadFromFutureVersions = new QCheckBox(appSettingsTab);
+    appSettingsGrid->addWidget(checkLoadFromFutureVersions,6,1);
+    checkLoadFromFutureVersions->setChecked(QucsSettings.IgnoreFutureVersion);
+
     t->addTab(appSettingsTab, tr("Settings"));
 
     // ...........................................................
@@ -506,6 +511,8 @@ void QucsSettingsDialog::slotApply()
     QucsSettings.OctaveBinDir = octaveEdit->text();
     QucsSettings.QucsHomeDir = homeEdit->text();
 
+    QucsSettings.IgnoreFutureVersion = checkLoadFromFutureVersions->isChecked();
+
     saveApplSettings(App);  // also sets the small and large font
 
     if(changed)
@@ -518,6 +525,7 @@ void QucsSettingsDialog::slotApply()
     // update the schenatic filelist hash
     QucsMain->updatePathList(currentPaths);
     QucsMain->updateSchNameHash();
+
 }
 
 

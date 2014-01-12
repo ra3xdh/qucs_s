@@ -678,7 +678,8 @@ bool Schematic::loadDocument()
     QMessageBox::StandardButton result;
     result = QMessageBox::warning(0,
                                   QObject::tr("Warning"),
-                                  QObject::tr("Wrong document version \n"
+                                  QObject::tr("Wrong document version \n" +
+                                              DocName + "\n"
                                               "Try to open it anyway?"),
                                   QMessageBox::Yes|QMessageBox::No);
 

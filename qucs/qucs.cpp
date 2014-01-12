@@ -805,8 +805,12 @@ int QucsApp::testFile(const QString& DocName)
 
   Line = Line.mid(16, Line.length()-17);
   if(!checkVersion(Line)) { // wrong version number ?
-    file.close();
-    return -4;
+      if (!QucsSettings.IgnoreFutureVersion) {
+          file.close();
+          return -4;
+      }
+    //file.close();
+    //return -4;
   }
 
   // read content ....................

@@ -67,6 +67,9 @@ struct tQucsSettings {
 
   unsigned int numRecentDocs;
   QStringList RecentDocs;
+
+  bool IgnoreFutureVersion;
+
 };
 
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used

@@ -74,7 +74,7 @@ public:
     QucsApp *App;
 
     QFont Font;
-    QCheckBox *checkWiring;
+    QCheckBox *checkWiring, *checkLoadFromFutureVersions;
     QComboBox *LanguageCombo;
     QPushButton *FontButton, *BGColorButton;
     QLineEdit *undoNumEdit, *editorEdit, *Input_Suffix, *Input_Program, *octaveEdit, *homeEdit;
