@@ -2700,7 +2700,8 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
                     svg1->setFileName(filename);
                 }
 
-                svg1->setSize(QSize(1.12*w,1.1*h));
+                //svg1->setSize(QSize(1.12*w,1.1*h));
+                svg1->setSize(QSize(1.12*w,h));
                 QPainter *p = new QPainter(svg1);
                 p->fillRect(0,0,svg1->size().width(),svg1->size().height(),Qt::white);
                 ViewPainter *vp = new ViewPainter(p);

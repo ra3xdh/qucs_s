@@ -119,6 +119,8 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
 
     this->layout()->setSizeConstraint(QLayout::SetFixedSize);
     this->setWindowTitle(tr("Export schematic to raster or vector image"));
+
+    this->setSvg(editFilename->text());
 }
 
 QString ExportDialog::FileToSave()
