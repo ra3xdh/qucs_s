@@ -49,13 +49,13 @@ Marker::Marker(Diagram *Diag_, Graph *pg_, int _nn, int cx_, int cy_)
   cy = -cy_;
   fCX = float(cx);
   fCY = float(cy);
-
+  Z0 = 50;		//Used for Smith chart marker, to calculate impedance
   if(!pGraph)  makeInvalid();
   else initText(_nn);   // finally create marker
 
   x1 =  cx + 60;
   y1 = -cy - 60;
-	Z0 = 50;		//Used for Smith chart marker, to calculate impedance
+
 }
 
 Marker::~Marker()
@@ -149,7 +149,19 @@ void Marker::initText(int n)
   }
   VarPos[nVarPos] = *pz;
   VarPos[nVarPos+1] = *(pz+1);
+  if(Diag->Name=="Smith") //impedance is useful as well here
+  {
+    double Zr, Zi;
+    Zr = *pz;
+    Zi = *(pz+1);
 
+    MatchDialog::r2z(Zr, Zi, Z0);
+    QString Var = pGraph->Var;
+    if(Var.startsWith("S"))
+        Text += "\n"+ Var.replace('S', 'Z')+": " +complexRect(Zr, Zi, Precision);
+    else
+        Text += "\nZ("+ Var+"): " +complexRect(Zr, Zi, Precision);
+  }
   px = VarPos;
   if(py != &Dummy)   // 2D in 3D diagram ?
     py = VarPos + 1;
@@ -229,7 +241,6 @@ void Marker::createText()
 	Zr = *pz;
 	Zi = *(pz+1);
 	  
-	
 	MatchDialog::r2z(Zr, Zi, Z0);
 	QString Var = pGraph->Var;
 	if(Var.startsWith("S"))
