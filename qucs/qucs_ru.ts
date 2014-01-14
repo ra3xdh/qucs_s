@@ -677,7 +677,7 @@
     <name>DisplayDialog</name>
     <message>
         <source>Close</source>
-        <translation type="obsolete">Закрыть</translation>
+        <translation type="unfinished">Закрыть</translation>
     </message>
     <message>
         <source>Analog</source>
@@ -685,15 +685,15 @@
     </message>
     <message>
         <source>VHDL</source>
-        <translation type="obsolete">VHDL</translation>
+        <translation type="unfinished">VHDL</translation>
     </message>
     <message>
         <source>Verilog</source>
-        <translation type="obsolete">Verilog</translation>
+        <translation type="unfinished">Verilog</translation>
     </message>
     <message>
         <source>Analogue</source>
-        <translation type="obsolete">Analog</translation>
+        <translation type="unfinished">Analog</translation>
     </message>
 </context>
 <context>
@@ -1047,15 +1047,15 @@
     </message>
     <message>
         <source>Close</source>
-        <translation type="obsolete">Закрыть</translation>
+        <translation type="unfinished">Закрыть</translation>
     </message>
     <message>
         <source>QucsFilter is a filter synthesis program. To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediatly, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
-        <translation type="obsolete">QucsFilter - это программа синтеза фильтров.  Для создания фильтра просто введите все параметры и нажмите большую кнопку внизу главного окна. Сразу после этого фильтр рассчитывается и помещается в буфер обмена. Теперь перейдите в Qucs, откройте пустой схемный документ и нажмите CTRL-V (вставить из буфера обмена). Теперь схема фильтра может быть вставлена и использована для моделирования. Удачи!</translation>
+        <translation type="unfinished">QucsFilter - это программа синтеза фильтров.  Для создания фильтра просто введите все параметры и нажмите большую кнопку внизу главного окна. Сразу после этого фильтр рассчитывается и помещается в буфер обмена. Теперь перейдите в Qucs, откройте пустой схемный документ и нажмите CTRL-V (вставить из буфера обмена). Теперь схема фильтра может быть вставлена и использована для моделирования. Удачи!</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="obsolete">Справка</translation>
+        <translation type="unfinished">Справка</translation>
     </message>
     <message>
         <source>Available transmission lines are: Microstrip, Rectangular Waveguide, Coaxial Line and Coupled Microstrips.</source>
@@ -1063,15 +1063,15 @@
     </message>
     <message>
         <source>Dismiss</source>
-        <translation type="obsolete">Готово</translation>
+        <translation type="unfinished">Готово</translation>
     </message>
     <message>
         <source>QucsTranscalc is an analysis and synthesis tool for calculating the electrical and physical properties of different kinds of RF and microwave transmission lines.</source>
-        <translation type="obsolete">QucsTranscalc - это инструмент для анализа и синтеза электрических и физических свойств различных типов линий передач.</translation>
+        <translation type="unfinished">QucsTranscalc - это инструмент для анализа и синтеза электрических и физических свойств различных типов линий передач.</translation>
     </message>
     <message>
         <source>For each type of transmission line, using dialog boxes, you can enter values for the various parameters, and either calculate its electrical properties, or use the given electrical requirements to synthesize physical parameters of the required transmission line.</source>
-        <translation type="obsolete">Для каждого типа линии передач можно с помощью диалоговых средств ввести значения различных параметров и либо вычислить ее электрические свойства, либо использовать данные электрические параметры для синтеза физических параметров выбранной линии передачи.</translation>
+        <translation type="unfinished">Для каждого типа линии передач можно с помощью диалоговых средств ввести значения различных параметров и либо вычислить ее электрические свойства, либо использовать данные электрические параметры для синтеза физических параметров выбранной линии передачи.</translation>
     </message>
     <message>
         <source>QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediatly, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</source>
@@ -1465,23 +1465,23 @@ Successfully created library.</source>
     </message>
     <message>
         <source>Manage User Libraries</source>
-        <translation type="obsolete">Ведение библиотек пользователя</translation>
+        <translation type="unfinished">Ведение библиотек пользователя</translation>
     </message>
     <message>
         <source>Choose library:</source>
-        <translation type="obsolete">Выбор библиотеки:</translation>
+        <translation type="unfinished">Выбор библиотеки:</translation>
     </message>
     <message>
         <source>New Name:</source>
-        <translation type="obsolete">Новое имя:</translation>
+        <translation type="unfinished">Новое имя:</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="obsolete">Удалить</translation>
+        <translation type="unfinished">Удалить</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="obsolete">Переименовать</translation>
+        <translation type="unfinished">Переименовать</translation>
     </message>
     <message>
         <source>No user library!</source>
@@ -1489,35 +1489,35 @@ Successfully created library.</source>
     </message>
     <message>
         <source>Please insert a new library name!</source>
-        <translation type="obsolete">Введите имя новой библиотеки!</translation>
+        <translation type="unfinished">Введите имя новой библиотеки!</translation>
     </message>
     <message>
         <source>Please choose a library!</source>
-        <translation type="obsolete">Выберите библиотеку!</translation>
+        <translation type="unfinished">Выберите библиотеку!</translation>
     </message>
     <message>
         <source>Cannot open library!</source>
-        <translation type="obsolete">Не удается открыть библиотеку!</translation>
+        <translation type="unfinished">Не удается открыть библиотеку!</translation>
     </message>
     <message>
         <source>No permission to modify library!</source>
-        <translation type="obsolete">Нет прав на изменение библиотеки!</translation>
+        <translation type="unfinished">Нет прав на изменение библиотеки!</translation>
     </message>
     <message>
         <source>Writing new library not successful!</source>
-        <translation type="obsolete">Новую библиотеку не удалось записать!</translation>
+        <translation type="unfinished">Новую библиотеку не удалось записать!</translation>
     </message>
     <message>
         <source>Cannot delete old library.</source>
-        <translation type="obsolete">Невозможно удалить старую библиотеку.</translation>
+        <translation type="unfinished">Невозможно удалить старую библиотеку.</translation>
     </message>
     <message>
         <source>Library file is corrupt!</source>
-        <translation type="obsolete">Файл библиотеки поврежден!</translation>
+        <translation type="unfinished">Файл библиотеки поврежден!</translation>
     </message>
     <message>
         <source>No permission to delete library &quot;%1&quot;.</source>
-        <translation type="obsolete">Нет прав на удаление библиотеки &quot;%1&quot;.</translation>
+        <translation type="unfinished">Нет прав на удаление библиотеки &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Successfully created library.</source>
@@ -1533,11 +1533,11 @@ Successfully created library.</source>
     </message>
     <message>
         <source>Cannot rename library subdirectory!</source>
-        <translation type="obsolete">Не удается переименовать подкаталог библиотеки!</translation>
+        <translation type="unfinished">Не удается переименовать подкаталог библиотеки!</translation>
     </message>
     <message>
         <source>No permission to delete library subdirectory &quot;%1&quot;.</source>
-        <translation type="obsolete">Нет прав на удаление подкаталога &quot;%1&quot; библиотеки. </translation>
+        <translation type="unfinished">Нет прав на удаление подкаталога &quot;%1&quot; библиотеки. </translation>
     </message>
     <message>
         <source>Add subcircuit description</source>
@@ -2054,35 +2054,35 @@ but is %1 !</source>
     <name>OptionsDialog</name>
     <message>
         <source>Options</source>
-        <translation type="obsolete">Настройки</translation>
+        <translation type="unfinished">Настройки</translation>
     </message>
     <message>
         <source>Units</source>
-        <translation type="obsolete">Единицы</translation>
+        <translation type="unfinished">Единицы</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="obsolete">Частота</translation>
+        <translation type="unfinished">Частота</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="obsolete">Длина</translation>
+        <translation type="unfinished">Длина</translation>
     </message>
     <message>
         <source>Resistance</source>
-        <translation type="obsolete">Сопротивление</translation>
+        <translation type="unfinished">Сопротивление</translation>
     </message>
     <message>
         <source>Angle</source>
-        <translation type="obsolete">Угол</translation>
+        <translation type="unfinished">Угол</translation>
     </message>
     <message>
         <source>Save as Default</source>
-        <translation type="obsolete">Сохранить как стандартные настройки</translation>
+        <translation type="unfinished">Сохранить как стандартные настройки</translation>
     </message>
     <message>
         <source>Dismiss</source>
-        <translation type="obsolete">Готово</translation>
+        <translation type="unfinished">Готово</translation>
     </message>
 </context>
 <context>
@@ -2944,11 +2944,11 @@ Wrong line start!</source>
     </message>
     <message>
         <source>Warning</source>
-        <translation type="obsolete">Предупреждение</translation>
+        <translation type="unfinished">Предупреждение</translation>
     </message>
     <message>
         <source>Cannot save settings !</source>
-        <translation type="obsolete">Не удается сохранить настройки !</translation>
+        <translation type="unfinished">Не удается сохранить настройки !</translation>
     </message>
     <message>
         <source>npn bipolar junction transistor</source>
@@ -3762,7 +3762,7 @@ Wrong &apos;painting&apos; line delimiter!</source>
     </message>
     <message>
         <source>Qucs Editor Version </source>
-        <translation type="obsolete">Версия редактора Qucs </translation>
+        <translation type="unfinished">Версия редактора Qucs </translation>
     </message>
     <message>
         <source>
@@ -3783,14 +3783,14 @@ Usage:  qucsedit [-r] filename
     <message>
         <source>    -r  open file read-only
 </source>
-        <translation type="obsolete">    -r  файл открывается только для чтения
+        <translation type="unfinished">    -r  файл открывается только для чтения
 </translation>
     </message>
     <message>
         <source>Too long command line argument!
 
 </source>
-        <translation type="obsolete">Слишком длинный аргумент командной строки!
+        <translation type="unfinished">Слишком длинный аргумент командной строки!
 
 </translation>
     </message>
@@ -3798,7 +3798,7 @@ Usage:  qucsedit [-r] filename
         <source>Wrong command line argument!
 
 </source>
-        <translation type="obsolete">Неправильный аргумент командной строки!
+        <translation type="unfinished">Неправильный аргумент командной строки!
 
 </translation>
     </message>
@@ -3806,7 +3806,7 @@ Usage:  qucsedit [-r] filename
         <source>Only one filename allowed!
 
 </source>
-        <translation type="obsolete">Можно только одно имя файла!
+        <translation type="unfinished">Можно только одно имя файла!
 
 </translation>
     </message>
@@ -3894,7 +3894,7 @@ Usage:  qucsedit [-r] filename
         <source>
 Very simple text editor for Qucs
 </source>
-        <translation type="obsolete">
+        <translation type="unfinished">
 Очень простой редактор текста для Qucs
 </translation>
     </message>
@@ -3902,19 +3902,19 @@ Very simple text editor for Qucs
         <source>
 Usage:  qucsedit [-r] file
 </source>
-        <translation type="obsolete">
+        <translation type="unfinished">
 Использование:  qucsedit [-r] файл
 </translation>
     </message>
     <message>
         <source>    -h  display this help and exit
 </source>
-        <translation type="obsolete">    -h  показать эту справку и выйти
+        <translation type="unfinished">    -h  показать эту справку и выйти
 </translation>
     </message>
     <message>
         <source> &lt;invalid&gt;</source>
-        <translation type="unfinished"> &lt;неправильно&gt;</translation>
+        <translation type="obsolete"> &lt;неправильно&gt;</translation>
     </message>
     <message>
         <source>initial phase in degrees</source>
@@ -4023,7 +4023,7 @@ Usage:  qucsedit [-r] file
     <message>
         <source>Copyright (C) 2004, 2005 by Michael Margraf
 </source>
-        <translation type="obsolete">Copyright (C) 2004, 2005 Michael Margraf
+        <translation type="unfinished">Copyright (C) 2004, 2005 Michael Margraf
 </translation>
     </message>
     <message>
@@ -7944,6 +7944,11 @@ Usage:  qucsedit [-r] file
         <source>Export as image</source>
         <translation type="unfinished">Сохранить как изображение</translation>
     </message>
+    <message>
+        <source>Wrong document version 
+</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QucsActions</name>
@@ -10855,107 +10860,127 @@ Use PNG, JPEG or SVG graphics!</source>
     </message>
     <message>
         <source>About Qt...</source>
-        <translation type="obsolete">О Qt...</translation>
+        <translation type="unfinished">О Qt...</translation>
     </message>
     <message>
         <source>&amp;File</source>
-        <translation type="obsolete">&amp;Файл</translation>
+        <translation type="unfinished">&amp;Файл</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="obsolete">&amp;Справка</translation>
+        <translation type="unfinished">&amp;Справка</translation>
     </message>
     <message>
         <source>Attenuation:</source>
-        <translation type="obsolete">Ослабление:</translation>
+        <translation type="unfinished">Ослабление:</translation>
     </message>
     <message>
         <source>1</source>
-        <translation type="obsolete">1</translation>
+        <translation type="unfinished">1</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation type="obsolete">дБ</translation>
+        <translation type="unfinished">дБ</translation>
     </message>
     <message>
         <source>Zin:</source>
-        <translation type="obsolete">Zin:</translation>
+        <translation type="unfinished">Zin:</translation>
     </message>
     <message>
         <source>50</source>
-        <translation type="obsolete">50</translation>
+        <translation type="unfinished">50</translation>
     </message>
     <message>
         <source>Zout:</source>
-        <translation type="obsolete">Zout:</translation>
+        <translation type="unfinished">Zout:</translation>
     </message>
     <message>
         <source>Calculate and put into Clipboard</source>
-        <translation type="obsolete">Рассчитать и скопировать в буфер обмена</translation>
+        <translation type="unfinished">Рассчитать и скопировать в буфер обмена</translation>
     </message>
     <message>
         <source>R1:</source>
-        <translation type="obsolete">R1:</translation>
+        <translation type="unfinished">R1:</translation>
     </message>
     <message>
         <source>--</source>
-        <translation type="obsolete">--</translation>
+        <translation type="unfinished">--</translation>
     </message>
     <message>
         <source>Ohm</source>
-        <translation type="obsolete">Ом</translation>
+        <translation type="unfinished">Ом</translation>
     </message>
     <message>
         <source>R2:</source>
-        <translation type="obsolete">R2:</translation>
+        <translation type="unfinished">R2:</translation>
     </message>
     <message>
         <source>R3:</source>
-        <translation type="obsolete">R3:</translation>
+        <translation type="unfinished">R3:</translation>
     </message>
     <message>
         <source>Result:</source>
-        <translation type="obsolete">Итог:</translation>
+        <translation type="unfinished">Итог:</translation>
     </message>
     <message>
         <source>About Qt</source>
-        <translation type="obsolete">О Qt</translation>
+        <translation type="unfinished">О Qt</translation>
     </message>
     <message>
         <source>About...</source>
-        <translation type="obsolete">О...</translation>
+        <translation type="unfinished">О...</translation>
     </message>
     <message>
         <source>
 Attenuator synthesis program
 </source>
-        <translation type="obsolete">
+        <translation type="unfinished">
 Программа синтеза аттеньюаторов
 </translation>
     </message>
     <message>
         <source>Copyright (C) 2006 by</source>
-        <translation type="obsolete">Copyright (C) 2006 </translation>
+        <translation type="unfinished">Copyright (C) 2006 </translation>
     </message>
     <message>
         <source>Topology</source>
-        <translation type="obsolete">Топология</translation>
+        <translation type="unfinished">Топология</translation>
     </message>
     <message>
         <source>Input</source>
-        <translation type="obsolete">Вход</translation>
+        <translation type="unfinished">Вход</translation>
     </message>
     <message>
         <source>Output</source>
-        <translation type="obsolete">Выход</translation>
+        <translation type="unfinished">Выход</translation>
     </message>
     <message>
         <source>Success!</source>
-        <translation type="obsolete">Успешно!</translation>
+        <translation type="unfinished">Успешно!</translation>
     </message>
     <message>
         <source>Error: Set Attenuation more than %1 dB</source>
         <translation type="obsolete">Ошибка: Установите ослабление более %1 dB</translation>
+    </message>
+    <message>
+        <source>&amp;Quit</source>
+        <translation type="unfinished">&amp;Закончить</translation>
+    </message>
+    <message>
+        <source>&amp;About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Qucs Attenuator Help</source>
+        <translation type="unfinished">Справка по Qucs Attenuator</translation>
+    </message>
+    <message>
+        <source>QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediatly, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</source>
+        <translation type="unfinished">QucsAttenuator - это программа синтеза аттеньюаторов. Для создания аттеньюатора нужно просто ввести все входные параметры и нажать кнопку расчета. Сразу после этого схема аттеньюатора рассчитывается и помещается в буфер обмена. Теперь нужно перейти в Qucs, открыть схемный документ и нажать CTRL-V (вставить из буфера обмена). Схема аттеньюатра теперь может быть вставлена. Удачи!</translation>
+    </message>
+    <message>
+        <source>Error: Set Attenuation less than %1 dB</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11510,7 +11535,7 @@ Enables/disables the statusbar</source>
     </message>
     <message>
         <source>About</source>
-        <translation type="obsolete">О</translation>
+        <translation type="unfinished">О</translation>
     </message>
     <message>
         <source>&amp;About Qucs...</source>
@@ -11730,7 +11755,7 @@ Do you want to save the changes before closing?</source>
     </message>
     <message>
         <source>&amp;Discard</source>
-        <translation type="obsolete">&amp;Закрыть без сохранения</translation>
+        <translation type="unfinished">&amp;Закрыть без сохранения</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -11774,7 +11799,7 @@ Do you want to save the changes before closing?</source>
     </message>
     <message>
         <source>About...</source>
-        <translation type="obsolete">О...</translation>
+        <translation type="unfinished">О...</translation>
     </message>
     <message>
         <source>Qucs Version </source>
@@ -11868,7 +11893,7 @@ Errors:
     </message>
     <message>
         <source>Error</source>
-        <translation type="obsolete">Ошибка</translation>
+        <translation type="unfinished">Ошибка</translation>
     </message>
     <message>
         <source>No page set !</source>
@@ -12353,7 +12378,7 @@ Sets a marker on a diagram&apos;s graph</source>
     </message>
     <message>
         <source>Enter a Document Name</source>
-        <translation type="obsolete">Введите имя документа</translation>
+        <translation type="unfinished">Введите имя документа</translation>
     </message>
     <message>
         <source>Qucs Documents (*.sch *.dpl);; Any File (*)</source>
@@ -12511,11 +12536,11 @@ Edits the schematic</source>
     </message>
     <message>
         <source>File: </source>
-        <translation type="obsolete">Файл: </translation>
+        <translation type="unfinished">Файл: </translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="obsolete">Закончить</translation>
+        <translation type="unfinished">Закончить</translation>
     </message>
     <message>
         <source>Qucs Editor Version </source>
@@ -12537,51 +12562,51 @@ very simple text editor for Qucs
     </message>
     <message>
         <source>Enter a Filename</source>
-        <translation type="obsolete">Введите имя файла</translation>
+        <translation type="unfinished">Введите имя файла</translation>
     </message>
     <message>
         <source>Cannot write file: </source>
-        <translation type="obsolete">Не удается записать файл:</translation>
+        <translation type="unfinished">Не удается записать файл:</translation>
     </message>
     <message>
         <source>Cannot read file: </source>
-        <translation type="obsolete">Не удается прочитать файл:</translation>
+        <translation type="unfinished">Не удается прочитать файл:</translation>
     </message>
     <message>
         <source>Closing document</source>
-        <translation type="obsolete">Закрытие документа</translation>
+        <translation type="unfinished">Закрытие документа</translation>
     </message>
     <message>
         <source>The text contains unsaved changes!
 </source>
-        <translation type="obsolete">В тексте есть несохраненные изменения!
+        <translation type="unfinished">В тексте есть несохраненные изменения!
 </translation>
     </message>
     <message>
         <source>Do you want to save the changes?</source>
-        <translation type="obsolete">Хотите сохранить изменения?</translation>
+        <translation type="unfinished">Хотите сохранить изменения?</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="obsolete">Со&amp;хранить</translation>
+        <translation type="unfinished">Со&amp;хранить</translation>
     </message>
     <message>
         <source>
 Very simple text editor for Qucs
 </source>
-        <translation type="obsolete">
+        <translation type="unfinished">
 Простой текстовый редактор для Qucs
 </translation>
     </message>
     <message>
         <source>Copyright (C) 2004, 2005 by Michael Margraf
 </source>
-        <translation type="obsolete">Copyright (C) 2004, 2005 Michael Margraf
+        <translation type="unfinished">Copyright (C) 2004, 2005 Michael Margraf
 </translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="obsolete">О&amp;тменить</translation>
+        <translation type="unfinished">О&amp;тменить</translation>
     </message>
     <message>
         <source>Row: %1  -  Column: %2</source>
@@ -12589,84 +12614,84 @@ Very simple text editor for Qucs
     </message>
     <message>
         <source>Line: %1  -  Column: %2</source>
-        <translation type="obsolete">Строка: %1  -  Столбец: %2</translation>
+        <translation type="unfinished">Строка: %1  -  Столбец: %2</translation>
     </message>
 </context>
 <context>
     <name>QucsFilter</name>
     <message>
         <source>E&amp;xit</source>
-        <translation type="obsolete">В&amp;ыход</translation>
+        <translation type="unfinished">В&amp;ыход</translation>
     </message>
     <message>
         <source>Help...</source>
-        <translation type="obsolete">Справка...</translation>
+        <translation type="unfinished">Справка...</translation>
     </message>
     <message>
         <source>&amp;About QucsFilter...</source>
-        <translation type="obsolete">&amp;О QucsFilter...</translation>
+        <translation type="unfinished">&amp;О QucsFilter...</translation>
     </message>
     <message>
         <source>About Qt...</source>
-        <translation type="obsolete">О Qt...</translation>
+        <translation type="unfinished">О Qt...</translation>
     </message>
     <message>
         <source>&amp;File</source>
-        <translation type="obsolete">&amp;Файл</translation>
+        <translation type="unfinished">&amp;Файл</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="obsolete">&amp;Справка</translation>
+        <translation type="unfinished">&amp;Справка</translation>
     </message>
     <message>
         <source>Filter type:</source>
-        <translation type="obsolete">Тип фильтра:</translation>
+        <translation type="unfinished">Тип фильтра:</translation>
     </message>
     <message>
         <source>Filter class:</source>
-        <translation type="obsolete">Класс фильтра:</translation>
+        <translation type="unfinished">Класс фильтра:</translation>
     </message>
     <message>
         <source>Low pass</source>
-        <translation type="obsolete">Низкочастотный</translation>
+        <translation type="unfinished">Низкочастотный</translation>
     </message>
     <message>
         <source>High pass</source>
-        <translation type="obsolete">Высокочастотный</translation>
+        <translation type="unfinished">Высокочастотный</translation>
     </message>
     <message>
         <source>Order:</source>
-        <translation type="obsolete">Порядок:</translation>
+        <translation type="unfinished">Порядок:</translation>
     </message>
     <message>
         <source>Corner frequency:</source>
-        <translation type="obsolete">Частота среза:</translation>
+        <translation type="unfinished">Частота среза:</translation>
     </message>
     <message>
         <source>Stop frequency:</source>
-        <translation type="obsolete">Конечная частота:</translation>
+        <translation type="unfinished">Конечная частота:</translation>
     </message>
     <message>
         <source>Pass band ripple:</source>
-        <translation type="obsolete">Неравномерность в полосе пропускания:</translation>
+        <translation type="unfinished">Неравномерность в полосе пропускания:</translation>
     </message>
     <message>
         <source>Impedance:</source>
-        <translation type="obsolete">Полное сопротивление:</translation>
+        <translation type="unfinished">Полное сопротивление:</translation>
     </message>
     <message>
         <source>Calculate and put into Clipboard</source>
-        <translation type="obsolete">Рассчитать и скопировать в буфер обмена</translation>
+        <translation type="unfinished">Рассчитать и скопировать в буфер обмена</translation>
     </message>
     <message>
         <source>About...</source>
-        <translation type="obsolete">О...</translation>
+        <translation type="unfinished">О...</translation>
     </message>
     <message>
         <source>
 Filter synthesis program
 </source>
-        <translation type="obsolete">
+        <translation type="unfinished">
 Программа синтеза фильтров
 </translation>
     </message>
@@ -12678,27 +12703,27 @@ Filter synthesis program
     </message>
     <message>
         <source>About Qt</source>
-        <translation type="obsolete">О Qt</translation>
+        <translation type="unfinished">О Qt</translation>
     </message>
     <message>
         <source>Result:</source>
-        <translation type="obsolete">Итог:</translation>
+        <translation type="unfinished">Итог:</translation>
     </message>
     <message>
         <source>Result: --</source>
-        <translation type="obsolete">Итог: --</translation>
+        <translation type="unfinished">Итог: --</translation>
     </message>
     <message>
         <source>Successful</source>
-        <translation type="obsolete">Успешно</translation>
+        <translation type="unfinished">Успешно</translation>
     </message>
     <message>
         <source>Band pass</source>
-        <translation type="obsolete">Полосовой</translation>
+        <translation type="unfinished">Полосовой</translation>
     </message>
     <message>
         <source>Band stop</source>
-        <translation type="obsolete">Режекторный</translation>
+        <translation type="unfinished">Режекторный</translation>
     </message>
     <message>
         <source>Copyright (C) 2005 by</source>
@@ -12706,50 +12731,50 @@ Filter synthesis program
     </message>
     <message>
         <source>Error</source>
-        <translation type="obsolete">Ошибка</translation>
+        <translation type="unfinished">Ошибка</translation>
     </message>
     <message>
         <source>Stop frequency must be greater than start frequency.</source>
-        <translation type="obsolete">Конечная частота должна быть выше начальной.</translation>
+        <translation type="unfinished">Конечная частота должна быть выше начальной.</translation>
     </message>
     <message>
         <source>Filter order must not be less than two.</source>
-        <translation type="obsolete">Порядок фильтра должен быть не меньше второго.</translation>
+        <translation type="unfinished">Порядок фильтра должен быть не меньше второго.</translation>
     </message>
     <message>
         <source>Start frequency:</source>
-        <translation type="obsolete">Начальная частота:</translation>
+        <translation type="unfinished">Начальная частота:</translation>
     </message>
     <message>
         <source>Bessel filter order must not be greater than 19.</source>
-        <translation type="obsolete">Порядок фильтра Бесселя должен быть не больше 19.</translation>
+        <translation type="unfinished">Порядок фильтра Бесселя должен быть не больше 19.</translation>
     </message>
     <message>
         <source>Stop band frequency:</source>
-        <translation type="obsolete">Частота режекторного фильтра:</translation>
+        <translation type="unfinished">Частота режекторного фильтра:</translation>
     </message>
     <message>
         <source>Stop band attenuation:</source>
-        <translation type="obsolete">Подавление режекторного фильтра:</translation>
+        <translation type="unfinished">Подавление режекторного фильтра:</translation>
     </message>
     <message>
         <source>Pass band frequency:</source>
-        <translation type="obsolete">Частота полосового фильтра:</translation>
+        <translation type="unfinished">Частота полосового фильтра:</translation>
     </message>
     <message>
         <source>Pass band attenuation:</source>
-        <translation type="obsolete">Ослабление полосового фильтра:</translation>
+        <translation type="unfinished">Ослабление полосового фильтра:</translation>
     </message>
     <message>
         <source>Copyright (C) 2005, 2006 by</source>
-        <translation type="obsolete">Copyright (C) 2005, 2006 </translation>
+        <translation type="unfinished">Copyright (C) 2005, 2006 </translation>
     </message>
 </context>
 <context>
     <name>QucsHelp</name>
     <message>
         <source>Qucs Help System</source>
-        <translation type="obsolete">Справочная система Qucs</translation>
+        <translation type="unfinished">Справочная система Qucs</translation>
     </message>
     <message>
         <source>Help Index</source>
@@ -12761,67 +12786,67 @@ Filter synthesis program
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="obsolete">&amp;Закончить</translation>
+        <translation type="unfinished">&amp;Закончить</translation>
     </message>
     <message>
         <source>&amp;Back</source>
-        <translation type="obsolete">&amp;Назад</translation>
+        <translation type="unfinished">&amp;Назад</translation>
     </message>
     <message>
         <source>&amp;Forward</source>
-        <translation type="obsolete">&amp;Вперед</translation>
+        <translation type="unfinished">&amp;Вперед</translation>
     </message>
     <message>
         <source>&amp;Home</source>
-        <translation type="obsolete">В &amp;начало</translation>
+        <translation type="unfinished">В &amp;начало</translation>
     </message>
     <message>
         <source>&amp;Previous</source>
-        <translation type="obsolete">&amp;Предыдущий</translation>
+        <translation type="unfinished">&amp;Предыдущий</translation>
     </message>
     <message>
         <source>&amp;Next</source>
-        <translation type="obsolete">&amp;Следующий</translation>
+        <translation type="unfinished">&amp;Следующий</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="obsolete">В начало</translation>
+        <translation type="unfinished">В начало</translation>
     </message>
     <message>
         <source>&amp;Table of Contents</source>
-        <translation type="obsolete">&amp;Оглавление</translation>
+        <translation type="unfinished">&amp;Оглавление</translation>
     </message>
     <message>
         <source>Enables/disables the table of contents</source>
-        <translation type="obsolete">Включает/выключает оглавление</translation>
+        <translation type="unfinished">Включает/выключает оглавление</translation>
     </message>
     <message>
         <source>Table of Contents
 
 Enables/disables the table of contents</source>
-        <translation type="obsolete">Оглавление
+        <translation type="unfinished">Оглавление
 
 Включает/выключает оглавление</translation>
     </message>
     <message>
         <source>&amp;About Qt</source>
-        <translation type="obsolete">&amp;О Qt</translation>
+        <translation type="unfinished">&amp;О Qt</translation>
     </message>
     <message>
         <source>&amp;File</source>
-        <translation type="obsolete">&amp;Файл</translation>
+        <translation type="unfinished">&amp;Файл</translation>
     </message>
     <message>
         <source>&amp;View</source>
-        <translation type="obsolete">&amp;Вид</translation>
+        <translation type="unfinished">&amp;Вид</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="obsolete">&amp;Справка</translation>
+        <translation type="unfinished">&amp;Справка</translation>
     </message>
     <message>
         <source>Contents</source>
-        <translation type="obsolete">Содержание</translation>
+        <translation type="unfinished">Содержание</translation>
     </message>
 </context>
 <context>
@@ -14252,7 +14277,7 @@ Copies files to project directory</source>
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="obsolete">&amp;Закончить</translation>
+        <translation type="unfinished">&amp;Закончить</translation>
     </message>
     <message>
         <source>Help</source>
@@ -14260,100 +14285,100 @@ Copies files to project directory</source>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="obsolete">&amp;Справка</translation>
+        <translation type="unfinished">&amp;Справка</translation>
     </message>
     <message>
         <source>About</source>
-        <translation type="obsolete">О</translation>
+        <translation type="unfinished">О</translation>
     </message>
     <message>
         <source>&amp;File</source>
-        <translation type="obsolete">&amp;Файл</translation>
+        <translation type="unfinished">&amp;Файл</translation>
     </message>
     <message>
         <source>Component Selection</source>
-        <translation type="obsolete">Выделение компонента</translation>
+        <translation type="unfinished">Выделение компонента</translation>
     </message>
     <message>
         <source>Search...</source>
-        <translation type="obsolete">Найти...</translation>
+        <translation type="unfinished">Найти...</translation>
     </message>
     <message>
         <source>Component</source>
-        <translation type="obsolete">Компонент</translation>
+        <translation type="unfinished">Компонент</translation>
     </message>
     <message>
         <source>Copy to clipboard</source>
-        <translation type="obsolete">Скопировать в буфер обмена</translation>
+        <translation type="unfinished">Скопировать в буфер обмена</translation>
     </message>
     <message>
         <source>Show Model</source>
-        <translation type="obsolete">Показать модель</translation>
+        <translation type="unfinished">Показать модель</translation>
     </message>
     <message>
         <source>About...</source>
-        <translation type="obsolete">О...</translation>
+        <translation type="unfinished">О...</translation>
     </message>
     <message>
         <source>Library Manager for Qucs
 </source>
-        <translation type="obsolete">Программа ведения библиотек для Qucs
+        <translation type="unfinished">Программа ведения библиотек для Qucs
 </translation>
     </message>
     <message>
         <source>Copyright (C) 2005 by Michael Margraf
 </source>
-        <translation type="obsolete">Copyright (C) 2005 Michael Margraf
+        <translation type="unfinished">Copyright (C) 2005 Michael Margraf
 
 </translation>
     </message>
     <message>
         <source>QucsLib is a program to manage Qucs component libraries. On the left side of the application window the available libraries can be browsed to find the wanted component. By clicking on the component name its description can be seen on the right side. The selected component is transported to the Qucs application by clicking on the button &quot;Copy to Clipboard&quot;. Being back in the schematic window the component can be inserted by pressing CTRL-V  (paste from clipboard).</source>
-        <translation type="obsolete">QucsLib - это программа для ведения библиотек компонентов Qucs.  В левой стороне окна программы можно просматривать имеющиеся библиотеки, находя нужный компонент.  Нажатием левой клавиши мыши на имени компонента можно получить его описание в правой стороне окна.  Выделенный компонент можно перенести в программу Qucs нажатием кнопки &quot;Скопировать в буфер обмена&quot;. Если вернуться назад в окно редактирования схемы, то этот компонент может быть вставлен нажатием CTRL-V (вставка из буфера обмена).</translation>
+        <translation type="unfinished">QucsLib - это программа для ведения библиотек компонентов Qucs.  В левой стороне окна программы можно просматривать имеющиеся библиотеки, находя нужный компонент.  Нажатием левой клавиши мыши на имени компонента можно получить его описание в правой стороне окна.  Выделенный компонент можно перенести в программу Qucs нажатием кнопки &quot;Скопировать в буфер обмена&quot;. Если вернуться назад в окно редактирования схемы, то этот компонент может быть вставлен нажатием CTRL-V (вставка из буфера обмена).</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="obsolete">Ошибка</translation>
+        <translation type="unfinished">Ошибка</translation>
     </message>
     <message>
         <source>Cannot open &quot;%1&quot;.</source>
-        <translation type="obsolete">Не удается открыть файл &quot;%1&quot;.</translation>
+        <translation type="unfinished">Не удается открыть файл &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Library is corrupt.</source>
-        <translation type="obsolete">Библиотечный файл поврежден.</translation>
+        <translation type="unfinished">Библиотечный файл поврежден.</translation>
     </message>
     <message>
         <source>Search result</source>
-        <translation type="obsolete">Результат поиска</translation>
+        <translation type="unfinished">Результат поиска</translation>
     </message>
     <message>
         <source>Result</source>
-        <translation type="obsolete">Результат</translation>
+        <translation type="unfinished">Результат</translation>
     </message>
     <message>
         <source>No appropriate component found.</source>
-        <translation type="obsolete">Соответствующий компонент не найден.</translation>
+        <translation type="unfinished">Соответствующий компонент не найден.</translation>
     </message>
     <message>
         <source>Manage User &amp;Libraries...</source>
-        <translation type="obsolete">Ведение &amp;библиотек пользователя...</translation>
+        <translation type="unfinished">Ведение &amp;библиотек пользователя...</translation>
     </message>
     <message>
         <source>A more comfortable way: The component can also be placed onto the schematic by using Drag n&apos;Drop.</source>
-        <translation type="obsolete">Более удобный способ: Компонент также может быть вставлен в схему с помощью перетаскивания.</translation>
+        <translation type="unfinished">Более удобный способ: Компонент также может быть вставлен в схему с помощью перетаскивания.</translation>
     </message>
     <message>
         <source>QucsLib Help</source>
-        <translation type="obsolete">Справка по QucsLib</translation>
+        <translation type="unfinished">Справка по QucsLib</translation>
     </message>
     <message>
         <source>Model</source>
-        <translation type="obsolete">Модель</translation>
+        <translation type="unfinished">Модель</translation>
     </message>
     <message>
         <source>Search Library Component</source>
-        <translation type="obsolete">Поиск библиотечного компонента</translation>
+        <translation type="unfinished">Поиск библиотечного компонента</translation>
     </message>
 </context>
 <context>
@@ -14619,6 +14644,10 @@ open files with an appropriate program.</source>
         <source>Select a directory</source>
         <translation>Выбрать каталог</translation>
     </message>
+    <message>
+        <source>Load documents from future versions </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QucsTranscalc</name>
@@ -14628,7 +14657,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>&amp;Load</source>
-        <translation type="obsolete">За&amp;грузить</translation>
+        <translation type="unfinished">За&amp;грузить</translation>
     </message>
     <message>
         <source>Save</source>
@@ -14636,7 +14665,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="obsolete">Со&amp;хранить</translation>
+        <translation type="unfinished">Со&amp;хранить</translation>
     </message>
     <message>
         <source>Options</source>
@@ -14644,7 +14673,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>&amp;Options</source>
-        <translation type="obsolete">&amp;Параметры</translation>
+        <translation type="unfinished">&amp;Параметры</translation>
     </message>
     <message>
         <source>Quit</source>
@@ -14652,7 +14681,7 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="obsolete">&amp;Закончить</translation>
+        <translation type="unfinished">&amp;Закончить</translation>
     </message>
     <message>
         <source>Copy to Clipboard</source>
@@ -14660,23 +14689,23 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>&amp;Copy to Clipboard</source>
-        <translation type="obsolete">С&amp;копировать в буфер обмена</translation>
+        <translation type="unfinished">С&amp;копировать в буфер обмена</translation>
     </message>
     <message>
         <source>Analyze</source>
-        <translation type="obsolete">Анализ</translation>
+        <translation type="unfinished">Анализ</translation>
     </message>
     <message>
         <source>&amp;Analyze</source>
-        <translation type="obsolete">Анали&amp;з</translation>
+        <translation type="unfinished">Анали&amp;з</translation>
     </message>
     <message>
         <source>Synthesize</source>
-        <translation type="obsolete">Синтез</translation>
+        <translation type="unfinished">Синтез</translation>
     </message>
     <message>
         <source>&amp;Synthesize</source>
-        <translation type="obsolete">&amp;Синтез</translation>
+        <translation type="unfinished">&amp;Синтез</translation>
     </message>
     <message>
         <source>Help</source>
@@ -14684,23 +14713,23 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="obsolete">&amp;Справка</translation>
+        <translation type="unfinished">&amp;Справка</translation>
     </message>
     <message>
         <source>About</source>
-        <translation type="obsolete">О</translation>
+        <translation type="unfinished">О</translation>
     </message>
     <message>
         <source>&amp;File</source>
-        <translation type="obsolete">&amp;Файл</translation>
+        <translation type="unfinished">&amp;Файл</translation>
     </message>
     <message>
         <source>&amp;Execute</source>
-        <translation type="obsolete">&amp;Выполнить</translation>
+        <translation type="unfinished">&amp;Выполнить</translation>
     </message>
     <message>
         <source>Transmission Line Type</source>
-        <translation type="obsolete">Тип линии передачи</translation>
+        <translation type="unfinished">Тип линии передачи</translation>
     </message>
     <message>
         <source>Microstrip</source>
@@ -14708,296 +14737,296 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <source>Rectangular Waveguide</source>
-        <translation type="obsolete">Прямоугольный волновод</translation>
+        <translation type="unfinished">Прямоугольный волновод</translation>
     </message>
     <message>
         <source>Coaxial Line</source>
-        <translation type="obsolete">Коаксиальная линия</translation>
+        <translation type="unfinished">Коаксиальная линия</translation>
     </message>
     <message>
         <source>Coupled Microstrip</source>
-        <translation type="obsolete">Связанная микрополосковая линия</translation>
+        <translation type="unfinished">Связанная микрополосковая линия</translation>
     </message>
     <message>
         <source>Substrate Parameters</source>
-        <translation type="obsolete">Параметры подложки</translation>
+        <translation type="unfinished">Параметры подложки</translation>
     </message>
     <message>
         <source>Component Parameters</source>
-        <translation type="obsolete">Параметры компонента</translation>
+        <translation type="unfinished">Параметры компонента</translation>
     </message>
     <message>
         <source>Physical Parameters</source>
-        <translation type="obsolete">Физические параметры</translation>
+        <translation type="unfinished">Физические параметры</translation>
     </message>
     <message>
         <source>Derive Electrical Parameters</source>
-        <translation type="obsolete">Расчет электрических параметров</translation>
+        <translation type="unfinished">Расчет электрических параметров</translation>
     </message>
     <message>
         <source>Compute Physical Parameters</source>
-        <translation type="obsolete">Расчет физических параметров</translation>
+        <translation type="unfinished">Расчет физических параметров</translation>
     </message>
     <message>
         <source>Electrical Parameters</source>
-        <translation type="obsolete">Электрические параметры</translation>
+        <translation type="unfinished">Электрические параметры</translation>
     </message>
     <message>
         <source>Calculated Results</source>
-        <translation type="obsolete">Результаты расчетов</translation>
+        <translation type="unfinished">Результаты расчетов</translation>
     </message>
     <message>
         <source>Ready.</source>
-        <translation type="obsolete">Готово.</translation>
+        <translation type="unfinished">Готово.</translation>
     </message>
     <message>
         <source>Conductor Losses</source>
-        <translation type="obsolete">Потери в проводнике</translation>
+        <translation type="unfinished">Потери в проводнике</translation>
     </message>
     <message>
         <source>Dielectric Losses</source>
-        <translation type="obsolete">Потери в диэлектрике</translation>
+        <translation type="unfinished">Потери в диэлектрике</translation>
     </message>
     <message>
         <source>Skin Depth</source>
-        <translation type="obsolete">Толщина скин-слоя</translation>
+        <translation type="unfinished">Толщина скин-слоя</translation>
     </message>
     <message>
         <source>TE-Modes</source>
-        <translation type="obsolete">Поперечно-электрические моды</translation>
+        <translation type="unfinished">Поперечно-электрические моды</translation>
     </message>
     <message>
         <source>TM-Modes</source>
-        <translation type="obsolete">Поперечно-магнитные моды</translation>
+        <translation type="unfinished">Поперечно-магнитные моды</translation>
     </message>
     <message>
         <source>Conductor Losses Even</source>
-        <translation type="obsolete">Омические потери для четной моды</translation>
+        <translation type="unfinished">Омические потери для четной моды</translation>
     </message>
     <message>
         <source>Conductor Losses Odd</source>
-        <translation type="obsolete">Омические потери для нечетной моды</translation>
+        <translation type="unfinished">Омические потери для нечетной моды</translation>
     </message>
     <message>
         <source>Dielectric Losses Even</source>
-        <translation type="obsolete">Диэлектрические потери для четной моды</translation>
+        <translation type="unfinished">Диэлектрические потери для четной моды</translation>
     </message>
     <message>
         <source>Dielectric Losses Odd</source>
-        <translation type="obsolete">Диэлектрические потери для нечетной моды</translation>
+        <translation type="unfinished">Диэлектрические потери для нечетной моды</translation>
     </message>
     <message>
         <source>Relative Permittivity</source>
-        <translation type="obsolete">Относительная диэлектрическая проницаемость</translation>
+        <translation type="unfinished">Относительная диэлектрическая проницаемость</translation>
     </message>
     <message>
         <source>Relative Permeability</source>
-        <translation type="obsolete">Относительная проницаемость</translation>
+        <translation type="unfinished">Относительная проницаемость</translation>
     </message>
     <message>
         <source>Height of Substrate</source>
-        <translation type="obsolete">Высота подложки</translation>
+        <translation type="unfinished">Высота подложки</translation>
     </message>
     <message>
         <source>Height of Box Top</source>
-        <translation type="obsolete">Высота крышки</translation>
+        <translation type="unfinished">Высота крышки</translation>
     </message>
     <message>
         <source>Strip Thickness</source>
-        <translation type="obsolete">Толщина полоски</translation>
+        <translation type="unfinished">Толщина полоски</translation>
     </message>
     <message>
         <source>Strip Conductivity</source>
-        <translation type="obsolete">Проводимость полоски</translation>
+        <translation type="unfinished">Проводимость полоски</translation>
     </message>
     <message>
         <source>Dielectric Loss Tangent</source>
-        <translation type="obsolete">Тангенс угла диэлектрических потерь</translation>
+        <translation type="unfinished">Тангенс угла диэлектрических потерь</translation>
     </message>
     <message>
         <source>Conductor Roughness</source>
-        <translation type="obsolete">Шероховатость проводника</translation>
+        <translation type="unfinished">Шероховатость проводника</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="obsolete">Частота</translation>
+        <translation type="unfinished">Частота</translation>
     </message>
     <message>
         <source>Line Width</source>
-        <translation type="obsolete">Ширина линии</translation>
+        <translation type="unfinished">Ширина линии</translation>
     </message>
     <message>
         <source>Line Length</source>
-        <translation type="obsolete">Длина линии</translation>
+        <translation type="unfinished">Длина линии</translation>
     </message>
     <message>
         <source>Characteristic Impedance</source>
-        <translation type="obsolete">Характеристическое полное сопротивление</translation>
+        <translation type="unfinished">Характеристическое полное сопротивление</translation>
     </message>
     <message>
         <source>Electrical Length</source>
-        <translation type="obsolete">Электрическая длина</translation>
+        <translation type="unfinished">Электрическая длина</translation>
     </message>
     <message>
         <source>Conductivity of Metal</source>
-        <translation type="obsolete">Проводимость металла</translation>
+        <translation type="unfinished">Проводимость металла</translation>
     </message>
     <message>
         <source>Magnetic Loss Tangent</source>
-        <translation type="obsolete">Тангенс угла магнитных потерь</translation>
+        <translation type="unfinished">Тангенс угла магнитных потерь</translation>
     </message>
     <message>
         <source>Width of Waveguide</source>
-        <translation type="obsolete">Ширина волновода</translation>
+        <translation type="unfinished">Ширина волновода</translation>
     </message>
     <message>
         <source>Height of Waveguide</source>
-        <translation type="obsolete">Высота волновода</translation>
+        <translation type="unfinished">Высота волновода</translation>
     </message>
     <message>
         <source>Waveguide Length</source>
-        <translation type="obsolete">Длина волновода</translation>
+        <translation type="unfinished">Длина волновода</translation>
     </message>
     <message>
         <source>Inner Diameter</source>
-        <translation type="obsolete">Внутренний диаметр</translation>
+        <translation type="unfinished">Внутренний диаметр</translation>
     </message>
     <message>
         <source>Outer Diameter</source>
-        <translation type="obsolete">Наружный диаметр</translation>
+        <translation type="unfinished">Наружный диаметр</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="obsolete">Длина</translation>
+        <translation type="unfinished">Длина</translation>
     </message>
     <message>
         <source>Gap Width</source>
-        <translation type="obsolete">Ширина зазора</translation>
+        <translation type="unfinished">Ширина зазора</translation>
     </message>
     <message>
         <source>Even-Mode Impedance</source>
-        <translation type="obsolete">Полное сопротивление для четной моды</translation>
+        <translation type="unfinished">Полное сопротивление для четной моды</translation>
     </message>
     <message>
         <source>Odd-Mode Impedance</source>
-        <translation type="obsolete">Полное сопротивление для нечетной моды</translation>
+        <translation type="unfinished">Полное сопротивление для нечетной моды</translation>
     </message>
     <message>
         <source>Selected for Calculation</source>
-        <translation type="obsolete">Выбрано для расчета</translation>
+        <translation type="unfinished">Выбрано для расчета</translation>
     </message>
     <message>
         <source>Check item for Calculation</source>
-        <translation type="obsolete">Отметьте для расчета</translation>
+        <translation type="unfinished">Отметьте для расчета</translation>
     </message>
     <message>
         <source>About...</source>
-        <translation type="obsolete">О...</translation>
+        <translation type="unfinished">О...</translation>
     </message>
     <message>
         <source>Transmission Line Calculator for Qucs
 </source>
-        <translation type="obsolete">Калькулятор линий передач для Qucs
+        <translation type="unfinished">Калькулятор линий передач для Qucs
 </translation>
     </message>
     <message>
         <source>Copyright (C) 2001 by Gopal Narayanan
 </source>
-        <translation type="obsolete">Copyright (C) 2001 Gopal Narayanan
+        <translation type="unfinished">Copyright (C) 2001 Gopal Narayanan
 </translation>
     </message>
     <message>
         <source>Copyright (C) 2002 by Claudio Girardi
 </source>
-        <translation type="obsolete">Copyright (C) 2002 Claudio Girardi
+        <translation type="unfinished">Copyright (C) 2002 Claudio Girardi
 </translation>
     </message>
     <message>
         <source>Copyright (C) 2005 by Stefan Jahn
 </source>
-        <translation type="obsolete">Copyright (C) 2005 Stefan Jahn
+        <translation type="unfinished">Copyright (C) 2005 Stefan Jahn
 </translation>
     </message>
     <message>
         <source>Values are consistent.</source>
-        <translation type="obsolete">Значения согласуются.</translation>
+        <translation type="unfinished">Значения согласуются.</translation>
     </message>
     <message>
         <source>Values are inconsistent.</source>
-        <translation type="obsolete">Значения не согласуются.</translation>
+        <translation type="unfinished">Значения не согласуются.</translation>
     </message>
     <message>
         <source>Loading file...</source>
-        <translation type="obsolete">Загрузка файла...</translation>
+        <translation type="unfinished">Загрузка файла...</translation>
     </message>
     <message>
         <source>Transcalc File</source>
-        <translation type="obsolete">Файл Transcalc&apos;а</translation>
+        <translation type="unfinished">Файл Transcalc&apos;а</translation>
     </message>
     <message>
         <source>Enter a Filename</source>
-        <translation type="obsolete">Введите имя файла</translation>
+        <translation type="unfinished">Введите имя файла</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="obsolete">Ошибка</translation>
+        <translation type="unfinished">Ошибка</translation>
     </message>
     <message>
         <source>Cannot load file:</source>
-        <translation type="obsolete">Не удается загрузить файл:</translation>
+        <translation type="unfinished">Не удается загрузить файл:</translation>
     </message>
     <message>
         <source>Loading aborted.</source>
-        <translation type="obsolete">Загрузка прервана.</translation>
+        <translation type="unfinished">Загрузка прервана.</translation>
     </message>
     <message>
         <source>Saving file...</source>
-        <translation type="obsolete">Сохранение файла...</translation>
+        <translation type="unfinished">Сохранение файла...</translation>
     </message>
     <message>
         <source>Cannot save file:</source>
-        <translation type="obsolete">Не удается сохранить файл:</translation>
+        <translation type="unfinished">Не удается сохранить файл:</translation>
     </message>
     <message>
         <source>Saving aborted.</source>
-        <translation type="obsolete">Сохранение прервано.</translation>
+        <translation type="unfinished">Сохранение прервано.</translation>
     </message>
     <message>
         <source>Schematic copied into clipboard.</source>
-        <translation type="obsolete">Схема скопирована в буфер обмена.</translation>
+        <translation type="unfinished">Схема скопирована в буфер обмена.</translation>
     </message>
     <message>
         <source>Transmission line type not available.</source>
-        <translation type="obsolete">Тип линии передачи недоступен.</translation>
+        <translation type="unfinished">Тип линии передачи недоступен.</translation>
     </message>
     <message>
         <source>ErEff</source>
-        <translation type="obsolete">Эффективная Er</translation>
+        <translation type="unfinished">Эффективная Er</translation>
     </message>
     <message>
         <source>ErEff Even</source>
-        <translation type="obsolete">Эффективная Er для четной моду</translation>
+        <translation type="unfinished">Эффективная Er для четной моду</translation>
     </message>
     <message>
         <source>ErEff Odd</source>
-        <translation type="obsolete">Эффективная Er для нечетной моды</translation>
+        <translation type="unfinished">Эффективная Er для нечетной моды</translation>
     </message>
     <message>
         <source>Microstrip Line</source>
-        <translation type="obsolete">Микрополосковая линия</translation>
+        <translation type="unfinished">Микрополосковая линия</translation>
     </message>
     <message>
         <source>Coplanar Waveguide</source>
-        <translation type="obsolete">Копланарный волновод</translation>
+        <translation type="unfinished">Копланарный волновод</translation>
     </message>
     <message>
         <source>Grounded Coplanar</source>
-        <translation type="obsolete">Заземленный копланар</translation>
+        <translation type="unfinished">Заземленный копланар</translation>
     </message>
     <message>
         <source>Copyright (C) 2008 by Michael Margraf
 </source>
-        <translation type="obsolete">Copyright (C) 2008 Michael Margraf
+        <translation type="unfinished">Copyright (C) 2008 Michael Margraf
 
 </translation>
     </message>
@@ -15172,11 +15201,11 @@ Edits the symbol for this schematic</source>
         <source>The search result contains all components whose
 name contains the search string. All libraries
 are included in the search.</source>
-        <translation type="obsolete">Результаы поиска содержат все компоненты, в именах которых присутствует строка поиска. Все библиотеки включены в поиск.</translation>
+        <translation type="unfinished">Результаы поиска содержат все компоненты, в именах которых присутствует строка поиска. Все библиотеки включены в поиск.</translation>
     </message>
     <message>
         <source>Search string:</source>
-        <translation type="obsolete">Строка поиска:</translation>
+        <translation type="unfinished">Строка поиска:</translation>
     </message>
     <message>
         <source>Search</source>
@@ -15184,11 +15213,11 @@ are included in the search.</source>
     </message>
     <message>
         <source>Close</source>
-        <translation type="obsolete">Закрыть</translation>
+        <translation type="unfinished">Закрыть</translation>
     </message>
     <message>
         <source>Search result</source>
-        <translation type="obsolete">Результаты поиска</translation>
+        <translation type="unfinished">Результаты поиска</translation>
     </message>
     <message>
         <source>Search Text</source>
@@ -15546,6 +15575,10 @@ Errors:
         <source>ERROR: Program not found: %1</source>
         <translation>ОШИБКА: Программа на найдена: %1</translation>
     </message>
+    <message>
+        <source>compiling netlist...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SpiceDialog</name>
@@ -15685,11 +15718,11 @@ Errors:
     <name>SymbolWidget</name>
     <message>
         <source>Symbol:</source>
-        <translation type="obsolete">Обозначение:</translation>
+        <translation type="unfinished">Обозначение:</translation>
     </message>
     <message>
         <source>! Drag n&apos;Drop me !</source>
-        <translation type="obsolete">Перетащи меня!</translation>
+        <translation type="unfinished">Перетащи меня!</translation>
     </message>
 </context>
 <context>
