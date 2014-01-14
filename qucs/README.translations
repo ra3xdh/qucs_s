@@ -1,22 +1,22 @@
--- 
+--
 -- README.translations
--- 
+--
 -- Copyright (C) 2004 Stefan Jahn <stefan@lkcc.org>
--- 
+--
 -- This is free software; you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
 -- the Free Software Foundation; either version 2, or (at your option)
 -- any later version.
--- 
+--
 -- This software is distributed in the hope that it will be useful,
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of
 -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 -- GNU General Public License for more details.
--- 
+--
 -- You should have received a copy of the GNU General Public License
 -- along with this package; see the file COPYING.  If not, write to
 -- the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
--- Boston, MA 02110-1301, USA.  
+-- Boston, MA 02110-1301, USA.
 --
 
 
@@ -33,6 +33,12 @@ The actual Qucs translation is named 'qucs_xx.ts' whence 'xx'
 specifies the locale abbreviation (e.g. 'de' for German, or 'es' for
 Spanish).  This type translation files may change as the source code
 of Qucs changes as well.
+
+The TS files can be updated by running:
+  $ cd ~/git/qucs/qucs/qucs
+  $ make qucs_.ts
+
+This target will scan all source files and update the source text(s).
 
 The translation of Qt's standard dialogs (e.g. file dialog) is named
 'qtgeneric_xx.ts' with the same convention for 'xx' as the actual Qucs

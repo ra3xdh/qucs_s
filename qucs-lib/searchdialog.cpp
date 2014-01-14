@@ -36,7 +36,7 @@
 
 
 SearchDialog::SearchDialog(QucsLib *parent)
-                     //: QDialog(parent, 0, false, Qt::WDestructiveClose)
+                     // QDialog(parent, 0, false, Qt::WDestructiveClose)
     : QDialog(parent)
 {
   ParentDialog = parent;
@@ -59,7 +59,7 @@ SearchDialog::SearchDialog(QucsLib *parent)
   h1Layout->addWidget(SearchString);
   h1Layout->addWidget(SearchEdit);
   h1->setLayout(h1Layout);
-  
+
 
   QPushButton *ButtonSearch = new QPushButton(tr("Search"));
   connect(ButtonSearch, SIGNAL(clicked()), SLOT(slotSearch()));
@@ -68,16 +68,16 @@ SearchDialog::SearchDialog(QucsLib *parent)
   ButtonSearch->setFocus();
 
   SearchEdit->setFocus();
-  
+
   QGroupBox *h2 = new QGroupBox(this);
   QHBoxLayout *h2Layout = new QHBoxLayout();
   h2Layout->addWidget(ButtonSearch);
   h2Layout->addWidget(ButtonClose);
   h2->setLayout(h2Layout);
-  
+
   all->addWidget(h1);
   all->addWidget(h2);
-  
+
 }
 
 SearchDialog::~SearchDialog()
