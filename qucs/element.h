@@ -15,12 +15,30 @@
  *                                                                         *
  ***************************************************************************/
 
+/** \file element.h
+  * \brief Defines drawing elements for schematics
+  *
+  * element.h contains definitions of various drawing elements used
+  * used to render schematics and the schematic symbols. The following
+  * structs are defined to hold information on various drawing types:
+  *
+  *    Line
+  *    Arc
+  *    Area
+  *    Port
+  *    Text
+  *    Property
+  *
+  * The Element class is also defined here which is a superclass
+  * of every component symbol.
+  *
+  */
+
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
 #include <QPen>
 #include <QBrush>
-
 
 class Node;
 class QPainter;
@@ -116,9 +134,13 @@ struct Property {
 #define isDiagramVScroll   0x8003
 
 
-
+/** \class Element
+  * \brief Superclass of all schematic drawing elements
+  *
+  *
+  */
 class Element {
-public: 
+public:
   Element();
   virtual ~Element();
 
@@ -132,7 +154,10 @@ public:
 };
 
 
-// label for Node and Wire classes
+/** \class Conductor
+  * \brief label for Node and Wire classes
+  *
+  */
 class Conductor : public Element {
 public:
   WireLabel *Label;
