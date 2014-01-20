@@ -68,7 +68,7 @@ typedef QMap<QString, SubFile> SubMap;
 
 class Schematic : public Q3ScrollView, public QucsDoc {
   Q_OBJECT
-public: 
+public:
   Schematic(QucsApp*, const QString&);
  ~Schematic();
 
@@ -248,6 +248,7 @@ public:
   int  prepareNetlist(QTextStream&, QStringList&, QTextEdit*);
   QString createNetlist(QTextStream&, int);
   bool loadDocument();
+  void highlightWireLabels (void);
 
 private:
   int  saveDocument();

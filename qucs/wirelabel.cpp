@@ -36,6 +36,7 @@ WireLabel::WireLabel(const QString& _Name, int _cx, int _cy,
 
   Type = _Type;
   isSelected = false;
+  isHighlighted = false;
 }
 
 WireLabel::~WireLabel()
@@ -107,7 +108,21 @@ bool WireLabel::getSelected(int x, int y)
 // ----------------------------------------------------------------
 void WireLabel::paint(ViewPainter *p)
 {
-  p->Painter->setPen(QPen(Qt::black,1));
+  QFont font = p->Painter->font();
+  if (isHighlighted)
+  {
+//    QColor highlightfill (Qt::blue);
+//    highlightfill.setAlpha(50);
+//    p->fillRect(x1-1, y1-1, x2, y2, highlightfill);
+    p->Painter->setPen(QPen(Qt::darkBlue,3));
+    font.setWeight (QFont::DemiBold);
+  }
+  else
+  {
+    font.setWeight (QFont::Normal);
+    p->Painter->setPen(QPen(Qt::black,1));
+  }
+  p->Painter->setFont (font);
   x2 = p->drawText(Name, x1, y1, &y2);
 
   int xpaint=0, ypaint=4, phi=0;
@@ -169,7 +184,9 @@ void WireLabel::paint(ViewPainter *p)
 
   x2 = int(double(x2) / p->Scale);
   y2 = int(double(y2) / p->Scale);
-  if(isSelected) {
+
+  if(isSelected)
+  {
     p->Painter->setPen(QPen(Qt::darkGray,3));
     p->drawRoundRect(x1-2, y1-2, x2+6, y2+5);
   }
