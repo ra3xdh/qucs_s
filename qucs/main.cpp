@@ -46,6 +46,8 @@
 #include "schematic.h"
 #include "module.h"
 
+#include "components/components.h"
+
 #ifdef _WIN32
 #include <Windows.h>  //for OutputDebugString
 #endif
@@ -336,6 +338,90 @@ int doPrint(QString schematic, QString printFile,
 }
 
 
+  void createIcons() {
+
+    if(!QDir("./bitmaps_generated").exists()){
+      QDir().mkdir("bitmaps_generated");
+    }
+
+    Module::registerModules ();
+    QStringList cats = Category::getCategories ();
+    //qDebug() << cats;
+
+    foreach(QString category, cats) {
+
+      Q3PtrList<Module> Comps;
+      Comps = Category::getModules(category);
+
+      if(category == "diagrams" | category == "simulations") break;
+
+      char * File;
+      QString Name;
+      Module * Mod;
+      
+      for (Mod = Comps.first(); Mod; Mod = Comps.next ()) {
+        if (Mod->info) {
+          *(Mod->info) (Name, File, false);
+          //qDebug() << Name << File;
+          Element *e = (Mod->info) (Name, File, true);
+          Component *c = (Component* ) e;
+
+          Q3PtrList<Line> Lines = c->Lines;
+          Q3PtrList<struct Arc> Arcs = c-> Arcs;
+          Q3PtrList<Area> Rects = c-> Rects;
+          Q3PtrList<Area> Ellips = c-> Ellips;
+          Q3PtrList<Port> Ports = c->Ports;
+          Q3PtrList<Text> Texts = c->Texts;
+
+          QGraphicsScene *scene = new QGraphicsScene();
+
+          foreach (Line *l, Lines) {
+            scene->addLine(l->x1, l->y1, l->x2, l->y2, l->style);
+          }
+
+          foreach(Arc *a, Arcs) {
+            // we need an open item here; QGraphisEllipseItem draws a filled ellipse and doesn't do the job here...
+            QPainterPath *path = new QPainterPath();
+            // the components do not contain the angles in degrees but in 1/16th degrees -> conversion needed
+            path->arcMoveTo(a->x,a->y,a->w,a->h,a->angle/16);
+            path->arcTo(a->x,a->y,a->w,a->h,a->angle/16,a->arclen/16);
+            scene->addPath(*path);
+          }
+
+          foreach(Area *a, Rects) {
+            scene->addRect(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
+          }
+
+          foreach(Area *a, Ellips) {
+            scene->addEllipse(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
+          }
+
+          foreach(Port *p, Ports) {
+            scene->addEllipse(p->x-3, p->y-3, 6, 6, QPen(Qt::red));
+          }
+
+          foreach(Text *t, Texts) {
+            QPainterPath *path = new QPainterPath();
+            QFont myFont;
+            path->addText(t->x,t->y+15,myFont,t->s);
+            scene->addPath(*path);
+          }
+
+          //QImage image(scene->sceneRect().size().toSize(), QImage::Format_ARGB32);
+          QImage image(32, 32, QImage::Format_ARGB32);
+          image.fill(Qt::transparent);
+
+          QPainter painter(&image);
+          scene->render(&painter);
+
+          image.save("./bitmaps_generated/" + QString(File) + ".png");
+        }
+    }
+  }
+}
+
+
+
 // #########################################################################
 // ##########                                                     ##########
 // ##########                  Program Start                      ##########
@@ -543,6 +629,10 @@ int main(int argc, char *argv[])
     }
     else if (!strcmp(argv[i], "-o")) {
       outputfile = argv[++i];
+    }
+    else if(!strcmp(argv[i], "-icons")) {
+      createIcons();
+      return 0;
     }
     else {
       fprintf(stderr, "Error: Unknown option: %s\n", argv[i]);
