@@ -368,6 +368,7 @@ void Module::registerModules (void) {
 
   // external simulation
   REGISTER_EXTERNAL_1 (ETR_Sim);
+  REGISTER_EXTERNAL_1 (ecvs);
 
   // paintings
   REGISTER_PAINT_1 (GraphicLine);

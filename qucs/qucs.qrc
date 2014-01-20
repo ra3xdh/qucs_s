@@ -230,5 +230,6 @@
         <file>bitmaps/xor.png</file>
         <file>bitmaps/ysmith.png</file>
         <file>bitmaps/etran.png</file>
+        <file>bitmaps/ecvs.png</file>
     </qresource>
 </RCC>

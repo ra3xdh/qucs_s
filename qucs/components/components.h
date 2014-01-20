@@ -193,5 +193,6 @@
 
 // external simulation components
 #include "etr_sim.h"
+#include "ecvs.h"
 
 #endif
