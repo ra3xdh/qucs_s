@@ -407,8 +407,10 @@ int doPrint(QString schematic, QString printFile,
             scene->addPath(*path);
           }
 
-          //QImage image(scene->sceneRect().size().toSize(), QImage::Format_ARGB32);
-          QImage image(32, 32, QImage::Format_ARGB32);
+          // this uses the size of the component as icon size
+          QImage image(scene->sceneRect().size().toSize(), QImage::Format_ARGB32);
+          // this uses a fixed size for the icon (32 x 32)
+          //QImage image(32, 32, QImage::Format_ARGB32);
           image.fill(Qt::transparent);
 
           QPainter painter(&image);
@@ -595,6 +597,7 @@ int main(int argc, char *argv[])
   "    --orin [portraid|landscape]  set orientation (default portraid)\n"
   "  -i FILENAME    use file as input schematic\n"
   "  -o FILENAME    use file as output netlist\n"
+  "  -icons         create component icons under ./bitmaps_generated\n"
   , argv[0]);
       return 0;
     }
