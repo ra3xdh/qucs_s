@@ -52,6 +52,11 @@ void ViewPainter::init(QPainter *p, float Scale_, int DX_, int DY_, int dx_, int
   p->setFont(f);
   LineSpacing = p->fontMetrics().lineSpacing();
   p->setWorldXForm(false);   // we use our own coordinate transformation
+
+  // Encourage Qt to antialias where possible for nicer drawings
+  p->setRenderHint(QPainter::Antialiasing, true);
+  // Also antialias text if possible
+  p->setRenderHint(QPainter::TextAntialiasing, true);
 }
 
 // -------------------------------------------------------------

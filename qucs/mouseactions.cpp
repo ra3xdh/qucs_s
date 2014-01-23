@@ -83,7 +83,7 @@ MouseActions::~MouseActions()
 void MouseActions::setPainter(Schematic *Doc)
 {
   // contents to viewport transformation
-  
+
   Doc->PostPaintEvent(_Translate,-Doc->contentsX(), -Doc->contentsY());
   Doc->PostPaintEvent(_Scale,Doc->Scale, Doc->Scale);
   Doc->PostPaintEvent(_Translate,-Doc->ViewX1, -Doc->ViewY1);
@@ -277,7 +277,7 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
   int gx = fx;
   int gy = fy;
   Doc->setOnGrid(gx, gy);
-  
+
 
   //QPainter painter(Doc->viewport());
   setPainter(Doc);
@@ -372,7 +372,7 @@ void MouseActions::MMoveSelect(Schematic *Doc, QMouseEvent *Event)
   if(drawn) {
     Doc->PostPaintEvent (_Rect, MAx1, MAy1, MAx2, MAy2); // erase old rectangle
     Doc->PostPaintEvent (_Rect,MAx1, MAy1, MAx2, MAy2);
-    
+
   }
   drawn = true;
   MAx2 = DOC_X_POS(Event->pos().x()) - MAx1;
@@ -403,7 +403,7 @@ void MouseActions::MMoveResizePainting(Schematic *Doc, QMouseEvent *Event)
 // Moves components by keeping the mouse button pressed.
 void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
 {
-  
+
   setPainter(Doc);
 
   MAx2 = DOC_X_POS(Event->pos().x());
@@ -499,7 +499,7 @@ void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
   MAx1 = DOC_X_POS(Event->pos().x());
   MAy1 = DOC_Y_POS(Event->pos().y());
   moveElements(Doc,MAx1,MAy1);
-  paintElementsScheme(Doc);      
+  paintElementsScheme(Doc);
 
   drawn = true;
   QucsMain->MouseMoveAction = &MouseActions::MMoveMoving2;
@@ -887,7 +887,7 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
 	  if(!QucsMain->intoH->isOn())
 	    QucsMain->intoH->addTo(ComponentMenu);
     }
-    // right-click menu to pop out of hierarchy    
+    // right-click menu to pop out of hierarchy
     if(!focusElement)
       if(!QucsMain->popH->isOn())
 	QucsMain->popH->addTo(ComponentMenu);
@@ -983,7 +983,8 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
 
 
   if(focusElement)
-  switch(focusElement->Type) {
+  switch(focusElement->Type)
+  {
     case isPaintingResize:  // resize painting ?
       focusElement->Type = isPainting;
       QucsMain->MouseReleaseAction = &MouseActions::MReleaseResizePainting;
@@ -991,6 +992,8 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
       QucsMain->MousePressAction = 0;
       QucsMain->MouseDoubleClickAction = 0;
       Doc->grabKeyboard();  // no keyboard inputs during move actions
+      // Update matching wire label highlighting
+      Doc->highlightWireLabels ();
       return;
 
     case isDiagramResize:  // resize diagram ?
@@ -1018,6 +1021,8 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
       QucsMain->MousePressAction = 0;
       QucsMain->MouseDoubleClickAction = 0;
       Doc->grabKeyboard(); // no keyboard inputs during move actions
+      // Update matching wire label highlighting
+      Doc->highlightWireLabels ();
       return;
 
     case isDiagramHScroll:  // scroll in tabular ?
@@ -1028,7 +1033,8 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
 
       No = ((TabDiagram*)focusElement)->scroll(MAy1);
 
-      switch(No) {
+      switch(No)
+      {
         case 1:
           Doc->setChanged(true, true, 'm'); // 'm' = only the first time
           break;
@@ -1040,8 +1046,12 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
 
           // Remember inital scroll bar position.
           MAx2 = int(((TabDiagram*)focusElement)->xAxis.limit_min);
+          // Update matching wire label highlighting
+          Doc->highlightWireLabels ();
           return;
       }
+      // Update matching wire label highlighting
+      Doc->highlightWireLabels ();
       Doc->viewport()->update();
       drawn = false;
       return;
@@ -1051,29 +1061,34 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
 
       MAx3 = No;
       QucsMain->slotApplyCompText();
+      // Update matching wire label highlighting
+      Doc->highlightWireLabels ();
       return;
 
     case isNode:
-      if (QucsSettings.NodeWiring) {
-      MAx1 = 0;   // paint wire corner first up, then left/right
-      MAx3 = focusElement->cx;  // works even if node is not on grid
-      MAy3 = focusElement->cy;
-      QucsMain->MouseMoveAction = &MouseActions::MMoveWire2;
-      QucsMain->MousePressAction = &MouseActions::MPressWire2;
-      QucsMain->MouseReleaseAction = 0; // if function is called from elsewhere
-      QucsMain->MouseDoubleClickAction = 0;
+      if (QucsSettings.NodeWiring)
+      {
+        MAx1 = 0;   // paint wire corner first up, then left/right
+        MAx3 = focusElement->cx;  // works even if node is not on grid
+        MAy3 = focusElement->cy;
+        QucsMain->MouseMoveAction = &MouseActions::MMoveWire2;
+        QucsMain->MousePressAction = &MouseActions::MPressWire2;
+        QucsMain->MouseReleaseAction = 0; // if function is called from elsewhere
+        QucsMain->MouseDoubleClickAction = 0;
 
-      formerAction = QucsMain->select; // to restore action afterwards
-      QucsMain->activeAction = QucsMain->insWire;
+        formerAction = QucsMain->select; // to restore action afterwards
+        QucsMain->activeAction = QucsMain->insWire;
 
-      QucsMain->select->blockSignals(true);
-      QucsMain->select->setOn(false);
-      QucsMain->select->blockSignals(false);
+        QucsMain->select->blockSignals(true);
+        QucsMain->select->setOn(false);
+        QucsMain->select->blockSignals(false);
 
-      QucsMain->insWire->blockSignals(true);
-      QucsMain->insWire->setOn(true);
-      QucsMain->insWire->blockSignals(false);
-      return;
+        QucsMain->insWire->blockSignals(true);
+        QucsMain->insWire->setOn(true);
+        QucsMain->insWire->blockSignals(false);
+        // Update matching wire label highlighting
+        Doc->highlightWireLabels ();
+        return;
       }
   }
 
@@ -1091,8 +1106,11 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
     QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect2;
     QucsMain->MouseMoveAction = &MouseActions::MMoveSelect;
   }
-  else {  // element could be moved
-    if(!Ctrl) {
+  else
+  {
+    // element could be moved
+    if(!Ctrl)
+    {
       if(!focusElement->isSelected)// Don't move selected elements if clicked
         Doc->deselectElements(focusElement); // element was not selected.
       focusElement->isSelected = true;
@@ -1100,13 +1118,16 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
     Doc->setOnGrid(MAx1, MAy1);
     QucsMain->MouseMoveAction = &MouseActions::MMoveMoving;
   }
+  // Update matching wire label highlighting
+  Doc->highlightWireLabels ();
 }
 
 // -----------------------------------------------------------
 void MouseActions::MPressDelete(Schematic *Doc, QMouseEvent*, float fX, float fY)
 {
   Element *pe = Doc->selectElement(fX, fY, false);
-  if(pe) {
+  if(pe)
+  {
     pe->isSelected = true;
     Doc->deleteElements();
 
@@ -1182,7 +1203,7 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent*, float fX, float fY
   if(e == 0) return;
   e->Type &= isSpecialMask;  // remove special functions
 
-  
+
   WireLabel *pl;
   int x1, y1, x2, y2;
 //  e->isSelected = false;
@@ -1237,7 +1258,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
   //QPainter painter(Doc->viewport());
   //setPainter(Doc, &painter);
 
-  
+
   int x1, y1, x2, y2, rot;
   if(selElem->Type & isComponent) {
     Component *Comp = (Component*)selElem;
@@ -1444,7 +1465,8 @@ void MouseActions::MPressMarker(Schematic *Doc, QMouseEvent*, float fX, float fY
 void MouseActions::MPressOnGrid(Schematic *Doc, QMouseEvent*, float fX, float fY)
 {
   Element *pe = Doc->selectElement(fX, fY, false);
-  if(pe) {
+  if(pe)
+  {
     pe->Type &= isSpecialMask;  // remove special functions (4 lowest bits)
 
     // onGrid is toggle action -> no other element can be selected
@@ -1452,9 +1474,12 @@ void MouseActions::MPressOnGrid(Schematic *Doc, QMouseEvent*, float fX, float fY
     Doc->elementsOnGrid();
 
     Doc->sizeOfAll(Doc->UsedX1, Doc->UsedY1, Doc->UsedX2, Doc->UsedY2);
+    // Update matching wire label highlighting
+    Doc->highlightWireLabels ();
     Doc->viewport()->update();
     drawn = false;
   }
+
 }
 
 // -----------------------------------------------------------
@@ -1517,6 +1542,7 @@ void MouseActions::MReleaseSelect(Schematic *Doc, QMouseEvent *Event)
   QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
   QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
   QucsMain->MouseMoveAction = 0;   // no element moving
+  Doc->highlightWireLabels ();
   Doc->viewport()->update();
   drawn = false;
 }
@@ -1539,6 +1565,7 @@ void MouseActions::MReleaseSelect2(Schematic *Doc, QMouseEvent *Event)
   QucsMain->MousePressAction = &MouseActions::MPressSelect;
   QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
   QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
+  Doc->highlightWireLabels ();
   Doc->viewport()->update();
   drawn = false;
 }
@@ -1555,6 +1582,7 @@ void MouseActions::MReleaseActivate(Schematic *Doc, QMouseEvent *Event)
   QucsMain->MousePressAction = &MouseActions::MPressActivate;
   QucsMain->MouseReleaseAction = 0;
   QucsMain->MouseDoubleClickAction = 0;
+  Doc->highlightWireLabels ();
   Doc->viewport()->update();
   drawn = false;
 }
@@ -1727,7 +1755,7 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
 	  break;
 	case isDiagram:
 	  Doc->Diagrams->append((Diagram*)pe);
-	  ((Diagram*)pe)->loadGraphData(Info.dirPath() + QDir::separator() + 
+	  ((Diagram*)pe)->loadGraphData(Info.dirPath() + QDir::separator() +
 					Doc->DataSet);
 	  Doc->enlargeView(pe->cx, pe->cy-pe->y2, pe->cx+pe->x2, pe->cy);
 	  break;
@@ -1755,7 +1783,7 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
     rot = movingRotated;
     x1 = y1 = 0;
     while(rot--) rotateElements(Doc,x1,y1);
-    
+
     QucsMain->MouseMoveAction = &MouseActions::MMovePaste;
     QucsMain->MousePressAction = 0;
     QucsMain->MouseReleaseAction = 0;
@@ -1771,13 +1799,13 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
     //setPainter(Doc, &painter);
 
     if(drawn) // erase old scheme
-      paintElementsScheme(Doc);      
+      paintElementsScheme(Doc);
     drawn = true;
 
     x1 = DOC_X_POS(Event->pos().x());
     y1 = DOC_Y_POS(Event->pos().y());
     rotateElements(Doc,x1,y1);
-    paintElementsScheme(Doc);      
+    paintElementsScheme(Doc);
     // save rotation
     movingRotated++;
     movingRotated &= 3;
@@ -1826,7 +1854,7 @@ void MouseActions::MReleaseZoomIn(Schematic *Doc, QMouseEvent *Event)
     if(xScale > yScale) xScale = yScale;
     yScale  = Doc->Scale;
     xScale /= yScale;
-    Doc->zoom(xScale);    
+    Doc->zoom(xScale);
 
     if(MAx2 > 0)  MAx1 -= int(float(MAx2)*yScale);
     if(MAy2 > 0)  MAy1 -= int(float(MAy2)*yScale);
@@ -1926,7 +1954,7 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
 	     break;
 	 if(!dia) break;
 
-	 
+
 	 ddia = new DiagramDialog(dia,
 	 	Info.dirPath() + QDir::separator() + Doc->DataSet, Doc, pg);
 	 if(ddia->exec() != QDialog::Rejected)   // is WDestructiveClose

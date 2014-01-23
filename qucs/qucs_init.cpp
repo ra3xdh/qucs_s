@@ -147,11 +147,11 @@ void QucsApp::initActions()
 	tr("Qucs Settings\n\nSets properties of the application"));
   connect(applSettings, SIGNAL(activated()), SLOT(slotApplSettings()));
 
-  refreshSchPath = new QAction(tr("Refresh Path..."), this);
+  refreshSchPath = new QAction(tr("Refresh Search Path..."), this);
   //refreshSchPath->setShortcut(Qt::CTRL+Qt::Key_Comma);
-  refreshSchPath->setStatusTip(tr("Refresh Path"));
+  refreshSchPath->setStatusTip(tr("Refresh Search Path"));
   refreshSchPath->setWhatsThis(
-    tr("Refresh Path\n\nRechecks the list of paths for files."));
+    tr("Refresh Path\n\nRechecks the list of paths for subcircuit files."));
   connect(refreshSchPath, SIGNAL(activated()), SLOT(slotRefreshSchPath()));
 
   alignTop = new QAction(tr("Align top"), this);
@@ -960,7 +960,7 @@ void QucsApp::slotShowWarnings()
 
   if(ResultState < 9)
     QTimer::singleShot(500, this, SLOT(slotShowWarnings()));
-  else 
+  else
     ResultState = 0;
 }
 

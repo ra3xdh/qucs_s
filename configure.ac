@@ -25,15 +25,15 @@ AC_ARG_ENABLE([debug],
   AC_HELP_STRING([--enable-debug],
                  [include debug output @<:@default=no@:>@]),
   [case "$enableval" in
-   yes) enable_debug="yes" ;;
-   no)  enable_debug="no"  ;;
-   *)   enable_debug="no"  ;;
+   yes) enable_qucs_gui_debug="yes" ;;
+   no)  enable_qucs_gui_debug="no"  ;;
+   *)   enable_qucs_gui_debug="no"  ;;
    esac],
-  [enable_debug="no"])
+  [enable_qucs_gui_debug="no"])
 if test $USE_MAINTAINER_MODE = yes; then
-  enable_debug="yes"
+  enable_qucs_gui_debug="yes"
 fi
-if test "$enable_debug" = yes; then
+if test "$enable_qucs_gui_debug" = yes; then
   AC_DEFINE(DEBUG, 1, [Define if debug output should be supported.])
   QT_DEF="-DQT_DEBUG"
 else
@@ -49,7 +49,6 @@ else
 #    esac
   fi
 fi
-unset enable_debug
 
 dnl Check for Linux
 case $host_os in
@@ -89,7 +88,7 @@ dnl Check for new platforms.
 osversion="`grep \"$host\" $srcdir/PLATFORMS 2>/dev/null`"
 if test "x$osversion" = "x"; then
   AC_MSG_RESULT([
-  The $PACKAGE package has never been compiled or run on this platform.  
+  The $PACKAGE package has never been compiled or run on this platform.
   Please send an email to <qucs-devel@lists.sourceforge.net> including your
   compiler and Qt version and whether it worked correctly or not.  The
   '$host' line will then be added to the PLATFORMS file included
@@ -126,7 +125,7 @@ if test "$MOC" = ":"; then
   AC_MSG_WARN([
   The $PACKAGE package needs the 'Qt Meta Object Compiler' to compile properly.
   Though Qt itself may be properly installed including headers and libraries
-  the 'moc' program is missing.  Possibly you need to install the full 
+  the 'moc' program is missing.  Possibly you need to install the full
   development package of Qt.])
 fi
 
@@ -284,6 +283,17 @@ case $host_os in
     ;;
 esac
 
+dnl append -O0 to CXXFLAGS if in debug mode and using gcc
+dnl to assist with debugging by preventing optimisation.
+dnl gcc will use the final invocation of -OX and ignore earlier
+dnl values
+if test "$enable_qucs_gui_debug" = yes; then
+ if test "x$GCC" = xyes; then
+    CXXFLAGS="$CXXFLAGS -O0"
+    AC_MSG_NOTICE([Appending gcc optimisation flag -O0 due to --enable-debug setting.])
+ fi
+fi
+
 AC_SUBST(QT_LDFLAGS)
 AC_SUBST(QT_LIBS)
 AC_SUBST(QT_MOC)
@@ -353,7 +363,7 @@ AH_TOP([
 ])
 
 dnl Add here all your Makefiles. These are created by configure.
-AC_CONFIG_FILES([Makefile 
+AC_CONFIG_FILES([Makefile
 		 contrib/Makefile
 		 qucs-edit/Makefile
 		 qucs-help/Makefile
@@ -381,7 +391,11 @@ AC_CONFIG_FILES([Makefile
 		 qucs/dialogs/Makefile])
 AC_OUTPUT
 
+dnl delete the unset enable_qucs_gui_debug variable
+unset enable_qucs_gui_debug
+
 dnl Print results.
 AC_MSG_RESULT([])
 AC_MSG_RESULT([ $PACKAGE version $VERSION configured successfully.])
 AC_MSG_RESULT([])
+

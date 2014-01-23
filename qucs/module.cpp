@@ -162,6 +162,8 @@ void Module::intoCategory (Module * m) {
   REGISTER_MOD_1 (QObject::tr("paintings"),val)
 #define REGISTER_PAINT_2(val,inf1,inf2) \
   REGISTER_MOD_2 (QObject::tr("paintings"),val,inf1,inf2)
+#define REGISTER_EXTERNAL_1(val) \
+  REGISTER_COMP_1 (QObject::tr("external sim components"),val)
 
 // This function has to be called once at application startup.  It
 // registers every component available in the application.  Put here
@@ -287,7 +289,7 @@ void Module::registerModules (void) {
   REGISTER_VERILOGA_2 (hicumL0V1p3, info, info_pnp);
   REGISTER_VERILOGA_1 (hicumL2V2p23);
   REGISTER_VERILOGA_1 (hicumL2V2p24);
-  REGISTER_VERILOGA_1 (hicumL2V2p31n); 
+  REGISTER_VERILOGA_1 (hicumL2V2p31n);
   REGISTER_VERILOGA_1 (photodiode);
   REGISTER_VERILOGA_1 (phototransistor);
   REGISTER_VERILOGA_1 (nigbt);
@@ -364,6 +366,10 @@ void Module::registerModules (void) {
   REGISTER_DIAGRAM_1 (TimingDiagram);
   REGISTER_DIAGRAM_1 (TruthDiagram);
 
+  // external simulation
+  REGISTER_EXTERNAL_1 (ETR_Sim);
+  REGISTER_EXTERNAL_1 (ecvs);
+
   // paintings
   REGISTER_PAINT_1 (GraphicLine);
   REGISTER_PAINT_1 (Arrow);
@@ -371,6 +377,7 @@ void Module::registerModules (void) {
   REGISTER_PAINT_2 (Ellipse, info, info_filled);
   REGISTER_PAINT_2 (Rectangle, info, info_filled);
   REGISTER_PAINT_1 (EllipseArc);
+
 }
 
 // This function has to be called once at application end.  It removes

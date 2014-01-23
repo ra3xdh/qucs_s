@@ -39,6 +39,8 @@ public:
   void setCenter(int x, int y, bool relative=false);
   bool getSelected(int, int);
   void setName(const QString& Name_);
+  void setHighlighted (bool newval) { isHighlighted = newval; };
+
 
   Conductor *pOwner;  // Wire or Node where label belongs to
   QString Name, initValue;
@@ -48,6 +50,10 @@ public:
   QString save();
   bool    load(const QString& s);
   bool    isHorizontal();
+
+private:
+  bool isHighlighted;
+
 };
 
 #endif
