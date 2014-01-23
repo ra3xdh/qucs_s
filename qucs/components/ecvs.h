@@ -14,6 +14,16 @@
  *                                                                         *
  ***************************************************************************/
 
+/** \file ecvs.h
+  * \brief The externally controlled voltage source component header file.
+  *
+  * Contains the m-code interface class definition.
+  */
+
+/**
+  * \ingroup QucsInterface
+  */
+
 #ifndef ECVS_H
 #define ECVS_H
 
