@@ -120,6 +120,7 @@ make
 #cd ../src/components/verilog
 #make
 #cd ../../../
+exit
 ./configure
 make distclean
 rm -rf autom4te.cache
@@ -133,8 +134,9 @@ rm -rf qucs-$RELEASE
 tar -zxvf qucs-$RELEASE.tar.gz #make the symbolic links actual files
 
 DISTS="precise quantal raring saucy"
-
-cp qucs-$RELEASE.tar.gz qucs_$RELEASE.orig.tar.gz
+./configure
+tar -zcvhf qucs_$RELEASE.orig.tar.gz qucs-$RELEASE
+#cp qucs-$RELEASE.tar.gz qucs_$RELEASE.orig.tar.gz
 
 cd qucs-$RELEASE
 COUNT=-0 #last version number in repository
