@@ -120,7 +120,6 @@ make
 #cd ../src/components/verilog
 #make
 #cd ../../../
-exit
 ./configure
 make distclean
 rm -rf autom4te.cache
