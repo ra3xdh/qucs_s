@@ -10,13 +10,9 @@
 #include <QProcess>
 #include <QStringList>
 #include <QKeyEvent>
-#include <Q3VBoxLayout>
 #include <QDockWidget>
-
-class QLineEdit;
-class Q3TextEdit;
-class Q3VBoxLayout;
-class Q3DockWindow;
+#include <QTextEdit>
+#include <QLineEdit>
 
 
 class OctaveWindow : public QWidget {
@@ -38,17 +34,14 @@ private slots:
   void slotSendCommand();
 
 protected:
-  void keyPressEvent(QKeyEvent*);
+  bool eventFilter(QObject *obj, QEvent *event);
 
 private:
-  Q3VBoxLayout *vBox;
-  Q3TextEdit *output;
-  QLineEdit *input;
-
+  QTextEdit *output;
   QProcess octProcess;
-
+  QLineEdit *input;
   QStringList cmdHistory;
-  QStringList::Iterator histIterator;
+  int histPosition;
 };
 
 #endif

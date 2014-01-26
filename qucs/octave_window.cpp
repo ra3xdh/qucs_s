@@ -7,16 +7,11 @@
 #include "main.h"
 
 #include <QSize>
-#include <Q3VBox>
 #include <QColor>
-#include <Q3Accel>
-#include <QLayout>
-#include <QLineEdit>
-#include <Q3TextEdit>
-#include <Q3DockWindow>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
 #include <QKeyEvent>
+#include <QWidget>
+#include <QVBoxLayout>
+
 
 #ifdef __MINGW32__
 #define executableSuffix ".exe"
@@ -34,27 +29,30 @@ OctaveWindow::OctaveWindow(QDockWidget *parent_): QWidget(parent_, 0)
   font.setFixedPitch(true);
   setFont(font);
 
-  vBox = new Q3VBoxLayout(this);
+  QWidget *all = new QWidget(parent_);
+  QVBoxLayout *allLayout = new QVBoxLayout();
 
-  output = new Q3TextEdit(this);
+  output = new QTextEdit(this);
   output->setReadOnly(true);
   output->setUndoRedoEnabled(false);
   output->setTextFormat(Qt::LogText);
-  output->setMaxLogLines(2000);
-  output->setWordWrap(Q3TextEdit::NoWrap);
+  output->setLineWrapMode(QTextEdit::NoWrap);
   output->setPaletteBackgroundColor(QucsSettings.BGColor);
-  vBox->addWidget(output, 10);
+  allLayout->addWidget(output);
 
   input = new QLineEdit(this);
   connect(input, SIGNAL(returnPressed()), SLOT(slotSendCommand()));
-  vBox->addWidget(input);
+  allLayout->addWidget(input);
+  all->setLayout(allLayout);
 
   setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-  parent_->setWidget(this);
+  parent_->setWidget(all);
+
   //parent_->setResizeEnabled(true);
   //parent_->setHorizontallyStretchable(true);
+  histPosition = 0;
 
-  histIterator = cmdHistory.end();
+  input->installEventFilter(this);
 }
 
 // -----------------------------------------------------------------
@@ -131,12 +129,13 @@ void OctaveWindow::adjustDirectory()
 // ------------------------------------------------------------------------
 void OctaveWindow::sendCommand(const QString& cmd)
 {
-  int par = output->paragraphs() - 1;
-  int idx = output->paragraphLength(par);
+  //int par = output->paragraphs() - 1;
+  //int idx = output->paragraphLength(par);
+  output->setTextColor(QColor(Qt::blue));
+  output->append(cmd);
   QString cmdstr = cmd + "\n";
-  output->insertAt(cmdstr, par, idx);
-  output->scrollToBottom();
-  //octProcess.writeToStdin(cmdstr);
+  //output->insertAt(cmdstr, par, idx);
+  //output->scrollToBottom();
   octProcess.write(cmdstr);
 }
 
@@ -153,51 +152,63 @@ void OctaveWindow::slotSendCommand()
   sendCommand(input->text());
   if(!input->text().stripWhiteSpace().isEmpty())
     cmdHistory.append(input->text());
-  histIterator = cmdHistory.end();
+  //histIterator = cmdHistory.end();
+  histPosition++;
   input->clear();
+  qDebug() << cmdHistory << histPosition;
 }
 
-// ------------------------------------------------------------------------
-void OctaveWindow::keyPressEvent(QKeyEvent *event)
-{
-  if(event->key() == Qt::Key_Up) {
-    if(histIterator == cmdHistory.begin())
-      return;
-    histIterator--;
-    input->setText(*histIterator);
-    return;
-  }
 
-  if(event->key() == Qt::Key_Down) {
-    if(histIterator == cmdHistory.end())
-      return;
-    histIterator++;
-    input->setText(*histIterator);
-    return;
-  }
+bool OctaveWindow::eventFilter(QObject *obj, QEvent *event) {
+    if (event->type() == QEvent::KeyPress) {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+            if (keyEvent->key() == Qt::Key_PageUp) {
+                //if(histIterator == cmdHistory.begin())
+                if(histPosition == 0)
+                    return false;
+                //histIterator--;
+                histPosition--;
+                input->setText(cmdHistory.at(histPosition));//*histIterator);
+                return true;
+            }
+            else if(keyEvent->key() == Qt::Key_PageDown) {
+                //if(histIterator == cmdHistory.end())
+                if(histPosition == cmdHistory.length()-1)
+                    return false;
+                //histIterator++;
+                histPosition++;
+                input->setText(cmdHistory.at(histPosition));//*histIterator);
+                return true;
+            }
+     }
+     return false;
 }
 
 // ------------------------------------------------------------------------
 // Is called when the process sends an output to stdout.
 void OctaveWindow::slotDisplayMsg()
 {
-  int par = output->paragraphs() - 1;
-  int idx = output->paragraphLength(par);
-  output->insertAt(QString(octProcess.readAllStandardOutput()), par, idx);
-  output->scrollToBottom();
+  //int par = output->paragraphs() - 1;
+  //int idx = output->paragraphLength(par);
+  //output->insertAt(QString(octProcess.readAllStandardOutput()), par, idx);
+  //output->scrollToBottom();
+  output->setTextColor(QColor(Qt::black));
+  output->append(octProcess.readAllStandardOutput());
 }
 
 // ------------------------------------------------------------------------
 // Is called when the process sends an output to stderr.
 void OctaveWindow::slotDisplayErr()
 {
-  if(!isVisible())
-    ((Q3DockWindow*)parent())->show();  // always show an error
+  //if(!isVisible())
+  //  ((Q3DockWindow*)parent())->show();  // always show an error
 
-  int par = output->paragraphs() - 1;
-  int idx = output->paragraphLength(par);
-  output->insertAt(QString(octProcess.readAllStandardError()), par, idx);
-  output->scrollToBottom();
+  //int par = output->paragraphs() - 1;
+  //int idx = output->paragraphLength(par);
+  //output->insertAt(QString(octProcess.readAllStandardError()), par, idx);
+  //output->scrollToBottom();
+    output->setTextColor(QColor(Qt::red));
+    output->append(octProcess.readAllStandardError());
 }
 
 // ------------------------------------------------------------------------
