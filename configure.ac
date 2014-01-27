@@ -15,7 +15,7 @@ AC_PREFIX_DEFAULT([/usr/local])
 test "x$prefix" = xNONE && prefix="/usr/local"
 
 dnl Checks for programs.
-AC_PROG_CXX
+AC_PROG_CXX(clang++ g++)
 AC_PROG_CC
 AC_PROG_RANLIB
 AC_CHECK_TOOL(AR, ar, :)
@@ -70,19 +70,6 @@ case $host_os in
   *)        MACOSX=no  ;;
 esac
 AM_CONDITIONAL(COND_MACOSX, test x$MACOSX = xyes)
-
-dnl Yet another compiler check.
-if test "x$GCC" = xyes; then
-  CFLAGS="$CFLAGS -pipe"
-  CXXFLAGS="$CXXFLAGS -pipe -fno-exceptions -fno-check-new"
-  if test x$WIN32 = xyes; then
-    CXXFLAGS="$CXXFLAGS"
-  fi
-  if test $USE_MAINTAINER_MODE = yes; then
-    CFLAGS="$CFLAGS -W -Wall -Wmissing-prototypes"
-    CXXFLAGS="$CXXFLAGS -W -Wall"
-  fi
-fi
 
 dnl Check for new platforms.
 osversion="`grep \"$host\" $srcdir/PLATFORMS 2>/dev/null`"
@@ -142,6 +129,19 @@ fi
 
 case $host_os in
   *linux* | *cygwin* | *mingw* )
+    dnl Yet another compiler check.
+    if test "x$GCC" = xyes; then
+      CFLAGS="$CFLAGS -pipe"
+      CXXFLAGS="$CXXFLAGS -pipe -fno-exceptions -fno-check-new"
+      if test x$WIN32 = xyes; then
+        CXXFLAGS="$CXXFLAGS"
+      fi
+      if test $USE_MAINTAINER_MODE = yes; then
+        CFLAGS="$CFLAGS -W -Wall -Wmissing-prototypes"
+        CXXFLAGS="$CXXFLAGS -W -Wall"
+      fi
+    fi
+
     dnl Check include path to Qt.
     QT_INCLUDES=""
     QT_VER=2
@@ -248,6 +248,20 @@ case $host_os in
     ;;
 
    *darwin* )
+    dnl Check for MacOSX, require clang++
+    if test "$CXX" = "clang++" ; then
+      AC_MSG_CHECKING([whether clang works])
+
+      CFLAGS="$CFLAGS -pipe"
+      CXXFLAGS="$CXXFLAGS -pipe"
+      if test $USE_MAINTAINER_MODE = yes; then
+        CFLAGS="$CFLAGS -W -Wall -Wmissing-prototypes"
+        CXXFLAGS="$CXXFLAGS -W -Wall"
+      fi
+    else
+      AC_MSG_ERROR([clang++ required but not found])
+    fi
+
     dnl Check for Qt in:
     dnl  * Digia default path: /Library/Frameworks
     dnl  * User provided path: QTDIR
@@ -278,7 +292,7 @@ case $host_os in
 
     dnl Define Qt3Support
     QT_DEF="-DQT_SHARED -DQT3_SUPPORT"
-    QT_LDFLAGS="-Wl -headerpad_max_install_names"
+    QT_LDFLAGS="-headerpad_max_install_names"
     CXXFLAGS="$CXXFLAGS $QT_CFLAGS $QT_DEF"
     ;;
 esac
