@@ -1,3 +1,27 @@
+qucs (0.0.18.140124-4) saucy; urgency=low
+
+  * snapshot
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Fri, 24 Jan 2014 10:55:22 +0100
+
+qucs (0.0.18.140124-3) raring; urgency=low
+
+  * snapshot
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Fri, 24 Jan 2014 10:54:50 +0100
+
+qucs (0.0.18.140124-2) quantal; urgency=low
+
+  * snapshot
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Fri, 24 Jan 2014 10:54:16 +0100
+
+qucs (0.0.18.140124-1) precise; urgency=low
+
+  * snapshot
+
+ -- Frans Schreuder <fransschreuder@gmail.com>  Fri, 24 Jan 2014 10:52:03 +0100
+
 qucs (0.0.18.140114-4) saucy; urgency=low
 
   * snapshot
