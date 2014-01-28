@@ -231,7 +231,7 @@ void Schematic::becomeCurrent(bool update)
       sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
       setChanged(true, true);
     }
-    
+
     ps = UndoSymbol.current();
     if(ps != UndoSymbol.getFirst())  App->undo->setEnabled(true);
     else  App->undo->setEnabled(false);
@@ -468,17 +468,17 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
       Painter.drawText(pn->Name, x, y);
     }
   }
-  
+
   /*
    * The following events used to be drawn from mouseactions.cpp, but since Qt4
    * Paint actions can only be called from within the paint event, so they
    * are put into a QList (PostedPaintEvents) and processed here
    */
-  for(int i=0;i<PostedPaintEvents.size();i++) 
+  for(int i=0;i<PostedPaintEvents.size();i++)
   {
     PostedPaintEvent p = PostedPaintEvents[i];
     QPainter painter2(viewport());
-    
+
     switch(p.pe)
     {
       case _NotRop:
@@ -487,7 +487,7 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
         else
           Painter.Painter->setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
         break;
-      case _Rect: 
+      case _Rect:
         if(p.PaintOnViewport)
           painter2.drawRect(p.x1, p.y1, p.x2, p.y2);
         else
@@ -515,17 +515,17 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
         Painter.Painter->setPen(Qt::DotLine);
         break;
       case _Translate:
-        
+
         painter2.translate(p.x1, p.y1);
         break;
       case _Scale:
         painter2.scale(p.x1,p.y1);
         break;
     }
-    
+
   }
   PostedPaintEvents.clear();
-  
+
 }
 
 void Schematic::PostPaintEvent (PE pe, int x1, int y1, int x2, int y2, int a, int b, bool PaintOnViewport)
@@ -550,7 +550,7 @@ void Schematic::contentsMousePressEvent(QMouseEvent *Event)
   App->editText->setHidden(true); // disable text edit of component property
   if(App->MouseReleaseAction == &MouseActions::MReleasePaste)
     return;
-  
+
   float x = float(Event->pos().x())/Scale + float(ViewX1);
   float y = float(Event->pos().y())/Scale + float(ViewY1);
 
@@ -1325,6 +1325,10 @@ int Schematic::save()
     ps->replace(1,1,'i');//at(1) = 'i';   // state of being unchanged
     UndoSymbol.findRef(ps);  // back to current
   }
+  // update the subcircuit file lookup hashes
+  QucsMain->updateSchNameHash();
+  QucsMain->updateSpiceNameHash();
+
   return result;
 }
 
