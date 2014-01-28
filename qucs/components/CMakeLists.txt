@@ -14,10 +14,12 @@ MESFET.cpp		diode.cpp		logical_or.cpp		rfedd.cpp
 ac_sim.cpp		dmux2to4.cpp		logical_xnor.cpp	rfedd2p.cpp
 am_modulator.cpp	dmux3to8.cpp		logical_xor.cpp		rlcg.cpp
 ampere_ac.cpp		dmux4to16.cpp		mod_amp.cpp		rs_flipflop.cpp
-ampere_dc.cpp		eqndefined.cpp		#module.cpp 
-source_ac.cpp
+ampere_dc.cpp		ecvs.cpp
+			eqndefined.cpp		#module.cpp 
+source_ac.cpp		
 ampere_noise.cpp	equation.cpp		mosfet.cpp		sp_sim.cpp
-amplifier.cpp		fa1b.cpp		mosfet_sub.cpp		sparamfile.cpp
+amplifier.cpp		etr_sim.cpp
+			fa1b.cpp		mosfet_sub.cpp		sparamfile.cpp
 andor4x2.cpp		fa2b.cpp		mscorner.cpp		spicedialog.cpp
 andor4x3.cpp		gatedDlatch.cpp		mscoupled.cpp
 andor4x4.cpp		greytobinary4bit.cpp	mscross.cpp		spicefile.cpp
