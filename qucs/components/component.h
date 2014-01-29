@@ -61,6 +61,8 @@ public:
   int  rotated;     // rotation angle divided by 90 degrees
 
   virtual QString getSubcircuitFile() { return ""; }
+  // set the pointer scematic associated with the component
+  virtual void setSchematic (Schematic* p) { containingSchematic = p; }
 
   Q3PtrList<Line>     Lines;
   Q3PtrList<struct Arc>      Arcs;
@@ -91,6 +93,7 @@ protected:
 
   void copyComponent(Component*);
   Property * getProperty(const QString&);
+  Schematic* containingSchematic;
 };
 
 
@@ -118,6 +121,6 @@ protected:
 };
 
 // prototype of independent function
-Component* getComponentFromName(QString&);
+Component* getComponentFromName(QString& Line, Schematic* p=NULL);
 
 #endif

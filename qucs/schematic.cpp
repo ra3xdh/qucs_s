@@ -99,14 +99,14 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
 
   isVerilog = false;
   creatingLib = false;
-  QFileInfo Info(Name_);
+  FileInfo = QFileInfo (Name_);
   if(App) {
     if(Name_.isEmpty())
       App->DocumentTab->addTab(this, QPixmap(empty_xpm),
                             QObject::tr("untitled"));
     else
       App->DocumentTab->addTab(this, QPixmap(empty_xpm),
-                            Info.fileName());
+                            FileInfo.fileName());
 
     // calls indirectly "becomeCurrent"
     App->DocumentTab->setCurrentPage(App->DocumentTab->indexOf(this));

@@ -106,6 +106,7 @@ QucsApp::QucsApp()
   //QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
 
   updateSchNameHash();
+  updateSpiceNameHash();
 
   move  (QucsSettings.x,  QucsSettings.y);
   resize(QucsSettings.dx, QucsSettings.dy);
@@ -1274,7 +1275,7 @@ bool QucsApp::saveAs()
     }
 
     // list of known file extensions
-    QString ext = "vhdl;vhd;v;va;sch;dpl;m;oct";
+    QString ext = "vhdl;vhd;v;va;sch;dpl;m;oct;net;qnet;txt";
     QStringList extlist = QStringList::split (';', ext);
 
     if(isTextDocument (w))
@@ -1282,20 +1283,27 @@ bool QucsApp::saveAs()
 	       tr("Verilog Sources")+" (*.v);;"+
 	       tr("Verilog-A Sources")+" (*.va);;"+
 	       tr("Octave Scripts")+" (*.m *.oct);;"+
+	       tr("Qucs Netlist")+" (*.net *.qnet);;"+
+	       tr("Plain Text")+" (*.txt);;"+
 	       tr("Any File")+" (*)";
     else
       Filter = QucsFileFilter;
-      s = QFileDialog::getSaveFileName(this, tr("Enter a Document Name"),
-        QucsSettings.QucsWorkDir.absPath(), Filter);
+
+    s = QFileDialog::getSaveFileName(this, tr("Enter a Document Name"),
+                                     QucsSettings.QucsWorkDir.absPath(),
+                                     Filter);
     if(s.isEmpty())  return false;
     Info.setFile(s);               // try to guess the best extension ...
     ext = Info.extension(false);
-    if(ext.isEmpty() ||
-       !extlist.contains(ext)) {   // ... if no one was specified or is unknown
-      if(isTextDocument (w))
-        s += ".vhdl";
-      else
+
+    if(ext.isEmpty() || !extlist.contains(ext))
+    {
+      // if no extension was specified or is unknown
+      if (!isTextDocument (w))
+      {
+        // assume it is a schematic
         s += ".sch";
+      }
     }
 
     Info.setFile(s);
@@ -1374,6 +1382,7 @@ void QucsApp::slotFileSaveAs()
 
   // refresh the schematic file path
   this->updateSchNameHash();
+  this->updateSpiceNameHash();
 
   if(!ProjName.isEmpty())
     readProjectFiles();  // re-read the content ListView
@@ -1407,6 +1416,7 @@ void QucsApp::slotFileSaveAll()
 
   // refresh the schematic file path
   this->updateSchNameHash();
+  this->updateSpiceNameHash();
 }
 
 // --------------------------------------------------------------
@@ -1615,6 +1625,7 @@ void QucsApp::slotApplSettings()
 void QucsApp::slotRefreshSchPath()
 {
   this->updateSchNameHash();
+  this->updateSpiceNameHash();
 
   QMessageBox msgBox;
   msgBox.setText("The schematic file path has been refreshed.");
@@ -2568,6 +2579,49 @@ void QucsApp::updateSchNameHash(void)
 }
 
 // -----------------------------------------------------------
+// Searches the qucs path list for all spice files and creates
+// a hash for lookup later
+void QucsApp::updateSpiceNameHash(void)
+{
+    // update the list of paths to search in qucsPathList, this
+    // removes nonexisting entries
+    updatePathList();
+
+    // now go through the paths creating a map to all the schematic files
+    // found in the directories. Note that we go through the list of paths from
+    // first index to last index. Since keys are unique it means schematic files
+    // in directories at the end of the list take precendence over those at the
+    // start of the list, we should warn about shadowing of schematic files in
+    // this way in the future
+    QStringList nameFilter;
+    nameFilter << "*.sp" << "*.cir" << "*.spc";
+
+    // clear out any existing hash table entriess
+    spiceNameHash.clear();
+
+    foreach (QString qucspath, qucsPathList) {
+        QDir thispath(qucspath);
+        // get all the schematic files in the directory
+        QFileInfoList spicefilesList = thispath.entryInfoList( nameFilter, QDir::Files );
+        // put each one in the hash table with the unique key the base name of
+        // the file, note this will overwrite the value if the key already exists
+        foreach (QFileInfo spicefile, spicefilesList) {
+            QString bn = spicefile.completeBaseName();
+            schNameHash[spicefile.completeBaseName()] = spicefile.absoluteFilePath();
+        }
+    }
+
+    // finally check the home/working directory
+    QDir thispath(QucsSettings.QucsWorkDir);
+    QFileInfoList spicefilesList = thispath.entryInfoList( nameFilter, QDir::Files );
+    // put each one in the hash table with the unique key the base name of
+    // the file, note this will overwrite the value if the key already exists
+    foreach (QFileInfo spicefile, spicefilesList) {
+        spiceNameHash[spicefile.completeBaseName()] = spicefile.absoluteFilePath();
+    }
+}
+
+// -----------------------------------------------------------
 // update the list of paths, pruning non-existing paths
 void QucsApp::updatePathList(void)
 {
@@ -2735,7 +2789,7 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
                     }
 
                     if (dlg->isEps()) {
-                        cmd = cmd + "--export-eps=" + filename;   
+                        cmd = cmd + "--export-eps=" + filename;
                     }
 
                     int result = QProcess::execute(cmd);
