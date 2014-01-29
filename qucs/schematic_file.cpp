@@ -977,7 +977,6 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
       int i;
       // tell the subcircuit it belongs to this schematic
       pc->setSchematic (this);
-qDebug () << "In Schematic::throughAllComps, this.Name: " << this->DocName;
       QString f = pc->getSubcircuitFile();
       SubMap::Iterator it = FileList.find(f);
       if(it != FileList.end())
