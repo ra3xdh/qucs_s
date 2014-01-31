@@ -247,8 +247,13 @@ void QucsApp::slotSelect(bool on)
 // -----------------------------------------------------------------------
 void QucsApp::slotEditPaste(bool on)
 {
+  // get the current document
   Schematic *Doc = (Schematic*)DocumentTab->currentPage();
-  if(Doc->inherits("QTextEdit")) {
+
+  // if the current document is a text document paste in
+  // the contents of the clipboard as text
+  if(Doc->inherits("QTextEdit"))
+  {
     ((TextDoc*)Doc)->viewport()->setFocus();
     ((TextDoc*)Doc)->paste();
 
@@ -257,10 +262,12 @@ void QucsApp::slotEditPaste(bool on)
     editPaste->blockSignals(false);
     return;
   }
+  // if it's not a text doc, prevent the user from editing
+  // while we perform the paste operation
+  editText->setHidden(true);
 
-  editText->setHidden(true); // disable text edit of component property
-
-  if(!on) {
+  if(!on)
+  {
     MouseMoveAction = 0;
     MousePressAction = 0;
     MouseReleaseAction = 0;
@@ -270,14 +277,16 @@ void QucsApp::slotEditPaste(bool on)
     return;
   }
 
-  if(!view->pasteElements(Doc)) {
+  if(!view->pasteElements(Doc))
+  {
     editPaste->blockSignals(true); // do not call toggle slot
     editPaste->setOn(false);       // set toolbar button off
     editPaste->blockSignals(false);
     return;   // if clipboard empty
   }
 
-  if(activeAction) {
+  if(activeAction)
+  {
     activeAction->blockSignals(true); // do not call toggle slot
     activeAction->setOn(false);       // set last toolbar button off
     activeAction->blockSignals(false);

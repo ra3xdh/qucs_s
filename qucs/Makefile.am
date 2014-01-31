@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-# 
+#
 # qucs/Makefile.am
 #
 # Automake input file.
@@ -10,16 +10,16 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2, or (at your option)
 # any later version.
-# 
+#
 # This software is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this package; see the file COPYING.  If not, write to
 # the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
-# Boston, MA 02110-1301, USA.  
+# Boston, MA 02110-1301, USA.
 #
 
 SUBDIRS = components diagrams paintings dialogs octave
@@ -45,7 +45,7 @@ qrc_qucs.cpp: qucs.qrc
 
 nodist_qucs_SOURCES = $(MOCFILES)
 
-AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES)
+AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs-lib
 qucs_LDFLAGS = $(X11_LDFLAGS) $(QT_LDFLAGS)
 qucs_LDADD = components/libcomponents.a diagrams/libdiagrams.a \
   paintings/libpaintings.a dialogs/libdialogs.a \
@@ -58,7 +58,7 @@ noinst_HEADERS = $(MOCHEADERS) main.h wire.h qucsdoc.h element.h node.h \
 TRANSLATIONS = qucs_de.ts qucs_pl.ts qucs_fr.ts qucs_it.ts qucs_ro.ts \
   qucs_pt.ts qucs_es.ts qucs_jp.ts qucs_hu.ts qucs_he.ts qucs_sv.ts   \
   qucs_tr.ts qucs_uk.ts qucs_ru.ts qucs_cs.ts qucs_ca.ts qucs_ar.ts   \
-  qucs_kk.ts 
+  qucs_kk.ts
 GENTRANSLATIONS = qtgeneric_untranslated.ts qtgeneric_de.ts qtgeneric_fr.ts \
   qtgeneric_es.ts qtgeneric_ro.ts qtgeneric_jp.ts qtgeneric_hu.ts \
   qtgeneric_it.ts qtgeneric_he.ts qtgeneric_sv.ts qtgeneric_pl.ts \

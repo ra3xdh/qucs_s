@@ -104,7 +104,7 @@ struct Property {
 // valid values for Element.Type
 // The 4 least significant bits of each value are reserved for special
 // additionals !!!
-#define isDummy           0
+#define isDummyElement    0
 #define isSpecialMask    -16
 
 #define isComponent        0x30000

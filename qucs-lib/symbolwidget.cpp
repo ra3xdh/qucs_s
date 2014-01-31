@@ -31,6 +31,7 @@
 
 #include "symbolwidget.h"
 #include "qucslib.h"
+#include "qucslib_common.h"
 
 
 const char *empty_xpm[] = {  // for drag n'drop
@@ -48,7 +49,7 @@ SymbolWidget::SymbolWidget(QWidget *parent) : QWidget(parent)
   DragNDropText = tr("! Drag n'Drop me !");
   DragNDropWidth = metrics.width(DragNDropText);    // get size of text
   TextHeight = metrics.lineSpacing();
-  
+
   ///setPaletteBackgroundColor(Qt::white);
   QPalette palette;
   palette.setColor(backgroundRole(), Qt::white);
@@ -293,7 +294,7 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
 
     // thermal node
     Lines.append(new Line(-30, 20,-20, 20,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(-20, 17,-20, 23,QPen(Qt::darkBlue,2)));  
+    Lines.append(new Line(-20, 17,-20, 23,QPen(Qt::darkBlue,2)));
 
     // arrow
     if(FirstProp == "npn" || Comp == "hic2_full" || Comp == "hicumL2V2p23" ||
@@ -356,7 +357,7 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
     Lines.append(new Line( 30, 16, 80,-12,QPen(Qt::darkBlue,2)));
     Lines.append(new Line( 16,-40, 80,-40,QPen(Qt::darkBlue,2)));
     Lines.append(new Line( 80,-40, 80,-12,QPen(Qt::darkBlue,2)));
-  
+
     Lines.append(new Line(-30,  0,-18,-12,QPen(Qt::darkBlue,1)));
     Lines.append(new Line(-22, 12,  2,-12,QPen(Qt::darkBlue,1)));
     Lines.append(new Line( -2, 12, 22,-12,QPen(Qt::darkBlue,1)));
@@ -371,7 +372,7 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
     x1 = -34; y1 =-44;
     x2 =  84; y2 = 20;
   }
-  
+
   x1 -= 4;   // enlarge component boundings a little
   x2 += 4;
   y1 -= 4;
@@ -456,7 +457,7 @@ int SymbolWidget::analyseLine(const QString& Row)
 
   s = Row.section(' ',0,0);    // component type
   if(s == ".PortSym") {  // here: ports are open nodes
-    if(!getIntegers(Row, &i1, &i2, &i3))  return -1;
+    if(!getCompLineIntegers(Row, &i1, &i2, &i3))  return -1;
     Arcs.append(new struct Arc(i1-4, i2-4, 8, 8, 0, 16*360,
                                QPen(Qt::red,1)));
 
@@ -467,7 +468,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     return 0;   // do not count Ports
   }
   else if(s == "Line") {
-    if(!getIntegers(Row, &i1, &i2, &i3, &i4))  return -1;
+    if(!getCompLineIntegers(Row, &i1, &i2, &i3, &i4))  return -1;
     if(!getPen(Row, Pen, 5))  return -1;
     i3 += i1;
     i4 += i2;
@@ -484,7 +485,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     return 1;
   }
   else if(s == "EArc") {
-    if(!getIntegers(Row, &i1, &i2, &i3, &i4, &i5, &i6))  return -1;
+    if(!getCompLineIntegers(Row, &i1, &i2, &i3, &i4, &i5, &i6))  return -1;
     if(!getPen(Row, Pen, 7))  return -1;
     Arcs.append(new struct Arc(i1, i2, i3, i4, i5, i6, Pen));
 
@@ -495,7 +496,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     return 1;
   }
   else if(s == ".ID") {
-    if(!getIntegers(Row, &i1, &i2))  return -1;
+    if(!getCompLineIntegers(Row, &i1, &i2))  return -1;
     Text_x = i1;
     Text_y = i2;
     Prefix = Row.section(' ',3,3);
@@ -503,7 +504,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     return 0;   // do not count IDs
   }
   else if(s == "Arrow") {
-    if(!getIntegers(Row, &i1, &i2, &i3, &i4, &i5, &i6))  return -1;
+    if(!getCompLineIntegers(Row, &i1, &i2, &i3, &i4, &i5, &i6))  return -1;
     if(!getPen(Row, Pen, 7))  return -1;
 
     double beta   = atan2(double(i6), double(i5));
@@ -544,7 +545,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     return 1;
   }
   else if(s == "Ellipse") {
-    if(!getIntegers(Row, &i1, &i2, &i3, &i4))  return -1;
+    if(!getCompLineIntegers(Row, &i1, &i2, &i3, &i4))  return -1;
     if(!getPen(Row, Pen, 5))  return -1;
     if(!getBrush(Row, Brush, 8))  return -1;
     Ellips.append(new Area(i1, i2, i3, i4, Pen, Brush));
@@ -560,7 +561,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     return 1;
   }
   else if(s == "Rectangle") {
-    if(!getIntegers(Row, &i1, &i2, &i3, &i4))  return -1;
+    if(!getCompLineIntegers(Row, &i1, &i2, &i3, &i4))  return -1;
     if(!getPen(Row, Pen, 5))  return -1;
     if(!getBrush(Row, Brush, 8))  return -1;
     Rects.append(new Area(i1, i2, i3, i4, Pen, Brush));
@@ -576,7 +577,7 @@ int SymbolWidget::analyseLine(const QString& Row)
     return 1;
   }
   else if(s == "Text") {  // must be last in order to reuse "s" *********
-    if(!getIntegers(Row, &i1, &i2, &i3))  return -1;
+    if(!getCompLineIntegers(Row, &i1, &i2, &i3))  return -1;
     Color.setNamedColor(Row.section(' ',4,4));
     if(!Color.isValid()) return -1;
 
@@ -604,45 +605,6 @@ int SymbolWidget::analyseLine(const QString& Row)
   return 0;
 }
 
-// ---------------------------------------------------------------------
-bool SymbolWidget::getIntegers(const QString& s, int *i1, int *i2, int *i3,
-			     int *i4, int *i5, int *i6)
-{
-  bool ok;
-  QString n;
-
-  if(!i1) return true;
-  n  = s.section(' ',1,1);
-  *i1 = n.toInt(&ok);
-  if(!ok) return false;
-
-  if(!i2) return true;
-  n  = s.section(' ',2,2);
-  *i2 = n.toInt(&ok);
-  if(!ok) return false;
-
-  if(!i3) return true;
-  n  = s.section(' ',3,3);
-  *i3 = n.toInt(&ok);
-  if(!ok) return false;
-
-  if(!i4) return true;
-  n  = s.section(' ',4,4);
-  *i4 = n.toInt(&ok);
-  if(!ok) return false;
-
-  if(!i5) return true;
-  n  = s.section(' ',5,5);
-  *i5 = n.toInt(&ok);
-  if(!ok) return false;
-
-  if(!i6) return true;
-  n  = s.section(' ',6,6);
-  *i6 = n.toInt(&ok);
-  if(!ok) return false;
-
-  return true;
-}
 
 // ---------------------------------------------------------------------
 bool SymbolWidget::getPen(const QString& s, QPen& Pen, int i)

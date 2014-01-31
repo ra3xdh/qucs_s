@@ -46,19 +46,11 @@ class SearchDialog;
 class QLabel;
 class QAction;
 class QPrinter;
-//class Q3ToolBar;
 class QLineEdit;
 class QComboBox;
 class QTabWidget;
-//class Q3PopupMenu;
-//class Q3ListBox;
-//class Q3ListBoxItem;
 class Q3ListView;
 class Q3ListViewItem;
-//class Q3IconView;
-//class Q3IconViewItem;
-//class VTabbedDockWidget;
-//class VTabWidget;
 class OctaveWindow;
 
 typedef bool (Schematic::*pToggleFunc) ();
@@ -146,6 +138,7 @@ private slots:
   void slotOpenProject(QListWidgetItem*);
   void slotMenuCloseProject();
   void slotSelectSubcircuit(QTreeWidgetItem*);
+  void slotSelectLibComponent(QTreeWidgetItem*);
   void slotOpenContent(QTreeWidgetItem*);
   void slotSetCompView(int);
   void slotProjNewButt();
@@ -167,6 +160,7 @@ public:
   QTabWidget *DocumentTab;
   //Q3IconView  *CompComps;
   QListWidget *CompComps;
+  QTreeWidget *libTreeWidget;
 
   // menu appearing by right mouse button click on content listview
   QMenu *ContentMenu;
@@ -189,21 +183,21 @@ private:
 
 // ********* Widgets on the main area **********************************
   //VTabbedDockWidget   *dock;
-  QDockWidget *dock;
-  QTabWidget *TabView;
-  QDockWidget *octDock;
-  OctaveWindow  *octave;
+  QDockWidget     *dock;
+  QTabWidget      *TabView;
+  QDockWidget     *octDock;
+  OctaveWindow    *octave;
 
-  QListWidget      *Projects;
+  QListWidget     *Projects;
   //Q3ListView     *Content;
-  QTreeWidget *Content;
+  QTreeWidget     *Content;
   //Q3ListViewItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
   //              *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
   QTreeWidgetItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
-                *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
+                  *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
 
 
-  QComboBox     *CompChoose;
+  QComboBox       *CompChoose;
 
 // ********** Properties ************************************************
   Q3PtrList<QString> HierarchyHistory; // keeps track of "go into subcircuit"
@@ -230,6 +224,7 @@ private:
 
   void updateRecentFilesList(QString s);
   void successExportMessages(bool ok);
+  void fillLibrariesTreeView (void);
 
 public:
 
@@ -374,4 +369,5 @@ private:
   friend class SaveDialog;
   QString lastExportFilename;
 };
-#endif
+
+#endif /* QUCS_H */
