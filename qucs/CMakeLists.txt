@@ -113,6 +113,31 @@ QT4_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
 SET(RESOURCES qucs.qrc)
 QT4_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
 
+if(UNIX AND NOT APPLE)
+
+    SET(ICON16 bitmaps/hicolor/16x16/apps/qucs.png )
+    SET(ICON22 bitmaps/hicolor/22x22/apps/qucs.png )
+    SET(ICON32 bitmaps/hicolor/32x32/apps/qucs.png )
+    SET(ICON48 bitmaps/hicolor/48x48/apps/qucs.png )
+    SET(ICON64 bitmaps/hicolor/64x64/apps/qucs.png )
+    SET(ICON128 bitmaps/hicolor/128x128/apps/qucs.png )
+    SET(ICON256 bitmaps/hicolor/256x256/apps/qucs.png )
+    SET(ICON512 bitmaps/hicolor/512x512/apps/qucs.png )
+    SET(ICONsc bitmaps/hicolor/scalable/apps/qucs.png )
+
+    INSTALL( FILES ${ICON16} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/16x16/apps)
+    INSTALL( FILES ${ICON22} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/22x22/apps)
+    INSTALL( FILES ${ICON32} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/32x32/apps)
+    INSTALL( FILES ${ICON48} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/48x48/apps)
+    INSTALL( FILES ${ICON64} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/64x64/apps)
+    INSTALL( FILES ${ICON128} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/128x128/apps)
+    INSTALL( FILES ${ICON256} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/256x256/apps)
+    INSTALL( FILES ${ICON512} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/512x512/apps)
+    INSTALL( FILES ${ICONsc} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps)
+
+    SET(DESKTOP qucs.desktop )
+    INSTALL( FILES ${DESKTOP} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+endif()
 
 #
 # Qucs translations
