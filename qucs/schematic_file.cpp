@@ -457,7 +457,7 @@ bool Schematic::loadComponents(Q3TextStream *stream, Q3PtrList<Component> *List)
     Line = Line.stripWhiteSpace();
     if(Line.isEmpty()) continue;
 
-    c = getComponentFromName(Line);
+    c = getComponentFromName(Line, this);
     if(!c) return false;
 
     if(List) {  // "paste" ?
@@ -728,7 +728,7 @@ bool Schematic::loadDocument()
       file.close();
       return false;
     }
-    } // Diagrams, Paintings 
+    } // Diagrams, Paintings
   }
 
   file.close();
@@ -936,7 +936,7 @@ void Schematic::propagateNode(QStringList& Collect,
 }
 
 #include <iostream>
-// --------------------------------------------------- 
+// ---------------------------------------------------
 // Goes through all schematic components and allows special component
 // handling, e.g. like subcircuit netlisting.
 bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
@@ -972,52 +972,67 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
     }
 
     // handle subcircuits
-    if(pc->Model == "Sub") {
+    if(pc->Model == "Sub")
+    {
       int i;
+      // tell the subcircuit it belongs to this schematic
+      pc->setSchematic (this);
       QString f = pc->getSubcircuitFile();
       SubMap::Iterator it = FileList.find(f);
-      if(it != FileList.end()) {
-	if (!it.data().PortTypes.isEmpty()) {
-	  i = 0;
-	  // apply in/out signal types of subcircuit
-	  for(Port *pp = pc->Ports.first(); pp; pp = pc->Ports.next(), i++) {
-	    pp->Type = it.data().PortTypes[i];
-	    pp->Connection->DType = pp->Type;
-	  }
-	}
+      if(it != FileList.end())
+      {
+        if (!it.data().PortTypes.isEmpty())
+        {
+          i = 0;
+          // apply in/out signal types of subcircuit
+          for(Port *pp = pc->Ports.first(); pp; pp = pc->Ports.next(), i++)
+          {
+            pp->Type = it.data().PortTypes[i];
+            pp->Connection->DType = pp->Type;
+          }
+        }
         continue;   // insert each subcircuit just one time
       }
+
+      // The subcircuit has not previously been added
       SubFile sub = SubFile("SCH", f);
       FileList.insert(f, sub);
+
 
       // load subcircuit schematic
       s = pc->Props.first()->Value;
       Schematic *d = new Schematic(0, pc->getSubcircuitFile());
-      if(!d->loadDocument()) {  // load document if possible
-        delete d;
-        ErrText->insert(QObject::tr("ERROR: Cannot load subcircuit \"%1\".").arg(s));
-        return false;
+      if(!d->loadDocument())      // load document if possible
+      {
+          delete d;
+          ErrText->insert(QObject::tr("ERROR: Cannot load subcircuit \"%1\".").arg(s));
+          return false;
       }
       d->DocName = s;
       d->isVerilog = isVerilog;
       d->isAnalog = isAnalog;
       d->creatingLib = creatingLib;
       r = d->createSubNetlist(stream, countInit, Collect, ErrText, NumPorts);
-      if (r) {
-	      i = 0;
-	      // save in/out signal types of subcircuit
-	      for(Port *pp = pc->Ports.first(); pp; pp = pc->Ports.next(), i++) {
-          //if(i>=d->PortTypes.count())break;
-	        pp->Type = d->PortTypes[i];
-	        pp->Connection->DType = pp->Type;
-	      }
-	      sub.PortTypes = d->PortTypes;
-	      FileList.replace(f, sub);
+      if (r)
+      {
+        i = 0;
+        // save in/out signal types of subcircuit
+        for(Port *pp = pc->Ports.first(); pp; pp = pc->Ports.next(), i++)
+        {
+            //if(i>=d->PortTypes.count())break;
+            pp->Type = d->PortTypes[i];
+            pp->Connection->DType = pp->Type;
+        }
+        sub.PortTypes = d->PortTypes;
+        FileList.replace(f, sub);
       }
       delete d;
-      if(!r) return false;
+      if(!r)
+      {
+        return false;
+      }
       continue;
-    }
+    } // if(pc->Model == "Sub")
 
     // handle library symbols
     if(pc->Model == "Lib") {
@@ -1053,6 +1068,8 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
     // handle SPICE subcircuit components
     if(pc->Model == "SPICE") {
       s = pc->Props.first()->Value;
+      // tell the spice component it belongs to this schematic
+      pc->setSchematic (this);
       if(s.isEmpty()) {
         ErrText->insert(QObject::tr("ERROR: No file name in SPICE component \"%1\".").
                         arg(pc->Name));
@@ -1102,7 +1119,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
 	r = vf->createSubNetlist(stream);
 	ErrText->insert(vf->getErrorText());
 	if(!r) return false;
-      }      
+      }
       continue;
     }
   }

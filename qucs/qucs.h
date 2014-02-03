@@ -46,19 +46,11 @@ class SearchDialog;
 class QLabel;
 class QAction;
 class QPrinter;
-//class Q3ToolBar;
 class QLineEdit;
 class QComboBox;
 class QTabWidget;
-//class Q3PopupMenu;
-//class Q3ListBox;
-//class Q3ListBoxItem;
 class Q3ListView;
 class Q3ListViewItem;
-//class Q3IconView;
-//class Q3IconViewItem;
-//class VTabbedDockWidget;
-//class VTabWidget;
 class OctaveWindow;
 
 typedef bool (Schematic::*pToggleFunc) ();
@@ -81,6 +73,7 @@ public:
   QString ProjName;   // name of the project, that is open
   //QList<QString> qucsPathList; // the qucs path list for subcircuits and spice files
   QHash<QString,QString> schNameHash; // QHash for the schematic files lookup
+  QHash<QString,QString> spiceNameHash; // QHash for the spice files lookup
 
   QLineEdit *editText;  // for edit component properties on schematic
   SearchDialog *SearchDia;  // global in order to keep values
@@ -145,6 +138,7 @@ private slots:
   void slotOpenProject(QListWidgetItem*);
   void slotMenuCloseProject();
   void slotSelectSubcircuit(QTreeWidgetItem*);
+  void slotSelectLibComponent(QTreeWidgetItem*);
   void slotOpenContent(QTreeWidgetItem*);
   void slotSetCompView(int);
   void slotProjNewButt();
@@ -166,6 +160,7 @@ public:
   QTabWidget *DocumentTab;
   //Q3IconView  *CompComps;
   QListWidget *CompComps;
+  QTreeWidget *libTreeWidget;
 
   // menu appearing by right mouse button click on content listview
   QMenu *ContentMenu;
@@ -188,21 +183,21 @@ private:
 
 // ********* Widgets on the main area **********************************
   //VTabbedDockWidget   *dock;
-  QDockWidget *dock;
-  QTabWidget *TabView;
-  QDockWidget *octDock;
-  OctaveWindow  *octave;
+  QDockWidget     *dock;
+  QTabWidget      *TabView;
+  QDockWidget     *octDock;
+  OctaveWindow    *octave;
 
-  QListWidget      *Projects;
+  QListWidget     *Projects;
   //Q3ListView     *Content;
-  QTreeWidget *Content;
+  QTreeWidget     *Content;
   //Q3ListViewItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
   //              *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
   QTreeWidgetItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
-                *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
+                  *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
 
 
-  QComboBox     *CompChoose;
+  QComboBox       *CompChoose;
 
 // ********** Properties ************************************************
   Q3PtrList<QString> HierarchyHistory; // keeps track of "go into subcircuit"
@@ -229,6 +224,7 @@ private:
 
   void updateRecentFilesList(QString s);
   void successExportMessages(bool ok);
+  void fillLibrariesTreeView (void);
 
 public:
 
@@ -237,6 +233,7 @@ public:
   void updatePathList(void); // update the list of paths, pruning non-existing paths
   void updatePathList(QStringList);
   void updateSchNameHash(void); // maps all schematic files in the path list
+  void updateSpiceNameHash(void); // maps all spice files in the path list
 
 /* **************************************************
    *****  The following methods are located in  *****
@@ -372,4 +369,5 @@ private:
   friend class SaveDialog;
   QString lastExportFilename;
 };
-#endif
+
+#endif /* QUCS_H */

@@ -143,6 +143,8 @@ public:
   Q3PtrList<QString> UndoStack;
   Q3PtrList<QString> UndoSymbol;    // undo stack for circuit symbol
 
+  QFileInfo getFileInfo (void) { return FileInfo; }
+
 protected:
   bool sizeOfFrame(int&, int&);
   void paintFrame(ViewPainter*);
@@ -167,6 +169,7 @@ protected slots:
 
 private:
   bool dragIsOkay;
+  QFileInfo FileInfo;
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****

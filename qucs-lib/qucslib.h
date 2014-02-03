@@ -71,7 +71,7 @@ private slots:
 private:
   void closeEvent(QCloseEvent*);
   void putLibrariesIntoCombobox();
-  bool getSection(QString, QString &, QString &);
+//  bool getSection(QString, QString &, QString &);
 
   QMenu *fileMenu, *helpMenu;
 

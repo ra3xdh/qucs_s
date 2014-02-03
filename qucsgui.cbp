@@ -446,10 +446,8 @@
 		<Unit filename="qucs/components/sparamfile.h" />
 		<Unit filename="qucs/components/spicedialog.cpp" />
 		<Unit filename="qucs/components/spicedialog.h" />
-		<Unit filename="qucs/components/spicedialog.moc.cpp" />
 		<Unit filename="qucs/components/spicefile.cpp" />
 		<Unit filename="qucs/components/spicefile.h" />
-		<Unit filename="qucs/components/spicefile.moc.cpp" />
 		<Unit filename="qucs/components/subcircuit.cpp" />
 		<Unit filename="qucs/components/subcircuit.h" />
 		<Unit filename="qucs/components/subcirport.cpp" />

@@ -1265,6 +1265,9 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
     switch(Event->button()) {
       case Qt::LeftButton :
 	// left mouse button inserts component into the schematic
+	// give the component a pointer to the schematic it's a
+	// part of
+	Comp->setSchematic (Doc);
 	Comp->textSize(x1, y1);
 	Doc->insertComponent(Comp);
 	Comp->textSize(x2, y2);

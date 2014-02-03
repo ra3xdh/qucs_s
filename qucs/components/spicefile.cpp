@@ -162,7 +162,97 @@ QString SpiceFile::getSubcircuitFile()
 {
   // construct full filename
   QString FileName = Props.getFirst()->Value;
-  return properAbsFileName(FileName);
+
+  if (FileName.isEmpty())
+  {
+      return properAbsFileName(FileName);
+  }
+
+  QFileInfo FileInfo(FileName);
+
+  if (FileInfo.exists())
+  {
+      // the file must be an absolute path to a schematic file
+     return FileInfo.absoluteFilePath();
+  }
+  else
+  {
+    // get the complete base name (everything except the last '.'
+    // and whatever follows
+    QString baseName = FileInfo.completeBaseName();
+
+    // if only a file name is supplied, first check if it is in the
+    // same directory as the schematic file it is a part of
+    if (FileInfo.fileName () == FileName)
+    {
+        // the file has no path information, just the file name
+        if (containingSchematic)
+        {
+            // check if a file of the same name is in the same directory
+            // as the schematic file, if we have a pointer to it, in
+            // which case we use this one
+            QFileInfo schematicFileInfo = containingSchematic->getFileInfo ();
+
+            QFileInfo localFIleInfo (schematicFileInfo.canonicalPath () + "/" + baseName + ".sp");
+            if (localFIleInfo.exists ())
+            {
+                // return the subcircuit saved in the same directory
+                // as the schematic file
+                return localFIleInfo.absoluteFilePath();
+            }
+
+            localFIleInfo = QFileInfo(schematicFileInfo.canonicalPath () + "/" + baseName + ".cir");
+            if (localFIleInfo.exists ())
+            {
+                // return the subcircuit saved in the same directory
+                // as the schematic file
+                return localFIleInfo.absoluteFilePath();
+            }
+
+            localFIleInfo = QFileInfo(schematicFileInfo.canonicalPath () + "/" + baseName + ".spc");
+            if (localFIleInfo.exists ())
+            {
+                // return the subcircuit saved in the same directory
+                // as the schematic file
+                return localFIleInfo.absoluteFilePath();
+            }
+        }
+    }
+
+    // look up the hash table for the schematic file as
+    // it does not seem to be an absolute path, this will also
+    // search the home directory which is always hashed
+    QMutex mutex;
+    mutex.lock();
+    QString hashsearchresult = QucsMain->spiceNameHash.value(baseName);
+    mutex.unlock();
+
+    if (hashsearchresult.isEmpty())
+    {
+        // the schematic was not found in the hash table, return
+        // what would always have been returned in this case
+        return properAbsFileName(FileName);
+    }
+    else
+    {
+        // we found an entry in the hash table, check it actually still exists
+        FileInfo.setFile(hashsearchresult);
+
+        if (FileInfo.exists())
+        {
+            // it does exist so return the absolute file path
+            return FileInfo.absoluteFilePath();
+        }
+        else
+        {
+            // the schematic file does not actually exist, return
+            // what would always have been returned in this case
+            return properAbsFileName(FileName);
+        }
+    }
+
+  }
+
 }
 
 // -------------------------------------------------------------------------

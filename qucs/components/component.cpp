@@ -62,6 +62,8 @@ Component::Component()
   Ports.setAutoDelete(true);
   Texts.setAutoDelete(true);
   Props.setAutoDelete(true);
+
+  containingSchematic = NULL;
 }
 
 // -------------------------------------------------------
@@ -1089,7 +1091,7 @@ int Component::analyseLine(const QString& Row, int numProps)
     if(i2 < y1)  y1 = i2;
     if(i1 > x2)  x2 = i1;
     if(i2 > y2)  y2 = i2;
-    
+
     if(i3 < x1)  x1 = i3;
     if(i4 < y1)  y1 = i4;
     if(i3 > x2)  x2 = i3;
@@ -1250,11 +1252,11 @@ void MultiViewComponent::recreate(Schematic *Doc)
   Rects.clear();
   Arcs.clear();
   createSymbol();
-  
+
   bool mmir = mirroredX;
   int  rrot = rotated;
   if (mmir && rrot==2) // mirrorX and rotate 180 = mirrorY
-    mirrorY(); 
+    mirrorY();
   else  {
     if(mmir)
       mirrorX();   // mirror
@@ -1402,7 +1404,7 @@ QString GateComponent::verilogCode(int NumPorts)
   }
   else {
     s = "  " + Model.lower();
- 
+
     if(NumPorts <= 0) { // no truth table simulation ?
       QString td = Props.at(2)->Value;        // delay time
       if(!Verilog_Delay(td, Name)) return td;
@@ -1512,13 +1514,13 @@ void GateComponent::createSymbol()
 
 // ***********************************************************************
 // ********                                                       ********
-// ******** The following function does not below to any class.   ********
+// ******** The following function does not belong to any class.  ********
 // ******** It creates a component by getting the identification  ********
 // ******** string used in the schematic file and for copy/paste. ********
 // ********                                                       ********
 // ***********************************************************************
 
-Component* getComponentFromName(QString& Line)
+Component* getComponentFromName(QString& Line, Schematic* p)
 {
   Component *c = 0;
 
@@ -1557,6 +1559,7 @@ Component* getComponentFromName(QString& Line)
 
   cstr = c->Name;   // is perhaps changed in "recreate" (e.g. subcircuit)
   int x = c->tx, y = c->ty;
+  c->setSchematic (p);
   c->recreate(0);
   c->Name = cstr;
   c->tx = x;  c->ty = y;

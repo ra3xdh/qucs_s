@@ -57,6 +57,8 @@
 //#include "dialogs/vtabwidget.h"
 //#include "dialogs/vtabbeddockwidget.h"
 #include "octave_window.h"
+#include "../qucs-lib/qucslib_common.h"
+
 extern const char *empty_xpm[];
 
 
@@ -106,6 +108,7 @@ QucsApp::QucsApp()
   //QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
 
   updateSchNameHash();
+  updateSpiceNameHash();
 
   move  (QucsSettings.x,  QucsSettings.y);
   resize(QucsSettings.dx, QucsSettings.dy);
@@ -274,7 +277,7 @@ void QucsApp::initView()
   connect(Projects, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(slotOpenProject(QListWidgetItem*)));
 
   // ----------------------------------------------------------
-  // "Content Tab" of the left QTabWidget
+  // "Content" Tab of the left QTabWidget
   Content = new QTreeWidget(this);
   Content->setColumnCount(2);
   QStringList headers;
@@ -285,7 +288,6 @@ void QucsApp::initView()
 
   // allow for a custom context menu
   Content->setContextMenuPolicy(Qt::CustomContextMenu);
-
 
   initContentListView();
 
@@ -300,7 +302,7 @@ void QucsApp::initView()
            SLOT(slotSelectSubcircuit(QTreeWidgetItem*)));
 
   // ----------------------------------------------------------
-  // "Component Tab" of the left QTabWidget
+  // "Component" Tab of the left QTabWidget
   QWidget *CompGroup  = new QWidget();
   QVBoxLayout *CompGroupLayout = new QVBoxLayout();
 
@@ -322,6 +324,41 @@ void QucsApp::initView()
   connect(CompComps, SIGNAL(itemActivated(QListWidgetItem*)), SLOT(slotSelectComponent(QListWidgetItem*)));
   connect(CompComps, SIGNAL(itemPressed(QListWidgetItem*)), SLOT(slotSelectComponent(QListWidgetItem*)));
 
+  // ----------------------------------------------------------
+  // "Libraries" Tab of the left QTabWidget
+
+  QWidget *LibGroup = new QWidget ();
+  QVBoxLayout *LibGroupLayout = new QVBoxLayout ();
+  QWidget *LibButts = new QWidget ();
+  QPushButton *LibManage = new QPushButton (tr ("Manage Libraries"));
+  connect(LibManage, SIGNAL(clicked()), SLOT(slotCallLibrary()));
+
+  QHBoxLayout *LibButtsLayout = new QHBoxLayout();
+  LibButtsLayout->addWidget (LibManage);
+  LibButts->setLayout(LibButtsLayout);
+
+  LibGroupLayout->addWidget(LibButts);
+
+
+  libTreeWidget = new QTreeWidget (this);
+  libTreeWidget->setColumnCount (1);
+  headers.clear ();
+  headers << tr ("Libraries");
+  libTreeWidget->setHeaderLabels (headers);
+
+  LibGroupLayout->addWidget (libTreeWidget);
+  LibGroup->setLayout (LibGroupLayout);
+
+  fillLibrariesTreeView ();
+
+  TabView->addTab (LibGroup, tr("Libraries"));
+  TabView->setTabToolTip (TabView->indexOf (CompGroup), tr ("system and user component libraries"));
+
+  connect(libTreeWidget, SIGNAL(itemPressed (QTreeWidgetItem*, int)),
+           SLOT(slotSelectLibComponent (QTreeWidgetItem*)));
+
+  // ----------------------------------------------------------
+  // put the tab widget in the dock
   dock->setWidget(TabView);
   dock->setAllowedAreas(Qt::LeftDockWidgetArea);
   this->addDockWidget(Qt::LeftDockWidgetArea, dock);
@@ -341,6 +378,158 @@ void QucsApp::initView()
   // ............................................
   readProjects(); // reads all projects and inserts them into the ListBox
 }
+
+// Put all available libraries into ComboBox.
+void QucsApp::fillLibrariesTreeView ()
+{
+    QStringList LibFiles;
+    QStringList::iterator it;
+    QList<QTreeWidgetItem *> topitems;
+
+    libTreeWidget->clear();
+
+    // make the system libraries section header
+    QTreeWidgetItem* newitem = new QTreeWidgetItem((QTreeWidget*)0, QStringList("System Libraries"));
+    newitem->setChildIndicatorPolicy (QTreeWidgetItem::DontShowIndicator);
+    QFont sectionFont = newitem->font(0);
+    sectionFont.setItalic (true);
+    sectionFont.setBold (true);
+    newitem->setFont (0, sectionFont);
+//    newitem->setBackground
+    topitems.append (newitem);
+
+    QDir LibDir(QucsSettings.LibDir);
+    LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+
+    // create top level library itmes, base on the library names
+    for(it = LibFiles.begin(); it != LibFiles.end(); it++)
+    {
+        ComponentLibrary parsedlibrary;
+
+        int result = parseComponentLibrary (QucsSettings.LibDir + *it , parsedlibrary);
+        QStringList nameAndFileName;
+        nameAndFileName.append (parsedlibrary.name);
+        nameAndFileName.append (QucsSettings.LibDir + *it);
+
+        QTreeWidgetItem* newlibitem = new QTreeWidgetItem((QTreeWidget*)0, nameAndFileName);
+
+        switch (result)
+        {
+            case QUCS_COMP_LIB_IO_ERROR:
+                QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (*it));
+                return;
+            case QUCS_COMP_LIB_CORRUPT:
+                QMessageBox::critical(0, tr("Error"), tr("Library is corrupt."));
+                return;
+            default:
+                break;
+        }
+
+        for (int i = 0; i < parsedlibrary.components.count (); i++)
+        {
+            QStringList compNameAndDefinition;
+
+            compNameAndDefinition.append (parsedlibrary.components[i].name);
+
+            QString s = "<Qucs Schematic " PACKAGE_VERSION ">\n";
+
+            s +=  "<Components>\n  " +
+                  parsedlibrary.components[i].modelString + "\n" +
+                  "</Components>\n";
+
+            compNameAndDefinition.append (s);
+
+            QTreeWidgetItem* newcompitem = new QTreeWidgetItem(newlibitem, compNameAndDefinition);
+        }
+
+        topitems.append (newlibitem);
+    }
+
+
+    // make the user libraries section header
+    newitem = new QTreeWidgetItem((QTreeWidget*)0, QStringList("User Libraries"));
+    newitem->setChildIndicatorPolicy (QTreeWidgetItem::DontShowIndicator);
+    newitem->setFont (0, sectionFont);
+    topitems.append (newitem);
+
+    QDir UserLibDir = QDir (QucsSettings.QucsHomeDir.canonicalPath () + "/user_lib");
+
+    // if there are user libraries, add them too
+    if(UserLibDir.exists ())
+    {
+        //LibFiles = UserLibDir.entryList("*.lib", QDir::Files, QDir::Name);
+        LibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+        int UserLibCount = LibFiles.count();
+
+        if (UserLibCount > 0)
+        {
+
+            // create top level library itmes, base on the library names
+            for(it = LibFiles.begin(); it != LibFiles.end(); it++)
+            {
+                ComponentLibrary parsedlibrary;
+
+                int result = parseComponentLibrary (QucsSettings.LibDir + *it , parsedlibrary);
+                QStringList nameAndFileName;
+                nameAndFileName.append (parsedlibrary.name);
+                nameAndFileName.append (QucsSettings.LibDir + *it);
+
+                QTreeWidgetItem* newlibitem = new QTreeWidgetItem((QTreeWidget*)0, nameAndFileName);
+
+                switch (result)
+                {
+                    case QUCS_COMP_LIB_IO_ERROR:
+                        QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (*it));
+                        return;
+                    case QUCS_COMP_LIB_CORRUPT:
+                        QMessageBox::critical(0, tr("Error"), tr("Library is corrupt."));
+                        return;
+                    default:
+                        break;
+                }
+
+                for (int i = 0; i < parsedlibrary.components.count (); i++)
+                {
+                    QStringList compNameAndDefinition;
+
+                    compNameAndDefinition.append (parsedlibrary.components[i].name);
+
+                    QString s = "<Qucs Schematic " PACKAGE_VERSION ">\n";
+
+                    s +=  "<Components>\n  " +
+                          parsedlibrary.components[i].modelString + "\n" +
+                          "</Components>\n";
+
+                    compNameAndDefinition.append (s);
+
+                    QTreeWidgetItem* newcompitem = new QTreeWidgetItem(newlibitem, compNameAndDefinition);
+                }
+
+                topitems.append (newlibitem);
+            }
+            libTreeWidget->insertTopLevelItems(0, topitems);
+        }
+        else
+        {
+            // make the user libraries section header
+            newitem = new QTreeWidgetItem((QTreeWidget*)0, QStringList("No User Libraries"));
+            sectionFont.setBold (false);
+            newitem->setFont (0, sectionFont);
+            topitems.append (newitem);
+        }
+    }
+    else
+    {
+        // make the user libraries section header
+        newitem = new QTreeWidgetItem((QTreeWidget*)0, QStringList("No User Libraries"));
+        sectionFont.setBold (false);
+        newitem->setFont (0, sectionFont);
+        topitems.append (newitem);
+    }
+
+    libTreeWidget->insertTopLevelItems(0, topitems);
+}
+
 
 // ---------------------------------------------------------------
 // Returns a pointer to the QucsDoc object whose number is "No".
@@ -1274,7 +1463,7 @@ bool QucsApp::saveAs()
     }
 
     // list of known file extensions
-    QString ext = "vhdl;vhd;v;va;sch;dpl;m;oct";
+    QString ext = "vhdl;vhd;v;va;sch;dpl;m;oct;net;qnet;txt";
     QStringList extlist = QStringList::split (';', ext);
 
     if(isTextDocument (w))
@@ -1282,20 +1471,27 @@ bool QucsApp::saveAs()
 	       tr("Verilog Sources")+" (*.v);;"+
 	       tr("Verilog-A Sources")+" (*.va);;"+
 	       tr("Octave Scripts")+" (*.m *.oct);;"+
+	       tr("Qucs Netlist")+" (*.net *.qnet);;"+
+	       tr("Plain Text")+" (*.txt);;"+
 	       tr("Any File")+" (*)";
     else
       Filter = QucsFileFilter;
-      s = QFileDialog::getSaveFileName(this, tr("Enter a Document Name"),
-        QucsSettings.QucsWorkDir.absPath(), Filter);
+
+    s = QFileDialog::getSaveFileName(this, tr("Enter a Document Name"),
+                                     QucsSettings.QucsWorkDir.absPath(),
+                                     Filter);
     if(s.isEmpty())  return false;
     Info.setFile(s);               // try to guess the best extension ...
     ext = Info.extension(false);
-    if(ext.isEmpty() ||
-       !extlist.contains(ext)) {   // ... if no one was specified or is unknown
-      if(isTextDocument (w))
-        s += ".vhdl";
-      else
+
+    if(ext.isEmpty() || !extlist.contains(ext))
+    {
+      // if no extension was specified or is unknown
+      if (!isTextDocument (w))
+      {
+        // assume it is a schematic
         s += ".sch";
+      }
     }
 
     Info.setFile(s);
@@ -1374,6 +1570,7 @@ void QucsApp::slotFileSaveAs()
 
   // refresh the schematic file path
   this->updateSchNameHash();
+  this->updateSpiceNameHash();
 
   if(!ProjName.isEmpty())
     readProjectFiles();  // re-read the content ListView
@@ -1407,6 +1604,7 @@ void QucsApp::slotFileSaveAll()
 
   // refresh the schematic file path
   this->updateSchNameHash();
+  this->updateSpiceNameHash();
 }
 
 // --------------------------------------------------------------
@@ -1615,6 +1813,7 @@ void QucsApp::slotApplSettings()
 void QucsApp::slotRefreshSchPath()
 {
   this->updateSchNameHash();
+  this->updateSpiceNameHash();
 
   QMessageBox msgBox;
   msgBox.setText("The schematic file path has been refreshed.");
@@ -2239,6 +2438,41 @@ void QucsApp::slotSelectSubcircuit(QTreeWidgetItem *item)
 
 
 // ---------------------------------------------------------
+// Is called when the mouse is clicked within the Content QListView.
+void QucsApp::slotSelectLibComponent(QTreeWidgetItem *item)
+{
+    // get the current document
+    Schematic *Doc = (Schematic*)DocumentTab->currentPage();
+
+    // if the current document is a schematic activate the paste
+    if(!Doc->inherits("QTextEdit"))
+    {
+
+        if(item == 0)
+        {
+            // mouse button pressed not over an item ?
+            Content->clearSelection();  // deselect component in ListView
+            return;
+        }
+
+        // if theres not a higher level item, this is a top level item,
+        // not a component item so return
+        if(item->parent() == 0) return;
+
+        if(item->text(1).isEmpty()) return;   // return, if not a subcircuit
+
+        // copy the subcircuit schematic to the clipboard
+        QClipboard *cb = QApplication::clipboard();
+        cb->setText(item->text(1));
+
+        // activate the paste command
+        slotEditPaste (true);
+    }
+
+}
+
+
+// ---------------------------------------------------------
 // This function is called if the document type changes, i.e.
 // from schematic to text document or vice versa.
 void QucsApp::switchSchematicDoc (bool SchematicMode)
@@ -2568,6 +2802,49 @@ void QucsApp::updateSchNameHash(void)
 }
 
 // -----------------------------------------------------------
+// Searches the qucs path list for all spice files and creates
+// a hash for lookup later
+void QucsApp::updateSpiceNameHash(void)
+{
+    // update the list of paths to search in qucsPathList, this
+    // removes nonexisting entries
+    updatePathList();
+
+    // now go through the paths creating a map to all the schematic files
+    // found in the directories. Note that we go through the list of paths from
+    // first index to last index. Since keys are unique it means schematic files
+    // in directories at the end of the list take precendence over those at the
+    // start of the list, we should warn about shadowing of schematic files in
+    // this way in the future
+    QStringList nameFilter;
+    nameFilter << "*.sp" << "*.cir" << "*.spc";
+
+    // clear out any existing hash table entriess
+    spiceNameHash.clear();
+
+    foreach (QString qucspath, qucsPathList) {
+        QDir thispath(qucspath);
+        // get all the schematic files in the directory
+        QFileInfoList spicefilesList = thispath.entryInfoList( nameFilter, QDir::Files );
+        // put each one in the hash table with the unique key the base name of
+        // the file, note this will overwrite the value if the key already exists
+        foreach (QFileInfo spicefile, spicefilesList) {
+            QString bn = spicefile.completeBaseName();
+            schNameHash[spicefile.completeBaseName()] = spicefile.absoluteFilePath();
+        }
+    }
+
+    // finally check the home/working directory
+    QDir thispath(QucsSettings.QucsWorkDir);
+    QFileInfoList spicefilesList = thispath.entryInfoList( nameFilter, QDir::Files );
+    // put each one in the hash table with the unique key the base name of
+    // the file, note this will overwrite the value if the key already exists
+    foreach (QFileInfo spicefile, spicefilesList) {
+        spiceNameHash[spicefile.completeBaseName()] = spicefile.absoluteFilePath();
+    }
+}
+
+// -----------------------------------------------------------
 // update the list of paths, pruning non-existing paths
 void QucsApp::updatePathList(void)
 {
@@ -2735,7 +3012,7 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
                     }
 
                     if (dlg->isEps()) {
-                        cmd = cmd + "--export-eps=" + filename;   
+                        cmd = cmd + "--export-eps=" + filename;
                     }
 
                     int result = QProcess::execute(cmd);
