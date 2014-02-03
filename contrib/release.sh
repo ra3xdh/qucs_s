@@ -132,7 +132,7 @@ tar -zcvhf qucs-$RELEASE.tar.gz qucs-$RELEASE
 rm -rf qucs-$RELEASE
 tar -zxvf qucs-$RELEASE.tar.gz #make the symbolic links actual files
 
-DISTS="precise quantal raring saucy"
+DISTS="saucy trusty"
 cd qucs-$RELEASE
 ./configure
 cd ..

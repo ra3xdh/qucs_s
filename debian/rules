@@ -58,7 +58,7 @@ install: build
 	$(MAKE) install prefix=`pwd`/debian/qucs/usr \
 		INSTALL_PROGRAM="$(INSTALL_PROGRAM)"\
 		mandir=`pwd`/debian/qucs/usr/share/man
-	dh_install debian/qucs.desktop usr/share/applications
+	#dh_install debian/qucs.desktop usr/share/applications
 	dh_install qucs/bitmaps/big.qucs.xpm usr/share/pixmaps
 	cp $(CURDIR)/debian/qucs.lintian-overrides $(CURDIR)/debian/qucs/usr/share/lintian/overrides/qucs
 

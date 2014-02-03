@@ -1,0 +1,16 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=QucsWTF
+Comment=A Universal Circuit Simulator
+Comment[es]=Un simulador universal de circuitos
+Comment[de]=Ein universeller Schaltkreissimulator
+Comment[pt]=Simulador universal de circuitos
+Comment[fr]=Simulateur universel de circuits
+Comment[it]=Simulatore universale di circuiti
+Exec=qucs %U
+Icon=qucs
+Terminal=false
+
+Type=Application
+Categories=Education;Electronics
+StartupNotify=false
