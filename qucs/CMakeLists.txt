@@ -123,7 +123,7 @@ if(UNIX AND NOT APPLE)
     SET(ICON128 bitmaps/hicolor/128x128/apps/qucs.png )
     SET(ICON256 bitmaps/hicolor/256x256/apps/qucs.png )
     SET(ICON512 bitmaps/hicolor/512x512/apps/qucs.png )
-    SET(ICONsc bitmaps/hicolor/scalable/apps/qucs.png )
+    SET(ICONsc bitmaps/hicolor/scalable/apps/qucs.svg )
 
     INSTALL( FILES ${ICON16} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/16x16/apps)
     INSTALL( FILES ${ICON22} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/22x22/apps)
