@@ -883,7 +883,7 @@ void ComponentDialog::slotSimTypeChange(int Type)
 void ComponentDialog::slotNumberChanged(const QString&)
 {
   QString Unit, tmp;
-  double x, y, Factor, ftmp;
+  double x, y, Factor;
   if(comboType->currentItem() == 1) {   // logarithmic ?
     str2num(editStop->text(), x, Unit, Factor);
     x *= Factor;
