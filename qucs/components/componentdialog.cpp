@@ -31,7 +31,7 @@
 #include <Q3HGroupBox>
 #include <QValidator>
 #include <QTabWidget>
-#include <Q3FileDialog>
+#include <QFileDialog>
 
 #include <math.h>
 
@@ -751,13 +751,17 @@ void ComponentDialog::slotApplyInput()
 // -------------------------------------------------------------------------
 void ComponentDialog::slotBrowseFile()
 {
-  QString s = Q3FileDialog::getOpenFileName(QucsSettings.QucsWorkDir.path(),
-          tr("All Files")+" (*.*);;"+tr("Touchstone files")+" (*.s?p);;"+
-          tr("CSV files")+" (*.csv);;"+
-          tr("SPICE files")+" (*.cir *.spi);;"+
-          tr("VHDL files")+" (*.vhdl *.vhd);;"+
-          tr("Verilog files")+" (*.v)",
-          this, "", tr("Select a file"));
+  QString s = QFileDialog::getOpenFileName (
+          this,
+          tr("Select a file"),
+          QucsSettings.QucsWorkDir.path(),
+          tr("All Files")+" (*.*);;"
+            + tr("Touchstone files") + " (*.s?p);;"
+            + tr("CSV files") + " (*.csv);;"
+            + tr("SPICE files") + " (*.cir *.spi);;"
+            + tr("VHDL files") + " (*.vhdl *.vhd);;"
+            + tr("Verilog files")+" (*.v)"  );
+
   if(!s.isEmpty()) {
     // snip path if file in current directory
     QFileInfo file(s);
