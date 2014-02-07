@@ -259,10 +259,11 @@ void SpiceDialog::slotButtApply()
 // -------------------------------------------------------------------------
 void SpiceDialog::slotButtBrowse()
 {
-    QString s = Q3FileDialog::getOpenFileName(
+    QString s = QFileDialog::getOpenFileName(this,
+                    tr("Select a file"),
                     lastDir.isEmpty() ? QString(".") : lastDir,
-                    tr("SPICE netlist")+" (*.cir);;"+tr("All Files")+" (*.*)",
-                    this, "", tr("Select a file"));
+                    tr("SPICE netlist") + " (*.cir);;" + tr("All Files") + " (*.*)");
+
     if(s.isEmpty()) return;
 
     QFileInfo Info(s);
