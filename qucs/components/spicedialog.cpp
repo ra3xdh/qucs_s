@@ -40,9 +40,11 @@
 #include <QComboBox>
 
 
-SpiceDialog::SpiceDialog(SpiceFile *c, Schematic *d)
+SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
     : QDialog(d, 0, TRUE, Qt::WDestructiveClose)
 {
+    App = App_; // pointer to main application
+
     resize(400, 250);
     setCaption(tr("Edit SPICE Component Properties"));
     Comp = c;
@@ -207,7 +209,6 @@ void SpiceDialog::slotButtApply()
         }
     }
 
-
     // apply all the new property values
     Property *pp = Comp->Props.first();
     if(pp->Value != FileEdit->text())
@@ -262,7 +263,8 @@ void SpiceDialog::slotButtBrowse()
     QString s = QFileDialog::getOpenFileName(this,
                     tr("Select a file"),
                     lastDir.isEmpty() ? QString(".") : lastDir,
-                    tr("SPICE netlist") + " (*.cir);;" + tr("All Files") + " (*.*)");
+                    tr("SPICE netlist") + App->getSpiceFileFilter ()
+                        + tr("All Files") + " (*.*)");
 
     if(s.isEmpty()) return;
 

@@ -59,8 +59,9 @@
 QAction *formerAction;   // remember action before drag n'drop etc.
 
 
-MouseActions::MouseActions()
+MouseActions::MouseActions(QucsApp* App_)
 {
+  App = App_; // pointer to main app
   selElem  = 0;  // no component/diagram is selected
   isMoveEqual = false;  // mouse cursor move x and y the same way
   focusElement = 0;
@@ -1899,7 +1900,7 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
          if(c->Model == "GND") return;
 
          if(c->Model == "SPICE") {
-           SpiceDialog *sd = new SpiceDialog((SpiceFile*)c, Doc);
+           SpiceDialog *sd = new SpiceDialog(App, (SpiceFile*)c, Doc);
            if(sd->exec() != 1) break;   // dialog is WDestructiveClose
          }
          else if(c->Model == ".Opt") {

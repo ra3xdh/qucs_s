@@ -193,28 +193,16 @@ QString SpiceFile::getSubcircuitFile()
             // which case we use this one
             QFileInfo schematicFileInfo = containingSchematic->getFileInfo ();
 
-            QFileInfo localFIleInfo (schematicFileInfo.canonicalPath () + "/" + baseName + ".sp");
-            if (localFIleInfo.exists ())
+            for (int i = 0; i < QucsMain->spiceExtensions.count (); i++)
             {
-                // return the subcircuit saved in the same directory
-                // as the schematic file
-                return localFIleInfo.absoluteFilePath();
-            }
-
-            localFIleInfo = QFileInfo(schematicFileInfo.canonicalPath () + "/" + baseName + ".cir");
-            if (localFIleInfo.exists ())
-            {
-                // return the subcircuit saved in the same directory
-                // as the schematic file
-                return localFIleInfo.absoluteFilePath();
-            }
-
-            localFIleInfo = QFileInfo(schematicFileInfo.canonicalPath () + "/" + baseName + ".spc");
-            if (localFIleInfo.exists ())
-            {
-                // return the subcircuit saved in the same directory
-                // as the schematic file
-                return localFIleInfo.absoluteFilePath();
+                QFileInfo localFIleInfo (schematicFileInfo.canonicalPath ()
+                                         + "/" + baseName + QucsMain->spiceExtensions[i]);
+                if (localFIleInfo.exists ())
+                {
+                    // return the subcircuit saved in the same directory
+                    // as the schematic file
+                    return localFIleInfo.absoluteFilePath();
+                }
             }
         }
     }

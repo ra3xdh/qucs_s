@@ -36,14 +36,14 @@ class Q3VBoxLayout;
 class QProcess;
 class QRegExpValidator;
 class QComboBox;
-
+class QucsApp;
 
 
 
 class SpiceDialog : public QDialog {
    Q_OBJECT
 public:
-  SpiceDialog(SpiceFile*, Schematic*);
+  SpiceDialog(QucsApp*, SpiceFile*, Schematic*);
  ~SpiceDialog();
 
 private slots:
@@ -90,6 +90,8 @@ private:
   QProcess *QucsConv, *SpicePrep;
   QString Line, Error;  // to store the text read from QucsConv
   int textStatus; // to store with text data QucsConv will sent next
+
+  QucsApp* App;
 };
 
 #endif

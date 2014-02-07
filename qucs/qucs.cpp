@@ -95,14 +95,17 @@ QucsApp::QucsApp()
 {
   setCaption("Qucs " PACKAGE_VERSION);
 
+  spiceExtensions << "*.sp" << "*.cir" << "*.spc" << "*.spi";
+
   QucsFileFilter =
-    tr("Schematic")+" (*.sch);;"+
-    tr("Data Display")+" (*.dpl);;"+
-    tr("Qucs Documents")+" (*.sch *.dpl);;"+
-    tr("VHDL Sources")+" (*.vhdl *.vhd);;"+
-    tr("Verilog Sources")+" (*.v);;"+
-    tr("Verilog-A Sources")+" (*.va);;"+
-    tr("Octave Scripts")+" (*.m *.oct);;"+
+    tr("Schematic") + " (*.sch);;" +
+    tr("Data Display") + " (*.dpl);;" +
+    tr("Qucs Documents") + " (*.sch *.dpl);;" +
+    tr("VHDL Sources") + " (*.vhdl *.vhd);;" +
+    tr("Verilog Sources") + " (*.v);;" +
+    tr("Verilog-A Sources") + " (*.va);;" +
+    tr("Octave Scripts") + " (*.m *.oct);;" +
+    tr("Spice Files") + getSpiceFileFilter() +
     tr("Any File")+" (*)";
   //QucsSettings.QucsWorkDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   //QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
@@ -235,7 +238,7 @@ void QucsApp::initView()
 
   connect(dock, SIGNAL(visibilityChanged(bool)), SLOT(slotToggleDock(bool)));
 
-  view = new MouseActions();
+  view = new MouseActions(this);
 
   editText = new QLineEdit(this);  // for editing component properties
   editText->setFrame(false);
@@ -438,7 +441,9 @@ void QucsApp::fillLibrariesTreeView ()
                   "</Components>\n";
 
             compNameAndDefinition.append (s);
-
+            // The following may produce a warning from the compiler about
+            // unused variable newcompitem, ignore it, we pass the pointer
+            // to the parent item in the constructor
             QTreeWidgetItem* newcompitem = new QTreeWidgetItem(newlibitem, compNameAndDefinition);
         }
 
@@ -501,7 +506,9 @@ void QucsApp::fillLibrariesTreeView ()
                           "</Components>\n";
 
                     compNameAndDefinition.append (s);
-
+                    // The following may produce a warning from the compiler about
+                    // unused variable newcompitem, ignore it, we pass the pointer
+                    // to the parent item in the constructor
                     QTreeWidgetItem* newcompitem = new QTreeWidgetItem(newlibitem, compNameAndDefinition);
                 }
 
@@ -2177,7 +2184,6 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
     sim->slotClose();   // close and delete simulation window
     if(w) {  // schematic still open ?
       SweepDialog *Dia = new SweepDialog((Schematic*)sim->DocWidget);
-
     }
   }
   else {
@@ -2801,6 +2807,23 @@ void QucsApp::updateSchNameHash(void)
     }
 }
 
+// --------------------------------------------------------
+// Produces a name filter suitible for file dialogs from the
+// list of recognised spice extensions
+QString QucsApp::getSpiceFileFilter (void)
+{
+    QString spexts = " (";
+
+    for (int i = 0; i < spiceExtensions.count (); i++)
+    {
+        spexts += "*" + spiceExtensions[i] + " ";
+    }
+
+    spexts += ");;";
+
+    return spexts;
+}
+
 // -----------------------------------------------------------
 // Searches the qucs path list for all spice files and creates
 // a hash for lookup later
@@ -2810,14 +2833,12 @@ void QucsApp::updateSpiceNameHash(void)
     // removes nonexisting entries
     updatePathList();
 
-    // now go through the paths creating a map to all the schematic files
+    // now go through the paths creating a map to all the spice files
     // found in the directories. Note that we go through the list of paths from
-    // first index to last index. Since keys are unique it means schematic files
+    // first index to last index. Since keys are unique it means spice files
     // in directories at the end of the list take precendence over those at the
-    // start of the list, we should warn about shadowing of schematic files in
+    // start of the list, we should warn about shadowing of spice files in
     // this way in the future
-    QStringList nameFilter;
-    nameFilter << "*.sp" << "*.cir" << "*.spc";
 
     // clear out any existing hash table entriess
     spiceNameHash.clear();
@@ -2825,7 +2846,7 @@ void QucsApp::updateSpiceNameHash(void)
     foreach (QString qucspath, qucsPathList) {
         QDir thispath(qucspath);
         // get all the schematic files in the directory
-        QFileInfoList spicefilesList = thispath.entryInfoList( nameFilter, QDir::Files );
+        QFileInfoList spicefilesList = thispath.entryInfoList( spiceExtensions, QDir::Files );
         // put each one in the hash table with the unique key the base name of
         // the file, note this will overwrite the value if the key already exists
         foreach (QFileInfo spicefile, spicefilesList) {
@@ -2836,7 +2857,7 @@ void QucsApp::updateSpiceNameHash(void)
 
     // finally check the home/working directory
     QDir thispath(QucsSettings.QucsWorkDir);
-    QFileInfoList spicefilesList = thispath.entryInfoList( nameFilter, QDir::Files );
+    QFileInfoList spicefilesList = thispath.entryInfoList( spiceExtensions, QDir::Files );
     // put each one in the hash table with the unique key the base name of
     // the file, note this will overwrite the value if the key already exists
     foreach (QFileInfo spicefile, spicefilesList) {
