@@ -31,7 +31,7 @@
 #include <Q3VBox>
 #include <QLineEdit>
 #include <QValidator>
-#include <Q3FileDialog>
+#include <QFileDialog>
 #include <QPushButton>
 #include <Q3ListBox>
 #include <QCheckBox>
