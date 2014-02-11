@@ -38,6 +38,7 @@ ADD_SUBDIRECTORY( qucs-help )
 ADD_SUBDIRECTORY( qucs-lib )
 ADD_SUBDIRECTORY( qucs-transcalc )
 #ADD_SUBDIRECTORY( examples )
+ADD_SUBDIRECTORY( contrib )
 
 
 
