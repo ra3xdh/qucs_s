@@ -27,13 +27,15 @@ Switch::Switch()
   Props.append(new Property("init", "off", false,
 		QObject::tr("initial state")+" [on, off]"));
   Props.append(new Property("time", "1 ms", false,
-		QObject::tr("time when state changes (semicolon separated list possible)")));
+		QObject::tr("time when state changes (semicolon separated list possible, even numbered lists are repeated)")));
   Props.append(new Property("Ron", "0", false,
 		QObject::tr("resistance of \"on\" state in ohms")));
-  Props.append(new Property("Roff", "1e9", false,
+  Props.append(new Property("Roff", "1e12", false,
 		QObject::tr("resistance of \"off\" state in ohms")));
   Props.append(new Property("Temp", "26.85", false,
 		QObject::tr("simulation temperature in degree Celsius")));
+  Props.append(new Property("MaxDuration", "1e-6", false,
+		QObject::tr("Max possible switch transition time (transition time 1/100 smallest value in 'time', or this number)")));
 
   createSymbol();
   tx = x1+4;

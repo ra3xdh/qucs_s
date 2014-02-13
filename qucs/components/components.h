@@ -160,6 +160,7 @@
 #include "photodiode.h"
 #include "phototransistor.h"
 #include "nigbt.h"
+#include "vcresistor.h"
 
 #include "dff_SR.h"
 #include "tff_SR.h"
