@@ -480,6 +480,8 @@
 		<Unit filename="qucs/components/vafile.h" />
 		<Unit filename="qucs/components/vccs.cpp" />
 		<Unit filename="qucs/components/vccs.h" />
+		<Unit filename="qucs/components/vcresistor.cpp" />
+		<Unit filename="qucs/components/vcresistor.h" />
 		<Unit filename="qucs/components/vcvs.cpp" />
 		<Unit filename="qucs/components/vcvs.h" />
 		<Unit filename="qucs/components/verilogfile.cpp" />
