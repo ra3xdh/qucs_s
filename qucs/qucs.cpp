@@ -229,6 +229,10 @@ void QucsApp::initView()
   DocumentTab->setTabsClosable(true);
   connect(DocumentTab,
           SIGNAL(tabCloseRequested(int)), SLOT(slotFileClose(int)));
+#ifdef HAVE_QTABWIDGET_SETMOVABLE
+  // make tabs draggable if supported
+  DocumentTab->setMovable (true);
+#endif
 
   //dock = new VTabbedDockWidget(Q3DockWindow::InDock, this);
   dock = new QDockWidget(this);

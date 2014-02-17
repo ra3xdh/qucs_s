@@ -297,6 +297,9 @@ case $host_os in
     ;;
 esac
 
+dnl check for Qt moveable tabwidgets (introduced in Qt 4.5)
+QUCS_CHECK_FUNC_QTABWIDGET_SETMOVABLE
+
 dnl append -O0 to CXXFLAGS if in debug mode and using gcc
 dnl to assist with debugging by preventing optimisation.
 dnl gcc will use the final invocation of -OX and ignore earlier
