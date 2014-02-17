@@ -30,6 +30,7 @@
 		<Unit filename="debian/changelog" />
 		<Unit filename="examples/Makefile.am" />
 		<Unit filename="examples/configure.ac" />
+		<Unit filename="m4/qt_features.m4" />
 		<Unit filename="qucs-attenuator/Makefile.am" />
 		<Unit filename="qucs-attenuator/attenuatorfunc.cpp" />
 		<Unit filename="qucs-attenuator/attenuatorfunc.h" />
