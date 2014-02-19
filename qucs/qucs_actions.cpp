@@ -1359,3 +1359,8 @@ void QucsApp::slotClearRecentFiles()
     QucsSettings.RecentDocs.clear();
     slotUpdateRecentFiles();
 }
+
+void QucsApp::slotLoadModule()
+{
+    qDebug() << "slotLoadModule";
+}

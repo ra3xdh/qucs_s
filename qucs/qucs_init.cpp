@@ -386,6 +386,10 @@ void QucsApp::initActions()
 	tr("Export to CSV\n\nConvert graph data to CSV file"));
   connect(graph2csv, SIGNAL(activated()), SLOT(slotExportGraphAsCsv()));
 
+  loadModule = new QAction(tr("Load VA module..."), this);
+  //
+  connect(loadModule, SIGNAL(activated()), SLOT(slotLoadModule()));
+
   magAll = new QAction(QIcon((":/bitmaps/viewmagfit.png")), tr("View All"), this);
   magAll->setShortcut(Qt::Key_0);
   magAll->setStatusTip(tr("Show the whole page"));
@@ -754,6 +758,8 @@ void QucsApp::initMenuBar()
   projMenu->insertSeparator();
   importData->addTo(projMenu);
   graph2csv->addTo(projMenu);
+  projMenu->insertSeparator();
+  loadModule->addTo(projMenu);
 
   toolMenu = new QMenu(tr("&Tools"));  // menuBar entry toolMenu
   toolMenu->addAction(callEditor);
