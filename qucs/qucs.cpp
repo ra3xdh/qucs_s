@@ -452,7 +452,7 @@ void QucsApp::fillLibrariesTreeView ()
     newitem->setFont (0, sectionFont);
     topitems.append (newitem);
 
-    QDir UserLibDir = QDir (QucsSettings.QucsHomeDir.canonicalPath () + "/user_lib");
+    QDir UserLibDir = QDir (QucsSettings.QucsHomeDir.canonicalPath () + "/user_lib/");
 
     // if there are user libraries, add them too
     if(UserLibDir.exists ())
@@ -469,17 +469,17 @@ void QucsApp::fillLibrariesTreeView ()
             {
                 ComponentLibrary parsedlibrary;
 
-                int result = parseComponentLibrary (QucsSettings.LibDir + *it , parsedlibrary);
+                int result = parseComponentLibrary (UserLibDir.absolutePath() +"/"+ *it , parsedlibrary);
                 QStringList nameAndFileName;
                 nameAndFileName.append (parsedlibrary.name);
-                nameAndFileName.append (QucsSettings.LibDir + *it);
+                nameAndFileName.append (UserLibDir.absolutePath() +"/"+ *it);
 
                 QTreeWidgetItem* newlibitem = new QTreeWidgetItem((QTreeWidget*)0, nameAndFileName);
 
                 switch (result)
                 {
                     case QUCS_COMP_LIB_IO_ERROR:
-                        QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (*it));
+                        QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (UserLibDir.absolutePath()+"/" +*it));
                         return;
                     case QUCS_COMP_LIB_CORRUPT:
                         QMessageBox::critical(0, tr("Error"), tr("Library is corrupt."));
