@@ -186,12 +186,27 @@ QString GraphicText::saveCpp()
   QString t = Text;
   convert2ASCII(t);
 
-  QString s = 
+  QString s =
     QString ("new Text (%1, %2, \"%3\", QColor (\"%4\"), %5, %6, %7)").
     arg(cx).arg(cy).arg(t).
     arg(Color.name()).arg(Font.pointSize()).
     arg(cos(M_PI * Angle / 180.0)).arg(sin(M_PI * Angle / 180.0));
   s = "Texts.append (" + s + ");";
+  return s;
+}
+
+QString GraphicText::saveJSON()
+{
+  QString t = Text;
+  convert2ASCII(t);
+
+  QString s =
+    QString ("{\"type\" : \"graphictext\", "
+      "\"x\" : %1, \"y\" : %2, \"s\" : \"%3\", "
+      "\"color\" : \"%4\", \"size\" : %5, \"cos\" : %6, \"sin\" : %7},").
+      arg(cx).arg(cy).arg(t).
+      arg(Color.name()).arg(Font.pointSize()).
+      arg(cos(M_PI * Angle / 180.0)).arg(sin(M_PI * Angle / 180.0));
   return s;
 }
 

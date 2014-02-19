@@ -162,10 +162,17 @@ QString PortSymbol::save()
 // --------------------------------------------------------------------------
 QString PortSymbol::saveCpp()
 {
-  QString s = 
+  QString s =
     QString ("new Port (%1, %2)").
     arg(cx).arg(cy);
   s = "Ports.append (" + s + "); /* " + nameStr + " */";
+  return s;
+}
+
+QString PortSymbol::saveJSON()
+{
+  QString s = QString ("{\"type\" : \"portsymbol\", "
+                       "\"x\" : %1, \"y\" : %2},").arg(cx).arg(cy);
   return s;
 }
 

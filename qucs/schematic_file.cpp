@@ -249,6 +249,88 @@ int Schematic::saveSymbolCpp (void)
   return 0;
 }
 
+// save symbol paintings in JSON format
+int Schematic::saveSymbolJSON()
+{
+  qDebug() << "saveSymbolJson";
+
+  QFileInfo info (DocName);
+  QString jsonfile = info.dirPath () + QDir::separator() + "symbol.json";
+  QFile file (jsonfile);
+
+  if (!file.open (QIODevice::WriteOnly)) {
+    QMessageBox::critical (0, QObject::tr("Error"),
+		   QObject::tr("Cannot save JSON symbol file \"%1\"!").arg(jsonfile));
+    return -1;
+  }
+
+  Q3TextStream stream (&file);
+
+  // automatically compute boundings of drawing
+  int xmin = INT_MAX;
+  int ymin = INT_MAX;
+  int xmax = INT_MIN;
+  int ymax = INT_MIN;
+  int x1, y1, x2, y2;
+  int maxNum = 0;
+  Painting * pp;
+
+  stream << "{\n";
+
+  stream << "\"paintings\" : [\n";
+
+  // symbol drawing code"
+  for (pp = SymbolPaints.first (); pp != 0; pp = SymbolPaints.next ()) {
+    if (pp->Name == ".ID ") continue;
+    if (pp->Name == ".PortSym ") {
+      if (((PortSymbol*)pp)->numberStr.toInt() > maxNum)
+	maxNum = ((PortSymbol*)pp)->numberStr.toInt();
+      x1 = ((PortSymbol*)pp)->cx;
+      y1 = ((PortSymbol*)pp)->cy;
+      if (x1 < xmin) xmin = x1;
+      if (x1 > xmax) xmax = x1;
+      if (y1 < ymin) ymin = y1;
+      if (y1 > ymax) ymax = y1;
+      continue;
+    }
+    pp->Bounding (x1, y1, x2, y2);
+    if (x1 < xmin) xmin = x1;
+    if (x2 > xmax) xmax = x2;
+    if (y1 < ymin) ymin = y1;
+    if (y2 > ymax) ymax = y2;
+    stream << "  " << pp->saveJSON() << "\n";
+  }
+
+  // terminal definitions
+  //stream << "terminal \n";
+  for (int i = 1; i <= maxNum; i++) {
+    for (pp = SymbolPaints.first (); pp != 0; pp = SymbolPaints.next ()) {
+      if (pp->Name == ".PortSym ")
+	if (((PortSymbol*)pp)->numberStr.toInt() == i)
+	  stream << "  " << pp->saveJSON () << "\n";
+    }
+  }
+
+  stream << "],\n"; //end of paintings JSON array
+
+  // symbol boundings
+  stream
+    << "  \"x1\" : " << xmin << ",\n" << "  \"y1\" : " << ymin << ",\n"
+    << "  \"x2\" : " << xmax << ",\n" << "  \"y2\" : " << ymax << ",\n";
+
+  // property text position
+  for (pp = SymbolPaints.first (); pp != 0; pp = SymbolPaints.next ())
+    if (pp->Name == ".ID ")
+      stream << "  " << pp->saveJSON () << "\n";
+
+  stream << "}\n";
+
+  file.close ();
+  return 0;
+
+
+}
+
 // -------------------------------------------------------------
 // Returns the number of subcircuit ports.
 int Schematic::saveDocument()
@@ -332,6 +414,7 @@ int Schematic::saveDocument()
   if (fileSuffix () == "sym") {
     if (fileSuffix (DataDisplay) == "va") {
       saveSymbolCpp ();
+      saveSymbolJSON ();
     }
   }
 

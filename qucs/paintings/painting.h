@@ -36,6 +36,7 @@ public:
   virtual bool load(const QString&) { return true; };
   virtual QString save();
   virtual QString saveCpp();
+  virtual QString saveJSON();
   virtual void paint(ViewPainter*) {};
   virtual void MouseMoving(Schematic*, int, int, int, int,
                            Schematic*, int, int, bool) {};

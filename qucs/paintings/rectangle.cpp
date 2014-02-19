@@ -184,13 +184,29 @@ QString Rectangle::saveCpp()
   QString b = filled ?
     QString (", QBrush (QColor (\"%1\"), %2)").
     arg(Brush.color().name()).arg(toBrushString(Brush.style())) : "";
-  QString s = 
+  QString s =
     QString ("new Area (%1, %2, %3, %4, "
 	     "QPen (QColor (\"%5\"), %6, %7)%8)").
     arg(cx).arg(cy).arg(x2).arg(y2).
     arg(Pen.color().name()).arg(Pen.width()).arg(toPenString(Pen.style())).
     arg(b);
   s = "Rects.append (" + s + ");";
+  return s;
+}
+
+QString Rectangle::saveJSON()
+{
+  QString b = filled ?
+    QString ("\"colorfill\" : \"%1\", \"stylefill\" : \"%2\"").
+    arg(Brush.color().name()).arg(toBrushString(Brush.style())) : "";
+
+  QString s =
+    QString("{\"type\" : \"rectangle\", "
+      "\"x\" : %1, \"y\" : %2, \"w\" : %3, \"h\" : %4, "
+      "\"color\" : \"%5\", \"thick\" : %6, \"style\" : \"%7\", %8},").
+      arg(cx).arg(cy).arg(x2).arg(y2).
+      arg(Pen.color().name()).arg(Pen.width()).arg(toPenString(Pen.style())).
+      arg(b);
   return s;
 }
 

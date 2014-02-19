@@ -104,6 +104,7 @@ public:
   bool    load();
   int     save();
   int     saveSymbolCpp (void);
+  int     saveSymbolJSON (void);
   void    becomeCurrent(bool);
   bool    undo();
   bool    redo();

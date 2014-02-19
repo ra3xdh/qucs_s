@@ -46,6 +46,11 @@ QString Painting::saveCpp()
   return QString();
 }
 
+QString Painting::saveJSON()
+{
+  return QString();
+}
+
 QString Painting::toPenString (int pen) {
   switch (pen) {
   case Qt::NoPen: return "Qt::NoPen";

@@ -142,9 +142,15 @@ QString ID_Text::save()
 // --------------------------------------------------------------------------
 QString ID_Text::saveCpp()
 {
-  QString s = 
+  QString s =
     QString ("tx = %1; ty = %2;").
     arg(cx).arg(cy);
+  return s;
+}
+
+QString ID_Text::saveJSON()
+{
+  QString s =  QString ("\"tx\" : %1,\n  \"ty\" : %2,").arg(cx).arg(cy);
   return s;
 }
 

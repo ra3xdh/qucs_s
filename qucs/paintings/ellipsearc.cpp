@@ -100,7 +100,7 @@ bool EllipseArc::load(const QString& s)
 {
   bool ok;
   QString n;
-  
+
   n  = s.section(' ',1,1);    // cx
   cx = n.toInt(&ok);
   if(!ok) return false;
@@ -157,12 +157,24 @@ QString EllipseArc::save()
 // --------------------------------------------------------------------------
 QString EllipseArc::saveCpp()
 {
-  QString s = 
+  QString s =
     QString ("new Arc (%1, %2, %3, %4, %5, %6, "
-	     "QPen (QColor (\"%7\"), %8, %8))").
+	     "QPen (QColor (\"%7\"), %8, %9))").
     arg(cx).arg(cy).arg(x2).arg(y2).arg(Angle).arg(ArcLen).
     arg(Pen.color().name()).arg(Pen.width()).arg(toPenString(Pen.style()));
   s = "Arcs.append (" + s + ");";
+  return s;
+}
+
+QString EllipseArc::saveJSON()
+{
+  QString s =
+    QString ("{\"type\" : \"ellipsearc\", "
+      "\"x\" : %1, \"y\" : %2, \"w\" : %3, \"h\" : %4, "
+      "\"angle\" : %5, \"arclen\" : %6, "
+      "\"color\" : \"%7\", \"thick\" : %8, \"style\" : \"%9\"},").
+      arg(cx).arg(cy).arg(x2).arg(y2).arg(Angle).arg(ArcLen).
+      arg(Pen.color().name()).arg(Pen.width()).arg(toPenString(Pen.style()));
   return s;
 }
 

@@ -35,6 +35,7 @@ public:
   bool load(const QString&);
   QString save();
   QString saveCpp();
+  QString saveJSON();
   void paint(ViewPainter*);
   void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int, bool);
   bool MousePressing();

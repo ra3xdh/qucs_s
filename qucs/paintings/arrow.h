@@ -38,6 +38,7 @@ public:
   bool load(const QString&);
   QString save();
   QString saveCpp();
+  QString saveJSON();
   void MouseMoving(Schematic*, int, int, int, int, Schematic*, int, int, bool);
   bool MousePressing();
   bool getSelected(float, float, float);
@@ -51,7 +52,7 @@ public:
   bool Dialog();
 
   void calcArrowHead();
-  
+
   QPen   Pen;
   int    Style;
   double Height, Width;  // size of the arrow head

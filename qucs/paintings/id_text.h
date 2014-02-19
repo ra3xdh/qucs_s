@@ -47,6 +47,7 @@ public:
   bool load(const QString&);
   QString save();
   QString saveCpp();
+  QString saveJSON();
   void paint(ViewPainter*);
   bool getSelected(float, float, float);
 
