@@ -84,6 +84,14 @@ Component * Module::getComponent (QString Model) {
   return 0;
 }
 
+void Module::registerDynamicComponents()
+{
+    qDebug() << "Module::registerDynamicComponents()";
+
+
+
+}
+
 // The function appends the given module to the appropriate category.
 // If there is no such category yet, then the category gets created.
 void Module::intoCategory (Module * m) {

@@ -38,6 +38,7 @@
 #include "dialogs/librarydialog.h"
 #include "dialogs/importdialog.h"
 #include "dialogs/packagedialog.h"
+#include "module.h"
 
 // for editing component name on schematic
 QRegExp  Expr_CompProp;
@@ -1363,4 +1364,5 @@ void QucsApp::slotClearRecentFiles()
 void QucsApp::slotLoadModule()
 {
     qDebug() << "slotLoadModule";
+    Module::registerDynamicComponents();
 }
