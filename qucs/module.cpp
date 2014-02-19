@@ -293,6 +293,7 @@ void Module::registerModules (void) {
   REGISTER_VERILOGA_1 (photodiode);
   REGISTER_VERILOGA_1 (phototransistor);
   REGISTER_VERILOGA_1 (nigbt);
+  REGISTER_VERILOGA_1 (vcresistor);
 
   // digital components
   REGISTER_DIGITAL_1 (Digi_Source);

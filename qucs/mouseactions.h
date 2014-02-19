@@ -31,13 +31,14 @@ class Schematic;
 class QPainter;
 class Q3PopupMenu;
 class QMouseEvent;
+class QucsApp;
 
 extern QAction *formerAction;
 
 
 class MouseActions {
 public:
-  MouseActions();
+  MouseActions(QucsApp*);
   virtual ~MouseActions();
 
   void setPainter(Schematic*);
@@ -59,6 +60,7 @@ public:
 
 private:
   bool isMoveEqual;
+  QucsApp* App;
 
   // -------------------------------------------------------------------
 public:

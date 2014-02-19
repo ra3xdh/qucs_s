@@ -30,6 +30,7 @@
 		<Unit filename="debian/changelog" />
 		<Unit filename="examples/Makefile.am" />
 		<Unit filename="examples/configure.ac" />
+		<Unit filename="m4/qt_features.m4" />
 		<Unit filename="qucs-attenuator/Makefile.am" />
 		<Unit filename="qucs-attenuator/attenuatorfunc.cpp" />
 		<Unit filename="qucs-attenuator/attenuatorfunc.h" />
@@ -480,6 +481,8 @@
 		<Unit filename="qucs/components/vafile.h" />
 		<Unit filename="qucs/components/vccs.cpp" />
 		<Unit filename="qucs/components/vccs.h" />
+		<Unit filename="qucs/components/vcresistor.cpp" />
+		<Unit filename="qucs/components/vcresistor.h" />
 		<Unit filename="qucs/components/vcvs.cpp" />
 		<Unit filename="qucs/components/vcvs.h" />
 		<Unit filename="qucs/components/verilogfile.cpp" />

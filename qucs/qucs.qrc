@@ -231,5 +231,6 @@
         <file>bitmaps/ysmith.png</file>
         <file>bitmaps/etran.png</file>
         <file>bitmaps/ecvs.png</file>
+        <file>bitmaps/vcresistor.png</file>
     </qresource>
 </RCC>

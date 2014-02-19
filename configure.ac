@@ -128,7 +128,7 @@ if test x$LINUX == "xyes"; then
 fi
 
 case $host_os in
-  *linux* | *cygwin* | *mingw* )
+  *linux* | *cygwin* | *mingw* | *bsd* )
     dnl Yet another compiler check.
     if test "x$GCC" = xyes; then
       CFLAGS="$CFLAGS -pipe"
@@ -182,7 +182,7 @@ case $host_os in
       QT_INC="$QT_DEF -DQT3_SUPPORT -DQT_THREAD_SUPPORT -D_REENTRANT"
       [case $host_os in
         *freebsd4*) QT_LIB="$QT_LIB -pthread" ;;
-        *freebsd[567]*) QT_LIB="$QT_LIB -lpthread" ;;
+        *freebsd*) QT_LIB="$QT_LIB -lpthread" ;;
         *mingw*) QT_INC="$QT_INC -mthreads"; QT_LDF="$QT_LDF -mthreads" ;;
       esac]
       QT_MTS="multi-threaded"
@@ -214,7 +214,7 @@ case $host_os in
     AC_MSG_CHECKING([for Qt library])
     paths="$QTDIR/lib $QTDIR/lib64 /usr/local/qt4/lib /usr/lib/qt4 /usr/lib/qt4/Qtconf /usr/lib \
       /usr/X11R6/lib/X11/qt4 /usr/X11R6/lib/X11/qt4 /usr/X11R6/lib/qt4 \
-      /usr/X11R6/lib /sw/lib /usr/lib64/qt4 /usr/X11R6/lib/qt4"
+      /usr/X11R6/lib /sw/lib /usr/lib64/qt4 /usr/X11R6/lib/qt4 $prefix/lib/qt4"
     AC_LANG(C++)
     for path in $paths; do
       save_LIBS="$LIBS"
@@ -223,14 +223,16 @@ case $host_os in
       LIBS="$LIBS $X11_LIBS $QT_LIB"
       LDFLAGS="$LDFLAGS $X11_LDFLAGS -L$path $QT_LDF"
       CXXFLAGS="$CXXFLAGS $X11_INCLUDES $QT_INCLUDES $QT_INC"
-#  AC_LINK_IFELSE(
-#    [#include <Qt/qapplication.h>
-#     int main (int argc, char ** argv) {
-#     QApplication a (argc, argv); a.exec (); return 0; }],
-#    [
-      QT_LDFLAGS="$path";
-        QT_INCLUDES="$QT_INCLUDES $QT_INC";
-        break;#])
+      AC_LINK_IFELSE(
+          [AC_LANG_SOURCE([#include <Qt/qapplication.h>
+                           int main (int argc, char ** argv) {
+                           QApplication a (argc, argv); a.exec (); return 0; }])],
+                           [
+                                 QT_LDFLAGS="$path";
+                                 QT_INCLUDES="$QT_INCLUDES $QT_INC";
+                                 break;
+                           ]
+      )
       LIBS="$save_LIBS"
       LDFLAGS="$save_LDFLAGS"
       CXXFLAGS="$save_CXXFLAGS"
@@ -296,6 +298,9 @@ case $host_os in
     CXXFLAGS="$CXXFLAGS $QT_CFLAGS $QT_DEF"
     ;;
 esac
+
+dnl check for Qt moveable tabwidgets (introduced in Qt 4.5)
+QUCS_CHECK_FUNC_QTABWIDGET_SETMOVABLE
 
 dnl append -O0 to CXXFLAGS if in debug mode and using gcc
 dnl to assist with debugging by preventing optimisation.

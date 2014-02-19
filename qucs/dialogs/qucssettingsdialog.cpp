@@ -725,7 +725,7 @@ void QucsSettingsDialog::slotAddPathWithSubFolders()
             path = pathIter.next();
             pathfinfo = pathIter.fileInfo();
 
-            if (pathfinfo.isDir() & !pathfinfo.isSymLink() & !path.endsWith("."))
+            if (pathfinfo.isDir() && !pathfinfo.isSymLink() && !path.endsWith("."))
             {
                 QDir thispath(path);
                 currentPaths.append(thispath.canonicalPath());

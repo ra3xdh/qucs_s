@@ -26,7 +26,7 @@ here=`pwd`
 cd `dirname $0`
 
 echo -n "Creating aclocal.m4... "
-${ACLOCAL:-aclocal}
+${ACLOCAL:-aclocal} -I m4
 echo "done."
 echo -n "Creating config.h.in... "
 autoheader
