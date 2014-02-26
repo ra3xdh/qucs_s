@@ -270,7 +270,7 @@ void Ellipse::MouseMoving(
   else { x2 = gx; y2 = gy; }
 
 
-  #warning p->setPen(Qt::SolidLine);
+  // FIXME #warning p->setPen(Qt::SolidLine);
   if(drawn) {
     p->PostPaintEvent(_Ellipse, cx+13, cy, 18, 12,0,0,true);  // erase old cursor symbol
     if(filled) {

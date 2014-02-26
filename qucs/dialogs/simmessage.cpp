@@ -195,7 +195,7 @@ void SimMessage::nextSPICE()
       startSimulator(); // <<<<<================== go on ===
       return;
     }
-#warning SPICE section below not being covered?
+// FIXME #warning SPICE section below not being covered?
     qDebug() << "goin thru SPICE branch on simmmessage.cpp";
     if(Line.left(5) == "SPICE") {
       if(Line.at(5) != 'o') insertSim = true;

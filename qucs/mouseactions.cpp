@@ -526,13 +526,13 @@ void MouseActions::MMoveScrollBar(Schematic *Doc, QMouseEvent *Event)
   if(d->scrollTo(MAx2, x - MAx1, y - MAy1)) {
     Doc->setChanged(true, true, 'm'); // 'm' = only the first time
 
-#warning QPainter p(Doc->viewport());
-    #warning ViewPainter Painter;
-    #warning Painter.init(&p, Doc->Scale, -Doc->ViewX1, -Doc->ViewY1,
-#warning                  Doc->contentsX(), Doc->contentsY());
-#warning     Painter.fillRect(d->cx-d->x1, d->cy-d->y2, d->x2+d->x1, d->y2+d->y1,
-#warning                      QucsSettings.BGColor);
-#warning     d->paint(&Painter);
+// FIXME #warning QPainter p(Doc->viewport());
+    // FIXME #warning ViewPainter Painter;
+    // FIXME #warning Painter.init(&p, Doc->Scale, -Doc->ViewX1, -Doc->ViewY1,
+// FIXME #warning                  Doc->contentsX(), Doc->contentsY());
+// FIXME #warning     Painter.fillRect(d->cx-d->x1, d->cy-d->y2, d->x2+d->x1, d->y2+d->y1,
+// FIXME #warning                      QucsSettings.BGColor);
+// FIXME #warning     d->paint(&Painter);
   }
 }
 

@@ -99,7 +99,7 @@ int main (int argc, char * argv []) {
     Q3TextStream s (buf, QIODevice::ReadWrite);
 
     compute_lumped (spec_p, s);
-#warning s. device () -> flush ();
+// FIXME #warning s. device () -> flush ();
 
     QClipboard *cb = QApplication::clipboard();
     cb->setText(buf);

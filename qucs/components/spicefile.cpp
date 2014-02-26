@@ -437,7 +437,7 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
   }
   (*outstream) << NetText;
   (*filstream) << NetText;
-#warning QucsConv->closeStdin();
+// FIXME #warning QucsConv->closeStdin();
 
   // waiting info dialog box
   QMessageBox *MBox = new QMessageBox(QObject::tr("Info"),

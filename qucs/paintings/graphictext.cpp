@@ -86,15 +86,15 @@ void GraphicText::paint(ViewPainter *p)
 // -----------------------------------------------------------------------
 void GraphicText::paintScheme(Schematic *p)
 {
-  #warning QMatrix wm = p->worldMatrix();
-  #warning QMatrix Mat (wm.m11(), 0.0, 0.0, wm.m22(),
-#warning 		wm.dx() + double(cx) * wm.m11(),
-#warning 		wm.dy() + double(cy) * wm.m22());
-  #warning p->setWorldMatrix(Mat);
-  #warning p->rotate(-Angle);
+  // FIXME #warning QMatrix wm = p->worldMatrix();
+  // FIXME #warning QMatrix Mat (wm.m11(), 0.0, 0.0, wm.m22(),
+// FIXME #warning 		wm.dx() + double(cx) * wm.m11(),
+// FIXME #warning 		wm.dy() + double(cy) * wm.m22());
+  // FIXME #warning p->setWorldMatrix(Mat);
+  // FIXME #warning p->rotate(-Angle);
   p->PostPaintEvent(_Rect, 0, 0, x2, y2);
 
-  #warning p->setWorldMatrix(wm);
+  // FIXME #warning p->setWorldMatrix(wm);
 }
 
 // ------------------------------------------------------------------------
@@ -217,7 +217,7 @@ void GraphicText::MouseMoving(
 	Schematic*, int, int, int gx, int gy,
 	Schematic *p, int x, int y, bool drawn)
 {
-  #warning p->setPen(Qt::SolidLine);
+  // FIXME #warning p->setPen(Qt::SolidLine);
   if(drawn) {
     p->PostPaintEvent(_Line, x1+15, y1+15, x1+20, y1,0,0,true);  // erase old cursor symbol
     p->PostPaintEvent(_Line, x1+26, y1+15, x1+21, y1,0,0,true);
@@ -352,7 +352,7 @@ bool GraphicText::Dialog()
       changed = true;
     }
   QFontMetrics  m(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
-#warning is this the right way? it was this: QFontMetrics  m(f);
+// FIXME #warning is this the right way? it was this: QFontMetrics  m(f);
   QSize s = m.size(0, Text);    // get size of text
   x2 = s.width();
   y2 = s.height();

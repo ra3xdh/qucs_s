@@ -218,7 +218,7 @@ void GraphicLine::MouseMoving(
   else { cx = gx; cy = gy; }
 
 
-  #warning p->setPen(Qt::SolidLine);
+  // FIXME #warning p->setPen(Qt::SolidLine);
   if(drawn) {
     p->PostPaintEvent(_Line, x1+27, y1, x1+15, y1+12,0,0,true);  // erase old cursor symbol
     p->PostPaintEvent(_Line, x1+25, y1-2, x1+29, y1+2,0,0,true);

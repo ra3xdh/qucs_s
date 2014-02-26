@@ -122,7 +122,7 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
     viewport()->setPaletteBackgroundColor(QucsSettings.BGColor);
     viewport()->setMouseTracking(true);
     viewport()->setAcceptDrops(true);  // enable drag'n drop
-#warning removed those signals, crashes on it...
+// FIXME #warning removed those signals, crashes on it...
     /*connect(horizontalScrollBar(),
 		SIGNAL(prevLine()), SLOT(slotScrollLeft()));
     connect(horizontalScrollBar(),
