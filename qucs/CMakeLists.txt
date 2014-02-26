@@ -2,7 +2,7 @@
 # automatically, set the CMAKE_PREFIX_PATH environment variable.
 # For example: "export CMAKE_PREFIX_PATH=/usr/local/trolltech/qt4.3.5"
 #
-# You can change the install location by 
+# You can change the install location by
 # running cmake like this:
 #   mkdir build; cd build
 #   cmake .. -DCMAKE_INSTALL_PREFIX=/new/install/prefix
@@ -54,7 +54,7 @@ CONFIGURE_FILE (
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR} )
 
-FIND_PACKAGE( Qt4 4.6.3 REQUIRED QtCore QtGui Qt3Support QtSvg QtXml )
+FIND_PACKAGE( Qt4 4.6.3 REQUIRED QtCore QtGui Qt3Support QtSvg QtXml QtScript)
 INCLUDE( ${QT_USE_FILE} )
 
 MESSAGE("QT_LIBRARIES=[${QT_LIBRARIES}]")
@@ -66,9 +66,9 @@ IF(WIN32)
   LINK_DIRECTORIES("${QT_BINARY_DIR}")
 
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(QT_LIBRARIES QtCored4 QtGuid4 Qt3Supportd4 QtSvgd4 QtXmld4)
+    set(QT_LIBRARIES QtCored4 QtGuid4 Qt3Supportd4 QtSvgd4 QtXmld4 QtScriptd4)
   else()
-    set(QT_LIBRARIES QtCore4 QtGui4 Qt3Support4 QtSvg4 QtXml4)
+    set(QT_LIBRARIES QtCore4 QtGui4 Qt3Support4 QtSvg4 QtXml4 QtScript4)
   ENDIF()
 ENDIF(WIN32)
 

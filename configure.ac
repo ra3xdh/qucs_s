@@ -152,7 +152,7 @@ case $host_os in
       /usr/X11R6/include/qt4 $prefix/include/qt4"
     for path in $paths; do
       if test -f "$path/Qt/qapplication.h"; then
-        QT_INCLUDES="$path -I$path/Qt -I$path/QtGui -I$path/QtCore -I$path/QtSvg -I$path/QtXml"
+        QT_INCLUDES="$path -I$path/Qt -I$path/QtGui -I$path/QtCore -I$path/QtSvg -I$path/QtXml -I$path/QtScript"
         QT_INCLUDES="$QT_INCLUDES -I$path/Qt3Support"
         QT_VER=4
         break
@@ -178,7 +178,7 @@ case $host_os in
        fi])
     if test "$enable_mt" = yes; then
       QT_LDF=""
-      QT_LIB="-lQtCore -lQtGui -lQtXml -lQt3Support -lQtSvg"
+      QT_LIB="-lQtCore -lQtGui -lQtXml -lQt3Support -lQtSvg -lQtScript"
       QT_INC="$QT_DEF -DQT3_SUPPORT -DQT_THREAD_SUPPORT -D_REENTRANT"
       [case $host_os in
         *freebsd4*) QT_LIB="$QT_LIB -pthread" ;;
@@ -188,13 +188,13 @@ case $host_os in
       QT_MTS="multi-threaded"
     else
       QT_LDF=""
-      QT_LIB="-lQtCore -lQtGui -lQtXml -lQt3Support -lQtSvg"
+      QT_LIB="-lQtCore -lQtGui -lQtXml -lQt3Support -lQtSvg -lQtScript"
       QT_INC="$QT_DEF"
       QT_MTS="non-threaded"
     fi
     case $host_os in
       *mingw*)
-      QT_LIB="-lQtCore4 -lQtGui4 -lQtXml4 -lQt3Support4 -lQtSvg4"
+      QT_LIB="-lQtCore4 -lQtGui4 -lQtXml4 -lQt3Support4 -lQtSvg4 -lQtScript"
       QT_INC="$QT_INC -DQT_DLL -DUNICODE"
       QT_LDF="$QT_LDF -mwindows"
       ;;
@@ -281,12 +281,14 @@ case $host_os in
 
     if test "x${with_qt}" = xyes ; then
       AC_MSG_RESULT([found in $path])
-      QT_LIBS="-framework QtGui -framework QtCore -framework QtXml -framework Qt3Support -framework QtSvg"
+      QT_LIBS="-framework QtGui -framework QtCore -framework QtXml -framework QtSvg -framework QtScript"
+      QT_LIBS="$QT_LIBS -framework Qt3Support"
       CPPFLAGS="$CPPFLAGS -I$path/QtCore.framework/Headers"
       CPPFLAGS="$CPPFLAGS -I$path/QtGui.framework/Headers"
       CPPFLAGS="$CPPFLAGS -I$path/QtXml.framework/Headers"
-      CPPFLAGS="$CPPFLAGS -I$path/Qt3Support.framework/Headers"
       CPPFLAGS="$CPPFLAGS -I$path/QtSvg.framework/Headers"
+      CPPFLAGS="$CPPFLAGS -I$path/QtScript.framework/Headers"
+      CPPFLAGS="$CPPFLAGS -I$path/Qt3Support.framework/Headers"
       QT_CFLAGS="$CPPFLAGS"
     else
       AC_MSG_ERROR([not found])

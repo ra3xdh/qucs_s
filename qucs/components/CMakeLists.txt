@@ -15,8 +15,8 @@ ac_sim.cpp		dmux2to4.cpp		logical_xnor.cpp	rfedd2p.cpp
 am_modulator.cpp	dmux3to8.cpp		logical_xor.cpp		rlcg.cpp
 ampere_ac.cpp		dmux4to16.cpp		mod_amp.cpp		rs_flipflop.cpp
 ampere_dc.cpp		ecvs.cpp
-			eqndefined.cpp		#module.cpp 
-source_ac.cpp		
+			eqndefined.cpp		#module.cpp
+source_ac.cpp
 ampere_noise.cpp	equation.cpp		mosfet.cpp		sp_sim.cpp
 amplifier.cpp		etr_sim.cpp
 			fa1b.cpp		mosfet_sub.cpp		sparamfile.cpp
@@ -53,8 +53,9 @@ d_flipflop.cpp		log_amp.cpp		phaseshifter.cpp	vpulse.cpp
 dc_sim.cpp		logic_0.cpp		photodiode.cpp		vrect.cpp
 dcblock.cpp		logic_1.cpp		phototransistor.cpp
 dcfeed.cpp		logical_and.cpp		pm_modulator.cpp
-bsim4v30nMOS.cpp 
-bsim4v30pMOS.cpp 
+bsim4v30nMOS.cpp
+bsim4v30pMOS.cpp
+vacomponent.cpp
 )
 
 SET(COMPONENTS_MOC_HDRS
