@@ -1378,3 +1378,8 @@ void QucsApp::slotLoadModule()
     //set new category into view
     // TODO
 }
+
+void QucsApp::slotBuildModule()
+{
+    qDebug() << "slotBuildModule";
+}

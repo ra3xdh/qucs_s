@@ -299,7 +299,7 @@ public:
           *distrHor, *distrVert, *selectAll, *callLib, *callMatch, *changeProps,
           *addToProj, *editFind, *editFindAgain, *insEntity, *selectMarker,
           *createLib, *importData, *graph2csv, *createPkg, *extractPkg,
-          *callAtt, *centerHor, *centerVert, *loadModule;
+          *callAtt, *centerHor, *centerVert, *loadModule, *buildModule;
 
 public slots:
   void slotEditRotate(bool);  // rotate the selected items
@@ -365,6 +365,7 @@ private slots:
   void slotUpdateRecentFiles();
   void slotClearRecentFiles();
   void slotLoadModule();
+  void slotBuildModule();
 
 private:
   void showHTML(const QString&);
