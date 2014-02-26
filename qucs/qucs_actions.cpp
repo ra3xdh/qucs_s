@@ -1427,4 +1427,25 @@ void QucsApp::slotBuildModule()
         qDebug() << "Make stdout"  << builder.readAllStandardOutput();
     }
 
+
+    //build libs
+    qDebug() << "\nbuild libs\n";
+
+    Arguments.clear();
+
+    Arguments << "-f" <<  "cpp2lib.makefile"
+              << QString("PREFIX=%1").arg(prefix)
+              << QString("MODEL=%1").arg(vaModule);
+
+    builder.start(Program, Arguments);
+
+    if (!builder.waitForFinished())
+        qDebug() << "Make failed:" << builder.errorString();
+    else {
+        qDebug() << "Make output:" << builder.readAll();
+        qDebug() << "Make stdout"  << builder.readAllStandardOutput();
+    }
+
+
+
 }
