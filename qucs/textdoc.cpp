@@ -218,6 +218,7 @@ void TextDoc::becomeCurrent (bool)
     App->insEntity->setStatusTip (tr("Inserts skeleton of Verilog module"));
     App->insEntity->setWhatsThis (
 	tr("Verilog module\n\nInserts the skeleton of a Verilog module"));
+    App->buildModule->setEnabled(true);
   }
   else if (language == LANG_OCTAVE) {
     App->insEntity->setMenuText (tr("Octave function"));
@@ -280,7 +281,7 @@ QMenu *TextDoc::createStandardContextMenu( const QPoint &pos )
 // ---------------------------------------------------
 bool TextDoc::load ()
 {
-  
+
   QFile file (DocName);
   if (!file.open (QIODevice::ReadOnly))
     return false;
@@ -326,7 +327,7 @@ float TextDoc::zoomBy(float s)
     this->zoomIn(2);
   }
   else {
-    this->zoomOut(2); 
+    this->zoomOut(2);
   }
   return Scale;
 }
@@ -364,7 +365,7 @@ void TextDoc::commentSelected ()
   QString co;
   int cl;
   switch (language) {
-  case LANG_VHDL: 
+  case LANG_VHDL:
     co = "--"; cl = 2;
     break;
   case LANG_VERILOG:

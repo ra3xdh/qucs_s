@@ -2619,6 +2619,8 @@ void QucsApp::switchSchematicDoc (bool SchematicMode)
   editFind->setEnabled (!SchematicMode);
   editFindAgain->setEnabled (!SchematicMode);
   insEntity->setEnabled (!SchematicMode);
+
+  buildModule->setEnabled(!SchematicMode); // only build if VA document
 }
 
 // ---------------------------------------------------------

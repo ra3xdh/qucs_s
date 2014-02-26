@@ -386,11 +386,11 @@ void QucsApp::initActions()
 	tr("Export to CSV\n\nConvert graph data to CSV file"));
   connect(graph2csv, SIGNAL(activated()), SLOT(slotExportGraphAsCsv()));
 
-  buildModule = new QAction(tr("Build VA module..."), this);
+  buildModule = new QAction(tr("Build Verilog-A module..."), this);
   // TODO shortcut, status, whatsthis
   connect(buildModule, SIGNAL(activated()), SLOT(slotBuildModule()));
 
-  loadModule = new QAction(tr("Load VA module..."), this);
+  loadModule = new QAction(tr("Load Verilog-A module..."), this);
   // TODO shortcut, status, whatsthis
   connect(loadModule, SIGNAL(activated()), SLOT(slotLoadModule()));
 
