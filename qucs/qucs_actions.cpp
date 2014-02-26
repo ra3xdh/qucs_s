@@ -1361,8 +1361,20 @@ void QucsApp::slotClearRecentFiles()
     slotUpdateRecentFiles();
 }
 
+
+//
 void QucsApp::slotLoadModule()
 {
     qDebug() << "slotLoadModule";
+
+    //
     Module::registerDynamicComponents();
+
+    // update the combobox,
+    // pick up new category 'verilog-a user components' from `Module::category`
+    // draw icons of dynamically registered components
+    QucsApp::fillComboBox(true);
+
+    //set new category into view
+    // TODO
 }

@@ -300,6 +300,7 @@ void Component::paint(ViewPainter *p)
     p->drawLine(cx+x1, cy+y2, cx+x2, cy+y1);
   }
 
+  // draw component bounding box
   if(isSelected) {
     p->Painter->setPen(QPen(Qt::darkGray,3));
     p->drawRoundRect(cx+x1, cy+y1, x2-x1, y2-y1);
@@ -310,6 +311,7 @@ void Component::paint(ViewPainter *p)
 // Paints the component when moved with the mouse.
 void Component::paintScheme(Schematic *p)
 {
+  // qDebug() << "paintScheme" << Model;
   if(Model.at(0) == '.') {   // is simulation component (dc, ac, ...)
     Text *pt;
     int a, b, xb, yb;
@@ -1546,7 +1548,7 @@ Component* getComponentFromName(QString& Line, Schematic* p)
 
   if(!c) {
     QMessageBox::critical(0, QObject::tr("Error"),
-	QObject::tr("Format Error:\nUnknown component!"));
+	QObject::tr("Format Error:\nUnknown component!\n%1").arg(cstr));
     return 0;
   }
 

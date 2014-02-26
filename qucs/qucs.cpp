@@ -581,17 +581,21 @@ QucsDoc * QucsApp::findDoc (QString File, int * Pos)
 // ---------------------------------------------------------------
 // Put the component groups into the ComboBox. It is possible to
 // only put the paintings in it, because of "symbol painting mode".
+
+// if setAll, add all categories to combobox
+// if not, set just paintings (symbol painting mode)
 void QucsApp::fillComboBox (bool setAll)
 {
-  CompChoose->setMaxVisibleItems (12); // Increase this if you add items below.
+  //CompChoose->setMaxVisibleItems (13); // Increase this if you add items below.
   CompChoose->clear ();
 
   QStringList cats = Category::getCategories ();
   for (QStringList::Iterator it = cats.begin (); it != cats.end (); ++it) {
-    if (*it != QObject::tr("paintings")) {
-      if (setAll) CompChoose->insertItem (*it);
-    }
-    else CompChoose->insertItem (*it);
+    if (setAll)
+      CompChoose->insertItem (*it);
+    else
+      if (*it == QObject::tr("paintings"))
+        CompChoose->insertItem (*it);
   }
 }
 
@@ -600,6 +604,8 @@ void QucsApp::fillComboBox (bool setAll)
 // Component IconView with the appropriate components.
 void QucsApp::slotSetCompView (int index)
 {
+  qDebug() << "QucsApp::slotSetCompView (int index)";
+
   editText->setHidden (true); // disable text edit of component property
 
   Q3PtrList<Module> Comps;
@@ -607,28 +613,73 @@ void QucsApp::slotSetCompView (int index)
   if (CompChoose->count () <= 0) return;
 
   QString item = CompChoose->text (index);
-  // The following test is used as only paintings are allowed in
-  // symbol editing mode, but it means any new categories must
-  // always be added before the paintings category in modules.cpp
-  if ((index + 1) >= CompChoose->count ()) // because of symbol edit mode
+
+  /*
+   * The following test is used as only paintings are allowed in
+   * symbol editing mode, previously paintings had to be the last
+   * category in modules.cpp.
+   * Howver, before symbol edit is started it is requested that only
+   * 'paintigs' gets added to the 'compChoose' combobox.
+   * See: QucsApp::fillComboBox
+   *
+   */
+
+  if (item == QObject::tr("paintings"))
   {
+    // if index beyond count of combobox, assume it is paintings...
     Comps = Category::getModules (QObject::tr("paintings"));
   }
   else
   {
+    // get list of components, will add the icons to dock
     Comps = Category::getModules (item);
   }
 
-  char * File;
   QString Name;
-  Module * Mod;
-  // Populate list of component bitmaps
-  for (Mod = Comps.first(); Mod; Mod = Comps.next ()) {
-    if (Mod->info) {
-      *(Mod->info) (Name, File, false);
-        QListWidgetItem *item = new QListWidgetItem(QPixmap(":/bitmaps/" + QString (File) + ".png"), Name);
-      item->setToolTip(Name);
-      CompComps->addItem(item);
+
+  // if something was registered dynamicaly, get and draw icons into dock
+  if (item == QObject::tr("verilog-a user devices")) {
+
+    // need to populate from vaComponents
+    // cannot use ordinary ->info below, need to know JSON
+    // fetch bitmap path from JSON or,
+    // provide default icon or,
+    // use Clemens stuff to bitmap of the symbol itself
+
+    // TODO test if bitmap exists, otherwise use default icon
+
+    QMap<QString, QString> vaBitmaps;
+
+    vaBitmaps["mypotentiometer"] =
+      "/Users/guilherme/git/qucs/va_loader_inverter_prj/mypotentiometer.png";
+    vaBitmaps["mybsim4v30pMOS"] =
+      "/Users/guilherme/git/qucs/va_loader_inverter_prj/mybsim4v30pMOS.png";
+    vaBitmaps["mybsim4v30nMOS"] =
+      "/Users/guilherme/git/qucs/va_loader_inverter_prj/mybsim4v30nMOS.png";
+
+    QListWidgetItem *icon;
+    QMapIterator<QString, QString> i(Module::vaComponents);
+    while (i.hasNext()) {
+      i.next();
+      Name = "mypotentiometer"; // goes under icon
+      Name = i.key();
+
+      icon = new QListWidgetItem(QPixmap(vaBitmaps[Name]), Name);
+      icon->setToolTip(Name);
+      CompComps->addItem(icon);
+    }
+  }
+  else {
+    char * File;
+    Module * Mod;
+    // Populate list of component bitmaps
+    for (Mod = Comps.first(); Mod; Mod = Comps.next ()) {
+      if (Mod->info) {
+        *(Mod->info) (Name, File, false);
+        QListWidgetItem *icon = new QListWidgetItem(QPixmap(":/bitmaps/" + QString (File) + ".png"), Name);
+        icon->setToolTip(Name);
+        CompComps->addItem(icon);
+      }
     }
   }
 }
@@ -666,19 +717,46 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
   MouseDoubleClickAction = 0;
 
   pInfoFunc Infos = 0;
+
+  pInfoVAFunc InfosVA = 0;
+
   int i = CompComps->row(item);
   Q3PtrList<Module> Comps;
-  if((CompChoose->currentItem()+1) >= CompChoose->count())
-    // the only one in "symbol-painting" mode
-    Comps = Category::getModules (QObject::tr("paintings"));
-  else
-    Comps = Category::getModules (CompChoose->currentText ());
-  Infos = Comps.at(i)->info;
 
-  char * Dummy2;
-  QString Dummy1;
-  if (Infos)
-    view->selElem = (*Infos) (Dummy1, Dummy2, true);
+  // if symbol mode, only paintings are enabled.
+  if (CompChoose->currentText() == QObject::tr("paintings"))
+    Comps = Category::getModules (QObject::tr("paintings"));
+  else {
+    Comps = Category::getModules (CompChoose->currentText ());
+    qDebug() << "pressed CompComps id" << i;
+    qDebug() << CompComps->item(i)->toolTip(); //Name;
+
+  }
+
+  // handle static and dynamic components
+  if (CompChoose->currentText() == QObject::tr("verilog-a user devices")){
+    InfosVA = Comps.at(i)->infoVA;
+
+    // get JSON file out of item name on toolTip
+    QString name = CompComps->item(i)->toolTip();
+    QString filename = Module::vaComponents[name];
+
+    char * Dummy2;
+    QString Dummy1;
+    if (InfosVA) {
+      qDebug() <<  " slotSelectComponent, view->selElem" ;
+      view->selElem = (*InfosVA) (Dummy1, Dummy2, true, filename);
+    }
+
+  }
+  else {
+    Infos = Comps.at(i)->info;
+
+    char * Dummy2;
+    QString Dummy1;
+    if (Infos)
+      view->selElem = (*Infos) (Dummy1, Dummy2, true);
+  }
 }
 
 // ####################################################################

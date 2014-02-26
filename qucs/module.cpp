@@ -32,6 +32,8 @@
 Q3Dict<Module> Module::Modules;
 Q3PtrList<Category> Category::Categories;
 
+QMap<QString, QString> Module::vaComponents;
+
 // Constructor creates instance of module object.
 Module::Module () {
   info = 0;
@@ -79,7 +81,11 @@ Component * Module::getComponent (QString Model) {
   if (m) {
     QString Name;
     char * File;
-    return (Component *) m->info (Name, File, true);
+    if (vaComponents.contains(Model))
+      return (Component *)
+              vacomponent::info (Name, File, true, vaComponents[Model]);
+    else
+      return (Component *) m->info (Name, File, true);
   }
   return 0;
 }
@@ -90,6 +96,66 @@ void Module::registerDynamicComponents()
 
 
 
+    // create a persistent map to hold va modules in use
+
+
+
+  // do it elsewhere
+  // check sanity, uniqueness of keys
+  vaComponents["mypotentiometer"] =
+    "/Users/guilherme/git/qucs/va_loader_inverter_prj/mypotentiometer_symbol.json";
+
+  vaComponents["mybsim4v30pMOS"] =
+      "/Users/guilherme/git/qucs/va_loader_inverter_prj/mybsim4v30pMOS_symbol.json";
+
+  vaComponents["mybsim4v30nMOS"] =
+      "/Users/guilherme/git/qucs/va_loader_inverter_prj/mybsim4v30nMOS_symbol.json";
+
+  // later for keys in vaComponents
+  QMapIterator<QString, QString> i(vaComponents);
+   while (i.hasNext()) {
+     i.next();
+
+     qDebug() << i.key() << ": " << i.value() << endl;
+
+     Module * m = new Module ();
+
+     // what now? pointer to info?
+
+     // the typedef needs to be different
+     //passes the pointer, but it has no idea how to call the JSON
+     m->infoVA = &vacomponent::info;
+
+     // TODO maybe allow user load into custom category?
+
+     m->category = QObject::tr("verilog-a user devices");
+
+
+     // instantiation of the component once in order
+     // to obtain "Model" property of the component
+     //QString Name, Model;
+     //char * File;
+     QString Name, Model;
+     char * File;
+     Component * c = (Component *)
+             vacomponent::info (Name, File, true, vaComponents[i.key()]);
+     Model = c->Model;
+     delete c;
+
+     // put into category and the component hash
+     intoCategory (m);
+
+     if (!Modules.find (Model))
+         Modules.insert (Model, m);
+
+
+
+
+     if (vaComponents.contains("mypotentiometer")) {
+         qDebug() << "Do something!";
+     }
+
+   } // while
 }
 
 // The function appends the given module to the appropriate category.

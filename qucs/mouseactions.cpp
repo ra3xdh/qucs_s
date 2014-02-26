@@ -24,11 +24,13 @@
 #include "node.h"
 #include "schematic.h"
 #include "mouseactions.h"
+#include "module.h"
 #include "components/component.h"
 #include "components/spicedialog.h"
 #include "components/spicefile.h"
 #include "components/optimizedialog.h"
 #include "components/componentdialog.h"
+#include "components/vacomponent.h"
 #include "diagrams/diagramdialog.h"
 #include "diagrams/markerdialog.h"
 #include "diagrams/tabdiagram.h"
@@ -64,7 +66,7 @@ MouseActions::MouseActions(QucsApp* App_)
   App = App_; // pointer to main app
   selElem  = 0;  // no component/diagram is selected
   isMoveEqual = false;  // mouse cursor move x and y the same way
-  focusElement = 0;
+  focusElement = 0; //element being interacted with mouse
 
   // ...............................................................
   // initialize menu appearing by right mouse button click on component
@@ -271,6 +273,8 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
 {
   if(selElem == 0) return;
 
+  qDebug() << "MMoveElement got selElem";
+
   int x  = Event->pos().x();
   int y  = Event->pos().y();
   int fx = DOC_X_POS(x);
@@ -298,6 +302,10 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
   // ********** it is a component or diagram
   if(drawn) selElem->paintScheme(Doc); // erase old scheme
   drawn = true;
+
+  Component *comp = (Component*)selElem;
+  //qDebug() << "desc" << comp->Description << "gx" << gx << "gy" << gy;
+
   selElem->setCenter(gx, gy);
   selElem->paintScheme(Doc); // paint scheme at new position
   Doc->viewport()->update();
@@ -972,6 +980,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent*, float fX, float fY)
 // -----------------------------------------------------------
 void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, float fY)
 {
+    qDebug() << "MPressSelect";
   bool Ctrl;
   if(Event->state() & Qt::ControlModifier) Ctrl = true;
   else Ctrl = false;
@@ -981,7 +990,6 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
   MAy1 = int(fY);
   focusElement = Doc->selectElement(fX, fY, Ctrl, &No);
   isMoveEqual = false;   // moving not neccessarily square
-
 
   if(focusElement)
   switch(focusElement->Type)
@@ -1253,6 +1261,7 @@ void MouseActions::MPressRotate(Schematic *Doc, QMouseEvent*, float fX, float fY
 }
 
 // -----------------------------------------------------------
+// insert component, diagram, painting into schematic ?!
 void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, float)
 {
   if(selElem == 0) return;
@@ -1263,6 +1272,9 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
   int x1, y1, x2, y2, rot;
   if(selElem->Type & isComponent) {
     Component *Comp = (Component*)selElem;
+    qDebug() << "+-+ got to switch:" << Comp->Name;
+    QString entryName = Comp->Name;
+
     switch(Event->button()) {
       case Qt::LeftButton :
 	// left mouse button inserts component into the schematic
@@ -1274,6 +1286,9 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
 	Comp->textSize(x2, y2);
 	if(Comp->tx < Comp->x1) Comp->tx -= x2 - x1;
 
+    // Note: insertCopmponents does increment  name1 -> name2
+    qDebug() << "  +-+ got to insert:" << Comp->Name;
+
 	// enlarge viewarea if component lies outside the view
 	Comp->entireBounds(x1,y1,x2,y2, Doc->textCorr());
 	Doc->enlargeView(x1, y1, x2, y2);
@@ -1282,7 +1297,18 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
 	Doc->viewport()->update();
 	Doc->setChanged(true, true);
 	rot = Comp->rotated;
-	Comp = Comp->newOne(); // component is used, so create a new one
+
+    // handle static and dynamic components
+//    QucsApp::CompChoose;
+    if (Module::vaComponents.contains(entryName)){
+      QString filename = Module::vaComponents[entryName];
+      qDebug() << "   ===+ recast";
+      Comp = dynamic_cast<vacomponent*>(Comp)->newOne(filename); //va component
+      qDebug() << "   => recast = Comp;" << Comp->Name;
+    }
+    else {
+	  Comp = Comp->newOne(); // static component is used, so create a new one
+    }
 	rot -= Comp->rotated;
 	rot &= 3;
 	while(rot--) Comp->rotate(); // keep last rotation for single component
@@ -1298,6 +1324,8 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
 
       default: ;   // avoids compiler warnings
     }
+    qDebug() << "   => selElem = Comp;" << Comp->Name;
+    // comp it geting empty
     selElem = Comp;
     return;
 
@@ -1880,7 +1908,11 @@ void MouseActions::MReleaseZoomIn(Schematic *Doc, QMouseEvent *Event)
 // ***********************************************************************
 void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
 {
+    qDebug() << "+double click, editElement";
+
   if(focusElement == 0) return;
+
+  qDebug() << "+focusElement->Type" << focusElement->Type;
 
   Graph *pg;
   Component *c;
@@ -1897,6 +1929,7 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
     case isAnalogComponent:
     case isDigitalComponent:
          c = (Component*)focusElement;
+         qDebug() << "cast focusElement into" << c->Name;
          if(c->Model == "GND") return;
 
          if(c->Model == "SPICE") {

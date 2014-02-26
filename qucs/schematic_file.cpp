@@ -39,6 +39,7 @@
 #include "components/vhdlfile.h"
 #include "components/verilogfile.h"
 #include "components/libcomp.h"
+#include "module.h"
 
 
 // Here the subcircuits, SPICE components etc are collected. It must be
@@ -252,10 +253,12 @@ int Schematic::saveSymbolCpp (void)
 // save symbol paintings in JSON format
 int Schematic::saveSymbolJSON()
 {
-  qDebug() << "saveSymbolJson";
-
   QFileInfo info (DocName);
-  QString jsonfile = info.dirPath () + QDir::separator() + "symbol.json";
+  QString jsonfile = info.dirPath () + QDir::separator()
+                   + info.baseName() + "_sym.json";
+
+  qDebug() << "saveSymbolJson for " << jsonfile;
+
   QFile file (jsonfile);
 
   if (!file.open (QIODevice::WriteOnly)) {
@@ -415,8 +418,102 @@ int Schematic::saveDocument()
     if (fileSuffix (DataDisplay) == "va") {
       saveSymbolCpp ();
       saveSymbolJSON ();
-    }
-  }
+
+      // TODO
+      qDebug() << "  -> Run adms";
+
+      /*
+       * - run adms, generate _props.json
+       *  - QProcess to run make
+       *  - keep messages for error catch
+       *
+       * - load both files
+       *  - Merge _props.json into _sym.json
+       *
+       */
+
+//      QString proj = "/Users/guilherme/git/qucs/va_loader_inverter_prj";
+//      QString adms = "/Users/guilherme/local/qucs-master/bin/admsXml";
+
+      QString Program;
+      QString workDir;
+      QStringList Arguments;
+
+      QString vaFile;
+
+      QString prefix = "/Users/guilherme/local/qucs-cmake-dylib/";
+
+      QString include = prefix+"include/qucs-core/";
+
+      Program = prefix+"/bin/admsXml";
+
+
+      workDir = QucsSettings.QucsWorkDir.absolutePath();
+
+      qDebug() << "App path : " << qApp->applicationDirPath();
+      qDebug() << "workdir"  << workDir;
+      qDebug() << "homedir"  << QucsSettings.QucsHomeDir.absolutePath();
+
+      vaFile = QucsSettings.QucsWorkDir.filePath(fileBase()+".va");
+
+      Arguments << vaFile
+                << "-e" << include+"qucsMODULEguiJSONsymbol.xml"
+                << "-A" << "dyload";
+
+//      QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+//      env.insert("PATH", env.value("PATH") );
+
+      QFile file(Program);
+      if ( !file.exists() ){
+        qDebug() << (tr("ERROR: Program not found: %1").arg(Program));
+//        return;
+      }
+
+      qDebug() << Program << Arguments.join(" ");
+
+      // need to cd into project to run admsXml?
+      QDir::setCurrent(workDir);
+
+      QProcess builder;
+      builder.setProcessChannelMode(QProcess::MergedChannels);
+
+      builder.start(Program, Arguments);
+
+
+      // how to capture [warning]? need to modify admsXml
+      if (!builder.waitForFinished())
+          qDebug() << "Make failed:" << builder.errorString();
+      else {
+          qDebug() << "Make output:" << builder.readAll();
+          qDebug() << "Make stdout"  << builder.readAllStandardOutput();
+      }
+
+      // Append _sym.json into _props.json
+      QFile f1(QucsSettings.QucsWorkDir.filePath(fileBase()+"_props.json"));
+      QFile f2(QucsSettings.QucsWorkDir.filePath(fileBase()+"_sym.json"));
+      f1.open(QIODevice::ReadOnly | QIODevice::Text);
+      f2.open(QIODevice::ReadOnly | QIODevice::Text);
+
+      QString dat1 = QString(f1.readAll());
+      QString dat2 = QString(f2.readAll());
+      QString finalJSON = dat1.append(dat2);
+
+      // remove joining point
+      finalJSON = finalJSON.replace("}{", "");
+
+      QFile f3(QucsSettings.QucsWorkDir.filePath(fileBase()+"_symbol.json"));
+      f3.open(QIODevice::WriteOnly | QIODevice::Text);
+      QTextStream out(&f3);
+      out << finalJSON;
+
+      f1.close();
+      f2.close();
+      f3.close();
+
+      // TODO choose icon, default to something or provided png
+
+    } // if DataDisplay va
+  } // if suffix .sym
 
   return 0;
 }

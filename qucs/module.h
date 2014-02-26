@@ -1,6 +1,7 @@
 //Added by qt3to4:
 #include <Q3PtrList>
 #include <Q3Dict>
+#include <QMap>
 /***************************************************************************
                                module.h
                               ----------
@@ -23,6 +24,7 @@
 
 // function typedefs for circuits and analyses
 typedef Element * (* pInfoFunc) (QString&, char * &, bool);
+typedef Element * (* pInfoVAFunc) (QString&, char * &, bool, QString);
 typedef Component * (* pCreatorFunc) ();
 
 class Module
@@ -38,6 +40,7 @@ class Module
 
  public:
   static Q3Dict<Module> Modules;
+  static QMap<QString, QString> vaComponents;
 
  public:
   static void registerModules (void);
@@ -45,6 +48,7 @@ class Module
 
  public:
   pInfoFunc info;
+  pInfoVAFunc infoVA;
   QString category;
 };
 

@@ -196,4 +196,7 @@
 #include "etr_sim.h"
 #include "ecvs.h"
 
+// Verilog-A dynamicaly loaded component
+#include "vacomponent.h"
+
 #endif
