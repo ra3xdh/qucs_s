@@ -1379,7 +1379,52 @@ void QucsApp::slotLoadModule()
     // TODO
 }
 
+
+/*
+ * Run the va2cpp
+ * Run the cpp2lib
+ *
+ * TODO
+ * - split into two actions, elaborate and compile?
+ * - collect, parse and display output of make
+ * - make on the path?, might need need to set enviroment for QProcess
+ *
+ */
 void QucsApp::slotBuildModule()
 {
     qDebug() << "slotBuildModule";
+
+
+    QString Program = "make";
+    QStringList Arguments;
+
+    QString prefix = "/Users/guilherme/local/qucs-cmake-dylib/";
+
+    QString workDir = QucsSettings.QucsWorkDir.absolutePath();
+
+    // need to cd into project to make sure output is droped there?
+    QDir::setCurrent(workDir);
+
+    QProcess builder;
+    builder.setProcessChannelMode(QProcess::MergedChannels);
+
+    // get current va document
+    QucsDoc *Doc = getDoc();
+    QString vaModule = Doc->fileBase(Doc->DocName);
+
+    Arguments << "-f" <<  "va2cpp.makefile"
+              << QString("PREFIX=%1").arg(prefix)
+              << QString("MODEL=%1").arg(vaModule);
+
+
+
+    builder.start(Program, Arguments);
+
+    if (!builder.waitForFinished())
+        qDebug() << "Make failed:" << builder.errorString();
+    else {
+        qDebug() << "Make output:" << builder.readAll();
+        qDebug() << "Make stdout"  << builder.readAllStandardOutput();
+    }
+
 }
