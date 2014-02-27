@@ -11,8 +11,8 @@ digisettingsdialog.cpp		qucssettingsdialog.cpp vtabbar.cpp
 importdialog.cpp		savedialog.cpp vtabbeddockwidget.cpp
 labeldialog.cpp			searchdialog.cpp vtabbutton.cpp
 librarydialog.cpp		settingsdialog.cpp vtabwidget.cpp
-matchdialog.cpp			simmessage.cpp newprojdialog.cpp		
-sweepdialog.cpp			exportdialog.cpp
+matchdialog.cpp			simmessage.cpp newprojdialog.cpp
+sweepdialog.cpp			exportdialog.cpp loaddialog.cpp
 )
 
 SET(DIALOGS_MOC_HDRS
@@ -22,6 +22,7 @@ exportdialog.h
 importdialog.h
 labeldialog.h
 librarydialog.h
+loaddialog.h
 matchdialog.h
 packagedialog.h
 qucssettingsdialog.h
