@@ -27,8 +27,7 @@
 
 #include <QDialog>
 #include <QRegExp>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <QLabel>
 #include <Q3PtrList>
 
@@ -62,7 +61,7 @@ private slots:
   void slotReadVars(int);
   void slotTakeVar(Q3ListViewItem*);
 //  void slotSelectGraph(int index);
-  void slotSelectGraph(Q3ListBoxItem*);
+  void slotSelectGraph(QListWidgetItem*);
   void slotNewGraph();
   void slotDeleteGraph();
   void slotOK();
@@ -104,9 +103,9 @@ private:
 
   QComboBox *ChooseData;
   Q3ListView *ChooseVars;
-  Q3ListBox  *GraphList;
+  QListWidget  *GraphList;
 
-  Q3VBoxLayout *all;   // the mother of all widgets
+  QVBoxLayout *all;   // the mother of all widgets
   QLineEdit   *GraphInput, *Property2, *xLabel, *ylLabel, *yrLabel;
   QCheckBox   *GridOn, *GridLogX, *GridLogY, *GridLogZ;
   QCheckBox   *manualX, *manualY, *manualZ, *hideInvisible;
