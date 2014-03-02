@@ -59,7 +59,7 @@ public:
 
 private slots:
   void slotReadVars(int);
-  void slotTakeVar(Q3ListViewItem*);
+  void slotTakeVar(QTableWidgetItem *item);
 //  void slotSelectGraph(int index);
   void slotSelectGraph(QListWidgetItem*);
   void slotNewGraph();
@@ -102,7 +102,8 @@ private:
   QRegExpValidator *Validator;
 
   QComboBox *ChooseData;
-  Q3ListView *ChooseVars;
+  //Q3ListView *ChooseVars;
+  QTableWidget *ChooseVars;
   QListWidget  *GraphList;
 
   QVBoxLayout *all;   // the mother of all widgets

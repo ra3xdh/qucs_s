@@ -38,6 +38,9 @@
 #include <QComboBox>
 #include <Q3ListView>
 #include <QListWidget>
+#include <QTableWidget>
+#include <QStringList>
+#include <QTreeWidgetItem>
 
 
 #define CROSS3D_SIZE   30
@@ -276,13 +279,18 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   connect(ChooseData, SIGNAL(activated(int)), SLOT(slotReadVars(int)));
   // todo: replace by QTableWidget
   // see https://gist.github.com/ClemensFMN/8955411
-  ChooseVars = new Q3ListView();
+  ChooseVars = new QTableWidget(1, 3, this);
+  ChooseVars->setSelectionBehavior(QAbstractItemView::SelectRows);
+  //ChooseVars->selectRow(0);
   DataGroupLayout->addWidget(ChooseVars);
-  ChooseVars->addColumn(tr("Name"));
-  ChooseVars->addColumn(tr("Type"));
-  ChooseVars->addColumn(tr("Size"));
-  connect(ChooseVars, SIGNAL(doubleClicked(Q3ListViewItem*)),
-		      SLOT(slotTakeVar(Q3ListViewItem*)));
+  //ChooseVars->addColumn(tr("Name"));
+  //ChooseVars->addColumn(tr("Type"));
+  //ChooseVars->addColumn(tr("Size"));
+  QStringList headers;
+  headers << tr("Name") << tr("Type") << tr("Size");
+  ChooseVars->setHorizontalHeaderLabels(headers);
+
+  connect(ChooseVars, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), SLOT(slotTakeVar(QTableWidgetItem*)));
 
 
   QGroupBox *GraphGroup = new QGroupBox(tr("Graph"));
@@ -740,6 +748,7 @@ void DiagramDialog::slotReadVars(int)
   }
 
   QString Line, tmp, Var;
+  int varNumber = 0;
   // reading the file as a whole improves speed very much, also using
   // a QByteArray rather than a QString
   QByteArray FileString = file.readAll();
@@ -761,11 +770,36 @@ void DiagramDialog::slotReadVars(int)
 
     if(Line.left(3) == "dep") {
       tmp = Line.section(' ', 2);
-      new Q3ListViewItem(ChooseVars, Var, "dep", tmp.remove('>'));
+      //new Q3ListViewItem(ChooseVars, Var, "dep", tmp.remove('>'));
+      qDebug() << varNumber << Var << tmp.remove('>');
+      ChooseVars->setRowCount(varNumber+1);
+      QTableWidgetItem *cell = new QTableWidgetItem(Var);
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      ChooseVars->setItem(varNumber, 0, cell);
+      cell = new QTableWidgetItem("dep");
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      ChooseVars->setItem(varNumber, 1, cell);
+      cell = new QTableWidgetItem(tmp.remove('>'));
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      ChooseVars->setItem(varNumber, 2, cell);
+      varNumber++;
     }
     else if(Line.left(5) == "indep") {
       tmp = Line.section(' ', 2, 2);
-      new Q3ListViewItem(ChooseVars, Var, "indep", tmp.remove('>'));
+      //new Q3ListViewItem(ChooseVars, Var, "indep", tmp.remove('>'));
+      qDebug() << varNumber << Var << tmp.remove('>');
+      ChooseVars->setRowCount(varNumber+1);
+      QTableWidgetItem *cell = new QTableWidgetItem(Var);
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      ChooseVars->setItem(varNumber, 0, cell);
+      cell = new QTableWidgetItem("indep");
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      ChooseVars->setItem(varNumber, 1, cell);
+      cell = new QTableWidgetItem(tmp.remove('>'));
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      ChooseVars->setItem(varNumber, 2, cell);
+      varNumber++;
+
     }
   } while(i > 0);
 }
@@ -774,14 +808,16 @@ void DiagramDialog::slotReadVars(int)
 // Inserts the double-clicked variable into the Graph Input Line at the
 // cursor position. If the Graph Input is empty, then the variable is
 // also inserted as graph.
-void DiagramDialog::slotTakeVar(Q3ListViewItem *Item)
+void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
 {
   GraphInput->blockSignals(true);
   if(toTake) GraphInput->setText("");
 
   int     i  = GraphInput->cursorPosition();
   QString s  = GraphInput->text();
-  QString s1 = Item->text(0);
+  //QString s1 = Item->text();
+  int row = Item->row();
+  QString s1 = ChooseVars->item(row, 0)->text();
   QFileInfo Info(defaultDataSet);
   if(ChooseData->currentText() != Info.baseName(true))
     s1 = ChooseData->currentText() + ":" + s1;
