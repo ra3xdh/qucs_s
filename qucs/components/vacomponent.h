@@ -35,7 +35,7 @@ class vacomponent : public Component
     vacomponent(QString filename);
     ~vacomponent() { };
     Component* newOne(QString filename);
-    static Element* info(QString&, char* &,
+    static Element* info(QString&, QString &,
                          bool getNewOne=false, QString filename="");
   protected:
     void createSymbol(QString filename);

@@ -24,7 +24,7 @@
 
 // function typedefs for circuits and analyses
 typedef Element * (* pInfoFunc) (QString&, char * &, bool);
-typedef Element * (* pInfoVAFunc) (QString&, char * &, bool, QString);
+typedef Element * (* pInfoVAFunc) (QString&, QString&, bool, QString);
 typedef Component * (* pCreatorFunc) ();
 
 class Module

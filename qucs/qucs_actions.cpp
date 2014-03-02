@@ -36,6 +36,7 @@
 #include "dialogs/changedialog.h"
 #include "dialogs/searchdialog.h"
 #include "dialogs/librarydialog.h"
+#include "dialogs/loaddialog.h"
 #include "dialogs/importdialog.h"
 #include "dialogs/packagedialog.h"
 #include "module.h"
@@ -1367,8 +1368,66 @@ void QucsApp::slotLoadModule()
 {
     qDebug() << "slotLoadModule";
 
-    //
+
+    LoadDialog *ld = new LoadDialog(this);
+    ld->setApp(this);
+
+    // fech list of _symbol.json
+    // fetch timestamp of VA, JSON, if VA newer, need to reload.
+
+    QString fileName ="";
+
+    QDir currentDir = QucsSettings.QucsWorkDir.absolutePath();
+
+    qDebug() << "+++++ curDir " << currentDir;
+
+    QStringList files;
+    if (fileName.isEmpty())
+        fileName = "*_symbol.json";
+    files = currentDir.entryList(QStringList(fileName),
+                                 QDir::Files | QDir::NoSymLinks);
+    qDebug() << files.join(" ");
+
+    ld->addFiles(files);
+    ld->initDialog();
+
+    // check what is already loaded, offer skip, reload
+
+    //pass stuff to ld dialog
+
+    // run, let user do the selections
+    ld->exec();
+
+    // load, unload, reload
+    // inform if symbol changed
+
+    // return what needs to be loaded
+    // reload means unload, load again
+    // populate Module::vaComponents
+
+
+    qDebug() << files.join("\n");
+
+
+    // build vaComponents map
+    for (int i = 0; i < files.size(); ++i){
+
+      //take module name
+      QString key = files.at(i).split("_").at(0);
+      qDebug() << "basename" << key;
+
+      Module::vaComponents[key]=
+              QucsSettings.QucsWorkDir.absoluteFilePath(files.at(i));
+
+    }
+
+    // TODO vaComponents should be populated with the dialog
+
+   // TODO dialog write new bitmap into JSON
+
     Module::registerDynamicComponents();
+
+    // regurns what needs to be unregistered
 
     // update the combobox,
     // pick up new category 'verilog-a user components' from `Module::category`
@@ -1377,6 +1436,8 @@ void QucsApp::slotLoadModule()
 
     //set new category into view
     // TODO
+
+    delete ld;
 }
 
 

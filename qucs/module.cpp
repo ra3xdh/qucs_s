@@ -81,9 +81,10 @@ Component * Module::getComponent (QString Model) {
   if (m) {
     QString Name;
     char * File;
+    QString vaBitmap;
     if (vaComponents.contains(Model))
       return (Component *)
-              vacomponent::info (Name, File, true, vaComponents[Model]);
+              vacomponent::info (Name, vaBitmap, true, vaComponents[Model]);
     else
       return (Component *) m->info (Name, File, true);
   }
@@ -94,24 +95,9 @@ void Module::registerDynamicComponents()
 {
     qDebug() << "Module::registerDynamicComponents()";
 
+  // vaComponents is populated in QucsApp::slotLoadModule
 
-
-    // create a persistent map to hold va modules in use
-
-
-
-  // do it elsewhere
-  // check sanity, uniqueness of keys
-  vaComponents["mypotentiometer"] =
-    "/Users/guilherme/git/qucs/va_loader_inverter_prj/mypotentiometer_symbol.json";
-
-  vaComponents["mybsim4v30pMOS"] =
-      "/Users/guilherme/git/qucs/va_loader_inverter_prj/mybsim4v30pMOS_symbol.json";
-
-  vaComponents["mybsim4v30nMOS"] =
-      "/Users/guilherme/git/qucs/va_loader_inverter_prj/mybsim4v30nMOS_symbol.json";
-
-  // later for keys in vaComponents
+  // register modules symbol and properties out of in vaComponents
   QMapIterator<QString, QString> i(vaComponents);
    while (i.hasNext()) {
      i.next();
@@ -127,18 +113,16 @@ void Module::registerDynamicComponents()
      m->infoVA = &vacomponent::info;
 
      // TODO maybe allow user load into custom category?
-
      m->category = QObject::tr("verilog-a user devices");
-
 
      // instantiation of the component once in order
      // to obtain "Model" property of the component
      //QString Name, Model;
      //char * File;
-     QString Name, Model;
-     char * File;
+     QString Name, Model, vaBitmap;
+//     char * File;
      Component * c = (Component *)
-             vacomponent::info (Name, File, true, vaComponents[i.key()]);
+             vacomponent::info (Name, vaBitmap, true, vaComponents[i.key()]);
      Model = c->Model;
      delete c;
 

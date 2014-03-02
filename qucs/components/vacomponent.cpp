@@ -83,9 +83,13 @@ Component *vacomponent::newOne(QString filename)
 }
 
 /*
+ * Get module name, bitmap
+ * if getNewOne set, return new object based on JSON file
  *
+ * TODO
+ * - name, bitmapfile are not really needed for vacoponent, remove
  */
-Element *vacomponent::info(QString &Name, char *&BitmapFile,
+Element *vacomponent::info(QString &Name, QString &BitmapFile,
                            bool getNewOne, QString filename)
 {
   // get variables out of file
@@ -94,11 +98,13 @@ Element *vacomponent::info(QString &Name, char *&BitmapFile,
   QScriptEngine engine;
   QScriptValue vadata = engine.evaluate("(" + data + ")");
 
-  Name  = getDouble(vadata, "Name");
+  Name  = getString(vadata, "Model");
 
   // TODO let user change this, only used to populate the dock
   // use clemens stuff to render out of symbol paintings?
-  BitmapFile = (char *) "VAimage";
+//  BitmapFile = (char *) "VAimage";
+  // Default is [modulename]
+  BitmapFile  = getString(vadata, "BitmapFile");
 
   if(getNewOne) return new vacomponent(filename);
   return 0;

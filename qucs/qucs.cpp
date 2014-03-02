@@ -640,31 +640,41 @@ void QucsApp::slotSetCompView (int index)
   // if something was registered dynamicaly, get and draw icons into dock
   if (item == QObject::tr("verilog-a user devices")) {
 
-    // need to populate from vaComponents
-    // cannot use ordinary ->info below, need to know JSON
-    // fetch bitmap path from JSON or,
-    // provide default icon or,
-    // use Clemens stuff to bitmap of the symbol itself
-
-    // TODO test if bitmap exists, otherwise use default icon
-
-    QMap<QString, QString> vaBitmaps;
-
-    vaBitmaps["mypotentiometer"] =
-      "/Users/guilherme/git/qucs/va_loader_inverter_prj/mypotentiometer.png";
-    vaBitmaps["mybsim4v30pMOS"] =
-      "/Users/guilherme/git/qucs/va_loader_inverter_prj/mybsim4v30pMOS.png";
-    vaBitmaps["mybsim4v30nMOS"] =
-      "/Users/guilherme/git/qucs/va_loader_inverter_prj/mybsim4v30nMOS.png";
-
     QListWidgetItem *icon;
     QMapIterator<QString, QString> i(Module::vaComponents);
     while (i.hasNext()) {
       i.next();
-      Name = "mypotentiometer"; // goes under icon
-      Name = i.key();
 
-      icon = new QListWidgetItem(QPixmap(vaBitmaps[Name]), Name);
+      // default icon initally matches the module name
+      //Name = i.key();
+
+      // Just need path to bitmap, do not create an object
+      QString Name, vaBitmap;
+      Component * c = (Component *)
+              vacomponent::info (Name, vaBitmap, false, i.value());
+      if (c) delete c;
+
+      // check if icon exists, fall back to default
+      QString iconPath = QucsSettings.QucsWorkDir.filePath(Name+".png");
+
+      QFile iconFile(iconPath);
+      QPixmap vaIcon;
+
+      if(iconFile.exists())
+      {
+        // load bitmap defined on the JSON symbol file
+        vaIcon = QPixmap(iconPath);
+      }
+      else
+      {
+        QMessageBox::information(this, tr("Info"),
+                     tr("Default icon not found:\n %1.png").arg(vaBitmap));
+        // default icon
+        vaIcon = QPixmap(":/bitmaps/editdelete.png");
+      }
+
+      // Add icon an name tag to dock
+      icon = new QListWidgetItem(vaIcon, Name);
       icon->setToolTip(Name);
       CompComps->addItem(icon);
     }
@@ -741,8 +751,8 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
     QString name = CompComps->item(i)->toolTip();
     QString filename = Module::vaComponents[name];
 
-    char * Dummy2;
     QString Dummy1;
+    QString Dummy2;
     if (InfosVA) {
       qDebug() <<  " slotSelectComponent, view->selElem" ;
       view->selElem = (*InfosVA) (Dummy1, Dummy2, true, filename);
