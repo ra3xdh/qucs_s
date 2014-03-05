@@ -419,36 +419,23 @@ int Schematic::saveDocument()
       saveSymbolCpp ();
       saveSymbolJSON ();
 
-      // TODO
-      qDebug() << "  -> Run adms";
-
-      /*
-       * - run adms, generate _props.json
-       *  - QProcess to run make
-       *  - keep messages for error catch
-       *
-       * - load both files
-       *  - Merge _props.json into _sym.json
-       *
-       */
-
-//      QString proj = "/Users/guilherme/git/qucs/va_loader_inverter_prj";
-//      QString adms = "/Users/guilherme/local/qucs-master/bin/admsXml";
-
-      QString Program;
-      QString workDir;
-      QStringList Arguments;
+      // TODO slit this into another method, or merge into saveSymbolJSON
+      // handle errors in separate
+      qDebug() << "  -> Run adms for symbol";
 
       QString vaFile;
 
-      QString prefix = "/Users/guilherme/local/qucs-cmake-dylib/";
+      QDir prefix = QDir(QucsSettings.BinDir);
 
-      QString include = prefix+"include/qucs-core/";
+      QDir include = QDir(QucsSettings.BinDir+"../include/qucs-core");
 
-      Program = prefix+"/bin/admsXml";
+#ifdef __MINGW32__
+      QString Program = prefix.absFilePath("admsXml.exe");
+#else
+      QString Program = prefix.absFilePath("admsXml");
+#endif
 
-
-      workDir = QucsSettings.QucsWorkDir.absolutePath();
+      QString workDir = QucsSettings.QucsWorkDir.absolutePath();
 
       qDebug() << "App path : " << qApp->applicationDirPath();
       qDebug() << "workdir"  << workDir;
@@ -456,8 +443,9 @@ int Schematic::saveDocument()
 
       vaFile = QucsSettings.QucsWorkDir.filePath(fileBase()+".va");
 
+      QStringList Arguments;
       Arguments << vaFile
-                << "-e" << include+"qucsMODULEguiJSONsymbol.xml"
+                << "-e" << include.absFilePath("qucsMODULEguiJSONsymbol.xml")
                 << "-A" << "dyload";
 
 //      QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
@@ -465,11 +453,12 @@ int Schematic::saveDocument()
 
       QFile file(Program);
       if ( !file.exists() ){
-        qDebug() << (tr("ERROR: Program not found: %1").arg(Program));
-//        return;
+        QMessageBox::critical(this, tr("Error"),
+                              tr("Program not found: %1").arg(Program));
+        return -1;
       }
 
-      qDebug() << Program << Arguments.join(" ");
+      qDebug() << "command: " << Program << Arguments.join(" ");
 
       // need to cd into project to run admsXml?
       QDir::setCurrent(workDir);
@@ -480,15 +469,21 @@ int Schematic::saveDocument()
       builder.start(Program, Arguments);
 
 
-      // how to capture [warning]? need to modify admsXml
-      if (!builder.waitForFinished())
-          qDebug() << "Make failed:" << builder.errorString();
+      // how to capture [warning]? need to modify admsXml?
+      // TODO put stdout, stderr into a dock window, not messagebox
+      if (!builder.waitForFinished()) {
+//            qDebug() << "Make failed:" << builder.errorString();
+        QMessageBox::critical(this, tr("Error"),
+                                builder.errorString());
+      }
       else {
-          qDebug() << "Make output:" << builder.readAll();
-          qDebug() << "Make stdout"  << builder.readAllStandardOutput();
+//          qDebug() << "Make output:" << builder.readAll();
+//          qDebug() << "Make stdout"  << builder.readAllStandardOutput();
+        QMessageBox::information(this, tr("Error"),
+                                 builder.readAll());
       }
 
-      // Append _sym.json into _props.json
+      // Append _sym.json into _props.json, save into _symbol.json
       QFile f1(QucsSettings.QucsWorkDir.filePath(fileBase()+"_props.json"));
       QFile f2(QucsSettings.QucsWorkDir.filePath(fileBase()+"_sym.json"));
       f1.open(QIODevice::ReadOnly | QIODevice::Text);

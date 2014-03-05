@@ -1471,15 +1471,16 @@ void QucsApp::slotBuildModule()
 {
     qDebug() << "slotBuildModule";
 
-
     QString Program = "make";
-    QStringList Arguments;
 
-    QString prefix = "/Users/guilherme/local/qucs-cmake-dylib/";
+    QDir prefix = QDir(QucsSettings.BinDir+"../");
+
+    QDir include = QDir(QucsSettings.BinDir+"../include/qucs-core");
 
     QString workDir = QucsSettings.QucsWorkDir.absolutePath();
 
     // need to cd into project to make sure output is droped there?
+    // need to cd - into previous location?
     QDir::setCurrent(workDir);
 
     QProcess builder;
@@ -1489,11 +1490,12 @@ void QucsApp::slotBuildModule()
     QucsDoc *Doc = getDoc();
     QString vaModule = Doc->fileBase(Doc->DocName);
 
-    Arguments << "-f" <<  "va2cpp.makefile"
-              << QString("PREFIX=%1").arg(prefix)
+
+    // build C++
+    QStringList Arguments;
+    Arguments << "-f" <<  include.absoluteFilePath("va2cpp.makefile")
+              << QString("PREFIX=%1").arg(prefix.absolutePath())
               << QString("MODEL=%1").arg(vaModule);
-
-
 
     builder.start(Program, Arguments);
 
@@ -1510,9 +1512,10 @@ void QucsApp::slotBuildModule()
 
     Arguments.clear();
 
-    Arguments << "-f" <<  "cpp2lib.makefile"
-              << QString("PREFIX=%1").arg(prefix)
-              << QString("MODEL=%1").arg(vaModule);
+    Arguments << "-f" <<  include.absoluteFilePath("cpp2lib.makefile")
+              << QString("MODEL=%1").arg(vaModule)
+              << QString("PREFIX=%1").arg(prefix.absolutePath())
+              << QString("PROJDIR=%1").arg(workDir);
 
     builder.start(Program, Arguments);
 
@@ -1522,7 +1525,4 @@ void QucsApp::slotBuildModule()
         qDebug() << "Make output:" << builder.readAll();
         qDebug() << "Make stdout"  << builder.readAllStandardOutput();
     }
-
-
-
 }
