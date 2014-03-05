@@ -1368,35 +1368,47 @@ void QucsApp::slotLoadModule()
 {
     qDebug() << "slotLoadModule";
 
-
     LoadDialog *ld = new LoadDialog(this);
     ld->setApp(this);
 
     // fech list of _symbol.json
     // fetch timestamp of VA, JSON, if VA newer, need to reload.
 
-    QString fileName ="";
-
-    QDir currentDir = QucsSettings.QucsWorkDir.absolutePath();
-
-    qDebug() << "+++++ curDir " << currentDir;
+    QDir projDir = QucsSettings.QucsWorkDir.absolutePath();
 
     QStringList files;
-    if (fileName.isEmpty())
-        fileName = "*_symbol.json";
-    files = currentDir.entryList(QStringList(fileName),
-                                 QDir::Files | QDir::NoSymLinks);
-    qDebug() << files.join(" ");
+    QString fileSuffix = "*_symbol.json";
 
-    ld->addFiles(files);
+    files = projDir.entryList(QStringList(fileSuffix),
+                                 QDir::Files | QDir::NoSymLinks);
+
+    // no JSON files or no a project?
+    if (!files.size()){
+        QMessageBox::critical(this, tr("Error"),
+                     tr("Symbol files not found in: %1\n\n"
+                        "Is the project open?\n"
+                        "Have you saved the Verilog-A symbols?")
+                       .arg(QString(projDir.absolutePath())));
+        return;
+    }
+
+    // initialize dialog
+
+    // pass list of potential symbol files
+    ld->symbolFiles << files;
+    ld->projDir = projDir;
     ld->initDialog();
 
-    // check what is already loaded, offer skip, reload
+
+
+    // TODO check what is already loaded, offer skip, reload
 
     //pass stuff to ld dialog
-
     // run, let user do the selections
-    ld->exec();
+
+    if (ld->exec() == QDialog::Accepted)
+      Module::vaComponents = ld->selectedComponents;
+    delete ld;
 
     // load, unload, reload
     // inform if symbol changed
@@ -1405,39 +1417,43 @@ void QucsApp::slotLoadModule()
     // reload means unload, load again
     // populate Module::vaComponents
 
-
-    qDebug() << files.join("\n");
-
-
+    // vaComponents are selected with the dialog
+    // dialog should populate acording to checkboxes
     // build vaComponents map
-    for (int i = 0; i < files.size(); ++i){
-
-      //take module name
-      QString key = files.at(i).split("_").at(0);
-      qDebug() << "basename" << key;
-
-      Module::vaComponents[key]=
-              QucsSettings.QucsWorkDir.absoluteFilePath(files.at(i));
-
-    }
-
-    // TODO vaComponents should be populated with the dialog
-
-   // TODO dialog write new bitmap into JSON
-
-    Module::registerDynamicComponents();
-
     // regurns what needs to be unregistered
 
-    // update the combobox,
+    // dialog write new bitmap into JSON
+
+    // remove all before registering again
+    // look for modules in the category,
+    // TODO investigate if it is leaking objects somewhere
+    QStringList remove;
+    Q3DictIterator<Module> it( Module::Modules );
+     for( ; it.current(); ++it ){
+         if (it.current()->category == QObject::tr("verilog-a user devices"))
+             remove << it.currentKey();
+     }
+     for (int i = 0; i < remove.size(); ++i){
+//         qDebug() << remove.at(i);
+         Module::Modules.remove(remove.at(i));
+     }
+
+    if (! Module::vaComponents.isEmpty()) {
+      // Register whatever is in Module::vaComponents
+      Module::registerDynamicComponents();
+
+    // update the combobox, set new category in view
     // pick up new category 'verilog-a user components' from `Module::category`
     // draw icons of dynamically registered components
-    QucsApp::fillComboBox(true);
+      //set new category into view
+      // TODO
 
-    //set new category into view
-    // TODO
+      QucsApp::fillComboBox(true);
+      CompChoose->setCurrentItem(CompChoose->count()-1);
+      slotSetCompView(CompChoose->count()-1);
+    }
 
-    delete ld;
+
 }
 
 

@@ -273,7 +273,7 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
 {
   if(selElem == 0) return;
 
-  qDebug() << "MMoveElement got selElem";
+//  qDebug() << "MMoveElement got selElem";
 
   int x  = Event->pos().x();
   int y  = Event->pos().y();
@@ -303,7 +303,7 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
   if(drawn) selElem->paintScheme(Doc); // erase old scheme
   drawn = true;
 
-  Component *comp = (Component*)selElem;
+//  Component *comp = (Component*)selElem;
   //qDebug() << "desc" << comp->Description << "gx" << gx << "gy" << gy;
 
   selElem->setCenter(gx, gy);
@@ -980,7 +980,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent*, float fX, float fY)
 // -----------------------------------------------------------
 void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, float fY)
 {
-    qDebug() << "MPressSelect";
+//    qDebug() << "MPressSelect";
   bool Ctrl;
   if(Event->state() & Qt::ControlModifier) Ctrl = true;
   else Ctrl = false;
@@ -1272,7 +1272,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
   int x1, y1, x2, y2, rot;
   if(selElem->Type & isComponent) {
     Component *Comp = (Component*)selElem;
-    qDebug() << "+-+ got to switch:" << Comp->Name;
+//    qDebug() << "+-+ got to switch:" << Comp->Name;
     QString entryName = Comp->Name;
 
     switch(Event->button()) {
@@ -1287,7 +1287,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
 	if(Comp->tx < Comp->x1) Comp->tx -= x2 - x1;
 
     // Note: insertCopmponents does increment  name1 -> name2
-    qDebug() << "  +-+ got to insert:" << Comp->Name;
+//    qDebug() << "  +-+ got to insert:" << Comp->Name;
 
 	// enlarge viewarea if component lies outside the view
 	Comp->entireBounds(x1,y1,x2,y2, Doc->textCorr());
@@ -1302,7 +1302,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
 //    QucsApp::CompChoose;
     if (Module::vaComponents.contains(entryName)){
       QString filename = Module::vaComponents[entryName];
-      qDebug() << "   ===+ recast";
+//      qDebug() << "   ===+ recast";
       Comp = dynamic_cast<vacomponent*>(Comp)->newOne(filename); //va component
       qDebug() << "   => recast = Comp;" << Comp->Name;
     }
@@ -1324,7 +1324,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
 
       default: ;   // avoids compiler warnings
     }
-    qDebug() << "   => selElem = Comp;" << Comp->Name;
+//    qDebug() << "   => selElem = Comp;" << Comp->Name;
     // comp it geting empty
     selElem = Comp;
     return;
@@ -1908,11 +1908,11 @@ void MouseActions::MReleaseZoomIn(Schematic *Doc, QMouseEvent *Event)
 // ***********************************************************************
 void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
 {
-    qDebug() << "+double click, editElement";
+//    qDebug() << "+double click, editElement";
 
   if(focusElement == 0) return;
 
-  qDebug() << "+focusElement->Type" << focusElement->Type;
+//  qDebug() << "+focusElement->Type" << focusElement->Type;
 
   Graph *pg;
   Component *c;
@@ -1929,7 +1929,7 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
     case isAnalogComponent:
     case isDigitalComponent:
          c = (Component*)focusElement;
-         qDebug() << "cast focusElement into" << c->Name;
+//         qDebug() << "cast focusElement into" << c->Name;
          if(c->Model == "GND") return;
 
          if(c->Model == "SPICE") {

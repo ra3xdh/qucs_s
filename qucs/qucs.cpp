@@ -604,7 +604,7 @@ void QucsApp::fillComboBox (bool setAll)
 // Component IconView with the appropriate components.
 void QucsApp::slotSetCompView (int index)
 {
-  qDebug() << "QucsApp::slotSetCompView (int index)";
+//  qDebug() << "QucsApp::slotSetCompView (int index)";
 
   editText->setHidden (true); // disable text edit of component property
 
@@ -655,7 +655,7 @@ void QucsApp::slotSetCompView (int index)
       if (c) delete c;
 
       // check if icon exists, fall back to default
-      QString iconPath = QucsSettings.QucsWorkDir.filePath(Name+".png");
+      QString iconPath = QucsSettings.QucsWorkDir.filePath(vaBitmap+".png");
 
       QFile iconFile(iconPath);
       QPixmap vaIcon;

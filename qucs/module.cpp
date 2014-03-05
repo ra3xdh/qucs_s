@@ -95,6 +95,7 @@ void Module::registerDynamicComponents()
 {
     qDebug() << "Module::registerDynamicComponents()";
 
+
   // vaComponents is populated in QucsApp::slotLoadModule
 
   // register modules symbol and properties out of in vaComponents
@@ -102,7 +103,7 @@ void Module::registerDynamicComponents()
    while (i.hasNext()) {
      i.next();
 
-     qDebug() << i.key() << ": " << i.value() << endl;
+//     qDebug() << i.key() << ": " << i.value() << endl;
 
      Module * m = new Module ();
 
@@ -131,13 +132,6 @@ void Module::registerDynamicComponents()
 
      if (!Modules.find (Model))
          Modules.insert (Model, m);
-
-
-
-
-     if (vaComponents.contains("mypotentiometer")) {
-         qDebug() << "Do something!";
-     }
 
    } // while
 }

@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui>
+
 #include "vacomponent.h"
 
 vacomponent::vacomponent(QString filename)
@@ -204,7 +206,7 @@ void vacomponent::createSymbol(QString filename)
     */
 
     if (!type.compare("ellipsearc")) {
-      qDebug() << "ellipsearc?" << type;
+//      qDebug() << "ellipsearc?" << type;
       x = getDouble(entry, "x");
       y = getDouble(entry, "y");
       w = getDouble(entry, "w");
@@ -241,7 +243,7 @@ void vacomponent::createSymbol(QString filename)
     }
 
     if (!type.compare("arrow")) {
-      qDebug() << "arrow?" << type;
+//      qDebug() << "arrow?" << type;
       x1 = getDouble(entry, "x1");
       y1 = getDouble(entry, "y1");
       x2 = getDouble(entry, "x2");
@@ -270,9 +272,9 @@ QString getData(QString filename)
   // Try to open the JSON file
   QFile file(filename);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    qDebug() << "Bad JSON file: " << filename;
     // TODO handle the error
-    return QString("Bad JSON");
+    QMessageBox::critical(0, QObject::tr("Error"),
+                          QObject::tr("File not found: %1").arg(filename));
   }
 
   // Stream-in the file
