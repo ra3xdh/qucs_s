@@ -1406,53 +1406,54 @@ void QucsApp::slotLoadModule()
     //pass stuff to ld dialog
     // run, let user do the selections
 
-    if (ld->exec() == QDialog::Accepted)
+    if (ld->exec() == QDialog::Accepted) {
+
       Module::vaComponents = ld->selectedComponents;
-    delete ld;
 
-    // load, unload, reload
-    // inform if symbol changed
+      // load, unload, reload
+      // inform if symbol changed
 
-    // return what needs to be loaded
-    // reload means unload, load again
-    // populate Module::vaComponents
+      // return what needs to be loaded
+      // reload means unload, load again
+      // populate Module::vaComponents
 
-    // vaComponents are selected with the dialog
-    // dialog should populate acording to checkboxes
-    // build vaComponents map
-    // regurns what needs to be unregistered
+      // vaComponents are selected with the dialog
+      // dialog should populate acording to checkboxes
+      // build vaComponents map
+      // regurns what needs to be unregistered
 
-    // dialog write new bitmap into JSON
+      // dialog write new bitmap into JSON
 
-    // remove all before registering again
-    // look for modules in the category,
-    // TODO investigate if it is leaking objects somewhere
-    QStringList remove;
-    Q3DictIterator<Module> it( Module::Modules );
-     for( ; it.current(); ++it ){
-         if (it.current()->category == QObject::tr("verilog-a user devices"))
-             remove << it.currentKey();
-     }
-     for (int i = 0; i < remove.size(); ++i){
-//         qDebug() << remove.at(i);
-         Module::Modules.remove(remove.at(i));
-     }
+      // remove all before registering again
+      // look for modules in the category,
+      // TODO investigate if it is leaking objects somewhere
+      QStringList remove;
+      Q3DictIterator<Module> it( Module::Modules );
+      for( ; it.current(); ++it ){
+        if (it.current()->category == QObject::tr("verilog-a user devices"))
+          remove << it.currentKey();
+      }
+      for (int i = 0; i < remove.size(); ++i){
+        Module::Modules.remove(remove.at(i));
+      }
 
-    if (! Module::vaComponents.isEmpty()) {
-      // Register whatever is in Module::vaComponents
-      Module::registerDynamicComponents();
+      if (! Module::vaComponents.isEmpty()) {
+        // Register whatever is in Module::vaComponents
+        Module::registerDynamicComponents();
 
-    // update the combobox, set new category in view
-    // pick up new category 'verilog-a user components' from `Module::category`
-    // draw icons of dynamically registered components
-      //set new category into view
-      // TODO
+        // update the combobox, set new category in view
+        // pick up new category 'verilog-a user components' from `Module::category`
+        // draw icons of dynamically registered components
+        //set new category into view
+        // TODO
 
-      QucsApp::fillComboBox(true);
-      CompChoose->setCurrentItem(CompChoose->count()-1);
-      slotSetCompView(CompChoose->count()-1);
+        QucsApp::fillComboBox(true);
+        CompChoose->setCurrentItem(CompChoose->count()-1);
+        slotSetCompView(CompChoose->count()-1);
+      }
     }
 
+    delete ld;
 
 }
 
