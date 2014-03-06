@@ -1548,7 +1548,9 @@ Component* getComponentFromName(QString& Line, Schematic* p)
 
   if(!c) {
     QMessageBox::critical(0, QObject::tr("Error"),
-	QObject::tr("Format Error:\nUnknown component!\n%1").arg(cstr));
+	QObject::tr("Format Error:\nUnknown component!\n"
+                "%1\n\n"
+                "Do you make use of loadable components?").arg(cstr));
     return 0;
   }
 
