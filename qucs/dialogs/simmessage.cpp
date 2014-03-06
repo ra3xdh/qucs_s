@@ -32,6 +32,7 @@ using namespace std;
 
 #include "simmessage.h"
 #include "main.h"
+#include "module.h"
 #include "qucs.h"
 #include "textdoc.h"
 #include "schematic.h"
@@ -136,11 +137,11 @@ bool SimMessage::startProcess()
     arg(QDate::currentDate().toString("ddd dd. MMM yyyy")).
     arg(QTime::currentTime().toString("hh:mm:ss:zzz"));
   ProgText->insert(txt + "\n\n");
-  
+
   SimProcess.blockSignals(false);
  /* On Qt4 it shows as running even before we .start it. FIXME*/
   if(SimProcess.state()==QProcess::Running ||SimProcess.state()==QProcess::Starting) {
-    qDebug() << "running!";  
+    qDebug() << "running!";
     ErrText->insert(tr("ERROR: Simulator is still running!"));
     FinishSimulation(-1);
     return false;
@@ -176,17 +177,17 @@ bool SimMessage::startProcess()
                        SLOT(slotReadSpiceNetlist()));
   connect(&SimProcess, SIGNAL(finished(int)),
                        SLOT(slotFinishSpiceNetlist(int)));
- 
+
   nextSPICE();
   return true;
   // Since now, the Doc pointer may be obsolete, as the user could have
   // closed the schematic !!!
 }
-  
+
 // ---------------------------------------------------
 // Converts a spice netlist into Qucs format and outputs it.
 void SimMessage::nextSPICE()
-{ 
+{
   QString Line;
   for(;;) {  // search for next SPICE component
     Line = *(Collect.begin());
@@ -231,7 +232,7 @@ void SimMessage::nextSPICE()
 
   if(makeSubcircuit) {
     Stream << "\n.Def:" << properName(FileName) << " ";
-  
+
     Line.replace(',', ' ');
     Stream << Line;
     if(!Line.isEmpty()) Stream << " _ref";
@@ -239,10 +240,10 @@ void SimMessage::nextSPICE()
   Stream << "\n";
 
   ProgressText = "";
-  
+
   qDebug() << "start QucsConv" << prog << com.join(" ");
   SimProcess.start(prog, com);
-  
+
   if(!SimProcess.Running) {
     ErrText->insert(tr("ERROR: Cannot start QucsConv!"));
     FinishSimulation(-1);
@@ -344,7 +345,7 @@ void SimMessage::startSimulator()
     // Take VHDL file in memory as it could contain unsaved changes.
     Stream << Doc->text();
     NetlistFile.close();
-    ProgText->insert(tr("done.")+"\n");  // of "creating netlist... 
+    ProgText->insert(tr("done.")+"\n");  // of "creating netlist...
 
     // Simulation.
     if (Doc->simulation) {
@@ -438,26 +439,35 @@ void SimMessage::startSimulator()
 	     << "endmodule // TestBench\n";
     }
     NetlistFile.close();
-    ProgText->insert(tr("done.")+"\n");  // of "creating netlist... 
+    ProgText->insert(tr("done.")+"\n");  // of "creating netlist...
 
     if(SimPorts < 0) {
       if((SimOpt = findOptimization((Schematic*)DocWidget))) {
 	    ((Optimize_Sim*)SimOpt)->createASCOnetlist();
-	    Program = QucsSettings.AscoDir + "asco"+ executablePostfix; 
+	    Program = QucsSettings.AscoDir + "asco"+ executablePostfix;
         Arguments << "-qucs" << QucsSettings.QucsHomeDir.filePath("asco_netlist.txt")
                   << "-o" << "asco_out";
       }
       else {
 	    Program = QucsSettings.BinDir + "qucsator" + executablePostfix;
 
-        Arguments << "-b" << "-g" << "-i" 
+        Arguments << "-b" << "-g" << "-i"
                   << QucsSettings.QucsHomeDir.filePath("netlist.txt")
                   << "-o" << DataSet;
+
+        if (! Module::vaComponents.isEmpty()) {
+//            qDebug() << "--> pass to qucsator: " << Module::vaComponents.keys();
+
+            Arguments << "-p" << QucsSettings.QucsWorkDir.absolutePath()
+                      << "-m" << Module::vaComponents.keys();
+        }
+
+        qDebug() << "Command :" << Program << Arguments.join(" ");
       }
     } else {
       if (isVerilog) {
           Program = pathName(QucsSettings.BinDir + QucsVeri);
-		  Arguments << "netlist.txt" << DataSet 
+		  Arguments << "netlist.txt" << DataSet
                     << SimTime << pathName(SimPath)
                     << pathName(QucsSettings.BinDir) << "-c";
       } else {
@@ -484,19 +494,19 @@ void SimMessage::startSimulator()
   waitForUpdate = false;
 #endif
   wasLF = false;
-  
+
   ProgressText = "";
-  
-#ifdef __MINGW32__  
+
+#ifdef __MINGW32__
   QString sep(";"); // path separator
-#else  
+#else
   QString sep(":");
 #endif
-  
-  // append process PATH 
+
+  // append process PATH
   QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
   env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
-  SimProcess.setProcessEnvironment(env); 
+  SimProcess.setProcessEnvironment(env);
   QFile file(Program);
   if ( !file.exists() ){
     ErrText->insert(tr("ERROR: Program not found: %1").arg(Program));
@@ -505,15 +515,15 @@ void SimMessage::startSimulator()
   }
   else
     file.close();
-  
+
   SimProcess.start(Program, Arguments); // launch the program
-  
+
   if(!SimProcess.Running) {
     ErrText->insert(tr("ERROR: Cannot start simulator!"));
     FinishSimulation(-1);
     return;
   }
-	
+
 }
 
 // ------------------------------------------------------------------------
@@ -584,14 +594,14 @@ void SimMessage::slotUpdateProgressBar()
 void SimMessage::slotDisplayErr()
 {
   QTextCursor cursor = ErrText->textCursor();
-  cursor.movePosition(QTextCursor::End);  
+  cursor.movePosition(QTextCursor::End);
   ErrText->insert(QString(SimProcess.readAllStandardError()));
 }
 
 // ------------------------------------------------------------------------
 // Is called when the simulation process terminates.
 void SimMessage::slotSimEnded(int status)
-{ 
+{
   FinishSimulation(status); //0 - normal  | 1 - crash
 }
 
