@@ -260,12 +260,14 @@ void Ellipse::MouseMoving(
 	Schematic *p, int x, int y, bool drawn)
 {
   if(State > 0) {
-    if(State > 1)
-      paintScale->PostPaintEvent(_Ellipse, x1, y1, x2-x1, y2-y1); // erase old painting
+//    FIXME bug 141
+//    if(State > 1)
+//      paintScale->PostPaintEvent(_Ellipse, x1, y1, x2-x1, y2-y1); // erase old painting
     State++;
     x2 = gx;
     y2 = gy;
-    paintScale->PostPaintEvent(_Ellipse, x1, y1, x2-x1, y2-y1);  // paint new painting
+//    FIXME bug 141
+//    paintScale->PostPaintEvent(_Ellipse, x1, y1, x2-x1, y2-y1);  // paint new painting
   }
   else { x2 = gx; y2 = gy; }
 
