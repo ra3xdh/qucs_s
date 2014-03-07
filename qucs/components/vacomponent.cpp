@@ -182,8 +182,6 @@ void vacomponent::createSymbol(QString filename)
     }
 
     if (!type.compare("rectangle")) {
-
-
       x = getDouble(entry, "x");
       y = getDouble(entry, "y");
       w = getDouble(entry, "w");
@@ -191,23 +189,33 @@ void vacomponent::createSymbol(QString filename)
       color = getString(entry, "color");
       thick = getDouble(entry, "thick");
       style = getString(entry, "style");
-//      colorfill = getString(entry, "colorfill");
-//      stylefill = getString(entry, "stylefill");
+      colorfill = getString(entry, "colorfill");
+      stylefill = getString(entry, "stylefill");
 
-      // TODO pass pen/brush to paint filled areas
       Rects.append (new Area (x, y, w, h,
-                        QPen (QColor (color), thick, Qt::SolidLine)));
+                        QPen (QColor (color), thick, penMap.value(style)),
+                        QBrush(QColor (colorfill), brushMap.value(stylefill))
+                        ));
     }
 
-    /* TODO ellipse
-    if  () {
+    if (!type.compare("ellipse")) {
+      x = getDouble(entry, "x");
+      y = getDouble(entry, "y");
+      w = getDouble(entry, "w");
+      h = getDouble(entry, "h");
+      color = getString(entry, "color");
+      thick = getDouble(entry, "thick");
+      style = getString(entry, "style");
+      colorfill = getString(entry, "colorfill");
+      stylefill = getString(entry, "stylefill");
 
-
+      Ellips.append (new Area (x, y, w, h,
+                         QPen (QColor (color), thick, penMap.value(style)),
+                         QBrush(QColor (colorfill), brushMap.value(stylefill))
+                         ));
     }
-    */
 
     if (!type.compare("ellipsearc")) {
-//      qDebug() << "ellipsearc?" << type;
       x = getDouble(entry, "x");
       y = getDouble(entry, "y");
       w = getDouble(entry, "w");
@@ -216,13 +224,10 @@ void vacomponent::createSymbol(QString filename)
       arclen = getDouble(entry, "arclen");
       color = getString(entry, "color");
       thick = getDouble(entry, "thick");
-//      style = getString(entry, "style");
-//      colorfill = getString(entry, "colorfill");
-//      stylefill = getString(entry, "stylefill");
+      style = getString(entry, "style");
 
-      // TODO pass pen/brush to paint filled areas
       Arcs.append (new Arc (x, y, w, h, angle, arclen,
-                       QPen (QColor (color), thick, Qt::SolidLine)));
+                       QPen (QColor (color), thick, penMap.value(style))));
     }
 
     if (!type.compare("portsymbol")) {
@@ -244,7 +249,6 @@ void vacomponent::createSymbol(QString filename)
     }
 
     if (!type.compare("arrow")) {
-//      qDebug() << "arrow?" << type;
       x1 = getDouble(entry, "x1");
       y1 = getDouble(entry, "y1");
       x2 = getDouble(entry, "x2");
