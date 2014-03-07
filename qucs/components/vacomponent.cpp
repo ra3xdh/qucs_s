@@ -78,7 +78,8 @@ vacomponent::vacomponent(QString filename)
 Component *vacomponent::newOne(QString filename)
 {
   vacomponent * p = new vacomponent(filename);
-  p->Props.getFirst()->Value = Props.getFirst()->Value;
+  if (Props.count())
+      p->Props.getFirst()->Value = Props.getFirst()->Value;
   p->recreate(0);
   return p;
 
