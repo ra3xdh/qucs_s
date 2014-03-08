@@ -45,7 +45,7 @@ http://qucs.sourceforge.net/
 
 \subsection email Email
 If you have any suggestions concerning this documentation, do not hesitate to send suggestions to
-qucs-devel (see <kbd>http://qucs.sourceforge.net/contact.shtml</kbd> for details)
+qucs-devel (see <kbd>http://qucs.sourceforge.net/contact.html</kbd> for details)
 
 \author
 Guilherme Brondani Torri  (mailto:guitorri@gmail.com)
