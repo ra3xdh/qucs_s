@@ -19,14 +19,22 @@
 
 #include "vacomponent.h"
 
+/*!
+ * \file vacomponent.cpp
+ * \brief Implementation of the vacomponent class.
+ */
+
+
+/*!
+ * \brief vacomponent::vacomponent
+ * \param filename File (JSON) containing the symbol paintins and properties.
+ */
 vacomponent::vacomponent(QString filename)
 {
-  //qDebug() << "vacomponent built from: " << filename;
-
   QString data = getData(filename);
 
-  // TODO check if JSON is error free?!
-  // TODO Need to destroy enginte??
+  /// \todo check if JSON is error free
+  /// \todo Need to destroy engine?
   QScriptEngine engine;
   QScriptValue vadata = engine.evaluate("(" + data + ")");
 
@@ -36,28 +44,28 @@ vacomponent::vacomponent(QString filename)
 
   QScriptValueIterator it(entries);
 
-  // Props.append;
   while (it.hasNext()) {
     it.next();
-    //qDebug() << "prop" << it.value().toString();
 
     QScriptValue entry = it.value();
 
     // skip length named iterate
     if (it.name().compare("length")) {
-      //qDebug() << it.name() << ": " << it.value().toString();
       QString name = getString(entry, "name");
       QString value = getString(entry, "value");
       QString display = getString(entry, "display");
       QString desc = getString(entry, "desc");
       // QString unit = getString(entry, "unit");
 
-      // TODO append units to description
+      /// \todo append units to description
+
       bool show;
       if (!display.compare("false"))
         show = false;
       else
         show = true;
+
+      /// \todo what if there are no properties?
 
       Props.append (new Property (name, value, show, desc));
     }
@@ -68,13 +76,17 @@ vacomponent::vacomponent(QString filename)
   Model = getString(vadata, "Model");
   Name  = getString(vadata, "SymName");
 
-  //qDebug() << "Model, Name: " << Model << Name;
-
+  /// TODO adjust location of text
   tx = x1+100;
   ty = y1+20;
 }
 
-// used by mouseactions to drop new items into the schematic
+/*!
+ * \brief vacomponent::newOne is used to mouse drop new items into the schematic.
+ * \param filename File (JSON) containing the symbol paintins and properties.
+ * \return \a Component based on the \p filename
+ *  Used by mouseactions to drop new items into the schematic.
+ */
 Component *vacomponent::newOne(QString filename)
 {
   vacomponent * p = new vacomponent(filename);
@@ -85,12 +97,15 @@ Component *vacomponent::newOne(QString filename)
 
 }
 
-/*
- * Get module name, bitmap
- * if getNewOne set, return new object based on JSON file
- *
- * TODO
- * - name, bitmapfile are not really needed for vacoponent, remove
+/*!
+ * \brief vacomponent::info is used to either get informatio or create objects.
+ * \param Name Model name, returned by reference
+ * \param BitmapFile Bitmap file for the dock, returned by reference
+ * \param getNewOne if set return new object based on JSON file
+ * \param filename File (JSON) containing the symbol paintins and properties.
+ * \return Null or a new \a Element if \p getNewOne is true
+ * Used to get \p Name and \p BitmapFile.
+ * It can also create new objects from symbol file.
  */
 Element *vacomponent::info(QString &Name, QString &BitmapFile,
                            bool getNewOne, QString filename)
@@ -103,19 +118,19 @@ Element *vacomponent::info(QString &Name, QString &BitmapFile,
 
   Name  = getString(vadata, "Model");
 
-  // TODO let user change this, only used to populate the dock
-  // use clemens stuff to render out of symbol paintings?
-//  BitmapFile = (char *) "VAimage";
-  // Default is [modulename]
+  /// Default BitmapFile is [modulename]
+  /// The BitmapFile JSON entry can be modified in \see LoadDialog::slotChangeIcon()
   BitmapFile  = getString(vadata, "BitmapFile");
 
   if(getNewOne) return new vacomponent(filename);
   return 0;
 }
 
-
-/*
- * vacomponent creates its own symbol
+/*!
+ * \brief vacomponent::createSymbol Constructor call this to create the symbol.
+ * \param filename File (JSON) containing the symbol paintins and properties.
+ * It reads the JSON file and parses the symbol paintings. Data is appended to
+ * to the appropriate lists, Lines, Rects, Ellips, ...
  */
 void vacomponent::createSymbol(QString filename)
 {
@@ -266,20 +281,23 @@ void vacomponent::createSymbol(QString filename)
   y1 = getDouble(vadata, "y1");
   x2 = getDouble(vadata, "x2");
   y2 = getDouble(vadata, "y2");
-
-  //qDebug() << "box" << x1 << y1 << x2 << y2;
 }
 
 
 // Move this elsewhere?
+/*!
+ * \brief getData Reads the JSON file
+ * \param filename  File (JSON) containing the symbol paintins and properties.
+ * \return the JSON file as a QString
+ */
 QString getData(QString filename)
 {
   // Try to open the JSON file
   QFile file(filename);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    // TODO handle the error
     QMessageBox::critical(0, QObject::tr("Error"),
                           QObject::tr("File not found: %1").arg(filename));
+    return "";
   }
 
   // Stream-in the file
@@ -293,12 +311,22 @@ QString getData(QString filename)
   return data;
 }
 
-//
+/*!
+ * \brief getDouble Helper to get a property out of a JSON script
+ * \param data JSON data as a QScritValue
+ * \param prop JSON property key
+ * \return a double corresponding to the JSON value
+ */
 double getDouble(QScriptValue data, QString prop){
   return data.property(prop).toString().toDouble();
 }
 
-//
+/*!
+ * \brief getString Helper to get a property out of a JSON script
+ * \param data JSON data as a QScritValue
+ * \param prop JSON property key
+ * \return a QString corresponding to the JSON value
+ */
 QString getString(QScriptValue data, QString prop){
   return data.property(prop).toString();
 }

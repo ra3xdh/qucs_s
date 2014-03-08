@@ -28,10 +28,14 @@
 
 #include <QDebug>
 
+/*!
+ * \file vacomponent.h
+ * \brief Definition of the vacomponent class.
+ */
+
 class vacomponent : public Component
 {
   public:
-    //vacomponent();
     vacomponent(QString filename);
     ~vacomponent() { };
     Component* newOne(QString filename);
