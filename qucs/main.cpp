@@ -14,6 +14,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+/*!
+ * \file main.cpp
+ * \brief Implementation of the main application.
+ */
 
 #ifdef HAVE_CONFIG_H
 # include <config.h>
@@ -40,6 +44,10 @@
 
 #include "schematic.h"
 #include "module.h"
+
+#ifdef _WIN32
+#include <Windows.h>  //for OutputDebugString
+#endif
 
 tQucsSettings QucsSettings;
 
@@ -166,6 +174,40 @@ bool saveApplSettings(QucsApp *qucs)
 
   return true;
 
+}
+
+/*!
+ * \brief qucsMessageOutput handles qDebug, qWarning, qCritical, qFatal.
+ * \param type Message type (Qt enum)
+ * \param msg Message
+ *
+ * The message handler is used to get control of the messages.
+ * Particulary on Windows, as the messages are sent to the debugger and do not
+ * show on the terminal. The handler could aslo be extended to create a log
+ * mechanism.
+ * <http://qt-project.org/doc/qt-4.8/debug.html#warning-and-debugging-messages>
+ * <http://qt-project.org/doc/qt-4.8/qtglobal.html#qInstallMsgHandler>
+ */
+void qucsMessageOutput(QtMsgType type, const char *msg)
+{
+  switch (type) {
+  case QtDebugMsg:
+    fprintf(stderr, "Debug: %s\n", msg);
+    break;
+  case QtWarningMsg:
+    fprintf(stderr, "Warning: %s\n", msg);
+    break;
+  case QtCriticalMsg:
+    fprintf(stderr, "Critical: %s\n", msg);
+    break;
+  case QtFatalMsg:
+    fprintf(stderr, "Fatal: %s\n", msg);
+    abort();
+  }
+
+#ifdef _WIN32
+  OutputDebugString(msg);
+#endif
 }
 
 // #########################################################################
@@ -807,6 +849,7 @@ int main(int argc, char *argv[])
 
   QucsMain = new QucsApp();
   a.setMainWidget(QucsMain);
+  qInstallMsgHandler(qucsMessageOutput);
   QucsMain->show();
   int result = a.exec();
   //saveApplSettings(QucsMain);

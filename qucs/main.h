@@ -14,6 +14,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+/*!
+ * \file main.h
+ * \brief Definitions and declarations for the main application.
+ */
 
 #ifndef QUCS_MAIN_H
 #define QUCS_MAIN_H
@@ -77,7 +81,9 @@ extern QucsApp *QucsMain;  // the Qucs application itself
 extern QString lastDir;    // to remember last directory for several dialogs
 extern QStringList qucsPathList;
 
+bool loadSettings();
 bool saveApplSettings(QucsApp*);
+void qucsMessageOutput(QtMsgType type, const char *msg);
 
 QString complexRect(double, double, int Precision=3);
 QString complexDeg (double, double, int Precision=3);
