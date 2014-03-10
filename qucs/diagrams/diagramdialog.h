@@ -33,14 +33,9 @@
 
 class Cross3D;
 class QLabel;
-class Q3ListBox;
 class QLineEdit;
 class QCheckBox;
-class Q3ListView;
-class Q3ListViewItem;
 class QComboBox;
-class Q3ListBoxItem;
-class Q3VBoxLayout;
 class QDoubleValidator;
 class QIntValidator;
 class QRegExpValidator;

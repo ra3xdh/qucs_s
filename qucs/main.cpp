@@ -31,7 +31,6 @@
 #include <QTextCodec>
 #include <QTranslator>
 #include <QFile>
-#include <Q3TextStream>
 #include <QMessageBox>
 #include <QRegExp>
 
