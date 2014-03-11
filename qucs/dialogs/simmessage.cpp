@@ -459,17 +459,39 @@ void SimMessage::startSimulator()
                   << "-o" << DataSet;
 
         if (! Module::vaComponents.isEmpty()) {
-//            qDebug() << "--> pass to qucsator: " << Module::vaComponents.keys();
-            /*! \todo Only pass modules to Qucsator that are indeed used on
+
+            /*! Only pass modules to Qucsator that are indeed used on
              * the schematic,it might be the case that the user loaded the icons,
              * but did not compiled the module. Qucsator will not find the library.
+             *
              * Check if used symbols have corresponing lib before running
              * Qucsator? Need to search on the netlis.txt? Is there other data
              * structure containig the netlist?
              *
             */
-            Arguments << "-p" << QucsSettings.QucsWorkDir.absolutePath()
-                      << "-m" << Module::vaComponents.keys();
+            QStringList usedComponents;
+
+            if (!NetlistFile.open(QIODevice::ReadOnly))
+               QMessageBox::critical(this, tr("Error"), tr("Cannot read netlist!"));
+            else {
+               QString net = QString(NetlistFile.readAll());
+
+               QMapIterator<QString, QString> i(Module::vaComponents);
+               while (i.hasNext()) {
+                   i.next();
+                   if (net.contains(i.key()))
+                       usedComponents << i.key();
+               }
+               NetlistFile.close();
+            }
+
+            if (! usedComponents.isEmpty()) {
+
+//              qDebug() << "used comps" << usedComponents.join(" ");
+
+              Arguments << "-p" << QucsSettings.QucsWorkDir.absolutePath()
+                        << "-m" << usedComponents;
+            }
         }
 
         qDebug() << "Command :" << Program << Arguments.join(" ");
