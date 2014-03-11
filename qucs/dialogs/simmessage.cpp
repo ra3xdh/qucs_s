@@ -314,7 +314,10 @@ static QString pathName(QString longpath) {
 }
 #endif
 
-// ------------------------------------------------------------------------
+
+/*!
+ * \brief SimMessage::startSimulator simulates the document in view.
+ */
 void SimMessage::startSimulator()
 {
   // Using the Doc pointer here is risky as the user may have closed
@@ -457,7 +460,14 @@ void SimMessage::startSimulator()
 
         if (! Module::vaComponents.isEmpty()) {
 //            qDebug() << "--> pass to qucsator: " << Module::vaComponents.keys();
-
+            /*! \todo Only pass modules to Qucsator that are indeed used on
+             * the schematic,it might be the case that the user loaded the icons,
+             * but did not compiled the module. Qucsator will not find the library.
+             * Check if used symbols have corresponing lib before running
+             * Qucsator? Need to search on the netlis.txt? Is there other data
+             * structure containig the netlist?
+             *
+            */
             Arguments << "-p" << QucsSettings.QucsWorkDir.absolutePath()
                       << "-m" << Module::vaComponents.keys();
         }

@@ -2196,8 +2196,11 @@ void QucsApp::slotZoomOut()
   getDoc()->zoomBy(0.7f);
 }
 
-// -----------------------------------------------------------------------
-// Is called when the simulate toolbar button is pressed.
+
+/*!
+ * \brief QucsApp::slotSimulate
+ *  is called when the simulate toolbar button is pressed.
+ */
 void QucsApp::slotSimulate()
 {
   editText->setHidden(true); // disable text edit of component property
