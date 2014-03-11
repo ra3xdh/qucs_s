@@ -1363,7 +1363,9 @@ void QucsApp::slotClearRecentFiles()
 }
 
 
-//
+/*!
+ * \brief QucsApp::slotLoadModule launches the dialog to select dynamic modueles
+ */
 void QucsApp::slotLoadModule()
 {
     qDebug() << "slotLoadModule";
@@ -1372,7 +1374,7 @@ void QucsApp::slotLoadModule()
     ld->setApp(this);
 
     // fech list of _symbol.json
-    // fetch timestamp of VA, JSON, if VA newer, need to reload.
+    // \todo fetch timestamp of VA, JSON, if VA newer, need to reload.
 
     QDir projDir = QucsSettings.QucsWorkDir.absolutePath();
 
@@ -1399,9 +1401,7 @@ void QucsApp::slotLoadModule()
     ld->projDir = projDir;
     ld->initDialog();
 
-
-
-    // TODO check what is already loaded, offer skip, reload
+    // \todo check what is already loaded, offer skip, reload
 
     //pass stuff to ld dialog
     // run, let user do the selections
@@ -1410,23 +1410,17 @@ void QucsApp::slotLoadModule()
 
       Module::vaComponents = ld->selectedComponents;
 
+      // dialog write new bitmap into JSON
       // load, unload, reload
       // inform if symbol changed
-
-      // return what needs to be loaded
-      // reload means unload, load again
       // populate Module::vaComponents
-
       // vaComponents are selected with the dialog
       // dialog should populate acording to checkboxes
-      // build vaComponents map
-      // regurns what needs to be unregistered
+      // build vaComponents QMap
 
-      // dialog write new bitmap into JSON
-
-      // remove all before registering again
+      // remove all modules before registering/loaded again
       // look for modules in the category,
-      // TODO investigate if it is leaking objects somewhere
+      // \todo investigate if it is leaking objects somewhere
       QStringList remove;
       Q3DictIterator<Module> it( Module::Modules );
       for( ; it.current(); ++it ){
@@ -1443,13 +1437,12 @@ void QucsApp::slotLoadModule()
 
         // update the combobox, set new category in view
         // pick up new category 'verilog-a user components' from `Module::category`
-        // draw icons of dynamically registered components
         //set new category into view
-        // TODO
-
         QucsApp::fillComboBox(true);
         CompChoose->setCurrentItem(CompChoose->count()-1);
         slotSetCompView(CompChoose->count()-1);
+
+        // icons of dynamically registered components ready to be dragged
       }
     }
 
@@ -1458,14 +1451,15 @@ void QucsApp::slotLoadModule()
 }
 
 
-/*
+/*!
+ * \brief QucsApp::slotBuildModule runs admsXml, C++ compiler to build library
+ *
  * Run the va2cpp
  * Run the cpp2lib
  *
  * TODO
  * - split into two actions, elaborate and compile?
  * - collect, parse and display output of make
- * - make on the path?, might need need to set enviroment for QProcess
  *
  */
 void QucsApp::slotBuildModule()
@@ -1484,9 +1478,8 @@ void QucsApp::slotBuildModule()
     // need to cd - into previous location?
     QDir::setCurrent(workDir);
 
-    QProcess builder;
-    builder.setProcessChannelMode(QProcess::MergedChannels);
-
+    QProcess *builder = new QProcess();
+    builder->setProcessChannelMode(QProcess::MergedChannels);
     // get current va document
     QucsDoc *Doc = getDoc();
     QString vaModule = Doc->fileBase(Doc->DocName);
@@ -1498,13 +1491,16 @@ void QucsApp::slotBuildModule()
               << QString("PREFIX=%1").arg(prefix.absolutePath())
               << QString("MODEL=%1").arg(vaModule);
 
-    builder.start(Program, Arguments);
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    env.insert("PATH", env.value("PATH") );
+    builder->setProcessEnvironment(env);
+    builder->start(Program, Arguments);
 
-    if (!builder.waitForFinished())
-        qDebug() << "Make failed:" << builder.errorString();
+    if (!builder->waitForFinished())
+        qDebug() << "Make failed:" << builder->errorString();
     else {
-        qDebug() << "Make output:" << builder.readAll();
-        qDebug() << "Make stdout"  << builder.readAllStandardOutput();
+        qDebug() << "Make output:" << builder->readAll();
+        qDebug() << "Make stdout"  << builder->readAllStandardOutput();
     }
 
 
@@ -1518,12 +1514,14 @@ void QucsApp::slotBuildModule()
               << QString("PREFIX=%1").arg(prefix.absolutePath())
               << QString("PROJDIR=%1").arg(workDir);
 
-    builder.start(Program, Arguments);
+//    builder->setProcessEnvironment(env);
+    builder->start(Program, Arguments);
 
-    if (!builder.waitForFinished())
-        qDebug() << "Make failed:" << builder.errorString();
+    if (!builder->waitForFinished())
+        qDebug() << "Make failed:" << builder->errorString();
     else {
-        qDebug() << "Make output:" << builder.readAll();
-        qDebug() << "Make stdout"  << builder.readAllStandardOutput();
+        qDebug() << "Make output:" << builder->readAll();
+        qDebug() << "Make stdout"  << builder->readAllStandardOutput();
     }
+    delete builder;
 }
