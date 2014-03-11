@@ -52,6 +52,7 @@ class QTabWidget;
 class Q3ListView;
 class Q3ListViewItem;
 class OctaveWindow;
+class MessageDock;
 
 typedef bool (Schematic::*pToggleFunc) ();
 typedef void (MouseActions::*pMouseFunc) (Schematic*, QMouseEvent*);
@@ -189,6 +190,7 @@ private:
   QTabWidget      *TabView;
   QDockWidget     *octDock;
   OctaveWindow    *octave;
+  MessageDock     *messageDock;
 
   QListWidget     *Projects;
   //Q3ListView     *Content;

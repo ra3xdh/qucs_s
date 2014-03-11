@@ -29,6 +29,7 @@
 #include "schematic.h"
 #include "textdoc.h"
 #include "mouseactions.h"
+#include "messagedock.h"
 #include "components/ground.h"
 #include "components/subcirport.h"
 #include "components/equation.h"
@@ -1466,6 +1467,10 @@ void QucsApp::slotBuildModule()
 {
     qDebug() << "slotBuildModule";
 
+    // reset message dock on entry
+    messageDock->admsOutput->clear();
+    messageDock->cppOutput->clear();
+
     QString Program = "make";
 
     QDir prefix = QDir(QucsSettings.BinDir+"../");
@@ -1485,7 +1490,7 @@ void QucsApp::slotBuildModule()
     QString vaModule = Doc->fileBase(Doc->DocName);
 
 
-    // build C++
+    // admsXml emmits C++
     QStringList Arguments;
     Arguments << "-f" <<  include.absoluteFilePath("va2cpp.makefile")
               << QString("PREFIX=%1").arg(prefix.absolutePath())
@@ -1496,13 +1501,16 @@ void QucsApp::slotBuildModule()
     builder->setProcessEnvironment(env);
     builder->start(Program, Arguments);
 
-    if (!builder->waitForFinished())
-        qDebug() << "Make failed:" << builder->errorString();
-    else {
-        qDebug() << "Make output:" << builder->readAll();
-        qDebug() << "Make stdout"  << builder->readAllStandardOutput();
+    // admsXml seems to communicate all via stdout, or is it because of make?
+    QString vaStatus;
+    if (!builder->waitForFinished()) {
+        vaStatus = builder->errorString();
+        qDebug() << "Make failed:" << vaStatus;
     }
-
+    else {
+        vaStatus = builder->readAll();
+        qDebug() << "Make stdout"  << vaStatus;
+    }
 
     //build libs
     qDebug() << "\nbuild libs\n";
@@ -1517,11 +1525,24 @@ void QucsApp::slotBuildModule()
 //    builder->setProcessEnvironment(env);
     builder->start(Program, Arguments);
 
-    if (!builder->waitForFinished())
-        qDebug() << "Make failed:" << builder->errorString();
+    QString cppStatus;
+
+    if (!builder->waitForFinished()) {
+        cppStatus = builder->errorString();
+        qDebug() << "Make failed:" << cppStatus;
+    }
     else {
-        qDebug() << "Make output:" << builder->readAll();
-        qDebug() << "Make stdout"  << builder->readAllStandardOutput();
+        cppStatus = builder->readAll();
+        qDebug() << "Make output:" << cppStatus;
     }
     delete builder;
+
+    // push make output to message dock
+    messageDock->admsOutput->setText(vaStatus);
+    messageDock->cppOutput->setText(cppStatus);
+
+    // shot the message docks
+    messageDock->admsDock->show();
+    messageDock->cppDock->show();
+
 }

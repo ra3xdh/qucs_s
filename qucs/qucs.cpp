@@ -37,6 +37,7 @@
 #include "syntax.h"
 #include "schematic.h"
 #include "mouseactions.h"
+#include "messagedock.h"
 #include "wire.h"
 #include "module.h"
 #include "components/components.h"
@@ -382,6 +383,11 @@ void QucsApp::initView()
   this->addDockWidget(Qt::BottomDockWidgetArea, octDock);
   this->setCorner(Qt::BottomLeftCorner  , Qt::LeftDockWidgetArea);
   //| Qt::BottomRightCorner
+
+  // ............................................
+
+  messageDock = new MessageDock(this);
+
   // ............................................
   readProjects(); // reads all projects and inserts them into the ListBox
 }

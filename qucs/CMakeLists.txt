@@ -90,6 +90,7 @@ SET(QUCS_SRCS
   mouseactions.cpp qucs_actions.cpp	schematic_file.cpp
   wirelabel.cpp node.cpp qucs_init.cpp
   syntax.cpp
+  messagedock.cpp
 )
 
 #
@@ -100,6 +101,7 @@ SET(QUCS_MOC_HDRS
   qucs.h
   schematic.h
   textdoc.h
+  messagedock.h
 )
 
 #
