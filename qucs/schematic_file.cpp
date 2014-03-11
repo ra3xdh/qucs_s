@@ -479,7 +479,7 @@ int Schematic::saveDocument()
       else {
 //          qDebug() << "Make output:" << builder.readAll();
 //          qDebug() << "Make stdout"  << builder.readAllStandardOutput();
-        QMessageBox::information(this, tr("Error"),
+        QMessageBox::information(this, tr("Status"),
                                  builder.readAll());
       }
 
