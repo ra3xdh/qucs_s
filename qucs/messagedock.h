@@ -38,14 +38,18 @@ public:
   /*!
    * \brief admsOutput holds the make output of running admsXml
    */
-  QTextEdit *admsOutput;
+  QPlainTextEdit *admsOutput;
   /*!
    * \brief cppOutput holds the make output of running a C++ compiler
    */
-  QTextEdit *cppOutput;
+  QPlainTextEdit *cppOutput;
 
   QDockWidget *admsDock;
   QDockWidget *cppDock;
+
+private slots:
+  void slotAdmsChanged();
+  void slotCursor();
 
 };
 

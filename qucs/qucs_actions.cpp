@@ -1499,6 +1499,11 @@ void QucsApp::slotBuildModule()
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.insert("PATH", env.value("PATH") );
     builder->setProcessEnvironment(env);
+
+    // prepend command to log
+    QString cmdString = QString("%1 %2\n").arg(Program, Arguments.join(" "));
+    messageDock->admsOutput->appendPlainText(cmdString);
+
     builder->start(Program, Arguments);
 
     // admsXml seems to communicate all via stdout, or is it because of make?
@@ -1523,6 +1528,11 @@ void QucsApp::slotBuildModule()
               << QString("PROJDIR=%1").arg(workDir);
 
 //    builder->setProcessEnvironment(env);
+
+    // prepend command to log
+    cmdString = QString("%1 %2\n").arg(Program, Arguments.join(" "));
+    messageDock->cppOutput->appendPlainText(cmdString);
+
     builder->start(Program, Arguments);
 
     QString cppStatus;
@@ -1538,8 +1548,8 @@ void QucsApp::slotBuildModule()
     delete builder;
 
     // push make output to message dock
-    messageDock->admsOutput->setText(vaStatus);
-    messageDock->cppOutput->setText(cppStatus);
+    messageDock->admsOutput->appendPlainText(vaStatus);
+    messageDock->cppOutput->appendPlainText(cppStatus);
 
     // shot the message docks
     messageDock->admsDock->show();
