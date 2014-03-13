@@ -316,6 +316,11 @@ int TextDoc::save ()
 
   QFileInfo Info (DocName);
   lastSaved = Info.lastModified ();
+
+  /// clear highlighted lines on save \see MessageDock::slotCursor()
+  QList<QTextEdit::ExtraSelection> extraSelections;
+  this->setExtraSelections(extraSelections);
+
   return 0;
 }
 

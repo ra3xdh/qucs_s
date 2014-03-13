@@ -1471,7 +1471,7 @@ void QucsApp::slotBuildModule()
     messageDock->admsOutput->clear();
     messageDock->cppOutput->clear();
 
-    QString Program = "make";
+    QString Program = "make";    // must be on the path!
 
     QDir prefix = QDir(QucsSettings.BinDir+"../");
 

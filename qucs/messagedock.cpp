@@ -17,6 +17,10 @@
 
 #include "messagedock.h"
 
+#include "main.h"
+#include "qucsdoc.h"
+#include "textdoc.h"
+
 #include <QVBoxLayout>
 #include <QTextEdit>
 
@@ -83,6 +87,9 @@ MessageDock::MessageDock(QucsApp *App_): QWidget()
     connect(admsOutput, SIGNAL(cursorPositionChanged()), this, SLOT(slotCursor()));
 }
 
+/*!
+ * \brief MessageDock::slotAdmsChanged
+ */
 void MessageDock::slotAdmsChanged()
 {
     qWarning() << "slotAdmsChanged";
@@ -105,29 +112,33 @@ void MessageDock::slotAdmsChanged()
         QString line = lines[i];
 
         if (line.contains("[fatal..]",Qt::CaseSensitive)) {
-            qWarning() << "fatal at line" << i;
-
-            // highlight 'fatal' lines on the log
-
-            QTextEdit::ExtraSelection selection;
-            QColor lineColor = QColor(Qt::yellow).lighter(160);
-
-            selection.format.setBackground(lineColor);
-            selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+//            qWarning() << "fatal at line" << i;
+            // get cursor for the line
             int pos = admsOutput->document()->findBlockByLineNumber(i).position();
             QTextCursor cursor = admsOutput->textCursor();
             cursor.setPosition(pos);
-            selection.cursor = cursor;
 
+            // highlight 'fatal' lines on the log
+            QTextEdit::ExtraSelection selection;
+            QColor lineColor = QColor(Qt::yellow).lighter(160);
+            selection.format.setBackground(lineColor);
+            selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+            selection.cursor = cursor;
             extraSelections.append(selection);
         }
     }
+    // highlight all the fatal warnings
     admsOutput->setExtraSelections(extraSelections);
 }
 
+
+/*!
+ * \brief MessageDock::slotCursor
+ */
 void MessageDock::slotCursor()
 {
     qWarning()  << admsOutput->textCursor().blockNumber();
+    int gotoLine = -1;
     QString line =  admsOutput->textCursor().block().text();
     if (line.contains("[fatal..]",Qt::CaseSensitive)) {
         // \todo improve the parsing of line
@@ -136,7 +147,7 @@ void MessageDock::slotCursor()
             int a,b;
             a = line.indexOf(":")+1;
             b = line.indexOf(":",a);
-            int gotoLine = line.mid(a,b-a).stripWhiteSpace();
+            gotoLine = line.mid(a,b-a).stripWhiteSpace().toInt();
             qWarning() << "goto line " << gotoLine;
         }
 
@@ -145,13 +156,56 @@ void MessageDock::slotCursor()
             int a,b;
             a = line.indexOf("at line");
             b = line.indexOf("--",a);
-            int gotoLine = line.mid(a+7,b-a-7).stripWhiteSpace();
+            gotoLine = line.mid(a+7,b-a-7).stripWhiteSpace().toInt();
             qWarning() << "goto line " << gotoLine;
         }
     }
 
   // \todo set hightlight in QucsDoc Verilog-A file?
   // move cursor? addt line number? highliht line number? set in focus
+
+    /*
+     * add slot to TextDoc
+     * it takes the gotoLine
+     * hightlings the line
+     * QucsApp::getDoc() //current should be a TextDoc
+     */
+//    QucsDoc *foo =  QucsMain->getDoc();
+//    qWarning() << foo->DocName;
+
+    if (gotoLine >= 0) {
+
+        // \todo it will mark whatever document is open. parse the model file
+        // name from the fatal message and ->findDoc instead of ->getDoc?
+
+        // grab active text document
+        TextDoc * d = (TextDoc*)QucsMain->getDoc();
+
+        QTextCursor cursor = d->textCursor();
+        int pos = d->document()->findBlockByLineNumber(gotoLine-1).position();
+        cursor.setPosition(pos);
+
+        // Highligt a give line
+        QList<QTextEdit::ExtraSelection> extraSelections;
+        QTextEdit::ExtraSelection selection;
+        QColor lineColor = QColor(Qt::yellow).lighter(160);
+        selection.format.setBackground(lineColor);
+        selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+        selection.cursor = cursor;
+        extraSelections.append(selection);
+
+        // color the selections on the active document
+        d->setExtraSelections(extraSelections);
+
+        //move focus to VA code
+        d->setFocus();
+        //move cursor to highlighted line
+//        d->setCursor(d->document()->);
+        d->setTextCursor(cursor);
+    }
+
+    /// \todo add line numbers to TextDoc, highlight as the cursor moves
+
 
 }
 
