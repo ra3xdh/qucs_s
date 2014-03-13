@@ -27,21 +27,15 @@
 
 #include <QDialog>
 #include <QRegExp>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <QLabel>
 #include <Q3PtrList>
 
 class Cross3D;
 class QLabel;
-class Q3ListBox;
 class QLineEdit;
 class QCheckBox;
-class Q3ListView;
-class Q3ListViewItem;
 class QComboBox;
-class Q3ListBoxItem;
-class Q3VBoxLayout;
 class QDoubleValidator;
 class QIntValidator;
 class QRegExpValidator;
@@ -60,9 +54,9 @@ public:
 
 private slots:
   void slotReadVars(int);
-  void slotTakeVar(Q3ListViewItem*);
+  void slotTakeVar(QTableWidgetItem *item);
 //  void slotSelectGraph(int index);
-  void slotSelectGraph(Q3ListBoxItem*);
+  void slotSelectGraph(QListWidgetItem*);
   void slotNewGraph();
   void slotDeleteGraph();
   void slotOK();
@@ -103,10 +97,11 @@ private:
   QRegExpValidator *Validator;
 
   QComboBox *ChooseData;
-  Q3ListView *ChooseVars;
-  Q3ListBox  *GraphList;
+  //Q3ListView *ChooseVars;
+  QTableWidget *ChooseVars;
+  QListWidget  *GraphList;
 
-  Q3VBoxLayout *all;   // the mother of all widgets
+  QVBoxLayout *all;   // the mother of all widgets
   QLineEdit   *GraphInput, *Property2, *xLabel, *ylLabel, *yrLabel;
   QCheckBox   *GridOn, *GridLogX, *GridLogY, *GridLogZ;
   QCheckBox   *manualX, *manualY, *manualZ, *hideInvisible;

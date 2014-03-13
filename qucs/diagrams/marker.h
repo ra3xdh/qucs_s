@@ -23,7 +23,6 @@
 #include "viewpainter.h"
 
 #include <QPainter>
-#include <Q3ValueList>
 
 class Diagram;
 class Graph;

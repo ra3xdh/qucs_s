@@ -41,7 +41,7 @@ comp_2bit.cpp		hybrid.cpp		nigbt.cpp		twistedpair.cpp
 comp_4bit.cpp		iexp.cpp		noise_ii.cpp		vafile.cpp
 component.cpp		ifile.cpp		noise_iv.cpp		vccs.cpp
 componentdialog.cpp	inductor.cpp		noise_vv.cpp		vcvs.cpp
-iprobe.cpp		opamp.cpp		verilogfile.cpp
+iprobe.cpp		opamp.cpp		verilogfile.cpp		vcresistor.cpp
 coplanar.cpp		ipulse.cpp		opt_sim.cpp		vexp.cpp
 coupler.cpp		irect.cpp		optimizedialog.cpp	vfile.cpp
 cpwgap.cpp		isolator.cpp	vhdlfile.cpp

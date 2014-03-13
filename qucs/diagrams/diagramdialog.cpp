@@ -17,20 +17,13 @@
 #include <QtGui>
 #include "diagramdialog.h"
 #include "qucs.h"
-//Added by qt3to4:
-#include <Q3GridLayout>
-#include <Q3VBoxLayout>
 #include <QPaintEvent>
 #include "schematic.h"
 #include "rect3ddiagram.h"
 
 #include <math.h>
 
-#include <Q3VBox>
 #include <QLayout>
-//#include <Q3HButtonGroup>
-#include <Q3ButtonGroup>
-#include <Q3HGroupBox>
 #include <QPushButton>
 #include <QTabWidget>
 #include <QLabel>
@@ -44,7 +37,10 @@
 #include <QSlider>
 #include <QComboBox>
 #include <Q3ListView>
-#include <Q3ListBox>
+#include <QListWidget>
+#include <QTableWidget>
+#include <QStringList>
+#include <QTreeWidgetItem>
 
 
 #define CROSS3D_SIZE   30
@@ -147,13 +143,15 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   }
 
   
-  all = new Q3VBoxLayout(this); // to provide neccessary size
+  all = new QVBoxLayout(this); // to provide neccessary size
   QTabWidget *t = new QTabWidget(this);
   all->addWidget(t);
 
-  // ...........................................................
-  Q3VBox *Tab1 = new Q3VBox(this);
-  Tab1->setSpacing(5);
+  // Tab #1 - Data ...........................................................
+  QWidget *Tab1 = new QWidget(this);
+  QVBoxLayout *Tab1Layout = new QVBoxLayout();
+  Tab1->setLayout(Tab1Layout);
+  Tab1Layout->setSpacing(5);
 
   Label4 = 0;     // different types with same content
   yrLabel = 0;
@@ -163,42 +161,56 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   hideInvisible = 0;
   rotationX = rotationY = rotationZ = 0;
 
-  Q3VButtonGroup *InputGroup = new Q3VButtonGroup(tr("Graph Input"), Tab1);
-  GraphInput = new QLineEdit(InputGroup);
+  QGroupBox *InputGroup = new QGroupBox(tr("Graph Input"));
+  QVBoxLayout *InputGroupLayout = new QVBoxLayout();
+  InputGroup->setLayout(InputGroupLayout);
+  Tab1Layout->addWidget(InputGroup);
+  GraphInput = new QLineEdit();
+  InputGroupLayout->addWidget(GraphInput);
   GraphInput->setValidator(Validator);
-  connect(GraphInput, SIGNAL(textChanged(const QString&)),
-		      SLOT(slotResetToTake(const QString&)));
-  Q3HBox *Box2 = new Q3HBox(InputGroup);
-  Box2->setSpacing(5);
+  connect(GraphInput, SIGNAL(textChanged(const QString&)), SLOT(slotResetToTake(const QString&)));
+  QWidget *Box2 = new QWidget();
+  QHBoxLayout *Box2Layout = new QHBoxLayout();
+  Box2->setLayout(Box2Layout);
+  InputGroupLayout->addWidget(Box2);
+  Box2Layout->setSpacing(5);
 
   if(Diag->Name == "Tab") {
-    Label1 = new QLabel(tr("Number Notation: "), Box2);
-    PropertyBox = new QComboBox(Box2);
+    Label1 = new QLabel(tr("Number Notation: "));
+    Box2Layout->addWidget(Label1);
+    PropertyBox = new QComboBox();
+    Box2Layout->addWidget(PropertyBox);
     PropertyBox->insertItem(tr("real/imaginary"));
     PropertyBox->insertItem(tr("magnitude/angle (degree)"));
     PropertyBox->insertItem(tr("magnitude/angle (radian)"));
     PropertyBox->setCurrentItem(1);
     connect(PropertyBox, SIGNAL(activated(int)), SLOT(slotSetNumMode(int)));
-    Box2->setStretchFactor(new QWidget(Box2), 5); // stretchable placeholder
+    Box2Layout->setStretchFactor(new QWidget(Box2), 5); // stretchable placeholder
 
-    Label2 = new QLabel(tr("Precision:"), Box2);
-    Property2 = new QLineEdit(Box2);
+    Label2 = new QLabel(tr("Precision:"));
+    Box2Layout->addWidget(Label2);
+    Property2 = new QLineEdit();
+    Box2Layout->addWidget(Property2);
     Property2->setValidator(ValInteger);
     Property2->setMaxLength(2);
     Property2->setMaximumWidth(25);
     Property2->setText("3");
   }
   else if(Diag->Name != "Truth") {
-    Label1 = new QLabel(tr("Color:"),Box2);
-    ColorButt = new QPushButton("   ",Box2);
+    Label1 = new QLabel(tr("Color:"));
+    Box2Layout->addWidget(Label1);
+    ColorButt = new QPushButton("   ");
+    Box2Layout->addWidget(ColorButt);
     ColorButt->setMinimumWidth(50);
     ColorButt->setEnabled(false);
     connect(ColorButt, SIGNAL(clicked()), SLOT(slotSetColor()));
-    Box2->setStretchFactor(new QWidget(Box2), 5); // stretchable placeholder
+    Box2Layout->setStretchFactor(new QWidget(Box2), 5); // stretchable placeholder
 
-    Label3 = new QLabel(tr("Style:"),Box2);
+    Label3 = new QLabel(tr("Style:"));
+    Box2Layout->addWidget(Label3);
     Label3->setEnabled(false);
-    PropertyBox = new QComboBox(Box2);
+    PropertyBox = new QComboBox();
+    Box2Layout->addWidget(PropertyBox);
     PropertyBox->insertItem(tr("solid line"));
     PropertyBox->insertItem(tr("dash line"));
     PropertyBox->insertItem(tr("dot line"));
@@ -210,28 +222,35 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     }
     connect(PropertyBox, SIGNAL(activated(int)),
 			 SLOT(slotSetGraphStyle(int)));
-    Box2->setStretchFactor(new QWidget(Box2), 5); // stretchable placeholder
+    Box2Layout->setStretchFactor(new QWidget(Box2), 5); // stretchable placeholder
 
-    Label2 = new QLabel(tr("Thickness:"),Box2);
-    Property2 = new QLineEdit(Box2);
+    Label2 = new QLabel(tr("Thickness:"));
+    Box2Layout->addWidget(Label2);
+    Property2 = new QLineEdit();
+    Box2Layout->addWidget(Property2);
     Property2->setValidator(ValInteger);
     Property2->setMaximumWidth(25);
     Property2->setMaxLength(2);
     Property2->setText("0");
 
-    if((Diag->Name=="Rect") || (Diag->Name=="PS") || (Diag->Name=="SP") ||
-       (Diag->Name=="Curve")) {
-      Q3HBox *Box3 = new Q3HBox(InputGroup);
-      Box3->setSpacing(5);
+    if((Diag->Name=="Rect") || (Diag->Name=="PS") || (Diag->Name=="SP") || (Diag->Name=="Curve")) {
 
-      Label4 = new QLabel(tr("y-Axis:"),Box3);
+      QWidget *Box3 = new QWidget();
+      Box2Layout->addWidget(Box3);
+      QHBoxLayout *Box3Layout = new QHBoxLayout();
+      Box3Layout->setSpacing(5);
+      Box3->setLayout(Box3Layout);
+
+      Label4 = new QLabel(tr("y-Axis:"));
+      Box3Layout->addWidget(Label4);
       Label4->setEnabled(false);
-      yAxisBox = new QComboBox(Box3);
+      yAxisBox = new QComboBox();
+      Box3Layout->addWidget(yAxisBox);
       yAxisBox->insertItem(NameY);
       yAxisBox->insertItem(NameZ);
       yAxisBox->setEnabled(false);
       connect(yAxisBox, SIGNAL(activated(int)), SLOT(slotSetYAxis(int)));
-      Box3->setStretchFactor(new QWidget(Box3), 5); // stretchable placeholder
+      Box3Layout->setStretchFactor(new QWidget(Box3), 5); // stretchable placeholder
     }
   }
   if(Property2) {
@@ -244,39 +263,60 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     Property2->setEnabled(false);
   }
 
-  Q3HBox *Box1 = new Q3HBox(Tab1);
-  Box1->setSpacing(5);
+  QWidget *Box1 = new QWidget();
+  Tab1Layout->addWidget(Box1);
+  QHBoxLayout *Box1Layout = new QHBoxLayout();
+  Box1->setLayout(Box1Layout);
+  Box1Layout->setSpacing(5);
 
-  Q3VButtonGroup *DataGroup = new Q3VButtonGroup(tr("Dataset"), Box1);
-  ChooseData = new QComboBox(false, DataGroup);
+  QGroupBox *DataGroup = new QGroupBox(tr("Dataset"));
+  Box1Layout->addWidget(DataGroup);
+  QVBoxLayout *DataGroupLayout = new QVBoxLayout();
+  DataGroup->setLayout(DataGroupLayout);
+  ChooseData = new QComboBox();
+  DataGroupLayout->addWidget(ChooseData);
   ChooseData->setMinimumWidth(200);
   connect(ChooseData, SIGNAL(activated(int)), SLOT(slotReadVars(int)));
-  ChooseVars = new Q3ListView(DataGroup);
-  ChooseVars->addColumn(tr("Name"));
-  ChooseVars->addColumn(tr("Type"));
-  ChooseVars->addColumn(tr("Size"));
-  connect(ChooseVars, SIGNAL(doubleClicked(Q3ListViewItem*)),
-		      SLOT(slotTakeVar(Q3ListViewItem*)));
+  // todo: replace by QTableWidget
+  // see https://gist.github.com/ClemensFMN/8955411
+  ChooseVars = new QTableWidget(1, 3, this);
+  ChooseVars->setSelectionBehavior(QAbstractItemView::SelectRows);
+  //ChooseVars->selectRow(0);
+  DataGroupLayout->addWidget(ChooseVars);
+  //ChooseVars->addColumn(tr("Name"));
+  //ChooseVars->addColumn(tr("Type"));
+  //ChooseVars->addColumn(tr("Size"));
+  QStringList headers;
+  headers << tr("Name") << tr("Type") << tr("Size");
+  ChooseVars->setHorizontalHeaderLabels(headers);
+
+  connect(ChooseVars, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), SLOT(slotTakeVar(QTableWidgetItem*)));
 
 
-  Q3VButtonGroup *GraphGroup = new Q3VButtonGroup(tr("Graph"), Box1);
-  GraphList = new Q3ListBox(GraphGroup);
-  connect(GraphList, SIGNAL(clicked(Q3ListBoxItem*)),
-		     SLOT(slotSelectGraph(Q3ListBoxItem*)));
-  connect(GraphList, SIGNAL(doubleClicked(Q3ListBoxItem*)),
-		     SLOT(slotDeleteGraph()));
-  QPushButton *NewButt = new QPushButton(tr("New Graph"), GraphGroup);
+  QGroupBox *GraphGroup = new QGroupBox(tr("Graph"));
+  Box1Layout->addWidget(GraphGroup);
+  QVBoxLayout *GraphGroupLayout = new QVBoxLayout();
+  GraphGroup->setLayout(GraphGroupLayout);
+  GraphList = new QListWidget();
+  GraphGroupLayout->addWidget(GraphList);
+  connect(GraphList, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(slotSelectGraph(QListWidgetItem*)));
+  connect(GraphList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(slotDeleteGraph()));
+  QPushButton *NewButt = new QPushButton(tr("New Graph"));
+  GraphGroupLayout->addWidget(NewButt);
   connect(NewButt, SIGNAL(clicked()), SLOT(slotNewGraph()));
-  QPushButton *DelButt = new QPushButton(tr("Delete Graph"), GraphGroup);
+  QPushButton *DelButt = new QPushButton(tr("Delete Graph"));
+  GraphGroupLayout->addWidget(DelButt);
   connect(DelButt, SIGNAL(clicked()), SLOT(slotDeleteGraph()));
 
   t->addTab(Tab1, tr("Data"));
 
-  // ...........................................................
+
+
+  // Tab #2...........................................................
   int Row = 0;
   if(Diag->Name.at(0) != 'T') {  // not tabular or timing diagram
     QWidget *Tab2 = new QWidget(t);
-    Q3GridLayout *gp = new Q3GridLayout(Tab2,13,3,5,5);
+    QGridLayout *gp = new QGridLayout(Tab2,13,3,5,5);
 
     gp->addMultiCellWidget(new QLabel(tr("x-Axis Label:"), Tab2), Row,Row,0,0);
     xLabel = new QLineEdit(Tab2);
@@ -366,69 +406,69 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
 
 
       if(Diag->Name == "Rect3D") {
-	hideInvisible = new QCheckBox(tr("hide invisible lines"), Tab2);
-	gp->addMultiCellWidget(hideInvisible, Row,Row,0,2);
-	Row++;
+        hideInvisible = new QCheckBox(tr("hide invisible lines"), Tab2);
+        gp->addMultiCellWidget(hideInvisible, Row,Row,0,2);
+        Row++;
 
-	QLabel *LabelRotX = new QLabel(tr("Rotation around x-Axis:"), Tab2);
-	LabelRotX->setPaletteForegroundColor(Qt::red);
-	gp->addWidget(LabelRotX, Row,0);
-	SliderRotX = new QSlider(0,360,20, ((Rect3DDiagram*)Diag)->rotX,
+        QLabel *LabelRotX = new QLabel(tr("Rotation around x-Axis:"), Tab2);
+        LabelRotX->setPaletteForegroundColor(Qt::red);
+        gp->addWidget(LabelRotX, Row,0);
+        SliderRotX = new QSlider(0,360,20, ((Rect3DDiagram*)Diag)->rotX,
 				 Qt::Horizontal, Tab2);
-	gp->addWidget(SliderRotX, Row,1);
-	connect(SliderRotX, SIGNAL(valueChanged(int)), SLOT(slotNewRotX(int)));
-	rotationX = new QLineEdit(Tab2);
-	rotationX->setValidator(ValInteger);
-	rotationX->setMaxLength(3);
-	rotationX->setMaximumWidth(40);
-	gp->addWidget(rotationX, Row,2);
-	connect(rotationX, SIGNAL(textChanged(const QString&)),
+        gp->addWidget(SliderRotX, Row,1);
+        connect(SliderRotX, SIGNAL(valueChanged(int)), SLOT(slotNewRotX(int)));
+        rotationX = new QLineEdit(Tab2);
+        rotationX->setValidator(ValInteger);
+        rotationX->setMaxLength(3);
+        rotationX->setMaximumWidth(40);
+        gp->addWidget(rotationX, Row,2);
+        connect(rotationX, SIGNAL(textChanged(const QString&)),
 			   SLOT(slotEditRotX(const QString&)));
-	Row++;
+        Row++;
 
-	QLabel *LabelRotY = new QLabel(tr("Rotation around y-Axis:"), Tab2);
-	LabelRotY->setPaletteForegroundColor(Qt::green);
-	gp->addWidget(LabelRotY, Row,0);
-	SliderRotY = new QSlider(0,360,20, ((Rect3DDiagram*)Diag)->rotY,
+        QLabel *LabelRotY = new QLabel(tr("Rotation around y-Axis:"), Tab2);
+        LabelRotY->setPaletteForegroundColor(Qt::green);
+        gp->addWidget(LabelRotY, Row,0);
+        SliderRotY = new QSlider(0,360,20, ((Rect3DDiagram*)Diag)->rotY,
 				 Qt::Horizontal, Tab2);
-	gp->addWidget(SliderRotY, Row,1);
-	connect(SliderRotY, SIGNAL(valueChanged(int)), SLOT(slotNewRotY(int)));
-	rotationY = new QLineEdit(Tab2);
-	rotationY->setValidator(ValInteger);
-	rotationY->setMaxLength(3);
-	rotationY->setMaximumWidth(40);
-	gp->addWidget(rotationY, Row,2);
-	connect(rotationY, SIGNAL(textChanged(const QString&)),
+        gp->addWidget(SliderRotY, Row,1);
+        connect(SliderRotY, SIGNAL(valueChanged(int)), SLOT(slotNewRotY(int)));
+        rotationY = new QLineEdit(Tab2);
+        rotationY->setValidator(ValInteger);
+        rotationY->setMaxLength(3);
+        rotationY->setMaximumWidth(40);
+        gp->addWidget(rotationY, Row,2);
+        connect(rotationY, SIGNAL(textChanged(const QString&)),
 			   SLOT(slotEditRotY(const QString&)));
-	Row++;
+        Row++;
 
-	QLabel *LabelRotZ = new QLabel(tr("Rotation around z-Axis:"), Tab2);
-	LabelRotZ->setPaletteForegroundColor(Qt::blue);
-	gp->addWidget(LabelRotZ, Row,0);
-	SliderRotZ = new QSlider(0,360,20, ((Rect3DDiagram*)Diag)->rotZ,
+        QLabel *LabelRotZ = new QLabel(tr("Rotation around z-Axis:"), Tab2);
+        LabelRotZ->setPaletteForegroundColor(Qt::blue);
+        gp->addWidget(LabelRotZ, Row,0);
+        SliderRotZ = new QSlider(0,360,20, ((Rect3DDiagram*)Diag)->rotZ,
 				 Qt::Horizontal, Tab2);
-	gp->addWidget(SliderRotZ, Row,1);
-	connect(SliderRotZ, SIGNAL(valueChanged(int)), SLOT(slotNewRotZ(int)));
-	rotationZ = new QLineEdit(Tab2);
-	rotationZ->setValidator(ValInteger);
-	rotationZ->setMaxLength(3);
-	rotationZ->setMaximumWidth(40);
-	gp->addWidget(rotationZ, Row,2);
-	connect(rotationZ, SIGNAL(textChanged(const QString&)),
+        gp->addWidget(SliderRotZ, Row,1);
+        connect(SliderRotZ, SIGNAL(valueChanged(int)), SLOT(slotNewRotZ(int)));
+        rotationZ = new QLineEdit(Tab2);
+        rotationZ->setValidator(ValInteger);
+        rotationZ->setMaxLength(3);
+        rotationZ->setMaximumWidth(40);
+        gp->addWidget(rotationZ, Row,2);
+        connect(rotationZ, SIGNAL(textChanged(const QString&)),
 			   SLOT(slotEditRotZ(const QString&)));
-	Row++;
+        Row++;
 
-	gp->addWidget(new QLabel(tr("2D-projection:"), Tab2), Row,0);
-	DiagCross = new Cross3D(((Rect3DDiagram*)Diag)->rotX,
+        gp->addWidget(new QLabel(tr("2D-projection:"), Tab2), Row,0);
+        DiagCross = new Cross3D(((Rect3DDiagram*)Diag)->rotX,
 				((Rect3DDiagram*)Diag)->rotY,
 				((Rect3DDiagram*)Diag)->rotZ, Tab2);
-	gp->addWidget(DiagCross, Row,1);
+        gp->addWidget(DiagCross, Row,1);
 
-	// transfer the diagram properties to the dialog
-	hideInvisible->setChecked(Diag->hideLines);
-	rotationX->setText(QString::number(((Rect3DDiagram*)Diag)->rotX));
-	rotationY->setText(QString::number(((Rect3DDiagram*)Diag)->rotY));
-	rotationZ->setText(QString::number(((Rect3DDiagram*)Diag)->rotZ));
+        // transfer the diagram properties to the dialog
+        hideInvisible->setChecked(Diag->hideLines);
+        rotationX->setText(QString::number(((Rect3DDiagram*)Diag)->rotX));
+        rotationY->setText(QString::number(((Rect3DDiagram*)Diag)->rotY));
+        rotationZ->setText(QString::number(((Rect3DDiagram*)Diag)->rotZ));
 
       }
     }
@@ -436,86 +476,165 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
 
     t->addTab(Tab2, tr("Properties"));
 
-  // ...........................................................
-    Q3VBox *Tab3 = new Q3VBox(this);
-    Tab1->setSpacing(5);
+    // Tab #3 - Limits ...........................................................
+    QWidget *Tab3 = new QWidget();
+    QVBoxLayout *Tab3Layout = new QVBoxLayout(this);
+    //Tab1->setSpacing(5);
 
-    Q3HGroupBox *axisX = new Q3HGroupBox(tr("x-Axis"), Tab3);
+    //Q3HGroupBox *axisX = new Q3HGroupBox(tr("x-Axis"));//, Tab3);
+    QGroupBox *axisX = new QGroupBox(tr("x-Axis"));
+    QHBoxLayout *axisXLayout = new QHBoxLayout();
 
-    Q3VBox *VBox1 = new Q3VBox(axisX);
-    VBox1->setStretchFactor(new QWidget(VBox1),5); // stretchable placeholder
-    manualX = new QCheckBox(tr("manual"), VBox1);
+
+    //Q3VBox *VBox1 = new Q3VBox(axisX);
+    QWidget *VBox1 = new QWidget();
+    axisXLayout->addWidget(VBox1);
+    QVBoxLayout *VBox1Layout = new QVBoxLayout();
+    VBox1Layout->setStretchFactor(new QWidget(VBox1),5); // stretchable placeholder
+    //VBox1->setStretchFactor(new QWidget(VBox1),5); // stretchable placeholder
+    manualX = new QCheckBox(tr("manual"));//, VBox1);
+    VBox1Layout->addWidget(manualX);
+    VBox1->setLayout(VBox1Layout);
     connect(manualX, SIGNAL(stateChanged(int)), SLOT(slotManualX(int)));
 
-    Q3VBox *VBox2 = new Q3VBox(axisX);
-    new QLabel(tr("start"), VBox2);
-    startX = new QLineEdit(VBox2);
+    //Q3VBox *VBox2 = new Q3VBox(axisX);
+    QWidget *VBox2 = new QWidget();
+    axisXLayout->addWidget(VBox2);
+    QVBoxLayout *VBox2Layout = new QVBoxLayout();
+    VBox2Layout->addWidget(new QLabel(tr("start")));//, VBox2);
+    startX = new QLineEdit();
+    VBox2Layout->addWidget(startX);
     startX->setValidator(ValDouble);
+    VBox2->setLayout(VBox2Layout);
 
-    Q3VBox *VBox3 = new Q3VBox(axisX);
-    new QLabel(tr("step"), VBox3);
-    stepX = new QLineEdit(VBox3);
+    //Q3VBox *VBox3 = new Q3VBox(axisX);
+    QWidget *VBox3 = new QWidget();
+    axisXLayout->addWidget(VBox3);
+    QVBoxLayout *VBox3Layout = new QVBoxLayout();
+    VBox3Layout->addWidget(new QLabel(tr("step")));//, VBox3);
+    stepX = new QLineEdit();//VBox3);
+    VBox3Layout->addWidget(stepX);
     stepX->setValidator(ValDouble);
+    VBox3->setLayout(VBox3Layout);
 
-    Q3VBox *VBox4 = new Q3VBox(axisX);
-    new QLabel(tr("stop"), VBox4);
-    stopX = new QLineEdit(VBox4);
+    //Q3VBox *VBox4 = new Q3VBox(axisX);
+    QWidget *VBox4 = new QWidget();
+    axisXLayout->addWidget(VBox4);
+    QVBoxLayout *VBox4Layout = new QVBoxLayout();
+    VBox4Layout->addWidget(new QLabel(tr("stop")));//, VBox4);
+    stopX = new QLineEdit();
+    VBox4Layout->addWidget(stopX);
     stopX->setValidator(ValDouble);
+    VBox4->setLayout(VBox4Layout);
+
+    axisX->setLayout(axisXLayout);
+    Tab3Layout->addWidget(axisX);
 
 
-    Q3HGroupBox *axisY;
-    axisY = new Q3HGroupBox(NameY, Tab3);
+    QGroupBox *axisY = new QGroupBox(NameY);
+    QHBoxLayout *axisYLayout = new QHBoxLayout();
 
-    Q3VBox *VBox5 = new Q3VBox(axisY);
-    VBox5->setStretchFactor(new QWidget(VBox5),5); // stretchable placeholder
-    manualY = new QCheckBox(tr("manual"), VBox5);
+    //Q3HGroupBox *axisY = new Q3HGroupBox(NameY);//, Tab3);
+    //Tab3Layout->addWidget(axisY);
+
+    //Q3VBox *VBox5 = new Q3VBox(axisY);
+    QWidget *VBox5 = new QWidget();
+    axisYLayout->addWidget(VBox5);
+    QVBoxLayout *VBox5Layout = new QVBoxLayout();
+    VBox5Layout->setStretchFactor(new QWidget(VBox5),5); // stretchable placeholder
+    manualY = new QCheckBox(tr("manual"));
+    VBox5Layout->addWidget(manualY);
     connect(manualY, SIGNAL(stateChanged(int)), SLOT(slotManualY(int)));
+    VBox5->setLayout(VBox5Layout);
 
-    Q3VBox *VBox6 = new Q3VBox(axisY);
-    new QLabel(tr("start"), VBox6);
-    startY = new QLineEdit(VBox6);
+    //Q3VBox *VBox6 = new Q3VBox(axisY);
+    QWidget *VBox6 = new QWidget();
+    axisYLayout->addWidget(VBox6);
+    QVBoxLayout *VBox6Layout = new QVBoxLayout();
+    VBox6Layout->addWidget(new QLabel(tr("start")));
+    startY = new QLineEdit();
+    VBox6Layout->addWidget(startY);
     startY->setValidator(ValDouble);
+    VBox6->setLayout(VBox6Layout);
 
-    Q3VBox *VBox7 = new Q3VBox(axisY);
+    //Q3VBox *VBox7 = new Q3VBox(axisY);
+    QWidget *VBox7 = new QWidget();
+    axisYLayout->addWidget(VBox7);
+    QVBoxLayout *VBox7Layout = new QVBoxLayout();
     if((Diag->Name=="Smith") || (Diag->Name=="ySmith") || (Diag->Name=="PS"))
-      new QLabel(tr("number"), VBox7);
-    else  new QLabel(tr("step"), VBox7);
-    stepY = new QLineEdit(VBox7);
+      VBox7Layout->addWidget(new QLabel(tr("number")));
+    else  VBox7Layout->addWidget(new QLabel(tr("step")));
+    stepY = new QLineEdit();
+    VBox7Layout->addWidget(stepY);
     stepY->setValidator(ValDouble);
+    VBox7->setLayout(VBox7Layout);
 
-    Q3VBox *VBox8 = new Q3VBox(axisY);
-    new QLabel(tr("stop"), VBox8);
-    stopY = new QLineEdit(VBox8);
+    //Q3VBox *VBox8 = new Q3VBox(axisY);
+    QWidget *VBox8 = new QWidget();
+    axisYLayout->addWidget(VBox8);
+    QVBoxLayout *VBox8Layout = new QVBoxLayout();
+    VBox8Layout->addWidget(new QLabel(tr("stop")));
+    stopY = new QLineEdit();
+    VBox8Layout->addWidget(stopY);
     stopY->setValidator(ValDouble);
+    VBox8->setLayout(VBox8Layout);
 
+    axisY->setLayout(axisYLayout);
+    Tab3Layout->addWidget(axisY);
 
-    Q3HGroupBox *axisZ;
-    axisZ = new Q3HGroupBox(NameZ, Tab3);
+    QGroupBox *axisZ = new QGroupBox(NameZ);
+    QHBoxLayout *axisZLayout = new QHBoxLayout();
 
-    Q3VBox *VBox9 = new Q3VBox(axisZ);
-    VBox9->setStretchFactor(new QWidget(VBox9),5); // stretchable placeholder
-    manualZ = new QCheckBox(tr("manual"), VBox9);
+    //Q3HGroupBox *axisZ = new Q3HGroupBox(NameZ);//, Tab3);
+    //Tab3Layout->addWidget(axisZ);
+
+    //Q3VBox *VBox9 = new Q3VBox(axisZ);
+    QWidget *VBox9 = new QWidget();
+    axisZLayout->addWidget(VBox9);
+    QVBoxLayout *VBox9Layout = new QVBoxLayout();
+    VBox9Layout->setStretchFactor(new QWidget(VBox9),5); // stretchable placeholder
+    manualZ = new QCheckBox(tr("manual"));
+    VBox9Layout->addWidget(manualZ);
     connect(manualZ, SIGNAL(stateChanged(int)), SLOT(slotManualZ(int)));
+    VBox9->setLayout(VBox9Layout);
 
-    Q3VBox *VBox10 = new Q3VBox(axisZ);
-    new QLabel(tr("start"), VBox10);
-    startZ = new QLineEdit(VBox10);
+    //Q3VBox *VBox10 = new Q3VBox(axisZ);
+    QWidget *VBox10 = new QWidget();
+    axisZLayout->addWidget(VBox10);
+    QVBoxLayout *VBox10Layout = new QVBoxLayout();
+    VBox10Layout->addWidget(new QLabel(tr("start")));
+    startZ = new QLineEdit();
+    VBox10Layout->addWidget(startZ);
     startZ->setValidator(ValDouble);
+    VBox10->setLayout(VBox10Layout);
 
-    Q3VBox *VBox11 = new Q3VBox(axisZ);
-    if(Diag->Name == "SP")  new QLabel(tr("number"), VBox11);
-    else  new QLabel(tr("step"), VBox11);
-    stepZ = new QLineEdit(VBox11);
+    //Q3VBox *VBox11 = new Q3VBox(axisZ);
+    QWidget *VBox11 = new QWidget();
+    axisZLayout->addWidget(VBox11);
+    QVBoxLayout *VBox11Layout = new QVBoxLayout();
+    if(Diag->Name == "SP") VBox11Layout->addWidget(new QLabel(tr("number")));
+    else VBox11Layout->addWidget(new QLabel(tr("step")));
+    stepZ = new QLineEdit();
+    VBox11Layout->addWidget(stepZ);
     stepZ->setValidator(ValDouble);
+    VBox11->setLayout(VBox11Layout);
 
-    Q3VBox *VBox12 = new Q3VBox(axisZ);
-    new QLabel(tr("stop"), VBox12);
-    stopZ = new QLineEdit(VBox12);
+    //Q3VBox *VBox12 = new Q3VBox(axisZ);
+    QWidget *VBox12 = new QWidget();
+    axisZLayout->addWidget(VBox12);
+    QVBoxLayout *VBox12Layout = new QVBoxLayout();
+    VBox12Layout->addWidget(new QLabel(tr("stop")));
+    stopZ = new QLineEdit();
+    VBox12Layout->addWidget(stopZ);
     stopZ->setValidator(ValDouble);
+    VBox12->setLayout(VBox12Layout);
 
+    Tab3Layout->setStretchFactor(new QWidget(Tab3),5); // stretchable placeholder
 
-    Tab3->setStretchFactor(new QWidget(Tab3),5); // stretchable placeholder
+    axisZ->setLayout(axisZLayout);
+    Tab3Layout->addWidget(axisZ);
 
+    Tab3->setLayout(Tab3Layout);
     t->addTab(Tab3, tr("Limits"));
 
     // ...........................................................
@@ -556,16 +675,22 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
 
   connect(t, SIGNAL(currentChanged(QWidget*)), SLOT(slotChangeTab(QWidget*)));
   // ...........................................................
-  Q3HBox *Butts = new Q3HBox(this);
-  Butts->setSpacing(5);
-  Butts->setMargin(5);
+  //Q3HBox *Butts = new Q3HBox(this);
+  QWidget *Butts = new QWidget();
+  QHBoxLayout *ButtsLayout = new QHBoxLayout();
+  ButtsLayout->setSpacing(5);
+  ButtsLayout->setMargin(5);
+  Butts->setLayout(ButtsLayout);
   all->addWidget(Butts);
 
-  QPushButton *OkButt = new QPushButton(tr("OK"), Butts);
+  QPushButton *OkButt = new QPushButton(tr("OK"));
+  ButtsLayout->addWidget(OkButt);
   connect(OkButt, SIGNAL(clicked()), SLOT(slotOK()));
-  QPushButton *ApplyButt = new QPushButton(tr("Apply"), Butts);
+  QPushButton *ApplyButt = new QPushButton(tr("Apply"));
+  ButtsLayout->addWidget(ApplyButt);
   connect(ApplyButt, SIGNAL(clicked()), SLOT(slotApply()));
-  QPushButton *CancelButt = new QPushButton(tr("Cancel"), Butts);
+  QPushButton *CancelButt = new QPushButton(tr("Cancel"));
+  ButtsLayout->addWidget(CancelButt);
   connect(CancelButt, SIGNAL(clicked()), SLOT(slotCancel()));
 
   OkButt->setDefault(true);
@@ -589,9 +714,9 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   // put all graphs into the ListBox
   Row = 0;
   for(Graph *pg = Diag->Graphs.first(); pg != 0; pg = Diag->Graphs.next()) {
-    GraphList->insertItem(pg->Var);
+    GraphList->insertItem(Row, pg->Var);
     if(pg == currentGraph) {
-      GraphList->setCurrentItem(Row);   // select current graph
+      GraphList->setCurrentRow(Row);   // select current graph
       SelectGraph(currentGraph);
     }
     Row++;
@@ -623,6 +748,7 @@ void DiagramDialog::slotReadVars(int)
   }
 
   QString Line, tmp, Var;
+  int varNumber = 0;
   // reading the file as a whole improves speed very much, also using
   // a QByteArray rather than a QString
   QByteArray FileString = file.readAll();
@@ -644,11 +770,36 @@ void DiagramDialog::slotReadVars(int)
 
     if(Line.left(3) == "dep") {
       tmp = Line.section(' ', 2);
-      new Q3ListViewItem(ChooseVars, Var, "dep", tmp.remove('>'));
+      //new Q3ListViewItem(ChooseVars, Var, "dep", tmp.remove('>'));
+      qDebug() << varNumber << Var << tmp.remove('>');
+      ChooseVars->setRowCount(varNumber+1);
+      QTableWidgetItem *cell = new QTableWidgetItem(Var);
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      ChooseVars->setItem(varNumber, 0, cell);
+      cell = new QTableWidgetItem("dep");
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      ChooseVars->setItem(varNumber, 1, cell);
+      cell = new QTableWidgetItem(tmp.remove('>'));
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      ChooseVars->setItem(varNumber, 2, cell);
+      varNumber++;
     }
     else if(Line.left(5) == "indep") {
       tmp = Line.section(' ', 2, 2);
-      new Q3ListViewItem(ChooseVars, Var, "indep", tmp.remove('>'));
+      //new Q3ListViewItem(ChooseVars, Var, "indep", tmp.remove('>'));
+      qDebug() << varNumber << Var << tmp.remove('>');
+      ChooseVars->setRowCount(varNumber+1);
+      QTableWidgetItem *cell = new QTableWidgetItem(Var);
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      ChooseVars->setItem(varNumber, 0, cell);
+      cell = new QTableWidgetItem("indep");
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      ChooseVars->setItem(varNumber, 1, cell);
+      cell = new QTableWidgetItem(tmp.remove('>'));
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      ChooseVars->setItem(varNumber, 2, cell);
+      varNumber++;
+
     }
   } while(i > 0);
 }
@@ -657,22 +808,24 @@ void DiagramDialog::slotReadVars(int)
 // Inserts the double-clicked variable into the Graph Input Line at the
 // cursor position. If the Graph Input is empty, then the variable is
 // also inserted as graph.
-void DiagramDialog::slotTakeVar(Q3ListViewItem *Item)
+void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
 {
   GraphInput->blockSignals(true);
   if(toTake) GraphInput->setText("");
 
   int     i  = GraphInput->cursorPosition();
   QString s  = GraphInput->text();
-  QString s1 = Item->text(0);
+  //QString s1 = Item->text();
+  int row = Item->row();
+  QString s1 = ChooseVars->item(row, 0)->text();
   QFileInfo Info(defaultDataSet);
   if(ChooseData->currentText() != Info.baseName(true))
     s1 = ChooseData->currentText() + ":" + s1;
   GraphInput->setText(s.left(i) + s1 + s.right(s.length()-i));
 
   if(s.isEmpty()) {
-    GraphList->insertItem(GraphInput->text());
-    GraphList->setSelected(GraphList->count()-1,true);
+    GraphList->addItem(GraphInput->text());////insertItem(i, GraphInput->text());
+    GraphList->setCurrentRow(GraphList->count()-1);
 
     Graph *g = new Graph(GraphInput->text());   // create a new graph
 
@@ -719,14 +872,14 @@ void DiagramDialog::slotTakeVar(Q3ListViewItem *Item)
 
 // --------------------------------------------------------------------------
 // Is called if a graph text is clicked in the BistBox.
-void DiagramDialog::slotSelectGraph(Q3ListBoxItem *item)
+void DiagramDialog::slotSelectGraph(QListWidgetItem *item)
 {
   if(item == 0) {
     GraphList->clearSelection();
     return;
   }
 
-  SelectGraph (Graphs.at (GraphList->index(item)));
+  SelectGraph (Graphs.at (GraphList->currentRow()));
 }
 
 // --------------------------------------------------------------------------
@@ -770,10 +923,10 @@ void DiagramDialog::SelectGraph(Graph *g)
 // Is called when the 'delelte graph' button is pressed.
 void DiagramDialog::slotDeleteGraph()
 {
-  int i = GraphList->index(GraphList->selectedItem());
+  int i = GraphList->currentRow();
   if(i < 0) return;   // return, if no item selected
 
-  GraphList->removeItem(i);
+  GraphList->takeItem(i);
   Graphs.remove(i);
 
   GraphInput->setText("");  // erase input line and back to default values
@@ -811,7 +964,7 @@ void DiagramDialog::slotNewGraph()
 {
   if(GraphInput->text().isEmpty()) return;
 
-  GraphList->insertItem(GraphInput->text());
+  GraphList->addItem(GraphInput->text());
 
   Graph *g = new Graph(GraphInput->text());   // create a new graph
   if(Diag->Name != "Tab") {
@@ -1026,7 +1179,7 @@ void DiagramDialog::slotSetColor()
   if(!c.isValid()) return;
   ColorButt->setPaletteBackgroundColor(c);
 
-  int i = GraphList->index(GraphList->selectedItem());
+  int i = GraphList->currentRow();
   if(i < 0) return;   // return, if no item selected
 
   Graph *g = Graphs.at(i);
@@ -1049,12 +1202,12 @@ void DiagramDialog::slotSetGridColor()
 // Is set if the graph input line changes.
 void DiagramDialog::slotResetToTake(const QString& s)
 {
-  int i = GraphList->index(GraphList->selectedItem());
+  int i = GraphList->currentRow();
   if(i < 0) return;   // return, if no item selected
 
   Graph *g = Graphs.at(i);
   g->Var = s;
-  GraphList->changeItem(s, i);   // must done after the graph settings !!!
+  // TODO GraphList->changeItem(s, i);   // must done after the graph settings !!!
   changed = true;
   toTake  = false;
 }
@@ -1063,7 +1216,7 @@ void DiagramDialog::slotResetToTake(const QString& s)
 // Is called if the user changes the graph thickness or the precision.
 void DiagramDialog::slotSetProp2(const QString& s)
 {
-  int i = GraphList->index(GraphList->selectedItem());
+  int i = GraphList->currentRow();
   if(i < 0) return;   // return, if no item selected
 
   Graph *g = Graphs.at(i);
@@ -1077,7 +1230,7 @@ void DiagramDialog::slotSetProp2(const QString& s)
 // Is called if the user changes the number mode.
 void DiagramDialog::slotSetNumMode(int Mode)
 {
-  int i = GraphList->index(GraphList->selectedItem());
+  int i = GraphList->currentRow();
   if(i < 0) return;   // return, if no item selected
 
   Graph *g = Graphs.at(i);
@@ -1108,7 +1261,7 @@ void DiagramDialog::slotSetGridBox(int state)
 // Is called if the user changes the graph style (combobox).
 void DiagramDialog::slotSetGraphStyle(int style)
 {
-  int i = GraphList->index(GraphList->selectedItem());
+  int i = GraphList->currentRow();
   if(i < 0) return;   // return, if no item selected
 
   Graph *g = Graphs.at(i);
@@ -1129,7 +1282,7 @@ void DiagramDialog::copyDiagramGraphs()
 // Is called if the combobox changes that defines which y axis uses the graph.
 void DiagramDialog::slotSetYAxis(int axis)
 {
-  int i = GraphList->index(GraphList->selectedItem());
+  int i = GraphList->currentRow();
   if(i < 0) return;   // return, if no item selected
 
   Graph *g = Graphs.at(i);
