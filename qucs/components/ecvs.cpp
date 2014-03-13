@@ -61,7 +61,7 @@ ecvs::ecvs()
 
   tx = x1+4;
   ty = y2+4;
-  Model = "ecvs";
+  Model = "ECVS";
   Name  = "ECVS";
 
   Props.append(new Property("U", "0 V", true,
