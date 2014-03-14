@@ -445,6 +445,7 @@ int Schematic::saveDocument()
 
       QStringList Arguments;
       Arguments << vaFile
+                << "-I" << include.absolutePath()
                 << "-e" << include.absFilePath("qucsMODULEguiJSONsymbol.xml")
                 << "-A" << "dyload";
 
@@ -472,15 +473,14 @@ int Schematic::saveDocument()
       // how to capture [warning]? need to modify admsXml?
       // TODO put stdout, stderr into a dock window, not messagebox
       if (!builder.waitForFinished()) {
-//            qDebug() << "Make failed:" << builder.errorString();
-        QMessageBox::critical(this, tr("Error"),
-                                builder.errorString());
+        QString cmdString = QString("%1 %2\n\n").arg(Program, Arguments.join(" "));
+        cmdString = cmdString + builder.errorString();
+        QMessageBox::critical(this, tr("Error"), cmdString);
       }
       else {
-//          qDebug() << "Make output:" << builder.readAll();
-//          qDebug() << "Make stdout"  << builder.readAllStandardOutput();
-        QMessageBox::information(this, tr("Status"),
-                                 builder.readAll());
+        QString cmdString = QString("%1 %2\n\n").arg(Program, Arguments.join(" "));
+        cmdString = cmdString + builder.readAll();
+        QMessageBox::information(this, tr("Status"), cmdString);
       }
 
       // Append _sym.json into _props.json, save into _symbol.json
