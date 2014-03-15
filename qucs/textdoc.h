@@ -1,9 +1,9 @@
 /***************************************************************************
                                 textdoc.h
                                -----------
-    begin                : Sat Mar 11 2006
-    copyright            : (C) 2006 by Michael Margraf
-    email                : michael.margraf@alumni.tu-berlin.de
+Copyright (C) 2006 by Michael Margraf <michael.margraf@alumni.tu-berlin.de>
+Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,12 +18,15 @@
 #ifndef TEXTDOC_H
 #define TEXTDOC_H
 
-
-#include <QTextEdit>
-#include <Q3TextEdit>
+#include <QPlainTextEdit>
 #include <QFont>
 
 #include "qucsdoc.h"
+
+/*!
+ * \file textdoc.h
+ * \brief Definition of the TextDoc class.
+ */
 
 class SyntaxHighlighter;
 
@@ -40,9 +43,12 @@ extern const char *empty_xpm[];    // provides same height than "smallsave_xpm"
 #define DEV_MASK_TYP 0xFF00
 #define DEV_DEF      0x0200 // default value
 
-class TextDoc : public QTextEdit, public QucsDoc {
+/*!
+ * \brief The TextDoc class definition
+ */
+class TextDoc : public QPlainTextEdit, public QucsDoc {
   Q_OBJECT
-public: 
+public:
   TextDoc (QucsApp *, const QString&);
  ~TextDoc ();
 
@@ -58,6 +64,7 @@ public:
   void  setLanguage (int);
   void  setLanguage (const QString&);
   QString getModuleName (void);
+
 
   QFont TextFont;
 
@@ -84,6 +91,9 @@ public slots:
 
 private:
   SyntaxHighlighter * syntaxHighlight;
+
+private slots:
+   void highlightCurrentLine();
 };
 
 #endif

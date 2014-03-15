@@ -1,9 +1,9 @@
 /***************************************************************************
                                textdoc.cpp
                               -------------
-    begin                : Sat Mar 11 2006
-    copyright            : (C) 2006 by Michael Margraf
-    email                : michael.margraf@alumni.tu-berlin.de
+Copyright (C) 2006 by Michael Margraf <michael.margraf@alumni.tu-berlin.de>
+Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -29,14 +29,23 @@
 #include "components/verilogfile.h"
 #include "components/vafile.h"
 
-TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QucsDoc(App_, Name_), QTextEdit()
+/*!
+ * \file textdoc.cpp
+ * \brief Implementation of the TextDoc class.
+ */
+
+/*!
+ * \brief TextDoc::TextDoc Text document constructor
+ * \param App_ is the parent object
+ * \param Name_ is the initial text document name
+ */
+TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QucsDoc(App_, Name_), QPlainTextEdit()
 {
   TextFont = QFont("Courier New");
   TextFont.setPointSize(QucsSettings.font.pointSize()-1);
   TextFont.setStyleHint(QFont::Courier);
   TextFont.setFixedPitch(true);
-  setFont(TextFont);
-  //Removed, otherwise zoomIn/Out does not work setCurrentFont(TextFont);
+  document()->setDefaultFont(TextFont);
 
   simulation = true;
   Library = "";
@@ -69,9 +78,16 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QucsDoc(App_, Name_), QT
 
     syntaxHighlight = new SyntaxHighlighter(this);
     syntaxHighlight->setLanguage(language);
+    syntaxHighlight->setDocument(document());
+
+    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+    highlightCurrentLine();
   }
 }
 
+/*!
+ * \brief TextDoc::~TextDoc Text document destructor
+ */
 TextDoc::~TextDoc()
 {
   if(App) {
@@ -80,7 +96,11 @@ TextDoc::~TextDoc()
   }
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::setLanguage(const QString&)
+ * \param FileName Text document file name
+ * Extract the file name suffix and assing a language_type to it.
+ */
 void TextDoc::setLanguage (const QString& FileName)
 {
   QFileInfo Info (FileName);
@@ -97,20 +117,27 @@ void TextDoc::setLanguage (const QString& FileName)
     setLanguage (LANG_NONE);
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::setLanguage(int)
+ * \param lang is a language_type
+ * Assing value to text document object language variable
+ */
 void TextDoc::setLanguage (int lang)
 {
   language = lang;
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::saveSettings saves the text document settings .cfg
+ * \return true/false if settings file opened with success
+ */
 bool TextDoc::saveSettings (void)
 {
   QFile file (DocName + ".cfg");
   if (!file.open (QIODevice::WriteOnly))
     return false;
 
-  Q3TextStream stream (&file);
+  QTextStream stream (&file);
   stream << "Textfile settings file, Qucs " PACKAGE_VERSION "\n"
 	 << "Simulation=" << simulation << "\n"
 	 << "Duration=" << SimTime << "\n"
@@ -128,14 +155,17 @@ bool TextDoc::saveSettings (void)
   return true;
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::loadSettings loads the text document settings
+ * \return true/false if settings file opened with success
+ */
 bool TextDoc::loadSettings (void)
 {
   QFile file (DocName + ".cfg");
   if (!file.open (QIODevice::ReadOnly))
     return false;
 
-  Q3TextStream stream (&file);
+  QTextStream stream (&file);
   QString Line, Setting;
 
   bool ok;
@@ -169,7 +199,10 @@ bool TextDoc::loadSettings (void)
   return true;
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::setName sets the text file name on its tab
+ * \param Name_ text file name to be set
+ */
 void TextDoc::setName (const QString& Name_)
 {
   DocName = Name_;
@@ -185,18 +218,22 @@ void TextDoc::setName (const QString& Name_)
     SimTime = "1";
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::becomeCurrent sets text document as current
+ *
+ * \detail Make sure the menu options are adjusted.
+ */
 void TextDoc::becomeCurrent (bool)
 {
   int x, y;
   slotCursorPosChanged();
   viewport()->setFocus ();
 
-  if (isUndoAvailable ())
+  if (document()->isUndoAvailable())
     App->undo->setEnabled (true);
   else
     App->undo->setEnabled (false);
-  if (isRedoAvailable ())
+  if (document()->isRedoAvailable ())
     App->redo->setEnabled (true);
   else
     App->redo->setEnabled (false);
@@ -230,47 +267,47 @@ void TextDoc::becomeCurrent (bool)
   App->editActivate->setEnabled (true);
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::slotCursorPosChanged update status bar with line:column
+ */
 void TextDoc::slotCursorPosChanged()
 {
   QTextCursor pos = textCursor();
   int x = pos.blockNumber();
   int y = pos.columnNumber();
-
-  // TODO This seems to be difficult; maybe http://pepper.troll.no/s60prereleases/doc/widgets-codeeditor.html
-
-  //if(tmpPosX > x)
-    //TODO clearParagraphBackground(tmpPosX);
-  //else
-    //for(int z=tmpPosX; z<x; z++)
-      //TODO clearParagraphBackground(z);
-  //if(tmpPosX != x)
-    //TODO setParagraphBackgroundColor(x, QColor(240, 240, 255));
   App->printCursorPosition(x+1, y+1);
   tmpPosX = x;
   tmpPosY = y;
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::slotSetChanged togles tab icon to indicate unsaved changes
+ */
 void TextDoc::slotSetChanged()
 {
-  if((isModified() && !DocChanged) || SetChanged) {
+  if((document()->isModified() && !DocChanged) || SetChanged) {
     App->DocumentTab->setTabIconSet(this, QPixmap(smallsave_xpm));
     DocChanged = true;
   }
-  else if((!isModified() && DocChanged)) {
+  else if((!document()->isModified() && DocChanged)) {
     App->DocumentTab->setTabIconSet(this, QPixmap(empty_xpm));
     DocChanged = false;
   }
 
-  App->undo->setEnabled(isUndoAvailable());
-  App->redo->setEnabled(isRedoAvailable());
+  App->undo->setEnabled(document()->isUndoAvailable());
+  App->redo->setEnabled(document()->isRedoAvailable());
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::createStandardContextMenu creates the standard context menu
+ * \param pos
+ * \return
+ *
+ *  \todo \fixme is this working?
+ */
 QMenu *TextDoc::createStandardContextMenu( const QPoint &pos )
 {
-  QMenu *popup = QTextEdit::createStandardContextMenu(pos);
+  QMenu *popup = QPlainTextEdit::createStandardContextMenu();
 
    if (language != LANG_OCTAVE) {
      App->fileSettings->addTo(popup);
@@ -278,18 +315,20 @@ QMenu *TextDoc::createStandardContextMenu( const QPoint &pos )
    return popup;
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::load loads a text document
+ * \return true/false if the document was opened with success
+ */
 bool TextDoc::load ()
 {
-
   QFile file (DocName);
   if (!file.open (QIODevice::ReadOnly))
     return false;
   setLanguage (DocName);
 
   QTextStream stream (&file);
-  setText (stream.read ());
-  setModified (false);
+  insertPlainText(stream.read ());
+  document()->setModified(false);
   slotSetChanged ();
   file.close ();
   lastSaved = QDateTime::currentDateTime ();
@@ -298,7 +337,11 @@ bool TextDoc::load ()
   return true;
 }
 
-// ---------------------------------------------------
+
+/*!
+ * \brief TextDoc::save saves the current document and it settings
+ * \return true/false if the document was opened with success
+ */
 int TextDoc::save ()
 {
   saveSettings ();
@@ -308,9 +351,9 @@ int TextDoc::save ()
     return -1;
   setLanguage (DocName);
 
-  Q3TextStream stream (&file);
-  stream << text ();
-  setModified (false);
+  QTextStream stream (&file);
+  stream << toPlainText();
+  document()->setModified (false);
   slotSetChanged ();
   file.close ();
 
@@ -324,113 +367,146 @@ int TextDoc::save ()
   return 0;
 }
 
-
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::zoomBy increases/decreases the text font size.
+ * \param s font size scaling factor
+ * \return (required) final scale
+ *
+ * \fixme is the return value being saved on the saveSettings() ?
+ */
 float TextDoc::zoomBy(float s)
 {
   if(s == 2.0) {
-    this->zoomIn(2);
+      QFont f = document()->defaultFont();
+      f.setPointSize(f.pointSize()*2);
+      document()->setDefaultFont(f);
   }
   else {
-    this->zoomOut(2);
+      QFont f = document()->defaultFont();
+      f.setPointSize(f.pointSize()*s);
+      document()->setDefaultFont(f);
   }
   return Scale;
 }
 
-
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::showNoZoom resets the font scaling
+ */
 void TextDoc::showNoZoom()
 {
   TextFont = QFont("Courier New");
   TextFont.setPointSize(QucsSettings.font.pointSize()-1);
   TextFont.setStyleHint(QFont::Courier);
   TextFont.setFixedPitch(true);
-  setFont(TextFont);
+  document()->setDefaultFont(TextFont);
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::loadSimulationTime set SimTime member variable
+ * \param Time string  with simulation time
+ * \return true if SimTime is set
+ */
 bool TextDoc::loadSimulationTime(QString& Time)
 {
   if(!SimTime.isEmpty()) {
     Time = SimTime;
     return true;
   }
-
   return false;
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::commentSelected toggles the comment of selected text
+ * See also QucsApp::slotEditActivate
+ */
 void TextDoc::commentSelected ()
 {
-  QString s = selectedText ();
-  if (s.isEmpty ())
-    return;
+  QTextCursor cursor = this->textCursor();
+
+  if(!cursor.hasSelection())
+      return; // No selection available
+
+  // get range of selection
+  int start = cursor.selectionStart();
+  int end = cursor.selectionEnd();
+
+  cursor.setPosition(start);
+  int firstLine = cursor.blockNumber();
+  cursor.setPosition(end, QTextCursor::KeepAnchor);
+  int lastLine = cursor.blockNumber();
 
   // use comment string indicator depending on language
   QString co;
-  int cl;
+
   switch (language) {
   case LANG_VHDL:
-    co = "--"; cl = 2;
+    co = "--";
     break;
   case LANG_VERILOG:
   case LANG_VERILOGA:
-    co = "//"; cl = 2;
+    co = "//";
     break;
   case LANG_OCTAVE:
-    co = "%"; cl = 1;
+    co = "%";
     break;
   default:
-    co = ""; cl = 0;
+    co = "";
     break;
   }
 
-  if (s.left (cl) == co)
-    s.remove (0, cl);
-  else
-    s = co + s;
-
-  for (int i = s.length () - cl; i >= 0; i--)
-    if (s.at (i) == '\n') {
-      if (s.mid (i+1, cl) == co)
-        s.remove(i+1, cl);
-      else
-        s.insert (i+1, co);
-    }
-  insert (s);
+  QStringList newlines;
+  for (int i=firstLine; i<=lastLine; i++) {
+      QString line = document()->findBlockByLineNumber(i).text();
+      if (line.startsWith(co)){
+          // uncomment
+          line.remove(0,co.length());
+          newlines << line;
+      }
+      else {
+          // comment
+          line = line.insert(0, co);
+          newlines << line;
+      }
+  }
+  insertPlainText(newlines.join("\n"));
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::insertSkeleton adds a basic skeleton for type of text file
+ */
 void TextDoc::insertSkeleton ()
 {
   if (language == LANG_VHDL)
-    insert ("entity  is\n  port ( : in bit);\nend;\n"
+    appendPlainText("entity  is\n  port ( : in bit);\nend;\n"
 	    "architecture  of  is\n  signal : bit;\nbegin\n\nend;\n\n");
   else if (language == LANG_VERILOG)
-    insert ("module  ( );\ninput ;\noutput ;\nbegin\n\nend\n"
+    appendPlainText ("module  ( );\ninput ;\noutput ;\nbegin\n\nend\n"
 	    "endmodule\n\n");
   else if (language == LANG_OCTAVE)
-    insert ("function  =  ( )\n"
+    appendPlainText ("function  =  ( )\n"
 	    "endfunction\n\n");
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief TextDoc::getModuleName parse the module name ou of the text file contents
+ * \return the module name
+ */
 QString TextDoc::getModuleName (void)
 {
   switch (language) {
   case LANG_VHDL:
     {
-      VHDL_File_Info VInfo (text ());
+      VHDL_File_Info VInfo (toPlainText());
       return VInfo.EntityName;
     }
   case LANG_VERILOG:
     {
-      Verilog_File_Info VInfo (text ());
+      Verilog_File_Info VInfo (toPlainText());
       return VInfo.ModuleName;
     }
   case LANG_VERILOGA:
     {
-      VerilogA_File_Info VInfo (text ());
+      VerilogA_File_Info VInfo (toPlainText());
       return VInfo.ModuleName;
     }
   case LANG_OCTAVE:
@@ -441,4 +517,26 @@ QString TextDoc::getModuleName (void)
   default:
     return "";
   }
+}
+
+/*!
+ * \brief TextDoc::highlightCurrentLine mark the current line
+ */
+void TextDoc::highlightCurrentLine()
+{
+    QList<QTextEdit::ExtraSelection> extraSelections;
+
+    if (!isReadOnly()) {
+        QTextEdit::ExtraSelection selection;
+
+        QColor lineColor = QColor(Qt::blue).lighter(195);
+
+        selection.format.setBackground(lineColor);
+        selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+        selection.cursor = textCursor();
+        selection.cursor.clearSelection();
+        extraSelections.append(selection);
+    }
+
+    setExtraSelections(extraSelections);
 }

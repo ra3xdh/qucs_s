@@ -1385,7 +1385,7 @@ int Schematic::adjustPortNumbers()
     VHDL_File_Info VInfo;
     TextDoc * d = (TextDoc*)App->findDoc (Name);
     if (d)
-      VInfo = VHDL_File_Info (d->text());
+      VInfo = VHDL_File_Info (d->document()->toPlainText());
     else
       VInfo = VHDL_File_Info (Name, true);
     Names = QStringList::split(",",VInfo.PortNames);
@@ -1441,7 +1441,7 @@ int Schematic::adjustPortNumbers()
     Verilog_File_Info VInfo;
     TextDoc * d = (TextDoc*)App->findDoc (Name);
     if (d)
-      VInfo = Verilog_File_Info (d->text());
+      VInfo = Verilog_File_Info (d->document()->toPlainText());
     else
       VInfo = Verilog_File_Info (Name, true);
     Names = QStringList::split(",",VInfo.PortNames);
@@ -1486,7 +1486,7 @@ int Schematic::adjustPortNumbers()
     VerilogA_File_Info VInfo;
     TextDoc * d = (TextDoc*)App->findDoc (Name);
     if (d)
-      VInfo = VerilogA_File_Info (d->text());
+      VInfo = VerilogA_File_Info (d->toPlainText());
     else
       VInfo = VerilogA_File_Info (Name, true);
     Names = QStringList::split(",",VInfo.PortNames);

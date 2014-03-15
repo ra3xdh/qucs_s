@@ -644,7 +644,7 @@ int doNetlist(QString schematic, QString netlist)
   qDebug() << "*** try to write netlist  :" << netlist;
 
   QStringList Collect;
-  QTextEdit *ProgText = new QTextEdit(); //dummy, not used
+
   QTextEdit *ErrText = new QTextEdit();  //dummy
   QFile NetlistFile;
   QTextStream   Stream;

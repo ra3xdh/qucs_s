@@ -126,6 +126,8 @@ void QucsApp::slotEditMirrorY(bool on)
 
 // -----------------------------------------------------------------------
 // Is called when the activate/deactivate toolbar button is pressed.
+// It also comments out the selected text on a text document
+// \todo update the status or tooltip message
 void QucsApp::slotEditActivate (bool on)
 {
   TextDoc * Doc = (TextDoc *) DocumentTab->currentPage ();
@@ -148,7 +150,7 @@ void QucsApp::slotEditActivate (bool on)
 void QucsApp::slotEditDelete(bool on)
 {
   TextDoc *Doc = (TextDoc*)DocumentTab->currentPage();
-  if(Doc->inherits("QTextEdit")) {
+  if(Doc->inherits("QPlainTextEdit")) {
     Doc->viewport()->setFocus();
     //Doc->del();
     Doc->textCursor().deleteChar();
@@ -197,8 +199,8 @@ void QucsApp::slotMoveText(bool on)
 void QucsApp::slotZoomIn(bool on)
 {
   TextDoc *Doc = (TextDoc*)DocumentTab->currentPage();
-  if(Doc->inherits("QTextEdit")) {
-    Doc->zoomBy(2.0f);
+  if(Doc->inherits("QPlainTextEdit")) {
+    Doc->zoomBy(1.5f);
     magPlus->blockSignals(true);
     magPlus->setOn(false);
     magPlus->blockSignals(false);
@@ -219,7 +221,7 @@ void QucsApp::slotEscape()
 void QucsApp::slotSelect(bool on)
 {
   QWidget *w = DocumentTab->currentPage();
-  if(w->inherits("QTextEdit")) {
+  if(w->inherits("QPlainTextEdit")) {
     ((TextDoc*)w)->viewport()->setFocus();
       select->blockSignals(true);
       select->setOn(true);
@@ -255,7 +257,7 @@ void QucsApp::slotEditPaste(bool on)
 
   // if the current document is a text document paste in
   // the contents of the clipboard as text
-  if(Doc->inherits("QTextEdit"))
+  if(Doc->inherits("QPlainTextEdit"))
   {
     ((TextDoc*)Doc)->viewport()->setFocus();
     ((TextDoc*)Doc)->paste();
@@ -423,7 +425,7 @@ void QucsApp::slotInsertPort(bool on)
 void QucsApp::slotEditUndo()
 {
   Schematic *Doc = (Schematic*)DocumentTab->currentPage();
-  if(Doc->inherits("QTextEdit")) {
+  if(Doc->inherits("QPlainTextEdit")) {
     ((TextDoc*)Doc)->viewport()->setFocus();
     ((TextDoc*)Doc)->undo();
     return;
@@ -441,7 +443,7 @@ void QucsApp::slotEditUndo()
 void QucsApp::slotEditRedo()
 {
   Schematic *Doc = (Schematic*)DocumentTab->currentPage();
-  if(Doc->inherits("QTextEdit")) {
+  if(Doc->inherits("QPlainTextEdit")) {
     ((TextDoc*)Doc)->viewport()->setFocus();
     ((TextDoc*)Doc)->redo();
     return;
@@ -569,7 +571,7 @@ void QucsApp::slotSelectAll()
   editText->setHidden(true); // disable text edit of component property
 
   QWidget *Doc = DocumentTab->currentPage();
-  if(Doc->inherits("QTextEdit")) {
+  if(Doc->inherits("QPlainTextEdit")) {
     ((TextDoc*)Doc)->viewport()->setFocus();
     //((TextDoc*)Doc)->selectAll(true);
     ((TextDoc*)Doc)->selectAll();
@@ -833,7 +835,7 @@ void QucsApp::slotEditFindAgain()
 void QucsApp::slotChangeProps()
 {
   QWidget *Doc = DocumentTab->currentPage();
-  if(Doc->inherits("QTextEdit")) {
+  if(Doc->inherits("QPlainTextEdit")) {
     ((TextDoc*)Doc)->viewport()->setFocus();
     SearchDia->initSearch(true);
   }

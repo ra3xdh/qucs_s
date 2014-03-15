@@ -41,9 +41,9 @@ SearchDialog::SearchDialog(QucsApp *App_)
   QGroupBox *g1 = new QGroupBox(tr("Text to search for"));
   QVBoxLayout *vbox1 = new QVBoxLayout;
   SearchEdit = new QLineEdit();
-  vbox1->addWidget(SearchEdit);   
+  vbox1->addWidget(SearchEdit);
   g1->setLayout(vbox1);
-  
+
   all->addWidget(g1);
 
   ReplaceGroup = new QGroupBox(tr("Text to replace with"));
@@ -51,7 +51,7 @@ SearchDialog::SearchDialog(QucsApp *App_)
   ReplaceEdit = new QLineEdit();
   vbox2->addWidget(ReplaceEdit);
   ReplaceGroup->setLayout(vbox2);
-  
+
   all->addWidget(ReplaceGroup);
 
   AskBox = new QCheckBox(tr("Ask before replacing"));
@@ -98,7 +98,7 @@ void SearchDialog::initSearch(bool replace)
 
   TextDoc *Doc = (TextDoc*)App->DocumentTab->currentPage();
   ReplaceEdit->clear();
-  SearchEdit->setText(Doc->selectedText());
+  SearchEdit->setText(Doc->textCursor().selectedText());
   SearchEdit->selectAll();
 
   SearchEdit->setFocus();
@@ -131,14 +131,14 @@ void SearchDialog::searchText(bool fromCursor, int Offset)
   if (WordBox->isChecked())
     findFlags = findFlags | QTextDocument::FindWholeWords;
   if (BackwardBox->isChecked())
-    findFlags = findFlags | QTextDocument::FindBackward;  
-  
+    findFlags = findFlags | QTextDocument::FindBackward;
+
   while ( Doc->find(SearchEdit->text(), findFlags)) {
-      
+
       count++;
       if(AskBox->isHidden())  // search only ?
         return;
-      
+
       i = QMessageBox::Yes;
       if(AskBox->isChecked()) {
         i = QMessageBox::information(this,
@@ -146,10 +146,10 @@ void SearchDialog::searchText(bool fromCursor, int Offset)
                QMessageBox::Yes | QMessageBox::Default, QMessageBox::No,
                QMessageBox::Cancel | QMessageBox::Escape);
       }
-      
+
       switch(i) {
         case QMessageBox::Yes:
-                 Doc->insert(ReplaceEdit->text());
+                 Doc->insertPlainText(ReplaceEdit->text());
                  Column += ReplaceEdit->text().length();
                  break;
         case QMessageBox::No:

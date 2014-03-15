@@ -346,7 +346,7 @@ void SimMessage::startSimulator()
     TextDoc * Doc = (TextDoc*)DocWidget;
 
     // Take VHDL file in memory as it could contain unsaved changes.
-    Stream << Doc->text();
+    Stream << Doc->toPlainText();
     NetlistFile.close();
     ProgText->insert(tr("done.")+"\n");  // of "creating netlist...
 
@@ -375,7 +375,7 @@ void SimMessage::startSimulator()
     }
     // Module.
     else {
-      QString text = Doc->text();
+      QString text = Doc->toPlainText();
       VHDL_File_Info VInfo (text);
       QString entity = VInfo.EntityName.lower();
       QString lib = Doc->Library.lower();

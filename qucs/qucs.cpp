@@ -1987,7 +1987,7 @@ void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
 
 
 // --------------------------------------------------------------
-// TODO -> in case of textdocument, cast to qtextedit & print
+// TODO -> in case of textdocument, cast to QPlainTextEdit & print
 void QucsApp::printCurrentDocument(bool fitToPage)
 {
   statusBar()->message(tr("Printing..."));
@@ -1996,7 +1996,7 @@ void QucsApp::printCurrentDocument(bool fitToPage)
   if(isTextDocument (DocumentTab->currentPage())) {
     QWidget *w;
     w = DocumentTab->currentPage();
-    QTextEdit *temp =  (QTextEdit*)w;
+    QPlainTextEdit *temp =  (QPlainTextEdit*)w;
 
     QPrintDialog *dialog = new QPrintDialog(Printer, this);
     dialog->setWindowTitle(tr("Print Document"));
@@ -2199,7 +2199,7 @@ void QucsApp::slotShowOne()
 void QucsApp::slotZoomOut()
 {
   editText->setHidden(true); // disable text edit of component property
-  getDoc()->zoomBy(0.7f);
+  getDoc()->zoomBy(0.5f);
 }
 
 
@@ -2552,7 +2552,7 @@ void QucsApp::slotSelectLibComponent(QTreeWidgetItem *item)
     Schematic *Doc = (Schematic*)DocumentTab->currentPage();
 
     // if the current document is a schematic activate the paste
-    if(!Doc->inherits("QTextEdit"))
+    if(!Doc->inherits("QPlainTextEdit"))
     {
 
         if(item == 0)
@@ -2677,7 +2677,7 @@ void QucsApp::changeSchematicSymbolMode(Schematic *Doc)
 
 // ---------------------------------------------------------
 bool QucsApp::isTextDocument(QWidget *w) {
-  if (w->inherits("QTextEdit"))
+  if (w->inherits("QPlainTextEdit"))
     return true;
   return false;
 }
