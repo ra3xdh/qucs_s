@@ -232,5 +232,7 @@
         <file>bitmaps/etran.png</file>
         <file>bitmaps/ecvs.png</file>
         <file>bitmaps/vcresistor.png</file>
+        <file>bitmaps/tick.png</file>
+        <file>bitmaps/error.png</file>
     </qresource>
 </RCC>
