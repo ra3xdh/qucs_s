@@ -23,6 +23,7 @@
 #include <QWidget>
 
 #include <QDockWidget>
+#include <QTabWidget>
 
 /*!
  * \file messagedock.h
@@ -35,6 +36,11 @@ public:
  ~MessageDock() {};
 
 public:
+
+  QDockWidget *msgDock;
+
+  QTabWidget *builderTabs;
+
   /*!
    * \brief admsOutput holds the make output of running admsXml
    */
@@ -44,11 +50,12 @@ public:
    */
   QPlainTextEdit *cppOutput;
 
-  QDockWidget *admsDock;
-  QDockWidget *cppDock;
+  void reset();
+
 
 private slots:
   void slotAdmsChanged();
+  void slotCppChanged();
   void slotCursor();
 
 };

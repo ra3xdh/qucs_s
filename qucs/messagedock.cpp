@@ -22,7 +22,6 @@
 #include "textdoc.h"
 
 #include <QVBoxLayout>
-#include <QTextEdit>
 
 /*!
  * \file messagedock.cpp
@@ -40,61 +39,54 @@
 MessageDock::MessageDock(QucsApp *App_): QWidget()
 {
 
-    // 1) add a dock for the adms messages
-    QWidget *admsMessage = new QWidget();
-    QVBoxLayout *admsLayout = new QVBoxLayout();
+    builderTabs = new QTabWidget();
+    builderTabs->setTabPosition(QTabWidget::South);
 
+    // 1) add a dock for the adms messages
     admsOutput = new QPlainTextEdit();
     admsOutput->setReadOnly(true);
 
-//    admsOutput->setText( vaStatus );
-
-    admsLayout->addWidget(admsOutput);
-    admsMessage->setLayout(admsLayout);
-
-    admsDock = new QDockWidget(tr("admsXml"), this);
-
-    admsDock->setWidget(admsMessage);
-    App_->addDockWidget(Qt::BottomDockWidgetArea, admsDock);
+    builderTabs->insertTab(0,admsOutput,tr("admsXml"));
 
 
     // 2) add a dock for the cpp compiler messages
-    QWidget *cppMessage = new QWidget();
-    QVBoxLayout *cppLayout = new QVBoxLayout();
-
     cppOutput = new QPlainTextEdit();
     cppOutput->setReadOnly(true);
 
-//    cppOutput->setText( cppStatus );
+    builderTabs->insertTab(1,cppOutput,tr("Compiler"));
 
-    cppLayout->addWidget(cppOutput);
-    cppMessage->setLayout(cppLayout);
+    msgDock = new QDockWidget();
+    msgDock->setWidget(builderTabs);
+    App_->addDockWidget(Qt::BottomDockWidgetArea, msgDock);
 
-    cppDock = new QDockWidget(tr("Compiler"), this);
-
-    cppDock->setWidget(cppMessage);
-    App_->addDockWidget(Qt::BottomDockWidgetArea, cppDock);
-
-    App_->tabifyDockWidget(admsDock, cppDock);
-
-    //start hidden
-    admsDock->hide();
-    cppDock->hide();
+    // start hidden
+    msgDock->hide();
 
     // monitor the amds output
     connect(admsOutput,SIGNAL(textChanged()), this, SLOT(slotAdmsChanged()));
-    // check out if curso over 'fail' line
+    // monitor the compiler output
+    connect(cppOutput,SIGNAL(textChanged()), this, SLOT(slotCppChanged()));
+    // check out if cursor over 'fail' line
     connect(admsOutput, SIGNAL(cursorPositionChanged()), this, SLOT(slotCursor()));
 }
 
 /*!
- * \brief MessageDock::slotAdmsChanged
+ * \brief MessageDock::reset clear the text and tab icons
+ */
+void MessageDock::reset()
+{
+    admsOutput->clear();
+    cppOutput->clear();
+
+    builderTabs->setTabIcon(0,QPixmap());
+    builderTabs->setTabIcon(1,QPixmap());
+}
+
+/*!
+ * \brief MessageDock::slotAdmsChanged monitors the adms log, update tab icon
  */
 void MessageDock::slotAdmsChanged()
 {
-    qWarning() << "slotAdmsChanged";
-//                  admsOutput->toPlainText().count("make");
-
     // look for [fatal..] output of admsXml
     // get line from either
     //  * [fatal..] ./3ph_vs.va:34:42: analog function '$abstime' is undefined
@@ -103,16 +95,16 @@ void MessageDock::slotAdmsChanged()
 
     // \todo can we change the mouse cursor over the highlighted lines?
     // A Qt::PointingHandCursor would be nice.
-    QString plainTextEditContents = admsOutput->toPlainText();
-    QStringList lines = plainTextEditContents.split("\n");
+    QString logContents = admsOutput->toPlainText();
+    QStringList lines = logContents.split("\n");
+
+    bool error = false;
 
     QList<QTextEdit::ExtraSelection> extraSelections;
     for (int i = 0; i < lines.size(); ++i) {
-
         QString line = lines[i];
 
         if (line.contains("[fatal..]",Qt::CaseSensitive)) {
-//            qWarning() << "fatal at line" << i;
             // get cursor for the line
             int pos = admsOutput->document()->findBlockByLineNumber(i).position();
             QTextCursor cursor = admsOutput->textCursor();
@@ -125,12 +117,51 @@ void MessageDock::slotAdmsChanged()
             selection.format.setProperty(QTextFormat::FullWidthSelection, true);
             selection.cursor = cursor;
             extraSelections.append(selection);
+
+            error = true;
+        }
+        else if (line.contains("[error..]",Qt::CaseSensitive)) {
+            // Do something with error?
+             error = true;
+        }
+        else if (line.contains("*** No rule to make target",Qt::CaseSensitive)) {
+            // Do something with error?
+             error = true;
         }
     }
+
     // highlight all the fatal warnings
     admsOutput->setExtraSelections(extraSelections);
+
+    // Change adms tab icon
+    if (error)
+         builderTabs->setTabIcon(0,QPixmap(":/bitmaps/error.png"));
+    else
+         builderTabs->setTabIcon(0,QPixmap(":/bitmaps/tick.png"));
 }
 
+/*!
+ * \brief MessageDock::slotCppChanged monitors the compiler log, update tab icon
+ */
+void MessageDock::slotCppChanged()
+{
+    QString logContents = cppOutput->toPlainText();
+
+    bool error = false;
+
+    if (logContents.contains("*** No rule to make target")) {
+        error = true;
+    }
+    else if (logContents.contains("error:")) {
+        error = true;
+    }
+
+    // Change compiler tab icon
+    if (error)
+         builderTabs->setTabIcon(1,QPixmap(":/bitmaps/error.png"));
+    else
+         builderTabs->setTabIcon(1,QPixmap(":/bitmaps/tick.png"));
+}
 
 /*!
  * \brief MessageDock::slotCursor
@@ -192,6 +223,11 @@ void MessageDock::slotCursor()
         selection.format.setBackground(lineColor);
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
         selection.cursor = cursor;
+
+        // get existing
+        extraSelections.append(d->extraSelections());
+
+        // append new
         extraSelections.append(selection);
 
         // color the selections on the active document
@@ -205,6 +241,8 @@ void MessageDock::slotCursor()
     }
 
     /// \todo add line numbers to TextDoc, highlight as the cursor moves
+    /// problem that now the cursor paints over the failed line.
+    /// can we have multiple selections?
 
 
 }

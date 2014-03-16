@@ -1470,8 +1470,11 @@ void QucsApp::slotBuildModule()
     qDebug() << "slotBuildModule";
 
     // reset message dock on entry
-    messageDock->admsOutput->clear();
-    messageDock->cppOutput->clear();
+    messageDock->reset();
+
+    messageDock->builderTabs->setTabIcon(0,QPixmap());
+    messageDock->builderTabs->setTabIcon(1,QPixmap());
+
 
     QString Program = "make";    // must be on the path!
 
@@ -1529,8 +1532,6 @@ void QucsApp::slotBuildModule()
               << QString("PREFIX=%1").arg(prefix.absolutePath())
               << QString("PROJDIR=%1").arg(workDir);
 
-//    builder->setProcessEnvironment(env);
-
     // prepend command to log
     cmdString = QString("%1 %2\n").arg(Program, Arguments.join(" "));
     messageDock->cppOutput->appendPlainText(cmdString);
@@ -1554,7 +1555,6 @@ void QucsApp::slotBuildModule()
     messageDock->cppOutput->appendPlainText(cppStatus);
 
     // shot the message docks
-    messageDock->admsDock->show();
-    messageDock->cppDock->show();
+    messageDock->msgDock->show();
 
 }
