@@ -387,11 +387,13 @@ void QucsApp::initActions()
   connect(graph2csv, SIGNAL(activated()), SLOT(slotExportGraphAsCsv()));
 
   buildModule = new QAction(tr("Build Verilog-A module..."), this);
-  // TODO shortcut, status, whatsthis
+  buildModule->setStatusTip(tr("Run admsXml and C++ compiler"));
+  buildModule->setWhatsThis(tr("Build Verilog-A module\nRuns amdsXml and C++ compiler"));
   connect(buildModule, SIGNAL(activated()), SLOT(slotBuildModule()));
 
   loadModule = new QAction(tr("Load Verilog-A module..."), this);
-  // TODO shortcut, status, whatsthis
+  loadModule->setStatusTip(tr("Select Verilog-A symbols to be loaded"));
+  loadModule->setWhatsThis(tr("Load Verilog-A module\nLet the user select and load symbols"));
   connect(loadModule, SIGNAL(activated()), SLOT(slotLoadModule()));
 
   magAll = new QAction(QIcon((":/bitmaps/viewmagfit.png")), tr("View All"), this);

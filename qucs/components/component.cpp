@@ -1547,6 +1547,7 @@ Component* getComponentFromName(QString& Line, Schematic* p)
     c = Module::getComponent (cstr);
 
   if(!c) {
+    /// \todo enable user to load partial schematic, skip unknown components
     QMessageBox::critical(0, QObject::tr("Error"),
 	QObject::tr("Format Error:\nUnknown component!\n"
                 "%1\n\n"

@@ -632,6 +632,7 @@ bool Schematic::loadComponents(Q3TextStream *stream, Q3PtrList<Component> *List)
     Line = Line.stripWhiteSpace();
     if(Line.isEmpty()) continue;
 
+    /// \todo enable user to load partial schematic, skip unknown components
     c = getComponentFromName(Line, this);
     if(!c) return false;
 
