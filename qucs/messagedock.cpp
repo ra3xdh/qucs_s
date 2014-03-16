@@ -152,7 +152,7 @@ void MessageDock::slotCppChanged()
     if (logContents.contains("*** No rule to make target")) {
         error = true;
     }
-    else if (logContents.contains("error:")) {
+    else if (logContents.contains("error",Qt::CaseInsensitive)) {
         error = true;
     }
 
