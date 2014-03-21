@@ -1476,7 +1476,13 @@ void QucsApp::slotBuildModule()
     messageDock->builderTabs->setTabIcon(1,QPixmap());
 
 
-    QString Program = "make";    // must be on the path!
+    QString Program;
+
+#ifdef __MINGW32__
+    Program = "mingw32-make.exe";    // must be on the path!
+#else
+    Program = "make";                // must be on the path!
+#endif
 
     QDir prefix = QDir(QucsSettings.BinDir+"../");
 
@@ -1528,9 +1534,9 @@ void QucsApp::slotBuildModule()
     Arguments.clear();
 
     Arguments << "-f" <<  include.absoluteFilePath("cpp2lib.makefile")
-              << QString("MODEL=%1").arg(vaModule)
               << QString("PREFIX=%1").arg(prefix.absolutePath())
-              << QString("PROJDIR=%1").arg(workDir);
+              << QString("PROJDIR=%1").arg(workDir)
+              << QString("MODEL=%1").arg(vaModule);
 
     // prepend command to log
     cmdString = QString("%1 %2\n").arg(Program, Arguments.join(" "));
