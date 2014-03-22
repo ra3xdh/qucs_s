@@ -10,6 +10,13 @@ SET(LIBRARYDIR TRUE)
 
 SET(CMAKE_BUILD_TYPE Debug)
 
+# The incomplete filter-v2 only builds withs -stdlib=libstc++
+# OSX defaults to libstc++. \fixme
+IF(APPLE)
+  SET(CMAKE_CXX_FLAGS  "-stdlib=libstdc++")
+ENDIF()
+
+
 ADD_DEFINITIONS( -DHAVE_CONFIG_H )
 
 # configure the header config.h

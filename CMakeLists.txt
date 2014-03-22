@@ -34,7 +34,8 @@ ADD_SUBDIRECTORY( qucs-attenuator )
 #ADD_SUBDIRECTORY( qucs-doc )
 ADD_SUBDIRECTORY( qucs-edit )
 ADD_SUBDIRECTORY( qucs-filter )
-#ADD_SUBDIRECTORY( qucs-filter-v2 )  # v2 not completed?
+# filter-v2 not completed, on OSX require libstc++, broken if default libc++ is used
+# ADD_SUBDIRECTORY( qucs-filter-v2 )
 ADD_SUBDIRECTORY( qucs-help )
 ADD_SUBDIRECTORY( qucs-lib )
 ADD_SUBDIRECTORY( qucs-transcalc )

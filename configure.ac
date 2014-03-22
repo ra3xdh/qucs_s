@@ -398,7 +398,6 @@ AC_CONFIG_FILES([Makefile
                  qucs-help/docs/cs/Makefile
                  qucs-help/docs/pt/Makefile
 		 qucs-filter/Makefile
-		 qucs-filter-v2/Makefile
 		 qucs-transcalc/Makefile
 		 qucs-transcalc/examples/Makefile
 		 qucs-lib/Makefile
@@ -410,7 +409,16 @@ AC_CONFIG_FILES([Makefile
 		 qucs/diagrams/Makefile
 		 qucs/paintings/Makefile
 		 qucs/dialogs/Makefile])
+
+# The incomplete filter-v2 only builds withs -stdlib=libstc++
+# OSX defaults to libstc++. Skip filter-v2 on Darwin.
+# See also Makefile.am
+if test MACOSX = no ; then
+  AC_CONFIG_FILES([ qucs-filter-v2/Makefile ])
+fi
+
 AC_OUTPUT
+
 
 dnl delete the unset enable_qucs_gui_debug variable
 unset enable_qucs_gui_debug
