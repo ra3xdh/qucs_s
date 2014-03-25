@@ -206,7 +206,7 @@ void qucsMessageOutput(QtMsgType type, const char *msg)
   }
 
 #ifdef _WIN32
-  OutputDebugString(msg);
+  OutputDebugStringA(msg);
 #endif
 }
 
