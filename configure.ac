@@ -194,7 +194,7 @@ case $host_os in
     fi
     case $host_os in
       *mingw*)
-      QT_LIB="-lQtCore4 -lQtGui4 -lQtXml4 -lQt3Support4 -lQtSvg4 -lQtScript"
+      QT_LIB="-lQtCore4 -lQtGui4 -lQtXml4 -lQt3Support4 -lQtSvg4 -lQtScript4"
       QT_INC="$QT_INC -DQT_DLL -DUNICODE"
       QT_LDF="$QT_LDF -mwindows"
       ;;
@@ -413,7 +413,7 @@ AC_CONFIG_FILES([Makefile
 # The incomplete filter-v2 only builds withs -stdlib=libstc++
 # OSX defaults to libstc++. Skip filter-v2 on Darwin.
 # See also Makefile.am
-if test MACOSX = no ; then
+if test "x$MACOSX" = xno ; then
   AC_CONFIG_FILES([ qucs-filter-v2/Makefile ])
 fi
 
