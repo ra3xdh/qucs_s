@@ -9,6 +9,7 @@ Makefile
 *.qm
 stamp-h1
 missing
+compile
 configure
 config.guess
 config.h
@@ -17,6 +18,7 @@ config.h.in
 config.log
 config.status
 build-stamp
+build/
 aclocal.m4
 INSTALL
 depcomp
@@ -37,3 +39,4 @@ debian/qucs.postrm.debhelper
 debian/qucs.substvars
 debian/qucs/
 qrc_*.cpp
+*.swp
