@@ -12,7 +12,6 @@ AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([no-define])
 AM_MAINTAINER_MODE
 AC_PREFIX_DEFAULT([/usr/local])
-test "x$prefix" = xNONE && prefix="/usr/local"
 
 dnl Checks for programs.
 AC_PROG_CXX(clang++ g++)
@@ -744,10 +743,8 @@ AC_SUBST(PATHXFORM)
 
 dnl Create path info.
 dnl BitmapDir still used by qucs-edit
-BIN_PATH="$prefix/bin/"
-AC_DEFINE_UNQUOTED([BINARYDIR], ["$BIN_PATH"],
-  [Where the binary files go.])
-unset BIN_PATH
+AC_DEFINE_UNQUOTED([BINARYDIR], ["$bindir"],
+                   [Where the binary files go.])
 LANG_PATH="$prefix/share/qucs/lang/"
 AC_DEFINE_UNQUOTED([LANGUAGEDIR], ["$LANG_PATH"],
   [Where the language files go.])
