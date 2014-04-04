@@ -55,6 +55,7 @@ dcblock.cpp		logic_1.cpp		phototransistor.cpp
 dcfeed.cpp		logical_and.cpp		pm_modulator.cpp
 bsim4v30nMOS.cpp
 bsim4v30pMOS.cpp
+vcresistor.cpp
 vacomponent.cpp
 )
 
