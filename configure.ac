@@ -249,19 +249,14 @@ case $host_os in
     fi
     ;;
 
-   *darwin* )
-    dnl Check for MacOSX, require clang++
-    if test "$CXX" = "clang++" ; then
-      AC_MSG_CHECKING([whether clang works])
+  *darwin* )
+    dnl MacOSX, common flags to GCC or Clang
 
-      CFLAGS="$CFLAGS -pipe"
-      CXXFLAGS="$CXXFLAGS -pipe"
-      if test $USE_MAINTAINER_MODE = yes; then
-        CFLAGS="$CFLAGS -W -Wall -Wmissing-prototypes"
-        CXXFLAGS="$CXXFLAGS -W -Wall"
-      fi
-    else
-      AC_MSG_ERROR([clang++ required but not found])
+    CFLAGS="$CFLAGS -pipe"
+    CXXFLAGS="$CXXFLAGS -pipe"
+    if test $USE_MAINTAINER_MODE = yes; then
+      CFLAGS="$CFLAGS -W -Wall -Wmissing-prototypes"
+      CXXFLAGS="$CXXFLAGS -W -Wall"
     fi
 
     dnl Check for Qt in:
