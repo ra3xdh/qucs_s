@@ -36,7 +36,6 @@
 #include <QCheckBox>
 #include <QSlider>
 #include <QComboBox>
-#include <Q3ListView>
 #include <QListWidget>
 #include <QTableWidget>
 #include <QStringList>
@@ -144,11 +143,11 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
 
   
   all = new QVBoxLayout(this); // to provide neccessary size
-  QTabWidget *t = new QTabWidget(this);
+  QTabWidget *t = new QTabWidget();
   all->addWidget(t);
 
   // Tab #1 - Data ...........................................................
-  QWidget *Tab1 = new QWidget(this);
+  QWidget *Tab1 = new QWidget();
   QVBoxLayout *Tab1Layout = new QVBoxLayout();
   Tab1->setLayout(Tab1Layout);
   Tab1Layout->setSpacing(5);
@@ -279,7 +278,7 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   connect(ChooseData, SIGNAL(activated(int)), SLOT(slotReadVars(int)));
   // todo: replace by QTableWidget
   // see https://gist.github.com/ClemensFMN/8955411
-  ChooseVars = new QTableWidget(1, 3, this);
+  ChooseVars = new QTableWidget(1, 3);
   ChooseVars->setSelectionBehavior(QAbstractItemView::SelectRows);
   //ChooseVars->selectRow(0);
   DataGroupLayout->addWidget(ChooseVars);
@@ -478,50 +477,43 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
 
     // Tab #3 - Limits ...........................................................
     QWidget *Tab3 = new QWidget();
-    QVBoxLayout *Tab3Layout = new QVBoxLayout(this);
-    //Tab1->setSpacing(5);
+    QVBoxLayout *Tab3Layout = new QVBoxLayout();
 
-    //Q3HGroupBox *axisX = new Q3HGroupBox(tr("x-Axis"));//, Tab3);
     QGroupBox *axisX = new QGroupBox(tr("x-Axis"));
     QHBoxLayout *axisXLayout = new QHBoxLayout();
 
-
-    //Q3VBox *VBox1 = new Q3VBox(axisX);
     QWidget *VBox1 = new QWidget();
     axisXLayout->addWidget(VBox1);
     QVBoxLayout *VBox1Layout = new QVBoxLayout();
     VBox1Layout->setStretchFactor(new QWidget(VBox1),5); // stretchable placeholder
-    //VBox1->setStretchFactor(new QWidget(VBox1),5); // stretchable placeholder
+
     manualX = new QCheckBox(tr("manual"));//, VBox1);
     VBox1Layout->addWidget(manualX);
     VBox1->setLayout(VBox1Layout);
     connect(manualX, SIGNAL(stateChanged(int)), SLOT(slotManualX(int)));
 
-    //Q3VBox *VBox2 = new Q3VBox(axisX);
     QWidget *VBox2 = new QWidget();
     axisXLayout->addWidget(VBox2);
     QVBoxLayout *VBox2Layout = new QVBoxLayout();
-    VBox2Layout->addWidget(new QLabel(tr("start")));//, VBox2);
+    VBox2Layout->addWidget(new QLabel(tr("start")));
     startX = new QLineEdit();
     VBox2Layout->addWidget(startX);
     startX->setValidator(ValDouble);
     VBox2->setLayout(VBox2Layout);
 
-    //Q3VBox *VBox3 = new Q3VBox(axisX);
     QWidget *VBox3 = new QWidget();
     axisXLayout->addWidget(VBox3);
     QVBoxLayout *VBox3Layout = new QVBoxLayout();
-    VBox3Layout->addWidget(new QLabel(tr("step")));//, VBox3);
+    VBox3Layout->addWidget(new QLabel(tr("step")));
     stepX = new QLineEdit();//VBox3);
     VBox3Layout->addWidget(stepX);
     stepX->setValidator(ValDouble);
     VBox3->setLayout(VBox3Layout);
 
-    //Q3VBox *VBox4 = new Q3VBox(axisX);
     QWidget *VBox4 = new QWidget();
     axisXLayout->addWidget(VBox4);
     QVBoxLayout *VBox4Layout = new QVBoxLayout();
-    VBox4Layout->addWidget(new QLabel(tr("stop")));//, VBox4);
+    VBox4Layout->addWidget(new QLabel(tr("stop")));
     stopX = new QLineEdit();
     VBox4Layout->addWidget(stopX);
     stopX->setValidator(ValDouble);
@@ -530,14 +522,9 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     axisX->setLayout(axisXLayout);
     Tab3Layout->addWidget(axisX);
 
-
     QGroupBox *axisY = new QGroupBox(NameY);
     QHBoxLayout *axisYLayout = new QHBoxLayout();
 
-    //Q3HGroupBox *axisY = new Q3HGroupBox(NameY);//, Tab3);
-    //Tab3Layout->addWidget(axisY);
-
-    //Q3VBox *VBox5 = new Q3VBox(axisY);
     QWidget *VBox5 = new QWidget();
     axisYLayout->addWidget(VBox5);
     QVBoxLayout *VBox5Layout = new QVBoxLayout();
@@ -547,7 +534,6 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     connect(manualY, SIGNAL(stateChanged(int)), SLOT(slotManualY(int)));
     VBox5->setLayout(VBox5Layout);
 
-    //Q3VBox *VBox6 = new Q3VBox(axisY);
     QWidget *VBox6 = new QWidget();
     axisYLayout->addWidget(VBox6);
     QVBoxLayout *VBox6Layout = new QVBoxLayout();
@@ -557,7 +543,6 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     startY->setValidator(ValDouble);
     VBox6->setLayout(VBox6Layout);
 
-    //Q3VBox *VBox7 = new Q3VBox(axisY);
     QWidget *VBox7 = new QWidget();
     axisYLayout->addWidget(VBox7);
     QVBoxLayout *VBox7Layout = new QVBoxLayout();
@@ -569,7 +554,6 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     stepY->setValidator(ValDouble);
     VBox7->setLayout(VBox7Layout);
 
-    //Q3VBox *VBox8 = new Q3VBox(axisY);
     QWidget *VBox8 = new QWidget();
     axisYLayout->addWidget(VBox8);
     QVBoxLayout *VBox8Layout = new QVBoxLayout();
@@ -585,10 +569,6 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     QGroupBox *axisZ = new QGroupBox(NameZ);
     QHBoxLayout *axisZLayout = new QHBoxLayout();
 
-    //Q3HGroupBox *axisZ = new Q3HGroupBox(NameZ);//, Tab3);
-    //Tab3Layout->addWidget(axisZ);
-
-    //Q3VBox *VBox9 = new Q3VBox(axisZ);
     QWidget *VBox9 = new QWidget();
     axisZLayout->addWidget(VBox9);
     QVBoxLayout *VBox9Layout = new QVBoxLayout();
@@ -598,7 +578,6 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     connect(manualZ, SIGNAL(stateChanged(int)), SLOT(slotManualZ(int)));
     VBox9->setLayout(VBox9Layout);
 
-    //Q3VBox *VBox10 = new Q3VBox(axisZ);
     QWidget *VBox10 = new QWidget();
     axisZLayout->addWidget(VBox10);
     QVBoxLayout *VBox10Layout = new QVBoxLayout();
@@ -608,7 +587,6 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     startZ->setValidator(ValDouble);
     VBox10->setLayout(VBox10Layout);
 
-    //Q3VBox *VBox11 = new Q3VBox(axisZ);
     QWidget *VBox11 = new QWidget();
     axisZLayout->addWidget(VBox11);
     QVBoxLayout *VBox11Layout = new QVBoxLayout();
@@ -619,7 +597,6 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     stepZ->setValidator(ValDouble);
     VBox11->setLayout(VBox11Layout);
 
-    //Q3VBox *VBox12 = new Q3VBox(axisZ);
     QWidget *VBox12 = new QWidget();
     axisZLayout->addWidget(VBox12);
     QVBoxLayout *VBox12Layout = new QVBoxLayout();
@@ -675,7 +652,6 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
 
   connect(t, SIGNAL(currentChanged(QWidget*)), SLOT(slotChangeTab(QWidget*)));
   // ...........................................................
-  //Q3HBox *Butts = new Q3HBox(this);
   QWidget *Butts = new QWidget();
   QHBoxLayout *ButtsLayout = new QHBoxLayout();
   ButtsLayout->setSpacing(5);
@@ -1207,7 +1183,7 @@ void DiagramDialog::slotResetToTake(const QString& s)
 
   Graph *g = Graphs.at(i);
   g->Var = s;
-  // TODO GraphList->changeItem(s, i);   // must done after the graph settings !!!
+  // \todo GraphList->changeItem(s, i);   // must done after the graph settings !!!
   changed = true;
   toTake  = false;
 }
