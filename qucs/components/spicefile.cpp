@@ -28,7 +28,7 @@
 #include <QString>
 #include <QStringList>
 #include <QMessageBox>
-#include <Q3TextStream>
+#include <QTextStream>
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
@@ -272,9 +272,8 @@ bool SpiceFile::createSubNetlist(QTextStream *stream)
   if(changed || !ConvFile.exists() ||
      (lastLoaded.isValid() && lastLoaded < Info.lastModified())) {
     if(!ConvFile.open(QIODevice::WriteOnly)) {
-      ErrText +=
-	QObject::tr("ERROR: Cannot save converted SPICE file \"%1\".").
-	arg(FileName + ".lst");
+      ErrText += QObject::tr("ERROR: Cannot save converted SPICE file \"%1\".").
+                          arg(FileName + ".lst");
       return false;
     }
     outstream = stream;
@@ -288,9 +287,8 @@ bool SpiceFile::createSubNetlist(QTextStream *stream)
 
   // load old file and stuff into stream
   if(!ConvFile.open(QIODevice::ReadOnly)) {
-    ErrText +=
-      QObject::tr("ERROR: Cannot open converted SPICE file \"%1\".").
-      arg(FileName + ".lst");
+    ErrText += QObject::tr("ERROR: Cannot open converted SPICE file \"%1\".").
+                        arg(FileName + ".lst");
     return false;
   }
   QByteArray FileContent = ConvFile.readAll();
@@ -422,13 +420,15 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
   QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
   env.insert("PATH", env.value("PATH") );
   QucsConv->setProcessEnvironment(env);
-  QucsConv->start(com.join(" "));
-  //QucsHelp->setCommunication(0);
 
-  connect(QucsConv, SIGNAL(readyReadStdout()), SLOT(slotGetNetlist()));
-  connect(QucsConv, SIGNAL(readyReadStderr()), SLOT(slotGetError()));
-  connect(QucsConv, SIGNAL(processExited()), SLOT(slotExited()));
   QucsConv->start(com.join(" "));
+
+  /// these slots might write into NetText, ErrText, outstream, filstream
+  connect(QucsConv, SIGNAL(readyReadStandardOutput()), SLOT(slotGetNetlist()));
+  connect(QucsConv, SIGNAL(readyReadStandardError()), SLOT(slotGetError()));
+  connect(QucsConv, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(slotExited()));
+
+  qDebug() << "Command qucsconv:" << com.join(" ");
 
   if(QucsConv->state()!=QProcess::Running&&
           QucsConv->state()!=QProcess::Starting) {
@@ -437,7 +437,6 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
   }
   (*outstream) << NetText;
   (*filstream) << NetText;
-// FIXME #warning QucsConv->closeStdin();
 
   // waiting info dialog box
   QMessageBox *MBox = new QMessageBox(QObject::tr("Info"),
@@ -445,7 +444,7 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
                QMessageBox::NoIcon, QMessageBox::Abort,
                QMessageBox::NoButton, QMessageBox::NoButton, 0, 0, true,
 	       Qt::WStyle_DialogBorder | Qt::WDestructiveClose);
-  connect(QucsConv, SIGNAL(processExited()), MBox, SLOT(close()));
+  connect(QucsConv, SIGNAL(finished(int)), MBox, SLOT(close()));
   MBox->exec();
 
   // finish
@@ -458,14 +457,12 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
 void SpiceFile::slotSkipErr()
 {
   SpicePrep->readAllStandardError();
-  //SpicePrep->readStderr();
 }
 
 // -------------------------------------------------------------------------
 void SpiceFile::slotSkipOut()
 {
     SpicePrep->readAllStandardOutput();
-  //SpicePrep->readStdout();
 }
 
 // -------------------------------------------------------------------------
@@ -519,7 +516,7 @@ void SpiceFile::slotGetNetlist()
 // -------------------------------------------------------------------------
 void SpiceFile::slotExited()
 {
-  if (!QucsConv->exitStatus()==QProcess::NormalExit) {
+  if (QucsConv->exitStatus() != QProcess::NormalExit) {
     NetText = "";
   }
   else {
