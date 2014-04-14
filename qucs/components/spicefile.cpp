@@ -345,11 +345,11 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
 
     if (!piping) {
       script << PrepName;
-      connect(SpicePrep, SIGNAL(readyReadStdout()), SLOT(slotSkipOut()));
-      connect(SpicePrep, SIGNAL(readyReadStderr()), SLOT(slotGetPrepErr()));
+      connect(SpicePrep, SIGNAL(readyReadStandardOutput()), SLOT(slotSkipOut()));
+      connect(SpicePrep, SIGNAL(readyReadStandardError()), SLOT(slotGetPrepErr()));
     } else {
-      connect(SpicePrep, SIGNAL(readyReadStdout()), SLOT(slotGetPrepOut()));
-      connect(SpicePrep, SIGNAL(readyReadStderr()), SLOT(slotGetPrepErr()));
+      connect(SpicePrep, SIGNAL(readyReadStandardOutput()), SLOT(slotGetPrepOut()));
+      connect(SpicePrep, SIGNAL(readyReadStandardError()), SLOT(slotGetPrepErr()));
     }
 
     QMessageBox *MBox = new QMessageBox(QObject::tr("Info"),
@@ -357,7 +357,7 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
                QMessageBox::NoIcon, QMessageBox::Abort,
                QMessageBox::NoButton, QMessageBox::NoButton, 0, 0, true,
 	       Qt::WStyle_DialogBorder |  Qt::WDestructiveClose);
-    connect(SpicePrep, SIGNAL(processExited()), MBox, SLOT(close()));
+    connect(SpicePrep, SIGNAL(finished(int)), MBox, SLOT(close()));
 
     if (piping) {
       PrepFile.setName(PrepName);
