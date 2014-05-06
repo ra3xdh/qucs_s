@@ -129,17 +129,27 @@ fi
 
 case $host_os in
   *linux* | *cygwin* | *mingw* | *bsd* )
-    dnl Yet another compiler check.
-    if test "x$GCC" = xyes; then
+
+    dnl Set Clang
+    if test "$CXX -dM -E - < /dev/null | grep __clang__" ; then
+      CFLAGS="$CFLAGS -pipe"
+      CXXFLAGS="$CXXFLAGS -pipe -fno-exceptions"
+      LDDFLAGS="$LDDFLAGS"
+      use_CLANG="yes"
+    fi
+
+    dnl Set GCC.
+    if test "x$use_CLANG" != "xyes" -a "x$GCC" = "xyes" ; then
       CFLAGS="$CFLAGS -pipe"
       CXXFLAGS="$CXXFLAGS -pipe -fno-exceptions -fno-check-new"
       if test x$WIN32 = xyes; then
         CXXFLAGS="$CXXFLAGS"
       fi
-      if test $USE_MAINTAINER_MODE = yes; then
-        CFLAGS="$CFLAGS -W -Wall -Wmissing-prototypes"
-        CXXFLAGS="$CXXFLAGS -W -Wall"
-      fi
+    fi
+
+    if test $USE_MAINTAINER_MODE = yes; then
+      CFLAGS="$CFLAGS -W -Wall -Wmissing-prototypes"
+      CXXFLAGS="$CXXFLAGS -W -Wall"
     fi
 
     dnl Check include path to Qt.
@@ -201,18 +211,20 @@ case $host_os in
     esac
     unset enable_mt
 
-    if test "x$QTDIR" == "x"; then
-      QTDIR="nonexistent"
+    dnl handle provided QTDIR environment variable
+    QTDIR_paths=""
+    if test "x$QTDIR" != "x"; then
+      echo "QTDIR provided: $QTDIR"
+      QTDIR_paths="$QTDIR/lib $QTDIR/lib64"
     fi
 
-    echo "QTDIR: .$QTDIR."
 
     dnl Check library path to Qt.
     QT_LDFLAGS=""
     QT_LIBS=""
     AC_MSG_RESULT([checking for Qt... $QT_VER ($QT_MTS)])
     AC_MSG_CHECKING([for Qt library])
-    paths="$QTDIR/lib $QTDIR/lib64 /usr/local/qt4/lib /usr/lib/qt4 /usr/lib/qt4/Qtconf /usr/lib \
+    paths="$QTDIR_paths /usr/local/qt4/lib /usr/lib/qt4 /usr/lib/qt4/Qtconf /usr/lib \
       /usr/X11R6/lib/X11/qt4 /usr/X11R6/lib/X11/qt4 /usr/X11R6/lib/qt4 \
       /usr/X11R6/lib /sw/lib /usr/lib64/qt4 /usr/X11R6/lib/qt4 $prefix/lib/qt4"
     AC_LANG(C++)
