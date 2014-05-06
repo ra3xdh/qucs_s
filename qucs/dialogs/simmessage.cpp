@@ -494,7 +494,6 @@ void SimMessage::startSimulator()
             }
         }
 
-        qDebug() << "Command :" << Program << Arguments.join(" ");
       }
     } else {
       if (isVerilog) {
@@ -547,6 +546,8 @@ void SimMessage::startSimulator()
   }
   else
     file.close();
+
+  qDebug() << "Command :" << Program << Arguments.join(" ");
 
   SimProcess.start(Program, Arguments); // launch the program
 
