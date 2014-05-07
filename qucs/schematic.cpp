@@ -653,7 +653,7 @@ void Schematic::paintSchToViewpainter(ViewPainter *p, bool printAll, bool toImag
         if (toImage) {
             pc->paint(p);
         } else {
-            pc->print(p, screenDpiX / printerDpiX);
+            pc->print(p, (float)screenDpiX / printerDpiX);
         }
         pc->isSelected = selected;
       }
