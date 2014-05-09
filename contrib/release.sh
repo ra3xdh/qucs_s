@@ -65,20 +65,21 @@ make distclean
 cd ..
 
 #Include the asco archive
-if [ -f ~/Downloads/ASCO-0.4.8.tar.gz ]
+if [ -f ~/Downloads/ASCO-0.4.9.tar.gz ]
 then
-	cp ~/Downloads/ASCO-0.4.8.tar.gz .
+	cp ~/Downloads/ASCO-0.4.9.tar.gz .
 else
-	wget https://downloads.sourceforge.net/project/asco/asco/0.4.8/ASCO-0.4.8.tar.gz
+	wget https://downloads.sourceforge.net/project/asco/asco/0.4.9/ASCO-0.4.9.tar.gz
 fi
 
-tar -zxvf ASCO-0.4.8.tar.gz
-rm ASCO-0.4.8.tar.gz
-mv ASCO-0.4.8 asco
+tar -zxvf ASCO-0.4.9.tar.gz
+rm ASCO-0.4.9.tar.gz
+mv ASCO-0.4.9 asco
 cd asco
-#patch -p1 < ../../../qucs/contrib/patch_asco_unbuffer.diff
+patch -p1 < ../../../qucs/contrib/patch_asco_unbuffer.diff
 touch NEWS
 tar -zxvf Autotools.tar.gz
+patch -p1 < ../../../qucs/contrib/patch_asco_osx.diff
 ./autogen.sh
 automake --add-missing
 aclocal
