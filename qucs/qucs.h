@@ -131,6 +131,7 @@ public slots:
   void slotShowContentMenu(const QPoint &);
   //void slotShowContentMenu(Q3ListViewItem*, const QPoint&, int);
   void slotCMenuOpen();
+  void slotCMenuCopy();
   void slotCMenuRename();
   void slotCMenuDelete();
   void slotCMenuDelGroup();
@@ -169,7 +170,7 @@ public:
   QMenu *ContentMenu;
 
   // corresponding actions
-  QAction *ActionCMenuOpen, *ActionCMenuRename, *ActionCMenuDelete, *ActionCMenuDelGroup, *ActionCMenuInsert;
+  QAction *ActionCMenuOpen, *ActionCMenuCopy, *ActionCMenuRename, *ActionCMenuDelete, *ActionCMenuDelGroup, *ActionCMenuInsert;
 
   QAction *fileNew, *textNew, *fileNewDpl, *fileOpen, *fileSave, *fileSaveAs,
           *fileSaveAll, *fileClose, *fileExamples, *fileSettings, *filePrint, *fileQuit,
