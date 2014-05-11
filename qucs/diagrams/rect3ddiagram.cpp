@@ -23,7 +23,7 @@
 #include <math.h>
 #include <float.h>
 #ifdef __MINGW32__
-# define finite(x) _finite(x)
+# define isfinite(x) _finite(x)
 #endif
 #include <limits.h>
 #if HAVE_IEEEFP_H
@@ -177,8 +177,8 @@ void Rect3DDiagram::calcCoordinate(double* &xD, double* &zD, double* &yD,
   *px = float(calcX_2D(x3D, y3D, z3D)) + xorig;
   *py = float(calcY_2D(x3D, y3D, z3D)) + yorig;
 
-  if(finite(*px))
-    if(finite(*py))
+  if(isfinite(*px))
+    if(isfinite(*py))
       return;
 
   *px = float(xorig);

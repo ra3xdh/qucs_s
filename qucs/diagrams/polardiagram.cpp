@@ -22,7 +22,7 @@
 #include <math.h>
 #include <float.h>
 #ifdef __MINGW32__
-# define finite(x) _finite(x)
+# define isfinite(x) _finite(x)
 #endif
 #if HAVE_IEEEFP_H
 # include <ieeefp.h>
@@ -58,8 +58,8 @@ void PolarDiagram::calcCoordinate(double* &, double* &yD, double* &,
   *px = float((yr/yAxis.up + 1.0)*double(x2)/2.0);
   *py = float((yi/yAxis.up + 1.0)*double(y2)/2.0);
 
-  if(finite(*px))
-    if(finite(*py))
+  if(isfinite(*px))
+    if(isfinite(*py))
       return;
 
   *px = *py = float(cx) / 2.0;

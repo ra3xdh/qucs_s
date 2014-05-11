@@ -22,7 +22,7 @@
 #include <math.h>
 #include <float.h>
 #ifdef __MINGW32__
-# define finite(x) _finite(x)
+# define isfinite(x) _finite(x)
 #endif
 #if HAVE_IEEEFP_H
 # include <ieeefp.h>
@@ -66,8 +66,8 @@ void CurveDiagram::calcCoordinate(double* &, double* &yD, double* &,
 		*double(y2));
   else  *py = float((yi-pa->low)/(pa->up-pa->low)*double(y2));
 
-  if(finite(*px))
-    if(finite(*py))
+  if(isfinite(*px))
+    if(isfinite(*py))
       return;
 
   *px = *py = 0.0;

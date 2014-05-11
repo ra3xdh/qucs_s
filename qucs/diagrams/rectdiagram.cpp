@@ -22,7 +22,7 @@
 #include <math.h>
 #include <float.h>
 #ifdef __MINGW32__
-# define finite(x) _finite(x)
+# define isfinite(x) _finite(x)
 #endif
 #if HAVE_IEEEFP_H
 # include <ieeefp.h>
@@ -78,8 +78,8 @@ void RectDiagram::calcCoordinate(double* &xD, double* &yD, double* &,
     *py = float((yr-pa->low)/(pa->up-pa->low)*double(y2));
   }
 
-  if(!finite(*px))  *px = 0.0;
-  if(!finite(*py))  *py = 0.0;
+  if(!isfinite(*px))  *px = 0.0;
+  if(!isfinite(*py))  *py = 0.0;
 }
 
 // --------------------------------------------------------------

@@ -41,7 +41,7 @@
 #include "rect3ddiagram.h"
 
 #ifdef __MINGW32__
-# define finite(x) _finite(x)
+# define isfinite(x) _finite(x)
 #endif
 
 using namespace std;
@@ -668,7 +668,7 @@ void Diagram::getAxisLimits(Graph *pg)
     p = pD->Points;
     for(z=pD->count; z>0; z--) { // check x coordinates (1. dimension)
       x = *(p++);
-      if(finite(x)) {
+      if(isfinite(x)) {
 	if(x > xAxis.max) xAxis.max = x;
 	if(x < xAxis.min) xAxis.min = x;
       }
@@ -681,7 +681,7 @@ void Diagram::getAxisLimits(Graph *pg)
       p = pDy->Points;
       for(z=pDy->count; z>0; z--) { // check y coordinates (2. dimension)
 	y = *(p++);
-	if(finite(y)) {
+	if(isfinite(y)) {
 	  if(y > yAxis.max) yAxis.max = y;
 	  if(y < yAxis.min) yAxis.min = y;
 	}
@@ -701,17 +701,17 @@ void Diagram::getAxisLimits(Graph *pg)
 
     if(Name[0] != 'C') {
       if(fabs(y) >= 1e-250) x = sqrt(x*x+y*y);
-      if(finite(x)) {
+      if(isfinite(x)) {
 	if(x > pa->max) pa->max = x;
 	if(x < pa->min) pa->min = x;
       }
     }
     else {   // location curve needs different treatment
-      if(finite(x)) {
+      if(isfinite(x)) {
 	if(x > xAxis.max) xAxis.max = x;
 	if(x < xAxis.min) xAxis.min = x;
       }
-      if(finite(y)) {
+      if(isfinite(y)) {
 	if(y > pa->max) pa->max = y;
 	if(y < pa->min) pa->min = y;
       }
@@ -993,17 +993,17 @@ if(Variable.right(3) != ".X ")
     *(p++) = y;
     if(Name[0] != 'C') {
       if(fabs(y) >= 1e-250) x = sqrt(x*x+y*y);
-      if(finite(x)) {
+      if(isfinite(x)) {
         if(x > pa->max) pa->max = x;
         if(x < pa->min) pa->min = x;
       }
     }
     else {   // location curve needs different treatment
-      if(finite(x)) {
+      if(isfinite(x)) {
         if(x > xAxis.max) xAxis.max = x;
         if(x < xAxis.min) xAxis.min = x;
       }
-      if(finite(y)) {
+      if(isfinite(y)) {
         if(y > pa->max) pa->max = y;
         if(y < pa->min) pa->min = y;
       }
@@ -1118,7 +1118,7 @@ int Diagram::loadIndepVarData(const QString& Variable,
     
     *(p++) = x;
     if(Name[0] != 'C')   // not for location curves
-      if(finite(x)) {
+      if(isfinite(x)) {
         if(x > pa->max) pa->max = x;
         if(x < pa->min) pa->min = x;
       }
