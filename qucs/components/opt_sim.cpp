@@ -195,6 +195,11 @@ bool Optimize_Sim::createASCOFiles()
 }
 
 // -----------------------------------------------------------
+/*!
+ * \brief Optimize_Sim::createASCOnetlist create ASCO netlist out or input
+ *  input netlist.
+ * \return true if asco_netlist.txt created, false otherwise
+ */
 bool Optimize_Sim::createASCOnetlist()
 {
   Property* pp;

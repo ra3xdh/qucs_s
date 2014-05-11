@@ -445,6 +445,59 @@ void SimMessage::startSimulator()
     ProgText->insert(tr("done.")+"\n");  // of "creating netlist...
 
     if(SimPorts < 0) {
+
+      // append command arguments
+      // append netlist with same arguments
+      if (! Module::vaComponents.isEmpty()) {
+
+          /*! Only pass modules to Qucsator that are indeed used on
+           * the schematic,it might be the case that the user loaded the icons,
+           * but did not compiled the module. Qucsator will not find the library.
+           *
+           * Check if used symbols have corresponing lib before running
+           * Qucsator? Need to search on the netlis.txt? Is there other data
+           * structure containig the netlist?
+           *
+          */
+          QStringList usedComponents;
+
+          if (!NetlistFile.open(QIODevice::ReadOnly))
+             QMessageBox::critical(this, tr("Error"), tr("Cannot read netlist!"));
+          else {
+             QString net = QString(NetlistFile.readAll());
+
+             QMapIterator<QString, QString> i(Module::vaComponents);
+             while (i.hasNext()) {
+                 i.next();
+                 if (net.contains(i.key()))
+                     usedComponents << i.key();
+             }
+             NetlistFile.close();
+          }
+
+          if (! usedComponents.isEmpty()) {
+
+
+            // \todo remvoe the command line arguments? use only netlist annotation?
+            //Arguments << "-p" << QucsSettings.QucsWorkDir.absolutePath()
+            //          << "-m" << usedComponents;
+            //qDebug() << "Command :" << Program << Arguments.join(" ");
+
+            /// Anotate netlist with Verilog-A dynamic path and module names
+            ///
+            if (!NetlistFile.open(QFile::Append | QFile::Text))
+               QMessageBox::critical(this, tr("Error"), tr("Cannot read netlist!"));
+            else {
+               QTextStream out(&NetlistFile);
+               out << "\n";
+               out << "# --path=" << QucsSettings.QucsWorkDir.absolutePath() << "\n";
+               out << "# --module=" << usedComponents.join(" ") << "\n";
+
+               NetlistFile.close();
+            }
+          }
+      } // vaComponents not empty
+
       if((SimOpt = findOptimization((Schematic*)DocWidget))) {
 	    ((Optimize_Sim*)SimOpt)->createASCOnetlist();
 	    Program = QucsSettings.AscoDir + "asco"+ executablePostfix;
@@ -457,45 +510,9 @@ void SimMessage::startSimulator()
         Arguments << "-b" << "-g" << "-i"
                   << QucsSettings.QucsHomeDir.filePath("netlist.txt")
                   << "-o" << DataSet;
-
-        if (! Module::vaComponents.isEmpty()) {
-
-            /*! Only pass modules to Qucsator that are indeed used on
-             * the schematic,it might be the case that the user loaded the icons,
-             * but did not compiled the module. Qucsator will not find the library.
-             *
-             * Check if used symbols have corresponing lib before running
-             * Qucsator? Need to search on the netlis.txt? Is there other data
-             * structure containig the netlist?
-             *
-            */
-            QStringList usedComponents;
-
-            if (!NetlistFile.open(QIODevice::ReadOnly))
-               QMessageBox::critical(this, tr("Error"), tr("Cannot read netlist!"));
-            else {
-               QString net = QString(NetlistFile.readAll());
-
-               QMapIterator<QString, QString> i(Module::vaComponents);
-               while (i.hasNext()) {
-                   i.next();
-                   if (net.contains(i.key()))
-                       usedComponents << i.key();
-               }
-               NetlistFile.close();
-            }
-
-            if (! usedComponents.isEmpty()) {
-
-//              qDebug() << "used comps" << usedComponents.join(" ");
-
-              Arguments << "-p" << QucsSettings.QucsWorkDir.absolutePath()
-                        << "-m" << usedComponents;
-            }
-        }
-
       }
-    } else {
+    }
+    else {
       if (isVerilog) {
           Program = pathName(QucsSettings.BinDir + QucsVeri);
 		  Arguments << "netlist.txt" << DataSet
@@ -548,7 +565,6 @@ void SimMessage::startSimulator()
     file.close();
 
   qDebug() << "Command :" << Program << Arguments.join(" ");
-
   SimProcess.start(Program, Arguments); // launch the program
 
   if(!SimProcess.Running) {
