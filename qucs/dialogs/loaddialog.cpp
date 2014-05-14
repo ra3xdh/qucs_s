@@ -239,11 +239,11 @@ void LoadDialog::loadSelected()
     QListWidgetItem* item = fileView->item(i);
 
     if (item->checkState() == Qt::Checked){
-        QString key = item->text().split("_").at(0);
+        QString key = item->text().split("_symbol.json").at(0);
         QString value = projDir.absoluteFilePath(item->text());
 
-//        qDebug() << "key" << key;
-//        qDebug() << "file " << value;
+        qDebug() << "key" << key;
+        qDebug() << "file " << value;
 
         selectedComponents[key] = value;
     }

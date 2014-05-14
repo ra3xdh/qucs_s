@@ -98,7 +98,7 @@ Component *vacomponent::newOne(QString filename)
 }
 
 /*!
- * \brief vacomponent::info is used to either get informatio or create objects.
+ * \brief vacomponent::info is used to either get information or create objects.
  * \param Name Model name, returned by reference
  * \param BitmapFile Bitmap file for the dock, returned by reference
  * \param getNewOne if set return new object based on JSON file
@@ -287,7 +287,7 @@ void vacomponent::createSymbol(QString filename)
 // Move this elsewhere?
 /*!
  * \brief getData Reads the JSON file
- * \param filename  File (JSON) containing the symbol paintins and properties.
+ * \param filename  File (JSON) containing the symbol paintings and properties.
  * \return the JSON file as a QString
  */
 QString getData(QString filename)
@@ -296,7 +296,7 @@ QString getData(QString filename)
   QFile file(filename);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     QMessageBox::critical(0, QObject::tr("Error"),
-                          QObject::tr("File not found: %1").arg(filename));
+                          QObject::tr("Symbol file not found: %1").arg(filename));
     return "";
   }
 

@@ -1304,7 +1304,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
       QString filename = Module::vaComponents[entryName];
 //      qDebug() << "   ===+ recast";
       Comp = dynamic_cast<vacomponent*>(Comp)->newOne(filename); //va component
-      qDebug() << "   => recast = Comp;" << Comp->Name;
+      qDebug() << "   => recast = Comp;" << Comp->Name << "filename: " << filename;
     }
     else {
 	  Comp = Comp->newOne(); // static component is used, so create a new one
