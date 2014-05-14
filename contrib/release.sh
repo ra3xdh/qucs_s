@@ -77,6 +77,8 @@ rm ASCO-0.4.9.tar.gz
 mv ASCO-0.4.9 asco
 cd asco
 patch -p1 < ../../../qucs/contrib/patch_asco_unbuffer.diff
+#https://sourceforge.net/p/qucs/bugs/143/
+patch -p1 < ../../../qucs/contrib/asco-nmlatest.c.patch
 touch NEWS
 tar -zxvf Autotools.tar.gz
 patch -p1 < ../../../qucs/contrib/patch_asco_osx.diff
