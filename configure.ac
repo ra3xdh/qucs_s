@@ -159,7 +159,7 @@ case $host_os in
     paths="$QTDIR/include /usr/local/qt4/include /usr/include/qt4 /usr/include/qt4 \
       /usr/include /usr/X11R6/include/X11/qt4 /usr/X11R6/include/X11/qt4 \
       /usr/X11R6/include/qt4 /usr/X11R6/include /sw/include/qt4 \
-      /usr/X11R6/include/qt4 $prefix/include/qt4"
+      /usr/X11R6/include/qt4 /usr/local/include/qt4"
     for path in $paths; do
       if test -f "$path/Qt/qapplication.h"; then
         QT_INCLUDES="$path -I$path/Qt -I$path/QtGui -I$path/QtCore -I$path/QtSvg -I$path/QtXml -I$path/QtScript"
@@ -191,8 +191,7 @@ case $host_os in
       QT_LIB="-lQtCore -lQtGui -lQtXml -lQt3Support -lQtSvg -lQtScript"
       QT_INC="$QT_DEF -DQT3_SUPPORT -DQT_THREAD_SUPPORT -D_REENTRANT"
       [case $host_os in
-        *freebsd4*) QT_LIB="$QT_LIB -pthread" ;;
-        *freebsd*) QT_LIB="$QT_LIB -lpthread" ;;
+        *freebsd*) QT_LIB="$QT_LIB -pthread" ;;
         *mingw*) QT_INC="$QT_INC -mthreads"; QT_LDF="$QT_LDF -mthreads" ;;
       esac]
       QT_MTS="multi-threaded"
@@ -226,7 +225,7 @@ case $host_os in
     AC_MSG_CHECKING([for Qt library])
     paths="$QTDIR_paths /usr/local/qt4/lib /usr/lib/qt4 /usr/lib/qt4/Qtconf /usr/lib \
       /usr/X11R6/lib/X11/qt4 /usr/X11R6/lib/X11/qt4 /usr/X11R6/lib/qt4 \
-      /usr/X11R6/lib /sw/lib /usr/lib64/qt4 /usr/X11R6/lib/qt4 $prefix/lib/qt4"
+      /usr/X11R6/lib /sw/lib /usr/lib64/qt4 /usr/X11R6/lib/qt4 /usr/local/lib/qt4"
     AC_LANG(C++)
     for path in $paths; do
       save_LIBS="$LIBS"
