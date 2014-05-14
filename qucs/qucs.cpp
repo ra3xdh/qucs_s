@@ -2635,6 +2635,8 @@ void QucsApp::switchSchematicDoc (bool SchematicMode)
   insEquation->setEnabled (SchematicMode);
   setMarker->setEnabled (SchematicMode);
 
+  exportAsImage->setEnabled (SchematicMode); // only export schematic, no text
+
   editFind->setEnabled (!SchematicMode);
   editFindAgain->setEnabled (!SchematicMode);
   insEntity->setEnabled (!SchematicMode);
