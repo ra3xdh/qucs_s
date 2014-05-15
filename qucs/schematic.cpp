@@ -734,7 +734,7 @@ float Schematic::zoom(float s)
 {
   Scale *= s;
   if(Scale > 10.0) Scale = 10.0f;
-  if(Scale < 0.01) Scale = 0.01f;
+  if(Scale < 0.1) Scale = 0.1f;
 
   // "resizeContents()" performs an immediate repaint. So, set widget
   // to hidden. This causes some flicker, but it is still nicer.
