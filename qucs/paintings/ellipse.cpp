@@ -260,19 +260,16 @@ void Ellipse::MouseMoving(
 	Schematic *p, int x, int y, bool drawn)
 {
   if(State > 0) {
-//    FIXME bug 141
-//    if(State > 1)
-//      paintScale->PostPaintEvent(_Ellipse, x1, y1, x2-x1, y2-y1); // erase old painting
+    if(State > 1)
+      // _Ellipse hang/crash application, using _Arc solved, see bug 141 (closed)
+      paintScale->PostPaintEvent(_Arc, x1, y1, x2-x1, y2-y1, 0, 16*360); // erase old painting
     State++;
     x2 = gx;
     y2 = gy;
-//    FIXME bug 141
-//    paintScale->PostPaintEvent(_Ellipse, x1, y1, x2-x1, y2-y1);  // paint new painting
+    paintScale->PostPaintEvent(_Arc, x1, y1, x2-x1, y2-y1, 0, 16*360);
   }
   else { x2 = gx; y2 = gy; }
 
-
-  // FIXME #warning p->setPen(Qt::SolidLine);
   if(drawn) {
     p->PostPaintEvent(_Ellipse, cx+13, cy, 18, 12,0,0,true);  // erase old cursor symbol
     if(filled) {
