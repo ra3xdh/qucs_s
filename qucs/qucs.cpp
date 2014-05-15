@@ -873,9 +873,18 @@ void QucsApp::slotCMenuCopy()
   QString Base   = Name.section('.',0,-2);
   if(Base.isEmpty()) Base = Name;
 
+  bool exists = true;   //generate unique name
+  int i = 0;
+  QString defaultName;
+  while (exists) {
+    ++i;
+    defaultName = Base + "_copy" + QString::number(i) + "." + Suffix;
+    exists = QFile::exists (Path + QDir::separator() + defaultName);
+  }
+
   bool ok;
   QString s = QInputDialog::getText(tr("Copy file"), tr("Enter new name:"),
-		QLineEdit::Normal, Base, &ok, this);
+		QLineEdit::Normal, defaultName, &ok, this);
   if(!ok) return;
   if(s.isEmpty()) return;
 
@@ -885,7 +894,7 @@ void QucsApp::slotCMenuCopy()
   else
     NewName = s+"."+Suffix;
 
-  if (NewName == Name) {  //check New Name repeat
+  if (QFile::exists(Path + QDir::separator() + NewName)) {  //check New Name exists
     QMessageBox::critical(this, tr("error"), tr("Cannot copy file to identical name: ") + Name);
     return;
   }
