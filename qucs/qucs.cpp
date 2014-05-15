@@ -867,7 +867,13 @@ void QucsApp::slotCMenuCopy()
   QString Name = Item->text(0);
   QString currentPath = QucsSettings.QucsWorkDir.filePath(Name);
   QString Path = currentPath.section(QDir::separator(), 0, -2);
-  qDebug(Path);
+
+  //check changed file save
+  if (findDoc (currentPath)) {
+    QMessageBox::critical(this, tr("Error"),
+			        tr("Cannot copy an open file!"));
+    return;
+  }
 
   QString Suffix = Name.section('.',-1);   // remember suffix
   QString Base   = Name.section('.',0,-2);
