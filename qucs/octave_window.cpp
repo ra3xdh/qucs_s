@@ -88,6 +88,16 @@ bool OctaveWindow::startOctave()
 
   OctavePath = QDir::toNativeSeparators(OctavePath+"/"+"octave"+QString(executableSuffix));
 
+  QFileInfo progOctave(OctavePath);
+
+  if (! progOctave.exists()) {
+      qDebug() << "Octave not found: " << OctavePath;
+      QMessageBox::critical(0, QObject::tr("Error"),
+                            QObject::tr("Octave not found in: %1\n\n"
+                                        "Set the Octave location on the application settings.").arg(OctavePath));
+      return false;
+  }
+
   Program = OctavePath;
   Arguments << "--no-history" << "-i" << "-f" << "-p"
             << QDir::toNativeSeparators(QucsSettings.OctaveDir); // m-files location
@@ -108,6 +118,7 @@ bool OctaveWindow::startOctave()
   octProcess.setProcessEnvironment(env);
   output->clear();
 
+  qDebug() << "Command :" << Program << Arguments.join(" ");
   octProcess.start(Program, Arguments);
 
   if(octProcess.state()!=QProcess::Running&&
