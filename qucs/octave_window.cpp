@@ -20,7 +20,7 @@
 #endif
 
 
-OctaveWindow::OctaveWindow(QDockWidget *parent_): QWidget(parent_, 0)
+OctaveWindow::OctaveWindow(QDockWidget *parent_): QWidget()
 {
   QFont font;
   font = QFont("Courier New");
@@ -29,7 +29,7 @@ OctaveWindow::OctaveWindow(QDockWidget *parent_): QWidget(parent_, 0)
   font.setFixedPitch(true);
   setFont(font);
 
-  QWidget *all = new QWidget(parent_);
+  QWidget *all = new QWidget();
   QVBoxLayout *allLayout = new QVBoxLayout();
 
   output = new QTextEdit(this);
