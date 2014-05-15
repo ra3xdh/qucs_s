@@ -869,10 +869,17 @@ void QucsApp::slotCMenuCopy()
   QString Path = currentPath.section(QDir::separator(), 0, -2);
 
   //check changed file save
-  if (findDoc (currentPath)) {
-    QMessageBox::critical(this, tr("Error"),
-			        tr("Cannot copy an open file!"));
-    return;
+  int z = 0; //search if the doc is loaded
+  QucsDoc *d = findDoc(currentPath, &z);
+  if (d->DocChanged) {
+    DocumentTab->setCurrentPage(z);
+    int ret = QMessageBox::question(this, tr("Copying Qucs document"), 
+          tr("The document contains unsaved changes!\n") + 
+          tr("Do you want to save the changes before closing?"),
+          tr("&Save"), tr("&Ignore"), 0, 1);
+    if (ret == 0) {
+      d->save();
+    }
   }
 
   QString Suffix = Name.section('.',-1);   // remember suffix
