@@ -199,6 +199,7 @@ cp $QTDIR/bin/QtNetwork4.dll  $WINDIR/bin
 cp $QTDIR/bin/QtXml4.dll  $WINDIR/bin
 cp $QTDIR/bin/QtSql4.dll  $WINDIR/bin
 cp $QTDIR/bin/QtSvg4.dll $WINDIR/bin
+cp $QTDIR/bin/QtScript4.dll $WINDIR/bin
 cp $QTDIR/bin/libgcc_s_dw2-1.dll $WINDIR/bin
 
 
