@@ -790,6 +790,10 @@ void QucsApp::initCursorMenu()
   connect(ActionCMenuOpen, SIGNAL(triggered()), this, SLOT(slotCMenuOpen()));
   ContentMenu->addAction(ActionCMenuOpen);
 
+  ActionCMenuCopy = new QAction(tr("Duplicate"), ContentMenu);
+  connect(ActionCMenuCopy, SIGNAL(triggered()), this, SLOT(slotCMenuCopy()));
+  ContentMenu->addAction(ActionCMenuCopy);
+
   ActionCMenuRename = new QAction(tr("Rename"), ContentMenu);
   connect(ActionCMenuRename, SIGNAL(triggered()), this, SLOT(slotCMenuRename()));
   ContentMenu->addAction(ActionCMenuRename);
@@ -852,6 +856,75 @@ void QucsApp::slotCMenuOpen()
   if(Item == 0) return;
 
   slotOpenContent(Item);
+}
+
+// ----------------------------------------------------------
+void QucsApp::slotCMenuCopy()
+{
+  QTreeWidgetItem *Item = Content->currentItem();
+  if(Item == 0) return;
+
+  QString Name = Item->text(0);
+  QString currentPath = QucsSettings.QucsWorkDir.filePath(Name);
+  QString Path = currentPath.section(QDir::separator(), 0, -2);
+
+  //check changed file save
+  int z = 0; //search if the doc is loaded
+  QucsDoc *d = findDoc(currentPath, &z);
+  if (d != NULL && d->DocChanged) {
+    DocumentTab->setCurrentPage(z);
+    int ret = QMessageBox::question(this, tr("Copying Qucs document"), 
+          tr("The document contains unsaved changes!\n") + 
+          tr("Do you want to save the changes before copying?"),
+          tr("&Ignore"), tr("&Save"), 0, 1);
+    if (ret == 1) {
+      d->save();
+    }
+  }
+
+  QString Suffix = Name.section('.',-1);   // remember suffix
+  QString Base   = Name.section('.',0,-2);
+  if(Base.isEmpty()) Base = Name;
+
+  bool exists = true;   //generate unique name
+  int i = 0;
+  QString defaultName;
+  while (exists) {
+    ++i;
+    defaultName = Base + "_copy" + QString::number(i) + "." + Suffix;
+    exists = QFile::exists (Path + QDir::separator() + defaultName);
+  }
+
+  bool ok;
+  QString s = QInputDialog::getText(tr("Copy file"), tr("Enter new name:"),
+		QLineEdit::Normal, defaultName, &ok, this);
+  if(!ok) return;
+  if(s.isEmpty()) return;
+
+  QString NewName;
+  if(s.contains('.'))
+    NewName = s;
+  else
+    NewName = s+"."+Suffix;
+
+  if (QFile::exists(Path + QDir::separator() + NewName)) {  //check New Name exists
+    QMessageBox::critical(this, tr("error"), tr("Cannot copy file to identical name: ") + Name);
+    return;
+  }
+
+  if (!QFile::copy(Path + QDir::separator() + Name,
+      Path + QDir::separator() + NewName)) {
+    QMessageBox::critical(this, tr("Error"), tr("Cannot copy schematic: ")+Name);
+    return;
+  }
+  //TODO: maybe require disable edit here
+
+  // refresh the schematic file path
+  this->updateSchNameHash();
+  this->updateSpiceNameHash();
+
+  if(!ProjName.isEmpty())
+    readProjectFiles();  // re-read the content ListView
 }
 
 // ----------------------------------------------------------
