@@ -790,7 +790,7 @@ void QucsApp::initCursorMenu()
   connect(ActionCMenuOpen, SIGNAL(triggered()), this, SLOT(slotCMenuOpen()));
   ContentMenu->addAction(ActionCMenuOpen);
 
-  ActionCMenuCopy = new QAction(tr("Copy"), ContentMenu);
+  ActionCMenuCopy = new QAction(tr("Duplicate"), ContentMenu);
   connect(ActionCMenuCopy, SIGNAL(triggered()), this, SLOT(slotCMenuCopy()));
   ContentMenu->addAction(ActionCMenuCopy);
 
@@ -871,13 +871,13 @@ void QucsApp::slotCMenuCopy()
   //check changed file save
   int z = 0; //search if the doc is loaded
   QucsDoc *d = findDoc(currentPath, &z);
-  if (d->DocChanged) {
+  if (d != NULL && d->DocChanged) {
     DocumentTab->setCurrentPage(z);
     int ret = QMessageBox::question(this, tr("Copying Qucs document"), 
           tr("The document contains unsaved changes!\n") + 
-          tr("Do you want to save the changes before closing?"),
-          tr("&Save"), tr("&Ignore"), 0, 1);
-    if (ret == 0) {
+          tr("Do you want to save the changes before copying?"),
+          tr("&Ignore"), tr("&Save"), 0, 1);
+    if (ret == 1) {
       d->save();
     }
   }
