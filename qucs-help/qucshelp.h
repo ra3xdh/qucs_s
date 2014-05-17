@@ -23,6 +23,7 @@
 #include <QDir>
 #include <QFont>
 #include <QStringList>
+#include <QTextBrowser>
 
 struct tQucsSettings {
   int x, y, dx, dy;    // position and size of main window
@@ -40,18 +41,18 @@ class Q3ListView;
 class HtmlDataFetcher;
 class Q3DockWindow;
 
-class TextBrowser : public Q3TextBrowser
+class TextBrowser : public QTextBrowser
 {
    Q_OBJECT
    public:
-      TextBrowser(QWidget *parent = 0) : Q3TextBrowser(parent)
+      TextBrowser(QWidget *parent = 0) : QTextBrowser(parent)
       {}
    public slots:
       void setSource(const QString& name)
       {
          // Dont do anything if the clicked link is web url
          if(!name.startsWith("http://"))
-            Q3TextBrowser::setSource(name);
+            QTextBrowser::setSource(name);
       }
 };
 
