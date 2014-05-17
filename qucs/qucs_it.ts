@@ -277,14 +277,14 @@
         <location line="+31"/>
         <location line="+150"/>
         <location line="+177"/>
-        <location line="+93"/>
+        <location line="+97"/>
         <source>yes</source>
         <translation>sì</translation>
     </message>
     <message>
-        <location line="-450"/>
+        <location line="-454"/>
         <location line="+181"/>
-        <location line="+268"/>
+        <location line="+272"/>
         <source>no</source>
         <translation>no</translation>
     </message>
@@ -293,12 +293,12 @@
         <translation type="obsolete">Tutti i Files (*.*)</translation>
     </message>
     <message>
-        <location line="-34"/>
+        <location line="-42"/>
         <source>Select a file</source>
         <translation>Seleziona un file</translation>
     </message>
     <message>
-        <location line="-493"/>
+        <location line="-489"/>
         <source>Description</source>
         <translation>Descrizione</translation>
     </message>
@@ -321,12 +321,12 @@
         <translation>Nome:</translation>
     </message>
     <message>
-        <location line="+504"/>
+        <location line="+507"/>
         <source>All Files</source>
         <translation>Tutti i file</translation>
     </message>
     <message>
-        <location line="-682"/>
+        <location line="-685"/>
         <source>Sweep</source>
         <translation>Sweep</translation>
     </message>
@@ -390,13 +390,13 @@
     </message>
     <message>
         <location line="+9"/>
-        <location line="+702"/>
+        <location line="+706"/>
         <location line="+22"/>
         <source>Step:</source>
         <translation>Passo:</translation>
     </message>
     <message>
-        <location line="-717"/>
+        <location line="-721"/>
         <source>Number:</source>
         <translation>Numero:</translation>
     </message>
@@ -407,7 +407,7 @@
         <translation>Proprietà</translation>
     </message>
     <message>
-        <location line="+590"/>
+        <location line="+594"/>
         <source>Points per decade:</source>
         <translation>Punti per decade:</translation>
     </message>
@@ -440,17 +440,17 @@
 <context>
     <name>DiagramDialog</name>
     <message>
-        <location filename="diagrams/diagramdialog.cpp" line="+115"/>
+        <location filename="diagrams/diagramdialog.cpp" line="+110"/>
         <source>Edit Diagram Properties</source>
         <translation>Modifica Proprietà Diagramma</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+53"/>
         <source>Graph Input</source>
         <translation>Aiuto Funzione</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+36"/>
         <source>Color:</source>
         <translation>Colore:</translation>
     </message>
@@ -459,12 +459,12 @@
         <translation type="obsolete">       Spessore:</translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+72"/>
         <source>Dataset</source>
         <translation>Dataset</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+18"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
@@ -473,32 +473,32 @@
         <translation type="obsolete">Stato</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+0"/>
         <source>Size</source>
         <translation>Grandezza</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Graph</source>
         <translation>Grafico</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>New Graph</source>
         <translation>Nuovo Grafico</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Delete Graph</source>
         <translation>Cancella Grafico</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Data</source>
         <translation>Dati</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+10"/>
         <source>x-Axis Label:</source>
         <translation>Etichetta asse x:</translation>
     </message>
@@ -517,17 +517,17 @@
         <translation>Proprietà</translation>
     </message>
     <message>
-        <location line="+127"/>
+        <location line="+186"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Apply</source>
         <translation>Applica</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
@@ -536,12 +536,12 @@
         <translation type="obsolete">Aiuto Funzione</translation>
     </message>
     <message>
-        <location line="-393"/>
+        <location line="-490"/>
         <source>Number Notation: </source>
         <translation>Notazione Numerica:</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>real/imaginary</source>
         <translation>reale/immaginario</translation>
     </message>
@@ -561,30 +561,30 @@
         <translation>Precisione:</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+37"/>
         <source>Thickness:</source>
         <translation>Spessore:</translation>
     </message>
     <message>
-        <location line="-16"/>
+        <location line="-18"/>
         <source>Style:</source>
         <translation>Stile:</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location line="+122"/>
+        <location line="+5"/>
+        <location line="+150"/>
         <source>solid line</source>
         <translation>linea continua</translation>
     </message>
     <message>
-        <location line="-121"/>
-        <location line="+122"/>
+        <location line="-149"/>
+        <location line="+150"/>
         <source>dash line</source>
         <translation>linea tratteggiata</translation>
     </message>
     <message>
-        <location line="-121"/>
-        <location line="+122"/>
+        <location line="-149"/>
+        <location line="+150"/>
         <source>dot line</source>
         <translation>linea a punti</translation>
     </message>
@@ -609,12 +609,12 @@
         <translation>linea tratteggio punto punto</translation>
     </message>
     <message>
-        <location line="-122"/>
+        <location line="-150"/>
         <source>long dash line</source>
         <translation>linea a tratti lunghi</translation>
     </message>
     <message>
-        <location line="+143"/>
+        <location line="+171"/>
         <source>logarithmical X Axis Grid</source>
         <translation>Griglia logaritmica dell&apos;asse X</translation>
     </message>
@@ -623,12 +623,12 @@
         <translation type="obsolete">Griglia logaritmica dell&apos;asse Y</translation>
     </message>
     <message>
-        <location line="-122"/>
+        <location line="-145"/>
         <source>y-Axis:</source>
         <translation>Asse y:</translation>
     </message>
     <message>
-        <location line="-100"/>
+        <location line="-121"/>
         <source>left Axis</source>
         <translation>Asse sinistro</translation>
     </message>
@@ -666,14 +666,14 @@
         <translation>Asse polare</translation>
     </message>
     <message>
-        <location line="+302"/>
+        <location line="+346"/>
         <source>x-Axis</source>
         <translation>Asse x</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location line="+24"/>
-        <location line="+26"/>
+        <location line="+8"/>
+        <location line="+42"/>
+        <location line="+44"/>
         <source>manual</source>
         <translation>manuale</translation>
     </message>
@@ -686,28 +686,28 @@
         <translation type="obsolete">Asse y destro</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+39"/>
         <source>Limits</source>
         <translation>Limiti</translation>
     </message>
     <message>
-        <location line="-68"/>
-        <location line="+24"/>
-        <location line="+26"/>
+        <location line="-117"/>
+        <location line="+42"/>
+        <location line="+44"/>
         <source>start</source>
         <translation>inizio</translation>
     </message>
     <message>
-        <location line="-45"/>
-        <location line="+26"/>
-        <location line="+25"/>
+        <location line="-77"/>
+        <location line="+44"/>
+        <location line="+43"/>
         <source>step</source>
         <translation>passo</translation>
     </message>
     <message>
-        <location line="-46"/>
-        <location line="+26"/>
-        <location line="+25"/>
+        <location line="-78"/>
+        <location line="+44"/>
+        <location line="+43"/>
         <source>stop</source>
         <translation>fine</translation>
     </message>
@@ -720,13 +720,13 @@
         <translation type="obsolete">Asse Polare</translation>
     </message>
     <message>
-        <location line="-31"/>
-        <location line="+25"/>
+        <location line="-53"/>
+        <location line="+43"/>
         <source>number</source>
         <translation>numero</translation>
     </message>
     <message>
-        <location line="-299"/>
+        <location line="-375"/>
         <source>stars</source>
         <translation>stelle</translation>
     </message>
@@ -741,7 +741,7 @@
         <translation>freccie</translation>
     </message>
     <message>
-        <location line="+180"/>
+        <location line="+208"/>
         <source>Rotation around y-Axis:</source>
         <translation>Rotazione attorno all&apos;asse y:</translation>
     </message>
@@ -756,7 +756,7 @@
         <translation>Rotazione attorno all&apos;asse x:</translation>
     </message>
     <message>
-        <location line="-242"/>
+        <location line="-286"/>
         <location line="+3"/>
         <location line="+11"/>
         <source>y-Axis</source>
@@ -768,7 +768,7 @@
         <translation>Asse z</translation>
     </message>
     <message>
-        <location line="+142"/>
+        <location line="+186"/>
         <location line="+8"/>
         <source>Label:</source>
         <translation>Etichetta:</translation>
@@ -796,12 +796,12 @@
         <translation>proiezione 2D:</translation>
     </message>
     <message>
-        <location line="-165"/>
+        <location line="-171"/>
         <source>Type</source>
         <translation>Tipo</translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+119"/>
         <source>hide invisible lines</source>
         <translation>nascondi linee invisibili</translation>
     </message>
@@ -1998,6 +1998,85 @@ Scrittura della nuova libreria fallita!</translation>
     </message>
 </context>
 <context>
+    <name>LoadDialog</name>
+    <message>
+        <location filename="dialogs/loaddialog.cpp" line="+45"/>
+        <source>Load Verilog-A symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Choose Verilog-A symbol files:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Select All</source>
+        <translation type="unfinished">Seleziona Tutto</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Deselect All</source>
+        <translation type="unfinished">Deseleziona Tutto</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ok</source>
+        <translation type="unfinished">Ok</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Change Icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>auto-load selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Load the selected symbols when opening the project.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+83"/>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Icon not found:
+ %1.png</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+47"/>
+        <source>Open File</source>
+        <translation type="unfinished">Apri File</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Icon image (*.png)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Error</source>
+        <translation type="unfinished">Errore</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>File not found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MarkerDialog</name>
     <message>
         <location filename="diagrams/markerdialog.cpp" line="+33"/>
@@ -2211,6 +2290,19 @@ ma è %1 !</translation>
     </message>
 </context>
 <context>
+    <name>MessageDock</name>
+    <message>
+        <location filename="messagedock.cpp" line="+49"/>
+        <source>admsXml</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Compiler</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>NewProjDialog</name>
     <message>
         <location filename="dialogs/newprojdialog.cpp" line="+30"/>
@@ -2241,7 +2333,7 @@ ma è %1 !</translation>
 <context>
     <name>OctaveWindow</name>
     <message>
-        <location filename="octave_window.cpp" line="+117"/>
+        <location filename="octave_window.cpp" line="+126"/>
         <source>ERROR: Cannot start Octave!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2804,24 +2896,26 @@ Package estratto con successo!</translation>
     <name>QObject</name>
     <message>
         <location filename="schematic.cpp" line="+106"/>
-        <location filename="textdoc.cpp" line="+55"/>
+        <location filename="textdoc.cpp" line="+64"/>
         <source>untitled</source>
         <translation>senza titolo</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="+1262"/>
-        <location filename="schematic_file.cpp" line="+112"/>
+        <location filename="octave_window.cpp" line="-31"/>
+        <location filename="qucs_actions.cpp" line="+1276"/>
+        <location filename="schematic_file.cpp" line="+113"/>
         <location line="+18"/>
         <location line="+21"/>
         <location line="+24"/>
         <location line="+17"/>
-        <location line="+66"/>
-        <location line="+95"/>
+        <location line="+72"/>
+        <location line="+78"/>
+        <location line="+185"/>
         <location line="+5"/>
         <location line="+37"/>
         <location line="+5"/>
         <location line="+6"/>
-        <location line="+67"/>
+        <location line="+68"/>
         <location line="+59"/>
         <location line="+18"/>
         <location line="+29"/>
@@ -2834,14 +2928,22 @@ Package estratto con successo!</translation>
         <location line="+10"/>
         <location line="+20"/>
         <location line="+56"/>
-        <location filename="components/component.cpp" line="+1527"/>
-        <location line="+19"/>
-        <location line="+6"/>
+        <location filename="components/component.cpp" line="+1531"/>
+        <location line="+20"/>
+        <location line="+8"/>
+        <location filename="components/vacomponent.cpp" line="+298"/>
         <source>Error</source>
         <translation>Errore</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-595"/>
+        <location line="+1"/>
+        <source>Octave not found in: %1
+
+Set the Octave location on the application settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="schematic_file.cpp" line="-770"/>
         <source>Wrong document version: </source>
         <translation>Versione documento errata: </translation>
     </message>
@@ -2854,12 +2956,17 @@ Unknown field!</source>
 Campo sconosciuto!</translation>
     </message>
     <message>
-        <location line="+83"/>
+        <location line="+89"/>
+        <source>Cannot save JSON symbol file &quot;%1&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+78"/>
         <source>Cannot save document!</source>
         <translation>Impossibile salvare il documento!</translation>
     </message>
     <message>
-        <location line="+95"/>
+        <location line="+185"/>
         <location line="+5"/>
         <source>Format Error:
 Wrong property field limiter!</source>
@@ -2888,7 +2995,7 @@ Si attendeva un numero nel campo della proprietà!</translation>
 Il campo &apos;Property&apos; non è chiuso!</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+68"/>
         <source>Format Error:
 &apos;Component&apos; field is not closed!</source>
         <translation>Errore di formato:
@@ -2950,8 +3057,8 @@ Formato della linea &apos;painting&apos; errato!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-568"/>
-        <location line="+528"/>
+        <location line="-743"/>
+        <location line="+703"/>
         <source>Format Error:
 &apos;Painting&apos; field is not closed!</source>
         <translation>Errore di formato:
@@ -2974,17 +3081,17 @@ Unknown field!</source>
 Campo sconosciuto!</translation>
     </message>
     <message>
-        <location filename="paintings/ellipse.cpp" line="+358"/>
+        <location filename="paintings/ellipse.cpp" line="+372"/>
         <source>Edit Ellipse Properties</source>
         <translation>Modifica Proprietà Ellisse</translation>
     </message>
     <message>
-        <location filename="paintings/graphicline.cpp" line="+317"/>
+        <location filename="paintings/graphicline.cpp" line="+328"/>
         <source>Edit Line Properties</source>
         <translation>Modifica Proprietà Linea</translation>
     </message>
     <message>
-        <location filename="paintings/rectangle.cpp" line="+358"/>
+        <location filename="paintings/rectangle.cpp" line="+374"/>
         <source>Edit Rectangle Properties</source>
         <translation>Modifica Proprietà Rettangolo</translation>
     </message>
@@ -3121,7 +3228,7 @@ Campo sconosciuto!</translation>
     <message>
         <location line="+1"/>
         <location filename="components/ccvs.cpp" line="+1"/>
-        <location filename="components/component.cpp" line="-261"/>
+        <location filename="components/component.cpp" line="-264"/>
         <location filename="components/d_flipflop.cpp" line="+27"/>
         <location filename="components/ifile.cpp" line="+60"/>
         <location filename="components/jk_flipflop.cpp" line="+29"/>
@@ -3167,14 +3274,13 @@ Wrong line start!</source>
 Inizio linea errato!</translation>
     </message>
     <message>
-        <location line="+19"/>
         <source>Format Error:
 Unknown component!</source>
-        <translation>Errore di formato:
+        <translation type="obsolete">Errore di formato:
 Componente sconosciuto!</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+28"/>
         <source>Format Error:
 Wrong &apos;component&apos; line format!</source>
         <translation>Errore di formato:
@@ -3250,10 +3356,10 @@ Formato della linea &apos;component&apos; errato!</translation>
         <translation>diodo</translation>
     </message>
     <message>
+        <location filename="components/EKV26MOS.cpp" line="+132"/>
         <location filename="components/bjtsub.cpp" line="+27"/>
         <location filename="components/diac.cpp" line="+53"/>
         <location filename="components/diode.cpp" line="+3"/>
-        <location filename="components/EKV26MOS.cpp" line="+132"/>
         <location filename="components/thyristor.cpp" line="+53"/>
         <location filename="components/triac.cpp" line="+57"/>
         <source>saturation current</source>
@@ -3590,16 +3696,16 @@ Formato della linea &apos;component&apos; errato!</translation>
         <translation>linea di trasmissione ideale</translation>
     </message>
     <message>
+        <location line="+26"/>
         <location filename="components/tline_4port.cpp" line="+53"/>
-        <location filename="components/tline.cpp" line="+26"/>
         <source>characteristic impedance</source>
         <translation>impedenza caratteristica</translation>
     </message>
     <message>
         <location filename="components/ctline.cpp" line="+59"/>
         <location filename="components/rlcg.cpp" line="+63"/>
-        <location filename="components/tline_4port.cpp" line="+2"/>
         <location filename="components/tline.cpp" line="+2"/>
+        <location filename="components/tline_4port.cpp" line="+2"/>
         <source>electrical length of the line</source>
         <translation>lunghezza elettrica della linea</translation>
     </message>
@@ -3643,9 +3749,20 @@ Formato della linea &apos;component&apos; errato!</translation>
         <translation>transconduttanza</translation>
     </message>
     <message>
+        <location filename="components/vcresistor.cpp" line="+23"/>
         <location filename="components/vcvs.cpp" line="-42"/>
         <source>voltage controlled voltage source</source>
         <translation>generatore di tensione controllato in tensione</translation>
+    </message>
+    <message>
+        <location line="+47"/>
+        <source>resistance gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Voltage Controlled Resistor</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="components/volt_ac.cpp" line="-25"/>
@@ -3662,9 +3779,20 @@ Formato della linea &apos;component&apos; errato!</translation>
         <translation>generatore ideale di tensione dc</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location filename="components/ecvs.cpp" line="+23"/>
+        <source>externally controlled voltage source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <location filename="components/volt_dc.cpp" line="+22"/>
         <source>voltage in Volts</source>
         <translation>tensione in Volts</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Externally Controlled Voltage Source</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="components/volt_noise.cpp" line="-29"/>
@@ -3692,39 +3820,39 @@ Formato della linea &apos;component&apos; errato!</translation>
         <translation type="obsolete">Cancella</translation>
     </message>
     <message>
-        <location filename="diagrams/marker.cpp" line="+274"/>
+        <location filename="diagrams/marker.cpp" line="+285"/>
         <location filename="diagrams/tabdiagram.cpp" line="+246"/>
         <source>invalid</source>
         <translation>non valido</translation>
     </message>
     <message>
+        <location filename="components/EKV26MOS.cpp" line="-2"/>
         <location filename="components/diac.cpp" line="+2"/>
         <location filename="components/diode.cpp" line="+2"/>
-        <location filename="components/EKV26MOS.cpp" line="-2"/>
         <location filename="components/thyristor.cpp" line="+2"/>
         <location filename="components/triac.cpp" line="+2"/>
         <source>emission coefficient</source>
         <translation>coefficiente di emissione</translation>
     </message>
     <message>
+        <location line="+14"/>
         <location filename="components/diode.cpp" line="+2"/>
-        <location filename="components/EKV26MOS.cpp" line="+14"/>
         <location filename="components/photodiode.cpp" line="+35"/>
         <source>zero-bias junction capacitance</source>
         <translation>capacità giunzione con polarizzazione zero</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="components/EKV26MOS.cpp" line="+3"/>
+        <location line="+3"/>
         <location filename="components/MESFET.cpp" line="+79"/>
+        <location filename="components/diode.cpp" line="+2"/>
         <location filename="components/photodiode.cpp" line="+3"/>
         <location filename="components/tunneldiode.cpp" line="+45"/>
         <source>grading coefficient</source>
         <translation>coefficiente di gradualità</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="components/EKV26MOS.cpp" line="-6"/>
+        <location line="-6"/>
+        <location filename="components/diode.cpp" line="+2"/>
         <location filename="components/photodiode.cpp" line="-6"/>
         <location filename="components/tunneldiode.cpp" line="+2"/>
         <source>junction potential</source>
@@ -4044,8 +4172,8 @@ Formato della linea &apos;component&apos; errato!</translation>
         <translation>resistenza ohmica serie</translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="components/EKV26MOS.cpp" line="+12"/>
+        <location filename="components/diode.cpp" line="+2"/>
         <location filename="components/photodiode.cpp" line="+15"/>
         <source>transit time</source>
         <translation>tempo di transito</translation>
@@ -4058,8 +4186,8 @@ Formato della linea &apos;component&apos; errato!</translation>
     </message>
     <message>
         <location filename="components/EKV26MOS.cpp" line="-99"/>
-        <location filename="components/jfet.cpp" line="+2"/>
         <location filename="components/MESFET.cpp" line="-56"/>
+        <location filename="components/jfet.cpp" line="+2"/>
         <source>transconductance parameter</source>
         <translation>parametro transconduttanza</translation>
     </message>
@@ -4135,6 +4263,7 @@ Formato della linea &apos;component&apos; errato!</translation>
         <location filename="components/ctline.cpp" line="+10"/>
         <location filename="components/dc_sim.cpp" line="-34"/>
         <location filename="components/diode.cpp" line="+14"/>
+        <location filename="components/etr_sim.cpp" line="+60"/>
         <location filename="components/isolator.cpp" line="-14"/>
         <location filename="components/jfet.cpp" line="+18"/>
         <location filename="components/mosfet_sub.cpp" line="-57"/>
@@ -4148,8 +4277,8 @@ Formato della linea &apos;component&apos; errato!</translation>
         <location filename="components/rlcg.cpp" line="+2"/>
         <location filename="components/source_ac.cpp" line="-16"/>
         <location filename="components/switch.cpp" line="+36"/>
-        <location filename="components/tline_4port.cpp" line="+4"/>
         <location filename="components/tline.cpp" line="-14"/>
+        <location filename="components/tline_4port.cpp" line="+4"/>
         <location filename="components/tr_sim.cpp" line="-29"/>
         <location filename="components/tunneldiode.cpp" line="+5"/>
         <location filename="components/twistedpair.cpp" line="+2"/>
@@ -4158,6 +4287,7 @@ Formato della linea &apos;component&apos; errato!</translation>
     </message>
     <message>
         <location filename="components/dc_sim.cpp" line="+2"/>
+        <location filename="components/etr_sim.cpp" line="-6"/>
         <location filename="components/hb_sim.cpp" line="-16"/>
         <location filename="components/tr_sim.cpp" line="-6"/>
         <source>relative tolerance for convergence</source>
@@ -4165,6 +4295,7 @@ Formato della linea &apos;component&apos; errato!</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="components/etr_sim.cpp" line="+2"/>
         <location filename="components/hb_sim.cpp" line="-4"/>
         <location filename="components/tr_sim.cpp" line="+2"/>
         <source>absolute tolerance for currents</source>
@@ -4172,6 +4303,7 @@ Formato della linea &apos;component&apos; errato!</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="components/etr_sim.cpp" line="+2"/>
         <location filename="components/hb_sim.cpp" line="+2"/>
         <location filename="components/tr_sim.cpp" line="+2"/>
         <source>absolute tolerance for voltages</source>
@@ -4183,6 +4315,7 @@ Formato della linea &apos;component&apos; errato!</translation>
     </message>
     <message>
         <location line="+5"/>
+        <location filename="components/etr_sim.cpp" line="-6"/>
         <location filename="components/hb_sim.cpp" line="+4"/>
         <location filename="components/tr_sim.cpp" line="-6"/>
         <source>maximum number of iterations until error</source>
@@ -4385,16 +4518,16 @@ Formato della linea &apos;component&apos; errato!</translation>
         <translation>fattore dell&apos;esponenziale per la giunzione di substrato</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="components/diode.cpp" line="-24"/>
         <location filename="components/EKV26MOS.cpp" line="+97"/>
         <location filename="components/MESFET.cpp" line="+43"/>
+        <location filename="components/bjtsub.cpp" line="+2"/>
+        <location filename="components/diode.cpp" line="-24"/>
         <location filename="components/photodiode.cpp" line="-2"/>
         <source>forward-bias depletion capacitance coefficient</source>
         <translation>coefficiente capacità di svuotamento con polarizzazione diretta</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="components/bjtsub.cpp" line="+2"/>
         <location filename="components/phototransistor.cpp" line="+11"/>
         <source>ideal forward transit time</source>
         <translation>tempo di transito diretto ideale</translation>
@@ -4421,15 +4554,15 @@ Formato della linea &apos;component&apos; errato!</translation>
         <translation>tempo di transito inverso ideale</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location filename="components/diode.cpp" line="+14"/>
         <location filename="components/EKV26MOS.cpp" line="-34"/>
+        <location filename="components/MESFET.cpp" line="+78"/>
+        <location filename="components/bjtsub.cpp" line="+4"/>
+        <location filename="components/diode.cpp" line="+14"/>
         <location filename="components/hic0_full.cpp" line="+176"/>
         <location filename="components/hicumL0V1p2.cpp" line="+190"/>
         <location filename="components/hicumL0V1p2g.cpp" line="+190"/>
         <location filename="components/hicumL0V1p3.cpp" line="+194"/>
         <location filename="components/jfet.cpp" line="-6"/>
-        <location filename="components/MESFET.cpp" line="+78"/>
         <location filename="components/mosfet_sub.cpp" line="-6"/>
         <location filename="components/photodiode.cpp" line="+24"/>
         <location filename="components/phototransistor.cpp" line="+21"/>
@@ -4439,10 +4572,10 @@ Formato della linea &apos;component&apos; errato!</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="components/diode.cpp" line="+2"/>
-        <location filename="components/EKV26MOS.cpp" line="+2"/>
-        <location filename="components/jfet.cpp" line="+2"/>
         <location filename="components/MESFET.cpp" line="-2"/>
+        <location filename="components/bjtsub.cpp" line="+2"/>
+        <location filename="components/diode.cpp" line="+2"/>
+        <location filename="components/jfet.cpp" line="+2"/>
         <location filename="components/mosfet_sub.cpp" line="+2"/>
         <location filename="components/photodiode.cpp" line="+2"/>
         <location filename="components/phototransistor.cpp" line="+2"/>
@@ -4450,7 +4583,7 @@ Formato della linea &apos;component&apos; errato!</translation>
         <translation>esponente rumore flicker</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="components/bjtsub.cpp" line="+2"/>
         <location filename="components/diode.cpp" line="+2"/>
         <location filename="components/jfet.cpp" line="+2"/>
         <location filename="components/mosfet_sub.cpp" line="+2"/>
@@ -4730,8 +4863,8 @@ Formato della linea &apos;component&apos; errato!</translation>
         <translation>tipo scansione</translation>
     </message>
     <message>
-        <location filename="components/bjtsub.cpp" line="-84"/>
         <location filename="components/EKV26MOS.cpp" line="-100"/>
+        <location filename="components/bjtsub.cpp" line="-84"/>
         <location filename="components/hic0_full.cpp" line="-157"/>
         <location filename="components/hicumL0V1p2.cpp" line="-171"/>
         <location filename="components/hicumL0V1p2g.cpp" line="-171"/>
@@ -4768,7 +4901,7 @@ Formato della linea &apos;component&apos; errato!</translation>
     </message>
     <message>
         <location filename="components/capacitor.cpp" line="-16"/>
-        <location filename="components/component.cpp" line="-256"/>
+        <location filename="components/component.cpp" line="-259"/>
         <location filename="components/diode.cpp" line="+40"/>
         <location filename="components/logical_buf.cpp" line="+6"/>
         <location filename="components/logical_inv.cpp" line="+6"/>
@@ -4789,7 +4922,7 @@ Formato della linea &apos;component&apos; errato!</translation>
         <translation>calcola parametri di rumore</translation>
     </message>
     <message>
-        <location filename="paintings/ellipsearc.cpp" line="+375"/>
+        <location filename="paintings/ellipsearc.cpp" line="+387"/>
         <source>Edit Arc Properties</source>
         <translation>Modifica Proprietà Arco</translation>
     </message>
@@ -4811,24 +4944,38 @@ Delimitatore linea &apos;painting&apos; errato!</translation>
         <translation>numero passi temporali della simulazione</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="components/etr_sim.cpp" line="-28"/>
+        <source>externally driven transient simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <location filename="components/tr_sim.cpp" line="+2"/>
         <source>integration method</source>
         <translation>metodo di integrazione</translation>
     </message>
     <message>
         <location line="+3"/>
+        <location filename="components/tr_sim.cpp" line="+3"/>
         <source>order of integration method</source>
         <translation>ordine del metodo di integrazione</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="components/tr_sim.cpp" line="+2"/>
         <source>initial step size in seconds</source>
         <translation>passo iniziale in secondi</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="components/tr_sim.cpp" line="+2"/>
         <source>minimum step size in seconds</source>
         <translation>passo minimo in secondi</translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>External transient simulation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs-edit/main.cpp" line="+76"/>
@@ -5017,17 +5164,20 @@ Usage:  qucsedit [-r] file
         <translation>fase iniziale in gradi</translation>
     </message>
     <message>
+        <location filename="components/etr_sim.cpp" line="-27"/>
         <location filename="components/tr_sim.cpp" line="+12"/>
         <source>relative tolerance of local truncation error</source>
         <translation>tolleranza relativa dell&apos;errore di troncamento locale</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="components/tr_sim.cpp" line="+2"/>
         <source>absolute tolerance of local truncation error</source>
         <translation>tolleranza assoluta dell&apos;errore di troncamento locale</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="components/tr_sim.cpp" line="+2"/>
         <source>overestimation of local truncation error</source>
         <translation>sovrastima dell&apos;errore di troncamento locale</translation>
     </message>
@@ -5159,6 +5309,7 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <location filename="components/dc_sim.cpp" line="+3"/>
+        <location filename="components/etr_sim.cpp" line="+2"/>
         <location filename="components/tr_sim.cpp" line="+2"/>
         <source>method for solving the circuit matrix</source>
         <translation>metodo per risolvere la matrice del circuito</translation>
@@ -5236,27 +5387,27 @@ Usage:  qucsedit [-r] file
         <translation>Salto Impedenza Coplanare</translation>
     </message>
     <message>
-        <location filename="components/diode.cpp" line="-26"/>
         <location filename="components/EKV26MOS.cpp" line="+116"/>
+        <location filename="components/diode.cpp" line="-26"/>
         <location filename="components/photodiode.cpp" line="-47"/>
         <source>reverse breakdown voltage</source>
         <translation>tensione di rottura inversa</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="components/EKV26MOS.cpp" line="+3"/>
+        <location line="+3"/>
+        <location filename="components/diode.cpp" line="+2"/>
         <location filename="components/photodiode.cpp" line="+3"/>
         <source>current at reverse breakdown voltage</source>
         <translation>corrente alla tensione di rottura inversa</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="+327"/>
+        <location filename="schematic_file.cpp" line="+337"/>
         <source>ERROR: Cannot load subcircuit &quot;%1&quot;.</source>
         <translation>ERRORE: Impossibile caricare sottocircuito &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location line="+59"/>
-        <location filename="components/spicefile.cpp" line="+72"/>
+        <location line="+66"/>
+        <location filename="components/spicefile.cpp" line="+150"/>
         <source>ERROR: No file name in SPICE component &quot;%1&quot;.</source>
         <translation>ERRORE: Nome file assente nel componente SPICE &quot;%1&quot;.</translation>
     </message>
@@ -5276,7 +5427,7 @@ Usage:  qucsedit [-r] file
         <translation>nome del componente nella libreria</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-11"/>
+        <location filename="schematic_file.cpp" line="-13"/>
         <source>ERROR: Cannot load library component &quot;%1&quot;.</source>
         <translation>ERRORE: Impossibile caricare il componente di libreria &quot;%1&quot;.</translation>
     </message>
@@ -5331,12 +5482,12 @@ Usage:  qucsedit [-r] file
         <translation>Freccia</translation>
     </message>
     <message>
-        <location filename="paintings/ellipsearc.cpp" line="-284"/>
+        <location filename="paintings/ellipsearc.cpp" line="-296"/>
         <source>Elliptic Arc</source>
         <translation>Arco ellittico</translation>
     </message>
     <message>
-        <location filename="paintings/ellipse.cpp" line="-261"/>
+        <location filename="paintings/ellipse.cpp" line="-275"/>
         <source>Ellipse</source>
         <translation>Ellisse</translation>
     </message>
@@ -5346,7 +5497,7 @@ Usage:  qucsedit [-r] file
         <translation>Ellisse riempita</translation>
     </message>
     <message>
-        <location filename="paintings/graphicline.cpp" line="-225"/>
+        <location filename="paintings/graphicline.cpp" line="-236"/>
         <source>Line</source>
         <translation>Linea</translation>
     </message>
@@ -5356,7 +5507,7 @@ Usage:  qucsedit [-r] file
         <translation>Testo</translation>
     </message>
     <message>
-        <location filename="paintings/rectangle.cpp" line="-261"/>
+        <location filename="paintings/rectangle.cpp" line="-277"/>
         <source>Rectangle</source>
         <translation>Rettangolo</translation>
     </message>
@@ -5379,30 +5530,30 @@ Usage:  qucsedit [-r] file
         <translation>tre induttori accoppiati</translation>
     </message>
     <message>
-        <location line="+46"/>
         <location filename="components/mutual.cpp" line="+58"/>
+        <location filename="components/mutual2.cpp" line="+46"/>
         <source>inductance of coil 1</source>
         <translation>induttanza dell&apos;induttore 1</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="components/mutual.cpp" line="+2"/>
+        <location filename="components/mutual2.cpp" line="+2"/>
         <source>inductance of coil 2</source>
         <translation>induttanza dell&apos;induttore 2</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="components/mutual2.cpp" line="+2"/>
         <source>inductance of coil 3</source>
         <translation>induttanza dell&apos;induttore 3</translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="components/mutual.cpp" line="+2"/>
+        <location filename="components/mutual2.cpp" line="+2"/>
         <source>coupling factor between coil 1 and 2</source>
         <translation>coefficiente di accoppiamento tra gli induttori 1 e 2</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="components/mutual2.cpp" line="+2"/>
         <source>coupling factor between coil 1 and 3</source>
         <translation>coefficiente di accoppiamento tra gli induttori 1 e 3</translation>
     </message>
@@ -5486,6 +5637,15 @@ Usage:  qucsedit [-r] file
         <location filename="components/logical_inv.cpp" line="-8"/>
         <source>voltage of high level</source>
         <translation>tensione del livello alto</translation>
+    </message>
+    <message>
+        <location line="+259"/>
+        <source>Format Error:
+Unknown component!
+%1
+
+Do you make use of loadable components?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="components/logical_nor.cpp" line="+22"/>
@@ -5575,7 +5735,7 @@ Usage:  qucsedit [-r] file
         <translation>Elenco istanti di cambiamento dell&apos;uscita</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-88"/>
+        <location filename="schematic_file.cpp" line="-103"/>
         <source>ERROR: Component &quot;%1&quot; has no analog model.</source>
         <translation>ERRORE: Il componente &quot;%1&quot; non ha un modello analogico.</translation>
     </message>
@@ -5585,7 +5745,7 @@ Usage:  qucsedit [-r] file
         <translation>ERRORE: Il componente &quot;%1&quot; non ha un modello digitale.</translation>
     </message>
     <message>
-        <location line="+267"/>
+        <location line="+284"/>
         <source>WARNING: Ignore simulation component in subcircuit &quot;%1&quot;.</source>
         <translation>ATTENZIONE: Ignorato componente di simulazione nel sottocircuito &quot;%1&quot;.</translation>
     </message>
@@ -5646,16 +5806,16 @@ Usage:  qucsedit [-r] file
         <translation type="obsolete">ERRORE: Nessuna simulazione richiesta in questa pagina.</translation>
     </message>
     <message>
+        <location filename="components/EKV26MOS.cpp" line="+18"/>
         <location filename="components/bjtsub.cpp" line="+88"/>
         <location filename="components/diode.cpp" line="+4"/>
-        <location filename="components/EKV26MOS.cpp" line="+18"/>
         <location filename="components/jfet.cpp" line="+38"/>
         <location filename="components/photodiode.cpp" line="+21"/>
         <source>saturation current temperature exponent</source>
         <translation>esponente della temperatura per la corrente di saturazione</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="components/bjtsub.cpp" line="+2"/>
         <location filename="components/diode.cpp" line="+2"/>
         <source>energy bandgap in eV</source>
         <translation>energy bandgap in eV</translation>
@@ -5731,8 +5891,8 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <location filename="components/EKV26MOS.cpp" line="+4"/>
-        <location filename="components/log_amp.cpp" line="+61"/>
         <location filename="components/MESFET.cpp" line="+6"/>
+        <location filename="components/log_amp.cpp" line="+61"/>
         <location filename="components/mosfet_sub.cpp" line="+91"/>
         <location filename="components/nigbt.cpp" line="+6"/>
         <location filename="components/photodiode.cpp" line="-8"/>
@@ -5791,7 +5951,7 @@ Usage:  qucsedit [-r] file
         <translation>FlipFlop RS</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="+485"/>
+        <location filename="main.cpp" line="+527"/>
         <location line="+63"/>
         <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
         <translation>Errore: Formato del tempo errato in &quot;%1&quot;. Usare numeri positivi con le unità</translation>
@@ -5974,11 +6134,16 @@ Usage:  qucsedit [-r] file
         <translation>resistenza nello stato aperto in ohms</translation>
     </message>
     <message>
+        <location line="+4"/>
+        <source>Max possible switch transition time (transition time 1/100 smallest value in &apos;time&apos;, or this number)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Relais</source>
         <translation type="obsolete">Relè</translation>
     </message>
     <message>
-        <location line="-6"/>
+        <location line="-10"/>
         <source>initial state</source>
         <translation>stato iniziale</translation>
     </message>
@@ -5987,18 +6152,18 @@ Usage:  qucsedit [-r] file
         <translation type="obsolete">istanti di cambiamento stato (possibile lista separata da virgole)</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+31"/>
         <source>Switch</source>
         <translation>Interruttore</translation>
     </message>
     <message>
-        <location filename="components/tline_4port.cpp" line="-2"/>
         <location filename="components/tline.cpp" line="-2"/>
+        <location filename="components/tline_4port.cpp" line="-2"/>
         <source>attenuation factor per length in 1/m</source>
         <translation>fattore di attenuazione per unità di lunghezza in 1/m</translation>
     </message>
     <message>
-        <location filename="components/switch.cpp" line="-32"/>
+        <location filename="components/switch.cpp" line="-34"/>
         <source>switch (time controlled)</source>
         <translation>interruttore (controllato temporalmente)</translation>
     </message>
@@ -6023,7 +6188,7 @@ Usage:  qucsedit [-r] file
         <translation>resistenza nello stato aperto in ohms</translation>
     </message>
     <message>
-        <location filename="mouseactions.cpp" line="+818"/>
+        <location filename="mouseactions.cpp" line="+827"/>
         <source>Edit Properties</source>
         <translation>Modifica proprietà</translation>
     </message>
@@ -6049,8 +6214,8 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <location line="+60"/>
-        <location filename="components/spicefile.cpp" line="+105"/>
-        <location line="+86"/>
+        <location filename="components/spicefile.cpp" line="+103"/>
+        <location line="+87"/>
         <source>Info</source>
         <translation>Informazioni</translation>
     </message>
@@ -6061,8 +6226,9 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <location filename="components/switch.cpp" line="+5"/>
-        <source>time when state changes (semicolon separated list possible)</source>
-        <translation>istanti di cambiamento di stato (si può usare una lista con separatore &quot;;&quot;)</translation>
+        <source>time when state changes (semicolon separated list possible, even numbered lists are repeated)</source>
+        <oldsource>time when state changes (semicolon separated list possible)</oldsource>
+        <translation type="unfinished">istanti di cambiamento di stato (si può usare una lista con separatore &quot;;&quot;)</translation>
     </message>
     <message>
         <source>ERROR: No file name in VHDL component &quot;%1&quot;.</source>
@@ -6089,13 +6255,14 @@ Usage:  qucsedit [-r] file
         <translation>vhdl</translation>
     </message>
     <message>
-        <location filename="components/rfedd2p.cpp" line="+37"/>
         <location filename="components/rfedd.cpp" line="+2"/>
+        <location filename="components/rfedd2p.cpp" line="+37"/>
         <location filename="components/sparamfile.cpp" line="-48"/>
         <source>representation during DC analysis</source>
         <translation>rappresentazione durante l&apos;analisi DC</translation>
     </message>
     <message>
+        <location filename="components/etr_sim.cpp" line="+3"/>
         <location filename="components/tr_sim.cpp" line="+3"/>
         <source>relax time step raster</source>
         <translation>rilassa griglia passi temporali</translation>
@@ -6127,6 +6294,7 @@ Usage:  qucsedit [-r] file
         <translation>ottimizzazione</translation>
     </message>
     <message>
+        <location filename="components/etr_sim.cpp" line="+2"/>
         <location filename="components/tr_sim.cpp" line="+2"/>
         <source>perform an initial DC analysis</source>
         <translation>esegui una analisi DC iniziale</translation>
@@ -8861,10 +9029,11 @@ Usage:  qucsedit [-r] file
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="components/EKV26MOS.cpp" line="+3"/>
+        <location filename="components/MESFET.cpp" line="+3"/>
         <location filename="components/bsim3v34nMOS.cpp" line="-19"/>
         <location filename="components/bsim3v34pMOS.cpp" line="+2"/>
         <location filename="components/diac.cpp" line="+4"/>
-        <location filename="components/EKV26MOS.cpp" line="+3"/>
         <location filename="components/hic0_full.cpp" line="+12"/>
         <location filename="components/hic2_full.cpp" line="+3"/>
         <location filename="components/hicumL0V1p2.cpp" line="+12"/>
@@ -8875,7 +9044,6 @@ Usage:  qucsedit [-r] file
         <location filename="components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="components/hicumL2V2p31n.cpp" line="+3"/>
         <location filename="components/log_amp.cpp" line="+3"/>
-        <location filename="components/MESFET.cpp" line="+3"/>
         <location filename="components/nigbt.cpp" line="+3"/>
         <location filename="components/photodiode.cpp" line="+33"/>
         <location filename="components/phototransistor.cpp" line="+15"/>
@@ -8927,6 +9095,7 @@ Usage:  qucsedit [-r] file
         <translation>Linea di Trasmissione a 4 Terminali</translation>
     </message>
     <message>
+        <location filename="components/etr_sim.cpp" line="+2"/>
         <location filename="components/tr_sim.cpp" line="+2"/>
         <source>maximum step size in seconds</source>
         <translation>passo massimo in secondi</translation>
@@ -9125,7 +9294,7 @@ Usage:  qucsedit [-r] file
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="components/spicefile.cpp" line="-181"/>
+        <location filename="components/spicefile.cpp" line="-180"/>
         <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
         <translation>ERRORE: Impossibile aprire file SPICE &quot;%1&quot;.</translation>
     </message>
@@ -9135,12 +9304,12 @@ Usage:  qucsedit [-r] file
         <translation>ERRORE: Impossibile avviare QucsConv!</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-160"/>
         <source>ERROR: Cannot save converted SPICE file &quot;%1&quot;.</source>
         <translation>ERRORE: Impossibile salvare il file SPICE convertito &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+15"/>
         <source>ERROR: Cannot open converted SPICE file &quot;%1&quot;.</source>
         <translation>ERRORE: Impossibile aprire il file SPICE convertito &quot;%1&quot;.</translation>
     </message>
@@ -9170,17 +9339,17 @@ Usage:  qucsedit [-r] file
 </translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-56"/>
+        <location filename="schematic_file.cpp" line="-58"/>
         <source>WARNING: Skipping library component &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="components/spicefile.cpp" line="+152"/>
+        <location filename="components/spicefile.cpp" line="+153"/>
         <source>Converting SPICE file &quot;%1&quot;.</source>
         <translation>Conversione file SPICE &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location line="-86"/>
+        <location line="-87"/>
         <source>Preprocessing SPICE file &quot;%1&quot;.</source>
         <translation>Pre-elaborazione file SPICE &quot;%1&quot;.</translation>
     </message>
@@ -9487,6 +9656,7 @@ Usage:  qucsedit [-r] file
     <message>
         <location filename="components/EKV26MOS.cpp" line="-30"/>
         <location line="+6"/>
+        <location filename="components/MESFET.cpp" line="-17"/>
         <location filename="components/hic0_full.cpp" line="-183"/>
         <location line="+10"/>
         <location line="+3"/>
@@ -9567,7 +9737,6 @@ Usage:  qucsedit [-r] file
         <location line="+110"/>
         <location filename="components/log_amp.cpp" line="-40"/>
         <location line="+3"/>
-        <location filename="components/MESFET.cpp" line="-17"/>
         <location filename="components/photodiode.cpp" line="-51"/>
         <location line="+6"/>
         <location filename="components/phototransistor.cpp" line="-68"/>
@@ -9577,6 +9746,10 @@ Usage:  qucsedit [-r] file
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="components/DLS_1ton.cpp" line="+21"/>
+        <location filename="components/DLS_nto1.cpp" line="+22"/>
+        <location filename="components/EKV26MOS.cpp" line="+15"/>
+        <location filename="components/MESFET.cpp" line="-65"/>
         <location filename="components/andor4x2.cpp" line="+32"/>
         <location filename="components/andor4x3.cpp" line="+32"/>
         <location filename="components/andor4x4.cpp" line="+32"/>
@@ -9585,12 +9758,9 @@ Usage:  qucsedit [-r] file
         <location filename="components/comp_2bit.cpp" line="+32"/>
         <location filename="components/comp_4bit.cpp" line="+32"/>
         <location filename="components/dff_SR.cpp" line="+34"/>
-        <location filename="components/DLS_1ton.cpp" line="+21"/>
-        <location filename="components/DLS_nto1.cpp" line="+22"/>
         <location filename="components/dmux2to4.cpp" line="+32"/>
         <location filename="components/dmux3to8.cpp" line="+33"/>
         <location filename="components/dmux4to16.cpp" line="+32"/>
-        <location filename="components/EKV26MOS.cpp" line="+15"/>
         <location filename="components/fa1b.cpp" line="+32"/>
         <location filename="components/fa2b.cpp" line="+32"/>
         <location filename="components/gatedDlatch.cpp" line="+34"/>
@@ -9654,7 +9824,6 @@ Usage:  qucsedit [-r] file
         <location line="+19"/>
         <location filename="components/hpribin4bit.cpp" line="+32"/>
         <location filename="components/jkff_SR.cpp" line="+34"/>
-        <location filename="components/MESFET.cpp" line="-65"/>
         <location filename="components/mux2to1.cpp" line="+32"/>
         <location filename="components/mux4to1.cpp" line="+32"/>
         <location filename="components/mux8to1.cpp" line="+32"/>
@@ -9668,13 +9837,13 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <location filename="components/EKV26MOS.cpp" line="-96"/>
+        <location filename="components/MESFET.cpp" line="-42"/>
+        <location line="+3"/>
+        <location line="+3"/>
         <location filename="components/hic2_full.cpp" line="-141"/>
         <location filename="components/hicumL2V2p23.cpp" line="-141"/>
         <location filename="components/hicumL2V2p24.cpp" line="-141"/>
         <location filename="components/hicumL2V2p31n.cpp" line="-141"/>
-        <location filename="components/MESFET.cpp" line="-42"/>
-        <location line="+3"/>
-        <location line="+3"/>
         <location filename="components/nigbt.cpp" line="+30"/>
         <source>1/V</source>
         <translation type="unfinished"></translation>
@@ -9733,6 +9902,7 @@ Usage:  qucsedit [-r] file
     <message>
         <location line="+9"/>
         <location line="+3"/>
+        <location filename="components/MESFET.cpp" line="+39"/>
         <location filename="components/hic0_full.cpp" line="-139"/>
         <location line="+36"/>
         <location line="+11"/>
@@ -9779,7 +9949,6 @@ Usage:  qucsedit [-r] file
         <location line="+84"/>
         <location filename="components/log_amp.cpp" line="+11"/>
         <location line="+6"/>
-        <location filename="components/MESFET.cpp" line="+39"/>
         <location filename="components/photodiode.cpp" line="-27"/>
         <location line="+38"/>
         <location filename="components/phototransistor.cpp" line="+9"/>
@@ -9792,6 +9961,9 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <location line="+47"/>
+        <location filename="components/MESFET.cpp" line="+10"/>
+        <location line="+3"/>
+        <location line="+3"/>
         <location filename="components/hic0_full.cpp" line="-85"/>
         <location line="+44"/>
         <location line="+11"/>
@@ -9848,9 +10020,6 @@ Usage:  qucsedit [-r] file
         <location line="+15"/>
         <location line="+57"/>
         <location line="+3"/>
-        <location filename="components/MESFET.cpp" line="+10"/>
-        <location line="+3"/>
-        <location line="+3"/>
         <location filename="components/photodiode.cpp" line="-23"/>
         <location filename="components/phototransistor.cpp" line="-29"/>
         <location line="+8"/>
@@ -9863,6 +10032,12 @@ Usage:  qucsedit [-r] file
         <location line="+6"/>
         <location line="+84"/>
         <location line="+6"/>
+        <location filename="components/MESFET.cpp" line="-67"/>
+        <location line="+20"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+12"/>
+        <location line="+3"/>
         <location filename="components/hic0_full.cpp" line="-141"/>
         <location line="+32"/>
         <location line="+32"/>
@@ -10002,12 +10177,6 @@ Usage:  qucsedit [-r] file
         <location filename="components/log_amp.cpp" line="-9"/>
         <location filename="components/logic_0.cpp" line="+29"/>
         <location filename="components/logic_1.cpp" line="+29"/>
-        <location filename="components/MESFET.cpp" line="-67"/>
-        <location line="+20"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+12"/>
-        <location line="+3"/>
         <location filename="components/nigbt.cpp" line="+3"/>
         <location line="+3"/>
         <location filename="components/photodiode.cpp" line="-9"/>
@@ -10209,16 +10378,16 @@ Usage:  qucsedit [-r] file
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+6"/>
         <location filename="components/MESFET.cpp" line="+29"/>
         <location line="+3"/>
         <location line="+3"/>
+        <location filename="components/log_amp.cpp" line="+1"/>
+        <location line="+6"/>
         <source>%/Celsius</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-4"/>
+        <location filename="components/log_amp.cpp" line="-4"/>
         <source>offset temperature coefficient</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10250,8 +10419,8 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <location filename="components/EKV26MOS.cpp" line="+19"/>
-        <location filename="components/log_amp.cpp" line="+4"/>
         <location filename="components/MESFET.cpp" line="+52"/>
+        <location filename="components/log_amp.cpp" line="+4"/>
         <location filename="components/nigbt.cpp" line="+3"/>
         <location line="+3"/>
         <location filename="components/photodiode.cpp" line="-19"/>
@@ -10265,13 +10434,13 @@ Usage:  qucsedit [-r] file
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
         <location filename="components/MESFET.cpp" line="-95"/>
+        <location filename="components/log_amp.cpp" line="+20"/>
         <source>I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="components/log_amp.cpp" line="+1"/>
         <source>R</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10982,28 +11151,28 @@ Usage:  qucsedit [-r] file
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+7"/>
         <location filename="components/rfedd2p.cpp" line="-2"/>
-        <location filename="components/rfedd.cpp" line="+7"/>
         <source>type of parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location filename="components/rfedd.cpp" line="+9"/>
+        <location line="+9"/>
         <location line="+2"/>
         <location line="+2"/>
         <location line="+2"/>
         <location line="+81"/>
         <location line="+5"/>
         <location line="+9"/>
+        <location filename="components/rfedd2p.cpp" line="+7"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
         <source>parameter equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="components/rfedd.cpp" line="-77"/>
+        <location line="-77"/>
         <source>Equation Defined RF Device</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12132,7 +12301,7 @@ Usage:  qucsedit [-r] file
     </message>
     <message>
         <location filename="components/binarytogrey4bit.cpp" line="-22"/>
-        <location filename="components/component.cpp" line="+4"/>
+        <location filename="components/component.cpp" line="-255"/>
         <location filename="components/greytobinary4bit.cpp" line="-22"/>
         <location filename="components/hpribin4bit.cpp" line="-22"/>
         <location filename="components/logical_buf.cpp" line="-96"/>
@@ -12282,7 +12451,7 @@ Usage:  qucsedit [-r] file
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="+409"/>
+        <location filename="schematic_file.cpp" line="+411"/>
         <source>WARNING: Equations in &quot;%1&quot; are &apos;time&apos; typed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12405,12 +12574,20 @@ Usage:  qucsedit [-r] file
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-1242"/>
+        <location filename="schematic_file.cpp" line="-1434"/>
         <source>Cannot save C++ file &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="module.cpp" line="+130"/>
+        <location filename="module.cpp" line="+117"/>
+        <location filename="qucs.cpp" line="+647"/>
+        <location line="+106"/>
+        <location filename="qucs_actions.cpp" line="+153"/>
+        <source>verilog-a user devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+65"/>
         <location line="+2"/>
         <source>lumped components</source>
         <translation type="unfinished">componenti discreti</translation>
@@ -12462,18 +12639,25 @@ Usage:  qucsedit [-r] file
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="+2073"/>
+        <location filename="qucs.cpp" line="+1706"/>
         <source>diagrams</source>
         <translation type="unfinished">diagrammi</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="-1681"/>
-        <location line="+19"/>
-        <location line="+55"/>
+        <location filename="qucs.cpp" line="-1856"/>
+        <location line="+30"/>
+        <location line="+3"/>
+        <location line="+107"/>
+        <location line="+1"/>
         <source>paintings</source>
         <translation type="unfinished">disegni</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>external sim components</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="components/hicumL2V2p24.cpp" line="-288"/>
@@ -12850,6 +13034,11 @@ Usage:  qucsedit [-r] file
         <source>HICUM L2 V2.31</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="components/vacomponent.cpp" line="+1"/>
+        <source>Symbol file not found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QucsActions</name>
@@ -12935,12 +13124,12 @@ Sovrascrivere ?</translation>
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="qucs.cpp" line="+140"/>
+        <location filename="qucs.cpp" line="+236"/>
         <location line="+77"/>
         <location line="+47"/>
         <location line="+329"/>
-        <location line="+237"/>
-        <location line="+624"/>
+        <location line="+244"/>
+        <location line="+630"/>
         <source>Warning</source>
         <translation>Attenzione</translation>
     </message>
@@ -12949,7 +13138,7 @@ Sovrascrivere ?</translation>
         <translation type="obsolete">Impossibile salvare impostazioni !</translation>
     </message>
     <message>
-        <location line="-1668"/>
+        <location line="-2045"/>
         <source>New</source>
         <translation>Nuovo</translation>
     </message>
@@ -12991,7 +13180,8 @@ Apre un documento esistente</translation>
         <translation type="obsolete">Salva File</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="+1183"/>
+        <location filename="qucs.cpp" line="+617"/>
+        <location line="+939"/>
         <location filename="qucs_init.cpp" line="+3"/>
         <source>&amp;Save</source>
         <translation>&amp;Salva</translation>
@@ -13211,8 +13401,8 @@ Pastes the clipboard contents to the cursor position</source>
 Incolla il contenuto degli appunti nella posizione del cursore</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1179"/>
-        <location line="+240"/>
+        <location filename="qucs.cpp" line="-1552"/>
+        <location line="+535"/>
         <source>Delete</source>
         <translation>Cancella</translation>
     </message>
@@ -13349,7 +13539,7 @@ Deletes an existing project</source>
 Cancella un progetto esistente</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+61"/>
         <source>View All</source>
         <translation>Vedi Tutto</translation>
     </message>
@@ -13739,7 +13929,7 @@ Breve introduzione a Qucs</translation>
         <translation>&amp;Progetto</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+28"/>
         <source>&amp;Simulation</source>
         <translation>&amp;Simulazione</translation>
     </message>
@@ -13754,34 +13944,34 @@ Breve introduzione a Qucs</translation>
         <translation>&amp;Aiuto</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-656"/>
-        <location line="+311"/>
-        <location filename="qucs.cpp" line="+631"/>
+        <location filename="qucs.cpp" line="+700"/>
         <location line="+10"/>
         <location line="+69"/>
         <location line="+30"/>
         <location line="+5"/>
-        <location line="+120"/>
+        <location line="+127"/>
         <location line="+5"/>
-        <location line="+33"/>
-        <location line="+48"/>
+        <location line="+34"/>
+        <location line="+49"/>
         <location line="+35"/>
-        <location line="+239"/>
+        <location line="+240"/>
         <location line="+37"/>
         <location line="+45"/>
         <location line="+22"/>
+        <location filename="qucs_actions.cpp" line="-809"/>
+        <location line="+311"/>
         <location filename="qucs_init.cpp" line="+151"/>
         <source>Ready.</source>
         <translation>Pronto.</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1571"/>
-        <location line="+234"/>
+        <location line="-1945"/>
+        <location line="+525"/>
         <source>Open</source>
         <translation>Apri</translation>
     </message>
     <message>
-        <location line="-216"/>
+        <location line="-507"/>
         <source>Projects</source>
         <translation>Progetti</translation>
     </message>
@@ -13791,19 +13981,19 @@ Breve introduzione a Qucs</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+723"/>
+        <location line="+1087"/>
         <source>Content of</source>
         <translation>Contenuto di</translation>
     </message>
     <message>
-        <location line="-723"/>
-        <location line="+658"/>
+        <location line="-1087"/>
+        <location line="+1022"/>
         <location line="+65"/>
         <source>Note</source>
         <translation>Nota</translation>
     </message>
     <message>
-        <location line="-812"/>
+        <location line="-1180"/>
         <source>Datasets</source>
         <translation>Dataset</translation>
     </message>
@@ -13814,12 +14004,12 @@ Breve introduzione a Qucs</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+1985"/>
+        <location line="+2365"/>
         <source>Schematics</source>
         <translation>Schemi</translation>
     </message>
     <message>
-        <location line="-1897"/>
+        <location line="-2274"/>
         <source>Content</source>
         <translation>Contenuto</translation>
     </message>
@@ -13870,7 +14060,7 @@ Breve introduzione a Qucs</translation>
         <translation type="obsolete">diagrammi</translation>
     </message>
     <message>
-        <location line="+174"/>
+        <location line="+470"/>
         <source>Rename</source>
         <translation>Rinomina</translation>
     </message>
@@ -13880,6 +14070,26 @@ Breve introduzione a Qucs</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="-373"/>
+        <location line="+3"/>
+        <location line="+62"/>
+        <location line="+3"/>
+        <location line="+417"/>
+        <location line="+21"/>
+        <location line="+22"/>
+        <location line="+14"/>
+        <location line="+12"/>
+        <location line="+54"/>
+        <location line="+31"/>
+        <location line="+235"/>
+        <location line="+1137"/>
+        <location line="+28"/>
+        <location line="+77"/>
+        <location line="+316"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+6"/>
         <location filename="qucs_actions.cpp" line="-283"/>
         <location line="+45"/>
         <location line="+24"/>
@@ -13894,26 +14104,12 @@ Breve introduzione a Qucs</translation>
         <location line="+295"/>
         <location line="+14"/>
         <location line="+19"/>
-        <location filename="qucs.cpp" line="+64"/>
-        <location line="+22"/>
-        <location line="+14"/>
-        <location line="+12"/>
-        <location line="+54"/>
-        <location line="+31"/>
-        <location line="+235"/>
-        <location line="+1125"/>
-        <location line="+28"/>
-        <location line="+77"/>
-        <location line="+277"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <location line="+6"/>
+        <location line="+144"/>
         <source>Error</source>
         <translation>Errore</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1901"/>
+        <location line="-1952"/>
         <source>Cannot rename an open file!</source>
         <translation>Impossibile rinominare un file aperto!</translation>
     </message>
@@ -13923,12 +14119,87 @@ Breve introduzione a Qucs</translation>
         <translation>Rinomina file</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="-49"/>
+        <location line="+49"/>
         <source>Enter new name:</source>
         <translation>Inserisci nuovo nome:</translation>
     </message>
     <message>
+        <location line="-839"/>
+        <source>Spice Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+232"/>
+        <source>Manage Libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <location line="+8"/>
+        <source>Libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>system and user component libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
+        <location line="+65"/>
+        <source>Cannot open &quot;%1&quot;.</source>
+        <translation type="unfinished">Impossibile aprire &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <location line="-62"/>
+        <location line="+65"/>
+        <source>Library is corrupt.</source>
+        <translation type="unfinished">La Libreria è danneggiata.</translation>
+    </message>
+    <message>
+        <location line="+177"/>
+        <source>Default icon not found:
+ %1.png</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+116"/>
+        <source>Duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+83"/>
+        <source>Copying Qucs document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Do you want to save the changes before copying?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Copy file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+12"/>
+        <source>error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Cannot copy file to identical name: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Cannot copy schematic: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
         <source>Cannot rename file: </source>
         <translation>Impossibile rinominare file: </translation>
     </message>
@@ -13945,21 +14216,21 @@ Breve introduzione a Qucs</translation>
     <message>
         <location line="+1"/>
         <location line="+77"/>
-        <location line="+614"/>
-        <location line="+451"/>
+        <location line="+621"/>
+        <location line="+454"/>
         <source>No</source>
         <translation>No</translation>
     </message>
     <message>
-        <location line="-1142"/>
+        <location line="-1152"/>
         <location line="+77"/>
-        <location line="+614"/>
-        <location line="+451"/>
+        <location line="+621"/>
+        <location line="+454"/>
         <source>Yes</source>
         <translation>Sì</translation>
     </message>
     <message>
-        <location line="-1137"/>
+        <location line="-1147"/>
         <source>Cannot delete schematic: </source>
         <translation>Impossibile cancellare schema: </translation>
     </message>
@@ -13974,12 +14245,22 @@ Breve introduzione a Qucs</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+492"/>
+        <location line="+338"/>
+        <source>Qucs Netlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Plain Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+162"/>
         <source>Closing Qucs document</source>
         <translation>Chiusura documento Qucs</translation>
     </message>
     <message>
-        <location line="+1305"/>
+        <location line="+1405"/>
         <location line="+13"/>
         <location line="+18"/>
         <location line="+6"/>
@@ -14014,13 +14295,13 @@ Do you want to save the changes before closing?</source>
 Vuoi salvare i cambiamenti prima di chiudere?</translation>
     </message>
     <message>
-        <location line="-1653"/>
+        <location line="-1762"/>
         <source>Creating new schematic...</source>
         <translation>Creazione nuovo schema...</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-636"/>
-        <location filename="qucs.cpp" line="+65"/>
+        <location line="+65"/>
+        <location filename="qucs_actions.cpp" line="-780"/>
         <source>Opening file...</source>
         <translation>Apertura file...</translation>
     </message>
@@ -14029,7 +14310,7 @@ Vuoi salvare i cambiamenti prima di chiudere?</translation>
         <translation type="obsolete">Schema (*.sch)</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="+2"/>
+        <location line="+2"/>
         <source>Enter a Schematic Name</source>
         <translation>Inserire un Nome per lo Schema</translation>
     </message>
@@ -14039,9 +14320,9 @@ Vuoi salvare i cambiamenti prima di chiudere?</translation>
         <translation>Apertura annullata</translation>
     </message>
     <message>
-        <location line="-674"/>
-        <location line="+360"/>
-        <location line="+760"/>
+        <location line="-743"/>
+        <location line="+429"/>
+        <location line="+770"/>
         <source>-port</source>
         <translation>-porta</translation>
     </message>
@@ -14050,13 +14331,13 @@ Vuoi salvare i cambiamenti prima di chiudere?</translation>
         <translation type="obsolete">Inserire Nome per Salvare il Documento</translation>
     </message>
     <message>
-        <location line="-410"/>
+        <location line="-420"/>
         <source>Saving file...</source>
         <translation>Salvataggio file...</translation>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+125"/>
+        <location line="+132"/>
         <source>Saving aborted</source>
         <translation>Salvataggio annullato</translation>
     </message>
@@ -14066,12 +14347,12 @@ Vuoi salvare i cambiamenti prima di chiudere?</translation>
         <translation>Salvataggio file con nuovo nome...</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>Saving all files...</source>
         <translation>Salvataggio di tutti i file...</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+49"/>
         <source>Closing file...</source>
         <translation>Chiusura file...</translation>
     </message>
@@ -14087,8 +14368,8 @@ Vuoi salvare i cambiamenti prima di chiuderlo?</translation>
         <translation>&amp;Abbandona</translation>
     </message>
     <message>
-        <location line="-136"/>
-        <location line="+136"/>
+        <location line="-138"/>
+        <location line="+138"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
@@ -14098,7 +14379,7 @@ Vuoi salvare i cambiamenti prima di chiuderlo?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+203"/>
+        <location line="+204"/>
         <source>Printing...</source>
         <translation>Stampa...</translation>
     </message>
@@ -14270,12 +14551,12 @@ Errori:
 </translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="+248"/>
+        <location filename="qucs.cpp" line="+250"/>
         <source>Cannot create </source>
         <translation>Impossibile creare </translation>
     </message>
     <message>
-        <location line="-1101"/>
+        <location line="-1113"/>
         <source>Choose Project Directory for Opening</source>
         <translation>Scegliere Directory del Progetto da Aprire</translation>
     </message>
@@ -14299,6 +14580,15 @@ Errori:
         <translation> - Progetto: </translation>
     </message>
     <message>
+        <location line="-698"/>
+        <location line="+465"/>
+        <location line="+211"/>
+        <location line="+44"/>
+        <location line="+17"/>
+        <location line="+14"/>
+        <location line="+16"/>
+        <location line="+35"/>
+        <location line="+211"/>
         <location filename="qucs_actions.cpp" line="-145"/>
         <location line="+14"/>
         <location line="+14"/>
@@ -14306,19 +14596,11 @@ Errori:
         <location line="+38"/>
         <location line="+14"/>
         <location line="+709"/>
-        <location filename="qucs.cpp" line="-233"/>
-        <location line="+211"/>
-        <location line="+44"/>
-        <location line="+17"/>
-        <location line="+14"/>
-        <location line="+16"/>
-        <location line="+35"/>
-        <location line="+204"/>
         <source>Info</source>
         <translation>Informazioni</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-540"/>
+        <location line="-547"/>
         <source>Cannot create project directory !</source>
         <translation>Impossibile creare la directory del progetto !</translation>
     </message>
@@ -14502,14 +14784,14 @@ tutti i file del progetto !
 Continuare ?</translation>
     </message>
     <message>
+        <location line="+7"/>
         <location filename="qucs_actions.cpp" line="+2"/>
-        <location filename="qucs.cpp" line="+7"/>
         <source>&amp;Yes</source>
         <translation>&amp;Sì</translation>
     </message>
     <message>
         <location line="+0"/>
-        <location filename="qucs.cpp" line="+0"/>
+        <location filename="qucs_actions.cpp" line="+0"/>
         <source>&amp;No</source>
         <translation>&amp;No</translation>
     </message>
@@ -14518,7 +14800,7 @@ Continuare ?</translation>
         <translation type="obsolete">Impossibile rimuovere il file del progetto: </translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="+9"/>
+        <location line="+9"/>
         <source>Cannot remove project directory !</source>
         <translation>Impossibile rimuovere la directory del progetto !</translation>
     </message>
@@ -14532,12 +14814,12 @@ Continuare ?</translation>
         <translation type="obsolete">Viste Dati (*.dpl)</translation>
     </message>
     <message>
-        <location line="+199"/>
+        <location line="+202"/>
         <source>Enter a Document Name</source>
         <translation>Inserire un Nome Documento</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+20"/>
         <source>The file &apos;</source>
         <translation>Il file &apos;</translation>
     </message>
@@ -14569,7 +14851,8 @@ Continuare ?</translation>
         <translation>Impossibile sovrascrivere un documento aperto</translation>
     </message>
     <message>
-        <location line="+124"/>
+        <location line="-813"/>
+        <location line="+939"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>Il documento contiene modifiche non salvate!
@@ -14607,7 +14890,7 @@ Continuare ?</translation>
         <translation>Impossibile avviare editor di testo!</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-374"/>
+        <location filename="qucs.cpp" line="-383"/>
         <source>This will destroy all the project files permanently ! Continue ?</source>
         <translation>Questo distruggerà tutti i file del progetto permanentemente! Continuare?</translation>
     </message>
@@ -14622,12 +14905,12 @@ Continuare ?</translation>
         <translation>Almeno due elementi devono essere selezionati!</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="+1025"/>
+        <location filename="qucs.cpp" line="+1037"/>
         <source>No page set !</source>
         <translation>Nessuna pagina impostata!</translation>
     </message>
     <message>
-        <location line="-1987"/>
+        <location line="-2369"/>
         <source>Schematic</source>
         <translation>Schema</translation>
     </message>
@@ -14642,9 +14925,9 @@ Continuare ?</translation>
         <translation>Documenti Qucs</translation>
     </message>
     <message>
+        <location line="+6"/>
+        <location line="+1544"/>
         <location filename="qucs_actions.cpp" line="+696"/>
-        <location filename="qucs.cpp" line="+5"/>
-        <location line="+1173"/>
         <source>Any File</source>
         <translation>Qualsiasi file</translation>
     </message>
@@ -14669,7 +14952,7 @@ Continuare ?</translation>
         <translation type="obsolete">Modifica schema</translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-941"/>
+        <location filename="qucs_init.cpp" line="-955"/>
         <source>Edits the symbol for this schematic</source>
         <translation>Modifica il simbolo per questo schema</translation>
     </message>
@@ -14717,7 +15000,7 @@ Modifica lo schema</translation>
         <translation type="obsolete">Cartesiano-3D</translation>
     </message>
     <message>
-        <location line="+819"/>
+        <location line="+833"/>
         <location line="+41"/>
         <source>no warnings</source>
         <translation>nessun avvertimento</translation>
@@ -14731,34 +15014,34 @@ Modifica lo schema</translation>
         <translation type="obsolete">componenti digitali</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1087"/>
+        <location filename="qucs.cpp" line="-1457"/>
         <source>Others</source>
         <translation>Altro</translation>
     </message>
     <message>
-        <location line="+1972"/>
+        <location line="+2352"/>
         <source>Cannot start &quot;%1&quot;!</source>
         <translation>Impossibile avviare &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location line="-2062"/>
-        <location line="+1173"/>
+        <location line="-2444"/>
+        <location line="+1543"/>
         <source>VHDL Sources</source>
         <translation>Sorgenti VHDL</translation>
     </message>
     <message>
-        <location line="-1071"/>
-        <location line="+1991"/>
+        <location line="-1439"/>
+        <location line="+2371"/>
         <source>VHDL</source>
         <translation>VHDL</translation>
     </message>
     <message>
-        <location line="-1921"/>
+        <location line="-2297"/>
         <source>content of project directory</source>
         <translation>contenuto della directory di progetto</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+20"/>
         <source>content of current project</source>
         <translation>contenuto del progetto corrente</translation>
     </message>
@@ -14775,7 +15058,7 @@ Modifica lo schema</translation>
         <translation type="obsolete">Impossibile cancellare file VHDL:</translation>
     </message>
     <message>
-        <location line="+839"/>
+        <location line="+1204"/>
         <source>Creating new text editor...</source>
         <translation>Creazione nuovo editor di testo...</translation>
     </message>
@@ -14784,7 +15067,7 @@ Modifica lo schema</translation>
         <translation type="obsolete">Stampa selezione...</translation>
     </message>
     <message>
-        <location line="+1306"/>
+        <location line="+1357"/>
         <source>Could not load S[1,1].</source>
         <translation>Impossibile caricare S[1,1].</translation>
     </message>
@@ -14876,7 +15159,15 @@ Sovrascrivere ?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-912"/>
+        <location line="+35"/>
+        <source>Symbol files not found in: %1
+
+Is the project open?
+Have you saved the Verilog-A symbols?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qucs_init.cpp" line="-926"/>
         <source>New
 
 Creates a new schematic or data display document</source>
@@ -14988,19 +15279,24 @@ Imposta le proprietà dell&apos;applicazione</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Refresh Path...</source>
+        <source>Refresh Search Path...</source>
+        <oldsource>Refresh Path...</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Refresh Path</source>
+        <source>Refresh Search Path</source>
+        <oldsource>Refresh Path</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Refresh Path
 
-Rechecks the list of paths for files.</source>
+Rechecks the list of paths for subcircuit files.</source>
+        <oldsource>Refresh Path
+
+Rechecks the list of paths for files.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -15207,7 +15503,7 @@ Copies files to project directory</source>
 Copia file nella directory del progetto</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+70"/>
         <source>Zoom out
 
 Zooms out the current view</source>
@@ -15504,12 +15800,12 @@ Informazioni sull&apos;applicazione</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+434"/>
+        <location line="+438"/>
         <source>About Qt</source>
         <translation>Informazioni su Qt</translation>
     </message>
     <message>
-        <location line="-435"/>
+        <location line="-439"/>
         <source>About Qt...</source>
         <translation>Informazioni su Qt...</translation>
     </message>
@@ -15527,7 +15823,7 @@ Informazioni su Qt di Trolltech</translation>
         <translation type="obsolete">Allinea</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+105"/>
         <source>&amp;Tools</source>
         <translation>Strumen&amp;ti</translation>
     </message>
@@ -15649,7 +15945,7 @@ Informazioni su Qt di Trolltech</translation>
         <translation>Ungherese di Jozsef Bus</translation>
     </message>
     <message>
-        <location line="-816"/>
+        <location line="-830"/>
         <source>Find...</source>
         <translation>Trova...</translation>
     </message>
@@ -15687,7 +15983,7 @@ Searches for the same piece of text again</source>
 Cerca ancora la stessa stringa di testo</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-545"/>
+        <location filename="qucs.cpp" line="-583"/>
         <source>The document was modified by another program !</source>
         <translation>Il documento è stato modificato da un altro programma!</translation>
     </message>
@@ -15740,7 +16036,39 @@ Copies the selection into the clipboard</source>
 Copia la selezione negli appunti</translation>
     </message>
     <message>
-        <location line="+147"/>
+        <location line="+145"/>
+        <source>Build Verilog-A module...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Run admsXml and C++ compiler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Build Verilog-A module
+Runs amdsXml and C++ compiler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Load Verilog-A module...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select Verilog-A symbols to be loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Load Verilog-A module
+Let the user select and load symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Show the whole page</source>
         <translation>Mostra la pagina intera</translation>
     </message>
@@ -15764,7 +16092,7 @@ Attiva il modo selezione</translation>
         <translation>Entità VHDL</translation>
     </message>
     <message>
-        <location line="+280"/>
+        <location line="+284"/>
         <source>&amp;Technical Papers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15811,7 +16139,7 @@ Attiva il modo selezione</translation>
         <translation>Russo di Igor Gorbounov</translation>
     </message>
     <message>
-        <location line="-557"/>
+        <location line="-561"/>
         <source>Inserts skeleton of VHDL entity</source>
         <translation>Inserisce scheletro entità VHDL</translation>
     </message>
@@ -15825,7 +16153,7 @@ Inserts the skeleton of a VHDL entity</source>
 Inserisce scheletro entità VHDL</translation>
     </message>
     <message>
-        <location line="-301"/>
+        <location line="-311"/>
         <source>Replace...</source>
         <translation>Sostituisci...</translation>
     </message>
@@ -15843,7 +16171,7 @@ o
 testo in modo VHDL</translation>
     </message>
     <message>
-        <location line="+252"/>
+        <location line="+262"/>
         <source>Deactivate/Activate selected components</source>
         <translation>Disattiva/Attiva componenti selezionati</translation>
     </message>
@@ -15880,12 +16208,12 @@ Selezione tutti i marker dei diagrammi  del documento</translation>
         <translation type="obsolete">Allinea/Distribuisci</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-143"/>
+        <location filename="qucs_actions.cpp" line="-178"/>
         <source>Please open project with subcircuits!</source>
         <translation>Apri progetto con i sottocircuiti!</translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-82"/>
+        <location filename="qucs_init.cpp" line="-92"/>
         <source>Create &amp;Library...</source>
         <translation>Crea &amp;Libreria...</translation>
     </message>
@@ -15904,7 +16232,7 @@ Create Library from Subcircuits</source>
 Crea libreria dai Sottocircuiti</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-900"/>
+        <location filename="qucs.cpp" line="-913"/>
         <source>Cannot delete file: </source>
         <translation>Impossibile cancellare file: </translation>
     </message>
@@ -16036,7 +16364,7 @@ Convert graph data to CSV file</source>
 Converte dati grafico in un file CSV</translation>
     </message>
     <message>
-        <location line="+238"/>
+        <location line="+248"/>
         <source>&amp;Dock Window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16053,7 +16381,7 @@ Enables/disables the browse dock window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="+685"/>
+        <location filename="qucs.cpp" line="+695"/>
         <source>Printer Error.</source>
         <translation>Errore di Stampa.</translation>
     </message>
@@ -16082,12 +16410,12 @@ Starts attenuator calculation program</source>
 Avvia il programma di calcolo attenuatori</translation>
     </message>
     <message>
-        <location line="+500"/>
+        <location line="+504"/>
         <source>GUI improvements by Gopala Krishna A</source>
         <translation>Miglioramenti alla GUI di Gopala Krishna A</translation>
     </message>
     <message>
-        <location line="-869"/>
+        <location line="-883"/>
         <source>Center horizontally</source>
         <translation>Centra orizzontalmente</translation>
     </message>
@@ -16125,12 +16453,12 @@ Center vertically selected elements</source>
 Centra verticalmente gli elementi selezionati</translation>
     </message>
     <message>
-        <location line="+512"/>
+        <location line="+522"/>
         <source>P&amp;ositioning</source>
         <translation>P&amp;osizionamento</translation>
     </message>
     <message>
-        <location line="+349"/>
+        <location line="+353"/>
         <source>Verilog-AMS interface by Helene Parruitte</source>
         <translation>Interfaccia Verilog-AMS di Helene Parruitte</translation>
     </message>
@@ -16161,7 +16489,7 @@ Centra verticalmente gli elementi selezionati</translation>
         <translation type="obsolete">Stampa...</translation>
     </message>
     <message>
-        <location line="-951"/>
+        <location line="-965"/>
         <source>Print Fit to Page</source>
         <translation>Stampa adatta alla Pagina</translation>
     </message>
@@ -16201,7 +16529,7 @@ Centra verticalmente gli elementi selezionati</translation>
         <translation>Chiude il progetto corrente</translation>
     </message>
     <message>
-        <location line="+106"/>
+        <location line="+116"/>
         <source>Mirrors the selected item about X Axis</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16231,14 +16559,14 @@ Centra verticalmente gli elementi selezionati</translation>
         <translation>Inserisce un simbolo di una porta</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1623"/>
-        <location line="+1173"/>
+        <location filename="qucs.cpp" line="-2003"/>
+        <location line="+1543"/>
         <source>Verilog Sources</source>
         <translation>Sorgenti Verilog</translation>
     </message>
     <message>
-        <location line="-1076"/>
-        <location line="+1997"/>
+        <location line="-1444"/>
+        <location line="+2377"/>
         <source>Verilog</source>
         <translation>Verilog</translation>
     </message>
@@ -16251,7 +16579,7 @@ Centra verticalmente gli elementi selezionati</translation>
         <translation type="obsolete">dispositivi verilog-a</translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-127"/>
+        <location filename="qucs_init.cpp" line="-137"/>
         <source>&amp;Import/Export Data...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16268,7 +16596,7 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+693"/>
+        <location line="+707"/>
         <source>Portuguese by Luciano Franca and Helio de Sousa</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16283,7 +16611,7 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1573"/>
+        <location filename="qucs.cpp" line="-1585"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16333,18 +16661,18 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-581"/>
-        <location line="+1173"/>
+        <location line="-951"/>
+        <location line="+1543"/>
         <source>Verilog-A Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1075"/>
+        <location line="-1443"/>
         <source>Verilog-A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+426"/>
+        <location line="+794"/>
         <source>Verilog-A source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16359,18 +16687,18 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-593"/>
-        <location line="+1173"/>
+        <location line="-963"/>
+        <location line="+1543"/>
         <source>Octave Scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1080"/>
+        <location line="-1448"/>
         <source>Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-453"/>
+        <location filename="qucs_init.cpp" line="-457"/>
         <source>&amp;Octave Window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18419,7 +18747,7 @@ Copia file nella directory del progetto</translation>
         <translation type="obsolete">Esci</translation>
     </message>
     <message>
-        <location filename="../qucs-lib/qucslib.cpp" line="+65"/>
+        <location filename="../qucs-lib/qucslib.cpp" line="+66"/>
         <source>&amp;Quit</source>
         <translation>&amp;Esci</translation>
     </message>
@@ -18469,7 +18797,7 @@ Copia file nella directory del progetto</translation>
         <translation>Mostra modello</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+69"/>
         <source>About...</source>
         <translation>Informazioni...</translation>
     </message>
@@ -18493,34 +18821,38 @@ Copia file nella directory del progetto</translation>
         <translation>QucsLib è un programma di gestione delle librerie di componenti di Qucs. Sul lato sinistro della finestra del&apos;applicazione si possono scorrere le librerie per ricercare i componenti desiderati. Cliccando sul nome di un componente si può vedere la sua descrizione sul lato destro. Il componente selezionato può essere trasportato nell&apos;applicazione Qucs cliccando sul bottone &quot;Copia negli Appunti&quot;. Tornando nella finestra dello schema il componente può essere inserito premendo CTRL-V  (copia dagli appunti).</translation>
     </message>
     <message>
-        <location line="+62"/>
-        <location line="+12"/>
-        <location line="+5"/>
-        <location line="+10"/>
-        <location line="+92"/>
+        <location line="+82"/>
+        <location line="+3"/>
+        <location line="+50"/>
+        <location line="+7"/>
+        <location line="+9"/>
+        <location line="+7"/>
+        <location line="+7"/>
         <source>Error</source>
         <translation>Errore</translation>
     </message>
     <message>
-        <location line="-118"/>
+        <location line="-83"/>
         <source>Cannot open &quot;%1&quot;.</source>
         <translation>Impossibile aprire &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <location line="+5"/>
-        <location line="+10"/>
-        <location line="+92"/>
+        <location line="+3"/>
+        <location line="+50"/>
+        <location line="+7"/>
+        <location line="+9"/>
+        <location line="+7"/>
+        <location line="+7"/>
         <source>Library is corrupt.</source>
         <translation>La Libreria è danneggiata.</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-122"/>
         <source>Search result</source>
         <translation>Risultato ricerca</translation>
     </message>
     <message>
-        <location line="+81"/>
+        <location line="+69"/>
         <source>Result</source>
         <translation>Risultato</translation>
     </message>
@@ -18530,12 +18862,12 @@ Copia file nella directory del progetto</translation>
         <translation>Nessun componente adatto è stato trovato.</translation>
     </message>
     <message>
-        <location line="-306"/>
+        <location line="-298"/>
         <source>Manage User &amp;Libraries...</source>
         <translation>Gestione &amp;Librerie Utente...</translation>
     </message>
     <message>
-        <location line="+192"/>
+        <location line="+194"/>
         <source>A more comfortable way: The component can also be placed onto the schematic by using Drag n&apos;Drop.</source>
         <translation>Un metodo più comodo: Il componente può essere posizionato sullo schema anche usando il Drag n&apos;Drop.</translation>
     </message>
@@ -18550,7 +18882,7 @@ Copia file nella directory del progetto</translation>
         <translation>Modello</translation>
     </message>
     <message>
-        <location line="+89"/>
+        <location line="+79"/>
         <source>Search Library Component</source>
         <translation>Cerca Componente di Libreria</translation>
     </message>
@@ -18673,12 +19005,7 @@ fine di aprirli utilizzando il programma appropriato.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>Path List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
+        <location line="+40"/>
         <source>Locations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18823,7 +19150,12 @@ fine di aprirli utilizzando il programma appropriato.</translation>
         <translation>Attributo</translation>
     </message>
     <message>
-        <location line="+506"/>
+        <location line="+116"/>
+        <source>Subcircuit Search Path List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+391"/>
         <source>Select the octave bin directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18843,7 +19175,7 @@ fine di aprirli utilizzando il programma appropriato.</translation>
         <translation type="obsolete">Editor VHDL</translation>
     </message>
     <message>
-        <location line="-620"/>
+        <location line="-621"/>
         <source>Czech</source>
         <translation>Ceco</translation>
     </message>
@@ -19537,17 +19869,33 @@ fine di aprirli utilizzando il programma appropriato.</translation>
         <translation>Versione:</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="+1025"/>
+        <location filename="schematic_file.cpp" line="+263"/>
+        <location line="+21"/>
+        <source>Error</source>
+        <translation type="unfinished">Errore</translation>
+    </message>
+    <message>
+        <location line="-20"/>
+        <source>Program not found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Status</source>
+        <translation type="unfinished">Stato</translation>
+    </message>
+    <message>
+        <location line="+928"/>
         <source>ERROR: Cannot create library file &quot;%s&quot;.</source>
         <translation>ERRORE: Impossibile creare il file di libreria &quot;%s&quot;.</translation>
     </message>
     <message>
-        <location filename="schematic.cpp" line="+1283"/>
+        <location filename="schematic.cpp" line="+1287"/>
         <source>generic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1196"/>
+        <location line="-1200"/>
         <source>Edit Text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19839,47 +20187,34 @@ sono incluse nella ricerca.</translation>
 <context>
     <name>SimMessage</name>
     <message>
-        <location filename="dialogs/simmessage_before_merge.cpp" line="+48"/>
-        <location filename="dialogs/simmessage.cpp" line="+51"/>
+        <location filename="dialogs/simmessage.cpp" line="+52"/>
         <source>Qucs Simulation Messages</source>
         <translation>Messaggi Simulazione Qucs</translation>
     </message>
     <message>
         <location line="+21"/>
-        <location line="+14"/>
-        <location filename="dialogs/simmessage.cpp" line="+21"/>
         <location line="+18"/>
         <source>Progress:</source>
         <translation>Progresso:</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location filename="dialogs/simmessage.cpp" line="+7"/>
+        <location line="+7"/>
         <source>Errors and Warnings:</source>
         <translation>Errori e Avvertimenti:</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <location filename="dialogs/simmessage.cpp" line="+15"/>
+        <location line="+15"/>
         <source>Goto display page</source>
         <translation>Vai alla pagina visualizzazione</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location line="+13"/>
-        <location filename="dialogs/simmessage.cpp" line="+5"/>
+        <location line="+5"/>
         <location line="+15"/>
         <source>Abort simulation</source>
         <translation>Annulla simulazione</translation>
     </message>
     <message>
-        <location line="+314"/>
-        <source>compiling netlist...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+130"/>
-        <location filename="dialogs/simmessage.cpp" line="+471"/>
+        <location line="+529"/>
         <source>Close window</source>
         <translation>Chiudi finestra</translation>
     </message>
@@ -19908,14 +20243,12 @@ Abbandonato.</translation>
 </translation>
     </message>
     <message>
-        <location line="-434"/>
-        <location filename="dialogs/simmessage.cpp" line="-459"/>
+        <location line="-517"/>
         <source>ERROR: Simulator is still running!</source>
         <translation>ERRORE: Il simulatore sta ancora lavorando!</translation>
     </message>
     <message>
-        <location line="+338"/>
-        <location filename="dialogs/simmessage.cpp" line="+368"/>
+        <location line="+426"/>
         <source>ERROR: Cannot start simulator!</source>
         <translation>ERRORE: Impossibile avviare il simulatore!</translation>
     </message>
@@ -19970,20 +20303,17 @@ Errori:
 </translation>
     </message>
     <message>
-        <location line="-329"/>
-        <location filename="dialogs/simmessage.cpp" line="-359"/>
+        <location line="-417"/>
         <source>ERROR: Cannot write netlist file!</source>
         <translation>ERRORE: Impossibile scrivere file netlist!</translation>
     </message>
     <message>
-        <location line="+91"/>
-        <location filename="dialogs/simmessage.cpp" line="+94"/>
+        <location line="+94"/>
         <source>ERROR: Cannot start QucsConv!</source>
         <translation>ERRORE: Impossibile avviare QucsConv!</translation>
     </message>
     <message>
-        <location line="-94"/>
-        <location filename="dialogs/simmessage.cpp" line="-97"/>
+        <location line="-97"/>
         <source>creating netlist... </source>
         <translation>creazione netlist... </translation>
     </message>
@@ -19992,85 +20322,83 @@ Errori:
         <translation type="obsolete">ERRORE: Impossibile copiare &quot;%1&quot; !</translation>
     </message>
     <message>
-        <location line="+76"/>
-        <location filename="dialogs/simmessage.cpp" line="+77"/>
+        <location line="+77"/>
         <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
         <translation>ERRORE: Impossibile aprire file SPICE &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location line="-89"/>
-        <location filename="dialogs/simmessage.cpp" line="-92"/>
+        <location line="-92"/>
         <source>Starting new simulation on %1 at %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+204"/>
-        <location line="+94"/>
-        <location filename="dialogs/simmessage.cpp" line="+212"/>
+        <location line="+215"/>
         <location line="+94"/>
         <source>done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="dialogs/simmessage.cpp" line="+61"/>
+        <location line="+20"/>
+        <location line="+24"/>
+        <source>Error</source>
+        <translation type="unfinished">Errore</translation>
+    </message>
+    <message>
+        <location line="-24"/>
+        <location line="+24"/>
+        <source>Cannot read netlist!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+71"/>
         <source>ERROR: Program not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="dialogs/simmessage_before_merge.cpp" line="+151"/>
-        <location filename="dialogs/simmessage.cpp" line="+109"/>
+        <location line="+110"/>
         <source>Simulation ended on %1 at %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="dialogs/simmessage.cpp" line="+3"/>
         <source>Ready.</source>
         <translation type="unfinished">Pronto.</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="dialogs/simmessage.cpp" line="+3"/>
         <source>Errors occurred during simulation on %1 at %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="dialogs/simmessage.cpp" line="+3"/>
         <source>Aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="dialogs/simmessage.cpp" line="+7"/>
         <source>Output:
 -------</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="dialogs/simmessage.cpp" line="+3"/>
         <source>Errors:
 -------</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-228"/>
-        <location line="+7"/>
-        <location filename="dialogs/simmessage.cpp" line="-247"/>
+        <location line="-302"/>
         <location line="+7"/>
         <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="dialogs/simmessage.cpp" line="+8"/>
         <source>ERROR: Cannot create &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-227"/>
-        <location filename="dialogs/simmessage.cpp" line="-233"/>
+        <location line="-236"/>
         <source>ERROR: Cannot simulate a text file!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20078,7 +20406,7 @@ Errori:
 <context>
     <name>SpiceDialog</name>
     <message>
-        <location filename="components/spicedialog.cpp" line="+64"/>
+        <location filename="components/spicedialog.cpp" line="+66"/>
         <source>Name:</source>
         <translation>Nome:</translation>
     </message>
@@ -20133,19 +20461,19 @@ Errori:
         <translation>Annulla</translation>
     </message>
     <message>
-        <location line="+118"/>
+        <location line="+129"/>
         <source>All Files</source>
         <translation>Tutti i file</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-3"/>
         <source>Select a file</source>
         <translation>Seleziona un file</translation>
     </message>
     <message>
-        <location line="+84"/>
-        <location line="+9"/>
-        <location line="+39"/>
+        <location line="+101"/>
+        <location line="+10"/>
+        <location line="+48"/>
         <source>Error</source>
         <translation>Errore</translation>
     </message>
@@ -20154,8 +20482,8 @@ Errori:
         <translation type="obsolete">Impossibile eseguire</translation>
     </message>
     <message>
-        <location line="-58"/>
-        <location line="+50"/>
+        <location line="-71"/>
+        <location line="+59"/>
         <source>Info</source>
         <translation>Informazioni</translation>
     </message>
@@ -20164,17 +20492,17 @@ Errori:
         <translation type="obsolete">Conversione...</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+22"/>
         <source>QucsConv Error</source>
         <translation>Errore QucsConv</translation>
     </message>
     <message>
-        <location line="-143"/>
+        <location line="-167"/>
         <source>SPICE netlist</source>
         <translation>netlist SPICE</translation>
     </message>
     <message>
-        <location line="-207"/>
+        <location line="-217"/>
         <source>Edit SPICE Component Properties</source>
         <translation>Modifica Proprietà Componente SPICE</translation>
     </message>
@@ -20189,33 +20517,33 @@ Errori:
         <translation>Includi simulazioni SPICE</translation>
     </message>
     <message>
-        <location line="+293"/>
+        <location line="+323"/>
         <source>Converting SPICE file &quot;%1&quot;.</source>
         <translation type="unfinished">Conversione file SPICE &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location line="-283"/>
+        <location line="-313"/>
         <source>preprocessor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+233"/>
+        <location line="+254"/>
         <source>Preprocessing SPICE file &quot;%1&quot;.</source>
         <translation type="unfinished">Pre-elaborazione file SPICE &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+43"/>
         <source>SPICE Preprocessor Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-26"/>
+        <location line="-30"/>
         <source>Cannot save preprocessed SPICE file &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <location line="+39"/>
+        <location line="+10"/>
+        <location line="+48"/>
         <source>Cannot execute &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20236,7 +20564,7 @@ Errori:
 <context>
     <name>SymbolWidget</name>
     <message>
-        <location filename="../qucs-lib/symbolwidget.cpp" line="+44"/>
+        <location filename="../qucs-lib/symbolwidget.cpp" line="+45"/>
         <source>Symbol:</source>
         <translation>Simbolo:</translation>
     </message>
@@ -20261,7 +20589,7 @@ Errori:
         <translation type="obsolete">Pagina %1 di %2</translation>
     </message>
     <message>
-        <location filename="textdoc.cpp" line="+150"/>
+        <location filename="textdoc.cpp" line="+178"/>
         <source>Edit Text Symbol</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20314,7 +20642,7 @@ Inserts the skeleton of a Verilog module</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Octave function</source>
         <translation type="unfinished"></translation>
     </message>

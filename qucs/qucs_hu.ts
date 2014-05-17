@@ -292,24 +292,24 @@
         <location line="+31"/>
         <location line="+150"/>
         <location line="+177"/>
-        <location line="+93"/>
+        <location line="+97"/>
         <source>yes</source>
         <translation>igen</translation>
     </message>
     <message>
-        <location line="-450"/>
+        <location line="-454"/>
         <location line="+181"/>
-        <location line="+268"/>
+        <location line="+272"/>
         <source>no</source>
         <translation>nem</translation>
     </message>
     <message>
-        <location line="-39"/>
+        <location line="-40"/>
         <source>All Files</source>
         <translation>Minden fájl</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-2"/>
         <source>Select a file</source>
         <translation>Fájl kiválasztás</translation>
     </message>
@@ -322,7 +322,7 @@
         <translation type="obsolete">A szövegszerkesztő (qucsedit) nem indítható!</translation>
     </message>
     <message>
-        <location line="-687"/>
+        <location line="-683"/>
         <source>Sweep</source>
         <translation>Léptetés</translation>
     </message>
@@ -386,13 +386,13 @@
     </message>
     <message>
         <location line="+9"/>
-        <location line="+702"/>
+        <location line="+706"/>
         <location line="+22"/>
         <source>Step:</source>
         <translation>Léptetés:</translation>
     </message>
     <message>
-        <location line="-717"/>
+        <location line="-721"/>
         <source>Number:</source>
         <translation>Lépésszám:</translation>
     </message>
@@ -403,7 +403,7 @@
         <translation>Tulajdonságok</translation>
     </message>
     <message>
-        <location line="+590"/>
+        <location line="+594"/>
         <source>Points per decade:</source>
         <translation>Pont per dekád:</translation>
     </message>
@@ -436,22 +436,22 @@
 <context>
     <name>DiagramDialog</name>
     <message>
-        <location filename="diagrams/diagramdialog.cpp" line="+115"/>
+        <location filename="diagrams/diagramdialog.cpp" line="+110"/>
         <source>Edit Diagram Properties</source>
         <translation>Diagram tulajdonságainak beállítása</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+53"/>
         <source>Graph Input</source>
         <translation>Grafikon bemenet</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+15"/>
         <source>Number Notation: </source>
         <translation>Szám jelzésmód:</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>real/imaginary</source>
         <translation>valós/képzetes</translation>
     </message>
@@ -471,50 +471,50 @@
         <translation>Pontosság:</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+10"/>
         <source>Color:</source>
         <translation>Szín:</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+27"/>
         <source>Thickness:</source>
         <translation>Vastagság:</translation>
     </message>
     <message>
-        <location line="-16"/>
+        <location line="-18"/>
         <source>Style:</source>
         <translation>Stílus:</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location line="+122"/>
+        <location line="+5"/>
+        <location line="+150"/>
         <source>solid line</source>
         <translation>folytonos vonal</translation>
     </message>
     <message>
-        <location line="-121"/>
-        <location line="+122"/>
+        <location line="-149"/>
+        <location line="+150"/>
         <source>dash line</source>
         <translation>szaggatott vonal</translation>
     </message>
     <message>
-        <location line="-121"/>
-        <location line="+122"/>
+        <location line="-149"/>
+        <location line="+150"/>
         <source>dot line</source>
         <translation>pontokból álló vonal</translation>
     </message>
     <message>
-        <location line="-120"/>
+        <location line="-148"/>
         <source>long dash line</source>
         <translation>hosszú szaggatott vonal</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+54"/>
         <source>Dataset</source>
         <translation>Adatok</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+18"/>
         <source>Name</source>
         <translation>Név</translation>
     </message>
@@ -523,32 +523,32 @@
         <translation type="obsolete">Státusz</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+0"/>
         <source>Size</source>
         <translation>Méret</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Graph</source>
         <translation>Grafikon</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>New Graph</source>
         <translation>Új grafikon</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Delete Graph</source>
         <translation>Grafikon törlése</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Data</source>
         <translation>Adat</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+10"/>
         <source>x-Axis Label:</source>
         <translation>X-tengely cimke:</translation>
     </message>
@@ -596,22 +596,22 @@
         <translation>Tulajdonságok</translation>
     </message>
     <message>
-        <location line="+127"/>
+        <location line="+186"/>
         <source>OK</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Apply</source>
         <translation>Alkalmaz</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Cancel</source>
         <translation>Mégsem</translation>
     </message>
     <message>
-        <location line="-361"/>
+        <location line="-450"/>
         <source>stars</source>
         <translation>csillagok</translation>
     </message>
@@ -626,12 +626,12 @@
         <translation>nyilak</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+23"/>
         <source>y-Axis:</source>
         <translation>Y-tengely:</translation>
     </message>
     <message>
-        <location line="-90"/>
+        <location line="-111"/>
         <location line="+5"/>
         <source>smith Axis</source>
         <translation>smith tengely</translation>
@@ -669,35 +669,35 @@
         <translation type="obsolete">logaritmikus rácsozat a jobboldali Y tengelyen</translation>
     </message>
     <message>
-        <location line="+315"/>
+        <location line="+359"/>
         <source>x-Axis</source>
         <translation>X-tengely</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location line="+24"/>
-        <location line="+26"/>
+        <location line="+8"/>
+        <location line="+42"/>
+        <location line="+44"/>
         <source>manual</source>
         <translation>manuális</translation>
     </message>
     <message>
-        <location line="-46"/>
-        <location line="+24"/>
-        <location line="+26"/>
+        <location line="-78"/>
+        <location line="+42"/>
+        <location line="+44"/>
         <source>start</source>
         <translation>start</translation>
     </message>
     <message>
-        <location line="-45"/>
-        <location line="+26"/>
-        <location line="+25"/>
+        <location line="-77"/>
+        <location line="+44"/>
+        <location line="+43"/>
         <source>step</source>
         <translation>lépés</translation>
     </message>
     <message>
-        <location line="-46"/>
-        <location line="+26"/>
-        <location line="+25"/>
+        <location line="-78"/>
+        <location line="+44"/>
+        <location line="+43"/>
         <source>stop</source>
         <translation>stop</translation>
     </message>
@@ -714,8 +714,8 @@
         <translation type="obsolete">baloldali Y-tengely</translation>
     </message>
     <message>
-        <location line="-31"/>
-        <location line="+25"/>
+        <location line="-53"/>
+        <location line="+43"/>
         <source>number</source>
         <translation>szám</translation>
     </message>
@@ -724,12 +724,12 @@
         <translation type="obsolete">baloldali Y-tengely</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+22"/>
         <source>Limits</source>
         <translation>Határadatok</translation>
     </message>
     <message>
-        <location line="-146"/>
+        <location line="-203"/>
         <source>Rotation around x-Axis:</source>
         <translation>Forgatás az X-tengely körül:</translation>
     </message>
@@ -744,7 +744,7 @@
         <translation>Forgatás az Z-tengely körül:</translation>
     </message>
     <message>
-        <location line="-274"/>
+        <location line="-318"/>
         <location line="+3"/>
         <location line="+11"/>
         <source>y-Axis</source>
@@ -756,7 +756,7 @@
         <translation>Z-tengely</translation>
     </message>
     <message>
-        <location line="+142"/>
+        <location line="+186"/>
         <location line="+8"/>
         <source>Label:</source>
         <translation>Cimke:</translation>
@@ -784,12 +784,12 @@
         <translation>2D-megjelenítés:</translation>
     </message>
     <message>
-        <location line="-165"/>
+        <location line="-171"/>
         <source>Type</source>
         <translation>Típus</translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+119"/>
         <source>hide invisible lines</source>
         <translation>Láthatatlan vonalak rejtése</translation>
     </message>
@@ -1899,6 +1899,85 @@ Az alkatrész katalógus írása sikertelen!</translation>
     </message>
 </context>
 <context>
+    <name>LoadDialog</name>
+    <message>
+        <location filename="dialogs/loaddialog.cpp" line="+45"/>
+        <source>Load Verilog-A symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Choose Verilog-A symbol files:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Select All</source>
+        <translation type="unfinished">Mindent kijelöl</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Deselect All</source>
+        <translation type="unfinished">Minden kijelölést megszüntet</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Mégsem</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ok</source>
+        <translation type="unfinished">Ok</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Change Icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>auto-load selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Load the selected symbols when opening the project.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+83"/>
+        <source>Info</source>
+        <translation type="unfinished">Infó</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Icon not found:
+ %1.png</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+47"/>
+        <source>Open File</source>
+        <translation type="unfinished">Fájl megnyitása</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Icon image (*.png)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Error</source>
+        <translation type="unfinished">Hiba</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>File not found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MarkerDialog</name>
     <message>
         <location filename="diagrams/markerdialog.cpp" line="+33"/>
@@ -2096,6 +2175,19 @@ de %1 !</translation>
     </message>
 </context>
 <context>
+    <name>MessageDock</name>
+    <message>
+        <location filename="messagedock.cpp" line="+49"/>
+        <source>admsXml</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Compiler</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>NewProjDialog</name>
     <message>
         <location filename="dialogs/newprojdialog.cpp" line="+30"/>
@@ -2126,7 +2218,7 @@ de %1 !</translation>
 <context>
     <name>OctaveWindow</name>
     <message>
-        <location filename="octave_window.cpp" line="+117"/>
+        <location filename="octave_window.cpp" line="+126"/>
         <source>ERROR: Cannot start Octave!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2687,7 +2779,7 @@ de %1 !</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="schematic_file.cpp" line="+680"/>
+        <location filename="schematic_file.cpp" line="+856"/>
         <location filename="../qucs-help/main.cpp" line="+99"/>
         <source>Warning</source>
         <translation>Figyelmeztetés</translation>
@@ -2699,24 +2791,26 @@ de %1 !</translation>
     </message>
     <message>
         <location filename="schematic.cpp" line="+106"/>
-        <location filename="textdoc.cpp" line="+55"/>
+        <location filename="textdoc.cpp" line="+64"/>
         <source>untitled</source>
         <translation>cím nélkül</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="+1262"/>
-        <location filename="schematic_file.cpp" line="-568"/>
+        <location filename="octave_window.cpp" line="-31"/>
+        <location filename="qucs_actions.cpp" line="+1276"/>
+        <location filename="schematic_file.cpp" line="-743"/>
         <location line="+18"/>
         <location line="+21"/>
         <location line="+24"/>
         <location line="+17"/>
-        <location line="+66"/>
-        <location line="+95"/>
+        <location line="+72"/>
+        <location line="+78"/>
+        <location line="+185"/>
         <location line="+5"/>
         <location line="+37"/>
         <location line="+5"/>
         <location line="+6"/>
-        <location line="+67"/>
+        <location line="+68"/>
         <location line="+59"/>
         <location line="+18"/>
         <location line="+29"/>
@@ -2729,22 +2823,30 @@ de %1 !</translation>
         <location line="+10"/>
         <location line="+20"/>
         <location line="+56"/>
-        <location filename="components/component.cpp" line="+1527"/>
-        <location line="+19"/>
-        <location line="+6"/>
+        <location filename="components/component.cpp" line="+1531"/>
+        <location line="+20"/>
+        <location line="+8"/>
+        <location filename="components/vacomponent.cpp" line="+298"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-613"/>
-        <location line="+528"/>
+        <location line="+1"/>
+        <source>Octave not found in: %1
+
+Set the Octave location on the application settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="schematic_file.cpp" line="-788"/>
+        <location line="+703"/>
         <source>Format Error:
 &apos;Painting&apos; field is not closed!</source>
         <translation>Formázási hiba:
 &apos;Painting&apos; mező nincs lezárva!</translation>
     </message>
     <message>
-        <location line="-510"/>
+        <location line="-685"/>
         <source>Wrong document version: </source>
         <translation>Helytelen dokumentum verzió:</translation>
     </message>
@@ -2757,12 +2859,17 @@ Unknown field!</source>
 Ismeretlen mező!</translation>
     </message>
     <message>
-        <location line="+83"/>
+        <location line="+89"/>
+        <source>Cannot save JSON symbol file &quot;%1&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+78"/>
         <source>Cannot save document!</source>
         <translation>Dokumentum nem menthető!</translation>
     </message>
     <message>
-        <location line="+95"/>
+        <location line="+185"/>
         <location line="+5"/>
         <source>Format Error:
 Wrong property field limiter!</source>
@@ -2791,7 +2898,7 @@ Szám legyen az érték mezőben!</translation>
 &apos;Property&apos; mező nincs lezárva!</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+68"/>
         <source>Format Error:
 &apos;Component&apos; field is not closed!</source>
         <translation>Formázási hiba:
@@ -2876,22 +2983,22 @@ Unknown field!</source>
 Ismeretlen mező!</translation>
     </message>
     <message>
-        <location filename="paintings/ellipsearc.cpp" line="+375"/>
+        <location filename="paintings/ellipsearc.cpp" line="+387"/>
         <source>Edit Arc Properties</source>
         <translation>Körív tulajdonságainak beállítása</translation>
     </message>
     <message>
-        <location filename="paintings/ellipse.cpp" line="+358"/>
+        <location filename="paintings/ellipse.cpp" line="+372"/>
         <source>Edit Ellipse Properties</source>
         <translation>Elipszis tulajdonságainak beállítása</translation>
     </message>
     <message>
-        <location filename="paintings/graphicline.cpp" line="+317"/>
+        <location filename="paintings/graphicline.cpp" line="+328"/>
         <source>Edit Line Properties</source>
         <translation>Vonal tulajdonságainak beéllítása</translation>
     </message>
     <message>
-        <location filename="paintings/rectangle.cpp" line="+358"/>
+        <location filename="paintings/rectangle.cpp" line="+374"/>
         <source>Edit Rectangle Properties</source>
         <translation>Nényszög tulajdonságainak beállítása</translation>
     </message>
@@ -2924,7 +3031,7 @@ Ismeretlen mező!</translation>
         <translation type="obsolete">Túl kevés független adat &quot;</translation>
     </message>
     <message>
-        <location filename="diagrams/marker.cpp" line="+274"/>
+        <location filename="diagrams/marker.cpp" line="+285"/>
         <location filename="diagrams/tabdiagram.cpp" line="+246"/>
         <source>invalid</source>
         <translation>érvénytelen</translation>
@@ -3074,6 +3181,7 @@ Ismeretlen mező!</translation>
         <location filename="components/ctline.cpp" line="+69"/>
         <location filename="components/dc_sim.cpp" line="+48"/>
         <location filename="components/diode.cpp" line="+60"/>
+        <location filename="components/etr_sim.cpp" line="+60"/>
         <location filename="components/isolator.cpp" line="+53"/>
         <location filename="components/jfet.cpp" line="+63"/>
         <location filename="components/mosfet_sub.cpp" line="+118"/>
@@ -3087,8 +3195,8 @@ Ismeretlen mező!</translation>
         <location filename="components/rlcg.cpp" line="+65"/>
         <location filename="components/source_ac.cpp" line="+2"/>
         <location filename="components/switch.cpp" line="+36"/>
-        <location filename="components/tline_4port.cpp" line="+59"/>
         <location filename="components/tline.cpp" line="+55"/>
+        <location filename="components/tline_4port.cpp" line="+59"/>
         <location filename="components/tr_sim.cpp" line="+25"/>
         <location filename="components/tunneldiode.cpp" line="+52"/>
         <location filename="components/twistedpair.cpp" line="+75"/>
@@ -3116,8 +3224,8 @@ Ismeretlen mező!</translation>
         <translation>bipoláris tranzisztor</translation>
     </message>
     <message>
-        <location filename="components/bjtsub.cpp" line="-70"/>
         <location filename="components/EKV26MOS.cpp" line="+19"/>
+        <location filename="components/bjtsub.cpp" line="-70"/>
         <location filename="components/hic0_full.cpp" line="+19"/>
         <location filename="components/hicumL0V1p2.cpp" line="+19"/>
         <location filename="components/hicumL0V1p2g.cpp" line="+19"/>
@@ -3128,17 +3236,17 @@ Ismeretlen mező!</translation>
         <translation>polaritás</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+113"/>
+        <location filename="components/bjtsub.cpp" line="+2"/>
         <location filename="components/diac.cpp" line="+53"/>
         <location filename="components/diode.cpp" line="-34"/>
-        <location filename="components/EKV26MOS.cpp" line="+113"/>
         <location filename="components/thyristor.cpp" line="+53"/>
         <location filename="components/triac.cpp" line="+57"/>
         <source>saturation current</source>
         <translation>szaturációs áram</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="components/bjtsub.cpp" line="+2"/>
         <location filename="components/phototransistor.cpp" line="+25"/>
         <source>forward emission coefficient</source>
         <translation type="unfinished"></translation>
@@ -3287,16 +3395,16 @@ Ismeretlen mező!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="components/diode.cpp" line="+10"/>
         <location filename="components/EKV26MOS.cpp" line="+19"/>
         <location filename="components/MESFET.cpp" line="+66"/>
+        <location filename="components/bjtsub.cpp" line="+2"/>
+        <location filename="components/diode.cpp" line="+10"/>
         <location filename="components/photodiode.cpp" line="+45"/>
         <source>forward-bias depletion capacitance coefficient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="components/bjtsub.cpp" line="+2"/>
         <location filename="components/phototransistor.cpp" line="+11"/>
         <source>ideal forward transit time</source>
         <translation type="unfinished"></translation>
@@ -3323,15 +3431,15 @@ Ismeretlen mező!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location filename="components/diode.cpp" line="+14"/>
         <location filename="components/EKV26MOS.cpp" line="-34"/>
+        <location filename="components/MESFET.cpp" line="+78"/>
+        <location filename="components/bjtsub.cpp" line="+4"/>
+        <location filename="components/diode.cpp" line="+14"/>
         <location filename="components/hic0_full.cpp" line="+157"/>
         <location filename="components/hicumL0V1p2.cpp" line="+171"/>
         <location filename="components/hicumL0V1p2g.cpp" line="+171"/>
         <location filename="components/hicumL0V1p3.cpp" line="+175"/>
         <location filename="components/jfet.cpp" line="+30"/>
-        <location filename="components/MESFET.cpp" line="+78"/>
         <location filename="components/mosfet_sub.cpp" line="+88"/>
         <location filename="components/photodiode.cpp" line="+24"/>
         <location filename="components/phototransistor.cpp" line="+21"/>
@@ -3341,10 +3449,10 @@ Ismeretlen mező!</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="components/diode.cpp" line="+2"/>
-        <location filename="components/EKV26MOS.cpp" line="+2"/>
-        <location filename="components/jfet.cpp" line="+2"/>
         <location filename="components/MESFET.cpp" line="-2"/>
+        <location filename="components/bjtsub.cpp" line="+2"/>
+        <location filename="components/diode.cpp" line="+2"/>
+        <location filename="components/jfet.cpp" line="+2"/>
         <location filename="components/mosfet_sub.cpp" line="+2"/>
         <location filename="components/photodiode.cpp" line="+2"/>
         <location filename="components/phototransistor.cpp" line="+2"/>
@@ -3352,7 +3460,7 @@ Ismeretlen mező!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="components/bjtsub.cpp" line="+2"/>
         <location filename="components/diode.cpp" line="+2"/>
         <location filename="components/jfet.cpp" line="+2"/>
         <location filename="components/mosfet_sub.cpp" line="+2"/>
@@ -3427,7 +3535,7 @@ Ismeretlen mező!</translation>
     <message>
         <location line="+1"/>
         <location filename="components/ccvs.cpp" line="+1"/>
-        <location filename="components/component.cpp" line="-261"/>
+        <location filename="components/component.cpp" line="-264"/>
         <location filename="components/d_flipflop.cpp" line="+27"/>
         <location filename="components/ifile.cpp" line="+60"/>
         <location filename="components/jk_flipflop.cpp" line="+29"/>
@@ -3488,14 +3596,13 @@ Wrong line start!</source>
 Helytelen sor kezdés!</translation>
     </message>
     <message>
-        <location line="+19"/>
         <source>Format Error:
 Unknown component!</source>
-        <translation>Fájl formátum hiba:
+        <translation type="obsolete">Fájl formátum hiba:
 Ismeretlen komponens!</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+28"/>
         <source>Format Error:
 Wrong &apos;component&apos; line format!</source>
         <translation>Formázási hiba:
@@ -3582,6 +3689,7 @@ Helytelen &apos;component&apos; sor!</translation>
     </message>
     <message>
         <location line="-32"/>
+        <location filename="components/etr_sim.cpp" line="-6"/>
         <location filename="components/hb_sim.cpp" line="+8"/>
         <location filename="components/tr_sim.cpp" line="-6"/>
         <source>relative tolerance for convergence</source>
@@ -3589,6 +3697,7 @@ Helytelen &apos;component&apos; sor!</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="components/etr_sim.cpp" line="+2"/>
         <location filename="components/hb_sim.cpp" line="-4"/>
         <location filename="components/tr_sim.cpp" line="+2"/>
         <source>absolute tolerance for currents</source>
@@ -3596,6 +3705,7 @@ Helytelen &apos;component&apos; sor!</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="components/etr_sim.cpp" line="+2"/>
         <location filename="components/hb_sim.cpp" line="+2"/>
         <location filename="components/tr_sim.cpp" line="+2"/>
         <source>absolute tolerance for voltages</source>
@@ -3608,6 +3718,7 @@ Helytelen &apos;component&apos; sor!</translation>
     </message>
     <message>
         <location line="+3"/>
+        <location filename="components/etr_sim.cpp" line="-6"/>
         <location filename="components/hb_sim.cpp" line="+4"/>
         <location filename="components/tr_sim.cpp" line="-6"/>
         <source>maximum number of iterations until error</source>
@@ -3624,40 +3735,40 @@ Helytelen &apos;component&apos; sor!</translation>
         <translation>Dióda</translation>
     </message>
     <message>
+        <location filename="components/EKV26MOS.cpp" line="+11"/>
         <location filename="components/diac.cpp" line="+2"/>
         <location filename="components/diode.cpp" line="+5"/>
-        <location filename="components/EKV26MOS.cpp" line="+11"/>
         <location filename="components/thyristor.cpp" line="+2"/>
         <location filename="components/triac.cpp" line="+2"/>
         <source>emission coefficient</source>
         <translation>emissziós együttható</translation>
     </message>
     <message>
+        <location line="+14"/>
         <location filename="components/diode.cpp" line="+2"/>
-        <location filename="components/EKV26MOS.cpp" line="+14"/>
         <location filename="components/photodiode.cpp" line="-38"/>
         <source>zero-bias junction capacitance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="components/EKV26MOS.cpp" line="+3"/>
+        <location line="+3"/>
         <location filename="components/MESFET.cpp" line="-63"/>
+        <location filename="components/diode.cpp" line="+2"/>
         <location filename="components/photodiode.cpp" line="+3"/>
         <location filename="components/tunneldiode.cpp" line="-7"/>
         <source>grading coefficient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="components/EKV26MOS.cpp" line="-6"/>
+        <location line="-6"/>
+        <location filename="components/diode.cpp" line="+2"/>
         <location filename="components/photodiode.cpp" line="-6"/>
         <location filename="components/tunneldiode.cpp" line="+2"/>
         <source>junction potential</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location filename="components/diode.cpp" line="+4"/>
         <source>linear capacitance</source>
         <translation>lineáris kapacitás</translation>
     </message>
@@ -3677,14 +3788,14 @@ Helytelen &apos;component&apos; sor!</translation>
         <translation>ohmikus soros ellenállás</translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="components/EKV26MOS.cpp" line="+12"/>
+        <location filename="components/diode.cpp" line="+2"/>
         <location filename="components/photodiode.cpp" line="+15"/>
         <source>transit time</source>
         <translation>átviteli idő</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location filename="components/diode.cpp" line="+52"/>
         <source>Diode</source>
         <translation>Dióda</translation>
     </message>
@@ -3880,8 +3991,8 @@ Helytelen &apos;component&apos; sor!</translation>
     </message>
     <message>
         <location filename="components/EKV26MOS.cpp" line="-99"/>
-        <location filename="components/jfet.cpp" line="+2"/>
         <location filename="components/MESFET.cpp" line="-56"/>
+        <location filename="components/jfet.cpp" line="+2"/>
         <source>transconductance parameter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4413,7 +4524,7 @@ Helytelen &apos;component&apos; sor!</translation>
     </message>
     <message>
         <location filename="components/capacitor.cpp" line="-16"/>
-        <location filename="components/component.cpp" line="-256"/>
+        <location filename="components/component.cpp" line="-259"/>
         <location filename="components/diode.cpp" line="-16"/>
         <location filename="components/logical_buf.cpp" line="+6"/>
         <location filename="components/logical_inv.cpp" line="+6"/>
@@ -4602,16 +4713,16 @@ Helytelen &apos;component&apos; sor!</translation>
         <translation>ideális tápvonal</translation>
     </message>
     <message>
+        <location line="+26"/>
         <location filename="components/tline_4port.cpp" line="-6"/>
-        <location filename="components/tline.cpp" line="+26"/>
         <source>characteristic impedance</source>
         <translation>karakterisztikus ellenállás</translation>
     </message>
     <message>
         <location filename="components/ctline.cpp" line="-10"/>
         <location filename="components/rlcg.cpp" line="-2"/>
-        <location filename="components/tline_4port.cpp" line="+2"/>
         <location filename="components/tline.cpp" line="+2"/>
+        <location filename="components/tline_4port.cpp" line="+2"/>
         <source>electrical length of the line</source>
         <translation>a vonal elektromos hossza</translation>
     </message>
@@ -4656,52 +4767,80 @@ Helytelen &apos;component&apos; sor!</translation>
         <translation>Lépészsám a szimuláció alatt </translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="components/etr_sim.cpp" line="-28"/>
+        <source>externally driven transient simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <location filename="components/tr_sim.cpp" line="+2"/>
         <source>integration method</source>
         <translation>integrációs módszer</translation>
     </message>
     <message>
         <location line="+3"/>
+        <location filename="components/tr_sim.cpp" line="+3"/>
         <source>order of integration method</source>
         <translation>integrációs módszer sorrendje</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="components/tr_sim.cpp" line="+2"/>
         <source>initial step size in seconds</source>
         <translation>kezdeti lépésméret másodpercekben</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="components/tr_sim.cpp" line="+2"/>
         <source>minimum step size in seconds</source>
         <translation>minimum lépésszám másodpercenként</translation>
     </message>
     <message>
         <location line="+12"/>
+        <location filename="components/tr_sim.cpp" line="+12"/>
         <source>relative tolerance of local truncation error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="components/tr_sim.cpp" line="+2"/>
         <source>absolute tolerance of local truncation error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="components/tr_sim.cpp" line="+2"/>
         <source>overestimation of local truncation error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
+        <source>External transient simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="components/tr_sim.cpp" line="+23"/>
         <source>Transient simulation</source>
         <translation>Tranziens szimuláció</translation>
     </message>
     <message>
+        <location filename="components/vcresistor.cpp" line="+23"/>
         <location filename="components/vcvs.cpp" line="-42"/>
         <source>voltage controlled voltage source</source>
         <translation>feszültségvezérelt feszültséggenerátor</translation>
     </message>
     <message>
-        <location line="+56"/>
+        <location line="+47"/>
+        <source>resistance gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Voltage Controlled Resistor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="components/vcvs.cpp" line="+56"/>
         <source>Voltage Controlled Voltage Source</source>
         <translation>Feszültség vezérelt feszültség generátor</translation>
     </message>
@@ -4740,12 +4879,23 @@ Helytelen &apos;component&apos; sor!</translation>
         <translation>ideális egyenfeszültség DC forrás</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location filename="components/ecvs.cpp" line="+23"/>
+        <source>externally controlled voltage source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <location filename="components/volt_dc.cpp" line="+22"/>
         <source>voltage in Volts</source>
         <translation>feszültség Voltban</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+18"/>
+        <source>Externally Controlled Voltage Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="components/volt_dc.cpp" line="+16"/>
         <source>dc Voltage Source</source>
         <translation>Egyenfeszültség DC forrás</translation>
     </message>
@@ -5013,6 +5163,7 @@ Használat:  qucsedit [-r] fájl
     </message>
     <message>
         <location filename="components/dc_sim.cpp" line="+3"/>
+        <location filename="components/etr_sim.cpp" line="-21"/>
         <location filename="components/tr_sim.cpp" line="-21"/>
         <source>method for solving the circuit matrix</source>
         <translation type="unfinished"></translation>
@@ -5090,27 +5241,27 @@ Használat:  qucsedit [-r] fájl
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="components/diode.cpp" line="-26"/>
         <location filename="components/EKV26MOS.cpp" line="+81"/>
+        <location filename="components/diode.cpp" line="-26"/>
         <location filename="components/photodiode.cpp" line="-21"/>
         <source>reverse breakdown voltage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="components/EKV26MOS.cpp" line="+3"/>
+        <location line="+3"/>
+        <location filename="components/diode.cpp" line="+2"/>
         <location filename="components/photodiode.cpp" line="+3"/>
         <source>current at reverse breakdown voltage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="+327"/>
+        <location filename="schematic_file.cpp" line="+337"/>
         <source>ERROR: Cannot load subcircuit &quot;%1&quot;.</source>
         <translation>HIBA: A &quot;%1&quot;  beágyazott kapcsolás nem tölthető be.</translation>
     </message>
     <message>
-        <location line="+59"/>
-        <location filename="components/spicefile.cpp" line="+72"/>
+        <location line="+66"/>
+        <location filename="components/spicefile.cpp" line="+150"/>
         <source>ERROR: No file name in SPICE component &quot;%1&quot;.</source>
         <translation>HIBA: A &quot;%1&quot; SPICE komponensnek nincs fájlneve.</translation>
     </message>
@@ -5131,7 +5282,7 @@ Használat:  qucsedit [-r] fájl
         <translation>alkatrész neve az alkatrész-katalógusban</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-11"/>
+        <location filename="schematic_file.cpp" line="-13"/>
         <source>ERROR: Cannot load library component &quot;%1&quot;.</source>
         <translation>HIBA: A &quot;%1&quot; alkatrész nem tölthető be a katalógusból.</translation>
     </message>
@@ -5186,12 +5337,12 @@ Használat:  qucsedit [-r] fájl
         <translation>Nyíl</translation>
     </message>
     <message>
-        <location filename="paintings/ellipsearc.cpp" line="-284"/>
+        <location filename="paintings/ellipsearc.cpp" line="-296"/>
         <source>Elliptic Arc</source>
         <translation>Körív</translation>
     </message>
     <message>
-        <location filename="paintings/ellipse.cpp" line="-261"/>
+        <location filename="paintings/ellipse.cpp" line="-275"/>
         <source>Ellipse</source>
         <translation>Elipszis</translation>
     </message>
@@ -5201,7 +5352,7 @@ Használat:  qucsedit [-r] fájl
         <translation>Kitöltött ellipszis</translation>
     </message>
     <message>
-        <location filename="paintings/graphicline.cpp" line="-225"/>
+        <location filename="paintings/graphicline.cpp" line="-236"/>
         <source>Line</source>
         <translation>Vonal</translation>
     </message>
@@ -5211,7 +5362,7 @@ Használat:  qucsedit [-r] fájl
         <translation>Szöveg</translation>
     </message>
     <message>
-        <location filename="paintings/rectangle.cpp" line="-261"/>
+        <location filename="paintings/rectangle.cpp" line="-277"/>
         <source>Rectangle</source>
         <translation>Téglalap</translation>
     </message>
@@ -5234,30 +5385,30 @@ Használat:  qucsedit [-r] fájl
         <translation>három csatolt tekercs</translation>
     </message>
     <message>
-        <location line="+46"/>
         <location filename="components/mutual.cpp" line="+58"/>
+        <location filename="components/mutual2.cpp" line="+46"/>
         <source>inductance of coil 1</source>
         <translation>1. tekercs induktivitása</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="components/mutual.cpp" line="+2"/>
+        <location filename="components/mutual2.cpp" line="+2"/>
         <source>inductance of coil 2</source>
         <translation>2. tekercs induktivitása</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="components/mutual2.cpp" line="+2"/>
         <source>inductance of coil 3</source>
         <translation>3. tekercs induktivitása</translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="components/mutual.cpp" line="+2"/>
+        <location filename="components/mutual2.cpp" line="+2"/>
         <source>coupling factor between coil 1 and 2</source>
         <translation>1-2 tekercs közötti csatolási tényező</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="components/mutual2.cpp" line="+2"/>
         <source>coupling factor between coil 1 and 3</source>
         <translation>1-3 tekercs közötti csatolási tényező</translation>
     </message>
@@ -5341,6 +5492,15 @@ Használat:  qucsedit [-r] fájl
         <location filename="components/logical_inv.cpp" line="-8"/>
         <source>voltage of high level</source>
         <translation>a magas szint feszültsége</translation>
+    </message>
+    <message>
+        <location line="+259"/>
+        <source>Format Error:
+Unknown component!
+%1
+
+Do you make use of loadable components?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="components/logical_nor.cpp" line="+22"/>
@@ -5431,7 +5591,7 @@ Digitális szimuláció</translation>
         <translation>időlista a kimenet váltásához</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-88"/>
+        <location filename="schematic_file.cpp" line="-103"/>
         <source>ERROR: Component &quot;%1&quot; has no analog model.</source>
         <translation>HIBA: &quot;%1&quot; alkatrész nem analóg modell.</translation>
     </message>
@@ -5441,7 +5601,7 @@ Digitális szimuláció</translation>
         <translation>HIBA: &quot;%1&quot; alkatrész nem digitális modell.</translation>
     </message>
     <message>
-        <location line="+267"/>
+        <location line="+284"/>
         <source>WARNING: Ignore simulation component in subcircuit &quot;%1&quot;.</source>
         <translation>FIGYELMEZTETÉS: Mellőzve az alkatrész a &quot;%1&quot; beágyazott kapcsolásban.</translation>
     </message>
@@ -5502,16 +5662,16 @@ Digitális szimuláció</translation>
         <translation type="obsolete">HIBA: Nincs szimulácó megadva ezen az oldalon.</translation>
     </message>
     <message>
+        <location filename="components/EKV26MOS.cpp" line="+18"/>
         <location filename="components/bjtsub.cpp" line="-13"/>
         <location filename="components/diode.cpp" line="+4"/>
-        <location filename="components/EKV26MOS.cpp" line="+18"/>
         <location filename="components/jfet.cpp" line="-39"/>
         <location filename="components/photodiode.cpp" line="+21"/>
         <source>saturation current temperature exponent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="components/bjtsub.cpp" line="+2"/>
         <location filename="components/diode.cpp" line="+2"/>
         <source>energy bandgap in eV</source>
         <translation type="unfinished"></translation>
@@ -5587,8 +5747,8 @@ Digitális szimuláció</translation>
     </message>
     <message>
         <location filename="components/EKV26MOS.cpp" line="+4"/>
-        <location filename="components/log_amp.cpp" line="+61"/>
         <location filename="components/MESFET.cpp" line="+125"/>
+        <location filename="components/log_amp.cpp" line="+61"/>
         <location filename="components/mosfet_sub.cpp" line="+91"/>
         <location filename="components/nigbt.cpp" line="+6"/>
         <location filename="components/photodiode.cpp" line="-8"/>
@@ -5647,7 +5807,7 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="+485"/>
+        <location filename="main.cpp" line="+527"/>
         <location line="+63"/>
         <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
         <translation type="unfinished"></translation>
@@ -5823,18 +5983,23 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+10"/>
+        <source>Max possible switch transition time (transition time 1/100 smallest value in &apos;time&apos;, or this number)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
         <source>Switch</source>
         <translation>Kapcsoló</translation>
     </message>
     <message>
-        <location filename="components/tline_4port.cpp" line="+2"/>
         <location filename="components/tline.cpp" line="-16"/>
+        <location filename="components/tline_4port.cpp" line="+2"/>
         <source>attenuation factor per length in 1/m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="components/switch.cpp" line="-32"/>
+        <location filename="components/switch.cpp" line="-34"/>
         <source>switch (time controlled)</source>
         <translation>kapcsoló (idő vezérelt)</translation>
     </message>
@@ -5859,7 +6024,7 @@ Digitális szimuláció</translation>
         <translation>ellenállás a kikapcsolt állapotban [Ohm]</translation>
     </message>
     <message>
-        <location filename="mouseactions.cpp" line="+818"/>
+        <location filename="mouseactions.cpp" line="+827"/>
         <source>Edit Properties</source>
         <translation>Tulajdonságok beállítása</translation>
     </message>
@@ -5885,8 +6050,8 @@ Digitális szimuláció</translation>
     </message>
     <message>
         <location line="+60"/>
-        <location filename="components/spicefile.cpp" line="+105"/>
-        <location line="+86"/>
+        <location filename="components/spicefile.cpp" line="+103"/>
+        <location line="+87"/>
         <source>Info</source>
         <translation>Infó</translation>
     </message>
@@ -5897,8 +6062,9 @@ Digitális szimuláció</translation>
     </message>
     <message>
         <location filename="components/switch.cpp" line="+5"/>
-        <source>time when state changes (semicolon separated list possible)</source>
-        <translation>állapot változás ideje (pontosvesszővel elválasztott lisat lehetséges)</translation>
+        <source>time when state changes (semicolon separated list possible, even numbered lists are repeated)</source>
+        <oldsource>time when state changes (semicolon separated list possible)</oldsource>
+        <translation type="unfinished">állapot változás ideje (pontosvesszővel elválasztott lisat lehetséges)</translation>
     </message>
     <message>
         <source>ERROR: No file name in VHDL component &quot;%1&quot;.</source>
@@ -5925,13 +6091,14 @@ Digitális szimuláció</translation>
         <translation>vhdl</translation>
     </message>
     <message>
-        <location filename="components/rfedd2p.cpp" line="+37"/>
         <location filename="components/rfedd.cpp" line="+2"/>
+        <location filename="components/rfedd2p.cpp" line="+37"/>
         <location filename="components/sparamfile.cpp" line="-48"/>
         <source>representation during DC analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="components/etr_sim.cpp" line="+3"/>
         <location filename="components/tr_sim.cpp" line="+3"/>
         <source>relax time step raster</source>
         <translation type="unfinished"></translation>
@@ -5963,6 +6130,7 @@ Digitális szimuláció</translation>
         <translation>optimalizálás</translation>
     </message>
     <message>
+        <location filename="components/etr_sim.cpp" line="+2"/>
         <location filename="components/tr_sim.cpp" line="+2"/>
         <source>perform an initial DC analysis</source>
         <translation>kezdeti DC analízis végrehajtása</translation>
@@ -5978,6 +6146,7 @@ Digitális szimuláció</translation>
         <translation>kezdeti áram tranziens szimulációhoz</translation>
     </message>
     <message>
+        <location filename="components/etr_sim.cpp" line="+2"/>
         <location filename="components/tr_sim.cpp" line="+2"/>
         <source>maximum step size in seconds</source>
         <translation>maximális lépésköz [mp]</translation>
@@ -6910,10 +7079,11 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="components/EKV26MOS.cpp" line="+3"/>
+        <location filename="components/MESFET.cpp" line="+3"/>
         <location filename="components/bsim3v34nMOS.cpp" line="+832"/>
         <location filename="components/bsim3v34pMOS.cpp" line="+832"/>
         <location filename="components/diac.cpp" line="+4"/>
-        <location filename="components/EKV26MOS.cpp" line="+3"/>
         <location filename="components/hic0_full.cpp" line="+9"/>
         <location filename="components/hic2_full.cpp" line="+3"/>
         <location filename="components/hicumL0V1p2.cpp" line="+9"/>
@@ -6924,7 +7094,6 @@ Digitális szimuláció</translation>
         <location filename="components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="components/hicumL2V2p31n.cpp" line="+3"/>
         <location filename="components/log_amp.cpp" line="+3"/>
-        <location filename="components/MESFET.cpp" line="+3"/>
         <location filename="components/nigbt.cpp" line="+3"/>
         <location filename="components/photodiode.cpp" line="+33"/>
         <location filename="components/phototransistor.cpp" line="+15"/>
@@ -7573,7 +7742,7 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="components/spicefile.cpp" line="-181"/>
+        <location filename="components/spicefile.cpp" line="-180"/>
         <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
         <translation>HIBA: A &quot;%1&quot; SPICE fájl nem nyitható meg.</translation>
     </message>
@@ -7583,12 +7752,12 @@ Digitális szimuláció</translation>
         <translation>HIBA: QucsConv nem indítható!</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-160"/>
         <source>ERROR: Cannot save converted SPICE file &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+15"/>
         <source>ERROR: Cannot open converted SPICE file &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7615,17 +7784,17 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-56"/>
+        <location filename="schematic_file.cpp" line="-58"/>
         <source>WARNING: Skipping library component &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="components/spicefile.cpp" line="+152"/>
+        <location filename="components/spicefile.cpp" line="+153"/>
         <source>Converting SPICE file &quot;%1&quot;.</source>
         <translation type="unfinished">&quot;%1&quot; SPICE fájl konvertásása.</translation>
     </message>
     <message>
-        <location line="-86"/>
+        <location line="-87"/>
         <source>Preprocessing SPICE file &quot;%1&quot;.</source>
         <translation type="unfinished">&quot;%1&quot; SPICE fájl előfeldolgozása.</translation>
     </message>
@@ -7803,6 +7972,7 @@ Digitális szimuláció</translation>
     <message>
         <location filename="components/EKV26MOS.cpp" line="-30"/>
         <location line="+6"/>
+        <location filename="components/MESFET.cpp" line="-17"/>
         <location filename="components/hic0_full.cpp" line="-223"/>
         <location line="+10"/>
         <location line="+3"/>
@@ -7883,7 +8053,6 @@ Digitális szimuláció</translation>
         <location line="+110"/>
         <location filename="components/log_amp.cpp" line="-40"/>
         <location line="+3"/>
-        <location filename="components/MESFET.cpp" line="-17"/>
         <location filename="components/photodiode.cpp" line="-51"/>
         <location line="+6"/>
         <location filename="components/phototransistor.cpp" line="-68"/>
@@ -7901,6 +8070,10 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="components/DLS_1ton.cpp" line="+21"/>
+        <location filename="components/DLS_nto1.cpp" line="+22"/>
+        <location filename="components/EKV26MOS.cpp" line="+15"/>
+        <location filename="components/MESFET.cpp" line="-65"/>
         <location filename="components/andor4x2.cpp" line="+32"/>
         <location filename="components/andor4x3.cpp" line="+32"/>
         <location filename="components/andor4x4.cpp" line="+32"/>
@@ -7909,12 +8082,9 @@ Digitális szimuláció</translation>
         <location filename="components/comp_2bit.cpp" line="+32"/>
         <location filename="components/comp_4bit.cpp" line="+32"/>
         <location filename="components/dff_SR.cpp" line="+34"/>
-        <location filename="components/DLS_1ton.cpp" line="+21"/>
-        <location filename="components/DLS_nto1.cpp" line="+22"/>
         <location filename="components/dmux2to4.cpp" line="+32"/>
         <location filename="components/dmux3to8.cpp" line="+33"/>
         <location filename="components/dmux4to16.cpp" line="+32"/>
-        <location filename="components/EKV26MOS.cpp" line="+15"/>
         <location filename="components/fa1b.cpp" line="+32"/>
         <location filename="components/fa2b.cpp" line="+32"/>
         <location filename="components/gatedDlatch.cpp" line="+34"/>
@@ -7978,7 +8148,6 @@ Digitális szimuláció</translation>
         <location line="+19"/>
         <location filename="components/hpribin4bit.cpp" line="+32"/>
         <location filename="components/jkff_SR.cpp" line="+34"/>
-        <location filename="components/MESFET.cpp" line="-65"/>
         <location filename="components/mux2to1.cpp" line="+32"/>
         <location filename="components/mux4to1.cpp" line="+32"/>
         <location filename="components/mux8to1.cpp" line="+32"/>
@@ -8000,13 +8169,13 @@ Digitális szimuláció</translation>
     </message>
     <message>
         <location filename="components/EKV26MOS.cpp" line="-96"/>
+        <location filename="components/MESFET.cpp" line="-42"/>
+        <location line="+3"/>
+        <location line="+3"/>
         <location filename="components/hic2_full.cpp" line="+3"/>
         <location filename="components/hicumL2V2p23.cpp" line="+3"/>
         <location filename="components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="components/hicumL2V2p31n.cpp" line="+3"/>
-        <location filename="components/MESFET.cpp" line="-42"/>
-        <location line="+3"/>
-        <location line="+3"/>
         <location filename="components/nigbt.cpp" line="+30"/>
         <source>1/V</source>
         <translation type="unfinished"></translation>
@@ -8065,6 +8234,7 @@ Digitális szimuláció</translation>
     <message>
         <location line="+9"/>
         <location line="+3"/>
+        <location filename="components/MESFET.cpp" line="+39"/>
         <location filename="components/hic0_full.cpp" line="-139"/>
         <location line="+36"/>
         <location line="+11"/>
@@ -8111,7 +8281,6 @@ Digitális szimuláció</translation>
         <location line="+84"/>
         <location filename="components/log_amp.cpp" line="+11"/>
         <location line="+6"/>
-        <location filename="components/MESFET.cpp" line="+39"/>
         <location filename="components/photodiode.cpp" line="-27"/>
         <location line="+38"/>
         <location filename="components/phototransistor.cpp" line="+9"/>
@@ -8124,6 +8293,9 @@ Digitális szimuláció</translation>
     </message>
     <message>
         <location line="+47"/>
+        <location filename="components/MESFET.cpp" line="+10"/>
+        <location line="+3"/>
+        <location line="+3"/>
         <location filename="components/hic0_full.cpp" line="-85"/>
         <location line="+44"/>
         <location line="+11"/>
@@ -8180,9 +8352,6 @@ Digitális szimuláció</translation>
         <location line="+15"/>
         <location line="+57"/>
         <location line="+3"/>
-        <location filename="components/MESFET.cpp" line="+10"/>
-        <location line="+3"/>
-        <location line="+3"/>
         <location filename="components/photodiode.cpp" line="-23"/>
         <location filename="components/phototransistor.cpp" line="-29"/>
         <location line="+8"/>
@@ -8195,6 +8364,12 @@ Digitális szimuláció</translation>
         <location line="+6"/>
         <location line="+84"/>
         <location line="+6"/>
+        <location filename="components/MESFET.cpp" line="-67"/>
+        <location line="+20"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+12"/>
+        <location line="+3"/>
         <location filename="components/hic0_full.cpp" line="-141"/>
         <location line="+32"/>
         <location line="+32"/>
@@ -8334,12 +8509,6 @@ Digitális szimuláció</translation>
         <location filename="components/log_amp.cpp" line="-9"/>
         <location filename="components/logic_0.cpp" line="+29"/>
         <location filename="components/logic_1.cpp" line="+29"/>
-        <location filename="components/MESFET.cpp" line="-67"/>
-        <location line="+20"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+12"/>
-        <location line="+3"/>
         <location filename="components/nigbt.cpp" line="+3"/>
         <location line="+3"/>
         <location filename="components/photodiode.cpp" line="-9"/>
@@ -8654,16 +8823,16 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+6"/>
         <location filename="components/MESFET.cpp" line="+29"/>
         <location line="+3"/>
         <location line="+3"/>
+        <location filename="components/log_amp.cpp" line="+1"/>
+        <location line="+6"/>
         <source>%/Celsius</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-4"/>
+        <location filename="components/log_amp.cpp" line="-4"/>
         <source>offset temperature coefficient</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8695,8 +8864,8 @@ Digitális szimuláció</translation>
     </message>
     <message>
         <location filename="components/EKV26MOS.cpp" line="+19"/>
-        <location filename="components/log_amp.cpp" line="+4"/>
         <location filename="components/MESFET.cpp" line="+52"/>
+        <location filename="components/log_amp.cpp" line="+4"/>
         <location filename="components/nigbt.cpp" line="+3"/>
         <location line="+3"/>
         <location filename="components/photodiode.cpp" line="-19"/>
@@ -8710,13 +8879,13 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
         <location filename="components/MESFET.cpp" line="-95"/>
+        <location filename="components/log_amp.cpp" line="+20"/>
         <source>I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="components/log_amp.cpp" line="+1"/>
         <source>R</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9427,28 +9596,28 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+7"/>
         <location filename="components/rfedd2p.cpp" line="-2"/>
-        <location filename="components/rfedd.cpp" line="+7"/>
         <source>type of parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location filename="components/rfedd.cpp" line="+9"/>
+        <location line="+9"/>
         <location line="+2"/>
         <location line="+2"/>
         <location line="+2"/>
         <location line="+81"/>
         <location line="+5"/>
         <location line="+9"/>
+        <location filename="components/rfedd2p.cpp" line="+7"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
         <source>parameter equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="components/rfedd.cpp" line="-77"/>
+        <location line="-77"/>
         <source>Equation Defined RF Device</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10577,7 +10746,7 @@ Digitális szimuláció</translation>
     </message>
     <message>
         <location filename="components/binarytogrey4bit.cpp" line="-22"/>
-        <location filename="components/component.cpp" line="+4"/>
+        <location filename="components/component.cpp" line="-255"/>
         <location filename="components/greytobinary4bit.cpp" line="-22"/>
         <location filename="components/hpribin4bit.cpp" line="-22"/>
         <location filename="components/logical_buf.cpp" line="-96"/>
@@ -10727,7 +10896,7 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="+409"/>
+        <location filename="schematic_file.cpp" line="+411"/>
         <source>WARNING: Equations in &quot;%1&quot; are &apos;time&apos; typed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10850,12 +11019,20 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-1242"/>
+        <location filename="schematic_file.cpp" line="-1434"/>
         <source>Cannot save C++ file &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="module.cpp" line="+130"/>
+        <location filename="module.cpp" line="+117"/>
+        <location filename="qucs.cpp" line="+647"/>
+        <location line="+106"/>
+        <location filename="qucs_actions.cpp" line="+153"/>
+        <source>verilog-a user devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+65"/>
         <location line="+2"/>
         <source>lumped components</source>
         <translation type="unfinished">Álltalános alkatrészek</translation>
@@ -10907,18 +11084,25 @@ Digitális szimuláció</translation>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="+2073"/>
+        <location filename="qucs.cpp" line="+1706"/>
         <source>diagrams</source>
         <translation type="unfinished">Diagramok</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="-1681"/>
-        <location line="+19"/>
-        <location line="+55"/>
+        <location filename="qucs.cpp" line="-1856"/>
+        <location line="+30"/>
+        <location line="+3"/>
+        <location line="+107"/>
+        <location line="+1"/>
         <source>paintings</source>
         <translation type="unfinished">Feliratok, rajzelemek</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>external sim components</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="components/hicumL2V2p24.cpp" line="-288"/>
@@ -12679,6 +12863,11 @@ Digitális szimuláció</translation>
         <source>HICUM L2 V2.31</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="components/vacomponent.cpp" line="+1"/>
+        <source>Symbol file not found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QucsActions</name>
@@ -12767,7 +12956,7 @@ Felülírjam?</translation>
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="qucs.cpp" line="-368"/>
+        <location filename="qucs.cpp" line="-642"/>
         <source>Schematic</source>
         <translation>Kapcsolási rajz</translation>
     </message>
@@ -12782,31 +12971,31 @@ Felülírjam?</translation>
         <translation>Qucs Dokumentációk</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-19"/>
-        <location filename="qucs.cpp" line="+5"/>
-        <location line="+1173"/>
+        <location line="+6"/>
+        <location line="+1544"/>
+        <location filename="qucs_actions.cpp" line="-172"/>
         <source>Any File</source>
         <translation>Bármelyik fájl</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1026"/>
+        <location line="-1392"/>
         <source>New</source>
         <translation>Új</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+234"/>
+        <location line="+525"/>
         <source>Open</source>
         <translation>Megnyitás</translation>
     </message>
     <message>
-        <location line="-232"/>
-        <location line="+240"/>
+        <location line="-523"/>
+        <location line="+535"/>
         <source>Delete</source>
         <translation>Törlés</translation>
     </message>
     <message>
-        <location line="-224"/>
+        <location line="-519"/>
         <source>Projects</source>
         <translation>Projektek</translation>
     </message>
@@ -12816,19 +13005,19 @@ Felülírjam?</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+723"/>
+        <location line="+1087"/>
         <source>Content of</source>
         <translation>Összetevői</translation>
     </message>
     <message>
-        <location line="-723"/>
-        <location line="+658"/>
+        <location line="-1087"/>
+        <location line="+1022"/>
         <location line="+65"/>
         <source>Note</source>
         <translation>Megjegyzés</translation>
     </message>
     <message>
-        <location line="-812"/>
+        <location line="-1180"/>
         <source>Datasets</source>
         <translation>Adatbeállítások</translation>
     </message>
@@ -12839,12 +13028,12 @@ Felülírjam?</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+1985"/>
+        <location line="+2365"/>
         <source>Schematics</source>
         <translation>Kapcsolási rajzok</translation>
     </message>
     <message>
-        <location line="-1897"/>
+        <location line="-2274"/>
         <source>Content</source>
         <translation>Összetevők</translation>
     </message>
@@ -12895,7 +13084,7 @@ Felülírjam?</translation>
         <translation type="obsolete">Feliratok, rajzelemek</translation>
     </message>
     <message>
-        <location line="+174"/>
+        <location line="+470"/>
         <source>Rename</source>
         <translation>Átnevezés</translation>
     </message>
@@ -12904,6 +13093,26 @@ Felülírjam?</translation>
         <translation type="obsolete">Csoport törlés</translation>
     </message>
     <message>
+        <location line="-365"/>
+        <location line="+3"/>
+        <location line="+62"/>
+        <location line="+3"/>
+        <location line="+417"/>
+        <location line="+21"/>
+        <location line="+22"/>
+        <location line="+14"/>
+        <location line="+12"/>
+        <location line="+54"/>
+        <location line="+31"/>
+        <location line="+235"/>
+        <location line="+1137"/>
+        <location line="+28"/>
+        <location line="+77"/>
+        <location line="+316"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+6"/>
         <location filename="qucs_actions.cpp" line="-609"/>
         <location line="+45"/>
         <location line="+24"/>
@@ -12918,26 +13127,12 @@ Felülírjam?</translation>
         <location line="+295"/>
         <location line="+14"/>
         <location line="+19"/>
-        <location filename="qucs.cpp" line="+72"/>
-        <location line="+22"/>
-        <location line="+14"/>
-        <location line="+12"/>
-        <location line="+54"/>
-        <location line="+31"/>
-        <location line="+235"/>
-        <location line="+1125"/>
-        <location line="+28"/>
-        <location line="+77"/>
-        <location line="+277"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <location line="+6"/>
+        <location line="+144"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1901"/>
+        <location line="-1952"/>
         <source>Cannot rename an open file!</source>
         <translation>Nyitott fájlt nem lehet átnevezni!</translation>
     </message>
@@ -12947,7 +13142,8 @@ Felülírjam?</translation>
         <translation>Fájl átnevezés</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="-49"/>
+        <location line="+49"/>
         <source>Enter new name:</source>
         <translation>Új név:</translation>
     </message>
@@ -12966,34 +13162,34 @@ Felülírjam?</translation>
         <location line="+77"/>
         <location line="+47"/>
         <location line="+329"/>
-        <location line="+237"/>
-        <location line="+624"/>
+        <location line="+244"/>
+        <location line="+630"/>
         <source>Warning</source>
         <translation>Figyelmeztetések</translation>
     </message>
     <message>
-        <location line="-1313"/>
+        <location line="-1326"/>
         <source>This will delete the file permanently! Continue ?</source>
         <translation>A fájl véglegesen törlődik! Folytatja?</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+77"/>
-        <location line="+614"/>
-        <location line="+451"/>
+        <location line="+621"/>
+        <location line="+454"/>
         <source>No</source>
         <translation>Nem</translation>
     </message>
     <message>
-        <location line="-1142"/>
+        <location line="-1152"/>
         <location line="+77"/>
-        <location line="+614"/>
-        <location line="+451"/>
+        <location line="+621"/>
+        <location line="+454"/>
         <source>Yes</source>
         <translation>Igen</translation>
     </message>
     <message>
-        <location line="-1137"/>
+        <location line="-1147"/>
         <source>Cannot delete schematic: </source>
         <translation>A kapcsolási rajz nem törölhető:</translation>
     </message>
@@ -13017,7 +13213,7 @@ Felülírjam?</translation>
         <translation>A munkakönyvtárat nem tudtam létrehozni!</translation>
     </message>
     <message>
-        <location line="+701"/>
+        <location line="+710"/>
         <source>Closing Qucs document</source>
         <translation>A Qucs dokumentum bezárás</translation>
     </message>
@@ -13029,40 +13225,40 @@ Szeretnéd menteni a változásakat bezárás előtt?
 </translation>
     </message>
     <message>
-        <location line="-310"/>
+        <location line="-319"/>
         <source>Creating new schematic...</source>
         <translation>Új kapcsolási rajz létrehozása...</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-627"/>
-        <location line="+311"/>
-        <location filename="qucs.cpp" line="+5"/>
+        <location line="+5"/>
         <location line="+10"/>
         <location line="+69"/>
         <location line="+30"/>
         <location line="+5"/>
-        <location line="+120"/>
+        <location line="+127"/>
         <location line="+5"/>
-        <location line="+33"/>
-        <location line="+48"/>
+        <location line="+34"/>
+        <location line="+49"/>
         <location line="+35"/>
-        <location line="+239"/>
+        <location line="+240"/>
         <location line="+37"/>
         <location line="+45"/>
         <location line="+22"/>
-        <location filename="qucs_init.cpp" line="+940"/>
+        <location filename="qucs_actions.cpp" line="-771"/>
+        <location line="+311"/>
+        <location filename="qucs_init.cpp" line="+954"/>
         <source>Ready.</source>
         <translation>Kész.
 </translation>
     </message>
     <message>
-        <location line="-320"/>
-        <location filename="qucs.cpp" line="-638"/>
+        <location line="-648"/>
+        <location filename="qucs_actions.cpp" line="-320"/>
         <source>Opening file...</source>
         <translation>Fájl nyitása...</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="+2"/>
+        <location line="+2"/>
         <source>Enter a Schematic Name</source>
         <translation>Kapcsolási rajz neve</translation>
     </message>
@@ -13072,35 +13268,35 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <translation>Megnyitás megszakítva</translation>
     </message>
     <message>
-        <location line="-674"/>
-        <location line="+360"/>
-        <location line="+760"/>
+        <location line="-743"/>
+        <location line="+429"/>
+        <location line="+770"/>
         <source>-port</source>
         <translation>-csatlakozás</translation>
     </message>
     <message>
-        <location line="-1139"/>
+        <location line="-1218"/>
         <source>Insert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+729"/>
+        <location line="+798"/>
         <source>Saving file...</source>
         <translation>Fájl mentése...</translation>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+125"/>
+        <location line="+132"/>
         <source>Saving aborted</source>
         <translation>Mentés megszakítva</translation>
     </message>
     <message>
-        <location line="-79"/>
+        <location line="-83"/>
         <source>Enter a Document Name</source>
         <translation>Dokumentum neve</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+20"/>
         <source>The file &apos;</source>
         <translation>A &apos;</translation>
     </message>
@@ -13118,7 +13314,7 @@ Szeretnéd menteni a változásakat bezárás előtt?
     </message>
     <message>
         <location line="+1"/>
-        <location line="+136"/>
+        <location line="+138"/>
         <source>Cancel</source>
         <translation>Mégsem</translation>
     </message>
@@ -13133,6 +13329,15 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <translation type="obsolete">nem fog látszani betöltéskor! Folytatja?</translation>
     </message>
     <message>
+        <location line="-1142"/>
+        <location line="+465"/>
+        <location line="+211"/>
+        <location line="+44"/>
+        <location line="+17"/>
+        <location line="+14"/>
+        <location line="+16"/>
+        <location line="+35"/>
+        <location line="+211"/>
         <location filename="qucs_actions.cpp" line="-145"/>
         <location line="+14"/>
         <location line="+14"/>
@@ -13140,24 +13345,16 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <location line="+38"/>
         <location line="+14"/>
         <location line="+709"/>
-        <location filename="qucs.cpp" line="-668"/>
-        <location line="+211"/>
-        <location line="+44"/>
-        <location line="+17"/>
-        <location line="+14"/>
-        <location line="+16"/>
-        <location line="+35"/>
-        <location line="+204"/>
         <source>Info</source>
         <translation>Infó</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-368"/>
+        <location line="-375"/>
         <source>Content of </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+369"/>
+        <location line="+376"/>
         <source>Cannot overwrite an open document</source>
         <translation>Nyitott dokumentumot nem lehet felülírni</translation>
     </message>
@@ -13167,17 +13364,18 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <translation>Fájl mentése, új fájlnévvel...</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>Saving all files...</source>
         <translation>Összes fájl mentése...</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+49"/>
         <source>Closing file...</source>
         <translation>Fájl bezárása...</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="-933"/>
+        <location line="+939"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>A dokumentum tartalmaz mentetlen változásokat!
@@ -13190,13 +13388,98 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <translation>El akarod menteni a változásokat bezárás előtt?</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location filename="qucs_init.cpp" line="-863"/>
+        <location line="-938"/>
+        <location line="+939"/>
+        <location filename="qucs_init.cpp" line="-877"/>
         <source>&amp;Save</source>
         <translation>&amp;Mentés</translation>
     </message>
     <message>
+        <location line="-1709"/>
+        <source>Spice Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+232"/>
+        <source>Manage Libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <location line="+8"/>
+        <source>Libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>system and user component libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
+        <location line="+65"/>
+        <source>Cannot open &quot;%1&quot;.</source>
+        <translation type="unfinished">&quot;%1&quot; megnyitása nem sikerült.</translation>
+    </message>
+    <message>
+        <location line="-62"/>
+        <location line="+65"/>
+        <source>Library is corrupt.</source>
+        <translation type="unfinished">Alkatrész katalógus hibás.</translation>
+    </message>
+    <message>
+        <location line="+177"/>
+        <source>Default icon not found:
+ %1.png</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+116"/>
+        <source>Duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+83"/>
+        <source>Copying Qucs document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Do you want to save the changes before copying?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Copy file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+0"/>
+        <source>Cannot copy file to identical name: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Cannot copy schematic: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+735"/>
+        <source>Qucs Netlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Plain Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+165"/>
         <source>&amp;Discard</source>
         <translation>&amp;Eldob</translation>
     </message>
@@ -13206,7 +13489,7 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+203"/>
+        <location line="+204"/>
         <source>Printing...</source>
         <translation>Nyomtatás...</translation>
     </message>
@@ -13241,7 +13524,7 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <translation>A kijelölés másolása a vágólapra...</translation>
     </message>
     <message>
-        <location line="+928"/>
+        <location line="+1027"/>
         <location line="+13"/>
         <location line="+18"/>
         <location line="+6"/>
@@ -13359,7 +13642,7 @@ Hibák:
         <translation>A szövegszerkesztő (qucsedit) nem indítható!</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-718"/>
+        <location filename="qucs.cpp" line="-815"/>
         <source>Cannot create </source>
         <translation>Létrehozás nem sikerült</translation>
     </message>
@@ -13369,7 +13652,7 @@ Hibák:
         <translation>Oldal nincs beállítva!</translation>
     </message>
     <message>
-        <location line="-1152"/>
+        <location line="-1164"/>
         <source>Cannot access project directory: </source>
         <translation>Nincs hozzáférés a projekt könyvtárhoz:</translation>
     </message>
@@ -13486,14 +13769,14 @@ Hibák:
         <translation>Ez véglegesen törli a projekt fájlt! Folytatja?</translation>
     </message>
     <message>
+        <location line="+1"/>
         <location filename="qucs_actions.cpp" line="+623"/>
-        <location filename="qucs.cpp" line="+1"/>
         <source>&amp;Yes</source>
         <translation>&amp;Igen</translation>
     </message>
     <message>
         <location line="+0"/>
-        <location filename="qucs.cpp" line="+0"/>
+        <location filename="qucs_actions.cpp" line="+0"/>
         <source>&amp;No</source>
         <translation>&amp;Nem</translation>
     </message>
@@ -13502,7 +13785,7 @@ Hibák:
         <translation type="obsolete">Nem lehet eltávolítani a projekt fájlt:</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="+9"/>
+        <location line="+9"/>
         <source>Cannot remove project directory !</source>
         <translation>Nem lehet eltávolítani a projekt könyvtárat!</translation>
     </message>
@@ -13602,34 +13885,34 @@ Nem indítható a tápvonal tervező program!
         <translation type="obsolete">digitális alkatrészek</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-891"/>
+        <location filename="qucs.cpp" line="-1259"/>
         <source>Others</source>
         <translation>Egyebek</translation>
     </message>
     <message>
-        <location line="+1972"/>
+        <location line="+2352"/>
         <source>Cannot start &quot;%1&quot;!</source>
         <translation>&quot;%1&quot; nem indítható!</translation>
     </message>
     <message>
-        <location line="-2062"/>
-        <location line="+1173"/>
+        <location line="-2444"/>
+        <location line="+1543"/>
         <source>VHDL Sources</source>
         <translation>VHDL forrás</translation>
     </message>
     <message>
-        <location line="-1071"/>
-        <location line="+1991"/>
+        <location line="-1439"/>
+        <location line="+2371"/>
         <source>VHDL</source>
         <translation>VHDL</translation>
     </message>
     <message>
-        <location line="-1921"/>
+        <location line="-2297"/>
         <source>content of project directory</source>
         <translation>projekt könyvtár tartalma</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+20"/>
         <source>content of current project</source>
         <translation>aktuális projekt tartalma</translation>
     </message>
@@ -13646,7 +13929,7 @@ Nem indítható a tápvonal tervező program!
         <translation type="obsolete">VHDL forrás nem törölhető:</translation>
     </message>
     <message>
-        <location line="+839"/>
+        <location line="+1204"/>
         <source>Creating new text editor...</source>
         <translation>Új szövegszerkesztő készítése...</translation>
     </message>
@@ -13655,7 +13938,7 @@ Nem indítható a tápvonal tervező program!
         <translation type="obsolete">Kiválasztás nyomtatása...</translation>
     </message>
     <message>
-        <location line="+1306"/>
+        <location line="+1357"/>
         <source>Could not load S[1,1].</source>
         <translation>S[1,1] nem betölthető.</translation>
     </message>
@@ -13736,6 +14019,14 @@ Felülírjam?</translation>
     <message>
         <location line="+438"/>
         <source>Clear list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Symbol files not found in: %1
+
+Is the project open?
+Have you saved the Verilog-A symbols?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -14011,19 +14302,24 @@ Beállítja a program tulajdonságait</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Refresh Path...</source>
+        <source>Refresh Search Path...</source>
+        <oldsource>Refresh Path...</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Refresh Path</source>
+        <source>Refresh Search Path</source>
+        <oldsource>Refresh Path</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Refresh Path
 
-Rechecks the list of paths for files.</source>
+Rechecks the list of paths for subcircuit files.</source>
+        <oldsource>Refresh Path
+
+Rechecks the list of paths for files.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -14427,7 +14723,7 @@ Copies files to project directory</source>
 Fájlok másolása a projekt könyvtárba</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+48"/>
         <source>View All</source>
         <translation>Nagyítás ablakméretre</translation>
     </message>
@@ -15080,12 +15376,12 @@ Program névjegy</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+434"/>
+        <location line="+438"/>
         <source>About Qt</source>
         <translation>Qt Névjegy</translation>
     </message>
     <message>
-        <location line="-435"/>
+        <location line="-439"/>
         <source>About Qt...</source>
         <translation>Qt Névjegy...</translation>
     </message>
@@ -15123,7 +15419,7 @@ Qt a Trolltech-től</translation>
         <translation>&amp;Projekt</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+18"/>
         <source>&amp;Tools</source>
         <translation>&amp;Eszközök</translation>
     </message>
@@ -15271,7 +15567,7 @@ Qt a Trolltech-től</translation>
         <translation>Bús József - Magyar</translation>
     </message>
     <message>
-        <location line="-816"/>
+        <location line="-830"/>
         <source>Find...</source>
         <translation>Keresés...</translation>
     </message>
@@ -15309,7 +15605,7 @@ Searches for the same piece of text again</source>
 Szöveg ismételt keresése</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-545"/>
+        <location filename="qucs.cpp" line="-583"/>
         <source>The document was modified by another program !</source>
         <translation>A dokumentumot másik program módosította!</translation>
     </message>
@@ -15362,7 +15658,39 @@ Copies the selection into the clipboard</source>
 Kijelölés vágólapra másolása</translation>
     </message>
     <message>
-        <location line="+147"/>
+        <location line="+145"/>
+        <source>Build Verilog-A module...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Run admsXml and C++ compiler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Build Verilog-A module
+Runs amdsXml and C++ compiler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Load Verilog-A module...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select Verilog-A symbols to be loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Load Verilog-A module
+Let the user select and load symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Show the whole page</source>
         <translation>Teljes oldal</translation>
     </message>
@@ -15391,7 +15719,7 @@ Kiválasztás aktiválása</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+131"/>
+        <location line="+135"/>
         <source>&amp;Technical Papers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15438,7 +15766,7 @@ Kiválasztás aktiválása</translation>
         <translation>Igor Gorbounov - Orosz</translation>
     </message>
     <message>
-        <location line="-557"/>
+        <location line="-561"/>
         <source>Inserts skeleton of VHDL entity</source>
         <translation>Váz illesztés a VHDL entitáshoz</translation>
     </message>
@@ -15452,7 +15780,7 @@ Inserts the skeleton of a VHDL entity</source>
 Váz illesztés a VHDL entitáshoz</translation>
     </message>
     <message>
-        <location line="-301"/>
+        <location line="-311"/>
         <source>Replace...</source>
         <translation>Csere...</translation>
     </message>
@@ -15470,7 +15798,7 @@ vagy
 szöveg csere VHDL kódban </translation>
     </message>
     <message>
-        <location line="+204"/>
+        <location line="+214"/>
         <source>Select Markers</source>
         <translation>Diagramjelzők kijelölése</translation>
     </message>
@@ -15507,12 +15835,12 @@ A kijelölt alkatrész Passziválása/Aktiválása </translation>
         <translation type="obsolete">Igazítás/Elterítés</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-143"/>
+        <location filename="qucs_actions.cpp" line="-178"/>
         <source>Please open project with subcircuits!</source>
         <translation>Nyisson projektet a beágyazott kapcsoláshoz!</translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-128"/>
+        <location filename="qucs_init.cpp" line="-138"/>
         <source>Create &amp;Library...</source>
         <translation>Új alkatrész &amp;katalógus létrehozás...</translation>
     </message>
@@ -15531,7 +15859,7 @@ Create Library from Subcircuits</source>
 Alkatrész-katalógust hoz létre a beágyazott kapcsoláshoz</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-900"/>
+        <location filename="qucs.cpp" line="-913"/>
         <source>Cannot delete file: </source>
         <translation>Fájl nem törölhető: </translation>
     </message>
@@ -15664,7 +15992,7 @@ Convert graph data to CSV file</source>
 Grafikon adatok CVS fájlba konvertálása</translation>
     </message>
     <message>
-        <location line="+238"/>
+        <location line="+248"/>
         <source>&amp;Dock Window</source>
         <translation>&amp;Navigátor ablak</translation>
     </message>
@@ -15683,7 +16011,7 @@ Enables/disables the browse dock window</source>
 Bekapcsolja/Kikapcsolja a navigátor ablakot</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="+685"/>
+        <location filename="qucs.cpp" line="+695"/>
         <source>Printer Error.</source>
         <translation>Nyomtató Hiba.</translation>
     </message>
@@ -15712,7 +16040,7 @@ Starts attenuator calculation program</source>
 Csillapító méretező program indítása</translation>
     </message>
     <message>
-        <location line="+500"/>
+        <location line="+504"/>
         <source>GUI improvements by Gopala Krishna A</source>
         <translation>GUI tökéletesítés köszönet Gopala Krishna A</translation>
     </message>
@@ -15732,7 +16060,7 @@ Csillapító méretező program indítása</translation>
         <translation>Verilog-AMS interfész, köszönet Helene Parruitte</translation>
     </message>
     <message>
-        <location line="-870"/>
+        <location line="-884"/>
         <source>Center horizontally</source>
         <translation>Függőlegesen egyvonalba</translation>
     </message>
@@ -15771,12 +16099,12 @@ Center vertically selected elements</source>
 A kiválasztott elemeket vízszintesen egyvonalba mozgatja</translation>
     </message>
     <message>
-        <location line="+512"/>
+        <location line="+522"/>
         <source>P&amp;ositioning</source>
         <translation>P&amp;ozicionálás</translation>
     </message>
     <message>
-        <location line="-586"/>
+        <location line="-596"/>
         <source>Print Fit to Page</source>
         <translation>Nyomtatás oldalra illesztve</translation>
     </message>
@@ -15816,7 +16144,7 @@ A kiválasztott elemeket vízszintesen egyvonalba mozgatja</translation>
         <translation>Bezárja az aktuális projektet</translation>
     </message>
     <message>
-        <location line="+106"/>
+        <location line="+116"/>
         <source>Mirrors the selected item about X Axis</source>
         <translation>Tükrözi a kiválasztott elemet az X tengelyre</translation>
     </message>
@@ -15866,14 +16194,14 @@ A kiválasztott elemeket vízszintesen egyvonalba mozgatja</translation>
         <translation type="obsolete">Nyomtatás...</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1623"/>
-        <location line="+1173"/>
+        <location filename="qucs.cpp" line="-2003"/>
+        <location line="+1543"/>
         <source>Verilog Sources</source>
         <translation>Verilog forrás</translation>
     </message>
     <message>
-        <location line="-1076"/>
-        <location line="+1997"/>
+        <location line="-1444"/>
+        <location line="+2377"/>
         <source>Verilog</source>
         <translation>Verilog</translation>
     </message>
@@ -15887,7 +16215,7 @@ A kiválasztott elemeket vízszintesen egyvonalba mozgatja</translation>
         <translation type="obsolete">próbák</translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-127"/>
+        <location filename="qucs_init.cpp" line="-137"/>
         <source>&amp;Import/Export Data...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15904,7 +16232,7 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+693"/>
+        <location line="+707"/>
         <source>Portuguese by Luciano Franca and Helio de Sousa</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15919,7 +16247,7 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1573"/>
+        <location filename="qucs.cpp" line="-1585"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15969,18 +16297,18 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-581"/>
-        <location line="+1173"/>
+        <location line="-951"/>
+        <location line="+1543"/>
         <source>Verilog-A Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1075"/>
+        <location line="-1443"/>
         <source>Verilog-A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+426"/>
+        <location line="+794"/>
         <source>Verilog-A source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15995,18 +16323,18 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-593"/>
-        <location line="+1173"/>
+        <location line="-963"/>
+        <location line="+1543"/>
         <source>Octave Scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1080"/>
+        <location line="-1448"/>
         <source>Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-453"/>
+        <location filename="qucs_init.cpp" line="-457"/>
         <source>&amp;Octave Window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17980,7 +18308,7 @@ Fájlok másolása a projekt könyvtárba</translation>
         <translation type="obsolete">Kilépés</translation>
     </message>
     <message>
-        <location filename="../qucs-lib/qucslib.cpp" line="+65"/>
+        <location filename="../qucs-lib/qucslib.cpp" line="+66"/>
         <source>&amp;Quit</source>
         <translation>&amp;Kilépés</translation>
     </message>
@@ -18030,7 +18358,7 @@ Fájlok másolása a projekt könyvtárba</translation>
         <translation>Modell megjelenítése</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+69"/>
         <source>About...</source>
         <translation>Névjegy...</translation>
     </message>
@@ -18054,34 +18382,38 @@ Fájlok másolása a projekt könyvtárba</translation>
         <translation>A alkatrész-katalógus (QucsLib) egy alkatrész-katalógus kezelő program. A bal oldalon legördülő menüből lehet alkatrész csoportot választani, majd a listából lehet a kívánt alkatrészt kikeresni. Az alkatrész nevére klikkelve jobb oldalon megjelennek az alkatrész adatai. A &quot;Másolás vágólapra&quot; gombbal azonnal a vágólapra helyezi az alkatrészt. Ezután a Qucs-ba beilleszthető az alkatrész a Szerkesztés / Beillesztés menüben vagy a CTRL-V billenytükombinációval.</translation>
     </message>
     <message>
-        <location line="+62"/>
-        <location line="+12"/>
-        <location line="+5"/>
-        <location line="+10"/>
-        <location line="+92"/>
+        <location line="+82"/>
+        <location line="+3"/>
+        <location line="+50"/>
+        <location line="+7"/>
+        <location line="+9"/>
+        <location line="+7"/>
+        <location line="+7"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location line="-118"/>
+        <location line="-83"/>
         <source>Cannot open &quot;%1&quot;.</source>
         <translation>&quot;%1&quot; megnyitása nem sikerült.</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <location line="+5"/>
-        <location line="+10"/>
-        <location line="+92"/>
+        <location line="+3"/>
+        <location line="+50"/>
+        <location line="+7"/>
+        <location line="+9"/>
+        <location line="+7"/>
+        <location line="+7"/>
         <source>Library is corrupt.</source>
         <translation>Alkatrész katalógus hibás.</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-122"/>
         <source>Search result</source>
         <translation>Keresés eredménye</translation>
     </message>
     <message>
-        <location line="+81"/>
+        <location line="+69"/>
         <source>Result</source>
         <translation>Eredmény</translation>
     </message>
@@ -18091,12 +18423,12 @@ Fájlok másolása a projekt könyvtárba</translation>
         <translation>Nem találtam megfelelő alkatrészt.</translation>
     </message>
     <message>
-        <location line="-306"/>
+        <location line="-298"/>
         <source>Manage User &amp;Libraries...</source>
         <translation>Felhasználói alkatrész-&amp;katalógust kezelő...</translation>
     </message>
     <message>
-        <location line="+192"/>
+        <location line="+194"/>
         <source>A more comfortable way: The component can also be placed onto the schematic by using Drag n&apos;Drop.</source>
         <translation>További lehetőség: Az alkatrész a jobb alsó &quot;Szimbólum:&quot; ablakból ! Húzd és Ejtsd ! módszerrel a kapcsolási rajz szerkesztőbe másolható.</translation>
     </message>
@@ -18111,7 +18443,7 @@ Fájlok másolása a projekt könyvtárba</translation>
         <translation>Modell</translation>
     </message>
     <message>
-        <location line="+89"/>
+        <location line="+79"/>
         <source>Search Library Component</source>
         <translation>Keresés az alkatrész katalógusban</translation>
     </message>
@@ -18169,12 +18501,7 @@ Fájlok másolása a projekt könyvtárba</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>Path List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
+        <location line="+40"/>
         <source>Locations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18199,7 +18526,7 @@ Fájlok másolása a projekt könyvtárba</translation>
         <translation>Alapértelmezett értékek</translation>
     </message>
     <message>
-        <location line="+346"/>
+        <location line="+347"/>
         <source>Select the octave bin directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18215,7 +18542,7 @@ Fájlok másolása a projekt könyvtárba</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-509"/>
+        <location line="-510"/>
         <source>Suffix</source>
         <translation>Utótag</translation>
     </message>
@@ -18261,7 +18588,12 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>Beállítás</translation>
     </message>
     <message>
-        <location line="+134"/>
+        <location line="+41"/>
+        <source>Subcircuit Search Path List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+93"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
@@ -19074,17 +19406,33 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>Ellenőrizve:</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="+1025"/>
+        <location filename="schematic_file.cpp" line="+263"/>
+        <location line="+21"/>
+        <source>Error</source>
+        <translation type="unfinished">Hiba</translation>
+    </message>
+    <message>
+        <location line="-20"/>
+        <source>Program not found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Status</source>
+        <translation type="unfinished">Státusz</translation>
+    </message>
+    <message>
+        <location line="+928"/>
         <source>ERROR: Cannot create library file &quot;%s&quot;.</source>
         <translation>HIBA: A &quot;%1&quot; alkatrész-katalógus fájl nem hozható létre.</translation>
     </message>
     <message>
-        <location filename="schematic.cpp" line="+1283"/>
+        <location filename="schematic.cpp" line="+1287"/>
         <source>generic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1196"/>
+        <location line="-1200"/>
         <source>Edit Text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19384,47 +19732,34 @@ Rács megjelenítése</translation>
 <context>
     <name>SimMessage</name>
     <message>
-        <location filename="dialogs/simmessage_before_merge.cpp" line="+48"/>
-        <location filename="dialogs/simmessage.cpp" line="+51"/>
+        <location filename="dialogs/simmessage.cpp" line="+52"/>
         <source>Qucs Simulation Messages</source>
         <translation>Qucs szimulációs üzenetek</translation>
     </message>
     <message>
         <location line="+21"/>
-        <location line="+14"/>
-        <location filename="dialogs/simmessage.cpp" line="+21"/>
         <location line="+18"/>
         <source>Progress:</source>
         <translation>Készultségi állapot:</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location filename="dialogs/simmessage.cpp" line="+7"/>
+        <location line="+7"/>
         <source>Errors and Warnings:</source>
         <translation>Hibák és Figyelmeztetések:</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <location filename="dialogs/simmessage.cpp" line="+15"/>
+        <location line="+15"/>
         <source>Goto display page</source>
         <translation>Ugrás az adatmegjelenítő oldalra</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location line="+13"/>
-        <location filename="dialogs/simmessage.cpp" line="+5"/>
+        <location line="+5"/>
         <location line="+15"/>
         <source>Abort simulation</source>
         <translation>Szimuláció megszakítása</translation>
     </message>
     <message>
-        <location line="+314"/>
-        <source>compiling netlist...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+130"/>
-        <location filename="dialogs/simmessage.cpp" line="+471"/>
+        <location line="+529"/>
         <source>Close window</source>
         <translation>Ablak bezárás</translation>
     </message>
@@ -19454,14 +19789,12 @@ Megszakítva.
 </translation>
     </message>
     <message>
-        <location line="-434"/>
-        <location filename="dialogs/simmessage.cpp" line="-459"/>
+        <location line="-517"/>
         <source>ERROR: Simulator is still running!</source>
         <translation>HIBA: A szimulátor még fut!</translation>
     </message>
     <message>
-        <location line="+338"/>
-        <location filename="dialogs/simmessage.cpp" line="+368"/>
+        <location line="+426"/>
         <source>ERROR: Cannot start simulator!</source>
         <translation>HIBA: Szimuláció nem indítható!</translation>
     </message>
@@ -19516,20 +19849,17 @@ Hibák:
 </translation>
     </message>
     <message>
-        <location line="-329"/>
-        <location filename="dialogs/simmessage.cpp" line="-359"/>
+        <location line="-417"/>
         <source>ERROR: Cannot write netlist file!</source>
         <translation>HIBA: Kötéslista fájl nem írható!</translation>
     </message>
     <message>
-        <location line="+91"/>
-        <location filename="dialogs/simmessage.cpp" line="+94"/>
+        <location line="+94"/>
         <source>ERROR: Cannot start QucsConv!</source>
         <translation>HIBA: QucsConv nem indítható!</translation>
     </message>
     <message>
-        <location line="-94"/>
-        <location filename="dialogs/simmessage.cpp" line="-97"/>
+        <location line="-97"/>
         <source>creating netlist... </source>
         <translation>kötéslista készítés...</translation>
     </message>
@@ -19538,58 +19868,61 @@ Hibák:
         <translation type="obsolete">HIBA: &quot;%1&quot; nem másolható!</translation>
     </message>
     <message>
-        <location line="+76"/>
-        <location filename="dialogs/simmessage.cpp" line="+77"/>
+        <location line="+77"/>
         <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
         <translation>HIBA: A &quot;%1&quot; SPICE fájl nem nyitható meg.</translation>
     </message>
     <message>
-        <location line="-89"/>
-        <location filename="dialogs/simmessage.cpp" line="-92"/>
+        <location line="-92"/>
         <source>Starting new simulation on %1 at %2</source>
         <translation>Új szimuláció indul: %1, %2</translation>
     </message>
     <message>
-        <location line="+204"/>
-        <location line="+94"/>
-        <location filename="dialogs/simmessage.cpp" line="+212"/>
+        <location line="+215"/>
         <location line="+94"/>
         <source>done.</source>
         <translation>kész.</translation>
     </message>
     <message>
-        <location filename="dialogs/simmessage.cpp" line="+61"/>
+        <location line="+20"/>
+        <location line="+24"/>
+        <source>Error</source>
+        <translation type="unfinished">Hiba</translation>
+    </message>
+    <message>
+        <location line="-24"/>
+        <location line="+24"/>
+        <source>Cannot read netlist!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+71"/>
         <source>ERROR: Program not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="dialogs/simmessage_before_merge.cpp" line="+151"/>
-        <location filename="dialogs/simmessage.cpp" line="+109"/>
+        <location line="+110"/>
         <source>Simulation ended on %1 at %2</source>
         <translation>Szimuláció vége: %1, %2</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="dialogs/simmessage.cpp" line="+3"/>
         <source>Ready.</source>
         <translation>Kész.
 </translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="dialogs/simmessage.cpp" line="+3"/>
         <source>Errors occurred during simulation on %1 at %2</source>
         <translation>Hiba a szimuláció közben: %1. %2</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="dialogs/simmessage.cpp" line="+3"/>
         <source>Aborted.</source>
         <translation>Megszakítva.</translation>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="dialogs/simmessage.cpp" line="+7"/>
         <source>Output:
 -------</source>
         <translation>Kimenet:
@@ -19597,29 +19930,24 @@ Hibák:
     </message>
     <message>
         <location line="+3"/>
-        <location filename="dialogs/simmessage.cpp" line="+3"/>
         <source>Errors:
 -------</source>
         <translation>Hibák:
 -------</translation>
     </message>
     <message>
-        <location line="-228"/>
-        <location line="+7"/>
-        <location filename="dialogs/simmessage.cpp" line="-247"/>
+        <location line="-302"/>
         <location line="+7"/>
         <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="dialogs/simmessage.cpp" line="+8"/>
         <source>ERROR: Cannot create &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-227"/>
-        <location filename="dialogs/simmessage.cpp" line="-233"/>
+        <location line="-236"/>
         <source>ERROR: Cannot simulate a text file!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19627,7 +19955,7 @@ Hibák:
 <context>
     <name>SpiceDialog</name>
     <message>
-        <location filename="components/spicedialog.cpp" line="+64"/>
+        <location filename="components/spicedialog.cpp" line="+66"/>
         <source>Name:</source>
         <translation>Név:</translation>
     </message>
@@ -19677,24 +20005,24 @@ Hibák:
         <translation>Mégsem</translation>
     </message>
     <message>
-        <location line="+118"/>
+        <location line="+129"/>
         <source>All Files</source>
         <translation>Minden fájl</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-3"/>
         <source>Select a file</source>
         <translation>Fájl kiválasztás</translation>
     </message>
     <message>
-        <location line="-171"/>
+        <location line="-178"/>
         <source>show file name in schematic</source>
         <translation>fájlnév megjelenítése a kapcsolási rajzon</translation>
     </message>
     <message>
-        <location line="+255"/>
-        <location line="+9"/>
-        <location line="+39"/>
+        <location line="+279"/>
+        <location line="+10"/>
+        <location line="+48"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
@@ -19703,8 +20031,8 @@ Hibák:
         <translation type="obsolete">Nem futtatható</translation>
     </message>
     <message>
-        <location line="-58"/>
-        <location line="+50"/>
+        <location line="-71"/>
+        <location line="+59"/>
         <source>Info</source>
         <translation>Infó</translation>
     </message>
@@ -19713,17 +20041,17 @@ Hibák:
         <translation type="obsolete">Konvetálás...</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+22"/>
         <source>QucsConv Error</source>
         <translation>QucsConv Hiba</translation>
     </message>
     <message>
-        <location line="-143"/>
+        <location line="-167"/>
         <source>SPICE netlist</source>
         <translation>SPICE kötéslista</translation>
     </message>
     <message>
-        <location line="-207"/>
+        <location line="-217"/>
         <source>Edit SPICE Component Properties</source>
         <translation>SPICE komponens tulajdonságainak beállítása</translation>
     </message>
@@ -19738,33 +20066,33 @@ Hibák:
         <translation>belső SPICE szimuláció</translation>
     </message>
     <message>
-        <location line="+293"/>
+        <location line="+323"/>
         <source>Converting SPICE file &quot;%1&quot;.</source>
         <translation>&quot;%1&quot; SPICE fájl konvertásása.</translation>
     </message>
     <message>
-        <location line="-283"/>
+        <location line="-313"/>
         <source>preprocessor</source>
         <translation>előfeldolgozó</translation>
     </message>
     <message>
-        <location line="+233"/>
+        <location line="+254"/>
         <source>Preprocessing SPICE file &quot;%1&quot;.</source>
         <translation>&quot;%1&quot; SPICE fájl előfeldolgozása.</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+43"/>
         <source>SPICE Preprocessor Error</source>
         <translation>SPICE előfeldolgozó HIBA</translation>
     </message>
     <message>
-        <location line="-26"/>
+        <location line="-30"/>
         <source>Cannot save preprocessed SPICE file &quot;%1&quot;.</source>
         <translation>Nem menthető az előfeldolgozott &quot;%1&quot; SPICE fájl.</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <location line="+39"/>
+        <location line="+10"/>
+        <location line="+48"/>
         <source>Cannot execute &quot;%1&quot;.</source>
         <translation>&quot;%1&quot; nem futtatható.</translation>
     </message>
@@ -19785,7 +20113,7 @@ Hibák:
 <context>
     <name>SymbolWidget</name>
     <message>
-        <location filename="../qucs-lib/symbolwidget.cpp" line="+44"/>
+        <location filename="../qucs-lib/symbolwidget.cpp" line="+45"/>
         <source>Symbol:</source>
         <translation>Szimbólum:</translation>
     </message>
@@ -19810,7 +20138,7 @@ Hibák:
         <translation type="obsolete">%1/%2 oldal</translation>
     </message>
     <message>
-        <location filename="textdoc.cpp" line="+150"/>
+        <location filename="textdoc.cpp" line="+178"/>
         <source>Edit Text Symbol</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19863,7 +20191,7 @@ Inserts the skeleton of a Verilog module</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Octave function</source>
         <translation type="unfinished"></translation>
     </message>
