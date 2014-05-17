@@ -1,24 +1,24 @@
--- 
+--
 -- RELEASE
--- 
+--
 -- release instructions.
--- 
+--
 -- Copyright (C) 2004, 2006, 2011 Stefan Jahn <stefan@lkcc.org>
--- 
+--
 -- This is free software; you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
 -- the Free Software Foundation; either version 2, or (at your option)
 -- any later version.
--- 
+--
 -- This software is distributed in the hope that it will be useful,
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of
 -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 -- GNU General Public License for more details.
--- 
+--
 -- You should have received a copy of the GNU General Public License
 -- along with this package; see the file COPYING.  If not, write to
 -- the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
--- Boston, MA 02110-1301, USA.  
+-- Boston, MA 02110-1301, USA.
 --
 
 
@@ -33,20 +33,20 @@ Distribution process:
   - Maintainance currently requires the following software packages:
      + Autoconf version 2.57 (at least)
      + GNU automake 1.7.0 (at least)
-     + Qt installation >= version 3.1 (by Trolltech)
+     + Qt installation >= version 4.6 (by Digia)
   - Get latest `config.guess' and `config.sub' from GNU servers or run the
     command `automake -a -f -c' with latest automake version installed.
   - Run `make distclean', `sh autogen.sh' and `make all'.
   - Run `make distcheck'.
-  - Check this status into SVN and tag it.
+  - Check this status into GIT and tag it.
 
 * Bump up version.
   - Add a ChangeLog entry in toplevel directory.
   - Add new section in NEWS.
   - Bump up version number in `configure.ac'.
-  - Check into SVN.
+  - Check into GIT.
 
-* Distribute the package. 
+* Distribute the package.
   - Upload the package to the SourceForge server and add a News item.
   - Announce the release at Freshmeat.
   - Send an announcement to <qucs-help@lists.sourceforge.net>.
@@ -65,8 +65,8 @@ the tarballs created using `make distcheck'.
   - Autoconf version 2.57 (at least)
   - GNU automake 1.7.0 (at least)
   - flex 2.5.31 (but at least 2.5.9)
-  - GNU Bison 1.875d
-  - Qt installation >= version 3.1 (by Trolltech)
+  - GNU Bison 2.6+
+  - Qt installation >= version 4.6 (by Digia)
 
 * Unpack the packages in a temporary directory.
   - mkdir /temporary-dir and cd /temporary-dir
