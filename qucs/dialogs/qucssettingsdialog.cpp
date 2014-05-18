@@ -267,13 +267,19 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     locationsGrid->addWidget(AdmsXmlButt, 2, 2);
     connect(AdmsXmlButt, SIGNAL(clicked()), SLOT(slotAdmsXmlDirBrowse()));
 
-    locationsGrid->addWidget(new QLabel(tr("Octave Path:"), locationsTab) ,3,0);
-    octaveEdit = new QLineEdit(locationsTab);
-    locationsGrid->addWidget(octaveEdit,3,1);
-    QPushButton *OctaveButt = new QPushButton("...");
-    locationsGrid->addWidget(OctaveButt, 3, 2);
-    connect(OctaveButt, SIGNAL(clicked()), SLOT(slotOctaveDirBrowse()));
+    locationsGrid->addWidget(new QLabel(tr("ASCO Path:"), locationsTab) ,3,0);
+    ascoEdit = new QLineEdit(locationsTab);
+    locationsGrid->addWidget(ascoEdit,3,1);
+    QPushButton *ascoButt = new QPushButton("...");
+    locationsGrid->addWidget(ascoButt, 3, 2);
+    connect(ascoButt, SIGNAL(clicked()), SLOT(slotAscoDirBrowse()));
 
+    locationsGrid->addWidget(new QLabel(tr("Octave Path:"), locationsTab) ,4,0);
+    octaveEdit = new QLineEdit(locationsTab);
+    locationsGrid->addWidget(octaveEdit,4,1);
+    QPushButton *OctaveButt = new QPushButton("...");
+    locationsGrid->addWidget(OctaveButt, 4, 2);
+    connect(OctaveButt, SIGNAL(clicked()), SLOT(slotOctaveDirBrowse()));
 
 
     // the pathsTableWidget displays the path list
@@ -291,14 +297,14 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     // allow multiple items to be selected
     pathsTableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(pathsTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotPathTableClicked(int,int)));
-    locationsGrid->addWidget(pathsTableWidget,4,0,3,2);
+    locationsGrid->addWidget(pathsTableWidget,5,0,3,2);
 
     QPushButton *AddPathButt = new QPushButton("Add Path");
-    locationsGrid->addWidget(AddPathButt, 4, 2);
+    locationsGrid->addWidget(AddPathButt, 5, 2);
     connect(AddPathButt, SIGNAL(clicked()), SLOT(slotAddPath()));
 
     QPushButton *AddPathSubFolButt = new QPushButton("Add Path With SubFolders");
-    locationsGrid->addWidget(AddPathSubFolButt, 4, 2);
+    locationsGrid->addWidget(AddPathSubFolButt, 5, 2);
     connect(AddPathSubFolButt, SIGNAL(clicked()), SLOT(slotAddPathWithSubFolders()));
 
     QPushButton *RemovePathButt = new QPushButton("Remove Path");
@@ -352,6 +358,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     /*! Load paths from settings */
     homeEdit->setText(QucsSettings.QucsHomeDir.canonicalPath());
     admsXmlEdit->setText(QucsSettings.AdmsXmlBinDir.canonicalPath());
+    ascoEdit->setText(QucsSettings.AscoBinDir.canonicalPath());
     octaveEdit->setText(QucsSettings.OctaveBinDir.canonicalPath());
 
 
@@ -525,6 +532,7 @@ void QucsSettingsDialog::slotApply()
     /*! Update QucsSettings, tool paths */
     QucsSettings.QucsHomeDir = homeEdit->text();
     QucsSettings.AdmsXmlBinDir = admsXmlEdit->text();
+    QucsSettings.AscoBinDir = ascoEdit->text();
     QucsSettings.OctaveBinDir = octaveEdit->text();
 
     QucsSettings.IgnoreFutureVersion = checkLoadFromFutureVersions->isChecked();
@@ -696,6 +704,15 @@ void QucsSettingsDialog::slotAdmsXmlDirBrowse()
     fileDialog.setFileMode(QFileDialog::DirectoryOnly);
     fileDialog.exec();
     admsXmlEdit->setText(fileDialog.selectedFile());
+}
+
+void QucsSettingsDialog::slotAscoDirBrowse()
+{
+    QFileDialog fileDialog( this, tr("Select the ASCO bin directory"), ascoEdit->text() );
+    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
+    fileDialog.exec();
+    ascoEdit->setText(fileDialog.selectedFile());
 }
 
 void QucsSettingsDialog::slotOctaveDirBrowse()

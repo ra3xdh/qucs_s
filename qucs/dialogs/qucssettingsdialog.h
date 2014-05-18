@@ -66,6 +66,7 @@ private slots:
 
     void slotHomeDirBrowse();
     void slotAdmsXmlDirBrowse();
+    void slotAscoDirBrowse();
     void slotOctaveDirBrowse();
 
     void slotAddPath();
@@ -80,7 +81,8 @@ public:
     QCheckBox *checkWiring, *checkLoadFromFutureVersions;
     QComboBox *LanguageCombo;
     QPushButton *FontButton, *BGColorButton;
-    QLineEdit *undoNumEdit, *editorEdit, *Input_Suffix, *Input_Program, *homeEdit, *admsXmlEdit, *octaveEdit;
+    QLineEdit *undoNumEdit, *editorEdit, *Input_Suffix, *Input_Program,
+              *homeEdit, *admsXmlEdit, *ascoEdit, *octaveEdit;
     QTableWidget *fileTypesTableWidget, *pathsTableWidget;
     QStandardItemModel *model;
     QPushButton *ColorComment, *ColorString, *ColorInteger,

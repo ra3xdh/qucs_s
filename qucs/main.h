@@ -57,16 +57,17 @@ struct tQucsSettings {
   QString BinDir;
   QString LangDir;
   QString LibDir;
-  QString AscoDir;
-  QString OctaveDir;
+  QString OctaveDir;  // m-files location
   QString ExamplesDir;
   QString DocDir;
 
   unsigned int NodeWiring;
   QDir QucsWorkDir;
   QDir QucsHomeDir;
-  QDir AdmsXmlBinDir;
-  QDir OctaveBinDir;
+  QDir AdmsXmlBinDir;  // dir of admsXml executable
+  QDir AscoBinDir;     // dir of asco executable
+  QDir OctaveBinDir;   // dir of octave executable
+
   // registered filename extensions with program to open the file
   QStringList FileTypes;
 

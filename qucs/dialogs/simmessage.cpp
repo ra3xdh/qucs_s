@@ -40,9 +40,9 @@ using namespace std;
 #include "components/vhdlfile.h"
 
 #ifdef __MINGW32__
-#define executablePostfix ".exe"
+#define executableSuffix ".exe"
 #else
-#define executablePostfix ""
+#define executableSuffix ""
 #endif
 
 
@@ -500,13 +500,14 @@ void SimMessage::startSimulator()
 
       if((SimOpt = findOptimization((Schematic*)DocWidget))) {
 	    ((Optimize_Sim*)SimOpt)->createASCOnetlist();
-	    Program = QucsSettings.AscoDir + "asco"+ executablePostfix;
+
+        Program = QucsSettings.AscoBinDir.canonicalPath();
+        Program = QDir::toNativeSeparators(Program+"/"+"asco"+QString(executableSuffix));
         Arguments << "-qucs" << QucsSettings.QucsHomeDir.filePath("asco_netlist.txt")
                   << "-o" << "asco_out";
       }
       else {
-	    Program = QucsSettings.BinDir + "qucsator" + executablePostfix;
-
+        Program = QucsSettings.BinDir + "qucsator" + executableSuffix;
         Arguments << "-b" << "-g" << "-i"
                   << QucsSettings.QucsHomeDir.filePath("netlist.txt")
                   << "-o" << DataSet;
@@ -553,6 +554,7 @@ void SimMessage::startSimulator()
 
   // append process PATH
   QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+  // insert Qucs bin dir, so ASCO can find qucsator
   env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
   SimProcess.setProcessEnvironment(env);
   QFile file(Program);

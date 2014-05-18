@@ -740,11 +740,22 @@ int main(int argc, char *argv[])
   QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
 
-  //  \todo add ADMSXMLBINDIR , ASCOBINDIR
+
   var = getenv("ADMSXMLBINDIR");
   if(var != NULL)
   {
       QucsSettings.AdmsXmlBinDir.setPath(var);
+  }
+
+  var = getenv("ASCOBINDIR");
+  if(var != NULL)
+  {
+      QucsSettings.AscoBinDir.setPath(var);
+  }
+  else
+  {
+      // ASCO same bin dir as Qucs
+      QucsSettings.AscoBinDir = QucsSettings.BinDir;
   }
 
   var = getenv("OCTAVEBINDIR");
@@ -788,7 +799,6 @@ int main(int argc, char *argv[])
   if(!QucsSettings.Task.isValid())
     QucsSettings.Task = Qt::darkRed;
 
-    QucsSettings.AscoDir = QucsSettings.BinDir;
 
   a.setFont(QucsSettings.font);
 
