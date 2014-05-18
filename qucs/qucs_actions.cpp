@@ -1476,12 +1476,12 @@ void QucsApp::slotBuildModule()
     messageDock->builderTabs->setTabIcon(1,QPixmap());
 
 
-    QString Program;
+    QString make;
 
 #ifdef __MINGW32__
-    Program = "mingw32-make.exe";    // must be on the path!
+    make = "mingw32-make.exe";    // must be on the path!
 #else
-    Program = "make";                // must be on the path!
+    make = "make";                // must be on the path!
 #endif
 
     QDir prefix = QDir(QucsSettings.BinDir+"../");
@@ -1500,10 +1500,18 @@ void QucsApp::slotBuildModule()
     QucsDoc *Doc = getDoc();
     QString vaModule = Doc->fileBase(Doc->DocName);
 
+    QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
+
+#ifdef __MINGW32__
+    admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml.exe");
+#else
+    admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml");
+#endif
 
     // admsXml emmits C++
     QStringList Arguments;
     Arguments << "-f" <<  include.absoluteFilePath("va2cpp.makefile")
+              << QString("ADMSXML=%1").arg(admsXml)
               << QString("PREFIX=%1").arg(prefix.absolutePath())
               << QString("MODEL=%1").arg(vaModule);
 
@@ -1512,10 +1520,11 @@ void QucsApp::slotBuildModule()
     builder->setProcessEnvironment(env);
 
     // prepend command to log
-    QString cmdString = QString("%1 %2\n").arg(Program, Arguments.join(" "));
+    QString cmdString = QString("%1 %2\n").arg(make, Arguments.join(" "));
     messageDock->admsOutput->appendPlainText(cmdString);
 
-    builder->start(Program, Arguments);
+    qDebug() << "Command :" << make << Arguments.join(" ");
+    builder->start(make, Arguments);
 
     // admsXml seems to communicate all via stdout, or is it because of make?
     QString vaStatus;
@@ -1539,10 +1548,10 @@ void QucsApp::slotBuildModule()
               << QString("MODEL=%1").arg(vaModule);
 
     // prepend command to log
-    cmdString = QString("%1 %2\n").arg(Program, Arguments.join(" "));
+    cmdString = QString("%1 %2\n").arg(make, Arguments.join(" "));
     messageDock->cppOutput->appendPlainText(cmdString);
 
-    builder->start(Program, Arguments);
+    builder->start(make, Arguments);
 
     QString cppStatus;
 

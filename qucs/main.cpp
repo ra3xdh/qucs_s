@@ -740,6 +740,13 @@ int main(int argc, char *argv[])
   QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
 
+  //  \todo add ADMSXMLBINDIR , ASCOBINDIR
+  var = getenv("ADMSXMLBINDIR");
+  if(var != NULL)
+  {
+      QucsSettings.AdmsXmlBinDir.setPath(var);
+  }
+
   var = getenv("OCTAVEBINDIR");
   if(var != NULL)
   {

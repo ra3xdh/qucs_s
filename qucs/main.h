@@ -65,6 +65,7 @@ struct tQucsSettings {
   unsigned int NodeWiring;
   QDir QucsWorkDir;
   QDir QucsHomeDir;
+  QDir AdmsXmlBinDir;
   QDir OctaveBinDir;
   // registered filename extensions with program to open the file
   QStringList FileTypes;

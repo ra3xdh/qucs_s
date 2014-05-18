@@ -425,14 +425,17 @@ int Schematic::saveDocument()
 
       QString vaFile;
 
-      QDir prefix = QDir(QucsSettings.BinDir);
+//      QDir prefix = QDir(QucsSettings.BinDir);
 
       QDir include = QDir(QucsSettings.BinDir+"../include/qucs-core");
 
+      //pick admsXml from settings
+      QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
+
 #ifdef __MINGW32__
-      QString Program = prefix.absFilePath("admsXml.exe");
+      admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml.exe");
 #else
-      QString Program = prefix.absFilePath("admsXml");
+      admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml");
 #endif
 
       QString workDir = QucsSettings.QucsWorkDir.absolutePath();
@@ -452,14 +455,15 @@ int Schematic::saveDocument()
 //      QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 //      env.insert("PATH", env.value("PATH") );
 
-      QFile file(Program);
+      QFile file(admsXml);
       if ( !file.exists() ){
         QMessageBox::critical(this, tr("Error"),
-                              tr("Program not found: %1").arg(Program));
+                              tr("Program admsXml not found: %1\n\n"
+                                  "Set the admsXml location on the application settings.").arg(admsXml));
         return -1;
       }
 
-      qDebug() << "command: " << Program << Arguments.join(" ");
+      qDebug() << "Command: " << admsXml << Arguments.join(" ");
 
       // need to cd into project to run admsXml?
       QDir::setCurrent(workDir);
@@ -467,18 +471,18 @@ int Schematic::saveDocument()
       QProcess builder;
       builder.setProcessChannelMode(QProcess::MergedChannels);
 
-      builder.start(Program, Arguments);
+      builder.start(admsXml, Arguments);
 
 
       // how to capture [warning]? need to modify admsXml?
       // TODO put stdout, stderr into a dock window, not messagebox
       if (!builder.waitForFinished()) {
-        QString cmdString = QString("%1 %2\n\n").arg(Program, Arguments.join(" "));
+        QString cmdString = QString("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
         cmdString = cmdString + builder.errorString();
         QMessageBox::critical(this, tr("Error"), cmdString);
       }
       else {
-        QString cmdString = QString("%1 %2\n\n").arg(Program, Arguments.join(" "));
+        QString cmdString = QString("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
         cmdString = cmdString + builder.readAll();
         QMessageBox::information(this, tr("Status"), cmdString);
       }

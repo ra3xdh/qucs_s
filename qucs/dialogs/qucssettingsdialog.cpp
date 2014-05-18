@@ -252,20 +252,29 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     QLabel *note2 = new QLabel(
         tr("Edit the standard paths and external applications"));
     locationsGrid->addWidget(note2,0,0,1,2);
-    locationsGrid->addWidget(new QLabel(tr("Octave path:"), locationsTab) ,1,0);
 
-    octaveEdit = new QLineEdit(locationsTab);
-    locationsGrid->addWidget(octaveEdit,1,1);
-    QPushButton *OctaveButt = new QPushButton("...");
-    locationsGrid->addWidget(OctaveButt, 1, 2);
-    connect(OctaveButt, SIGNAL(clicked()), SLOT(slotOctaveBrowse()));
-
-    locationsGrid->addWidget(new QLabel(tr("Qucs Home:"), locationsTab) ,2,0);
+    locationsGrid->addWidget(new QLabel(tr("Qucs Home:"), locationsTab) ,1,0);
     homeEdit = new QLineEdit(locationsTab);
-    locationsGrid->addWidget(homeEdit,2,1);
+    locationsGrid->addWidget(homeEdit,1,1);
     QPushButton *HomeButt = new QPushButton("...");
-    locationsGrid->addWidget(HomeButt, 2, 2);
+    locationsGrid->addWidget(HomeButt, 1, 2);
     connect(HomeButt, SIGNAL(clicked()), SLOT(slotHomeDirBrowse()));
+
+    locationsGrid->addWidget(new QLabel(tr("AdmsXml Path:"), locationsTab) ,2,0);
+    admsXmlEdit = new QLineEdit(locationsTab);
+    locationsGrid->addWidget(admsXmlEdit,2,1);
+    QPushButton *AdmsXmlButt = new QPushButton("...");
+    locationsGrid->addWidget(AdmsXmlButt, 2, 2);
+    connect(AdmsXmlButt, SIGNAL(clicked()), SLOT(slotAdmsXmlDirBrowse()));
+
+    locationsGrid->addWidget(new QLabel(tr("Octave Path:"), locationsTab) ,3,0);
+    octaveEdit = new QLineEdit(locationsTab);
+    locationsGrid->addWidget(octaveEdit,3,1);
+    QPushButton *OctaveButt = new QPushButton("...");
+    locationsGrid->addWidget(OctaveButt, 3, 2);
+    connect(OctaveButt, SIGNAL(clicked()), SLOT(slotOctaveDirBrowse()));
+
+
 
     // the pathsTableWidget displays the path list
     pathsTableWidget = new QTableWidget(locationsTab);
@@ -282,10 +291,10 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     // allow multiple items to be selected
     pathsTableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(pathsTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotPathTableClicked(int,int)));
-    locationsGrid->addWidget(pathsTableWidget,3,0,3,2);
+    locationsGrid->addWidget(pathsTableWidget,4,0,3,2);
 
     QPushButton *AddPathButt = new QPushButton("Add Path");
-    locationsGrid->addWidget(AddPathButt, 3, 2);
+    locationsGrid->addWidget(AddPathButt, 4, 2);
     connect(AddPathButt, SIGNAL(clicked()), SLOT(slotAddPath()));
 
     QPushButton *AddPathSubFolButt = new QPushButton("Add Path With SubFolders");
@@ -339,8 +348,12 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     for(int z=LanguageCombo->count()-1; z>=0; z--)
         if(LanguageCombo->text(z).section('(',1,1).remove(')') == QucsSettings.Language)
             LanguageCombo->setCurrentItem(z);
-    octaveEdit->setText(QucsSettings.OctaveBinDir.canonicalPath());
+
+    /*! Load paths from settings */
     homeEdit->setText(QucsSettings.QucsHomeDir.canonicalPath());
+    admsXmlEdit->setText(QucsSettings.AdmsXmlBinDir.canonicalPath());
+    octaveEdit->setText(QucsSettings.OctaveBinDir.canonicalPath());
+
 
     resize(300, 200);
 }
@@ -508,8 +521,11 @@ void QucsSettingsDialog::slotApply()
                                       +"/"+
                                       fileTypesTableWidget->item(row,1)->text());
     }
-    QucsSettings.OctaveBinDir = octaveEdit->text();
+
+    /*! Update QucsSettings, tool paths */
     QucsSettings.QucsHomeDir = homeEdit->text();
+    QucsSettings.AdmsXmlBinDir = admsXmlEdit->text();
+    QucsSettings.OctaveBinDir = octaveEdit->text();
 
     QucsSettings.IgnoreFutureVersion = checkLoadFromFutureVersions->isChecked();
 
@@ -664,16 +680,6 @@ void QucsSettingsDialog::slotTableClicked(int row, int col)
 // -----------------------------------------------------------
 // The locations tab slots
 
-void QucsSettingsDialog::slotOctaveBrowse()
-{
-    QFileDialog fileDialog( this, tr("Select the octave bin directory"), octaveEdit->text() );
-    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
-    fileDialog.exec();
-    octaveEdit->setText(fileDialog.selectedFile());
-}
-
-
 void QucsSettingsDialog::slotHomeDirBrowse()
 {
     QFileDialog fileDialog( this, tr("Select the home directory"), homeEdit->text() );
@@ -681,6 +687,24 @@ void QucsSettingsDialog::slotHomeDirBrowse()
     fileDialog.setFileMode(QFileDialog::DirectoryOnly);
     fileDialog.exec();
     homeEdit->setText(fileDialog.selectedFile());
+}
+
+void QucsSettingsDialog::slotAdmsXmlDirBrowse()
+{
+    QFileDialog fileDialog( this, tr("Select the admsXml bin directory"), admsXmlEdit->text() );
+    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
+    fileDialog.exec();
+    admsXmlEdit->setText(fileDialog.selectedFile());
+}
+
+void QucsSettingsDialog::slotOctaveDirBrowse()
+{
+    QFileDialog fileDialog( this, tr("Select the octave bin directory"), octaveEdit->text() );
+    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
+    fileDialog.exec();
+    octaveEdit->setText(fileDialog.selectedFile());
 }
 
 void QucsSettingsDialog::slotPathTableClicked(int row, int col)
