@@ -729,12 +729,12 @@ int main(int argc, char *argv[])
 
   }
 
-  QucsSettings.BinDir = QucsDir.canonicalPath() + "/bin/";
-  QucsSettings.LangDir =QucsDir.canonicalPath() + "/share/qucs/lang/";
-  QucsSettings.LibDir =QucsDir.canonicalPath() + "/share/qucs/library/";
-  QucsSettings.OctaveDir =QucsDir.canonicalPath() + "/share/qucs/octave/";
+  QucsSettings.BinDir =      QucsDir.canonicalPath() + "/bin/";
+  QucsSettings.LangDir =     QucsDir.canonicalPath() + "/share/qucs/lang/";
+  QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/qucs/library/";
+  QucsSettings.OctaveDir =   QucsDir.canonicalPath() + "/share/qucs/octave/";
   QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/qucs/docs/examples/";
-  QucsSettings.DocDir = QucsDir.canonicalPath() + "/share/qucs/docs/";
+  QucsSettings.DocDir =      QucsDir.canonicalPath() + "/share/qucs/docs/";
 
   QucsSettings.Editor = "qucs";
   QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
@@ -742,29 +742,28 @@ int main(int argc, char *argv[])
 
 
   var = getenv("ADMSXMLBINDIR");
-  if(var != NULL)
-  {
+  if(var != NULL) {
       QucsSettings.AdmsXmlBinDir.setPath(var);
+  }
+  else {
+      // default admsXml bindir same as Qucs
+      QucsSettings.AdmsXmlBinDir = QucsSettings.BinDir;
   }
 
   var = getenv("ASCOBINDIR");
-  if(var != NULL)
-  {
+  if(var != NULL)  {
       QucsSettings.AscoBinDir.setPath(var);
   }
-  else
-  {
-      // ASCO same bin dir as Qucs
+  else  {
+      // default ASCO bindir same as Qucs
       QucsSettings.AscoBinDir = QucsSettings.BinDir;
   }
 
   var = getenv("OCTAVEBINDIR");
-  if(var != NULL)
-  {
+  if(var != NULL)  {
       QucsSettings.OctaveBinDir.setPath(var);
   }
-  else
-  {
+  else  {
 #ifdef __MINGW32__
       QucsSettings.OctaveBinDir.setPath("C:/Software/Octave-3.6.4/bin/");
 #else
