@@ -87,7 +87,8 @@ bool loadSettings()
     //if(settings.contains("BinDir"))QucsSettings.BinDir = settings.value("BinDir").toString();
     //if(settings.contains("LangDir"))QucsSettings.LangDir = settings.value("LangDir").toString();
     //if(settings.contains("LibDir"))QucsSettings.LibDir = settings.value("LibDir").toString();
-    //if(settings.contains("AscoDir"))QucsSettings.AscoDir = settings.value("AscoDir").toString();
+    if(settings.contains("AdmsXmlBinDir"))QucsSettings.AdmsXmlBinDir = settings.value("AdmsXmlBinDir").toString();
+    if(settings.contains("AscoBinDir"))QucsSettings.AscoBinDir = settings.value("AscoBinDir").toString();
     //if(settings.contains("OctaveDir"))QucsSettings.OctaveDir = settings.value("OctaveDir").toString();
     //if(settings.contains("ExamplesDir"))QucsSettings.ExamplesDir = settings.value("ExamplesDir").toString();
     //if(settings.contains("DocDir"))QucsSettings.DocDir = settings.value("DocDir").toString();
@@ -152,7 +153,8 @@ bool saveApplSettings(QucsApp *qucs)
     //settings.setValue("BinDir", QucsSettings.BinDir);
     //settings.setValue("LangDir", QucsSettings.LangDir);
     //settings.setValue("LibDir", QucsSettings.LibDir);
-    //settings.setValue("AscoDir", QucsSettings.AscoDir);
+    settings.setValue("AdmsXmlBinDir", QucsSettings.AdmsXmlBinDir.canonicalPath());
+    settings.setValue("AscoBinDir", QucsSettings.AscoBinDir.canonicalPath());
     //settings.setValue("OctaveDir", QucsSettings.OctaveDir);
     //settings.setValue("ExamplesDir", QucsSettings.ExamplesDir);
     //settings.setValue("DocDir", QucsSettings.DocDir);
@@ -747,7 +749,15 @@ int main(int argc, char *argv[])
   }
   else {
       // default admsXml bindir same as Qucs
-      QucsSettings.AdmsXmlBinDir = QucsSettings.BinDir;
+      QString admsExec;
+#ifdef __MINGW32__
+      admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco.exe");
+#else
+      admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco");
+#endif
+      QFile adms(admsExec);
+      if(adms.exists())
+        QucsSettings.AdmsXmlBinDir.setPath(QucsSettings.BinDir);
   }
 
   var = getenv("ASCOBINDIR");
@@ -756,7 +766,15 @@ int main(int argc, char *argv[])
   }
   else  {
       // default ASCO bindir same as Qucs
-      QucsSettings.AscoBinDir = QucsSettings.BinDir;
+      QString ascoExec;
+#ifdef __MINGW32__
+      ascoExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco.exe");
+#else
+      ascoExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco");
+#endif
+      QFile asco(ascoExec);
+      if(asco.exists())
+        QucsSettings.AscoBinDir.setPath(QucsSettings.BinDir);
   }
 
   var = getenv("OCTAVEBINDIR");
