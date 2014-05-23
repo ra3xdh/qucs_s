@@ -45,6 +45,26 @@ SET(LANGUAGEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/lang/")
 SET(LIBRARYDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/library/")
 SET(OCTAVEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/octave/")
 
+
+FIND_PACKAGE( Qt4 4.6.3 REQUIRED QtCore QtGui Qt3Support QtSvg QtXml QtScript)
+INCLUDE( ${QT_USE_FILE} )
+
+#MESSAGE("QT_INCLUDES=[${QT_INCLUDES}]")
+#MESSAGE("QT_LIBRARIES=[${QT_LIBRARIES}]")
+
+# Check whether the Qt QTabWidget::setMovable() function exists.
+# This function was added in Qt 4.5.
+# * Maybe use CMake CheckCXXSourceCompiles in the future?
+TRY_COMPILE( HAVE_QTABWIDGET_SETMOVABLE
+        ${CMAKE_BINARY_DIR}
+        ${CMAKE_SOURCE_DIR}/cmake/QTabWidget_setMovable.cpp
+        CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${QT_INCLUDES}"
+        LINK_LIBRARIES ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
+        OUTPUT_VARIABLE TRY_OUT )
+IF(NOT HAVE_QTABWIDGET_SETMOVABLE)
+  MESSAGE("QTabWidget::setMovable() not available, feature disabled.")
+ENDIF()
+
 # configure the header config.h
 CONFIGURE_FILE (
     "${PROJECT_SOURCE_DIR}/../config.h.cmake"
@@ -54,10 +74,6 @@ CONFIGURE_FILE (
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR} )
 
-FIND_PACKAGE( Qt4 4.6.3 REQUIRED QtCore QtGui Qt3Support QtSvg QtXml QtScript)
-INCLUDE( ${QT_USE_FILE} )
-
-MESSAGE("QT_LIBRARIES=[${QT_LIBRARIES}]")
 
 # For some reason, on Windows QT_LIBRARIES point to static(?) .a libs
 # which do not provide the needed symbols. They are found on
