@@ -40,10 +40,6 @@
 
 #include "rect3ddiagram.h"
 
-#ifdef __MINGW32__
-# define isfinite(x) _finite(x)
-#endif
-
 using namespace std;
 
 Diagram::Diagram(int _cx, int _cy)

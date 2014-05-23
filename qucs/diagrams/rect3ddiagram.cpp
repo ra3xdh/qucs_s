@@ -22,9 +22,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
-#ifdef __MINGW32__
-# define isfinite(x) _finite(x)
-#endif
 #include <limits.h>
 #if HAVE_IEEEFP_H
 # include <ieeefp.h>
