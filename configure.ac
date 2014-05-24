@@ -85,19 +85,44 @@ fi
 unset osversion
 
 dnl Release specific. Uncomment these as required.
-# AC_CONFIG_SUBDIRS(qucs-core)
-# AC_CONFIG_SUBDIRS(qucs-doc)
-# AC_CONFIG_SUBDIRS(freehdl)
-# AC_CONFIG_SUBDIRS(verilog)
-# AC_CONFIG_SUBDIRS(asco)
-# AC_CONFIG_SUBDIRS(examples)
+# RELEASE="yes"
 
-# RELEASEDIRS="qucs-core"
-# RELEASEDIRS="$RELEASEDIRS qucs-doc"
-# RELEASEDIRS="$RELEASEDIRS freehdl"
-# RELEASEDIRS="$RELEASEDIRS verilog"
-# RELEASEDIRS="$RELEASEDIRS asco"
-# RELEASEDIRS="$RELEASEDIRS examples"
+if test "$RELEASE"="yes"; then
+
+  dnl Default-enabled build distributed ASCO
+  AC_ARG_ENABLE([asco],
+      AS_HELP_STRING([--disable-asco], [Disable build of included ASCO (enabled by default)]))
+
+  AS_IF([test "x$enable_asco" != "xno"], [
+    dnl Do the stuff needed for enabling the feature
+    AC_CONFIG_SUBDIRS(asco)
+    RELEASEDIRS="$RELEASEDIRS asco"
+
+  dnl Default-enabled build distributed ADMS
+  dnl The released source is configured, does not need ADMS.
+  dnl Provided as convinience for dynamic loader users.
+  AC_ARG_ENABLE([adms],
+      AS_HELP_STRING([--disable-adms], [Disable build of included ADMS (enabled by default)]))
+
+  AS_IF([test "x$enable_adms" != "xno"], [
+    dnl Do the stuff needed for enabling the feature
+    AC_CONFIG_SUBDIRS(qucs-core/deps/adms)
+    RELEASEDIRS="$RELEASEDIRS qucs-core/deps/adms"
+  ])
+  ])
+
+  AC_CONFIG_SUBDIRS(qucs-core)
+  AC_CONFIG_SUBDIRS(qucs-doc)
+  AC_CONFIG_SUBDIRS(examples)
+  # AC_CONFIG_SUBDIRS(freehdl)
+  # AC_CONFIG_SUBDIRS(verilog)
+
+  RELEASEDIRS="$RELEASEDIRS qucs-core"
+  RELEASEDIRS="$RELEASEDIRS qucs-doc"
+  RELEASEDIRS="$RELEASEDIRS examples"
+  # RELEASEDIRS="$RELEASEDIRS freehdl"
+  # RELEASEDIRS="$RELEASEDIRS verilog"
+fi
 AC_SUBST(RELEASEDIRS)
 
 dnl Check for language support.
