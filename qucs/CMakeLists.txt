@@ -57,7 +57,7 @@ INCLUDE( ${QT_USE_FILE} )
 # * Maybe use CMake CheckCXXSourceCompiles in the future?
 TRY_COMPILE( HAVE_QTABWIDGET_SETMOVABLE
         ${CMAKE_BINARY_DIR}
-        ${CMAKE_SOURCE_DIR}/cmake/QTabWidget_setMovable.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/QTabWidget_setMovable.cpp
         CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${QT_INCLUDES}"
         LINK_LIBRARIES ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
         OUTPUT_VARIABLE TRY_OUT )
