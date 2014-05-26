@@ -370,8 +370,9 @@ void SimMessage::startSimulator()
       }
 #endif
       Program = pathName(QucsSettings.BinDir + QucsDigi);
-	  Arguments  << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
-		  << pathName(QucsSettings.BinDir) << libs;
+      Arguments  << QucsSettings.QucsHomeDir.filePath("netlist.txt")
+                 << DataSet << SimTime << pathName(SimPath)
+                 << pathName(QucsSettings.BinDir) << libs;
     }
     // Module.
     else {
@@ -406,7 +407,10 @@ void SimMessage::startSimulator()
       destFile.writeBlock(text.ascii(), text.length());
       destFile.close();
       Program = pathName(QucsSettings.BinDir + QucsDigiLib);
-	  Arguments << "netlist.txt" << pathName(SimPath) << entity << lib;
+      Arguments << QucsSettings.QucsHomeDir.filePath("netlist.txt")
+                << pathName(SimPath)
+                << entity
+                << lib;
     }
   }
   // Simulate schematic window.
@@ -516,17 +520,22 @@ void SimMessage::startSimulator()
     else {
       if (isVerilog) {
           Program = pathName(QucsSettings.BinDir + QucsVeri);
-		  Arguments << "netlist.txt" << DataSet
-                    << SimTime << pathName(SimPath)
-                    << pathName(QucsSettings.BinDir) << "-c";
+          Arguments << QucsSettings.QucsHomeDir.filePath("netlist.txt")
+                    << DataSet
+                    << SimTime
+                    << pathName(SimPath)
+                    << pathName(QucsSettings.BinDir)
+                    << "-c";
       } else {
 #ifdef __MINGW32__
 	Program = pathName(QucsSettings.BinDir + QucsDigi);
-	Arguments << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
+    Arguments << QucsSettings.QucsHomeDir.filePath("netlist.txt")
+              << DataSet << SimTime << pathName(SimPath)
 		      << pathName(QucsSettings.BinDir) << "-Wl" << "-c";
 #else
 	Program = pathName(QucsSettings.BinDir + QucsDigi);
-	Arguments << "netlist.txt" << DataSet << SimTime << pathName(SimPath)
+    Arguments << QucsSettings.QucsHomeDir.filePath("netlist.txt")
+              << DataSet << SimTime << pathName(SimPath)
 		      << pathName(QucsSettings.BinDir) << "-Wall" << "-c";
 
 #endif
