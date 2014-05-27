@@ -98,6 +98,7 @@ cp $QTDIR/bin/QtScript4.dll $WINDIR/bin
 
 cp $QTDIR/bin/libgcc_s_dw2-1.dll $WINDIR/bin
 cp $QTDIR/bin/libstdc++-6.dll $WINDIR/bin
+cp $QTDIR/bin/libwinpthread-1.dll $WINDIR/bin
 
 #cp $QTDIR/bin/mingwm10.dll $WINDIR/bin
 #cp /usr/lib/gcc/i586-mingw32msvc/4.2.1-sjlj/*.dll $WINDIR/bin
