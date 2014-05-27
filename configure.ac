@@ -84,10 +84,9 @@ if test "x$osversion" = "x"; then
 fi
 unset osversion
 
-dnl Release specific. Uncomment these as required.
-# RELEASE="yes"
-
-if test "$RELEASE"="yes"; then
+dnl Release specific. Chanded by release_tarball.sh
+RELEASE=no
+if test $RELEASE = yes; then
 
   dnl Default-enabled build distributed ASCO
   AC_ARG_ENABLE([asco],

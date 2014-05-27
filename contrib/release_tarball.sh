@@ -69,6 +69,8 @@ rm -r release/qucs-$RELEASE/qucs-core/deps/adms/.git
 
 # release broke CMake! Release has different structure than Repository
 find release/qucs-$RELEASE -name CMakeLists.txt | xargs rm
+rm -rf release/qucs-$RELEASE/cmake
+rm -rf release/qucs-$RELEASE/qucs-core/cmake
 
 # Build documentation in source dir
 cd $REPO/release/qucs-doc
@@ -102,6 +104,7 @@ done
 # done with qucs-doc
 cd $REPO/release
 rm -rf qucs-doc
+
 
 
 # cleanup and prepare target dir
@@ -143,7 +146,7 @@ aclocal
 cd ..
 
 # set configure.ac into RELEASE mode
-sed -i '' 's/# RELEASE="yes"/RELEASE="yes"/g' configure.ac
+sed -i '' 's/RELEASE=no/RELEASE=yes/g' configure.ac
 
 # bootstrap qucs, qucs-edit, qucs-filter...
 cd $REPO/release/qucs-$RELEASE
