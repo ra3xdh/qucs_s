@@ -58,7 +58,6 @@ echo Exporting git tree recursively...
 # flatten subdiretories
 git clone --recursive ./ release/
 mv release/examples release/qucs/examples/examples
-#mv release/qucs-core/deps/adms/ release/qucs/adms/
 mv release/qucs-core release/qucs/
 
 # TODO remove .gitignore, .travis, ...
@@ -66,6 +65,10 @@ mv release/qucs-core release/qucs/
 # tag directory
 mv release/qucs release/qucs-$RELEASE
 rm -rf release/.git
+rm -r release/qucs-$RELEASE/qucs-core/deps/adms/.git
+
+# release broke CMake! Release has different structure than Repository
+find release/qucs-$RELEASE -name CMakeLists.txt | xargs rm
 
 # Build documentation in source dir
 cd $REPO/release/qucs-doc
