@@ -149,6 +149,13 @@ echo "Configuring for i386-MinGW32 cross ..."
 
 ./configure --prefix=${WINDIR} --target=i386-mingw32 --host=i386-mingw32 --build=i586-linux --program-prefix="" --disable-dependency-tracking
 
+# cleanup
+if [ -d ${WINDIR} ]
+then
+	echo Prefix directory exists, removing: ${WINDIR}
+	rm -rf ${WINDIR}
+fi
+
 make -j 8
 make install
 # Install binaries into ~/.wine/drive_c/qucs-win32-bin/
