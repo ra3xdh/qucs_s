@@ -41,7 +41,7 @@
 
 ## 3) Install MinGW into Wine (MinGW matched to Qt)
 #
-# Download MinGW 4.8.3
+# Download MinGW 4.8.2
 # http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.8.2/threads-posix/dwarf/i686-4.8.2-release-posix-dwarf-rt_v3-rev3.7z
 #
 # Install (extract) MinGW into Wine
