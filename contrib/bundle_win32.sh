@@ -66,24 +66,30 @@ mv iverilog-${ICARUS_VER}_setup.exe $WINDIR
 
 # add FreeHDL into installer
 echo Copy FreeHDL...
-if [ -f ~/Downloads/freehdl-0.0.8-setup.exe ]
+#freehdl=~/Downloads/freehdl-0.0.8-setup.exe
+freehdl=~/Downloads/freehdl-0.0.8-1-setup.exe
+if [ -f $freehdl ]
 then
-	cp ~/Downloads/freehdl-0.0.8-setup.exe .
+	cp $freehdl .
 else
+  # TODO
 	wget https://downloads.sourceforge.net/project/qucs/freehdl/freehdl-0.0.8-setup.exe -P ~/Downloads/
 fi
-mv freehdl-0.0.8-setup.exe $WINDIR
+mv $freehdl $WINDIR
 
 
 # TODO update this?
 echo Copy MinGW...
-if [ -f ~/Downloads/mingw32-g++-0.0.2-setup.exe ]
+#mingw= ~/Downloads/mingw32-g++-0.0.2-setup.exe
+mingw= ~/Downloads/mingw-w64-i686-4.8.2-release-posix-dwarf-rt_v3-rev3-setup.exe
+if [ -f $mingw ]
 then
-	cp ~/Downloads/mingw32-g++-0.0.2-setup.exe .
+	cp $mingw .
 else
+  # TODO
 	wget https://downloads.sourceforge.net/project/qucs/freehdl/mingw32-g%2B%2B-0.0.2-setup.exe -P ~/Downloads/
 fi
-mv mingw32-g++-0.0.2-setup.exe $WINDIR
+mv $mingw $WINDIR
 
 
 echo Copy runtime libraries...
