@@ -23,7 +23,15 @@
 ; NOTE: additional files: bin/libregex.dll lib/libregex.a
 ;
 
-#define RELEASE "0.0.8"
+; changelog
+; 0.0.8-1
+;   - just repackage
+;   - eliminate need for admin rights
+; 0.0.8
+;   - first release
+
+
+#define RELEASE "0.0.8-1"
 #define BASENAME "freehdl"
 #define APPNAME "FreeHDL"
 #define APPVERNAME "FreeHDL 0.0.8 binary package for Win32"
@@ -37,7 +45,7 @@ AppPublisher=the Qucs team
 AppPublisherURL={# URL}
 AppSupportURL={# URL}
 AppUpdatesURL={# URL}
-DefaultDirName={pf}\FreeHDL
+;DefaultDirName={pf}\FreeHDL
 DefaultGroupName=FreeHDL
 AllowNoIcons=yes
 LicenseFile={# TREE}\gpl.rtf
@@ -46,11 +54,16 @@ Compression=lzma
 SolidCompression=yes
 ChangesEnvironment=yes
 
+; no admin right required http://www.kinook.com/blog/?p=53
+PrivilegesRequired=none
+DefaultDirName={code:DefDirRoot}\FreeHDL
+
 [Registry]
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: FREEHDL; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: MINGWDIR; ValueData: {code:MinGWDir}; Flags: createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
-; Root: HKCU; Subkey: Environment; ValueType: string; ValueName: FREEHDL; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
-; Root: HKCU; Subkey: Environment; ValueType: string; ValueName: MINGWDIR; ValueData: {code:MinGWDir}; Flags: createvalueifdoesntexist; MinVersion: 0,4.00.1381
+
+Root: HKCU; Subkey: Environment; ValueType: string; ValueName: FREEHDL; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
+Root: HKCU; Subkey: Environment; ValueType: string; ValueName: MINGWDIR; ValueData: {code:MinGWDir}; Flags: createvalueifdoesntexist; MinVersion: 0,4.00.1381
 
 [Tasks]
 ; Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -101,4 +114,19 @@ begin
 
   Result := Dir;
 end;
+
+
+function IsRegularUser(): Boolean;
+begin
+  Result := not (IsAdminLoggedOn or IsPowerUserLoggedOn);
+end;
+
+function DefDirRoot(Param: String): String;
+begin
+  if IsRegularUser then
+    Result := ExpandConstant('{localappdata}')
+  else
+    Result := ExpandConstant('{pf}')
+end;
+
 
