@@ -101,30 +101,45 @@
 # make
 # make install
 
-if [ $# -ne 0 ]
-then
-  RELEASE=$1
-else
-  RELEASE=$(date +"%y%m%d")
-  RELEASE="0.0.18."${RELEASE:0:6}
+#if [ $# -ne 0 ]
+#then
+#  RELEASE=$1
+#else
+#  RELEASE=$(date +"%y%m%d")
+#  RELEASE="0.0.18."${RELEASE:0:6}
+#fi
+#echo Building release: $RELEASE
+
+if [ "$#" -ne 1 ]; then
+    echo "Provide tarball as argument..."
 fi
-echo Building release: $RELEASE
 
 REPO=${PWD}
 echo Working from: ${REPO}
 # TODO test location
+
+# simple test for current location
+if [ ! -d release ]
+then
+	echo Sub-directory _release_ does not exists, run release_tarball.sh or change directory.
+  exit
+fi
 
 cd ${REPO}/release
 mkdir build_win32
 cd build_win32
 
 # Requires package:     ~/git/qucs/release/qucs-x.x.x.tar.gz
-tar xvfz ../qucs-${RELEASE}.tar.gz
-cd qucs-${RELEASE}
+TARBALL=$(basename $1)
+DIRNAME=$(basename $1 .tar.gz)
+
+echo Using source tarball: $TARBALL
+
+tar xvfz ../$TARBALL
+cd $DIRNAME
 
 
 echo "Building mingw32"
-
 
 # Temporary install prefix
 WINDIR=${HOME}/.wine/drive_c/qucs-win32-bin
@@ -158,4 +173,8 @@ fi
 
 make -j 8
 make install
+
+# deploy pdfs and other things
+make install data
+
 # Install binaries into ~/.wine/drive_c/qucs-win32-bin/

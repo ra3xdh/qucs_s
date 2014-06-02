@@ -33,19 +33,28 @@
 # Set Release tag
 # TODO get it from git tags or VERSION file
 
+
 if [ $# -ne 0 ]
 then
   RELEASE=$1
 else
   RELEASE=$(date +"%y%m%d")
-  RELEASE="0.0.18."${RELEASE:0:6}
+  RELEASE="0.0.18-"${RELEASE:0:6}
 fi
+
+
+# Get Git short hash
+GIT=$(git log --pretty=format:'%h' -n 1)
+
+
+# Append git short hash
+RELEASE=${RELEASE}-git-${GIT}
 echo Building release: $RELEASE
 
 REPO=${PWD}
 echo Working from: ${REPO}
-# TODO test location
 
+# TODO test location
 if [ -d release ]
 then
 	echo Directory release exists, removing ...
@@ -68,9 +77,9 @@ rm -rf release/.git
 rm -r release/qucs-$RELEASE/qucs-core/deps/adms/.git
 
 # release broke CMake! Release has different structure than Repository
-find release/qucs-$RELEASE -name CMakeLists.txt | xargs rm
-rm -rf release/qucs-$RELEASE/cmake
-rm -rf release/qucs-$RELEASE/qucs-core/cmake
+#find release/qucs-$RELEASE -name CMakeLists.txt | xargs rm
+#rm -rf release/qucs-$RELEASE/cmake
+#rm -rf release/qucs-$RELEASE/qucs-core/cmake
 
 # Build documentation in source dir
 cd $REPO/release/qucs-doc
@@ -88,7 +97,7 @@ cd ..
 
 cd technical
 make technical
-ps2pdf technical.ps
+#ps2pdf technical.ps
 cd ..
 
 
@@ -97,8 +106,8 @@ cd $REPO/release/qucs-doc
 DOC_SUBDIRS="report technical tutorial"
 for DOC_SUBDIR in ${DOC_SUBDIRS} ; do
 	cd $DOC_SUBDIR
-	mkdir -p ../../qucs-$RELEASE/qucs-doc/$DOC_SUBDIR
-	find -name "*.pdf" |grep -v pics| xargs cp -t ../../qucs-$RELEASE/qucs-doc/$DOC_SUBDIR
+	mkdir -p $REPO/release/qucs-$RELEASE/qucs-doc/$DOC_SUBDIR
+	find . -name "*.pdf" |grep -v pics| xargs -I {} cp {} $REPO/release/qucs-$RELEASE/qucs-doc/$DOC_SUBDIR
 	cd ..
 done
 # done with qucs-doc
@@ -177,9 +186,8 @@ echo Bootstrap ADMS...
 cd qucs-core/deps/adms
 ./bootstrap.sh
 ./configure --enable-maintainer-mode
-make dist
-rm -rf autom4te.cache
-rm -rf adms-*.tar.gz
+make distcheck
+rm -r adms-*.tar.gz
 cd ../../..
 
 echo Creating source archive...
