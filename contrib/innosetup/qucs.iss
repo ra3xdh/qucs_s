@@ -28,6 +28,10 @@
 #define TREE "c:\qucs-win32-bin\"
 #define octaveversion "3.6.4"
 
+#define freehdl  "freehdl-0.0.8-1-setup.exe"
+#define iverilog "iverilog-20130827_setup.exe"
+#define mingw    "mingw-w64-i686-4.8.2-release-posix-dwarf-rt_v3-rev3-setup.exe"
+
 
 [Setup]
 AppName={# APPNAME}
@@ -66,8 +70,8 @@ Root: HKCU; Subkey: Environment; ValueType: string; ValueName: ASCOBINDIR; Value
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "iverilog"; Description: "Install iverilog 0.9.7"; GroupDescription: "Install bundled software"; Flags: checkedonce
-Name: "mingw32"; Description: "Install Mingw32 0.0.2 (Required for FreeHDL, Verilog-A)"; GroupDescription: "Install bundled software"; Flags: checkedonce
+Name: "iverilog"; Description: "Install iverilog dev-130827"; GroupDescription: "Install bundled software"; Flags: checkedonce
+Name: "mingw32"; Description: "Install Mingw-w64 4.8.2 (Required for FreeHDL, Verilog-A)"; GroupDescription: "Install bundled software"; Flags: checkedonce
 Name: "freehdl"; Description: "Install FreeHDL 0.0.8"; GroupDescription: "Install bundled software"; Flags: checkedonce
 Name: "octave"; Description: "Download Octave"; GroupDescription: "Install bundled software"; Flags: checkedonce
 
@@ -79,9 +83,9 @@ Source: "{# TREE}\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubd
 Source: "{# TREE}\misc\*"; DestDir: "{app}\misc"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{# TREE}\share\*"; DestDir: "{app}\share"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
-Source: "{# TREE}\iverilog-0.9.7_setup.exe"; DestDir: "{tmp}"
-Source: "{# TREE}\freehdl-0.0.8-1-setup.exe"; DestDir: "{tmp}"
-Source: "{# TREE}\mingw-w64-i686-4.8.2-release-posix-dwarf-rt_v3-rev3-setup.exe"; DestDir: "{tmp}"
+Source: "{# TREE}\{# iverilog}"; DestDir: "{tmp}"
+Source: "{# TREE}\{# freehdl}"; DestDir: "{tmp}"
+Source: "{# TREE}\{# mingw}"; DestDir: "{tmp}"
 
 [Icons]
 Name: "{group}\Quite Universal Circuit Simulator"; Filename: "{app}\bin\qucs.exe"; IconFilename: "{app}\misc\qucs64x64.ico"; WorkingDir: "{app}\bin"
@@ -91,9 +95,9 @@ Name: "{group}\{cm:UninstallProgram,Qucs}"; Filename: "{uninstallexe}"
 Name: "{userdesktop}\Qucs"; Filename: "{app}\bin\qucs.exe"; IconFilename: "{app}\misc\qucs64x64.ico"; WorkingDir: "{app}\bin"; Tasks: desktopicon
 
 [Run]
-Filename: "{tmp}\iverilog-0.9.7_setup.exe"; Parameters: ""; Tasks: iverilog
-Filename: "{tmp}\freehdl-0.0.8-1-setup.exe"; Parameters: ""; Tasks: freehdl
-Filename: "{tmp}\mingw-w64-i686-4.8.2-release-posix-dwarf-rt_v3-rev3-setup.exe"; Parameters: ""; Tasks: mingw32
+Filename: "{tmp}\{# iverilog}"; Parameters: ""; Tasks: iverilog
+Filename: "{tmp}\{# freehdl}"; Parameters: ""; Tasks: freehdl
+Filename: "{tmp}\{# mingw}"; Parameters: ""; Tasks: mingw32
 
 
 [Code]
