@@ -519,12 +519,12 @@ void SimMessage::startSimulator()
     }
     else {
       if (isVerilog) {
-          Program = pathName(QucsSettings.BinDir + QucsVeri);
-          Arguments << QucsSettings.QucsHomeDir.filePath("netlist.txt")
+          Program = QDir::toNativeSeparators(QucsSettings.BinDir + QucsVeri);
+          Arguments << QDir::toNativeSeparators(QucsSettings.QucsHomeDir.filePath("netlist.txt"))
                     << DataSet
                     << SimTime
-                    << pathName(SimPath)
-                    << pathName(QucsSettings.BinDir)
+                    << QDir::toNativeSeparators(SimPath)
+                    << QDir::toNativeSeparators(QucsSettings.BinDir)
                     << "-c";
       } else {
 #ifdef __MINGW32__
