@@ -354,19 +354,22 @@ void SimMessage::startSimulator()
     if (Doc->simulation) {
       SimTime = Doc->SimTime;
       QString libs = Doc->Libraries.lower();
+      /// \todo \bug error: unrecognized command line option '-Wl'
 #ifdef __MINGW32__
       if(libs.isEmpty()) {
-	libs = "-Wl";
-      } else {
-	libs.replace(" ",",-l");
-	libs = "-Wl,-l" + libs;
+        libs = "";
+      }
+      else {
+        libs.replace(" ",",-l");
+        libs = "-Wl,-l" + libs;
       }
 #else
       if(libs.isEmpty()) {
-	libs = "-c";
-      } else {
-	libs.replace(" ",",-l");
-	libs = "-c,-l" + libs;
+        libs = "-c";
+      }
+      else {
+        libs.replace(" ",",-l");
+        libs = "-c,-l" + libs;
       }
 #endif
       Program = pathName(QucsSettings.BinDir + QucsDigi);
@@ -527,11 +530,14 @@ void SimMessage::startSimulator()
                     << QDir::toNativeSeparators(QucsSettings.BinDir)
                     << "-c";
       } else {
+/// \todo \bug error: unrecognized command line option '-Wl'
 #ifdef __MINGW32__
 	Program = pathName(QucsSettings.BinDir + QucsDigi);
-    Arguments << QucsSettings.QucsHomeDir.filePath("netlist.txt")
-              << DataSet << SimTime << pathName(SimPath)
-		      << pathName(QucsSettings.BinDir) << "-Wl" << "-c";
+    Arguments << QDir::toNativeSeparators(QucsSettings.QucsHomeDir.filePath("netlist.txt"))
+              << DataSet
+              << SimTime
+              << QDir::toNativeSeparators(SimPath)
+              << QDir::toNativeSeparators(QucsSettings.BinDir) << "-Wall" << "-c";
 #else
 	Program = pathName(QucsSettings.BinDir + QucsDigi);
     Arguments << QucsSettings.QucsHomeDir.filePath("netlist.txt")
