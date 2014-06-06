@@ -6,6 +6,8 @@
 # sh [path]/minw-freehdl.sh
 
 
+# TODO automate build of GNU regex
+
 
 # GNU regex is need to compile FreeHDL
 
@@ -53,6 +55,7 @@
 ## Compile FreeHDL, see below
 # Note: remember to copy libregex.a into freehdl_cross/lib (we do not modify mingw-w64, just repackage into an installer)
 
+# TODO download freeHDL source
 
 # run from ~/build/freehd-x.x.x/
 
@@ -116,3 +119,4 @@ CXXFLAGS=-static-libstdc++ ./configure --prefix=${WINDIR} --target=$TARGET --hos
 make #-j 8
 make install
 
+echo Done!

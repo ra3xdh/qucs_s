@@ -1,5 +1,5 @@
 
-
+# create a FreeHDL installer for Win32
 
 WINDIR=${HOME}/.wine/drive_c/freehdl_cross
 

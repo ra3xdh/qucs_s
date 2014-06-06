@@ -112,6 +112,7 @@
 
 if [ "$#" -ne 1 ]; then
     echo "Provide tarball as argument..."
+    exit
 fi
 
 REPO=${PWD}
@@ -139,7 +140,9 @@ tar xvfz ../$TARBALL
 cd $DIRNAME
 
 
-echo "Building mingw32"
+echo "Building Qucs for Win32"
+
+# TODO Linux / Mac
 
 # Temporary install prefix
 WINDIR=${HOME}/.wine/drive_c/qucs-win32-bin
@@ -161,6 +164,8 @@ export WINDRES="wine windres.exe"
 
 echo "Configuring for i386-MinGW32 cross ..."
 
+# no need for triplets with mingw-w64?
+# http://sourceforge.net/apps/trac/mingw-w64/wiki/TypeTriplets
 
 ./configure --prefix=${WINDIR} --target=i386-mingw32 --host=i386-mingw32 --build=i586-linux --program-prefix="" --disable-dependency-tracking
 

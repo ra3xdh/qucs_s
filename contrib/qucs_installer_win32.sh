@@ -14,7 +14,7 @@
 
 ## Install Inno Setup 5
 #
-# See also script `build_win32.sh`
+# See also script `qucs_build_win32.sh`
 #
 # Install older Inno version due to issues with wine
 # Error: * Could not find dependent assembly L"Microsoft.Windows.Common-Controls" (6.0.0.0)
@@ -111,13 +111,13 @@ cp $QTDIR/bin/libwinpthread-1.dll $WINDIR/bin
 #cp $HOME/.wine/drive_c/mingw32/bin/*.dll $WINDIR/bin
 
 echo Create Inno Setup installer...
-cp  ${REPO}/qucs/contrib/innosetup/qucs.iss release/qucs.iss
-wine "$INNOSETUP" /cc release/qucs.iss
-rm release/qucs.iss
+cp  ${REPO}/qucs/contrib/innosetup/qucs.iss .
+wine "$INNOSETUP" /cc qucs.iss
+rm qucs.iss
 
 # TODO version is hardcoded on the Inno Setup file
-cp release/Output/qucs-0.0.18-setup.exe release/qucs-$RELEASE-win32.exe
-rm -r release/Output
+cp ./Output/qucs-0.0.18-setup.exe ${HOME}/Downloads/qucs-$RELEASE-win32.exe
+#rm -r release/Output
 
 
 echo Done!
