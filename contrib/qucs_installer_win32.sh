@@ -67,9 +67,9 @@ mv iverilog-${ICARUS_VER}_setup.exe $WINDIR
 # add FreeHDL into installer
 #freehdl=~/Downloads/freehdl-0.0.8-setup.exe
 freehdl=freehdl-0.0.8-1-setup.exe # recompiled, repackaged, no admin
-if [ -e ${HOME}/$freehdl ]; then
+if [ -e ${HOME}/Downloads/$freehdl ]; then
   echo Copy FreeHDL...
-	cp ${HOME}/$freehdl .
+	cp ${HOME}/Downloads/$freehdl .
 else
   # TODO upload
   echo Downloading FreeHDL...
@@ -78,11 +78,11 @@ fi
 cp $freehdl $WINDIR
 
 
-# TODO update this?
+# add Mingw-w64 to installer
 mingw=mingw-w64-i686-4.8.2-release-posix-dwarf-rt_v3-rev3-setup.exe
-if [ -e ${HOME}/$mingw ]; then
+if [ -e ${HOME}/Downloads/$mingw ]; then
   echo Copy MinGW...
-	cp ${HOME}/$mingw .
+	cp ${HOME}/Downloads/$mingw .
 else
   # TODO upload
   echo Downloading Mingw...

@@ -42,7 +42,7 @@
 #define APPNAME "Mingw-w64"
 #define APPVERNAME "Mingw-w64 4.8.2 for Win32"
 #define URL "http://www.mingw.org"
-#define TREE "C:\mingw32"
+#define TREE "C:\mingw_original\mingw32"
 
 [Setup]
 AppName={# APPNAME}
@@ -65,7 +65,7 @@ DefaultDirName={code:DefDirRoot}\mingw32
 
 
 [Registry]
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}/bin" Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}/bin"; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
 
 Root: HKCU; Subkey: Environment; ValueType: string; ValueName: "PATH"; ValueData: {app}/bin; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
 
@@ -87,7 +87,7 @@ Source: "{# TREE}\share\*"; DestDir: "{app}\share"; Flags: ignoreversion recurse
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\Visit the Mingw-w64 Web Site"; Filename: "{app}\misc\website-mingw.url"
+Name: "{group}\Visit the Mingw-w64 Web Site"; Filename: "{app}\misc\mingw.url"
 Name: "{group}\{cm:UninstallProgram,Mingw-w64}"; Filename: "{uninstallexe}"
 
 [Run]
