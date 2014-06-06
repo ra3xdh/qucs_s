@@ -532,14 +532,14 @@ void SimMessage::startSimulator()
       } else {
 /// \todo \bug error: unrecognized command line option '-Wl'
 #ifdef __MINGW32__
-	Program = pathName(QucsSettings.BinDir + QucsDigi);
+    Program = QDir::toNativeSeparators(pathName(QucsSettings.BinDir + QucsDigi));
     Arguments << QDir::toNativeSeparators(QucsSettings.QucsHomeDir.filePath("netlist.txt"))
               << DataSet
               << SimTime
               << QDir::toNativeSeparators(SimPath)
               << QDir::toNativeSeparators(QucsSettings.BinDir) << "-Wall" << "-c";
 #else
-	Program = pathName(QucsSettings.BinDir + QucsDigi);
+    Program = QDir::toNativeSeparators(pathName(QucsSettings.BinDir + QucsDigi));
     Arguments << QucsSettings.QucsHomeDir.filePath("netlist.txt")
               << DataSet << SimTime << pathName(SimPath)
 		      << pathName(QucsSettings.BinDir) << "-Wall" << "-c";

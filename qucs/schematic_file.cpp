@@ -447,9 +447,9 @@ int Schematic::saveDocument()
       vaFile = QucsSettings.QucsWorkDir.filePath(fileBase()+".va");
 
       QStringList Arguments;
-      Arguments << vaFile
-                << "-I" << include.absolutePath()
-                << "-e" << include.absFilePath("qucsMODULEguiJSONsymbol.xml")
+      Arguments << QDir::toNativeSeparators(vaFile)
+                << "-I" << QDir::toNativeSeparators(include.absolutePath())
+                << "-e" << QDir::toNativeSeparators(include.absFilePath("qucsMODULEguiJSONsymbol.xml"))
                 << "-A" << "dyload";
 
 //      QProcessEnvironment env = QProcessEnvironment::systemEnvironment();

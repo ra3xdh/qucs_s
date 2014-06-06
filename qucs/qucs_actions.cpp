@@ -1543,8 +1543,8 @@ void QucsApp::slotBuildModule()
     Arguments.clear();
 
     Arguments << "-f" <<  QDir::toNativeSeparators(include.absoluteFilePath("cpp2lib.makefile"))
-              << QString("PREFIX=%1").arg(QDir::toNativeSeparators(prefix.absolutePath()))
-              << QString("PROJDIR=%1").arg(QDir::toNativeSeparators(workDir))
+              << QString("PREFIX=\"%1\"").arg(QDir::toNativeSeparators(prefix.absolutePath()))
+              << QString("PROJDIR=\"%1\"").arg(QDir::toNativeSeparators(workDir))
               << QString("MODEL=%1").arg(vaModule);
 
     // prepend command to log
