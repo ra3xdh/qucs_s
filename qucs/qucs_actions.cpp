@@ -1510,9 +1510,9 @@ void QucsApp::slotBuildModule()
 
     // admsXml emmits C++
     QStringList Arguments;
-    Arguments << "-f" <<  include.absoluteFilePath("va2cpp.makefile")
+    Arguments << "-f" <<  QDir::toNativeSeparators(include.absoluteFilePath("va2cpp.makefile"))
               << QString("ADMSXML=%1").arg(admsXml)
-              << QString("PREFIX=%1").arg(prefix.absolutePath())
+              << QString("PREFIX=%1").arg(QDir::toNativeSeparators(prefix.absolutePath()))
               << QString("MODEL=%1").arg(vaModule);
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
@@ -1542,9 +1542,9 @@ void QucsApp::slotBuildModule()
 
     Arguments.clear();
 
-    Arguments << "-f" <<  include.absoluteFilePath("cpp2lib.makefile")
-              << QString("PREFIX=%1").arg(prefix.absolutePath())
-              << QString("PROJDIR=%1").arg(workDir)
+    Arguments << "-f" <<  QDir::toNativeSeparators(include.absoluteFilePath("cpp2lib.makefile"))
+              << QString("PREFIX=%1").arg(QDir::toNativeSeparators(prefix.absolutePath()))
+              << QString("PROJDIR=%1").arg(QDir::toNativeSeparators(workDir))
               << QString("MODEL=%1").arg(vaModule);
 
     // prepend command to log
