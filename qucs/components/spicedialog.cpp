@@ -20,7 +20,7 @@
 #include "main.h"
 #include "qucs.h"
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <Q3GridLayout>
 #include <Q3VBoxLayout>
 #include "schematic.h"
@@ -367,7 +367,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
                                       arg(PrepName));
                 return false;
             }
-            prestream = new Q3TextStream(&PrepFile);
+            prestream = new QTextStream(&PrepFile);
         }
         SpicePrep->start(spiceCommand);
         if ((SpicePrep->state() != QProcess::Starting) && (SpicePrep->state() != QProcess::Running))

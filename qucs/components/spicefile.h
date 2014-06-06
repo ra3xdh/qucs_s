@@ -23,10 +23,10 @@
 #include <QObject>
 #include <QDateTime>
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 
 class QProcess;
-class Q3TextStream;
+class QTextStream;
 class QString;
 
 class SpiceFile : public QObject, public MultiViewComponent  {

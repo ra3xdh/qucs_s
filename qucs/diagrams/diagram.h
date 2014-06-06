@@ -25,7 +25,7 @@
 
 #include <QFile>
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <Q3PtrList>
 
 #define MIN_SCROLLBAR_SIZE 8
@@ -76,7 +76,7 @@ public:
   bool    getSelected(int, int);
   bool    resizeTouched(float, float, float);
   QString save();
-  bool    load(const QString&, Q3TextStream*);
+  bool    load(const QString&, QTextStream*);
 
   void getAxisLimits(Graph*);
   void updateGraphData();

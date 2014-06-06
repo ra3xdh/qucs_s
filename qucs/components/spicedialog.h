@@ -22,7 +22,7 @@
 #include <QRegExp>
 #include <QDir>
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <Q3VBoxLayout>
 
 class Schematic;
@@ -86,7 +86,7 @@ private:
   bool        changed;
   int         currentPrep;
 
-  Q3TextStream *prestream;
+  QTextStream *prestream;
   QProcess *QucsConv, *SpicePrep;
   QString Line, Error;  // to store the text read from QucsConv
   int textStatus; // to store with text data QucsConv will sent next

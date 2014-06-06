@@ -37,7 +37,7 @@
 
 #include "qucs.h"
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <QDragLeaveEvent>
 #include <Q3StrList>
 #include <Q3PtrList>
@@ -1259,7 +1259,7 @@ QString Schematic::copySelected(bool cut)
 
 // ---------------------------------------------------
 // Performs paste function from clipboard
-bool Schematic::paste(Q3TextStream *stream, Q3PtrList<Element> *pe)
+bool Schematic::paste(QTextStream *stream, Q3PtrList<Element> *pe)
 {
   return pasteFromClipboard(stream, pe);
 }

@@ -17,7 +17,7 @@
 #include <QtGui>
 #include "qucs.h"
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <Q3PtrList>
 #include <QMouseEvent>
 #include "main.h"
@@ -100,7 +100,7 @@ bool MouseActions::pasteElements(Schematic *Doc)
 {
   QClipboard *cb = QApplication::clipboard();   // get system clipboard
   QString s = cb->text(QClipboard::Clipboard);
-  Q3TextStream stream(&s, QIODevice::ReadOnly);
+  QTextStream stream(&s, QIODevice::ReadOnly);
   movingElements.clear();
   if(!Doc->paste(&stream, &movingElements)) return false;
 

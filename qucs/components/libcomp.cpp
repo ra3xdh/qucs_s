@@ -22,7 +22,7 @@
 #include "libcomp.h"
 #include "qucs.h"
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include "main.h"
 #include "schematic.h"
 
@@ -97,7 +97,7 @@ int LibComp::loadSection(const QString& Name, QString& Section,
   if(!file.open(QIODevice::ReadOnly))
     return -1;
 
-  Q3TextStream ReadWhole(&file);
+  QTextStream ReadWhole(&file);
   Section = ReadWhole.read();
   file.close();
 
@@ -204,7 +204,7 @@ int LibComp::loadSymbol()
   x1 = y1 = INT_MAX;
   x2 = y2 = INT_MIN;
 
-  Q3TextStream stream(&FileString, QIODevice::ReadOnly);
+  QTextStream stream(&FileString, QIODevice::ReadOnly);
   while(!stream.atEnd()) {
     Line = stream.readLine();
     Line = Line.stripWhiteSpace();

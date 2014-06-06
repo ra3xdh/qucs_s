@@ -27,7 +27,7 @@
 #endif
 #include <locale.h>
 
-#include <Q3TextStream>
+#include <QTextStream>
 #include <QMessageBox>
 #include <QRegExp>
 #include <QDateTime>
@@ -1235,7 +1235,7 @@ QString Diagram::save()
 }
 
 // ------------------------------------------------------------
-bool Diagram::load(const QString& Line, Q3TextStream *stream)
+bool Diagram::load(const QString& Line, QTextStream *stream)
 {
   bool ok;
   QString s = Line;

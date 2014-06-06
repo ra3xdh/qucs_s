@@ -22,7 +22,7 @@
 #include "subcircuit.h"
 #include "qucs.h"
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include "schematic.h"
 #include "main.h"
 
@@ -146,10 +146,10 @@ int Subcircuit::loadSymbol(const QString& DocName)
   // *****************************************************************
   // To strongly speed up the file read operation the whole file is
   // read into the memory in one piece.
-  Q3TextStream ReadWhole(&file);
+  QTextStream ReadWhole(&file);
   QString FileString = ReadWhole.read();
   file.close();
-  Q3TextStream stream(&FileString, QIODevice::ReadOnly);
+  QTextStream stream(&FileString, QIODevice::ReadOnly);
 
 
   // read header **************************

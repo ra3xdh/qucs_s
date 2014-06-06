@@ -27,7 +27,7 @@
 #include <QTextEdit>
 #include <Q3PtrList>
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <Q3ValueList>
 
 #include "main.h"
@@ -102,7 +102,7 @@ QString Schematic::createClipboardFile()
 
 // -------------------------------------------------------------
 // Only read fields without loading them.
-bool Schematic::loadIntoNothing(Q3TextStream *stream)
+bool Schematic::loadIntoNothing(QTextStream *stream)
 {
   QString Line, cstr;
   while(!stream->atEnd()) {
@@ -117,7 +117,7 @@ bool Schematic::loadIntoNothing(Q3TextStream *stream)
 
 // -------------------------------------------------------------
 // Paste from clipboard.
-bool Schematic::pasteFromClipboard(Q3TextStream *stream, Q3PtrList<Element> *pe)
+bool Schematic::pasteFromClipboard(QTextStream *stream, Q3PtrList<Element> *pe)
 {
   QString Line;
 
@@ -195,7 +195,7 @@ int Schematic::saveSymbolCpp (void)
     return -1;
   }
 
-  Q3TextStream stream (&file);
+  QTextStream stream (&file);
 
   // automatically compute boundings of drawing
   int xmin = INT_MAX;
@@ -267,7 +267,7 @@ int Schematic::saveSymbolJSON()
     return -1;
   }
 
-  Q3TextStream stream (&file);
+  QTextStream stream (&file);
 
   // automatically compute boundings of drawing
   int xmin = INT_MAX;
@@ -345,7 +345,7 @@ int Schematic::saveDocument()
     return -1;
   }
 
-  Q3TextStream stream(&file);
+  QTextStream stream(&file);
 
   stream << "<Qucs Schematic " << PACKAGE_VERSION << ">\n";
 
@@ -518,7 +518,7 @@ int Schematic::saveDocument()
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadProperties(Q3TextStream *stream)
+bool Schematic::loadProperties(QTextStream *stream)
 {
   bool ok = true;
   QString Line, cstr, nstr;
@@ -626,7 +626,7 @@ void Schematic::simpleInsertComponent(Component *c)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadComponents(Q3TextStream *stream, Q3PtrList<Component> *List)
+bool Schematic::loadComponents(QTextStream *stream, Q3PtrList<Component> *List)
 {
   QString Line, cstr;
   Component *c;
@@ -696,7 +696,7 @@ void Schematic::simpleInsertWire(Wire *pw)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadWires(Q3TextStream *stream, Q3PtrList<Element> *List)
+bool Schematic::loadWires(QTextStream *stream, Q3PtrList<Element> *List)
 {
   Wire *w;
   QString Line;
@@ -733,7 +733,7 @@ bool Schematic::loadWires(Q3TextStream *stream, Q3PtrList<Element> *List)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadDiagrams(Q3TextStream *stream, Q3PtrList<Diagram> *List)
+bool Schematic::loadDiagrams(QTextStream *stream, Q3PtrList<Diagram> *List)
 {
   Diagram *d;
   QString Line, cstr;
@@ -776,7 +776,7 @@ bool Schematic::loadDiagrams(Q3TextStream *stream, Q3PtrList<Diagram> *List)
 }
 
 // -------------------------------------------------------------
-bool Schematic::loadPaintings(Q3TextStream *stream, Q3PtrList<Painting> *List)
+bool Schematic::loadPaintings(QTextStream *stream, Q3PtrList<Painting> *List)
 {
   Painting *p=0;
   QString Line, cstr;
@@ -833,7 +833,7 @@ bool Schematic::loadDocument()
   }
 
   QString Line;
-  Q3TextStream stream(&file);
+  QTextStream stream(&file);
 
   // read header **************************
   do {
@@ -982,7 +982,7 @@ bool Schematic::rebuild(QString *s)
   DocPaints.clear();
 
   QString Line;
-  Q3TextStream stream(s, QIODevice::ReadOnly);
+  QTextStream stream(s, QIODevice::ReadOnly);
   Line = stream.readLine();  // skip identity byte
 
   // read content *************************
@@ -1001,7 +1001,7 @@ bool Schematic::rebuildSymbol(QString *s)
   SymbolPaints.clear();	// delete whole document
 
   QString Line;
-  Q3TextStream stream(s, QIODevice::ReadOnly);
+  QTextStream stream(s, QIODevice::ReadOnly);
   Line = stream.readLine();  // skip identity byte
 
   // read content *************************

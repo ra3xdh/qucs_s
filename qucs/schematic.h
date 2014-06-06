@@ -24,7 +24,7 @@
 #include "components/component.h"
 #include "qucsdoc.h"
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include <QDragMoveEvent>
 #include <QDropEvent>
 #include <QDragLeaveEvent>
@@ -100,7 +100,7 @@ public:
   bool  createSubcircuitSymbol();
 
   QString copySelected(bool);
-  bool    paste(Q3TextStream*, Q3PtrList<Element>*);
+  bool    paste(QTextStream*, Q3PtrList<Element>*);
   bool    load();
   int     save();
   int     saveSymbolCpp (void);
@@ -263,17 +263,17 @@ public:
 private:
   int  saveDocument();
 
-  bool loadProperties(Q3TextStream*);
+  bool loadProperties(QTextStream*);
   void simpleInsertComponent(Component*);
-  bool loadComponents(Q3TextStream*, Q3PtrList<Component> *List=0);
+  bool loadComponents(QTextStream*, Q3PtrList<Component> *List=0);
   void simpleInsertWire(Wire*);
-  bool loadWires(Q3TextStream*, Q3PtrList<Element> *List=0);
-  bool loadDiagrams(Q3TextStream*, Q3PtrList<Diagram>*);
-  bool loadPaintings(Q3TextStream*, Q3PtrList<Painting>*);
-  bool loadIntoNothing(Q3TextStream*);
+  bool loadWires(QTextStream*, Q3PtrList<Element> *List=0);
+  bool loadDiagrams(QTextStream*, Q3PtrList<Diagram>*);
+  bool loadPaintings(QTextStream*, Q3PtrList<Painting>*);
+  bool loadIntoNothing(QTextStream*);
 
   QString createClipboardFile();
-  bool    pasteFromClipboard(Q3TextStream*, Q3PtrList<Element>*);
+  bool    pasteFromClipboard(QTextStream *, Q3PtrList<Element>*);
 
   QString createUndoString(char);
   bool    rebuild(QString *);

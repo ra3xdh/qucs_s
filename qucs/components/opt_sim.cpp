@@ -17,7 +17,7 @@
 #include <QtGui>
 #include <QDir>
 #include <QFile>
-#include <Q3TextStream>
+#include <QTextStream>
 #include <QRegExp>
 #include <QString>
 #include <QStringList>
@@ -82,7 +82,7 @@ bool Optimize_Sim::createASCOFiles()
   Property* pp;
   QFile afile(QucsSettings.QucsHomeDir.filePath("asco_netlist.cfg"));
   if(afile.open(QIODevice::WriteOnly)) {
-    Q3TextStream stream(&afile);
+    QTextStream stream(&afile);
     stream << "*\n";
     stream << "* ASCO configuration file for '" << Name << "'\n";
     stream << "*\n\n";
@@ -177,7 +177,7 @@ bool Optimize_Sim::createASCOFiles()
       QString VarName = pp->Value.section('|',0,0);
       QFile efile(ExtractDir.filePath(VarName));
       if(efile.open(QIODevice::WriteOnly)) {
-	Q3TextStream stream(&efile);
+    QTextStream stream(&efile);
 	stream << "# Info #\n";
 	stream << "#\n\n";
 	stream << "# Commands #\n";
@@ -214,8 +214,8 @@ bool Optimize_Sim::createASCOnetlist()
   QFile outfile(QucsSettings.QucsHomeDir.filePath("asco_netlist.txt"));
   if(!infile.open(QIODevice::ReadOnly)) return false;
   if(!outfile.open(QIODevice::WriteOnly)) return false;
-  Q3TextStream instream(&infile);
-  Q3TextStream outstream(&outfile);
+  QTextStream instream(&infile);
+  QTextStream outstream(&outfile);
   QString Line;
   while(!instream.atEnd()) {
     Line = instream.readLine();
@@ -262,7 +262,7 @@ bool Optimize_Sim::loadASCOout()
 
   QFile infile(QucsSettings.QucsHomeDir.filePath("asco_out.log"));
   if(!infile.open(QIODevice::ReadOnly)) return false;
-  Q3TextStream instream(&infile);
+  QTextStream instream(&infile);
   QString Line;
   while(!instream.atEnd()) Line = instream.readLine();
   infile.close();

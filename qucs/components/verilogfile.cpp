@@ -18,7 +18,7 @@
 #include "verilogfile.h"
 #include "qucs.h"
 //Added by qt3to4:
-#include <Q3TextStream>
+#include <QTextStream>
 #include "main.h"
 #include "schematic.h"
 
@@ -97,7 +97,7 @@ QString Verilog_File::loadFile()
   if(!f.open(QIODevice::ReadOnly))
     return QString("");
 
-  Q3TextStream stream(&f);
+  QTextStream stream(&f);
   File = stream.read();   // QString is better for "find" function
   f.close();
 
