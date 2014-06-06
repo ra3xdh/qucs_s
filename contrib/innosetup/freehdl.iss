@@ -25,7 +25,7 @@
 
 ; changelog
 ; 0.0.8-1
-;   - just repackage
+;   - rebuild (i686-posix-dwarf-rev3, Built by MinGW-W64 project) 4.8.2
 ;   - eliminate need for admin rights
 ; 0.0.8
 ;   - first release
@@ -36,7 +36,7 @@
 #define APPNAME "FreeHDL"
 #define APPVERNAME "FreeHDL 0.0.8 binary package for Win32"
 #define URL "http://www.freehdl.seul.org"
-#define TREE "C:\home\freetree"
+#define TREE "C:\freehdl_cross"
 
 [Setup]
 AppName={# APPNAME}

@@ -32,6 +32,11 @@
 ; cp ~/git/qucs/qucs/contrib/innosetup/gpl.rtf ${HOME}/.wine/drive_c/mingw32/
 ; cp -r ~/git/qucs/qucs/contrib/innosetup/misc/website-mingw ${HOME}/.wine/drive_c/mingw32/misc/website-mingw
 
+
+
+; changelog
+; - try to append mingw/bin to system PATH or user PATH
+
 #define RELEASE "i686-4.8.2-release-posix-dwarf-rt_v3-rev3"
 #define BASENAME "mingw-w64"
 #define APPNAME "Mingw-w64"
@@ -60,9 +65,10 @@ DefaultDirName={code:DefDirRoot}\mingw32
 
 
 [Registry]
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: MINGWDIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}/bin" Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
 
-Root: HKCU; Subkey: Environment; ValueType: string; ValueName: MINGWDIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
+Root: HKCU; Subkey: Environment; ValueType: string; ValueName: "PATH"; ValueData: {app}/bin; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
+
 
 
 [Tasks]

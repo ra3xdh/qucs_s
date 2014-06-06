@@ -70,9 +70,9 @@ Root: HKCU; Subkey: Environment; ValueType: string; ValueName: ASCOBINDIR; Value
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "iverilog"; Description: "Install iverilog dev-130827"; GroupDescription: "Install bundled software"; Flags: checkedonce
 Name: "mingw32"; Description: "Install Mingw-w64 4.8.2 (Required for FreeHDL, Verilog-A)"; GroupDescription: "Install bundled software"; Flags: checkedonce
 Name: "freehdl"; Description: "Install FreeHDL 0.0.8"; GroupDescription: "Install bundled software"; Flags: checkedonce
+Name: "iverilog"; Description: "Install iverilog dev-130827"; GroupDescription: "Install bundled software"; Flags: checkedonce
 Name: "octave"; Description: "Download Octave"; GroupDescription: "Install bundled software"; Flags: checkedonce
 
 
@@ -95,9 +95,9 @@ Name: "{group}\{cm:UninstallProgram,Qucs}"; Filename: "{uninstallexe}"
 Name: "{userdesktop}\Qucs"; Filename: "{app}\bin\qucs.exe"; IconFilename: "{app}\misc\qucs64x64.ico"; WorkingDir: "{app}\bin"; Tasks: desktopicon
 
 [Run]
-Filename: "{tmp}\{# iverilog}"; Parameters: ""; Tasks: iverilog
-Filename: "{tmp}\{# freehdl}"; Parameters: ""; Tasks: freehdl
 Filename: "{tmp}\{# mingw}"; Parameters: ""; Tasks: mingw32
+Filename: "{tmp}\{# freehdl}"; Parameters: ""; Tasks: freehdl
+Filename: "{tmp}\{# iverilog}"; Parameters: ""; Tasks: iverilog
 
 
 [Code]

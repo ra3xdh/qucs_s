@@ -59,39 +59,36 @@ if [ -f ~/Downloads/iverilog-${ICARUS_VER}_setup.exe ]
 then
 	cp ~/Downloads/iverilog-${ICARUS_VER}_setup.exe .
 else
-  wget http://bleyer.org/icarus/iverilog-${ICARUS_VER}_setup.exe -P ~/Downloads/
+  wget http://bleyer.org/icarus/iverilog-${ICARUS_VER}_setup.exe -P ${HOME}/Downloads/
 fi
 mv iverilog-${ICARUS_VER}_setup.exe $WINDIR
 
 
 # add FreeHDL into installer
-echo Copy FreeHDL...
 #freehdl=~/Downloads/freehdl-0.0.8-setup.exe
-freehdl="${HOME}/Downloads/freehdl-0.0.8-1-setup.exe" # repackaged, no admin
-if [ -f $freehdl ]
-then
-	cp $freehdl .
+freehdl=freehdl-0.0.8-1-setup.exe # recompiled, repackaged, no admin
+if [ -e ${HOME}/$freehdl ]; then
+  echo Copy FreeHDL...
+	cp ${HOME}/$freehdl .
 else
   # TODO upload
   echo Downloading FreeHDL...
-	wget https://downloads.sourceforge.net/project/qucs/freehdl/freehdl-0.0.8-setup.exe -P ~/Downloads/
+	wget https://downloads.sourceforge.net/project/qucs/freehdl/$freehdl -P ${HOME}/Downloads/
 fi
-mv $freehdl $WINDIR
+cp $freehdl $WINDIR
 
 
 # TODO update this?
-echo Copy MinGW...
-#mingw= ~/Downloads/mingw32-g++-0.0.2-setup.exe
-mingw=~/Downloads/mingw-w64-i686-4.8.2-release-posix-dwarf-rt_v3-rev3-setup.exe
-if [ -f $mingw ]
-then
-	cp $mingw .
+mingw=mingw-w64-i686-4.8.2-release-posix-dwarf-rt_v3-rev3-setup.exe
+if [ -e ${HOME}/$mingw ]; then
+  echo Copy MinGW...
+	cp ${HOME}/$mingw .
 else
   # TODO upload
   echo Downloading Mingw...
-	wget https://downloads.sourceforge.net/project/qucs/freehdl/mingw32-g%2B%2B-0.0.2-setup.exe -P ~/Downloads/
+	wget https://downloads.sourceforge.net/project/qucs/freehdl/$mingw -P ${HOME}/Downloads/
 fi
-mv $mingw $WINDIR
+cp $mingw $WINDIR
 
 
 echo Copy runtime libraries...
@@ -119,7 +116,7 @@ wine "$INNOSETUP" /cc release/qucs.iss
 rm release/qucs.iss
 
 # TODO version is hardcoded on the Inno Setup file
-mv release/Output/qucs-0.0.18-setup.exe release/qucs-$RELEASE-win32.exe
+cp release/Output/qucs-0.0.18-setup.exe release/qucs-$RELEASE-win32.exe
 rm -r release/Output
 
 
