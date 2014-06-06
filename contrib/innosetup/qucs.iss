@@ -57,10 +57,10 @@ ChangesEnvironment=yes
 ;DefaultDirName={code:DefDirRoot}\Qucs
 
 [Registry]
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: QUCSDIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: HOME; ValueData: {code:HomeDir}; Flags: createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: ADMSXMLBINDIR; ValueData: {app}\bin; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: ASCOBINDIR; ValueData: {app}\bin; Flags: createvalueifdoesntexist noerror ; MinVersion: 0,4.00.1381
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: QUCSDIR; ValueData: "{app}"; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: HOME; ValueData: "{code:HomeDir}"; Flags: createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: ADMSXMLBINDIR; ValueData: "{app}\bin"; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: ASCOBINDIR; ValueData: "{app}\bin"; Flags: createvalueifdoesntexist noerror ; MinVersion: 0,4.00.1381
 ;let octave take care of its registry
 ;Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: OCTAVEDIR; ValueData: {app}\share\qucs\octave; Flags: deletevalue createvalueifdoesntexist noerror uninsdeletekey; MinVersion: 0,4.00.1381
 ;Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueName: "Path"; ValueType: "string"; ValueData: "{app}\bin;{olddata}"; Check: NotOnPathAlready(); Flags: preservestringtype noerror;
