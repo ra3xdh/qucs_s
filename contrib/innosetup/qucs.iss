@@ -20,6 +20,10 @@
 ; Boston, MA 02110-1301, USA.
 ;
 
+; changelog
+; - commented out non admin install, doesn't seem to work
+; - enable non admin install
+
 #define RELEASE "0.0.18"
 #define BASENAME "qucs"
 #define APPNAME "Qucs"
@@ -40,7 +44,7 @@ AppPublisher=the Qucs team
 AppPublisherURL={# URL}
 AppSupportURL={# URL}
 AppUpdatesURL={# URL}
-;DefaultDirName={pf}\Qucs
+DefaultDirName={pf}\Qucs
 DefaultGroupName=Qucs
 AllowNoIcons=yes
 LicenseFile={# TREE}\gpl.rtf
@@ -49,8 +53,8 @@ Compression=lzma
 SolidCompression=yes
 ChangesEnvironment=yes
 ; no admin right required http://www.kinook.com/blog/?p=53
-PrivilegesRequired=none
-DefaultDirName={code:DefDirRoot}\Qucs
+;PrivilegesRequired=none
+;DefaultDirName={code:DefDirRoot}\Qucs
 
 [Registry]
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: QUCSDIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
@@ -62,10 +66,11 @@ Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 ;Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueName: "Path"; ValueType: "string"; ValueData: "{app}\bin;{olddata}"; Check: NotOnPathAlready(); Flags: preservestringtype noerror;
 ;Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueName: "Path"; ValueType: "string"; ValueData: "{code:OctaveDir};{olddata}"; Tasks: octave; Check: OctaveNotOnPathAlready(); Flags: preservestringtype noerror;
 
-Root: HKCU; Subkey: Environment; ValueType: string; ValueName: QUCSDIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist noerror uninsdeletekey; MinVersion: 0,4.00.1381
-Root: HKCU; Subkey: Environment; ValueType: string; ValueName: HOME; ValueData: {code:HomeDir}; Flags: createvalueifdoesntexist noerror uninsdeletekey; MinVersion: 0,4.00.1381
-Root: HKCU; Subkey: Environment; ValueType: string; ValueName: ADMSXMLBINDIR; ValueData: {app}\bin; Flags: deletevalue createvalueifdoesntexist noerror uninsdeletekey; MinVersion: 0,4.00.1381
-Root: HKCU; Subkey: Environment; ValueType: string; ValueName: ASCOBINDIR; ValueData: {app}\bin; Flags: deletevalue createvalueifdoesntexist noerror uninsdeletekey; MinVersion: 0,4.00.1381
+; handle Current User install
+;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: QUCSDIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist noerror uninsdeletekey; MinVersion: 0,4.00.1381
+;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: HOME; ValueData: {code:HomeDir}; Flags: createvalueifdoesntexist noerror uninsdeletekey; MinVersion: 0,4.00.1381
+;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: ADMSXMLBINDIR; ValueData: {app}\bin; Flags: deletevalue createvalueifdoesntexist noerror uninsdeletekey; MinVersion: 0,4.00.1381
+;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: ASCOBINDIR; ValueData: {app}\bin; Flags: deletevalue createvalueifdoesntexist noerror uninsdeletekey; MinVersion: 0,4.00.1381
 
 
 [Tasks]

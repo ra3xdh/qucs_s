@@ -29,9 +29,7 @@
 ; $ 7z x i686-4.8.2-release-posix-dwarf-rt_v3-rev3.7z -o${HOME}/.wine/drive_c/
 ; Install to: C:\mingwtree
 
-; cp ~/git/qucs/qucs/contrib/innosetup/gpl.rtf ${HOME}/.wine/drive_c/mingw32/
-; cp -r ~/git/qucs/qucs/contrib/innosetup/misc/website-mingw ${HOME}/.wine/drive_c/mingw32/misc/website-mingw
-
+; See mingw-w64-installer-win32.sh
 
 
 ; changelog
@@ -51,7 +49,7 @@ AppPublisher=the Qucs Team
 AppPublisherURL={# URL}
 AppSupportURL={# URL}
 AppUpdatesURL={# URL}
-;DefaultDirName={pf}\mingw32
+DefaultDirName={pf}\mingw32
 DefaultGroupName=Mingw-w64
 AllowNoIcons=yes
 LicenseFile={# TREE}\gpl.rtf
@@ -60,14 +58,14 @@ Compression=lzma
 SolidCompression=yes
 ChangesEnvironment=yes
 ; no admin right required http://www.kinook.com/blog/?p=53
-PrivilegesRequired=none
-DefaultDirName={code:DefDirRoot}\mingw32
+;PrivilegesRequired=none
+;DefaultDirName={code:DefDirRoot}\mingw32
 
 
 [Registry]
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}/bin"; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: expandsz; ValueName: "PATH"; ValueData: "{olddata};{app}/bin"; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
 
-Root: HKCU; Subkey: Environment; ValueType: string; ValueName: "PATH"; ValueData: {app}/bin; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
+;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: "PATH"; ValueData: {app}/bin; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
 
 
 

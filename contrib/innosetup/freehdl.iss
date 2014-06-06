@@ -45,7 +45,7 @@ AppPublisher=the Qucs team
 AppPublisherURL={# URL}
 AppSupportURL={# URL}
 AppUpdatesURL={# URL}
-;DefaultDirName={pf}\FreeHDL
+DefaultDirName={pf}\FreeHDL
 DefaultGroupName=FreeHDL
 AllowNoIcons=yes
 LicenseFile={# TREE}\gpl.rtf
@@ -55,8 +55,8 @@ SolidCompression=yes
 ChangesEnvironment=yes
 
 ; no admin right required http://www.kinook.com/blog/?p=53
-PrivilegesRequired=none
-DefaultDirName={code:DefDirRoot}\FreeHDL
+;PrivilegesRequired=none
+;DefaultDirName={code:DefDirRoot}\FreeHDL
 
 [Registry]
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: FREEHDL; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
