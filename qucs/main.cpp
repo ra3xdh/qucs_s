@@ -819,6 +819,10 @@ int main(int argc, char *argv[])
 
   a.setFont(QucsSettings.font);
 
+  // set codecs
+  QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+  QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+
   QTranslator tor( 0 );
   QString lang = QucsSettings.Language;
   if(lang.isEmpty())
