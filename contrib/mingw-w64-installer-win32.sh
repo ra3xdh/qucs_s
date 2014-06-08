@@ -29,8 +29,10 @@ INNOSETUP="${HOME}/.wine/drive_c/Program Files/Inno Setup 5/Compil32.exe"
 
 echo Create Inno Setup installer...
 cp  ${HOME}/git/qucs/qucs/contrib/innosetup/mingw-w64.iss .
+cp  ${HOME}/git/qucs/qucs/contrib/innosetup/modpath.iss .
 wine "$INNOSETUP" /cc mingw-w64.iss
 rm mingw-w64.iss
+rm modpath.iss
 
 # TODO version is hardcoded on the Inno Setup file
 echo Copy mingw installer to ~/Downloads/

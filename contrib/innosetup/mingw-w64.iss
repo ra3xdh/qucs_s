@@ -33,6 +33,7 @@
 
 
 ; changelog
+; - add ModPath.iss, to append PATH (http://www.legroom.net/software/modpath)
 ; - try to append mingw/bin to system PATH or user PATH
 
 #define RELEASE "i686-4.8.2-release-posix-dwarf-rt_v3-rev3"
@@ -56,14 +57,16 @@ LicenseFile={# TREE}\gpl.rtf
 OutputBaseFilename={# BASENAME}-{# RELEASE}-setup
 Compression=lzma
 SolidCompression=yes
-ChangesEnvironment=yes
+ChangesEnvironment=true
+UsePreviousAppDir=yes
+
 ; no admin right required http://www.kinook.com/blog/?p=53
 ;PrivilegesRequired=none
 ;DefaultDirName={code:DefDirRoot}\mingw32
 
 
-[Registry]
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: expandsz; ValueName: "PATH"; ValueData: "{olddata};{app}/bin"; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
+;[Registry]
+;Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: expandsz; ValueName: "PATH"; ValueData: "{olddata};{app}/bin"; Flags: deletevalue createvalueifdoesntexist noerror; MinVersion: 0,4.00.1381
 
 ;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: "PATH"; ValueData: {app}/bin; Flags: deletevalue createvalueifdoesntexist; MinVersion: 0,4.00.1381
 
@@ -71,6 +74,8 @@ Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 
 [Tasks]
 ; Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: modifypath; Description: &Add Mingw-w64 executable directory to the system PATH; Flags: checkedonce
+
 
 [Files]
 Source: "{# TREE}\bin\*"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -103,3 +108,15 @@ function DefDirRoot(Param: String): String;
     else
       Result := ExpandConstant('{pf}')
   end;
+
+
+const
+	ModPathName = 'modifypath';
+	ModPathType = 'system';
+
+function ModPathDir(): TArrayOfString;
+begin
+	setArrayLength(Result, 1)
+	Result[0] := ExpandConstant('{app}\bin');
+end;
+#include "modpath.iss"

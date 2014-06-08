@@ -53,6 +53,7 @@ OutputBaseFilename={# BASENAME}-{# RELEASE}-setup
 Compression=lzma
 SolidCompression=yes
 ChangesEnvironment=yes
+UsePreviousAppDir=yes
 
 ; no admin right required http://www.kinook.com/blog/?p=53
 ;PrivilegesRequired=none
