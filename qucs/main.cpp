@@ -745,7 +745,7 @@ int main(int argc, char *argv[])
 
   var = getenv("ADMSXMLBINDIR");
   if(var != NULL) {
-      QucsSettings.AdmsXmlBinDir.setPath(var);
+      QucsSettings.AdmsXmlBinDir.setPath(QString(var));
   }
   else {
       // default admsXml bindir same as Qucs
@@ -762,7 +762,7 @@ int main(int argc, char *argv[])
 
   var = getenv("ASCOBINDIR");
   if(var != NULL)  {
-      QucsSettings.AscoBinDir.setPath(var);
+      QucsSettings.AscoBinDir.setPath(QString(var));
   }
   else  {
       // default ASCO bindir same as Qucs
@@ -779,16 +779,16 @@ int main(int argc, char *argv[])
 
   var = getenv("OCTAVEBINDIR");
   if(var != NULL)  {
-      QucsSettings.OctaveBinDir.setPath(var);
+      QucsSettings.OctaveBinDir.setPath(QString(var));
   }
   else  {
 #ifdef __MINGW32__
-      QucsSettings.OctaveBinDir.setPath("C:/Software/Octave-3.6.4/bin/");
+      QucsSettings.OctaveBinDir.setPath(QString("C:/Software/Octave-3.6.4/bin/"));
 #else
       QFile octaveExec("/usr/bin/octave");
-      if(octaveExec.exists())QucsSettings.OctaveBinDir.setPath("/usr/bin/");
+      if(octaveExec.exists())QucsSettings.OctaveBinDir.setPath(QString("/usr/bin/"));
       QFile octaveExec1("/usr/local/bin/octave");
-      if(octaveExec1.exists()) QucsSettings.OctaveBinDir.setPath("/usr/local/bin/");
+      if(octaveExec1.exists()) QucsSettings.OctaveBinDir.setPath(QString("/usr/local/bin/"));
 #endif
   }
   loadSettings();
