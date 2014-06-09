@@ -70,6 +70,8 @@ Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueName: "Path"; ValueType: "string"; ValueData: "{app}\bin;{olddata}"; Check: NotOnPathAlready(); Flags: preservestringtype noerror;
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueName: "Path"; ValueType: "string"; ValueData: "{code:OctaveDir};{olddata}"; Tasks: octave; Check: OctaveNotOnPathAlready(); Flags: preservestringtype noerror;
 
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: OCTAVEBINDIR; ValueData: "{code:GetOctaveBinDir}"; Flags: createvalueifdoesntexist noerror ; MinVersion: 0,4.00.1381
+
 ; handle Current User install
 ;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: QUCSDIR; ValueData: {app}; Flags: deletevalue createvalueifdoesntexist noerror uninsdeletekey; MinVersion: 0,4.00.1381
 ;Root: HKCU; Subkey: Environment; ValueType: string; ValueName: HOME; ValueData: {code:HomeDir}; Flags: createvalueifdoesntexist noerror uninsdeletekey; MinVersion: 0,4.00.1381
@@ -110,6 +112,16 @@ Filename: "{tmp}\{# iverilog}"; Parameters: ""; Tasks: iverilog
 
 
 [Code]
+// globar var, set by Octavedir, used to create OCTAVEBINDIR used by Qucs
+var
+  OctaveBinDir: String;
+
+// get Octave bin dir
+function GetOctaveBinDir(Param: String): String;
+begin
+  Result := OctaveBinDir;
+end;
+
 function HomeDir(Param: String): String;
 var Dir : String;
 begin
@@ -264,6 +276,8 @@ begin
     Dir := Dir + '\bin';
   end;
 
+  // push to global var
+  OctaveBinDir := Dir;
   Result := Dir;
 end;
 
