@@ -26,4 +26,5 @@ Recommended sequence:
     * upload instaler to SF
 
 * package Win32 build: `qucs_installer_win32.sh`
+  * upload installer to SF
 

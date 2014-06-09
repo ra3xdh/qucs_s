@@ -33,6 +33,14 @@ else
 fi
 echo Building release: $RELEASE
 
+# Get Git short hash
+GIT=$(git log --pretty=format:'%h' -n 1)
+
+if [[ -n "$GIT" ]]; then
+  # Append git short hash
+  RELEASE=${RELEASE}-git-${GIT}
+  echo Building release: $RELEASE
+fi
 
 REPO=${PWD}
 echo Working from: ${REPO}
@@ -116,6 +124,7 @@ cp  ${REPO}/qucs/contrib/innosetup/qucs.iss .
 wine "$INNOSETUP" /cc qucs.iss
 rm qucs.iss
 
+echo Saving copy to ${HOME}/Downloads/qucs-$RELEASE-win32.exe
 # TODO version is hardcoded on the Inno Setup file
 cp ./Output/qucs-0.0.18-setup.exe ${HOME}/Downloads/qucs-$RELEASE-win32.exe
 #rm -r release/Output
