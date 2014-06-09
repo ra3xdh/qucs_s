@@ -751,9 +751,9 @@ int main(int argc, char *argv[])
       // default admsXml bindir same as Qucs
       QString admsExec;
 #ifdef __MINGW32__
-      admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco.exe");
+      admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"admsXml.exe");
 #else
-      admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"asco");
+      admsExec = QDir::toNativeSeparators(QucsSettings.BinDir+"/"+"admsXml");
 #endif
       QFile adms(admsExec);
       if(adms.exists())
