@@ -806,9 +806,10 @@ void QucsApp::showHTML(const QString& Page)
   QucsHelp->start(com.join(" "));
   //QucsHelp->setCommunication(0);
 
-  if(QucsHelp->state()!=QProcess::Running&&
-          QucsHelp->state()!=QProcess::Starting) {
-    QMessageBox::critical(this, tr("Error"), tr("Cannot start qucshelp!"));
+
+  qDebug() << "Command :" << com.join(" ");
+  if( !QucsHelp->waitForStarted(1000) ) {
+    QMessageBox::critical(this, tr("Error"), tr("Cannot start qucshelp! \n\n%1").arg(com.join(" ")));
     delete QucsHelp;
     return;
   }

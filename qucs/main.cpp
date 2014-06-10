@@ -718,7 +718,8 @@ int main(int argc, char *argv[])
   QDir QucsDir;
   if (var!= NULL)
   {
-      QucsDir = QDir(var);
+      QucsDir = QDir(QString(var));
+      qDebug() << "QUCSDIR set: " << QucsDir.absolutePath();
   }
   else
   {
@@ -731,7 +732,7 @@ int main(int argc, char *argv[])
 
   }
 
-  QucsSettings.BinDir =      QucsDir.canonicalPath() + "/bin/";
+  QucsSettings.BinDir =      QucsDir.absolutePath() + "/bin/";
   QucsSettings.LangDir =     QucsDir.canonicalPath() + "/share/qucs/lang/";
   QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/qucs/library/";
   QucsSettings.OctaveDir =   QucsDir.canonicalPath() + "/share/qucs/octave/";
