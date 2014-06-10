@@ -762,18 +762,18 @@ void QucsApp::slotCallMatch()
 // Is called to start the attenuator calculation program.
 void QucsApp::slotCallAtt()
 {
-  QProcess *QucsAtt =
-    new QProcess();
+  QString prog;
+  prog = QDir::toNativeSeparators(QucsSettings.BinDir + "qucsattenuator");
 
-  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-  env.insert("PATH", env.value("PATH") );
-  QucsAtt->setProcessEnvironment(env);
-  QucsAtt->start("qucsattenuator");
+  QProcess *QucsAtt = new QProcess();
 
-  if(QucsAtt->state()!=QProcess::Running&&
-          QucsAtt->state()!=QProcess::Starting) {
+  QucsAtt->start(prog);
+
+  qDebug() << "Command :" << prog;
+
+  if( !QucsAtt->waitForStarted(1000) ) {
     QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot start attenuator calculation program!"));
+                          tr("Cannot start attenuator calculation program! \n\n%1").arg(prog));
     delete QucsAtt;
     return;
   }
