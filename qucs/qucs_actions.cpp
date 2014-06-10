@@ -729,18 +729,19 @@ void QucsApp::slotCallLine()
 // Is called to start the component library program.
 void QucsApp::slotCallLibrary()
 {
-  QProcess *QucsLibrary =
-    new QProcess();
-  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-  env.insert("PATH", env.value("PATH") );
-  QucsLibrary->setProcessEnvironment(env);
-  QucsLibrary->start("qucslib");
+  QString prog;
+  prog = QDir::toNativeSeparators(QucsSettings.BinDir + "qucslib");
 
-  if(QucsLibrary->state()!=QProcess::Running&&
-          QucsLibrary->state()!=QProcess::Starting) {
+  QProcess *QucsLibrary = new QProcess();
+
+  QucsLibrary->start(prog);
+
+  qDebug() << "Command :" << prog;
+
+  if( !QucsLibrary->waitForStarted(1000) ) {
 
     QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot start library program!"));
+                          tr("Cannot start library program! \n\n%1").arg(prog));
     delete QucsLibrary;
     return;
   }
