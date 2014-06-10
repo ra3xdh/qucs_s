@@ -681,18 +681,18 @@ void QucsApp::slotCallEditor()
 // Is called to start the filter synthesis program.
 void QucsApp::slotCallFilter()
 {
-  QProcess *QucsFilter =
-    new QProcess();
+  QString prog;
+  prog = QDir::toNativeSeparators(QucsSettings.BinDir + "qucsfilter");
 
-  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-  env.insert("PATH", env.value("PATH") );
-  QucsFilter->setProcessEnvironment(env);
-  QucsFilter->start("qucsfilter");
+  QProcess *QucsFilter = new QProcess();
 
-  if(QucsFilter->state()!=QProcess::Running&&
-          QucsFilter->state()!=QProcess::Starting) {
+  QucsFilter->start(prog);
+
+  qDebug() << "Command :" << prog;
+
+  if( !QucsFilter->waitForStarted(1000) ) {
     QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot start filter synthesis program!"));
+                          tr("Cannot start filter synthesis program! \n\n%1").arg(prog));
     delete QucsFilter;
     return;
   }
