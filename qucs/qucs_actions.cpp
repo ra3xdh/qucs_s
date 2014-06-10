@@ -626,7 +626,10 @@ void QucsApp::editFile(const QString& File)
       // use an external editor
       QStringList com;
 
-      com << QucsSettings.Editor;
+      if (QucsSettings.Editor.toLower().contains("qucsedit"))
+         com << QDir::toNativeSeparators(QucsSettings.BinDir + "qucsedit");
+      else
+          com << QucsSettings.Editor;
 
       if (!File.isEmpty())
       {
@@ -638,15 +641,13 @@ void QucsApp::editFile(const QString& File)
       QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
       env.insert("PATH", env.value("PATH") );
       QucsEditor->setProcessEnvironment(env);
+
+      qDebug() << "Command :" << com.join(" ");
+
       QucsEditor->start(com.join(" "));
-      //QucsHelp->setCommunication(0);
 
-      if(QucsEditor->state()!=QProcess::Running&&
-              QucsEditor->state()!=QProcess::Starting) {
-
-
-//      QucsEditor->setCommunication(0);
-        QMessageBox::critical(this, tr("Error"), tr("Cannot start text editor!"));
+      if( !QucsEditor->waitForStarted(1000) ) {
+        QMessageBox::critical(this, tr("Error"), tr("Cannot start text editor! \n\n%1").arg(com.join(" ")));
         delete QucsEditor;
         return;
       }
