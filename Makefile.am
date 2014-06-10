@@ -69,7 +69,7 @@ mac-install-apps:
 	  $(DESTDIR)$(bindir)/$$app.app/Contents/Info.plist && \
 	$(install_sh_DATA) $(srcdir)/qucs/bitmaps/$$app.icns \
 	  $(DESTDIR)$(bindir)/$$app.app/Contents/Resources/application.icns && \
-	echo "#!/bin/sh\n$(DESTDIR)$(bindir)/$$app.app/Contents/MacOS/$$app \$$*\n" > \
+	echo "#!/bin/sh\n$(bindir)/$$app.app/Contents/MacOS/$$app \$$*\n" > \
 	  $(DESTDIR)$(bindir)/$$app && \
 	chmod +x $(DESTDIR)$(bindir)/$$app; \
 	done
