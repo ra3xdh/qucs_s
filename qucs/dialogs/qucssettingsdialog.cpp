@@ -102,6 +102,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
 
     appSettingsGrid->addWidget(new QLabel(tr("text editor:"), appSettingsTab) ,4,0);
     editorEdit = new QLineEdit(appSettingsTab);
+    editorEdit->setToolTip(tr("Set to qucs, qucsedit or the path to your favorite text editor."));
     appSettingsGrid->addWidget(editorEdit,4,1);
 
     appSettingsGrid->addWidget(new QLabel(tr("start wiring when clicking open node:"), appSettingsTab) ,5,0);

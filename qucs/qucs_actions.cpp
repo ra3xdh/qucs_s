@@ -46,6 +46,11 @@
 QRegExp  Expr_CompProp;
 QRegExpValidator Val_CompProp(Expr_CompProp, 0);
 
+#ifdef __MINGW32__
+#define suffix ".exe"
+#else
+#define suffix ""
+#endif
 
 // -----------------------------------------------------------------------
 // This function is called from all toggle actions.
@@ -604,21 +609,28 @@ extern QString lastDirOpenSave; // to remember last directory and file
 void QucsApp::editFile(const QString& File)
 {
 
+    qDebug() << "File" << File;
     if (QucsSettings.Editor.toLower() == "qucs" | QucsSettings.Editor.isEmpty())
     {
-        // The Editor is 'qucs' or empty, open it in an editor tab
-        editText->setHidden(true); // disable text edit of component property
+        // The Editor is 'qucs' or empty, open a net document tab
+        if (File.isEmpty()) {
+            QucsApp::slotTextNew();
+        }
+        else
+        {
+            editText->setHidden(true); // disable text edit of component property
 
-        statusBar()->message(tr("Opening file..."));
+            statusBar()->message(tr("Opening file..."));
 
-        QFileInfo finfo(File);
+            QFileInfo finfo(File);
 
-        if(!finfo.exists())
-          statusBar()->message(tr("Opening aborted, file not found."), 2000);
-        else {
-          gotoPage(File);
-          lastDirOpenSave = File;   // remember last directory and file
-          statusBar()->message(tr("Ready."));
+            if(!finfo.exists())
+                statusBar()->message(tr("Opening aborted, file not found."), 2000);
+            else {
+                gotoPage(File);
+                lastDirOpenSave = File;   // remember last directory and file
+                statusBar()->message(tr("Ready."));
+            }
         }
     }
     else
@@ -627,7 +639,7 @@ void QucsApp::editFile(const QString& File)
       QStringList com;
 
       if (QucsSettings.Editor.toLower().contains("qucsedit"))
-         com << QDir::toNativeSeparators(QucsSettings.BinDir + "qucsedit");
+         com << QDir::toNativeSeparators(QucsSettings.BinDir + "qucsedit" + suffix);
       else
           com << QucsSettings.Editor;
 
@@ -683,7 +695,7 @@ void QucsApp::slotCallEditor()
 void QucsApp::slotCallFilter()
 {
   QString prog;
-  prog = QDir::toNativeSeparators(QucsSettings.BinDir + "qucsfilter");
+  prog = QDir::toNativeSeparators(QucsSettings.BinDir + "qucsfilter" + suffix);
 
   QProcess *QucsFilter = new QProcess();
 
@@ -707,7 +719,7 @@ void QucsApp::slotCallFilter()
 void QucsApp::slotCallLine()
 {
   QString prog;
-  prog = QDir::toNativeSeparators(QucsSettings.BinDir + "qucstrans");
+  prog = QDir::toNativeSeparators(QucsSettings.BinDir + "qucstrans" + suffix);
 
   QProcess *QucsLine = new QProcess();
 
@@ -731,7 +743,7 @@ void QucsApp::slotCallLine()
 void QucsApp::slotCallLibrary()
 {
   QString prog;
-  prog = QDir::toNativeSeparators(QucsSettings.BinDir + "qucslib");
+  prog = QDir::toNativeSeparators(QucsSettings.BinDir + "qucslib" + suffix);
 
   QProcess *QucsLibrary = new QProcess();
 
@@ -799,7 +811,7 @@ void QucsApp::slotGettingStarted()
 void QucsApp::showHTML(const QString& Page)
 {
   QStringList com;
-  com << QucsSettings.BinDir + "qucshelp" << Page;
+  com << QucsSettings.BinDir + "qucshelp" + suffix << Page;
   QProcess *QucsHelp = new QProcess();
 
   QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
