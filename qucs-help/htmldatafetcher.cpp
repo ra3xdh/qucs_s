@@ -19,10 +19,8 @@
 
 #include "htmldatafetcher.h"
 #include <QMimeData>
-#include <Q3DragObject>
-//Added by qt3to4:
-#include <Q3TextStream>
-#include <Q3MimeSourceFactory>
+#include <QTextStream>
+#include <QDebug>
 
 HtmlDataFetcher::HtmlDataFetcher()
 {
@@ -323,13 +321,14 @@ QStringList HtmlDataFetcher::fetchChapterTexts(const QString &indexFile)
     return retVal;
   }
 
-  const QMimeSource *source = Q3MimeSourceFactory::defaultFactory()->data(indexFile);
-  Q_ASSERT(source);
-  QString sourceText;
-  bool status = Q3TextDrag::decode(source,sourceText);
-  Q_ASSERT(status);
+  qDebug() << indexFile;
 
-  Q3TextStream str(&sourceText,QIODevice::ReadOnly);
+  QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf-8"));
+
+  QFile index(indexFile);
+  index.open(QIODevice::ReadOnly);
+  QTextStream str(&index);
+
   QString txt;
   bool inText = false;//spans multiple lines
   while ( !str.atEnd() )
@@ -355,6 +354,7 @@ QStringList HtmlDataFetcher::fetchChapterTexts(const QString &indexFile)
         txt = line.mid(index,end-index);
         formatAndReplace(txt);
         retVal << txt;
+        qDebug() << txt;
       }
       else
       {
@@ -377,6 +377,8 @@ QStringList HtmlDataFetcher::fetchChapterTexts(const QString &indexFile)
       }
     }
   }
+  qDebug() << retVal;
+  index.close();
   return retVal;
 }
 
@@ -390,7 +392,7 @@ QStringList HtmlDataFetcher::fetchLinksToFiles(const QString &indexFile)
     qWarning("HtmlDataFetcher::fetchLinksToFiles() : File open error");
     return QStringList();
   }
-  Q3TextStream str(&file);
+  QTextStream str(&file);
   QString line,link;
   int index = -1;
   int end = -1;

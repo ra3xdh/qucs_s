@@ -26,11 +26,12 @@
 #include <QTextCodec>
 #include <QTranslator>
 #include <QFile>
-#include <Q3TextStream>
+#include <QTextStream>
 #include <QMessageBox>
 #include <QDir>
 #include <QFont>
 #include <QTextCodec>
+#include <QDebug>
 
 #include "qucshelp.h"
 
@@ -47,7 +48,7 @@ bool loadSettings()
   if(!file.open(QIODevice::ReadOnly))
     result = false; // settings file doesn't exist
   else {
-    Q3TextStream stream(&file);
+    QTextStream stream(&file);
     QString Line, Setting;
     while(!stream.atEnd()) {
       Line = stream.readLine();
@@ -67,7 +68,7 @@ bool loadSettings()
   if(!file.open(QIODevice::ReadOnly))
     result = true; // qucs settings not necessary
   else {
-    Q3TextStream stream(&file);
+    QTextStream stream(&file);
     QString Line, Setting;
     while(!stream.atEnd()) {
       Line = stream.readLine();
@@ -102,7 +103,7 @@ bool saveApplSettings(QucsHelp *qucs)
   }
 
   QString Line;
-  Q3TextStream stream(&file);
+  QTextStream stream(&file);
 
   stream << "Settings file, Qucs Help System " PACKAGE_VERSION "\n"
 	 << "HelpWindow=" << qucs->x() << ',' << qucs->y() << ','
@@ -151,6 +152,7 @@ int main(int argc, char *argv[])
   QString locale = QucsSettings.Language;
   if(locale.isEmpty())
     locale = QTextCodec::locale();
+
   tor.load( QString("qucs_") + locale, QucsSettings.LangDir);
   a.installTranslator( &tor );
 
