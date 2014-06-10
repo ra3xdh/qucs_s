@@ -1,10 +1,10 @@
 <html>
 
 <head>
-<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
 <meta name="Author" content="Michael Margraf">
 <meta name="Translator" content="Helio de Sousa">
-<title>Qucs - Começando com Simulações Digitais</title>
+<title>Qucs - ComeÃ§ando com SimulaÃ§Ãµes Digitais</title>
 </head>
 
 
@@ -17,30 +17,30 @@
 Simulador de Circuitos Completamente Universal<br>
 </h3>
 <h1>
-Começando com<br>
-Simulações Digitais<br><br>
+ComeÃ§ando com<br>
+SimulaÃ§Ãµes Digitais<br><br>
 </h1></center>
 
 
-Qucs também é uma interface gráfica para executar simulações digitais.
-Este documento irá lhe dar uma breve descrição de como usá-la.
+Qucs tambÃ©m Ã© uma interface grÃ¡fica para executar simulaÃ§Ãµes digitais.
+Este documento irÃ¡ lhe dar uma breve descriÃ§Ã£o de como usÃ¡-la.
 <br><br>
-Para simulações digitais Qucs utiliza o programa FreeHDL
+Para simulaÃ§Ãµes digitais Qucs utiliza o programa FreeHDL
 (<a href="http://www.freehdl.seul.org">http://www.freehdl.seul.org</a>).
-Assim, o pacote FreeHDL como também o compilador GNU C++ devem estar instalados
+Assim, o pacote FreeHDL como tambÃ©m o compilador GNU C++ devem estar instalados
 no computador.<br><br>
-Não há grandes diferenças em se executar uma simulação analógica ou uma
-digital. Tendo lido <a href="start.html">Começando com
-Simulações Analógicas</a>, fica fácil ter uma simulação digital funcionando.
-Vamos calcular a tabela verdade de uma simples porta lógica AND.
+NÃ£o hÃ¡ grandes diferenÃ§as em se executar uma simulaÃ§Ã£o analÃ³gica ou uma
+digital. Tendo lido <a href="start.html">ComeÃ§ando com
+SimulaÃ§Ãµes AnalÃ³gicas</a>, fica fÃ¡cil ter uma simulaÃ§Ã£o digital funcionando.
+Vamos calcular a tabela verdade de uma simples porta lÃ³gica AND.
 Selecione a classe "componentes digitais" da aba componentes no
 lado esquerdo e monte o circuito mostrado na figura 1. O bloco de
-simulação digital pode ser encontrado entre os outros blocos de simulação.<br>
-As fontes digitais <i>S1</i> e <i>S2</i> são as entradas, o nó rotulado
-como <i>Output</i> é a saída. Após executar a simulação, a página de
-exibição de dados abrirá. Coloque o diagrama <i>tabela verdade</i> nela
-e adicione a variável <i>Output</i>. Agora, a tabela verdade de uma porta AND
-de duas entradas é mostrado. Parabéns, a primeira simulação digital
+simulaÃ§Ã£o digital pode ser encontrado entre os outros blocos de simulaÃ§Ã£o.<br>
+As fontes digitais <i>S1</i> e <i>S2</i> sÃ£o as entradas, o nÃ³ rotulado
+como <i>Output</i> Ã© a saÃ­da. ApÃ³s executar a simulaÃ§Ã£o, a pÃ¡gina de
+exibiÃ§Ã£o de dados abrirÃ¡. Coloque o diagrama <i>tabela verdade</i> nela
+e adicione a variÃ¡vel <i>Output</i>. Agora, a tabela verdade de uma porta AND
+de duas entradas Ã© mostrado. ParabÃ©ns, a primeira simulaÃ§Ã£o digital
 terminou!
 <br><br>
 
@@ -49,34 +49,34 @@ terminou!
 </center>
 
 <br>
-Tabela verdade não é a única simulação digital que o Qucs pode efetuar.
-Também é possível aplicar um sinal arbitrário ao circuito e visualizar
-o sinal de saída em um diagrama de tempo. Para fazer desta forma, o parâmetro <i>Tipo</i>
-do bloco de simulação deve ser mudado para <i>TimeList</i> e a
-duração da simulação deve ser inserido no próximo parâmetro.
+Tabela verdade nÃ£o Ã© a Ãºnica simulaÃ§Ã£o digital que o Qucs pode efetuar.
+TambÃ©m Ã© possÃ­vel aplicar um sinal arbitrÃ¡rio ao circuito e visualizar
+o sinal de saÃ­da em um diagrama de tempo. Para fazer desta forma, o parÃ¢metro <i>Tipo</i>
+do bloco de simulaÃ§Ã£o deve ser mudado para <i>TimeList</i> e a
+duraÃ§Ã£o da simulaÃ§Ã£o deve ser inserido no prÃ³ximo parÃ¢metro.
 As fontes digitais tem agora um comportamento diferente: Elas podem gerar uma
-sequência aleatória de bits apenas definindo o primeiro bit (baixo ou alto) e
-uma lista que define os instantes até a nova mudança de estado. Note que esta
-lista se repete após o seu fim. Então, para criar um clock de 1GHz com
-razão de pulsos de 1:1, a lista escreve: 0.5ns; 0.5ns<br>
-Para exibir os resultados desse tipo de simulação, há o diagrama
-<i>diagrama de tempo</i>. Aqui, os resultados de todas os nós de saídas podem ser exibidos
-linha por linha em um diagrama. Então, vamos nos divertir...
+sequÃªncia aleatÃ³ria de bits apenas definindo o primeiro bit (baixo ou alto) e
+uma lista que define os instantes atÃ© a nova mudanÃ§a de estado. Note que esta
+lista se repete apÃ³s o seu fim. EntÃ£o, para criar um clock de 1GHz com
+razÃ£o de pulsos de 1:1, a lista escreve: 0.5ns; 0.5ns<br>
+Para exibir os resultados desse tipo de simulaÃ§Ã£o, hÃ¡ o diagrama
+<i>diagrama de tempo</i>. Aqui, os resultados de todas os nÃ³s de saÃ­das podem ser exibidos
+linha por linha em um diagrama. EntÃ£o, vamos nos divertir...
 <br>
 
 <br>
 <h3>Componente em arquivo VHDL</h3>
-Simulações mais complexas e mais universais podem ser executadas usando o
-componente "arquivo VHDL". Este componente pode ser encontrado na lista de componentes (seção "componentes digitais"). Todavia, o uso recomendado é o seguinte: O arquivo VHDL deve ser membro do projeto.
-Então, vá até o visualizador de lista de conteúdo e clique no nome do arquivo. Após entrar
-na área de esquema elétrico, o componente VHDL pode ser colocado.<br>
-O último bloco entidade no arquivo VHDL define a interface, isto é, todas as portas de
-entrada e saída devem ser declaradas aqui. Essas portas também serão mostradas pelo
-símbolo no esquema elétrico e podem ser conectadas ao resto do circuito. Durante
-a simulação, o código fonte do arquivo VHDL é colocado no nível mais alto
-do arquivo VHDL. Isto deve ser considerado como causa de algumas limitações. Por
+SimulaÃ§Ãµes mais complexas e mais universais podem ser executadas usando o
+componente "arquivo VHDL". Este componente pode ser encontrado na lista de componentes (seÃ§Ã£o "componentes digitais"). Todavia, o uso recomendado Ã© o seguinte: O arquivo VHDL deve ser membro do projeto.
+EntÃ£o, vÃ¡ atÃ© o visualizador de lista de conteÃºdo e clique no nome do arquivo. ApÃ³s entrar
+na Ã¡rea de esquema elÃ©trico, o componente VHDL pode ser colocado.<br>
+O Ãºltimo bloco entidade no arquivo VHDL define a interface, isto Ã©, todas as portas de
+entrada e saÃ­da devem ser declaradas aqui. Essas portas tambÃ©m serÃ£o mostradas pelo
+sÃ­mbolo no esquema elÃ©trico e podem ser conectadas ao resto do circuito. Durante
+a simulaÃ§Ã£o, o cÃ³digo fonte do arquivo VHDL Ã© colocado no nÃ­vel mais alto
+do arquivo VHDL. Isto deve ser considerado como causa de algumas limitaÃ§Ãµes. Por
 examplo, o nome das entidades dentro do arquivo VHDL devem ser diferentes dos nomes
-já dados para subcircuitos. (Após a simulação, o código fonte completo pode
+jÃ¡ dados para subcircuitos. (ApÃ³s a simulaÃ§Ã£o, o cÃ³digo fonte completo pode
 ser visto pressionando-se F6. Use-o para adquirir um sentimento por este tipo de procedimento.)
 
 <br><br><a href="#top">voltar ao topo</a><br>

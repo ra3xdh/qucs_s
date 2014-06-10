@@ -1,10 +1,10 @@
 <html>
 
 <head>
-<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
 <meta name="Author" content="Public domain">
 <meta name="Translator" content="Helio de Sousa">
-<title>Qucs - Começando com Otimizações</title>
+<title>Qucs - ComeÃ§ando com OtimizaÃ§Ãµes</title>
 </head>
 
 
@@ -17,73 +17,73 @@
 Simulador de Circuitos Completamente Universal<br>
 </h3>
 <h1>
-Começando com<br>
-Otimizações<br><br>
+ComeÃ§ando com<br>
+OtimizaÃ§Ãµes<br><br>
 </h1></center>
 
 Para otimizar circuitos, Qucs usa a ferramenta ASCO
 (<a href="http://asco.sourceforge.net/">http://asco.sourceforge.net/</a>). Uma
-breve descrição de como preparar seu esquema elétrico, executar e interpretar os
-resultados são dados abaixo. Antes de usar esta funcionalidade, ASCO deve estar instalado
+breve descriÃ§Ã£o de como preparar seu esquema elÃ©trico, executar e interpretar os
+resultados sÃ£o dados abaixo. Antes de usar esta funcionalidade, ASCO deve estar instalado
 no computador.
 <br><br>
 
-Otimização de um circuito não é nada mais do que a minimização da função
+OtimizaÃ§Ã£o de um circuito nÃ£o Ã© nada mais do que a minimizaÃ§Ã£o da funÃ§Ã£o
 custo. Ela poderia ser o atraso no tempo de subida de um circuito digital, ou
-a potência ou ganho de um circuito analógico. Outra possibilidade é definindo o
-problema de otimização como sendo  uma composição de funções, conduzindo neste caso para
-a definição de figura-de-mérito.
+a potÃªncia ou ganho de um circuito analÃ³gico. Outra possibilidade Ã© definindo o
+problema de otimizaÃ§Ã£o como sendo  uma composiÃ§Ã£o de funÃ§Ãµes, conduzindo neste caso para
+a definiÃ§Ã£o de figura-de-mÃ©rito.
 <br><br>
 
-Para configurar uma netlist para otimização, duas coisas devem ser adicionadas a já
-existente netlist: inserir a(s) equação(ões) e o bloco do componente otimização. Tomando
-o esquema elétrico da Figura 1 e mudando ele até que que se obtenha o esquema elétrico
+Para configurar uma netlist para otimizaÃ§Ã£o, duas coisas devem ser adicionadas a jÃ¡
+existente netlist: inserir a(s) equaÃ§Ã£o(Ãµes) e o bloco do componente otimizaÃ§Ã£o. Tomando
+o esquema elÃ©trico da Figura 1 e mudando ele atÃ© que que se obtenha o esquema elÃ©trico
 exibido na Figura 2.
 <br><br>
 
 <center>
-<img src="optimization1.png"><br>Figura 1 - Esquema elétrico inicial.<br><br>
+<img src="optimization1.png"><br>Figura 1 - Esquema elÃ©trico inicial.<br><br>
 </center>
 
 <center>
-<img src="optimization2.png"><br>Figura 2 - Esquema elétrico preparado.<br><br>
+<img src="optimization2.png"><br>Figura 2 - Esquema elÃ©trico preparado.<br><br>
 </center>
 
 <br>
-Agora, abra o componente otimização e selecione a aba Algorítmo. Dos parâmetros
-existentes, dê atenção especial a 'Número máximo de Iterações', 'Constante F' e 
-'Fator de cruzamento pelo valor'. Pelo valor- ou subestimação pode levar a uma 
-convergência prematura do otimizador para um mínimo local ou, um tempo muito
-longo de otimização.
+Agora, abra o componente otimizaÃ§Ã£o e selecione a aba AlgorÃ­tmo. Dos parÃ¢metros
+existentes, dÃª atenÃ§Ã£o especial a 'NÃºmero mÃ¡ximo de IteraÃ§Ãµes', 'Constante F' e 
+'Fator de cruzamento pelo valor'. Pelo valor- ou subestimaÃ§Ã£o pode levar a uma 
+convergÃªncia prematura do otimizador para um mÃ­nimo local ou, um tempo muito
+longo de otimizaÃ§Ã£o.
 <br><br>
 
 <center>
-<img src="optimization3.png"><br>Figura 3 - Janela de otimização, opção Algorítimo.<br><br>
+<img src="optimization3.png"><br>Figura 3 - Janela de otimizaÃ§Ã£o, opÃ§Ã£o AlgorÃ­timo.<br><br>
 </center>
 
 <br>
-Na aba Variáveis, definimos quais elementos do circuito serão escolhidos e suas
-faixas de variação, como mostrado na Figura 4. Os nomes das variáveis correspondem aos
-local do identificadores nas propriedades e <b>não</b> ao nome dos componentes.
+Na aba VariÃ¡veis, definimos quais elementos do circuito serÃ£o escolhidos e suas
+faixas de variaÃ§Ã£o, como mostrado na Figura 4. Os nomes das variÃ¡veis correspondem aos
+local do identificadores nas propriedades e <b>nÃ£o</b> ao nome dos componentes.
 <br><br>
 
 <center>
-<img src="optimization4.png"><br>Figura 4 - Janela de otimização, opção Variáveis.<br><br>
+<img src="optimization4.png"><br>Figura 4 - Janela de otimizaÃ§Ã£o, opÃ§Ã£o VariÃ¡veis.<br><br>
 </center>
 
 <br>
-Finalmente, vá para a aba Metas onde os objetivos de otimização (maximizar, minimizar) e
-restrições (menor, maior, igual) são definidos. ASCO automaticamente os combinará 
-em uma única função custo que será minimizada.
+Finalmente, vÃ¡ para a aba Metas onde os objetivos de otimizaÃ§Ã£o (maximizar, minimizar) e
+restriÃ§Ãµes (menor, maior, igual) sÃ£o definidos. ASCO automaticamente os combinarÃ¡ 
+em uma Ãºnica funÃ§Ã£o custo que serÃ¡ minimizada.
 <br><br>
 
 <center>
-<img src="optimization5.png"><br>Figura 5 - Janela otimização, opção Metas.<br><br>
+<img src="optimization5.png"><br>Figura 5 - Janela otimizaÃ§Ã£o, opÃ§Ã£o Metas.<br><br>
 </center>
 
 <br>
-O próximo passo é mudar o esquema elétrico, e definir quais elementos do circuito
-serão otimizados. O esquema elétrico resultante é mostrado na Figura 6.
+O prÃ³ximo passo Ã© mudar o esquema elÃ©trico, e definir quais elementos do circuito
+serÃ£o otimizados. O esquema elÃ©trico resultante Ã© mostrado na Figura 6.
 <br><br>
 
 <center>
@@ -91,18 +91,18 @@ serão otimizados. O esquema elétrico resultante é mostrado na Figura 6.
 </center>
 
 <br>
-O último passo é executar a otimização, isto é, executar a simulação pressionando F2.
+O Ãºltimo passo Ã© executar a otimizaÃ§Ã£o, isto Ã©, executar a simulaÃ§Ã£o pressionando F2.
 Quando finalizado, que demora poucos
-segundo em um computador moderno, os melhores resultados da simulação são exibidos em
-um visualizador de formas de onda gráfico. 
+segundo em um computador moderno, os melhores resultados da simulaÃ§Ã£o sÃ£o exibidos em
+um visualizador de formas de onda grÃ¡fico. 
 <br><br>
 
 <center>
 <img src="optimization7.png"><br>Figura 7 - Janela de resultados do Qucs.<br><br>
 </center>
 
-Os melhores valores para o circuito encontrados podem ser encontrados na janela de otimização, na aba Variáveis. Agora eles são os valores iniciais para cada uma das
-variáveis introduzidas (Figura 8).
+Os melhores valores para o circuito encontrados podem ser encontrados na janela de otimizaÃ§Ã£o, na aba VariÃ¡veis. Agora eles sÃ£o os valores iniciais para cada uma das
+variÃ¡veis introduzidas (Figura 8).
 <br><br>
 
 <center>

@@ -1,7 +1,7 @@
 <html>
 
 <head>
-<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
 <meta name="Author" content="Michael Margraf">
 <meta name="Translator" content="Helio de Sousa">
 <title>Qucs - Criando Circuitos de Casamento</title>
@@ -20,42 +20,42 @@ Simulador de Circuitos Completamente Universal<br>
 Criando Circuitos de Casamento<br><br>
 </h1></center>
 
-Criar circuitos de casamento é uma tarefa frequentemente necessária na tecnologia de 
-microondas. Qucs pode fazer isso automaticamente. Estes são os passos 
+Criar circuitos de casamento Ã© uma tarefa frequentemente necessÃ¡ria na tecnologia de 
+microondas. Qucs pode fazer isso automaticamente. Estes sÃ£o os passos 
 necessarios:<br>
 <lu>
-<li>Faça uma simulação de parâmetro-S para calcular o coeficiente de 
-reflexão.</li>
-<li>Coloque um diagrama e exiba o coeficiente de reflexão (ex.
+<li>FaÃ§a uma simulaÃ§Ã£o de parÃ¢metro-S para calcular o coeficiente de 
+reflexÃ£o.</li>
+<li>Coloque um diagrama e exiba o coeficiente de reflexÃ£o (ex.
 S[1,1] para port 1, S[2,2] para port 2 etc.)</li>
-<li>Crie um marcador no gráfico utilizando a opção do menu Inserir>Inserir Marcador no Gráfico e clique em cima da curva, na frequência desejada.</li>
-<li>Clique com o botão direito do mouse no marcador e selecione no menu que
-aparecer a opção "casamento de potência".</li>
-<li>Uma janela aparecerá onde os valores podem ser ajustados, por exemplo:
-A impedância de referência pode ser escolhida diferente dos 50 ohms.</li>
-<li>Após clicar em "criar" a página retornará para o esquema elétrico
-e movendo o cursor do mouse, o circuito de casamento poderá ser colocado.</li>
+<li>Crie um marcador no grÃ¡fico utilizando a opÃ§Ã£o do menu Inserir>Inserir Marcador no GrÃ¡fico e clique em cima da curva, na frequÃªncia desejada.</li>
+<li>Clique com o botÃ£o direito do mouse no marcador e selecione no menu que
+aparecer a opÃ§Ã£o "casamento de potÃªncia".</li>
+<li>Uma janela aparecerÃ¡ onde os valores podem ser ajustados, por exemplo:
+A impedÃ¢ncia de referÃªncia pode ser escolhida diferente dos 50 ohms.</li>
+<li>ApÃ³s clicar em "criar" a pÃ¡gina retornarÃ¡ para o esquema elÃ©trico
+e movendo o cursor do mouse, o circuito de casamento poderÃ¡ ser colocado.</li>
 </lu>
 <br>
-O lado esquerdo do circuito de casamento é a entrada e o lado direito, deve ser 
+O lado esquerdo do circuito de casamento Ã© a entrada e o lado direito, deve ser 
 conectado ao circuito.
 <br>
-Se os pontos do marcador para uma variável chamada "Sopt", o Menu mostrará a
-opção "casamento de ruído". Note que a única diferença para "casamento de potência"
-é o fato de que o coeficiente de reflexão do complexo conjugado é tomado.
-Então, se a variável tem outro nome, o casamento de ruído pode ser escolhido
+Se os pontos do marcador para uma variÃ¡vel chamada "Sopt", o Menu mostrarÃ¡ a
+opÃ§Ã£o "casamento de ruÃ­do". Note que a Ãºnica diferenÃ§a para "casamento de potÃªncia"
+Ã© o fato de que o coeficiente de reflexÃ£o do complexo conjugado Ã© tomado.
+EntÃ£o, se a variÃ¡vel tem outro nome, o casamento de ruÃ­do pode ser escolhido
 re-ajustando os valores na janela.
 <br>
-A janela de casamento pode ser também chamada pelo Menu (Ferramentas->Circuito de Casamento)
-ou pelo atalho (&lt;CTRL-5&gt;). Mas então todos os valores tem que ser entrados manualmente.
+A janela de casamento pode ser tambÃ©m chamada pelo Menu (Ferramentas->Circuito de Casamento)
+ou pelo atalho (&lt;CTRL-5&gt;). Mas entÃ£o todos os valores tem que ser entrados manualmente.
 <br><br>
 
 <h3>
 Circuitos de Casamento de 2-Portas<br>
 </h3></center>
-Se o nome da variável no marcador de texto for um parâmetro S, então existe uma opção
-para casar simultâneamente entrada e saída de um circuito de duas portas.
-Isto funciona de forma completamente semelhante aos passos mencionandos acima. Seus resultados são dois circuitos L: O nó mais a esquerda é para conectar a porta 1, o nó mais a direita é para conectar a porta 2 e os dois nós do meio são para conectar o circuito de duas portas.
+Se o nome da variÃ¡vel no marcador de texto for um parÃ¢metro S, entÃ£o existe uma opÃ§Ã£o
+para casar simultÃ¢neamente entrada e saÃ­da de um circuito de duas portas.
+Isto funciona de forma completamente semelhante aos passos mencionandos acima. Seus resultados sÃ£o dois circuitos L: O nÃ³ mais a esquerda Ã© para conectar a porta 1, o nÃ³ mais a direita Ã© para conectar a porta 2 e os dois nÃ³s do meio sÃ£o para conectar o circuito de duas portas.
 <br><br>
 
 <br><a href="#top">voltar ao topo</a>

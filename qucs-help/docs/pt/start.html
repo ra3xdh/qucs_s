@@ -1,10 +1,10 @@
 <html>
 
 <head>
-<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
 <meta name="Author" content="Michael Margraf">
 <meta name="Translator" content="Helio de Sousa">
-<title>Qucs - Começando</title>
+<title>Qucs - ComeÃ§ando</title>
 </head>
 
 
@@ -17,34 +17,34 @@
 Simulador de Circuitos Completamente Universal<br>
 </h3>
 <h1>
-Começando com<br>
-Simulações Analógicas<br><br>
+ComeÃ§ando com<br>
+SimulaÃ§Ãµes AnalÃ³gicas<br><br>
 </h1></center>
 
 
-Qucs (fala-se: kju:ks) é um simulador de circuitos com interface gráfica. Ele é capaz de
-executar muitos tipos diferentes de simulações (ex. DC, Parâmetro S).
-Este documento deve dar uma pequena descrição de como usar o Qucs.
+Qucs (fala-se: kju:ks) Ã© um simulador de circuitos com interface grÃ¡fica. Ele Ã© capaz de
+executar muitos tipos diferentes de simulaÃ§Ãµes (ex. DC, ParÃ¢metro S).
+Este documento deve dar uma pequena descriÃ§Ã£o de como usar o Qucs.
 <br><br>
-Quando você começar o Qucs pela primeira vez, ele criará o diretório ".qucs" no diretório home do
-usuário. Cada arquivo será salvo dentro deste  diretório ou dentro de um de seus subdiretórios.
-Após o Qucs ser carregado, você verá uma janela principal semelhante a janela vista na figura 1.
-No lado direito, fica a área de trabalho (6) contendo o esquema elétrico,
-exibição de dados e assim por diante. Usando a barra tabular (5) acima desta área, você pode rapidamente
-trocar para qualquer documento aberto. No lado esquerdo da janela principal do Qucs, há
-outra área (1), de quem o conteúdo depende do estado de sua barra tabular logo acima:
-"Projetos" (2), "Conteúdo" (3) e "Componentes" (4). Após iniciar o Qucs, a aba "Projetos"
-(2) fica ativa. Por ser a primeira vez que você começa este programa, a área está vazia
-porque você não tem nenhum projeto. Pressione o botão "Novo" localizado acima da área (1) e
-uma janela abrirá. Entre com um nome para o seu primeiro projeto, ex. "primeiroProjeto" e pressione
-o botão "Ok". Qucs criará um diretório de projeto dentro do diretório ~/.qucs, para este exemplo,
-"primeiroProjeto_prj". Cada arquivo que pertença a este novo projeto será salvo dentro deste
-diretório. O novo projeto é imediatamente aberto (como pode ser lido na barra de título da janela)
-e a barra de abas mudada para "Conteúdo" (3), onde o conteúdo do projeto atualmente
-aberto é mostrado. Você ainda não tem nenhum documento, assim, pressione o botão salvar na barra de
-ferramentas (ou use o menu principal: Arquivo->Salvar) para salvar o documento sem título
-que preenche a área de trabalho (6). Você será perguntado pelo nome do seu novo documento.
-Digite "primeiroEsquema" e pressione o botão "Ok".
+Quando vocÃª comeÃ§ar o Qucs pela primeira vez, ele criarÃ¡ o diretÃ³rio ".qucs" no diretÃ³rio home do
+usuÃ¡rio. Cada arquivo serÃ¡ salvo dentro deste  diretÃ³rio ou dentro de um de seus subdiretÃ³rios.
+ApÃ³s o Qucs ser carregado, vocÃª verÃ¡ uma janela principal semelhante a janela vista na figura 1.
+No lado direito, fica a Ã¡rea de trabalho (6) contendo o esquema elÃ©trico,
+exibiÃ§Ã£o de dados e assim por diante. Usando a barra tabular (5) acima desta Ã¡rea, vocÃª pode rapidamente
+trocar para qualquer documento aberto. No lado esquerdo da janela principal do Qucs, hÃ¡
+outra Ã¡rea (1), de quem o conteÃºdo depende do estado de sua barra tabular logo acima:
+"Projetos" (2), "ConteÃºdo" (3) e "Componentes" (4). ApÃ³s iniciar o Qucs, a aba "Projetos"
+(2) fica ativa. Por ser a primeira vez que vocÃª comeÃ§a este programa, a Ã¡rea estÃ¡ vazia
+porque vocÃª nÃ£o tem nenhum projeto. Pressione o botÃ£o "Novo" localizado acima da Ã¡rea (1) e
+uma janela abrirÃ¡. Entre com um nome para o seu primeiro projeto, ex. "primeiroProjeto" e pressione
+o botÃ£o "Ok". Qucs criarÃ¡ um diretÃ³rio de projeto dentro do diretÃ³rio ~/.qucs, para este exemplo,
+"primeiroProjeto_prj". Cada arquivo que pertenÃ§a a este novo projeto serÃ¡ salvo dentro deste
+diretÃ³rio. O novo projeto Ã© imediatamente aberto (como pode ser lido na barra de tÃ­tulo da janela)
+e a barra de abas mudada para "ConteÃºdo" (3), onde o conteÃºdo do projeto atualmente
+aberto Ã© mostrado. VocÃª ainda nÃ£o tem nenhum documento, assim, pressione o botÃ£o salvar na barra de
+ferramentas (ou use o menu principal: Arquivo->Salvar) para salvar o documento sem tÃ­tulo
+que preenche a Ã¡rea de trabalho (6). VocÃª serÃ¡ perguntado pelo nome do seu novo documento.
+Digite "primeiroEsquema" e pressione o botÃ£o "Ok".
 <br><br>
 
 <center>
@@ -52,41 +52,41 @@ Digite "primeiroEsquema" e pressione o botão "Ok".
 </center>
 
 <br>
-Agora, nós queremos fazer uma simples simulação DC, ex. nós queremos analisar o circuito da figura
-(1). Ative a aba "Componentes" ( (4) na figura 1). Lá, você verá uma caixa de seleção onde
-você pode escolher um grupo de componentes, abaixo, os componentes que podem ser escolhidos do grupo.
-Escolha "componentes soltos" e clique no primeiro símbolo: "Resistor". Movendo o cursor do mouse
-dentro da área de trabalho (6), você carregará um desenho do símbolo de um resistor. Pressionando o botão direito
-do mouse, o símbolo girará, pressionando o botão esquerdo do mouse colocará o componente no
-esquema elétrico. Repita este processo para todos os componentes mostrados na figura 1. A fonte de tensão
-pode ser encontrada na classe de componentes "fontes", o símbolo terra pode ser pego na classe "componentes
-soltos" ou da barra de ferramentas, o tipo de simulação é definida pelos grandes blocos de simulação
-encontrados na classe de componentes "simulações". Para editar os parâmetros do segundo resistor,
-clique duas vezes sobre ele com o botão esquerdo. Uma caixa de diálogo abrirá, onde você pode mudar a
-resistência. Digite "100 Ohm" no campo de edição no lado direito e pressione enter.
+Agora, nÃ³s queremos fazer uma simples simulaÃ§Ã£o DC, ex. nÃ³s queremos analisar o circuito da figura
+(1). Ative a aba "Componentes" ( (4) na figura 1). LÃ¡, vocÃª verÃ¡ uma caixa de seleÃ§Ã£o onde
+vocÃª pode escolher um grupo de componentes, abaixo, os componentes que podem ser escolhidos do grupo.
+Escolha "componentes soltos" e clique no primeiro sÃ­mbolo: "Resistor". Movendo o cursor do mouse
+dentro da Ã¡rea de trabalho (6), vocÃª carregarÃ¡ um desenho do sÃ­mbolo de um resistor. Pressionando o botÃ£o direito
+do mouse, o sÃ­mbolo girarÃ¡, pressionando o botÃ£o esquerdo do mouse colocarÃ¡ o componente no
+esquema elÃ©trico. Repita este processo para todos os componentes mostrados na figura 1. A fonte de tensÃ£o
+pode ser encontrada na classe de componentes "fontes", o sÃ­mbolo terra pode ser pego na classe "componentes
+soltos" ou da barra de ferramentas, o tipo de simulaÃ§Ã£o Ã© definida pelos grandes blocos de simulaÃ§Ã£o
+encontrados na classe de componentes "simulaÃ§Ãµes". Para editar os parÃ¢metros do segundo resistor,
+clique duas vezes sobre ele com o botÃ£o esquerdo. Uma caixa de diÃ¡logo abrirÃ¡, onde vocÃª pode mudar a
+resistÃªncia. Digite "100 Ohm" no campo de ediÃ§Ã£o no lado direito e pressione enter.
 <br><br>
-Para conectar os componentes, pressione o botão "fio" da barra de ferramentas (ou use o menu principal: Inserir->Fio).
-Mova o cursor do mouse até uma porta aberta (marcado por pequenos círculos vermelhos). Clicando nela, começa
-o fio. Agora mova até o ponto final e clique novamente. Os componentes estão agora conectados. Se você quiser
-mudar a direção do canto do fio, clique com o botão direito do mouse antes de
-clicar no ponto final. Você também pode terminar um fio sem clicar sobre uma porta aberta ou sobre um fio:
-Apenas faça um duplo-clique com o botão esquerdo do mouse.
+Para conectar os componentes, pressione o botÃ£o "fio" da barra de ferramentas (ou use o menu principal: Inserir->Fio).
+Mova o cursor do mouse atÃ© uma porta aberta (marcado por pequenos cÃ­rculos vermelhos). Clicando nela, comeÃ§a
+o fio. Agora mova atÃ© o ponto final e clique novamente. Os componentes estÃ£o agora conectados. Se vocÃª quiser
+mudar a direÃ§Ã£o do canto do fio, clique com o botÃ£o direito do mouse antes de
+clicar no ponto final. VocÃª tambÃ©m pode terminar um fio sem clicar sobre uma porta aberta ou sobre um fio:
+Apenas faÃ§a um duplo-clique com o botÃ£o esquerdo do mouse.
 <br><br>
-Por último mas não menos importante, você deve rotular o nó onde queira que o Qucs calcule a tensão.
-Pressione o botão rótulo na barra de ferramentas (ou use o menu: Inserir->Rótulo de Fio). Agora clique no
-fio escolhido. Uma janela de diálogo abrirá e você pode digitar o nome do nó. Digite "divisor" e clique no botão "Ok". 
+Por Ãºltimo mas nÃ£o menos importante, vocÃª deve rotular o nÃ³ onde queira que o Qucs calcule a tensÃ£o.
+Pressione o botÃ£o rÃ³tulo na barra de ferramentas (ou use o menu: Inserir->RÃ³tulo de Fio). Agora clique no
+fio escolhido. Uma janela de diÃ¡logo abrirÃ¡ e vocÃª pode digitar o nome do nÃ³. Digite "divisor" e clique no botÃ£o "Ok". 
 Agora o circuito deve se parecer com o visto na figura 1.
 <br><br>
-Para iniciar a simulação pressione o botão simular na barra de ferramentas (ou use o menu:
-Simulação->Simular). Uma janela abrirá e exibirá o progresso da simulação. Após finalizar a simulação com
-sucesso, a exibição de dados é aberta. Normalmente, tudo isso acontece tão rapidamente que você verá
-somente uma curta piscada. Agora você tem que colocar um diagrama para ver os resultados da simulação. No lado esquerdo,
-a classe de componentes "diagramas" já foi escolhida automaticamente. Clique no ítem
-"Tabela", mova o mouse até a área de trabalho e colóque-o clicando com o botão esquerdo do mouse.
-Uma janela de diálogo abrirá e você poderá escolher o que será exibido no novo diagrama. Na área esquerda
-você verá o nome do nó que você definiu: "divisor". Clique duas vezes e ele será transferido
-para a área da direita. Feche a janela clicando no botão "Ok". Agora você pode ver o resultado
-da simulação: 0.666667 volts. Maravilhoso, dê um tapinha em suas costas!
+Para iniciar a simulaÃ§Ã£o pressione o botÃ£o simular na barra de ferramentas (ou use o menu:
+SimulaÃ§Ã£o->Simular). Uma janela abrirÃ¡ e exibirÃ¡ o progresso da simulaÃ§Ã£o. ApÃ³s finalizar a simulaÃ§Ã£o com
+sucesso, a exibiÃ§Ã£o de dados Ã© aberta. Normalmente, tudo isso acontece tÃ£o rapidamente que vocÃª verÃ¡
+somente uma curta piscada. Agora vocÃª tem que colocar um diagrama para ver os resultados da simulaÃ§Ã£o. No lado esquerdo,
+a classe de componentes "diagramas" jÃ¡ foi escolhida automaticamente. Clique no Ã­tem
+"Tabela", mova o mouse atÃ© a Ã¡rea de trabalho e colÃ³que-o clicando com o botÃ£o esquerdo do mouse.
+Uma janela de diÃ¡logo abrirÃ¡ e vocÃª poderÃ¡ escolher o que serÃ¡ exibido no novo diagrama. Na Ã¡rea esquerda
+vocÃª verÃ¡ o nome do nÃ³ que vocÃª definiu: "divisor". Clique duas vezes e ele serÃ¡ transferido
+para a Ã¡rea da direita. Feche a janela clicando no botÃ£o "Ok". Agora vocÃª pode ver o resultado
+da simulaÃ§Ã£o: 0.666667 volts. Maravilhoso, dÃª um tapinha em suas costas!
 <br>
 
 
