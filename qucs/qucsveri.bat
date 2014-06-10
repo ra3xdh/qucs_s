@@ -21,7 +21,7 @@ REM the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 REM Boston, MA 02110-1301, USA.  
 REM
 
-if not exist "%5" goto usage
+if not exist %5 goto usage
 
 set NAME=%1
 set NAMEOUT=%2
