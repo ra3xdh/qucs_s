@@ -53,7 +53,7 @@ OutputBaseFilename={# BASENAME}-{# RELEASE}-setup
 Compression=lzma
 SolidCompression=yes
 ChangesEnvironment=yes
-InfoBeforeFile={# TREE}\infobefore.rtf
+;InfoBeforeFile={# TREE}\infobefore.rtf
 UsePreviousAppDir=yes
 
 ; no admin right required http://www.kinook.com/blog/?p=53

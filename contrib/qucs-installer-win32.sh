@@ -57,7 +57,7 @@ export QTDIR=${HOME}/.wine/drive_c/Qt/4.8.6
 # add to installer content GPL notice, Icons, site locations
 echo Copy Inno contents...
 cp ${REPO}/qucs/contrib/innosetup/gpl.rtf $WINDIR
-cp ${REPO}/qucs/contrib/innosetup/infobefore.rtf $WINDIR
+#cp ${REPO}/qucs/contrib/innosetup/infobefore.rtf $WINDIR
 cp -r ${REPO}/qucs/contrib/innosetup/misc $WINDIR
 
 # add Icarus Verilog installer
