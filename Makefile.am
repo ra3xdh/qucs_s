@@ -48,11 +48,11 @@ mac-install-apps:
 	@echo "Creating MacOSX applications...";
 	@list='$(app_PROGS)'; for file in $$list; do \
 	app=`basename $$file` && \
-	$(mkinstalldirs) $(bindir)/$$app.app/Contents && \
-	$(mkinstalldirs) $(bindir)/$$app.app/Contents/Resources && \
-	$(mkinstalldirs) $(bindir)/$$app.app/Contents/MacOS && \
-	$(install_sh_PROGRAM) $$file $(bindir)/$$app.app/Contents/MacOS/ && \
-	strip $(bindir)/$$app.app/Contents/MacOS/$$app && \
+	$(mkinstalldirs) $(DESTDIR)$(bindir)/$$app.app/Contents && \
+	$(mkinstalldirs) $(DESTDIR)$(bindir)/$$app.app/Contents/Resources && \
+	$(mkinstalldirs) $(DESTDIR)$(bindir)/$$app.app/Contents/MacOS && \
+	$(install_sh_PROGRAM) $$file $(DESTDIR)$(bindir)/$$app.app/Contents/MacOS/ && \
+	strip $(DESTDIR)$(bindir)/$$app.app/Contents/MacOS/$$app && \
 	case $$app in \
 	  qucs)		  desc="Qucs";; \
 	  qucsattenuator) desc="Qucs Attenuator";; \
@@ -66,26 +66,26 @@ mac-install-apps:
 	  sed -e "s/@version@/$(PACKAGE_VERSION)/g" | \
 	  sed -e "s/@name@/$$desc/g" | \
 	  sed -e "s/@exec@/$$app/g" > \
-	  $(bindir)/$$app.app/Contents/Info.plist && \
+	  $(DESTDIR)$(bindir)/$$app.app/Contents/Info.plist && \
 	$(install_sh_DATA) $(srcdir)/qucs/bitmaps/$$app.icns \
-	  $(bindir)/$$app.app/Contents/Resources/application.icns && \
-	echo "#!/bin/sh\n$(bindir)/$$app.app/Contents/MacOS/$$app \$$*\n" > \
-	  $(bindir)/$$app && \
-	chmod +x $(bindir)/$$app; \
+	  $(DESTDIR)$(bindir)/$$app.app/Contents/Resources/application.icns && \
+	echo "#!/bin/sh\n$(DESTDIR)$(bindir)/$$app.app/Contents/MacOS/$$app \$$*\n" > \
+	  $(DESTDIR)$(bindir)/$$app && \
+	chmod +x $(DESTDIR)$(bindir)/$$app; \
 	done
 
 mac-deploy-framework:
 	@echo "Copying and setting up MacOSX/Qt framework...";
 	@list='$(app_PROGS)'; for file in $$list; do \
 	app=`basename $$file`; \
-	echo "running: macdeployqt $(bindir)/$${app}.app"; \
-	macdeployqt $(bindir)/$$app.app; \
+	echo "running: macdeployqt $(DESTDIR)$(bindir)/$${app}.app"; \
+	macdeployqt $(DESTDIR)$(bindir)/$$app.app; \
 	done
 
 uninstall-hook:
 	@list='$(app_PROGS)'; for file in $$list; do \
 	app=`basename $$file` && \
-	rm -rf $(bindir)/$$app.app; \
+	rm -rf $(DESTDIR)$(bindir)/$$app.app; \
 	done
 else
 install-exec-hook:
