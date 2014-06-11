@@ -26,10 +26,14 @@
 #include <QAction>
 #include <QPixmap>
 #include <QFile>
-#include <Q3PopupMenu>
 #include <QMenuBar>
 #include <QApplication>
-#include <Q3ListView>
+#include <QListWidget>
+#include <QToolBar>
+#include <QDockWidget>
+#include <QDebug>
+#include <QToolBar>
+#include <QDir>
 
 
 
@@ -60,9 +64,11 @@ QucsHelp::~QucsHelp()
 
 void QucsHelp::setupActions()
 {
-  Q3ToolBar *toolbar = new Q3ToolBar(this,"main_toolbar");
+  QToolBar *toolbar = new QToolBar(this,"main_toolbar");
+
+  this->addToolBar(toolbar);
+
   QMenuBar *bar = menuBar();
-  statusBar();
 
   const QKeySequence ks = QKeySequence();
 
@@ -93,8 +99,9 @@ void QucsHelp::setupActions()
   connect(textBrowser,SIGNAL(forwardAvailable(bool)),forwardAction,SLOT(setEnabled(bool)));
 
   connect(homeAction,SIGNAL(activated()),textBrowser,SLOT(home()));
+  connect(homeAction,SIGNAL(activated()),this,SLOT(gohome()));
 
-  connect(textBrowser,SIGNAL(sourceChanged(const QString &)),this,SLOT(slotSourceChanged(const QString&)));
+  connect(textBrowser,SIGNAL(sourceChanged(const QUrl &)),this,SLOT(slotSourceChanged(const QUrl &)));
   connect(previousAction,SIGNAL(activated()),this,SLOT(previousLink()));
   connect(nextAction,SIGNAL(activated()),this,SLOT(nextLink()));
   connect(viewBrowseDock, SIGNAL(toggled(bool)), SLOT(slotToggleSidebar(bool)));
@@ -108,10 +115,10 @@ void QucsHelp::setupActions()
   toolbar->addSeparator();
   quitAction->addTo(toolbar);
 
-  Q3PopupMenu *fileMenu = new Q3PopupMenu(this);
+  QMenu *fileMenu = new QMenu(this);
   quitAction->addTo(fileMenu);
 
-  Q3PopupMenu *viewMenu = new Q3PopupMenu(this);
+  QMenu *viewMenu = new QMenu(this);
   backAction->addTo(viewMenu);
   forwardAction->addTo(viewMenu);
   homeAction->addTo(viewMenu);
@@ -120,58 +127,58 @@ void QucsHelp::setupActions()
   viewMenu->insertSeparator();
   viewBrowseDock->addTo(viewMenu);
 
-  Q3PopupMenu *helpMenu = new Q3PopupMenu(this);
+  QMenu *helpMenu = new QMenu(this);
   helpMenu->insertItem(tr("&About Qt"),qApp,SLOT(aboutQt()));
 
   bar->insertItem(tr("&File"), fileMenu );
   bar->insertItem(tr("&View"),viewMenu);
   bar->insertSeparator();
   bar->insertItem(tr("&Help"),helpMenu);
-
 }
-
 
 void QucsHelp::createSidebar()
 {
-  dock = new Q3DockWindow(Q3DockWindow::InDock,this);
-  dock->setResizeEnabled(true);
-  dock->setCloseMode(Q3DockWindow::Always);
+  dock = new QDockWidget(tr("Contents"),this);
   connect(dock,SIGNAL(visibilityChanged(bool)),this,SLOT(slotToggleSidebarAction(bool)));
 
-  chaptersView = new Q3ListView(dock,"chapters_view");
-  chaptersView->setRootIsDecorated(false);
-  chaptersView->addColumn(tr("Contents"));
-  chaptersView->setSorting(-1);
-  chaptersView->setSelectionMode(Q3ListView::Single);
-
+  chaptersView = new QListWidget(dock);
   dock->setWidget(chaptersView);
-  moveDockWindow(dock,Qt::Left);
-
+  dock->setAllowedAreas(Qt::LeftDockWidgetArea);
+  this->addDockWidget(Qt::LeftDockWidgetArea, dock);
 
   QStringList l = dataFetcher->fetchChapterTexts(QucsHelpDir.filePath("index.html"));
-  for(int i=l.count()-1;i>=0;i--)
-    chaptersView->insertItem(new Q3ListViewItem(chaptersView,l[i],QString::number(i+1)));
+  for(int i=0; i < (l.count()-1); i++) {
+    QListWidgetItem *newItem = new QListWidgetItem;
+    newItem->setText(l[i]);
+    chaptersView->addItem(newItem);
+  }
 
-  Q3ListViewItem *curItem = new Q3ListViewItem(chaptersView,tr("Home"),QString::number(0));
-  chaptersView->insertItem(curItem);
-  chaptersView->setSelected(curItem,true);
+  QListWidgetItem *curItem = new QListWidgetItem(tr("Home"));
+  chaptersView->insertItem(0,curItem);
+  chaptersView->setCurrentItem(curItem);
 
-  connect(chaptersView,SIGNAL(selectionChanged()),this,SLOT(displaySelectedChapter()));
+  connect(chaptersView,SIGNAL(itemSelectionChanged()),this,SLOT(displaySelectedChapter()));
 }
 
 void QucsHelp::displaySelectedChapter()
 {
-  if(chaptersView->selectedItem() == 0)
+  if(chaptersView->selectedItems().size() == 0)
       return;
-  uint y = chaptersView->selectedItem()->text(1).toUInt();
+  int y = chaptersView->currentRow();
   Q_ASSERT(y < links.count());
   textBrowser->setSource(QucsHelpDir.filePath(links[y]));
-  cachedSelectedText = chaptersView->selectedItem()->text(1);
+  cachedSelectedText = chaptersView->currentItem()->text();
 }
-//This slot updates next and previous actions i.e enabling/disabling
-void QucsHelp::slotSourceChanged(const QString& _str)
+
+void QucsHelp::gohome()
 {
-  QString str(_str);
+    chaptersView->setCurrentRow(0);
+}
+
+//This slot updates next and previous actions i.e enabling/disabling
+void QucsHelp::slotSourceChanged(const QUrl & _str)
+{
+  QString str = _str.toString();
   // Remove '#*' chars in link since we don't check '#top,etc' while tracking previous actions
   int hashPos = str.findRev('#');
   if(hashPos != -1)
@@ -189,15 +196,15 @@ void QucsHelp::slotSourceChanged(const QString& _str)
       previousAction->setEnabled(bool(i!=0));
       nextAction->setEnabled(bool(i+1 != links.count()));
       QString temp = cachedSelectedText;
-      if(chaptersView->selectedItem())
-         temp = chaptersView->selectedItem()->text(1);
+      if(chaptersView->selectedItems().size())
+         temp = chaptersView->currentItem()->text();
       if(temp.toUInt() != i)
       {
-        Q3ListViewItem *item = chaptersView->findItem(QString::number(i),1);
+        QListWidgetItem *item = chaptersView->item(i);
         if(item != 0l)
         {
           chaptersView->blockSignals(true);
-          chaptersView->setSelected(item,true);
+          chaptersView->setCurrentItem(item);
           chaptersView->blockSignals(false);
         }
       }

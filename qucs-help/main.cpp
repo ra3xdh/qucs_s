@@ -35,6 +35,10 @@
 
 #include "qucshelp.h"
 
+#ifdef _WIN32
+#include <Windows.h>  //for OutputDebugString
+#endif
+
 QDir QucsHelpDir; // directory to find helps files
 tQucsSettings QucsSettings; // application settings
 
@@ -113,6 +117,39 @@ bool saveApplSettings(QucsHelp *qucs)
   return true;
 }
 
+/*!
+ * \brief qucsMessageOutput handles qDebug, qWarning, qCritical, qFatal.
+ * \param type Message type (Qt enum)
+ * \param msg Message
+ *
+ * The message handler is used to get control of the messages.
+ * Particulary on Windows, as the messages are sent to the debugger and do not
+ * show on the terminal. The handler could aslo be extended to create a log
+ * mechanism.
+ * <http://qt-project.org/doc/qt-4.8/debug.html#warning-and-debugging-messages>
+ * <http://qt-project.org/doc/qt-4.8/qtglobal.html#qInstallMsgHandler>
+ */
+void qucsMessageOutput(QtMsgType type, const char *msg)
+{
+  switch (type) {
+  case QtDebugMsg:
+    fprintf(stderr, "Debug: %s\n", msg);
+    break;
+  case QtWarningMsg:
+    fprintf(stderr, "Warning: %s\n", msg);
+    break;
+  case QtCriticalMsg:
+    fprintf(stderr, "Critical: %s\n", msg);
+    break;
+  case QtFatalMsg:
+    fprintf(stderr, "Fatal: %s\n", msg);
+    abort();
+  }
+
+#ifdef _WIN32
+  OutputDebugStringA(msg);
+#endif
+}
 
 // #########################################################################
 // ##########                                                     ##########
@@ -170,6 +207,8 @@ int main(int argc, char *argv[])
 
   QString Page;
   if(argc > 1) Page = argv[1];
+
+  qInstallMsgHandler(qucsMessageOutput);
 
   QucsHelp *qucs = new QucsHelp(Page);
   a.setMainWidget(qucs);

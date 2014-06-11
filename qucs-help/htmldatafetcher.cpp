@@ -321,8 +321,6 @@ QStringList HtmlDataFetcher::fetchChapterTexts(const QString &indexFile)
     return retVal;
   }
 
-  qDebug() << indexFile;
-
   QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf-8"));
 
   QFile index(indexFile);
@@ -354,7 +352,6 @@ QStringList HtmlDataFetcher::fetchChapterTexts(const QString &indexFile)
         txt = line.mid(index,end-index);
         formatAndReplace(txt);
         retVal << txt;
-        qDebug() << txt;
       }
       else
       {
@@ -377,7 +374,6 @@ QStringList HtmlDataFetcher::fetchChapterTexts(const QString &indexFile)
       }
     }
   }
-  qDebug() << retVal;
   index.close();
   return retVal;
 }

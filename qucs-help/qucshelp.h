@@ -18,12 +18,14 @@
 #ifndef QUCSHELP_H
 #define QUCSHELP_H
 
-#include <Q3MainWindow>
-#include <Q3TextBrowser>
+#include <QMainWindow>
+#include <QTextBrowser>
 #include <QDir>
 #include <QFont>
 #include <QStringList>
 #include <QTextBrowser>
+#include <QUrl>
+#include <QDebug>
 
 struct tQucsSettings {
   int x, y, dx, dy;    // position and size of main window
@@ -36,10 +38,9 @@ struct tQucsSettings {
 extern tQucsSettings QucsSettings;
 extern QDir QucsHelpDir;
 class QAction;
-class Q3ListViewItem;
-class Q3ListView;
+class QListWidget;
 class HtmlDataFetcher;
-class Q3DockWindow;
+class QDockWidget;
 
 class TextBrowser : public QTextBrowser
 {
@@ -51,24 +52,26 @@ class TextBrowser : public QTextBrowser
       void setSource(const QString& name)
       {
          // Dont do anything if the clicked link is web url
-         if(!name.startsWith("http://"))
-            QTextBrowser::setSource(name);
+         if(!name.startsWith("http://")) {
+            QTextBrowser::setSource(QUrl::fromLocalFile(name));
+         }
       }
 };
 
-class QucsHelp : public Q3MainWindow  {
+class QucsHelp : public QMainWindow  {
   Q_OBJECT
   public:
     QucsHelp(const QString& page);
     ~QucsHelp();
 
   private slots:
-    void slotSourceChanged(const QString& str);
+    void slotSourceChanged(const QUrl &str);
     void slotToggleSidebar(bool);
     void slotToggleSidebarAction(bool);
     void previousLink();
     void nextLink();
     void displaySelectedChapter();
+    void gohome();
 
   private:
     void setupActions();
@@ -80,8 +83,8 @@ class QucsHelp : public Q3MainWindow  {
     QAction *previousAction;
     QAction *nextAction;
     QAction *viewBrowseDock;
-    Q3ListView *chaptersView;
-    Q3DockWindow *dock;
+    QListWidget *chaptersView;
+    QDockWidget *dock;
     HtmlDataFetcher *dataFetcher;
     QString currentSource;
     QString cachedSelectedText;
