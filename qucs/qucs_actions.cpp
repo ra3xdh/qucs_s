@@ -46,12 +46,6 @@
 QRegExp  Expr_CompProp;
 QRegExpValidator Val_CompProp(Expr_CompProp, 0);
 
-#ifdef __MINGW32__
-#define suffix ".exe"
-#else
-#define suffix ""
-#endif
-
 // -----------------------------------------------------------------------
 // This function is called from all toggle actions.
 bool QucsApp::performToggleAction(bool on, QAction *Action,
@@ -608,8 +602,6 @@ extern QString lastDirOpenSave; // to remember last directory and file
 // component edit dialog.
 void QucsApp::editFile(const QString& File)
 {
-
-    qDebug() << "File" << File;
     if (QucsSettings.Editor.toLower() == "qucs" | QucsSettings.Editor.isEmpty())
     {
         // The Editor is 'qucs' or empty, open a net document tab
@@ -636,33 +628,46 @@ void QucsApp::editFile(const QString& File)
     else
     {
       // use an external editor
-      QStringList com;
+      QString prog;
+      QStringList args;
 
-      if (QucsSettings.Editor.toLower().contains("qucsedit"))
-         com << QDir::toNativeSeparators(QucsSettings.BinDir + "qucsedit" + suffix);
-      else
-          com << QucsSettings.Editor;
+      if (QucsSettings.Editor.toLower().contains("qucsedit")) {
 
-      if (!File.isEmpty())
-      {
-          com << File;
+#ifdef __MINGW32__
+  prog = "qucsedit.exe";
+#elif __APPLE__
+  prog = "qucsedit.app/Contents/MacOS/qucsedit";
+#else
+  prog = "qucsedit";
+#endif
+
+        QFileInfo editor(QucsSettings.BinDir + prog);
+        prog = QDir::toNativeSeparators(editor.canonicalFilePath());
+      }
+      else { // user defined editor
+          QFileInfo editor(QucsSettings.Editor);
+          prog = QDir::toNativeSeparators(editor.canonicalFilePath());
+      }
+
+      if (!File.isEmpty()) {
+          args << File;
       }
 
       QProcess *QucsEditor = new QProcess();
-
       QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
       env.insert("PATH", env.value("PATH") );
       QucsEditor->setProcessEnvironment(env);
 
-      qDebug() << "Command :" << com.join(" ");
+      qDebug() << "Command: " << prog << args.join(" ");
 
-      QucsEditor->start(com.join(" "));
+      QucsEditor->start(prog, args);
 
       if( !QucsEditor->waitForStarted(1000) ) {
-        QMessageBox::critical(this, tr("Error"), tr("Cannot start text editor! \n\n%1").arg(com.join(" ")));
+        QMessageBox::critical(this, tr("Error"), tr("Cannot start text editor! \n\n%1").arg(prog));
         delete QucsEditor;
         return;
       }
+      qDebug() << QucsEditor->readAllStandardError();
 
       // to kill it before qucs ends
       connect(this, SIGNAL(signalKillEmAll()), QucsEditor, SLOT(kill()));
@@ -695,12 +700,21 @@ void QucsApp::slotCallEditor()
 void QucsApp::slotCallFilter()
 {
   QString prog;
-  prog = QDir::toNativeSeparators(QucsSettings.BinDir + "qucsfilter" + suffix);
+
+#ifdef __MINGW32__
+  prog = "qucsfilter.exe";
+#elif __APPLE__
+  prog = "qucsfilter.app/Contents/MacOS/qucsfilter";
+#else
+  prog = "qucsfilter";
+#endif
 
   QProcess *QucsFilter = new QProcess();
 
+  QucsFilter->setWorkingDirectory(QucsSettings.BinDir);
   QucsFilter->start(prog);
 
+  prog = QDir::toNativeSeparators(QucsSettings.BinDir+prog);
   qDebug() << "Command :" << prog;
 
   if( !QucsFilter->waitForStarted(1000) ) {
@@ -719,12 +733,19 @@ void QucsApp::slotCallFilter()
 void QucsApp::slotCallLine()
 {
   QString prog;
-  prog = QDir::toNativeSeparators(QucsSettings.BinDir + "qucstrans" + suffix);
-
+#ifdef __MINGW32__
+  prog = "qucstrans.exe";
+#elif __APPLE__
+  prog = "qucstrans.app/Contents/MacOS/qucstrans";
+#else
+  prog = "qucstrans";
+#endif
   QProcess *QucsLine = new QProcess();
 
+  QucsLine->setWorkingDirectory(QucsSettings.BinDir);
   QucsLine->start(prog);
 
+  prog = QDir::toNativeSeparators(QucsSettings.BinDir+prog);
   qDebug() << "Command :" << prog;
 
   if( !QucsLine->waitForStarted(1000) ) {
@@ -743,12 +764,20 @@ void QucsApp::slotCallLine()
 void QucsApp::slotCallLibrary()
 {
   QString prog;
-  prog = QDir::toNativeSeparators(QucsSettings.BinDir + "qucslib" + suffix);
+#ifdef __MINGW32__
+  prog = "qucslib.exe";
+#elif __APPLE__
+  prog = "qucslib.app/Contents/MacOS/qucslib";
+#else
+  prog = "qucslib";
+#endif
 
   QProcess *QucsLibrary = new QProcess();
 
+  QucsLibrary->setWorkingDirectory(QucsSettings.BinDir);
   QucsLibrary->start(prog);
 
+  prog = QDir::toNativeSeparators(QucsSettings.BinDir+prog);
   qDebug() << "Command :" << prog;
 
   if( !QucsLibrary->waitForStarted(1000) ) {
@@ -776,12 +805,20 @@ void QucsApp::slotCallMatch()
 void QucsApp::slotCallAtt()
 {
   QString prog;
-  prog = QDir::toNativeSeparators(QucsSettings.BinDir + "qucsattenuator");
+#ifdef __MINGW32__
+  prog = "qucsattenuator.exe";
+#elif __APPLE__
+  prog = "qucsattenuator.app/Contents/MacOS/qucsattenuator";
+#else
+  prog = "qucsattenuator";
+#endif
 
   QProcess *QucsAtt = new QProcess();
 
+  QucsAtt->setWorkingDirectory(QucsSettings.BinDir);
   QucsAtt->start(prog);
 
+  prog = QDir::toNativeSeparators(QucsSettings.BinDir+prog);
   qDebug() << "Command :" << prog;
 
   if( !QucsAtt->waitForStarted(1000) ) {
@@ -810,16 +847,23 @@ void QucsApp::slotGettingStarted()
 // --------------------------------------------------------------
 void QucsApp::showHTML(const QString& Page)
 {
+
+  QString prog;
+#ifdef __MINGW32__
+  prog = "qucshelp.exe";
+#elif __APPLE__
+  prog = "qucshelp.app/Contents/MacOS/qucshelp";
+#else
+  prog = "qucshelp";
+#endif
+
   QStringList com;
-  com << QucsSettings.BinDir + "qucshelp" + suffix << Page;
+  com << prog << Page;
+
   QProcess *QucsHelp = new QProcess();
 
-  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-  env.insert("PATH", env.value("PATH") );
-  QucsHelp->setProcessEnvironment(env);
+  QucsHelp->setWorkingDirectory(QucsSettings.BinDir);
   QucsHelp->start(com.join(" "));
-  //QucsHelp->setCommunication(0);
-
 
   qDebug() << "Command :" << com.join(" ");
   if( !QucsHelp->waitForStarted(1000) ) {
