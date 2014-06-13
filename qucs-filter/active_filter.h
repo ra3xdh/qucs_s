@@ -2,17 +2,17 @@
   copyright: (C) 2010 by Michael Margraf
  ***************************************************************************/
 
-#ifndef LC_FILTER_H
-#define LC_FILTER_H
+#ifndef ACTIVE_FILTER_H
+#define ACTIVE_FILTER_H
 
 #include "filter.h"
 
-// ladder filter containing inductors L and capacitors C
-class LC_Filter : public Filter {
+// active RC filter using operational amplifiers
+class Active_Filter : public Filter {
 public:
-  LC_Filter();
+  Active_Filter();
 
-  static QString* createSchematic(tFilter*, bool);
+  static QString* createSchematic(tFilter*, double);
 };
 
 #endif

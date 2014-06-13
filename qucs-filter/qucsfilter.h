@@ -19,6 +19,7 @@
 #define QUCSFILTER_H
 
 #include <QMainWindow>
+#include <QGroupBox>
 #include <QLabel>
 
 class QGridLayout;
@@ -54,6 +55,8 @@ private slots:
   void slotTypeChanged(int);
   void slotClassChanged(int);
   void slotShowResult();
+  void slotRealizationChanged(int);
+  void slotTakeEr(const QString&);
 
 private:
   void setError(const QString&);
@@ -61,12 +64,13 @@ private:
 
   int ResultState;
 
-  QGridLayout *gbox;
-  QComboBox *ComboType, *ComboClass, *ComboCorner, *ComboStop, *ComboBandStop;
-  QLineEdit *EditOrder, *EditCorner, *EditStop, *EditRipple, *EditImpedance;
+  QGridLayout *all, *gbox1, *gbox2;
+  QGroupBox *box1, *box2;
+  QComboBox *ComboRealize, *ComboType, *ComboClass, *ComboCorner, *ComboStop, *ComboBandStop, *ComboEr;
+  QLineEdit *EditOrder, *EditCorner, *EditStop, *EditRipple, *EditImpedance, *EditThickness, *EditHeight, *EditMinWidth, *EditMaxWidth;
   QLineEdit *EditAtten, *EditBandStop;
   QLabel *LabelRipple, *LabelRipple_dB, *LabelStart, *LabelStop, *LabelResult;
-  QLabel *LabelAtten, *LabelAtten_dB, *LabelBandStop, *LabelOrder;
+  QLabel *LabelAtten, *LabelAtten_dB, *LabelBandStop, *LabelOrder, *LabelImpedance, *LabelOhm;
   QIntValidator *IntVal;
   QDoubleValidator *DoubleVal;
 };

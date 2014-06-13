@@ -38,11 +38,19 @@
 #include <QPixmap>
 
 #include "lc_filter.h"
+#include "tl_filter.h"
+#include "eqn_filter.h"
+#include "line_filter.h"
+#include "cline_filter.h"
+#include "stepz_filter.h"
+#include "active_filter.h"
+
 #include "qf_poly.h"
 #include "qf_filter.h"
 #include "qf_cauer.h"
 #include "qucsfilter.h"
 #include "helpdialog.h"
+#include "material_props.h"
 
 QucsFilter::QucsFilter()
 {
@@ -85,114 +93,197 @@ QucsFilter::QucsFilter()
   menuBar()->addMenu(helpMenu);
 
   // -------  create main windows widgets --------
-  gbox = new QGridLayout();
-  gbox->setSpacing(3);
-  
+  all  = new QGridLayout();
+  all->setSpacing(3);
+
   // assign layout to central widget
-  centralWidget->setLayout(gbox);
+  centralWidget->setLayout(all);
+
+  // ...........................................................
+  box1 = new QGroupBox(tr("Filter"), this);
+  all->addWidget(box1,0,0);
+
+  gbox1 = new QGridLayout();
+  gbox1->setSpacing(3);
+
+  box1->setLayout(gbox1);
+
+  QLabel *Label0 = new QLabel(tr("Realization:"), this);
+  gbox1->addWidget(Label0, 0,0);
+  ComboRealize = new QComboBox(this);
+  ComboRealize->addItem("LC ladder (pi type)");
+  ComboRealize->addItem("LC ladder (tee type)");
+  ComboRealize->addItem("C-coupled transmission lines");
+  ComboRealize->addItem("Microstrip end-coupled");
+  ComboRealize->addItem("Coupled transmission lines");
+  ComboRealize->addItem("Coupled microstrip");
+  ComboRealize->addItem("Stepped-impedance");
+  ComboRealize->addItem("Stepped-impedance microstrip");
+  ComboRealize->addItem("Active");
+  ComboRealize->addItem("Equation-defined");
+  gbox1->addWidget(ComboRealize, 0,1);
+  connect(ComboRealize, SIGNAL(activated(int)), SLOT(slotRealizationChanged(int)));
 
   QLabel *Label1 = new QLabel(tr("Filter type:"), this);
-  gbox->addWidget(Label1, 1,0);
+  gbox1->addWidget(Label1, 1,0);
   ComboType = new QComboBox(this);
   ComboType->addItem("Bessel");
   ComboType->addItem("Butterworth");
   ComboType->addItem("Chebyshev");
   ComboType->addItem("Cauer");
-  gbox->addWidget(ComboType, 1,1);
+  gbox1->addWidget(ComboType, 1,1);
   connect(ComboType, SIGNAL(activated(int)), SLOT(slotTypeChanged(int)));
 
   QLabel *Label2 = new QLabel(tr("Filter class:"), this);
-  gbox->addWidget(Label2, 2,0);
+  gbox1->addWidget(Label2, 2,0);
   ComboClass = new QComboBox(this);
   ComboClass->addItem(tr("Low pass"));
   ComboClass->addItem(tr("High pass"));
   ComboClass->addItem(tr("Band pass"));
   ComboClass->addItem(tr("Band stop"));
-  gbox->addWidget(ComboClass, 2,1);
+  gbox1->addWidget(ComboClass, 2,1);
   connect(ComboClass, SIGNAL(activated(int)), SLOT(slotClassChanged(int)));
 
   IntVal = new QIntValidator(1, 200, this);
   DoubleVal = new QDoubleValidator(this);
 
   LabelOrder = new QLabel(tr("Order:"), this);
-  gbox->addWidget(LabelOrder, 3,0);
+  gbox1->addWidget(LabelOrder, 3,0);
   EditOrder = new QLineEdit("3", this);
   EditOrder->setValidator(IntVal);
-  gbox->addWidget(EditOrder, 3,1);
+  gbox1->addWidget(EditOrder, 3,1);
 
   LabelStart = new QLabel(tr("Corner frequency:"), this);
-  gbox->addWidget(LabelStart, 4,0);
+  gbox1->addWidget(LabelStart, 4,0);
   EditCorner = new QLineEdit("1", this);
   EditCorner->setValidator(DoubleVal);
-  gbox->addWidget(EditCorner, 4,1);
+  gbox1->addWidget(EditCorner, 4,1);
   ComboCorner = new QComboBox(this);
   ComboCorner->addItem("Hz");
   ComboCorner->addItem("kHz");
   ComboCorner->addItem("MHz");
   ComboCorner->addItem("GHz");
   ComboCorner->setCurrentIndex(3);
-  gbox->addWidget(ComboCorner, 4,2);
+  gbox1->addWidget(ComboCorner, 4,2);
 
   LabelStop = new QLabel(tr("Stop frequency:"), this);
-  gbox->addWidget(LabelStop, 5,0);
+  gbox1->addWidget(LabelStop, 5,0);
   EditStop = new QLineEdit("2", this);
   EditStop->setValidator(DoubleVal);
-  gbox->addWidget(EditStop, 5,1);
+  gbox1->addWidget(EditStop, 5,1);
   ComboStop = new QComboBox(this);
   ComboStop->addItem("Hz");
   ComboStop->addItem("kHz");
   ComboStop->addItem("MHz");
   ComboStop->addItem("GHz");
   ComboStop->setCurrentIndex(3);
-  gbox->addWidget(ComboStop, 5,2);
+  gbox1->addWidget(ComboStop, 5,2);
 
   LabelBandStop = new QLabel(tr("Stop band frequency:"), this);
-  gbox->addWidget(LabelBandStop, 6,0);
+  gbox1->addWidget(LabelBandStop, 6,0);
   EditBandStop = new QLineEdit("3", this);
   EditBandStop->setValidator(DoubleVal);
-  gbox->addWidget(EditBandStop, 6,1);
+  gbox1->addWidget(EditBandStop, 6,1);
   ComboBandStop = new QComboBox(this);
   ComboBandStop->addItem("Hz");
   ComboBandStop->addItem("kHz");
   ComboBandStop->addItem("MHz");
   ComboBandStop->addItem("GHz");
   ComboBandStop->setCurrentIndex(3);
-  gbox->addWidget(ComboBandStop, 6,2);
+  gbox1->addWidget(ComboBandStop, 6,2);
 
   LabelRipple = new QLabel(tr("Pass band ripple:"), this);
-  gbox->addWidget(LabelRipple, 7,0);
+  gbox1->addWidget(LabelRipple, 7,0);
   EditRipple = new QLineEdit("1", this);
   EditRipple->setValidator(DoubleVal);
-  gbox->addWidget(EditRipple, 7,1);
+  gbox1->addWidget(EditRipple, 7,1);
   LabelRipple_dB = new QLabel("dB", this);
-  gbox->addWidget(LabelRipple_dB, 7,2);
+  gbox1->addWidget(LabelRipple_dB, 7,2);
 
   LabelAtten = new QLabel(tr("Stop band attenuation:"), this);
-  gbox->addWidget(LabelAtten, 8,0);
+  gbox1->addWidget(LabelAtten, 8,0);
   EditAtten = new QLineEdit("20", this);
   EditAtten->setValidator(DoubleVal);
-  gbox->addWidget(EditAtten, 8,1);
+  gbox1->addWidget(EditAtten, 8,1);
   LabelAtten_dB = new QLabel("dB", this);
-  gbox->addWidget(LabelAtten_dB, 8,2);
+  gbox1->addWidget(LabelAtten_dB, 8,2);
 
-  QLabel *Label9 = new QLabel(tr("Impedance:"), this);
-  gbox->addWidget(Label9, 9,0);
+  LabelImpedance = new QLabel(tr("Impedance:"), this);
+  gbox1->addWidget(LabelImpedance, 9,0);
   EditImpedance = new QLineEdit("50", this);
   EditImpedance->setValidator(DoubleVal);
-  gbox->addWidget(EditImpedance, 9,1);
-  QLabel *Label10 = new QLabel("Ohm", this);
-  gbox->addWidget(Label10, 9,2);
+  gbox1->addWidget(EditImpedance, 9,1);
+  LabelOhm = new QLabel("Ohm", this);
+  gbox1->addWidget(LabelOhm, 9,2);
 
+  // ...........................................................
+  box2 = new QGroupBox(tr("Microstrip Substrate"), this);
+  box2->setEnabled(false);
+  all->addWidget(box2,0,1);
 
+  gbox2 = new QGridLayout();
+  gbox2->setSpacing(3);
+
+  box2->setLayout(gbox2);
+
+  QLabel *Label3 = new QLabel(tr("Relative permittivity:"), this);
+  gbox2->addWidget(Label3, 0,0);
+  ComboEr = new QComboBox(this);
+  ComboEr->setEditable(true);
+  ComboEr->lineEdit()->setValidator(DoubleVal);
+  connect(ComboEr, SIGNAL(activated(const QString&)), SLOT(slotTakeEr(const QString&)));
+  gbox2->addWidget(ComboEr, 0,1);
+
+  pChar *p = List_er;
+  while(*(++p))
+    ComboEr->addItem(*p);  // put material properties into combobox
+  ComboEr->lineEdit()->setText("9.8");
+
+  QLabel *Label4 = new QLabel(tr("Substrate height:"), this);
+  gbox2->addWidget(Label4, 1,0);
+  EditHeight = new QLineEdit("1.0", this);
+  EditHeight->setValidator(DoubleVal);
+  gbox2->addWidget(EditHeight, 1,1);
+  QLabel *Label5 = new QLabel("mm", this);
+  gbox2->addWidget(Label5, 1,2);
+
+  QLabel *Label6 = new QLabel(tr("metal thickness:"), this);
+  gbox2->addWidget(Label6, 2,0);
+  EditThickness = new QLineEdit("12.5", this);
+  EditThickness->setValidator(DoubleVal);
+  gbox2->addWidget(EditThickness, 2,1);
+  QLabel *Label7 = new QLabel("um", this);
+  gbox2->addWidget(Label7, 2,2);
+
+  QLabel *Label8 = new QLabel(tr("minimum width:"), this);
+  gbox2->addWidget(Label8, 3,0);
+  EditMinWidth = new QLineEdit("0.4", this);
+  EditMinWidth->setValidator(DoubleVal);
+  gbox2->addWidget(EditMinWidth, 3,1);
+  QLabel *Label9 = new QLabel("mm", this);
+  gbox2->addWidget(Label9, 3,2);
+
+  QLabel *Label10 = new QLabel(tr("maximum width:"), this);
+  gbox2->addWidget(Label10, 4,0);
+  EditMaxWidth = new QLineEdit("5.0", this);
+  EditMaxWidth->setValidator(DoubleVal);
+  gbox2->addWidget(EditMaxWidth, 4,1);
+  QLabel *Label11 = new QLabel("mm", this);
+  gbox2->addWidget(Label11, 4,2);
+
+  QSpacerItem *mySpacer=new QSpacerItem(1,1, QSizePolicy::Minimum, QSizePolicy::Expanding);
+  gbox2->addItem(mySpacer, 5, 0, 1, -1);
+
+  // ...........................................................
   QPushButton *ButtonGo = new QPushButton(tr("Calculate and put into Clipboard"), this);
   connect(ButtonGo, SIGNAL(clicked()), SLOT(slotCalculate()));
-  gbox->addWidget(ButtonGo, 10,0,1,3);
+  all->addWidget(ButtonGo, 1, 0, 1, -1);
 
   LabelResult = new QLabel(this);
   ResultState = 100;
   slotShowResult();
   LabelResult->setAlignment(Qt::AlignHCenter);
-  gbox->addWidget(LabelResult, 11,0,1,3);
+  all->addWidget(LabelResult, 2, 0, 1, -1);
 
   // -------  finally set initial state  --------
   slotTypeChanged(0);
@@ -201,7 +292,9 @@ QucsFilter::QucsFilter()
 
 QucsFilter::~QucsFilter()
 {
-  delete gbox;
+  delete gbox1;
+  delete gbox2;
+  delete all;
   delete IntVal;
   delete DoubleVal;
 }
@@ -256,47 +349,87 @@ void QucsFilter::setError(const QString& Message)
 // ************************************************************
 QString * QucsFilter::calculateFilter(struct tFilter * Filter)
 {
-  QString * s = NULL;
+    QString * s = NULL;
 
-  if (Filter->Type == TYPE_CAUER) {
-    qf_cauer * F = NULL;
-    double amin, amax, fc, fs, bw, r;
-    fc = Filter->Frequency;
-    amin = Filter->Ripple;
-    fs = Filter->Frequency3;
-    r = Filter->Impedance;
-    amax = Filter->Attenuation;
-    bw = Filter->Frequency2 - fc;
+    tSubstrate Substrate;
+    Substrate.er = ComboEr->currentText().toDouble();
+    Substrate.height = EditHeight->text().toDouble() / 1e3;
+    Substrate.thickness = EditThickness->text().toDouble() / 1e6;
+    Substrate.tand = 0.0;
+    Substrate.resistivity = 1e-10;
+    Substrate.roughness = 0.0;
+    Substrate.minWidth = EditMinWidth->text().toDouble() / 1e3;
+    Substrate.maxWidth = EditMaxWidth->text().toDouble() / 1e3;
 
-    switch (Filter->Class) {
-    case CLASS_LOWPASS:
-      F = new qf_cauer (amin, amax, fc, fs, r, 0, LOWPASS);
-      break;
-    case CLASS_HIGHPASS:
-      F = new qf_cauer (amin, amax, fc, fs, r, 0, HIGHPASS);
-      break;
-    case CLASS_BANDPASS:
-      F = new qf_cauer (amin, amax, fc + bw / 2, fs, r, bw, BANDPASS);
-      break;
-    case CLASS_BANDSTOP:
-      F = new qf_cauer (amin, amax, fc + bw / 2, fs, r, bw, BANDSTOP);
-      break;
+    switch(ComboRealize->currentIndex()) {
+      case 2:  // C-coupled transmission line filter
+        s = Line_Filter::createSchematic(Filter, &Substrate, false);
+        return s;
+      case 3:  // microstrip end-coupled filter
+        s = Line_Filter::createSchematic(Filter, &Substrate, true);
+        return s;
+      case 4:  // coupled transmission line filter
+        s = CoupledLine_Filter::createSchematic(Filter, &Substrate, false);
+        return s;
+      case 5:  // coupled microstrip line filter
+        s = CoupledLine_Filter::createSchematic(Filter, &Substrate, true);
+        return s;
+      case 6:  // stepped-impedance transmission line filter
+        s = StepImpedance_Filter::createSchematic(Filter, &Substrate, false);
+        return s;
+      case 7:  // stepped-impedance microstrip line filter
+        s = StepImpedance_Filter::createSchematic(Filter, &Substrate, true);
+        return s;
+      case 8:  // active filter
+        s = Active_Filter::createSchematic(Filter, Filter->Impedance);
+        return s;
+      case 9:  // equation defined filter
+        s = Equation_Filter::createSchematic(Filter);
+        return s;
     }
-    if (F) {
-      //F->dump();
-      EditOrder->setText(QString::number(F->order()));
-      s = new QString(F->to_qucs().c_str());
-      delete F;
+
+    if (Filter->Type != TYPE_CAUER) {
+      if(ComboRealize->currentIndex() == 0)
+        s = LC_Filter::createSchematic(Filter, true);
+      else
+        s = LC_Filter::createSchematic(Filter, false);
     }
-    else {
-      s = NULL;
+    else  {
+      qf_cauer * F = NULL;
+      double amin, amax, fc, fs, bw, r;
+      fc = Filter->Frequency;
+      amin = Filter->Ripple;
+      fs = Filter->Frequency3;
+      r = Filter->Impedance;
+      amax = Filter->Attenuation;
+      bw = Filter->Frequency2 - fc;
+
+      switch (Filter->Class) {
+      case CLASS_LOWPASS:
+        F = new qf_cauer (amin, amax, fc, fs, r, 0, LOWPASS);
+        break;
+      case CLASS_HIGHPASS:
+        F = new qf_cauer (amin, amax, fc, fs, r, 0, HIGHPASS);
+        break;
+      case CLASS_BANDPASS:
+        F = new qf_cauer (amin, amax, fc + bw / 2, fs, r, bw, BANDPASS);
+        break;
+      case CLASS_BANDSTOP:
+        F = new qf_cauer (amin, amax, fc + bw / 2, fs, r, bw, BANDSTOP);
+        break;
+      }
+      if (F) {
+        //F->dump();
+        EditOrder->setText(QString::number(F->order()));
+        s = new QString(F->to_qucs().c_str());
+        delete F;
+      }
+      else {
+        s = NULL;
+      }
     }
+    return s;
   }
-  else {
-    s = LC_Filter::createSchematic(Filter);
-  }
-  return s;
-}
 
 // ************************************************************
 void QucsFilter::slotCalculate()
@@ -440,4 +573,47 @@ void QucsFilter::slotClassChanged(int index)
     LabelBandStop->setText(tr("Pass band frequency:"));
     LabelRipple->setText(tr("Pass band attenuation:"));
   }
+}
+
+// ************************************************************
+void QucsFilter::slotRealizationChanged(int index)
+{
+  if(index < 2)         // set to LC ladder type?
+    ComboClass->setEnabled(true);
+  else if(index < 6) {  // set to "transmission line" types?
+    // set to bandpass fixed
+    ComboClass->setCurrentIndex(CLASS_BANDPASS);
+    slotClassChanged(CLASS_BANDPASS);
+    ComboClass->setEnabled(false);
+  }
+  else if(index < 8) {  // set to "stepped impedance" types?
+    // set to lowpass fixed
+    ComboClass->setCurrentIndex(CLASS_LOWPASS);
+    slotClassChanged(CLASS_LOWPASS);
+    ComboClass->setEnabled(false);
+  }
+  else
+    ComboClass->setEnabled(true);
+
+  if((index == 3)||(index == 5)||(index == 7))
+    box2->setEnabled(true);
+  else
+    box2->setEnabled(false);
+
+  if(index == 8) {   // set to active filter?
+    LabelImpedance->setText(tr("Voltage Gain:"));
+    LabelOhm->setText("dB");
+  }
+  else {
+    LabelImpedance->setText(tr("Impedance:"));
+    LabelOhm->setText("Ohm");
+  }
+}
+
+// ************************************************************
+void QucsFilter::slotTakeEr(const QString& Text)
+{
+  // If the ComboBox text was a material property, the material name
+  // is separated by two spaces. So, cut off the name.
+  ComboEr->lineEdit()->setText(Text.section("  ", 0, 0));
 }
