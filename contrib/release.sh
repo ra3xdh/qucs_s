@@ -100,21 +100,31 @@ cd ..
 #mv verilog-0.9.6 verilog
 
 
-sed -i 's/# AC_CONFIG_SUBDIRS(qucs-core)/AC_CONFIG_SUBDIRS(qucs-core)/g' configure.ac
-sed -i 's/# RELEASEDIRS="qucs-core"/RELEASEDIRS="qucs-core"/g' configure.ac
-sed -i 's/# AC_CONFIG_SUBDIRS(qucs-doc)/AC_CONFIG_SUBDIRS(qucs-doc)/g' configure.ac
-sed -i 's/# RELEASEDIRS="$RELEASEDIRS qucs-doc"/RELEASEDIRS="$RELEASEDIRS qucs-doc"/g' configure.ac
-sed -i 's/# AC_CONFIG_SUBDIRS(examples)/AC_CONFIG_SUBDIRS(examples)/g' configure.ac
-sed -i 's/# RELEASEDIRS="$RELEASEDIRS examples"/RELEASEDIRS="$RELEASEDIRS examples"/g' configure.ac
-sed -i 's/# AC_CONFIG_SUBDIRS(asco)/AC_CONFIG_SUBDIRS(asco)/g' configure.ac
-sed -i 's/# RELEASEDIRS="$RELEASEDIRS asco"/RELEASEDIRS="$RELEASEDIRS asco"/g' configure.ac
+#sed -i 's/# AC_CONFIG_SUBDIRS(qucs-core)/AC_CONFIG_SUBDIRS(qucs-core)/g' configure.ac
+#sed -i 's/# RELEASEDIRS="qucs-core"/RELEASEDIRS="qucs-core"/g' configure.ac
+#sed -i 's/# AC_CONFIG_SUBDIRS(qucs-doc)/AC_CONFIG_SUBDIRS(qucs-doc)/g' configure.ac
+#sed -i 's/# RELEASEDIRS="$RELEASEDIRS qucs-doc"/RELEASEDIRS="$RELEASEDIRS qucs-doc"/g' configure.ac
+#sed -i 's/# AC_CONFIG_SUBDIRS(examples)/AC_CONFIG_SUBDIRS(examples)/g' configure.ac
+#sed -i 's/# RELEASEDIRS="$RELEASEDIRS examples"/RELEASEDIRS="$RELEASEDIRS examples"/g' configure.ac
+#sed -i 's/# AC_CONFIG_SUBDIRS(asco)/AC_CONFIG_SUBDIRS(asco)/g' configure.ac
+#sed -i 's/# RELEASEDIRS="$RELEASEDIRS asco"/RELEASEDIRS="$RELEASEDIRS asco"/g' configure.ac
+
+sed -i 's/RELEASE=no/RELEASE=yes/g' configure.ac
 
 ./autogen.sh
 make distclean
 rm -rf autom4te.cache
 
+
+cd qucs-core/deps/adms
+wget http://downloads.sourceforge.net/project/mot-adms/adms-source/2.3/adms-2.3.2.tar.gz
+tar -zxvf adms-2.3.2.tar.gz
+mv adms-2.3.2/* .
+rm -rf adms-2.3.2 
+rm adms-2.3.2.tar.gz
+cd ../..
+
 libtoolize
-cd qucs-core
 ./bootstrap.sh
 ./configure --enable-maintainer-mode
 make
@@ -135,7 +145,7 @@ tar -zcvhf qucs-$RELEASE.tar.gz qucs-$RELEASE
 rm -rf qucs-$RELEASE
 tar -zxvf qucs-$RELEASE.tar.gz #make the symbolic links actual files
 
-DISTS="saucy trusty"
+DISTS="saucy trusty utopic"
 cd qucs-$RELEASE
 ./configure
 cd ..
