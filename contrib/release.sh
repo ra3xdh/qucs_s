@@ -28,29 +28,39 @@ mv release/qucs-core release/qucs/
 mv release/qucs release/qucs-$RELEASE
 
 rm -rf release/.git
-cd release/qucs-doc
-./autogen.sh
-cd tutorial
-make tutorial
-make book
-cd ..
-cd report
-make report
-make book
-cd ..
-cd technical
-make technical
-ps2pdf technical.ps
-cd ..
 
-
-DOC_SUBDIRS="report technical tutorial"
-for DOC_SUBDIR in ${DOC_SUBDIRS} ; do
-	cd $DOC_SUBDIR
-	mkdir -p ../../qucs-$RELEASE/qucs-doc/$DOC_SUBDIR
-	find -name "*.pdf" |grep -v pics| xargs cp -t ../../qucs-$RELEASE/qucs-doc/$DOC_SUBDIR
+if [ -f ~/Downloads/qucs-doc.tar.gz ]
+then
+	cd release/qucs-$RELEASE
+	cp ~/Downloads/qucs-doc.tar.gz .
+	tar -zxvf qucs-doc.tar.gz
+	rm qucs-doc.tar.gz
+else
+	cd release/qucs-doc
+	./autogen.sh
+	cd tutorial
+	make tutorial
+	make book
 	cd ..
-done
+	cd report
+	make report
+	make book
+	cd ..
+	cd technical
+	make technical
+	ps2pdf technical.ps
+	cd ..
+
+
+
+	DOC_SUBDIRS="report technical tutorial"
+	for DOC_SUBDIR in ${DOC_SUBDIRS} ; do
+		cd $DOC_SUBDIR
+		mkdir -p ../../qucs-$RELEASE/qucs-doc/$DOC_SUBDIR
+		find -name "*.pdf" |grep -v pics| xargs cp -t ../../qucs-$RELEASE/qucs-doc/$DOC_SUBDIR
+		cd ..
+	done
+fi
 
 #including pdf versions of qucs-doc in archives
 cd ../qucs-$RELEASE
@@ -122,7 +132,11 @@ tar -zxvf adms-2.3.2.tar.gz
 mv adms-2.3.2/* .
 rm -rf adms-2.3.2 
 rm adms-2.3.2.tar.gz
-cd ../..
+cd admsXml
+sed -i 's/\$(generated_FILES)/ /g' Makefile.in
+sed -i 's/\$(generated_FILES)/ /g' Makefile.am
+sed -i 's/\$(generated_FILES)/ /g' Makefile
+cd ../../..
 
 libtoolize
 ./bootstrap.sh
