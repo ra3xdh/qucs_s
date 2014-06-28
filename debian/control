@@ -3,7 +3,7 @@ Section: electronics
 Priority: optional
 Maintainer: José L. Redrejo Rodríguez <jredrejo@debian.org>
 Homepage: http://qucs.sourceforge.net
-Build-Depends: debhelper (>> 4.0.0),autotools-dev, libqtcore4, libqt4-qt3support, libqt4-dev, build-essential, qt4-qmake, libx11-dev
+Build-Depends: debhelper (>> 4.0.0),autotools-dev, libqtcore4, libqt4-qt3support, libqt4-dev, build-essential, qt4-qmake, libx11-dev, flex, bison, gperf
 Standards-Version: 3.8.1
 
 Package: qucs

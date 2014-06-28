@@ -162,64 +162,64 @@ for DIST in ${DISTS} ; do
 done
 
 
-echo "Building mingw32"
-make clean
-INNOSETUP="$HOME/.wine/drive_c/Program Files (x86)/Inno Setup 5/Compil32.exe"
-cd ..
-WINDIR=$PWD/qucs-win32-bin
-cd qucs-$RELEASE
-export QTDIR=~/.wine/drive_c/Qt/4.8.4/
-./mingw-configure --prefix=$WINDIR
-sed -i 's/-fno-rtti/ /g' qucs-filter-v2/Makefile
-cp ../../qucs/qucs/qucsdigi.bat qucs #is deleted by the linux build for some reason
-make
-make install
-
-cp contrib/innosetup/gpl.rtf $WINDIR
-cp -r contrib/innosetup/misc $WINDIR
-if [ -f ~/Downloads/iverilog-0.9.6_setup.exe ]
-then
-	cp ~/Downloads/iverilog-0.9.6_setup.exe .
-else
-	wget http://bleyer.org/icarus/iverilog-0.9.6_setup.exe
-	#wget http://bleyer.org/icarus/iverilog-0.9.5_setup.exe
-fi
-mv iverilog-0.9.6_setup.exe $WINDIR
-if [ -f ~/Downloads/freehdl-0.0.8-setup.exe ]
-then
-	cp ~/Downloads/freehdl-0.0.8-setup.exe .
-else
-	wget https://downloads.sourceforge.net/project/qucs/freehdl/freehdl-0.0.8-setup.exe
-fi
-
-mv freehdl-0.0.8-setup.exe $WINDIR
-if [ -f ~/Downloads/mingw32-g++-0.0.2-setup.exe ]
-then
-	cp ~/Downloads/mingw32-g++-0.0.2-setup.exe .
-else
-	wget https://downloads.sourceforge.net/project/qucs/freehdl/mingw32-g%2B%2B-0.0.2-setup.exe
-fi
-mv mingw32-g++-0.0.2-setup.exe $WINDIR
-
-cp $QTDIR/bin/mingwm10.dll $WINDIR/bin
-cp $QTDIR/bin/Qt3Support4.dll  $WINDIR/bin
-cp $QTDIR/bin/QtCore4.dll  $WINDIR/bin
-cp $QTDIR/bin/QtGui4.dll  $WINDIR/bin
-cp $QTDIR/bin/QtNetwork4.dll  $WINDIR/bin
-cp $QTDIR/bin/QtXml4.dll  $WINDIR/bin
-cp $QTDIR/bin/QtSql4.dll  $WINDIR/bin
-cp $QTDIR/bin/QtSvg4.dll $WINDIR/bin
-cp $QTDIR/bin/QtScript4.dll $WINDIR/bin
-cp $QTDIR/bin/libgcc_s_dw2-1.dll $WINDIR/bin
-
-
-cp /usr/lib/gcc/i586-mingw32msvc/4.2.1-sjlj/*.dll $WINDIR/bin
-cp /usr/lib/gcc/i686-w64-mingw32/4.6/*.dll $WINDIR/bin
-
-wine "$INNOSETUP" /cc contrib/innosetup/qucs.iss
-mv contrib/innosetup/Output/qucs-0.0.18-setup.exe ../qucs-$RELEASE.exe
-
-cp debian/changelog ../../qucs/debian/changelog
+#echo "Building mingw32"
+#make clean
+#INNOSETUP="$HOME/.wine/drive_c/Program Files (x86)/Inno Setup 5/Compil32.exe"
+#cd ..
+#WINDIR=$PWD/qucs-win32-bin
+#cd qucs-$RELEASE
+#export QTDIR=~/.wine/drive_c/Qt/4.8.4/
+#./mingw-configure --prefix=$WINDIR
+#sed -i 's/-fno-rtti/ /g' qucs-filter-v2/Makefile
+#cp ../../qucs/qucs/qucsdigi.bat qucs #is deleted by the linux build for some reason
+#make
+#make install
+#
+#cp contrib/innosetup/gpl.rtf $WINDIR
+#cp -r contrib/innosetup/misc $WINDIR
+#if [ -f ~/Downloads/iverilog-0.9.6_setup.exe ]
+#then
+#	cp ~/Downloads/iverilog-0.9.6_setup.exe .
+#else
+#	wget http://bleyer.org/icarus/iverilog-0.9.6_setup.exe
+#	#wget http://bleyer.org/icarus/iverilog-0.9.5_setup.exe
+#fi
+#mv iverilog-0.9.6_setup.exe $WINDIR
+#if [ -f ~/Downloads/freehdl-0.0.8-setup.exe ]
+#then
+#	cp ~/Downloads/freehdl-0.0.8-setup.exe .
+#else
+#	wget https://downloads.sourceforge.net/project/qucs/freehdl/freehdl-0.0.8-setup.exe
+#fi
+#
+#mv freehdl-0.0.8-setup.exe $WINDIR
+#if [ -f ~/Downloads/mingw32-g++-0.0.2-setup.exe ]
+#then
+#	cp ~/Downloads/mingw32-g++-0.0.2-setup.exe .
+#else
+#	wget https://downloads.sourceforge.net/project/qucs/freehdl/mingw32-g%2B%2B-0.0.2-setup.exe
+#fi
+#mv mingw32-g++-0.0.2-setup.exe $WINDIR
+#
+#cp $QTDIR/bin/mingwm10.dll $WINDIR/bin
+#cp $QTDIR/bin/Qt3Support4.dll  $WINDIR/bin
+#cp $QTDIR/bin/QtCore4.dll  $WINDIR/bin
+#cp $QTDIR/bin/QtGui4.dll  $WINDIR/bin
+#cp $QTDIR/bin/QtNetwork4.dll  $WINDIR/bin
+#cp $QTDIR/bin/QtXml4.dll  $WINDIR/bin
+#cp $QTDIR/bin/QtSql4.dll  $WINDIR/bin
+#cp $QTDIR/bin/QtSvg4.dll $WINDIR/bin
+#cp $QTDIR/bin/QtScript4.dll $WINDIR/bin
+#cp $QTDIR/bin/libgcc_s_dw2-1.dll $WINDIR/bin
+#
+#
+#cp /usr/lib/gcc/i586-mingw32msvc/4.2.1-sjlj/*.dll $WINDIR/bin
+#cp /usr/lib/gcc/i686-w64-mingw32/4.6/*.dll $WINDIR/bin
+#
+#wine "$INNOSETUP" /cc contrib/innosetup/qucs.iss
+#mv contrib/innosetup/Output/qucs-0.0.18-setup.exe ../qucs-$RELEASE.exe
+#
+#cp debian/changelog ../../qucs/debian/changelog
 
 
 
