@@ -752,22 +752,22 @@ void QucsApp::initMenuBar()
 
 
   projMenu = new QMenu(tr("&Project"));  // menuBar entry projMenu
-  projNew->addTo(projMenu);
-  projOpen->addTo(projMenu);
-  addToProj->addTo(projMenu);
-  projClose->addTo(projMenu);
-  projDel->addTo(projMenu);
+  projMenu->addAction(projNew);
+  projMenu->addAction(projOpen);
+  projMenu->addAction(addToProj);
+  projMenu->addAction(projClose);
+  projMenu->addAction(projDel);
   projMenu->insertSeparator();
-  createLib->addTo(projMenu);
-  createPkg->addTo(projMenu);
-  extractPkg->addTo(projMenu);
+  projMenu->addAction(createLib);
+  projMenu->addAction(createPkg);
+  projMenu->addAction(extractPkg);
   projMenu->insertSeparator();
-  importData->addTo(projMenu);
-  graph2csv->addTo(projMenu);
+  projMenu->addAction(importData);
+  projMenu->addAction(graph2csv);
   projMenu->insertSeparator();
   // TODO only enable if document is VA file
-  buildModule->addTo(projMenu);
-  loadModule->addTo(projMenu);
+  projMenu->addAction(buildModule);
+  projMenu->addAction(loadModule);
 
   toolMenu = new QMenu(tr("&Tools"));  // menuBar entry toolMenu
   toolMenu->addAction(callEditor);
