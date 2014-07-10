@@ -527,29 +527,35 @@ void QucsApp::initActions()
   callFilter->setWhatsThis(tr("Filter synthesis\n\nStarts QucsFilter"));
   connect(callFilter, SIGNAL(activated()), SLOT(slotCallFilter()));
 
+  callActiveFilter = new QAction(tr("Active filter synthesis"),this);
+  callActiveFilter->setShortcut(Qt::CTRL+Qt::Key_3);
+  callActiveFilter->setStatusTip(tr("Starts QucsActiveFilter"));
+  callActiveFilter->setWhatsThis(tr("Active filter synthesis\n\nStarts QucsActiveFilter"));
+  connect(callActiveFilter, SIGNAL(activated()), SLOT(slotCallActiveFilter()));
+
   callLine = new QAction(tr("Line calculation"), this);
-  callLine->setShortcut(Qt::CTRL+Qt::Key_3);
+  callLine->setShortcut(Qt::CTRL+Qt::Key_4);
   callLine->setStatusTip(tr("Starts QucsTrans"));
   callLine->setWhatsThis(
 		tr("Line calculation\n\nStarts transmission line calculator"));
   connect(callLine, SIGNAL(activated()), SLOT(slotCallLine()));
 
   callLib = new QAction(tr("Component Library"), this);
-  callLib->setShortcut(Qt::CTRL+Qt::Key_4);
+  callLib->setShortcut(Qt::CTRL+Qt::Key_5);
   callLib->setStatusTip(tr("Starts QucsLib"));
   callLib->setWhatsThis(
 		tr("Component Library\n\nStarts component library program"));
   connect(callLib, SIGNAL(activated()), SLOT(slotCallLibrary()));
 
   callMatch = new QAction(tr("Matching Circuit"), this);
-  callMatch->setShortcut(Qt::CTRL+Qt::Key_5);
+  callMatch->setShortcut(Qt::CTRL+Qt::Key_6);
   callMatch->setStatusTip(tr("Creates Matching Circuit"));
   callMatch->setWhatsThis(
 	tr("Matching Circuit\n\nDialog for Creating Matching Circuit"));
   connect(callMatch, SIGNAL(activated()), SLOT(slotCallMatch()));
 
   callAtt = new QAction(tr("Attenuator synthesis"), this);
-  callAtt->setShortcut(Qt::CTRL+Qt::Key_6);
+  callAtt->setShortcut(Qt::CTRL+Qt::Key_7);
   callAtt->setStatusTip(tr("Starts QucsAttenuator"));
   callAtt->setWhatsThis(
 	tr("Attenuator synthesis\n\nStarts attenuator calculation program"));
@@ -759,6 +765,7 @@ void QucsApp::initMenuBar()
   toolMenu = new QMenu(tr("&Tools"));  // menuBar entry toolMenu
   toolMenu->addAction(callEditor);
   toolMenu->addAction(callFilter);
+  toolMenu->addAction(callActiveFilter);
   toolMenu->addAction(callLine);
   toolMenu->addAction(callLib);
   toolMenu->addAction(callMatch);

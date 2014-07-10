@@ -728,6 +728,37 @@ void QucsApp::slotCallFilter()
   connect(this, SIGNAL(signalKillEmAll()), QucsFilter, SLOT(kill()));
 }
 
+void QucsApp::slotCallActiveFilter()
+{
+    QString prog;
+
+  #ifdef __MINGW32__
+    prog = "qucsactivefilter.exe";
+  #elif __APPLE__
+    prog = "qucsactivefilter.app/Contents/MacOS/qucsactivefilter";
+  #else
+    prog = "qucsactivefilter";
+  #endif
+
+    QProcess *QucsActiveFilter = new QProcess();
+
+    QucsActiveFilter->setWorkingDirectory(QucsSettings.BinDir);
+    QucsActiveFilter->start(prog);
+
+    prog = QDir::toNativeSeparators(QucsSettings.BinDir+prog);
+    qDebug() << "Command :" << prog;
+
+    if( !QucsActiveFilter->waitForStarted(1000) ) {
+      QMessageBox::critical(this, tr("Error"),
+                            tr("Cannot start filter synthesis program! \n\n%1").arg(prog));
+      delete QucsActiveFilter;
+      return;
+    }
+
+    // to kill it before qucs ends
+    connect(this, SIGNAL(signalKillEmAll()), QucsActiveFilter, SLOT(kill()));
+}
+
 // ------------------------------------------------------------------------
 // Is called to start the transmission line calculation program.
 void QucsApp::slotCallLine()
