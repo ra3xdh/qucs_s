@@ -1,0 +1,41 @@
+.TH QucsFilter "1" "April 2005" "Debian/GNU Linux" "User Commands"
+.SH NAME
+QucsFilter \- A filter synthesis application.
+.SH SYNOPSIS
+.B qucsfilter
+[\fIOPTION\fR] ...
+.SH DESCRIPTION
+
+\fBQucs\fR is an integrated circuit simulator which means you will be
+able to setup a circuit with a graphical user interface (GUI) and
+simulate the large-signal, small-signal and noise behaviour of the
+circuit.  After that simulation has finished you will be able to
+present the simulation results on a presentation page or window.
+
+The software aims to support all kinds of circuit simulation types,
+e.g. DC, AC, S-parameter, harmonic balance analysis, noise analysis,
+etc.
+
+\fBQucsActiveFilter\fR is the active filter synthesis tool used by Qucs.  
+By use of an input dialog the user can create a filter which is then 
+copied into the system-wide clipboard.  In \fBQucs\fR the user opens 
+an empty schematic and presses CTRL-V (paste from clipboard). The filter
+schematic is now inserted and can be simulated.
+
+Available filter types are: Butterworth, Bessel, Chebyshev, Cauer.
+
+Available topologies are: Sallen-Key, Multifeedback and Cauer.
+
+.SH AVAILABILITY
+The latest version of Qucs can always be obtained from
+\fBwww.sourceforge.net\fR or \fBwww.freshmeat.net\fR
+.SH "REPORTING BUGS"
+Known bugs are documented within the BUGS file.  Report bugs to
+<qucs-bugs@lists.sourceforge.net>.
+.SH COPYRIGHT
+Copyright \(co 2005 Michael Margraf <michael.margraf@alumni.tu-berlin.de>
+.PP
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+.SH AUTHORS
+Written by Vadim Kuznetsov (RA3XDH) <ra3xdh@gmail.com>.

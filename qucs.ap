@@ -29,7 +29,8 @@ PROJECTS = \
 	qucs/paintings/libpaintings qucs/dialogs/libdialogs \
 	qucs-filter/qucsfilter qucs-transcalc/qucstrans \
 	qucs-transcalc/libtranscalc qucs-lib/qucslib \
-	qucs-attenuator/qucsattenuator
+	qucs-attenuator/qucsattenuator \
+	qucsactivefilter/qucsactivefilter
 
 # Notify dependencies.
 qucs_DEPENDENCIES = libcomponents libdiagrams libpaintings libdialogs
