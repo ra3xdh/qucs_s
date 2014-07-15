@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>sk-highpass.svg</file>
+        <file>sk-lowpass.svg</file>
+        <file>mfb-lowpass.svg</file>
+        <file>mfb-highpass.svg</file>
+        <file>AFR.svg</file>
+        <file>cauer.svg</file>
+        <file>high-pass.svg</file>
+        <file>trfunc.png</file>
+    </qresource>
+</RCC>

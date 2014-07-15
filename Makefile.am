@@ -36,6 +36,7 @@ SUBDIRS = \
 	qucs-help \
 	qucs-lib \
 	qucs-transcalc \
+    qucs-activefilter \
 	qucs-rescodes \
 	contrib \
 	$(FILTERV2) \
@@ -48,7 +49,7 @@ if COND_MACOSX
 app_PROGS = $(top_builddir)/qucs/qucs \
   $(top_builddir)/qucs-attenuator/qucsattenuator \
   $(top_builddir)/qucs-filter/qucsfilter \
-  $(top_builddir)/qucsactivefilter/qucsactivefilter \
+  $(top_builddir)/qucs-activefilter/qucsactivefilter \
   $(top_builddir)/qucs-help/qucshelp \
   $(top_builddir)/qucs-lib/qucslib \
   $(top_builddir)/qucs-edit/qucsedit \
