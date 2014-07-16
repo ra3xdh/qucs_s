@@ -138,43 +138,68 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     right = new QVBoxLayout;
 
     //left->addWidget(lblInputData);
-    left->addWidget(lblA1);
-    left->addWidget(edtA1);
-    left->addWidget(lblA2);
-    left->addWidget(edtA2);
-    left->addWidget(lblF1);
-    left->addWidget(edtF1);
-    left->addWidget(lblF2);
-    left->addWidget(edtF2);
-    left->addWidget(lblRpl1);
-    left->addWidget(edtPassbRpl);
-    left->addWidget(lblKv);
-    left->addWidget(edtKv);
-    left->addWidget(lblOrder);
-    left->addWidget(edtOrder);
+    QGroupBox *gpbPar = new QGroupBox(tr("Filter parameters"));
+    QVBoxLayout *vl3 = new QVBoxLayout;
+    vl3->addWidget(lblA1);
+    vl3->addWidget(edtA1);
+    vl3->addWidget(lblA2);
+    vl3->addWidget(edtA2);
+    vl3->addWidget(lblF1);
+    vl3->addWidget(edtF1);
+    vl3->addWidget(lblF2);
+    vl3->addWidget(edtF2);
+    vl3->addWidget(lblRpl1);
+    vl3->addWidget(edtPassbRpl);
+    vl3->addWidget(lblKv);
+    vl3->addWidget(edtKv);
+    vl3->addWidget(lblOrder);
+    vl3->addWidget(edtOrder);
+    left->addWidget(gpbPar);
+    gpbPar->setLayout(vl3);
+
+
+    QGroupBox *gpbFunc = new QGroupBox(tr("Transfer function and Topology"));
+    QVBoxLayout *vl4 = new QVBoxLayout;
+
     QHBoxLayout *l3 = new QHBoxLayout;
     l3->addWidget(lblTyp);
     l3->addWidget(cbxFilterFunc);
-    left->addLayout(l3);
+    vl4->addLayout(l3);
 
-    left->addWidget(btnDefineTransferFunc);
+    vl4->addWidget(btnDefineTransferFunc);
 
     QHBoxLayout *l1 = new QHBoxLayout;
     l1->addWidget(lblResp);
     l1->addWidget(cbxResponse);
-    left->addLayout(l1);
+    vl4->addLayout(l1);
     QHBoxLayout *l2 = new QHBoxLayout;
     l2->addWidget(lblSch);
     l2->addWidget(cbxFilterType);
-    left->addLayout(l2);
-    left->addWidget(btnCalcSchematic);
+    vl4->addLayout(l2);
+    vl4->addWidget(btnCalcSchematic);
+
+    gpbFunc->setLayout(vl4);
+    left->addWidget(gpbFunc);
+
     left->addStretch();
 
-    right->addWidget(lblAFR);
+    QGroupBox *gpbAFR = new QGroupBox(tr("General filter amplidure-frequency response"));
+    QVBoxLayout *vl1 = new QVBoxLayout;
+    vl1->addWidget(imgAFR);
+    gpbAFR->setLayout(vl1);
+    right->addWidget(gpbAFR);
+
+    QGroupBox *gpbSCH = new QGroupBox(tr("Filter topology preview"));
+    QVBoxLayout *vl2 = new QVBoxLayout;
+    vl2->addWidget(sch_pic);
+    gpbSCH->setLayout(vl2);
+    right->addWidget(gpbSCH);
+
+    /*right->addWidget(lblAFR);
     right->addWidget(imgAFR);
     right->addWidget(lblTopology);
     right->addWidget(sch_pic);
-    right->addStretch();
+    right->addStretch();*/
 
     top->addLayout(left);
     top->addLayout(center);
@@ -185,7 +210,13 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     QSplitter *sp1 = new QSplitter;
     top1->addWidget(sp1);
     txtResult->setReadOnly(true);
-    top1->addWidget(txtResult);
+
+    QGroupBox *gpbCons = new QGroupBox(tr("Filter calculation console"));
+    QVBoxLayout *vl5 = new QVBoxLayout;
+    vl5->addWidget(txtResult);
+    gpbCons->setLayout(vl5);
+
+    top1->addWidget(gpbCons);
     txtResult->setMinimumHeight(180);
 
     zenter = new QWidget;
