@@ -100,13 +100,14 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
 
     cbxFilterType = new QComboBox;
     QStringList lst;
-    lst<<tr("Cauer section")
-      <<tr("Multifeedback (MFB)")
-      <<tr("Sallen-Key (S-K)");
+    lst<<tr("Multifeedback (MFB)")
+       <<tr("Sallen-Key (S-K)")
+       <<tr("Cauer section");
      //<<tr("Пассивный");
     cbxFilterType->addItems(lst);
     connect(cbxFilterType,SIGNAL(currentIndexChanged(int)),this,SLOT(slotUpdateSchematic()));
     this->slotSwitchParameters();
+    cbxFilterType->setMaxCount(3);
 
     lblAFR = new QLabel(tr("General amplitude frequency response"));
     lblTopology = new QLabel(tr("Filter topology preview (one stage)"));
@@ -129,6 +130,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     sch_pic = new QSvgWidget(s1);
     sch_pic->setFixedSize(sz);
     sch_pic->show();
+    this->slotUpdateSchematic();
 
     top = new QHBoxLayout;
     left = new QVBoxLayout;
@@ -249,7 +251,7 @@ void QucsActiveFilter::slotCalcSchematic()
     bool ok = false;
 
     switch (cbxFilterType->currentIndex()) {
-    case 0 : {               
+    case 2 : {
                 if (((ffunc==Filter::InvChebyshev)||(ffunc==Filter::Cauer))) {
                    SchCauer cauer(ffunc,ftyp,par);
                    ok = cauer.calcFilter();
@@ -269,7 +271,7 @@ void QucsActiveFilter::slotCalcSchematic()
              }
 
              break;
-    case 1 : {              
+    case 0 : {
                 if (!((ffunc==Filter::InvChebyshev)||(ffunc==Filter::Cauer))) {
                     MFBfilter mfb(ffunc,ftyp,par);
                     if (ffunc==Filter::User) {
@@ -291,7 +293,7 @@ void QucsActiveFilter::slotCalcSchematic()
                 }
              }
              break;
-    case 2 : {
+    case 1 : {
                SallenKey sk(ffunc,ftyp,par);
                if (ffunc==Filter::User) {
                    sk.set_TrFunc(coeffA,coeffB);
@@ -358,15 +360,15 @@ void QucsActiveFilter::slotUpdateSchematic()
     slotUpdateResponse();
     QString s;
     switch (cbxFilterType->currentIndex()) {
-    case 0 : s = ":images/cauer.svg";
+    case 2 : s = ":images/bitmaps/cauer.svg"; // Cauer section
              break;
-    case 1 : if (ftyp==Filter::HighPass) {
+    case 0 : if (ftyp==Filter::HighPass) { // Multifeedback
             s = ":/images/bitmaps/mfb-highpass.svg";
         } else if (ftyp==Filter::LowPass) {
             s = ":/images/bitmaps/mfb-lowpass.svg";
         }
              break;
-    case 2 : if (ftyp==Filter::HighPass) {
+    case 1 : if (ftyp==Filter::HighPass) { // Sallen-Key
             s = ":/images/bitmaps/sk-highpass.svg";
         } else if (ftyp==Filter::LowPass) {
            s = ":/images/bitmaps/sk-lowpass.svg";
@@ -389,7 +391,7 @@ void QucsActiveFilter::slotUpdateSchematic()
 
 void QucsActiveFilter::slotSwitchParameters()
 {
-    if (cbxFilterFunc->currentIndex()==0) {
+    if (cbxFilterFunc->currentIndex()==0) { // Butterworth
         edtA1->setEnabled(true);
         edtPassbRpl->setEnabled(false);
     } else {
@@ -397,20 +399,30 @@ void QucsActiveFilter::slotSwitchParameters()
         edtPassbRpl->setEnabled(true);
     }
 
-    if ((cbxFilterFunc->currentIndex()==3)||(cbxFilterFunc->currentIndex()==2)) {
-        cbxFilterType->setCurrentIndex(0);
+    if ((cbxFilterFunc->currentIndex()==3)||(cbxFilterFunc->currentIndex()==2)) { // Inverse Chebyshev
+                                                                                  // or Cauer
         cbxFilterType->setDisabled(true);
     } else {
         cbxFilterType->setDisabled(false);
     }
 
-    if ((cbxFilterFunc->currentIndex())==4) {
+    if ((cbxFilterFunc->currentIndex()==3)||  // Inv.Chebyshev
+        (cbxFilterFunc->currentIndex()==2)||  // Cauer
+        (cbxFilterFunc->currentIndex()==5)) // or User defined
+    {
+        cbxFilterType->addItem(tr("Cauer section"),Qt::DisplayRole);
+        cbxFilterType->setCurrentIndex(2);
+    } else {
+        cbxFilterType->removeItem(2);
+    }
+
+    if ((cbxFilterFunc->currentIndex())==4) { // Bessel
         edtOrder->setEnabled(true);
     } else {
         edtOrder->setEnabled(false);
     }
 
-    if ((cbxFilterFunc->currentIndex()==5)||(cbxFilterFunc->currentIndex()==4)) {
+    if ((cbxFilterFunc->currentIndex()==5)||(cbxFilterFunc->currentIndex()==4)) { // Bessel or User Def.
         btnDefineTransferFunc->setEnabled(true);
         edtF2->setEnabled(false);
         edtPassbRpl->setEnabled(false);
