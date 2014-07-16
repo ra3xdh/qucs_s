@@ -77,7 +77,7 @@ private:
     QHBoxLayout *top;
     QVBoxLayout *left;
     QVBoxLayout *center;
-    QVBoxLayout *right;
+    QHBoxLayout *right;
     QVBoxLayout *top1;
     
     QSvgWidget *sch_pic;
