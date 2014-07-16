@@ -111,7 +111,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     lblAFR = new QLabel(tr("General amplitude frequency response"));
     lblTopology = new QLabel(tr("Filter topology preview (one stage)"));
 
-    QString s1 = ":/images/AFR.svg";
+    QString s1 = ":/images/bitmaps/AFR.svg";
     QSvgRenderer *ren = new QSvgRenderer(s1);
     QSize sz = ren->defaultSize();
     sz *= 1.1;
@@ -120,7 +120,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     imgAFR->setFixedSize(sz);
     imgAFR->show();
 
-    s1 = ":/images/cauer.svg";
+    s1 = ":/images/bitmaps/cauer.svg";
     ren = new QSvgRenderer(s1);
     sz = ren->defaultSize();
     sz *= 0.65;
@@ -326,14 +326,14 @@ void QucsActiveFilter::slotCalcSchematic()
 
 void QucsActiveFilter::slotUpdateResponse()
 {
-    QString s = ":/images/AFR.svg";
+    QString s = ":/images/bitmaps/AFR.svg";
 
     switch (cbxResponse->currentIndex()) {
         case 0 :
-            s = ":/images/AFR.svg";
+            s = ":/images/bitmaps/AFR.svg";
             ftyp = Filter::LowPass;
             break;
-        case 1 : s = ":/images/high-pass.svg";
+        case 1 : s = ":/images/bitmaps/high-pass.svg";
             ftyp = Filter::HighPass;
             break;
         case 2 : ftyp = Filter::BandPass;
@@ -361,18 +361,18 @@ void QucsActiveFilter::slotUpdateSchematic()
     case 0 : s = ":images/cauer.svg";
              break;
     case 1 : if (ftyp==Filter::HighPass) {
-            s = ":/images/mfb-highpass.svg";
+            s = ":/images/bitmaps/mfb-highpass.svg";
         } else if (ftyp==Filter::LowPass) {
-            s = ":/images/mfb-lowpass.svg";
+            s = ":/images/bitmaps/mfb-lowpass.svg";
         }
              break;
     case 2 : if (ftyp==Filter::HighPass) {
-            s = ":/images/sk-highpass.svg";
+            s = ":/images/bitmaps/sk-highpass.svg";
         } else if (ftyp==Filter::LowPass) {
-           s = ":/images/sk-lowpass.svg";
+           s = ":/images/bitmaps/sk-lowpass.svg";
         }
         break;
-    case 3 : s = ":/images/mfb-lowpass.svg";
+    case 3 : s = ":/images/bitmaps/mfb-lowpass.svg";
         break;
     default:
         break;

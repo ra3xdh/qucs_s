@@ -24,7 +24,7 @@ TransferFuncDialog::TransferFuncDialog(QVector<long double> &a, QVector<long dou
     this->setWindowTitle(tr("Define filter transfer function"));
 
     imgTrfuncEq = new QLabel;
-    imgTrfuncEq->setPixmap(QPixmap(":images/trfunc.png"));
+    imgTrfuncEq->setPixmap(QPixmap(":images/bitmaps/trfunc.png"));
     //imgTrfuncEq->setScaledContents(true);
 
 

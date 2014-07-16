@@ -1,12 +1,12 @@
 <RCC>
     <qresource prefix="/images">
-        <file>sk-highpass.svg</file>
-        <file>sk-lowpass.svg</file>
-        <file>mfb-lowpass.svg</file>
-        <file>mfb-highpass.svg</file>
-        <file>AFR.svg</file>
-        <file>cauer.svg</file>
-        <file>high-pass.svg</file>
-        <file>trfunc.png</file>
+        <file>bitmaps/AFR.svg</file>
+        <file>bitmaps/cauer.svg</file>
+        <file>bitmaps/high-pass.svg</file>
+        <file>bitmaps/mfb-highpass.svg</file>
+        <file>bitmaps/mfb-lowpass.svg</file>
+        <file>bitmaps/sk-highpass.svg</file>
+        <file>bitmaps/sk-lowpass.svg</file>
+        <file>bitmaps/trfunc.png</file>
     </qresource>
 </RCC>
