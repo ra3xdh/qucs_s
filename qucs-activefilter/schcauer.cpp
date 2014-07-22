@@ -45,8 +45,6 @@ void SchCauer::calcLowPass()
         im = Zeros.at(k-1).imag();
         float A = im*im;
 
-        qDebug()<<A<<B<<C;
-
         C1 = 10.0/Fc;
         C2 = C1;
         R5 = 1.0/(Wc*C1);
@@ -88,8 +86,6 @@ void SchCauer::calcHighPass()
         float C = re*re + im*im;
         im = Zeros.at(k-1).imag();
         float A = im*im;
-
-        qDebug()<<A<<B<<C;
 
         C1 = 10.0/Fc;
         C2 = C1;
@@ -145,7 +141,6 @@ void SchCauer::createGenericSchematic(QString &s)
 
     for (int i=1; i<=N2ord; i++) {
         stage = Sections.at(i-1);
-        qDebug()<<stage.N;
         QString suffix1, suffix2;
         float C1 = autoscaleCapacitor(stage.C1,suffix1);
         float C2 = autoscaleCapacitor(stage.C2,suffix2);

@@ -63,7 +63,6 @@ void MFBfilter::createLowPassSchematic(QString &s)
     s += QString("<GND * 1 %1 360 0 0 0 0>\n").arg(70+dx);
     for (int i=1; i<=N2ord; i++) {
         stage = Sections.at(i-1);
-        qDebug()<<stage.N;
         QString suffix1, suffix2;
         float C1 = autoscaleCapacitor(stage.C1,suffix1);
         float C2 = autoscaleCapacitor(stage.C2,suffix2);
@@ -138,7 +137,6 @@ void MFBfilter::createHighPassSchematic(QString &s)
     s += QString("<GND * 1 %1 360 0 0 0 0>\n").arg(70+dx);
     for (int i=1; i<=N2ord; i++) {
         stage = Sections.at(i-1);
-        qDebug()<<stage.N;
         QString suffix1, suffix2;
         float C1 = autoscaleCapacitor(stage.C1,suffix1);
         float C2 = autoscaleCapacitor(stage.C2,suffix2);
@@ -206,8 +204,6 @@ void MFBfilter::calcHighPass()
         float B = -2.0*re;
         float C = re*re + im*im;
 
-        qDebug()<<B<<C;
-
         C1 = 10.0/Fc;
         C2 = C1/Kv;
         R1 = B/((2*C1+C2)*Wc);
@@ -239,8 +235,6 @@ void MFBfilter::calcLowPass()
         float im = Poles.at(k-1).imag();
         float B = -2.0*re;
         float C = re*re + im*im;
-
-        qDebug()<<B<<C;
 
         C2 = (10.0/Fc);
         C1 = (B*B*C2)/(4*C*(Kv+1));

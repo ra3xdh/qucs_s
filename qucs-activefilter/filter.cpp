@@ -53,11 +53,6 @@ void Filter::createSchematic(QString &s)
     default: break;
     }
 
-    /*QFile sch("filter.sch");
-    sch.open(QFile::WriteOnly);
-    QTextStream out(&sch);
-    out<<s;
-    sch.close();*/
 }
 
 void Filter::createHighPassSchematic(QString &s)
@@ -156,7 +151,7 @@ void Filter::calcFirstOrder()
             R1 = 1.0/(Wc*C*C1);
         }
 
-        qDebug()<<C;
+        //qDebug()<<C;
 
         if (Kv != 1.0) {
             R2 = Kv*R1/(Kv - 1);

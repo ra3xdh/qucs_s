@@ -247,18 +247,18 @@ void QucsActiveFilter::slotCalcSchematic()
     Filter::FilterFunc ffunc;
 
     switch (cbxFilterFunc->currentIndex()) {
-            case 0 : ffunc = Filter::Butterworth;
+            case funcButterworth : ffunc = Filter::Butterworth;
                      break;
-            case 1 : ffunc = Filter::Chebyshev;
+            case funcChebyshev : ffunc = Filter::Chebyshev;
                      break;
-            case 2 : ffunc = Filter::InvChebyshev;
+            case funcInvChebyshev : ffunc = Filter::InvChebyshev;
                      break;
-            case 3 : ffunc = Filter::Cauer;
+            case funcCauer : ffunc = Filter::Cauer;
                      break;
-            case 4 : ffunc = Filter::Bessel;
+            case funcBessel : ffunc = Filter::Bessel;
                      par.order = edtOrder->text().toInt();
                      break;
-            case 5 : ffunc = Filter::User;
+            case funcUser : ffunc = Filter::User;
                      break;
             default: ffunc = Filter::NoFunc;
                      break;
@@ -267,13 +267,13 @@ void QucsActiveFilter::slotCalcSchematic()
 
 
     switch (cbxResponse->currentIndex()) {
-    case 0 : ftyp = Filter::LowPass;
+    case tLowPass : ftyp = Filter::LowPass;
         break;
-    case 1 : ftyp = Filter::HighPass;
+    case tHiPass : ftyp = Filter::HighPass;
         break;
-    case 2 : ftyp = Filter::BandPass;
+    case tBandPass : ftyp = Filter::BandPass;
         break;
-    case 3 : ftyp = Filter::BandStop;
+    case tBandStop : ftyp = Filter::BandStop;
         break;
     default: ftyp = Filter::NoFilter;
         break;
@@ -283,7 +283,7 @@ void QucsActiveFilter::slotCalcSchematic()
     bool ok = false;
 
     switch (cbxFilterType->currentIndex()) {
-    case 2 : {
+    case topoCauer : {
                 if (((ffunc==Filter::InvChebyshev)||(ffunc==Filter::Cauer))) {
                    SchCauer cauer(ffunc,ftyp,par);
                    ok = cauer.calcFilter();
@@ -303,7 +303,7 @@ void QucsActiveFilter::slotCalcSchematic()
              }
 
              break;
-    case 0 : {
+    case topoMFB : {
                 if (!((ffunc==Filter::InvChebyshev)||(ffunc==Filter::Cauer))) {
                     MFBfilter mfb(ffunc,ftyp,par);
                     if (ffunc==Filter::User) {
@@ -325,7 +325,7 @@ void QucsActiveFilter::slotCalcSchematic()
                 }
              }
              break;
-    case 1 : {
+    case topoSallenKey : {
                SallenKey sk(ffunc,ftyp,par);
                if (ffunc==Filter::User) {
                    sk.set_TrFunc(coeffA,coeffB);
@@ -342,9 +342,8 @@ void QucsActiveFilter::slotCalcSchematic()
                }
              }
              break;
-    case 3 : errorMessage(tr("Function will be implemented in future version"));
+    default : errorMessage(tr("Function will be implemented in future version"));
              break;
-    default: break;
     }
 
     if (ok) {
@@ -363,16 +362,16 @@ void QucsActiveFilter::slotUpdateResponse()
     QString s = ":/images/bitmaps/AFR.svg";
 
     switch (cbxResponse->currentIndex()) {
-        case 0 :
+        case tLowPass :
             s = ":/images/bitmaps/AFR.svg";
             ftyp = Filter::LowPass;
             break;
-        case 1 : s = ":/images/bitmaps/high-pass.svg";
+        case tHiPass : s = ":/images/bitmaps/high-pass.svg";
             ftyp = Filter::HighPass;
             break;
-        case 2 : ftyp = Filter::BandPass;
+        case tBandPass : ftyp = Filter::BandPass;
             break;
-        case 3 : ftyp = Filter::BandStop;
+        case tBandStop : ftyp = Filter::BandStop;
             break;
         default: ftyp = Filter::NoFilter;
             break;
@@ -392,15 +391,15 @@ void QucsActiveFilter::slotUpdateSchematic()
     slotUpdateResponse();
     QString s;
     switch (cbxFilterType->currentIndex()) {
-    case 2 : s = ":images/bitmaps/cauer.svg"; // Cauer section
+    case topoCauer : s = ":images/bitmaps/cauer.svg"; // Cauer section
              break;
-    case 0 : if (ftyp==Filter::HighPass) { // Multifeedback
+    case topoMFB : if (ftyp==Filter::HighPass) { // Multifeedback
             s = ":/images/bitmaps/mfb-highpass.svg";
         } else if (ftyp==Filter::LowPass) {
             s = ":/images/bitmaps/mfb-lowpass.svg";
         }
              break;
-    case 1 : if (ftyp==Filter::HighPass) { // Sallen-Key
+    case topoSallenKey : if (ftyp==Filter::HighPass) { // Sallen-Key
             s = ":/images/bitmaps/sk-highpass.svg";
         } else if (ftyp==Filter::LowPass) {
            s = ":/images/bitmaps/sk-lowpass.svg";
@@ -423,7 +422,7 @@ void QucsActiveFilter::slotUpdateSchematic()
 
 void QucsActiveFilter::slotSwitchParameters()
 {
-    if (cbxFilterFunc->currentIndex()==0) { // Butterworth
+    if (cbxFilterFunc->currentIndex()==funcButterworth) { // Butterworth
         edtA1->setEnabled(true);
         edtPassbRpl->setEnabled(false);
     } else {
@@ -431,30 +430,32 @@ void QucsActiveFilter::slotSwitchParameters()
         edtPassbRpl->setEnabled(true);
     }
 
-    if ((cbxFilterFunc->currentIndex()==3)||(cbxFilterFunc->currentIndex()==2)) { // Inverse Chebyshev
+    if ((cbxFilterFunc->currentIndex()==funcCauer)||
+        (cbxFilterFunc->currentIndex()==funcInvChebyshev)) { // Inverse Chebyshev
                                                                                   // or Cauer
         cbxFilterType->setDisabled(true);
     } else {
         cbxFilterType->setDisabled(false);
     }
 
-    if ((cbxFilterFunc->currentIndex()==3)||  // Inv.Chebyshev
-        (cbxFilterFunc->currentIndex()==2)||  // Cauer
-        (cbxFilterFunc->currentIndex()==5)) // or User defined
+    if ((cbxFilterFunc->currentIndex()==funcInvChebyshev)||  // Inv.Chebyshev
+        (cbxFilterFunc->currentIndex()==funcCauer)||  // Cauer
+        (cbxFilterFunc->currentIndex()==funcUser)) // or User defined
     {
         cbxFilterType->addItem(tr("Cauer section"),Qt::DisplayRole);
-        cbxFilterType->setCurrentIndex(2);
+        cbxFilterType->setCurrentIndex(topoCauer);
     } else {
-        cbxFilterType->removeItem(2);
+        cbxFilterType->removeItem(topoCauer);
     }
 
-    if ((cbxFilterFunc->currentIndex())==4) { // Bessel
+    if ((cbxFilterFunc->currentIndex())==funcBessel) { // Bessel
         edtOrder->setEnabled(true);
     } else {
         edtOrder->setEnabled(false);
     }
 
-    if ((cbxFilterFunc->currentIndex()==5)||(cbxFilterFunc->currentIndex()==4)) { // Bessel or User Def.
+    if ((cbxFilterFunc->currentIndex()==funcUser)||
+        (cbxFilterFunc->currentIndex()==funcBessel)) { // Bessel or User Def.
         btnDefineTransferFunc->setEnabled(true);
         edtF2->setEnabled(false);
         edtPassbRpl->setEnabled(false);
