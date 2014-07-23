@@ -26,11 +26,12 @@ bin_PROGRAMS = qucsactivefilter
 
 dist_man_MANS = qucsactivefilter.1
 
-MOCHEADERS = qucsactivefilter.h transferfuncdialog.h
+MOCHEADERS = qucsactivefilter.h transferfuncdialog.h helpdialog.h
 MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
-qucsactivefilter_SOURCES = main.cpp qucsactivefilter.cpp filter.cpp transferfuncdialog.cpp sallenkey.cpp \
-  mfbfilter.cpp schcauer.cpp qf_poly.cpp qrc_qucsactivefilter.cpp
+qucsactivefilter_SOURCES = main.cpp qucsactivefilter.cpp filter.cpp helpdialog.cpp \
+transferfuncdialog.cpp sallenkey.cpp \
+mfbfilter.cpp schcauer.cpp qf_poly.cpp qrc_qucsactivefilter.cpp
 
 qrc_qucsactivefilter.cpp: qucsactivefilter.qrc
 	$(RCC) -o $@ $<
