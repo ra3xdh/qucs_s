@@ -47,12 +47,14 @@ qf_poly.cpp
 sallenkey.cpp
 schcauer.cpp
 transferfuncdialog.cpp
+helpdialog.cpp
 qucsactivefilter.cpp
 )
 
 SET(QUCS-ACTIVE-FILTER_MOC_HDRS
 transferfuncdialog.h
 qucsactivefilter.h
+helpdialog.h
 )
 
 QT4_WRAP_CPP(QUCS-ACTIVE-FILTER_MOC_SRCS ${QUCS-ACTIVE-FILTER_MOC_HDRS})

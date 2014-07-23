@@ -109,6 +109,9 @@ private slots:
     void slotCalcSchematic();
     void slotSwitchParameters();
     void slotDefineTransferFunc();
+    void slotHelpAbout();
+    void slotHelpAboutQt();
+    void slotHelpIntro();
 
 public:
     QucsActiveFilter(QWidget *parent = 0);

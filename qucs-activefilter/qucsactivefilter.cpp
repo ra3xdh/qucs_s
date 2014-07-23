@@ -21,6 +21,10 @@
 #include "mfbfilter.h"
 #include "schcauer.h"
 #include "transferfuncdialog.h"
+#include "helpdialog.h"
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 #include <QTextCodec>
 
 
@@ -32,6 +36,37 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     ftyp = Filter::NoFilter;
 
     QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+
+    // --------  create menubar  -------------------
+    QMenu *fileMenu = new QMenu(tr("&File"));
+
+    QAction * fileQuit = new QAction(tr("E&xit"), this);
+    fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
+    connect(fileQuit, SIGNAL(activated()), SLOT(close()));
+
+    fileMenu->addAction(fileQuit);
+
+    QMenu *helpMenu = new QMenu(tr("&Help"), this);
+    QAction * helpHelp = new QAction(tr("Help..."), this);
+    helpHelp->setShortcut(Qt::Key_F1);
+    connect(helpHelp, SIGNAL(activated()), SLOT(slotHelpIntro()));
+
+    QAction * helpAbout = new QAction(tr("&About QucsFilter..."), this);
+    helpMenu->addAction(helpAbout);
+    connect(helpAbout, SIGNAL(activated()), SLOT(slotHelpAbout()));
+
+    QAction * helpAboutQt = new QAction(tr("About Qt..."), this);
+    helpMenu->addAction(helpAboutQt);
+    connect(helpAboutQt, SIGNAL(activated()), SLOT(slotHelpAboutQt()));
+
+    helpMenu->addAction(helpHelp);
+    helpMenu->addSeparator();
+    helpMenu->addAction(helpAbout);
+    helpMenu->addAction(helpAboutQt);
+
+    menuBar()->addMenu(fileMenu);
+    menuBar()->addSeparator();
+    menuBar()->addMenu(helpMenu);
 
     //lblInputData = new QLabel(tr("Входные данные"));
     lblA1 = new QLabel(tr("Passband attenuation, Ap (dB)"));
@@ -489,4 +524,31 @@ void QucsActiveFilter::errorMessage(QString str)
                                         QMessageBox::Ok);
     msg->exec();
     delete msg;
+}
+
+
+void QucsActiveFilter::slotHelpAbout()
+{
+  QMessageBox::about(this, tr("About..."),
+    "QucsFilter Version " PACKAGE_VERSION+
+    tr("\nActive Filter synthesis program\n")+
+    tr("Copyright (C) 2014 by")+
+    "\nVadim Kuznetsov\n"
+    "\nThis is free software; see the source for copying conditions."
+    "\nThere is NO warranty; not even for MERCHANTABILITY or "
+    "\nFITNESS FOR A PARTICULAR PURPOSE.\n\n");
+}
+
+// ************************************************************
+void QucsActiveFilter::slotHelpAboutQt()
+{
+  QMessageBox::aboutQt(this, tr("About Qt"));
+}
+
+// ************************************************************
+void QucsActiveFilter::slotHelpIntro()
+{
+  HelpDialog *d = new HelpDialog(this);
+  d->exec();
+  delete d;
 }
