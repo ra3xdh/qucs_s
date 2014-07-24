@@ -51,7 +51,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     helpHelp->setShortcut(Qt::Key_F1);
     connect(helpHelp, SIGNAL(activated()), SLOT(slotHelpIntro()));
 
-    QAction * helpAbout = new QAction(tr("&About QucsFilter..."), this);
+    QAction * helpAbout = new QAction(tr("&About QucsActiveFilter..."), this);
     helpMenu->addAction(helpAbout);
     connect(helpAbout, SIGNAL(activated()), SLOT(slotHelpAbout()));
 
@@ -530,7 +530,7 @@ void QucsActiveFilter::errorMessage(QString str)
 void QucsActiveFilter::slotHelpAbout()
 {
   QMessageBox::about(this, tr("About..."),
-    "QucsFilter Version " PACKAGE_VERSION+
+    "QucsActiveFilter Version " PACKAGE_VERSION+
     tr("\nActive Filter synthesis program\n")+
     tr("Copyright (C) 2014 by")+
     "\nVadim Kuznetsov\n"
