@@ -206,7 +206,7 @@ AC_ARG_WITH(macosx-version-min-required,
     [
                           Usage:     --with-macosx-version-min-required=<version>
 
-                          e. g.: --with-macos-version-min-required=10.6
+                          e. g.: --with-macosx-version-min-required=10.6
                           see --with-macosx-sdk for more info
     ],
 ,)
@@ -217,7 +217,7 @@ AC_ARG_WITH(macosx-version-max-allowed,
     [
                           Usage:     --with-macosx-version-max-allowed=<version>
 
-                          e. g.: --with-macos-version-max-allowed=10.6
+                          e. g.: --with-macosx-version-max-allowed=10.6
                           see --with-macosx-sdk for more info
     ],
 ,)
