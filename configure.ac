@@ -344,6 +344,10 @@ case $host_os in
       LDFLAGS="$save_LDFLAGS"
       CXXFLAGS="$save_CXXFLAGS"
     done
+
+    dnl Capture dir found for Qt
+    QT_DIR="$path"
+
     LIBS="$save_LIBS"
     LDFLAGS="$save_LDFLAGS"
     CXXFLAGS="$save_CXXFLAGS"
