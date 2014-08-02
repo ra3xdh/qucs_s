@@ -383,6 +383,9 @@ case $host_os in
       fi
     done
 
+    dnl Capture dir found for Qt
+    QT_DIR="$path"
+
     if test "x${with_qt}" = xyes ; then
       AC_MSG_RESULT([found in $path])
       QT_LIBS="-framework QtGui -framework QtCore -framework QtXml -framework QtSvg -framework QtScript"
@@ -806,5 +809,23 @@ unset enable_qucs_gui_debug
 dnl Print results.
 AC_MSG_RESULT([])
 AC_MSG_RESULT([ $PACKAGE version $VERSION configured successfully.])
+AC_MSG_RESULT([
+Configure Information:
+  C++ Compiler    : $CXX
+    DEFS          :   $DEFS
+    CPPFLAGS      :   $CPPFLAGS
+    CXXFLAGS      :   $CXXFLAGS
+
+  Linker          : $LD
+    LDFLAGS       :   $LDFLAGS
+    LIBS          :   $LIBS
+
+  Prefix          : $prefix
+  QTDIR           : $QT_DIR
+  QT_LIBS         : $QT_LIBS
+  QT_DEF          : $QT_DEF
+  QT_LDFLAGS      : $QT_LDFLAGS
+  QT_INC          : $QT_INC
+])
 AC_MSG_RESULT([])
 
