@@ -6,6 +6,8 @@
     email                : michael.margraf@alumni.tu-berlin.de
  ***************************************************************************/
 
+/* Copyright (C) 2014 Guilherme Brondani Torri <guitorri@gmail.com>        */
+
 /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,8 +22,6 @@
 #include <limits.h>
 
 #include <QProcess>
-
-//Added by qt3to4:
 #include <Q3PtrList>
 
 #include "main.h"

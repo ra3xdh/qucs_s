@@ -162,7 +162,6 @@ signals:
 public:
   MouseActions *view;
   QTabWidget *DocumentTab;
-  //Q3IconView  *CompComps;
   QListWidget *CompComps;
   QTreeWidget *libTreeWidget;
 
@@ -186,7 +185,6 @@ private:
   QPrinter  *Printer; // printer is global (to remember the user settings)
 
 // ********* Widgets on the main area **********************************
-  //VTabbedDockWidget   *dock;
   QDockWidget     *dock;
   QTabWidget      *TabView;
   QDockWidget     *octDock;
@@ -194,10 +192,7 @@ private:
   MessageDock     *messageDock;
 
   QListWidget     *Projects;
-  //Q3ListView     *Content;
   QTreeWidget     *Content;
-  //Q3ListViewItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
-  //              *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
   QTreeWidgetItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
                   *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
 

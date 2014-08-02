@@ -20,35 +20,15 @@
 #endif
 #include <QtGui>
 
-
-
 #include "main.h"
 #include "qucs.h"
 #include "dialogs/vtabbeddockwidget.h"
 #include "octave_window.h"
 
 
-/*
-QAction* Q3Action(QString a,QIcon b, QString c,unsigned int d, QObject* e)
-{
-	QAction* action=new QAction(b,c,e);
-	action->setShortcut((Qt::ShortcutContext)d);
-	return action;
-}
-
-QAction* Q3Action(QString a, QString c, unsigned int d, QObject* e)
-{
-	QAction* action=new QAction(c,e);
-	action->setShortcut((Qt::ShortcutContext)d);
-	return action;
-}
-*/
-
-
-
-
-// ----------------------------------------------------------
-// initializes all QActions of the application
+/**
+ * @brief QucsApp::initActions Initializes all QActions of the application
+ */
 void QucsApp::initActions()
 {
   activeAction = 0;   // no active action
@@ -1069,6 +1049,8 @@ void QucsApp::slotHelpAbout()
     tr("Quite Universal Circuit Simulator")+"\n"+
     tr("Copyright (C)")+" 2003-2009 "+
     tr("by Michael Margraf")+"\n"+
+    tr("Copyright (C)")+" 2011-2014 "+
+    tr("Qucs Team")+"\n"+
     "\nThis is free software; see the source for copying conditions."
     "\nThere is NO warranty; not even for MERCHANTABILITY or "
     "\nFITNESS FOR A PARTICULAR PURPOSE.\n\n"+
@@ -1077,13 +1059,14 @@ void QucsApp::slotHelpAbout()
     tr("Special thanks to Jens Flucke and Raimund Jacob")+"\n"+
     tr("Many thanks to Mike Brinson for correcting the VHDL output")+"\n"+
     tr("GUI improvements by Gopala Krishna A")+"\n"+
-    tr("Verilog-AMS interface by Helene Parruitte")+"\n\n"+
+    tr("Verilog-AMS interface by Helene Parruitte")+"\n"+
+    tr("Verilog-AMS dynamic loader by Guilherme Brondani Torri")+"\n\n"+
     tr("Translations:")+"\n"+
     tr("German by Stefan Jahn")+"\n"+
     tr("Polish by Dariusz Pienkowski")+"\n"+
     tr("Romanian by Radu Circa")+"\n"+
     tr("French by Vincent Habchi, F5RCS")+"\n"+
-    tr("Portuguese by Luciano Franca and Helio de Sousa")+"\n"+
+    tr("Portuguese by Luciano Franca, Helio de Sousa, Guilherme Brondani Torri")+"\n"+
     tr("Spanish by Jose L. Redrejo Rodriguez")+"\n"+
     tr("Japanese by Toyoyuki Ishikawa")+"\n"+
     tr("Italian by Giorgio Luparia and Claudio Girardi")+"\n"+

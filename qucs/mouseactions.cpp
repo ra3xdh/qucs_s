@@ -6,6 +6,8 @@
     email                : michael.margraf@alumni.tu-berlin.de
  ***************************************************************************/
 
+/* Copyright (C) 2014 Guilherme Brondani Torri <guitorri@gmail.com>        */
+
 /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -16,7 +18,6 @@
  ***************************************************************************/
 #include <QtGui>
 #include "qucs.h"
-//Added by qt3to4:
 #include <QTextStream>
 #include <Q3PtrList>
 #include <QMouseEvent>
@@ -312,22 +313,13 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
 }
 
 // -----------------------------------------------------------
+/**
+ * @brief MouseActions::MMoveWire2 Paint wire as it is being drawn with mouse.
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMoveWire2(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  //setPainter(Doc, &painter);
-
-  if(drawn)
-    if(MAx1 == 0) {
-      Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3, MAy2); // erase old
-      Doc->PostPaintEvent (_Line, MAx3, MAy2, MAx2, MAy2); // erase old
-    }
-    else {
-      Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx2, MAy3); // erase old
-      Doc->PostPaintEvent (_Line, MAx2, MAy3, MAx2, MAy2); // erase old
-    }
-  else drawn = true;
-
   MAx2  = DOC_X_POS(Event->pos().x());
   MAy2  = DOC_Y_POS(Event->pos().y());
   Doc->setOnGrid(MAx2, MAy2);
@@ -345,45 +337,34 @@ void MouseActions::MMoveWire2(Schematic *Doc, QMouseEvent *Event)
   Doc->viewport()->update();
 }
 
-// -----------------------------------------------------------
+
+/**
+ * @brief MouseActions::MMoveWire1 Paint hair cross for "insert wire" mode
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMoveWire1(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  Doc->PostPaintEvent (_DotLine,0,0,0,0,0,0,true);
-  Doc->PostPaintEvent (_NotRop,0,0,0,0,0,0,true);
-  if(drawn) {
-    Doc->PostPaintEvent (_Line, 0, MAy3, MAx2, MAy3,0,0,true); // erase old
-    Doc->PostPaintEvent (_Line, MAx3, 0, MAx3, MAy2,0,0,true);
-  }
-
   MAx3 = DOC_X_POS(Event->pos().x());
   MAy3 = DOC_Y_POS(Event->pos().y());
   Doc->setOnGrid(MAx3, MAy3);
-  MAx3 = SCR_X_POS(MAx3) - Doc->contentsX();
-  MAy3 = SCR_Y_POS(MAy3) - Doc->contentsY();
 
-  MAx2  = Doc->visibleWidth();
-  MAy2  = Doc->visibleHeight();
+  MAx2  = DOC_X_POS(Doc->viewport()->width());
+  MAy2  = DOC_Y_POS(Doc->viewport()->height());
 
-  drawn = true;
-  Doc->PostPaintEvent (_Line, 0, MAy3, MAx2, MAy3, 0,0, true); // paint
-  Doc->PostPaintEvent (_Line, MAx3, 0, MAx3, MAy2, 0,0, true);
+  Doc->PostPaintEvent (_Line, Doc->ViewX1, MAy3, MAx2, MAy3);
+  Doc->PostPaintEvent (_Line, MAx3, Doc->ViewY1, MAx3, MAy2);
   Doc->viewport()->update();
 }
 
-// -----------------------------------------------------------
-// Paints a rectangle to select elements within it.
+
+/**
+ * @brief MouseActions::MMoveSelect Paints a rectangle for selection area.
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMoveSelect(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  //setPainter(Doc, &painter);
-
-  if(drawn) {
-    Doc->PostPaintEvent (_Rect, MAx1, MAy1, MAx2, MAy2); // erase old rectangle
-    Doc->PostPaintEvent (_Rect,MAx1, MAy1, MAx2, MAy2);
-
-  }
-  drawn = true;
   MAx2 = DOC_X_POS(Event->pos().x()) - MAx1;
   MAy2 = DOC_Y_POS(Event->pos().y()) - MAy1;
   if(isMoveEqual) {    // x and y size must be equal ?
@@ -498,13 +479,14 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
   MAy1 = MAy2;
 }
 
-// -----------------------------------------------------------
-// Moves components after paste from clipboard.
+
+/**
+ * @brief MouseActions::MMovePaste Moves components after paste from clipboard.
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMovePaste(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  //setPainter(Doc);
-
   MAx1 = DOC_X_POS(Event->pos().x());
   MAy1 = DOC_Y_POS(Event->pos().y());
   moveElements(Doc,MAx1,MAy1);
@@ -536,238 +518,176 @@ void MouseActions::MMoveScrollBar(Schematic *Doc, QMouseEvent *Event)
   }
 }
 
-// -----------------------------------------------------------
-// Paints a cross under the mouse cursor to show the delete modus.
+
+/**
+* @brief MouseActions::MMoveDelete
+*   Paints a cross under the mouse cursor to show the delete mode.
+* @param Doc Schematic document
+* @param Event
+*/
 void MouseActions::MMoveDelete(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  Doc->PostPaintEvent (_NotRop, 0,0,0,0,0,0,true);
+  MAx3  = DOC_X_POS(Event->pos().x());
+  MAy3  = DOC_Y_POS(Event->pos().y());
 
-  if(drawn) {
-    Doc->PostPaintEvent (_Line, MAx3-15, MAy3-15, MAx3+15, MAy3+15,0,0,true); // erase old
-    Doc->PostPaintEvent (_Line, MAx3-15, MAy3+15, MAx3+15, MAy3-15,0,0,true);
-  }
-  drawn = true;
-
-  MAx3  = Event->pos().x() - Doc->contentsX();
-  MAy3  = Event->pos().y() - Doc->contentsY();
-
-  Doc->PostPaintEvent (_Line, MAx3-15, MAy3-15, MAx3+15, MAy3+15,0,0,true); // paint
-  Doc->PostPaintEvent (_Line, MAx3-15, MAy3+15, MAx3+15, MAy3-15,0,0,true);
+  // cannot draw on the viewport, it is displaced by the size of dock and toolbar
+  Doc->PostPaintEvent (_Line, MAx3-15, MAy3-15, MAx3+15, MAy3+15,0,0,false);
+  Doc->PostPaintEvent (_Line, MAx3-15, MAy3+15, MAx3+15, MAy3-15,0,0,false);
 }
 
-// -----------------------------------------------------------
-// Paints a label above the mouse cursor to show the set wire label modus.
+
+/**
+ * @brief MouseActions::MMoveLabel Paints a label above the mouse cursor for "set wire label".
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMoveLabel(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  Doc->PostPaintEvent (_NotRop, 0,0,0,0,0,0,true);
-  if(drawn) {
-    Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3+10, MAy3-10,0,0,true); // erase old
-    Doc->PostPaintEvent (_Line, MAx3+10, MAy3-10, MAx3+20, MAy3-10,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+10, MAy3-10, MAx3+10, MAy3-17,0,0,true);
+  MAx3  = DOC_X_POS(Event->pos().x());
+  MAy3  = DOC_Y_POS(Event->pos().y());
 
-    Doc->PostPaintEvent (_Line, MAx3+12, MAy3-12, MAx3+15, MAy3-23,0,0,true);   // "A"
-    Doc->PostPaintEvent (_Line, MAx3+14, MAy3-17, MAx3+17, MAy3-17,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+19, MAy3-12, MAx3+16, MAy3-23,0,0,true);
-  }
-  drawn = true;
+  // paint marker
+  Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3+10, MAy3-10);
+  Doc->PostPaintEvent (_Line, MAx3+10, MAy3-10, MAx3+20, MAy3-10);
+  Doc->PostPaintEvent (_Line, MAx3+10, MAy3-10, MAx3+10, MAy3-17);
 
-  MAx3  = Event->pos().x() - Doc->contentsX();
-  MAy3  = Event->pos().y() - Doc->contentsY();
-
-  Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3+10, MAy3-10,0,0,true); // paint new
-  Doc->PostPaintEvent (_Line, MAx3+10, MAy3-10, MAx3+20, MAy3-10,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+10, MAy3-10, MAx3+10, MAy3-17,0,0,true);
-
-  Doc->PostPaintEvent (_Line, MAx3+12, MAy3-12, MAx3+15, MAy3-23,0,0,true);   // "A"
-  Doc->PostPaintEvent (_Line, MAx3+14, MAy3-17, MAx3+17, MAy3-17,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+19, MAy3-12, MAx3+16, MAy3-23,0,0,true);
+  // paint A
+  Doc->PostPaintEvent (_Line, MAx3+12, MAy3-12, MAx3+15, MAy3-23);
+  Doc->PostPaintEvent (_Line, MAx3+14, MAy3-17, MAx3+17, MAy3-17);
+  Doc->PostPaintEvent (_Line, MAx3+19, MAy3-12, MAx3+16, MAy3-23);
 }
 
-// -----------------------------------------------------------
-// Paints a triangle above the mouse cursor to show the set marker modus.
+
+/**
+ * @brief MouseActions::MMoveMarker Paints a triangle above the mouse for "set marker on graph"
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMoveMarker(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  Doc->PostPaintEvent (_NotRop, 0,0,0,0,0,0,true);
-  if(drawn) {
-    Doc->PostPaintEvent (_Line, MAx3, MAy3-2, MAx3-8, MAy3-10,0,0,true); // erase old
-    Doc->PostPaintEvent (_Line, MAx3+1, MAy3-3, MAx3+8, MAy3-10,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3-7, MAy3-10, MAx3+7, MAy3-10,0,0,true);
-  }
-  drawn = true;
+  MAx3  = DOC_X_POS(Event->pos().x());
+  MAy3  = DOC_Y_POS(Event->pos().y());
 
-  MAx3  = Event->pos().x() - Doc->contentsX();
-  MAy3  = Event->pos().y() - Doc->contentsY();
-
-  Doc->PostPaintEvent (_Line, MAx3, MAy3-2, MAx3-8, MAy3-10,0,0,true); // paint new
-  Doc->PostPaintEvent (_Line, MAx3+1, MAy3-3, MAx3+8, MAy3-10,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3-7, MAy3-10, MAx3+7, MAy3-10,0,0,true);
+  Doc->PostPaintEvent (_Line, MAx3, MAy3-2, MAx3-8, MAy3-10);
+  Doc->PostPaintEvent (_Line, MAx3+1, MAy3-3, MAx3+8, MAy3-10);
+  Doc->PostPaintEvent (_Line, MAx3-7, MAy3-10, MAx3+7, MAy3-10);
 }
 
-// -----------------------------------------------------------
-// Paints rounded arrows above the mouse cursor to show the
-// "mirror about y axis" modus.
+
+/**
+ * @brief MouseActions::MMoveMirrorX Paints rounded "mirror about y axis" mouse cursor
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMoveMirrorY(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  Doc->PostPaintEvent (_NotRop, 0,0,0,0,0,0,true);
-  if(drawn) {
-    Doc->PostPaintEvent (_Line, MAx3-11, MAy3-4, MAx3-9, MAy3-9,0,0,true); // erase old
-    Doc->PostPaintEvent (_Line, MAx3-11, MAy3-3, MAx3-6, MAy3-3,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+11, MAy3-4, MAx3+9, MAy3-9,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+11, MAy3-3, MAx3+6, MAy3-3,0,0,true);
-    Doc->PostPaintEvent (_Arc, MAx3-10, MAy3-8, 21, 10, 16*20, 16*140,true);
-  }
-  drawn = true;
+  MAx3  = DOC_X_POS(Event->pos().x());
+  MAy3  = DOC_Y_POS(Event->pos().y());
 
-  MAx3  = Event->pos().x() - Doc->contentsX();
-  MAy3  = Event->pos().y() - Doc->contentsY();
-
-  Doc->PostPaintEvent (_Line, MAx3-11, MAy3-4, MAx3-9, MAy3-9,0,0,true); // paint new
-  Doc->PostPaintEvent (_Line, MAx3-11, MAy3-3, MAx3-6, MAy3-3,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+11, MAy3-4, MAx3+9, MAy3-9,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+11, MAy3-3, MAx3+6, MAy3-3,0,0,true);
-  Doc->PostPaintEvent (_Arc, MAx3-10, MAy3-8, 21, 10, 16*20, 16*140,true);
+  Doc->PostPaintEvent (_Line, MAx3-11, MAy3-4, MAx3-9, MAy3-9);
+  Doc->PostPaintEvent (_Line, MAx3-11, MAy3-3, MAx3-6, MAy3-3);
+  Doc->PostPaintEvent (_Line, MAx3+11, MAy3-4, MAx3+9, MAy3-9);
+  Doc->PostPaintEvent (_Line, MAx3+11, MAy3-3, MAx3+6, MAy3-3);
+  Doc->PostPaintEvent (_Arc, MAx3-10, MAy3-8, 21, 10, 16*20, 16*140,false);
 }
 
-// -----------------------------------------------------------
-// Paints rounded arrows beside the mouse cursor to show the
-// "mirror about x axis" modus.
+
+/**
+ * @brief MouseActions::MMoveMirrorX Paints rounded "mirror about x axis" mouse cursor
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMoveMirrorX(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  Doc->PostPaintEvent (_NotRop, 0,0,0,0,0,0,true);
-  if(drawn) {
-    Doc->PostPaintEvent (_Line, MAx3-4, MAy3-11, MAx3-9, MAy3-9,0,0,true); // erase old
-    Doc->PostPaintEvent (_Line, MAx3-3, MAy3-11, MAx3-3, MAy3-6,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3-4, MAy3+11, MAx3-9, MAy3+9,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3-3, MAy3+11, MAx3-3, MAy3+6,0,0,true);
-    Doc->PostPaintEvent (_Arc, MAx3-8, MAy3-10, 10, 21, 16*110, 16*140,true);
-  }
-  drawn = true;
+  MAx3  = DOC_X_POS(Event->pos().x());
+  MAy3  = DOC_Y_POS(Event->pos().y());
 
-  MAx3  = Event->pos().x() - Doc->contentsX();
-  MAy3  = Event->pos().y() - Doc->contentsY();
-
-  Doc->PostPaintEvent (_Line, MAx3-4, MAy3-11, MAx3-9, MAy3-9,0,0,true); // paint new
-  Doc->PostPaintEvent (_Line, MAx3-3, MAy3-11, MAx3-3, MAy3-6,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3-4, MAy3+11, MAx3-9, MAy3+9,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3-3, MAy3+11, MAx3-3, MAy3+6,0,0,true);
-  Doc->PostPaintEvent (_Arc, MAx3-8, MAy3-10, 10, 21, 16*110, 16*140,true);
+  Doc->PostPaintEvent (_Line, MAx3-4, MAy3-11, MAx3-9, MAy3-9);
+  Doc->PostPaintEvent (_Line, MAx3-3, MAy3-11, MAx3-3, MAy3-6);
+  Doc->PostPaintEvent (_Line, MAx3-4, MAy3+11, MAx3-9, MAy3+9);
+  Doc->PostPaintEvent (_Line, MAx3-3, MAy3+11, MAx3-3, MAy3+6);
+  Doc->PostPaintEvent (_Arc, MAx3-8, MAy3-10, 10, 21, 16*110, 16*140,false);
 }
 
-// -----------------------------------------------------------
-// Paints a rounded arrow above the mouse cursor to show the "rotate" modus.
+/**
+ * @brief MouseActions::MMoveMirrorX Paints "rotate" mouse cursor
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMoveRotate(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  Doc->PostPaintEvent (_NotRop, 0,0,0,0,0,0,true);
-  if(drawn) {
-    Doc->PostPaintEvent (_Line, MAx3-6, MAy3+8, MAx3-6, MAy3+1,0,0,true); // erase old
-    Doc->PostPaintEvent (_Line, MAx3-7, MAy3+8, MAx3-12, MAy3+8,0,0,true);
-    Doc->PostPaintEvent (_Arc, MAx3-10, MAy3-10, 21, 21, -16*20, 16*240,true);
-  }
-  drawn = true;
+  MAx3  = DOC_X_POS(Event->pos().x());
+  MAy3  = DOC_Y_POS(Event->pos().y());
 
-  MAx3  = Event->pos().x() - Doc->contentsX();
-  MAy3  = Event->pos().y() - Doc->contentsY();
-
-  Doc->PostPaintEvent (_Line, MAx3-6, MAy3+8, MAx3-6, MAy3+1,0,0,true); // paint new
-  Doc->PostPaintEvent (_Line, MAx3-7, MAy3+8, MAx3-12, MAy3+8,0,0,true);
-  Doc->PostPaintEvent (_Arc, MAx3-10, MAy3-10, 21, 21, -16*20, 16*240,true);
+  Doc->PostPaintEvent (_Line, MAx3-6, MAy3+8, MAx3-6, MAy3+1);
+  Doc->PostPaintEvent (_Line, MAx3-7, MAy3+8, MAx3-12, MAy3+8);
+  Doc->PostPaintEvent (_Arc, MAx3-10, MAy3-10, 21, 21, -16*20, 16*240,false);
 }
 
-// -----------------------------------------------------------
-// Paints a rectangle beside the mouse cursor to show the "activate" modus.
+
+/**
+ * @brief MouseActions::MMoveActivate Paints a crossed box mouse cursor to "(de)activate" components.
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMoveActivate(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  Doc->PostPaintEvent (_NotRop, 0,0,0,0,0,0,true);
-  if(drawn) {
-    Doc->PostPaintEvent (_Rect, MAx3, MAy3-9, 14, 10, 0, 0, true); // erase old
-    Doc->PostPaintEvent (_Line, MAx3, MAy3-9, MAx3+13, MAy3,0, 0, true);
-    Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3+13, MAy3-9,0, 0, true);
-  }
-  drawn = true;
+  MAx3  = DOC_X_POS(Event->pos().x());
+  MAy3  = DOC_Y_POS(Event->pos().y());
 
-  MAx3  = Event->pos().x() - Doc->contentsX();
-  MAy3  = Event->pos().y() - Doc->contentsY();
-
-  Doc->PostPaintEvent (_Rect, MAx3, MAy3-9, 14, 10, 0, 0, true); // paint new
-  Doc->PostPaintEvent (_Line, MAx3, MAy3-9, MAx3+13, MAy3, 0, 0, true);
-  Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3+13, MAy3-9, 0, 0, true);
+  Doc->PostPaintEvent (_Rect, MAx3, MAy3-9, 14, 10);
+  Doc->PostPaintEvent (_Line, MAx3, MAy3-9, MAx3+13, MAy3);
+  Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3+13, MAy3-9);
 }
 
-// -----------------------------------------------------------
-// Paints a grid beside the mouse cursor to show the "on grid" modus.
+
+/**
+ * @brief MouseActions::MMoveOnGrid Paints a grid beside the mouse cursor, put "on grid" mode.
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMoveOnGrid(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  Doc->PostPaintEvent (_NotRop, 0,0,0,0,0,0,true);
-  if(drawn) {
-    Doc->PostPaintEvent (_Line, MAx3+10, MAy3+ 3, MAx3+25, MAy3+3,0,0,true); // erase old
-    Doc->PostPaintEvent (_Line, MAx3+10, MAy3+ 7, MAx3+25, MAy3+7,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+10, MAy3+11, MAx3+25, MAy3+11,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+13, MAy3, MAx3+13, MAy3+15,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+17, MAy3, MAx3+17, MAy3+15,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+21, MAy3, MAx3+21, MAy3+15,0,0,true);
-  }
-  drawn = true;
+  MAx3  = DOC_X_POS(Event->pos().x());
+  MAy3  = DOC_Y_POS(Event->pos().y());
 
-  MAx3  = Event->pos().x() - Doc->contentsX();
-  MAy3  = Event->pos().y() - Doc->contentsY();
-
-  Doc->PostPaintEvent (_Line, MAx3+10, MAy3+ 3, MAx3+25, MAy3+3,0,0,true); // paint new
-  Doc->PostPaintEvent (_Line, MAx3+10, MAy3+ 7, MAx3+25, MAy3+7,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+10, MAy3+11, MAx3+25, MAy3+11,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+13, MAy3, MAx3+13, MAy3+15,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+17, MAy3, MAx3+17, MAy3+15,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+21, MAy3, MAx3+21, MAy3+15,0,0,true);
+  Doc->PostPaintEvent (_Line, MAx3+10, MAy3+ 3, MAx3+25, MAy3+3);
+  Doc->PostPaintEvent (_Line, MAx3+10, MAy3+ 7, MAx3+25, MAy3+7);
+  Doc->PostPaintEvent (_Line, MAx3+10, MAy3+11, MAx3+25, MAy3+11);
+  Doc->PostPaintEvent (_Line, MAx3+13, MAy3, MAx3+13, MAy3+15);
+  Doc->PostPaintEvent (_Line, MAx3+17, MAy3, MAx3+17, MAy3+15);
+  Doc->PostPaintEvent (_Line, MAx3+21, MAy3, MAx3+21, MAy3+15);
 }
 
-// -----------------------------------------------------------
-// Paints symbol beside the mouse to show the "move component text" modus.
+
+/**
+ * @brief MouseActions::MMoveMoveTextB Paints mouse symbol for "move component text" mode.
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMoveMoveTextB(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  Doc->PostPaintEvent (_NotRop, 0,0,0,0,0,0,true);
-  if(drawn) {
-    Doc->PostPaintEvent (_Line, MAx3+14, MAy3   , MAx3+16, MAy3,0,0,true); // erase old
-    Doc->PostPaintEvent (_Line, MAx3+23, MAy3   , MAx3+25, MAy3,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+13, MAy3   , MAx3+13, MAy3+ 3,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+13, MAy3+ 7, MAx3+13, MAy3+10,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+14, MAy3+10, MAx3+16, MAy3+10,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+23, MAy3+10, MAx3+25, MAy3+10,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+26, MAy3   , MAx3+26, MAy3+ 3,0,0,true);
-    Doc->PostPaintEvent (_Line, MAx3+26, MAy3+ 7, MAx3+26, MAy3+10,0,0,true);
-  }
-  drawn = true;
+  MAx3  = DOC_X_POS(Event->pos().x());
+  MAy3  = DOC_Y_POS(Event->pos().y());
 
-  MAx3 = Event->pos().x() - Doc->contentsX();
-  MAy3 = Event->pos().y() - Doc->contentsY();
-
-  Doc->PostPaintEvent (_Line, MAx3+14, MAy3   , MAx3+16, MAy3,0,0,true); // paint new
-  Doc->PostPaintEvent (_Line, MAx3+23, MAy3   , MAx3+25, MAy3,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+13, MAy3   , MAx3+13, MAy3+ 3,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+13, MAy3+ 7, MAx3+13, MAy3+10,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+14, MAy3+10, MAx3+16, MAy3+10,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+23, MAy3+10, MAx3+25, MAy3+10,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+26, MAy3   , MAx3+26, MAy3+ 3,0,0,true);
-  Doc->PostPaintEvent (_Line, MAx3+26, MAy3+ 7, MAx3+26, MAy3+10,0,0,true);
+  Doc->PostPaintEvent (_Line, MAx3+14, MAy3   , MAx3+16, MAy3);
+  Doc->PostPaintEvent (_Line, MAx3+23, MAy3   , MAx3+25, MAy3);
+  Doc->PostPaintEvent (_Line, MAx3+13, MAy3   , MAx3+13, MAy3+ 3);
+  Doc->PostPaintEvent (_Line, MAx3+13, MAy3+ 7, MAx3+13, MAy3+10);
+  Doc->PostPaintEvent (_Line, MAx3+14, MAy3+10, MAx3+16, MAy3+10);
+  Doc->PostPaintEvent (_Line, MAx3+23, MAy3+10, MAx3+25, MAy3+10);
+  Doc->PostPaintEvent (_Line, MAx3+26, MAy3   , MAx3+26, MAy3+ 3);
+  Doc->PostPaintEvent (_Line, MAx3+26, MAy3+ 7, MAx3+26, MAy3+10);
 }
 
-// -----------------------------------------------------------
+
+/**
+ * @brief MouseActions::MMoveMoveText Paint rectangle around component text being mouse moved
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMoveMoveText(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  //setPainter(Doc, &painter);
-
-  if(drawn)
-    Doc->PostPaintEvent (_Rect, MAx1, MAy1, MAx2, MAy2,0,0,true); // erase old
-  drawn = true;
-
   int newX = DOC_X_POS(Event->pos().x());
   int newY = DOC_Y_POS(Event->pos().y());
   MAx1 += newX - MAx3;
@@ -775,28 +695,23 @@ void MouseActions::MMoveMoveText(Schematic *Doc, QMouseEvent *Event)
   MAx3  = newX;
   MAy3  = newY;
 
-  Doc->PostPaintEvent (_Rect, MAx1, MAy1, MAx2, MAy2,0,0,true); // paint new
+  Doc->PostPaintEvent (_Rect, MAx1, MAy1, MAx2, MAy2);
 }
 
-// -----------------------------------------------------------
-// Paints symbol beside the mouse to show the "Zoom in" modus.
+
+/**
+ * @brief MouseActions::MMoveZoomIn Paints symbol beside the mouse to show the "Zoom in" modus.
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MMoveZoomIn(Schematic *Doc, QMouseEvent *Event)
 {
-  //QPainter painter(Doc->viewport());
-  Doc->PostPaintEvent (_NotRop, 0,0,0,0,0,0,true);
-  if(drawn) {
-    Doc->PostPaintEvent (_Line, MAx3+14, MAy3   , MAx3+22, MAy3,0,0,true); // erase old
-    Doc->PostPaintEvent (_Line, MAx3+18, MAy3-4 , MAx3+18, MAy3+4,0,0,true);
-    Doc->PostPaintEvent (_Ellipse, MAx3+12, MAy3-6, 13, 13,0,0,true);
-  }
-  drawn = true;
+  MAx3  = DOC_X_POS(Event->pos().x());
+  MAy3  = DOC_Y_POS(Event->pos().y());
 
-  MAx3 = Event->pos().x() - Doc->contentsX();
-  MAy3 = Event->pos().y() - Doc->contentsY();
-
-  Doc->PostPaintEvent (_Line, MAx3+14, MAy3   , MAx3+22, MAy3,0,0,true);  // paint new
-  Doc->PostPaintEvent (_Line, MAx3+18, MAy3-4 , MAx3+18, MAy3+4,0,0,true);
-  Doc->PostPaintEvent (_Ellipse, MAx3+12, MAy3-6, 13, 13,0,0,true);
+  Doc->PostPaintEvent (_Line, MAx3+14, MAy3   , MAx3+22, MAy3);
+  Doc->PostPaintEvent (_Line, MAx3+18, MAy3-4 , MAx3+18, MAy3+4);
+  Doc->PostPaintEvent (_Ellipse, MAx3+12, MAy3-6, 13, 13,0,0,false);
   Doc->viewport()->update();
 }
 
@@ -980,7 +895,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent*, float fX, float fY)
 // -----------------------------------------------------------
 void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, float fY)
 {
-//    qDebug() << "MPressSelect";
+  qDebug() << "MPressSelect";
   bool Ctrl;
   if(Event->state() & Qt::ControlModifier) Ctrl = true;
   else Ctrl = false;
@@ -1100,8 +1015,6 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
         return;
       }
   }
-
-
 
   QucsMain->MousePressAction = 0;
   QucsMain->MouseDoubleClickAction = 0;
@@ -1372,18 +1285,22 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
   }
 }
 
-// -----------------------------------------------------------
-// Is called if starting point of wire is pressed
+
+/**
+ * @brief MouseActions::MPressWire1 Is called if starting point of wire is pressed
+ * @param Doc
+ * @param fX
+ * @param fY
+ */
 void MouseActions::MPressWire1(Schematic *Doc, QMouseEvent*, float fX, float fY)
 {
-  //QPainter painter(Doc->viewport());
-  Doc->PostPaintEvent (_DotLine);
-  Doc->PostPaintEvent (_NotRop);
-  if(drawn) {
+  //Doc->PostPaintEvent (_DotLine);
+  //Doc->PostPaintEvent (_NotRop);
+  //if(drawn) {
     Doc->PostPaintEvent (_Line, 0, MAy3, MAx2, MAy3); // erase old mouse cross
     Doc->PostPaintEvent (_Line, MAx3, 0, MAx3, MAy2);
-  }
-  drawn = false;
+  //}
+  //drawn = false;
 
   MAx1 = 0;   // paint wire corner first up, then left/right
   MAx3 = int(fX);
@@ -1398,12 +1315,16 @@ void MouseActions::MPressWire1(Schematic *Doc, QMouseEvent*, float fX, float fY)
   Doc->viewport()->update();
 }
 
-// -----------------------------------------------------------
-// Is called if ending point of wire is pressed
+
+/**
+ * @brief MouseActions::MPressWire2 Is called if ending point of wire is pressed
+ * @param Doc
+ * @param Event
+ * @param fX
+ * @param fY
+ */
 void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, float fY)
 {
-  //QPainter painter(Doc->viewport());
-  //setPainter(Doc, &painter);
 
   int set1 = 0, set2 = 0;
   switch(Event->button()) {
@@ -1446,7 +1367,8 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
     MAy3 = MAy2;
     break;
 
-  case Qt::RightButton :  // right mouse button changes the wire corner
+   /// \todo document right mouse button changes the wire corner
+  case Qt::RightButton :
     if(MAx1 == 0) {
       Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3, MAy2); // erase old
       Doc->PostPaintEvent (_Line, MAx3, MAy2, MAx2, MAy2); // erase old
@@ -1537,6 +1459,8 @@ void MouseActions::MPressMoveText(Schematic *Doc, QMouseEvent*, float fX, float 
 // -----------------------------------------------------------
 void MouseActions::MPressZoomIn(Schematic *Doc, QMouseEvent*, float fX, float fY)
 {
+    qDebug() << "zoom into box";
+  /// \bug the zoom into box is not working
   MAx1 = int(fX);
   MAy1 = int(fY);
   MAx2 = 0;  // rectangle size
@@ -2038,7 +1962,12 @@ void MouseActions::MDoubleClickSelect(Schematic *Doc, QMouseEvent *Event)
   editElement(Doc, Event);
 }
 
-// -----------------------------------------------------------
+
+/**
+ * @brief MouseActions::MDoubleClickWire2  Double click terminates wire insertion.
+ * @param Doc
+ * @param Event
+ */
 void MouseActions::MDoubleClickWire2(Schematic *Doc, QMouseEvent *Event)
 {
   MPressWire2(Doc, Event, DOC_X_FPOS, DOC_Y_FPOS);

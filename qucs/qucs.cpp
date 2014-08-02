@@ -145,9 +145,11 @@ QucsApp::QucsApp()
   Printer->setColorMode(QPrinter::Color);
   Printer->setFullPage(true);
 
+  // instance of small text search dialog
   SearchDia = new SearchDialog(this);
 
   // creates a document called "untitled"
+  // it configures itself and get appended to App->DocumentTab
   new Schematic(this, "");
 
   select->setOn(true);  // switch on the 'select' action
@@ -212,6 +214,9 @@ void QucsApp::initContentListView()
 
 }
 
+/**
+ * @brief QucsApp::initView Setup the layour of all widgets
+ */
 void QucsApp::initView()
 {
 
@@ -238,7 +243,7 @@ void QucsApp::initView()
   //dock = new VTabbedDockWidget(Q3DockWindow::InDock, this);
   dock = new QDockWidget(this);
   //TabView = new VTabWidget(VTabInterface::TabLeft,dock);  // tabs on the left side
-  TabView = new QTabWidget(this);
+  TabView = new QTabWidget(dock);
   TabView->setTabPosition(QTabWidget::West);
 
   connect(dock, SIGNAL(visibilityChanged(bool)), SLOT(slotToggleDock(bool)));
