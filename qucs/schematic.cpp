@@ -442,6 +442,8 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
       pn->Label->paint(&Painter);  // separate because of paintSelected
   }
 
+  // FIXME disable here, issue with select box goes away
+  // also, instead of red, line turns blue
   for(Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
     pd->paint(&Painter);
 

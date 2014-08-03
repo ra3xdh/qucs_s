@@ -359,12 +359,13 @@ void MouseActions::MMoveWire1(Schematic *Doc, QMouseEvent *Event)
 
 
 /**
- * @brief MouseActions::MMoveSelect Paints a rectangle for selection area.
+ * @brief MouseActions::MMoveSelect Paints a rectangle for select area.
  * @param Doc
  * @param Event
  */
 void MouseActions::MMoveSelect(Schematic *Doc, QMouseEvent *Event)
 {
+  //qDebug() << "MMoveSelect " << "select area";
   MAx2 = DOC_X_POS(Event->pos().x()) - MAx1;
   MAy2 = DOC_Y_POS(Event->pos().y()) - MAy1;
   if(isMoveEqual) {    // x and y size must be equal ?
@@ -373,9 +374,8 @@ void MouseActions::MMoveSelect(Schematic *Doc, QMouseEvent *Event)
     }
     else { if(MAy2<0) MAy2 = -abs(MAx2); else MAy2 = abs(MAx2); }
   }
-  Doc->PostPaintEvent (_Rect, MAx1, MAy1, MAx2, MAy2); // paint new rectangle
+
   Doc->PostPaintEvent (_Rect, MAx1, MAy1, MAx2, MAy2);
-  Doc->viewport()->update();
 }
 
 // -----------------------------------------------------------
@@ -895,7 +895,6 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent*, float fX, float fY)
 // -----------------------------------------------------------
 void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, float fY)
 {
-  qDebug() << "MPressSelect";
   bool Ctrl;
   if(Event->state() & Qt::ControlModifier) Ctrl = true;
   else Ctrl = false;
@@ -905,6 +904,12 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
   MAy1 = int(fY);
   focusElement = Doc->selectElement(fX, fY, Ctrl, &No);
   isMoveEqual = false;   // moving not neccessarily square
+
+  if(focusElement)
+    // print define value in hex, see element.h
+    qDebug() << "MPressSelect: focusElement->Type" <<  QString("0x%1").arg(focusElement->Type, 0, 16);
+  else
+    qDebug() << "MPressSelect";
 
   if(focusElement)
   switch(focusElement->Type)
