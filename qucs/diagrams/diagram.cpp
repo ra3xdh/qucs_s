@@ -103,6 +103,8 @@ void Diagram::paint(ViewPainter *p)
   for(pg = Graphs.first(); pg != 0; pg = Graphs.next())
     pg->paint(p, cx, cy);
 
+  // keep track of painter state
+  p->Painter->save();
 
   // write whole text (axis label inclusively)
   QMatrix wm = p->Painter->worldMatrix();
@@ -117,6 +119,9 @@ void Diagram::paint(ViewPainter *p)
   }
   p->Painter->setWorldMatrix(wm);
   p->Painter->setWorldXForm(false);
+
+  // restore painter state
+  p->Painter->restore();
 
   // draw markers last, so they are at the top of painting layers
   for(pg = Graphs.first(); pg != 0; pg = Graphs.next())
