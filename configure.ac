@@ -151,10 +151,22 @@ if test x$LINUX == "xyes"; then
   AC_SUBST(X11_LIBS)
 fi
 
-# borrowed from http://cgit.freedesktop.org/libreoffice/core/tree/configure.ac
-dnl ===================================================================
 dnl MacOSX build and runtime environment options
-dnl ===================================================================
+dnl   borrowed from http://cgit.freedesktop.org/libreoffice/core/tree/configure.ac
+
+dnl Default-enabled search for SDK
+AC_ARG_ENABLE([sdk],
+  AS_HELP_STRING([--enable-sdk],
+                 [search for Mac OSX SDK @<:@default=yes@:>@. \
+                  Disable this option to set custom compiler flags CXX, CXXFLAGS]),
+  [case "$enableval" in
+   yes) enable_sdk="yes" ;;
+   no)  enable_sdk="no"  ;;
+   *)   enable_sdk="yes"  ;;
+   esac],
+  [enable_sdk="no"])
+
+dnl Specify version of SDK
 AC_ARG_WITH(macosx-sdk,
     AS_HELP_STRING([--with-macosx-sdk],
         [Use a specific SDK for building.])
@@ -413,12 +425,12 @@ case $host_os in
       CPPFLAGS="$CPPFLAGS -W -Wall"
     fi
 
+    dnl ===================================================================
+    dnl Test if search for SDK was disabled
+    AS_IF([test "x$enable_sdk" = "xyes"], [
 
-    dnl MacOSX, common flags to GCC or Clang
-    # borrowed from http://cgit.freedesktop.org/libreoffice/core/tree/configure.ac
-    dnl ===================================================================
     dnl Check OS X SDK and compiler
-    dnl ===================================================================
+    dnl borrowed from http://cgit.freedesktop.org/libreoffice/core/tree/configure.ac
     AC_MSG_CHECKING([what Mac OS X SDK to use])
 
     bitness=-m64
@@ -684,6 +696,9 @@ case $host_os in
     fi
     AC_MSG_NOTICE([MAC_OS_X_VERSION_MIN_REQUIRED=$MAC_OS_X_VERSION_MIN_REQUIRED])
     AC_MSG_NOTICE([MAC_OS_X_VERSION_MAX_ALLOWED=$MAC_OS_X_VERSION_MAX_ALLOWED])
+
+    dnl End test for enable_sdk
+    ])
 
     ;;
 esac
