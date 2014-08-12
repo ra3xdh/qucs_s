@@ -164,7 +164,7 @@ AC_ARG_ENABLE([sdk],
    no)  enable_sdk="no"  ;;
    *)   enable_sdk="yes"  ;;
    esac],
-  [enable_sdk="no"])
+  [enable_sdk="yes"])
 
 dnl Specify version of SDK
 AC_ARG_WITH(macosx-sdk,
