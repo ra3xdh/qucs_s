@@ -82,6 +82,7 @@ public:
 
   bool loadSettings (void);
   bool saveSettings (void);
+  void refreshLanguage(void);
 
   QMenu* createStandardContextMenu(const QPoint&);
 

@@ -334,6 +334,7 @@ bool TextDoc::load ()
   lastSaved = QDateTime::currentDateTime ();
   loadSettings ();
   SimOpenDpl = simulation ? true : false;
+  refreshLanguage();
   return true;
 }
 
@@ -363,6 +364,7 @@ int TextDoc::save ()
   /// clear highlighted lines on save \see MessageDock::slotCursor()
   QList<QTextEdit::ExtraSelection> extraSelections;
   this->setExtraSelections(extraSelections);
+  refreshLanguage();
 
   return 0;
 }
@@ -539,4 +541,11 @@ void TextDoc::highlightCurrentLine()
     }
 
     setExtraSelections(extraSelections);
+}
+
+void TextDoc::refreshLanguage()
+{
+    this->setLanguage(DocName);
+    syntaxHighlight->setLanguage(language);
+    syntaxHighlight->setDocument(document());
 }
