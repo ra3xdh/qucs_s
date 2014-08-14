@@ -354,8 +354,8 @@ void Schematic::paintFrame(ViewPainter *p)
   int xall, yall;
   if(!sizeOfFrame(xall, yall))
     return;
-
-  p->Painter->setPen(QPen(Qt::black,0));
+  p->Painter->setPen(QPen(Qt::darkGray,1));
+  //p->Painter->setPen(QPen(Qt::black,0));
   int d = p->LineSpacing + int(4.0 * p->Scale);
   int x1_, y1_, x2_, y2_;
   p->map(xall, yall, x1_, y1_);
@@ -603,10 +603,21 @@ void Schematic::print(QPrinter*, QPainter *Painter, bool printAll, bool fitToPag
   int marginY = (int)(40 * printerDpiY / screenDpiY);
 
   if(fitToPage) {
-    float ScaleX = float(printerW - 2*marginX) /
-                   float((UsedX2-UsedX1) * printerDpiX) * screenDpiX;
-    float ScaleY = float(printerH - 2*marginY) /
-                   float((UsedY2-UsedY1) * printerDpiY) * screenDpiY;
+
+    float ScaleX = float((printerW - 2*marginX) /
+                   float((UsedX2-UsedX1) * printerDpiX)) * screenDpiX;
+    float ScaleY = float((printerH - 2*marginY) /
+                   float((UsedY2-UsedY1) * printerDpiY)) * screenDpiY;
+
+    if(showFrame){
+        int xall, yall;
+        sizeOfFrame(xall, yall);
+        ScaleX = ((float)(printerW - 2*marginX) /
+                       (float)(xall * printerDpiX)) * screenDpiX;
+        ScaleY = ((float)(printerH - 2*marginY) /
+                       (float)(yall * printerDpiY)) * screenDpiY;
+    }
+
     if(ScaleX > ScaleY)
       PrintScale = ScaleY;
     else
@@ -630,7 +641,6 @@ void Schematic::print(QPrinter*, QPainter *Painter, bool printAll, bool fitToPag
   printFont.setPointSizeF(printFont.pointSizeF()/PrintRatio);
   Painter->setFont(printFont);
 #endif
-
   p.init(Painter, PrintScale * PrintRatio,
          -StartX, -StartY, -marginX, -marginY,
 	 PrintScale, PrintRatio);
@@ -655,7 +665,7 @@ void Schematic::paintSchToViewpainter(ViewPainter *p, bool printAll, bool toImag
         if (toImage) {
             pc->paint(p);
         } else {
-            pc->print(p, (float)screenDpiX / printerDpiX);
+            pc->print(p, (float)screenDpiX / (float)printerDpiX);
         }
         pc->isSelected = selected;
       }
