@@ -905,7 +905,18 @@ void DiagramDialog::slotDeleteGraph()
   GraphList->takeItem(i);
   Graphs.remove(i);
 
-  GraphInput->setText("");  // erase input line and back to default values
+  int k=0;
+  if (GraphList->count()!=0) {
+      if (i>(GraphList->count()-1)) {
+          k = GraphList->count()-1;
+      } else {
+          k=i;
+      }
+      GraphInput->setText(GraphList->item(k)->text());
+  } else {
+      GraphInput->setText("");  // erase input line and back to default values
+  }
+
   if(Diag->Name != "Tab") {
     if(Diag->Name != "Truth") {
       ColorButt->setPaletteBackgroundColor(
