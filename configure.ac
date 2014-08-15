@@ -151,10 +151,22 @@ if test x$LINUX == "xyes"; then
   AC_SUBST(X11_LIBS)
 fi
 
-# borrowed from http://cgit.freedesktop.org/libreoffice/core/tree/configure.ac
-dnl ===================================================================
 dnl MacOSX build and runtime environment options
-dnl ===================================================================
+dnl   borrowed from http://cgit.freedesktop.org/libreoffice/core/tree/configure.ac
+
+dnl Default-enabled search for SDK
+AC_ARG_ENABLE([sdk],
+  AS_HELP_STRING([--enable-sdk],
+                 [search for Mac OSX SDK @<:@default=yes@:>@. \
+                  Disable this option to set custom compiler flags CXX, CXXFLAGS]),
+  [case "$enableval" in
+   yes) enable_sdk="yes" ;;
+   no)  enable_sdk="no"  ;;
+   *)   enable_sdk="yes"  ;;
+   esac],
+  [enable_sdk="yes"])
+
+dnl Specify version of SDK
 AC_ARG_WITH(macosx-sdk,
     AS_HELP_STRING([--with-macosx-sdk],
         [Use a specific SDK for building.])
@@ -206,7 +218,7 @@ AC_ARG_WITH(macosx-version-min-required,
     [
                           Usage:     --with-macosx-version-min-required=<version>
 
-                          e. g.: --with-macos-version-min-required=10.6
+                          e. g.: --with-macosx-version-min-required=10.6
                           see --with-macosx-sdk for more info
     ],
 ,)
@@ -217,7 +229,7 @@ AC_ARG_WITH(macosx-version-max-allowed,
     [
                           Usage:     --with-macosx-version-max-allowed=<version>
 
-                          e. g.: --with-macos-version-max-allowed=10.6
+                          e. g.: --with-macosx-version-max-allowed=10.6
                           see --with-macosx-sdk for more info
     ],
 ,)
@@ -344,6 +356,10 @@ case $host_os in
       LDFLAGS="$save_LDFLAGS"
       CXXFLAGS="$save_CXXFLAGS"
     done
+
+    dnl Capture dir found for Qt
+    QT_DIR="$path"
+
     LIBS="$save_LIBS"
     LDFLAGS="$save_LDFLAGS"
     CXXFLAGS="$save_CXXFLAGS"
@@ -383,6 +399,9 @@ case $host_os in
       fi
     done
 
+    dnl Capture dir found for Qt
+    QT_DIR="$path"
+
     if test "x${with_qt}" = xyes ; then
       AC_MSG_RESULT([found in $path])
       QT_LIBS="-framework QtGui -framework QtCore -framework QtXml -framework QtSvg -framework QtScript"
@@ -406,12 +425,12 @@ case $host_os in
       CPPFLAGS="$CPPFLAGS -W -Wall"
     fi
 
+    dnl ===================================================================
+    dnl Test if search for SDK was disabled
+    AS_IF([test "x$enable_sdk" = "xyes"], [
 
-    dnl MacOSX, common flags to GCC or Clang
-    # borrowed from http://cgit.freedesktop.org/libreoffice/core/tree/configure.ac
-    dnl ===================================================================
     dnl Check OS X SDK and compiler
-    dnl ===================================================================
+    dnl borrowed from http://cgit.freedesktop.org/libreoffice/core/tree/configure.ac
     AC_MSG_CHECKING([what Mac OS X SDK to use])
 
     bitness=-m64
@@ -678,6 +697,9 @@ case $host_os in
     AC_MSG_NOTICE([MAC_OS_X_VERSION_MIN_REQUIRED=$MAC_OS_X_VERSION_MIN_REQUIRED])
     AC_MSG_NOTICE([MAC_OS_X_VERSION_MAX_ALLOWED=$MAC_OS_X_VERSION_MAX_ALLOWED])
 
+    dnl End test for enable_sdk
+    ])
+
     ;;
 esac
 
@@ -806,5 +828,23 @@ unset enable_qucs_gui_debug
 dnl Print results.
 AC_MSG_RESULT([])
 AC_MSG_RESULT([ $PACKAGE version $VERSION configured successfully.])
+AC_MSG_RESULT([
+Configure Information:
+  C++ Compiler    : $CXX
+    DEFS          :   $DEFS
+    CPPFLAGS      :   $CPPFLAGS
+    CXXFLAGS      :   $CXXFLAGS
+
+  Linker          : $LD
+    LDFLAGS       :   $LDFLAGS
+    LIBS          :   $LIBS
+
+  Prefix          : $prefix
+  QTDIR           : $QT_DIR
+  QT_LIBS         : $QT_LIBS
+  QT_DEF          : $QT_DEF
+  QT_LDFLAGS      : $QT_LDFLAGS
+  QT_INC          : $QT_INC
+])
 AC_MSG_RESULT([])
 
