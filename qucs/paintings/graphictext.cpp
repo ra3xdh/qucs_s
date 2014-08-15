@@ -50,6 +50,9 @@ GraphicText::~GraphicText()
 // -----------------------------------------------------------------------
 void GraphicText::paint(ViewPainter *p)
 {
+  // keep track of painter state
+  p->Painter->save();
+
   QMatrix wm = p->Painter->worldMatrix();
   QMatrix Mat(1.0, 0.0, 0.0, 1.0, p->DX + float(cx) * p->Scale,
 				   p->DY + float(cy) * p->Scale);
@@ -78,6 +81,10 @@ void GraphicText::paint(ViewPainter *p)
   Font.setPointSize(Size);   // restore real font size
   p->Painter->setWorldMatrix(wm);
   p->Painter->setWorldXForm(false);
+
+  // restore painter state
+  p->Painter->restore();
+
   x2 = int(float(w) / p->Scale);
   y2 = int(float(h) / p->Scale);
   p->Painter->setFont(f);

@@ -46,9 +46,11 @@ PortSymbol::~PortSymbol()
 // --------------------------------------------------------------------------
 void PortSymbol::paint(ViewPainter *p)
 {
+  // keep track of painter state
+  p->Painter->save();
+
   p->Painter->setPen(QPen(Qt::red,1));  // like open node
   p->drawEllipse(cx-4, cy-4, 8, 8);
-
 
   QSize r = p->Painter->fontMetrics().size(0, nameStr);
   int Unit = int(8.0 * p->Scale);
@@ -90,6 +92,10 @@ void PortSymbol::paint(ViewPainter *p)
 
   p->Painter->setWorldMatrix(wm);
   p->Painter->setWorldXForm(false);
+
+  // restore painter state
+  p->Painter->restore();
+
   x1 = int(float(x1) / p->Scale);
   x2 = int(float(x2) / p->Scale);
   y1 = int(float(y1) / p->Scale);

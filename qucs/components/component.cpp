@@ -251,6 +251,10 @@ void Component::paint(ViewPainter *p)
     p->Painter->setBrush(Qt::NoBrush);
 
     newFont.setWeight(QFont::Light);
+
+    // keep track of painter state
+    p->Painter->save();
+
     QMatrix wm = p->Painter->worldMatrix();
     // write all text
     for(pt = Texts.first(); pt != 0; pt = Texts.next()) {
@@ -272,6 +276,9 @@ void Component::paint(ViewPainter *p)
     }
     p->Painter->setWorldMatrix(wm);
     p->Painter->setWorldXForm(false);
+
+    // restore painter state
+    p->Painter->restore();
   }
 
   // restore old font

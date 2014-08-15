@@ -388,6 +388,9 @@ bool Marker::moveUpDown(bool up)
 // ---------------------------------------------------------------------
 void Marker::paint(ViewPainter *p, int x0, int y0)
 {
+  // keep track of painter state
+  p->Painter->save();
+
   // Workaround for bug in Qt: If WorldMatrix is turned off, \n in the
   // text creates a terrible mess.
   p->Painter->setWorldXForm(true);
@@ -405,6 +408,9 @@ void Marker::paint(ViewPainter *p, int x0, int y0)
   }
   p->Painter->setWorldMatrix(wm);
   p->Painter->setWorldXForm(false);
+
+  // restore painter state
+  p->Painter->restore();
 
   p->Painter->setPen(QPen(Qt::darkMagenta,0));
   p->drawRectD(x0+x1, y0+y1, x2_, y2_);
