@@ -790,16 +790,16 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
   if(toTake) GraphInput->setText("");
 
   int     i  = GraphInput->cursorPosition();
-  QString s  = GraphInput->text();
+  //QString s="";
   //QString s1 = Item->text();
   int row = Item->row();
   QString s1 = ChooseVars->item(row, 0)->text();
   QFileInfo Info(defaultDataSet);
   if(ChooseData->currentText() != Info.baseName(true))
     s1 = ChooseData->currentText() + ":" + s1;
-  GraphInput->setText(s.left(i) + s1 + s.right(s.length()-i));
+  GraphInput->setText(s1);
 
-  if(s.isEmpty()) {
+  //if(s.isEmpty()) {
     GraphList->addItem(GraphInput->text());////insertItem(i, GraphInput->text());
     GraphList->setCurrentRow(GraphList->count()-1);
 
@@ -834,7 +834,7 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
     Graphs.append(g);
     changed = true;
     toTake  = true;
-  }
+  //}
 
   GraphInput->blockSignals(false);
 
