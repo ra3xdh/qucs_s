@@ -1394,7 +1394,8 @@ void QucsApp::slotMenuCloseProject()
 bool QucsApp::deleteDirectoryContent(QDir& Dir)
 {
   // removes every file, remove("*") does not work
-  QStringList Files = Dir.entryList("*", QDir::Files);  // all files
+  QStringList Files = Dir.entryList("*", QDir::Files|QDir::Hidden);  // all files
+  qDebug()<<Files;
   QStringList::iterator it;
   for(it = Files.begin(); it != Files.end(); it++) {
      if(!Dir.remove(*it)) {
