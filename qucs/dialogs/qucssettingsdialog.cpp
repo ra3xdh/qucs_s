@@ -305,11 +305,11 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     connect(AddPathButt, SIGNAL(clicked()), SLOT(slotAddPath()));
 
     QPushButton *AddPathSubFolButt = new QPushButton("Add Path With SubFolders");
-    locationsGrid->addWidget(AddPathSubFolButt, 5, 2);
+    locationsGrid->addWidget(AddPathSubFolButt, 6, 2);
     connect(AddPathSubFolButt, SIGNAL(clicked()), SLOT(slotAddPathWithSubFolders()));
 
     QPushButton *RemovePathButt = new QPushButton("Remove Path");
-    locationsGrid->addWidget(RemovePathButt , 5, 2);
+    locationsGrid->addWidget(RemovePathButt , 7, 2);
     connect(RemovePathButt, SIGNAL(clicked()), SLOT(slotRemovePath()));
 
     // create a copy of the current global path list
