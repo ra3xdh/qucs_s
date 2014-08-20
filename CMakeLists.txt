@@ -2,6 +2,29 @@ PROJECT(qucs-suite CXX C)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 cmake_policy(VERSION 2.8)
 
+message(STATUS "${PROJECT_NAME} ${CMAKE_INSTALL_PREFIX}
+    ${qucs-suite_BINARY_DIR}" )
+
+
+# Build qucs-core (release mode) FIXME
+# * during release the repo directories are flattened
+# * simply adding qucs-core, creates target name collision qucs vs (lib)qucs.
+#  * targets must be globally unique
+# * external_project, does a copy (!)
+#  * this is perfect for 'external' tarbals or repos, but we have the code
+#    already in the tree, can we resolve the collision in another way?
+include(ExternalProject)
+IF(EXISTS ${CMAKE_SOURCE_DIR}/qucs-core )
+  ADD_SUBDIRECTORY( qucs-core )
+  #ExternalProject_Add ( qucs-core
+  #  URL ${qucs-suite_SOURCE_DIR}/qucs-core/
+  #  PREFIX  ${qucs-suite_BINARY_DIR}
+  #  INSTALL_DIR ${CMAKE_INSTALL_DIR}
+  #  INSTALL_COMMAND "make install"
+  #  #CMAKE_ARGS ${qucs-suite_CMAKE_ARGS}
+  #  )
+ENDIF()
+
 FIND_PACKAGE( Qt4 REQUIRED )
 
 SET( QT_USE_QT TRUE )
