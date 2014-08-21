@@ -30,14 +30,15 @@
 
 
 
-# Set Release tag
-# TODO get it from git tags or VERSION file
 
 
+# Pass argument with version of stable
 if [ $# -ne 0 ]
 then
   RELEASE=$1
 else
+  # Set Release git tag
+  # TODO get it from git tags or VERSION file
   RELEASE=$(date +"%y%m%d")
   RELEASE="0.0.18-"${RELEASE:0:6}
 fi
@@ -49,10 +50,14 @@ GIT=$(git log --pretty=format:'%h' -n 1)
 
 # Append git short hash
 RELEASE=${RELEASE}-git-${GIT}
+echo =====================
 echo Building release: $RELEASE
+echo =====================
 
 REPO=${PWD}
+echo =====================
 echo Working from: ${REPO}
+echo =====================
 
 # TODO test location
 if [ -d release ]
@@ -61,7 +66,9 @@ then
 	rm -rf release
 fi
 
+echo =================================
 echo Exporting git tree recursively...
+echo =================================
 
 # Recursive to clone also ADMS
 # flatten subdiretories
@@ -72,6 +79,9 @@ mv release/qucs-core release/qucs/
 # TODO remove .gitignore, .travis, ...
 
 # tag directory
+echo =====================
+echo Release directory: $REPO/release/qucs-$RELEASE
+echo =====================
 mv release/qucs release/qucs-$RELEASE
 rm -rf release/.git
 rm -r release/qucs-$RELEASE/qucs-core/deps/adms/.git
@@ -81,7 +91,9 @@ rm -r release/qucs-$RELEASE/qucs-core/deps/adms/.git
 #rm -rf release/qucs-$RELEASE/cmake
 #rm -rf release/qucs-$RELEASE/qucs-core/cmake
 
-# Build documentation in source dir
+echo =====================================
+echo Build PDF documentation in source dir
+echo =====================================
 cd $REPO/release/qucs-doc
 ./autogen.sh
 
@@ -101,7 +113,9 @@ make technical
 cd ..
 
 
-#including pdf versions of qucs-doc in target dir
+echo =================================================
+echo Including pdf versions of qucs-doc to release dir
+echo =================================================
 cd $REPO/release/qucs-doc
 DOC_SUBDIRS="report technical tutorial"
 for DOC_SUBDIR in ${DOC_SUBDIRS} ; do
@@ -115,8 +129,9 @@ cd $REPO/release
 rm -rf qucs-doc
 
 
-
-# cleanup and prepare target dir
+echo ============================================
+echo Cleanup qucs-doc and examples in release dir
+echo ============================================
 cd $REPO/release/qucs-$RELEASE
 cd qucs-doc
 ./autogen.sh
@@ -129,7 +144,9 @@ make distclean
 cd ..
 
 
-# Include the asco source
+echo ===============================================
+echo Download, patch and include ASCO to release dir
+echo ===============================================
 cd $REPO/release/qucs-$RELEASE
 if [ -f ~/Downloads/ASCO-0.4.9.tar.gz ]
 then
@@ -154,10 +171,17 @@ automake --add-missing
 aclocal
 cd ..
 
-# set configure.ac into RELEASE mode
+
+echo ==================================
+echo Set configure.ac into RELEASE mode
+echo ==================================
+cd $REPO/release/qucs-$RELEASE
 sed -i '' 's/RELEASE=no/RELEASE=yes/g' configure.ac
 
-# bootstrap qucs, qucs-edit, qucs-filter...
+
+echo =========================================
+echo Bootstrap Qucs, Qucs-edit, Qucs-filter...
+echo =========================================
 cd $REPO/release/qucs-$RELEASE
 ./autogen.sh
 make distclean
@@ -170,8 +194,9 @@ esac
 $LIBTOOLIZE
 
 
-echo Bootstrap qucs-core...
-# bootstrap qucs-core
+echo ===================
+echo Bootstrap Qucs-core
+echo ===================
 cd qucs-core
 ./bootstrap.sh
 ./configure --enable-maintainer-mode
@@ -181,8 +206,10 @@ make distclean # Verilog-A sources are kept ??
 rm -rf autom4te.cache
 cd ..
 
-echo Bootstrap ADMS...
-# bootstrap amds
+
+echo ========================
+echo Bootstrap ADMS submodule
+echo ========================
 cd qucs-core/deps/adms
 ./bootstrap.sh
 ./configure --enable-maintainer-mode
@@ -190,13 +217,19 @@ make distcheck
 rm -r adms-*.tar.gz
 cd ../../..
 
+
+echo ==========================
 echo Creating source archive...
+echo ==========================
 cd $REPO/release/
 tar -zcvhf qucs-$RELEASE.tar.gz qucs-$RELEASE
 rm -rf qucs-$RELEASE
 tar -zxvf qucs-$RELEASE.tar.gz #make the symbolic links actual files
 
-echo Saving copy to ${HOME}/Downloads/qucs-$RELEASE.tar.gz
+
+echo +++++++++++++++
+echo Saving copy to: ${HOME}/Downloads/qucs-$RELEASE.tar.gz
+echo +++++++++++++++
 cp qucs-$RELEASE.tar.gz ${HOME}/Downloads/
 
 
