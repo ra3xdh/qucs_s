@@ -165,7 +165,10 @@ patch -p1 < ../../../qucs/contrib/patch_asco_unbuffer.diff
 patch -p1 < ../../../qucs/contrib/asco-nmlatest.c.patch
 touch NEWS
 tar -zxvf Autotools.tar.gz
+# force LINUX definition while building on OSX
 patch -p1 < ../../../qucs/contrib/patch_asco_osx.diff
+# add default disable MPI (issue cross compiling)
+patch -p1 < ../../../qucs/contrib/asco-default-disabled-MPI-enable-mpi-option.patch
 ./autogen.sh
 automake --add-missing
 aclocal

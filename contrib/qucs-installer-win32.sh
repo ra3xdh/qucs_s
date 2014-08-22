@@ -1,13 +1,13 @@
 #!/bin/bash
 
-## file: bundle_win32.sh
+## file: qucs-installer-win32.sh
 #
 ## This file creates the Qucs Windows x86_32 installer.
 
 # Requires binaries into:   ~/.wine/drive_c/qucs-win32-bin/
 # Requires Inno setup file: ~/git/qucs/qucs/contrib/innosetup/qucs.iss
 
-# run from ~/gi/qucs
+# run from ~/git/qucs
 
 # Output ~/git/qucs/release/Output
 

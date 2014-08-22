@@ -22,16 +22,18 @@
 ## 1) Install Wine (using homebrew)
 #
 # $ brew install wine
+# $ brew install --devel --without-x11 wine
 
 ## 2) Install Qt into Wine
 #
 # Download Qt
 #   http://download.qt-project.org/official_releases/qt/4.8/4.8.6/qt-opensource-windows-x86-mingw482-4.8.6.exe.mirrorlist
+#   latest: qt-opensource-windows-x86-mingw482-4.8.6-1.exe
 #
 # Install Qt into Wine
 # $ wine qt-opensource-windows-x86-mingw482-4.8.6.exe
 #
-# Follow the installer, note the install
+# Follow the installer, note the install path.
 # Install into
 #   C:\Qt\4.8.6
 #
@@ -45,7 +47,7 @@
 # http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.8.2/threads-posix/dwarf/i686-4.8.2-release-posix-dwarf-rt_v3-rev3.7z
 #
 # Install (extract) MinGW into Wine
-# $ 7z x i686-4.8.2-release-posix-dwarf-rt_v3-rev3.7z -o${HOME}/.wine/drive_c/
+# $ 7z x i686-4.8.2-release-posix-dwarf-rt_v3-rev3.7z -o$HOME/.wine/drive_c/
 #
 
 ## 4) Update Wine registry
@@ -56,7 +58,7 @@
 #
 # cat > /tmp/qttemp.reg << EOF
 # [HKEY_CURRENT_USER\Environment]
-# "PATH"="%PATH%;c:\\\windows\\\system32;C:\\\Qt\\\4.8.6\\\bin;C:\\\mingw32\\\bin"
+# "PATH"="%PATH%;C:\\\windows\\\system32;C:\\\Qt\\\4.8.6\\\bin;C:\\\mingw32\\\bin"
 # "QTDIR"="C:\\\Qt\\\4.8.6"
 # EOF
 # regedit /tmp/qttemp.reg
@@ -64,17 +66,18 @@
 
 
 
-## 5) Install Inno Setup 5 (see script `bundle_win32.sh`)
+## 5) Install Inno Setup 5 (used also on `qucs-installer-win32.sh`)
 # Install older Inno version due to issues with wine
 # Error: * Could not find dependent assembly L"Microsoft.Windows.Common-Controls" (6.0.0.0)
 #
-# Install http://files.jrsoftware.org/is/5/isetup-5.5.0.exe	29-May-2012 06:51 	1.8M
+# Install this older version to fix the issue:
+#  http://files.jrsoftware.org/is/5/isetup-5.5.0.exe	29-May-2012 06:51 	1.8M
 # $ wine isetup-5.5.0.exe
 
 
 
 ## Notes:
-# Need --disable-dependency-tracking to avoid mixup of host and target header files
+# Need to add --disable-dependency-tracking to avoid mixup of host and target header files
 # https://software.sandia.gov/trac/acro/ticket/2835
 
 
@@ -82,16 +85,16 @@
 # Build Win32 Binary
 # * build ASCO
 # * build ADMS
-# * include freehdl
-# * include iverilog
-# * link to MinGW (needed for freeHDL and Verilog-A compiler)
-# * lint to Octave
+# * include freehdl binary package
+# * include iverilog binary package
+# * include MinGW binary package (needed for freeHDL and Verilog-A compiler)
+# * link to Octave
 
 
 # TODO
 # * use Travis to package, build binary and upload to SF
 #   * create a release/package branches
-#   * figure out a way to install silently, no user intervention.
+#   * figure out a way to install Qt silently, no user intervention.
 #   * maybe AutoIt can be used
 #   * perhaps nightly builds in the future
 
@@ -176,7 +179,7 @@ then
 	rm -rf ${WINDIR}
 fi
 
-make -j 8
+make
 make install
 
 # deploy pdfs and other things
