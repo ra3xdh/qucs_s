@@ -6,5 +6,6 @@
         <file>bitmaps/cpw.png</file>
         <file>bitmaps/microstrip.png</file>
         <file>bitmaps/rectwaveguide.png</file>
+        <file>bitmaps/big.qucs.xpm</file>
     </qresource>
 </RCC>
