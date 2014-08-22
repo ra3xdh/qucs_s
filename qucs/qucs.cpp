@@ -222,7 +222,10 @@ void QucsApp::initView()
 
 
   // set application icon
-  setIcon (QPixmap(":/bitmaps/big.qucs.xpm"));
+  // APPLE sets the QApplication icon with Info.plist
+#ifndef __APPLE__
+  setWindowIcon (QPixmap(":/bitmaps/big.qucs.xpm"));
+#endif
 
   DocumentTab = new QTabWidget(this);
   setCentralWidget(DocumentTab);

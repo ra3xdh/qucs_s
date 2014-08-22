@@ -43,7 +43,10 @@ QucsHelp::QucsHelp(const QString& page)
   dataFetcher = new HtmlDataFetcher();
   links = dataFetcher->fetchLinksToFiles(QucsHelpDir.filePath("index.html"));
   // set application icon
-  setIcon (QPixmap(":/bitmaps/big.qucs.xpm"));
+  // APPLE sets the QApplication icon with Info.plist
+#ifndef __APPLE__
+  setWindowIcon (QPixmap(":/bitmaps/big.qucs.xpm"));
+#endif
   setCaption(tr("Qucs Help System"));
 
   textBrowser = new TextBrowser(this);
