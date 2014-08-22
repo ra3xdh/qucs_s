@@ -1,0 +1,43 @@
+From a0a8bdc4842f659827771634a955c526c6f96970 Mon Sep 17 00:00:00 2001
+From: Guilherme Brondani Torri <guitorri@gmail.com>
+Date: Fri, 22 Aug 2014 11:01:48 +0200
+Subject: [PATCH] asco default disabled MPI, enable-mpi option
+
+* While cross compiling, it picks up the host mpicc and messes up the
+  build. Adding the --enable-mpi option while things are not fixed.
+---
+ configure.ac | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 47b71ef..d8ec0c1 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -53,8 +53,22 @@ if test "x$GCC" = xyes; then
+   fi
+ fi
+ 
+-dnl Check for MP-ICC.
+-AC_PATH_PROG(CC_MPI, mpicc, :)
++dnl Force the Unix definition
++case $host_os in
++  *darwin*)
++  CFLAGS="$CFLAGS -DUNIX -I/usr/include/malloc"
++  ;;
++esac
++
++dnl Default-disabled MPI support
++AC_ARG_ENABLE([mpi],
++    AS_HELP_STRING([--enable-mpi], [Enable MPI support]))
++
++CC_MPI=":"
++AS_IF([test "x$enable_mpi" = "xyes"], [
++  dnl Check for MP-ICC in the system path
++  AC_PATH_PROG(CC_MPI, mpicc, :)
++])
+ AM_CONDITIONAL(MPI, test "$CC_MPI" != ":")
+ 
+ dnl Checks for libraries.
+-- 
+1.9.0
+
