@@ -29,8 +29,18 @@ bin_PROGRAMS = qucsrescodes
 MOCHEADERS = helpdialog.h mycolorbox.h myresistancebox.h mywidget.h qresistor.h
 MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
-qucsrescodes_SOURCES = main.cpp helpdialog.cpp \
-  mycolorbox.cpp myresistancebox.cpp notation.cpp qresistor.cpp resistor.cpp
+qucsrescodes_SOURCES = \
+  main.cpp \
+	helpdialog.cpp \
+  mycolorbox.cpp \
+	myresistancebox.cpp \
+	notation.cpp \
+	qresistor.cpp \
+	resistor.cpp \
+  qrc_qucsrescodes.cpp
+
+qrc_qucsrescodes.cpp: qucsrescodes.qrc
+	$(RCC) -o $@ $<
 
 nodist_qucsrescodes_SOURCES = $(MOCFILES)
 

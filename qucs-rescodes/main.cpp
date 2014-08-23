@@ -52,7 +52,8 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
 : QWidget( parent, name )
 {
 	setCaption("Color Codes");
-	// FIXME setIcon(QPixmap(QString(BITMAPDIR)+"big.qucs.xpm"));
+  setWindowIcon(QPixmap(":/bitmaps/big.qucs.xpm"));
+
 	 // --------  create menubar  -------------------
 	Q3PopupMenu *fileMenu = new Q3PopupMenu();
 	fileMenu->insertItem(tr("E&xit"), qApp, SLOT(quit()), Qt::CTRL+Qt::Key_Q);
@@ -84,12 +85,10 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
 	//-------------------switching buttons ui--------------------------------------//
 	Q3HBox *buttonBox = new Q3HBox(this,"buttonBox");
 	
-	// FIXME QPushButton *calcColor = new QPushButton(QPixmap(QImage(QString(BITMAPDIR)+"next.png"))," To Colors", buttonBox, "calcColor" );
-	QPushButton *calcColor = new QPushButton(" To Colors", buttonBox, "calcColor" );
+  QPushButton *calcColor = new QPushButton(QPixmap(":/bitmaps/next.png")," To Colors", buttonBox, "calcColor" );
 	connect(calcColor, SIGNAL(clicked()),this,SLOT(setResistanceValue()));
 
-	// FIXME QPushButton *calcResistance = new QPushButton(QPixmap(QImage(QString(BITMAPDIR)+"previous.png"))," To Resistance", buttonBox, "calcResistance" );
-	QPushButton *calcResistance = new QPushButton(" To Resistance", buttonBox, "calcResistance" );
+	QPushButton *calcResistance = new QPushButton(QPixmap(":/bitmaps/previous.png")," To Resistance", buttonBox, "calcResistance" );
 	connect(calcResistance, SIGNAL(clicked()),this,SLOT(setColorValue()));
 
 	QPushButton *quit = new QPushButton( "Quit", buttonBox, "quit" );
