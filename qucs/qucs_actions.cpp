@@ -831,7 +831,22 @@ void QucsApp::slotCallAtt()
   // to kill it before qucs ends
   connect(this, SIGNAL(signalKillEmAll()), QucsAtt, SLOT(kill()));
 }
+// ------------------------------------------------------------------------
+// Is called to start the resistor color code calculation program.
+void QucsApp::slotCallRes()
+{
+  QProcess *QucsRes =
+    new QProcess(QString(QucsSettings.BinDir + "qucsrescodes"));
+  if(!QucsRes->start()) {
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Cannot start resistor color code calculation program!"));
+    delete QucsRes;
+    return;
+  }
 
+  // to kill it before qucs ends
+  connect(this, SIGNAL(signalKillEmAll()), QucsRes, SLOT(kill()));
+}
 // --------------------------------------------------------------
 void QucsApp::slotHelpIndex()
 {

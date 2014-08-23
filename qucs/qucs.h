@@ -340,6 +340,7 @@ public slots:
   void slotCallLibrary();
   void slotCallMatch();
   void slotCallAtt();
+  void slotCallRes();
   void slotHelpIndex();       // shows a HTML docu: Help Index
   void slotGettingStarted();  // shows a HTML docu: Getting started
   void slotChangeProps();

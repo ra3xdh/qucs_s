@@ -13188,6 +13188,24 @@ Do you make use of loadable components?</source>
         <source>Symbol file not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cannot start resistor color code calculation program!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resistor color codes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts Qucs resistor color codes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resistor color codes
+
+Starts standard resistor color code computation program</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QucsActions</name>

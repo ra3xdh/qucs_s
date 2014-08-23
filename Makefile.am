@@ -40,6 +40,7 @@ app_PROGS = $(top_builddir)/qucs/qucs \
   $(top_builddir)/qucs-help/qucshelp \
   $(top_builddir)/qucs-lib/qucslib \
   $(top_builddir)/qucs-edit/qucsedit \
+  $(top_builddir)/qucs-rescodes/qucsrescodes \
   $(top_builddir)/qucs-transcalc/qucstrans
 
 install-exec-hook: mac-install-apps mac-deploy-framework
@@ -60,6 +61,7 @@ mac-install-apps:
 	  qucshelp)	  desc="Qucs Help";; \
 	  qucslib)	  desc="Qucs Library";; \
 	  qucsedit)	  desc="Qucs Editor";; \
+	  qucrescodes)	  desc="Qucs Resistor codes";; \
 	  qucstrans)	  desc="Qucs Transcalc";; \
 	esac && \
 	cat $(srcdir)/Info.plist | \
