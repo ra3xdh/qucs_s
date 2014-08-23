@@ -18,12 +18,14 @@
 
 
 #include <qlineedit.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
+//Added by qt3to4:
+#include <QLabel>
 class QLabel;
 class QResistor;
 class QString;
 class QComboBox;
-class MyResistanceBox: public QGroupBox 
+class MyResistanceBox: public Q3GroupBox 
 {
 	Q_OBJECT
 	QString closestRes;

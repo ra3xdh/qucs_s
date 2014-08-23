@@ -22,19 +22,21 @@
 #ifndef QUCS_RESCODES_MAIN_CPP
 #define QUCS_RESCODES_MAIN_CPP
 #include <qapplication.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qpushbutton.h>
 #include <qfont.h>
 #include <qlayout.h>
-#include <qgrid.h>
+#include <q3grid.h>
 #include <qpixmap.h>
 #include <qstring.h>
 #include <qimage.h>
 #include <qmenubar.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qmessagebox.h>
 #include <qlayout.h>
 #include <qclipboard.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
 #include <vector>
 #include <string>
 
@@ -50,13 +52,13 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
 : QWidget( parent, name )
 {
 	setCaption("Color Codes");
-	setIcon(QPixmap(QString(BITMAPDIR)+"big.qucs.xpm"));
+	// FIXME setIcon(QPixmap(QString(BITMAPDIR)+"big.qucs.xpm"));
 	 // --------  create menubar  -------------------
-	QPopupMenu *fileMenu = new QPopupMenu();
-	fileMenu->insertItem(tr("E&xit"), qApp, SLOT(quit()), CTRL+Key_Q);
+	Q3PopupMenu *fileMenu = new Q3PopupMenu();
+	fileMenu->insertItem(tr("E&xit"), qApp, SLOT(quit()), Qt::CTRL+Qt::Key_Q);
 
-	QPopupMenu *helpMenu = new QPopupMenu();
-	helpMenu->insertItem(tr("Help..."), this, SLOT(slotHelpIntro()), Key_F1);
+	Q3PopupMenu *helpMenu = new Q3PopupMenu();
+	helpMenu->insertItem(tr("Help..."), this, SLOT(slotHelpIntro()), Qt::Key_F1);
 	helpMenu->insertSeparator();
 	helpMenu->insertItem(
 			tr("&About ResistorCodes..."), this, SLOT(slotHelpAbout()), 0);
@@ -80,12 +82,14 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
 	//-------------------paste the configuration to clipboard--------------------------------------------//
 	connect(res, SIGNAL(valueModified(QResistor*)),this,SLOT(slotConfiguration()));
 	//-------------------switching buttons ui--------------------------------------//
-	QHBox *buttonBox = new QHBox(this,"buttonBox");
+	Q3HBox *buttonBox = new Q3HBox(this,"buttonBox");
 	
-	QPushButton *calcColor = new QPushButton(QPixmap(QImage(QString(BITMAPDIR)+"next.png"))," To Colors", buttonBox, "calcColor" );
+	// FIXME QPushButton *calcColor = new QPushButton(QPixmap(QImage(QString(BITMAPDIR)+"next.png"))," To Colors", buttonBox, "calcColor" );
+	QPushButton *calcColor = new QPushButton(" To Colors", buttonBox, "calcColor" );
 	connect(calcColor, SIGNAL(clicked()),this,SLOT(setResistanceValue()));
 
-	QPushButton *calcResistance = new QPushButton(QPixmap(QImage(QString(BITMAPDIR)+"previous.png"))," To Resistance", buttonBox, "calcResistance" );
+	// FIXME QPushButton *calcResistance = new QPushButton(QPixmap(QImage(QString(BITMAPDIR)+"previous.png"))," To Resistance", buttonBox, "calcResistance" );
+	QPushButton *calcResistance = new QPushButton(" To Resistance", buttonBox, "calcResistance" );
 	connect(calcResistance, SIGNAL(clicked()),this,SLOT(setColorValue()));
 
 	QPushButton *quit = new QPushButton( "Quit", buttonBox, "quit" );
@@ -94,7 +98,7 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
 
 
 	//--------------------packing all of them together---------------------------------------//
-	QGridLayout *grid = new QGridLayout( this, 4, 1, 10 );
+	Q3GridLayout *grid = new Q3GridLayout( this, 4, 1, 10 );
 	//3x1, 10 pixel border
 
 	QWidget *Space = new QWidget(this);   // reserve space for menubar

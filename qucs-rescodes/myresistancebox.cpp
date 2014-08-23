@@ -21,13 +21,13 @@
 #include <qlabel.h>
 #include <qcombobox.h>
 #include <qlineedit.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include "myresistancebox.h"
 #include "qresistor.h"
 #include <math.h>
 
 MyResistanceBox::MyResistanceBox( QWidget *parent, const char *name )
-: QGroupBox(3,Qt::Horizontal,"Resistance Values" ,parent, name )
+: Q3GroupBox(3,Qt::Horizontal,"Resistance Values" ,parent, name )
 {
 	//--------------------resistance displaying ui ---------------------------------//
 	
@@ -39,11 +39,13 @@ MyResistanceBox::MyResistanceBox( QWidget *parent, const char *name )
 	tolerance = new QComboBox(this, "tolerance");
 	stdRes = new QLabel("Closest standard resistance : 0 Ohms \n Tolerance : 20%",this, "stdRes");
 	
-	static const char* units[]={"Ohms","kOhms","MOhms",0};
-	resUnit ->insertStrList(units);
+	QStringList units;
+  units << "Ohms" << "kOhms" << "MOhms";
+	resUnit ->insertStringList(units);
 
-	static const char* tols[]={"20%","10%","5%","2%","1%","0.5%","0.25%","0.1%","0.05%",0};
-	tolerance ->insertStrList(tols);
+	QStringList tols;
+  tols << "20%" << "10%" << "5%" << "2%" << "1%" << "0.5%" << "0.25%" << "0.1%" << "0.05%";
+	tolerance ->insertStringList(tols);
 }
 
 void MyResistanceBox::update(QResistor *res)

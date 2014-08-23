@@ -17,7 +17,7 @@
 
 
 
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <string>
 #include <map>
 #include <vector>
@@ -26,7 +26,7 @@ using namespace std;
 class QResistor;
 class QComboBox;
 
-class MyColorBox: public QGroupBox 
+class MyColorBox: public Q3GroupBox 
 {
 	Q_OBJECT
 	

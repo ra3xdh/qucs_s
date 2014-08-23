@@ -18,7 +18,7 @@
 
 
 #include <qcombobox.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <vector>
 #include <map>
 #include <string>
@@ -28,22 +28,32 @@
 #include <iostream>
 
 MyColorBox::MyColorBox( QWidget *parent, const char *name )
-: QGroupBox(5,Qt::Horizontal,"Colour Codes" ,parent, name )
+: Q3GroupBox(5,Qt::Horizontal,"Colour Codes" ,parent, name )
 {
 	//--------------------color code displaying ui-------------------------------------//
-	const char* colors[]={"none","black","brown","red","orange","yellow","green","blue","violet","gray","white","gold","silver",0};
-	const char* colors2[]={"black","brown","red","orange","yellow","green","blue","violet","gray","white",0};
+	QStringList colors;
+  colors << "none" << "black" << "brown" << "red" << "orange" << "yellow" << "green"
+         << "blue" << "violet" << "gray" << "white" << "gold" << "silver";
+
+	QStringList colors2;
+  colors2 << "black" << "brown" << "red" << "orange" << "yellow" << "green" << "blue"
+          << "violet" << "gray" << "white";
+
 	QObject* item = new QObject;
 	for(int i=0;i<4;i++)
-	{	
+	{
 		colorCode[i]=new QComboBox(this);
-		colorCode[i]->insertStrList(colors2);
+		colorCode[i]->insertStringList(colors2);
 	}
 
-	colorCode[3]->insertStrList(colors);
-	const char* tolColors[]={"none","silver","gold","red","brown","green","blue","violet","gray",0};
+	colorCode[3]->insertStringList(colors);
+
+	QStringList tolColors;
+	tolColors << "none" << "silver" << "gold" << "red" << "brown" << "green" << "blue" 
+            << "violet" << "gray";
+
 	colorCode[4]=new QComboBox (this);
-	colorCode[4]->insertStrList(tolColors);
+	colorCode[4]->insertStringList(tolColors);
 }
 map<string,int> MyColorBox::constructRevTolindexMap()
 {
