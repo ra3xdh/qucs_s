@@ -784,30 +784,31 @@ AH_TOP([
 
 dnl Add here all your Makefiles. These are created by configure.
 AC_CONFIG_FILES([Makefile
-		 contrib/Makefile
-		 qucs-edit/Makefile
-		 qucs-help/Makefile
-                 qucs-help/docs/Makefile
-                 qucs-help/docs/en/Makefile
-		 qucs-help/docs/de/Makefile
-                 qucs-help/docs/es/Makefile
-                 qucs-help/docs/fr/Makefile
-                 qucs-help/docs/ru/Makefile
-                 qucs-help/docs/uk/Makefile
-                 qucs-help/docs/cs/Makefile
-                 qucs-help/docs/pt/Makefile
-		 qucs-filter/Makefile
-		 qucs-transcalc/Makefile
-		 qucs-transcalc/examples/Makefile
-		 qucs-lib/Makefile
-		 qucs-lib/library/Makefile
-		 qucs-attenuator/Makefile
-		 qucs/Makefile
-		 qucs/octave/Makefile
-		 qucs/components/Makefile
-		 qucs/diagrams/Makefile
-		 qucs/paintings/Makefile
-		 qucs/dialogs/Makefile])
+    contrib/Makefile
+    qucs-edit/Makefile
+    qucs-help/Makefile
+    qucs-help/docs/Makefile
+    qucs-help/docs/en/Makefile
+    qucs-help/docs/de/Makefile
+    qucs-help/docs/es/Makefile
+    qucs-help/docs/fr/Makefile
+    qucs-help/docs/ru/Makefile
+    qucs-help/docs/uk/Makefile
+    qucs-help/docs/cs/Makefile
+    qucs-help/docs/pt/Makefile
+    qucs-filter/Makefile
+    qucs-transcalc/Makefile
+    qucs-transcalc/examples/Makefile
+    qucs-lib/Makefile
+    qucs-lib/library/Makefile
+    qucs-attenuator/Makefile
+    qucs-rescodes/Makefile
+    qucs/Makefile
+    qucs/octave/Makefile
+    qucs/components/Makefile
+    qucs/diagrams/Makefile
+    qucs/paintings/Makefile
+    qucs/dialogs/Makefile])
 
 # The incomplete filter-v2 only builds withs -stdlib=libstc++
 # OSX defaults to libstc++. Skip filter-v2 on Darwin.
