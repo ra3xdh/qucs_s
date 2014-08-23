@@ -30,7 +30,7 @@ MyResistanceBox::MyResistanceBox( QWidget *parent, const char *name )
 : Q3GroupBox(3,Qt::Horizontal,"Resistance Values" ,parent, name )
 {
 	//--------------------resistance displaying ui ---------------------------------//
-	
+
 	resValueEdit = new QLineEdit (this, "resValueEdit");
 	const QDoubleValidator *validator = new QDoubleValidator (resValueEdit,"validator");
 	resValueEdit->setValidator(validator);
@@ -38,7 +38,7 @@ MyResistanceBox::MyResistanceBox( QWidget *parent, const char *name )
 	resUnit = new QComboBox(this, "resUnit");
 	tolerance = new QComboBox(this, "tolerance");
 	stdRes = new QLabel("Closest standard resistance : 0 Ohms \n Tolerance : 20%",this, "stdRes");
-	
+
 	QStringList units;
   units << "Ohms" << "kOhms" << "MOhms";
 	resUnit ->insertStringList(units);

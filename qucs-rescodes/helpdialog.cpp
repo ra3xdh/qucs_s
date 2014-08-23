@@ -35,7 +35,7 @@ email                : sudhakar.m.kumar@gmail.com
 
 	// --------  set help text into dialog  ------------
 	QString s(tr("A program to compute color codes for resistors "
-				"and resistance values for color codes. "	  
+				"and resistance values for color codes. "
 				"To obtain the color codes, simply enter the "
 				"resistance and tolerance values and press the "
 				"\"To Colors\" button. "

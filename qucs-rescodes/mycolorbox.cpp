@@ -49,7 +49,7 @@ MyColorBox::MyColorBox( QWidget *parent, const char *name )
 	colorCode[3]->insertStringList(colors);
 
 	QStringList tolColors;
-	tolColors << "none" << "silver" << "gold" << "red" << "brown" << "green" << "blue" 
+	tolColors << "none" << "silver" << "gold" << "red" << "brown" << "green" << "blue"
             << "violet" << "gray";
 
 	colorCode[4]=new QComboBox (this);
@@ -76,12 +76,12 @@ void MyColorBox:: update(QResistor* res)
 	int len= list.size();
 
 	for (i=0;i<len;i++){
-		
+
 		colorCode[i]->setCurrentItem(list[i]<0?(9-list[i]):list[i]);
 	}
 	for (i=len;i<4;i++)
 		colorCode[i]->setCurrentItem(0);
-       	
+
 	map<string,int> revTolcodeMap=constructRevTolindexMap();
 	colorCode[i]->setCurrentItem(revTolcodeMap[res->getTolring()]);
 }
@@ -91,13 +91,13 @@ vector<string> MyColorBox:: enteredValue()
 	vector<string> colors;
 	int i;
 	string str;
-	
+
 	for (i=0;i<3;i++)
 		colors.push_back(string((colorCode[i]->currentText()).ascii()));
 	if((colorCode[3])->currentItem())
 	{
 		colors.push_back(string((colorCode[3]->currentText()).ascii()));
-		
+
 	}
 		return colors;
 }

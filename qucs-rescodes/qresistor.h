@@ -26,7 +26,7 @@
 #include <iostream>
 
 class QResistor : public QWidget
-{	
+{
 	Resistor *res;
 	float resistance;
 	float tolerance;
@@ -76,7 +76,7 @@ class QResistor : public QWidget
 		{
 			return modifier;
 		}
-		
+
 		vector<int> getColors() const
 		{
 			return colcodes;
@@ -88,7 +88,7 @@ class QResistor : public QWidget
 		}
 
 	public slots:
-	
+
 	signals:
 		void valueModified(QResistor*);
 };

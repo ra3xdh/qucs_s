@@ -4,7 +4,7 @@ class MyColorBox;
 class QResistor;
 
 //---------------------------class declarations------------------------------------//
-class MyWidget: public QWidget 
+class MyWidget: public QWidget
 {
 	Q_OBJECT
 	QResistor *res;
@@ -14,7 +14,7 @@ class MyWidget: public QWidget
 	public:
 		MyWidget( QWidget *parent=0, const char *name=0 );
 	public slots:
-		
+
 		void setResistanceValue();
 		void setColorValue();
 		void slotHelpAbout();

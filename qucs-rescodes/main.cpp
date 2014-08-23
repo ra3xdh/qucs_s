@@ -79,12 +79,12 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
 	colorBox = new MyColorBox(this, "colorBox");
 
 	connect(res, SIGNAL(valueModified(QResistor*)),colorBox,SLOT(update(QResistor*)));
-	
+
 	//-------------------paste the configuration to clipboard--------------------------------------------//
 	connect(res, SIGNAL(valueModified(QResistor*)),this,SLOT(slotConfiguration()));
 	//-------------------switching buttons ui--------------------------------------//
 	Q3HBox *buttonBox = new Q3HBox(this,"buttonBox");
-	
+
   QPushButton *calcColor = new QPushButton(QPixmap(":/bitmaps/next.png")," To Colors", buttonBox, "calcColor" );
 	connect(calcColor, SIGNAL(clicked()),this,SLOT(setResistanceValue()));
 
@@ -158,7 +158,7 @@ void MyWidget::slotConfiguration()
 	*s += "</Diagrams>\n";
 	*s += "<Paintings>\n";
 	*s += "</Paintings>\n";
-	
+
 	QClipboard* cb = QApplication::clipboard();
 	cb->setText(*s);
 	delete(s);
