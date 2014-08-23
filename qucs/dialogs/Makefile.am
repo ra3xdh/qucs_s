@@ -29,7 +29,7 @@ MOCHEADERS = settingsdialog.h simmessage.h qucssettingsdialog.h      \
      sweepdialog.h searchdialog.h librarydialog.h importdialog.h     \
      packagedialog.h savedialog.h vasettingsdialog.h                 \
      vtabbutton.h vtabbar.h vtabwidget.h vtabbeddockwidget.h        \
-     exportdialog.h loaddialog.h
+     exportdialog.h loaddialog.h newprojdialog.h
 
 MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
@@ -43,7 +43,7 @@ libdialogs_a_SOURCES = settingsdialog.cpp newprojdialog.cpp \
 
 nodist_libdialogs_a_SOURCES = $(MOCFILES)
 
-noinst_HEADERS = newprojdialog.h vtabglobal.h $(MOCHEADERS)
+noinst_HEADERS = vtabglobal.h $(MOCHEADERS)
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 

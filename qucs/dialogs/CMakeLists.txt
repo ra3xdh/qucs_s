@@ -24,6 +24,7 @@ labeldialog.h
 librarydialog.h
 loaddialog.h
 matchdialog.h
+newprojdialog.h
 packagedialog.h
 qucssettingsdialog.h
 savedialog.h
