@@ -27,8 +27,18 @@ if !COND_MACOSX
   FILTERV2= qucs-filter-v2
 endif
 
-SUBDIRS = qucs qucs-edit qucs-help qucs-transcalc qucs-filter qucs-lib \
-	qucs-attenuator $(FILTERV2) contrib $(RELEASEDIRS) 
+SUBDIRS = \
+  qucs \
+	qucs-attenuator \
+	qucs-edit \
+	qucs-filter \
+	qucs-help \
+	qucs-lib \
+	qucs-transcalc \
+	qucs-rescodes \
+	contrib \
+	$(FILTERV2) \
+	$(RELEASEDIRS)
 
 EXTRA_DIST = autogen.sh depcomp PLATFORMS RELEASE Info.plist
 

@@ -297,7 +297,7 @@ public:
           *distrHor, *distrVert, *selectAll, *callLib, *callMatch, *changeProps,
           *addToProj, *editFind, *editFindAgain, *insEntity, *selectMarker,
           *createLib, *importData, *graph2csv, *createPkg, *extractPkg,
-          *callAtt, *centerHor, *centerVert, *loadModule, *buildModule;
+          *callAtt, *callRes, *centerHor, *centerVert, *loadModule, *buildModule;
 
 public slots:
   void slotEditRotate(bool);  // rotate the selected items

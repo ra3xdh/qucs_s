@@ -52,7 +52,11 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
 : QWidget( parent, name )
 {
 	setCaption("Color Codes");
-  setWindowIcon(QPixmap(":/bitmaps/big.qucs.xpm"));
+
+  // icons are handled differently on OSX
+#ifndef __APPLE__
+  setIcon(QPixmap(":/bitmaps/big.qucs.xpm"));
+#endif
 
 	 // --------  create menubar  -------------------
 	Q3PopupMenu *fileMenu = new Q3PopupMenu();
@@ -100,9 +104,9 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
 	Q3GridLayout *grid = new Q3GridLayout( this, 4, 1, 10 );
 	//3x1, 10 pixel border
 
-	QWidget *Space = new QWidget(this);   // reserve space for menubar
-	Space->setFixedSize(1, bar->height());
-	grid->addWidget(Space, 0,0);
+	//QWidget *Space = new QWidget(this);   // reserve space for menubar
+	//Space->setFixedSize(1, bar->height());
+	//grid->addWidget(Space, 0,0);
 
 	grid->addWidget( resBox, 1, 0 );
 	grid->addWidget( buttonBox, 2, 0 );

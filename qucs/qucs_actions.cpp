@@ -835,11 +835,26 @@ void QucsApp::slotCallAtt()
 // Is called to start the resistor color code calculation program.
 void QucsApp::slotCallRes()
 {
-  QProcess *QucsRes =
-    new QProcess(QString(QucsSettings.BinDir + "qucsrescodes"));
-  if(!QucsRes->start()) {
+  QString prog;
+#ifdef __MINGW32__
+  prog = "qucsrescodes.exe";
+#elif __APPLE__
+  prog = "qucsrescodes.app/Contents/MacOS/qucsrescodes";
+#else
+  prog = "qucrescodes";
+#endif
+
+  QProcess *QucsRes = new QProcess();
+
+  QucsRes->setWorkingDirectory(QucsSettings.BinDir);
+  QucsRes->start(prog);
+
+  prog = QDir::toNativeSeparators(QucsSettings.BinDir+prog);
+  qDebug() << "Command :" << prog;
+
+  if( !QucsRes->waitForStarted(1000) ) {
     QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot start resistor color code calculation program!"));
+                          tr("Cannot start resistor color code calculation program! \n\n%1").arg(prog));
     delete QucsRes;
     return;
   }

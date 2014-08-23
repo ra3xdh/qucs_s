@@ -555,6 +555,13 @@ void QucsApp::initActions()
 	tr("Attenuator synthesis\n\nStarts attenuator calculation program"));
   connect(callAtt, SIGNAL(activated()), SLOT(slotCallAtt()));
 
+  callRes = new QAction(tr("Resistor color codes"), this);
+  callRes->setShortcut(Qt::CTRL+Qt::Key_7);
+  callRes->setStatusTip(tr("Starts Qucs resistor color codes"));
+  callRes->setWhatsThis(
+  tr("Resistor color codes\n\nStarts standard resistor color code computation program"));
+  connect(callRes, SIGNAL(activated()), SLOT(slotCallRes()));
+
   simulate = new QAction(QIcon((":/bitmaps/gear.png")), tr("Simulate"), this);
   simulate->setShortcut(Qt::Key_F2);
   simulate->setStatusTip(tr("Simulates the current schematic"));
@@ -756,6 +763,7 @@ void QucsApp::initMenuBar()
   toolMenu->addAction(callLib);
   toolMenu->addAction(callMatch);
   toolMenu->addAction(callAtt);
+  toolMenu->addAction(callRes);
 
 
 

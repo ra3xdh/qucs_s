@@ -50,7 +50,7 @@ qucsrescodes_LDADD = $(X11_LIBS) $(QT_LIBS)
 
 noinst_HEADERS = $(MOCHEADERS) classproto.h
 
-%.moc.cpp: %.h
+.h.moc.cpp:
 	$(MOC) -o $@ $<
 
 CLEANFILES = *~
