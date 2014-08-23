@@ -2637,8 +2637,8 @@ men är nu %1 !</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="schematic_file.cpp" line="+856"/>
-        <location filename="../qucs-help/main.cpp" line="+99"/>
+        <location filename="schematic_file.cpp" line="+860"/>
+        <location filename="../qucs-help/main.cpp" line="+104"/>
         <source>Warning</source>
         <translation>Varning</translation>
     </message>
@@ -2655,15 +2655,15 @@ men är nu %1 !</translation>
     </message>
     <message>
         <location filename="octave_window.cpp" line="-31"/>
-        <location filename="qucs_actions.cpp" line="+1276"/>
-        <location filename="schematic_file.cpp" line="-743"/>
+        <location filename="qucs_actions.cpp" line="+1365"/>
+        <location filename="schematic_file.cpp" line="-747"/>
         <location line="+18"/>
         <location line="+21"/>
         <location line="+24"/>
         <location line="+17"/>
         <location line="+72"/>
         <location line="+78"/>
-        <location line="+185"/>
+        <location line="+189"/>
         <location line="+5"/>
         <location line="+37"/>
         <location line="+5"/>
@@ -2681,7 +2681,7 @@ men är nu %1 !</translation>
         <location line="+10"/>
         <location line="+20"/>
         <location line="+56"/>
-        <location filename="components/component.cpp" line="+1531"/>
+        <location filename="components/component.cpp" line="+1538"/>
         <location line="+20"/>
         <location line="+8"/>
         <location filename="components/vacomponent.cpp" line="+298"/>
@@ -2696,14 +2696,14 @@ Set the Octave location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-788"/>
-        <location line="+703"/>
+        <location filename="schematic_file.cpp" line="-792"/>
+        <location line="+707"/>
         <source>Format Error:
 &apos;Painting&apos; field is not closed!</source>
         <translation>Formatfel: Färgläggningsfält är ej stängt!</translation>
     </message>
     <message>
-        <location line="-685"/>
+        <location line="-689"/>
         <source>Wrong document version: </source>
         <translation>Fel dokumentversion:</translation>
     </message>
@@ -2726,7 +2726,7 @@ Okänt fält!</translation>
         <translation>Kan ej spara dokument!</translation>
     </message>
     <message>
-        <location line="+185"/>
+        <location line="+189"/>
         <location line="+5"/>
         <source>Format Error:
 Wrong property field limiter!</source>
@@ -2897,7 +2897,7 @@ Okänt fält!</translation>
         <translation>Redigera linjeegenskaper</translation>
     </message>
     <message>
-        <location filename="paintings/graphictext.cpp" line="+124"/>
+        <location filename="paintings/graphictext.cpp" line="+131"/>
         <source>Text</source>
         <translation>Text</translation>
     </message>
@@ -2917,7 +2917,7 @@ Okänt fält!</translation>
         <translation>Redigera rektangelegenskaper</translation>
     </message>
     <message>
-        <location filename="diagrams/curvediagram.cpp" line="+248"/>
+        <location filename="diagrams/curvediagram.cpp" line="+245"/>
         <source>Locus Curve</source>
         <translation>Ortskurva</translation>
     </message>
@@ -2928,12 +2928,12 @@ Okänt fält!</translation>
         <translation>ogiltig</translation>
     </message>
     <message>
-        <location filename="diagrams/polardiagram.cpp" line="+101"/>
+        <location filename="diagrams/polardiagram.cpp" line="+98"/>
         <source>Polar</source>
         <translation>Polär</translation>
     </message>
     <message>
-        <location filename="diagrams/psdiagram.cpp" line="+128"/>
+        <location filename="diagrams/psdiagram.cpp" line="+125"/>
         <source>Polar-Smith Combi</source>
         <translation>Polär-Smith-kombination</translation>
     </message>
@@ -2943,17 +2943,17 @@ Okänt fält!</translation>
         <translation>Smith-polär-kombination</translation>
     </message>
     <message>
-        <location filename="diagrams/rect3ddiagram.cpp" line="+1143"/>
+        <location filename="diagrams/rect3ddiagram.cpp" line="+1140"/>
         <source>3D-Cartesian</source>
         <translation>3D-kartesiskt</translation>
     </message>
     <message>
-        <location filename="diagrams/rectdiagram.cpp" line="+246"/>
+        <location filename="diagrams/rectdiagram.cpp" line="+243"/>
         <source>Cartesian</source>
         <translation>Kartesiskt</translation>
     </message>
     <message>
-        <location filename="diagrams/smithdiagram.cpp" line="+111"/>
+        <location filename="diagrams/smithdiagram.cpp" line="+108"/>
         <source>Smith Chart</source>
         <translation>Smithdiagram</translation>
     </message>
@@ -5601,7 +5601,7 @@ Do you make use of loadable components?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="+527"/>
+        <location filename="main.cpp" line="+529"/>
         <location line="+63"/>
         <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
         <translation>Fel: Fel tidsformat i &quot;%1&quot;. Använd positivt tal utan enhet</translation>
@@ -5826,7 +5826,7 @@ Do you make use of loadable components?</source>
         <translation>resistans vid &quot;off&quot;-tillstånd i Ohm</translation>
     </message>
     <message>
-        <location filename="mouseactions.cpp" line="+827"/>
+        <location filename="mouseactions.cpp" line="+742"/>
         <source>Edit Properties</source>
         <translation>Redigera egenskaper</translation>
     </message>
@@ -10821,13 +10821,13 @@ Do you make use of loadable components?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-1434"/>
+        <location filename="schematic_file.cpp" line="-1438"/>
         <source>Cannot save C++ file &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="module.cpp" line="+117"/>
-        <location filename="qucs.cpp" line="+647"/>
+        <location filename="qucs.cpp" line="+655"/>
         <location line="+106"/>
         <location filename="qucs_actions.cpp" line="+153"/>
         <source>verilog-a user devices</source>
@@ -10886,14 +10886,14 @@ Do you make use of loadable components?</source>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="+1706"/>
+        <location filename="qucs.cpp" line="+1708"/>
         <source>diagrams</source>
         <translation type="unfinished">kurvor</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="-1856"/>
+        <location filename="qucs.cpp" line="-1858"/>
         <location line="+30"/>
         <location line="+3"/>
         <location line="+107"/>
@@ -12751,7 +12751,7 @@ Skriva över?</translation>
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="qucs.cpp" line="-642"/>
+        <location filename="qucs.cpp" line="-650"/>
         <source>Schematic</source>
         <translation>Schema</translation>
     </message>
@@ -12767,13 +12767,13 @@ Skriva över?</translation>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+1544"/>
+        <location line="+1554"/>
         <location filename="qucs_actions.cpp" line="-172"/>
         <source>Any File</source>
         <translation>Alla filer</translation>
     </message>
     <message>
-        <location line="-1392"/>
+        <location line="-1394"/>
         <source>New</source>
         <translation>Ny</translation>
     </message>
@@ -12812,7 +12812,7 @@ Skriva över?</translation>
         <translation>Anmärkning</translation>
     </message>
     <message>
-        <location line="-1180"/>
+        <location line="-1186"/>
         <source>Datasets</source>
         <translation>Datamängder</translation>
     </message>
@@ -12823,12 +12823,12 @@ Skriva över?</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+2365"/>
+        <location line="+2373"/>
         <source>Schematics</source>
         <translation>Scheman</translation>
     </message>
     <message>
-        <location line="-2274"/>
+        <location line="-2276"/>
         <source>Content</source>
         <translation>Innehåll</translation>
     </message>
@@ -12900,7 +12900,7 @@ Skriva över?</translation>
         <location line="+54"/>
         <location line="+31"/>
         <location line="+235"/>
-        <location line="+1137"/>
+        <location line="+1139"/>
         <location line="+28"/>
         <location line="+77"/>
         <location line="+316"/>
@@ -12908,12 +12908,13 @@ Skriva över?</translation>
         <location line="+7"/>
         <location line="+7"/>
         <location line="+6"/>
-        <location filename="qucs_actions.cpp" line="-609"/>
-        <location line="+45"/>
-        <location line="+24"/>
-        <location line="+24"/>
-        <location line="+32"/>
-        <location line="+37"/>
+        <location filename="qucs_actions.cpp" line="-681"/>
+        <location line="+55"/>
+        <location line="+31"/>
+        <location line="+33"/>
+        <location line="+40"/>
+        <location line="+31"/>
+        <location line="+44"/>
         <location line="+46"/>
         <location line="+32"/>
         <location line="+16"/>
@@ -12927,7 +12928,7 @@ Skriva över?</translation>
         <translation>Fel</translation>
     </message>
     <message>
-        <location line="-1952"/>
+        <location line="-1954"/>
         <source>Cannot rename an open file!</source>
         <translation>Kan ej döpa om en öppen fil!</translation>
     </message>
@@ -12957,34 +12958,34 @@ Skriva över?</translation>
         <location line="+77"/>
         <location line="+47"/>
         <location line="+329"/>
-        <location line="+244"/>
+        <location line="+246"/>
         <location line="+630"/>
         <source>Warning</source>
         <translation>Varning</translation>
     </message>
     <message>
-        <location line="-1326"/>
+        <location line="-1328"/>
         <source>This will delete the file permanently! Continue ?</source>
         <translation>Detta kommer att ta bort filen för gott! Fortsätta?</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+77"/>
-        <location line="+621"/>
+        <location line="+623"/>
         <location line="+454"/>
         <source>No</source>
         <translation>Nej</translation>
     </message>
     <message>
-        <location line="-1152"/>
+        <location line="-1154"/>
         <location line="+77"/>
-        <location line="+621"/>
+        <location line="+623"/>
         <location line="+454"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location line="-1147"/>
+        <location line="-1149"/>
         <source>Cannot delete schematic: </source>
         <translation>Kan ej ta bort schema: </translation>
     </message>
@@ -13008,7 +13009,7 @@ Skriva över?</translation>
         <translation>Kan ej skapa arbetsmapp!</translation>
     </message>
     <message>
-        <location line="+710"/>
+        <location line="+712"/>
         <source>Closing Qucs document</source>
         <translation>Stänger Qucs-dokument</translation>
     </message>
@@ -13038,15 +13039,15 @@ Vill du spara dessa innan filen stängs?</translation>
         <location line="+37"/>
         <location line="+45"/>
         <location line="+22"/>
-        <location filename="qucs_actions.cpp" line="-771"/>
-        <location line="+311"/>
-        <location filename="qucs_init.cpp" line="+954"/>
+        <location filename="qucs_actions.cpp" line="-857"/>
+        <location line="+397"/>
+        <location filename="qucs_init.cpp" line="+942"/>
         <source>Ready.</source>
         <translation>Klar.</translation>
     </message>
     <message>
         <location line="-648"/>
-        <location filename="qucs_actions.cpp" line="-320"/>
+        <location filename="qucs_actions.cpp" line="-406"/>
         <source>Opening file...</source>
         <translation>Öppnar fil...</translation>
     </message>
@@ -13061,19 +13062,19 @@ Vill du spara dessa innan filen stängs?</translation>
         <translation>Öppning avbruten</translation>
     </message>
     <message>
-        <location line="-743"/>
+        <location line="-745"/>
         <location line="+429"/>
-        <location line="+770"/>
+        <location line="+772"/>
         <source>-port</source>
         <translation>-port</translation>
     </message>
     <message>
-        <location line="-1218"/>
+        <location line="-1220"/>
         <source>Insert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+798"/>
+        <location line="+800"/>
         <source>Saving file...</source>
         <translation>Sparar fil...</translation>
     </message>
@@ -13122,32 +13123,32 @@ Vill du spara dessa innan filen stängs?</translation>
         <translation type="obsolete">kommer att synas i innehållsbläddraren! Fortsätta?</translation>
     </message>
     <message>
-        <location line="-1142"/>
+        <location line="-1144"/>
         <location line="+465"/>
         <location line="+211"/>
         <location line="+44"/>
         <location line="+17"/>
         <location line="+14"/>
         <location line="+16"/>
-        <location line="+35"/>
+        <location line="+37"/>
         <location line="+211"/>
-        <location filename="qucs_actions.cpp" line="-145"/>
+        <location filename="qucs_actions.cpp" line="-149"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+38"/>
         <location line="+14"/>
-        <location line="+709"/>
+        <location line="+799"/>
         <source>Info</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location line="-375"/>
+        <location line="-377"/>
         <source>Content of </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+376"/>
+        <location line="+378"/>
         <source>Cannot overwrite an open document</source>
         <translation>Kan ej skriva över ett öppet dokument</translation>
     </message>
@@ -13167,8 +13168,8 @@ Vill du spara dessa innan filen stängs?</translation>
         <translation>Stänger fil...</translation>
     </message>
     <message>
-        <location line="-933"/>
-        <location line="+939"/>
+        <location line="-935"/>
+        <location line="+941"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>Dokumentet innehåller osparade ändringr!
@@ -13180,19 +13181,19 @@ Vill du spara dessa innan filen stängs?</translation>
         <translation>Vill du spara ändringarna innan stängning?</translation>
     </message>
     <message>
-        <location line="-938"/>
-        <location line="+939"/>
-        <location filename="qucs_init.cpp" line="-877"/>
+        <location line="-940"/>
+        <location line="+941"/>
+        <location filename="qucs_init.cpp" line="-885"/>
         <source>&amp;Save</source>
         <translation>&amp;Spara</translation>
     </message>
     <message>
-        <location line="-1709"/>
+        <location line="-1719"/>
         <source>Spice Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+232"/>
+        <location line="+240"/>
         <source>Manage Libraries</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13241,7 +13242,12 @@ Vill du spara dessa innan filen stängs?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+1"/>
+        <source>&amp;Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>Copy file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13261,7 +13267,7 @@ Vill du spara dessa innan filen stängs?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+735"/>
+        <location line="+737"/>
         <source>Qucs Netlist</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13345,7 +13351,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="+870"/>
+        <location filename="qucs_init.cpp" line="+878"/>
         <location line="+41"/>
         <source>no warnings</source>
         <translation>inga varningar</translation>
@@ -13361,7 +13367,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation>Ingen sida satt!</translation>
     </message>
     <message>
-        <location line="-1164"/>
+        <location line="-1166"/>
         <source>Cannot access project directory: </source>
         <translation>Kan ej få tillgång till projektmapp: </translation>
     </message>
@@ -13391,12 +13397,12 @@ Use PNG, JPEG or SVG graphics!</source>
     </message>
     <message>
         <location line="+211"/>
-        <location line="+126"/>
+        <location line="+128"/>
         <source>No project is selected !</source>
         <translation>Inget projekt är valt!</translation>
     </message>
     <message>
-        <location line="-51"/>
+        <location line="-53"/>
         <source>Cannot delete an open project !</source>
         <translation>Kan ej ta bort ett öppet projekt!</translation>
     </message>
@@ -13464,7 +13470,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation type="obsolete">Redigera kretssymbol</translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-876"/>
+        <location filename="qucs_init.cpp" line="-884"/>
         <source>Edits the symbol for this schematic</source>
         <translation>Redigera symbolen för detta schema</translation>
     </message>
@@ -13502,29 +13508,29 @@ Redigerar schemat</translation>
         <translation type="obsolete">filkomponenter</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1259"/>
+        <location filename="qucs.cpp" line="-1265"/>
         <source>Others</source>
         <translation>Annat</translation>
     </message>
     <message>
-        <location line="+2352"/>
+        <location line="+2360"/>
         <source>Cannot start &quot;%1&quot;!</source>
         <translation>kan ej starta &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location line="-2444"/>
-        <location line="+1543"/>
+        <location line="-2454"/>
+        <location line="+1553"/>
         <source>VHDL Sources</source>
         <translation>VHDL-källor</translation>
     </message>
     <message>
-        <location line="-1439"/>
-        <location line="+2371"/>
+        <location line="-1447"/>
+        <location line="+2379"/>
         <source>VHDL</source>
         <translation>VHDL</translation>
     </message>
     <message>
-        <location line="-2297"/>
+        <location line="-2299"/>
         <source>content of project directory</source>
         <translation>innehåll i projektmapp</translation>
     </message>
@@ -13546,7 +13552,7 @@ Redigerar schemat</translation>
         <translation type="obsolete">Kan ej ta bort VHDL-källa: </translation>
     </message>
     <message>
-        <location line="+1204"/>
+        <location line="+1206"/>
         <source>Creating new text editor...</source>
         <translation>Skapar ny textredigerare...</translation>
     </message>
@@ -13580,7 +13586,7 @@ Redigerar schemat</translation>
         <translation>Fel beroende!</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-804"/>
+        <location filename="qucs_actions.cpp" line="-894"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
@@ -13590,37 +13596,32 @@ Redigerar schemat</translation>
         <translation>Åtminstone två element måste väljas!</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+59"/>
         <source>Opening aborted, file not found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
         <source>Cannot start text editor!</source>
-        <translation>Kan ej starta textredigerare!</translation>
+        <translation type="obsolete">Kan ej starta textredigerare!</translation>
     </message>
     <message>
-        <location line="+46"/>
         <source>Cannot start filter synthesis program!</source>
-        <translation>Kan inte starta filtersyntesprogrammet!</translation>
+        <translation type="obsolete">Kan inte starta filtersyntesprogrammet!</translation>
     </message>
     <message>
-        <location line="+24"/>
         <source>Cannot start line calculation program!</source>
-        <translation>Kan inte starta ledningsberäkningsprogrammet!</translation>
+        <translation type="obsolete">Kan inte starta ledningsberäkningsprogrammet!</translation>
     </message>
     <message>
-        <location line="+24"/>
         <source>Cannot start library program!</source>
-        <translation>Kan inte starta biblioteksprogram!</translation>
+        <translation type="obsolete">Kan inte starta biblioteksprogram!</translation>
     </message>
     <message>
-        <location line="+68"/>
         <source>Cannot start qucshelp!</source>
-        <translation>Kan inte starta qusc-hjälpen!</translation>
+        <translation type="obsolete">Kan inte starta qusc-hjälpen!</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+326"/>
         <source>No project open!</source>
         <translation>Inget projekt öppnat!</translation>
     </message>
@@ -14794,7 +14795,7 @@ Dialog for Creating Matching Circuit</source>
 Dialog för att skapa matchande krets</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+17"/>
         <source>Simulate</source>
         <translation>Simulera</translation>
     </message>
@@ -15029,12 +15030,12 @@ Om tillämpningen</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+438"/>
+        <location line="+442"/>
         <source>About Qt</source>
         <translation>Om Qt</translation>
     </message>
     <message>
-        <location line="-439"/>
+        <location line="-443"/>
         <source>About Qt...</source>
         <translation>Om Qt...</translation>
     </message>
@@ -15077,7 +15078,7 @@ Om Qt från Trolltech</translation>
         <translation>&amp;Verktyg</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>&amp;Simulation</source>
         <translation>&amp;Simulering</translation>
     </message>
@@ -15121,16 +15122,17 @@ Om Qt från Trolltech</translation>
     </message>
     <message>
         <location line="+1"/>
+        <location line="+2"/>
         <source>Copyright (C)</source>
         <translation>Copyright (C)</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>by Michael Margraf</source>
         <translation>by Michael Margraf</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+6"/>
         <source>Simulator by Stefan Jahn</source>
         <translation>Simulator av Stefan Jahn</translation>
     </message>
@@ -15150,7 +15152,7 @@ Om Qt från Trolltech</translation>
         <translation>Många tack till Mike Branson för rättning av VHDL-utdata</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Translations:</source>
         <translation>Översättningar:</translation>
     </message>
@@ -15214,7 +15216,7 @@ Om Qt från Trolltech</translation>
         <translation>Ungerska av Jozsef Bus</translation>
     </message>
     <message>
-        <location line="-830"/>
+        <location line="-841"/>
         <source>Find...</source>
         <translation>Leta...</translation>
     </message>
@@ -15361,12 +15363,12 @@ Aktiverar valmod</translation>
         <translation>VHDL-entitet</translation>
     </message>
     <message>
-        <location line="+149"/>
+        <location line="+156"/>
         <source>Open Recent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+135"/>
+        <location line="+136"/>
         <source>&amp;Technical Papers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15408,12 +15410,27 @@ Aktiverar valmod</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+172"/>
+        <location line="+151"/>
+        <source>Qucs Team</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Verilog-AMS dynamic loader by Guilherme Brondani Torri</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Portuguese by Luciano Franca, Helio de Sousa, Guilherme Brondani Torri</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Russian by Igor Gorbounov</source>
         <translation>Ryska av Igor Gorbounov</translation>
     </message>
     <message>
-        <location line="-561"/>
+        <location line="-572"/>
         <source>Inserts skeleton of VHDL entity</source>
         <translation></translation>
     </message>
@@ -15496,7 +15513,7 @@ Create Library from Subcircuits</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-913"/>
+        <location filename="qucs.cpp" line="-915"/>
         <source>Cannot delete file: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -15526,7 +15543,56 @@ Create Library from Subcircuits</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="-680"/>
+        <source>Cannot start text editor! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+56"/>
+        <source>Cannot start filter synthesis program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Cannot start line calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>Cannot start library program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>Cannot start attenuator calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Cannot start resistor color code calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>Cannot start qucshelp! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+460"/>
         <source>Output file already exists!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15604,7 +15670,7 @@ Convert graph data to CSV file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+248"/>
+        <location line="+255"/>
         <source>&amp;Dock Window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15621,17 +15687,12 @@ Enables/disables the browse dock window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="+695"/>
+        <location filename="qucs.cpp" line="+697"/>
         <source>Printer Error.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-496"/>
-        <source>Cannot start attenuator calculation program!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qucs_init.cpp" line="-67"/>
+        <location filename="qucs_init.cpp" line="-74"/>
         <source>Attenuator synthesis</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15648,12 +15709,12 @@ Starts attenuator calculation program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+504"/>
+        <location line="+514"/>
         <source>GUI improvements by Gopala Krishna A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>Czech by Marek Straka</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15663,12 +15724,12 @@ Starts attenuator calculation program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-16"/>
+        <location line="-17"/>
         <source>Verilog-AMS interface by Helene Parruitte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-884"/>
+        <location line="-894"/>
         <source>Center horizontally</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15702,12 +15763,12 @@ Center vertically selected elements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+522"/>
+        <location line="+529"/>
         <source>P&amp;ositioning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-596"/>
+        <location line="-603"/>
         <source>Print Fit to Page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15780,14 +15841,14 @@ Center vertically selected elements</source>
         <translation type="obsolete">Stäng</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-2003"/>
-        <location line="+1543"/>
+        <location filename="qucs.cpp" line="-2013"/>
+        <location line="+1553"/>
         <source>Verilog Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1444"/>
-        <location line="+2377"/>
+        <location line="-1452"/>
+        <location line="+2385"/>
         <source>Verilog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15809,12 +15870,7 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+707"/>
-        <source>Portuguese by Luciano Franca and Helio de Sousa</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+11"/>
+        <location line="+729"/>
         <source>Arabic by Chabane Noureddine</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15824,7 +15880,7 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1585"/>
+        <location filename="qucs.cpp" line="-1587"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15874,18 +15930,18 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-951"/>
-        <location line="+1543"/>
+        <location line="-959"/>
+        <location line="+1553"/>
         <source>Verilog-A Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1443"/>
+        <location line="-1451"/>
         <source>Verilog-A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+794"/>
+        <location line="+800"/>
         <source>Verilog-A source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15900,18 +15956,18 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-963"/>
-        <location line="+1543"/>
+        <location line="-971"/>
+        <location line="+1553"/>
         <source>Octave Scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1448"/>
+        <location line="-1456"/>
         <source>Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-457"/>
+        <location filename="qucs_init.cpp" line="-461"/>
         <source>&amp;Octave Window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15928,18 +15984,17 @@ Shows/hides the Octave dock window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot start resistor color code calculation program!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location line="-74"/>
         <source>Resistor color codes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Starts Qucs resistor color codes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Resistor color codes
 
 Starts standard resistor color code computation program</source>
@@ -16427,7 +16482,7 @@ Filtersyntesprogram
 <context>
     <name>QucsHelp</name>
     <message>
-        <location filename="../qucs-help/qucshelp.cpp" line="+44"/>
+        <location filename="../qucs-help/qucshelp.cpp" line="+50"/>
         <source>Qucs Help System</source>
         <translation>Qusc hjälpsystem</translation>
     </message>
@@ -16440,7 +16495,7 @@ Filtersyntesprogram
         <translation type="obsolete">Stäng</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+29"/>
         <source>&amp;Quit</source>
         <translation type="unfinished">&amp;Avsluta</translation>
     </message>
@@ -16470,12 +16525,12 @@ Filtersyntesprogram
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+75"/>
+        <location line="+70"/>
         <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-74"/>
+        <location line="-69"/>
         <source>&amp;Table of Contents</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16492,7 +16547,7 @@ Enables/disables the table of contents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+40"/>
         <source>&amp;About Qt</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16512,7 +16567,7 @@ Enables/disables the table of contents</source>
         <translation type="unfinished">&amp;Hjälp</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+5"/>
         <source>Contents</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18005,7 +18060,7 @@ Kopierar filer till projektmapp</translation>
         <translation>Dokumentbakgrundsfärg:</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+31"/>
         <source>maximum undo operations:</source>
         <translation>maximalt antal ångraoperationer:</translation>
     </message>
@@ -18015,7 +18070,7 @@ Kopierar filer till projektmapp</translation>
         <translation>textredigerare:</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Load documents from future versions </source>
         <translation type="unfinished"></translation>
     </message>
@@ -18030,17 +18085,27 @@ Kopierar filer till projektmapp</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Octave path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="+3"/>
         <source>Qucs Home:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+7"/>
+        <source>AdmsXml Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>ASCO Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Octave Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
         <source>Locations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18065,23 +18130,33 @@ Kopierar filer till projektmapp</translation>
         <translation>Standardvärden</translation>
     </message>
     <message>
-        <location line="+347"/>
+        <location line="+365"/>
+        <source>Select the admsXml bin directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Select the ASCO bin directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Select the octave bin directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="-27"/>
         <source>Select the home directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+41"/>
         <location line="+19"/>
         <source>Select a directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-510"/>
+        <location line="-551"/>
         <source>Suffix</source>
         <translation>Suffix</translation>
     </message>
@@ -18127,12 +18202,12 @@ open files with an appropriate program.</source>
         <translation>Mängd</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+56"/>
         <source>Subcircuit Search Path List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+93"/>
+        <location line="+98"/>
         <source>Error</source>
         <translation>Fel</translation>
     </message>
@@ -18142,7 +18217,7 @@ open files with an appropriate program.</source>
         <translation>Detta suffix är redan registrerat!</translation>
     </message>
     <message>
-        <location line="-299"/>
+        <location line="-321"/>
         <source>Language (set after reload):</source>
         <translation>Språk (satt efter omstart):</translation>
     </message>
@@ -18202,19 +18277,25 @@ open files with an appropriate program.</source>
         <translation>Svenska</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Turkish</source>
         <translation>Turkiska</translation>
     </message>
     <message>
-        <location line="-3"/>
+        <location line="-4"/>
         <source>Hungarian</source>
         <translation>Ungerska</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Portuguese</source>
-        <translation>Portugisiska</translation>
+        <source>Portuguese-BR</source>
+        <oldsource>Portuguese</oldsource>
+        <translation type="unfinished">Portugisiska</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Portuguese-PT</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -18227,7 +18308,12 @@ open files with an appropriate program.</source>
         <translation>Ryska</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+15"/>
+        <source>Set to qucs, qucsedit or the path to your favorite text editor.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>Colors for Syntax Highlighting:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18267,7 +18353,7 @@ open files with an appropriate program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-71"/>
+        <location line="-72"/>
         <source>Czech</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18277,12 +18363,12 @@ open files with an appropriate program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+16"/>
         <source>start wiring when clicking open node:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-14"/>
+        <location line="-15"/>
         <source>Arabic</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18292,7 +18378,7 @@ open files with an appropriate program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+75"/>
         <source>Directive</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18955,18 +19041,20 @@ open files with an appropriate program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="+263"/>
-        <location line="+21"/>
+        <location filename="schematic_file.cpp" line="+266"/>
+        <location line="+22"/>
         <source>Error</source>
         <translation type="unfinished">Fel</translation>
     </message>
     <message>
-        <location line="-20"/>
-        <source>Program not found: %1</source>
+        <location line="-21"/>
+        <source>Program admsXml not found: %1
+
+Set the admsXml location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>Status</source>
         <translation type="unfinished">Status</translation>
     </message>
@@ -18976,12 +19064,12 @@ open files with an appropriate program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic.cpp" line="+1287"/>
+        <location filename="schematic.cpp" line="+1299"/>
         <source>generic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1200"/>
+        <location line="-1212"/>
         <source>Edit Text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19332,7 +19420,7 @@ ingår i sökningen.</translation>
 </translation>
     </message>
     <message>
-        <location line="+323"/>
+        <location line="+340"/>
         <source>ERROR: Cannot start simulator!</source>
         <translation>FEL: Kan ej starta simulator!</translation>
     </message>
@@ -19391,7 +19479,7 @@ Fel:
 </translation>
     </message>
     <message>
-        <location line="-511"/>
+        <location line="-528"/>
         <source>creating netlist... </source>
         <translation>skapar nätlista...</translation>
     </message>
@@ -19411,7 +19499,7 @@ Fel:
     </message>
     <message>
         <location line="+215"/>
-        <location line="+94"/>
+        <location line="+101"/>
         <source>done.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19428,7 +19516,7 @@ Fel:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+81"/>
         <source>ERROR: Program not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19465,7 +19553,7 @@ Fel:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-302"/>
+        <location line="-315"/>
         <location line="+7"/>
         <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
@@ -19476,7 +19564,7 @@ Fel:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-236"/>
+        <location line="-240"/>
         <source>ERROR: Cannot simulate a text file!</source>
         <translation type="unfinished"></translation>
     </message>

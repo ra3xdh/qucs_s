@@ -2779,8 +2779,8 @@ de %1 !</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="schematic_file.cpp" line="+856"/>
-        <location filename="../qucs-help/main.cpp" line="+99"/>
+        <location filename="schematic_file.cpp" line="+860"/>
+        <location filename="../qucs-help/main.cpp" line="+104"/>
         <source>Warning</source>
         <translation>Figyelmeztetés</translation>
     </message>
@@ -2797,15 +2797,15 @@ de %1 !</translation>
     </message>
     <message>
         <location filename="octave_window.cpp" line="-31"/>
-        <location filename="qucs_actions.cpp" line="+1276"/>
-        <location filename="schematic_file.cpp" line="-743"/>
+        <location filename="qucs_actions.cpp" line="+1365"/>
+        <location filename="schematic_file.cpp" line="-747"/>
         <location line="+18"/>
         <location line="+21"/>
         <location line="+24"/>
         <location line="+17"/>
         <location line="+72"/>
         <location line="+78"/>
-        <location line="+185"/>
+        <location line="+189"/>
         <location line="+5"/>
         <location line="+37"/>
         <location line="+5"/>
@@ -2823,7 +2823,7 @@ de %1 !</translation>
         <location line="+10"/>
         <location line="+20"/>
         <location line="+56"/>
-        <location filename="components/component.cpp" line="+1531"/>
+        <location filename="components/component.cpp" line="+1538"/>
         <location line="+20"/>
         <location line="+8"/>
         <location filename="components/vacomponent.cpp" line="+298"/>
@@ -2838,15 +2838,15 @@ Set the Octave location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-788"/>
-        <location line="+703"/>
+        <location filename="schematic_file.cpp" line="-792"/>
+        <location line="+707"/>
         <source>Format Error:
 &apos;Painting&apos; field is not closed!</source>
         <translation>Formázási hiba:
 &apos;Painting&apos; mező nincs lezárva!</translation>
     </message>
     <message>
-        <location line="-685"/>
+        <location line="-689"/>
         <source>Wrong document version: </source>
         <translation>Helytelen dokumentum verzió:</translation>
     </message>
@@ -2869,7 +2869,7 @@ Ismeretlen mező!</translation>
         <translation>Dokumentum nem menthető!</translation>
     </message>
     <message>
-        <location line="+185"/>
+        <location line="+189"/>
         <location line="+5"/>
         <source>Format Error:
 Wrong property field limiter!</source>
@@ -5287,17 +5287,17 @@ Használat:  qucsedit [-r] fájl
         <translation>HIBA: A &quot;%1&quot; alkatrész nem tölthető be a katalógusból.</translation>
     </message>
     <message>
-        <location filename="diagrams/curvediagram.cpp" line="+248"/>
+        <location filename="diagrams/curvediagram.cpp" line="+245"/>
         <source>Locus Curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="diagrams/polardiagram.cpp" line="+101"/>
+        <location filename="diagrams/polardiagram.cpp" line="+98"/>
         <source>Polar</source>
         <translation>Poláris</translation>
     </message>
     <message>
-        <location filename="diagrams/psdiagram.cpp" line="+128"/>
+        <location filename="diagrams/psdiagram.cpp" line="+125"/>
         <source>Polar-Smith Combi</source>
         <translation>Poláris-Smith kombinált</translation>
     </message>
@@ -5307,17 +5307,17 @@ Használat:  qucsedit [-r] fájl
         <translation>Smith-Poláris kombinált</translation>
     </message>
     <message>
-        <location filename="diagrams/rect3ddiagram.cpp" line="+1143"/>
+        <location filename="diagrams/rect3ddiagram.cpp" line="+1140"/>
         <source>3D-Cartesian</source>
         <translation>3D-Derékszögű</translation>
     </message>
     <message>
-        <location filename="diagrams/rectdiagram.cpp" line="+246"/>
+        <location filename="diagrams/rectdiagram.cpp" line="+243"/>
         <source>Cartesian</source>
         <translation>Derékszögű</translation>
     </message>
     <message>
-        <location filename="diagrams/smithdiagram.cpp" line="+111"/>
+        <location filename="diagrams/smithdiagram.cpp" line="+108"/>
         <source>Smith Chart</source>
         <translation>Smith Diagram</translation>
     </message>
@@ -5357,7 +5357,7 @@ Használat:  qucsedit [-r] fájl
         <translation>Vonal</translation>
     </message>
     <message>
-        <location filename="paintings/graphictext.cpp" line="+124"/>
+        <location filename="paintings/graphictext.cpp" line="+131"/>
         <source>Text</source>
         <translation>Szöveg</translation>
     </message>
@@ -5807,7 +5807,7 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="+527"/>
+        <location filename="main.cpp" line="+529"/>
         <location line="+63"/>
         <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
         <translation type="unfinished"></translation>
@@ -6024,7 +6024,7 @@ Digitális szimuláció</translation>
         <translation>ellenállás a kikapcsolt állapotban [Ohm]</translation>
     </message>
     <message>
-        <location filename="mouseactions.cpp" line="+827"/>
+        <location filename="mouseactions.cpp" line="+742"/>
         <source>Edit Properties</source>
         <translation>Tulajdonságok beállítása</translation>
     </message>
@@ -11019,13 +11019,13 @@ Digitális szimuláció</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-1434"/>
+        <location filename="schematic_file.cpp" line="-1438"/>
         <source>Cannot save C++ file &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="module.cpp" line="+117"/>
-        <location filename="qucs.cpp" line="+647"/>
+        <location filename="qucs.cpp" line="+655"/>
         <location line="+106"/>
         <location filename="qucs_actions.cpp" line="+153"/>
         <source>verilog-a user devices</source>
@@ -11084,14 +11084,14 @@ Digitális szimuláció</translation>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="+1706"/>
+        <location filename="qucs.cpp" line="+1708"/>
         <source>diagrams</source>
         <translation type="unfinished">Diagramok</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="-1856"/>
+        <location filename="qucs.cpp" line="-1858"/>
         <location line="+30"/>
         <location line="+3"/>
         <location line="+107"/>
@@ -12956,7 +12956,7 @@ Felülírjam?</translation>
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="qucs.cpp" line="-642"/>
+        <location filename="qucs.cpp" line="-650"/>
         <source>Schematic</source>
         <translation>Kapcsolási rajz</translation>
     </message>
@@ -12972,13 +12972,13 @@ Felülírjam?</translation>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+1544"/>
+        <location line="+1554"/>
         <location filename="qucs_actions.cpp" line="-172"/>
         <source>Any File</source>
         <translation>Bármelyik fájl</translation>
     </message>
     <message>
-        <location line="-1392"/>
+        <location line="-1394"/>
         <source>New</source>
         <translation>Új</translation>
     </message>
@@ -13017,7 +13017,7 @@ Felülírjam?</translation>
         <translation>Megjegyzés</translation>
     </message>
     <message>
-        <location line="-1180"/>
+        <location line="-1186"/>
         <source>Datasets</source>
         <translation>Adatbeállítások</translation>
     </message>
@@ -13028,12 +13028,12 @@ Felülírjam?</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+2365"/>
+        <location line="+2373"/>
         <source>Schematics</source>
         <translation>Kapcsolási rajzok</translation>
     </message>
     <message>
-        <location line="-2274"/>
+        <location line="-2276"/>
         <source>Content</source>
         <translation>Összetevők</translation>
     </message>
@@ -13105,7 +13105,7 @@ Felülírjam?</translation>
         <location line="+54"/>
         <location line="+31"/>
         <location line="+235"/>
-        <location line="+1137"/>
+        <location line="+1139"/>
         <location line="+28"/>
         <location line="+77"/>
         <location line="+316"/>
@@ -13113,12 +13113,13 @@ Felülírjam?</translation>
         <location line="+7"/>
         <location line="+7"/>
         <location line="+6"/>
-        <location filename="qucs_actions.cpp" line="-609"/>
-        <location line="+45"/>
-        <location line="+24"/>
-        <location line="+24"/>
-        <location line="+32"/>
-        <location line="+37"/>
+        <location filename="qucs_actions.cpp" line="-681"/>
+        <location line="+55"/>
+        <location line="+31"/>
+        <location line="+33"/>
+        <location line="+40"/>
+        <location line="+31"/>
+        <location line="+44"/>
         <location line="+46"/>
         <location line="+32"/>
         <location line="+16"/>
@@ -13132,7 +13133,7 @@ Felülírjam?</translation>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location line="-1952"/>
+        <location line="-1954"/>
         <source>Cannot rename an open file!</source>
         <translation>Nyitott fájlt nem lehet átnevezni!</translation>
     </message>
@@ -13162,34 +13163,34 @@ Felülírjam?</translation>
         <location line="+77"/>
         <location line="+47"/>
         <location line="+329"/>
-        <location line="+244"/>
+        <location line="+246"/>
         <location line="+630"/>
         <source>Warning</source>
         <translation>Figyelmeztetések</translation>
     </message>
     <message>
-        <location line="-1326"/>
+        <location line="-1328"/>
         <source>This will delete the file permanently! Continue ?</source>
         <translation>A fájl véglegesen törlődik! Folytatja?</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+77"/>
-        <location line="+621"/>
+        <location line="+623"/>
         <location line="+454"/>
         <source>No</source>
         <translation>Nem</translation>
     </message>
     <message>
-        <location line="-1152"/>
+        <location line="-1154"/>
         <location line="+77"/>
-        <location line="+621"/>
+        <location line="+623"/>
         <location line="+454"/>
         <source>Yes</source>
         <translation>Igen</translation>
     </message>
     <message>
-        <location line="-1147"/>
+        <location line="-1149"/>
         <source>Cannot delete schematic: </source>
         <translation>A kapcsolási rajz nem törölhető:</translation>
     </message>
@@ -13213,7 +13214,7 @@ Felülírjam?</translation>
         <translation>A munkakönyvtárat nem tudtam létrehozni!</translation>
     </message>
     <message>
-        <location line="+710"/>
+        <location line="+712"/>
         <source>Closing Qucs document</source>
         <translation>A Qucs dokumentum bezárás</translation>
     </message>
@@ -13244,16 +13245,16 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <location line="+37"/>
         <location line="+45"/>
         <location line="+22"/>
-        <location filename="qucs_actions.cpp" line="-771"/>
-        <location line="+311"/>
-        <location filename="qucs_init.cpp" line="+954"/>
+        <location filename="qucs_actions.cpp" line="-857"/>
+        <location line="+397"/>
+        <location filename="qucs_init.cpp" line="+942"/>
         <source>Ready.</source>
         <translation>Kész.
 </translation>
     </message>
     <message>
         <location line="-648"/>
-        <location filename="qucs_actions.cpp" line="-320"/>
+        <location filename="qucs_actions.cpp" line="-406"/>
         <source>Opening file...</source>
         <translation>Fájl nyitása...</translation>
     </message>
@@ -13268,19 +13269,19 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <translation>Megnyitás megszakítva</translation>
     </message>
     <message>
-        <location line="-743"/>
+        <location line="-745"/>
         <location line="+429"/>
-        <location line="+770"/>
+        <location line="+772"/>
         <source>-port</source>
         <translation>-csatlakozás</translation>
     </message>
     <message>
-        <location line="-1218"/>
+        <location line="-1220"/>
         <source>Insert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+798"/>
+        <location line="+800"/>
         <source>Saving file...</source>
         <translation>Fájl mentése...</translation>
     </message>
@@ -13329,32 +13330,32 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <translation type="obsolete">nem fog látszani betöltéskor! Folytatja?</translation>
     </message>
     <message>
-        <location line="-1142"/>
+        <location line="-1144"/>
         <location line="+465"/>
         <location line="+211"/>
         <location line="+44"/>
         <location line="+17"/>
         <location line="+14"/>
         <location line="+16"/>
-        <location line="+35"/>
+        <location line="+37"/>
         <location line="+211"/>
-        <location filename="qucs_actions.cpp" line="-145"/>
+        <location filename="qucs_actions.cpp" line="-149"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+38"/>
         <location line="+14"/>
-        <location line="+709"/>
+        <location line="+799"/>
         <source>Info</source>
         <translation>Infó</translation>
     </message>
     <message>
-        <location line="-375"/>
+        <location line="-377"/>
         <source>Content of </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+376"/>
+        <location line="+378"/>
         <source>Cannot overwrite an open document</source>
         <translation>Nyitott dokumentumot nem lehet felülírni</translation>
     </message>
@@ -13374,8 +13375,8 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <translation>Fájl bezárása...</translation>
     </message>
     <message>
-        <location line="-933"/>
-        <location line="+939"/>
+        <location line="-935"/>
+        <location line="+941"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>A dokumentum tartalmaz mentetlen változásokat!
@@ -13388,19 +13389,19 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <translation>El akarod menteni a változásokat bezárás előtt?</translation>
     </message>
     <message>
-        <location line="-938"/>
-        <location line="+939"/>
-        <location filename="qucs_init.cpp" line="-877"/>
+        <location line="-940"/>
+        <location line="+941"/>
+        <location filename="qucs_init.cpp" line="-885"/>
         <source>&amp;Save</source>
         <translation>&amp;Mentés</translation>
     </message>
     <message>
-        <location line="-1709"/>
+        <location line="-1719"/>
         <source>Spice Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+232"/>
+        <location line="+240"/>
         <source>Manage Libraries</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13449,7 +13450,12 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+1"/>
+        <source>&amp;Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>Copy file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13469,7 +13475,7 @@ Szeretnéd menteni a változásakat bezárás előtt?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+735"/>
+        <location line="+737"/>
         <source>Qucs Netlist</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13553,9 +13559,8 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-459"/>
         <source>Cannot start qucshelp!</source>
-        <translation>A Qucs Súgó (qucshelp) nem indítható!</translation>
+        <translation type="obsolete">A Qucs Súgó (qucshelp) nem indítható!</translation>
     </message>
     <message>
         <source>Starting new simulation on </source>
@@ -13637,12 +13642,11 @@ Hibák:
 </translation>
     </message>
     <message>
-        <location line="-162"/>
         <source>Cannot start text editor!</source>
-        <translation>A szövegszerkesztő (qucsedit) nem indítható!</translation>
+        <translation type="obsolete">A szövegszerkesztő (qucsedit) nem indítható!</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-815"/>
+        <location line="-815"/>
         <source>Cannot create </source>
         <translation>Létrehozás nem sikerült</translation>
     </message>
@@ -13652,7 +13656,7 @@ Hibák:
         <translation>Oldal nincs beállítva!</translation>
     </message>
     <message>
-        <location line="-1164"/>
+        <location line="-1166"/>
         <source>Cannot access project directory: </source>
         <translation>Nincs hozzáférés a projekt könyvtárhoz:</translation>
     </message>
@@ -13754,12 +13758,12 @@ Hibák:
     </message>
     <message>
         <location line="+211"/>
-        <location line="+126"/>
+        <location line="+128"/>
         <source>No project is selected !</source>
         <translation>Nincs kiválasztott projekt!</translation>
     </message>
     <message>
-        <location line="-51"/>
+        <location line="-53"/>
         <source>Cannot delete an open project !</source>
         <translation>Nyitott projektet nem lehet törölni!</translation>
     </message>
@@ -13770,7 +13774,7 @@ Hibák:
     </message>
     <message>
         <location line="+1"/>
-        <location filename="qucs_actions.cpp" line="+623"/>
+        <location filename="qucs_actions.cpp" line="+2"/>
         <source>&amp;Yes</source>
         <translation>&amp;Igen</translation>
     </message>
@@ -13795,7 +13799,7 @@ Hibák:
         <translation>Válassz projekt könyvtárat a törléshez</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-804"/>
+        <location filename="qucs_actions.cpp" line="-894"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
@@ -13859,16 +13863,14 @@ Szerkeszti a kapcsolási rajzot</translation>
         <translation type="obsolete">Tulajdonságok beállítása</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="+133"/>
         <source>Cannot start filter synthesis program!</source>
-        <translation>
+        <translation type="obsolete">
 Nem indítható a szűrő méretező program!
 </translation>
     </message>
     <message>
-        <location line="+24"/>
         <source>Cannot start line calculation program!</source>
-        <translation>
+        <translation type="obsolete">
 Nem indítható a tápvonal tervező program!
 </translation>
     </message>
@@ -13885,29 +13887,29 @@ Nem indítható a tápvonal tervező program!
         <translation type="obsolete">digitális alkatrészek</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1259"/>
+        <location filename="qucs.cpp" line="-1265"/>
         <source>Others</source>
         <translation>Egyebek</translation>
     </message>
     <message>
-        <location line="+2352"/>
+        <location line="+2360"/>
         <source>Cannot start &quot;%1&quot;!</source>
         <translation>&quot;%1&quot; nem indítható!</translation>
     </message>
     <message>
-        <location line="-2444"/>
-        <location line="+1543"/>
+        <location line="-2454"/>
+        <location line="+1553"/>
         <source>VHDL Sources</source>
         <translation>VHDL forrás</translation>
     </message>
     <message>
-        <location line="-1439"/>
-        <location line="+2371"/>
+        <location line="-1447"/>
+        <location line="+2379"/>
         <source>VHDL</source>
         <translation>VHDL</translation>
     </message>
     <message>
-        <location line="-2297"/>
+        <location line="-2299"/>
         <source>content of project directory</source>
         <translation>projekt könyvtár tartalma</translation>
     </message>
@@ -13929,7 +13931,7 @@ Nem indítható a tápvonal tervező program!
         <translation type="obsolete">VHDL forrás nem törölhető:</translation>
     </message>
     <message>
-        <location line="+1204"/>
+        <location line="+1206"/>
         <source>Creating new text editor...</source>
         <translation>Új szövegszerkesztő készítése...</translation>
     </message>
@@ -13963,14 +13965,13 @@ Nem indítható a tápvonal tervező program!
         <translation>Rossz függőség!</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="+24"/>
         <source>Cannot start library program!</source>
-        <translation>
+        <translation type="obsolete">
 Nem indítható az alkatrész-katalógus program!
 </translation>
     </message>
     <message>
-        <location line="+114"/>
+        <location filename="qucs_actions.cpp" line="+385"/>
         <source>No project open!</source>
         <translation>Nincs nyitott projekt!</translation>
     </message>
@@ -15140,7 +15141,7 @@ Dialog for Creating Matching Circuit</source>
 Illesztő áramkör létrehozó párbeszédablak</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+17"/>
         <source>Simulate</source>
         <translation>Szimuláció</translation>
     </message>
@@ -15376,12 +15377,12 @@ Program névjegy</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+438"/>
+        <location line="+442"/>
         <source>About Qt</source>
         <translation>Qt Névjegy</translation>
     </message>
     <message>
-        <location line="-439"/>
+        <location line="-443"/>
         <source>About Qt...</source>
         <translation>Qt Névjegy...</translation>
     </message>
@@ -15424,7 +15425,7 @@ Qt a Trolltech-től</translation>
         <translation>&amp;Eszközök</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>&amp;Simulation</source>
         <translation>Sz&amp;imuláció</translation>
     </message>
@@ -15474,16 +15475,17 @@ Qt a Trolltech-től</translation>
     </message>
     <message>
         <location line="+1"/>
+        <location line="+2"/>
         <source>Copyright (C)</source>
         <translation>Copyright (C)</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>by Michael Margraf</source>
         <translation>by Michael Margraf</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+6"/>
         <source>Simulator by Stefan Jahn</source>
         <translation>Szimulátor: Stefan Jahn</translation>
     </message>
@@ -15503,7 +15505,7 @@ Qt a Trolltech-től</translation>
         <translation>További köszönet Mike Brinson-nak a korrekt VHDL kimenetért</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Translations:</source>
         <translation>Fordítók:</translation>
     </message>
@@ -15567,7 +15569,7 @@ Qt a Trolltech-től</translation>
         <translation>Bús József - Magyar</translation>
     </message>
     <message>
-        <location line="-830"/>
+        <location line="-841"/>
         <source>Find...</source>
         <translation>Keresés...</translation>
     </message>
@@ -15714,12 +15716,12 @@ Kiválasztás aktiválása</translation>
         <translation>VHDL entitás</translation>
     </message>
     <message>
-        <location line="+149"/>
+        <location line="+156"/>
         <source>Open Recent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+135"/>
+        <location line="+136"/>
         <source>&amp;Technical Papers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15761,12 +15763,27 @@ Kiválasztás aktiválása</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+172"/>
+        <location line="+151"/>
+        <source>Qucs Team</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Verilog-AMS dynamic loader by Guilherme Brondani Torri</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Portuguese by Luciano Franca, Helio de Sousa, Guilherme Brondani Torri</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Russian by Igor Gorbounov</source>
         <translation>Igor Gorbounov - Orosz</translation>
     </message>
     <message>
-        <location line="-561"/>
+        <location line="-572"/>
         <source>Inserts skeleton of VHDL entity</source>
         <translation>Váz illesztés a VHDL entitáshoz</translation>
     </message>
@@ -15859,7 +15876,7 @@ Create Library from Subcircuits</source>
 Alkatrész-katalógust hoz létre a beágyazott kapcsoláshoz</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-913"/>
+        <location filename="qucs.cpp" line="-915"/>
         <source>Cannot delete file: </source>
         <translation>Fájl nem törölhető: </translation>
     </message>
@@ -15889,12 +15906,61 @@ Alkatrész-katalógust hoz létre a beágyazott kapcsoláshoz</translation>
         <translation>Kimemeti fájl név</translation>
     </message>
     <message>
-        <location line="-640"/>
+        <location line="-726"/>
         <source>Opening aborted, file not found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+654"/>
+        <location line="+46"/>
+        <source>Cannot start text editor! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+56"/>
+        <source>Cannot start filter synthesis program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Cannot start line calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>Cannot start library program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>Cannot start attenuator calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Cannot start resistor color code calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>Cannot start qucshelp! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+460"/>
         <source>Output file already exists!</source>
         <translation>A kimeneti fájl már létezik!
 </translation>
@@ -15992,7 +16058,7 @@ Convert graph data to CSV file</source>
 Grafikon adatok CVS fájlba konvertálása</translation>
     </message>
     <message>
-        <location line="+248"/>
+        <location line="+255"/>
         <source>&amp;Dock Window</source>
         <translation>&amp;Navigátor ablak</translation>
     </message>
@@ -16011,17 +16077,16 @@ Enables/disables the browse dock window</source>
 Bekapcsolja/Kikapcsolja a navigátor ablakot</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="+695"/>
+        <location filename="qucs.cpp" line="+697"/>
         <source>Printer Error.</source>
         <translation>Nyomtató Hiba.</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-496"/>
         <source>Cannot start attenuator calculation program!</source>
-        <translation>Csillapító méretező program nem indítható!</translation>
+        <translation type="obsolete">Csillapító méretező program nem indítható!</translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-67"/>
+        <location filename="qucs_init.cpp" line="-74"/>
         <source>Attenuator synthesis</source>
         <translation>Csillapító méretező</translation>
     </message>
@@ -16040,12 +16105,12 @@ Starts attenuator calculation program</source>
 Csillapító méretező program indítása</translation>
     </message>
     <message>
-        <location line="+504"/>
+        <location line="+514"/>
         <source>GUI improvements by Gopala Krishna A</source>
         <translation>GUI tökéletesítés köszönet Gopala Krishna A</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>Czech by Marek Straka</source>
         <translation>Marek Straka - Cseh</translation>
     </message>
@@ -16055,12 +16120,12 @@ Csillapító méretező program indítása</translation>
         <translation>Antoni Subirats - Katalán</translation>
     </message>
     <message>
-        <location line="-16"/>
+        <location line="-17"/>
         <source>Verilog-AMS interface by Helene Parruitte</source>
         <translation>Verilog-AMS interfész, köszönet Helene Parruitte</translation>
     </message>
     <message>
-        <location line="-884"/>
+        <location line="-894"/>
         <source>Center horizontally</source>
         <translation>Függőlegesen egyvonalba</translation>
     </message>
@@ -16099,12 +16164,12 @@ Center vertically selected elements</source>
 A kiválasztott elemeket vízszintesen egyvonalba mozgatja</translation>
     </message>
     <message>
-        <location line="+522"/>
+        <location line="+529"/>
         <source>P&amp;ositioning</source>
         <translation>P&amp;ozicionálás</translation>
     </message>
     <message>
-        <location line="-596"/>
+        <location line="-603"/>
         <source>Print Fit to Page</source>
         <translation>Nyomtatás oldalra illesztve</translation>
     </message>
@@ -16194,14 +16259,14 @@ A kiválasztott elemeket vízszintesen egyvonalba mozgatja</translation>
         <translation type="obsolete">Nyomtatás...</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-2003"/>
-        <location line="+1543"/>
+        <location filename="qucs.cpp" line="-2013"/>
+        <location line="+1553"/>
         <source>Verilog Sources</source>
         <translation>Verilog forrás</translation>
     </message>
     <message>
-        <location line="-1444"/>
-        <location line="+2377"/>
+        <location line="-1452"/>
+        <location line="+2385"/>
         <source>Verilog</source>
         <translation>Verilog</translation>
     </message>
@@ -16232,12 +16297,7 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+707"/>
-        <source>Portuguese by Luciano Franca and Helio de Sousa</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+11"/>
+        <location line="+729"/>
         <source>Arabic by Chabane Noureddine</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16247,7 +16307,7 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1585"/>
+        <location filename="qucs.cpp" line="-1587"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16297,18 +16357,18 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-951"/>
-        <location line="+1543"/>
+        <location line="-959"/>
+        <location line="+1553"/>
         <source>Verilog-A Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1443"/>
+        <location line="-1451"/>
         <source>Verilog-A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+794"/>
+        <location line="+800"/>
         <source>Verilog-A source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16323,18 +16383,18 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-963"/>
-        <location line="+1543"/>
+        <location line="-971"/>
+        <location line="+1553"/>
         <source>Octave Scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1448"/>
+        <location line="-1456"/>
         <source>Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-457"/>
+        <location filename="qucs_init.cpp" line="-461"/>
         <source>&amp;Octave Window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16351,18 +16411,17 @@ Shows/hides the Octave dock window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot start resistor color code calculation program!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location line="-74"/>
         <source>Resistor color codes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Starts Qucs resistor color codes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Resistor color codes
 
 Starts standard resistor color code computation program</source>
@@ -16902,7 +16961,7 @@ Szűrő méretező program
 <context>
     <name>QucsHelp</name>
     <message>
-        <location filename="../qucs-help/qucshelp.cpp" line="+44"/>
+        <location filename="../qucs-help/qucshelp.cpp" line="+50"/>
         <source>Qucs Help System</source>
         <translation>Qucs súgó rendszer</translation>
     </message>
@@ -16915,7 +16974,7 @@ Szűrő méretező program
         <translation type="obsolete">Bezár</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+29"/>
         <source>&amp;Quit</source>
         <translation>&amp;Kilépés</translation>
     </message>
@@ -16945,12 +17004,12 @@ Szűrő méretező program
         <translation>&amp;Következő</translation>
     </message>
     <message>
-        <location line="+75"/>
+        <location line="+70"/>
         <source>Home</source>
         <translation>Kezdőlap</translation>
     </message>
     <message>
-        <location line="-74"/>
+        <location line="-69"/>
         <source>&amp;Table of Contents</source>
         <translation>&amp;Tartalomjegyzék</translation>
     </message>
@@ -16969,7 +17028,7 @@ Enables/disables the table of contents</source>
 Be vagy Kikapcsolja a tartalomjegyzéket</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+40"/>
         <source>&amp;About Qt</source>
         <translation>&amp;Qt Névjegy</translation>
     </message>
@@ -16989,7 +17048,7 @@ Be vagy Kikapcsolja a tartalomjegyzéket</translation>
         <translation>&amp;Súgó</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+5"/>
         <source>Contents</source>
         <translation>Összetevők</translation>
     </message>
@@ -18484,7 +18543,7 @@ Fájlok másolása a projekt könyvtárba</translation>
         <translation>Dokumentum háttér szín:</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+31"/>
         <source>maximum undo operations:</source>
         <translation>maximális visszavonások száma:</translation>
     </message>
@@ -18494,7 +18553,7 @@ Fájlok másolása a projekt könyvtárba</translation>
         <translation>szövegszerkesztő:</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Load documents from future versions </source>
         <translation type="unfinished"></translation>
     </message>
@@ -18509,17 +18568,27 @@ Fájlok másolása a projekt könyvtárba</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Octave path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="+3"/>
         <source>Qucs Home:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+7"/>
+        <source>AdmsXml Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>ASCO Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Octave Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
         <source>Locations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18544,23 +18613,33 @@ Fájlok másolása a projekt könyvtárba</translation>
         <translation>Alapértelmezett értékek</translation>
     </message>
     <message>
-        <location line="+347"/>
+        <location line="+365"/>
+        <source>Select the admsXml bin directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Select the ASCO bin directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Select the octave bin directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="-27"/>
         <source>Select the home directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+41"/>
         <location line="+19"/>
         <source>Select a directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-510"/>
+        <location line="-551"/>
         <source>Suffix</source>
         <translation>Utótag</translation>
     </message>
@@ -18606,12 +18685,12 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>Beállítás</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+56"/>
         <source>Subcircuit Search Path List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+93"/>
+        <location line="+98"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
@@ -18621,7 +18700,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>Ez az utótag már regisztrált!</translation>
     </message>
     <message>
-        <location line="-299"/>
+        <location line="-321"/>
         <source>Language (set after reload):</source>
         <translation>Nyelv (beállítás után újraindítás után):</translation>
     </message>
@@ -18681,19 +18760,25 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>Svéd</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Turkish</source>
         <translation>Török</translation>
     </message>
     <message>
-        <location line="-3"/>
+        <location line="-4"/>
         <source>Hungarian</source>
         <translation>Magyar</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Portuguese</source>
-        <translation>Portugál</translation>
+        <source>Portuguese-BR</source>
+        <oldsource>Portuguese</oldsource>
+        <translation type="unfinished">Portugál</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Portuguese-PT</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -18706,7 +18791,12 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>Orosz</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+15"/>
+        <source>Set to qucs, qucsedit or the path to your favorite text editor.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>Colors for Syntax Highlighting:</source>
         <translation>Színek a szintaxis kiemeléshez:</translation>
     </message>
@@ -18750,7 +18840,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation type="obsolete">VHDL Szerkesztő</translation>
     </message>
     <message>
-        <location line="-71"/>
+        <location line="-72"/>
         <source>Czech</source>
         <translation>Cseh</translation>
     </message>
@@ -18760,12 +18850,12 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>Katalán</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+16"/>
         <source>start wiring when clicking open node:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-14"/>
+        <location line="-15"/>
         <source>Arabic</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18775,7 +18865,7 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+75"/>
         <source>Directive</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19424,18 +19514,20 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>Ellenőrizve:</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="+263"/>
-        <location line="+21"/>
+        <location filename="schematic_file.cpp" line="+266"/>
+        <location line="+22"/>
         <source>Error</source>
         <translation type="unfinished">Hiba</translation>
     </message>
     <message>
-        <location line="-20"/>
-        <source>Program not found: %1</source>
+        <location line="-21"/>
+        <source>Program admsXml not found: %1
+
+Set the admsXml location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>Status</source>
         <translation type="unfinished">Státusz</translation>
     </message>
@@ -19445,12 +19537,12 @@ a fájlt a megfelelő program nyissa meg.</translation>
         <translation>HIBA: A &quot;%1&quot; alkatrész-katalógus fájl nem hozható létre.</translation>
     </message>
     <message>
-        <location filename="schematic.cpp" line="+1287"/>
+        <location filename="schematic.cpp" line="+1299"/>
         <source>generic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1200"/>
+        <location line="-1212"/>
         <source>Edit Text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19777,7 +19869,7 @@ Rács megjelenítése</translation>
         <translation>Szimuláció megszakítása</translation>
     </message>
     <message>
-        <location line="+529"/>
+        <location line="+546"/>
         <source>Close window</source>
         <translation>Ablak bezárás</translation>
     </message>
@@ -19807,12 +19899,12 @@ Megszakítva.
 </translation>
     </message>
     <message>
-        <location line="-517"/>
+        <location line="-534"/>
         <source>ERROR: Simulator is still running!</source>
         <translation>HIBA: A szimulátor még fut!</translation>
     </message>
     <message>
-        <location line="+426"/>
+        <location line="+443"/>
         <source>ERROR: Cannot start simulator!</source>
         <translation>HIBA: Szimuláció nem indítható!</translation>
     </message>
@@ -19867,7 +19959,7 @@ Hibák:
 </translation>
     </message>
     <message>
-        <location line="-417"/>
+        <location line="-434"/>
         <source>ERROR: Cannot write netlist file!</source>
         <translation>HIBA: Kötéslista fájl nem írható!</translation>
     </message>
@@ -19897,7 +19989,7 @@ Hibák:
     </message>
     <message>
         <location line="+215"/>
-        <location line="+94"/>
+        <location line="+101"/>
         <source>done.</source>
         <translation>kész.</translation>
     </message>
@@ -19914,7 +20006,7 @@ Hibák:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+81"/>
         <source>ERROR: Program not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19954,7 +20046,7 @@ Hibák:
 -------</translation>
     </message>
     <message>
-        <location line="-302"/>
+        <location line="-315"/>
         <location line="+7"/>
         <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
@@ -19965,7 +20057,7 @@ Hibák:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-236"/>
+        <location line="-240"/>
         <source>ERROR: Cannot simulate a text file!</source>
         <translation type="unfinished"></translation>
     </message>

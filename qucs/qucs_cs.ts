@@ -2858,7 +2858,7 @@ je ale %1 !</translation>
     </message>
     <message>
         <location filename="octave_window.cpp" line="-31"/>
-        <location filename="qucs_actions.cpp" line="+1276"/>
+        <location filename="qucs_actions.cpp" line="+1365"/>
         <location filename="schematic_file.cpp" line="+113"/>
         <location line="+18"/>
         <location line="+21"/>
@@ -2866,7 +2866,7 @@ je ale %1 !</translation>
         <location line="+17"/>
         <location line="+72"/>
         <location line="+78"/>
-        <location line="+185"/>
+        <location line="+189"/>
         <location line="+5"/>
         <location line="+37"/>
         <location line="+5"/>
@@ -2884,7 +2884,7 @@ je ale %1 !</translation>
         <location line="+10"/>
         <location line="+20"/>
         <location line="+56"/>
-        <location filename="components/component.cpp" line="+1531"/>
+        <location filename="components/component.cpp" line="+1538"/>
         <location line="+20"/>
         <location line="+8"/>
         <location filename="components/vacomponent.cpp" line="+298"/>
@@ -2899,7 +2899,7 @@ Set the Octave location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-770"/>
+        <location filename="schematic_file.cpp" line="-774"/>
         <source>Wrong document version: </source>
         <translation>Špatná verze dokumentu: </translation>
     </message>
@@ -2922,7 +2922,7 @@ Neznámá položka!</translation>
         <translation>Dokument nelze uložit!</translation>
     </message>
     <message>
-        <location line="+185"/>
+        <location line="+189"/>
         <location line="+5"/>
         <source>Format Error:
 Wrong property field limiter!</source>
@@ -3026,8 +3026,8 @@ Chybný formát řádku v &apos;grafických objektů&apos;!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-743"/>
-        <location line="+703"/>
+        <location line="-747"/>
+        <location line="+707"/>
         <source>Format Error:
 &apos;Painting&apos; field is not closed!</source>
         <translation>Chyba formátu:
@@ -3867,7 +3867,7 @@ Neplatný začátek řádku!</translation>
     </message>
     <message>
         <location filename="schematic_file.cpp" line="-47"/>
-        <location filename="../qucs-help/main.cpp" line="+99"/>
+        <location filename="../qucs-help/main.cpp" line="+104"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
@@ -5595,7 +5595,7 @@ Do you make use of loadable components?</source>
         <translation>Čára</translation>
     </message>
     <message>
-        <location filename="paintings/graphictext.cpp" line="+124"/>
+        <location filename="paintings/graphictext.cpp" line="+131"/>
         <source>Text</source>
         <translation>Text</translation>
     </message>
@@ -5610,17 +5610,17 @@ Do you make use of loadable components?</source>
         <translation>vyplněný obdélník</translation>
     </message>
     <message>
-        <location filename="diagrams/curvediagram.cpp" line="+248"/>
+        <location filename="diagrams/curvediagram.cpp" line="+245"/>
         <source>Locus Curve</source>
         <translation>Amplitudově fázová křivka</translation>
     </message>
     <message>
-        <location filename="diagrams/polardiagram.cpp" line="+101"/>
+        <location filename="diagrams/polardiagram.cpp" line="+98"/>
         <source>Polar</source>
         <translation>Polární</translation>
     </message>
     <message>
-        <location filename="diagrams/psdiagram.cpp" line="+128"/>
+        <location filename="diagrams/psdiagram.cpp" line="+125"/>
         <source>Polar-Smith Combi</source>
         <translation>Kombinovaný polární-Smithův</translation>
     </message>
@@ -5630,17 +5630,17 @@ Do you make use of loadable components?</source>
         <translation>Smithův-polární kombinovaný</translation>
     </message>
     <message>
-        <location filename="diagrams/rect3ddiagram.cpp" line="+1143"/>
+        <location filename="diagrams/rect3ddiagram.cpp" line="+1140"/>
         <source>3D-Cartesian</source>
         <translation>3D-kartézský</translation>
     </message>
     <message>
-        <location filename="diagrams/rectdiagram.cpp" line="+246"/>
+        <location filename="diagrams/rectdiagram.cpp" line="+243"/>
         <source>Cartesian</source>
         <translation>Kartézský</translation>
     </message>
     <message>
-        <location filename="diagrams/smithdiagram.cpp" line="+111"/>
+        <location filename="diagrams/smithdiagram.cpp" line="+108"/>
         <source>Smith Chart</source>
         <translation>Smithův-diagram</translation>
     </message>
@@ -6012,7 +6012,7 @@ Do you make use of loadable components?</source>
         <translation>RS-FlipFlop</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="+527"/>
+        <location filename="main.cpp" line="+529"/>
         <location line="+63"/>
         <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
         <translation>Chyba: Chybný časový formát v &quot;%1&quot;. Použijte kladné číslo s jednotkami</translation>
@@ -6245,7 +6245,7 @@ Do you make use of loadable components?</source>
         <translation>odpor ve &quot;vypnutém&quot; stavu v Ohmech</translation>
     </message>
     <message>
-        <location filename="mouseactions.cpp" line="+827"/>
+        <location filename="mouseactions.cpp" line="+742"/>
         <source>Edit Properties</source>
         <translation>Upravit vlastnosti</translation>
     </message>
@@ -12622,13 +12622,13 @@ Do you make use of loadable components?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-1434"/>
+        <location filename="schematic_file.cpp" line="-1438"/>
         <source>Cannot save C++ file &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="module.cpp" line="+117"/>
-        <location filename="qucs.cpp" line="+647"/>
+        <location filename="qucs.cpp" line="+655"/>
         <location line="+106"/>
         <location filename="qucs_actions.cpp" line="+153"/>
         <source>verilog-a user devices</source>
@@ -12687,14 +12687,14 @@ Do you make use of loadable components?</source>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="+1706"/>
+        <location filename="qucs.cpp" line="+1708"/>
         <source>diagrams</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="-1856"/>
+        <location filename="qucs.cpp" line="-1858"/>
         <location line="+30"/>
         <location line="+3"/>
         <location line="+107"/>
@@ -13369,7 +13369,7 @@ Přepsat ?</translation>
         <translation>Nový</translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="+58"/>
+        <location filename="qucs_init.cpp" line="+38"/>
         <source>&amp;New</source>
         <translation>&amp;Nový</translation>
     </message>
@@ -13424,7 +13424,7 @@ Otevře již existující dokument</translation>
     </message>
     <message>
         <location filename="qucs.cpp" line="+617"/>
-        <location line="+939"/>
+        <location line="+941"/>
         <location filename="qucs_init.cpp" line="+3"/>
         <source>&amp;Save</source>
         <translation>&amp;Uložit</translation>
@@ -13658,7 +13658,7 @@ Zkopíruje vybranou oblast do schránky</translation>
         <translation type="obsolete">digitální komponenty</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1716"/>
+        <location filename="qucs.cpp" line="-1726"/>
         <source>Schematic</source>
         <translation>Schéma</translation>
     </message>
@@ -13674,13 +13674,13 @@ Zkopíruje vybranou oblast do schránky</translation>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+1544"/>
+        <location line="+1554"/>
         <location filename="qucs_actions.cpp" line="-172"/>
         <source>Any File</source>
         <translation>Všechny soubory</translation>
     </message>
     <message>
-        <location line="-1390"/>
+        <location line="-1392"/>
         <location line="+525"/>
         <source>Open</source>
         <translation>Otevřít</translation>
@@ -13714,7 +13714,7 @@ Zkopíruje vybranou oblast do schránky</translation>
         <translation>Poznámka</translation>
     </message>
     <message>
-        <location line="-1180"/>
+        <location line="-1186"/>
         <source>Datasets</source>
         <translation>Datové sady</translation>
     </message>
@@ -13725,12 +13725,12 @@ Zkopíruje vybranou oblast do schránky</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+2365"/>
+        <location line="+2373"/>
         <source>Schematics</source>
         <translation>Schémata</translation>
     </message>
     <message>
-        <location line="-2274"/>
+        <location line="-2276"/>
         <source>Content</source>
         <translation>Obsah</translation>
     </message>
@@ -13802,7 +13802,7 @@ Zkopíruje vybranou oblast do schránky</translation>
         <location line="+54"/>
         <location line="+31"/>
         <location line="+235"/>
-        <location line="+1137"/>
+        <location line="+1139"/>
         <location line="+28"/>
         <location line="+77"/>
         <location line="+316"/>
@@ -13810,12 +13810,13 @@ Zkopíruje vybranou oblast do schránky</translation>
         <location line="+7"/>
         <location line="+7"/>
         <location line="+6"/>
-        <location filename="qucs_actions.cpp" line="-609"/>
-        <location line="+45"/>
-        <location line="+24"/>
-        <location line="+24"/>
-        <location line="+32"/>
-        <location line="+37"/>
+        <location filename="qucs_actions.cpp" line="-681"/>
+        <location line="+55"/>
+        <location line="+31"/>
+        <location line="+33"/>
+        <location line="+40"/>
+        <location line="+31"/>
+        <location line="+44"/>
         <location line="+46"/>
         <location line="+32"/>
         <location line="+16"/>
@@ -13829,7 +13830,7 @@ Zkopíruje vybranou oblast do schránky</translation>
         <translation>Chyba</translation>
     </message>
     <message>
-        <location line="-1952"/>
+        <location line="-1954"/>
         <source>Cannot rename an open file!</source>
         <translation>Otevřený soubor nelze přejmenovat!</translation>
     </message>
@@ -13859,34 +13860,34 @@ Zkopíruje vybranou oblast do schránky</translation>
         <location line="+77"/>
         <location line="+47"/>
         <location line="+329"/>
-        <location line="+244"/>
+        <location line="+246"/>
         <location line="+630"/>
         <source>Warning</source>
         <translation>Upozornění</translation>
     </message>
     <message>
-        <location line="-1326"/>
+        <location line="-1328"/>
         <source>This will delete the file permanently! Continue ?</source>
         <translation>Soubor bude nenávratně smazán! Pokračovat ?</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+77"/>
-        <location line="+621"/>
+        <location line="+623"/>
         <location line="+454"/>
         <source>No</source>
         <translation>Ne</translation>
     </message>
     <message>
-        <location line="-1152"/>
+        <location line="-1154"/>
         <location line="+77"/>
-        <location line="+621"/>
+        <location line="+623"/>
         <location line="+454"/>
         <source>Yes</source>
         <translation>Ano</translation>
     </message>
     <message>
-        <location line="-1147"/>
+        <location line="-1149"/>
         <source>Cannot delete schematic: </source>
         <translation>Nelze smazat schéma: </translation>
     </message>
@@ -13910,7 +13911,7 @@ Zkopíruje vybranou oblast do schránky</translation>
         <translation>Pracovní adresář nelze vytvořit !</translation>
     </message>
     <message>
-        <location line="+710"/>
+        <location line="+712"/>
         <source>Closing Qucs document</source>
         <translation>Uzavřít Qucs dokument</translation>
     </message>
@@ -13940,15 +13941,15 @@ Chcete změny před uzavřením uložit?</translation>
         <location line="+37"/>
         <location line="+45"/>
         <location line="+22"/>
-        <location filename="qucs_actions.cpp" line="-771"/>
-        <location line="+311"/>
-        <location filename="qucs_init.cpp" line="+707"/>
+        <location filename="qucs_actions.cpp" line="-857"/>
+        <location line="+397"/>
+        <location filename="qucs_init.cpp" line="+715"/>
         <source>Ready.</source>
         <translation>Hotovo.</translation>
     </message>
     <message>
         <location line="-648"/>
-        <location filename="qucs_actions.cpp" line="-320"/>
+        <location filename="qucs_actions.cpp" line="-406"/>
         <source>Opening file...</source>
         <translation>Otevřít soubor...</translation>
     </message>
@@ -13963,19 +13964,19 @@ Chcete změny před uzavřením uložit?</translation>
         <translation>Otevírání přerušeno</translation>
     </message>
     <message>
-        <location line="-743"/>
+        <location line="-745"/>
         <location line="+429"/>
-        <location line="+770"/>
+        <location line="+772"/>
         <source>-port</source>
         <translation>-port</translation>
     </message>
     <message>
-        <location line="-1218"/>
+        <location line="-1220"/>
         <source>Insert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+798"/>
+        <location line="+800"/>
         <source>Saving file...</source>
         <translation>Uložit soubor...</translation>
     </message>
@@ -14024,32 +14025,32 @@ Chcete změny před uzavřením uložit?</translation>
         <translation type="obsolete">se objeví ve výpisu adresáře! Dále?</translation>
     </message>
     <message>
-        <location line="-1142"/>
+        <location line="-1144"/>
         <location line="+465"/>
         <location line="+211"/>
         <location line="+44"/>
         <location line="+17"/>
         <location line="+14"/>
         <location line="+16"/>
-        <location line="+35"/>
+        <location line="+37"/>
         <location line="+211"/>
-        <location filename="qucs_actions.cpp" line="-145"/>
+        <location filename="qucs_actions.cpp" line="-149"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+38"/>
         <location line="+14"/>
-        <location line="+709"/>
+        <location line="+799"/>
         <source>Info</source>
         <translation>Informace</translation>
     </message>
     <message>
-        <location line="-375"/>
+        <location line="-377"/>
         <source>Content of </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+376"/>
+        <location line="+378"/>
         <source>Cannot overwrite an open document</source>
         <translation>Otevřený soubor nelze přepsat</translation>
     </message>
@@ -14069,20 +14070,20 @@ Chcete změny před uzavřením uložit?</translation>
         <translation>Uzavřít soubor...</translation>
     </message>
     <message>
-        <location line="-933"/>
-        <location line="+939"/>
+        <location line="-935"/>
+        <location line="+941"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>Dokument obsahuje neuložené změny!
 </translation>
     </message>
     <message>
-        <location line="-1707"/>
+        <location line="-1717"/>
         <source>Spice Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+232"/>
+        <location line="+240"/>
         <source>Manage Libraries</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14131,7 +14132,12 @@ Chcete změny před uzavřením uložit?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+1"/>
+        <source>&amp;Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>Copy file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14151,7 +14157,7 @@ Chcete změny před uzavřením uložit?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+735"/>
+        <location line="+737"/>
         <source>Qucs Netlist</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14250,7 +14256,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1951"/>
+        <location line="-1953"/>
         <source>Cannot access project directory: </source>
         <translation>Adresář s projektem není přístupný: </translation>
     </message>
@@ -14280,12 +14286,12 @@ Use PNG, JPEG or SVG graphics!</source>
     </message>
     <message>
         <location line="+211"/>
-        <location line="+126"/>
+        <location line="+128"/>
         <source>No project is selected !</source>
         <translation>Nejsou vybrány žádné projekty !</translation>
     </message>
     <message>
-        <location line="-51"/>
+        <location line="-53"/>
         <source>Cannot delete an open project !</source>
         <translation>Otevřený projekt nelze smazat !</translation>
     </message>
@@ -14353,7 +14359,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation type="obsolete">Upravit symbol komponenty</translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-842"/>
+        <location filename="qucs_init.cpp" line="-850"/>
         <source>Edits the symbol for this schematic</source>
         <translation>Upravit symbol pro toto schéma</translation>
     </message>
@@ -14383,29 +14389,29 @@ Edits the schematic</source>
 Upraví schéma</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1259"/>
+        <location filename="qucs.cpp" line="-1265"/>
         <source>Others</source>
         <translation>Ostatní</translation>
     </message>
     <message>
-        <location line="+2352"/>
+        <location line="+2360"/>
         <source>Cannot start &quot;%1&quot;!</source>
         <translation>Program &quot;%1&quot; nelze spustit!</translation>
     </message>
     <message>
-        <location line="-2444"/>
-        <location line="+1543"/>
+        <location line="-2454"/>
+        <location line="+1553"/>
         <source>VHDL Sources</source>
         <translation>VHDL zdroje</translation>
     </message>
     <message>
-        <location line="-1439"/>
-        <location line="+2371"/>
+        <location line="-1447"/>
+        <location line="+2379"/>
         <source>VHDL</source>
         <translation>VHDL</translation>
     </message>
     <message>
-        <location line="-2297"/>
+        <location line="-2299"/>
         <source>content of project directory</source>
         <translation>Obsah adresáře s projektem</translation>
     </message>
@@ -14427,7 +14433,7 @@ Upraví schéma</translation>
         <translation type="obsolete">Zdrojový soubor VHDL nelze smazat: </translation>
     </message>
     <message>
-        <location line="+1204"/>
+        <location line="+1206"/>
         <source>Creating new text editor...</source>
         <translation>Vytvoření nového textového editoru...</translation>
     </message>
@@ -14461,7 +14467,7 @@ Upraví schéma</translation>
         <translation>Chybná závislost!</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-804"/>
+        <location filename="qucs_actions.cpp" line="-894"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
@@ -14471,37 +14477,32 @@ Upraví schéma</translation>
         <translation>K tomuto úkonu musí být vybrány minimálně dva Elementy !</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+59"/>
         <source>Opening aborted, file not found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
         <source>Cannot start text editor!</source>
-        <translation>Textový editor nelze spustit!</translation>
+        <translation type="obsolete">Textový editor nelze spustit!</translation>
     </message>
     <message>
-        <location line="+46"/>
         <source>Cannot start filter synthesis program!</source>
-        <translation>Nelze spustit program pro syntézu filtru</translation>
+        <translation type="obsolete">Nelze spustit program pro syntézu filtru</translation>
     </message>
     <message>
-        <location line="+24"/>
         <source>Cannot start line calculation program!</source>
-        <translation>Nelze spustit program pro výpočet vedení!</translation>
+        <translation type="obsolete">Nelze spustit program pro výpočet vedení!</translation>
     </message>
     <message>
-        <location line="+24"/>
         <source>Cannot start library program!</source>
-        <translation>Nelze spustit program pro práci s knihovnami!</translation>
+        <translation type="obsolete">Nelze spustit program pro práci s knihovnami!</translation>
     </message>
     <message>
-        <location line="+68"/>
         <source>Cannot start qucshelp!</source>
-        <translation>Nelze spustit qucs nápovědu!</translation>
+        <translation type="obsolete">Nelze spustit qucs nápovědu!</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+326"/>
         <source>No project open!</source>
         <translation>Není otevřen žádný projekt!</translation>
     </message>
@@ -15453,7 +15454,7 @@ Dialog for Creating Matching Circuit</source>
 Dialog pro vytvoření přizpůsobovací sítě</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+17"/>
         <source>Simulate</source>
         <translation>Simulovat</translation>
     </message>
@@ -15688,12 +15689,12 @@ Informace o programu</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+438"/>
+        <location line="+442"/>
         <source>About Qt</source>
         <translation>O aplikačním prostředí Qt</translation>
     </message>
     <message>
-        <location line="-439"/>
+        <location line="-443"/>
         <source>About Qt...</source>
         <translation>O aplikačním prostředí Qt...</translation>
     </message>
@@ -15736,7 +15737,7 @@ O aplikačním prostředí QT od firmy Trolltech</translation>
         <translation>&amp;Nástroje</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>&amp;Simulation</source>
         <translation>&amp;Simulace</translation>
     </message>
@@ -15786,16 +15787,17 @@ O aplikačním prostředí QT od firmy Trolltech</translation>
     </message>
     <message>
         <location line="+1"/>
+        <location line="+2"/>
         <source>Copyright (C)</source>
         <translation>Copyright (C)</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>by Michael Margraf</source>
         <translation>Michael Margraf</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+6"/>
         <source>Simulator by Stefan Jahn</source>
         <translation>Simulator - Stefan Jahn</translation>
     </message>
@@ -15815,7 +15817,7 @@ O aplikačním prostředí QT od firmy Trolltech</translation>
         <translation>Ozvláštně velký dík - Mike Brinson, za zlepšení na VHDL výstupech</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Translations:</source>
         <translation>Překlady:</translation>
     </message>
@@ -15883,7 +15885,7 @@ O aplikačním prostředí QT od firmy Trolltech</translation>
         <translation type="obsolete">Hledat</translation>
     </message>
     <message>
-        <location line="-830"/>
+        <location line="-841"/>
         <source>Find...</source>
         <translation>Hledat...</translation>
     </message>
@@ -16010,12 +16012,12 @@ Inserts the sceleton of a VHDL entity</source>
 Vloží zákldní konstrukci VHDL entity</translation>
     </message>
     <message>
-        <location line="+563"/>
+        <location line="+574"/>
         <source>Russian by Igor Gorbounov</source>
         <translation>Rusky - Igor Gorbounov</translation>
     </message>
     <message>
-        <location line="-561"/>
+        <location line="-572"/>
         <source>Inserts skeleton of VHDL entity</source>
         <translation>Vloží konstrukci VHDL entity</translation>
     </message>
@@ -16084,12 +16086,11 @@ Vybere všechny diagramové značky v dokumentu</translation>
         <translation type="obsolete">Vyrovnat/rozdělit</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-618"/>
         <source>Cannot start attenuator calculation program!</source>
-        <translation>Nelze spustit podprogram pro výpočet atenuátoru!</translation>
+        <translation type="obsolete">Nelze spustit podprogram pro výpočet atenuátoru!</translation>
     </message>
     <message>
-        <location line="+440"/>
+        <location filename="qucs_actions.cpp" line="-178"/>
         <source>Please open project with subcircuits!</source>
         <translation>Je nutné otevřít projekt s podobvody!</translation>
     </message>
@@ -16114,7 +16115,56 @@ Vybere všechny diagramové značky v dokumentu</translation>
         <translation>Vložit výstupní jméno souboru</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="-680"/>
+        <source>Cannot start text editor! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+56"/>
+        <source>Cannot start filter synthesis program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Cannot start line calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>Cannot start library program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>Cannot start attenuator calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Cannot start resistor color code calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>Cannot start qucshelp! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+460"/>
         <source>Output file already exists!</source>
         <translation>Výstupní soubor již existuje!</translation>
     </message>
@@ -16124,7 +16174,7 @@ Vybere všechny diagramové značky v dokumentu</translation>
         <translation>Přepsat ho?</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-913"/>
+        <location filename="qucs.cpp" line="-915"/>
         <source>Cannot delete file: </source>
         <translation>Nelze smazat soubor: </translation>
     </message>
@@ -16134,7 +16184,7 @@ Vybere všechny diagramové značky v dokumentu</translation>
         <translation>Nelze odstranit adresář: </translation>
     </message>
     <message>
-        <location line="+695"/>
+        <location line="+697"/>
         <source>Printer Error.</source>
         <translation>Chyba při komunikaci s tiskárnou.</translation>
     </message>
@@ -16292,7 +16342,7 @@ Starts attenuator calculation program</source>
 Spustit podprogram pro výpočet atenuátoru</translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+66"/>
         <source>&amp;Dock Window</source>
         <translation>&amp;Zachytit okno</translation>
     </message>
@@ -16316,7 +16366,7 @@ Aktivuje/deaktivuje plovoucí okno prohlížeče</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+135"/>
+        <location line="+136"/>
         <source>&amp;Technical Papers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16358,12 +16408,27 @@ Aktivuje/deaktivuje plovoucí okno prohlížeče</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+157"/>
+        <location line="+151"/>
+        <source>Qucs Team</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>GUI improvements by Gopala Krishna A</source>
         <translation>GUI vylepšení: Gopala Krishna A</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+2"/>
+        <source>Verilog-AMS dynamic loader by Guilherme Brondani Torri</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Portuguese by Luciano Franca, Helio de Sousa, Guilherme Brondani Torri</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Czech by Marek Straka</source>
         <translation>České rozhraní: Marek Straka</translation>
     </message>
@@ -16373,12 +16438,12 @@ Aktivuje/deaktivuje plovoucí okno prohlížeče</translation>
         <translation>Katalánské rozhraní: Antoni Subirats</translation>
     </message>
     <message>
-        <location line="-16"/>
+        <location line="-17"/>
         <source>Verilog-AMS interface by Helene Parruitte</source>
         <translation>Verilog-AMS rozhraní: Helene Parruitte</translation>
     </message>
     <message>
-        <location line="-884"/>
+        <location line="-894"/>
         <source>Center horizontally</source>
         <translation>Vyrovnat vodorovně</translation>
     </message>
@@ -16416,7 +16481,7 @@ Center vertically selected elements</source>
 Vyrovnat svisle vybrané prvky</translation>
     </message>
     <message>
-        <location line="+522"/>
+        <location line="+529"/>
         <source>P&amp;ositioning</source>
         <translation>U&amp;místění</translation>
     </message>
@@ -16437,7 +16502,7 @@ Vyrovnat svisle vybrané prvky</translation>
         <translation type="obsolete">Tisk...</translation>
     </message>
     <message>
-        <location line="-596"/>
+        <location line="-603"/>
         <source>Print Fit to Page</source>
         <translation>Tisk na velikost stránky</translation>
     </message>
@@ -16507,14 +16572,14 @@ Vyrovnat svisle vybrané prvky</translation>
         <translation>Vložit symbol portu</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-2003"/>
-        <location line="+1543"/>
+        <location filename="qucs.cpp" line="-2013"/>
+        <location line="+1553"/>
         <source>Verilog Sources</source>
         <translation>Verilog data</translation>
     </message>
     <message>
-        <location line="-1444"/>
-        <location line="+2377"/>
+        <location line="-1452"/>
+        <location line="+2385"/>
         <source>Verilog</source>
         <translation></translation>
     </message>
@@ -16548,12 +16613,7 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+707"/>
-        <source>Portuguese by Luciano Franca and Helio de Sousa</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+11"/>
+        <location line="+729"/>
         <source>Arabic by Chabane Noureddine</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16563,7 +16623,7 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1585"/>
+        <location filename="qucs.cpp" line="-1587"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16613,18 +16673,18 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-951"/>
-        <location line="+1543"/>
+        <location line="-959"/>
+        <location line="+1553"/>
         <source>Verilog-A Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1443"/>
+        <location line="-1451"/>
         <source>Verilog-A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+794"/>
+        <location line="+800"/>
         <source>Verilog-A source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16639,18 +16699,18 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-963"/>
-        <location line="+1543"/>
+        <location line="-971"/>
+        <location line="+1553"/>
         <source>Octave Scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1448"/>
+        <location line="-1456"/>
         <source>Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-457"/>
+        <location filename="qucs_init.cpp" line="-461"/>
         <source>&amp;Octave Window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16667,18 +16727,17 @@ Shows/hides the Octave dock window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot start resistor color code calculation program!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location line="-74"/>
         <source>Resistor color codes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Starts Qucs resistor color codes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Resistor color codes
 
 Starts standard resistor color code computation program</source>
@@ -18718,7 +18777,7 @@ program pro syntézu filtru
 <context>
     <name>QucsHelp</name>
     <message>
-        <location filename="../qucs-help/qucshelp.cpp" line="+44"/>
+        <location filename="../qucs-help/qucshelp.cpp" line="+50"/>
         <source>Qucs Help System</source>
         <translation>Qucs nápověda</translation>
     </message>
@@ -18731,7 +18790,7 @@ program pro syntézu filtru
         <translation type="obsolete">Zavřít</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+29"/>
         <source>&amp;Quit</source>
         <translation>&amp;Ukončit</translation>
     </message>
@@ -18780,7 +18839,7 @@ Enables/disables the table of contents</source>
 Aktivuje/deaktivuje výpis obsahu</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+40"/>
         <source>&amp;About Qt</source>
         <translation>&amp;O prostředí Qt</translation>
     </message>
@@ -18800,12 +18859,12 @@ Aktivuje/deaktivuje výpis obsahu</translation>
         <translation>&amp;Nápověda</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+5"/>
         <source>Contents</source>
         <translation>Obsah</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Home</source>
         <translation>Domů</translation>
     </message>
@@ -20395,7 +20454,7 @@ Zkopíruje soubory do adresáře projektu</translation>
         <translation type="obsolete">Simulace</translation>
     </message>
     <message>
-        <location line="+245"/>
+        <location line="+262"/>
         <source>OK</source>
         <translation>Hotovo</translation>
     </message>
@@ -20419,12 +20478,12 @@ Zkopíruje soubory do adresáře projektu</translation>
         <translation>Přednastavení</translation>
     </message>
     <message>
-        <location line="-259"/>
+        <location line="-276"/>
         <source>Font (set after reload):</source>
         <translation>Typ písma (aktivováno až po restartu):</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+36"/>
         <source>maximum undo operations:</source>
         <translation>maximální počet undo operací:</translation>
     </message>
@@ -20434,7 +20493,7 @@ Zkopíruje soubory do adresáře projektu</translation>
         <translation>Textový editor:</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Settings</source>
         <translation>Nastavení</translation>
     </message>
@@ -20490,22 +20549,17 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Octave path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="+3"/>
         <source>Qucs Home:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+62"/>
         <source>Locations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+68"/>
+        <location line="+73"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
@@ -20515,7 +20569,7 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
         <translation>Tato koncovka je již registrovaná!</translation>
     </message>
     <message>
-        <location line="-299"/>
+        <location line="-321"/>
         <source>Language (set after reload):</source>
         <translation>Jazyk (bude nastaveno po restartu):</translation>
     </message>
@@ -20581,8 +20635,14 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Portuguese</source>
-        <translation>Portugalština</translation>
+        <source>Portuguese-BR</source>
+        <oldsource>Portuguese</oldsource>
+        <translation type="unfinished">Portugalština</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Portuguese-PT</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -20600,7 +20660,12 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
         <translation>Ruština</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+15"/>
+        <source>Set to qucs, qucsedit or the path to your favorite text editor.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Load documents from future versions </source>
         <translation type="unfinished"></translation>
     </message>
@@ -20645,28 +20710,53 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
         <translation>Atribut</translation>
     </message>
     <message>
-        <location line="+116"/>
+        <location line="+101"/>
+        <source>AdmsXml Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>ASCO Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Octave Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Subcircuit Search Path List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+391"/>
+        <location line="+409"/>
+        <source>Select the admsXml bin directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Select the ASCO bin directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Select the octave bin directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="-27"/>
         <source>Select the home directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+41"/>
         <location line="+19"/>
         <source>Select a directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-621"/>
+        <location line="-663"/>
         <source>Czech</source>
         <translation>Česky</translation>
     </message>
@@ -20676,12 +20766,12 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
         <translation>Katalánsky</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+16"/>
         <source>start wiring when clicking open node:</source>
         <translation>spustit propojení vodiči po kliknutí na &quot;otevřít uzel&quot;:</translation>
     </message>
     <message>
-        <location line="-14"/>
+        <location line="-15"/>
         <source>Arabic</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20691,7 +20781,7 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+75"/>
         <source>Directive</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21364,18 +21454,20 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
         <translation>Verze:</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="+263"/>
-        <location line="+21"/>
+        <location filename="schematic_file.cpp" line="+266"/>
+        <location line="+22"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-20"/>
-        <source>Program not found: %1</source>
+        <location line="-21"/>
+        <source>Program admsXml not found: %1
+
+Set the admsXml location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>Status</source>
         <translation type="unfinished">status</translation>
     </message>
@@ -21385,12 +21477,12 @@ soubory automaticky otevírat s odpovídajícími programy.</translation>
         <translation>CHYBA: Nelze vytvořit knihovnu v souboru &quot;%s&quot;.</translation>
     </message>
     <message>
-        <location filename="schematic.cpp" line="+1287"/>
+        <location filename="schematic.cpp" line="+1299"/>
         <source>generic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1200"/>
+        <location line="-1212"/>
         <source>Edit Text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21703,7 +21795,7 @@ jméně je hledaný řetězec. Do hledání budou zahrnuty všechny knihovny.</t
         <translation>Přerušit simulaci</translation>
     </message>
     <message>
-        <location line="+529"/>
+        <location line="+546"/>
         <source>Close window</source>
         <translation>Zavřít okno</translation>
     </message>
@@ -21732,12 +21824,12 @@ Abgebrochen.</translation>
 </translation>
     </message>
     <message>
-        <location line="-517"/>
+        <location line="-534"/>
         <source>ERROR: Simulator is still running!</source>
         <translation>CHYBA: Simulátor stále běží!</translation>
     </message>
     <message>
-        <location line="+426"/>
+        <location line="+443"/>
         <source>ERROR: Cannot start simulator!</source>
         <translation>CHYBA: Simulátor nelze spustit!</translation>
     </message>
@@ -21792,7 +21884,7 @@ Chyby:
 </translation>
     </message>
     <message>
-        <location line="-417"/>
+        <location line="-434"/>
         <source>ERROR: Cannot write netlist file!</source>
         <translation>CHYBA: Soubor s netlistem nelze uložit!</translation>
     </message>
@@ -21826,7 +21918,7 @@ Chyby:
     </message>
     <message>
         <location line="+215"/>
-        <location line="+94"/>
+        <location line="+101"/>
         <source>done.</source>
         <translation>hotovo.</translation>
     </message>
@@ -21843,7 +21935,7 @@ Chyby:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+81"/>
         <source>ERROR: Program not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21882,7 +21974,7 @@ Chyby:
 -------</translation>
     </message>
     <message>
-        <location line="-302"/>
+        <location line="-315"/>
         <location line="+7"/>
         <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
@@ -21893,7 +21985,7 @@ Chyby:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-236"/>
+        <location line="-240"/>
         <source>ERROR: Cannot simulate a text file!</source>
         <translation type="unfinished"></translation>
     </message>

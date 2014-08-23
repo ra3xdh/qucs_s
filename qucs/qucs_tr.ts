@@ -2675,8 +2675,8 @@ olmalı fakat şu anda %1 !</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="schematic_file.cpp" line="+856"/>
-        <location filename="../qucs-help/main.cpp" line="+99"/>
+        <location filename="schematic_file.cpp" line="+860"/>
+        <location filename="../qucs-help/main.cpp" line="+104"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
@@ -2693,15 +2693,15 @@ olmalı fakat şu anda %1 !</translation>
     </message>
     <message>
         <location filename="octave_window.cpp" line="-31"/>
-        <location filename="qucs_actions.cpp" line="+1276"/>
-        <location filename="schematic_file.cpp" line="-743"/>
+        <location filename="qucs_actions.cpp" line="+1365"/>
+        <location filename="schematic_file.cpp" line="-747"/>
         <location line="+18"/>
         <location line="+21"/>
         <location line="+24"/>
         <location line="+17"/>
         <location line="+72"/>
         <location line="+78"/>
-        <location line="+185"/>
+        <location line="+189"/>
         <location line="+5"/>
         <location line="+37"/>
         <location line="+5"/>
@@ -2719,7 +2719,7 @@ olmalı fakat şu anda %1 !</translation>
         <location line="+10"/>
         <location line="+20"/>
         <location line="+56"/>
-        <location filename="components/component.cpp" line="+1531"/>
+        <location filename="components/component.cpp" line="+1538"/>
         <location line="+20"/>
         <location line="+8"/>
         <location filename="components/vacomponent.cpp" line="+298"/>
@@ -2734,15 +2734,15 @@ Set the Octave location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-788"/>
-        <location line="+703"/>
+        <location filename="schematic_file.cpp" line="-792"/>
+        <location line="+707"/>
         <source>Format Error:
 &apos;Painting&apos; field is not closed!</source>
         <translation>Biçim Hatası:
 &apos;Boyama-Painting&apos; alanı kapalı değil!</translation>
     </message>
     <message>
-        <location line="-685"/>
+        <location line="-689"/>
         <source>Wrong document version: </source>
         <translation>Belge sürümü yanlış:</translation>
     </message>
@@ -2765,7 +2765,7 @@ Bilinmeyen alan!</translation>
         <translation>Belge kaydedilemiyor!</translation>
     </message>
     <message>
-        <location line="+185"/>
+        <location line="+189"/>
         <location line="+5"/>
         <source>Format Error:
 Wrong property field limiter!</source>
@@ -2978,7 +2978,7 @@ Bilinmeyen alan!</translation>
         <translation>Hat Özelliklerini Değiştir</translation>
     </message>
     <message>
-        <location filename="paintings/graphictext.cpp" line="+124"/>
+        <location filename="paintings/graphictext.cpp" line="+131"/>
         <source>Text</source>
         <translation>Metin</translation>
     </message>
@@ -2998,7 +2998,7 @@ Bilinmeyen alan!</translation>
         <translation>Dik dörtgen özelliklerini değiştir</translation>
     </message>
     <message>
-        <location filename="diagrams/curvediagram.cpp" line="+248"/>
+        <location filename="diagrams/curvediagram.cpp" line="+245"/>
         <source>Locus Curve</source>
         <translation>Gezenek (Lokus) Eğrisi</translation>
     </message>
@@ -3009,12 +3009,12 @@ Bilinmeyen alan!</translation>
         <translation>geçersiz</translation>
     </message>
     <message>
-        <location filename="diagrams/polardiagram.cpp" line="+101"/>
+        <location filename="diagrams/polardiagram.cpp" line="+98"/>
         <source>Polar</source>
         <translation>Kutupsal</translation>
     </message>
     <message>
-        <location filename="diagrams/psdiagram.cpp" line="+128"/>
+        <location filename="diagrams/psdiagram.cpp" line="+125"/>
         <source>Polar-Smith Combi</source>
         <translation>Kutupsal-Smith Bilesimi</translation>
     </message>
@@ -3024,17 +3024,17 @@ Bilinmeyen alan!</translation>
         <translation>Smith-Kutupsal Bilesimi</translation>
     </message>
     <message>
-        <location filename="diagrams/rect3ddiagram.cpp" line="+1143"/>
+        <location filename="diagrams/rect3ddiagram.cpp" line="+1140"/>
         <source>3D-Cartesian</source>
         <translation>3B-Kartezyen</translation>
     </message>
     <message>
-        <location filename="diagrams/rectdiagram.cpp" line="+246"/>
+        <location filename="diagrams/rectdiagram.cpp" line="+243"/>
         <source>Cartesian</source>
         <translation>Kartezyen</translation>
     </message>
     <message>
-        <location filename="diagrams/smithdiagram.cpp" line="+111"/>
+        <location filename="diagrams/smithdiagram.cpp" line="+108"/>
         <source>Smith Chart</source>
         <translation>Smith Çartı</translation>
     </message>
@@ -5643,7 +5643,7 @@ Kullanım:  qucsedit [-r] kütük
         <translation>RS-TetikDevresi</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="+527"/>
+        <location filename="main.cpp" line="+529"/>
         <location line="+63"/>
         <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
         <translation>Hata: &quot;%1&quot; de zaman biçimi yanlış. Birimi olan artı değerlikli sayı kulanın</translation>
@@ -5868,7 +5868,7 @@ Kullanım:  qucsedit [-r] kütük
         <translation>&quot;kapalı&quot; durumunun Ohm cinsinden direnci</translation>
     </message>
     <message>
-        <location filename="mouseactions.cpp" line="+827"/>
+        <location filename="mouseactions.cpp" line="+742"/>
         <source>Edit Properties</source>
         <translation>Özellikleri Düzenle</translation>
     </message>
@@ -12263,13 +12263,13 @@ Kullanım:  qucsedit [-r] kütük
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-1434"/>
+        <location filename="schematic_file.cpp" line="-1438"/>
         <source>Cannot save C++ file &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="module.cpp" line="+117"/>
-        <location filename="qucs.cpp" line="+647"/>
+        <location filename="qucs.cpp" line="+655"/>
         <location line="+106"/>
         <location filename="qucs_actions.cpp" line="+153"/>
         <source>verilog-a user devices</source>
@@ -12328,14 +12328,14 @@ Kullanım:  qucsedit [-r] kütük
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="+1706"/>
+        <location filename="qucs.cpp" line="+1708"/>
         <source>diagrams</source>
         <translation type="unfinished">çizgeler</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="-1856"/>
+        <location filename="qucs.cpp" line="-1858"/>
         <location line="+30"/>
         <location line="+3"/>
         <location line="+107"/>
@@ -12809,7 +12809,7 @@ Overwrite ?</source>
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="qucs.cpp" line="-642"/>
+        <location filename="qucs.cpp" line="-650"/>
         <source>Schematic</source>
         <translation>Tasarım</translation>
     </message>
@@ -12825,13 +12825,13 @@ Overwrite ?</source>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+1544"/>
+        <location line="+1554"/>
         <location filename="qucs_actions.cpp" line="-172"/>
         <source>Any File</source>
         <translation>Herhangi Bir Kütük</translation>
     </message>
     <message>
-        <location line="-1392"/>
+        <location line="-1394"/>
         <source>New</source>
         <translation>Yeni</translation>
     </message>
@@ -12870,7 +12870,7 @@ Overwrite ?</source>
         <translation>Not</translation>
     </message>
     <message>
-        <location line="-1182"/>
+        <location line="-1188"/>
         <source>Others</source>
         <translation>Diğerleri</translation>
     </message>
@@ -12886,12 +12886,12 @@ Overwrite ?</source>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+2365"/>
+        <location line="+2373"/>
         <source>Schematics</source>
         <translation>Tasarılar</translation>
     </message>
     <message>
-        <location line="-2274"/>
+        <location line="-2276"/>
         <source>Content</source>
         <translation>İçerik</translation>
     </message>
@@ -12967,7 +12967,7 @@ Overwrite ?</source>
         <location line="+54"/>
         <location line="+31"/>
         <location line="+235"/>
-        <location line="+1137"/>
+        <location line="+1139"/>
         <location line="+28"/>
         <location line="+77"/>
         <location line="+316"/>
@@ -12975,12 +12975,13 @@ Overwrite ?</source>
         <location line="+7"/>
         <location line="+7"/>
         <location line="+6"/>
-        <location filename="qucs_actions.cpp" line="-609"/>
-        <location line="+45"/>
-        <location line="+24"/>
-        <location line="+24"/>
-        <location line="+32"/>
-        <location line="+37"/>
+        <location filename="qucs_actions.cpp" line="-681"/>
+        <location line="+55"/>
+        <location line="+31"/>
+        <location line="+33"/>
+        <location line="+40"/>
+        <location line="+31"/>
+        <location line="+44"/>
         <location line="+46"/>
         <location line="+32"/>
         <location line="+16"/>
@@ -12994,7 +12995,7 @@ Overwrite ?</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location line="-1952"/>
+        <location line="-1954"/>
         <source>Cannot rename an open file!</source>
         <translation>Açık kütük yeniden adlandırılamaz!</translation>
     </message>
@@ -13024,34 +13025,34 @@ Overwrite ?</source>
         <location line="+77"/>
         <location line="+47"/>
         <location line="+329"/>
-        <location line="+244"/>
+        <location line="+246"/>
         <location line="+630"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location line="-1326"/>
+        <location line="-1328"/>
         <source>This will delete the file permanently! Continue ?</source>
         <translation>Kütük kalıcı olarak silinecek! Devam ?</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+77"/>
-        <location line="+621"/>
+        <location line="+623"/>
         <location line="+454"/>
         <source>No</source>
         <translation>Hayır</translation>
     </message>
     <message>
-        <location line="-1152"/>
+        <location line="-1154"/>
         <location line="+77"/>
-        <location line="+621"/>
+        <location line="+623"/>
         <location line="+454"/>
         <source>Yes</source>
         <translation>Evet</translation>
     </message>
     <message>
-        <location line="-1147"/>
+        <location line="-1149"/>
         <source>Cannot delete schematic: </source>
         <translation>Tasarı silinemiyor:</translation>
     </message>
@@ -13075,7 +13076,7 @@ Overwrite ?</source>
         <translation>Çalışma dizini oluşturulamıyor !</translation>
     </message>
     <message>
-        <location line="+710"/>
+        <location line="+712"/>
         <source>Closing Qucs document</source>
         <translation>Qucs belgesi kapatılıyor</translation>
     </message>
@@ -13105,15 +13106,15 @@ Kapatmadan önce kaydetmek ister misiniz?</translation>
         <location line="+37"/>
         <location line="+45"/>
         <location line="+22"/>
-        <location filename="qucs_actions.cpp" line="-771"/>
-        <location line="+311"/>
-        <location filename="qucs_init.cpp" line="+954"/>
+        <location filename="qucs_actions.cpp" line="-857"/>
+        <location line="+397"/>
+        <location filename="qucs_init.cpp" line="+942"/>
         <source>Ready.</source>
         <translation>Hazır.</translation>
     </message>
     <message>
         <location line="-648"/>
-        <location filename="qucs_actions.cpp" line="-320"/>
+        <location filename="qucs_actions.cpp" line="-406"/>
         <source>Opening file...</source>
         <translation>Kütük açılıyor...</translation>
     </message>
@@ -13128,19 +13129,19 @@ Kapatmadan önce kaydetmek ister misiniz?</translation>
         <translation>Açma işlemi iptal edildi</translation>
     </message>
     <message>
-        <location line="-743"/>
+        <location line="-745"/>
         <location line="+429"/>
-        <location line="+770"/>
+        <location line="+772"/>
         <source>-port</source>
         <translation>-uç</translation>
     </message>
     <message>
-        <location line="-1218"/>
+        <location line="-1220"/>
         <source>Insert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+798"/>
+        <location line="+800"/>
         <source>Saving file...</source>
         <translation>Kütük kaydediliyor...</translation>
     </message>
@@ -13189,32 +13190,32 @@ Kapatmadan önce kaydetmek ister misiniz?</translation>
         <translation type="obsolete">görünecek içerik gözatıcısında! Devam?</translation>
     </message>
     <message>
-        <location line="-1142"/>
+        <location line="-1144"/>
         <location line="+465"/>
         <location line="+211"/>
         <location line="+44"/>
         <location line="+17"/>
         <location line="+14"/>
         <location line="+16"/>
-        <location line="+35"/>
+        <location line="+37"/>
         <location line="+211"/>
-        <location filename="qucs_actions.cpp" line="-145"/>
+        <location filename="qucs_actions.cpp" line="-149"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+38"/>
         <location line="+14"/>
-        <location line="+709"/>
+        <location line="+799"/>
         <source>Info</source>
         <translation>Bilgi</translation>
     </message>
     <message>
-        <location line="-375"/>
+        <location line="-377"/>
         <source>Content of </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+376"/>
+        <location line="+378"/>
         <source>Cannot overwrite an open document</source>
         <translation>Açık bir belge üzerine yazılamaz</translation>
     </message>
@@ -13234,8 +13235,8 @@ Kapatmadan önce kaydetmek ister misiniz?</translation>
         <translation>Kütük kapatılıyor...</translation>
     </message>
     <message>
-        <location line="-933"/>
-        <location line="+939"/>
+        <location line="-935"/>
+        <location line="+941"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>Belge kaydedilmemiş değişiklikler içeriyor!
@@ -13247,19 +13248,19 @@ Kapatmadan önce kaydetmek ister misiniz?</translation>
         <translation>Kapatmadan önce değişiklikleri kaydetmek istiyor musunuz ?</translation>
     </message>
     <message>
-        <location line="-938"/>
-        <location line="+939"/>
-        <location filename="qucs_init.cpp" line="-877"/>
+        <location line="-940"/>
+        <location line="+941"/>
+        <location filename="qucs_init.cpp" line="-885"/>
         <source>&amp;Save</source>
         <translation>&amp;Kaydet</translation>
     </message>
     <message>
-        <location line="-1709"/>
+        <location line="-1719"/>
         <source>Spice Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+232"/>
+        <location line="+240"/>
         <source>Manage Libraries</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13308,7 +13309,12 @@ Kapatmadan önce kaydetmek ister misiniz?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+1"/>
+        <source>&amp;Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>Copy file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13328,7 +13334,7 @@ Kapatmadan önce kaydetmek ister misiniz?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+735"/>
+        <location line="+737"/>
         <source>Qucs Netlist</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13427,7 +13433,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1935"/>
+        <location line="-1937"/>
         <location line="+51"/>
         <source> - Project: </source>
         <translation>- Tasarım:</translation>
@@ -13457,12 +13463,12 @@ Use PNG, JPEG or SVG graphics!</source>
     </message>
     <message>
         <location line="+211"/>
-        <location line="+126"/>
+        <location line="+128"/>
         <source>No project is selected !</source>
         <translation>Seçili Tasarım yok !</translation>
     </message>
     <message>
-        <location line="-51"/>
+        <location line="-53"/>
         <source>Cannot delete an open project !</source>
         <translation>Açık bir tasarım silinemez !</translation>
     </message>
@@ -13560,19 +13566,19 @@ Edits the schematic</source>
 Tasarıyı düzenler/değiştirir</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1351"/>
-        <location line="+1543"/>
+        <location filename="qucs.cpp" line="-1359"/>
+        <location line="+1553"/>
         <source>VHDL Sources</source>
         <translation>VHDL Kaynakları</translation>
     </message>
     <message>
-        <location line="-1439"/>
-        <location line="+2371"/>
+        <location line="-1447"/>
+        <location line="+2379"/>
         <source>VHDL</source>
         <translation>VHDL</translation>
     </message>
     <message>
-        <location line="-2297"/>
+        <location line="-2299"/>
         <source>content of project directory</source>
         <translation>Tasarı dizininin içeriği</translation>
     </message>
@@ -13594,7 +13600,7 @@ Tasarıyı düzenler/değiştirir</translation>
         <translation type="obsolete">VHDL kütüğü silinemiyor: </translation>
     </message>
     <message>
-        <location line="+1204"/>
+        <location line="+1206"/>
         <source>Creating new text editor...</source>
         <translation>Yeni metin düzenleyici oluşturuluyor...</translation>
     </message>
@@ -13628,7 +13634,7 @@ Tasarıyı düzenler/değiştirir</translation>
         <translation>Yanlış dayanak!</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-804"/>
+        <location filename="qucs_actions.cpp" line="-894"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
@@ -13638,37 +13644,32 @@ Tasarıyı düzenler/değiştirir</translation>
         <translation>En az iki eleman seçilmeli !</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+59"/>
         <source>Opening aborted, file not found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
         <source>Cannot start text editor!</source>
-        <translation>Metin düzenleyici başlatılamıyor!</translation>
+        <translation type="obsolete">Metin düzenleyici başlatılamıyor!</translation>
     </message>
     <message>
-        <location line="+46"/>
         <source>Cannot start filter synthesis program!</source>
-        <translation>Süzgeç tasarım yazılımı başlatılamıyor!</translation>
+        <translation type="obsolete">Süzgeç tasarım yazılımı başlatılamıyor!</translation>
     </message>
     <message>
-        <location line="+24"/>
         <source>Cannot start line calculation program!</source>
-        <translation>iletim hattı hesaplayıcı uygulama başlatılamıyor!</translation>
+        <translation type="obsolete">iletim hattı hesaplayıcı uygulama başlatılamıyor!</translation>
     </message>
     <message>
-        <location line="+24"/>
         <source>Cannot start library program!</source>
-        <translation>Kütüphane yazılımı başlatılamıyor!</translation>
+        <translation type="obsolete">Kütüphane yazılımı başlatılamıyor!</translation>
     </message>
     <message>
-        <location line="+68"/>
         <source>Cannot start qucshelp!</source>
-        <translation>Qucs yardım (qucshelp) açılamıyor!</translation>
+        <translation type="obsolete">Qucs yardım (qucshelp) açılamıyor!</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+326"/>
         <source>No project open!</source>
         <translation>Açık tasarım yok!</translation>
     </message>
@@ -14842,7 +14843,7 @@ Dialog for Creating Matching Circuit</source>
 Karşılaştırma Devresi Oluşturma İletişim Penceresi</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+17"/>
         <source>Simulate</source>
         <translation>Benzetimi Başlat</translation>
     </message>
@@ -15073,12 +15074,12 @@ Uygulama hakkında</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+438"/>
+        <location line="+442"/>
         <source>About Qt</source>
         <translation>Qt Hakkında</translation>
     </message>
     <message>
-        <location line="-439"/>
+        <location line="-443"/>
         <source>About Qt...</source>
         <translation>Qt Hakkında...</translation>
     </message>
@@ -15121,7 +15122,7 @@ Trolltech tarafından Qt hakkında</translation>
         <translation>&amp;Araçlar</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>&amp;Simulation</source>
         <translation>&amp;Benzetim</translation>
     </message>
@@ -15171,16 +15172,17 @@ Trolltech tarafından Qt hakkında</translation>
     </message>
     <message>
         <location line="+1"/>
+        <location line="+2"/>
         <source>Copyright (C)</source>
         <translation>Çoğaltma hakkı (Ç)</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>by Michael Margraf</source>
         <translation>by Michael Margraf</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+6"/>
         <source>Simulator by Stefan Jahn</source>
         <translation>Benzetici, Stefan Jahn tarafından</translation>
     </message>
@@ -15200,7 +15202,7 @@ Trolltech tarafından Qt hakkında</translation>
         <translation>Mike Brinson&apos; a çok teşekkürler, VHDL çıktısını düzelttiği için</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Translations:</source>
         <translation>Çevirmenler:</translation>
     </message>
@@ -15264,7 +15266,7 @@ Trolltech tarafından Qt hakkında</translation>
         <translation>Macarca, Jozsef Bus tarafından</translation>
     </message>
     <message>
-        <location line="-830"/>
+        <location line="-841"/>
         <source>Find...</source>
         <translation>Ara...</translation>
     </message>
@@ -15411,12 +15413,12 @@ Seçme durumunu etkinleştirir</translation>
         <translation>VHDL varlığı</translation>
     </message>
     <message>
-        <location line="+149"/>
+        <location line="+156"/>
         <source>Open Recent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+135"/>
+        <location line="+136"/>
         <source>&amp;Technical Papers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15458,12 +15460,27 @@ Seçme durumunu etkinleştirir</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+172"/>
+        <location line="+151"/>
+        <source>Qucs Team</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Verilog-AMS dynamic loader by Guilherme Brondani Torri</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Portuguese by Luciano Franca, Helio de Sousa, Guilherme Brondani Torri</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Russian by Igor Gorbounov</source>
         <translation>Rusça, Igor Gorbounov tarafından</translation>
     </message>
     <message>
-        <location line="-561"/>
+        <location line="-572"/>
         <source>Inserts skeleton of VHDL entity</source>
         <translation>Bir &quot;VHDL varlığı&quot; iskeleti koyar</translation>
     </message>
@@ -15557,7 +15574,7 @@ Create Library from Subcircuits</source>
 Alt devrelerden bir kütüphane olusturur</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-913"/>
+        <location filename="qucs.cpp" line="-915"/>
         <source>Cannot delete file: </source>
         <translation>Kütük silinemiyor: </translation>
     </message>
@@ -15587,7 +15604,56 @@ Alt devrelerden bir kütüphane olusturur</translation>
         <translation>Çıktı Kütügünün Adını Girin</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="-680"/>
+        <source>Cannot start text editor! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+56"/>
+        <source>Cannot start filter synthesis program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Cannot start line calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>Cannot start library program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>Cannot start attenuator calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Cannot start resistor color code calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>Cannot start qucshelp! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+460"/>
         <source>Output file already exists!</source>
         <translation>Çıktı kütügü zaten var!</translation>
     </message>
@@ -15684,7 +15750,7 @@ Convert graph data to CSV file</source>
 Grafik verisini CVS kütügüne çevirir</translation>
     </message>
     <message>
-        <location line="+248"/>
+        <location line="+255"/>
         <source>&amp;Dock Window</source>
         <translation>&amp;Gözlem Penceresi</translation>
     </message>
@@ -15703,17 +15769,16 @@ Enables/disables the browse dock window</source>
 Gözlem Penceresini açar/kapar</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="+695"/>
+        <location filename="qucs.cpp" line="+697"/>
         <source>Printer Error.</source>
         <translation>Yazıcı Hatası.</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-496"/>
         <source>Cannot start attenuator calculation program!</source>
-        <translation>Zayıflatıcı hesaplayıcı uygulama başlatılamıyor!</translation>
+        <translation type="obsolete">Zayıflatıcı hesaplayıcı uygulama başlatılamıyor!</translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-67"/>
+        <location filename="qucs_init.cpp" line="-74"/>
         <source>Attenuator synthesis</source>
         <translation>Zayıflatıcı olusturma</translation>
     </message>
@@ -15736,12 +15801,12 @@ Zayıflatıcı olusturma yazılımını baslatır</translation>
         <translation type="obsolete">Seçili bileşeni 90 derece dönürür</translation>
     </message>
     <message>
-        <location line="+504"/>
+        <location line="+514"/>
         <source>GUI improvements by Gopala Krishna A</source>
         <translation>GUI ile ilgili iyileştirme Gopala Krishna A. tarafından yapıldı</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>Czech by Marek Straka</source>
         <translation>Çekçe Marek Straka tarafından yapıldı</translation>
     </message>
@@ -15751,12 +15816,12 @@ Zayıflatıcı olusturma yazılımını baslatır</translation>
         <translation>Katalan Antoni Subirats tarafından yapıldı</translation>
     </message>
     <message>
-        <location line="-16"/>
+        <location line="-17"/>
         <source>Verilog-AMS interface by Helene Parruitte</source>
         <translation>Verilog-AMS arayüzü Helene Parruitte tarafından yapıldı</translation>
     </message>
     <message>
-        <location line="-884"/>
+        <location line="-894"/>
         <source>Center horizontally</source>
         <translation>Yatay ortala</translation>
     </message>
@@ -15794,12 +15859,12 @@ Center vertically selected elements</source>
 Seçili bileşenleri dikey olarak ortala</translation>
     </message>
     <message>
-        <location line="+522"/>
+        <location line="+529"/>
         <source>P&amp;ositioning</source>
         <translation>&amp;Hizalama</translation>
     </message>
     <message>
-        <location line="-596"/>
+        <location line="-603"/>
         <source>Print Fit to Page</source>
         <translation>Sayfaya Sığdırarak Yazdır</translation>
     </message>
@@ -15889,14 +15954,14 @@ Seçili bileşenleri dikey olarak ortala</translation>
         <translation type="obsolete">Yazdır...</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-2003"/>
-        <location line="+1543"/>
+        <location filename="qucs.cpp" line="-2013"/>
+        <location line="+1553"/>
         <source>Verilog Sources</source>
         <translation>Verilog Kaynakları</translation>
     </message>
     <message>
-        <location line="-1444"/>
-        <location line="+2377"/>
+        <location line="-1452"/>
+        <location line="+2385"/>
         <source>Verilog</source>
         <translation>Verilog</translation>
     </message>
@@ -15930,12 +15995,7 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+707"/>
-        <source>Portuguese by Luciano Franca and Helio de Sousa</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+11"/>
+        <location line="+729"/>
         <source>Arabic by Chabane Noureddine</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15945,7 +16005,7 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1585"/>
+        <location filename="qucs.cpp" line="-1587"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15995,18 +16055,18 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-951"/>
-        <location line="+1543"/>
+        <location line="-959"/>
+        <location line="+1553"/>
         <source>Verilog-A Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1443"/>
+        <location line="-1451"/>
         <source>Verilog-A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+794"/>
+        <location line="+800"/>
         <source>Verilog-A source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16021,18 +16081,18 @@ Convert data file to various file formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-963"/>
-        <location line="+1543"/>
+        <location line="-971"/>
+        <location line="+1553"/>
         <source>Octave Scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1448"/>
+        <location line="-1456"/>
         <source>Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-457"/>
+        <location filename="qucs_init.cpp" line="-461"/>
         <source>&amp;Octave Window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16049,18 +16109,17 @@ Shows/hides the Octave dock window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot start resistor color code calculation program!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location line="-74"/>
         <source>Resistor color codes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Starts Qucs resistor color codes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Resistor color codes
 
 Starts standard resistor color code computation program</source>
@@ -16552,7 +16611,7 @@ Süzgeç tasarım yazılımı
 <context>
     <name>QucsHelp</name>
     <message>
-        <location filename="../qucs-help/qucshelp.cpp" line="+44"/>
+        <location filename="../qucs-help/qucshelp.cpp" line="+50"/>
         <source>Qucs Help System</source>
         <translation>Qucs Yardım Sistemi</translation>
     </message>
@@ -16565,7 +16624,7 @@ Süzgeç tasarım yazılımı
         <translation type="obsolete">Kapat</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+29"/>
         <source>&amp;Quit</source>
         <translation>&amp;Çıkış</translation>
     </message>
@@ -16614,7 +16673,7 @@ Enables/disables the table of contents</source>
 İçindekileri göster/gösterme</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+40"/>
         <source>&amp;About Qt</source>
         <translation>&amp;Qt hakkında</translation>
     </message>
@@ -16634,12 +16693,12 @@ Enables/disables the table of contents</source>
         <translation>&amp;Yardım</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+5"/>
         <source>Contents</source>
         <translation>İçindekiler</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Home</source>
         <translation>Ev</translation>
     </message>
@@ -18112,7 +18171,12 @@ Trolltech tarafından Qt hakkında</translation>
         <translation>Belge Ardalan Rengi:</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+20"/>
+        <source>Portuguese-PT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>maximum undo operations:</source>
         <translation>azami işlem geri alma:</translation>
     </message>
@@ -18122,7 +18186,12 @@ Trolltech tarafından Qt hakkında</translation>
         <translation>metin düzenleyici:</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+2"/>
+        <source>Set to qucs, qucsedit or the path to your favorite text editor.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Load documents from future versions </source>
         <translation type="unfinished"></translation>
     </message>
@@ -18179,17 +18248,27 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Octave path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="+3"/>
         <source>Qucs Home:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+7"/>
+        <source>AdmsXml Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>ASCO Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Octave Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Subcircuit Search Path List</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18219,7 +18298,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation>Varsayılan Değerler</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+54"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
@@ -18229,23 +18308,33 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation>Bu ek zaten kayıtlı!</translation>
     </message>
     <message>
-        <location line="+297"/>
+        <location line="+310"/>
+        <source>Select the admsXml bin directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Select the ASCO bin directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Select the octave bin directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="-27"/>
         <source>Select the home directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+41"/>
         <location line="+19"/>
         <source>Select a directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-639"/>
+        <location line="-682"/>
         <source>Language (set after reload):</source>
         <translation>Dil (tekrar yüklemeden sonra etkinleşmek üzere):</translation>
     </message>
@@ -18305,22 +18394,23 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation>İsveççe</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Turkish</source>
         <translation>Türkçe</translation>
     </message>
     <message>
-        <location line="-3"/>
+        <location line="-4"/>
         <source>Hungarian</source>
         <translation>Macarca</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Portuguese</source>
-        <translation>Portekizce</translation>
+        <source>Portuguese-BR</source>
+        <oldsource>Portuguese</oldsource>
+        <translation type="unfinished">Portekizce</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Ukrainian</source>
         <translation>Ukraynaca</translation>
     </message>
@@ -18330,7 +18420,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation>Rusça</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+35"/>
         <source>Colors for Syntax Highlighting:</source>
         <translation>Metin Renklendirmesi için Renkler:</translation>
     </message>
@@ -18374,7 +18464,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation type="obsolete">VHDL metin düzenleyici</translation>
     </message>
     <message>
-        <location line="-71"/>
+        <location line="-72"/>
         <source>Czech</source>
         <translation>Çekçe</translation>
     </message>
@@ -18384,12 +18474,12 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation>Katalan</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+16"/>
         <source>start wiring when clicking open node:</source>
         <translation>açık bir düğüm tıklandığında bağlantı teli döşemeye başla:</translation>
     </message>
     <message>
-        <location line="-14"/>
+        <location line="-15"/>
         <source>Arabic</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18399,7 +18489,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+75"/>
         <source>Directive</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19063,18 +19153,20 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation>Düzeltme:</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="+263"/>
-        <location line="+21"/>
+        <location filename="schematic_file.cpp" line="+266"/>
+        <location line="+22"/>
         <source>Error</source>
         <translation type="unfinished">Hata</translation>
     </message>
     <message>
-        <location line="-20"/>
-        <source>Program not found: %1</source>
+        <location line="-21"/>
+        <source>Program admsXml not found: %1
+
+Set the admsXml location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19084,12 +19176,12 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation>HATA: &quot;%s&quot; kütüphanesi oluşturulamıyor.</translation>
     </message>
     <message>
-        <location filename="schematic.cpp" line="+1287"/>
+        <location filename="schematic.cpp" line="+1299"/>
         <source>generic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1200"/>
+        <location line="-1212"/>
         <source>Edit Text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19447,7 +19539,7 @@ Bütün kütüphaneler aranır.</translation>
 </translation>
     </message>
     <message>
-        <location line="+323"/>
+        <location line="+340"/>
         <source>ERROR: Cannot start simulator!</source>
         <translation>HATA: Benzetici başlatılamıyor!</translation>
     </message>
@@ -19511,7 +19603,7 @@ Hatalar:
         <translation type="obsolete">HATA: %1 çoğaltılamıyor !</translation>
     </message>
     <message>
-        <location line="-434"/>
+        <location line="-451"/>
         <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
         <translation>HATA: SPICE kütügü &quot;%1&quot; açılamıyor.</translation>
     </message>
@@ -19522,7 +19614,7 @@ Hatalar:
     </message>
     <message>
         <location line="+215"/>
-        <location line="+94"/>
+        <location line="+101"/>
         <source>done.</source>
         <translation>bitti.</translation>
     </message>
@@ -19539,7 +19631,7 @@ Hatalar:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+81"/>
         <source>ERROR: Program not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19578,7 +19670,7 @@ Hatalar:
 --------</translation>
     </message>
     <message>
-        <location line="-302"/>
+        <location line="-315"/>
         <location line="+7"/>
         <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
@@ -19589,7 +19681,7 @@ Hatalar:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-236"/>
+        <location line="-240"/>
         <source>ERROR: Cannot simulate a text file!</source>
         <translation type="unfinished"></translation>
     </message>

@@ -2596,8 +2596,8 @@ but is %1 !</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="schematic_file.cpp" line="+856"/>
-        <location filename="../qucs-help/main.cpp" line="+99"/>
+        <location filename="schematic_file.cpp" line="+860"/>
+        <location filename="../qucs-help/main.cpp" line="+104"/>
         <source>Warning</source>
         <translation>Ескерту</translation>
     </message>
@@ -2607,13 +2607,13 @@ but is %1 !</source>
         <translation>Реттемелерді сақтау мүмкін емес !</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="+527"/>
+        <location filename="main.cpp" line="+529"/>
         <location line="+63"/>
         <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
         <translation>Қате: Уақыттың пішімі белгісіз &quot;%1&quot;. Өлшем бірліктермен қоса оң сандарды қолданыңыз</translation>
     </message>
     <message>
-        <location filename="mouseactions.cpp" line="+827"/>
+        <location filename="mouseactions.cpp" line="+742"/>
         <source>Edit Properties</source>
         <translation>Қасиеттерін Өзгерту</translation>
     </message>
@@ -2651,15 +2651,15 @@ but is %1 !</source>
     </message>
     <message>
         <location filename="octave_window.cpp" line="-31"/>
-        <location filename="qucs_actions.cpp" line="+1276"/>
-        <location filename="schematic_file.cpp" line="-743"/>
+        <location filename="qucs_actions.cpp" line="+1365"/>
+        <location filename="schematic_file.cpp" line="-747"/>
         <location line="+18"/>
         <location line="+21"/>
         <location line="+24"/>
         <location line="+17"/>
         <location line="+72"/>
         <location line="+78"/>
-        <location line="+185"/>
+        <location line="+189"/>
         <location line="+5"/>
         <location line="+37"/>
         <location line="+5"/>
@@ -2677,7 +2677,7 @@ but is %1 !</source>
         <location line="+10"/>
         <location line="+20"/>
         <location line="+56"/>
-        <location filename="components/component.cpp" line="+1531"/>
+        <location filename="components/component.cpp" line="+1538"/>
         <location line="+20"/>
         <location line="+8"/>
         <location filename="components/vacomponent.cpp" line="+298"/>
@@ -2703,15 +2703,15 @@ Set the Octave location on the application settings.</source>
         <translation>аты жоқ</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-788"/>
-        <location line="+703"/>
+        <location filename="schematic_file.cpp" line="-792"/>
+        <location line="+707"/>
         <source>Format Error:
 &apos;Painting&apos; field is not closed!</source>
         <translation>Пішімде қате бар:
 &apos;Painting&apos; өрісі жабық емес!</translation>
     </message>
     <message>
-        <location line="-685"/>
+        <location line="-689"/>
         <source>Wrong document version: </source>
         <translation>Құжаттың нұсқасы дұрыс емес:</translation>
     </message>
@@ -2734,7 +2734,7 @@ Unknown field!</source>
         <translation>Құжатты сақтау мүмкін емес!</translation>
     </message>
     <message>
-        <location line="+185"/>
+        <location line="+189"/>
         <location line="+5"/>
         <source>Format Error:
 Wrong property field limiter!</source>
@@ -2946,7 +2946,7 @@ Unknown field!</source>
         <translation>Сызық қасиетін өзгерту</translation>
     </message>
     <message>
-        <location filename="paintings/graphictext.cpp" line="+124"/>
+        <location filename="paintings/graphictext.cpp" line="+131"/>
         <source>Text</source>
         <translation>Мәтін</translation>
     </message>
@@ -2966,7 +2966,7 @@ Unknown field!</source>
         <translation>Тіктөртбұрыш қасиеттерін өзгерту</translation>
     </message>
     <message>
-        <location filename="diagrams/curvediagram.cpp" line="+248"/>
+        <location filename="diagrams/curvediagram.cpp" line="+245"/>
         <source>Locus Curve</source>
         <translation>Шеңберлік диаграмма</translation>
     </message>
@@ -2977,12 +2977,12 @@ Unknown field!</source>
         <translation>дұрыс емес</translation>
     </message>
     <message>
-        <location filename="diagrams/polardiagram.cpp" line="+101"/>
+        <location filename="diagrams/polardiagram.cpp" line="+98"/>
         <source>Polar</source>
         <translation>Полярлы</translation>
     </message>
     <message>
-        <location filename="diagrams/psdiagram.cpp" line="+128"/>
+        <location filename="diagrams/psdiagram.cpp" line="+125"/>
         <source>Polar-Smith Combi</source>
         <translation>Араласқан Смит поляры</translation>
     </message>
@@ -2992,17 +2992,17 @@ Unknown field!</source>
         <translation>Смит поляры араласқан</translation>
     </message>
     <message>
-        <location filename="diagrams/rect3ddiagram.cpp" line="+1143"/>
+        <location filename="diagrams/rect3ddiagram.cpp" line="+1140"/>
         <source>3D-Cartesian</source>
         <translation>Үш өлшемді декарттық</translation>
     </message>
     <message>
-        <location filename="diagrams/rectdiagram.cpp" line="+246"/>
+        <location filename="diagrams/rectdiagram.cpp" line="+243"/>
         <source>Cartesian</source>
         <translation>Декарттық</translation>
     </message>
     <message>
-        <location filename="diagrams/smithdiagram.cpp" line="+111"/>
+        <location filename="diagrams/smithdiagram.cpp" line="+108"/>
         <source>Smith Chart</source>
         <translation>Смит диаграммасы</translation>
     </message>
@@ -10727,13 +10727,13 @@ Usage:  qucsedit [-r] file
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="-1434"/>
+        <location filename="schematic_file.cpp" line="-1438"/>
         <source>Cannot save C++ file &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="module.cpp" line="+117"/>
-        <location filename="qucs.cpp" line="+647"/>
+        <location filename="qucs.cpp" line="+655"/>
         <location line="+106"/>
         <location filename="qucs_actions.cpp" line="+153"/>
         <source>verilog-a user devices</source>
@@ -10792,14 +10792,14 @@ Usage:  qucsedit [-r] file
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="+1706"/>
+        <location filename="qucs.cpp" line="+1708"/>
         <source>diagrams</source>
         <translation type="unfinished">диаграммалар</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="qucs.cpp" line="-1856"/>
+        <location filename="qucs.cpp" line="-1858"/>
         <location line="+30"/>
         <location line="+3"/>
         <location line="+107"/>
@@ -12587,20 +12587,20 @@ Usage:  qucsedit [-r] file
         <location line="+17"/>
         <location line="+14"/>
         <location line="+16"/>
-        <location line="+35"/>
+        <location line="+37"/>
         <location line="+211"/>
-        <location filename="qucs_actions.cpp" line="-963"/>
+        <location filename="qucs_actions.cpp" line="-1053"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+38"/>
         <location line="+14"/>
-        <location line="+709"/>
+        <location line="+799"/>
         <source>Info</source>
         <translation>Ақпарат</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-802"/>
+        <location filename="qucs_actions.cpp" line="-892"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
@@ -12610,7 +12610,7 @@ Usage:  qucsedit [-r] file
         <translation>Кем дегенде екі элемент таңдалуы тиіс !</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1257"/>
+        <location filename="qucs.cpp" line="-1259"/>
         <location line="+3"/>
         <location line="+62"/>
         <location line="+3"/>
@@ -12622,7 +12622,7 @@ Usage:  qucsedit [-r] file
         <location line="+54"/>
         <location line="+31"/>
         <location line="+235"/>
-        <location line="+1137"/>
+        <location line="+1139"/>
         <location line="+28"/>
         <location line="+77"/>
         <location line="+316"/>
@@ -12630,12 +12630,13 @@ Usage:  qucsedit [-r] file
         <location line="+7"/>
         <location line="+7"/>
         <location line="+6"/>
-        <location filename="qucs_actions.cpp" line="+87"/>
-        <location line="+45"/>
-        <location line="+24"/>
-        <location line="+24"/>
-        <location line="+32"/>
-        <location line="+37"/>
+        <location filename="qucs_actions.cpp" line="+105"/>
+        <location line="+55"/>
+        <location line="+31"/>
+        <location line="+33"/>
+        <location line="+40"/>
+        <location line="+31"/>
+        <location line="+44"/>
         <location line="+46"/>
         <location line="+32"/>
         <location line="+16"/>
@@ -12649,39 +12650,82 @@ Usage:  qucsedit [-r] file
         <translation>Қате</translation>
     </message>
     <message>
-        <location filename="qucs_actions.cpp" line="-775"/>
+        <location filename="qucs_actions.cpp" line="-861"/>
         <source>Opening aborted, file not found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
         <source>Cannot start text editor!</source>
-        <translation>Мәтіндік редакторды іске қосу мүмкін емес!</translation>
+        <translation type="obsolete">Мәтіндік редакторды іске қосу мүмкін емес!</translation>
+    </message>
+    <message>
+        <source>Cannot start filter synthesis program!</source>
+        <translation type="obsolete">Сүзгілер синтезін есептейтін бағдарламаны іске қосу мүмкін емес!</translation>
+    </message>
+    <message>
+        <source>Cannot start line calculation program!</source>
+        <translation type="obsolete">Беріліс арнаны есептейтін бағдарламаны іске қосу мүмкін емес!</translation>
+    </message>
+    <message>
+        <source>Cannot start library program!</source>
+        <translation type="obsolete">Кітапханалық бағдарламаны іске қосу мүмкін емес!</translation>
+    </message>
+    <message>
+        <source>Cannot start attenuator calculation program!</source>
+        <translation type="obsolete">Аттеньюаторларды есептейтін бағдарламаны іске қосу мүмкін емес!</translation>
+    </message>
+    <message>
+        <source>Cannot start qucshelp!</source>
+        <translation type="obsolete">qucshelp бағдарламасын іске қосу мүмкін емес!</translation>
     </message>
     <message>
         <location line="+46"/>
-        <source>Cannot start filter synthesis program!</source>
-        <translation>Сүзгілер синтезін есептейтін бағдарламаны іске қосу мүмкін емес!</translation>
+        <source>Cannot start text editor! 
+
+%1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Cannot start line calculation program!</source>
-        <translation>Беріліс арнаны есептейтін бағдарламаны іске қосу мүмкін емес!</translation>
+        <location line="+56"/>
+        <source>Cannot start filter synthesis program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Cannot start library program!</source>
-        <translation>Кітапханалық бағдарламаны іске қосу мүмкін емес!</translation>
+        <location line="+31"/>
+        <source>Cannot start line calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>Cannot start attenuator calculation program!</source>
-        <translation>Аттеньюаторларды есептейтін бағдарламаны іске қосу мүмкін емес!</translation>
+        <location line="+33"/>
+        <source>Cannot start library program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+36"/>
-        <source>Cannot start qucshelp!</source>
-        <translation>qucshelp бағдарламасын іске қосу мүмкін емес!</translation>
+        <location line="+40"/>
+        <source>Cannot start attenuator calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Cannot start resistor color code calculation program! 
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>Cannot start qucshelp! 
+
+%1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+46"/>
@@ -12757,9 +12801,9 @@ Have you saved the Verilog-A symbols?</source>
         <location line="+37"/>
         <location line="+45"/>
         <location line="+22"/>
-        <location filename="qucs_actions.cpp" line="-772"/>
-        <location line="+311"/>
-        <location filename="qucs_init.cpp" line="+954"/>
+        <location filename="qucs_actions.cpp" line="-858"/>
+        <location line="+397"/>
+        <location filename="qucs_init.cpp" line="+942"/>
         <source>Ready.</source>
         <translation>Дайын.</translation>
     </message>
@@ -12784,8 +12828,8 @@ Have you saved the Verilog-A symbols?</source>
         <translation>CSV файлы</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-2099"/>
-        <location line="+1544"/>
+        <location filename="qucs.cpp" line="-2109"/>
+        <location line="+1554"/>
         <location filename="qucs_actions.cpp" line="+0"/>
         <source>Any File</source>
         <translation>Басқа файл</translation>
@@ -12806,7 +12850,7 @@ Have you saved the Verilog-A symbols?</source>
         <translation>Осыны қайта жазу керек па?</translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-219"/>
+        <location filename="qucs.cpp" line="-221"/>
         <location filename="qucs_actions.cpp" line="+1"/>
         <source>&amp;Yes</source>
         <translation>&amp;ИЯ</translation>
@@ -12818,7 +12862,7 @@ Have you saved the Verilog-A symbols?</source>
         <translation>&amp;Жоқ</translation>
     </message>
     <message>
-        <location line="-1333"/>
+        <location line="-1341"/>
         <source>Schematic</source>
         <translation>Сұлба</translation>
     </message>
@@ -12834,18 +12878,18 @@ Have you saved the Verilog-A symbols?</source>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+1543"/>
+        <location line="+1553"/>
         <source>VHDL Sources</source>
         <translation>VHDL қорек көздері</translation>
     </message>
     <message>
-        <location line="-1542"/>
-        <location line="+1543"/>
+        <location line="-1552"/>
+        <location line="+1553"/>
         <source>Verilog Sources</source>
         <translation>Verilog қорек көздері</translation>
     </message>
     <message>
-        <location line="-1452"/>
+        <location line="-1460"/>
         <source>Others</source>
         <translation>Басқалар</translation>
     </message>
@@ -12861,24 +12905,24 @@ Have you saved the Verilog-A symbols?</source>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+2377"/>
+        <location line="+2385"/>
         <source>Verilog</source>
         <translation>Verilog</translation>
     </message>
     <message>
-        <location line="-2373"/>
-        <location line="+2371"/>
+        <location line="-2381"/>
+        <location line="+2379"/>
         <source>VHDL</source>
         <translation>VHDL</translation>
     </message>
     <message>
-        <location line="-2369"/>
-        <location line="+2365"/>
+        <location line="-2377"/>
+        <location line="+2373"/>
         <source>Schematics</source>
         <translation>Сұлбалар</translation>
     </message>
     <message>
-        <location line="-2314"/>
+        <location line="-2316"/>
         <source>New</source>
         <translation>Құру</translation>
     </message>
@@ -13021,34 +13065,34 @@ Have you saved the Verilog-A symbols?</source>
         <location line="+77"/>
         <location line="+47"/>
         <location line="+329"/>
-        <location line="+244"/>
+        <location line="+246"/>
         <location line="+630"/>
         <source>Warning</source>
         <translation>Ескерту</translation>
     </message>
     <message>
-        <location line="-1326"/>
+        <location line="-1328"/>
         <source>This will delete the file permanently! Continue ?</source>
         <translation>Файлды жою қайтарылмайды! Жалғастырасыз ба?</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+77"/>
-        <location line="+621"/>
+        <location line="+623"/>
         <location line="+454"/>
         <source>No</source>
         <translation>Жоқ</translation>
     </message>
     <message>
-        <location line="-1152"/>
+        <location line="-1154"/>
         <location line="+77"/>
-        <location line="+621"/>
+        <location line="+623"/>
         <location line="+454"/>
         <source>Yes</source>
         <translation>ИЯ</translation>
     </message>
     <message>
-        <location line="-1147"/>
+        <location line="-1149"/>
         <source>Cannot delete schematic: </source>
         <translation>Сұлбаны жою мүмкін емес:</translation>
     </message>
@@ -13095,12 +13139,12 @@ Have you saved the Verilog-A symbols?</source>
     <message>
         <location line="-318"/>
         <location line="+429"/>
-        <location line="+770"/>
+        <location line="+772"/>
         <source>-port</source>
         <translation>-порттық</translation>
     </message>
     <message>
-        <location line="-716"/>
+        <location line="-718"/>
         <source>Cannot access project directory: </source>
         <translation>Проект папкасына рұқсат алу мумкін емес:</translation>
     </message>
@@ -13130,12 +13174,12 @@ Have you saved the Verilog-A symbols?</source>
     </message>
     <message>
         <location line="+23"/>
-        <location line="+126"/>
+        <location line="+128"/>
         <source>No project is selected !</source>
         <translation>Проект таңдалған жоқ !</translation>
     </message>
     <message>
-        <location line="-82"/>
+        <location line="-84"/>
         <source>Cannot delete file: </source>
         <translation>Файлды жою мүмкін емес:</translation>
     </message>
@@ -13165,7 +13209,7 @@ Have you saved the Verilog-A symbols?</source>
         <translation>Жою үшін проекттің бір папкасын таңдаңыз</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+42"/>
         <source>Creating new schematic...</source>
         <translation>Жаңа сұлбаны құру...</translation>
     </message>
@@ -13176,7 +13220,7 @@ Have you saved the Verilog-A symbols?</source>
     </message>
     <message>
         <location line="+54"/>
-        <location filename="qucs_actions.cpp" line="-660"/>
+        <location filename="qucs_actions.cpp" line="-746"/>
         <source>Opening file...</source>
         <translation>Файлды ашу...</translation>
     </message>
@@ -13255,8 +13299,8 @@ Have you saved the Verilog-A symbols?</source>
         <translation>Qucs құжатын жабу</translation>
     </message>
     <message>
-        <location line="-938"/>
-        <location line="+939"/>
+        <location line="-940"/>
+        <location line="+941"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>Құжатта сақталмаған өзгертулер бар!
@@ -13268,19 +13312,19 @@ Have you saved the Verilog-A symbols?</source>
         <translation>Бағдарламаны жабу алдында сақтау керек па?</translation>
     </message>
     <message>
-        <location line="-938"/>
-        <location line="+939"/>
-        <location filename="qucs_init.cpp" line="-877"/>
+        <location line="-940"/>
+        <location line="+941"/>
+        <location filename="qucs_init.cpp" line="-885"/>
         <source>&amp;Save</source>
         <translation>&amp;Сақтау</translation>
     </message>
     <message>
-        <location line="-1709"/>
+        <location line="-1719"/>
         <source>Spice Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+232"/>
+        <location line="+240"/>
         <source>Manage Libraries</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13329,7 +13373,12 @@ Have you saved the Verilog-A symbols?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+1"/>
+        <source>&amp;Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>Copy file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13349,7 +13398,7 @@ Have you saved the Verilog-A symbols?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+735"/>
+        <location line="+737"/>
         <source>Qucs Netlist</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14909,7 +14958,7 @@ Starts attenuator calculation program</source>
 Аттеньюаторларды есептейтін бағдарламаны іске қосады</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+10"/>
         <source>Simulate</source>
         <translation>Модельдеу</translation>
     </message>
@@ -15144,12 +15193,12 @@ About the application</source>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+438"/>
+        <location line="+442"/>
         <source>About Qt</source>
         <translation>Qt жайлы</translation>
     </message>
     <message>
-        <location line="-437"/>
+        <location line="-441"/>
         <source>About Qt
 
 About Qt by Trolltech</source>
@@ -15193,7 +15242,7 @@ Trolltech Qt жайлы</translation>
         <translation>&amp;Құралдар</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>&amp;Simulation</source>
         <translation>&amp;Моделдеу</translation>
     </message>
@@ -15277,13 +15326,19 @@ Trolltech Qt жайлы</translation>
     </message>
     <message>
         <location line="+1"/>
+        <location line="+2"/>
         <source>Copyright (C)</source>
         <translation>Copyright (C)</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>by Michael Margraf</source>
         <translation>by Michael Margraf</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Qucs Team</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -15317,6 +15372,11 @@ Trolltech Qt жайлы</translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Verilog-AMS dynamic loader by Guilherme Brondani Torri</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Translations:</source>
         <translation>Аудармалар:</translation>
     </message>
@@ -15342,8 +15402,12 @@ Trolltech Qt жайлы</translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Portuguese by Luciano Franca, Helio de Sousa, Guilherme Brondani Torri</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Portuguese by Luciano Franca and Helio de Sousa</source>
-        <translation>Португалдық тілге-Luciano Franca</translation>
+        <translation type="obsolete">Португалдық тілге-Luciano Franca</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -15406,7 +15470,7 @@ Trolltech Qt жайлы</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs.cpp" line="-1894"/>
+        <location filename="qucs.cpp" line="-1896"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15456,18 +15520,18 @@ Trolltech Qt жайлы</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-951"/>
-        <location line="+1543"/>
+        <location line="-959"/>
+        <location line="+1553"/>
         <source>Verilog-A Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1443"/>
+        <location line="-1451"/>
         <source>Verilog-A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+598"/>
+        <location line="+604"/>
         <source>Insert</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15487,18 +15551,18 @@ Trolltech Qt жайлы</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-963"/>
-        <location line="+1543"/>
+        <location line="-971"/>
+        <location line="+1553"/>
         <source>Octave Scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1448"/>
+        <location line="-1456"/>
         <source>Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qucs_init.cpp" line="-457"/>
+        <location filename="qucs_init.cpp" line="-461"/>
         <source>&amp;Octave Window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15515,18 +15579,17 @@ Shows/hides the Octave dock window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot start resistor color code calculation program!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location line="-74"/>
         <source>Resistor color codes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Starts Qucs resistor color codes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Resistor color codes
 
 Starts standard resistor color code computation program</source>
@@ -15998,12 +16061,12 @@ Filter synthesis program
 <context>
     <name>QucsHelp</name>
     <message>
-        <location filename="../qucs-help/qucshelp.cpp" line="+44"/>
+        <location filename="../qucs-help/qucshelp.cpp" line="+50"/>
         <source>Qucs Help System</source>
         <translation>Qucs көмек жүйесі</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+29"/>
         <source>&amp;Quit</source>
         <translation>&amp;Шығу</translation>
     </message>
@@ -16052,7 +16115,7 @@ Enables/disables the table of contents</source>
 тақырыбын қосу/өшіру</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+40"/>
         <source>&amp;About Qt</source>
         <translation>&amp;Qt жайлы</translation>
     </message>
@@ -16072,12 +16135,12 @@ Enables/disables the table of contents</source>
         <translation>&amp;Көмек</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+5"/>
         <source>Contents</source>
         <translation>Мазмұны</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Home</source>
         <translation>Үйге</translation>
     </message>
@@ -16307,8 +16370,14 @@ Enables/disables the table of contents</source>
     </message>
     <message>
         <location line="+1"/>
-        <source>Portuguese</source>
-        <translation>Португалдық</translation>
+        <source>Portuguese-BR</source>
+        <oldsource>Portuguese</oldsource>
+        <translation type="unfinished">Португалдық</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Portuguese-PT</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -16351,7 +16420,12 @@ Enables/disables the table of contents</source>
         <translation>мәтіндік редактор:</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+2"/>
+        <source>Set to qucs, qucsedit or the path to your favorite text editor.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>start wiring when clicking open node:</source>
         <translation>түйін ашылған кезде байланыстыруды бастау:</translation>
     </message>
@@ -16406,22 +16480,47 @@ Enables/disables the table of contents</source>
         <translation>Аттрибут</translation>
     </message>
     <message>
-        <location line="+116"/>
+        <location line="+101"/>
+        <source>AdmsXml Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>ASCO Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Octave Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Subcircuit Search Path List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+391"/>
+        <location line="+409"/>
+        <source>Select the admsXml bin directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Select the ASCO bin directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Select the octave bin directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="-27"/>
         <source>Select the home directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+41"/>
         <location line="+19"/>
         <source>Select a directory</source>
         <translation type="unfinished"></translation>
@@ -16431,7 +16530,7 @@ Enables/disables the table of contents</source>
         <translation type="obsolete">VHDL редакторы</translation>
     </message>
     <message>
-        <location line="-523"/>
+        <location line="-564"/>
         <source>Register filename extensions here in order to
 open files with an appropriate program.</source>
         <translation>Файлдар сәйкес бағдарламалық қамтамамен ашылу үшін файл атының кеңейтілуін тіркеңіз.</translation>
@@ -16477,17 +16576,12 @@ open files with an appropriate program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Octave path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="+3"/>
         <source>Qucs Home:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+62"/>
         <source>Locations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16512,7 +16606,7 @@ open files with an appropriate program.</source>
         <translation>Үндестік бойынша берілген мән</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+54"/>
         <source>Error</source>
         <translation>Қате</translation>
     </message>
@@ -16522,12 +16616,12 @@ open files with an appropriate program.</source>
         <translation>Бұл кеңейту тіркелген!</translation>
     </message>
     <message>
-        <location line="-278"/>
+        <location line="-299"/>
         <source>Kazakh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+75"/>
         <source>Directive</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17131,18 +17225,20 @@ open files with an appropriate program.</source>
         <translation>Тексерген:</translation>
     </message>
     <message>
-        <location filename="schematic_file.cpp" line="+263"/>
-        <location line="+21"/>
+        <location filename="schematic_file.cpp" line="+266"/>
+        <location line="+22"/>
         <source>Error</source>
         <translation type="unfinished">Қате</translation>
     </message>
     <message>
-        <location line="-20"/>
-        <source>Program not found: %1</source>
+        <location line="-21"/>
+        <source>Program admsXml not found: %1
+
+Set the admsXml location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17152,12 +17248,12 @@ open files with an appropriate program.</source>
         <translation>ҚАТЕ:&quot;%s&quot; кітапханалық файлды құру мүмкін емес.</translation>
     </message>
     <message>
-        <location filename="schematic.cpp" line="+1287"/>
+        <location filename="schematic.cpp" line="+1299"/>
         <source>generic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1200"/>
+        <location line="-1212"/>
         <source>Edit Text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17504,7 +17600,7 @@ are included in the search.</source>
     </message>
     <message>
         <location line="+103"/>
-        <location line="+94"/>
+        <location line="+101"/>
         <source>done.</source>
         <translation>дайын.</translation>
     </message>
@@ -17521,7 +17617,7 @@ are included in the search.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+81"/>
         <source>ERROR: Program not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17568,7 +17664,7 @@ are included in the search.</source>
         <translation>Қателер: --------</translation>
     </message>
     <message>
-        <location line="-302"/>
+        <location line="-315"/>
         <location line="+7"/>
         <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
@@ -17579,7 +17675,7 @@ are included in the search.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-236"/>
+        <location line="-240"/>
         <source>ERROR: Cannot simulate a text file!</source>
         <translation type="unfinished"></translation>
     </message>
