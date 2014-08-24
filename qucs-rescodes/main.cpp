@@ -104,9 +104,11 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
 	Q3GridLayout *grid = new Q3GridLayout( this, 4, 1, 10 );
 	//3x1, 10 pixel border
 
-	//QWidget *Space = new QWidget(this);   // reserve space for menubar
-	//Space->setFixedSize(1, bar->height());
-	//grid->addWidget(Space, 0,0);
+#ifndef __APPLE__
+    QWidget *Space = new QWidget(this);   // reserve space for menubar
+    Space->setFixedSize(1, bar->height());
+    grid->addWidget(Space, 0,0);
+#endif
 
 	grid->addWidget( resBox, 1, 0 );
 	grid->addWidget( buttonBox, 2, 0 );
