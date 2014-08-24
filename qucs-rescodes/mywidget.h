@@ -1,4 +1,4 @@
-#include <qwidget.h>
+#include <QWidget>
 class MyResistanceBox;
 class MyColorBox;
 class QResistor;

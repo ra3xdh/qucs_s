@@ -20,7 +20,7 @@
 #ifndef QRESISTOR_HPP
 #define QRESISTOR_HPP
 #include "classproto.h"
-#include <qwidget.h>
+#include <QWidget>
 #include <vector>
 
 #include <iostream>

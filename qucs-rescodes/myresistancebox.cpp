@@ -17,11 +17,11 @@
 
 
 
-#include <qvalidator.h>
-#include <qlabel.h>
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <q3groupbox.h>
+#include <QValidator>
+#include <QLabel>
+#include <QComboBox>
+#include <QLineEdit>
+#include <Q3GroupBox>
 #include "myresistancebox.h"
 #include "qresistor.h"
 #include <math.h>

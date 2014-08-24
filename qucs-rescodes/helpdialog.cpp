@@ -19,10 +19,10 @@ email                : sudhakar.m.kumar@gmail.com
 
 #include "helpdialog.h"
 
-#include <qlayout.h>
-#include <q3hbox.h>
-#include <qpushbutton.h>
-#include <q3textedit.h>
+#include <QLayout>
+#include <Q3HBox>
+#include <QPushButton>
+#include <Q3TextEdit>
 //Added by qt3to4:
 #include <Q3VBoxLayout>
 

@@ -17,8 +17,8 @@
 
 
 
-#include <qlineedit.h>
-#include <q3groupbox.h>
+#include <QLineEdit>
+#include <Q3GroupBox>
 //Added by qt3to4:
 #include <QLabel>
 class QLabel;

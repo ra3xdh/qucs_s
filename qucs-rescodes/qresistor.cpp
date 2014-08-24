@@ -1,4 +1,4 @@
-#include <qwidget.h>
+#include <QWidget>
 #include <iostream>
 #include "qresistor.h"
 

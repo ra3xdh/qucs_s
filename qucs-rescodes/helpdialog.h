@@ -18,7 +18,7 @@
 #ifndef HELPDIALOG_H
 #define HELPDIALOG_H
 
-#include <qdialog.h>
+#include <QDialog>
 //Added by qt3to4:
 #include <Q3VBoxLayout>
 

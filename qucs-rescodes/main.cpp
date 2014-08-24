@@ -21,20 +21,20 @@
 #endif
 #ifndef QUCS_RESCODES_MAIN_CPP
 #define QUCS_RESCODES_MAIN_CPP
-#include <qapplication.h>
-#include <q3hbox.h>
-#include <qpushbutton.h>
-#include <qfont.h>
-#include <qlayout.h>
-#include <q3grid.h>
-#include <qpixmap.h>
-#include <qstring.h>
-#include <qimage.h>
-#include <qmenubar.h>
-#include <q3popupmenu.h>
-#include <qmessagebox.h>
-#include <qlayout.h>
-#include <qclipboard.h>
+#include <QApplication>
+#include <Q3HBox>
+#include <QPushButton>
+#include <QFont>
+#include <QLayout>
+#include <Q3Grid>
+#include <QPixmap>
+#include <QString>
+#include <QImage>
+#include <QMenuBar>
+#include <Q3PopupMenu>
+#include <QMessageBox>
+#include <QLayout>
+#include <QClipboard>
 //Added by qt3to4:
 #include <Q3GridLayout>
 #include <vector>

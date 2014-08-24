@@ -17,7 +17,7 @@
 
 
 
-#include <q3groupbox.h>
+#include <Q3GroupBox>
 #include <string>
 #include <map>
 #include <vector>

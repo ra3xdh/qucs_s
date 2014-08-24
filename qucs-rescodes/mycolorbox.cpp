@@ -17,8 +17,8 @@
 
 
 
-#include <qcombobox.h>
-#include <q3groupbox.h>
+#include <QComboBox>
+#include <Q3GroupBox>
 #include <vector>
 #include <map>
 #include <string>
