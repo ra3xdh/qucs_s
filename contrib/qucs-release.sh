@@ -41,15 +41,15 @@ else
   # TODO get it from git tags or VERSION file
   RELEASE=$(date +"%y%m%d")
   RELEASE="0.0.18-"${RELEASE:0:6}
+
+  # Get Git short hash
+  GIT=$(git log --pretty=format:'%h' -n 1)
+  # Append git short hash
+  RELEASE=${RELEASE}-git-${GIT}
+
 fi
 
 
-# Get Git short hash
-GIT=$(git log --pretty=format:'%h' -n 1)
-
-
-# Append git short hash
-RELEASE=${RELEASE}-git-${GIT}
 echo =====================
 echo Building release: $RELEASE
 echo =====================
