@@ -30,17 +30,14 @@ then
 else
   RELEASE=$(date +"%y%m%d")
   RELEASE="0.0.18."${RELEASE:0:6}
+
+  # Get Git short hash
+  GIT=$(git log --pretty=format:'%h' -n 1)
+  # Append git short hash
+  RELEASE=${RELEASE}-git-${GIT}
 fi
 echo Building release: $RELEASE
 
-# Get Git short hash
-GIT=$(git log --pretty=format:'%h' -n 1)
-
-if [[ -n "$GIT" ]]; then
-  # Append git short hash
-  RELEASE=${RELEASE}-git-${GIT}
-  echo Building release: $RELEASE
-fi
 
 REPO=${PWD}
 echo Working from: ${REPO}
