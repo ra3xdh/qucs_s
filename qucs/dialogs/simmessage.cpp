@@ -214,7 +214,7 @@ void SimMessage::nextSPICE()
 
   QString prog;
   QStringList com;
-  prog = QucsSettings.BinDir + "qucsconv";
+  prog = QucsSettings.BinDir + "qucsconv" + executableSuffix;
   if(makeSubcircuit)
     com << "-g" << "_ref";
   com << "-if" << "spice" << "-of" << "qucs";
@@ -245,7 +245,7 @@ void SimMessage::nextSPICE()
   SimProcess.start(prog, com);
 
   if(!SimProcess.Running) {
-    ErrText->insert(tr("ERROR: Cannot start QucsConv!"));
+    ErrText->insert(tr("SIM ERROR: Cannot start QucsConv!"));
     FinishSimulation(-1);
     return;
   }

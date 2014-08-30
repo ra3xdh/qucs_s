@@ -397,9 +397,16 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
     *SpiceFile = PrepName;
   }
 
+  QString executableSuffix = "";
+#ifdef __MINGW32__
+  executableSuffix = ".exe";
+#endif
+
   // begin command line construction
+  QString prog;
   QStringList com;
-  com << (QucsSettings.BinDir + "qucsconv");
+  prog =  QucsSettings.BinDir + "qucsconv"  + executableSuffix;
+
   if(makeSubcircuit) com << "-g" << "_ref";
   com << "-if" << "spice" << "-of" << "qucs";
   com << "-i" << *SpiceFile;
@@ -421,18 +428,18 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
   env.insert("PATH", env.value("PATH") );
   QucsConv->setProcessEnvironment(env);
 
-  QucsConv->start(com.join(" "));
+  qDebug() << "Command:" << prog << com.join(" ");
+//  QucsConv->start(com.join(" "));
+  QucsConv->start(prog, com);
 
   /// these slots might write into NetText, ErrText, outstream, filstream
   connect(QucsConv, SIGNAL(readyReadStandardOutput()), SLOT(slotGetNetlist()));
   connect(QucsConv, SIGNAL(readyReadStandardError()), SLOT(slotGetError()));
   connect(QucsConv, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(slotExited()));
 
-  qDebug() << "Command qucsconv:" << com.join(" ");
-
   if(QucsConv->state()!=QProcess::Running&&
           QucsConv->state()!=QProcess::Starting) {
-    ErrText += QObject::tr("ERROR: Cannot start QucsConv!");
+    ErrText += QObject::tr("COMP ERROR: Cannot start QucsConv!");
     return false;
   }
   (*outstream) << NetText;

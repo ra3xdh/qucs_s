@@ -306,6 +306,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
     QString preprocessor = PrepCombo->currentText();
     if (preprocessor != "none")
     {
+        qDebug() << "Run spice preprocessor (perl)";
         bool piping = true;
         QString script;
 #ifdef __MINGW32__
@@ -402,11 +403,23 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
     // Now do the spice->qucs netlist conversion using the qucsconv program ...
     QucsConv = new QProcess(this);
 
-    QString QucsconvCmd = QucsSettings.BinDir + "qucsconv -if spice -of qucs -i " +
-                          FileInfo.filePath();
-    qDebug () << QucsconvCmd;
+    QString executableSuffix = "";
+#ifdef __MINGW32__
+    executableSuffix = ".exe";
+#endif
+
+    QString Program;
+    QStringList Arguments;
+    Program = QucsSettings.BinDir + "qucsconv" + executableSuffix;
+    Arguments << "-if" << "spice"
+              << "-of" <<  "qucs"
+              << "-i" << FileInfo.filePath();
+
+    qDebug() << "Command :" << Program << Arguments.join(" ");
+
     connect(QucsConv, SIGNAL(readyReadStandardOutput()), SLOT(slotGetNetlist()));
     connect(QucsConv, SIGNAL(readyReadStandardError()), SLOT(slotGetError()));
+
 
     QMessageBox *MBox = new QMessageBox(tr("Info"),
                                         tr("Converting SPICE file \"%1\".").arg(FileInfo.filePath()),
@@ -416,18 +429,17 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
 
     connect(QucsConv, SIGNAL(finished(int, QProcess::ExitStatus)), MBox, SLOT(close()));
 
-    QucsConv->start(QucsconvCmd);
+    QucsConv->start(Program, Arguments);
 
-    if((QucsConv->state() != QProcess::Starting) && (QucsConv->state()!=QProcess::Running))
+//    if((QucsConv->state() != QProcess::Starting) && (QucsConv->state()!=QProcess::Running))
+    if(!QucsConv->Running)
     {
         QMessageBox::critical(this, tr("Error"),
-                              tr("Cannot execute \"%1\".").arg(QucsSettings.BinDir + "qucsconv"));
+                              tr("Cannot execute \"%1\".").arg(QucsSettings.BinDir + "qucsconv" + executableSuffix));
         return false;
     }
-    //QucsConv->closeStdin();
 
     MBox->exec();
-    delete QucsConv;
 
     if(!Error.isEmpty())
         QMessageBox::critical(this, tr("QucsConv Error"), Error);
@@ -486,6 +498,7 @@ void SpiceDialog::slotGetError()
 // -------------------------------------------------------------------------
 void SpiceDialog::slotGetNetlist()
 {
+    qDebug() << "slotGetNetlist";
     int i;
     QString s;
     Line += QString(QucsConv->readAllStandardOutput ());
