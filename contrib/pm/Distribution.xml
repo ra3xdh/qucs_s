@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<installer-gui-script minSpecVersion="1">
+    <pkg-ref id="org.qucs.pkg"/>
+    <options customize="never" require-scripts="false"/>
+
+    <!-- Define documents displayed at various steps -->
+    <title>Qucs 0.0.18</title>
+    <background file="qucslogo4_transparent.png" mime-type="image/png" alignment="center" scaling="tofit" />
+    <welcome file="Welcome.rtf"/>
+    <license file="License.rtf"/>
+    <readme file="Readme.rtf"/>
+    <domains enable_localSystem="true"/>
+
+    <choices-outline>
+        <line choice="default">
+            <line choice="org.qucs.pkg"/>
+        </line>
+    </choices-outline>
+    <choice id="default"/>
+    <choice id="org.qucs.pkg" visible="false">
+        <pkg-ref id="org.qucs.pkg"/>
+    </choice>
+    <pkg-ref id="org.qucs.pkg" version="0.0.18" onConclusion="none">qucs-0.0.18.pkg</pkg-ref>
+</installer-gui-script>
