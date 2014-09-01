@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# final location
+PREFIX='/usr/local/bin'
+
+# list of programs to link into /Applications
+PROGS="
+  qucs.app
+  qucsattenuator.app
+  qucsedit.app
+  qucsfilter.app
+  qucshelp.app
+  qucslib.app
+  qucsrescodes.app
+  qucstrans.app"
+
+# link programs
+for app in $PROGS
+do
+  ln -s $PREFIX/$app /Applications/$app
+done
+
+exit 0
