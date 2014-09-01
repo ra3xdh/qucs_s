@@ -31,7 +31,8 @@ for bom in "${packages[@]}"; do
     lsbom -f -l -s -pf ${bom} \
     | while read i; do
       # Remove each file listed in the bom.
-      file="/usr/local/${i}"
+      cd /
+      file="${i}"
       if [ -e $file ]; then
         echo "removing: ${file}"
         rm $file
@@ -43,7 +44,33 @@ for bom in "${packages[@]}"; do
 done
 
 
-echo "*** Removing receipts: /var/db/receipts/org.qucs.*"
-rm -f /var/db/receipts/org.qucs.*
+## remove symlinks if found
+# final location
+PREFIX='/usr/local/bin'
+
+# list of programs to link into /Applications
+PROGS="
+  qucs.app
+  qucsattenuator.app
+  qucsedit.app
+  qucsfilter.app
+  qucshelp.app
+  qucslib.app
+  qucsrescodes.app
+  qucstrans.app"
+
+# link programs
+for app in $PROGS
+do
+
+  link=/Applications/$app
+  if [ -L $link ]; then
+    rm $link
+  fi
+done
+
+
+#echo "*** Removing receipts: /var/db/receipts/org.qucs.*"
+#rm -f /var/db/receipts/org.qucs.*
 
 
