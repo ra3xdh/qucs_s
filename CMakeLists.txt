@@ -2,9 +2,25 @@ PROJECT(qucs-suite CXX C)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 cmake_policy(VERSION 2.8)
 
+
+file (STRINGS "${qucs-suite_SOURCE_DIR}/VERSION" QUCS_VERSION)
+message(STATUS "Configuring Qucs: VERSION ${QUCS_VERSION}")
+
+set(GIT unknown)
+IF(EXISTS ${CMAKE_SOURCE_DIR}/../.git )
+  FIND_PACKAGE(Git)
+  # Get the latest abbreviated commit hash of the working branch
+  execute_process(
+    COMMAND ${GIT_EXECUTABLE} log --pretty=format:%h -n 1u
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_COMMIT_HASH
+  )
+  set(GIT ${GIT_COMMIT_HASH})
+  message(STATUS "Found Git repository, last commit hash: ${GIT}")
+ENDIF()
+
 message(STATUS "${PROJECT_NAME} ${CMAKE_INSTALL_PREFIX}
     ${qucs-suite_BINARY_DIR}" )
-
 
 # Build qucs-core (release mode) FIXME
 # * during release the repo directories are flattened
