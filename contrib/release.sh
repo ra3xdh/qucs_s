@@ -129,18 +129,18 @@ make distclean
 rm -rf autom4te.cache
 
 
-#cd qucs-core/deps/adms
+cd qucs-core/deps/adms
 #wget http://downloads.sourceforge.net/project/mot-adms/adms-source/2.3/adms-2.3.2.tar.gz
 #tar -zxvf adms-2.3.2.tar.gz
 #mv adms-2.3.2/* .
 #rm -rf adms-2.3.2 
 #rm adms-2.3.2.tar.gz
-#cd admsXml
-#sed -i 's/\$(generated_FILES)/ /g' Makefile.in
-#sed -i 's/\$(generated_FILES)/ /g' Makefile.am
-#sed -i 's/\$(generated_FILES)/ /g' Makefile
-#cd ../../..
-cd qucs-core
+cd admsXml
+sed -i 's/\$(generated_FILES)/ /g' Makefile.in
+sed -i 's/\$(generated_FILES)/ /g' Makefile.am
+sed -i 's/\$(generated_FILES)/ /g' Makefile
+cd ../../..
+#cd qucs-core
 libtoolize
 ./bootstrap.sh
 ./configure --enable-maintainer-mode
