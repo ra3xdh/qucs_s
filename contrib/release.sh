@@ -22,11 +22,14 @@ fi
 
 echo exporting git tree...
 
-git clone ./ release/
+git clone ./ release
+cd release/qucs
+git submodule init
+git submodule update
+cd ../..
 mv release/examples release/qucs/examples/examples
 mv release/qucs-core release/qucs/
 mv release/qucs release/qucs-$RELEASE
-
 rm -rf release/.git
 
 if [ -f ~/Downloads/qucs-doc.tar.gz ]
@@ -126,18 +129,18 @@ make distclean
 rm -rf autom4te.cache
 
 
-cd qucs-core/deps/adms
-wget http://downloads.sourceforge.net/project/mot-adms/adms-source/2.3/adms-2.3.2.tar.gz
-tar -zxvf adms-2.3.2.tar.gz
-mv adms-2.3.2/* .
-rm -rf adms-2.3.2 
-rm adms-2.3.2.tar.gz
-cd admsXml
-sed -i 's/\$(generated_FILES)/ /g' Makefile.in
-sed -i 's/\$(generated_FILES)/ /g' Makefile.am
-sed -i 's/\$(generated_FILES)/ /g' Makefile
-cd ../../..
-
+#cd qucs-core/deps/adms
+#wget http://downloads.sourceforge.net/project/mot-adms/adms-source/2.3/adms-2.3.2.tar.gz
+#tar -zxvf adms-2.3.2.tar.gz
+#mv adms-2.3.2/* .
+#rm -rf adms-2.3.2 
+#rm adms-2.3.2.tar.gz
+#cd admsXml
+#sed -i 's/\$(generated_FILES)/ /g' Makefile.in
+#sed -i 's/\$(generated_FILES)/ /g' Makefile.am
+#sed -i 's/\$(generated_FILES)/ /g' Makefile
+#cd ../../..
+cd qucs-core
 libtoolize
 ./bootstrap.sh
 ./configure --enable-maintainer-mode
