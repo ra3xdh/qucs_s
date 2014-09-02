@@ -841,7 +841,7 @@ void QucsApp::slotCallRes()
 #elif __APPLE__
   prog = "qucsrescodes.app/Contents/MacOS/qucsrescodes";
 #else
-  prog = "qucrescodes";
+  prog = "qucsrescodes";
 #endif
 
   QProcess *QucsRes = new QProcess();
