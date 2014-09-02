@@ -1,3 +1,25 @@
+Qucs MASTER Changelog
+=========================
+
+Please update this file with the main changes. I will become the next release notes.
+It will make our life easier to keep track of what have been done and to decide when it is time for a new release.
+
+
+Miscelaneous
+------------
+
+ * new: top VERSION files shall be used for versioning (Autotools, CMake). TODO, package versioning.
+
+ * new: add tag with the latest Git commit hash: Qucs (About and -v), Qucsator, Qucsconv
+
+
+Bugfixes
+--------
+
+ * [#29]: https://github.com/Qucs/qucs/pull/29
+
+
+---
 
 Qucs 0.0.18 Release Notes
 =========================
