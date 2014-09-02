@@ -854,7 +854,11 @@ int main(int argc, char *argv[])
       return 0;
     }
     else if (!strcmp(argv[i], "-v") || !strcmp(argv[i], "--version")) {
+#ifdef GIT
+      fprintf(stdout, "Qucs " PACKAGE_VERSION " ("GIT")" "\n");
+#else
       fprintf(stdout, "Qucs " PACKAGE_VERSION "\n");
+#endif
       return 0;
     }
     else if (!strcmp(argv[i], "-n") || !strcmp(argv[i], "--netlist")) {

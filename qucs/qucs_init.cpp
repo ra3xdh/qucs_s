@@ -1053,7 +1053,11 @@ void QucsApp::slotToggleOctave(bool on)
 void QucsApp::slotHelpAbout()
 {
   QMessageBox::about(this, tr("About..."),
-    tr("Qucs Version")+" "+PACKAGE_VERSION+"\n"+
+    tr("Qucs Version")+" "+PACKAGE_VERSION+
+#ifdef GIT
+    " ("+GIT+") " +
+#endif
+    "\n"+
     tr("Quite Universal Circuit Simulator")+"\n"+
     tr("Copyright (C)")+" 2003-2009 "+
     tr("by Michael Margraf")+"\n"+
