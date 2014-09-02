@@ -821,15 +821,26 @@ if test "x$MACOSX" = xno ; then
   AC_CONFIG_FILES([ qucs-filter-v2/Makefile ])
 fi
 
-AC_OUTPUT
 
+dnl Check for Git short SHA to tag version
+dnl The release package should also keep it on the config.h
+GIT="unknown"
+if test -d "../.git"; then
+  m4_define([GIT_REVISION], m4_esyscmd([git log --pretty=format:'%h' -n 1u]))
+  AC_DEFINE([GIT], ["GIT_REVISION"], [Git short revision hash.])
+  GIT=GIT_REVISION
+  echo "\nFound Git clone... $GIT"
+fi
+
+
+AC_OUTPUT
 
 dnl delete the unset enable_qucs_gui_debug variable
 unset enable_qucs_gui_debug
 
 dnl Print results.
 AC_MSG_RESULT([])
-AC_MSG_RESULT([ $PACKAGE version $VERSION configured successfully.])
+AC_MSG_RESULT([ $PACKAGE version $VERSION ($GIT) configured successfully.])
 AC_MSG_RESULT([
 Configure Information:
   C++ Compiler    : $CXX
