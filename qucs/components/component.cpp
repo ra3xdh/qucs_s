@@ -56,7 +56,6 @@ Component::Component()
   ty = 0;
 
   Arcs.setAutoDelete(true);
-  Lines.setAutoDelete(true);
   Rects.setAutoDelete(true);
   Ellips.setAutoDelete(true);
   Ports.setAutoDelete(true);
@@ -223,7 +222,7 @@ void Component::paint(ViewPainter *p)
   else {    // normal components go here
 
     // paint all lines
-    for(Line *p1 = Lines.first(); p1 != 0; p1 = Lines.next()) {
+    foreach(Line *p1, Lines) {
       p->Painter->setPen(p1->style);
       p->drawLine(cx+p1->x1, cy+p1->y1, cx+p1->x2, cy+p1->y2);
     }
@@ -353,7 +352,7 @@ void Component::paintScheme(Schematic *p)
   }
 
   // paint all lines
-  for(Line *p1 = Lines.first(); p1 != 0; p1 = Lines.next())
+  foreach(Line *p1, Lines)
     p->PostPaintEvent(_Line,cx+p1->x1, cy+p1->y1, cx+p1->x2, cy+p1->y2);
 
   // paint all ports
@@ -395,7 +394,7 @@ void Component::rotate()
   int tmp, dx, dy;
 
   // rotate all lines
-  for(Line *p1 = Lines.first(); p1 != 0; p1 = Lines.next()) {
+  foreach(Line *p1, Lines) {
     tmp = -p1->x1;
     p1->x1 = p1->y1;
     p1->y1 = tmp;
@@ -494,7 +493,7 @@ void Component::mirrorX()
     if(Ports.count() < 1) return;  // do not rotate components without ports
 
   // mirror all lines
-  for(Line *p1 = Lines.first(); p1 != 0; p1 = Lines.next()) {
+  foreach(Line *p1, Lines) {
     p1->y1 = -p1->y1;
     p1->y2 = -p1->y2;
   }
@@ -556,7 +555,7 @@ void Component::mirrorY()
     if(Ports.count() < 1) return;  // do not rotate components without ports
 
   // mirror all lines
-  for(Line *p1 = Lines.first(); p1 != 0; p1 = Lines.next()) {
+  foreach(Line *p1, Lines) {
     p1->x1 = -p1->x1;
     p1->x2 = -p1->x2;
   }
