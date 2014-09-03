@@ -187,7 +187,6 @@ int LibComp::loadSymbol()
 
     copyComponent(pc);
 
-    pc->Arcs.setAutoDelete(false);
     pc->Rects.setAutoDelete(false);
     pc->Ellips.setAutoDelete(false);
     pc->Ports.setAutoDelete(false);

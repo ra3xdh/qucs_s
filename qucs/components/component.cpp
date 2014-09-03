@@ -55,7 +55,6 @@ Component::Component()
   tx = 0;
   ty = 0;
 
-  Arcs.setAutoDelete(true);
   Rects.setAutoDelete(true);
   Ellips.setAutoDelete(true);
   Ports.setAutoDelete(true);
@@ -228,7 +227,7 @@ void Component::paint(ViewPainter *p)
     }
 
     // paint all arcs
-    for(Arc *p3 = Arcs.first(); p3 != 0; p3 = Arcs.next()) {
+    foreach(Arc *p3, Arcs) {
       p->Painter->setPen(p3->style);
       p->drawArc(cx+p3->x, cy+p3->y, p3->w, p3->h, p3->angle, p3->arclen);
     }
@@ -359,7 +358,7 @@ void Component::paintScheme(Schematic *p)
   for(Port *p2 = Ports.first(); p2 != 0; p2 = Ports.next())
     if(p2->avail) p->PostPaintEvent(_Ellipse,cx+p2->x-4, cy+p2->y-4, 8, 8);
 
-  for(Arc *p3 = Arcs.first(); p3 != 0; p3 = Arcs.next())   // paint all arcs
+  foreach(Arc *p3, Arcs)   // paint all arcs
     p->PostPaintEvent(_Arc,cx+p3->x, cy+p3->y, p3->w, p3->h, p3->angle, p3->arclen);
 
   Area *pa;
@@ -411,7 +410,7 @@ void Component::rotate()
   }
 
   // rotate all arcs
-  for(Arc *p3 = Arcs.first(); p3 != 0; p3 = Arcs.next()) {
+  foreach(Arc *p3, Arcs) {
     tmp = -p3->x;
     p3->x = p3->y;
     p3->y = tmp - p3->w;
@@ -503,7 +502,7 @@ void Component::mirrorX()
     p2->y = -p2->y;
 
   // mirror all arcs
-  for(Arc *p3 = Arcs.first(); p3 != 0; p3 = Arcs.next()) {
+  foreach(Arc *p3, Arcs) {
     p3->y = -p3->y - p3->h;
     if(p3->angle > 16*180) p3->angle -= 16*360;
     p3->angle  = -p3->angle;    // mirror
@@ -565,7 +564,7 @@ void Component::mirrorY()
     p2->x = -p2->x;
 
   // mirror all arcs
-  for(Arc *p3 = Arcs.first(); p3 != 0; p3 = Arcs.next()) {
+  foreach(Arc *p3, Arcs) {
     p3->x = -p3->x - p3->w;
     p3->angle = 16*180 - p3->angle - p3->arclen;  // mirror
     if(p3->angle < 0) p3->angle += 16*360;   // angle has to be > 0
