@@ -15,6 +15,11 @@
  *                                                                         *
  ***************************************************************************/
 
+/*!
+  \class Diagram
+  \brief The Diagram class is a superclass for diagrams.
+*/
+
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -78,8 +83,9 @@ Diagram::~Diagram()
 {
 }
 
-// ------------------------------------------------------------
-// Paint function for most diagrams (cartesian, smith, polar, ...)
+/*!
+   Paint function for most diagrams (cartesian, smith, polar, ...)
+*/
 void Diagram::paint(ViewPainter *p)
 {
   // paint all lines
@@ -149,8 +155,9 @@ void Diagram::paintScheme(Schematic *p)
   p->PostPaintEvent(_Rect, cx, cy-y2, x2, y2);
 }
 
-// ------------------------------------------------------------
-// Put axis labels into the text list.
+/*!
+   Put axis labels into the text list.
+*/
 void Diagram::createAxisLabels()
 {
   Graph *pg;
@@ -307,8 +314,9 @@ bool Diagram::insideDiagram(float x, float y)
   return ((x*x + y*y) <= R*R);
 }
 
-// ------------------------------------------------------------
-// Cohen-Sutherland clipping algorithm
+/*!
+   Cohen-Sutherland clipping algorithm
+*/
 void Diagram::rectClip(float* &p)
 {
   int code, z=0;
@@ -387,8 +395,9 @@ endWithHidden:
     p -= 2;
 }
 
-// ------------------------------------------------------------
-// Clipping for round diagrams (smith, polar, ...)
+/*!
+   Clipping for round diagrams (smith, polar, ...)
+*/
 void Diagram::clip(float* &p)
 {
   float R = float(x2) / 2.0;
@@ -633,9 +642,10 @@ bool Diagram::getSelected(int x_, int y_)
   return false;
 }
 
-// ------------------------------------------------------------
-// Checks if the resize area was clicked. If so return "true" and sets
-// x1/y1 and x2/y2 to the border coordinates to draw a rectangle.
+/*!
+   Checks if the resize area was clicked. If so return "true" and sets
+   x1/y1 and x2/y2 to the border coordinates to draw a rectangle.
+*/
 bool Diagram::resizeTouched(float fX, float fY, float len)
 {
   float fCX = float(cx), fCY = float(cy);
@@ -761,8 +771,9 @@ void Diagram::loadGraphData(const QString& defaultDataSet)
   updateGraphData();
 }
 
-// ------------------------------------------------------------------------
-// Calculate diagram again without reading dataset from file.
+/*!
+   Calculate diagram again without reading dataset from file.
+*/
 void Diagram::recalcGraphData()
 {
   yAxis.min = zAxis.min = xAxis.min =  DBL_MAX;
@@ -1040,8 +1051,9 @@ else {  // of "if not digital"
   return 2;
 }
 
-// --------------------------------------------------------------------------
-// Reads the data of an independent variable. Returns the number of points.
+/*!
+   Reads the data of an independent variable. Returns the number of points.
+*/
 int Diagram::loadIndepVarData(const QString& Variable,
 			      char *FileString, Axis *pa, Graph *pg)
 {
@@ -1127,8 +1139,9 @@ int Diagram::loadIndepVarData(const QString& Variable,
   return n;   // return number of independent data
 }
 
-// ------------------------------------------------------------
-// Checks if the two graphs have the same independent variables.
+/*!
+   Checks if the two graphs have the same independent variables.
+*/
 bool Diagram::sameDependencies(Graph *g1, Graph *g2)
 {
   if(g1 == g2)  return true;
@@ -1649,16 +1662,17 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
   if(len > x3)  x3 = len;
 }
 
-// --------------------------------------------------------------
-// Calculations for Cartesian diagrams (RectDiagram and Rect3DDiagram).
-// parameters:   Axis - pointer to the axis to scale
-//               Dist - length of axis in pixel on the screen
-// return value: "true" if axis runs from largest to smallest value
-//
-//               GridNum  - number where the first numbered grid is placed
-//               GridStep - distance from one grid to the next
-//               zD     - screen coordinate where the first grid is placed
-//               zDstep - distance on screen from one grid to the next
+/*!
+ Calculations for Cartesian diagrams (RectDiagram and Rect3DDiagram).
+ \param   Axis - pointer to the axis to scale
+ \param   Dist - length of axis in pixel on the screen
+ \return value: "true" if axis runs from largest to smallest value
+
+  \param[out]             GridNum  - number where the first numbered grid is placed
+  \param[out]             GridStep - distance from one grid to the next
+  \param[out]             zD     - screen coordinate where the first grid is placed
+  \param[out]             zDstep - distance on screen from one grid to the next
+*/
 bool Diagram::calcAxisScale(Axis *Axis, double& GridNum, double& zD,
 				double& zDstep, double& GridStep, double Dist)
 {
@@ -1766,17 +1780,21 @@ else {   // user defined limits
   return back;
 }
 
-// --------------------------------------------------------------
-// Calculations for logarithmical Cartesian diagrams (RectDiagram and
-//  Rect3DDiagram).
-// parameters:   Axis - pointer to the axis to scale
-//               Dist - length of axis in pixel on the screen
-// return value: "true" if axis runs from largest to smallest value
-//
-//               z      - screen coordinate where the first grid is placed
-//               zD     - number where the first grid is placed
-//               zDstep - number increment from one grid to the next
-//               coor   - scale factor for calculate screen coordinate
+/*!
+  Calculations for logarithmical Cartesian diagrams
+  (RectDiagram and  Rect3DDiagram).
+
+ \param       Axis   - pointer to the axis to scale
+ \param       len    - length of axis in pixel on the screen
+ \return value: "true" if axis runs from largest to smallest value
+
+ \param[out]  z      - screen coordinate where the first grid is placed
+ \param[out]  zD     - number where the first grid is placed
+ \param[out]  zDstep - number increment from one grid to the next
+ \param[out]  coor   - scale factor for calculate screen coordinate
+
+ \todo use this as example to document other methods
+*/
 bool Diagram::calcAxisLogScale(Axis *Axis, int& z, double& zD,
 				double& zDstep, double& corr, int len)
 {
