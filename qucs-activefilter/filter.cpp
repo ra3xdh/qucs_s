@@ -37,6 +37,8 @@ Filter::Filter(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam par)
         Fl = par.Fl;
         Fu = par.Fu;
         TW = par.TW;
+        F0 = sqrt(Fu*Fl);
+        Q = F0/abs(Fu-Fl);
     }
 
     Rp = par.Rp;
@@ -58,6 +60,10 @@ void Filter::createSchematic(QString &s)
         break;
     case Filter::LowPass : createLowPassSchematic(s);
         break;
+    case Filter::BandPass : createBandPassSchematic(s);
+        break;
+    case Filter::BandStop : createBandStopSchematic(s);
+        break;
     default: break;
     }
 
@@ -75,6 +81,16 @@ void Filter::createLowPassSchematic(QString &s)
     s = "<Qucs Schematic ";
     s += PACKAGE_VERSION;
     s += ">\n";
+}
+
+void Filter::createBandPassSchematic(QString &s)
+{
+    s = "<Qucs Schematic "PACKAGE_VERSION">\n";
+}
+
+void Filter::createBandStopSchematic(QString &s)
+{
+    s = "<Qucs Schematic "PACKAGE_VERSION">\n";
 }
 
 bool Filter::calcFilter()

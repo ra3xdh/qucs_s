@@ -68,7 +68,7 @@ protected:
     Filter::FType ftype;
     Filter::FilterFunc ffunc;
     int order;
-    float Fc,Kv,Fs,Ap,As,Rp,Fl,Fu,TW,Q;
+    float Fc,Kv,Fs,Ap,As,Rp,Fl,Fu,TW,Q,BW,F0;
     int Nr,Nc,Nopamp; // total number of R,C, opamp
 
     int Nr1,Nc1,Nop1; // number of R,C, opamp per stage
@@ -91,6 +91,8 @@ protected:
     virtual void calcBandStop();
     virtual void createHighPassSchematic(QString &s);
     virtual void createLowPassSchematic(QString &s);
+    virtual void createBandPassSchematic(QString &s);
+    virtual void createBandStopSchematic(QString &s);
 
 public:
 
