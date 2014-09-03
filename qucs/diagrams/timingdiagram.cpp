@@ -151,7 +151,7 @@ int TimingDiagram::calcDiagram()
   Graph *firstGraph;
 
   QListIterator<Graph *> ig(Graphs);
-  Graph *g;
+  Graph *g = 0;
   if (ig.hasNext())
      g= ig.next();
 

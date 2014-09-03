@@ -37,7 +37,6 @@ Graph::Graph(const QString& _Line)
   ScrPoints = 0;
   cPointsY = 0;
 
-  Markers.setAutoDelete(true);
   cPointsX.setAutoDelete(true);
 }
 
@@ -95,7 +94,7 @@ QString Graph::save()
 	      " "+QString::number(numMode)+" "+QString::number(Style)+
 	      " "+QString::number(yAxisNo)+">";
 
-  for(Marker *pm=Markers.first(); pm != 0; pm=Markers.next())
+  foreach(Marker *pm, Markers)
     s += "\n\t  "+pm->save();
 
   return s;
@@ -239,7 +238,7 @@ Graph* Graph::sameNewOne()
   pg->numMode   = numMode;
   pg->yAxisNo   = yAxisNo;
 
-  for(Marker *pm = Markers.first(); pm != 0; pm = Markers.next())
+  foreach(Marker *pm, Markers)
     pg->Markers.append(pm->sameNewOne(pg));
 
   return pg;

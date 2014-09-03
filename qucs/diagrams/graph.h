@@ -76,7 +76,7 @@ public:
   QColor  Color;
   int     Thick;
   int     Style;
-  Q3PtrList<Marker> Markers;
+  QList<Marker *> Markers;
 
   // for tabular diagram
   int  Precision;   // number of digits to show
