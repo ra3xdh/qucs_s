@@ -215,7 +215,7 @@ Graph* SweepDialog::setBiasPoints()
     if(pc->Model == "IProbe") {
       pn = pc->Ports.first()->Connection;
       if(!pn->Name.isEmpty())   // preserve node voltage ?
-        pn = pc->Ports.next()->Connection;
+        pn = pc->Ports.at(1)->Connection;
 
       pn->x1 = 0x10;   // mark current
       pg->Var = pc->Name + ".I";

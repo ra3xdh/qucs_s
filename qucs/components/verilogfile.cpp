@@ -69,14 +69,18 @@ Element* Verilog_File::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString Verilog_File::verilogCode(int)
 {
   QString s;
-  Port *pp = Ports.first();
+  QListIterator<Port *> iport(Ports);
+  Port *pp = iport.next();
   if(pp) {
     s = "  " + ModuleName + " " + Name + " (";
 
     // output all node names
     if(pp)  s += pp->Connection->Name;
-    for(pp = Ports.next(); pp != 0; pp = Ports.next())
+    while(iport.hasNext())
+    {
+      pp = iport.next();
       s += ", "+pp->Connection->Name;   // node names
+    }
 
     s += ");\n";
   }

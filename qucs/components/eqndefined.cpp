@@ -77,7 +77,7 @@ QString EqnDefined::netlist()
   QString e = "\n";
 
   // output all node names
-  for(Port *p1 = Ports.first(); p1 != 0; p1 = Ports.next())
+  foreach(Port *p1, Ports)
     s += " "+p1->Connection->Name;   // node names
 
   // output all properties

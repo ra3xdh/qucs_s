@@ -88,9 +88,14 @@ void Subcircuit::createSymbol()
     if(tx == INT_MIN)  tx = x1+4;
     if(ty == INT_MIN)  ty = y2+4;
     // remove unused ports
-    for(Port *pp = Ports.first(); pp != 0; ) {
-      if(!pp->avail) { Ports.remove(); pp = Ports.current (); }
-      else pp = Ports.next();
+    QMutableListIterator<Port *> ip(Ports);
+    Port *pp;
+    while (ip.hasNext()) {
+      pp = ip.next();
+      if(!pp->avail) {
+          pp = ip.peekNext();
+          ip.remove();
+      }
     }
   }
   else {
@@ -204,7 +209,7 @@ QString Subcircuit::netlist()
   QString s = Model+":"+Name;
 
   // output all node names
-  for(Port *p1 = Ports.first(); p1 != 0; p1 = Ports.next())
+  foreach(Port *p1, Ports)
     s += " "+p1->Connection->Name;   // node names
 
   // type for subcircuit
@@ -235,10 +240,14 @@ QString Subcircuit::vhdlCode(int)
 
   // output all node names
   s += " port map (";
-  Port *pp = Ports.first();
-  if(pp)  s += pp->Connection->Name;
-  for(pp = Ports.next(); pp != 0; pp = Ports.next())
+  QListIterator<Port *> iport(Ports);
+  Port *pp = iport.next();
+  if(pp)
+    s += pp->Connection->Name;
+  while (iport.hasNext()) {
+    pp = iport.next();
     s += ", "+pp->Connection->Name;   // node names
+  }
 
   s += ");\n";
   return s;
@@ -262,10 +271,14 @@ QString Subcircuit::verilogCode(int)
 
   // output all node names
   s +=  " " + Name + " (";
-  Port *pp = Ports.first();
-  if(pp)  s += pp->Connection->Name;
-  for(pp = Ports.next(); pp != 0; pp = Ports.next())
+  QListIterator<Port *> iport(Ports);
+  Port *pp = iport.next();
+  if(pp)
+    s += pp->Connection->Name;
+  while (iport.hasNext()) {
+    pp = iport.next();
     s += ", "+pp->Connection->Name;   // node names
+  }
 
   s += ");\n";
   return s;

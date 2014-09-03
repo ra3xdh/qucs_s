@@ -55,7 +55,6 @@ Component::Component()
   tx = 0;
   ty = 0;
 
-  Ports.setAutoDelete(true);
   Props.setAutoDelete(true);
 
   containingSchematic = NULL;
@@ -350,7 +349,7 @@ void Component::paintScheme(Schematic *p)
     p->PostPaintEvent(_Line,cx+p1->x1, cy+p1->y1, cx+p1->x2, cy+p1->y2);
 
   // paint all ports
-  for(Port *p2 = Ports.first(); p2 != 0; p2 = Ports.next())
+  foreach(Port *p2, Ports)
     if(p2->avail) p->PostPaintEvent(_Ellipse,cx+p2->x-4, cy+p2->y-4, 8, 8);
 
   foreach(Arc *p3, Arcs)   // paint all arcs
@@ -397,7 +396,7 @@ void Component::rotate()
   }
 
   // rotate all ports
-  for(Port *p2 = Ports.first(); p2 != 0; p2 = Ports.next()) {
+  foreach(Port *p2, Ports) {
     tmp = -p2->x;
     p2->x = p2->y;
     p2->y = tmp;
@@ -491,7 +490,7 @@ void Component::mirrorX()
   }
 
   // mirror all ports
-  for(Port *p2 = Ports.first(); p2 != 0; p2 = Ports.next())
+  foreach(Port *p2, Ports)
     p2->y = -p2->y;
 
   // mirror all arcs
@@ -553,7 +552,7 @@ void Component::mirrorY()
   }
 
   // mirror all ports
-  for(Port *p2 = Ports.first(); p2 != 0; p2 = Ports.next())
+  foreach(Port *p2, Ports)
     p2->x = -p2->x;
 
   // mirror all arcs
@@ -610,7 +609,7 @@ QString Component::netlist()
   QString s = Model+":"+Name;
 
   // output all node names
-  for(Port *p1 = Ports.first(); p1 != 0; p1 = Ports.next())
+  foreach(Port *p1, Ports)
     s += " "+p1->Connection->Name;   // node names
 
   // output all properties
@@ -635,7 +634,7 @@ QString Component::getNetlist()
   int z=0;
   QString s;
   QString Node1 = Ports.first()->Connection->Name;
-  for(Port *pp = Ports.next(); pp != 0; pp = Ports.next())
+  foreach(Port *pp, Ports)
     s += "R:" + Name + "." + QString::number(z++) + " " +
          Node1 + " " + pp->Connection->Name + " R=\"0\"\n";
   return s;
@@ -661,7 +660,7 @@ QString Component::get_Verilog_Code(int NumPorts)
   Port *p = Ports.first();
   QString Node1 = p->Connection->Name;
   QString s = "";
-  for(p = Ports.next(); p != 0; p = Ports.next())
+  foreach(Port *p, Ports)
     s += "  assign " + p->Connection->Name + " = " + Node1 + ";\n";
   return s;
 }
@@ -687,8 +686,8 @@ QString Component::get_VHDL_Code(int NumPorts)
   // This is locigally correct for the inverter only, but makes
   // some sense for the gates (OR, AND etc.).
   // Has anyone a better idea?
-  QString Node1 = Ports.first()->Connection->Name;
-  return "  " + Node1 + " <= " + Ports.next()->Connection->Name + ";\n";
+  QString Node1 = Ports.at(0)->Connection->Name;
+  return "  " + Node1 + " <= " + Ports.at(1)->Connection->Name + ";\n";
 }
 
 // -------------------------------------------------------
@@ -918,9 +917,10 @@ int Component::analyseLine(const QString& Row, int numProps)
     for(i6 = Ports.count(); i6<i3; i6++)  // if ports not in numerical order
       Ports.append(new Port(0, 0, false));
 
-    Ports.at(i3-1)->x  = i1;
-    Ports.current()->y = i2;
-    Ports.current()->avail = true;
+    Port *po = Ports.at(i3-1);
+    po->x  = i1;
+    po->y = i2;
+    po->avail = true;
 
     if(i1 < x1)  x1 = i1;  // keep track of component boundings
     if(i1 > x2)  x2 = i1;
@@ -1305,7 +1305,7 @@ QString GateComponent::netlist()
   QString s = Model+":"+Name;
 
   // output all node names
-  for(Port *pp = Ports.first(); pp != 0; pp = Ports.next())
+  foreach(Port *pp, Ports)
     s += " "+pp->Connection->Name;   // node names
 
   // output all properties
@@ -1321,7 +1321,8 @@ QString GateComponent::netlist()
 // -------------------------------------------------------
 QString GateComponent::vhdlCode(int NumPorts)
 {
-  Port *pp = Ports.first();
+  QListIterator<Port *> iport(Ports);
+  Port *pp = iport.next();
   QString s = "  " + pp->Connection->Name + " <= ";  // output port
 
   // xnor NOT defined for std_logic, so here use not and xor
@@ -1329,12 +1330,14 @@ QString GateComponent::vhdlCode(int NumPorts)
     QString Op = " xor ";
 
     // first input port
-    pp = Ports.next();
+    pp = iport.next();
     QString rhs = pp->Connection->Name;
 
     // output all input ports with node names
-    for (pp = Ports.next (); pp != 0; pp = Ports.next ())
+    while(iport.hasNext()) {
+      pp = iport.next();
       rhs = "not ((" + rhs + ")" + Op + pp->Connection->Name + ")";
+    }
     s += rhs;
   }
   else {
@@ -1344,12 +1347,14 @@ QString GateComponent::vhdlCode(int NumPorts)
       Op = Op.remove(1, 1);
     }
 
-    pp = Ports.next();
+    pp = iport.next();
     s += pp->Connection->Name;   // first input port
 
     // output all input ports with node names
-    for(pp = Ports.next(); pp != 0; pp = Ports.next())
+    while(iport.hasNext()) {
+      pp = iport.next();
       s += Op + pp->Connection->Name;
+    }
     if(Model.at(0) == 'N')
       s += ')';
   }
@@ -1368,7 +1373,8 @@ QString GateComponent::vhdlCode(int NumPorts)
 QString GateComponent::verilogCode(int NumPorts)
 {
   bool synthesize = true;
-  Port *pp = Ports.first();
+  QListIterator<Port *> iport(Ports);
+  Port *pp = iport.next();
   QString s("");
 
   if(synthesize) {
@@ -1392,12 +1398,14 @@ QString GateComponent::verilogCode(int NumPorts)
     s += " " + pp->Connection->Name + " = ";  // output port
     if(Model.at(0) == 'N') s += "~(";
 
-    pp = Ports.next();
+    pp = iport.next();
     s += pp->Connection->Name;   // first input port
 
     // output all input ports with node names
-    for(pp = Ports.next(); pp != 0; pp = Ports.next())
+    while (iport.hasNext()) {
+      pp = iport.next();
       s += " " + op + " " + pp->Connection->Name;
+    }
 
     if(Model.at(0) == 'N') s += ")";
     s += ";\n";
@@ -1412,12 +1420,14 @@ QString GateComponent::verilogCode(int NumPorts)
     }
     s += " " + Name + " (" + pp->Connection->Name;  // output port
 
-    pp = Ports.next();
+    pp = iport.next();
     s += ", " + pp->Connection->Name;   // first input port
 
     // output all input ports with node names
-    for(pp = Ports.next(); pp != 0; pp = Ports.next())
+    while (iport.hasNext()) {
+      pp = iport.next();
       s += ", " + pp->Connection->Name;
+    }
 
     s += ");\n";
   }

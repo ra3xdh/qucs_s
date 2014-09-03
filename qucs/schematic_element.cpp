@@ -1683,7 +1683,7 @@ int Schematic::copySelectedElements(Q3PtrList<Element> *p)
             count++;
 
             // delete all port connections
-            for(pp = pc->Ports.first(); pp!=0; pp = pc->Ports.next())
+            foreach(Port *pp, pc->Ports)
             {
                 pp->Connection->Connections.removeRef((Element*)pc);
                 pp->Connection->State = 4;
@@ -1721,7 +1721,7 @@ int Schematic::copySelectedElements(Q3PtrList<Element> *p)
     pc = (Component*)p->first();
     for(i=0; i<count; i++)
     {
-        for(pp = pc->Ports.first(); pp!=0; pp = pc->Ports.next())
+        foreach(Port *pp, pc->Ports)
             newMovingWires(p, pp->Connection, count);
 
         p->findRef(pc);   // back to the real current pointer
@@ -2383,9 +2383,8 @@ void Schematic::setComponentNumber(Component *c)
 // ---------------------------------------------------
 void Schematic::insertComponentNodes(Component *c, bool noOptimize)
 {
-    Port *pp;
     // connect every node of the component to corresponding schematic node
-    for(pp = c->Ports.first(); pp != 0; pp = c->Ports.next())
+    foreach(Port *pp, c->Ports)
         pp->Connection = insertNode(pp->x+c->cx, pp->y+c->cy, c);
 
     if(noOptimize)  return;
@@ -2394,9 +2393,12 @@ void Schematic::insertComponentNodes(Component *c, bool noOptimize)
     Element *pe, *pe1;
     Q3PtrList<Element> *pL;
     // if component over wire then delete this wire
-    c->Ports.first();  // omit the first element
-    for(pp = c->Ports.next(); pp != 0; pp = c->Ports.next())
+    QListIterator<Port *> iport(c->Ports);
+    // omit the first element
+    Port *pp = iport.next();
+    while (iport.hasNext())
     {
+        pp = iport.next();
         pn = pp->Connection;
         for(pe = pn->Connections.first(); pe!=0; pe = pn->Connections.next())
             if(pe->Type == isWire)
@@ -2426,7 +2428,7 @@ void Schematic::insertRawComponent(Component *c, bool noOptimize)
     if(c->Model == "GND")
     {
         c->Model = "x";    // prevent that this ground is found as label
-        Element *pe = getWireLabel(c->Ports.getFirst()->Connection);
+        Element *pe = getWireLabel(c->Ports.first()->Connection);
         if(pe) if((pe->Type & isComponent) == 0)
             {
                 delete ((Conductor*)pe)->Label;
@@ -2439,7 +2441,7 @@ void Schematic::insertRawComponent(Component *c, bool noOptimize)
 // ---------------------------------------------------
 void Schematic::recreateComponent(Component *Comp)
 {
-    Port *pp;
+
     WireLabel **plMem=0, **pl;
     int PortCount = Comp->Ports.count();
 
@@ -2448,7 +2450,7 @@ void Schematic::recreateComponent(Component *Comp)
         // Save the labels whose node is not connected to somewhere else.
         // Otherwise the label would be deleted.
         pl = plMem = (WireLabel**)malloc(PortCount * sizeof(WireLabel*));
-        for(pp = Comp->Ports.first(); pp != 0; pp = Comp->Ports.next())
+        foreach(Port *pp, Comp->Ports)
             if(pp->Connection->Connections.count() < 2)
             {
                 *(pl++) = pp->Connection->Label;
@@ -2479,7 +2481,7 @@ void Schematic::recreateComponent(Component *Comp)
     {
         // restore node labels
         pl = plMem;
-        for(pp = Comp->Ports.first(); pp != 0; pp = Comp->Ports.next())
+        foreach(Port *pp, Comp->Ports)
         {
             if(*pl != 0)
             {
@@ -2514,7 +2516,7 @@ void Schematic::insertComponent(Component *c)
         if(c->Model == "GND")
         {
             c->Model = "x";    // prevent that this ground is found as label
-            Element *pe = getWireLabel(c->Ports.getFirst()->Connection);
+            Element *pe = getWireLabel(c->Ports.first()->Connection);
             if(pe) if((pe->Type & isComponent) == 0)
                 {
                     delete ((Conductor*)pe)->Label;
@@ -2575,7 +2577,7 @@ void Schematic::activateCompsWithinRect(int x1, int y1, int x2, int y2)
                             pc->isActive = a;    // change "active status"
                             if(a == COMP_IS_ACTIVE)  // only for active (not shorten)
                                 if(pc->Model == "GND")  // if existing, delete label on wire line
-                                    oneLabel(pc->Ports.getFirst()->Connection);
+                                    oneLabel(pc->Ports.first()->Connection);
                         }
                         changed = true;
                     }
@@ -2606,7 +2608,7 @@ bool Schematic::activateSpecifiedComponent(int x, int y)
                             pc->isActive = a;    // change "active status"
                             if(a == COMP_IS_ACTIVE)  // only for active (not shorten)
                                 if(pc->Model == "GND")  // if existing, delete label on wire line
-                                    oneLabel(pc->Ports.getFirst()->Connection);
+                                    oneLabel(pc->Ports.first()->Connection);
                         }
                         setChanged(true, true);
                         return true;
@@ -2636,7 +2638,7 @@ bool Schematic::activateSelectedComponents()
                 pc->isActive = a;    // change "active status"
                 if(a == COMP_IS_ACTIVE)  // only for active (not shorten)
                     if(pc->Model == "GND")  // if existing, delete label on wire line
-                        oneLabel(pc->Ports.getFirst()->Connection);
+                        oneLabel(pc->Ports.first()->Connection);
             }
             sel = true;
         }
@@ -2649,11 +2651,10 @@ bool Schematic::activateSelectedComponents()
 // Sets the component ports anew. Used after rotate, mirror etc.
 void Schematic::setCompPorts(Component *pc)
 {
-    Port *pp;
     WireLabel *pl;
     Q3PtrList<WireLabel> LabelCache;
 
-    for(pp = pc->Ports.first(); pp!=0; pp = pc->Ports.next())
+    foreach(Port *pp, pc->Ports)
     {
         pp->Connection->Connections.removeRef((Element*)pc);// delete connections
         switch(pp->Connection->Connections.count())
@@ -2677,7 +2678,7 @@ void Schematic::setCompPorts(Component *pc)
 
     // Re-connect component node to schematic node. This must be done completely
     // after the first loop in order to avoid problems with node labels.
-    for(pp = pc->Ports.first(); pp!=0; pp = pc->Ports.next())
+    foreach(Port *pp, pc->Ports)
         pp->Connection = insertNode(pp->x+pc->cx, pp->y+pc->cy, pc);
 
     for(pl = LabelCache.first(); pl != 0; pl = LabelCache.next())
@@ -2741,10 +2742,8 @@ Component* Schematic::selectedComponent(int x, int y)
 // Deletes the component 'c'.
 void Schematic::deleteComp(Component *c)
 {
-    Port *pn;
-
     // delete all port connections
-    for(pn = c->Ports.first(); pn!=0; pn = c->Ports.next())
+    foreach(Port *pn, c->Ports)
         switch(pn->Connection->Connections.count())
         {
         case 1  :
@@ -2784,8 +2783,8 @@ int Schematic::copyComponents(int& x1, int& y1, int& x2, int& y2,
             count++;
             ElementCache->append(pc);
 
-            Port *pp;   // rescue non-selected node labels
-            for(pp = pc->Ports.first(); pp != 0; pp = pc->Ports.next())
+            // rescue non-selected node labels
+            foreach(Port *pp, pc->Ports)
                 if(pp->Connection->Label)
                     if(pp->Connection->Connections.count() < 2)
                     {
@@ -2826,8 +2825,8 @@ void Schematic::copyComponents2(int& x1, int& y1, int& x2, int& y2,
 
             ElementCache->append(pc);
 
-            Port *pp;   // rescue non-selected node labels
-            for(pp = pc->Ports.first(); pp != 0; pp = pc->Ports.next())
+            // rescue non-selected node labels
+            foreach(Port *pp, pc->Ports)
                 if(pp->Connection->Label)
                     if(pp->Connection->Connections.count() < 2)
                     {

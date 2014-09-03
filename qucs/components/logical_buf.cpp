@@ -48,8 +48,8 @@ Logical_Buf::Logical_Buf()
 // -------------------------------------------------------
 QString Logical_Buf::vhdlCode(int NumPorts)
 {
-  QString s = "  " + Ports.getFirst()->Connection->Name + " <= " +
-              Ports.getLast()->Connection->Name;
+  QString s = "  " + Ports.first()->Connection->Name + " <= " +
+              Ports.last()->Connection->Name;
 
   if(NumPorts <= 0) { // no truth table simulation ?
     QString td = Props.at(1)->Value;
@@ -65,7 +65,7 @@ QString Logical_Buf::vhdlCode(int NumPorts)
 QString Logical_Buf::verilogCode(int NumPorts)
 {
   bool synthesize = true;
-  Port *pp = Ports.first();
+  Port *pp = Ports.at(0);
   QString s ("");
 
   if (synthesize) {
@@ -78,7 +78,7 @@ QString Logical_Buf::verilogCode(int NumPorts)
     }
     s += " ";
     s += pp->Connection->Name + " = ";  // output port
-    pp = Ports.next();
+    pp = Ports.at(1);
     s += pp->Connection->Name;          // input port
     s += ";\n";
   }

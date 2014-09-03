@@ -94,7 +94,7 @@ QString iFile::netlist()
   QString s = Model+":"+Name;
 
   // output all node names
-  for(Port *p1 = Ports.first(); p1 != 0; p1 = Ports.next())
+  foreach(Port *p1, Ports)
     s += " "+p1->Connection->Name;   // node names
 
   // output file properties

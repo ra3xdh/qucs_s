@@ -1695,7 +1695,7 @@ bool Schematic::elementsOnGrid()
     if(pc->isSelected) {
 
       // rescue non-selected node labels
-      for(pp = pc->Ports.first(); pp != 0; pp = pc->Ports.next())
+      foreach(Port *pp, pc->Ports)
         if(pp->Connection->Label)
           if(pp->Connection->Connections.count() < 2) {
             LabelCache.append(pp->Connection->Label);

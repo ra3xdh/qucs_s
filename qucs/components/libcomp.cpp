@@ -187,7 +187,6 @@ int LibComp::loadSymbol()
 
     copyComponent(pc);
 
-    pc->Ports.setAutoDelete(false);
     pc->Props.setAutoDelete(false);
     delete pc;
 
@@ -279,7 +278,7 @@ QString LibComp::netlist()
   QString s = "Sub:"+Name;   // output as subcircuit
 
   // output all node names
-  for(Port *p1 = Ports.first(); p1 != 0; p1 = Ports.next())
+  foreach(Port *p1, Ports)
     s += " "+p1->Connection->Name;   // node names
 
   // output property
@@ -298,10 +297,13 @@ QString LibComp::verilogCode(int)
   QString s = "  Sub_" + createType() + " " + Name + " (";
 
   // output all node names
-  Port *pp = Ports.first();
+  QListIterator<Port *> iport(Ports);
+  Port *pp = iport.next();
   if(pp)  s += pp->Connection->Name;
-  for(pp = Ports.next(); pp != 0; pp = Ports.next())
+  while (iport.hasNext()) {
+    pp = iport.next();
     s += ", "+pp->Connection->Name;   // node names
+  }
 
   s += ");\n";
   return s;
@@ -313,10 +315,13 @@ QString LibComp::vhdlCode(int)
   QString s = "  " + Name + ": entity Sub_" + createType() + " port map (";
 
   // output all node names
-  Port *pp = Ports.first();
+  QListIterator<Port *> iport(Ports);
+  Port *pp = iport.next();
   if(pp)  s += pp->Connection->Name;
-  for(pp = Ports.next(); pp != 0; pp = Ports.next())
+  while (iport.hasNext()) {
+    pp = iport.next();
     s += ", "+pp->Connection->Name;   // node names
+  }
 
   s += ");\n";
   return s;
