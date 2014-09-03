@@ -4,6 +4,11 @@ Qucs MASTER Changelog
 Please update this file with the main changes. I will become the next release notes.
 It will make our life easier to keep track of what have been done and to decide when it is time for a new release.
 
+Port
+----
+
+ * Ported Diagram classes from Qt3PtrList to QList
+
 
 Miscelaneous
 ------------
