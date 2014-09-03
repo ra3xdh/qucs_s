@@ -14,6 +14,11 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+/*!
+  \class DiagramDialog
+  \brief The DiagramDialog is used to setup and edit diagrams.
+*/
 #include <QtGui>
 #include "diagramdialog.h"
 #include "qucs.h"
@@ -846,8 +851,9 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
   }
 }
 
-// --------------------------------------------------------------------------
-// Is called if a graph text is clicked in the BistBox.
+/*!
+  Is called if a graph text is clicked in the BistBox.
+*/
 void DiagramDialog::slotSelectGraph(QListWidgetItem *item)
 {
   if(item == 0) {
@@ -858,8 +864,9 @@ void DiagramDialog::slotSelectGraph(QListWidgetItem *item)
   SelectGraph (Graphs.at (GraphList->currentRow()));
 }
 
-// --------------------------------------------------------------------------
-// Puts the text of the selected graph into the line edit.
+/*!
+  Puts the text of the selected graph into the line edit.
+*/
 void DiagramDialog::SelectGraph(Graph *g)
 {
   GraphInput->blockSignals(true);
@@ -895,8 +902,9 @@ void DiagramDialog::SelectGraph(Graph *g)
   }
 }
 
-// --------------------------------------------------------------------------
-// Is called when the 'delelte graph' button is pressed.
+/*!
+ Is called when the 'delelte graph' button is pressed.
+*/
 void DiagramDialog::slotDeleteGraph()
 {
   int i = GraphList->currentRow();
@@ -972,16 +980,18 @@ void DiagramDialog::slotNewGraph()
   toTake  = false;
 }
 
-// --------------------------------------------------------------------------
-// Is called if "Ok" button is pressed.
+/*!
+ Is called if "Ok" button is pressed.
+*/
 void DiagramDialog::slotOK()
 {
   slotApply();
   slotCancel();
 }
 
-// --------------------------------------------------------------------------
-// Is called if "Apply" button is pressed.
+/*!
+ Is called if "Apply" button is pressed.
+*/
 void DiagramDialog::slotApply()
 {
   if(Diag->Name.at(0) != 'T') {  // not tabular or timing
@@ -1185,8 +1195,9 @@ void DiagramDialog::slotSetGridColor()
   changed = true;
 }
 
-// --------------------------------------------------------------------------
-// Is set if the graph input line changes.
+/*!
+ Is set if the graph input line changes.
+*/
 void DiagramDialog::slotResetToTake(const QString& s)
 {
   int i = GraphList->currentRow();
@@ -1199,8 +1210,9 @@ void DiagramDialog::slotResetToTake(const QString& s)
   toTake  = false;
 }
 
-// --------------------------------------------------------------------------
-// Is called if the user changes the graph thickness or the precision.
+/*!
+ Is called if the user changes the graph thickness or the precision.
+*/
 void DiagramDialog::slotSetProp2(const QString& s)
 {
   int i = GraphList->currentRow();
@@ -1213,8 +1225,9 @@ void DiagramDialog::slotSetProp2(const QString& s)
   toTake  = false;
 }
 
-// --------------------------------------------------------------------------
-// Is called if the user changes the number mode.
+/*!
+ Is called if the user changes the number mode.
+*/
 void DiagramDialog::slotSetNumMode(int Mode)
 {
   int i = GraphList->currentRow();
@@ -1226,8 +1239,9 @@ void DiagramDialog::slotSetNumMode(int Mode)
   toTake  = false;
 }
 
-// --------------------------------------------------------------------------
-// Is called when the "show grid" checkbox is changed.
+/*!
+ Is called when the "show grid" checkbox is changed.
+*/
 void DiagramDialog::slotSetGridBox(int state)
 {
   if(state == 2) {
@@ -1244,8 +1258,9 @@ void DiagramDialog::slotSetGridBox(int state)
   }
 }
 
-// --------------------------------------------------------------------------
-// Is called if the user changes the graph style (combobox).
+/*!
+ Is called if the user changes the graph style (combobox).
+*/
 void DiagramDialog::slotSetGraphStyle(int style)
 {
   int i = GraphList->currentRow();
@@ -1257,16 +1272,18 @@ void DiagramDialog::slotSetGraphStyle(int style)
   toTake  = false;
 }
 
-// --------------------------------------------------------------------------
-// Makes a copy of all graphs in the diagram.
+/*!
+ Makes a copy of all graphs in the diagram.
+*/
 void DiagramDialog::copyDiagramGraphs()
 {
   foreach(Graph *pg, Diag->Graphs)
     Graphs.append(pg->sameNewOne());
 }
 
-// --------------------------------------------------------------------------
-// Is called if the combobox changes that defines which y axis uses the graph.
+/*!
+ Is called if the combobox changes that defines which y axis uses the graph.
+*/
 void DiagramDialog::slotSetYAxis(int axis)
 {
   int i = GraphList->currentRow();
@@ -1329,8 +1346,9 @@ void DiagramDialog::slotManualZ(int state)
   }
 }
 
-// --------------------------------------------------------------------------
-// Is called if the current tab of the QTabWidget changes.
+/*!
+ Is called if the current tab of the QTabWidget changes.
+*/
 void DiagramDialog::slotChangeTab(QWidget*)
 {
   if(stepX == 0) return;   // defined ?
@@ -1348,8 +1366,10 @@ void DiagramDialog::slotChangeTab(QWidget*)
   }
 }
 
-// --------------------------------------------------------------------------
-// Is called when the slider for rotation angle is changed.
+
+/*!
+ Is called when the slider for rotation angle is changed.
+*/
 void DiagramDialog::slotNewRotX(int Value)
 {
   rotationX->setText(QString::number(Value));
@@ -1357,8 +1377,9 @@ void DiagramDialog::slotNewRotX(int Value)
   DiagCross->update();
 }
 
-// --------------------------------------------------------------------------
-// Is called when the slider for rotation angle is changed.
+/*!
+ Is called when the slider for rotation angle is changed.
+*/
 void DiagramDialog::slotNewRotY(int Value)
 {
   rotationY->setText(QString::number(Value));
@@ -1366,8 +1387,9 @@ void DiagramDialog::slotNewRotY(int Value)
   DiagCross->update();
 }
 
-// --------------------------------------------------------------------------
-// Is called when the slider for rotation angle is changed.
+/*!
+ Is called when the slider for rotation angle is changed.
+*/
 void DiagramDialog::slotNewRotZ(int Value)
 {
   rotationZ->setText(QString::number(Value));
@@ -1375,8 +1397,9 @@ void DiagramDialog::slotNewRotZ(int Value)
   DiagCross->update();
 }
 
-// --------------------------------------------------------------------------
-// Is called when the number (text) for rotation angle is changed.
+/*!
+ Is called when the number (text) for rotation angle is changed.
+*/
 void DiagramDialog::slotEditRotX(const QString& Text)
 {
   SliderRotX->setValue(Text.toInt());
@@ -1384,8 +1407,9 @@ void DiagramDialog::slotEditRotX(const QString& Text)
   DiagCross->update();
 }
 
-// --------------------------------------------------------------------------
-// Is called when the number (text) for rotation angle is changed.
+/*!
+ Is called when the number (text) for rotation angle is changed.
+*/
 void DiagramDialog::slotEditRotY(const QString& Text)
 {
   SliderRotY->setValue(Text.toInt());
@@ -1393,8 +1417,9 @@ void DiagramDialog::slotEditRotY(const QString& Text)
   DiagCross->update();
 }
 
-// --------------------------------------------------------------------------
-// Is called when the number (text) for rotation angle is changed.
+/*!
+ Is called when the number (text) for rotation angle is changed.
+*/
 void DiagramDialog::slotEditRotZ(const QString& Text)
 {
   SliderRotZ->setValue(Text.toInt());
