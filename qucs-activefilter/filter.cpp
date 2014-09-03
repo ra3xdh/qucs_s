@@ -108,6 +108,10 @@ bool Filter::calcFilter()
         break;
     case Filter::HighPass : calcHighPass();
         break;
+    case Filter::BandPass : calcBandPass();
+        break;
+    case Filter::BandStop : calcBandStop();
+        break;
     default: return false;
         break;
     }
@@ -127,6 +131,16 @@ void Filter::calcHighPass()
 }
 
 void Filter::calcLowPass()
+{
+
+}
+
+void Filter::calcBandPass()
+{
+
+}
+
+void Filter::calcBandStop()
 {
 
 }

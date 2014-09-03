@@ -34,12 +34,16 @@ struct RC_elements {
 };
 
 struct FilterParam {
-    float Ap;
-    float As;
-    float Fc;
-    float Fs;
-    float Rp;
-    float Kv;
+    float Ap; // Band pass atten.
+    float As; // Band stop atten.
+    float Fc; // Cutoff frequency
+    float Fs; // Stopband freq.
+    float Rp; // Passband ripple
+    float Kv; // Passband gain
+    float Fl; // Lower freq.
+    float Fu; // Upper freq.
+    float TW; // Band width
+    float Q; // Quality factor
     int order;
 };
 
@@ -83,6 +87,8 @@ protected:
     float autoscaleCapacitor(float C, QString &suffix);
     virtual void calcHighPass();
     virtual void calcLowPass();
+    virtual void calcBandPass();
+    virtual void calcBandStop();
     virtual void createHighPassSchematic(QString &s);
     virtual void createLowPassSchematic(QString &s);
 
