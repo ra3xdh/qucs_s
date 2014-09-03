@@ -86,7 +86,7 @@ void jkff_SR::createSymbol()
   Texts.append(new Text( 11,-32, "Q", Qt::darkBlue, 12.0));
   Texts.append(new Text( -5,-39, "S", Qt::darkBlue, 12.0));
   Texts.append(new Text( 11,  7, "Q", Qt::darkBlue, 12.0));
-  Texts.current()->over=true;
+  Texts.last()->over=true;
   Texts.append(new Text( -5, 17, "R", Qt::darkBlue, 12.0));
  
   Ports.append(new Port(  0,-60));  // S

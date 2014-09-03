@@ -69,7 +69,7 @@ public:
   QList<Area *>     Rects;
   QList<Area *>     Ellips;
   Q3PtrList<Port>     Ports;
-  Q3PtrList<Text>     Texts;
+  QList<Text *>     Texts;
   Q3PtrList<Property> Props;
 
   #define COMP_IS_OPEN    0

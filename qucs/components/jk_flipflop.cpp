@@ -47,7 +47,7 @@ JK_FlipFlop::JK_FlipFlop()
   Texts.append(new Text(-18,  8, "K", Qt::darkBlue, 12.0));
   Texts.append(new Text(  6,-31, "Q", Qt::darkBlue, 12.0));
   Texts.append(new Text(  6,  8, "Q", Qt::darkBlue, 12.0));
-  Texts.current()->over=true;
+  Texts.last()->over=true;
   Lines.append(new Line(-20, -4,-12,  0,QPen(Qt::darkBlue,0)));
   Lines.append(new Line(-20,  4,-12,  0,QPen(Qt::darkBlue,0)));
 

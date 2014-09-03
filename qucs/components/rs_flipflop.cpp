@@ -40,7 +40,7 @@ RS_FlipFlop::RS_FlipFlop()
   Texts.append(new Text(-18, -1, "S", Qt::darkBlue, 12.0));
   Texts.append(new Text(  6,-21, "Q", Qt::darkBlue, 12.0));
   Texts.append(new Text(  6, -1, "Q", Qt::darkBlue, 12.0));
-  Texts.current()->over=true;
+  Texts.last()->over=true;
 
   Ports.append(new Port(-30,-10));  // R
   Ports.append(new Port(-30, 10));  // S

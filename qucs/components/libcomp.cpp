@@ -188,7 +188,6 @@ int LibComp::loadSymbol()
     copyComponent(pc);
 
     pc->Ports.setAutoDelete(false);
-    pc->Texts.setAutoDelete(false);
     pc->Props.setAutoDelete(false);
     delete pc;
 
