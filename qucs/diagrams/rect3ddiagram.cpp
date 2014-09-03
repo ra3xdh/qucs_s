@@ -360,7 +360,7 @@ void Rect3DDiagram::removeHiddenLines(char *zBuffer, tBound *Bounds)
   tPoint3D *p;
   int i, j, z, dx, dy, Size=0;
   // pre-calculate buffer size to avoid reallocations in the first step
-  for(g = Graphs.first(); g!=0; g = Graphs.next())
+  foreach(Graph *g, Graphs)
     if(g->cPointsY)
       Size += g->cPointsX.getFirst()->count * g->countY;
 
@@ -372,7 +372,7 @@ void Rect3DDiagram::removeHiddenLines(char *zBuffer, tBound *Bounds)
   tPointZ *zp = zMem, *zp_tmp;
 
   // ...............................................................
-  for(g = Graphs.first(); g!=0; g = Graphs.next()) {
+  foreach(Graph *g, Graphs) {
 
     pz = g->cPointsY;
     if(!pz) continue;
@@ -494,7 +494,7 @@ void Rect3DDiagram::removeHiddenLines(char *zBuffer, tBound *Bounds)
   tPoint3D *MemEnd = Mem + 2*Size - 5;   // limit of buffer
 
   zp = zMem;
-  for(g = Graphs.first(); g!=0; g = Graphs.next()) {
+  foreach(Graph *g, Graphs) {
     if(!g->cPointsY) continue;
     dx = g->cPointsX.first()->count;
     if(g->countY > 1)  dy = g->cPointsX.next()->count;
@@ -743,7 +743,7 @@ void Rect3DDiagram::createAxis(Axis *Axis, bool Right,
   y = y1_ - int(double(valid)*cos_phi);
   if(Axis->Label.isEmpty()) {
     // write all labels ----------------------------------------
-    for(pg = Graphs.first(); pg != 0; pg = Graphs.next()) {
+    foreach(Graph *pg, Graphs) {
       if(Axis != &zAxis) {
         if(!pg->cPointsY)  continue;
         if(valid < 0) {

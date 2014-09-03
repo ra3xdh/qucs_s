@@ -936,7 +936,7 @@ Marker* Schematic::setMarker(int x, int y)
         {
 
             // test all graphs of the diagram
-            for(Graph *pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next())
+            foreach(Graph *pg,pd->Graphs)
             {
                 n  = pg->getSelected(x-pd->cx, pd->cy-y);
                 if(n >= 0)
@@ -1159,7 +1159,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
     for(Diagram *pd = Diagrams->last(); pd != 0; pd = Diagrams->prev())
     {
 
-        for(pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next())
+        foreach(Graph *pg, pd->Graphs)
         {
             // test markers of graphs
             for(Marker *pm = pg->Markers.first(); pm != 0; pm = pg->Markers.next())
@@ -1226,7 +1226,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
             }
 
             // test graphs of diagram
-            for(pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next())
+            foreach(Graph *pg, pd->Graphs)
             {
                 if(pg->getSelected(x-pd->cx, pd->cy-y) >= 0)
                 {
@@ -1384,7 +1384,7 @@ void Schematic::deselectElements(Element *e)
         if(e != pd)  pd->isSelected = false;
 
         // test graphs of diagram
-        for(Graph *pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next())
+        foreach(Graph *pg, pd->Graphs)
         {
             if(e != pg) pg->isSelected = false;
 
@@ -1485,7 +1485,7 @@ int Schematic::selectElements(int x1, int y1, int x2, int y2, bool flag)
     for(Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
     {
         // test graphs of diagram
-        for(Graph *pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next())
+        foreach(Graph *pg, pd->Graphs)
         {
             if(pg->isSelected &= flag) z++;
 
@@ -1535,7 +1535,7 @@ int Schematic::selectElements(int x1, int y1, int x2, int y2, bool flag)
 void Schematic::selectMarkers()
 {
     for(Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
-        for(Graph *pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next())
+        foreach(Graph *pg, pd->Graphs)
             for(Marker *pm = pg->Markers.first(); pm!=0; pm = pg->Markers.next())
                 pm->isSelected = true;
 }
@@ -1802,7 +1802,7 @@ int Schematic::copySelectedElements(Q3PtrList<Element> *p)
         }
         else
         {
-            for(Graph *pg = pd->Graphs.first(); pg!=0; pg = pd->Graphs.next())
+            foreach(Graph *pg, pd->Graphs)
                 for(Marker *pm = pg->Markers.first(); pm != 0; )
                     if(pm->isSelected)
                     {
@@ -1942,8 +1942,13 @@ bool Schematic::deleteElements()
         {
             bool wasGraphDeleted = false;
             // all graphs of diagram
-            for(Graph *pg = pd->Graphs.first(); pg != 0; )
+
+            QMutableListIterator<Graph *> ig(pd->Graphs);
+            Graph *pg;
+
+            while (ig.hasNext())
             {
+                pg = ig.next();
                 // all markers of diagram
                 for(Marker *pm = pg->Markers.first(); pm != 0; )
                     if(pm->isSelected)
@@ -1956,11 +1961,14 @@ bool Schematic::deleteElements()
 
                 if(pg->isSelected)
                 {
-                    pd->Graphs.remove();
-                    pg = pd->Graphs.current();
+                    //old pd->Graphs.remove();
+                    //old pg = pd->Graphs.current();
+                    pg = ig.peekNext();
+                    ig.remove();
                     sel = wasGraphDeleted = true;
                 }
-                else  pg = pd->Graphs.next();
+                else
+                    pg = ig.next();
             }
             if(wasGraphDeleted)
                 pd->recalcGraphData();  // update diagram (resize etc.)

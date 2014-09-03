@@ -72,7 +72,12 @@ int TruthDiagram::calcDiagram()
     xAxis.limit_min = 0.0;
 
   Graph *firstGraph;
-  Graph *g = Graphs.first();
+
+  QListIterator<Graph *> ig(Graphs);
+  Graph *g;
+  if (ig.hasNext())
+     g= ig.next();
+
   if(g == 0) {  // no variables specified in diagram ?
     Str = QObject::tr("no variables");
     colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
@@ -90,7 +95,7 @@ int TruthDiagram::calcDiagram()
   int startWriting, z;
 
   while(g->cPointsX.isEmpty()) {  // any graph with data ?
-    g = Graphs.next();
+    g = ig.next();
     if(g == 0) break;
   }
 if(g) if(!g->cPointsX.isEmpty()) {
@@ -144,7 +149,7 @@ if(g) if(!g->cPointsX.isEmpty()) {
   firstGraph = g;
   // ................................................
   // all dependent variables
-  for(g = Graphs.first(); g!=0; g = Graphs.next()) {
+  foreach(Graph *g ,Graphs) {
     y = y2-tHeight-5;
 
     Str = g->Var;
@@ -221,7 +226,7 @@ if(g) if(!g->cPointsX.isEmpty()) {
       Texts.append(new Text(x, y, Str));
     }
     x += colWidth+15;
-    if(g != Graphs.getLast())   // do not paint last line
+    if(g != Graphs.last())   // do not paint last line
       Lines.append(new Line(x-8, y2, x-8, 0, QPen(Qt::black,0)));
   }
 

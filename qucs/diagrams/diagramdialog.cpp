@@ -689,7 +689,7 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   // ...........................................................
   // put all graphs into the ListBox
   Row = 0;
-  for(Graph *pg = Diag->Graphs.first(); pg != 0; pg = Diag->Graphs.next()) {
+  foreach(Graph *pg, Diag->Graphs) {
     GraphList->insertItem(Row, pg->Var);
     if(pg == currentGraph) {
       GraphList->setCurrentRow(Row);   // select current graph
@@ -1261,7 +1261,7 @@ void DiagramDialog::slotSetGraphStyle(int style)
 // Makes a copy of all graphs in the diagram.
 void DiagramDialog::copyDiagramGraphs()
 {
-  for(Graph *pg = Diag->Graphs.first(); pg != 0; pg = Diag->Graphs.next())
+  foreach(Graph *pg, Diag->Graphs)
     Graphs.append(pg->sameNewOne());
 }
 

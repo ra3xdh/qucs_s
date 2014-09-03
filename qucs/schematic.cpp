@@ -715,7 +715,7 @@ void Schematic::paintSchToViewpainter(ViewPainter *p, bool printAll, bool toImag
     for(Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
       if(pd->isSelected || printAll) {
         // if graph or marker is selected, deselect during printing
-        for(pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next()) {
+        foreach(Graph *pg, pd->Graphs) {
       if(pg->isSelected)  pg->Type |= 1;  // remember selection
       pg->isSelected = false;
       for(pm = pg->Markers.first(); pm != 0; pm = pg->Markers.next()) {
@@ -730,7 +730,7 @@ void Schematic::paintSchToViewpainter(ViewPainter *p, bool printAll, bool toImag
         pd->isSelected = selected;
 
         // revert selection of graphs and markers
-        for(pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next()) {
+        foreach(Graph *pg, pd->Graphs) {
       if(pg->Type & 1)  pg->isSelected = true;
       pg->Type &= -2;
       for(pm = pg->Markers.first(); pm != 0; pm = pg->Markers.next()) {
@@ -996,7 +996,7 @@ void Schematic::sizeOfAll(int& xmin, int& ymin, int& xmax, int& ymax)
     if(y1 < ymin) ymin = y1;
     if(y2 > ymax) ymax = y2;
 
-    for(Graph *pg = pd->Graphs.first(); pg!=0; pg = pd->Graphs.next())
+    foreach(Graph *pg, pd->Graphs)
       // test all markers of diagram
       for(Marker *pm = pg->Markers.first(); pm!=0; pm = pg->Markers.next()) {
         pm->Bounding(x1, y1, x2, y2);
@@ -1792,7 +1792,7 @@ bool Schematic::elementsOnGrid()
       count = true;
     }
 
-    for(Graph *pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next())
+    foreach(Graph *pg,pd->Graphs)
       // test markers of diagram
       for(Marker *pm = pg->Markers.first(); pm != 0; pm = pg->Markers.next())
         if(pm->isSelected) {

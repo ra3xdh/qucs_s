@@ -1595,7 +1595,7 @@ void MouseActions::MReleaseResizeDiagram(Schematic *Doc, QMouseEvent *Event)
 
   Diagram *pd = (Diagram*)focusElement;
   pd->updateGraphData();
-  for(Graph *pg = pd->Graphs.first(); pg != 0; pg = pd->Graphs.next())
+  foreach(Graph *pg, pd->Graphs)
     for(Marker *pm = pg->Markers.first(); pm!=0; pm = pg->Markers.next()) {
       pm->x1 += MAx3;      // correct changes due to move of diagram corner
       pm->y1 += MAy3;
@@ -1916,7 +1916,7 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
 	 pg = (Graph*)focusElement;
 	 // searching diagram for this graph
 	 for(dia = Doc->Diagrams->last(); dia != 0; dia = Doc->Diagrams->prev())
-	   if(dia->Graphs.findRef(pg) >= 0)
+	   if(dia->Graphs.indexOf(pg) >= 0)
 	     break;
 	 if(!dia) break;
 

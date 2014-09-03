@@ -45,14 +45,14 @@ TimingDiagram::~TimingDiagram()
 void TimingDiagram::paint(ViewPainter *p)
 {
   // paint all lines
-  for(Line *pl = Lines.first(); pl != 0; pl = Lines.next()) {
+  foreach(Line *pl, Lines) {
     p->Painter->setPen(pl->style);
     p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
   }
 
   p->Painter->setPen(Qt::black);
   // write whole text
-  for(Text *pt = Texts.first(); pt != 0; pt = Texts.next())
+  foreach(Text *pt, Texts)
     p->drawText(pt->s, cx+pt->x, cy-pt->y);
 
 
@@ -143,7 +143,12 @@ int TimingDiagram::calcDiagram()
     xAxis.limit_min = 0.0;
 
   Graph *firstGraph;
-  Graph *g = Graphs.first();
+
+  QListIterator<Graph *> ig(Graphs);
+  Graph *g;
+  if (ig.hasNext())
+     g= ig.next();
+
   if(g == 0) {  // no variables specified in diagram ?
     Str = QObject::tr("no variables");
     colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
@@ -155,7 +160,7 @@ int TimingDiagram::calcDiagram()
 
   double *px;
   while(g->cPointsX.isEmpty()) {  // any graph with data ?
-    g = Graphs.next();
+    g = ig.next();
     if(g == 0) break;
   }
   if(g == 0) {
@@ -170,7 +175,7 @@ int TimingDiagram::calcDiagram()
 
   // First check the maximum bit number of all vectors.
   colWidth = 0;
-  for(g = Graphs.first(); g!=0; g = Graphs.next())
+  foreach(Graph *g, Graphs)
     if(g->cPointsY) {
       if(g->Var.right(2) == ".X") {
         z = strlen((char*)g->cPointsY);
@@ -211,7 +216,7 @@ if(!firstGraph->cPointsX.isEmpty()) {
 
   y -= 5;
   // write all dependent variable names to get width of first column
-  for(g = Graphs.first(); g!=0; g = Graphs.next()) {
+  foreach(Graph *g, Graphs) {
     if(y < tHeight)  break;
     Str = g->Var;
     colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
@@ -259,7 +264,7 @@ if(!firstGraph->cPointsX.isEmpty()) {
   QPen Pen;
   int  yLast, yNow;
   y = y2-tHeight-9;
-  for(g = Graphs.first(); g!=0; g = Graphs.next()) {
+  foreach(Graph *g, Graphs) {
     if(y < tHeight) {
       // mark lack of space with a small arrow
       Lines.append(new Line(4, 6, 4, -7, QPen(Qt::red,2)));

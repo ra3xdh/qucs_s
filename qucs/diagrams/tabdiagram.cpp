@@ -46,7 +46,7 @@ TabDiagram::~TabDiagram()
 void TabDiagram::paint(ViewPainter *p)
 {
   // paint all lines
-  for(Line *pl = Lines.first(); pl != 0; pl = Lines.next()) {
+  foreach(Line *pl, Lines) {
     p->Painter->setPen(pl->style);
     p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
   }
@@ -100,7 +100,7 @@ void TabDiagram::paint(ViewPainter *p)
 
   p->Painter->setPen(Qt::black);
   // write whole text
-  for(Text *pt = Texts.first(); pt != 0; pt = Texts.next())
+  foreach(Text *pt, Texts)
     p->drawText(pt->s, cx+pt->x, cy-pt->y);
 
 
@@ -149,7 +149,12 @@ int TabDiagram::calcDiagram()
     xAxis.limit_min = 0.0;
 
   Graph *firstGraph;
-  Graph *g = Graphs.first();
+
+  QListIterator<Graph *> ig(Graphs);
+  Graph *g = 0;
+  if (ig.hasNext())
+     g= ig.next();
+
   if(g == 0) {  // no variables specified in diagram ?
     Str = QObject::tr("no variables");
     colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
@@ -166,8 +171,9 @@ int TabDiagram::calcDiagram()
   int counting, invisibleCount=0;
   int startWriting, lastCount = 1;
 
-  while(g->cPointsX.isEmpty()) {  // any graph with data ?
-    g = Graphs.next();
+  // any graph with data ?
+  while(g->cPointsX.isEmpty()) {
+    g = ig.next();
     if(g == 0) break;
   }
 if(g) if(!g->cPointsX.isEmpty()) {
@@ -220,7 +226,7 @@ if(g) if(!g->cPointsX.isEmpty()) {
     x += colWidth+15;
     Lines.append(new Line(x-8, y2, x-8, 0, QPen(Qt::black,0)));
   }
-  Lines.current()->style = QPen(Qt::black,2);
+  Lines.last()->style = QPen(Qt::black,2);
 
 }  // of "if no data in graphs"
 
@@ -228,7 +234,7 @@ if(g) if(!g->cPointsX.isEmpty()) {
   firstGraph = g;
   // ................................................
   // all dependent variables
-  for(g = Graphs.first(); g!=0; g = Graphs.next()) {
+  foreach(Graph *g, Graphs) {
     y = y2-tHeight-5;
     colWidth = 0;
 
@@ -305,7 +311,7 @@ if(g) if(!g->cPointsX.isEmpty()) {
       Texts.append(new Text(x, y, Str));
     }
     x += colWidth+15;
-    if(g != Graphs.getLast())   // do not paint last line
+    if(g != Graphs.last())   // do not paint last line
       Lines.append(new Line(x-8, y2, x-8, 0, QPen(Qt::black,0)));
   }
 

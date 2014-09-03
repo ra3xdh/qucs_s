@@ -72,10 +72,6 @@ Diagram::Diagram(int _cx, int _cy)
   Type = isDiagram;
   isSelected = false;
   GridPen = QPen(Qt::lightGray,0);
-  Graphs.setAutoDelete(true);
-  Arcs.setAutoDelete(true);
-  Lines.setAutoDelete(true);
-  Texts.setAutoDelete(true);
 }
 
 Diagram::~Diagram()
@@ -87,20 +83,20 @@ Diagram::~Diagram()
 void Diagram::paint(ViewPainter *p)
 {
   // paint all lines
-  for(Line *pl = Lines.first(); pl != 0; pl = Lines.next()) {
+  foreach(Line *pl, Lines) {
     p->Painter->setPen(pl->style);
     p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
   }
 
   // paint all arcs (1 pixel larger to compensate for strange circle method)
-  for(struct Arc *pa = Arcs.first(); pa != 0; pa = Arcs.next()) {
+  foreach(Arc *pa, Arcs) {
     p->Painter->setPen(pa->style);
     p->drawArc(cx+pa->x, cy-pa->y, pa->w, pa->h, pa->angle, pa->arclen);
   }
 
   Graph *pg;
   // draw all graphs
-  for(pg = Graphs.first(); pg != 0; pg = Graphs.next())
+  foreach(Graph *pg, Graphs)
     pg->paint(p, cx, cy);
 
   // keep track of painter state
@@ -108,7 +104,7 @@ void Diagram::paint(ViewPainter *p)
 
   // write whole text (axis label inclusively)
   QMatrix wm = p->Painter->worldMatrix();
-  for(Text *pt = Texts.first(); pt != 0; pt = Texts.next()) {
+  foreach(Text *pt, Texts) {
     p->Painter->setWorldMatrix(
         QMatrix(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
                  p->DX + float(cx+pt->x) * p->Scale,
@@ -124,8 +120,9 @@ void Diagram::paint(ViewPainter *p)
   p->Painter->restore();
 
   // draw markers last, so they are at the top of painting layers
-  for(pg = Graphs.first(); pg != 0; pg = Graphs.next())
-    for(Marker *pm = pg->Markers.first(); pm != 0; pm = pg->Markers.next())
+  //for(pg = Graphs.first(); pg != 0; pg = Graphs.next())
+  foreach(Graph *pg, Graphs)
+    foreach(Marker *pm, pg->Markers)
       pm->paint(p, cx, cy);
 
 
@@ -167,7 +164,7 @@ void Diagram::createAxisLabels()
   y = -y1;
   if(xAxis.Label.isEmpty()) {
     // write all x labels ----------------------------------------
-    for(pg = Graphs.first(); pg != 0; pg = Graphs.next()) {
+    foreach(Graph *pg, Graphs) {
 	DataX *pD = pg->cPointsX.getFirst();
 	if(!pD) continue;
 	y -= LineSpacing;
@@ -203,7 +200,7 @@ void Diagram::createAxisLabels()
   y = y2>>1;
   if(yAxis.Label.isEmpty()) {
     // draw left y-label for all graphs ------------------------------
-    for(pg = Graphs.first(); pg != 0; pg = Graphs.next()) {
+    foreach(Graph *pg, Graphs) {
       if(pg->yAxisNo != 0)  continue;
       if(pg->cPointsY) {
 	if(Name[0] != 'C') {   // location curve ?
@@ -241,7 +238,7 @@ void Diagram::createAxisLabels()
   y = y2>>1;
   if(zAxis.Label.isEmpty()) {
     // draw right y-label for all graphs ------------------------------
-    for(pg = Graphs.first(); pg != 0; pg = Graphs.next()) {
+    foreach(Graph *pg, Graphs) {
       if(pg->yAxisNo != 1)  continue;
       if(pg->cPointsY) {
 	if(Name[0] != 'C') {   // location curve ?
@@ -733,7 +730,7 @@ void Diagram::loadGraphData(const QString& defaultDataSet)
   yAxis.max = zAxis.max = xAxis.max = -DBL_MAX;
 
   int No=0;
-  for(Graph *pg = Graphs.first(); pg != 0; pg = Graphs.next()) {
+  foreach(Graph *pg, Graphs) {
     if(loadVarData(defaultDataSet, pg) != 1)   // load data, determine max/min values
       No++;
     else
@@ -773,7 +770,7 @@ void Diagram::recalcGraphData()
   yAxis.numGraphs = zAxis.numGraphs = 0;
 
   // get maximum and minimum values
-  for(Graph *pg = Graphs.first(); pg != 0; pg = Graphs.next())
+  foreach(Graph *pg, Graphs)
     getAxisLimits(pg);
 
   if(xAxis.min > xAxis.max) {
@@ -801,8 +798,7 @@ void Diagram::updateGraphData()
 {
   int valid = calcDiagram();   // do not calculate graph data if invalid
 
-  Graph *pg;
-  for(pg = Graphs.first(); pg != 0; pg = Graphs.next()) {
+  foreach(Graph *pg, Graphs) {
     if(pg->ScrPoints != 0) {
       free(pg->ScrPoints);
       pg->ScrPoints = 0;
@@ -819,8 +815,8 @@ void Diagram::updateGraphData()
 
   // Setting markers must be done last, because in 3D diagram "Mem"
   // is released in "createAxisLabels()".
-  for(pg = Graphs.first(); pg != 0; pg = Graphs.next())
-    for(Marker *pm = pg->Markers.first(); pm != 0; pm = pg->Markers.next())
+  foreach(Graph *pg, Graphs)
+    foreach(Marker *pm, pg->Markers)
       pm->createText();
 }
 
@@ -1232,7 +1228,7 @@ QString Diagram::save()
   // labels can contain spaces -> must be last items in the line
   s += " \""+xAxis.Label+"\" \""+yAxis.Label+"\" \""+zAxis.Label+"\">\n";
 
-  for(Graph *pg=Graphs.first(); pg != 0; pg=Graphs.next())
+  foreach(Graph *pg, Graphs)
     s += pg->save()+"\n";
 
   s += "  </"+Name+">";
@@ -1369,7 +1365,7 @@ bool Diagram::load(const QString& Line, QTextStream *stream)
 
       // .......................................................
       // load markers of the diagram
-      pg = Graphs.current();
+      pg = Graphs.last();
       if(!pg)  return false;
       Marker *pm = new Marker(this, pg);
       if(!pm->load(s)) {
@@ -1647,7 +1643,8 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
   Arcs.append(new struct Arc(0, y2, x2, y2, tmp, 16*360-phi, QPen(Qt::black,0)));
 
   QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
-  QSize r = metrics.size(0, Texts.current()->s);  // width of text
+  /// \fixme
+  QSize r = metrics.size(0, Texts.last()->s);  // width of text
   len = x2+r.width()-4;   // more space at the right
   if(len > x3)  x3 = len;
 }
