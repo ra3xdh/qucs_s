@@ -68,7 +68,7 @@ protected:
     Filter::FType ftype;
     Filter::FilterFunc ffunc;
     int order;
-    float Fc,Kv,Fs,Ap,As,Rp;
+    float Fc,Kv,Fs,Ap,As,Rp,Fl,Fu,TW,Q;
     int Nr,Nc,Nopamp; // total number of R,C, opamp
 
     int Nr1,Nc1,Nop1; // number of R,C, opamp per stage

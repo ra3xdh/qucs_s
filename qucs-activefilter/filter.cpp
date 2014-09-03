@@ -27,11 +27,19 @@ Filter::Filter(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam par)
 {
     ffunc = ffunc_;
     ftype = type_;
-    Fc = par.Fc;
-    Fs = par.Fs;
+
+    if ((ftype==Filter::HighPass)||(ftype==Filter::LowPass)) {
+        Fc = par.Fc;
+        Fs = par.Fs;
+        As = par.As;
+        Ap = par.Ap;
+    } else {
+        Fl = par.Fl;
+        Fu = par.Fu;
+        TW = par.TW;
+    }
+
     Rp = par.Rp;
-    As = par.As;
-    Ap = par.Ap;
     Kv = par.Kv;
     if (ffunc==Filter::Bessel) {
         order = par.order;

@@ -108,6 +108,7 @@ private slots:
     void slotUpdateResponse();
     void slotCalcSchematic();
     void slotSwitchParameters();
+    void slotSetLabels();
     void slotDefineTransferFunc();
     void slotHelpAbout();
     void slotHelpAboutQt();

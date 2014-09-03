@@ -132,6 +132,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     cbxResponse->addItems(lst3);
     connect(cbxResponse,SIGNAL(currentIndexChanged(int)),this,SLOT(slotUpdateResponse()));
     connect(cbxResponse,SIGNAL(currentIndexChanged(int)),this,SLOT(slotUpdateSchematic()));
+    connect(cbxResponse,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetLabels()));
 
     cbxFilterType = new QComboBox;
     QStringList lst;
@@ -270,11 +271,18 @@ void QucsActiveFilter::slotCalcSchematic()
 {
 
     FilterParam par;
-    par.Ap = edtA1->text().toFloat();
-    par.As = edtA2->text().toFloat();
+    if ((cbxResponse->currentIndex()==tLowPass)||
+        (cbxResponse->currentIndex()==tHiPass)) {
+       par.Ap = edtA1->text().toFloat();
+       par.As = edtA2->text().toFloat();
+       par.Fc = edtF1->text().toFloat();
+       par.Fs = edtF2->text().toFloat();
+    } else {
+       par.Fu = edtF1->text().toFloat();
+       par.Fl = edtF2->text().toFloat();
+       par.TW = edtA1->text().toFloat();
+    }
     par.Rp = edtPassbRpl->text().toFloat();
-    par.Fc = edtF1->text().toFloat();
-    par.Fs = edtF2->text().toFloat();
     float G = edtKv->text().toFloat();
     par.Kv = pow(10,G/20.0);
 
@@ -504,6 +512,22 @@ void QucsActiveFilter::slotSwitchParameters()
         edtA1->setEnabled(true);
         edtA2->setEnabled(true);
         edtKv->setEnabled(true);
+    }
+}
+
+void QucsActiveFilter::slotSetLabels()
+{
+    if ((cbxResponse->currentIndex()==tBandPass)|| // set proper labels
+        (cbxResponse->currentIndex()==tBandStop)) {
+        lblF1->setText(tr("Upper cutoff frequency, Fu (Hz)"));
+        lblF2->setText(tr("Lower cuttoff frequency, Fl (Hz)"));
+        lblA1->setText(tr("Transient bandwidth, TW (Hz)"));
+        lblA2->setEnabled(false);
+    } else {
+        lblF1->setText(tr("Cuttof frequency, Fc (Hz)"));
+        lblF2->setText(tr("Stopband frequency, Fs (Hz)"));
+        lblA1->setText(tr("Passband attenuation, Ap (dB)"));
+        lblA2->setEnabled(true);
     }
 }
 
