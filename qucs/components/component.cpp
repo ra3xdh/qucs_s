@@ -55,8 +55,6 @@ Component::Component()
   tx = 0;
   ty = 0;
 
-  Rects.setAutoDelete(true);
-  Ellips.setAutoDelete(true);
   Ports.setAutoDelete(true);
   Texts.setAutoDelete(true);
   Props.setAutoDelete(true);
@@ -233,15 +231,14 @@ void Component::paint(ViewPainter *p)
     }
 
     // paint all rectangles
-    Area *pa;
-    for(pa = Rects.first(); pa != 0; pa = Rects.next()) {
+    foreach(Area *pa, Rects) {
       p->Painter->setPen(pa->Pen);
       p->Painter->setBrush(pa->Brush);
       p->drawRect(cx+pa->x, cy+pa->y, pa->w, pa->h);
     }
 
     // paint all ellipses
-    for(pa = Ellips.first(); pa != 0; pa = Ellips.next()) {
+    foreach(Area *pa, Ellips) {
       p->Painter->setPen(pa->Pen);
       p->Painter->setBrush(pa->Brush);
       p->drawEllipse(cx+pa->x, cy+pa->y, pa->w, pa->h);
@@ -361,11 +358,11 @@ void Component::paintScheme(Schematic *p)
   foreach(Arc *p3, Arcs)   // paint all arcs
     p->PostPaintEvent(_Arc,cx+p3->x, cy+p3->y, p3->w, p3->h, p3->angle, p3->arclen);
 
-  Area *pa;
-  for(pa = Rects.first(); pa != 0; pa = Rects.next()) // paint all rectangles
+
+  foreach(Area *pa, Rects) // paint all rectangles
     p->PostPaintEvent(_Rect,cx+pa->x, cy+pa->y, pa->w, pa->h);
 
-  for(pa = Ellips.first(); pa != 0; pa = Ellips.next()) // paint all ellipses
+  foreach(Area *pa, Ellips) // paint all ellipses
     p->PostPaintEvent(_Ellipse,cx+pa->x, cy+pa->y, pa->w, pa->h);
 }
 
@@ -421,9 +418,8 @@ void Component::rotate()
     if(p3->angle >= 16*360) p3->angle -= 16*360;;
   }
 
-  Area *pa;
   // rotate all rectangles
-  for(pa = Rects.first(); pa != 0; pa = Rects.next()) {
+  foreach(Area *pa, Rects) {
     tmp = -pa->x;
     pa->x = pa->y;
     pa->y = tmp - pa->w;
@@ -433,7 +429,7 @@ void Component::rotate()
   }
 
   // rotate all ellipses
-  for(pa = Ellips.first(); pa != 0; pa = Ellips.next()) {
+  foreach(Area *pa, Ellips) {
     tmp = -pa->x;
     pa->x = pa->y;
     pa->y = tmp - pa->w;
@@ -512,11 +508,11 @@ void Component::mirrorX()
 
   Area *pa;
   // mirror all rectangles
-  for(pa = Rects.first(); pa != 0; pa = Rects.next())
+  foreach(Area *pa, Rects)
     pa->y = -pa->y - pa->h;
 
   // mirror all ellipses
-  for(pa = Ellips.first(); pa != 0; pa = Ellips.next())
+  foreach(Area *pa, Ellips)
     pa->y = -pa->y - pa->h;
 
   QFont f = QucsSettings.font;
@@ -572,11 +568,11 @@ void Component::mirrorY()
 
   Area *pa;
   // mirror all rectangles
-  for(pa = Rects.first(); pa != 0; pa = Rects.next())
+  foreach(Area *pa, Rects)
     pa->x = -pa->x - pa->w;
 
   // mirror all ellipses
-  for(pa = Ellips.first(); pa != 0; pa = Ellips.next())
+  foreach(Area *pa, Ellips)
     pa->x = -pa->x - pa->w;
 
   int tmp;
