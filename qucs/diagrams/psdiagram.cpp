@@ -15,6 +15,11 @@
  *                                                                         *
  ***************************************************************************/
 
+/*!
+  \class PSDiagram
+  \brief The PSDiagram class implements the Polar and Smith (combi) diagrams
+*/
+
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif

@@ -15,6 +15,11 @@
  *                                                                         *
  ***************************************************************************/
 
+/*!
+  \class RectDiagram
+  \brief The RectDiagram class implements the Cartesian diagram
+*/
+
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif

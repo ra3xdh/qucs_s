@@ -15,6 +15,11 @@
  *                                                                         *
  ***************************************************************************/
 
+/*!
+  \class Rect3DDiagram
+  \brief The Rect3DDiagram class implements the 3D-Cartesian diagram
+*/
+
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif

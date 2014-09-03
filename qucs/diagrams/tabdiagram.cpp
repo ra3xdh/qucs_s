@@ -14,6 +14,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+/*!
+  \class TabDiagram
+  \brief The TabDiagram class implements the Tabular diagram
+*/
+
 #include <QtGui>
 #include "tabdiagram.h"
 #include "main.h"

@@ -15,6 +15,11 @@
  *                                                                         *
  ***************************************************************************/
 
+/*!
+  \class CurveDiagram
+  \brief The CurveDiagram class implements the Locus Curve diagram
+*/
+
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif

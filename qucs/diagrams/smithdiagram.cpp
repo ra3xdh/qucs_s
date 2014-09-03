@@ -15,6 +15,11 @@
  *                                                                         *
  ***************************************************************************/
 
+/*!
+  \class SmithDiagram
+  \brief The SmithDiagram class implements the Impedance and Admittance Smith diagram
+*/
+
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif

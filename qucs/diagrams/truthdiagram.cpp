@@ -14,6 +14,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+/*!
+  \class TruthDiagram
+  \brief The TruthDiagram class implements the Truth Table diagram
+*/
+
 #include <QtGui>
 #include "truthdiagram.h"
 #include "main.h"

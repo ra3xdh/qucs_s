@@ -14,6 +14,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+/*!
+  \class TimingDiagram
+  \brief The TimingDiagram class implements the Timing diagram
+*/
+
 #include <QtGui>
 #include "timingdiagram.h"
 #include "main.h"
