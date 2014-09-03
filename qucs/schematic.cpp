@@ -542,6 +542,7 @@ void Schematic::PostPaintEvent (PE pe, int x1, int y1, int x2, int y2, int a, in
 // ---------------------------------------------------
 void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
 {
+  App->printCursorPosition(Event->pos().x(), Event->pos().y());
   if(App->MouseMoveAction)
     (App->view->*(App->MouseMoveAction))(this, Event);
 }
