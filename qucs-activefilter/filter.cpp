@@ -37,8 +37,18 @@ Filter::Filter(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam par)
         Fl = par.Fl;
         Fu = par.Fu;
         TW = par.TW;
+        BW = fabs(Fu -Fl);
         F0 = sqrt(Fu*Fl);
-        Q = F0/abs(Fu-Fl);
+        Fc=BW;          // cutoff freq. of LPF prototype
+        float Fs1 = Fu + TW;
+        float Fs1lp = fabsf(Fs1 - (F0*F0)/Fs1);    // stopband freq. of LPF prototype
+        float Fs2 = Fl - TW;
+        float Fs2lp = fabsf(Fs2 - (F0*F0)/Fs2);
+        Fs = std::min(Fs1lp,Fs2lp);
+        Ap = 3.0;
+        As = 20.0;
+        qDebug()<<Fc<<Fs;
+        Q = F0/fabs(Fu-Fl);
     }
 
     Rp = par.Rp;

@@ -34,8 +34,11 @@ MFBfilter::MFBfilter(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam
         Nr1=2;
         Nc1=3;
         break;
-    default:
+    case Filter::BandPass :
+        Nr1=3;
+        Nc1=2;
         break;
+    default : break;
     }
 
     //Nr1 = 3;
