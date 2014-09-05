@@ -29,17 +29,12 @@
 #include <QPushButton>
 #include <Q3PtrList>
 #include <QDir>
-//Added by qt3to4:
-#include <Q3GridLayout>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 
 class Schematic;
-class Q3GridLayout;
 class QValidator;
-class Q3VBoxLayout;
 class QIntValidator;
 class QRegExpValidator;
-
 
 
 class ComponentDialog : public QDialog {
@@ -79,7 +74,7 @@ protected slots:
     void reject();
 
 private:
-  Q3VBoxLayout *all;   // the mother of all widgets
+  QVBoxLayout *all;   // the mother of all widgets
   QValidator  *Validator, *ValRestrict, *Validator2;
   QRegExp     Expr;
   QIntValidator *ValInteger;

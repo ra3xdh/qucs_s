@@ -14,24 +14,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "componentdialog.h"
-#include "main.h"
-#include "qucs.h"
-//Added by qt3to4:
-#include <Q3Button>
+#include <QtGui>
 #include <QLabel>
 #include <Q3GridLayout>
-#include <Q3VBoxLayout>
-#include "schematic.h"
-
-#include <Q3HBox>
-#include <Q3VBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QLayout>
-#include <Q3HGroupBox>
 #include <QValidator>
 #include <QTabWidget>
 #include <QFileDialog>
 
+#include "componentdialog.h"
+#include "main.h"
+#include "qucs.h"
+#include "schematic.h"
+#include <math.h>
 
 
 ComponentDialog::ComponentDialog(Component *c, Schematic *d)
@@ -43,7 +40,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   Doc   = d;
   QString s;
 
-  all = new Q3VBoxLayout(this); // to provide neccessary size
+  all = new QVBoxLayout(this); // to provide neccessary size
+  all->setContentsMargins(1,1,1,1);
   Q3GridLayout *gp1;
   QWidget *myParent = this;
   ValInteger = new QIntValidator(1, 1000000, this);
@@ -69,7 +67,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 
     QWidget *Tab1 = new QWidget(t);
     t->addTab(Tab1, tr("Sweep"));
-    Q3GridLayout *gp = new Q3GridLayout(Tab1, 9,3,5,5);
+    QGridLayout *gp = new QGridLayout(Tab1, 9,3,5,5);
 
     gp->addMultiCellWidget(new QLabel(Comp->Description, Tab1), 0,0,0,1);
 
@@ -241,89 +239,123 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 
 
   // ...........................................................
-  gp1->addMultiCellWidget(new QLabel(Comp->Description, myParent), 0,0,0,1);
+  gp1->addMultiCellWidget(new QLabel(Comp->Description), 0,0,0,1);
 
-  Q3HBox *h5 = new Q3HBox(myParent);
+  QHBoxLayout *h5 = new QHBoxLayout;
   h5->setSpacing(5);
-  gp1->addWidget(h5, 1,0);
-  new QLabel(tr("Name:"), h5);
-  CompNameEdit = new QLineEdit(h5);
+
+  h5->addWidget(new QLabel(tr("Name:")) );
+
+  CompNameEdit = new QLineEdit;
+  h5->addWidget(CompNameEdit);
+
   CompNameEdit->setValidator(ValRestrict);
   connect(CompNameEdit, SIGNAL(returnPressed()), SLOT(slotButtOK()));
 
-  showName = new QCheckBox(tr("display in schematic"), myParent);
-  gp1->addWidget(showName, 1,1);
+  showName = new QCheckBox(tr("display in schematic"));
+  h5->addWidget(showName);
 
-  Q3HGroupBox *PropertyBox = new Q3HGroupBox(tr("Properties"), myParent);
-  gp1->addMultiCellWidget(PropertyBox, 2,2,0,1);
+  QWidget *hTop = new QWidget;
+  hTop->setLayout(h5);
 
-  prop = new Q3ListView(PropertyBox);
+  gp1->addWidget(hTop,1,0);
+
+  QGroupBox *PropertyBox = new QGroupBox(tr("Properties"));
+
+  QHBoxLayout *hProps = new QHBoxLayout;
+
+  /// \todo add name filter
+  prop = new Q3ListView();
   prop->setMinimumSize(200, 150);
   prop->addColumn(tr("Name"));
   prop->addColumn(tr("Value"));
   prop->addColumn(tr("display"));
   prop->addColumn(tr("Description"));
-  prop->setSorting(-1);   // no sorting
+  prop->setSorting(-1);   // no sorting, keep as in the model
 
-  Q3VBox *v1 = new Q3VBox(PropertyBox);
+
+  hProps->addWidget(prop);
+
+  PropertyBox->setLayout(hProps);
+  gp1->addWidget(PropertyBox,2,0);
+
+  QWidget *vboxProps = new QWidget;
+  QVBoxLayout *v1 = new QVBoxLayout;
+  vboxProps->setLayout(v1);
   v1->setSpacing(3);
 
-  Name = new QLabel(v1);
+  hProps->addWidget(vboxProps);
 
-  Description = new QLabel(v1);
+  Name = new QLabel;
+  v1->addWidget(Name);
+
+  Description = new QLabel;
+  v1->addWidget(Description);
 
   // hide, because it only replaces 'Description' in some cases
-  NameEdit = new QLineEdit(v1);
+  NameEdit = new QLineEdit;
+  v1->addWidget(NameEdit);
   NameEdit->setShown(false);
   NameEdit->setValidator(ValRestrict);
   connect(NameEdit, SIGNAL(returnPressed()), SLOT(slotApplyPropName()));
 
-  edit = new QLineEdit(v1);
+  edit = new QLineEdit;
+  v1->addWidget(edit);
   edit->setMinimumWidth(150);
   edit->setValidator(Validator2);
   connect(edit, SIGNAL(returnPressed()), SLOT(slotApplyProperty()));
 
   // hide, because it only replaces 'edit' in some cases
-  ComboEdit = new QComboBox(false, v1);
+  ComboEdit = new QComboBox;
+  v1->addWidget(ComboEdit);
   ComboEdit->setShown(false);
   connect(ComboEdit, SIGNAL(activated(const QString&)),
 	  SLOT(slotApplyChange(const QString&)));
 
-  Q3HBox *h3 = new Q3HBox(v1);
-  h3->setStretchFactor(new QWidget(h3),5); // stretchable placeholder
-  EditButt = new QPushButton(tr("Edit"),h3);
+  QHBoxLayout *h3 = new QHBoxLayout(v1);
+
+  EditButt = new QPushButton(tr("Edit"));
+  h3->addWidget(EditButt);
   EditButt->setEnabled(false);
   EditButt->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   connect(EditButt, SIGNAL(clicked()), SLOT(slotEditFile()));
-  BrowseButt = new QPushButton(tr("Browse"),h3);
+
+  BrowseButt = new QPushButton(tr("Browse"));
+  h3->addWidget(BrowseButt);
   BrowseButt->setEnabled(false);
   BrowseButt->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   connect(BrowseButt, SIGNAL(clicked()), SLOT(slotBrowseFile()));
 
-  disp = new QCheckBox(tr("display in schematic"), v1);
+  disp = new QCheckBox(tr("display in schematic"));
+  v1->addWidget(disp);
   connect(disp, SIGNAL(stateChanged(int)), SLOT(slotApplyState(int)));
 
-  v1->setStretchFactor(new QWidget(v1),5); // stretchable placeholder
-
-  Q3HBox *h4 = new Q3HBox(v1);
+  QHBoxLayout *h4 = new QHBoxLayout(v1);
   h4->setSpacing(5);
-  ButtAdd = new QPushButton(tr("Add"),h4);
+  ButtAdd = new QPushButton(tr("Add"));
+  h4->addWidget(ButtAdd);
   ButtAdd->setEnabled(false);
-  ButtRem = new QPushButton(tr("Remove"),h4);
+  ButtRem = new QPushButton(tr("Remove"));
+  h4->addWidget(ButtRem);
   ButtRem->setEnabled(false);
   connect(ButtAdd, SIGNAL(clicked()), SLOT(slotButtAdd()));
   connect(ButtRem, SIGNAL(clicked()), SLOT(slotButtRem()));
 
   // ...........................................................
-  Q3HBox *h2 = new Q3HBox(this);
+  QHBoxLayout *h2 = new QHBoxLayout(this);
+  QWidget * hbox2 = new QWidget;
+  hbox2->setLayout(h2);
   h2->setSpacing(5);
-  all->addWidget(h2);
-  connect(new QPushButton(tr("OK"),h2), SIGNAL(clicked()),
-	  SLOT(slotButtOK()));
-  connect(new QPushButton(tr("Apply"),h2), SIGNAL(clicked()),
-	  SLOT(slotApplyInput()));
-  connect(new QPushButton(tr("Cancel"),h2), SIGNAL(clicked()),
-	  SLOT(slotButtCancel()));
+  all->addWidget(hbox2);
+  QPushButton *ok = new QPushButton(tr("OK"));
+  QPushButton *apply = new QPushButton(tr("Apply"));
+  QPushButton *cancel = new QPushButton(tr("Cancel"));
+  h2->addWidget(ok);
+  h2->addWidget(apply);
+  h2->addWidget(cancel);
+  connect(ok,     SIGNAL(clicked()), SLOT(slotButtOK()));
+  connect(apply,  SIGNAL(clicked()), SLOT(slotApplyInput()));
+  connect(cancel, SIGNAL(clicked()), SLOT(slotButtCancel()));
 
   // ------------------------------------------------------------
   CompNameEdit->setText(Comp->Name);
@@ -349,8 +381,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
     slotSelectProperty(prop->firstChild());
   }
 
-  connect(prop, SIGNAL(clicked(Q3ListViewItem*)),
-	  SLOT(slotSelectProperty(Q3ListViewItem*)));
+  connect(prop, SIGNAL(clicked(Q3ListViewItem*)), SLOT(slotSelectProperty(Q3ListViewItem*)));
 }
 
 ComponentDialog::~ComponentDialog()
