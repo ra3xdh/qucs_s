@@ -34,7 +34,7 @@
 ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 			: QDialog(d, 0, TRUE, Qt::WDestructiveClose)
 {
-  resize(400, 250);
+  resize(600, 250);
   setCaption(tr("Edit Component Properties"));
   Comp  = c;
   Doc   = d;
@@ -261,30 +261,43 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   gp1->addWidget(hTop,1,0);
 
   QGroupBox *PropertyBox = new QGroupBox(tr("Properties"));
-
-  QHBoxLayout *hProps = new QHBoxLayout;
-
-  /// \todo add name filter
-  prop = new Q3ListView();
-  prop->setMinimumSize(200, 150);
-  prop->addColumn(tr("Name"));
-  prop->addColumn(tr("Value"));
-  prop->addColumn(tr("display"));
-  prop->addColumn(tr("Description"));
-  prop->setSorting(-1);   // no sorting, keep as in the model
-
-
-  hProps->addWidget(prop);
-
-  PropertyBox->setLayout(hProps);
   gp1->addWidget(PropertyBox,2,0);
 
-  QWidget *vboxProps = new QWidget;
+  // H layout inside the GroupBox
+  QHBoxLayout *hProps = new QHBoxLayout;
+  PropertyBox->setLayout(hProps);
+
+  // left pane
+  /// \todo add name filter, at the bottom of left pane
+  QWidget *vboxPropsL = new QWidget;
+  QVBoxLayout *vL = new QVBoxLayout;
+  vboxPropsL->setLayout(vL);
+
+  /// \todo column min width
+  prop = new QTableWidget(0,4); //initialize
+  vL->addWidget(prop);
+  prop->setSelectionBehavior(QAbstractItemView::SelectRows);
+  prop->setSelectionMode(QAbstractItemView::SingleSelection);
+  prop->setMinimumSize(200, 150);
+//  prop->horizontalHeader()->setStretchLastSection(true);
+  prop->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+
+  QStringList headers;
+  headers << tr("Name")
+          << tr("Value")
+          << tr("display")
+          << tr("Description");
+  prop->setHorizontalHeaderLabels(headers);
+
+  // right pane
+  QWidget *vboxPropsR = new QWidget;
   QVBoxLayout *v1 = new QVBoxLayout;
-  vboxProps->setLayout(v1);
+  vboxPropsR->setLayout(v1);
+
   v1->setSpacing(3);
 
-  hProps->addWidget(vboxProps);
+  hProps->addWidget(vboxPropsL);
+  hProps->addWidget(vboxPropsR);
 
   Name = new QLabel;
   v1->addWidget(Name);
@@ -368,20 +381,48 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   tmp = Comp->ty+ty_Dist - Comp->y1;
   if((tmp > 0) || (tmp < -6))  ty_Dist = 0;
 
-  // insert all properties into the ListBox
-  for(Property *p = Comp->Props.last(); p != 0; p = Comp->Props.prev()) {
-    if(p == pp)  break;   // do not insert if already on first tab
-    if(p->display) s = tr("yes");
-    else s = tr("no");
-    new Q3ListViewItem(prop, p->Name, p->Value, s, p->Description);
+  // insert all properties into the TableWidget
+  /// \todo why does it backwards??
+  int row=0; // row counter
+//  for(Property *p = Comp->Props.last(); p != 0; p = Comp->Props.prev()) {
+  for(Property *p = Comp->Props.first(); p != 0; p = Comp->Props.next()) {
+    if(p == pp) // do not insert if already on first tab
+      break;
+    if(p->display)
+      s = tr("yes");
+    else
+      s = tr("no");
+
+    // add Props into TableWidget
+    qDebug() << p->Name << p->Value << s << p->Description;
+
+    prop->setRowCount(prop->rowCount()+1);
+
+    QTableWidgetItem *cell;
+    cell = new QTableWidgetItem(p->Name);
+    cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+    prop->setItem(row, 0, cell);
+    cell = new QTableWidgetItem(p->Value);
+    cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+    prop->setItem(row, 1, cell);
+    cell = new QTableWidgetItem(s);
+    cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+    prop->setItem(row, 2, cell);
+    cell = new QTableWidgetItem(p->Description);
+    cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+    prop->setItem(row, 3, cell);
+
+    row++;
   }
 
-  if(prop->childCount() > 0) {
-    prop->setCurrentItem(prop->firstChild());
-    slotSelectProperty(prop->firstChild());
+  if(prop->rowCount() > 0) {
+      prop->setCurrentItem(prop->item(0,0));
+      slotSelectProperty(prop->item(0,0));
   }
 
-  connect(prop, SIGNAL(clicked(Q3ListViewItem*)), SLOT(slotSelectProperty(Q3ListViewItem*)));
+  /// \todo add key up/down brose and select prop
+  connect(prop, SIGNAL(itemClicked(QTableWidgetItem*)),
+                SLOT(slotSelectProperty(QTableWidgetItem*)));
 }
 
 ComponentDialog::~ComponentDialog()
@@ -396,15 +437,25 @@ ComponentDialog::~ComponentDialog()
 // -------------------------------------------------------------------------
 // Is called if a property is selected. It transfers the values to the right
 // side for editing.
-void ComponentDialog::slotSelectProperty(Q3ListViewItem *item)
+void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
 {
+  qDebug() << "row " << item->row(); //<< item->text()
+
+  QString name  = prop->item(item->row(),0)->text();
+  QString value = prop->item(item->row(),1)->text();
+  QString show  = prop->item(item->row(),2)->text();
+  QString desc  = prop->item(item->row(),3)->text();
+
   if(item == 0) return;
   item->setSelected(true);  // if called from elsewhere, this was not yet done
 
-  if(item->text(2) == tr("yes")) disp->setChecked(true);
-  else disp->setChecked(false);
 
-  if(item->text(0) == "File") {
+  if(show == tr("yes"))
+    disp->setChecked(true);
+  else
+    disp->setChecked(false);
+
+  if(name == "File") {
     EditButt->setEnabled(true);
     BrowseButt->setEnabled(true);
   }
@@ -413,15 +464,16 @@ void ComponentDialog::slotSelectProperty(Q3ListViewItem *item)
     BrowseButt->setEnabled(false);
   }
 
-  QString PropDesc = item->text(3);
-  if(PropDesc.isEmpty()) {
+  /// \todo enable edit of description anyway...
+  /// empy or "-" (no comment from verilog-a)
+  if(desc.isEmpty()) {
     // show two line edit fields (name and value)
     ButtAdd->setEnabled(true);
     ButtRem->setEnabled(true);
 
     Name->setText("");
-    NameEdit->setText(item->text(0));
-    edit->setText(item->text(1));
+    NameEdit->setText(name);
+    edit->setText(value);
 
     edit->setShown(true);
     NameEdit->setShown(true);
@@ -434,38 +486,38 @@ void ComponentDialog::slotSelectProperty(Q3ListViewItem *item)
     ButtAdd->setEnabled(false);
     ButtRem->setEnabled(false);
 
-    Name->setText(item->text(0));
-    edit->setText(item->text(1));
+    Name->setText(name);
+    edit->setText(value);
 
     NameEdit->setShown(false);
-    NameEdit->setText(item->text(0));  // perhaps used for adding properties
+    NameEdit->setText(name); // perhaps used for adding properties
     Description->setShown(true);
 
     // handle special combobox items
     QStringList List;
-    int b = PropDesc.find('[');
-    int e = PropDesc.findRev(']');
+    int b = desc.find('[');
+    int e = desc.findRev(']');
     if (e-b > 2) {
-      QString str = PropDesc.mid(b+1, e-b-1);
+      QString str = desc.mid(b+1, e-b-1);
       str.replace( QRegExp("[^a-zA-Z0-9_,]"), "" );
       List = List.split(',',str);
     }
 
     QFontMetrics  metrics(QucsSettings.font);   // get size of text
-    while(metrics.width(PropDesc) > 270) {  // if description too long, cut it
-      if (PropDesc.findRev(' ') != -1)
-	PropDesc = PropDesc.left(PropDesc.findRev(' ', -1)) + "....";
+    while(metrics.width(desc) > 270) {  // if description too long, cut it
+      if (desc.findRev(' ') != -1)
+        desc = desc.left(desc.findRev(' ', -1)) + "....";
       else
-	PropDesc = PropDesc.left(PropDesc.length()-5) + "....";
+        desc = desc.left(desc.length()-5) + "....";
     }
-    Description->setText(PropDesc);
+    Description->setText(desc);
 
     if(List.count() >= 1) {    // ComboBox with value list or line edit ?
       ComboEdit->clear();
       ComboEdit->insertStringList(List);
 
       for(int i=ComboEdit->count()-1; i>=0; i--)
-       if(item->text(1) == ComboEdit->text(i)) {
+       if(value == ComboEdit->text(i)) {
          ComboEdit->setCurrentItem(i);
 	 break;
        }
@@ -477,68 +529,102 @@ void ComponentDialog::slotSelectProperty(Q3ListViewItem *item)
       ComboEdit->setShown(false);
     }
     edit->setFocus();   // edit QLineEdit
-//    edit->deselect();  // doesn't work ?!?
   }
 }
 
 // -------------------------------------------------------------------------
 void ComponentDialog::slotApplyChange(const QString& Text)
 {
+  // pick selected row
+  QTableWidgetItem *item = prop->selectedItems()[0];
+
+  int row = item->row();
+
+  qDebug() << Text;
   edit->setText(Text);
-  prop->currentItem()->setText(1, Text);	// apply edit line
+  //FIXME prop->currentItem()->setText(1, Text);	// apply edit line
+  prop->item(row, 1)->setText(Text);
 
   ComboEdit->setFocus();
+
+  /* old, new below
   Q3ListViewItem *item = prop->currentItem()->itemBelow();
   if(item == 0) return;
 
   prop->setSelected(item, true);
   slotSelectProperty(item);   // switch to the next property
+  */
+
+  // step to next item
+  if ( row < prop->rowCount()) {
+    prop->setCurrentItem(prop->item(row+1,0));
+    slotSelectProperty(prop->item(row+1,0));
+  }
 }
 
-// -------------------------------------------------------------------------
-// Is called if the "RETURN"-button is pressed in the "edit" Widget.
+/*!
+ Is called if the "RETURN" key is pressed in the "edit" Widget.
+ The parameter is edited on the right pane.
+ Return key commits the change, and steps to the next parameter in the list.
+*/
 void ComponentDialog::slotApplyProperty()
 {
-  Q3ListViewItem *item = prop->currentItem();
-  if(!item) return;
+  // pick selected row
+  QTableWidgetItem *item = prop->selectedItems()[0];
+
+  int row = item->row();
+
+  QString name  = prop->item(row, 0)->text();
+  QString value = prop->item(row, 1)->text();
+
+  if(!item)
+    return;
 
   if(ComboEdit->isShown())   // take text from ComboBox ?
     edit->setText(ComboEdit->currentText());
 
-  if(item->text(1) != edit->text())
-    item->setText(1, edit->text());    // apply edit line
+  // apply edit line
+  if(value != edit->text()) {
+       prop->item(row, 1)->setText(edit->text());
+    }
 
   if(NameEdit->isShown())	// also apply property name ?
-    if(item->text(0) != NameEdit->text()) {
+    if(name != NameEdit->text()) {
 //      if(NameEdit->text() == "Export")
 //        item->setText(0, "Export_");   // name must not be "Export" !!!
 //      else
-      item->setText(0, NameEdit->text());  // apply property name
+//      item->setText(0, NameEdit->text());  // apply property name
+      prop->item(row, 0)->setText(edit->text());
     }
 
-  item = item->itemBelow();
-  if(!item) {
+  // step to next item
+  if ( row < prop->rowCount()) {
+    prop->setCurrentItem(prop->item(row+1,0));
+    slotSelectProperty(prop->item(row+1,0));
+  }
+  else {
     slotButtOK();   // close dialog, if it was the last property
     return;
   }
-
-  prop->setSelected(item, true);
-  prop->ensureItemVisible(item);
-  slotSelectProperty(item);   // switch to the next property
 }
 
 // -------------------------------------------------------------------------
 // Is called if the "RETURN"-button is pressed in the "NameEdit" Widget.
 void ComponentDialog::slotApplyPropName()
 {
-  Q3ListViewItem *item = prop->currentItem();
-  if(item->text(0) != NameEdit->text()) {
+  // pick selected row
+  QTableWidgetItem *item = prop->selectedItems()[0];
+  int row = item->row();
+
+  QString name  = prop->item(row, 0)->text();
+
+  if(name != NameEdit->text()) {
 //    if(NameEdit->text() == "Export") {
 //	item->setText(0, "Export_");   // name must not be "Export" !!!
 //	NameEdit->setText("Export_");
 //    }
 //      else
-    item->setText(0, NameEdit->text());  // apply property name
+    prop->item(row, 0)->setText(edit->text());
   }
   edit->setFocus();   // cursor into "edit" widget
 }
@@ -547,15 +633,22 @@ void ComponentDialog::slotApplyPropName()
 // Is called if the checkbox is pressed (changed).
 void ComponentDialog::slotApplyState(int State)
 {
-  Q3ListViewItem *item = prop->currentItem();
+  // pick selected row
+  QTableWidgetItem *item = prop->selectedItems()[0];
+  int row = item->row();
+
+  QString disp  = prop->item(row, 2)->text();
+
   if(item == 0) return;
 
   QString ButtonState;
-  if(State) ButtonState = tr("yes");
-  else ButtonState = tr("no");
+  if(State)
+    ButtonState = tr("yes");
+  else
+    ButtonState = tr("no");
 
-  if(item->text(2) != ButtonState) {
-    item->setText(2, ButtonState);
+  if(disp != ButtonState) {
+    prop->item(row, 2)->setText(ButtonState);
   }
 }
 
@@ -586,6 +679,7 @@ void ComponentDialog::reject()
 // Is called, if the "Apply"-button is pressed.
 void ComponentDialog::slotApplyInput()
 {
+  qDebug() << " \n == Apply ";
   if(Comp->showName != showName->isChecked()) {
     Comp->showName = showName->isChecked();
     changed = true;
@@ -715,42 +809,66 @@ void ComponentDialog::slotApplyInput()
   }
 
 
-  Q3ListViewItem *item = prop->firstChild();
- if(item != 0) {
+  // pick selected row
+  QTableWidgetItem *item = prop->selectedItems()[0];
+  int row = item->row();
 
-  item = prop->currentItem();
-  if(item->text(1) != edit->text())
-    item->setText(1, edit->text());    // apply edit line
+  QString name  = prop->item(row, 0)->text();
+  QString value = prop->item(row, 1)->text();
+  //QString disp  = prop->item(row, 2)->text();
+
+//  Q3ListViewItem *item = prop->firstChild();
+   if(item != 0) {
+
+//  item = prop->currentItem();
+  if(value != edit->text())
+//    item->setText(1, edit->text());    // apply edit line
+    prop->item(row, 1)->setText(edit->text());
+
   if(NameEdit->isShown())	// also apply property name ?
-    if(item->text(0) != NameEdit->text())
-      item->setText(0, NameEdit->text());  // apply property name
+    if(name != NameEdit->text())
+//      item->setText(0, NameEdit->text());  // apply property name
+      prop->item(row, 0)->setText(NameEdit->text());
 
 
   // apply all the new property values in the ListView
-  for(item = prop->firstChild(); item != 0; item = item->itemBelow()) {
-    display = (item->text(2) == tr("yes"));
+  for( int row = 0; row < prop->rowCount(); row++ ) {
+
+//    QTableWidgetItem *item = prop->item(row,0);
+
+    QString name  = prop->item(row, 0)->text();
+    QString value = prop->item(row, 1)->text();
+    QString disp = prop->item(row, 2)->text();
+    QString desc = prop->item(row, 3)->text();
+
+    qDebug() << "====>" <<name << value;
+
+
+//  for(item = prop->firstChild(); item != 0; item = item->itemBelow()) {
+    display = (disp == tr("yes"));
     if(pp) {
       if(pp->display != display) {
         pp->display = display;
         changed = true;
       }
-      if(pp->Value != item->text(1)) {
-        pp->Value = item->text(1);
+      if(pp->Value != value) {
+        pp->Value = value;
         changed = true;
       }
-      if(pp->Name != item->text(0)) {
-        pp->Name = item->text(0);   // override if previous one was removed
+      if(pp->Name != name) {
+        pp->Name = name;   // override if previous one was removed
         changed = true;
       }
-      pp->Description = item->text(3);
+      pp->Description = desc;
     }
     else {  // if less properties than in ListView -> create new
-      Comp->Props.append(new
-	  Property(item->text(0), item->text(1), display, item->text(3)));
+      Comp->Props.append(new Property(name, value, display, desc));
       changed = true;
     }
     pp = Comp->Props.next();
   }
+
+  /// \todo need this?
   if(pp) {  // if more properties than in ListView -> delete the rest
     pp = Comp->Props.prev();
     Comp->Props.last();
@@ -758,7 +876,8 @@ void ComponentDialog::slotApplyInput()
       Comp->Props.remove();
     changed = true;
   }
- }
+
+ } // if (item !=0)
 
   if(changed) {
     int dx, dy;
@@ -775,6 +894,7 @@ void ComponentDialog::slotApplyInput()
     Doc->recreateComponent(Comp);
     Doc->viewport()->repaint();
   }
+
 }
 
 // -------------------------------------------------------------------------
@@ -798,7 +918,8 @@ void ComponentDialog::slotBrowseFile()
        QucsSettings.QucsWorkDir.absPath() == file.dirPath(true)) s = file.fileName();
     edit->setText(s);
   }
-  prop->currentItem()->setText(1, s);
+  /* FIX
+  prop->currentItem()->setText(1, s); */
 }
 
 // -------------------------------------------------------------------------
@@ -807,45 +928,107 @@ void ComponentDialog::slotEditFile()
   Doc->App->editFile(QucsSettings.QucsWorkDir.filePath(edit->text()));
 }
 
-// -------------------------------------------------------------------------
-// Is called if the add button is pressed. This is only possible for some
-// properties.
+/*!
+  Is called if the add button is pressed. This is only possible for some
+ properties.
+ \todo which props can be added??
+*/
 void ComponentDialog::slotButtAdd()
 {
-  Q3ListViewItem *item;
+//  Q3ListViewItem *item;
   // Search if property with this name already exist.
-  for(item = prop->firstChild(); item != 0; item = item->itemBelow())
-    if(item->text(0) == NameEdit->text()) {
-      prop->setSelected(item, true);
-      slotSelectProperty(item);
+  // loop over all items, select if found by name
+//  for(item = prop->firstChild(); item != 0; item = item->itemBelow())
+  for(int row=0; row < prop->rowCount(); row++) {
+
+      QString name  = prop->item(row, 0)->text();
+
+
+    //if found, jump to it
+    if( name == NameEdit->text()) {
+//      prop->setSelected(item, true);
+//      slotSelectProperty(item);
+      prop->setCurrentItem(prop->item(row,0));
+      slotSelectProperty(prop->item(row,0));
       return;
     }
+  }
 
-  item = prop->selectedItem();
-  if(item == 0) item = prop->lastItem();
+  //if nothing selected, select last
+//  item = prop->selectedItem();
+//  if(item == 0) item = prop->lastItem();
+  prop->setCurrentItem(prop->item(prop->rowCount(),0));
+  slotSelectProperty(prop->item(prop->rowCount(),0));
 
   QString s = tr("no");
-  if(disp->isChecked()) s = tr("yes");
+  if(disp->isChecked())
+    s = tr("yes");
 
-  prop->setSelected(new Q3ListViewItem(prop, item,
-			NameEdit->text(), edit->text(), s), true);
+  /// \todo test add parameter
+  // add new item and set it selected
+//  prop->setSelected(new Q3ListViewItem(prop, item,
+//			NameEdit->text(), edit->text(), s), true);
+
+
+
+  prop->setRowCount(prop->rowCount()+1);
+
+  int row = prop->rowCount();
+
+  /// \todo refator this
+  QTableWidgetItem *cell;
+  cell = new QTableWidgetItem(NameEdit->text());
+  cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+  prop->setItem(row, 0, cell);
+  cell = new QTableWidgetItem(edit->text());
+  cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+  prop->setItem(row, 1, cell);
+  cell = new QTableWidgetItem(s);
+  cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+  prop->setItem(row, 2, cell);
+  // no description?
+//  cell = new QTableWidgetItem(p->Description);
+//  cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+//  prop->setItem(row, 3, cell);
+
 }
 
-// -------------------------------------------------------------------------
-// Is called if the remove button is pressed. This is only possible for
-// some properties.
+/*!
+ Is called if the remove button is pressed. This is only possible for
+ some properties.
+
+ \todo which properties can be removed??
+*/
 void ComponentDialog::slotButtRem()
 {
-  if(prop->childCount() < 3) return;  // the last property cannot be removed
-  Q3ListViewItem *item = prop->selectedItem();
-  if(item == 0) return;
+  if(prop->rowCount() < 3)
+    return;  // the last property cannot be removed
 
+  QTableWidgetItem *item = prop->selectedItems()[0];
+  int row = item->row();
+
+//  Q3ListViewItem *item = prop->selectedItem();
+  if(item == 0)
+    return;
+
+  /// \todo test remove of parameters
+    /* old code, new below
   Q3ListViewItem *next_item = item->itemBelow();
-  if(next_item == 0) next_item = item->itemAbove();
+  if(next_item == 0)
+    next_item = item->itemAbove();
   prop->takeItem(item);     // remove from ListView
   delete item;              // delete item
 
   slotSelectProperty(next_item);
+  */
+
+  // peek next, delete current, set next current
+  if ( row < prop->rowCount()) {
+    prop->setCurrentItem(prop->item(row+1,0));
+    slotSelectProperty(prop->item(row+1,0));
+    prop->removeRow(row); /// \todo deleted?
+    delete item;
+   }
 }
 
 // -------------------------------------------------------------------------
@@ -1031,3 +1214,4 @@ void ComponentDialog::slotNumberEntered()
 {
   slotButtOK();
 }
+

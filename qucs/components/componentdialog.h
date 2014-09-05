@@ -46,7 +46,7 @@ public:
 private slots:
   void slotButtOK();
   void slotButtCancel();
-  void slotSelectProperty(Q3ListViewItem *item);
+  void slotSelectProperty(QTableWidgetItem *item);
   void slotApplyInput();
   void slotApplyState(int State);
   void slotBrowseFile();
@@ -78,7 +78,7 @@ private:
   QValidator  *Validator, *ValRestrict, *Validator2;
   QRegExp     Expr;
   QIntValidator *ValInteger;
-  Q3ListView   *prop;
+  QTableWidget  *prop;
   QLineEdit   *edit, *NameEdit, *CompNameEdit;
   QComboBox   *ComboEdit;
   QLabel      *Name, *Description;
