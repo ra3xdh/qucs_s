@@ -27,8 +27,12 @@ class MFBfilter : public Filter
 protected:
     void calcHighPass();
     void calcLowPass();
+    void calcBandPass();
+    void calcBandStop();
     void createHighPassSchematic(QString &s);
     void createLowPassSchematic(QString &s);
+    void createBandPassSchematic(QString &s);
+    void createBandStopSchematic(QString &s);
 
 public:
     MFBfilter(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam par);

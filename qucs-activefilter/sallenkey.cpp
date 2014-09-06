@@ -117,6 +117,78 @@ void SallenKey::calcHighPass()
     calcFirstOrder();
 }
 
+
+void SallenKey::calcBandPass()
+{
+    float W0 = 2*M_PI*F0;
+    float R1,R2,R3,R4,C1;
+    //float rho = Kv/Q;
+    //float gamma = 1.0;
+    int cnt = 1;
+
+    for (int k=1; k <= order/2; k++) {
+        float re = Poles.at(k-1).real();
+        float im = Poles.at(k-1).imag();
+        float B = -2.0*re;
+        float C = re*re + im*im;
+
+        float H = C + 4.0*Q*Q;
+        float E = (1.0/B)*sqrt(0.5*(H+sqrt(H*H-(4.0*B*B*Q*Q))));
+        float F = (B*E)/Q;
+        float D = 0.5*(F+sqrt(F*F-4.0));
+
+        qDebug()<<D<<E<<Q;
+
+        float rho = Kv*sqrt(C)/Q;
+        float beta = D/E;
+        float gamma = D*D;
+
+        C1 = 10.0/F0;
+        R1 = 2.0/(rho*W0*C1);
+        R2 = 2.0/((-beta+sqrt((rho-beta)*(rho-beta)+8.0*gamma))*W0*C1);
+        R3 = (1.0/R1+1.0/R2)/(gamma*W0*W0*C1*C1);
+        R4 = 2.0*R3;
+
+        RC_elements current_section;
+        current_section.N = cnt;
+        current_section.R1 = 1000*R1;
+        current_section.R2 = 1000*R2;
+        current_section.R3 = 1000*R3;
+        current_section.R4 = 1000*R4;
+        current_section.C1 = C1;
+        current_section.C2 = C1;
+        Sections.append(current_section);
+
+        cnt++;
+
+        beta = 1.0/(D*E);
+        gamma = 1.0/(D*D);
+        C1 = 10.0/F0;
+        R1 = 2.0/(rho*W0*C1);
+        R2 = 2.0/((-beta+sqrt((rho-beta)*(rho-beta)+8.0*gamma))*W0*C1);
+        R3 = (1.0/R1+1.0/R2)/(gamma*W0*W0*C1*C1);
+        R4 = 2.0*R3;
+
+        current_section.N = cnt;
+        current_section.R1 = 1000*R1;
+        current_section.R2 = 1000*R2;
+        current_section.R3 = 1000*R3;
+        current_section.R4 = 1000*R4;
+        current_section.C1 = C1;
+        current_section.C2 = C1;
+        Sections.append(current_section);
+
+        cnt++;
+
+
+    }
+}
+
+void SallenKey::calcBandStop()
+{
+
+}
+
 void SallenKey::createHighPassSchematic(QString &s)
 {
     int const N_R=4; // number of resisitors in 2-order Sallen-Key stage
@@ -279,3 +351,15 @@ void SallenKey::createLowPassSchematic(QString &s)
 
     s += "</Wires>\n";
 }
+
+void SallenKey::createBandPassSchematic(QString &s)
+{
+
+}
+
+void SallenKey::createBandStopSchematic(QString &s)
+{
+
+}
+
+

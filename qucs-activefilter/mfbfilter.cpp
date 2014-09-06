@@ -196,6 +196,16 @@ void MFBfilter::createHighPassSchematic(QString &s)
     s += "</Wires>\n";
 }
 
+void MFBfilter::createBandPassSchematic(QString &s)
+{
+
+}
+
+void MFBfilter::createBandStopSchematic(QString &s)
+{
+
+}
+
 void MFBfilter::calcHighPass()
 {
     float R1,R2,C1,C2;
@@ -258,4 +268,73 @@ void MFBfilter::calcLowPass()
     }
 
     this->calcFirstOrder();
+}
+
+void MFBfilter::calcBandPass()
+{
+    float W0 = 2*M_PI*F0;
+    float R1,R2,R3,C1,C2;
+    //float rho = Kv/Q;
+    //float gamma = 1.0;
+    int cnt = 1;
+
+    for (int k=1; k <= order/2; k++) {
+        float re = Poles.at(k-1).real();
+        float im = Poles.at(k-1).imag();
+        float B = -2.0*re;
+        float C = re*re + im*im;
+
+        float H = C + 4.0*Q*Q;
+        float E = (1.0/B)*sqrt(0.5*(H+sqrt(H*H-(4.0*B*B*Q*Q))));
+        float F = (B*E)/Q;
+        float D = 0.5*(F+sqrt(F*F-4.0));
+
+        qDebug()<<D<<E<<Q;
+
+        float rho = Kv*sqrt(C)/Q;
+        float beta = D/E;
+        float gamma = D*D;
+
+        C1 = 10.0/F0;
+        C2 = C1*(rho*beta-gamma)/gamma;
+        R1 = 1.0/(rho*W0*C1);
+        R2 = beta/((C1*(gamma-rho*beta)+gamma*C2)*W0);
+        R3 = (1.0/C1+1.0/C2)/(beta*W0);
+
+        RC_elements current_section;
+        current_section.N = cnt;
+        current_section.R1 = R1;
+        current_section.R2 = R2;
+        current_section.R3 = R3;
+        current_section.C1 = C1;
+        current_section.C2 = C2;
+        Sections.append(current_section);
+
+        cnt++;
+
+        beta = 1.0/(D*E);
+        gamma = 1.0/(D*D);
+        C1 = 10.0/F0;
+        C2 = C1*(rho*beta-gamma)/gamma;
+        R1 = 1.0/(rho*W0*C1);
+        R2 = beta/((C1*(gamma-rho*beta)+gamma*C2)*W0);
+        R3 = (1.0/C1+1.0/C2)/(beta*W0);
+
+        current_section.N = cnt;
+        current_section.R1 = R1;
+        current_section.R2 = R2;
+        current_section.R3 = R3;
+        current_section.C1 = C1;
+        current_section.C2 = C2;
+        Sections.append(current_section);
+
+        cnt++;
+
+
+    }
+}
+
+void MFBfilter::calcBandStop()
+{
+
 }
