@@ -198,7 +198,68 @@ void MFBfilter::createHighPassSchematic(QString &s)
 
 void MFBfilter::createBandPassSchematic(QString &s)
 {
+    RC_elements stage;
+    int dx = 0;
 
+    s += "<Qucs Schematic ";
+    s += PACKAGE_VERSION;
+    s += ">\n";
+    s += "<Components>\n";
+    s += QString("<.AC AC1 1 300 440 0 61 0 0 \"lin\" 1 \"1 Hz\" 1 \"%1 kHz\" 1 \"501\" 1 \"no\" 0>\n").arg((Fu+1000)/1000.0);
+    s += "<.DC DC1 1 60 440 0 61 0 0 \"26.85\" 0 \"0.001\" 0 \"1 pA\" 0 \"1 uV\" 0 \"no\" 0 \"150\" 0 \"no\" 0 \"none\" 0 \"CroutLU\" 0>\n";
+    s += "<Eqn Eqn1 1 610 450 -30 14 0 0 \"K=dB(out.v/in.v)\" 1 \"yes\" 0>\n";
+    s += QString("<Vac V1 1 %1 330 18 -26 0 1 \"1 V\" 1 \"1 kHz\" 0 \"0\" 0 \"0\" 0>\n").arg(70+dx);
+    s += QString("<GND * 1 %1 360 0 0 0 0>\n").arg(70+dx);
+    for (int i=1; i<=Sections.count(); i++) {
+        stage = Sections.at(i-1);
+        QString suffix1, suffix2;
+        float C1 = autoscaleCapacitor(stage.C1,suffix1);
+        float C2 = autoscaleCapacitor(stage.C2,suffix2);
+        s += QString("<GND * 1 %1 380 0 0 0 0>\n").arg(200+dx);
+        s += QString("<GND * 1 %1 350 0 0 0 0>\n").arg(360+dx);
+        s += QString("<OpAmp OP%1 1 %2 270 -26 -70 1 0 \"1e6\" 1 \"15 V\" 0>\n").arg(1+(i-1)*Nop1).arg(390+dx);
+        s += QString("<C C%1 1 %2 180 15 -26 0 1 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(1+(i-1)*Nc1).arg(200+dx).arg(C1,0,'f',3).arg(suffix1);
+        s += QString("<C C%1 1 %2 250 -26 15 0 0 \"%3%4\" 1 \"\" 0 \"neutral\" 0>\n").arg(2+(i-1)*Nc1).arg(250+dx).arg(C2,0,'f',3).arg(suffix2);
+        s += QString("<R R%1 1 %2 250 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(1+(i-1)*Nr1).arg(150+dx).arg(stage.R1,0,'f',3);
+        s += QString("<R R%1 1 %2 350 17 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(2+(i-1)*Nr1).arg(200+dx).arg(stage.R2,0,'f',3);
+        s += QString("<R R%1 1 %2 180 17 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(3+(i-1)*Nr1).arg(320+dx).arg(stage.R3,0,'f',3);
+        dx += 400;
+    }
+
+
+    s += "</Components>\n";
+    s += "<Wires>\n";
+    dx = 0;
+    s += "<70 250 120 250 \"in\" 120 220 22 \"\">\n";
+    s += "<70 250 70 300 \"\" 0 0 0 \"\">\n";
+    for (int i=1; i<=Sections.count(); i++) {
+        if (i!=1) {
+            s += QString("<%1 250 %2 270 \"\" 0 0 0 \"\">\n").arg(120+dx).arg(120+dx);
+            s += QString("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(dx+70).arg(120+dx);
+        }
+        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(180+dx).arg(200+dx);
+        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(220+dx);
+        s += QString("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
+        s += QString("<%1 250 %2 320 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
+        s += QString("<%1 290 %2 350 \"\" 0 0 0 \"\">\n").arg(360+dx).arg(360+dx);
+        s += QString("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(200+dx);
+        s += QString("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(200+dx).arg(320+dx);
+        s += QString("<%1 130 %2 150 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
+        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(280+dx).arg(320+dx);
+        s += QString("<%1 250 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(360+dx);
+        s += QString("<%1 210 %2 250 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(320+dx);
+        s += QString("<%1 130 %2 130 \"\" 0 0 0 \"\">\n").arg(320+dx).arg(470+dx);
+        s += QString("<%1 270 %2 270 \"\" 0 0 0 \"\">\n").arg(430+dx).arg(470+dx);
+        if (i==order) {
+            s += QString("<%1 130 %2 270 \"out\" %3 170 70 \"\">\n").arg(470+dx).arg(470+dx).arg(500+dx);
+        } else {
+            s += QString("<%1 130 %2 270 \"\" 0 0 0 \"\">\n").arg(470+dx).arg(470+dx);
+        }
+        dx += 400;
+    }
+
+
+    s += "</Wires>\n";
 }
 
 void MFBfilter::createBandStopSchematic(QString &s)
@@ -210,6 +271,8 @@ void MFBfilter::calcHighPass()
 {
     float R1,R2,C1,C2;
     float Wc = 2*M_PI*Fc;
+    float Nst = order/2 + order%2;
+    float Kv1 = pow(Kv,1.0/Nst);
 
     for (int k=1; k <= order/2; k++) {
         float re = Poles.at(k-1).real();
@@ -218,7 +281,7 @@ void MFBfilter::calcHighPass()
         float C = re*re + im*im;
 
         C1 = 10.0/Fc;
-        C2 = C1/Kv;
+        C2 = C1/Kv1;
         R1 = B/((2*C1+C2)*Wc);
         R2 = ((2*C1 + C2)*C)/(B*C1*C2*Wc);
 
@@ -242,6 +305,8 @@ void MFBfilter::calcLowPass()
 {
     float R1,R2,R3,C1,C2;
     float Wc = 2*M_PI*Fc;
+    float Nst = order/2 + order%2;
+    float Kv1 = pow(Kv,1.0/Nst);
 
     for (int k=1; k <= order/2; k++) {
         float re = Poles.at(k-1).real();
@@ -250,9 +315,9 @@ void MFBfilter::calcLowPass()
         float C = re*re + im*im;
 
         C2 = (10.0/Fc);
-        C1 = (B*B*C2)/(4*C*(Kv+1));
-        R2 = (2*(Kv+1))/(Wc*(B*C2+sqrt(B*B*C2*C2-4*C*C1*C2*(Kv+1))));
-        R1 = R2/Kv;
+        C1 = (B*B*C2)/(4*C*(Kv1+1));
+        R2 = (2*(Kv1+1))/(Wc*(B*C2+sqrt(B*B*C2*C2-4*C*C1*C2*(Kv+1))));
+        R1 = R2/Kv1;
         R3 = 1.0/(C*C1*C2*Wc*Wc*R2);
 
         RC_elements curr_stage;
@@ -276,10 +341,11 @@ void MFBfilter::calcBandPass()
     float R1,R2,R3,C1,C2;
     //float rho = Kv/Q;
     //float gamma = 1.0;
-    int cnt = 1;
+    int cnt = 1; 
+    float Kv1 = pow(Kv,1.0/order);
 
     if (order==1) {  // Filter contains only 1 1st-order section
-        float rho = Kv/Q;
+        float rho = Kv1/Q;
         float beta = 1.0/Q;
         float gamma = 1.0;
 
@@ -316,7 +382,7 @@ void MFBfilter::calcBandPass()
 
         qDebug()<<D<<E<<Q;
 
-        float rho = Kv*sqrt(C)/Q;
+        float rho = Kv1*sqrt(C)/Q;
         float beta = D/E;
         float gamma = D*D;
 
@@ -372,7 +438,7 @@ void MFBfilter::calcBandPass()
         int k = order/2 + 1;
         float re = Poles.at(k-1).real();
         float C = -re;
-        float rho = Kv*C/Q;
+        float rho = Kv1*C/Q;
         float beta = C/Q;
         float gamma = 1.0;
 

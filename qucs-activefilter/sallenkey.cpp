@@ -125,9 +125,10 @@ void SallenKey::calcBandPass()
     //float rho = Kv/Q;
     //float gamma = 1.0;
     int cnt = 1;
+    float Kv1 = pow(Kv,1.0/order);
 
     if (order==1) {  // Filter contains only 1 1st-order section
-        float rho = Kv/Q;
+        float rho = Kv1/Q;
         float beta = 1.0/Q;
         float gamma = 1.0;
 
@@ -163,7 +164,7 @@ void SallenKey::calcBandPass()
 
         qDebug()<<D<<E<<Q;
 
-        float rho = Kv*sqrt(C)/Q;
+        float rho = Kv1*sqrt(C)/Q;
         float beta = D/E;
         float gamma = D*D;
 
@@ -213,7 +214,7 @@ void SallenKey::calcBandPass()
         int k = order/2 + 1;
         float re = Poles.at(k-1).real();
         float C = -re;
-        float rho = Kv*C/Q;
+        float rho = Kv1*C/Q;
         float beta = C/Q;
         float gamma = 1.0;
 
