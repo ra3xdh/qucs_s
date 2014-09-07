@@ -278,6 +278,31 @@ void MFBfilter::calcBandPass()
     //float gamma = 1.0;
     int cnt = 1;
 
+    if (order==1) {  // Filter contains only 1 1st-order section
+        float rho = Kv/Q;
+        float beta = 1.0/Q;
+        float gamma = 1.0;
+
+        C1 = 10.0/F0;
+        C2 = C1*(rho*beta-gamma)/gamma;
+        if (C2<0) C2=C1;
+        R1 = 1.0/(rho*W0*C1);
+        R2 = beta/((C1*(gamma-rho*beta)+gamma*C2)*W0);
+        R3 = (1.0/C1+1.0/C2)/(beta*W0);
+
+
+        RC_elements current_section;
+        current_section.N = 1;
+        current_section.R1 = 1000*R1;
+        current_section.R2 = 1000*R2;
+        current_section.R3 = 1000*R3;
+        current_section.R4 = 0;
+        current_section.R5 = 0;
+        current_section.C1 = C1;
+        current_section.C2 = C2;
+        Sections.append(current_section);
+    }
+
     for (int k=1; k <= order/2; k++) {
         float re = Poles.at(k-1).real();
         float im = Poles.at(k-1).imag();
@@ -297,15 +322,18 @@ void MFBfilter::calcBandPass()
 
         C1 = 10.0/F0;
         C2 = C1*(rho*beta-gamma)/gamma;
+        if (C2<0) C2=C1;
         R1 = 1.0/(rho*W0*C1);
         R2 = beta/((C1*(gamma-rho*beta)+gamma*C2)*W0);
         R3 = (1.0/C1+1.0/C2)/(beta*W0);
 
         RC_elements current_section;
         current_section.N = cnt;
-        current_section.R1 = R1;
-        current_section.R2 = R2;
-        current_section.R3 = R3;
+        current_section.R1 = 1000*R1;
+        current_section.R2 = 1000*R2;
+        current_section.R3 = 1000*R3;
+        current_section.R4 = 0;
+        current_section.R5 = 0;
         current_section.C1 = C1;
         current_section.C2 = C2;
         Sections.append(current_section);
@@ -316,14 +344,17 @@ void MFBfilter::calcBandPass()
         gamma = 1.0/(D*D);
         C1 = 10.0/F0;
         C2 = C1*(rho*beta-gamma)/gamma;
+        if (C2<0) C2=C1;
         R1 = 1.0/(rho*W0*C1);
         R2 = beta/((C1*(gamma-rho*beta)+gamma*C2)*W0);
         R3 = (1.0/C1+1.0/C2)/(beta*W0);
 
         current_section.N = cnt;
-        current_section.R1 = R1;
-        current_section.R2 = R2;
-        current_section.R3 = R3;
+        current_section.R1 = 1000*R1;
+        current_section.R2 = 1000*R2;
+        current_section.R3 = 1000*R3;
+        current_section.R4 = 0;
+        current_section.R5 = 0;
         current_section.C1 = C1;
         current_section.C2 = C2;
         Sections.append(current_section);
@@ -331,6 +362,36 @@ void MFBfilter::calcBandPass()
         cnt++;
 
 
+    }
+
+
+    if (order%2 != 0) { // Need to implement first-order section
+
+        float R1,R2,R3,R4,C1;
+
+        int k = order/2 + 1;
+        float re = Poles.at(k-1).real();
+        float C = -re;
+        float rho = Kv*C/Q;
+        float beta = C/Q;
+        float gamma = 1.0;
+
+        C1 = 10.0/F0;
+        if (C2<0) C2=C1;
+        R1 = 1.0/(rho*W0*C1);
+        R2 = beta/((C1*(gamma-rho*beta)+gamma*C2)*W0);
+        R3 = (1.0/C1+1.0/C2)/(beta*W0);
+
+        RC_elements current_section;
+        current_section.N = cnt;
+        current_section.R1 = 1000*R1;
+        current_section.R2 = 1000*R2;
+        current_section.R3 = 1000*R3;
+        current_section.R4 = 0;
+        current_section.R5 = 0;
+        current_section.C1 = C1;
+        current_section.C2 = C2;
+        Sections.append(current_section);
     }
 }
 

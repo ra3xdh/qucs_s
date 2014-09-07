@@ -126,7 +126,31 @@ void SallenKey::calcBandPass()
     //float gamma = 1.0;
     int cnt = 1;
 
-    for (int k=1; k <= order/2; k++) {
+    if (order==1) {  // Filter contains only 1 1st-order section
+        float rho = Kv/Q;
+        float beta = 1.0/Q;
+        float gamma = 1.0;
+
+        C1 = 10.0/F0;
+        R1 = 2.0/(rho*W0*C1);
+        R2 = 2.0/((-beta+sqrt((rho-beta)*(rho-beta)+8.0*gamma))*W0*C1);
+        R3 = (1.0/R1+1.0/R2)/(gamma*W0*W0*C1*C1);
+        R4 = 2.0*R3;
+
+        RC_elements current_section;
+        current_section.N = 1;
+        current_section.R1 = 1000*R1;
+        current_section.R2 = 1000*R2;
+        current_section.R3 = 1000*R3;
+        current_section.R4 = 1000*R4;
+        current_section.C1 = C1;
+        current_section.C2 = C1;
+        Sections.append(current_section);
+
+        return;
+    }
+
+    for (int k=1; k <= order/2; k++) { // Usually 2nd-order section
         float re = Poles.at(k-1).real();
         float im = Poles.at(k-1).imag();
         float B = -2.0*re;
@@ -179,9 +203,37 @@ void SallenKey::calcBandPass()
         Sections.append(current_section);
 
         cnt++;
-
-
     }
+
+
+    if (order%2 != 0) { // Need to implement first-order section
+
+        float R1,R2,R3,R4,C1;
+
+        int k = order/2 + 1;
+        float re = Poles.at(k-1).real();
+        float C = -re;
+        float rho = Kv*C/Q;
+        float beta = C/Q;
+        float gamma = 1.0;
+
+        C1 = 10.0/F0;
+        R1 = 2.0/(rho*W0*C1);
+        R2 = 2.0/((-beta+sqrt((rho-beta)*(rho-beta)+8.0*gamma))*W0*C1);
+        R3 = (1.0/R1+1.0/R2)/(gamma*W0*W0*C1*C1);
+        R4 = 2.0*R3;
+
+        RC_elements current_section;
+        current_section.N = cnt;
+        current_section.R1 = 1000*R1;
+        current_section.R2 = 1000*R2;
+        current_section.R3 = 1000*R3;
+        current_section.R4 = 1000*R4;
+        current_section.C1 = C1;
+        current_section.C2 = C1;
+        Sections.append(current_section);
+    }
+
 }
 
 void SallenKey::calcBandStop()
