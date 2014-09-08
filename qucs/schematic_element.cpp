@@ -1962,7 +1962,6 @@ bool Schematic::deleteElements()
                     pm = im.next();
                     if(pm->isSelected)
                     {
-                        pm = im.peekNext();
                         im.remove();
                         sel = true;
                     }
@@ -1970,18 +1969,16 @@ bool Schematic::deleteElements()
 
                 if(pg->isSelected)
                 {
-                    pg = ig.peekNext();
                     ig.remove();
                     sel = wasGraphDeleted = true;
                 }
-                else
-                    pg = ig.next();
             }
             if(wasGraphDeleted)
                 pd->recalcGraphData();  // update diagram (resize etc.)
 
             pd = Diagrams->next();
-        }
+        } //else
+
 
     Painting *pp = Paintings->first();
     while(pp != 0)      // test all paintings
