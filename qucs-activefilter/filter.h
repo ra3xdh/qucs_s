@@ -29,6 +29,7 @@ struct RC_elements {
     float R3;
     float R4;
     float R5;
+    float R6;
     float C1;
     float C2;
 };

@@ -111,6 +111,81 @@ void SchCauer::calcHighPass()
     this->calcFirstOrder();
 }
 
+void SchCauer::calcBandPass()
+{
+    float R1,R2,R3,R4,R5,R6,R7,C1,C2;
+    float W0 = 2*M_PI*F0;
+    float Kv1 = pow(Kv,1.0/order);
+    int cnt = 1;
+
+    for (int k=1; k <= order/2; k++) {
+
+        float re = Poles.at(k-1).real();
+        float im = Poles.at(k-1).imag();
+        float B = -2.0*re;
+        float C = re*re + im*im;
+        im = Zeros.at(k-1).imag();
+        float A = im*im;
+        float mu = 2.0;
+
+        float A1 = 1+(A+sqrt(A*A+4*A*Q*Q))/(2*Q*Q);
+        float H = C + 4.0*Q*Q;
+        float E = (1.0/B)*sqrt(0.5*(H+sqrt(H*H-(4.0*B*B*Q*Q))));
+        float F = (B*E)/Q;
+        float D = 0.5*(F+sqrt(F*F-4.0));
+
+        C1 = 10.0/F0;
+        C2 = C1;
+
+        R1 = ((mu*D)/(Kv1*A1*E*W0*C1))*sqrt(A/C);
+        R2 = E/(D*W0*C2);
+        R3 = mu/(D*E*W0*C1);
+        R5 = R3;
+        R4 = (Kv1/mu)*sqrt(C/A)*R5;
+        R6 = mu*R2/(mu-1);
+        R7 = mu*R2;
+
+        RC_elements current_section;
+        current_section.N = cnt;
+        current_section.R1 = 1000*R1;
+        current_section.R2 = 1000*R2;
+        current_section.R3 = 1000*R3;
+        current_section.R4 = 1000*R4;
+        current_section.R5 = 1000*R5;
+        current_section.R6 = 1000*R6;
+        current_section.C1 = C1;
+        current_section.C2 = C1;
+        Sections.append(current_section);
+
+        cnt++;
+
+        R1 = ((mu*A1)/(Kv1*D*E*W0*C1))*sqrt(A/C);
+        R2 = (D*E)/(W0*C2);
+        R3 = (mu*D)/(E*W0*C1);
+        R5 = R3;
+        R4 = (Kv1/mu)*sqrt(C/A)*R5;
+        R6 = mu*R2/(mu-1);
+        R7 = mu*R2;
+
+        current_section.N = cnt;
+        current_section.R1 = 1000*R1;
+        current_section.R2 = 1000*R2;
+        current_section.R3 = 1000*R3;
+        current_section.R4 = 1000*R4;
+        current_section.R5 = 1000*R5;
+        current_section.R6 = 1000*R6;
+        current_section.C1 = C1;
+        current_section.C2 = C1;
+        Sections.append(current_section);
+
+        cnt++;
+    }
+}
+
+void SchCauer::calcBandStop()
+{
+
+}
 
 void SchCauer::createLowPassSchematic(QString &s)
 {
@@ -120,6 +195,17 @@ void SchCauer::createLowPassSchematic(QString &s)
 void SchCauer::createHighPassSchematic(QString &s)
 {
     createGenericSchematic(s);
+}
+
+
+void SchCauer::createBandPassSchematic(QString &s)
+{
+
+}
+
+void SchCauer::createBandStopSchematic(QString &s)
+{
+
 }
 
 void SchCauer::createGenericSchematic(QString &s)

@@ -436,6 +436,10 @@ void Filter::cauerOrderEstim() // from Digital Filter Design Handbook page 102
     float q = 150.0*pow(u,13) + 2.0*pow(u,9) + 2.0*pow(u,5) + u;
     float dd = (pow(10.0,As/10.0)-1.0)/(pow(10.0,Rp/10.0)-1.0);
     order = ceil(log10(16.0*dd)/log10(1.0/q));
+
+    if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
+        if (order%2!=0) order++; // only even order Cauer.
+    }
 }
 
 void Filter::calcCauer() // from Digital Filter Designer's handbook p.103
