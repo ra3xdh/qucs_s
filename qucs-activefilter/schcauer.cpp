@@ -24,6 +24,11 @@ SchCauer::SchCauer(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam p
     Filter(ffunc_, type_, par)
 {
     Nr1 = 5;
+
+   if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
+       Nr1 = 7;
+   }
+
     Nop1 = 3;
     Nc1 = 2;
 }
@@ -200,20 +205,30 @@ void SchCauer::createHighPassSchematic(QString &s)
 
 void SchCauer::createBandPassSchematic(QString &s)
 {
-
+    createGenericSchematic(s);
 }
 
 void SchCauer::createBandStopSchematic(QString &s)
 {
-
+    createGenericSchematic(s);
 }
 
 void SchCauer::createGenericSchematic(QString &s)
 {
     RC_elements stage;
     int dx = 0;
-    int N2ord = order/2; // number of 2-nd order stages
-    int N1stOrd = order%2; // number of 1-st order stages
+    int N2ord, N1stOrd;
+    float Fac;
+
+    if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
+        N2ord = Sections.count();
+        N1stOrd = 0;
+        Fac = (Fu+1000)/1000.0;
+    } else {
+        N2ord = order/2; // number of 2-nd order stages
+        N1stOrd = order%2; // number of 1-st order stages
+        Fac = (10.0*Fc)/1000.0;
+    }
 
     s += "<Qucs Schematic ";
     s += PACKAGE_VERSION;
@@ -222,7 +237,7 @@ void SchCauer::createGenericSchematic(QString &s)
     s += "<Vac V1 1 80 290 18 -26 0 1 \"1 V\" 0 \"1 kHz\" 0 \"0\" 0 \"0\" 0>\n";
     s += "<.DC DC1 1 40 510 0 61 0 0 \"26.85\" 0 \"0.001\" 0 \"1 pA\" 0 \"1 uV\" 0 \"no\" 0 \"150\" 0 \"no\" 0 \"none\" 0 \"CroutLU\" 0>\n";
     s += "<Eqn Eqn1 1 640 520 -30 14 0 0 \"K=dB(out.v/in.v)\" 1 \"yes\" 0>\n";
-    s += "<.AC AC1 1 320 510 0 61 0 0 \"lin\" 1 \"1 Hz\" 1 \"10 kHz\" 1 \"5001\" 1 \"no\" 0>\n";
+    s += QString("<.AC AC1 1 320 510 0 61 0 0 \"lin\" 1 \"1 Hz\" 1 \"%1 kHz\" 1 \"1001\" 1 \"no\" 0>\n").arg(Fac);
     s += "<GND * 1 80 320 0 0 0 0>\n";
 
     for (int i=1; i<=N2ord; i++) {
@@ -243,17 +258,27 @@ void SchCauer::createGenericSchematic(QString &s)
         s += QString("<GND * 1 %1 290 0 0 0 0>\n").arg(240+dx);
         s += QString("<GND * 1 %1 440 0 0 0 0>\n").arg(250+dx);
 
+        if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
+            s += QString("<GND * 1 %1 470 0 0 0 0>\n").arg(500+dx);
+            s += QString("<R R%1 1 %2 370 -26 15 0 0 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(6+(i-1)*Nr1).arg(570+dx).arg(stage.R6,0,'f',3);
+            s += QString("<R R%1 1 %2 440 15 -26 0 1 \"%3k\" 1 \"26.85\" 0 \"0.0\" 0 \"0.0\" 0 \"26.85\" 0 \"european\" 0>\n").arg(7+(i+1)*Nr1).arg(500+dx).arg(stage.R6,0,'f',3);
+        }
+
         dx += 580;
     }
 
-    if (N1stOrd!=0) {
-        if (ftype==Filter::LowPass) {
-            createFirstOrderComponentsLPF(s,Sections.last(),dx+80);
-        } else if (ftype==Filter::HighPass) {
-            createFirstOrderComponentsHPF(s,Sections.last(),dx+80);
-        }
 
+    if ((ftype==Filter::LowPass)||(ftype==Filter::HighPass)) {
+        if (N1stOrd!=0) {
+            if (ftype==Filter::LowPass) {
+                createFirstOrderComponentsLPF(s,Sections.last(),dx+80);
+            } else if (ftype==Filter::HighPass) {
+                createFirstOrderComponentsHPF(s,Sections.last(),dx+80);
+            }
+
+        }
     }
+
 
     s += "</Components>\n";
     s += "<Wires>\n";
@@ -265,12 +290,19 @@ void SchCauer::createGenericSchematic(QString &s)
         if (i!=1) {
             s += QString("<%1 260 %2 260 \"\" 0 0 0 \"\">\n").arg(dx+30).arg(140+dx);
         }
-        s += QString("<%1 370 %2 370 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(610+dx);
+
         s += QString("<%1 220 %2 220 \"\" 0 0 0 \"\">\n").arg(210+dx).arg(220+dx);
         s += QString("<%1 280 %2 370 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(500+dx);
         s += QString("<%1 280 %2 280 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(530+dx);
         s += QString("<%1 260 %2 260 \"\" 0 0 0 \"\">\n").arg(600+dx).arg(610+dx);
         s += QString("<%1 260 %2 370 \"\" 0 0 0 \"\">\n").arg(610+dx).arg(610+dx);
+        if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
+            s += QString("<%1 370 %2 410 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(500+dx);
+            s += QString("<%1 370 %2 370 \"\" 0 0 0 \"\">\n").arg(600+dx).arg(610+dx);
+            s += QString("<%1 370 %2 370 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(540+dx);
+        } else {
+            s += QString("<%1 370 %2 370 \"\" 0 0 0 \"\">\n").arg(500+dx).arg(610+dx);
+        }
         s += QString("<%1 240 %2 240 \"\" 0 0 0 \"\">\n").arg(440+dx).arg(480+dx);
         s += QString("<%1 400 %2 400 \"\" 0 0 0 \"\">\n").arg(340+dx).arg(420+dx);
         s += QString("<%1 380 %2 380 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(260+dx);
@@ -282,7 +314,14 @@ void SchCauer::createGenericSchematic(QString &s)
         s += QString("<%1 220 %2 220 \"\" 0 0 0 \"\">\n").arg(220+dx).arg(240+dx);
         s += QString("<%1 420 %2 420 \"\" 0 0 0 \"\">\n").arg(250+dx).arg(270+dx);
         s += QString("<%1 420 %2 440 \"\" 0 0 0 \"\">\n").arg(250+dx).arg(250+dx);
-        if ((2*i)==order) {
+
+        int n;
+        if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
+            n = i;
+        } else {
+            n = 2*i;
+        }
+        if (n==order) {
             s += QString("<%1 110 %2 260 \"out\" %3 160 101 \"\">\n").arg(610+dx).arg(610+dx).arg(540+dx);
         } else {
             s += QString("<%1 110 %2 260 \"\" 0 0 0 \"\">\n").arg(610+dx).arg(610+dx);
@@ -306,8 +345,10 @@ void SchCauer::createGenericSchematic(QString &s)
         dx +=580;
     }
 
-    if (N1stOrd!=0) {
-            createFirstOrderWires(s,dx+80,260);
+    if ((ftype==Filter::LowPass)||(ftype==Filter::HighPass)) {
+        if (N1stOrd!=0) {
+                createFirstOrderWires(s,dx+80,260);
+        }
     }
 
     s += "</Wires>\n";
