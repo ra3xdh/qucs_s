@@ -53,7 +53,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   Expr.setPattern("[\\w_]+");  // valid expression for property 'NameEdit'
   ValRestrict = new QRegExpValidator(Expr, this);
 
-  checkSim  = 0;  editSim  = 0;  comboType  = 0;  checkParam = 0;
+  checkSim  = 0;  comboSim  = 0;  comboType  = 0;  checkParam = 0;
   editStart = 0;  editStop = 0;  editNumber = 0;
 
   Property *pp = 0;   // last property not to put in ListView
@@ -79,10 +79,10 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
     if(Comp->Model == ".SW") {   // parameter sweep
       textSim = new QLabel(tr("Simulation:"), Tab1);
       gp->addWidget(textSim, row,0);
-      editSim = new QComboBox(Tab1);
-      editSim->setEditable(true);
-      connect(editSim, SIGNAL(activated(int)), SLOT(slotSimEntered(int)));
-      gp->addWidget(editSim, row,1);
+      comboSim = new QComboBox(Tab1);
+      comboSim->setEditable(true);
+      connect(comboSim, SIGNAL(activated(int)), SLOT(slotSimEntered(int)));
+      gp->addWidget(comboSim, row,1);
       checkSim = new QCheckBox(tr("display in schematic"), Tab1);
       gp->addWidget(checkSim, row++,2);
     }
@@ -164,8 +164,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
       for(pc=Doc->Components->first(); pc!=0; pc=Doc->Components->next())
         if(pc != Comp)
           if(pc->Model[0] == '.')
-            editSim->insertItem(pc->Name);
-      editSim->setCurrentText(Comp->Props.first()->Value);
+            comboSim->insertItem(pc->Name);
+      comboSim->setCurrentText(Comp->Props.first()->Value);
 
       checkSim->setChecked(Comp->Props.current()->display);
       s = Comp->Props.next()->Value;
@@ -703,14 +703,14 @@ void ComponentDialog::slotApplyInput()
   bool display;
   Property *pp = Comp->Props.first();
   // apply all the new property values
-  if(editSim) {
+  if(comboSim) {
     display = checkSim->isChecked();
     if(pp->display != display) {
       pp->display = display;
       changed = true;
     }
-    if(pp->Value != editSim->currentText()) {
-      pp->Value = editSim->currentText();
+    if(pp->Value != comboSim->currentText()) {
+      pp->Value = comboSim->currentText();
       changed = true;
     }
     pp = Comp->Props.next();
