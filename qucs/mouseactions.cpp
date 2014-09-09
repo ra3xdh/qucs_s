@@ -1464,8 +1464,7 @@ void MouseActions::MPressMoveText(Schematic *Doc, QMouseEvent*, float fX, float 
 // -----------------------------------------------------------
 void MouseActions::MPressZoomIn(Schematic *Doc, QMouseEvent*, float fX, float fY)
 {
-    qDebug() << "zoom into box";
-  /// \bug the zoom into box is not working
+  qDebug() << "zoom into box";
   MAx1 = int(fX);
   MAy1 = int(fY);
   MAx2 = 0;  // rectangle size
@@ -1799,30 +1798,31 @@ void MouseActions::MReleaseZoomIn(Schematic *Doc, QMouseEvent *Event)
 
   MAx1 = Event->pos().x();
   MAy1 = Event->pos().y();
-  float DX = float(abs(MAx2));
-  float DY = float(abs(MAy2));
+  float DX = float(MAx2);
+  float DY = float(MAy2);
+
+  float initialScale = Doc->Scale;
+  float scale = 1;
+  float xShift = 0;
+  float yShift = 0;
   if((Doc->Scale * DX) < 6.0) {
-    DX = 1.5;    // a simple click zooms by constant factor
-    Doc->zoom(DX);
+    // a simple click zooms by constant factor
+    scale = Doc->zoom(1.5)/initialScale;
 
-    DX -= 1.0;
-    MAx1 = int(DX * float(Event->pos().x()));
-    MAy1 = int(DX * float(Event->pos().y()));
-  }
-  else {
-    float xScale = float(Doc->visibleWidth())  / DX;
-    float yScale = float(Doc->visibleHeight()) / DY;
-    if(xScale > yScale) xScale = yScale;
-    yScale  = Doc->Scale;
-    xScale /= yScale;
-    Doc->zoom(xScale);
+    xShift = scale * Event->pos().x();
+    yShift = scale * Event->pos().y();
+  } else {
+    float xScale = float(Doc->visibleWidth())  / abs(DX);
+    float yScale = float(Doc->visibleHeight()) / abs(DY);
+    scale = qMin(xScale, yScale)/initialScale;
+    scale = Doc->zoom(scale)/initialScale;
 
-    if(MAx2 > 0)  MAx1 -= int(float(MAx2)*yScale);
-    if(MAy2 > 0)  MAy1 -= int(float(MAy2)*yScale);
-    MAx1 = int(float(MAx1) * xScale) - Doc->contentsX();
-    MAy1 = int(float(MAy1) * xScale) - Doc->contentsY();
+    xShift = scale * (MAx1 - 0.5*DX);
+    yShift = scale * (MAy1 - 0.5*DY);
   }
-  Doc->scrollBy(MAx1, MAy1);
+  xShift -= (0.5*Doc->visibleWidth() + Doc->contentsX());
+  yShift -= (0.5*Doc->visibleHeight() + Doc->contentsY());
+  Doc->scrollBy(xShift, yShift);
 
   QucsMain->MouseMoveAction = &MouseActions::MMoveZoomIn;
   QucsMain->MouseReleaseAction = 0;
