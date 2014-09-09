@@ -133,6 +133,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     connect(cbxResponse,SIGNAL(currentIndexChanged(int)),this,SLOT(slotUpdateResponse()));
     connect(cbxResponse,SIGNAL(currentIndexChanged(int)),this,SLOT(slotUpdateSchematic()));
     connect(cbxResponse,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetLabels()));
+    connect(cbxResponse,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSwitchParameters()));
 
     cbxFilterType = new QComboBox;
     QStringList lst;
@@ -327,7 +328,9 @@ void QucsActiveFilter::slotCalcSchematic()
 
     switch (cbxFilterType->currentIndex()) {
     case topoCauer : {
-                if (((ffunc==Filter::InvChebyshev)||(ffunc==Filter::Cauer))) {
+            if (((ffunc==Filter::InvChebyshev)||
+                 (ffunc==Filter::Cauer)||
+                 (ftyp==Filter::BandStop))) {
                    SchCauer cauer(ffunc,ftyp,par);
                    ok = cauer.calcFilter();
                    cauer.createPolesZerosList(lst);
@@ -474,7 +477,8 @@ void QucsActiveFilter::slotSwitchParameters()
     }
 
     if ((cbxFilterFunc->currentIndex()==funcCauer)||
-        (cbxFilterFunc->currentIndex()==funcInvChebyshev)) { // Inverse Chebyshev
+        (cbxFilterFunc->currentIndex()==funcInvChebyshev)||
+        (cbxResponse->currentIndex()==tBandStop)) { // Inverse Chebyshev
                                                                                   // or Cauer
         cbxFilterType->setDisabled(true);
     } else {
@@ -483,7 +487,8 @@ void QucsActiveFilter::slotSwitchParameters()
 
     if ((cbxFilterFunc->currentIndex()==funcInvChebyshev)||  // Inv.Chebyshev
         (cbxFilterFunc->currentIndex()==funcCauer)||  // Cauer
-        (cbxFilterFunc->currentIndex()==funcUser)) // or User defined
+        (cbxFilterFunc->currentIndex()==funcUser)|| // or User defined
+        (cbxResponse->currentIndex()==tBandStop))
     {
         cbxFilterType->addItem(tr("Cauer section"),Qt::DisplayRole);
         cbxFilterType->setCurrentIndex(topoCauer);
