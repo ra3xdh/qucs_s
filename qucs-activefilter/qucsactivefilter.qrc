@@ -8,5 +8,7 @@
         <file>bitmaps/sk-highpass.svg</file>
         <file>bitmaps/sk-lowpass.svg</file>
         <file>bitmaps/trfunc.png</file>
+        <file>bitmaps/bandpass.svg</file>
+        <file>bitmaps/bandstop.svg</file>
     </qresource>
 </RCC>

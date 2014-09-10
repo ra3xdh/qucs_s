@@ -415,9 +415,11 @@ void QucsActiveFilter::slotUpdateResponse()
         case tHiPass : s = ":/images/bitmaps/high-pass.svg";
             ftyp = Filter::HighPass;
             break;
-        case tBandPass : ftyp = Filter::BandPass;
+        case tBandPass : s = ":/images/bitmaps/bandpass.svg";
+            ftyp = Filter::BandPass;
             break;
-        case tBandStop : ftyp = Filter::BandStop;
+        case tBandStop : s = ":/images/bitmaps/bandstop.svg";
+            ftyp = Filter::BandStop;
             break;
         default: ftyp = Filter::NoFilter;
             break;
