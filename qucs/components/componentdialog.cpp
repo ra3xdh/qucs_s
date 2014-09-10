@@ -381,10 +381,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   tmp = Comp->ty+ty_Dist - Comp->y1;
   if((tmp > 0) || (tmp < -6))  ty_Dist = 0;
 
-  // insert all properties into the TableWidget
-  /// \todo why does it backwards??
+  // insert all properties into the TableWidget member prop
   int row=0; // row counter
-//  for(Property *p = Comp->Props.last(); p != 0; p = Comp->Props.prev()) {
   for(Property *p = Comp->Props.first(); p != 0; p = Comp->Props.next()) {
     if(p == pp) // do not insert if already on first tab
       break;
@@ -535,6 +533,7 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
 // -------------------------------------------------------------------------
 void ComponentDialog::slotApplyChange(const QString& Text)
 {
+  /// \bug what if the table have no items?
   // pick selected row
   QTableWidgetItem *item = prop->selectedItems()[0];
 
@@ -542,18 +541,10 @@ void ComponentDialog::slotApplyChange(const QString& Text)
 
   qDebug() << Text;
   edit->setText(Text);
-  //FIXME prop->currentItem()->setText(1, Text);	// apply edit line
+  // apply edit line
   prop->item(row, 1)->setText(Text);
 
   ComboEdit->setFocus();
-
-  /* old, new below
-  Q3ListViewItem *item = prop->currentItem()->itemBelow();
-  if(item == 0) return;
-
-  prop->setSelected(item, true);
-  slotSelectProperty(item);   // switch to the next property
-  */
 
   // step to next item
   if ( row < prop->rowCount()) {
@@ -700,9 +691,15 @@ void ComponentDialog::slotApplyInput()
     }
   }
 
+  /*! Walk the original Comp->Props and compare with the
+   *  data in the dialog.
+   *  The pointers to the combo, edits,... are set to 0.
+   *  Only check if the widgets were created (pointers checks are 'true')
+   */
   bool display;
   Property *pp = Comp->Props.first();
   // apply all the new property values
+
   if(comboSim) {
     display = checkSim->isChecked();
     if(pp->display != display) {
@@ -781,6 +778,9 @@ void ComponentDialog::slotApplyInput()
         pp->Name  = "Points";
         changed = true;
       }
+      qDebug() << "====> before ad"
+               << pp->Description;
+
       pp = Comp->Props.next();
     }
     else {
@@ -804,72 +804,85 @@ void ComponentDialog::slotApplyInput()
         pp->Name  = "Values";
         changed = true;
       }
+      qDebug() << "====> before ad"
+               << pp;
+
       pp = Comp->Props.next();
     }
   }
 
 
   // pick selected row
-  QTableWidgetItem *item = prop->selectedItems()[0];
-  int row = item->row();
+  QTableWidgetItem *item = 0;
 
-  QString name  = prop->item(row, 0)->text();
-  QString value = prop->item(row, 1)->text();
-  //QString disp  = prop->item(row, 2)->text();
+  //  make sure we have one item, take selected
+  if (prop->rowCount() > 0) {
+    item = prop->selectedItems()[0];
+  }
 
-//  Q3ListViewItem *item = prop->firstChild();
+  /*! Walk the dialog list of 'prop'
+   */
    if(item != 0) {
+     int row = item->row();
+     QString name  = prop->item(row, 0)->text();
+     QString value = prop->item(row, 1)->text();
 
-//  item = prop->currentItem();
-  if(value != edit->text())
-//    item->setText(1, edit->text());    // apply edit line
-    prop->item(row, 1)->setText(edit->text());
+     // apply edit line
+     if(value != edit->text())
+       prop->item(row, 1)->setText(edit->text());
 
-  if(NameEdit->isShown())	// also apply property name ?
-    if(name != NameEdit->text())
-//      item->setText(0, NameEdit->text());  // apply property name
-      prop->item(row, 0)->setText(NameEdit->text());
+     // apply property name
+     if(NameEdit->isShown())
+       if(name != NameEdit->text())
+         prop->item(row, 0)->setText(NameEdit->text());
 
+     // apply all the new property values in the ListView
+     for( int row = 0; row < prop->rowCount(); row++ ) {
 
-  // apply all the new property values in the ListView
-  for( int row = 0; row < prop->rowCount(); row++ ) {
+       QString name  = prop->item(row, 0)->text();
+       QString value = prop->item(row, 1)->text();
+       QString disp = prop->item(row, 2)->text();
+       QString desc = prop->item(row, 3)->text();
 
-//    QTableWidgetItem *item = prop->item(row,0);
+       qDebug() << "====>" <<name << value
+                << Comp->Props.count()
+                << prop->rowCount() +1
+                << pp;
 
-    QString name  = prop->item(row, 0)->text();
-    QString value = prop->item(row, 1)->text();
-    QString disp = prop->item(row, 2)->text();
-    QString desc = prop->item(row, 3)->text();
+       display = (disp == tr("yes"));
+       if( pp ) {
 
-    qDebug() << "====>" <<name << value;
+         qDebug() << "got pp" << pp << pp->Description;
 
-
-//  for(item = prop->firstChild(); item != 0; item = item->itemBelow()) {
-    display = (disp == tr("yes"));
-    if(pp) {
-      if(pp->display != display) {
-        pp->display = display;
-        changed = true;
-      }
-      if(pp->Value != value) {
-        pp->Value = value;
-        changed = true;
-      }
-      if(pp->Name != name) {
-        pp->Name = name;   // override if previous one was removed
-        changed = true;
-      }
-      pp->Description = desc;
-    }
-    else {  // if less properties than in ListView -> create new
-      Comp->Props.append(new Property(name, value, display, desc));
-      changed = true;
+         if(pp->display != display) {
+             pp->display = display;
+             changed = true;
+         }
+         if(pp->Value != value) {
+            pp->Value = value;
+            changed = true;
+         }
+         if(pp->Name != name) {
+           pp->Name = name;   // override if previous one was removed
+           changed = true;
+         }
+         pp->Description = desc;
+         }
+       else {
+          // if properties where added in the dialog
+          // -> create new on the Comp
+         if (Comp->Props.count() < prop->rowCount() +1) {
+             qDebug() << "adding to Comp ";
+             Comp->Props.append(new Property(name, value, display, desc));
+             changed = true;
+         }
     }
     pp = Comp->Props.next();
   }
 
-  /// \todo need this?
-  if(pp) {  // if more properties than in ListView -> delete the rest
+  // original Comp still has properties? (removed some in the dialog?)
+  // if more properties than in ListView -> delete the rest
+  if(pp) {
     pp = Comp->Props.prev();
     Comp->Props.last();
     while(pp != Comp->Props.current())
@@ -877,7 +890,7 @@ void ComponentDialog::slotApplyInput()
     changed = true;
   }
 
- } // if (item !=0)
+ } // end if (item !=0)
 
   if(changed) {
     int dx, dy;
@@ -929,25 +942,20 @@ void ComponentDialog::slotEditFile()
 }
 
 /*!
+  Add description if missing.
   Is called if the add button is pressed. This is only possible for some
  properties.
- \todo which props can be added??
+ If desc is empy, ButtAdd is enabled, this slot handles if it is clicked.
 */
 void ComponentDialog::slotButtAdd()
 {
-//  Q3ListViewItem *item;
   // Search if property with this name already exist.
   // loop over all items, select if found by name
-//  for(item = prop->firstChild(); item != 0; item = item->itemBelow())
   for(int row=0; row < prop->rowCount(); row++) {
 
-      QString name  = prop->item(row, 0)->text();
-
-
+    QString name  = prop->item(row, 0)->text();
     //if found, jump to it
     if( name == NameEdit->text()) {
-//      prop->setSelected(item, true);
-//      slotSelectProperty(item);
       prop->setCurrentItem(prop->item(row,0));
       slotSelectProperty(prop->item(row,0));
       return;
@@ -955,8 +963,6 @@ void ComponentDialog::slotButtAdd()
   }
 
   //if nothing selected, select last
-//  item = prop->selectedItem();
-//  if(item == 0) item = prop->lastItem();
   prop->setCurrentItem(prop->item(prop->rowCount(),0));
   slotSelectProperty(prop->item(prop->rowCount(),0));
 
@@ -965,11 +971,6 @@ void ComponentDialog::slotButtAdd()
     s = tr("yes");
 
   /// \todo test add parameter
-  // add new item and set it selected
-//  prop->setSelected(new Q3ListViewItem(prop, item,
-//			NameEdit->text(), edit->text(), s), true);
-
-
 
   prop->setRowCount(prop->rowCount()+1);
 
@@ -996,8 +997,7 @@ void ComponentDialog::slotButtAdd()
 /*!
  Is called if the remove button is pressed. This is only possible for
  some properties.
-
- \todo which properties can be removed??
+ If desc is empy, ButtRem is enabled, this slot handles if it is clicked.
 */
 void ComponentDialog::slotButtRem()
 {
@@ -1012,15 +1012,6 @@ void ComponentDialog::slotButtRem()
     return;
 
   /// \todo test remove of parameters
-    /* old code, new below
-  Q3ListViewItem *next_item = item->itemBelow();
-  if(next_item == 0)
-    next_item = item->itemAbove();
-  prop->takeItem(item);     // remove from ListView
-  delete item;              // delete item
-
-  slotSelectProperty(next_item);
-  */
 
   // peek next, delete current, set next current
   if ( row < prop->rowCount()) {
