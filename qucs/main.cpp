@@ -617,7 +617,7 @@ bool checkVersion(QString& Line)
 // ##########                                                     ##########
 // #########################################################################
 
-int doNetlist(QString schematic, QString netlist)
+Schematic *openSchematic(QString schematic)
 {
   qDebug() << "*** try to load schematic :" << schematic;
 
@@ -627,7 +627,7 @@ int doNetlist(QString schematic, QString netlist)
   }
   else {
     fprintf(stderr, "Error: Could not load schematic %s\n", schematic.ascii());
-    return 1;
+    return NULL;
   }
 
   // populate Modules list
@@ -640,6 +640,15 @@ int doNetlist(QString schematic, QString netlist)
   if(!sch->loadDocument()) {
     fprintf(stderr, "Error: Could not load schematic %s\n", schematic.ascii());
     delete sch;
+    return NULL;
+  }
+  return sch;
+}
+
+int doNetlist(QString schematic, QString netlist)
+{
+  Schematic *sch = openSchematic(schematic);
+  if (sch == NULL) {
     return 1;
   }
 
@@ -683,9 +692,49 @@ int doNetlist(QString schematic, QString netlist)
   Stream << '\n';
 
   QString SimTime = sch->createNetlist(Stream, SimPorts);
+  delete(sch);
 
   NetlistFile.close();
 
+  return 0;
+}
+
+int doPrint(QString schematic, QString printFile)
+{
+  Schematic *sch = openSchematic(schematic);
+  if (sch == NULL) {
+    return 1;
+  }
+
+  sch->Nodes = &(sch->DocNodes);
+  sch->Wires = &(sch->DocWires);
+  sch->Diagrams = &(sch->DocDiags);
+  sch->Paintings = &(sch->DocPaints);
+  sch->Components = &(sch->DocComps);
+
+  qDebug() << "*** try to print file  :" << printFile;
+
+  //initial printer
+  QPrinter *Printer = new QPrinter(QPrinter::HighResolution);
+#if defined (QT_VERSION) && QT_VERSION > 0x030200
+  Printer->setOptionEnabled(QPrinter::PrintSelection, true);
+  Printer->setOptionEnabled(QPrinter::PrintPageRange, false);
+  Printer->setOptionEnabled(QPrinter::PrintToFile, true);
+#endif
+  Printer->setColorMode(QPrinter::Color);
+  Printer->setFullPage(true);
+
+  Printer->setOutputFileName(printFile);
+
+  QPainter Painter(Printer);
+  if(!Painter.device()) {      // valid device available ?
+    qDebug() << "Error: Printer Error.";
+    return -1;
+  }
+
+  bool fitToPage = true;
+  ((QucsDoc *)sch)->print(Printer, &Painter,
+    Printer->printRange() == QPrinter::AllPages, fitToPage);
   return 0;
 }
 
@@ -835,10 +884,11 @@ int main(int argc, char *argv[])
   // work properly !???!
   setlocale (LC_NUMERIC, "C");
 
-  QString schematic;
-  QString netlist;
+  QString inputfile;
+  QString outputfile;
 
-  QString operation;
+  bool netlist_flag = false;
+  bool print_flag = false;
 
   // simple command line parser
   for (int i = 1; i < argc; ++i) {
@@ -848,6 +898,7 @@ int main(int argc, char *argv[])
   "  -h, --help     display this help and exit\n"
   "  -v, --version  display version information and exit\n"
   "  -n, --netlist  convert Qucs schematic into netlist\n"
+  "  -p, --print    print Qucs schematic\n"
   "  -i FILENAME    use file as input schematic\n"
   "  -o FILENAME    use file as output netlist\n"
   , argv[0]);
@@ -862,13 +913,16 @@ int main(int argc, char *argv[])
       return 0;
     }
     else if (!strcmp(argv[i], "-n") || !strcmp(argv[i], "--netlist")) {
-      operation = "netlist";
+      netlist_flag = true;
+    }
+    else if (!strcmp(argv[i], "-p") || !strcmp(argv[i], "--print")) {
+      print_flag = true;
     }
     else if (!strcmp(argv[i], "-i")) {
-      schematic = argv[++i];
+      inputfile = argv[++i];
     }
     else if (!strcmp(argv[i], "-o")) {
-      netlist = argv[++i];
+      outputfile = argv[++i];
     }
     else {
       fprintf(stderr, "Error: Unknown option: %s\n", argv[i]);
@@ -877,17 +931,24 @@ int main(int argc, char *argv[])
   }
 
   // check operation and its required arguments
-  if (operation == "netlist") {
-    if (schematic.isEmpty()) {
-      fprintf(stderr, "Error: Expected input schematic file.\n");
+  if (netlist_flag and print_flag) {
+    fprintf(stderr, "Error: --print and --netlist cannot be used together\n");
+    return -1;
+  } else if (netlist_flag or print_flag) {
+    if (inputfile.isEmpty()) {
+      fprintf(stderr, "Error: Expected input file.\n");
       return -1;
     }
-    if (netlist.isEmpty()) {
-      fprintf(stderr, "Error: Expected output netlist file.\n");
+    if (outputfile.isEmpty()) {
+      fprintf(stderr, "Error: Expected output file.\n");
       return -1;
     }
     // create netlist from schematic
-    return doNetlist(schematic, netlist);
+    if (netlist_flag) {
+      return doNetlist(inputfile, outputfile);
+    } else if (print_flag) {
+      return doPrint(inputfile, outputfile);
+    }
   }
 
   QucsMain = new QucsApp();
