@@ -439,18 +439,27 @@ void QucsActiveFilter::slotUpdateSchematic()
     slotUpdateResponse();
     QString s;
     switch (cbxFilterType->currentIndex()) {
-    case topoCauer : s = ":images/bitmaps/cauer.svg"; // Cauer section
+    case topoCauer : if ((ftyp==Filter::BandStop)||
+                         (ftyp==Filter::BandPass)) {
+            s = ":images/bitmaps/cauer-bandpass.svg"; // Cauer section
+        } else {
+            s = ":images/bitmaps/cauer.svg"; // Cauer section
+        }
              break;
     case topoMFB : if (ftyp==Filter::HighPass) { // Multifeedback
             s = ":/images/bitmaps/mfb-highpass.svg";
         } else if (ftyp==Filter::LowPass) {
             s = ":/images/bitmaps/mfb-lowpass.svg";
+        } else if (ftyp==Filter::BandPass) {
+            s = ":/images/bitmaps/mfb-bandpass.svg";
         }
              break;
     case topoSallenKey : if (ftyp==Filter::HighPass) { // Sallen-Key
             s = ":/images/bitmaps/sk-highpass.svg";
         } else if (ftyp==Filter::LowPass) {
            s = ":/images/bitmaps/sk-lowpass.svg";
+        } else if (ftyp==Filter::BandPass) {
+           s = ":/images/bitmaps/sk-bandpass.svg";
         }
         break;
     case 3 : s = ":/images/bitmaps/mfb-lowpass.svg";

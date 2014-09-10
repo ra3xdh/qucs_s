@@ -10,5 +10,8 @@
         <file>bitmaps/trfunc.png</file>
         <file>bitmaps/bandpass.svg</file>
         <file>bitmaps/bandstop.svg</file>
+        <file>bitmaps/cauer-bandpass.svg</file>
+        <file>bitmaps/mfb-bandpass.svg</file>
+        <file>bitmaps/sk-bandpass.svg</file>
     </qresource>
 </RCC>
