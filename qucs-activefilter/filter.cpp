@@ -361,6 +361,10 @@ void Filter::calcChebyshev()
     float N1 = acosh(sqrt((pow(10,0.1*As)-1)/(eps*eps)))/acosh(kf);
     int N = ceil(N1);
 
+    if (ftype==Filter::BandStop) {
+        if (N%2!=0) N++; // only even order Cauer.
+    }
+
     float a = sinh((asinh(1/eps))/N);
     float b = cosh((asinh(1/eps))/N);
 
@@ -385,6 +389,10 @@ void Filter::calcButterworth()
     float J2=log10(C1)/(2*log10(kf));
     int N2 = round(J2+1);
 
+    if (ftype==Filter::BandStop) {
+        if (N2%2!=0) N2++; // only even order Cauer.
+    }
+
     Poles.clear();
     Zeros.clear();
 
@@ -406,6 +414,10 @@ void Filter::calcInvChebyshev() // Chebyshev Type-II filter
     float kf = std::max(Fs/Fc,Fc/Fs);
 
     order = ceil(acosh(sqrt(pow(10.0,0.1*As)-1.0))/acosh(kf));
+
+    if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
+        if (order%2!=0) order++; // only even order Cauer.
+    }
 
     float eps = 1.0/(sqrt(pow(10.0,0.1*As)-1.0));
     float a = sinh((asinh(1.0/eps))/(order));
