@@ -189,7 +189,89 @@ void SchCauer::calcBandPass()
 
 void SchCauer::calcBandStop()
 {
+    float R1,R2,R3,R4,R5,R6,R7,C1,C2;
+    float W0 = 2*M_PI*F0;
+    float Kv1 = pow(Kv,1.0/order);
+    int cnt = 1;
+    float A=0,A2;
 
+    for (int k=1; k <= order/2; k++) {
+
+        float re = Poles.at(k-1).real();
+        float im = Poles.at(k-1).imag();
+        float B = -2.0*re;
+        float C = re*re + im*im;
+        if ((ffunc==Filter::Cauer)||
+            (ffunc==Filter::InvChebyshev)) {
+            im = Zeros.at(k-1).imag();
+            A = im*im;
+            A2 = 1.0+(1.0/(2.0*A*Q*Q)*(1+sqrt(1.0+4.0*A*Q*Q)));
+        } else {
+            A2 = 1.0;
+        }
+        float mu = 2.0;
+
+        float H = 1.0+4.0*C*Q*Q;
+        float E1 = (1.0/B)*sqrt(0.5*C*(H+sqrt(H*H-4.0*B*B*Q*Q)));
+        float G = (B*E1)/(Q*C);
+        float D1 = 0.5*(G+sqrt(G*G-4));
+
+        float alpha = A2;
+        float beta = D1/E1;
+        float gamma = D1*D1;
+
+        C1 = 10.0/F0;
+        C2 = C1;
+        R1 = (mu*beta)/(Kv1*alpha*W0*C1);
+        R2 = 1.0/(beta*W0*C2);
+        R3 = (Kv1*alpha*R1)/gamma;
+        R5 = 1.0/(W0*C1);
+        R4 = Kv1*R5/mu;
+        R6 = mu*R2/(mu-1.0);
+
+        RC_elements current_section;
+        current_section.N = cnt;
+        current_section.R1 = 1000*R1;
+        current_section.R2 = 1000*R2;
+        current_section.R3 = 1000*R3;
+        current_section.R4 = 1000*R4;
+        current_section.R5 = 1000*R5;
+        current_section.R6 = 1000*R6;
+        current_section.C1 = C1;
+        current_section.C2 = C1;
+        Sections.append(current_section);
+
+        cnt++;
+
+        alpha = 1.0/A2;
+        beta = 1.0/(D1*E1);
+        gamma = 1.0/(D1*D1);
+
+        C1 = 10.0/F0;
+        C2 = C1;
+        R1 = (mu*beta)/(Kv1*alpha*W0*C1);
+        R2 = 1.0/(beta*W0*C2);
+        R3 = (Kv1*alpha*R1)/gamma;
+        R5 = 1.0/(W0*C1);
+        R4 = Kv1*R5/mu;
+        R6 = mu*R2/(mu-1.0);
+
+        current_section;
+        current_section.N = cnt;
+        current_section.R1 = 1000*R1;
+        current_section.R2 = 1000*R2;
+        current_section.R3 = 1000*R3;
+        current_section.R4 = 1000*R4;
+        current_section.R5 = 1000*R5;
+        current_section.R6 = 1000*R6;
+        current_section.C1 = C1;
+        current_section.C2 = C1;
+        Sections.append(current_section);
+
+        cnt++;
+
+
+    }
 }
 
 void SchCauer::createLowPassSchematic(QString &s)
