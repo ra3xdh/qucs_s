@@ -30,8 +30,7 @@ Filter::Filter(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam par)
 
     if ((ftype==Filter::HighPass)||(ftype==Filter::LowPass)) {
         Fc = par.Fc;
-        Fs = par.Fs;
-        As = par.As;
+        Fs = par.Fs;        
         Ap = par.Ap;
     } else {
         Fl = par.Fl;
@@ -48,13 +47,13 @@ Filter::Filter(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam par)
             float Fs2lp = fabsf(Fs2 - (F0*F0)/Fs2);
             Fs = std::min(Fs1lp,Fs2lp);
         }
-        Ap = 3.0;
-        As = 20.0;
+        Ap = 3.0;        
         qDebug()<<Fc<<Fs;
         Q = F0/fabs(Fu-Fl);
     }
 
     Rp = par.Rp;
+    As = par.As;
     Kv = par.Kv;
     if (ffunc==Filter::Bessel) {
         order = par.order;

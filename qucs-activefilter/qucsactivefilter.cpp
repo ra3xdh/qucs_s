@@ -274,15 +274,22 @@ void QucsActiveFilter::slotCalcSchematic()
     FilterParam par;
     if ((cbxResponse->currentIndex()==tLowPass)||
         (cbxResponse->currentIndex()==tHiPass)) {
-       par.Ap = edtA1->text().toFloat();
-       par.As = edtA2->text().toFloat();
+       par.Ap = edtA1->text().toFloat();       
        par.Fc = edtF1->text().toFloat();
        par.Fs = edtF2->text().toFloat();
     } else {
        par.Fu = edtF1->text().toFloat();
        par.Fl = edtF2->text().toFloat();
        par.TW = edtA1->text().toFloat();
+
+       if (par.Fl>par.Fu) {
+           errorMessage(tr("Upper cutoff frequency of band-pass/band-stop filter is\n"
+                           "less than lower. Unable to implement such filter.\n"
+                           "Change parameters and try again."));
+           return;
+       }
     }
+    par.As = edtA2->text().toFloat();
     par.Rp = edtPassbRpl->text().toFloat();
     float G = edtKv->text().toFloat();
     par.Kv = pow(10,G/20.0);
@@ -538,12 +545,14 @@ void QucsActiveFilter::slotSetLabels()
         lblF1->setText(tr("Upper cutoff frequency, Fu (Hz)"));
         lblF2->setText(tr("Lower cuttoff frequency, Fl (Hz)"));
         lblA1->setText(tr("Transient bandwidth, TW (Hz)"));
-        lblA2->setEnabled(false);
+        //lblA2->setEnabled(false);
+        //edtA2->setEnabled(false);
     } else {
         lblF1->setText(tr("Cuttof frequency, Fc (Hz)"));
         lblF2->setText(tr("Stopband frequency, Fs (Hz)"));
         lblA1->setText(tr("Passband attenuation, Ap (dB)"));
-        lblA2->setEnabled(true);
+        //lblA2->setEnabled(true);
+        //edtA2->setEnabled(true);
     }
 }
 
