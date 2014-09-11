@@ -227,11 +227,7 @@ void Filter::calcFirstOrder()
 void Filter::createPartList(QStringList &lst)
 {
     lst<<QObject::tr("Part list");
-    if ((ffunc==Filter::InvChebyshev)||(ffunc==Filter::Cauer)) {
-        lst<<"Stage# C1(uF) R1(kOhm) R2(kOhm) R3(kOhm) R4(kOhm)  R5(kOhm)";
-    } else {
-        lst<<"Stage# C1(uF) C2(uF) R1(kOhm) R2(kOhm) R3(kOhm) R4(kOhm)";
-    }
+    lst<<"Stage# C1(uF) C2(uF) R1(kOhm) R2(kOhm) R3(kOhm) R4(kOhm)  R5(kOhm) R6(kOhm)";
 
     RC_elements stage;
 
@@ -239,13 +235,10 @@ void Filter::createPartList(QStringList &lst)
         QString suff1,suff2;
         float C1=autoscaleCapacitor(stage.C1,suff1);
         float C2=autoscaleCapacitor(stage.C2,suff2);
-        if ((ffunc==Filter::InvChebyshev)||(ffunc==Filter::Cauer)) {
-            lst<<QString("%1%2%3%4%5%6%7%8").arg(stage.N,6).arg(C1,10,'f',3).arg(suff1)
-                 .arg(stage.R1,10,'f',3).arg(stage.R2,10,'f',3).arg(stage.R3,10,'f',3).arg(stage.R4,10,'f',3).arg(stage.R5,10,'f',3);
-        } else {
-            lst<<QString("%1%2%3%4%5%6%7%8%9").arg(stage.N,6).arg(C1,10,'f',3).arg(suff1).arg(C2,10,'f',3).arg(suff2)
-                 .arg(stage.R1,10,'f',3).arg(stage.R2,10,'f',3).arg(stage.R3,10,'f',3).arg(stage.R4,10,'f',3);
-        }
+
+        lst<<QString("%1%2%3%4%5%6%7%8%9%10%11").arg(stage.N,6).arg(C1,10,'f',3).arg(suff1).arg(C2,10,'f',3).arg(suff2)
+             .arg(stage.R1,10,'f',3).arg(stage.R2,10,'f',3).arg(stage.R3,10,'f',3).arg(stage.R4,10,'f',3).arg(stage.R5,10,'f',3).arg(stage.R6,10,'f',3);
+
 
     }
 }
@@ -260,7 +253,12 @@ void Filter::createPolesZerosList(QStringList &lst)
                 lst<<QString::number(zero.real()) + " + j*" + QString::number(zero.imag());
         }
     }
-    lst<<""<<QObject::tr("Poles list Pk=Re+j*Im");
+
+    if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
+       lst<<""<<QObject::tr("LPF prototype poles list Pk=Re+j*Im");
+    } else {
+        lst<<""<<QObject::tr("Poles list Pk=Re+j*Im");
+    }
     std::complex<float> pole;
     foreach(pole,Poles) {
             lst<<QString::number(pole.real()) + " + j*" + QString::number(pole.imag());
