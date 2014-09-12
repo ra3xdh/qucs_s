@@ -58,7 +58,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 
   Property *pp = 0;   // last property not to put in ListView
   // ...........................................................
-  // if simulation component
+  // if simulation component: .TR, .AC, .SW, (.SP ?)
   if((Comp->Model[0] == '.') &&
      (Comp->Model != ".DC") && (Comp->Model != ".HB") &&
      (Comp->Model != ".Digi") && (Comp->Model != ".ETR")) {
@@ -76,6 +76,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
     editParam->setValidator(ValRestrict);
     connect(editParam, SIGNAL(returnPressed()), SLOT(slotParamEntered()));
     checkParam = new QCheckBox(tr("display in schematic"), Tab1);
+
     if(Comp->Model == ".SW") {   // parameter sweep
       textSim = new QLabel(tr("Simulation:"), Tab1);
       gp->addWidget(textSim, row,0);
@@ -89,6 +90,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
     else {
       editParam->setReadOnly(true);
       checkParam->setDisabled(true);
+
       if(Comp->Model == ".TR")    // transient simulation ?
         editParam->setText("time");
       else {
@@ -227,10 +229,10 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
     connect(checkNumber, SIGNAL(stateChanged(int)), SLOT(slotSetChanged(int)));*/
 
 
-    QWidget *Tab2 = new QWidget(t);
-    t->addTab(Tab2, tr("Properties"));
-    gp1 = new Q3GridLayout(Tab2, 9,2,5,5);
-    myParent = Tab2;
+    QWidget *tabProperties = new QWidget(t);
+    t->addTab(tabProperties, tr("Properties"));
+    gp1 = new Q3GridLayout(tabProperties, 9,2,5,5);
+    myParent = tabProperties;
   }
   else {   // no simulation component
     gp1 = new Q3GridLayout(0, 9,2,5,5);
@@ -268,7 +270,6 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   PropertyBox->setLayout(hProps);
 
   // left pane
-  /// \todo add name filter, at the bottom of left pane
   QWidget *vboxPropsL = new QWidget;
   QVBoxLayout *vL = new QVBoxLayout;
   vboxPropsL->setLayout(vL);
@@ -381,18 +382,23 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   tmp = Comp->ty+ty_Dist - Comp->y1;
   if((tmp > 0) || (tmp < -6))  ty_Dist = 0;
 
-  // insert all properties into the TableWidget member prop
+  /*! Insert all \a Comp properties into the dialog \a prop list */
   int row=0; // row counter
-  for(Property *p = Comp->Props.first(); p != 0; p = Comp->Props.next()) {
-    if(p == pp) // do not insert if already on first tab
-      break;
+//  for(Property *p = Comp->Props.first(); p != 0; p = Comp->Props.next()) {
+  for(Property *p = Comp->Props.at(Comp->Props.find(pp)+1); p != 0; p = Comp->Props.next()) {
+
+    // do not insert if already on first tab
+    // this is the reason it was originally from back to front...
+    // the 'pp' is the lasted property stepped over while filling the Swep tab
+//    if(p == pp)
+//      break;
     if(p->display)
       s = tr("yes");
     else
       s = tr("no");
 
     // add Props into TableWidget
-    qDebug() << p->Name << p->Value << s << p->Description;
+    qDebug() << " Loading Comp->Props :" << p->Name << p->Value << p->display << p->Description ;
 
     prop->setRowCount(prop->rowCount()+1);
 
@@ -433,20 +439,21 @@ ComponentDialog::~ComponentDialog()
 }
 
 // -------------------------------------------------------------------------
-// Is called if a property is selected. It transfers the values to the right
-// side for editing.
+// Is called if a property is selected.
+// Handle the Property editor tab.
+// It transfers the values to the right side for editing.
 void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
 {
+
+  if(item == 0) return;
+  item->setSelected(true);  // if called from elsewhere, this was not yet done
+
   qDebug() << "row " << item->row(); //<< item->text()
 
   QString name  = prop->item(item->row(),0)->text();
   QString value = prop->item(item->row(),1)->text();
   QString show  = prop->item(item->row(),2)->text();
   QString desc  = prop->item(item->row(),3)->text();
-
-  if(item == 0) return;
-  item->setSelected(true);  // if called from elsewhere, this was not yet done
-
 
   if(show == tr("yes"))
     disp->setChecked(true);
@@ -816,7 +823,7 @@ void ComponentDialog::slotApplyInput()
   QTableWidgetItem *item = 0;
 
   //  make sure we have one item, take selected
-  if (prop->rowCount() > 0) {
+  if (prop->selectedItems().size()) {
     item = prop->selectedItems()[0];
   }
 
