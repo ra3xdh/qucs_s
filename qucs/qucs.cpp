@@ -137,11 +137,9 @@ QucsApp::QucsApp()
 
   // default settings of the printer
   Printer = new QPrinter(QPrinter::HighResolution);
-#if defined (QT_VERSION) && QT_VERSION > 0x030200
   Printer->setOptionEnabled(QPrinter::PrintSelection, true);
   Printer->setOptionEnabled(QPrinter::PrintPageRange, false);
   Printer->setOptionEnabled(QPrinter::PrintToFile, true);
-#endif
   Printer->setColorMode(QPrinter::Color);
   Printer->setFullPage(true);
 
