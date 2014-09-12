@@ -435,7 +435,7 @@ void MFBfilter::calcBandPass()
 
     if (order%2 != 0) { // Need to implement first-order section
 
-        float R1,R2,R3,R4,C1;
+        float R1,R2,R3,C1;
 
         int k = order/2 + 1;
         float re = Poles.at(k-1).real();

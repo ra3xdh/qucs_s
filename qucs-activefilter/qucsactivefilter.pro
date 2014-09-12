@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = qucsactivefilter
 TEMPLATE = app
 
+DEFINES += HAVE_CONFIG_H
 
 SOURCES += main.cpp\
     filter.cpp \
@@ -19,7 +20,8 @@ SOURCES += main.cpp\
     qf_poly.cpp \
     schcauer.cpp \
     transferfuncdialog.cpp \
-    qucsactivefilter.cpp
+    qucsactivefilter.cpp \
+    helpdialog.cpp
 
 HEADERS  += \
     filter.h \
@@ -30,7 +32,8 @@ HEADERS  += \
     schcauer.h \
     transferfuncdialog.h \
     bessel.h \
-    qucsactivefilter.h
+    qucsactivefilter.h \
+    helpdialog.h
 
 RESOURCES += \
     qucsactivefilter.qrc

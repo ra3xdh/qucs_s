@@ -148,6 +148,8 @@ void SallenKey::calcBandPass()
         current_section.R2 = 1000*R2;
         current_section.R3 = 1000*R3;
         current_section.R4 = 1000*R4;
+        current_section.R5 = 0;
+        current_section.R6 = 0;
         current_section.C1 = C1;
         current_section.C2 = C1;
         Sections.append(current_section);
@@ -184,6 +186,8 @@ void SallenKey::calcBandPass()
         current_section.R2 = 1000*R2;
         current_section.R3 = 1000*R3;
         current_section.R4 = 1000*R4;
+        current_section.R5 = 0;
+        current_section.R6 = 0;
         current_section.C1 = C1;
         current_section.C2 = C1;
         Sections.append(current_section);
@@ -203,6 +207,8 @@ void SallenKey::calcBandPass()
         current_section.R2 = 1000*R2;
         current_section.R3 = 1000*R3;
         current_section.R4 = 1000*R4;
+        current_section.R5 = 0;
+        current_section.R6 = 0;
         current_section.C1 = C1;
         current_section.C2 = C1;
         Sections.append(current_section);
@@ -234,6 +240,8 @@ void SallenKey::calcBandPass()
         current_section.R2 = 1000*R2;
         current_section.R3 = 1000*R3;
         current_section.R4 = 1000*R4;
+        current_section.R5 = 0;
+        current_section.R6 = 0;
         current_section.C1 = C1;
         current_section.C2 = C1;
         Sections.append(current_section);

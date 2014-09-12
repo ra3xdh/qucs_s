@@ -258,7 +258,6 @@ void SchCauer::calcBandStop()
         R4 = Kv1*R5/mu;
         R6 = mu*R2/(mu-1.0);
 
-        current_section;
         current_section.N = cnt;
         current_section.R1 = 1000*R1;
         current_section.R2 = 1000*R2;
