@@ -15,6 +15,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "classproto.h"
+#include "myresistancebox.h"
+#include "mycolorbox.h"
+#include "qresistor.h"
+#include "mywidget.h"
+#include "helpdialog.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -22,30 +28,20 @@
 #ifndef QUCS_RESCODES_MAIN_CPP
 #define QUCS_RESCODES_MAIN_CPP
 #include <QApplication>
-#include <Q3HBox>
+#include <QHBoxLayout>
+#include <QGridLayout>
 #include <QPushButton>
-#include <QFont>
-#include <QLayout>
-#include <Q3Grid>
 #include <QPixmap>
 #include <QString>
 #include <QImage>
+#include <QMenu>
 #include <QMenuBar>
-#include <Q3PopupMenu>
+#include <QAction>
 #include <QMessageBox>
-#include <QLayout>
 #include <QClipboard>
-//Added by qt3to4:
-#include <Q3GridLayout>
+
 #include <vector>
 #include <string>
-
-#include "classproto.h"
-#include "myresistancebox.h"
-#include "mycolorbox.h"
-#include "qresistor.h"
-#include "mywidget.h"
-#include "helpdialog.h"
 //------------------------class member declarations for MyWidget---------------------------------//
 
 MyWidget::MyWidget( QWidget *parent, const char *name )
@@ -59,20 +55,33 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
 #endif
 
 	 // --------  create menubar  -------------------
-	Q3PopupMenu *fileMenu = new Q3PopupMenu();
-	fileMenu->insertItem(tr("E&xit"), qApp, SLOT(quit()), Qt::CTRL+Qt::Key_Q);
+  QAction *fileExit = new QAction(tr("E&xit"), this);
+  fileExit->setShortcut(Qt::CTRL+Qt::Key_Q);
+  connect(fileExit, SIGNAL(activated()), qApp, SLOT(quit()));
 
-	Q3PopupMenu *helpMenu = new Q3PopupMenu();
-	helpMenu->insertItem(tr("Help..."), this, SLOT(slotHelpIntro()), Qt::Key_F1);
-	helpMenu->insertSeparator();
-	helpMenu->insertItem(
-			tr("&About ResistorCodes..."), this, SLOT(slotHelpAbout()), 0);
-	helpMenu->insertItem(tr("About Qt..."), this, SLOT(slotHelpAboutQt()), 0);
+  QMenu *fileMenu = new QMenu(tr("&File"));
+  fileMenu->addAction(fileExit);
 
-	QMenuBar *bar = new QMenuBar(this);
-	bar->insertItem(tr("&File"), fileMenu);
-	bar->insertSeparator ();
-	bar->insertItem(tr("&Help"), helpMenu);
+  QAction *help = new QAction(tr("Help..."), this);
+  help->setShortcut(Qt::Key_F1);
+  connect(help, SIGNAL(activated()), this, SLOT(slotHelpIntro()));
+
+  QAction *about = new QAction(tr("&About ResistorCodes..."), this);
+  connect(about, SIGNAL(activated()), this, SLOT(slotHelpAbout()));
+
+  QAction *aboutQt = new QAction(tr("&About Qt..."), this);
+  connect(aboutQt, SIGNAL(activated()), this, SLOT(slotHelpAboutQt()));
+
+  QMenu *helpMenu = new QMenu(tr("&Help"));
+  helpMenu->addAction(help);
+  helpMenu->addAction(about);
+  helpMenu->addSeparator();
+  helpMenu->addAction(aboutQt);
+
+  QMenuBar *menuBar = new QMenuBar(this);
+	menuBar->addMenu(fileMenu);
+	menuBar->insertSeparator();
+	menuBar->addMenu(helpMenu);
 
 	res= new QResistor();
 	//--------------------resistance displayin ui ---------------------------------//
@@ -87,31 +96,32 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
 	//-------------------paste the configuration to clipboard--------------------------------------------//
 	connect(res, SIGNAL(valueModified(QResistor*)),this,SLOT(slotConfiguration()));
 	//-------------------switching buttons ui--------------------------------------//
-	Q3HBox *buttonBox = new Q3HBox(this,"buttonBox");
-
-  QPushButton *calcColor = new QPushButton(QPixmap(":/bitmaps/next.png")," To Colors", buttonBox, "calcColor" );
+  QPushButton *calcColor = new QPushButton(QPixmap(":/bitmaps/next.png")," To Colors", this, "calcColor" );
 	connect(calcColor, SIGNAL(clicked()),this,SLOT(setResistanceValue()));
 
-	QPushButton *calcResistance = new QPushButton(QPixmap(":/bitmaps/previous.png")," To Resistance", buttonBox, "calcResistance" );
+	QPushButton *calcResistance = new QPushButton(QPixmap(":/bitmaps/previous.png")," To Resistance", this, "calcResistance" );
 	connect(calcResistance, SIGNAL(clicked()),this,SLOT(setColorValue()));
 
-	QPushButton *quit = new QPushButton( "Quit", buttonBox, "quit" );
-//	quit->setFont( QFont( "Times", 18, QFont::Bold ) );
+	QPushButton *quit = new QPushButton( "Quit", this, "quit" );
 	connect( quit, SIGNAL(clicked()), qApp, SLOT(quit()) );
 
+  QHBoxLayout *buttonBox = new QHBoxLayout;
+  buttonBox->addWidget(calcColor);
+  buttonBox->addWidget(calcResistance);
+  buttonBox->addWidget(quit);
 
 	//--------------------packing all of them together---------------------------------------//
-	Q3GridLayout *grid = new Q3GridLayout( this, 4, 1, 10 );
-	//3x1, 10 pixel border
+  QGridLayout *grid = new QGridLayout(this);
+  grid->setMargin(10);
 
 #ifndef __APPLE__
     QWidget *Space = new QWidget(this);   // reserve space for menubar
-    Space->setFixedSize(1, bar->height());
+    Space->setFixedSize(1, menuBar->height());
     grid->addWidget(Space, 0,0);
 #endif
 
 	grid->addWidget( resBox, 1, 0 );
-	grid->addWidget( buttonBox, 2, 0 );
+	grid->addLayout( buttonBox, 2, 0 );
 	grid->addWidget( colorBox, 3, 0 );
 
 }
@@ -176,8 +186,6 @@ int main( int argc, char **argv )
 	QApplication a( argc, argv );
 
 	MyWidget w;
-//	w.setGeometry( 100, 100, 500, 355 );
-//	w.setFixedSize(500, 355 );
 	a.setMainWidget( &w );
 	w.show();
 	return a.exec();

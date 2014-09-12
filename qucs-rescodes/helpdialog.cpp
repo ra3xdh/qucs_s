@@ -19,15 +19,13 @@ email                : sudhakar.m.kumar@gmail.com
 
 #include "helpdialog.h"
 
-#include <QLayout>
-#include <Q3HBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QPushButton>
-#include <Q3TextEdit>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QTextEdit>
 
 
-	HelpDialog::HelpDialog(QWidget *parent)
+HelpDialog::HelpDialog(QWidget *parent)
 : QDialog(parent, 0, false, Qt::WDestructiveClose)
 {
 	setCaption("Resistance color codes help");
@@ -48,26 +46,24 @@ email                : sudhakar.m.kumar@gmail.com
 
 
 	// --------  create dialog widgets  ------------
-	resize(250, 230);
+	resize(300, 200);
 
-	vLayout = new Q3VBoxLayout(this);
+	vLayout = new QVBoxLayout(this);
 
-	Text = new Q3TextEdit(s, QString::null, this);
+	Text = new QTextEdit(s, this);
 	Text->setTextFormat(Qt::PlainText);
 	Text->setReadOnly(true);
 	Text->setMinimumSize(200,200);
 	vLayout->addWidget(Text);
 
-	Q3HBox *h = new Q3HBox(this);
-	vLayout->addWidget(h);
+  QHBoxLayout *h = new QHBoxLayout;
+	vLayout->addLayout(h);
 
-	h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
+	QPushButton *ButtonClose = new QPushButton(tr("Close"), this);
+  h->addWidget(ButtonClose);
 
-	QPushButton *ButtonClose = new QPushButton(tr("Close"), h);
 	connect(ButtonClose, SIGNAL(clicked()), SLOT(slotClose()));
 	ButtonClose->setFocus();
-
-	h->setStretchFactor(new QWidget(h),5); // stretchable placeholder
 }
 
 HelpDialog::~HelpDialog()

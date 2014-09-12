@@ -15,18 +15,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
-#include <Q3GroupBox>
 #include <string>
 #include <map>
 #include <vector>
 using namespace std;
 
+#include <QGroupBox>
+
 class QResistor;
 class QComboBox;
 
-class MyColorBox: public Q3GroupBox 
+class MyColorBox: public QGroupBox 
 {
 	Q_OBJECT
 	

@@ -15,29 +15,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
+#include "myresistancebox.h"
+#include "qresistor.h"
 
 #include <QValidator>
 #include <QLabel>
 #include <QComboBox>
 #include <QLineEdit>
-#include <Q3GroupBox>
-#include "myresistancebox.h"
-#include "qresistor.h"
-#include <math.h>
+#include <QGroupBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+
+#include <cmath>
 
 MyResistanceBox::MyResistanceBox( QWidget *parent, const char *name )
-: Q3GroupBox(3,Qt::Horizontal,"Resistance Values" ,parent, name )
+//: QGroupBox(3,Qt::Horizontal,"Resistance Values" ,parent, name )
+: QGroupBox("Resistance Values", parent)
 {
 	//--------------------resistance displaying ui ---------------------------------//
+	resValueEdit = new QLineEdit(this);
 
-	resValueEdit = new QLineEdit (this, "resValueEdit");
 	const QDoubleValidator *validator = new QDoubleValidator (resValueEdit,"validator");
 	resValueEdit->setValidator(validator);
 	resValueEdit->setMaxLength(6);
-	resUnit = new QComboBox(this, "resUnit");
-	tolerance = new QComboBox(this, "tolerance");
-	stdRes = new QLabel("Closest standard resistance : 0 Ohms \n Tolerance : 20%",this, "stdRes");
+
+	resUnit = new QComboBox(this);
+	tolerance = new QComboBox(this);
+	stdRes = new QLabel("Closest standard resistance : 0 Ohms \n Tolerance : 20%");
 
 	QStringList units;
   units << "Ohms" << "kOhms" << "MOhms";
@@ -46,11 +50,22 @@ MyResistanceBox::MyResistanceBox( QWidget *parent, const char *name )
 	QStringList tols;
   tols << "20%" << "10%" << "5%" << "2%" << "1%" << "0.5%" << "0.25%" << "0.1%" << "0.05%";
 	tolerance ->insertStringList(tols);
+
+  QHBoxLayout *hbox = new QHBoxLayout;
+  hbox->addWidget(resValueEdit);
+  hbox->addWidget(resUnit);
+  hbox->addWidget(tolerance);
+
+  QVBoxLayout *vbox = new QVBoxLayout;
+  vbox->addLayout(hbox);
+  vbox->addWidget(stdRes);
+  
+  this->setLayout(vbox);
 }
 
 void MyResistanceBox::update(QResistor *res)
 {
-	stdRes->setText("Closest standard resistance : "+QString::number(res->getResistance())+QString(QChar(res->getModifier()))+"Ohms \n Tolerance : "+QString::number(res->getTolerance())+"%");
+	stdRes->setText("Closest standard resistance : "+ QString::number(res->getResistance())+QString(QChar(res->getModifier()))+"Ohms \n Tolerance : "+QString::number(res->getTolerance())+"%");
 }
 
 float MyResistanceBox::enteredValue()
