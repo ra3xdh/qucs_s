@@ -15,20 +15,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
-#include <QComboBox>
-#include <Q3GroupBox>
-#include <vector>
-#include <map>
-#include <string>
 #include "mycolorbox.h"
 #include "qresistor.h"
 
-#include <iostream>
+#include <QComboBox>
+#include <QGroupBox>
+#include <QHBoxLayout>
+
+#include <vector>
+#include <map>
+#include <string>
 
 MyColorBox::MyColorBox( QWidget *parent, const char *name )
-: Q3GroupBox(5,Qt::Horizontal,"Colour Codes" ,parent, name )
+: QGroupBox("Colour Codes" ,parent)
 {
 	//--------------------color code displaying ui-------------------------------------//
 	QStringList colors;
@@ -54,7 +53,14 @@ MyColorBox::MyColorBox( QWidget *parent, const char *name )
 
 	colorCode[4]=new QComboBox (this);
 	colorCode[4]->insertStringList(tolColors);
+
+  QHBoxLayout *hbox = new QHBoxLayout;
+  for (int i = 0; i < 5; ++i) {
+    hbox->addWidget(colorCode[i]);
+  }
+  this->setLayout(hbox);
 }
+
 map<string,int> MyColorBox::constructRevTolindexMap()
 {
 	map<string,int> revTolindexMap;
