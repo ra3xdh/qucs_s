@@ -859,8 +859,6 @@ void ComponentDialog::slotApplyInput()
        display = (disp == tr("yes"));
        if( pp ) {
 
-         qDebug() << "got pp" << pp << pp->Description;
-
          if(pp->display != display) {
              pp->display = display;
              changed = true;
