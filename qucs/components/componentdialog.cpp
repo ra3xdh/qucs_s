@@ -622,7 +622,7 @@ void ComponentDialog::slotApplyPropName()
 //	NameEdit->setText("Export_");
 //    }
 //      else
-    prop->item(row, 0)->setText(edit->text());
+    prop->item(row, 0)->setText(NameEdit->text());
   }
   edit->setFocus();   // cursor into "edit" widget
 }
