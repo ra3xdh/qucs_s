@@ -96,7 +96,7 @@ sed -i 'voo' "s/10\.[5-7]/10\.${VER}/g" resources/Welcome.rtf
 # copy locally the postinstall script
 mkdir scripts
 cp $SRC/postinstall scripts/
-#sudo chmod +x scripts/postinstall
+sudo chmod +x scripts/postinstall
 
 # copy locally the customized Distribution file
 cp $SRC/Distribution.xml .
