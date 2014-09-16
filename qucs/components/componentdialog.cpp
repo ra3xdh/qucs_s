@@ -953,6 +953,20 @@ void ComponentDialog::slotEditFile()
   Is called if the add button is pressed. This is only possible for some
  properties.
  If desc is empy, ButtAdd is enabled, this slot handles if it is clicked.
+ Used with: Equation, ?
+
+ Original behavior for an Equation block
+  - start with props
+    y=1 (Name, Value)
+    Export=yes
+  - add equation, results
+    y=1
+    y2=1
+    Export=yes
+
+  If Name already exists, set it to focus
+  If new name, insert item before Export
+
 */
 void ComponentDialog::slotButtAdd()
 {
@@ -969,21 +983,27 @@ void ComponentDialog::slotButtAdd()
     }
   }
 
+
+
   //if nothing selected, select last
-  prop->setCurrentItem(prop->item(prop->rowCount(),0));
-  slotSelectProperty(prop->item(prop->rowCount(),0));
+//  prop->setCurrentItem(prop->item(prop->rowCount(),0));
+//  slotSelectProperty(prop->item(prop->rowCount(),0));
 
   QString s = tr("no");
   if(disp->isChecked())
     s = tr("yes");
 
-  /// \todo test add parameter
 
-  prop->setRowCount(prop->rowCount()+1);
+  // take last row
+  QList<QTableWidgetItem*> rowItems;
+  for (int col = 0; col < prop->columnCount(); ++col)  {
+    rowItems << prop->takeItem(prop->rowCount()-1, col);
+  }
 
-  int row = prop->rowCount();
+  // set last row with current info in
+  int row = prop->rowCount()-1;
 
-  /// \todo refator this
+  // append new row
   QTableWidgetItem *cell;
   cell = new QTableWidgetItem(NameEdit->text());
   cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
@@ -994,17 +1014,27 @@ void ComponentDialog::slotButtAdd()
   cell = new QTableWidgetItem(s);
   cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
   prop->setItem(row, 2, cell);
-  // no description?
-//  cell = new QTableWidgetItem(p->Description);
-//  cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-//  prop->setItem(row, 3, cell);
+  // no description? add empty cell
+  cell = new QTableWidgetItem("");
+  cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+  prop->setItem(row, 3, cell);
 
+  // increase list
+  prop->setRowCount(prop->rowCount()+1);
+
+  // add taken item again as last
+  row = prop->rowCount()-1;
+  for (int col = 0; col < prop->columnCount(); ++col)
+  {
+    prop->setItem(row, col, rowItems.at(col));
+  }
 }
 
 /*!
  Is called if the remove button is pressed. This is only possible for
  some properties.
  If desc is empy, ButtRem is enabled, this slot handles if it is clicked.
+ Used with: Equations, ?
 */
 void ComponentDialog::slotButtRem()
 {
@@ -1014,18 +1044,14 @@ void ComponentDialog::slotButtRem()
   QTableWidgetItem *item = prop->selectedItems()[0];
   int row = item->row();
 
-//  Q3ListViewItem *item = prop->selectedItem();
   if(item == 0)
     return;
-
-  /// \todo test remove of parameters
 
   // peek next, delete current, set next current
   if ( row < prop->rowCount()) {
     prop->setCurrentItem(prop->item(row+1,0));
     slotSelectProperty(prop->item(row+1,0));
-    prop->removeRow(row); /// \todo deleted?
-    delete item;
+    prop->removeRow(row);
    }
 }
 
