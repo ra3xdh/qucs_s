@@ -711,6 +711,7 @@ int doPrint(QString schematic, QString printFile)
   sch->Diagrams = &(sch->DocDiags);
   sch->Paintings = &(sch->DocPaints);
   sch->Components = &(sch->DocComps);
+  sch->reloadGraphs();
 
   qDebug() << "*** try to print file  :" << printFile;
 

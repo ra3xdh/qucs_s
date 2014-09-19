@@ -163,7 +163,11 @@ void Diagram::createAxisLabels()
   Graph *pg;
   int   x, y, w, wmax = 0;
   QString Str;
-  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
+  QFont font = QFont("Helvetica", 12);
+  if (QucsMain) {
+    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
+  }
+  QFontMetrics  metrics(font);   // get size of text
   int LineSpacing = metrics.lineSpacing();
 
 
@@ -1655,7 +1659,11 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
   else  tmp = 0;
   Arcs.append(new struct Arc(0, y2, x2, y2, tmp, 16*360-phi, QPen(Qt::black,0)));
 
-  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
+  QFont font = QFont("Helvetica", 12);
+  if (QucsMain) {
+    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
+  }
+  QFontMetrics  metrics(font);   // get size of text
   /// \fixme
   QSize r = metrics.size(0, Texts.last()->s);  // width of text
   len = x2+r.width()-4;   // more space at the right
@@ -1892,7 +1900,11 @@ bool Diagram::calcYAxis(Axis *Axis, int x0)
   double GridStep, corr, zD, zDstep, GridNum;
 
   QString tmp;
-  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
+  QFont font = QFont("Helvetica", 12);
+  if (QucsMain) {
+    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
+  }
+  QFontMetrics  metrics(font);   // get size of text
   int maxWidth = 0;
 
   bool back = false;

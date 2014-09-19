@@ -635,7 +635,11 @@ int Rect3DDiagram::calcAxis(Axis *Axis, int x, int y,
   double xstepD, ystepD;
 
   QString tmp;
-  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
+  QFont font = QFont("Helvetica", 12);
+  if (QucsMain) {
+    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
+  }
+  QFontMetrics  metrics(font);   // get size of text
   int maxWidth = 0;
   int count, gx, gy, w;
 
@@ -728,7 +732,11 @@ void Rect3DDiagram::createAxis(Axis *Axis, bool Right,
   if(Axis == &yAxis)  Index = 1;
 
   QString s;
-  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
+  QFont font = QFont("Helvetica", 12);
+  if (QucsMain) {
+    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
+  }
+  QFontMetrics  metrics(font);   // get size of text
 
   x = x2_ - x1_;
   y = y2_ - y1_;
@@ -790,7 +798,11 @@ int Rect3DDiagram::calcDiagram()
   Arcs.clear();
 
   double GridStep, corr, zD, zDstep, GridNum;
-  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
+  QFont font = QFont("Helvetica", 12);
+  if (QucsMain) {
+    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
+  }
+  QFontMetrics  metrics(font);   // get size of text
 
   x3 = x2 + 7;
   int z, z2, o, w;
