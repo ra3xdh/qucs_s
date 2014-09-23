@@ -9,6 +9,8 @@ Port
 
  * Ported Diagram classes from Qt3PtrList to QList
 
+ * Ported Component member variables Lines, Arcs, Rects, Ellips, Texts from Qt3PtrList to QList
+
 
 Miscelaneous
 ------------
