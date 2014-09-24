@@ -888,6 +888,10 @@ int main(int argc, char *argv[])
 
   bool netlist_flag = false;
   bool print_flag = false;
+  QString page = "A4";
+  int dpi = 96;
+  QString color = "RGB";
+  QString orientation = "portraid";
 
   // simple command line parser
   for (int i = 1; i < argc; ++i) {
@@ -898,6 +902,10 @@ int main(int argc, char *argv[])
   "  -v, --version  display version information and exit\n"
   "  -n, --netlist  convert Qucs schematic into netlist\n"
   "  -p, --print    print Qucs schematic\n"
+  "    --page [A4|A3|B4|B5]         use with --print, set print page size, A4 is default\n"
+  "    --dpi NUMBER                 use with --print, set dpi value\n"
+  "    --color [BW|RGB]             use with --print, set color mode\n"
+  "    --orin [portraid|landscape]  use with --print, set orientation\n"
   "  -i FILENAME    use file as input schematic\n"
   "  -o FILENAME    use file as output netlist\n"
   , argv[0]);
@@ -916,6 +924,18 @@ int main(int argc, char *argv[])
     }
     else if (!strcmp(argv[i], "-p") || !strcmp(argv[i], "--print")) {
       print_flag = true;
+    }
+    else if (!strcmp(argv[i], "--page")) {
+      page = argv[++i];
+    }
+    else if (!strcmp(argv[i], "--dpi")) {
+      dpi = QString(argv[++i]).toInt();
+    }
+    else if (!strcmp(argv[i], "--color")) {
+      color = argv[++i];
+    }
+    else if (!strcmp(argv[i], "--orin")) {
+      orientation = argv[++i];
     }
     else if (!strcmp(argv[i], "-i")) {
       inputfile = argv[++i];
