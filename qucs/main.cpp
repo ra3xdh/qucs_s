@@ -777,10 +777,15 @@ int doPrint(QString schematic, QString printFile,
     hsel += bourder;
     float scal = 1.0;
 
-    if (printFile.endsWith(".svg")) {
+    if (printFile.endsWith(".svg") || printFile.endsWith(".eps")) {
       QSvgGenerator* svg1 = new QSvgGenerator();
 
-      svg1->setFileName(printFile);
+      QString tempfile = printFile + ".tmp.svg";
+      if (!printFile.endsWith(".svg")) {
+          svg1->setFileName(tempfile);
+      } else {
+          svg1->setFileName(printFile);
+      }
       // this seems not work as expected
       //svg1->setResolution(dpi);
 
@@ -795,6 +800,24 @@ int doPrint(QString schematic, QString printFile,
       delete vp;
       delete p;
       delete svg1;
+
+      if (!printFile.endsWith(".svg")) {
+          QString cmd = "inkscape -z -D --file=";
+          cmd += tempfile + " ";
+
+          if (printFile.endsWith(".eps")) {
+            cmd += "--export-eps=" + printFile;
+          }
+
+          int result = QProcess::execute(cmd);
+
+          if (result!=0) {
+              QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,"Export to image", "Inkscape start error!", QMessageBox::Ok);
+              msg->exec();
+              delete msg;
+          }
+          QFile::remove(tempfile);
+      }
 
     } else if (printFile.endsWith(".png")) {
       QImage* img;
