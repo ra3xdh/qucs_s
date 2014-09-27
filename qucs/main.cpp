@@ -763,8 +763,40 @@ int doPrint(QString schematic, QString printFile,
     ((QucsDoc *)sch)->print(Printer, &Painter,
       Printer->printRange() == QPrinter::AllPages, fitToPage);
   } else {
+
+    const int bourder = 30;
+    int w,h,wsel,hsel,
+        xmin, ymin, xmin_sel, ymin_sel;
+
+    sch->getSchWidthAndHeight(w, h, xmin, ymin);
+    sch->getSelAreaWidthAndHeight(wsel, hsel, xmin_sel, ymin_sel);
+    w += bourder;
+    h += bourder;
+    wsel += bourder;
+    hsel += bourder;
+    float scal = 1.0;
+
     if (printFile.endsWith(".svg")) {
     } else if (printFile.endsWith(".png")) {
+      QImage* img;
+      if (color == "BW") {
+        img = new QImage(w, h, QImage::Format_Mono);
+      } else {
+        img = new QImage(w, h, QImage::Format_RGB888);
+      }
+
+      QPainter* p = new QPainter(img);
+      p->fillRect(0, 0, w, h, Qt::white);
+      ViewPainter* vp = new ViewPainter(p);
+      vp->init(p, scal, 0, 0, xmin*scal-bourder/2, ymin*scal-bourder/2, scal,scal);
+
+      sch->paintSchToViewpainter(vp,true,true);
+
+      img->save(printFile);
+
+      delete vp;
+      delete p;
+      delete img;
     } else {
       fprintf(stderr, "Unsupported format of output file. \n"
           "Use PNG, SVG or PDF format!\n");
