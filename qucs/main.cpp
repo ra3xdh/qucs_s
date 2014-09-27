@@ -699,7 +699,8 @@ int doNetlist(QString schematic, QString netlist)
   return 0;
 }
 
-int doPrint(QString schematic, QString printFile)
+int doPrint(QString schematic, QString printFile,
+    QString page, int dpi, QString color, QString orientation)
 {
   Schematic *sch = openSchematic(schematic);
   if (sch == NULL) {
@@ -715,25 +716,61 @@ int doPrint(QString schematic, QString printFile)
 
   qDebug() << "*** try to print file  :" << printFile;
 
-  //initial printer
-  QPrinter *Printer = new QPrinter(QPrinter::HighResolution);
-  Printer->setOptionEnabled(QPrinter::PrintSelection, true);
-  Printer->setOptionEnabled(QPrinter::PrintPageRange, false);
-  Printer->setOptionEnabled(QPrinter::PrintToFile, true);
-  Printer->setColorMode(QPrinter::Color);
-  Printer->setFullPage(true);
+  // determine filetype
+  if (printFile.endsWith(".pdf")) {
+    //initial printer
+    QPrinter *Printer = new QPrinter(QPrinter::HighResolution);
+    Printer->setOptionEnabled(QPrinter::PrintSelection, true);
+    Printer->setOptionEnabled(QPrinter::PrintPageRange, false);
+    Printer->setOptionEnabled(QPrinter::PrintToFile, true);
+    Printer->setFullPage(true);
 
-  Printer->setOutputFileName(printFile);
+    //set property
+    Printer->setOutputFileName(printFile);
 
-  QPainter Painter(Printer);
-  if(!Painter.device()) {      // valid device available ?
-    qDebug() << "Error: Printer Error.";
-    return -1;
+    //page size
+    if (page == "A3") {
+      Printer->setPaperSize(QPrinter::A3);
+    } else if (page == "B4") {
+      Printer->setPaperSize(QPrinter::B4);
+    } else if (page == "B5") {
+      Printer->setPaperSize(QPrinter::B5);
+    } else {
+      Printer->setPaperSize(QPrinter::A4);
+    }
+    //dpi
+    Printer->setResolution(dpi);
+    //color
+    if (color == "BW") {
+      Printer->setColorMode(QPrinter::GrayScale);
+    } else {
+      Printer->setColorMode(QPrinter::Color);
+    }
+    //orientation
+    if (orientation == "landscape") {
+      Printer->setOrientation(QPrinter::Landscape);
+    } else {
+      Printer->setOrientation(QPrinter::Portrait);
+    }
+
+    QPainter Painter(Printer);
+    if(!Painter.device()) {      // valid device available ?
+      qDebug() << "Error: Printer Error.";
+      return -1;
+    }
+
+    bool fitToPage = true;
+    ((QucsDoc *)sch)->print(Printer, &Painter,
+      Printer->printRange() == QPrinter::AllPages, fitToPage);
+  } else {
+    if (printFile.endsWith(".svg")) {
+    } else if (printFile.endsWith(".png")) {
+    } else {
+      fprintf(stderr, "Unsupported format of output file. \n"
+          "Use PNG, SVG or PDF format!\n");
+      return -1;
+    }
   }
-
-  bool fitToPage = true;
-  ((QucsDoc *)sch)->print(Printer, &Painter,
-    Printer->printRange() == QPrinter::AllPages, fitToPage);
   return 0;
 }
 
@@ -966,7 +1003,8 @@ int main(int argc, char *argv[])
     if (netlist_flag) {
       return doNetlist(inputfile, outputfile);
     } else if (print_flag) {
-      return doPrint(inputfile, outputfile);
+      return doPrint(inputfile, outputfile,
+          page, dpi, color, orientation);
     }
   }
 
