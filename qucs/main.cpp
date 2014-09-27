@@ -37,6 +37,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QRegExp>
+#include <QtSvg>
 
 #include "qucs.h"
 #include "main.h"
@@ -777,6 +778,24 @@ int doPrint(QString schematic, QString printFile,
     float scal = 1.0;
 
     if (printFile.endsWith(".svg")) {
+      QSvgGenerator* svg1 = new QSvgGenerator();
+
+      svg1->setFileName(printFile);
+      // this seems not work as expected
+      //svg1->setResolution(dpi);
+
+      svg1->setSize(QSize(1.12*w, h));
+      QPainter *p = new QPainter(svg1);
+      p->fillRect(0, 0, svg1->size().width(), svg1->size().height(), Qt::white);
+      ViewPainter *vp = new ViewPainter(p);
+      vp->init(p, 1.0, 0, 0, xmin-bourder/2, ymin-bourder/2, 1.0, 1.0);
+
+      sch->paintSchToViewpainter(vp,true,true);
+
+      delete vp;
+      delete p;
+      delete svg1;
+
     } else if (printFile.endsWith(".png")) {
       QImage* img;
       if (color == "BW") {
