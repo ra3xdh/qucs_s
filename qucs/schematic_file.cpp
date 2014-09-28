@@ -1959,3 +1959,18 @@ QString Schematic::createNetlist(QTextStream& stream, int NumPorts)
 
   return Time;
 }
+
+QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
+{
+    if(!isAnalog) {
+        return QString("");
+    }
+
+    QString s, Time;
+    for(Component *pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
+      if(isAnalog) {
+        s = pc->getNetlist();
+      }
+      stream<<s;
+    }
+}
