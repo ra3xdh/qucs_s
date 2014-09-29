@@ -29,7 +29,7 @@ TransferFuncDialog::TransferFuncDialog(QVector<long double> &a, QVector<long dou
 
 
 
-    lblB = new QLabel(tr("Numenator b[i]="));
+    lblB = new QLabel(tr("Numerator b[i]="));
     lblA = new QLabel(tr("Denomenator a[i]="));
 
     QStringList indexes;
