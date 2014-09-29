@@ -2383,6 +2383,9 @@ void Schematic::setComponentNumber(Component *c)
 // ---------------------------------------------------
 void Schematic::insertComponentNodes(Component *c, bool noOptimize)
 {
+    // simulation components do not have ports
+    if (c->Ports.empty()) return;
+
     // connect every node of the component to corresponding schematic node
     foreach(Port *pp, c->Ports)
         pp->Connection = insertNode(pp->x+c->cx, pp->y+c->cy, c);
