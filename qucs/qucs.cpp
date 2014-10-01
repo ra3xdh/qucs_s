@@ -2828,3 +2828,16 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
   }
   delete writer;
 }
+
+
+void QucsApp::slotSimulateWithSpice()
+{
+    Schematic *sch = (Schematic*)DocumentTab->currentPage();
+    int num=0;
+    QFile spice_file("/home/vvk/spice4qucs.cir");
+    if (spice_file.open(QFile::WriteOnly)) {
+        QTextStream stream(&spice_file);
+        sch->createSpiceNetlist(stream,num);
+        spice_file.close();
+    }
+}

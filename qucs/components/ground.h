@@ -30,6 +30,7 @@ public:
 
 protected:
   QString netlist();
+  QString spice_netlist();
 };
 
 #endif

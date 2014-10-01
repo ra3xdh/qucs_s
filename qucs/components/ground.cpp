@@ -64,3 +64,8 @@ QString Ground::netlist()
 {
   return QString("");
 }
+
+QString Ground::spice_netlist()
+{
+    return QString("");
+}

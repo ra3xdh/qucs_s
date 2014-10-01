@@ -1962,15 +1962,26 @@ QString Schematic::createNetlist(QTextStream& stream, int NumPorts)
 
 QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
 {
-    if(!isAnalog) {
+    /*if(!isAnalog) {
         return QString("");
-    }
+    }*/
+    QStringList collect;
+    QTextEdit *err = new QTextEdit;
+
+    prepareNetlist(stream,collect,err);
+
+    Signals.clear();  // was filled in "giveNodeNames()"
+    FileList.clear();
 
     QString s, Time;
     for(Component *pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
       if(isAnalog) {
-        s = pc->getNetlist();
+        s = pc->getSpiceNetlist();
       }
       stream<<s;
     }
+
+    delete err;
+
+    return QString(" ");
 }
