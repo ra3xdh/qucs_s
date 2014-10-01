@@ -342,11 +342,18 @@ void ExportDialog::recalcScale()
 
 ExportDialog::ImgFormat ExportDialog::getImgFormat()
 {
+    // default
+    ExportDialog::ImgFormat ImgFormat = ExportDialog::Coloured;
+
     switch (cbxImgType->currentIndex()) {
-    case 0 : return ExportDialog::Coloured;
+    case 0 :
+        ImgFormat = ExportDialog::Coloured;
         break;
-    case 1 : return ExportDialog::Monochrome;
+    case 1 :
+        ImgFormat = ExportDialog::Monochrome;
         break;
     default : break;
     }
+
+    return ImgFormat;
 }
