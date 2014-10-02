@@ -113,7 +113,7 @@ inline bool getCompLineIntegers(const QString& s,
 // into a schematic
 //
 // returns an empty string if it couldn't be constructed
-inline int makeModelString (QString libname, QString compname, QString compstring, QString &modelstring)
+inline int makeModelString (QString libname, QString compname, QString compstring, QString &modelstring, bool default_sym = false)
 {
 
     if (!getSection("Model", compstring, modelstring))
@@ -134,9 +134,13 @@ inline int makeModelString (QString libname, QString compname, QString compstrin
     // The model wasn't a single line so we have to pick through the
     // symbol definition to get the ID for the model string
     QString symbolSection;
-    if (!getSection("Symbol", compstring, symbolSection))
-    {
-        return QUCS_COMP_LIB_CORRUPT;
+    if (default_sym) {    // Default Symbol presents
+        symbolSection = compstring;
+    } else {  // We need to find and process <Symbol> section
+        if (!getSection("Symbol", compstring, symbolSection))
+        {
+            return QUCS_COMP_LIB_CORRUPT;
+        }
     }
 
     QStringList symbolstringLines = symbolSection.split ("\n");
@@ -284,7 +288,7 @@ inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
         }
         else
         {
-            int result = makeModelString (library.name, component.name, library.defaultSymbol, component.modelString);
+            int result = makeModelString (library.name, component.name, library.defaultSymbol, component.modelString, true);
             if (result != QUCS_COMP_LIB_OK) return result;
         }
 
