@@ -26,6 +26,7 @@ public:
   Inductor();
  ~Inductor();
   Component* newOne();
+  QString spice_netlist();
   static Element* info(QString&, char* &, bool getNewOne=false);
 };
 

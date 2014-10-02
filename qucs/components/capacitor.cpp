@@ -16,6 +16,8 @@
  ***************************************************************************/
 
 #include "capacitor.h"
+#include "node.h"
+#include "schematic.h"
 
 
 Capacitor::Capacitor()
@@ -33,6 +35,7 @@ Capacitor::Capacitor()
   tx = x1+4;
   ty = y2+4;
   Model = "C";
+  SpiceModel = "C";
   Name  = "C";
 }
 
@@ -48,6 +51,24 @@ Element* Capacitor::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new Capacitor();
   return 0;
+}
+
+QString Capacitor::spice_netlist()
+{
+    QString s = SpiceModel + Name;
+
+    // output all node names
+    foreach(Port *p1, Ports) {
+        QString nam = p1->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+
+    QString val = Props.at(0)->Value;
+    val.remove(' ').remove("F");
+    s += " " + val;
+
+    return s+'\n';
 }
 
 void Capacitor::createSymbol()

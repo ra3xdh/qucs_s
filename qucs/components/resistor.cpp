@@ -65,8 +65,7 @@ QString Resistor::spice_netlist()
     }
 
     QString val = Props.at(0)->Value;
-    val.remove(' ');
-    if (val.endsWith("Ohm")) val.chop(3);
+    val.remove(' ').remove("Ohm");
     s += " " + val;
 
     return s+'\n';

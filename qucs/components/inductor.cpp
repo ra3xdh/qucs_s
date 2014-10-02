@@ -16,6 +16,8 @@
  ***************************************************************************/
 
 #include "inductor.h"
+#include "node.h"
+#include "schematic.h"
 
 
 Inductor::Inductor()
@@ -38,6 +40,7 @@ Inductor::Inductor()
   ty = y2+4;
   Model = "L";
   Name  = "L";
+  SpiceModel = "L";
 
   Props.append(new Property("L", "1 nH", true,
 		QObject::tr("inductance in Henry")));
@@ -52,6 +55,25 @@ Inductor::~Inductor()
 Component* Inductor::newOne()
 {
   return new Inductor();
+}
+
+
+QString Inductor::spice_netlist()
+{
+    QString s = SpiceModel + Name;
+
+    // output all node names
+    foreach(Port *p1, Ports) {
+        QString nam = p1->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+
+    QString val = Props.at(0)->Value;
+    val.remove(' ').remove("H");
+    s += " " + val;
+
+    return s+'\n';
 }
 
 Element* Inductor::info(QString& Name, char* &BitmapFile, bool getNewOne)

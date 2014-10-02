@@ -26,6 +26,7 @@ public:
   Capacitor();
  ~Capacitor() {};
   Component* newOne();
+  QString spice_netlist();
   static Element* info(QString&, char* &, bool getNewOne=false);
 
 protected:
