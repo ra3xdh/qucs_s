@@ -29,15 +29,14 @@ endif
 
 SUBDIRS = \
   qucs \
-    qucsactivefilter\
+	qucs-activefilter \
 	qucs-attenuator \
 	qucs-edit \
 	qucs-filter \
 	qucs-help \
 	qucs-lib \
-	qucs-transcalc \
-    qucs-activefilter \
 	qucs-rescodes \
+	qucs-transcalc \
 	contrib \
 	$(FILTERV2) \
 	$(RELEASEDIRS)
