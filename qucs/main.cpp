@@ -1008,15 +1008,17 @@ int main(int argc, char *argv[])
   for (int i = 1; i < argc; ++i) {
     if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
       fprintf(stdout,
-  "Usage: %s [OPTION]...\n\n"
+  "Usage: %s [-hv] \n"
+  "       qucs -n -i FILENAME -o FILENAME\n"
+  "       qucs -p -i FILENAME -o FILENAME.[pdf|png|svg|eps] \n\n"
   "  -h, --help     display this help and exit\n"
   "  -v, --version  display version information and exit\n"
   "  -n, --netlist  convert Qucs schematic into netlist\n"
-  "  -p, --print    print Qucs schematic\n"
-  "    --page [A4|A3|B4|B5]         use with --print, set print page size, A4 is default\n"
-  "    --dpi NUMBER                 use with --print, set dpi value\n"
-  "    --color [BW|RGB]             use with --print, set color mode\n"
-  "    --orin [portraid|landscape]  use with --print, set orientation\n"
+  "  -p, --print    print Qucs schematic to file (eps needs inkscape)\n"
+  "    --page [A4|A3|B4|B5]         set print page size (default A4)\n"
+  "    --dpi NUMBER                 set dpi value (default 96)\n"
+  "    --color [RGB|RGB]            set color mode (default RGB)\n"
+  "    --orin [portraid|landscape]  set orientation (default portraid)\n"
   "  -i FILENAME    use file as input schematic\n"
   "  -o FILENAME    use file as output netlist\n"
   , argv[0]);
