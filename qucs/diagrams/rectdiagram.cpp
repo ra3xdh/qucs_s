@@ -129,7 +129,11 @@ int RectDiagram::calcDiagram()
   Arcs.clear();
 
   double GridStep, corr, zD, zDstep, GridNum;
-  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
+  QFont font = QFont("Helvetica", 12);
+  if (QucsMain) {
+    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
+  }
+  QFontMetrics  metrics(font);   // get size of text
   y1 = QucsSettings.font.pointSize() + 6;
 
   x1 = 10;      // position of label text

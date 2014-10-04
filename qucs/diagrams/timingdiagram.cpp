@@ -125,7 +125,11 @@ int TimingDiagram::calcDiagram()
 
   y1 = 0;  // no scroll bar
   x3 = x2;
-  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
+  QFont font = QFont("Helvetica", 12);
+  if (QucsMain) {
+    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
+  }
+  QFontMetrics  metrics(font);   // get size of text
   int tHeight = metrics.lineSpacing();
   QString Str;
   int colWidth=0, x=4, y, xStart = 0, z;

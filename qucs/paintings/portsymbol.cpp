@@ -31,7 +31,11 @@ PortSymbol::PortSymbol(int cx_, int cy_, const QString& numberStr_,
   Angel = 0;
   nameStr = nameStr_;
   numberStr = numberStr_;
-  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
+  QFont font = QFont("Helvetica", 12);
+  if (QucsMain) {
+    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
+  }
+  QFontMetrics  metrics(font);   // get size of text
   QSize r = metrics.size(0, nameStr);
   x1 = -r.width() - 8;
   y1 = -((r.height() + 8) >> 1);

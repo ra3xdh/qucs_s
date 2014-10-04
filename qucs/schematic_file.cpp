@@ -879,10 +879,9 @@ bool Schematic::loadDocument()
     if(Line.isEmpty()) continue;
 
     if(Line == "<Symbol>") {
-      if ((Schematic*)QucsMain != 0) // GUI running, load Symbols
       if(!loadPaintings(&stream, &SymbolPaints)) {
-	file.close();
-	return false;
+        file.close();
+        return false;
       }
     }
     else
@@ -895,20 +894,18 @@ bool Schematic::loadDocument()
     if(Line == "<Wires>") {
       if(!loadWires(&stream)) { file.close(); return false; } }
     else
-    if ((Schematic*)QucsMain != 0) { // GUI running, load Diagrams, Paintings
     if(Line == "<Diagrams>") {
       if(!loadDiagrams(&stream, &DocDiags)) { file.close(); return false; } }
     else
     if(Line == "<Paintings>") {
       if(!loadPaintings(&stream, &DocPaints)) { file.close(); return false; } }
     else {
-        qDebug() << Line;
-      QMessageBox::critical(0, QObject::tr("Error"),
+       qDebug() << Line;
+       QMessageBox::critical(0, QObject::tr("Error"),
 		   QObject::tr("File Format Error:\nUnknown field!"));
       file.close();
       return false;
     }
-    } // Diagrams, Paintings
   }
 
   file.close();

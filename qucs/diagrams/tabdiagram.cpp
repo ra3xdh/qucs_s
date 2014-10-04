@@ -131,7 +131,11 @@ int TabDiagram::calcDiagram()
 
   x1 = 0;  // no scroll bar
   x3 = x2;
-  QFontMetrics  metrics(((Schematic*)QucsMain->DocumentTab->currentPage())->font());   // get size of text
+  QFont font = QFont("Helvetica", 12);
+  if (QucsMain) {
+    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
+  }
+  QFontMetrics  metrics(font);   // get size of text
   //qDebug("QucsSettings.font %i", QucsSettings.font.pointSize());
   int tHeight = metrics.lineSpacing();
   QString Str;

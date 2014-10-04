@@ -37,6 +37,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QRegExp>
+#include <QtSvg>
 
 #include "qucs.h"
 #include "main.h"
@@ -617,7 +618,7 @@ bool checkVersion(QString& Line)
 // ##########                                                     ##########
 // #########################################################################
 
-int doNetlist(QString schematic, QString netlist)
+Schematic *openSchematic(QString schematic)
 {
   qDebug() << "*** try to load schematic :" << schematic;
 
@@ -627,7 +628,7 @@ int doNetlist(QString schematic, QString netlist)
   }
   else {
     fprintf(stderr, "Error: Could not load schematic %s\n", schematic.ascii());
-    return 1;
+    return NULL;
   }
 
   // populate Modules list
@@ -640,6 +641,15 @@ int doNetlist(QString schematic, QString netlist)
   if(!sch->loadDocument()) {
     fprintf(stderr, "Error: Could not load schematic %s\n", schematic.ascii());
     delete sch;
+    return NULL;
+  }
+  return sch;
+}
+
+int doNetlist(QString schematic, QString netlist)
+{
+  Schematic *sch = openSchematic(schematic);
+  if (sch == NULL) {
     return 1;
   }
 
@@ -683,9 +693,158 @@ int doNetlist(QString schematic, QString netlist)
   Stream << '\n';
 
   QString SimTime = sch->createNetlist(Stream, SimPorts);
+  delete(sch);
 
   NetlistFile.close();
 
+  return 0;
+}
+
+int doPrint(QString schematic, QString printFile,
+    QString page, int dpi, QString color, QString orientation)
+{
+  Schematic *sch = openSchematic(schematic);
+  if (sch == NULL) {
+    return 1;
+  }
+
+  sch->Nodes = &(sch->DocNodes);
+  sch->Wires = &(sch->DocWires);
+  sch->Diagrams = &(sch->DocDiags);
+  sch->Paintings = &(sch->DocPaints);
+  sch->Components = &(sch->DocComps);
+  sch->reloadGraphs();
+
+  qDebug() << "*** try to print file  :" << printFile;
+
+  // determine filetype
+  if (printFile.endsWith(".pdf")) {
+    //initial printer
+    QPrinter *Printer = new QPrinter(QPrinter::HighResolution);
+    Printer->setOptionEnabled(QPrinter::PrintSelection, true);
+    Printer->setOptionEnabled(QPrinter::PrintPageRange, false);
+    Printer->setOptionEnabled(QPrinter::PrintToFile, true);
+    Printer->setFullPage(true);
+
+    //set property
+    Printer->setOutputFileName(printFile);
+
+    //page size
+    if (page == "A3") {
+      Printer->setPaperSize(QPrinter::A3);
+    } else if (page == "B4") {
+      Printer->setPaperSize(QPrinter::B4);
+    } else if (page == "B5") {
+      Printer->setPaperSize(QPrinter::B5);
+    } else {
+      Printer->setPaperSize(QPrinter::A4);
+    }
+    //dpi
+    Printer->setResolution(dpi);
+    //color
+    if (color == "BW") {
+      Printer->setColorMode(QPrinter::GrayScale);
+    } else {
+      Printer->setColorMode(QPrinter::Color);
+    }
+    //orientation
+    if (orientation == "landscape") {
+      Printer->setOrientation(QPrinter::Landscape);
+    } else {
+      Printer->setOrientation(QPrinter::Portrait);
+    }
+
+    QPainter Painter(Printer);
+    if(!Painter.device()) {      // valid device available ?
+      qDebug() << "Error: Printer Error.";
+      return -1;
+    }
+
+    bool fitToPage = true;
+    ((QucsDoc *)sch)->print(Printer, &Painter,
+      Printer->printRange() == QPrinter::AllPages, fitToPage);
+  } else {
+
+    const int bourder = 30;
+    int w,h,wsel,hsel,
+        xmin, ymin, xmin_sel, ymin_sel;
+
+    sch->getSchWidthAndHeight(w, h, xmin, ymin);
+    sch->getSelAreaWidthAndHeight(wsel, hsel, xmin_sel, ymin_sel);
+    w += bourder;
+    h += bourder;
+    wsel += bourder;
+    hsel += bourder;
+    float scal = 1.0;
+
+    if (printFile.endsWith(".svg") || printFile.endsWith(".eps")) {
+      QSvgGenerator* svg1 = new QSvgGenerator();
+
+      QString tempfile = printFile + ".tmp.svg";
+      if (!printFile.endsWith(".svg")) {
+          svg1->setFileName(tempfile);
+      } else {
+          svg1->setFileName(printFile);
+      }
+      // this seems not work as expected
+      //svg1->setResolution(dpi);
+
+      svg1->setSize(QSize(1.12*w, h));
+      QPainter *p = new QPainter(svg1);
+      p->fillRect(0, 0, svg1->size().width(), svg1->size().height(), Qt::white);
+      ViewPainter *vp = new ViewPainter(p);
+      vp->init(p, 1.0, 0, 0, xmin-bourder/2, ymin-bourder/2, 1.0, 1.0);
+
+      sch->paintSchToViewpainter(vp,true,true);
+
+      delete vp;
+      delete p;
+      delete svg1;
+
+      if (!printFile.endsWith(".svg")) {
+          QString cmd = "inkscape -z -D --file=";
+          cmd += tempfile + " ";
+
+          if (printFile.endsWith(".eps")) {
+            cmd += "--export-eps=" + printFile;
+          }
+
+          int result = QProcess::execute(cmd);
+
+          if (result!=0) {
+              QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,"Export to image", "Inkscape start error!", QMessageBox::Ok);
+              msg->exec();
+              delete msg;
+          }
+          QFile::remove(tempfile);
+      }
+
+    } else if (printFile.endsWith(".png")) {
+      QImage* img;
+      if (color == "BW") {
+        img = new QImage(w, h, QImage::Format_Mono);
+      } else {
+        img = new QImage(w, h, QImage::Format_RGB888);
+      }
+
+      QPainter* p = new QPainter(img);
+      p->fillRect(0, 0, w, h, Qt::white);
+      ViewPainter* vp = new ViewPainter(p);
+      vp->init(p, scal, 0, 0, xmin*scal-bourder/2, ymin*scal-bourder/2, scal,scal);
+
+      sch->paintSchToViewpainter(vp,true,true);
+
+      img->save(printFile);
+
+      delete vp;
+      delete p;
+      delete img;
+    } else {
+      fprintf(stderr, "Unsupported format of output file. \n"
+          "Use PNG, SVG or PDF format!\n");
+      return -1;
+    }
+  }
   return 0;
 }
 
@@ -835,19 +994,31 @@ int main(int argc, char *argv[])
   // work properly !???!
   setlocale (LC_NUMERIC, "C");
 
-  QString schematic;
-  QString netlist;
+  QString inputfile;
+  QString outputfile;
 
-  QString operation;
+  bool netlist_flag = false;
+  bool print_flag = false;
+  QString page = "A4";
+  int dpi = 96;
+  QString color = "RGB";
+  QString orientation = "portraid";
 
   // simple command line parser
   for (int i = 1; i < argc; ++i) {
     if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
       fprintf(stdout,
-  "Usage: %s [OPTION]...\n\n"
+  "Usage: %s [-hv] \n"
+  "       qucs -n -i FILENAME -o FILENAME\n"
+  "       qucs -p -i FILENAME -o FILENAME.[pdf|png|svg|eps] \n\n"
   "  -h, --help     display this help and exit\n"
   "  -v, --version  display version information and exit\n"
   "  -n, --netlist  convert Qucs schematic into netlist\n"
+  "  -p, --print    print Qucs schematic to file (eps needs inkscape)\n"
+  "    --page [A4|A3|B4|B5]         set print page size (default A4)\n"
+  "    --dpi NUMBER                 set dpi value (default 96)\n"
+  "    --color [RGB|RGB]            set color mode (default RGB)\n"
+  "    --orin [portraid|landscape]  set orientation (default portraid)\n"
   "  -i FILENAME    use file as input schematic\n"
   "  -o FILENAME    use file as output netlist\n"
   , argv[0]);
@@ -862,13 +1033,28 @@ int main(int argc, char *argv[])
       return 0;
     }
     else if (!strcmp(argv[i], "-n") || !strcmp(argv[i], "--netlist")) {
-      operation = "netlist";
+      netlist_flag = true;
+    }
+    else if (!strcmp(argv[i], "-p") || !strcmp(argv[i], "--print")) {
+      print_flag = true;
+    }
+    else if (!strcmp(argv[i], "--page")) {
+      page = argv[++i];
+    }
+    else if (!strcmp(argv[i], "--dpi")) {
+      dpi = QString(argv[++i]).toInt();
+    }
+    else if (!strcmp(argv[i], "--color")) {
+      color = argv[++i];
+    }
+    else if (!strcmp(argv[i], "--orin")) {
+      orientation = argv[++i];
     }
     else if (!strcmp(argv[i], "-i")) {
-      schematic = argv[++i];
+      inputfile = argv[++i];
     }
     else if (!strcmp(argv[i], "-o")) {
-      netlist = argv[++i];
+      outputfile = argv[++i];
     }
     else {
       fprintf(stderr, "Error: Unknown option: %s\n", argv[i]);
@@ -877,17 +1063,25 @@ int main(int argc, char *argv[])
   }
 
   // check operation and its required arguments
-  if (operation == "netlist") {
-    if (schematic.isEmpty()) {
-      fprintf(stderr, "Error: Expected input schematic file.\n");
+  if (netlist_flag and print_flag) {
+    fprintf(stderr, "Error: --print and --netlist cannot be used together\n");
+    return -1;
+  } else if (netlist_flag or print_flag) {
+    if (inputfile.isEmpty()) {
+      fprintf(stderr, "Error: Expected input file.\n");
       return -1;
     }
-    if (netlist.isEmpty()) {
-      fprintf(stderr, "Error: Expected output netlist file.\n");
+    if (outputfile.isEmpty()) {
+      fprintf(stderr, "Error: Expected output file.\n");
       return -1;
     }
     // create netlist from schematic
-    return doNetlist(schematic, netlist);
+    if (netlist_flag) {
+      return doNetlist(inputfile, outputfile);
+    } else if (print_flag) {
+      return doPrint(inputfile, outputfile,
+          page, dpi, color, orientation);
+    }
   }
 
   QucsMain = new QucsApp();
