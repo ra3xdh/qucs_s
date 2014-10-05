@@ -562,7 +562,7 @@ void QucsApp::initActions()
   connect(callAtt, SIGNAL(activated()), SLOT(slotCallAtt()));
 
   callRes = new QAction(tr("Resistor color codes"), this);
-  callRes->setShortcut(Qt::CTRL+Qt::Key_7);
+  callRes->setShortcut(Qt::CTRL+Qt::Key_8);
   callRes->setStatusTip(tr("Starts Qucs resistor color codes"));
   callRes->setWhatsThis(
   tr("Resistor color codes\n\nStarts standard resistor color code computation program"));
