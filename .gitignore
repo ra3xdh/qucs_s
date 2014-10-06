@@ -41,3 +41,5 @@ debian/qucs.substvars
 debian/qucs/
 qrc_*.cpp
 *.swp
+*.dsp
+*.dsw
