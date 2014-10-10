@@ -84,7 +84,7 @@ int TruthDiagram::calcDiagram()
   Graph *firstGraph;
 
   QListIterator<Graph *> ig(Graphs);
-  Graph *g;
+  Graph *g = 0;
   if (ig.hasNext())
      g= ig.next();
 
@@ -106,7 +106,7 @@ int TruthDiagram::calcDiagram()
 
   while(g->cPointsX.isEmpty()) {  // any graph with data ?
     g = ig.next();
-    if(g == 0) break;
+    if( ! ig.hasNext()) break;
   }
 if(g) if(!g->cPointsX.isEmpty()) {
   // ................................................
