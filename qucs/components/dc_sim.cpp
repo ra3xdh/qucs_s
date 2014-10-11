@@ -20,6 +20,7 @@
 
 DC_Sim::DC_Sim()
 {
+  isSimulation = true;
   Description = QObject::tr("dc simulation");
 
   QString s = Description;

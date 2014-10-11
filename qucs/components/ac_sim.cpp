@@ -20,6 +20,7 @@
 
 AC_Sim::AC_Sim()
 {
+  isSimulation = true;
   Description = QObject::tr("ac simulation");
 
   QString s = Description;

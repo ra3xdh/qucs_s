@@ -78,6 +78,7 @@ public:
   int  isActive; // should it be used in simulation or not ?
   int  tx, ty;   // upper left corner of text (position)
   bool showName;
+  bool isSimulation; // is it AC,DC,TR or other spice-compatible simulation?
   QString  Model, Name;
   QString  Description;
   QString  SpiceModel;

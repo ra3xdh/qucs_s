@@ -20,6 +20,7 @@
 
 TR_Sim::TR_Sim()
 {
+  isSimulation = true;
   Description = QObject::tr("transient simulation");
 
   QString  s = Description;
