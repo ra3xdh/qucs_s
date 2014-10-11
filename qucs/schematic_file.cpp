@@ -1975,10 +1975,17 @@ QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
 
     QString s, Time;
     for(Component *pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
-      if(isAnalog) {
+      if(isAnalog && !(pc->isSimulation)) {
         s = pc->getSpiceNetlist();
+        stream<<s;
       }
-      stream<<s;
+    }
+
+    for(Component *pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
+       if(pc->isSimulation) {
+           s = pc->getSpiceNetlist();
+           stream<<s;
+       }
     }
 
     delete err;

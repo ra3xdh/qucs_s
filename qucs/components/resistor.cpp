@@ -21,6 +21,7 @@
 
 Resistor::Resistor(bool european)
 {
+  isSimulation = false;
   Description = QObject::tr("resistor");
 
   Props.append(new Property("R", "50 Ohm", true,

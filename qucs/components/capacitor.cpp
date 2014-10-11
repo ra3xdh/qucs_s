@@ -22,6 +22,7 @@
 
 Capacitor::Capacitor()
 {
+  isSimulation = false;
   Description = QObject::tr("capacitor");
 
   Props.append(new Property("C", "1 pF", true,
