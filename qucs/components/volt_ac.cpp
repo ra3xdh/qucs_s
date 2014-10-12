@@ -83,9 +83,12 @@ QString Volt_ac::spice_netlist()
         s += " "+ nam;   // node names
     }
     s += " SIN(0 ";
-    s += Props.at(0)->Value.remove(' ').toUpper() + " ";
-    s += Props.at(1)->Value.remove(' ').toUpper() + " 0 ";
-    QString theta = Props.at(3)->Value.remove(' ');
+    QString val = Props.at(0)->Value;
+    s += val.remove(' ').remove("V").toUpper() + " ";
+    val = Props.at(1)->Value;
+    s += val.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("Hz").toUpper() + " 0 ";
+    QString theta = Props.at(3)->Value;
+    theta.remove(' ');
     if (!theta.isEmpty()) {
         s += theta;
     } else {

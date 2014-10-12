@@ -1967,8 +1967,8 @@ QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
     }*/
     QStringList collect;
     QTextEdit *err = new QTextEdit;
-
     prepareNetlist(stream,collect,err);
+    delete err;
 
     Signals.clear();  // was filled in "giveNodeNames()"
     FileList.clear();
@@ -1988,7 +1988,7 @@ QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
        }
     }
 
-    delete err;
+    stream<<".END\n";
 
     return QString(" ");
 }

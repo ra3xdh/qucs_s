@@ -102,18 +102,28 @@ QString AC_Sim::spice_netlist()
     QString s = SpiceModel + " ";
     if (Props.at(0)->Value=="log") {
         s += "DEC ";
-        float Np = Props.at(3)->Value.toFloat();
-        float Fstart = Props.at(1)->Value.toFloat();
-        float Fstop = Props.at(2)->Value.toFloat();
-        float Nd = ceil(log10(Fstop/Fstart));
-        float Npd = ceil(Np/Nd);
+        QString unit;
+        QString tmp = Props.at(3)->Value;
+        double Np,Fstart,Fstop,fac = 1.0;
+        str2num(tmp,Np,unit,fac);
+        Np = Np*fac;
+        tmp = Props.at(1)->Value;
+        str2num(tmp,Fstart,unit,fac);
+        Fstart = Fstart*fac;
+        tmp = Props.at(2)->Value;
+        str2num(tmp,Fstop,unit,fac);
+        Fstop = Fstop*fac;
+        double Nd = ceil(log10(Fstop/Fstart));
+        double Npd = ceil(Np/Nd);
         s += QString::number(Npd) + " ";
     } else {
         s += "LIN ";
         s += Props.at(3)->Value + " ";
     }
-    s += Props.at(1)->Value.toUpper().remove(' ') + " ";
-    s += Props.at(2)->Value.toUpper().remove(' ') + " ";
+    QString start = Props.at(1)->Value;
+    QString stop = Props.at(2)->Value;
+    s += start.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("Hz").toUpper() + " ";
+    s += stop.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("Hz").toUpper() + " ";
     s += " \n";
     return s;
 
