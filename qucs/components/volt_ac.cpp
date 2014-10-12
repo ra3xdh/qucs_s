@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include "volt_ac.h"
+#include "node.h"
 
 
 Volt_ac::Volt_ac()
@@ -40,6 +41,7 @@ Volt_ac::Volt_ac()
   tx = x1+4;
   ty = y2+4;
   Model = "Vac";
+  SpiceModel = "";
   Name  = "V";
 
   Props.append(new Property("U", "1 V", true,
@@ -70,4 +72,25 @@ Element* Volt_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new Volt_ac();
   return 0;
+}
+
+QString Volt_ac::spice_netlist()
+{
+    QString s = Name + " ";
+    foreach(Port *p1, Ports) {
+        QString nam = p1->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+    s += " SIN(0 ";
+    s += Props.at(0)->Value.remove(' ').toUpper() + " ";
+    s += Props.at(1)->Value.remove(' ').toUpper() + " 0 ";
+    QString theta = Props.at(3)->Value.remove(' ');
+    if (!theta.isEmpty()) {
+        s += theta;
+    } else {
+        s += "0";
+    }
+    s += ")\n";
+    return s;
 }
