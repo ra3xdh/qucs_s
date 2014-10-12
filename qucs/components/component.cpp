@@ -46,6 +46,7 @@ Component::Component()
 {
   Type = isAnalogComponent;
 
+  isSimulation = false;
   mirroredX = false;
   rotated = 0;
   isSelected = false;

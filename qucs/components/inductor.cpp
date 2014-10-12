@@ -22,7 +22,6 @@
 
 Inductor::Inductor()
 {
-  isSimulation = false;
   Description = QObject::tr("inductor");
 
   Arcs.append(new Arc(-18, -6, 12, 12,  0, 16*180,QPen(Qt::darkBlue,2)));
