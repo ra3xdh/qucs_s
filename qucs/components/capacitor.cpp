@@ -68,6 +68,11 @@ QString Capacitor::spice_netlist()
     QString val = Props.at(0)->Value;
     val.remove(' ').remove("F");
     s += " " + val;
+    val = Props.at(1)->Value; // add inial volatge if presents
+    val.remove(' ').toUpper();
+    if (!val.isEmpty()) {
+        s += " IC=" + val;
+    }
 
     return s+'\n';
 }

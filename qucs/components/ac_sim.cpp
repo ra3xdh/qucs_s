@@ -42,6 +42,7 @@ AC_Sim::AC_Sim()
   tx = 0;
   ty = y2+1;
   Model = ".AC";
+  SpiceModel = ".AC";
   Name  = "AC";
 
   // The index of the first 4 properties must not changed. Used in recreate().
@@ -94,4 +95,26 @@ void AC_Sim::recreate(Schematic*)
     Props.next()->Name = "Stop";
     Props.next()->Name = "Points";
   }
+}
+
+QString AC_Sim::spice_netlist()
+{
+    QString s = SpiceModel + " ";
+    if (Props.at(0)->Value=="log") {
+        s += "DEC ";
+        float Np = Props.at(3)->Value.toFloat();
+        float Fstart = Props.at(1)->Value.toFloat();
+        float Fstop = Props.at(2)->Value.toFloat();
+        float Nd = ceil(log10(Fstop/Fstart));
+        float Npd = ceil(Np/Nd);
+        s += QString::number(Npd) + " ";
+    } else {
+        s += "LIN ";
+        s += Props.at(3)->Value + " ";
+    }
+    s += Props.at(1)->Value.toUpper().remove(' ') + " ";
+    s += Props.at(2)->Value.toUpper().remove(' ') + " ";
+    s += " \n";
+    return s;
+
 }
