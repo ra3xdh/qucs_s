@@ -43,7 +43,6 @@
 #include "line_filter.h"
 #include "cline_filter.h"
 #include "stepz_filter.h"
-#include "active_filter.h"
 
 #include "qf_poly.h"
 #include "qf_filter.h"
@@ -119,7 +118,6 @@ QucsFilter::QucsFilter()
   ComboRealize->addItem("Coupled microstrip");
   ComboRealize->addItem("Stepped-impedance");
   ComboRealize->addItem("Stepped-impedance microstrip");
-  ComboRealize->addItem("Active");
   ComboRealize->addItem("Equation-defined");
   gbox1->addWidget(ComboRealize, 0,1);
   connect(ComboRealize, SIGNAL(activated(int)), SLOT(slotRealizationChanged(int)));
@@ -380,10 +378,7 @@ QString * QucsFilter::calculateFilter(struct tFilter * Filter)
       case 7:  // stepped-impedance microstrip line filter
         s = StepImpedance_Filter::createSchematic(Filter, &Substrate, true);
         return s;
-      case 8:  // active filter
-        s = Active_Filter::createSchematic(Filter, Filter->Impedance);
-        return s;
-      case 9:  // equation defined filter
+      case 8:  // equation defined filter
         s = Equation_Filter::createSchematic(Filter);
         return s;
     }
@@ -599,15 +594,6 @@ void QucsFilter::slotRealizationChanged(int index)
     box2->setEnabled(true);
   else
     box2->setEnabled(false);
-
-  if(index == 8) {   // set to active filter?
-    LabelImpedance->setText(tr("Voltage Gain:"));
-    LabelOhm->setText("dB");
-  }
-  else {
-    LabelImpedance->setText(tr("Impedance:"));
-    LabelOhm->setText("Ohm");
-  }
 }
 
 // ************************************************************
