@@ -1988,6 +1988,17 @@ QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
        }
     }
 
+    QStringList probe_names; // set probes for named nodes
+    probe_names.clear();
+    for(Wire *pw = DocWires.first(); pw != 0; pw = DocWires.next()) {
+      if(pw->Label != 0) {
+          if (!probe_names.contains(pw->Label->Name)) {
+              probe_names.append(pw->Label->Name);
+          }
+      }
+    }
+    qDebug()<<probe_names;
+
     stream<<".END\n";
 
     return QString(" ");
