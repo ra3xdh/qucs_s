@@ -1981,9 +1981,15 @@ QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
       }
     }
 
+    QStringList simulations; // determine which simulations are in use
+    simulations.clear();
     for(Component *pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
        if(pc->isSimulation) {
            s = pc->getSpiceNetlist();
+           QString sim_typ = pc->Model;
+           if (sim_typ==".AC") simulations.append("AC");
+           if (sim_typ==".TR") simulations.append("TRAN");
+           if (sim_typ==".DC") simulations.append("DC");
            stream<<s;
        }
     }
@@ -1998,6 +2004,16 @@ QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
       }
     }
     qDebug()<<probe_names;
+
+    QString sim;
+    foreach (sim,simulations) {
+        QString nod;
+        stream<<".print "+sim;
+        foreach (nod,probe_names) {
+            stream<<" v("+nod+") ";
+        }
+        stream<<endl;
+    }
 
     stream<<".END\n";
 
