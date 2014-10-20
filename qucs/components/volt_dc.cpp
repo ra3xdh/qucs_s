@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include "volt_dc.h"
+#include "node.h"
 
 
 Volt_dc::Volt_dc()
@@ -54,6 +55,20 @@ Volt_dc::~Volt_dc()
 Component* Volt_dc::newOne()
 {
   return new Volt_dc();
+}
+
+QString Volt_dc::spice_netlist()
+{
+    QString s = Name + " ";
+    foreach(Port *p1, Ports) {
+        QString nam = p1->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+    QString val = Props.at(0)->Value;
+    val.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("V").toUpper();
+    s += " DC " + val + "\n";
+    return s;
 }
 
 Element* Volt_dc::info(QString& Name, char* &BitmapFile, bool getNewOne)
