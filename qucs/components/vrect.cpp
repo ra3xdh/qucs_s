@@ -16,6 +16,8 @@
  ***************************************************************************/
 
 #include "vrect.h"
+#include "node.h"
+#include "main.h"
 
 
 vRect::vRect()
@@ -47,6 +49,7 @@ vRect::vRect()
   ty = y2+4;
   Model = "Vrect";
   Name  = "V";
+  SpiceModel = "V";
 
   Props.append(new Property("U", "1 V", true,
 		QObject::tr("voltage of high signal")));
@@ -66,6 +69,42 @@ vRect::vRect()
 
 vRect::~vRect()
 {
+}
+
+QString vRect::spice_netlist()
+{
+    QString s = SpiceModel + Name + " ";
+    foreach(Port *p1, Ports) {
+        QString nam = p1->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+
+    s += " PULSE( 0 ";
+
+    QString val = Props.at(0)->Value;
+    s += val.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("V").toUpper() + " ";
+    val = Props.at(5)->Value;
+    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper().remove("s") + " ";
+    val = Props.at(3)->Value;
+    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper().remove("s") + " ";
+    val = Props.at(4)->Value;
+    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper().remove("s") + " ";
+
+    double T,TL,TH,fac;
+    QString unit;
+    val = Props.at(1)->Value;
+    str2num(val,TH,unit,fac);
+    TH = TH*fac;
+
+    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper().remove("s") + " ";
+    val = Props.at(2)->Value;
+    str2num(val,TL,unit,fac);
+    T = TL*fac+TH;
+    s += QString::number(T) + " )\n";
+
+
+    return s;
 }
 
 Component* vRect::newOne()

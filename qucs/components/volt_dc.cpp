@@ -41,6 +41,7 @@ Volt_dc::Volt_dc()
   ty = y2+4;
   Model = "Vdc";
   Name  = "V";
+  SpiceModel = "V";
 
   Props.append(new Property("U", "1 V", true,
 		QObject::tr("voltage in Volts")));
@@ -59,7 +60,7 @@ Component* Volt_dc::newOne()
 
 QString Volt_dc::spice_netlist()
 {
-    QString s = Name + " ";
+    QString s = SpiceModel+Name + " ";
     foreach(Port *p1, Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";

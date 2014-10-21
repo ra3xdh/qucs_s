@@ -79,6 +79,7 @@ public:
   int  tx, ty;   // upper left corner of text (position)
   bool showName;
   bool isSimulation; // is it AC,DC,TR or other spice-compatible simulation?
+  bool isProbe; // is it Voltage/Current spice-compatible probe?
   QString  Model, Name;
   QString  Description;
   QString  SpiceModel;

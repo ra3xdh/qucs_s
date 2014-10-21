@@ -41,7 +41,7 @@ Volt_ac::Volt_ac()
   tx = x1+4;
   ty = y2+4;
   Model = "Vac";
-  SpiceModel = "";
+  SpiceModel = "V";
   Name  = "V";
 
   Props.append(new Property("U", "1 V", true,
@@ -76,7 +76,7 @@ Element* Volt_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString Volt_ac::spice_netlist()
 {
-    QString s = Name + " ";
+    QString s = SpiceModel + Name + " ";
     foreach(Port *p1, Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
