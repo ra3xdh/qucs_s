@@ -18,6 +18,7 @@
 #include "inductor.h"
 #include "node.h"
 #include "schematic.h"
+#include "main.h"
 
 
 Inductor::Inductor()
@@ -70,10 +71,13 @@ QString Inductor::spice_netlist()
     }
 
     QString val = Props.at(0)->Value;
-    val.remove(' ').remove("H");
-    s += " " + val;
+    double Ind,fac;
+    QString unit;
+    str2num(val,Ind,unit,fac);
+    Ind *=fac;
+    s += " "+QString::number(Ind) + "\n";
 
-    return s+'\n';
+    return s;
 }
 
 Element* Inductor::info(QString& Name, char* &BitmapFile, bool getNewOne)
