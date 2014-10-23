@@ -17,6 +17,7 @@
 
 #include "volt_ac.h"
 #include "node.h"
+#include "main.h"
 
 
 Volt_ac::Volt_ac()
@@ -83,10 +84,19 @@ QString Volt_ac::spice_netlist()
         s += " "+ nam;   // node names
     }
     s += " SIN(0 ";
+    double freq,volts,fac;
+    QString unit;
+
     QString val = Props.at(0)->Value;
-    s += val.remove(' ').remove("V").toUpper() + " ";
+    str2num(val,volts,unit,fac);
+    volts *=fac;
+    s += QString::number(volts) + " ";
+
     val = Props.at(1)->Value;
-    s += val.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("Hz").toUpper() + " 0 ";
+    str2num(val,freq,unit,fac);
+    freq *=fac;
+    s += QString::number(freq) + " 0 ";
+
     QString theta = Props.at(3)->Value;
     theta.remove(' ');
     if (!theta.isEmpty()) {

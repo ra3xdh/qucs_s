@@ -82,22 +82,33 @@ QString vRect::spice_netlist()
 
     s += " PULSE( 0 ";
 
-    QString val = Props.at(0)->Value;
-    s += val.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("V").toUpper() + " ";
-    val = Props.at(5)->Value;
-    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
-    val = Props.at(3)->Value;
-    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
-    val = Props.at(4)->Value;
-    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
-
-    double T,TL,TH,fac;
+    double T,TL,TH,VH,Td,Tr,Tf,fac;
     QString unit;
+
+    QString val = Props.at(0)->Value; //VH
+    str2num(val,VH,unit,fac);
+    VH *= fac;
+    s += QString::number(VH) + " ";
+
+    val = Props.at(5)->Value; // Td
+    str2num(val,Td,unit,fac);
+    Td *= fac;
+    s += QString::number(Td) + " ";
+
+    val = Props.at(3)->Value; // Tr
+    str2num(val,Tr,unit,fac);
+    Tr *= fac;
+    s += QString::number(Tr) + " ";
+    val = Props.at(4)->Value; // Tf
+    str2num(val,Tf,unit,fac);
+    Tf *= fac;
+    s += QString::number(Tf) + " ";
+
     val = Props.at(1)->Value;
     str2num(val,TH,unit,fac);
-    TH = TH*fac;
+    TH *= fac;
+    s += QString::number(TH) + " ";
 
-    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
     val = Props.at(2)->Value;
     str2num(val,TL,unit,fac);
     T = TL*fac+TH;
