@@ -18,6 +18,7 @@
 #include "capacitor.h"
 #include "node.h"
 #include "schematic.h"
+#include "main.h"
 
 
 Capacitor::Capacitor()
@@ -65,8 +66,11 @@ QString Capacitor::spice_netlist()
     }
 
     QString val = Props.at(0)->Value;
-    val.remove(' ').remove("F");
-    s += " " + val;
+    double Cap,fac;
+    QString unit;
+    str2num(val,Cap,unit,fac);
+    Cap *=fac;
+    s += " "+QString::number(Cap) + " ";
     val = Props.at(1)->Value; // add inial volatge if presents
     val.remove(' ').toUpper();
     if (!val.isEmpty()) {
