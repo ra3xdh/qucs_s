@@ -122,9 +122,13 @@ QString AC_Sim::spice_netlist()
     }
     QString start = Props.at(1)->Value;
     QString stop = Props.at(2)->Value;
-    s += start.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("Hz").toUpper() + " ";
-    s += stop.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("Hz").toUpper() + " ";
-    s += " \n";
+    QString unit;
+    double Fstart,Fstop,fac;
+    str2num(start,Fstart,unit,fac);
+    Fstart *= fac;
+    str2num(stop,Fstop,unit,fac);
+    Fstop *=fac;
+    s += QString::number(Fstart) + " " + QString::number(Fstop) + " \n";
     return s;
 
 }
