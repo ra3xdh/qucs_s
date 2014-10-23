@@ -80,25 +80,35 @@ QString vPulse::spice_netlist()
 
     s += " PULSE(";
 
-    QString val = Props.at(0)->Value;
-    s += val.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("V").toUpper() + " ";
+    double T1,T2,Pw,VL,VH,Tr,Tf,fac;
+    QString unit;
+
+    QString val = Props.at(0)->Value; // VL
+    str2num(val,VL,unit,fac);
+    VL *= fac;
+    s += QString::number(VL) + " ";
+
     val = Props.at(1)->Value;
-    s += val.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("V").toUpper() + " ";
+    str2num(val,VH,unit,fac);
+    VH *= fac;
+    s += QString::number(VH) + " ";
 
     val = Props.at(2)->Value; // Td
-    double T1,fac;
-    QString unit;
     str2num(val,T1,unit,fac);
-    T1 = T1*fac;
+    T1 *= fac;
+    s += QString::number(T1) + " ";
 
-    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
     val = Props.at(4)->Value; // Tr
-    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
+    str2num(val,Tr,unit,fac);
+    Tr *= fac;
+    s += QString::number(Tr) + " ";
+
     val = Props.at(5)->Value; // Tf
-    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
+    str2num(val,Tf,unit,fac);
+    Tf *= fac;
+    s += QString::number(Tf) + " ";
 
     val = Props.at(3)->Value; // T2
-    double Pw,T2;
     str2num(val,T2,unit,fac);
     Pw = T2*fac - T1;
     s += QString::number(Pw) + " )\n";
