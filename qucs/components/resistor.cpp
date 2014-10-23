@@ -17,6 +17,7 @@
 #include "resistor.h"
 #include "node.h"
 #include "schematic.h"
+#include "main.h"
 
 
 Resistor::Resistor(bool european)
@@ -65,8 +66,10 @@ QString Resistor::spice_netlist()
     }
 
     QString val = Props.at(0)->Value;
-    val.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("Ohm");
-    s += " " + val;
+    QString unit;
+    double R,fac;
+    str2num(val,R,unit,fac);
+    s += " " + QString::number(R*fac);
 
     return s+'\n';
 }

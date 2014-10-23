@@ -85,11 +85,11 @@ QString vRect::spice_netlist()
     QString val = Props.at(0)->Value;
     s += val.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("V").toUpper() + " ";
     val = Props.at(5)->Value;
-    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper().remove("s") + " ";
+    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
     val = Props.at(3)->Value;
-    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper().remove("s") + " ";
+    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
     val = Props.at(4)->Value;
-    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper().remove("s") + " ";
+    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
 
     double T,TL,TH,fac;
     QString unit;
@@ -97,7 +97,7 @@ QString vRect::spice_netlist()
     str2num(val,TH,unit,fac);
     TH = TH*fac;
 
-    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper().remove("s") + " ";
+    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
     val = Props.at(2)->Value;
     str2num(val,TL,unit,fac);
     T = TL*fac+TH;

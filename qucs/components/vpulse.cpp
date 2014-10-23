@@ -16,6 +16,8 @@
  ***************************************************************************/
 
 #include "vpulse.h"
+#include "node.h"
+#include "main.h"
 
 
 vPulse::vPulse()
@@ -45,6 +47,7 @@ vPulse::vPulse()
   ty = y2+4;
   Model = "Vpulse";
   Name  = "V";
+  SpiceModel = "V";
 
   Props.append(new Property("U1", "0 V", true,
 		QObject::tr("voltage before and after the pulse")));
@@ -64,6 +67,43 @@ vPulse::vPulse()
 
 vPulse::~vPulse()
 {
+}
+
+QString vPulse::spice_netlist()
+{
+    QString s = SpiceModel + Name + " ";
+    foreach(Port *p1, Ports) {
+        QString nam = p1->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+
+    s += " PULSE(";
+
+    QString val = Props.at(0)->Value;
+    s += val.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("V").toUpper() + " ";
+    val = Props.at(1)->Value;
+    s += val.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("V").toUpper() + " ";
+
+    val = Props.at(2)->Value; // Td
+    double T1,fac;
+    QString unit;
+    str2num(val,T1,unit,fac);
+    T1 = T1*fac;
+
+    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
+    val = Props.at(4)->Value; // Tr
+    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
+    val = Props.at(5)->Value; // Tf
+    s += val.remove(' ').replace("M","Meg",Qt::CaseSensitive).toUpper() + " ";
+
+    val = Props.at(3)->Value; // T2
+    double Pw,T2;
+    str2num(val,T2,unit,fac);
+    Pw = T2*fac - T1;
+    s += QString::number(Pw) + " )\n";
+
+    return s;
 }
 
 Component* vPulse::newOne()
