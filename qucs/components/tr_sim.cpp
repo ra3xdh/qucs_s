@@ -38,6 +38,7 @@ TR_Sim::TR_Sim()
   ty = y2+1;
   Model = ".TR";
   Name  = "TR";
+  SpiceModel = ".TRAN";
 
   // The index of the first 4 properties must not changed. Used in recreate().
   Props.append(new Property("Type", "lin", true,
@@ -100,6 +101,25 @@ Element* TR_Sim::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new TR_Sim();
   return 0;
+}
+
+QString TR_Sim::spice_netlist()
+{
+    QString s = SpiceModel;
+    QString val,unit;
+    double Tstart,Tstop,Npoints,Tstep,fac;
+
+    val = Props.at(1)->Value;
+    str2num(val,Tstart,unit,fac);
+    Tstart *= fac;
+    val = Props.at(2)->Value;
+    str2num(val,Tstop,unit,fac);
+    Tstop *= fac;
+    Npoints = Props.at(3)->Value.toDouble();
+    Tstep = (Tstop-Tstart)/Npoints;
+
+    s += QString(" %1 %2 %3\n").arg(Tstep).arg(Tstop).arg(Tstart);
+    return s;
 }
 
 void TR_Sim::recreate(Schematic*)
