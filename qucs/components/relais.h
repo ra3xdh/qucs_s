@@ -27,6 +27,7 @@ public:
  ~Relais();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+  QString spice_netlist();
 };
 
 #endif

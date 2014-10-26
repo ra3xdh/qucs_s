@@ -16,6 +16,8 @@
  ***************************************************************************/
 
 #include "relais.h"
+#include "node.h"
+#include "main.h"
 
 
 Relais::Relais()
@@ -55,6 +57,7 @@ Relais::Relais()
   ty = y1+4;
   Model = "Relais";
   Name  = "S";
+  SpiceModel = "SW";
 
   Props.append(new Property("Vt", "0.5 V", false,
 		QObject::tr("threshold voltage in Volts")));
@@ -75,6 +78,46 @@ Relais::~Relais()
 Component* Relais::newOne()
 {
   return new Relais();
+}
+
+QString Relais::spice_netlist()
+{
+    QString s = Name;
+    QString unit;
+    double Vt,Vh,Ron,Roff,fac;
+
+    QList<int> seq; // nodes sequence
+    seq<<0<<3<<1<<2;
+    // output all node names
+    foreach(int i, seq) {
+        QString nam = Ports.at(i)->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+
+    QString model = " MOD_" + Name;
+    s += model + " OFF\n";
+    s += ".model " + model + " sw ";
+
+    QString val = Props.at(0)->Value; // Vt
+    str2num(val,Vt,unit,fac);
+    Vt *= fac;
+
+    val = Props.at(1)->Value;
+    str2num(val,Vh,unit,fac);
+    Vh *= fac;
+
+    val = Props.at(2)->Value;
+    str2num(val,Ron,unit,fac);
+    Ron *= fac;
+
+    val = Props.at(3)->Value;
+    str2num(val,Roff,unit,fac);
+    Roff *= fac;
+
+    s += QString(" vt=%1 vh=%2 ron=%3 roff=%4 \n").arg(Vt).arg(Vh).arg(Ron).arg(Roff);
+
+    return s;
 }
 
 Element* Relais::info(QString& Name, char* &BitmapFile, bool getNewOne)
