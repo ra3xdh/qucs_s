@@ -39,8 +39,8 @@ void ViewPainter::init(QPainter *p, float Scale_, int DX_, int DY_, int dx_, int
   Scale = Scale_;
   FontScale = FontScale_;
   PrintScale = PrintScale_;
-  DX = floor(float(DX_) * Scale) - float(dx_);
-  DY = floor(float(DY_) * Scale) - float(dy_);
+  DX = float(DX_) * Scale - float(dx_);
+  DY = float(DY_) * Scale - float(dy_);
 
   QFont f = p->font();
   if(FontScale == 0.0)
@@ -70,38 +70,33 @@ void ViewPainter::map(int x1, int y1, int& x, int& y)
 }
 
 // -------------------------------------------------------------
-void ViewPainter::drawPoint(int x1, int y1)
+void ViewPainter::drawPoint(int x1i, int y1i)
 {
-  float z;
-  z = float(x1)*Scale + DX;
-  x1 = TO_INT(z);
-  z = float(y1)*Scale + DY;
-  y1 = TO_INT(z);
+  float x1, y1;
+  x1 = float(x1i)*Scale + DX;
+  y1 = float(y1i)*Scale + DY;
 
-  Painter->drawPoint(x1, y1);
+  Painter->drawPoint(QPointF(x1, y1));
 }
 
 // -------------------------------------------------------------
-void ViewPainter::drawLine(int x1, int y1, int x2, int y2)
+void ViewPainter::drawLine(int x1i, int y1i, int x2i, int y2i)
 {
   float z;
-  z = float(x1)*Scale + DX;
-  x1 = TO_INT(z);
-  z = float(y1)*Scale + DY;
-  y1 = TO_INT(z);
-  z = float(x2)*Scale + DX;
-  x2 = TO_INT(z);
-  z = float(y2)*Scale + DY;
-  y2 = TO_INT(z);
+  float x1, y1, x2, y2;
+  x1 = float(x1i)*Scale + DX;
+  y1 = float(y1i)*Scale + DY;
+  x2 = float(x2i)*Scale + DX;
+  y2 = float(y2i)*Scale + DY;
 
-  Painter->drawLine(x1, y1, x2, y2);
+  Painter->drawLine(QLineF(x1, y1, x2, y2));
 }
 
 // -------------------------------------------------------------
 void ViewPainter::drawLines(int x0, int y0, float *pp)
 {
   float z, DX_, DY_;
-  int x1, x2, y1, y2;
+  float x1, x2, y1, y2;
   if(*pp < 0)
     pp++;
 
@@ -110,32 +105,24 @@ void ViewPainter::drawLines(int x0, int y0, float *pp)
 
   while(*pp > GRAPHEND) {
     if(*pp >= 0) {
-      z = DX_ + (*pp)*Scale;
-      x1 = TO_INT(z);
-      z = DY_ - (*(pp+1))*Scale;
-      y1 = TO_INT(z);
-      Painter->drawPoint(x1, y1);
+      x1 = DX_ + (*pp)*Scale;
+      y1 = DY_ - (*(pp+1))*Scale;
+      Painter->drawPoint(QPointF(x1, y1));
     }
     while(*pp > BRANCHEND) {   // until end of branch
-      z = DX_ + (*pp)*Scale;
-      x1 = TO_INT(z);
-      z = DY_ - (*(pp+1))*Scale;
-      y1 = TO_INT(z);
+      x1 = DX_ + (*pp)*Scale;
+      y1 = DY_ - (*(pp+1))*Scale;
       pp += 2;
       while(*pp > STROKEEND) { // until end of stroke
-        z = DX_ + (*pp)*Scale;
-        x2 = TO_INT(z);
-        z = DY_ - (*(pp+1))*Scale;
-        y2 = TO_INT(z);
-        Painter->drawLine(x1, y1, x2, y2);
+        x2 = DX_ + (*pp)*Scale;
+        y2 = DY_ - (*(pp+1))*Scale;
+        Painter->drawLine(QLineF(x1, y1, x2, y2));
         pp += 2;
         if(*pp <= STROKEEND)  break;
 
-        z = DX_ + (*pp)*Scale;
-        x1 = TO_INT(z);
-        z = DY_ - (*(pp+1))*Scale;
-        y1 = TO_INT(z);
-        Painter->drawLine(x2, y2, x1, y1);
+        x1 = DX_ + (*pp)*Scale;
+        y1 = DY_ - (*(pp+1))*Scale;
+        Painter->drawLine(QLineF(x2, y2, x1, y1));
         pp += 2;
       }
       if(*pp <= BRANCHEND)  break;   // end of line ?
@@ -146,164 +133,144 @@ void ViewPainter::drawLines(int x0, int y0, float *pp)
 }
 
 // -------------------------------------------------------------
-void ViewPainter::drawStarSymbols(int x0, int y0, float *pp)
+void ViewPainter::drawStarSymbols(int x0i, int y0i, float *pp)
 {
-  int x3, x1, x2, y1, y2;
+  float x3, x0, y0, x1, x2, y1, y2;
   float z, DX_, DY_;
   if(*pp < 0)
     pp++;
 
-  DX_ = DX + float(x0)*Scale;
-  DY_ = DY + float(y0)*Scale;
+  DX_ = DX + float(x0i)*Scale;
+  DY_ = DY + float(y0i)*Scale;
 
   while(*pp > GRAPHEND) {
     if(*pp >= 0) {
       z = DX_ + (*(pp++))*Scale;
-      x0 = TO_INT(z-5.0*Scale);
-      x3 = TO_INT(z+5.0*Scale);
-      x1 = TO_INT(z-4.0*Scale);
-      x2 = TO_INT(z+4.0*Scale);
+      x0 = z-5.0*Scale;
+      x3 = z+5.0*Scale;
+      x1 = z-4.0*Scale;
+      x2 = z+4.0*Scale;
       z = DY_ - (*(pp++))*Scale;
-      y0 = TO_INT(z);
-      y1 = TO_INT(z-4.0*Scale);
-      y2 = TO_INT(z+4.0*Scale);
-      Painter->drawLine(x0, y0, x3, y0); // horizontal line
-      Painter->drawLine(x1, y2, x2, y1); // upper left to lower right
-      Painter->drawLine(x2, y2, x1, y1); // upper right to lower left
+      y0 = z;
+      y1 = z-4.0*Scale;
+      y2 = z+4.0*Scale;
+      Painter->drawLine(QLineF(x0, y0, x3, y0)); // horizontal line
+      Painter->drawLine(QLineF(x1, y2, x2, y1)); // upper left to lower right
+      Painter->drawLine(QLineF(x2, y2, x1, y1)); // upper right to lower left
     }
     else  pp++;
   }
 }
 
 // -------------------------------------------------------------
-void ViewPainter::drawCircleSymbols(int x0, int y0, float *pp)
+void ViewPainter::drawCircleSymbols(int x0i, int y0i, float *pp)
 {
-  int d;
+  float x0, y0;
   float z, DX_, DY_;
   if(*pp < 0)
     pp++;
 
   z = 8.0*Scale;
-  d = TO_INT(z);
-  DX_ = DX + float(x0)*Scale;
-  DY_ = DY + float(y0)*Scale;
+  DX_ = DX + float(x0i)*Scale;
+  DY_ = DY + float(y0i)*Scale;
 
   while(*pp > GRAPHEND) {
     if(*pp >= 0) {
-      z = DX_ + (*(pp++)-4.0)*Scale;
-      x0 = TO_INT(z);
-      z = DY_ - (*(pp++)+4.0)*Scale;
-      y0 = TO_INT(z);
-      Painter->drawEllipse(x0, y0, d, d);
+      x0 = DX_ + (*(pp++)-4.0)*Scale;
+      y0 = DY_ - (*(pp++)+4.0)*Scale;
+      Painter->drawEllipse(QRectF(x0, y0, z, z));
     }
     else  pp++;
   }
 }
 
 // -------------------------------------------------------------
-void ViewPainter::drawArrowSymbols(int x0, int y0, float *pp)
+void ViewPainter::drawArrowSymbols(int x0i, int y0i, float *pp)
 {
-  int x1, x2, y1, y2;
+  int x0, y0, x1, x2, y1, y2;
   float z, DX_, DY_;
   if(*pp < 0)
     pp++;
 
-  DX_ = DX + float(x0)*Scale;
-  DY_ = DY + float(y0)*Scale;
-  y2 = TO_INT(DY_);
+  DX_ = DX + float(x0i)*Scale;
+  DY_ = DY + float(y0i)*Scale;
+  y2 = DY_;
 
   while(*pp > GRAPHEND) {
     if(*pp >= 0) {
-      z = DX_ + (*(pp++))*Scale;
-      x0 = TO_INT(z);
-      x1 = TO_INT(z-4.0*Scale);
-      x2 = TO_INT(z+4.0*Scale);
-      z = DY_ - (*(pp++))*Scale;
-      y0 = TO_INT(z);
-      y1 = TO_INT(z+7.0*Scale);
-      Painter->drawLine(x0, y0, x0, y2);
-      Painter->drawLine(x1, y1, x0, y0);
-      Painter->drawLine(x2, y1, x0, y0);
+      x0 = DX_ + (*(pp++))*Scale;
+      x1 = x0-4.0*Scale;
+      x2 = x0+4.0*Scale;
+      y0 = DY_ - (*(pp++))*Scale;
+      y1 = y0+7.0*Scale;
+      Painter->drawLine(QLineF(x0, y0, x0, y2));
+      Painter->drawLine(QLineF(x1, y1, x0, y0));
+      Painter->drawLine(QLineF(x2, y1, x0, y0));
     }
     else  pp++;
   }
 }
 
 // -------------------------------------------------------------
-void ViewPainter::drawRect(int x1, int y1, int dx, int dy)
+void ViewPainter::drawRect(int x1i, int y1i, int dxi, int dyi)
 {
-  float z;
-  z = float(x1)*Scale + DX;
-  x1 = TO_INT(z);
-  z = float(y1)*Scale + DY;
-  y1 = TO_INT(z);
-  z = float(dx)*Scale;
-  dx = TO_INT(z);
-  z = float(dy)*Scale;
-  dy = TO_INT(z);
+  float x1, y1, dx, dy;
+  x1 = float(x1i)*Scale + DX;
+  y1 = float(y1i)*Scale + DY;
+  dx = float(dxi)*Scale;
+  dy = float(dyi)*Scale;
 
-  Painter->drawRect(x1, y1, dx, dy);
+  Painter->drawRect(QRectF(x1, y1, dx, dy));
 }
 
 // -------------------------------------------------------------
-void ViewPainter::drawRectD(int x1, int y1, int dx, int dy)
+void ViewPainter::drawRectD(int x1i, int y1i, int dx, int dy)
 {
-  float z;
-  z = float(x1)*Scale + DX;
-  x1 = TO_INT(z);
-  z = float(y1)*Scale + DY;
-  y1 = TO_INT(z);
+  float x1, y1;
+  x1 = float(x1i)*Scale + DX;
+  y1 = float(y1i)*Scale + DY;
 
-  Painter->drawRect(x1, y1, dx, dy);
+  Painter->drawRect(QRectF(x1, y1, dx, dy));
 }
 
 // -------------------------------------------------------------
-void ViewPainter::drawRoundRect(int x1, int y1, int dx, int dy)
+void ViewPainter::drawRoundRect(int x1i, int y1i, int dxi, int dyi)
 {
-  float z;
-  z = float(x1)*Scale + DX;
-  x1 = TO_INT(z);
-  z = float(y1)*Scale + DY;
-  y1 = TO_INT(z);
-  z = float(dx)*Scale;
-  dx = TO_INT(z);
-  z = float(dy)*Scale;
-  dy = TO_INT(z);
+  float x1, y1, dx, dy;
+  x1 = float(x1i)*Scale + DX;
+  y1 = float(y1i)*Scale + DY;
+  dx = float(dxi)*Scale;
+  dy = float(dyi)*Scale;
 
-  Painter->drawRoundRect(x1, y1, dx, dy);
+  Painter->drawRoundRect(QRectF(x1, y1, dx, dy));
 }
 
 // -------------------------------------------------------------
-void ViewPainter::drawEllipse(int x1, int y1, int dx, int dy)
+void ViewPainter::drawEllipse(int x1i, int y1i, int dxi, int dyi)
 {
-  float z;
-  z = float(x1)*Scale + DX;
-  x1 = TO_INT(z);
-  z = float(y1)*Scale + DY;
-  y1 = TO_INT(z);
-  z = float(dx)*Scale;
-  dx = TO_INT(z);
-  z = float(dy)*Scale;
-  dy = TO_INT(z);
+  float x1, y1, dx, dy;
+  x1 = float(x1i)*Scale + DX;
+  y1 = float(y1i)*Scale + DY;
+  dx = float(dxi)*Scale;
+  dy = float(dyi)*Scale;
 
-  Painter->drawEllipse(x1, y1, dx, dy);
+  Painter->drawEllipse(QRectF(x1, y1, dx, dy));
 }
 
 // -------------------------------------------------------------
 // Returns width of text (and height if pointer is not null).
-int ViewPainter::drawText(const QString& Text, int x1, int y1, int *Height)
+int ViewPainter::drawText(const QString& Text, int x1i, int y1i, int *Height)
 {
-  float z;
-  z = float(x1)*Scale + DX;
-  x1 = TO_INT(z);
-  z = float(y1)*Scale + DY;
-  y1 = TO_INT(z);
+  float x1, y1;
+  x1= float(x1i)*Scale + DX;
+  y1 = float(y1i)*Scale + DY;
 
-  QRect r;
-  Painter->drawText(x1, y1, 0, 0, Qt::TextDontClip, Text, -1, &r);
+  QRectF rf;
+  rf = Painter->boundingRect(QRectF(x1, y1, 0, 0), Qt::TextDontClip, Text);
+  Painter->drawText(QRectF(x1, y1, 0, 0), Qt::TextDontClip, Text);
 
-  if(Height)  *Height = r.height();
-  return r.width();
+  if(Height)  *Height = TO_INT(rf.height());
+  return TO_INT(rf.width());
 }
 
 // -------------------------------------------------------------
@@ -311,11 +278,11 @@ int ViewPainter::drawText(const QString& Text, int x1, int y1, int *Height)
 int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1,
 				int *Height)
 {
-  QRect r;
-  int y = 0;
-  int x = 0;
-  int h = 0;
-  int w = 0;
+  QRectF rf;
+  float y = 0.0;
+  float x = 0.0;
+  float h = 0.0;
+  float w = 0.0;
   int i = 0;
 
   while (Text.length()>i) {
@@ -338,13 +305,21 @@ int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1,
       QFont f = Painter->font();
       f.setPointSizeFloat(f.pointSizeFloat()*0.8);
       Painter->setFont(f);
-      Painter->drawText(x1+x,
+
+      rf = Painter->boundingRect(QRectF(x1+x,
 			y1+y + (is_sub ? +0.6 : -0.3) *
 			fbak.pointSizeFloat() * scale,
-			0, 0, Qt::TextDontClip,
-			Text.mid(i, len ? len : 1), -1, &r);
+			0, 0), Qt::TextDontClip,
+			Text.mid(i, len ? len : 1));
+
+      Painter->drawText(QRectF(x1+x,
+			y1+y + (is_sub ? +0.6 : -0.3) *
+			fbak.pointSizeFloat() * scale,
+			0, 0), Qt::TextDontClip,
+			Text.mid(i, len ? len : 1));
+
       Painter->setFont(fbak);
-      x += r.width();
+      x += rf.width();
       if (x > w) w = x;
       i += len ? len + 1 : 1;
     }
@@ -355,12 +330,16 @@ int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1,
              /*!Text[i+len].isNull()*/ && Text[i+len].latin1() != '_' &&
 	     Text[i+len].latin1() != '^' && Text[i+len].latin1() != '\n')
 			len++;
-      Painter->drawText(x1+x, y1+y,
-			0, 0, Qt::TextDontClip, Text.mid(i, len), -1, &r);
-      if (h < r.height()) {
-        h = r.height();
+
+      rf = Painter->boundingRect(QRectF(x1+x, y1+y, 0, 0),
+				 Qt::TextDontClip, Text.mid(i, len));
+      Painter->drawText(QRectF(x1+x, y1+y, 0, 0),
+			Qt::TextDontClip, Text.mid(i, len));
+
+      if (h < rf.height()) {
+        h = rf.height();
       }
-      x += r.width();
+      x += rf.width();
       if (x > w) w = x;
       if (Text.length()>(i+len)&&Text[i+len].latin1() == '\n') {
 		    y += h;
@@ -376,61 +355,48 @@ int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1,
 }
 
 // -------------------------------------------------------------
-// Returns width of text (and height if pointer is not null).
-void ViewPainter::drawArc(int x1, int y1, int w, int h, int Angle, int ArcLen)
+void ViewPainter::drawArc(int x1i, int y1i, int wi, int hi, int Angle, int ArcLen)
 {
-  float z;
-  z = float(x1)*Scale + DX;
-  x1 = TO_INT(z);
-  z = float(y1)*Scale + DY;
-  y1 = TO_INT(z);
+  float x1, y1, w, h;
+  x1 = float(x1i)*Scale + DX;
+  y1 = float(y1i)*Scale + DY;
+  w = float(wi)*Scale;
+  h = float(hi)*Scale;
 
-  // Width and height get a different treatment due to some alaising artefacts.
-  // The following procedure was found empirically.
-  w = int(float(w)*Scale);
-  h = int(float(h)*Scale);
-  Painter->drawArc(x1, y1, w+1, h+1, Angle, ArcLen);
+  Painter->drawArc(QRectF(x1, y1, w, h), Angle, ArcLen);
 }
 
 // -------------------------------------------------------------
-void ViewPainter::fillRect(int x1, int y1, int dx, int dy, const QColor& Color)
+void ViewPainter::fillRect(int x1i, int y1i, int dxi, int dyi, const QColor& Color)
 {
-  float z;
-  z = float(x1)*Scale + DX;
-  x1 = TO_INT(z);
-  z = float(y1)*Scale + DY;
-  y1 = TO_INT(z);
+  float x1, y1, dx, dy;
+  x1 = float(x1i)*Scale + DX;
+  y1 = float(y1i)*Scale + DY;
 
-  z = float(dx)*Scale;
-  dx = TO_INT(z);
-  z = float(dy)*Scale;
-  dy = TO_INT(z);
+  dx = float(dxi)*Scale;
+  dy = float(dyi)*Scale;
 
-  Painter->fillRect(x1, y1, dx, dy, QBrush(Color));
+  Painter->fillRect(QRectF(x1, y1, dx, dy), QBrush(Color));
 }
 
 // -------------------------------------------------------------
-void ViewPainter::eraseRect(int x1, int y1, int dx, int dy)
+void ViewPainter::eraseRect(int x1i, int y1i, int dx, int dy)
 {
-  float z;
-  z = float(x1)*Scale + DX;
-  x1 = TO_INT(z);
-  z = float(y1)*Scale + DY;
-  y1 = TO_INT(z);
+  float x1, y1;
+  x1 = float(x1i)*Scale + DX;
+  y1 = float(y1i)*Scale + DY;
 
-  Painter->eraseRect(x1, y1, dx, dy);
+  Painter->eraseRect(QRectF(x1, y1, dx, dy));
 }
 
 // -------------------------------------------------------------
 // Draw little resize rectangles with center x1/y1 and size independent
 // of zoom factor.
-void ViewPainter::drawResizeRect(int x1, int y1)
+void ViewPainter::drawResizeRect(int x1i, int y1i)
 {
-  float z;
-  z = float(x1)*Scale + DX;
-  x1 = TO_INT(z);
-  z = float(y1)*Scale + DY;
-  y1 = TO_INT(z);
+  float x1, y1;
+  x1 = float(x1i)*Scale + DX;
+  y1 = float(y1i)*Scale + DY;
 
-  Painter->drawRect(x1-5, y1-5, 10, 10);
+  Painter->drawRect(QRectF(x1-5, y1-5, 10, 10));
 }
