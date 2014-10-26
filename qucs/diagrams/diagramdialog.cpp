@@ -284,6 +284,15 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   // todo: replace by QTableWidget
   // see https://gist.github.com/ClemensFMN/8955411
   ChooseVars = new QTableWidget(1, 3);
+  ChooseVars->setShowGrid(false);
+  ChooseVars->verticalHeader()->setVisible(false);
+  ChooseVars->horizontalHeader()->setStretchLastSection(true);
+  ChooseVars->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+  // make sure sorting is disabled before inserting items
+  ChooseVars->setSortingEnabled(false);
+  ChooseVars->horizontalHeader()->setSortIndicatorShown(true);
+  ChooseVars->horizontalHeader()->setSortIndicator(0, Qt::AscendingOrder);
+
   ChooseVars->setSelectionBehavior(QAbstractItemView::SelectRows);
   //ChooseVars->selectRow(0);
   DataGroupLayout->addWidget(ChooseVars);
@@ -704,9 +713,9 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   }
 
   if(ColorButt)
-    if(!currentGraph)
-      ColorButt->setPaletteBackgroundColor
-    (QColor(DefaultColors[GraphList->count()%NumDefaultColors]));
+    if(!currentGraph) {
+      ColorButt->setPaletteBackgroundColor(QColor(DefaultColors[GraphList->count()%NumDefaultColors]));
+    }
 }
 
 DiagramDialog::~DiagramDialog()
@@ -735,7 +744,9 @@ void DiagramDialog::slotReadVars(int)
   QByteArray FileString = file.readAll();
   file.close();
 
-  ChooseVars->clear();
+  // make sure sorting is disabled before inserting items
+  ChooseVars->setSortingEnabled(false);
+  ChooseVars->clearContents();
   int i=0, j=0;
   i = FileString.find('<')+1;
   if(i > 0)
@@ -783,6 +794,8 @@ void DiagramDialog::slotReadVars(int)
 
     }
   } while(i > 0);
+  // sorting should be enabled only after adding items
+  ChooseVars->setSortingEnabled(true);
 }
 
 // ------------------------------------------------------------------------
@@ -852,7 +865,7 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
 }
 
 /*!
-  Is called if a graph text is clicked in the BistBox.
+  Is called if a graph text is clicked in the ListBox.
 */
 void DiagramDialog::slotSelectGraph(QListWidgetItem *item)
 {
@@ -878,6 +891,7 @@ void DiagramDialog::SelectGraph(Graph *g)
       Property2->setText(QString::number(g->Thick));
       ColorButt->setPaletteBackgroundColor(g->Color);
       PropertyBox->setCurrentItem(g->Style);
+      qDebug() << g->Style << g->Color << g->Thick ;
       if(yAxisBox) {
         yAxisBox->setCurrentItem(g->yAxisNo);
         yAxisBox->setEnabled(true);
