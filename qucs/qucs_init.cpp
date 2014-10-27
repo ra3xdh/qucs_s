@@ -22,7 +22,6 @@
 
 #include "main.h"
 #include "qucs.h"
-#include "dialogs/vtabbeddockwidget.h"
 #include "octave_window.h"
 
 

@@ -28,15 +28,13 @@ SOURCES = savedialog.cpp settingsdialog.cpp newprojdialog.cpp \
 	simmessage.cpp qucssettingsdialog.cpp labeldialog.cpp \
 	changedialog.cpp matchdialog.cpp sweepdialog.cpp \
 	digisettingsdialog.cpp searchdialog.cpp librarydialog.cpp \
-	importdialog.cpp packagedialog.cpp vtabbutton.cpp vtabbar.cpp \
-	vtabwidget.cpp vtabbeddockwidget.cpp vasettingsdialog.cpp
+	importdialog.cpp packagedialog.cpp vasettingsdialog.cpp
 
 # List of special Qt files.
 MOCHEADERS = savedialog.h settingsdialog.h simmessage.h \
 	qucssettingsdialog.h labeldialog.h changedialog.h matchdialog.h \
 	sweepdialog.h digisettingsdialog.h searchdialog.h librarydialog.h \
-	importdialog.h packagedialog.h vtabbutton.h vtabbar.h vtabwidget.h \
-	vtabbeddockwidget.h vasettingsdialog.h
+	importdialog.h packagedialog.h vasettingsdialog.h
 
 # Additional libraries.
 LIBS = 
