@@ -703,10 +703,14 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     Row++;
   }
 
-  if(ColorButt)
-    if(!currentGraph)
-      ColorButt->setPaletteBackgroundColor
-    (QColor(DefaultColors[GraphList->count()%NumDefaultColors]));
+  if(ColorButt) {
+    if(!currentGraph) {
+      QColor selectedColor(DefaultColors[GraphList->count()%NumDefaultColors]);
+      QString stylesheet = QString("QPushButton {background-color: %1};").arg(selectedColor.name());
+      ColorButt->setStyleSheet(stylesheet);
+      ColorButt->setPaletteBackgroundColor(selectedColor);
+    }
+  }
 }
 
 DiagramDialog::~DiagramDialog()
@@ -814,8 +818,10 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
       if(Diag->Name != "Truth") {
         g->Color = ColorButt->paletteBackgroundColor();
         g->Thick = Property2->text().toInt();
-        ColorButt->setPaletteBackgroundColor(
-                   QColor(DefaultColors[GraphList->count()%NumDefaultColors]));
+        QColor selectedColor(DefaultColors[GraphList->count()%NumDefaultColors]);
+        QString stylesheet = QString("QPushButton {background-color: %1};").arg(selectedColor.name());
+        ColorButt->setStyleSheet(stylesheet);
+        ColorButt->setPaletteBackgroundColor(selectedColor);
         if(g->Var.right(3) == ".Vb")   // harmonic balance output ?
           if(PropertyBox->count() >= GRAPHSTYLE_ARROW)
             PropertyBox->setCurrentItem(GRAPHSTYLE_ARROW);
@@ -876,6 +882,8 @@ void DiagramDialog::SelectGraph(Graph *g)
   if(Diag->Name != "Tab") {
     if(Diag->Name != "Truth") {
       Property2->setText(QString::number(g->Thick));
+      QString stylesheet = QString("QPushButton {background-color: %1};").arg(g->Color.name());
+      ColorButt->setStyleSheet(stylesheet);
       ColorButt->setPaletteBackgroundColor(g->Color);
       PropertyBox->setCurrentItem(g->Style);
       if(yAxisBox) {
@@ -927,8 +935,10 @@ void DiagramDialog::slotDeleteGraph()
 
   if(Diag->Name != "Tab") {
     if(Diag->Name != "Truth") {
-      ColorButt->setPaletteBackgroundColor(
-        QColor(DefaultColors[GraphList->count()%NumDefaultColors]));
+      QColor selectedColor(DefaultColors[GraphList->count()%NumDefaultColors]);
+      QString stylesheet = QString("QPushButton {background-color: %1};").arg(selectedColor.name());
+      ColorButt->setStyleSheet(stylesheet);
+      ColorButt->setPaletteBackgroundColor(selectedColor);
       Property2->setText("0");
       if(yAxisBox) {
         yAxisBox->setCurrentItem(0);
@@ -1174,6 +1184,8 @@ void DiagramDialog::slotSetColor()
 {
   QColor c = QColorDialog::getColor(ColorButt->paletteBackgroundColor(),this);
   if(!c.isValid()) return;
+  QString stylesheet = QString("QPushButton {background-color: %1};").arg(c.name());
+  ColorButt->setStyleSheet(stylesheet);
   ColorButt->setPaletteBackgroundColor(c);
 
   int i = GraphList->currentRow();
