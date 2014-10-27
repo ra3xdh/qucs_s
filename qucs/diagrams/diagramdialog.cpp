@@ -284,6 +284,15 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   // todo: replace by QTableWidget
   // see https://gist.github.com/ClemensFMN/8955411
   ChooseVars = new QTableWidget(1, 3);
+  ChooseVars->setShowGrid(false);
+  ChooseVars->verticalHeader()->setVisible(false);
+  ChooseVars->horizontalHeader()->setStretchLastSection(true);
+  ChooseVars->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+  // make sure sorting is disabled before inserting items
+  ChooseVars->setSortingEnabled(false);
+  ChooseVars->horizontalHeader()->setSortIndicatorShown(true);
+  ChooseVars->horizontalHeader()->setSortIndicator(0, Qt::AscendingOrder);
+
   ChooseVars->setSelectionBehavior(QAbstractItemView::SelectRows);
   //ChooseVars->selectRow(0);
   DataGroupLayout->addWidget(ChooseVars);
@@ -739,7 +748,9 @@ void DiagramDialog::slotReadVars(int)
   QByteArray FileString = file.readAll();
   file.close();
 
-  ChooseVars->clear();
+  // make sure sorting is disabled before inserting items
+  ChooseVars->setSortingEnabled(false);
+  ChooseVars->clearContents();
   int i=0, j=0;
   i = FileString.find('<')+1;
   if(i > 0)
@@ -787,6 +798,8 @@ void DiagramDialog::slotReadVars(int)
 
     }
   } while(i > 0);
+  // sorting should be enabled only after adding items
+  ChooseVars->setSortingEnabled(true);
 }
 
 // ------------------------------------------------------------------------
@@ -858,7 +871,7 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
 }
 
 /*!
-  Is called if a graph text is clicked in the BistBox.
+  Is called if a graph text is clicked in the ListBox.
 */
 void DiagramDialog::slotSelectGraph(QListWidgetItem *item)
 {

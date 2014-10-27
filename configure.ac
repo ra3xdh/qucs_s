@@ -267,10 +267,10 @@ case $host_os in
     QT_INCLUDES=""
     QT_VER=2
     AC_MSG_CHECKING([for Qt headers])
-    paths="$QTDIR/include /usr/local/qt4/include /usr/include/qt4 /usr/include/qt4 \
-      /usr/include /usr/X11R6/include/X11/qt4 /usr/X11R6/include/X11/qt4 \
+    paths="$QTDIR/include /usr/local/qt4/include /usr/include/qt4 \
+      /usr/include /usr/lib/qt/include /usr/X11R6/include/X11/qt4 \
       /usr/X11R6/include/qt4 /usr/X11R6/include /sw/include/qt4 \
-      /usr/X11R6/include/qt4 /usr/local/include/qt4"
+      /usr/local/include/qt4"
     for path in $paths; do
       if test -f "$path/Qt/qapplication.h"; then
         QT_INCLUDES="$path -I$path/Qt -I$path/QtGui -I$path/QtCore -I$path/QtSvg -I$path/QtXml -I$path/QtScript"
