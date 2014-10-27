@@ -87,7 +87,7 @@ QString Relais::spice_netlist()
     double Vt,Vh,Ron,Roff,fac;
 
     QList<int> seq; // nodes sequence
-    seq<<0<<3<<1<<2;
+    seq<<1<<2<<0<<3;
     // output all node names
     foreach(int i, seq) {
         QString nam = Ports.at(i)->Connection->Name;
