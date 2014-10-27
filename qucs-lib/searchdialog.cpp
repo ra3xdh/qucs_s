@@ -29,7 +29,6 @@
 #include <QFile>
 #include <QTextStream>
 
-
 #include "searchdialog.h"
 #include "qucslib.h"
 
@@ -135,14 +134,14 @@ void SearchDialog::slotSearch()
       End += 13;
 
       // does search criterion match ?
-      if(CompName.indexOf(SearchEdit->text()) >= 0) {
+      if(CompName.indexOf(SearchEdit->text(), 0, Qt::CaseInsensitive) >= 0) {
         if(!findComponent) {
           ParentDialog->DefaultSymbol = "";
           ParentDialog->CompList->clear();
           ParentDialog->LibraryComps.clear();
         }
         findComponent = true;
-	      ParentDialog->CompList->addItem(CompName);
+	ParentDialog->CompList->addItem(CompName);
         ParentDialog->LibraryComps.append(
 			  LibName+'\n'+LibraryString.mid(Start, End-Start));
       }
