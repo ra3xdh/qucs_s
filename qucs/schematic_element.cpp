@@ -1153,7 +1153,6 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
         }
     }
 
-    Graph *pg;
     Corr = 5.0 / Scale;  // size of line select and area for resizing
     // test all diagrams
     for(Diagram *pd = Diagrams->last(); pd != 0; pd = Diagrams->prev())
@@ -1666,7 +1665,6 @@ void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
 int Schematic::copySelectedElements(Q3PtrList<Element> *p)
 {
     int i, count = 0;
-    Port      *pp;
     Component *pc;
     Wire      *pw;
     Diagram   *pd;

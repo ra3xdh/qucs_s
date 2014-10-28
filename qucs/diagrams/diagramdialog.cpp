@@ -811,7 +811,7 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
   GraphInput->blockSignals(true);
   if(toTake) GraphInput->setText("");
 
-  int     i  = GraphInput->cursorPosition();
+  GraphInput->cursorPosition();
   //QString s="";
   //QString s1 = Item->text();
   int row = Item->row();

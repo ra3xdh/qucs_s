@@ -312,7 +312,6 @@ void Component::paintScheme(Schematic *p)
 {
   // qDebug() << "paintScheme" << Model;
   if(Model.at(0) == '.') {   // is simulation component (dc, ac, ...)
-    Text *pt;
     int a, b, xb, yb;
     QFont newFont = p->font();
 
@@ -502,7 +501,6 @@ void Component::mirrorX()
     if(p3->angle < 0) p3->angle += 16*360;  // angle has to be > 0
   }
 
-  Area *pa;
   // mirror all rectangles
   foreach(Area *pa, Rects)
     pa->y = -pa->y - pa->h;
@@ -562,7 +560,6 @@ void Component::mirrorY()
     if(p3->angle < 0) p3->angle += 16*360;   // angle has to be > 0
   }
 
-  Area *pa;
   // mirror all rectangles
   foreach(Area *pa, Rects)
     pa->x = -pa->x - pa->w;

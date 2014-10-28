@@ -100,7 +100,6 @@ void Diagram::paint(ViewPainter *p)
     p->drawArc(cx+pa->x, cy-pa->y, pa->w, pa->h, pa->angle, pa->arclen);
   }
 
-  Graph *pg;
   // draw all graphs
   foreach(Graph *pg, Graphs)
     pg->paint(p, cx, cy);
@@ -126,7 +125,6 @@ void Diagram::paint(ViewPainter *p)
   p->Painter->restore();
 
   // draw markers last, so they are at the top of painting layers
-  //for(pg = Graphs.first(); pg != 0; pg = Graphs.next())
   foreach(Graph *pg, Graphs)
     foreach(Marker *pm, pg->Markers)
       pm->paint(p, cx, cy);
@@ -160,7 +158,6 @@ void Diagram::paintScheme(Schematic *p)
 */
 void Diagram::createAxisLabels()
 {
-  Graph *pg;
   int   x, y, w, wmax = 0;
   QString Str;
   QFont font = QFont("Helvetica", 12);
