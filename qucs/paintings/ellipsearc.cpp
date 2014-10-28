@@ -398,8 +398,8 @@ bool EllipseArc::Dialog()
     Pen.setColor(d->ColorButt->paletteBackgroundColor());
     changed = true;
   }
-  if(Pen.width()  != d->LineWidth->text().toUInt()) {
-    Pen.setWidth(d->LineWidth->text().toUInt());
+  if(Pen.width()  != d->LineWidth->text().toInt()) {
+    Pen.setWidth(d->LineWidth->text().toInt());
     changed = true;
   }
   if(Pen.style()  != (Qt::PenStyle)(d->StyleBox->currentItem()+1)) {
