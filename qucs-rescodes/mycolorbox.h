@@ -32,7 +32,7 @@ class MyColorBox: public QGroupBox
 	QComboBox *colorCode[5];
 	map<string,int> constructRevTolindexMap();
 	public:
-		MyColorBox( QWidget *parent=0, const char *name=0 );
+		MyColorBox( QWidget *parent=0);
 		string enteredTolerance();
 		vector<string> enteredValue();
 

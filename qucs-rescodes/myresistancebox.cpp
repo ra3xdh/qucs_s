@@ -28,8 +28,7 @@
 
 #include <cmath>
 
-MyResistanceBox::MyResistanceBox( QWidget *parent, const char *name )
-//: QGroupBox(3,Qt::Horizontal,"Resistance Values" ,parent, name )
+MyResistanceBox::MyResistanceBox( QWidget *parent )
 : QGroupBox("Resistance Values", parent)
 {
 	//--------------------resistance displaying ui ---------------------------------//

@@ -84,7 +84,7 @@ public:
   bool saveSettings (void);
   void refreshLanguage(void);
 
-  QMenu* createStandardContextMenu(const QPoint&);
+  QMenu* createStandardContextMenu();
 
 public slots:
   void slotCursorPosChanged ();

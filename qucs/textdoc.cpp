@@ -305,7 +305,7 @@ void TextDoc::slotSetChanged()
  *
  *  \todo \fixme is this working?
  */
-QMenu *TextDoc::createStandardContextMenu( const QPoint &pos )
+QMenu *TextDoc::createStandardContextMenu()
 {
   QMenu *popup = QPlainTextEdit::createStandardContextMenu();
 

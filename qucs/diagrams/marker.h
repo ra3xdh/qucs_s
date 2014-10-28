@@ -46,7 +46,7 @@ public:
   bool    load(const QString& Line);
   bool    getSelected(int, int);
   Marker* sameNewOne(Graph*);
-  void    getTextSize(const QFont&);
+  void    getTextSize();
 
   Diagram *Diag;     // the corresponding diagram
   Graph   *pGraph;   // the corresponding graph

@@ -33,7 +33,7 @@ class MyResistanceBox: public QGroupBox
 	QComboBox *resUnit; 
 	QComboBox *tolerance; 
 	public:
-		MyResistanceBox( QWidget *parent=0, const char *name=0 );
+		MyResistanceBox( QWidget *parent=0 );
 		float enteredValue();
 		float enteredTolerance();
 	public slots:

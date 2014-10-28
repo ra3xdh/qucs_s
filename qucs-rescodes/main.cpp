@@ -85,11 +85,11 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
 
 	res= new QResistor();
 	//--------------------resistance displayin ui ---------------------------------//
-	resBox = new MyResistanceBox (this, "resBox");
+	resBox = new MyResistanceBox (this);
 
 	connect(res, SIGNAL(valueModified(QResistor*)),resBox,SLOT(update(QResistor*)));
 	//-------------------color displaying ui---------------------------------------------//
-	colorBox = new MyColorBox(this, "colorBox");
+	colorBox = new MyColorBox(this);
 
 	connect(res, SIGNAL(valueModified(QResistor*)),colorBox,SLOT(update(QResistor*)));
 
