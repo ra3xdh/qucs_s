@@ -283,7 +283,7 @@ void QucsLib::slotShowModel()
 // ----------------------------------------------------
 void QucsLib::slotSelectLibrary(int Index)
 {
-    int Start, End, NameStart, NameEnd;
+    int End;
 
     End = Library->count ()-1;
 

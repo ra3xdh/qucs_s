@@ -698,7 +698,6 @@ void SimMessage::FinishSimulation(int Status)
 
   QFile file(QucsSettings.QucsHomeDir.filePath("log.txt"));  // save simulator messages
   if(file.open(QIODevice::WriteOnly)) {
-    int z;
     QTextStream stream(&file);
     stream << tr("Output:\n-------") << "\n\n";
     for(int z=0; z<ProgText->document()->blockCount(); z++)

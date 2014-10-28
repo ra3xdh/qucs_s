@@ -225,7 +225,6 @@ void TextDoc::setName (const QString& Name_)
  */
 void TextDoc::becomeCurrent (bool)
 {
-  int x, y;
   slotCursorPosChanged();
   viewport()->setFocus ();
 

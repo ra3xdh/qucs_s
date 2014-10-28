@@ -82,7 +82,6 @@ void ViewPainter::drawPoint(int x1i, int y1i)
 // -------------------------------------------------------------
 void ViewPainter::drawLine(int x1i, int y1i, int x2i, int y2i)
 {
-  float z;
   float x1, y1, x2, y2;
   x1 = float(x1i)*Scale + DX;
   y1 = float(y1i)*Scale + DY;
@@ -95,7 +94,7 @@ void ViewPainter::drawLine(int x1i, int y1i, int x2i, int y2i)
 // -------------------------------------------------------------
 void ViewPainter::drawLines(int x0, int y0, float *pp)
 {
-  float z, DX_, DY_;
+  float DX_, DY_;
   float x1, x2, y1, y2;
   if(*pp < 0)
     pp++;
@@ -188,7 +187,7 @@ void ViewPainter::drawCircleSymbols(int x0i, int y0i, float *pp)
 void ViewPainter::drawArrowSymbols(int x0i, int y0i, float *pp)
 {
   int x0, y0, x1, x2, y1, y2;
-  float z, DX_, DY_;
+  float DX_, DY_;
   if(*pp < 0)
     pp++;
 
