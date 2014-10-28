@@ -361,7 +361,6 @@ void Rect3DDiagram::removeHiddenLines(char *zBuffer, tBound *Bounds)
   double Dummy = 0.0;  // number for 1-dimensional data in 3D cartesian
   double *px, *py, *pz;
 
-  Graph *g;
   tPoint3D *p;
   int i, j, z, dx, dy, Size=0;
   // pre-calculate buffer size to avoid reallocations in the first step
@@ -726,7 +725,6 @@ void Rect3DDiagram::createAxis(Axis *Axis, bool Right,
                                int x1_, int y1_, int x2_, int y2_)
 {
   DataX *pD;
-  Graph *pg;
   double phi, cos_phi, sin_phi;
   int x, y, z, w, valid, Index = 0;
   if(Axis == &yAxis)  Index = 1;

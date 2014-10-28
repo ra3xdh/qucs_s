@@ -26,7 +26,7 @@
 #include <map>
 #include <string>
 
-MyColorBox::MyColorBox( QWidget *parent, const char *name )
+MyColorBox::MyColorBox( QWidget *parent )
 : QGroupBox("Colour Codes" ,parent)
 {
 	//--------------------color code displaying ui-------------------------------------//
@@ -38,7 +38,6 @@ MyColorBox::MyColorBox( QWidget *parent, const char *name )
   colors2 << "black" << "brown" << "red" << "orange" << "yellow" << "green" << "blue"
           << "violet" << "gray" << "white";
 
-	QObject* item = new QObject;
 	for(int i=0;i<4;i++)
 	{
 		colorCode[i]=new QComboBox(this);

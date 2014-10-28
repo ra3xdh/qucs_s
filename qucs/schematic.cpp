@@ -1685,7 +1685,6 @@ bool Schematic::elementsOnGrid()
 {
   int x, y, No;
   bool count = false;
-  Port *pp;
   WireLabel *pl, *pLabel;
   Q3PtrList<WireLabel> LabelCache;
 

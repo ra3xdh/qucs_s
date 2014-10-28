@@ -179,7 +179,7 @@ void Marker::initText(int n)
 
   cx = int(fCX+0.5);
   cy = int(fCY+0.5);
-  getTextSize(QucsSettings.font);
+  getTextSize();
 }
 
 // ---------------------------------------------------------------------
@@ -270,7 +270,7 @@ void Marker::createText()
 
   cx = int(fCX+0.5);
   cy = int(fCY+0.5);
-  getTextSize(QucsSettings.font);
+  getTextSize();
 }
 
 // ---------------------------------------------------------------------
@@ -286,11 +286,11 @@ void Marker::makeInvalid()
 
   fCX = float(cx);
   fCY = float(cy);
-  getTextSize(QucsSettings.font);
+  getTextSize();
 }
 
 // ---------------------------------------------------------------------
-void Marker::getTextSize(const QFont& Font)
+void Marker::getTextSize()
 {
   QFont font = QFont("Helvetica", 12);
   if (QucsMain) {

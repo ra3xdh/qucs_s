@@ -7,10 +7,9 @@ INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR}
 
 SET(DIALOGS_SRCS
 changedialog.cpp		packagedialog.cpp vasettingsdialog.cpp
-digisettingsdialog.cpp		qucssettingsdialog.cpp vtabbar.cpp
-importdialog.cpp		savedialog.cpp vtabbeddockwidget.cpp
-labeldialog.cpp			searchdialog.cpp vtabbutton.cpp
-librarydialog.cpp		settingsdialog.cpp vtabwidget.cpp
+digisettingsdialog.cpp		qucssettingsdialog.cpp
+importdialog.cpp		savedialog.cpp labeldialog.cpp
+searchdialog.cpp     librarydialog.cpp settingsdialog.cpp
 matchdialog.cpp			simmessage.cpp newprojdialog.cpp
 sweepdialog.cpp			exportdialog.cpp loaddialog.cpp
 )
@@ -34,10 +33,6 @@ simmessage.h
 sweepdialog.h
 sweepdialog.h
 vasettingsdialog.h
-vtabbar.h
-vtabbeddockwidget.h
-vtabbutton.h
-vtabwidget.h
 )
 
 QT4_WRAP_CPP( DIALOGS_MOC_SRCS ${DIALOGS_MOC_HDRS} )

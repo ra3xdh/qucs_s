@@ -55,8 +55,6 @@
 #include "dialogs/matchdialog.h"
 #include "dialogs/simmessage.h"
 #include "dialogs/exportdialog.h"
-//#include "dialogs/vtabwidget.h"
-//#include "dialogs/vtabbeddockwidget.h"
 #include "octave_window.h"
 #include "../qucs-lib/qucslib_common.h"
 
@@ -241,9 +239,7 @@ void QucsApp::initView()
   DocumentTab->setMovable (true);
 #endif
 
-  //dock = new VTabbedDockWidget(Q3DockWindow::InDock, this);
   dock = new QDockWidget(this);
-  //TabView = new VTabWidget(VTabInterface::TabLeft,dock);  // tabs on the left side
   TabView = new QTabWidget(dock);
   TabView->setTabPosition(QTabWidget::West);
 

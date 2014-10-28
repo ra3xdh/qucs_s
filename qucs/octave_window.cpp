@@ -63,7 +63,7 @@ OctaveWindow::~OctaveWindow()
 }
 
 // -----------------------------------------------------------------
-QSize OctaveWindow::sizeHint()
+QSize OctaveWindow::sizeHint() const
 {
   QSize Size;
   int w=0, h=0;
