@@ -594,13 +594,13 @@ void QucsApp::fillComboBox (bool setAll)
   //CompChoose->setMaxVisibleItems (13); // Increase this if you add items below.
   CompChoose->clear ();
 
-  QStringList cats = Category::getCategories ();
-  for (QStringList::Iterator it = cats.begin (); it != cats.end (); ++it) {
-    if (setAll)
-      CompChoose->insertItem (*it);
-    else
-      if (*it == QObject::tr("paintings"))
-        CompChoose->insertItem (*it);
+  if (!setAll) {
+    CompChoose->insertItem(QObject::tr("paintings"));
+  } else {
+    QStringList cats = Category::getCategories ();
+    foreach (QString it, cats) {
+      CompChoose->insertItem (it);
+    }
   }
 }
 
