@@ -38,7 +38,7 @@ public:
   mySpinBox(int, int, int, double*, QWidget*);
 
 protected:
-  QString textFromValue(int);
+  QString textFromValue(int) const;
   QValidator::State validate ( QString & text, int & pos ) const;
 
 private:

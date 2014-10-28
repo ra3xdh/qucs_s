@@ -21,7 +21,7 @@ public:
   OctaveWindow(QDockWidget*);
  ~OctaveWindow();
 
-  QSize sizeHint();
+  QSize sizeHint() const;
   bool startOctave();
   void runOctaveScript(const QString&);
   void sendCommand(const QString&);

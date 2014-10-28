@@ -44,7 +44,7 @@ mySpinBox::mySpinBox(int Min, int Max, int Step, double *Val, QWidget *Parent)
 
 #include <iostream>
 using namespace std;
-QString mySpinBox::textFromValue(int Val)
+QString mySpinBox::textFromValue(int Val) const
 {
   cout<<"Values + Val"<<*(Values+Val)<<endl;
   return QString::number(*(Values+Val));
