@@ -32,6 +32,10 @@ void Element::paintScheme(Schematic *)
 {
 }
 
+void Element::paintScheme(QPainter *)
+{
+}
+
 void Element::setCenter(int, int, bool)
 {
 }

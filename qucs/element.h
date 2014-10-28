@@ -144,7 +144,8 @@ public:
   Element();
   virtual ~Element();
 
-  virtual void paintScheme(Schematic*);
+  virtual void paintScheme(Schematic *);
+  virtual void paintScheme(QPainter *);
   virtual void setCenter(int, int, bool relative=false);
   virtual void getCenter(int&, int&);
 
