@@ -2008,22 +2008,22 @@ QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
     }
     qDebug()<<probe_names;
 
-    stream<<".control\n"          //execute simulations
+   /* stream<<".control\n"          //execute simulations
           <<"set filetype=ascii\n"
-          <<"run\n";
+          <<"run\n";*/
 
     QString sim;                 // see results
     foreach (sim,simulations) {
         QString nod;
-        stream<<".print "+sim;
+        stream<<"* .print "+sim; // comment for demo version
         foreach (nod,probe_names) {
             stream<<" v("+nod+") ";
         }
         stream<<endl;
     }
 
-    stream<<"exit\n"
-          <<".endc\n";
+   /* stream<<"exit\n"
+          <<".endc\n";*/
 
     stream<<".END\n";
 
