@@ -619,27 +619,7 @@ void QucsApp::slotSetCompView (int index)
 
   QString item = CompChoose->text (index);
 
-  /*
-   * The following test is used as only paintings are allowed in
-   * symbol editing mode, previously paintings had to be the last
-   * category in modules.cpp.
-   * Howver, before symbol edit is started it is requested that only
-   * 'paintigs' gets added to the 'compChoose' combobox.
-   * See: QucsApp::fillComboBox
-   *
-   */
-
-  if (item == QObject::tr("paintings"))
-  {
-    // if index beyond count of combobox, assume it is paintings...
-    Comps = Category::getModules (QObject::tr("paintings"));
-  }
-  else
-  {
-    // get list of components, will add the icons to dock
-    Comps = Category::getModules (item);
-  }
-
+  Comps = Category::getModules(item);
   QString Name;
 
   // if something was registered dynamicaly, get and draw icons into dock
@@ -739,14 +719,9 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
   Q3PtrList<Module> Comps;
 
   // if symbol mode, only paintings are enabled.
-  if (CompChoose->currentText() == QObject::tr("paintings"))
-    Comps = Category::getModules (QObject::tr("paintings"));
-  else {
-    Comps = Category::getModules (CompChoose->currentText ());
-    qDebug() << "pressed CompComps id" << i;
-    qDebug() << CompComps->item(i)->toolTip(); //Name;
-
-  }
+  Comps = Category::getModules(CompChoose->currentText());
+  qDebug() << "pressed CompComps id" << i;
+  qDebug() << CompComps->item(i)->toolTip(); //Name;
 
   // handle static and dynamic components
   if (CompChoose->currentText() == QObject::tr("verilog-a user devices")){
