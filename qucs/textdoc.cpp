@@ -39,7 +39,7 @@ Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
  * \param App_ is the parent object
  * \param Name_ is the initial text document name
  */
-TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QucsDoc(App_, Name_), QPlainTextEdit()
+TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDoc(App_, Name_)
 {
   TextFont = QFont("Courier New");
   TextFont.setPointSize(QucsSettings.font.pointSize()-1);
