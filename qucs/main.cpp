@@ -102,6 +102,9 @@ bool loadSettings()
     if (settings.contains("IngnoreVersion")) QucsSettings.IgnoreFutureVersion = settings.value("IngnoreVersion").toBool();
     else QucsSettings.IgnoreFutureVersion = false;
 
+    if (settings.contains("DrawInAntiAliasing")) QucsSettings.DrawInAntiAliasing = settings.value("DrawInAntiAliasing").toBool();
+    else QucsSettings.IgnoreFutureVersion = false;
+
 
     QucsSettings.RecentDocs = settings.value("RecentDocs").toString().split("*",QString::SkipEmptyParts);
     QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
@@ -161,7 +164,8 @@ bool saveApplSettings(QucsApp *qucs)
     //settings.setValue("DocDir", QucsSettings.DocDir);
     settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
     settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
-    settings.setValue("IngnoreVersion",QucsSettings.IgnoreFutureVersion);
+    settings.setValue("IngnoreVersion", QucsSettings.IgnoreFutureVersion);
+    settings.setValue("DrawInAntiAliasing", QucsSettings.DrawInAntiAliasing);
 
     // Copy the list of directory paths in which Qucs should
     // search for subcircuit schematics from qucsPathList

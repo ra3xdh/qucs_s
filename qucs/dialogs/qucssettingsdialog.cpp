@@ -116,6 +116,11 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     appSettingsGrid->addWidget(checkLoadFromFutureVersions,6,1);
     checkLoadFromFutureVersions->setChecked(QucsSettings.IgnoreFutureVersion);
 
+    appSettingsGrid->addWidget(new QLabel(tr("Draw diagrams with anti-aliasing feature")));
+    checkAntiAliasing = new QCheckBox(appSettingsTab);
+    appSettingsGrid->addWidget(checkAntiAliasing,7,1);
+    checkAntiAliasing->setChecked(QucsSettings.DrawInAntiAliasing);
+
     t->addTab(appSettingsTab, tr("Settings"));
 
     // ...........................................................
@@ -538,6 +543,12 @@ void QucsSettingsDialog::slotApply()
     QucsSettings.OctaveBinDir = octaveEdit->text();
 
     QucsSettings.IgnoreFutureVersion = checkLoadFromFutureVersions->isChecked();
+
+    if(QucsSettings.DrawInAntiAliasing != checkAntiAliasing->isChecked())
+    {
+      QucsSettings.DrawInAntiAliasing = checkAntiAliasing->isChecked();
+      changed = true;
+    }
 
     saveApplSettings(App);  // also sets the small and large font
 

@@ -75,6 +75,7 @@ struct tQucsSettings {
   QStringList RecentDocs;
 
   bool IgnoreFutureVersion;
+  bool DrawInAntiAliasing;
 
 };
 
