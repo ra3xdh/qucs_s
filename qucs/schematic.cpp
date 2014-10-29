@@ -22,20 +22,11 @@
 #include <stdlib.h>
 #include <limits.h>
 
-#include <QImage>
-#include <QAction>
-#include <QRegExp>
-#include <QIcon>
-#include <QPrinter>
-#include <QLineEdit>
 #include <QFileInfo>
 #include <Q3IconView>
-#include <QTabWidget>
+#include <QPrinter>
 #include <QPaintDevice>
 #include <QDir>
-
-#include "qucs.h"
-//Added by qt3to4:
 #include <QTextStream>
 #include <QDragLeaveEvent>
 #include <Q3StrList>
@@ -47,9 +38,11 @@
 #include <QMouseEvent>
 #include <QEvent>
 #include <QWheelEvent>
+
+#include "qucs.h"
+#include "schematic.h"
 #include "main.h"
 #include "node.h"
-#include "schematic.h"
 #include "textdoc.h"
 #include "viewpainter.h"
 #include "mouseactions.h"

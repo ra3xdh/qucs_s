@@ -16,18 +16,10 @@
  ***************************************************************************/
 #include <QtGui>
 #include <stdlib.h>
-#include <string>
 #include <limits.h>
 
 #include "schematic.h"
-#include "node.h"
-#include "wire.h"
-#include "diagrams/diagram.h"
-#include "paintings/painting.h"
-#include "components/component.h"
-//Added by qt3to4:
 #include <Q3PtrList>
-
 
 
 /* *******************************************************************
