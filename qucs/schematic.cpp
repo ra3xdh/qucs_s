@@ -31,8 +31,7 @@
 #include <QFileInfo>
 #include <Q3IconView>
 #include <QTabWidget>
-#include <Q3DragObject>
-#include <Q3PaintDeviceMetrics>
+#include <QPaintDevice>
 #include <QDir>
 
 #include "qucs.h"
@@ -589,15 +588,14 @@ void Schematic::contentsMouseDoubleClickEvent(QMouseEvent *Event)
 // -----------------------------------------------------------
 void Schematic::print(QPrinter*, QPainter *Painter, bool printAll, bool fitToPage)
 {
-  Q3PaintDeviceMetrics pmetrics(Painter->device());
-  float printerDpiX = (float)pmetrics.logicalDpiX();
-  float printerDpiY = (float)pmetrics.logicalDpiY();
-  float printerW = (float)pmetrics.width();
-  float printerH = (float)pmetrics.height();
+  QPaintDevice *pdevice = Painter->device();
+  float printerDpiX = (float)pdevice->logicalDpiX();
+  float printerDpiY = (float)pdevice->logicalDpiY();
+  float printerW = (float)pdevice->width();
+  float printerH = (float)pdevice->height();
   QPainter pa(viewport());
-  Q3PaintDeviceMetrics smetrics(pa.device());
-  float screenDpiX = (float)smetrics.logicalDpiX();
-  float screenDpiY = (float)smetrics.logicalDpiY();
+  float screenDpiX = (float)pa.device()->logicalDpiX();
+  float screenDpiY = (float)pa.device()->logicalDpiY();
   float PrintScale = 0.5;
   sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
   int marginX = (int)(40 * printerDpiX / screenDpiX);
