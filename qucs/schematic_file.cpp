@@ -1997,8 +1997,15 @@ QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
        }
     }
 
-    QStringList probe_names; // set probes for named nodes
+    QStringList probe_names; // set probes for named nodes and wires
     probe_names.clear();
+    for(Node *pn = DocNodes.first(); pn != 0; pn = DocNodes.next()) {
+      if(pn->Label != 0) {
+          if (!probe_names.contains(pn->Label->Name)) {
+              probe_names.append(pn->Label->Name);
+          }
+      }
+    }
     for(Wire *pw = DocWires.first(); pw != 0; pw = DocWires.next()) {
       if(pw->Label != 0) {
           if (!probe_names.contains(pw->Label->Name)) {
@@ -2006,6 +2013,7 @@ QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
           }
       }
     }
+    probe_names.sort();
     qDebug()<<probe_names;
 
     stream<<".control\n"          //execute simulations
