@@ -2008,22 +2008,26 @@ QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
     }
     qDebug()<<probe_names;
 
-   /* stream<<".control\n"          //execute simulations
+    stream<<".control\n"          //execute simulations
           <<"set filetype=ascii\n"
-          <<"run\n";*/
+          <<"run\n";
+
+    QFileInfo inf(DocName);
+    QString basenam = inf.baseName();
 
     QString sim;                 // see results
     foreach (sim,simulations) {
         QString nod;
-        stream<<"* .print "+sim; // comment for demo version
         foreach (nod,probe_names) {
-            stream<<" v("+nod+") ";
+            QString filename = QString("%1_%2_%3.txt").arg(basenam).arg(sim).arg(nod);
+            QString write_str = QString("write %1 %2.v(%3)\n").arg(filename).arg(sim).arg(nod);
+            stream<<write_str;
         }
         stream<<endl;
     }
 
-   /* stream<<"exit\n"
-          <<".endc\n";*/
+    stream<<"exit\n"
+          <<".endc\n";
 
     stream<<".END\n";
 
