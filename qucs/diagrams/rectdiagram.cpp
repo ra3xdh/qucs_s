@@ -30,8 +30,6 @@
 # include <ieeefp.h>
 #endif
 
-#include <QMessageBox>
-
 #include "rectdiagram.h"
 #include "main.h"
 #include "qucs.h"

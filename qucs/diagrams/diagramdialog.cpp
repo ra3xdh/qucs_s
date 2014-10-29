@@ -22,20 +22,16 @@
 #include <QtGui>
 #include "diagramdialog.h"
 #include "qucs.h"
-#include <QPaintEvent>
 #include "schematic.h"
 #include "rect3ddiagram.h"
 
 #include <math.h>
 
-#include <QLayout>
+#include <QPaintEvent>
 #include <QPushButton>
 #include <QTabWidget>
 #include <QLabel>
 #include <QStringList>
-#include <QMessageBox>
-#include <Q3PtrList>
-#include <QValidator>
 #include <QColorDialog>
 #include <QLineEdit>
 #include <QCheckBox>
@@ -43,8 +39,6 @@
 #include <QComboBox>
 #include <QListWidget>
 #include <QTableWidget>
-#include <QStringList>
-#include <QTreeWidgetItem>
 
 
 #define CROSS3D_SIZE   30

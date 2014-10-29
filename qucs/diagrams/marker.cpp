@@ -22,13 +22,11 @@
 #include "../dialogs/matchdialog.h" //For r2z function
 
 #include <QString>
-#include <QWidget>
 #include <QPainter>
 
 #include <limits.h>
 #include <math.h>
 #include <stdlib.h>
-
 
 #include "qucs.h"
 #include "schematic.h"

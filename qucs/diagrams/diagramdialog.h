@@ -27,10 +27,9 @@
 
 #include <QDialog>
 #include <QRegExp>
-#include <QVBoxLayout>
-#include <QLabel>
 #include <Q3PtrList>
 
+class QVBoxLayout;
 class Cross3D;
 class QLabel;
 class QLineEdit;
@@ -97,7 +96,6 @@ private:
   QRegExpValidator *Validator;
 
   QComboBox *ChooseData;
-  //Q3ListView *ChooseVars;
   QTableWidget *ChooseVars;
   QListWidget  *GraphList;
 

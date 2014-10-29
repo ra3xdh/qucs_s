@@ -22,8 +22,7 @@
 #include "element.h"
 #include "viewpainter.h"
 
-#include <QPainter>
-
+class QPainter;
 class Diagram;
 class Graph;
 
