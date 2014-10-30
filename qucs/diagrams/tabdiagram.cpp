@@ -25,9 +25,7 @@
 #include "main.h"
 
 #include <math.h>
-//Added by qt3to4:
-#include <Q3PointArray>
-
+#include <QPolygon>
 
 #include "qucs.h"
 #include "schematic.h"
@@ -59,7 +57,7 @@ void TabDiagram::paint(ViewPainter *p)
 
   if(x1 > 0) {  // paint scroll bar ?
     int   x, y, dx, dy;
-    Q3PointArray Points;
+    QPolygon Points;
     y = y2 - 20;
     // draw scroll bar
     int by = cy-y + yAxis.numGraphs;

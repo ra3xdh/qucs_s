@@ -25,8 +25,7 @@
 #include "main.h"
 
 #include <math.h>
-//Added by qt3to4:
-#include <Q3PointArray>
+#include <QPolygon>
 
 #include "qucs.h"
 #include "schematic.h"
@@ -64,7 +63,7 @@ void TimingDiagram::paint(ViewPainter *p)
 
   if(y1 > 0) {  // paint scroll bar ?
     int   x, y, dx, dy;
-    Q3PointArray Points;
+    QPolygon Points;
     // draw scroll bar
     p->fillRect(cx+yAxis.numGraphs, cy+2, zAxis.numGraphs, 14, QColor(192, 192, 192));
 
