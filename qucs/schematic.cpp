@@ -23,7 +23,6 @@
 #include <limits.h>
 
 #include <QFileInfo>
-#include <Q3IconView>
 #include <QPrinter>
 #include <QPaintDevice>
 #include <QDir>
@@ -2023,8 +2022,10 @@ void Schematic::slotScrollRight()
 void Schematic::contentsDropEvent(QDropEvent *Event)
 {
   if(dragIsOkay) {
-    Q3StrList List;
-    Q3UriDrag::decode(Event, List);
+    QList<QUrl> urls = Event->mimeData()->urls();
+    if (urls.isEmpty()) {
+      return;
+    }
 
     // do not close untitled document to avoid segfault
     QucsDoc *d = QucsMain->getDoc(0);
@@ -2032,8 +2033,9 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
     d->DocChanged = true;
 
     // URI:  file:/home/linuxuser/Desktop/example.sch
-    for(unsigned int i=0; i < List.count(); i++)
-      App->gotoPage(QDir::convertSeparators(Q3UriDrag::uriToLocalFile(List.at(i))));
+    foreach(QUrl url, urls) {
+      App->gotoPage(QDir::convertSeparators(url.toLocalFile()));
+    }
 
     d->DocChanged = changed;
     return;
@@ -2057,31 +2059,28 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
 // ---------------------------------------------------
 void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
 {
-
-  //qDebug() << Event->mimeData()->formats();
+  //FIXME: the function of drag library component seems not working?
   formerAction = 0;
   dragIsOkay = false;
 
   // file dragged in ?
-  if(Event->provides("text/uri-list"))
-    if(Q3UriDrag::canDecode(Event)) {
-      dragIsOkay = true;
-      Event->accept();
-      return;
-    }
+  if(Event->mimeData()->hasUrls()) {
+    dragIsOkay = true;
+    Event->accept();
+    return;
+  }
 
   // drag library component
-  if(Event->provides("text/plain")) {
-    QString s;
-    if(Q3TextDrag::decode(Event, s))
-      if(s.left(15) == "QucsComponent:<") {
-        s = s.mid(14);
-        App->view->selElem = getComponentFromName(s);
-        if(App->view->selElem) {
-          Event->accept();
-          return;
-        }
+  if(Event->mimeData()->hasText()) {
+    QString s = Event->mimeData()->text();
+    if(s.left(15) == "QucsComponent:<") {
+      s = s.mid(14);
+      App->view->selElem = getComponentFromName(s);
+      if(App->view->selElem) {
+        Event->accept();
+        return;
       }
+    }
     Event->ignore();
     return;
   }
@@ -2091,7 +2090,6 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
 
     // drag component from listview
     if(Event->provides("application/x-qabstractitemmodeldatalist")) {
-      //Q3IconViewItem *Item = App->CompComps->currentItem();
       QListWidgetItem *Item = App->CompComps->currentItem();
       if(Item) {
         formerAction = App->activeAction;
