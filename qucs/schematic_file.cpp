@@ -22,11 +22,8 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QStringList>
-#include <QRegExp>
-#include <Q3TextEdit>
 #include <QTextEdit>
 #include <Q3PtrList>
-//Added by qt3to4:
 #include <QTextStream>
 #include <Q3ValueList>
 

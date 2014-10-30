@@ -22,21 +22,10 @@
 #include <stdlib.h>
 #include <limits.h>
 
-#include <QImage>
-#include <QAction>
-#include <QRegExp>
-#include <QIcon>
-#include <QPrinter>
-#include <QLineEdit>
 #include <QFileInfo>
-#include <Q3IconView>
-#include <QTabWidget>
-#include <Q3DragObject>
-#include <Q3PaintDeviceMetrics>
+#include <QPrinter>
+#include <QPaintDevice>
 #include <QDir>
-
-#include "qucs.h"
-//Added by qt3to4:
 #include <QTextStream>
 #include <QDragLeaveEvent>
 #include <Q3StrList>
@@ -48,9 +37,11 @@
 #include <QMouseEvent>
 #include <QEvent>
 #include <QWheelEvent>
+
+#include "qucs.h"
+#include "schematic.h"
 #include "main.h"
 #include "node.h"
-#include "schematic.h"
 #include "textdoc.h"
 #include "viewpainter.h"
 #include "mouseactions.h"
@@ -589,15 +580,14 @@ void Schematic::contentsMouseDoubleClickEvent(QMouseEvent *Event)
 // -----------------------------------------------------------
 void Schematic::print(QPrinter*, QPainter *Painter, bool printAll, bool fitToPage)
 {
-  Q3PaintDeviceMetrics pmetrics(Painter->device());
-  float printerDpiX = (float)pmetrics.logicalDpiX();
-  float printerDpiY = (float)pmetrics.logicalDpiY();
-  float printerW = (float)pmetrics.width();
-  float printerH = (float)pmetrics.height();
+  QPaintDevice *pdevice = Painter->device();
+  float printerDpiX = (float)pdevice->logicalDpiX();
+  float printerDpiY = (float)pdevice->logicalDpiY();
+  float printerW = (float)pdevice->width();
+  float printerH = (float)pdevice->height();
   QPainter pa(viewport());
-  Q3PaintDeviceMetrics smetrics(pa.device());
-  float screenDpiX = (float)smetrics.logicalDpiX();
-  float screenDpiY = (float)smetrics.logicalDpiY();
+  float screenDpiX = (float)pa.device()->logicalDpiX();
+  float screenDpiY = (float)pa.device()->logicalDpiY();
   float PrintScale = 0.5;
   sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
   int marginX = (int)(40 * printerDpiX / screenDpiX);
@@ -2032,8 +2022,10 @@ void Schematic::slotScrollRight()
 void Schematic::contentsDropEvent(QDropEvent *Event)
 {
   if(dragIsOkay) {
-    Q3StrList List;
-    Q3UriDrag::decode(Event, List);
+    QList<QUrl> urls = Event->mimeData()->urls();
+    if (urls.isEmpty()) {
+      return;
+    }
 
     // do not close untitled document to avoid segfault
     QucsDoc *d = QucsMain->getDoc(0);
@@ -2041,8 +2033,9 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
     d->DocChanged = true;
 
     // URI:  file:/home/linuxuser/Desktop/example.sch
-    for(unsigned int i=0; i < List.count(); i++)
-      App->gotoPage(QDir::convertSeparators(Q3UriDrag::uriToLocalFile(List.at(i))));
+    foreach(QUrl url, urls) {
+      App->gotoPage(QDir::convertSeparators(url.toLocalFile()));
+    }
 
     d->DocChanged = changed;
     return;
@@ -2066,31 +2059,28 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
 // ---------------------------------------------------
 void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
 {
-
-  //qDebug() << Event->mimeData()->formats();
+  //FIXME: the function of drag library component seems not working?
   formerAction = 0;
   dragIsOkay = false;
 
   // file dragged in ?
-  if(Event->provides("text/uri-list"))
-    if(Q3UriDrag::canDecode(Event)) {
-      dragIsOkay = true;
-      Event->accept();
-      return;
-    }
+  if(Event->mimeData()->hasUrls()) {
+    dragIsOkay = true;
+    Event->accept();
+    return;
+  }
 
   // drag library component
-  if(Event->provides("text/plain")) {
-    QString s;
-    if(Q3TextDrag::decode(Event, s))
-      if(s.left(15) == "QucsComponent:<") {
-        s = s.mid(14);
-        App->view->selElem = getComponentFromName(s);
-        if(App->view->selElem) {
-          Event->accept();
-          return;
-        }
+  if(Event->mimeData()->hasText()) {
+    QString s = Event->mimeData()->text();
+    if(s.left(15) == "QucsComponent:<") {
+      s = s.mid(14);
+      App->view->selElem = getComponentFromName(s);
+      if(App->view->selElem) {
+        Event->accept();
+        return;
       }
+    }
     Event->ignore();
     return;
   }
@@ -2100,7 +2090,6 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
 
     // drag component from listview
     if(Event->provides("application/x-qabstractitemmodeldatalist")) {
-      //Q3IconViewItem *Item = App->CompComps->currentItem();
       QListWidgetItem *Item = App->CompComps->currentItem();
       if(Item) {
         formerAction = App->activeAction;

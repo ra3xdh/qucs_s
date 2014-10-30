@@ -18,30 +18,28 @@
 #ifndef SCHEMATIC_H
 #define SCHEMATIC_H
 #include <QtGui>
+
 #include "wire.h"
+#include "node.h"
+#include "qucsdoc.h"
+#include "viewpainter.h"
 #include "diagrams/diagram.h"
 #include "paintings/painting.h"
 #include "components/component.h"
-#include "qucsdoc.h"
-//Added by qt3to4:
-#include <QTextStream>
-#include <QDragMoveEvent>
-#include <QDropEvent>
-#include <QDragLeaveEvent>
-#include <QWheelEvent>
-#include <QMouseEvent>
-#include <QDragEnterEvent>
-#include "viewpainter.h"
-#include "node.h"
 
 #include <Q3ScrollView>
-#include <QPainter>
 #include <Q3PtrList>
-#include <QFile>
 #include <QStringList>
 
-class Q3TextEdit;
+class QTextStream;
 class QTextEdit;
+class QDragMoveEvent;
+class QDropEvent;
+class QDragLeaveEvent;
+class QWheelEvent;
+class QMouseEvent;
+class QDragEnterEvent;
+class QPainter;
 
 // digital signal data
 struct DigSignal {
