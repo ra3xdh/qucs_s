@@ -23,7 +23,6 @@
 #include "opt_sim.h"
 #include "schematic.h"
 
-#include <Q3HBox>
 #include <QLabel>
 #include <QCheckBox>
 #include <QLineEdit>
@@ -35,6 +34,7 @@
 #include <QMessageBox>
 #include <QGridLayout>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 
 
 OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
@@ -151,19 +151,22 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   connect(VarList, SIGNAL(selectionChanged(Q3ListViewItem*)),
                    SLOT(slotEditVariable(Q3ListViewItem*)));
 
-  Q3HBox *VarLine = new Q3HBox(Tab3);
+  QHBoxLayout *VarLine = new QHBoxLayout(Tab3);
   VarLine->setSpacing(3);
-  gp3->addMultiCellWidget(VarLine, 1,1,0,2);
+  gp3->addMultiCellLayout(VarLine, 1,1,0,2);
 
-  new QLabel(tr("Name:"), VarLine);
-  VarNameEdit = new QLineEdit(VarLine);
+  VarNameEdit = new QLineEdit();
   VarNameEdit->setValidator(Validator);
   connect(VarNameEdit, SIGNAL(textChanged(const QString&)),
           SLOT(slotChangeVarName(const QString&)));
-  VarActiveCheck = new QCheckBox(tr("active"), VarLine);
+  VarActiveCheck = new QCheckBox(tr("active"));
   VarActiveCheck->setChecked(true);
   connect(VarActiveCheck, SIGNAL(toggled(bool)),
           SLOT(slotChangeVarActive(bool)));
+
+  VarLine->addWidget(new QLabel(tr("Name:")));
+  VarLine->addWidget(VarNameEdit);
+  VarLine->addWidget(VarActiveCheck);
 
   gp3->addWidget(new QLabel(tr("initial:"), Tab3), 2,0);
   gp3->addWidget(new QLabel(tr("min:"), Tab3), 2,1);
@@ -184,12 +187,11 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   connect(VarMaxEdit, SIGNAL(textChanged(const QString&)),
           SLOT(slotChangeVarMax(const QString&)));
 
-  Q3HBox *VarButtons = new Q3HBox(Tab3);
+  QHBoxLayout *VarButtons = new QHBoxLayout(Tab3);
   VarButtons->setSpacing(3);
-  gp3->addMultiCellWidget(VarButtons, 4,4,0,2);
+  gp3->addMultiCellLayout(VarButtons, 4,4,0,2);
 
-  new QLabel(tr("Type:"), VarButtons);
-  VarTypeCombo = new QComboBox(VarButtons);
+  VarTypeCombo = new QComboBox();
   VarTypeCombo->insertItem(tr("linear double"));
   VarTypeCombo->insertItem(tr("logarithmic double"));
   VarTypeCombo->insertItem(tr("linear integer"));
@@ -197,11 +199,16 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   connect(VarTypeCombo, SIGNAL(activated(const QString&)),
           SLOT(slotChangeVarType(const QString&)));
 
-  VarButtons->setStretchFactor(new QWidget(VarButtons), 10);
-  QPushButton *AddVar_Butt = new QPushButton(tr("Add"), VarButtons);
+  QPushButton *AddVar_Butt = new QPushButton(tr("Add"));
   connect(AddVar_Butt, SIGNAL(clicked()), SLOT(slotAddVariable()));
-  QPushButton *DelVar_Butt = new QPushButton(tr("Delete"), VarButtons);
+  QPushButton *DelVar_Butt = new QPushButton(tr("Delete"));
   connect(DelVar_Butt, SIGNAL(clicked()), SLOT(slotDeleteVariable()));
+
+  VarButtons->addWidget(new QLabel(tr("Type:")));
+  VarButtons->addWidget(VarTypeCombo);
+  VarButtons->addStretch();
+  VarButtons->addWidget(AddVar_Butt);
+  VarButtons->addWidget(DelVar_Butt);
 
   t->addTab(Tab3, tr("Variables"));
 
@@ -243,31 +250,39 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   connect(GoalTypeCombo, SIGNAL(activated(const QString&)),
           SLOT(slotChangeGoalType(const QString&)));
 
-  Q3HBox *GoalButtons = new Q3HBox(Tab4);
+  QHBoxLayout *GoalButtons = new QHBoxLayout(Tab4);
   GoalButtons->setSpacing(3);
-  gp4->addMultiCellWidget(GoalButtons, 3,3,0,2);
+  gp4->addMultiCellLayout(GoalButtons, 3,3,0,2);
 
-  GoalButtons->setStretchFactor(new QWidget(GoalButtons),5);
-  QPushButton *AddGoal_Butt = new QPushButton(tr("Add"), GoalButtons);
+  QPushButton *AddGoal_Butt = new QPushButton(tr("Add"));
   connect(AddGoal_Butt, SIGNAL(clicked()), SLOT(slotAddGoal()));
-  QPushButton *DelGoal_Butt = new QPushButton(tr("Delete"), GoalButtons);
+  QPushButton *DelGoal_Butt = new QPushButton(tr("Delete"));
   connect(DelGoal_Butt, SIGNAL(clicked()), SLOT(slotDeleteGoal()));
+
+  GoalButtons->addStretch();
+  GoalButtons->addWidget(AddGoal_Butt);
+  GoalButtons->addWidget(DelGoal_Butt);
 
   t->addTab(Tab4, tr("Goals"));
 
   // ...........................................................
   // buttons on the bottom of the dialog (independent of the TabWidget)
-  Q3HBox *Butts = new Q3HBox(this);
+  QHBoxLayout *Butts = new QHBoxLayout(this);
   Butts->setSpacing(3);
   Butts->setMargin(3);
-  all->addWidget(Butts);
 
-  QPushButton *OkButt = new QPushButton(tr("OK"), Butts);
+  QPushButton *OkButt = new QPushButton(tr("OK"));
   connect(OkButt, SIGNAL(clicked()), SLOT(slotOK()));
-  QPushButton *ApplyButt = new QPushButton(tr("Apply"), Butts);
+  QPushButton *ApplyButt = new QPushButton(tr("Apply"));
   connect(ApplyButt, SIGNAL(clicked()), SLOT(slotApply()));
-  QPushButton *CancelButt = new QPushButton(tr("Cancel"), Butts);
+  QPushButton *CancelButt = new QPushButton(tr("Cancel"));
   connect(CancelButt, SIGNAL(clicked()), SLOT(slotCancel()));
+
+  Butts->addStretch();
+  Butts->addWidget(OkButt);
+  Butts->addWidget(ApplyButt);
+  Butts->addWidget(CancelButt);
+  all->addLayout(Butts);
 
   OkButt->setFocus();
 
