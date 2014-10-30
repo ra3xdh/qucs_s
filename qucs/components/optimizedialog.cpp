@@ -33,7 +33,7 @@
 #include <QValidator>
 #include <QPushButton>
 #include <QMessageBox>
-#include <Q3GridLayout>
+#include <QGridLayout>
 #include <QVBoxLayout>
 
 
@@ -56,26 +56,26 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
 
   // ...........................................................
   QWidget *Tab1 = new QWidget(t);
-  Q3GridLayout *gp1 = new Q3GridLayout(Tab1,3,2,3,3);
+  QGridLayout *gp1 = new QGridLayout(Tab1);
 
-  gp1->addWidget(new QLabel(tr("Name:"), Tab1), 0,0);
+  gp1->addWidget(new QLabel(tr("Name:"), Tab1), 0, 0);
   NameEdit = new QLineEdit(Tab1);
   NameEdit->setValidator(Validator);
-  gp1->addWidget(NameEdit,0,1);
+  gp1->addWidget(NameEdit, 0, 1);
 
-  gp1->addWidget(new QLabel(tr("Simulation:"), Tab1), 1,0);
+  gp1->addWidget(new QLabel(tr("Simulation:"), Tab1), 1, 0);
   SimEdit = new QComboBox(Tab1);
   SimEdit->setEditable(true);
-  gp1->addWidget(SimEdit,1,1);
+  gp1->addWidget(SimEdit, 1, 1);
 
   t->addTab(Tab1, tr("General"));
 
   // ...........................................................
-  QWidget *Tab4 = new QWidget(t);
-  Q3GridLayout *gp4 = new Q3GridLayout(Tab4,11,2,3,3);
+  QWidget *Tab2 = new QWidget(t);
+  QGridLayout *gp2 = new QGridLayout(Tab2);
 
-  gp4->addWidget(new QLabel(tr("Method:"), Tab4), 0,0);
-  MethodCombo = new QComboBox(Tab4);
+  gp2->addWidget(new QLabel(tr("Method:"), Tab2), 0,0);
+  MethodCombo = new QComboBox(Tab2);
   MethodCombo->insertItem("DE/best/1/exp");
   MethodCombo->insertItem("DE/rand/1/exp");
   MethodCombo->insertItem("DE/rand-to-best/1/exp");
@@ -86,60 +86,60 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   MethodCombo->insertItem("DE/rand-to-best/1/bin");
   MethodCombo->insertItem("DE/best/2/bin");
   MethodCombo->insertItem("DE/rand/2/bin");
-  gp4->addWidget(MethodCombo,0,1);
+  gp2->addWidget(MethodCombo,0,1);
 
-  gp4->addWidget(new QLabel(tr("Maximum number of iterations:"), Tab4), 1,0);
-  IterEdit = new QLineEdit(Tab4);
+  gp2->addWidget(new QLabel(tr("Maximum number of iterations:"), Tab2), 1,0);
+  IterEdit = new QLineEdit(Tab2);
   IterEdit->setValidator(intVal);
-  gp4->addWidget(IterEdit,1,1);
+  gp2->addWidget(IterEdit,1,1);
 
-  gp4->addWidget(new QLabel(tr("Output refresh cycle:"), Tab4), 2,0);
-  RefreshEdit = new QLineEdit(Tab4);
+  gp2->addWidget(new QLabel(tr("Output refresh cycle:"), Tab2), 2,0);
+  RefreshEdit = new QLineEdit(Tab2);
   RefreshEdit->setValidator(intVal);
-  gp4->addWidget(RefreshEdit,2,1);
+  gp2->addWidget(RefreshEdit,2,1);
 
-  gp4->addWidget(new QLabel(tr("Number of parents:"), Tab4), 3,0);
-  ParentsEdit = new QLineEdit(Tab4);
+  gp2->addWidget(new QLabel(tr("Number of parents:"), Tab2), 3,0);
+  ParentsEdit = new QLineEdit(Tab2);
   ParentsEdit->setValidator(intVal);
-  gp4->addWidget(ParentsEdit,3,1);
+  gp2->addWidget(ParentsEdit,3,1);
 
-  gp4->addWidget(new QLabel(tr("Constant F:"), Tab4), 4,0);
-  ConstEdit = new QLineEdit(Tab4);
+  gp2->addWidget(new QLabel(tr("Constant F:"), Tab2), 4,0);
+  ConstEdit = new QLineEdit(Tab2);
   ConstEdit->setValidator(new QDoubleValidator(0.0,2.0,20,ConstEdit));
-  gp4->addWidget(ConstEdit,4,1);
+  gp2->addWidget(ConstEdit,4,1);
 
-  gp4->addWidget(new QLabel(tr("Crossing over factor:"), Tab4), 5,0);
-  CrossEdit = new QLineEdit(Tab4);
+  gp2->addWidget(new QLabel(tr("Crossing over factor:"), Tab2), 5,0);
+  CrossEdit = new QLineEdit(Tab2);
   CrossEdit->setValidator(new QDoubleValidator(0.0,1.0,20,CrossEdit));
-  gp4->addWidget(CrossEdit,5,1);
+  gp2->addWidget(CrossEdit,5,1);
 
-  gp4->addWidget(new QLabel(tr("Pseudo random number seed:"), Tab4), 6,0);
-  SeedEdit = new QLineEdit(Tab4);
+  gp2->addWidget(new QLabel(tr("Pseudo random number seed:"), Tab2), 6,0);
+  SeedEdit = new QLineEdit(Tab2);
   SeedEdit->setValidator(numVal);
-  gp4->addWidget(SeedEdit,6,1);
+  gp2->addWidget(SeedEdit,6,1);
 
-  gp4->addWidget(new QLabel(tr("Minimum cost variance:"), Tab4), 7,0);
-  CostVarEdit = new QLineEdit(Tab4);
+  gp2->addWidget(new QLabel(tr("Minimum cost variance:"), Tab2), 7,0);
+  CostVarEdit = new QLineEdit(Tab2);
   CostVarEdit->setValidator(numVal);
-  gp4->addWidget(CostVarEdit,7,1);
+  gp2->addWidget(CostVarEdit,7,1);
 
-  gp4->addWidget(new QLabel(tr("Cost objectives:"), Tab4), 8,0);
-  CostObjEdit = new QLineEdit(Tab4);
+  gp2->addWidget(new QLabel(tr("Cost objectives:"), Tab2), 8,0);
+  CostObjEdit = new QLineEdit(Tab2);
   CostObjEdit->setValidator(numVal);
-  gp4->addWidget(CostObjEdit,8,1);
+  gp2->addWidget(CostObjEdit,8,1);
 
-  gp4->addWidget(new QLabel(tr("Cost constraints:"), Tab4), 9,0);
-  CostConEdit = new QLineEdit(Tab4);
+  gp2->addWidget(new QLabel(tr("Cost constraints:"), Tab2), 9,0);
+  CostConEdit = new QLineEdit(Tab2);
   CostConEdit->setValidator(numVal);
-  gp4->addWidget(CostConEdit,9,1);
+  gp2->addWidget(CostConEdit,9,1);
 
-  t->addTab(Tab4, tr("Algorithm"));
+  t->addTab(Tab2, tr("Algorithm"));
 
   // ...........................................................
-  QWidget *Tab2 = new QWidget(t);
-  Q3GridLayout *gp2 = new Q3GridLayout(Tab2,5,3,3,3);
+  QWidget *Tab3 = new QWidget(t);
+  QGridLayout *gp3 = new QGridLayout(Tab3);
 
-  VarList = new Q3ListView(Tab2);
+  VarList = new Q3ListView(Tab3);
   VarList->addColumn(tr("Name"));
   VarList->addColumn(tr("active"));
   VarList->addColumn(tr("initial"));
@@ -147,13 +147,13 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   VarList->addColumn(tr("max"));
   VarList->addColumn(tr("Type"));
   VarList->setSorting(-1);   // no sorting
-  gp2->addMultiCellWidget(VarList,0,0,0,2);
+  gp3->addMultiCellWidget(VarList,0,0,0,2);
   connect(VarList, SIGNAL(selectionChanged(Q3ListViewItem*)),
                    SLOT(slotEditVariable(Q3ListViewItem*)));
 
-  Q3HBox *VarLine = new Q3HBox(Tab2);
+  Q3HBox *VarLine = new Q3HBox(Tab3);
   VarLine->setSpacing(3);
-  gp2->addMultiCellWidget(VarLine, 1,1,0,2);
+  gp3->addMultiCellWidget(VarLine, 1,1,0,2);
 
   new QLabel(tr("Name:"), VarLine);
   VarNameEdit = new QLineEdit(VarLine);
@@ -165,28 +165,28 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   connect(VarActiveCheck, SIGNAL(toggled(bool)),
           SLOT(slotChangeVarActive(bool)));
 
-  gp2->addWidget(new QLabel(tr("initial:"), Tab2), 2,0);
-  gp2->addWidget(new QLabel(tr("min:"), Tab2), 2,1);
-  gp2->addWidget(new QLabel(tr("max:"), Tab2), 2,2);
-  VarInitEdit = new QLineEdit(Tab2);
+  gp3->addWidget(new QLabel(tr("initial:"), Tab3), 2,0);
+  gp3->addWidget(new QLabel(tr("min:"), Tab3), 2,1);
+  gp3->addWidget(new QLabel(tr("max:"), Tab3), 2,2);
+  VarInitEdit = new QLineEdit(Tab3);
   VarInitEdit->setValidator(numVal);
-  gp2->addWidget(VarInitEdit,3,0);
+  gp3->addWidget(VarInitEdit,3,0);
   connect(VarInitEdit, SIGNAL(textChanged(const QString&)),
           SLOT(slotChangeVarInit(const QString&)));
-  VarMinEdit = new QLineEdit(Tab2);
+  VarMinEdit = new QLineEdit(Tab3);
   VarMinEdit->setValidator(numVal);
-  gp2->addWidget(VarMinEdit,3,1);
+  gp3->addWidget(VarMinEdit,3,1);
   connect(VarMinEdit, SIGNAL(textChanged(const QString&)),
           SLOT(slotChangeVarMin(const QString&)));
-  VarMaxEdit = new QLineEdit(Tab2);
+  VarMaxEdit = new QLineEdit(Tab3);
   VarMaxEdit->setValidator(numVal);
-  gp2->addWidget(VarMaxEdit,3,2);
+  gp3->addWidget(VarMaxEdit,3,2);
   connect(VarMaxEdit, SIGNAL(textChanged(const QString&)),
           SLOT(slotChangeVarMax(const QString&)));
 
-  Q3HBox *VarButtons = new Q3HBox(Tab2);
+  Q3HBox *VarButtons = new Q3HBox(Tab3);
   VarButtons->setSpacing(3);
-  gp2->addMultiCellWidget(VarButtons, 4,4,0,2);
+  gp3->addMultiCellWidget(VarButtons, 4,4,0,2);
 
   new QLabel(tr("Type:"), VarButtons);
   VarTypeCombo = new QComboBox(VarButtons);
@@ -203,49 +203,49 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   QPushButton *DelVar_Butt = new QPushButton(tr("Delete"), VarButtons);
   connect(DelVar_Butt, SIGNAL(clicked()), SLOT(slotDeleteVariable()));
 
-  t->addTab(Tab2, tr("Variables"));
+  t->addTab(Tab3, tr("Variables"));
 
   // ...........................................................
-  QWidget *Tab3 = new QWidget(t);
-  Q3GridLayout *gp3 = new Q3GridLayout(Tab3,4,3,3,3);
+  QWidget *Tab4 = new QWidget(t);
+  QGridLayout *gp4 = new QGridLayout(Tab4);
 
-  GoalList = new Q3ListView(Tab3);
+  GoalList = new Q3ListView(Tab4);
   GoalList->addColumn(tr("Name"));
   GoalList->addColumn(tr("Type"));
   GoalList->addColumn(tr("Value"));
   GoalList->setSorting(-1);   // no sorting
-  gp3->addMultiCellWidget(GoalList,0,0,0,2);
+  gp4->addMultiCellWidget(GoalList,0,0,0,2);
   connect(GoalList, SIGNAL(selectionChanged(Q3ListViewItem*)),
                     SLOT(slotEditGoal(Q3ListViewItem*)));
 
-  gp3->addWidget(new QLabel(tr("Name:"), Tab3), 1,0);
-  GoalNameEdit = new QLineEdit(Tab3);
+  gp4->addWidget(new QLabel(tr("Name:"), Tab4), 1,0);
+  GoalNameEdit = new QLineEdit(Tab4);
   GoalNameEdit->setValidator(Validator);
-  gp3->addWidget(GoalNameEdit,1,1);
+  gp4->addWidget(GoalNameEdit,1,1);
   connect(GoalNameEdit, SIGNAL(textChanged(const QString&)),
           SLOT(slotChangeGoalName(const QString&)));
 
-  gp3->addWidget(new QLabel(tr("Value:"), Tab3), 2,0);
-  GoalNumEdit = new QLineEdit(Tab3);
+  gp4->addWidget(new QLabel(tr("Value:"), Tab4), 2,0);
+  GoalNumEdit = new QLineEdit(Tab4);
   GoalNumEdit->setValidator(numVal);
-  gp3->addWidget(GoalNumEdit,2,1);
+  gp4->addWidget(GoalNumEdit,2,1);
   connect(GoalNumEdit, SIGNAL(textChanged(const QString&)),
           SLOT(slotChangeGoalNum(const QString&)));
 
-  GoalTypeCombo = new QComboBox(Tab3);
+  GoalTypeCombo = new QComboBox(Tab4);
   GoalTypeCombo->insertItem(tr("minimize"));
   GoalTypeCombo->insertItem(tr("maximize"));
   GoalTypeCombo->insertItem(tr("less"));
   GoalTypeCombo->insertItem(tr("greater"));
   GoalTypeCombo->insertItem(tr("equal"));
   GoalTypeCombo->insertItem(tr("monitor"));
-  gp3->addWidget(GoalTypeCombo,2,2);
+  gp4->addWidget(GoalTypeCombo,2,2);
   connect(GoalTypeCombo, SIGNAL(activated(const QString&)),
           SLOT(slotChangeGoalType(const QString&)));
 
-  Q3HBox *GoalButtons = new Q3HBox(Tab3);
+  Q3HBox *GoalButtons = new Q3HBox(Tab4);
   GoalButtons->setSpacing(3);
-  gp3->addMultiCellWidget(GoalButtons, 3,3,0,2);
+  gp4->addMultiCellWidget(GoalButtons, 3,3,0,2);
 
   GoalButtons->setStretchFactor(new QWidget(GoalButtons),5);
   QPushButton *AddGoal_Butt = new QPushButton(tr("Add"), GoalButtons);
@@ -253,7 +253,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   QPushButton *DelGoal_Butt = new QPushButton(tr("Delete"), GoalButtons);
   connect(DelGoal_Butt, SIGNAL(clicked()), SLOT(slotDeleteGoal()));
 
-  t->addTab(Tab3, tr("Goals"));
+  t->addTab(Tab4, tr("Goals"));
 
   // ...........................................................
   // buttons on the bottom of the dialog (independent of the TabWidget)
