@@ -22,7 +22,6 @@
 #include <QtGui>
 
 #include "textdoc.h"
-//#include "main.h"
 
 enum language_type {
   LANG_NONE = 0,

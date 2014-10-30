@@ -23,6 +23,7 @@
 #include "qucs.h"
 #include "schematic.h"
 
+#include <QString>
 
 WireLabel::WireLabel(const QString& _Name, int _cx, int _cy,
                      int _x1, int _y1, int _Type)

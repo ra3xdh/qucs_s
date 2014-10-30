@@ -18,9 +18,6 @@
  ***************************************************************************/
 #include <QtGui>
 #include "qucs.h"
-#include <QTextStream>
-#include <Q3PtrList>
-#include <QMouseEvent>
 #include "main.h"
 #include "node.h"
 #include "schematic.h"
@@ -38,14 +35,15 @@
 #include "diagrams/timingdiagram.h"
 #include "dialogs/labeldialog.h"
 
-#include <QInputDialog>
+#include <QTextStream>
+#include <Q3PtrList>
+#include <QMouseEvent>
 #include <QClipboard>
 #include <QApplication>
 #include <QMessageBox>
 #include <Q3PopupMenu>
 #include <QEvent>
 #include <QAction>
-#include <QTabWidget>
 
 #include <limits.h>
 #include <stdlib.h>

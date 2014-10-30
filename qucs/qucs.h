@@ -19,40 +19,30 @@
 #define QUCS_H
 
 #include <QtGui>
-//#include <Q3MainWindow>
 #include <QMainWindow>
 #include <QString>
-#include <QDir>
-//Added by qt3to4:
-#include <QLabel>
 #include <Q3PtrList>
-//#include <Q3PopupMenu>
-#include <QMouseEvent>
-#include <QCloseEvent>
-#include <Q3ScrollView>
-#include <QMenu>
-#include <QToolBar>
-#include <QAction>
-#include <QTabWidget>
-#include <QDockWidget>
-//#include <QListWidget>
-#include <QSettings>
 
 class QucsDoc;
 class Schematic;
 class SimMessage;
 class MouseActions;
 class SearchDialog;
+class OctaveWindow;
+class MessageDock;
+
 class QLabel;
 class QAction;
 class QPrinter;
 class QLineEdit;
 class QComboBox;
 class QTabWidget;
-class Q3ListView;
-class Q3ListViewItem;
-class OctaveWindow;
-class MessageDock;
+class QDir;
+class QMouseEvent;
+class QCloseEvent;
+class QMenu;
+class QToolBar;
+class QSettings;
 
 typedef bool (Schematic::*pToggleFunc) ();
 typedef void (MouseActions::*pMouseFunc) (Schematic*, QMouseEvent*);

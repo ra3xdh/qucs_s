@@ -9,10 +9,11 @@
 #include <QWidget>
 #include <QProcess>
 #include <QStringList>
-#include <QKeyEvent>
-#include <QDockWidget>
-#include <QTextEdit>
-#include <QLineEdit>
+
+class QEvent;
+class QDockWidget;
+class QTextEdit;
+class QLineEdit;
 
 
 class OctaveWindow : public QWidget {

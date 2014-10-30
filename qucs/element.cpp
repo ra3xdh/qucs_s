@@ -16,7 +16,7 @@
  ***************************************************************************/
 
 #include "element.h"
-//#include "schematic.h"
+
 Element::Element()
 {
   Type = isDummyElement;

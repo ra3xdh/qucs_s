@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include "mnemo.h"
+#include <QString>
 
 struct tSpecialChar {
      char Mnemonic[16];

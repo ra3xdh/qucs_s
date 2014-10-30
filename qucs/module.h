@@ -1,7 +1,3 @@
-//Added by qt3to4:
-#include <Q3PtrList>
-#include <Q3Dict>
-#include <QMap>
 /***************************************************************************
                                module.h
                               ----------
@@ -21,6 +17,10 @@
 
 #ifndef MODULE_H
 #define MODULE_H
+
+#include <Q3PtrList>
+#include <Q3Dict>
+#include <QMap>
 
 // function typedefs for circuits and analyses
 typedef Element * (* pInfoFunc) (QString&, char * &, bool);

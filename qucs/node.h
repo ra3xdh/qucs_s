@@ -23,8 +23,6 @@
 #include <Q3PtrList>
 
 class ViewPainter;
-class WireLabel;
-class QPainter;
 
 
 class Node : public Conductor {

@@ -21,8 +21,6 @@
 #include "qucsdoc.h"
 #include "textdoc.h"
 
-#include <QVBoxLayout>
-
 /*!
  * \file messagedock.cpp
  * \brief Definition of the MessageDock class.

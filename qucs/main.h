@@ -24,13 +24,11 @@
 
 #include <QFont>
 #include <QColor>
-#include <Q3PtrList>
 #include <QStringList>
 
 #include "wire.h"
 #include "node.h"
 #include "diagrams/diagram.h"
-#include <QSettings>
 
 class QucsApp;
 class Component;
