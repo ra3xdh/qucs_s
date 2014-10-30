@@ -23,9 +23,8 @@
 #include "components/component.h"    // because of struct Port
 #include "wirelabel.h"
 
-#include <QPainter>
-#include <QString>
-#include <Q3PtrList>
+class QPainter;
+class QString;
 
 
 class Wire : public Conductor {

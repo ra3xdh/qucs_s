@@ -22,8 +22,8 @@
 
 #include <QWidget>
 
-#include <QDockWidget>
-#include <QTabWidget>
+class QDockWidget;
+class QTabWidget;
 
 /*!
  * \file messagedock.h

@@ -18,7 +18,6 @@
 #include <Q3Dict>
 #include <QString>
 #include <QStringList>
-//Added by qt3to4:
 #include <Q3PtrList>
 
 #include "element.h"
