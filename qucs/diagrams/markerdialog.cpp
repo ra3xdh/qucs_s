@@ -16,15 +16,13 @@
  ***************************************************************************/
 #include <QtGui>
 #include "markerdialog.h"
+#include "diagram.h"
 
-#include <QLayout>
 #include <QLabel>
-#include <Q3HBox>
+#include <QLineEdit>
 #include <QPushButton>
 #include <QValidator>
-//Added by qt3to4:
-#include <Q3GridLayout>
-#include "diagram.h"
+#include <QGridLayout>
 
 
 MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
@@ -33,44 +31,51 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   setCaption(tr("Edit Marker Properties"));
   pMarker = pm_;
 
-  Q3GridLayout *g = new Q3GridLayout(this, 5,2,5,5);
+  QGridLayout *g = new QGridLayout;
 
-  g->addWidget(new QLabel(tr("Precision: "), this), 0,0);
-  Precision = new QLineEdit(this);
+  Precision = new QLineEdit();
   Precision->setText(QString::number(pMarker->Precision));
   Precision->setValidator(new QIntValidator(0, 12, this));
+
+  g->addWidget(new QLabel(tr("Precision: ")), 0, 0);
   g->addWidget(Precision, 0, 1);
-	if(pMarker->Diag->Name=="Smith") //S parameter also displayed as Z, need Z0 here
-  {
-		g->addWidget(new QLabel(tr("Z0: "), this), 2,0);
-		SourceImpedance = new QLineEdit(this);
-  	SourceImpedance->setText(QString::number(pMarker->Z0));
-		g->addWidget(SourceImpedance,2,1);
-	}
-  g->addWidget(new QLabel(tr("Number Notation: "), this), 1,0);
-  NumberBox = new QComboBox(this);
+
+  NumberBox = new QComboBox();
   NumberBox->insertItem(tr("real/imaginary"));
   NumberBox->insertItem(tr("magnitude/angle (degree)"));
   NumberBox->insertItem(tr("magnitude/angle (radian)"));
   NumberBox->setCurrentItem(pMarker->numMode);
+
+  g->addWidget(new QLabel(tr("Number Notation: ")), 1,0);
   g->addWidget(NumberBox, 1, 1);
+
+	if(pMarker->Diag->Name=="Smith") //S parameter also displayed as Z, need Z0 here
+  {
+		SourceImpedance = new QLineEdit();
+  	SourceImpedance->setText(QString::number(pMarker->Z0));
+
+		g->addWidget(new QLabel(tr("Z0: ")), 2,0);
+		g->addWidget(SourceImpedance,2,1);
+	}
   
-  TransBox = new QCheckBox(tr("transparent"), this);
+  TransBox = new QCheckBox(tr("transparent"));
   TransBox->setChecked(pMarker->transparent);
   g->addMultiCellWidget(TransBox,3,3,0,1);
 
-  
-
-  Q3HBox *b = new Q3HBox(this);
-  b->setSpacing(5);
-  g->addMultiCellWidget(b,4,4,0,1);
-
   // first => activated by pressing RETURN
-  QPushButton *ButtOK = new QPushButton(tr("OK"),b);
+  QPushButton *ButtOK = new QPushButton(tr("OK"));
   connect(ButtOK, SIGNAL(clicked()), SLOT(slotAcceptValues()));
 
-  QPushButton *ButtCancel = new QPushButton(tr("Cancel"),b);
+  QPushButton *ButtCancel = new QPushButton(tr("Cancel"));
   connect(ButtCancel, SIGNAL(clicked()), SLOT(reject()));
+
+  QHBoxLayout *b = new QHBoxLayout();
+  b->setSpacing(5);
+  b->addWidget(ButtOK);
+  b->addWidget(ButtCancel);
+  g->addMultiCellLayout(b,4,4,0,1);
+
+  this->setLayout(g);
 }
 
 MarkerDialog::~MarkerDialog()

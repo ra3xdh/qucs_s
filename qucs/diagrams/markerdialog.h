@@ -19,12 +19,10 @@
 #define MARKERDIALOG_H
 #include "marker.h"
 #include <QDialog>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QCheckBox>
 
-
-
+class QLineEdit;
+class QComboBox;
+class QCheckBox;
 
 class MarkerDialog : public QDialog  {
 Q_OBJECT
