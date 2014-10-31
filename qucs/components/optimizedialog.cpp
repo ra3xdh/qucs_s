@@ -28,7 +28,6 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QTableWidget>
-#include <Q3ListView>
 #include <QTabWidget>
 #include <QValidator>
 #include <QPushButton>
@@ -238,14 +237,17 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   QGridLayout *gp4 = new QGridLayout();
   Tab4->setLayout(gp4);
 
-  GoalList = new Q3ListView();
-  GoalList->addColumn(tr("Name"));
-  GoalList->addColumn(tr("Type"));
-  GoalList->addColumn(tr("Value"));
-  GoalList->setSorting(-1);   // no sorting
-  connect(GoalList, SIGNAL(selectionChanged(Q3ListViewItem*)),
-                    SLOT(slotEditGoal(Q3ListViewItem*)));
-  gp4->addMultiCellWidget(GoalList,0,0,0,2);
+  GoalTable = new QTableWidget();
+  GoalTable->horizontalHeader()->setStretchLastSection(true);
+  GoalTable->verticalHeader()->hide();
+  GoalTable->setColumnCount(3);
+  GoalTable->setHorizontalHeaderLabels(
+      QStringList() << tr("Name") << tr("Type") << tr("Value"));
+  GoalTable->setSortingEnabled(false);
+  GoalTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+  connect(GoalTable, SIGNAL(currentCellChanged(int, int, int, int)),
+                    SLOT(slotEditGoal()));
+  gp4->addMultiCellWidget(GoalTable,0,0,0,2);
 
   GoalNameEdit = new QLineEdit();
   GoalNameEdit->setValidator(Validator);
@@ -374,14 +376,33 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
       VarTable->setItem(row, 5, item);
     }
     if(pp->Name == "Goal") {
-      new Q3ListViewItem(GoalList, pp->Value.section('|',0,0),
-        ((pp->Value.section('|',1,1) == "MIN") ? tr("minimize") :
-        ((pp->Value.section('|',1,1) == "MAX") ? tr("maximize") :
-        ((pp->Value.section('|',1,1) == "LE") ? tr("less") :
-        ((pp->Value.section('|',1,1) == "GE") ? tr("greater") :
-        ((pp->Value.section('|',1,1) == "EQ") ? tr("equal") :
-	 tr("monitor")))))),
-	pp->Value.section('|',2,2));
+      QStringList GoalSplit = pp->Value.split("|");
+      int row = GoalTable->rowCount();
+      GoalTable->insertRow(row);
+
+      item = new QTableWidgetItem(GoalSplit.at(0));
+      item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+      GoalTable->setItem(row, 0, item);
+      QString typeStr;
+      if (GoalSplit.at(1) == "MIN") {
+        typeStr = tr("minimize");
+      } else if (GoalSplit.at(1) == "MAX") {
+        typeStr = tr("maximize");
+      } else if (GoalSplit.at(1) == "LE") {
+        typeStr = tr("less");
+      } else if (GoalSplit.at(1) == "GE") {
+        typeStr = tr("greater");
+      } else if (GoalSplit.at(1) == "EQ") {
+        typeStr = tr("equal");
+      } else {
+        typeStr = tr("monitor");
+      }
+      item = new QTableWidgetItem(typeStr);
+      item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+      GoalTable->setItem(row, 1, item);
+      item = new QTableWidgetItem(GoalSplit.at(2));
+      item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+      GoalTable->setItem(row, 2, item);
     }
   }
 
@@ -537,11 +558,12 @@ void OptimizeDialog::slotChangeVarType(const QString& Text)
 }
 
 // -----------------------------------------------------------
-void OptimizeDialog::slotEditGoal(Q3ListViewItem *Item)
+void OptimizeDialog::slotEditGoal()
 {
   GoalNameEdit->blockSignals(true);
 
-  if(Item == 0) {
+  int row = GoalTable->currentRow();
+  if(row < 0 || row >= GoalTable->rowCount()) {
     GoalNameEdit->clear();
     GoalTypeCombo->setCurrentItem(0);
     GoalNumEdit->clear();
@@ -549,9 +571,10 @@ void OptimizeDialog::slotEditGoal(Q3ListViewItem *Item)
     return;
   }
 
-  GoalNameEdit->setText(Item->text(0));
-  GoalTypeCombo->setCurrentText(Item->text(1));
-  GoalNumEdit->setText(Item->text(2));
+  GoalNameEdit->setText(GoalTable->item(row, 0)->text());
+  GoalTypeCombo->setCurrentText(GoalTable->item(row, 1)->text());
+  GoalNumEdit->setText(GoalTable->item(row, 2)->text());
+
   GoalNameEdit->blockSignals(false);
 }
 
@@ -564,60 +587,67 @@ void OptimizeDialog::slotAddGoal()
     return;
   }
 
-  Q3ListViewItem *item;
-  for(item = GoalList->firstChild(); item != 0; item = item->itemBelow())
-    if(item->text(0) == GoalNameEdit->text()) {
+  int row;
+  for (row = 0; row < GoalTable->rowCount(); ++row) {
+    if (GoalNameEdit->text() == GoalTable->item(row, 0)->text()) {
       QMessageBox::critical(this, tr("Error"),
          tr("Goal \"%1\" already in list!").arg(GoalNameEdit->text()));
       return;
     }
+  }
 
+  QTableWidgetItem *item;
+  row = GoalTable->rowCount();
+  GoalTable->insertRow(row);
+  item = new QTableWidgetItem(GoalNameEdit->text());
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  GoalTable->setItem(row, 0, item);
+  item = new QTableWidgetItem(GoalTypeCombo->currentText());
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  GoalTable->setItem(row, 1, item);
+  item = new QTableWidgetItem(GoalNumEdit->text());
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  GoalTable->setItem(row, 2, item);
 
-  new Q3ListViewItem(GoalList, GoalNameEdit->text(),
-      GoalTypeCombo->currentText(), GoalNumEdit->text());
-
-  slotEditGoal(0);    // clear entry fields
-  GoalList->clearSelection();
+  GoalTable->setCurrentCell(row, 0);
+  slotEditGoal();    // clear entry fields
+  GoalTable->clearSelection();
 }
 
 // -----------------------------------------------------------
 void OptimizeDialog::slotDeleteGoal()
 {
-  Q3ListViewItem *next_item = 0;
-
-  Q3ListViewItem *Item = GoalList->selectedItem();
-  if(Item) {
-    next_item = Item->itemBelow();
-    if(next_item == 0) next_item = Item->itemAbove();
-    GoalList->takeItem(Item); // remove from ListView
-    delete Item;              // delete item
-  }
-
-  slotEditGoal(next_item);
+  int selectedrow = GoalTable->currentRow();
+  GoalTable->removeRow(selectedrow);
+  int nextRow = (selectedrow == GoalTable->rowCount())? selectedrow-1 : selectedrow;
+  GoalTable->setCurrentCell(nextRow, 0);
+  slotEditVariable();
 }
 
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeGoalName(const QString&)
 {
-  GoalList->clearSelection();
+  GoalTable->clearSelection();
 }
 
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeGoalType(const QString& Text)
 {
-  Q3ListViewItem *Item = GoalList->selectedItem();
-  if(Item == 0) return;
-
-  Item->setText(1, Text);
+  int selectedrow = GoalTable->currentRow();
+  QTableWidgetItem *item = GoalTable->item(selectedrow, 1);
+  if (item) {
+    item->setText(Text);
+  }
 }
 
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeGoalNum(const QString& Text)
 {
-  Q3ListViewItem *Item = GoalList->selectedItem();
-  if(Item == 0) return;
-
-  Item->setText(2, Text);
+  int selectedrow = GoalTable->currentRow();
+  QTableWidgetItem *item = GoalTable->item(selectedrow, 2);
+  if (item) {
+    item->setText(Text);
+  }
 }
 
 // -----------------------------------------------------------
@@ -667,8 +697,8 @@ void OptimizeDialog::slotApply()
   }
 
   Property *pp = Comp->Props.at(2);
-  // apply all the new property values in the TableWidget
   int row;
+  // apply all the new property values in the TableWidget
   for (row = 0; row < VarTable->rowCount(); ++row) {
     QStringList propList;
     propList << VarTable->item(row, 0)->text();
@@ -705,14 +735,25 @@ void OptimizeDialog::slotApply()
     pp = Comp->Props.next();
   }
 
-  for(item = GoalList->firstChild(); item != 0; item = item->itemBelow()) {
-    Prop = item->text(0) + "|" +
-           ((item->text(1) == tr("minimize")) ? "MIN" :
-           ((item->text(1) == tr("maximize")) ? "MAX" :
-           ((item->text(1) == tr("less")) ? "LE" :
-           ((item->text(1) == tr("greater")) ? "GE" :
-           ((item->text(1) == tr("equal")) ? "EQ" : "MON"))))) + "|" +
-           item->text(2);
+  for (row = 0; row < GoalTable->rowCount(); ++row) {
+    QStringList propList;
+    propList << GoalTable->item(row, 0)->text();
+    QString typeStr = GoalTable->item(row, 1)->text();
+    if (typeStr == tr("minimize")) {
+      propList << "MIN";
+    } else if (typeStr == tr("maximize")) {
+      propList << "MAX";
+    } else if (typeStr == tr("less")) {
+      propList << "LE";
+    } else if (typeStr == tr("greater")) {
+      propList << "GE";
+    } else if (typeStr == tr("equal")) {
+      propList << "EQ";
+    } else {
+      propList << "MON";
+    }
+    propList << GoalTable->item(row, 2)->text();
+    Prop = propList.join("|");
 
     if(pp) {
       if(pp->Name != "Goal") {
