@@ -46,7 +46,7 @@ class rectwaveguide : public transline {
 
  public:
   void analyze ();
-  void synthesize ();
+  int synthesize ();
 
  private:
   double kval ();

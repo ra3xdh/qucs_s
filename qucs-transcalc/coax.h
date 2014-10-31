@@ -44,7 +44,7 @@ class coax : public transline {
 
  public:
   void analyze ();
-  void synthesize ();
+  int synthesize ();
 
  private:
   void get_coax_sub();

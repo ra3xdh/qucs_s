@@ -63,7 +63,7 @@ class c_microstrip : public transline {
 
  public:
   void analyze ();
-  void synthesize ();
+  int synthesize ();
 
  private:
   double delta_u_thickness_single(double, double);

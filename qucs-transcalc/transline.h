@@ -42,7 +42,7 @@ class transline {
   char * getUnit (const char *);
   bool   isSelected (const char *);
 
-  virtual void synthesize () { };
+  virtual int synthesize () { return -1; };
   virtual void analyze () { };
 
  protected:

@@ -55,7 +55,7 @@ class microstrip : public transline {
 
  public:
   void analyze();
-  void synthesize();
+  int synthesize();
 
  private:
   double er_eff_freq();

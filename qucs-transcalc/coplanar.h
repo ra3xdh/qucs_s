@@ -44,7 +44,7 @@ class coplanar : public transline {
 
  public:
   void analyze();
-  void synthesize();
+  int synthesize();
 
  protected:
   bool backMetal;
