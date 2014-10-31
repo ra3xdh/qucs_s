@@ -27,6 +27,7 @@
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QTableWidget>
 #include <Q3ListView>
 #include <QTabWidget>
 #include <QValidator>
@@ -69,6 +70,8 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   gp1->addWidget(NameEdit, 0, 1);
   gp1->addWidget(new QLabel(tr("Simulation:"), Tab1), 1, 0);
   gp1->addWidget(SimEdit, 1, 1);
+
+  setTabOrder(NameEdit, SimEdit);
 
   t->addTab(Tab1, tr("General"));
 
@@ -153,17 +156,18 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   QGridLayout *gp3 = new QGridLayout();
   Tab3->setLayout(gp3);
 
-  VarList = new Q3ListView();
-  VarList->addColumn(tr("Name"));
-  VarList->addColumn(tr("active"));
-  VarList->addColumn(tr("initial"));
-  VarList->addColumn(tr("min"));
-  VarList->addColumn(tr("max"));
-  VarList->addColumn(tr("Type"));
-  VarList->setSorting(-1);   // no sorting
-  gp3->addMultiCellWidget(VarList,0,0,0,2);
-  connect(VarList, SIGNAL(selectionChanged(Q3ListViewItem*)),
-                   SLOT(slotEditVariable(Q3ListViewItem*)));
+  VarTable = new QTableWidget();
+  VarTable->horizontalHeader()->setStretchLastSection(true);
+  VarTable->verticalHeader()->hide();
+  VarTable->setColumnCount(6);
+  VarTable->setHorizontalHeaderLabels(
+      QStringList() << tr("Name") << tr("active") << tr("initial") << tr("min") << tr("max") << tr("Type"));
+  VarTable->setSortingEnabled(false);
+  VarTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+  connect(VarTable, SIGNAL(currentCellChanged(int, int, int, int)),
+      SLOT(slotEditVariable()));
+  gp3->addMultiCellWidget(VarTable,0,0,0,2);
 
   VarNameEdit = new QLineEdit();
   VarNameEdit->setValidator(Validator);
@@ -200,6 +204,10 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   gp3->addWidget(VarInitEdit,3,0);
   gp3->addWidget(VarMinEdit,3,1);
   gp3->addWidget(VarMaxEdit,3,2);
+
+  setTabOrder(VarActiveCheck, VarInitEdit);
+  setTabOrder(VarInitEdit, VarMinEdit);
+  setTabOrder(VarMinEdit, VarMaxEdit);
 
   VarTypeCombo = new QComboBox();
   VarTypeCombo->insertItem(tr("linear double"));
@@ -330,16 +338,40 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
 
   NameEdit->setText(Comp->Name);
 
+  QTableWidgetItem *item;
   for(pp = Comp->Props.at(2); pp != 0; pp = Comp->Props.next()) {
     if(pp->Name == "Var") {
-      new Q3ListViewItem(VarList, pp->Value.section('|',0,0),
-        pp->Value.section('|',1,1) == "yes" ? tr("yes") : tr("no"),
-	pp->Value.section('|',2,2),
-        pp->Value.section('|',3,3), pp->Value.section('|',4,4),
-        ((pp->Value.section('|',5,5)=="LIN_DOUBLE")?tr("linear double") :
-        ((pp->Value.section('|',5,5)=="LOG_DOUBLE")?tr("logarithmic double") :
-        ((pp->Value.section('|',5,5)=="LIN_INT")?tr("linear integer") :
-	 tr("logarithmic integer")))));
+      QStringList ValueSplit = pp->Value.split("|");
+      int row = VarTable->rowCount();
+      VarTable->insertRow(row);
+      item = new QTableWidgetItem(ValueSplit.at(0));
+      item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+      VarTable->setItem(row, 0, item);
+      item = new QTableWidgetItem((ValueSplit.at(1) == "yes")? tr("yes") : tr("no"));
+      item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+      VarTable->setItem(row, 1, item);
+      item = new QTableWidgetItem(ValueSplit.at(2));
+      item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+      VarTable->setItem(row, 2, item);
+      item = new QTableWidgetItem(ValueSplit.at(3));
+      item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+      VarTable->setItem(row, 3, item);
+      item = new QTableWidgetItem(ValueSplit.at(4));
+      item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+      VarTable->setItem(row, 4, new QTableWidgetItem(ValueSplit.at(4)));
+      QString typeStr;
+      if (ValueSplit.at(5) == "LIN_DOUBLE") {
+        typeStr = tr("linear double");
+      } else if (ValueSplit.at(5) == "LOG_DOUBLE") {
+        typeStr = tr("logarithmic double");
+      } else if (ValueSplit.at(5) == "LIN_INT") {
+        typeStr = tr("linear integer");
+      } else {
+        typeStr = tr("logarithmic integer");
+      }
+      item = new QTableWidgetItem(typeStr);
+      item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+      VarTable->setItem(row, 5, item);
     }
     if(pp->Name == "Goal") {
       new Q3ListViewItem(GoalList, pp->Value.section('|',0,0),
@@ -365,27 +397,30 @@ OptimizeDialog::~OptimizeDialog()
 }
 
 // -----------------------------------------------------------
-void OptimizeDialog::slotEditVariable(Q3ListViewItem *Item)
+void OptimizeDialog::slotEditVariable()
 {
   VarNameEdit->blockSignals(true);
 
-  if(Item == 0) {
+  int row = VarTable->currentRow();
+  if (row < 0 || row >= VarTable->rowCount()) {
     VarNameEdit->clear();
     VarActiveCheck->setChecked(true);
     VarInitEdit->clear();
     VarMinEdit->clear();
     VarMaxEdit->clear();
     VarTypeCombo->setCurrentItem(0);
+
     VarNameEdit->blockSignals(false);
     return;
   }
 
-  VarNameEdit->setText(Item->text(0));
-  VarActiveCheck->setChecked(Item->text(1) == tr("yes"));
-  VarInitEdit->setText(Item->text(2));
-  VarMinEdit->setText(Item->text(3));
-  VarMaxEdit->setText(Item->text(4));
-  VarTypeCombo->setCurrentText(Item->text(5));
+  VarNameEdit->setText(VarTable->item(row, 0)->text());
+  VarActiveCheck->setChecked(VarTable->item(row, 1)->text() == tr("yes"));
+  VarInitEdit->setText(VarTable->item(row, 2)->text());
+  VarMinEdit->setText(VarTable->item(row, 3)->text());
+  VarMaxEdit->setText(VarTable->item(row, 4)->text());
+  VarTypeCombo->setCurrentText(VarTable->item(row, 5)->text());
+
   VarNameEdit->blockSignals(false);
 }
 
@@ -393,95 +428,112 @@ void OptimizeDialog::slotEditVariable(Q3ListViewItem *Item)
 void OptimizeDialog::slotAddVariable()
 {
   if(VarNameEdit->text().isEmpty() || VarInitEdit->text().isEmpty() ||
-        VarMinEdit->text().isEmpty() || VarMaxEdit->text().isEmpty()) {
+      VarMinEdit->text().isEmpty() || VarMaxEdit->text().isEmpty()) {
     QMessageBox::critical(this, tr("Error"),
        tr("Every text field must be non-empty!"));
     return;
   }
 
-  Q3ListViewItem *item;
-  for(item = VarList->firstChild(); item != 0; item = item->itemBelow())
-    if(item->text(0) == VarNameEdit->text()) {
-      QMessageBox::critical(this, tr("Error"),
-         tr("Variable \"%1\" already in list!").arg(VarNameEdit->text()));
+  int row;
+  for (row = 0; row < VarTable->rowCount(); ++row) {
+    if (VarNameEdit->text() == VarTable->item(row, 0)->text()) {
+      QMessageBox::critical(this, tr("Error"), 
+          tr("Variable \"%1\" aleardy in list!").arg(VarNameEdit->text()));
       return;
     }
+  }
 
+  QTableWidgetItem *item;
+  row = VarTable->rowCount();
+  VarTable->insertRow(row);
+  item = new QTableWidgetItem(VarNameEdit->text());
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  VarTable->setItem(row, 0, item);
+  item = new QTableWidgetItem(VarActiveCheck->isChecked() ? tr("yes") : tr("no"));
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  VarTable->setItem(row, 1, item);
+  item = new QTableWidgetItem(VarInitEdit->text());
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  VarTable->setItem(row, 2, item);
+  item = new QTableWidgetItem(VarMinEdit->text());
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  VarTable->setItem(row, 3, item);
+  item = new QTableWidgetItem(VarMaxEdit->text());
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  VarTable->setItem(row, 4, item);
+  item = new QTableWidgetItem(VarTypeCombo->currentText());
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  VarTable->setItem(row, 5, item);
 
-  new Q3ListViewItem(VarList, VarNameEdit->text(),
-      VarActiveCheck->isChecked() ? tr("yes") : tr("no"),
-      VarInitEdit->text(), VarMinEdit->text(), VarMaxEdit->text(),
-      VarTypeCombo->currentText());
-
-  slotEditVariable(0);   // clear entry fields
-  VarList->clearSelection();
+  VarTable->setCurrentCell(row, 0);
+  slotEditVariable();   // clear entry fields
+  VarTable->clearSelection();
 }
 
 // -----------------------------------------------------------
 void OptimizeDialog::slotDeleteVariable()
 {
-  Q3ListViewItem *next_item = 0;
-
-  Q3ListViewItem *Item = VarList->selectedItem();
-  if(Item) {
-    next_item = Item->itemBelow();
-    if(next_item == 0) next_item = Item->itemAbove();
-    VarList->takeItem(Item);  // remove from ListView
-    delete Item;              // delete item
-  }
-
-  slotEditVariable(next_item);
+  int selectedrow = VarTable->currentRow();
+  VarTable->removeRow(selectedrow);
+  int nextRow = (selectedrow == VarTable->rowCount())? selectedrow-1 : selectedrow;
+  VarTable->setCurrentCell(nextRow, 0);
+  slotEditVariable();
 }
 
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeVarActive(bool On)
 {
-  Q3ListViewItem *Item = VarList->selectedItem();
-  if(Item == 0) return;
-
-  Item->setText(1, On ? tr("yes") : tr("no"));
+  int selectedrow = VarTable->currentRow();
+  QTableWidgetItem *item = VarTable->item(selectedrow, 1);
+  if (item) {
+    item->setText( On ? tr("yes") : tr("no") );
+  }
 }
 
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeVarName(const QString&)
 {
-  VarList->clearSelection();
+  VarTable->clearSelection();
 }
 
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeVarInit(const QString& Text)
 {
-  Q3ListViewItem *Item = VarList->selectedItem();
-  if(Item == 0) return;
-
-  Item->setText(2, Text);
+  int selectedrow = VarTable->currentRow();
+  QTableWidgetItem *item = VarTable->item(selectedrow, 2);
+  if (item) {
+    item->setText(Text);
+  }
 }
 
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeVarMin(const QString& Text)
 {
-  Q3ListViewItem *Item = VarList->selectedItem();
-  if(Item == 0) return;
-
-  Item->setText(3, Text);
+  int selectedrow = VarTable->currentRow();
+  QTableWidgetItem *item = VarTable->item(selectedrow, 3);
+  if (item) {
+    item->setText(Text);
+  }
 }
 
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeVarMax(const QString& Text)
 {
-  Q3ListViewItem *Item = VarList->selectedItem();
-  if(Item == 0) return;
-
-  Item->setText(4, Text);
+  int selectedrow = VarTable->currentRow();
+  QTableWidgetItem *item = VarTable->item(selectedrow, 4);
+  if (item) {
+    item->setText(Text);
+  }
 }
 
 // -----------------------------------------------------------
 void OptimizeDialog::slotChangeVarType(const QString& Text)
 {
-  Q3ListViewItem *Item = VarList->selectedItem();
-  if(Item == 0) return;
-
-  Item->setText(5, Text);
+  int selectedrow = VarTable->currentRow();
+  QTableWidgetItem *item = VarTable->item(selectedrow, 5);
+  if (item) {
+    item->setText(Text);
+  }
 }
 
 // -----------------------------------------------------------
@@ -614,17 +666,27 @@ void OptimizeDialog::slotApply()
     changed = true;
   }
 
-  Q3ListViewItem *item;
   Property *pp = Comp->Props.at(2);
-  // apply all the new property values in the ListView
-  for(item = VarList->firstChild(); item != 0; item = item->itemBelow()) {
-    Prop = item->text(0) + "|" + 
-           ((item->text(1) == tr("yes")) ? "yes" : "no") + "|" +
-           item->text(2) + "|" + item->text(3) + "|" +
-           item->text(4) + "|" +
-           ((item->text(5) == tr("linear double")) ? "LIN_DOUBLE" :
-           ((item->text(5) == tr("logarithmic double")) ? "LOG_DOUBLE" :
-           ((item->text(5) == tr("linear integer")) ? "LIN_INT" : "LOG_INT")));
+  // apply all the new property values in the TableWidget
+  int row;
+  for (row = 0; row < VarTable->rowCount(); ++row) {
+    QStringList propList;
+    propList << VarTable->item(row, 0)->text();
+    propList << ((VarTable->item(row, 1)->text() == tr("yes"))? "yes" : "no");
+    propList << VarTable->item(row, 2)->text();
+    propList << VarTable->item(row, 3)->text();
+    propList << VarTable->item(row, 4)->text();
+    QString typeStr = VarTable->item(row, 5)->text();
+    if (typeStr == tr("linear double")) {
+      propList << "LIN_DOUBLE";
+    } else if (typeStr == tr("logarithmic double")) {
+      propList << "LOG_DOUBLE";
+    } else if (typeStr == tr("linear integer")) {
+      propList << "LIN_INT";
+    } else {
+      propList << "LOG_INT";
+    }
+    Prop = propList.join("|");
 
     if(pp) {
       if(pp->Name != "Var") {

@@ -25,6 +25,7 @@
 
 class Schematic;
 class Optimize_Sim;
+class QTableWidget;
 class Q3ListView;
 class Q3ListViewItem;
 class QCheckBox;
@@ -51,7 +52,7 @@ private slots:
   void slotAddGoal();
   void slotDeleteGoal();
   void slotEditGoal(Q3ListViewItem*);
-  void slotEditVariable(Q3ListViewItem*);
+  void slotEditVariable();
   void slotChangeVarName(const QString&);
   void slotChangeVarActive(bool);
   void slotChangeVarInit(const QString&);
@@ -78,7 +79,8 @@ public:
             *GoalNameEdit, *GoalNumEdit;
   QCheckBox *VarActiveCheck;
   QComboBox *SimEdit, *GoalTypeCombo, *MethodCombo, *VarTypeCombo;
-  Q3ListView *VarList, *GoalList;
+  Q3ListView *GoalList;
+  QTableWidget *VarTable;
 
   QRegExp Expr;
   QRegExpValidator *Validator;
