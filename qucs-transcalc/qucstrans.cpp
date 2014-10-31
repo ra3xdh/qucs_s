@@ -983,9 +983,15 @@ void QucsTranscalc::slotAnalyze()
 
 void QucsTranscalc::slotSynthesize()
 {
+  int status;
+
   if (TransLineTypes[getTypeIndex()].line)
-    TransLineTypes[getTypeIndex()].line->synthesize();
-  statusBar()->showMessage(tr("Values are consistent."));
+    status = TransLineTypes[getTypeIndex()].line->synthesize();
+
+  if (status == 0)
+    statusBar()->showMessage(tr("Values are consistent."));
+  else
+    statusBar()->showMessage(tr("Failed to converge!"));
 }
 
 void QucsTranscalc::slotValueChanged()
