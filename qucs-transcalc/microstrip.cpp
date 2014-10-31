@@ -500,10 +500,11 @@ void microstrip::analyze()
 /*
  * synthesis function
  */
-void microstrip::synthesize()
+int microstrip::synthesize()
 {
   double Z0_dest, Z0_current, Z0_result, increment, slope, error;
   int iteration;
+  const int maxiter = 100;
 
   /* Get and assign substrate parameters */
   get_microstrip_sub();
@@ -556,7 +557,7 @@ void microstrip::synthesize()
     error = fabs(Z0_dest - Z0_current);
     /*      printf("Iteration = %d\n",iteration);
 	    printf("w = %g\t Z0 = %g\n",ms->w, Z0_current); */
-    if (iteration > 100)
+    if (iteration > maxiter)
       break;
   }
 
@@ -572,4 +573,8 @@ void microstrip::synthesize()
   /* print results in the subwindow */
   show_results();
 
+  if (iteration > maxiter)
+    return -1;
+  else
+    return 0;
 }

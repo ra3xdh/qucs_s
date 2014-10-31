@@ -139,7 +139,7 @@ void coax::analyze ()
 /*
  * synthesize() - synthesis function 
  */
-void coax::synthesize ()
+int coax::synthesize ()
 {
   double lambda_g;
 
@@ -171,6 +171,8 @@ void coax::synthesize ()
   setProperty ("L", l, UNIT_LENGTH, LENGTH_M);
 
   show_results();
+
+  return 0;
 }
 
 /*

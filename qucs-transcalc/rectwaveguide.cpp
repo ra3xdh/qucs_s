@@ -249,7 +249,7 @@ void rectwaveguide::analyze ()
 /*
  * synthesize - synthesis function
  */
-void rectwaveguide::synthesize ()
+int rectwaveguide::synthesize ()
 {
   double lambda_g, k, beta;
 
@@ -302,6 +302,8 @@ void rectwaveguide::synthesize ()
   }
 
   show_results ();
+
+  return 0;
 }
 
 void rectwaveguide::show_results ()
