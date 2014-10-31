@@ -274,12 +274,15 @@ double c_microstrip::delta_Z0_even_cover(double g, double u, double h2h)
   C = -2.291 / pow(1.0 + h2h, 1.90);
   f_e = 1.0 - atanh(A + (B + C * u) * u);
 
-  x = pow(10.0, 0.103 * g - 0.159);
-  y = pow(10.0, 0.0492 * g - 0.073);
-  D = 0.747 / sin(0.5 * M_PI * x);
-  E = 0.725 * sin(0.5 * M_PI * y);
-  F = pow(10.0, 0.11 - 0.0947 * g);
-  g_e = 270.0 * (1.0 - tanh(D + E * sqrt(1.0 + h2h) - F / (1.0 + h2h)));
+  if (g < 4.46631063751) {
+    x = pow(10.0, 0.103 * g - 0.159);
+    y = pow(10.0, 0.0492 * g - 0.073);
+    D = 0.747 / sin(0.5 * M_PI * x);
+    E = 0.725 * sin(0.5 * M_PI * y);
+    F = pow(10.0, 0.11 - 0.0947 * g);
+    g_e = 270.0 * (1.0 - tanh(D + E * sqrt(1.0 + h2h) - F / (1.0 + h2h)));
+  } else
+    g_e = 0.0;
 
   delta_Z0_even = f_e * g_e;
 
@@ -778,10 +781,6 @@ void c_microstrip::get_c_microstrip_phys()
 
 void c_microstrip::show_results()
 {
-  setProperty ("Z0e", Z0e, UNIT_RES, RES_OHM);
-  setProperty ("Z0o", Z0o, UNIT_RES, RES_OHM);
-  setProperty ("Ang_l", sqrt (ang_l_e * ang_l_o), UNIT_ANG, ANG_RAD);
-
   setResult (0, er_eff_e, "");
   setResult (1, er_eff_o, "");
   setResult (2, atten_cond_e, "dB");
@@ -808,6 +807,12 @@ void c_microstrip::analyze()
 
   /* compute coupled microstrip parameters */
   calc();
+
+  /* update electrical parameters */
+  setProperty ("Z0e", Z0e, UNIT_RES, RES_OHM);
+  setProperty ("Z0o", Z0o, UNIT_RES, RES_OHM);
+  setProperty ("Ang_l", sqrt (ang_l_e * ang_l_o), UNIT_ANG, ANG_RAD);
+
   /* print results in the subwindow */
   show_results();
 }
@@ -828,12 +833,14 @@ void c_microstrip::syn_fun(double *f1, double *f2, double s_h, double w_h, doubl
 /*
  * synthesis function
  */
-void c_microstrip::synthesize()
+int c_microstrip::synthesize()
 {
   double Z0_e, Z0_o;
   double f1, f2, ft1, ft2, j11, j12, j21, j22, d_s_h, d_w_h, err;
   double eps = 1e-04;
   double w_h, s_h, le, lo;
+  int iter = 0;
+  const int maxiter = 1000;
 
   /* Get and assign substrate parameters */
   get_c_microstrip_sub();
@@ -860,6 +867,9 @@ void c_microstrip::synthesize()
   f1 = f2 = 0;
 
   /* rather crude Newton-Rhapson */
+  /* might fail due to overshooting or singular jacobian, should implement a better algorithm... */
+  /* initial errors values */
+  syn_fun(&f1, &f2, s_h, w_h, Z0_e, Z0_o);
   do {
     /* compute Jacobian */
     syn_fun(&ft1, &ft2, s_h + eps, w_h, Z0_e, Z0_o);
@@ -873,22 +883,27 @@ void c_microstrip::synthesize()
     d_s_h = (-f1 * j22 + f2 * j12) / (j11 * j22 - j21 * j12);
     d_w_h = (-f2 * j11 + f1 * j21) / (j11 * j22 - j21 * j12);
 
+    if (!isfinite(d_s_h) || !isfinite(d_w_h)) {
+      /* a computed step is infinite: we are lost... */
+      iter = maxiter+1; /* just to signal we did not converge */
+      break;
+    }
     s_h += d_s_h;
+    if (s_h <= 0.0) s_h = eps; /* avoid negative values */
     w_h += d_w_h;
+    if (w_h <= 0.0) w_h = eps; /* avoid negative values */
 
     /* compute the error with the new values of s_h and w_h */
     syn_fun(&f1, &f2, s_h, w_h, Z0_e, Z0_o);
     err = sqrt(f1 * f1 + f2 * f2);
 
+    iter++;
     /* converged ? */
-  } while (err > 1e-04);
+  } while ((err > 1e-04) && (iter < maxiter));
 
   /* denormalize computed width and spacing */
   s = s_h * h;
   w = w_h * h;
-
-  setProperty ("W", w, UNIT_LENGTH, LENGTH_M);
-  setProperty ("S", s, UNIT_LENGTH, LENGTH_M);
 
   /* calculate physical length */
   ang_l_e = getProperty ("Ang_l", UNIT_ANG, ANG_RAD);
@@ -896,9 +911,18 @@ void c_microstrip::synthesize()
   le = C0 / f / sqrt(er_eff_e * mur_eff) * ang_l_e / 2.0 / M_PI;
   lo = C0 / f / sqrt(er_eff_o * mur_eff) * ang_l_o / 2.0 / M_PI;
   l = sqrt (le * lo);
+  
+  /* update physical parameters */
+  setProperty ("W", w, UNIT_LENGTH, LENGTH_M);
+  setProperty ("S", s, UNIT_LENGTH, LENGTH_M);
   setProperty ("L", l, UNIT_LENGTH, LENGTH_M);
 
   calc();
   /* print results in the subwindow */
   show_results();
+
+  if (iter > maxiter)
+    return -1;
+  else
+    return 0;
 }
