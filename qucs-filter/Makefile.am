@@ -29,9 +29,21 @@ dist_man_MANS = qucsfilter.1
 MOCHEADERS = qucsfilter.h helpdialog.h
 MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
-qucsfilter_SOURCES = main.cpp qucsfilter.cpp helpdialog.cpp lc_filter.cpp \
-  qf_poly.cpp qf_filter.cpp qf_cauer.cpp qrc_qucsfilter.cpp filter.cpp \
-  cline_filter.cpp eqn_filter.cpp line_filter.cpp stepz_filter.cpp tl_filter.cpp
+qucsfilter_SOURCES =  \
+	eqn_filter.cpp \
+	filter.cpp \
+	helpdialog.cpp \
+	lc_filter.cpp \
+	line_filter.cpp \
+	qf_cauer.cpp \
+	qf_filter.cpp \
+	qucsfilter.cpp \
+	stepz_filter.cpp \
+	tl_filter.cpp \
+	cline_filter.cpp \
+	main.cpp  \
+	qf_poly.cpp \
+	qrc_qucsfilter.cpp
 
 qrc_qucsfilter.cpp: qucsfilter.qrc
 	$(RCC) -o $@ $<
@@ -42,8 +54,13 @@ AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES)
 qucsfilter_LDFLAGS = $(X11_LDFLAGS) $(QT_LDFLAGS)
 qucsfilter_LDADD = $(X11_LIBS) $(QT_LIBS)
 
-noinst_HEADERS = $(MOCHEADERS) lc_filter.h qf_poly.h qf_filter.h qf_cauer.h \
-  qf_matrix.h
+noinst_HEADERS = \
+  $(MOCHEADERS) \
+	lc_filter.h \
+	qf_poly.h \
+	qf_filter.h \
+	qf_cauer.h \
+	qf_matrix.h
 
 SUFFIXES = .moc.cpp
 
