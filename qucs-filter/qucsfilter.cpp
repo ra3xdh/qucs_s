@@ -232,7 +232,7 @@ QucsFilter::QucsFilter()
   connect(ComboEr, SIGNAL(activated(const QString&)), SLOT(slotTakeEr(const QString&)));
   gbox2->addWidget(ComboEr, 0,1);
 
-  pChar *p = List_er;
+  const char **p = List_er;
   while(*(++p))
     ComboEr->addItem(*p);  // put material properties into combobox
   ComboEr->lineEdit()->setText("9.8");
