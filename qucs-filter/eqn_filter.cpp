@@ -17,8 +17,8 @@
 
 #include "eqn_filter.h"
 
-#include <qstring.h>
-#include <qmessagebox.h>
+#include <QString>
+#include <QMessageBox>
 
 
 Equation_Filter::Equation_Filter()

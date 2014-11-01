@@ -17,8 +17,8 @@
 
 #include "cline_filter.h"
 
-#include <qstring.h>
-#include <qmessagebox.h>
+#include <QString>
+#include <QMessageBox>
 
 CoupledLine_Filter::CoupledLine_Filter()
 {

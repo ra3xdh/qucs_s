@@ -13,8 +13,8 @@
 
 #include "lc_filter.h"
 
-#include <qstring.h>
-#include <qmessagebox.h>
+#include <QString>
+#include <QMessageBox>
 
 Filter::Filter()
 {

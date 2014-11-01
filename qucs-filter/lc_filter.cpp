@@ -17,7 +17,7 @@
 
 #include "lc_filter.h"
 
-#include <qstring.h>
+#include <QString>
 
 
 LC_Filter::LC_Filter()

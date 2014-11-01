@@ -17,8 +17,8 @@
 
 #include "line_filter.h"
 
-#include <qstring.h>
-#include <qmessagebox.h>
+#include <QString>
+#include <QMessageBox>
 
 // capacitive end-coupled, half-wavelength bandpass filter
 Line_Filter::Line_Filter()

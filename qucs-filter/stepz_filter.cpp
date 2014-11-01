@@ -17,8 +17,8 @@
 
 #include "stepz_filter.h"
 
-#include <qstring.h>
-#include <qmessagebox.h>
+#include <QString>
+#include <QMessageBox>
 
 StepImpedance_Filter::StepImpedance_Filter()
 {
