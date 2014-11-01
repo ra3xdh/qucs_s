@@ -983,7 +983,7 @@ void QucsTranscalc::slotAnalyze()
 
 void QucsTranscalc::slotSynthesize()
 {
-  int status;
+  int status = -1;
 
   if (TransLineTypes[getTypeIndex()].line)
     status = TransLineTypes[getTypeIndex()].line->synthesize();
