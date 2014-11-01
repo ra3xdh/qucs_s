@@ -42,18 +42,24 @@ INCLUDE( ${QT_USE_FILE} )
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 SET(QUCS-FILTER_SRCS
-helpdialog.cpp
-lc_filter.cpp
-main.cpp
-qf_cauer.cpp
-qf_filter.cpp
-qf_poly.cpp
-qucsfilter.cpp
+  eqn_filter.cpp
+  filter.cpp
+  helpdialog.cpp
+  lc_filter.cpp
+  line_filter.cpp
+  qf_cauer.cpp
+  qf_filter.cpp
+  qucsfilter.cpp
+  stepz_filter.cpp
+  tl_filter.cpp
+  cline_filter.cpp
+  main.cpp
+  qf_poly.cpp
 )
 
 SET(QUCS-FILTER_MOC_HDRS
-helpdialog.h
-qucsfilter.h
+  helpdialog.h
+  qucsfilter.h
 )
 
 QT4_WRAP_CPP(QUCS-FILTER_MOC_SRCS ${QUCS-FILTER_MOC_HDRS})
