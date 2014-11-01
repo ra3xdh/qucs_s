@@ -103,7 +103,7 @@ bool loadSettings()
     else QucsSettings.IgnoreFutureVersion = false;
 
     if (settings.contains("DrawInAntiAliasing")) QucsSettings.DrawInAntiAliasing = settings.value("DrawInAntiAliasing").toBool();
-    else QucsSettings.IgnoreFutureVersion = false;
+    else QucsSettings.DrawInAntiAliasing = false;
 
 
     QucsSettings.RecentDocs = settings.value("RecentDocs").toString().split("*",QString::SkipEmptyParts);
