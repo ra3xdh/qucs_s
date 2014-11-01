@@ -36,7 +36,7 @@ public:
  ~ViewPainter();
 
   void init(QPainter*, float, int, int, int, int, float FontScale_=0.0,
-	    float PrintScale_=1.0);
+	    float PrintScale_=1.0, bool DrawInAntiAliasing = true);
   void map(int, int, int&, int&);
   void drawPoint(int, int);
   void drawLine (int, int, int, int);

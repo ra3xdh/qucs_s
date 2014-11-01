@@ -409,7 +409,8 @@ void Schematic::paintFrame(ViewPainter *p)
 void Schematic::drawContents(QPainter *p, int, int, int, int)
 {
   ViewPainter Painter;
-  Painter.init(p, Scale, -ViewX1, -ViewY1, contentsX(), contentsY());
+  Painter.init(p, Scale, -ViewX1, -ViewY1, contentsX(),
+	       contentsY(), 1.0, 1.0, QucsSettings.DrawInAntiAliasing);
 
   paintGrid(&Painter, contentsX(), contentsY(),
             visibleWidth(), visibleHeight());
@@ -634,7 +635,7 @@ void Schematic::print(QPrinter*, QPainter *Painter, bool printAll, bool fitToPag
 #endif
   p.init(Painter, PrintScale * PrintRatio,
          -StartX, -StartY, -marginX, -marginY,
-	 PrintScale, PrintRatio);
+         PrintScale, PrintRatio, QucsSettings.DrawInAntiAliasing);
 
   if(!symbolMode)
     paintFrame(&p);

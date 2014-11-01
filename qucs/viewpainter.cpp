@@ -33,7 +33,8 @@ ViewPainter::~ViewPainter()
 }
 
 // -------------------------------------------------------------
-void ViewPainter::init(QPainter *p, float Scale_, int DX_, int DY_, int dx_, int dy_, float FontScale_, float PrintScale_)
+void ViewPainter::init(QPainter *p, float Scale_, int DX_, int DY_, int dx_, int dy_,
+    float FontScale_, float PrintScale_, bool DrawInAntiAliasing)
 {
   Painter = p;
   Scale = Scale_;
@@ -54,9 +55,9 @@ void ViewPainter::init(QPainter *p, float Scale_, int DX_, int DY_, int dx_, int
   p->setWorldXForm(false);   // we use our own coordinate transformation
 
   // Encourage Qt to antialias where possible for nicer drawings
-  p->setRenderHint(QPainter::Antialiasing, true);
+  p->setRenderHint(QPainter::Antialiasing, DrawInAntiAliasing);
   // Also antialias text if possible
-  p->setRenderHint(QPainter::TextAntialiasing, true);
+  p->setRenderHint(QPainter::TextAntialiasing, DrawInAntiAliasing);
 }
 
 // -------------------------------------------------------------
