@@ -339,6 +339,7 @@ void QucsApp::initView()
   connect(CompChoose, SIGNAL(activated(int)), SLOT(slotSetCompView(int)));
   connect(CompComps, SIGNAL(itemActivated(QListWidgetItem*)), SLOT(slotSelectComponent(QListWidgetItem*)));
   connect(CompComps, SIGNAL(itemPressed(QListWidgetItem*)), SLOT(slotSelectComponent(QListWidgetItem*)));
+  connect(CompSearch, SIGNAL(textEdited(const QString &)), this, SLOT(slotSearchComponent(const QString &)));
 
   // ----------------------------------------------------------
   // "Libraries" Tab of the left QTabWidget
@@ -703,6 +704,42 @@ void QucsApp::slotSetCompView (int index)
 }
 
 // ------------------------------------------------------------------
+// When CompSearch is being edited, create a temp page show the
+// search result
+void QucsApp::slotSearchComponent(const QString &searchText)
+{
+  qDebug() << "User search: " << searchText;
+  CompComps->clear ();   // clear the IconView
+  if (!searchText.isEmpty()) {
+    editText->setHidden (true); // disable text edit of component property
+
+    //traverse all component and match searchText with name
+    QString Name;
+    char * File;
+    Module * Mod;
+    QList<Module *> Comps;
+
+    QStringList cats = Category::getCategories ();
+    foreach(QString it, cats) {
+      Comps = Category::getModules(it);
+      QList<Module *>::const_iterator modit;
+      for (modit = Comps.constBegin(); modit != Comps.constEnd(); modit++) {
+        if ((*modit)->info) {
+          *((*modit)->info) (Name, File, false);
+
+          if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
+            //match
+            QListWidgetItem *icon = new QListWidgetItem(QPixmap(":/bitmaps/" + QString (File) + ".png"), Name);
+            icon->setToolTip(Name);
+            CompComps->addItem(icon);
+          }
+        }
+      }
+    }
+  }
+}
+
+// ------------------------------------------------------------------
 // Is called when the mouse is clicked within the Component QIconView.
 void QucsApp::slotSelectComponent(QListWidgetItem *item)
 {
@@ -746,29 +783,45 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
   qDebug() << "pressed CompComps id" << i;
   qDebug() << CompComps->item(i)->toolTip(); //Name;
 
+  QString name = CompComps->item(i)->toolTip();
+  QString CompName;
+  QString CompFile_qstr;
+  char *CompFile_cptr;
   // handle static and dynamic components
   if (CompChoose->currentText() == QObject::tr("verilog-a user devices")){
     InfosVA = Comps.at(i)->infoVA;
 
     // get JSON file out of item name on toolTip
-    QString name = CompComps->item(i)->toolTip();
     QString filename = Module::vaComponents[name];
 
-    QString Dummy1;
-    QString Dummy2;
     if (InfosVA) {
       qDebug() <<  " slotSelectComponent, view->selElem" ;
-      view->selElem = (*InfosVA) (Dummy1, Dummy2, true, filename);
+      view->selElem = (*InfosVA) (CompName, CompFile_qstr, true, filename);
     }
 
+  } else if (CompChoose->currentText() == QObject::tr("search components")) {
+    //in search component, search all category to get a component in same name
+    QString CompName;
+    char *CompFile;
+
+    QStringList cats = Category::getCategories();
+    foreach (QString it, cats) {
+      Comps = Category::getModules (it);
+      foreach(Module *mod, Comps) {
+        if (mod->info) {
+          (*mod->info)(CompName, CompFile_cptr, false);
+          if (CompName == name) {
+            view->selElem = (*mod->info) (CompName, CompFile, true);
+          }
+        }
+      }
+    }
   }
   else {
     Infos = Comps.at(i)->info;
 
-    char * Dummy2;
-    QString Dummy1;
     if (Infos)
-      view->selElem = (*Infos) (Dummy1, Dummy2, true);
+      view->selElem = (*Infos) (CompName, CompFile_cptr, true);
   }
 }
 
