@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 #include <QtGui>
-#include <Q3Dict>
+#include <QHash>
 #include <QString>
 #include <QStringList>
 #include <Q3PtrList>
@@ -28,7 +28,7 @@
 #include "module.h"
 
 // Global category and component lists.
-Q3Dict<Module> Module::Modules;
+QHash<QString, Module *> Module::Modules;
 Q3PtrList<Category> Category::Categories;
 
 QMap<QString, QString> Module::vaComponents;
@@ -69,14 +69,14 @@ void Module::registerComponent (QString category, pInfoFunc info) {
 
   // put into category and the component hash
   intoCategory (m);
-  if (!Modules.find (Model))
+  if (!Modules.contains (Model))
     Modules.insert (Model, m);
 }
 
 // Returns instantiated component based on the given "Model" name.  If
 // there is no such component registers the function returns NULL.
 Component * Module::getComponent (QString Model) {
-  Module * m = Modules.find (Model);
+  Module * m = Modules.find(Model).value();
   if (m) {
     QString Name;
     char * File;
@@ -129,7 +129,7 @@ void Module::registerDynamicComponents()
      // put into category and the component hash
      intoCategory (m);
 
-     if (!Modules.find (Model))
+     if (!Modules.contains (Model))
          Modules.insert (Model, m);
 
    } // while
@@ -437,6 +437,13 @@ void Module::registerModules (void) {
 void Module::unregisterModules (void) {
   Category::Categories.setAutoDelete (true);
   Category::Categories.clear ();
+
+  //remove all modules by iterator, require in qhash
+  QHashIterator<QString, Module *> it( Modules );
+  while(it.hasNext()) {
+    it.next();
+    delete it.value();
+  }
   Modules.clear ();
 }
 

@@ -19,7 +19,7 @@
 #define MODULE_H
 
 #include <Q3PtrList>
-#include <Q3Dict>
+#include <QHash>
 #include <QMap>
 
 // function typedefs for circuits and analyses
@@ -39,7 +39,7 @@ class Module
   static void registerDynamicComponents(void);
 
  public:
-  static Q3Dict<Module> Modules;
+  static QHash<QString, Module *> Modules;
   static QMap<QString, QString> vaComponents;
 
  public:
