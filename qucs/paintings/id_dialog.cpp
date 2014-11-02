@@ -18,19 +18,17 @@
 #include "id_dialog.h"
 #include "id_text.h"
 
-#include <Q3HBox>
-#include <Q3VBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QGridLayout>
 #include <QLabel>
-#include <QLayout>
 #include <Q3ListView>
 #include <QCheckBox>
 #include <QLineEdit>
-#include <Q3VGroupBox>
+#include <QGroupBox>
 #include <QValidator>
 #include <QPushButton>
 #include <QMessageBox>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
 
 
 ID_Dialog::ID_Dialog(ID_Text *idText_)
@@ -38,31 +36,35 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
   idText = idText_;
   setCaption(tr("Edit Subcircuit Properties"));
 
-  v = new Q3VBoxLayout(this);
-  v->setSpacing(5);
-  v->setMargin(5);
+  all = new QVBoxLayout;
+  all->setSpacing(5);
+  all->setMargin(5);
 
-  Q3HBox *h0 = new Q3HBox(this);
-  h0->setSpacing(5);
-  v->addWidget(h0);
+  QHBoxLayout *htop = new QHBoxLayout;
+  htop->setSpacing(5);
+  all->addLayout(htop);
 
   Expr.setPattern("[A-Za-z][A-Za-z0-9_]*");
   SubVal = new QRegExpValidator(Expr, this);
-  new QLabel(tr("Prefix:"), h0);
-  Prefix = new QLineEdit(h0);
+  Prefix = new QLineEdit(idText->Prefix);
   Prefix->setValidator(SubVal);
-  Prefix->setText(idText->Prefix);
 
+  htop->addWidget(new QLabel(tr("Prefix:")));
+  htop->addWidget(Prefix);
 
-  Q3VGroupBox *ParamBox = new Q3VGroupBox(tr("Parameters"), this);
-  v->addWidget(ParamBox);
-  ParamList = new Q3ListView(ParamBox);
+  QGroupBox *ParamBox = new QGroupBox(tr("Parameters"));
+  all->addWidget(ParamBox);
+  QVBoxLayout *vbox_param = new QVBoxLayout;
+  ParamBox->setLayout(vbox_param);
+
+  ParamList = new Q3ListView();
   ParamList->addColumn(tr("display"));
   ParamList->addColumn(tr("Name"));
   ParamList->addColumn(tr("Default"));
   ParamList->addColumn(tr("Description"));
   ParamList->addColumn(tr("Type"));
   ParamList->setSorting(-1);   // no sorting
+  vbox_param->addWidget(ParamList);
 
   SubParameter *pp;
   for(pp = idText->Parameter.last(); pp!=0; pp = idText->Parameter.prev())
@@ -73,69 +75,82 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
   connect(ParamList, SIGNAL(selectionChanged(Q3ListViewItem*)),
                      SLOT(slotEditParameter(Q3ListViewItem*)));
 
-  showCheck = new QCheckBox(tr("display in schematic"), ParamBox);
+  showCheck = new QCheckBox(tr("display in schematic"));
   showCheck->setChecked(true);
   connect(showCheck, SIGNAL(toggled(bool)), SLOT(slotToggleShow(bool)));
 
-  Q3HBox *h1 = new Q3HBox(ParamBox);
-  Q3VBox *v1 = new Q3VBox(h1);
-  new QLabel(tr("Name:"), v1);
-  new QLabel(tr("Default Value:"), v1);
-  new QLabel(tr("Description:"), v1);
-  new QLabel(tr("Type:"), v1);
+  vbox_param->addWidget(showCheck);
 
-  Q3VBox *v2 = new Q3VBox(h1);
+  QGridLayout *paramEditLayout = new QGridLayout;
+  vbox_param->addLayout(paramEditLayout);
+
+  paramEditLayout->addWidget(new QLabel(tr("Name:")), 0, 0);
+  paramEditLayout->addWidget(new QLabel(tr("Default Value:")), 1, 0);
+  paramEditLayout->addWidget(new QLabel(tr("Description:")), 2, 0);
+  paramEditLayout->addWidget(new QLabel(tr("Type:")), 3, 0);
 
   Expr.setPattern("[\\w_]+");
   NameVal = new QRegExpValidator(Expr, this);
-  ParamNameEdit = new QLineEdit(v2);
+  ParamNameEdit = new QLineEdit;
   ParamNameEdit->setValidator(NameVal);
   connect(ParamNameEdit, SIGNAL(textChanged(const QString&)),
           SLOT(slotNameChanged(const QString&)));
 
   Expr.setPattern("[^\"=]*");
   ValueVal = new QRegExpValidator(Expr, this);
-  ValueEdit = new QLineEdit(v2);
+  ValueEdit = new QLineEdit;
   ValueEdit->setValidator(ValueVal);
   connect(ValueEdit, SIGNAL(textChanged(const QString&)),
           SLOT(slotValueChanged(const QString&)));
 
   Expr.setPattern("[^\"=\\x005B\\x005D]*");
   DescrVal = new QRegExpValidator(Expr, this);
-  DescriptionEdit = new QLineEdit(v2);
+  DescriptionEdit = new QLineEdit;
   DescriptionEdit->setValidator(DescrVal);
   connect(DescriptionEdit, SIGNAL(textChanged(const QString&)),
           SLOT(slotDescrChanged(const QString&)));
 
   Expr.setPattern("[\\w_]+");
   TypeVal = new QRegExpValidator(Expr, this);
-  TypeEdit = new QLineEdit(v2);
+  TypeEdit = new QLineEdit;
   TypeEdit->setValidator(TypeVal);
   connect(TypeEdit, SIGNAL(textChanged(const QString&)),
           SLOT(slotTypeChanged(const QString&)));
 
-  Q3HBox *h2 = new Q3HBox(ParamBox);
-  h2->setStretchFactor(new QWidget(h2), 10);
-  QPushButton *ButtAdd = new QPushButton(tr("Add"), h2);
+  paramEditLayout->addWidget(ParamNameEdit, 0, 1);
+  paramEditLayout->addWidget(ValueEdit, 1, 1);
+  paramEditLayout->addWidget(DescriptionEdit, 2, 1);
+  paramEditLayout->addWidget(TypeEdit, 3, 1);
+
+  QPushButton *ButtAdd = new QPushButton(tr("Add"));
   connect(ButtAdd, SIGNAL(clicked()), SLOT(slotAddParameter()));
-  QPushButton *ButtRemove = new QPushButton(tr("Remove"), h2);
+  QPushButton *ButtRemove = new QPushButton(tr("Remove"));
   connect(ButtRemove, SIGNAL(clicked()), SLOT(slotRemoveParameter()));
 
-  Q3HBox *h3 = new Q3HBox(this);
-  h3->setSpacing(5);
-  v->addWidget(h3);
+  QHBoxLayout *hbox_paramedit = new QHBoxLayout;
+  vbox_param->addLayout(hbox_paramedit);
+  hbox_paramedit->addStretch();
+  hbox_paramedit->addWidget(ButtAdd);
+  hbox_paramedit->addWidget(ButtRemove);
 
-  QPushButton *ButtOK = new QPushButton(tr("OK"),h3);
+  QPushButton *ButtOK = new QPushButton(tr("OK"));
   connect(ButtOK, SIGNAL(clicked()), SLOT(slotOk()));
-  QPushButton *ButtCancel = new QPushButton(tr("Cancel"),h3);
+  QPushButton *ButtCancel = new QPushButton(tr("Cancel"));
   connect(ButtCancel, SIGNAL(clicked()), SLOT(reject()));
 
+  QHBoxLayout *hbox_bottom = new QHBoxLayout;
+  hbox_bottom->setSpacing(5);
+  all->addLayout(hbox_bottom);
+  hbox_bottom->addWidget(ButtOK);
+  hbox_bottom->addWidget(ButtCancel);
+
+  this->setLayout(all);
   resize(320, 350);
 }
 
 ID_Dialog::~ID_Dialog()
 {
-  delete v;
+  delete all;
   delete SubVal;
   delete NameVal;
   delete ValueVal;

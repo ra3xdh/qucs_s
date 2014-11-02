@@ -25,7 +25,7 @@ class ID_Text;
 class Q3ListView;
 class QLineEdit;
 class QCheckBox;
-class Q3VBoxLayout;
+class QVBoxLayout;
 class Q3ListViewItem;
 class QRegExpValidator;
 
@@ -39,7 +39,7 @@ public:
 private:
   ID_Text *idText;
 
-  Q3VBoxLayout *v;
+  QVBoxLayout *all;
   QLineEdit *Prefix;
 
   Q3ListView *ParamList;
