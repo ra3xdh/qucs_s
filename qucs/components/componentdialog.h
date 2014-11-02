@@ -17,17 +17,17 @@
 
 #ifndef COMPONENTDIALOG_H
 #define COMPONENTDIALOG_H
-#include <QtGui>
+
 #include "component.h"
+
+#include <QtGui>
 #include <QLabel>
 #include <QDialog>
-#include <Q3ListView>
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QRegExp>
 #include <QComboBox>
 #include <QPushButton>
-#include <Q3PtrList>
 #include <QDir>
 #include <QVBoxLayout>
 
