@@ -20,6 +20,8 @@
 
 #include "painting.h"
 
+#include <QPen>
+
 
 class GraphicLine : public Painting  {
 public:

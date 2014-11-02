@@ -22,11 +22,6 @@
 #include "graphictextdialog.h"
 #include "schematic.h"
 #include "qucs.h"
-#include <QWidget>
-#include <QPainter>
-#include <QLineEdit>
-#include <Q3TextEdit>
-#include <QPushButton>
 
 #include <math.h>
 

@@ -16,8 +16,6 @@
  ***************************************************************************/
 #include <QtGui>
 #include "painting.h"
-#include <iostream>
-using namespace std;
 
 Painting::Painting()
 {

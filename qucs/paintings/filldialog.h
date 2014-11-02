@@ -19,8 +19,6 @@
 #define FILLDIALOG_H
 
 #include <QDialog>
-#include <QLabel>
-#include <QVBoxLayout>
 
 class QVBoxLayout;
 class QLabel;

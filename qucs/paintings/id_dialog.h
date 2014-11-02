@@ -20,9 +20,6 @@
 
 #include <QDialog>
 #include <QRegExp>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
-
 
 class ID_Text;
 class Q3ListView;

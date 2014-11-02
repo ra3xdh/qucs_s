@@ -19,9 +19,6 @@
 #include "filldialog.h"
 #include "main.h"
 #include "schematic.h"
-#include <QPushButton>
-#include <QLineEdit>
-#include <QComboBox>
 
 #include <math.h>
 

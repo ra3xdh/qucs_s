@@ -17,11 +17,6 @@
 #include <QtGui>
 #include "rectangle.h"
 #include "filldialog.h"
-
-#include <QPushButton>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QCheckBox>
 #include "schematic.h"
 
 Rectangle::Rectangle(bool _filled)
