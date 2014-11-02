@@ -22,7 +22,8 @@
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QLabel>
-#include <Q3ListView>
+#include <QTableWidget>
+#include <QTableWidgetItem>
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QGroupBox>
@@ -57,23 +58,38 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
   QVBoxLayout *vbox_param = new QVBoxLayout;
   ParamBox->setLayout(vbox_param);
 
-  ParamList = new Q3ListView();
-  ParamList->addColumn(tr("display"));
-  ParamList->addColumn(tr("Name"));
-  ParamList->addColumn(tr("Default"));
-  ParamList->addColumn(tr("Description"));
-  ParamList->addColumn(tr("Type"));
-  ParamList->setSorting(-1);   // no sorting
-  vbox_param->addWidget(ParamList);
+  ParamTable = new QTableWidget();
+  ParamTable->horizontalHeader()->setStretchLastSection(true);
+  ParamTable->verticalHeader()->hide();
+  ParamTable->setColumnCount(5);
+  ParamTable->setHorizontalHeaderLabels(
+      QStringList() << tr("display") << tr("Name") << tr("Default") << tr("Description") << tr("Type"));
+  ParamTable->setSortingEnabled(false); // no sorting
+  ParamTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+  vbox_param->addWidget(ParamTable);
 
   SubParameter *pp;
-  for(pp = idText->Parameter.last(); pp!=0; pp = idText->Parameter.prev())
-    new Q3ListViewItem(ParamList,
-      pp->display ? tr("yes") : tr("no"), pp->Name.section('=', 0,0),
-      pp->Name.section('=', 1,1), pp->Description, pp->Type);
-
-  connect(ParamList, SIGNAL(selectionChanged(Q3ListViewItem*)),
-                     SLOT(slotEditParameter(Q3ListViewItem*)));
+  QTableWidgetItem *item;
+  for(pp = idText->Parameter.first(); pp!=0; pp = idText->Parameter.next()) {
+    int row = ParamTable->rowCount();
+    ParamTable->insertRow(row);
+    item = new QTableWidgetItem((pp->display)? tr("yes") : tr("no"));
+    item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+    ParamTable->setItem(row, 0, item);
+    item = new QTableWidgetItem(pp->Name.section('=', 0, 0));
+    item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+    ParamTable->setItem(row, 1, item);
+    item = new QTableWidgetItem(pp->Name.section('=', 1, 1));
+    item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+    ParamTable->setItem(row, 2, item);
+    item = new QTableWidgetItem(pp->Description);
+    item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+    ParamTable->setItem(row, 3, item);
+    item = new QTableWidgetItem(pp->Type);
+    item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+    ParamTable->setItem(row, 4, item);
+  }
+  connect(ParamTable, SIGNAL(currentCellChanged(int, int, int, int)), SLOT(slotEditParameter()));
 
   showCheck = new QCheckBox(tr("display in schematic"));
   showCheck->setChecked(true);
@@ -145,7 +161,7 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
   hbox_bottom->addWidget(ButtCancel);
 
   this->setLayout(all);
-  resize(320, 350);
+  resize(320, 400);
 }
 
 ID_Dialog::~ID_Dialog()
@@ -159,10 +175,11 @@ ID_Dialog::~ID_Dialog()
 }
 
 // -----------------------------------------------------------
-void ID_Dialog::slotEditParameter(Q3ListViewItem *Item)
+void ID_Dialog::slotEditParameter()
 {
-  if(Item == 0) {
-    ParamList->clearSelection();
+  int row = ParamTable->currentRow();
+  if (row < 0 || row >= ParamTable->rowCount()) {
+    ParamTable->clearSelection();
     ParamNameEdit->clear();
     showCheck->setChecked(true);
     ValueEdit->clear();
@@ -171,11 +188,11 @@ void ID_Dialog::slotEditParameter(Q3ListViewItem *Item)
     return;
   }
 
-  showCheck->setChecked(Item->text(0) == tr("yes"));
-  ParamNameEdit->setText(Item->text(1));
-  ValueEdit->setText(Item->text(2));
-  DescriptionEdit->setText(Item->text(3));
-  TypeEdit->setText(Item->text(4));
+  showCheck->setChecked(ParamTable->item(row, 0)->text() == tr("yes"));
+  ParamNameEdit->setText(ParamTable->item(row, 1)->text());
+  ValueEdit->setText(ParamTable->item(row, 2)->text());
+  DescriptionEdit->setText(ParamTable->item(row, 3)->text());
+  TypeEdit->setText(ParamTable->item(row, 4)->text());
 }
 
 // -----------------------------------------------------------
@@ -189,85 +206,99 @@ void ID_Dialog::slotAddParameter()
        tr("Parameter must not be named \"File\"!"));
     return;
   }
-
-  Q3ListViewItem *item, *lastItem=0;
-  for(item = ParamList->firstChild(); item!=0; item = item->itemBelow()) {
-    if(item->text(1) == ParamNameEdit->text()) {
+  
+  int row;
+  for (row = 0; row < ParamTable->rowCount(); ++row) {
+    if(ParamTable->item(row, 1)->text() == ParamNameEdit->text()) {
       QMessageBox::critical(this, tr("Error"),
          tr("Parameter \"%1\" already in list!").arg(ParamNameEdit->text()));
       return;
     }
-    lastItem = item;
   }
 
+  row = ParamTable->rowCount();
+  ParamTable->insertRow(row);
 
-  new Q3ListViewItem(ParamList, lastItem,
-      showCheck->isChecked() ? tr("yes") : tr("no"), ParamNameEdit->text(),
-      ValueEdit->text(), DescriptionEdit->text(), TypeEdit->text());
+  QTableWidgetItem *item;
+  item = new QTableWidgetItem((showCheck->isChecked())? tr("yes") : tr("no"));
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  ParamTable->setItem(row, 0, item);
+  item = new QTableWidgetItem(ParamNameEdit->text());
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  ParamTable->setItem(row, 1, item);
+  item = new QTableWidgetItem(ValueEdit->text());
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  ParamTable->setItem(row, 2, item);
+  item = new QTableWidgetItem(DescriptionEdit->text());
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  ParamTable->setItem(row, 3, item);
+  item = new QTableWidgetItem(TypeEdit->text());
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+  ParamTable->setItem(row, 4, item);
 
-  slotEditParameter(0);   // clear entry fields
-  ParamList->clearSelection();
+  ParamTable->setCurrentCell(row, 0);
+  slotEditParameter();   // clear entry fields
+  ParamTable->clearSelection();
 }
 
 // -----------------------------------------------------------
 void ID_Dialog::slotRemoveParameter()
 {
-  Q3ListViewItem *nextItem = 0;
-
-  Q3ListViewItem *Item = ParamList->selectedItem();
-  if(Item) {
-    nextItem = Item->itemBelow();
-    if(nextItem == 0)  nextItem = Item->itemAbove();
-    ParamList->takeItem(Item);  // remove from ListView
-    delete Item;                // delete item
-  }
-
-  slotEditParameter(nextItem);
+  int selectedrow = ParamTable->currentRow();
+  ParamTable->removeRow(selectedrow);
+  int nextRow = (selectedrow == ParamTable->rowCount())? selectedrow-1 : selectedrow;
+  ParamTable->setCurrentCell(nextRow, 0);
+  slotEditParameter();
 }
 
 // -----------------------------------------------------------
 void ID_Dialog::slotToggleShow(bool On)
 {
-  Q3ListViewItem *Item = ParamList->selectedItem();
-  if(Item == 0) return;
-
-  Item->setText(0, On ? tr("yes") : tr("no"));
+  int selectedrow = ParamTable->currentRow();
+  QTableWidgetItem *item = ParamTable->item(selectedrow, 0);
+  if (item) {
+    item->setText(On ? tr("yes") : tr("no"));
+  }
 }
 
 // -----------------------------------------------------------
 void ID_Dialog::slotNameChanged(const QString& text)
 {
-  Q3ListViewItem *Item = ParamList->selectedItem();
-  if(Item == 0) return;
-
-  Item->setText(1, text);
+  int selectedrow = ParamTable->currentRow();
+  QTableWidgetItem *item = ParamTable->item(selectedrow, 1);
+  if (item) {
+    item->setText(text);
+  }
 }
 
 // -----------------------------------------------------------
 void ID_Dialog::slotValueChanged(const QString& text)
 {
-  Q3ListViewItem *Item = ParamList->selectedItem();
-  if(Item == 0) return;
-
-  Item->setText(2, text);
+  int selectedrow = ParamTable->currentRow();
+  QTableWidgetItem *item = ParamTable->item(selectedrow, 2);
+  if (item) {
+    item->setText(text);
+  }
 }
 
 // -----------------------------------------------------------
 void ID_Dialog::slotDescrChanged(const QString& text)
 {
-  Q3ListViewItem *Item = ParamList->selectedItem();
-  if(Item == 0) return;
-
-  Item->setText(3, text);
+  int selectedrow = ParamTable->currentRow();
+  QTableWidgetItem *item = ParamTable->item(selectedrow, 3);
+  if (item) {
+    item->setText(text);
+  }
 }
 
 // -----------------------------------------------------------
 void ID_Dialog::slotTypeChanged(const QString& text)
 {
-  Q3ListViewItem *Item = ParamList->selectedItem();
-  if(Item == 0) return;
-
-  Item->setText(4, text);
+  int selectedrow = ParamTable->currentRow();
+  QTableWidgetItem *item = ParamTable->item(selectedrow, 4);
+  if (item) {
+    item->setText(text);
+  }
 }
 
 // -----------------------------------------------------------
@@ -282,33 +313,31 @@ void ID_Dialog::slotOk()
     }
 
   QString s;
-  Q3ListViewItem *item;
   SubParameter *pp = idText->Parameter.first();
-  for(item = ParamList->firstChild(); item != 0; item = item->itemBelow()) {
-    s = item->text(1) + "=" + item->text(2);
+  for (int row = 0; row < ParamTable->rowCount(); ++row) {
+    s = ParamTable->item(row, 1)->text() + "=" + ParamTable->item(row, 2)->text();
 
-    if(pp) {
-      if(pp->display != (item->text(0) == tr("yes"))) {
-        pp->display = (item->text(0) == tr("yes"));
+    if (pp) {
+      if (pp->display != (ParamTable->item(row, 0)->text() == tr("yes"))) {
+        pp->display = (ParamTable->item(row, 0)->text() == tr("yes"));
         changed = true;
       }
-      if(pp->Name != s) {
+      if (pp->Name != s) {
         pp->Name = s;
         changed = true;
       }
-      if(pp->Description != item->text(3)) {
-        pp->Description = item->text(3);
+      if (pp->Description != ParamTable->item(row, 3)->text()) {
+        pp->Description = ParamTable->item(row, 3)->text();
         changed = true;
       }
-      if(pp->Type != item->text(4)) {
-        pp->Type = item->text(4);
+      if (pp->Type != ParamTable->item(row, 3)->text()) {
+        pp->Type = ParamTable->item(row, 3)->text();
         changed = true;
       }
-    }
-    else {
+    } else {
       idText->Parameter.append(new SubParameter(
-         (item->text(0) == tr("yes")) ? true : false, s, item->text(3),
-	 item->text(4)));
+         (ParamTable->item(row, 0)->text() == tr("yes")) ? true : false,
+         s, ParamTable->item(row, 3)->text(), ParamTable->item(row, 4)->text()));
       changed = true;
     }
 
