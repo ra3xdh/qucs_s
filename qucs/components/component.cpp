@@ -79,7 +79,9 @@ void Component::Bounding(int& _x1, int& _y1, int& _x2, int& _y2)
 // Size of component text.
 int Component::textSize(int& _dx, int& _dy)
 {
-  QFontMetrics  metrics(QucsSettings.font);   // get size of text
+  // need to use the painter fontMetrics() to obtain proper results
+  QFontMetrics metrics = containingSchematic->fontMetrics(); // get size of text
+
   int tmp, count=0;
   _dx = _dy = 0;
   if(showName) {
