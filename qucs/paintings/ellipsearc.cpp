@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "ellipsearc.h"
 #include "filldialog.h"
 #include "main.h"

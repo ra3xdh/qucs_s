@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "main.h"
 #include "mnemo.h"
 #include "viewpainter.h"

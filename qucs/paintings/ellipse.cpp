@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "ellipse.h"
 #include "filldialog.h"
 #include "schematic.h"

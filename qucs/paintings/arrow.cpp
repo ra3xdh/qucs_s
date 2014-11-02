@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "arrow.h"
 #include "arrowdialog.h"
 #include "schematic.h"
