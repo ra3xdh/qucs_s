@@ -1544,14 +1544,17 @@ void QucsApp::slotLoadModule()
       // remove all modules before registering/loaded again
       // look for modules in the category,
       // \todo investigate if it is leaking objects somewhere
-      QStringList remove;
-      Q3DictIterator<Module> it( Module::Modules );
-      for( ; it.current(); ++it ){
-        if (it.current()->category == QObject::tr("verilog-a user devices"))
-          remove << it.currentKey();
+      QStringList removeList;
+      QHashIterator<QString, Module *> it( Module::Modules );
+      while(it.hasNext()) {
+        it.next();
+        if (it.value()->category == QObject::tr("verlog-a user devices")) {
+          removeList << it.key();
+          delete it.value();
+        }
       }
-      for (int i = 0; i < remove.size(); ++i){
-        Module::Modules.remove(remove.at(i));
+      for (int i = 0; i < removeList.size(); ++i){
+        Module::Modules.remove(removeList.at(i));
       }
 
       if (! Module::vaComponents.isEmpty()) {
