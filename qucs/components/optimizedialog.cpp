@@ -25,7 +25,6 @@
 
 #include <Q3HBox>
 #include <QLabel>
-#include <QLayout>
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QComboBox>
@@ -34,9 +33,8 @@
 #include <QValidator>
 #include <QPushButton>
 #include <QMessageBox>
-//Added by qt3to4:
 #include <Q3GridLayout>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 
 
 OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
@@ -52,7 +50,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   numVal = new QDoubleValidator(this);
   intVal = new QIntValidator(this);
 
-  all = new Q3VBoxLayout(this); // to provide the neccessary size
+  all = new QVBoxLayout(this); // to provide the neccessary size
   QTabWidget *t = new QTabWidget(this);
   all->addWidget(t);
 

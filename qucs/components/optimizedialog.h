@@ -30,8 +30,7 @@ class Q3ListViewItem;
 class QCheckBox;
 class QComboBox;
 class QLineEdit;
-class QPushButton;
-class Q3VBoxLayout;
+class QVBoxLayout;
 class QRegExpValidator;
 class QDoubleValidator;
 class QIntValidator;
@@ -71,7 +70,7 @@ public:
   Schematic *Doc;
   bool changed;
 
-  Q3VBoxLayout *all;
+  QVBoxLayout *all;
   QLineEdit *NameEdit, *VarNameEdit,
             *VarInitEdit, *VarMinEdit, *VarMaxEdit,
             *IterEdit, *RefreshEdit, *ParentsEdit, *ConstEdit, *CrossEdit,
