@@ -279,7 +279,7 @@ public:
   void createSubNetlistPlain(QTextStream*, QTextEdit*, int);
   int  prepareNetlist(QTextStream&, QStringList&, QTextEdit*,bool spice=false);
   QString createNetlist(QTextStream&, int);
-  QString createSpiceNetlist(QTextStream&, int);
+  QString createSpiceNetlist(QTextStream&, int, QStringList& simulations,QStringList& vars);
   bool loadDocument();
   void highlightWireLabels (void);
 

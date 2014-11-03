@@ -1961,7 +1961,7 @@ QString Schematic::createNetlist(QTextStream& stream, int NumPorts)
   return Time;
 }
 
-QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
+QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts,QStringList& simulations, QStringList& vars)
 {
     /*if(!isAnalog) {
         return QString("");
@@ -1974,7 +1974,7 @@ QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
     Signals.clear();  // was filled in "giveNodeNames()"
     FileList.clear();
 
-    QString s, Time;
+    QString s;
     for(Component *pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
       if(isAnalog &&
          !(pc->isSimulation) &&
@@ -1984,37 +1984,37 @@ QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
       }
     }
 
-    QStringList simulations; // determine which simulations are in use
+    // determine which simulations are in use
     simulations.clear();
     for(Component *pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
        if(pc->isSimulation) {
            s = pc->getSpiceNetlist();
            QString sim_typ = pc->Model;
-           if (sim_typ==".AC") simulations.append("AC");
-           if (sim_typ==".TR") simulations.append("TRAN");
-           if (sim_typ==".DC") simulations.append("DC");
+           if (sim_typ==".AC") simulations.append("ac");
+           if (sim_typ==".TR") simulations.append("tran");
+           if (sim_typ==".DC") simulations.append("dc");
            stream<<s;
        }
     }
 
-    QStringList probe_names; // set probes for named nodes and wires
-    probe_names.clear();
+    // set variable names for named nodes and wires
+    vars.clear();
     for(Node *pn = DocNodes.first(); pn != 0; pn = DocNodes.next()) {
       if(pn->Label != 0) {
-          if (!probe_names.contains(pn->Label->Name)) {
-              probe_names.append(pn->Label->Name);
+          if (!vars.contains(pn->Label->Name)) {
+              vars.append(pn->Label->Name);
           }
       }
     }
     for(Wire *pw = DocWires.first(); pw != 0; pw = DocWires.next()) {
       if(pw->Label != 0) {
-          if (!probe_names.contains(pw->Label->Name)) {
-              probe_names.append(pw->Label->Name);
+          if (!vars.contains(pw->Label->Name)) {
+              vars.append(pw->Label->Name);
           }
       }
     }
-    probe_names.sort();
-    qDebug()<<probe_names;
+    vars.sort();
+    qDebug()<<vars;
 
     stream<<".control\n"          //execute simulations
           <<"set filetype=ascii\n"
@@ -2026,7 +2026,7 @@ QString Schematic::createSpiceNetlist(QTextStream& stream, int NumPorts)
     QString sim;                 // see results
     foreach (sim,simulations) {
         QString nod;
-        foreach (nod,probe_names) {
+        foreach (nod,vars) {
             QString filename = QString("%1_%2_%3.txt").arg(basenam).arg(sim).arg(nod);
             QString write_str = QString("write %1 %2.v(%3)\n").arg(filename).arg(sim).arg(nod);
             stream<<write_str;

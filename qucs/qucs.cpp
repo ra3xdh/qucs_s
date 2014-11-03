@@ -2832,13 +2832,21 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
 
 void QucsApp::slotSimulateWithSpice()
 {
+    QStringList vars,sims;
+
     Schematic *sch = (Schematic*)DocumentTab->currentPage();
     int num=0;
     QString tmp_path = QDir::homePath()+"/.qucs/spice4qucs.cir";
     QFile spice_file(tmp_path);
     if (spice_file.open(QFile::WriteOnly)) {
         QTextStream stream(&spice_file);
-        sch->createSpiceNetlist(stream,num);
+        sch->createSpiceNetlist(stream,num,sims,vars);
         spice_file.close();
     }
+    qDebug()<<sims<<vars;
+
+    QString old_dir = QDir::currentPath(); // Execute ngspice
+    QDir::setCurrent(QDir::homePath()+"/.qucs");
+    QProcess::execute("ngspice "+tmp_path);
+    QDir::setCurrent(old_dir);
 }
