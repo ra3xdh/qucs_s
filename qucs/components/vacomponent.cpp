@@ -19,6 +19,12 @@
 
 #include "vacomponent.h"
 
+#include <QString>
+#include <QScriptEngine>
+#include <QScriptValue>
+#include <QScriptValueIterator>
+
+
 /*!
  * \file vacomponent.cpp
  * \brief Implementation of the vacomponent class.

@@ -15,20 +15,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
 #include <QtGui>
 #include "subcircuit.h"
 #include "qucs.h"
-//Added by qt3to4:
-#include <QTextStream>
 #include "schematic.h"
 #include "main.h"
 
-#include <QDir>
+#include <QTextStream>
 #include <QFileInfo>
-#include <QRegExp>
 
 #include <math.h>
 #include <limits.h>

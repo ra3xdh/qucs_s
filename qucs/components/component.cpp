@@ -17,15 +17,9 @@
 #include <QtGui>
 #include <stdlib.h>
 
-#include <QDir>
 #include <QPen>
-#include <QPoint>
 #include <QString>
-#include <QPainter>
-#include <QTabWidget>
 #include <QMessageBox>
-#include <QtXml>
-#include <Q3Dict>
 
 #include "components.h"
 #include "node.h"

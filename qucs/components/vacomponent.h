@@ -20,13 +20,10 @@
 
 #include "component.h"
 
-#include <QFile>
-#include <QTextStream>
-#include <QScriptEngine>
 #include <QScriptValue>
-#include <QScriptValueIterator>
 
-#include <QDebug>
+class QString;
+class QScriptValue;
 
 /*!
  * \file vacomponent.h

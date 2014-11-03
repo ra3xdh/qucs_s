@@ -19,8 +19,9 @@
 #define VERILOGFILE_H
 
 #include "component.h"
-//Added by qt3to4:
-#include <QTextStream>
+
+class QTextStream;
+class QString;
 
 
 class Verilog_File : public MultiViewComponent  {
