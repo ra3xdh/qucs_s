@@ -14,13 +14,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "graphicline.h"
 #include "filldialog.h"
 #include "schematic.h"
-#include <QPushButton>
-#include <QLineEdit>
-#include <QComboBox>
 
 #include <math.h>
 

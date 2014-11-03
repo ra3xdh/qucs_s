@@ -19,7 +19,6 @@
 #define GRAPHICTEXTDIALOG_H
 
 #include <QDialog>
-#include <QVBoxLayout>
 
 class QLineEdit;
 class QTextEdit;

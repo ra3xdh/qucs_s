@@ -14,16 +14,11 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "arrow.h"
 #include "arrowdialog.h"
 #include "schematic.h"
 
-#include <QLineEdit>
-#include <QPushButton>
-#include <QComboBox>
-//Added by qt3to4:
-#include <Q3PointArray>
+#include <QPolygon>
 #include <math.h>
 
 
@@ -50,7 +45,7 @@ Arrow::~Arrow()
 // --------------------------------------------------------------------------
 void Arrow::paint(ViewPainter *p)
 {
-  Q3PointArray Points;
+  QPolygon Points;
   int x1_, y1_, x2_, y2_, x3_, y3_;
   if(isSelected) {
     p->Painter->setPen(QPen(Qt::darkGray,Pen.width()+5));

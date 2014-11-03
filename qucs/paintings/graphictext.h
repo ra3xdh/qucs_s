@@ -20,6 +20,10 @@
 
 #include "painting.h"
 
+#include <QColor>
+#include <QFont>
+#include <QString>
+
 
 class GraphicText : public Painting  {
 public:

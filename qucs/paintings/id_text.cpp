@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "id_text.h"
 #include "id_dialog.h"
 #include "schematic.h"

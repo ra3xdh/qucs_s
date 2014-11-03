@@ -20,6 +20,7 @@
 
 #include "painting.h"
 
+#include <QString>
 
 class PortSymbol : public Painting  {
 public:

@@ -14,10 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "painting.h"
-#include <iostream>
-using namespace std;
 
 Painting::Painting()
 {
