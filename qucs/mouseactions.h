@@ -25,7 +25,7 @@
 class Wire;
 class Schematic;
 class QPainter;
-class Q3PopupMenu;
+class QMenu;
 class QMouseEvent;
 class QucsApp;
 
@@ -52,7 +52,7 @@ public:
   int movingRotated;
 
   // menu appearing by right mouse button click on component
-  Q3PopupMenu *ComponentMenu;
+  QMenu *ComponentMenu;
 
 private:
   bool isMoveEqual;

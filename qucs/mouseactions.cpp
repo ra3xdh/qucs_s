@@ -16,7 +16,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "qucs.h"
 #include "main.h"
 #include "node.h"
@@ -41,7 +40,7 @@
 #include <QClipboard>
 #include <QApplication>
 #include <QMessageBox>
-#include <Q3PopupMenu>
+#include <QMenu>
 #include <QEvent>
 #include <QAction>
 
@@ -69,7 +68,7 @@ MouseActions::MouseActions(QucsApp* App_)
 
   // ...............................................................
   // initialize menu appearing by right mouse button click on component
-  ComponentMenu = new Q3PopupMenu(QucsMain);
+  ComponentMenu = new QMenu(QucsMain);
   focusMEvent   = new QMouseEvent(QEvent::MouseButtonPress, QPoint(0,0),
 				  Qt::NoButton, Qt::NoButton);
 }
@@ -761,14 +760,13 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
   }
 
   while (true) {
-      if (focusElement) {
-          if (focusElement->Type == isDiagram) {
-
-              ComponentMenu->insertItem(QObject::tr("Export as image"), QucsMain,
-                      SLOT(slotSaveDiagramToGraphicsFile()));
-          }
+    if (focusElement) {
+      if (focusElement->Type == isDiagram) {
+        ComponentMenu->insertItem(QObject::tr("Export as image"), QucsMain,
+            SLOT(slotSaveDiagramToGraphicsFile()));
       }
-      break;
+    }
+    break;
   }
 
   if(!QucsMain->editDelete->isOn())
