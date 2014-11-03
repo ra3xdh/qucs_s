@@ -19,15 +19,13 @@
 #define COMPONENT_H
 
 #include <Q3PtrList>
-#include <QPen>
-#include <QPoint>
-#include <QWidget>
 
 #include "element.h"
 
 class Schematic;
 class ViewPainter;
 class QString;
+class QPen;
 
 
 class Component : public Element {
