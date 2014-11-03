@@ -317,6 +317,7 @@ void QucsApp::initView()
   // "Component" Tab of the left QTabWidget
   QWidget *CompGroup  = new QWidget();
   QVBoxLayout *CompGroupLayout = new QVBoxLayout();
+  QHBoxLayout *CompSearchLayout = new QHBoxLayout();
 
   CompChoose = new QComboBox(this);
   CompComps = new QListWidget(this);
@@ -324,11 +325,14 @@ void QucsApp::initView()
   CompComps->setGridSize(QSize(110,90));
   CompSearchLabel = new QLabel(this, tr("Search Components:"));
   CompSearch = new QLineEdit(this);
+  CompSearchClear = new QPushButton(tr("Clear"));
 
   CompGroupLayout->addWidget(CompChoose);
   CompGroupLayout->addWidget(CompComps);
   CompGroupLayout->addWidget(CompSearchLabel);
-  CompGroupLayout->addWidget(CompSearch);
+  CompGroupLayout->addLayout(CompSearchLayout);
+  CompSearchLayout->addWidget(CompSearch);
+  CompSearchLayout->addWidget(CompSearchClear);
   CompGroup->setLayout(CompGroupLayout);
 
   TabView->addTab(CompGroup,tr("Components"));
@@ -339,7 +343,8 @@ void QucsApp::initView()
   connect(CompChoose, SIGNAL(activated(int)), SLOT(slotSetCompView(int)));
   connect(CompComps, SIGNAL(itemActivated(QListWidgetItem*)), SLOT(slotSelectComponent(QListWidgetItem*)));
   connect(CompComps, SIGNAL(itemPressed(QListWidgetItem*)), SLOT(slotSelectComponent(QListWidgetItem*)));
-  connect(CompSearch, SIGNAL(textEdited(const QString &)), this, SLOT(slotSearchComponent(const QString &)));
+  connect(CompSearch, SIGNAL(textEdited(const QString &)), SLOT(slotSearchComponent(const QString &)));
+  connect(CompSearchClear, SIGNAL(clicked()), SLOT(slotSearchClear()));
 
   // ----------------------------------------------------------
   // "Libraries" Tab of the left QTabWidget
@@ -734,6 +739,13 @@ void QucsApp::slotSearchComponent(const QString &searchText)
       }
     }
   }
+}
+
+// ------------------------------------------------------------------
+void QucsApp::slotSearchClear()
+{
+  CompSearch->clear();
+  slotSetCompView(CompChoose->currentIndex());
 }
 
 // ------------------------------------------------------------------

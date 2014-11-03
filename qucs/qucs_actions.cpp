@@ -221,6 +221,7 @@ void QucsApp::slotZoomIn(bool on)
 void QucsApp::slotEscape()
 {
     select->setChecked(true);
+    slotSearchClear();
 }
 
 // -----------------------------------------------------------------------
