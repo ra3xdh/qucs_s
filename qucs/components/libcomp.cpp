@@ -15,9 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
 #include <QtGui>
 #include "libcomp.h"
 #include "qucs.h"

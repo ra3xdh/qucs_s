@@ -15,9 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 #include <QtGui>
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
 
 #include "optimizedialog.h"
 #include "opt_sim.h"
