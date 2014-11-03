@@ -25,8 +25,8 @@ class Schematic;
 class SpiceFile;
 class QLineEdit;
 class QPushButton;
-class Q3ListBox;
-class Q3ListBoxItem;
+class QListWidget;
+class QListWidgetItem;
 class QCheckBox;
 class QVBoxLayout;
 class QProcess;
@@ -50,8 +50,8 @@ private slots:
 
   void slotButtAdd();
   void slotButtRemove();
-  void slotAddPort(Q3ListBoxItem*);
-  void slotRemovePort(Q3ListBoxItem*);
+  void slotAddPort(QListWidgetItem *);
+  void slotRemovePort(QListWidgetItem *);
 
   void slotGetNetlist();
   void slotGetError();
@@ -71,7 +71,7 @@ private:
   QVBoxLayout *all;   // the mother of all widgets
   QRegExpValidator  *Validator, *ValRestrict;
   QRegExp     Expr;
-  Q3ListBox    *NodesList, *PortsList;
+  QListWidget *NodesList, *PortsList;
   QCheckBox   *FileCheck, *SimCheck;
   QLineEdit   *FileEdit, *CompNameEdit;
   QPushButton *ButtBrowse, *ButtEdit, *ButtAdd, *ButtRemove,

@@ -34,8 +34,8 @@
 #include <QMessageBox>
 #include <QComboBox>
 #include <QTextStream>
-
-#include <Q3ListBox>
+#include <QListWidget>
+#include <QListWidgetItem>
 
 
 SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
@@ -111,12 +111,12 @@ SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
     midGrid->addWidget(new QLabel(tr("SPICE net nodes:")), 0,0);
     midGrid->addWidget(new QLabel(tr("Component ports:")), 0,2);
 
-    NodesList = new Q3ListBox();
-    connect(NodesList, SIGNAL(doubleClicked(Q3ListBoxItem*)),
-            SLOT(slotAddPort(Q3ListBoxItem*)));
-    PortsList = new Q3ListBox();
-    connect(PortsList, SIGNAL(doubleClicked(Q3ListBoxItem*)),
-            SLOT(slotRemovePort(Q3ListBoxItem*)));
+    NodesList = new QListWidget();
+    connect(NodesList, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
+            SLOT(slotAddPort(QListWidgetItem *)));
+    PortsList = new QListWidget();
+    connect(PortsList, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
+            SLOT(slotRemovePort(QListWidgetItem *)));
     midGrid->addWidget(NodesList, 1,0);
     midGrid->addWidget(PortsList, 1,2);
 
@@ -235,10 +235,10 @@ void SpiceDialog::slotButtApply()
     }
 
     QString tmp;
-    for(unsigned int i=0; i<PortsList->count(); i++)
+    for(int i=0; i<PortsList->count(); i++)
     {
         if(!tmp.isEmpty())  tmp += ',';
-        tmp += "_net" + PortsList->text(i);   // chosen ports
+        tmp += "_net" + PortsList->item(i)->text();   // chosen ports
     }
     pp = Comp->Props.next();
     if(pp->Value != tmp)
@@ -459,20 +459,26 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
     Property *pp = Comp->Props.at(1);
     if(!pp->Value.isEmpty())
     {
-        PortsList->clear();
-        PortsList->insertStringList(QStringList::split(',', pp->Value));
+      PortsList->clear();
+      QStringList ports = QStringList::split(',', pp->Value);
+      foreach(QString port, ports) {
+        PortsList->addItem(port);
+      }
     }
 
     QString tmp;
-    Q3ListBoxItem *pi;
-    for(unsigned int i=0; i<PortsList->count(); i++)
+    QList<QListWidgetItem *> plist;
+    for(int i=0; i<PortsList->count(); i++)
     {
-        tmp = PortsList->text(i).remove(0, 4);
-        PortsList->changeItem(tmp, i);
+      tmp = PortsList->item(i)->text().remove(0, 4);
+      PortsList->item(i)->setText(tmp);
 
-        pi = NodesList->findItem(tmp, Qt::CaseSensitive | QKeySequence::ExactMatch);
-        if(pi) delete pi;
-        else PortsList->removeItem(i--);
+      plist = NodesList->findItems(tmp, Qt::MatchCaseSensitive | Qt::MatchExactly);
+      if (!plist.isEmpty()) {
+        delete plist[0];
+      } else {
+        delete PortsList->item(i);
+      }
     }
     return true;
 }
@@ -563,7 +569,7 @@ void SpiceDialog::slotGetNetlist()
 
             if(s.left(4) == "_net")
             {
-                NodesList->insertItem(s.remove(0, 4));
+                NodesList->addItem(s.remove(0, 4));
             }
             break;
 
@@ -581,7 +587,7 @@ void SpiceDialog::slotGetNetlist()
 
             if(s.left(4) == "_net")
             {
-                PortsList->insertItem(s);   // prefix "_net" is removed later on
+                PortsList->addItem(s);   // prefix "_net" is removed later on
             }
             break;
         }
@@ -598,32 +604,34 @@ void SpiceDialog::slotButtEdit()
 // Is called if the add button is pressed.
 void SpiceDialog::slotButtAdd()
 {
-    int i = NodesList->currentItem();
-    if(i < 0) return;
-    PortsList->insertItem(NodesList->currentText());
-    NodesList->removeItem(i);
+  QListWidgetItem *item = NodesList->currentItem();
+  if (item) {
+    PortsList->addItem(item->text());
+    delete(item);
+  }
 }
 
 // -------------------------------------------------------------------------
 // Is called if the remove button is pressed.
 void SpiceDialog::slotButtRemove()
 {
-    int i = PortsList->currentItem();
-    if(i < 0) return;
-    NodesList->insertItem(PortsList->currentText());
-    PortsList->removeItem(i);
+  QListWidgetItem *item = PortsList->currentItem();
+  if (item) {
+    NodesList->addItem(item->text());
+    delete(item);
+  }
 }
 
 // -------------------------------------------------------------------------
 // Is called when double-click on NodesList-Box
-void SpiceDialog::slotAddPort(Q3ListBoxItem *Item)
+void SpiceDialog::slotAddPort(QListWidgetItem *Item)
 {
     if(Item) slotButtAdd();
 }
 
 // -------------------------------------------------------------------------
 // Is called when double-click on PortsList-Box
-void SpiceDialog::slotRemovePort(Q3ListBoxItem *Item)
+void SpiceDialog::slotRemovePort(QListWidgetItem *Item)
 {
     if(Item) slotButtRemove();
 }
