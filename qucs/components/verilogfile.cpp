@@ -17,13 +17,11 @@
 #include <QtGui>
 #include "verilogfile.h"
 #include "qucs.h"
-//Added by qt3to4:
-#include <QTextStream>
 #include "main.h"
 #include "schematic.h"
 
+#include <QTextStream>
 #include <QRegExp>
-#include <QDir>
 #include <QFileInfo>
 
 

@@ -20,8 +20,6 @@
 
 #include <QDialog>
 #include <QRegExp>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
 
 class Schematic;
 class Optimize_Sim;

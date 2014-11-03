@@ -18,13 +18,11 @@
 #include <QtGui>
 #include "libcomp.h"
 #include "qucs.h"
-//Added by qt3to4:
-#include <QTextStream>
 #include "main.h"
 #include "schematic.h"
 
+#include <QTextStream>
 #include <QDir>
-#include <QFileInfo>
 #include <QRegExp>
 
 #include <math.h>

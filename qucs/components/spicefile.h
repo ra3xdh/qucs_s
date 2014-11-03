@@ -17,13 +17,10 @@
 
 #ifndef SPICEFILE_H
 #define SPICEFILE_H
-#include <QtGui>
 #include "component.h"
 
 #include <QObject>
 #include <QDateTime>
-//Added by qt3to4:
-#include <QTextStream>
 
 class QProcess;
 class QTextStream;
