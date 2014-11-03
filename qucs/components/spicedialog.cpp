@@ -19,25 +19,23 @@
 #include "spicefile.h"
 #include "main.h"
 #include "qucs.h"
-//Added by qt3to4:
-#include <QTextStream>
-#include <Q3GridLayout>
-#include <Q3VBoxLayout>
 #include "schematic.h"
 
 #include <QLabel>
-#include <QLayout>
-#include <Q3HBox>
-#include <Q3VBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QGridLayout>
 #include <QLineEdit>
 #include <QValidator>
 #include <QFileDialog>
 #include <QPushButton>
-#include <Q3ListBox>
 #include <QCheckBox>
 #include <QProcess>
 #include <QMessageBox>
 #include <QComboBox>
+#include <QTextStream>
+
+#include <Q3ListBox>
 
 
 SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
@@ -50,7 +48,8 @@ SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
     Comp = c;
     Doc  = d;
 
-    all = new Q3VBoxLayout(this); // to provide neccessary size
+    all = new QVBoxLayout(); // to provide neccessary size
+    this->setLayout(all);
     QWidget *myParent = this;
 
     Expr.setPattern("[^\"=]+");  // valid expression for property 'edit' etc
@@ -58,85 +57,98 @@ SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
     Expr.setPattern("[\\w_]+");  // valid expression for property 'NameEdit' etc
     ValRestrict = new QRegExpValidator(Expr, this);
 
-
     // ...........................................................
-    Q3GridLayout *topGrid = new Q3GridLayout(0, 4,3,3,3);
+    QGridLayout *topGrid = new QGridLayout;
     all->addLayout(topGrid);
 
-    topGrid->addWidget(new QLabel(tr("Name:"), myParent), 0,0);
-    CompNameEdit = new QLineEdit(myParent);
+    CompNameEdit = new QLineEdit;
     CompNameEdit->setValidator(ValRestrict);
-    topGrid->addWidget(CompNameEdit, 0,1);
     connect(CompNameEdit, SIGNAL(returnPressed()), SLOT(slotButtOK()));
 
-    topGrid->addWidget(new QLabel(tr("File:"), myParent), 1,0);
-    FileEdit = new QLineEdit(myParent);
-    FileEdit->setValidator(ValRestrict);
-    topGrid->addWidget(FileEdit, 1,1);
-    connect(FileEdit, SIGNAL(returnPressed()), SLOT(slotButtOK()));
+    topGrid->addWidget(new QLabel(tr("Name:")), 0, 0);
+    topGrid->addWidget(CompNameEdit, 0, 1);
 
-    ButtBrowse = new QPushButton(tr("Browse"), myParent);
-    topGrid->addWidget(ButtBrowse, 1,2);
+    
+    FileEdit = new QLineEdit;
+    FileEdit->setValidator(ValRestrict);
+    connect(FileEdit, SIGNAL(returnPressed()), SLOT(slotButtOK()));
+    ButtBrowse = new QPushButton(tr("Browse"));
     connect(ButtBrowse, SIGNAL(clicked()), SLOT(slotButtBrowse()));
 
-    ButtEdit = new QPushButton(tr("Edit"), myParent);
-    topGrid->addWidget(ButtEdit, 2,2);
-    connect(ButtEdit, SIGNAL(clicked()), SLOT(slotButtEdit()));
+    topGrid->addWidget(new QLabel(tr("File:")), 1,0);
+    topGrid->addWidget(FileEdit, 1,1);
+    topGrid->addWidget(ButtBrowse, 1,2);
+
 
     FileCheck = new QCheckBox(tr("show file name in schematic"), myParent);
-    topGrid->addWidget(FileCheck, 2,1);
+    ButtEdit = new QPushButton(tr("Edit"), myParent);
+    connect(ButtEdit, SIGNAL(clicked()), SLOT(slotButtEdit()));
+
+    topGrid->addWidget(FileCheck, 2, 1);
+    topGrid->addWidget(ButtEdit, 2, 2);
+
 
     SimCheck = new QCheckBox(tr("include SPICE simulations"), myParent);
     topGrid->addWidget(SimCheck, 3,1);
 
-    Q3HBox *h1 = new Q3HBox(myParent);
-    h1->setSpacing(5);
-    PrepCombo = new QComboBox(h1);
-    PrepCombo->insertItem("none");
-    PrepCombo->insertItem("ps2sp");
-    PrepCombo->insertItem("spicepp");
-    PrepCombo->insertItem("spiceprm");
-    QLabel * PrepLabel = new QLabel(tr("preprocessor"), h1);
+    QHBoxLayout *hcenter = new QHBoxLayout;
+    topGrid->addLayout(hcenter, 4, 1);
+
+    hcenter->setSpacing(5);
+    PrepCombo = new QComboBox();
+    PrepCombo->insertItems(0, QStringList() << "none" << "ps2sp" << "spicepp" << "spiceprm" );
+    QLabel *PrepLabel = new QLabel(tr("preprocessor"));
     PrepLabel->setMargin(5);
-    topGrid->addWidget(h1, 4,1);
     connect(PrepCombo, SIGNAL(activated(int)), SLOT(slotPrepChanged(int)));
 
+    hcenter->addWidget(PrepCombo);
+    hcenter->addWidget(PrepLabel);
+
     // ...........................................................
-    Q3GridLayout *midGrid = new Q3GridLayout(0, 2,3,5,5);
+    QGridLayout *midGrid = new QGridLayout;
     all->addLayout(midGrid);
 
-    midGrid->addWidget(new QLabel(tr("SPICE net nodes:"), myParent), 0,0);
-    NodesList = new Q3ListBox(myParent);
-    midGrid->addWidget(NodesList, 1,0);
+    midGrid->addWidget(new QLabel(tr("SPICE net nodes:")), 0,0);
+    midGrid->addWidget(new QLabel(tr("Component ports:")), 0,2);
+
+    NodesList = new Q3ListBox();
     connect(NodesList, SIGNAL(doubleClicked(Q3ListBoxItem*)),
             SLOT(slotAddPort(Q3ListBoxItem*)));
-
-    Q3VBox *v0 = new Q3VBox(myParent);
-    v0->setSpacing(5);
-    midGrid->addWidget(v0, 1,1);
-    ButtAdd = new QPushButton(tr("Add >>"), v0);
-    connect(ButtAdd, SIGNAL(clicked()), SLOT(slotButtAdd()));
-    ButtRemove = new QPushButton(tr("<< Remove"), v0);
-    connect(ButtRemove, SIGNAL(clicked()), SLOT(slotButtRemove()));
-    v0->setStretchFactor(new QWidget(v0), 5); // stretchable placeholder
-
-    midGrid->addWidget(new QLabel(tr("Component ports:"), myParent), 0,2);
-    PortsList = new Q3ListBox(myParent);
-    midGrid->addWidget(PortsList, 1,2);
+    PortsList = new Q3ListBox();
     connect(PortsList, SIGNAL(doubleClicked(Q3ListBoxItem*)),
             SLOT(slotRemovePort(Q3ListBoxItem*)));
+    midGrid->addWidget(NodesList, 1,0);
+    midGrid->addWidget(PortsList, 1,2);
 
+    QVBoxLayout *vcenter = new QVBoxLayout;
+    vcenter->setSpacing(5);
+
+    ButtAdd = new QPushButton(tr("Add >>"));
+    connect(ButtAdd, SIGNAL(clicked()), SLOT(slotButtAdd()));
+    ButtRemove = new QPushButton(tr("<< Remove"));
+    connect(ButtRemove, SIGNAL(clicked()), SLOT(slotButtRemove()));
+
+    vcenter->addWidget(ButtAdd);
+    vcenter->addWidget(ButtRemove);
+    vcenter->addStretch();
+    midGrid->addLayout(vcenter, 1,1);
 
     // ...........................................................
-    Q3HBox *h0 = new Q3HBox(this);
-    h0->setSpacing(5);
-    all->addWidget(h0);
-    connect(new QPushButton(tr("OK"),h0), SIGNAL(clicked()),
-            SLOT(slotButtOK()));
-    connect(new QPushButton(tr("Apply"),h0), SIGNAL(clicked()),
-            SLOT(slotButtApply()));
-    connect(new QPushButton(tr("Cancel"),h0), SIGNAL(clicked()),
-            SLOT(slotButtCancel()));
+    QHBoxLayout *hbottom = new QHBoxLayout;
+    hbottom->setSpacing(5);
+
+    ButtOK = new QPushButton(tr("OK"));
+    ButtApply = new QPushButton(tr("Apply"));
+    ButtCancel = new QPushButton(tr("Cancel"));
+    connect(ButtOK, SIGNAL(clicked()), SLOT(slotButtOK()));
+    connect(ButtApply, SIGNAL(clicked()), SLOT(slotButtApply()));
+    connect(ButtCancel, SIGNAL(clicked()), SLOT(slotButtCancel()));
+    hbottom->addStretch();
+    hbottom->addWidget(ButtOK);
+    hbottom->addWidget(ButtApply);
+    hbottom->addWidget(ButtCancel);
+
+    all->addLayout(hbottom);
 
     // ------------------------------------------------------------
     CompNameEdit->setText(Comp->Name);
