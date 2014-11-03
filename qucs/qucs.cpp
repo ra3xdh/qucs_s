@@ -1671,6 +1671,8 @@ bool QucsApp::saveAs()
   }
   Doc->setName(s);
   lastDirOpenSave = Info.dirPath(true);  // remember last directory and file
+  updateRecentFilesList(s);
+  slotUpdateRecentFiles();
 
   if(intoView) {    // insert new name in Content ListView ?
     if(Info.dirPath(true) == QucsSettings.QucsWorkDir.absPath())
