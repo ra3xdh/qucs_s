@@ -16,7 +16,7 @@
  ***************************************************************************/
 #include <QtGui>
 #include <QLabel>
-#include <Q3GridLayout>
+#include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLayout>
@@ -42,7 +42,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 
   all = new QVBoxLayout(this); // to provide neccessary size
   all->setContentsMargins(1,1,1,1);
-  Q3GridLayout *gp1;
+  QGridLayout *gp1;
   QWidget *myParent = this;
   ValInteger = new QIntValidator(1, 1000000, this);
 
@@ -231,11 +231,11 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 
     QWidget *tabProperties = new QWidget(t);
     t->addTab(tabProperties, tr("Properties"));
-    gp1 = new Q3GridLayout(tabProperties, 9,2,5,5);
+    gp1 = new QGridLayout(tabProperties, 9,2,5,5);
     myParent = tabProperties;
   }
   else {   // no simulation component
-    gp1 = new Q3GridLayout(0, 9,2,5,5);
+    gp1 = new QGridLayout(0, 9,2,5,5);
     all->addLayout(gp1);
   }
 
