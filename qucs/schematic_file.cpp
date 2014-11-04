@@ -18,7 +18,8 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-#include <QtGui>
+
+#include <QtCore>
 #include <QMessageBox>
 #include <QDir>
 #include <QStringList>
@@ -26,6 +27,8 @@
 #include <Q3PtrList>
 #include <QTextStream>
 #include <Q3ValueList>
+#include <QProcess>
+#include <QDebug>
 
 #include "main.h"
 #include "node.h"

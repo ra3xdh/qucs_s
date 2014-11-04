@@ -18,8 +18,7 @@ Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-#include <QtGui>
-#include <QtCore>
+#include <QAction>
 
 #include "main.h"
 #include "qucs.h"
@@ -309,7 +308,7 @@ QMenu *TextDoc::createStandardContextMenu()
   QMenu *popup = QPlainTextEdit::createStandardContextMenu();
 
    if (language != LANG_OCTAVE) {
-     App->fileSettings->addTo(popup);
+     App->fileSettings->addTo((QWidget *)popup);
    }
    return popup;
 }

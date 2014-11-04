@@ -14,11 +14,11 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include <QHash>
 #include <QString>
 #include <QStringList>
 #include <Q3PtrList>
+#include <QDebug>
 
 #include "element.h"
 #include "components/component.h"

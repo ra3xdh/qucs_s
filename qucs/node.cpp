@@ -14,11 +14,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "node.h"
 
 #include "viewpainter.h"
 #include "wirelabel.h"
+
+#include <QPainter>
 
 Node::Node(int _x, int _y)
 {

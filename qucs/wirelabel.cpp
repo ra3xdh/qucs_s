@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "wirelabel.h"
 #include "viewpainter.h"
 #include "wire.h"
@@ -24,6 +23,7 @@
 #include "schematic.h"
 
 #include <QString>
+#include <QPainter>
 
 WireLabel::WireLabel(const QString& _Name, int _cx, int _cy,
                      int _x1, int _y1, int _Type)

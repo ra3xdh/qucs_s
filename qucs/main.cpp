@@ -23,7 +23,6 @@
 # include <config.h>
 #endif
 
-#include <QtGui>
 #include <stdlib.h>
 #include <ctype.h>
 #include <math.h>

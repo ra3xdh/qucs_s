@@ -18,12 +18,21 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-#include <QtGui>
 
 #include "main.h"
 #include "qucs.h"
 #include "octave_window.h"
 
+#include <QAction>
+#include <QShortcut>
+#include <QMenu>
+#include <QMenuBar>
+#include <QToolBar>
+#include <QLabel>
+#include <QTimer>
+#include <QStatusBar>
+#include <QDockWidget>
+#include <QMessageBox>
 
 /**
  * @brief QucsApp::initActions Initializes all QActions of the application

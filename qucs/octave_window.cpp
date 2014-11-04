@@ -2,7 +2,6 @@
     copyright            : (C) 2010 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
  ***************************************************************************/
-#include <QtGui>
 #include "octave_window.h"
 #include "main.h"
 
@@ -11,6 +10,11 @@
 #include <QKeyEvent>
 #include <QWidget>
 #include <QVBoxLayout>
+#include <QTextEdit>
+#include <QLineEdit>
+#include <QDockWidget>
+#include <QDebug>
+#include <QMessageBox>
 
 
 #ifdef __MINGW32__

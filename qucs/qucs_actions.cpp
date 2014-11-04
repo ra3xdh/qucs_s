@@ -16,13 +16,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include <QtCore>
 #include <stdlib.h>
 #include <limits.h>
 
 #include <QProcess>
 #include <Q3PtrList>
+#include <QRegExpValidator>
+#include <QLineEdit>
+#include <QAction>
+#include <QStatusBar>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QMenu>
+#include <QComboBox>
+#include <QDockWidget>
 
 #include "main.h"
 #include "qucs.h"
