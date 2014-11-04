@@ -20,7 +20,6 @@
 // *********  The class that does the syntax highlighting **********
 // *********                                              **********
 // *****************************************************************
-#include <QtGui>
 
 #include "textdoc.h"
 #include "syntax.h"

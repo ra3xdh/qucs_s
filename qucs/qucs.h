@@ -18,10 +18,10 @@
 #ifndef QUCS_H
 #define QUCS_H
 
-#include <QtGui>
 #include <QMainWindow>
 #include <QString>
 #include <Q3PtrList>
+#include <QHash>
 
 class QucsDoc;
 class Schematic;
@@ -43,6 +43,11 @@ class QCloseEvent;
 class QMenu;
 class QToolBar;
 class QSettings;
+class QListWidgetItem;
+class QTreeWidget;
+class QTreeWidgetItem;
+class QListWidget;
+class QShortcut;
 
 typedef bool (Schematic::*pToggleFunc) ();
 typedef void (MouseActions::*pMouseFunc) (Schematic*, QMouseEvent*);

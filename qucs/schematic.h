@@ -17,7 +17,6 @@
 
 #ifndef SCHEMATIC_H
 #define SCHEMATIC_H
-#include <QtGui>
 
 #include "wire.h"
 #include "node.h"

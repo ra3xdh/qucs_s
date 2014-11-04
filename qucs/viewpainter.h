@@ -19,6 +19,8 @@
 #define VIEWPAINTER_H
 
 class QPainter;
+class QString;
+class QColor;
 
 #define TO_INT(f)   (f > 0.0 ? int(f + 0.5) : int(f - 0.5))
 

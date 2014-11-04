@@ -18,10 +18,8 @@
 #ifndef SYNTAX_H
 #define SYNTAX_H
 
-#include <QtCore>
-#include <QtGui>
-
 #include "textdoc.h"
+#include <QSyntaxHighlighter>
 
 enum language_type {
   LANG_NONE = 0,

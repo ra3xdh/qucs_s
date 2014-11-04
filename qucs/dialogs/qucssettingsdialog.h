@@ -25,8 +25,6 @@
 #include <QRegExp>
 #include <QVBoxLayout>
 
-class QListView;
-//class Q3ListViewItem;
 class QLineEdit;
 class QCheckBox;
 class QVBoxLayout;
@@ -34,8 +32,8 @@ class QPushButton;
 class QComboBox;
 class QIntValidator;
 class QRegExpValidator;
-class QTableView;
 class QStandardItemModel;
+class QTableWidget;
 
 class QucsSettingsDialog : public QDialog
 {

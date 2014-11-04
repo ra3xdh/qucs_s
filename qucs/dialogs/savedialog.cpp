@@ -28,6 +28,8 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QDebug>
+#include <QGroupBox>
+#include <QListWidgetItem>
 
 SaveDialog::SaveDialog( QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
    : QDialog( parent, name, modal, fl ),unsavedDocs()

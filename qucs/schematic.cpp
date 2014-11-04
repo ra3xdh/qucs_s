@@ -18,7 +18,6 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-#include <QtGui>
 #include <stdlib.h>
 #include <limits.h>
 

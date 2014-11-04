@@ -24,6 +24,7 @@
 
 class QDockWidget;
 class QTabWidget;
+class QPlainTextEdit;
 
 /*!
  * \file messagedock.h
