@@ -20,7 +20,6 @@
   \brief The TruthDiagram class implements the Truth Table diagram
 */
 
-#include <QtGui>
 #include "truthdiagram.h"
 #include "main.h"
 

@@ -20,15 +20,14 @@
   \brief The TabDiagram class implements the Tabular diagram
 */
 
-#include <QtGui>
 #include "tabdiagram.h"
 #include "main.h"
-
 #include <math.h>
-#include <QPolygon>
-
 #include "qucs.h"
 #include "schematic.h"
+
+#include <QPolygon>
+#include <QPainter>
 
 TabDiagram::TabDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
 {

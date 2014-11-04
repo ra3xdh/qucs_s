@@ -23,7 +23,6 @@
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
-#include <QtGui>
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
@@ -31,11 +30,6 @@
 # include <ieeefp.h>
 #endif
 #include <locale.h>
-
-#include <QTextStream>
-#include <QMessageBox>
-#include <QRegExp>
-#include <QDateTime>
 
 #include "diagram.h"
 #include "qucs.h"
@@ -45,7 +39,11 @@
 
 #include "rect3ddiagram.h"
 
-using namespace std;
+#include <QTextStream>
+#include <QMessageBox>
+#include <QRegExp>
+#include <QDateTime>
+#include <QPainter>
 
 Diagram::Diagram(int _cx, int _cy)
 {

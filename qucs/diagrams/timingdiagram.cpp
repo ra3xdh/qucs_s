@@ -20,15 +20,15 @@
   \brief The TimingDiagram class implements the Timing diagram
 */
 
-#include <QtGui>
 #include "timingdiagram.h"
 #include "main.h"
+#include "qucs.h"
+#include "schematic.h"
 
 #include <math.h>
 #include <QPolygon>
+#include <QPainter>
 
-#include "qucs.h"
-#include "schematic.h"
 
 TimingDiagram::TimingDiagram(int _cx, int _cy) : TabDiagram(_cx, _cy)
 {

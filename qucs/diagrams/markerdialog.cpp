@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "markerdialog.h"
 #include "diagram.h"
 
@@ -23,6 +22,8 @@
 #include <QPushButton>
 #include <QValidator>
 #include <QGridLayout>
+#include <QComboBox>
+#include <QCheckBox>
 
 
 MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
