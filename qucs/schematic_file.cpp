@@ -26,7 +26,7 @@
 #include <QTextEdit>
 #include <Q3PtrList>
 #include <QTextStream>
-#include <Q3ValueList>
+#include <QList>
 #include <QProcess>
 #include <QDebug>
 
@@ -1537,9 +1537,9 @@ int NumPorts)
 
       // subcircuit connections
       if(!Signals.isEmpty()) {
-        Q3ValueList<DigSignal> values = Signals.values();
-        Q3ValueList<DigSignal>::iterator it;
-        for (it = values.begin(); it != values.end(); ++it) {
+        QList<DigSignal> values = Signals.values();
+        QList<DigSignal>::const_iterator it;
+        for (it = values.constBegin(); it != values.constEnd(); ++it) {
           (*tstream) << " wire " << (*it).Name << ";\n";
         }
       }
@@ -1615,9 +1615,9 @@ int NumPorts)
                   << " is\n";
 
       if(!Signals.isEmpty()) {
-        Q3ValueList<DigSignal> values = Signals.values();
-        Q3ValueList<DigSignal>::iterator it;
-        for (it = values.begin(); it != values.end(); ++it) {
+        QList<DigSignal> values = Signals.values();
+        QList<DigSignal>::const_iterator it;
+        for (it = values.constBegin(); it != values.constEnd(); ++it) {
           (*tstream) << " signal " << (*it).Name << " : "
           << ((*it).Type.isEmpty() ?
           VHDL_SIGNAL_TYPE : (*it).Type) << ";\n";
@@ -1784,17 +1784,17 @@ void Schematic::beginNetlistDigital(QTextStream& stream)
 {
   if (isVerilog) {
     stream << "module TestBench ();\n";
-    Q3ValueList<DigSignal> values = Signals.values();
-    Q3ValueList<DigSignal>::iterator it;
-    for (it = values.begin(); it != values.end(); ++it) {
+    QList<DigSignal> values = Signals.values();
+    QList<DigSignal>::const_iterator it;
+    for (it = values.constBegin(); it != values.constEnd(); ++it) {
       stream << "  wire " << (*it).Name << ";\n";
     }
     stream << "\n";
   } else {
     stream << "architecture Arch_TestBench of TestBench is\n";
-    Q3ValueList<DigSignal> values = Signals.values();
-    Q3ValueList<DigSignal>::iterator it;
-    for (it = values.begin(); it != values.end(); ++it) {
+    QList<DigSignal> values = Signals.values();
+    QList<DigSignal>::const_iterator it;
+    for (it = values.constBegin(); it != values.constEnd(); ++it) {
       stream << "  signal " << (*it).Name << " : "
 	     << ((*it).Type.isEmpty() ?
 		 VHDL_SIGNAL_TYPE : (*it).Type) << ";\n";
