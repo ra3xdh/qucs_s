@@ -43,6 +43,8 @@
 #include <QMenu>
 #include <QEvent>
 #include <QAction>
+#include <QLineEdit>
+#include <QDebug>
 
 #include <limits.h>
 #include <stdlib.h>
