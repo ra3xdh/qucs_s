@@ -17,7 +17,6 @@
 
 #ifndef DIAGRAMDIALOG_H
 #define DIAGRAMDIALOG_H
-#include <QtGui>
 #include "diagram.h"
 #include "node.h"
 
@@ -39,6 +38,10 @@ class QDoubleValidator;
 class QIntValidator;
 class QRegExpValidator;
 class QSlider;
+class QTableWidgetItem;
+class QListWidgetItem;
+class QTableWidget;
+class QListWidget;
 
 
 class DiagramDialog : public QDialog  {

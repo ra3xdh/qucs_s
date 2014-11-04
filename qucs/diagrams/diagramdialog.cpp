@@ -19,7 +19,6 @@
   \class DiagramDialog
   \brief The DiagramDialog is used to setup and edit diagrams.
 */
-#include <QtGui>
 #include "diagramdialog.h"
 #include "qucs.h"
 #include "schematic.h"
@@ -39,6 +38,12 @@
 #include <QComboBox>
 #include <QListWidget>
 #include <QTableWidget>
+#include <QPainter>
+#include <QVBoxLayout>
+#include <QGroupBox>
+#include <QHeaderView>
+#include <QDir>
+#include <QDebug>
 
 
 #define CROSS3D_SIZE   30
