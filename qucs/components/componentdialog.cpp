@@ -32,7 +32,6 @@
 #include <QTabWidget>
 #include <QFileDialog>
 
-#include <math.h>
 
 
 ComponentDialog::ComponentDialog(Component *c, Schematic *d)

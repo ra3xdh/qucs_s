@@ -24,6 +24,8 @@
 #include <QLineEdit>
 #include <QComboBox>
 
+#include <math.h>
+
 EllipseArc::EllipseArc()
 {
   Name = "EArc ";

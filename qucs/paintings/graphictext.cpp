@@ -27,6 +27,8 @@
 #include <QLineEdit>
 #include <QTextEdit>
 
+#include <math.h>
+
 GraphicText::GraphicText()
 {
   Name = "Text ";

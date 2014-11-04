@@ -20,7 +20,6 @@
 #include "main.h"
 #include "schematic.h"
 
-#include <math.h>
 #include <limits.h>
 
 #include <QTextStream>

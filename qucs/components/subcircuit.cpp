@@ -24,7 +24,6 @@
 #include <QFileInfo>
 #include <QMutex>
 
-#include <math.h>
 #include <limits.h>
 
 

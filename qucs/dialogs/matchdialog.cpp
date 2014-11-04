@@ -40,6 +40,8 @@
 #include <QClipboard>
 #include <QGroupBox>
 
+#include <math.h>
+
 
 MatchDialog::MatchDialog(QWidget *parent)
 			: QDialog(parent) //, 0, TRUE, Qt::WDestructiveClose)
