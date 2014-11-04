@@ -18,6 +18,8 @@
 #include "id_dialog.h"
 #include "schematic.h"
 
+#include <QPainter>
+
 ID_Text::ID_Text(int cx_, int cy_)
 {
   Name = ".ID ";

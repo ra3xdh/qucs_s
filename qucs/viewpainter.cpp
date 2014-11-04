@@ -14,12 +14,13 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "viewpainter.h"
 #include "diagrams/graph.h"
 
 #include <math.h>
 
+#include <QPainter>
+#include <QFont>
 
 ViewPainter::ViewPainter(QPainter *p)
 {

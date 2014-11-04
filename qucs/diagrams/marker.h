@@ -18,7 +18,6 @@
 #ifndef MARKER_H
 #define MARKER_H
 
-#include <QtGui>
 #include "element.h"
 #include "viewpainter.h"
 

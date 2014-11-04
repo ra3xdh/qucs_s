@@ -17,10 +17,13 @@
 #include "arrow.h"
 #include "arrowdialog.h"
 #include "schematic.h"
+#include "math.h"
 
 #include <QPolygon>
-#include <math.h>
-
+#include <QPainter>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QComboBox>
 
 Arrow::Arrow()
 {

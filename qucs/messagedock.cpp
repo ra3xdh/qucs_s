@@ -21,6 +21,9 @@
 #include "qucsdoc.h"
 #include "textdoc.h"
 
+#include <QDockWidget>
+#include <QDebug>
+
 /*!
  * \file messagedock.cpp
  * \brief Definition of the MessageDock class.

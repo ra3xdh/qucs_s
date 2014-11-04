@@ -25,6 +25,7 @@
 #include <QFont>
 #include <QColor>
 #include <QStringList>
+#include <QDir>
 
 #include "wire.h"
 #include "node.h"

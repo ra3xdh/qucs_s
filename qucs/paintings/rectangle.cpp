@@ -18,6 +18,12 @@
 #include "filldialog.h"
 #include "schematic.h"
 
+#include <QPainter>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QCheckBox>
+
 Rectangle::Rectangle(bool _filled)
 {
   Name = "Rectangle ";

@@ -18,8 +18,10 @@
 #include "filldialog.h"
 #include "schematic.h"
 
-#include <math.h>
-
+#include <QPainter>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QComboBox>
 
 GraphicLine::GraphicLine(int cx_, int cy_, int x2_, int y2_, QPen Pen_)
 {

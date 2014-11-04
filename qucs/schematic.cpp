@@ -36,6 +36,11 @@
 #include <QMouseEvent>
 #include <QEvent>
 #include <QWheelEvent>
+#include <QPainter>
+#include <QAction>
+#include <QLineEdit>
+#include <QUrl>
+#include <QListWidget>
 
 #include "qucs.h"
 #include "schematic.h"

@@ -19,6 +19,8 @@
 #include "schematic.h"
 #include "qucs.h"
 
+#include <QPainter>
+
 PortSymbol::PortSymbol(int cx_, int cy_, const QString& numberStr_,
                                          const QString& nameStr_)
 {
