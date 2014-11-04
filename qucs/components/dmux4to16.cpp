@@ -15,7 +15,6 @@
  * any later version.
  * 
  */
-#include <QtGui>
 #include "dmux4to16.h"
 #include "node.h"
 #include "main.h"

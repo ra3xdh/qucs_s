@@ -15,7 +15,6 @@
  * any later version.
  * 
  */
-#include <QtGui>
 #include "fa1b.h"
 #include "node.h"
 #include "main.h"

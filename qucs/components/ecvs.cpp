@@ -13,7 +13,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "ecvs.h"
 #include "schematic.h"
 #include "main.h"

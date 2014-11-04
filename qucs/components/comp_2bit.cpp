@@ -15,7 +15,6 @@
  * any later version.
  * 
  */
-#include <QtGui>
 #include "comp_2bit.h"
 #include "node.h"
 #include "main.h"

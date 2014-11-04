@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "spicedialog.h"
 #include "spicefile.h"
 #include "main.h"
@@ -36,6 +35,7 @@
 #include <QTextStream>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QDebug>
 
 
 SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)

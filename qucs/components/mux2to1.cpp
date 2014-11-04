@@ -15,7 +15,6 @@
  * any later version.
  * 
  */
-#include <QtGui>
 #include "mux2to1.h"
 #include "node.h"
 #include "main.h"

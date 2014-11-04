@@ -7,7 +7,6 @@
  * any later version.
  * 
  */
-#include <QtGui>
 #include "node.h"
 #include "hicumL0V1p2.h"
 

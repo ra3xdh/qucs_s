@@ -18,7 +18,6 @@
 #if HAVE_UNISTD_H
 # include <unistd.h>
 #endif
-#include <QtGui>
 #include <QRegExp>
 #include <QProcess>
 #include <QString>
@@ -28,6 +27,8 @@
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
+#include <QMutex>
+#include <QDebug>
 
 #include "spicefile.h"
 #include "schematic.h"

@@ -15,7 +15,6 @@
  * any later version.
  * 
  */
-#include <QtGui>
 #include "binarytogrey4bit.h"
 #include "node.h"
 #include "main.h"

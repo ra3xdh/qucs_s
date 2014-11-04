@@ -15,7 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui>
 
 #include "vacomponent.h"
 
@@ -23,6 +22,9 @@
 #include <QScriptEngine>
 #include <QScriptValue>
 #include <QScriptValueIterator>
+#include <QFile>
+#include <QTextStream>
+#include <QMessageBox>
 
 
 /*!

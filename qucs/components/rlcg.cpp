@@ -14,9 +14,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "main.h"
 #include "rlcg.h"
+
+#include <QFontMetrics>
 
 RLCG::RLCG()
 {

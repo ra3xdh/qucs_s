@@ -8,7 +8,6 @@
  * 
  */
 #include <stdlib.h>
-#include <QtGui>
 #include "pad3bit.h"
 #include "node.h"
 #include "main.h"

@@ -14,9 +14,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "mstee.h"
 #include "main.h"
+
+#include <QFontMetrics>
 
 MStee::MStee()
 {

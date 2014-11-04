@@ -7,7 +7,6 @@
  * any later version.
  * 
  */
-#include <QtGui>
 #include "node.h"
 #include "hic0_full.h"
 

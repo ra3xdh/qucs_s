@@ -14,10 +14,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "equation.h"
 #include "main.h"
 
+#include <QFontMetrics>
 
 Equation::Equation()
 {

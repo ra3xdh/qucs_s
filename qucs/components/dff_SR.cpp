@@ -15,7 +15,6 @@
  * any later version.
  * 
  */
-#include <QtGui>
 #include "dff_SR.h"
 #include "node.h"
 #include "main.h"

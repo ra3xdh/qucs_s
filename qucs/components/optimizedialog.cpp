@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 
 #include "optimizedialog.h"
 #include "opt_sim.h"
@@ -32,6 +31,7 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QHeaderView>
 
 
 OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)

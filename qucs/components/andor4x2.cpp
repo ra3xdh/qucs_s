@@ -15,7 +15,6 @@
  * any later version.
  * 
  */
-#include <QtGui>
 #include "andor4x2.h"
 #include "node.h"
 #include "main.h"

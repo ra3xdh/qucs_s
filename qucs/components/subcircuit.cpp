@@ -15,7 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui>
 #include "subcircuit.h"
 #include "qucs.h"
 #include "schematic.h"
@@ -23,6 +22,7 @@
 
 #include <QTextStream>
 #include <QFileInfo>
+#include <QMutex>
 
 #include <math.h>
 #include <limits.h>

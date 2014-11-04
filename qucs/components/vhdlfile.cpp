@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "vhdlfile.h"
 #include "qucs.h"
 #include "main.h"
