@@ -17,10 +17,14 @@
 #ifndef EXPORTDIALOG_H
 #define EXPORTDIALOG_H
 
-#include <QObject>
-#include <QtGui>
 #include <QDialog>
 
+class QLabel;
+class QCheckBox;
+class QLineEdit;
+class QComboBox;
+class QHBoxLayout;
+class QVBoxLayout;
 
 class ExportDialog : public QDialog
 {

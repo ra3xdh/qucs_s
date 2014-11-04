@@ -17,6 +17,17 @@
 #include <math.h>
 #include "exportdialog.h"
 
+#include <QValidator>
+#include <QLabel>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QFileInfo>
+#include <QFileDialog>
+
 ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, bool nosel_, QWidget *parent) :
     QDialog(parent)
 {
