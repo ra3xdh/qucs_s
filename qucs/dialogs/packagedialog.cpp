@@ -19,7 +19,6 @@
 # include <config.h>
 #endif
 
-#include <QtGui>
 #include <stdlib.h>
 
 #include <QLabel>
@@ -34,6 +33,7 @@
 #include <QButtonGroup>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QGroupBox>
 
 #include "packagedialog.h"
 #include "qucs.h"

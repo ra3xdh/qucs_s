@@ -19,7 +19,6 @@
  * Boston, MA 02110-1301, USA.                                             *
  ***************************************************************************/
 
-#include <QtGui>
 #include <QVariant>
 #include <QLabel>
 #include <QPushButton>
@@ -28,10 +27,15 @@
 #include <QScrollArea>
 #include <QDebug>
 #include <QFileDialog>
-
 #include <QScriptEngine>
 #include <QScriptValue>
 #include <QScriptValueIterator>
+#include <QGroupBox>
+#include <QListWidget>
+#include <QListWidgetItem>
+#include <QEvent>
+#include <QKeyEvent>
+#include <QMessageBox>
 
 #include "loaddialog.h"
 #include "qucs.h"

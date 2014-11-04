@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include "sweepdialog.h"
 #include "schematic.h"
 #include "qucs.h"

@@ -19,7 +19,6 @@
 # include <config.h>
 #endif
 
-#include <QtGui>
 #include "matchdialog.h"
 #include "main.h"
 #include "qucs.h"

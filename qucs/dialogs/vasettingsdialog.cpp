@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLabel>
@@ -30,6 +29,7 @@
 #include <QPushButton>
 #include <QFileDialog>
 #include <QGridLayout>
+#include <QRadioButton>
 
 #include "vasettingsdialog.h"
 #include "textdoc.h"

@@ -18,7 +18,6 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-#include <QtGui>
 #include <QLabel>
 #include <QLineEdit>
 #include <QTextEdit>
@@ -35,6 +34,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QStackedWidget>
+#include <QGroupBox>
 #include <QDebug>
 
 #include "librarydialog.h"

@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #include <stdlib.h>
 #include <iostream>
 using namespace std;
@@ -29,6 +28,9 @@ using namespace std;
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QProcess>
+#include <QProgressBar>
+#include <QDebug>
+#include <QMessageBox>
 
 #include "simmessage.h"
 #include "main.h"

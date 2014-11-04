@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -39,6 +38,11 @@
 #include <QComboBox>
 #include <QMessageBox>
 #include <QCheckBox>
+#include <QTableWidget>
+#include <QTableWidgetItem>
+#include <QHeaderView>
+#include <QFileDialog>
+#include <QDirIterator>
 
 using namespace std;
 
