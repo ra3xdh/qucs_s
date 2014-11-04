@@ -14,22 +14,26 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtGui>
-#include <QLabel>
-#include <QGridLayout>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QLayout>
-#include <QValidator>
-#include <QTabWidget>
-#include <QFileDialog>
 
 #include "componentdialog.h"
 #include "main.h"
 #include "qucs.h"
 #include "schematic.h"
-#include <math.h>
 
+#include <cmath>
+
+#include <QLabel>
+#include <QLayout>
+#include <QValidator>
+#include <QTableWidget>
+#include <QHeaderView>
+#include <QFileDialog>
+#include <QLineEdit>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QGroupBox>
+#include <QPushButton>
+#include <QDebug>
 
 ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 			: QDialog(d, 0, TRUE, Qt::WDestructiveClose)

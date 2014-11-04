@@ -20,21 +20,22 @@
 
 #include "component.h"
 
-#include <QtGui>
-#include <QLabel>
 #include <QDialog>
-#include <QLineEdit>
-#include <QCheckBox>
-#include <QRegExp>
-#include <QComboBox>
-#include <QPushButton>
-#include <QDir>
-#include <QVBoxLayout>
 
 class Schematic;
+
 class QValidator;
 class QIntValidator;
 class QRegExpValidator;
+class QTableWidget;
+class QTableWidgetItem;
+class QLabel;
+class QLineEdit;
+class QCheckBox;
+class QRegExp;
+class QComboBox;
+class QPushButton;
+class QVBoxLayout;
 
 
 class ComponentDialog : public QDialog {
