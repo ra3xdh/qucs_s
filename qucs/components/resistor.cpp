@@ -56,7 +56,7 @@ Component* Resistor::newOne()
 
 QString Resistor::spice_netlist()
 {
-    QString s = SpiceModel + Name;
+    QString s=check_spice_refdes();
 
     // output all node names
     foreach(Port *p1, Ports) {

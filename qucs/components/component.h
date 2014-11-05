@@ -89,6 +89,7 @@ protected:
   virtual QString spice_netlist();
   virtual QString vhdlCode(int);
   virtual QString verilogCode(int);
+  QString check_spice_refdes();
 
   int  analyseLine(const QString&, int);
   bool getIntegers(const QString&, int *i1=0, int *i2=0, int *i3=0,

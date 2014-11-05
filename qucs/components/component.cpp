@@ -630,6 +630,16 @@ QString Component::netlist()
   return s + '\n';
 }
 
+QString Component::check_spice_refdes() // If starting letters of the component name
+{                                       // match spice model (i.e. R1, C1, L1)rerurns Name.
+                                        // Otherwise returns unique Spice Refdes (Name+SpiceModel)
+    if (Name.startsWith(SpiceModel,Qt::CaseInsensitive)) {
+        return Name;
+    } else {
+        return (SpiceModel + Name);
+    }
+}
+
 QString Component::spice_netlist()
 {
     QString s = SpiceModel+Name;

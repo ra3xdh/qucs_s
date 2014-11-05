@@ -73,7 +73,8 @@ vRect::~vRect()
 
 QString vRect::spice_netlist()
 {
-    QString s = SpiceModel + Name + " ";
+    QString s=check_spice_refdes();
+
     foreach(Port *p1, Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
