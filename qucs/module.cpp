@@ -18,7 +18,6 @@
 #include <QString>
 #include <QStringList>
 #include <QList>
-#include <Q3PtrList>
 #include <QDebug>
 
 #include "element.h"
@@ -453,19 +452,24 @@ void Module::unregisterModules (void) {
 // Constructor creates instance of module object.
 Category::Category () {
   Name = "#special";
-  Content.clear ();
+  while(!Content.isEmpty()) {
+    delete Content.takeFirst();
+  }
 }
 
 // Constructor creates named instance of module object.
 Category::Category (const QString name) {
   Name = name;
-  Content.clear ();
+  while(!Content.isEmpty()) {
+    delete Content.takeFirst();
+  }
 }
 
 // Destructor removes instance of module object from memory.
 Category::~Category () {
-  Content.setAutoDelete (true);
-  Content.clear ();
+  while(!Content.isEmpty()) {
+    delete Content.takeFirst();
+  }
 }
 
 // Returns the available category names in a list of strings.
@@ -482,13 +486,14 @@ QStringList Category::getCategories (void) {
 // The function returns the registered modules in the given category
 // as a pointer list.  The pointer list is empty if there is no such
 // category available.
-Q3PtrList<Module> Category::getModules (QString category) {
-  Q3PtrList<Module> res;
+QList<Module *> Category::getModules (QString category) {
+  QList<Module *> res;
   QList<Category *>::const_iterator it;
   for (it = Category::Categories.constBegin();
        it != Category::Categories.constEnd(); it++) {
-    if (category == (*it)->Name)
+    if (category == (*it)->Name) {
       res = (*it)->Content;
+    }
   }
   return res;
 }
