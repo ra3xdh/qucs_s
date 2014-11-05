@@ -18,6 +18,7 @@
 #ifndef MODULE_H
 #define MODULE_H
 
+#include <QList>
 #include <Q3PtrList>
 #include <QHash>
 #include <QMap>
@@ -60,7 +61,7 @@ class Category
   ~Category ();
 
  public:
-  static Q3PtrList<Category> Categories;
+  static QList<Category *> Categories;
 
  public:
   static QStringList getCategories (void);
