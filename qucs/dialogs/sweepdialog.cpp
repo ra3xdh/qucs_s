@@ -125,8 +125,9 @@ void SweepDialog::slotNewValue(int)
 {
   DataX *pD = pGraph->cPointsX.first();
   int Factor = 1, Index = 0;
-  for(mySpinBox *pb = BoxList.first(); pb!=0; pb = BoxList.next()) {
-    Index  += pb->value() * Factor;
+  QList<mySpinBox *>::const_iterator it;
+  for(it = BoxList.constBegin(); it != BoxList.constEnd(); it++) {
+    Index  += (*it)->value() * Factor;
     Factor *= pD->count;
   }
   Index *= 2;  // because of complex values
