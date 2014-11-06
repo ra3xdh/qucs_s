@@ -733,6 +733,27 @@ void Schematic::paintSchToViewpainter(ViewPainter *p, bool printAll, bool toImag
       }
         }
       }
+
+    if(showBias > 0) {  // show DC bias points in schematic ?
+      int x, y, z;
+      for(Node* pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
+        if(pn->Name.isEmpty()) continue;
+        x = pn->cx;
+        y = pn->cy + 4;
+        z = pn->x1;
+        if(z & 1) x -= p->Painter->fontMetrics().width(pn->Name);
+        if(!(z & 2)) {
+          y -= (p->LineSpacing>>1) + 4;
+          if(z & 1) x -= 4;
+          else x += 4;
+        }
+        if(z & 0x10)
+          p->Painter->setPen(Qt::darkGreen);  // green for currents
+        else
+          p->Painter->setPen(Qt::blue);   // blue for voltages
+        p->drawText(pn->Name, x, y);
+      }
+    }
 }
 
 // -----------------------------------------------------------
