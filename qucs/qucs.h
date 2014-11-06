@@ -20,8 +20,8 @@
 
 #include <QMainWindow>
 #include <QString>
-#include <Q3PtrList>
 #include <QHash>
+#include <QStack>
 
 class QucsDoc;
 class Schematic;
@@ -124,7 +124,6 @@ public slots:
 
   // for menu that appears by right click in content ListView
   void slotShowContentMenu(const QPoint &);
-  //void slotShowContentMenu(Q3ListViewItem*, const QPoint&, int);
   void slotCMenuOpen();
   void slotCMenuCopy();
   void slotCMenuRename();
@@ -195,7 +194,7 @@ private:
   QComboBox       *CompChoose;
 
 // ********** Properties ************************************************
-  Q3PtrList<QString> HierarchyHistory; // keeps track of "go into subcircuit"
+  QStack<QString> HierarchyHistory; // keeps track of "go into subcircuit"
   QString  QucsFileFilter;
 
 // ********** Methods ***************************************************

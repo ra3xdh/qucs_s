@@ -126,7 +126,6 @@ QucsApp::QucsApp()
   viewBrowseDock->setOn(true);
   slotViewOctaveDock(false);
   initCursorMenu();
-  HierarchyHistory.setAutoDelete(true);
   Module::registerModules ();
 
   // default settings of the printer
@@ -1902,11 +1901,8 @@ void QucsApp::slotChangeView(QWidget *w)
   Doc->becomeCurrent(true);
   view->drawn = false;
 
-  if(!HierarchyHistory.isEmpty())
-    if(*(HierarchyHistory.getLast()) != "*") {
-      HierarchyHistory.clear();   // no subcircuit history anymore
-      popH->setEnabled(false);
-    }
+  HierarchyHistory.clear();
+  popH->setEnabled(false);
 }
 
 // --------------------------------------------------------------
@@ -2194,18 +2190,12 @@ void QucsApp::slotIntoHierarchy()
 
   Schematic *Doc = (Schematic*)DocumentTab->currentPage();
   Component *pc = Doc->searchSelSubcircuit();
-  if(pc == 0) return;
-
-  QString *ps = new QString("*");
-  HierarchyHistory.append(ps);    // sign not to clear HierarchyHistory
+  if(pc == 0) { return; }
 
   QString s = pc->getSubcircuitFile();
-  if(!gotoPage(s)) {
-    HierarchyHistory.remove();
-    return;
-  }
+  if(!gotoPage(s)) { return; }
 
-  *(HierarchyHistory.getLast()) = Doc->DocName; // remember for the way back
+  HierarchyHistory.push(Doc->DocName); //remember for the way back
   popH->setEnabled(true);
 }
 
@@ -2215,19 +2205,18 @@ void QucsApp::slotPopHierarchy()
 {
   editText->setHidden(true); // disable text edit of component property
 
-  if(HierarchyHistory.count() == 0) return;
+  if(HierarchyHistory.size() == 0) return;
 
-  QString Doc = *(HierarchyHistory.getLast());
-  *(HierarchyHistory.last()) = "*";  // sign not to clear HierarchyHistory
+  QString Doc = HierarchyHistory.pop();
 
   if(!gotoPage(Doc)) {
-    *(HierarchyHistory.getLast()) = Doc;
+    HierarchyHistory.push(Doc);
     return;
   }
 
-  HierarchyHistory.remove();
-  if(HierarchyHistory.count() == 0)
+  if(HierarchyHistory.size() == 0) {
     popH->setEnabled(false);
+  }
 }
 
 // --------------------------------------------------------------
