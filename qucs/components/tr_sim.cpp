@@ -106,14 +106,12 @@ Element* TR_Sim::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString TR_Sim::spice_netlist()
 {
     QString s = SpiceModel;
-    QString val,unit;
+    QString unit;
     double Tstart,Tstop,Npoints,Tstep,fac;
 
-    val = Props.at(1)->Value;
-    str2num(val,Tstart,unit,fac);
+    str2num(Props.at(1)->Value,Tstart,unit,fac); // Calculate Time Step
     Tstart *= fac;
-    val = Props.at(2)->Value;
-    str2num(val,Tstop,unit,fac);
+    str2num(Props.at(2)->Value,Tstop,unit,fac);
     Tstop *= fac;
     Npoints = Props.at(3)->Value.toDouble();
     Tstep = (Tstop-Tstart)/Npoints;

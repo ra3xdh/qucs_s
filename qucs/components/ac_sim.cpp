@@ -100,35 +100,27 @@ void AC_Sim::recreate(Schematic*)
 QString AC_Sim::spice_netlist()
 {
     QString s = SpiceModel + " ";
-    if (Props.at(0)->Value=="log") {
-        s += "DEC ";
-        QString unit;
-        QString tmp = Props.at(3)->Value;
-        double Np,Fstart,Fstop,fac = 1.0;
-        str2num(tmp,Np,unit,fac);
-        Np = Np*fac;
-        tmp = Props.at(1)->Value;
-        str2num(tmp,Fstart,unit,fac);
-        Fstart = Fstart*fac;
-        tmp = Props.at(2)->Value;
-        str2num(tmp,Fstop,unit,fac);
-        Fstop = Fstop*fac;
-        double Nd = ceil(log10(Fstop/Fstart));
-        double Npd = ceil(Np/Nd);
-        s += QString::number(Npd) + " ";
-    } else {
-        s += "LIN ";
-        s += Props.at(3)->Value + " ";
-    }
-    QString start = Props.at(1)->Value;
-    QString stop = Props.at(2)->Value;
     QString unit;
+    if (Props.at(0)->Value=="log") { // convert points number for spice compatibility
+        double Np,Fstart,Fstop,fac = 1.0;
+        str2num(Props.at(3)->Value,Np,unit,fac); // Points number
+        Np *= fac;
+        str2num(Props.at(1)->Value,Fstart,unit,fac);
+        Fstart *= fac;
+        str2num(Props.at(2)->Value,Fstop,unit,fac);
+        Fstop *= fac;
+        double Nd = ceil(log10(Fstop/Fstart)); // number of decades
+        double Npd = ceil(Np/Nd); // points per decade
+        s += QString("DEC %1 ").arg(Npd);
+    } else {  // no need conversion
+        s += QString("LIN %1 ").arg(Props.at(3)->Value);
+    }
     double Fstart,Fstop,fac;
-    str2num(start,Fstart,unit,fac);
-    Fstart *= fac;
-    str2num(stop,Fstop,unit,fac);
+    str2num(Props.at(1)->Value,Fstart,unit,fac); // Start freq.
+    Fstart *=fac;
+    str2num(Props.at(2)->Value,Fstop,unit,fac); // Stop freq.
     Fstop *=fac;
-    s += QString::number(Fstart) + " " + QString::number(Fstop) + " \n";
+    s += QString("%1 %2 \n").arg(Fstart).arg(Fstop);
     return s;
 
 }

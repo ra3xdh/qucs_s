@@ -70,12 +70,10 @@ QString Inductor::spice_netlist()
         s += " "+ nam;   // node names
     }
 
-    QString val = Props.at(0)->Value;
     double Ind,fac;
     QString unit;
-    str2num(val,Ind,unit,fac);
-    Ind *=fac;
-    s += " "+QString::number(Ind) + "\n";
+    str2num(Props.at(0)->Value,Ind,unit,fac);
+    s += QString(" %1\n").arg(Ind*fac);
 
     return s;
 }

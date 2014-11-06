@@ -17,6 +17,7 @@
 
 #include "volt_dc.h"
 #include "node.h"
+#include "main.h"
 
 
 Volt_dc::Volt_dc()
@@ -66,9 +67,10 @@ QString Volt_dc::spice_netlist()
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }
-    QString val = Props.at(0)->Value;
-    val.replace("M","Meg",Qt::CaseSensitive).remove(' ').remove("V").toUpper();
-    s += " DC " + val + "\n";
+    QString unit;
+    double Volt,fac;
+    str2num(Props.at(0)->Value,Volt,unit,fac);
+    s += QString(" DC %1\n").arg(Volt*fac);
     return s;
 }
 

@@ -77,33 +77,25 @@ Element* Volt_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString Volt_ac::spice_netlist()
 {
-    QString s = SpiceModel + Name + " ";
+    QString s=check_spice_refdes();
     foreach(Port *p1, Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }
-    s += " SIN(0 ";
+
     double freq,volts,fac;
     QString unit;
 
-    QString val = Props.at(0)->Value;
-    str2num(val,volts,unit,fac);
+    str2num(Props.at(0)->Value,volts,unit,fac);
     volts *=fac;
-    s += QString::number(volts) + " ";
 
-    val = Props.at(1)->Value;
-    str2num(val,freq,unit,fac);
+    str2num(Props.at(1)->Value,freq,unit,fac);
     freq *=fac;
-    s += QString::number(freq) + " 0 ";
 
     QString theta = Props.at(3)->Value;
     theta.remove(' ');
-    if (!theta.isEmpty()) {
-        s += theta;
-    } else {
-        s += "0";
-    }
-    s += ")\n";
+    if (theta.isEmpty()) theta="0";
+    s += QString(" SIN(0 %1 %2 0 %3)\n").arg(volts).arg(freq).arg(theta);
     return s;
 }

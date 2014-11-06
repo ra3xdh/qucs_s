@@ -65,13 +65,12 @@ QString Resistor::spice_netlist()
         s += " "+ nam;   // node names
     }
 
-    QString val = Props.at(0)->Value;
     QString unit;
     double R,fac;
-    str2num(val,R,unit,fac);
-    s += " " + QString::number(R*fac);
+    str2num(Props.at(0)->Value,R,unit,fac);
+    s += QString(" %1\n").arg(R*fac);
 
-    return s+'\n';
+    return s;
 }
 
 // -------------------------------------------------------
