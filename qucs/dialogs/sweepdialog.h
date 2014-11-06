@@ -20,7 +20,6 @@
 
 #include <QDialog>
 #include <QRegExp>
-#include <Q3PtrList>
 #include <QList>
 
 #include <QSpinBox>
@@ -66,8 +65,8 @@ private:
 
   Graph *pGraph;
   Schematic *Doc;
-  Q3PtrList<Node> NodeList;
-  Q3PtrList<double> ValueList;
+  QList<Node *> NodeList;
+  QList<double *> ValueList;
 };
 
 #endif

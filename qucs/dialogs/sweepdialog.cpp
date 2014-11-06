@@ -116,8 +116,9 @@ SweepDialog::~SweepDialog()
 {
   delete pGraph;
 
-  for(double *p = ValueList.first(); p!=0; p = ValueList.next())
-    delete p;
+  while(!ValueList.isEmpty()) {
+    delete ValueList.takeFirst();
+  }
 }
 
 // ---------------------------------------------------------------
@@ -132,14 +133,12 @@ void SweepDialog::slotNewValue(int)
   }
   Index *= 2;  // because of complex values
 
-  double *p = ValueList.first();
-  for(Node *pn = NodeList.first(); pn!=0; pn = NodeList.next()) {
-    pn->Name = num2str(*(p+Index));
-    if(pn->x1 & 0x10)
-      pn->Name += "A";
-    else
-      pn->Name += "V";
-    p = ValueList.next();
+  QList<Node *>::iterator node_it;
+  QList<double *>::const_iterator value_it;
+  for(node_it = NodeList.begin(); node_it != NodeList.end(); node_it++) {
+    (*node_it)->Name = num2str(*((*value_it)+Index));
+    (*node_it)->Name += ((*node_it)->x1 & 0x10)? "A" : "V";
+    value_it++;
   }
 
   Doc->viewport()->update();
