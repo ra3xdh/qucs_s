@@ -79,40 +79,25 @@ QString vPulse::spice_netlist()
         s += " "+ nam;   // node names
     }
 
-    s += " PULSE(";
+
 
     double T1,T2,Pw,VL,VH,Tr,Tf,fac;
     QString unit;
 
-    QString val = Props.at(0)->Value; // VL
-    str2num(val,VL,unit,fac);
+    str2num(Props.at(0)->Value,VL,unit,fac); // VL
     VL *= fac;
-    s += QString::number(VL) + " ";
-
-    val = Props.at(1)->Value;
-    str2num(val,VH,unit,fac);
+    str2num(Props.at(1)->Value,VH,unit,fac); // VH
     VH *= fac;
-    s += QString::number(VH) + " ";
-
-    val = Props.at(2)->Value; // Td
-    str2num(val,T1,unit,fac);
+    str2num(Props.at(2)->Value,T1,unit,fac); // Td
     T1 *= fac;
-    s += QString::number(T1) + " ";
-
-    val = Props.at(4)->Value; // Tr
-    str2num(val,Tr,unit,fac);
+    str2num(Props.at(4)->Value,Tr,unit,fac); // Tr
     Tr *= fac;
-    s += QString::number(Tr) + " ";
-
-    val = Props.at(5)->Value; // Tf
-    str2num(val,Tf,unit,fac);
+    str2num(Props.at(5)->Value,Tf,unit,fac); // Tf
     Tf *= fac;
-    s += QString::number(Tf) + " ";
-
-    val = Props.at(3)->Value; // T2
-    str2num(val,T2,unit,fac);
+    str2num(Props.at(3)->Value,T2,unit,fac); //T2
     Pw = T2*fac - T1;
-    s += QString::number(Pw) + " )\n";
+
+    s += QString(" PULSE(%1 %2 %3 %4 %5 %6)\n").arg(VL).arg(VH).arg(T1).arg(Tr).arg(Tf).arg(Pw);
 
     return s;
 }
