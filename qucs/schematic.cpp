@@ -15,9 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
 #include <stdlib.h>
 #include <limits.h>
 
@@ -27,7 +24,6 @@
 #include <QDir>
 #include <QTextStream>
 #include <QDragLeaveEvent>
-#include <Q3StrList>
 #include <Q3PtrList>
 #include <QPixmap>
 #include <QDragEnterEvent>
