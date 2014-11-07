@@ -68,24 +68,24 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
   ParamTable->setSelectionBehavior(QAbstractItemView::SelectRows);
   vbox_param->addWidget(ParamTable);
 
-  SubParameter *pp;
   QTableWidgetItem *item;
-  for(pp = idText->Parameter.first(); pp!=0; pp = idText->Parameter.next()) {
+  QList<SubParameter *>::const_iterator it;
+  for(it = idText->Parameter.constBegin(); it != idText->Parameter.constEnd(); it++) {
     int row = ParamTable->rowCount();
     ParamTable->insertRow(row);
-    item = new QTableWidgetItem((pp->display)? tr("yes") : tr("no"));
+    item = new QTableWidgetItem(((*it)->display)? tr("yes") : tr("no"));
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
     ParamTable->setItem(row, 0, item);
-    item = new QTableWidgetItem(pp->Name.section('=', 0, 0));
+    item = new QTableWidgetItem((*it)->Name.section('=', 0, 0));
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
     ParamTable->setItem(row, 1, item);
-    item = new QTableWidgetItem(pp->Name.section('=', 1, 1));
+    item = new QTableWidgetItem((*it)->Name.section('=', 1, 1));
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
     ParamTable->setItem(row, 2, item);
-    item = new QTableWidgetItem(pp->Description);
+    item = new QTableWidgetItem((*it)->Description);
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
     ParamTable->setItem(row, 3, item);
-    item = new QTableWidgetItem(pp->Type);
+    item = new QTableWidgetItem((*it)->Type);
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
     ParamTable->setItem(row, 4, item);
   }
@@ -313,25 +313,25 @@ void ID_Dialog::slotOk()
     }
 
   QString s;
-  SubParameter *pp = idText->Parameter.first();
+  QList<SubParameter *>::iterator it = idText->Parameter.begin();
   for (int row = 0; row < ParamTable->rowCount(); ++row) {
     s = ParamTable->item(row, 1)->text() + "=" + ParamTable->item(row, 2)->text();
 
-    if (pp) {
-      if (pp->display != (ParamTable->item(row, 0)->text() == tr("yes"))) {
-        pp->display = (ParamTable->item(row, 0)->text() == tr("yes"));
+    if (it != idText->Parameter.end()) {
+      if ((*it)->display != (ParamTable->item(row, 0)->text() == tr("yes"))) {
+        (*it)->display = (ParamTable->item(row, 0)->text() == tr("yes"));
         changed = true;
       }
-      if (pp->Name != s) {
-        pp->Name = s;
+      if ((*it)->Name != s) {
+        (*it)->Name = s;
         changed = true;
       }
-      if (pp->Description != ParamTable->item(row, 3)->text()) {
-        pp->Description = ParamTable->item(row, 3)->text();
+      if ((*it)->Description != ParamTable->item(row, 3)->text()) {
+        (*it)->Description = ParamTable->item(row, 3)->text();
         changed = true;
       }
-      if (pp->Type != ParamTable->item(row, 3)->text()) {
-        pp->Type = ParamTable->item(row, 3)->text();
+      if ((*it)->Type != ParamTable->item(row, 3)->text()) {
+        (*it)->Type = ParamTable->item(row, 3)->text();
         changed = true;
       }
     } else {
@@ -341,15 +341,15 @@ void ID_Dialog::slotOk()
       changed = true;
     }
 
-    pp = idText->Parameter.next();
+    it++;
   }
 
   // if more properties than in ListView -> delete the rest
-  if(pp) {
-    pp = idText->Parameter.prev();
-    idText->Parameter.last();
-    while(pp != idText->Parameter.current())
-      idText->Parameter.remove();
+  if (it != idText->Parameter.end()) {
+    while(it != idText->Parameter.end()) {
+      delete (*it);
+      it++;
+    }
     changed = true;
   }
 

@@ -1504,10 +1504,10 @@ int NumPorts)
     (*tstream) << "\n.Def:" << Type << " " << SubcircuitPortNames.join(" ");
     for(pi = SymbolPaints.first(); pi != 0; pi = SymbolPaints.next())
       if(pi->Name == ".ID ") {
-        SubParameter *pp;
         ID_Text *pid = (ID_Text*)pi;
-        for(pp = pid->Parameter.first(); pp != 0; pp = pid->Parameter.next()) {
-          s = pp->Name; // keep 'Name' unchanged
+        QList<SubParameter *>::const_iterator it;
+        for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
+          s = (*it)->Name; // keep 'Name' unchanged
           (*tstream) << " " << s.replace("=", "=\"") << '"';
         }
         break;
@@ -1548,17 +1548,14 @@ int NumPorts)
       // subcircuit parameters
       for(pi = SymbolPaints.first(); pi != 0; pi = SymbolPaints.next())
         if(pi->Name == ".ID ") {
-          SubParameter *pp;
+          QList<SubParameter *>::const_iterator it;
           ID_Text *pid = (ID_Text*)pi;
-          if(pid->Parameter.first()) {
-            for(pp = pid->Parameter.first(); pp != 0;) {
-              s = pp->Name.section('=', 0,0);
-              QString v = Verilog_Param(pp->Name.section('=', 1,1));
-              (*tstream) << " parameter " << s << " = " << v << ";\n";
-              pp = pid->Parameter.next();
-            }
-            (*tstream) << "\n";
+          for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
+            s = (*it)->Name.section('=', 0,0);
+            QString v = Verilog_Param((*it)->Name.section('=', 1,1));
+            (*tstream) << " parameter " << s << " = " << v << ";\n";
           }
+          (*tstream) << "\n";
           break;
         }
 
@@ -1593,19 +1590,18 @@ int NumPorts)
 
       for(pi = SymbolPaints.first(); pi != 0; pi = SymbolPaints.next())
         if(pi->Name == ".ID ") {
-          SubParameter *pp;
           ID_Text *pid = (ID_Text*)pi;
-          if(pid->Parameter.first()) {
-            (*tstream) << " generic (";
-            for(pp = pid->Parameter.first(); pp != 0;) {
-              s = pp->Name;
-              QString t = pp->Type.isEmpty() ? "real" : pp->Type;
-              (*tstream) << s.replace("=", " : "+t+" := ");
-              pp = pid->Parameter.next();
-              if(pp) (*tstream) << ";\n ";
-            }
-            (*tstream) << ");\n";
+          QList<SubParameter *>::const_iterator it;
+
+          (*tstream) << " generic (";
+
+          for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
+            s = (*it)->Name;
+            QString t = (*it)->Type.isEmpty() ? "real" : (*it)->Type;
+            (*tstream) << s.replace("=", " : "+t+" := ") << ";\n ";
           }
+
+          (*tstream) << ");\n";
           break;
         }
 
