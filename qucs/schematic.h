@@ -28,6 +28,7 @@
 
 #include <Q3ScrollView>
 #include <Q3PtrList>
+#include <QVector>
 #include <QStringList>
 #include <QFileInfo>
 
@@ -139,8 +140,10 @@ public:
   int tmpViewX1, tmpViewY1, tmpViewX2, tmpViewY2;
   int tmpUsedX1, tmpUsedY1, tmpUsedX2, tmpUsedY2;
 
-  Q3PtrList<QString> UndoStack;
-  Q3PtrList<QString> UndoSymbol;    // undo stack for circuit symbol
+  int undoActionIdx;
+  QVector<QString *> undoAction;
+  int undoSymbolIdx;
+  QVector<QString *> undoSymbol;    // undo stack for circuit symbol
 
   QFileInfo getFileInfo (void) { return FileInfo; }
 
