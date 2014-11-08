@@ -414,7 +414,7 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
 {
   ViewPainter Painter;
   Painter.init(p, Scale, -ViewX1, -ViewY1, contentsX(),
-	       contentsY(), 1.0, 1.0, QucsSettings.DrawInAntiAliasing);
+	       contentsY(), QucsSettings.DrawInAntiAliasing);
 
   paintGrid(&Painter, contentsX(), contentsY(),
             visibleWidth(), visibleHeight());

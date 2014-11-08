@@ -33,8 +33,9 @@ ViewPainter::~ViewPainter()
 }
 
 // -------------------------------------------------------------
-void ViewPainter::init(QPainter *p, float Scale_, int DX_, int DY_, int dx_, int dy_,
-    float FontScale_, float PrintScale_, bool DrawInAntiAliasing)
+void ViewPainter::init(QPainter *p, float Scale_, int DX_, int DY_, 
+		       int dx_, int dy_, bool DrawInAntiAliasing, 
+		       float FontScale_, float PrintScale_)
 {
   Painter = p;
   Scale = Scale_;
