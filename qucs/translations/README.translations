@@ -35,7 +35,7 @@ Spanish).  This type translation files may change as the source code
 of Qucs changes as well.
 
 The TS files can be updated by running:
-  $ cd ~/git/qucs/qucs/qucs
+  $ cd ~/git/qucs/qucs/qucs/translations
   $ make qucs_.ts
 
 This target will scan all source files and update the source text(s).

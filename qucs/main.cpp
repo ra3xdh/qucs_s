@@ -888,7 +888,8 @@ int main(int argc, char *argv[])
      #ifdef __APPLE__
      QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
      #else
-     QucsDir = QDir(QucsApplicationPath.replace("/bin",""));
+     QucsDir = QDir(QucsApplicationPath);
+     QucsDir.cdUp();
      #endif
 
   }
