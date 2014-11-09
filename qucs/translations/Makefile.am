@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 #
-# qucs/diagrams/Makefile.am
+# qucs/translations/Makefile.am
 #
 # Automake input file.
 #
@@ -37,13 +37,19 @@ TRANSFILES = $(TRANSLATIONS:.ts=.qm)
 qucs_.ts: $(qucs_SOURCES)
 	@echo "Updating translations...";
 	@list='$(TRANSLATIONS)'; for file in $$list; do \
-	  $(LUPDATE) `$(PATHXFORM) $(srcdir)/*.cpp $(srcdir)/paintings/*.cpp \
-	  $(srcdir)/diagrams/*.cpp $(srcdir)/components/*.cpp \
-	  $(srcdir)/dialogs/*.cpp  $(top_srcdir)/qucs-help/*.cpp \
-	  $(top_srcdir)/qucs-edit/*.cpp $(top_srcdir)/qucs-filter/*.cpp \
-	  $(top_srcdir)/qucs-transcalc/*.cpp $(top_srcdir)/qucs-lib/*.cpp \
+	  $(LUPDATE) `$(PATHXFORM) \
+	  $(top_srcdir)/qucs/*.cpp \
+	  $(top_srcdir)/qucs/paintings/*.cpp \
+	  $(top_srcdir)/qucs/diagrams/*.cpp \
+	  $(top_srcdir)/qucs/components/*.cpp \
+	  $(top_srcdir)/qucs/dialogs/*.cpp  \
+	  $(top_srcdir)/qucs-help/*.cpp \
+	  $(top_srcdir)/qucs-edit/*.cpp \
+	  $(top_srcdir)/qucs-filter/*.cpp \
+	  $(top_srcdir)/qucs-transcalc/*.cpp \
+	  $(top_srcdir)/qucs-lib/*.cpp \
 	  $(top_srcdir)/qucs-attenuator/*.cpp` \
-	  -locations relative -ts $(srcdir)/$$file; \
+	  -locations relative -ts $(top_srcdir)/qucs/translations/$$file; \
 	done
 
 .ts.qm:
