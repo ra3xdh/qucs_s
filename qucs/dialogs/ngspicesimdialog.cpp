@@ -62,7 +62,8 @@ NgspiceSimDialog::~NgspiceSimDialog()
 void NgspiceSimDialog::slotSimulate()
 {
     int num=0;
-    QStringList vars,sims;
+    sims.clear();
+    vars.clear();
     QString tmp_path = QDir::homePath()+"/.qucs/spice4qucs.cir";
     QFile spice_file(tmp_path);
     if (spice_file.open(QFile::WriteOnly)) {
@@ -82,7 +83,7 @@ void NgspiceSimDialog::slotSimulate()
 void NgspiceSimDialog::startNgSpice(QString netlist)
 {
     buttonStopSim->setEnabled(true);
-    ngspice->setWorkingDirectory(QDir::convertSeparators(QDir::homePath()+"/.qucs/"));
+    ngspice->setWorkingDirectory(QDir::convertSeparators(QDir::homePath()+"/.qucs/spice4qucs"));
     ngspice->start("ngspice "+ netlist);
 }
 
@@ -100,4 +101,35 @@ void NgspiceSimDialog::slotProcessNgSpiceOutput(int exitCode)
     QString out = ngspice->readAllStandardOutput();
     editSimConsole->clear();
     editSimConsole->append(out);
+    // Set temporary safe output name
+    convertToQucsData(Sch->DocName+".s4q.dat");
+}
+
+void NgspiceSimDialog::convertToQucsData(const QString &qucs_dataset)
+{
+    QFile dataset(qucs_dataset);
+    if (dataset.open(QFile::WriteOnly)) {
+        QTextStream ds_stream(&dataset);
+
+        ds_stream<<"Qucs Dataset "PACKAGE_VERSION">\n";
+
+        QString sim;
+        foreach(sim,sims) {
+            QString indep;
+            if (sim=="tran") {
+                indep = "time";
+            } else if (sim=="ac") {
+                indep = "frequency";
+            }
+            ds_stream<<QString("<indep %1>\n").arg(indep);
+            ds_stream<<"</indep>\n";
+            QString var;
+            foreach (var,vars) {
+                ds_stream<<QString("<dep %1.Vt %2>\n").arg(var).arg(indep);
+                ds_stream<<"</dep>/n";
+            }
+        }
+
+        dataset.close();
+    }
 }

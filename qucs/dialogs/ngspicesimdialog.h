@@ -34,9 +34,11 @@ private:
     QPushButton *buttonStopSim;
 
     QTextEdit *editSimConsole;
+    QStringList sims,vars; // List of simulations and output variables
 
 
     void startNgSpice(QString netlist);
+    void convertToQucsData(const QString &qucs_dataset);
 
 public:
     explicit NgspiceSimDialog(Schematic *sch,QWidget *parent = 0);
