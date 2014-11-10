@@ -1,5 +1,5 @@
 /***************************************************************************
-                           ngspicesimdialog.cpp
+                           ngspicesimdialog.h
                              ----------------
     begin                : Sun Nov 9 2014
     copyright            : (C) 2014 by Vadim Kuznetsov
@@ -34,9 +34,13 @@ private:
     QPushButton *buttonStopSim;
 
     QTextEdit *editSimConsole;
-    QStringList sims,vars; // List of simulations and output variables
+    QStringList sims, // Lists of simulations,
+                vars, // output variables,
+                output_files; // and ngspice output files
 
 
+    void createSpiceNetlist(QTextStream& stream, int NumPorts,QStringList& simulations, QStringList& vars,
+                                          QStringList &outputs);
     void startNgSpice(QString netlist);
     void convertToQucsData(const QString &qucs_dataset);
 

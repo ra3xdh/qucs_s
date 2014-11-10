@@ -68,7 +68,7 @@ void NgspiceSimDialog::slotSimulate()
     QFile spice_file(tmp_path);
     if (spice_file.open(QFile::WriteOnly)) {
         QTextStream stream(&spice_file);
-        Sch->createSpiceNetlist(stream,num,sims,vars);
+        createSpiceNetlist(stream,num,sims,vars,output_files);
         spice_file.close();
     }
     qDebug()<<sims<<vars;
@@ -113,23 +113,110 @@ void NgspiceSimDialog::convertToQucsData(const QString &qucs_dataset)
 
         ds_stream<<"Qucs Dataset "PACKAGE_VERSION">\n";
 
-        QString sim;
-        foreach(sim,sims) {
-            QString indep;
+        QString sim,indep;
+        QStringList indep_vars;
+        /*foreach(sim,sims) { // extract independent vars from simulations list
             if (sim=="tran") {
-                indep = "time";
+                indep_vars<<"time";
             } else if (sim=="ac") {
-                indep = "frequency";
+                indep_vars<<"frequency";
             }
-            ds_stream<<QString("<indep %1>\n").arg(indep);
+            ds_stream<<QString("<indep %1>\n").arg(indep_vars.last());
             ds_stream<<"</indep>\n";
+        }*/
+
+        /*foreach (indep,indep_vars) { // form dependent vars
             QString var;
             foreach (var,vars) {
                 ds_stream<<QString("<dep %1.Vt %2>\n").arg(var).arg(indep);
-                ds_stream<<"</dep>/n";
+                ds_stream<<"</dep>\n";
             }
-        }
+        }*/
+
+        /*QString ng_spice_output_filename;
+        foreach(ng_spice_output_filename,output_files) {
+            QFile ofile(ng_spice_output_filename);
+            if (ofile.open(QFile::ReadOnly)) {
+
+                ofile.close();
+            }
+        }*/
 
         dataset.close();
     }
+}
+
+
+void NgspiceSimDialog::createSpiceNetlist(QTextStream& stream, int NumPorts,QStringList& simulations, QStringList& vars,
+                                      QStringList &outputs)
+{
+    if(!Sch->prepareSpiceNetlist(stream)) return; // Unable to perform ngspice simulation
+
+    QString s;
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+      if(Sch->isAnalog &&
+         !(pc->isSimulation) &&
+         !(pc->isProbe)) {
+        s = pc->getSpiceNetlist();
+        stream<<s;
+      }
+    }
+
+    // determine which simulations are in use
+    simulations.clear();
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+       if(pc->isSimulation) {
+           s = pc->getSpiceNetlist();
+           QString sim_typ = pc->Model;
+           if (sim_typ==".AC") simulations.append("ac");
+           if (sim_typ==".TR") simulations.append("tran");
+           if (sim_typ==".DC") simulations.append("dc");
+           stream<<s;
+       }
+    }
+
+    // set variable names for named nodes and wires
+    vars.clear();
+    for(Node *pn = Sch->DocNodes.first(); pn != 0; pn = Sch->DocNodes.next()) {
+      if(pn->Label != 0) {
+          if (!vars.contains(pn->Label->Name)) {
+              vars.append(pn->Label->Name);
+          }
+      }
+    }
+    for(Wire *pw = Sch->DocWires.first(); pw != 0; pw = Sch->DocWires.next()) {
+      if(pw->Label != 0) {
+          if (!vars.contains(pw->Label->Name)) {
+              vars.append(pw->Label->Name);
+          }
+      }
+    }
+    vars.sort();
+    qDebug()<<vars;
+
+    stream<<".control\n"          //execute simulations
+          <<"set filetype=ascii\n"
+          <<"run\n";
+
+    QFileInfo inf(Sch->DocName);
+    QString basenam = inf.baseName();
+
+    QString sim;                 // see results
+    outputs.clear();
+    foreach (sim,simulations) {
+        QString nod;
+        foreach (nod,vars) {
+            QString filename = QString("%1_%2_%3.txt").arg(basenam).arg(sim).arg(nod);
+            QString write_str = QString("write %1 %2.v(%3)\n").arg(filename).arg(sim).arg(nod);
+            stream<<write_str;
+            outputs.append(filename);
+        }
+        stream<<endl;
+    }
+
+    stream<<"exit\n"
+          <<".endc\n";
+
+    stream<<".END\n";
+
 }
