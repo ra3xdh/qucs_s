@@ -34,6 +34,8 @@ private:
     QPushButton *buttonStopSim;
 
     QTextEdit *editSimConsole;
+
+    QString workdir;
     QStringList sims, // Lists of simulations,
                 vars, // output variables,
                 output_files; // and ngspice output files

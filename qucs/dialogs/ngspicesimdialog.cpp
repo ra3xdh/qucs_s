@@ -26,6 +26,8 @@ NgspiceSimDialog::NgspiceSimDialog(Schematic *sch,QWidget *parent) :
 {
     Sch = sch;
 
+    workdir = QDir::convertSeparators(QDir::homePath()+"/.qucs/spice4qucs");
+
     ngspice = new QProcess(this);
     ngspice->setProcessChannelMode(QProcess::MergedChannels);
     connect(ngspice,SIGNAL(finished(int)),this,SLOT(slotProcessNgSpiceOutput(int)));
@@ -64,7 +66,7 @@ void NgspiceSimDialog::slotSimulate()
     int num=0;
     sims.clear();
     vars.clear();
-    QString tmp_path = QDir::homePath()+"/.qucs/spice4qucs.cir";
+    QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs.cir");
     QFile spice_file(tmp_path);
     if (spice_file.open(QFile::WriteOnly)) {
         QTextStream stream(&spice_file);
@@ -83,7 +85,7 @@ void NgspiceSimDialog::slotSimulate()
 void NgspiceSimDialog::startNgSpice(QString netlist)
 {
     buttonStopSim->setEnabled(true);
-    ngspice->setWorkingDirectory(QDir::convertSeparators(QDir::homePath()+"/.qucs/spice4qucs"));
+    ngspice->setWorkingDirectory(workdir);
     ngspice->start("ngspice "+ netlist);
 }
 
@@ -102,7 +104,7 @@ void NgspiceSimDialog::slotProcessNgSpiceOutput(int exitCode)
     editSimConsole->clear();
     editSimConsole->append(out);
     // Set temporary safe output name
-    convertToQucsData(Sch->DocName+".s4q.dat");
+    convertToQucsData(workdir+"/ngspice.s4q.dat");
 }
 
 void NgspiceSimDialog::convertToQucsData(const QString &qucs_dataset)
@@ -115,7 +117,7 @@ void NgspiceSimDialog::convertToQucsData(const QString &qucs_dataset)
 
         QString sim,indep;
         QStringList indep_vars;
-        /*foreach(sim,sims) { // extract independent vars from simulations list
+        foreach(sim,sims) { // extract independent vars from simulations list
             if (sim=="tran") {
                 indep_vars<<"time";
             } else if (sim=="ac") {
@@ -123,15 +125,15 @@ void NgspiceSimDialog::convertToQucsData(const QString &qucs_dataset)
             }
             ds_stream<<QString("<indep %1>\n").arg(indep_vars.last());
             ds_stream<<"</indep>\n";
-        }*/
+        }
 
-        /*foreach (indep,indep_vars) { // form dependent vars
+        foreach (indep,indep_vars) { // form dependent vars
             QString var;
             foreach (var,vars) {
                 ds_stream<<QString("<dep %1.Vt %2>\n").arg(var).arg(indep);
                 ds_stream<<"</dep>\n";
             }
-        }*/
+        }
 
         /*QString ng_spice_output_filename;
         foreach(ng_spice_output_filename,output_files) {
@@ -205,12 +207,15 @@ void NgspiceSimDialog::createSpiceNetlist(QTextStream& stream, int NumPorts,QStr
     outputs.clear();
     foreach (sim,simulations) {
         QString nod;
+        QString nods;
+        nods.clear();
         foreach (nod,vars) {
-            QString filename = QString("%1_%2_%3.txt").arg(basenam).arg(sim).arg(nod);
-            QString write_str = QString("write %1 %2.v(%3)\n").arg(filename).arg(sim).arg(nod);
-            stream<<write_str;
-            outputs.append(filename);
+            nods += QString("%1.v(%2) ").arg(sim).arg(nod);
         }
+        QString filename = QString("%1_%2.txt").arg(basenam).arg(sim);
+        QString write_str = QString("write %1 %2\n").arg(filename).arg(nods);
+        stream<<write_str;
+        outputs.append(filename);
         stream<<endl;
     }
 
