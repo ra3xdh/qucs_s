@@ -117,6 +117,39 @@ void NgspiceSimDialog::convertToQucsData(const QString &qucs_dataset)
 
         QString sim,indep;
         QStringList indep_vars;
+
+        QList< QList<double> > sim_points;
+
+        QString ngspice_output_filename;
+        foreach(ngspice_output_filename,output_files) {
+            QFile ofile(workdir+QDir::separator()+ngspice_output_filename);
+            if (ofile.open(QFile::ReadOnly)) {
+                QTextStream ngsp_data(&ofile);
+                bool start_values_sec = false;
+                while (!ngsp_data.atEnd()) {
+                    QString lin = ngsp_data.readLine();
+                    if (!lin.isEmpty()) {
+                        if (lin=="Values:") {
+                            start_values_sec = true;
+                            continue;
+                        }
+                        if (start_values_sec) {
+                            QList<double> sim_point;
+                            QRegExp sep("[ \t]");
+                            double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble();
+                            sim_point.append(indep_val);
+                            for (int i=0;i<vars.count();i++) {
+                                double dep_val = ngsp_data.readLine().remove(sep).toDouble();
+                                sim_point.append(dep_val);
+                            }
+                            sim_points.append(sim_point);
+                        }
+                    }
+                }
+                ofile.close();
+            }
+        }
+
         foreach(sim,sims) { // extract independent vars from simulations list
             if (sim=="tran") {
                 indep_vars<<"time";
@@ -124,6 +157,11 @@ void NgspiceSimDialog::convertToQucsData(const QString &qucs_dataset)
                 indep_vars<<"frequency";
             }
             ds_stream<<QString("<indep %1>\n").arg(indep_vars.last());
+            QList<double> sim_point;
+            foreach (sim_point,sim_points) {
+                ds_stream<<QString::number(sim_point.at(0),'e',12)<<endl;
+            }
+
             ds_stream<<"</indep>\n";
         }
 
@@ -134,15 +172,6 @@ void NgspiceSimDialog::convertToQucsData(const QString &qucs_dataset)
                 ds_stream<<"</dep>\n";
             }
         }
-
-        /*QString ng_spice_output_filename;
-        foreach(ng_spice_output_filename,output_files) {
-            QFile ofile(ng_spice_output_filename);
-            if (ofile.open(QFile::ReadOnly)) {
-
-                ofile.close();
-            }
-        }*/
 
         dataset.close();
     }
