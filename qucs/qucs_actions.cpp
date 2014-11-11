@@ -1556,7 +1556,7 @@ void QucsApp::slotLoadModule()
       QHashIterator<QString, Module *> it( Module::Modules );
       while(it.hasNext()) {
         it.next();
-        if (it.value()->category == QObject::tr("verlog-a user devices")) {
+        if (it.value()->category == QObject::tr("verilog-a user devices")) {
           removeList << it.key();
           delete it.value();
         }
