@@ -51,7 +51,7 @@ qucs_.ts: $(qucs_SOURCES)
 	  $(top_srcdir)/qucs-transcalc/*.cpp \
 	  $(top_srcdir)/qucs-lib/*.cpp \
 	  $(top_srcdir)/qucs-attenuator/*.cpp` \
-	  -locations relative -ts $(top_srcdir)/qucs/translations/$$file; \
+	  -locations relative -ts $(srcdir)/$$file; \
 	done
 
 .ts.qm:
