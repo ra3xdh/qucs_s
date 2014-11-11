@@ -17,7 +17,6 @@
  */
 #include "fa2b.h"
 #include "node.h"
-#include "main.h"
 #include "misc.h"
 
 fa2b::fa2b()

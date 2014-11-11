@@ -15,7 +15,6 @@
  ***************************************************************************/
 #include "ecvs.h"
 #include "schematic.h"
-#include "main.h"
 
 ecvs::ecvs()
 {

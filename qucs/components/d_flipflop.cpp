@@ -16,7 +16,6 @@
  ***************************************************************************/
 #include "d_flipflop.h"
 #include "node.h"
-#include "main.h"
 #include "misc.h"
 
 D_FlipFlop::D_FlipFlop()

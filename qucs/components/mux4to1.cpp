@@ -17,7 +17,6 @@
  */
 #include "mux4to1.h"
 #include "node.h"
-#include "main.h"
 #include "misc.h"
 
 mux4to1::mux4to1()

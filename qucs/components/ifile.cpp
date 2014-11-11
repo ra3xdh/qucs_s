@@ -17,7 +17,6 @@
  ***************************************************************************/
 #include "ifile.h"
 #include "schematic.h"
-#include "main.h"
 #include "misc.h"
 
 iFile::iFile()

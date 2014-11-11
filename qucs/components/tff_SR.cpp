@@ -17,7 +17,6 @@
  */
 #include "tff_SR.h"
 #include "node.h"
-#include "main.h"
 #include "misc.h"
 
 tff_SR::tff_SR()

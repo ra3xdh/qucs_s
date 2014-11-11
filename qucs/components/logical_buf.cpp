@@ -14,7 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "main.h"
 #include "logical_buf.h"
 #include "schematic.h"
 #include "node.h"

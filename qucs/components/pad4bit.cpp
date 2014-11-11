@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include "pad4bit.h"
 #include "node.h"
-#include "main.h"
 
 pad4bit::pad4bit()
 {

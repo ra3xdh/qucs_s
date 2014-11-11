@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include "pad2bit.h"
 #include "node.h"
-#include "main.h"
 
 pad2bit::pad2bit()
 {

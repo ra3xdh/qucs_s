@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include "pad3bit.h"
 #include "node.h"
-#include "main.h"
 
 pad3bit::pad3bit()
 {

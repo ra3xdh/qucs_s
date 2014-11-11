@@ -17,7 +17,6 @@
  */
 #include "comp_1bit.h"
 #include "node.h"
-#include "main.h"
 #include "misc.h"
 
 comp_1bit::comp_1bit()
