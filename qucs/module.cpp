@@ -76,8 +76,8 @@ void Module::registerComponent (QString category, pInfoFunc info) {
 // Returns instantiated component based on the given "Model" name.  If
 // there is no such component registers the function returns NULL.
 Component * Module::getComponent (QString Model) {
-  Module * m = Modules.find(Model).value();
-  if (m) {
+  if ( Modules.contains(Model)) {
+    Module *m = Modules.find(Model).value();
     QString Name;
     char * File;
     QString vaBitmap;
