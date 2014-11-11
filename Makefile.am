@@ -37,6 +37,7 @@ SUBDIRS = \
 	qucs-lib \
 	qucs-rescodes \
 	qucs-transcalc \
+	translations \
 	contrib \
 	$(FILTERV2) \
 	$(RELEASEDIRS)

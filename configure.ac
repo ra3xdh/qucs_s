@@ -814,7 +814,7 @@ AC_CONFIG_FILES([Makefile
     qucs/diagrams/Makefile
     qucs/paintings/Makefile
     qucs/dialogs/Makefile
-    qucs/translations/Makefile])
+    translations/Makefile])
 
 # The incomplete filter-v2 only builds withs -stdlib=libstc++
 # OSX defaults to libstc++. Skip filter-v2 on Darwin.

@@ -22,7 +22,7 @@
 # Boston, MA 02110-1301, USA.
 #
 
-SUBDIRS = components diagrams paintings dialogs octave translations
+SUBDIRS = components diagrams paintings dialogs octave
 
 if COND_WIN32
 bin_SCRIPTS = qucsdigi.bat qucsveri.bat qucsdigilib.bat
@@ -79,13 +79,12 @@ desktopdir = ${prefix}/share/applications
 desktop_DATA = qucs.desktop
 
 
-EXTRA_DIST = $(TRANSLATIONS) $(GENTRANSLATIONS) README.translations \
+EXTRA_DIST = \
 	qucsdigi qucsdigilib qucsdigi.bat qucsdigilib.bat qucsveri qucsveri.bat \
 	$(hicolor16_DATA) $(hicolor22_DATA) $(hicolor32_DATA) $(hicolor48_DATA) \
 	$(hicolor64_DATA) $(hicolor128_DATA) $(hicolor256_DATA) $(hicolor512_DATA) \
 	$(hicolorsc_DATA) $(desktop_DATA)
 
-all-local: $(TRANSLATIONS) $(TRANSFILES)
 
 .h.moc.cpp:
 	$(MOC) -o $@ $<
