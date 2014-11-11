@@ -50,7 +50,8 @@ qucs_.ts: $(qucs_SOURCES)
 	  $(top_srcdir)/qucs-filter/*.cpp \
 	  $(top_srcdir)/qucs-transcalc/*.cpp \
 	  $(top_srcdir)/qucs-lib/*.cpp \
-	  $(top_srcdir)/qucs-attenuator/*.cpp` \
+	  $(top_srcdir)/qucs-attenuator/*.cpp \
+	  $(top_srcdir)/qucs-rescodes/*.cpp` \
 	  -locations relative -ts $(srcdir)/$$file; \
 	done
 
