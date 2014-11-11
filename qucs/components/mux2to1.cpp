@@ -18,6 +18,7 @@
 #include "mux2to1.h"
 #include "node.h"
 #include "main.h"
+#include "misc.h"
 
 mux2to1::mux2to1()
 {

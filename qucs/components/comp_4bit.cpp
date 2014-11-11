@@ -18,6 +18,7 @@
 #include "comp_4bit.h"
 #include "node.h"
 #include "main.h"
+#include "misc.h"
 
 comp_4bit::comp_4bit()
 {

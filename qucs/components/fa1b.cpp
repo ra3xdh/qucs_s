@@ -18,6 +18,7 @@
 #include "fa1b.h"
 #include "node.h"
 #include "main.h"
+#include "misc.h"
 
 fa1b::fa1b()
 {

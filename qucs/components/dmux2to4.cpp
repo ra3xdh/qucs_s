@@ -18,6 +18,7 @@
 #include "dmux2to4.h"
 #include "node.h"
 #include "main.h"
+#include "misc.h"
 
 dmux2to4::dmux2to4()
 {

@@ -17,6 +17,7 @@
 #include "digi_source.h"
 #include "main.h"
 #include "node.h"
+#include "misc.h"
 
 
 Digi_Source::Digi_Source()

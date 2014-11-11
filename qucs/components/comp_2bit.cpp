@@ -18,6 +18,7 @@
 #include "comp_2bit.h"
 #include "node.h"
 #include "main.h"
+#include "misc.h"
 
 comp_2bit::comp_2bit()
 {

@@ -19,6 +19,7 @@
 #include "jk_flipflop.h"
 #include "node.h"
 #include "main.h"
+#include "misc.h"
 
 JK_FlipFlop::JK_FlipFlop()
 {

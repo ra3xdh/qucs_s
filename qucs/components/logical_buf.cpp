@@ -18,6 +18,7 @@
 #include "logical_buf.h"
 #include "schematic.h"
 #include "node.h"
+#include "misc.h"
 
 
 Logical_Buf::Logical_Buf()

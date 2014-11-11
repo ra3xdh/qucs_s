@@ -35,6 +35,7 @@
 #include "main.h"
 #include "qucs.h"
 #include "schematic.h"
+#include "misc.h"
 
 CurveDiagram::CurveDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
 {

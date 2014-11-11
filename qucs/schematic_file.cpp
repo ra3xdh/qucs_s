@@ -40,6 +40,7 @@
 #include "components/verilogfile.h"
 #include "components/libcomp.h"
 #include "module.h"
+#include "misc.h"
 
 
 // Here the subcircuits, SPICE components etc are collected. It must be

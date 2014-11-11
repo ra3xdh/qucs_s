@@ -24,6 +24,7 @@
 #include "schematic.h"
 #include "viewpainter.h"
 #include "module.h"
+#include "misc.h"
 
 #include <QPen>
 #include <QString>

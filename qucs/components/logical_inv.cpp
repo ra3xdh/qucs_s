@@ -18,6 +18,7 @@
 #include "logical_inv.h"
 #include "schematic.h"
 #include "node.h"
+#include "misc.h"
 
 
 Logical_Inv::Logical_Inv()

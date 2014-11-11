@@ -18,6 +18,7 @@
 #include "andor4x3.h"
 #include "node.h"
 #include "main.h"
+#include "misc.h"
 
 andor4x3::andor4x3()
 {

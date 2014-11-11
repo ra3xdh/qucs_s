@@ -18,6 +18,7 @@
 #include "dff_SR.h"
 #include "node.h"
 #include "main.h"
+#include "misc.h"
 
 dff_SR::dff_SR()
 {

@@ -39,7 +39,7 @@ qucs_SOURCES = node.cpp element.cpp qucsdoc.cpp wire.cpp mouseactions.cpp   \
   qucs.cpp main.cpp wirelabel.cpp qucs_init.cpp qucs_actions.cpp            \
   viewpainter.cpp mnemo.cpp schematic.cpp schematic_element.cpp textdoc.cpp \
   schematic_file.cpp syntax.cpp module.cpp octave_window.cpp qrc_qucs.cpp   \
-  messagedock.cpp
+  messagedock.cpp misc.cpp
 
 qrc_qucs.cpp: qucs.qrc
 	$(RCC) -o $@ $<
@@ -53,7 +53,7 @@ qucs_LDADD = components/libcomponents.a diagrams/libdiagrams.a \
   $(X11_LIBS) $(QT_LIBS)
 
 noinst_HEADERS = $(MOCHEADERS) main.h wire.h qucsdoc.h element.h node.h \
-  wirelabel.h viewpainter.h mnemo.h mouseactions.h syntax.h module.h
+  wirelabel.h viewpainter.h mnemo.h mouseactions.h syntax.h module.h misc.h
 
 hicolor16dir = ${prefix}/share/icons/hicolor/16x16/apps
 hicolor16_DATA =  bitmaps/hicolor/16x16/apps/qucs.png

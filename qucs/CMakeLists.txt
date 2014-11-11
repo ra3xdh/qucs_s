@@ -107,7 +107,7 @@ SET(QUCS_SRCS
   module.cpp	schematic_element.cpp	wire.cpp
   mouseactions.cpp qucs_actions.cpp	schematic_file.cpp
   wirelabel.cpp node.cpp qucs_init.cpp
-  syntax.cpp
+  syntax.cpp misc.cpp
   messagedock.cpp
 )
 

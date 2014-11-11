@@ -18,6 +18,7 @@
 #include "andor4x2.h"
 #include "node.h"
 #include "main.h"
+#include "misc.h"
 
 andor4x2::andor4x2()
 {

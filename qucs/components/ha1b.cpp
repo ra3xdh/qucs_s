@@ -18,6 +18,7 @@
 #include "ha1b.h"
 #include "node.h"
 #include "main.h"
+#include "misc.h"
 
 ha1b::ha1b()
 {

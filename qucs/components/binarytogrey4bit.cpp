@@ -18,6 +18,7 @@
 #include "binarytogrey4bit.h"
 #include "node.h"
 #include "main.h"
+#include "misc.h"
 
 binarytogrey4bit::binarytogrey4bit()
 {
