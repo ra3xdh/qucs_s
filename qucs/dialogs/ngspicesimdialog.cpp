@@ -232,28 +232,49 @@ void NgspiceSimDialog::createSpiceNetlist(QTextStream& stream, int NumPorts,QStr
 
 void NgspiceSimDialog::parseNgSpiceSimOutput(QString ngspice_file,QList< QList<double> > &sim_points)
 {
+    QString indep_var;
+    QStringList dep_vars;
+
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream ngsp_data(&ofile);
         bool start_values_sec = false;
+        int NumVars=0;
         while (!ngsp_data.atEnd()) {
+            QRegExp sep("[ \t]");
             QString lin = ngsp_data.readLine();
-            if (!lin.isEmpty()) {
-                if (lin=="Values:") {
-                    start_values_sec = true;
-                    continue;
+            if (lin.isEmpty()) continue;
+            if (lin.contains("No. Variables")) {
+                NumVars=lin.split(sep,QString::SkipEmptyParts).at(2).toInt();
+                qDebug()<<NumVars;
+                continue;
+            }
+            if (lin=="Variables:") {
+                dep_vars.clear();
+                indep_var = ngsp_data.readLine().split(sep,QString::SkipEmptyParts).at(1); // Achtung!!! Kaput!!!
+
+                for (int i=1;i<NumVars;i++) {
+                    lin = ngsp_data.readLine();
+                    QString dep_var = lin.split(sep,QString::SkipEmptyParts).at(1);
+                    qDebug()<<dep_var;
+                    dep_vars.append(dep_var);
                 }
-                if (start_values_sec) {
-                    QList<double> sim_point;
-                    QRegExp sep("[ \t]");
-                    double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble();
-                    sim_point.append(indep_val);
-                    for (int i=0;i<vars.count();i++) {
-                        double dep_val = ngsp_data.readLine().remove(sep).toDouble();
-                        sim_point.append(dep_val);
-                    }
-                    sim_points.append(sim_point);
+                qDebug()<<indep_var<<dep_vars;
+                continue;
+            }
+            if (lin=="Values:") {
+                start_values_sec = true;
+                continue;
+            }
+            if (start_values_sec) {
+                QList<double> sim_point;
+                double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble();
+                sim_point.append(indep_val);
+                for (int i=0;i<vars.count();i++) {
+                    double dep_val = ngsp_data.readLine().remove(sep).toDouble();
+                    sim_point.append(dep_val);
                 }
+                sim_points.append(sim_point);
             }
         }
         ofile.close();
