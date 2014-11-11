@@ -43,7 +43,6 @@ ADD_DEFINITIONS( -DHAVE_CONFIG_H )
 SET(BINARYDIR "${CMAKE_INSTALL_PREFIX}/bin/")
 #SET(BITMAPDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/bitmaps/")
 SET(DOCDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/docs/")
-SET(LANGUAGEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/lang/")
 SET(LIBRARYDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/library/")
 SET(OCTAVEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/octave/")
 
@@ -160,22 +159,7 @@ if(UNIX AND NOT APPLE)
     INSTALL( FILES ${DESKTOP} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
 endif()
 
-#
-# Qucs translations
-#
-FILE(GLOB QucsTRANSLATIONS translations/qucs_*.ts)
 
-#
-# Qt translation
-#
-FILE(GLOB QtTRANSLATIONS translations/qtgeneric_*.ts)
-
-QT4_CREATE_TRANSLATION(LANG_SRCS ${QtTRANSLATIONS} ${QucsTRANSLATIONS})
-
-# apps look into the location below to find translations
-#IF( NOT APPLE )
-INSTALL( FILES ${LANG_SRCS} DESTINATION ${LANGUAGEDIR})
-#ENDIF()
 
 
 #
@@ -210,8 +194,7 @@ ENDIF(APPLE)
 ADD_EXECUTABLE( qucs MACOSX_BUNDLE WIN32
   ${QUCS_SRCS}
   ${QUCS_MOC_SRCS}
-  ${RESOURCES_SRCS}
-  ${LANG_SRCS} )
+  ${RESOURCES_SRCS} )
 
 #
 # Tell CMake which libraries we need to link our executable against.
