@@ -27,6 +27,11 @@ NgspiceSimDialog::NgspiceSimDialog(Schematic *sch,QWidget *parent) :
     Sch = sch;
 
     workdir = QDir::convertSeparators(QDir::homePath()+"/.qucs/spice4qucs");
+    QFileInfo inf(workdir);
+    if (!inf.exists()) {
+        QDir dir;
+        dir.mkpath(workdir);
+    }
 
     ngspice = new QProcess(this);
     ngspice->setProcessChannelMode(QProcess::MergedChannels);
@@ -107,25 +112,42 @@ void NgspiceSimDialog::slotProcessNgSpiceOutput(int exitCode)
     convertToQucsData(workdir+"/ngspice.s4q.dat");
 }
 
+// Reads ngspice simulation results and merges it in single Qucs dataset
 void NgspiceSimDialog::convertToQucsData(const QString &qucs_dataset)
 {
     QFile dataset(qucs_dataset);
     if (dataset.open(QFile::WriteOnly)) {
         QTextStream ds_stream(&dataset);
 
-        ds_stream<<"Qucs Dataset "PACKAGE_VERSION">\n";
+        ds_stream<<"<Qucs Dataset "PACKAGE_VERSION">\n";
 
         QString sim,indep;
         QStringList indep_vars;
 
         QList< QList<double> > sim_points;
+        QStringList var_list;
 
         QString ngspice_output_filename;
-        foreach(ngspice_output_filename,output_files) {
-            parseNgSpiceSimOutput(workdir+QDir::separator()+ngspice_output_filename,sim_points);
+        foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
+            parseNgSpiceSimOutput(workdir+QDir::separator()+ngspice_output_filename,sim_points,var_list);
+            QString indep = var_list.first();
+            ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(sim_points.count()); // output indep var: TODO: parameter sweep
+            QList<double> sim_point;
+            foreach (sim_point,sim_points) {
+                ds_stream<<QString::number(sim_point.at(0),'e',12)<<endl;
+            }
+            ds_stream<<"</indep>\n";
+            for(int i=1;i<var_list.count();i++) { // output dep var
+                ds_stream<<QString("<dep %1 %2>\n").arg(var_list.at(i)).arg(indep);
+                foreach (sim_point,sim_points) {
+                    ds_stream<<QString::number(sim_point.at(i),'e',12)<<endl;
+                }
+                ds_stream<<"</dep>\n";
+            }
+
         }
 
-        foreach(sim,sims) { // extract independent vars from simulations list
+        /*foreach(sim,sims) { // extract independent vars from simulations list
             if (sim=="tran") {
                 indep_vars<<"time";
             } else if (sim=="ac") {
@@ -138,15 +160,15 @@ void NgspiceSimDialog::convertToQucsData(const QString &qucs_dataset)
             }
 
             ds_stream<<"</indep>\n";
-        }
+        }*/
 
-        foreach (indep,indep_vars) { // form dependent vars
+        /*foreach (indep,indep_vars) { // form dependent vars
             QString var;
             foreach (var,vars) {
                 ds_stream<<QString("<dep %1.Vt %2>\n").arg(var).arg(indep);
                 ds_stream<<"</dep>\n";
             }
-        }
+        }*/
 
         dataset.close();
     }
@@ -230,16 +252,14 @@ void NgspiceSimDialog::createSpiceNetlist(QTextStream& stream, int NumPorts,QStr
 
 }
 
-void NgspiceSimDialog::parseNgSpiceSimOutput(QString ngspice_file,QList< QList<double> > &sim_points)
+void NgspiceSimDialog::parseNgSpiceSimOutput(QString ngspice_file,QList< QList<double> > &sim_points,QStringList &var_list)
 {
-    QString indep_var;
-    QStringList dep_vars;
 
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream ngsp_data(&ofile);
         bool start_values_sec = false;
-        int NumVars=0;
+        int NumVars=0; // Number of dep. and indep.variables
         while (!ngsp_data.atEnd()) {
             QRegExp sep("[ \t]");
             QString lin = ngsp_data.readLine();
@@ -250,16 +270,17 @@ void NgspiceSimDialog::parseNgSpiceSimOutput(QString ngspice_file,QList< QList<d
                 continue;
             }
             if (lin=="Variables:") {
-                dep_vars.clear();
-                indep_var = ngsp_data.readLine().split(sep,QString::SkipEmptyParts).at(1); // Achtung!!! Kaput!!!
+                var_list.clear();
+                QString indep_var = ngsp_data.readLine().split(sep,QString::SkipEmptyParts).at(1); // Achtung!!! Vorsicht!!!
+                var_list.append(indep_var);
 
                 for (int i=1;i<NumVars;i++) {
                     lin = ngsp_data.readLine();
                     QString dep_var = lin.split(sep,QString::SkipEmptyParts).at(1);
                     qDebug()<<dep_var;
-                    dep_vars.append(dep_var);
+                    var_list.append(dep_var);
                 }
-                qDebug()<<indep_var<<dep_vars;
+                qDebug()<<var_list;
                 continue;
             }
             if (lin=="Values:") {
