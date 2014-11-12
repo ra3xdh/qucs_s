@@ -59,6 +59,8 @@ private slots:
     void slotSimulate();
     void killThemAll();
     void slotProcessNgSpiceOutput(int exitCode);
+    void slotNgspiceStarted();
+    void slotNgspiceStartError();
     
 };
 

@@ -37,6 +37,8 @@ NgspiceSimDialog::NgspiceSimDialog(Schematic *sch,QWidget *parent) :
     ngspice->setProcessChannelMode(QProcess::MergedChannels);
     connect(ngspice,SIGNAL(finished(int)),this,SLOT(slotProcessNgSpiceOutput(int)));
     connect(this,SIGNAL(destroyed()),this,SLOT(killThemAll()));
+    connect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
+    connect(ngspice,SIGNAL(error(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
 
     buttonSimulate = new QPushButton(tr("Simulate"),this);
     connect(buttonSimulate,SIGNAL(clicked()),this,SLOT(slotSimulate()));
@@ -106,10 +108,23 @@ void NgspiceSimDialog::slotProcessNgSpiceOutput(int exitCode)
 {
     buttonStopSim->setEnabled(false);
     QString out = ngspice->readAllStandardOutput();
-    editSimConsole->clear();
+    //editSimConsole->clear();
     editSimConsole->append(out);
     // Set temporary safe output name
-    convertToQucsData(workdir+"/ngspice.s4q.dat");
+    QFileInfo inf(Sch->DocName);
+    QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
+    convertToQucsData(qucs_dataset);
+}
+
+void NgspiceSimDialog::slotNgspiceStarted()
+{
+    editSimConsole->clear();
+    editSimConsole->append(tr("ngspice started...\n"));
+}
+
+void NgspiceSimDialog::slotNgspiceStartError()
+{
+    editSimConsole->append(tr("ngspice error..."));
 }
 
 // Reads ngspice simulation results and merges it in single Qucs dataset
