@@ -141,10 +141,11 @@ void NgspiceSimDialog::convertToQucsData(const QString &qucs_dataset)
 
         QList< QList<double> > sim_points;
         QStringList var_list;
+        bool isComplex = false;
 
         QString ngspice_output_filename;
         foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
-            parseNgSpiceSimOutput(workdir+QDir::separator()+ngspice_output_filename,sim_points,var_list);
+            parseNgSpiceSimOutput(workdir+QDir::separator()+ngspice_output_filename,sim_points,var_list,isComplex);
             QString indep = var_list.first();
             ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(sim_points.count()); // output indep var: TODO: parameter sweep
             QList<double> sim_point;
@@ -155,7 +156,18 @@ void NgspiceSimDialog::convertToQucsData(const QString &qucs_dataset)
             for(int i=1;i<var_list.count();i++) { // output dep var
                 ds_stream<<QString("<dep %1 %2>\n").arg(var_list.at(i)).arg(indep);
                 foreach (sim_point,sim_points) {
-                    ds_stream<<QString::number(sim_point.at(i),'e',12)<<endl;
+                    if (isComplex) {
+                        double re=sim_point.at(2*(i-1)+1);
+                        double im = sim_point.at(2*i);
+                        QString s;
+                        s += QString::number(re,'e',12);
+                        if (im<0) s += "-j";
+                        else s += "+j";
+                        s += QString::number(fabs(im),'e',12) + "\n";
+                        ds_stream<<s;
+                    } else {
+                        ds_stream<<QString::number(sim_point.at(i),'e',12)<<endl;
+                    }
                 }
                 ds_stream<<"</dep>\n";
             }
@@ -267,19 +279,24 @@ void NgspiceSimDialog::createSpiceNetlist(QTextStream& stream, int NumPorts,QStr
 
 }
 
-void NgspiceSimDialog::parseNgSpiceSimOutput(QString ngspice_file,QList< QList<double> > &sim_points,QStringList &var_list)
+void NgspiceSimDialog::parseNgSpiceSimOutput(QString ngspice_file,QList< QList<double> > &sim_points,QStringList &var_list, bool &isComplex)
 {
-
+    isComplex = false;
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream ngsp_data(&ofile);
+        sim_points.clear();
         bool start_values_sec = false;
         int NumVars=0; // Number of dep. and indep.variables
         while (!ngsp_data.atEnd()) {
-            QRegExp sep("[ \t]");
+            QRegExp sep("[ \t,]");
             QString lin = ngsp_data.readLine();
             if (lin.isEmpty()) continue;
-            if (lin.contains("No. Variables")) {
+            if (lin.contains("Flags")&&lin.contains("complex")) { // output consists of
+                isComplex = true; // complex numbers
+                continue;         // maybe ac_analysis
+            }
+            if (lin.contains("No. Variables")) {  // get number of variables
                 NumVars=lin.split(sep,QString::SkipEmptyParts).at(2).toInt();
                 qDebug()<<NumVars;
                 continue;
@@ -304,11 +321,22 @@ void NgspiceSimDialog::parseNgSpiceSimOutput(QString ngspice_file,QList< QList<d
             }
             if (start_values_sec) {
                 QList<double> sim_point;
-                double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble();
+                double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble(); // only real indep vars
                 sim_point.append(indep_val);
                 for (int i=0;i<vars.count();i++) {
-                    double dep_val = ngsp_data.readLine().remove(sep).toDouble();
-                    sim_point.append(dep_val);
+                    if (isComplex) {
+                        QStringList lst = ngsp_data.readLine().split(sep,QString::SkipEmptyParts);
+                        qDebug()<<lst;
+                        if (lst.count()==2) {
+                            double re_dep_val = lst.at(0).toDouble();  // for complex sim results
+                            double im_dep_val = lst.at(1).toDouble();  // imaginary part follows
+                            sim_point.append(re_dep_val);              // real part
+                            sim_point.append(im_dep_val);
+                        }
+                    } else {
+                        double dep_val = ngsp_data.readLine().remove(sep).toDouble();
+                        sim_point.append(dep_val);
+                    }
                 }
                 sim_points.append(sim_point);
             }

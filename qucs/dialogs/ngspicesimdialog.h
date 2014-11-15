@@ -45,7 +45,7 @@ private:
                                           QStringList &outputs);
     void startNgSpice(QString netlist);
     void convertToQucsData(const QString &qucs_dataset);
-    void parseNgSpiceSimOutput(QString ngspice_file,QList< QList<double> > &sim_points, QStringList &var_list);
+    void parseNgSpiceSimOutput(QString ngspice_file,QList< QList<double> > &sim_points, QStringList &var_list, bool &isComplex);
 
 public:
     explicit NgspiceSimDialog(Schematic *sch,QWidget *parent = 0);
