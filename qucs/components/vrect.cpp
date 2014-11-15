@@ -96,7 +96,7 @@ QString vRect::spice_netlist()
     TH *= fac;
     str2num(Props.at(2)->Value,TL,unit,fac);
     T = TL*fac+TH;
-    s += QString(" PULSE( 0 %1 %2 %3 %4 %5 %6)\n").arg(VH).arg(Td).arg(Tr).arg(Tf).arg(TH).arg(T);
+    s += QString(" DC PULSE( 0 %1 %2 %3 %4 %5 %6) AC %7\n").arg(VH).arg(Td).arg(Tr).arg(Tf).arg(TH).arg(T).arg(VH);
 
     return s;
 }

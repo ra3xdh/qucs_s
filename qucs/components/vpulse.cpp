@@ -97,7 +97,7 @@ QString vPulse::spice_netlist()
     str2num(Props.at(3)->Value,T2,unit,fac); //T2
     Pw = T2*fac - T1;
 
-    s += QString(" PULSE(%1 %2 %3 %4 %5 %6)\n").arg(VL).arg(VH).arg(T1).arg(Tr).arg(Tf).arg(Pw);
+    s += QString(" DC PULSE(%1 %2 %3 %4 %5 %6) AC %7\n").arg(VL).arg(VH).arg(T1).arg(Tr).arg(Tf).arg(Pw).arg(VH);
 
     return s;
 }

@@ -96,6 +96,6 @@ QString Volt_ac::spice_netlist()
     QString theta = Props.at(3)->Value;
     theta.remove(' ');
     if (theta.isEmpty()) theta="0";
-    s += QString(" DC SIN(0 %1 %2 0 %3) AC\n").arg(volts).arg(freq).arg(theta);
+    s += QString(" DC SIN(0 %1 %2 0 %3) AC %4\n").arg(volts).arg(freq).arg(theta).arg(volts);
     return s;
 }
