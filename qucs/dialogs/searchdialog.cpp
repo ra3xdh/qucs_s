@@ -1,21 +1,29 @@
-/***************************************************************************
-                              searchdialog.cpp
-                             ------------------
-    begin                : Sat Apr 01 2006
-    copyright            : (C) 2006 by Michael Margraf
-    email                : michael.margraf@alumni.tu-berlin.de
- ***************************************************************************/
-
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/*
+ * searchdialog.h - implementation of search dialog
+ *
+ * Copyright (C) 2006, Michael Margraf, michael.margraf@alumni.tu-berlin.de
+ * Copyright (C) 2014, Yodalee, lc85301@gmail.com
+ *
+ * This file is part of Qucs
+ *
+ * Qucs is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Qucs.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 #include "searchdialog.h"
+#include "ui_searchdialog.h"
+
 #include "textdoc.h"
 #include "qucs.h"
 
@@ -30,56 +38,19 @@
 #include <QDebug>
 
 
-SearchDialog::SearchDialog(QucsApp *App_)
-            : QDialog(App_, 0, true)
+SearchDialog::SearchDialog(QucsApp *App_) : 
+    QDialog(App_, 0, true),
+    ui(new Ui::SearchDialog)
 {
   App = App_;
+  ui->setupUi(this);
 
-  QVBoxLayout *all = new QVBoxLayout(this);
-  all->setMargin(5);
-
-  QGroupBox *g1 = new QGroupBox(tr("Text to search for"));
-  QVBoxLayout *vbox1 = new QVBoxLayout;
-  SearchEdit = new QLineEdit();
-  vbox1->addWidget(SearchEdit);
-  g1->setLayout(vbox1);
-
-  all->addWidget(g1);
-
-  ReplaceGroup = new QGroupBox(tr("Text to replace with"));
-  QVBoxLayout *vbox2 = new QVBoxLayout;
-  ReplaceEdit = new QLineEdit();
-  vbox2->addWidget(ReplaceEdit);
-  ReplaceGroup->setLayout(vbox2);
-
-  all->addWidget(ReplaceGroup);
-
-  AskBox = new QCheckBox(tr("Ask before replacing"));
-  all->addWidget(AskBox);
-
-  PositionBox = new QCheckBox(tr("From cursor position"));
-  all->addWidget(PositionBox);
-  CaseBox = new QCheckBox(tr("Case sensitive"));
-  all->addWidget(CaseBox);
-  WordBox = new QCheckBox(tr("Whole words only"));
-  all->addWidget(WordBox);
-  BackwardBox = new QCheckBox(tr("Search backwards"));
-  all->addWidget(BackwardBox);
-
-  QHBoxLayout *Buttons = new QHBoxLayout();
-  all->addLayout(Buttons);
-  QPushButton *ButtonSearch = new QPushButton(tr("Search"));
-  Buttons->addWidget(ButtonSearch);
-  QPushButton *ButtonCancel = new QPushButton(tr("Cancel"));
-  Buttons->addWidget(ButtonCancel);
-  connect(ButtonSearch, SIGNAL(clicked()), SLOT(slotSearch()));
-  connect(ButtonCancel, SIGNAL(clicked()), SLOT(reject()));
-
-  ButtonSearch->setDefault(true);
+  connect(ui->ButtonSearch, SIGNAL(clicked()), SLOT(slotSearch()));
 }
 
 SearchDialog::~SearchDialog()
 {
+  delete ui;
 }
 
 // ---------------------------------------------------------------------
@@ -87,21 +58,22 @@ void SearchDialog::initSearch(bool replace)
 {
   if(replace) {
     setWindowTitle(tr("Replace Text"));
-    AskBox->setHidden(false);
-    ReplaceGroup->setHidden(false);
+    ui->AskBox->setHidden(false);
+    ui->ReplaceGroup->setHidden(false);
   }
   else {
     setWindowTitle(tr("Search Text"));
-    AskBox->hide();
-    ReplaceGroup->hide();
+    ui->AskBox->hide();
+    ui->ReplaceGroup->hide();
   }
 
   TextDoc *Doc = (TextDoc*)App->DocumentTab->currentPage();
-  ReplaceEdit->clear();
-  SearchEdit->setText(Doc->textCursor().selectedText());
-  SearchEdit->selectAll();
+  ui->ReplaceEdit->clear();
+  ui->SearchEdit->setText(Doc->textCursor().selectedText());
+  ui->SearchEdit->selectAll();
 
-  SearchEdit->setFocus();
+  ui->SearchEdit->setFocus();
+  layout()->setSizeConstraint(QLayout::SetFixedSize);
   exec();
 }
 
@@ -116,31 +88,34 @@ void SearchDialog::searchText(bool fromCursor, int Offset)
     Line = Doc->textCursor().blockNumber();
     Column = Doc->textCursor().columnNumber();
   }
-  else if(BackwardBox->isChecked())
+  else if(ui->BackwardBox->isChecked())
     Line = Doc->document()->blockCount();
 
-  if(!BackwardBox->isChecked())
+  if(!ui->BackwardBox->isChecked())
     Column += Offset;
 
-  if(SearchEdit->text().isEmpty())
+  if(ui->SearchEdit->text().isEmpty())
     return;
 
   QFlag findFlags = 0;
-  if (CaseBox->isChecked())
+  if (ui->CaseBox->isChecked()) {
     findFlags = QTextDocument::FindCaseSensitively;
-  if (WordBox->isChecked())
+  }
+  if (ui->WordBox->isChecked()) {
     findFlags = findFlags | QTextDocument::FindWholeWords;
-  if (BackwardBox->isChecked())
+  }
+  if (ui->BackwardBox->isChecked()) {
     findFlags = findFlags | QTextDocument::FindBackward;
+  }
 
-  while ( Doc->find(SearchEdit->text(), findFlags)) {
+  while ( Doc->find(ui->SearchEdit->text(), findFlags)) {
 
       count++;
-      if(AskBox->isHidden())  // search only ?
+      if(ui->AskBox->isHidden())  // search only ?
         return;
 
       i = QMessageBox::Yes;
-      if(AskBox->isChecked()) {
+      if(ui->AskBox->isChecked()) {
         i = QMessageBox::information(this,
                tr("Replace..."), tr("Replace occurrence ?"),
                QMessageBox::Yes | QMessageBox::Default, QMessageBox::No,
@@ -149,11 +124,11 @@ void SearchDialog::searchText(bool fromCursor, int Offset)
 
       switch(i) {
         case QMessageBox::Yes:
-                 Doc->insertPlainText(ReplaceEdit->text());
-                 Column += ReplaceEdit->text().length();
+                 Doc->insertPlainText(ui->ReplaceEdit->text());
+                 Column += ui->ReplaceEdit->text().length();
                  break;
         case QMessageBox::No:
-                 Column += SearchEdit->text().length();
+                 Column += ui->SearchEdit->text().length();
                  break;
         default: return;
       }
@@ -163,8 +138,8 @@ void SearchDialog::searchText(bool fromCursor, int Offset)
     QMessageBox::information(this, tr("Search..."),
                    tr("Search string not found!"));
   else
-    if(!AskBox->isHidden())  // replace ?
-      if(!AskBox->isChecked())  // only with that, "count" has correct number !!!
+    if(!ui->AskBox->isHidden())  // replace ?
+      if(!ui->AskBox->isChecked())  // only with that, "count" has correct number !!!
         QMessageBox::information(this, tr("Replace..."),
                      tr("Replaced %1 occurrences!").arg(count));
 }
@@ -173,5 +148,5 @@ void SearchDialog::searchText(bool fromCursor, int Offset)
 void SearchDialog::slotSearch()
 {
   accept();
-  searchText(PositionBox->isChecked(), 0);
+  searchText(ui->PositionBox->isChecked(), 0);
 }
