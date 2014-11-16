@@ -32,6 +32,10 @@ MOCHEADERS = settingsdialog.h simmessage.h qucssettingsdialog.h      \
 
 MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
+UICFILES = ui_searchdialog.h
+
+BUILT_SOURCES = $(UICFILES)
+
 libdialogs_a_SOURCES = settingsdialog.cpp newprojdialog.cpp \
      simmessage.cpp qucssettingsdialog.cpp labeldialog.cpp changedialog.cpp \
      matchdialog.cpp sweepdialog.cpp digisettingsdialog.cpp searchdialog.cpp \
@@ -41,7 +45,7 @@ libdialogs_a_SOURCES = settingsdialog.cpp newprojdialog.cpp \
 
 nodist_libdialogs_a_SOURCES = $(MOCFILES)
 
-noinst_HEADERS = $(MOCHEADERS)
+noinst_HEADERS = $(MOCHEADERS) $(UIHEADERS)
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
@@ -50,6 +54,9 @@ SUFFIXES = .moc.cpp
 .h.moc.cpp:
 	$(MOC) -o $@ $<
 
+ui_searchdialog.h: searchdialog.ui
+	$(UIC) -o $@ $<
+
 CLEANFILES = *~
 MAINTAINERCLEANFILES = Makefile.in *.moc.cpp
-DISTCLEANFILES = *.moc.cpp
+DISTCLEANFILES = *.moc.cpp ui_*.h

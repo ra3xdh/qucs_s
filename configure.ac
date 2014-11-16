@@ -143,6 +143,14 @@ if test "$MOC" = ":"; then
   development package of Qt.])
 fi
 
+if test "$UIC" = ":"; then
+  AC_MSG_WARN([
+  The $PACKAGE package needs the 'Qt User Interface Compiler' to compile properly.
+  Though Qt itself may be properly installed including headers and libraries
+  the 'uic' program is missing.  Possibly you need to install the full
+  development package of Qt.])
+fi
+
 dnl Check for X11
 if test x$LINUX == "xyes"; then
   AC_PATH_XTRA

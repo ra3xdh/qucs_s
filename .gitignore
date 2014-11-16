@@ -1,6 +1,7 @@
 *.moc.o
 *.moc.o
 *.moc.cpp
+ui_*.h
 *.o
 Makefile.in
 Makefile
