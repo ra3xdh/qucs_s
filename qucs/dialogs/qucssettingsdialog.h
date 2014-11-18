@@ -77,11 +77,11 @@ public:
 
     QFont Font;
     QCheckBox *checkWiring, *checkLoadFromFutureVersions,
-              *checkAntiAliasing;
+              *checkAntiAliasing, *checkTextAntiAliasing;
     QComboBox *LanguageCombo;
     QPushButton *FontButton, *BGColorButton;
-    QLineEdit *undoNumEdit, *editorEdit, *Input_Suffix, *Input_Program,
-              *homeEdit, *admsXmlEdit, *ascoEdit, *octaveEdit;
+    QLineEdit *LargeFontSizeEdit, *undoNumEdit, *editorEdit, *Input_Suffix,
+              *Input_Program, *homeEdit, *admsXmlEdit, *ascoEdit, *octaveEdit;
     QTableWidget *fileTypesTableWidget, *pathsTableWidget;
     QStandardItemModel *model;
     QPushButton *ColorComment, *ColorString, *ColorInteger,
@@ -89,6 +89,7 @@ public:
                 *ColorDirective, *ColorTask;
 
     QVBoxLayout *all;
+    QIntValidator *val50;
     QIntValidator *val200;
     QRegExp Expr;
     QRegExpValidator *Validator;

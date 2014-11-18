@@ -65,7 +65,7 @@ bool loadSettings()
     if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
     if(settings.contains("dy"))QucsSettings.dy=settings.value("dy").toInt();
     if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
-    if(settings.contains("largeFontSize"))QucsSettings.largeFontSize=settings.value("largeFontSize").toDouble();
+    if(settings.contains("LargeFontSize"))QucsSettings.largeFontSize=settings.value("LargeFontSize").toDouble(); // use toDouble() as it can interpret the string according to the current locale
     if(settings.contains("maxUndo"))QucsSettings.maxUndo=settings.value("maxUndo").toInt();
     if(settings.contains("NodeWiring"))QucsSettings.NodeWiring=settings.value("NodeWiring").toInt();
     if(settings.contains("BGColor"))QucsSettings.BGColor.setNamedColor(settings.value("BGColor").toString());
@@ -97,12 +97,16 @@ bool loadSettings()
          QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
     QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
 
-    if (settings.contains("IngnoreVersion")) QucsSettings.IgnoreFutureVersion = settings.value("IngnoreVersion").toBool();
+    if (settings.contains("IgnoreVersion")) QucsSettings.IgnoreFutureVersion = settings.value("IgnoreVersion").toBool();
+    // check also for old setting name with typo...
+    else if (settings.contains("IngnoreVersion")) QucsSettings.IgnoreFutureVersion = settings.value("IngnoreVersion").toBool();
     else QucsSettings.IgnoreFutureVersion = false;
 
-    if (settings.contains("DrawInAntiAliasing")) QucsSettings.DrawInAntiAliasing = settings.value("DrawInAntiAliasing").toBool();
-    else QucsSettings.DrawInAntiAliasing = false;
+    if (settings.contains("GraphAntiAliasing")) QucsSettings.GraphAntiAliasing = settings.value("GraphAntiAliasing").toBool();
+    else QucsSettings.GraphAntiAliasing = false;
 
+    if (settings.contains("TextAntiAliasing")) QucsSettings.TextAntiAliasing = settings.value("TextAntiAliasing").toBool();
+    else QucsSettings.TextAntiAliasing = false;
 
     QucsSettings.RecentDocs = settings.value("RecentDocs").toString().split("*",QString::SkipEmptyParts);
     QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
@@ -135,7 +139,8 @@ bool saveApplSettings(QucsApp *qucs)
     settings.setValue("dx", QucsSettings.dx);
     settings.setValue("dy", QucsSettings.dy);
     settings.setValue("font", QucsSettings.font.toString());
-    settings.setValue("largeFontSize", QucsSettings.largeFontSize);
+    // store LargeFontSize as a string, so it will be also human-readable in the settings file (will be a @Variant() otherwise)
+    settings.setValue("LargeFontSize", QString::number(QucsSettings.largeFontSize));
     settings.setValue("maxUndo", QucsSettings.maxUndo);
     settings.setValue("NodeWiring", QucsSettings.NodeWiring);
     settings.setValue("BGColor", QucsSettings.BGColor.name());
@@ -162,8 +167,9 @@ bool saveApplSettings(QucsApp *qucs)
     //settings.setValue("DocDir", QucsSettings.DocDir);
     settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
     settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
-    settings.setValue("IngnoreVersion", QucsSettings.IgnoreFutureVersion);
-    settings.setValue("DrawInAntiAliasing", QucsSettings.DrawInAntiAliasing);
+    settings.setValue("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
+    settings.setValue("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
+    settings.setValue("TextAntiAliasing", QucsSettings.TextAntiAliasing);
 
     // Copy the list of directory paths in which Qucs should
     // search for subcircuit schematics from qucsPathList

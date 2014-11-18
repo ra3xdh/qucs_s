@@ -14,12 +14,19 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+/*!
+ * \file qucssettingsdialog.cpp
+ * \brief Implementation of the Application Settings dialog
+ */
+
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
 
 #include "qucssettingsdialog.h"
 #include <iostream>
+#include <math.h>
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include "main.h"
@@ -43,6 +50,7 @@
 #include <QHeaderView>
 #include <QFileDialog>
 #include <QDirIterator>
+#include <QDebug>
 
 using namespace std;
 
@@ -55,12 +63,12 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     Expr.setPattern("[\\w_]+");
     Validator  = new QRegExpValidator(Expr, this);
 
-    all = new QVBoxLayout(this); // to provide the neccessary size
+    all = new QVBoxLayout(this); // to provide the necessary size
     QTabWidget *t = new QTabWidget();
     all->addWidget(t);
 
     // ...........................................................
-    // The application setings tab
+    // The application settings tab
     QWidget *appSettingsTab = new QWidget(t);
     QGridLayout *appSettingsGrid = new QGridLayout(appSettingsTab);
 
@@ -69,12 +77,18 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     connect(FontButton, SIGNAL(clicked()), SLOT(slotFontDialog()));
     appSettingsGrid->addWidget(FontButton,0,1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Document Background Color:"), appSettingsTab) ,1,0);
+    val50 = new QIntValidator(1, 50, this);
+    appSettingsGrid->addWidget(new QLabel(tr("Large font size:"), appSettingsTab), 1,0);
+    LargeFontSizeEdit = new QLineEdit(appSettingsTab);
+    LargeFontSizeEdit->setValidator(val50);
+    appSettingsGrid->addWidget(LargeFontSizeEdit,1,1);
+
+    appSettingsGrid->addWidget(new QLabel(tr("Document Background Color:"), appSettingsTab) ,2,0);
     BGColorButton = new QPushButton("      ", appSettingsTab);
     connect(BGColorButton, SIGNAL(clicked()), SLOT(slotBGColorDialog()));
-    appSettingsGrid->addWidget(BGColorButton,1,1);
+    appSettingsGrid->addWidget(BGColorButton,2,1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Language (set after reload):"), appSettingsTab) ,2,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Language (set after reload):"), appSettingsTab) ,3,0);
     LanguageCombo = new QComboBox(appSettingsTab);
     LanguageCombo->insertItem(tr("system language"));
     LanguageCombo->insertItem(tr("English")+" (en)");
@@ -97,33 +111,40 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     LanguageCombo->insertItem(tr("Catalan")+" (ca)");
     LanguageCombo->insertItem(tr("Arabic")+" (ar)");
     LanguageCombo->insertItem(tr("Kazakh")+" (kk)");
-    appSettingsGrid->addWidget(LanguageCombo,2,1);
+    appSettingsGrid->addWidget(LanguageCombo,3,1);
 
     val200 = new QIntValidator(0, 200, this);
-    appSettingsGrid->addWidget(new QLabel(tr("maximum undo operations:"), appSettingsTab) ,3,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Maximum undo operations:"), appSettingsTab) ,4,0);
     undoNumEdit = new QLineEdit(appSettingsTab);
     undoNumEdit->setValidator(val200);
-    appSettingsGrid->addWidget(undoNumEdit,3,1);
+    appSettingsGrid->addWidget(undoNumEdit,4,1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("text editor:"), appSettingsTab) ,4,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Text editor:"), appSettingsTab) ,5,0);
     editorEdit = new QLineEdit(appSettingsTab);
     editorEdit->setToolTip(tr("Set to qucs, qucsedit or the path to your favorite text editor."));
-    appSettingsGrid->addWidget(editorEdit,4,1);
+    appSettingsGrid->addWidget(editorEdit,5,1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("start wiring when clicking open node:"), appSettingsTab) ,5,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Start wiring when clicking open node:"), appSettingsTab) ,6,0);
     checkWiring = new QCheckBox(appSettingsTab);
-    appSettingsGrid->addWidget(checkWiring,5,1);
+    appSettingsGrid->addWidget(checkWiring,6,1);
 
-
-    appSettingsGrid->addWidget(new QLabel(tr("Load documents from future versions ")));
+    appSettingsGrid->addWidget(new QLabel(tr("Load documents from future versions:")));
     checkLoadFromFutureVersions = new QCheckBox(appSettingsTab);
-    appSettingsGrid->addWidget(checkLoadFromFutureVersions,6,1);
+    checkLoadFromFutureVersions->setToolTip(tr("Try to load also documents created with newer versions of Qucs."));
+    appSettingsGrid->addWidget(checkLoadFromFutureVersions,7,1);
     checkLoadFromFutureVersions->setChecked(QucsSettings.IgnoreFutureVersion);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Draw diagrams with anti-aliasing feature")));
+    appSettingsGrid->addWidget(new QLabel(tr("Draw diagrams with anti-aliasing feature:")));
     checkAntiAliasing = new QCheckBox(appSettingsTab);
-    appSettingsGrid->addWidget(checkAntiAliasing,7,1);
-    checkAntiAliasing->setChecked(QucsSettings.DrawInAntiAliasing);
+    checkAntiAliasing->setToolTip(tr("Use anti-aliasing for graphs for a smoother appereance."));
+    appSettingsGrid->addWidget(checkAntiAliasing,8,1);
+    checkAntiAliasing->setChecked(QucsSettings.GraphAntiAliasing);
+
+    appSettingsGrid->addWidget(new QLabel(tr("Draw text with anti-aliasing feature:")));
+    checkTextAntiAliasing = new QCheckBox(appSettingsTab);
+    checkTextAntiAliasing->setToolTip(tr("Use anti-aliasing for text for a smoother appereance."));
+    appSettingsGrid->addWidget(checkTextAntiAliasing,9,1);
+    checkTextAntiAliasing->setChecked(QucsSettings.TextAntiAliasing);
 
     t->addTab(appSettingsTab, tr("Settings"));
 
@@ -349,14 +370,14 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     Butts->addWidget(DefaultButt);
     connect(DefaultButt, SIGNAL(clicked()), SLOT(slotDefaultValues()));
 
-
-
     OkButt->setDefault(true);
 
     // ...........................................................
     // fill the fields with the Qucs-Properties
     Font  = QucsSettings.font;
     FontButton->setText(Font.toString());
+    QString s = QString::number(QucsSettings.largeFontSize, 'f', 1);
+    LargeFontSizeEdit->setText(s);
     BGColorButton->setPaletteBackgroundColor(QucsSettings.BGColor);
     undoNumEdit->setText(QString::number(QucsSettings.maxUndo));
     editorEdit->setText(QucsSettings.Editor);
@@ -379,6 +400,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
 QucsSettingsDialog::~QucsSettingsDialog()
 {
     delete all;
+    delete val50;
     delete val200;
     delete Validator;
 }
@@ -548,10 +570,23 @@ void QucsSettingsDialog::slotApply()
 
     QucsSettings.IgnoreFutureVersion = checkLoadFromFutureVersions->isChecked();
 
-    if(QucsSettings.DrawInAntiAliasing != checkAntiAliasing->isChecked())
+    if (QucsSettings.GraphAntiAliasing != checkAntiAliasing->isChecked())
     {
-      QucsSettings.DrawInAntiAliasing = checkAntiAliasing->isChecked();
+      QucsSettings.GraphAntiAliasing = checkAntiAliasing->isChecked();
       changed = true;
+    }
+
+    if (QucsSettings.TextAntiAliasing != checkTextAntiAliasing->isChecked())
+    {
+      QucsSettings.TextAntiAliasing = checkTextAntiAliasing->isChecked();
+      changed = true;
+    }
+
+    // use toDouble() as it can interpret the string according to the current locale
+    if (QucsSettings.largeFontSize != LargeFontSizeEdit->text().toDouble(&ok))
+    {
+        QucsSettings.largeFontSize = LargeFontSizeEdit->text().toDouble(&ok);
+        changed = true;
     }
 
     saveApplSettings(App);  // also sets the small and large font
@@ -595,8 +630,10 @@ void QucsSettingsDialog::slotBGColorDialog()
 // -----------------------------------------------------------
 void QucsSettingsDialog::slotDefaultValues()
 {
-    //Font = QFont("Helvetica", 12);
+    Font = QFont("Helvetica", 12);
     FontButton->setText(Font.toString());
+    LargeFontSizeEdit->setText(QString::number(16.0));
+
     LanguageCombo->setCurrentItem(0);
     BGColorButton->setPaletteBackgroundColor(QColor(255,250,225));
 
@@ -613,6 +650,9 @@ void QucsSettingsDialog::slotDefaultValues()
     undoNumEdit->setText("20");
     editorEdit->setText(QucsSettings.BinDir + "qucs");
     checkWiring->setChecked(false);
+    checkLoadFromFutureVersions->setChecked(false);
+    checkAntiAliasing->setChecked(false);
+    checkTextAntiAliasing->setChecked(true);
 }
 
 // -----------------------------------------------------------
@@ -698,6 +738,7 @@ void QucsSettingsDialog::slotColorTask()
 
 void QucsSettingsDialog::slotTableClicked(int row, int col)
 {
+    Q_UNUSED(col);
     Input_Suffix->setText(fileTypesTableWidget->item(row,0)->text());
     Input_Program->setText(fileTypesTableWidget->item(row,1)->text());
 }
@@ -741,8 +782,12 @@ void QucsSettingsDialog::slotOctaveDirBrowse()
     octaveEdit->setText(fileDialog.selectedFile());
 }
 
+/*! \brief (seems unused at present)
+ */
 void QucsSettingsDialog::slotPathTableClicked(int row, int col)
 {
+    Q_UNUSED(row);
+    Q_UNUSED(col);
     //Input_Path->setText(fileTypesTableWidget->item(row,0)->text());
 }
 
