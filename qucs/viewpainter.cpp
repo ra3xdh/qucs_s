@@ -14,12 +14,14 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#include "main.h"
 #include "viewpainter.h"
 #include "diagrams/graph.h"
 
-
 #include <QPainter>
 #include <QFont>
+#include <QDebug>
 
 ViewPainter::ViewPainter(QPainter *p)
 {
@@ -34,7 +36,7 @@ ViewPainter::~ViewPainter()
 
 // -------------------------------------------------------------
 void ViewPainter::init(QPainter *p, float Scale_, int DX_, int DY_, 
-		       int dx_, int dy_, bool DrawInAntiAliasing, 
+		       int dx_, int dy_, 
 		       float FontScale_, float PrintScale_)
 {
   Painter = p;
@@ -55,10 +57,12 @@ void ViewPainter::init(QPainter *p, float Scale_, int DX_, int DY_,
   LineSpacing = p->fontMetrics().lineSpacing();
   p->setWorldXForm(false);   // we use our own coordinate transformation
 
-  // Encourage Qt to antialias where possible for nicer drawings
-  p->setRenderHint(QPainter::Antialiasing, DrawInAntiAliasing);
-  // Also antialias text if possible
-  p->setRenderHint(QPainter::TextAntialiasing, DrawInAntiAliasing);
+  QPainter::RenderHints hints = 0;
+  // Ask to to antialias drawings if requested
+  if (QucsSettings.GraphAntiAliasing) hints |= QPainter::Antialiasing;
+  // Ask to antialias text if requested
+  if (QucsSettings.TextAntiAliasing) hints |= QPainter::TextAntialiasing;
+  p->setRenderHints(hints);
 }
 
 // -------------------------------------------------------------
