@@ -87,6 +87,9 @@ public:
   QMenu* createStandardContextMenu();
 
 public slots:
+  void search(const QString &str, bool CaseSensitive, bool wordOnly, bool backward);
+  void replace(const QString &str, const QString &str2, bool needConfirmed,
+               bool CaseSensitive, bool wordOnly, bool backward);
   void slotCursorPosChanged ();
   void slotSetChanged ();
 

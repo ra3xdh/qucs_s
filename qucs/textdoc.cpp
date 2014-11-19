@@ -265,6 +265,18 @@ void TextDoc::becomeCurrent (bool)
   App->editActivate->setEnabled (true);
 }
 
+// implement search function
+void TextDoc::search(const QString &str, bool CaseSensitive, bool wordOnly, bool backward)
+{
+}
+
+// implement replace function
+void TextDoc::replace(const QString &str, const QString &str2, bool needConfirmed,
+                      bool CaseSensitive, bool wordOnly, bool backward)
+{
+}
+
+
 /*!
  * \brief TextDoc::slotCursorPosChanged update status bar with line:column
  */
