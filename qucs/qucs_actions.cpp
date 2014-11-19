@@ -952,12 +952,6 @@ void QucsApp::slotEditFind()
   SearchDia->initSearch();
 }
 
-// ---------------------------------------------------------------------
-// Is called when the find-again action is activated.
-void QucsApp::slotEditFindAgain()
-{
-}
-
 // --------------------------------------------------------------
 void QucsApp::slotChangeProps()
 {

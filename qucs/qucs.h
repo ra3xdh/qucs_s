@@ -289,7 +289,7 @@ public:
           *helpIndex, *helpGetStart, *callEditor, *callFilter, *callLine, *callActiveFilter,
           *showMsg, *showNet, *alignTop, *alignBottom, *alignLeft, *alignRight,
           *distrHor, *distrVert, *selectAll, *callLib, *callMatch, *changeProps,
-          *addToProj, *editFind, *editFindAgain, *insEntity, *selectMarker,
+          *addToProj, *editFind, *insEntity, *selectMarker,
           *createLib, *importData, *graph2csv, *createPkg, *extractPkg,
           *callAtt, *callRes, *centerHor, *centerVert, *loadModule, *buildModule;
 
@@ -315,7 +315,6 @@ public slots:
   void slotEditUndo();    // makes the last operation undone
   void slotEditRedo();    // makes the last undo undone
   void slotEditFind();    // searches for a piece of text
-  void slotEditFindAgain();  // searches for the same piece of text again
   void slotAlignTop();    // align selected elements with respect to top
   void slotAlignBottom(); // align selected elements with respect to bottom
   void slotAlignLeft();   // align selected elements with respect to left

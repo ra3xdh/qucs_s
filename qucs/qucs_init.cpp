@@ -254,13 +254,6 @@ void QucsApp::initActions()
   editFind->setWhatsThis(tr("Find\n\nSearches for a piece of text"));
   connect(editFind, SIGNAL(activated()), SLOT(slotEditFind()));
 
-  editFindAgain = new QAction(tr("Find Again"), this);
-  editFindAgain->setShortcut(Qt::Key_F3);
-  editFindAgain->setStatusTip(tr("Find same text again"));
-  editFindAgain->setWhatsThis(
-                 tr("Find\n\nSearches for the same piece of text again"));
-  connect(editFindAgain, SIGNAL(activated()), SLOT(slotEditFindAgain()));
-
   // to ease usage with notebooks, backspace can also be used to delete
   // currently not supported
   //mainAccel->connectItem(mainAccel->insertItem(Qt::Key_Backspace),
@@ -713,7 +706,6 @@ void QucsApp::initMenuBar()
   editMenu->addAction(selectAll);
   editMenu->addAction(selectMarker);
   editMenu->addAction(editFind);
-  editMenu->addAction(editFindAgain);
   editMenu->addAction(changeProps);
   editMenu->addAction(editRotate);
   editMenu->addAction(editMirror);

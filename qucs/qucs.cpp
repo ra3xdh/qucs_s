@@ -2678,7 +2678,6 @@ void QucsApp::switchSchematicDoc (bool SchematicMode)
   exportAsImage->setEnabled (SchematicMode); // only export schematic, no text
 
   editFind->setEnabled (!SchematicMode);
-  editFindAgain->setEnabled (!SchematicMode);
   insEntity->setEnabled (!SchematicMode);
 
   buildModule->setEnabled(!SchematicMode); // only build if VA document
