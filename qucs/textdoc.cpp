@@ -19,6 +19,7 @@ Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
 # include <config.h>
 #endif
 #include <QAction>
+#include <QMessageBox>
 
 #include "main.h"
 #include "qucs.h"
@@ -268,12 +269,53 @@ void TextDoc::becomeCurrent (bool)
 // implement search function
 void TextDoc::search(const QString &str, bool CaseSensitive, bool wordOnly, bool backward)
 {
+  QFlag findFlags = 0;
+
+  if (CaseSensitive) {
+    findFlags = QTextDocument::FindCaseSensitively;
+  }
+  if (backward) {
+    findFlags = findFlags | QTextDocument::FindBackward;
+  }
+  if (wordOnly) {
+    findFlags = findFlags | QTextDocument::FindWholeWords;
+  }
+
+  textCursor().clearSelection();
+  find(str, findFlags);
 }
 
 // implement replace function
 void TextDoc::replace(const QString &str, const QString &str2, bool needConfirmed,
                       bool CaseSensitive, bool wordOnly, bool backward)
 {
+  int i;
+  QFlag findFlags = 0;
+
+  if (CaseSensitive) {
+    findFlags = QTextDocument::FindCaseSensitively;
+  }
+  if (backward) {
+    findFlags = findFlags | QTextDocument::FindBackward;
+  }
+  if (wordOnly) {
+    findFlags = findFlags | QTextDocument::FindWholeWords;
+  }
+
+  textCursor().clearSelection();
+  if(find(str, findFlags)) {
+    i = QMessageBox::Yes;
+    if (needConfirmed) {
+      i = QMessageBox::information(this,
+          tr("Replace..."), tr("Replace occurrence ?"),
+          QMessageBox::Yes | QMessageBox::Default,
+          QMessageBox::No | QMessageBox::Escape);
+    }
+
+    if(i == QMessageBox::Yes) {
+      insertPlainText(str2);
+    }
+  }
 }
 
 
