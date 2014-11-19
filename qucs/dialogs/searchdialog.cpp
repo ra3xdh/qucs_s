@@ -27,17 +27,6 @@
 #include "textdoc.h"
 #include "qucs.h"
 
-#include <QLabel>
-#include <QCheckBox>
-#include <QLineEdit>
-#include <QGroupBox>
-#include <QPushButton>
-#include <QMessageBox>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QDebug>
-
-
 SearchDialog::SearchDialog(QucsApp *App_) : 
     QDialog(App_, 0, true),
     ui(new Ui::SearchDialog)
@@ -78,75 +67,20 @@ void SearchDialog::initSearch(bool replace)
 }
 
 // ---------------------------------------------------------------------
-void SearchDialog::searchText(bool fromCursor, int Offset)
-{
-  TextDoc *Doc = (TextDoc*)App->DocumentTab->currentPage();
-
-  //FIXME : the find already searches from cursor
-  int Line=0, Column=0, count=0, i;
-  if(fromCursor) {
-    Line = Doc->textCursor().blockNumber();
-    Column = Doc->textCursor().columnNumber();
-  }
-  else if(ui->BackwardBox->isChecked())
-    Line = Doc->document()->blockCount();
-
-  if(!ui->BackwardBox->isChecked())
-    Column += Offset;
-
-  if(ui->SearchEdit->text().isEmpty())
-    return;
-
-  QFlag findFlags = 0;
-  if (ui->CaseBox->isChecked()) {
-    findFlags = QTextDocument::FindCaseSensitively;
-  }
-  if (ui->WordBox->isChecked()) {
-    findFlags = findFlags | QTextDocument::FindWholeWords;
-  }
-  if (ui->BackwardBox->isChecked()) {
-    findFlags = findFlags | QTextDocument::FindBackward;
-  }
-
-  while ( Doc->find(ui->SearchEdit->text(), findFlags)) {
-
-      count++;
-      if(ui->AskBox->isHidden())  // search only ?
-        return;
-
-      i = QMessageBox::Yes;
-      if(ui->AskBox->isChecked()) {
-        i = QMessageBox::information(this,
-               tr("Replace..."), tr("Replace occurrence ?"),
-               QMessageBox::Yes | QMessageBox::Default, QMessageBox::No,
-               QMessageBox::Cancel | QMessageBox::Escape);
-      }
-
-      switch(i) {
-        case QMessageBox::Yes:
-                 Doc->insertPlainText(ui->ReplaceEdit->text());
-                 Column += ui->ReplaceEdit->text().length();
-                 break;
-        case QMessageBox::No:
-                 Column += ui->SearchEdit->text().length();
-                 break;
-        default: return;
-      }
-  }
-
-  if(count == 0)
-    QMessageBox::information(this, tr("Search..."),
-                   tr("Search string not found!"));
-  else
-    if(!ui->AskBox->isHidden())  // replace ?
-      if(!ui->AskBox->isChecked())  // only with that, "count" has correct number !!!
-        QMessageBox::information(this, tr("Replace..."),
-                     tr("Replaced %1 occurrences!").arg(count));
-}
-
-// ---------------------------------------------------------------------
 void SearchDialog::slotSearch()
 {
-  accept();
-  searchText(false, 0);
+  if(ui->SearchEdit->text().isEmpty()) {
+    return;
+  }
+
+  if(ui->AskBox->isHidden()) { //search
+    emit search(
+        ui->SearchEdit->text(), ui->CaseBox->isChecked(), ui->WordBox->isChecked(),
+        ui->BackwardBox->isChecked());
+  } else {
+    emit replace(
+        ui->SearchEdit->text(), ui->ReplaceEdit->text(),
+        ui->AskBox->isChecked(), ui->CaseBox->isChecked(),
+        ui->WordBox->isChecked(), ui->BackwardBox->isChecked());
+  }
 }

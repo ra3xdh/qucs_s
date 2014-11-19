@@ -27,10 +27,6 @@
 #include <QDialog>
 
 class QucsApp;
-class QLineEdit;
-class QCheckBox;
-class QGroupBox;
-class QPushButton;
 
 namespace Ui {
   class SearchDialog;
@@ -45,7 +41,11 @@ public:
  ~SearchDialog();
 
   void initSearch(bool replace=false);
-  void searchText(bool, int);
+
+signals:
+  void search(const QString &str, bool CaseSensitive, bool wordOnly, bool backward);
+  void replace(const QString &str, const QString &str2, bool needConfirmed,
+               bool CaseSensitive, bool wordOnly, bool backward);
 
 private slots:
   void slotSearch();
