@@ -949,7 +949,7 @@ void QucsApp::showHTML(const QString& Page)
 // Is called when the find action is activated.
 void QucsApp::slotEditFind()
 {
-  SearchDia->initSearch();
+  SearchDia->initSearch(((TextDoc *)DocumentTab->currentPage())->textCursor().selectedText(), false);
 }
 
 // --------------------------------------------------------------
@@ -958,7 +958,7 @@ void QucsApp::slotChangeProps()
   QWidget *Doc = DocumentTab->currentPage();
   if(Doc->inherits("QPlainTextEdit")) {
     ((TextDoc*)Doc)->viewport()->setFocus();
-    SearchDia->initSearch(true);
+    SearchDia->initSearch(((TextDoc *)Doc)->textCursor().selectedText(), true);
   }
   else {
     ChangeDialog *d = new ChangeDialog((Schematic*)Doc);

@@ -43,7 +43,7 @@ SearchDialog::~SearchDialog()
 }
 
 // ---------------------------------------------------------------------
-void SearchDialog::initSearch(bool replace)
+void SearchDialog::initSearch(const QString &text, bool replace)
 {
   if(replace) {
     setWindowTitle(tr("Replace Text"));
@@ -56,14 +56,15 @@ void SearchDialog::initSearch(bool replace)
     ui->ReplaceGroup->hide();
   }
 
-  TextDoc *Doc = (TextDoc*)App->DocumentTab->currentPage();
   ui->ReplaceEdit->clear();
-  ui->SearchEdit->setText(Doc->textCursor().selectedText());
+  ui->SearchEdit->setText(text);
   ui->SearchEdit->selectAll();
 
   ui->SearchEdit->setFocus();
   layout()->setSizeConstraint(QLayout::SetFixedSize);
-  exec();
+  show();
+  raise();
+  activateWindow();
 }
 
 // ---------------------------------------------------------------------

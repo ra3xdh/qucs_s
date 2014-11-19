@@ -40,7 +40,7 @@ public:
   SearchDialog(QucsApp*);
  ~SearchDialog();
 
-  void initSearch(bool replace=false);
+  void initSearch(const QString &text, bool replace=false);
 
 signals:
   void search(const QString &str, bool CaseSensitive, bool wordOnly, bool backward);
