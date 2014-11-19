@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>234</width>
-    <height>334</height>
+    <width>242</width>
+    <height>274</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
@@ -50,13 +50,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="PositionBox">
-         <property name="text">
-          <string>From cursor position</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QCheckBox" name="CaseBox">
          <property name="text">
           <string>Case sensitive</string>
@@ -79,39 +72,39 @@
        </item>
       </layout>
      </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="ButtonSearch">
-         <property name="text">
-          <string>Search</string>
-         </property>
-         <property name="default">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="ButtonCancel">
-         <property name="text">
-          <string>Cancel</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QPushButton" name="ButtonSearch">
+       <property name="text">
+        <string>Next</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="CloseButt">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>
@@ -121,27 +114,25 @@
   <tabstop>SearchEdit</tabstop>
   <tabstop>ReplaceEdit</tabstop>
   <tabstop>AskBox</tabstop>
-  <tabstop>PositionBox</tabstop>
   <tabstop>CaseBox</tabstop>
   <tabstop>WordBox</tabstop>
   <tabstop>BackwardBox</tabstop>
   <tabstop>ButtonSearch</tabstop>
-  <tabstop>ButtonCancel</tabstop>
  </tabstops>
  <resources/>
  <connections>
   <connection>
-   <sender>ButtonCancel</sender>
+   <sender>CloseButt</sender>
    <signal>clicked()</signal>
    <receiver>SearchDialog</receiver>
-   <slot>reject()</slot>
+   <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>184</x>
-     <y>300</y>
+     <x>211</x>
+     <y>51</y>
     </hint>
     <hint type="destinationlabel">
-     <x>116</x>
+     <x>130</x>
      <y>166</y>
     </hint>
    </hints>

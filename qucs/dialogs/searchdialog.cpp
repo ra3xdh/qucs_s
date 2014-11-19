@@ -148,5 +148,5 @@ void SearchDialog::searchText(bool fromCursor, int Offset)
 void SearchDialog::slotSearch()
 {
   accept();
-  searchText(ui->PositionBox->isChecked(), 0);
+  searchText(false, 0);
 }
