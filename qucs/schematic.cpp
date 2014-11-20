@@ -108,13 +108,15 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
 
   // to repair some strange  scrolling artefacts
   connect(this, SIGNAL(horizontalSliderReleased()),
-  viewport(), SLOT(update()));
+      viewport(), SLOT(update()));
   connect(this, SIGNAL(verticalSliderReleased()),
-  viewport(), SLOT(update()));
-
-  // to prevent user from editing something that he doesn't see
-  // connect(this, SIGNAL(horizontalSliderPressed()), App, SLOT(slotHideEdit()));
-  // connect(this, SIGNAL(verticalSliderPressed()), App, SLOT(slotHideEdit()));
+      viewport(), SLOT(update()));
+  if (App_) {
+    connect(this, SIGNAL(horizontalSliderPressed()), 
+        App_, SLOT(slotHideEdit()));
+    connect(this, SIGNAL(verticalSliderPressed()),
+        App_, SLOT(slotHideEdit()));
+  }
 }
 
 Schematic::~Schematic()

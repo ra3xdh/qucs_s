@@ -1409,6 +1409,7 @@ void QucsApp::slotMenuProjClose()
   Schematic *d = new Schematic(this, "");
   int i = DocumentTab->addTab(d, QPixmap(empty_xpm), QObject::tr("untitled"));
   DocumentTab->setCurrentIndex(i);
+
   view->drawn = false;
 
   slotResetWarnings();
