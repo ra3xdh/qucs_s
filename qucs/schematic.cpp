@@ -121,10 +121,6 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
 
 Schematic::~Schematic()
 {
-  if(App) {
-    App->editText->setParent(App, 0); // reparent QLineEdit instance used for changing component properties
-    App->DocumentTab->removeTab(App->DocumentTab->indexOf(this));  // delete tab in TabBar
-  }
 }
 
 // ---------------------------------------------------

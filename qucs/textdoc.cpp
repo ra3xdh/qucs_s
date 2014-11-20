@@ -79,10 +79,7 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDo
  */
 TextDoc::~TextDoc()
 {
-  if(App) {
-    delete syntaxHighlight;
-    App->DocumentTab->removePage(this);  // delete tab in TabBar
-  }
+  delete syntaxHighlight;
 }
 
 /*!

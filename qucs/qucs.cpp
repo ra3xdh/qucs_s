@@ -1833,8 +1833,11 @@ void QucsApp::closeFile(int index)
         case 2 : return;
       }
     }
+    editText->move(QPoint(0, 0));
+    editText->hide();
 
     delete Doc;
+    DocumentTab->removeTab(index);
 
     if(DocumentTab->count() < 1) { // if no document left, create an untitled
       Schematic *d = new Schematic(this, "");
