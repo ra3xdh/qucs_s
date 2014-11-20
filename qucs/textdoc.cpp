@@ -57,32 +57,21 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDo
   Scale = (float)TextFont.pointSize();
   //TODO (not supported) setUndoDepth(QucsSettings.maxUndo);
   setLanguage (Name_);
-  QFileInfo Info (Name_);
 
-  if(App) {
-    if(Name_.isEmpty()) {
-      App->DocumentTab->addTab(this, QPixmap(empty_xpm), QObject::tr("untitled"));
-      }
-    else {
-      App->DocumentTab->addTab(this, QPixmap(empty_xpm), Info.fileName());
-    }
-    App->DocumentTab->setCurrentPage(App->DocumentTab->indexOf(this));
+  viewport()->setFocus();
 
-    viewport()->setFocus();
+  setWordWrapMode(QTextOption::NoWrap);
+  setPaletteBackgroundColor(QucsSettings.BGColor);
+  connect(this, SIGNAL(textChanged()), SLOT(slotSetChanged()));
+  connect(this, SIGNAL(cursorPositionChanged()),
+          SLOT(slotCursorPosChanged()));
 
-    setWordWrapMode(QTextOption::NoWrap);
-    setPaletteBackgroundColor(QucsSettings.BGColor);
-    connect(this, SIGNAL(textChanged()), SLOT(slotSetChanged()));
-    connect(this, SIGNAL(cursorPositionChanged()),
-            SLOT(slotCursorPosChanged()));
+  syntaxHighlight = new SyntaxHighlighter(this);
+  syntaxHighlight->setLanguage(language);
+  syntaxHighlight->setDocument(document());
 
-    syntaxHighlight = new SyntaxHighlighter(this);
-    syntaxHighlight->setLanguage(language);
-    syntaxHighlight->setDocument(document());
-
-    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
-    highlightCurrentLine();
-  }
+  connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+  highlightCurrentLine();
 }
 
 /*!

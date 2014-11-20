@@ -93,56 +93,28 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
 
   isVerilog = false;
   creatingLib = false;
-  FileInfo = QFileInfo (Name_);
-  if(App) {
-    if(Name_.isEmpty())
-      App->DocumentTab->addTab(this, QPixmap(empty_xpm),
-                            QObject::tr("untitled"));
-    else
-      App->DocumentTab->addTab(this, QPixmap(empty_xpm),
-                            FileInfo.fileName());
 
-    // calls indirectly "becomeCurrent"
-    App->DocumentTab->setCurrentIndex(App->DocumentTab->indexOf(this));
+  showFrame = 0;  // don't show
+  Frame_Text0 = tr("Title");
+  Frame_Text1 = tr("Drawn By:");
+  Frame_Text2 = tr("Date:");
+  Frame_Text3 = tr("Revision:");
 
-    showFrame = 0;  // don't show
-    Frame_Text0 = tr("Title");
-    Frame_Text1 = tr("Drawn By:");
-    Frame_Text2 = tr("Date:");
-    Frame_Text3 = tr("Revision:");
+  setVScrollBarMode(Q3ScrollView::AlwaysOn);
+  setHScrollBarMode(Q3ScrollView::AlwaysOn);
+  viewport()->setPaletteBackgroundColor(QucsSettings.BGColor);
+  viewport()->setMouseTracking(true);
+  viewport()->setAcceptDrops(true);  // enable drag'n drop
 
-    setVScrollBarMode(Q3ScrollView::AlwaysOn);
-    setHScrollBarMode(Q3ScrollView::AlwaysOn);
-    //viewport()->setPaletteBackgroundColor(QucsSettings.BGColor);
+  // to repair some strange  scrolling artefacts
+  connect(this, SIGNAL(horizontalSliderReleased()),
+  viewport(), SLOT(update()));
+  connect(this, SIGNAL(verticalSliderReleased()),
+  viewport(), SLOT(update()));
 
-    QPalette p = palette(); 
-    p.setColor(viewport()->backgroundRole(), QucsSettings.BGColor); 
-    viewport()->setPalette(p);
-
-    viewport()->setMouseTracking(true);
-    viewport()->setAcceptDrops(true);  // enable drag'n drop
-// FIXME #warning removed those signals, crashes on it...
-    /*connect(horizontalScrollBar(),
-		SIGNAL(prevLine()), SLOT(slotScrollLeft()));
-    connect(horizontalScrollBar(),
-		SIGNAL(nextLine()), SLOT(slotScrollRight()));
-    connect(verticalScrollBar(),
-		SIGNAL(prevLine()), SLOT(slotScrollUp()));
-    connect(verticalScrollBar(),
-		SIGNAL(nextLine()), SLOT(slotScrollDown()));*/
-
-    // ...........................................................
-
-    // to repair some strange  scrolling artefacts
-    connect(this, SIGNAL(horizontalSliderReleased()),
-		viewport(), SLOT(update()));
-    connect(this, SIGNAL(verticalSliderReleased()),
-		viewport(), SLOT(update()));
-
-    // to prevent user from editing something that he doesn't see
-    connect(this, SIGNAL(horizontalSliderPressed()), App, SLOT(slotHideEdit()));
-    connect(this, SIGNAL(verticalSliderPressed()), App, SLOT(slotHideEdit()));
-  } // of "if(App)"
+  // to prevent user from editing something that he doesn't see
+  // connect(this, SIGNAL(horizontalSliderPressed()), App, SLOT(slotHideEdit()));
+  // connect(this, SIGNAL(verticalSliderPressed()), App, SLOT(slotHideEdit()));
 }
 
 Schematic::~Schematic()
@@ -1344,6 +1316,9 @@ bool Schematic::load()
 
   // The undo stack of the circuit symbol is initialized when first
   // entering its edit mode.
+  
+  // have to call this to avoid crash at sizeOfAll
+  becomeCurrent(false);
 
   sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
   if(ViewX1 > UsedX1)  ViewX1 = UsedX1;
