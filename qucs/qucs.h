@@ -56,6 +56,9 @@ typedef bool (Schematic::*pToggleFunc) ();
 typedef void (MouseActions::*pMouseFunc) (Schematic*, QMouseEvent*);
 typedef void (MouseActions::*pMouseFunc2) (Schematic*, QMouseEvent*, float, float);
 
+extern const char *smallsave_xpm[];// icon for unsaved files (diskette)
+extern const char *empty_xpm[];    // provides same height than "smallsave_xpm"
+
 class QucsApp : public QMainWindow {
   Q_OBJECT
 public:

@@ -25,10 +25,6 @@ class QucsApp;
 class QPrinter;
 class QPainter;
 
-extern const char *smallsave_xpm[];// icon for unsaved files (diskette)
-extern const char *empty_xpm[];    // provides same height than "smallsave_xpm"
-
-
 class QucsDoc {
 public: 
   QucsDoc(QucsApp*, const QString&);
