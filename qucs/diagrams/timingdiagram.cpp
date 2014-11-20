@@ -170,7 +170,7 @@ int TimingDiagram::calcDiagram()
   double *px;
   while(g->cPointsX.isEmpty()) {  // any graph with data ?
     g = ig.next();
-    if(g == 0) break;
+    if( !ig.hasNext()) break;
   }
   if(g == 0) {
     Str = QObject::tr("no data");
