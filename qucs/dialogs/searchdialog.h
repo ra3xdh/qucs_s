@@ -26,8 +26,6 @@
 
 #include <QDialog>
 
-class QucsApp;
-
 namespace Ui {
   class SearchDialog;
 }
@@ -37,7 +35,7 @@ class SearchDialog : public QDialog
   Q_OBJECT
 
 public:
-  SearchDialog(QucsApp*);
+  SearchDialog(QWidget *);
  ~SearchDialog();
 
   void initSearch(const QString &text, bool replace=false);
@@ -52,7 +50,6 @@ private slots:
 
 private:
   Ui::SearchDialog *ui;
-  QucsApp *App;
 };
 
 #endif

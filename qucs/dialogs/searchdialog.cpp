@@ -24,14 +24,10 @@
 #include "searchdialog.h"
 #include "ui_searchdialog.h"
 
-#include "textdoc.h"
-#include "qucs.h"
-
-SearchDialog::SearchDialog(QucsApp *App_) : 
-    QDialog(App_, 0, true),
+SearchDialog::SearchDialog(QWidget *parent) : 
+    QDialog(parent),
     ui(new Ui::SearchDialog)
 {
-  App = App_;
   ui->setupUi(this);
 
   connect(ui->ButtonSearch, SIGNAL(clicked()), SLOT(slotSearch()));
