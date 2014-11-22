@@ -17,7 +17,7 @@
 #include <QHash>
 #include <QString>
 #include <QStringList>
-#include <Q3PtrList>
+#include <QList>
 #include <QDebug>
 
 #include "element.h"
@@ -29,7 +29,7 @@
 
 // Global category and component lists.
 QHash<QString, Module *> Module::Modules;
-Q3PtrList<Category> Category::Categories;
+QList<Category *> Category::Categories;
 
 QMap<QString, QString> Module::vaComponents;
 
@@ -76,8 +76,8 @@ void Module::registerComponent (QString category, pInfoFunc info) {
 // Returns instantiated component based on the given "Model" name.  If
 // there is no such component registers the function returns NULL.
 Component * Module::getComponent (QString Model) {
-  Module * m = Modules.find(Model).value();
-  if (m) {
+  if ( Modules.contains(Model)) {
+    Module *m = Modules.find(Model).value();
     QString Name;
     char * File;
     QString vaBitmap;
@@ -140,17 +140,18 @@ void Module::registerDynamicComponents()
 void Module::intoCategory (Module * m) {
 
   // look through existing categories
-  Category * cat = Category::Categories.first ();
-  for (; cat; cat = Category::Categories.next ()) {
-    if (cat->Name == m->category) {
-      cat->Content.append (m);
+  QList<Category *>::const_iterator it;
+  for (it = Category::Categories.constBegin();
+       it != Category::Categories.constEnd(); it++) {
+    if ((*it)->Name == m->category) {
+      (*it)->Content.append (m);
       break;
     }
   }
 
   // if there is no such category, then create it
-  if (!cat) {
-    cat = new Category (m->category);
+  if (it == Category::Categories.constEnd()) {
+    Category *cat = new Category (m->category);
     Category::Categories.append (cat);
     cat->Content.append (m);
   }
@@ -435,8 +436,9 @@ void Module::registerModules (void) {
 // This function has to be called once at application end.  It removes
 // all categories and registered modules from memory.
 void Module::unregisterModules (void) {
-  Category::Categories.setAutoDelete (true);
-  Category::Categories.clear ();
+  while(!Category::Categories.isEmpty()) {
+    delete Category::Categories.takeFirst();
+  }
 
   //remove all modules by iterator, require in qhash
   QHashIterator<QString, Module *> it( Modules );
@@ -450,27 +452,33 @@ void Module::unregisterModules (void) {
 // Constructor creates instance of module object.
 Category::Category () {
   Name = "#special";
-  Content.clear ();
+  while(!Content.isEmpty()) {
+    delete Content.takeFirst();
+  }
 }
 
 // Constructor creates named instance of module object.
 Category::Category (const QString name) {
   Name = name;
-  Content.clear ();
+  while(!Content.isEmpty()) {
+    delete Content.takeFirst();
+  }
 }
 
 // Destructor removes instance of module object from memory.
 Category::~Category () {
-  Content.setAutoDelete (true);
-  Content.clear ();
+  while(!Content.isEmpty()) {
+    delete Content.takeFirst();
+  }
 }
 
 // Returns the available category names in a list of strings.
 QStringList Category::getCategories (void) {
   QStringList res;
-  Category * cat = Categories.first ();
-  for (; cat; cat = Categories.next ()) {
-    res.append (cat->Name);
+  QList<Category *>::const_iterator it;
+  for (it = Category::Categories.constBegin(); 
+       it != Category::Categories.constEnd(); it++) {
+    res.append ((*it)->Name);
   }
   return res;
 }
@@ -478,24 +486,25 @@ QStringList Category::getCategories (void) {
 // The function returns the registered modules in the given category
 // as a pointer list.  The pointer list is empty if there is no such
 // category available.
-Q3PtrList<Module> Category::getModules (QString category) {
-  Q3PtrList<Module> res;
-  Category * cat = Categories.first ();
-  for (; cat; cat = Categories.next ()) {
-    if (category == cat->Name)
-      res = cat->Content;
+QList<Module *> Category::getModules (QString category) {
+  QList<Module *> res;
+  QList<Category *>::const_iterator it;
+  for (it = Category::Categories.constBegin();
+       it != Category::Categories.constEnd(); it++) {
+    if (category == (*it)->Name) {
+      res = (*it)->Content;
+    }
   }
   return res;
 }
 
 // Returns the index number into the category list for the given
-// category name.  The function returns zero if there is no such
+// category name.  The function returns minus 1 if there is no such
 // category.
 int Category::getModulesNr (QString category) {
-  Category * cat = Categories.first ();
-  for (int i = 0; cat; cat = Categories.next (), i++) {
-    if (category == cat->Name)
+  for (int i = 0; i < Category::Categories.size(); i++) {
+    if (category == Category::Categories.at(i)->Name)
       return i;
   }
-  return 0;
+  return -1;
 }

@@ -20,7 +20,7 @@
 
 #include <QDialog>
 #include <QRegExp>
-#include <Q3PtrList>
+#include <QList>
 
 #include <QSpinBox>
 #include <QGridLayout>
@@ -61,12 +61,12 @@ private:
   Graph* setBiasPoints();
 
   QGridLayout *all;   // the mother of all widgets
-  Q3PtrList<mySpinBox> BoxList;
+  QList<mySpinBox *> BoxList;
 
   Graph *pGraph;
   Schematic *Doc;
-  Q3PtrList<Node> NodeList;
-  Q3PtrList<double> ValueList;
+  QList<Node *> NodeList;
+  QList<double *> ValueList;
 };
 
 #endif
