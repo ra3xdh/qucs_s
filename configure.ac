@@ -127,30 +127,6 @@ if test $RELEASE = yes; then
 fi
 AC_SUBST(RELEASEDIRS)
 
-dnl Check for language support.
-AC_PATH_PROGS(LRELEASE, lrelease-qt4 lrelease, :, [$QTDIR/bin:$PATH])
-AC_PATH_PROGS(LUPDATE, lupdate-qt4 lupdate, :, [$QTDIR/bin:$PATH])
-
-dnl Check for MOC/UIC/RCC support.
-AC_PATH_PROGS(MOC, moc-qt4 moc, :, [$QTDIR/bin:$PATH])
-AC_PATH_PROGS(UIC, uic-qt4 uic, :, [$QTDIR/bin:$PATH])
-AC_PATH_PROGS(RCC, rcc, :, [$QTDIR/bin:$PATH])
-if test "$MOC" = ":"; then
-  AC_MSG_WARN([
-  The $PACKAGE package needs the 'Qt Meta Object Compiler' to compile properly.
-  Though Qt itself may be properly installed including headers and libraries
-  the 'moc' program is missing.  Possibly you need to install the full
-  development package of Qt.])
-fi
-
-if test "$UIC" = ":"; then
-  AC_MSG_WARN([
-  The $PACKAGE package needs the 'Qt User Interface Compiler' to compile properly.
-  Though Qt itself may be properly installed including headers and libraries
-  the 'uic' program is missing.  Possibly you need to install the full
-  development package of Qt.])
-fi
-
 dnl Check for X11
 if test x$LINUX == "xyes"; then
   AC_PATH_XTRA
@@ -271,6 +247,18 @@ case $host_os in
       CXXFLAGS="$CXXFLAGS -W -Wall"
     fi
 
+    dnl handle provided QTDIR environment variable
+    dnl   in Slackware when both Qt3 at Qt4 are installed the Qt4 path
+    dnl   is in QT4DIR while QTDIR contains the path to Qt3
+    QTDIR_paths=""
+    if test "x$QT4DIR" != "x"; then
+      echo "QT4DIR provided: $QT4DIR"
+      QTDIR=$QT4DIR
+    elif test "x$QTDIR" != "x"; then
+      echo "QTDIR provided: $QTDIR"
+    fi
+    QTDIR_paths="$QTDIR/lib $QTDIR/lib64"
+
     dnl Check include path to Qt.
     QT_INCLUDES=""
     QT_VER=2
@@ -328,14 +316,6 @@ case $host_os in
       ;;
     esac
     unset enable_mt
-
-    dnl handle provided QTDIR environment variable
-    QTDIR_paths=""
-    if test "x$QTDIR" != "x"; then
-      echo "QTDIR provided: $QTDIR"
-      QTDIR_paths="$QTDIR/lib $QTDIR/lib64"
-    fi
-
 
     dnl Check library path to Qt.
     QT_LDFLAGS=""
@@ -713,6 +693,31 @@ case $host_os in
 
     ;;
 esac
+
+dnl Check for language support.
+AC_PATH_PROGS(LRELEASE, lrelease-qt4 lrelease, :, [$QT_DIR/bin:$PATH])
+AC_PATH_PROGS(LUPDATE, lupdate-qt4 lupdate, :, [$QT_DIR/bin:$PATH])
+
+dnl Check for MOC/UIC/RCC support.
+AC_PATH_PROGS(MOC, moc-qt4 moc, :, [$QT_DIR/bin:$PATH])
+AC_PATH_PROGS(UIC, uic-qt4 uic, :, [$QT_DIR/bin:$PATH])
+AC_PATH_PROGS(RCC, rcc, :, [$QT_DIR/bin:$PATH])
+
+if test "$MOC" = ":"; then
+  AC_MSG_WARN([
+  The $PACKAGE package needs the 'Qt Meta Object Compiler' to compile properly.
+  Though Qt itself may be properly installed including headers and libraries
+  the 'moc' program is missing.  Possibly you need to install the full
+  development package of Qt.])
+fi
+
+if test "$UIC" = ":"; then
+  AC_MSG_WARN([
+  The $PACKAGE package needs the 'Qt User Interface Compiler' to compile properly.
+  Though Qt itself may be properly installed including headers and libraries
+  the 'uic' program is missing.  Possibly you need to install the full
+  development package of Qt.])
+fi
 
 dnl check for Qt moveable tabwidgets (introduced in Qt 4.5)
 QUCS_CHECK_FUNC_QTABWIDGET_SETMOVABLE
