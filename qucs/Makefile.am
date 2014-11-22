@@ -39,7 +39,7 @@ qucs_SOURCES = node.cpp element.cpp qucsdoc.cpp wire.cpp mouseactions.cpp   \
   qucs.cpp main.cpp wirelabel.cpp qucs_init.cpp qucs_actions.cpp            \
   viewpainter.cpp mnemo.cpp schematic.cpp schematic_element.cpp textdoc.cpp \
   schematic_file.cpp syntax.cpp module.cpp octave_window.cpp qrc_qucs.cpp   \
-  messagedock.cpp misc.cpp
+  messagedock.cpp misc.cpp imagewriter.cpp printerwriter.cpp
 
 qrc_qucs.cpp: qucs.qrc
 	$(RCC) -o $@ $<
