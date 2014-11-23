@@ -62,7 +62,7 @@ void encode_String(const QString& Input, QString& Output)
   struct tSpecialChar *p;
 
   Output = "";
-  while((Begin=Input.find('\\', Begin)) >= 0) {
+  while((Begin=Input.indexOf('\\', Begin)) >= 0) {
     Output += Input.mid(End, Begin - End);
     End = Begin++;
 

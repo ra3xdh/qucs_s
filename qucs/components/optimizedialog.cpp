@@ -40,7 +40,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   Comp = c_;
   Doc  = d_;
   changed = false;
-  setCaption(tr("Edit Optimization Properties"));
+  setWindowTitle(tr("Edit Optimization Properties"));
 
   Expr.setPattern("[\\w_]+");
   Validator = new QRegExpValidator(Expr, this);

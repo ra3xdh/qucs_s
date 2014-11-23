@@ -255,7 +255,7 @@ bool SpiceFile::createSubNetlist(QTextStream *stream)
   // check input and output file
   QFile SpiceFile, ConvFile;
   FileName = getSubcircuitFile();
-  SpiceFile.setName(FileName);
+  SpiceFile.setFileName(FileName);
   if(!SpiceFile.open(QIODevice::ReadOnly)) {
     ErrText += QObject::tr("ERROR: Cannot open SPICE file \"%1\".").
       arg(FileName);
@@ -263,7 +263,7 @@ bool SpiceFile::createSubNetlist(QTextStream *stream)
   }
   SpiceFile.close();
   QString ConvName = SpiceFile.name() + ".lst";
-  ConvFile.setName(ConvName);
+  ConvFile.setFileName(ConvName);
   QFileInfo Info(ConvName);
 
   // re-create converted file if necessary
@@ -358,7 +358,7 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
     connect(SpicePrep, SIGNAL(finished(int)), MBox, SLOT(close()));
 
     if (piping) {
-      PrepFile.setName(PrepName);
+      PrepFile.setFileName(PrepName);
       if(!PrepFile.open(QIODevice::WriteOnly)) {
 	ErrText +=
 	  QObject::tr("ERROR: Cannot save preprocessed SPICE file \"%1\".").
@@ -495,10 +495,10 @@ void SpiceFile::slotGetNetlist()
   QString s;
   NetLine += QString(QucsConv->readAllStandardOutput());
 
-  while((i = NetLine.find('\n')) >= 0) {
+  while((i = NetLine.indexOf('\n')) >= 0) {
     s = NetLine.left(i);
     NetLine.remove(0, i+1);
-    s = s.stripWhiteSpace();
+    s = s.trimmed();
     if(s.size()>0&&s.at(0) == '#') {
       continue;
     } else if(s.isEmpty()) {

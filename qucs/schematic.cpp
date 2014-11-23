@@ -2080,7 +2080,7 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
   App->view->selElem = 0;  // no component selected
 
   if(formerAction)
-    formerAction->setOn(true);  // restore old action
+    formerAction->setChecked(true);  // restore old action
 }
 
 // ---------------------------------------------------
@@ -2147,7 +2147,7 @@ void Schematic::contentsDragLeaveEvent(QDragLeaveEvent*)
       }
 
   if(formerAction)
-    formerAction->setOn(true);  // restore old action
+    formerAction->setChecked(true);  // restore old action
 }
 
 // ---------------------------------------------------

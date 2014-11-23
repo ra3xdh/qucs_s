@@ -33,7 +33,7 @@
 FillDialog::FillDialog(const QString& _Caption, bool show, QWidget *parent)
 			: QDialog(parent)
 {
-  setCaption(_Caption);
+  setWindowTitle(_Caption);
 
   all = new QVBoxLayout(this); // to provide the neccessary size
   QTabWidget *t = new QTabWidget(this);

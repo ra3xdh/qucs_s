@@ -32,7 +32,7 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     QDialog(parent)
 {
 
-    setCaption(tr("Export graphics"));
+    setWindowTitle(tr("Export graphics"));
     dwidth = w;
     dheight = h;
     dwidthsel = wsel;

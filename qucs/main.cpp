@@ -266,7 +266,7 @@ int doNetlist(QString schematic, QString netlist)
 
   Collect.clear();  // clear list for NodeSets, SPICE components etc.
 
-  NetlistFile.setName(netlist);
+  NetlistFile.setFileName(netlist);
   if(!NetlistFile.open(QIODevice::WriteOnly)) {
     fprintf(stderr, "Error: Could not load netlist %s\n", netlist.ascii());
     return -1;

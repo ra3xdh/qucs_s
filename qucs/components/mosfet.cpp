@@ -105,7 +105,7 @@ void MOSFET::createSymbol()
     Lines.append(new Line( -1,  0, -6,  5,QPen(Qt::darkBlue,2)));
   }
 
-  if((Props.next()->Value.stripWhiteSpace().at(0) == '-') ==
+  if((Props.next()->Value.trimmed().at(0) == '-') ==
      (Props.first()->Value == "nfet"))
     Lines.append(new Line(-10, -8,-10,  8,QPen(Qt::darkBlue,3)));
   else

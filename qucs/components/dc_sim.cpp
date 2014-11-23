@@ -23,7 +23,7 @@ DC_Sim::DC_Sim()
   Description = QObject::tr("dc simulation");
 
   QString s = Description;
-  int a = s.find(" ");
+  int a = s.indexOf(" ");
   int b = s.findRev(" ");
   if (a != -1 && b != -1) {
     if (a > (int) s.length() - b)  b = a;

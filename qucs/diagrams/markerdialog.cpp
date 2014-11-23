@@ -29,7 +29,7 @@
 MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
                      : QDialog(parent, 0, FALSE, Qt::WDestructiveClose)
 {
-  setCaption(tr("Edit Marker Properties"));
+  setWindowTitle(tr("Edit Marker Properties"));
   pMarker = pm_;
 
   QGridLayout *g = new QGridLayout;

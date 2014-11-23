@@ -155,7 +155,7 @@ int Subcircuit::loadSymbol(const QString& DocName)
   do {
     if(stream.atEnd()) return -2;
     Line = stream.readLine();
-    Line = Line.stripWhiteSpace();
+    Line = Line.trimmed();
   } while(Line.isEmpty());
 
   if(Line.left(16) != "<Qucs Schematic ")  // wrong file type ?
@@ -185,7 +185,7 @@ int Subcircuit::loadSymbol(const QString& DocName)
       return z;      // return number of ports
     }
 
-    Line = Line.stripWhiteSpace();
+    Line = Line.trimmed();
     if(Line.at(0) != '<') return -5;
     if(Line.at(Line.length()-1) != '>') return -6;
     Line = Line.mid(1, Line.length()-2); // cut off start and end character

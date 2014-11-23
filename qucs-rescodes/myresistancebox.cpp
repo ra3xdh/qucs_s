@@ -19,6 +19,7 @@
 #include "qresistor.h"
 
 #include <QValidator>
+#include <QDoubleValidator>
 #include <QLabel>
 #include <QComboBox>
 #include <QLineEdit>
@@ -34,7 +35,7 @@ MyResistanceBox::MyResistanceBox( QWidget *parent )
 	//--------------------resistance displaying ui ---------------------------------//
 	resValueEdit = new QLineEdit(this);
 
-	const QDoubleValidator *validator = new QDoubleValidator (resValueEdit,"validator");
+	const QDoubleValidator *validator = new QDoubleValidator (resValueEdit/*,"validator"*/);
 	resValueEdit->setValidator(validator);
 	resValueEdit->setMaxLength(6);
 
@@ -44,11 +45,11 @@ MyResistanceBox::MyResistanceBox( QWidget *parent )
 
 	QStringList units;
   units << "Ohms" << "kOhms" << "MOhms";
-	resUnit ->insertStringList(units);
+	resUnit ->insertItems(0,units);
 
 	QStringList tols;
   tols << "20%" << "10%" << "5%" << "2%" << "1%" << "0.5%" << "0.25%" << "0.1%" << "0.05%";
-	tolerance ->insertStringList(tols);
+	tolerance ->insertItems(0,tols);
 
   QHBoxLayout *hbox = new QHBoxLayout;
   hbox->addWidget(resValueEdit);
@@ -71,7 +72,7 @@ float MyResistanceBox::enteredValue()
 {
 	bool ok;
 	float f;
-	int i=resUnit->currentItem();
+	int i=resUnit->currentIndex();
 	f=(resValueEdit->text()).toFloat(&ok);
 	f=f*(pow(10,3*i));
 

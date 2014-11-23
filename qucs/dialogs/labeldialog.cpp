@@ -107,8 +107,8 @@ void LabelDialog::slotCancel()
 
 void LabelDialog::slotOk()
 {
-  NodeName->setText(NodeName->text().stripWhiteSpace());
-  InitValue->setText(InitValue->text().stripWhiteSpace());
+  NodeName->setText(NodeName->text().trimmed());
+  InitValue->setText(InitValue->text().trimmed());
 
   bool changed = false;
   if(pLabel) {

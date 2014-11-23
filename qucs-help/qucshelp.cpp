@@ -47,7 +47,7 @@ QucsHelp::QucsHelp(const QString& page)
 #ifndef __APPLE__
   setWindowIcon (QPixmap(":/bitmaps/big.qucs.xpm"));
 #endif
-  setCaption(tr("Qucs Help System"));
+  setWindowTitle(tr("Qucs Help System"));
 
   textBrowser = new TextBrowser(this);
   textBrowser->setMinimumSize(400,200);
@@ -67,7 +67,7 @@ QucsHelp::~QucsHelp()
 
 void QucsHelp::setupActions()
 {
-  QToolBar *toolbar = new QToolBar(this,"main_toolbar");
+  QToolBar *toolbar = new QToolBar("main_toolbar",this);
 
   this->addToolBar(toolbar);
 
@@ -76,20 +76,34 @@ void QucsHelp::setupActions()
   const QKeySequence ks = QKeySequence();
 
   QAction *quitAction = new QAction(QIcon((":/bitmaps/quit.png")),
-                                    tr("&Quit"), (const QKeySequence&)Qt::CTRL+Qt::Key_Q, this,"");
+                                    tr("&Quit"), this);
+    quitAction->setShortcut((const QKeySequence&)Qt::CTRL+Qt::Key_Q);
+    
   QAction *backAction = new QAction(QIcon((":/bitmaps/back.png")),
-                                    tr("&Back"), Qt::ALT+Qt::Key_Left, this,"");
+                                    tr("&Back"), this);
+    backAction->setShortcut( Qt::ALT+Qt::Key_Left);
+ 
+    
   QAction *forwardAction = new QAction(QIcon((":/bitmaps/forward.png")),
-                                       tr("&Forward"), Qt::ALT+Qt::Key_Right, this,"");
+                                       tr("&Forward"),  this);
+   forwardAction->setShortcut(Qt::ALT+Qt::Key_Right);
+    
   QAction *homeAction = new QAction(QIcon((":/bitmaps/home.png")),
-                                    tr("&Home"),Qt::CTRL+Qt::Key_H,this,"");
+                                    tr("&Home"),this);
+   homeAction->setShortcut(Qt::CTRL+Qt::Key_H);
+    
   previousAction = new QAction(QIcon((":/bitmaps/previous.png")),tr("&Previous"),
-                               ks, this,"");
+                               this);
+   previousAction->setShortcut( ks);
+    
   nextAction = new QAction(QIcon((":/bitmaps/next.png")),
-                           tr("&Next"), ks, this,"");
-  viewBrowseDock = new QAction(tr("&Table of Contents"), 0, this,"");
-  viewBrowseDock->setToggleAction(true);
-  viewBrowseDock->setOn(true);
+                           tr("&Next"), this);
+   nextAction->setShortcut( ks);
+    
+  viewBrowseDock = new QAction(tr("&Table of Contents"), this);
+    
+  viewBrowseDock->setCheckable(true);
+  viewBrowseDock->setChecked(true);
   viewBrowseDock->setStatusTip(tr("Enables/disables the table of contents"));
   viewBrowseDock->setWhatsThis(tr("Table of Contents\n\nEnables/disables the table of contents"));
 
@@ -109,34 +123,53 @@ void QucsHelp::setupActions()
   connect(nextAction,SIGNAL(activated()),this,SLOT(nextLink()));
   connect(viewBrowseDock, SIGNAL(toggled(bool)), SLOT(slotToggleSidebar(bool)));
 
-  backAction->addTo(toolbar);
-  forwardAction->addTo(toolbar);
+  //backAction->addTo(toolbar);
+    toolbar->addAction(backAction);
+  //forwardAction->addTo(toolbar);
+    toolbar->addAction(forwardAction);
   toolbar->addSeparator();
-  homeAction->addTo(toolbar);
-  previousAction->addTo(toolbar);
-  nextAction->addTo(toolbar);
+  //homeAction->addTo(toolbar);
+    toolbar->addAction(homeAction);
+  //previousAction->addTo(toolbar);
+    toolbar->addAction(previousAction);
+  //nextAction->addTo(toolbar);
+    toolbar->addAction(nextAction);
   toolbar->addSeparator();
-  quitAction->addTo(toolbar);
+  //quitAction->addTo(toolbar);
+    toolbar->addAction(quitAction);
 
   QMenu *fileMenu = new QMenu(this);
-  quitAction->addTo(fileMenu);
+  //quitAction->addTo(fileMenu);
+    fileMenu->addAction(quitAction);
 
   QMenu *viewMenu = new QMenu(this);
-  backAction->addTo(viewMenu);
-  forwardAction->addTo(viewMenu);
-  homeAction->addTo(viewMenu);
-  previousAction->addTo(viewMenu);
-  nextAction->addTo(viewMenu);
-  viewMenu->insertSeparator();
-  viewBrowseDock->addTo(viewMenu);
+  //backAction->addTo(viewMenu);
+    viewMenu->addAction(backAction);
+  //forwardAction->addTo(viewMenu);
+    viewMenu->addAction(forwardAction);
+
+  //homeAction->addTo(viewMenu);
+    viewMenu->addAction(homeAction);
+
+  //previousAction->addTo(viewMenu);
+    viewMenu->addAction(previousAction);
+
+  //nextAction->addTo(viewMenu);
+    viewMenu->addAction(nextAction);
+
+  //viewMenu->insertSeparator();
+    viewMenu->addSeparator();
+
+  //viewBrowseDock->addTo(viewMenu);
+    
 
   QMenu *helpMenu = new QMenu(this);
-  helpMenu->insertItem(tr("&About Qt"),qApp,SLOT(aboutQt()));
+  helpMenu->addAction(tr("&About Qt"),qApp,SLOT(aboutQt()));
 
-  bar->insertItem(tr("&File"), fileMenu );
-  bar->insertItem(tr("&View"),viewMenu);
-  bar->insertSeparator();
-  bar->insertItem(tr("&Help"),helpMenu);
+  bar->addMenu(new QMenu(tr("&File"), fileMenu));
+  bar->addMenu(new QMenu(tr("&View"),viewMenu));
+  bar->addSeparator();
+  bar->addMenu(new QMenu(tr("&Help"),helpMenu));
 }
 
 void QucsHelp::createSidebar()
@@ -183,7 +216,7 @@ void QucsHelp::slotSourceChanged(const QUrl & _str)
 {
   QString str = _str.toString();
   // Remove '#*' chars in link since we don't check '#top,etc' while tracking previous actions
-  int hashPos = str.findRev('#');
+  int hashPos = str.lastIndexOf('#');
   if(hashPos != -1)
     str = str.left(hashPos);
   // Don't do anything if accessing same page
@@ -219,7 +252,7 @@ void QucsHelp::slotSourceChanged(const QUrl & _str)
   {
     textBrowser->setSource(QucsHelpDir.filePath(links[0]));
     currentSource = QucsHelpDir.filePath(links[0]);
-    qDebug("QucsHelp::slotSourceChanged():  Link mismatch \n Link: %s",str.ascii());
+    qDebug("QucsHelp::slotSourceChanged():  Link mismatch \n Link: %s",str.toAscii().data());
   }
   else
     currentSource = str;
@@ -249,6 +282,6 @@ void QucsHelp::slotToggleSidebar(bool b)
 void QucsHelp::slotToggleSidebarAction(bool b)
 {
   viewBrowseDock->blockSignals(true);
-  viewBrowseDock->setOn(b);
+  viewBrowseDock->setChecked(b);
   viewBrowseDock->blockSignals(false);
 }

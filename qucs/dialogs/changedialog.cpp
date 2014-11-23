@@ -137,7 +137,7 @@ void ChangeDialog::slotButtReplace()
 
   // create dialog showing all found components
   QDialog *Dia = new QDialog(this);
-  Dia->setCaption(tr("Found Components"));
+  Dia->setWindowTitle(tr("Found Components"));
   QVBoxLayout *Dia_All = new QVBoxLayout(Dia);
   Dia_All->setSpacing(3);
   Dia_All->setMargin(5);
@@ -179,7 +179,7 @@ void ChangeDialog::slotButtReplace()
             Dia_Box->addWidget(pb);   
             pList.append(pb);
             pb->setChecked(true);
-            i1 = pp->Description.find('[');
+            i1 = pp->Description.indexOf('[');
             if(i1 < 0)  break;  // no multiple-choice property
 
             i2 = pp->Description.findRev(']');

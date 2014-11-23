@@ -30,7 +30,7 @@
 ArrowDialog::ArrowDialog(QWidget *parent, const char *name)
                                   : QDialog(parent, name)
 {
-  setCaption(tr("Edit Arrow Properties"));
+  setWindowTitle(tr("Edit Arrow Properties"));
   val100 = new QIntValidator(0, 100, this);
 
   all = new QGridLayout(this, 5,4,3,3);

@@ -35,7 +35,7 @@
 ID_Dialog::ID_Dialog(ID_Text *idText_)
 {
   idText = idText_;
-  setCaption(tr("Edit Subcircuit Properties"));
+  setWindowTitle(tr("Edit Subcircuit Properties"));
 
   all = new QVBoxLayout;
   all->setSpacing(5);

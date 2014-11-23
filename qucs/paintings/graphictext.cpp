@@ -160,7 +160,7 @@ bool GraphicText::load(const QString& s)
   Angle = n.toInt(&ok);
   if(!ok) return false;
 
-  Text = s.mid(s.find('"')+1);    // Text (can contain " !!!)
+  Text = s.mid(s.indexOf('"')+1);    // Text (can contain " !!!)
   Text.truncate(Text.length()-1);
   if(Text.isEmpty()) return false;
 

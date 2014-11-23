@@ -74,7 +74,7 @@ bool QucsApp::performToggleAction(bool on, QAction *Action,
   do {
     if(Function) if((Doc->*Function)()) {
       Action->blockSignals(true);
-      Action->setOn(false);  // release toolbar button
+      Action->setChecked(false);  // release toolbar button
       Action->blockSignals(false);
       Doc->viewport()->update();
       break;
@@ -82,7 +82,7 @@ bool QucsApp::performToggleAction(bool on, QAction *Action,
 
     if(activeAction) {
       activeAction->blockSignals(true); // do not call toggle slot
-      activeAction->setOn(false);       // set last toolbar button off
+      activeAction->setChecked(false);       // set last toolbar button off
       activeAction->blockSignals(false);
     }
     activeAction = Action;
@@ -163,7 +163,7 @@ void QucsApp::slotEditDelete(bool on)
     Doc->textCursor().deleteChar();
 
     editDelete->blockSignals(true);
-    editDelete->setOn(false);  // release toolbar button
+    editDelete->setChecked(false);  // release toolbar button
     editDelete->blockSignals(false);
   }
   else
@@ -209,7 +209,7 @@ void QucsApp::slotZoomIn(bool on)
   if(Doc->inherits("QPlainTextEdit")) {
     Doc->zoomBy(1.5f);
     magPlus->blockSignals(true);
-    magPlus->setOn(false);
+    magPlus->setChecked(false);
     magPlus->blockSignals(false);
   }
   else
@@ -231,7 +231,7 @@ void QucsApp::slotSelect(bool on)
   if(w->inherits("QPlainTextEdit")) {
     ((TextDoc*)w)->viewport()->setFocus();
       select->blockSignals(true);
-      select->setOn(true);
+      select->setChecked(true);
       select->blockSignals(false);
     return;
   }
@@ -245,7 +245,7 @@ void QucsApp::slotSelect(bool on)
     view->drawn = false;
 
     select->blockSignals(true);
-    select->setOn(false);
+    select->setChecked(false);
     select->blockSignals(false);
     return;
   }
@@ -270,7 +270,7 @@ void QucsApp::slotEditPaste(bool on)
     ((TextDoc*)Doc)->paste();
 
     editPaste->blockSignals(true);
-    editPaste->setOn(false);  // release toolbar button
+    editPaste->setChecked(false);  // release toolbar button
     editPaste->blockSignals(false);
     return;
   }
@@ -292,7 +292,7 @@ void QucsApp::slotEditPaste(bool on)
   if(!view->pasteElements(Doc))
   {
     editPaste->blockSignals(true); // do not call toggle slot
-    editPaste->setOn(false);       // set toolbar button off
+    editPaste->setChecked(false);       // set toolbar button off
     editPaste->blockSignals(false);
     return;   // if clipboard empty
   }
@@ -300,7 +300,7 @@ void QucsApp::slotEditPaste(bool on)
   if(activeAction)
   {
     activeAction->blockSignals(true); // do not call toggle slot
-    activeAction->setOn(false);       // set last toolbar button off
+    activeAction->setChecked(false);       // set last toolbar button off
     activeAction->blockSignals(false);
   }
   activeAction = editPaste;
@@ -344,7 +344,7 @@ void QucsApp::slotInsertEquation(bool on)
   }
   if(activeAction) {
     activeAction->blockSignals(true); // do not call toggle slot
-    activeAction->setOn(false);       // set last toolbar button off
+    activeAction->setChecked(false);       // set last toolbar button off
     activeAction->blockSignals(false);
   }
   activeAction = insEquation;
@@ -377,7 +377,7 @@ void QucsApp::slotInsertGround(bool on)
   }
   if(activeAction) {
     activeAction->blockSignals(true); // do not call toggle slot
-    activeAction->setOn(false);       // set last toolbar button off
+    activeAction->setChecked(false);       // set last toolbar button off
     activeAction->blockSignals(false);
   }
   activeAction = insGround;
@@ -410,7 +410,7 @@ void QucsApp::slotInsertPort(bool on)
   }
   if(activeAction) {
     activeAction->blockSignals(true); // do not call toggle slot
-    activeAction->setOn(false);       // set last toolbar button off
+    activeAction->setChecked(false);       // set last toolbar button off
     activeAction->blockSignals(false);
   }
   activeAction = insPort;
@@ -1009,8 +1009,8 @@ void QucsApp::slotAddToProject()
   QFile origFile, destFile;
   while(it != FileList.end()) {
     Info.setFile(*it);
-    origFile.setName(*it);
-    destFile.setName(QucsSettings.QucsWorkDir.absPath() +
+    origFile.setFileName(*it);
+    destFile.setFileName(QucsSettings.QucsWorkDir.absPath() +
                      QDir::separator() + Info.fileName());
 
     if(!origFile.open(QIODevice::ReadOnly)) {
@@ -1125,9 +1125,9 @@ void QucsApp::slotCursorUp()
     if(view->MAx3 == 0) return;  // edit component namen ?
     Component *pc = (Component*)view->focusElement;
     Property *pp = pc->Props.at(view->MAx3-1);  // current property
-    int Begin = pp->Description.find('[');
+    int Begin = pp->Description.indexOf('[');
     if(Begin < 0) return;  // no selection list ?
-    int End = pp->Description.find(editText->text(), Begin); // current
+    int End = pp->Description.indexOf(editText->text(), Begin); // current
     if(End < 0) return;  // should never happen
     End = pp->Description.findRev(',', End);
     if(End < Begin) return;  // was first item ?
@@ -1172,17 +1172,17 @@ void QucsApp::slotCursorDown()
     if(view->MAx3 == 0) return;  // edit component namen ?
     Component *pc = (Component*)view->focusElement;
     Property *pp = pc->Props.at(view->MAx3-1);  // current property
-    int Pos = pp->Description.find('[');
+    int Pos = pp->Description.indexOf('[');
     if(Pos < 0) return;  // no selection list ?
-    Pos = pp->Description.find(editText->text(), Pos); // current list item
+    Pos = pp->Description.indexOf(editText->text(), Pos); // current list item
     if(Pos < 0) return;  // should never happen
-    Pos = pp->Description.find(',', Pos);
+    Pos = pp->Description.indexOf(',', Pos);
     if(Pos < 0) return;  // was last item ?
     Pos++;
     if(pp->Description.at(Pos) == ' ') Pos++; // remove leading space
-    int End = pp->Description.find(',', Pos);
+    int End = pp->Description.indexOf(',', Pos);
     if(End < 0) {  // is last item ?
-      End = pp->Description.find(']', Pos);
+      End = pp->Description.indexOf(']', Pos);
       if(End < 0) return;  // should never happen
     }
     editText->setText(pp->Description.mid(Pos, End-Pos));
@@ -1306,7 +1306,7 @@ void QucsApp::slotApplyCompText()
   if(pp) {  // is it a property ?
     s = pp->Value;
     view->MAx2 += editText->fontMetrics().width(pp->Name+"=");
-    if(pp->Description.find('[') >= 0)  // is selection list ?
+    if(pp->Description.indexOf('[') >= 0)  // is selection list ?
       editText->setReadOnly(true);
     Expr_CompProp.setPattern("[^\"]*");
     if(!pc->showName) n--;

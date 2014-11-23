@@ -33,7 +33,7 @@
 GraphicTextDialog::GraphicTextDialog(QWidget *parent, const char *name)
                                   : QDialog(parent, name)
 {
-  setCaption(tr("Edit Text Properties"));
+  setWindowTitle(tr("Edit Text Properties"));
 
   vert = new QVBoxLayout(this);
   vert->setMargin(3);

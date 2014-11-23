@@ -23,7 +23,7 @@ TR_Sim::TR_Sim()
   Description = QObject::tr("transient simulation");
 
   QString  s = Description;
-  int a = s.find(" ");
+  int a = s.indexOf(" ");
   if (a != -1) s[a] = '\n';
 
   Texts.append(new Text(0, 0, s.left(a), Qt::darkBlue, QucsSettings.largeFontSize));

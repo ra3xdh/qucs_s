@@ -291,14 +291,14 @@ int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1,
   int i = 0;
 
   while (Text.length()>i) {
-    if ((Text[i].latin1() == '_' || Text[i].latin1() == '^') &&
+    if ((Text[i].toLatin1() == '_' || Text[i].toLatin1() == '^') &&
 	!Text[i+1].isNull()) {
-      bool is_sub = Text[i++].latin1() == '_';
+      bool is_sub = Text[i++].toLatin1() == '_';
       int len = 0;
 
       if (Text[i] == '{') {
         i++;
-        while (!Text[i+len].isNull() && Text[i+len].latin1() != '}') len++;
+        while (!Text[i+len].isNull() && Text[i+len].toLatin1() != '}') len++;
       }
 
 #ifdef __MINGW32__
@@ -332,8 +332,8 @@ int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1,
     {
       int len = 0;
       while (Text.length()>(i+len)
-             /*!Text[i+len].isNull()*/ && Text[i+len].latin1() != '_' &&
-	     Text[i+len].latin1() != '^' && Text[i+len].latin1() != '\n')
+             /*!Text[i+len].isNull()*/ && Text[i+len].toLatin1() != '_' &&
+	     Text[i+len].toLatin1() != '^' && Text[i+len].toLatin1() != '\n')
 			len++;
 
       rf = Painter->boundingRect(QRectF(x1+x, y1+y, 0, 0),
@@ -346,7 +346,7 @@ int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1,
       }
       x += rf.width();
       if (x > w) w = x;
-      if (Text.length()>(i+len)&&Text[i+len].latin1() == '\n') {
+      if (Text.length()>(i+len)&&Text[i+len].toLatin1() == '\n') {
 		    y += h;
 		    x = 0;
 		    i++;

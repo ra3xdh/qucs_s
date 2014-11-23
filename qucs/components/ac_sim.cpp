@@ -23,7 +23,7 @@ AC_Sim::AC_Sim()
   Description = QObject::tr("ac simulation");
 
   QString s = Description;
-  int a = s.find(" ");
+  int a = s.indexOf(" ");
   int b = s.findRev(" ");
   if (a != -1 && b != -1) {
     if (a > (int) s.length() - b)  b = a;

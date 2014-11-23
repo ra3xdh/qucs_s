@@ -152,7 +152,7 @@ bool SimMessage::startProcess()
 
   Collect.clear();  // clear list for NodeSets, SPICE components etc.
   ProgText->insert(tr("creating netlist... "));
-  NetlistFile.setName(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
+  NetlistFile.setFileName(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
    if(!NetlistFile.open(QIODevice::WriteOnly)) {
     ErrText->insert(tr("ERROR: Cannot write netlist file!"));
     FinishSimulation(-1);
@@ -223,10 +223,10 @@ void SimMessage::nextSPICE()
   com << "-if" << "spice" << "-of" << "qucs";
 
   QFile SpiceFile;
-  if(FileName.find(QDir::separator()) < 0)  // add path ?
-    SpiceFile.setName(QucsSettings.QucsWorkDir.path() + QDir::separator() + FileName);
+  if(FileName.indexOf(QDir::separator()) < 0)  // add path ?
+    SpiceFile.setFileName(QucsSettings.QucsWorkDir.path() + QDir::separator() + FileName);
   else
-    SpiceFile.setName(FileName);
+    SpiceFile.setFileName(FileName);
   if(!SpiceFile.open(QIODevice::ReadOnly)) {
     ErrText->insert(tr("ERROR: Cannot open SPICE file \"%1\".").arg(FileName));
     FinishSimulation(-1);
@@ -275,13 +275,13 @@ void SimMessage::slotReadSpiceNetlist()
   QString s;
   ProgressText += QString(SimProcess.readAllStandardOutput());
 
-  while((i = ProgressText.find('\n')) >= 0) {
+  while((i = ProgressText.indexOf('\n')) >= 0) {
 
     s = ProgressText.left(i);
     ProgressText.remove(0, i+1);
 
 
-    s = s.stripWhiteSpace();
+    s = s.trimmed();
     if(s.isEmpty()) continue;
     if(s.at(0) == '#') continue;
     if(s.at(0) == '.') if(s.left(5) != ".Def:") { // insert simulations later
@@ -404,7 +404,7 @@ void SimMessage::startSimulator()
 	}
       vhdlDir.setPath(vhdlDir.path()+"/"+lib);
       QFile destFile;
-      destFile.setName(vhdlDir.filePath(entity+".vhdl"));
+      destFile.setFileName(vhdlDir.filePath(entity+".vhdl"));
       if(!destFile.open(QIODevice::WriteOnly)) {
 	ErrText->insert(tr("ERROR: Cannot create \"%1\"!")
 			.arg(destFile.name()));
@@ -616,8 +616,8 @@ void SimMessage::slotDisplayMsg()
     i = ProgressText.findRev('\r');
     if(i > 1) {
 #ifdef SPEEDUP_PROGRESSBAR
-      iProgress = 10*int(ProgressText.at(i-2).latin1()-'0') +
-                     int(ProgressText.at(i-1).latin1()-'0');
+      iProgress = 10*int(ProgressText.at(i-2).toLatin1()-'0') +
+                     int(ProgressText.at(i-1).toLatin1()-'0');
       if(!waitForUpdate) {
         QTimer::singleShot(20, this, SLOT(slotUpdateProgressBar()));
         waitForUpdate = true;
@@ -625,17 +625,17 @@ void SimMessage::slotDisplayMsg()
 #else
       SimProgress->setMaximum(100);
       SimProgress->setValue(
-         10*int(ProgressText.at(i-2).latin1()-'0') +
-            int(ProgressText.at(i-1).latin1()-'0'));
+         10*int(ProgressText.at(i-2).toLatin1()-'0') +
+            int(ProgressText.at(i-1).toLatin1()-'0'));
 #endif
       ProgressText.remove(0, i+1);
     }
 
-    if(ProgressText.size()>0&&ProgressText.at(0).latin1() <= '\t')
+    if(ProgressText.size()>0&&ProgressText.at(0).toLatin1() <= '\t')
       return;
   }
   else {
-    i = ProgressText.find('\t');
+    i = ProgressText.indexOf('\t');
     if(i >= 0) {
       wasLF = true;
       ProgText->insert(ProgressText.left(i));

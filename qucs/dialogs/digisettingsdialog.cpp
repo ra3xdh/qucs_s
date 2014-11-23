@@ -151,7 +151,7 @@ void DigiSettingsDialog::slotOk()
     changed = true;
   }
   if(Doc->Library != NameEdit->text()) {
-    QString lib = NameEdit->text().stripWhiteSpace();
+    QString lib = NameEdit->text().trimmed();
     Doc->Library = lib;
     changed = true;
   }

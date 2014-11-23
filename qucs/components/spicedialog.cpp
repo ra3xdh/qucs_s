@@ -44,7 +44,7 @@ SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
   App = App_; // pointer to main application
 
   resize(400, 250);
-  setCaption(tr("Edit SPICE Component Properties"));
+  setWindowTitle(tr("Edit SPICE Component Properties"));
   Comp = c;
   Doc  = d;
 
@@ -381,7 +381,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
 
     if (piping)
     {
-      PrepFile.setName(PrepName);
+      PrepFile.setFileName(PrepName);
       if(!PrepFile.open(QIODevice::WriteOnly))
       {
         QMessageBox::critical(this, tr("Error"),
@@ -532,11 +532,11 @@ void SpiceDialog::slotGetNetlist()
   QString s;
   Line += QString(QucsConv->readAllStandardOutput ());
 
-  while((i = Line.find('\n')) >= 0)
+  while((i = Line.indexOf('\n')) >= 0)
   {
     s = Line.left(i);
     Line.remove(0, i+1);
-    s = s.stripWhiteSpace();
+    s = s.trimmed();
     if (!s.isEmpty ())
     {
       if (s.at(0) == '.')

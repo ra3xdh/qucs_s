@@ -198,7 +198,7 @@ void QucsApp::initActions()
   onGrid->setStatusTip(tr("Sets selected elements on grid"));
   onGrid->setWhatsThis(
 	tr("Set on Grid\n\nSets selected elements on grid"));
-  onGrid->setToggleAction(true);
+  onGrid->setCheckable(true);
   connect(onGrid, SIGNAL(toggled(bool)), SLOT(slotOnGrid(bool)));
 
   moveText = new QAction(tr("Move Component Text"), this);
@@ -206,7 +206,7 @@ void QucsApp::initActions()
   moveText->setStatusTip(tr("Moves the property text of components"));
   moveText->setWhatsThis(
 	tr("Move Component Text\n\nMoves the property text of components"));
-  moveText->setToggleAction(true);
+  moveText->setCheckable(true);
   connect(moveText, SIGNAL(toggled(bool)), SLOT(slotMoveText(bool)));
 
   changeProps = new QAction(tr("Replace..."), this);
@@ -238,14 +238,14 @@ void QucsApp::initActions()
 	tr("Pastes the clipboard contents to the cursor position"));
   editPaste->setWhatsThis(
 	tr("Paste\n\nPastes the clipboard contents to the cursor position"));
-  editPaste->setToggleAction(true);
+  editPaste->setCheckable(true);
   connect(editPaste, SIGNAL(toggled(bool)), SLOT(slotEditPaste(bool)));
 
   editDelete = new QAction(QIcon((":/bitmaps/editdelete.png")), tr("&Delete"), this);
   editDelete->setShortcut(Qt::Key_Delete);
   editDelete->setStatusTip(tr("Deletes the selected components"));
   editDelete->setWhatsThis(tr("Delete\n\nDeletes the selected components"));
-  editDelete->setToggleAction(true);
+  editDelete->setCheckable(true);
   connect(editDelete, SIGNAL(toggled(bool)), SLOT(slotEditDelete(bool)));
 
   editFind = new QAction(tr("Find..."), this);
@@ -400,7 +400,7 @@ void QucsApp::initActions()
   magPlus->setShortcut(Qt::Key_Plus);
   magPlus->setStatusTip(tr("Zooms into the current view"));
   magPlus->setWhatsThis(tr("Zoom in\n\nZooms the current view"));
-  magPlus->setToggleAction(true);
+  magPlus->setCheckable(true);
   connect(magPlus, SIGNAL(toggled(bool)), SLOT(slotZoomIn(bool)));
 
   magMinus = new QAction(QIcon((":/bitmaps/viewmag-.png")), tr("Zoom out"), this);
@@ -417,7 +417,7 @@ void QucsApp::initActions()
   select = new QAction(QIcon((":/bitmaps/pointer.png")), tr("Select"), this);
   select->setStatusTip(tr("Activate select mode"));
   select->setWhatsThis(tr("Select\n\nActivates select mode"));
-  select->setToggleAction(true);
+  select->setCheckable(true);
   connect(select, SIGNAL(toggled(bool)), SLOT(slotSelect(bool)));
 
   selectAll = new QAction(tr("Select All"), this);
@@ -439,7 +439,7 @@ void QucsApp::initActions()
   editRotate->setStatusTip(tr("Rotates the selected component by 90\x00B0"));
   editRotate->setWhatsThis(
     tr("Rotate\n\nRotates the selected component by 90\x00B0 counter-clockwise"));
-  editRotate->setToggleAction(true);
+  editRotate->setCheckable(true);
   connect(editRotate, SIGNAL(toggled(bool)), SLOT(slotEditRotate(bool)));
 
   editMirror = new QAction(QIcon((":/bitmaps/mirror.png")), tr("Mirror about X Axis"), this);
@@ -447,7 +447,7 @@ void QucsApp::initActions()
   editMirror->setStatusTip(tr("Mirrors the selected item about X Axis"));
   editMirror->setWhatsThis(
 	tr("Mirror about X Axis\n\nMirrors the selected item about X Axis"));
-  editMirror->setToggleAction(true);
+  editMirror->setCheckable(true);
   connect(editMirror, SIGNAL(toggled(bool)), SLOT(slotEditMirrorX(bool)));
 
   editMirrorY = new QAction(QIcon((":/bitmaps/mirrory.png")), tr("Mirror about Y Axis"), this);
@@ -455,7 +455,7 @@ void QucsApp::initActions()
   editMirrorY->setStatusTip(tr("Mirrors the selected item about Y Axis"));
   editMirrorY->setWhatsThis(
 	tr("Mirror about Y Axis\n\nMirrors the selected item about Y Axis"));
-  editMirrorY->setToggleAction(true);
+  editMirrorY->setCheckable(true);
   connect(editMirrorY, SIGNAL(toggled(bool)), SLOT(slotEditMirrorY(bool)));
 
   intoH = new QAction(QIcon((":/bitmaps/bottom.png")), tr("Go into Subcircuit"), this);
@@ -478,7 +478,7 @@ void QucsApp::initActions()
   editActivate->setStatusTip(tr("Deactivate/Activate selected components"));
   editActivate->setWhatsThis(
 	tr("Deactivate/Activate\n\nDeactivate/Activate the selected components"));
-  editActivate->setToggleAction(true);
+  editActivate->setCheckable(true);
   connect(editActivate, SIGNAL(toggled(bool)), SLOT(slotEditActivate(bool)));
 
   insEquation = new QAction(QIcon((":/bitmaps/equation.png")),	tr("Insert Equation"), this);
@@ -486,34 +486,34 @@ void QucsApp::initActions()
   insEquation->setStatusTip(tr("Inserts an equation"));
   insEquation->setWhatsThis(
 	tr("Insert Equation\n\nInserts a user defined equation"));
-  insEquation->setToggleAction(true);
+  insEquation->setCheckable(true);
   connect(insEquation, SIGNAL(toggled(bool)), SLOT(slotInsertEquation(bool)));
 
   insGround = new QAction(QIcon((":/bitmaps/ground.png")), tr("Insert Ground"), this);
   insGround->setShortcut(Qt::CTRL+Qt::Key_G);
   insGround->setStatusTip(tr("Inserts a ground symbol"));
   insGround->setWhatsThis(tr("Insert Ground\n\nInserts a ground symbol"));
-  insGround->setToggleAction(true);
+  insGround->setCheckable(true);
   connect(insGround, SIGNAL(toggled(bool)), SLOT(slotInsertGround(bool)));
 
   insPort = new QAction(QIcon((":/bitmaps/port.png")),	tr("Insert Port"), this);
   insPort->setStatusTip(tr("Inserts a port symbol"));
   insPort->setWhatsThis(tr("Insert Port\n\nInserts a port symbol"));
-  insPort->setToggleAction(true);
+  insPort->setCheckable(true);
   connect(insPort, SIGNAL(toggled(bool)), SLOT(slotInsertPort(bool)));
 
   insWire = new QAction(QIcon((":/bitmaps/wire.png")),	tr("Wire"), this);
   insWire->setShortcut(Qt::CTRL+Qt::Key_E);
   insWire->setStatusTip(tr("Inserts a wire"));
   insWire->setWhatsThis(tr("Wire\n\nInserts a wire"));
-  insWire->setToggleAction(true);
+  insWire->setCheckable(true);
   connect(insWire, SIGNAL(toggled(bool)), SLOT(slotSetWire(bool)));
 
   insLabel = new QAction(QIcon((":/bitmaps/nodename.png")), tr("Wire Label"), this);
   insLabel->setShortcut(Qt::CTRL+Qt::Key_L);
   insLabel->setStatusTip(tr("Inserts a wire or pin label"));
   insLabel->setWhatsThis(tr("Wire Label\n\nInserts a wire or pin label"));
-  insLabel->setToggleAction(true);
+  insLabel->setCheckable(true);
   connect(insLabel, SIGNAL(toggled(bool)), SLOT(slotInsertLabel(bool)));
 
   insEntity = new QAction(tr("VHDL entity"), this);
@@ -602,7 +602,7 @@ void QucsApp::initActions()
   setMarker->setStatusTip(tr("Sets a marker on a diagram's graph"));
   setMarker->setWhatsThis(
 	tr("Set Marker\n\nSets a marker on a diagram's graph"));
-  setMarker->setToggleAction(true);
+  setMarker->setCheckable(true);
   connect(setMarker, SIGNAL(toggled(bool)), SLOT(slotSetMarker(bool)));
 
   showMsg = new QAction(tr("Show Last Messages"), this);
@@ -620,27 +620,27 @@ void QucsApp::initActions()
   connect(showNet, SIGNAL(activated()), SLOT(slotShowLastNetlist()));
 
   viewToolBar = new QAction(tr("Tool&bar"), this);
-  viewToolBar->setToggleAction(true);
+  viewToolBar->setCheckable(true);
   viewToolBar->setStatusTip(tr("Enables/disables the toolbar"));
   viewToolBar->setWhatsThis(tr("Toolbar\n\nEnables/disables the toolbar"));
   connect(viewToolBar, SIGNAL(toggled(bool)), SLOT(slotViewToolBar(bool)));
 
   viewStatusBar = new QAction(tr("&Statusbar"), this);
-  viewStatusBar->setToggleAction(true);
+  viewStatusBar->setCheckable(true);
   viewStatusBar->setStatusTip(tr("Enables/disables the statusbar"));
   viewStatusBar->setWhatsThis(
 	tr("Statusbar\n\nEnables/disables the statusbar"));
   connect(viewStatusBar, SIGNAL(toggled(bool)), SLOT(slotViewStatusBar(bool)));
 
   viewBrowseDock = new QAction(tr("&Dock Window"), this);
-  viewBrowseDock->setToggleAction(true);
+  viewBrowseDock->setCheckable(true);
   viewBrowseDock->setStatusTip(tr("Enables/disables the browse dock window"));
   viewBrowseDock->setWhatsThis(
 	tr("Browse Window\n\nEnables/disables the browse dock window"));
   connect(viewBrowseDock, SIGNAL(toggled(bool)), SLOT(slotViewBrowseDock(bool)));
 
   viewOctaveDock = new QAction(tr("&Octave Window"), this);
-  viewOctaveDock->setToggleAction(true);
+  viewOctaveDock->setCheckable(true);
   viewOctaveDock->setStatusTip(tr("Shows/hides the Octave dock window"));
   viewOctaveDock->setWhatsThis(
       tr("Octave Window\n\nShows/hides the Octave dock window"));
@@ -1040,7 +1040,7 @@ void QucsApp::slotViewBrowseDock(bool toggle)
 void QucsApp::slotToggleDock(bool on)
 {
   viewBrowseDock->blockSignals(true);
-  viewBrowseDock->setOn(on);
+  viewBrowseDock->setChecked(on);
   viewBrowseDock->blockSignals(false);
 }
 
@@ -1060,7 +1060,7 @@ void QucsApp::slotViewOctaveDock(bool toggle)
 void QucsApp::slotToggleOctave(bool on)
 {
   viewOctaveDock->blockSignals(true);
-  viewOctaveDock->setOn(on);
+  viewOctaveDock->setChecked(on);
   viewOctaveDock->blockSignals(false);
 }
 

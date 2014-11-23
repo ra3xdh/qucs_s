@@ -838,9 +838,9 @@ int Diagram::loadVarData(const QString& fileName, Graph *g)
   QString Variable;
   QFileInfo Info(fileName);
 
-  int pos = g->Var.find(':');
+  int pos = g->Var.indexOf(':');
 //  if(g->Var.right(3) == "].X")  // e.g. stdl[8:0].X
-//    if(pos > g->Var.find('['))
+//    if(pos > g->Var.indexOf('['))
 //      pos = -1;
 
   /* WORK-AROUND: A bug in SCIM (libscim) which Qt is linked to causes
@@ -848,11 +848,11 @@ int Diagram::loadVarData(const QString& fileName, Graph *g)
   setlocale (LC_NUMERIC, "C");
 
   if(pos <= 0) {
-    file.setName(fileName);
+    file.setFileName(fileName);
     Variable = g->Var;
   }
   else {
-    file.setName(Info.dirPath()+QDir::separator() + g->Var.left(pos)+".dat");
+    file.setFileName(Info.dirPath()+QDir::separator() + g->Var.left(pos)+".dat");
     Variable = g->Var.mid(pos+1);
   }
 
@@ -892,7 +892,7 @@ int Diagram::loadVarData(const QString& fileName, Graph *g)
   Variable = "dep "+Variable+" ";
   // "pFile" is used through-out the whole function and must NOT used
   // for other purposes!
-  char *pFile = strstr(FileString, Variable.latin1());
+  char *pFile = strstr(FileString, Variable.toLatin1());
   while(pFile) {
     if(*(pFile-1) == '<')     // is dependent variable ?
       break;
@@ -900,7 +900,7 @@ int Diagram::loadVarData(const QString& fileName, Graph *g)
       isIndep = true;
       break;
     }
-    pFile = strstr(pFile+4, Variable.latin1());
+    pFile = strstr(pFile+4, Variable.toLatin1());
   }
 
   if(!pFile)  return 0;   // data not found
@@ -1067,7 +1067,7 @@ int Diagram::loadIndepVarData(const QString& Variable,
   Line = "dep "+Variable+" ";
   // "pFile" is used through-out the whole function and must NOT used
   // for other purposes!
-  char *pFile = strstr(FileString, Line.latin1());
+  char *pFile = strstr(FileString, Line.toLatin1());
   while(pFile) {
     if(*(pFile-1) == '<')     // is dependent variable ?
       break;
@@ -1075,7 +1075,7 @@ int Diagram::loadIndepVarData(const QString& Variable,
       isIndep = true;
       break;
     }
-    pFile = strstr(pFile+4, Line.latin1());
+    pFile = strstr(pFile+4, Line.toLatin1());
   }
 
   if(!pFile)  return -1;   // data not found
@@ -1089,9 +1089,9 @@ int Diagram::loadIndepVarData(const QString& Variable,
   pFile = pPos+1;
   char *pEnd;
   if(!isIndep) {           // dependent variable can also be used...
-    if(Line.find(' ') >= 0)  return -1; // ...if only one dependency
+    if(Line.indexOf(' ') >= 0)  return -1; // ...if only one dependency
     Line = "<indep "+Line+" ";
-    pPos = strstr(FileString, Line.latin1());
+    pPos = strstr(FileString, Line.toLatin1());
     if(!pPos)  return -1;
     pPos += Line.length();
     pEnd = strchr(pPos, '>');
@@ -1277,7 +1277,7 @@ bool Diagram::load(const QString& Line, QTextStream *stream)
 
   char c;
   n = s.section(' ',5,5);    // GridOn
-  c = n.at(0).latin1() - '0';
+  c = n.at(0).toLatin1() - '0';
   xAxis.GridOn = yAxis.GridOn = (c & 1) != 0;
   hideLines = (c & 2) != 0;
 
@@ -1293,7 +1293,7 @@ bool Diagram::load(const QString& Line, QTextStream *stream)
 
   n = s.section(' ',8,8);    // xlog, ylog
   xAxis.log = n.at(0) != '0';
-  c = n.at(1).latin1();
+  c = n.at(1).toLatin1();
   yAxis.log = ((c - '0') & 1) == 1;
   zAxis.log = ((c - '0') & 2) == 2;
 
@@ -1370,7 +1370,7 @@ bool Diagram::load(const QString& Line, QTextStream *stream)
   // load graphs of the diagram
   while(!stream->atEnd()) {
     s = stream->readLine();
-    s = s.stripWhiteSpace();
+    s = s.trimmed();
     if(s.isEmpty()) continue;
 
     if(s == ("</"+Name+">")) return true;  // found end tag ?

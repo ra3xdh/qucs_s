@@ -40,7 +40,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 			: QDialog(d, 0, TRUE, Qt::WDestructiveClose)
 {
   resize(600, 250);
-  setCaption(tr("Edit Component Properties"));
+  setWindowTitle(tr("Edit Component Properties"));
   Comp  = c;
   Doc   = d;
   QString s;
@@ -504,7 +504,7 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
 
     // handle special combobox items
     QStringList List;
-    int b = desc.find('[');
+    int b = desc.indexOf('[');
     int e = desc.findRev(']');
     if (e-b > 2) {
       QString str = desc.mid(b+1, e-b-1);
@@ -523,7 +523,7 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
 
     if(List.count() >= 1) {    // ComboBox with value list or line edit ?
       ComboEdit->clear();
-      ComboEdit->insertStringList(List);
+      ComboEdit->insertItems(0,List);
 
       for(int i=ComboEdit->count()-1; i>=0; i--)
        if(value == ComboEdit->text(i)) {
@@ -1064,9 +1064,9 @@ void ComponentDialog::slotSimTypeChange(int Type)
     if(!editNumber->isEnabled()) {  // was the other mode before ?
       // this text change, did not emit the textChange signal !??!
       editStart->setText(
-	editValues->text().section(';', 0, 0).stripWhiteSpace());
+	editValues->text().section(';', 0, 0).trimmed());
       editStop->setText(
-	editValues->text().section(';', -1, -1).stripWhiteSpace());
+	editValues->text().section(';', -1, -1).trimmed());
       editNumber->setText("2");
       slotNumberChanged(0);
 

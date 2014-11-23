@@ -41,17 +41,17 @@ MyColorBox::MyColorBox( QWidget *parent )
 	for(int i=0;i<4;i++)
 	{
 		colorCode[i]=new QComboBox(this);
-		colorCode[i]->insertStringList(colors2);
+		colorCode[i]->insertItems(0,colors2);
 	}
 
-	colorCode[3]->insertStringList(colors);
+	colorCode[3]->insertItems(0,colors);
 
 	QStringList tolColors;
 	tolColors << "none" << "silver" << "gold" << "red" << "brown" << "green" << "blue"
             << "violet" << "gray";
 
 	colorCode[4]=new QComboBox (this);
-	colorCode[4]->insertStringList(tolColors);
+	colorCode[4]->insertItems(0,tolColors);
 
   QHBoxLayout *hbox = new QHBoxLayout;
   for (int i = 0; i < 5; ++i) {
@@ -82,13 +82,13 @@ void MyColorBox:: update(QResistor* res)
 
 	for (i=0;i<len;i++){
 
-		colorCode[i]->setCurrentItem(list[i]<0?(9-list[i]):list[i]);
+		colorCode[i]->setCurrentIndex(list[i]<0?(9-list[i]):list[i]);
 	}
 	for (i=len;i<4;i++)
-		colorCode[i]->setCurrentItem(0);
+		colorCode[i]->setCurrentIndex(0);
 
 	map<string,int> revTolcodeMap=constructRevTolindexMap();
-	colorCode[i]->setCurrentItem(revTolcodeMap[res->getTolring()]);
+	colorCode[i]->setCurrentIndex(revTolcodeMap[res->getTolring()]);
 }
 
 vector<string> MyColorBox:: enteredValue()
@@ -98,15 +98,15 @@ vector<string> MyColorBox:: enteredValue()
 	string str;
 
 	for (i=0;i<3;i++)
-		colors.push_back(string((colorCode[i]->currentText()).ascii()));
-	if((colorCode[3])->currentItem())
+		colors.push_back(string((colorCode[i]->currentText()).toAscii()));
+	if((colorCode[3])->currentIndex())
 	{
-		colors.push_back(string((colorCode[3]->currentText()).ascii()));
+		colors.push_back(string((colorCode[3]->currentText()).toAscii()));
 
 	}
 		return colors;
 }
 string MyColorBox:: enteredTolerance()
 {
-	return string((colorCode[4]->currentText()).ascii());
+	return string((colorCode[4]->currentText()).toAscii());
 }

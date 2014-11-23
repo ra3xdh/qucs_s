@@ -179,7 +179,7 @@ void MessageDock::slotCursor()
             int a,b;
             a = line.indexOf(":")+1;
             b = line.indexOf(":",a);
-            gotoLine = line.mid(a,b-a).stripWhiteSpace().toInt();
+            gotoLine = line.mid(a,b-a).trimmed().toInt();
             qWarning() << "goto line " << gotoLine;
         }
 
@@ -188,7 +188,7 @@ void MessageDock::slotCursor()
             int a,b;
             a = line.indexOf("at line");
             b = line.indexOf("--",a);
-            gotoLine = line.mid(a+7,b-a-7).stripWhiteSpace().toInt();
+            gotoLine = line.mid(a+7,b-a-7).trimmed().toInt();
             qWarning() << "goto line " << gotoLine;
         }
     }

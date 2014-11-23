@@ -268,13 +268,13 @@ void LibraryDialog::slotCreateNext()
     LibDir.cd("user_lib");
   }
 
-  LibFile.setName(QucsSettings.LibDir + NameEdit->text() + ".lib");
+  LibFile.setFileName(QucsSettings.LibDir + NameEdit->text() + ".lib");
   if(LibFile.exists()) {
     QMessageBox::critical(this, tr("Error"), tr("A system library with this name already exists!"));
     return;
   }
 
-  LibFile.setName(LibDir.absFilePath(NameEdit->text()) + ".lib");
+  LibFile.setFileName(LibDir.absFilePath(NameEdit->text()) + ".lib");
   if(LibFile.exists()) {
     QMessageBox::critical(this, tr("Error"), tr("A library with this name already exists!"));
     return;
@@ -303,9 +303,9 @@ void LibraryDialog::slotCreateNext()
 void LibraryDialog::intoStream(QTextStream &Stream, QString &tmp,
 			       const char *sec)
 {
-  int i = tmp.find("TOP LEVEL MARK");
+  int i = tmp.indexOf("TOP LEVEL MARK");
   if(i >= 0) {
-    i = tmp.find('\n',i) + 1;
+    i = tmp.indexOf('\n',i) + 1;
     tmp = tmp.mid(i);
   }
   Stream << "  <" << sec << ">";
@@ -341,7 +341,7 @@ int LibraryDialog::intoFile(QString &ifn, QString &ofn, QStringList &IFiles)
     ofn = Info.fileName();
     IFiles.append(ofn);
     QFile ofile;
-    ofile.setName(LibDirSub.absFilePath(ofn));
+    ofile.setFileName(LibDirSub.absFilePath(ofn));
     if(!ofile.open(QIODevice::WriteOnly)) {
       ErrText->insert(
         QObject::tr("ERROR: Cannot create file \"%1\".\n").arg(ofn));

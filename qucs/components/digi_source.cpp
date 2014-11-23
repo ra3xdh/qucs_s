@@ -115,7 +115,7 @@ QString Digi_Source::vhdlCode(int NumPorts)
     else
       State = '1';
 
-    t = Props.at(2)->Value.section(';',z,z).stripWhiteSpace();
+    t = Props.at(2)->Value.section(';',z,z).trimmed();
     while(!t.isEmpty()) {
       s += Out + State + "';";    // next value for signal
 
@@ -125,7 +125,7 @@ QString Digi_Source::vhdlCode(int NumPorts)
       s += t.replace("after","wait for") + ";\n";
       State ^= 1;
       z++;
-      t = Props.at(2)->Value.section(';',z,z).stripWhiteSpace();
+      t = Props.at(2)->Value.section(';',z,z).trimmed();
     }
   }
   else {  // truth table simulation
@@ -163,7 +163,7 @@ QString Digi_Source::verilogCode(int NumPorts)
       State = '1';
     s += "  always begin\n";
 
-    t = Props.next()->Value.section(';',z,z).stripWhiteSpace();
+    t = Props.next()->Value.section(';',z,z).trimmed();
     while(!t.isEmpty()) {
       if(!Verilog_Delay(t, Name))
         return t;    // time has not VHDL format
@@ -171,7 +171,7 @@ QString Digi_Source::verilogCode(int NumPorts)
       s += "   " + t + ";\n";
       State ^= 1;
       z++;
-      t = Props.current()->Value.section(';',z,z).stripWhiteSpace();
+      t = Props.current()->Value.section(';',z,z).trimmed();
     }
   }
   else {  // truth table simulation

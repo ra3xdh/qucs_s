@@ -98,18 +98,18 @@ int LibComp::loadSection(const QString& Name, QString& Section,
   if(Section.left(14) != "<Qucs Library ")  // wrong file type ?
     return -2;
 
-  int Start, End = Section.find(' ', 14);
+  int Start, End = Section.indexOf(' ', 14);
   if(End < 15) return -3;
   QString Line = Section.mid(14, End-14);
   if(!checkVersion(Line)) // wrong version number ?
     return -3;
 
   if(Name == "Symbol") {
-    Start = Section.find("\n<", 14); // if library has default symbol, take it
+    Start = Section.indexOf("\n<", 14); // if library has default symbol, take it
     if(Start > 0)
       if(Section.mid(Start+2, 14) == "DefaultSymbol>") {
         Start += 16;
-        End = Section.find("\n</DefaultSymbol>", Start);
+        End = Section.indexOf("\n</DefaultSymbol>", Start);
         if(End < 0)  return -9;
         Section = Section.mid(Start, End-Start);
         return 0;
@@ -118,23 +118,23 @@ int LibComp::loadSection(const QString& Name, QString& Section,
 
   // search component
   Line = "\n<Component " + Props.next()->Value + ">";
-  Start = Section.find(Line);
+  Start = Section.indexOf(Line);
   if(Start < 0)  return -4;  // component not found
-  Start = Section.find('\n', Start);
+  Start = Section.indexOf('\n', Start);
   if(Start < 0)  return -5;  // file corrupt
   Start++;
-  End = Section.find("\n</Component>", Start);
+  End = Section.indexOf("\n</Component>", Start);
   if(End < 0)  return -6;  // file corrupt
   Section = Section.mid(Start, End-Start+1);
   
   // search model includes
   if(Includes) {
     int StartI, EndI;
-    StartI = Section.find("<"+Name+"Includes");
+    StartI = Section.indexOf("<"+Name+"Includes");
     if(StartI >= 0) {  // includes found
-      StartI = Section.find('"', StartI);
+      StartI = Section.indexOf('"', StartI);
       if(StartI < 0)  return -10;  // file corrupt
-      EndI = Section.find('>', StartI);
+      EndI = Section.indexOf('>', StartI);
       if(EndI < 0)  return -11;  // file corrupt
       StartI++; EndI--;
       QString inc = Section.mid(StartI, EndI-StartI);
@@ -146,12 +146,12 @@ int LibComp::loadSection(const QString& Name, QString& Section,
   }
 
   // search model
-  Start = Section.find("<"+Name+">");
+  Start = Section.indexOf("<"+Name+">");
   if(Start < 0)  return -7;  // symbol not found
-  Start = Section.find('\n', Start);
+  Start = Section.indexOf('\n', Start);
   if(Start < 0)  return -8;  // file corrupt
   while(Section.at(++Start) == ' ') ;
-  End = Section.find("</"+Name+">", Start);
+  End = Section.indexOf("</"+Name+">", Start);
   if(End < 0)  return -9;  // file corrupt
 
   // snip actual model
@@ -194,7 +194,7 @@ int LibComp::loadSymbol()
   QTextStream stream(&FileString, QIODevice::ReadOnly);
   while(!stream.atEnd()) {
     Line = stream.readLine();
-    Line = Line.stripWhiteSpace();
+    Line = Line.trimmed();
     if(Line.isEmpty())  continue;
     if(Line.at(0) != '<') return -11;
     if(Line.at(Line.length()-1) != '>') return -12;

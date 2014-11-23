@@ -535,7 +535,7 @@ bool Marker::load(const QString& _s)
     VarPos = (double*)malloc(j);
 
   do {
-    j = n.find('/', i);
+    j = n.indexOf('/', i);
     VarPos[nVarPos++] = n.mid(i,j-i).toDouble(&ok);
     if(!ok) return false;
     i = j+1;

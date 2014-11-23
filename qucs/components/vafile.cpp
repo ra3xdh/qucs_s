@@ -44,8 +44,8 @@ VerilogA_File_Info::VerilogA_File_Info (QString File, bool isfile)
   
   QString s;
   int i=0, j, k=0;
-  while((i=File.find("//", i)) >= 0) { // remove all Verilog-A comments
-    j = File.find('\n', i+2);          // (This also finds "//" within a ...
+  while((i=File.indexOf("//", i)) >= 0) { // remove all Verilog-A comments
+    j = File.indexOf('\n', i+2);          // (This also finds "//" within a ...
     if(j < 0)                          //  string, but as no strings are ...
       File = File.left(i);             //  allowed in module headers, it ...
     else                               //  does not matter.)
@@ -53,8 +53,8 @@ VerilogA_File_Info::VerilogA_File_Info (QString File, bool isfile)
   }
 
   i=0;
-  while((i=File.find("/*", i)) >= 0) { // remove all Verilog-A comments
-    j = File.find("*/", i+2);          // (This also finds "/*" within a ...
+  while((i=File.indexOf("/*", i)) >= 0) { // remove all Verilog-A comments
+    j = File.indexOf("*/", i+2);          // (This also finds "/*" within a ...
     if(j < 0)                          //  string, but as no strings are ...
       File = File.left(i);             //  allowed in module headers, it ...
     else                               //  does not matter.)
@@ -71,25 +71,25 @@ VerilogA_File_Info::VerilogA_File_Info (QString File, bool isfile)
     return;
 
   Expr.setPattern("\\bendmodule\\b");    // end of last module
-  i = File.find(Expr, k+7);
+  i = File.indexOf(Expr, k+7);
   if(i < 0)
     return;
   s = File.mid(k+7, i-k-7);  // cut out module declaration
 
   Expr.setPattern("\\b");
-  i = s.find(Expr);
+  i = s.indexOf(Expr);
   if(i < 0)
     return;
-  j = s.find(Expr, i+1);
+  j = s.indexOf(Expr, i+1);
   if(j < 0)
     return;
   ModuleName = s.mid(i, j-i);  // save module name
 
-  i = s.find('(', j);
+  i = s.indexOf('(', j);
   if(i < 0)
     return;
 
-  j = s.find(')', i);
+  j = s.indexOf(')', i);
   if(j < 0)
     return;
   s = s.mid(i+1, j-i-1);
@@ -109,8 +109,8 @@ QString VerilogA_File_Info::parsePorts(QString s, int i)
   i = 0;    // remove all Verilog-A identifiers (e.g. "input")
   Expr.setPattern("(\\binput\\b|\\boutput\\b|\\binout\\b)");
   Expr1.setPattern("(\\b)");
-  while((i=s.find(Expr, i)) >= 0) {
-    j = s.find(Expr1, i+1);
+  while((i=s.indexOf(Expr, i)) >= 0) {
+    j = s.indexOf(Expr1, i+1);
     if(j < 0)
       s = s.left(i);
     else

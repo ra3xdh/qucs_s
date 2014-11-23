@@ -24,7 +24,7 @@ Digi_Sim::Digi_Sim()
   Description = QObject::tr("digital simulation");
 
   QString  s = Description;
-  int a = s.find(" ");
+  int a = s.indexOf(" ");
   if (a != -1) s[a] = '\n';  // break line before the word "simulation"
 
   Texts.append(new Text(0, 0, s.left(a), Qt::darkBlue, QucsSettings.largeFontSize));

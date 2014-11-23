@@ -270,7 +270,7 @@ bool Optimize_Sim::loadASCOout()
   QStringList::Iterator it;
   for(it = entries.begin(); it != entries.end(); ++it ) {
     QString Name = *it;
-    Name = Name.stripWhiteSpace();
+    Name = Name.trimmed();
     if(vars.contains(Name)) {
       for(pp = Props.at(2); pp != 0; pp = Props.next()) {
 	if(pp->Name == "Var") {
@@ -284,7 +284,7 @@ bool Optimize_Sim::loadASCOout()
 	    val[5] = pp->Value.section('|',5,5);
 	    ++it;
 	    QString Value = *it;
-	    Value = Value.stripWhiteSpace();
+	    Value = Value.trimmed();
 	    val[2] = Value;
 	    pp->Value = val[0] + "|" + val[1] + "|" + val[2] + "|" +
 	      val[3] + "|" + val[4] + "|" + val[5];

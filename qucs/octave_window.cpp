@@ -165,7 +165,7 @@ void OctaveWindow::runOctaveScript(const QString& name)
 void OctaveWindow::slotSendCommand()
 {
   sendCommand(input->text());
-  if(!input->text().stripWhiteSpace().isEmpty())
+  if(!input->text().trimmed().isEmpty())
     cmdHistory.append(input->text());
   //histIterator = cmdHistory.end();
   histPosition++;
