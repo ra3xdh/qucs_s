@@ -45,6 +45,8 @@ SET(BINARYDIR "${CMAKE_INSTALL_PREFIX}/bin/")
 SET(DOCDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/docs/")
 SET(LIBRARYDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/library/")
 SET(OCTAVEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/octave/")
+#Add:
+SET(LANGUAGEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/lang/")
 
 
 FIND_PACKAGE( Qt4 4.6.3 REQUIRED QtCore QtGui Qt3Support QtSvg QtXml QtScript)
