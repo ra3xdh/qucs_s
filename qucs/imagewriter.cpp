@@ -36,6 +36,89 @@ ImageWriter::~ImageWriter()
 }
 
 void
+ImageWriter::noGuiPrint(QWidget *doc, QString printFile, QString color)
+{
+  Schematic *sch = static_cast<Schematic*>(doc);
+  const int bourder = 30;
+  int w,h,wsel,hsel,
+      xmin, ymin, xmin_sel, ymin_sel;
+
+  sch->getSchWidthAndHeight(w, h, xmin, ymin);
+  sch->getSelAreaWidthAndHeight(wsel, hsel, xmin_sel, ymin_sel);
+  w += bourder;
+  h += bourder;
+  wsel += bourder;
+  hsel += bourder;
+  float scal = 1.0;
+
+  if (printFile.endsWith(".svg") || printFile.endsWith(".eps")) {
+    QSvgGenerator* svg1 = new QSvgGenerator();
+
+    QString tempfile = printFile + ".tmp.svg";
+    if (!printFile.endsWith(".svg")) {
+        svg1->setFileName(tempfile);
+    } else {
+        svg1->setFileName(printFile);
+    }
+
+    svg1->setSize(QSize(1.12*w, h));
+    QPainter *p = new QPainter(svg1);
+    p->fillRect(0, 0, svg1->size().width(), svg1->size().height(), Qt::white);
+    ViewPainter *vp = new ViewPainter(p);
+    vp->init(p, 1.0, 0, 0, xmin-bourder/2, ymin-bourder/2, 1.0, 1.0);
+
+    sch->paintSchToViewpainter(vp,true,true);
+
+    delete vp;
+    delete p;
+    delete svg1;
+
+    if (!printFile.endsWith(".svg")) {
+        QString cmd = "inkscape -z -D --file=";
+        cmd += tempfile + " ";
+
+        if (printFile.endsWith(".eps")) {
+          cmd += "--export-eps=" + printFile;
+        }
+
+        int result = QProcess::execute(cmd);
+
+        if (result!=0) {
+            QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,"Export to image", "Inkscape start error!", QMessageBox::Ok);
+            msg->exec();
+            delete msg;
+        }
+        QFile::remove(tempfile);
+    }
+
+  } else if (printFile.endsWith(".png")) {
+    QImage* img;
+    if (color == "BW") {
+      img = new QImage(w, h, QImage::Format_Mono);
+    } else {
+      img = new QImage(w, h, QImage::Format_RGB888);
+    }
+
+    QPainter* p = new QPainter(img);
+    p->fillRect(0, 0, w, h, Qt::white);
+    ViewPainter* vp = new ViewPainter(p);
+    vp->init(p, scal, 0, 0, xmin*scal-bourder/2, ymin*scal-bourder/2, scal,scal);
+
+    sch->paintSchToViewpainter(vp,true,true);
+
+    img->save(printFile);
+
+    delete vp;
+    delete p;
+    delete img;
+  } else {
+    fprintf(stderr, "Unsupported format of output file. \n"
+        "Use PNG, SVG or PDF format!\n");
+    return;
+  }
+}
+
+void
 ImageWriter::print(QWidget *doc)
 {
   Schematic *sch = static_cast<Schematic*>(doc);

@@ -23,6 +23,8 @@
 #ifndef IMAGEWRITER_H_
 #define IMAGEWRITER_H_ value
 
+#include <QString>
+
 class QWidget;
 
 class ImageWriter
@@ -30,7 +32,8 @@ class ImageWriter
 public:
   ImageWriter ();
   virtual ~ImageWriter ();
-  virtual void print(QWidget *);
+  void print(QWidget *);
+  void noGuiPrint(QWidget *, QString printFile, QString color);
 
   void setDiagram(bool diagram) { onlyDiagram = diagram; };
 private:
