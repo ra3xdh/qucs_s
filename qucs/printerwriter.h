@@ -23,14 +23,20 @@
 #ifndef PRINTERWRITER_H_
 #define PRINTERWRITER_H_ value
 
-class QucsDoc;
+class QPrinter;
+class QWidget;
 
 class PrinterWriter
 {
 public:
   PrinterWriter ();
   virtual ~PrinterWriter ();
-  virtual void print(QucsDoc *);
+  virtual void print(QWidget *);
+
+  void setFitToPage(bool _fitToPage) { fitToPage = _fitToPage; };
+private:
+  bool fitToPage;
+  QPrinter *Printer;
 };
 
 #endif
