@@ -31,6 +31,7 @@ SearchDialog::SearchDialog(QWidget *parent) :
   ui->setupUi(this);
 
   connect(ui->ButtonSearch, SIGNAL(clicked()), SLOT(slotSearch()));
+  connect(this, SIGNAL(finished(int)), SLOT(slotDisconnect()));
 }
 
 SearchDialog::~SearchDialog()
@@ -39,17 +40,23 @@ SearchDialog::~SearchDialog()
 }
 
 // ---------------------------------------------------------------------
-void SearchDialog::initSearch(const QString &text, bool replace)
+void SearchDialog::initSearch(QWidget *_doc, const QString &text, bool replace)
 {
+  doc = _doc;
+
   if(replace) {
     setWindowTitle(tr("Replace Text"));
     ui->AskBox->setHidden(false);
     ui->ReplaceGroup->setHidden(false);
+    connect(this, SIGNAL(replace(const QString &, const QString &, bool, bool, bool, bool)),
+        doc, SLOT(replace(const QString &, const QString &, bool, bool, bool, bool)));
   }
   else {
     setWindowTitle(tr("Search Text"));
-    ui->AskBox->hide();
-    ui->ReplaceGroup->hide();
+    ui->AskBox->setHidden(true);
+    ui->ReplaceGroup->setHidden(true);
+    connect(this, SIGNAL(search(const QString &, bool, bool, bool)),
+        doc, SLOT(search(const QString &, bool, bool, bool)));
   }
 
   ui->ReplaceEdit->clear();
@@ -79,5 +86,18 @@ void SearchDialog::slotSearch()
         ui->SearchEdit->text(), ui->ReplaceEdit->text(),
         ui->AskBox->isChecked(), ui->CaseBox->isChecked(),
         ui->WordBox->isChecked(), ui->BackwardBox->isChecked());
+  }
+}
+
+// ---------------------------------------------------------------------
+void SearchDialog::slotDisconnect()
+{
+  //hidden -> search
+  if (ui->AskBox->isHidden()) {
+    disconnect(this, SIGNAL(search(const QString &, bool, bool, bool)),
+        doc, SLOT(search(const QString &, bool, bool, bool)));
+  } else {
+    disconnect(this, SIGNAL(replace(const QString &, const QString &, bool, bool, bool, bool)),
+        doc, SLOT(replace(const QString &, const QString &, bool, bool, bool, bool)));
   }
 }

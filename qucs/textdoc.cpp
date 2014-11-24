@@ -281,7 +281,6 @@ void TextDoc::search(const QString &str, bool CaseSensitive, bool wordOnly, bool
     findFlags = findFlags | QTextDocument::FindWholeWords;
   }
 
-  textCursor().clearSelection();
   find(str, findFlags);
 }
 
@@ -302,7 +301,6 @@ void TextDoc::replace(const QString &str, const QString &str2, bool needConfirme
     findFlags = findFlags | QTextDocument::FindWholeWords;
   }
 
-  textCursor().clearSelection();
   if(find(str, findFlags)) {
     i = QMessageBox::Yes;
     if (needConfirmed) {

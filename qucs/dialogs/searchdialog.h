@@ -38,7 +38,7 @@ public:
   SearchDialog(QWidget *);
  ~SearchDialog();
 
-  void initSearch(const QString &text, bool replace=false);
+  void initSearch(QWidget *doc, const QString &text, bool replace=false);
 
 signals:
   void search(const QString &str, bool CaseSensitive, bool wordOnly, bool backward);
@@ -47,9 +47,11 @@ signals:
 
 private slots:
   void slotSearch();
+  void slotDisconnect();
 
 private:
   Ui::SearchDialog *ui;
+  QWidget *doc;
 };
 
 #endif

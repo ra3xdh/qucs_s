@@ -949,15 +949,8 @@ void QucsApp::showHTML(const QString& Page)
 // Is called when the find action is activated.
 void QucsApp::slotEditFind()
 {
-  connect(SearchDia,
-      SIGNAL(search(const QString &, bool, bool, bool)),
-      ((TextDoc *)DocumentTab->currentPage()),
-      SLOT(search(const QString &, bool, bool, bool)));
-  SearchDia->initSearch(((TextDoc *)DocumentTab->currentPage())->textCursor().selectedText(), false);
-  disconnect(SearchDia,
-      SIGNAL(search(const QString &, bool, bool, bool)),
-      ((TextDoc *)DocumentTab->currentPage()),
-      SLOT(search(const QString &, bool, bool, bool)));
+  SearchDia->initSearch(DocumentTab->currentPage(),
+      ((TextDoc *)DocumentTab->currentPage())->textCursor().selectedText(), false);
 }
 
 // --------------------------------------------------------------
@@ -967,15 +960,8 @@ void QucsApp::slotChangeProps()
   if(Doc->inherits("QPlainTextEdit")) {
     ((TextDoc*)Doc)->viewport()->setFocus();
 
-    connect(SearchDia,
-        SIGNAL(replace(const QString &, const QString &, bool, bool, bool, bool)),
-        ((TextDoc *)DocumentTab->currentPage()),
-        SLOT(replace(const QString &, const QString &, bool, bool, bool, bool)));
-    SearchDia->initSearch(((TextDoc *)Doc)->textCursor().selectedText(), true);
-    disconnect(SearchDia,
-        SIGNAL(replace(const QString &, const QString &, bool, bool, bool, bool)),
-        ((TextDoc *)DocumentTab->currentPage()),
-        SLOT(replace(const QString &, const QString &, bool, bool, bool, bool)));
+    SearchDia->initSearch(Doc,
+        ((TextDoc *)Doc)->textCursor().selectedText(), true);
   }
   else {
     ChangeDialog *d = new ChangeDialog((Schematic*)Doc);
