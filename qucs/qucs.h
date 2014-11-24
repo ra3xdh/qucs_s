@@ -33,7 +33,6 @@ class MessageDock;
 
 class QLabel;
 class QAction;
-class QPrinter;
 class QLineEdit;
 class QComboBox;
 class QTabWidget;
@@ -176,8 +175,6 @@ public:
   QAction *activeAction;    // pointer to the action selected by the user
 
 private:
-  QPrinter  *Printer; // printer is global (to remember the user settings)
-
 // ********* Widgets on the main area **********************************
   QDockWidget     *dock;
   QTabWidget      *TabView;

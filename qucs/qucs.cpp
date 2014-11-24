@@ -52,6 +52,7 @@
 #include "dialogs/simmessage.h"
 #include "dialogs/exportdialog.h"
 #include "octave_window.h"
+#include "printerwriter.h"
 #include "../qucs-lib/qucslib_common.h"
 #include "misc.h"
 
@@ -129,14 +130,6 @@ QucsApp::QucsApp()
   initCursorMenu();
   Module::registerModules ();
 
-  // default settings of the printer
-  Printer = new QPrinter(QPrinter::HighResolution);
-  Printer->setOptionEnabled(QPrinter::PrintSelection, true);
-  Printer->setOptionEnabled(QPrinter::PrintPageRange, false);
-  Printer->setOptionEnabled(QPrinter::PrintToFile, true);
-  Printer->setColorMode(QPrinter::Color);
-  Printer->setFullPage(true);
-
   // instance of small text search dialog
   SearchDia = new SearchDialog(this);
 
@@ -173,7 +166,6 @@ QucsApp::QucsApp()
 QucsApp::~QucsApp()
 {
   Module::unregisterModules ();
-  delete Printer;
 }
 
 
@@ -2034,53 +2026,19 @@ void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
 
 
 // --------------------------------------------------------------
-// TODO -> in case of textdocument, cast to QPlainTextEdit & print
+// printCurrentDocument: call printerwriter to print document
 void QucsApp::printCurrentDocument(bool fitToPage)
 {
   statusBar()->message(tr("Printing..."));
   editText->setHidden(true); // disable text edit of component property
 
-  if(isTextDocument (DocumentTab->currentPage())) {
-    QWidget *w;
-    w = DocumentTab->currentPage();
-    QPlainTextEdit *temp =  (QPlainTextEdit*)w;
+  PrinterWriter *writer = new PrinterWriter();
+  writer->setFitToPage(fitToPage);
+  writer->print(DocumentTab->currentPage());
+  delete writer;
 
-    QPrintDialog *dialog = new QPrintDialog(Printer, this);
-    dialog->setWindowTitle(tr("Print Document"));
-    dialog->addEnabledOption(QAbstractPrintDialog::PrintSelection);
-     if (dialog->exec() == QDialog::Accepted)
-         temp->print(Printer);
-
-  }
-    //Printer->setOrientation(QPrinter::Portrait);
-  else {
-    Printer->setOrientation(QPrinter::Landscape);
-
-  //Printer->setPrintRange(QPrinter::AllPages);
-
-  if(Printer->setup(this)) {   // printer dialog
-
-    QPainter Painter(Printer);
-    if(!Painter.device())      // valid device available ?
-      goto Error;
-
-    for(int z=Printer->numCopies(); z>0 ; z--) {
-      if(Printer->aborted())
-        break;
-
-      getDoc()->print(Printer, &Painter,
-              Printer->printRange() == QPrinter::AllPages, fitToPage);
-      if(z > 1)
-        if(!Printer->newPage())
-          goto Error;
-    }
-  }
-  }
   statusBar()->message(tr("Ready."));
   return;
-
-Error:
-  statusBar()->message(tr("Printer Error."));
 }
 
 // --------------------------------------------------------------
