@@ -57,6 +57,7 @@ bsim4v30nMOS.cpp
 bsim4v30pMOS.cpp
 vcresistor.cpp
 vacomponent.cpp
+mutualx.cpp
 )
 
 SET(COMPONENTS_MOC_HDRS
