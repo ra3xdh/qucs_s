@@ -31,6 +31,10 @@ public:
   ImageWriter ();
   virtual ~ImageWriter ();
   virtual void print(QWidget *);
+
+  void setDiagram(bool diagram) { onlyDiagram = diagram; };
+private:
+  bool onlyDiagram;
 };
 
 #endif
