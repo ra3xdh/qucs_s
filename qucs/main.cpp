@@ -40,6 +40,7 @@
 #include "qucs.h"
 #include "main.h"
 #include "node.h"
+#include "printerwriter.h"
 
 #include "schematic.h"
 #include "module.h"
@@ -323,49 +324,9 @@ int doPrint(QString schematic, QString printFile,
   // determine filetype
   if (printFile.endsWith(".pdf")) {
     //initial printer
-    QPrinter *Printer = new QPrinter(QPrinter::HighResolution);
-    Printer->setOptionEnabled(QPrinter::PrintSelection, true);
-    Printer->setOptionEnabled(QPrinter::PrintPageRange, false);
-    Printer->setOptionEnabled(QPrinter::PrintToFile, true);
-    Printer->setFullPage(true);
-
-    //set property
-    Printer->setOutputFileName(printFile);
-
-    //page size
-    if (page == "A3") {
-      Printer->setPaperSize(QPrinter::A3);
-    } else if (page == "B4") {
-      Printer->setPaperSize(QPrinter::B4);
-    } else if (page == "B5") {
-      Printer->setPaperSize(QPrinter::B5);
-    } else {
-      Printer->setPaperSize(QPrinter::A4);
-    }
-    //dpi
-    Printer->setResolution(dpi);
-    //color
-    if (color == "BW") {
-      Printer->setColorMode(QPrinter::GrayScale);
-    } else {
-      Printer->setColorMode(QPrinter::Color);
-    }
-    //orientation
-    if (orientation == "landscape") {
-      Printer->setOrientation(QPrinter::Landscape);
-    } else {
-      Printer->setOrientation(QPrinter::Portrait);
-    }
-
-    QPainter Painter(Printer);
-    if(!Painter.device()) {      // valid device available ?
-      qDebug() << "Error: Printer Error.";
-      return -1;
-    }
-
-    bool fitToPage = true;
-    ((QucsDoc *)sch)->print(Printer, &Painter,
-      Printer->printRange() == QPrinter::AllPages, fitToPage);
+    PrinterWriter *Printer = new PrinterWriter();
+    Printer->setFitToPage(true);
+    Printer->noGuiPrint(sch, printFile, page, dpi, color, orientation);
   } else {
 
     const int bourder = 30;
