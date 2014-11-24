@@ -35,6 +35,8 @@ PrinterWriter::PrinterWriter()
   Printer->setOptionEnabled(QPrinter::PrintSelection, true);
   Printer->setOptionEnabled(QPrinter::PrintPageRange, false);
   Printer->setOptionEnabled(QPrinter::PrintToFile, true);
+
+  Printer->setPaperSize(QPrinter::A4);
   Printer->setColorMode(QPrinter::Color);
   Printer->setFullPage(true);
 
@@ -46,13 +48,53 @@ PrinterWriter::~PrinterWriter()
   delete Printer;
 }
 
+//allow user pass parameter and print document
+void
+PrinterWriter::noGuiPrint(QWidget *doc, QString printFile,
+    QString page, int dpi, QString color, QString orientation)
+{
+  //set property
+  Printer->setOutputFileName(printFile);
+
+  //page size
+  if (page == "A3") {
+    Printer->setPaperSize(QPrinter::A3);
+  } else if (page == "B4") {
+    Printer->setPaperSize(QPrinter::B4);
+  } else if (page == "B5") {
+    Printer->setPaperSize(QPrinter::B5);
+  } else {
+    Printer->setPaperSize(QPrinter::A4);
+  }
+  //dpi
+  Printer->setResolution(dpi);
+  //color
+  if (color == "BW") {
+    Printer->setColorMode(QPrinter::GrayScale);
+  } else {
+    Printer->setColorMode(QPrinter::Color);
+  }
+  //orientation
+  if (orientation == "landscape") {
+    Printer->setOrientation(QPrinter::Landscape);
+  } else {
+    Printer->setOrientation(QPrinter::Portrait);
+  }
+  QPainter Painter(Printer);
+  if(!Painter.device()) {      // valid device available ?
+    return;
+  }
+
+  static_cast<Schematic *>(doc)->print(Printer, &Painter,
+    Printer->printRange() == QPrinter::AllPages, fitToPage);
+}
+
 void
 PrinterWriter::print(QWidget *doc)
 {
   QPrintDialog *dialog = new QPrintDialog(Printer, 0);
   dialog->setWindowTitle(QObject::tr("Print Document"));
   dialog->addEnabledOption(QAbstractPrintDialog::PrintSelection);
-
 
   if (doc->inherits("QPlainTextEdit"))
   {
@@ -67,6 +109,7 @@ PrinterWriter::print(QWidget *doc)
     {
       QPainter Painter(Printer);
       if(!Painter.device()) {     // valid device available ?
+        delete dialog;
         return;
       }
       for (int z = Printer->numCopies(); z > 0; --z) {
@@ -77,6 +120,7 @@ PrinterWriter::print(QWidget *doc)
         static_cast<Schematic *>(doc)->print(Printer, &Painter,
                 Printer->printRange() == QPrinter::AllPages, fitToPage);
         if (z > 1 && !Printer->newPage()) {
+          delete dialog;
           return;
         }
       }

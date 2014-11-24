@@ -23,7 +23,9 @@
 #ifndef PRINTERWRITER_H_
 #define PRINTERWRITER_H_ value
 
-class QPrinter;
+#include <QPrinter>
+#include <QString>
+
 class QWidget;
 
 class PrinterWriter
@@ -31,7 +33,9 @@ class PrinterWriter
 public:
   PrinterWriter ();
   virtual ~PrinterWriter ();
-  virtual void print(QWidget *);
+  void print(QWidget *);
+  void noGuiPrint(QWidget *doc, QString printFile,
+      QString page, int dpi, QString color, QString orientation);
 
   void setFitToPage(bool _fitToPage) { fitToPage = _fitToPage; };
 private:
