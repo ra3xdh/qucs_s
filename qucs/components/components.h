@@ -111,6 +111,7 @@
 #include "libcomp.h"
 #include "mutual.h"
 #include "mutual2.h"
+#include "mutualx.h"
 #include "coupler.h"
 #include "hybrid.h"
 #include "switch.h"

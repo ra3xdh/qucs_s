@@ -245,6 +245,7 @@ void Module::registerModules (void) {
   REGISTER_LUMPED_1 (vProbe);
   REGISTER_LUMPED_1 (Mutual);
   REGISTER_LUMPED_1 (Mutual2);
+  REGISTER_LUMPED_1 (MutualX);
   REGISTER_LUMPED_1 (Switch);
   REGISTER_LUMPED_1 (Relais);
   REGISTER_LUMPED_1 (RFedd);

@@ -19,7 +19,7 @@
 #include "schematic.h"
 
 #include <QFileInfo>
-
+#include <QtCore>
 
 EqnDefined::EqnDefined()
 {
@@ -94,6 +94,7 @@ QString EqnDefined::netlist()
 // -------------------------------------------------------
 void EqnDefined::createSymbol()
 {
+    qDebug()<<"222";
   int i, PortDistance = 60;
 
   // adjust branch number

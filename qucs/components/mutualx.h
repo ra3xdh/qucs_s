@@ -9,14 +9,15 @@
 #include "component.h"
 
 
-class MutualN : public MultiViewComponent  {
+class MutualX : public MultiViewComponent  {
 public:
-  MutualN();
-  static Element* info(QString&, QByteArray*, bool getNewOne=false);
-  static char component_icon[230];
+  MutualX();
+  ~MutualX() {};
+  Component* newOne();
+  static Element* info(QString& Name, char* &BitmapFile, bool getNewOne);
 
 protected:
-  void createSymbol(Schematic*);
+  void createSymbol();
 };
 
 #endif
