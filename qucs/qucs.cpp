@@ -738,6 +738,40 @@ void QucsApp::slotSearchComponent(const QString &searchText)
         }
       }
     }
+    QMapIterator<QString, QString> i(Module::vaComponents);
+    while (i.hasNext()) {
+      i.next();
+
+      // Just need path to bitmap, do not create an object
+      QString Name, vaBitmap;
+      vacomponent::info (Name, vaBitmap, false, i.value());
+
+      if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
+        //match
+
+        // check if icon exists, fall back to default
+        QString iconPath = QucsSettings.QucsWorkDir.filePath(vaBitmap+".png");
+
+        QFile iconFile(iconPath);
+        QPixmap vaIcon;
+
+        if(iconFile.exists())
+        {
+          // load bitmap defined on the JSON symbol file
+          vaIcon = QPixmap(iconPath);
+        }
+        else
+        {
+          // default icon
+          vaIcon = QPixmap(":/bitmaps/editdelete.png");
+        }
+
+        // Add icon an name tag to dock
+        QListWidgetItem *icon = new QListWidgetItem(vaIcon, Name);
+        icon->setToolTip("verilog-a user devices: " + Name);
+        CompComps->addItem(icon);
+      }
+    }
   }
 }
 
@@ -825,6 +859,19 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
           }
         }
         i++;
+      }
+      i = CompChoose->findText(QObject::tr("verilog-a user devices"));
+      QMapIterator<QString, QString> it(Module::vaComponents);
+      while (it.hasNext()) {
+        it.next();
+
+        // Just need vacomponent name, do not create an object
+        QString Name, vaBitmap;
+        vacomponent::info (Name, vaBitmap, false, it.value());
+
+        if (Name == name) {
+          CompChoose->setCurrentIndex(i);
+        }
       }
     } else {
       Infos = Comps.at(i)->info;
