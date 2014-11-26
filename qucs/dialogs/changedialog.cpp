@@ -35,7 +35,7 @@
 
 
 ChangeDialog::ChangeDialog(Schematic *Doc_)
-			: QDialog(Doc_) //, 0, TRUE, Qt::WDestructiveClose)
+			: QDialog(Doc_) 
 {
   Doc = Doc_;
   setWindowTitle(tr("Change Component Properties"));

@@ -27,7 +27,7 @@
 
 
 HelpDialog::HelpDialog(QWidget *parent)
-                     : QDialog(parent) //, 0, false, Qt::WDestructiveClose)
+                     : QDialog(parent) 
 {
   setWindowTitle("QucsTranscalc "+tr("Help"));
 

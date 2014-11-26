@@ -31,7 +31,7 @@
 
 
 ImportDialog::ImportDialog(QWidget *parent)
-		: QDialog(parent) //, 0, FALSE, Qt::WDestructiveClose)
+		: QDialog(parent) 
 {
   setWindowTitle(tr("Convert Data File..."));
 

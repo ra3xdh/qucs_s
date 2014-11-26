@@ -37,7 +37,7 @@
 #include <QGroupBox>
 
 
-LibraryDialog::LibraryDialog(QWidget *App_) : QDialog(App_) //?, 0, TRUE, Qt::WDestructiveClose)
+LibraryDialog::LibraryDialog(QWidget *App_) : QDialog(App_) 
 {
   setWindowTitle(tr("Manage User Libraries"));
 

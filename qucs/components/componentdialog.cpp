@@ -37,7 +37,7 @@
 #include <QDebug>
 
 ComponentDialog::ComponentDialog(Component *c, Schematic *d)
-			: QDialog(d, 0, TRUE, Qt::WDestructiveClose)
+			: QDialog(d)
 {
   resize(600, 250);
   setWindowTitle(tr("Edit Component Properties"));

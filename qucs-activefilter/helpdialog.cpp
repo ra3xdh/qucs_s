@@ -29,7 +29,7 @@
 
 
 HelpDialog::HelpDialog(QWidget *parent)
-                     : QDialog(parent) //, 0, false, Qt::WDestructiveClose)
+                     : QDialog(parent)
 {
   setWindowTitle("Qucs Filter Help");
 

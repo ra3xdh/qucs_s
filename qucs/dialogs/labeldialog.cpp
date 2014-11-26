@@ -25,7 +25,7 @@
 
 
 LabelDialog::LabelDialog(WireLabel *pl, QWidget *parent)
-                     : QDialog(parent) //, 0, true)
+                     : QDialog(parent) 
 {
   setWindowTitle(tr("Insert Nodename"));
 

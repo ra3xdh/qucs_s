@@ -45,7 +45,7 @@
 
 
 MatchDialog::MatchDialog(QWidget *parent)
-			: QDialog(parent) //, 0, TRUE, Qt::WDestructiveClose)
+			: QDialog(parent) 
 {
   setWindowTitle(tr("Create Matching Circuit"));
   DoubleVal = new QDoubleValidator(this);

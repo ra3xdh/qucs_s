@@ -50,7 +50,7 @@ using namespace std;
 
 
 SimMessage::SimMessage(QWidget *w, QWidget *parent)
-		: QDialog(parent) //, 0, FALSE, Qt::WDestructiveClose)
+		: QDialog(parent) 
 {
   setWindowTitle(tr("Qucs Simulation Messages"));
   QucsDoc *Doc;

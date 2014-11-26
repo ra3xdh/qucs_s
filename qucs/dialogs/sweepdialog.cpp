@@ -60,7 +60,7 @@ QValidator::State mySpinBox::validate ( QString & text, int & pos ) const
 
 
 SweepDialog::SweepDialog(Schematic *Doc_)
-			: QDialog(Doc_)//, 0, TRUE, Qt::WDestructiveClose)
+			: QDialog(Doc_)
 {
   Doc = Doc_;
 

@@ -33,7 +33,7 @@
 
 
 DigiSettingsDialog::DigiSettingsDialog(TextDoc *Doc_)
-                  : QDialog(Doc_) //, 0, true, Qt::WDestructiveClose)
+                  : QDialog(Doc_) 
 {
   Doc = Doc_;
   setWindowTitle(tr("Document Settings"));
