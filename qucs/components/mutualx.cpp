@@ -4,6 +4,7 @@
  ***************************************************************************/
 
 #include "mutualx.h"
+#include "node.h"
 #include <QtCore>
 
 MutualX::MutualX()
@@ -43,6 +44,41 @@ Component* MutualX::newOne()
     p->Props.at(0)->Value=Props.at(0)->Value;
     p->recreate(0);
     return p;
+}
+
+QString MutualX::netlist()
+{
+    QString s = Model + ":" + Name;
+
+    // output all node names
+    foreach(Port *p1, Ports) {
+      s += " "+p1->Connection->Name;   // node names
+    }
+
+    int coils = Props.at(0)->Value.toInt();
+
+    QString L="";
+    for (int i=0;i<coils;i++) {
+        L += Props.at(i+1)->Value + ";";
+    }
+    L.chop(1);
+
+    QString k="";
+    for (int i=1, state=1;i<=coils;i++) {
+        for (int j=i;j<=coils;j++,state++) {
+            if (i==j) {
+                k += "1.0;"; // for self-inductance
+                state--;
+            } else {
+                k += Props.at(coils+state)->Value+";";
+            }
+        }
+    }
+    k.chop(1);
+
+    s += QString(" L=\"[%1]\" k=\"[%2]\"\n").arg(L,k);
+
+    return s;
 }
 
 // --------------------------------------------------------

@@ -18,6 +18,7 @@ public:
 
 protected:
   void createSymbol();
+  QString netlist();
 };
 
 #endif
