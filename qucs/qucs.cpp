@@ -732,7 +732,7 @@ void QucsApp::slotSearchComponent(const QString &searchText)
           if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
             //match
             QListWidgetItem *icon = new QListWidgetItem(QPixmap(":/bitmaps/" + QString (File) + ".png"), Name);
-            icon->setToolTip(Name);
+            icon->setToolTip(it + ": " + Name);
             CompComps->addItem(icon);
           }
         }
@@ -790,9 +790,9 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
   // if symbol mode, only paintings are enabled.
   Comps = Category::getModules(CompChoose->currentText());
   qDebug() << "pressed CompComps id" << i;
-  qDebug() << CompComps->item(i)->toolTip(); //Name;
+  qDebug() << CompComps->item(i)->text(); //Name;
 
-  QString name = CompComps->item(i)->toolTip();
+  QString name = CompComps->item(i)->text();
   QString CompName;
   QString CompFile_qstr;
   char *CompFile_cptr;
@@ -800,7 +800,7 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
   if (CompChoose->currentText() == QObject::tr("verilog-a user devices")){
     InfosVA = Comps.at(i)->infoVA;
 
-    // get JSON file out of item name on toolTip
+    // get JSON file out of item name on widgetitem
     QString filename = Module::vaComponents[name];
 
     if (InfosVA) {
@@ -812,16 +812,19 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
     if (!CompSearch->text().isEmpty()) {
       //comp search is not empty, search all category to get a component in same name
       QStringList cats = Category::getCategories();
+      int i = 0;
       foreach (QString it, cats) {
         Comps = Category::getModules (it);
         foreach(Module *mod, Comps) {
           if (mod->info) {
             (*mod->info)(CompName, CompFile_cptr, false);
             if (CompName == name) {
+              CompChoose->setCurrentIndex(i);
               view->selElem = (*mod->info) (CompName, CompFile_cptr, true);
             }
           }
         }
+        i++;
       }
     } else {
       Infos = Comps.at(i)->info;
