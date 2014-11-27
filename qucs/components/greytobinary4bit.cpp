@@ -17,7 +17,7 @@
  */
 #include "greytobinary4bit.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 greytobinary4bit::greytobinary4bit()
 {

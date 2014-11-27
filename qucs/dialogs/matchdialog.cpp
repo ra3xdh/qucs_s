@@ -26,6 +26,7 @@
 #include "../components/capacitor.h"
 #include "../components/inductor.h"
 #include "../components/ground.h"
+#include "misc.h"
 
 #include <QLabel>
 #include <QHBoxLayout>

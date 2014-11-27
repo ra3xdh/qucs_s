@@ -38,6 +38,7 @@
 #include "schematic.h"
 
 #include "rect3ddiagram.h"
+#include "misc.h"
 
 #include <QTextStream>
 #include <QMessageBox>

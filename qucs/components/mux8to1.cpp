@@ -17,7 +17,7 @@
  */
 #include "mux8to1.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 mux8to1::mux8to1()
 {

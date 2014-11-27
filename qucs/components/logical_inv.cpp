@@ -14,10 +14,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "main.h"
 #include "logical_inv.h"
 #include "schematic.h"
 #include "node.h"
+#include "misc.h"
 
 
 Logical_Inv::Logical_Inv()

@@ -17,7 +17,7 @@
  */
 #include "andor4x4.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 andor4x4::andor4x4()
 {

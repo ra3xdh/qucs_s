@@ -17,7 +17,7 @@
  */
 #include "jkff_SR.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 jkff_SR::jkff_SR()
 {

@@ -40,6 +40,7 @@ using namespace std;
 #include "schematic.h"
 #include "components/opt_sim.h"
 #include "components/vhdlfile.h"
+#include "misc.h"
 
 #ifdef __MINGW32__
 #define executableSuffix ".exe"

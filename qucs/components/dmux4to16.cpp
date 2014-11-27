@@ -17,7 +17,7 @@
  */
 #include "dmux4to16.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 dmux4to16::dmux4to16()
 {

@@ -21,6 +21,7 @@
 #include <QGridLayout>
 #include "main.h"
 #include "../diagrams/graph.h"
+#include "misc.h"
 
 #include <QLabel>
 #include <QLineEdit>

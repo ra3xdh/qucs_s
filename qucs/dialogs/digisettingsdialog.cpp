@@ -29,7 +29,7 @@
 
 #include "digisettingsdialog.h"
 #include "textdoc.h"
-#include "main.h"
+#include "misc.h"
 
 
 DigiSettingsDialog::DigiSettingsDialog(TextDoc *Doc_)

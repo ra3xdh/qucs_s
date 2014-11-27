@@ -17,7 +17,7 @@
  */
 #include "hpribin4bit.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 hpribin4bit::hpribin4bit()
 {

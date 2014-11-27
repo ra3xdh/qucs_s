@@ -19,6 +19,7 @@
 #include "qucs.h"
 #include "main.h"
 #include "schematic.h"
+#include "misc.h"
 
 #include <limits.h>
 

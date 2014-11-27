@@ -53,6 +53,7 @@
 #include "dialogs/exportdialog.h"
 #include "octave_window.h"
 #include "../qucs-lib/qucslib_common.h"
+#include "misc.h"
 
 extern const char *empty_xpm[];
 

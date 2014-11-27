@@ -16,7 +16,7 @@
  ***************************************************************************/
 #include "rs_flipflop.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 RS_FlipFlop::RS_FlipFlop()
 {

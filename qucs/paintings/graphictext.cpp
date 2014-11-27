@@ -21,6 +21,7 @@
 #include "graphictextdialog.h"
 #include "schematic.h"
 #include "qucs.h"
+#include "misc.h"
 
 #include <QPainter>
 #include <QPushButton>

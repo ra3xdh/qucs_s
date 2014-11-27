@@ -25,6 +25,7 @@
 #include <math.h>
 #include "qucs.h"
 #include "schematic.h"
+#include "misc.h"
 
 #include <QPolygon>
 #include <QPainter>

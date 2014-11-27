@@ -24,6 +24,7 @@
 #include "main.h"
 #include "qucs.h"
 #include "schematic.h"
+#include "misc.h"
 
 #include <math.h>
 #include <QPolygon>

@@ -17,7 +17,7 @@
  */
 #include "dmux3to8.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 
 dmux3to8::dmux3to8()

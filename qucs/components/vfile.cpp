@@ -17,7 +17,7 @@
  ***************************************************************************/
 #include "vfile.h"
 #include "schematic.h"
-#include "main.h"
+#include "misc.h"
 
 vFile::vFile()
 {
