@@ -11,8 +11,6 @@
 #
 file (GLOB TRANSLATIONS_FILES qucs_*.ts)
 
-message( "My files \n:" ${TRANSLATIONS_FILES} )
-
 # WARNING: make clean might delete the source .ts files! Danger!
 option (UPDATE_TRANSLATIONS "Update source translation translations/*.ts" "OFF")
 
