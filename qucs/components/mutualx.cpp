@@ -64,14 +64,32 @@ QString MutualX::netlist()
     L.chop(1);
 
     QString k="";
-    for (int i=1, state=1;i<=coils;i++) {
-        for (int j=i;j<=coils;j++,state++) {
+
+    QVector< QVector<QString> > vec_k(coils);
+    QVector<QString> vec1_k(coils);
+    vec1_k.fill("0.0");
+    vec_k.fill(vec1_k);
+
+
+    for (int i=0, state=1;i<coils;i++) {
+        for (int j=i;j<coils;j++,state++) {
             if (i==j) {
-                k += "1.0;"; // for self-inductance
+                vec_k[i][j] = "1.0"; // for self-inductance
                 state--;
             } else {
-                k += Props.at(coils+state)->Value+";";
-            }
+                vec_k[i][j] = Props.at(coils+state)->Value; // for mutual inductances
+            }                                      // Parameters need to be in prpoer sequence
+                            // otherwise netlist will be broken. Maybe rewrite it?
+        }
+        for (int j=0;j<i;j++) {
+            vec_k[i][j]= vec_k[j][i];
+        }
+    }
+
+    foreach (vec1_k,vec_k) {
+        QString ki;
+        foreach (ki,vec1_k) {
+            k += ki+";";
         }
     }
     k.chop(1);
