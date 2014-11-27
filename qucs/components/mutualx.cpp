@@ -1,11 +1,25 @@
 /***************************************************************************
+                                 mutualx.cpp
+                                -----------
+    begin                : Mon Nov 24 2014
     copyright            : (C) 2010 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
+    adapted for Qucs by  : Vadim Kiznetsov
+    email                : ra3xdh@gmail.com
  ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 
 #include "mutualx.h"
 #include "node.h"
-#include <QtCore>
 
 MutualX::MutualX()
 {
