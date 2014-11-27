@@ -27,7 +27,7 @@ MutualX::MutualX()
 Element* MutualX::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr("N Mutual Inductors");
-  BitmapFile = (char *) "mutual";
+  BitmapFile = (char *) "mutualx";
 
   if(getNewOne) {
       MutualX* p =  new MutualX();
@@ -102,7 +102,6 @@ QString MutualX::netlist()
 // --------------------------------------------------------
 void MutualX::createSymbol()
 {
-    qDebug()<<"111";
   // adjust port number
   int Num = Props.first()->Value.toInt();
   if(Num < 1)
@@ -116,7 +115,7 @@ void MutualX::createSymbol()
   j = Props.count();
   NumProps = Num + Num * (Num - 1) / 2 + 1;
   for(i = j; i < NumProps; i++)
-    Props.append(new Property("L", "1 mH", false, " "));
+    Props.append(new Property("L", "0.0", false, " "));
   for(i = NumProps; i < j; i++)
     Props.removeLast();
 
