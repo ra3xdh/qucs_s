@@ -57,7 +57,7 @@ private slots:
   void slotDisplayMsg();
   void slotDisplayErr();
   void slotCloseStdin();
-  void slotSimEnded(int status);
+  void slotSimEnded(int exitCode, QProcess::ExitStatus exitStatus);
   void slotDisplayButton();
   void AbortSim();
 
