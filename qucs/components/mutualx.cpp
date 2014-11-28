@@ -4,7 +4,7 @@
     begin                : Mon Nov 24 2014
     copyright            : (C) 2010 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
-    adapted for Qucs by  : Vadim Kiznetsov
+    adapted for Qucs by  : Vadim Kuznetsov
     email                : ra3xdh@gmail.com
  ***************************************************************************/
 
@@ -79,34 +79,39 @@ QString MutualX::netlist()
 
     QString k="";
 
-    QVector< QVector<QString> > vec_k(coils);
-    QVector<QString> vec1_k(coils);
-    vec1_k.fill("0.0");
-    vec_k.fill(vec1_k);
+    QString **k_matrix = new QString*[coils];
+    for (int i=0;i<coils;i++) {
+        k_matrix[i]= new QString[coils];
+    }
 
 
     for (int i=0, state=1;i<coils;i++) {
         for (int j=i;j<coils;j++,state++) {
             if (i==j) {
-                vec_k[i][j] = "1.0"; // for self-inductance
+                k_matrix[i][j] = "1.0"; // for self-inductance
                 state--;
             } else {
-                vec_k[i][j] = Props.at(coils+state)->Value; // for mutual inductances
-            }                                      // Parameters need to be in prpoer sequence
-                            // otherwise netlist will be broken. Maybe rewrite it?
+                k_matrix[i][j] = Props.at(coils+state)->Value; // for mutual inductances
+            }
+
         }
         for (int j=0;j<i;j++) {
-            vec_k[i][j]= vec_k[j][i];
+            k_matrix[i][j]= k_matrix[j][i];
         }
     }
 
-    foreach (vec1_k,vec_k) {
-        QString ki;
-        foreach (ki,vec1_k) {
-            k += ki+";";
+    for (int i=0;i<coils;i++) {
+        for (int j=0;j<coils;j++) {
+            k += k_matrix[i][j]+";";
         }
     }
     k.chop(1);
+
+    for (int i=0;i<coils;i++) {
+        delete [] k_matrix[i];
+    }
+    delete [] k_matrix;
+
 
     s += QString(" L=\"[%1]\" k=\"[%2]\"\n").arg(L,k);
 

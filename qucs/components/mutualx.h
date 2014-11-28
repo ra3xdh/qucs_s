@@ -4,7 +4,7 @@
     begin                : Mon Nov 24 2014
     copyright            : (C) 2010 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
-    adapted for Qucs     : Vadim Kiznetsov
+    adapted for Qucs     : Vadim Kuznetsov
     email                : ra3xdh@gmail.com
  ***************************************************************************/
 
