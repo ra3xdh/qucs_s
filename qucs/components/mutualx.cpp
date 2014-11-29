@@ -4,7 +4,7 @@
     begin                : Mon Nov 24 2014
     copyright            : (C) 2010 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
-    adapted for Qucs by  : Vadim Kuznetsov
+    copyright            : (C) 2014 by Vadim Kuznetsov
     email                : ra3xdh@gmail.com
  ***************************************************************************/
 
@@ -20,6 +20,7 @@
 
 #include "mutualx.h"
 #include "node.h"
+#include "math.h"
 
 MutualX::MutualX()
 {
@@ -28,11 +29,22 @@ MutualX::MutualX()
   Model = "MUTX";
   Name  = "Tr";
 
+  const int init_coils=4; // initial number of coils
   // must be the first property!
-  Props.append(new Property("coils", "4", false,
+  Props.append(new Property("coils", QString::number(init_coils), false,
 		QObject::tr("number of mutual inductances")));
 
-  Props.append(new Property("L", "1 mH", false, " "));
+  for (int i=1;i<=init_coils; i++) {
+      Props.append(new Property("L"+QString::number(i), "1 mH", false,
+                                QObject::tr("inductance of coil") + " " + QString::number(i)));
+  }
+
+  for(int i = 1; i < init_coils; i++)
+    for(int j = i+1; j <= init_coils; j++) {
+       QString nam = "k" + QString::number(i) + QString::number(j);
+       QString desc = QObject::tr("coupling factor between coil %1 and coil %2").arg(i).arg(j);
+       Props.append(new Property(nam,"0.9",false,desc));
+    }
 
   createSymbol();
 }
@@ -129,30 +141,42 @@ void MutualX::createSymbol()
     Num = 8;
   Props.first()->Value = QString::number(Num);
 
-  // adjust property number
-  int i, j, NumProps;
-  j = Props.count();
+  int NumProps,oldNumProps;
+  oldNumProps = Props.count();
   NumProps = Num + Num * (Num - 1) / 2 + 1;
-  for(i = j; i < NumProps; i++)
-    Props.append(new Property("L", "0.0", false, " "));
-  for(i = NumProps; i < j; i++)
-    Props.removeLast();
+  if (oldNumProps!=NumProps) { // Coils count was changed
+      int oldCoils = rint(0.5*(sqrt(8*oldNumProps-7)-1.0)); // calculate old number of coils
+                                                            // we need to solve quadratic equation
+      int dCoils = abs(oldCoils - Num);          // how many coils were added/removed?
+      int k_cnt = (Num*(Num-1))/2;
+      int old_k_cnt = (oldCoils*(oldCoils-1))/2;
+      int delta_cnt = abs(old_k_cnt-k_cnt);
 
-  // set property names and descriptions
-  Property *pp = Props.first();
-  for(i = 1; i <= Num; i++) {
-    pp = Props.next();
-    pp->Name = "L" + QString::number(i);
-    pp->Description =
-        QObject::tr("inductance of coil") + " " + QString::number(i);
+      if (oldCoils>Num) { // reduce coils number
+
+          for (int i=0;i<dCoils;i++) {
+              Props.remove(oldCoils);
+          }
+          for (int i=0;i<delta_cnt;i++) {
+              Props.removeLast();
+          }
+      } else { // add new coils
+          for(int i = 0; i < dCoils; i++) { // add new properties for coils
+              Props.insert(oldCoils+1, new Property("L"+QString::number(Num-i), "1 mH", false,
+                                                    QObject::tr("inductance of coil") + " " + QString::number(Num-i)));
+          }
+          for (int i=0;i<delta_cnt;i++) { // and for coupling coeffs.
+              Props.append(new Property("k", "0.9", false, " "));
+          }
+      }
+
+      for(int i = 1,state=1; i < Num; i++) // Adjust coupling coeffs names
+        for(int j = i+1; j <= Num; j++,state++) {
+          Props.at(Num+state)->Name = "k" + QString::number(i) + QString::number(j);
+          Props.at(Num+state)->Description =
+              QObject::tr("coupling factor between coil %1 and coil %2").arg(i).arg(j);
+        }
   }
-  for(i = 1; i < Num; i++)
-    for(j = i+1; j <= Num; j++) {
-      pp = Props.next();
-      pp->Name = "k" + QString::number(i) + QString::number(j);
-      pp->Description =
-          QObject::tr("coupling factor between coil %1 and coil %2").arg(i).arg(j);
-    }
 
   // draw symbol
   int x = -10 * (Num-1);
@@ -165,7 +189,7 @@ void MutualX::createSymbol()
   ty = y1+4;
 
   x -= 6;
-  for(i=0; i<Num; i++) {
+  for(int i=0; i<Num; i++) {
     Arcs.append(new Arc(x,-18,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
     Arcs.append(new Arc(x, -6,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
     Arcs.append(new Arc(x,  6,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
