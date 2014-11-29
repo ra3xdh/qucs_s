@@ -29,6 +29,7 @@ Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
  */
 
 class SyntaxHighlighter;
+class QString;
 
 extern const char *smallsave_xpm[];// icon for unsaved files (diskette)
 extern const char *empty_xpm[];    // provides same height than "smallsave_xpm"
@@ -97,7 +98,8 @@ private:
   SyntaxHighlighter * syntaxHighlight;
 
 private slots:
-   void highlightCurrentLine();
+  void highlightCurrentLine();
+  bool baseSearch(const QString &, bool, bool, bool);
 };
 
 #endif

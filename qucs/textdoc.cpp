@@ -266,42 +266,54 @@ void TextDoc::becomeCurrent (bool)
   App->editActivate->setEnabled (true);
 }
 
-// implement search function
-void TextDoc::search(const QString &str, bool CaseSensitive, bool wordOnly, bool backward)
+bool TextDoc::baseSearch(const QString &str, bool CaseSensitive, bool wordOnly, bool backward)
 {
-  QFlag findFlags = 0;
+  QFlag flag = 0;
+  bool finded;
 
   if (CaseSensitive) {
-    findFlags = QTextDocument::FindCaseSensitively;
+    flag = QTextDocument::FindCaseSensitively;
   }
   if (backward) {
-    findFlags = findFlags | QTextDocument::FindBackward;
+    flag = flag | QTextDocument::FindBackward;
   }
   if (wordOnly) {
-    findFlags = findFlags | QTextDocument::FindWholeWords;
+    flag = flag | QTextDocument::FindWholeWords;
   }
 
-  find(str, findFlags);
+  finded = find(str, flag);
+  if (!finded) {
+    if (!backward) {
+      moveCursor(QTextCursor::Start);
+    } else {
+      moveCursor(QTextCursor::End);
+    }
+    finded = find(str, flag);
+    if (!finded) {
+      QMessageBox::information(this,
+          tr("Find..."), tr("Cannot find target: %1").arg(str),
+          QMessageBox::Ok | QMessageBox::Default | QMessageBox::Escape);
+    }
+  }
+  return finded;
+}
+
+// implement search function
+// if target not find, auto revert to head, find again
+// if still not find, pop out message
+void TextDoc::search(const QString &str, bool CaseSensitive, bool wordOnly, bool backward)
+{
+  baseSearch(str, CaseSensitive, wordOnly, backward);
 }
 
 // implement replace function
 void TextDoc::replace(const QString &str, const QString &str2, bool needConfirmed,
                       bool CaseSensitive, bool wordOnly, bool backward)
 {
+  bool finded = baseSearch(str, CaseSensitive, wordOnly, backward);
   int i;
-  QFlag findFlags = 0;
 
-  if (CaseSensitive) {
-    findFlags = QTextDocument::FindCaseSensitively;
-  }
-  if (backward) {
-    findFlags = findFlags | QTextDocument::FindBackward;
-  }
-  if (wordOnly) {
-    findFlags = findFlags | QTextDocument::FindWholeWords;
-  }
-
-  if(find(str, findFlags)) {
+  if(finded) {
     i = QMessageBox::Yes;
     if (needConfirmed) {
       i = QMessageBox::information(this,
@@ -309,7 +321,6 @@ void TextDoc::replace(const QString &str, const QString &str2, bool needConfirme
           QMessageBox::Yes | QMessageBox::Default,
           QMessageBox::No | QMessageBox::Escape);
     }
-
     if(i == QMessageBox::Yes) {
       insertPlainText(str2);
     }
