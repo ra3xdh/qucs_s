@@ -312,45 +312,37 @@ void ID_Dialog::slotOk()
       changed = true;
     }
 
-  QString s;
-  QList<SubParameter *>::iterator it = idText->Parameter.begin();
+  QList<SubParameter *> scratch;
   for (int row = 0; row < ParamTable->rowCount(); ++row) {
-    s = ParamTable->item(row, 1)->text() + "=" + ParamTable->item(row, 2)->text();
+      bool display = ParamTable->item(row, 0)->text() == tr("yes");
+      // s = "name=defaultval"
+      QString s(ParamTable->item(row, 1)->text() + "=" + ParamTable->item(row, 2)->text()),
+              desc(ParamTable->item(row, 3)->text()),
+              type(ParamTable->item(row, 4)->text());
 
-    if (it != idText->Parameter.end()) {
-      if ((*it)->display != (ParamTable->item(row, 0)->text() == tr("yes"))) {
-        (*it)->display = (ParamTable->item(row, 0)->text() == tr("yes"));
-        changed = true;
-      }
-      if ((*it)->Name != s) {
-        (*it)->Name = s;
-        changed = true;
-      }
-      if ((*it)->Description != ParamTable->item(row, 3)->text()) {
-        (*it)->Description = ParamTable->item(row, 3)->text();
-        changed = true;
-      }
-      if ((*it)->Type != ParamTable->item(row, 3)->text()) {
-        (*it)->Type = ParamTable->item(row, 3)->text();
-        changed = true;
-      }
-    } else {
-      idText->Parameter.append(new SubParameter(
-         (ParamTable->item(row, 0)->text() == tr("yes")) ? true : false,
-         s, ParamTable->item(row, 3)->text(), ParamTable->item(row, 4)->text()));
-      changed = true;
-    }
-
-    it++;
+      scratch.append(new SubParameter(display, s, desc, type));
   }
 
-  // if more properties than in ListView -> delete the rest
-  if (it != idText->Parameter.end()) {
-    while(it != idText->Parameter.end()) {
-      delete (*it);
-      it++;
-    }
-    changed = true;
+  if (scratch.size()!=idText->Parameter.size()) {
+      changed = true;
+  } else {
+      QList<SubParameter *>::const_iterator A(scratch.begin()),
+                                            end(scratch.end()),
+                                            B(idText->Parameter.begin());
+      for(;A!=end; ++A, ++B) {
+          if((*A)->display!=(*B)->display || (*A)->Name!=(*B)->Name ||
+             (*A)->Description!=(*B)->Description || (*A)->Type!=(*B)->Type) {
+              changed = true;
+              break;
+          }
+      }
+  }
+
+  if(changed)
+      idText->Parameter.swap(scratch);
+
+  foreach(SubParameter *p, scratch) {
+      delete p;
   }
 
   if(changed)  accept();
