@@ -388,45 +388,45 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 
   /*! Insert all \a Comp properties into the dialog \a prop list */
   int row=0; // row counter
-//  for(Property *p = Comp->Props.first(); p != 0; p = Comp->Props.next()) {
   for(Property *p = Comp->Props.at(Comp->Props.find(pp)+1); p != 0; p = Comp->Props.next()) {
 
-    // do not insert if already on first tab
-    // this is the reason it was originally from back to front...
-    // the 'pp' is the lasted property stepped over while filling the Swep tab
-//    if(p == pp)
-//      break;
-    if(p->display)
-      s = tr("yes");
-    else
-      s = tr("no");
+      // do not insert if already on first tab
+      // this is the reason it was originally from back to front...
+      // the 'pp' is the lasted property stepped over while filling the Swep tab
+  //    if(p == pp)
+  //      break;
+      if(p->display)
+        s = tr("yes");
+      else
+        s = tr("no");
 
-    // add Props into TableWidget
-    qDebug() << " Loading Comp->Props :" << p->Name << p->Value << p->display << p->Description ;
+      // add Props into TableWidget
+      qDebug() << " Loading Comp->Props :" << p->Name << p->Value << p->display << p->Description ;
 
-    prop->setRowCount(prop->rowCount()+1);
+      prop->setRowCount(prop->rowCount()+1);
 
-    QTableWidgetItem *cell;
-    cell = new QTableWidgetItem(p->Name);
-    cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-    prop->setItem(row, 0, cell);
-    cell = new QTableWidgetItem(p->Value);
-    cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-    prop->setItem(row, 1, cell);
-    cell = new QTableWidgetItem(s);
-    cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-    prop->setItem(row, 2, cell);
-    cell = new QTableWidgetItem(p->Description);
-    cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-    prop->setItem(row, 3, cell);
+      QTableWidgetItem *cell;
+      cell = new QTableWidgetItem(p->Name);
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      prop->setItem(row, 0, cell);
+      cell = new QTableWidgetItem(p->Value);
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      prop->setItem(row, 1, cell);
+      cell = new QTableWidgetItem(s);
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      prop->setItem(row, 2, cell);
+      cell = new QTableWidgetItem(p->Description);
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      prop->setItem(row, 3, cell);
 
-    row++;
-  }
+      row++;
+    }
 
-  if(prop->rowCount() > 0) {
-      prop->setCurrentItem(prop->item(0,0));
-      slotSelectProperty(prop->item(0,0));
-  }
+    if(prop->rowCount() > 0) {
+        prop->setCurrentItem(prop->item(0,0));
+        slotSelectProperty(prop->item(0,0));
+    }
+
 
   /// \todo add key up/down brose and select prop
   connect(prop, SIGNAL(itemClicked(QTableWidgetItem*)),
@@ -440,6 +440,60 @@ ComponentDialog::~ComponentDialog()
   delete Validator2;
   delete ValRestrict;
   delete ValInteger;
+}
+
+
+// Updates component property list. Useful for MultiViewComponents
+
+void ComponentDialog::updateCompPropsList()
+{
+    QString s;
+    int row=0; // row counter
+    for(Property *p = Comp->Props.first(); p != 0; p = Comp->Props.next()) {
+    //for(Property *p = Comp->Props.at(Comp->Props.find(pp)+1); p != 0; p = Comp->Props.next()) {
+
+      // do not insert if already on first tab
+      // this is the reason it was originally from back to front...
+      // the 'pp' is the lasted property stepped over while filling the Swep tab
+  //    if(p == pp)
+  //      break;
+      if(p->display)
+        s = tr("yes");
+      else
+        s = tr("no");
+
+      // add Props into TableWidget
+      qDebug() << " Loading Comp->Props :" << p->Name << p->Value << p->display << p->Description ;
+
+      if (row > prop->rowCount()-1) { // Add new rows
+          prop->setRowCount(prop->rowCount()+1);
+      }
+
+      QTableWidgetItem *cell;
+      cell = new QTableWidgetItem(p->Name);
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      prop->setItem(row, 0, cell);
+      cell = new QTableWidgetItem(p->Value);
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      prop->setItem(row, 1, cell);
+      cell = new QTableWidgetItem(s);
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      prop->setItem(row, 2, cell);
+      cell = new QTableWidgetItem(p->Description);
+      cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
+      prop->setItem(row, 3, cell);
+
+      row++;
+    }
+
+    if(prop->rowCount() > 0) {
+        prop->setCurrentItem(prop->item(0,0));
+        slotSelectProperty(prop->item(0,0));
+    }
+
+    if (row < prop->rowCount()-1) {
+        prop->setRowCount(row);
+    }
 }
 
 // -------------------------------------------------------------------------
@@ -915,6 +969,9 @@ void ComponentDialog::slotApplyInput()
 
     Doc->recreateComponent(Comp);
     Doc->viewport()->repaint();
+    if (Comp->Props.count() != prop->rowCount()) { // If props count was changed after recreation
+        updateCompPropsList(); // of component we need to update properties
+    }
   }
 
 }

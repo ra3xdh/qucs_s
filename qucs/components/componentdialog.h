@@ -98,6 +98,8 @@ private:
   QCheckBox *checkSim, *checkParam, *checkValues, *checkStart, *checkStop,
             *checkNumber, *checkType, *showName;
   QComboBox *comboSim, *comboType;
+
+  void updateCompPropsList(void);
 };
 
 #endif
