@@ -113,6 +113,26 @@ SET(QUCS_SRCS
   messagedock.cpp
 )
 
+SET(QUCS_HDRS
+element.h
+main.h
+messagedock.h
+misc.h
+mnemo.h
+module.h
+mouseactions.h
+node.h
+octave_window.h
+qucs.h
+qucsdoc.h
+schematic.h
+syntax.h
+textdoc.h
+viewpainter.h
+wire.h
+wirelabel.h
+)
+
 #
 # files that have Q_OBJECT need to be MOC'ed
 #
@@ -194,6 +214,7 @@ ENDIF(APPLE)
 #  CMake's way of creating an executable
 #
 ADD_EXECUTABLE( qucs MACOSX_BUNDLE WIN32
+  ${QUCS_HDRS}
   ${QUCS_SRCS}
   ${QUCS_MOC_SRCS}
   ${RESOURCES_SRCS} )

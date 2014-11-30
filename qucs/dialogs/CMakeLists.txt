@@ -6,6 +6,28 @@ INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR}
 
 #INCLUDES = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
+SET(DIALOGS_HDRS
+changedialog.h
+digisettingsdialog.h
+exportdialog.h
+importdialog.h
+labeldialog.h
+librarydialog.h
+loaddialog.h
+matchdialog.h
+newprojdialog.h
+packagedialog.h
+qucssettingsdialog.h
+savedialog.h
+searchdialog.h
+settingsdialog.h
+simmessage.h
+sweepdialog.h
+vasettingsdialog.h
+)
+
+
+
 SET(DIALOGS_SRCS
 changedialog.cpp		packagedialog.cpp vasettingsdialog.cpp
 digisettingsdialog.cpp		qucssettingsdialog.cpp
@@ -44,4 +66,4 @@ QT4_WRAP_CPP( DIALOGS_MOC_SRCS ${DIALOGS_MOC_HDRS} )
 
 QT4_WRAP_UI( DIALOGS_UIC_SRCS ${DIALOGS_UIC_HDRS} )
 
-ADD_LIBRARY(dialogs ${DIALOGS_SRCS} ${DIALOGS_MOC_SRCS} ${DIALOGS_UIC_SRCS})
+ADD_LIBRARY(dialogs ${DIALOGS_HDRS} ${DIALOGS_SRCS} ${DIALOGS_MOC_SRCS} ${DIALOGS_UIC_SRCS})
