@@ -402,10 +402,14 @@ void createIcons() {
         }
 
         foreach(Text *t, Texts) {
-          QPainterPath *path = new QPainterPath();
           QFont myFont;
-          path->addText(t->x,t->y+15,myFont,t->s);
-          scene->addPath(*path);
+          myFont.setPointSize(10);
+          QGraphicsTextItem* item  = new QGraphicsTextItem(t->s);
+          item->setX(t->x);
+          item->setY(t->y);
+          item->setFont(myFont);
+
+          scene->addItem(item);
         }
 
         // this uses the size of the component as icon size
