@@ -346,25 +346,24 @@ void createIcons() {
     QDir().mkdir("bitmaps_generated");
   }
 
-  Module::registerModules ();
   QStringList cats = Category::getCategories ();
-  //qDebug() << cats;
 
   foreach(QString category, cats) {
 
     QList<Module *> Comps;
     Comps = Category::getModules(category);
 
-    if(category == "diagrams" | category == "simulations") break;
+    // crash with diagrams, skip
+    if(category == "diagrams") break;
 
     char * File;
     QString Name;
 
     foreach (Module *Mod, Comps) {
       if (Mod->info) {
-        *(Mod->info) (Name, File, false);
-        //qDebug() << Name << File;
+
         Element *e = (Mod->info) (Name, File, true);
+
         Component *c = (Component* ) e;
 
         QList<Line *> Lines      = c->Lines;
@@ -427,7 +426,123 @@ void createIcons() {
   } // category
 }
 
+/*!
+ * \brief createDocData Create data used for documentation.
+ *
+ * It uses the bitmapp file name to prefix the component data and property files.
+ * Creates the following:
+ *  - list of categories: cat_list.txt
+ *  - category directory, ex.: ./lumped components/
+ *    - list of components: comp_list.txt
+ *    - csv for the objedt fields. Ex [component]_data.csv
+ *    - csv for the component properties. Ex [component]_props.csv
+ */
+void createDocData() {
 
+  QMap<int, QString> typeMap;
+  typeMap.insert(0x30000, "Component");
+  typeMap.insert(0x30002, "ComponentText");
+  typeMap.insert(0x10000, "AnalogComponent");
+  typeMap.insert(0x20000, "DigitalComponent") ;
+//##define isComponent        0x30000
+//#define isComponentText    0x30002
+//#define isAnalogComponent  0x10000
+//#define isDigitalComponent 0x20000
+
+  Module::registerModules ();
+  QStringList cats = Category::getCategories ();
+
+  QStringList catHeader;
+  catHeader << "# Note: auto-generated file (changes will be lost on update)";
+  QFile file("categories.txt");
+  if (!file.open(QFile::WriteOnly | QFile::Text)) return;
+  QTextStream out(&file);
+  out << cats.join("\n");
+  file.close();
+
+  // table for quick reference, schematic and netlist entry
+//  QStringList quickReference;
+
+  foreach(QString category, cats) {
+
+    QList<Module *> Comps;
+    Comps = Category::getModules(category);
+
+    // crash with diagrams, skip
+    if(category == "diagrams") break;
+
+    // one dir per category
+    QString curDir = "./"+category+"/";
+    qDebug() << "Creating dir:" << curDir;
+    if(!QDir(curDir).exists()){
+        QDir().mkdir(curDir);
+    }
+
+    char * File;
+    QString Name;
+
+    int num = 0; // compoment id inside category
+
+    foreach (Module *Mod, Comps) {
+      if (Mod->info) {
+
+        num += 1;
+
+        Element *e = (Mod->info) (Name, File, true);
+
+        Component *c = (Component* ) e;
+
+        // object info
+        QStringList compData;
+
+        compData << "# Note: auto-generated file (changes will be lost on update)";
+        compData << "Caption; "           + Name;
+        compData << "Description; "       + c->Description;
+        compData << "Schematic entry; ``" + c->Model + "``"; // entry as code
+        compData << "Netlist entry; ``"   + c->Name  + "``"; // entry as code
+        compData << "Type; "              + typeMap.value(c->Type);
+        compData << "Bitmap file; "       + QString(File);
+        compData << "Properties; "        + QString::number(c->Props.count());
+        compData << "Category; "          + category;
+
+        // 001_data.csv
+        QString ID = QString("%1").arg(num,3,'d',0,'0');
+        QString objDataFile;
+        objDataFile = QString("%1_data.csv").arg( ID  ) ;
+
+        QFile file(curDir + objDataFile);
+        if (!file.open(QFile::WriteOnly | QFile::Text)) return;
+        QTextStream out(&file);
+        out << compData.join("\n");
+        file.close();
+
+
+        QStringList compProps;
+        compProps << "# Note: auto-generated file (changes will be lost on update)";
+        compProps << QString("# %1; %2; %3; %4").arg(  "Name", "Value", "Display", "Description");
+        foreach(Property *prop, c->Props) {
+          compProps << QString("%1; \"%2\"; %3; \"%4\"").arg(
+                         prop->Name,
+                         prop->Value,
+                         prop->display?"yes":"no",
+                         prop->Description.replace("\"","\"\"")); // escape quote in quote
+        }
+
+        // 001_props.csv
+        QString objPropFile = QString("%1_prop.csv").arg( ID ) ;
+
+        QFile fileProps(curDir + objPropFile );
+        if (!fileProps.open(QFile::WriteOnly | QFile::Text)) return;
+        QTextStream outProps(&fileProps);
+        outProps << compProps.join("\n");
+        compProps.clear();
+        file.close();
+      }
+    } // module
+
+  } // category
+
+}
 
 // #########################################################################
 // ##########                                                     ##########
@@ -603,6 +718,7 @@ int main(int argc, char *argv[])
   "  -i FILENAME    use file as input schematic\n"
   "  -o FILENAME    use file as output netlist\n"
   "  -icons         create component icons under ./bitmaps_generated\n"
+  "  -doc           dump data for documentation\n"
   , argv[0]);
       return 0;
     }
@@ -640,6 +756,10 @@ int main(int argc, char *argv[])
     }
     else if(!strcmp(argv[i], "-icons")) {
       createIcons();
+      return 0;
+    }
+    else if(!strcmp(argv[i], "-doc")) {
+      createDocData();
       return 0;
     }
     else {
