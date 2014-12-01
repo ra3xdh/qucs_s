@@ -350,7 +350,7 @@ int doPrint(QString schematic, QString printFile,
 
     foreach(QString category, cats) {
 
-      Q3PtrList<Module> Comps;
+      QList<Module *> Comps;
       Comps = Category::getModules(category);
 
       if(category == "diagrams" | category == "simulations") break;
@@ -359,19 +359,19 @@ int doPrint(QString schematic, QString printFile,
       QString Name;
       Module * Mod;
       
-      for (Mod = Comps.first(); Mod; Mod = Comps.next ()) {
+      foreach (Mod, Comps) {
         if (Mod->info) {
           *(Mod->info) (Name, File, false);
           //qDebug() << Name << File;
           Element *e = (Mod->info) (Name, File, true);
           Component *c = (Component* ) e;
 
-          Q3PtrList<Line> Lines = c->Lines;
-          Q3PtrList<struct Arc> Arcs = c-> Arcs;
-          Q3PtrList<Area> Rects = c-> Rects;
-          Q3PtrList<Area> Ellips = c-> Ellips;
-          Q3PtrList<Port> Ports = c->Ports;
-          Q3PtrList<Text> Texts = c->Texts;
+          QList<Line *> Lines      = c->Lines;
+          QList<struct Arc *> Arcs = c-> Arcs;
+          QList<Area *> Rects      = c-> Rects;
+          QList<Area *> Ellips     = c-> Ellips;
+          QList<Port *> Ports      = c->Ports;
+          QList<Text*> Texts       = c->Texts;
 
           QGraphicsScene *scene = new QGraphicsScene();
 
