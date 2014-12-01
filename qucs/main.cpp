@@ -337,89 +337,90 @@ int doPrint(QString schematic, QString printFile,
   return 0;
 }
 
+/*!
+ * \brief createIcons Create component icons (png) from command line.
+ */
+void createIcons() {
 
-  void createIcons() {
-
-    if(!QDir("./bitmaps_generated").exists()){
-      QDir().mkdir("bitmaps_generated");
-    }
-
-    Module::registerModules ();
-    QStringList cats = Category::getCategories ();
-    //qDebug() << cats;
-
-    foreach(QString category, cats) {
-
-      QList<Module *> Comps;
-      Comps = Category::getModules(category);
-
-      if(category == "diagrams" | category == "simulations") break;
-
-      char * File;
-      QString Name;
-      Module * Mod;
-      
-      foreach (Mod, Comps) {
-        if (Mod->info) {
-          *(Mod->info) (Name, File, false);
-          //qDebug() << Name << File;
-          Element *e = (Mod->info) (Name, File, true);
-          Component *c = (Component* ) e;
-
-          QList<Line *> Lines      = c->Lines;
-          QList<struct Arc *> Arcs = c-> Arcs;
-          QList<Area *> Rects      = c-> Rects;
-          QList<Area *> Ellips     = c-> Ellips;
-          QList<Port *> Ports      = c->Ports;
-          QList<Text*> Texts       = c->Texts;
-
-          QGraphicsScene *scene = new QGraphicsScene();
-
-          foreach (Line *l, Lines) {
-            scene->addLine(l->x1, l->y1, l->x2, l->y2, l->style);
-          }
-
-          foreach(Arc *a, Arcs) {
-            // we need an open item here; QGraphisEllipseItem draws a filled ellipse and doesn't do the job here...
-            QPainterPath *path = new QPainterPath();
-            // the components do not contain the angles in degrees but in 1/16th degrees -> conversion needed
-            path->arcMoveTo(a->x,a->y,a->w,a->h,a->angle/16);
-            path->arcTo(a->x,a->y,a->w,a->h,a->angle/16,a->arclen/16);
-            scene->addPath(*path);
-          }
-
-          foreach(Area *a, Rects) {
-            scene->addRect(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
-          }
-
-          foreach(Area *a, Ellips) {
-            scene->addEllipse(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
-          }
-
-          foreach(Port *p, Ports) {
-            scene->addEllipse(p->x-3, p->y-3, 6, 6, QPen(Qt::red));
-          }
-
-          foreach(Text *t, Texts) {
-            QPainterPath *path = new QPainterPath();
-            QFont myFont;
-            path->addText(t->x,t->y+15,myFont,t->s);
-            scene->addPath(*path);
-          }
-
-          // this uses the size of the component as icon size
-          QImage image(scene->sceneRect().size().toSize(), QImage::Format_ARGB32);
-          // this uses a fixed size for the icon (32 x 32)
-          //QImage image(32, 32, QImage::Format_ARGB32);
-          image.fill(Qt::transparent);
-
-          QPainter painter(&image);
-          scene->render(&painter);
-
-          image.save("./bitmaps_generated/" + QString(File) + ".png");
-        }
-    }
+  if(!QDir("./bitmaps_generated").exists()){
+    QDir().mkdir("bitmaps_generated");
   }
+
+  Module::registerModules ();
+  QStringList cats = Category::getCategories ();
+  //qDebug() << cats;
+
+  foreach(QString category, cats) {
+
+    QList<Module *> Comps;
+    Comps = Category::getModules(category);
+
+    if(category == "diagrams" | category == "simulations") break;
+
+    char * File;
+    QString Name;
+
+    foreach (Module *Mod, Comps) {
+      if (Mod->info) {
+        *(Mod->info) (Name, File, false);
+        //qDebug() << Name << File;
+        Element *e = (Mod->info) (Name, File, true);
+        Component *c = (Component* ) e;
+
+        QList<Line *> Lines      = c->Lines;
+        QList<struct Arc *> Arcs = c-> Arcs;
+        QList<Area *> Rects      = c-> Rects;
+        QList<Area *> Ellips     = c-> Ellips;
+        QList<Port *> Ports      = c->Ports;
+        QList<Text*> Texts       = c->Texts;
+
+        QGraphicsScene *scene = new QGraphicsScene();
+
+        foreach (Line *l, Lines) {
+          scene->addLine(l->x1, l->y1, l->x2, l->y2, l->style);
+        }
+
+        foreach(Arc *a, Arcs) {
+          // we need an open item here; QGraphisEllipseItem draws a filled ellipse and doesn't do the job here...
+          QPainterPath *path = new QPainterPath();
+          // the components do not contain the angles in degrees but in 1/16th degrees -> conversion needed
+          path->arcMoveTo(a->x,a->y,a->w,a->h,a->angle/16);
+          path->arcTo(a->x,a->y,a->w,a->h,a->angle/16,a->arclen/16);
+          scene->addPath(*path);
+        }
+
+        foreach(Area *a, Rects) {
+          scene->addRect(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
+        }
+
+        foreach(Area *a, Ellips) {
+          scene->addEllipse(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
+        }
+
+        foreach(Port *p, Ports) {
+          scene->addEllipse(p->x-3, p->y-3, 6, 6, QPen(Qt::red));
+        }
+
+        foreach(Text *t, Texts) {
+          QPainterPath *path = new QPainterPath();
+          QFont myFont;
+          path->addText(t->x,t->y+15,myFont,t->s);
+          scene->addPath(*path);
+        }
+
+        // this uses the size of the component as icon size
+        QImage image(scene->sceneRect().size().toSize(), QImage::Format_ARGB32);
+        // this uses a fixed size for the icon (32 x 32)
+        //QImage image(32, 32, QImage::Format_ARGB32);
+        image.fill(Qt::transparent);
+
+        QPainter painter(&image);
+        scene->render(&painter);
+
+        image.save("./bitmaps_generated/" + QString(File) + ".png");
+      }
+    } // module
+  } // category
 }
 
 
