@@ -447,10 +447,24 @@ ComponentDialog::~ComponentDialog()
 
 void ComponentDialog::updateCompPropsList()
 {
+    int last_prop=0; // last property not to put in ListView
+        // ...........................................................
+        // if simulation component: .TR, .AC, .SW, (.SP ?)
+    if((Comp->Model[0] == '.') &&
+       (Comp->Model != ".DC") && (Comp->Model != ".HB") &&
+       (Comp->Model != ".Digi") && (Comp->Model != ".ETR")) {
+        if(Comp->Model == ".SW") {   // parameter sweep
+           last_prop = 2;
+        } else {
+            last_prop = 0;
+        }
+            last_prop += 3;  // remember last property for ListView
+    }
+
     QString s;
     int row=0; // row counter
-    for(Property *p = Comp->Props.first(); p != 0; p = Comp->Props.next()) {
-    //for(Property *p = Comp->Props.at(Comp->Props.find(pp)+1); p != 0; p = Comp->Props.next()) {
+    //for(Property *p = Comp->Props.first(); p != 0; p = Comp->Props.next()) {
+    for(Property *p = Comp->Props.at(last_prop); p != 0; p = Comp->Props.next()) {
 
       // do not insert if already on first tab
       // this is the reason it was originally from back to front...
