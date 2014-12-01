@@ -39,19 +39,7 @@ TRANSFILES = $(TRANSLATIONS:.ts=.qm)
 qucs_.ts: $(qucs_SOURCES)
 	@echo "Updating translations...";
 	@list='$(TRANSLATIONS)'; for file in $$list; do \
-	  $(LUPDATE) `$(PATHXFORM) \
-	  $(top_srcdir)/qucs/*.cpp \
-	  $(top_srcdir)/qucs/paintings/*.cpp \
-	  $(top_srcdir)/qucs/diagrams/*.cpp \
-	  $(top_srcdir)/qucs/components/*.cpp \
-	  $(top_srcdir)/qucs/dialogs/*.cpp  \
-	  $(top_srcdir)/qucs-help/*.cpp \
-	  $(top_srcdir)/qucs-edit/*.cpp \
-	  $(top_srcdir)/qucs-filter/*.cpp \
-	  $(top_srcdir)/qucs-transcalc/*.cpp \
-	  $(top_srcdir)/qucs-lib/*.cpp \
-	  $(top_srcdir)/qucs-attenuator/*.cpp \
-	  $(top_srcdir)/qucs-rescodes/*.cpp` \
+	  $(LUPDATE) `$(PATHXFORM) -recursive $(top_srcdir)\
 	  -locations relative -ts $(srcdir)/$$file; \
 	done
 
