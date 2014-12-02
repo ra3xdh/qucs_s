@@ -18,6 +18,10 @@
 /*!
   \class Diagram
   \brief The Diagram class is a superclass for diagrams.
+
+  \todo Should probably use QFontMetrics::boundingRect(QString).width instead
+        of QFontMetrics::width(QString), since only the first gives the actual
+	width (see Qt docs)
 */
 
 #if HAVE_CONFIG_H
@@ -32,7 +36,6 @@
 #include <locale.h>
 
 #include "diagram.h"
-#include "qucs.h"
 #include "main.h"
 #include "mnemo.h"
 #include "schematic.h"
@@ -159,11 +162,8 @@ void Diagram::createAxisLabels()
 {
   int   x, y, w, wmax = 0;
   QString Str;
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  metrics(font);   // get size of text
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
   int LineSpacing = metrics.lineSpacing();
 
 
@@ -1163,7 +1163,7 @@ bool Diagram::sameDependencies(Graph *g1, Graph *g2)
 int Diagram::checkColumnWidth(const QString& Str,
 		const QFontMetrics& metrics, int colWidth, int x, int y)
 {
-    //qDebug("%i", metrics.charWidth(Str,0));
+  //qDebug("%i", metrics.charWidth(Str,0));
   int w = metrics.boundingRect(Str).width();  // width of text
   if(w > colWidth) {
     colWidth = w;
@@ -1655,12 +1655,8 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
   else  tmp = 0;
   Arcs.append(new struct Arc(0, y2, x2, y2, tmp, 16*360-phi, QPen(Qt::black,0)));
 
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  metrics(font);   // get size of text
-  /// \fixme
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
   QSize r = metrics.size(0, Texts.last()->s);  // width of text
   len = x2+r.width()-4;   // more space at the right
   if(len > x3)  x3 = len;
@@ -1896,11 +1892,8 @@ bool Diagram::calcYAxis(Axis *Axis, int x0)
   double GridStep, corr, zD, zDstep, GridNum;
 
   QString tmp;
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  metrics(font);   // get size of text
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
   int maxWidth = 0;
 
   bool back = false;

@@ -35,7 +35,8 @@ RLCG::RLCG()
   Lines.append(new Line( 14, 14, 21,  7,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 21, 14, 28,  7,QPen(Qt::darkBlue,2)));
 
-  QFontMetrics  metrics(QucsSettings.font);
+  // use the screen-compatible metric
+  QFontMetrics  metrics(QucsSettings.font, 0);
   int fHeight = metrics.lineSpacing();
   QString tmp = QObject::tr("RLCG");
   int w = metrics.width(tmp);

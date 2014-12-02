@@ -80,7 +80,10 @@ Element* SpiceFile::info(QString& Name, char* &BitmapFile, bool getNewOne)
 // -------------------------------------------------------
 void SpiceFile::createSymbol()
 {
-  QFontMetrics  metrics(QucsSettings.font);   // get size of text
+  QFont f = QucsSettings.font; // get the basic font
+  //f.setPointSize(10); // set it to the size used for the text
+  // use the screen-compatible metric
+  QFontMetrics  metrics(f, 0);   // get size of text
   int fHeight = metrics.lineSpacing();
 
   int No = 0;
@@ -102,7 +105,10 @@ void SpiceFile::createSymbol()
     Texts.append(new Text(w/-2, 0, tmp, Qt::red));
   }
   tmp = QObject::tr("spice");
-  w = metrics.width(tmp);
+  w = metrics.boundingRect(tmp).width();
+  //Lines.append(new Line(w/-2, 5, w/2, 5, QPen(Qt::red,1)));
+  //Lines.append(new Line(w/-2, 0, w/2, 0, QPen(Qt::red,1)));
+  //Lines.append(new Line(w/-2, -5, w/2, -5, QPen(Qt::red,1)));
   Texts.append(new Text(w/-2, -i, tmp));
 
 

@@ -22,8 +22,6 @@
 
 #include "timingdiagram.h"
 #include "main.h"
-#include "qucs.h"
-#include "schematic.h"
 #include "misc.h"
 
 #include <math.h>
@@ -125,11 +123,8 @@ int TimingDiagram::calcDiagram()
 
   y1 = 0;  // no scroll bar
   x3 = x2;
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  metrics(font);   // get size of text
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
   int tHeight = metrics.lineSpacing();
   QString Str;
   int colWidth=0, x=4, y, xStart = 0, z;

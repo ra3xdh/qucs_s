@@ -43,7 +43,7 @@ SymbolWidget::SymbolWidget(QWidget *parent) : QWidget(parent)
 
   Text_x = Text_y = 0;
   PaintText = tr("Symbol:");
-  QFontMetrics  metrics(QucsSettings.font);
+  QFontMetrics  metrics(QucsSettings.font, 0); // use the the screen-compatible metric
   TextWidth = metrics.width(PaintText) + 4;    // get size of text
 
   DragNDropText = tr("! Drag n'Drop me !");
@@ -591,8 +591,8 @@ int SymbolWidget::analyseLine(const QString& Row)
 
     QFont Font(QucsSettings.font);
     Font.setPointSizeF(float(i3));
-    QFontMetrics  metrics(Font);
-    QSize r = metrics.size(0, s);    // get size of text
+    QFontMetrics  metrics(Font, 0);  // use the the screen-compatible metric
+    QSize r = metrics.size(0, s);  // get size of text
     i3 = i1 + r.width();
     i4 = i2 + r.height();
 

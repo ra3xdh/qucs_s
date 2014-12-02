@@ -106,7 +106,8 @@ QString RFedd2P::netlist()
 // -------------------------------------------------------
 void RFedd2P::createSymbol()
 {
-  QFontMetrics  metrics(QucsSettings.font);   // get size of text
+  // use the screen-compatible metric
+  QFontMetrics  metrics(QucsSettings.font, 0);   // get size of text
   int fHeight = metrics.lineSpacing();
   int w, i;
   QString tmp;

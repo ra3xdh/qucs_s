@@ -76,8 +76,8 @@ void Component::Bounding(int& _x1, int& _y1, int& _x2, int& _y2)
 // Size of component text.
 int Component::textSize(int& _dx, int& _dy)
 {
-  // need to use the painter fontMetrics() to obtain proper results
-  QFontMetrics metrics = containingSchematic->fontMetrics(); // get size of text
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
 
   int tmp, count=0;
   _dx = _dy = 0;
@@ -143,7 +143,8 @@ int Component::getTextSelected(int x_, int y_, float Corr)
   x_ -= tx;
   y_ -= ty;
   int w, dy = int(float(y_) * Corr);  // correction for font scaling
-  QFontMetrics  metrics(QucsSettings.font);
+  // use the screen-compatible metric
+  QFontMetrics  metrics(QucsSettings.font, 0);
   if(showName) {
     w  = metrics.width(Name);
     if(dy < 1) {
@@ -318,6 +319,8 @@ void Component::paintScheme(Schematic *p)
           ((Schematic*)QucsMain->DocumentTab->currentPage())->Scale;
     newFont.setPointSizeFloat(float(Scale) * QucsSettings.largeFontSize);
     newFont.setWeight(QFont::DemiBold);
+    // here the font metric is already the screen metric, since the font
+    // is the current font the painter is using
     QFontMetrics  metrics(newFont);
 
     a = b = 0;
@@ -451,7 +454,8 @@ void Component::rotate()
   tmp = -tx;    // rotate text position
   tx  = ty;
   ty  = tmp;
-  QFontMetrics  metrics(QucsSettings.font);   // get size of text
+  // use the screen-compatible metric
+  QFontMetrics  metrics(QucsSettings.font, 0);   // get size of text
   dx = dy = 0;
   if(showName) {
     dx = metrics.width(Name);
@@ -512,15 +516,16 @@ void Component::mirrorX()
   // mirror all text
   foreach(Text *pt, Texts) {
     f.setPointSizeFloat(pt->Size);
-    QFontMetrics  smallMetrics(f);
+    // use the screen-compatible metric
+    QFontMetrics  smallMetrics(f, 0);
     QSize s = smallMetrics.size(0, pt->s);   // use size for more lines
     pt->y = -pt->y - int(pt->mCos)*s.height() + int(pt->mSin)*s.width();
   }
 
   int tmp = y1;
   y1  = -y2; y2 = -tmp;   // mirror boundings
-
-  QFontMetrics  metrics(QucsSettings.font);   // get size of text
+  // use the screen-compatible metric
+  QFontMetrics  metrics(QucsSettings.font, 0);   // get size of text
   int dy = 0;
   if(showName)
     dy = metrics.lineSpacing();   // for "Name"
@@ -572,15 +577,16 @@ void Component::mirrorY()
   // mirror all text
   foreach(Text *pt, Texts) {
     f.setPointSizeFloat(pt->Size);
-    QFontMetrics  smallMetrics(f);
+    // use the screen-compatible metric
+    QFontMetrics  smallMetrics(f, 0);
     QSize s = smallMetrics.size(0, pt->s);   // use size for more lines
     pt->x = -pt->x - int(pt->mSin)*s.height() - int(pt->mCos)*s.width();
   }
 
   tmp = x1;
   x1  = -x2; x2 = -tmp;   // mirror boundings
-
-  QFontMetrics  metrics(QucsSettings.font);   // get size of text
+  // use the screen-compatible metric
+  QFontMetrics  metrics(QucsSettings.font, 0);   // get size of text
   int dx = 0;
   if(showName)
     dx = metrics.width(Name);
@@ -1076,7 +1082,7 @@ int Component::analyseLine(const QString& Row, int numProps)
 
     QFont Font(QucsSettings.font);
     Font.setPointSizeFloat(float(i3));
-    QFontMetrics  metrics(Font);
+    QFontMetrics  metrics(Font, 0); // use the screen-compatible metric
     QSize r = metrics.size(0, s);    // get size of text
     i3 = i1 + int(float(r.width())  * Texts.last()->mCos)
             + int(float(r.height()) * Texts.last()->mSin);

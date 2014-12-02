@@ -111,8 +111,9 @@ QString Verilog_File::loadFile()
 
 // -------------------------------------------------------
 void Verilog_File::createSymbol()
-{
-  QFontMetrics  metrics(QucsSettings.font);   // get size of text
+{ 
+  // use the screen-compatible metric
+  QFontMetrics  metrics(QucsSettings.font, 0);   // get size of text
   int fHeight = metrics.lineSpacing();
 
   int No = 0;

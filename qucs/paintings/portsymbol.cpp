@@ -17,7 +17,6 @@
 #include "main.h"
 #include "portsymbol.h"
 #include "schematic.h"
-#include "qucs.h"
 
 #include <QPainter>
 
@@ -32,11 +31,8 @@ PortSymbol::PortSymbol(int cx_, int cy_, const QString& numberStr_,
   Angel = 0;
   nameStr = nameStr_;
   numberStr = numberStr_;
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  metrics(font);   // get size of text
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
   QSize r = metrics.size(0, nameStr);
   x1 = -r.width() - 8;
   y1 = -((r.height() + 8) >> 1);

@@ -516,7 +516,6 @@ void ComponentDialog::updateCompPropsList()
 // It transfers the values to the right side for editing.
 void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
 {
-
   if(item == 0) return;
   item->setSelected(true);  // if called from elsewhere, this was not yet done
 
@@ -580,7 +579,8 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
       List = List.split(',',str);
     }
 
-    QFontMetrics  metrics(QucsSettings.font);   // get size of text
+    // use the screen-compatible metric
+    QFontMetrics metrics(QucsSettings.font, 0);   // get size of text
     while(metrics.width(desc) > 270) {  // if description too long, cut it
       if (desc.findRev(' ') != -1)
         desc = desc.left(desc.findRev(' ', -1)) + "....";

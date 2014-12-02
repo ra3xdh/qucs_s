@@ -20,7 +20,6 @@
 #include "graphictext.h"
 #include "graphictextdialog.h"
 #include "schematic.h"
-#include "qucs.h"
 #include "misc.h"
 
 #include <QPainter>
@@ -165,12 +164,9 @@ bool GraphicText::load(const QString& s)
   if(Text.isEmpty()) return false;
 
   convert2Unicode(Text);
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  metrics(font);
-  QSize r = metrics.size(0, Text);    // get size of text
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
+  QSize r = metrics.size(0, Text);    // get overall size of text
   x2 = r.width();
   y2 = r.height();
 
@@ -361,13 +357,10 @@ bool GraphicText::Dialog()
       Text = _Text;
       changed = true;
     }
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  m(font);
-// FIXME #warning is this the right way? it was this: QFontMetrics  m(f);
-  QSize s = m.size(0, Text);    // get size of text
+
+  // get font metric using the screen-compatible metric
+  QFontMetrics  m(f, 0);
+  QSize s = m.size(0, Text); // get size of text
   x2 = s.width();
   y2 = s.height();
 

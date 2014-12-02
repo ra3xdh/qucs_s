@@ -27,7 +27,7 @@ Equation::Equation()
   QFont f = QucsSettings.font;
   f.setWeight(QFont::Light);
   f.setPointSizeFloat(12.0);
-  QFontMetrics  metrics(f);
+  QFontMetrics  metrics(f, 0);  // use the the screen-compatible metric
   QSize r = metrics.size(0, QObject::tr("Equation"));
   int xb = r.width()  >> 1;
   int yb = r.height() >> 1;

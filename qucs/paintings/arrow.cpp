@@ -14,6 +14,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+/*!
+  \class Arrow
+  \brief The Arrow class implements the arrow painting
+*/
+
 #include "arrow.h"
 #include "arrowdialog.h"
 #include "schematic.h"

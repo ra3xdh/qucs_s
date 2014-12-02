@@ -26,7 +26,8 @@ MStee::MStee()
   x1 = -30; y1 = -11;
   x2 =  30; y2 =  30;
 
-  QFontMetrics metrics(QucsSettings.font);   // get size of text
+  // use the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);   // get size of text
   tx = x1+4;
   ty = y1 - 5*metrics.lineSpacing() - 4;
   Model = "MTEE";

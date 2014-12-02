@@ -20,6 +20,8 @@
   \brief The Rect3DDiagram class implements the 3D-Cartesian diagram
 */
 
+#include <QFontMetrics>
+
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -33,8 +35,6 @@
 
 #include "rect3ddiagram.h"
 #include "main.h"
-#include "qucs.h"
-#include "schematic.h"
 #include "misc.h"
 
 Rect3DDiagram::Rect3DDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
@@ -627,6 +627,7 @@ void Rect3DDiagram::calcLimits()
 }
 
 // --------------------------------------------------------------
+/// \todo check Right unused parameter
 int Rect3DDiagram::calcAxis(Axis *Axis, int x, int y,
                             double xD, double phi, bool Right)
 {
@@ -634,11 +635,8 @@ int Rect3DDiagram::calcAxis(Axis *Axis, int x, int y,
   double xstepD, ystepD;
 
   QString tmp;
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  metrics(font);   // get size of text
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
   int maxWidth = 0;
   int count, gx, gy, w;
 
@@ -647,80 +645,81 @@ int Rect3DDiagram::calcAxis(Axis *Axis, int x, int y,
   gx = int(5.4 * cos(Expo) + 0.5);  // short grid marker lines
   gy = int(5.4 * sin(Expo) + 0.5);
 
-
-if(Axis->log) {
-
-  bool back = calcAxisLogScale(Axis, w, yD, stepD, corr, int(xD));
-
-  double upD  = Axis->up;
-  if(yD > 1.5*stepD)  yD = 10.0*stepD;  // always start at power of 10
-  if(back) {
-    upD  = Axis->low;
-    phi += M_PI;
-    xD   = 0.0;
-  }
-
-  int xLen, yLen;
-  ystepD = corr * log10(yD / fabs(Axis->low));
-  while(ystepD <= xD) {  // create all grid lines
-
-    tmp = StringNiceNum(yD);
-    if(Axis->up < 0.0)  tmp = '-'+tmp;
-    w = metrics.width(tmp);  // width of text
-    if(maxWidth < w) maxWidth = w;
-
-    xLen = int(ystepD * cos(phi) + 0.5) + x;
-    yLen = int(ystepD * sin(phi) + 0.5) + y;
-    if(Qt::DockRight)
-      Texts.append(new Text(xLen+3+gx, yLen-6+gy, tmp));
-    else
-      Texts.append(new Text(xLen-w-2-gx, yLen-6-gy, tmp));
-
-    // short grid marks
-    Lines.append(new Line(xLen-gx, yLen-gy, xLen+gx, yLen+gy,
-                          QPen(Qt::black,0)));
-    yD *= 10.0;
-    ystepD += corr;
-  }
-
-}
-else {  // not logarithmical
-  calcAxisScale(Axis, GridNum, yD, stepD, GridStep, xD);
-  count = int((xD - yD) / stepD) + 1;  // number of grids
   
-  xstepD = stepD * cos(phi);
-  ystepD = stepD * sin(phi);
-  xD = yD * cos(phi) + 0.5 + double(x);
-  yD = yD * sin(phi) + 0.5 + double(y);
+  if(Axis->log) {
 
-  if(Axis->up == 0.0)  Expo = log10(fabs(Axis->up-Axis->low));
-  else  Expo = log10(fabs(Axis->up));
+    bool back = calcAxisLogScale(Axis, w, yD, stepD, corr, int(xD));
 
-  for(; count>0; count--) {
-    x = int(xD);
-    y = int(yD);
-    if(fabs(GridNum) < 0.01*pow(10.0, Expo)) GridNum = 0.0; // make 0 really 0
-    tmp = StringNiceNum(GridNum);
+    double upD  = Axis->up;
+    if(yD > 1.5*stepD)  yD = 10.0*stepD;  // always start at power of 10
+    if(back) {
+      upD  = Axis->low;
+      phi += M_PI;
+      xD   = 0.0;
+    }
 
-    w = metrics.width(tmp);  // width of text
-    if(maxWidth < w) maxWidth = w;
-    if(Qt::DockRight)
-      Texts.append(new Text(x+3+gx, y-6+gy, tmp)); // place text right
-    else
-      Texts.append(new Text(x-w-2-gx, y-6-gy, tmp)); // place left
-    GridNum += GridStep;
-
-    // short grid marks
-    Lines.append(new Line(x-gx, y-gy, x+gx, y+gy, QPen(Qt::black,0)));
-    xD += xstepD;
-    yD += ystepD;
+    int xLen, yLen;
+    ystepD = corr * log10(yD / fabs(Axis->low));
+    while(ystepD <= xD) {  // create all grid lines
+      
+      tmp = StringNiceNum(yD);
+      if(Axis->up < 0.0)  tmp = '-'+tmp;
+      w = metrics.width(tmp);  // width of text
+      if(maxWidth < w) maxWidth = w;
+      
+      xLen = int(ystepD * cos(phi) + 0.5) + x;
+      yLen = int(ystepD * sin(phi) + 0.5) + y;
+      if(Qt::DockRight)
+	Texts.append(new Text(xLen+3+gx, yLen-6+gy, tmp));
+      else
+	Texts.append(new Text(xLen-w-2-gx, yLen-6-gy, tmp));
+      
+      // short grid marks
+      Lines.append(new Line(xLen-gx, yLen-gy, xLen+gx, yLen+gy,
+			    QPen(Qt::black,0)));
+      yD *= 10.0;
+      ystepD += corr;
+    }
+    
   }
-} // of "if(ylog) ... else ..."
-
+  else {  // not logarithmical
+    calcAxisScale(Axis, GridNum, yD, stepD, GridStep, xD);
+    count = int((xD - yD) / stepD) + 1;  // number of grids
+    
+    xstepD = stepD * cos(phi);
+    ystepD = stepD * sin(phi);
+    xD = yD * cos(phi) + 0.5 + double(x);
+    yD = yD * sin(phi) + 0.5 + double(y);
+    
+    if(Axis->up == 0.0)  Expo = log10(fabs(Axis->up-Axis->low));
+    else  Expo = log10(fabs(Axis->up));
+    
+    for(; count>0; count--) {
+      x = int(xD);
+      y = int(yD);
+      if(fabs(GridNum) < 0.01*pow(10.0, Expo)) GridNum = 0.0; // make 0 really 0
+      tmp = StringNiceNum(GridNum);
+      
+      w = metrics.width(tmp);  // width of text
+      if(maxWidth < w) maxWidth = w;
+      if(Qt::DockRight)
+	Texts.append(new Text(x+3+gx, y-6+gy, tmp)); // place text right
+      else
+	Texts.append(new Text(x-w-2-gx, y-6-gy, tmp)); // place left
+      GridNum += GridStep;
+      
+      // short grid marks
+      Lines.append(new Line(x-gx, y-gy, x+gx, y+gy, QPen(Qt::black,0)));
+      xD += xstepD;
+      yD += ystepD;
+    }
+  } // of "if(Axis->log) ... else ..."
+  
   return maxWidth+5;
 }
 
 // --------------------------------------------------------------
+/// \todo check Right unused parameter
 void Rect3DDiagram::createAxis(Axis *Axis, bool Right,
                                int x1_, int y1_, int x2_, int y2_)
 {
@@ -730,11 +729,8 @@ void Rect3DDiagram::createAxis(Axis *Axis, bool Right,
   if(Axis == &yAxis)  Index = 1;
 
   QString s;
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  metrics(font);   // get size of text
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
 
   x = x2_ - x1_;
   y = y2_ - y1_;
@@ -796,11 +792,8 @@ int Rect3DDiagram::calcDiagram()
   Arcs.clear();
 
   double GridStep, corr, zD, zDstep, GridNum;
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  metrics(font);   // get size of text
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
 
   x3 = x2 + 7;
   int z, z2, o, w;

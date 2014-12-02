@@ -176,8 +176,8 @@ void SParamFile::createSymbol()
 
   x1 = -30; y1 = -h-2;
   x2 =  30; y2 =  h+15;
-
-  QFontMetrics  metrics(QucsSettings.font);   // get size of text
+  // use the screen-compatible metric
+  QFontMetrics  metrics(QucsSettings.font, 0);   // get size of text
   tx = x1+4;
   ty = y1 - 2*metrics.lineSpacing() - 4;
 }
