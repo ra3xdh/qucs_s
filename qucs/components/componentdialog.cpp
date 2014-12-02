@@ -458,7 +458,7 @@ void ComponentDialog::updateCompPropsList()
         } else {
             last_prop = 0;
         }
-            last_prop += 3;  // remember last property for ListView
+            last_prop += 4;  // remember last property for ListView
     }
 
     QString s;
