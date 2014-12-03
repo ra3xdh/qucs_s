@@ -19,6 +19,7 @@
 
 #include "schematic.h"
 #include <Q3PtrList>
+#include <QDebug>
 
 
 /* *******************************************************************
@@ -859,7 +860,7 @@ void Schematic::deleteWire(Wire *w)
 
 // ---------------------------------------------------
 int Schematic::copyWires(int& x1, int& y1, int& x2, int& y2,
-                         Q3PtrList<Element> *ElementCache)
+                         QList<Element *> *ElementCache)
 {
     int count=0;
     Node *pn;
@@ -1815,7 +1816,7 @@ int Schematic::copySelectedElements(Q3PtrList<Element> *p)
 
 // ---------------------------------------------------
 bool Schematic::copyComps2WiresPaints(int& x1, int& y1, int& x2, int& y2,
-                                      Q3PtrList<Element> *ElementCache)
+                                      QList<Element *> *ElementCache)
 {
     x1=INT_MAX;
     y1=INT_MAX;
@@ -1833,7 +1834,7 @@ bool Schematic::copyComps2WiresPaints(int& x1, int& y1, int& x2, int& y2,
 // ---------------------------------------------------
 // Used in "aligning()", "distributeHorizontal()", "distributeVertical()".
 int Schematic::copyElements(int& x1, int& y1, int& x2, int& y2,
-                            Q3PtrList<Element> *ElementCache)
+                            QList<Element *> *ElementCache)
 {
     int bx1, by1, bx2, by2;
     Wires->setAutoDelete(false);
@@ -1992,11 +1993,16 @@ bool Schematic::deleteElements()
 }
 
 // ---------------------------------------------------
+/*!
+ * \brief Schematic::aligning align selected elements.
+ * \param Mode: top, bottom, left, right, center vertical, center horizontal
+ * \return True if aligned
+ */
 bool Schematic::aligning(int Mode)
 {
     int x1, y1, x2, y2;
     int bx1, by1, bx2, by2, *bx=0, *by=0, *ax=0, *ay=0;
-    Q3PtrList<Element> ElementCache;
+    QList<Element *> ElementCache;
     int count = copyElements(x1, y1, x2, y2, &ElementCache);
     if(count < 1) return false;
 
@@ -2045,11 +2051,15 @@ bool Schematic::aligning(int Mode)
     }
     x2 = 0;
 
-    Wire *pw;
+    Wire      *pw;
     Component *pc;
+    Element   *pe;
     // re-insert elements
     // Go backwards in order to insert node labels before its component.
-    for(Element *pe = ElementCache.last(); pe != 0; pe = ElementCache.prev())
+    QListIterator<Element *> elementCacheIter(ElementCache);
+    elementCacheIter.toBack();
+    while (elementCacheIter.hasPrevious()) {
+        pe = elementCacheIter.previous();
         switch(pe->Type)
         {
         case isComponent:
@@ -2112,6 +2122,7 @@ bool Schematic::aligning(int Mode)
         default:
             ;
         }
+    }
 
     ElementCache.clear();
     if(count < 2) return false;
@@ -2120,12 +2131,15 @@ bool Schematic::aligning(int Mode)
     return true;
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief Schematic::distributeHorizontal sort selection horizontally
+ * \return True if sorted
+ */
 bool Schematic::distributeHorizontal()
 {
     int x1, y1, x2, y2;
     int bx1, by1, bx2, by2;
-    Q3PtrList<Element> ElementCache;
+    QList<Element *> ElementCache;
     int count = copyElements(x1, y1, x2, y2, &ElementCache);
     if(count < 1) return false;
 
@@ -2139,6 +2153,7 @@ bool Schematic::distributeHorizontal()
         }*/
 
     // using bubble sort to get elements x ordered
+    QListIterator<Element *> elementCacheIter(ElementCache);
     if(count > 1)
         for(int i = count-1; i>0; i--)
         {
@@ -2146,27 +2161,29 @@ bool Schematic::distributeHorizontal()
             for(int j=0; j<i; j++)
             {
                 pe->getCenter(bx1, by1);
-                pe=ElementCache.next();
+                pe=elementCacheIter.peekNext();
                 pe->getCenter(bx2, by2);
                 if(bx1 > bx2)    // change two elements ?
                 {
-                    ElementCache.replace(j+1, ElementCache.prev());
+                    ElementCache.replace(j+1, elementCacheIter.peekPrevious());
                     ElementCache.replace(j, pe);
-                    pe = ElementCache.next();
+                    pe = elementCacheIter.next();
                 }
             }
         }
 
-    ElementCache.getLast()->getCenter(x2, y2);
-    ElementCache.getFirst()->getCenter(x1, y1);
+    ElementCache.last()->getCenter(x2, y2);
+    ElementCache.first()->getCenter(x1, y1);
     Wire *pw;
     int x = x2;
     int dx=0;
     if(count > 1) dx = (x2-x1)/(count-1);
     // re-insert elements and put them at right position
     // Go backwards in order to insert node labels before its component.
-    for(pe = ElementCache.last(); pe != 0; pe = ElementCache.prev())
+    elementCacheIter.toBack();
+    while (elementCacheIter.hasPrevious())
     {
+        pe = elementCacheIter.previous();
         switch(pe->Type)
         {
         case isComponent:
@@ -2229,16 +2246,20 @@ bool Schematic::distributeHorizontal()
     return true;
 }
 
-// ---------------------------------------------------
+/*!
+ * \brief Schematic::distributeVertical sort selection vertically.
+ * \return True if sorted
+ */
 bool Schematic::distributeVertical()
 {
     int x1, y1, x2, y2;
     int bx1, by1, bx2, by2;
-    Q3PtrList<Element> ElementCache;
+    QList<Element *> ElementCache;
     int count = copyElements(x1, y1, x2, y2, &ElementCache);
     if(count < 1) return false;
 
-    // using bubble sort to get elements x ordered
+    // using bubble sort to get elements y ordered
+    QListIterator<Element *> elementCacheIter(ElementCache);
     Element *pe;
     if(count > 1)
         for(int i = count-1; i>0; i--)
@@ -2247,27 +2268,29 @@ bool Schematic::distributeVertical()
             for(int j=0; j<i; j++)
             {
                 pe->getCenter(bx1, by1);
-                pe=ElementCache.next();
+                pe = elementCacheIter.peekNext();
                 pe->getCenter(bx2, by2);
                 if(by1 > by2)    // change two elements ?
                 {
-                    ElementCache.replace(j+1, ElementCache.prev());
+                    ElementCache.replace(j+1, elementCacheIter.peekPrevious());
                     ElementCache.replace(j, pe);
-                    pe = ElementCache.next();
+                    pe = elementCacheIter.next();
                 }
             }
         }
 
-    ElementCache.getLast()->getCenter(x2, y2);
-    ElementCache.getFirst()->getCenter(x1, y1);
+    ElementCache.last()->getCenter(x2, y2);
+    ElementCache.first()->getCenter(x1, y1);
     Wire *pw;
     int y  = y2;
     int dy=0;
     if(count > 1) dy = (y2-y1)/(count-1);
     // re-insert elements and put them at right position
     // Go backwards in order to insert node labels before its component.
-    for(pe = ElementCache.last(); pe != 0; pe = ElementCache.prev())
+    elementCacheIter.toBack();
+    while (elementCacheIter.hasPrevious())
     {
+        pe = elementCacheIter.previous();
         switch(pe->Type)
         {
         case isComponent:
@@ -2757,7 +2780,7 @@ void Schematic::deleteComp(Component *c)
 
 // ---------------------------------------------------
 int Schematic::copyComponents(int& x1, int& y1, int& x2, int& y2,
-                              Q3PtrList<Element> *ElementCache)
+                              QList<Element *> *ElementCache)
 {
     Component *pc;
     int bx1, by1, bx2, by2, count=0;
@@ -2801,7 +2824,7 @@ int Schematic::copyComponents(int& x1, int& y1, int& x2, int& y2,
 
 // ---------------------------------------------------
 void Schematic::copyComponents2(int& x1, int& y1, int& x2, int& y2,
-                                Q3PtrList<Element> *ElementCache)
+                                QList<Element *> *ElementCache)
 {
     Component *pc;
     // find bounds of all selected components
@@ -3022,7 +3045,7 @@ void Schematic::insertNodeLabel(WireLabel *pl)
 
 // ---------------------------------------------------
 void Schematic::copyLabels(int& x1, int& y1, int& x2, int& y2,
-                           Q3PtrList<Element> *ElementCache)
+                           QList<Element *> *ElementCache)
 {
     WireLabel *pl;
     // find bounds of all selected wires
@@ -3075,7 +3098,7 @@ Painting* Schematic::selectedPainting(float fX, float fY)
 
 // ---------------------------------------------------
 void Schematic::copyPaintings(int& x1, int& y1, int& x2, int& y2,
-                              Q3PtrList<Element> *ElementCache)
+                              QList<Element *> *ElementCache)
 {
     Painting *pp;
     int bx1, by1, bx2, by2;
