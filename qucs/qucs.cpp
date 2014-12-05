@@ -815,7 +815,6 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
   MouseDoubleClickAction = 0;
 
   pInfoFunc Infos = 0;
-
   pInfoVAFunc InfosVA = 0;
 
   int i = CompComps->row(item);
@@ -830,50 +829,53 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
   QString CompName;
   QString CompFile_qstr;
   char *CompFile_cptr;
-  // handle static and dynamic components
-  if (CompChoose->currentText() == QObject::tr("verilog-a user devices")){
-    InfosVA = Comps.at(i)->infoVA;
 
-    // get JSON file out of item name on widgetitem
-    QString filename = Module::vaComponents[name];
-
-    if (InfosVA) {
-      qDebug() <<  " slotSelectComponent, view->selElem" ;
-      view->selElem = (*InfosVA) (CompName, CompFile_qstr, true, filename);
-    }
-  }
-  else {
-    if (!CompSearch->text().isEmpty()) {
-      //comp search is not empty, search all category to get a component in same name
-      QStringList cats = Category::getCategories();
-      int i = 0;
-      foreach (QString it, cats) {
-        Comps = Category::getModules (it);
-        foreach(Module *mod, Comps) {
-          if (mod->info) {
-            (*mod->info)(CompName, CompFile_cptr, false);
-            if (CompName == name) {
-              CompChoose->setCurrentIndex(i);
-              view->selElem = (*mod->info) (CompName, CompFile_cptr, true);
-            }
+  if (!CompSearch->text().isEmpty()) {
+    //comp search is not empty, search all category to get a component in same name
+    QStringList cats = Category::getCategories();
+    int i = 0;
+    //search normal component
+    foreach (QString it, cats) {
+      Comps = Category::getModules (it);
+      foreach(Module *mod, Comps) {
+        if (mod->info) {
+          (*mod->info)(CompName, CompFile_cptr, false);
+          if (CompName == name) {
+            CompChoose->setCurrentIndex(i);
+            view->selElem = (*mod->info) (CompName, CompFile_cptr, true);
           }
         }
-        i++;
       }
-      i = CompChoose->findText(QObject::tr("verilog-a user devices"));
-      QMapIterator<QString, QString> it(Module::vaComponents);
-      while (it.hasNext()) {
-        it.next();
+      i++;
+    }
+    //search verilog-a component
+    i = CompChoose->findText(QObject::tr("verilog-a user devices"));
+    QMapIterator<QString, QString> it(Module::vaComponents);
+    while (it.hasNext()) {
+      it.next();
 
-        // Just need vacomponent name, do not create an object
-        QString Name, vaBitmap;
-        vacomponent::info (Name, vaBitmap, false, it.value());
+      // Just need vacomponent name, do not create an object
+      QString Name, vaBitmap;
+      vacomponent::info (Name, vaBitmap, false, it.value());
 
-        if (Name == name) {
-          CompChoose->setCurrentIndex(i);
-        }
+      if (Name == name) {
+        view->selElem = vacomponent::info(CompName, CompFile_qstr, true, it.value());
       }
-    } else {
+    }
+  } else {
+    // handle static and dynamic components
+    if (CompChoose->currentText() == QObject::tr("verilog-a user devices")){
+      InfosVA = Comps.at(i)->infoVA;
+
+      // get JSON file out of item name on widgetitem
+      QString filename = Module::vaComponents[name];
+
+      if (InfosVA) {
+        qDebug() <<  " slotSelectComponent, view->selElem" ;
+        view->selElem = (*InfosVA) (CompName, CompFile_qstr, true, filename);
+      }
+    }
+    else {
       Infos = Comps.at(i)->info;
 
       if (Infos)
