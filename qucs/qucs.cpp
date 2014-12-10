@@ -18,19 +18,32 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
-#include <QDebug>
-#include <QtCore>
-#include <QtSvg>
-#include <limits.h>
 
-#include <QProcess>
-#include <Q3PtrList>
+#include <QAction>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
+#include <QDockWidget>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QListWidget>
+#include <QComboBox>
+#include <QMenu>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QStatusBar>
+#include <QShortcut>
+#include <QApplication>
+#include <QClipboard>
+#include <QInputDialog>
+#include <QDesktopServices>
+#include <QUrl>
+#include <QSettings>
+#include <QDebug>
 
 #include "main.h"
 #include "qucs.h"
 #include "qucsdoc.h"
 #include "textdoc.h"
-#include "syntax.h"
 #include "schematic.h"
 #include "mouseactions.h"
 #include "messagedock.h"
