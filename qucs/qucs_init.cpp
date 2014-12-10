@@ -317,7 +317,7 @@ void QucsApp::initActions()
   projDel->setShortcut(Qt::CTRL+Qt::SHIFT+Qt::Key_D);
   projDel->setStatusTip(tr("Deletes an existing project"));
   projDel->setWhatsThis(tr("Delete Project\n\nDeletes an existing project"));
-  connect(projDel, SIGNAL(activated()), SLOT(slotMenuDelProject()));
+  connect(projDel, SIGNAL(activated()), SLOT(slotMenuProjDel()));
 
   projClose = new QAction(tr("&Close Project"), this);
   projClose->setShortcut(Qt::CTRL+Qt::SHIFT+Qt::Key_W);

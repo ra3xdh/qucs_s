@@ -135,8 +135,9 @@ public slots:
 
 private slots:
   void slotMenuProjOpen();
-  void slotListProjOpen(const QModelIndex &);
   void slotMenuProjClose();
+  void slotMenuProjDel();
+  void slotListProjOpen(const QModelIndex &);
   void slotSelectSubcircuit(QTreeWidgetItem*);
   void slotSelectLibComponent(QTreeWidgetItem*);
   void slotOpenContent(QTreeWidgetItem*);
@@ -144,7 +145,6 @@ private slots:
   void slotButtonProjNew();
   void slotButtonProjOpen();
   void slotButtonProjDel();
-  void slotMenuDelProject();
   void slotChangeView(QWidget*);
   void slotSimulate();
   void slotAfterSimulation(int, SimMessage*);
@@ -207,8 +207,8 @@ private:
   void printCurrentDocument(bool);
   bool saveFile(QucsDoc *Doc=0);
   bool saveAs();
-  void openProject(const QString&);
-  bool deleteProject(const QString&, const QString&);
+  void openProject(const QString &);
+  bool deleteProject(const QString &);
   void updatePortNumber(QucsDoc*, int);
   void fillComboBox(bool);
   void switchSchematicDoc(bool);

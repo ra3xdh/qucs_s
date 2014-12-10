@@ -1279,8 +1279,10 @@ void QucsApp::openProject(const QString& Path)
   editText->setHidden(true); // disable text edit of component property
 
   QString Name = Path;
-  Name = Name.left(Name.length()-1);   // cut off trailing '/'
-  int i = Name.findRev('/');
+  if (Name.endsWith(QDir::separator())) {
+    Name = Name.left(Name.length()-1);  // cut off trailing '/'
+  }
+  int i = Name.lastIndexOf(QDir::separator());
   if(i > 0) Name = Name.mid(i+1);   // cut out the last subdirectory
   Name.remove("_prj");
 
@@ -1407,20 +1409,31 @@ bool QucsApp::deleteDirectoryContent(QDir& Dir)
 }
 
 // ----------------------------------------------------------
-bool QucsApp::deleteProject(const QString& Path, const QString& Name)
+bool QucsApp::deleteProject(const QString& Path)
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit();
+
+  QString Name = Path;
+
+  if(Name.isEmpty()) return false;
+
+  if (Name.endsWith(QDir::separator())) {
+    Name = Name.left(Name.length()-1);  // cut off trailing '/'
+  }
+  int i = Name.lastIndexOf(QDir::separator());
+  if(i > 0) Name = Name.mid(i+1);  // cut out the last subdirectory
+  Name.chop(4); // remove "_prj" from name
 
   if(Name == ProjName) {
     QMessageBox::information(this, tr("Info"),
-			tr("Cannot delete an open project !"));
+        tr("Cannot delete an open project !"));
     return false;
   }
 
   // first ask, if really delete project ?
   if(QMessageBox::warning(this, tr("Warning"),
-     tr("This will destroy all the project files permanently ! Continue ?"),
-     tr("&Yes"), tr("&No"), 0,1,1))  return false;
+      tr("This will destroy all the project files permanently ! Continue ?"),
+      tr("&Yes"), tr("&No"), 0,1,1))  return false;
 
   QDir projDir = QDir(Path);
   if(!deleteDirectoryContent(projDir))
@@ -1438,41 +1451,29 @@ bool QucsApp::deleteProject(const QString& Path, const QString& Name)
 
 // ----------------------------------------------------------
 // Is called, when "Delete Project" menu is activated.
-void QucsApp::slotMenuDelProject()
+void QucsApp::slotMenuProjDel()
 {
+  QString d = QFileDialog::getExistingDirectory(
+      this, tr("Choose Project Directory for Deleting"),
+      QucsSettings.QucsHomeDir.path(),
+      QFileDialog::ShowDirsOnly
+      | QFileDialog::DontResolveSymlinks);
 
-  QString d = QFileDialog::getExistingDirectory(this, tr("Choose Project Directory for Deleting"),
-                                                 QucsSettings.QucsHomeDir.path(),
-                                                 QFileDialog::ShowDirsOnly
-                                                 | QFileDialog::DontResolveSymlinks);
-  QString s = d;
-
-  if(s.isEmpty()) return;
-
-  if (s.endsWith(QDir::separator())) {
-      s = s.left(s.length()-1);  // cut off trailing '/'
-  }
-  int i = s.findRev(QDir::separator());
-  if(i > 0) s = s.mid(i+1);  // cut out the last subdirectory
-  s.chop(4); // remove "_prj" from name
-  deleteProject(d, s);
-  readProjects();   // re-reads all projects and inserts them into the ListBox
+  deleteProject(d);
 }
 
 // ----------------------------------------------------------
 // Is called, when "Delete Project" button is pressed.
 void QucsApp::slotButtonProjDel()
 {
-  //QListWidgetItem *item = Projects->currentItem();
-  //if(!item) {
-  //  QMessageBox::information(this, tr("Info"),
-	//		     tr("No project is selected !"));
-  //  return;
-  //}
+  QModelIndex idx = Projects->currentIndex();
+  if(!idx.isValid()) {
+    QMessageBox::information(this, tr("Info"),
+        tr("No project is selected!"));
+    return;
+  }
 
-  //if(!deleteProject(QucsSettings.QucsHomeDir.filePath(item->text()+"_prj"),
-	//item->text()))  return;
-  //Projects->takeItem(Projects->currentRow());  // remove from project list
+  deleteProject(QucsSettings.QucsHomeDir.filePath(idx.data().toString()));
 }
 
 
