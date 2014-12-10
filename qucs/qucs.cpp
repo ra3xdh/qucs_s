@@ -1375,37 +1375,36 @@ void QucsApp::slotMenuProjClose()
   ProjName = "";
 }
 
-// ----------------------------------------------------------
-bool QucsApp::deleteDirectoryContent(QDir& Dir)
+// remove a directory recursively
+bool QucsApp::deleteDirectory(const QString &Path)
 {
-  // removes every file, remove("*") does not work
-  QStringList Files = Dir.entryList("*", QDir::Files|QDir::Hidden);  // all files
-  QStringList::iterator it;
-  for(it = Files.begin(); it != Files.end(); it++) {
-     if(!Dir.remove(*it)) {
-       QMessageBox::information(this, tr("Info"),
-				tr("Cannot delete file: ")+(*it));
-       return false;
-     }
-  }
+  bool result = true;
+  QDir projDir = QDir(Path);
 
-  QDir myDir(Dir);
-  // Remove all directories recursively.
-  Files = Dir.entryList("*", QDir::Dirs);
-  Files.pop_front();  // delete "." from list
-  Files.pop_front();  // delete ".." from list
-  for(it = Files.begin(); it != Files.end(); it++) {
-     myDir.cd(*it);
-     if(!deleteDirectoryContent(myDir))
-       return false;
-     myDir.cdUp();
-     if(!myDir.rmdir(*it)) {
-       QMessageBox::information(this, tr("Info"),
-				tr("Cannot remove directory: ")+(*it));
-       return false;
+  if (projDir.exists(Path)) {
+    Q_FOREACH(QFileInfo info, 
+        projDir.entryInfoList(
+            QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::AllEntries, QDir::DirsFirst)) {
+      if (info.isDir()) {
+        result = deleteDirectory(info.absoluteFilePath());
+        if (!result) {
+          QMessageBox::information(this, tr("Info"),
+              tr("Cannot remove directory: %1").arg(Path));
+          return false;
+        }
+      }
+      else if(info.isFile()) {
+        result = QFile::remove(info.absoluteFilePath());
+        if (!result) {
+          QMessageBox::information(this, tr("Info"),
+              tr("Cannot delete file: %1").arg(info.fileName()));
+          return false;
+        }
+      }
     }
+    result = projDir.rmdir(Path);
   }
-  return true;
+  return result;
 }
 
 // ----------------------------------------------------------
@@ -1435,17 +1434,11 @@ bool QucsApp::deleteProject(const QString& Path)
       tr("This will destroy all the project files permanently ! Continue ?"),
       tr("&Yes"), tr("&No"), 0,1,1))  return false;
 
-  QDir projDir = QDir(Path);
-  if(!deleteDirectoryContent(projDir))
-    return false;
-
-  projDir.cdUp();  // leave project directory for deleting
-  if(!projDir.rmdir(Name+"_prj")) {
+  if (!deleteDirectory(Path)) {
     QMessageBox::information(this, tr("Info"),
-			     tr("Cannot remove project directory !"));
+        tr("Cannot remove project directory!"));
     return false;
   }
-
   return true;
 }
 

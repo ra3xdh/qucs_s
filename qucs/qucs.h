@@ -214,7 +214,7 @@ private:
   void switchSchematicDoc(bool);
   void switchEditMode(bool);
   void changeSchematicSymbolMode(Schematic*);
-  bool deleteDirectoryContent(QDir& Dir);
+  bool deleteDirectory(const QString &);
   bool isTextDocument(QWidget *);
   void closeFile(int);
 
