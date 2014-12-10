@@ -36,6 +36,7 @@
 #include <QClipboard>
 #include <QInputDialog>
 #include <QDesktopServices>
+#include <QFileSystemModel>
 #include <QUrl>
 #include <QSettings>
 #include <QDebug>
@@ -118,8 +119,6 @@ QucsApp::QucsApp()
     tr("Octave Scripts") + " (*.m *.oct);;" +
     tr("Spice Files") + getSpiceFileFilter() +
     tr("Any File")+" (*)";
-  //QucsSettings.QucsWorkDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
-  //QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
 
   updateSchNameHash();
   updateSpiceNameHash();
@@ -278,15 +277,13 @@ void QucsApp::initView()
 
   ProjGroupLayout->addWidget(ProjButts);
 
-  Projects = new QListWidget();
+  Projects = new QListView();
 
   ProjGroupLayout->addWidget(Projects);
   ProjGroup->setLayout(ProjGroupLayout);
 
   TabView->addTab(ProjGroup, tr("Projects"));
   TabView->setTabToolTip(TabView->indexOf(ProjGroup), tr("content of project directory"));
-
-  connect(Projects, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(slotOpenProject(QListWidgetItem*)));
 
   // ----------------------------------------------------------
   // "Content" Tab of the left QTabWidget
@@ -305,7 +302,6 @@ void QucsApp::initView()
 
   TabView->addTab(Content,tr("Content"));
   TabView->setTabToolTip(TabView->indexOf(Content), tr("content of current project"));
-
 
   connect(Content, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
 		   SLOT(slotOpenContent(QTreeWidgetItem*)));
@@ -391,6 +387,12 @@ void QucsApp::initView()
   // ............................................
 
   messageDock = new MessageDock(this);
+
+  // initial home directory model
+  m_homeDirModel = new QFileSystemModel(this);
+  QStringList filters("*_prj");
+  m_homeDirModel->setNameFilters(filters);
+  m_homeDirModel->setFilter(QDir::AllDirs | QDir::Dirs | QDir::NoDotAndDotDot);
 
   // ............................................
   readProjects(); // reads all projects and inserts them into the ListBox
@@ -1077,29 +1079,20 @@ void QucsApp::slotCMenuInsert ()
 // Checks for qucs directory and reads all existing Qucs projects.
 void QucsApp::readProjects()
 {
-  QDir ProjDir(QucsSettings.QucsHomeDir);
-  if(!ProjDir.cd(QucsSettings.QucsHomeDir.absolutePath())) { // work directory exists ?
-    if(!ProjDir.mkdir(QucsSettings.QucsHomeDir.absolutePath())) { // no, then create it
+  QString path = QucsSettings.QucsHomeDir.absolutePath();
+  QDir ProjDir(path);
+
+  // create home dir if not exist
+  if(!ProjDir.exists()) {
+    if(!ProjDir.mkdir(path)) {
       QMessageBox::warning(this, tr("Warning"),
-                   tr("Cannot create work directory !"));
+          tr("Cannot create work directory !"));
       return;
     }
-    ProjDir.cd(QucsSettings.QucsHomeDir.absolutePath());
   }
-
-  // get all directories
-  QStringList PrDirs = ProjDir.entryList("*", QDir::Dirs, QDir::Name);
-  PrDirs.pop_front(); // delete "." from list
-  PrDirs.pop_front(); // delete ".." from list
-
-  Projects->clear();
-  QStringList::iterator it;
-  // inserts all project directories
-  for(it = PrDirs.begin(); it != PrDirs.end(); it++)
-     if ((*it).right(4) == "_prj") {  // project directories end with "_prj"
-       (*it) = (*it).left((*it).length()-4); // remove "_prj" from name
-       Projects->addItem(*it);
-     }
+  m_homeDirModel->setRootPath(path);
+  Projects->setModel(m_homeDirModel);
+  Projects->setRootIndex(m_homeDirModel->index(path));
 }
 
 // ----------------------------------------------------------
@@ -1111,14 +1104,14 @@ void QucsApp::slotProjNewButt()
   NewProjDialog *d = new NewProjDialog(this);
   if(d->exec() != QDialog::Accepted) return;
 
-  QDir projDir(QucsSettings.QucsHomeDir.path());
-  if(projDir.mkdir(d->ProjName->text()+"_prj")) {
-    Projects->insertItem(0, d->ProjName->text());  // at first position
-    if(d->OpenProj->isChecked())
-      slotOpenProject(Projects->item(0));
-  }
-  else QMessageBox::information(this, tr("Info"),
-                    tr("Cannot create project directory !"));
+  //QDir projDir(QucsSettings.QucsHomeDir.path());
+  //if(projDir.mkdir(d->ProjName->text()+"_prj")) {
+  //  Projects->insertItem(0, d->ProjName->text());  // at first position
+  //  if(d->OpenProj->isChecked())
+  //    slotOpenProject(Projects->item(0));
+  //}
+  //else QMessageBox::information(this, tr("Info"),
+  //                  tr("Cannot create project directory !"));
 }
 
 // ----------------------------------------------------------
@@ -1326,10 +1319,10 @@ void QucsApp::slotProjOpenButt()
 {
   editText->setHidden(true); // disable text edit of component property
 
-  QListWidgetItem *item = Projects->currentItem();
-  if(item) slotOpenProject(item);
-  else QMessageBox::information(this, tr("Info"),
-				tr("No project is selected !"));
+  //QListWidgetItem *item = Projects->currentItem();
+  //if(item) slotOpenProject(item);
+  //else QMessageBox::information(this, tr("Info"),
+	//			tr("No project is selected !"));
 }
 
 // ----------------------------------------------------------
@@ -1454,16 +1447,16 @@ void QucsApp::slotMenuDelProject()
 // Is called, when "Delete Project" button is pressed.
 void QucsApp::slotProjDelButt()
 {
-  QListWidgetItem *item = Projects->currentItem();
-  if(!item) {
-    QMessageBox::information(this, tr("Info"),
-			     tr("No project is selected !"));
-    return;
-  }
+  //QListWidgetItem *item = Projects->currentItem();
+  //if(!item) {
+  //  QMessageBox::information(this, tr("Info"),
+	//		     tr("No project is selected !"));
+  //  return;
+  //}
 
-  if(!deleteProject(QucsSettings.QucsHomeDir.filePath(item->text()+"_prj"),
-	item->text()))  return;
-  Projects->takeItem(Projects->currentRow());  // remove from project list
+  //if(!deleteProject(QucsSettings.QucsHomeDir.filePath(item->text()+"_prj"),
+	//item->text()))  return;
+  //Projects->takeItem(Projects->currentRow());  // remove from project list
 }
 
 

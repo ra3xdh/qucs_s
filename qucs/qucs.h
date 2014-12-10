@@ -47,6 +47,8 @@ class QTreeWidget;
 class QTreeWidgetItem;
 class QListWidget;
 class QShortcut;
+class QListView;
+class QFileSystemModel;
 
 typedef bool (Schematic::*pToggleFunc) ();
 typedef void (MouseActions::*pMouseFunc) (Schematic*, QMouseEvent*);
@@ -182,7 +184,7 @@ private:
   OctaveWindow    *octave;
   MessageDock     *messageDock;
 
-  QListWidget     *Projects;
+  QListView       *Projects;
   QTreeWidget     *Content;
   QTreeWidgetItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
                   *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
@@ -193,6 +195,8 @@ private:
 // ********** Properties ************************************************
   QStack<QString> HierarchyHistory; // keeps track of "go into subcircuit"
   QString  QucsFileFilter;
+  QFileSystemModel *m_homeDirModel;
+  QFileSystemModel *m_projModel;
 
 // ********** Methods ***************************************************
   void initView();
