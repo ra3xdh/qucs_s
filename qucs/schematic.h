@@ -150,6 +150,8 @@ public:
 
 signals:
   void signalCursorPosChanged(int, int);
+  void signalUndoState(bool);
+  void signalRedoState(bool);
 
 protected:
   bool sizeOfFrame(int&, int&);

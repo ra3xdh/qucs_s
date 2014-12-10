@@ -990,6 +990,20 @@ void QucsApp::printCursorPosition(int x, int y)
   PositionLabel->setMinimumWidth(PositionLabel->width());
 }
 
+// --------------------------------------------------------------
+// called by document, update undo state
+void QucsApp::slotUpdateUndo(bool isEnabled)
+{
+  undo->setEnabled(isEnabled);
+}
+
+// --------------------------------------------------------------
+// called by document, update redo state
+void QucsApp::slotUpdateRedo(bool isEnabled)
+{
+  redo->setEnabled(isEnabled);
+}
+
 // ----------------------------------------------------------
 // turn Toolbar on or off
 void QucsApp::slotViewToolBar(bool toggle)

@@ -89,6 +89,8 @@ public:
 
 signals:
   void signalCursorPosChanged(int, int);
+  void signalUndoState(bool);
+  void signalRedoState(bool);
 
 public slots:
   void search(const QString &str, bool CaseSensitive, bool wordOnly, bool backward);

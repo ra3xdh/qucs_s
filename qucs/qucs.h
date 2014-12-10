@@ -240,6 +240,8 @@ public slots:
   void slotShowWarnings();
   void slotResetWarnings();
   void printCursorPosition(int, int);
+  void slotUpdateUndo(bool);  // update undo available state
+  void slotUpdateRedo(bool);  // update redo available state
 
 private slots:
   void slotViewToolBar(bool toggle);    // toggle the toolbar
