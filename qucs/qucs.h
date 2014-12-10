@@ -49,6 +49,7 @@ class QListWidget;
 class QShortcut;
 class QListView;
 class QFileSystemModel;
+class QModelIndex;
 
 typedef bool (Schematic::*pToggleFunc) ();
 typedef void (MouseActions::*pMouseFunc) (Schematic*, QMouseEvent*);
@@ -134,7 +135,7 @@ public slots:
 
 private slots:
   void slotMenuProjOpen();
-  void slotListProjOpen(QListWidgetItem*);
+  void slotListProjOpen(const QModelIndex &);
   void slotMenuProjClose();
   void slotSelectSubcircuit(QTreeWidgetItem*);
   void slotSelectLibComponent(QTreeWidgetItem*);
@@ -206,7 +207,7 @@ private:
   void printCurrentDocument(bool);
   bool saveFile(QucsDoc *Doc=0);
   bool saveAs();
-  void openProject(const QString&, const QString&);
+  void openProject(const QString&);
   bool deleteProject(const QString&, const QString&);
   void updatePortNumber(QucsDoc*, int);
   void fillComboBox(bool);

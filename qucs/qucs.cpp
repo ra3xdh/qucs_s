@@ -19,6 +19,7 @@
 # include <config.h>
 #endif
 
+#include <QModelIndex>
 #include <QAction>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
@@ -284,6 +285,9 @@ void QucsApp::initView()
 
   TabView->addTab(ProjGroup, tr("Projects"));
   TabView->setTabToolTip(TabView->indexOf(ProjGroup), tr("content of project directory"));
+
+  connect(Projects, SIGNAL(doubleClicked(const QModelIndex &)),
+          this, SLOT(slotListProjOpen(const QModelIndex &)));
 
   // ----------------------------------------------------------
   // "Content" Tab of the left QTabWidget
@@ -1117,7 +1121,7 @@ void QucsApp::slotButtonProjNew()
         tr("Cannot create project directory !"));
   }
   if(open) {
-    //slotOpenProject(Projects->item(0));
+    openProject(QucsSettings.QucsHomeDir.filePath(name));
   }
 }
 
@@ -1270,9 +1274,15 @@ void QucsApp::readProjectFiles()
 
 // ----------------------------------------------------------
 // Opens an existing project.
-void QucsApp::openProject(const QString& Path, const QString& Name)
+void QucsApp::openProject(const QString& Path)
 {
   editText->setHidden(true); // disable text edit of component property
+
+  QString Name = Path;
+  Name = Name.left(Name.length()-1);   // cut off trailing '/'
+  int i = Name.findRev('/');
+  if(i > 0) Name = Name.mid(i+1);   // cut out the last subdirectory
+  Name.remove("_prj");
 
   if(!closeAllFiles()) return;   // close files and ask for saving them
   new Schematic(this, "");
@@ -1306,37 +1316,36 @@ void QucsApp::openProject(const QString& Path, const QString& Name)
 // Is called when the open project menu is called.
 void QucsApp::slotMenuProjOpen()
 {
-  QString d = QFileDialog::getExistingDirectory(this, tr("Choose Project Directory for Opening"),
-                                                 QucsSettings.QucsHomeDir.path(),
-                                                 QFileDialog::ShowDirsOnly
-                                                 | QFileDialog::DontResolveSymlinks);
-  QString s = d;
-  if(s.isEmpty()) return;
+  QString d = QFileDialog::getExistingDirectory(
+      this, tr("Choose Project Directory for Opening"),
+      QucsSettings.QucsHomeDir.path(),
+      QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+  if(d.isEmpty()) return;
 
-  s = s.left(s.length()-1);   // cut off trailing '/'
-  int i = s.findRev('/');
-  if(i > 0) s = s.mid(i+1);   // cut out the last subdirectory
-  s.remove("_prj");
-  openProject(d, s);
+  openProject(d);
 }
 
 // ----------------------------------------------------------
 // Is called, when "Open Project" button is pressed.
 void QucsApp::slotButtonProjOpen()
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit();
 
-  //QListWidgetItem *item = Projects->currentItem();
-  //if(item) slotOpenProject(item);
-  //else QMessageBox::information(this, tr("Info"),
-	//			tr("No project is selected !"));
+  QModelIndex idx = Projects->currentIndex();
+  if (!idx.isValid()) {
+    QMessageBox::information(this, tr("Info"),
+				tr("No project is selected !"));
+  } else {
+    slotListProjOpen(idx);
+  }
 }
 
 // ----------------------------------------------------------
 // Is called when project is double-clicked to open it.
-void QucsApp::slotListProjOpen(QListWidgetItem *item)
+void QucsApp::slotListProjOpen(const QModelIndex &idx)
 {
-  openProject(QucsSettings.QucsHomeDir.filePath(item->text()+"_prj"), item->text());
+  openProject(QucsSettings.QucsHomeDir.filePath(
+      idx.data().toString()));
 }
 
 // ----------------------------------------------------------
