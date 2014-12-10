@@ -305,13 +305,13 @@ void QucsApp::initActions()
   projNew->setShortcut(Qt::CTRL+Qt::SHIFT+Qt::Key_N);
   projNew->setStatusTip(tr("Creates a new project"));
   projNew->setWhatsThis(tr("New Project\n\nCreates a new project"));
-  connect(projNew, SIGNAL(activated()), SLOT(slotProjNewButt()));
+  connect(projNew, SIGNAL(activated()), SLOT(slotButtonProjNew()));
 
   projOpen = new QAction(tr("&Open Project..."), this);
 	projOpen->setShortcut(Qt::CTRL+Qt::SHIFT+Qt::Key_O);
   projOpen->setStatusTip(tr("Opens an existing project"));
   projOpen->setWhatsThis(tr("Open Project\n\nOpens an existing project"));
-  connect(projOpen, SIGNAL(activated()), SLOT(slotMenuOpenProject()));
+  connect(projOpen, SIGNAL(activated()), SLOT(slotMenuProjOpen()));
 
   projDel = new QAction(tr("&Delete Project..."), this);
   projDel->setShortcut(Qt::CTRL+Qt::SHIFT+Qt::Key_D);
@@ -323,7 +323,7 @@ void QucsApp::initActions()
   projClose->setShortcut(Qt::CTRL+Qt::SHIFT+Qt::Key_W);
   projClose->setStatusTip(tr("Closes the current project"));
   projClose->setWhatsThis(tr("Close Project\n\nCloses the current project"));
-  connect(projClose, SIGNAL(activated()), SLOT(slotMenuCloseProject()));
+  connect(projClose, SIGNAL(activated()), SLOT(slotMenuProjClose()));
 
   addToProj = new QAction(tr("&Add Files to Project..."), this);
   addToProj->setShortcut(Qt::CTRL+Qt::SHIFT+Qt::Key_A);

@@ -263,11 +263,11 @@ void QucsApp::initView()
   QVBoxLayout *ProjGroupLayout = new QVBoxLayout();
   QWidget *ProjButts = new QWidget();
   QPushButton *ProjNew = new QPushButton(tr("New"));
-  connect(ProjNew, SIGNAL(clicked()), SLOT(slotProjNewButt()));
+  connect(ProjNew, SIGNAL(clicked()), SLOT(slotButtonProjNew()));
   QPushButton *ProjOpen = new QPushButton(tr("Open"));
-  connect(ProjOpen, SIGNAL(clicked()), SLOT(slotProjOpenButt()));
+  connect(ProjOpen, SIGNAL(clicked()), SLOT(slotButtonProjOpen()));
   QPushButton *ProjDel = new QPushButton(tr("Delete"));
-  connect(ProjDel, SIGNAL(clicked()), SLOT(slotProjDelButt()));
+  connect(ProjDel, SIGNAL(clicked()), SLOT(slotButtonProjDel()));
 
   QHBoxLayout *ProjButtsLayout = new QHBoxLayout();
   ProjButtsLayout->addWidget(ProjNew);
@@ -1097,7 +1097,7 @@ void QucsApp::readProjects()
 
 // ----------------------------------------------------------
 // Is called, when "Create New Project" button is pressed.
-void QucsApp::slotProjNewButt()
+void QucsApp::slotButtonProjNew()
 {
   editText->setHidden(true); // disable text edit of component property
 
@@ -1304,7 +1304,7 @@ void QucsApp::openProject(const QString& Path, const QString& Name)
 
 // ----------------------------------------------------------
 // Is called when the open project menu is called.
-void QucsApp::slotMenuOpenProject()
+void QucsApp::slotMenuProjOpen()
 {
   QString d = QFileDialog::getExistingDirectory(this, tr("Choose Project Directory for Opening"),
                                                  QucsSettings.QucsHomeDir.path(),
@@ -1322,7 +1322,7 @@ void QucsApp::slotMenuOpenProject()
 
 // ----------------------------------------------------------
 // Is called, when "Open Project" button is pressed.
-void QucsApp::slotProjOpenButt()
+void QucsApp::slotButtonProjOpen()
 {
   editText->setHidden(true); // disable text edit of component property
 
@@ -1334,14 +1334,14 @@ void QucsApp::slotProjOpenButt()
 
 // ----------------------------------------------------------
 // Is called when project is double-clicked to open it.
-void QucsApp::slotOpenProject(QListWidgetItem *item)
+void QucsApp::slotListProjOpen(QListWidgetItem *item)
 {
   openProject(QucsSettings.QucsHomeDir.filePath(item->text()+"_prj"), item->text());
 }
 
 // ----------------------------------------------------------
 // Is called when the close project menu is called.
-void QucsApp::slotMenuCloseProject()
+void QucsApp::slotMenuProjClose()
 {
   editText->setHidden(true); // disable text edit of component property
 
@@ -1452,7 +1452,7 @@ void QucsApp::slotMenuDelProject()
 
 // ----------------------------------------------------------
 // Is called, when "Delete Project" button is pressed.
-void QucsApp::slotProjDelButt()
+void QucsApp::slotButtonProjDel()
 {
   //QListWidgetItem *item = Projects->currentItem();
   //if(!item) {

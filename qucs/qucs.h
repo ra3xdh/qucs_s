@@ -133,16 +133,16 @@ public slots:
   void slotCMenuInsert();
 
 private slots:
-  void slotMenuOpenProject();
-  void slotOpenProject(QListWidgetItem*);
-  void slotMenuCloseProject();
+  void slotMenuProjOpen();
+  void slotListProjOpen(QListWidgetItem*);
+  void slotMenuProjClose();
   void slotSelectSubcircuit(QTreeWidgetItem*);
   void slotSelectLibComponent(QTreeWidgetItem*);
   void slotOpenContent(QTreeWidgetItem*);
   void slotSetCompView(int);
-  void slotProjNewButt();
-  void slotProjOpenButt();
-  void slotProjDelButt();
+  void slotButtonProjNew();
+  void slotButtonProjOpen();
+  void slotButtonProjDel();
   void slotMenuDelProject();
   void slotChangeView(QWidget*);
   void slotSimulate();
