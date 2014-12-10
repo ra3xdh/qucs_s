@@ -148,6 +148,9 @@ public:
 
   QFileInfo getFileInfo (void) { return FileInfo; }
 
+signals:
+  void signalCursorPosChanged(int, int);
+
 protected:
   bool sizeOfFrame(int&, int&);
   void paintFrame(ViewPainter*);

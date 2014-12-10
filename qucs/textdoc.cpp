@@ -65,6 +65,10 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDo
   connect(this, SIGNAL(textChanged()), SLOT(slotSetChanged()));
   connect(this, SIGNAL(cursorPositionChanged()),
           SLOT(slotCursorPosChanged()));
+  if (App_) {
+    connect(this, SIGNAL(signalCursorPosChanged(int, int)),
+        App_, SLOT(printCursorPosition(int, int)));
+  }
 
   syntaxHighlight = new SyntaxHighlighter(this);
   syntaxHighlight->setLanguage(language);
@@ -322,7 +326,7 @@ void TextDoc::slotCursorPosChanged()
   QTextCursor pos = textCursor();
   int x = pos.blockNumber();
   int y = pos.columnNumber();
-  App->printCursorPosition(x+1, y+1);
+  emit signalCursorPosChanged(x+1, y+1);
   tmpPosX = x;
   tmpPosY = y;
 }
