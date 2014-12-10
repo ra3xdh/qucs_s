@@ -1104,14 +1104,21 @@ void QucsApp::slotProjNewButt()
   NewProjDialog *d = new NewProjDialog(this);
   if(d->exec() != QDialog::Accepted) return;
 
-  //QDir projDir(QucsSettings.QucsHomeDir.path());
-  //if(projDir.mkdir(d->ProjName->text()+"_prj")) {
-  //  Projects->insertItem(0, d->ProjName->text());  // at first position
-  //  if(d->OpenProj->isChecked())
-  //    slotOpenProject(Projects->item(0));
-  //}
-  //else QMessageBox::information(this, tr("Info"),
-  //                  tr("Cannot create project directory !"));
+  QDir projDir(QucsSettings.QucsHomeDir.path());
+  QString name = d->ProjName->text();
+  bool open = d->OpenProj->isChecked();
+
+  if (!name.endsWith("_prj")) {
+    name += "_prj";
+  }
+
+  if(!projDir.mkdir(name)) {
+    QMessageBox::information(this, tr("Info"),
+        tr("Cannot create project directory !"));
+  }
+  if(open) {
+    //slotOpenProject(Projects->item(0));
+  }
 }
 
 // ----------------------------------------------------------
