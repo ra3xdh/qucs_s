@@ -62,7 +62,6 @@ public:
  ~QucsApp();
   QSettings *qucsSettings;
   bool closeAllFiles();
-  static int testFile(const QString&);
   bool gotoPage(const QString&);   // to load a document
   QucsDoc *getDoc(int No=-1);
   QucsDoc* findDoc (QString, int * Pos = 0);

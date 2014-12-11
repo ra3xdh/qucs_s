@@ -253,6 +253,7 @@ private:
    ******************************************************************** */
 
 public:
+  static int testFile(const QString &);
   bool createLibNetlist(QTextStream*, QTextEdit*, int);
   bool createSubNetlist(QTextStream *, int&, QStringList&, QTextEdit*, int);
   void createSubNetlistPlain(QTextStream*, QTextEdit*, int);

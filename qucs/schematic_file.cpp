@@ -1056,6 +1056,72 @@ void Schematic::throughAllNodes(bool User, QStringList& Collect,
   }
 }
 
+// ----------------------------------------------------------
+// Checks whether this file is a qucs file and whether it is an subcircuit.
+// It returns the number of subcircuit ports.
+int Schematic::testFile(const QString& DocName)
+{
+  QFile file(DocName);
+  if(!file.open(QIODevice::ReadOnly)) {
+    return -1;
+  }
+
+  QString Line;
+  // .........................................
+  // To strongly speed up the file read operation the whole file is
+  // read into the memory in one piece.
+  QTextStream ReadWhole(&file);
+  QString FileString = ReadWhole.read();
+  file.close();
+  QTextStream stream(&FileString, QIODevice::ReadOnly);
+
+
+  // read header ........................
+  do {
+    if(stream.atEnd()) {
+      file.close();
+      return -2;
+    }
+    Line = stream.readLine();
+    Line = Line.trimmed();
+  } while(Line.isEmpty());
+
+  if(Line.left(16) != "<Qucs Schematic ") {  // wrong file type ?
+    file.close();
+    return -3;
+  }
+
+  Line = Line.mid(16, Line.length()-17);
+  if(!checkVersion(Line)) { // wrong version number ?
+      if (!QucsSettings.IgnoreFutureVersion) {
+          file.close();
+          return -4;
+      }
+    //file.close();
+    //return -4;
+  }
+
+  // read content ....................
+  while(!stream.atEnd()) {
+    Line = stream.readLine();
+    if(Line == "<Components>") break;
+  }
+
+  int z=0;
+  while(!stream.atEnd()) {
+    Line = stream.readLine();
+    if(Line == "</Components>") {
+      file.close();
+      return z;       // return number of ports
+    }
+
+    Line = Line.trimmed();
+    QString s = Line.section(' ',0,0);    // component type
+    if(s == "<Port") z++;
+  }
+  return -5;  // component field not closed
+}
+
 // ---------------------------------------------------
 // Collects the signal names for digital simulations.
 void Schematic::collectDigitalSignals(void)

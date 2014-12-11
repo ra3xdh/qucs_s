@@ -1126,72 +1126,6 @@ void QucsApp::slotButtonProjNew()
 }
 
 // ----------------------------------------------------------
-// Checks whether this file is a qucs file and whether it is an subcircuit.
-// It returns the number of subcircuit ports.
-int QucsApp::testFile(const QString& DocName)
-{
-  QFile file(DocName);
-  if(!file.open(QIODevice::ReadOnly)) {
-    return -1;
-  }
-
-  QString Line;
-  // .........................................
-  // To strongly speed up the file read operation the whole file is
-  // read into the memory in one piece.
-  QTextStream ReadWhole(&file);
-  QString FileString = ReadWhole.read();
-  file.close();
-  QTextStream stream(&FileString, QIODevice::ReadOnly);
-
-
-  // read header ........................
-  do {
-    if(stream.atEnd()) {
-      file.close();
-      return -2;
-    }
-    Line = stream.readLine();
-    Line = Line.trimmed();
-  } while(Line.isEmpty());
-
-  if(Line.left(16) != "<Qucs Schematic ") {  // wrong file type ?
-    file.close();
-    return -3;
-  }
-
-  Line = Line.mid(16, Line.length()-17);
-  if(!checkVersion(Line)) { // wrong version number ?
-      if (!QucsSettings.IgnoreFutureVersion) {
-          file.close();
-          return -4;
-      }
-    //file.close();
-    //return -4;
-  }
-
-  // read content ....................
-  while(!stream.atEnd()) {
-    Line = stream.readLine();
-    if(Line == "<Components>") break;
-  }
-
-  int z=0;
-  while(!stream.atEnd()) {
-    Line = stream.readLine();
-    if(Line == "</Components>") {
-      file.close();
-      return z;       // return number of ports
-    }
-
-    Line = Line.trimmed();
-    QString s = Line.section(' ',0,0);    // component type
-    if(s == "<Port") z++;
-  }
-  return -5;  // component field not closed
-}
-
-// ----------------------------------------------------------
 // Reads all files in the project directory and sort them into the
 // content ListView
 void QucsApp::readProjectFiles()
@@ -1228,7 +1162,7 @@ void QucsApp::readProjectFiles()
   for(it = Elements.begin(); it != Elements.end(); ++it) {
     Str = QucsDoc::fileSuffix (*it);
     if(Str == "sch") {
-      n = testFile(QucsSettings.QucsWorkDir.filePath((*it).ascii()));
+      n = Schematic::testFile(QucsSettings.QucsWorkDir.filePath((*it).toAscii()));
       if(n >= 0) {
         if(n > 0) {
           QTreeWidgetItem *temp = new QTreeWidgetItem(ConSchematics);

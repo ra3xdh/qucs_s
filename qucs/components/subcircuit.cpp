@@ -93,7 +93,7 @@ void Subcircuit::createSymbol()
     }
   }
   else {
-    No = QucsApp::testFile(FileName);
+    No = Schematic::testFile(FileName);
     if(No < 0)  No = 0;
 
     Ports.clear();
