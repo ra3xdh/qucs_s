@@ -98,7 +98,8 @@ public:
   void  reloadGraphs();
   bool  createSubcircuitSymbol();
 
-  QString copySelected(bool);
+  void    cut();
+  void    copy();
   bool    paste(QTextStream*, Q3PtrList<Element>*);
   bool    load();
   int     save();

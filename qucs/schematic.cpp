@@ -38,6 +38,8 @@
 #include <QUrl>
 #include <QListWidget>
 #include <QDebug>
+#include <QApplication>
+#include <QClipboard>
 
 #include "qucs.h"
 #include "schematic.h"
@@ -1282,13 +1284,23 @@ void Schematic::reloadGraphs()
     pd->loadGraphData(Info.path()+QDir::separator()+DataSet);
 }
 
-// ---------------------------------------------------
-// Performs copy or cut functions for clipboard.
-QString Schematic::copySelected(bool cut)
+// Copy function, 
+void Schematic::copy()
 {
   QString s = createClipboardFile();
-  if(cut) deleteElements();   // delete selected elements if wanted
-  return s;
+  QClipboard *cb = QApplication::clipboard();  // get system clipboard
+  if (!s.isEmpty()) {
+    cb->setText(s, QClipboard::Clipboard);
+  }
+}
+
+// ---------------------------------------------------
+// Cut function, copy followed by deletion
+void Schematic::cut()
+{
+  copy();
+  deleteElements(); //delete selected elements
+  viewport()->update();
 }
 
 // ---------------------------------------------------

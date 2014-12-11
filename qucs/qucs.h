@@ -104,8 +104,6 @@ public slots:
   void slotFilePrint();   // print the current file
   void slotFilePrintFit();// Print and fit to page
   void slotFileQuit();    // exits the application
-  void slotEditCut();     // put marked object into clipboard and delete it
-  void slotEditCopy();    // put the marked object into the clipboard
   void slotApplSettings();// open dialog to change application settings
   void slotRefreshSchPath(); // refresh the schematic path hash
 
@@ -213,7 +211,7 @@ private:
   void switchSchematicDoc(bool);
   void switchEditMode(bool);
   void changeSchematicSymbolMode(Schematic*);
-  bool deleteDirectory(const QString &);
+  bool recurRemove(const QString &);
   bool isTextDocument(QWidget *);
   void closeFile(int);
 
@@ -298,6 +296,8 @@ public slots:
   void slotEditRotate(bool);  // rotate the selected items
   void slotEditMirrorX(bool); // mirror the selected items about X axis
   void slotEditMirrorY(bool); // mirror the selected items about Y axis
+  void slotEditCut();         // put marked object into clipboard and delete it
+  void slotEditCopy();        // put the marked object into the clipboard
   void slotEditPaste(bool);   // paste the clipboard into the document
   void slotEditDelete(bool);  // delete the selected items
   void slotInsertEquation(bool);

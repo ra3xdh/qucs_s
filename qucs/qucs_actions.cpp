@@ -256,61 +256,95 @@ void QucsApp::slotSelect(bool on)
   }
 }
 
+// --------------------------------------------------------------------
+void QucsApp::slotEditCut()
+{
+  statusBar()->message(tr("Cutting selection..."));
+  editText->setHidden(true); // disable text edit of component property
+
+  QWidget *Doc = DocumentTab->currentPage();
+  if(isTextDocument (Doc)) {
+    ((TextDoc *)Doc)->cut();
+  } else {
+    ((Schematic *)Doc)->cut();
+  }
+
+  statusBar()->message(tr("Ready."));
+}
+
+// --------------------------------------------------------------------
+void QucsApp::slotEditCopy()
+{
+  statusBar()->message(tr("Copying selection to clipboard..."));
+
+  QWidget *Doc = DocumentTab->currentPage();
+  if(isTextDocument (Doc)) {
+    ((TextDoc *)Doc)->copy();
+  } else {
+    ((Schematic *)Doc)->copy();
+  }
+
+  statusBar()->message(tr("Ready."));
+}
+
 // -----------------------------------------------------------------------
 void QucsApp::slotEditPaste(bool on)
 {
   // get the current document
-  Schematic *Doc = (Schematic*)DocumentTab->currentPage();
+  QWidget *Doc = DocumentTab->currentPage();
 
   // if the current document is a text document paste in
   // the contents of the clipboard as text
-  if(Doc->inherits("QPlainTextEdit"))
+  if(isTextDocument (Doc))
   {
-    ((TextDoc*)Doc)->viewport()->setFocus();
     ((TextDoc*)Doc)->paste();
 
     editPaste->blockSignals(true);
     editPaste->setChecked(false);  // release toolbar button
     editPaste->blockSignals(false);
     return;
-  }
-  // if it's not a text doc, prevent the user from editing
-  // while we perform the paste operation
-  editText->setHidden(true);
+  } 
+  else {
+    // if it's not a text doc, prevent the user from editing
+    // while we perform the paste operation
+    editText->setHidden(true);
 
-  if(!on)
-  {
-    MouseMoveAction = 0;
+    if(!on)
+    {
+      MouseMoveAction = 0;
+      MousePressAction = 0;
+      MouseReleaseAction = 0;
+      MouseDoubleClickAction = 0;
+      activeAction = 0;   // no action active
+      if(view->drawn) {
+        ((Schematic *)Doc)->viewport()->update();
+      }
+      return;
+    }
+
+    if(!view->pasteElements((Schematic *)Doc))
+    {
+      editPaste->blockSignals(true); // do not call toggle slot
+      editPaste->setChecked(false);       // set toolbar button off
+      editPaste->blockSignals(false);
+      return;   // if clipboard empty
+    }
+
+    if(activeAction)
+    {
+      activeAction->blockSignals(true); // do not call toggle slot
+      activeAction->setChecked(false);       // set last toolbar button off
+      activeAction->blockSignals(false);
+    }
+    activeAction = editPaste;
+
+    view->drawn = false;
+    MouseMoveAction = &MouseActions::MMovePaste;
+    view->movingRotated = 0;
     MousePressAction = 0;
     MouseReleaseAction = 0;
     MouseDoubleClickAction = 0;
-    activeAction = 0;   // no action active
-    if(view->drawn) Doc->viewport()->update();
-    return;
   }
-
-  if(!view->pasteElements(Doc))
-  {
-    editPaste->blockSignals(true); // do not call toggle slot
-    editPaste->setChecked(false);       // set toolbar button off
-    editPaste->blockSignals(false);
-    return;   // if clipboard empty
-  }
-
-  if(activeAction)
-  {
-    activeAction->blockSignals(true); // do not call toggle slot
-    activeAction->setChecked(false);       // set last toolbar button off
-    activeAction->blockSignals(false);
-  }
-  activeAction = editPaste;
-
-  view->drawn = false;
-  MouseMoveAction = &MouseActions::MMovePaste;
-  view->movingRotated = 0;
-  MousePressAction = 0;
-  MouseReleaseAction = 0;
-  MouseDoubleClickAction = 0;
 }
 
 // -----------------------------------------------------------------------

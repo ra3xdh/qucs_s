@@ -1310,7 +1310,7 @@ void QucsApp::slotMenuProjClose()
 }
 
 // remove a directory recursively
-bool QucsApp::deleteDirectory(const QString &Path)
+bool QucsApp::recurRemove(const QString &Path)
 {
   bool result = true;
   QDir projDir = QDir(Path);
@@ -1320,7 +1320,7 @@ bool QucsApp::deleteDirectory(const QString &Path)
         projDir.entryInfoList(
             QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::AllEntries, QDir::DirsFirst)) {
       if (info.isDir()) {
-        result = deleteDirectory(info.absoluteFilePath());
+        result = recurRemove(info.absoluteFilePath());
         if (!result) {
           QMessageBox::information(this, tr("Info"),
               tr("Cannot remove directory: %1").arg(Path));
@@ -1368,7 +1368,7 @@ bool QucsApp::deleteProject(const QString& Path)
       tr("This will destroy all the project files permanently ! Continue ?"),
       tr("&Yes"), tr("&No"), 0,1,1))  return false;
 
-  if (!deleteDirectory(Path)) {
+  if (!recurRemove(Path)) {
     QMessageBox::information(this, tr("Info"),
         tr("Cannot remove project directory!"));
     return false;
@@ -2044,52 +2044,6 @@ void QucsApp::closeEvent(QCloseEvent* Event)
    }
    else
       Event->ignore();
-}
-
-// --------------------------------------------------------------------
-void QucsApp::slotEditCut()
-{
-  statusBar()->message(tr("Cutting selection..."));
-
-  Schematic *Doc = (Schematic*)DocumentTab->currentPage();
-  if(isTextDocument (Doc)) {
-    ((TextDoc*)Doc)->viewport()->setFocus();
-    ((TextDoc*)Doc)->cut();
-    return;
-  }
-
-  editText->setHidden(true); // disable text edit of component property
-  QClipboard *cb = QApplication::clipboard();  // get system clipboard
-
-  QString s = Doc->copySelected(true);
-  if(!s.isEmpty()) {
-    cb->setText(s, QClipboard::Clipboard);
-    Doc->viewport()->update();
-  }
-
-  statusBar()->message(tr("Ready."));
-}
-
-// --------------------------------------------------------------------
-void QucsApp::slotEditCopy()
-{
-  statusBar()->message(tr("Copying selection to clipboard..."));
-
-  Schematic *Doc = (Schematic*)DocumentTab->currentPage();
-  if(isTextDocument (Doc)) {
-    ((TextDoc*)Doc)->viewport()->setFocus();
-    ((TextDoc*)Doc)->copy();
-    return;
-  }
-
-  editText->setHidden(true); // disable text edit of component property
-  QClipboard *cb = QApplication::clipboard();  // get system clipboard
-
-  QString s = Doc->copySelected(false);
-  if(!s.isEmpty())
-    cb->setText(s, QClipboard::Clipboard);
-
-  statusBar()->message(tr("Ready."));
 }
 
 // --------------------------------------------------------------------
