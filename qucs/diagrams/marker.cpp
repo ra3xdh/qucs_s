@@ -396,7 +396,7 @@ void Marker::paint(ViewPainter *p, int x0, int y0)
 
   // Workaround for bug in Qt: If WorldMatrix is turned off, \n in the
   // text creates a terrible mess.
-  p->Painter->setWorldXForm(true);
+  p->Painter->setWorldMatrixEnabled(true);
   QMatrix wm = p->Painter->worldMatrix();
   p->Painter->setWorldMatrix(QMatrix());
 
@@ -410,7 +410,7 @@ void Marker::paint(ViewPainter *p, int x0, int y0)
     p->drawText(Text, x0+x1+3, y0+y1+3);
   }
   p->Painter->setWorldMatrix(wm);
-  p->Painter->setWorldXForm(false);
+  p->Painter->setWorldMatrixEnabled(false);
 
   // restore painter state
   p->Painter->restore();

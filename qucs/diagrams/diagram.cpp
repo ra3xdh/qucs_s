@@ -121,7 +121,7 @@ void Diagram::paint(ViewPainter *p)
     p->Painter->drawText(0, 0, pt->s);
   }
   p->Painter->setWorldMatrix(wm);
-  p->Painter->setWorldXForm(false);
+  p->Painter->setWorldMatrixEnabled(false);
 
   // restore painter state
   p->Painter->restore();
@@ -852,7 +852,7 @@ int Diagram::loadVarData(const QString& fileName, Graph *g)
     Variable = g->Var;
   }
   else {
-    file.setFileName(Info.dirPath()+QDir::separator() + g->Var.left(pos)+".dat");
+    file.setFileName(Info.path()+QDir::separator() + g->Var.left(pos)+".dat");
     Variable = g->Var.mid(pos+1);
   }
 

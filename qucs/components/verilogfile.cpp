@@ -14,6 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
 #include "verilogfile.h"
 #include "qucs.h"
 #include "main.h"
@@ -100,7 +101,7 @@ QString Verilog_File::loadFile()
     return QString("");
 
   QTextStream stream(&f);
-  File = stream.read();   // QString is better for "find" function
+  File = stream.readAll();   // QString is better for "find" function
   f.close();
 
   // parse ports, i.e. network connections
@@ -241,11 +242,11 @@ Verilog_File_Info::Verilog_File_Info(QString File, bool isfile)
   }
 
   QRegExp Expr,Expr1;
-  Expr.setCaseSensitive(true);
-  Expr1.setCaseSensitive(true);
+  Expr.setCaseSensitivity(Qt::CaseSensitive);
+  Expr1.setCaseSensitivity(Qt::CaseSensitive);
   k--;
   Expr.setPattern("\\bmodule\\b");  // start of last module
-  k = File.findRev(Expr, k);
+  k = File.lastIndexOf(Expr, k);
   if(k < 0)
     return;
 
@@ -281,8 +282,8 @@ Verilog_File_Info::Verilog_File_Info(QString File, bool isfile)
 QString Verilog_File_Info::parsePorts(QString s, int i)
 {
   QRegExp Expr,Expr1;
-  Expr.setCaseSensitive(true);
-  Expr1.setCaseSensitive(true);
+  Expr.setCaseSensitivity(Qt::CaseSensitive);
+  Expr1.setCaseSensitivity(Qt::CaseSensitive);
 
   int j;
   i = 0;    // remove all Verilog identifiers (e.g. "input")

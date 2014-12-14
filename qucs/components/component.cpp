@@ -30,13 +30,18 @@
 #include <QString>
 #include <QMessageBox>
 #include <QPainter>
+#include <QDebug>
+
+/*!
+ * \file component.cpp
+ * \brief Implementation of the Component class.
+ */
 
 
-// ***********************************************************************
-// **********                                                   **********
-// **********                  class "Component"                **********
-// **********                                                   **********
-// ***********************************************************************
+/*!
+ * \class Component
+ * \brief The Component class implements a generic analog component
+ */
 Component::Component()
 {
   Type = isAnalogComponent;
@@ -184,7 +189,7 @@ void Component::paint(ViewPainter *p)
   QFont f = p->Painter->font();   // save current font
   QFont newFont = f;
   if(Model.at(0) == '.') {   // is simulation component (dc, ac, ...)
-    newFont.setPointSizeFloat(p->Scale * Texts.first()->Size);
+    newFont.setPointSizeF(p->Scale * Texts.first()->Size);
     newFont.setWeight(QFont::DemiBold);
     p->Painter->setFont(newFont);
     p->map(cx, cy, x, y);
@@ -194,7 +199,7 @@ void Component::paint(ViewPainter *p)
     QRect r, t;
     foreach(Text *pt, Texts) {
       t.setRect(x, y+b, 0, 0);
-      p->Painter->drawText(t, Qt::AlignLeft|Qt::TextDontClip, pt->s, -1, &r);
+      p->Painter->drawText(t, Qt::AlignLeft|Qt::TextDontClip, pt->s, &r);
       b += r.height();
       if(a < r.width())  a = r.width();
     }
@@ -254,7 +259,7 @@ void Component::paint(ViewPainter *p)
           QMatrix(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
                    p->DX + float(cx+pt->x) * p->Scale,
                    p->DY + float(cy+pt->y) * p->Scale));
-      newFont.setPointSizeFloat(p->Scale * pt->Size);
+      newFont.setPointSizeF(p->Scale * pt->Size);
       newFont.setOverline(pt->over);
       newFont.setUnderline(pt->under);
       p->Painter->setFont(newFont);
@@ -267,7 +272,7 @@ void Component::paint(ViewPainter *p)
       }
     }
     p->Painter->setWorldMatrix(wm);
-    p->Painter->setWorldXForm(false);
+    p->Painter->setWorldMatrixEnabled(false);
 
     // restore painter state
     p->Painter->restore();
@@ -316,8 +321,8 @@ void Component::paintScheme(Schematic *p)
     QFont newFont = p->font();
 
     float Scale =
-          ((Schematic*)QucsMain->DocumentTab->currentPage())->Scale;
-    newFont.setPointSizeFloat(float(Scale) * QucsSettings.largeFontSize);
+          ((Schematic*)QucsMain->DocumentTab->currentWidget())->Scale;
+    newFont.setPointSizeF(float(Scale) * QucsSettings.largeFontSize);
     newFont.setWeight(QFont::DemiBold);
     // here the font metric is already the screen metric, since the font
     // is the current font the painter is using
@@ -515,7 +520,7 @@ void Component::mirrorX()
   QFont f = QucsSettings.font;
   // mirror all text
   foreach(Text *pt, Texts) {
-    f.setPointSizeFloat(pt->Size);
+    f.setPointSizeF(pt->Size);
     // use the screen-compatible metric
     QFontMetrics  smallMetrics(f, 0);
     QSize s = smallMetrics.size(0, pt->s);   // use size for more lines
@@ -576,7 +581,7 @@ void Component::mirrorY()
   QFont f = QucsSettings.font;
   // mirror all text
   foreach(Text *pt, Texts) {
-    f.setPointSizeFloat(pt->Size);
+    f.setPointSizeF(pt->Size);
     // use the screen-compatible metric
     QFontMetrics  smallMetrics(f, 0);
     QSize s = smallMetrics.size(0, pt->s);   // use size for more lines
@@ -685,7 +690,7 @@ QString Component::get_VHDL_Code(int NumPorts)
 
   // Component is shortened.
   // This puts the signal of the second port onto the first port.
-  // This is locigally correct for the inverter only, but makes
+  // This is logically correct for the inverter only, but makes
   // some sense for the gates (OR, AND etc.).
   // Has anyone a better idea?
   QString Node1 = Ports.at(0)->Connection->Name;
@@ -1081,7 +1086,7 @@ int Component::analyseLine(const QString& Row, int numProps)
                           float(sin(float(i4)*M_PI/180.0))));
 
     QFont Font(QucsSettings.font);
-    Font.setPointSizeFloat(float(i3));
+    Font.setPointSizeF(float(i3));
     QFontMetrics  metrics(Font, 0); // use the screen-compatible metric
     QSize r = metrics.size(0, s);    // get size of text
     i3 = i1 + int(float(r.width())  * Texts.last()->mCos)
@@ -1343,7 +1348,7 @@ QString GateComponent::vhdlCode(int NumPorts)
     s += rhs;
   }
   else {
-    QString Op = ' ' + Model.lower() + ' ';
+    QString Op = ' ' + Model.toLower() + ' ';
     if(Model.at(0) == 'N') {
       s += "not (";    // nor, nand is NOT assoziative !!! but xnor is !!!
       Op = Op.remove(1, 1);
@@ -1380,7 +1385,7 @@ QString GateComponent::verilogCode(int NumPorts)
   QString s("");
 
   if(synthesize) {
-    QString op = Model.lower();
+    QString op = Model.toLower();
     if(op == "and" || op == "nand")
       op = "&";
     else if (op == "or" || op == "nor")
@@ -1413,7 +1418,7 @@ QString GateComponent::verilogCode(int NumPorts)
     s += ";\n";
   }
   else {
-    s = "  " + Model.lower();
+    s = "  " + Model.toLower();
 
     if(NumPorts <= 0) { // no truth table simulation ?
       QString td = Props.at(2)->Value;        // delay time

@@ -58,7 +58,7 @@ void GraphicText::paint(ViewPainter *p)
   p->Painter->rotate(-Angle);   // automatically enables transformation
 
   int Size = Font.pointSize();
-  Font.setPointSizeFloat( p->FontScale * float(Size) );
+  Font.setPointSizeF( p->FontScale * float(Size) );
 
   QFont f = p->Painter->font();
   p->Painter->setPen(Color);
@@ -78,7 +78,7 @@ void GraphicText::paint(ViewPainter *p)
 
   Font.setPointSize(Size);   // restore real font size
   p->Painter->setWorldMatrix(wm);
-  p->Painter->setWorldXForm(false);
+  p->Painter->setWorldMatrixEnabled(false);
 
   // restore painter state
   p->Painter->restore();
@@ -324,7 +324,11 @@ bool GraphicText::Dialog()
   bool changed = false;
 
   GraphicTextDialog *d = new GraphicTextDialog();
-  d->ColorButt->setPaletteBackgroundColor(Color);
+
+  QPalette palette;
+  palette.setColor(d->ColorButt->backgroundRole(), Color);
+  d->ColorButt->setPalette(palette);
+
   d->TextSize->setText(QString::number(Font.pointSize()));
   d->Angle->setText(QString::number(Angle));
   QString _Text = Text;
@@ -336,8 +340,8 @@ bool GraphicText::Dialog()
     return false;
   }
 
-  if(Color != d->ColorButt->paletteBackgroundColor()) {
-    Color = d->ColorButt->paletteBackgroundColor();
+  if(Color != d->ColorButt->palette().color(d->ColorButt->backgroundRole())) {
+    Color = d->ColorButt->palette().color(d->ColorButt->backgroundRole());
     changed = true;
   }
   f.setPointSize(d->TextSize->text().toInt());   // to avoid wrong text width
@@ -351,7 +355,7 @@ bool GraphicText::Dialog()
     changed = true;
   }
 
-  encode_String(d->text->text(), _Text);  // create special characters
+  encode_String(d->text->toPlainText(), _Text);  // create special characters
   if(!_Text.isEmpty())
     if(_Text != Text) {
       Text = _Text;

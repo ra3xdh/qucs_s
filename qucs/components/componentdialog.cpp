@@ -45,7 +45,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   Doc   = d;
   QString s;
 
-  all = new QVBoxLayout(this); // to provide neccessary size
+  all = new QVBoxLayout; // to provide neccessary size
+  this->setLayout(all);
   all->setContentsMargins(1,1,1,1);
   QGridLayout *gp1;
 
@@ -72,9 +73,10 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 
     QWidget *Tab1 = new QWidget(t);
     t->addTab(Tab1, tr("Sweep"));
-    QGridLayout *gp = new QGridLayout(Tab1, 9,3,5,5);
+    QGridLayout *gp = new QGridLayout;
+    Tab1->setLayout(gp);
 
-    gp->addMultiCellWidget(new QLabel(Comp->Description, Tab1), 0,0,0,1);
+    gp->addWidget(new QLabel(Comp->Description, Tab1), 0,0,1,2);
 
     int row=1;
     editParam = new QLineEdit(Tab1);
@@ -113,10 +115,14 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
     textType = new QLabel(tr("Type:"), Tab1);
     gp->addWidget(textType, row,0);
     comboType = new QComboBox(Tab1);
-    comboType->insertItem(tr("linear"));
-    comboType->insertItem(tr("logarithmic"));
-    comboType->insertItem(tr("list"));
-    comboType->insertItem(tr("constant"));
+
+    QStringList sweeptypes;
+    sweeptypes << tr("linear") 
+	       << tr("logarithmic") 
+	       << tr("list") 
+	       << tr("constant");
+    comboType->insertItems(0, sweeptypes);
+			   
     gp->addWidget(comboType, row,1);
     connect(comboType, SIGNAL(activated(int)), SLOT(slotSimTypeChange(int)));
     checkType = new QCheckBox(tr("display in schematic"), Tab1);
@@ -168,11 +174,19 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 
     if(Comp->Model == ".SW") {   // parameter sweep
       Component *pc;
-      for(pc=Doc->Components->first(); pc!=0; pc=Doc->Components->next())
+      for(pc=Doc->Components->first(); pc!=0; pc=Doc->Components->next()) {
+	// insert all schematic available simulations in the Simulation combo box
         if(pc != Comp)
           if(pc->Model[0] == '.')
-            comboSim->insertItem(pc->Name);
-      comboSim->setCurrentText(Comp->Props.first()->Value);
+            comboSim->insertItem(comboSim->count(), pc->Name);
+      }
+      qDebug() << "[]" << Comp->Props.first()->Value;
+      // set selected simulations in combo box to the currently used one
+      int i = comboSim->findText(Comp->Props.first()->Value);
+      if (i != -1) // current simulation is in the available simulations list (normal case)
+	comboSim->setCurrentIndex(i);
+      else  // current simulation not in the available simulations list
+	comboSim->setEditText(Comp->Props.first()->Value);
 
       checkSim->setChecked(Comp->Props.current()->display);
       s = Comp->Props.next()->Value;
@@ -203,7 +217,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
       else  tNum = 1;
     }
     else  tNum = 3;
-    comboType->setCurrentItem(tNum);
+    comboType->setCurrentIndex(tNum);
 
     slotSimTypeChange(tNum);   // not automatically ?!?
     if(tNum > 1) {
@@ -236,16 +250,18 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 
     QWidget *tabProperties = new QWidget(t);
     t->addTab(tabProperties, tr("Properties"));
-    gp1 = new QGridLayout(tabProperties, 9,2,5,5);
+    //gp1 = new QGridLayout(tabProperties, 9,2,5,5);
+    gp1 = new QGridLayout(tabProperties);
   }
   else {   // no simulation component
-    gp1 = new QGridLayout(0, 9,2,5,5);
+    //gp1 = new QGridLayout(0, 9,2,5,5);
+    gp1 = new QGridLayout();
     all->addLayout(gp1);
   }
 
 
   // ...........................................................
-  gp1->addMultiCellWidget(new QLabel(Comp->Description), 0,0,0,1);
+  gp1->addWidget(new QLabel(Comp->Description), 0,0,1,2);
 
   QHBoxLayout *h5 = new QHBoxLayout;
   h5->setSpacing(5);
@@ -313,7 +329,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   // hide, because it only replaces 'Description' in some cases
   NameEdit = new QLineEdit;
   v1->addWidget(NameEdit);
-  NameEdit->setShown(false);
+  NameEdit->setVisible(false);
   NameEdit->setValidator(ValRestrict);
   connect(NameEdit, SIGNAL(returnPressed()), SLOT(slotApplyPropName()));
 
@@ -326,11 +342,12 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   // hide, because it only replaces 'edit' in some cases
   ComboEdit = new QComboBox;
   v1->addWidget(ComboEdit);
-  ComboEdit->setShown(false);
+  ComboEdit->setVisible(false);
   connect(ComboEdit, SIGNAL(activated(const QString&)),
 	  SLOT(slotApplyChange(const QString&)));
 
-  QHBoxLayout *h3 = new QHBoxLayout(v1);
+  QHBoxLayout *h3 = new QHBoxLayout;
+  v1->addLayout(h3);
 
   EditButt = new QPushButton(tr("Edit"));
   h3->addWidget(EditButt);
@@ -348,7 +365,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   v1->addWidget(disp);
   connect(disp, SIGNAL(stateChanged(int)), SLOT(slotApplyState(int)));
 
-  QHBoxLayout *h4 = new QHBoxLayout(v1);
+  QHBoxLayout *h4 = new QHBoxLayout;
+  v1->addLayout(h4);
   h4->setSpacing(5);
   ButtAdd = new QPushButton(tr("Add"));
   h4->addWidget(ButtAdd);
@@ -360,7 +378,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   connect(ButtRem, SIGNAL(clicked()), SLOT(slotButtRem()));
 
   // ...........................................................
-  QHBoxLayout *h2 = new QHBoxLayout(this);
+  QHBoxLayout *h2 = new QHBoxLayout;
   QWidget * hbox2 = new QWidget;
   hbox2->setLayout(h2);
   h2->setSpacing(5);
@@ -551,10 +569,10 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
     NameEdit->setText(name);
     edit->setText(value);
 
-    edit->setShown(true);
-    NameEdit->setShown(true);
-    Description->setShown(false);
-    ComboEdit->setShown(false);
+    edit->setVisible(true);
+    NameEdit->setVisible(true);
+    Description->setVisible(false);
+    ComboEdit->setVisible(false);
 
     NameEdit->setFocus();   // edit QLineEdit
   }
@@ -565,25 +583,26 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
     Name->setText(name);
     edit->setText(value);
 
-    NameEdit->setShown(false);
+    NameEdit->setVisible(false);
     NameEdit->setText(name); // perhaps used for adding properties
-    Description->setShown(true);
+    Description->setVisible(true);
 
     // handle special combobox items
     QStringList List;
     int b = desc.indexOf('[');
-    int e = desc.findRev(']');
+    int e = desc.lastIndexOf(']');
     if (e-b > 2) {
       QString str = desc.mid(b+1, e-b-1);
       str.replace( QRegExp("[^a-zA-Z0-9_,]"), "" );
-      List = List.split(',',str);
+      List = str.split(',');
+      qDebug() << "List = " << List;
     }
 
     // use the screen-compatible metric
     QFontMetrics metrics(QucsSettings.font, 0);   // get size of text
     while(metrics.width(desc) > 270) {  // if description too long, cut it
-      if (desc.findRev(' ') != -1)
-        desc = desc.left(desc.findRev(' ', -1)) + "....";
+      if (desc.lastIndexOf(' ') != -1)
+        desc = desc.left(desc.lastIndexOf(' ')) + "....";
       else
         desc = desc.left(desc.length()-5) + "....";
     }
@@ -594,16 +613,16 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
       ComboEdit->insertItems(0,List);
 
       for(int i=ComboEdit->count()-1; i>=0; i--)
-       if(value == ComboEdit->text(i)) {
-         ComboEdit->setCurrentItem(i);
+       if(value == ComboEdit->itemText(i)) {
+         ComboEdit->setCurrentIndex(i);
 	 break;
        }
-      edit->setShown(false);
-      ComboEdit->setShown(true);
+      edit->setVisible(false);
+      ComboEdit->setVisible(true);
     }
     else {
-      edit->setShown(true);
-      ComboEdit->setShown(false);
+      edit->setVisible(true);
+      ComboEdit->setVisible(false);
     }
     edit->setFocus();   // edit QLineEdit
   }
@@ -614,19 +633,20 @@ void ComponentDialog::slotApplyChange(const QString& Text)
 {
   /// \bug what if the table have no items?
   // pick selected row
-  QTableWidgetItem *item = prop->selectedItems()[0];
-
+  QList<QTableWidgetItem *> items = prop->selectedItems();
+  Q_ASSERT(!items.isEmpty());
+  QTableWidgetItem *item = items.first();
+  
   int row = item->row();
-
-  qDebug() << Text;
+  
   edit->setText(Text);
   // apply edit line
   prop->item(row, 1)->setText(Text);
 
   ComboEdit->setFocus();
 
-  // step to next item
-  if ( row < prop->rowCount()) {
+  // step to next item if not at the last line
+  if ( row < (prop->rowCount() - 1)) {
     prop->setCurrentItem(prop->item(row+1,0));
     slotSelectProperty(prop->item(row+1,0));
   }
@@ -650,7 +670,7 @@ void ComponentDialog::slotApplyProperty()
   if(!item)
     return;
 
-  if(ComboEdit->isShown())   // take text from ComboBox ?
+  if (!ComboEdit->isHidden())   // take text from ComboBox ?
     edit->setText(ComboEdit->currentText());
 
   // apply edit line
@@ -658,8 +678,8 @@ void ComponentDialog::slotApplyProperty()
        prop->item(row, 1)->setText(edit->text());
     }
 
-  if(NameEdit->isShown())	// also apply property name ?
-    if(name != NameEdit->text()) {
+  if (!NameEdit->isHidden())	// also apply property name ?
+    if (name != NameEdit->text()) {
 //      if(NameEdit->text() == "Export")
 //        item->setText(0, "Export_");   // name must not be "Export" !!!
 //      else
@@ -797,7 +817,7 @@ void ComponentDialog::slotApplyInput()
       pp->display = display;
       changed = true;
     }
-    switch(comboType->currentItem()) {
+    switch(comboType->currentIndex()) {
       case 1:  tmp = "log";   break;
       case 2:  tmp = "list";  break;
       case 3:  tmp = "const"; break;
@@ -822,7 +842,7 @@ void ComponentDialog::slotApplyInput()
     pp = Comp->Props.next();
   }
   if(editStart) {
-    if(comboType->currentItem() < 2) {
+    if(comboType->currentIndex() < 2) {
       display = checkStart->isChecked();
       if(pp->display != display) {
         pp->display = display;
@@ -911,8 +931,8 @@ void ComponentDialog::slotApplyInput()
        prop->item(row, 1)->setText(edit->text());
 
      // apply property name
-     if(NameEdit->isShown())
-       if(name != NameEdit->text())
+     if (!NameEdit->isHidden())
+       if (name != NameEdit->text())
          prop->item(row, 0)->setText(NameEdit->text());
 
      // apply all the new property values in the ListView
@@ -1008,7 +1028,7 @@ void ComponentDialog::slotBrowseFile()
     // snip path if file in current directory
     QFileInfo file(s);
     if(QucsSettings.QucsWorkDir.exists(file.fileName()) &&
-       QucsSettings.QucsWorkDir.absPath() == file.dirPath(true)) s = file.fileName();
+       QucsSettings.QucsWorkDir.absolutePath() == file.absolutePath()) s = file.fileName();
     edit->setText(s);
   }
   /* FIX
@@ -1193,7 +1213,7 @@ void ComponentDialog::slotNumberChanged(const QString&)
 {
   QString Unit, tmp;
   double x, y, Factor;
-  if(comboType->currentItem() == 1) {   // logarithmic ?
+  if(comboType->currentIndex() == 1) {   // logarithmic ?
     str2num(editStop->text(), x, Unit, Factor);
     x *= Factor;
     str2num(editStart->text(), y, Unit, Factor);
@@ -1230,7 +1250,7 @@ void ComponentDialog::slotStepChanged(const QString& Step)
 {
   QString Unit;
   double x, y, Factor;
-  if(comboType->currentItem() == 1) {   // logarithmic ?
+  if(comboType->currentIndex() == 1) {   // logarithmic ?
     str2num(editStop->text(), x, Unit, Factor);
     x *= Factor;
     str2num(editStart->text(), y, Unit, Factor);

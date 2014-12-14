@@ -487,10 +487,14 @@ bool Arrow::Dialog()
   ArrowDialog *d = new ArrowDialog();
   d->HeadWidth->setText(QString::number(Width));
   d->HeadLength->setText(QString::number(Height));
-  d->ColorButt->setPaletteBackgroundColor(Pen.color());
+
+  QPalette palette;
+  palette.setColor(d->ColorButt->backgroundRole(), Pen.color());
+  d->ColorButt->setPalette(palette);
+
   d->LineWidth->setText(QString::number(Pen.width()));
   d->SetComboBox(Pen.style());
-  d->ArrowStyleBox->setCurrentItem(Style);
+  d->ArrowStyleBox->setCurrentIndex(Style);
 
   if(d->exec() == QDialog::Rejected) {
     delete d;
@@ -505,8 +509,8 @@ bool Arrow::Dialog()
     Height = d->HeadLength->text().toDouble();
     changed = true;
   }
-  if(Pen.color() != d->ColorButt->paletteBackgroundColor()) {
-    Pen.setColor(d->ColorButt->paletteBackgroundColor());
+  if(Pen.color() != d->ColorButt->palette().color(d->ColorButt->backgroundRole())) {
+    Pen.setColor(d->ColorButt->palette().color(d->ColorButt->backgroundRole()));
     changed = true;
   }
   if(Pen.width() != d->LineWidth->text().toInt()) {
@@ -517,8 +521,8 @@ bool Arrow::Dialog()
     Pen.setStyle(d->LineStyle);
     changed = true;
   }
-  if(Style != d->ArrowStyleBox->currentItem()) {
-    Style = d->ArrowStyleBox->currentItem();
+  if(Style != d->ArrowStyleBox->currentIndex()) {
+    Style = d->ArrowStyleBox->currentIndex();
     changed = true;
   }
 

@@ -92,7 +92,7 @@ void PortSymbol::paint(ViewPainter *p)
 
 
   p->Painter->setWorldMatrix(wm);
-  p->Painter->setWorldXForm(false);
+  p->Painter->setWorldMatrixEnabled(false);
 
   // restore painter state
   p->Painter->restore();

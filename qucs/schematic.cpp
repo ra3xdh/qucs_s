@@ -37,6 +37,7 @@
 #include <QLineEdit>
 #include <QUrl>
 #include <QListWidget>
+#include <QDebug>
 
 #include "qucs.h"
 #include "schematic.h"
@@ -100,7 +101,7 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
                             FileInfo.fileName());
 
     // calls indirectly "becomeCurrent"
-    App->DocumentTab->setCurrentPage(App->DocumentTab->indexOf(this));
+    App->DocumentTab->setCurrentIndex(App->DocumentTab->indexOf(this));
 
     showFrame = 0;  // don't show
     Frame_Text0 = tr("Title");
@@ -110,7 +111,12 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
 
     setVScrollBarMode(Q3ScrollView::AlwaysOn);
     setHScrollBarMode(Q3ScrollView::AlwaysOn);
-    viewport()->setPaletteBackgroundColor(QucsSettings.BGColor);
+    //viewport()->setPaletteBackgroundColor(QucsSettings.BGColor);
+
+    QPalette p = palette(); 
+    p.setColor(viewport()->backgroundRole(), QucsSettings.BGColor); 
+    viewport()->setPalette(p);
+
     viewport()->setMouseTracking(true);
     viewport()->setAcceptDrops(true);  // enable drag'n drop
 // FIXME #warning removed those signals, crashes on it...
@@ -139,10 +145,10 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
 
 Schematic::~Schematic()
 {
-	if(App) {
-		App->editText->reparent(App, 0, QPoint(0, 0));
-		App->DocumentTab->removePage(this);  // delete tab in TabBar
-	}
+  if(App) {
+    App->editText->setParent(App, 0); // reparent QLineEdit instance used for changing component properties
+    App->DocumentTab->removeTab(App->DocumentTab->indexOf(this));  // delete tab in TabBar
+  }
 }
 
 // ---------------------------------------------------
@@ -192,18 +198,18 @@ void Schematic::becomeCurrent(bool update)
   // update appropriate menu entry
   if (symbolMode) {
     if (DocName.right(4) == ".sym") {
-      App->symEdit->setMenuText(tr("Edit Text"));
+      App->symEdit->setText(tr("Edit Text"));
       App->symEdit->setStatusTip(tr("Edits the Text"));
       App->symEdit->setWhatsThis(tr("Edit Text\n\nEdits the text file"));
     }
     else {
-      App->symEdit->setMenuText(tr("Edit Schematic"));
+      App->symEdit->setText(tr("Edit Schematic"));
       App->symEdit->setStatusTip(tr("Edits the schematic"));
       App->symEdit->setWhatsThis(tr("Edit Schematic\n\nEdits the schematic"));
     }
   }
   else {
-    App->symEdit->setMenuText(tr("Edit Circuit Symbol"));
+    App->symEdit->setText(tr("Edit Circuit Symbol"));
     App->symEdit->setStatusTip(tr("Edits the symbol for this schematic"));
     App->symEdit->setWhatsThis(
 	tr("Edit Circuit Symbol\n\nEdits the symbol for this schematic"));
@@ -245,10 +251,9 @@ void Schematic::setName (const QString& Name_)
 {
   DocName = Name_;
   QFileInfo Info (DocName);
-  if (App) App->DocumentTab->setTabLabel (this, Info.fileName ());
-
-  QString base = Info.baseName (true);
-  QString ext = Info.extension (false);
+  if (App) App->DocumentTab->setTabText(App->DocumentTab->indexOf(this), Info.fileName());
+  QString base = Info.completeBaseName ();
+  QString ext = Info.suffix();
   DataSet = base + ".dat";
   Script = base + ".m";
   if (ext != "dpl")
@@ -262,9 +267,9 @@ void Schematic::setName (const QString& Name_)
 void Schematic::setChanged(bool c, bool fillStack, char Op)
 {
   if((!DocChanged) && c)
-    App->DocumentTab->setTabIconSet(this, QPixmap(smallsave_xpm));
+    App->DocumentTab->setTabIcon(App->DocumentTab->currentIndex(), QPixmap(smallsave_xpm));
   else if(DocChanged && (!c))
-    App->DocumentTab->setTabIconSet(this, QPixmap(empty_xpm));
+    App->DocumentTab->setTabIcon(App->DocumentTab->currentIndex(), QPixmap(empty_xpm));
   DocChanged = c;
 
   showBias = -1;   // schematic changed => bias points may be invalid
@@ -895,7 +900,8 @@ void Schematic::paintGrid(ViewPainter *p, int cX, int cY, int Width, int Height)
   int x1  = int(float(cX)/Scale) + ViewX1;
   int y1  = int(float(cY)/Scale) + ViewY1;
 
-  // setOnGrid(x1, y1) for 2*Grid
+  /// \todo setting the center of rotation on the grid causes the center to move when doing multiple rotations when it is not already on the grid. Should not force the center but force the component alignment after rotation.
+  setOnGrid(x1, y1);
   if(x1<0) x1 -= GridX - 1;
   else x1 += GridX;
   x1 -= x1 % (GridX << 1);
@@ -936,7 +942,7 @@ void Schematic::paintGrid(ViewPainter *p, int cX, int cY, int Width, int Height)
 float Schematic::textCorr()
 {
   QFont Font = QucsSettings.font;
-  Font.setPointSizeFloat( Scale * float(Font.pointSize()) );
+  Font.setPointSizeF( Scale * float(Font.pointSize()) );
   QFontMetrics  metrics(Font);
   return (Scale / float(metrics.lineSpacing()));
 }
@@ -1052,7 +1058,7 @@ bool Schematic::rotateElements()
 
   x1 = (x1+x2) >> 1;   // center for rotation
   y1 = (y1+y2) >> 1;
-  setOnGrid(x1, y1);
+  //setOnGrid(x1, y1);
 
 
   Wire *pw;
@@ -1115,6 +1121,8 @@ bool Schematic::rotateElements()
         pp = (Painting*)pe;
         pp->rotate();   // rotate painting !before! rotating its center
         pp->getCenter(x2, y2);
+        //qDebug("pp->getCenter(x2, y2): (%i,%i)\n", x2, y2);
+        //qDebug("(x1,y1) (x2,y2): (%i,%i) (%i,%i)\n", x1,y1,x2,y2);
         pp->setCenter(y2-y1 + x1, x1-x2 + y1);
         Paintings->append(pp);
         break;
@@ -1271,7 +1279,7 @@ void Schematic::reloadGraphs()
 {
   QFileInfo Info(DocName);
   for(Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
-    pd->loadGraphData(Info.dirPath()+QDir::separator()+DataSet);
+    pd->loadGraphData(Info.path()+QDir::separator()+DataSet);
 }
 
 // ---------------------------------------------------
@@ -1406,7 +1414,7 @@ int Schematic::adjustPortNumbers()
   int countPort = 0;
 
   QFileInfo Info (DataDisplay);
-  QString Suffix = Info.extension (false);
+  QString Suffix = Info.suffix();
 
   // handle VHDL file symbol
   if (Suffix == "vhd" || Suffix == "vhdl") {
@@ -1416,7 +1424,7 @@ int Schematic::adjustPortNumbers()
 
     // get ports from VHDL file
     QFileInfo Info(DocName);
-    QString Name = Info.dirPath() + QDir::separator() + DataDisplay;
+    QString Name = Info.path() + QDir::separator() + DataDisplay;
 
     // obtain VHDL information either from open text document or the
     // file directly
@@ -1426,16 +1434,21 @@ int Schematic::adjustPortNumbers()
       VInfo = VHDL_File_Info (d->document()->toPlainText());
     else
       VInfo = VHDL_File_Info (Name, true);
-    Names = QStringList::split(",",VInfo.PortNames);
+
+    if (!VInfo.PortNames.isEmpty())
+      Names = VInfo.PortNames.split(",", QString::SkipEmptyParts);
 
     for(pp = SymbolPaints.first(); pp!=0; pp = SymbolPaints.next())
       if(pp->Name == ".ID ") {
 	ID_Text * id = (ID_Text *) pp;
-	id->Prefix = VInfo.EntityName.upper();
+	id->Prefix = VInfo.EntityName.toUpper();
 	id->Parameter.clear();
-	GNames = QStringList::split(",",VInfo.GenNames);
-	GTypes = QStringList::split(",",VInfo.GenTypes);
-	GDefs = QStringList::split(",",VInfo.GenDefs);
+	if (!VInfo.GenNames.isEmpty())
+	  GNames = VInfo.GenNames.split(",", QString::SkipEmptyParts);
+	if (!VInfo.GenTypes.isEmpty())
+	  GTypes = VInfo.GenTypes.split(",", QString::SkipEmptyParts);
+	if (!VInfo.GenDefs.isEmpty())
+	  GDefs = VInfo.GenDefs.split(",", QString::SkipEmptyParts);;
 	for(Number = 1, it = GNames.begin(); it != GNames.end(); ++it) {
 	  id->Parameter.append(new SubParameter(
  	    true,
@@ -1472,7 +1485,7 @@ int Schematic::adjustPortNumbers()
 
     // get ports from Verilog-HDL file
     QFileInfo Info (DocName);
-    QString Name = Info.dirPath() + QDir::separator() + DataDisplay;
+    QString Name = Info.path() + QDir::separator() + DataDisplay;
 
     // obtain Verilog-HDL information either from open text document or the
     // file directly
@@ -1482,12 +1495,13 @@ int Schematic::adjustPortNumbers()
       VInfo = Verilog_File_Info (d->document()->toPlainText());
     else
       VInfo = Verilog_File_Info (Name, true);
-    Names = QStringList::split(",",VInfo.PortNames);
+    if (!VInfo.PortNames.isEmpty())
+      Names = VInfo.PortNames.split(",", QString::SkipEmptyParts);
 
     for(pp = SymbolPaints.first(); pp!=0; pp = SymbolPaints.next())
       if(pp->Name == ".ID ") {
 	ID_Text * id = (ID_Text *) pp;
-	id->Prefix = VInfo.ModuleName.upper();
+	id->Prefix = VInfo.ModuleName.toUpper();
 	id->Parameter.clear();
       }
 
@@ -1517,7 +1531,7 @@ int Schematic::adjustPortNumbers()
 
     // get ports from Verilog-A file
     QFileInfo Info (DocName);
-    QString Name = Info.dirPath() + QDir::separator() + DataDisplay;
+    QString Name = Info.path() + QDir::separator() + DataDisplay;
 
     // obtain Verilog-A information either from open text document or the
     // file directly
@@ -1527,12 +1541,14 @@ int Schematic::adjustPortNumbers()
       VInfo = VerilogA_File_Info (d->toPlainText());
     else
       VInfo = VerilogA_File_Info (Name, true);
-    Names = QStringList::split(",",VInfo.PortNames);
+
+    if (!VInfo.PortNames.isEmpty())
+      Names = VInfo.PortNames.split(",", QString::SkipEmptyParts);
 
     for(pp = SymbolPaints.first(); pp!=0; pp = SymbolPaints.next())
       if(pp->Name == ".ID ") {
 	ID_Text * id = (ID_Text *) pp;
-	id->Prefix = VInfo.ModuleName.upper();
+	id->Prefix = VInfo.ModuleName.toUpper();
 	id->Parameter.clear();
       }
 
@@ -1868,7 +1884,7 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
   int delta = Event->delta() >> 1;     // use smaller steps
 
   // ...................................................................
-  if((Event->state() & Qt::ShiftModifier) ||
+  if((Event->modifiers() & Qt::ShiftModifier) ||
      (Event->orientation() == Qt::Horizontal)) { // scroll horizontally ?
       if(delta > 0) { if(scrollLeft(delta)) scrollBy(-delta, 0); }
       else { if(scrollRight(delta)) scrollBy(-delta, 0); }
@@ -1876,7 +1892,7 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
       App->view->drawn = false;
   }
   // ...................................................................
-  else if(Event->state() & Qt::ControlModifier) {  // use mouse wheel to zoom ?
+  else if(Event->modifiers() & Qt::ControlModifier) {  // use mouse wheel to zoom ?
       float Scaling;
       if(delta < 0) Scaling = float(delta)/-60.0/1.1;
       else Scaling = 1.1*60.0/float(delta);
@@ -2003,7 +2019,7 @@ bool Schematic::scrollRight(int step)
 void Schematic::slotScrollUp()
 {
   App->editText->setHidden(true);  // disable edit of component property
-  scrollUp(verticalScrollBar()->lineStep());
+  scrollUp(verticalScrollBar()->singleStep());
   viewport()->update(); // because QScrollView thinks nothing has changed
   App->view->drawn = false;
 }
@@ -2013,7 +2029,7 @@ void Schematic::slotScrollUp()
 void Schematic::slotScrollDown()
 {
   App->editText->setHidden(true);  // disable edit of component property
-  scrollDown(-verticalScrollBar()->lineStep());
+  scrollDown(-verticalScrollBar()->singleStep());
   viewport()->update(); // because QScrollView thinks nothing has changed
   App->view->drawn = false;
 }
@@ -2023,7 +2039,7 @@ void Schematic::slotScrollDown()
 void Schematic::slotScrollLeft()
 {
   App->editText->setHidden(true);  // disable edit of component property
-  scrollLeft(horizontalScrollBar()->lineStep());
+  scrollLeft(horizontalScrollBar()->singleStep());
   viewport()->update(); // because QScrollView thinks nothing has changed
   App->view->drawn = false;
 }
@@ -2033,7 +2049,7 @@ void Schematic::slotScrollLeft()
 void Schematic::slotScrollRight()
 {
   App->editText->setHidden(true);  // disable edit of component property
-  scrollRight(-horizontalScrollBar()->lineStep());
+  scrollRight(-horizontalScrollBar()->singleStep());
   viewport()->update(); // because QScrollView thinks nothing has changed
   App->view->drawn = false;
 }
@@ -2070,7 +2086,7 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
 
 
   QMouseEvent e(QEvent::MouseButtonPress, Event->pos(),
-                Qt::LeftButton, Qt::NoButton);
+                Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
   int x = int(Event->pos().x()/Scale) + ViewX1;
   int y = int(Event->pos().y()/Scale) + ViewY1;
 
@@ -2159,7 +2175,8 @@ void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
       return;
     }
 
-    QMouseEvent e(QEvent::MouseMove, Event->pos(), Qt::NoButton, Qt::NoButton);
+    QMouseEvent e(QEvent::MouseMove, Event->pos(), Qt::NoButton, 
+		  Qt::NoButton, Qt::NoModifier);
     App->view->MMoveElement(this, &e);
   }
 
