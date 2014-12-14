@@ -19,8 +19,6 @@
 #include <limits.h>
 
 #include <QPainter>
-//#include <Q3DragObject>
-//Added by qt3to4:
 #include <QPaintEvent>
 #include <QPixmap>
 #include <QMouseEvent>
@@ -33,6 +31,10 @@
 #include "qucslib.h"
 #include "qucslib_common.h"
 
+/*!
+ * \file symbolwidget.cpp
+ * \brief Implementation of the SymbolWidget class.
+ */
 
 const char *empty_xpm[] = {  // for drag n'drop
 "1 1 1 1", "  c None", " "};
@@ -144,8 +146,12 @@ void SymbolWidget::paintEvent(QPaintEvent*)
   }
 }
 
-// ************************************************************
-// Creates a symbol from the model name of a component.
+/*!
+ * \brief Creates a symbol from the model name of a component.
+ * \param Lib_
+ * \param Comp_
+ * \return number of symbol ports
+ */
 int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
 {
   Arcs.clear();
@@ -392,9 +398,13 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
   return PortNo;
 }
 
-// ************************************************************
-// Loads the symbol for the component from the symbol field and
-// returns the number of painting elements.
+/*!
+ * \brief Loads the symbol for the component from the symbol field
+ * \param SymbolString
+ * \param Lib_
+ * \param Comp_
+ * \return the number of painting elements or a negative nuber if error
+ */
 int SymbolWidget::setSymbol( QString& SymbolString,
                             const QString& Lib_, const QString& Comp_)
 {
@@ -419,8 +429,8 @@ int SymbolWidget::setSymbol( QString& SymbolString,
     Line = Line.trimmed();
     if(Line.isEmpty()) continue;
 
-    if(Line.at(0) != '<') return -1;
-    if(Line.at(Line.length()-1) != '>') return -1;
+    if(Line.at(0) != '<') return -1; // check for start char
+    if(Line.at(Line.length()-1) != '>') return -1; // check for end char
     Line = Line.mid(1, Line.length()-2); // cut off start and end character
     Result = analyseLine(Line);
     if(Result < 0) return -6;   // line format error

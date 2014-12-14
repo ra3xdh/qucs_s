@@ -22,7 +22,6 @@
 #include <QFileInfo>
 
 
-
 SParamFile::SParamFile()
 {
   Description = QObject::tr("S parameter file");
@@ -138,8 +137,18 @@ QString SParamFile::netlist()
 // -------------------------------------------------------
 void SParamFile::createSymbol()
 {
-  int PortDistance = 60;
+  QFont Font(QucsSettings.font); // default application font
+  // symbol text is smaller (10 pt default)
+  Font.setPointSize(10 ); 
+  // get the small font size; use the screen-compatible metric
+  QFontMetrics  smallmetrics(Font, 0);
+  int fHeight = smallmetrics.lineSpacing();
+  QString stmp;
+
+  int w, PortDistance = 60;
   int Num = Props.getLast()->Value.toInt();
+
+  // adjust number of ports
   if(Num < 1) Num = 1;
   else if(Num > 8) {
     PortDistance = 20;
@@ -147,26 +156,31 @@ void SParamFile::createSymbol()
   }
   Props.getLast()->Value = QString::number(Num);
 
+  // draw symbol outline
   int h = (PortDistance/2)*((Num-1)/2) + 15;
   Lines.append(new Line(-15, -h, 15, -h,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 15, -h, 15,  h,QPen(Qt::darkBlue,2)));
   Lines.append(new Line(-15,  h, 15,  h,QPen(Qt::darkBlue,2)));
   Lines.append(new Line(-15, -h,-15,  h,QPen(Qt::darkBlue,2)));
-  Texts.append(new Text( -9, -6,QObject::tr("file")));
-
+  stmp = QObject::tr("file"); 
+  w = smallmetrics.width(stmp); // compute text size to center it 
+  Texts.append(new Text(-w/2, -fHeight/2, stmp));
 
   int i=0, y = 15-h;
-  while(i<Num) {
+  while(i<Num) { // add ports lines and numbers
     i++;
     Lines.append(new Line(-30, y,-15, y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30, y));
-    Texts.append(new Text(-25,y-14,QString::number(i)));
+    stmp = QString::number(i);
+    w = smallmetrics.width(stmp);
+    Texts.append(new Text(-25-w, y-fHeight-2, stmp)); // text right-aligned
 
-    if(i == Num) break;
+    if(i == Num) break; // if odd number of ports there will be one port less on the right side
     i++;
     Lines.append(new Line( 15, y, 30, y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 30, y));
-    Texts.append(new Text( 19,y-14,QString::number(i)));
+    stmp = QString::number(i);
+    Texts.append(new Text(25, y-fHeight-2, stmp)); // text left-aligned
     y += PortDistance;
   }
 
@@ -176,8 +190,8 @@ void SParamFile::createSymbol()
 
   x1 = -30; y1 = -h-2;
   x2 =  30; y2 =  h+15;
-  // use the screen-compatible metric
-  QFontMetrics  metrics(QucsSettings.font, 0);   // get size of text
+  // compute component name text position - normal size font
+  QFontMetrics  metrics(QucsSettings.font, 0);   // use the screen-compatible metric
   tx = x1+4;
   ty = y1 - 2*metrics.lineSpacing() - 4;
 }

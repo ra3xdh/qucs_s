@@ -15,12 +15,24 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "main.h"
 #include "mutual2.h"
+
+#include<QFontMetrics>
 
 
 Mutual2::Mutual2()
 {
   Description = QObject::tr("three mutual inductors");
+
+  QFont Font(QucsSettings.font); // default application font
+  // symbol text is smaller (10 pt default)
+  Font.setPointSize(10); 
+  // get the small font size; use the screen-compatible metric
+  QFontMetrics  smallmetrics(Font, 0);
+
+  int w;
+  QString stmp;
 
   Arcs.append(new Arc(-16,-58,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
   Arcs.append(new Arc(-16,-46,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
@@ -44,9 +56,11 @@ Mutual2::Mutual2()
   Lines.append(new Line(-10, 10,-30, 10,QPen(Qt::darkBlue,2)));
   Lines.append(new Line(-10, 10,-10, 22,QPen(Qt::darkBlue,2)));
 
-  Texts.append(new Text(-20,-61,"1"));
-  Texts.append(new Text(-20, 18,"2"));
-  Texts.append(new Text( 15,-22,"3"));
+  stmp = "1"; w = smallmetrics.width(stmp); // compute width to right-align
+  Texts.append(new Text(-13-w,-61,stmp));
+  stmp = "2"; w = smallmetrics.width(stmp); // compute width to right-align
+  Texts.append(new Text(-13-w, 18,stmp));
+  Texts.append(new Text( 13,-22,"3")); // left-aligned, no need to compute width
 
   Lines.append(new Line(  0,-57,  0, 57,QPen(Qt::darkBlue,1,Qt::DashLine)));
 

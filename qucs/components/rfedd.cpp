@@ -21,7 +21,6 @@
 #include <QFileInfo>
 
 
-
 RFedd::RFedd()
 {
   Description = QObject::tr("equation defined RF device");
@@ -110,11 +109,14 @@ QString RFedd::netlist()
 // -------------------------------------------------------
 void RFedd::createSymbol()
 {
-  // use the screen-compatible metric
-  QFontMetrics  metrics(QucsSettings.font, 0);   // get size of text
-  int fHeight = metrics.lineSpacing();
-  int w, i;
+  QFont Font(QucsSettings.font); // default application font
+  // symbol text is smaller (10 pt default)
+  Font.setPointSize(10); 
+  // get the small font size; use the screen-compatible metric
+  QFontMetrics  smallmetrics(Font, 0); 
+  int fHeight = smallmetrics.lineSpacing();
   QString tmp;
+  int w, i;
 
   // adjust port number
   int No = Props.at(1)->Value.toInt();
@@ -123,8 +125,8 @@ void RFedd::createSymbol()
   Props.at(1)->Value = QString::number(No);
 
   // adjust property number and names
-  int NumProps = Props.count() - 3;
-  if (NumProps < No * No) {
+  int NumProps = Props.count() - 3; // Type, Ports, duringDC
+  if (NumProps < No * No) { // number of ports was increased, add properties
     for(i = 0; i < NumProps; i++) {
       tmp=QString::number((i)/No+1)+QString::number((i)%No+1);
       Props.at(i+3)->Name="P"+tmp;
@@ -135,7 +137,7 @@ void RFedd::createSymbol()
       Props.append(new Property("P"+tmp, "0", false,
 		QObject::tr("parameter equation") + " " +tmp));
     }
-  } else {
+  } else { // number of ports was decreased, remove properties
     for(i = No * No; i < NumProps; i++) {
       Props.removeLast();
     }
@@ -154,33 +156,36 @@ void RFedd::createSymbol()
   Lines.append(new Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
   Lines.append(new Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
 
-  i = fHeight/2;
+  // component text name, centered
   tmp = QObject::tr("RF");
-  w = metrics.width(tmp);
-  Texts.append(new Text(w/-2, -i, tmp));
+  w = smallmetrics.width(tmp);
+  Texts.append(new Text(-w/2, -fHeight/2, tmp)); // text centered in box
 
   i = 0;
   int y = 15-h;
-  while(i<No) {
+  while(i<No) { // add ports lines and numbers
+    // left side
     Lines.append(new Line(-30,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30,  y));
     tmp = QString::number(i+1);
-    w = metrics.width(tmp);
-    Texts.append(new Text(-20-w, y-fHeight-2, tmp));
+    w = smallmetrics.width(tmp);
+    Texts.append(new Text(-25-w, y-fHeight-2, tmp)); // text right-aligned
     i++;
 
-    if(i == No) break;
+    if(i == No) break; // if odd number of ports there will be one port less on the right side
+    // right side
     Lines.append(new Line(HALFWIDTH,  y, 30,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 30,  y));
     tmp = QString::number(i+1);
-    Texts.append(new Text( 20, y-fHeight-2, tmp));
+    Texts.append(new Text(25, y-fHeight-2, tmp)); // text left-aligned
     y += 60;
     i++;
   }
 
   x1 = -30; y1 = -h-2;
   x2 =  30; y2 =  h+2;
-
+  // compute component name text position - normal size font
+  QFontMetrics  metrics(QucsSettings.font, 0);   // use the screen-compatible metric
   tx = x1+4;
-  ty = y1 - fHeight - 4;
+  ty = y1 - metrics.lineSpacing() - 4;
 }

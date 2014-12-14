@@ -35,11 +35,14 @@ RLCG::RLCG()
   Lines.append(new Line( 14, 14, 21,  7,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 21, 14, 28,  7,QPen(Qt::darkBlue,2)));
 
-  // use the screen-compatible metric
-  QFontMetrics  metrics(QucsSettings.font, 0);
-  int fHeight = metrics.lineSpacing();
+  QFont Font(QucsSettings.font); // default application font
+  // symbol text is smaller (10 pt default)
+  Font.setPointSize(10); 
+  // get the small font size; use the screen-compatible metric
+  QFontMetrics  smallmetrics(Font, 0); 
+  int fHeight = smallmetrics.lineSpacing();
   QString tmp = QObject::tr("RLCG");
-  int w = metrics.width(tmp);
+  int w = smallmetrics.width(tmp);
   Texts.append(new Text(w/-2, -fHeight, tmp));
 
   Ports.append(new Port(-30, 0));
