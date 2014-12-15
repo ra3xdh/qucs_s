@@ -14,11 +14,18 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+/*!
+  \class Marker
+  \brief The Marker class implements the marker object used for all the
+         diagram
+*/
+
 #include "marker.h"
 #include "diagram.h"
 #include "graph.h"
 #include "main.h"
-#include "../dialogs/matchdialog.h" //For r2z function
+#include "../dialogs/matchdialog.h" // For r2z function
 
 #include <QString>
 #include <QPainter>
@@ -27,10 +34,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "qucs.h"
-#include "schematic.h"
 #include "misc.h"
-
 
 
 Marker::Marker(Diagram *Diag_, Graph *pg_, int _nn, int cx_, int cy_)
@@ -290,11 +294,8 @@ void Marker::makeInvalid()
 // ---------------------------------------------------------------------
 void Marker::getTextSize()
 {
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  metrics(font);   // get size of text
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
   QSize r = metrics.size(0, Text);
   x2 = r.width()+5;
   y2 = r.height()+5;
@@ -395,7 +396,7 @@ void Marker::paint(ViewPainter *p, int x0, int y0)
 
   // Workaround for bug in Qt: If WorldMatrix is turned off, \n in the
   // text creates a terrible mess.
-  p->Painter->setWorldXForm(true);
+  p->Painter->setWorldMatrixEnabled(true);
   QMatrix wm = p->Painter->worldMatrix();
   p->Painter->setWorldMatrix(QMatrix());
 
@@ -409,7 +410,7 @@ void Marker::paint(ViewPainter *p, int x0, int y0)
     p->drawText(Text, x0+x1+3, y0+y1+3);
   }
   p->Painter->setWorldMatrix(wm);
-  p->Painter->setWorldXForm(false);
+  p->Painter->setWorldMatrixEnabled(false);
 
   // restore painter state
   p->Painter->restore();

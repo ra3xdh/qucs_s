@@ -20,7 +20,6 @@
 #include "graphictext.h"
 #include "graphictextdialog.h"
 #include "schematic.h"
-#include "qucs.h"
 #include "misc.h"
 
 #include <QPainter>
@@ -59,7 +58,7 @@ void GraphicText::paint(ViewPainter *p)
   p->Painter->rotate(-Angle);   // automatically enables transformation
 
   int Size = Font.pointSize();
-  Font.setPointSizeFloat( p->FontScale * float(Size) );
+  Font.setPointSizeF( p->FontScale * float(Size) );
 
   QFont f = p->Painter->font();
   p->Painter->setPen(Color);
@@ -79,7 +78,7 @@ void GraphicText::paint(ViewPainter *p)
 
   Font.setPointSize(Size);   // restore real font size
   p->Painter->setWorldMatrix(wm);
-  p->Painter->setWorldXForm(false);
+  p->Painter->setWorldMatrixEnabled(false);
 
   // restore painter state
   p->Painter->restore();
@@ -165,12 +164,9 @@ bool GraphicText::load(const QString& s)
   if(Text.isEmpty()) return false;
 
   convert2Unicode(Text);
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  metrics(font);
-  QSize r = metrics.size(0, Text);    // get size of text
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
+  QSize r = metrics.size(0, Text);    // get overall size of text
   x2 = r.width();
   y2 = r.height();
 
@@ -328,7 +324,11 @@ bool GraphicText::Dialog()
   bool changed = false;
 
   GraphicTextDialog *d = new GraphicTextDialog();
-  d->ColorButt->setPaletteBackgroundColor(Color);
+
+  QPalette palette;
+  palette.setColor(d->ColorButt->backgroundRole(), Color);
+  d->ColorButt->setPalette(palette);
+
   d->TextSize->setText(QString::number(Font.pointSize()));
   d->Angle->setText(QString::number(Angle));
   QString _Text = Text;
@@ -340,8 +340,8 @@ bool GraphicText::Dialog()
     return false;
   }
 
-  if(Color != d->ColorButt->paletteBackgroundColor()) {
-    Color = d->ColorButt->paletteBackgroundColor();
+  if(Color != d->ColorButt->palette().color(d->ColorButt->backgroundRole())) {
+    Color = d->ColorButt->palette().color(d->ColorButt->backgroundRole());
     changed = true;
   }
   f.setPointSize(d->TextSize->text().toInt());   // to avoid wrong text width
@@ -355,19 +355,16 @@ bool GraphicText::Dialog()
     changed = true;
   }
 
-  encode_String(d->text->text(), _Text);  // create special characters
+  encode_String(d->text->toPlainText(), _Text);  // create special characters
   if(!_Text.isEmpty())
     if(_Text != Text) {
       Text = _Text;
       changed = true;
     }
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  m(font);
-// FIXME #warning is this the right way? it was this: QFontMetrics  m(f);
-  QSize s = m.size(0, Text);    // get size of text
+
+  // get font metric using the screen-compatible metric
+  QFontMetrics  m(f, 0);
+  QSize s = m.size(0, Text); // get size of text
   x2 = s.width();
   y2 = s.height();
 

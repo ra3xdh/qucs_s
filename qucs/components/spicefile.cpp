@@ -80,13 +80,18 @@ Element* SpiceFile::info(QString& Name, char* &BitmapFile, bool getNewOne)
 // -------------------------------------------------------
 void SpiceFile::createSymbol()
 {
-  QFontMetrics  metrics(QucsSettings.font);   // get size of text
-  int fHeight = metrics.lineSpacing();
+  QFont f = QucsSettings.font; // get the basic font
+  // symbol text is smaller (10 pt default)
+  f.setPointSize(10);
+  // use the screen-compatible metric
+  QFontMetrics  smallmetrics(f, 0);   // get size of text
+  int fHeight = smallmetrics.lineSpacing();
 
   int No = 0;
   QString tmp, PortNames = Props.at(1)->Value;
   if(!PortNames.isEmpty())  No = PortNames.count(',') + 1;
-
+  
+  // draw symbol outline
   #define HALFWIDTH  17
   int h = 30*((No-1)/2) + 15;
   Lines.append(new Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(Qt::darkBlue,2)));
@@ -98,29 +103,28 @@ void SpiceFile::createSymbol()
   if(withSim) {
     i = fHeight - 2;
     tmp = QObject::tr("sim");
-    w = metrics.width(tmp);
+    w = smallmetrics.width(tmp);
     Texts.append(new Text(w/-2, 0, tmp, Qt::red));
   }
   tmp = QObject::tr("spice");
-  w = metrics.width(tmp);
+  w = smallmetrics.boundingRect(tmp).width();
   Texts.append(new Text(w/-2, -i, tmp));
-
 
   i = 0;
   int y = 15-h;
-  while(i<No) {
+  while(i<No) { // add ports lines and numbers
     Lines.append(new Line(-30,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30,  y));
     tmp = PortNames.section(',', i, i).mid(4);
-    w = metrics.width(tmp);
-    Texts.append(new Text(-20-w, y-fHeight-2, tmp));
+    w = smallmetrics.width(tmp);
+    Texts.append(new Text(-20-w, y-fHeight-2, tmp)); // text right-aligned
     i++;
 
-    if(i == No) break;
+    if(i == No) break; // if odd number of ports there will be one port less on the right side
     Lines.append(new Line(HALFWIDTH,  y, 30,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 30,  y));
     tmp = PortNames.section(',', i, i).mid(4);
-    Texts.append(new Text( 20, y-fHeight-2, tmp));
+    Texts.append(new Text( 20, y-fHeight-2, tmp)); // text left-aligned
     y += 60;
     i++;
   }
@@ -134,6 +138,9 @@ void SpiceFile::createSymbol()
   x1 = -30; y1 = -h-2;
   x2 =  30; y2 =  h+15;
 
+  // compute component name text position - normal size font
+  QFontMetrics  metrics(QucsSettings.font, 0);   // use the screen-compatible metric
+  fHeight = metrics.lineSpacing();
   tx = x1+4;
   ty = y1 - fHeight - 4;
   if(Props.first()->display) ty -= fHeight;
@@ -262,7 +269,7 @@ bool SpiceFile::createSubNetlist(QTextStream *stream)
     return false;
   }
   SpiceFile.close();
-  QString ConvName = SpiceFile.name() + ".lst";
+  QString ConvName = SpiceFile.fileName() + ".lst";
   ConvFile.setFileName(ConvName);
   QFileInfo Info(ConvName);
 
@@ -276,7 +283,7 @@ bool SpiceFile::createSubNetlist(QTextStream *stream)
     }
     outstream = stream;
     filstream = new QTextStream(&ConvFile);
-    QString SpiceName = SpiceFile.name();
+    QString SpiceName = SpiceFile.fileName();
     bool ret = recreateSubNetlist(&SpiceName, &FileName);
     ConvFile.close();
     delete filstream;
@@ -350,20 +357,21 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
       connect(SpicePrep, SIGNAL(readyReadStandardError()), SLOT(slotGetPrepErr()));
     }
 
-    QMessageBox *MBox = new QMessageBox(QObject::tr("Info"),
-	       QObject::tr("Preprocessing SPICE file \"%1\".").arg(*SpiceFile),
-               QMessageBox::NoIcon, QMessageBox::Abort,
-               QMessageBox::NoButton, QMessageBox::NoButton, 0, 0, true,
-	       Qt::WStyle_DialogBorder |  Qt::WDestructiveClose);
+    QMessageBox *MBox = 
+      new QMessageBox(QMessageBox::NoIcon,
+                      QObject::tr("Info"),
+                      QObject::tr("Preprocessing SPICE file \"%1\".").arg(*SpiceFile),
+                      QMessageBox::Abort);
+    MBox->setAttribute(Qt::WA_DeleteOnClose);
     connect(SpicePrep, SIGNAL(finished(int)), MBox, SLOT(close()));
 
     if (piping) {
       PrepFile.setFileName(PrepName);
       if(!PrepFile.open(QIODevice::WriteOnly)) {
-	ErrText +=
-	  QObject::tr("ERROR: Cannot save preprocessed SPICE file \"%1\".").
-	  arg(PrepName);
-	return false;
+        ErrText +=
+          QObject::tr("ERROR: Cannot save preprocessed SPICE file \"%1\".").
+          arg(PrepName);
+        return false;
       }
       prestream = new QTextStream(&PrepFile);
     }
@@ -379,8 +387,8 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
       ErrText += QObject::tr("ERROR: Cannot execute \"%1\".").
               arg(interpreter + " " + script.join(" ") + "\".");
       if (piping) {
-	PrepFile.close();
-	delete prestream;
+        PrepFile.close();
+        delete prestream;
       }
       return false;
     }
@@ -444,11 +452,12 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
   (*filstream) << NetText;
 
   // waiting info dialog box
-  QMessageBox *MBox = new QMessageBox(QObject::tr("Info"),
-	       QObject::tr("Converting SPICE file \"%1\".").arg(*SpiceFile),
-               QMessageBox::NoIcon, QMessageBox::Abort,
-               QMessageBox::NoButton, QMessageBox::NoButton, 0, 0, true,
-	       Qt::WStyle_DialogBorder | Qt::WDestructiveClose);
+  QMessageBox *MBox = 
+    new QMessageBox(QMessageBox::NoIcon, 
+                    QObject::tr("Info"),
+                    QObject::tr("Converting SPICE file \"%1\".").arg(*SpiceFile),
+                    QMessageBox::Abort);
+  MBox->setAttribute(Qt::WA_DeleteOnClose);
   connect(QucsConv, SIGNAL(finished(int)), MBox, SLOT(close()));
   MBox->exec();
 
@@ -505,8 +514,8 @@ void SpiceFile::slotGetNetlist()
       continue;
     } else if(s.size()>0&&s.at(0) == '.') {
       if(s.left(5) != ".Def:") {
-	if(insertSim) SimText += s + "\n";
-	continue;
+        if(insertSim) SimText += s + "\n";
+        continue;
       }
     }
     if(makeSubcircuit) {

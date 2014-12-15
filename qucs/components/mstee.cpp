@@ -19,6 +19,7 @@
 
 #include <QFontMetrics>
 
+
 MStee::MStee()
 {
   Description = QObject::tr("microstrip tee");
@@ -26,9 +27,10 @@ MStee::MStee()
   x1 = -30; y1 = -11;
   x2 =  30; y2 =  30;
 
-  QFontMetrics metrics(QucsSettings.font);   // get size of text
+  // use the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);   // get size of text
   tx = x1+4;
-  ty = y1 - 5*metrics.lineSpacing() - 4;
+  ty = y1 - 5*metrics.lineSpacing() - 4; // 5 lines of text
   Model = "MTEE";
   Name  = "MS";
 
@@ -75,6 +77,12 @@ Element* MStee::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 void MStee::createSymbol()
 {
+  QFont Font(QucsSettings.font); // default application font
+  // symbol text is smaller (10 pt default)
+  Font.setPointSize(10); 
+  // get the small font size; use the screen-compatible metric
+  QFontMetrics smallmetrics(Font, 0); 
+  
   Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line(  0, 18,  0, 30,QPen(Qt::darkBlue,2)));
@@ -88,9 +96,14 @@ void MStee::createSymbol()
   Lines.append(new Line( -8, 18,  8, 18,QPen(Qt::darkBlue,2)));
 
   if(Props.getLast()->Value.at(0) != 'n') {
-    Texts.append(new Text(-26, 3, "1"));
-    Texts.append(new Text( 21, 3, "2"));
-    Texts.append(new Text(  4,18, "3"));
+    QString stmp = "1"; 
+    int w = smallmetrics.width(stmp);
+    int d = smallmetrics.descent();
+    int a = smallmetrics.ascent();
+    
+    Texts.append(new Text(-25-w, -d+6, stmp)); // right-aligned, top-aligned
+    Texts.append(new Text( 25, -d+6, "2")); // left-aligned, top-aligned
+    Texts.append(new Text(  5, 30-a-1, "3")); // bottom-aligned
   }
 
   Ports.append(new Port(-30, 0));

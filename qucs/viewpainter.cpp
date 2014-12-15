@@ -52,10 +52,10 @@ void ViewPainter::init(QPainter *p, float Scale_, int DX_, int DY_,
 #ifdef __MINGW32__
   FontScale = Scale;
 #endif
-  f.setPointSizeFloat( FontScale * float(f.pointSize()) );
+  f.setPointSizeF( FontScale * float(f.pointSize()) );
   p->setFont(f);
   LineSpacing = p->fontMetrics().lineSpacing();
-  p->setWorldXForm(false);   // we use our own coordinate transformation
+  p-> setMatrixEnabled(false);   // we use our own coordinate transformation
 
   QPainter::RenderHints hints = 0;
   // Ask to to antialias drawings if requested
@@ -308,18 +308,18 @@ int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1,
 #endif
       QFont fbak = Painter->font();
       QFont f = Painter->font();
-      f.setPointSizeFloat(f.pointSizeFloat()*0.8);
+      f.setPointSizeF(f.pointSizeF()*0.8);
       Painter->setFont(f);
 
       rf = Painter->boundingRect(QRectF(x1+x,
 			y1+y + (is_sub ? +0.6 : -0.3) *
-			fbak.pointSizeFloat() * scale,
+			fbak.pointSizeF() * scale,
 			0, 0), Qt::TextDontClip,
 			Text.mid(i, len ? len : 1));
 
       Painter->drawText(QRectF(x1+x,
 			y1+y + (is_sub ? +0.6 : -0.3) *
-			fbak.pointSizeFloat() * scale,
+			fbak.pointSizeF() * scale,
 			0, 0), Qt::TextDontClip,
 			Text.mid(i, len ? len : 1));
 

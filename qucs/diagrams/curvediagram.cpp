@@ -33,8 +33,6 @@
 
 #include "curvediagram.h"
 #include "main.h"
-#include "qucs.h"
-#include "schematic.h"
 #include "misc.h"
 
 CurveDiagram::CurveDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
@@ -120,11 +118,8 @@ int CurveDiagram::calcDiagram()
   Arcs.clear();
 
   double GridStep, corr, zD, zDstep, GridNum;
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  metrics(font);   // get size of text
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
   y1 = QucsSettings.font.pointSize() + 6;
 
   x1 = 10;      // position of label text
@@ -165,9 +160,9 @@ if(xAxis.log) {
       tmp = StringNiceNum(zD);
       if(xAxis.up < 0.0)  tmp = '-'+tmp;
       w = metrics.width(tmp);  // width of text
-
+      // center text horizontally under the x tick mark
       Texts.append(new Text(z-(w>>1), -y1, tmp));
-      Lines.append(new Line(z, 5, z, -5, QPen(Qt::black,0)));  // x marks
+      Lines.append(new Line(z, 5, z, -5, QPen(Qt::black,0)));  // x tick marks
     }
 
     zD += zDstep;
@@ -193,12 +188,13 @@ else {  // not logarithmical
     if(fabs(GridNum) < 0.01*pow(10.0, Expo)) GridNum = 0.0;// make 0 really 0
     tmp = StringNiceNum(GridNum);
     w = metrics.width(tmp);  // width of text
-    Texts.append(new Text(z-(w>>1), -y1, tmp));
+    // center text horizontally under the x tick mark
+    Texts.append(new Text(z-(w>>1), -y1, tmp)); // Text(x, y, str, ...)
     GridNum += GridStep;
 
     if(xAxis.GridOn)  if(z < x2)  if(z > 0)
       Lines.prepend(new Line(z, y2, z, 0, GridPen)); // x grid
-    Lines.append(new Line(z, 5, z, -5, QPen(Qt::black,0)));   // x marks
+    Lines.append(new Line(z, 5, z, -5, QPen(Qt::black,0)));   // x tick marks
     zD += zDstep;
     z = int(zD);
   }

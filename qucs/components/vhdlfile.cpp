@@ -109,7 +109,7 @@ QString VHDL_File::loadFile()
     return QString("");
 
   QTextStream stream(&f);
-  File = stream.read();   // QString is better for "find" function
+  File = stream.readAll();   // QString is better for "find" function
   f.close();
 
   // parse ports, i.e. network connections; and generics, i.e. parameters
@@ -125,7 +125,8 @@ QString VHDL_File::loadFile()
 // -------------------------------------------------------
 void VHDL_File::createSymbol()
 {
-  QFontMetrics  metrics(QucsSettings.font);   // get size of text
+  // use the screen-compatible metric
+  QFontMetrics  metrics(QucsSettings.font, 0);   // get size of text
   int fHeight = metrics.lineSpacing();
 
   int No = 0;
@@ -280,11 +281,11 @@ VHDL_File_Info::VHDL_File_Info(QString File, bool isfile)
   }
 
   QRegExp Expr;
-  Expr.setCaseSensitive(false);
+  Expr.setCaseSensitivity(Qt::CaseInsensitive); 
   for(;;) {
     k--;
     Expr.setPattern("\\bentity\\b");  // start of last entity
-    k = File.findRev(Expr, k);
+    k = File.lastIndexOf(Expr, k);
     if(k < 0)
       return;
 
@@ -309,7 +310,7 @@ VHDL_File_Info::VHDL_File_Info(QString File, bool isfile)
     j = s.indexOf(Expr, i+1);
     if(j < 0)
       return;
-    if(s.mid(i, j-i).lower() == "is")   // really found start of entity ?
+    if(s.mid(i, j-i).toLower() == "is")   // really found start of entity ?
       break;
 
     if(k < 1)    // already searched the whole text
@@ -325,7 +326,7 @@ VHDL_File_Info::VHDL_File_Info(QString File, bool isfile)
 QString VHDL_File_Info::parsePorts(QString s, int j)
 {
   QRegExp Expr;
-  Expr.setCaseSensitive(false);
+  Expr.setCaseSensitivity(Qt::CaseInsensitive);
   int i, p, l, k;
 
   Expr.setPattern("\\bport\\b");  // start of interface definition
@@ -360,17 +361,17 @@ QString VHDL_File_Info::parsePorts(QString s, int j)
     if(j < 0) {
       t = s.mid(i+1);
       t.remove(';');
-      t = t.simplifyWhiteSpace();
+      t = t.simplified();
       s = s.left(i);
     } else {
       t = s.mid(i+1, j-i);
       t.remove(';');
-      t = t.simplifyWhiteSpace();
+      t = t.simplified();
       s.remove(i, j-i);
     }
     if ((k = t.indexOf(' ')) >= 0)
       t = t.mid(k+1);
-    t = t.simplifyWhiteSpace();
+    t = t.simplified();
     k = s.indexOf(';',l+2);
     k = (s.mid(l,k-l).count(',')) + 1;
     while (k-->0) types = types + t + ",";
@@ -388,7 +389,7 @@ QString VHDL_File_Info::parsePorts(QString s, int j)
 QString VHDL_File_Info::parseGenerics(QString s, int j)
 {
   QRegExp Expr;
-  Expr.setCaseSensitive(false);
+  Expr.setCaseSensitivity(Qt::CaseInsensitive);
   int i, p, l, k, n;
 
   Expr.setPattern("\\bgeneric\\b");
@@ -426,12 +427,12 @@ QString VHDL_File_Info::parseGenerics(QString s, int j)
       j = s.indexOf(';', n+2);
       if(j < 0) {
 	d = s.mid(n+2);
-	d = d.simplifyWhiteSpace();
+	d = d.simplified();
 	s = s.left(n);
       } else {
 	d = s.mid(n+2, j-n-1);
 	d.remove(';');
-	d = d.simplifyWhiteSpace();
+	d = d.simplified();
 	s.remove(n, j-n);
       }
       j = s.indexOf(';', n);
@@ -439,17 +440,17 @@ QString VHDL_File_Info::parseGenerics(QString s, int j)
     if(j < 0) {
       t = s.mid(i+1);
       t.remove(';');
-      t = t.simplifyWhiteSpace();
+      t = t.simplified();
       s = s.left(i);
     } else {
       t = s.mid(i+1, j-i);
       t.remove(';');
-      t = t.simplifyWhiteSpace();
+      t = t.simplified();
       s.remove(i, j-i);
     }
     if ((k = t.indexOf(' ')) >= 0)
       t = t.mid(k+1);
-    t = t.simplifyWhiteSpace();
+    t = t.simplified();
     k = s.indexOf(';',l+2);
     k = (s.mid(l,k-l).count(',')) + 1;
     while (k-->0) {

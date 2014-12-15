@@ -106,10 +106,14 @@ QString RFedd2P::netlist()
 // -------------------------------------------------------
 void RFedd2P::createSymbol()
 {
-  QFontMetrics  metrics(QucsSettings.font);   // get size of text
-  int fHeight = metrics.lineSpacing();
-  int w, i;
+  QFont Font(QucsSettings.font); // default application font
+  // symbol text is smaller (10 pt default)
+  Font.setPointSize(10); 
+  // get the small font size; use the screen-compatible metric
+  QFontMetrics  smallmetrics(Font, 0); 
+  int fHeight = smallmetrics.lineSpacing();
   QString tmp;
+  int w, i;
 
   // draw symbol
   #define HALFWIDTH  17
@@ -119,30 +123,32 @@ void RFedd2P::createSymbol()
   Lines.append(new Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
   Lines.append(new Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
 
-  i = fHeight/2;
+  // component text name
   tmp = Props.at(0)->Value;
-  w = metrics.width(tmp);
-  Texts.append(new Text(w/-2, -i, tmp));
+  w = smallmetrics.width(tmp);
+  Texts.append(new Text(-w/2, -fHeight/2, tmp)); // text centered in the box
 
+  // add port numbers text
   i = 0;
   int y = 15-h;
   Lines.append(new Line(-30,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
   Ports.append(new Port(-30,  y));
   tmp = QString::number(i+1);
-  w = metrics.width(tmp);
-  Texts.append(new Text(-20-w, y-fHeight-2, tmp));
+  w = smallmetrics.width(tmp);
+  Texts.append(new Text(-25-w, y-fHeight-2, tmp)); // text right-aligned
   i++;
 
   Lines.append(new Line(HALFWIDTH,  y, 30,  y,QPen(Qt::darkBlue,2)));
   Ports.append(new Port( 30,  y));
   tmp = QString::number(i+1);
-  Texts.append(new Text( 20, y-fHeight-2, tmp));
+  Texts.append(new Text(25, y-fHeight-2, tmp)); // text left-aligned
   y += 60;
   i++;
 
   x1 = -30; y1 = -h-2;
   x2 =  30; y2 =  h+2;
-
+  // compute component name text position - normal size font
+  QFontMetrics  metrics(QucsSettings.font, 0);   // use the screen-compatible metric
   tx = x1+4;
-  ty = y1 - fHeight - 4;
+  ty = y1 - metrics.lineSpacing() - 4;
 }

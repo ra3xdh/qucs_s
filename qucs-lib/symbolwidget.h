@@ -30,6 +30,11 @@
 
 #include "element.h"
 
+/*!
+ * \file symbolwidget.h
+ * \brief Definition of the SymbolWidget class.
+ */
+
 class QPaintEvent;
 class QSizePolicy;
 
@@ -93,12 +98,10 @@ private:
 
   int  analyseLine(const QString&);
 
-
   bool getPen  (const QString&, QPen&, int);
   bool getBrush(const QString&, QBrush&, int);
 
   //Q3DragObject *myDragObject;
-
 
   QString PaintText, DragNDropText;
   int TextWidth, DragNDropWidth, TextHeight;

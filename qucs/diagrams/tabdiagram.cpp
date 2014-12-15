@@ -20,15 +20,15 @@
   \brief The TabDiagram class implements the Tabular diagram
 */
 
+#include <QFontMetrics>
+#include <QPolygon>
+#include <QPainter>
+
 #include "tabdiagram.h"
 #include "main.h"
 #include <math.h>
-#include "qucs.h"
-#include "schematic.h"
 #include "misc.h"
 
-#include <QPolygon>
-#include <QPainter>
 
 TabDiagram::TabDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
 {
@@ -129,12 +129,8 @@ int TabDiagram::calcDiagram()
 
   x1 = 0;  // no scroll bar
   x3 = x2;
-  QFont font = QFont("Helvetica", 12);
-  if (QucsMain) {
-    font = ((Schematic*)QucsMain->DocumentTab->currentPage())->font();
-  }
-  QFontMetrics  metrics(font);   // get size of text
-  //qDebug("QucsSettings.font %i", QucsSettings.font.pointSize());
+  // get size of text using the screen-compatible metric
+  QFontMetrics metrics(QucsSettings.font, 0);
   int tHeight = metrics.lineSpacing();
   QString Str;
   int colWidth=0, x=8, y;
