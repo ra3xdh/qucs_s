@@ -112,7 +112,7 @@ SET(QUCS_SRCS
   mouseactions.cpp qucs_actions.cpp	schematic_file.cpp
   wirelabel.cpp node.cpp qucs_init.cpp
   syntax.cpp misc.cpp messagedock.cpp
-  imagewriter.cpp printerwriter.cpp
+  imagewriter.cpp printerwriter.cpp projectView.cpp
 )
 
 SET(QUCS_HDRS
