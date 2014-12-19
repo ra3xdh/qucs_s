@@ -30,6 +30,7 @@ class MouseActions;
 class SearchDialog;
 class OctaveWindow;
 class MessageDock;
+class ProjectView;
 
 class QLabel;
 class QAction;
@@ -184,6 +185,7 @@ private:
 
   QListView       *Projects;
   QTreeWidget     *Content;
+  ProjectView     *Content_new;
   QTreeWidgetItem *ConSchematics, *ConSources, *ConDisplays, *ConDatasets,
                   *ConOthers, *ConVerilog, *ConVerilogA, *ConOctave;
 

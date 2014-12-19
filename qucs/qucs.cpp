@@ -51,6 +51,7 @@
 #include "messagedock.h"
 #include "wire.h"
 #include "module.h"
+#include "projectView.h"
 #include "components/components.h"
 #include "paintings/paintings.h"
 #include "diagrams/diagrams.h"
@@ -315,6 +316,12 @@ void QucsApp::initView()
 
   connect(Content, SIGNAL(itemPressed(QTreeWidgetItem*, int)),
            SLOT(slotSelectSubcircuit(QTreeWidgetItem*)));
+
+  // ----------------------------------------------------------
+  // "Content_new" Tab of the left QTabWidget
+  Content_new = new ProjectView(this);
+  TabView->addTab(Content_new, tr("Content_new"));
+  TabView->setTabToolTip(TabView->indexOf(Content_new), tr("content of current project"));
 
   // ----------------------------------------------------------
   // "Component" Tab of the left QTabWidget
