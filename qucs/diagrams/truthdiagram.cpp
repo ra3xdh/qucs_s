@@ -99,56 +99,56 @@ int TruthDiagram::calcDiagram()
   int counting, invisibleCount=0;
   int startWriting, z;
 
-  while(g->cPointsX.isEmpty()) {  // any graph with data ?
-    g = ig.next();
-    if( ! ig.hasNext()) break;
-  }
-if(g) if(!g->cPointsX.isEmpty()) {
-  // ................................................
-  NumAll = g->cPointsX.getFirst()->count * g->countY;  // number of values
-
-  invisibleCount = NumAll - y/tHeight;
-  if(invisibleCount <= 0)  xAxis.limit_min = 0.0;// height bigger than needed
-  else {
-    if(invisibleCount < int(xAxis.limit_min + 0.5))
-      xAxis.limit_min = double(invisibleCount); // adjust limit of scroll bar
-    NumLeft = invisibleCount - int(xAxis.limit_min + 0.5);
+  // any graph with data ?
+  while(g->cPointsX.isEmpty()) {
+    if (!ig.hasNext()) break; // no more graphs, exit loop
+    g = ig.next(); // point to next graph
   }
 
-
-  colWidth = 0;
-  Texts.append(new Text(x-4, y2-2, Str)); // independent variable
-  if(NumAll != 0) {
-    z = metrics.width("1");
-    colWidth = metrics.width("0");
-    if(z > colWidth)  colWidth = z;
-    colWidth += 2;
-    counting = int(log(double(NumAll)) / log(2.0) + 0.9999); // number of bits
-
-    if((x+colWidth*counting) >= x2) {    // enough space for text ?
-      checkColumnWidth("0", metrics, 0, x2, y);
-      goto funcEnd;
+  if(!g->cPointsX.isEmpty()) { // did we find a graph with data ?
+    // ................................................
+    NumAll = g->cPointsX.getFirst()->count * g->countY;  // number of values
+    
+    invisibleCount = NumAll - y/tHeight;
+    if(invisibleCount <= 0)  xAxis.limit_min = 0.0;// height bigger than needed
+    else {
+      if(invisibleCount < int(xAxis.limit_min + 0.5))
+	xAxis.limit_min = double(invisibleCount); // adjust limit of scroll bar
+      NumLeft = invisibleCount - int(xAxis.limit_min + 0.5);
     }
 
-    y = y2-tHeight-5;
-    startWriting = x;
-    for(z=int(xAxis.limit_min + 0.5); z<NumAll; z++) {
-      if(y < tHeight) break;  // no room for more rows ?
-      startWriting = x;
-      for(int zi=counting-1; zi>=0; zi--) {
-        if(z & (1 << zi))  Str = "1";
-        else  Str = "0";
-        Texts.append(new Text( startWriting, y, Str));
-        startWriting += colWidth;
+    colWidth = 0;
+    Texts.append(new Text(x-4, y2-2, Str)); // independent variable
+    if(NumAll != 0) {
+      z = metrics.width("1");
+      colWidth = metrics.width("0");
+      if(z > colWidth)  colWidth = z;
+      colWidth += 2;
+      counting = int(log(double(NumAll)) / log(2.0) + 0.9999); // number of bits
+      
+      if((x+colWidth*counting) >= x2) {    // enough space for text ?
+	checkColumnWidth("0", metrics, 0, x2, y);
+	goto funcEnd;
       }
-      y -= tHeight;
+      
+      y = y2-tHeight-5;
+      startWriting = x;
+      for(z=int(xAxis.limit_min + 0.5); z<NumAll; z++) {
+	if(y < tHeight) break;  // no room for more rows ?
+	startWriting = x;
+	for(int zi=counting-1; zi>=0; zi--) {
+	  if(z & (1 << zi))  Str = "1";
+	  else  Str = "0";
+	  Texts.append(new Text( startWriting, y, Str));
+	  startWriting += colWidth;
+	}
+	y -= tHeight;
+      }
+      x = startWriting + 15;
     }
-    x = startWriting + 15;
-  }
-  Lines.append(new Line(x-8, y2, x-8, 0, QPen(Qt::black,2)));
-
-}  // of "if no data in graphs"
-
+    Lines.append(new Line(x-8, y2, x-8, 0, QPen(Qt::black,2)));  
+  }  // of "if no data in graphs"
+  
 
   int zi, digitWidth;
   firstGraph = g;

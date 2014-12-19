@@ -151,9 +151,9 @@ int TimingDiagram::calcDiagram()
 
   QListIterator<Graph *> ig(Graphs);
   Graph *g = 0;
-  if (ig.hasNext())
-     g= ig.next();
-
+  if (ig.hasNext()) // point to first graph
+    g = ig.next();
+  
   if(g == 0) {  // no variables specified in diagram ?
     Str = QObject::tr("no variables");
     colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
@@ -164,11 +164,13 @@ int TimingDiagram::calcDiagram()
 
 
   double *px;
-  while(g->cPointsX.isEmpty()) {  // any graph with data ?
-    g = ig.next();
-    if( !ig.hasNext()) break;
+  // any graph with data ?
+  while(g->cPointsX.isEmpty()) {
+    if (!ig.hasNext()) break; // no more graphs, exit loop
+    g = ig.next(); // point to next graph
   }
-  if(g == 0) {
+  
+  if(g->cPointsX.isEmpty()) { // no graph with data found ?
     Str = QObject::tr("no data");
     colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
     if(colWidth < 0)  return 0;
