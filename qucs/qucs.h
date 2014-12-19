@@ -139,6 +139,7 @@ private slots:
   void slotSelectSubcircuit(QTreeWidgetItem*);
   void slotSelectLibComponent(QTreeWidgetItem*);
   void slotOpenContent(QTreeWidgetItem*);
+  void slotOpenContent_new(const QModelIndex &);
   void slotSetCompView(int);
   void slotButtonProjNew();
   void slotButtonProjOpen();

@@ -323,6 +323,9 @@ void QucsApp::initView()
   TabView->addTab(Content_new, tr("Content_new"));
   TabView->setTabToolTip(TabView->indexOf(Content_new), tr("content of current project"));
 
+  connect(Content_new, SIGNAL(doubleClicked(const QModelIndex &)),
+          SLOT(slotOpenContent_new(const QModelIndex &)));
+
   // ----------------------------------------------------------
   // "Component" Tab of the left QTabWidget
   QWidget *CompGroup  = new QWidget();
@@ -1358,6 +1361,8 @@ void QucsApp::openProject(const QString& Path)
   }
   QucsSettings.QucsWorkDir.setPath(ProjDir.path());
   octave->adjustDirectory();
+
+  Content_new->setProjPath(QucsSettings.QucsWorkDir.absolutePath());
 
   QStringList headers;
   headers << tr("Content of ") + Name << tr("Note");
@@ -2470,6 +2475,79 @@ void QucsApp::slotOpenContent(QTreeWidgetItem *item)
     if(Suffix == (*it).section('/',0,0)) {
       com = QStringList::split(" ", (*it).section('/',1,1));
       com << Info.absFilePath();
+      QProcess *Program = new QProcess();
+      //Program->setCommunication(0);
+      QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+      env.insert("PATH", env.value("PATH") );
+      Program->setProcessEnvironment(env);
+      Program->start(com.join(" "));
+      if(Program->state()!=QProcess::Running&&
+              Program->state()!=QProcess::Starting) {
+        QMessageBox::critical(this, tr("Error"),
+               tr("Cannot start \"%1\"!").arg(Info.absFilePath()));
+        delete Program;
+      }
+      return;
+    }
+    it++;
+  }
+
+  // If no appropriate program was found, open as text file.
+  editFile(Info.absFilePath());  // open datasets with text editor
+}
+
+// -------------------------------------------------------------------
+// Changes to the data display of current page.
+void QucsApp::slotOpenContent_new(const QModelIndex &idx)
+{
+  editText->setHidden(true); // disable text edit of component property
+
+  //test the item is valid
+  if (!idx.isValid()) { return; }
+  if (!idx.parent().isValid()) { return; }
+
+  QString filename = idx.sibling(idx.row(), 0).data().toString();
+  QString note = idx.sibling(idx.row(), 1).data().toString();
+  //qDebug() << filename << note;
+  QFileInfo Info(QucsSettings.QucsWorkDir.filePath(filename));
+  QString extName = Info.completeSuffix();
+
+  if (extName == "sch" || extName == "dpl" || extName == "vhdl" ||
+      extName == "vhd" || extName == "v" || extName == "va" ||
+      extName == "m" || extName == "oct") {
+    gotoPage(Info.absFilePath());
+    updateRecentFilesList(Info.absFilePath());
+    slotUpdateRecentFiles();
+
+    if(note.isEmpty())     // is subcircuit ?
+      if(extName == "sch") return;
+
+    select->blockSignals(true);  // switch on the 'select' action ...
+    select->setChecked(true);
+    select->blockSignals(false);
+
+    activeAction = select;
+    MouseMoveAction = 0;
+    MousePressAction = &MouseActions::MPressSelect;
+    MouseReleaseAction = &MouseActions::MReleaseSelect;
+    MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
+    return;
+  }
+
+  if(extName == "dat") {
+    editFile(Info.absFilePath());  // open datasets with text editor
+    return;
+  }
+
+  // File is no Qucs file, so go through list and search a user
+  // defined program to open it.
+  QStringList com;
+  QStringList::const_iterator it = QucsSettings.FileTypes.constBegin();
+  while(it != QucsSettings.FileTypes.constEnd()) {
+    if(extName == (*it).section('/',0,0)) {
+      com = QStringList::split(" ", (*it).section('/',1,1));
+      com << Info.absFilePath();
+
       QProcess *Program = new QProcess();
       //Program->setCommunication(0);
       QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
