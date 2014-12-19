@@ -320,8 +320,13 @@ void QucsApp::initView()
   // ----------------------------------------------------------
   // "Content_new" Tab of the left QTabWidget
   Content_new = new ProjectView(this);
+  Content_new->setContextMenuPolicy(Qt::CustomContextMenu);
+
   TabView->addTab(Content_new, tr("Content_new"));
   TabView->setTabToolTip(TabView->indexOf(Content_new), tr("content of current project"));
+
+  connect(Content_new, SIGNAL(clicked(const QModelIndex &)), 
+          SLOT(slotSelectSubcircuit_new(const QModelIndex &)));
 
   connect(Content_new, SIGNAL(doubleClicked(const QModelIndex &)),
           SLOT(slotOpenContent_new(const QModelIndex &)));
@@ -942,6 +947,8 @@ void QucsApp::initCursorMenu()
 
 
   connect(Content, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotShowContentMenu(const QPoint&)));
+
+  connect(Content_new, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotShowContentMenu(const QPoint&)));
 }
 
 // ----------------------------------------------------------
@@ -2627,6 +2634,69 @@ void QucsApp::slotSelectSubcircuit(QTreeWidgetItem *item)
   MouseDoubleClickAction = 0;
 }
 
+// ---------------------------------------------------------
+// Is called when the mouse is clicked within the Content QListView.
+void QucsApp::slotSelectSubcircuit_new(const QModelIndex &idx)
+{
+  editText->setHidden(true); // disable text edit of component property
+
+  if(!idx.isValid()) {   // mouse button pressed not over an item ?
+    Content_new->clearSelection();  // deselect component in ListView
+    return;
+  }
+
+  bool isVHDL = false;
+  bool isVerilog = false;
+  QModelIndex parentIdx = idx.parent();
+  if(!parentIdx.isValid()) { return; }
+
+  QString category = parentIdx.data().toString();
+
+  if(category == tr("Schematics")) {
+    if(idx.sibling(idx.row(), 1).data().toString().isEmpty())
+      return;   // return, if not a subcircuit
+  }
+  else if(category == tr("VHDL"))
+    isVHDL = true;
+  else if(category == tr("Verilog"))
+    isVerilog = true;
+  else
+    return;
+
+  QString filename = idx.sibling(idx.row(), 0).data().toString();
+  QString note = idx.sibling(idx.row(), 1).data().toString();
+
+  // delete previously selected elements
+  if(view->selElem != 0)  delete view->selElem;
+  view->selElem = 0;
+
+  // toggle last toolbar button off
+  if(activeAction) {
+    activeAction->blockSignals(true); // do not call toggle slot
+    activeAction->setChecked(false);       // set last toolbar button off
+    activeAction->blockSignals(false);
+  }
+  activeAction = 0;
+
+  Component *Comp;
+  if(isVHDL)
+    Comp = new VHDL_File();
+  else if(isVerilog)
+    Comp = new Verilog_File();
+  else
+    Comp = new Subcircuit();
+  Comp->Props.first()->Value = idx.sibling(idx.row(), 0).data().toString();
+  Comp->recreate(0);
+  view->selElem = Comp;
+
+  if(view->drawn)
+    ((Q3ScrollView*)DocumentTab->currentPage())->viewport()->update();
+  view->drawn = false;
+  MouseMoveAction = &MouseActions::MMoveElement;
+  MousePressAction = &MouseActions::MPressElement;
+  MouseReleaseAction = 0;
+  MouseDoubleClickAction = 0;
+}
 
 // ---------------------------------------------------------
 // Is called when the mouse is clicked within the Content QListView.
