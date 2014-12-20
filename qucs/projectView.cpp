@@ -25,9 +25,7 @@
 #include "schematic.h"
 
 #include <QString>
-#include <QList>
 #include <QDir>
-#include <QStandardItem>
 #include <QStandardItemModel>
 
 ProjectView::ProjectView(QWidget *parent)
@@ -36,11 +34,12 @@ ProjectView::ProjectView(QWidget *parent)
   m_projPath = QString();
   m_projPath = QString();
   m_valid = false;
-  m_model = new QStandardItemModel(8, 2);
+  m_model = new QStandardItemModel(8, 2, this);
 
   refresh();
 
   this->setModel(m_model);
+  this->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 ProjectView::~ProjectView()
@@ -76,11 +75,11 @@ ProjectView::setProjPath(const QString &path)
 void
 ProjectView::refresh()
 {
+  m_model->clear();
+
   QStringList header;
   header << tr("Content of %1").arg(m_projName) << tr("Note");
   m_model->setHorizontalHeaderLabels(header);
-
-  m_model->clear();
 
   APPEND_ROW(m_model, FILETYPE1);
   APPEND_ROW(m_model, FILETYPE2);
@@ -91,77 +90,60 @@ ProjectView::refresh()
   APPEND_ROW(m_model, FILETYPE7);
   APPEND_ROW(m_model, FILETYPE8);
 
+  setExpanded(m_model->index(6, 0), true);
+
   if (!m_valid) {
     return;
   }
-  
-//  QList<QVariant> data;
-//
-//  data << tr("Content of %1").arg(m_projName) << tr("Note");
-//  rootItem = new ProjectItem(data);
-//#define appendCategory(content) \
-//  ({ data.clear(); \
-//     data << content << ""; \
-//     rootItem->appendChild(new ProjectItem(data, rootItem)); \
-//  })
-//  appendCategory(FILETYPE1);
-//  appendCategory(FILETYPE2);
-//  appendCategory(FILETYPE3);
-//  appendCategory(FILETYPE4);
-//  appendCategory(FILETYPE5);
-//  appendCategory(FILETYPE6);
-//  appendCategory(FILETYPE7);
-//  appendCategory(FILETYPE8);
-//#undef appendCategory
-//
-//  int n;
-//  // put all files into "Content"-ListView
-//  QDir workPath(m_projPath);
-//  QStringList files = workPath.entryList("*", QDir::Files, QDir::Name);
-//  QStringList::iterator it;
-//  QString extName, fileName;
-//
-//#define appendFile(category) \
-//  ({ rootItem->child(category)->appendChild(new ProjectItem(columnData, rootItem->child(category))); })
-//
-//  for(it = files.begin(); it != files.end(); ++it) {
-//    fileName = (*it).toAscii();
-//    extName = QFileInfo(workPath.filePath(fileName)).completeSuffix();
-//    QList<QVariant> columnData;
-//    columnData << fileName;
-//
-//    if(extName == "dat") {
-//      appendFile(0);
-//    }
-//    else if(extName == "dpl") {
-//      appendFile(1);
-//    }
-//    else if(extName == "v") {
-//      appendFile(2);
-//    }
-//    else if(extName == "va") {
-//      appendFile(3);
-//    }
-//    else if((extName == "vhdl") || (extName == "vhd")) {
-//      appendFile(4);
-//    }
-//    else if((extName == "m") || (extName == "oct")) {
-//      appendFile(5);
-//    }
-//    else if(extName == "sch") {
-//      n = Schematic::testFile(workPath.filePath(fileName));
-//      if(n >= 0) {
-//        if(n > 0) {
-//          columnData << QString::number(n)+tr("-port");
-//        }
-//      }
-//      appendFile(6);
-//    }
-//    else {
-//      appendFile(7);
-//    }
-//  }
-//
-//#undef appendFile
-//  reset();
+
+  // put all files into "Content"-ListView
+  QDir workPath(m_projPath);
+  QStringList files = workPath.entryList("*", QDir::Files, QDir::Name);
+  QStringList::iterator it;
+  QString extName, fileName;
+  QList<QStandardItem *> columnData;
+
+#define APPEND_CHILD(category, data) \
+  m_model->item(category, 0)->appendRow(data);
+
+  for(it = files.begin(); it != files.end(); ++it) {
+    fileName = (*it).toAscii();
+    extName = QFileInfo(workPath.filePath(fileName)).completeSuffix();
+
+    columnData.clear();
+    columnData.append(new QStandardItem(fileName));
+
+    if(extName == "dat") {
+      APPEND_CHILD(0, columnData);
+    }
+    else if(extName == "dpl") {
+      APPEND_CHILD(1, columnData);
+    }
+    else if(extName == "v") {
+      APPEND_CHILD(2, columnData);
+    }
+    else if(extName == "va") {
+      APPEND_CHILD(3, columnData);
+    }
+    else if((extName == "vhdl") || (extName == "vhd")) {
+      APPEND_CHILD(4, columnData);
+    }
+    else if((extName == "m") || (extName == "oct")) {
+      APPEND_CHILD(5, columnData);
+    }
+    else if(extName == "sch") {
+      int n = Schematic::testFile(workPath.filePath(fileName));
+      if(n >= 0) {
+        if(n > 0) {
+          columnData.append(new QStandardItem(QString::number(n)+tr("-port")));
+        }
+      }
+      APPEND_CHILD(6, columnData);
+    }
+    else {
+      APPEND_CHILD(7, columnData);
+    }
+  }
+
+  resizeColumnToContents(0);
 }

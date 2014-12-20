@@ -1323,6 +1323,8 @@ void QucsApp::readProjectFiles()
       temp->setText(0, (*it).ascii());
     }
   }
+
+  Content_new->refresh();
 }
 
 // ----------------------------------------------------------
@@ -1360,6 +1362,8 @@ void QucsApp::openProject(const QString& Path)
   QStringList headers;
   headers << tr("Content of ") + Name << tr("Note");
   Content->setHeaderLabels(headers);
+
+  Content_new->setProjPath(QucsSettings.QucsWorkDir.absolutePath());
 
   readProjectFiles();
 
