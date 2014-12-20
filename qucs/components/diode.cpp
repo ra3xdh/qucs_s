@@ -16,7 +16,8 @@
  ***************************************************************************/
 
 #include "diode.h"
-
+#include "node.h"
+#include "main.h"
 
 Diode::Diode()
 {
@@ -86,11 +87,39 @@ Diode::Diode()
   ty = y2+4;
   Model = "Diode";
   Name  = "D";
+  SpiceModel = "D";
 }
 
 Component* Diode::newOne()
 {
   return new Diode();
+}
+
+QString Diode::spice_netlist()
+{
+    QString s = check_spice_refdes();
+    // output all node names
+    foreach(Port *p1, Ports) {
+        QString nam = p1->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+
+    QString par_str = "";
+
+    for (unsigned int i=0;i<Props.count()-2;i++) {
+        QString unit;
+        double val,fac;
+        str2num(Props.at(i)->Value,val,unit,fac);
+        val *= fac;
+        par_str += QString("%1=%2 ").arg(Props.at(i)->Name).arg(val);
+    }
+
+    s += QString(" MOD_%1 \n").arg(Name);
+    s += QString(".MODEL MOD_%1 D (%2)\n").arg(Name).arg(par_str);
+
+    return s;
+
 }
 
 Element* Diode::info(QString& Name, char* &BitmapFile, bool getNewOne)

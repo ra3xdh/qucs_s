@@ -27,6 +27,7 @@ public:
  ~Diode() {};
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+  QString spice_netlist();
 
 protected:
   void createSymbol();
