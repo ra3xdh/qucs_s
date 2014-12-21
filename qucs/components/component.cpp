@@ -640,6 +640,34 @@ QString Component::check_spice_refdes() // If starting letters of the component 
     }
 }
 
+// Forms spice parameter list
+// ignore_list --- QStringList with spice_incompatible parameters
+// convert_list ---  QString list with parameters that needs names conversion
+//                   list format is: ( qucs_parameter_name<i> , spice_parameter_name<i>, ... )
+
+QString Component::form_spice_param_list(QStringList& ignore_list, QStringList& convert_list)
+{
+    QString par_str = "";
+
+    for (unsigned int i=0;i<Props.count();i++) {
+        if (!ignore_list.contains(Props.at(i)->Name)) {
+            QString unit,nam;
+            if (convert_list.contains(Props.at(i)->Name)) {
+                nam = convert_list.at(convert_list.indexOf(Props.at(i)->Name)+1);
+            } else {
+                nam = Props.at(i)->Name;
+            }
+            double val,fac;
+            str2num(Props.at(i)->Value,val,unit,fac);
+            val *= fac;
+            par_str += QString("%1=%2 ").arg(nam).arg(val);
+        }
+
+    }
+
+    return par_str;
+}
+
 QString Component::spice_netlist()
 {
     QString s = SpiceModel+Name;
