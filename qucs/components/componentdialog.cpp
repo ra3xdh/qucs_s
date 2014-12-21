@@ -1034,10 +1034,46 @@ void ComponentDialog::slotApplyInput()
 // -------------------------------------------------------------------------
 void ComponentDialog::slotBrowseFile()
 {
+  // current file name from the component properties
+  QString currFileName = prop->item(prop->currentRow(), 1)->text();
+  QFileInfo currFileInfo(currFileName);
+  // name of the schematic where component is instantiated (may be empty)
+  QFileInfo schematicFileInfo = Comp->getSchematic()->getFileInfo();
+  QString schematicFileName = schematicFileInfo.fileName();
+  // directory to use for the file open dialog
+  QString currDir;
+
+  if (!currFileName.isEmpty()) { // a file name is already defined
+    if (currFileInfo.isRelative()) { // but has no absolute path
+      if (!schematicFileName.isEmpty()) { // if schematic has a filename
+	// build the an absolute file name using the schematic path
+	currDir = schematicFileInfo.absolutePath() + 
+	          QDir::separator() +
+                  currFileInfo.fileName();
+      } else { // no absolute paths around
+	// use the WorkDir path
+	currDir = QucsSettings.QucsWorkDir.path() + 
+	          QDir::separator() +
+	  currFileInfo.fileName();
+      }
+    } else { // current file name is absolute
+      // use it
+      currDir = currFileName;
+    }
+  } else { // a file name is not defined
+    if (!schematicFileName.isEmpty()) { // if schematic has a filename
+      // use the schematic absolute path
+      currDir = schematicFileInfo.absolutePath();
+    } else { // no absolute paths around
+      // use the WorkDir path
+      currDir = QucsSettings.QucsWorkDir.path();
+    }
+  }
+  
   QString s = QFileDialog::getOpenFileName (
           this,
           tr("Select a file"),
-          QucsSettings.QucsWorkDir.path(),
+          currDir,
           tr("All Files")+" (*.*);;"
             + tr("Touchstone files") + " (*.s?p);;"
             + tr("CSV files") + " (*.csv);;"
