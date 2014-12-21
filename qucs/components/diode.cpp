@@ -36,7 +36,7 @@ Diode::Diode()
   Props.append(new Property("Fc", "0.5", false,
 	QObject::tr("forward-bias depletion capacitance coefficient")));
   Props.append(new Property("Cp", "0.0 fF", false,
-	QObject::tr("linear capacitance")));
+    QObject::tr("linear capacitance")));
   Props.append(new Property("Isr", "0.0", false,
 	QObject::tr("recombination current parameter")));
   Props.append(new Property("Nr", "2.0", false,
@@ -105,17 +105,30 @@ QString Diode::spice_netlist()
         s += " "+ nam;   // node names
     }
 
+    QStringList spice_incompat,spice_tr;
+    spice_incompat<<"Cp"<<"Isr"<<"Nr"<<"Ffe"<<"Temp"; // spice-incompatible parameters
+    spice_tr<<"Tbv"<<"Tcv"; // parameters that need convertion of names
+                            // list format is: ( qucs_parameter<i> , spice_parameter<i> )
+
     QString par_str = "";
 
     for (unsigned int i=0;i<Props.count()-2;i++) {
-        QString unit;
-        double val,fac;
-        str2num(Props.at(i)->Value,val,unit,fac);
-        val *= fac;
-        par_str += QString("%1=%2 ").arg(Props.at(i)->Name).arg(val);
+        if (!spice_incompat.contains(Props.at(i)->Name)) {
+            QString unit,nam;
+            if (spice_tr.contains(Props.at(i)->Name)) {
+                nam = spice_tr.at(spice_tr.indexOf(Props.at(i)->Name)+1);
+            } else {
+                nam = Props.at(i)->Name;
+            }
+            double val,fac;
+            str2num(Props.at(i)->Value,val,unit,fac);
+            val *= fac;
+            par_str += QString("%1=%2 ").arg(nam).arg(val);
+        }
+
     }
 
-    s += QString(" MOD_%1 \n").arg(Name);
+    s += QString(" MOD_%1 AREA=%2 \n").arg(Name).arg(Props.at(27)->Value);
     s += QString(".MODEL MOD_%1 D (%2)\n").arg(Name).arg(par_str);
 
     return s;
