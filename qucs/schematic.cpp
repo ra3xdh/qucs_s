@@ -267,9 +267,9 @@ void Schematic::setName (const QString& Name_)
 void Schematic::setChanged(bool c, bool fillStack, char Op)
 {
   if((!DocChanged) && c)
-    App->DocumentTab->setTabIcon(App->DocumentTab->currentIndex(), QPixmap(smallsave_xpm));
+    App->DocumentTab->setTabIcon(App->DocumentTab->indexOf(this), QPixmap(smallsave_xpm));
   else if(DocChanged && (!c))
-    App->DocumentTab->setTabIcon(App->DocumentTab->currentIndex(), QPixmap(empty_xpm));
+    App->DocumentTab->setTabIcon(App->DocumentTab->indexOf(this), QPixmap(empty_xpm));
   DocChanged = c;
 
   showBias = -1;   // schematic changed => bias points may be invalid
