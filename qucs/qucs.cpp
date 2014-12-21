@@ -915,8 +915,6 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
 
 void QucsApp::initCursorMenu()
 {
-
-  // TODO -> The contentmenu is also shown when the user right-clicks on a category...
   ContentMenu = new QMenu(this);
 
   ActionCMenuOpen = new QAction(tr("Open"), ContentMenu);
@@ -939,16 +937,25 @@ void QucsApp::initCursorMenu()
   connect(ActionCMenuInsert, SIGNAL(triggered()), this, SLOT(slotCMenuInsert()));
   ContentMenu->addAction(ActionCMenuInsert);
 
+  ContentMenu_new = new QMenu(this);
+#define APPEND_MENU(action, slot, text) \
+  { \
+  action = new QAction(tr(text), ContentMenu_new); \
+  connect(action, SIGNAL(triggered()), SLOT(slot())); \
+  ContentMenu_new->addAction(action); \
+  }
+  
+  APPEND_MENU(ActionCMenuOpen_new, slotCMenuOpen_new, "Open")
+  APPEND_MENU(ActionCMenuCopy_new, slotCMenuCopy_new, "Duplicate")
+  APPEND_MENU(ActionCMenuRename_new, slotCMenuRename_new, "Rename")
+  APPEND_MENU(ActionCMenuDelete_new, slotCMenuDelete_new, "Delete")
+  APPEND_MENU(ActionCMenuInsert_new, slotCMenuInsert_new, "Insert")
 
-  // TODO -> not implemented yet...
-  //ActionCMenuDelGroup = new QAction(tr("Delete Group"), ContentMenu);
-  //connect(ActionCMenuDelGroup, SIGNAL(triggered()), this, SLOT(slotCMenuDelGroup()));
-  //Content->addAction(ActionCMenuDelGroup);
-
+#undef APPEND_MENU
 
   connect(Content, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotShowContentMenu(const QPoint&)));
 
-  connect(Content_new, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotShowContentMenu(const QPoint&)));
+  connect(Content_new, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotShowContentMenu_new(const QPoint&)));
 }
 
 // ----------------------------------------------------------
@@ -969,21 +976,22 @@ void QucsApp::slotShowContentMenu(const QPoint& pos) {
   if(item->parent()!= 0) {
     ContentMenu->popup(Content->mapToGlobal(pos));
   }
+}
 
-}
-/* OLD Version
-void QucsApp::slotShowContentMenu(Q3ListViewItem *item, const QPoint& point, int)
+// ----------------------------------------------------------
+// Shows the menu.
+void QucsApp::slotShowContentMenu_new(const QPoint& pos) 
 {
-  if(item)
-    if(item->parent() != 0) {   // no component, but item "schematic", ...
-      if(item->parent()->nextSibling()) // "Others" section in listview ?
-        ContentMenu->setItemEnabled(ContentMenu->idAt(3), true);
-      else
-        ContentMenu->setItemEnabled(ContentMenu->idAt(3), false);
-      ContentMenu->popup(point);
-    }
+  QModelIndex idx = Content_new->indexAt(pos);
+  if (idx.isValid() && idx.parent().isValid()) {
+    ActionCMenuInsert_new->setVisible(
+        idx.sibling(idx.row(), 1).data().toString().contains(tr("-port"))
+    );
+    ContentMenu_new->popup(Content_new->mapToGlobal(pos));
+  }    
 }
-*/
+
+
 // ----------------------------------------------------------
 void QucsApp::slotCMenuOpen()
 {
@@ -1151,78 +1159,27 @@ QString QucsApp::fileType (const QString& Ext)
 }
 
 // ----------------------------------------------------------
-// TODO -> not implemented yet
-// Deletes all files with that name (and suffix sch, dpl, dat, vhdl, etc.).
-void QucsApp::slotCMenuDelGroup ()
-{
-  QTreeWidgetItem *item = Content->currentItem();
-  if (item == 0)
-    return;
-  QString s = item->text (0);
-  s = QucsDoc::fileBase (s); // cut off suffix from file name
-
-  const char * extensions[] =
-    { "sch", "dpl", "dat", "vhdl", "vhd", "v", "sym",
-      "vhdl.cfg", "vhd.cfg", "va", 0 };
-
-  int i;
-  for (i = 0; extensions[i] != 0; i++) {
-    QString Short = s + "." + extensions[i];
-    QString Name = QucsSettings.QucsWorkDir.filePath (Short);
-    // search, if files are open
-    if (findDoc (Name)) {
-      QMessageBox::critical(this, tr("Error"), tr("Cannot delete the open file \"%1\"!").arg(Short));
-      return;
-    }
-  }
-
-
-
-  // check existence of files
-  QString Str = "\n";
-  for (i = 0; extensions[i] != 0; i++) {
-    QString Short = s + "." + extensions[i];
-    QString Long = QucsSettings.QucsWorkDir.filePath (Short);
-    bool exists = QFile::exists (Long);
-    if (exists)
-      Str += Short + "\n";
-  }
-  int No;
-  No = QMessageBox::warning (this, tr("Warning"),
-	tr("This will delete the files%1permanently! Continue ?").arg(Str),
-	tr("No"), tr("Yes"));
-  if (No != 1)
-    return;
-
-  // file removal
-  for (i = 0; extensions[i] != 0; i++) {
-    QString Short = s + "." + extensions[i];
-    QString Name = QucsSettings.QucsWorkDir.filePath (Short);
-    bool exists = QFile::exists (Name);
-    if (exists) {
-      // remove files
-      if (!QFile::remove (Name)) {
-	       QMessageBox::critical(this, tr("Error"),	tr("Cannot delete %1: \"%2\"!").arg(fileType (extensions[i])).
-	        arg(Short));
-	       continue;
-      }
-      // remove items from listview
-      //item = Content->findItem (Short, 0);
-      if (item) {
-	     // TODO???
-       //item->parent()->takeItem (item);
-	     delete item;
-      }
-    }
-  }
-}
-
-
-// ----------------------------------------------------------
 // Inserts the selected subschematic in the schematic
 void QucsApp::slotCMenuInsert ()
 {
     slotSelectSubcircuit(Content->currentItem());
+}
+
+void QucsApp::slotCMenuOpen_new()
+{
+}
+
+void QucsApp::slotCMenuCopy_new()
+{
+}
+void QucsApp::slotCMenuRename_new()
+{
+}
+void QucsApp::slotCMenuDelete_new()
+{
+}
+void QucsApp::slotCMenuInsert_new()
+{
 }
 
 // ################################################################
@@ -1656,6 +1613,7 @@ bool QucsApp::saveFile(QucsDoc *Doc)
   if(Result < 0)  return false;
 
   updatePortNumber(Doc, Result);
+  Content_new->refresh();
   return true;
 }
 
@@ -1764,6 +1722,7 @@ bool QucsApp::saveAs()
   if(n < 0)  return false;
 
   updatePortNumber(Doc, n);
+  Content_new->refresh();
   return true;
 }
 
@@ -2035,10 +1994,7 @@ void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
   if (ext == "sch") {
     Model = "Sub";
 
-    // enter new port number into ListView
-    // TODO I'm not sure if I do things correctly here -> RECHECK!!!
     QTreeWidgetItem *p;
-    //for(p = ConSchematics->firstChild(); p!=0; p = p->nextSibling()) {
     for(int i=0; i<ConSchematics->childCount(); i++) {
       p = ConSchematics->child(i);
       if(p->text(0) == Name) {

@@ -124,12 +124,18 @@ public slots:
 
   // for menu that appears by right click in content ListView
   void slotShowContentMenu(const QPoint &);
+  void slotShowContentMenu_new(const QPoint &);
   void slotCMenuOpen();
   void slotCMenuCopy();
   void slotCMenuRename();
   void slotCMenuDelete();
-  void slotCMenuDelGroup();
   void slotCMenuInsert();
+
+  void slotCMenuOpen_new();
+  void slotCMenuCopy_new();
+  void slotCMenuRename_new();
+  void slotCMenuDelete_new();
+  void slotCMenuInsert_new();
 
 private slots:
   void slotMenuProjOpen();
@@ -163,9 +169,12 @@ public:
 
   // menu appearing by right mouse button click on content listview
   QMenu *ContentMenu;
+  QMenu *ContentMenu_new;
 
   // corresponding actions
-  QAction *ActionCMenuOpen, *ActionCMenuCopy, *ActionCMenuRename, *ActionCMenuDelete, *ActionCMenuDelGroup, *ActionCMenuInsert;
+  QAction *ActionCMenuOpen, *ActionCMenuCopy, *ActionCMenuRename, *ActionCMenuDelete, *ActionCMenuInsert;
+
+  QAction *ActionCMenuOpen_new, *ActionCMenuCopy_new, *ActionCMenuRename_new, *ActionCMenuDelete_new, *ActionCMenuInsert_new;
 
   QAction *fileNew, *textNew, *fileNewDpl, *fileOpen, *fileSave, *fileSaveAs,
           *fileSaveAll, *fileClose, *fileExamples, *fileSettings, *filePrint, *fileQuit,
