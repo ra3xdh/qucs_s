@@ -1172,6 +1172,70 @@ void QucsApp::slotCMenuOpen_new()
 
 void QucsApp::slotCMenuCopy_new()
 {
+  QModelIndex idx = Content_new->currentIndex();
+
+  //test the item is valid
+  if (!idx.isValid() || !idx.parent().isValid()) { return; }
+
+  QString filename = idx.sibling(idx.row(), 0).data().toString();
+  QDir dir(QucsSettings.QucsWorkDir);
+  QString file(dir.filePath(filename));
+  QFileInfo fileinfo(file);
+
+  //check changed file save
+  int z = 0; //search if the doc is loaded
+  QucsDoc *d = findDoc(file, &z);
+  if (d != NULL && d->DocChanged) {
+    DocumentTab->setCurrentPage(z);
+    int ret = QMessageBox::question(this, tr("Copying Qucs document"), 
+        tr("The document contains unsaved changes!\n") + 
+        tr("Do you want to save the changes before copying?"),
+        tr("&Ignore"), tr("&Save"), 0, 1);
+    if (ret == 1) {
+      d->save();
+    }
+  }
+
+  QString suffix = fileinfo.completeSuffix();
+  QString base = fileinfo.baseName();
+  if(base.isEmpty()) {
+    base = filename;
+  }
+
+  bool exists = true;   //generate unique name
+  int i = 0;
+  QString defaultName;
+  while (exists) {
+    ++i;
+    defaultName = base + "_copy" + QString::number(i) + "." + suffix;
+    exists = QFile::exists(dir.filePath(defaultName));
+  }
+
+  bool ok;
+  QString s = QInputDialog::getText(tr("Copy file"), tr("Enter new name:"),
+      QLineEdit::Normal, defaultName, &ok, this);
+  if(ok && !s.isEmpty()) {
+    if (!s.endsWith(suffix)) {
+      s += QString(".") + suffix;
+    }
+
+    if (QFile::exists(dir.filePath(s))) {  //check New Name exists
+      QMessageBox::critical(this, tr("error"), tr("Cannot copy file to identical name: %1").arg(filename));
+      return;
+    }
+
+    if (!QFile::copy(dir.filePath(filename), dir.filePath(s))) {
+      QMessageBox::critical(this, tr("Error"), tr("Cannot copy schematic: %1").arg(filename));
+      return;
+    }
+    //TODO: maybe require disable edit here
+
+    // refresh the schematic file path
+    this->updateSchNameHash();
+    this->updateSpiceNameHash();
+
+    Content_new->refresh();
+  }
 }
 
 void QucsApp::slotCMenuRename_new()
@@ -1179,8 +1243,7 @@ void QucsApp::slotCMenuRename_new()
   QModelIndex idx = Content_new->currentIndex();
 
   //test the item is valid
-  if (!idx.isValid()) { return; }
-  if (!idx.parent().isValid()) { return; }
+  if (!idx.isValid() || !idx.parent().isValid()) { return; }
 
   QString filename = idx.sibling(idx.row(), 0).data().toString();
   QString file(QucsSettings.QucsWorkDir.filePath(filename));
@@ -1207,7 +1270,7 @@ void QucsApp::slotCMenuRename_new()
     }
     QDir dir(QucsSettings.QucsWorkDir.path());
     if(!dir.rename(filename, s)) {
-      QMessageBox::critical(this, tr("Error"), tr("Cannot rename file: %1") + filename);
+      QMessageBox::critical(this, tr("Error"), tr("Cannot rename file: %1").arg(filename));
       return;
     }
 
@@ -1217,7 +1280,34 @@ void QucsApp::slotCMenuRename_new()
 
 void QucsApp::slotCMenuDelete_new()
 {
+  QModelIndex idx = Content_new->currentIndex();
+
+  //test the item is valid
+  if (!idx.isValid() || !idx.parent().isValid()) { return; }
+
+  QString filename = idx.sibling(idx.row(), 0).data().toString();
+  QString file(QucsSettings.QucsWorkDir.filePath(filename));
+
+  if (findDoc (file)) {
+    QMessageBox::critical(this, tr("Error"), tr("Cannot delete an open file!"));
+    return;
+  }
+
+  int No;
+  No = QMessageBox::warning(this, tr("Warning"),
+      tr("This will delete the file permanently! Continue ?"),
+      tr("No"), tr("Yes"));
+  if(No == 1) {
+    if(!QFile::remove(file)) {
+      QMessageBox::critical(this, tr("Error"),
+      tr("Cannot delete file: %1").arg(filename));
+      return;
+    }
+  }
+
+  Content_new->refresh();
 }
+
 void QucsApp::slotCMenuInsert_new()
 {
   slotSelectSubcircuit_new(Content_new->currentIndex());
