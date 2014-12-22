@@ -27,6 +27,7 @@ BJT::BJT()
   tx = x2+4;
   ty = y1+4;
   Model = "_BJT";
+  SpiceModel="Q";
 }
 
 // -------------------------------------------------------
@@ -36,6 +37,31 @@ Component* BJT::newOne()
   p->Props.getFirst()->Value = Props.getFirst()->Value;
   p->recreate(0);
   return p;
+}
+
+QString BJT::spice_netlist()
+{
+    QString s = check_spice_refdes();
+    QList<int> pin_seq;
+    pin_seq<<1<<0<<2; // Pin sequence: CBE
+    // output all node names
+    foreach(int pin, pin_seq) {
+        QString nam = Ports.at(pin)->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+
+    QStringList spice_incompat,spice_tr;
+    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"Kb"<<"Ab"<<"Fb"; // spice-incompatible parameters
+    spice_tr.clear(); // parameters that need convertion of names
+
+    QString par_str = form_spice_param_list(spice_incompat,spice_tr);
+
+    s += QString(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(Props.at(47)->Value)
+            .arg(Props.at(35)->Value);
+    s += QString(".MODEL QMOD_%1 %2 (%3)\n").arg(Name).arg(Props.at(0)->Value).arg(par_str);
+
+    return s;
 }
 
 // -------------------------------------------------------

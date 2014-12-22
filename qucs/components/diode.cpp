@@ -99,8 +99,11 @@ QString Diode::spice_netlist()
 {
     QString s = check_spice_refdes();
     // output all node names
-    foreach(Port *p1, Ports) {
-        QString nam = p1->Connection->Name;
+    QList<int> pin_seq;
+    pin_seq<<1<<0; // Pin sequence: CBE
+    // output all node names
+    foreach(int pin, pin_seq) {
+        QString nam = Ports.at(pin)->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }
@@ -111,8 +114,9 @@ QString Diode::spice_netlist()
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 
-    s += QString(" MOD_%1 AREA=%2 \n").arg(Name).arg(Props.at(27)->Value);
-    s += QString(".MODEL MOD_%1 D (%2)\n").arg(Name).arg(par_str);
+    s += QString(" DMOD_%1 AREA=%2 Temp=%3\n").arg(Name).arg(Props.at(27)->Value)
+            .arg(Props.at(17)->Value);
+    s += QString(".MODEL DMOD_%1 D (%2)\n").arg(Name).arg(par_str);
 
     return s;
 
