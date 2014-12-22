@@ -1167,19 +1167,60 @@ void QucsApp::slotCMenuInsert ()
 
 void QucsApp::slotCMenuOpen_new()
 {
+  slotOpenContent_new(Content_new->currentIndex());
 }
 
 void QucsApp::slotCMenuCopy_new()
 {
 }
+
 void QucsApp::slotCMenuRename_new()
 {
+  QModelIndex idx = Content_new->currentIndex();
+
+  //test the item is valid
+  if (!idx.isValid()) { return; }
+  if (!idx.parent().isValid()) { return; }
+
+  QString filename = idx.sibling(idx.row(), 0).data().toString();
+  QString file(QucsSettings.QucsWorkDir.filePath(filename));
+  QFileInfo fileinfo(file);
+
+  if (findDoc(file)) {
+    QMessageBox::critical(this, tr("Error"),
+        tr("Cannot rename an open file!"));
+    return;
+  }
+
+  QString suffix = fileinfo.completeSuffix();
+  QString base = fileinfo.baseName();
+  if(base.isEmpty()) {
+    base = filename;
+  }
+
+  bool ok;
+  QString s = QInputDialog::getText(tr("Rename file"), tr("Enter new filename:"),
+		QLineEdit::Normal, base, &ok, this);
+  if(ok && !s.isEmpty()) { 
+    if (!s.endsWith(suffix)) {
+      s += QString(".") + suffix;
+    }
+    QDir dir(QucsSettings.QucsWorkDir.path());
+    if(!dir.rename(filename, s)) {
+      QMessageBox::critical(this, tr("Error"), tr("Cannot rename file: %1") + filename);
+      return;
+    }
+
+    Content_new->refresh();
+  }
 }
+
 void QucsApp::slotCMenuDelete_new()
 {
 }
 void QucsApp::slotCMenuInsert_new()
 {
+  slotSelectSubcircuit_new(Content_new->currentIndex());
 }
 
 // ################################################################
@@ -2471,7 +2512,6 @@ void QucsApp::slotOpenContent_new(const QModelIndex &idx)
 
   QString filename = idx.sibling(idx.row(), 0).data().toString();
   QString note = idx.sibling(idx.row(), 1).data().toString();
-  //qDebug() << filename << note;
   QFileInfo Info(QucsSettings.QucsWorkDir.filePath(filename));
   QString extName = Info.completeSuffix();
 
