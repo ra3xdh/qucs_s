@@ -1234,7 +1234,7 @@ void QucsApp::slotCMenuCopy_new()
     this->updateSchNameHash();
     this->updateSpiceNameHash();
 
-    Content_new->refresh();
+    slotUpdateTreeview();
   }
 }
 
@@ -1274,7 +1274,7 @@ void QucsApp::slotCMenuRename_new()
       return;
     }
 
-    Content_new->refresh();
+    slotUpdateTreeview();
   }
 }
 
@@ -1305,7 +1305,7 @@ void QucsApp::slotCMenuDelete_new()
     }
   }
 
-  Content_new->refresh();
+  slotUpdateTreeview();
 }
 
 void QucsApp::slotCMenuInsert_new()
@@ -1422,7 +1422,7 @@ void QucsApp::readProjectFiles()
     }
   }
 
-  Content_new->refresh();
+  slotUpdateTreeview();
 }
 
 // ----------------------------------------------------------
@@ -1744,7 +1744,7 @@ bool QucsApp::saveFile(QucsDoc *Doc)
   if(Result < 0)  return false;
 
   updatePortNumber(Doc, Result);
-  Content_new->refresh();
+  slotUpdateTreeview();
   return true;
 }
 
@@ -1853,7 +1853,7 @@ bool QucsApp::saveAs()
   if(n < 0)  return false;
 
   updatePortNumber(Doc, n);
-  Content_new->refresh();
+  slotUpdateTreeview();
   return true;
 }
 
@@ -1909,6 +1909,7 @@ void QucsApp::slotFileSaveAll()
 
   // refresh the schematic file path
   slotRefreshSchPath();
+  slotUpdateTreeview();
 }
 
 // --------------------------------------------------------------
@@ -2467,10 +2468,8 @@ void QucsApp::slotChangePage(QString& DocName, QString& DataDisplay)
     }
     else {
       if(file.open(QIODevice::ReadWrite)) {  // if document doesn't exist, create
-        //TODO RECHECK!! new Q3ListViewItem(ConDisplays, DataDisplay); // add new name
-        QTreeWidgetItem *temp = new QTreeWidgetItem(ConDisplays);
-        temp->setText(0,DataDisplay);
         d->DataDisplay = Info.fileName();
+        slotUpdateTreeview();
       }
       else {
         QMessageBox::critical(this, tr("Error"), tr("Cannot create ")+Name);
@@ -3111,6 +3110,14 @@ void QucsApp::slotFileChanged(bool changed)
 {
   DocumentTab->setTabIcon(DocumentTab->currentIndex(),
       QPixmap((changed)? smallsave_xpm : empty_xpm));
+}
+
+// -----------------------------------------------------------
+// Update project view by call refresh function
+// looses the focus.
+void QucsApp::slotUpdateTreeview()
+{
+  Content_new->refresh();
 }
 
 // -----------------------------------------------------------

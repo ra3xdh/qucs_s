@@ -137,6 +137,7 @@ public slots:
   void slotCMenuDelete_new();
   void slotCMenuInsert_new();
 
+  void slotUpdateTreeview();
 private slots:
   void slotMenuProjOpen();
   void slotMenuProjClose();
