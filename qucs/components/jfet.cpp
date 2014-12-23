@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include "jfet.h"
+#include "node.h"
 
 
 JFET::JFET()
@@ -77,6 +78,7 @@ JFET::JFET()
   ty = y1+4;
   Model = "JFET";
   Name  = "T";
+  SpiceModel = "J";
 }
 
 // -------------------------------------------------------
@@ -86,6 +88,42 @@ Component* JFET::newOne()
   p->Props.getFirst()->Value = Props.getFirst()->Value;
   p->recreate(0);
   return p;
+}
+
+QString JFET::spice_netlist()
+{
+    QString s = check_spice_refdes();
+    QList<int> pin_seq;
+    pin_seq<<1<<0<<2; // Pin sequence: DGS
+    // output all node names
+    foreach(int pin, pin_seq) {
+        QString nam = Ports.at(pin)->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+
+    /*
+unrecognized parameter (n) - ignored
+unrecognized parameter (isr) - ignored
+unrecognized parameter (nr) - ignored
+unrecognized parameter (m) - ignored
+unrecognized parameter (xti) - ignored
+   */
+
+    QStringList spice_incompat,spice_tr;
+    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"<<"Isr"<<"Nr"<<"M"<<"Xti";
+                              // spice-incompatible parameters
+    spice_tr<<"Vt0tc"<<"Tcv"; // parameters that need convertion of names
+
+    QString par_str = form_spice_param_list(spice_incompat,spice_tr);
+
+    QString jfet_type = Props.at(0)->Value.at(0).toUpper();
+
+    s += QString(" JMOD_%1 %2 TEMP=%3\n").arg(Name).arg(Props.at(23)->Value)
+            .arg(Props.at(18)->Value);
+    s += QString(".MODEL JMOD_%1 %2JF (%3)\n").arg(Name).arg(jfet_type).arg(par_str);
+
+    return s;
 }
 
 // -------------------------------------------------------
