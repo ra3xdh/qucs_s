@@ -102,13 +102,6 @@ QString JFET::spice_netlist()
         s += " "+ nam;   // node names
     }
 
-    /*
-unrecognized parameter (n) - ignored
-unrecognized parameter (isr) - ignored
-unrecognized parameter (nr) - ignored
-unrecognized parameter (m) - ignored
-unrecognized parameter (xti) - ignored
-   */
 
     QStringList spice_incompat,spice_tr;
     spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"<<"Isr"<<"Nr"<<"M"<<"Xti";
