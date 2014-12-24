@@ -43,6 +43,8 @@ DC_Sim::DC_Sim()
   ty = y2+1;
   Model = ".DC";
   Name  = "DC";
+  SpiceModel = ".OP";
+  isSimulation = true;
 
   Props.append(new Property("Temp", "26.85", false,
 		QObject::tr("simulation temperature in degree Celsius")));
@@ -84,4 +86,9 @@ Element* DC_Sim::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new DC_Sim();
   return 0;
+}
+
+QString DC_Sim::spice_netlist()
+{
+    return SpiceModel + "\n";
 }

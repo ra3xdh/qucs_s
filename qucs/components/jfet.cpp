@@ -104,7 +104,7 @@ QString JFET::spice_netlist()
 
 
     QStringList spice_incompat,spice_tr;
-    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"<<"Isr"<<"Nr"<<"M"<<"Xti";
+    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"<<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce";
                               // spice-incompatible parameters
     spice_tr<<"Vt0tc"<<"Tcv"; // parameters that need convertion of names
 

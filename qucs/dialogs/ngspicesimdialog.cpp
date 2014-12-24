@@ -225,7 +225,7 @@ void NgspiceSimDialog::createSpiceNetlist(QTextStream& stream, int NumPorts,QStr
            QString sim_typ = pc->Model;
            if (sim_typ==".AC") simulations.append("ac");
            if (sim_typ==".TR") simulations.append("tran");
-           if (sim_typ==".DC") simulations.append("dc");
+           //if (sim_typ==".DC") simulations.append("dc");
            stream<<s;
        }
     }

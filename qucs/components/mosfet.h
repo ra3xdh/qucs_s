@@ -33,6 +33,7 @@ public:
 protected:
   void createSymbol();
   QString netlist();
+  QString spice_netlist();
 };
 
 #endif
