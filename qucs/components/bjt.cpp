@@ -57,9 +57,9 @@ QString BJT::spice_netlist()
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 
-    s += QString(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(Props.at(47)->Value)
-            .arg(Props.at(35)->Value);
-    s += QString(".MODEL QMOD_%1 %2 (%3)\n").arg(Name).arg(Props.at(0)->Value).arg(par_str);
+    s += QString(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
+            .arg(getProperty("Temp")->Value);
+    s += QString(".MODEL QMOD_%1 %2 (%3)\n").arg(Name).arg(getProperty("Type")->Value).arg(par_str);
 
     return s;
 }

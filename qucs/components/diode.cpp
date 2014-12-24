@@ -114,8 +114,8 @@ QString Diode::spice_netlist()
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 
-    s += QString(" DMOD_%1 AREA=%2 Temp=%3\n").arg(Name).arg(Props.at(27)->Value)
-            .arg(Props.at(17)->Value);
+    s += QString(" DMOD_%1 AREA=%2 Temp=%3\n").arg(Name).arg(getProperty("Area")->Value)
+            .arg(getProperty("Temp")->Value);
     s += QString(".MODEL DMOD_%1 D (%2)\n").arg(Name).arg(par_str);
 
     return s;

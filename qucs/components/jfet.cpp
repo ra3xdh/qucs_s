@@ -110,10 +110,10 @@ QString JFET::spice_netlist()
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 
-    QString jfet_type = Props.at(0)->Value.at(0).toUpper();
+    QString jfet_type = getProperty("Type")->Value.at(0).toUpper();
 
-    s += QString(" JMOD_%1 %2 TEMP=%3\n").arg(Name).arg(Props.at(23)->Value)
-            .arg(Props.at(18)->Value);
+    s += QString(" JMOD_%1 %2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
+            .arg(getProperty("Temp")->Value);
     s += QString(".MODEL JMOD_%1 %2JF (%3)\n").arg(Name).arg(jfet_type).arg(par_str);
 
     return s;
