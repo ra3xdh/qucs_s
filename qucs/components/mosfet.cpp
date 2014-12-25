@@ -155,12 +155,22 @@ QString MOSFET::spice_netlist()
                               // spice-incompatible parameters
     spice_tr.clear(); // parameters that need convertion of names
 
+    QStringList check_defaults_list;
+    QString unit;
+    check_defaults_list<<"Nsub"<<"Nss";
+    foreach (QString parnam,check_defaults_list) { // Check some parameters for default value (zero)
+        double val,fac;   // And reduce parameter list
+        str2num(getProperty(parnam)->Value,val,unit,fac);
+        if ((val *= fac)==0.0) {
+            spice_incompat.append(parnam);
+        }
+    }
+
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 
     QString mosfet_type = getProperty("Type")->Value.at(0).toUpper();
 
     double l,w,as,ad,ps,pd,fac;
-    QString unit;
     str2num(getProperty("L")->Value,l,unit,fac);
     l *= fac;
     str2num(getProperty("W")->Value,w,unit,fac);
