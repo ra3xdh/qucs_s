@@ -342,10 +342,12 @@ int doPrint(QString schematic, QString printFile,
  */
 void createIcons() {
 
+  int nCats = 0, nComps = 0;
+
   if(!QDir("./bitmaps_generated").exists()){
     QDir().mkdir("bitmaps_generated");
   }
-
+  Module::registerModules ();
   QStringList cats = Category::getCategories ();
 
   foreach(QString category, cats) {
@@ -397,7 +399,7 @@ void createIcons() {
         }
 
         foreach(Port *p, Ports) {
-          scene->addEllipse(p->x-3, p->y-3, 6, 6, QPen(Qt::red));
+          scene->addEllipse(p->x-4, p->y-4, 8, 8, QPen(Qt::red));
         }
 
         foreach(Text *t, Texts) {
@@ -412,18 +414,42 @@ void createIcons() {
         }
 
         // this uses the size of the component as icon size
-        QImage image(scene->sceneRect().size().toSize(), QImage::Format_ARGB32);
+        // Qt bug ? The returned sceneRect() is often 1 px short on bottom
+        //   and right sides without anti-aliasing. 1 px more missing on top
+        //   and left when anti-aliasing is used
+        QRectF rScene = scene->sceneRect().adjusted(-1,-1,1,1);
+        // image and scene need to be the same size, since render()
+        //   will fill the entire image, otherwise the scaling will
+        //   introduce artifacts
+        QSize sImage = rScene.size().toSize(); // rounding seems not to be an issue
+        // ARGB32_Premultiplied is faster (Qt docs)
+        //QImage image(sImage.toSize(), QImage::Format_ARGB32);
+        QImage image(sImage, QImage::Format_ARGB32_Premultiplied);
         // this uses a fixed size for the icon (32 x 32)
         //QImage image(32, 32, QImage::Format_ARGB32);
         image.fill(Qt::transparent);
 
         QPainter painter(&image);
-        scene->render(&painter);
+        QPainter::RenderHints hints = 0;
+        // Ask to antialias drawings if requested
+        if (QucsSettings.GraphAntiAliasing) hints |= QPainter::Antialiasing;
+        // Ask to antialias text if requested
+        if (QucsSettings.TextAntiAliasing) hints |= QPainter::TextAntialiasing;
+        painter.setRenderHints(hints);
+
+        // pass target and source size eplicitly, otherwise sceneRect() is used
+        //   for the source size, which is often wrong (see comment above)
+        scene->render(&painter, image.rect(), rScene);
 
         image.save("./bitmaps_generated/" + QString(File) + ".png");
+
+        fprintf(stdout, "[%s] %s\n", category.toAscii().data(), File);
       }
+      nComps++;
     } // module
+    nCats++;
   } // category
+  fprintf(stdout, "Created %i component icons from %i categories\n", nComps, nCats);
 }
 
 /*!
