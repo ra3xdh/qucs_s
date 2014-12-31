@@ -97,12 +97,12 @@ void Filter::createLowPassSchematic(QString &s)
 
 void Filter::createBandPassSchematic(QString &s)
 {
-    s = "<Qucs Schematic "PACKAGE_VERSION">\n";
+    s = "<Qucs Schematic " PACKAGE_VERSION ">\n";
 }
 
 void Filter::createBandStopSchematic(QString &s)
 {
-    s = "<Qucs Schematic "PACKAGE_VERSION">\n";
+    s = "<Qucs Schematic " PACKAGE_VERSION ">\n";
 }
 
 bool Filter::calcFilter()
