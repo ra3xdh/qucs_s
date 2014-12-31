@@ -179,8 +179,8 @@ void Rect3DDiagram::calcCoordinate(double* &xD, double* &zD, double* &yD,
   *px = float(calcX_2D(x3D, y3D, z3D)) + xorig;
   *py = float(calcY_2D(x3D, y3D, z3D)) + yorig;
 
-  if(isfinite(*px))
-    if(isfinite(*py))
+  if(std::isfinite(*px))
+    if(std::isfinite(*py))
       return;
 
   *px = float(xorig);

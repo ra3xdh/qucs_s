@@ -60,8 +60,8 @@ void PSDiagram::calcCoordinate(double* &, double* &yD, double* &,
   *px = float((yr/pa->up + 1.0)*double(x2)/2.0);
   *py = float((yi/pa->up + 1.0)*double(y2)/2.0);
 
-  if(isfinite(*px))
-    if(isfinite(*py))
+  if(std::isfinite(*px))
+    if(std::isfinite(*py))
       return;
 
   *px = *py = float(cx) / 2.0;

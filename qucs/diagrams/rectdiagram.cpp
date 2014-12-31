@@ -78,8 +78,8 @@ void RectDiagram::calcCoordinate(double* &xD, double* &yD, double* &,
     *py = float((yr-pa->low)/(pa->up-pa->low)*double(y2));
   }
 
-  if(!isfinite(*px))  *px = 0.0;
-  if(!isfinite(*py))  *py = 0.0;
+  if(!std::isfinite(*px))  *px = 0.0;
+  if(!std::isfinite(*py))  *py = 0.0;
 }
 
 // --------------------------------------------------------------
