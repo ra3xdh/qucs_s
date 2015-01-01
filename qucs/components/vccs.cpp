@@ -16,6 +16,8 @@
  ***************************************************************************/
 
 #include "vccs.h"
+#include "node.h"
+#include "main.h"
 
 
 VCCS::VCCS()
@@ -57,6 +59,7 @@ VCCS::VCCS()
   tx = x1+4;
   ty = y2+4;
   Model = "VCCS";
+  SpiceModel = "G";
   Name  = "SRC";
 
   Props.append(new Property("G", "1 S", true,
@@ -80,4 +83,25 @@ Element* VCCS::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new VCCS();
   return 0;
+}
+
+QString VCCS::spice_netlist()
+{
+    QString s = check_spice_refdes();
+    QList<int> seq; // nodes sequence
+    seq<<1<<2<<0<<3;
+    // output all node names
+    foreach(int i, seq) {
+        QString nam = Ports.at(i)->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+
+    double val,fac;
+    QString unit;
+    str2num(Props.at(0)->Value,val,unit,fac); // Ignore delay time. It is spice-incompatibele
+    val *=fac;
+    s += QString::number(val) + "\n";
+
+    return s;
 }
