@@ -58,20 +58,15 @@ QString Capacitor::spice_netlist()
 {
     QString s=check_spice_refdes();
 
-    // output all node names
-    foreach(Port *p1, Ports) {
-        QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
-    }
+    s += QString(" %1 %2 ").arg(Ports.at(0)->Connection->Name)
+            .arg(Ports.at(1)->Connection->Name); // output  nodes
+    s.replace(" gnd ", " 0 ");
 
-    QString val = Props.at(0)->Value;
     double Cap,fac;
     QString unit;
-    str2num(val,Cap,unit,fac);
-    Cap *=fac;
-    s += " "+QString::number(Cap) + " ";
-    val = Props.at(1)->Value; // add inial volatge if presents
+    str2num(Props.at(0)->Value,Cap,unit,fac);
+    s += " "+QString::number(Cap*fac) + " ";
+    QString val = Props.at(1)->Value; // add inial volatge if presents
     val.remove(' ').toUpper();
     if (!val.isEmpty()) {
         s += " IC=" + val;

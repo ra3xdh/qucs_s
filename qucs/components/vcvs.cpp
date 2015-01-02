@@ -102,7 +102,7 @@ QString VCVS::spice_netlist()
     QString unit;
     str2num(Props.at(0)->Value,val,unit,fac); // Ignore delay time. It is spice-incompatibele
     val *=fac;
-    s += QString::number(val) + "\n";
+    s += " " + QString::number(val) + "\n";
 
     return s;
 }

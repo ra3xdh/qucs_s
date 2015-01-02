@@ -95,7 +95,7 @@ QString CCVS::spice_netlist()
             .arg(Ports.at(2)->Connection->Name); // output source nodes
     s.replace(" gnd ", " 0 ");
     s += QString(" V%1 %2\n").arg(Name).arg(val);
-    s += QString("V%1 %2 %3 DC 0 AC 0\n").arg(Name).arg(Ports.at(0)->Connection->Name)
+    s += QString("V%1 %2 %3 DC 0 \n").arg(Name).arg(Ports.at(0)->Connection->Name)
             .arg(Ports.at(3)->Connection->Name);   // controlling 0V source
 
     return s;

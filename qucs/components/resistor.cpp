@@ -58,12 +58,9 @@ QString Resistor::spice_netlist()
 {
     QString s=check_spice_refdes();
 
-    // output all node names
-    foreach(Port *p1, Ports) {
-        QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
-    }
+    s += QString(" %1 %2 ").arg(Ports.at(0)->Connection->Name)
+            .arg(Ports.at(1)->Connection->Name); // output 2 nodes
+    s.replace(" gnd ", " 0 ");
 
     QString unit;
     double R,fac;
