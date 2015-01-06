@@ -141,17 +141,18 @@ fi
 dnl MacOSX build and runtime environment options
 dnl   borrowed from http://cgit.freedesktop.org/libreoffice/core/tree/configure.ac
 
-dnl Default-enabled search for SDK
+dnl Default disabled search for SDK
+dnl Enabling set the -isysroot, see darwin section below for SDK setup
 AC_ARG_ENABLE([sdk],
   AS_HELP_STRING([--enable-sdk],
-                 [search for Mac OSX SDK @<:@default=yes@:>@. \
+                 [search for Mac OSX SDK @<:@default=no@:>@. \
                   Disable this option to set custom compiler flags CXX, CXXFLAGS]),
   [case "$enableval" in
    yes) enable_sdk="yes" ;;
    no)  enable_sdk="no"  ;;
    *)   enable_sdk="yes"  ;;
    esac],
-  [enable_sdk="yes"])
+  [enable_sdk="no"])
 
 dnl Specify version of SDK
 AC_ARG_WITH(macosx-sdk,
@@ -417,7 +418,7 @@ case $host_os in
     fi
 
     dnl ===================================================================
-    dnl Test if search for SDK was disabled
+    dnl Test if search for SDK was enabled
     AS_IF([test "x$enable_sdk" = "xyes"], [
 
     dnl Check OS X SDK and compiler
