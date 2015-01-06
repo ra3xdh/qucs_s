@@ -394,9 +394,11 @@ void QucsApp::initView()
 
   // initial home directory model
   m_homeDirModel = new QFileSystemModel(this);
-  QStringList filters("*_prj");
+  QStringList filters;
+  filters << "*_prj";
   m_homeDirModel->setNameFilters(filters);
-  m_homeDirModel->setFilter(QDir::AllDirs | QDir::Dirs | QDir::NoDotAndDotDot);
+  m_homeDirModel->setNameFilterDisables(false);
+  m_homeDirModel->setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
 
   // ............................................
   readProjects(); // reads all projects and inserts them into the ListBox
