@@ -323,13 +323,13 @@ void QucsApp::initView()
   CompComps = new QListWidget(this);
   CompComps->setViewMode(QListView::IconMode);
   CompComps->setGridSize(QSize(110,90));
-  CompSearchLabel = new QLabel(this, tr("Search Components:"));
   CompSearch = new QLineEdit(this);
+  CompSearch->setPlaceholderText(tr("Search Components"));
   CompSearchClear = new QPushButton(tr("Clear"));
 
+  CompGroupLayout->setSpacing(5);
   CompGroupLayout->addWidget(CompChoose);
   CompGroupLayout->addWidget(CompComps);
-  CompGroupLayout->addWidget(CompSearchLabel);
   CompGroupLayout->addLayout(CompSearchLayout);
   CompSearchLayout->addWidget(CompSearch);
   CompSearchLayout->addWidget(CompSearchClear);
