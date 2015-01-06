@@ -52,8 +52,10 @@ class QStringList;
 class LibraryDialog : public QDialog {
    Q_OBJECT
 public:
-  LibraryDialog(QWidget *, QStringList);
+  LibraryDialog(QWidget *);
  ~LibraryDialog();
+
+  void fillSchematicList(QStringList &);
 
 private slots:
   void slotCreateNext();
@@ -72,6 +74,7 @@ private:
 private:
   int curDescr;
   QVBoxLayout *all;   // the mother of all widgets
+  QVBoxLayout *checkBoxLayout;
   QStackedWidget *stackedWidgets;
   QLabel *theLabel;
   QLabel *checkedCktName;

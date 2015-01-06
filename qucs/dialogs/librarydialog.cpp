@@ -50,7 +50,7 @@
 
 extern SubMap FileList;
 
-LibraryDialog::LibraryDialog(QWidget *parent, QStringList SchematicList)
+LibraryDialog::LibraryDialog(QWidget *parent)
 			: QDialog(parent)
 {
   setWindowTitle(tr("Create Library"));
@@ -95,7 +95,7 @@ LibraryDialog::LibraryDialog(QWidget *parent, QStringList SchematicList)
 
   QWidget *scrollWidget = new QWidget();
 
-  QVBoxLayout *checkBoxLayout = new QVBoxLayout();
+  checkBoxLayout = new QVBoxLayout();
   scrollWidget->setLayout(checkBoxLayout);
   scrollArea->setWidget(scrollWidget);
 
@@ -209,20 +209,6 @@ LibraryDialog::LibraryDialog(QWidget *parent, QStringList SchematicList)
   hbox2->addWidget(close);
   connect(close, SIGNAL(clicked()), SLOT(reject()));
   msgLayout->addLayout(hbox2);
-
-  // ...........................................................
-  // insert all subcircuits of into checklist
-  foreach(const QString &filename, SchematicList) {
-    QCheckBox *subCheck = new QCheckBox(filename);
-    checkBoxLayout->addWidget(subCheck);
-    BoxList.append(subCheck);
-  }
-
-  if(BoxList.isEmpty()) {
-    ButtCreateNext->setEnabled(false);
-    QLabel *noProj = new QLabel(tr("No projects!"));
-    checkBoxLayout->addWidget(noProj);
-  }
 }
 
 
@@ -230,6 +216,24 @@ LibraryDialog::~LibraryDialog()
 {
   delete all;
   delete Validator;
+}
+
+void
+LibraryDialog::fillSchematicList(QStringList &SchematicList)
+{
+  // ...........................................................
+  // insert all subcircuits of into checklist
+  if (SchematicList.size() == 0) {
+    ButtCreateNext->setEnabled(false);
+    QLabel *noProj = new QLabel(tr("No projects!"));
+    checkBoxLayout->addWidget(noProj);
+  } else {
+    foreach(const QString &filename, SchematicList) {
+      QCheckBox *subCheck = new QCheckBox(filename);
+      checkBoxLayout->addWidget(subCheck);
+      BoxList.append(subCheck);
+    }
+  }
 }
 
 // ---------------------------------------------------------------
