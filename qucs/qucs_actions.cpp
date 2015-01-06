@@ -36,6 +36,7 @@
 #include <QMenu>
 #include <QComboBox>
 #include <QDockWidget>
+#include <QTreeWidgetItem>
 
 #include "main.h"
 #include "qucs.h"
@@ -1238,7 +1239,18 @@ void QucsApp::slotCreateLib()
     return;
   }
 
-  LibraryDialog *d = new LibraryDialog(this, ConSchematics);
+  QStringList SchematicList;
+  QTreeWidgetItem *p;
+  for(int i=0; i < ConSchematics->childCount(); i++){
+    p = ConSchematics->child(i);
+    if(p->parent() == 0)
+      break;
+    if(!p->text(1).isEmpty()){
+      SchematicList.append(p->text(0));
+    }
+  }
+
+  LibraryDialog *d = new LibraryDialog(this, SchematicList);
   d->exec();
 }
 

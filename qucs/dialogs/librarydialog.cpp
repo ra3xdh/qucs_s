@@ -1,19 +1,25 @@
-/***************************************************************************
-                              librarydialog.cpp
-                             -------------------
-    begin                : Sun Jun 04 2006
-    copyright            : (C) 2006 by Michael Margraf
-    email                : michael.margraf@alumni.tu-berlin.de
- ***************************************************************************/
-
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/*
+ * librarydialog.cpp - implementation of dialog to create library
+ *
+ * Copyright (C) 2006, Michael Margraf, michael.margraf@alumni.tu-berlin.de
+ * Copyright (C) 2014, Yodalee, lc85301@gmail.com
+ *
+ * This file is part of Qucs
+ *
+ * Qucs is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Qucs.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 #ifdef HAVE_CONFIG_H
 # include <config.h>
@@ -36,18 +42,17 @@
 #include <QStackedWidget>
 #include <QGroupBox>
 #include <QDebug>
+#include <QStringList>
 
 #include "librarydialog.h"
-#include "qucs.h"
 #include "main.h"
 #include "schematic.h"
 
 extern SubMap FileList;
 
-LibraryDialog::LibraryDialog(QucsApp *App_, QTreeWidgetItem *SchematicList)
-			: QDialog(App_)
+LibraryDialog::LibraryDialog(QWidget *parent, QStringList SchematicList)
+			: QDialog(parent)
 {
-  App = App_;
   setWindowTitle(tr("Create Library"));
 
   Expr.setPattern("[\\w_]+");
@@ -207,16 +212,10 @@ LibraryDialog::LibraryDialog(QucsApp *App_, QTreeWidgetItem *SchematicList)
 
   // ...........................................................
   // insert all subcircuits of into checklist
-  QTreeWidgetItem *p ;
-  for(int i=0; i < SchematicList->childCount(); i++){
-    p = SchematicList->child(i);
-    if(p->parent() == 0)
-      break;
-    if(!p->text(1).isEmpty()){
-        QCheckBox *subCheck = new QCheckBox(p->text(0));
-        checkBoxLayout->addWidget(subCheck);
-        BoxList.append(subCheck);
-    }
+  foreach(const QString &filename, SchematicList) {
+    QCheckBox *subCheck = new QCheckBox(filename);
+    checkBoxLayout->addWidget(subCheck);
+    BoxList.append(subCheck);
   }
 
   if(BoxList.isEmpty()) {

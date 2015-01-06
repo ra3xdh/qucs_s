@@ -1,5 +1,5 @@
 /*
- * searchdialog.h - implementation of search dialog
+ * searchdialog.cpp - implementation of search dialog
  *
  * Copyright (C) 2006, Michael Margraf, michael.margraf@alumni.tu-berlin.de
  * Copyright (C) 2014, Yodalee, lc85301@gmail.com
