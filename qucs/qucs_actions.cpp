@@ -1241,7 +1241,7 @@ void QucsApp::slotCreateLib()
   }
 
   LibraryDialog *d = new LibraryDialog(this);
-  d->fillSchematicList(Content_new->exportSchematic());
+  d->fillSchematicList(Content->exportSchematic());
   d->exec();
 }
 
