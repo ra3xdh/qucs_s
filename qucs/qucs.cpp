@@ -1463,8 +1463,6 @@ void QucsApp::openProject(const QString& Path)
   headers << tr("Content of ") + Name << tr("Note");
   Content->setHeaderLabels(headers);
 
-  Content_new->setProjPath(QucsSettings.QucsWorkDir.absolutePath());
-
   readProjectFiles();
 
   TabView->setCurrentPage(1);   // switch to "Content"-Tab

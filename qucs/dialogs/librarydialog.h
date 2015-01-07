@@ -55,7 +55,7 @@ public:
   LibraryDialog(QWidget *);
  ~LibraryDialog();
 
-  void fillSchematicList(QStringList &);
+  void fillSchematicList(QStringList);
 
 private slots:
   void slotCreateNext();

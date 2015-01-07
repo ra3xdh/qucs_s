@@ -56,6 +56,7 @@ public:
   //data related
   void setProjPath(const QString &);
   void refresh();
+  QStringList exportSchematic();
 private:
   QStandardItemModel *m_model;
 

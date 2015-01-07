@@ -25,6 +25,7 @@
 #include "schematic.h"
 
 #include <QString>
+#include <QStringList>
 #include <QDir>
 #include <QStandardItemModel>
 
@@ -146,4 +147,17 @@ ProjectView::refresh()
   }
 
   resizeColumnToContents(0);
+}
+
+QStringList
+ProjectView::exportSchematic()
+{
+  QStringList list;
+  QStandardItem *item = m_model->item(6, 0);
+  for (int i = 0; i < item->rowCount(); ++i) {
+    if (item->child(i,1)) {
+      list.append(item->child(i,0)->text());
+    }
+  }
+  return list;
 }

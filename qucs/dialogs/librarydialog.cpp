@@ -219,7 +219,7 @@ LibraryDialog::~LibraryDialog()
 }
 
 void
-LibraryDialog::fillSchematicList(QStringList &SchematicList)
+LibraryDialog::fillSchematicList(QStringList SchematicList)
 {
   // ...........................................................
   // insert all subcircuits of into checklist
