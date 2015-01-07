@@ -193,10 +193,6 @@ QucsApp::~QucsApp()
 // ##########     Creates the working area (QTabWidget etc.)    ##########
 // ##########                                                   ##########
 // #######################################################################
-void QucsApp::initContentListView()
-{
-}
-
 /**
  * @brief QucsApp::initView Setup the layour of all widgets
  */
@@ -1127,17 +1123,6 @@ void QucsApp::slotButtonProjNew()
 }
 
 // ----------------------------------------------------------
-// Reads all files in the project directory and sort them into the
-// content ListView
-void QucsApp::readProjectFiles()
-{
-  //Is this OK instead of the above??
-  initContentListView();
-
-  slotUpdateTreeview();
-}
-
-// ----------------------------------------------------------
 // Opens an existing project.
 void QucsApp::openProject(const QString& Path)
 {
@@ -1170,9 +1155,6 @@ void QucsApp::openProject(const QString& Path)
   octave->adjustDirectory();
 
   Content->setProjPath(QucsSettings.QucsWorkDir.absolutePath());
-
-  QStringList headers;
-  readProjectFiles();
 
   TabView->setCurrentPage(1);   // switch to "Content"-Tab
   ProjName = Name;   // remember the name of project
@@ -1235,8 +1217,7 @@ void QucsApp::slotMenuProjClose()
   QucsSettings.QucsWorkDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   octave->adjustDirectory();
 
-  QStringList headers;
-  initContentListView();
+  Content->setProjPath("");
 
   TabView->setCurrentPage(0);   // switch to "Projects"-Tab
   ProjName = "";
@@ -1470,7 +1451,7 @@ void QucsApp::slotFileSave()
   statusBar()->message(tr("Ready."));
 
   if(!ProjName.isEmpty())
-    readProjectFiles();  // re-read the content ListView
+    slotUpdateTreeview();
 }
 
 // --------------------------------------------------------------
@@ -1582,7 +1563,7 @@ void QucsApp::slotFileSaveAs()
   slotRefreshSchPath();
 
   if(!ProjName.isEmpty())
-    readProjectFiles();  // re-read the content ListView
+    slotUpdateTreeview();
 }
 
 

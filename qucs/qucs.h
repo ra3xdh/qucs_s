@@ -200,7 +200,6 @@ private:
 // ********** Methods ***************************************************
   void initView();
   void initCursorMenu();
-  void initContentListView();
 
   void printCurrentDocument(bool);
   bool saveFile(QucsDoc *Doc=0);
@@ -223,7 +222,6 @@ private:
 public:
 
   void readProjects();
-  void readProjectFiles();
   void updatePathList(void); // update the list of paths, pruning non-existing paths
   void updatePathList(QStringList);
   void updateSchNameHash(void); // maps all schematic files in the path list

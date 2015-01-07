@@ -51,7 +51,7 @@ ProjectView::~ProjectView()
 void
 ProjectView::setProjPath(const QString &path)
 {
-  m_valid = QDir(path).exists();
+  m_valid = !path.isEmpty() && QDir(path).exists();
 
   if (m_valid) {
     //test path exist
@@ -67,9 +67,8 @@ ProjectView::setProjPath(const QString &path)
       m_projName = m_projName.mid(i+1);   // cut out the last subdirectory
     }
     m_projName.remove("_prj");
-
-    refresh();
   }
+  refresh();
 }
 
 // refresh using projectPath

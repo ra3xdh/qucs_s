@@ -952,7 +952,7 @@ void QucsApp::slotAddToProject()
   }
 
   free(Buffer);
-  readProjectFiles();  // re-read the content ListView
+  slotUpdateTreeview();
   statusBar()->message(tr("Ready."));
 }
 
@@ -1257,7 +1257,7 @@ void QucsApp::slotImportData()
 
   ImportDialog *d = new ImportDialog(this);
   if(d->exec() == QDialog::Accepted)
-    readProjectFiles();  // re-read all project files
+    slotUpdateTreeview();
 }
 
 // -----------------------------------------------------------
