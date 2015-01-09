@@ -248,6 +248,9 @@ case $host_os in
       CXXFLAGS="$CXXFLAGS -W -Wall"
     fi
 
+    dnl Enable C++11 support
+    CXXFLAGS="$CXXFLAGS -std=c++0x"
+
     dnl handle provided QTDIR environment variable
     dnl   in Slackware when both Qt3 at Qt4 are installed the Qt4 path
     dnl   is in QT4DIR while QTDIR contains the path to Qt3
@@ -416,6 +419,9 @@ case $host_os in
     if test $USE_MAINTAINER_MODE = yes; then
       CPPFLAGS="$CPPFLAGS -W -Wall"
     fi
+
+    dnl Enable C++11 support
+    CPPFLAGS="$CPPFLAGS -std=c++0x"
 
     dnl ===================================================================
     dnl Test if search for SDK was enabled
