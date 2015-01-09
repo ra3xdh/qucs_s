@@ -20,7 +20,7 @@
 
 #include "mutualx.h"
 #include "node.h"
-#include "math.h"
+#include <cmath>
 
 MutualX::MutualX()
 {

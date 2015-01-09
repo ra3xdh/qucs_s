@@ -26,7 +26,7 @@
 
 #include "qucssettingsdialog.h"
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include "main.h"

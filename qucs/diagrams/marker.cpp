@@ -31,7 +31,7 @@
 #include <QPainter>
 
 #include <limits.h>
-#include <math.h>
+#include <cmath>
 #include <stdlib.h>
 
 #include "misc.h"

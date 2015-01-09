@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <math.h>
+#include <cmath>
 #include "exportdialog.h"
 
 #include <QValidator>

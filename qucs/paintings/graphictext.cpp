@@ -27,7 +27,7 @@
 #include <QLineEdit>
 #include <QTextEdit>
 
-#include <math.h>
+#include <cmath>
 
 GraphicText::GraphicText()
 {

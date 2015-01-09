@@ -19,7 +19,7 @@
 #define FILTER_H
 
 #include <QtCore>
-#include <math.h>
+#include <cmath>
 #include <complex>
 
 struct RC_elements {

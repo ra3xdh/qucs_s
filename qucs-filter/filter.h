@@ -27,7 +27,7 @@
 #define LIGHTSPEED 299792458.0
 #define Z_FIELD    376.73031346958504364963
 
-#include <math.h>
+#include <cmath>
 
 #define atanh(x) (0.5 * log((1.0 + (x)) / (1.0 - (x))))
 #define asinh(x) log((x) + sqrt((x) * (x) + 1.0))

@@ -23,7 +23,7 @@
 # include <config.h>
 #endif
 
-#include "math.h"
+#include <cmath>
 #include "misc.h"
 #include "main.h"
 

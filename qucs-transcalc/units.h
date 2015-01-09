@@ -24,7 +24,7 @@
 #ifndef __UNITS_H
 #define __UNITS_H
 
-#include <math.h>
+#include <cmath>
 
 #ifdef __MINGW32__
 #define atanh(x) (0.5 * log((1.0 + (x)) / (1.0 - (x))))

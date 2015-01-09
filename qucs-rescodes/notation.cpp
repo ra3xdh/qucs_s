@@ -19,7 +19,7 @@
 
 #include <stdlib.h>
 #include <ctype.h>
-#include <math.h>
+#include <cmath>
 #include "classproto.h"
 
 map<int,char> Notation::constructExpToModMap()

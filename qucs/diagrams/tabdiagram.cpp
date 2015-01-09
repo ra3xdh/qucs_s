@@ -26,7 +26,7 @@
 
 #include "tabdiagram.h"
 #include "main.h"
-#include <math.h>
+#include <cmath>
 #include "misc.h"
 
 

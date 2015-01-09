@@ -41,7 +41,7 @@
 #include <QClipboard>
 #include <QGroupBox>
 
-#include <math.h>
+#include <cmath>
 
 
 MatchDialog::MatchDialog(QWidget *parent)

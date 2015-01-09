@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 #include <stdlib.h>
-#include <math.h>
+#include <cmath>
 
 #include "components.h"
 #include "node.h"

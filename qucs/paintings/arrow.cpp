@@ -23,7 +23,7 @@
 #include "arrow.h"
 #include "arrowdialog.h"
 #include "schematic.h"
-#include "math.h"
+#include <cmath>
 
 #include <QPolygon>
 #include <QPainter>

@@ -24,7 +24,7 @@
 #include "main.h"
 #include "misc.h"
 
-#include <math.h>
+#include <cmath>
 #include <QPolygon>
 #include <QPainter>
 

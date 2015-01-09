@@ -19,7 +19,7 @@
 # include <config.h>
 #endif
 
-#include <math.h>
+#include <cmath>
 #include <iostream>
 #include <sstream>
 #include <string>

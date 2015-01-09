@@ -17,7 +17,7 @@
 
 // Elliptic (Cauer) filters, odd order
 
-#include <math.h>
+#include <cmath>
 #include <stdlib.h>
 #include <iostream>
 #include <string>

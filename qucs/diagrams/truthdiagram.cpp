@@ -20,7 +20,7 @@
   \brief The TruthDiagram class implements the Truth Table diagram
 */
 
-#include <math.h>
+#include <cmath>
 
 #include <QFontMetrics>
 

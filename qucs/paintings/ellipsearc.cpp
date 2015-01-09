@@ -24,7 +24,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 
-#include <math.h>
+#include <cmath>
 
 EllipseArc::EllipseArc()
 {

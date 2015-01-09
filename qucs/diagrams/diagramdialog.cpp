@@ -24,7 +24,7 @@
 #include "schematic.h"
 #include "rect3ddiagram.h"
 
-#include <math.h>
+#include <cmath>
 
 #include <QPaintEvent>
 #include <QPushButton>
