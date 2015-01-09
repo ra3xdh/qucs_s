@@ -17,7 +17,7 @@
 
 #include "ccvs.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 CCVS::CCVS()
 {

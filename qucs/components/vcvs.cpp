@@ -17,7 +17,7 @@
 
 #include "vcvs.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 
 VCVS::VCVS()

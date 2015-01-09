@@ -17,7 +17,7 @@
 #include "resistor.h"
 #include "node.h"
 #include "schematic.h"
-#include "main.h"
+#include "misc.h"
 
 
 Resistor::Resistor(bool european)

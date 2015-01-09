@@ -17,7 +17,7 @@
 
 #include "vccs.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 
 VCCS::VCCS()

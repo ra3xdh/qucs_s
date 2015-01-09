@@ -18,7 +18,7 @@
 #include "capacitor.h"
 #include "node.h"
 #include "schematic.h"
-#include "main.h"
+#include "misc.h"
 
 
 Capacitor::Capacitor()

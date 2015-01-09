@@ -17,7 +17,7 @@
 
 #include "volt_ac.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 
 Volt_ac::Volt_ac()

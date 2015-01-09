@@ -17,7 +17,7 @@
 
 #include "cccs.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 
 CCCS::CCCS()

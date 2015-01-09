@@ -17,7 +17,7 @@
 
 #include "volt_dc.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 
 Volt_dc::Volt_dc()

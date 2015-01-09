@@ -134,7 +134,7 @@ void NgspiceSimDialog::convertToQucsData(const QString &qucs_dataset)
     if (dataset.open(QFile::WriteOnly)) {
         QTextStream ds_stream(&dataset);
 
-        ds_stream<<"<Qucs Dataset "PACKAGE_VERSION">\n";
+        ds_stream<<"<Qucs Dataset " PACKAGE_VERSION ">\n";
 
         QString sim,indep;
         QStringList indep_vars;

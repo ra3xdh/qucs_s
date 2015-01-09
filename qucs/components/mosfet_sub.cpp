@@ -17,7 +17,7 @@
 
 #include "mosfet_sub.h"
 #include "node.h"
-#include "main.h"
+#include "misc.h"
 
 Basic_MOSFET::Basic_MOSFET()
 {
