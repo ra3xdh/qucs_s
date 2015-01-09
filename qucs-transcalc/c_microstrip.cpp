@@ -883,7 +883,7 @@ int c_microstrip::synthesize()
     d_s_h = (-f1 * j22 + f2 * j12) / (j11 * j22 - j21 * j12);
     d_w_h = (-f2 * j11 + f1 * j21) / (j11 * j22 - j21 * j12);
 
-    if (!isfinite(d_s_h) || !isfinite(d_w_h)) {
+    if (!std::isfinite(d_s_h) || !std::isfinite(d_w_h)) {
       /* a computed step is infinite: we are lost... */
       iter = maxiter+1; /* just to signal we did not converge */
       break;
