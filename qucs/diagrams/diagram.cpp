@@ -28,7 +28,7 @@
 # include <config.h>
 #endif
 #include <stdlib.h>
-#include <math.h>
+#include <cmath>
 #include <float.h>
 #if HAVE_IEEEFP_H
 # include <ieeefp.h>

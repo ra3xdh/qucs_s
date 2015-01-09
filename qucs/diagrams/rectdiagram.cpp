@@ -25,7 +25,7 @@
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
-#include <math.h>
+#include <cmath>
 #include <float.h>
 #if HAVE_IEEEFP_H
 # include <ieeefp.h>
