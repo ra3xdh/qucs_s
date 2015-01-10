@@ -105,7 +105,7 @@ bool QucsApp::performToggleAction(bool on, QAction *Action,
 }
 
 // -----------------------------------------------------------------------
-// Is called, when "set on grid" action is activated.
+// Is called, when "set on grid" action is triggered.
 void QucsApp::slotOnGrid(bool on)
 {
   performToggleAction(on, onGrid, &Schematic::elementsOnGrid,
@@ -199,7 +199,7 @@ void QucsApp::slotSetMarker(bool on)
 }
 
 // -----------------------------------------------------------------------
-// Is called, when "move component text" action is activated.
+// Is called, when "move component text" action is triggered.
 void QucsApp::slotMoveText(bool on)
 {
   performToggleAction(on, moveText, 0,
@@ -207,7 +207,7 @@ void QucsApp::slotMoveText(bool on)
 }
 
 // -----------------------------------------------------------------------
-// Is called, when "Zoom in" action is activated.
+// Is called, when "Zoom in" action is triggered.
 void QucsApp::slotZoomIn(bool on)
 {
   TextDoc *Doc = (TextDoc*)DocumentTab->currentPage();
@@ -504,7 +504,7 @@ void QucsApp::slotEditRedo()
 }
 
 // --------------------------------------------------------------
-// Is called, when "Align top" action is activated.
+// Is called, when "Align top" action is triggered.
 void QucsApp::slotAlignTop()
 {
   editText->setHidden(true); // disable text edit of component property
@@ -518,7 +518,7 @@ void QucsApp::slotAlignTop()
 }
 
 // --------------------------------------------------------------
-// Is called, when "Align bottom" action is activated.
+// Is called, when "Align bottom" action is triggered.
 void QucsApp::slotAlignBottom()
 {
   editText->setHidden(true); // disable text edit of component property
@@ -532,7 +532,7 @@ void QucsApp::slotAlignBottom()
 }
 
 // --------------------------------------------------------------
-// Is called, when "Align left" action is activated.
+// Is called, when "Align left" action is triggered.
 void QucsApp::slotAlignLeft()
 {
   editText->setHidden(true); // disable text edit of component property
@@ -546,7 +546,7 @@ void QucsApp::slotAlignLeft()
 }
 
 // --------------------------------------------------------------
-// Is called, when "Align right" action is activated.
+// Is called, when "Align right" action is triggered.
 void QucsApp::slotAlignRight()
 {
   editText->setHidden(true); // disable text edit of component property
@@ -560,7 +560,7 @@ void QucsApp::slotAlignRight()
 }
 
 // --------------------------------------------------------------
-// Is called, when "Distribute horizontally" action is activated.
+// Is called, when "Distribute horizontally" action is triggered.
 void QucsApp::slotDistribHoriz()
 {
   editText->setHidden(true); // disable text edit of component property
@@ -572,7 +572,7 @@ void QucsApp::slotDistribHoriz()
 }
 
 // --------------------------------------------------------------
-// Is called, when "Distribute vertically" action is activated.
+// Is called, when "Distribute vertically" action is triggered.
 void QucsApp::slotDistribVert()
 {
   editText->setHidden(true); // disable text edit of component property
@@ -584,7 +584,7 @@ void QucsApp::slotDistribVert()
 }
 
 // --------------------------------------------------------------
-// Is called, when "Center horizontally" action is activated.
+// Is called, when "Center horizontally" action is triggered.
 void QucsApp::slotCenterHorizontal()
 {
   editText->setHidden(true); // disable text edit of component property
@@ -598,7 +598,7 @@ void QucsApp::slotCenterHorizontal()
 }
 
 // --------------------------------------------------------------
-// Is called, when "Center vertically" action is activated.
+// Is called, when "Center vertically" action is triggered.
 void QucsApp::slotCenterVertical()
 {
   editText->setHidden(true); // disable text edit of component property
@@ -612,7 +612,7 @@ void QucsApp::slotCenterVertical()
 }
 
 // ---------------------------------------------------------------------
-// Is called when the "select all" action is activated.
+// Is called when the "select all" action is triggered.
 void QucsApp::slotSelectAll()
 {
   editText->setHidden(true); // disable text edit of component property
@@ -631,7 +631,7 @@ void QucsApp::slotSelectAll()
 }
 
 // ---------------------------------------------------------------------
-// Is called when the "select markers" action is activated.
+// Is called when the "select markers" action is triggered.
 void QucsApp::slotSelectMarker()
 {
   editText->setHidden(true); // disable text edit of component property
@@ -844,7 +844,7 @@ void QucsApp::showHTML(const QString& Page)
 }
 
 // ---------------------------------------------------------------------
-// Is called when the find action is activated.
+// Is called when the find action is triggered.
 void QucsApp::slotEditFind()
 {
   SearchDia->initSearch(DocumentTab->currentPage(),
