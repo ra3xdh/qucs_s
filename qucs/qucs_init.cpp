@@ -33,6 +33,7 @@
 #include <QStatusBar>
 #include <QDockWidget>
 #include <QMessageBox>
+#include <QApplication>
 
 /**
  * @brief QucsApp::initActions Initializes all QActions of the application
@@ -654,7 +655,7 @@ void QucsApp::initActions()
   helpAboutQt = new QAction(tr("About Qt..."), this);
   helpAboutQt->setStatusTip(tr("About Qt"));
   helpAboutQt->setWhatsThis(tr("About Qt\n\nAbout Qt by Trolltech"));
-  connect(helpAboutQt, SIGNAL(triggered()), SLOT(slotHelpAboutQt()));
+  connect(helpAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 }
 
 // ----------------------------------------------------------
@@ -1098,10 +1099,3 @@ void QucsApp::slotHelpAbout()
     tr("Arabic by Chabane Noureddine")+"\n"+
     tr("Kazakh by Erbol Keshubaev"));
 }
-
-// ----------------------------------------------------------
-void QucsApp::slotHelpAboutQt()
-{
-  QMessageBox::aboutQt(this, tr("About Qt"));
-}
-

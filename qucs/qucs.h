@@ -248,7 +248,6 @@ private slots:
   void slotToggleOctave(bool);
   void slotToggleDock(bool);
   void slotHelpAbout();     // shows an about dialog
-  void slotHelpAboutQt();   // shows the standard about dialog for Qt
 
 private:
   void initActions();    // initializes all QActions of the application
