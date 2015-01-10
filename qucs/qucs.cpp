@@ -69,7 +69,7 @@
 #include "dialogs/exportdialog.h"
 //#include "dialogs/vtabwidget.h"
 //#include "dialogs/vtabbeddockwidget.h"
-#include "dialogs/ngspicesimdialog.h"
+#include "extsimkernels/ngspicesimdialog.h"
 #include "octave_window.h"
 #include "printerwriter.h"
 #include "imagewriter.h"

@@ -52,7 +52,6 @@ loaddialog.h
 matchdialog.h
 newprojdialog.h
 packagedialog.h
-ngspicesimdialog.h
 qucssettingsdialog.h
 savedialog.h
 searchdialog.h

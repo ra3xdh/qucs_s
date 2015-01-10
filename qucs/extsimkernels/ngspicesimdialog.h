@@ -19,6 +19,7 @@
 #define NGSPICESIMDIALOG_H
 
 #include <QtGui>
+#include <QtCore>
 #include "schematic.h"
 
 class NgspiceSimDialog : public QDialog

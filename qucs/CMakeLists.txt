@@ -122,6 +122,7 @@ ADD_SUBDIRECTORY( dialogs )
 ADD_SUBDIRECTORY( octave )
 ADD_SUBDIRECTORY( python )
 ADD_SUBDIRECTORY( paintings )
+ADD_SUBDIRECTORY( extsimkernels )
 
 SET(QUCS_SRCS
   element.cpp	octave_window.cpp	qucsdoc.cpp
@@ -326,10 +327,6 @@ INSTALL( FILES ${SCRIPTS} DESTINATION bin/ )
 # And then there's ways to customize this as well
 #set(CPACK_BINARY_DRAGNDROP ON)
 #include(CPack)
-
-
-
-
 
 
 
