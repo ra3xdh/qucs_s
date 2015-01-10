@@ -1,7 +1,7 @@
 /***************************************************************************
-                           ngspicesimdialog.h
+                           mgspice.h
                              ----------------
-    begin                : Sun Nov 9 2014
+    begin                : Sat Jan 10 2014
     copyright            : (C) 2014 by Vadim Kuznetsov
     email                : ra3xdh@gmail.com
  ***************************************************************************/
@@ -15,45 +15,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef NGSPICESIMDIALOG_H
-#define NGSPICESIMDIALOG_H
 
-#include <QtGui>
+#ifndef NGSPICE_H
+#define NGSPICE_H
+
 #include <QtCore>
 #include "schematic.h"
-#include "ngspice.h"
+#include "abstractspicekernel.h"
 
-class NgspiceSimDialog : public QDialog
+class Ngspice : public AbstractSpiceKernel
 {
     Q_OBJECT
-private:
-
-    Schematic *Sch;
-
-    QPushButton *buttonSimulate;
-    QPushButton *buttonStopSim;
-
-    QTextEdit *editSimConsole;
-
-    QString workdir;
-
-    Ngspice *ngspice;
-
 public:
-    explicit NgspiceSimDialog(Schematic *sch,QWidget *parent = 0);
-    ~NgspiceSimDialog();
+    explicit Ngspice(Schematic *sch_, QObject *parent = 0);
     
-signals:
-    
-public slots:
-
-private slots:
-    void slotProcessNgSpiceOutput();
-    void slotNgspiceStarted();
-    void slotNgspiceStartError();
-    void slotStart();
-    void slotStop();
+protected:
+    void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
+                  QStringList &vars, QStringList &outputs);
     
 };
 
-#endif // NGSPICESIMDIALOG_H
+#endif // NGSPICE_H
