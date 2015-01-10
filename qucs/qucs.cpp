@@ -74,36 +74,6 @@
 
 extern const char *empty_xpm[];
 
-
-// IconView without dragging icon bitmap
-/*
-class myIconView : public Q3IconView
-{
-public:
-  myIconView(QWidget* parent_) : Q3IconView(parent_, 0, 0) {};
- ~myIconView() {};
-
-protected:
-  Q3DragObject *dragObject() {
-    Q3IconViewItem *Item = currentItem();
-    if(!Item) return 0;
-
-    // no picture during dragging, but bounding rectangles in QListView
-    Q3IconDrag *DragPic = new Q3IconDrag( viewport() );
-    DragPic->setPixmap( QPixmap(empty_xpm), QPoint(0, 0) );
-    DragPic->append( Q3IconDragItem(),
-        QRect( Item->pixmapRect().width() / -2,
-               Item->pixmapRect().height() / -2,
-               Item->pixmapRect().width(), Item->pixmapRect().height() ),
-        QRect( Item->textRect().width() / -2,
-               Item->pixmapRect().height() / 2 + 5,
-               Item->textRect().width(), Item->textRect().height() ) );
-    return DragPic;
-  };
-};
-*/
-
-
 QucsApp::QucsApp()
 {
   setWindowTitle("Qucs " PACKAGE_VERSION);
@@ -161,19 +131,10 @@ QucsApp::QucsApp()
   for(int z=1; z<qApp->argc(); z++) {
     QString arg = qApp->argv()[z];
     if(*(arg) != '-') {
-      // allow uri's: file:/home/linuxuser/Desktop/example.sch
-      //TODO
-      //if(arg.contains(":/")) {
-        //QString f = QDir::convertSeparators(Q3UriDrag::uriToLocalFile(arg));
-      //  if(f.isEmpty()) f = arg;
-      //  gotoPage(f);
-      //} else {
-        // get and set absolute path, QucsWorkDir now finds subcircuits
-        QFileInfo Info(arg);
-        QucsSettings.QucsWorkDir.setPath(Info.absoluteDir().absolutePath());
-        arg = QucsSettings.QucsWorkDir.filePath(Info.fileName());
-        gotoPage(arg);
-      //}
+      QFileInfo Info(arg);
+      QucsSettings.QucsWorkDir.setPath(Info.absoluteDir().absolutePath());
+      arg = QucsSettings.QucsWorkDir.filePath(Info.fileName());
+      gotoPage(arg);
     }
   }
 }
@@ -191,7 +152,6 @@ QucsApp::~QucsApp()
 // #######################################################################
 void QucsApp::initContentListView()
 {
-
   Content->clear();
 
   ConOthers = new QTreeWidgetItem(Content);
@@ -1261,26 +1221,6 @@ void QucsApp::slotButtonProjNew()
 // content ListView
 void QucsApp::readProjectFiles()
 {
-  // Delete the content files, but don't delete the parent items !!!
-/* TODO
-  while(ConSchematics->firstChild())
-    delete ConSchematics->firstChild();
-  while(ConDisplays->firstChild())
-    delete ConDisplays->firstChild();
-  while(ConDatasets->firstChild())
-    delete ConDatasets->firstChild();
-  while(ConSources->firstChild())
-    delete ConSources->firstChild();
-  while(ConVerilog->firstChild())
-    delete ConVerilog->firstChild();
-  while(ConVerilogA->firstChild())
-    delete ConVerilogA->firstChild();
-  while(ConOthers->firstChild())
-    delete ConOthers->firstChild();
-  while(ConOctave->firstChild())
-    delete ConOctave->firstChild();
-*/
-
   //Is this OK instead of the above??
   initContentListView();
 
@@ -1620,7 +1560,6 @@ void QucsApp::slotFileOpen()
     gotoPage(s);
     lastDirOpenSave = s;   // remember last directory and file
 
-
     statusBar()->message(tr("Ready."));
   }
 }
@@ -1740,32 +1679,6 @@ bool QucsApp::saveAs()
   Doc->setName(s);
   lastDirOpenSave = Info.dirPath(true);  // remember last directory and file
   updateRecentFilesList(s);
-
-  if(intoView) {    // insert new name in Content ListView ?
-    if(Info.dirPath(true) == QucsSettings.QucsWorkDir.absPath())
-      if(!ProjName.isEmpty()) {
-        s = Info.fileName();  // remove path from file name
-	QString ext = Info.extension (false);
-  /*
-        if(ext == "sch")
-          Content->setSelected(new Q3ListViewItem(ConSchematics, s), true);
-        else if(ext == "dpl")
-          Content->setSelected(new Q3ListViewItem(ConDisplays, s), true);
-        else if(ext == "dat")
-          Content->setSelected(new Q3ListViewItem(ConDatasets, s), true);
-        else if((ext == "vhdl") || (ext == "vhd"))
-          Content->setSelected(new Q3ListViewItem(ConSources, s), true);
-        else if(ext == "v")
-          Content->setSelected(new Q3ListViewItem(ConVerilog, s), true);
-        else if(ext == "va")
-          Content->setSelected(new Q3ListViewItem(ConVerilogA, s), true);
-        else if(ext == "m" || ext == "oct")
-          Content->setSelected(new Q3ListViewItem(ConOctave, s), true);
-        else
-          Content->setSelected(new Q3ListViewItem(ConOthers, s), true);
-*/
-      }
-  }
 
   n = Doc->save();   // SAVE
   if(n < 0)  return false;
@@ -1972,19 +1885,6 @@ void QucsApp::slotChangeView(QWidget *w)
 
   HierarchyHistory.clear();
   popH->setEnabled(false);
-}
-
-// --------------------------------------------------------------
-// Changes to the next document in the TabBar.
-void QucsApp::slotNextTab()
-{
-  int No = DocumentTab->currentPageIndex() + 1;
-  if(No >= DocumentTab->count())
-    No = 0;
-
-  // make new document the current (calls "slotChangeView(int)" indirectly)
-  DocumentTab->setCurrentPage(No);
-  view->drawn = false;
 }
 
 // --------------------------------------------------------------

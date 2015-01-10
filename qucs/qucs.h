@@ -69,7 +69,6 @@ public:
   QString fileType (const QString&);
 
   QString ProjName;   // name of the project, that is open
-  //QList<QString> qucsPathList; // the qucs path list for subcircuits and spice files
   QHash<QString,QString> schNameHash; // QHash for the schematic files lookup
   QStringList spiceExtensions; // List of extensions used for spice files
   QString getSpiceFileFilter (void); // generate file filter string for spice files
@@ -150,7 +149,6 @@ private slots:
   void slotAfterSimulation(int, SimMessage*);
   void slotDCbias();
   void slotChangePage(QString&, QString&);
-  void slotNextTab();
   void slotHideEdit();
 signals:
   void signalKillEmAll();

@@ -284,20 +284,6 @@ void QucsApp::initActions()
   cursorDown = new QShortcut(QKeySequence(Qt::Key_Down), this);
   connect(cursorDown, SIGNAL(activated()), SLOT(slotCursorDown()));
 
-
-/*
-  mainAccel->connectItem(mainAccel->insertItem(Qt::Key_Left),
-			this, SLOT(slotCursorLeft()));
-  mainAccel->connectItem(mainAccel->insertItem(Qt::Key_Right),
-			this, SLOT(slotCursorRight()));
-  mainAccel->connectItem(mainAccel->insertItem(Qt::Key_Up),
-			this, SLOT(slotCursorUp()));
-  mainAccel->connectItem(mainAccel->insertItem(Qt::Key_Down),
-			this, SLOT(slotCursorDown()));
-  mainAccel->connectItem(mainAccel->insertItem(Qt::Key_Tab),
-			this, SLOT(slotNextTab()));
-*/
-
   undo = new QAction(QIcon((":/bitmaps/undo.png")), tr("&Undo"), this);
   undo->setShortcut(Qt::CTRL+Qt::Key_Z);
   undo->setStatusTip(tr("Undoes the last command"));
