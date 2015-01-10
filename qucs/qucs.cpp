@@ -996,8 +996,7 @@ void QucsApp::slotCMenuCopy()
   //TODO: maybe require disable edit here
 
   // refresh the schematic file path
-  this->updateSchNameHash();
-  this->updateSpiceNameHash();
+  slotRefreshSchPath();
 
   if(!ProjName.isEmpty())
     readProjectFiles();  // re-read the content ListView
@@ -1705,8 +1704,7 @@ void QucsApp::slotFileSaveAs()
   statusBar()->message(tr("Ready."));
 
   // refresh the schematic file path
-  this->updateSchNameHash();
-  this->updateSpiceNameHash();
+  slotRefreshSchPath();
 
   if(!ProjName.isEmpty())
     readProjectFiles();  // re-read the content ListView
@@ -1739,8 +1737,7 @@ void QucsApp::slotFileSaveAll()
   statusBar()->message(tr("Ready."));
 
   // refresh the schematic file path
-  this->updateSchNameHash();
-  this->updateSpiceNameHash();
+  slotRefreshSchPath();
 }
 
 // --------------------------------------------------------------
@@ -1928,18 +1925,15 @@ void QucsApp::slotApplSettings()
   view->drawn = false;
 }
 
-
 // --------------------------------------------------------------
 void QucsApp::slotRefreshSchPath()
 {
   this->updateSchNameHash();
   this->updateSpiceNameHash();
 
-  QMessageBox msgBox;
-  msgBox.setText("The schematic file path has been refreshed.");
-  msgBox.exec();
+  int exit = QMessageBox::information(this, tr("Update schematic path"),
+      tr("The schematic file path has been refreshed."), tr("OK"));
 }
-
 
 // --------------------------------------------------------------
 void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
