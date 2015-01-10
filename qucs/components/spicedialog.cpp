@@ -280,7 +280,7 @@ void SpiceDialog::slotButtBrowse()
   QString s = QFileDialog::getOpenFileName(this,
                   tr("Select a file"),
                   lastDir.isEmpty() ? QString(".") : lastDir,
-                  tr("SPICE netlist") + App->getSpiceFileFilter ()
+                  tr("SPICE netlist") + QString(" (") + App->spiceExtensions.join(" ") + QString(");;")
                       + tr("All Files") + " (*.*)");
 
   if(s.isEmpty()) {

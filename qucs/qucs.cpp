@@ -88,7 +88,7 @@ QucsApp::QucsApp()
     tr("Verilog Sources") + " (*.v);;" +
     tr("Verilog-A Sources") + " (*.va);;" +
     tr("Octave Scripts") + " (*.m *.oct);;" +
-    tr("Spice Files") + getSpiceFileFilter() +
+    tr("Spice Files") + QString(" (") + spiceExtensions.join(" ") + QString(");;") +
     tr("Any File")+" (*)";
 
   updateSchNameHash();
@@ -2838,23 +2838,6 @@ void QucsApp::updateSchNameHash(void)
     foreach (QFileInfo schfile, schfilesList) {
         schNameHash[schfile.completeBaseName()] = schfile.absoluteFilePath();
     }
-}
-
-// --------------------------------------------------------
-// Produces a name filter suitible for file dialogs from the
-// list of recognised spice extensions
-QString QucsApp::getSpiceFileFilter (void)
-{
-    QString spexts = " (";
-
-    for (int i = 0; i < spiceExtensions.count (); i++)
-    {
-        spexts += "*" + spiceExtensions[i] + " ";
-    }
-
-    spexts += ");;";
-
-    return spexts;
 }
 
 // -----------------------------------------------------------

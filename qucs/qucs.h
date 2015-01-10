@@ -71,7 +71,6 @@ public:
   QString ProjName;   // name of the project, that is open
   QHash<QString,QString> schNameHash; // QHash for the schematic files lookup
   QStringList spiceExtensions; // List of extensions used for spice files
-  QString getSpiceFileFilter (void); // generate file filter string for spice files
   QHash<QString,QString> spiceNameHash; // QHash for the spice files lookup
 
   QLineEdit *editText;  // for edit component properties on schematic
