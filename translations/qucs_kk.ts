@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="kk">
 <context>
     <name>ArrowDialog</name>
     <message>
@@ -150,7 +150,7 @@
     <message>
         <location line="-25"/>
         <source>Error</source>
-        <translation type="unfinished">Қате</translation>
+        <translation>Қате</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -178,38 +178,34 @@
         <source>Yes</source>
         <translation>ИЯ</translation>
     </message>
-    <message>
-        <source>No match found!</source>
-        <translation type="obsolete">Сәйкессіздік!</translation>
-    </message>
 </context>
 <context>
     <name>ComponentDialog</name>
     <message>
-        <location filename="../qucs/components/componentdialog.cpp" line="+42"/>
+        <location filename="../qucs/components/componentdialog.cpp" line="+43"/>
         <source>Edit Component Properties</source>
         <translation>Компоненттердің қасиетін өзгерту</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+33"/>
         <source>Sweep</source>
         <translation>бұрап ашу</translation>
     </message>
     <message>
+        <location line="+10"/>
         <location line="+9"/>
-        <location line="+9"/>
-        <location line="+30"/>
+        <location line="+34"/>
         <location line="+9"/>
         <location line="+9"/>
         <location line="+9"/>
         <location line="+16"/>
-        <location line="+96"/>
-        <location line="+86"/>
+        <location line="+106"/>
+        <location line="+94"/>
         <source>display in schematic</source>
         <translation>сұлбада көрсету</translation>
     </message>
     <message>
-        <location line="-261"/>
+        <location line="-283"/>
         <source>Simulation:</source>
         <translation>Моделдеу:</translation>
     </message>
@@ -224,7 +220,7 @@
         <translation>Тип:</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>linear</source>
         <translation>сызықтық</translation>
     </message>
@@ -244,7 +240,7 @@
         <translation>тұрақты</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Values:</source>
         <translation>Мағыналар:</translation>
     </message>
@@ -260,19 +256,19 @@
     </message>
     <message>
         <location line="+9"/>
-        <location line="+941"/>
+        <location line="+1123"/>
         <location line="+22"/>
         <source>Step:</source>
         <translation>Қадам:</translation>
     </message>
     <message>
-        <location line="-956"/>
+        <location line="-1138"/>
         <source>Number:</source>
         <translation>Сан:</translation>
     </message>
     <message>
-        <location line="+79"/>
-        <location line="+31"/>
+        <location line="+87"/>
+        <location line="+33"/>
         <source>Properties</source>
         <translation>Қасиеті</translation>
     </message>
@@ -282,7 +278,7 @@
         <translation>Аты:</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+45"/>
         <source>Name</source>
         <translation>Аты</translation>
     </message>
@@ -302,7 +298,7 @@
         <translation>бейнелеу</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+42"/>
         <source>Edit</source>
         <translation>Өзгерту</translation>
     </message>
@@ -312,7 +308,7 @@
         <translation>Көріп шығу</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+16"/>
         <source>Add</source>
         <translation>Қосу</translation>
     </message>
@@ -320,6 +316,16 @@
         <location line="+3"/>
         <source>Remove</source>
         <translation>Жою</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Move Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Move Down</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
@@ -337,23 +343,32 @@
         <translation>Жоқ</translation>
     </message>
     <message>
-        <location line="+30"/>
-        <location line="+62"/>
-        <location line="+186"/>
+        <location line="+29"/>
+        <location line="+74"/>
+        <location line="+54"/>
+        <location line="+201"/>
         <location line="+215"/>
-        <location line="+133"/>
+        <location line="+167"/>
+        <location line="+292"/>
         <source>yes</source>
         <translation>ия</translation>
     </message>
     <message>
-        <location line="-594"/>
-        <location line="+248"/>
-        <location line="+344"/>
+        <location line="-1001"/>
+        <location line="+74"/>
+        <location line="+255"/>
+        <location line="+378"/>
+        <location line="+296"/>
         <source>no</source>
         <translation>жоқ</translation>
     </message>
     <message>
-        <location line="-65"/>
+        <location line="-356"/>
+        <source>Select a file</source>
+        <translation>Файлды таңдау</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>All Files</source>
         <translation>Барлық файлдар</translation>
     </message>
@@ -383,12 +398,7 @@
         <translation>Verilog файлдары</translation>
     </message>
     <message>
-        <location line="-7"/>
-        <source>Select a file</source>
-        <translation>Файлды таңдау</translation>
-    </message>
-    <message>
-        <location line="+164"/>
+        <location line="+185"/>
         <source>Points per decade:</source>
         <translation>Бір ондыққа шақ келетін нүктелер саны:</translation>
     </message>
@@ -476,24 +486,24 @@
     </message>
     <message>
         <location line="+5"/>
-        <location line="+159"/>
+        <location line="+151"/>
         <source>solid line</source>
         <translation>тұтас сызық</translation>
     </message>
     <message>
-        <location line="-158"/>
-        <location line="+159"/>
+        <location line="-150"/>
+        <location line="+151"/>
         <source>dash line</source>
         <translation>штрихталған сызық</translation>
     </message>
     <message>
-        <location line="-158"/>
-        <location line="+159"/>
+        <location line="-150"/>
+        <location line="+151"/>
         <source>dot line</source>
         <translation>пунктирленген сызық</translation>
     </message>
     <message>
-        <location line="-157"/>
+        <location line="-149"/>
         <source>long dash line</source>
         <translation>штрихтары ұзын сызық</translation>
     </message>
@@ -518,7 +528,7 @@
         <translation>қалыңдығы:</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+10"/>
         <source>y-Axis:</source>
         <translation>y-осі:</translation>
     </message>
@@ -528,7 +538,7 @@
         <translation>Мәліметтерді теру</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+26"/>
         <source>Name</source>
         <translation>Аты</translation>
     </message>
@@ -656,36 +666,36 @@
         <translation>х-осі</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <location line="+42"/>
-        <location line="+44"/>
+        <location line="+7"/>
+        <location line="+43"/>
+        <location line="+45"/>
         <source>manual</source>
         <translation>қолмен өзгерту</translation>
     </message>
     <message>
-        <location line="-78"/>
-        <location line="+42"/>
-        <location line="+44"/>
+        <location line="-80"/>
+        <location line="+43"/>
+        <location line="+45"/>
         <source>start</source>
         <translation>бастау</translation>
     </message>
     <message>
-        <location line="-77"/>
+        <location line="-79"/>
+        <location line="+45"/>
         <location line="+44"/>
-        <location line="+43"/>
         <source>step</source>
         <translation>қадам</translation>
     </message>
     <message>
-        <location line="-78"/>
+        <location line="-80"/>
+        <location line="+45"/>
         <location line="+44"/>
-        <location line="+43"/>
         <source>stop</source>
         <translation>тоқта</translation>
     </message>
     <message>
-        <location line="-53"/>
-        <location line="+43"/>
+        <location line="-54"/>
+        <location line="+44"/>
         <source>number</source>
         <translation>сан</translation>
     </message>
@@ -827,7 +837,7 @@
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Жоқ</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1029,6 +1039,248 @@
     </message>
 </context>
 <context>
+    <name>FilterDialog</name>
+    <message>
+        <location filename="../qucs-filter-v2/qf_dialog.cpp" line="+51"/>
+        <source>E&amp;xit</source>
+        <translation>Ш&amp;ығу</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>&amp;About Qucs Filter...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>About Qt...</source>
+        <translation>Qt жайлы...</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>&amp;File</source>
+        <translation>&amp;Файл</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>&amp;Help</source>
+        <translation>&amp;Көмек</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Specify order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>b</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>c</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Cutoff/Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location line="+40"/>
+        <location line="+13"/>
+        <source>Hz</source>
+        <translation>Гц</translation>
+    </message>
+    <message>
+        <location line="-52"/>
+        <location line="+40"/>
+        <location line="+13"/>
+        <source>kHz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-52"/>
+        <location line="+40"/>
+        <location line="+13"/>
+        <source>MHz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-52"/>
+        <location line="+40"/>
+        <location line="+13"/>
+        <source>GHz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-50"/>
+        <source>Ripple</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <location line="+53"/>
+        <source>dB</source>
+        <translation>дБ</translation>
+    </message>
+    <message>
+        <location line="-50"/>
+        <source>Angle</source>
+        <translation>Бұрыш</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Â°</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Zin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <location line="+8"/>
+        <source>Ohm</source>
+        <translation>Ом</translation>
+    </message>
+    <message>
+        <location line="-5"/>
+        <source>Zout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Stopband corner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Bandwidth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Attenuation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>dual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Stopband is first pole</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Optimize cauer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Equal inductors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>+ rather than T</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Optimize C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cmin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cmax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>noC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Optimize L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lmin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lmax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>noL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>LC Filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Microstrip Filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Active Filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Calculate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>About...</source>
+        <translation>Жайлы...</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>
+Filter synthesis program
+</source>
+        <translation>
+Сүзгіні синтездейтін қамтама
+</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copyright (C) 2009 by</source>
+        <translation type="unfinished">Copyright (C) 2005, 2006 by {2009 ?}</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>About Qt</source>
+        <translation>Qt жайлы</translation>
+    </message>
+</context>
+<context>
     <name>GraphicTextDialog</name>
     <message>
         <location filename="../qucs/paintings/graphictextdialog.cpp" line="+36"/>
@@ -1071,14 +1323,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Text size: </source>
-        <translation type="obsolete">Мәтіннің өлшемі:</translation>
-    </message>
-    <message>
-        <source>Rotation angle: </source>
-        <translation type="obsolete">Бұрылу бұрышы:</translation>
-    </message>
-    <message>
         <location line="+29"/>
         <source>Error</source>
         <translation>Қате</translation>
@@ -1092,15 +1336,26 @@
 <context>
     <name>HelpDialog</name>
     <message>
-        <location filename="../qucs-filter/helpdialog.cpp" line="+38"/>
+        <location filename="../qucs-activefilter/helpdialog.cpp" line="+38"/>
+        <source>QucsActiveFilter is a active filter synthesis program. Butterworth, Chebyshev, Inverse Chebyshev, Cauer, Bessel and User defined transfer function are supported.To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediatly, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <location filename="../qucs-filter/helpdialog.cpp" line="+67"/>
+        <location filename="../qucs-rescodes/helpdialog.cpp" line="+66"/>
+        <source>Close</source>
+        <translation>Жабу</translation>
+    </message>
+    <message>
+        <location filename="../qucs-filter/helpdialog.cpp" line="-29"/>
         <source>QucsFilter is a filter synthesis program. To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediatly, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
         <translation>QucsFilter - бұл сүзгілерді синтездейтін бағдарлама. Сүзгіні құру үшін барлық керекті параметрлерді енгізіп негізгі терезенің төмен жағында орналасқан батырманы басыңыз. Осыдан кейін сүзгі есептеліп алмастыру буферіне жіберіледі. Содан кейін Qucs-қа өтіп, таза құжатты ашып CTRL-V (алмастыру буферінен қою) пернесін басыңыз. Енді сіздің сұлбаңызға сүзгіні енгізіп, өзгертіп және моделдеуге болады. Іске сәт!</translation>
     </message>
     <message>
-        <location line="+29"/>
-        <location filename="../qucs-rescodes/helpdialog.cpp" line="+62"/>
-        <source>Close</source>
-        <translation>Жабу</translation>
+        <location filename="../qucs-rescodes/helpdialog.cpp" line="-31"/>
+        <source>A program to compute color codes for resistors and resistance values for color codes. To obtain the color codes, simply enter the resistance and tolerance values and press the &quot;To Colors&quot; button. Alternatively to obtain the resistance, select the appropriate color bands and press the &quot;To Resistance&quot; button. The program computes the closest standard resistor value. You can paste the computed resistor in the schematic (by pressing ctrl+v). Have fun!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs-transcalc/helpdialog.cpp" line="+32"/>
@@ -1122,19 +1377,6 @@
         <source>Dismiss</source>
         <translation>Дайын</translation>
     </message>
-    <message>
-        <source>Qucs Attenuator Help</source>
-        <translation type="obsolete">Qucs Attenuator жайлы анықтама</translation>
-    </message>
-    <message>
-        <source>QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediatly, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</source>
-        <translation type="obsolete">QucsAttenuator - бұл аттеньюаторларды синтездейтін бағдарлама. Аттеньюаторларды құру үшін барлық керекті параметрлерді енгізіп негізгі терезенің төмен жағында орналасқан батырманы басыңыз. Осыдан кейін аттеньюатор есептеліп алмастыру буферіне жіберіледі. Содан кейін Qucs-қа өтіп, таза құжатты ашып CTRL-V (алмастыру буферінен қою) пернесін басыңыз. Енді сіздің сұлбаңызға аттеньюаторды енгізіп, өзгертіп және моделдеуге болады. Іске сәт!</translation>
-    </message>
-    <message>
-        <location filename="../qucs-rescodes/helpdialog.cpp" line="-27"/>
-        <source>A program to compute color codes for resistors and resistance values for color codes. To obtain the color codes, simply enter the resistance and tolerance values and press the &quot;To Colors&quot; button. Alternatively to obtain the resistance, select the appropriate color bands and press the &quot;To Resistance&quot; button. The program computes the closest standard resistor value. You can paste the computed resistor in the schematic (by pressing ctrl+v). Have fun!</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ID_Dialog</name>
@@ -1154,7 +1396,7 @@
         <translation>Параметрлер</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
         <source>display</source>
         <translation>көрсету</translation>
     </message>
@@ -1180,29 +1422,27 @@
     </message>
     <message>
         <location line="+10"/>
-        <location line="+115"/>
-        <location line="+32"/>
+        <location line="+106"/>
         <location line="+37"/>
-        <location line="+61"/>
-        <location line="+1"/>
-        <location line="+17"/>
+        <location line="+49"/>
+        <location line="+45"/>
         <source>yes</source>
         <translation>ия</translation>
     </message>
     <message>
-        <location line="-263"/>
-        <location line="+147"/>
-        <location line="+37"/>
+        <location line="-237"/>
+        <location line="+143"/>
+        <location line="+94"/>
         <source>no</source>
         <translation>жоқ</translation>
     </message>
     <message>
-        <location line="-166"/>
+        <location line="-219"/>
         <source>display in schematic</source>
         <translation>сұлбада көрсету</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Name:</source>
         <translation>Аты:</translation>
     </message>
@@ -1222,7 +1462,7 @@
         <translation>Тип:</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+27"/>
         <source>Add</source>
         <translation>Қосу</translation>
     </message>
@@ -1238,11 +1478,16 @@
     </message>
     <message>
         <location line="+2"/>
+        <source>Apply</source>
+        <translation type="unfinished">Қолдану</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Cancel</source>
         <translation>Артқа қайтару</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+54"/>
         <location line="+8"/>
         <source>Error</source>
         <translation>Қате</translation>
@@ -1316,7 +1561,12 @@
         <translation>Qucs желі тізімі</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+1"/>
+        <source>Matlab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Messages</source>
         <translation>Хабарлар</translation>
     </message>
@@ -1440,11 +1690,6 @@
         <source>Converter ended with errors!</source>
         <translation>Түрлендіруші жұмысын қателермен аяқтады!</translation>
     </message>
-    <message>
-        <location line="-264"/>
-        <source>Matlab</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>LabelDialog</name>
@@ -1489,7 +1734,7 @@
 <context>
     <name>LibraryDialog</name>
     <message>
-        <location filename="../qucs/dialogs/librarydialog.cpp" line="+51"/>
+        <location filename="../qucs/dialogs/librarydialog.cpp" line="+56"/>
         <source>Create Library</source>
         <translation>Кітапхананы құру</translation>
     </message>
@@ -1539,7 +1784,7 @@
     <message>
         <location line="+6"/>
         <source>Description:</source>
-        <translation type="unfinished">Бейнелеу:</translation>
+        <translation>Бейнелеу:</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1547,15 +1792,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No subcircuits!</source>
-        <translation type="obsolete">Сұлба жоқ!</translation>
+        <location line="+12"/>
+        <location line="+190"/>
+        <source>Create</source>
+        <translation>Құру</translation>
     </message>
     <message>
-        <location line="+82"/>
+        <location line="-169"/>
+        <source>Message:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <location filename="../qucs-lib/librarydialog.cpp" line="+74"/>
+        <source>Close</source>
+        <translation>Жабу</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>No projects!</source>
+        <translation>Проекттер жоқ!</translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <location line="+17"/>
         <location line="+16"/>
         <location line="+6"/>
-        <location filename="../qucs-lib/librarydialog.cpp" line="+134"/>
+        <location filename="../qucs-lib/librarydialog.cpp" line="+60"/>
         <location line="+14"/>
         <location line="+11"/>
         <location line="+6"/>
@@ -1604,33 +1867,7 @@
         <translation>Осындай аты бар кітапхана әлбетте бар!</translation>
     </message>
     <message>
-        <source>Enter description for &quot;%1&quot;:</source>
-        <translation type="obsolete">&quot;%1&quot; үшін анықтама енгізіңіз: </translation>
-    </message>
-    <message>
-        <location line="-109"/>
-        <location line="+193"/>
-        <source>Create</source>
-        <translation>Құру</translation>
-    </message>
-    <message>
-        <location line="-172"/>
-        <source>Message:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <location filename="../qucs-lib/librarydialog.cpp" line="-91"/>
-        <source>Close</source>
-        <translation>Жабу</translation>
-    </message>
-    <message>
-        <location line="+21"/>
-        <source>No projects!</source>
-        <translation type="unfinished">Проекттер жоқ!</translation>
-    </message>
-    <message>
-        <location line="+142"/>
+        <location line="+87"/>
         <source>Next...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1690,7 +1927,7 @@
         <translation>Кітапхана сәтті құрылды.</translation>
     </message>
     <message>
-        <location filename="../qucs-lib/librarydialog.cpp" line="-32"/>
+        <location filename="../qucs-lib/librarydialog.cpp" line="-123"/>
         <source>Manage User Libraries</source>
         <translation>Тұтынушы кітапханаларын басқару</translation>
     </message>
@@ -1713,10 +1950,6 @@
         <location line="+2"/>
         <source>Rename</source>
         <translation>Атын өзгерту</translation>
-    </message>
-    <message>
-        <source>No user library!</source>
-        <translation type="obsolete">Тұтынушы кітапханасы жоқ!</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -1785,22 +2018,22 @@
     <message>
         <location line="+19"/>
         <source>Select All</source>
-        <translation type="unfinished">Бәрін таңдау</translation>
+        <translation>Бәрін таңдау</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Deselect All</source>
-        <translation type="unfinished">Бәрін таңдауды қайтару</translation>
+        <translation>Бәрін таңдауды қайтару</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Жоқ</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Ok</source>
-        <translation type="unfinished">ИЯ</translation>
+        <translation>ИЯ</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1820,7 +2053,7 @@
     <message>
         <location line="+83"/>
         <source>Info</source>
-        <translation type="unfinished">Ақпарат</translation>
+        <translation>Ақпарат</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1841,7 +2074,7 @@
     <message>
         <location line="+18"/>
         <source>Error</source>
-        <translation type="unfinished">Қате</translation>
+        <translation>Қате</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1862,17 +2095,7 @@
         <translation>Нақтылық:</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Z0: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-8"/>
-        <source>Number Notation: </source>
-        <translation>Сандарды бейнелеу:</translation>
-    </message>
-    <message>
-        <location line="-5"/>
+        <location line="+4"/>
         <source>real/imaginary</source>
         <translation>нақты/жорамал бөліктер</translation>
     </message>
@@ -1887,7 +2110,17 @@
         <translation>бұрыштық/өлшем (радианда)</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+3"/>
+        <source>Number Notation: </source>
+        <translation>Сандарды бейнелеу:</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Z0: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>transparent</source>
         <translation>көрінеді</translation>
     </message>
@@ -1905,7 +2138,7 @@
 <context>
     <name>MatchDialog</name>
     <message>
-        <location filename="../qucs/dialogs/matchdialog.cpp" line="+49"/>
+        <location filename="../qucs/dialogs/matchdialog.cpp" line="+50"/>
         <source>Create Matching Circuit</source>
         <translation>Тұйықталған тізбекті құру</translation>
     </message>
@@ -2030,19 +2263,19 @@ but is %1 !</source>
 <context>
     <name>MyWidget</name>
     <message>
-        <location filename="../qucs-rescodes/main.cpp" line="+58"/>
+        <location filename="../qucs-rescodes/main.cpp" line="+60"/>
         <source>E&amp;xit</source>
-        <translation type="unfinished">Ш&amp;ығу</translation>
+        <translation>Ш&amp;ығу</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;Файл</translation>
+        <translation>&amp;Файл</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Help...</source>
-        <translation type="unfinished">Көмек...</translation>
+        <translation>Көмек...</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2057,12 +2290,12 @@ but is %1 !</source>
     <message>
         <location line="+3"/>
         <source>&amp;Help</source>
-        <translation type="unfinished">&amp;Көмек</translation>
+        <translation>&amp;Көмек</translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+70"/>
         <source>About...</source>
-        <translation type="unfinished">Жайлы...</translation>
+        <translation>Жайлы...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2079,7 +2312,7 @@ Resistor color code computation program
     <message>
         <location line="+10"/>
         <source>About Qt</source>
-        <translation type="unfinished">Qt жайлы</translation>
+        <translation>Qt жайлы</translation>
     </message>
 </context>
 <context>
@@ -2121,19 +2354,19 @@ Resistor color code computation program
 <context>
     <name>OptimizeDialog</name>
     <message>
-        <location filename="../qucs/components/optimizedialog.cpp" line="+43"/>
+        <location filename="../qucs/components/optimizedialog.cpp" line="+55"/>
         <source>Edit Optimization Properties</source>
         <translation>Оптимизация қасиетін өзгерту</translation>
     </message>
     <message>
         <location line="+22"/>
-        <location line="+114"/>
-        <location line="+75"/>
+        <location line="+120"/>
+        <location line="+84"/>
         <source>Name:</source>
         <translation>Аты:</translation>
     </message>
     <message>
-        <location line="-187"/>
+        <location line="-202"/>
         <source>Simulation:</source>
         <translation>Моделдеу:</translation>
     </message>
@@ -2199,18 +2432,18 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+12"/>
-        <location line="+82"/>
+        <location line="+97"/>
         <source>Name</source>
         <translation>Аты</translation>
     </message>
     <message>
-        <location line="-82"/>
-        <location line="+12"/>
+        <location line="-97"/>
+        <location line="+18"/>
         <source>active</source>
         <translation>беделді</translation>
     </message>
     <message>
-        <location line="-12"/>
+        <location line="-18"/>
         <source>initial</source>
         <translation>бастапқы</translation>
     </message>
@@ -2226,12 +2459,12 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+0"/>
-        <location line="+82"/>
+        <location line="+97"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location line="-45"/>
+        <location line="-54"/>
         <source>initial:</source>
         <translation>бастапқы:</translation>
     </message>
@@ -2246,56 +2479,56 @@ Resistor color code computation program
         <translation>макс:</translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Type:</source>
-        <translation>Тип:</translation>
-    </message>
-    <message>
-        <location line="+236"/>
-        <source>Variable &quot;%1&quot; aleardy in list!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-250"/>
-        <location line="+154"/>
+        <location line="+10"/>
+        <location line="+175"/>
         <location line="+344"/>
         <source>linear double</source>
         <translation>сызықтық затты тип</translation>
     </message>
     <message>
-        <location line="-497"/>
-        <location line="+155"/>
+        <location line="-518"/>
+        <location line="+176"/>
         <location line="+344"/>
         <source>logarithmic double</source>
         <translation>логарифмдік заттық тип</translation>
     </message>
     <message>
-        <location line="-498"/>
-        <location line="+156"/>
+        <location line="-519"/>
+        <location line="+177"/>
         <location line="+344"/>
         <source>linear integer</source>
         <translation>сызықтық бүтін тип</translation>
     </message>
     <message>
-        <location line="-499"/>
-        <location line="+157"/>
+        <location line="-520"/>
+        <location line="+178"/>
         <source>logarithmic integer</source>
         <translation>логарифмдік бүтін тип</translation>
     </message>
     <message>
-        <location line="-153"/>
-        <location line="+60"/>
+        <location line="-174"/>
+        <location line="+69"/>
         <source>Add</source>
         <translation>Қосу</translation>
     </message>
     <message>
-        <location line="-58"/>
-        <location line="+60"/>
+        <location line="-67"/>
+        <location line="+69"/>
         <source>Delete</source>
         <translation>Өшіру</translation>
     </message>
     <message>
-        <location line="-48"/>
+        <location line="-64"/>
+        <source>Type:</source>
+        <translation>Тип:</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Copy current values to equation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Variables</source>
         <translation>Айнымалылар</translation>
     </message>
@@ -2311,47 +2544,47 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+4"/>
-        <location line="+119"/>
+        <location line="+131"/>
         <location line="+354"/>
         <source>minimize</source>
         <translation>минимум</translation>
     </message>
     <message>
-        <location line="-472"/>
-        <location line="+120"/>
+        <location line="-484"/>
+        <location line="+132"/>
         <location line="+354"/>
         <source>maximize</source>
         <translation>максимум</translation>
     </message>
     <message>
-        <location line="-473"/>
-        <location line="+121"/>
+        <location line="-485"/>
+        <location line="+133"/>
         <location line="+354"/>
         <source>less</source>
         <translation>Азырақ</translation>
     </message>
     <message>
-        <location line="-474"/>
-        <location line="+122"/>
+        <location line="-486"/>
+        <location line="+134"/>
         <location line="+354"/>
         <source>greater</source>
         <translation>көбірек</translation>
     </message>
     <message>
-        <location line="-475"/>
-        <location line="+123"/>
+        <location line="-487"/>
+        <location line="+135"/>
         <location line="+354"/>
         <source>equal</source>
         <translation>бірдей</translation>
     </message>
     <message>
-        <location line="-476"/>
-        <location line="+124"/>
+        <location line="-488"/>
+        <location line="+136"/>
         <source>monitor</source>
         <translation>бақылау</translation>
     </message>
     <message>
-        <location line="-107"/>
+        <location line="-119"/>
         <source>Goals</source>
         <translation>Мақсаттар</translation>
     </message>
@@ -2371,8 +2604,8 @@ Resistor color code computation program
         <translation>Артқа қайтару</translation>
     </message>
     <message>
-        <location line="+49"/>
-        <location line="+87"/>
+        <location line="+57"/>
+        <location line="+91"/>
         <location line="+34"/>
         <location line="+37"/>
         <location line="+195"/>
@@ -2380,8 +2613,8 @@ Resistor color code computation program
         <translation>ия</translation>
     </message>
     <message>
-        <location line="-353"/>
-        <location line="+121"/>
+        <location line="-357"/>
+        <location line="+125"/>
         <location line="+37"/>
         <source>no</source>
         <translation>жоқ</translation>
@@ -2401,13 +2634,24 @@ Resistor color code computation program
         <translation>Барлық мәтіндік өрістер бос болмауы керек!</translation>
     </message>
     <message>
-        <source>Variable &quot;%1&quot; already in list!</source>
-        <translation type="obsolete">Айнымалы тізімде бар&quot;%1&quot;!</translation>
+        <location line="-124"/>
+        <source>Variable &quot;%1&quot; aleardy in list!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+132"/>
         <source>Goal &quot;%1&quot; already in list!</source>
         <translation>Мақсат тізімде бар&quot;%1!</translation>
+    </message>
+    <message>
+        <location line="+248"/>
+        <source>Set precision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Precision:</source>
+        <translation type="unfinished">Нақтылық:</translation>
     </message>
 </context>
 <context>
@@ -2456,7 +2700,7 @@ Resistor color code computation program
 <context>
     <name>PackageDialog</name>
     <message>
-        <location filename="../qucs/dialogs/packagedialog.cpp" line="+61"/>
+        <location filename="../qucs/dialogs/packagedialog.cpp" line="+62"/>
         <source>Create Project Package</source>
         <translation>Проект пакетін құру</translation>
     </message>
@@ -2659,467 +2903,65 @@ Resistor color code computation program
     </message>
 </context>
 <context>
-    <name>QObject</name>
+    <name>ProjectView</name>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="+860"/>
-        <location filename="../qucs-help/main.cpp" line="+104"/>
-        <location filename="../qucs-filter/stepz_filter.cpp" line="+45"/>
-        <source>Warning</source>
-        <translation>Ескерту</translation>
-    </message>
-    <message>
-        <location filename="../qucs-help/main.cpp" line="+1"/>
-        <source>Cannot save settings !</source>
-        <translation>Реттемелерді сақтау мүмкін емес !</translation>
-    </message>
-    <message>
-        <location filename="../qucs/main.cpp" line="+532"/>
-        <location line="+63"/>
-        <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
-        <translation>Қате: Уақыттың пішімі белгісіз &quot;%1&quot;. Өлшем бірліктермен қоса оң сандарды қолданыңыз</translation>
-    </message>
-    <message>
-        <location filename="../qucs/mouseactions.cpp" line="+741"/>
-        <source>Edit Properties</source>
-        <translation>Қасиеттерін Өзгерту</translation>
-    </message>
-    <message>
-        <location line="+26"/>
-        <source>Export as image</source>
+        <location filename="../qucs/projectView.cpp" line="+81"/>
+        <source>Content of %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>power matching</source>
-        <translation>қуатты сәйкестендіру</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>noise matching</source>
-        <translation>шуды сәйкестендіру</translation>
+        <location line="+0"/>
+        <source>Note</source>
+        <translation type="unfinished">Ескерту</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>2-port matching</source>
-        <translation>төрт полюсті сәйкестендіру</translation>
-    </message>
-    <message>
-        <location line="+60"/>
-        <location filename="../qucs/components/spicefile.cpp" line="+352"/>
-        <location line="+94"/>
-        <source>Info</source>
-        <translation>Ақпарат</translation>
+        <source>Datasets</source>
+        <translation type="unfinished">Терілген мәліметтер</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>The ground potential cannot be labeled!</source>
-        <translation>Жердің потенциалында түртпе болу мүмкін емес!!</translation>
-    </message>
-    <message>
-        <location filename="../qucs/octave_window.cpp" line="-31"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+1404"/>
-        <location filename="../qucs/schematic_file.cpp" line="-747"/>
-        <location line="+18"/>
-        <location line="+21"/>
-        <location line="+24"/>
-        <location line="+17"/>
-        <location line="+72"/>
-        <location line="+78"/>
-        <location line="+189"/>
-        <location line="+5"/>
-        <location line="+37"/>
-        <location line="+5"/>
-        <location line="+6"/>
-        <location line="+68"/>
-        <location line="+59"/>
-        <location line="+18"/>
-        <location line="+29"/>
-        <location line="+6"/>
-        <location line="+8"/>
-        <location line="+17"/>
-        <location line="+16"/>
-        <location line="+6"/>
-        <location line="+8"/>
-        <location line="+10"/>
-        <location line="+20"/>
-        <location line="+54"/>
-        <location filename="../qucs/components/component.cpp" line="+1534"/>
-        <location line="+20"/>
-        <location line="+8"/>
-        <location filename="../qucs/components/vacomponent.cpp" line="+306"/>
-        <source>Error</source>
-        <translation>Қате</translation>
+        <source>Data Displays</source>
+        <translation type="unfinished">Мәліметтерді көру терезелері</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Octave not found in: %1
-
-Set the Octave location on the application settings.</source>
+        <source>Verilog</source>
+        <translation type="unfinished">Verilog</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Verilog-A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="+1"/>
-        <source>Cannot create output file!</source>
-        <translation>Шығатын файлды құру мүмкін емес !</translation>
+        <location line="+1"/>
+        <source>VHDL</source>
+        <translation type="unfinished">VHDL</translation>
     </message>
     <message>
-        <location line="+154"/>
-        <source>verlog-a user devices</source>
+        <location line="+1"/>
+        <source>Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/schematic.cpp" line="+101"/>
-        <location filename="../qucs/textdoc.cpp" line="+63"/>
-        <source>untitled</source>
-        <translation>аты жоқ</translation>
+        <location line="+1"/>
+        <source>Schematics</source>
+        <translation type="unfinished">Сұлбалар</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="-790"/>
-        <location line="+707"/>
-        <source>Format Error:
-&apos;Painting&apos; field is not closed!</source>
-        <translation>Пішімде қате бар:
-&apos;Painting&apos; өрісі жабық емес!</translation>
+        <location line="+1"/>
+        <source>Others</source>
+        <translation type="unfinished">Басқалар</translation>
     </message>
     <message>
-        <location line="-689"/>
-        <source>Wrong document version: </source>
-        <translation>Құжаттың нұсқасы дұрыс емес:</translation>
+        <location line="+47"/>
+        <source>-port</source>
+        <translation type="unfinished">-порттық</translation>
     </message>
-    <message>
-        <location line="+21"/>
-        <location line="+24"/>
-        <source>Clipboard Format Error:
-Unknown field!</source>
-        <translation>Алмастыру буферінің пішімінде қате бар:
-белгісіз өріс!</translation>
-    </message>
-    <message>
-        <location line="+89"/>
-        <source>Cannot save JSON symbol file &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+78"/>
-        <source>Cannot save document!</source>
-        <translation>Құжатты сақтау мүмкін емес!</translation>
-    </message>
-    <message>
-        <location line="+189"/>
-        <location line="+5"/>
-        <source>Format Error:
-Wrong property field limiter!</source>
-        <translation>Пішімде қате бар:
-Өріс шектеуінің қасиеті дұрыс емес!</translation>
-    </message>
-    <message>
-        <location line="+37"/>
-        <source>Format Error:
-Unknown property: </source>
-        <translation>Пішімде қате бар:
-Қасиеті белгісіз:</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Format Error:
-Number expected in property field!</source>
-        <translation>Пішімде қате бар:
-Қасиет өрісінде сан күтілді!</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Format Error:
-&apos;Property&apos; field is not closed!</source>
-        <translation>Пішімде қате бар:
-&apos;Property&apos; өрісі жабық емес!</translation>
-    </message>
-    <message>
-        <location line="+68"/>
-        <source>Format Error:
-&apos;Component&apos; field is not closed!</source>
-        <translation>Пішімде қате бар:
-&apos;Component&apos; өрісі жабық емес!</translation>
-    </message>
-    <message>
-        <location line="+59"/>
-        <source>Format Error:
-Wrong &apos;wire&apos; line format!</source>
-        <translation>Пішімде қате бар:
-&apos;wire&apos; жолының пішімі дұрыс емес!</translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Format Error:
-&apos;Wire&apos; field is not closed!</source>
-        <translation>Пішімде қате бар:
-&apos;Wire&apos; өрісі жабық емес!</translation>
-    </message>
-    <message>
-        <location line="+29"/>
-        <source>Format Error:
-Unknown diagram!</source>
-        <translation>Пішімде қате бар:
-Белгісіз диаграмма!</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Format Error:
-Wrong &apos;diagram&apos; line format!</source>
-        <translation>Пішімде қате бар:
-&apos;diagram&apos; жолының пішімі дұрыс емес!</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Format Error:
-&apos;Diagram&apos; field is not closed!</source>
-        <translation>Пішімде қате бар:
-&apos;Diagram&apos; өрісі жабық емес!</translation>
-    </message>
-    <message>
-        <location line="+17"/>
-        <source>Format Error:
-Wrong &apos;painting&apos; line delimiter!</source>
-        <translation>Пішімде қате бар:
-&apos;painting&apos;жолындағы шектеу дұрыс емес !</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Format Error:
-Unknown painting!</source>
-        <translation>Пішімде қате бар:
-Белгісіз бейне!</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Format Error:
-Wrong &apos;painting&apos; line format!</source>
-        <translation>Пішімде қате бар:
-&apos;painting&apos;жолындағы пішім дұрыс емес !</translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Cannot load document: </source>
-        <translation>Құжатты енгізу мүмкін емес:</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>Wrong document type: </source>
-        <translation>Құжаттың типі дұрыс емес:</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Wrong document version 
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+44"/>
-        <source>File Format Error:
-Unknown field!</source>
-        <translation>Файл пішімінде қате бар: Белгісіз өріс!</translation>
-    </message>
-    <message>
-        <location line="+230"/>
-        <source>ERROR: Component &quot;%1&quot; has no analog model.</source>
-        <translation>ҚАТЕ: &quot;%1&quot; компонентінің аналогтық моделі жоқ.</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>ERROR: Component &quot;%1&quot; has no digital model.</source>
-        <translation>ҚАТЕ: &quot;%1&quot; компонентінің цифрлық моделі жоқ.</translation>
-    </message>
-    <message>
-        <location line="+46"/>
-        <source>ERROR: Cannot load subcircuit &quot;%1&quot;.</source>
-        <translation>Қате:Сұлбаны енгізу&quot;%1&quot; мүмкін емес.</translation>
-    </message>
-    <message>
-        <location line="+34"/>
-        <source>WARNING: Skipping library component &quot;%1&quot;.</source>
-        <translation>ЕСКЕРТУ:&quot;%1&quot; кітапхананың компонентасы жетіспейді.</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>ERROR: Cannot load library component &quot;%1&quot;.</source>
-        <translation>Қате: Кітапхана компонентасын енгізу&quot;%1&quot; мүмкін емес.</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <location filename="../qucs/components/spicefile.cpp" line="-197"/>
-        <source>ERROR: No file name in SPICE component &quot;%1&quot;.</source>
-        <translation>ҚАТЕ: &quot;%1&quot;SPICE компонентінің аты жоқ.</translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <location filename="../qucs/components/verilogfile.cpp" line="+175"/>
-        <location filename="../qucs/components/vhdlfile.cpp" line="+219"/>
-        <source>ERROR: No file name in %1 component &quot;%2&quot;.</source>
-        <translation>ҚАТЕ: &quot;%1&quot;және&quot;%2&quot; компоненттерінің аты жоқ.</translation>
-    </message>
-    <message>
-        <location line="+148"/>
-        <source>WARNING: Ignore simulation component in subcircuit &quot;%1&quot;.</source>
-        <translation>ЕСКЕРТУ:&quot;%1&quot; сұлбадағы моделдеу компонентасы қабылданбайды.</translation>
-    </message>
-    <message>
-        <location line="+282"/>
-        <source>ERROR: Only one digital simulation allowed.</source>
-        <translation>ҚАТЕ: Тек қана бір цифрлық моделдеуге рұқсат етіледі.</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>ERROR: Analog and digital simulations cannot be mixed.</source>
-        <translation>ҚАТЕ: Аналогтық және цифрлық моделдеу араласпауы керек.</translation>
-    </message>
-    <message>
-        <location line="+19"/>
-        <source>ERROR: Digital simulation needs at least one digital source.</source>
-        <translation>ҚАТЕ: Цифрлық симуляция кем дегенде бір цифрлық қорек көзін қажет етеді.</translation>
-    </message>
-    <message>
-        <location filename="../qucs/paintings/arrow.cpp" line="+135"/>
-        <source>Arrow</source>
-        <translation>Бағыттауыш</translation>
-    </message>
-    <message>
-        <location filename="../qucs/paintings/ellipsearc.cpp" line="+91"/>
-        <source>Elliptic Arc</source>
-        <translation>Эллиптік доға</translation>
-    </message>
-    <message>
-        <location line="+296"/>
-        <source>Edit Arc Properties</source>
-        <translation>Доғаның қасиетін өзгерту</translation>
-    </message>
-    <message>
-        <location filename="../qucs/paintings/ellipse.cpp" line="+98"/>
-        <source>Ellipse</source>
-        <translation>Эллипс</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>filled Ellipse</source>
-        <translation>іші толтырылған эллипс</translation>
-    </message>
-    <message>
-        <location line="+265"/>
-        <source>Edit Ellipse Properties</source>
-        <translation>Эллипс қасиеттерін өзгерту</translation>
-    </message>
-    <message>
-        <location filename="../qucs/paintings/graphicline.cpp" line="+90"/>
-        <source>Line</source>
-        <translation>Сызық</translation>
-    </message>
-    <message>
-        <location line="+236"/>
-        <source>Edit Line Properties</source>
-        <translation>Сызық қасиетін өзгерту</translation>
-    </message>
-    <message>
-        <location filename="../qucs/paintings/graphictext.cpp" line="+129"/>
-        <source>Text</source>
-        <translation>Мәтін</translation>
-    </message>
-    <message>
-        <location filename="../qucs/paintings/rectangle.cpp" line="+97"/>
-        <source>Rectangle</source>
-        <translation>Тіктөртбұрыш</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>filled Rectangle</source>
-        <translation>іші толтырылған тіктөртбұрыш</translation>
-    </message>
-    <message>
-        <location line="+267"/>
-        <source>Edit Rectangle Properties</source>
-        <translation>Тіктөртбұрыш қасиеттерін өзгерту</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/curvediagram.cpp" line="+253"/>
-        <source>Locus Curve</source>
-        <translation>Шеңберлік диаграмма</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/marker.cpp" line="+282"/>
-        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+259"/>
-        <source>invalid</source>
-        <translation>дұрыс емес</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/polardiagram.cpp" line="+102"/>
-        <source>Polar</source>
-        <translation>Полярлы</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/psdiagram.cpp" line="+129"/>
-        <source>Polar-Smith Combi</source>
-        <translation>Араласқан Смит поляры</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Smith-Polar Combi</source>
-        <translation>Смит поляры араласқан</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/rect3ddiagram.cpp" line="+1154"/>
-        <source>3D-Cartesian</source>
-        <translation>Үш өлшемді декарттық</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/rectdiagram.cpp" line="+249"/>
-        <source>Cartesian</source>
-        <translation>Декарттық</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/smithdiagram.cpp" line="+112"/>
-        <source>Smith Chart</source>
-        <translation>Смит диаграммасы</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Admittance Smith</source>
-        <translation>Смит диаграммасы (өткізгіштік)</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/tabdiagram.cpp" line="-93"/>
-        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+162"/>
-        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+91"/>
-        <source>no variables</source>
-        <translation>айнымалылар жоқ</translation>
-    </message>
-    <message>
-        <location line="+142"/>
-        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+47"/>
-        <location line="+89"/>
-        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+134"/>
-        <source>wrong dependency</source>
-        <translation>қате тәуелділік</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <location filename="../qucs/diagrams/timingdiagram.cpp" line="-122"/>
-        <location line="+113"/>
-        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+7"/>
-        <source>no data</source>
-        <translation>мәліметтер жоқ</translation>
-    </message>
-    <message>
-        <location line="+98"/>
-        <source>Tabular</source>
-        <translation>Кестелік</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+232"/>
-        <source>Timing Diagram</source>
-        <translation>Уақыттық диаграмма</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+46"/>
-        <source>Truth Table</source>
-        <translation>Ақиқаттық кесте</translation>
-    </message>
+</context>
+<context>
+    <name>QObject</name>
     <message>
         <location filename="../qucs/components/ac_sim.cpp" line="+23"/>
         <location line="+48"/>
@@ -3362,11 +3204,7 @@ Unknown field!</source>
         <translation>шығысындағы кідіріс</translation>
     </message>
     <message>
-        <location filename="../qucs/components/DLS_1ton.cpp" line="+21"/>
-        <location filename="../qucs/components/DLS_nto1.cpp" line="+22"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+153"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+69"/>
-        <location filename="../qucs/components/andor4x2.cpp" line="+1"/>
+        <location line="+1"/>
         <location filename="../qucs/components/andor4x3.cpp" line="+1"/>
         <location filename="../qucs/components/andor4x4.cpp" line="+1"/>
         <location filename="../qucs/components/binarytogrey4bit.cpp" line="+1"/>
@@ -3374,9 +3212,12 @@ Unknown field!</source>
         <location filename="../qucs/components/comp_2bit.cpp" line="+1"/>
         <location filename="../qucs/components/comp_4bit.cpp" line="+1"/>
         <location filename="../qucs/components/dff_SR.cpp" line="+33"/>
+        <location filename="../qucs/components/DLS_1ton.cpp" line="+21"/>
+        <location filename="../qucs/components/DLS_nto1.cpp" line="+22"/>
         <location filename="../qucs/components/dmux2to4.cpp" line="+1"/>
         <location filename="../qucs/components/dmux3to8.cpp" line="+1"/>
         <location filename="../qucs/components/dmux4to16.cpp" line="+1"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+153"/>
         <location filename="../qucs/components/fa1b.cpp" line="+1"/>
         <location filename="../qucs/components/fa2b.cpp" line="+1"/>
         <location filename="../qucs/components/gatedDlatch.cpp" line="+33"/>
@@ -3440,6 +3281,7 @@ Unknown field!</source>
         <location line="+19"/>
         <location filename="../qucs/components/hpribin4bit.cpp" line="+1"/>
         <location filename="../qucs/components/jkff_SR.cpp" line="+33"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+69"/>
         <location filename="../qucs/components/mux2to1.cpp" line="+1"/>
         <location filename="../qucs/components/mux4to1.cpp" line="+1"/>
         <location filename="../qucs/components/mux8to1.cpp" line="+1"/>
@@ -3452,7 +3294,7 @@ Unknown field!</source>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../qucs/components/andor4x2.cpp" line="+19"/>
+        <location line="+19"/>
         <source>4x2 AndOr</source>
         <translation>4х2 Және-Немесе</translation>
     </message>
@@ -3514,7 +3356,7 @@ Unknown field!</source>
         <location filename="../qucs/components/rectline.cpp" line="+64"/>
         <location filename="../qucs/components/relais.cpp" line="+68"/>
         <location filename="../qucs/components/resistor.cpp" line="+29"/>
-        <location filename="../qucs/components/rlcg.cpp" line="+66"/>
+        <location filename="../qucs/components/rlcg.cpp" line="+70"/>
         <location filename="../qucs/components/source_ac.cpp" line="+2"/>
         <location filename="../qucs/components/switch.cpp" line="+35"/>
         <location filename="../qucs/components/tline.cpp" line="+55"/>
@@ -3559,7 +3401,7 @@ Unknown field!</source>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../qucs/components/component.cpp" line="-272"/>
+        <location filename="../qucs/components/component.cpp" line="+1309"/>
         <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
         <location filename="../qucs/components/hpribin4bit.cpp" line="-3"/>
         <location filename="../qucs/components/logical_buf.cpp" line="+34"/>
@@ -3590,8 +3432,8 @@ Unknown field!</source>
         <translation>pnp транзистор</translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-135"/>
         <location filename="../qucs/components/bjtsub.cpp" line="-130"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="-135"/>
         <location filename="../qucs/components/hic0_full.cpp" line="-68"/>
         <location filename="../qucs/components/hicumL0V1p2.cpp" line="-82"/>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-82"/>
@@ -3602,17 +3444,17 @@ Unknown field!</source>
         <translation>полярлану</translation>
     </message>
     <message>
-        <location line="+113"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diac.cpp" line="+53"/>
         <location filename="../qucs/components/diode.cpp" line="-34"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+113"/>
         <location filename="../qucs/components/thyristor.cpp" line="+53"/>
         <location filename="../qucs/components/triac.cpp" line="+57"/>
         <source>saturation current</source>
         <translation>қаныққан ағын</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-30"/>
         <source>forward emission coefficient</source>
         <translation>эмиссияның өткізу коэффициенті</translation>
@@ -3761,16 +3603,16 @@ Unknown field!</source>
         <translation>салымшасы бар өсімшенің экспоненталық факторы</translation>
     </message>
     <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/diode.cpp" line="+10"/>
         <location filename="../qucs/components/EKV26MOS.cpp" line="+19"/>
         <location filename="../qucs/components/MESFET.cpp" line="-3"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
-        <location filename="../qucs/components/diode.cpp" line="+10"/>
         <location filename="../qucs/components/photodiode.cpp" line="-3"/>
         <source>forward-bias depletion capacitance coefficient</source>
         <translation>тура ығысудың меншікті сыйымдылық коэффициенті</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+11"/>
         <source>ideal forward transit time</source>
         <translation>тура өтудің идеалды уақыты</translation>
@@ -3797,15 +3639,15 @@ Unknown field!</source>
         <translation>кері өтпелі идеалды уақыт</translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-34"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+78"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+4"/>
+        <location line="+4"/>
         <location filename="../qucs/components/diode.cpp" line="+14"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="-34"/>
         <location filename="../qucs/components/hic0_full.cpp" line="+157"/>
         <location filename="../qucs/components/hicumL0V1p2.cpp" line="+171"/>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+171"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+175"/>
         <location filename="../qucs/components/jfet.cpp" line="+30"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+78"/>
         <location filename="../qucs/components/mosfet_sub.cpp" line="+88"/>
         <location filename="../qucs/components/photodiode.cpp" line="+24"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+21"/>
@@ -3815,10 +3657,10 @@ Unknown field!</source>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/MESFET.cpp" line="-2"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+2"/>
         <location filename="../qucs/components/jfet.cpp" line="+2"/>
+        <location filename="../qucs/components/MESFET.cpp" line="-2"/>
         <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
         <location filename="../qucs/components/photodiode.cpp" line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+2"/>
@@ -3826,7 +3668,7 @@ Unknown field!</source>
         <translation>шудың жанып-өшу экспонентасы</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+2"/>
         <location filename="../qucs/components/jfet.cpp" line="+2"/>
         <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
@@ -3860,16 +3702,16 @@ Unknown field!</source>
         <translation>тура және кері бета үшін температура экспонентасы</translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+37"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+8"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+37"/>
         <location filename="../qucs/components/jfet.cpp" line="+4"/>
         <location filename="../qucs/components/photodiode.cpp" line="-23"/>
         <source>saturation current temperature exponent</source>
         <translation>қаныққан ток ағынының температуралық экспонентасы</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+2"/>
         <source>energy bandgap in eV</source>
         <translation>eV шектелген аймақтың ені</translation>
@@ -3933,7 +3775,7 @@ Unknown field!</source>
         <location filename="../qucs/components/mscross.cpp" line="+29"/>
         <location filename="../qucs/components/msmbend.cpp" line="+47"/>
         <location filename="../qucs/components/msstep.cpp" line="+50"/>
-        <location filename="../qucs/components/mstee.cpp" line="+36"/>
+        <location filename="../qucs/components/mstee.cpp" line="+38"/>
         <location filename="../qucs/components/msvia.cpp" line="-4"/>
         <source>substrate</source>
         <translation>салымша</translation>
@@ -3942,6 +3784,1445 @@ Unknown field!</source>
         <location line="+12"/>
         <source>Bond Wire</source>
         <translation>Қосылған Сым</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/bsim3v34nMOS.cpp" line="+15"/>
+        <source>bsim3v34nMOS verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/bsim3v34pMOS.cpp" line="+18"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/bsim4v30nMOS.cpp" line="+19"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/bsim4v30pMOS.cpp" line="+18"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/bsim3v34pMOS.cpp" line="+2"/>
+        <location filename="../qucs/components/diac.cpp" line="+6"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+7"/>
+        <location filename="../qucs/components/hic0_full.cpp" line="+69"/>
+        <location filename="../qucs/components/hic2_full.cpp" line="+86"/>
+        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+73"/>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+84"/>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+87"/>
+        <location filename="../qucs/components/hicumL2V2p1.cpp" line="+218"/>
+        <location filename="../qucs/components/hicumL2V2p23.cpp" line="+86"/>
+        <location filename="../qucs/components/hicumL2V2p24.cpp" line="+86"/>
+        <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+114"/>
+        <location filename="../qucs/components/log_amp.cpp" line="+64"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+9"/>
+        <location filename="../qucs/components/nigbt.cpp" line="+41"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+25"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+15"/>
+        <location filename="../qucs/components/potentiometer.cpp" line="+46"/>
+        <location filename="../qucs/components/thyristor.cpp" line="+8"/>
+        <location filename="../qucs/components/triac.cpp" line="+8"/>
+        <source>simulation temperature</source>
+        <translation>моделдеу температурасы</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>bsim3v34nMOS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/bsim3v34pMOS.cpp" line="-817"/>
+        <source>bsim3v34pMOS verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+836"/>
+        <source>bsim3v34pMOS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/bsim4v30nMOS.cpp" line="-558"/>
+        <source>bsim4v30nMOS verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+577"/>
+        <source>bsim4v30nMOS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/bsim4v30pMOS.cpp" line="-557"/>
+        <source>bsim4v30pMOS verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+576"/>
+        <source>bsim4v30pMOS</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/capacitor.cpp" line="+23"/>
@@ -4139,7 +5420,42 @@ Unknown field!</source>
         <translation>жоғары деңгейдегі кернеу</translation>
     </message>
     <message>
-        <location line="+249"/>
+        <location line="+248"/>
+        <location line="+20"/>
+        <location line="+8"/>
+        <location filename="../qucs/components/vacomponent.cpp" line="+306"/>
+        <location filename="../qucs/octave_window.cpp" line="-31"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+1301"/>
+        <location filename="../qucs/schematic_file.cpp" line="+114"/>
+        <location line="+18"/>
+        <location line="+21"/>
+        <location line="+24"/>
+        <location line="+17"/>
+        <location line="+72"/>
+        <location line="+78"/>
+        <location line="+189"/>
+        <location line="+5"/>
+        <location line="+37"/>
+        <location line="+5"/>
+        <location line="+6"/>
+        <location line="+68"/>
+        <location line="+59"/>
+        <location line="+18"/>
+        <location line="+29"/>
+        <location line="+6"/>
+        <location line="+8"/>
+        <location line="+17"/>
+        <location line="+16"/>
+        <location line="+6"/>
+        <location line="+8"/>
+        <location line="+10"/>
+        <location line="+20"/>
+        <location line="+54"/>
+        <source>Error</source>
+        <translation>Қате</translation>
+    </message>
+    <message>
+        <location line="-27"/>
         <source>Format Error:
 Wrong line start!</source>
         <translation>Пішімде қате бар: Жолды бастау дұрыс емес!</translation>
@@ -4152,12 +5468,6 @@ Unknown component!
 
 Do you make use of loadable components?</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Format Error:
-Unknown component!</source>
-        <translation type="obsolete">Пішімде қате бар:
-Белгісіз компонент!</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -4322,24 +5632,62 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Компланарлы арна енінің ауытқуы</translation>
     </message>
     <message>
-        <location filename="../qucs/components/dcblock.cpp" line="-24"/>
-        <source>dc block</source>
-        <translation>тұрақты тоқтағы бөгет</translation>
+        <location filename="../qucs/components/ctline.cpp" line="-50"/>
+        <source>coupled transmission lines</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+38"/>
-        <source>dc Block</source>
-        <translation>Тұрақты тоқтағы жол айырымы</translation>
+        <location line="+36"/>
+        <source>characteristic impedance of even mode</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/dcfeed.cpp" line="-25"/>
-        <source>dc feed</source>
-        <translation>тұрақты токты қамтамасыз ету</translation>
+        <location line="+2"/>
+        <source>characteristic impedance of odd mode</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+39"/>
-        <source>dc Feed</source>
-        <translation>Тұрақты токты қамтамасыз ету</translation>
+        <location line="+2"/>
+        <location filename="../qucs/components/rlcg.cpp" line="-2"/>
+        <location filename="../qucs/components/tline.cpp" line="-4"/>
+        <location filename="../qucs/components/tline_4port.cpp" line="-4"/>
+        <source>electrical length of the line</source>
+        <translation>сызықтың электрлік ұзындығы</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>relative dielectric constant of even mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>relative dielectric constant of odd mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>attenuation factor per length of even mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>attenuation factor per length of odd mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Coupled Transmission Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/d_flipflop.cpp" line="-2"/>
+        <source>D flip flop with asynchron reset</source>
+        <translation>Асинхронды өшіруі бар Д-триггері</translation>
+    </message>
+    <message>
+        <location line="+92"/>
+        <source>D-FlipFlop</source>
+        <translation>Д-триггері</translation>
     </message>
     <message>
         <location filename="../qucs/components/dc_sim.cpp" line="-24"/>
@@ -4402,6 +5750,26 @@ Wrong &apos;component&apos; line format!</source>
         <translation>сұлбадағы матрицаны шешетін әдіс</translation>
     </message>
     <message>
+        <location filename="../qucs/components/dcblock.cpp" line="-24"/>
+        <source>dc block</source>
+        <translation>тұрақты тоқтағы бөгет</translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>dc Block</source>
+        <translation>Тұрақты тоқтағы жол айырымы</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/dcfeed.cpp" line="-25"/>
+        <source>dc feed</source>
+        <translation>тұрақты токты қамтамасыз ету</translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>dc Feed</source>
+        <translation>Тұрақты токты қамтамасыз ету</translation>
+    </message>
+    <message>
         <location filename="../qucs/components/dff_SR.cpp" line="-8"/>
         <source>D flip flop with set and reset verilog device</source>
         <translation>Д-триггердің жазу/өшіруі бар логикалық құрылғы</translation>
@@ -4436,23 +5804,13 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Д-триггері сым/SR</translation>
     </message>
     <message>
-        <location filename="../qucs/components/d_flipflop.cpp" line="-2"/>
-        <source>D flip flop with asynchron reset</source>
-        <translation>Асинхронды өшіруі бар Д-триггері</translation>
-    </message>
-    <message>
-        <location line="+92"/>
-        <source>D-FlipFlop</source>
-        <translation>Д-триггері</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/diac.cpp" line="-30"/>
+        <location filename="../qucs/components/diac.cpp" line="-36"/>
         <source>diac (bidirectional trigger diode)</source>
         <translation>диак (екі бағытты триггерлік диод)</translation>
     </message>
     <message>
         <location line="+24"/>
-        <location filename="../qucs/components/triac.cpp" line="-6"/>
+        <location filename="../qucs/components/triac.cpp" line="-14"/>
         <source>(bidirectional) breakover voltage</source>
         <translation>(екі бағытты) өтпелі кернеу</translation>
     </message>
@@ -4463,54 +5821,29 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/thyristor.cpp" line="-2"/>
+        <location filename="../qucs/components/thyristor.cpp" line="-10"/>
         <location filename="../qucs/components/triac.cpp" line="+4"/>
         <source>parasitic capacitance</source>
         <translation>паразиттік сыйымдылық</translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-26"/>
-        <location filename="../qucs/components/diac.cpp" line="+4"/>
+        <location line="+4"/>
         <location filename="../qucs/components/diode.cpp" line="-54"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="-33"/>
         <location filename="../qucs/components/thyristor.cpp" line="+4"/>
         <location filename="../qucs/components/triac.cpp" line="+4"/>
         <source>emission coefficient</source>
         <translation>эмиссия коэффициенті</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diac.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/thyristor.cpp" line="+2"/>
         <location filename="../qucs/components/triac.cpp" line="+2"/>
         <source>intrinsic junction resistance</source>
         <translation>нақты ішкі кедергі</translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+33"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+9"/>
-        <location filename="../qucs/components/bsim3v34nMOS.cpp" line="+832"/>
-        <location filename="../qucs/components/bsim3v34pMOS.cpp" line="+832"/>
-        <location filename="../qucs/components/diac.cpp" line="+2"/>
-        <location filename="../qucs/components/hic0_full.cpp" line="+69"/>
-        <location filename="../qucs/components/hic2_full.cpp" line="+86"/>
-        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+73"/>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+84"/>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+87"/>
-        <location filename="../qucs/components/hicumL2V2p1.cpp" line="+218"/>
-        <location filename="../qucs/components/hicumL2V2p23.cpp" line="+86"/>
-        <location filename="../qucs/components/hicumL2V2p24.cpp" line="+86"/>
-        <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+114"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+64"/>
-        <location filename="../qucs/components/nigbt.cpp" line="+41"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+25"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+15"/>
-        <location filename="../qucs/components/potentiometer.cpp" line="+46"/>
-        <location filename="../qucs/components/thyristor.cpp" line="+4"/>
-        <location filename="../qucs/components/triac.cpp" line="+4"/>
-        <source>simulation temperature</source>
-        <translation>моделдеу температурасы</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/diac.cpp" line="+10"/>
+        <location line="+12"/>
         <source>Diac</source>
         <translation>Диак</translation>
     </message>
@@ -4563,31 +5896,31 @@ Wrong &apos;component&apos; line format!</source>
         <translation>диод</translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-19"/>
-        <location filename="../qucs/components/diode.cpp" line="+7"/>
+        <location line="+7"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+14"/>
         <location filename="../qucs/components/photodiode.cpp" line="-40"/>
         <source>zero-bias junction capacitance</source>
         <translation>нөлдік ығысу кезіндегі меншікті сыйымдылық</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+3"/>
         <location filename="../qucs/components/MESFET.cpp" line="-72"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
         <location filename="../qucs/components/photodiode.cpp" line="+3"/>
         <location filename="../qucs/components/tunneldiode.cpp" line="-7"/>
         <source>grading coefficient</source>
         <translation>әмбебап емес коэффициент</translation>
     </message>
     <message>
-        <location line="-6"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="-6"/>
         <location filename="../qucs/components/photodiode.cpp" line="-6"/>
         <location filename="../qucs/components/tunneldiode.cpp" line="+2"/>
         <source>junction potential</source>
         <translation>өтпелі потенциал</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diode.cpp" line="+4"/>
+        <location line="+4"/>
         <source>linear capacitance</source>
         <translation>сызықтық сыйымдылық</translation>
     </message>
@@ -4607,33 +5940,33 @@ Wrong &apos;component&apos; line format!</source>
         <translation>тізбектелген кедергі</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/EKV26MOS.cpp" line="+12"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
         <location filename="../qucs/components/photodiode.cpp" line="+15"/>
         <source>transit time</source>
         <translation>өту уақыты</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location line="+2"/>
         <source>high-injection knee current (0=infinity)</source>
         <translation>Жоғары инжекция кезіндегі шекаралық ток (0=шексіздік)</translation>
     </message>
     <message>
+        <location line="+8"/>
         <location filename="../qucs/components/EKV26MOS.cpp" line="-18"/>
-        <location filename="../qucs/components/diode.cpp" line="+8"/>
         <location filename="../qucs/components/photodiode.cpp" line="-21"/>
         <source>reverse breakdown voltage</source>
         <translation>кері кемімелі кернеу</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+3"/>
         <location filename="../qucs/components/photodiode.cpp" line="+3"/>
         <source>current at reverse breakdown voltage</source>
         <translation>кері кемімелі кернеудің ағыны</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diode.cpp" line="+8"/>
+        <location line="+8"/>
         <source>Bv linear temperature coefficient</source>
         <translation>Bv сызықтық температуралық коэффициент</translation>
     </message>
@@ -4706,12 +6039,6 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+6"/>
         <location line="+84"/>
         <location line="+6"/>
-        <location filename="../qucs/components/MESFET.cpp" line="-58"/>
-        <location line="+20"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+12"/>
-        <location line="+3"/>
         <location filename="../qucs/components/hic0_full.cpp" line="-216"/>
         <location line="+32"/>
         <location line="+32"/>
@@ -4851,6 +6178,12 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/log_amp.cpp" line="-29"/>
         <location filename="../qucs/components/logic_0.cpp" line="+28"/>
         <location filename="../qucs/components/logic_1.cpp" line="+28"/>
+        <location filename="../qucs/components/MESFET.cpp" line="-58"/>
+        <location line="+20"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+12"/>
+        <location line="+3"/>
         <location filename="../qucs/components/nigbt.cpp" line="-8"/>
         <location line="+3"/>
         <location filename="../qucs/components/photodiode.cpp" line="-2"/>
@@ -4896,6 +6229,22 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+25"/>
         <source>4to16 Demux</source>
         <translation>4-те 16 демультиплексор</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/ecvs.cpp" line="+21"/>
+        <source>externally controlled voltage source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <location filename="../qucs/components/volt_dc.cpp" line="+45"/>
+        <source>voltage in Volts</source>
+        <translation>кернеу Вольтпен</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Externally Controlled Voltage Source</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/EKV26MOS.cpp" line="-126"/>
@@ -4987,8 +6336,8 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../qucs/components/MESFET.cpp" line="-39"/>
         <location filename="../qucs/components/jfet.cpp" line="-40"/>
+        <location filename="../qucs/components/MESFET.cpp" line="-39"/>
         <source>transconductance parameter</source>
         <translation>аралық өткізгіштің параметрі</translation>
     </message>
@@ -5005,13 +6354,13 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+4"/>
-        <location line="+3"/>
-        <location line="+3"/>
         <location filename="../qucs/components/hic2_full.cpp" line="-198"/>
         <location filename="../qucs/components/hicumL2V2p23.cpp" line="-198"/>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="-198"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="-228"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+4"/>
+        <location line="+3"/>
+        <location line="+3"/>
         <location filename="../qucs/components/nigbt.cpp" line="+33"/>
         <source>1/V</source>
         <translation>1/В</translation>
@@ -5166,7 +6515,6 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <location line="+3"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+39"/>
         <location filename="../qucs/components/hic0_full.cpp" line="-139"/>
         <location line="+36"/>
         <location line="+11"/>
@@ -5213,6 +6561,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+84"/>
         <location filename="../qucs/components/log_amp.cpp" line="+3"/>
         <location line="+6"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+39"/>
         <location filename="../qucs/components/photodiode.cpp" line="-12"/>
         <location line="+38"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+18"/>
@@ -5237,7 +6586,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+1"/>
         <location line="+3"/>
         <location line="+3"/>
-        <location filename="../qucs/components/rlcg.cpp" line="-6"/>
+        <location filename="../qucs/components/rlcg.cpp" line="-4"/>
         <source>F/m</source>
         <translation>Ф/м</translation>
     </message>
@@ -5299,7 +6648,6 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+5"/>
         <location line="+6"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+62"/>
         <location filename="../qucs/components/hic0_full.cpp" line="-121"/>
         <location line="+10"/>
         <location line="+3"/>
@@ -5380,6 +6728,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+110"/>
         <location filename="../qucs/components/log_amp.cpp" line="-20"/>
         <location line="+3"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+62"/>
         <location filename="../qucs/components/photodiode.cpp" line="-35"/>
         <location line="+6"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-47"/>
@@ -5390,9 +6739,6 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+6"/>
-        <location filename="../qucs/components/MESFET.cpp" line="-52"/>
-        <location line="+3"/>
-        <location line="+3"/>
         <location filename="../qucs/components/hic0_full.cpp" line="-93"/>
         <location line="+44"/>
         <location line="+11"/>
@@ -5449,6 +6795,9 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+15"/>
         <location line="+57"/>
         <location line="+3"/>
+        <location filename="../qucs/components/MESFET.cpp" line="-52"/>
+        <location line="+3"/>
+        <location line="+3"/>
         <location filename="../qucs/components/photodiode.cpp" line="+6"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-20"/>
         <location line="+8"/>
@@ -5468,8 +6817,8 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+60"/>
         <location filename="../qucs/components/log_amp.cpp" line="+34"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+60"/>
         <location filename="../qucs/components/mosfet_sub.cpp" line="+4"/>
         <location filename="../qucs/components/nigbt.cpp" line="+8"/>
         <location filename="../qucs/components/photodiode.cpp" line="+2"/>
@@ -5479,8 +6828,8 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+1"/>
         <location filename="../qucs/components/log_amp.cpp" line="+1"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+1"/>
         <location filename="../qucs/components/nigbt.cpp" line="+1"/>
         <location line="+3"/>
         <location filename="../qucs/components/photodiode.cpp" line="+1"/>
@@ -5499,7 +6848,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>EPFL-EKV РMOS 2.6 диоды</translation>
     </message>
     <message>
-        <location filename="../qucs/components/eqndefined.cpp" line="+26"/>
+        <location filename="../qucs/components/eqndefined.cpp" line="+25"/>
         <source>equation defined device</source>
         <translation>математикалық теңдіктіі анықтайтын құрылғы</translation>
     </message>
@@ -5515,18 +6864,18 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+74"/>
+        <location line="+82"/>
         <source>current equation</source>
         <translation>ағынның теңдігі</translation>
     </message>
     <message>
-        <location line="-72"/>
-        <location line="+74"/>
+        <location line="-80"/>
+        <location line="+82"/>
         <source>charge equation</source>
         <translation>теңдік заряд</translation>
     </message>
     <message>
-        <location line="-56"/>
+        <location line="-64"/>
         <source>Equation Defined Device</source>
         <translation>Математикалық теңдеуді анықтайтын құрылғы</translation>
     </message>
@@ -5546,6 +6895,76 @@ Wrong &apos;component&apos; line format!</source>
         <location line="-36"/>
         <source>put result into dataset</source>
         <translation>мәліметтер қорынан нәтижені алу</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/etr_sim.cpp" line="-44"/>
+        <source>externally driven transient simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="-25"/>
+        <source>integration method</source>
+        <translation>интегрирлеу әдісі</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+3"/>
+        <source>order of integration method</source>
+        <translation>интегрирлеу әдісінің реті</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <source>initial step size in seconds</source>
+        <translation>секундпен шаққанда бастапқы қадам өлшемі</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <source>minimum step size in seconds</source>
+        <translation>секундпен шаққанда минималды қадам өлшемі</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+12"/>
+        <source>relative tolerance of local truncation error</source>
+        <translation>жергілікті қысқарту қателеріне салыстырмалы рұқсат</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <source>absolute tolerance of local truncation error</source>
+        <translation>жергілікті қысқарту қателеріне абсолютті рұқсат</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <source>overestimation of local truncation error</source>
+        <translation>қысқару қателерін бағалаудағы жоғарғы шегі</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+5"/>
+        <source>relax time step raster</source>
+        <translation>уақыттық қадамдарда рұқсат етілген қателіктер</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <source>perform an initial DC analysis</source>
+        <translation>бастапқы анализді тұрақты токта орындау</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <source>maximum step size in seconds</source>
+        <translation>секундпен шаққанда максималды қадам өлшемі</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>External transient simulation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/fa1b.cpp" line="-6"/>
@@ -7826,6 +9245,121 @@ Wrong &apos;component&apos; line format!</source>
         <translation>pnp типті HICUM L0 1.2 нұсқасы</translation>
     </message>
     <message>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-236"/>
+        <source>HICUM Level 0 v1.2g verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>high-injection roll-off current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+194"/>
+        <source>TC of iqf (bandgap coefficient of zero bias hole charge)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>TC of avalanche prefactor, identical to alfav of Hicum/L2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>TC of avalanche exponential factor, identical to alqav of Hicum/L2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Emitter part coefficient of the zero bias hole charge temperature variation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Collector part coefficient of the zero bias hole charge temperature variation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Bandgap TC parameter of ver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Bandgap TC parameter of vef</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Specific recombination current at the BC barrier for high forward injection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>npn HICUM L0 v1.2g</source>
+        <translation type="unfinished">npn типті HICUM L0 1.2g нұсқасы {0 ?}</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>pnp HICUM L0 v1.2g</source>
+        <translation type="unfinished">pnp типті HICUM L0 1.2g нұсқасы {0 ?}</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="-235"/>
+        <source>HICUM Level 0 v1.3 verilog device</source>
+        <translation type="unfinished">HICUM Level 2 v2.23 Verilog-моделі {0 ?} {1.3 ?}</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Flag for using third order solution for transfer current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>bias dependence for reverse Early voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+217"/>
+        <source>Flag for turning temperature dependence of tef0 on and off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>TC of Reverse Early voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>TC of AVER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Bandgap difference between base and BE-junction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Frist-order TC of iqfh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Second-order TC of iqfh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+36"/>
+        <source>npn HICUM L0 v1.3</source>
+        <translation type="unfinished">npn типті HICUM L0 1.3 нұсқасы {0 ?}</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>pnp HICUM L0 v1.3</source>
+        <translation type="unfinished">pnp типті HICUM L0 1.3 нұсқасы {0 ?}</translation>
+    </message>
+    <message>
         <location filename="../qucs/components/hicumL2V2p1.cpp" line="-201"/>
         <source>HICUM Level 2 v2.1 verilog device</source>
         <translation>HICUM Level 2 v2.21 Verilog-моделі</translation>
@@ -7856,6 +9390,106 @@ Wrong &apos;component&apos; line format!</source>
         <translation>HICUM L2 v2.23 нұсқасы</translation>
     </message>
     <message>
+        <location filename="../qucs/components/hicumL2V2p24.cpp" line="-287"/>
+        <source>HICUM Level 2 v2.24 verilog device</source>
+        <translation type="unfinished">HICUM Level 2 v2.23 Verilog-моделі {2 ?} {2.24 ?}</translation>
+    </message>
+    <message>
+        <location line="+309"/>
+        <source>HICUM L2 v2.24</source>
+        <translation type="unfinished">HICUM L2 v2.24 нұсқасы {2 ?}</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/hicumL2V2p31n.cpp" line="-321"/>
+        <source>hicumL2V2p31n verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Weight factor for the low current minority charge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Parameter describing the slope of hjEi(VBE)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Smoothing parameter for hjEi(VBE) at high voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+160"/>
+        <source>Time constant for modeling carrier jam at low VCE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Barrier voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Normalization parameter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Smoothing parameter for barrier voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>fitting factor for critical current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Flag for turning on and off of correlated noise implementation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Emitter resistance flicker noise coefficient</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Emitter resistance flicker noise exponent factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+52"/>
+        <source>Bandgap difference between B and B-E junction used for hjEi0 and hf0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Temperature coefficient for ahjEi</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Temperature coefficient for hjEi0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Temperature coefficient for Rth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>First order relative TC of parameter Rth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>HICUM L2 V2.31</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qucs/components/hpribin4bit.cpp" line="-3"/>
         <source>4bit highest priority encoder (binary form) verilog device</source>
         <translation>4 биттік жоғары приоритетті шифратор логикалық құрылғысы (бинарлық пішінде)</translation>
@@ -7864,6 +9498,22 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+25"/>
         <source>4Bit HPRI-Bin</source>
         <translation>4 биттік HPRI-Bin моделі</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/hybrid.cpp" line="-39"/>
+        <source>hybrid (unsymmetrical 3dB coupler)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <location filename="../qucs/components/phaseshifter.cpp" line="-2"/>
+        <source>phase shift in degree</source>
+        <translation>градуспен өлшегенде фаза ығысуы</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Hybrid</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/iexp.cpp" line="+23"/>
@@ -8159,16 +9809,6 @@ Wrong &apos;component&apos; line format!</source>
         <translation>p-арнасы бар өрістік транзистор</translation>
     </message>
     <message>
-        <location filename="../qucs/components/jkff_SR.cpp" line="-7"/>
-        <source>jk flip flop with set and reset verilog device</source>
-        <translation>асинхронды кірісі және өшіруі бар JK-триггер verilog құрылғысы</translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>JK-FlipFlop w/ SR</source>
-        <translation>JK-триггер вт/SR</translation>
-    </message>
-    <message>
         <location filename="../qucs/components/jk_flipflop.cpp" line="-2"/>
         <source>JK flip flop with asynchron set and reset</source>
         <translation>асинхронды кірісі және өшіруі бар JK-триггер</translation>
@@ -8179,7 +9819,17 @@ Wrong &apos;component&apos; line format!</source>
         <translation>JK-триггер</translation>
     </message>
     <message>
-        <location filename="../qucs/components/libcomp.cpp" line="+33"/>
+        <location filename="../qucs/components/jkff_SR.cpp" line="-7"/>
+        <source>jk flip flop with set and reset verilog device</source>
+        <translation>асинхронды кірісі және өшіруі бар JK-триггер verilog құрылғысы</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>JK-FlipFlop w/ SR</source>
+        <translation>JK-триггер вт/SR</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/libcomp.cpp" line="+34"/>
         <source>Component taken from Qucs library</source>
         <translation>Компонент Qucs кітапханасынан алынды</translation>
     </message>
@@ -8269,16 +9919,16 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Сәйкестік қатенің температуралық коэффициенті</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <location line="+6"/>
         <location filename="../qucs/components/MESFET.cpp" line="-58"/>
         <location line="+3"/>
         <location line="+3"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+1"/>
-        <location line="+6"/>
         <source>%/Celsius</source>
         <translation>%/Цельсий</translation>
     </message>
     <message>
-        <location filename="../qucs/components/log_amp.cpp" line="-4"/>
+        <location line="-4"/>
         <source>offset temperature coefficient</source>
         <translation>температуралық коэффициентті қайта орнату</translation>
     </message>
@@ -8314,13 +9964,13 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Логарифмдік күшейткіш</translation>
     </message>
     <message>
+        <location line="+20"/>
         <location filename="../qucs/components/MESFET.cpp" line="-43"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+20"/>
         <source>I</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../qucs/components/log_amp.cpp" line="+1"/>
+        <location line="+1"/>
         <source>R</source>
         <translation>кедергі</translation>
     </message>
@@ -8633,8 +10283,8 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/thyristor.cpp" line="-2"/>
-        <location filename="../qucs/components/triac.cpp" line="-2"/>
+        <location filename="../qucs/components/thyristor.cpp" line="+2"/>
+        <location filename="../qucs/components/triac.cpp" line="+2"/>
         <source>gate resistance</source>
         <translation>түйек кедергісі</translation>
     </message>
@@ -9130,6 +10780,16 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Микросызықтық арнаның үзілісі</translation>
     </message>
     <message>
+        <location filename="../qucs/components/mslange.cpp" line="-36"/>
+        <source>microstrip lange coupler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source>Microstrip Lange Coupler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qucs/components/msline.cpp" line="-27"/>
         <source>microstrip line</source>
         <translation>микросызықтық арна</translation>
@@ -9217,12 +10877,12 @@ Wrong &apos;component&apos; line format!</source>
         <translation>микросызықтық арна енінің секірісі</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mstee.cpp" line="-28"/>
+        <location filename="../qucs/components/mstee.cpp" line="-29"/>
         <source>microstrip tee</source>
         <translation>үштік микросызықтық арна</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+27"/>
         <source>temperature in degree Celsius</source>
         <translation>температура °C шкаласымен</translation>
     </message>
@@ -9247,13 +10907,13 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Микросызықтық өтпелі арнаның тесігі</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mutual2.cpp" line="+23"/>
-        <source>three mutual inductors</source>
-        <translation>үш индуктивті байланысқан орама</translation>
+        <location filename="../qucs/components/mutual.cpp" line="+23"/>
+        <source>two mutual inductors</source>
+        <translation>екі индуктивті байланысқан орама</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mutual.cpp" line="+58"/>
-        <location filename="../qucs/components/mutual2.cpp" line="+46"/>
+        <location line="+35"/>
+        <location filename="../qucs/components/mutual2.cpp" line="+83"/>
         <source>inductance of coil 1</source>
         <translation>орама индуктивтілігі 1</translation>
     </message>
@@ -9264,18 +10924,28 @@ Wrong &apos;component&apos; line format!</source>
         <translation>орама индуктивтілігі 2</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mutual2.cpp" line="+2"/>
-        <source>inductance of coil 3</source>
-        <translation>орама индуктивтілігі 3</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/mutual.cpp" line="+2"/>
-        <location filename="../qucs/components/mutual2.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/mutual2.cpp" line="+4"/>
         <source>coupling factor between coil 1 and 2</source>
         <translation>1 және 2 орамасы үшін байланыс коэффициенті</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mutual2.cpp" line="+2"/>
+        <location line="+14"/>
+        <source>Mutual Inductors</source>
+        <translation>Индуктивті байланысқан катушка</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/mutual2.cpp" line="-63"/>
+        <source>three mutual inductors</source>
+        <translation>үш индуктивті байланысқан орама</translation>
+    </message>
+    <message>
+        <location line="+61"/>
+        <source>inductance of coil 3</source>
+        <translation>орама индуктивтілігі 3</translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>coupling factor between coil 1 and 3</source>
         <translation>1 және 3 орамасы үшін байланыс коэффициенті</translation>
     </message>
@@ -9290,14 +10960,32 @@ Wrong &apos;component&apos; line format!</source>
         <translation>3 орамалық индуктивті катушка</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mutual.cpp" line="-39"/>
-        <source>two mutual inductors</source>
-        <translation>екі индуктивті байланысқан орама</translation>
+        <location filename="../qucs/components/mutualx.cpp" line="+27"/>
+        <source>several mutual inductors</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+53"/>
-        <source>Mutual Inductors</source>
-        <translation>Индуктивті байланысқан катушка</translation>
+        <location line="+8"/>
+        <source>number of mutual inductances</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <location line="+131"/>
+        <location line="+19"/>
+        <source>inductance of coil</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-144"/>
+        <location line="+152"/>
+        <source>coupling factor between coil %1 and coil %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-142"/>
+        <source>N Mutual Inductors</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mux2to1.cpp" line="-6"/>
@@ -9328,6 +11016,124 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+25"/>
         <source>8to1 Mux</source>
         <translation>8 кірісті мультиплексор</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/nigbt.cpp" line="-45"/>
+        <source>NIGBT verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>gate-drain overlap area</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+3"/>
+        <source>m**2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>area of the device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>MOS transconductance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>ambipolar recombination lifetime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>metallurgical base width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>avalanche uniformity factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>avalanche multiplication exponent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>gate-source capacitance per unit area</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+3"/>
+        <source>F/cm**2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>gate-drain oxide capacitance per unit area</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>emitter saturation current density</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>A/cm**2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>triode region factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>electron mobility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+3"/>
+        <source>cm**2/Vs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>hole mobility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>base doping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>1/cm**3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>transverse field factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>gate-drain overlap depletion threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>NIGBT</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/noise_ii.cpp" line="-58"/>
@@ -9398,14 +11204,14 @@ Wrong &apos;component&apos; line format!</source>
         <translation>оптимизация</translation>
     </message>
     <message>
-        <location filename="../qucs/components/pad2bit.cpp" line="+18"/>
+        <location filename="../qucs/components/pad2bit.cpp" line="+17"/>
         <source>2bit pattern generator verilog device</source>
         <translation>2 битті логикалық генератор құрылғысының моделі</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../qucs/components/pad3bit.cpp" line="+21"/>
-        <location filename="../qucs/components/pad4bit.cpp" line="+21"/>
+        <location filename="../qucs/components/pad3bit.cpp" line="+20"/>
+        <location filename="../qucs/components/pad4bit.cpp" line="+20"/>
         <source>pad output value</source>
         <translation>салымшаның шығыс мәні</translation>
     </message>
@@ -9461,18 +11267,12 @@ Wrong &apos;component&apos; line format!</source>
         <translation>бұраманың нәтижелік мәні</translation>
     </message>
     <message>
-        <location filename="../qucs/components/phaseshifter.cpp" line="-26"/>
+        <location filename="../qucs/components/phaseshifter.cpp" line="-24"/>
         <source>phase shifter</source>
         <translation>фазалық ығысу</translation>
     </message>
     <message>
-        <location filename="../qucs/components/hybrid.cpp" line="-2"/>
-        <location filename="../qucs/components/phaseshifter.cpp" line="+24"/>
-        <source>phase shift in degree</source>
-        <translation>градуспен өлшегенде фаза ығысуы</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/phaseshifter.cpp" line="+16"/>
+        <location line="+40"/>
         <source>Phase Shifter</source>
         <translation>Фазалық ығысу</translation>
     </message>
@@ -9748,20 +11548,26 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Резистор US</translation>
     </message>
     <message>
-        <location filename="../qucs/components/rfedd2p.cpp" line="+27"/>
-        <source>equation defined 2-port RF device</source>
-        <translation>екі порты бар RF құрылғысы үшін әртүрлі теңдеулер</translation>
+        <location filename="../qucs/components/rfedd.cpp" line="+26"/>
+        <source>equation defined RF device</source>
+        <translation>RF құрылғысы үшін әртүрлі теңдеулер</translation>
     </message>
     <message>
-        <location filename="../qucs/components/rfedd.cpp" line="+34"/>
-        <location filename="../qucs/components/rfedd2p.cpp" line="+7"/>
+        <location line="+7"/>
+        <location filename="../qucs/components/rfedd2p.cpp" line="+34"/>
         <source>type of parameters</source>
         <translation>параметрлер типі</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/sparamfile.cpp" line="+7"/>
+        <source>number of ports</source>
+        <translation>порттар саны</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <location filename="../qucs/components/rfedd2p.cpp" line="+2"/>
-        <location filename="../qucs/components/sparamfile.cpp" line="+2"/>
+        <location filename="../qucs/components/sparamfile.cpp" line="-5"/>
         <source>representation during DC analysis</source>
         <translation>тұрақты токты анализдегендегі бейне</translation>
     </message>
@@ -9770,7 +11576,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+2"/>
         <location line="+2"/>
         <location line="+2"/>
-        <location line="+81"/>
+        <location line="+85"/>
         <location line="+5"/>
         <location line="+9"/>
         <location filename="../qucs/components/rfedd2p.cpp" line="+5"/>
@@ -9781,38 +11587,32 @@ Wrong &apos;component&apos; line format!</source>
         <translation>параметрлік теңдеу</translation>
     </message>
     <message>
-        <location filename="../qucs/components/rfedd2p.cpp" line="+17"/>
-        <source>Equation Defined 2-port RF Device</source>
-        <translation>Екі порты бар RF құрылғысы үшін әртүрлі теңдеулер</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/rfedd.cpp" line="-117"/>
-        <source>equation defined RF device</source>
-        <translation>RF құрылғысы үшін әртүрлі теңдеулер</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <location filename="../qucs/components/sparamfile.cpp" line="+5"/>
-        <source>number of ports</source>
-        <translation>порттар саны</translation>
-    </message>
-    <message>
-        <location line="+31"/>
+        <location line="-81"/>
         <source>Equation Defined RF Device</source>
         <translation>RF құрылғысы үшін әртүрлі теңдеулер</translation>
     </message>
     <message>
-        <location line="+90"/>
+        <location line="+94"/>
         <source>RF</source>
         <translation>RF</translation>
     </message>
     <message>
-        <location filename="../qucs/components/rlcg.cpp" line="-36"/>
+        <location filename="../qucs/components/rfedd2p.cpp" line="-20"/>
+        <source>equation defined 2-port RF device</source>
+        <translation>екі порты бар RF құрылғысы үшін әртүрлі теңдеулер</translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <source>Equation Defined 2-port RF Device</source>
+        <translation>Екі порты бар RF құрылғысы үшін әртүрлі теңдеулер</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/rlcg.cpp" line="-40"/>
         <source>RLCG transmission line</source>
         <translation>RLCG беріліс арнасы</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+20"/>
         <source>RLCG</source>
         <translation>RLCG</translation>
     </message>
@@ -9852,15 +11652,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>S/м</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ctline.cpp" line="-10"/>
-        <location filename="../qucs/components/rlcg.cpp" line="+2"/>
-        <location filename="../qucs/components/tline.cpp" line="-4"/>
-        <location filename="../qucs/components/tline_4port.cpp" line="-4"/>
-        <source>electrical length of the line</source>
-        <translation>сызықтың электрлік ұзындығы</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/rlcg.cpp" line="+16"/>
+        <location line="+18"/>
         <source>RLCG Transmission Line</source>
         <translation>RLCG беріліс арнасы</translation>
     </message>
@@ -9893,105 +11685,6 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+20"/>
         <source>Power Source</source>
         <translation>Қорек көзі</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/sparamfile.cpp" line="-18"/>
-        <source>S parameter file</source>
-        <translation>S-параметрлері бар файл</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>name of the s parameter file</source>
-        <translation>параметрлік файлдың аты</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>data type</source>
-        <translation>мәліметтер типі</translation>
-    </message>
-    <message>
-        <location line="+26"/>
-        <source>n-port S parameter file</source>
-        <translation>S-параметрлі файл n-портты құрылғы</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>1-port S parameter file</source>
-        <translation>S-параметрлі файл 1-портты құрылғы</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>2-port S parameter file</source>
-        <translation>2 портты S-параметрлері бар файл</translation>
-    </message>
-    <message>
-        <location line="+66"/>
-        <source>file</source>
-        <translation>файл</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/spicefile.cpp" line="-208"/>
-        <source>SPICE netlist file</source>
-        <translation>SPICE сұлбасының файлы</translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>SPICE netlist</source>
-        <translation>SPICE сұлбасы</translation>
-    </message>
-    <message>
-        <location line="+31"/>
-        <source>sim</source>
-        <translation>сим</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>spice</source>
-        <translation>SPICE</translation>
-    </message>
-    <message>
-        <location line="+156"/>
-        <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
-        <translation>ҚАТЕ: SPICE-файлды &quot;%1&quot; ашу мүмкін емес.</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>ERROR: Cannot save converted SPICE file &quot;%1&quot;.</source>
-        <translation>Қате: Түрлендірілген SPICE &quot;%1&quot; файлды сақтау мүмкін емес .</translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>ERROR: Cannot open converted SPICE file &quot;%1&quot;.</source>
-        <translation>Қате: Түрлендірілген SPICE &quot;%1&quot; файлды ашу мүмкін емес .</translation>
-    </message>
-    <message>
-        <location line="+66"/>
-        <source>Preprocessing SPICE file &quot;%1&quot;.</source>
-        <translation>SPICE файл &quot;%1&quot;өңделуде.</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>ERROR: Cannot save preprocessed SPICE file &quot;%1&quot;.</source>
-        <translation>Қате: Өңделген SPICE &quot;%1&quot; файлды сақтау мүмкін емес .</translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>ERROR: Cannot execute &quot;%1&quot;.</source>
-        <translation>ҚАТЕ: Файлды &quot;%1&quot; қолдану мүмкін емес.</translation>
-    </message>
-    <message>
-        <location line="+61"/>
-        <source>COMP ERROR: Cannot start QucsConv!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ERROR: Cannot start QucsConv!</source>
-        <translation type="obsolete">ҚАТЕ: QucsConv іске қосу мүмкін емес!</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Converting SPICE file &quot;%1&quot;.</source>
-        <translation>SPICE файл &quot;%1&quot;түрленді.</translation>
     </message>
     <message>
         <location filename="../qucs/components/sp_sim.cpp" line="-30"/>
@@ -10029,7 +11722,115 @@ Wrong &apos;component&apos; line format!</source>
         <translation>S-параметрлерді моделдеу</translation>
     </message>
     <message>
-        <location filename="../qucs/components/subcircuit.cpp" line="+34"/>
+        <location filename="../qucs/components/sparamfile.cpp" line="-13"/>
+        <source>S parameter file</source>
+        <translation>S-параметрлері бар файл</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>name of the s parameter file</source>
+        <translation>параметрлік файлдың аты</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>data type</source>
+        <translation>мәліметтер типі</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>n-port S parameter file</source>
+        <translation>S-параметрлі файл n-портты құрылғы</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>1-port S parameter file</source>
+        <translation>S-параметрлі файл 1-портты құрылғы</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>2-port S parameter file</source>
+        <translation>2 портты S-параметрлері бар файл</translation>
+    </message>
+    <message>
+        <location line="+77"/>
+        <source>file</source>
+        <translation>файл</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/spicefile.cpp" line="+42"/>
+        <source>SPICE netlist file</source>
+        <translation>SPICE сұлбасының файлы</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>SPICE netlist</source>
+        <translation>SPICE сұлбасы</translation>
+    </message>
+    <message>
+        <location line="+36"/>
+        <source>sim</source>
+        <translation>сим</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>spice</source>
+        <translation>SPICE</translation>
+    </message>
+    <message>
+        <location line="+148"/>
+        <location filename="../qucs/schematic_file.cpp" line="+415"/>
+        <source>ERROR: No file name in SPICE component &quot;%1&quot;.</source>
+        <translation>ҚАТЕ: &quot;%1&quot;SPICE компонентінің аты жоқ.</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
+        <translation>ҚАТЕ: SPICE-файлды &quot;%1&quot; ашу мүмкін емес.</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>ERROR: Cannot save converted SPICE file &quot;%1&quot;.</source>
+        <translation>Қате: Түрлендірілген SPICE &quot;%1&quot; файлды сақтау мүмкін емес .</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>ERROR: Cannot open converted SPICE file &quot;%1&quot;.</source>
+        <translation>Қате: Түрлендірілген SPICE &quot;%1&quot; файлды ашу мүмкін емес .</translation>
+    </message>
+    <message>
+        <location line="+67"/>
+        <location line="+95"/>
+        <location filename="../qucs/mouseactions.cpp" line="+847"/>
+        <source>Info</source>
+        <translation>Ақпарат</translation>
+    </message>
+    <message>
+        <location line="-94"/>
+        <source>Preprocessing SPICE file &quot;%1&quot;.</source>
+        <translation>SPICE файл &quot;%1&quot;өңделуде.</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>ERROR: Cannot save preprocessed SPICE file &quot;%1&quot;.</source>
+        <translation>Қате: Өңделген SPICE &quot;%1&quot; файлды сақтау мүмкін емес .</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>ERROR: Cannot execute &quot;%1&quot;.</source>
+        <translation>ҚАТЕ: Файлды &quot;%1&quot; қолдану мүмкін емес.</translation>
+    </message>
+    <message>
+        <location line="+61"/>
+        <source>COMP ERROR: Cannot start QucsConv!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Converting SPICE file &quot;%1&quot;.</source>
+        <translation>SPICE файл &quot;%1&quot;түрленді.</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/subcircuit.cpp" line="+35"/>
         <source>subcircuit</source>
         <translation>сұлба</translation>
     </message>
@@ -10111,8 +11912,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>time when state changes (semicolon separated list possible, even numbered lists are repeated)</source>
-        <oldsource>time when state changes (semicolon separated list possible)</oldsource>
-        <translation type="unfinished">күй өзгеретін уақыт (екі нүктесі бар тізімге рұқсат )</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -10135,12 +11935,12 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Ауыстырып-қосқыш</translation>
     </message>
     <message>
-        <location filename="../qucs/components/symtrafo.cpp" line="+23"/>
+        <location filename="../qucs/components/symtrafo.cpp" line="+26"/>
         <source>ideal symmetrical transformer</source>
         <translation>әмбебап симметриялы трансформатор</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+63"/>
         <source>voltage transformation ratio of coil 1</source>
         <translation>кернеу орамасының трансформация коэффициенті 1</translation>
     </message>
@@ -10185,13 +11985,13 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Тиристор</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tline_4port.cpp" line="-32"/>
-        <source>ideal 4-terminal transmission line</source>
-        <translation>4-шығысы бар әмбебап беріліс арнасы</translation>
+        <location filename="../qucs/components/tline.cpp" line="-28"/>
+        <source>ideal transmission line</source>
+        <translation>әмбебап беріліс арнасы</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tline.cpp" line="-2"/>
-        <location filename="../qucs/components/tline_4port.cpp" line="+30"/>
+        <location line="+26"/>
+        <location filename="../qucs/components/tline_4port.cpp" line="-2"/>
         <source>characteristic impedance</source>
         <translation>толық сипаттамалық кедергі</translation>
     </message>
@@ -10202,19 +12002,44 @@ Wrong &apos;component&apos; line format!</source>
         <translation>1/м өлшем бірлігіндегі бәсеңдеу коэффициенті</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tline_4port.cpp" line="+16"/>
+        <location line="+16"/>
+        <source>Transmission Line</source>
+        <translation>Мәліметтерді беру арнасы</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/tline_4port.cpp" line="-34"/>
+        <source>ideal 4-terminal transmission line</source>
+        <translation>4-шығысы бар әмбебап беріліс арнасы</translation>
+    </message>
+    <message>
+        <location line="+50"/>
         <source>4-Terminal Transmission Line</source>
         <translation>4-шығысы бар беріліс арнасы</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tline.cpp" line="-30"/>
-        <source>ideal transmission line</source>
-        <translation>әмбебап беріліс арнасы</translation>
+        <location filename="../qucs/components/tr_sim.cpp" line="-60"/>
+        <source>transient simulation</source>
+        <translation>өтпелі процесті моделдеу</translation>
     </message>
     <message>
-        <location line="+46"/>
-        <source>Transmission Line</source>
-        <translation>Мәліметтерді беру арнасы</translation>
+        <location line="+22"/>
+        <source>start time in seconds</source>
+        <translation>бастапқы уақыт секунд өлшем бірлігінде</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>stop time in seconds</source>
+        <translation>нәтижелік уақыт секунд өлшем бірлігінде</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>number of simulation time steps</source>
+        <translation>моделдеу уақытының қадамдар саны</translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Transient simulation</source>
+        <translation>Өтпелі процесті моделдеу</translation>
     </message>
     <message>
         <location filename="../qucs/components/transformer.cpp" line="+23"/>
@@ -10245,777 +12070,6 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+22"/>
         <source>Triac</source>
         <translation>Триак</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/tr_sim.cpp" line="-53"/>
-        <source>transient simulation</source>
-        <translation>өтпелі процесті моделдеу</translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>start time in seconds</source>
-        <translation>бастапқы уақыт секунд өлшем бірлігінде</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>stop time in seconds</source>
-        <translation>нәтижелік уақыт секунд өлшем бірлігінде</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>number of simulation time steps</source>
-        <translation>моделдеу уақытының қадамдар саны</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/etr_sim.cpp" line="-44"/>
-        <source>externally driven transient simulation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>integration method</source>
-        <translation>интегрирлеу әдісі</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+3"/>
-        <source>order of integration method</source>
-        <translation>интегрирлеу әдісінің реті</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>initial step size in seconds</source>
-        <translation>секундпен шаққанда бастапқы қадам өлшемі</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>minimum step size in seconds</source>
-        <translation>секундпен шаққанда минималды қадам өлшемі</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+12"/>
-        <source>relative tolerance of local truncation error</source>
-        <translation>жергілікті қысқарту қателеріне салыстырмалы рұқсат</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>absolute tolerance of local truncation error</source>
-        <translation>жергілікті қысқарту қателеріне абсолютті рұқсат</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>overestimation of local truncation error</source>
-        <translation>қысқару қателерін бағалаудағы жоғарғы шегі</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+5"/>
-        <source>relax time step raster</source>
-        <translation>уақыттық қадамдарда рұқсат етілген қателіктер</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>perform an initial DC analysis</source>
-        <translation>бастапқы анализді тұрақты токта орындау</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>maximum step size in seconds</source>
-        <translation>секундпен шаққанда максималды қадам өлшемі</translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>External transient simulation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/tr_sim.cpp" line="+14"/>
-        <source>Transient simulation</source>
-        <translation>Өтпелі процесті моделдеу</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/twistedpair.cpp" line="-50"/>
-        <source>twisted pair transmission line</source>
-        <translation>орама жұптық беріліс арнасы</translation>
-    </message>
-    <message>
-        <location line="+36"/>
-        <source>diameter of conductor</source>
-        <translation>өткізгіш диаметрі</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>diameter of wire (conductor and insulator)</source>
-        <translation>сымның диаметрі (өткізгіш пен оқшаулағыш)</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>physical length of the line</source>
-        <translation>арнаның физикалық ұзындығы</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>twists per length in 1/m</source>
-        <translation>1 метрге орама саны</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>dielectric constant of insulator</source>
-        <translation>оқшаулағыштың диэлектрлік тұрақтысы</translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>Twisted-Pair</source>
-        <translation>Орама жұбы</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vccs.cpp" line="-41"/>
-        <source>voltage controlled current source</source>
-        <translation>ток ағынын бақылайтын кернеу көзінің қорегі</translation>
-    </message>
-    <message>
-        <location line="+40"/>
-        <source>forward transconductance</source>
-        <translation>тура өтпелі өткізгіштік</translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>Voltage Controlled Current Source</source>
-        <translation>Ток ағынын бақылайтын кернеу көзінің қорегі</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vcresistor.cpp" line="+23"/>
-        <location filename="../qucs/components/vcvs.cpp" line="-42"/>
-        <source>voltage controlled voltage source</source>
-        <translation>кернеумен басқарылатын кернеу көзі</translation>
-    </message>
-    <message>
-        <location line="+47"/>
-        <source>resistance gain</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>Voltage Controlled Resistor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vcvs.cpp" line="+56"/>
-        <source>Voltage Controlled Voltage Source</source>
-        <translation>Кернеумен басқарылатын кернеу көзі</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/verilogfile.cpp" line="-145"/>
-        <location line="+24"/>
-        <source>Verilog file</source>
-        <translation>Verilog файлы</translation>
-    </message>
-    <message>
-        <location line="-21"/>
-        <source>Name of Verilog file</source>
-        <translation>Verilog файлдың аты</translation>
-    </message>
-    <message>
-        <location line="+97"/>
-        <source>verilog</source>
-        <translation>Verilog</translation>
-    </message>
-    <message>
-        <location line="+56"/>
-        <location filename="../qucs/components/vhdlfile.cpp" line="+11"/>
-        <source>ERROR: Cannot open %1 file &quot;%2&quot;.</source>
-        <translation>ҚАТЕ: &quot;%1&quot; және &quot;%2&quot;файлдарын ашу мүмкін емес.</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vexp.cpp" line="-40"/>
-        <source>exponential voltage source</source>
-        <translation>көрсеткіштік кернеуінің қорек көзі</translation>
-    </message>
-    <message>
-        <location line="+34"/>
-        <source>voltage before rising edge</source>
-        <translation>өсу фронтына дейінгі кернеу</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>maximum voltage of the pulse</source>
-        <translation>импульс кезіндегі максималды кернеу</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>rise time of the rising edge</source>
-        <translation>өсу фронтының өсу уақыты</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>fall time of the falling edge</source>
-        <translation>құлау кесіндісінің құлау уақыты</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Exponential Voltage Pulse</source>
-        <translation>импульстік кернеудің көрсеткіші</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vfile.cpp" line="-35"/>
-        <source>file based voltage source</source>
-        <translation>кернеу қорек көзінің базалық файлы</translation>
-    </message>
-    <message>
-        <location line="+53"/>
-        <source>File Based Voltage Source</source>
-        <translation>Кернеу қорек көзінің базалық файлы</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vhdlfile.cpp" line="-200"/>
-        <location line="+24"/>
-        <source>VHDL file</source>
-        <translation>VHDL файлы</translation>
-    </message>
-    <message>
-        <location line="-21"/>
-        <source>Name of VHDL file</source>
-        <translation>VHDL файлдың аты</translation>
-    </message>
-    <message>
-        <location line="+110"/>
-        <source>vhdl</source>
-        <translation>VHDL</translation>
-    </message>
-    <message>
-        <location line="+41"/>
-        <location line="+7"/>
-        <source>generic variable</source>
-        <translation>айнымалыларды генерирлеу</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/volt_ac.cpp" line="-29"/>
-        <source>ideal ac voltage source</source>
-        <translation>айнымалы токтың әмбебап қорек көзі</translation>
-    </message>
-    <message>
-        <location line="+45"/>
-        <source>ac Voltage Source</source>
-        <translation>айнымалы тоқта кернеудің қорек көзі</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/volt_dc.cpp" line="+23"/>
-        <source>ideal dc voltage source</source>
-        <translation>тұрақты кернеудің әмбебап қорек көзі</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/ecvs.cpp" line="+22"/>
-        <source>externally controlled voltage source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+45"/>
-        <location filename="../qucs/components/volt_dc.cpp" line="+22"/>
-        <source>voltage in Volts</source>
-        <translation>кернеу Вольтпен</translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Externally Controlled Voltage Source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/volt_dc.cpp" line="+16"/>
-        <source>dc Voltage Source</source>
-        <translation>Тұрақты токтағы кернеудің қорек көзі</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/volt_noise.cpp" line="-29"/>
-        <source>noise voltage source</source>
-        <translation>шу кернеуінің қорек көзі</translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <source>voltage power spectral density in V^2/Hz</source>
-        <translation>кернеу көзі шуы қуатының спектральды тығыздығы В²/Гц</translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>Noise Voltage Source</source>
-        <translation>Шу кернеуінің қорек көзі</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vprobe.cpp" line="+23"/>
-        <source>voltage probe</source>
-        <translation>кернеу өлшеуіш</translation>
-    </message>
-    <message>
-        <location line="+44"/>
-        <source>Voltage Probe</source>
-        <translation>Кернеу өлшеуіш</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vpulse.cpp" line="-37"/>
-        <source>ideal voltage pulse source</source>
-        <translation>импульстік кернеуінің әмбебап қорек көзі</translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>voltage before and after the pulse</source>
-        <translation>импульсқа дейін және кейін кернеудің мәні</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>voltage of the pulse</source>
-        <translation>импульс кезіндегі кернеу</translation>
-    </message>
-    <message>
-        <location line="+24"/>
-        <source>Voltage Pulse</source>
-        <translation>Импульстік кернеудің қорек көзі</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vrect.cpp" line="-39"/>
-        <source>ideal rectangle voltage source</source>
-        <translation>тікбұрышты қалыптағы кернеудің әмбебап қорек көзі</translation>
-    </message>
-    <message>
-        <location line="+29"/>
-        <source>voltage of high signal</source>
-        <translation>Импульс шыңындағы кернеу</translation>
-    </message>
-    <message>
-        <location line="+26"/>
-        <source>Rectangle Voltage</source>
-        <translation>Тікбұрышты формалы кернеу көзі</translation>
-    </message>
-    <message>
-        <location filename="../qucs/dialogs/librarydialog.cpp" line="-267"/>
-        <source>ERROR: Cannot open file &quot;%1&quot;.
-</source>
-        <translation>ҚАТЕ: Файлды &quot;%1&quot; ашу мүмкін емес.</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>ERROR: Cannot create user library subdirectory !
-</source>
-        <translation>ҚАТЕ:Тұтынушыға арналған папка құрылған жоқ!</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>ERROR: Cannot create file &quot;%1&quot;.
-</source>
-        <translation>Қате:Файл құру&quot;%1&quot; мүмкін емес.</translation>
-    </message>
-    <message>
-        <location filename="../qucs-edit/main.cpp" line="+76"/>
-        <source>Qucs Editor Version </source>
-        <translation>Qucs редакторының нұсқасы</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>
-Very simple text editor for Qucs
-</source>
-        <translation>Qucs үшін өте қарапайым мәтіндік редактор</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Copyright (C) 2004, 2005 by Michael Margraf
-</source>
-        <translation>Copyright (C) 2004, 2005 by Michael Margraf</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>
-Usage:  qucsedit [-r] file
-</source>
-        <translation>
-Қолдану: qucsedit [-r] файл
-</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>    -h  display this help and exit
-</source>
-        <translation>    -h  осы анықтаманы көрсетіп кейін шығу
-</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>    -r  open file read-only
-</source>
-        <translation>    -r  файл тек оқу үшін ашылды
-</translation>
-    </message>
-    <message>
-        <location line="+48"/>
-        <source>Too long command line argument!
-
-</source>
-        <translation>Басқару жолының аргументі өте ұзын!
-
-</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Wrong command line argument!
-
-</source>
-        <translation>Басқару жолының аргументі дұрыс емес!
-
-</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Only one filename allowed!
-
-</source>
-        <translation>Тек қана бір файлдың аты рұқсат етіледі!
-
-</translation>
-    </message>
-    <message>
-        <location filename="../qucs/schematic_file.cpp" line="-109"/>
-        <source>WARNING: Equations in &quot;%1&quot; are &apos;time&apos; typed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/nigbt.cpp" line="-45"/>
-        <source>NIGBT verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>gate-drain overlap area</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+3"/>
-        <source>m**2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1"/>
-        <source>area of the device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>MOS transconductance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>ambipolar recombination lifetime</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>metallurgical base width</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>gate-source capacitance per unit area</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+3"/>
-        <source>F/cm**2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1"/>
-        <source>gate-drain oxide capacitance per unit area</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>A/cm**2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>triode region factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>electron mobility</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+3"/>
-        <source>cm**2/Vs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1"/>
-        <source>hole mobility</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>base doping</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>1/cm**3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>transverse field factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+32"/>
-        <source>NIGBT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-56"/>
-        <source>avalanche uniformity factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>avalanche multiplication exponent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>emitter saturation current density</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>gate-drain overlap depletion threshold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/schematic_file.cpp" line="-1437"/>
-        <source>Cannot save C++ file &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/module.cpp" line="+116"/>
-        <location filename="../qucs/qucs.cpp" line="+625"/>
-        <location line="+101"/>
-        <source>verilog-a user devices</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+65"/>
-        <location line="+2"/>
-        <source>lumped components</source>
-        <translation type="unfinished">дискреттік компоненттер</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>sources</source>
-        <translation type="unfinished">қорек көздері</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>probes</source>
-        <translation type="unfinished">тестілеу</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>transmission lines</source>
-        <translation type="unfinished">мәліметтерді беру арнасы</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <source>nonlinear components</source>
-        <translation type="unfinished">сызықтық емес компоненттер</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+2"/>
-        <source>verilog-a devices</source>
-        <translation type="unfinished">verilog құрылғылары</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>digital components</source>
-        <translation type="unfinished">цифрлық компоненттер</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+2"/>
-        <source>file components</source>
-        <translation type="unfinished">файл компоненттері</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>simulations</source>
-        <translation type="unfinished">Моделдеу түрлері</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="+1710"/>
-        <source>diagrams</source>
-        <translation type="unfinished">диаграммалар</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="-1839"/>
-        <source>paintings</source>
-        <translation type="unfinished">суреттер</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>external sim components</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hicumL2V2p24.cpp" line="-287"/>
-        <source>HICUM Level 2 v2.24 verilog device</source>
-        <translation type="unfinished">HICUM Level 2 v2.24 Verilog-моделі</translation>
-    </message>
-    <message>
-        <location line="+309"/>
-        <source>HICUM L2 v2.24</source>
-        <translation type="unfinished">HICUM L2 v2.24 нұсқасы</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="-235"/>
-        <source>HICUM Level 0 v1.3 verilog device</source>
-        <translation type="unfinished">HICUM Level 0 v1.3 Verilog-моделі</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-207"/>
-        <source>high-injection roll-off current</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+194"/>
-        <source>TC of iqf (bandgap coefficient of zero bias hole charge)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+24"/>
-        <source>Emitter part coefficient of the zero bias hole charge temperature variation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Collector part coefficient of the zero bias hole charge temperature variation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Specific recombination current at the BC barrier for high forward injection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+284"/>
-        <source>npn HICUM L0 v1.3</source>
-        <translation type="unfinished">npn типті HICUM L0 1.3 нұсқасы {0?}</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>pnp HICUM L0 v1.3</source>
-        <translation type="unfinished">pnp типті HICUM L0 1.3 нұсқасы {0?}</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-255"/>
-        <source>HICUM Level 0 v1.2g verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+225"/>
-        <source>TC of avalanche prefactor, identical to alfav of Hicum/L2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>TC of avalanche exponential factor, identical to alqav of Hicum/L2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <source>Bandgap TC parameter of ver</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Bandgap TC parameter of vef</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+24"/>
-        <source>npn HICUM L0 v1.2g</source>
-        <translation type="unfinished">npn типті HICUM L0 1.2g нұсқасы {0 ?}</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>pnp HICUM L0 v1.2g</source>
-        <translation type="unfinished">pnp типті HICUM L0 1.2g нұсқасы {0 ?}</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hybrid.cpp" line="-37"/>
-        <source>hybrid (unsymmetrical 3dB coupler)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+50"/>
-        <source>Hybrid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/ctline.cpp" line="-40"/>
-        <source>coupled transmission lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+36"/>
-        <source>characteristic impedance of even mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>characteristic impedance of odd mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>relative dielectric constant of even mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>relative dielectric constant of odd mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>attenuation factor per length of even mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>attenuation factor per length of odd mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>Coupled Transmission Line</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/tunneldiode.cpp" line="-35"/>
@@ -11088,1563 +12142,890 @@ Usage:  qucsedit [-r] file
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="-285"/>
-        <source>Flag for using third order solution for transfer current</source>
-        <translation type="unfinished"></translation>
+        <location filename="../qucs/components/twistedpair.cpp" line="-50"/>
+        <source>twisted pair transmission line</source>
+        <translation>орама жұптық беріліс арнасы</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>bias dependence for reverse Early voltage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+217"/>
-        <source>Flag for turning temperature dependence of tef0 on and off</source>
-        <translation type="unfinished"></translation>
+        <location line="+36"/>
+        <source>diameter of conductor</source>
+        <translation>өткізгіш диаметрі</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>TC of Reverse Early voltage</source>
-        <translation type="unfinished"></translation>
+        <source>diameter of wire (conductor and insulator)</source>
+        <translation>сымның диаметрі (өткізгіш пен оқшаулағыш)</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>TC of AVER</source>
-        <translation type="unfinished"></translation>
+        <source>physical length of the line</source>
+        <translation>арнаның физикалық ұзындығы</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Bandgap difference between base and BE-junction</source>
-        <translation type="unfinished"></translation>
+        <source>twists per length in 1/m</source>
+        <translation>1 метрге орама саны</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Frist-order TC of iqfh</source>
-        <translation type="unfinished"></translation>
+        <source>dielectric constant of insulator</source>
+        <translation>оқшаулағыштың диэлектрлік тұрақтысы</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Second-order TC of iqfh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/mslange.cpp" line="-36"/>
-        <source>microstrip lange coupler</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+53"/>
-        <source>Microstrip Lange Coupler</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/bsim3v34nMOS.cpp" line="-817"/>
-        <source>bsim3v34nMOS verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location filename="../qucs/components/bsim3v34pMOS.cpp" line="-814"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location filename="../qucs/components/bsim4v30nMOS.cpp" line="+19"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location filename="../qucs/components/bsim4v30pMOS.cpp" line="+18"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <source>-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+21"/>
-        <source>bsim3v34nMOS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/bsim3v34pMOS.cpp" line="-815"/>
-        <source>bsim3v34pMOS verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+836"/>
-        <source>bsim3v34pMOS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/bsim4v30nMOS.cpp" line="-558"/>
-        <source>bsim4v30nMOS verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+577"/>
-        <source>bsim4v30nMOS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/bsim4v30pMOS.cpp" line="-557"/>
-        <source>bsim4v30pMOS verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+576"/>
-        <source>bsim4v30pMOS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hicumL2V2p31n.cpp" line="-321"/>
-        <source>hicumL2V2p31n verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Weight factor for the low current minority charge</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Parameter describing the slope of hjEi(VBE)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Smoothing parameter for hjEi(VBE) at high voltage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+160"/>
-        <source>Time constant for modeling carrier jam at low VCE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+30"/>
-        <source>Barrier voltage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Normalization parameter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Smoothing parameter for barrier voltage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>fitting factor for critical current</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>Flag for turning on and off of correlated noise implementation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Emitter resistance flicker noise coefficient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Emitter resistance flicker noise exponent factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+52"/>
-        <source>Bandgap difference between B and B-E junction used for hjEi0 and hf0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Temperature coefficient for ahjEi</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Temperature coefficient for hjEi0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Temperature coefficient for Rth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>First order relative TC of parameter Rth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+33"/>
-        <source>HICUM L2 V2.31</source>
-        <translation type="unfinished"></translation>
+        <location line="+22"/>
+        <source>Twisted-Pair</source>
+        <translation>Орама жұбы</translation>
     </message>
     <message>
         <location filename="../qucs/components/vacomponent.cpp" line="+1"/>
         <source>Symbol file not found: %1</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vccs.cpp" line="-41"/>
+        <source>voltage controlled current source</source>
+        <translation>ток ағынын бақылайтын кернеу көзінің қорегі</translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>forward transconductance</source>
+        <translation>тура өтпелі өткізгіштік</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Voltage Controlled Current Source</source>
+        <translation>Ток ағынын бақылайтын кернеу көзінің қорегі</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vcresistor.cpp" line="+23"/>
+        <location filename="../qucs/components/vcvs.cpp" line="-42"/>
+        <source>voltage controlled voltage source</source>
+        <translation>кернеумен басқарылатын кернеу көзі</translation>
+    </message>
+    <message>
+        <location line="+47"/>
+        <source>resistance gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Voltage Controlled Resistor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vcvs.cpp" line="+56"/>
+        <source>Voltage Controlled Voltage Source</source>
+        <translation>Кернеумен басқарылатын кернеу көзі</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/verilogfile.cpp" line="+32"/>
+        <location line="+24"/>
+        <source>Verilog file</source>
+        <translation>Verilog файлы</translation>
+    </message>
+    <message>
+        <location line="-21"/>
+        <source>Name of Verilog file</source>
+        <translation>Verilog файлдың аты</translation>
+    </message>
+    <message>
+        <location line="+98"/>
+        <source>verilog</source>
+        <translation>Verilog</translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <location filename="../qucs/components/vhdlfile.cpp" line="+221"/>
+        <location filename="../qucs/schematic_file.cpp" line="+25"/>
+        <source>ERROR: No file name in %1 component &quot;%2&quot;.</source>
+        <translation>ҚАТЕ: &quot;%1&quot;және&quot;%2&quot; компоненттерінің аты жоқ.</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <location filename="../qucs/components/vhdlfile.cpp" line="+11"/>
+        <source>ERROR: Cannot open %1 file &quot;%2&quot;.</source>
+        <translation>ҚАТЕ: &quot;%1&quot; және &quot;%2&quot;файлдарын ашу мүмкін емес.</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vexp.cpp" line="-40"/>
+        <source>exponential voltage source</source>
+        <translation>көрсеткіштік кернеуінің қорек көзі</translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>voltage before rising edge</source>
+        <translation>өсу фронтына дейінгі кернеу</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>maximum voltage of the pulse</source>
+        <translation>импульс кезіндегі максималды кернеу</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>rise time of the rising edge</source>
+        <translation>өсу фронтының өсу уақыты</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>fall time of the falling edge</source>
+        <translation>құлау кесіндісінің құлау уақыты</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Exponential Voltage Pulse</source>
+        <translation>импульстік кернеудің көрсеткіші</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vfile.cpp" line="-35"/>
+        <source>file based voltage source</source>
+        <translation>кернеу қорек көзінің базалық файлы</translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source>File Based Voltage Source</source>
+        <translation>Кернеу қорек көзінің базалық файлы</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vhdlfile.cpp" line="-201"/>
+        <location line="+24"/>
+        <source>VHDL file</source>
+        <translation>VHDL файлы</translation>
+    </message>
+    <message>
+        <location line="-21"/>
+        <source>Name of VHDL file</source>
+        <translation>VHDL файлдың аты</translation>
+    </message>
+    <message>
+        <location line="+111"/>
+        <source>vhdl</source>
+        <translation>VHDL</translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <location line="+7"/>
+        <source>generic variable</source>
+        <translation>айнымалыларды генерирлеу</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/volt_ac.cpp" line="-29"/>
+        <source>ideal ac voltage source</source>
+        <translation>айнымалы токтың әмбебап қорек көзі</translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>ac Voltage Source</source>
+        <translation>айнымалы тоқта кернеудің қорек көзі</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/volt_dc.cpp" line="-22"/>
+        <source>ideal dc voltage source</source>
+        <translation>тұрақты кернеудің әмбебап қорек көзі</translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>dc Voltage Source</source>
+        <translation>Тұрақты токтағы кернеудің қорек көзі</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/volt_noise.cpp" line="-29"/>
+        <source>noise voltage source</source>
+        <translation>шу кернеуінің қорек көзі</translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>voltage power spectral density in V^2/Hz</source>
+        <translation>кернеу көзі шуы қуатының спектральды тығыздығы В²/Гц</translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Noise Voltage Source</source>
+        <translation>Шу кернеуінің қорек көзі</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vprobe.cpp" line="+23"/>
+        <source>voltage probe</source>
+        <translation>кернеу өлшеуіш</translation>
+    </message>
+    <message>
+        <location line="+44"/>
+        <source>Voltage Probe</source>
+        <translation>Кернеу өлшеуіш</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vpulse.cpp" line="-37"/>
+        <source>ideal voltage pulse source</source>
+        <translation>импульстік кернеуінің әмбебап қорек көзі</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>voltage before and after the pulse</source>
+        <translation>импульсқа дейін және кейін кернеудің мәні</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>voltage of the pulse</source>
+        <translation>импульс кезіндегі кернеу</translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Voltage Pulse</source>
+        <translation>Импульстік кернеудің қорек көзі</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vrect.cpp" line="-39"/>
+        <source>ideal rectangle voltage source</source>
+        <translation>тікбұрышты қалыптағы кернеудің әмбебап қорек көзі</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>voltage of high signal</source>
+        <translation>Импульс шыңындағы кернеу</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Rectangle Voltage</source>
+        <translation>Тікбұрышты формалы кернеу көзі</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/curvediagram.cpp" line="+250"/>
+        <source>Locus Curve</source>
+        <translation>Шеңберлік диаграмма</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/diagram.h" line="+32"/>
+        <source> &lt;invalid&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/marker.cpp" line="+287"/>
+        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+255"/>
+        <source>invalid</source>
+        <translation>дұрыс емес</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/polardiagram.cpp" line="+101"/>
+        <source>Polar</source>
+        <translation>Полярлы</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/psdiagram.cpp" line="+128"/>
+        <source>Polar-Smith Combi</source>
+        <translation>Араласқан Смит поляры</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Smith-Polar Combi</source>
+        <translation>Смит поляры араласқан</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/rect3ddiagram.cpp" line="+1150"/>
+        <source>3D-Cartesian</source>
+        <translation>Үш өлшемді декарттық</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/rectdiagram.cpp" line="+248"/>
+        <source>Cartesian</source>
+        <translation>Декарттық</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/smithdiagram.cpp" line="+111"/>
+        <source>Smith Chart</source>
+        <translation>Смит диаграммасы</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Admittance Smith</source>
+        <translation>Смит диаграммасы (өткізгіштік)</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/tabdiagram.cpp" line="-92"/>
+        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+158"/>
+        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+88"/>
+        <source>no variables</source>
+        <translation>айнымалылар жоқ</translation>
+    </message>
+    <message>
+        <location line="+141"/>
+        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+49"/>
+        <location line="+89"/>
+        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+133"/>
+        <source>wrong dependency</source>
+        <translation>қате тәуелділік</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location filename="../qucs/diagrams/timingdiagram.cpp" line="-122"/>
+        <location line="+113"/>
+        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+7"/>
+        <source>no data</source>
+        <translation>мәліметтер жоқ</translation>
+    </message>
+    <message>
+        <location line="+98"/>
+        <source>Tabular</source>
+        <translation>Кестелік</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+232"/>
+        <source>Timing Diagram</source>
+        <translation>Уақыттық диаграмма</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+46"/>
+        <source>Truth Table</source>
+        <translation>Ақиқаттық кесте</translation>
+    </message>
+    <message>
+        <location filename="../qucs/dialogs/librarydialog.cpp" line="-267"/>
+        <source>ERROR: Cannot open file &quot;%1&quot;.
+</source>
+        <translation>ҚАТЕ: Файлды &quot;%1&quot; ашу мүмкін емес.</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>ERROR: Cannot create user library subdirectory !
+</source>
+        <translation>ҚАТЕ:Тұтынушыға арналған папка құрылған жоқ!</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>ERROR: Cannot create file &quot;%1&quot;.
+</source>
+        <translation>Қате:Файл құру&quot;%1&quot; мүмкін емес.</translation>
+    </message>
+    <message>
+        <location filename="../qucs/imagewriter.cpp" line="+251"/>
+        <location line="+8"/>
+        <location line="+4"/>
+        <location line="+4"/>
+        <source>Export to image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-15"/>
+        <source>Inkscape start error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Successfully exported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Disk write error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Unsupported format of graphics file. 
+Use PNG, JPEG or SVG graphics!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/misc.cpp" line="+343"/>
+        <location line="+63"/>
+        <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
+        <translation>Қате: Уақыттың пішімі белгісіз &quot;%1&quot;. Өлшем бірліктермен қоса оң сандарды қолданыңыз</translation>
+    </message>
+    <message>
+        <location filename="../qucs/module.cpp" line="+116"/>
+        <location filename="../qucs/qucs.cpp" line="+627"/>
+        <location line="+203"/>
+        <location line="+15"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+149"/>
+        <source>verilog-a user devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+66"/>
+        <location line="+2"/>
+        <source>lumped components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>probes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>transmission lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>nonlinear components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>verilog-a devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>digital components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>file components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>simulations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/qucs.cpp" line="+1316"/>
+        <source>diagrams</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/qucs.cpp" line="-1563"/>
+        <source>paintings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>external sim components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/mouseactions.cpp" line="-106"/>
+        <source>Edit Properties</source>
+        <translation>Қасиеттерін Өзгерту</translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Export as image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>power matching</source>
+        <translation>қуатты сәйкестендіру</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>noise matching</source>
+        <translation>шуды сәйкестендіру</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>2-port matching</source>
+        <translation>төрт полюсті сәйкестендіру</translation>
+    </message>
+    <message>
+        <location line="+61"/>
+        <source>The ground potential cannot be labeled!</source>
+        <translation>Жердің потенциалында түртпе болу мүмкін емес!!</translation>
+    </message>
+    <message>
+        <location filename="../qucs/octave_window.cpp" line="+1"/>
+        <source>Octave not found in: %1
+
+Set the Octave location on the application settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/paintings/arrow.cpp" line="+141"/>
+        <source>Arrow</source>
+        <translation>Бағыттауыш</translation>
+    </message>
+    <message>
+        <location filename="../qucs/paintings/ellipse.cpp" line="+98"/>
+        <source>Ellipse</source>
+        <translation>Эллипс</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>filled Ellipse</source>
+        <translation>іші толтырылған эллипс</translation>
+    </message>
+    <message>
+        <location line="+265"/>
+        <source>Edit Ellipse Properties</source>
+        <translation>Эллипс қасиеттерін өзгерту</translation>
+    </message>
+    <message>
+        <location filename="../qucs/paintings/ellipsearc.cpp" line="+91"/>
+        <source>Elliptic Arc</source>
+        <translation>Эллиптік доға</translation>
+    </message>
+    <message>
+        <location line="+296"/>
+        <source>Edit Arc Properties</source>
+        <translation>Доғаның қасиетін өзгерту</translation>
+    </message>
+    <message>
+        <location filename="../qucs/paintings/graphicline.cpp" line="+90"/>
+        <source>Line</source>
+        <translation>Сызық</translation>
+    </message>
+    <message>
+        <location line="+236"/>
+        <source>Edit Line Properties</source>
+        <translation>Сызық қасиетін өзгерту</translation>
+    </message>
+    <message>
+        <location filename="../qucs/paintings/graphictext.cpp" line="+129"/>
+        <source>Text</source>
+        <translation>Мәтін</translation>
+    </message>
+    <message>
+        <location filename="../qucs/paintings/rectangle.cpp" line="+97"/>
+        <source>Rectangle</source>
+        <translation>Тіктөртбұрыш</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>filled Rectangle</source>
+        <translation>іші толтырылған тіктөртбұрыш</translation>
+    </message>
+    <message>
+        <location line="+267"/>
+        <source>Edit Rectangle Properties</source>
+        <translation>Тіктөртбұрыш қасиеттерін өзгерту</translation>
+    </message>
+    <message>
+        <location filename="../qucs/printerwriter.cpp" line="+96"/>
+        <source>Print Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/qucs_actions.cpp" line="-148"/>
+        <source>Cannot create output file!</source>
+        <translation>Шығатын файлды құру мүмкін емес !</translation>
+    </message>
+    <message>
+        <location filename="../qucs/qucs.cpp" line="-433"/>
+        <location line="+976"/>
+        <location line="+69"/>
+        <location line="+122"/>
+        <location line="+12"/>
+        <location line="+299"/>
+        <source>untitled</source>
+        <translation>аты жоқ</translation>
+    </message>
+    <message>
+        <location filename="../qucs/schematic_file.cpp" line="-1230"/>
+        <location line="+707"/>
+        <source>Format Error:
+&apos;Painting&apos; field is not closed!</source>
+        <translation>Пішімде қате бар:
+&apos;Painting&apos; өрісі жабық емес!</translation>
+    </message>
+    <message>
+        <location line="-689"/>
+        <source>Wrong document version: </source>
+        <translation>Құжаттың нұсқасы дұрыс емес:</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <location line="+24"/>
+        <source>Clipboard Format Error:
+Unknown field!</source>
+        <translation>Алмастыру буферінің пішімінде қате бар:
+белгісіз өріс!</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Cannot save C++ file &quot;%1&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Cannot save JSON symbol file &quot;%1&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+78"/>
+        <source>Cannot save document!</source>
+        <translation>Құжатты сақтау мүмкін емес!</translation>
+    </message>
+    <message>
+        <location line="+189"/>
+        <location line="+5"/>
+        <source>Format Error:
+Wrong property field limiter!</source>
+        <translation>Пішімде қате бар:
+Өріс шектеуінің қасиеті дұрыс емес!</translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <source>Format Error:
+Unknown property: </source>
+        <translation>Пішімде қате бар:
+Қасиеті белгісіз:</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Format Error:
+Number expected in property field!</source>
+        <translation>Пішімде қате бар:
+Қасиет өрісінде сан күтілді!</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Format Error:
+&apos;Property&apos; field is not closed!</source>
+        <translation>Пішімде қате бар:
+&apos;Property&apos; өрісі жабық емес!</translation>
+    </message>
+    <message>
+        <location line="+68"/>
+        <source>Format Error:
+&apos;Component&apos; field is not closed!</source>
+        <translation>Пішімде қате бар:
+&apos;Component&apos; өрісі жабық емес!</translation>
+    </message>
+    <message>
+        <location line="+59"/>
+        <source>Format Error:
+Wrong &apos;wire&apos; line format!</source>
+        <translation>Пішімде қате бар:
+&apos;wire&apos; жолының пішімі дұрыс емес!</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Format Error:
+&apos;Wire&apos; field is not closed!</source>
+        <translation>Пішімде қате бар:
+&apos;Wire&apos; өрісі жабық емес!</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Format Error:
+Unknown diagram!</source>
+        <translation>Пішімде қате бар:
+Белгісіз диаграмма!</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Format Error:
+Wrong &apos;diagram&apos; line format!</source>
+        <translation>Пішімде қате бар:
+&apos;diagram&apos; жолының пішімі дұрыс емес!</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Format Error:
+&apos;Diagram&apos; field is not closed!</source>
+        <translation>Пішімде қате бар:
+&apos;Diagram&apos; өрісі жабық емес!</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Format Error:
+Wrong &apos;painting&apos; line delimiter!</source>
+        <translation>Пішімде қате бар:
+&apos;painting&apos;жолындағы шектеу дұрыс емес !</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Format Error:
+Unknown painting!</source>
+        <translation>Пішімде қате бар:
+Белгісіз бейне!</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Format Error:
+Wrong &apos;painting&apos; line format!</source>
+        <translation>Пішімде қате бар:
+&apos;painting&apos;жолындағы пішім дұрыс емес !</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Cannot load document: </source>
+        <translation>Құжатты енгізу мүмкін емес:</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Wrong document type: </source>
+        <translation>Құжаттың типі дұрыс емес:</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location filename="../qucs-filter/stepz_filter.cpp" line="+45"/>
+        <location filename="../qucs-filter-v2/qf_settings.cpp" line="+90"/>
+        <location line="+72"/>
+        <location filename="../qucs-help/main.cpp" line="+104"/>
+        <source>Warning</source>
+        <translation>Ескерту</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Wrong document version 
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+44"/>
+        <source>File Format Error:
+Unknown field!</source>
+        <translation>Файл пішімінде қате бар: Белгісіз өріс!</translation>
+    </message>
+    <message>
+        <location line="+296"/>
+        <source>ERROR: Component &quot;%1&quot; has no analog model.</source>
+        <translation>ҚАТЕ: &quot;%1&quot; компонентінің аналогтық моделі жоқ.</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>ERROR: Component &quot;%1&quot; has no digital model.</source>
+        <translation>ҚАТЕ: &quot;%1&quot; компонентінің цифрлық моделі жоқ.</translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>ERROR: Cannot load subcircuit &quot;%1&quot;.</source>
+        <translation>Қате:Сұлбаны енгізу&quot;%1&quot; мүмкін емес.</translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>WARNING: Skipping library component &quot;%1&quot;.</source>
+        <translation>ЕСКЕРТУ:&quot;%1&quot; кітапхананың компонентасы жетіспейді.</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>ERROR: Cannot load library component &quot;%1&quot;.</source>
+        <translation>Қате: Кітапхана компонентасын енгізу&quot;%1&quot; мүмкін емес.</translation>
+    </message>
+    <message>
+        <location line="+186"/>
+        <source>WARNING: Ignore simulation component in subcircuit &quot;%1&quot;.</source>
+        <translation>ЕСКЕРТУ:&quot;%1&quot; сұлбадағы моделдеу компонентасы қабылданбайды.</translation>
+    </message>
+    <message>
+        <location line="+201"/>
+        <source>WARNING: Equations in &quot;%1&quot; are &apos;time&apos; typed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+77"/>
+        <source>ERROR: Only one digital simulation allowed.</source>
+        <translation>ҚАТЕ: Тек қана бір цифрлық моделдеуге рұқсат етіледі.</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>ERROR: Analog and digital simulations cannot be mixed.</source>
+        <translation>ҚАТЕ: Аналогтық және цифрлық моделдеу араласпауы керек.</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>ERROR: Digital simulation needs at least one digital source.</source>
+        <translation>ҚАТЕ: Цифрлық симуляция кем дегенде бір цифрлық қорек көзін қажет етеді.</translation>
+    </message>
+    <message>
+        <location filename="../qucs-activefilter/filter.cpp" line="+234"/>
+        <source>Part list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Filter order = %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Zeros list Pk=Re+j*Im</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>LPF prototype poles list Pk=Re+j*Im</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Poles list Pk=Re+j*Im</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs-edit/main.cpp" line="+76"/>
+        <source>Qucs Editor Version </source>
+        <translation>Qucs редакторының нұсқасы</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>
+Very simple text editor for Qucs
+</source>
+        <translation>Qucs үшін өте қарапайым мәтіндік редактор</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copyright (C) 2004, 2005 by Michael Margraf
+</source>
+        <translation>Copyright (C) 2004, 2005 by Michael Margraf</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>
+Usage:  qucsedit [-r] file
+</source>
+        <translation>
+Қолдану: qucsedit [-r] файл
+</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>    -h  display this help and exit
+</source>
+        <translation>    -h  осы анықтаманы көрсетіп кейін шығу
+</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>    -r  open file read-only
+</source>
+        <translation>    -r  файл тек оқу үшін ашылды
+</translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Too long command line argument!
+
+</source>
+        <translation>Басқару жолының аргументі өте ұзын!
+
+</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Wrong command line argument!
+
+</source>
+        <translation>Басқару жолының аргументі дұрыс емес!
+
+</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Only one filename allowed!
+
+</source>
+        <translation>Тек қана бір файлдың аты рұқсат етіледі!
+
+</translation>
     </message>
     <message>
         <location filename="../qucs-filter/stepz_filter.cpp" line="+1"/>
@@ -12654,31 +13035,1033 @@ a substrate with lower permittivity and larger height.
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../qucs-filter-v2/qf_settings.cpp" line="-71"/>
+        <location filename="../qucs-help/main.cpp" line="+1"/>
+        <source>Cannot save settings !</source>
+        <translation>Реттемелерді сақтау мүмкін емес !</translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Cannot save settings file !</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QucsActiveFilter</name>
+    <message>
+        <location filename="../qucs-activefilter/qucsactivefilter.cpp" line="+41"/>
+        <source>&amp;File</source>
+        <translation>&amp;Файл</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>E&amp;xit</source>
+        <translation>Ш&amp;ығу</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&amp;Help</source>
+        <translation>&amp;Көмек</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Help...</source>
+        <translation>Көмек...</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>&amp;About QucsActiveFilter...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>About Qt...</source>
+        <translation>Qt жайлы...</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <location line="+481"/>
+        <source>Passband attenuation, Ap (dB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-480"/>
+        <source>Stopband attenuation, As (dB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+477"/>
+        <source>Cuttof frequency, Fc (Hz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-476"/>
+        <location line="+477"/>
+        <source>Stopband frequency, Fs (Hz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-476"/>
+        <source>Passband ripple Rp(dB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Passband gain, Kv (dB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Filter order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Approximation type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Butterworth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Chebyshev</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Inverse Chebyshev</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cauer (Elliptic)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Bessel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>User defined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Manually define transfer function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Calculate and copy to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Calculation console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Filter topology</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Filter type:</source>
+        <translation>Сүзгі типі:</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>LowPass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>High Pass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Band Pass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Band Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Multifeedback (MFB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sallen-Key (S-K)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+369"/>
+        <source>Cauer section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-362"/>
+        <source>General amplitude frequency response</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Filter topology preview (one stage)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>Filter parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Transfer function and Topology</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>General filter amplidure-frequency response</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Filter topology preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Filter calculation console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>Upper cutoff frequency of band-pass/band-stop filter is
+less than lower. Unable to implement such filter.
+Change parameters and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+63"/>
+        <location line="+23"/>
+        <location line="+21"/>
+        <source>Unable to implement filter with such parameters and topology 
+Change parapeters and/or topology and try again!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-40"/>
+        <source>Unable to use Cauer section for Chebyshev or Butterworth 
+frequency response. Try to use another topology.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Unable to use MFB filter for Cauer or Inverse Chebyshev 
+frequency response. Try to use another topology.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Function will be implemented in future version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>
+Filter calculation was sucessfull</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>
+Filter calculation terminated with error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+140"/>
+        <source>Upper cutoff frequency, Fu (Hz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lower cuttoff frequency, Fl (Hz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Transient bandwidth, TW (Hz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Active filter design</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>About...</source>
+        <translation>Жайлы...</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>
+Active Filter synthesis program
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copyright (C) 2014 by</source>
+        <translation type="unfinished">Copyright (C) 2005, 2006 by {2014 ?}</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>About Qt</source>
+        <translation>Qt жайлы</translation>
+    </message>
 </context>
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+57"/>
-        <location line="+460"/>
-        <location line="+211"/>
-        <location line="+44"/>
-        <location line="+17"/>
-        <location line="+14"/>
+        <location filename="../qucs/qucs.cpp" line="-1517"/>
+        <source>Schematic</source>
+        <translation>Сұлба</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Data Display</source>
+        <translation>Мәліметтерді көру терезесі</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Qucs Documents</source>
+        <translation>Qucs құжаттары</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1355"/>
+        <source>VHDL Sources</source>
+        <translation>VHDL қорек көздері</translation>
+    </message>
+    <message>
+        <location line="-1354"/>
+        <location line="+1355"/>
+        <source>Verilog Sources</source>
+        <translation>Verilog қорек көздері</translation>
+    </message>
+    <message>
+        <location line="-1354"/>
+        <location line="+1355"/>
+        <source>Verilog-A Sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1354"/>
+        <location line="+1355"/>
+        <source>Octave Scripts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1354"/>
+        <source>Spice Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1356"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-19"/>
+        <source>Any File</source>
+        <translation>Басқа файл</translation>
+    </message>
+    <message>
+        <source>Others</source>
+        <translation type="obsolete">Басқалар</translation>
+    </message>
+    <message>
+        <source>Datasets</source>
+        <translation type="obsolete">Терілген мәліметтер</translation>
+    </message>
+    <message>
+        <source>Data Displays</source>
+        <translation type="obsolete">Мәліметтерді көру терезелері</translation>
+    </message>
+    <message>
+        <location line="+790"/>
+        <source>Verilog</source>
+        <translation>Verilog</translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>VHDL</source>
+        <translation>VHDL</translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>Schematics</source>
+        <translation>Сұлбалар</translation>
+    </message>
+    <message>
+        <location line="-2027"/>
+        <source>New</source>
+        <translation>Құру</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Open</source>
+        <translation>Ашу</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Delete</source>
+        <translation>Өшіру</translation>
+    </message>
+    <message>
         <location line="+16"/>
-        <location line="+37"/>
-        <location line="+211"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-1085"/>
+        <source>Projects</source>
+        <translation>Проекттер</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>content of project directory</source>
+        <translation>проект папкасының құрамы</translation>
+    </message>
+    <message>
+        <source>Content of</source>
+        <translation type="obsolete">Мазмұны</translation>
+    </message>
+    <message>
+        <source>Note</source>
+        <translation type="obsolete">Ескерту</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Content</source>
+        <translation>Мазмұны</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>content of current project</source>
+        <translation>қолданыстағы проекттің мазмұны</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Search Components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Components</source>
+        <translation>Компоненттер</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>components and diagrams</source>
+        <translation>компоненттер мен диаграммалар</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Manage Libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <location line="+8"/>
+        <source>Libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>system and user component libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+77"/>
+        <location line="+3"/>
+        <location line="+64"/>
+        <location line="+3"/>
+        <location line="+492"/>
+        <location line="+25"/>
+        <location line="+20"/>
+        <location line="+19"/>
+        <location line="+10"/>
+        <location line="+88"/>
+        <location line="+995"/>
+        <location line="+28"/>
+        <location line="+70"/>
+        <location line="+309"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+6"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-567"/>
+        <location line="+103"/>
+        <location line="+62"/>
+        <location line="+32"/>
+        <location line="+16"/>
+        <location line="+10"/>
+        <location line="+5"/>
+        <location line="+295"/>
+        <location line="+15"/>
+        <location line="+19"/>
+        <location line="+138"/>
+        <source>Error</source>
+        <translation>Қате</translation>
+    </message>
+    <message>
+        <location line="-2153"/>
+        <location line="+67"/>
+        <source>Cannot open &quot;%1&quot;.</source>
+        <translation>Ашуға мүмкіндік болмады&quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <location line="-64"/>
+        <location line="+67"/>
+        <source>Library is corrupt.</source>
+        <translation>Кітапхана бұзылған.</translation>
+    </message>
+    <message>
+        <location line="+160"/>
+        <location line="+461"/>
+        <location line="+70"/>
+        <location line="+52"/>
+        <location line="+8"/>
+        <location line="+28"/>
+        <location line="+11"/>
+        <location line="+26"/>
+        <location line="+213"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-895"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+38"/>
         <location line="+14"/>
-        <location line="+830"/>
+        <location line="+685"/>
         <source>Info</source>
         <translation>Ақпарат</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-923"/>
+        <location line="-868"/>
+        <source>Default icon not found:
+ %1.png</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="obsolete">Атын өзгерту</translation>
+    </message>
+    <message>
+        <location line="+240"/>
+        <source>-port</source>
+        <translation>-порттық</translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source>Copying Qucs document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+678"/>
+        <source>The document contains unsaved changes!
+</source>
+        <translation>Құжатта сақталмаған өзгертулер бар!
+</translation>
+    </message>
+    <message>
+        <location line="-677"/>
+        <source>Do you want to save the changes before copying?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>&amp;Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <location line="+678"/>
+        <location filename="../qucs/qucs_init.cpp" line="+66"/>
+        <source>&amp;Save</source>
+        <translation>&amp;Сақтау</translation>
+    </message>
+    <message>
+        <location line="-656"/>
+        <source>Copy file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Enter new name:</source>
+        <translation>Жаңа файл атын енгізіңіз:</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Cannot rename an open file!</source>
+        <translation>Ашық файлдың атын өзгерту мүмкін емес!</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Rename file</source>
+        <translation>Файл атын өзгерту</translation>
+    </message>
+    <message>
+        <source>Cannot rename file: </source>
+        <translation type="obsolete">Файлдың атын өзгерту мүмкін емес:</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Cannot delete an open file!</source>
+        <translation>Ашық файлды жою мүмкін емес!</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location line="+32"/>
+        <location line="+192"/>
+        <location line="+232"/>
+        <location line="+492"/>
+        <source>Warning</source>
+        <translation>Ескерту</translation>
+    </message>
+    <message>
+        <location line="-947"/>
+        <source>This will delete the file permanently! Continue ?</source>
+        <translation>Файлды жою қайтарылмайды! Жалғастырасыз ба?</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+457"/>
+        <location line="+369"/>
+        <source>No</source>
+        <translation>Жоқ</translation>
+    </message>
+    <message>
+        <location line="-826"/>
+        <location line="+457"/>
+        <location line="+369"/>
+        <source>Yes</source>
+        <translation>ИЯ</translation>
+    </message>
+    <message>
+        <source>Cannot delete schematic: </source>
+        <translation type="obsolete">Сұлбаны жою мүмкін емес:</translation>
+    </message>
+    <message>
+        <location line="-979"/>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Verilog source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Verilog-A source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>VHDL source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>data file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>data display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>schematic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>VHDL configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+166"/>
+        <source>Cannot create work directory !</source>
+        <translation>Жұмыс папкасы құрылмады !</translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>Cannot create project directory !</source>
+        <translation>Проект папкасын құру мүмкін емес !</translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>Cannot access project directory: </source>
+        <translation>Проект папкасына рұқсат алу мумкін емес:</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <location line="+53"/>
+        <source> - Project: </source>
+        <translation> - Проект: </translation>
+    </message>
+    <message>
+        <location line="-45"/>
+        <source>Choose Project Directory for Opening</source>
+        <translation>Ашу үшін проекттің бір папкасын таңдаңыз</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>No project is selected !</source>
+        <translation>Проект таңдалған жоқ !</translation>
+    </message>
+    <message>
+        <location line="+52"/>
+        <source>Cannot remove directory: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-177"/>
+        <location line="+185"/>
+        <source>Cannot delete file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-265"/>
+        <source>Cannot copy file to identical name: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Cannot copy schematic: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <source>Enter new filename:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Cannot rename file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+243"/>
+        <source>Cannot delete an open project !</source>
+        <translation>Ашық проектті жою мүмкін емес!</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>This will destroy all the project files permanently ! Continue ?</source>
+        <translation>Проекттің барлық файлдарын жою, қайтарылмайды! Жалғастырасыз ба?</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+2"/>
+        <source>&amp;Yes</source>
+        <translation>&amp;ИЯ</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+0"/>
+        <source>&amp;No</source>
+        <translation>&amp;Жоқ</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Cannot remove project directory!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Choose Project Directory for Deleting</source>
+        <translation>Жою үшін проекттің бір папкасын таңдаңыз</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>No project is selected!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Creating new schematic...</source>
+        <translation>Жаңа сұлбаны құру...</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location line="+12"/>
+        <location line="+68"/>
+        <location line="+31"/>
+        <location line="+5"/>
+        <location line="+104"/>
+        <location line="+5"/>
+        <location line="+33"/>
+        <location line="+54"/>
+        <location line="+35"/>
+        <location line="+177"/>
+        <location line="+34"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-1017"/>
+        <location line="+15"/>
+        <location line="+379"/>
+        <location line="+282"/>
+        <location filename="../qucs/qucs_init.cpp" line="+883"/>
+        <source>Ready.</source>
+        <translation>Дайын.</translation>
+    </message>
+    <message>
+        <location line="-552"/>
+        <source>Creating new text editor...</source>
+        <translation>Жаңа мәтіндік редакторды құру...</translation>
+    </message>
+    <message>
+        <location line="+61"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-291"/>
+        <source>Opening file...</source>
+        <translation>Файлды ашу...</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Enter a Schematic Name</source>
+        <translation>Сұлба атын енгізіңіз</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Opening aborted</source>
+        <translation>Ашу үзілді</translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Saving file...</source>
+        <translation>Файлды сақтау...</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+109"/>
+        <source>Saving aborted</source>
+        <translation>Сақтауды үзү</translation>
+    </message>
+    <message>
+        <location line="-66"/>
+        <source>Qucs Netlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Plain Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Enter a Document Name</source>
+        <translation>Құжат атын енгізіңіз</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>The file &apos;</source>
+        <translation>Файл &apos;</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>&apos; already exists!
+</source>
+        <translation>&apos; әлбетте бар !
+</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Saving will overwrite the old one! Continue?</source>
+        <translation>Сақтау бұрынғы файлды өзгертуге әкеп соғады! Жалғастырасыз ба?</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+115"/>
+        <source>Cancel</source>
+        <translation>Артқа қайтару</translation>
+    </message>
+    <message>
+        <location line="-105"/>
+        <source>Cannot overwrite an open document</source>
+        <translation>Ашық құжатқа қайта жазу мүмкін емес</translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Saving file under new filename...</source>
+        <translation>Файлды басқа атпен сақтау...</translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Saving all files...</source>
+        <translation>Барлық файлдарды сақтау...</translation>
+    </message>
+    <message>
+        <location line="+49"/>
+        <source>Closing file...</source>
+        <translation>Файлды жабу...</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Closing Qucs document</source>
+        <translation>Qucs құжатын жабу</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Do you want to save the changes before closing?</source>
+        <translation>Бағдарламаны жабу алдында сақтау керек па?</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>&amp;Discard</source>
+        <translation>&amp;Сақтаусыз жабу</translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Open examples directory...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+117"/>
+        <source>Update schematic path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The schematic file path has been refreshed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>OK</source>
+        <translation type="unfinished">ИЯ</translation>
+    </message>
+    <message>
+        <location line="+54"/>
+        <source>Printing...</source>
+        <translation>Баспа...</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Exiting application...</source>
+        <translation>Қамтамадан шығу...</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Quit...</source>
+        <translation>Шығу...</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Do you really want to quit?</source>
+        <translation>Бағдарламалық қамтамадан шыққыңыз келеді ма?</translation>
+    </message>
+    <message>
+        <location line="+122"/>
+        <source>The document was modified by another program !</source>
+        <translation>Бұл құжат басқа бағдарламалық қамтамамен өзгертілген!</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you want to reload or keep this version ?</source>
+        <translation>Бұл нұсқаны қалдырып немесе қайтадан орнатасыз ба?</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Reload</source>
+        <translation>Қайтадан қосу</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Keep it</source>
+        <translation>Қалдыру</translation>
+    </message>
+    <message>
+        <location line="+137"/>
+        <source>Cannot create </source>
+        <translation>Құру мүмкін емес</translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>No page set !</source>
+        <translation>Парақ реттелген жоқ !</translation>
+    </message>
+    <message>
+        <location line="+71"/>
+        <source>Cannot start &quot;%1&quot;!</source>
+        <translation>Файлды бастау&quot;%1&quot; мүмкін емес!</translation>
+    </message>
+    <message>
+        <location line="+308"/>
+        <source>Could not load S[1,1].</source>
+        <translation>S[1,1] элементін енгізу мүмкін емес.</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Could not load S[1,2].</source>
+        <translation>S[1,2] элементін енгізу мүмкін емес.</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Could not load S[2,1].</source>
+        <translation>S[2,1] элементін енгізу мүмкін емес.</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Could not load S[2,2].</source>
+        <translation>S[2,2] элементін енгізу мүмкін емес.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Wrong dependency!</source>
+        <translation>Тәуелділік дұрыс емес!</translation>
+    </message>
+    <message>
+        <location filename="../qucs/qucs_actions.cpp" line="-395"/>
+        <source>Cutting selection...</source>
+        <translation>Ерекшеленгенді кесіп алу...</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Copying selection to clipboard...</source>
+        <translation>Ерекшеленген аумақты алмастыру буферіне көшіру...</translation>
+    </message>
+    <message>
+        <location line="+231"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
@@ -12688,74 +14071,9 @@ a substrate with lower permittivity and larger height.
         <translation>Кем дегенде екі элемент таңдалуы тиіс !</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-1234"/>
-        <location line="+3"/>
-        <location line="+62"/>
-        <location line="+3"/>
-        <location line="+392"/>
-        <location line="+21"/>
-        <location line="+22"/>
-        <location line="+14"/>
-        <location line="+12"/>
-        <location line="+54"/>
-        <location line="+31"/>
-        <location line="+235"/>
-        <location line="+1141"/>
-        <location line="+28"/>
-        <location line="+77"/>
-        <location line="+316"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <location line="+6"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+105"/>
-        <location line="+55"/>
-        <location line="+31"/>
-        <location line="+31"/>
-        <location line="+33"/>
-        <location line="+40"/>
-        <location line="+31"/>
-        <location line="+44"/>
-        <location line="+46"/>
-        <location line="+32"/>
-        <location line="+16"/>
-        <location line="+10"/>
-        <location line="+5"/>
-        <location line="+295"/>
-        <location line="+14"/>
-        <location line="+19"/>
-        <location line="+144"/>
-        <source>Error</source>
-        <translation>Қате</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-892"/>
+        <location line="+59"/>
         <source>Opening aborted, file not found.</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot start text editor!</source>
-        <translation type="obsolete">Мәтіндік редакторды іске қосу мүмкін емес!</translation>
-    </message>
-    <message>
-        <source>Cannot start filter synthesis program!</source>
-        <translation type="obsolete">Сүзгілер синтезін есептейтін бағдарламаны іске қосу мүмкін емес!</translation>
-    </message>
-    <message>
-        <source>Cannot start line calculation program!</source>
-        <translation type="obsolete">Беріліс арнаны есептейтін бағдарламаны іске қосу мүмкін емес!</translation>
-    </message>
-    <message>
-        <source>Cannot start library program!</source>
-        <translation type="obsolete">Кітапханалық бағдарламаны іске қосу мүмкін емес!</translation>
-    </message>
-    <message>
-        <source>Cannot start attenuator calculation program!</source>
-        <translation type="obsolete">Аттеньюаторларды есептейтін бағдарламаны іске қосу мүмкін емес!</translation>
-    </message>
-    <message>
-        <source>Cannot start qucshelp!</source>
-        <translation type="obsolete">qucshelp бағдарламасын іске қосу мүмкін емес!</translation>
     </message>
     <message>
         <location line="+46"/>
@@ -12765,50 +14083,14 @@ a substrate with lower permittivity and larger height.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+56"/>
-        <location line="+31"/>
-        <source>Cannot start filter synthesis program! 
+        <location line="+104"/>
+        <source>Cannot start %1 program! 
 
-%1</source>
+(%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+31"/>
-        <source>Cannot start line calculation program! 
-
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+33"/>
-        <source>Cannot start library program! 
-
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+40"/>
-        <source>Cannot start attenuator calculation program! 
-
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+31"/>
-        <source>Cannot start resistor color code calculation program! 
-
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+43"/>
-        <source>Cannot start qucshelp! 
-
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+46"/>
+        <location line="+61"/>
         <source>No project open!</source>
         <translation>Ашық проект жоқ !</translation>
     </message>
@@ -12854,46 +14136,12 @@ Overwrite ?</source>
         <translation>Жазу мүмкін емес&quot;%1&quot;!</translation>
     </message>
     <message>
-        <location line="+438"/>
-        <source>Clear list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+35"/>
-        <source>Symbol files not found in: %1
-
-Is the project open?
-Have you saved the Verilog-A symbols?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs.cpp" line="-1392"/>
-        <location line="+10"/>
-        <location line="+69"/>
-        <location line="+30"/>
-        <location line="+5"/>
-        <location line="+129"/>
-        <location line="+5"/>
-        <location line="+34"/>
-        <location line="+49"/>
-        <location line="+35"/>
-        <location line="+240"/>
-        <location line="+37"/>
-        <location line="+45"/>
-        <location line="+22"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-889"/>
-        <location line="+428"/>
-        <location filename="../qucs/qucs_init.cpp" line="+957"/>
-        <source>Ready.</source>
-        <translation>Дайын.</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs_actions.cpp" line="+283"/>
+        <location line="+295"/>
         <source>Please open project with subcircuits!</source>
         <translation>Сұлбасы бар проектті ашыңыз!</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Please open project first!</source>
         <translation>Алдымен проектті ашыңыз!</translation>
     </message>
@@ -12903,24 +14151,17 @@ Have you saved the Verilog-A symbols?</source>
         <translation>Диаграмма графигін таңдаңыз!</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>CSV file</source>
-        <translation>CSV файлы</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs.cpp" line="-2082"/>
-        <location line="+1525"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+0"/>
-        <source>Any File</source>
-        <translation>Басқа файл</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-1"/>
+        <location line="+9"/>
         <source>Enter an Output File Name</source>
         <translation>Шығатын файл атын енгізіңіз</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+1"/>
+        <source>CSV file</source>
+        <translation>CSV файлы</translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>Output file already exists!</source>
         <translation>Шығатын файл әлбетте бар!</translation>
     </message>
@@ -12930,738 +14171,15 @@ Have you saved the Verilog-A symbols?</source>
         <translation>Осыны қайта жазу керек па?</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-221"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+1"/>
-        <source>&amp;Yes</source>
-        <translation>&amp;ИЯ</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+0"/>
-        <source>&amp;No</source>
-        <translation>&amp;Жоқ</translation>
-    </message>
-    <message>
-        <location line="-1312"/>
-        <source>Schematic</source>
-        <translation>Сұлба</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Data Display</source>
-        <translation>Мәліметтерді көру терезесі</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Qucs Documents</source>
-        <translation>Qucs құжаттары</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+1524"/>
-        <source>VHDL Sources</source>
-        <translation>VHDL қорек көздері</translation>
-    </message>
-    <message>
-        <location line="-1523"/>
-        <location line="+1524"/>
-        <source>Verilog Sources</source>
-        <translation>Verilog қорек көздері</translation>
-    </message>
-    <message>
-        <location line="-1433"/>
-        <source>Others</source>
-        <translation>Басқалар</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Datasets</source>
-        <translation>Терілген мәліметтер</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Data Displays</source>
-        <translation>Мәліметтерді көру терезелері</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <location line="+2360"/>
-        <source>Verilog</source>
-        <translation>Verilog</translation>
-    </message>
-    <message>
-        <location line="-2356"/>
-        <location line="+2354"/>
-        <source>VHDL</source>
-        <translation>VHDL</translation>
-    </message>
-    <message>
-        <location line="-2352"/>
-        <location line="+2348"/>
-        <source>Schematics</source>
-        <translation>Сұлбалар</translation>
-    </message>
-    <message>
-        <location line="-2293"/>
-        <source>New</source>
-        <translation>Құру</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+500"/>
-        <source>Open</source>
-        <translation>Ашу</translation>
-    </message>
-    <message>
-        <location line="-498"/>
-        <location line="+510"/>
-        <source>Delete</source>
-        <translation>Өшіру</translation>
-    </message>
-    <message>
-        <location line="-494"/>
-        <source>Projects</source>
-        <translation>Проекттер</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>content of project directory</source>
-        <translation>проект папкасының құрамы</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <location line="+1062"/>
-        <source>Content of</source>
-        <translation>Мазмұны</translation>
-    </message>
-    <message>
-        <location line="-1062"/>
-        <location line="+997"/>
-        <location line="+65"/>
-        <source>Note</source>
-        <translation>Ескерту</translation>
-    </message>
-    <message>
-        <location line="-1052"/>
-        <source>Content</source>
-        <translation>Мазмұны</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>content of current project</source>
-        <translation>қолданыстағы проекттің мазмұны</translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <source>Components</source>
-        <translation>Компоненттер</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>components and diagrams</source>
-        <translation>компоненттер мен диаграммалар</translation>
-    </message>
-    <message>
-        <source>lumped components</source>
-        <translation type="obsolete">дискреттік компоненттер</translation>
-    </message>
-    <message>
-        <source>sources</source>
-        <translation type="obsolete">қорек көздері</translation>
-    </message>
-    <message>
-        <source>probes</source>
-        <translation type="obsolete">тестілеу</translation>
-    </message>
-    <message>
-        <source>transmission lines</source>
-        <translation type="obsolete">мәліметтерді беру арнасы</translation>
-    </message>
-    <message>
-        <source>nonlinear components</source>
-        <translation type="obsolete">сызықтық емес компоненттер</translation>
-    </message>
-    <message>
-        <source>verilog-a devices</source>
-        <translation type="obsolete">verilog құрылғылары</translation>
-    </message>
-    <message>
-        <source>digital components</source>
-        <translation type="obsolete">цифрлық компоненттер</translation>
-    </message>
-    <message>
-        <source>file components</source>
-        <translation type="obsolete">файл компоненттері</translation>
-    </message>
-    <message>
-        <source>simulations</source>
-        <translation type="obsolete">Моделдеу түрлері</translation>
-    </message>
-    <message>
-        <source>diagrams</source>
-        <translation type="obsolete">диаграммалар</translation>
-    </message>
-    <message>
-        <source>paintings</source>
-        <translation type="obsolete">суреттер</translation>
-    </message>
-    <message>
-        <location line="+445"/>
-        <source>Rename</source>
-        <translation>Атын өзгерту</translation>
-    </message>
-    <message>
-        <source>Delete Group</source>
-        <translation type="obsolete">Группаны жою</translation>
-    </message>
-    <message>
-        <location line="+142"/>
-        <source>Cannot rename an open file!</source>
-        <translation>Ашық файлдың атын өзгерту мүмкін емес!</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Rename file</source>
-        <translation>Файл атын өзгерту</translation>
-    </message>
-    <message>
-        <location line="-49"/>
-        <location line="+49"/>
-        <source>Enter new name:</source>
-        <translation>Жаңа файл атын енгізіңіз:</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Cannot rename file: </source>
-        <translation>Файлдың атын өзгерту мүмкін емес:</translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>Cannot delete an open file!</source>
-        <translation>Ашық файлды жою мүмкін емес!</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <location line="+77"/>
-        <location line="+47"/>
-        <location line="+329"/>
-        <location line="+246"/>
-        <location line="+632"/>
-        <source>Warning</source>
-        <translation>Ескерту</translation>
-    </message>
-    <message>
-        <location line="-1330"/>
-        <source>This will delete the file permanently! Continue ?</source>
-        <translation>Файлды жою қайтарылмайды! Жалғастырасыз ба?</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+77"/>
-        <location line="+623"/>
-        <location line="+456"/>
-        <source>No</source>
-        <translation>Жоқ</translation>
-    </message>
-    <message>
-        <location line="-1156"/>
-        <location line="+77"/>
-        <location line="+623"/>
-        <location line="+456"/>
-        <source>Yes</source>
-        <translation>ИЯ</translation>
-    </message>
-    <message>
-        <location line="-1151"/>
-        <source>Cannot delete schematic: </source>
-        <translation>Сұлбаны жою мүмкін емес:</translation>
-    </message>
-    <message>
-        <source>Cannot delete the open file: </source>
-        <translation type="obsolete">Ашық файлды жою мүмкін емес:</translation>
-    </message>
-    <message>
-        <source>This will delete the files
-</source>
-        <translation type="obsolete">Бұл файлдың өшуіне әкеп соғады
-</translation>
-    </message>
-    <message>
-        <source>permanently! Continue ?</source>
-        <translation type="obsolete">қайтарылмайды! Жалғастырасыз ба?</translation>
-    </message>
-    <message>
-        <source>Cannot delete data display: </source>
-        <translation type="obsolete">Мәліметтерді шолуды жою мүмкін емес:</translation>
-    </message>
-    <message>
-        <source>Cannot delete data file: </source>
-        <translation type="obsolete">Мәліметтер файлын жою мүмкін емес:</translation>
-    </message>
-    <message>
-        <source>Cannot delete VHDL source: </source>
-        <translation type="obsolete">VHDL бастапқы мәтінді жою мүмкін емес:</translation>
-    </message>
-    <message>
-        <source>Cannot delete Verilog source: </source>
-        <translation type="obsolete">Verilog көзін жою мүмкін емес:</translation>
-    </message>
-    <message>
-        <location line="+118"/>
-        <source>Cannot create work directory !</source>
-        <translation>Жұмыс папкасы құрылмады !</translation>
-    </message>
-    <message>
-        <location line="+37"/>
-        <source>Cannot create project directory !</source>
-        <translation>Проект папкасын құру мүмкін емес !</translation>
-    </message>
-    <message>
-        <location line="-318"/>
-        <location line="+429"/>
-        <location line="+774"/>
-        <source>-port</source>
-        <translation>-порттық</translation>
-    </message>
-    <message>
-        <location line="-720"/>
-        <source>Cannot access project directory: </source>
-        <translation>Проект папкасына рұқсат алу мумкін емес:</translation>
-    </message>
-    <message>
-        <source>Content of &apos;</source>
-        <translation type="obsolete">Мазмұны &apos;</translation>
-    </message>
-    <message>
-        <source>&apos;</source>
-        <translation type="obsolete">&apos;</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Content of </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <location line="+51"/>
-        <source> - Project: </source>
-        <translation> - Проект: </translation>
-    </message>
-    <message>
-        <location line="-44"/>
-        <source>Choose Project Directory for Opening</source>
-        <translation>Ашу үшін проекттің бір папкасын таңдаңыз</translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <location line="+128"/>
-        <source>No project is selected !</source>
-        <translation>Проект таңдалған жоқ !</translation>
-    </message>
-    <message>
-        <location line="-84"/>
-        <source>Cannot delete file: </source>
-        <translation>Файлды жою мүмкін емес:</translation>
-    </message>
-    <message>
-        <location line="+17"/>
-        <source>Cannot remove directory: </source>
-        <translation>Папканы жою мумкін емес:</translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>Cannot delete an open project !</source>
-        <translation>Ашық проектті жою мүмкін емес!</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>This will destroy all the project files permanently ! Continue ?</source>
-        <translation>Проекттің барлық файлдарын жою, қайтарылмайды! Жалғастырасыз ба?</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Cannot remove project directory !</source>
-        <translation>Проект папкасын жою мүмкін емес !</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Choose Project Directory for Deleting</source>
-        <translation>Жою үшін проекттің бір папкасын таңдаңыз</translation>
-    </message>
-    <message>
-        <location line="+42"/>
-        <source>Creating new schematic...</source>
-        <translation>Жаңа сұлбаны құру...</translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>Creating new text editor...</source>
-        <translation>Жаңа мәтіндік редакторды құру...</translation>
-    </message>
-    <message>
-        <location line="+54"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-777"/>
-        <source>Opening file...</source>
-        <translation>Файлды ашу...</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Enter a Schematic Name</source>
-        <translation>Сұлба атын енгізіңіз</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Opening aborted</source>
-        <translation>Ашу үзілді</translation>
-    </message>
-    <message>
-        <location line="+36"/>
-        <source>Saving file...</source>
-        <translation>Файлды сақтау...</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <location line="+134"/>
-        <source>Saving aborted</source>
-        <translation>Сақтауды үзү</translation>
-    </message>
-    <message>
-        <location line="-85"/>
-        <source>Enter a Document Name</source>
-        <translation>Құжат атын енгізіңіз</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>The file &apos;</source>
-        <translation>Файл &apos;</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>&apos; already exists!
-</source>
-        <translation>&apos; әлбетте бар !
-</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Saving will overwrite the old one! Continue?</source>
-        <translation>Сақтау бұрынғы файлды өзгертуге әкеп соғады! Жалғастырасыз ба?</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+140"/>
-        <source>Cancel</source>
-        <translation>Артқа қайтару</translation>
-    </message>
-    <message>
-        <location line="-130"/>
-        <source>Cannot overwrite an open document</source>
-        <translation>Ашық құжатқа қайта жазу мүмкін емес</translation>
-    </message>
-    <message>
-        <location line="+47"/>
-        <source>Saving file under new filename...</source>
-        <translation>Файлды басқа атпен сақтау...</translation>
-    </message>
-    <message>
-        <location line="+26"/>
-        <source>Saving all files...</source>
-        <translation>Барлық файлдарды сақтау...</translation>
-    </message>
-    <message>
-        <location line="+49"/>
-        <source>Closing file...</source>
-        <translation>Файлды жабу...</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Closing Qucs document</source>
-        <translation>Qucs құжатын жабу</translation>
-    </message>
-    <message>
-        <location line="-942"/>
-        <location line="+943"/>
-        <source>The document contains unsaved changes!
-</source>
-        <translation>Құжатта сақталмаған өзгертулер бар!
-</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you want to save the changes before closing?</source>
-        <translation>Бағдарламаны жабу алдында сақтау керек па?</translation>
-    </message>
-    <message>
-        <location line="-942"/>
-        <location line="+943"/>
-        <location filename="../qucs/qucs_init.cpp" line="-892"/>
-        <source>&amp;Save</source>
-        <translation>&amp;Сақтау</translation>
-    </message>
-    <message>
-        <location line="-1692"/>
-        <source>Spice Files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+236"/>
-        <source>Manage Libraries</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <location line="+8"/>
-        <source>Libraries</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>system and user component libraries</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+69"/>
-        <location line="+65"/>
-        <source>Cannot open &quot;%1&quot;.</source>
-        <translation type="unfinished">Ашуға мүмкіндік болмады&quot;%1&quot;.</translation>
-    </message>
-    <message>
-        <location line="-62"/>
-        <location line="+65"/>
-        <source>Library is corrupt.</source>
-        <translation type="unfinished">Кітапхана бұзылған.</translation>
-    </message>
-    <message>
-        <location line="+157"/>
-        <source>Default icon not found:
- %1.png</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+111"/>
-        <source>Duplicate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+83"/>
-        <source>Copying Qucs document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Do you want to save the changes before copying?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>&amp;Ignore</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>Copy file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Cannot copy file to identical name: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Cannot copy schematic: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+737"/>
-        <source>Qucs Netlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Plain Text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+167"/>
-        <source>&amp;Discard</source>
-        <translation>&amp;Сақтаусыз жабу</translation>
-    </message>
-    <message>
-        <location line="+44"/>
-        <source>Open examples directory...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+204"/>
-        <source>Printing...</source>
-        <translation>Баспа...</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Print Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+34"/>
-        <source>Printer Error.</source>
-        <translation>Баспа қатесі.</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>Exiting application...</source>
-        <translation>Қамтамадан шығу...</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Quit...</source>
-        <translation>Шығу...</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Do you really want to quit?</source>
-        <translation>Бағдарламалық қамтамадан шыққыңыз келеді ма?</translation>
-    </message>
-    <message>
-        <location line="+36"/>
-        <source>Cutting selection...</source>
-        <translation>Ерекшеленгенді кесіп алу...</translation>
-    </message>
-    <message>
-        <location line="+24"/>
-        <source>Copying selection to clipboard...</source>
-        <translation>Ерекшеленген аумақты алмастыру буферіне көшіру...</translation>
-    </message>
-    <message>
-        <location line="+115"/>
-        <source>The document was modified by another program !</source>
-        <translation>Бұл құжат басқа бағдарламалық қамтамамен өзгертілген!</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you want to reload or keep this version ?</source>
-        <translation>Бұл нұсқаны қалдырып немесе қайтадан орнатасыз ба?</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Reload</source>
-        <translation>Қайтадан қосу</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Keep it</source>
-        <translation>Қалдыру</translation>
-    </message>
-    <message>
-        <location line="+133"/>
-        <source>Cannot create </source>
-        <translation>Құру мүмкін емес</translation>
-    </message>
-    <message>
-        <location line="+28"/>
-        <source>No page set !</source>
-        <translation>Парақ реттелген жоқ !</translation>
-    </message>
-    <message>
-        <location line="+78"/>
-        <source>Cannot start &quot;%1&quot;!</source>
-        <translation>Файлды бастау&quot;%1&quot; мүмкін емес!</translation>
-    </message>
-    <message>
-        <location line="+670"/>
-        <location line="+13"/>
-        <location line="+18"/>
-        <location line="+6"/>
-        <source>Export to image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-36"/>
-        <source>Inkscape start error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Unsupported format of graphics file. 
-Use PNG, JPEG or SVG graphics!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Sucessfully exported!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Disk write error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Circuit Symbol</source>
-        <translation type="obsolete">Cұлбаның белгісін өзгерту</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs_init.cpp" line="+35"/>
-        <source>Edits the symbol for this schematic</source>
-        <translation>Бұл сұлба үшін белгіні өзгерту</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Edit Circuit Symbol
+        <location line="+116"/>
+        <source>Symbol files not found in: %1
 
-Edits the symbol for this schematic</source>
-        <translation>Сұлбаның белгісін өзгерту
-
-Бұл сұлбаның белгісін өзгерту</translation>
+Is the project open?
+Have you saved the Verilog-A symbols?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Edit Schematic</source>
-        <translation type="obsolete">Сұлбаны өзгерту</translation>
-    </message>
-    <message>
-        <source>Edits the schematic</source>
-        <translation type="obsolete">Сұлбаны өзгерту</translation>
-    </message>
-    <message>
-        <source>Edit Schematic
-
-Edits the schematic</source>
-        <translation type="obsolete">Сұлбаны өзгерту
-
-Сұлбаны реттеу</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs.cpp" line="-393"/>
-        <source>Could not load S[1,1].</source>
-        <translation>S[1,1] элементін енгізу мүмкін емес.</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Could not load S[1,2].</source>
-        <translation>S[1,2] элементін енгізу мүмкін емес.</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Could not load S[2,1].</source>
-        <translation>S[2,1] элементін енгізу мүмкін емес.</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Could not load S[2,2].</source>
-        <translation>S[2,2] элементін енгізу мүмкін емес.</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Wrong dependency!</source>
-        <translation>Тәуелділік дұрыс емес!</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs_init.cpp" line="-56"/>
+        <location filename="../qucs/qucs_init.cpp" line="-902"/>
         <source>&amp;New</source>
         <translation>&amp;Құру</translation>
     </message>
@@ -13678,10 +14196,6 @@ Creates a new schematic or data display document</source>
         <translation>Құру
 
 Мәліметтерді қарау үшін жаңа сұлба немесе құжатты құрады</translation>
-    </message>
-    <message>
-        <source>New Text</source>
-        <translation type="obsolete">Жаңа мәтін</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -13722,10 +14236,6 @@ Opens an existing document</source>
 Әлбетте бар құжатты ашады</translation>
     </message>
     <message>
-        <source>Save</source>
-        <translation type="obsolete">Сақтау</translation>
-    </message>
-    <message>
         <location line="+5"/>
         <source>Saves the current document</source>
         <translation>Қолданыстағы құжатты сақтайды</translation>
@@ -13759,10 +14269,6 @@ Saves the current document under a new filename</source>
 Құжатты басқа атпен сақтайды</translation>
     </message>
     <message>
-        <source>Save All</source>
-        <translation type="obsolete">Бәрін сақтау</translation>
-    </message>
-    <message>
         <location line="+3"/>
         <source>Save &amp;All</source>
         <translation>Бәрін &amp;сақтау</translation>
@@ -13782,10 +14288,6 @@ Saves all open documents</source>
 Ашық құжаттардың барлығын сақтайды</translation>
     </message>
     <message>
-        <source>Close</source>
-        <translation type="obsolete">Жабу</translation>
-    </message>
-    <message>
         <location line="+3"/>
         <source>&amp;Close</source>
         <translation>&amp;Жабу</translation>
@@ -13803,6 +14305,11 @@ Closes the current document</source>
         <translation>Файлды жабу
 
 Ашық құжатты жабады</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Clear Recent</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -13827,7 +14334,21 @@ Opens a file explorer with example documents</source>
         <translation>&amp;Cұлбаның белгісін өзгерту</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+2"/>
+        <source>Edits the symbol for this schematic</source>
+        <translation>Бұл сұлба үшін белгіні өзгерту</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Edit Circuit Symbol
+
+Edits the symbol for this schematic</source>
+        <translation>Сұлбаның белгісін өзгерту
+
+Бұл сұлбаның белгісін өзгерту</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>&amp;Document Settings...</source>
         <translation>&amp;Құжат реттемесі...</translation>
     </message>
@@ -13844,10 +14365,6 @@ Sets properties of the file</source>
         <translation>Реттеулер
 
 Файл қасиеттерін реттейді</translation>
-    </message>
-    <message>
-        <source>Print...</source>
-        <translation type="obsolete">Баспа...</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -13928,13 +14445,11 @@ Sets properties of the application</source>
     <message>
         <location line="+3"/>
         <source>Refresh Search Path...</source>
-        <oldsource>Refresh Path...</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Refresh Search Path</source>
-        <oldsource>Refresh Path</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13942,9 +14457,6 @@ Sets properties of the application</source>
         <source>Refresh Path
 
 Rechecks the list of paths for subcircuit files.</source>
-        <oldsource>Refresh Path
-
-Rechecks the list of paths for files.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -14161,10 +14673,6 @@ text in VHDL code</source>
 VHDL қамтаманың мәтінін</translation>
     </message>
     <message>
-        <source>Cut</source>
-        <translation type="obsolete">Кесіп алу</translation>
-    </message>
-    <message>
         <location line="+3"/>
         <source>Cu&amp;t</source>
         <translation>Кесіп &amp;алу</translation>
@@ -14185,10 +14693,6 @@ Cuts out the selection and puts it into the clipboard</source>
 </translation>
     </message>
     <message>
-        <source>Copy</source>
-        <translation type="obsolete">көшіру</translation>
-    </message>
-    <message>
         <location line="+3"/>
         <source>&amp;Copy</source>
         <translation>&amp;көшіру</translation>
@@ -14206,10 +14710,6 @@ Copies the selection into the clipboard</source>
         <translation>Көшіру
 
 Ерекшеленген аумақты алмастыру буферіне көшіреді</translation>
-    </message>
-    <message>
-        <source>Paste</source>
-        <translation type="obsolete">Қою</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -14269,30 +14769,12 @@ Searches for a piece of text</source>
 Мәтінді іздеу</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Find Again</source>
-        <translation>Келесісін табу</translation>
+        <location line="+8"/>
+        <source>Export as image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Find same text again</source>
-        <translation>Ұқсас мәтінді қайта іздеу</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Find
-
-Searches for the same piece of text again</source>
-        <translation>Іздеу
-
-Сол мәтінді тағы іздеу</translation>
-    </message>
-    <message>
-        <source>Undo</source>
-        <translation type="obsolete">Кері қайтару</translation>
-    </message>
-    <message>
-        <location line="+38"/>
+        <location line="+16"/>
         <source>&amp;Undo</source>
         <translation>&amp;Кері қайтару</translation>
     </message>
@@ -14313,16 +14795,7 @@ Makes the last action undone</source>
 </translation>
     </message>
     <message>
-        <source>Redo</source>
-        <translation type="obsolete">Қайтару</translation>
-    </message>
-    <message>
-        <location line="-33"/>
-        <source>Export as image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+36"/>
+        <location line="+3"/>
         <source>&amp;Redo</source>
         <translation>&amp;Қайтару</translation>
     </message>
@@ -15055,7 +15528,24 @@ Starts attenuator calculation program</source>
 Аттеньюаторларды есептейтін бағдарламаны іске қосады</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+3"/>
+        <source>Resistor color codes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Starts Qucs resistor color codes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Resistor color codes
+
+Starts standard resistor color code computation program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Simulate</source>
         <translation>Модельдеу</translation>
     </message>
@@ -15227,7 +15717,24 @@ Enables/disables the browse dock window</source>
 Бекітілген шолу терезелерін қосу/өшіру</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+3"/>
+        <source>&amp;Octave Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Shows/hides the Octave dock window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Octave Window
+
+Shows/hides the Octave dock window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Help Index...</source>
         <translation>Анықтама мазмұны...</translation>
     </message>
@@ -15290,12 +15797,11 @@ About the application</source>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+447"/>
         <source>About Qt</source>
         <translation>Qt жайлы</translation>
     </message>
     <message>
-        <location line="-446"/>
+        <location line="+1"/>
         <source>About Qt
 
 About Qt by Trolltech</source>
@@ -15314,12 +15820,12 @@ Trolltech Qt жайлы</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+26"/>
         <source>&amp;Edit</source>
         <translation>&amp;Өзгерту</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+24"/>
         <source>P&amp;ositioning</source>
         <translation>Қойылған &amp;орны</translation>
     </message>
@@ -15383,7 +15889,7 @@ Trolltech Qt жайлы</translation>
     <message>
         <location line="+12"/>
         <source>Edit</source>
-        <translation type="unfinished">Өзгерту</translation>
+        <translation>Өзгерту</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -15407,7 +15913,7 @@ Trolltech Qt жайлы</translation>
         <translation>Соңғы моделдеу кезіндегі ескерту! F5-ті басыңыз</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+99"/>
         <source>About...</source>
         <translation>Жайлы...</translation>
     </message>
@@ -15503,10 +16009,6 @@ Trolltech Qt жайлы</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Portuguese by Luciano Franca and Helio de Sousa</source>
-        <translation type="obsolete">Португалдық тілге-Luciano Franca</translation>
-    </message>
-    <message>
         <location line="+1"/>
         <source>Spanish by Jose L. Redrejo Rodriguez</source>
         <translation>Испан тілінде - Jose L. Redrejo Rodriguez</translation>
@@ -15566,161 +16068,18 @@ Trolltech Qt жайлы</translation>
         <source>Kazakh by Erbol Keshubaev</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../qucs/qucs.cpp" line="-1898"/>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Verilog source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>VHDL source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>data file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>data display</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>schematic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>symbol</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>VHDL configuration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>configuration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+43"/>
-        <source>This will delete the files%1permanently! Continue ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-930"/>
-        <location line="+1524"/>
-        <source>Verilog-A Sources</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1424"/>
-        <source>Verilog-A</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+577"/>
-        <source>Insert</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+196"/>
-        <source>Verilog-A source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+39"/>
-        <source>Cannot delete the open file &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+31"/>
-        <source>Cannot delete %1: &quot;%2&quot;!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-942"/>
-        <location line="+1524"/>
-        <source>Octave Scripts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1429"/>
-        <source>Octave</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs_init.cpp" line="-466"/>
-        <source>&amp;Octave Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Shows/hides the Octave dock window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Octave Window
-
-Shows/hides the Octave dock window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-74"/>
-        <source>Resistor color codes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Starts Qucs resistor color codes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Resistor color codes
-
-Starts standard resistor color code computation program</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>QucsAttenuator</name>
     <message>
-        <source>E&amp;xit</source>
-        <translation type="obsolete">Ш&amp;ығу</translation>
-    </message>
-    <message>
-        <source>Help...</source>
-        <translation type="obsolete">Көмек...</translation>
-    </message>
-    <message>
-        <source>&amp;About QucsAttenuator...</source>
-        <translation type="obsolete">&amp;Qucs Attenuator жайлы анықтама...</translation>
-    </message>
-    <message>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+70"/>
-        <source>About Qt...</source>
-        <translation>Qt жайлы...</translation>
-    </message>
-    <message>
-        <location line="-22"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+48"/>
         <source>&amp;File</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished">&amp;Шығу</translation>
+        <translation>&amp;Шығу</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -15734,7 +16093,12 @@ Starts standard resistor color code computation program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+7"/>
+        <source>About Qt...</source>
+        <translation>Qt жайлы...</translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>Topology</source>
         <translation>Топология</translation>
     </message>
@@ -15824,12 +16188,12 @@ Starts standard resistor color code computation program</source>
     <message>
         <location line="-107"/>
         <source>Qucs Attenuator Help</source>
-        <translation type="unfinished">Qucs Attenuator жайлы анықтама</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediatly, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</source>
-        <translation type="unfinished">QucsAttenuator - бұл аттеньюаторларды синтездейтін бағдарлама. Аттеньюаторларды құру үшін барлық керекті параметрлерді енгізіп негізгі терезенің төмен жағында орналасқан батырманы басыңыз. Осыдан кейін аттеньюатор есептеліп алмастыру буферіне жіберіледі. Содан кейін Qucs-қа өтіп, таза құжатты ашып CTRL-V (алмастыру буферінен қою) пернесін басыңыз. Енді сіздің сұлбаңызға аттеньюаторды енгізіп, өзгертіп және моделдеуге болады. Іске сәт!</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
@@ -15866,21 +16230,17 @@ Attenuator synthesis program
         <source>Error: Set Attenuation less than %1 dB</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Error: Set Attenuation more than %1 dB</source>
-        <translation type="obsolete">Қате: Бәсеңдетуді %1 дБ-ден арттырыңыз</translation>
-    </message>
 </context>
 <context>
     <name>QucsEdit</name>
     <message>
         <location filename="../qucs-edit/qucsedit.cpp" line="+44"/>
-        <location line="+147"/>
+        <location line="+148"/>
         <source>File: </source>
         <translation>Файл:</translation>
     </message>
     <message>
-        <location line="-136"/>
+        <location line="-137"/>
         <location line="+49"/>
         <source>Line: %1  -  Column: %2</source>
         <translation>Жол: %1-баған: %2</translation>
@@ -15940,7 +16300,7 @@ Very simple text editor for Qucs
         <translation>Файлды оқу мүмкін емес:</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Closing document</source>
         <translation>Құжатты жабу</translation>
     </message>
@@ -15974,12 +16334,22 @@ Very simple text editor for Qucs
 <context>
     <name>QucsFilter</name>
     <message>
-        <location filename="../qucs-filter/qucsfilter.cpp" line="+66"/>
+        <location filename="../qucs-filter/qucsfilter.cpp" line="+64"/>
+        <source>&amp;File</source>
+        <translation>&amp;Файл</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>E&amp;xit</source>
         <translation>Ш&amp;ығу</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
+        <source>&amp;Help</source>
+        <translation>&amp;Көмек</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Help...</source>
         <translation>Көмек...</translation>
     </message>
@@ -15994,17 +16364,7 @@ Very simple text editor for Qucs
         <translation>Qt жайлы...</translation>
     </message>
     <message>
-        <location line="-17"/>
-        <source>&amp;File</source>
-        <translation>&amp;Файл</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>&amp;Help</source>
-        <translation>&amp;Көмек</translation>
-    </message>
-    <message>
-        <location line="+30"/>
+        <location line="+21"/>
         <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16208,37 +16568,37 @@ Filter synthesis program
         <translation>&amp;Шығу</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>&amp;Back</source>
         <translation>&amp;Артқа</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+5"/>
         <source>&amp;Forward</source>
         <translation>&amp;Алдына</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>&amp;Home</source>
         <translation>&amp;Үйге</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>&amp;Previous</source>
         <translation>&amp;Алдынғы</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>&amp;Next</source>
         <translation>&amp;Келесі</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>&amp;Table of Contents</source>
         <translation>&amp;Тақырыбы</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Enables/disables the table of contents</source>
         <translation>тақырыбын қосу/өшіру</translation>
     </message>
@@ -16285,7 +16645,12 @@ Enables/disables the table of contents</source>
 <context>
     <name>QucsLib</name>
     <message>
-        <location filename="../qucs-lib/qucslib.cpp" line="+62"/>
+        <location filename="../qucs-lib/qucslib.cpp" line="+60"/>
+        <source>&amp;File</source>
+        <translation>&amp;Файл</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Manage User &amp;Libraries...</source>
         <translation>Тұтынушы кітапханаларын &amp; басқару...</translation>
     </message>
@@ -16293,10 +16658,6 @@ Enables/disables the table of contents</source>
         <location line="+4"/>
         <source>&amp;Quit</source>
         <translation>&amp;Шығу</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation type="obsolete">Көмек</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -16310,12 +16671,7 @@ Enables/disables the table of contents</source>
         <translation>Жайлы</translation>
     </message>
     <message>
-        <location line="-23"/>
-        <source>&amp;File</source>
-        <translation>&amp;Файл</translation>
-    </message>
-    <message>
-        <location line="+42"/>
+        <location line="+19"/>
         <source>Component Selection</source>
         <translation>Компонентті ерекшелеу</translation>
     </message>
@@ -16426,7 +16782,7 @@ Enables/disables the table of contents</source>
 <context>
     <name>QucsSettingsDialog</name>
     <message>
-        <location filename="../qucs/dialogs/qucssettingsdialog.cpp" line="+53"/>
+        <location filename="../qucs/dialogs/qucssettingsdialog.cpp" line="+61"/>
         <source>Edit Qucs Properties</source>
         <translation>Qucs қасиеттерін өзгерту</translation>
     </message>
@@ -16434,6 +16790,11 @@ Enables/disables the table of contents</source>
         <location line="+14"/>
         <source>Font (set after reload):</source>
         <translation>Шрифт (қайта қосудан кейін іске қосылады):</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Large font size:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -16456,60 +16817,59 @@ Enables/disables the table of contents</source>
         <translation>Ағылшынша</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+6"/>
         <source>German</source>
         <translation>Немісше</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>French</source>
         <translation>Французша</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+12"/>
         <source>Spanish</source>
         <translation>Испандық</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-8"/>
         <source>Italian</source>
         <translation>Италиандық</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Polish</source>
         <translation>Польшалық</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Romanian</source>
         <translation>Румынша</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-5"/>
         <source>Japanese</source>
         <translation>Жапондық</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+8"/>
         <source>Swedish</source>
         <translation>Шведтық</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-10"/>
         <source>Hungarian</source>
         <translation>Венгерлік</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>Hebrew</source>
         <translation>Івріттік</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+6"/>
         <source>Portuguese-BR</source>
-        <oldsource>Portuguese</oldsource>
-        <translation type="unfinished">Португалдық</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -16517,7 +16877,7 @@ Enables/disables the table of contents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+5"/>
         <source>Turkish</source>
         <translation>Түрікше</translation>
     </message>
@@ -16527,34 +16887,44 @@ Enables/disables the table of contents</source>
         <translation>Украиндық</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-4"/>
         <source>Russian</source>
         <translation>Орысша</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-13"/>
         <source>Czech</source>
         <translation>Чехтық</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>Catalan</source>
         <translation>Каталондық</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>Arabic</source>
         <translation>Арабша</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>maximum undo operations:</source>
-        <translation>қайтару операцияларының максимумы:</translation>
+        <location line="+3"/>
+        <source>Chinese</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Kazakh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Maximum undo operations:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
-        <source>text editor:</source>
-        <translation>мәтіндік редактор:</translation>
+        <source>Text editor:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -16563,21 +16933,41 @@ Enables/disables the table of contents</source>
     </message>
     <message>
         <location line="+3"/>
-        <source>start wiring when clicking open node:</source>
-        <translation>түйін ашылған кезде байланыстыруды бастау:</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Load documents from future versions </source>
+        <source>Start wiring when clicking open node:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Draw diagrams with anti-aliasing feature</source>
+        <location line="+4"/>
+        <source>Load documents from future versions:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Try to load also documents created with newer versions of Qucs.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Draw diagrams with anti-aliasing feature:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Use anti-aliasing for graphs for a smoother appereance.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Draw text with anti-aliasing feature:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Use anti-aliasing for text for a smoother appereance.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Settings</source>
         <translation>Реттемелер</translation>
     </message>
@@ -16622,57 +17012,22 @@ Enables/disables the table of contents</source>
         <translation>Аттрибут</translation>
     </message>
     <message>
-        <location line="+101"/>
-        <source>AdmsXml Path:</source>
+        <location line="+6"/>
+        <source>Directive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
-        <source>ASCO Path:</source>
+        <source>Source Code Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Octave Path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Subcircuit Search Path List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+415"/>
-        <source>Select the admsXml bin directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Select the ASCO bin directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Select the octave bin directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-27"/>
-        <source>Select the home directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+41"/>
-        <location line="+19"/>
-        <source>Select a directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>VHDL Editor</source>
-        <translation type="obsolete">VHDL редакторы</translation>
-    </message>
-    <message>
-        <location line="-570"/>
+        <location line="+8"/>
         <source>Register filename extensions here in order to
 open files with an appropriate program.</source>
         <translation>Файлдар сәйкес бағдарламалық қамтамамен ашылу үшін файл атының кеңейтілуін тіркеңіз.</translation>
@@ -16688,7 +17043,7 @@ open files with an appropriate program.</source>
         <translation>Бағдарлама</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+24"/>
         <source>Suffix:</source>
         <translation>Кеңейту:</translation>
     </message>
@@ -16723,7 +17078,27 @@ open files with an appropriate program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+7"/>
+        <source>AdmsXml Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>ASCO Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Octave Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Subcircuit Search Path List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
         <source>Locations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16748,7 +17123,7 @@ open files with an appropriate program.</source>
         <translation>Үндестік бойынша берілген мән</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+55"/>
         <source>Error</source>
         <translation>Қате</translation>
     </message>
@@ -16758,40 +17133,43 @@ open files with an appropriate program.</source>
         <translation>Бұл кеңейту тіркелген!</translation>
     </message>
     <message>
-        <location line="-304"/>
-        <source>Kazakh</source>
+        <location line="+326"/>
+        <source>Select the home directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+80"/>
-        <source>Directive</source>
+        <location line="+9"/>
+        <source>Select the admsXml bin directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Task</source>
+        <location line="+9"/>
+        <source>Select the ASCO bin directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Source Code Editor</source>
+        <location line="+9"/>
+        <source>Select the octave bin directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <location line="+19"/>
+        <source>Select a directory</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QucsTranscalc</name>
     <message>
-        <source>Load</source>
-        <translation type="obsolete">Енгізу</translation>
+        <location filename="../qucs-transcalc/qucstrans.cpp" line="+262"/>
+        <source>&amp;File</source>
+        <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location filename="../qucs-transcalc/qucstrans.cpp" line="+264"/>
+        <location line="+2"/>
         <source>&amp;Load</source>
         <translation>&amp;Енгізу</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="obsolete">Сақтау</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -16799,17 +17177,9 @@ open files with an appropriate program.</source>
         <translation>&amp;Сақтау</translation>
     </message>
     <message>
-        <source>Options</source>
-        <translation type="obsolete">Реттеулер</translation>
-    </message>
-    <message>
         <location line="+7"/>
         <source>&amp;Options</source>
         <translation>&amp;Реттеулер</translation>
-    </message>
-    <message>
-        <source>Quit</source>
-        <translation type="obsolete">Шығу</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -16817,37 +17187,24 @@ open files with an appropriate program.</source>
         <translation>&amp;Шығу</translation>
     </message>
     <message>
-        <source>Copy to Clipboard</source>
-        <translation type="obsolete">Алмастыру буферіне көшіру</translation>
+        <location line="+6"/>
+        <source>&amp;Execute</source>
+        <translation>&amp;орындау</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+2"/>
         <source>&amp;Copy to Clipboard</source>
         <translation>&amp;Алмастыру буферіне көшіру</translation>
     </message>
     <message>
-        <location line="+92"/>
-        <source>Analyze</source>
-        <translation>Анализ</translation>
-    </message>
-    <message>
-        <location line="-87"/>
+        <location line="+5"/>
         <source>&amp;Analyze</source>
         <translation>&amp;Анализ</translation>
     </message>
     <message>
-        <location line="+92"/>
-        <source>Synthesize</source>
-        <translation>Синтез</translation>
-    </message>
-    <message>
-        <location line="-87"/>
+        <location line="+5"/>
         <source>&amp;Synthesize</source>
         <translation>&amp;Синтез</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation type="obsolete">Көмек</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -16861,17 +17218,7 @@ open files with an appropriate program.</source>
         <translation>Жайлы</translation>
     </message>
     <message>
-        <location line="-51"/>
-        <source>&amp;File</source>
-        <translation>&amp;Файл</translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>&amp;Execute</source>
-        <translation>&amp;орындау</translation>
-    </message>
-    <message>
-        <location line="+39"/>
+        <location line="+15"/>
         <source>Transmission Line Type</source>
         <translation>Беріліс арнаның типі</translation>
     </message>
@@ -16921,12 +17268,22 @@ open files with an appropriate program.</source>
         <translation>Физикалық параметрлер</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+6"/>
+        <source>Analyze</source>
+        <translation>Анализ</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Derive Electrical Parameters</source>
         <translation>Электрлік параметрлерді есептеу</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+3"/>
+        <source>Synthesize</source>
+        <translation>Синтез</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Compute Physical Parameters</source>
         <translation>Физикалық параметрлерді есептеу</translation>
     </message>
@@ -16942,14 +17299,14 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+569"/>
+        <location line="+571"/>
         <location line="+157"/>
         <location line="+19"/>
         <source>Ready.</source>
         <translation>Дайын.</translation>
     </message>
     <message>
-        <location line="-696"/>
+        <location line="-698"/>
         <location line="+6"/>
         <location line="+6"/>
         <location line="+6"/>
@@ -17192,7 +17549,7 @@ open files with an appropriate program.</source>
         <translation>Толық кедергі</translation>
     </message>
     <message>
-        <location line="+138"/>
+        <location line="+140"/>
         <source>Selected for Calculation</source>
         <translation>Есептеу үшін таңдалынған</translation>
     </message>
@@ -17258,19 +17615,19 @@ open files with an appropriate program.</source>
         <translation>Файлды енгізу...</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location line="+19"/>
-        <source>Transcalc File</source>
-        <translation>Transcalc файлы</translation>
-    </message>
-    <message>
-        <location line="-21"/>
+        <location line="+2"/>
         <location line="+19"/>
         <source>Enter a Filename</source>
         <translation>Файл атын енгізіңіз</translation>
     </message>
     <message>
-        <location line="-13"/>
+        <location line="-17"/>
+        <location line="+19"/>
+        <source>Transcalc File</source>
+        <translation>Transcalc файлы</translation>
+    </message>
+    <message>
+        <location line="-15"/>
         <location line="+19"/>
         <source>Error</source>
         <translation>Қате</translation>
@@ -17314,17 +17671,7 @@ open files with an appropriate program.</source>
 <context>
     <name>SaveDialog</name>
     <message>
-        <location filename="../qucs/dialogs/savedialog.cpp" line="+60"/>
-        <source>Modified Files</source>
-        <translation>Өзгертілген файлдар</translation>
-    </message>
-    <message>
-        <location line="+34"/>
-        <source>Untitled</source>
-        <translation>Аты жоқ</translation>
-    </message>
-    <message>
-        <location line="-56"/>
+        <location filename="../qucs/dialogs/savedialog.cpp" line="+38"/>
         <source>Save the modified files</source>
         <translation>Өзгертілген файлдарды сақтау</translation>
     </message>
@@ -17334,7 +17681,12 @@ open files with an appropriate program.</source>
         <translation>Файлдарды сақтау үшін таңдау</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+3"/>
+        <source>Modified Files</source>
+        <translation>Өзгертілген файлдар</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Abort Closing</source>
         <translation>Жабуды тоқтату</translation>
     </message>
@@ -17348,11 +17700,16 @@ open files with an appropriate program.</source>
         <source>Save Selected</source>
         <translation>Ерекшеленгендерді сақтау</translation>
     </message>
+    <message>
+        <location line="+16"/>
+        <source>Untitled</source>
+        <translation>Аты жоқ</translation>
+    </message>
 </context>
 <context>
     <name>Schematic</name>
     <message>
-        <location filename="../qucs/schematic.cpp" line="+9"/>
+        <location filename="../qucs/schematic.cpp" line="+98"/>
         <source>Title</source>
         <translation>Аты</translation>
     </message>
@@ -17372,35 +17729,7 @@ open files with an appropriate program.</source>
         <translation>Тексерген:</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="+266"/>
-        <location line="+22"/>
-        <source>Error</source>
-        <translation type="unfinished">Қате</translation>
-    </message>
-    <message>
-        <location line="-21"/>
-        <source>Program admsXml not found: %1
-
-Set the admsXml location on the application settings.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+26"/>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+927"/>
-        <source>ERROR: Cannot create library file &quot;%s&quot;.</source>
-        <translation>ҚАТЕ:&quot;%s&quot; кітапханалық файлды құру мүмкін емес.</translation>
-    </message>
-    <message>
-        <location filename="../qucs/schematic.cpp" line="+1319"/>
-        <source>generic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1232"/>
+        <location line="+81"/>
         <source>Edit Text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17419,128 +17748,137 @@ Edits the text file</source>
     <message>
         <location line="+3"/>
         <source>Edit Schematic</source>
-        <translation type="unfinished">Сұлбаны өзгерту</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Edits the schematic</source>
-        <translation type="unfinished">Сұлбаны өзгерту</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Edit Schematic
 
 Edits the schematic</source>
-        <translation type="unfinished">Сұлбаны өзгерту
-
-Сұлбаны реттеу</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Edit Circuit Symbol</source>
-        <translation type="unfinished">Cұлбаның белгісін өзгерту</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Edits the symbol for this schematic</source>
-        <translation type="unfinished">Бұл сұлба үшін белгіні өзгерту</translation>
+        <translation>Бұл сұлба үшін белгіні өзгерту</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Edit Circuit Symbol
 
 Edits the symbol for this schematic</source>
-        <translation type="unfinished">Сұлбаның белгісін өзгерту
+        <translation>Сұлбаның белгісін өзгерту
 
 Бұл сұлбаның белгісін өзгерту</translation>
+    </message>
+    <message>
+        <location line="+1253"/>
+        <source>generic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/schematic_file.cpp" line="-1342"/>
+        <location line="+22"/>
+        <source>Error</source>
+        <translation>Қате</translation>
+    </message>
+    <message>
+        <location line="-21"/>
+        <source>Program admsXml not found: %1
+
+Set the admsXml location on the application settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+993"/>
+        <source>ERROR: Cannot create library file &quot;%s&quot;.</source>
+        <translation>ҚАТЕ:&quot;%s&quot; кітапханалық файлды құру мүмкін емес.</translation>
     </message>
 </context>
 <context>
     <name>SearchDialog</name>
     <message>
-        <location filename="../qucs/dialogs/searchdialog.cpp" line="+41"/>
+        <location filename="../qucs/dialogs/searchdialog.ui" line="+14"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+145"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Text to search for</source>
         <translation>Іздеу</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+12"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Text to replace with</source>
         <translation>Алмастыру</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+14"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Ask before replacing</source>
         <translation>Алмастыру алдында сұрау</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>From cursor position</source>
-        <translation>Курсор позициясынан</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+7"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Case sensitive</source>
         <translation>Регистрді ескеру</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+7"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Whole words only</source>
         <translation>Тек қана тұтас сөздер</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+7"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Search backwards</source>
         <translation>Кері іздеу</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../qucs-lib/searchdialog.cpp" line="+63"/>
-        <source>Search</source>
-        <translation>Іздеу</translation>
+        <location line="+13"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <source>Next</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Cancel</source>
-        <translation>Артқа қайтару</translation>
+        <location line="+10"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs-lib/searchdialog.cpp" line="+65"/>
+        <source>Close</source>
+        <translation>Жабу</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location filename="../qucs/dialogs/searchdialog.cpp" line="+48"/>
         <source>Replace Text</source>
         <translation>Мәтінді алмастыру</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>Search Text</source>
         <translation>Мәтінді іздеу</translation>
     </message>
     <message>
-        <location line="+51"/>
-        <location line="+23"/>
-        <source>Replace...</source>
-        <translation>Алмастыру...</translation>
-    </message>
-    <message>
-        <location line="-23"/>
-        <source>Replace occurrence ?</source>
-        <translation>Алмастыру орындалды ма?</translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Search...</source>
-        <translation>Іздеу...</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Search string not found!</source>
-        <translation>Ізделінген жол табылмады!</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Replaced %1 occurrences!</source>
-        <translation>Алмастыру %1 рет орындалды!</translation>
-    </message>
-    <message>
-        <location filename="../qucs-lib/searchdialog.cpp" line="-15"/>
+        <location filename="../qucs-lib/searchdialog.cpp" line="-17"/>
         <source>The search result contains all components whose
 name contains the search string. All libraries
 are included in the search.</source>
@@ -17552,12 +17890,12 @@ are included in the search.</source>
         <translation>Іздеу жолы:</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Close</source>
-        <translation>Жабу</translation>
+        <location line="+11"/>
+        <source>Search</source>
+        <translation>Іздеу</translation>
     </message>
     <message>
-        <location line="+89"/>
+        <location line="+91"/>
         <location line="+1"/>
         <source>Search result</source>
         <translation>Іздеу нәтижесі</translation>
@@ -17571,22 +17909,32 @@ are included in the search.</source>
         <translation>Файл қасиеттерін өзгерту</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Data Display:</source>
-        <translation>Мәліметтерді көру:</translation>
-    </message>
-    <message>
-        <location line="-5"/>
+        <location line="+11"/>
         <source>Data Set:</source>
         <translation>Мәліметтерді теру:</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Data Display:</source>
+        <translation>Мәліметтерді көру:</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>open data display after simulation</source>
         <translation>моделдеуден кейін мәліметтерді көруді ашу</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+4"/>
+        <source>Octave Script:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>run script after simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Simulation</source>
         <translation>Моделдеу</translation>
     </message>
@@ -17675,21 +18023,11 @@ are included in the search.</source>
         <source>Cancel</source>
         <translation>Артқа қайтару</translation>
     </message>
-    <message>
-        <location line="-76"/>
-        <source>Octave Script:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>run script after simulation</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>SimMessage</name>
     <message>
-        <location filename="../qucs/dialogs/simmessage.cpp" line="+54"/>
+        <location filename="../qucs/dialogs/simmessage.cpp" line="+67"/>
         <source>Qucs Simulation Messages</source>
         <translation>Qucs моделдеу хабары</translation>
     </message>
@@ -17705,13 +18043,13 @@ are included in the search.</source>
         <translation>Қателер және ескертулер:</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+14"/>
         <source>Goto display page</source>
         <translation>Көрініс парағына өту</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location line="+15"/>
+        <location line="+22"/>
         <source>Abort simulation</source>
         <translation>Моделдеуді тоқтату</translation>
     </message>
@@ -17721,40 +18059,19 @@ are included in the search.</source>
         <translation>Жаңа моделдеуді %1 %2 ден бастау</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>ERROR: Simulator is still running!</source>
-        <translation>ҚАТЕ: Симулятор әлі жұмыс істеп тұр!</translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+15"/>
         <source>creating netlist... </source>
         <translation>сұлбаны құру...</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>ERROR: Cannot write netlist file!</source>
-        <translation>ҚАТЕ: Сұлбалық файлды жазу мүмкін емес!</translation>
-    </message>
-    <message>
-        <location line="+74"/>
-        <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
-        <translation>ҚАТЕ: SPICE-файлды &quot;%1&quot; ашу мүмкін емес.</translation>
-    </message>
-    <message>
-        <source>ERROR: Cannot start QucsConv!</source>
-        <translation type="obsolete">ҚАТЕ: QucsConv іске қосу мүмкін емес!</translation>
-    </message>
-    <message>
-        <location line="+123"/>
-        <location line="+101"/>
         <source>done.</source>
-        <translation>дайын.</translation>
+        <translation type="obsolete">дайын.</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+324"/>
         <location line="+24"/>
         <source>Error</source>
-        <translation type="unfinished">Қате</translation>
+        <translation>Қате</translation>
     </message>
     <message>
         <location line="-24"/>
@@ -17763,17 +18080,70 @@ are included in the search.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+81"/>
-        <source>ERROR: Program not found: %1</source>
+        <location line="-354"/>
+        <source>ERROR: Simulator is still running!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>ERROR: Cannot start simulator!</source>
-        <translation>ҚАТЕ: Симуляторды іске қосу мүмкін емес!</translation>
+        <location line="+9"/>
+        <source>ERROR: Cannot write netlist file!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+91"/>
+        <location line="+12"/>
+        <source>ERROR: Cannot simulate a text file!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+63"/>
+        <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
+        <translation type="unfinished">ҚАТЕ: SPICE-файлды &quot;%1&quot; ашу мүмкін емес.</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>SIM ERROR: Cannot start QucsConv!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+105"/>
+        <location line="+101"/>
+        <source>done.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+7"/>
+        <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>ERROR: Cannot create &quot;%1&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+270"/>
+        <source>ERROR: Cannot start </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Starting </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>ERROR: Simulator crashed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please report this error to qucs-bugs@lists.sourceforge.net</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Close window</source>
         <translation>Терезені жабу</translation>
     </message>
@@ -17809,27 +18179,6 @@ are included in the search.</source>
 -------</source>
         <translation>Қателер: --------</translation>
     </message>
-    <message>
-        <location line="-314"/>
-        <location line="+7"/>
-        <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-150"/>
-        <source>SIM ERROR: Cannot start QucsConv!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+158"/>
-        <source>ERROR: Cannot create &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-240"/>
-        <source>ERROR: Cannot simulate a text file!</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>SpiceDialog</name>
@@ -17844,27 +18193,27 @@ are included in the search.</source>
         <translation>Аты:</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>File:</source>
-        <translation>Файл:</translation>
-    </message>
-    <message>
-        <location line="-3"/>
+        <location line="+7"/>
         <source>Browse</source>
         <translation>Көріп шығу</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Edit</source>
-        <translation>Өзгерту</translation>
+        <location line="+3"/>
+        <source>File:</source>
+        <translation>Файл:</translation>
     </message>
     <message>
-        <location line="-1"/>
+        <location line="+5"/>
         <source>show file name in schematic</source>
         <translation>файл атын сұлбада көрсету</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+1"/>
+        <source>Edit</source>
+        <translation>Өзгерту</translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>include SPICE simulations</source>
         <translation>Spice моделі құрамында бар</translation>
     </message>
@@ -17879,7 +18228,12 @@ are included in the search.</source>
         <translation>SPICE тізбегінің түйіндері:</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+1"/>
+        <source>Component ports:</source>
+        <translation>Компонент порттары:</translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Add &gt;&gt;</source>
         <translation>Қосу &gt;&gt;</translation>
     </message>
@@ -17889,12 +18243,7 @@ are included in the search.</source>
         <translation>&lt;&lt; Жою</translation>
     </message>
     <message>
-        <location line="-16"/>
-        <source>Component ports:</source>
-        <translation>Компонент порттары:</translation>
-    </message>
-    <message>
-        <location line="+28"/>
+        <location line="+12"/>
         <source>OK</source>
         <translation>ИЯ</translation>
     </message>
@@ -17909,7 +18258,12 @@ are included in the search.</source>
         <translation>Жоқ</translation>
     </message>
     <message>
-        <location line="+141"/>
+        <location line="+139"/>
+        <source>Select a file</source>
+        <translation>Файлды таңдау</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>SPICE netlist</source>
         <translation>SPICE сұлбасы</translation>
     </message>
@@ -17919,12 +18273,7 @@ are included in the search.</source>
         <translation>Барлық файлдар</translation>
     </message>
     <message>
-        <location line="-3"/>
-        <source>Select a file</source>
-        <translation>Файлды таңдау</translation>
-    </message>
-    <message>
-        <location line="+93"/>
+        <location line="+90"/>
         <location line="+72"/>
         <source>Info</source>
         <translation>Ақпарат</translation>
@@ -17971,7 +18320,7 @@ are included in the search.</source>
 <context>
     <name>SweepDialog</name>
     <message>
-        <location filename="../qucs/dialogs/sweepdialog.cpp" line="+79"/>
+        <location filename="../qucs/dialogs/sweepdialog.cpp" line="+80"/>
         <source>Bias Points</source>
         <translation>Жұмыс нуктелері</translation>
     </message>
@@ -17984,7 +18333,7 @@ are included in the search.</source>
 <context>
     <name>SymbolWidget</name>
     <message>
-        <location filename="../qucs-lib/symbolwidget.cpp" line="+45"/>
+        <location filename="../qucs-lib/symbolwidget.cpp" line="+47"/>
         <source>Symbol:</source>
         <translation>Белгі:</translation>
     </message>
@@ -17997,19 +18346,7 @@ are included in the search.</source>
 <context>
     <name>TextDoc</name>
     <message>
-        <source>Error</source>
-        <translation type="obsolete">Қате</translation>
-    </message>
-    <message>
-        <source>There is no selection!</source>
-        <translation type="obsolete">Ерекшелеу жоқ!</translation>
-    </message>
-    <message>
-        <source>Page %1 of %2</source>
-        <translation type="obsolete">%2 ішінде %1 парақ</translation>
-    </message>
-    <message>
-        <location filename="../qucs/textdoc.cpp" line="+177"/>
+        <location filename="../qucs/textdoc.cpp" line="+228"/>
         <source>Edit Text Symbol</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18028,19 +18365,19 @@ Edits the symbol for this text document</source>
     <message>
         <location line="+3"/>
         <source>VHDL entity</source>
-        <translation type="unfinished">VHDL объектісі</translation>
+        <translation>VHDL объектісі</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Inserts skeleton of VHDL entity</source>
-        <translation type="unfinished">VHDL объектінің негізін енгізеді</translation>
+        <translation>VHDL объектінің негізін енгізеді</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>VHDL entity
 
 Inserts the skeleton of a VHDL entity</source>
-        <translation type="unfinished">VHDL объектісі
+        <translation>VHDL объектісі
 
 VHDL объектісінің негізін қояды</translation>
     </message>
@@ -18078,61 +18415,81 @@ Inserts the skeleton of a Verilog module</source>
 Inserts the skeleton of a Octave function</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+31"/>
+        <source>Find...</source>
+        <translation>Іздеу...</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Cannot find target: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Replace...</source>
+        <translation>Алмастыру...</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Replace occurrence ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TransferFuncDialog</name>
+    <message>
+        <location filename="../qucs-activefilter/transferfuncdialog.cpp" line="+24"/>
+        <source>Define filter transfer function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Numerator b[i]=</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Denominator a[i]=</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>a[i]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>b[i]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Cancel</source>
+        <translation>Жоқ</translation>
+    </message>
 </context>
 <context>
     <name>VASettingsDialog</name>
     <message>
         <location filename="../qucs/dialogs/vasettingsdialog.cpp" line="+43"/>
         <source>Document Settings</source>
-        <translation type="unfinished">Құжат реттемесі</translation>
+        <translation>Құжат реттемесі</translation>
     </message>
     <message>
-        <source>Digital Simulation Settings</source>
-        <translation type="obsolete">Цифрлық моделдеу реттемесі</translation>
-    </message>
-    <message>
-        <source>Simulation</source>
-        <translation type="obsolete">Моделдеу</translation>
-    </message>
-    <message>
-        <source>Duration of Simulation:</source>
-        <translation type="obsolete">Моделдеу ұзақтығы:</translation>
-    </message>
-    <message>
-        <source>Precompile Module</source>
-        <translation type="obsolete">Компиляциялық модуль</translation>
-    </message>
-    <message>
-        <source>Library Name:</source>
-        <translation type="obsolete">Кітапхана аты:</translation>
-    </message>
-    <message>
-        <source>Libraries:</source>
-        <translation type="obsolete">Кітапханалар:</translation>
-    </message>
-    <message>
-        <location line="+107"/>
-        <source>Ok</source>
-        <translation type="unfinished">ИЯ</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="obsolete">Қате</translation>
-    </message>
-    <message>
-        <location line="-100"/>
+        <location line="+9"/>
         <source>Code Creation Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Browse</source>
-        <translation type="unfinished">Көріп шығу</translation>
+        <translation>Көріп шығу</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -18152,7 +18509,7 @@ Inserts the skeleton of a Octave function</source>
     <message>
         <location line="+10"/>
         <source>Description:</source>
-        <translation type="unfinished">Бейнелеу:</translation>
+        <translation>Бейнелеу:</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -18185,14 +18542,24 @@ Inserts the skeleton of a Octave function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+77"/>
+        <location line="+16"/>
+        <source>Ok</source>
+        <translation>ИЯ</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Cancel</source>
+        <translation>Жоқ</translation>
+    </message>
+    <message>
+        <location line="+59"/>
         <source>PNG files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Any file</source>
-        <translation type="unfinished">Басқа файлдар</translation>
+        <translation>Басқа файлдар</translation>
     </message>
     <message>
         <location line="+1"/>

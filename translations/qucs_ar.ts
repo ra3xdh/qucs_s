@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="ar">
 <context>
     <name>ArrowDialog</name>
     <message>
@@ -150,7 +150,7 @@
     <message>
         <location line="-25"/>
         <source>Error</source>
-        <translation type="unfinished">خطأ</translation>
+        <translation>خطأ</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -178,38 +178,34 @@
         <source>Yes</source>
         <translation>نعم</translation>
     </message>
-    <message>
-        <source>No match found!</source>
-        <translation type="obsolete">العثور على أي مباراة!</translation>
-    </message>
 </context>
 <context>
     <name>ComponentDialog</name>
     <message>
-        <location filename="../qucs/components/componentdialog.cpp" line="+42"/>
+        <location filename="../qucs/components/componentdialog.cpp" line="+43"/>
         <source>Edit Component Properties</source>
         <translation>تحرير خصائص العنصر</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+33"/>
         <source>Sweep</source>
         <translation>الاجتياح</translation>
     </message>
     <message>
+        <location line="+10"/>
         <location line="+9"/>
-        <location line="+9"/>
-        <location line="+30"/>
+        <location line="+34"/>
         <location line="+9"/>
         <location line="+9"/>
         <location line="+9"/>
         <location line="+16"/>
-        <location line="+96"/>
-        <location line="+86"/>
+        <location line="+106"/>
+        <location line="+94"/>
         <source>display in schematic</source>
         <translation>العرض التخطيطي</translation>
     </message>
     <message>
-        <location line="-261"/>
+        <location line="-283"/>
         <source>Simulation:</source>
         <translation>المحاكاة :</translation>
     </message>
@@ -224,7 +220,7 @@
         <translation>النوع :</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>linear</source>
         <translation>خطية</translation>
     </message>
@@ -244,7 +240,7 @@
         <translation>ثابت</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Values:</source>
         <translation>القيم :</translation>
     </message>
@@ -260,19 +256,19 @@
     </message>
     <message>
         <location line="+9"/>
-        <location line="+941"/>
+        <location line="+1123"/>
         <location line="+22"/>
         <source>Step:</source>
         <translation>خطوة :</translation>
     </message>
     <message>
-        <location line="-956"/>
+        <location line="-1138"/>
         <source>Number:</source>
         <translation>العدد :</translation>
     </message>
     <message>
-        <location line="+79"/>
-        <location line="+31"/>
+        <location line="+87"/>
+        <location line="+33"/>
         <source>Properties</source>
         <translation>الخصائص :</translation>
     </message>
@@ -282,7 +278,7 @@
         <translation>الاسم :</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+45"/>
         <source>Name</source>
         <translation>الاسم </translation>
     </message>
@@ -302,7 +298,7 @@
         <translation>وصف</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+42"/>
         <source>Edit</source>
         <translation>تحرير</translation>
     </message>
@@ -312,7 +308,7 @@
         <translation>تصفح</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+16"/>
         <source>Add</source>
         <translation>إضافة</translation>
     </message>
@@ -320,6 +316,16 @@
         <location line="+3"/>
         <source>Remove</source>
         <translation>يزيل</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Move Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Move Down</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
@@ -337,23 +343,32 @@
         <translation>إلغاء</translation>
     </message>
     <message>
-        <location line="+30"/>
-        <location line="+62"/>
-        <location line="+186"/>
+        <location line="+29"/>
+        <location line="+74"/>
+        <location line="+54"/>
+        <location line="+201"/>
         <location line="+215"/>
-        <location line="+133"/>
+        <location line="+167"/>
+        <location line="+292"/>
         <source>yes</source>
         <translation>نعم</translation>
     </message>
     <message>
-        <location line="-594"/>
-        <location line="+248"/>
-        <location line="+344"/>
+        <location line="-1001"/>
+        <location line="+74"/>
+        <location line="+255"/>
+        <location line="+378"/>
+        <location line="+296"/>
         <source>no</source>
         <translation>لا</translation>
     </message>
     <message>
-        <location line="-65"/>
+        <location line="-356"/>
+        <source>Select a file</source>
+        <translation>تحديد ملف</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>All Files</source>
         <translation>جميع الملفات</translation>
     </message>
@@ -383,12 +398,7 @@
         <translation>فيريلوج ملفات</translation>
     </message>
     <message>
-        <location line="-7"/>
-        <source>Select a file</source>
-        <translation>تحديد ملف</translation>
-    </message>
-    <message>
-        <location line="+164"/>
+        <location line="+185"/>
         <source>Points per decade:</source>
         <translation>نقطة لكل عقد من الزمن :</translation>
     </message>
@@ -476,24 +486,24 @@
     </message>
     <message>
         <location line="+5"/>
-        <location line="+159"/>
+        <location line="+151"/>
         <source>solid line</source>
         <translation>خط الصلبة</translation>
     </message>
     <message>
-        <location line="-158"/>
-        <location line="+159"/>
+        <location line="-150"/>
+        <location line="+151"/>
         <source>dash line</source>
         <translation>اندفاعة خط</translation>
     </message>
     <message>
-        <location line="-158"/>
-        <location line="+159"/>
+        <location line="-150"/>
+        <location line="+151"/>
         <source>dot line</source>
         <translation>خط نقطة</translation>
     </message>
     <message>
-        <location line="-157"/>
+        <location line="-149"/>
         <source>long dash line</source>
         <translation>اندفاعة خط</translation>
     </message>
@@ -518,7 +528,7 @@
         <translation>السمك :</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+10"/>
         <source>y-Axis:</source>
         <translation>العمودي :</translation>
     </message>
@@ -528,7 +538,7 @@
         <translation>بيانات</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+26"/>
         <source>Name</source>
         <translation>الاسم </translation>
     </message>
@@ -656,36 +666,36 @@
         <translation>المحور السيني</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <location line="+42"/>
-        <location line="+44"/>
+        <location line="+7"/>
+        <location line="+43"/>
+        <location line="+45"/>
         <source>manual</source>
         <translation>دليل</translation>
     </message>
     <message>
-        <location line="-78"/>
-        <location line="+42"/>
-        <location line="+44"/>
+        <location line="-80"/>
+        <location line="+43"/>
+        <location line="+45"/>
         <source>start</source>
         <translation>بداية </translation>
     </message>
     <message>
-        <location line="-77"/>
+        <location line="-79"/>
+        <location line="+45"/>
         <location line="+44"/>
-        <location line="+43"/>
         <source>step</source>
         <translation>خطوة </translation>
     </message>
     <message>
-        <location line="-78"/>
+        <location line="-80"/>
+        <location line="+45"/>
         <location line="+44"/>
-        <location line="+43"/>
         <source>stop</source>
         <translation>التوقف </translation>
     </message>
     <message>
-        <location line="-53"/>
-        <location line="+43"/>
+        <location line="-54"/>
+        <location line="+44"/>
         <source>number</source>
         <translation>العدد </translation>
     </message>
@@ -827,7 +837,7 @@
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">إلغاء</translation>
+        <translation>إلغاء</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1029,6 +1039,248 @@
     </message>
 </context>
 <context>
+    <name>FilterDialog</name>
+    <message>
+        <location filename="../qucs-filter-v2/qf_dialog.cpp" line="+51"/>
+        <source>E&amp;xit</source>
+        <translation>&amp;خروج</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>&amp;About Qucs Filter...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>About Qt...</source>
+        <translation>كيو تي حول...</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>&amp;File</source>
+        <translation>‏‏&amp;ملف</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>&amp;Help</source>
+        <translation>مساعدة&amp;</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Specify order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>b</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>c</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Cutoff/Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location line="+40"/>
+        <location line="+13"/>
+        <source>Hz</source>
+        <translation>هرتز</translation>
+    </message>
+    <message>
+        <location line="-52"/>
+        <location line="+40"/>
+        <location line="+13"/>
+        <source>kHz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-52"/>
+        <location line="+40"/>
+        <location line="+13"/>
+        <source>MHz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-52"/>
+        <location line="+40"/>
+        <location line="+13"/>
+        <source>GHz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-50"/>
+        <source>Ripple</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <location line="+53"/>
+        <source>dB</source>
+        <translation>dB</translation>
+    </message>
+    <message>
+        <location line="-50"/>
+        <source>Angle</source>
+        <translation>الزاوية</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Â°</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Zin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <location line="+8"/>
+        <source>Ohm</source>
+        <translation>Ω</translation>
+    </message>
+    <message>
+        <location line="-5"/>
+        <source>Zout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Stopband corner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Bandwidth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Attenuation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>dual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Stopband is first pole</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Optimize cauer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Equal inductors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>+ rather than T</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Optimize C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cmin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cmax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>noC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Optimize L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lmin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lmax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>noL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>LC Filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Microstrip Filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Active Filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Calculate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>About...</source>
+        <translation>حول...</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>
+Filter synthesis program
+</source>
+        <translation>
+توليف برنامج فلتر
+</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copyright (C) 2009 by</source>
+        <translation type="unfinished">حقوق الطبع محفوظة (جيم) 2004 ،  2005 من قبل  {2009 ?}</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>About Qt</source>
+        <translation>عن كيو تي</translation>
+    </message>
+</context>
+<context>
     <name>GraphicTextDialog</name>
     <message>
         <location filename="../qucs/paintings/graphictextdialog.cpp" line="+36"/>
@@ -1071,14 +1323,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Text size: </source>
-        <translation type="obsolete">حجم:</translation>
-    </message>
-    <message>
-        <source>Rotation angle: </source>
-        <translation type="obsolete">عدد التأشير :</translation>
-    </message>
-    <message>
         <location line="+29"/>
         <source>Error</source>
         <translation>خطأ</translation>
@@ -1092,15 +1336,26 @@
 <context>
     <name>HelpDialog</name>
     <message>
-        <location filename="../qucs-filter/helpdialog.cpp" line="+38"/>
+        <location filename="../qucs-activefilter/helpdialog.cpp" line="+38"/>
+        <source>QucsActiveFilter is a active filter synthesis program. Butterworth, Chebyshev, Inverse Chebyshev, Cauer, Bessel and User defined transfer function are supported.To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediatly, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <location filename="../qucs-filter/helpdialog.cpp" line="+67"/>
+        <location filename="../qucs-rescodes/helpdialog.cpp" line="+66"/>
+        <source>Close</source>
+        <translation>غلق</translation>
+    </message>
+    <message>
+        <location filename="../qucs-filter/helpdialog.cpp" line="-29"/>
         <source>QucsFilter is a filter synthesis program. To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediatly, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
         <translation>QucsFilter is a filter synthesis program. To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediatly, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</translation>
     </message>
     <message>
-        <location line="+29"/>
-        <location filename="../qucs-rescodes/helpdialog.cpp" line="+62"/>
-        <source>Close</source>
-        <translation>غلق</translation>
+        <location filename="../qucs-rescodes/helpdialog.cpp" line="-31"/>
+        <source>A program to compute color codes for resistors and resistance values for color codes. To obtain the color codes, simply enter the resistance and tolerance values and press the &quot;To Colors&quot; button. Alternatively to obtain the resistance, select the appropriate color bands and press the &quot;To Resistance&quot; button. The program computes the closest standard resistor value. You can paste the computed resistor in the schematic (by pressing ctrl+v). Have fun!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs-transcalc/helpdialog.cpp" line="+32"/>
@@ -1122,19 +1377,6 @@
         <source>Dismiss</source>
         <translation>فصل</translation>
     </message>
-    <message>
-        <source>Qucs Attenuator Help</source>
-        <translation type="obsolete">مساعدة Qucs المخفف</translation>
-    </message>
-    <message>
-        <source>QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediatly, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</source>
-        <translation type="obsolete">QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediatly, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</translation>
-    </message>
-    <message>
-        <location filename="../qucs-rescodes/helpdialog.cpp" line="-27"/>
-        <source>A program to compute color codes for resistors and resistance values for color codes. To obtain the color codes, simply enter the resistance and tolerance values and press the &quot;To Colors&quot; button. Alternatively to obtain the resistance, select the appropriate color bands and press the &quot;To Resistance&quot; button. The program computes the closest standard resistor value. You can paste the computed resistor in the schematic (by pressing ctrl+v). Have fun!</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ID_Dialog</name>
@@ -1146,15 +1388,15 @@
     <message>
         <location line="+15"/>
         <source>Prefix:</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Parameters</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
         <source>display</source>
         <translation>يعرض</translation>
     </message>
@@ -1174,30 +1416,33 @@
         <translation>وصف</translation>
     </message>
     <message>
+        <location line="+0"/>
+        <source>Type</source>
+        <translation>النوع </translation>
+    </message>
+    <message>
         <location line="+10"/>
-        <location line="+115"/>
-        <location line="+32"/>
+        <location line="+106"/>
         <location line="+37"/>
-        <location line="+61"/>
-        <location line="+1"/>
-        <location line="+17"/>
+        <location line="+49"/>
+        <location line="+45"/>
         <source>yes</source>
         <translation>نعم</translation>
     </message>
     <message>
-        <location line="-263"/>
-        <location line="+147"/>
-        <location line="+37"/>
+        <location line="-237"/>
+        <location line="+143"/>
+        <location line="+94"/>
         <source>no</source>
         <translation>لا</translation>
     </message>
     <message>
-        <location line="-166"/>
+        <location line="-219"/>
         <source>display in schematic</source>
         <translation>العرض التخطيطي</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Name:</source>
         <translation>الاسم :</translation>
     </message>
@@ -1212,7 +1457,12 @@
         <translation>وصف:</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+1"/>
+        <source>Type:</source>
+        <translation>النوع :</translation>
+    </message>
+    <message>
+        <location line="+27"/>
         <source>Add</source>
         <translation>إضافة</translation>
     </message>
@@ -1228,11 +1478,16 @@
     </message>
     <message>
         <location line="+2"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Cancel</source>
         <translation>إلغاء</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+54"/>
         <location line="+8"/>
         <source>Error</source>
         <translation>خطأ</translation>
@@ -1240,36 +1495,33 @@
     <message>
         <location line="-7"/>
         <source>Parameter must not be named &quot;File&quot;!</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Parameter &quot;%1&quot; already in list!</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location line="-148"/>
-        <source>Type</source>
-        <translation type="unfinished">النوع </translation>
-    </message>
-    <message>
-        <location line="+40"/>
-        <source>Type:</source>
-        <translation type="unfinished">النوع :</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ImportDialog</name>
     <message>
-        <source>Import Data File...</source>
-        <translation type="obsolete">استيراد ملف بيانات...</translation>
+        <location filename="../qucs/dialogs/importdialog.cpp" line="+36"/>
+        <source>Convert Data File...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Import File:</source>
-        <translation type="obsolete">استيراد ملف:</translation>
+        <location line="+4"/>
+        <source>File specification</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/dialogs/importdialog.cpp" line="+46"/>
+        <location line="+3"/>
+        <source>Input File:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Browse</source>
         <translation>تصفح</translation>
     </message>
@@ -1279,16 +1531,52 @@
         <translation>الناتج الملف :</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+3"/>
+        <source>Output Data:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Qucs dataset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Touchstone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>CSV</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Qucs library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Qucs netlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Matlab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Messages</source>
         <translation>رسائل</translation>
     </message>
     <message>
-        <source>Import</source>
-        <translation type="obsolete">استيراد</translation>
+        <location line="+16"/>
+        <source>Convert</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+2"/>
         <source>Abort</source>
         <translation>إحباط</translation>
     </message>
@@ -1333,11 +1621,22 @@
         <translation>VCD ملفات</translation>
     </message>
     <message>
-        <source>Any File</source>
-        <translation type="obsolete">أية ملفات</translation>
+        <location line="+1"/>
+        <source>Qucs dataset files</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+1"/>
+        <source>SPICE files</source>
+        <translation>ملفات SPICE</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Any file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Enter a Data File Name</source>
         <translation>إدخال البيانات اسم الملف</translation>
     </message>
@@ -1372,98 +1671,24 @@
         <translation>...خطأ : تنسيق ملف غير معروف! يرجى التحقق من اسم الملف تمديد!</translation>
     </message>
     <message>
-        <location line="+51"/>
-        <source>ERROR: Cannot start converter!</source>
-        <translation>خطأ : لا يمكن بدء المحول!</translation>
-    </message>
-    <message>
-        <source>Successfully imported file!</source>
-        <translation type="obsolete">استيراد الملف بنجاح!</translation>
-    </message>
-    <message>
-        <location line="+62"/>
-        <source>Converter ended with errors!</source>
-        <translation>المحول انتهت الأخطاء!</translation>
-    </message>
-    <message>
-        <location line="-292"/>
-        <source>Convert Data File...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>File specification</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Input File:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Output Data:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Qucs dataset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Touchstone</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>CSV</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Qucs library</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Qucs netlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+24"/>
-        <source>Convert</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+33"/>
-        <source>Qucs dataset files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>SPICE files</source>
-        <translation type="unfinished">ملفات SPICE</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Any file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+136"/>
+        <location line="+43"/>
         <source>Running command line:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+8"/>
+        <source>ERROR: Cannot start converter!</source>
+        <translation>خطأ : لا يمكن بدء المحول!</translation>
+    </message>
+    <message>
+        <location line="+56"/>
         <source>Successfully converted file!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-258"/>
-        <source>Matlab</source>
-        <translation type="unfinished"></translation>
+        <location line="+6"/>
+        <source>Converter ended with errors!</source>
+        <translation>المحول انتهت الأخطاء!</translation>
     </message>
 </context>
 <context>
@@ -1509,7 +1734,7 @@
 <context>
     <name>LibraryDialog</name>
     <message>
-        <location filename="../qucs/dialogs/librarydialog.cpp" line="+51"/>
+        <location filename="../qucs/dialogs/librarydialog.cpp" line="+56"/>
         <source>Create Library</source>
         <translation>إنشاء مكتبة</translation>
     </message>
@@ -1559,7 +1784,7 @@
     <message>
         <location line="+6"/>
         <source>Description:</source>
-        <translation type="unfinished">وصف:</translation>
+        <translation>وصف:</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1567,15 +1792,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No subcircuits!</source>
-        <translation type="obsolete">لا SUBCIRCUITS!</translation>
+        <location line="+12"/>
+        <location line="+190"/>
+        <source>Create</source>
+        <translation>إنشاء</translation>
     </message>
     <message>
-        <location line="+82"/>
+        <location line="-169"/>
+        <source>Message:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <location filename="../qucs-lib/librarydialog.cpp" line="+74"/>
+        <source>Close</source>
+        <translation>غلق</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>No projects!</source>
+        <translation>لا مشاريع!</translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <location line="+17"/>
         <location line="+16"/>
         <location line="+6"/>
-        <location filename="../qucs-lib/librarydialog.cpp" line="+134"/>
+        <location filename="../qucs-lib/librarydialog.cpp" line="+60"/>
         <location line="+14"/>
         <location line="+11"/>
         <location line="+6"/>
@@ -1624,33 +1867,7 @@
         <translation>وهناك مكتبة بهذا الاسم موجود بالفعل!</translation>
     </message>
     <message>
-        <source>Enter description for &quot;%1&quot;:</source>
-        <translation type="obsolete">وصفا لدخول &quot;٪ 1&quot; :</translation>
-    </message>
-    <message>
-        <location line="-109"/>
-        <location line="+193"/>
-        <source>Create</source>
-        <translation>إنشاء</translation>
-    </message>
-    <message>
-        <location line="-172"/>
-        <source>Message:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <location filename="../qucs-lib/librarydialog.cpp" line="-91"/>
-        <source>Close</source>
-        <translation>غلق</translation>
-    </message>
-    <message>
-        <location line="+21"/>
-        <source>No projects!</source>
-        <translation type="unfinished">لا مشاريع!</translation>
-    </message>
-    <message>
-        <location line="+142"/>
+        <location line="+87"/>
         <source>Next...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1710,7 +1927,7 @@
         <translation>نجحت في انشاء مكتبة.</translation>
     </message>
     <message>
-        <location filename="../qucs-lib/librarydialog.cpp" line="-32"/>
+        <location filename="../qucs-lib/librarydialog.cpp" line="-123"/>
         <source>Manage User Libraries</source>
         <translation>إدارة المكتبات المستخدم</translation>
     </message>
@@ -1733,10 +1950,6 @@
         <location line="+2"/>
         <source>Rename</source>
         <translation>إعادة تسمية</translation>
-    </message>
-    <message>
-        <source>No user library!</source>
-        <translation type="obsolete">أي مستخدم للمكتبة!</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -1805,22 +2018,22 @@
     <message>
         <location line="+19"/>
         <source>Select All</source>
-        <translation type="unfinished">اختيار الكل</translation>
+        <translation>اختيار الكل</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Deselect All</source>
-        <translation type="unfinished">إلغاء جميع</translation>
+        <translation>إلغاء جميع</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Cancel</source>
-        <translation type="unfinished">إلغاء</translation>
+        <translation>إلغاء</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Ok</source>
-        <translation type="unfinished">موافق</translation>
+        <translation>موافق</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1840,7 +2053,7 @@
     <message>
         <location line="+83"/>
         <source>Info</source>
-        <translation type="unfinished">معلومات</translation>
+        <translation>معلومات</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1861,7 +2074,7 @@
     <message>
         <location line="+18"/>
         <source>Error</source>
-        <translation type="unfinished">خطأ</translation>
+        <translation>خطأ</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1882,17 +2095,7 @@
         <translation>الدقة :</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Z0: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-8"/>
-        <source>Number Notation: </source>
-        <translation>عدد التأشير :</translation>
-    </message>
-    <message>
-        <location line="-5"/>
+        <location line="+4"/>
         <source>real/imaginary</source>
         <translation>حقيقية / خيالية</translation>
     </message>
@@ -1907,7 +2110,17 @@
         <translation>حجم / زاوية (نصف قطر ية</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+3"/>
+        <source>Number Notation: </source>
+        <translation>عدد التأشير :</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Z0: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>transparent</source>
         <translation>شفافية</translation>
     </message>
@@ -1925,7 +2138,7 @@
 <context>
     <name>MatchDialog</name>
     <message>
-        <location filename="../qucs/dialogs/matchdialog.cpp" line="+49"/>
+        <location filename="../qucs/dialogs/matchdialog.cpp" line="+50"/>
         <source>Create Matching Circuit</source>
         <translation>إنشاء دائرة مطابقة</translation>
     </message>
@@ -2050,19 +2263,19 @@ but is %1 !</source>
 <context>
     <name>MyWidget</name>
     <message>
-        <location filename="../qucs-rescodes/main.cpp" line="+58"/>
+        <location filename="../qucs-rescodes/main.cpp" line="+60"/>
         <source>E&amp;xit</source>
-        <translation type="unfinished">&amp;خروج</translation>
+        <translation>&amp;خروج</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>&amp;File</source>
-        <translation type="unfinished">‏‏&amp;ملف</translation>
+        <translation>‏‏&amp;ملف</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Help...</source>
-        <translation type="unfinished">مساعدة...</translation>
+        <translation>مساعدة...</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2077,12 +2290,12 @@ but is %1 !</source>
     <message>
         <location line="+3"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>مساعدة&amp;</translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+70"/>
         <source>About...</source>
-        <translation type="unfinished">حول...</translation>
+        <translation>حول...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2099,7 +2312,7 @@ Resistor color code computation program
     <message>
         <location line="+10"/>
         <source>About Qt</source>
-        <translation type="unfinished">عن كيو تي</translation>
+        <translation>عن كيو تي</translation>
     </message>
 </context>
 <context>
@@ -2141,19 +2354,19 @@ Resistor color code computation program
 <context>
     <name>OptimizeDialog</name>
     <message>
-        <location filename="../qucs/components/optimizedialog.cpp" line="+43"/>
+        <location filename="../qucs/components/optimizedialog.cpp" line="+55"/>
         <source>Edit Optimization Properties</source>
         <translation>تحرير التحسين للخصائص</translation>
     </message>
     <message>
         <location line="+22"/>
-        <location line="+114"/>
-        <location line="+75"/>
+        <location line="+120"/>
+        <location line="+84"/>
         <source>Name:</source>
         <translation>الاسم :</translation>
     </message>
     <message>
-        <location line="-187"/>
+        <location line="-202"/>
         <source>Simulation:</source>
         <translation>المحاكاة :</translation>
     </message>
@@ -2219,18 +2432,18 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+12"/>
-        <location line="+82"/>
+        <location line="+97"/>
         <source>Name</source>
         <translation>الاسم </translation>
     </message>
     <message>
-        <location line="-82"/>
-        <location line="+12"/>
+        <location line="-97"/>
+        <location line="+18"/>
         <source>active</source>
         <translation>نشطة</translation>
     </message>
     <message>
-        <location line="-12"/>
+        <location line="-18"/>
         <source>initial</source>
         <translation>الأولي</translation>
     </message>
@@ -2246,12 +2459,12 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+0"/>
-        <location line="+82"/>
+        <location line="+97"/>
         <source>Type</source>
         <translation>النوع </translation>
     </message>
     <message>
-        <location line="-45"/>
+        <location line="-54"/>
         <source>initial:</source>
         <translation>الأولي:</translation>
     </message>
@@ -2266,56 +2479,56 @@ Resistor color code computation program
         <translation>الكبرى:</translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Type:</source>
-        <translation>النوع :</translation>
-    </message>
-    <message>
-        <location line="+236"/>
-        <source>Variable &quot;%1&quot; aleardy in list!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-250"/>
-        <location line="+154"/>
+        <location line="+10"/>
+        <location line="+175"/>
         <location line="+344"/>
         <source>linear double</source>
         <translation>خطية مزدوجة</translation>
     </message>
     <message>
-        <location line="-497"/>
-        <location line="+155"/>
+        <location line="-518"/>
+        <location line="+176"/>
         <location line="+344"/>
         <source>logarithmic double</source>
         <translation>المزدوج لوغاريتمي</translation>
     </message>
     <message>
-        <location line="-498"/>
-        <location line="+156"/>
+        <location line="-519"/>
+        <location line="+177"/>
         <location line="+344"/>
         <source>linear integer</source>
         <translation>الخطي العددي</translation>
     </message>
     <message>
-        <location line="-499"/>
-        <location line="+157"/>
+        <location line="-520"/>
+        <location line="+178"/>
         <source>logarithmic integer</source>
         <translation>لوغاريتمي العددي</translation>
     </message>
     <message>
-        <location line="-153"/>
-        <location line="+60"/>
+        <location line="-174"/>
+        <location line="+69"/>
         <source>Add</source>
         <translation>إضافة</translation>
     </message>
     <message>
-        <location line="-58"/>
-        <location line="+60"/>
+        <location line="-67"/>
+        <location line="+69"/>
         <source>Delete</source>
         <translation>حذف </translation>
     </message>
     <message>
-        <location line="-48"/>
+        <location line="-64"/>
+        <source>Type:</source>
+        <translation>النوع :</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Copy current values to equation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Variables</source>
         <translation>المتغيرات</translation>
     </message>
@@ -2331,47 +2544,47 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+4"/>
-        <location line="+119"/>
+        <location line="+131"/>
         <location line="+354"/>
         <source>minimize</source>
         <translation>الحد الأدنى</translation>
     </message>
     <message>
-        <location line="-472"/>
-        <location line="+120"/>
+        <location line="-484"/>
+        <location line="+132"/>
         <location line="+354"/>
         <source>maximize</source>
         <translation>الحد الأقصى</translation>
     </message>
     <message>
-        <location line="-473"/>
-        <location line="+121"/>
+        <location line="-485"/>
+        <location line="+133"/>
         <location line="+354"/>
         <source>less</source>
         <translation>أقل</translation>
     </message>
     <message>
-        <location line="-474"/>
-        <location line="+122"/>
+        <location line="-486"/>
+        <location line="+134"/>
         <location line="+354"/>
         <source>greater</source>
         <translation>أكبر</translation>
     </message>
     <message>
-        <location line="-475"/>
-        <location line="+123"/>
+        <location line="-487"/>
+        <location line="+135"/>
         <location line="+354"/>
         <source>equal</source>
         <translation>تساوي</translation>
     </message>
     <message>
-        <location line="-476"/>
-        <location line="+124"/>
+        <location line="-488"/>
+        <location line="+136"/>
         <source>monitor</source>
         <translation>رصد</translation>
     </message>
     <message>
-        <location line="-107"/>
+        <location line="-119"/>
         <source>Goals</source>
         <translation>الأهداف</translation>
     </message>
@@ -2391,8 +2604,8 @@ Resistor color code computation program
         <translation>إلغاء</translation>
     </message>
     <message>
-        <location line="+49"/>
-        <location line="+87"/>
+        <location line="+57"/>
+        <location line="+91"/>
         <location line="+34"/>
         <location line="+37"/>
         <location line="+195"/>
@@ -2400,8 +2613,8 @@ Resistor color code computation program
         <translation>نعم</translation>
     </message>
     <message>
-        <location line="-353"/>
-        <location line="+121"/>
+        <location line="-357"/>
+        <location line="+125"/>
         <location line="+37"/>
         <source>no</source>
         <translation>لا</translation>
@@ -2421,13 +2634,24 @@ Resistor color code computation program
         <translation>كل حقل النص يجب أن يكون شغله !</translation>
     </message>
     <message>
-        <source>Variable &quot;%1&quot; already in list!</source>
-        <translation type="obsolete">المتغير &quot;٪ 1&quot; في قائمة بالفعل !</translation>
+        <location line="-124"/>
+        <source>Variable &quot;%1&quot; aleardy in list!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+132"/>
         <source>Goal &quot;%1&quot; already in list!</source>
         <translation>الهدف &quot;٪ 1&quot; في قائمة  !</translation>
+    </message>
+    <message>
+        <location line="+248"/>
+        <source>Set precision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Precision:</source>
+        <translation type="unfinished">الدقة :</translation>
     </message>
 </context>
 <context>
@@ -2476,7 +2700,7 @@ Resistor color code computation program
 <context>
     <name>PackageDialog</name>
     <message>
-        <location filename="../qucs/dialogs/packagedialog.cpp" line="+61"/>
+        <location filename="../qucs/dialogs/packagedialog.cpp" line="+62"/>
         <source>Create Project Package</source>
         <translation>إنشاء المجلد</translation>
     </message>
@@ -2679,467 +2903,65 @@ Resistor color code computation program
     </message>
 </context>
 <context>
-    <name>QObject</name>
+    <name>ProjectView</name>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="+860"/>
-        <location filename="../qucs-help/main.cpp" line="+104"/>
-        <location filename="../qucs-filter/stepz_filter.cpp" line="+45"/>
-        <source>Warning</source>
-        <translation>تحذير</translation>
-    </message>
-    <message>
-        <location filename="../qucs-help/main.cpp" line="+1"/>
-        <source>Cannot save settings !</source>
-        <translation>لا يمكن حفظ الإعدادات!</translation>
-    </message>
-    <message>
-        <location filename="../qucs/main.cpp" line="+532"/>
-        <location line="+63"/>
-        <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
-        <translation>خطأ : الوقت غير ملائم في شكل&quot;%1&quot;. استخدامالإجابي لعدد الوحدات</translation>
-    </message>
-    <message>
-        <location filename="../qucs/mouseactions.cpp" line="+741"/>
-        <source>Edit Properties</source>
-        <translation>تعديل خصائص</translation>
-    </message>
-    <message>
-        <location line="+26"/>
-        <source>Export as image</source>
+        <location filename="../qucs/projectView.cpp" line="+81"/>
+        <source>Content of %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>power matching</source>
-        <translation>مطابقة الإشعال</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>noise matching</source>
-        <translation>مطابقة الضوضاء </translation>
+        <location line="+0"/>
+        <source>Note</source>
+        <translation type="unfinished">علما</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>2-port matching</source>
-        <translation> مطابقة2-port  </translation>
-    </message>
-    <message>
-        <location line="+60"/>
-        <location filename="../qucs/components/spicefile.cpp" line="+352"/>
-        <location line="+94"/>
-        <source>Info</source>
-        <translation>معلومات</translation>
+        <source>Datasets</source>
+        <translation type="unfinished">بيانات</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>The ground potential cannot be labeled!</source>
-        <translation>المحتملة في الميدان لا يمكن أن توصف!</translation>
-    </message>
-    <message>
-        <location filename="../qucs/octave_window.cpp" line="-31"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+1404"/>
-        <location filename="../qucs/schematic_file.cpp" line="-747"/>
-        <location line="+18"/>
-        <location line="+21"/>
-        <location line="+24"/>
-        <location line="+17"/>
-        <location line="+72"/>
-        <location line="+78"/>
-        <location line="+189"/>
-        <location line="+5"/>
-        <location line="+37"/>
-        <location line="+5"/>
-        <location line="+6"/>
-        <location line="+68"/>
-        <location line="+59"/>
-        <location line="+18"/>
-        <location line="+29"/>
-        <location line="+6"/>
-        <location line="+8"/>
-        <location line="+17"/>
-        <location line="+16"/>
-        <location line="+6"/>
-        <location line="+8"/>
-        <location line="+10"/>
-        <location line="+20"/>
-        <location line="+54"/>
-        <location filename="../qucs/components/component.cpp" line="+1534"/>
-        <location line="+20"/>
-        <location line="+8"/>
-        <location filename="../qucs/components/vacomponent.cpp" line="+306"/>
-        <source>Error</source>
-        <translation>خطأ</translation>
+        <source>Data Displays</source>
+        <translation type="unfinished">عرض البيانات </translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Octave not found in: %1
-
-Set the Octave location on the application settings.</source>
+        <source>Verilog</source>
+        <translation type="unfinished">فيريلوج </translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Verilog-A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="+1"/>
-        <source>Cannot create output file!</source>
-        <translation>لا يمكن إنشاء ملف الانتاج!</translation>
+        <location line="+1"/>
+        <source>VHDL</source>
+        <translation type="unfinished">VHDL</translation>
     </message>
     <message>
-        <location line="+154"/>
-        <source>verlog-a user devices</source>
+        <location line="+1"/>
+        <source>Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/schematic.cpp" line="+101"/>
-        <location filename="../qucs/textdoc.cpp" line="+63"/>
-        <source>untitled</source>
-        <translation>بدون عنوان</translation>
+        <location line="+1"/>
+        <source>Schematics</source>
+        <translation type="unfinished">الخطط</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="-790"/>
-        <location line="+707"/>
-        <source>Format Error:
-&apos;Painting&apos; field is not closed!</source>
-        <translation>خطأ في الشكل :
-الطلاء الميدانية ليست مغلقة!</translation>
+        <location line="+1"/>
+        <source>Others</source>
+        <translation type="unfinished">الآخرين</translation>
     </message>
     <message>
-        <location line="-689"/>
-        <source>Wrong document version: </source>
-        <translation>  الخطأ في إصدار الوثيقة :</translation>
+        <location line="+47"/>
+        <source>-port</source>
+        <translation type="unfinished">-الميناء </translation>
     </message>
-    <message>
-        <location line="+21"/>
-        <location line="+24"/>
-        <source>Clipboard Format Error:
-Unknown field!</source>
-        <translation> خطأ  في شكل الحافظة:
-ميدان مجهول!</translation>
-    </message>
-    <message>
-        <location line="+89"/>
-        <source>Cannot save JSON symbol file &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+78"/>
-        <source>Cannot save document!</source>
-        <translation>لا يمكن حفظ الوثيقة!</translation>
-    </message>
-    <message>
-        <location line="+189"/>
-        <location line="+5"/>
-        <source>Format Error:
-Wrong property field limiter!</source>
-        <translation>خطأ في الشكل :
-خطأ مجال الملكية المحدد!</translation>
-    </message>
-    <message>
-        <location line="+37"/>
-        <source>Format Error:
-Unknown property: </source>
-        <translation>خطأ في الشكل :
-خصائص غير معروف :</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Format Error:
-Number expected in property field!</source>
-        <translation>خطأ في الشكل :
-العدد المتوقع في مجال الملكية!</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Format Error:
-&apos;Property&apos; field is not closed!</source>
-        <translation>خطأ في الشكل :
-الخصائص الميدانية ليست مغلقة!</translation>
-    </message>
-    <message>
-        <location line="+68"/>
-        <source>Format Error:
-&apos;Component&apos; field is not closed!</source>
-        <translation>خطأ في الشكل :
-الطلاء الميدانية ليست مغلقة!</translation>
-    </message>
-    <message>
-        <location line="+59"/>
-        <source>Format Error:
-Wrong &apos;wire&apos; line format!</source>
-        <translation>خطأ في الشكل :
-خطأ شكل الخط &apos;سلك&apos; !</translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Format Error:
-&apos;Wire&apos; field is not closed!</source>
-        <translation>خطأ في الشكل :
- الحقل&apos;&apos;سلك الميدانية ليس مغلق!</translation>
-    </message>
-    <message>
-        <location line="+29"/>
-        <source>Format Error:
-Unknown diagram!</source>
-        <translation>خطأ في الشكل :
-رسم بياني غير معروفة!</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Format Error:
-Wrong &apos;diagram&apos; line format!</source>
-        <translation>خطأ في الشكل :
-خطأ  في شكل خط &apos;الرسم البياني&apos;  !</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Format Error:
-&apos;Diagram&apos; field is not closed!</source>
-        <translation>خطأ في الشكل :
- حقل &apos;الرسم البياني&apos; ليس مغلق!</translation>
-    </message>
-    <message>
-        <location line="+17"/>
-        <source>Format Error:
-Wrong &apos;painting&apos; line delimiter!</source>
-        <translation>خطأ في الشكل :
-خطأ &apos;لوحة&apos; خط محدد!</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Format Error:
-Unknown painting!</source>
-        <translation>خطأ في الشكل :
-لوحة غير معروفة!</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Format Error:
-Wrong &apos;painting&apos; line format!</source>
-        <translation>خطأ في الشكل :
-خطأ &apos;لوحة&apos; خط محدد!</translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Cannot load document: </source>
-        <translation>لا يمكن تحميل الوثيقة :</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>Wrong document type: </source>
-        <translation>خطأ نوع الوثيقة :</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Wrong document version 
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+44"/>
-        <source>File Format Error:
-Unknown field!</source>
-        <translation>خطأ في تنسيق ملف :حقل مجهول!</translation>
-    </message>
-    <message>
-        <location line="+230"/>
-        <source>ERROR: Component &quot;%1&quot; has no analog model.</source>
-        <translation>خطأ : العنصر &quot;٪ 1&quot; ليس لديها نموذج التناظرية.</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>ERROR: Component &quot;%1&quot; has no digital model.</source>
-        <translation>خطأ : العنصر &quot;٪ 1&quot; ليس لديها نموذج رقمي.</translation>
-    </message>
-    <message>
-        <location line="+46"/>
-        <source>ERROR: Cannot load subcircuit &quot;%1&quot;.</source>
-        <translation>خطأ : لا يمكن تحميل subcircuit &quot;٪ 1&quot;.</translation>
-    </message>
-    <message>
-        <location line="+34"/>
-        <source>WARNING: Skipping library component &quot;%1&quot;.</source>
-        <translation>تحذير : مكتبة تخطي عنصر &quot;٪ 1&quot;.</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>ERROR: Cannot load library component &quot;%1&quot;.</source>
-        <translation>خطأ : لا يمكن تحميل مكتبة عنصر &quot;٪ 1&quot;.</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <location filename="../qucs/components/spicefile.cpp" line="-197"/>
-        <source>ERROR: No file name in SPICE component &quot;%1&quot;.</source>
-        <translation>خطأ : لا يوجد اسم الملف في عنصر SPICE  في &quot;٪ 1&quot;.</translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <location filename="../qucs/components/verilogfile.cpp" line="+175"/>
-        <location filename="../qucs/components/vhdlfile.cpp" line="+219"/>
-        <source>ERROR: No file name in %1 component &quot;%2&quot;.</source>
-        <translation>خطأ : لايوجد اسم الملف من %1  العنصر &quot;٪ 2&quot;.</translation>
-    </message>
-    <message>
-        <location line="+148"/>
-        <source>WARNING: Ignore simulation component in subcircuit &quot;%1&quot;.</source>
-        <translation>تحذير : تجاهل عنصر المحاكاة في subcircuit &quot;٪ 1&quot;.</translation>
-    </message>
-    <message>
-        <location line="+282"/>
-        <source>ERROR: Only one digital simulation allowed.</source>
-        <translation>خطأ : واحد فقط يسمح المحاكاة الرقمية.</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>ERROR: Analog and digital simulations cannot be mixed.</source>
-        <translation>خطأ : النظير والمحاكاة الرقمية لا يمكن أن تكون مختلطة.</translation>
-    </message>
-    <message>
-        <location line="+19"/>
-        <source>ERROR: Digital simulation needs at least one digital source.</source>
-        <translation>خطأ : المحاكاة الرقمية للاحتياجات واحد على الأقل الرقمية المصدر.</translation>
-    </message>
-    <message>
-        <location filename="../qucs/paintings/arrow.cpp" line="+135"/>
-        <source>Arrow</source>
-        <translation>السهم</translation>
-    </message>
-    <message>
-        <location filename="../qucs/paintings/ellipsearc.cpp" line="+91"/>
-        <source>Elliptic Arc</source>
-        <translation>Elliptic Arc</translation>
-    </message>
-    <message>
-        <location line="+296"/>
-        <source>Edit Arc Properties</source>
-        <translation>تعديل خصائص القوس</translation>
-    </message>
-    <message>
-        <location filename="../qucs/paintings/ellipse.cpp" line="+98"/>
-        <source>Ellipse</source>
-        <translation>القطع الناقص</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>filled Ellipse</source>
-        <translation>شغل القطع الناقص</translation>
-    </message>
-    <message>
-        <location line="+265"/>
-        <source>Edit Ellipse Properties</source>
-        <translation>تعديل خصائص القطع الناقص</translation>
-    </message>
-    <message>
-        <location filename="../qucs/paintings/graphicline.cpp" line="+90"/>
-        <source>Line</source>
-        <translation>الخط</translation>
-    </message>
-    <message>
-        <location line="+236"/>
-        <source>Edit Line Properties</source>
-        <translation>تعديل خصائص الخط</translation>
-    </message>
-    <message>
-        <location filename="../qucs/paintings/graphictext.cpp" line="+129"/>
-        <source>Text</source>
-        <translation>النص</translation>
-    </message>
-    <message>
-        <location filename="../qucs/paintings/rectangle.cpp" line="+97"/>
-        <source>Rectangle</source>
-        <translation>المستطيل</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>filled Rectangle</source>
-        <translation>شغل مستطيل</translation>
-    </message>
-    <message>
-        <location line="+267"/>
-        <source>Edit Rectangle Properties</source>
-        <translation>تعديل خصائص مستطيل</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/curvediagram.cpp" line="+253"/>
-        <source>Locus Curve</source>
-        <translation>المكان المنحن</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/marker.cpp" line="+282"/>
-        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+259"/>
-        <source>invalid</source>
-        <translation>غير صحيح</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/polardiagram.cpp" line="+102"/>
-        <source>Polar</source>
-        <translation>القطبي</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/psdiagram.cpp" line="+129"/>
-        <source>Polar-Smith Combi</source>
-        <translation>Polar-Smith Combi</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Smith-Polar Combi</source>
-        <translation>Smith-Polar Combi</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/rect3ddiagram.cpp" line="+1154"/>
-        <source>3D-Cartesian</source>
-        <translation>3D - ديكارت</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/rectdiagram.cpp" line="+249"/>
-        <source>Cartesian</source>
-        <translation>ديكارت</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/smithdiagram.cpp" line="+112"/>
-        <source>Smith Chart</source>
-        <translation>سميث الرسم البياني</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Admittance Smith</source>
-        <translation>القبول سميث</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/tabdiagram.cpp" line="-93"/>
-        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+162"/>
-        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+91"/>
-        <source>no variables</source>
-        <translation>لا متغيرات</translation>
-    </message>
-    <message>
-        <location line="+142"/>
-        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+47"/>
-        <location line="+89"/>
-        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+134"/>
-        <source>wrong dependency</source>
-        <translation>من الخطأ الاعتماد</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <location filename="../qucs/diagrams/timingdiagram.cpp" line="-122"/>
-        <location line="+113"/>
-        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+7"/>
-        <source>no data</source>
-        <translation>لا توجد بيانات</translation>
-    </message>
-    <message>
-        <location line="+98"/>
-        <source>Tabular</source>
-        <translation>مجدول</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+232"/>
-        <source>Timing Diagram</source>
-        <translation>توقيت الشكل البياني</translation>
-    </message>
-    <message>
-        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+46"/>
-        <source>Truth Table</source>
-        <translation>الجدول الحقيقة </translation>
-    </message>
+</context>
+<context>
+    <name>QObject</name>
     <message>
         <location filename="../qucs/components/ac_sim.cpp" line="+23"/>
         <location line="+48"/>
@@ -3336,6 +3158,167 @@ Unknown field!</source>
         <translation>المكبر</translation>
     </message>
     <message>
+        <location filename="../qucs/components/andor4x2.cpp" line="+25"/>
+        <source>4x2 andor verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../qucs/components/andor4x3.cpp" line="+28"/>
+        <location filename="../qucs/components/andor4x4.cpp" line="+28"/>
+        <location filename="../qucs/components/comp_1bit.cpp" line="+28"/>
+        <location filename="../qucs/components/comp_2bit.cpp" line="+28"/>
+        <location filename="../qucs/components/comp_4bit.cpp" line="+28"/>
+        <location filename="../qucs/components/dmux2to4.cpp" line="+28"/>
+        <location filename="../qucs/components/dmux3to8.cpp" line="+29"/>
+        <location filename="../qucs/components/dmux4to16.cpp" line="+28"/>
+        <location filename="../qucs/components/fa1b.cpp" line="+28"/>
+        <location filename="../qucs/components/fa2b.cpp" line="+28"/>
+        <location filename="../qucs/components/ha1b.cpp" line="+28"/>
+        <location filename="../qucs/components/mux2to1.cpp" line="+28"/>
+        <location filename="../qucs/components/mux4to1.cpp" line="+28"/>
+        <location filename="../qucs/components/mux8to1.cpp" line="+28"/>
+        <source>transfer function high scaling factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/andor4x3.cpp" line="+2"/>
+        <location filename="../qucs/components/andor4x4.cpp" line="+2"/>
+        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+30"/>
+        <location filename="../qucs/components/comp_1bit.cpp" line="+2"/>
+        <location filename="../qucs/components/comp_2bit.cpp" line="+2"/>
+        <location filename="../qucs/components/comp_4bit.cpp" line="+2"/>
+        <location filename="../qucs/components/dmux2to4.cpp" line="+2"/>
+        <location filename="../qucs/components/dmux3to8.cpp" line="+2"/>
+        <location filename="../qucs/components/dmux4to16.cpp" line="+2"/>
+        <location filename="../qucs/components/fa1b.cpp" line="+2"/>
+        <location filename="../qucs/components/fa2b.cpp" line="+2"/>
+        <location filename="../qucs/components/greytobinary4bit.cpp" line="+30"/>
+        <location filename="../qucs/components/ha1b.cpp" line="+2"/>
+        <location filename="../qucs/components/hpribin4bit.cpp" line="+30"/>
+        <location filename="../qucs/components/mux2to1.cpp" line="+2"/>
+        <location filename="../qucs/components/mux4to1.cpp" line="+2"/>
+        <location filename="../qucs/components/mux8to1.cpp" line="+2"/>
+        <source>output delay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location filename="../qucs/components/andor4x3.cpp" line="+1"/>
+        <location filename="../qucs/components/andor4x4.cpp" line="+1"/>
+        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+1"/>
+        <location filename="../qucs/components/comp_1bit.cpp" line="+1"/>
+        <location filename="../qucs/components/comp_2bit.cpp" line="+1"/>
+        <location filename="../qucs/components/comp_4bit.cpp" line="+1"/>
+        <location filename="../qucs/components/dff_SR.cpp" line="+33"/>
+        <location filename="../qucs/components/DLS_1ton.cpp" line="+21"/>
+        <location filename="../qucs/components/DLS_nto1.cpp" line="+22"/>
+        <location filename="../qucs/components/dmux2to4.cpp" line="+1"/>
+        <location filename="../qucs/components/dmux3to8.cpp" line="+1"/>
+        <location filename="../qucs/components/dmux4to16.cpp" line="+1"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+153"/>
+        <location filename="../qucs/components/fa1b.cpp" line="+1"/>
+        <location filename="../qucs/components/fa2b.cpp" line="+1"/>
+        <location filename="../qucs/components/gatedDlatch.cpp" line="+33"/>
+        <location filename="../qucs/components/greytobinary4bit.cpp" line="+1"/>
+        <location filename="../qucs/components/ha1b.cpp" line="+1"/>
+        <location filename="../qucs/components/hic0_full.cpp" line="+67"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+5"/>
+        <location line="+5"/>
+        <location filename="../qucs/components/hic2_full.cpp" line="+58"/>
+        <location line="+62"/>
+        <location line="+66"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+5"/>
+        <location line="+19"/>
+        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+81"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+5"/>
+        <location line="+5"/>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+81"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+5"/>
+        <location line="+5"/>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+85"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+5"/>
+        <location line="+5"/>
+        <location filename="../qucs/components/hicumL2V2p23.cpp" line="+58"/>
+        <location line="+62"/>
+        <location line="+66"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+5"/>
+        <location line="+19"/>
+        <location filename="../qucs/components/hicumL2V2p24.cpp" line="+58"/>
+        <location line="+62"/>
+        <location line="+66"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+5"/>
+        <location line="+19"/>
+        <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+64"/>
+        <location line="+62"/>
+        <location line="+66"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+5"/>
+        <location line="+19"/>
+        <location filename="../qucs/components/hpribin4bit.cpp" line="+1"/>
+        <location filename="../qucs/components/jkff_SR.cpp" line="+33"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+69"/>
+        <location filename="../qucs/components/mux2to1.cpp" line="+1"/>
+        <location filename="../qucs/components/mux4to1.cpp" line="+1"/>
+        <location filename="../qucs/components/mux8to1.cpp" line="+1"/>
+        <location filename="../qucs/components/nigbt.cpp" line="+28"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+48"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+52"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/tff_SR.cpp" line="+33"/>
+        <source>s</source>
+        <translation>s</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>4x2 AndOr</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/andor4x3.cpp" line="-6"/>
+        <source>4x3 andor verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>4x3 AndOr</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/andor4x4.cpp" line="-6"/>
+        <source>4x4 andor verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>4x4 AndOr</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qucs/components/attenuator.cpp" line="+23"/>
         <source>attenuator</source>
         <translation>المخفف</translation>
@@ -3373,7 +3356,7 @@ Unknown field!</source>
         <location filename="../qucs/components/rectline.cpp" line="+64"/>
         <location filename="../qucs/components/relais.cpp" line="+68"/>
         <location filename="../qucs/components/resistor.cpp" line="+29"/>
-        <location filename="../qucs/components/rlcg.cpp" line="+66"/>
+        <location filename="../qucs/components/rlcg.cpp" line="+70"/>
         <location filename="../qucs/components/source_ac.cpp" line="+2"/>
         <location filename="../qucs/components/switch.cpp" line="+35"/>
         <location filename="../qucs/components/tline.cpp" line="+55"/>
@@ -3412,6 +3395,26 @@ Unknown field!</source>
         <translation>إنحياز  ت</translation>
     </message>
     <message>
+        <location filename="../qucs/components/binarytogrey4bit.cpp" line="-6"/>
+        <source>4bit binary to grey converter verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../qucs/components/component.cpp" line="+1309"/>
+        <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
+        <location filename="../qucs/components/hpribin4bit.cpp" line="-3"/>
+        <location filename="../qucs/components/logical_buf.cpp" line="+34"/>
+        <location filename="../qucs/components/logical_inv.cpp" line="+34"/>
+        <source>transfer function scaling factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>4Bit Bin2Grey</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qucs/components/bjt.cpp" line="+25"/>
         <source>bipolar junction transistor</source>
         <translation>القطب تقاطع ترانزستور </translation>
@@ -3429,30 +3432,30 @@ Unknown field!</source>
         <translation>pnp ترانزستور </translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+18"/>
         <location filename="../qucs/components/bjtsub.cpp" line="-130"/>
-        <location filename="../qucs/components/hic0_full.cpp" line="+18"/>
-        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+18"/>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+18"/>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+18"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="-135"/>
+        <location filename="../qucs/components/hic0_full.cpp" line="-68"/>
+        <location filename="../qucs/components/hicumL0V1p2.cpp" line="-82"/>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-82"/>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="-86"/>
         <location filename="../qucs/components/jfet.cpp" line="-36"/>
         <location filename="../qucs/components/mosfet_sub.cpp" line="-94"/>
         <source>polarity</source>
         <translation>قطبية </translation>
     </message>
     <message>
-        <location line="+113"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diac.cpp" line="+53"/>
         <location filename="../qucs/components/diode.cpp" line="-34"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+113"/>
         <location filename="../qucs/components/thyristor.cpp" line="+53"/>
         <location filename="../qucs/components/triac.cpp" line="+57"/>
         <source>saturation current</source>
         <translation>التشبع  الحالي</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+25"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="-30"/>
         <source>forward emission coefficient</source>
         <translation>تقدم معامل إرتباط </translation>
     </message>
@@ -3600,16 +3603,16 @@ Unknown field!</source>
         <translation>الركازة عامل مفرق الأسي</translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+19"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+66"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+10"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+45"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+19"/>
+        <location filename="../qucs/components/MESFET.cpp" line="-3"/>
+        <location filename="../qucs/components/photodiode.cpp" line="-3"/>
         <source>forward-bias depletion capacitance coefficient</source>
         <translation>إلى الأمام التحيز معامل استنفاد مواسعة</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+11"/>
         <source>ideal forward transit time</source>
         <translation>وقت عبور مثالية للمضي قدما</translation>
@@ -3636,15 +3639,15 @@ Unknown field!</source>
         <translation>عكس المثل وقت العبور</translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-34"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+78"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+4"/>
+        <location line="+4"/>
         <location filename="../qucs/components/diode.cpp" line="+14"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="-34"/>
         <location filename="../qucs/components/hic0_full.cpp" line="+157"/>
         <location filename="../qucs/components/hicumL0V1p2.cpp" line="+171"/>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+171"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+175"/>
         <location filename="../qucs/components/jfet.cpp" line="+30"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+78"/>
         <location filename="../qucs/components/mosfet_sub.cpp" line="+88"/>
         <location filename="../qucs/components/photodiode.cpp" line="+24"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+21"/>
@@ -3654,10 +3657,10 @@ Unknown field!</source>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/MESFET.cpp" line="-2"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+2"/>
         <location filename="../qucs/components/jfet.cpp" line="+2"/>
+        <location filename="../qucs/components/MESFET.cpp" line="-2"/>
         <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
         <location filename="../qucs/components/photodiode.cpp" line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+2"/>
@@ -3665,7 +3668,7 @@ Unknown field!</source>
         <translation>خفق  معامل الأسي</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+2"/>
         <location filename="../qucs/components/jfet.cpp" line="+2"/>
         <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
@@ -3699,16 +3702,16 @@ Unknown field!</source>
         <translation>الأس لدرجة الحرارة الى الامام وعكس بيتا</translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+37"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+8"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+37"/>
         <location filename="../qucs/components/jfet.cpp" line="+4"/>
         <location filename="../qucs/components/photodiode.cpp" line="-23"/>
         <source>saturation current temperature exponent</source>
         <translation>التشبع درجة الحرارة الحالية الأس</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+2"/>
         <source>energy bandgap in eV</source>
         <translation>فرق في الطاقة eV</translation>
@@ -3772,7 +3775,7 @@ Unknown field!</source>
         <location filename="../qucs/components/mscross.cpp" line="+29"/>
         <location filename="../qucs/components/msmbend.cpp" line="+47"/>
         <location filename="../qucs/components/msstep.cpp" line="+50"/>
-        <location filename="../qucs/components/mstee.cpp" line="+36"/>
+        <location filename="../qucs/components/mstee.cpp" line="+38"/>
         <location filename="../qucs/components/msvia.cpp" line="-4"/>
         <source>substrate</source>
         <translation>مادة </translation>
@@ -3781,6 +3784,1445 @@ Unknown field!</source>
         <location line="+12"/>
         <source>Bond Wire</source>
         <translation>وصلة السلك</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/bsim3v34nMOS.cpp" line="+15"/>
+        <source>bsim3v34nMOS verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/bsim3v34pMOS.cpp" line="+18"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/bsim4v30nMOS.cpp" line="+19"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/bsim4v30pMOS.cpp" line="+18"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/bsim3v34pMOS.cpp" line="+2"/>
+        <location filename="../qucs/components/diac.cpp" line="+6"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+7"/>
+        <location filename="../qucs/components/hic0_full.cpp" line="+69"/>
+        <location filename="../qucs/components/hic2_full.cpp" line="+86"/>
+        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+73"/>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+84"/>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+87"/>
+        <location filename="../qucs/components/hicumL2V2p1.cpp" line="+218"/>
+        <location filename="../qucs/components/hicumL2V2p23.cpp" line="+86"/>
+        <location filename="../qucs/components/hicumL2V2p24.cpp" line="+86"/>
+        <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+114"/>
+        <location filename="../qucs/components/log_amp.cpp" line="+64"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+9"/>
+        <location filename="../qucs/components/nigbt.cpp" line="+41"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+25"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+15"/>
+        <location filename="../qucs/components/potentiometer.cpp" line="+46"/>
+        <location filename="../qucs/components/thyristor.cpp" line="+8"/>
+        <location filename="../qucs/components/triac.cpp" line="+8"/>
+        <source>simulation temperature</source>
+        <translation>محاكاة الحرارة</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>bsim3v34nMOS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/bsim3v34pMOS.cpp" line="-817"/>
+        <source>bsim3v34pMOS verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+836"/>
+        <source>bsim3v34pMOS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/bsim4v30nMOS.cpp" line="-558"/>
+        <source>bsim4v30nMOS verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+577"/>
+        <source>bsim4v30nMOS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/bsim4v30pMOS.cpp" line="-557"/>
+        <source>bsim4v30pMOS verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+576"/>
+        <source>bsim4v30pMOS</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/capacitor.cpp" line="+23"/>
@@ -3799,10 +5241,10 @@ Unknown field!</source>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/component.cpp" line="-268"/>
+        <location filename="../qucs/components/component.cpp" line="+4"/>
         <location filename="../qucs/components/diode.cpp" line="+4"/>
-        <location filename="../qucs/components/logical_buf.cpp" line="+38"/>
-        <location filename="../qucs/components/logical_inv.cpp" line="+38"/>
+        <location filename="../qucs/components/logical_buf.cpp" line="+4"/>
+        <location filename="../qucs/components/logical_inv.cpp" line="+4"/>
         <location filename="../qucs/components/resistor.cpp" line="+4"/>
         <source>schematic symbol</source>
         <translation>الرمز التخطيطي</translation>
@@ -3935,6 +5377,36 @@ Unknown field!</source>
         <translation>متحد المحور الخط</translation>
     </message>
     <message>
+        <location filename="../qucs/components/comp_1bit.cpp" line="-6"/>
+        <source>1bit comparator verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>1Bit Comparator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/comp_2bit.cpp" line="-6"/>
+        <source>2bit comparator verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>2Bit Comparator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/comp_4bit.cpp" line="-6"/>
+        <source>4bit comparator verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>4Bit Comparator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qucs/components/component.cpp" line="-4"/>
         <source>number of input ports</source>
         <translation>عدد منافذ الدخول</translation>
@@ -3948,7 +5420,42 @@ Unknown field!</source>
         <translation>المستوى العالي للفولتاج</translation>
     </message>
     <message>
-        <location line="+249"/>
+        <location line="+248"/>
+        <location line="+20"/>
+        <location line="+8"/>
+        <location filename="../qucs/components/vacomponent.cpp" line="+306"/>
+        <location filename="../qucs/octave_window.cpp" line="-31"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+1301"/>
+        <location filename="../qucs/schematic_file.cpp" line="+114"/>
+        <location line="+18"/>
+        <location line="+21"/>
+        <location line="+24"/>
+        <location line="+17"/>
+        <location line="+72"/>
+        <location line="+78"/>
+        <location line="+189"/>
+        <location line="+5"/>
+        <location line="+37"/>
+        <location line="+5"/>
+        <location line="+6"/>
+        <location line="+68"/>
+        <location line="+59"/>
+        <location line="+18"/>
+        <location line="+29"/>
+        <location line="+6"/>
+        <location line="+8"/>
+        <location line="+17"/>
+        <location line="+16"/>
+        <location line="+6"/>
+        <location line="+8"/>
+        <location line="+10"/>
+        <location line="+20"/>
+        <location line="+54"/>
+        <source>Error</source>
+        <translation>خطأ</translation>
+    </message>
+    <message>
+        <location line="-27"/>
         <source>Format Error:
 Wrong line start!</source>
         <translation>خطأ في الشكل :
@@ -3962,12 +5469,6 @@ Unknown component!
 
 Do you make use of loadable components?</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Format Error:
-Unknown component!</source>
-        <translation type="obsolete">خطأ في الشكل :
-عنصر غير معروف !</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -4132,24 +5633,62 @@ Wrong &apos;component&apos; line format!</source>
         <translation>خطوة متحد المستوى </translation>
     </message>
     <message>
-        <location filename="../qucs/components/dcblock.cpp" line="-24"/>
-        <source>dc block</source>
-        <translation>فك</translation>
+        <location filename="../qucs/components/ctline.cpp" line="-50"/>
+        <source>coupled transmission lines</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+38"/>
-        <source>dc Block</source>
-        <translation>فك</translation>
+        <location line="+36"/>
+        <source>characteristic impedance of even mode</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/dcfeed.cpp" line="-25"/>
-        <source>dc feed</source>
-        <translation>وصول مستمر</translation>
+        <location line="+2"/>
+        <source>characteristic impedance of odd mode</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+39"/>
-        <source>dc Feed</source>
-        <translation>وصول مستمر</translation>
+        <location line="+2"/>
+        <location filename="../qucs/components/rlcg.cpp" line="-2"/>
+        <location filename="../qucs/components/tline.cpp" line="-4"/>
+        <location filename="../qucs/components/tline_4port.cpp" line="-4"/>
+        <source>electrical length of the line</source>
+        <translation>الطول الكهربائى للخط</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>relative dielectric constant of even mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>relative dielectric constant of odd mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>attenuation factor per length of even mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>attenuation factor per length of odd mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Coupled Transmission Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/d_flipflop.cpp" line="-2"/>
+        <source>D flip flop with asynchron reset</source>
+        <translation>D flip flop with asynchron reset</translation>
+    </message>
+    <message>
+        <location line="+92"/>
+        <source>D-FlipFlop</source>
+        <translation>D-FlipFlop</translation>
     </message>
     <message>
         <location filename="../qucs/components/dc_sim.cpp" line="-24"/>
@@ -4212,23 +5751,67 @@ Wrong &apos;component&apos; line format!</source>
         <translation>الطريقة حل مصفوفة  الدارة </translation>
     </message>
     <message>
-        <location filename="../qucs/components/d_flipflop.cpp" line="-2"/>
-        <source>D flip flop with asynchron reset</source>
-        <translation>D flip flop with asynchron reset</translation>
+        <location filename="../qucs/components/dcblock.cpp" line="-24"/>
+        <source>dc block</source>
+        <translation>فك</translation>
     </message>
     <message>
-        <location line="+92"/>
-        <source>D-FlipFlop</source>
-        <translation>D-FlipFlop</translation>
+        <location line="+38"/>
+        <source>dc Block</source>
+        <translation>فك</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diac.cpp" line="-30"/>
+        <location filename="../qucs/components/dcfeed.cpp" line="-25"/>
+        <source>dc feed</source>
+        <translation>وصول مستمر</translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>dc Feed</source>
+        <translation>وصول مستمر</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/dff_SR.cpp" line="-8"/>
+        <source>D flip flop with set and reset verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../qucs/components/gatedDlatch.cpp" line="-5"/>
+        <location filename="../qucs/components/jkff_SR.cpp" line="-5"/>
+        <location filename="../qucs/components/tff_SR.cpp" line="-5"/>
+        <source>cross coupled gate transfer function high scaling factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/gatedDlatch.cpp" line="+2"/>
+        <location filename="../qucs/components/jkff_SR.cpp" line="+2"/>
+        <location filename="../qucs/components/tff_SR.cpp" line="+2"/>
+        <source>cross coupled gate transfer function low scaling factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/gatedDlatch.cpp" line="+2"/>
+        <location filename="../qucs/components/jkff_SR.cpp" line="+2"/>
+        <location filename="../qucs/components/tff_SR.cpp" line="+2"/>
+        <source>cross coupled gate delay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>D-FlipFlop w/ SR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/diac.cpp" line="-36"/>
         <source>diac (bidirectional trigger diode)</source>
         <translation>diac (bidirectional trigger diode)</translation>
     </message>
     <message>
         <location line="+24"/>
-        <location filename="../qucs/components/triac.cpp" line="-6"/>
+        <location filename="../qucs/components/triac.cpp" line="-14"/>
         <source>(bidirectional) breakover voltage</source>
         <translation>(ثنائي الاتجاه) جهد breakover</translation>
     </message>
@@ -4239,54 +5822,29 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/thyristor.cpp" line="-2"/>
+        <location filename="../qucs/components/thyristor.cpp" line="-10"/>
         <location filename="../qucs/components/triac.cpp" line="+4"/>
         <source>parasitic capacitance</source>
         <translation>سعة المكثف تشويش</translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-26"/>
-        <location filename="../qucs/components/diac.cpp" line="+4"/>
+        <location line="+4"/>
         <location filename="../qucs/components/diode.cpp" line="-54"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="-33"/>
         <location filename="../qucs/components/thyristor.cpp" line="+4"/>
         <location filename="../qucs/components/triac.cpp" line="+4"/>
         <source>emission coefficient</source>
         <translation>معامل الانبعاث</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diac.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/thyristor.cpp" line="+2"/>
         <location filename="../qucs/components/triac.cpp" line="+2"/>
         <source>intrinsic junction resistance</source>
         <translation>مفرق المقاومة الجوهرية </translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+33"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+9"/>
-        <location filename="../qucs/components/bsim3v34nMOS.cpp" line="+832"/>
-        <location filename="../qucs/components/bsim3v34pMOS.cpp" line="+832"/>
-        <location filename="../qucs/components/diac.cpp" line="+2"/>
-        <location filename="../qucs/components/hic0_full.cpp" line="+69"/>
-        <location filename="../qucs/components/hic2_full.cpp" line="+305"/>
-        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+73"/>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+84"/>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+87"/>
-        <location filename="../qucs/components/hicumL2V2p1.cpp" line="+218"/>
-        <location filename="../qucs/components/hicumL2V2p23.cpp" line="+305"/>
-        <location filename="../qucs/components/hicumL2V2p24.cpp" line="+305"/>
-        <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+339"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+64"/>
-        <location filename="../qucs/components/nigbt.cpp" line="+69"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+25"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+15"/>
-        <location filename="../qucs/components/potentiometer.cpp" line="+46"/>
-        <location filename="../qucs/components/thyristor.cpp" line="+4"/>
-        <location filename="../qucs/components/triac.cpp" line="+4"/>
-        <source>simulation temperature</source>
-        <translation>محاكاة الحرارة</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/diac.cpp" line="+10"/>
+        <location line="+12"/>
         <source>Diac</source>
         <translation>Diac</translation>
     </message>
@@ -4339,31 +5897,31 @@ Wrong &apos;component&apos; line format!</source>
         <translation>صمام ثنائي </translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-19"/>
-        <location filename="../qucs/components/diode.cpp" line="+7"/>
+        <location line="+7"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+14"/>
         <location filename="../qucs/components/photodiode.cpp" line="-40"/>
         <source>zero-bias junction capacitance</source>
         <translation>قدرة ملتقى التحيز عند مستوى الصفر</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+3"/>
         <location filename="../qucs/components/MESFET.cpp" line="-72"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
         <location filename="../qucs/components/photodiode.cpp" line="+3"/>
         <location filename="../qucs/components/tunneldiode.cpp" line="-7"/>
         <source>grading coefficient</source>
         <translation>درجات المعامل</translation>
     </message>
     <message>
-        <location line="-6"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="-6"/>
         <location filename="../qucs/components/photodiode.cpp" line="-6"/>
         <location filename="../qucs/components/tunneldiode.cpp" line="+2"/>
         <source>junction potential</source>
         <translation>تقاطع الجهد</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diode.cpp" line="+4"/>
+        <location line="+4"/>
         <source>linear capacitance</source>
         <translation>سعة المكثف الخطي</translation>
     </message>
@@ -4383,33 +5941,33 @@ Wrong &apos;component&apos; line format!</source>
         <translation> ohmicسلسلة المقاومة</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/EKV26MOS.cpp" line="+12"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
         <location filename="../qucs/components/photodiode.cpp" line="+15"/>
         <source>transit time</source>
         <translation>زمن العبور</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location line="+2"/>
         <source>high-injection knee current (0=infinity)</source>
         <translation>high-injection knee current (0=infinity)</translation>
     </message>
     <message>
+        <location line="+8"/>
         <location filename="../qucs/components/EKV26MOS.cpp" line="-18"/>
-        <location filename="../qucs/components/diode.cpp" line="+8"/>
         <location filename="../qucs/components/photodiode.cpp" line="-21"/>
         <source>reverse breakdown voltage</source>
         <translation>عكس انهيار الجهد</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="+3"/>
         <location filename="../qucs/components/photodiode.cpp" line="+3"/>
         <source>current at reverse breakdown voltage</source>
         <translation>عكس اتجاه الانهيار الحالي في الجهد</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diode.cpp" line="+8"/>
+        <location line="+8"/>
         <source>Bv linear temperature coefficient</source>
         <translation>  Bvالمعامل الخطي لدرجة الحرارة</translation>
     </message>
@@ -4450,90 +6008,38 @@ Wrong &apos;component&apos; line format!</source>
         <translation>صمام ثنائي </translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-122"/>
-        <source>EPFL-EKV MOS 2.6 verilog device</source>
-        <translation>أجهزة فيريلوج EPFL-EKV MOS 2.6</translation>
+        <location filename="../qucs/components/DLS_1ton.cpp" line="-6"/>
+        <source>data voltage level shifter (digital to analogue) verilog device</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>long = 1, short = 2</source>
-        <translation>long = 1, short = 2</translation>
+        <location line="+3"/>
+        <location filename="../qucs/components/DLS_nto1.cpp" line="-4"/>
+        <source>voltage level</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>length parameter</source>
-        <translation>طول المعلم</translation>
+        <location filename="../qucs/components/DLS_nto1.cpp" line="+3"/>
+        <source>time delay</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+3"/>
-        <location line="+10"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+33"/>
-        <location line="+13"/>
-        <location line="+36"/>
-        <location filename="../qucs/components/nigbt.cpp" line="-38"/>
-        <source>m</source>
-        <translation>m</translation>
+        <location line="+20"/>
+        <source>D2A Level Shifter</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-99"/>
-        <source>Width parameter</source>
-        <translation>عرض المعلم</translation>
+        <location filename="../qucs/components/DLS_nto1.cpp" line="-6"/>
+        <source>data voltage level shifter (analogue to digital) verilog device</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>parallel multiple device number</source>
-        <translation>عدد الأجهزة الموازية المتعددة</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>series multiple device number</source>
-        <translation>سلسلة رقم الجهاز متعددة</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>gate oxide capacitance per unit area</source>
-        <translation>بوابة أكسيد سعة المكثف  في وحدة المساحة</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>F/m**2</source>
-        <translation>F/m**2</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>metallurgical junction depth</source>
-        <translation>تقاطع عمق المعدنية</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>channel width correction</source>
-        <translation> عرض قناة التصحيح</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>channel length correction</source>
-        <translation>طول قناة التصحيح</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>long channel threshold voltage</source>
-        <translation>طول قناة  عتبة الجهد</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/DLS_nto1.cpp" line="+19"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+1"/>
+        <location line="+4"/>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="-92"/>
         <location line="+6"/>
         <location line="+84"/>
         <location line="+6"/>
-        <location filename="../qucs/components/MESFET.cpp" line="-58"/>
-        <location line="+20"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+12"/>
-        <location line="+3"/>
         <location filename="../qucs/components/hic0_full.cpp" line="-216"/>
         <location line="+32"/>
         <location line="+32"/>
@@ -4673,7 +6179,13 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/log_amp.cpp" line="-29"/>
         <location filename="../qucs/components/logic_0.cpp" line="+28"/>
         <location filename="../qucs/components/logic_1.cpp" line="+28"/>
-        <location filename="../qucs/components/nigbt.cpp" line="+30"/>
+        <location filename="../qucs/components/MESFET.cpp" line="-58"/>
+        <location line="+20"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+12"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/nigbt.cpp" line="-8"/>
         <location line="+3"/>
         <location filename="../qucs/components/photodiode.cpp" line="-2"/>
         <location line="+6"/>
@@ -4685,7 +6197,131 @@ Wrong &apos;component&apos; line format!</source>
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="-94"/>
+        <location line="+22"/>
+        <source>A2D Level Shifter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/dmux2to4.cpp" line="-6"/>
+        <source>2to4 demultiplexer verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>2to4 Demux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/dmux3to8.cpp" line="-6"/>
+        <source>3to8 demultiplexer verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>3to8 Demux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/dmux4to16.cpp" line="-6"/>
+        <source>4to16 demultiplexer verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>4to16 Demux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/ecvs.cpp" line="+21"/>
+        <source>externally controlled voltage source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <location filename="../qucs/components/volt_dc.cpp" line="+45"/>
+        <source>voltage in Volts</source>
+        <translation>الفولتاج بالفولت</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Externally Controlled Voltage Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/EKV26MOS.cpp" line="-126"/>
+        <source>EPFL-EKV MOS 2.6 verilog device</source>
+        <translation>أجهزة فيريلوج EPFL-EKV MOS 2.6</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>long = 1, short = 2</source>
+        <translation>long = 1, short = 2</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>length parameter</source>
+        <translation>طول المعلم</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+3"/>
+        <location line="+10"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location line="+33"/>
+        <location line="+13"/>
+        <location line="+36"/>
+        <location filename="../qucs/components/nigbt.cpp" line="-33"/>
+        <source>m</source>
+        <translation>m</translation>
+    </message>
+    <message>
+        <location line="-99"/>
+        <source>Width parameter</source>
+        <translation>عرض المعلم</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>parallel multiple device number</source>
+        <translation>عدد الأجهزة الموازية المتعددة</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>series multiple device number</source>
+        <translation>سلسلة رقم الجهاز متعددة</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>gate oxide capacitance per unit area</source>
+        <translation>بوابة أكسيد سعة المكثف  في وحدة المساحة</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>F/m**2</source>
+        <translation>F/m**2</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>metallurgical junction depth</source>
+        <translation>تقاطع عمق المعدنية</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>channel width correction</source>
+        <translation> عرض قناة التصحيح</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>channel length correction</source>
+        <translation>طول قناة التصحيح</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>long channel threshold voltage</source>
+        <translation>طول قناة  عتبة الجهد</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>body effect parameter</source>
         <translation>هيئة أثر المعلم</translation>
     </message>
@@ -4701,14 +6337,14 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../qucs/components/MESFET.cpp" line="-39"/>
         <location filename="../qucs/components/jfet.cpp" line="-40"/>
+        <location filename="../qucs/components/MESFET.cpp" line="-39"/>
         <source>transconductance parameter</source>
         <translation>transconductance معلم </translation>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../qucs/components/nigbt.cpp" line="-39"/>
+        <location filename="../qucs/components/nigbt.cpp" line="-6"/>
         <source>A/V**2</source>
         <translation>A/V**2</translation>
     </message>
@@ -4719,13 +6355,13 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+4"/>
-        <location line="+3"/>
-        <location line="+3"/>
         <location filename="../qucs/components/hic2_full.cpp" line="-198"/>
         <location filename="../qucs/components/hicumL2V2p23.cpp" line="-198"/>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="-198"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="-228"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+4"/>
+        <location line="+3"/>
+        <location line="+3"/>
         <location filename="../qucs/components/nigbt.cpp" line="+33"/>
         <source>1/V</source>
         <translation>التحرك</translation>
@@ -4880,7 +6516,6 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <location line="+3"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+39"/>
         <location filename="../qucs/components/hic0_full.cpp" line="-139"/>
         <location line="+36"/>
         <location line="+11"/>
@@ -4927,6 +6562,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+84"/>
         <location filename="../qucs/components/log_amp.cpp" line="+3"/>
         <location line="+6"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+39"/>
         <location filename="../qucs/components/photodiode.cpp" line="-12"/>
         <location line="+38"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+18"/>
@@ -4951,7 +6587,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+1"/>
         <location line="+3"/>
         <location line="+3"/>
-        <location filename="../qucs/components/rlcg.cpp" line="-6"/>
+        <location filename="../qucs/components/rlcg.cpp" line="-4"/>
         <source>F/m</source>
         <translation>F/m</translation>
     </message>
@@ -5013,7 +6649,6 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+5"/>
         <location line="+6"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+62"/>
         <location filename="../qucs/components/hic0_full.cpp" line="-121"/>
         <location line="+10"/>
         <location line="+3"/>
@@ -5094,6 +6729,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+110"/>
         <location filename="../qucs/components/log_amp.cpp" line="-20"/>
         <location line="+3"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+62"/>
         <location filename="../qucs/components/photodiode.cpp" line="-35"/>
         <location line="+6"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-47"/>
@@ -5104,9 +6740,6 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+6"/>
-        <location filename="../qucs/components/MESFET.cpp" line="-52"/>
-        <location line="+3"/>
-        <location line="+3"/>
         <location filename="../qucs/components/hic0_full.cpp" line="-93"/>
         <location line="+44"/>
         <location line="+11"/>
@@ -5163,6 +6796,9 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+15"/>
         <location line="+57"/>
         <location line="+3"/>
+        <location filename="../qucs/components/MESFET.cpp" line="-52"/>
+        <location line="+3"/>
+        <location line="+3"/>
         <location filename="../qucs/components/photodiode.cpp" line="+6"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-20"/>
         <location line="+8"/>
@@ -5176,119 +6812,25 @@ Wrong &apos;component&apos; line format!</source>
         <translation>منطقة الصمام الثنائي النسبية</translation>
     </message>
     <message>
-        <source>forward-bias depletion capcitance coefficient</source>
-        <translation type="obsolete"> تحيز معامل السعة </translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/DLS_1ton.cpp" line="+21"/>
-        <location filename="../qucs/components/DLS_nto1.cpp" line="+3"/>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+5"/>
-        <location filename="../qucs/components/MESFET.cpp" line="-19"/>
-        <location filename="../qucs/components/andor4x2.cpp" line="+31"/>
-        <location filename="../qucs/components/andor4x3.cpp" line="+31"/>
-        <location filename="../qucs/components/andor4x4.cpp" line="+31"/>
-        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+31"/>
-        <location filename="../qucs/components/comp_1bit.cpp" line="+31"/>
-        <location filename="../qucs/components/comp_2bit.cpp" line="+31"/>
-        <location filename="../qucs/components/comp_4bit.cpp" line="+31"/>
-        <location filename="../qucs/components/dff_SR.cpp" line="+33"/>
-        <location filename="../qucs/components/dmux2to4.cpp" line="+31"/>
-        <location filename="../qucs/components/dmux3to8.cpp" line="+32"/>
-        <location filename="../qucs/components/dmux4to16.cpp" line="+31"/>
-        <location filename="../qucs/components/fa1b.cpp" line="+31"/>
-        <location filename="../qucs/components/fa2b.cpp" line="+31"/>
-        <location filename="../qucs/components/gatedDlatch.cpp" line="+33"/>
-        <location filename="../qucs/components/greytobinary4bit.cpp" line="+31"/>
-        <location filename="../qucs/components/ha1b.cpp" line="+31"/>
-        <location filename="../qucs/components/hic0_full.cpp" line="-102"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+5"/>
-        <location line="+5"/>
-        <location filename="../qucs/components/hic2_full.cpp" line="-167"/>
-        <location line="+62"/>
-        <location line="+66"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+5"/>
-        <location line="+19"/>
-        <location filename="../qucs/components/hicumL0V1p2.cpp" line="-102"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+5"/>
-        <location line="+5"/>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-102"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+5"/>
-        <location line="+5"/>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="-102"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+5"/>
-        <location line="+5"/>
-        <location filename="../qucs/components/hicumL2V2p23.cpp" line="-167"/>
-        <location line="+62"/>
-        <location line="+66"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+5"/>
-        <location line="+19"/>
-        <location filename="../qucs/components/hicumL2V2p24.cpp" line="-167"/>
-        <location line="+62"/>
-        <location line="+66"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+5"/>
-        <location line="+19"/>
-        <location filename="../qucs/components/hicumL2V2p31n.cpp" line="-177"/>
-        <location line="+62"/>
-        <location line="+66"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+5"/>
-        <location line="+19"/>
-        <location filename="../qucs/components/hpribin4bit.cpp" line="+31"/>
-        <location filename="../qucs/components/jkff_SR.cpp" line="+33"/>
-        <location filename="../qucs/components/mux2to1.cpp" line="+31"/>
-        <location filename="../qucs/components/mux4to1.cpp" line="+31"/>
-        <location filename="../qucs/components/mux8to1.cpp" line="+31"/>
-        <location filename="../qucs/components/nigbt.cpp" line="-30"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+8"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+3"/>
-        <location line="+3"/>
-        <location filename="../qucs/components/tff_SR.cpp" line="+33"/>
-        <source>s</source>
-        <translation>s</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/EKV26MOS.cpp" line="+4"/>
+        <location line="+9"/>
         <source>charge partition parameter</source>
         <translation>شحن  معلم التقسيم</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+79"/>
         <location filename="../qucs/components/log_amp.cpp" line="+34"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+60"/>
         <location filename="../qucs/components/mosfet_sub.cpp" line="+4"/>
-        <location filename="../qucs/components/nigbt.cpp" line="+38"/>
-        <location filename="../qucs/components/photodiode.cpp" line="-6"/>
+        <location filename="../qucs/components/nigbt.cpp" line="+8"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+2"/>
         <location filename="../qucs/components/potentiometer.cpp" line="+5"/>
         <source>parameter measurement temperature</source>
         <translation>وسيط لقياس درجة الحرارة</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+1"/>
         <location filename="../qucs/components/log_amp.cpp" line="+1"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+1"/>
         <location filename="../qucs/components/nigbt.cpp" line="+1"/>
         <location line="+3"/>
         <location filename="../qucs/components/photodiode.cpp" line="+1"/>
@@ -5307,7 +6849,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>EPFL-EKV PMOS 2.6</translation>
     </message>
     <message>
-        <location filename="../qucs/components/eqndefined.cpp" line="+26"/>
+        <location filename="../qucs/components/eqndefined.cpp" line="+25"/>
         <source>equation defined device</source>
         <translation> جهاز تحديد المعادلة</translation>
     </message>
@@ -5323,18 +6865,18 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+74"/>
+        <location line="+82"/>
         <source>current equation</source>
         <translation>المعادلة الحالية</translation>
     </message>
     <message>
-        <location line="-72"/>
-        <location line="+74"/>
+        <location line="-80"/>
+        <location line="+82"/>
         <source>charge equation</source>
         <translation>شحن المعادلة</translation>
     </message>
     <message>
-        <location line="-56"/>
+        <location line="-64"/>
         <source>Equation Defined Device</source>
         <translation>جهاز تحديد المعادلة</translation>
     </message>
@@ -5354,6 +6896,116 @@ Wrong &apos;component&apos; line format!</source>
         <location line="-36"/>
         <source>put result into dataset</source>
         <translation> وضع  نتيجة في جدول  البيانات </translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/etr_sim.cpp" line="-44"/>
+        <source>externally driven transient simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="-25"/>
+        <source>integration method</source>
+        <translation>الطريقة الإندماجية</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+3"/>
+        <source>order of integration method</source>
+        <translation>ترتيب الطريقة الإندماجية</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <source>initial step size in seconds</source>
+        <translation>حجم الخطوة أولية بالثواني</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <source>minimum step size in seconds</source>
+        <translation>حجم الخطوة الأدنى بالثواني</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+12"/>
+        <source>relative tolerance of local truncation error</source>
+        <translation>خطأ قي التسامح النسبي للبتر المحلي  </translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <source>absolute tolerance of local truncation error</source>
+        <translation>خطأ قي التسامح المطلق للبتر المحلي  </translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <source>overestimation of local truncation error</source>
+        <translation> خطأ قي التسامح المبالغ للبتر المحلي  </translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+5"/>
+        <source>relax time step raster</source>
+        <translation>مرحلة إسترخاء خطوط المسح</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <source>perform an initial DC analysis</source>
+        <translation>تؤدي الحساب الأولي لمرحلة التشغيل</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <source>maximum step size in seconds</source>
+        <translation>حجم الخطوة  بثواني</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>External transient simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/fa1b.cpp" line="-6"/>
+        <source>1bit full adder verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>1Bit FullAdder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/fa2b.cpp" line="-6"/>
+        <source>2bit full adder verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>2Bit FullAdder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/gatedDlatch.cpp" line="-7"/>
+        <source>gated D latch verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Gated D-Latch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
+        <source>4bit grey to binary converter verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>4Bit Grey2Bin</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/ground.cpp" line="+25"/>
@@ -5379,6 +7031,16 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+16"/>
         <source>Gyrator</source>
         <translation>الملفوف</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/ha1b.cpp" line="-6"/>
+        <source>1bit half adder verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>1Bit HalfAdder</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hb_sim.cpp" line="-29"/>
@@ -5420,22 +7082,22 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/hic0_full.cpp" line="+149"/>
-        <location filename="../qucs/components/hic2_full.cpp" line="+75"/>
-        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+153"/>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+153"/>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+167"/>
+        <location filename="../qucs/components/hic0_full.cpp" line="+66"/>
+        <location filename="../qucs/components/hic2_full.cpp" line="+69"/>
+        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+70"/>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+70"/>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+84"/>
         <location filename="../qucs/components/hicumL2V2p1.cpp" line="-6"/>
-        <location filename="../qucs/components/hicumL2V2p23.cpp" line="+75"/>
-        <location filename="../qucs/components/hicumL2V2p24.cpp" line="+75"/>
-        <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+103"/>
+        <location filename="../qucs/components/hicumL2V2p23.cpp" line="+69"/>
+        <location filename="../qucs/components/hicumL2V2p24.cpp" line="+69"/>
+        <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+87"/>
         <source>Thermal capacitance</source>
         <translation>سعة حرارية</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Scaling factor, number of emitter fingers</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5836,14 +7498,18 @@ Wrong &apos;component&apos; line format!</source>
         <translation>تقدم أولي للتيار الكهربائي</translation>
     </message>
     <message>
-        <source>forward d.c. high-injection toll-off current</source>
-        <translation type="obsolete">forward d.c. high-injection toll-off current</translation>
+        <location line="-100"/>
+        <location filename="../qucs/components/hicumL0V1p2.cpp" line="-111"/>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-111"/>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="-111"/>
+        <source>forward d.c. high-injection roll-off current</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-97"/>
-        <location filename="../qucs/components/hicumL0V1p2.cpp" line="-106"/>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-106"/>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="-106"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+5"/>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+5"/>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+5"/>
         <source>inverse d.c. high-injection roll-off current</source>
         <translation>inverse d.c. high-injection roll-off current</translation>
     </message>
@@ -5975,26 +7641,34 @@ Wrong &apos;component&apos; line format!</source>
         <translation>باعث تخزينها في الوقت محايدة </translation>
     </message>
     <message>
-        <source>Exponent factor for emmiter transit time</source>
-        <translation type="obsolete">  دليل عامل  لباعث الزمن</translation>
+        <location line="+3"/>
+        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+3"/>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
+        <source>Exponent factor for emitter transit time</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+5"/>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+5"/>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+5"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+2"/>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Saturation time at high current densities</source>
         <translation>التشبع في الوقت الحالي عالية الكثافة</translation>
     </message>
     <message>
-        <source>Smoothing facor for current dependence</source>
-        <translation type="obsolete">تمهيد من عوامل الاعتماد الحالي</translation>
+        <location line="+3"/>
+        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+3"/>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
+        <source>Smoothing factor for current dependence</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+5"/>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+5"/>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+5"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+2"/>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Storage time at inverse operation</source>
         <translation>التخزين في وقت العملية العكسية</translation>
     </message>
@@ -7504,7 +9178,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/hicumL0V1p2.cpp" line="-245"/>
         <source>HICUM Level 0 v1.2 verilog device</source>
-        <translation></translation>
+        <translation type="unfinished">أجهزة فيريلوج  v2.23 2 HICUM  {0 ?} {1.2 ?}</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -7542,21 +9216,24 @@ Wrong &apos;component&apos; line format!</source>
         <translation>d.c. معامل دليل شحن  قاعدة الإرسال لتيار التحويل</translation>
     </message>
     <message>
-        <source>BE capacitance ratio Ratio maximum to zero-bias value for d.c. transfer current</source>
-        <translation type="obsolete">d.c. نسبة سعة قاعدة الإرسال النسبة القصوى معدومة القيمة لتيار التحويل </translation>
+        <location line="+2"/>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
+        <source>BE capacitance ratio (maximum to zero-bias value) for d.c. transfer current</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+162"/>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+162"/>
+        <location line="+160"/>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+160"/>
         <source>TC of iqf</source>
         <translation>TC of iqf</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+175"/>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+173"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+8"/>
         <source>Exponent factor for temperature dependent thermal resistance</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+35"/>
@@ -7567,6 +9244,121 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+9"/>
         <source>pnp HICUM L0 v1.2</source>
         <translation>pnp HICUM L0 v1.2</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-236"/>
+        <source>HICUM Level 0 v1.2g verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>high-injection roll-off current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+194"/>
+        <source>TC of iqf (bandgap coefficient of zero bias hole charge)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>TC of avalanche prefactor, identical to alfav of Hicum/L2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>TC of avalanche exponential factor, identical to alqav of Hicum/L2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Emitter part coefficient of the zero bias hole charge temperature variation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Collector part coefficient of the zero bias hole charge temperature variation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Bandgap TC parameter of ver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Bandgap TC parameter of vef</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Specific recombination current at the BC barrier for high forward injection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>npn HICUM L0 v1.2g</source>
+        <translation type="unfinished">npn HICUM L0 v1.2g {0 ?}</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>pnp HICUM L0 v1.2g</source>
+        <translation type="unfinished">pnp HICUM L0 v1.2g {0 ?}</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/hicumL0V1p3.cpp" line="-235"/>
+        <source>HICUM Level 0 v1.3 verilog device</source>
+        <translation type="unfinished">أجهزة فيريلوج  v2.23 2 HICUM  {0 ?} {1.3 ?}</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Flag for using third order solution for transfer current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>bias dependence for reverse Early voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+217"/>
+        <source>Flag for turning temperature dependence of tef0 on and off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>TC of Reverse Early voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>TC of AVER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Bandgap difference between base and BE-junction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Frist-order TC of iqfh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Second-order TC of iqfh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+36"/>
+        <source>npn HICUM L0 v1.3</source>
+        <translation type="unfinished">npn HICUM L0 v1.3 {0 ?}</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>pnp HICUM L0 v1.3</source>
+        <translation type="unfinished">pnp HICUM L0 v1.3 {0 ?}</translation>
     </message>
     <message>
         <location filename="../qucs/components/hicumL2V2p1.cpp" line="-201"/>
@@ -7597,6 +9389,132 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+309"/>
         <source>HICUM L2 v2.23</source>
         <translation>HICUM L2 v2.23</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/hicumL2V2p24.cpp" line="-287"/>
+        <source>HICUM Level 2 v2.24 verilog device</source>
+        <translation type="unfinished">أجهزة فيريلوج  v2.23 2 HICUM  {2 ?} {2.24 ?}</translation>
+    </message>
+    <message>
+        <location line="+309"/>
+        <source>HICUM L2 v2.24</source>
+        <translation type="unfinished">HICUM L2 v2.24 {2 ?}</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/hicumL2V2p31n.cpp" line="-321"/>
+        <source>hicumL2V2p31n verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Weight factor for the low current minority charge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Parameter describing the slope of hjEi(VBE)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Smoothing parameter for hjEi(VBE) at high voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+160"/>
+        <source>Time constant for modeling carrier jam at low VCE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Barrier voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Normalization parameter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Smoothing parameter for barrier voltage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>fitting factor for critical current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Flag for turning on and off of correlated noise implementation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Emitter resistance flicker noise coefficient</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Emitter resistance flicker noise exponent factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+52"/>
+        <source>Bandgap difference between B and B-E junction used for hjEi0 and hf0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Temperature coefficient for ahjEi</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Temperature coefficient for hjEi0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Temperature coefficient for Rth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>First order relative TC of parameter Rth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>HICUM L2 V2.31</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/hpribin4bit.cpp" line="-3"/>
+        <source>4bit highest priority encoder (binary form) verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>4Bit HPRI-Bin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/hybrid.cpp" line="-39"/>
+        <source>hybrid (unsymmetrical 3dB coupler)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <location filename="../qucs/components/phaseshifter.cpp" line="-2"/>
+        <source>phase shift in degree</source>
+        <translation>مرحلة تحول بالدرجة</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Hybrid</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/iexp.cpp" line="+23"/>
@@ -7902,7 +9820,17 @@ Wrong &apos;component&apos; line format!</source>
         <translation>JK-FlipFlop</translation>
     </message>
     <message>
-        <location filename="../qucs/components/libcomp.cpp" line="+33"/>
+        <location filename="../qucs/components/jkff_SR.cpp" line="-7"/>
+        <source>jk flip flop with set and reset verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>JK-FlipFlop w/ SR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/libcomp.cpp" line="+34"/>
         <source>Component taken from Qucs library</source>
         <translation> Qucs العنصر مأخوذ من مكتبة </translation>
     </message>
@@ -7992,16 +9920,16 @@ Wrong &apos;component&apos; line format!</source>
         <translation>معامل الحرارة المطابق للخطأ</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <location line="+6"/>
         <location filename="../qucs/components/MESFET.cpp" line="-58"/>
         <location line="+3"/>
         <location line="+3"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+1"/>
-        <location line="+6"/>
         <source>%/Celsius</source>
         <translation>%مئوية</translation>
     </message>
     <message>
-        <location filename="../qucs/components/log_amp.cpp" line="-4"/>
+        <location line="-4"/>
         <source>offset temperature coefficient</source>
         <translation>تغير معامل الحرارة</translation>
     </message>
@@ -8037,15 +9965,45 @@ Wrong &apos;component&apos; line format!</source>
         <translation>مكبر الصوت لوغاريتمي</translation>
     </message>
     <message>
+        <location line="+20"/>
         <location filename="../qucs/components/MESFET.cpp" line="-43"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+20"/>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <location filename="../qucs/components/log_amp.cpp" line="+1"/>
+        <location line="+1"/>
         <source>R</source>
         <translation>R</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/logic_0.cpp" line="-4"/>
+        <source>logic 0 verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>logic 0 voltage level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Logic 0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/logic_1.cpp" line="-4"/>
+        <source>logic 1 verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>logic 1 voltage level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Logic 1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/logical_and.cpp" line="+22"/>
@@ -8320,13 +10278,14 @@ Wrong &apos;component&apos; line format!</source>
         <translation>مصدر استنزاف  معادلة الشحنة المختارة</translation>
     </message>
     <message>
-        <source>Vto temperature  coefficient</source>
-        <translation type="obsolete">Vto معامل درجة الحرارة </translation>
+        <location line="+2"/>
+        <source>Vto temperature coefficient</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location filename="../qucs/components/thyristor.cpp" line="-2"/>
-        <location filename="../qucs/components/triac.cpp" line="-2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/thyristor.cpp" line="+2"/>
+        <location filename="../qucs/components/triac.cpp" line="+2"/>
         <source>gate resistance</source>
         <translation>بوابة المقاومة</translation>
     </message>
@@ -8822,6 +10781,16 @@ Wrong &apos;component&apos; line format!</source>
         <translation>microstrip فجوة</translation>
     </message>
     <message>
+        <location filename="../qucs/components/mslange.cpp" line="-36"/>
+        <source>microstrip lange coupler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source>Microstrip Lange Coupler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qucs/components/msline.cpp" line="-27"/>
         <source>microstrip line</source>
         <translation>Microstrip خط </translation>
@@ -8857,6 +10826,38 @@ Wrong &apos;component&apos; line format!</source>
         <translation>الشريط الصغير مفتوح</translation>
     </message>
     <message>
+        <location filename="../qucs/components/msrstub.cpp" line="-20"/>
+        <source>microstrip radial stub</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>inner radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>outer radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>stub angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <location filename="../qucs/components/potentiometer.cpp" line="-9"/>
+        <location line="+7"/>
+        <source>degrees</source>
+        <translation>درجات</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Microstrip Radial Stub</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qucs/components/msstep.cpp" line="-33"/>
         <source>microstrip impedance step</source>
         <translation> مرحلة مقاومة الشريط الصغير</translation>
@@ -8877,12 +10878,12 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Microstrip خطوة</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mstee.cpp" line="-28"/>
+        <location filename="../qucs/components/mstee.cpp" line="-29"/>
         <source>microstrip tee</source>
         <translation>microstrip كوم </translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+27"/>
         <source>temperature in degree Celsius</source>
         <translation>  الحرارة عند الدرجة المئوية</translation>
     </message>
@@ -8907,13 +10908,13 @@ Wrong &apos;component&apos; line format!</source>
         <translation>microstrip بواسطة</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mutual2.cpp" line="+23"/>
-        <source>three mutual inductors</source>
-        <translation>ثلاثة أدواة الحث المتبادل</translation>
+        <location filename="../qucs/components/mutual.cpp" line="+23"/>
+        <source>two mutual inductors</source>
+        <translation>أدواة الحث المتبادل2</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mutual.cpp" line="+58"/>
-        <location filename="../qucs/components/mutual2.cpp" line="+46"/>
+        <location line="+35"/>
+        <location filename="../qucs/components/mutual2.cpp" line="+83"/>
         <source>inductance of coil 1</source>
         <translation>محاثة من اللفة 1</translation>
     </message>
@@ -8924,18 +10925,28 @@ Wrong &apos;component&apos; line format!</source>
         <translation>محاثة من اللفة 2</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mutual2.cpp" line="+2"/>
-        <source>inductance of coil 3</source>
-        <translation>محاثة من اللفة 3</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/mutual.cpp" line="+2"/>
-        <location filename="../qucs/components/mutual2.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/mutual2.cpp" line="+4"/>
         <source>coupling factor between coil 1 and 2</source>
         <translation>عامل الاقتران بين اللفة 1 و 2</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mutual2.cpp" line="+2"/>
+        <location line="+14"/>
+        <source>Mutual Inductors</source>
+        <translation>أدواة الحث المتبادل</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/mutual2.cpp" line="-63"/>
+        <source>three mutual inductors</source>
+        <translation>ثلاثة أدواة الحث المتبادل</translation>
+    </message>
+    <message>
+        <location line="+61"/>
+        <source>inductance of coil 3</source>
+        <translation>محاثة من اللفة 3</translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>coupling factor between coil 1 and 3</source>
         <translation>عامل الاقتران بين اللفة 1 و 3</translation>
     </message>
@@ -8950,14 +10961,180 @@ Wrong &apos;component&apos; line format!</source>
         <translation>أدواة الحث المتبادل3  </translation>
     </message>
     <message>
-        <location filename="../qucs/components/mutual.cpp" line="-39"/>
-        <source>two mutual inductors</source>
-        <translation>أدواة الحث المتبادل2</translation>
+        <location filename="../qucs/components/mutualx.cpp" line="+27"/>
+        <source>several mutual inductors</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+53"/>
-        <source>Mutual Inductors</source>
-        <translation>أدواة الحث المتبادل</translation>
+        <location line="+8"/>
+        <source>number of mutual inductances</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <location line="+131"/>
+        <location line="+19"/>
+        <source>inductance of coil</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-144"/>
+        <location line="+152"/>
+        <source>coupling factor between coil %1 and coil %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-142"/>
+        <source>N Mutual Inductors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/mux2to1.cpp" line="-6"/>
+        <source>2to1 multiplexer verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>2to1 Mux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/mux4to1.cpp" line="-6"/>
+        <source>4to1 multiplexer verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>4to1 Mux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/mux8to1.cpp" line="-6"/>
+        <source>8to1 multiplexer verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>8to1 Mux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/nigbt.cpp" line="-45"/>
+        <source>NIGBT verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>gate-drain overlap area</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+3"/>
+        <source>m**2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>area of the device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>MOS transconductance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>ambipolar recombination lifetime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>metallurgical base width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>avalanche uniformity factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>avalanche multiplication exponent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>gate-source capacitance per unit area</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+3"/>
+        <source>F/cm**2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>gate-drain oxide capacitance per unit area</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>emitter saturation current density</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>A/cm**2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>triode region factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>electron mobility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+3"/>
+        <source>cm**2/Vs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>hole mobility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>base doping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>1/cm**3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>transverse field factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>gate-drain overlap depletion threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>NIGBT</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/noise_ii.cpp" line="-58"/>
@@ -9028,6 +11205,43 @@ Wrong &apos;component&apos; line format!</source>
         <translation>التحسين</translation>
     </message>
     <message>
+        <location filename="../qucs/components/pad2bit.cpp" line="+17"/>
+        <source>2bit pattern generator verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../qucs/components/pad3bit.cpp" line="+20"/>
+        <location filename="../qucs/components/pad4bit.cpp" line="+20"/>
+        <source>pad output value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>2Bit Pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/pad3bit.cpp" line="-3"/>
+        <source>3bit pattern generator verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>3Bit Pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/pad4bit.cpp" line="-3"/>
+        <source>4bit pattern generator verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>4Bit Pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qucs/components/param_sweep.cpp" line="-30"/>
         <location line="+44"/>
         <source>Parameter sweep</source>
@@ -9054,18 +11268,12 @@ Wrong &apos;component&apos; line format!</source>
         <translation>توقف قيمة الإجتياح</translation>
     </message>
     <message>
-        <location filename="../qucs/components/phaseshifter.cpp" line="-26"/>
+        <location filename="../qucs/components/phaseshifter.cpp" line="-24"/>
         <source>phase shifter</source>
         <translation>مرحلة شيفتر</translation>
     </message>
     <message>
-        <location filename="../qucs/components/hybrid.cpp" line="-2"/>
-        <location filename="../qucs/components/phaseshifter.cpp" line="+24"/>
-        <source>phase shift in degree</source>
-        <translation>مرحلة تحول بالدرجة</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/phaseshifter.cpp" line="+16"/>
+        <location line="+40"/>
         <source>Phase Shifter</source>
         <translation>المرحلة شيفتر</translation>
     </message>
@@ -9096,7 +11304,7 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+24"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+30"/>
         <source>A/W</source>
         <translation>A/W</translation>
     </message>
@@ -9131,6 +11339,50 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Photodiode</translation>
     </message>
     <message>
+        <location filename="../qucs/components/phototransistor.cpp" line="-64"/>
+        <source>Phototransistor verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>dark current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>collector series resistance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>emitter series resistance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>base series resistance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>responsivity at relative selectivity=100%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>relative selectivity polynomial coefficient</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Phototransistor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qucs/components/pm_modulator.cpp" line="-33"/>
         <source>ac voltage source with phase modulator</source>
         <translation type="unfinished"></translation>
@@ -9151,7 +11403,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/potentiometer.cpp" line="-16"/>
+        <location filename="../qucs/components/potentiometer.cpp" line="-14"/>
         <source>Potentiometer verilog device</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9166,14 +11418,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/msrstub.cpp" line="+6"/>
-        <location filename="../qucs/components/potentiometer.cpp" line="+1"/>
-        <location line="+7"/>
-        <source>degrees</source>
-        <translation>درجات</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/potentiometer.cpp" line="-5"/>
+        <location line="+3"/>
         <source>resistive law taper coefficient</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9304,20 +11549,26 @@ Wrong &apos;component&apos; line format!</source>
         <translation>US المقاومة</translation>
     </message>
     <message>
-        <location filename="../qucs/components/rfedd2p.cpp" line="+27"/>
-        <source>equation defined 2-port RF device</source>
-        <translation> RF تحديد معادلة منفذ-2 لجهاز</translation>
+        <location filename="../qucs/components/rfedd.cpp" line="+26"/>
+        <source>equation defined RF device</source>
+        <translation> RF تحديد معادلة لجهاز</translation>
     </message>
     <message>
-        <location filename="../qucs/components/rfedd.cpp" line="+34"/>
-        <location filename="../qucs/components/rfedd2p.cpp" line="+7"/>
+        <location line="+7"/>
+        <location filename="../qucs/components/rfedd2p.cpp" line="+34"/>
         <source>type of parameters</source>
         <translation>نوع المتغيرات</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/sparamfile.cpp" line="+7"/>
+        <source>number of ports</source>
+        <translation>عدد المنافذ </translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <location filename="../qucs/components/rfedd2p.cpp" line="+2"/>
-        <location filename="../qucs/components/sparamfile.cpp" line="+2"/>
+        <location filename="../qucs/components/sparamfile.cpp" line="-5"/>
         <source>representation during DC analysis</source>
         <translation>التمثيل عند حساب نقطة التشغيل </translation>
     </message>
@@ -9326,7 +11577,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+2"/>
         <location line="+2"/>
         <location line="+2"/>
-        <location line="+81"/>
+        <location line="+85"/>
         <location line="+5"/>
         <location line="+9"/>
         <location filename="../qucs/components/rfedd2p.cpp" line="+5"/>
@@ -9337,30 +11588,74 @@ Wrong &apos;component&apos; line format!</source>
         <translation>متغير المعادلة</translation>
     </message>
     <message>
-        <location filename="../qucs/components/rfedd2p.cpp" line="+17"/>
-        <source>Equation Defined 2-port RF Device</source>
-        <translation> RF تحديد معادلة منفذ-2 لجهاز</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/rfedd.cpp" line="-117"/>
-        <source>equation defined RF device</source>
-        <translation> RF تحديد معادلة لجهاز</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <location filename="../qucs/components/sparamfile.cpp" line="+5"/>
-        <source>number of ports</source>
-        <translation>عدد المنافذ </translation>
-    </message>
-    <message>
-        <location line="+31"/>
+        <location line="-81"/>
         <source>Equation Defined RF Device</source>
         <translation> RF تحديد معادلة لجهاز</translation>
     </message>
     <message>
-        <location line="+90"/>
+        <location line="+94"/>
         <source>RF</source>
         <translation>RF</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/rfedd2p.cpp" line="-20"/>
+        <source>equation defined 2-port RF device</source>
+        <translation> RF تحديد معادلة منفذ-2 لجهاز</translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <source>Equation Defined 2-port RF Device</source>
+        <translation> RF تحديد معادلة منفذ-2 لجهاز</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/rlcg.cpp" line="-40"/>
+        <source>RLCG transmission line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>RLCG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>resistive load</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Ohm/m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>inductive load</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>H/m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>capacitive load</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>conductive load</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>S/m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>RLCG Transmission Line</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/rs_flipflop.cpp" line="-2"/>
@@ -9391,105 +11686,6 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+20"/>
         <source>Power Source</source>
         <translation>مصدر التشغيل</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/sparamfile.cpp" line="-18"/>
-        <source>S parameter file</source>
-        <translation>S ملف المتغير </translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>name of the s parameter file</source>
-        <translation>S إسم ملف المتغير </translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>data type</source>
-        <translation>نوع البيانات</translation>
-    </message>
-    <message>
-        <location line="+26"/>
-        <source>n-port S parameter file</source>
-        <translation>S ملف المتغير n-منفذ</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>1-port S parameter file</source>
-        <translation>S  منفذ-1 ملف المتغير</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>2-port S parameter file</source>
-        <translation>S  منفذ-2 ملف المتغير</translation>
-    </message>
-    <message>
-        <location line="+66"/>
-        <source>file</source>
-        <translation>الملف</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/spicefile.cpp" line="-208"/>
-        <source>SPICE netlist file</source>
-        <translation>SPICE ملف وثيقة</translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>SPICE netlist</source>
-        <translation>SPICE وثيقة </translation>
-    </message>
-    <message>
-        <location line="+31"/>
-        <source>sim</source>
-        <translation>sim</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>spice</source>
-        <translation>spice</translation>
-    </message>
-    <message>
-        <location line="+156"/>
-        <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
-        <translation>.خطأ : لا يمكن فتح  ملف سبيس&quot;%1&quot;ء</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>ERROR: Cannot save converted SPICE file &quot;%1&quot;.</source>
-        <translation>.خطأ : لا يمكن حفظ ملف سبيس&quot;%1&quot;ء</translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>ERROR: Cannot open converted SPICE file &quot;%1&quot;.</source>
-        <translation>.خطأ : لا يمكن فتح  ملف سبيس&quot;%1&quot;ء</translation>
-    </message>
-    <message>
-        <location line="+66"/>
-        <source>Preprocessing SPICE file &quot;%1&quot;.</source>
-        <translation type="unfinished">تجهيز ملف  SPICE &quot;&quot;%1 .</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>ERROR: Cannot save preprocessed SPICE file &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>ERROR: Cannot execute &quot;%1&quot;.</source>
-        <translation>&quot;خطأ : لا يمكن تنفيذ &quot;1٪ـ</translation>
-    </message>
-    <message>
-        <location line="+61"/>
-        <source>COMP ERROR: Cannot start QucsConv!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ERROR: Cannot start QucsConv!</source>
-        <translation type="obsolete">! QucsConv خطأ : لايمكن بدأ </translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Converting SPICE file &quot;%1&quot;.</source>
-        <translation>.&quot;%1&quot; SPICE تحويل ملف  </translation>
     </message>
     <message>
         <location filename="../qucs/components/sp_sim.cpp" line="-30"/>
@@ -9527,7 +11723,115 @@ Wrong &apos;component&apos; line format!</source>
         <translation>متغير المحاكاة-S </translation>
     </message>
     <message>
-        <location filename="../qucs/components/subcircuit.cpp" line="+34"/>
+        <location filename="../qucs/components/sparamfile.cpp" line="-13"/>
+        <source>S parameter file</source>
+        <translation>S ملف المتغير </translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>name of the s parameter file</source>
+        <translation>S إسم ملف المتغير </translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>data type</source>
+        <translation>نوع البيانات</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>n-port S parameter file</source>
+        <translation>S ملف المتغير n-منفذ</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>1-port S parameter file</source>
+        <translation>S  منفذ-1 ملف المتغير</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>2-port S parameter file</source>
+        <translation>S  منفذ-2 ملف المتغير</translation>
+    </message>
+    <message>
+        <location line="+77"/>
+        <source>file</source>
+        <translation>الملف</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/spicefile.cpp" line="+42"/>
+        <source>SPICE netlist file</source>
+        <translation>SPICE ملف وثيقة</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>SPICE netlist</source>
+        <translation>SPICE وثيقة </translation>
+    </message>
+    <message>
+        <location line="+36"/>
+        <source>sim</source>
+        <translation>sim</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>spice</source>
+        <translation>spice</translation>
+    </message>
+    <message>
+        <location line="+148"/>
+        <location filename="../qucs/schematic_file.cpp" line="+415"/>
+        <source>ERROR: No file name in SPICE component &quot;%1&quot;.</source>
+        <translation>خطأ : لا يوجد اسم الملف في عنصر SPICE  في &quot;٪ 1&quot;.</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
+        <translation>.خطأ : لا يمكن فتح  ملف سبيس&quot;%1&quot;ء</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>ERROR: Cannot save converted SPICE file &quot;%1&quot;.</source>
+        <translation>.خطأ : لا يمكن حفظ ملف سبيس&quot;%1&quot;ء</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>ERROR: Cannot open converted SPICE file &quot;%1&quot;.</source>
+        <translation>.خطأ : لا يمكن فتح  ملف سبيس&quot;%1&quot;ء</translation>
+    </message>
+    <message>
+        <location line="+67"/>
+        <location line="+95"/>
+        <location filename="../qucs/mouseactions.cpp" line="+847"/>
+        <source>Info</source>
+        <translation>معلومات</translation>
+    </message>
+    <message>
+        <location line="-94"/>
+        <source>Preprocessing SPICE file &quot;%1&quot;.</source>
+        <translation>تجهيز ملف  SPICE &quot;&quot;%1 .</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>ERROR: Cannot save preprocessed SPICE file &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>ERROR: Cannot execute &quot;%1&quot;.</source>
+        <translation>&quot;خطأ : لا يمكن تنفيذ &quot;1٪ـ</translation>
+    </message>
+    <message>
+        <location line="+61"/>
+        <source>COMP ERROR: Cannot start QucsConv!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Converting SPICE file &quot;%1&quot;.</source>
+        <translation>.&quot;%1&quot; SPICE تحويل ملف  </translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/subcircuit.cpp" line="+35"/>
         <source>subcircuit</source>
         <translation>فرع الدائرة الكهربائية</translation>
     </message>
@@ -9609,8 +11913,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>time when state changes (semicolon separated list possible, even numbered lists are repeated)</source>
-        <oldsource>time when state changes (semicolon separated list possible)</oldsource>
-        <translation type="unfinished">(الوقت أين تتغير المراحل(علامة وقف لفصل القائمة ممكنة</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9633,12 +11936,12 @@ Wrong &apos;component&apos; line format!</source>
         <translation>مفتاح كهربائي</translation>
     </message>
     <message>
-        <location filename="../qucs/components/symtrafo.cpp" line="+23"/>
+        <location filename="../qucs/components/symtrafo.cpp" line="+26"/>
         <source>ideal symmetrical transformer</source>
         <translation>التحول المثالي التناضري</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+63"/>
         <source>voltage transformation ratio of coil 1</source>
         <translation>نسبة تحول الفولت  للفة 1</translation>
     </message>
@@ -9651,6 +11954,16 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+14"/>
         <source>symmetric Transformer</source>
         <translation>التحول  التناضري</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/tff_SR.cpp" line="-7"/>
+        <source>T flip flop with set and reset verilog device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>T-FlipFlop w/ SR</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/thyristor.cpp" line="-36"/>
@@ -9673,44 +11986,61 @@ Wrong &apos;component&apos; line format!</source>
         <translation>الثايرستور</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tline_4port.cpp" line="-36"/>
-        <source>ideal 4-terminal transmission line</source>
-        <translation>محطات-4  خط نقل مثالي</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/tline.cpp" line="-6"/>
-        <location filename="../qucs/components/tline_4port.cpp" line="+30"/>
-        <source>characteristic impedance</source>
-        <translation>خصائص المقاومة</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/ctline.cpp" line="-10"/>
-        <location filename="../qucs/components/rlcg.cpp" line="+4"/>
-        <location filename="../qucs/components/tline.cpp" line="+2"/>
-        <location filename="../qucs/components/tline_4port.cpp" line="+2"/>
-        <source>electrical length of the line</source>
-        <translation>الطول الكهربائى للخط</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/tline.cpp" line="+2"/>
-        <location filename="../qucs/components/tline_4port.cpp" line="+2"/>
-        <source>attenuation factor per length in 1/m</source>
-        <translation>عامل التخفيف وفقا للطول في 1 / م</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/tline_4port.cpp" line="+16"/>
-        <source>4-Terminal Transmission Line</source>
-        <translation>محطات-4  خط نقل</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/tline.cpp" line="-30"/>
+        <location filename="../qucs/components/tline.cpp" line="-28"/>
         <source>ideal transmission line</source>
         <translation>خط الإنتقال المثالي </translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+26"/>
+        <location filename="../qucs/components/tline_4port.cpp" line="-2"/>
+        <source>characteristic impedance</source>
+        <translation>خصائص المقاومة</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <location filename="../qucs/components/tline_4port.cpp" line="+4"/>
+        <source>attenuation factor per length in 1/m</source>
+        <translation>عامل التخفيف وفقا للطول في 1 / م</translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Transmission Line</source>
         <translation> خط الانتقال</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/tline_4port.cpp" line="-34"/>
+        <source>ideal 4-terminal transmission line</source>
+        <translation>محطات-4  خط نقل مثالي</translation>
+    </message>
+    <message>
+        <location line="+50"/>
+        <source>4-Terminal Transmission Line</source>
+        <translation>محطات-4  خط نقل</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/tr_sim.cpp" line="-60"/>
+        <source>transient simulation</source>
+        <translation>المحاكاة الوقتي</translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>start time in seconds</source>
+        <translation>بداية الوقت بالثواني</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>stop time in seconds</source>
+        <translation>نهاية  الوقت بالثواني</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>number of simulation time steps</source>
+        <translation>عدد مرات المحاكاة</translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Transient simulation</source>
+        <translation>المحاكاة الوقتي</translation>
     </message>
     <message>
         <location filename="../qucs/components/transformer.cpp" line="+23"/>
@@ -9741,1330 +12071,6 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+22"/>
         <source>Triac</source>
         <translation>صمام تحكم كهربائي</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/tr_sim.cpp" line="-53"/>
-        <source>transient simulation</source>
-        <translation>المحاكاة الوقتي</translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>start time in seconds</source>
-        <translation>بداية الوقت بالثواني</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>stop time in seconds</source>
-        <translation>نهاية  الوقت بالثواني</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>number of simulation time steps</source>
-        <translation>عدد مرات المحاكاة</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/etr_sim.cpp" line="-44"/>
-        <source>externally driven transient simulation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>integration method</source>
-        <translation>الطريقة الإندماجية</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+3"/>
-        <source>order of integration method</source>
-        <translation>ترتيب الطريقة الإندماجية</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>initial step size in seconds</source>
-        <translation>حجم الخطوة أولية بالثواني</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>minimum step size in seconds</source>
-        <translation>حجم الخطوة الأدنى بالثواني</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+12"/>
-        <source>relative tolerance of local truncation error</source>
-        <translation>خطأ قي التسامح النسبي للبتر المحلي  </translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>absolute tolerance of local truncation error</source>
-        <translation>خطأ قي التسامح المطلق للبتر المحلي  </translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>overestimation of local truncation error</source>
-        <translation> خطأ قي التسامح المبالغ للبتر المحلي  </translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+5"/>
-        <source>relax time step raster</source>
-        <translation>مرحلة إسترخاء خطوط المسح</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>perform an initial DC analysis</source>
-        <translation>تؤدي الحساب الأولي لمرحلة التشغيل</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
-        <source>maximum step size in seconds</source>
-        <translation>حجم الخطوة  بثواني</translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>External transient simulation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/tr_sim.cpp" line="+14"/>
-        <source>Transient simulation</source>
-        <translation>المحاكاة الوقتي</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/twistedpair.cpp" line="-50"/>
-        <source>twisted pair transmission line</source>
-        <translation>خط الإتصال للزوج الملتوي</translation>
-    </message>
-    <message>
-        <location line="+36"/>
-        <source>diameter of conductor</source>
-        <translation>قطر الناقل</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>diameter of wire (conductor and insulator)</source>
-        <translation>قطر السلك(الناقل و العازل)ـ</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>physical length of the line</source>
-        <translation>طول الفيزيائى للخيط</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>twists per length in 1/m</source>
-        <translation>طول اللفة ب 1/م</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>dielectric constant of insulator</source>
-        <translation>ثابت العازل الكهربائي من العازل</translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>Twisted-Pair</source>
-        <translation>زوج الملتوي</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vccs.cpp" line="-41"/>
-        <source>voltage controlled current source</source>
-        <translation>مصدر التيار مسيطر الفولت  </translation>
-    </message>
-    <message>
-        <location line="+40"/>
-        <source>forward transconductance</source>
-        <translation> transconductance أرسل </translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>Voltage Controlled Current Source</source>
-        <translation>مصدر التيار مسيطر الفولت  </translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vcresistor.cpp" line="+23"/>
-        <location filename="../qucs/components/vcvs.cpp" line="-42"/>
-        <source>voltage controlled voltage source</source>
-        <translation>مصدر الفولت مسيطر الفولت  </translation>
-    </message>
-    <message>
-        <location line="+47"/>
-        <source>resistance gain</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>Voltage Controlled Resistor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vcvs.cpp" line="+56"/>
-        <source>Voltage Controlled Voltage Source</source>
-        <translation>مصدر الفولت مسيطر الفولت  </translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/verilogfile.cpp" line="-145"/>
-        <location line="+24"/>
-        <source>Verilog file</source>
-        <translation>ملف فيريلوج </translation>
-    </message>
-    <message>
-        <location line="-21"/>
-        <source>Name of Verilog file</source>
-        <translation> إسم ملف فيريلوج </translation>
-    </message>
-    <message>
-        <location line="+97"/>
-        <source>verilog</source>
-        <translation>فيريلوج </translation>
-    </message>
-    <message>
-        <location line="+56"/>
-        <location filename="../qucs/components/vhdlfile.cpp" line="+11"/>
-        <source>ERROR: Cannot open %1 file &quot;%2&quot;.</source>
-        <translation>.خطأ : لا يمكن إنشاء ٪ 1 الملف &quot;%2&quot;ـ</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vexp.cpp" line="-40"/>
-        <source>exponential voltage source</source>
-        <translation>تضاعف مصدر الفولت </translation>
-    </message>
-    <message>
-        <location line="+34"/>
-        <source>voltage before rising edge</source>
-        <translation>قبل أن يرتفع الحد الحالي للفولت</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>maximum voltage of the pulse</source>
-        <translation>الحد الأقصى للنبض الفولت  </translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>rise time of the rising edge</source>
-        <translation>  ارتفاع وقت الحد الأمامي</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>fall time of the falling edge</source>
-        <translation>إنتهاء الوقت لمتابعة الحد</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Exponential Voltage Pulse</source>
-        <translation>تضاعف نبض الفولت </translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vfile.cpp" line="-35"/>
-        <source>file based voltage source</source>
-        <translation>ملف مصدر الفولت</translation>
-    </message>
-    <message>
-        <location line="+53"/>
-        <source>File Based Voltage Source</source>
-        <translation>ملف مصدر الفولت</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vhdlfile.cpp" line="-200"/>
-        <location line="+24"/>
-        <source>VHDL file</source>
-        <translation>VHDLملف </translation>
-    </message>
-    <message>
-        <location line="-21"/>
-        <source>Name of VHDL file</source>
-        <translation>VHDLإسم ملف </translation>
-    </message>
-    <message>
-        <location line="+110"/>
-        <source>vhdl</source>
-        <translation>vhdl</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/volt_ac.cpp" line="-29"/>
-        <source>ideal ac voltage source</source>
-        <translation>مصدر خاص بالمنحنى المثالي</translation>
-    </message>
-    <message>
-        <location line="+45"/>
-        <source>ac Voltage Source</source>
-        <translation>مصدر خاص بالمنحنى </translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/volt_dc.cpp" line="+23"/>
-        <source>ideal dc voltage source</source>
-        <translation>مصدر التيار المستمر المثالي</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/ecvs.cpp" line="+22"/>
-        <source>externally controlled voltage source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+45"/>
-        <location filename="../qucs/components/volt_dc.cpp" line="+22"/>
-        <source>voltage in Volts</source>
-        <translation>الفولتاج بالفولت</translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Externally Controlled Voltage Source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/volt_dc.cpp" line="+16"/>
-        <source>dc Voltage Source</source>
-        <translation>مصدر الفولتاج لتيار المستمر</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/volt_noise.cpp" line="-29"/>
-        <source>noise voltage source</source>
-        <translation>مصدر  التشويش في الفولت  </translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <source>voltage power spectral density in V^2/Hz</source>
-        <translation>V^2/Hz الكثافة الطيفية قوة الفولتاج  في  </translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>Noise Voltage Source</source>
-        <translation>مصدر  التشويش في الفولت  </translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vprobe.cpp" line="+23"/>
-        <source>voltage probe</source>
-        <translation>تحقيق الضغط</translation>
-    </message>
-    <message>
-        <location line="+44"/>
-        <source>Voltage Probe</source>
-        <translation>تحقيق الضغط</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vpulse.cpp" line="-37"/>
-        <source>ideal voltage pulse source</source>
-        <translation>مصدر ذبذبات الضغط المثالي</translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>voltage before and after the pulse</source>
-        <translation>الفولتاج قبل و بعد الذبذبة</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>voltage of the pulse</source>
-        <translation>الفولتاج لذبذبة</translation>
-    </message>
-    <message>
-        <location line="+24"/>
-        <source>Voltage Pulse</source>
-        <translation>ذبذبة الفولتاج</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vrect.cpp" line="-39"/>
-        <source>ideal rectangle voltage source</source>
-        <translation>المصدر المثالي لذبذبة التيار </translation>
-    </message>
-    <message>
-        <location line="+29"/>
-        <source>voltage of high signal</source>
-        <translation>فولتاج للإشارة العالية</translation>
-    </message>
-    <message>
-        <location line="+26"/>
-        <source>Rectangle Voltage</source>
-        <translation>فولتاج المستطيل</translation>
-    </message>
-    <message>
-        <location filename="../qucs/dialogs/librarydialog.cpp" line="-267"/>
-        <source>ERROR: Cannot open file &quot;%1&quot;.
-</source>
-        <translation>&quot;خطأ : لا يمكن إنشاء الملف &quot;٪ 1.
-‏</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>ERROR: Cannot create user library subdirectory !
-</source>
-        <translation> خطأ : لا يمكن إنشاء دليل فرعي لمستخدم المكتبة !</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>ERROR: Cannot create file &quot;%1&quot;.
-</source>
-        <translation>&quot;خطأ : لا يمكن إنشاء الملف &quot;٪ 1.
-</translation>
-    </message>
-    <message>
-        <location filename="../qucs-edit/main.cpp" line="+76"/>
-        <source>Qucs Editor Version </source>
-        <translation>Qucs محرر النسخة </translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>
-Very simple text editor for Qucs
-</source>
-        <translation>
-Qucsمحرر نصوص بسيط جدا ل</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Copyright (C) 2004, 2005 by Michael Margraf
-</source>
-        <translation>حقوق الطبع محفوظة (جيم) 2004 ، و 2005 من قبل مايكل مرغراف
-</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>
-Usage:  qucsedit [-r] file
-</source>
-        <translation>
-qucsedit [-r] file :إستعمال 
-</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>    -h  display this help and exit
-</source>
-        <translation>إضهار هذه المساعدة و الخروج h-
-</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>    -r  open file read-only
-</source>
-        <translation>فتح الملف للقراءة فقط r- 
-</translation>
-    </message>
-    <message>
-        <location line="+48"/>
-        <source>Too long command line argument!
-
-</source>
-        <translation>كذلك طول متغير السطر!
-
- </translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Wrong command line argument!
-
-</source>
-        <translation>خطأ في معامل  الأمِر!
-
-</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Only one filename allowed!
-
-</source>
-        <translation> اسم الملف واحد فقط سمحت!
-
-</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/andor4x2.cpp" line="-6"/>
-        <source>4x2 andor verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/andor4x3.cpp" line="-3"/>
-        <location filename="../qucs/components/andor4x4.cpp" line="-3"/>
-        <location filename="../qucs/components/comp_1bit.cpp" line="-3"/>
-        <location filename="../qucs/components/comp_2bit.cpp" line="-3"/>
-        <location filename="../qucs/components/comp_4bit.cpp" line="-3"/>
-        <location filename="../qucs/components/dmux2to4.cpp" line="-3"/>
-        <location filename="../qucs/components/dmux3to8.cpp" line="-3"/>
-        <location filename="../qucs/components/dmux4to16.cpp" line="-3"/>
-        <location filename="../qucs/components/fa1b.cpp" line="-3"/>
-        <location filename="../qucs/components/fa2b.cpp" line="-3"/>
-        <location filename="../qucs/components/ha1b.cpp" line="-3"/>
-        <location filename="../qucs/components/mux2to1.cpp" line="-3"/>
-        <location filename="../qucs/components/mux4to1.cpp" line="-3"/>
-        <location filename="../qucs/components/mux8to1.cpp" line="-3"/>
-        <source>transfer function high scaling factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/andor4x3.cpp" line="+2"/>
-        <location filename="../qucs/components/andor4x4.cpp" line="+2"/>
-        <location filename="../qucs/components/binarytogrey4bit.cpp" line="-1"/>
-        <location filename="../qucs/components/comp_1bit.cpp" line="+2"/>
-        <location filename="../qucs/components/comp_2bit.cpp" line="+2"/>
-        <location filename="../qucs/components/comp_4bit.cpp" line="+2"/>
-        <location filename="../qucs/components/dmux2to4.cpp" line="+2"/>
-        <location filename="../qucs/components/dmux3to8.cpp" line="+2"/>
-        <location filename="../qucs/components/dmux4to16.cpp" line="+2"/>
-        <location filename="../qucs/components/fa1b.cpp" line="+2"/>
-        <location filename="../qucs/components/fa2b.cpp" line="+2"/>
-        <location filename="../qucs/components/greytobinary4bit.cpp" line="-1"/>
-        <location filename="../qucs/components/ha1b.cpp" line="+2"/>
-        <location filename="../qucs/components/hpribin4bit.cpp" line="-1"/>
-        <location filename="../qucs/components/mux2to1.cpp" line="+2"/>
-        <location filename="../qucs/components/mux4to1.cpp" line="+2"/>
-        <location filename="../qucs/components/mux8to1.cpp" line="+2"/>
-        <source>output delay</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>4x2 AndOr</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/andor4x3.cpp" line="-5"/>
-        <source>4x3 andor verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>4x3 AndOr</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/andor4x4.cpp" line="-5"/>
-        <source>4x4 andor verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>4x4 AndOr</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/binarytogrey4bit.cpp" line="-5"/>
-        <source>4bit binary to grey converter verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/component.cpp" line="-273"/>
-        <location filename="../qucs/components/greytobinary4bit.cpp" line="-2"/>
-        <location filename="../qucs/components/hpribin4bit.cpp" line="-2"/>
-        <location filename="../qucs/components/logical_buf.cpp" line="-96"/>
-        <location filename="../qucs/components/logical_inv.cpp" line="-113"/>
-        <source>transfer function scaling factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>4Bit Bin2Grey</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/comp_1bit.cpp" line="-5"/>
-        <source>1bit comparator verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>1Bit Comparator</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/comp_2bit.cpp" line="-5"/>
-        <source>2bit comparator verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>2Bit Comparator</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/comp_4bit.cpp" line="-5"/>
-        <source>4bit comparator verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>4Bit Comparator</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/dff_SR.cpp" line="-8"/>
-        <source>D flip flop with set and reset verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/gatedDlatch.cpp" line="-5"/>
-        <location filename="../qucs/components/jkff_SR.cpp" line="-5"/>
-        <location filename="../qucs/components/tff_SR.cpp" line="-5"/>
-        <source>cross coupled gate transfer function high scaling factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/gatedDlatch.cpp" line="+2"/>
-        <location filename="../qucs/components/jkff_SR.cpp" line="+2"/>
-        <location filename="../qucs/components/tff_SR.cpp" line="+2"/>
-        <source>cross coupled gate transfer function low scaling factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/gatedDlatch.cpp" line="+2"/>
-        <location filename="../qucs/components/jkff_SR.cpp" line="+2"/>
-        <location filename="../qucs/components/tff_SR.cpp" line="+2"/>
-        <source>cross coupled gate delay</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>D-FlipFlop w/ SR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/DLS_1ton.cpp" line="-6"/>
-        <source>data voltage level shifter (digital to analogue) verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/DLS_nto1.cpp" line="-4"/>
-        <source>voltage level</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/DLS_nto1.cpp" line="+3"/>
-        <source>time delay</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>D2A Level Shifter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/DLS_nto1.cpp" line="-6"/>
-        <source>data voltage level shifter (analogue to digital) verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+26"/>
-        <source>A2D Level Shifter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/dmux2to4.cpp" line="-5"/>
-        <source>2to4 demultiplexer verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>2to4 Demux</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/dmux3to8.cpp" line="-5"/>
-        <source>3to8 demultiplexer verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>3to8 Demux</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/dmux4to16.cpp" line="-5"/>
-        <source>4to16 demultiplexer verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>4to16 Demux</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/fa1b.cpp" line="-5"/>
-        <source>1bit full adder verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>1Bit FullAdder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/fa2b.cpp" line="-5"/>
-        <source>2bit full adder verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>2Bit FullAdder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/gatedDlatch.cpp" line="-7"/>
-        <source>gated D latch verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>Gated D-Latch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
-        <source>4bit grey to binary converter verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>4Bit Grey2Bin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/ha1b.cpp" line="-5"/>
-        <source>1bit half adder verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>1Bit HalfAdder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hic0_full.cpp" line="-242"/>
-        <location filename="../qucs/components/hicumL0V1p2.cpp" line="-257"/>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-218"/>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="-213"/>
-        <source>forward d.c. high-injection roll-off current</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+48"/>
-        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+59"/>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+59"/>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+59"/>
-        <source>Exponent factor for emitter transit time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <location filename="../qucs/components/hicumL0V1p2.cpp" line="+5"/>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+5"/>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+5"/>
-        <source>Smoothing factor for current dependence</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hicumL0V1p2.cpp" line="-19"/>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-19"/>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="-19"/>
-        <source>BE capacitance ratio (maximum to zero-bias value) for d.c. transfer current</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hpribin4bit.cpp" line="-3"/>
-        <source>4bit highest priority encoder (binary form) verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>4Bit HPRI-Bin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/jkff_SR.cpp" line="-7"/>
-        <source>jk flip flop with set and reset verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>JK-FlipFlop w/ SR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/logic_0.cpp" line="-4"/>
-        <source>logic 0 verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>logic 0 voltage level</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>Logic 0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/logic_1.cpp" line="-4"/>
-        <source>logic 1 verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>logic 1 voltage level</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>Logic 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/MESFET.cpp" line="-57"/>
-        <source>Vto temperature coefficient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/msrstub.cpp" line="-26"/>
-        <source>microstrip radial stub</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>inner radius</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>outer radius</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>stub angle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>Microstrip Radial Stub</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/mux2to1.cpp" line="-5"/>
-        <source>2to1 multiplexer verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>2to1 Mux</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/mux4to1.cpp" line="-5"/>
-        <source>4to1 multiplexer verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>4to1 Mux</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/mux8to1.cpp" line="-5"/>
-        <source>8to1 multiplexer verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>8to1 Mux</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/pad2bit.cpp" line="+18"/>
-        <source>2bit pattern generator verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/pad3bit.cpp" line="+21"/>
-        <location filename="../qucs/components/pad4bit.cpp" line="+21"/>
-        <source>pad output value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
-        <source>2Bit Pattern</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/pad3bit.cpp" line="-3"/>
-        <source>3bit pattern generator verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>3Bit Pattern</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/pad4bit.cpp" line="-3"/>
-        <source>4bit pattern generator verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>4Bit Pattern</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/phototransistor.cpp" line="-64"/>
-        <source>Phototransistor verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>dark current</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+41"/>
-        <source>collector series resistance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>emitter series resistance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>base series resistance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>responsivity at relative selectivity=100%</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <source>relative selectivity polynomial coefficient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+21"/>
-        <source>Phototransistor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/rlcg.cpp" line="-40"/>
-        <source>RLCG transmission line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>RLCG</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>resistive load</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Ohm/m</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>inductive load</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>H/m</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>capacitive load</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>conductive load</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>S/m</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>RLCG Transmission Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/tff_SR.cpp" line="-7"/>
-        <source>T flip flop with set and reset verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>T-FlipFlop w/ SR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/vhdlfile.cpp" line="+41"/>
-        <location line="+7"/>
-        <source>generic variable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/schematic_file.cpp" line="-109"/>
-        <source>WARNING: Equations in &quot;%1&quot; are &apos;time&apos; typed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/nigbt.cpp" line="-45"/>
-        <source>NIGBT verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>gate-drain overlap area</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+3"/>
-        <source>m**2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1"/>
-        <source>area of the device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>MOS transconductance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>ambipolar recombination lifetime</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>metallurgical base width</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>gate-source capacitance per unit area</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+3"/>
-        <source>F/cm**2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1"/>
-        <source>gate-drain oxide capacitance per unit area</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>A/cm**2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>triode region factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>electron mobility</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+3"/>
-        <source>cm**2/Vs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1"/>
-        <source>hole mobility</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>base doping</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>1/cm**3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>transverse field factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+32"/>
-        <source>NIGBT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-56"/>
-        <source>avalanche uniformity factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>avalanche multiplication exponent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>emitter saturation current density</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>gate-drain overlap depletion threshold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/schematic_file.cpp" line="-1437"/>
-        <source>Cannot save C++ file &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/module.cpp" line="+116"/>
-        <location filename="../qucs/qucs.cpp" line="+625"/>
-        <location line="+101"/>
-        <source>verilog-a user devices</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+65"/>
-        <location line="+2"/>
-        <source>lumped components</source>
-        <translation type="unfinished">صنف العناصر</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>sources</source>
-        <translation type="unfinished">المصادر</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>probes</source>
-        <translation type="unfinished">تحقيقات</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>transmission lines</source>
-        <translation type="unfinished">انتقال الخط</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <source>nonlinear components</source>
-        <translation type="unfinished">العناصر غير الخطية</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+2"/>
-        <source>verilog-a devices</source>
-        <translation type="unfinished">أجهزة فيريلوج</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>digital components</source>
-        <translation type="unfinished">عناصر الرقمية</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+2"/>
-        <source>file components</source>
-        <translation type="unfinished">عناصر الملفات</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>simulations</source>
-        <translation type="unfinished">المحاكاة </translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="+1710"/>
-        <source>diagrams</source>
-        <translation type="unfinished">رسوم بيانية</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="-1839"/>
-        <source>paintings</source>
-        <translation type="unfinished">لوحات</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>external sim components</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hicumL2V2p24.cpp" line="-287"/>
-        <source>HICUM Level 2 v2.24 verilog device</source>
-        <translation type="unfinished">أجهزة فيريلوج  v2.23 2 HICUM  {2.24?}</translation>
-    </message>
-    <message>
-        <location line="+309"/>
-        <source>HICUM L2 v2.24</source>
-        <translation type="unfinished">HICUM L2 v2.24</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="-67"/>
-        <source>HICUM Level 0 v1.3 verilog device</source>
-        <translation type="unfinished">أجهزة فيريلوج  v2.23 0 HICUM  {1.3?}</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-34"/>
-        <source>high-injection roll-off current</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+194"/>
-        <source>TC of iqf (bandgap coefficient of zero bias hole charge)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+24"/>
-        <source>Emitter part coefficient of the zero bias hole charge temperature variation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Collector part coefficient of the zero bias hole charge temperature variation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Specific recombination current at the BC barrier for high forward injection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="+284"/>
-        <source>npn HICUM L0 v1.3</source>
-        <translation type="unfinished">npn HICUM L0 v1.3</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>pnp HICUM L0 v1.3</source>
-        <translation type="unfinished">pnp HICUM L0 v1.3</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-255"/>
-        <source>HICUM Level 0 v1.2g verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+225"/>
-        <source>TC of avalanche prefactor, identical to alfav of Hicum/L2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>TC of avalanche exponential factor, identical to alqav of Hicum/L2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <source>Bandgap TC parameter of ver</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Bandgap TC parameter of vef</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+24"/>
-        <source>npn HICUM L0 v1.2g</source>
-        <translation type="unfinished">npn HICUM L0 v1.2g {0 ?}</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>pnp HICUM L0 v1.2g</source>
-        <translation type="unfinished">pnp HICUM L0 v1.2g {0 ?}</translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hybrid.cpp" line="-37"/>
-        <source>hybrid (unsymmetrical 3dB coupler)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+50"/>
-        <source>Hybrid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/ctline.cpp" line="-40"/>
-        <source>coupled transmission lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+36"/>
-        <source>characteristic impedance of even mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>characteristic impedance of odd mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>relative dielectric constant of even mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>relative dielectric constant of odd mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>attenuation factor per length of even mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>attenuation factor per length of odd mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>Coupled Transmission Line</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/tunneldiode.cpp" line="-35"/>
@@ -11137,1563 +12143,894 @@ qucsedit [-r] file :إستعمال
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/components/hicumL0V1p3.cpp" line="-285"/>
-        <source>Flag for using third order solution for transfer current</source>
-        <translation type="unfinished"></translation>
+        <location filename="../qucs/components/twistedpair.cpp" line="-50"/>
+        <source>twisted pair transmission line</source>
+        <translation>خط الإتصال للزوج الملتوي</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>bias dependence for reverse Early voltage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+217"/>
-        <source>Flag for turning temperature dependence of tef0 on and off</source>
-        <translation type="unfinished"></translation>
+        <location line="+36"/>
+        <source>diameter of conductor</source>
+        <translation>قطر الناقل</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>TC of Reverse Early voltage</source>
-        <translation type="unfinished"></translation>
+        <source>diameter of wire (conductor and insulator)</source>
+        <translation>قطر السلك(الناقل و العازل)ـ</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>TC of AVER</source>
-        <translation type="unfinished"></translation>
+        <source>physical length of the line</source>
+        <translation>طول الفيزيائى للخيط</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Bandgap difference between base and BE-junction</source>
-        <translation type="unfinished"></translation>
+        <source>twists per length in 1/m</source>
+        <translation>طول اللفة ب 1/م</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Frist-order TC of iqfh</source>
-        <translation type="unfinished"></translation>
+        <source>dielectric constant of insulator</source>
+        <translation>ثابت العازل الكهربائي من العازل</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Second-order TC of iqfh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/mslange.cpp" line="-36"/>
-        <source>microstrip lange coupler</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+53"/>
-        <source>Microstrip Lange Coupler</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/bsim3v34nMOS.cpp" line="-817"/>
-        <source>bsim3v34nMOS verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location filename="../qucs/components/bsim3v34pMOS.cpp" line="-814"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location filename="../qucs/components/bsim4v30nMOS.cpp" line="+19"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location filename="../qucs/components/bsim4v30pMOS.cpp" line="+18"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <source>-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+21"/>
-        <source>bsim3v34nMOS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/bsim3v34pMOS.cpp" line="-815"/>
-        <source>bsim3v34pMOS verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+836"/>
-        <source>bsim3v34pMOS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/bsim4v30nMOS.cpp" line="-558"/>
-        <source>bsim4v30nMOS verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+577"/>
-        <source>bsim4v30nMOS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/bsim4v30pMOS.cpp" line="-557"/>
-        <source>bsim4v30pMOS verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+576"/>
-        <source>bsim4v30pMOS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/components/hicumL2V2p31n.cpp" line="-321"/>
-        <source>hicumL2V2p31n verilog device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Weight factor for the low current minority charge</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Parameter describing the slope of hjEi(VBE)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Smoothing parameter for hjEi(VBE) at high voltage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+160"/>
-        <source>Time constant for modeling carrier jam at low VCE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+30"/>
-        <source>Barrier voltage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Normalization parameter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Smoothing parameter for barrier voltage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>fitting factor for critical current</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>Flag for turning on and off of correlated noise implementation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Emitter resistance flicker noise coefficient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Emitter resistance flicker noise exponent factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+52"/>
-        <source>Bandgap difference between B and B-E junction used for hjEi0 and hf0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Temperature coefficient for ahjEi</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Temperature coefficient for hjEi0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Temperature coefficient for Rth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>First order relative TC of parameter Rth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+33"/>
-        <source>HICUM L2 V2.31</source>
-        <translation type="unfinished"></translation>
+        <location line="+22"/>
+        <source>Twisted-Pair</source>
+        <translation>زوج الملتوي</translation>
     </message>
     <message>
         <location filename="../qucs/components/vacomponent.cpp" line="+1"/>
         <source>Symbol file not found: %1</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vccs.cpp" line="-41"/>
+        <source>voltage controlled current source</source>
+        <translation>مصدر التيار مسيطر الفولت  </translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>forward transconductance</source>
+        <translation> transconductance أرسل </translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Voltage Controlled Current Source</source>
+        <translation>مصدر التيار مسيطر الفولت  </translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vcresistor.cpp" line="+23"/>
+        <location filename="../qucs/components/vcvs.cpp" line="-42"/>
+        <source>voltage controlled voltage source</source>
+        <translation>مصدر الفولت مسيطر الفولت  </translation>
+    </message>
+    <message>
+        <location line="+47"/>
+        <source>resistance gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Voltage Controlled Resistor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vcvs.cpp" line="+56"/>
+        <source>Voltage Controlled Voltage Source</source>
+        <translation>مصدر الفولت مسيطر الفولت  </translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/verilogfile.cpp" line="+32"/>
+        <location line="+24"/>
+        <source>Verilog file</source>
+        <translation>ملف فيريلوج </translation>
+    </message>
+    <message>
+        <location line="-21"/>
+        <source>Name of Verilog file</source>
+        <translation> إسم ملف فيريلوج </translation>
+    </message>
+    <message>
+        <location line="+98"/>
+        <source>verilog</source>
+        <translation>فيريلوج </translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <location filename="../qucs/components/vhdlfile.cpp" line="+221"/>
+        <location filename="../qucs/schematic_file.cpp" line="+25"/>
+        <source>ERROR: No file name in %1 component &quot;%2&quot;.</source>
+        <translation>خطأ : لايوجد اسم الملف من %1  العنصر &quot;٪ 2&quot;.</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <location filename="../qucs/components/vhdlfile.cpp" line="+11"/>
+        <source>ERROR: Cannot open %1 file &quot;%2&quot;.</source>
+        <translation>.خطأ : لا يمكن إنشاء ٪ 1 الملف &quot;%2&quot;ـ</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vexp.cpp" line="-40"/>
+        <source>exponential voltage source</source>
+        <translation>تضاعف مصدر الفولت </translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>voltage before rising edge</source>
+        <translation>قبل أن يرتفع الحد الحالي للفولت</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>maximum voltage of the pulse</source>
+        <translation>الحد الأقصى للنبض الفولت  </translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>rise time of the rising edge</source>
+        <translation>  ارتفاع وقت الحد الأمامي</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>fall time of the falling edge</source>
+        <translation>إنتهاء الوقت لمتابعة الحد</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Exponential Voltage Pulse</source>
+        <translation>تضاعف نبض الفولت </translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vfile.cpp" line="-35"/>
+        <source>file based voltage source</source>
+        <translation>ملف مصدر الفولت</translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source>File Based Voltage Source</source>
+        <translation>ملف مصدر الفولت</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vhdlfile.cpp" line="-201"/>
+        <location line="+24"/>
+        <source>VHDL file</source>
+        <translation>VHDLملف </translation>
+    </message>
+    <message>
+        <location line="-21"/>
+        <source>Name of VHDL file</source>
+        <translation>VHDLإسم ملف </translation>
+    </message>
+    <message>
+        <location line="+111"/>
+        <source>vhdl</source>
+        <translation>vhdl</translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <location line="+7"/>
+        <source>generic variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/volt_ac.cpp" line="-29"/>
+        <source>ideal ac voltage source</source>
+        <translation>مصدر خاص بالمنحنى المثالي</translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>ac Voltage Source</source>
+        <translation>مصدر خاص بالمنحنى </translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/volt_dc.cpp" line="-22"/>
+        <source>ideal dc voltage source</source>
+        <translation>مصدر التيار المستمر المثالي</translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>dc Voltage Source</source>
+        <translation>مصدر الفولتاج لتيار المستمر</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/volt_noise.cpp" line="-29"/>
+        <source>noise voltage source</source>
+        <translation>مصدر  التشويش في الفولت  </translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>voltage power spectral density in V^2/Hz</source>
+        <translation>V^2/Hz الكثافة الطيفية قوة الفولتاج  في  </translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Noise Voltage Source</source>
+        <translation>مصدر  التشويش في الفولت  </translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vprobe.cpp" line="+23"/>
+        <source>voltage probe</source>
+        <translation>تحقيق الضغط</translation>
+    </message>
+    <message>
+        <location line="+44"/>
+        <source>Voltage Probe</source>
+        <translation>تحقيق الضغط</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vpulse.cpp" line="-37"/>
+        <source>ideal voltage pulse source</source>
+        <translation>مصدر ذبذبات الضغط المثالي</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>voltage before and after the pulse</source>
+        <translation>الفولتاج قبل و بعد الذبذبة</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>voltage of the pulse</source>
+        <translation>الفولتاج لذبذبة</translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Voltage Pulse</source>
+        <translation>ذبذبة الفولتاج</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vrect.cpp" line="-39"/>
+        <source>ideal rectangle voltage source</source>
+        <translation>المصدر المثالي لذبذبة التيار </translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>voltage of high signal</source>
+        <translation>فولتاج للإشارة العالية</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Rectangle Voltage</source>
+        <translation>فولتاج المستطيل</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/curvediagram.cpp" line="+250"/>
+        <source>Locus Curve</source>
+        <translation>المكان المنحن</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/diagram.h" line="+32"/>
+        <source> &lt;invalid&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/marker.cpp" line="+287"/>
+        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+255"/>
+        <source>invalid</source>
+        <translation>غير صحيح</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/polardiagram.cpp" line="+101"/>
+        <source>Polar</source>
+        <translation>القطبي</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/psdiagram.cpp" line="+128"/>
+        <source>Polar-Smith Combi</source>
+        <translation>Polar-Smith Combi</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Smith-Polar Combi</source>
+        <translation>Smith-Polar Combi</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/rect3ddiagram.cpp" line="+1150"/>
+        <source>3D-Cartesian</source>
+        <translation>3D - ديكارت</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/rectdiagram.cpp" line="+248"/>
+        <source>Cartesian</source>
+        <translation>ديكارت</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/smithdiagram.cpp" line="+111"/>
+        <source>Smith Chart</source>
+        <translation>سميث الرسم البياني</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Admittance Smith</source>
+        <translation>القبول سميث</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/tabdiagram.cpp" line="-92"/>
+        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+158"/>
+        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+88"/>
+        <source>no variables</source>
+        <translation>لا متغيرات</translation>
+    </message>
+    <message>
+        <location line="+141"/>
+        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+49"/>
+        <location line="+89"/>
+        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+133"/>
+        <source>wrong dependency</source>
+        <translation>من الخطأ الاعتماد</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location filename="../qucs/diagrams/timingdiagram.cpp" line="-122"/>
+        <location line="+113"/>
+        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+7"/>
+        <source>no data</source>
+        <translation>لا توجد بيانات</translation>
+    </message>
+    <message>
+        <location line="+98"/>
+        <source>Tabular</source>
+        <translation>مجدول</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+232"/>
+        <source>Timing Diagram</source>
+        <translation>توقيت الشكل البياني</translation>
+    </message>
+    <message>
+        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+46"/>
+        <source>Truth Table</source>
+        <translation>الجدول الحقيقة </translation>
+    </message>
+    <message>
+        <location filename="../qucs/dialogs/librarydialog.cpp" line="-267"/>
+        <source>ERROR: Cannot open file &quot;%1&quot;.
+</source>
+        <translation>&quot;خطأ : لا يمكن إنشاء الملف &quot;٪ 1.
+‏</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>ERROR: Cannot create user library subdirectory !
+</source>
+        <translation> خطأ : لا يمكن إنشاء دليل فرعي لمستخدم المكتبة !</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>ERROR: Cannot create file &quot;%1&quot;.
+</source>
+        <translation>&quot;خطأ : لا يمكن إنشاء الملف &quot;٪ 1.
+</translation>
+    </message>
+    <message>
+        <location filename="../qucs/imagewriter.cpp" line="+251"/>
+        <location line="+8"/>
+        <location line="+4"/>
+        <location line="+4"/>
+        <source>Export to image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-15"/>
+        <source>Inkscape start error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Successfully exported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Disk write error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Unsupported format of graphics file. 
+Use PNG, JPEG or SVG graphics!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/misc.cpp" line="+343"/>
+        <location line="+63"/>
+        <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
+        <translation>خطأ : الوقت غير ملائم في شكل&quot;%1&quot;. استخدامالإجابي لعدد الوحدات</translation>
+    </message>
+    <message>
+        <location filename="../qucs/module.cpp" line="+116"/>
+        <location filename="../qucs/qucs.cpp" line="+627"/>
+        <location line="+203"/>
+        <location line="+15"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+149"/>
+        <source>verilog-a user devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+66"/>
+        <location line="+2"/>
+        <source>lumped components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>probes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>transmission lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>nonlinear components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>verilog-a devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>digital components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>file components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>simulations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/qucs.cpp" line="+1316"/>
+        <source>diagrams</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/qucs.cpp" line="-1563"/>
+        <source>paintings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>external sim components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/mouseactions.cpp" line="-106"/>
+        <source>Edit Properties</source>
+        <translation>تعديل خصائص</translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Export as image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>power matching</source>
+        <translation>مطابقة الإشعال</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>noise matching</source>
+        <translation>مطابقة الضوضاء </translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>2-port matching</source>
+        <translation> مطابقة2-port  </translation>
+    </message>
+    <message>
+        <location line="+61"/>
+        <source>The ground potential cannot be labeled!</source>
+        <translation>المحتملة في الميدان لا يمكن أن توصف!</translation>
+    </message>
+    <message>
+        <location filename="../qucs/octave_window.cpp" line="+1"/>
+        <source>Octave not found in: %1
+
+Set the Octave location on the application settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/paintings/arrow.cpp" line="+141"/>
+        <source>Arrow</source>
+        <translation>السهم</translation>
+    </message>
+    <message>
+        <location filename="../qucs/paintings/ellipse.cpp" line="+98"/>
+        <source>Ellipse</source>
+        <translation>القطع الناقص</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>filled Ellipse</source>
+        <translation>شغل القطع الناقص</translation>
+    </message>
+    <message>
+        <location line="+265"/>
+        <source>Edit Ellipse Properties</source>
+        <translation>تعديل خصائص القطع الناقص</translation>
+    </message>
+    <message>
+        <location filename="../qucs/paintings/ellipsearc.cpp" line="+91"/>
+        <source>Elliptic Arc</source>
+        <translation>Elliptic Arc</translation>
+    </message>
+    <message>
+        <location line="+296"/>
+        <source>Edit Arc Properties</source>
+        <translation>تعديل خصائص القوس</translation>
+    </message>
+    <message>
+        <location filename="../qucs/paintings/graphicline.cpp" line="+90"/>
+        <source>Line</source>
+        <translation>الخط</translation>
+    </message>
+    <message>
+        <location line="+236"/>
+        <source>Edit Line Properties</source>
+        <translation>تعديل خصائص الخط</translation>
+    </message>
+    <message>
+        <location filename="../qucs/paintings/graphictext.cpp" line="+129"/>
+        <source>Text</source>
+        <translation>النص</translation>
+    </message>
+    <message>
+        <location filename="../qucs/paintings/rectangle.cpp" line="+97"/>
+        <source>Rectangle</source>
+        <translation>المستطيل</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>filled Rectangle</source>
+        <translation>شغل مستطيل</translation>
+    </message>
+    <message>
+        <location line="+267"/>
+        <source>Edit Rectangle Properties</source>
+        <translation>تعديل خصائص مستطيل</translation>
+    </message>
+    <message>
+        <location filename="../qucs/printerwriter.cpp" line="+96"/>
+        <source>Print Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/qucs_actions.cpp" line="-148"/>
+        <source>Cannot create output file!</source>
+        <translation>لا يمكن إنشاء ملف الانتاج!</translation>
+    </message>
+    <message>
+        <location filename="../qucs/qucs.cpp" line="-433"/>
+        <location line="+976"/>
+        <location line="+69"/>
+        <location line="+122"/>
+        <location line="+12"/>
+        <location line="+299"/>
+        <source>untitled</source>
+        <translation>بدون عنوان</translation>
+    </message>
+    <message>
+        <location filename="../qucs/schematic_file.cpp" line="-1230"/>
+        <location line="+707"/>
+        <source>Format Error:
+&apos;Painting&apos; field is not closed!</source>
+        <translation>خطأ في الشكل :
+الطلاء الميدانية ليست مغلقة!</translation>
+    </message>
+    <message>
+        <location line="-689"/>
+        <source>Wrong document version: </source>
+        <translation>  الخطأ في إصدار الوثيقة :</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <location line="+24"/>
+        <source>Clipboard Format Error:
+Unknown field!</source>
+        <translation> خطأ  في شكل الحافظة:
+ميدان مجهول!</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Cannot save C++ file &quot;%1&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Cannot save JSON symbol file &quot;%1&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+78"/>
+        <source>Cannot save document!</source>
+        <translation>لا يمكن حفظ الوثيقة!</translation>
+    </message>
+    <message>
+        <location line="+189"/>
+        <location line="+5"/>
+        <source>Format Error:
+Wrong property field limiter!</source>
+        <translation>خطأ في الشكل :
+خطأ مجال الملكية المحدد!</translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <source>Format Error:
+Unknown property: </source>
+        <translation>خطأ في الشكل :
+خصائص غير معروف :</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Format Error:
+Number expected in property field!</source>
+        <translation>خطأ في الشكل :
+العدد المتوقع في مجال الملكية!</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Format Error:
+&apos;Property&apos; field is not closed!</source>
+        <translation>خطأ في الشكل :
+الخصائص الميدانية ليست مغلقة!</translation>
+    </message>
+    <message>
+        <location line="+68"/>
+        <source>Format Error:
+&apos;Component&apos; field is not closed!</source>
+        <translation>خطأ في الشكل :
+الطلاء الميدانية ليست مغلقة!</translation>
+    </message>
+    <message>
+        <location line="+59"/>
+        <source>Format Error:
+Wrong &apos;wire&apos; line format!</source>
+        <translation>خطأ في الشكل :
+خطأ شكل الخط &apos;سلك&apos; !</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Format Error:
+&apos;Wire&apos; field is not closed!</source>
+        <translation>خطأ في الشكل :
+ الحقل&apos;&apos;سلك الميدانية ليس مغلق!</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Format Error:
+Unknown diagram!</source>
+        <translation>خطأ في الشكل :
+رسم بياني غير معروفة!</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Format Error:
+Wrong &apos;diagram&apos; line format!</source>
+        <translation>خطأ في الشكل :
+خطأ  في شكل خط &apos;الرسم البياني&apos;  !</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Format Error:
+&apos;Diagram&apos; field is not closed!</source>
+        <translation>خطأ في الشكل :
+ حقل &apos;الرسم البياني&apos; ليس مغلق!</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Format Error:
+Wrong &apos;painting&apos; line delimiter!</source>
+        <translation>خطأ في الشكل :
+خطأ &apos;لوحة&apos; خط محدد!</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Format Error:
+Unknown painting!</source>
+        <translation>خطأ في الشكل :
+لوحة غير معروفة!</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Format Error:
+Wrong &apos;painting&apos; line format!</source>
+        <translation>خطأ في الشكل :
+خطأ &apos;لوحة&apos; خط محدد!</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Cannot load document: </source>
+        <translation>لا يمكن تحميل الوثيقة :</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Wrong document type: </source>
+        <translation>خطأ نوع الوثيقة :</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location filename="../qucs-filter/stepz_filter.cpp" line="+45"/>
+        <location filename="../qucs-filter-v2/qf_settings.cpp" line="+90"/>
+        <location line="+72"/>
+        <location filename="../qucs-help/main.cpp" line="+104"/>
+        <source>Warning</source>
+        <translation>تحذير</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Wrong document version 
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+44"/>
+        <source>File Format Error:
+Unknown field!</source>
+        <translation>خطأ في تنسيق ملف :حقل مجهول!</translation>
+    </message>
+    <message>
+        <location line="+296"/>
+        <source>ERROR: Component &quot;%1&quot; has no analog model.</source>
+        <translation>خطأ : العنصر &quot;٪ 1&quot; ليس لديها نموذج التناظرية.</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>ERROR: Component &quot;%1&quot; has no digital model.</source>
+        <translation>خطأ : العنصر &quot;٪ 1&quot; ليس لديها نموذج رقمي.</translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>ERROR: Cannot load subcircuit &quot;%1&quot;.</source>
+        <translation>خطأ : لا يمكن تحميل subcircuit &quot;٪ 1&quot;.</translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>WARNING: Skipping library component &quot;%1&quot;.</source>
+        <translation>تحذير : مكتبة تخطي عنصر &quot;٪ 1&quot;.</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>ERROR: Cannot load library component &quot;%1&quot;.</source>
+        <translation>خطأ : لا يمكن تحميل مكتبة عنصر &quot;٪ 1&quot;.</translation>
+    </message>
+    <message>
+        <location line="+186"/>
+        <source>WARNING: Ignore simulation component in subcircuit &quot;%1&quot;.</source>
+        <translation>تحذير : تجاهل عنصر المحاكاة في subcircuit &quot;٪ 1&quot;.</translation>
+    </message>
+    <message>
+        <location line="+201"/>
+        <source>WARNING: Equations in &quot;%1&quot; are &apos;time&apos; typed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+77"/>
+        <source>ERROR: Only one digital simulation allowed.</source>
+        <translation>خطأ : واحد فقط يسمح المحاكاة الرقمية.</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>ERROR: Analog and digital simulations cannot be mixed.</source>
+        <translation>خطأ : النظير والمحاكاة الرقمية لا يمكن أن تكون مختلطة.</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>ERROR: Digital simulation needs at least one digital source.</source>
+        <translation>خطأ : المحاكاة الرقمية للاحتياجات واحد على الأقل الرقمية المصدر.</translation>
+    </message>
+    <message>
+        <location filename="../qucs-activefilter/filter.cpp" line="+234"/>
+        <source>Part list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Filter order = %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Zeros list Pk=Re+j*Im</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>LPF prototype poles list Pk=Re+j*Im</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Poles list Pk=Re+j*Im</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs-edit/main.cpp" line="+76"/>
+        <source>Qucs Editor Version </source>
+        <translation>Qucs محرر النسخة </translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>
+Very simple text editor for Qucs
+</source>
+        <translation>
+Qucsمحرر نصوص بسيط جدا ل</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copyright (C) 2004, 2005 by Michael Margraf
+</source>
+        <translation>حقوق الطبع محفوظة (جيم) 2004 ، و 2005 من قبل مايكل مرغراف
+</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>
+Usage:  qucsedit [-r] file
+</source>
+        <translation>
+qucsedit [-r] file :إستعمال 
+</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>    -h  display this help and exit
+</source>
+        <translation>إضهار هذه المساعدة و الخروج h-
+</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>    -r  open file read-only
+</source>
+        <translation>فتح الملف للقراءة فقط r- 
+</translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Too long command line argument!
+
+</source>
+        <translation>كذلك طول متغير السطر!
+
+ </translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Wrong command line argument!
+
+</source>
+        <translation>خطأ في معامل  الأمِر!
+
+</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Only one filename allowed!
+
+</source>
+        <translation> اسم الملف واحد فقط سمحت!
+
+</translation>
     </message>
     <message>
         <location filename="../qucs-filter/stepz_filter.cpp" line="+1"/>
@@ -12703,31 +13040,1033 @@ a substrate with lower permittivity and larger height.
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../qucs-filter-v2/qf_settings.cpp" line="-71"/>
+        <location filename="../qucs-help/main.cpp" line="+1"/>
+        <source>Cannot save settings !</source>
+        <translation>لا يمكن حفظ الإعدادات!</translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Cannot save settings file !</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QucsActiveFilter</name>
+    <message>
+        <location filename="../qucs-activefilter/qucsactivefilter.cpp" line="+41"/>
+        <source>&amp;File</source>
+        <translation>‏‏&amp;ملف</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>E&amp;xit</source>
+        <translation>&amp;خروج</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&amp;Help</source>
+        <translation>مساعدة&amp;</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Help...</source>
+        <translation>مساعدة...</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>&amp;About QucsActiveFilter...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>About Qt...</source>
+        <translation>كيو تي حول...</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <location line="+481"/>
+        <source>Passband attenuation, Ap (dB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-480"/>
+        <source>Stopband attenuation, As (dB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+477"/>
+        <source>Cuttof frequency, Fc (Hz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-476"/>
+        <location line="+477"/>
+        <source>Stopband frequency, Fs (Hz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-476"/>
+        <source>Passband ripple Rp(dB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Passband gain, Kv (dB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Filter order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Approximation type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Butterworth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Chebyshev</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Inverse Chebyshev</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cauer (Elliptic)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Bessel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>User defined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Manually define transfer function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Calculate and copy to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Calculation console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Filter topology</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Filter type:</source>
+        <translation>مرشح من نوع :</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>LowPass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>High Pass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Band Pass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Band Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Multifeedback (MFB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sallen-Key (S-K)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+369"/>
+        <source>Cauer section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-362"/>
+        <source>General amplitude frequency response</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Filter topology preview (one stage)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>Filter parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Transfer function and Topology</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>General filter amplidure-frequency response</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Filter topology preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Filter calculation console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>Upper cutoff frequency of band-pass/band-stop filter is
+less than lower. Unable to implement such filter.
+Change parameters and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+63"/>
+        <location line="+23"/>
+        <location line="+21"/>
+        <source>Unable to implement filter with such parameters and topology 
+Change parapeters and/or topology and try again!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-40"/>
+        <source>Unable to use Cauer section for Chebyshev or Butterworth 
+frequency response. Try to use another topology.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Unable to use MFB filter for Cauer or Inverse Chebyshev 
+frequency response. Try to use another topology.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Function will be implemented in future version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>
+Filter calculation was sucessfull</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>
+Filter calculation terminated with error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+140"/>
+        <source>Upper cutoff frequency, Fu (Hz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lower cuttoff frequency, Fl (Hz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Transient bandwidth, TW (Hz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Active filter design</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>About...</source>
+        <translation>حول...</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>
+Active Filter synthesis program
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copyright (C) 2014 by</source>
+        <translation type="unfinished">حقوق الطبع محفوظة (جيم) 2004 ،  2005 من قبل  {2014 ?}</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>About Qt</source>
+        <translation>عن كيو تي</translation>
+    </message>
 </context>
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+57"/>
-        <location line="+460"/>
-        <location line="+211"/>
-        <location line="+44"/>
-        <location line="+17"/>
-        <location line="+14"/>
+        <location filename="../qucs/qucs.cpp" line="-1517"/>
+        <source>Schematic</source>
+        <translation>تخطيطي</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Data Display</source>
+        <translation>عرض البيانات </translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Qucs Documents</source>
+        <translation>وثائق Qucs</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1355"/>
+        <source>VHDL Sources</source>
+        <translation>مصادر VHDL</translation>
+    </message>
+    <message>
+        <location line="-1354"/>
+        <location line="+1355"/>
+        <source>Verilog Sources</source>
+        <translation>مصادر verilog</translation>
+    </message>
+    <message>
+        <location line="-1354"/>
+        <location line="+1355"/>
+        <source>Verilog-A Sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1354"/>
+        <location line="+1355"/>
+        <source>Octave Scripts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1354"/>
+        <source>Spice Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1356"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-19"/>
+        <source>Any File</source>
+        <translation>أية ملفات</translation>
+    </message>
+    <message>
+        <source>Others</source>
+        <translation type="obsolete">الآخرين</translation>
+    </message>
+    <message>
+        <source>Datasets</source>
+        <translation type="obsolete">بيانات</translation>
+    </message>
+    <message>
+        <source>Data Displays</source>
+        <translation type="obsolete">عرض البيانات </translation>
+    </message>
+    <message>
+        <location line="+790"/>
+        <source>Verilog</source>
+        <translation>فيريلوج </translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>VHDL</source>
+        <translation>VHDL</translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>Schematics</source>
+        <translation>الخطط</translation>
+    </message>
+    <message>
+        <location line="-2027"/>
+        <source>New</source>
+        <translation>جديد</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Open</source>
+        <translation>‏يفتح</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Delete</source>
+        <translation>حذف </translation>
+    </message>
+    <message>
         <location line="+16"/>
-        <location line="+37"/>
-        <location line="+211"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-1085"/>
+        <source>Projects</source>
+        <translation> مشاريع</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>content of project directory</source>
+        <translation>مضمون مشروع الدليل</translation>
+    </message>
+    <message>
+        <source>Content of</source>
+        <translation type="obsolete">محتوى</translation>
+    </message>
+    <message>
+        <source>Note</source>
+        <translation type="obsolete">علما</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Content</source>
+        <translation>محتوى</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>content of current project</source>
+        <translation>مضمون المشروع الحالي</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Search Components</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Components</source>
+        <translation>عناصر </translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>components and diagrams</source>
+        <translation>المكونات ورسوم بيانية</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Manage Libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <location line="+8"/>
+        <source>Libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>system and user component libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+77"/>
+        <location line="+3"/>
+        <location line="+64"/>
+        <location line="+3"/>
+        <location line="+492"/>
+        <location line="+25"/>
+        <location line="+20"/>
+        <location line="+19"/>
+        <location line="+10"/>
+        <location line="+88"/>
+        <location line="+995"/>
+        <location line="+28"/>
+        <location line="+70"/>
+        <location line="+309"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+6"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-567"/>
+        <location line="+103"/>
+        <location line="+62"/>
+        <location line="+32"/>
+        <location line="+16"/>
+        <location line="+10"/>
+        <location line="+5"/>
+        <location line="+295"/>
+        <location line="+15"/>
+        <location line="+19"/>
+        <location line="+138"/>
+        <source>Error</source>
+        <translation>خطأ</translation>
+    </message>
+    <message>
+        <location line="-2153"/>
+        <location line="+67"/>
+        <source>Cannot open &quot;%1&quot;.</source>
+        <translation>لا نستطيع فتح &quot;%1.</translation>
+    </message>
+    <message>
+        <location line="-64"/>
+        <location line="+67"/>
+        <source>Library is corrupt.</source>
+        <translation>المكتبة فاسدة.</translation>
+    </message>
+    <message>
+        <location line="+160"/>
+        <location line="+461"/>
+        <location line="+70"/>
+        <location line="+52"/>
+        <location line="+8"/>
+        <location line="+28"/>
+        <location line="+11"/>
+        <location line="+26"/>
+        <location line="+213"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-895"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+38"/>
         <location line="+14"/>
-        <location line="+830"/>
+        <location line="+685"/>
         <source>Info</source>
         <translation>معلومات</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-923"/>
+        <location line="-868"/>
+        <source>Default icon not found:
+ %1.png</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="obsolete">إعادة تسمية</translation>
+    </message>
+    <message>
+        <location line="+240"/>
+        <source>-port</source>
+        <translation>-الميناء </translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source>Copying Qucs document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+678"/>
+        <source>The document contains unsaved changes!
+</source>
+        <translation>وتتضمن هذه الوثيقة التغييرات غير المحفوظة!
+</translation>
+    </message>
+    <message>
+        <location line="-677"/>
+        <source>Do you want to save the changes before copying?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>&amp;Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <location line="+678"/>
+        <location filename="../qucs/qucs_init.cpp" line="+66"/>
+        <source>&amp;Save</source>
+        <translation>&amp; حفظ</translation>
+    </message>
+    <message>
+        <location line="-656"/>
+        <source>Copy file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Enter new name:</source>
+        <translation>أدخل الاسم الجديد :</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Cannot rename an open file!</source>
+        <translation>لا يمكن إعادة تسمية الملف المفتوح!</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Rename file</source>
+        <translation>إعادة تسمية الملف</translation>
+    </message>
+    <message>
+        <source>Cannot rename file: </source>
+        <translation type="obsolete">لا يمكن إعادة تسمية الملف :</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Cannot delete an open file!</source>
+        <translation>لا يمكن حذف ملف مفتوح!</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location line="+32"/>
+        <location line="+192"/>
+        <location line="+232"/>
+        <location line="+492"/>
+        <source>Warning</source>
+        <translation>تحذير</translation>
+    </message>
+    <message>
+        <location line="-947"/>
+        <source>This will delete the file permanently! Continue ?</source>
+        <translation>حذف هذا الملف نهائيا! الاستمرار؟</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+457"/>
+        <location line="+369"/>
+        <source>No</source>
+        <translation>لا</translation>
+    </message>
+    <message>
+        <location line="-826"/>
+        <location line="+457"/>
+        <location line="+369"/>
+        <source>Yes</source>
+        <translation>نعم</translation>
+    </message>
+    <message>
+        <source>Cannot delete schematic: </source>
+        <translation type="obsolete">لا يمكن حذف التخطيطي :</translation>
+    </message>
+    <message>
+        <location line="-979"/>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Verilog source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Verilog-A source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>VHDL source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>data file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>data display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>schematic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>VHDL configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+166"/>
+        <source>Cannot create work directory !</source>
+        <translation>لا يمكن إنشاء دليل عمل!</translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>Cannot create project directory !</source>
+        <translation>لا يمكن إنشاء دليل للمشروع!</translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>Cannot access project directory: </source>
+        <translation>لا يمكن الوصول إلى مشروع الدليل :</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <location line="+53"/>
+        <source> - Project: </source>
+        <translation>-المشروع :</translation>
+    </message>
+    <message>
+        <location line="-45"/>
+        <source>Choose Project Directory for Opening</source>
+        <translation>اختيار مشروع دليل لافتتاح</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>No project is selected !</source>
+        <translation>لم يتم اختيار المشروع!</translation>
+    </message>
+    <message>
+        <location line="+52"/>
+        <source>Cannot remove directory: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-177"/>
+        <location line="+185"/>
+        <source>Cannot delete file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-265"/>
+        <source>Cannot copy file to identical name: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Cannot copy schematic: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <source>Enter new filename:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Cannot rename file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+243"/>
+        <source>Cannot delete an open project !</source>
+        <translation>لا يمكن حذف هذا المشروع مفتوح!</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>This will destroy all the project files permanently ! Continue ?</source>
+        <translation>وهذا من شأنه تدمير كل ملفات المشاريع بشكل دائم! الاستمرار؟</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+2"/>
+        <source>&amp;Yes</source>
+        <translation>&amp;نعم</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+0"/>
+        <source>&amp;No</source>
+        <translation>&amp;موافق</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Cannot remove project directory!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Choose Project Directory for Deleting</source>
+        <translation>دليل اختيار المشروع للحذف</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>No project is selected!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Creating new schematic...</source>
+        <translation>تخطيطية جديدة...</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location line="+12"/>
+        <location line="+68"/>
+        <location line="+31"/>
+        <location line="+5"/>
+        <location line="+104"/>
+        <location line="+5"/>
+        <location line="+33"/>
+        <location line="+54"/>
+        <location line="+35"/>
+        <location line="+177"/>
+        <location line="+34"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-1017"/>
+        <location line="+15"/>
+        <location line="+379"/>
+        <location line="+282"/>
+        <location filename="../qucs/qucs_init.cpp" line="+883"/>
+        <source>Ready.</source>
+        <translation>جاهز.</translation>
+    </message>
+    <message>
+        <location line="-552"/>
+        <source>Creating new text editor...</source>
+        <translation>محرر نصوص جديدة...</translation>
+    </message>
+    <message>
+        <location line="+61"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-291"/>
+        <source>Opening file...</source>
+        <translation>فتح الملف...</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Enter a Schematic Name</source>
+        <translation>أدخل اسم تخطيطي</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Opening aborted</source>
+        <translation>أجهض الفتح </translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Saving file...</source>
+        <translation>حفظ الملف...</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+109"/>
+        <source>Saving aborted</source>
+        <translation>إجهاض الحفظ</translation>
+    </message>
+    <message>
+        <location line="-66"/>
+        <source>Qucs Netlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Plain Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Enter a Document Name</source>
+        <translation>إدخال الاسم وثيقة</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>The file &apos;</source>
+        <translation>الملف &apos;</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>&apos; already exists!
+</source>
+        <translation>&apos;موجود بالفعل!
+</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Saving will overwrite the old one! Continue?</source>
+        <translation>إنقاذ الإرادة فوق القديم! الاستمرار؟</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+115"/>
+        <source>Cancel</source>
+        <translation>إلغاء</translation>
+    </message>
+    <message>
+        <location line="-105"/>
+        <source>Cannot overwrite an open document</source>
+        <translation>لا يمكن الكتابة فوق مفتوحة وثيقة</translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Saving file under new filename...</source>
+        <translation>إنقاذ ملف جديد تحت اسم الملف...</translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Saving all files...</source>
+        <translation>حفظ الملف...</translation>
+    </message>
+    <message>
+        <location line="+49"/>
+        <source>Closing file...</source>
+        <translation>إغلاق ملف...</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Closing Qucs document</source>
+        <translation>الوثيقة الختامية Qucs</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Do you want to save the changes before closing?</source>
+        <translation>هل تريد حفظ التغييرات قبل اقفال؟</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>&amp;Discard</source>
+        <translation>&amp; تجاهل</translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Open examples directory...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+117"/>
+        <source>Update schematic path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The schematic file path has been refreshed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>OK</source>
+        <translation type="unfinished">موافق</translation>
+    </message>
+    <message>
+        <location line="+54"/>
+        <source>Printing...</source>
+        <translation>الطباعة...</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Exiting application...</source>
+        <translation>تغادرها تطبيق...</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Quit...</source>
+        <translation>استقال...</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Do you really want to quit?</source>
+        <translation>هل تريد حقا الانسحاب؟</translation>
+    </message>
+    <message>
+        <location line="+122"/>
+        <source>The document was modified by another program !</source>
+        <translation>الوثيقة التي تم تعديلها من خلال برنامج آخر!</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you want to reload or keep this version ?</source>
+        <translation>هل تريد إعادة تحميل أو الإبقاء على هذه الصيغة؟</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Reload</source>
+        <translation>إعادة تحميل</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Keep it</source>
+        <translation>يبقيها</translation>
+    </message>
+    <message>
+        <location line="+137"/>
+        <source>Cannot create </source>
+        <translation>لا نستطيع تنفيذ</translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>No page set !</source>
+        <translation>اي صفحة!</translation>
+    </message>
+    <message>
+        <location line="+71"/>
+        <source>Cannot start &quot;%1&quot;!</source>
+        <translation>لا يمكن ان تبدأ &quot;٪ 1&quot;!</translation>
+    </message>
+    <message>
+        <location line="+308"/>
+        <source>Could not load S[1,1].</source>
+        <translation>لا يمكن تحميل S[1,1].</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Could not load S[1,2].</source>
+        <translation>لا يمكن تحميل S[1,2].</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Could not load S[2,1].</source>
+        <translation>لا يمكن تحميل S[2,1].</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Could not load S[2,2].</source>
+        <translation>لا يمكن تحميل S[2,2].</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Wrong dependency!</source>
+        <translation>من الخطأ الاعتماد!</translation>
+    </message>
+    <message>
+        <location filename="../qucs/qucs_actions.cpp" line="-395"/>
+        <source>Cutting selection...</source>
+        <translation>قطع اختيار...</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Copying selection to clipboard...</source>
+        <translation>نسخ إلى الحافظة اختيار...</translation>
+    </message>
+    <message>
+        <location line="+231"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
@@ -12737,74 +14076,9 @@ a substrate with lower permittivity and larger height.
         <translation>يجب إختيار إثنين علي الأقل !</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-1234"/>
-        <location line="+3"/>
-        <location line="+62"/>
-        <location line="+3"/>
-        <location line="+392"/>
-        <location line="+21"/>
-        <location line="+22"/>
-        <location line="+14"/>
-        <location line="+12"/>
-        <location line="+54"/>
-        <location line="+31"/>
-        <location line="+235"/>
-        <location line="+1141"/>
-        <location line="+28"/>
-        <location line="+77"/>
-        <location line="+316"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <location line="+6"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+105"/>
-        <location line="+55"/>
-        <location line="+31"/>
-        <location line="+31"/>
-        <location line="+33"/>
-        <location line="+40"/>
-        <location line="+31"/>
-        <location line="+44"/>
-        <location line="+46"/>
-        <location line="+32"/>
-        <location line="+16"/>
-        <location line="+10"/>
-        <location line="+5"/>
-        <location line="+295"/>
-        <location line="+14"/>
-        <location line="+19"/>
-        <location line="+144"/>
-        <source>Error</source>
-        <translation>خطأ</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-892"/>
+        <location line="+59"/>
         <source>Opening aborted, file not found.</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot start text editor!</source>
-        <translation type="obsolete">لا يمكن بدء محرر نصوص !</translation>
-    </message>
-    <message>
-        <source>Cannot start filter synthesis program!</source>
-        <translation type="obsolete">لا يمكن بدء برنامج فلتر للتوليف!</translation>
-    </message>
-    <message>
-        <source>Cannot start line calculation program!</source>
-        <translation type="obsolete">لا يمكن بدء برنامج حساب الخط!</translation>
-    </message>
-    <message>
-        <source>Cannot start library program!</source>
-        <translation type="obsolete">لا يمكن أن يبدأ برنامج المكتبة!</translation>
-    </message>
-    <message>
-        <source>Cannot start attenuator calculation program!</source>
-        <translation type="obsolete">لا يمكن أن يبدأ برنامج  الحساب المخفف!</translation>
-    </message>
-    <message>
-        <source>Cannot start qucshelp!</source>
-        <translation type="obsolete">لا يمكن أن يبدأ qucshelp!</translation>
     </message>
     <message>
         <location line="+46"/>
@@ -12814,50 +14088,14 @@ a substrate with lower permittivity and larger height.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+56"/>
-        <location line="+31"/>
-        <source>Cannot start filter synthesis program! 
+        <location line="+104"/>
+        <source>Cannot start %1 program! 
 
-%1</source>
+(%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+31"/>
-        <source>Cannot start line calculation program! 
-
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+33"/>
-        <source>Cannot start library program! 
-
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+40"/>
-        <source>Cannot start attenuator calculation program! 
-
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+31"/>
-        <source>Cannot start resistor color code calculation program! 
-
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+43"/>
-        <source>Cannot start qucshelp! 
-
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+46"/>
+        <location line="+61"/>
         <source>No project open!</source>
         <translation>لا يوجد مشروع مفتوح !</translation>
     </message>
@@ -12904,46 +14142,12 @@ Overwrite ?</source>
         <translation>لا تستطيع كتابة &quot;٪ 1&quot;!</translation>
     </message>
     <message>
-        <location line="+438"/>
-        <source>Clear list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+35"/>
-        <source>Symbol files not found in: %1
-
-Is the project open?
-Have you saved the Verilog-A symbols?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs.cpp" line="-1392"/>
-        <location line="+10"/>
-        <location line="+69"/>
-        <location line="+30"/>
-        <location line="+5"/>
-        <location line="+129"/>
-        <location line="+5"/>
-        <location line="+34"/>
-        <location line="+49"/>
-        <location line="+35"/>
-        <location line="+240"/>
-        <location line="+37"/>
-        <location line="+45"/>
-        <location line="+22"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-889"/>
-        <location line="+428"/>
-        <location filename="../qucs/qucs_init.cpp" line="+957"/>
-        <source>Ready.</source>
-        <translation>جاهز.</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs_actions.cpp" line="+283"/>
+        <location line="+295"/>
         <source>Please open project with subcircuits!</source>
         <translation>!يرجى فتح المشروع الدارة الفرعية </translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Please open project first!</source>
         <translation>افتح أولا مشروع من فضلك!</translation>
     </message>
@@ -12953,24 +14157,17 @@ Have you saved the Verilog-A symbols?</source>
         <translation>الرجاء اختيار الرسم  البياني!</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>CSV file</source>
-        <translation>ملفات CSV</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs.cpp" line="-2082"/>
-        <location line="+1525"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+0"/>
-        <source>Any File</source>
-        <translation>أية ملفات</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-1"/>
+        <location line="+9"/>
         <source>Enter an Output File Name</source>
         <translation>إدخال اسم الملف</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+1"/>
+        <source>CSV file</source>
+        <translation>ملفات CSV</translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>Output file already exists!</source>
         <translation>الناتج الملف موجود بالفعل!</translation>
     </message>
@@ -12980,738 +14177,15 @@ Have you saved the Verilog-A symbols?</source>
         <translation>فوق ذلك؟</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-221"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+1"/>
-        <source>&amp;Yes</source>
-        <translation>&amp;نعم</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+0"/>
-        <source>&amp;No</source>
-        <translation>&amp;موافق</translation>
-    </message>
-    <message>
-        <location line="-1312"/>
-        <source>Schematic</source>
-        <translation>تخطيطي</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Data Display</source>
-        <translation>عرض البيانات </translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Qucs Documents</source>
-        <translation>وثائق Qucs</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+1524"/>
-        <source>VHDL Sources</source>
-        <translation>مصادر VHDL</translation>
-    </message>
-    <message>
-        <location line="-1523"/>
-        <location line="+1524"/>
-        <source>Verilog Sources</source>
-        <translation>مصادر verilog</translation>
-    </message>
-    <message>
-        <location line="-1433"/>
-        <source>Others</source>
-        <translation>الآخرين</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Datasets</source>
-        <translation>بيانات</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Data Displays</source>
-        <translation>عرض البيانات </translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <location line="+2360"/>
-        <source>Verilog</source>
-        <translation>فيريلوج </translation>
-    </message>
-    <message>
-        <location line="-2356"/>
-        <location line="+2354"/>
-        <source>VHDL</source>
-        <translation>VHDL</translation>
-    </message>
-    <message>
-        <location line="-2352"/>
-        <location line="+2348"/>
-        <source>Schematics</source>
-        <translation>الخطط</translation>
-    </message>
-    <message>
-        <location line="-2293"/>
-        <source>New</source>
-        <translation>جديد</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+500"/>
-        <source>Open</source>
-        <translation>‏يفتح</translation>
-    </message>
-    <message>
-        <location line="-498"/>
-        <location line="+510"/>
-        <source>Delete</source>
-        <translation>حذف </translation>
-    </message>
-    <message>
-        <location line="-494"/>
-        <source>Projects</source>
-        <translation> مشاريع</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>content of project directory</source>
-        <translation>مضمون مشروع الدليل</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <location line="+1062"/>
-        <source>Content of</source>
-        <translation>محتوى</translation>
-    </message>
-    <message>
-        <location line="-1062"/>
-        <location line="+997"/>
-        <location line="+65"/>
-        <source>Note</source>
-        <translation>علما</translation>
-    </message>
-    <message>
-        <location line="-1052"/>
-        <source>Content</source>
-        <translation>محتوى</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>content of current project</source>
-        <translation>مضمون المشروع الحالي</translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <source>Components</source>
-        <translation>عناصر </translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>components and diagrams</source>
-        <translation>المكونات ورسوم بيانية</translation>
-    </message>
-    <message>
-        <source>lumped components</source>
-        <translation type="obsolete">صنف العناصر</translation>
-    </message>
-    <message>
-        <source>sources</source>
-        <translation type="obsolete">المصادر</translation>
-    </message>
-    <message>
-        <source>probes</source>
-        <translation type="obsolete">تحقيقات</translation>
-    </message>
-    <message>
-        <source>transmission lines</source>
-        <translation type="obsolete">انتقال الخط</translation>
-    </message>
-    <message>
-        <source>nonlinear components</source>
-        <translation type="obsolete">العناصر غير الخطية</translation>
-    </message>
-    <message>
-        <source>verilog-a devices</source>
-        <translation type="obsolete">أجهزة فيريلوج</translation>
-    </message>
-    <message>
-        <source>digital components</source>
-        <translation type="obsolete">عناصر الرقمية</translation>
-    </message>
-    <message>
-        <source>file components</source>
-        <translation type="obsolete">عناصر الملفات</translation>
-    </message>
-    <message>
-        <source>simulations</source>
-        <translation type="obsolete">المحاكاة </translation>
-    </message>
-    <message>
-        <source>diagrams</source>
-        <translation type="obsolete">رسوم بيانية</translation>
-    </message>
-    <message>
-        <source>paintings</source>
-        <translation type="obsolete">لوحات</translation>
-    </message>
-    <message>
-        <location line="+445"/>
-        <source>Rename</source>
-        <translation>إعادة تسمية</translation>
-    </message>
-    <message>
-        <source>Delete Group</source>
-        <translation type="obsolete">حذف المجموعة</translation>
-    </message>
-    <message>
-        <location line="+142"/>
-        <source>Cannot rename an open file!</source>
-        <translation>لا يمكن إعادة تسمية الملف المفتوح!</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Rename file</source>
-        <translation>إعادة تسمية الملف</translation>
-    </message>
-    <message>
-        <location line="-49"/>
-        <location line="+49"/>
-        <source>Enter new name:</source>
-        <translation>أدخل الاسم الجديد :</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Cannot rename file: </source>
-        <translation>لا يمكن إعادة تسمية الملف :</translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>Cannot delete an open file!</source>
-        <translation>لا يمكن حذف ملف مفتوح!</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <location line="+77"/>
-        <location line="+47"/>
-        <location line="+329"/>
-        <location line="+246"/>
-        <location line="+632"/>
-        <source>Warning</source>
-        <translation>تحذير</translation>
-    </message>
-    <message>
-        <location line="-1330"/>
-        <source>This will delete the file permanently! Continue ?</source>
-        <translation>حذف هذا الملف نهائيا! الاستمرار؟</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+77"/>
-        <location line="+623"/>
-        <location line="+456"/>
-        <source>No</source>
-        <translation>لا</translation>
-    </message>
-    <message>
-        <location line="-1156"/>
-        <location line="+77"/>
-        <location line="+623"/>
-        <location line="+456"/>
-        <source>Yes</source>
-        <translation>نعم</translation>
-    </message>
-    <message>
-        <location line="-1151"/>
-        <source>Cannot delete schematic: </source>
-        <translation>لا يمكن حذف التخطيطي :</translation>
-    </message>
-    <message>
-        <source>Cannot delete the open file: </source>
-        <translation type="obsolete">لا يمكن حذف ملف مفتوح:</translation>
-    </message>
-    <message>
-        <source>This will delete the files
-</source>
-        <translation type="obsolete">هذا من شأنه حذف الملفات
-</translation>
-    </message>
-    <message>
-        <source>permanently! Continue ?</source>
-        <translation type="obsolete">بشكل دائم! الاستمرار؟</translation>
-    </message>
-    <message>
-        <source>Cannot delete data display: </source>
-        <translation type="obsolete">لا يمكن حذف بيانات العرض :</translation>
-    </message>
-    <message>
-        <source>Cannot delete data file: </source>
-        <translation type="obsolete">لا يمكن حذف ملف بيانات :</translation>
-    </message>
-    <message>
-        <source>Cannot delete VHDL source: </source>
-        <translation type="obsolete">لا يمكن حذف مصدر VHDL  :</translation>
-    </message>
-    <message>
-        <source>Cannot delete Verilog source: </source>
-        <translation type="obsolete">لا يمكن حذف مصدر فيريلوج  :</translation>
-    </message>
-    <message>
-        <location line="+118"/>
-        <source>Cannot create work directory !</source>
-        <translation>لا يمكن إنشاء دليل عمل!</translation>
-    </message>
-    <message>
-        <location line="+37"/>
-        <source>Cannot create project directory !</source>
-        <translation>لا يمكن إنشاء دليل للمشروع!</translation>
-    </message>
-    <message>
-        <location line="-318"/>
-        <location line="+429"/>
-        <location line="+774"/>
-        <source>-port</source>
-        <translation>-الميناء </translation>
-    </message>
-    <message>
-        <location line="-720"/>
-        <source>Cannot access project directory: </source>
-        <translation>لا يمكن الوصول إلى مشروع الدليل :</translation>
-    </message>
-    <message>
-        <source>Content of &apos;</source>
-        <translation type="obsolete">محتوى &apos;</translation>
-    </message>
-    <message>
-        <source>&apos;</source>
-        <translation type="obsolete">&apos;</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Content of </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <location line="+51"/>
-        <source> - Project: </source>
-        <translation>-المشروع :</translation>
-    </message>
-    <message>
-        <location line="-44"/>
-        <source>Choose Project Directory for Opening</source>
-        <translation>اختيار مشروع دليل لافتتاح</translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <location line="+128"/>
-        <source>No project is selected !</source>
-        <translation>لم يتم اختيار المشروع!</translation>
-    </message>
-    <message>
-        <location line="-84"/>
-        <source>Cannot delete file: </source>
-        <translation>لا يمكن حذف الملف :</translation>
-    </message>
-    <message>
-        <location line="+17"/>
-        <source>Cannot remove directory: </source>
-        <translation>لا يمكن إزالة الدليل :</translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>Cannot delete an open project !</source>
-        <translation>لا يمكن حذف هذا المشروع مفتوح!</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>This will destroy all the project files permanently ! Continue ?</source>
-        <translation>وهذا من شأنه تدمير كل ملفات المشاريع بشكل دائم! الاستمرار؟</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Cannot remove project directory !</source>
-        <translation>لا يمكن إزالة هذا المشروع دليل!</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Choose Project Directory for Deleting</source>
-        <translation>دليل اختيار المشروع للحذف</translation>
-    </message>
-    <message>
-        <location line="+42"/>
-        <source>Creating new schematic...</source>
-        <translation>تخطيطية جديدة...</translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>Creating new text editor...</source>
-        <translation>محرر نصوص جديدة...</translation>
-    </message>
-    <message>
-        <location line="+54"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-777"/>
-        <source>Opening file...</source>
-        <translation>فتح الملف...</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Enter a Schematic Name</source>
-        <translation>أدخل اسم تخطيطي</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Opening aborted</source>
-        <translation>أجهض الفتح </translation>
-    </message>
-    <message>
-        <location line="+36"/>
-        <source>Saving file...</source>
-        <translation>حفظ الملف...</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <location line="+134"/>
-        <source>Saving aborted</source>
-        <translation>إجهاض الحفظ</translation>
-    </message>
-    <message>
-        <location line="-85"/>
-        <source>Enter a Document Name</source>
-        <translation>إدخال الاسم وثيقة</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>The file &apos;</source>
-        <translation>الملف &apos;</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>&apos; already exists!
-</source>
-        <translation>&apos;موجود بالفعل!
-</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Saving will overwrite the old one! Continue?</source>
-        <translation>إنقاذ الإرادة فوق القديم! الاستمرار؟</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <location line="+140"/>
-        <source>Cancel</source>
-        <translation>إلغاء</translation>
-    </message>
-    <message>
-        <location line="-130"/>
-        <source>Cannot overwrite an open document</source>
-        <translation>لا يمكن الكتابة فوق مفتوحة وثيقة</translation>
-    </message>
-    <message>
-        <location line="+47"/>
-        <source>Saving file under new filename...</source>
-        <translation>إنقاذ ملف جديد تحت اسم الملف...</translation>
-    </message>
-    <message>
-        <location line="+26"/>
-        <source>Saving all files...</source>
-        <translation>حفظ الملف...</translation>
-    </message>
-    <message>
-        <location line="+49"/>
-        <source>Closing file...</source>
-        <translation>إغلاق ملف...</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Closing Qucs document</source>
-        <translation>الوثيقة الختامية Qucs</translation>
-    </message>
-    <message>
-        <location line="-942"/>
-        <location line="+943"/>
-        <source>The document contains unsaved changes!
-</source>
-        <translation>وتتضمن هذه الوثيقة التغييرات غير المحفوظة!
-</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you want to save the changes before closing?</source>
-        <translation>هل تريد حفظ التغييرات قبل اقفال؟</translation>
-    </message>
-    <message>
-        <location line="-942"/>
-        <location line="+943"/>
-        <location filename="../qucs/qucs_init.cpp" line="-892"/>
-        <source>&amp;Save</source>
-        <translation>&amp; حفظ</translation>
-    </message>
-    <message>
-        <location line="-1692"/>
-        <source>Spice Files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+236"/>
-        <source>Manage Libraries</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <location line="+8"/>
-        <source>Libraries</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>system and user component libraries</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+69"/>
-        <location line="+65"/>
-        <source>Cannot open &quot;%1&quot;.</source>
-        <translation type="unfinished">لا نستطيع فتح &quot;%1.</translation>
-    </message>
-    <message>
-        <location line="-62"/>
-        <location line="+65"/>
-        <source>Library is corrupt.</source>
-        <translation type="unfinished">المكتبة فاسدة.</translation>
-    </message>
-    <message>
-        <location line="+157"/>
-        <source>Default icon not found:
- %1.png</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+111"/>
-        <source>Duplicate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+83"/>
-        <source>Copying Qucs document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Do you want to save the changes before copying?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>&amp;Ignore</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>Copy file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Cannot copy file to identical name: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Cannot copy schematic: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+737"/>
-        <source>Qucs Netlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Plain Text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+167"/>
-        <source>&amp;Discard</source>
-        <translation>&amp; تجاهل</translation>
-    </message>
-    <message>
-        <location line="+44"/>
-        <source>Open examples directory...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+204"/>
-        <source>Printing...</source>
-        <translation>الطباعة...</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Print Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+34"/>
-        <source>Printer Error.</source>
-        <translation>خطأ في الطباعة.</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>Exiting application...</source>
-        <translation>تغادرها تطبيق...</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Quit...</source>
-        <translation>استقال...</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Do you really want to quit?</source>
-        <translation>هل تريد حقا الانسحاب؟</translation>
-    </message>
-    <message>
-        <location line="+36"/>
-        <source>Cutting selection...</source>
-        <translation>قطع اختيار...</translation>
-    </message>
-    <message>
-        <location line="+24"/>
-        <source>Copying selection to clipboard...</source>
-        <translation>نسخ إلى الحافظة اختيار...</translation>
-    </message>
-    <message>
-        <location line="+115"/>
-        <source>The document was modified by another program !</source>
-        <translation>الوثيقة التي تم تعديلها من خلال برنامج آخر!</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you want to reload or keep this version ?</source>
-        <translation>هل تريد إعادة تحميل أو الإبقاء على هذه الصيغة؟</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Reload</source>
-        <translation>إعادة تحميل</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Keep it</source>
-        <translation>يبقيها</translation>
-    </message>
-    <message>
-        <location line="+133"/>
-        <source>Cannot create </source>
-        <translation>لا نستطيع تنفيذ</translation>
-    </message>
-    <message>
-        <location line="+28"/>
-        <source>No page set !</source>
-        <translation>اي صفحة!</translation>
-    </message>
-    <message>
-        <location line="+78"/>
-        <source>Cannot start &quot;%1&quot;!</source>
-        <translation>لا يمكن ان تبدأ &quot;٪ 1&quot;!</translation>
-    </message>
-    <message>
-        <location line="+670"/>
-        <location line="+13"/>
-        <location line="+18"/>
-        <location line="+6"/>
-        <source>Export to image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-36"/>
-        <source>Inkscape start error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Unsupported format of graphics file. 
-Use PNG, JPEG or SVG graphics!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Sucessfully exported!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Disk write error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Circuit Symbol</source>
-        <translation type="obsolete">تحرير دائرة الرمز</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs_init.cpp" line="+35"/>
-        <source>Edits the symbol for this schematic</source>
-        <translation>تعديلات لهذا الرمز التخطيطي</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Edit Circuit Symbol
+        <location line="+116"/>
+        <source>Symbol files not found in: %1
 
-Edits the symbol for this schematic</source>
-        <translation>تحرير دائرة الرمز ذ
-
-تعديلات لهذا الرمز التخطيطي</translation>
+Is the project open?
+Have you saved the Verilog-A symbols?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Edit Schematic</source>
-        <translation type="obsolete">تحرير تخطيطي</translation>
-    </message>
-    <message>
-        <source>Edits the schematic</source>
-        <translation type="obsolete">تعديلات التخطيطي</translation>
-    </message>
-    <message>
-        <source>Edit Schematic
-
-Edits the schematic</source>
-        <translation type="obsolete">تحرير تخطيطي 
-
-تعديلات التخطيطي</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs.cpp" line="-393"/>
-        <source>Could not load S[1,1].</source>
-        <translation>لا يمكن تحميل S[1,1].</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Could not load S[1,2].</source>
-        <translation>لا يمكن تحميل S[1,2].</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Could not load S[2,1].</source>
-        <translation>لا يمكن تحميل S[2,1].</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Could not load S[2,2].</source>
-        <translation>لا يمكن تحميل S[2,2].</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Wrong dependency!</source>
-        <translation>من الخطأ الاعتماد!</translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs_init.cpp" line="-56"/>
+        <location filename="../qucs/qucs_init.cpp" line="-902"/>
         <source>&amp;New</source>
         <translation>&amp;عرض</translation>
     </message>
@@ -13728,10 +14202,6 @@ Creates a new schematic or data display document</source>
         <translation>جديد 
 
 يخلق جديد التخطيطي عرض وثيقة من وثائق أو بيانات</translation>
-    </message>
-    <message>
-        <source>New Text</source>
-        <translation type="obsolete">النص الجديد</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -13772,10 +14242,6 @@ Opens an existing document</source>
 يفتح وجود وثيقة من وثائق</translation>
     </message>
     <message>
-        <source>Save</source>
-        <translation type="obsolete"> ‏حفظ</translation>
-    </message>
-    <message>
         <location line="+5"/>
         <source>Saves the current document</source>
         <translation>يوفر الوثيقة الحالية</translation>
@@ -13809,10 +14275,6 @@ Saves the current document under a new filename</source>
 تحفظ هذه الوثيقة تحت اسم ملف جديد</translation>
     </message>
     <message>
-        <source>Save All</source>
-        <translation type="obsolete">حفظ كل</translation>
-    </message>
-    <message>
         <location line="+3"/>
         <source>Save &amp;All</source>
         <translation>حفظ &amp;كل</translation>
@@ -13832,10 +14294,6 @@ Saves all open documents</source>
 حفظ جميع الوثائق المفتوحة</translation>
     </message>
     <message>
-        <source>Close</source>
-        <translation type="obsolete">غلق</translation>
-    </message>
-    <message>
         <location line="+3"/>
         <source>&amp;Close</source>
         <translation>&amp;غلق</translation>
@@ -13853,6 +14311,11 @@ Closes the current document</source>
         <translation>إغلاق الملف 
 
 يغلق الوثيقة الحالية</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Clear Recent</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -13877,7 +14340,21 @@ Opens a file explorer with example documents</source>
         <translation>&amp;تحرير  رمز الدائرة‏‏</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+2"/>
+        <source>Edits the symbol for this schematic</source>
+        <translation>تعديلات لهذا الرمز التخطيطي</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Edit Circuit Symbol
+
+Edits the symbol for this schematic</source>
+        <translation>تحرير دائرة الرمز ذ
+
+تعديلات لهذا الرمز التخطيطي</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>&amp;Document Settings...</source>
         <translation>&amp;ضبط وثائق...</translation>
     </message>
@@ -13894,10 +14371,6 @@ Sets properties of the file</source>
         <translation>إعدادات 
 
 يحدد خصائص الملف</translation>
-    </message>
-    <message>
-        <source>Print...</source>
-        <translation type="obsolete">طباعة...</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -13978,13 +14451,11 @@ Sets properties of the application</source>
     <message>
         <location line="+3"/>
         <source>Refresh Search Path...</source>
-        <oldsource>Refresh Path...</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Refresh Search Path</source>
-        <oldsource>Refresh Path</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13992,9 +14463,6 @@ Sets properties of the application</source>
         <source>Refresh Path
 
 Rechecks the list of paths for subcircuit files.</source>
-        <oldsource>Refresh Path
-
-Rechecks the list of paths for files.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -14211,10 +14679,6 @@ text in VHDL code</source>
  VHDLالنص في </translation>
     </message>
     <message>
-        <source>Cut</source>
-        <translation type="obsolete">قص</translation>
-    </message>
-    <message>
         <location line="+3"/>
         <source>Cu&amp;t</source>
         <translation>ق&amp;ص</translation>
@@ -14234,10 +14698,6 @@ Cuts out the selection and puts it into the clipboard</source>
 قص الإختيار و ضعها في الحافظة</translation>
     </message>
     <message>
-        <source>Copy</source>
-        <translation type="obsolete">نسخة</translation>
-    </message>
-    <message>
         <location line="+3"/>
         <source>&amp;Copy</source>
         <translation>&amp;نسخة</translation>
@@ -14255,10 +14715,6 @@ Copies the selection into the clipboard</source>
         <translation>نسخة
 
 إنسخ الإختيار  في الحافظة</translation>
-    </message>
-    <message>
-        <source>Paste</source>
-        <translation type="obsolete">لصق</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -14318,30 +14774,12 @@ Searches for a piece of text</source>
 ابحث عن قطعة من النص</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Find Again</source>
-        <translation> أجد مرة أخرى</translation>
+        <location line="+8"/>
+        <source>Export as image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Find same text again</source>
-        <translation>العثور على النص نفسه من جديد</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Find
-
-Searches for the same piece of text again</source>
-        <translation>العثور على
-
-ابحث عن قطعة من النص من جديد</translation>
-    </message>
-    <message>
-        <source>Undo</source>
-        <translation type="obsolete">تراجع</translation>
-    </message>
-    <message>
-        <location line="+38"/>
+        <location line="+16"/>
         <source>&amp;Undo</source>
         <translation>&amp;تراجع</translation>
     </message>
@@ -14358,10 +14796,6 @@ Makes the last action undone</source>
         <translation>تراجع
 
 يجعل التراجع عن آخر إجراء</translation>
-    </message>
-    <message>
-        <source>Redo</source>
-        <translation type="obsolete">الإعادة</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -14535,23 +14969,24 @@ Install Content of a Package</source>
 تثبيت محتوى المجلد  </translation>
     </message>
     <message>
-        <source>&amp;Import Data...</source>
-        <translation type="obsolete">&amp;استيراد  بيانات...</translation>
+        <location line="+3"/>
+        <source>&amp;Import/Export Data...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Convert file to Qucs data file</source>
-        <translation type="obsolete">تحويل الملف إلى ملف بيانات Qucs</translation>
+        <location line="+2"/>
+        <source>Convert data file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Import Data
+        <location line="+2"/>
+        <source>Import/Export Data
 
-Convert data file to Qucs data file</source>
-        <translation type="obsolete">استيراد  بيانات
-
-تحويل الملف إلى ملف بيانات Qucs</translation>
+Convert data file to various file formats</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+3"/>
         <source>Export to &amp;CSV...</source>
         <translation>تصدير إلى &amp;CSV...</translation>
     </message>
@@ -15094,7 +15529,24 @@ Starts attenuator calculation program</source>
 بدأ حساب البرنامج المخفف</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+3"/>
+        <source>Resistor color codes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Starts Qucs resistor color codes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Resistor color codes
+
+Starts standard resistor color code computation program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Simulate</source>
         <translation>محاكاة</translation>
     </message>
@@ -15266,7 +15718,24 @@ Enables/disables the browse dock window</source>
 ويتيح / لتعطيل قفص النافذة</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+3"/>
+        <source>&amp;Octave Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Shows/hides the Octave dock window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Octave Window
+
+Shows/hides the Octave dock window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Help Index...</source>
         <translation>مؤشر المساعدة ...</translation>
     </message>
@@ -15327,12 +15796,11 @@ About the application</source>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+447"/>
         <source>About Qt</source>
         <translation>عن كيو تي</translation>
     </message>
     <message>
-        <location line="-446"/>
+        <location line="+1"/>
         <source>About Qt
 
 About Qt by Trolltech</source>
@@ -15351,12 +15819,12 @@ About Qt by Trolltech</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+26"/>
         <source>&amp;Edit</source>
         <translation>‏&amp;تحرير</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+24"/>
         <source>P&amp;ositioning</source>
         <translation>ال&amp;‏مواقع</translation>
     </message>
@@ -15420,7 +15888,7 @@ About Qt by Trolltech</source>
     <message>
         <location line="+12"/>
         <source>Edit</source>
-        <translation type="unfinished">تحرير</translation>
+        <translation>تحرير</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -15444,7 +15912,7 @@ About Qt by Trolltech</source>
         <translation>تحذيرات في التمثيل السابق! اضغط على F5</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+99"/>
         <source>About...</source>
         <translation>حول...</translation>
     </message>
@@ -15540,10 +16008,6 @@ About Qt by Trolltech</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Portuguese by Luciano Franca</source>
-        <translation type="obsolete">البرتغالية من قبل لوتشيانو فرانكا</translation>
-    </message>
-    <message>
         <location line="+1"/>
         <source>Spanish by Jose L. Redrejo Rodriguez</source>
         <translation>الاسبانية من قبل خوسيه رودريغيز ل  Redrejo</translation>
@@ -15594,29 +16058,7 @@ About Qt by Trolltech</source>
         <translation>الكاتالوينية من قبل انتوني سوبيراتز</translation>
     </message>
     <message>
-        <location line="-743"/>
-        <source>&amp;Import/Export Data...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-94"/>
-        <source>Export as image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+96"/>
-        <source>Convert data file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Import/Export Data
-
-Convert data file to various file formats</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+740"/>
+        <location line="+1"/>
         <source>Arabic by Chabane Noureddine</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15625,161 +16067,18 @@ Convert data file to various file formats</source>
         <source>Kazakh by Erbol Keshubaev</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../qucs/qucs.cpp" line="-1898"/>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Verilog source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>VHDL source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>data file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>data display</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>schematic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>symbol</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>VHDL configuration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>configuration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+43"/>
-        <source>This will delete the files%1permanently! Continue ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-930"/>
-        <location line="+1524"/>
-        <source>Verilog-A Sources</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1424"/>
-        <source>Verilog-A</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+577"/>
-        <source>Insert</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+196"/>
-        <source>Verilog-A source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+39"/>
-        <source>Cannot delete the open file &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+31"/>
-        <source>Cannot delete %1: &quot;%2&quot;!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-942"/>
-        <location line="+1524"/>
-        <source>Octave Scripts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1429"/>
-        <source>Octave</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qucs/qucs_init.cpp" line="-466"/>
-        <source>&amp;Octave Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Shows/hides the Octave dock window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Octave Window
-
-Shows/hides the Octave dock window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-74"/>
-        <source>Resistor color codes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Starts Qucs resistor color codes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Resistor color codes
-
-Starts standard resistor color code computation program</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>QucsAttenuator</name>
     <message>
-        <source>E&amp;xit</source>
-        <translation type="obsolete">&amp;خروج</translation>
-    </message>
-    <message>
-        <source>Help...</source>
-        <translation type="obsolete">مساعدة...</translation>
-    </message>
-    <message>
-        <source>&amp;About QucsAttenuator...</source>
-        <translation type="obsolete">&amp; حول QucsAttenuator...</translation>
-    </message>
-    <message>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+70"/>
-        <source>About Qt...</source>
-        <translation>عن كيو تي...</translation>
-    </message>
-    <message>
-        <location line="-22"/>
+        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+48"/>
         <source>&amp;File</source>
         <translation>‏‏&amp;ملف</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>خروج&amp;</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -15793,7 +16092,12 @@ Starts standard resistor color code computation program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+7"/>
+        <source>About Qt...</source>
+        <translation>عن كيو تي...</translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>Topology</source>
         <translation>طوبولوجيا</translation>
     </message>
@@ -15883,12 +16187,12 @@ Starts standard resistor color code computation program</source>
     <message>
         <location line="-107"/>
         <source>Qucs Attenuator Help</source>
-        <translation type="unfinished">مساعدة Qucs المخفف</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediatly, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</source>
-        <translation type="unfinished">QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediatly, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
@@ -15925,21 +16229,17 @@ Attenuator synthesis program
         <source>Error: Set Attenuation less than %1 dB</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Error: Set Attenuation more than %1 dB</source>
-        <translation type="obsolete">‏خطأ : مجموعة تخفيف أكثر من %1 ديسيبل‏</translation>
-    </message>
 </context>
 <context>
     <name>QucsEdit</name>
     <message>
         <location filename="../qucs-edit/qucsedit.cpp" line="+44"/>
-        <location line="+147"/>
+        <location line="+148"/>
         <source>File: </source>
         <translation>‏‏ملف‏:</translation>
     </message>
     <message>
-        <location line="-136"/>
+        <location line="-137"/>
         <location line="+49"/>
         <source>Line: %1  -  Column: %2</source>
         <translation>‏‏خط  ٪1 - عمود : ‏2٪ ‏</translation>
@@ -15999,7 +16299,7 @@ Very simple text editor for Qucs
         <translation>لا يمكن قراءة الملف :</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Closing document</source>
         <translation>الوثيقة الختامية</translation>
     </message>
@@ -16034,12 +16334,22 @@ Very simple text editor for Qucs
 <context>
     <name>QucsFilter</name>
     <message>
-        <location filename="../qucs-filter/qucsfilter.cpp" line="+66"/>
+        <location filename="../qucs-filter/qucsfilter.cpp" line="+64"/>
+        <source>&amp;File</source>
+        <translation>‏‏&amp;ملف</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>E&amp;xit</source>
         <translation>&amp;خروج</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
+        <source>&amp;Help</source>
+        <translation>&amp;‏مساعدة</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Help...</source>
         <translation>مساعدة...</translation>
     </message>
@@ -16054,17 +16364,7 @@ Very simple text editor for Qucs
         <translation>كيو تي حول...</translation>
     </message>
     <message>
-        <location line="-17"/>
-        <source>&amp;File</source>
-        <translation>‏‏&amp;ملف</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>&amp;Help</source>
-        <translation>&amp;‏مساعدة</translation>
-    </message>
-    <message>
-        <location line="+30"/>
+        <location line="+21"/>
         <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16268,37 +16568,37 @@ Filter synthesis program
         <translation>‏&amp;استقال</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>&amp;Back</source>
         <translation>‏&amp;خلف</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+5"/>
         <source>&amp;Forward</source>
         <translation>‏&amp;للأمام</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>&amp;Home</source>
         <translation>‏&amp;منزل</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>&amp;Previous</source>
         <translation>‏&amp;السابق</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>&amp;Next</source>
         <translation>‏&amp;التالي</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>&amp;Table of Contents</source>
         <translation>‏&amp;قائمة المحتويات</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Enables/disables the table of contents</source>
         <translation>ويتيح / لتعطيل جدول المحتويات</translation>
     </message>
@@ -16343,18 +16643,19 @@ Enables/disables the table of contents</source>
 <context>
     <name>QucsLib</name>
     <message>
-        <location filename="../qucs-lib/qucslib.cpp" line="+62"/>
+        <location filename="../qucs-lib/qucslib.cpp" line="+60"/>
+        <source>&amp;File</source>
+        <translation>‏‏&amp;ملف</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Manage User &amp;Libraries...</source>
-        <translation type="unfinished">...‏إدارة &amp;‏المكتبات المستخدم</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>&amp;Quit</source>
         <translation>&amp;نهاية</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation type="obsolete">مساعدة</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -16368,12 +16669,7 @@ Enables/disables the table of contents</source>
         <translation>حول</translation>
     </message>
     <message>
-        <location line="-23"/>
-        <source>&amp;File</source>
-        <translation>‏‏&amp;ملف</translation>
-    </message>
-    <message>
-        <location line="+42"/>
+        <location line="+19"/>
         <source>Component Selection</source>
         <translation>اختيار العنصر</translation>
     </message>
@@ -16486,7 +16782,7 @@ Enables/disables the table of contents</source>
 <context>
     <name>QucsSettingsDialog</name>
     <message>
-        <location filename="../qucs/dialogs/qucssettingsdialog.cpp" line="+53"/>
+        <location filename="../qucs/dialogs/qucssettingsdialog.cpp" line="+61"/>
         <source>Edit Qucs Properties</source>
         <translation>تحرير خصائص كوكس</translation>
     </message>
@@ -16494,6 +16790,11 @@ Enables/disables the table of contents</source>
         <location line="+14"/>
         <source>Font (set after reload):</source>
         <translation>فونت (بعد إعادة تحميل ) :</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Large font size:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -16516,60 +16817,59 @@ Enables/disables the table of contents</source>
         <translation>إنجليزي</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+6"/>
         <source>German</source>
         <translation>الألمانية</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>French</source>
         <translation>فرنسي</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+12"/>
         <source>Spanish</source>
         <translation>الأسبانية</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-8"/>
         <source>Italian</source>
         <translation>الايطالية</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Polish</source>
         <translation>البولندية</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Romanian</source>
         <translation>الرومانية</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-5"/>
         <source>Japanese</source>
         <translation>اليابانية</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+8"/>
         <source>Swedish</source>
         <translation>السويدية</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-10"/>
         <source>Hungarian</source>
         <translation>الهنغارية</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>Hebrew</source>
         <translation>العبرية</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+6"/>
         <source>Portuguese-BR</source>
-        <oldsource>Portuguese</oldsource>
-        <translation type="unfinished">البرتغالية</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -16577,7 +16877,7 @@ Enables/disables the table of contents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+5"/>
         <source>Turkish</source>
         <translation>التركية</translation>
     </message>
@@ -16587,29 +16887,44 @@ Enables/disables the table of contents</source>
         <translation>الأوكرانية</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-4"/>
         <source>Russian</source>
         <translation>الروسية</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-13"/>
         <source>Czech</source>
         <translation>التشيكية</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>Catalan</source>
         <translation>الكاتالوينية</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>maximum undo operations:</source>
-        <translation>أقصى قدر من التراجع عن العمليات :</translation>
+        <location line="-1"/>
+        <source>Arabic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Chinese</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Kazakh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Maximum undo operations:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
-        <source>text editor:</source>
-        <translation>محرر نصوص :</translation>
+        <source>Text editor:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -16618,21 +16933,41 @@ Enables/disables the table of contents</source>
     </message>
     <message>
         <location line="+3"/>
-        <source>start wiring when clicking open node:</source>
-        <translation>عند النقر على بدء الأسلاك مفتوحة العقدة :</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Load documents from future versions </source>
+        <source>Start wiring when clicking open node:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Draw diagrams with anti-aliasing feature</source>
+        <location line="+4"/>
+        <source>Load documents from future versions:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Try to load also documents created with newer versions of Qucs.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Draw diagrams with anti-aliasing feature:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Use anti-aliasing for graphs for a smoother appereance.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Draw text with anti-aliasing feature:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Use anti-aliasing for text for a smoother appereance.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Settings</source>
         <translation>إعدادات</translation>
     </message>
@@ -16677,57 +17012,22 @@ Enables/disables the table of contents</source>
         <translation> خاصِّيَّة</translation>
     </message>
     <message>
-        <location line="+101"/>
-        <source>AdmsXml Path:</source>
+        <location line="+6"/>
+        <source>Directive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
-        <source>ASCO Path:</source>
+        <source>Source Code Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Octave Path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Subcircuit Search Path List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+415"/>
-        <source>Select the admsXml bin directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Select the ASCO bin directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Select the octave bin directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-27"/>
-        <source>Select the home directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+41"/>
-        <location line="+19"/>
-        <source>Select a directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>VHDL Editor</source>
-        <translation type="obsolete">ملفات VHDL</translation>
-    </message>
-    <message>
-        <location line="-570"/>
+        <location line="+8"/>
         <source>Register filename extensions here in order to
 open files with an appropriate program.</source>
         <translation>تسجيل اسم الملف تمديد هنا ل 
@@ -16744,7 +17044,7 @@ open files with an appropriate program.</source>
         <translation>البرنامج</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+24"/>
         <source>Suffix:</source>
         <translation>لاحقة :</translation>
     </message>
@@ -16779,7 +17079,27 @@ open files with an appropriate program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+7"/>
+        <source>AdmsXml Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>ASCO Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Octave Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Subcircuit Search Path List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
         <source>Locations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16804,7 +17124,7 @@ open files with an appropriate program.</source>
         <translation>القيمة الافتراضية </translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+55"/>
         <source>Error</source>
         <translation>خطأ</translation>
     </message>
@@ -16814,45 +17134,43 @@ open files with an appropriate program.</source>
         <translation>هذه الاحقة سجلت من قبل!</translation>
     </message>
     <message>
-        <location line="-305"/>
-        <source>Arabic</source>
+        <location line="+326"/>
+        <source>Select the home directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Kazakh</source>
+        <location line="+9"/>
+        <source>Select the admsXml bin directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+80"/>
-        <source>Directive</source>
+        <location line="+9"/>
+        <source>Select the ASCO bin directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Task</source>
+        <location line="+9"/>
+        <source>Select the octave bin directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Source Code Editor</source>
+        <location line="+18"/>
+        <location line="+19"/>
+        <source>Select a directory</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QucsTranscalc</name>
     <message>
-        <source>Load</source>
-        <translation type="obsolete">حمل</translation>
+        <location filename="../qucs-transcalc/qucstrans.cpp" line="+262"/>
+        <source>&amp;File</source>
+        <translation>‏‏&amp;ملف</translation>
     </message>
     <message>
-        <location filename="../qucs-transcalc/qucstrans.cpp" line="+264"/>
+        <location line="+2"/>
         <source>&amp;Load</source>
         <translation>&amp;حمل</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="obsolete"> حفظ</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -16860,17 +17178,9 @@ open files with an appropriate program.</source>
         <translation>&amp; حفظ</translation>
     </message>
     <message>
-        <source>Options</source>
-        <translation type="obsolete">خيارات</translation>
-    </message>
-    <message>
         <location line="+7"/>
         <source>&amp;Options</source>
         <translation>&amp;خيارات</translation>
-    </message>
-    <message>
-        <source>Quit</source>
-        <translation type="obsolete">خروج</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -16878,37 +17188,24 @@ open files with an appropriate program.</source>
         <translation>خروج&amp;</translation>
     </message>
     <message>
-        <source>Copy to Clipboard</source>
-        <translation type="obsolete">نسخة إلى الحافظة</translation>
+        <location line="+6"/>
+        <source>&amp;Execute</source>
+        <translation>تنفيذ&amp;</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+2"/>
         <source>&amp;Copy to Clipboard</source>
         <translation>نسخة إلى الحافظة&amp;</translation>
     </message>
     <message>
-        <location line="+92"/>
-        <source>Analyze</source>
-        <translation>تحليل</translation>
-    </message>
-    <message>
-        <location line="-87"/>
+        <location line="+5"/>
         <source>&amp;Analyze</source>
         <translation>تحليل&amp;</translation>
     </message>
     <message>
-        <location line="+92"/>
-        <source>Synthesize</source>
-        <translation>توليف</translation>
-    </message>
-    <message>
-        <location line="-87"/>
+        <location line="+5"/>
         <source>&amp;Synthesize</source>
         <translation>توليف&amp;</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation type="obsolete">مساعدة</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -16922,17 +17219,7 @@ open files with an appropriate program.</source>
         <translation>حول</translation>
     </message>
     <message>
-        <location line="-51"/>
-        <source>&amp;File</source>
-        <translation>‏‏&amp;ملف</translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>&amp;Execute</source>
-        <translation>تنفيذ&amp;</translation>
-    </message>
-    <message>
-        <location line="+39"/>
+        <location line="+15"/>
         <source>Transmission Line Type</source>
         <translation>انتقال نوع الخط</translation>
     </message>
@@ -16982,12 +17269,22 @@ open files with an appropriate program.</source>
         <translation>خصائص الفزيائية</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+6"/>
+        <source>Analyze</source>
+        <translation>تحليل</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Derive Electrical Parameters</source>
         <translation>خصائص مَمَرّ الكهربائية </translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+3"/>
+        <source>Synthesize</source>
+        <translation>توليف</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Compute Physical Parameters</source>
         <translation>خصائص الحسابات الفيزائية</translation>
     </message>
@@ -17003,14 +17300,14 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+569"/>
+        <location line="+571"/>
         <location line="+157"/>
         <location line="+19"/>
         <source>Ready.</source>
         <translation>جاهز.</translation>
     </message>
     <message>
-        <location line="-696"/>
+        <location line="-698"/>
         <location line="+6"/>
         <location line="+6"/>
         <location line="+6"/>
@@ -17253,7 +17550,7 @@ open files with an appropriate program.</source>
         <translation>الأسلوب الفردي للمقاومة</translation>
     </message>
     <message>
-        <location line="+138"/>
+        <location line="+140"/>
         <source>Selected for Calculation</source>
         <translation>اختيرت للحساب</translation>
     </message>
@@ -17324,19 +17621,19 @@ open files with an appropriate program.</source>
         <translation>تحميل الملف ...</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location line="+19"/>
-        <source>Transcalc File</source>
-        <translation>ملف Transcalc</translation>
-    </message>
-    <message>
-        <location line="-21"/>
+        <location line="+2"/>
         <location line="+19"/>
         <source>Enter a Filename</source>
         <translation>أدخل اسم الملف</translation>
     </message>
     <message>
-        <location line="-13"/>
+        <location line="-17"/>
+        <location line="+19"/>
+        <source>Transcalc File</source>
+        <translation>ملف Transcalc</translation>
+    </message>
+    <message>
+        <location line="-15"/>
         <location line="+19"/>
         <source>Error</source>
         <translation>خطأ</translation>
@@ -17380,17 +17677,7 @@ open files with an appropriate program.</source>
 <context>
     <name>SaveDialog</name>
     <message>
-        <location filename="../qucs/dialogs/savedialog.cpp" line="+60"/>
-        <source>Modified Files</source>
-        <translation>تعديل ملفات</translation>
-    </message>
-    <message>
-        <location line="+34"/>
-        <source>Untitled</source>
-        <translation>بدون عنوان</translation>
-    </message>
-    <message>
-        <location line="-56"/>
+        <location filename="../qucs/dialogs/savedialog.cpp" line="+38"/>
         <source>Save the modified files</source>
         <translation>انقاذ تعديل الملفات</translation>
     </message>
@@ -17400,7 +17687,12 @@ open files with an appropriate program.</source>
         <translation>اختر صورة لإنقاذ</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+3"/>
+        <source>Modified Files</source>
+        <translation>تعديل ملفات</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Abort Closing</source>
         <translation>إحباط الختامي</translation>
     </message>
@@ -17414,11 +17706,16 @@ open files with an appropriate program.</source>
         <source>Save Selected</source>
         <translation>إنقاذ مختارة</translation>
     </message>
+    <message>
+        <location line="+16"/>
+        <source>Untitled</source>
+        <translation>بدون عنوان</translation>
+    </message>
 </context>
 <context>
     <name>Schematic</name>
     <message>
-        <location filename="../qucs/schematic.cpp" line="+9"/>
+        <location filename="../qucs/schematic.cpp" line="+98"/>
         <source>Title</source>
         <translation>العنوان</translation>
     </message>
@@ -17438,35 +17735,7 @@ open files with an appropriate program.</source>
         <translation>مراجعة :</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="+266"/>
-        <location line="+22"/>
-        <source>Error</source>
-        <translation type="unfinished">خطأ</translation>
-    </message>
-    <message>
-        <location line="-21"/>
-        <source>Program admsXml not found: %1
-
-Set the admsXml location on the application settings.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+26"/>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+927"/>
-        <source>ERROR: Cannot create library file &quot;%s&quot;.</source>
-        <translation>ERROR: Cannot create library file &quot;%s&quot;.</translation>
-    </message>
-    <message>
-        <location filename="../qucs/schematic.cpp" line="+1319"/>
-        <source>generic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1232"/>
+        <location line="+81"/>
         <source>Edit Text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17485,128 +17754,137 @@ Edits the text file</source>
     <message>
         <location line="+3"/>
         <source>Edit Schematic</source>
-        <translation type="unfinished">تحرير تخطيطي</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Edits the schematic</source>
-        <translation type="unfinished">تعديلات التخطيطي</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Edit Schematic
 
 Edits the schematic</source>
-        <translation type="unfinished">تحرير تخطيطي 
-
-تعديلات التخطيطي</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Edit Circuit Symbol</source>
-        <translation type="unfinished">تحرير دائرة الرمز</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Edits the symbol for this schematic</source>
-        <translation type="unfinished">تعديلات لهذا الرمز التخطيطي</translation>
+        <translation>تعديلات لهذا الرمز التخطيطي</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Edit Circuit Symbol
 
 Edits the symbol for this schematic</source>
-        <translation type="unfinished">تحرير دائرة الرمز ذ
+        <translation>تحرير دائرة الرمز ذ
 
 تعديلات لهذا الرمز التخطيطي</translation>
+    </message>
+    <message>
+        <location line="+1253"/>
+        <source>generic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs/schematic_file.cpp" line="-1342"/>
+        <location line="+22"/>
+        <source>Error</source>
+        <translation>خطأ</translation>
+    </message>
+    <message>
+        <location line="-21"/>
+        <source>Program admsXml not found: %1
+
+Set the admsXml location on the application settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+993"/>
+        <source>ERROR: Cannot create library file &quot;%s&quot;.</source>
+        <translation>ERROR: Cannot create library file &quot;%s&quot;.</translation>
     </message>
 </context>
 <context>
     <name>SearchDialog</name>
     <message>
-        <location filename="../qucs/dialogs/searchdialog.cpp" line="+41"/>
+        <location filename="../qucs/dialogs/searchdialog.ui" line="+14"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+145"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Text to search for</source>
         <translation>للبحث عن نص</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+12"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Text to replace with</source>
         <translation>ليحل محل النص مع</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+14"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Ask before replacing</source>
         <translation>نسأل قبل ان يحل محل</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>From cursor position</source>
-        <translation>من موضع المؤشر</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+7"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Case sensitive</source>
         <translation>القضية الحساسة</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+7"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Whole words only</source>
         <translation>كلمات فقط لكامل</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+7"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Search backwards</source>
         <translation>البحث الوراء</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../qucs-lib/searchdialog.cpp" line="+63"/>
-        <source>Search</source>
-        <translation>البحث</translation>
+        <location line="+13"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <source>Next</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Cancel</source>
-        <translation>إلغاء</translation>
+        <location line="+10"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs-lib/searchdialog.cpp" line="+65"/>
+        <source>Close</source>
+        <translation>غلق</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location filename="../qucs/dialogs/searchdialog.cpp" line="+48"/>
         <source>Replace Text</source>
         <translation>استبدال النص</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>Search Text</source>
         <translation>البحث عن النص</translation>
     </message>
     <message>
-        <location line="+51"/>
-        <location line="+23"/>
-        <source>Replace...</source>
-        <translation>استبدال...</translation>
-    </message>
-    <message>
-        <location line="-23"/>
-        <source>Replace occurrence ?</source>
-        <translation> استبدال الموجود? </translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Search...</source>
-        <translation>البحث عن...</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Search string not found!</source>
-        <translation>بحث سلسلة غير موجود!</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Replaced %1 occurrences!</source>
-        <translation> استبدال %1  الموجود!</translation>
-    </message>
-    <message>
-        <location filename="../qucs-lib/searchdialog.cpp" line="-15"/>
+        <location filename="../qucs-lib/searchdialog.cpp" line="-17"/>
         <source>The search result contains all components whose
 name contains the search string. All libraries
 are included in the search.</source>
@@ -17620,12 +17898,12 @@ are included in the search.</source>
         <translation>كلمة البحث :</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Close</source>
-        <translation>غلق</translation>
+        <location line="+11"/>
+        <source>Search</source>
+        <translation>البحث</translation>
     </message>
     <message>
-        <location line="+89"/>
+        <location line="+91"/>
         <location line="+1"/>
         <source>Search result</source>
         <translation>نتيجة البحث</translation>
@@ -17639,22 +17917,32 @@ are included in the search.</source>
         <translation>تعديل خصائص الملف</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Data Display:</source>
-        <translation>عرض البيانات :</translation>
-    </message>
-    <message>
-        <location line="-5"/>
+        <location line="+11"/>
         <source>Data Set:</source>
         <translation>مجموعة من البيانات :</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Data Display:</source>
+        <translation>عرض البيانات :</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>open data display after simulation</source>
         <translation>عرض البيانات المفتوحة بعد المحاكاة</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+4"/>
+        <source>Octave Script:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>run script after simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Simulation</source>
         <translation>المحاكاة </translation>
     </message>
@@ -17743,21 +18031,11 @@ are included in the search.</source>
         <source>Cancel</source>
         <translation>إلغاء</translation>
     </message>
-    <message>
-        <location line="-76"/>
-        <source>Octave Script:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>run script after simulation</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>SimMessage</name>
     <message>
-        <location filename="../qucs/dialogs/simmessage.cpp" line="+54"/>
+        <location filename="../qucs/dialogs/simmessage.cpp" line="+67"/>
         <source>Qucs Simulation Messages</source>
         <translation>محاكاة Qucs رسائل</translation>
     </message>
@@ -17773,13 +18051,13 @@ are included in the search.</source>
         <translation>الاخطاء والانذارات :</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+14"/>
         <source>Goto display page</source>
         <translation>عرض صفحة</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location line="+15"/>
+        <location line="+22"/>
         <source>Abort simulation</source>
         <translation>إحباط المحاكاة</translation>
     </message>
@@ -17789,40 +18067,19 @@ are included in the search.</source>
         <translation>المحاكاة الجديدة ابتداء من 1 في المئة عن 2 ٪</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>ERROR: Simulator is still running!</source>
-        <translation>خطأ : لا يزال يركض المحاكاة!</translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+15"/>
         <source>creating netlist... </source>
         <translation>إنشاء netlist...</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>ERROR: Cannot write netlist file!</source>
-        <translation>خطأ : لا يمكن الكتابة netlist الملف!</translation>
-    </message>
-    <message>
-        <location line="+74"/>
-        <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
-        <translation>خطأ : لا يمكن فتح التوابل الملف &quot;٪ 1&quot;.</translation>
-    </message>
-    <message>
-        <source>ERROR: Cannot start QucsConv!</source>
-        <translation type="obsolete">! QucsConv خطأ : لايمكن بدأ </translation>
-    </message>
-    <message>
-        <location line="+123"/>
-        <location line="+101"/>
         <source>done.</source>
-        <translation>فعل.</translation>
+        <translation type="obsolete">فعل.</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+324"/>
         <location line="+24"/>
         <source>Error</source>
-        <translation type="unfinished">خطأ</translation>
+        <translation>خطأ</translation>
     </message>
     <message>
         <location line="-24"/>
@@ -17831,17 +18088,70 @@ are included in the search.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+81"/>
-        <source>ERROR: Program not found: %1</source>
+        <location line="-354"/>
+        <source>ERROR: Simulator is still running!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>ERROR: Cannot start simulator!</source>
-        <translation>خطأ : لا يمكن البدء في محاكاة!</translation>
+        <location line="+9"/>
+        <source>ERROR: Cannot write netlist file!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+91"/>
+        <location line="+12"/>
+        <source>ERROR: Cannot simulate a text file!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+63"/>
+        <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
+        <translation type="unfinished">.خطأ : لا يمكن فتح  ملف سبيس&quot;%1&quot;ء</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>SIM ERROR: Cannot start QucsConv!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+105"/>
+        <location line="+101"/>
+        <source>done.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+7"/>
+        <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>ERROR: Cannot create &quot;%1&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+270"/>
+        <source>ERROR: Cannot start </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Starting </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>ERROR: Simulator crashed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please report this error to qucs-bugs@lists.sourceforge.net</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Close window</source>
         <translation>إغلاق النافذة</translation>
     </message>
@@ -17877,27 +18187,6 @@ are included in the search.</source>
 -------</source>
         <translation>خطأ:-------</translation>
     </message>
-    <message>
-        <location line="-314"/>
-        <location line="+7"/>
-        <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-150"/>
-        <source>SIM ERROR: Cannot start QucsConv!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+158"/>
-        <source>ERROR: Cannot create &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-240"/>
-        <source>ERROR: Cannot simulate a text file!</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>SpiceDialog</name>
@@ -17912,27 +18201,27 @@ are included in the search.</source>
         <translation>الاسم :</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>File:</source>
-        <translation>ملف:</translation>
-    </message>
-    <message>
-        <location line="-3"/>
+        <location line="+7"/>
         <source>Browse</source>
         <translation>تصفح</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Edit</source>
-        <translation>تحرير</translation>
+        <location line="+3"/>
+        <source>File:</source>
+        <translation>ملف:</translation>
     </message>
     <message>
-        <location line="-1"/>
+        <location line="+5"/>
         <source>show file name in schematic</source>
         <translation>عرض اسم الملف في المخطط</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+1"/>
+        <source>Edit</source>
+        <translation>تحرير</translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>include SPICE simulations</source>
         <translation>تشمل عمليات Spice</translation>
     </message>
@@ -17947,7 +18236,12 @@ are included in the search.</source>
         <translation>Spice عقدة  :</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+1"/>
+        <source>Component ports:</source>
+        <translation>العنصر الموانئ :</translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Add &gt;&gt;</source>
         <translation>إضافة&gt;&gt;</translation>
     </message>
@@ -17957,12 +18251,7 @@ are included in the search.</source>
         <translation>&lt;&lt;إزالة</translation>
     </message>
     <message>
-        <location line="-16"/>
-        <source>Component ports:</source>
-        <translation>العنصر الموانئ :</translation>
-    </message>
-    <message>
-        <location line="+28"/>
+        <location line="+12"/>
         <source>OK</source>
         <translation>موافق</translation>
     </message>
@@ -17977,7 +18266,12 @@ are included in the search.</source>
         <translation>إلغاء</translation>
     </message>
     <message>
-        <location line="+141"/>
+        <location line="+139"/>
+        <source>Select a file</source>
+        <translation>إختر ملف</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>SPICE netlist</source>
         <translation>SPICE netlist</translation>
     </message>
@@ -17987,12 +18281,7 @@ are included in the search.</source>
         <translation>جميع الملفات</translation>
     </message>
     <message>
-        <location line="-3"/>
-        <source>Select a file</source>
-        <translation>إختر ملف</translation>
-    </message>
-    <message>
-        <location line="+93"/>
+        <location line="+90"/>
         <location line="+72"/>
         <source>Info</source>
         <translation>معلومات</translation>
@@ -18039,7 +18328,7 @@ are included in the search.</source>
 <context>
     <name>SweepDialog</name>
     <message>
-        <location filename="../qucs/dialogs/sweepdialog.cpp" line="+79"/>
+        <location filename="../qucs/dialogs/sweepdialog.cpp" line="+80"/>
         <source>Bias Points</source>
         <translation>التحيز نقطة</translation>
     </message>
@@ -18052,7 +18341,7 @@ are included in the search.</source>
 <context>
     <name>SymbolWidget</name>
     <message>
-        <location filename="../qucs-lib/symbolwidget.cpp" line="+45"/>
+        <location filename="../qucs-lib/symbolwidget.cpp" line="+47"/>
         <source>Symbol:</source>
         <translation>رمز :</translation>
     </message>
@@ -18065,19 +18354,7 @@ are included in the search.</source>
 <context>
     <name>TextDoc</name>
     <message>
-        <source>Error</source>
-        <translation type="obsolete">خطأ</translation>
-    </message>
-    <message>
-        <source>There is no selection!</source>
-        <translation type="obsolete">ليس هناك اختيار!</translation>
-    </message>
-    <message>
-        <source>Page %1 of %2</source>
-        <translation type="obsolete">صفحة ٪ 1 من 2 ٪</translation>
-    </message>
-    <message>
-        <location filename="../qucs/textdoc.cpp" line="+177"/>
+        <location filename="../qucs/textdoc.cpp" line="+228"/>
         <source>Edit Text Symbol</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18096,19 +18373,19 @@ Edits the symbol for this text document</source>
     <message>
         <location line="+3"/>
         <source>VHDL entity</source>
-        <translation type="unfinished">قيمة VHDL </translation>
+        <translation>قيمة VHDL </translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Inserts skeleton of VHDL entity</source>
-        <translation type="unfinished">إضافة هيكل قيمة VHDL    </translation>
+        <translation>إضافة هيكل قيمة VHDL    </translation>
     </message>
     <message>
         <location line="+2"/>
         <source>VHDL entity
 
 Inserts the skeleton of a VHDL entity</source>
-        <translation type="unfinished">قيمة VHDL 
+        <translation>قيمة VHDL 
 
 إضافة هيكل قيمة VHDL</translation>
     </message>
@@ -18146,61 +18423,81 @@ Inserts the skeleton of a Verilog module</source>
 Inserts the skeleton of a Octave function</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+31"/>
+        <source>Find...</source>
+        <translation>العثور على...</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Cannot find target: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Replace...</source>
+        <translation>استبدال...</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Replace occurrence ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TransferFuncDialog</name>
+    <message>
+        <location filename="../qucs-activefilter/transferfuncdialog.cpp" line="+24"/>
+        <source>Define filter transfer function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Numerator b[i]=</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Denominator a[i]=</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>a[i]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>b[i]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Cancel</source>
+        <translation>إلغاء</translation>
+    </message>
 </context>
 <context>
     <name>VASettingsDialog</name>
     <message>
         <location filename="../qucs/dialogs/vasettingsdialog.cpp" line="+43"/>
         <source>Document Settings</source>
-        <translation type="unfinished">ضبط وثائق</translation>
+        <translation>ضبط وثائق</translation>
     </message>
     <message>
-        <source>Digital Simulation Settings</source>
-        <translation type="obsolete">المحاكاة الرقمية إعدادات</translation>
-    </message>
-    <message>
-        <source>Simulation</source>
-        <translation type="obsolete">المحاكاة </translation>
-    </message>
-    <message>
-        <source>Duration of Simulation:</source>
-        <translation type="obsolete">مدة المحاكاة :</translation>
-    </message>
-    <message>
-        <source>Precompile Module</source>
-        <translation type="obsolete">Precompile نميطة</translation>
-    </message>
-    <message>
-        <source>Library Name:</source>
-        <translation type="obsolete">مكتبة الاسم :</translation>
-    </message>
-    <message>
-        <source>Libraries:</source>
-        <translation type="obsolete">مكتبات :</translation>
-    </message>
-    <message>
-        <location line="+107"/>
-        <source>Ok</source>
-        <translation type="unfinished">موافق</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Cancel</source>
-        <translation type="unfinished">إلغاء</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="obsolete">خطأ</translation>
-    </message>
-    <message>
-        <location line="-100"/>
+        <location line="+9"/>
         <source>Code Creation Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Browse</source>
-        <translation type="unfinished">تصفح</translation>
+        <translation>تصفح</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -18220,7 +18517,7 @@ Inserts the skeleton of a Octave function</source>
     <message>
         <location line="+10"/>
         <source>Description:</source>
-        <translation type="unfinished">وصف:</translation>
+        <translation>وصف:</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -18253,7 +18550,17 @@ Inserts the skeleton of a Octave function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+77"/>
+        <location line="+16"/>
+        <source>Ok</source>
+        <translation>موافق</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Cancel</source>
+        <translation>إلغاء</translation>
+    </message>
+    <message>
+        <location line="+59"/>
         <source>PNG files</source>
         <translation type="unfinished"></translation>
     </message>
