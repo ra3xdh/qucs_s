@@ -1,5 +1,5 @@
 /***************************************************************************
-                               qucsactions.cpp
+                               qucs_actions.cpp
                               -----------------
     begin                : Sat May 1 2004
     copyright            : (C) 2004 by Michael Margraf
@@ -16,6 +16,11 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+/*! \file qucs_actions.cpp
+ *  \brief Actions implementation for the GUI menu items
+ */
+
 #include <QtCore>
 #include <stdlib.h>
 #include <limits.h>
@@ -742,128 +747,26 @@ void QucsApp::slotCallEditor()
 // Is called to start the filter synthesis program.
 void QucsApp::slotCallFilter()
 {
-  QString prog;
-
-#ifdef __MINGW32__
-  prog = "qucsfilter.exe";
-#elif __APPLE__
-  prog = "qucsfilter.app/Contents/MacOS/qucsfilter";
-#else
-  prog = "qucsfilter";
-#endif
-
-  QProcess *QucsFilter = new QProcess();
-
-  QucsFilter->setWorkingDirectory(QucsSettings.BinDir);
-  QucsFilter->start(prog);
-
-  prog = QDir::toNativeSeparators(QucsSettings.BinDir+prog);
-  qDebug() << "Command :" << prog;
-
-  if( !QucsFilter->waitForStarted(1000) ) {
-    QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot start filter synthesis program! \n\n%1").arg(prog));
-    delete QucsFilter;
-    return;
-  }
-
-  // to kill it before qucs ends
-  connect(this, SIGNAL(signalKillEmAll()), QucsFilter, SLOT(kill()));
+  launchTool("qucsfilter", "filter synthesis");
 }
 
 void QucsApp::slotCallActiveFilter()
 {
-    QString prog;
-
-  #ifdef __MINGW32__
-    prog = "qucsactivefilter.exe";
-  #elif __APPLE__
-    prog = "qucsactivefilter.app/Contents/MacOS/qucsactivefilter";
-  #else
-    prog = "qucsactivefilter";
-  #endif
-
-    QProcess *QucsActiveFilter = new QProcess();
-
-    QucsActiveFilter->setWorkingDirectory(QucsSettings.BinDir);
-    QucsActiveFilter->start(prog);
-
-    prog = QDir::toNativeSeparators(QucsSettings.BinDir+prog);
-    qDebug() << "Command :" << prog;
-
-    if( !QucsActiveFilter->waitForStarted(1000) ) {
-      QMessageBox::critical(this, tr("Error"),
-                            tr("Cannot start filter synthesis program! \n\n%1").arg(prog));
-      delete QucsActiveFilter;
-      return;
-    }
-
-    // to kill it before qucs ends
-    connect(this, SIGNAL(signalKillEmAll()), QucsActiveFilter, SLOT(kill()));
+  launchTool("qucsactivefilter", "active filter synthesis");
 }
 
 // ------------------------------------------------------------------------
 // Is called to start the transmission line calculation program.
 void QucsApp::slotCallLine()
 {
-  QString prog;
-#ifdef __MINGW32__
-  prog = "qucstrans.exe";
-#elif __APPLE__
-  prog = "qucstrans.app/Contents/MacOS/qucstrans";
-#else
-  prog = "qucstrans";
-#endif
-  QProcess *QucsLine = new QProcess();
-
-  QucsLine->setWorkingDirectory(QucsSettings.BinDir);
-  QucsLine->start(prog);
-
-  prog = QDir::toNativeSeparators(QucsSettings.BinDir+prog);
-  qDebug() << "Command :" << prog;
-
-  if( !QucsLine->waitForStarted(1000) ) {
-    QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot start line calculation program! \n\n%1").arg(prog));
-    delete QucsLine;
-    return;
-  }
-
-  // to kill it before qucs ends
-  connect(this, SIGNAL(signalKillEmAll()), QucsLine, SLOT(kill()));
+  launchTool("qucstrans", "line calculation");
 }
 
 // ------------------------------------------------------------------------
 // Is called to start the component library program.
 void QucsApp::slotCallLibrary()
 {
-  QString prog;
-#ifdef __MINGW32__
-  prog = "qucslib.exe";
-#elif __APPLE__
-  prog = "qucslib.app/Contents/MacOS/qucslib";
-#else
-  prog = "qucslib";
-#endif
-
-  QProcess *QucsLibrary = new QProcess();
-
-  QucsLibrary->setWorkingDirectory(QucsSettings.BinDir);
-  QucsLibrary->start(prog);
-
-  prog = QDir::toNativeSeparators(QucsSettings.BinDir+prog);
-  qDebug() << "Command :" << prog;
-
-  if( !QucsLibrary->waitForStarted(1000) ) {
-
-    QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot start library program! \n\n%1").arg(prog));
-    delete QucsLibrary;
-    return;
-  }
-
-  // to kill it before qucs ends
-  connect(this, SIGNAL(signalKillEmAll()), QucsLibrary, SLOT(kill()));
+  launchTool("qucslib", "library");
 }
 
 // --------------------------------------------------------------
@@ -878,64 +781,50 @@ void QucsApp::slotCallMatch()
 // Is called to start the attenuator calculation program.
 void QucsApp::slotCallAtt()
 {
-  QString prog;
-#ifdef __MINGW32__
-  prog = "qucsattenuator.exe";
-#elif __APPLE__
-  prog = "qucsattenuator.app/Contents/MacOS/qucsattenuator";
-#else
-  prog = "qucsattenuator";
-#endif
-
-  QProcess *QucsAtt = new QProcess();
-
-  QucsAtt->setWorkingDirectory(QucsSettings.BinDir);
-  QucsAtt->start(prog);
-
-  prog = QDir::toNativeSeparators(QucsSettings.BinDir+prog);
-  qDebug() << "Command :" << prog;
-
-  if( !QucsAtt->waitForStarted(1000) ) {
-    QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot start attenuator calculation program! \n\n%1").arg(prog));
-    delete QucsAtt;
-    return;
-  }
-
-  // to kill it before qucs ends
-  connect(this, SIGNAL(signalKillEmAll()), QucsAtt, SLOT(kill()));
+  launchTool("qucsattenuator", "attenuator calculation");
 }
+
 // ------------------------------------------------------------------------
 // Is called to start the resistor color code calculation program.
 void QucsApp::slotCallRes()
 {
-  QString prog;
+  launchTool("qucsrescodes", "resistor color code calculation");
+}
+
+/*!
+ * \brief launch an external application passing arguments
+ *
+ * \param prog  executable program name (will be transformed depending on OS)
+ * \param progDesc  program description string (used for error messages)
+ * \param args  arguments to pass to the executable
+ */
+void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QString& args) {
+  QProcess *tool = new QProcess();
+
 #ifdef __MINGW32__
-  prog = "qucsrescodes.exe";
+  QString cmd = QDir::toNativeSeparators(QucsSettings.BinDir + prog + ".exe") + " " + args;
 #elif __APPLE__
-  prog = "qucsrescodes.app/Contents/MacOS/qucsrescodes";
+  QString cmd = QDir::toNativeSeparators(QucsSettings.BinDir + prog + ".app/Contents/MacOS/" + prog) + " " + args;
 #else
-  prog = "qucsrescodes";
+  QString cmd = QDir::toNativeSeparators(QucsSettings.BinDir + prog) + " " + args;
 #endif
 
-  QProcess *QucsRes = new QProcess();
-
-  QucsRes->setWorkingDirectory(QucsSettings.BinDir);
-  QucsRes->start(prog);
-
-  prog = QDir::toNativeSeparators(QucsSettings.BinDir+prog);
-  qDebug() << "Command :" << prog;
-
-  if( !QucsRes->waitForStarted(1000) ) {
+  tool->setWorkingDirectory(QucsSettings.BinDir);
+  qDebug() << "Command :" << cmd;
+  tool->start(cmd);
+  
+  if(!tool->waitForStarted(1000) ) {
     QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot start resistor color code calculation program! \n\n%1").arg(prog));
-    delete QucsRes;
+                          tr("Cannot start %1 program! \n\n(%2)").arg(progDesc, cmd));
+    delete tool;
     return;
   }
 
-  // to kill it before qucs ends
-  connect(this, SIGNAL(signalKillEmAll()), QucsRes, SLOT(kill()));
+  // to kill the application first before qucs finishes exiting
+  connect(this, SIGNAL(signalKillEmAll()), tool, SLOT(kill()));
 }
+
+
 // --------------------------------------------------------------
 void QucsApp::slotHelpIndex()
 {
@@ -951,33 +840,7 @@ void QucsApp::slotGettingStarted()
 // --------------------------------------------------------------
 void QucsApp::showHTML(const QString& Page)
 {
-
-  QString prog;
-#ifdef __MINGW32__
-  prog = "qucshelp.exe";
-#elif __APPLE__
-  prog = "qucshelp.app/Contents/MacOS/qucshelp";
-#else
-  prog = "qucshelp";
-#endif
-
-  QStringList com;
-  com << prog << Page;
-
-  QProcess *QucsHelp = new QProcess();
-
-  QucsHelp->setWorkingDirectory(QucsSettings.BinDir);
-  QucsHelp->start(com.join(" "));
-
-  qDebug() << "Command :" << com.join(" ");
-  if( !QucsHelp->waitForStarted(1000) ) {
-    QMessageBox::critical(this, tr("Error"), tr("Cannot start qucshelp! \n\n%1").arg(com.join(" ")));
-    delete QucsHelp;
-    return;
-  }
-
-  // to kill it before qucs ends
-  connect(this, SIGNAL(signalKillEmAll()), QucsHelp, SLOT(kill()));
+  launchTool("qucshelp", "help", Page);
 }
 
 // ---------------------------------------------------------------------
