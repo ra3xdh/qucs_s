@@ -1486,10 +1486,8 @@ void QucsApp::slotExtractPackage()
 
 void QucsApp::slotOpenRecent(int num)
 {
-    //qDebug()<<QucsSettings.RecentDocs.at(num);
-    gotoPage(QucsSettings.RecentDocs.at(num));
-    updateRecentFilesList(QucsSettings.RecentDocs.at(num));
-    slotUpdateRecentFiles();
+  gotoPage(QucsSettings.RecentDocs.at(num));
+  updateRecentFilesList(QucsSettings.RecentDocs.at(num));
 }
 
 void QucsApp::slotUpdateRecentFiles()
