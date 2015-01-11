@@ -141,6 +141,7 @@ QucsApp::QucsApp()
   viewStatusBar->setChecked(true);
   viewBrowseDock->setChecked(true);
   slotViewOctaveDock(false);
+  slotUpdateRecentFiles();
   initCursorMenu();
   Module::registerModules ();
 
