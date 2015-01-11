@@ -88,6 +88,11 @@ void QucsApp::initActions()
   fileClose->setWhatsThis(tr("Close File\n\nCloses the current document"));
   connect(fileClose, SIGNAL(activated()), SLOT(slotFileClose()));
 
+  for (int i = 0; i < MaxRecentFiles; ++i) {
+    fileRecentAction[i] = new QAction(this);
+    fileRecentAction[i]->setVisible(false);
+  }
+
   fileExamples = new QAction(tr("&Examples"), this);
   fileExamples->setStatusTip(tr("Opens a file explorer with example documents"));
   fileExamples->setWhatsThis(
@@ -673,7 +678,9 @@ void QucsApp::initMenuBar()
 
   recentfilesMenu = new QMenu(tr("Open Recent"),fileMenu);
   fileMenu->addMenu(recentfilesMenu);
-  slotUpdateRecentFiles();
+  for (int i = 0; i < MaxRecentFiles; ++i) {
+    recentfilesMenu->addAction(fileRecentAction[i]);
+  }
 
   fileMenu->insertSeparator();
   fileMenu->addAction(fileSave);
