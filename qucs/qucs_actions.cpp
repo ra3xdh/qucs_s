@@ -1502,8 +1502,8 @@ void QucsApp::slotUpdateRecentFiles()
         recent_docs.prepend(new QAction(file,this));
         connect(recent_docs.first(),SIGNAL(triggered()),mapper,SLOT(map()));
     }
-    recentfilesMenu->clear();
-    recentfilesMenu->addActions(recent_docs);
+    recentFilesMenu->clear();
+    recentFilesMenu->addActions(recent_docs);
 
     for (int i=0; i<recent_docs.count(); i++) {
         mapper->setMapping(recent_docs.at(i),(recent_docs.count() - 1)-i);
@@ -1511,8 +1511,8 @@ void QucsApp::slotUpdateRecentFiles()
 
     connect(mapper,SIGNAL(mapped(int)),this,SLOT(slotOpenRecent(int)));
 
-    recentfilesMenu->insertSeparator();
-    recentfilesMenu->addAction(tr("Clear list"),this,SLOT(slotClearRecentFiles()));
+    recentFilesMenu->insertSeparator();
+    recentFilesMenu->addAction(tr("Clear list"),this,SLOT(slotClearRecentFiles()));
 
 }
 
