@@ -2860,6 +2860,14 @@ void QucsApp::slotHideEdit()
 }
 
 // -----------------------------------------------------------
+// set document tab icon to smallsave_xpm or empty_xpm
+void QucsApp::slotFileChanged(bool changed)
+{
+  DocumentTab->setTabIcon(DocumentTab->currentIndex(),
+      QPixmap((changed)? smallsave_xpm : empty_xpm));
+}
+
+// -----------------------------------------------------------
 // Searches the qucs path list for all schematic files and creates
 // a hash for lookup later
 void QucsApp::updateSchNameHash(void)

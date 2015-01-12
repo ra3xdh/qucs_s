@@ -31,9 +31,6 @@ Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
 class SyntaxHighlighter;
 class QString;
 
-extern const char *smallsave_xpm[];// icon for unsaved files (diskette)
-extern const char *empty_xpm[];    // provides same height than "smallsave_xpm"
-
 // device type flags
 #define DEV_BJT      0x0001
 #define DEV_MOS      0x0002
@@ -89,6 +86,7 @@ public:
 
 signals:
   void signalCursorPosChanged(int, int);
+  void signalFileChanged(bool);
   void signalUndoState(bool);
   void signalRedoState(bool);
 
