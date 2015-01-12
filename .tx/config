@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+
+[qucs-desktop.qucs]
+type = QT
+file_filter = translations/qucs_<lang>.ts
+source_file = translations/qucs_en.ts
+source_lang = en
+
