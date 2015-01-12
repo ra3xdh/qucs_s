@@ -21,7 +21,7 @@ puke() {
 #if [ "x$(basename $(pwd))" != "xlocale" -o $(ls *.ts 2>/dev/null|wc -w) -eq 0 ]; then
 if [  $(ls *.ts 2>/dev/null|wc -w) -eq 0 ]; then
     echo "Current directory doesn't seem to have any translations."
-    echo "Please, use this script from inside the ~/git/qucs/qucs/qucs directory."
+    echo "Please, use this script from inside the ~/git/qucs/qucs/translations/ directory."
     exit 1
 fi
 
