@@ -21,7 +21,7 @@
 
 #include "ngspicesimdialog.h"
 
-NgspiceSimDialog::NgspiceSimDialog(Schematic *sch,QWidget *parent) :
+ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     QDialog(parent)
 {
     Sch = sch;
@@ -63,14 +63,14 @@ NgspiceSimDialog::NgspiceSimDialog(Schematic *sch,QWidget *parent) :
     this->setLayout(vl_top);
 }
 
-NgspiceSimDialog::~NgspiceSimDialog()
+ExternSimDialog::~ExternSimDialog()
 {
     ngspice->killThemAll();
 }
 
 
 
-void NgspiceSimDialog::slotProcessNgSpiceOutput()
+void ExternSimDialog::slotProcessNgSpiceOutput()
 {
     buttonStopSim->setEnabled(false);
     QString out = ngspice->getOutput();
@@ -82,23 +82,23 @@ void NgspiceSimDialog::slotProcessNgSpiceOutput()
     ngspice->convertToQucsData(qucs_dataset);
 }
 
-void NgspiceSimDialog::slotNgspiceStarted()
+void ExternSimDialog::slotNgspiceStarted()
 {
     editSimConsole->clear();
     editSimConsole->append(tr("ngspice started...\n"));
 }
 
-void NgspiceSimDialog::slotNgspiceStartError()
+void ExternSimDialog::slotNgspiceStartError()
 {
     editSimConsole->append(tr("ngspice error..."));
 }
 
-void NgspiceSimDialog::slotStart()
+void ExternSimDialog::slotStart()
 {
     buttonStopSim->setEnabled(true);
 }
 
-void NgspiceSimDialog::slotStop()
+void ExternSimDialog::slotStop()
 {
     buttonStopSim->setEnabled(false);
     ngspice->killThemAll();

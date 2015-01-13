@@ -11,18 +11,21 @@ SET(EXTSIMKERNELS_HDRS
 ngspicesimdialog.h
 abstractspicekernel.h
 ngspice.h
+xyce.h
 )
 
 SET(EXTSIMKERNELS_SRCS
 ngspicesimdialog.cpp
 abstractspicekernel.cpp
 ngspice.cpp
+xyce.cpp
 )
 
 SET(EXTSIMKERNELS_MOC_HDRS
 ngspicesimdialog.h
 abstractspicekernel.h
 ngspice.h
+xyce.h
 )
 
 QT4_WRAP_CPP( EXTSIMKERNELS_MOC_SRCS ${EXTSIMKERNELS_MOC_HDRS} )

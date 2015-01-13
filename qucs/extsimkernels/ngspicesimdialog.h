@@ -23,7 +23,7 @@
 #include "schematic.h"
 #include "ngspice.h"
 
-class NgspiceSimDialog : public QDialog
+class ExternSimDialog : public QDialog
 {
     Q_OBJECT
 private:
@@ -40,8 +40,8 @@ private:
     Ngspice *ngspice;
 
 public:
-    explicit NgspiceSimDialog(Schematic *sch,QWidget *parent = 0);
-    ~NgspiceSimDialog();
+    explicit ExternSimDialog(Schematic *sch,QWidget *parent = 0);
+    ~ExternSimDialog();
     
 signals:
     
