@@ -30,6 +30,8 @@ private:
 
     Schematic *Sch;
 
+    QLabel *lblSimulator;
+    QComboBox *cbxSimualor;
     QPushButton *buttonSimulate;
     QPushButton *buttonStopSim;
 

@@ -47,14 +47,23 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     connect(buttonStopSim,SIGNAL(clicked()),ngspice,SLOT(killThemAll()));
     buttonStopSim->setEnabled(false);
 
+    lblSimulator = new QLabel(tr("Select external simulator:"));
     QGroupBox *grp1 = new QGroupBox(tr("Simulation console"),this);
     QVBoxLayout *vbl1 = new QVBoxLayout;
+    cbxSimualor = new QComboBox(this);
+    QStringList items;
+    items<<"Ngspice"<<"Xyce (Serial)"<<"Xyce (Parallel)";
+    cbxSimualor->addItems(items);
     editSimConsole = new QTextEdit(this);
     editSimConsole->setReadOnly(true);
     vbl1->addWidget(editSimConsole);
     grp1->setLayout(vbl1);
 
     QVBoxLayout *vl_top = new QVBoxLayout;
+    QHBoxLayout *hl2 = new QHBoxLayout;
+    hl2->addWidget(lblSimulator);
+    hl2->addWidget(cbxSimualor);
+    vl_top->addLayout(hl2);
     vl_top->addWidget(grp1);
     QHBoxLayout *hl1 = new QHBoxLayout;
     hl1->addWidget(buttonSimulate);
