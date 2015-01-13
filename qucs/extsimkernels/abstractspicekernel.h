@@ -27,6 +27,9 @@ class AbstractSpiceKernel : public QObject
 {
     Q_OBJECT
 private:
+    QString output;
+
+protected:
     QString netlist,workdir;
     QString simulator_cmd;
     QString simulator_parameters;
@@ -34,9 +37,7 @@ private:
 
     QStringList sims,vars,output_files;
 
-    QString output;
 
-protected:
     Schematic *Sch;
 
     virtual void createNetlist(QTextStream& stream, int NumPorts,QStringList& simulations,
@@ -63,7 +64,7 @@ signals:
     void errors(QProcess::ProcessError);
     
 public slots:
-    void slotSimulate();
+    virtual void slotSimulate();
     void killThemAll();
     void slotErrors(QProcess::ProcessError err);
     void slotFinished();

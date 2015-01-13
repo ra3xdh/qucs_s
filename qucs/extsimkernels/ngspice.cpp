@@ -101,3 +101,24 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
 
     stream<<".END\n";
 }
+
+void Ngspice::slotSimulate()
+{
+    int num=0;
+    sims.clear();
+    vars.clear();
+    QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs.cir");
+    QFile spice_file(tmp_path);
+    if (spice_file.open(QFile::WriteOnly)) {
+        QTextStream stream(&spice_file);
+        createNetlist(stream,num,sims,vars,output_files);
+        spice_file.close();
+    }
+    qDebug()<<sims<<vars;
+
+    //startNgSpice(tmp_path);
+    SimProcess->setWorkingDirectory(workdir);
+    QString cmd = QString("%1 %2 %3").arg(simulator_cmd,simulator_parameters,tmp_path);
+    SimProcess->start(cmd);
+    emit started();
+}

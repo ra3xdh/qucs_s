@@ -32,7 +32,8 @@ public:
 protected:
     void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
                   QStringList &vars, QStringList &outputs);
-    
+public slots:
+    void slotSimulate();
 };
 
 #endif // NGSPICE_H
