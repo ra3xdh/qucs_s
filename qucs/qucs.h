@@ -61,7 +61,6 @@ class QucsApp : public QMainWindow {
 public:
   QucsApp();
  ~QucsApp();
-  QSettings *qucsSettings;
   bool closeAllFiles();
   bool gotoPage(const QString&);   // to load a document
   QucsDoc *getDoc(int No=-1);

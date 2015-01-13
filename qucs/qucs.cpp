@@ -2476,7 +2476,7 @@ void QucsApp::slotSelectLibComponent(QTreeWidgetItem *item)
     Schematic *Doc = (Schematic*)DocumentTab->currentPage();
 
     // if the current document is a schematic activate the paste
-    if(!Doc->inherits("QPlainTextEdit"))
+    if(!isTextDocument(Doc))
     {
 
         if(item == 0)
@@ -2602,9 +2602,7 @@ void QucsApp::changeSchematicSymbolMode(Schematic *Doc)
 
 // ---------------------------------------------------------
 bool QucsApp::isTextDocument(QWidget *w) {
-  if (w->inherits("QPlainTextEdit"))
-    return true;
-  return false;
+  return w->inherits("QPlainTextEdit");
 }
 
 // ---------------------------------------------------------

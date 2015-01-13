@@ -162,7 +162,7 @@ void QucsApp::slotEditActivate (bool on)
 void QucsApp::slotEditDelete(bool on)
 {
   TextDoc *Doc = (TextDoc*)DocumentTab->currentPage();
-  if(Doc->inherits("QPlainTextEdit")) {
+  if(isTextDocument(Doc)) {
     Doc->viewport()->setFocus();
     //Doc->del();
     Doc->textCursor().deleteChar();
@@ -211,7 +211,7 @@ void QucsApp::slotMoveText(bool on)
 void QucsApp::slotZoomIn(bool on)
 {
   TextDoc *Doc = (TextDoc*)DocumentTab->currentPage();
-  if(Doc->inherits("QPlainTextEdit")) {
+  if(isTextDocument(Doc)) {
     Doc->zoomBy(1.5f);
     magPlus->blockSignals(true);
     magPlus->setChecked(false);
@@ -234,7 +234,7 @@ void QucsApp::slotEscape()
 void QucsApp::slotSelect(bool on)
 {
   QWidget *w = DocumentTab->currentPage();
-  if(w->inherits("QPlainTextEdit")) {
+  if(isTextDocument(w)) {
     ((TextDoc*)w)->viewport()->setFocus();
       select->blockSignals(true);
       select->setChecked(true);
@@ -472,7 +472,7 @@ void QucsApp::slotInsertPort(bool on)
 void QucsApp::slotEditUndo()
 {
   Schematic *Doc = (Schematic*)DocumentTab->currentPage();
-  if(Doc->inherits("QPlainTextEdit")) {
+  if(isTextDocument(Doc)) {
     ((TextDoc*)Doc)->viewport()->setFocus();
     ((TextDoc*)Doc)->undo();
     return;
@@ -490,7 +490,7 @@ void QucsApp::slotEditUndo()
 void QucsApp::slotEditRedo()
 {
   Schematic *Doc = (Schematic*)DocumentTab->currentPage();
-  if(Doc->inherits("QPlainTextEdit")) {
+  if(isTextDocument(Doc)) {
     ((TextDoc*)Doc)->viewport()->setFocus();
     ((TextDoc*)Doc)->redo();
     return;
@@ -618,7 +618,7 @@ void QucsApp::slotSelectAll()
   editText->setHidden(true); // disable text edit of component property
 
   QWidget *Doc = DocumentTab->currentPage();
-  if(Doc->inherits("QPlainTextEdit")) {
+  if(isTextDocument(Doc)) {
     ((TextDoc*)Doc)->viewport()->setFocus();
     //((TextDoc*)Doc)->selectAll(true);
     ((TextDoc*)Doc)->selectAll();
@@ -855,7 +855,7 @@ void QucsApp::slotEditFind()
 void QucsApp::slotChangeProps()
 {
   QWidget *Doc = DocumentTab->currentPage();
-  if(Doc->inherits("QPlainTextEdit")) {
+  if(isTextDocument(Doc)) {
     ((TextDoc*)Doc)->viewport()->setFocus();
 
     SearchDia->initSearch(Doc,
