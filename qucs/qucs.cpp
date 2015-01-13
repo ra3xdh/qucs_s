@@ -1733,6 +1733,7 @@ bool QucsApp::saveAs()
     break;
   }
   Doc->setName(s);
+  DocumentTab->setTabText(DocumentTab->indexOf(this), misc::properFileName(s));
   lastDirOpenSave = Info.dirPath(true);  // remember last directory and file
   updateRecentFilesList(s);
 

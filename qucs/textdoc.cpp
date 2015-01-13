@@ -204,8 +204,6 @@ void TextDoc::setName (const QString& Name_)
   setLanguage (DocName);
 
   QFileInfo Info (DocName);
-  if (App)
-    App->DocumentTab->setTabLabel (this, Info.fileName ());
 
   DataSet = Info.baseName (true) + ".dat";
   DataDisplay = Info.baseName (true) + ".dpl";

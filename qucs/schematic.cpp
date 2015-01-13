@@ -231,7 +231,6 @@ void Schematic::setName (const QString& Name_)
 {
   DocName = Name_;
   QFileInfo Info (DocName);
-  if (App) App->DocumentTab->setTabText(App->DocumentTab->indexOf(this), Info.fileName());
   QString base = Info.completeBaseName ();
   QString ext = Info.suffix();
   DataSet = base + ".dat";
