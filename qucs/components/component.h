@@ -36,7 +36,7 @@ public:
   virtual Component* newOne();
   virtual void recreate(Schematic*) {};
   QString getNetlist();
-  QString getSpiceNetlist();
+  QString getSpiceNetlist(bool isXyce = false);
   QString get_VHDL_Code(int);
   QString get_Verilog_Code(int);
   void    paint(ViewPainter*);

@@ -700,11 +700,15 @@ QString Component::getNetlist()
   return s;
 }
 
-QString Component::getSpiceNetlist()
+QString Component::getSpiceNetlist(bool isXyce)
 {
     switch(isActive) {
       case COMP_IS_ACTIVE:
-        return spice_netlist();
+        if (isXyce) {
+            return spice_netlist();
+        } else {
+            return spice_netlist();
+        }
       case COMP_IS_OPEN:
         return QString("");
     }

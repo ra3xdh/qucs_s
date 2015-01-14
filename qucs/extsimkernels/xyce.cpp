@@ -15,7 +15,7 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
       if(Sch->isAnalog &&
          !(pc->isSimulation) &&
          !(pc->isProbe)) {
-        s = pc->getSpiceNetlist();
+        s = pc->getSpiceNetlist(true);
         stream<<s;
       }
     }
@@ -24,7 +24,7 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
     simulations.clear();
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
        if(pc->isSimulation) {
-           s = pc->getSpiceNetlist();
+           s = pc->getSpiceNetlist(true);
            QString sim_typ = pc->Model;
            if (sim_typ==".AC") simulations.append("ac");
            if (sim_typ==".TR") simulations.append("tran");
