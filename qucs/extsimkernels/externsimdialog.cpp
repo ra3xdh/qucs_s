@@ -19,7 +19,7 @@
 # include <config.h>
 #endif
 
-#include "ngspicesimdialog.h"
+#include "externsimdialog.h"
 
 ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     QDialog(parent)

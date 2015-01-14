@@ -15,8 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef NGSPICESIMDIALOG_H
-#define NGSPICESIMDIALOG_H
+#ifndef EXTERNSIMDIALOG_H
+#define EXTERNSIMDIALOG_H
 
 #include <QtGui>
 #include <QtCore>
@@ -58,4 +58,4 @@ private slots:
     
 };
 
-#endif // NGSPICESIMDIALOG_H
+#endif // EXTERNSIMDIALOG_H
