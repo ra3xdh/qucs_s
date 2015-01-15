@@ -229,7 +229,7 @@ case $host_os in
     dnl Set Clang
     if test "$CXX -dM -E - < /dev/null | grep __clang__" ; then
       CFLAGS="$CFLAGS -pipe"
-      CXXFLAGS="$CXXFLAGS -pipe -fno-exceptions"
+      CXXFLAGS="$CXXFLAGS -pipe -fno-exceptions -Wno-deprecated-register"
       LDDFLAGS="$LDDFLAGS"
       use_CLANG="yes"
     fi
