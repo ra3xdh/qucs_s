@@ -8,6 +8,10 @@
 class Xyce : public AbstractSpiceKernel
 {
     Q_OBJECT
+private:
+    QStringList simulationsQueue;
+    void determineUsedSimulations();
+
 public:
     explicit Xyce(Schematic *sch_, QObject *parent = 0);
     

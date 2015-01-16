@@ -5,6 +5,18 @@ Xyce::Xyce(Schematic *sch_, QObject *parent) :
 {
 }
 
+void Xyce::determineUsedSimulations()
+{
+
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+       if(pc->isSimulation) {
+           QString sim_typ = pc->Model;
+           if (sim_typ==".AC") simulationsQueue.append("ac");
+           if (sim_typ==".TR") simulationsQueue.append("tran");
+       }
+    }
+}
+
 void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
                     QStringList &vars, QStringList &outputs)
 {
@@ -18,19 +30,6 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
         s = pc->getSpiceNetlist(true);
         stream<<s;
       }
-    }
-
-    // determine which simulations are in use
-    simulations.clear();
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-       if(pc->isSimulation) {
-           s = pc->getSpiceNetlist(true);
-           QString sim_typ = pc->Model;
-           if (sim_typ==".AC") simulations.append("ac");
-           if (sim_typ==".TR") simulations.append("tran");
-           //if (sim_typ==".DC") simulations.append("dc");
-           stream<<s;
-       }
     }
 
     // set variable names for named nodes and wires
@@ -57,25 +56,40 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
     QFileInfo inf(Sch->DocName);
     QString basenam = inf.baseName();
 
-    QString sim;                 // see results
-    outputs.clear();
-    foreach (sim,simulations) {
-        QString nod,nods;
-        nods.clear();
-        foreach (nod,vars) {
-            nods += QString("v(%1) ").arg(nod);
-        }
-        QString filename = QString("%1_%2.txt").arg(basenam).arg(sim);
-        QString write_str = QString(".PRINT  %1 format=raw filename=%2\n").arg(sim).arg(filename).arg(nods);
-        stream<<write_str;
-        outputs.append(filename);
-        stream<<endl;
+    QString nod,nods;
+    nods.clear();
+    foreach (nod,vars) {
+        nods += QString("v(%1) ").arg(nod);
     }
+    QString sim = simulations.first();
+    QString filename = QString("%1_%2.txt").arg(basenam).arg(sim);
+    QString write_str = QString(".PRINT  %1 format=raw filename=%2\n").arg(sim).arg(filename).arg(nods);
+    stream<<write_str;
+    outputs.append(filename);
 
     stream<<".END\n";
 }
 
 void Xyce::slotSimulate()
 {
+
+    int num=0;
+    QStringList netlistQueue;
+    netlistQueue.clear();
+    output_files.clear();
+
+    foreach(QString sim,simulationsQueue) {
+        QStringList sim_lst;
+        sim_lst.clear();
+        sim_lst.append(sim);
+        QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs."+sim+".cir");
+        netlistQueue.append(tmp_path);
+        QFile spice_file(tmp_path);
+        if (spice_file.open(QFile::WriteOnly)) {
+            QTextStream stream(&spice_file);
+            createNetlist(stream,num,sim_lst,vars,output_files);
+            spice_file.close();
+        }
+    }
 
 }
