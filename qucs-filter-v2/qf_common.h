@@ -18,6 +18,15 @@
 #include <typeinfo>
 #include <Q3TextStream>
 
+// may clash with Qt defined M_PI
+#ifndef M_PI
+const double M_PI = 3.14;
+const double M_PI_2 = M_PI/2.0;
+#endif
+//const double M_SQRT2   =   1.41421356237309504880168872420969808   /* sqrt(2)        */
+const double M_SQRT1_2 =   0.707106781186547524400844362104849039;  /* 1/sqrt(2)      */
+
+
 using namespace std;
 
 typedef double			  qf_double_t;

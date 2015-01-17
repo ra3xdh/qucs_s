@@ -26,15 +26,14 @@
 
 #include <cmath>
 
-#ifdef __MINGW32__
-#define atanh(x) (0.5 * log((1.0 + (x)) / (1.0 - (x))))
-#define asinh(x) log((x) + sqrt((x) * (x) + 1.0))
-#define acosh(x) log((x) + sqrt((x) * (x) - 1.0))
-#endif
+//#ifdef __MINGW32__
+//#define atanh(x) (0.5 * log((1.0 + (x)) / (1.0 - (x))))
+//#define asinh(x) log((x) + sqrt((x) * (x) + 1.0))
+//#define acosh(x) log((x) + sqrt((x) * (x) - 1.0))
+//#endif
 
-#ifndef M_PI
-#define M_PI           3.1415926535897932384626433832795029  /* pi */
-#endif                 
+const double M_PI = 3.1415926535897932384626433832795029;  /* pi */
+const double M_PI_2 = M_PI/2.0;  /* pi/2 */
 
 #ifndef M_E
 #define M_E            2.7182818284590452353602874713526625   /* e */

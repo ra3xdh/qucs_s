@@ -29,6 +29,8 @@
 
 #include <cmath>
 
+const double M_PI = 3.14;
+
 #define atanh(x) (0.5 * log((1.0 + (x)) / (1.0 - (x))))
 #define asinh(x) log((x) + sqrt((x) * (x) + 1.0))
 #define acosh(x) log((x) + sqrt((x) * (x) - 1.0))
