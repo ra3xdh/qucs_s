@@ -77,7 +77,7 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
 
 
     QString filename = QString("%1_%2.txt").arg(basenam).arg(sim);
-    QString write_str = QString(".PRINT  %1 format=raw filename=%2 %3\n").arg(sim).arg(filename).arg(nods);
+    QString write_str = QString(".PRINT  %1 format=raw file=%2 %3\n").arg(sim).arg(filename).arg(nods);
     stream<<write_str;
     outputs.append(filename);
 
@@ -88,7 +88,6 @@ void Xyce::slotSimulate()
 {
 
     int num=0;
-    QStringList netlistQueue;
     netlistQueue.clear();
     output_files.clear();
 
@@ -108,4 +107,27 @@ void Xyce::slotSimulate()
         }
     }
 
+    output.clear();
+    nextSimulation();
+    emit started();
+
+}
+
+void Xyce::slotFinished()
+{
+    output += SimProcess->readAllStandardOutput();
+    if (netlistQueue.isEmpty()) {
+        emit finished();
+        return;
+    } else {
+        nextSimulation();
+    }
+}
+
+void Xyce::nextSimulation()
+{
+    QString file = netlistQueue.takeFirst();
+    SimProcess->setWorkingDirectory(workdir);
+    QString cmd = QString("%1 %2 %3").arg(simulator_cmd,simulator_parameters,file);
+    SimProcess->start(cmd);
 }

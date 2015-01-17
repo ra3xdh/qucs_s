@@ -85,10 +85,10 @@ void ExternSimDialog::slotSetSimulator()
     switch (cbxSimualor->currentIndex()) {
     case simNgspice: {
         disconnect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
+        disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessXyceOutput()));
         disconnect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
         connect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
+        connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()));
         connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
         disconnect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
         connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
@@ -96,10 +96,10 @@ void ExternSimDialog::slotSetSimulator()
         break;
     case simXyceSer: {
         disconnect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
+        disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()));
         disconnect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
         connect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
+        connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessXyceOutput()));
         connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
         connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
         disconnect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
@@ -114,7 +114,7 @@ void ExternSimDialog::slotSetSimulator()
 }
 
 
-void ExternSimDialog::slotProcessOutput()
+void ExternSimDialog::slotProcessNgspiceOutput()
 {
     buttonStopSim->setEnabled(false);
     cbxSimualor->setEnabled(true);
@@ -125,6 +125,19 @@ void ExternSimDialog::slotProcessOutput()
     QFileInfo inf(Sch->DocName);
     QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
     ngspice->convertToQucsData(qucs_dataset);
+}
+
+void ExternSimDialog::slotProcessXyceOutput()
+{
+    buttonStopSim->setEnabled(false);
+    cbxSimualor->setEnabled(true);
+    QString out = xyce->getOutput();
+    //editSimConsole->clear();
+    editSimConsole->append(out);
+    // Set temporary safe output name
+    QFileInfo inf(Sch->DocName);
+    QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_xyce.dat";
+    xyce->convertToQucsData(qucs_dataset);
 }
 
 void ExternSimDialog::slotNgspiceStarted()

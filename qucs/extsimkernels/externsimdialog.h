@@ -54,7 +54,8 @@ signals:
 public slots:
 
 private slots:
-    void slotProcessOutput();
+    void slotProcessNgspiceOutput();
+    void slotProcessXyceOutput();
     void slotNgspiceStarted();
     void slotNgspiceStartError();
     void slotStart();

@@ -10,7 +10,9 @@ class Xyce : public AbstractSpiceKernel
     Q_OBJECT
 private:
     QStringList simulationsQueue;
+    QStringList netlistQueue;
     void determineUsedSimulations();
+    void nextSimulation();
 
 public:
     explicit Xyce(Schematic *sch_, QObject *parent = 0);
@@ -18,6 +20,9 @@ public:
 protected:
     void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
                   QStringList &vars, QStringList &outputs);
+protected slots:
+    void slotFinished();
+
 public slots:
     void slotSimulate();
     

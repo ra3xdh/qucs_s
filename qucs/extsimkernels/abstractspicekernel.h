@@ -26,13 +26,9 @@
 class AbstractSpiceKernel : public QObject
 {
     Q_OBJECT
-private:
-    QString output;
-
 protected:
-    QString netlist,workdir;
-    QString simulator_cmd;
-    QString simulator_parameters;
+    QString netlist,workdir, simulator_cmd,
+            simulator_parameters, output;
     QProcess *SimProcess;
 
     QStringList sims,vars,output_files;
@@ -59,12 +55,14 @@ signals:
     void started();
     void finished();
     void errors(QProcess::ProcessError);
-    
+
+protected slots:
+    virtual void slotFinished();
+
 public slots:
     virtual void slotSimulate();
     void killThemAll();
     void slotErrors(QProcess::ProcessError err);
-    void slotFinished();
     
 };
 
