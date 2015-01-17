@@ -26,8 +26,7 @@
 
 
 
-AbstractSpiceKernel::AbstractSpiceKernel(Schematic *sch_,
-                                         Simulator kern, QObject *parent) :
+AbstractSpiceKernel::AbstractSpiceKernel(Schematic *sch_, QObject *parent) :
     QObject(parent)
 {
     Sch = sch_;
@@ -37,20 +36,6 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *sch_,
     if (!inf.exists()) {
         QDir dir;
         dir.mkpath(workdir);
-    }
-
-    switch (kern) {
-    case AbstractSpiceKernel::Ngspice : {
-        simulator_cmd = "ngspice";
-        simulator_parameters = "";
-        }
-        break;
-    case AbstractSpiceKernel::Xyce : {
-        simulator_cmd = "/usr/local/Xyce-Release-6.2.0-OPENSOURCE/bin/runxyce";
-        simulator_parameters = "-a";
-        }
-        break;
-    default: break;
     }
 
     SimProcess = new QProcess(this);

@@ -45,10 +45,7 @@ protected:
 
 public:
 
-    enum Simulator {Ngspice, Xyce, NoSimulator};
-
-    explicit AbstractSpiceKernel(Schematic *sch_, Simulator kern,
-                                 QObject *parent = 0);
+    explicit AbstractSpiceKernel(Schematic *sch_, QObject *parent = 0);
     ~AbstractSpiceKernel();
 
     void parseNgSpiceSimOutput(QString ngspice_file,

@@ -19,9 +19,10 @@
 #include "ngspice.h"
 
 Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
-    AbstractSpiceKernel(sch_, AbstractSpiceKernel::Ngspice, parent)
+    AbstractSpiceKernel(sch_, parent)
 {
-
+    simulator_cmd = "ngspice";
+    simulator_parameters = "";
 }
 
 // Reads ngspice simulation results and merges it in single Qucs dataset
