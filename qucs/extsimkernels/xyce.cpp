@@ -62,8 +62,20 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
         nods += QString("v(%1) ").arg(nod);
     }
     QString sim = simulations.first();
+
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) { // Xyce can run
+       if(pc->isSimulation) {                        // only one simulations per time.
+           QString sim_typ = pc->Model;              // Multiple simulations are forbidden.
+           QString s = pc->getSpiceNetlist();
+           if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
+           if ((sim_typ==".TR")&&(sim=="tran")) stream<<s;
+           if ((sim_typ==".DC")) stream<<s;
+       }
+    }
+
+
     QString filename = QString("%1_%2.txt").arg(basenam).arg(sim);
-    QString write_str = QString(".PRINT  %1 format=raw filename=%2\n").arg(sim).arg(filename).arg(nods);
+    QString write_str = QString(".PRINT  %1 format=raw filename=%2 %3\n").arg(sim).arg(filename).arg(nods);
     stream<<write_str;
     outputs.append(filename);
 
@@ -77,6 +89,8 @@ void Xyce::slotSimulate()
     QStringList netlistQueue;
     netlistQueue.clear();
     output_files.clear();
+
+    determineUsedSimulations();
 
     foreach(QString sim,simulationsQueue) {
         QStringList sim_lst;

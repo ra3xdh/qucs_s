@@ -22,6 +22,7 @@
 #include <QtCore>
 #include "schematic.h"
 #include "ngspice.h"
+#include "xyce.h"
 
 class ExternSimDialog : public QDialog
 {
@@ -40,6 +41,9 @@ private:
     QString workdir;
 
     Ngspice *ngspice;
+    Xyce *xyce;
+
+    enum Simulator {simNgspice=0, simXyceSer = 1, simXycePar =2};
 
 public:
     explicit ExternSimDialog(Schematic *sch,QWidget *parent = 0);
@@ -50,11 +54,12 @@ signals:
 public slots:
 
 private slots:
-    void slotProcessNgSpiceOutput();
+    void slotProcessOutput();
     void slotNgspiceStarted();
     void slotNgspiceStartError();
     void slotStart();
     void slotStop();
+    void slotSetSimulator();
     
 };
 
