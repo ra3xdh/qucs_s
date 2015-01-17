@@ -26,6 +26,9 @@
 class AbstractSpiceKernel : public QObject
 {
     Q_OBJECT
+private:
+    void normalizeVarsNames(QStringList &var_list);
+
 protected:
     QString netlist,workdir, simulator_cmd,
             simulator_parameters, output;

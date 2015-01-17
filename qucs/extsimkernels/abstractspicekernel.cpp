@@ -157,6 +157,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         QString ngspice_output_filename;
         foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
             parseNgSpiceSimOutput(workdir+QDir::separator()+ngspice_output_filename,sim_points,var_list,isComplex);
+            normalizeVarsNames(var_list);
             QString indep = var_list.first();
             ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(sim_points.count()); // output indep var: TODO: parameter sweep
             QList<double> sim_point;
@@ -189,6 +190,27 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
     }
 }
 
+// Normalize Ngspice and Xyce variables naming
+void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
+{
+    QString prefix="";
+    QString indep = var_list.first();
+    qDebug()<<"norm:"<<indep;
+    indep = indep.toLower();
+    if (indep=="time") {
+        prefix = "tran.";
+    } else if (indep=="frequency") {
+        prefix = "ac.";
+    }
+
+    if (var_list.count()>1) {
+        for (int i=1;i<var_list.count();i++) {
+            if (!var_list[i].startsWith(prefix)) {
+                var_list[i] = prefix + var_list[i];
+            }
+        }
+    }
+}
 
 void AbstractSpiceKernel::slotErrors(QProcess::ProcessError err)
 {
