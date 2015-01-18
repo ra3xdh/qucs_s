@@ -24,16 +24,18 @@
 #define TYPE_CHEBYSHEV   2
 #define TYPE_CAUER       3
 
-#define LIGHTSPEED 299792458.0
-#define Z_FIELD    376.73031346958504364963
-
 #include <cmath>
 
-const double M_PI = 3.14;
+// guard in case cmath also includes math.h
+#ifndef M_PI
+const double M_PI   = 3.1415926535897932384626433832795029;  /* pi */
+const double M_1_PI = 0.3183098861837906715377675267450287;  /* 1/pi */
+const double M_LN2  = 0.6931471805599453094172321214581766;
+#endif
 
-#define atanh(x) (0.5 * log((1.0 + (x)) / (1.0 - (x))))
-#define asinh(x) log((x) + sqrt((x) * (x) + 1.0))
-#define acosh(x) log((x) + sqrt((x) * (x) - 1.0))
+const double LIGHTSPEED = 299792458.0;
+const double Z_FIELD = 376.73031346958504364963;
+
 #define coth(x)  (1.0 + 2.0 / (exp(2.0*(x)) - 1.0))
 #define sech(x)  (2.0 / (exp(x) + exp(-(x))))
 
