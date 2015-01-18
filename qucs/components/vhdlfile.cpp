@@ -207,7 +207,7 @@ QString VHDL_File::getSubcircuitFile()
 {
   // construct full filename
   QString FileName = Props.getFirst()->Value;
-  return properAbsFileName(FileName);
+  return misc::properAbsFileName(FileName);
 }
 
 // -------------------------------------------------------

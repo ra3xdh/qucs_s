@@ -376,7 +376,7 @@ void PackageDialog::extractPackage()
   }
 
   Version = QString(Content.data()+13);
-  if(!checkVersion(Version)) {
+  if(!misc::checkVersion(Version)) {
     MsgText->append(tr("ERROR: Wrong version number!"));
     goto ErrorEnd;
   }

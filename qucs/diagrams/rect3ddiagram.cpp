@@ -662,7 +662,7 @@ int Rect3DDiagram::calcAxis(Axis *Axis, int x, int y,
     ystepD = corr * log10(yD / fabs(Axis->low));
     while(ystepD <= xD) {  // create all grid lines
       
-      tmp = StringNiceNum(yD);
+      tmp = misc::StringNiceNum(yD);
       if(Axis->up < 0.0)  tmp = '-'+tmp;
       w = metrics.width(tmp);  // width of text
       if(maxWidth < w) maxWidth = w;
@@ -698,7 +698,7 @@ int Rect3DDiagram::calcAxis(Axis *Axis, int x, int y,
       x = int(xD);
       y = int(yD);
       if(fabs(GridNum) < 0.01*pow(10.0, Expo)) GridNum = 0.0; // make 0 really 0
-      tmp = StringNiceNum(GridNum);
+      tmp = misc::StringNiceNum(GridNum);
       
       w = metrics.width(tmp);  // width of text
       if(maxWidth < w) maxWidth = w;

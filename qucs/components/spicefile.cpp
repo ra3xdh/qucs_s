@@ -157,8 +157,8 @@ QString SpiceFile::netlist()
   foreach(Port *pp, Ports)
     s += " "+pp->Connection->Name;   // output all node names
 
-  QString f = properFileName(Props.first()->Value);
-  s += " Type=\""+properName(f)+"\"\n";
+  QString f = misc::properFileName(Props.first()->Value);
+  s += " Type=\""+misc::properName(f)+"\"\n";
   return s;
 }
 
@@ -170,7 +170,7 @@ QString SpiceFile::getSubcircuitFile()
 
   if (FileName.isEmpty())
   {
-      return properAbsFileName(FileName);
+      return misc::properAbsFileName(FileName);
   }
 
   QFileInfo FileInfo(FileName);
@@ -224,7 +224,7 @@ QString SpiceFile::getSubcircuitFile()
     {
         // the schematic was not found in the hash table, return
         // what would always have been returned in this case
-        return properAbsFileName(FileName);
+        return misc::properAbsFileName(FileName);
     }
     else
     {
@@ -240,7 +240,7 @@ QString SpiceFile::getSubcircuitFile()
         {
             // the schematic file does not actually exist, return
             // what would always have been returned in this case
-            return properAbsFileName(FileName);
+            return misc::properAbsFileName(FileName);
         }
     }
 
@@ -419,8 +419,8 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
 
   // begin netlist text creation
   if(makeSubcircuit) {
-    QString f = properFileName(*FileName);
-    NetText += "\n.Def:" + properName(f) + " ";
+    QString f = misc::properFileName(*FileName);
+    NetText += "\n.Def:" + misc::properName(f) + " ";
     QString PortNames = Props.at(1)->Value;
     PortNames.replace(',', ' ');
     NetText += PortNames;

@@ -101,7 +101,7 @@ int LibComp::loadSection(const QString& Name, QString& Section,
   int Start, End = Section.indexOf(' ', 14);
   if(End < 15) return -3;
   QString Line = Section.mid(14, End-14);
-  if(!checkVersion(Line)) // wrong version number ?
+  if(!misc::checkVersion(Line)) // wrong version number ?
     return -3;
 
   if(Name == "Symbol") {
@@ -214,7 +214,7 @@ QString LibComp::getSubcircuitFile()
 {
   QDir Directory(QucsSettings.LibDir);
   QString FileName = Directory.absFilePath(Props.first()->Value);
-  return properAbsFileName(FileName);
+  return misc::properAbsFileName(FileName);
 }
 
 // -------------------------------------------------------
@@ -261,8 +261,8 @@ bool LibComp::createSubNetlist(QTextStream *stream, QStringList &FileList,
 // -------------------------------------------------------
 QString LibComp::createType()
 {
-  QString Type = properFileName(Props.first()->Value);
-  return properName(Type + "_" + Props.next()->Value);
+  QString Type = misc::properFileName(Props.first()->Value);
+  return misc::properName(Type + "_" + Props.next()->Value);
 }
 
 // -------------------------------------------------------

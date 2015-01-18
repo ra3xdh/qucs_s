@@ -1551,7 +1551,7 @@ void Diagram::createSmithChart(Axis *Axis, int Mode)
 
     if(Below)  y = 4;
     else  y = y2-4-QucsSettings.font.pointSize();
-    Texts.append(new Text(0, y, StringNum(Axis->up)));
+    Texts.append(new Text(0, y, misc::StringNum(Axis->up)));
   }
 
 }
@@ -1632,7 +1632,7 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
     for(i=int(numGrids); i>1; i--) {    // create all grid circles
       z = int(zD);
       GridNum += GridStep;
-      Texts.append(new Text(((x2+z)>>1)-10, tPos, StringNiceNum(GridNum)));
+      Texts.append(new Text(((x2+z)>>1)-10, tPos, misc::StringNiceNum(GridNum)));
 
       phi = int(16.0*180.0/M_PI*atan(double(2*tHeight)/zD));
       if(!Below)  tmp = beta + phi;
@@ -1649,7 +1649,7 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
   }
 
   // create outer circle
-  Texts.append(new Text(x2-8, tPos, StringNiceNum(Axis->up)));
+  Texts.append(new Text(x2-8, tPos, misc::StringNiceNum(Axis->up)));
   phi = int(16.0*180.0/M_PI*atan(double(2*tHeight)/double(x2)));
   if(!Below)  tmp = phi;
   else  tmp = 0;
@@ -1911,7 +1911,7 @@ if(Axis->log) {
       Lines.prepend(new Line(0, z, x2, z, GridPen));  // y grid
 
     if((zD < 1.5*zDstep) || (z == 0)) {
-      tmp = StringNiceNum(zD);
+      tmp = misc::StringNiceNum(zD);
       if(Axis->up < 0.0)  tmp = '-'+tmp;
 
       w = metrics.width(tmp);  // width of text
@@ -1946,7 +1946,7 @@ else {  // not logarithmical
   z = int(zD);   //  "int(...)" implies "floor(...)"
   while((z <= y2) && (z >= 0)) {  // create all grid lines
     if(fabs(GridNum) < 0.01*pow(10.0, Expo)) GridNum = 0.0;// make 0 really 0
-    tmp = StringNiceNum(GridNum);
+    tmp = misc::StringNiceNum(GridNum);
 
     w = metrics.width(tmp);  // width of text
     if(maxWidth < w) maxWidth = w;

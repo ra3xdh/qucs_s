@@ -101,7 +101,7 @@ QString tff_SR::vhdlCode( int )
   QString s="";
 
   QString td = Props.at(2)->Value;     // delay time
-  if(!VHDL_Delay(td, Name)) return td; // time has not VHDL format
+  if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
 
   QString S     = Ports.at(0)->Connection->Name;
@@ -131,7 +131,7 @@ QString tff_SR::vhdlCode( int )
 QString tff_SR::verilogCode( int )
 {
   QString td = Props.at(2)->Value;        // delay time
-  if(!Verilog_Delay(td, Name)) return td; // time does not have VHDL format
+  if(!misc::Verilog_Delay(td, Name)) return td; // time does not have VHDL format
   
   QString l = "";
  

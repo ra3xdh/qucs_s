@@ -122,7 +122,7 @@ QString andor4x3::vhdlCode( int )
   QString s="";
 
   QString td = Props.at(1)->Value;     // delay time
-  if(!VHDL_Delay(td, Name)) return td; // time has not VHDL format
+  if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
 
   QString a11 = Ports.at(0)->Connection->Name;
@@ -156,7 +156,7 @@ QString andor4x3::vhdlCode( int )
 QString andor4x3::verilogCode( int )
 {
   QString td = Props.at(1)->Value;        // delay time
-  if(!Verilog_Delay(td, Name)) return td; // time does not have VHDL format
+  if(!misc::Verilog_Delay(td, Name)) return td; // time does not have VHDL format
   
   QString l = "";
 

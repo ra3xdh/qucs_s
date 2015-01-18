@@ -90,7 +90,7 @@ QString comp_1bit::vhdlCode( int )
   QString s="";
 
   QString td = Props.at(1)->Value;     // delay time
-  if(!VHDL_Delay(td, Name)) return td; // time has not VHDL format
+  if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
  
   QString X    = Ports.at(0)->Connection->Name;
@@ -113,7 +113,7 @@ QString comp_1bit::verilogCode( int )
   QString l="";
 
   QString td = Props.at(1)->Value;        // delay time
-  if(!Verilog_Delay(td, Name)) return td; // time does not have VHDL format
+  if(!misc::Verilog_Delay(td, Name)) return td; // time does not have VHDL format
 
   QString X    = Ports.at(0)->Connection->Name;
   QString Y    = Ports.at(1)->Connection->Name;

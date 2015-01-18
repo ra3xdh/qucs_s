@@ -137,7 +137,7 @@ void SweepDialog::slotNewValue(int)
   QList<Node *>::iterator node_it;
   QList<double *>::const_iterator value_it;
   for(node_it = NodeList.begin(); node_it != NodeList.end(); node_it++) {
-    (*node_it)->Name = num2str(*((*value_it)+Index));
+    (*node_it)->Name = misc::num2str(*((*value_it)+Index));
     (*node_it)->Name += ((*node_it)->x1 & 0x10)? "A" : "V";
     value_it++;
   }
@@ -191,7 +191,7 @@ Graph* SweepDialog::setBiasPoints()
 
     pg->Var = pn->Name + ".V";
     if(Diag->loadVarData(DataSet, pg)) {
-      pn->Name = num2str(*(pg->cPointsY)) + "V";
+      pn->Name = misc::num2str(*(pg->cPointsY)) + "V";
       NodeList.append(pn);             // remember node ...
       ValueList.append(pg->cPointsY);  // ... and all of its values
       pg->cPointsY = 0;   // do not delete it next time !
@@ -220,7 +220,7 @@ Graph* SweepDialog::setBiasPoints()
       pn->x1 = 0x10;   // mark current
       pg->Var = pc->Name + ".I";
       if(Diag->loadVarData(DataSet, pg)) {
-        pn->Name = num2str(*(pg->cPointsY)) + "A";
+        pn->Name = misc::num2str(*(pg->cPointsY)) + "A";
         NodeList.append(pn);             // remember node ...
         ValueList.append(pg->cPointsY);  // ... and all of its values
         pg->cPointsY = 0;   // do not delete it next time !

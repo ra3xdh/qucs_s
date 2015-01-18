@@ -52,7 +52,7 @@ QString Logical_Inv::vhdlCode(int NumPorts)
 
   if(NumPorts <= 0) { // no truth table simulation ?
     QString td = Props.at(1)->Value;
-    if(!VHDL_Delay(td, Name)) return td;
+    if(!misc::VHDL_Delay(td, Name)) return td;
     s += td;
   }
 
@@ -72,7 +72,7 @@ QString Logical_Inv::verilogCode(int NumPorts)
 
     if(NumPorts <= 0) { // no truth table simulation ?
       QString td = Props.at(1)->Value;
-      if(!Verilog_Delay(td, Name)) return td;
+      if(!misc::Verilog_Delay(td, Name)) return td;
       s += td;
     }
     s += " ";
@@ -86,7 +86,7 @@ QString Logical_Inv::verilogCode(int NumPorts)
 
     if(NumPorts <= 0) { // no truth table simulation ?
       QString td = Props.at(1)->Value;
-      if(!Verilog_Delay(td, Name))
+      if(!misc::Verilog_Delay(td, Name))
 	return td;    // time has not VHDL format
       s += td;
     }

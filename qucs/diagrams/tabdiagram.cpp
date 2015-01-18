@@ -211,7 +211,7 @@ int TabDiagram::calcDiagram()
 	      y += tHeight*startWriting;
 	      startWriting = 0;
 	      if(y < tHeight) break;  // no room for more rows ?
-	      Str = StringNum(*px, 'g', g->Precision);
+	      Str = misc::StringNum(*px, 'g', g->Precision);
 	      colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
 	      if(colWidth < 0)  goto funcEnd;
 	      
@@ -267,9 +267,9 @@ int TabDiagram::calcDiagram()
             if(startWriting-- > 0) continue; // reached visible area ?
             if(y < tHeight) break;           // no room for more rows ?
             switch(g->numMode) {
-              case 0: Str = complexRect(*py, *(py+1), g->Precision); break;
-              case 1: Str = complexDeg (*py, *(py+1), g->Precision); break;
-              case 2: Str = complexRad (*py, *(py+1), g->Precision); break;
+              case 0: Str = misc::complexRect(*py, *(py+1), g->Precision); break;
+              case 1: Str = misc::complexDeg (*py, *(py+1), g->Precision); break;
+              case 2: Str = misc::complexRad (*py, *(py+1), g->Precision); break;
             }
 
             colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
