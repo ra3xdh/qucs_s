@@ -994,38 +994,24 @@ void QucsApp::printCursorPosition(int x, int y)
 // turn Toolbar on or off
 void QucsApp::slotViewToolBar(bool toggle)
 {
-  if (toggle== false) {
-    fileToolbar->hide();
-    editToolbar->hide();
-    viewToolbar->hide();
-    workToolbar->hide();
-  }
-  else {
-    fileToolbar->show();
-    editToolbar->show();
-    viewToolbar->show();
-    workToolbar->show();
-  }
+  fileToolbar->setVisible(toggle);
+  editToolbar->setVisible(toggle);
+  viewToolbar->setVisible(toggle);
+  workToolbar->setVisible(toggle);
 }
 
 // ----------------------------------------------------------
 // turn Statusbar on or off
 void QucsApp::slotViewStatusBar(bool toggle)
 {
-  if (toggle == false)
-    statusBar()->hide();
-  else
-    statusBar()->show();
+  statusBar()->setVisible(toggle);
 }
 
 // ----------------------------------------------------------
 // turn Brwose Dock Window on or off
 void QucsApp::slotViewBrowseDock(bool toggle)
 {
-  if (toggle == false)
-    dock->hide();
-  else
-    dock->show();
+  dock->setVisible(toggle);
 }
 
 // ----------------------------------------------------------
@@ -1040,12 +1026,10 @@ void QucsApp::slotToggleDock(bool on)
 // turn Octave Dock Window on or off
 void QucsApp::slotViewOctaveDock(bool toggle)
 {
-  if(toggle) {
-    octDock->show();
+  octDock->setVisible(toggle);
+  if (toggle) {
     octave->startOctave();
   }
-  else
-    octDock->hide();
 }
 
 // ----------------------------------------------------------
