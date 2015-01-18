@@ -157,6 +157,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         QString ngspice_output_filename;
         foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
             parseNgSpiceSimOutput(workdir+QDir::separator()+ngspice_output_filename,sim_points,var_list,isComplex);
+            if (var_list.isEmpty()) continue; // notning to convert
             normalizeVarsNames(var_list);
             QString indep = var_list.first();
             ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(sim_points.count()); // output indep var: TODO: parameter sweep

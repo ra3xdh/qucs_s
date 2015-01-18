@@ -126,8 +126,12 @@ void Xyce::slotFinished()
 
 void Xyce::nextSimulation()
 {
-    QString file = netlistQueue.takeFirst();
-    SimProcess->setWorkingDirectory(workdir);
-    QString cmd = QString("%1 %2 %3").arg(simulator_cmd,simulator_parameters,file);
-    SimProcess->start(cmd);
+    if (!netlistQueue.isEmpty()) {
+        QString file = netlistQueue.takeFirst();
+        SimProcess->setWorkingDirectory(workdir);
+        QString cmd = QString("%1 %2 %3").arg(simulator_cmd,simulator_parameters,file);
+        SimProcess->start(cmd);
+    } else {
+        emit finished(); // nothing to simulate
+    }
 }
