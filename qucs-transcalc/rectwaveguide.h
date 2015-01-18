@@ -39,10 +39,10 @@ class rectwaveguide : public transline {
   double Z0;               /* characteristic impedance */
   double ang_l;            /* Electrical length in angle */
   double er_eff;           /* Effective dielectric constant */
-  double mur_eff;          /* Effective mag. permeability */
+  //double mur_eff;          /* Effective mag. permeability */
   double atten_dielectric; /* Loss in dielectric (dB) */
   double atten_cond;       /* Loss in conductors (dB) */
-  double fc10;             /* Cutoff frequency for TE10 mode */
+  //double fc10;             /* Cutoff frequency for TE10 mode */
 
  public:
   void analyze ();

@@ -45,17 +45,17 @@ class c_microstrip : public transline {
   double Z0_o_0;		/* static odd-mode impedance */
   double Z0e;			/* even-mode impedance */
   double Z0o;			/* odd-mode impedance */
-  double c_e;			/* even-mode capacitance */
-  double c_o;			/* odd-mode capacitance */
+  //double c_e;			/* even-mode capacitance */
+  //double c_o;			/* odd-mode capacitance */
   double ang_l_e;		/* even-mode electrical length in angle */
   double ang_l_o;		/* odd-mode electrical length in angle */
   double er_eff_e;		/* even-mode effective dielectric constant */
   double er_eff_o;		/* odd-mode effective dielectric constant */
   double er_eff_e_0;		/* static even-mode effective dielectric constant */
   double er_eff_o_0;		/* static odd-mode effective dielectric constant */
-  double er_eff;		/* FIXME: dummy */
+  //double er_eff;		/* FIXME: dummy */
   double mur_eff;		/* Effective mag. permeability */
-  double w_eff;			/* Effective width of line */
+  //double w_eff;			/* Effective width of line */
   double atten_dielectric_e;	/* even-mode dielectric losses (dB) */
   double atten_cond_e;		/* even-mode conductors losses (dB) */
   double atten_dielectric_o;	/* odd-mode dielectric losses (dB) */
