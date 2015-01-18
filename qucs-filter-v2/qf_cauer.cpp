@@ -17,13 +17,6 @@
 
 // Elliptic (Cauer) filters, odd order
 
-#ifndef M_1_PI
-#define M_1_PI    0.3183098861837906715377675267450287
-#endif
-#ifndef M_LN2
-#define M_LN2     0.6931471805599453094172321214581766
-#endif
-
 #undef	_QF_CAUER_DEBUG
 
 #include "qf_common.h"
