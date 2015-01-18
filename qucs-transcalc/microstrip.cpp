@@ -495,8 +495,6 @@ void microstrip::analyze()
 }
 
 
-#define MAX_ERROR 0.000001
-
 /*
  * synthesis function
  */

@@ -28,9 +28,6 @@
 #include <cmath>
 #include <float.h>
 
-#ifndef INFINITY
-#define INFINITY -log (0.0);
-#endif
 
 #include "units.h"
 #include "transline.h"
@@ -191,8 +188,6 @@ void coplanar::analyze()
 }
 
 
-#define MAX_ERROR 0.000001
-
 // -------------------------------------------------------------------
 int coplanar::synthesize()
 {
@@ -277,7 +272,6 @@ int coplanar::synthesize()
    **********                                             **********
    ***************************************************************** */
 
-#define NR_EPSI  2.2204460492503131e-16
 
 /* The function computes the complete elliptic integral of first kind
    K() and the second kind E() using the arithmetic-geometric mean
