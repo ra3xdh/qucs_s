@@ -27,9 +27,9 @@ public:
  ~Diode() {};
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  QString spice_netlist();
 
 protected:
+  QString spice_netlist(bool isXyce = false);
   void createSymbol();
 };
 

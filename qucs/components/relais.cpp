@@ -80,7 +80,7 @@ Component* Relais::newOne()
   return new Relais();
 }
 
-QString Relais::spice_netlist()
+QString Relais::spice_netlist(bool isXyce)
 {
     QString s = Name;
     QString unit;

@@ -90,7 +90,7 @@ Component* JFET::newOne()
   return p;
 }
 
-QString JFET::spice_netlist()
+QString JFET::spice_netlist(bool isXyce)
 {
     QString s = check_spice_refdes();
     QList<int> pin_seq;
@@ -104,9 +104,17 @@ QString JFET::spice_netlist()
 
 
     QStringList spice_incompat,spice_tr;
-    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"<<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce";
-                              // spice-incompatible parameters
-    spice_tr<<"Vt0tc"<<"Tcv"; // parameters that need convertion of names
+    if (isXyce) {
+        spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"
+                     <<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce"<<"Vt0tc";
+                                  // spice-incompatible parameters
+        spice_tr<<"Vt0"<<"VtO"; // parameters that need convertion of names
+    } else {
+        spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"<<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce";
+                                  // spice-incompatible parameters
+        spice_tr<<"Vt0tc"<<"Tcv"; // parameters that need convertion of names
+    }
+
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 

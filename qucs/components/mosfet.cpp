@@ -137,7 +137,7 @@ QString MOSFET::netlist()
   return s + '\n';
 }
 
-QString MOSFET::spice_netlist()
+QString MOSFET::spice_netlist(bool isXyce)
 {
     QString s = check_spice_refdes();
     QList<int> pin_seq;
@@ -153,7 +153,12 @@ QString MOSFET::spice_netlist()
     spice_incompat<<"Type"<<"Temp"<<"L"<<"W"<<"Ad"<<"As"<<"Pd"<<"Ps"
                  <<"Rg"<<"N"<<"Tt"<<"Nrd"<<"Nrs"<<"Ffe";
                               // spice-incompatible parameters
-    spice_tr.clear(); // parameters that need convertion of names
+    if (isXyce) {
+        spice_tr<<"Vt0"<<"VtO"; // parameters that need convertion of names
+    } else {
+        spice_tr.clear();
+    }
+
 
     QStringList check_defaults_list;
     QString unit;

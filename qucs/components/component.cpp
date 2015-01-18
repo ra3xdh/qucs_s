@@ -668,14 +668,9 @@ QString Component::form_spice_param_list(QStringList& ignore_list, QStringList& 
     return par_str;
 }
 
-QString Component::spice_netlist()
+QString Component::spice_netlist(bool isXyce)
 {
-    QString s = SpiceModel+Name;
-
-    // output all node names
-    foreach(Port *p1, Ports)
-      s += " "+p1->Connection->Name;   // node names
-    return s+'\n';
+    return QString("\n"); // ignore if not implemented
 }
 
 // -------------------------------------------------------
@@ -705,7 +700,7 @@ QString Component::getSpiceNetlist(bool isXyce)
     switch(isActive) {
       case COMP_IS_ACTIVE:
         if (isXyce) {
-            return spice_netlist();
+            return spice_netlist(true);
         } else {
             return spice_netlist();
         }

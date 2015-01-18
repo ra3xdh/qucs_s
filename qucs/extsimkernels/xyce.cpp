@@ -68,7 +68,7 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) { // Xyce can run
        if(pc->isSimulation) {                        // only one simulations per time.
            QString sim_typ = pc->Model;              // Multiple simulations are forbidden.
-           QString s = pc->getSpiceNetlist();
+           QString s = pc->getSpiceNetlist(true);
            if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
            if ((sim_typ==".TR")&&(sim=="tran")) stream<<s;
            if ((sim_typ==".DC")) stream<<s;

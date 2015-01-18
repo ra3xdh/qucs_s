@@ -75,7 +75,7 @@ Element* Volt_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Volt_ac::spice_netlist()
+QString Volt_ac::spice_netlist(bool isXyce)
 {
     QString s=check_spice_refdes();
     foreach(Port *p1, Ports) {

@@ -71,7 +71,7 @@ vRect::~vRect()
 {
 }
 
-QString vRect::spice_netlist()
+QString vRect::spice_netlist(bool isXyce)
 {
     QString s=check_spice_refdes();
 

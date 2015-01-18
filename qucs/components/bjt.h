@@ -32,7 +32,7 @@ public:
 protected:
   void createSymbol();
   QString netlist();
-  QString spice_netlist();
+  QString spice_netlist(bool isXyce = false);
 };
 
 #endif

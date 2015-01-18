@@ -29,7 +29,7 @@ public:
   static Element* info(QString&, char* &, bool getNewOne=false);
 
 protected:
-  QString spice_netlist();
+  QString spice_netlist(bool isXyce = false);
 };
 
 #endif

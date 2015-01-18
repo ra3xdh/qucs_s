@@ -104,7 +104,7 @@ Element* TR_Sim::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString TR_Sim::spice_netlist()
+QString TR_Sim::spice_netlist(bool isXyce)
 {
     QString s = SpiceModel;
     QString unit;

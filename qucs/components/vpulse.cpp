@@ -69,7 +69,7 @@ vPulse::~vPulse()
 {
 }
 
-QString vPulse::spice_netlist()
+QString vPulse::spice_netlist(bool isXyce)
 {
     QString s=check_spice_refdes();
 

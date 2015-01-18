@@ -86,7 +86,7 @@ public:
 
 protected:
   virtual QString netlist();
-  virtual QString spice_netlist();
+  virtual QString spice_netlist(bool isXyce = false);
   virtual QString vhdlCode(int);
   virtual QString verilogCode(int);
   QString check_spice_refdes();

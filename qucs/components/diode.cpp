@@ -95,7 +95,7 @@ Component* Diode::newOne()
   return new Diode();
 }
 
-QString Diode::spice_netlist()
+QString Diode::spice_netlist(bool isXyce)
 {
     QString s = check_spice_refdes();
     // output all node names
@@ -109,14 +109,25 @@ QString Diode::spice_netlist()
     }
 
     QStringList spice_incompat,spice_tr;
-    spice_incompat<<"Cp"<<"Isr"<<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"; // spice-incompatible parameters
-    spice_tr<<"Tbv"<<"Tcv"; // parameters that need convertion of names
+    if (isXyce) {
+        spice_tr<<"Tbv"<<"Tbv1"<<"Trs"<<"Trs1"; // parameters that need convertion of names
+        spice_incompat<<"Ttt1"<<"Ttt2"<<"Tm1"<<"Tm2"<<"Cp"<<"Isr"
+                     <<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"; // spice-incompatible parameters
+    } else {
+        spice_tr<<"Tbv"<<"Tcv";
+        spice_incompat<<"Cp"<<"Isr"<<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol";
+    }
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 
     s += QString(" DMOD_%1 AREA=%2 Temp=%3\n").arg(Name).arg(getProperty("Area")->Value)
             .arg(getProperty("Temp")->Value);
-    s += QString(".MODEL DMOD_%1 D (%2)\n").arg(Name).arg(par_str);
+    if (isXyce) {
+        s += QString(".MODEL DMOD_%1 D (LEVEL = 2 %2)\n").arg(Name).arg(par_str);
+    } else {
+        s += QString(".MODEL DMOD_%1 D (%2)\n").arg(Name).arg(par_str);
+    }
+
 
     return s;
 

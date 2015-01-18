@@ -83,7 +83,7 @@ Element* CCCS::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString CCCS::spice_netlist()
+QString CCCS::spice_netlist(bool isXyce)
 {
     QString s = check_spice_refdes(); // spice CCCS consists two sources: output source
                         // and zero value controlling source

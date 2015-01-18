@@ -65,7 +65,7 @@ QString Ground::netlist()
   return QString("");
 }
 
-QString Ground::spice_netlist()
+QString Ground::spice_netlist(bool isXyce)
 {
     return QString("");
 }

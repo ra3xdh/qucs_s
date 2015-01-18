@@ -54,7 +54,7 @@ Component* Resistor::newOne()
   return new Resistor(Props.getLast()->Value != "US");
 }
 
-QString Resistor::spice_netlist()
+QString Resistor::spice_netlist(bool isXyce)
 {
     QString s=check_spice_refdes();
 

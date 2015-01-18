@@ -59,7 +59,7 @@ Component* Inductor::newOne()
 }
 
 
-QString Inductor::spice_netlist()
+QString Inductor::spice_netlist(bool isXyce)
 {
     QString s=check_spice_refdes();
 

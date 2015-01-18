@@ -39,7 +39,7 @@ Component* BJT::newOne()
   return p;
 }
 
-QString BJT::spice_netlist()
+QString BJT::spice_netlist(bool isXyce)
 {
     QString s = check_spice_refdes();
     QList<int> pin_seq;
