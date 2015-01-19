@@ -162,7 +162,7 @@ int Subcircuit::loadSymbol(const QString& DocName)
     return -3;
 
   Line = Line.mid(16, Line.length()-17);
-  if(!checkVersion(Line)) // wrong version number ?
+  if(!misc::checkVersion(Line)) // wrong version number ?
     return -4;
 
   // read content *************************
@@ -207,8 +207,8 @@ QString Subcircuit::netlist()
     s += " "+p1->Connection->Name;   // node names
 
   // type for subcircuit
-  QString f = properFileName(Props.first()->Value);
-  s += " Type=\""+properName(f)+"\"";
+  QString f = misc::properFileName(Props.first()->Value);
+  s += " Type=\""+misc::properName(f)+"\"";
 
   // output all user defined properties
   for(Property *pp = Props.next(); pp != 0; pp = Props.next())
@@ -219,8 +219,8 @@ QString Subcircuit::netlist()
 // -------------------------------------------------------
 QString Subcircuit::vhdlCode(int)
 {
-  QString f = properFileName(Props.first()->Value);
-  QString s = "  " + Name + ": entity Sub_" + properName(f);
+  QString f = misc::properFileName(Props.first()->Value);
+  QString s = "  " + Name + ": entity Sub_" + misc::properName(f);
 
   // output all user defined properties
   Property *pr = Props.next();
@@ -250,16 +250,16 @@ QString Subcircuit::vhdlCode(int)
 // -------------------------------------------------------
 QString Subcircuit::verilogCode(int)
 {
-  QString f = properFileName(Props.first()->Value);
-  QString s = "  Sub_" + properName(f);
+  QString f = misc::properFileName(Props.first()->Value);
+  QString s = "  Sub_" + misc::properName(f);
 
   // output all user defined properties
   Property *pr = Props.next();
   if (pr) {
     s += " #(";
-    s += Verilog_Param(pr->Value);
+    s += misc::Verilog_Param(pr->Value);
     for(pr = Props.next(); pr != 0; pr = Props.next())
-      s += ", " + Verilog_Param(pr->Value);
+      s += ", " + misc::Verilog_Param(pr->Value);
     s += ")";
   }
 
@@ -286,7 +286,7 @@ QString Subcircuit::getSubcircuitFile()
 
   if (FileName.isEmpty())
   {
-      return properAbsFileName(FileName);
+      return misc::properAbsFileName(FileName);
   }
 
   QFileInfo FileInfo(FileName);
@@ -335,7 +335,7 @@ QString Subcircuit::getSubcircuitFile()
     {
         // the schematic was not found in the hash table, return
         // what would always have been returned in this case
-        return properAbsFileName(FileName);
+        return misc::properAbsFileName(FileName);
     }
     else
     {
@@ -351,7 +351,7 @@ QString Subcircuit::getSubcircuitFile()
         {
             // the schematic file does not actually exist, return
             // what would always have been returned in this case
-            return properAbsFileName(FileName);
+            return misc::properAbsFileName(FileName);
         }
     }
 

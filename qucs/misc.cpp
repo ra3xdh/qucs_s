@@ -35,7 +35,7 @@
 #include <QDir>
 
 // #########################################################################
-QString complexRect(double real, double imag, int Precision)
+QString misc::complexRect(double real, double imag, int Precision)
 {
   QString Text;
   if(fabs(imag) < 1e-250) Text = QString::number(real,'g',Precision);
@@ -51,7 +51,7 @@ QString complexRect(double real, double imag, int Precision)
   return Text;
 }
 
-QString complexDeg(double real, double imag, int Precision)
+QString misc::complexDeg(double real, double imag, int Precision)
 {
   QString Text;
   if(fabs(imag) < 1e-250) Text = QString::number(real,'g',Precision);
@@ -62,7 +62,7 @@ QString complexDeg(double real, double imag, int Precision)
   return Text;
 }
 
-QString complexRad (double real, double imag, int Precision)
+QString misc::complexRad (double real, double imag, int Precision)
 {
   QString Text;
   if(fabs(imag) < 1e-250) Text = QString::number(real,'g',Precision);
@@ -74,7 +74,7 @@ QString complexRad (double real, double imag, int Precision)
 }
 
 // #########################################################################
-QString StringNum(double num, char form, int Precision)
+QString misc::StringNum(double num, char form, int Precision)
 {
   int a = 0;
   char *p, Buffer[512], Format[6] = "%.00g";
@@ -104,7 +104,7 @@ QString StringNum(double num, char form, int Precision)
 }
 
 // #########################################################################
-QString StringNiceNum(double num)
+QString misc::StringNiceNum(double num)
 {
   char Format[6] = "%.8e";
   if(fabs(num) < 1e-250)  return QString("0");  // avoid many problems
@@ -139,7 +139,7 @@ QString StringNiceNum(double num)
 }
 
 // #########################################################################
-void str2num(const QString& s_, double& Number, QString& Unit, double& Factor)
+void misc::str2num(const QString& s_, double& Number, QString& Unit, double& Factor)
 {
   QString str = s_.stripWhiteSpace();
 
@@ -195,7 +195,7 @@ void str2num(const QString& s_, double& Number, QString& Unit, double& Factor)
 }
 
 // #########################################################################
-QString num2str(double Num)
+QString misc::num2str(double Num)
 {
   char c = 0;
   double cal = fabs(Num);
@@ -227,7 +227,7 @@ QString num2str(double Num)
 }
 
 // #########################################################################
-void convert2Unicode(QString& Text)
+void misc::convert2Unicode(QString& Text)
 {
   bool ok;
   int i = 0;
@@ -244,7 +244,7 @@ void convert2Unicode(QString& Text)
 }
 
 // #########################################################################
-void convert2ASCII(QString& Text)
+void misc::convert2ASCII(QString& Text)
 {
   Text.replace('\\', "\\\\");
   Text.replace('\n', "\\n");
@@ -263,7 +263,7 @@ void convert2ASCII(QString& Text)
 // #########################################################################
 // Converts a path to an absolute path and resolves paths relative to the
 // Qucs home directory
-QString properAbsFileName(const QString& Name)
+QString misc::properAbsFileName(const QString& Name)
 {
   QString s = Name;
   QFileInfo Info(s);
@@ -279,7 +279,7 @@ QString properAbsFileName(const QString& Name)
 }
 
 // #########################################################################
-QString properFileName(const QString& Name)
+QString misc::properFileName(const QString& Name)
 {
   QFileInfo Info(Name);
   return Info.fileName();
@@ -287,7 +287,7 @@ QString properFileName(const QString& Name)
 
 // #########################################################################
 // Takes a file name (with path) and replaces all special characters.
-QString properName(const QString& Name)
+QString misc::properName(const QString& Name)
 {
   QString s = Name;
   QFileInfo Info(s);
@@ -304,10 +304,10 @@ QString properName(const QString& Name)
 
 // #########################################################################
 // Creates and returns delay time for VHDL entities.
-bool VHDL_Delay(QString& td, const QString& Name)
+bool misc::VHDL_Delay(QString& td, const QString& Name)
 {
   if(strtod(td.latin1(), 0) != 0.0) {  // delay time property
-    if(!VHDL_Time(td, Name))
+    if(!misc::VHDL_Time(td, Name))
       return false;    // time has not VHDL format
     td = " after " + td;
     return true;
@@ -324,7 +324,7 @@ bool VHDL_Delay(QString& td, const QString& Name)
 
 // #########################################################################
 // Checks and corrects a time (number & unit) according VHDL standard.
-bool VHDL_Time(QString& t, const QString& Name)
+bool misc::VHDL_Time(QString& t, const QString& Name)
 {
   char *p;
   double Time = strtod(t.latin1(), &p);
@@ -351,11 +351,11 @@ bool VHDL_Time(QString& t, const QString& Name)
 
 // #########################################################################
 // Returns parameters for Verilog modules.
-QString Verilog_Param(const QString Value)
+QString misc::Verilog_Param(const QString Value)
 {
   if(strtod(Value.latin1(), 0) != 0.0) {
     QString td = Value;
-    if(!Verilog_Time(td, "parameter"))
+    if(!misc::Verilog_Time(td, "parameter"))
       return Value;
     else
       return td;
@@ -366,10 +366,10 @@ QString Verilog_Param(const QString Value)
 
 // #########################################################################
 // Creates and returns delay time for Verilog modules.
-bool Verilog_Delay(QString& td, const QString& Name)
+bool misc::Verilog_Delay(QString& td, const QString& Name)
 {
   if(strtod(td.latin1(), 0) != 0.0) {  // delay time property
-    if(!Verilog_Time(td, Name))
+    if(!misc::Verilog_Time(td, Name))
       return false;    // time has not Verilog format
     td = " #" + td;
     return true;
@@ -386,7 +386,7 @@ bool Verilog_Delay(QString& td, const QString& Name)
 
 // #########################################################################
 // Checks and corrects a time (number & unit) according Verilog standard.
-bool Verilog_Time(QString& t, const QString& Name)
+bool misc::Verilog_Time(QString& t, const QString& Name)
 {
   char *p;
   double Time = strtod(t.latin1(), &p);
@@ -413,7 +413,7 @@ bool Verilog_Time(QString& t, const QString& Name)
 }
 
 // #########################################################################
-bool checkVersion(QString& Line)
+bool misc::checkVersion(QString& Line)
 {
   QStringList sl = QStringList::split('.',PACKAGE_VERSION);
   QStringList ll = QStringList::split('.',Line);

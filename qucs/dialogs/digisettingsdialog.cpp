@@ -130,7 +130,7 @@ void DigiSettingsDialog::slotOk()
   if(SimTime != TimeEdit->text()) {
     if(simRadio->isChecked()) {
       QString s = TimeEdit->text();
-      if(!VHDL_Time(s, tr("Document Settings"))) {
+      if(!misc::VHDL_Time(s, tr("Document Settings"))) {
 	QMessageBox::critical(this, tr("Error"), s.mid(1));
 	reject();
 	return;

@@ -101,7 +101,7 @@ QString mux2to1::vhdlCode( int )
   QString s="";
 
   QString td = Props.at(1)->Value;
-  if(!VHDL_Delay(td, Name))
+  if(!misc::VHDL_Delay(td, Name))
     return td;      // Time does not have VHDL format.
   td += ";\n";
 
@@ -122,7 +122,7 @@ QString mux2to1::vhdlCode( int )
 QString mux2to1::verilogCode( int )
 {
   QString td = Props.at(1)->Value;
-  if(!Verilog_Delay(td, Name))
+  if(!misc::Verilog_Delay(td, Name))
     return td;      // Time does not have VHDL format.
   td += " ";
   

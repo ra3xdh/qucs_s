@@ -253,7 +253,7 @@ if(!firstGraph->cPointsX.isEmpty()) {
   px += z;
   z = pD->count - z;
   for( ; z>0; z--) {
-    Str = num2str(*(px++));
+    Str = misc::num2str(*(px++));
     colWidth = metrics.width(Str);  // width of text
     if(x+colWidth+2 >= x2)  break;
 

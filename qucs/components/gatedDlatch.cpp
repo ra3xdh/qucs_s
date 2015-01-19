@@ -90,7 +90,7 @@ QString gatedDlatch::vhdlCode( int )
   QString s="";
 
   QString td = Props.at(2)->Value;     // delay time
-  if(!VHDL_Delay(td, Name)) return td; // time has not VHDL format
+  if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
 
   QString D    = Ports.at(0)->Connection->Name;
@@ -111,7 +111,7 @@ QString gatedDlatch::vhdlCode( int )
 QString gatedDlatch::verilogCode( int )
 {
   QString td = Props.at(2)->Value;        // delay time
-  if(!Verilog_Delay(td, Name)) return td; // time does not have VHDL format
+  if(!misc::Verilog_Delay(td, Name)) return td; // time does not have VHDL format
   
   QString l = "";
 

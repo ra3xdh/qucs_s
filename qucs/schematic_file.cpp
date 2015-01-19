@@ -371,13 +371,13 @@ int Schematic::saveDocument()
   stream << "  <showFrame=" << showFrame << ">\n";
 
   QString t;
-  convert2ASCII(t = Frame_Text0);
+  misc::convert2ASCII(t = Frame_Text0);
   stream << "  <FrameText0=" << t << ">\n";
-  convert2ASCII(t = Frame_Text1);
+  misc::convert2ASCII(t = Frame_Text1);
   stream << "  <FrameText1=" << t << ">\n";
-  convert2ASCII(t = Frame_Text2);
+  misc::convert2ASCII(t = Frame_Text2);
   stream << "  <FrameText2=" << t << ">\n";
-  convert2ASCII(t = Frame_Text3);
+  misc::convert2ASCII(t = Frame_Text3);
   stream << "  <FrameText3=" << t << ">\n";
   stream << "</Properties>\n";
 
@@ -567,10 +567,10 @@ bool Schematic::loadProperties(QTextStream *stream)
 		else SimRunScript = true;
     else if(cstr == "showFrame")
 		showFrame = nstr.at(0).toLatin1() - '0';
-    else if(cstr == "FrameText0") convert2Unicode(Frame_Text0 = nstr);
-    else if(cstr == "FrameText1") convert2Unicode(Frame_Text1 = nstr);
-    else if(cstr == "FrameText2") convert2Unicode(Frame_Text2 = nstr);
-    else if(cstr == "FrameText3") convert2Unicode(Frame_Text3 = nstr);
+    else if(cstr == "FrameText0") misc::convert2Unicode(Frame_Text0 = nstr);
+    else if(cstr == "FrameText1") misc::convert2Unicode(Frame_Text1 = nstr);
+    else if(cstr == "FrameText2") misc::convert2Unicode(Frame_Text2 = nstr);
+    else if(cstr == "FrameText3") misc::convert2Unicode(Frame_Text3 = nstr);
     else {
       QMessageBox::critical(0, QObject::tr("Error"),
 	   QObject::tr("Format Error:\nUnknown property: ")+cstr);
@@ -854,7 +854,7 @@ bool Schematic::loadDocument()
   }
 
   Line = Line.mid(16, Line.length()-17);
-  if(!checkVersion(Line)) { // wrong version number ?
+  if(!misc::checkVersion(Line)) { // wrong version number ?
 
     QMessageBox::StandardButton result;
     result = QMessageBox::warning(0,
@@ -1092,7 +1092,7 @@ int Schematic::testFile(const QString& DocName)
   }
 
   Line = Line.mid(16, Line.length()-17);
-  if(!checkVersion(Line)) { // wrong version number ?
+  if(!misc::checkVersion(Line)) { // wrong version number ?
       if (!QucsSettings.IgnoreFutureVersion) {
           file.close();
           return -4;
@@ -1475,7 +1475,7 @@ int NumPorts)
   QTextStream * tstream = stream;
   QFile ofile;
   if(creatingLib) {
-    QString f = properAbsFileName(DocName) + ".lst";
+    QString f = misc::properAbsFileName(DocName) + ".lst";
     ofile.setFileName(f);
     if(!ofile.open(IO_WriteOnly)) {
       ErrText->insert(tr("ERROR: Cannot create library file \"%s\".").arg(f));
@@ -1562,8 +1562,8 @@ int NumPorts)
     }
   }
 
-  QString f = properFileName(DocName);
-  QString Type = properName(f);
+  QString f = misc::properFileName(DocName);
+  QString Type = misc::properName(f);
 
   Painting *pi;
   if(isAnalog) {
@@ -1619,7 +1619,7 @@ int NumPorts)
           ID_Text *pid = (ID_Text*)pi;
           for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
             s = (*it)->Name.section('=', 0,0);
-            QString v = Verilog_Param((*it)->Name.section('=', 1,1));
+            QString v = misc::Verilog_Param((*it)->Name.section('=', 1,1));
             (*tstream) << " parameter " << s << " = " << v << ";\n";
           }
           (*tstream) << "\n";
@@ -1910,9 +1910,9 @@ QString Schematic::createNetlist(QTextStream& stream, int NumPorts)
         } else {
           Time = pc->Props.at(1)->Value;
 	  if (isVerilog) {
-	    if(!Verilog_Time(Time, pc->Name)) return Time;
+	    if(!misc::Verilog_Time(Time, pc->Name)) return Time;
 	  } else {
-	    if(!VHDL_Time(Time, pc->Name)) return Time;  // wrong time format
+	    if(!misc::VHDL_Time(Time, pc->Name)) return Time;  // wrong time format
 	  }
         }
       }

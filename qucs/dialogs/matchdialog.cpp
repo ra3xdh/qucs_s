@@ -517,15 +517,15 @@ QString MatchDialog::calcMatching(double r_real, double r_imag,
 
   // serial component
   if (X1 < 0.0)   // capacitance ?
-    Str += ':' + num2str(-1.0 / Omega / X1) + 'F';
+    Str += ':' + misc::num2str(-1.0 / Omega / X1) + 'F';
   else   // inductance
-    Str += ':' + num2str(X1 / Omega) + 'H';
+    Str += ':' + misc::num2str(X1 / Omega) + 'H';
 
   // parallel component
   if (X2 < 0.0)   // inductance ?
-    Str += ':' + num2str(-1.0 / Omega / X2) + 'H';
+    Str += ':' + misc::num2str(-1.0 / Omega / X2) + 'H';
   else   // capacitance
-    Str += ':' + num2str(X2 / Omega) + 'F';
+    Str += ':' + misc::num2str(X2 / Omega) + 'F';
 
   return Str;
 }

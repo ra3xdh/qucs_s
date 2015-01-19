@@ -122,7 +122,7 @@ QString dmux3to8::vhdlCode( int )
   QString s="";
 
   QString td = Props.at(1)->Value;     // delay time
-  if(!VHDL_Delay(td, Name)) return td; // time has not VHDL format
+  if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
 
   QString En = Ports.at(0)->Connection->Name;
@@ -155,7 +155,7 @@ QString dmux3to8::vhdlCode( int )
 QString dmux3to8::verilogCode( int )
 {
   QString td = Props.at(1)->Value;        // delay time
-  if(!Verilog_Delay(td, Name)) return td; // time does not have VHDL format
+  if(!misc::Verilog_Delay(td, Name)) return td; // time does not have VHDL format
   
   QString l = "";
 

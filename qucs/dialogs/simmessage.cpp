@@ -254,7 +254,7 @@ void SimMessage::nextSPICE()
   }
 
   if(makeSubcircuit) {
-    Stream << "\n.Def:" << properName(FileName) << " ";
+    Stream << "\n.Def:" << misc::properName(FileName) << " ";
 
     Line.replace(',', ' ');
     Stream << Line;

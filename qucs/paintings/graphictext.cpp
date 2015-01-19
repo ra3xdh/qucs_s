@@ -163,7 +163,7 @@ bool GraphicText::load(const QString& s)
   Text.truncate(Text.length()-1);
   if(Text.isEmpty()) return false;
 
-  convert2Unicode(Text);
+  misc::convert2Unicode(Text);
   // get size of text using the screen-compatible metric
   QFontMetrics metrics(QucsSettings.font, 0);
   QSize r = metrics.size(0, Text);    // get overall size of text
@@ -177,7 +177,7 @@ bool GraphicText::load(const QString& s)
 QString GraphicText::save()
 {
   QString t = Text;
-  convert2ASCII(t);
+  misc::convert2ASCII(t);
 
   // The 'Text' property has to be the last within the line !
   QString s = Name+QString::number(cx)+" "+QString::number(cy)+" "
@@ -190,7 +190,7 @@ QString GraphicText::save()
 QString GraphicText::saveCpp()
 {
   QString t = Text;
-  convert2ASCII(t);
+  misc::convert2ASCII(t);
 
   QString s =
     QString ("new Text (%1, %2, \"%3\", QColor (\"%4\"), %5, %6, %7)").
@@ -204,7 +204,7 @@ QString GraphicText::saveCpp()
 QString GraphicText::saveJSON()
 {
   QString t = Text;
-  convert2ASCII(t);
+  misc::convert2ASCII(t);
 
   QString s =
     QString ("{\"type\" : \"graphictext\", "

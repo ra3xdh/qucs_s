@@ -119,7 +119,7 @@ QString Digi_Source::vhdlCode(int NumPorts)
     while(!t.isEmpty()) {
       s += Out + State + "';";    // next value for signal
 
-      if(!VHDL_Delay(t, Name))
+      if(!misc::VHDL_Delay(t, Name))
         return t;    // time has not VHDL format
 
       s += t.replace("after","wait for") + ";\n";
@@ -165,7 +165,7 @@ QString Digi_Source::verilogCode(int NumPorts)
 
     t = Props.next()->Value.section(';',z,z).trimmed();
     while(!t.isEmpty()) {
-      if(!Verilog_Delay(t, Name))
+      if(!misc::Verilog_Delay(t, Name))
         return t;    // time has not VHDL format
       s += "    " + r + " = " + State + ";\n";
       s += "   " + t + ";\n";

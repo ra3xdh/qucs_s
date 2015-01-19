@@ -1214,9 +1214,9 @@ void ComponentDialog::slotNumberChanged(const QString&)
   QString Unit, tmp;
   double x, y, Factor;
   if(comboType->currentIndex() == 1) {   // logarithmic ?
-    str2num(editStop->text(), x, Unit, Factor);
+    misc::str2num(editStop->text(), x, Unit, Factor);
     x *= Factor;
-    str2num(editStart->text(), y, Unit, Factor);
+    misc::str2num(editStart->text(), y, Unit, Factor);
     y *= Factor;
     if(y == 0.0)  y = x / 10.0;
     if(x == 0.0)  x = y * 10.0;
@@ -1225,15 +1225,15 @@ void ComponentDialog::slotNumberChanged(const QString&)
     Unit = QString::number(x);
   }
   else {
-    str2num(editStop->text(), x, Unit, Factor);
+    misc::str2num(editStop->text(), x, Unit, Factor);
     x *= Factor;
-    str2num(editStart->text(), y, Unit, Factor);
+    misc::str2num(editStart->text(), y, Unit, Factor);
     y *= Factor;
     x = (x - y) / (editNumber->text().toDouble() - 1.0);
 
-    QString step = num2str(x);
+    QString step = misc::num2str(x);
 
-    str2num(step, x, Unit, Factor);
+    misc::str2num(step, x, Unit, Factor);
     if(Factor == 1.0)
         Unit = "";
 
@@ -1251,25 +1251,25 @@ void ComponentDialog::slotStepChanged(const QString& Step)
   QString Unit;
   double x, y, Factor;
   if(comboType->currentIndex() == 1) {   // logarithmic ?
-    str2num(editStop->text(), x, Unit, Factor);
+    misc::str2num(editStop->text(), x, Unit, Factor);
     x *= Factor;
-    str2num(editStart->text(), y, Unit, Factor);
+    misc::str2num(editStart->text(), y, Unit, Factor);
     y *= Factor;
 
     x /= y;
-    str2num(Step, y, Unit, Factor);
+    misc::str2num(Step, y, Unit, Factor);
     y *= Factor;
 
     x = log10(fabs(x)) * y;
   }
   else {
-    str2num(editStop->text(), x, Unit, Factor);
+    misc::str2num(editStop->text(), x, Unit, Factor);
     x *= Factor;
-    str2num(editStart->text(), y, Unit, Factor);
+    misc::str2num(editStart->text(), y, Unit, Factor);
     y *= Factor;
 
     x -= y;
-    str2num(Step, y, Unit, Factor);
+    misc::str2num(Step, y, Unit, Factor);
     y *= Factor;
 
     x /= y;

@@ -157,7 +157,7 @@ if(xAxis.log) {
       Lines.prepend(new Line(z, y2, z, 0, GridPen));  // x grid
 
     if((zD < 1.5*zDstep) || (z == 0) || (z == x2)) {
-      tmp = StringNiceNum(zD);
+      tmp = misc::StringNiceNum(zD);
       if(xAxis.up < 0.0)  tmp = '-'+tmp;
       w = metrics.width(tmp);  // width of text
       // center text horizontally under the x tick mark
@@ -186,7 +186,7 @@ else {  // not logarithmical
   z = int(zD);   //  "int(...)" implies "floor(...)"
   while((z <= x2) && (z >= 0)) {    // create all grid lines
     if(fabs(GridNum) < 0.01*pow(10.0, Expo)) GridNum = 0.0;// make 0 really 0
-    tmp = StringNiceNum(GridNum);
+    tmp = misc::StringNiceNum(GridNum);
     w = metrics.width(tmp);  // width of text
     // center text horizontally under the x tick mark
     Texts.append(new Text(z-(w>>1), -y1, tmp)); // Text(x, y, str, ...)

@@ -142,11 +142,11 @@ void Marker::initText(int n)
   pz = pGraph->cPointsY + 2*n;
   Text += pGraph->Var + ": ";
   switch(numMode) {
-    case 0: Text += complexRect(*pz, *(pz+1), Precision);
+    case 0: Text += misc::complexRect(*pz, *(pz+1), Precision);
             break;
-    case 1: Text += complexDeg(*pz, *(pz+1), Precision);
+    case 1: Text += misc::complexDeg(*pz, *(pz+1), Precision);
             break;
-    case 2: Text += complexRad(*pz, *(pz+1), Precision);
+    case 2: Text += misc::complexRad(*pz, *(pz+1), Precision);
             break;
   }
   VarPos[nVarPos] = *pz;
@@ -160,9 +160,9 @@ void Marker::initText(int n)
     MatchDialog::r2z(Zr, Zi, Z0);
     QString Var = pGraph->Var;
     if(Var.startsWith("S"))
-        Text += "\n"+ Var.replace('S', 'Z')+": " +complexRect(Zr, Zi, Precision);
+        Text += "\n"+ Var.replace('S', 'Z')+": " +misc::complexRect(Zr, Zi, Precision);
     else
-        Text += "\nZ("+ Var+"): " +complexRect(Zr, Zi, Precision);
+        Text += "\nZ("+ Var+"): " +misc::complexRect(Zr, Zi, Precision);
   }
   px = VarPos;
   if(py != &Dummy)   // 2D in 3D diagram ?
@@ -230,11 +230,11 @@ void Marker::createText()
 
   Text += pGraph->Var + ": ";
   switch(numMode) {
-    case 0: Text += complexRect(*pz, *(pz+1), Precision);
+    case 0: Text += misc::complexRect(*pz, *(pz+1), Precision);
       break;
-    case 1: Text += complexDeg(*pz, *(pz+1), Precision);
+    case 1: Text += misc::complexDeg(*pz, *(pz+1), Precision);
       break;
-    case 2: Text += complexRad(*pz, *(pz+1), Precision);
+    case 2: Text += misc::complexRad(*pz, *(pz+1), Precision);
       break;
   }
   if(Diag->Name=="Smith") //impedance is useful as well here
@@ -246,9 +246,9 @@ void Marker::createText()
 	MatchDialog::r2z(Zr, Zi, Z0);
 	QString Var = pGraph->Var;
 	if(Var.startsWith("S"))
-  		Text += "\n"+ Var.replace('S', 'Z')+": " +complexRect(Zr, Zi, Precision);
+  		Text += "\n"+ Var.replace('S', 'Z')+": " +misc::complexRect(Zr, Zi, Precision);
 	else
-		Text += "\nZ("+ Var+"): " +complexRect(Zr, Zi, Precision);
+		Text += "\nZ("+ Var+"): " +misc::complexRect(Zr, Zi, Precision);
   }
   VarPos[nVarPos] = *pz;
   VarPos[nVarPos+1] = *(pz+1);

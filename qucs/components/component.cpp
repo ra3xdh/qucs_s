@@ -1079,7 +1079,7 @@ int Component::analyseLine(const QString& Row, int numProps)
     s = Row.mid(Row.indexOf('"')+1);    // Text (can contain " !!!)
     s = s.left(s.length()-1);
     if(s.isEmpty()) return -1;
-    convert2Unicode(s);
+    misc::convert2Unicode(s);
 
     Texts.append(new Text(i1, i2, s, Color, float(i3),
                           float(cos(float(i4)*M_PI/180.0)),
@@ -1368,7 +1368,7 @@ QString GateComponent::vhdlCode(int NumPorts)
 
   if(NumPorts <= 0) { // no truth table simulation ?
     QString td = Props.at(2)->Value;        // delay time
-    if(!VHDL_Delay(td, Name)) return td;
+    if(!misc::VHDL_Delay(td, Name)) return td;
     s += td;
   }
 
@@ -1399,7 +1399,7 @@ QString GateComponent::verilogCode(int NumPorts)
 
     if(NumPorts <= 0) { // no truth table simulation ?
       QString td = Props.at(2)->Value;        // delay time
-      if(!Verilog_Delay(td, Name)) return td;
+      if(!misc::Verilog_Delay(td, Name)) return td;
       s += td;
     }
     s += " " + pp->Connection->Name + " = ";  // output port
@@ -1422,7 +1422,7 @@ QString GateComponent::verilogCode(int NumPorts)
 
     if(NumPorts <= 0) { // no truth table simulation ?
       QString td = Props.at(2)->Value;        // delay time
-      if(!Verilog_Delay(td, Name)) return td;
+      if(!misc::Verilog_Delay(td, Name)) return td;
       s += td;
     }
     s += " " + Name + " (" + pp->Connection->Name;  // output port
