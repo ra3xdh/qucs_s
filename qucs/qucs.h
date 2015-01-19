@@ -262,8 +262,11 @@ private:
           *viewBrowseDock, *viewOctaveDock;
 
   // menus contain the items of their menubar
+  enum { MaxRecentFiles = 8 };
   QMenu *fileMenu, *editMenu, *insMenu, *projMenu, *simMenu, *viewMenu,
-             *helpMenu, *alignMenu, *toolMenu, *recentfilesMenu;
+             *helpMenu, *alignMenu, *toolMenu, *recentFilesMenu;
+  QAction *fileRecentAction[MaxRecentFiles];
+  QAction *fileClearRecent;
 
   // submenus for the PDF documents
   QMenu *helpTechnical, *helpReport, *helpTutorial;
@@ -345,7 +348,7 @@ public slots:
   void slotChangeProps();
   void slotAddToProject();
   void slotApplyCompText();
-  void slotOpenRecent(int num);
+  void slotOpenRecent();
   void slotSaveDiagramToGraphicsFile();
   void slotSaveSchematicToGraphicsFile(bool diagram = false);
 

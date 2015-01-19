@@ -141,6 +141,7 @@ QucsApp::QucsApp()
   viewStatusBar->setChecked(true);
   viewBrowseDock->setChecked(true);
   slotViewOctaveDock(false);
+  slotUpdateRecentFiles();
   initCursorMenu();
   Module::registerModules ();
 
@@ -1608,12 +1609,7 @@ void QucsApp::slotFileOpen()
   if(s.isEmpty())
     statusBar()->message(tr("Opening aborted"), 2000);
   else {
-
-
-
-
     updateRecentFilesList(s);
-    slotUpdateRecentFiles();
 
     gotoPage(s);
     lastDirOpenSave = s;   // remember last directory and file
@@ -1738,7 +1734,6 @@ bool QucsApp::saveAs()
   Doc->setName(s);
   lastDirOpenSave = Info.dirPath(true);  // remember last directory and file
   updateRecentFilesList(s);
-  slotUpdateRecentFiles();
 
   if(intoView) {    // insert new name in Content ListView ?
     if(Info.dirPath(true) == QucsSettings.QucsWorkDir.absPath())
@@ -2460,7 +2455,6 @@ void QucsApp::slotOpenContent(QTreeWidgetItem *item)
       Suffix == "m" || Suffix == "oct") {
     gotoPage(Info.absFilePath());
     updateRecentFilesList(Info.absFilePath());
-    slotUpdateRecentFiles();
 
     if(item->text(1).isEmpty())     // is subcircuit ?
       if(Suffix == "sch") return;
@@ -3030,20 +3024,12 @@ void QucsApp::updatePathList(QStringList newPathList)
 
 void QucsApp::updateRecentFilesList(QString s)
 {
-    QSettings* settings = new QSettings("qucs","qucs");
-    QucsSettings.numRecentDocs++;
-    if (!QucsSettings.RecentDocs.contains(s)) {
-        QucsSettings.RecentDocs.append(s);
-    } else {
-        QucsSettings.RecentDocs.remove(s);
-        QucsSettings.RecentDocs.append(s);
-    }
-    if (QucsSettings.RecentDocs.count()>8) {
-        QucsSettings.RecentDocs.removeFirst();
-    }
-
-    settings->setValue("RecentDocs",QucsSettings.RecentDocs.join("*"));
-    delete settings;
+  QucsSettings.RecentDocs.removeAll(s);
+  QucsSettings.RecentDocs.append(s);
+  if (QucsSettings.RecentDocs.size() > MaxRecentFiles) {
+    QucsSettings.RecentDocs.removeFirst();
+  }
+  slotUpdateRecentFiles();
 }
 
 void QucsApp::slotSaveDiagramToGraphicsFile()

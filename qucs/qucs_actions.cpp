@@ -1347,46 +1347,39 @@ void QucsApp::slotExtractPackage()
   readProjects();
 }
 
-void QucsApp::slotOpenRecent(int num)
+void QucsApp::slotOpenRecent()
 {
-    //qDebug()<<QucsSettings.RecentDocs.at(num);
-    gotoPage(QucsSettings.RecentDocs.at(num));
-    updateRecentFilesList(QucsSettings.RecentDocs.at(num));
-    slotUpdateRecentFiles();
+  QAction *action = qobject_cast<QAction *>(sender());
+  if (action) {
+    gotoPage(action->data().toString());
+    updateRecentFilesList(action->data().toString());
+  }
 }
 
 void QucsApp::slotUpdateRecentFiles()
 {
-
-
-    QSignalMapper* mapper = new QSignalMapper(this);
-    QList<QAction*> recent_docs;
-
-    QString file;
-    foreach (file,QucsSettings.RecentDocs) {
-        recent_docs.prepend(new QAction(file,this));
-        connect(recent_docs.first(),SIGNAL(triggered()),mapper,SLOT(map()));
+  QMutableStringListIterator it(QucsSettings.RecentDocs);
+  while(it.hasNext()) {
+    if (!QFile::exists(it.next())) {
+        it.remove();
     }
-    recentfilesMenu->clear();
-    recentfilesMenu->addActions(recent_docs);
-
-    for (int i=0; i<recent_docs.count(); i++) {
-        mapper->setMapping(recent_docs.at(i),(recent_docs.count() - 1)-i);
+  }
+  for (int i = 0; i < MaxRecentFiles; ++i) {
+    if (i < QucsSettings.RecentDocs.size()) {
+      fileRecentAction[i]->setText(QucsSettings.RecentDocs[i]);
+      fileRecentAction[i]->setData(QucsSettings.RecentDocs[i]);
+      fileRecentAction[i]->setVisible(true);
+    } else {
+      fileRecentAction[i]->setVisible(false);
     }
-
-    connect(mapper,SIGNAL(mapped(int)),this,SLOT(slotOpenRecent(int)));
-
-    recentfilesMenu->insertSeparator();
-    recentfilesMenu->addAction(tr("Clear list"),this,SLOT(slotClearRecentFiles()));
-
+  }
 }
 
 void QucsApp::slotClearRecentFiles()
 {
-    QucsSettings.RecentDocs.clear();
-    slotUpdateRecentFiles();
+  QucsSettings.RecentDocs.clear();
+  slotUpdateRecentFiles();
 }
-
 
 /*!
  * \brief QucsApp::slotLoadModule launches the dialog to select dynamic modueles
