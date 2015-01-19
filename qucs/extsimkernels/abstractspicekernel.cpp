@@ -139,6 +139,19 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
     }
 }
 
+void AbstractSpiceKernel::parseHBOutput(QString ngspice_file,
+                                        QList<QList<double> > &sim_points, QStringList &var_list)
+{
+
+}
+
+void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
+                     QList< QList<double> > &sim_points,
+                     QStringList &var_list, bool &isComplex)
+{
+
+}
+
 void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
 {
     QFile dataset(qucs_dataset);
