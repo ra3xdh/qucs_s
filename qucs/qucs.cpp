@@ -700,6 +700,7 @@ void QucsApp::slotSetCompView (int index)
     QList<Module *>::const_iterator it;
     for (it = Comps.constBegin(); it != Comps.constEnd(); it++) {
       if ((*it)->info) {
+        /// \todo warning: expression result unused, can we rewrite this?
         *((*it)->info) (Name, File, false);
         QListWidgetItem *icon = new QListWidgetItem(QPixmap(":/bitmaps/" + QString (File) + ".png"), Name);
         icon->setToolTip(Name);
@@ -732,6 +733,7 @@ void QucsApp::slotSearchComponent(const QString &searchText)
       QList<Module *>::const_iterator modit;
       for (modit = Comps.constBegin(); modit != Comps.constEnd(); modit++) {
         if ((*modit)->info) {
+          /// \todo warning: expression result unused, can we rewrite this?
           *((*modit)->info) (Name, File, false);
 
           if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
