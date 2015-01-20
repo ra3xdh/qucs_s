@@ -83,7 +83,7 @@ extern QString lastDir;    // to remember last directory for several dialogs
 extern QStringList qucsPathList;
 
 bool loadSettings();
-bool saveApplSettings(QucsApp*);
+bool saveApplSettings();
 void qucsMessageOutput(QtMsgType type, const char *msg);
 
 #endif // ifndef QUCS_MAIN_H

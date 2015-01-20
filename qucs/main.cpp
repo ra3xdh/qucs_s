@@ -132,7 +132,7 @@ bool loadSettings()
 
 // #########################################################################
 // Saves the settings in the settings file.
-bool saveApplSettings(QucsApp *qucs)
+bool saveApplSettings()
 {
     QSettings settings ("qucs","qucs");
 

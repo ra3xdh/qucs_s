@@ -264,6 +264,7 @@ void MFBfilter::createBandPassSchematic(QString &s)
 
 void MFBfilter::createBandStopSchematic(QString &s)
 {
+    Q_UNUSED(s);
 
 }
 

@@ -579,6 +579,8 @@ void QucsTranscalc::setupTranslations () {
    its 'box'. */
 void QucsTranscalc::createPropItem (QGridLayout * parentGrid, TransValue * val,
                     int box, QButtonGroup * group) {
+  Q_UNUSED(group);
+
   QRadioButton * r = NULL;
   QLabel * l;
   QLineEdit * e;

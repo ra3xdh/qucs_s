@@ -316,6 +316,8 @@ void LoadDialog::slotChangeIcon()
 
 bool LoadDialog::eventFilter(QObject *obj, QEvent *event)
 {
+  Q_UNUSED(obj);
+
   if (event->type() == QEvent::KeyPress) {
     QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
 //    qDebug() << "type" << keyEvent->key() << fileView->count();

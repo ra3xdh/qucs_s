@@ -494,6 +494,7 @@ void SallenKey::createBandPassSchematic(QString &s)
 
 void SallenKey::createBandStopSchematic(QString &s)
 {
+    Q_UNUSED(s);
 
 }
 

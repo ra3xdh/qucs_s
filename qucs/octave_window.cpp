@@ -175,6 +175,8 @@ void OctaveWindow::slotSendCommand()
 
 
 bool OctaveWindow::eventFilter(QObject *obj, QEvent *event) {
+    Q_UNUSED(obj);
+
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
             if (keyEvent->key() == Qt::Key_PageUp) {

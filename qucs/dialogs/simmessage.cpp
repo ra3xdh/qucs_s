@@ -313,9 +313,10 @@ void SimMessage::slotReadSpiceNetlist()
 }
 
 // ------------------------------------------------------------------------
-/// \todo check 'int status' unused parameter ?
 void SimMessage::slotFinishSpiceNetlist(int status )
 {
+  Q_UNUSED(status);
+
   if(makeSubcircuit)
     Stream << ".Def:End\n\n";
 

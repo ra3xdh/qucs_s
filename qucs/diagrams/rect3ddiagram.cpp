@@ -627,10 +627,11 @@ void Rect3DDiagram::calcLimits()
 }
 
 // --------------------------------------------------------------
-/// \todo check Right unused parameter
 int Rect3DDiagram::calcAxis(Axis *Axis, int x, int y,
                             double xD, double phi, bool Right)
 {
+  Q_UNUSED(Right);
+
   double GridStep, corr, yD, stepD, GridNum, Expo;
   double xstepD, ystepD;
 
@@ -719,10 +720,11 @@ int Rect3DDiagram::calcAxis(Axis *Axis, int x, int y,
 }
 
 // --------------------------------------------------------------
-/// \todo check Right unused parameter
 void Rect3DDiagram::createAxis(Axis *Axis, bool Right,
                                int x1_, int y1_, int x2_, int y2_)
 {
+  Q_UNUSED(Right);
+
   DataX *pD;
   double phi, cos_phi, sin_phi;
   int x, y, z, w, valid, Index = 0;

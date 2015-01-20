@@ -589,7 +589,7 @@ void QucsSettingsDialog::slotApply()
         changed = true;
     }
 
-    saveApplSettings(App);  // also sets the small and large font
+    saveApplSettings();  // also sets the small and large font
 
     if(changed)
     {

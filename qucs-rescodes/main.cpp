@@ -47,6 +47,8 @@
 MyWidget::MyWidget( QWidget *parent, const char *name )
 : QWidget( parent/*, name */)
 {
+  Q_UNUSED(name);
+
 	setWindowTitle("Color Codes");
 
   // icons are handled differently on OSX
