@@ -724,7 +724,6 @@ void QucsApp::slotSearchComponent(const QString &searchText)
     //traverse all component and match searchText with name
     QString Name;
     char * File;
-    Module * Mod;
     QList<Module *> Comps;
 
     QStringList cats = Category::getCategories ();
@@ -2312,6 +2311,9 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
     sim->slotClose();   // close and delete simulation window
     if(w) {  // schematic still open ?
       SweepDialog *Dia = new SweepDialog((Schematic*)sim->DocWidget);
+
+      // silence warning about unused variable.
+      Q_UNUSED(Dia)
     }
   }
   else {
