@@ -79,7 +79,7 @@ void qf_icheb::scpt (qf_double_t d2) {
   qf_double_t gp = pow (g, 1 / static_cast <qf_double_t> (Pspec -> ord));
 
   for (unsigned k = Pspec -> ord + 1; k <= (3 * Pspec -> ord + 1) / 2; k ++) {
-    qf_double_t an = (2 * k - 1) * M_PI_2 / Pspec -> ord;
+    qf_double_t an = (2 * k - 1) * pi_over_2 / Pspec -> ord;
     qf_double_t san = sin (an);
 
     san *= (gp * gp - 1) / (2 * gp);
@@ -116,7 +116,7 @@ void qf_icheb::scpt (qf_double_t d2) {
   // Now computes the zeros of transmission
 
   for (unsigned k = 1; k <= Pspec -> ord / 2; k ++) {
-    zr. push_back (Pspec -> th / cos ((2 * k - 1) * M_PI_2 / Pspec -> ord));
+    zr. push_back (Pspec -> th / cos ((2 * k - 1) * pi_over_2 / Pspec -> ord));
 #ifdef _QF_ICHEB_DEBUG
       std::cout << "Zero: " << zr [k - 1] << "\n";
 #endif
@@ -159,7 +159,7 @@ bool qf_icheb::synth () {
 
       // Cap (shunt to ground)
       lcmp. insert (new qf_cap (trp. v, true, true));
-      // Serial L || C (direct)
+      // Serial L || C (direct)
       lcmp. insert (new qf_plc (trp. w1, trp. w2, false, false));
     }
     else {

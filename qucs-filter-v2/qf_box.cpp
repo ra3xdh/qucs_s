@@ -152,9 +152,9 @@ bool  qf_box::semanticCheck (void) {
 
   // Fill in the specifications structure
 
-  spec. fc = cutoff * 2 * M_PI;
-  spec. fs = stop * 2 * M_PI;
-  spec. bw = bdwth * 2 * M_PI;
+  spec. fc = cutoff * 2 * pi;
+  spec. fs = stop * 2 * pi;
+  spec. bw = bdwth * 2 * pi;
   spec. ord_given = OrderBox -> isChecked ();
 
   if (spec. ord_given) {
@@ -165,7 +165,7 @@ bool  qf_box::semanticCheck (void) {
     else
       spec. subord = ' ';
 
-    spec. ang = (EnterAngle -> text ()). toDouble () * M_PI / 180;
+    spec. ang = (EnterAngle -> text ()). toDouble () * pi / 180;
   }
 
   spec. amin = ripple;

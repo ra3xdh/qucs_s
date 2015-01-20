@@ -27,7 +27,7 @@ qf_poly	qf_lgndr::legendre (void) {
   if (Pspec -> ord % 2) { // Odd case
     
     k = (Pspec -> ord - 1) / 2;
-    c = M_SQRT1_2 / (k + 1);
+    c = one_over_sqrt2 / (k + 1);
     S = L0 * c;
 
     for (unsigned i = 1; i < k + 1; i ++) {

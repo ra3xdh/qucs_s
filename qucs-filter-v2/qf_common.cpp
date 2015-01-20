@@ -293,7 +293,7 @@ int main (void) {
 
 	std::cout << "Theta (deg): ";
 	std::cin >> fs;
-	fs = M_PI * fs / 180;
+	fs = pi * fs / 180;
 
 	if (o % 2 == 0)
 	{

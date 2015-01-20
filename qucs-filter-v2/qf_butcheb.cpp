@@ -43,7 +43,7 @@ bool  qf_buttcheb::synth (void) {
 
 void  qf_butt::coeffs (void) {
   
-  qf_double_t ang = M_PI / (2 * Pspec -> ord);
+  qf_double_t ang = pi / (2 * Pspec -> ord);
 
   for (unsigned n = 1; n <= Pspec -> ord; n ++) {
     gn. push_back (2 * sin ((2 * n - 1) * ang));
@@ -75,7 +75,7 @@ void  qf_cheb::coeffs () {
   qf_double_t bt = log (1 / tanh (Pspec -> amin / 17.37));
   qf_double_t gm = sinh (bt / (2 * Pspec -> ord));
 
-  qf_double_t fa = M_PI / Pspec -> ord;
+  qf_double_t fa = pi / Pspec -> ord;
   qf_double_t oa;
   qf_double_t a = sin (fa / 2);
   qf_double_t sfa = sin (fa);

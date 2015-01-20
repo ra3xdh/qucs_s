@@ -21,7 +21,7 @@
 
 // Arc sin in degrees
 inline qf_double_t ASIND (qf_double_t ang) {
-  return 180 * asin (ang) / M_PI;
+  return 180 * asin (ang) / pi;
 }
 
 qf_zigzag::qf_zigzag (qf_spec* Tspec): qf_tform (Tspec)

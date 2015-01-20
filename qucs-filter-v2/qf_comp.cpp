@@ -335,7 +335,7 @@ void qf_lcmp::dump_all (Q3TextStream& out) {
 
   // S-parameter simulation box and equation
   com << "<.SP SP1 1 " << x << " " << y-280 << " 0 50 0 0 \"log\" 1 \""
-      << valstr(fc/2/M_PI/10) << "Hz\" 1 \"" << valstr(fc/2/M_PI*10)
+      << valstr(fc/2/pi/10) << "Hz\" 1 \"" << valstr(fc/2/pi*10)
       << "Hz\" 1 \"200\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n";
   com << "<Eqn Eqn1 1 " << x+200 << " " << y-270
       << " -28 15 0 0 \"dBS21=dB(S[2,1])\" 1 "
@@ -353,7 +353,7 @@ void qf_lcmp::dump_all (Q3TextStream& out) {
   out << "<Paintings>\n";
   out << "<Text " << x+310 << " " << y-280 << " 12 #000000 0 \""
       << tx << "\\n"
-      << valstr(fc/2/M_PI) << "Hz cutoff/center frequency\\n"
+      << valstr(fc/2/pi) << "Hz cutoff/center frequency\\n"
       << "impedance matching Z_{IN}=" << valstr(r1) << "\\Omega, Z_{OUT}="
       << valstr(r2) << "\\Omega\">\n";
   out << "</Paintings>\n";
