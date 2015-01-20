@@ -43,7 +43,7 @@ rectwaveguide::~rectwaveguide()
 double rectwaveguide::kval ()
 {
   double kval;
-  kval = 2.0 * M_PI * f * sqrt (mur * er) / C0;
+  kval = 2.0 * pi * f * sqrt (mur * er) / C0;
   return kval;
 }
  
@@ -54,7 +54,7 @@ double rectwaveguide::kval ()
 double rectwaveguide::kc (int m, int n)
 {
   double kcval;
-  kcval = sqrt (pow ((m * M_PI / a), 2.0) + pow ((n * M_PI / b), 2.0));
+  kcval = sqrt (pow ((m * pi / a), 2.0) + pow ((n * pi / b), 2.0));
   return kcval;
 }
 
@@ -65,7 +65,7 @@ double rectwaveguide::kc (int m, int n)
 double rectwaveguide::fc (int m, int n)
 {
   double fcval;
-  fcval =  kc (m, n) * C0 / (2.0 * M_PI * sqrt (mur * er));
+  fcval =  kc (m, n) * C0 / (2.0 * pi * sqrt (mur * er));
   return fcval;
 }
 
@@ -79,7 +79,7 @@ double rectwaveguide::alphac ()
   double ac;
   short m, n, mmax, nmax;
 
-  Rs = sqrt ((M_PI * f * mur * MU0) / sigma);
+  Rs = sqrt ((pi * f * mur * MU0) / sigma);
   k = kval ();
   ac = 0.0;
   mmax = (int) floor (f / fc (1,0));
@@ -221,13 +221,13 @@ void rectwaveguide::analyze ()
   if (kc (1,0) <= k) {
     /* propagating modes */
     beta = sqrt (pow (k, 2.0) - pow (kc (1,0), 2.0));
-    lambda_g = 2.0 * M_PI / beta;
+    lambda_g = 2.0 * pi / beta;
     /* Z0 = (k * ZF0) / beta; */
     Z0 = k * ZF0 / beta;
 
     /* calculate electrical angle */
-    lambda_g = 2.0 * M_PI / beta;
-    ang_l = 2.0 * M_PI * l / lambda_g;    /* in radians */
+    lambda_g = 2.0 * pi / beta;
+    ang_l = 2.0 * pi * l / lambda_g;    /* in radians */
     atten_cond = alphac () * l;
     atten_dielectric = alphad () * l;
     er_eff = (1.0 - pow ((fc (1,0) / f), 2.0));
@@ -280,15 +280,15 @@ int rectwaveguide::synthesize ()
 
   k = kval ();
   beta = sqrt(pow(k,2.) - pow(kc(1,0),2.0));
-  lambda_g = (2. * M_PI)/beta;
-  l = (ang_l * lambda_g)/(2.0 * M_PI);    /* in m */
+  lambda_g = (2. * pi)/beta;
+  l = (ang_l * lambda_g)/(2.0 * pi);    /* in m */
 
   setProperty ("L", l, UNIT_LENGTH, LENGTH_M);
 
   if (kc(1,0) <= k) {
     /*propagating modes */
     beta = sqrt(pow(k,2.) - pow(kc(1,0),2.0));
-    lambda_g = (2. * M_PI)/beta;
+    lambda_g = (2. * pi)/beta;
     atten_cond = alphac () * l;
     atten_dielectric = alphad () * l;
     er_eff = (1.0 - pow((fc(1,0)/f),2.0));

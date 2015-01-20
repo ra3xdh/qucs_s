@@ -59,7 +59,7 @@ double c_microstrip::delta_u_thickness_single(double u, double t_h)
   double delta_u;
 
   if (t_h > 0.0) {
-    delta_u = (1.25 * t_h / M_PI) * (1.0 + log((2.0 + (4.0 * M_PI * u - 2.0) / (1.0 + exp(-100.0 * (u - 1.0 / (2.0 * M_PI))))) / t_h));
+    delta_u = (1.25 * t_h / pi) * (1.0 + log((2.0 + (4.0 * pi * u - 2.0) / (1.0 + exp(-100.0 * (u - 1.0 / (2.0 * pi))))) / t_h));
   } else {
     delta_u = 0.0;
   }
@@ -277,8 +277,8 @@ double c_microstrip::delta_Z0_even_cover(double g, double u, double h2h)
   if (g < 4.46631063751) {
     x = pow(10.0, 0.103 * g - 0.159);
     y = pow(10.0, 0.0492 * g - 0.073);
-    D = 0.747 / sin(0.5 * M_PI * x);
-    E = 0.725 * sin(0.5 * M_PI * y);
+    D = 0.747 / sin(0.5 * pi * x);
+    E = 0.725 * sin(0.5 * pi * y);
     F = pow(10.0, 0.11 - 0.0947 * g);
     g_e = 270.0 * (1.0 - tanh(D + E * sqrt(1.0 + h2h) - F / (1.0 + h2h)));
   } else
@@ -454,17 +454,17 @@ void c_microstrip::conductor_losses()
     /* skin resistance */
     R_s = 1.0 / (sigma * delta);
     /* correction for surface roughness */
-    R_s *= 1.0 + ((2.0 / M_PI) * atan(1.40 * pow((rough / delta), 2.0)));
+    R_s *= 1.0 + ((2.0 / pi) * atan(1.40 * pow((rough / delta), 2.0)));
     
     /* even-mode strip inductive quality factor */
-    Q_c_e = (M_PI * Z0_h_e * w * f) / (R_s * C0 * K);
+    Q_c_e = (pi * Z0_h_e * w * f) / (R_s * C0 * K);
     /* even-mode losses per unith length */
-    alpha_c_e = (20.0 * M_PI / log(10.0)) * f * sqrt(e_r_eff_e_0) / (C0 * Q_c_e);
+    alpha_c_e = (20.0 * pi / log(10.0)) * f * sqrt(e_r_eff_e_0) / (C0 * Q_c_e);
     
   /* odd-mode strip inductive quality factor */
-    Q_c_o = (M_PI * Z0_h_o * w * f) / (R_s * C0 * K);
+    Q_c_o = (pi * Z0_h_o * w * f) / (R_s * C0 * K);
     /* odd-mode losses per unith length */
-    alpha_c_o = (20.0 * M_PI / log(10.0)) * f * sqrt(e_r_eff_o_0) / (C0 * Q_c_o);
+    alpha_c_o = (20.0 * pi / log(10.0)) * f * sqrt(e_r_eff_o_0) / (C0 * Q_c_o);
   } else {
     alpha_c_e = alpha_c_o = 0.0;
   }
@@ -487,8 +487,8 @@ void c_microstrip::dielectric_losses()
   e_r_eff_e_0 = er_eff_e_0;
   e_r_eff_o_0 = er_eff_o_0;
 
-  alpha_d_e = (20.0 * M_PI / log(10.0)) * (f / C0) * (e_r / sqrt(e_r_eff_e_0)) * ((e_r_eff_e_0 - 1.0) / (e_r - 1.0)) * tand;
-  alpha_d_o = (20.0 * M_PI / log(10.0)) * (f / C0) * (e_r / sqrt(e_r_eff_o_0)) * ((e_r_eff_o_0 - 1.0) / (e_r - 1.0)) * tand;
+  alpha_d_e = (20.0 * pi / log(10.0)) * (f / C0) * (e_r / sqrt(e_r_eff_e_0)) * ((e_r_eff_e_0 - 1.0) / (e_r - 1.0)) * tand;
+  alpha_d_o = (20.0 * pi / log(10.0)) * (f / C0) * (e_r / sqrt(e_r_eff_o_0)) * ((e_r_eff_o_0 - 1.0) / (e_r - 1.0)) * tand;
 
   atten_dielectric_e = alpha_d_e * l;
   atten_dielectric_o = alpha_d_o * l;
@@ -527,8 +527,8 @@ void c_microstrip::line_angle()
   /* odd-mode wavelength */
   lambda_g_o = v_o / f;
   /* electrical angles */
-  ang_l_e = 2.0 * M_PI * l / lambda_g_e;	/* in radians */
-  ang_l_o = 2.0 * M_PI * l / lambda_g_o;	/* in radians */
+  ang_l_e = 2.0 * pi * l / lambda_g_e;	/* in radians */
+  ang_l_o = 2.0 * pi * l / lambda_g_o;	/* in radians */
 }
 
 
@@ -537,15 +537,15 @@ void c_microstrip::syn_err_fun(double *f1, double *f2, double s_h, double w_h, d
 
   double g, h;
 
-  g = cosh(0.5 * M_PI * s_h);
-  h = cosh(M_PI * w_h + 0.5 * M_PI * s_h);
+  g = cosh(0.5 * pi * s_h);
+  h = cosh(pi * w_h + 0.5 * pi * s_h);
 
-  *f1 = (2.0 / M_PI) * acosh((2.0 * h - g + 1.0) / (g + 1.0));
-  *f2 = (2.0 / M_PI) * acosh((2.0 * h - g - 1.0) / (g - 1.0));
+  *f1 = (2.0 / pi) * acosh((2.0 * h - g + 1.0) / (g + 1.0));
+  *f2 = (2.0 / pi) * acosh((2.0 * h - g - 1.0) / (g - 1.0));
   if (e_r <= 6.0) {
-    *f2 += (4.0 / (M_PI * (1.0 + e_r / 2.0))) * acosh(1.0 + 2.0 * w_h / s_h);
+    *f2 += (4.0 / (pi * (1.0 + e_r / 2.0))) * acosh(1.0 + 2.0 * w_h / s_h);
   } else {
-    *f2 += (1.0 / M_PI) * acosh(1.0 + 2.0 * w_h / s_h);
+    *f2 += (1.0 / pi) * acosh(1.0 + 2.0 * w_h / s_h);
   }
   *f1 -= w_h_se;
   *f2 -= w_h_so;
@@ -578,12 +578,12 @@ void c_microstrip::synth_width()
   a = exp(Z0 * sqrt(e_r + 1.0) / 42.4) - 1.0;
   w_h_so = 8.0 * sqrt(a * ((7.0 + 4.0 / e_r) / 11.0) + ((1.0 + 1.0 / e_r) / 0.81)) / a;
 
-  ce = cosh(0.5 * M_PI * w_h_se);
-  co = cosh(0.5 * M_PI * w_h_so);
+  ce = cosh(0.5 * pi * w_h_se);
+  co = cosh(0.5 * pi * w_h_so);
   /* first guess at s/h */
-  s_h = (2.0 / M_PI) * acosh((ce + co - 2.0) / (co - ce));
+  s_h = (2.0 / pi) * acosh((ce + co - 2.0) / (co - ce));
   /* first guess at w/h */
-  w_h = acosh((ce * co - 1.0) / (co - ce)) / M_PI - s_h / 2.0;
+  w_h = acosh((ce * co - 1.0) / (co - ce)) / pi - s_h / 2.0;
 
   s = s_h * h;
   w = w_h * h;
@@ -908,8 +908,8 @@ int c_microstrip::synthesize()
   /* calculate physical length */
   ang_l_e = getProperty ("Ang_l", UNIT_ANG, ANG_RAD);
   ang_l_o = getProperty ("Ang_l", UNIT_ANG, ANG_RAD);
-  le = C0 / f / sqrt(er_eff_e * mur_eff) * ang_l_e / 2.0 / M_PI;
-  lo = C0 / f / sqrt(er_eff_o * mur_eff) * ang_l_o / 2.0 / M_PI;
+  le = C0 / f / sqrt(er_eff_e * mur_eff) * ang_l_e / 2.0 / pi;
+  lo = C0 / f / sqrt(er_eff_o * mur_eff) * ang_l_o / 2.0 / pi;
   l = sqrt (le * lo);
   
   /* update physical parameters */

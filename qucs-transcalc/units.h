@@ -26,23 +26,21 @@
 
 #include <cmath>
 
-// guard in case cmath also includes math.h
-#ifndef M_PI
-const double M_PI   = 3.1415926535897932384626433832795029;  /* pi */
-const double M_PI_2 = M_PI/2.0;                              /* pi/2 */
-const double M_E =  2.7182818284590452353602874713526625;    /* e */
-#endif
 
-const double MU0 = 12.566370614e-7;          /* magnetic constant         */
-const double C0  = 299792458.0;              /* speed of light in vacuum  */
-const double ZF0 = 376.73031346958504364963; /* wave resistance in vacuum */
+static const double pi        = 3.1415926535897932384626433832795029;  /* pi   */
+static const double pi_over_2 = 1.5707963267948966192313216916397514;  /* pi/2 */
+static const double e         = 2.7182818284590452353602874713526625;  /* e    */
+
+static const double MU0 = 12.566370614e-7;          /* magnetic constant         */
+static const double C0  = 299792458.0;              /* speed of light in vacuum  */
+static const double ZF0 = 376.73031346958504364963; /* wave resistance in vacuum */
 
 #ifndef INFINITY
 const double INFINITY = -log (0.0);
 #endif
 
-const double NR_EPSI   = 2.2204460492503131e-16;
-const double MAX_ERROR = 0.000001;
+static const double NR_EPSI   = 2.2204460492503131e-16;
+static const double MAX_ERROR = 0.000001;
 
 // Types of units.
 #define UNIT_FREQ   0

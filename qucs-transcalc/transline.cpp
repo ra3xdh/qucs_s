@@ -51,8 +51,8 @@ static double conv_res[2][2] = {
 
 // Unit conversion array for angles.
 static double conv_ang[2][2] = {
-  {1.0,         M_PI/180.0},
-  {180.0/M_PI,         1.0}
+  {1.0,         pi/180.0},
+  {180.0/pi,         1.0}
 };
 
 /* Constructor creates a transmission line instance. */
@@ -182,6 +182,6 @@ int transline::translateUnit (char * text) {
 double transline::skin_depth()
 {
   double depth;
-  depth = 1.0 / (sqrt(M_PI * f * mur * MU0 * sigma));
+  depth = 1.0 / (sqrt(pi * f * mur * MU0 * sigma));
   return depth;
 }

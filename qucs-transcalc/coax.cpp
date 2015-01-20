@@ -91,7 +91,7 @@ void coax::get_coax_phys ()
 double coax::alphad_coax ()
 {
   double ad;
-  ad = (M_PI/C0) * f * sqrt(er) * tand;
+  ad = (pi/C0) * f * sqrt(er) * tand;
   ad = ad * 20.0 / log(10.0);
   return ad;
 }
@@ -99,7 +99,7 @@ double coax::alphad_coax ()
 double coax::alphac_coax ()
 {
   double ac, Rs;
-  Rs = sqrt((M_PI * f * mur* MU0)/sigma);
+  Rs = sqrt((pi * f * mur* MU0)/sigma);
   ac = sqrt(er) * (((1/din) + (1/dout))/log(dout/din)) * (Rs/ZF0);
   ac = ac * 20.0 / log(10.0);
   return ac;
@@ -122,12 +122,12 @@ void coax::analyze ()
   get_coax_phys();
  
   if (din != 0.0){
-    Z0 = (ZF0/2/M_PI/sqrt(er))*log(dout/din);
+    Z0 = (ZF0/2/pi/sqrt(er))*log(dout/din);
   }
 
   lambda_g = (C0/(f))/sqrt(er * mur);
   /* calculate electrical angle */
-  ang_l = (2.0 * M_PI * l)/lambda_g;    /* in radians */
+  ang_l = (2.0 * pi * l)/lambda_g;    /* in radians */
      
   setProperty ("Z0", Z0, UNIT_RES, RES_OHM);
   setProperty ("Ang_l", ang_l, UNIT_ANG, ANG_RAD);
@@ -157,17 +157,17 @@ int coax::synthesize ()
       
   if (isSelected ("din")) {
     /* solve for din */
-    din = dout / exp(Z0*sqrt(er)/ZF0*2*M_PI);
+    din = dout / exp(Z0*sqrt(er)/ZF0*2*pi);
     setProperty ("din", din, UNIT_LENGTH, LENGTH_M);
   } else if (isSelected ("dout")) {
     /* solve for dout */
-    dout = din * exp(Z0*sqrt(er)/ZF0*2*M_PI);
+    dout = din * exp(Z0*sqrt(er)/ZF0*2*pi);
     setProperty ("dout", dout, UNIT_LENGTH, LENGTH_M);
   }
 
   lambda_g = (C0/(f))/sqrt(er * mur);
   /* calculate physical length */
-  l = (lambda_g * ang_l)/(2.0 * M_PI);    /* in m */
+  l = (lambda_g * ang_l)/(2.0 * pi);    /* in m */
   setProperty ("L", l, UNIT_LENGTH, LENGTH_M);
 
   show_results();
@@ -190,18 +190,18 @@ void coax::show_results()
   setResult (1, atten_dielectric, "dB");
       
   n = 1;
-  fc = C0 / sqrt (er * mur) / (M_PI_2 * (dout + din)/(double) n);
+  fc = C0 / sqrt (er * mur) / (pi_over_2 * (dout + din)/(double) n);
   setResult (2, "none");
   if (fc <= f) {
     char text[256], txt[256];
     strcpy (text, "TE(1,1) ");
     m = 2;
-    fc = C0 / sqrt (er * mur) / (M_PI_2 * (dout + din)/(double) m);
+    fc = C0 / sqrt (er * mur) / (pi_over_2 * (dout + din)/(double) m);
     while ((fc <= f) && (m<10)) {
       sprintf(txt, "TE(n,%d) ",m);
       strcat(text,txt);
       m++;
-      fc = C0 / sqrt (er * mur) / (M_PI_2 * (dout + din)/(double) m);
+      fc = C0 / sqrt (er * mur) / (pi_over_2 * (dout + din)/(double) m);
     }
     setResult (2, text);
   }

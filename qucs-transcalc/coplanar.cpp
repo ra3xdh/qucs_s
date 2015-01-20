@@ -77,7 +77,7 @@ void coplanar::calc()
 
   // backside is metal
   if (backMetal) {
-    k3  = tanh ((M_PI / 4) * (w / h)) / tanh ((M_PI / 4) * (w + s + s) / h);
+    k3  = tanh ((pi / 4) * (w / h)) / tanh ((pi / 4) * (w + s + s) / h);
     q3 = ellipk (k3) / ellipk (sqrt (1 - k3 * k3));
     qz  = 1 / (q1 + q3);
     er0 = 1 + q3 * qz * (er - 1);
@@ -85,7 +85,7 @@ void coplanar::calc()
   }
   // backside is air
   else {
-    k2  = sinh ((M_PI / 4) * (w / h)) / sinh ((M_PI / 4) * (w + s + s) / h);
+    k2  = sinh ((pi / 4) * (w / h)) / sinh ((pi / 4) * (w + s + s) / h);
     q2 = ellipk (k2) / ellipk (sqrt (1 - k2 * k2));
     er0 = 1 + (er - 1) / 2 * q2 / q1;
     zl_factor = ZF0 / 4 / q1;
@@ -94,7 +94,7 @@ void coplanar::calc()
   // adds effect of strip thickness
   if (t > 0) {
     double d, se, We, ke, qe;
-    d  = (t * 1.25 / M_PI) * (1 + log (4 * M_PI * w / t));
+    d  = (t * 1.25 / pi) * (1 + log (4 * pi * w / t));
     se = s - d;
     We = w + d;
 
@@ -133,13 +133,13 @@ void coplanar::calc()
   double ac = 0;
   if (t > 0) {
     // equations by GHIONE
-    double n  = (1 - k1) * 8 * M_PI / (t * (1 + k1)); 
+    double n  = (1 - k1) * 8 * pi / (t * (1 + k1)); 
     double a  = w / 2;
     double b  = a + s;
-    ac = (M_PI + log (n * a)) / a + (M_PI + log (n * b)) / b;
+    ac = (pi + log (n * a)) / a + (pi + log (n * b)) / b;
   }
   double ac_factor = ac / (4 * ZF0 * kk1 * kpk1 * (1 - k1 * k1));
-  double ad_factor = (er / (er - 1)) * tand * M_PI / C0;
+  double ad_factor = (er / (er - 1)) * tand * pi / C0;
 
 
   // ....................................................
@@ -151,11 +151,11 @@ void coplanar::calc()
   // for now, the loss are limited to strip losses (no radiation
   // losses yet) losses in neper/length
   atten_cond = 20.0 / log(10.0) * len
-             * ac_factor * sr_er0 * sqrt (M_PI * MU0 * f / sigma);
+             * ac_factor * sr_er0 * sqrt (pi * MU0 * f / sigma);
   atten_dielectric = 20.0 / log(10.0) * len
                    * ad_factor * f * (sr_er_f * sr_er_f - 1) / sr_er_f;
 
-  ang_l = 2.0 * M_PI * len * sr_er_f * f / C0;	/* in radians */
+  ang_l = 2.0 * pi * len * sr_er_f * f / C0;	/* in radians */
 
   er_eff = sr_er_f * sr_er_f;
   Z0 = zl_factor / sr_er_f;
@@ -249,7 +249,7 @@ int coplanar::synthesize()
   setProperty ("S", s, UNIT_LENGTH, LENGTH_M);
   /* calculate physical length */
   ang_l = getProperty ("Ang_l", UNIT_ANG, ANG_RAD);
-  len = C0 / f / sqrt(er_eff) * ang_l / 2.0 / M_PI;    /* in m */
+  len = C0 / f / sqrt(er_eff) * ang_l / 2.0 / pi;    /* in m */
   setProperty ("L", len, UNIT_LENGTH, LENGTH_M);
 
   /* compute coplanar parameters */
@@ -312,8 +312,8 @@ void coplanar::ellipke (double arg, double &k, double &e) {
       k = 0; e = 0;
     }
     else {
-      k = M_PI_2 / a;
-      e = M_PI_2 * (1 - s) / a;
+      k = pi_over_2 / a;
+      e = pi_over_2 * (1 - s) / a;
       if (arg < 0) {
         k *= fk;
         e *= fe;

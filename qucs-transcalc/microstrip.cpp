@@ -52,8 +52,8 @@ microstrip::~microstrip()
 double microstrip::Z0_homogeneous(double u)
 {
   double f, Z0;
-  f = 6.0 + (2.0 * M_PI - 6.0) * exp(-pow(30.666 / u, 0.7528));
-  Z0 = (ZF0 / (2.0 * M_PI)) * log(f / u + sqrt(1.0 + 4.0 / (u * u)));
+  f = 6.0 + (2.0 * pi - 6.0) * exp(-pow(30.666 / u, 0.7528));
+  Z0 = (ZF0 / (2.0 * pi)) * log(f / u + sqrt(1.0 + 4.0 / (u * u)));
   return Z0;
 }
 
@@ -108,7 +108,7 @@ double microstrip::delta_q_cover(double h2h)
 double microstrip::delta_q_thickness(double u, double t_h)
 {
   double q_t;
-  q_t = (2.0 * log(2.0) / M_PI) * (t_h / sqrt(u));
+  q_t = (2.0 * log(2.0) / pi) * (t_h / sqrt(u));
   return q_t;
 }
 
@@ -133,7 +133,7 @@ double microstrip::delta_u_thickness(double u, double t_h, double e_r)
   double delta_u;
   if (t_h > 0.0) {
     /* correction for thickness for a homogeneous microstrip */
-    delta_u = (t_h / M_PI) * log(1.0 + (4.0 * M_E) * pow(tanh(sqrt(6.517 * u)), 2.0) / t_h);
+    delta_u = (t_h / pi) * log(1.0 + (4.0 * e) * pow(tanh(sqrt(6.517 * u)), 2.0) / t_h);
     /* correction for strip on a substrate with relative permettivity e_r */
     delta_u = 0.5 * delta_u * (1.0 + 1.0 / cosh(sqrt(e_r - 1.0)));
   } else {
@@ -293,10 +293,10 @@ double microstrip::conductor_losses()
     R_s = 1.0 / (sigma * delta);
     
     /* correction for surface roughness */
-    R_s *= 1.0 + ((2.0 / M_PI) * atan(1.40 * pow((rough / delta), 2.0)));
+    R_s *= 1.0 + ((2.0 / pi) * atan(1.40 * pow((rough / delta), 2.0)));
     /* strip inductive quality factor */
-    Q_c = (M_PI * Z0_h_1 * w * f) / (R_s * C0 * K);
-    alpha_c = (20.0 * M_PI / log(10.0)) * f * sqrt(e_r_eff_0) / (C0 * Q_c);
+    Q_c = (pi * Z0_h_1 * w * f) / (R_s * C0 * K);
+    alpha_c = (20.0 * pi / log(10.0)) * f * sqrt(e_r_eff_0) / (C0 * Q_c);
   } else {
     alpha_c = 0.0;
   }
@@ -317,7 +317,7 @@ double microstrip::dielectric_losses()
   e_r = er;
   e_r_eff_0 = er_eff_0;
 
-  alpha_d = (20.0 * M_PI / log(10.0)) * (f / C0) * (e_r / sqrt(e_r_eff_0)) * ((e_r_eff_0 - 1.0) / (e_r - 1.0)) * tand;
+  alpha_d = (20.0 * pi / log(10.0)) * (f / C0) * (e_r / sqrt(e_r_eff_0)) * ((e_r_eff_0 - 1.0) / (e_r - 1.0)) * tand;
 
   return alpha_d;
 }
@@ -360,13 +360,13 @@ double microstrip::synth_width()
   e_r = er;
 
 
-  a = ((Z0 / ZF0 / 2 / M_PI) * sqrt((e_r + 1) / 2.)) + ((e_r - 1) / (e_r + 1) * (0.23 + (0.11 / e_r)));
-  b = ZF0 / 2 * M_PI / (Z0 * sqrt(e_r));
+  a = ((Z0 / ZF0 / 2 / pi) * sqrt((e_r + 1) / 2.)) + ((e_r - 1) / (e_r + 1) * (0.23 + (0.11 / e_r)));
+  b = ZF0 / 2 * pi / (Z0 * sqrt(e_r));
 
   if (a > 1.52) {
     w_h = 8 * exp(a) / (exp(2. * a) - 2);
   } else {
-    w_h = (2. / M_PI) * (b - 1. - log((2 * b) - 1.) + ((e_r - 1) / (2 * e_r)) * (log(b - 1.) + 0.39 - 0.61 / e_r));
+    w_h = (2. / pi) * (b - 1. - log((2 * b) - 1.) + ((e_r - 1) / (2 * e_r)) * (log(b - 1.) + 0.39 - 0.61 / e_r));
   }
 
   if (h > 0.0) {
@@ -394,7 +394,7 @@ void microstrip::line_angle()
   /* wavelength */
   lambda_g = v / f;
   /* electrical angles */
-  ang_l = 2.0 * M_PI * l / lambda_g;	/* in radians */
+  ang_l = 2.0 * pi * l / lambda_g;	/* in radians */
 }
 
 
@@ -562,7 +562,7 @@ int microstrip::synthesize()
   setProperty ("W", w, UNIT_LENGTH, LENGTH_M);
   /* calculate physical length */
   ang_l = getProperty ("Ang_l", UNIT_ANG, ANG_RAD);
-  l = C0 / f / sqrt(er_eff * mur_eff) * ang_l / 2.0 / M_PI;    /* in m */
+  l = C0 / f / sqrt(er_eff * mur_eff) * ang_l / 2.0 / pi;    /* in m */
   setProperty ("L", l, UNIT_LENGTH, LENGTH_M);
 
   /* compute microstrip parameters */
