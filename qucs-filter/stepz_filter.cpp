@@ -29,7 +29,7 @@ QString* StepImpedance_Filter::createSchematic(tFilter *Filter, tSubstrate *Subs
 {
   int i, x;
   double len, width, er_eff_min, er_eff_max, Z0;
-  double Omega = 2.0 * M_PI * Filter->Frequency;
+  double Omega = 2.0 * pi * Filter->Frequency;
   double Zlow  = 20.0;
   double Zhigh = 400.0;
 

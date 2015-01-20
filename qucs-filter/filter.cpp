@@ -227,7 +227,7 @@ double Filter::BesselValue(int No, int Order)
 // Calculate normalized component value for Butterworth filter
 double Filter::ButterworthValue(int No, int Order)
 {
-  return 2.0 * sin(double(2*No + 1) / double(2*Order) * M_PI);
+  return 2.0 * sin(double(2*No + 1) / double(2*Order) * pi);
 }
 
 
@@ -242,12 +242,12 @@ double Filter::ChebyshevValue(int No, int Order, double Ripple)
   Ripple = sqrt(pow(10.0, Ripple / 10.0) - 1.0);
   Ripple = sinh(asinh(1.0 / Ripple) / double(Order));
 
-  a = sin(0.5 / double(Order) * M_PI);
+  a = sin(0.5 / double(Order) * pi);
   gk = a / Ripple;
   for(i=1; i<=No; i++) {  // coefficients are defined recursivly
     ak  = a;
-    a   = sin(double(2 * i + 1) / double(2 * Order) * M_PI);
-    b   = sin(double(i) * M_PI / double(Order));
+    a   = sin(double(2 * i + 1) / double(2 * Order) * pi);
+    b   = sin(double(i) * pi / double(Order));
     gk *= Ripple * Ripple + b * b;
     gk  = ak * a / gk;
   }
@@ -323,7 +323,7 @@ double Filter::quadraticButterworthValues(int No, int Order, double &b)
     a = double(No);
   else
     a = double(2*No-1) / 2.0;
-  a = 2.0 * cos(a * M_PI / double(Order));
+  a = 2.0 * cos(a * pi / double(Order));
   b = 1.0;
   return a;
 }
@@ -345,7 +345,7 @@ double Filter::quadraticChebyshevValues(int No, int Order, double Ripple, double
     a = double(No);
   else
     a = double(2*No-1) / 2.0;
-  a  = cos(a * M_PI / double(Order));
+  a  = cos(a * pi / double(Order));
   b  = 1.0 / (cosh(c) * cosh(c) - a*a);
   a *= 2.0 * b * sinh(c);
   return a;

@@ -37,7 +37,7 @@ void TL_Filter::calcMicrostrip(tSubstrate *substrate,
   double w1 = Wh;
   if(t > 1e-100) { // width correction due to metal thickness?
     a = coth(sqrt(6.517*Wh));
-    b = t / M_PI * log(1.0 + 10.873127 / t / a / a);
+    b = t / pi * log(1.0 + 10.873127 / t / a / a);
     w1 += b;
     Wh += 0.5 * b * (1.0 + sech(sqrt(er - 1.0)));
   }
@@ -51,11 +51,11 @@ void TL_Filter::calcMicrostrip(tSubstrate *substrate,
 
   // characteristic impedance
   zl = 6.0 + 0.2831853 * exp(-pow(30.666/Wh, 0.7528));
-  zl = Z_FIELD / 2.0/M_PI * log(zl/Wh + sqrt(1.0 + 4.0/Wh/Wh));
+  zl = Z_FIELD / 2.0/pi * log(zl/Wh + sqrt(1.0 + 4.0/Wh/Wh));
 
   // characteristic impedance (same again for "w1")
   a = 6.0 + 0.2831853 * exp(-pow(30.666/w1, 0.7528));
-  a = Z_FIELD / 2.0/M_PI * log(a/w1 + sqrt(1.0 + 4.0/w1/w1));
+  a = Z_FIELD / 2.0/pi * log(a/w1 + sqrt(1.0 + 4.0/w1/w1));
 
   a /= zl;
   zl /= sqrt(er_eff);
@@ -183,10 +183,10 @@ void TL_Filter::sythesizeCoupledMicrostrip
   Wh_o = 8.0 * sqrt(a * ((7.0 + 4.0 / er) / 11.0) + ((1.0 + 1.0 / er) / 0.81)) / a;
 
   // first rough estimation
-  ce = cosh(0.5 * M_PI * Wh_e);
-  co = cosh(0.5 * M_PI * Wh_o);
-  gap = (2.0 / M_PI) * acosh((ce + co - 2.0) / (co - ce)) * substrate->height;
-  width = acosh((ce * co - 1.0) / (co - ce)) / M_PI - gap / 2.0;
+  ce = cosh(0.5 * pi * Wh_e);
+  co = cosh(0.5 * pi * Wh_o);
+  gap = (2.0 / pi) * acosh((ce + co - 2.0) / (co - ce)) * substrate->height;
+  width = acosh((ce * co - 1.0) / (co - ce)) / pi - gap / 2.0;
   width *= substrate->height;
 
   int iteration = 0;  // iteration counter
@@ -308,13 +308,13 @@ void TL_Filter::getCoupledMicrostrip
   // width correction due to metal thickness
   a = 1.0;
   if(t > 1e-20) {
-    if(Wh_e > (h/2.0/M_PI)) {
-      if(h > (t*4.0*M_PI))
-        a = t / M_PI * (1.0 + log(2.0*h/t));
+    if(Wh_e > (h/2.0/pi)) {
+      if(h > (t*4.0*pi))
+        a = t / pi * (1.0 + log(2.0*h/t));
     }
     else {
       if(Wh_e > (t*2.0))
-        a = t / M_PI * (1.0 + log(4.0*M_PI*Wh_e/t));
+        a = t / pi * (1.0 + log(4.0*pi*Wh_e/t));
     }
   }
   if(g > 20.0*t) {
@@ -363,7 +363,7 @@ void TL_Filter::getCoupledMicrostrip
 
   // static zero-thickness characteristic impedance by Hammerstad and Jensen
   zl_e = 6.0 + 0.2831853 * exp(-pow(30.666/Wh_e, 0.7528));
-  zl_e = Z_FIELD/sqrt(er_e) / 2.0/M_PI * log(zl_e/Wh_e + sqrt(1.0 + 4.0/Wh_e/Wh_e));
+  zl_e = Z_FIELD/sqrt(er_e) / 2.0/pi * log(zl_e/Wh_e + sqrt(1.0 + 4.0/Wh_e/Wh_e));
 
   // static characteristic impedance of even mode
   b  = 1.0 + 0.7519 * g + 0.189 * pow(g, 2.31);                  // = Q2
@@ -377,7 +377,7 @@ void TL_Filter::getCoupledMicrostrip
 
   // static zero-thickness characteristic impedance by Hammerstad and Jensen
   zl_o = 6.0 + 0.2831853 * exp(-pow(30.666/Wh_o, 0.7528));
-  zl_o = Z_FIELD/sqrt(er_o) / 2.0/M_PI * log(zl_o/Wh_o + sqrt(1.0 + 4.0/Wh_o/Wh_o));
+  zl_o = Z_FIELD/sqrt(er_o) / 2.0/pi * log(zl_o/Wh_o + sqrt(1.0 + 4.0/Wh_o/Wh_o));
 
   // static characteristic impedance of odd mode
   a  = exp(-6.5 - 0.95 * log(g) - pow(g / 0.15, 5.0));                // = Q8

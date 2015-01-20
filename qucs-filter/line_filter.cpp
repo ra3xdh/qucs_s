@@ -38,7 +38,7 @@ QString* Line_Filter::createSchematic(tFilter *Filter, tSubstrate *Substrate, bo
     getMicrostrip(Filter->Impedance, Omega, Substrate, width, er_eff);
   Wh = width / Substrate->height;
 
-  Omega *= 2.0*M_PI;  // angular frequency
+  Omega *= 2.0*pi;  // angular frequency
 
   // create the Qucs schematic
   QString *s = new QString("<Qucs Schematic " PACKAGE_VERSION ">\n");
@@ -64,9 +64,9 @@ QString* Line_Filter::createSchematic(tFilter *Filter, tSubstrate *Substrate, bo
 
 	// characteristic admittance of J-inverter (normalized to Y0)
     if((i == 0) || (i == Filter->Order))
-      Value = sqrt(0.5 * M_PI * Bandwidth / Value);
+      Value = sqrt(0.5 * pi * Bandwidth / Value);
     else
-      Value = 0.5 * M_PI * Bandwidth / sqrt(Value);
+      Value = 0.5 * pi * Bandwidth / sqrt(Value);
 
     // susceptance
     Value /= (1.0 - Value*Value);
@@ -90,7 +90,7 @@ QString* Line_Filter::createSchematic(tFilter *Filter, tSubstrate *Substrate, bo
 
     if(i > 0) {
       len = LIGHTSPEED / sqrt(er_eff) / Omega
-          * (M_PI - 0.5*(atan(2.0*Value) + atan(2.0*Value2)));
+          * (pi - 0.5*(atan(2.0*Value) + atan(2.0*Value2)));
       len -= dl;
     }
     Value2 = Value;  // remember for next loop

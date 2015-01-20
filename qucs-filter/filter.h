@@ -26,19 +26,15 @@
 
 #include <cmath>
 
-// guard in case cmath also includes math.h
-#ifndef M_PI
-const double M_PI   = 3.1415926535897932384626433832795029;  /* pi */
-const double M_1_PI = 0.3183098861837906715377675267450287;  /* 1/pi */
-const double M_LN2  = 0.6931471805599453094172321214581766;
-#endif
+static const double pi          = 3.1415926535897932384626433832795029;  /* pi       */
+static const double one_over_pi = 0.3183098861837906715377675267450287;  /* 1/pi     */
+static const double ln2         = 0.6931471805599453094172321214581766;  /* log_e(2) */
 
-const double LIGHTSPEED = 299792458.0;
-const double Z_FIELD = 376.73031346958504364963;
+static const double LIGHTSPEED = 299792458.0;
+static const double Z_FIELD = 376.73031346958504364963;
 
 #define coth(x)  (1.0 + 2.0 / (exp(2.0*(x)) - 1.0))
 #define sech(x)  (2.0 / (exp(x) + exp(-(x))))
-
 
 struct tFilter {
   int Type;

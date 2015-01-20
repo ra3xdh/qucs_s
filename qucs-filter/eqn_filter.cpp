@@ -68,7 +68,7 @@ QString* Equation_Filter::createSchematic(tFilter *Filter)
       eqn = QString::number(2.0 / pow(10.0, Filter->Ripple/20.0));
   }
 
-  Omega *= 2.0*M_PI;   // angular frequency
+  Omega *= 2.0*pi;   // angular frequency
 
   QString varS = "*S";
   switch(Filter->Class) {
@@ -78,11 +78,11 @@ QString* Equation_Filter::createSchematic(tFilter *Filter)
       break;
     case CLASS_BANDPASS:  // transform to bandpass
       varS = QString("*(S+%1/S)").arg(Omega*Omega);
-      Omega = 0.5 / M_PI / fabs(Filter->Frequency2 - Filter->Frequency);
+      Omega = 0.5 / pi / fabs(Filter->Frequency2 - Filter->Frequency);
       break;
     case CLASS_BANDSTOP:  // transform to bandstop
       varS = QString("/(S+%1/S)").arg(Omega*Omega);
-      Omega = 2.0 * M_PI * fabs(Filter->Frequency2 - Filter->Frequency);
+      Omega = 2.0 * pi * fabs(Filter->Frequency2 - Filter->Frequency);
       break;
   }
 

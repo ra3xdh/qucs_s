@@ -57,9 +57,9 @@ QString* CoupledLine_Filter::createSchematic(tFilter *Filter, tSubstrate *Substr
 
 	// characteristic admittance of J-inverter (normalized to Y0)
     if((i == 0) || (i == Filter->Order))
-      Value = sqrt(0.5 * M_PI * Bandwidth / Value);
+      Value = sqrt(0.5 * pi * Bandwidth / Value);
     else
-      Value = 0.5 * M_PI * Bandwidth / sqrt(Value);
+      Value = 0.5 * pi * Bandwidth / sqrt(Value);
 
     Z0e = (1.0 + Value + Value*Value) * Filter->Impedance;
     Z0o = (1.0 - Value + Value*Value) * Filter->Impedance;

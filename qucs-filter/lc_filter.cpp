@@ -54,7 +54,7 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
   }
 
   Bandwidth = fabs(Filter->Frequency2 - Filter->Frequency) / Omega;
-  Omega *= 2.0*M_PI;   // angular frequency
+  Omega *= 2.0*pi;   // angular frequency
 
   // create the Qucs schematic
   QString *s = new QString("<Qucs Schematic " PACKAGE_VERSION ">\n");
@@ -107,7 +107,7 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
 
       case CLASS_BANDPASS:
         Value /= Bandwidth;    // transform to bandpass
-        Value2 = 0.25 / Filter->Frequency / Filter->Frequency2 / M_PI / M_PI / Value;
+        Value2 = 0.25 / Filter->Frequency / Filter->Frequency2 / pi / pi / Value;
         if(i & 1) {
           *s += QString("<L L1 1 %1 %2 -26 -44 0 0 \"%3H\" 1>\n").arg(x+40).arg(yl).arg(num2str(Value));
           *s += QString("<C C1 1 %1 %2 -26 10 0 0 \"%3F\" 1>\n").arg(x-20).arg(yl).arg(num2str(Value2));
