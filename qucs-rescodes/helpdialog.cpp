@@ -52,7 +52,7 @@ HelpDialog::HelpDialog(QWidget *parent)
 
 	Text = new QTextEdit(s, this);
     
-#pragma message "Do this way?"
+/// \todo  "Do this way?"
     Text->setAcceptRichText(false);
 	//Text->setTextFormat(Qt::PlainText);
     
