@@ -3,7 +3,7 @@
 Xyce::Xyce(Schematic *sch_, QObject *parent) :
     AbstractSpiceKernel(sch_, parent)
 {
-    simulator_cmd = "runxyce";
+    simulator_cmd = "/usr/local/Xyce-Release-6.2.0-OPENSOURCE/bin/runxyce";
     simulator_parameters = "-a";
 }
 
