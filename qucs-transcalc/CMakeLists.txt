@@ -48,6 +48,16 @@ SET(QUCSTRANS_SRCS
 main.cpp qucstrans.cpp helpdialog.cpp optionsdialog.cpp
 )
 
+SET(QUCSTRANS_HDRS
+  c_microstrip.h
+  coax.h
+  coplanar.h
+  microstrip.h
+  rectwaveguide.h
+  transline.h
+  units.h
+)
+
 SET(QUCSTRANS_MOC_HDRS
 qucstrans.h helpdialog.h optionsdialog.h
 )
@@ -86,6 +96,7 @@ ENDIF(APPLE)
 
 ADD_EXECUTABLE(qucstrans MACOSX_BUNDLE WIN32
   ${QUCSTRANS_SRCS}
+  ${QUCSTRANS_HDRS}
   ${QUCSTRANS_MOC_SRCS}
   ${RESOURCES_SRCS} )
 
