@@ -22,6 +22,8 @@
 #include <cmath>
 #include <complex>
 
+static const double pi = 3.1415926535897932384626433832795029;  /* pi   */
+
 struct RC_elements {
     int   N;
     float R1;

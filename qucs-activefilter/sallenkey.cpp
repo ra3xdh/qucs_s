@@ -36,7 +36,7 @@ SallenKey::SallenKey(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam
 void SallenKey::calcLowPass()
 {
     float R1,R2,R3,R4,C1,C2;
-    float Wc = 2*M_PI*Fc;
+    float Wc = 2*pi*Fc;
     float Nst = order/2 + order%2;
     float Kv1 = pow(Kv,1.0/Nst);
 
@@ -80,7 +80,7 @@ void SallenKey::calcLowPass()
 void SallenKey::calcHighPass()
 {
     float R1,R2,R3,R4,C1;
-    float Wc = 2*M_PI*Fc;
+    float Wc = 2*pi*Fc;
 
     float Nst = order/2 + order%2;
     float Kv1 = pow(Kv,1.0/Nst);
@@ -124,7 +124,7 @@ void SallenKey::calcHighPass()
 
 void SallenKey::calcBandPass()
 {
-    float W0 = 2*M_PI*F0;
+    float W0 = 2*pi*F0;
     float R1,R2,R3,R4,C1;
     //float rho = Kv/Q;
     //float gamma = 1.0;

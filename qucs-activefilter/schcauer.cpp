@@ -36,7 +36,7 @@ SchCauer::SchCauer(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam p
 void SchCauer::calcLowPass()
 {
     float R1,R2,R3,R4,R5,C1,C2;
-    float Wc = 2*M_PI*Fc;
+    float Wc = 2*pi*Fc;
     float Nst = order/2 + order%2;
     float Kv1 = pow(Kv,1.0/Nst);
     //qDebug()<<Kv1;
@@ -79,7 +79,7 @@ void SchCauer::calcLowPass()
 void SchCauer::calcHighPass()
 {
     float R1,R2,R3,R4,R5,C1,C2;
-    float Wc = 2*M_PI*Fc;
+    float Wc = 2*pi*Fc;
     float Nst = order/2 + order%2;
     float Kv1 = pow(Kv,1.0/Nst);
     //qDebug()<<Kv1;
@@ -121,7 +121,7 @@ void SchCauer::calcHighPass()
 void SchCauer::calcBandPass()
 {
     float R1,R2,R3,R4,R5,R6,R7,C1,C2;
-    float W0 = 2*M_PI*F0;
+    float W0 = 2*pi*F0;
     float Kv1 = pow(Kv,1.0/order);
     int cnt = 1;
 
@@ -192,7 +192,7 @@ void SchCauer::calcBandPass()
 void SchCauer::calcBandStop()
 {
     float R1,R2,R3,R4,R5,R6,C1,C2;
-    float W0 = 2*M_PI*F0;
+    float W0 = 2*pi*F0;
     float Kv1 = pow(Kv,1.0/order);
     int cnt = 1;
     float A=0,A2;

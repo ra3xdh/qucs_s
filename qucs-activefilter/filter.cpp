@@ -188,7 +188,7 @@ void Filter::calcFirstOrder()
         float R1, R2,R3;
 
         int k = order/2 + 1;
-        float Wc = 2*M_PI*Fc;
+        float Wc = 2*pi*Fc;
         float re = Poles.at(k-1).real();
         //float im = Poles.at(k-1).imag();
         //float C = re*re + im*im;
@@ -369,8 +369,8 @@ void Filter::calcChebyshev()
     Zeros.clear();
 
     for (int k=1;k<=N;k++) {
-            float re = -1*a*sin(M_PI*(2*k-1)/(2*N));
-            float im = b*cos(M_PI*(2*k-1)/(2*N));
+            float re = -1*a*sin(pi*(2*k-1)/(2*N));
+            float im = b*cos(pi*(2*k-1)/(2*N));
             std::complex<float> pol(re,im);
             Poles.append(pol);
     }
@@ -394,8 +394,8 @@ void Filter::calcButterworth()
     Zeros.clear();
 
     for (int k=1;k<=N2;k++) {
-        float re =-1*sin(M_PI*(2*k-1)/(2*N2));
-        float im =cos(M_PI*(2*k-1)/(2*N2));
+        float re =-1*sin(pi*(2*k-1)/(2*N2));
+        float im =cos(pi*(2*k-1)/(2*N2));
         std::complex<float> pol(re,im);
         Poles.append(pol);
     }
@@ -421,13 +421,13 @@ void Filter::calcInvChebyshev() // Chebyshev Type-II filter
     float b = cosh((asinh(1.0/eps))/(order));
 
     for (int k=1;k<=order;k++) {
-        float im = 1.0/(cos(((2*k-1)*M_PI)/(2*order)));
+        float im = 1.0/(cos(((2*k-1)*pi)/(2*order)));
         Zeros.append(std::complex<float>(0,im));
     }
 
     for (int k=1;k<=order;k++) {
-        float re = -1*a*sin(M_PI*(2*k-1)/(2*order));
-        float im = b*cos(M_PI*(2*k-1)/(2*order));
+        float re = -1*a*sin(pi*(2*k-1)/(2*order));
+        float im = b*cos(pi*(2*k-1)/(2*order));
         std::complex<float> invpol(re,im); // inverse pole
         std::complex<float> pol;
         pol = std::complex<float>(1.0,0) / invpol; // pole
@@ -496,7 +496,7 @@ void Filter::calcCauer() // from Digital Filter Designer's handbook p.103
         sum = 0.0;
         for(int m=0;m<5;m++) {
             float term = pow(-1.0,m)*pow(q,m*(m+1));
-            term = term*sin((2*m+1)*M_PI*mu/order);
+            term = term*sin((2*m+1)*pi*mu/order);
             sum += term;
         }
         numer = 2.0*sum*sqrt(sqrt(q));
@@ -504,7 +504,7 @@ void Filter::calcCauer() // from Digital Filter Designer's handbook p.103
         sum = 0.0;
         for(int m=1;m<5;m++) {
             float term = pow(-1.0,m)*pow(q,m*m);
-            term = term*cos(2.0*m*M_PI*mu/order);
+            term = term*cos(2.0*m*pi*mu/order);
             sum += term;
         }
         denom = 1.0+2.0*sum;
