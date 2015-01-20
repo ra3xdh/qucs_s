@@ -1444,14 +1444,14 @@ void Diagram::createSmithChart(Axis *Axis, int Mode)
   // ....................................................
   // draw arcs with im(z)=const
   for(m=1; m<GridY; m++) {
-    n_sin = M_PI*double(m)/double(GridY);
+    n_sin = pi*double(m)/double(GridY);
     n_cos = cos(n_sin);
     n_sin = sin(n_sin);
     im = (1.0-n_cos)/n_sin * pow(Axis->up,0.7); // up^0.7 is beauty correction
     y  = int(im/Axis->up*x2 + 0.5);  // diameter
 
     if(Axis->up <= 1.0) {       // Smith chart with |r|=1
-      beta  = int(16.0*180.0*atan2(n_sin-im,n_cos-1.0)/M_PI - 0.5);
+      beta  = int(16.0*180.0*atan2(n_sin-im,n_cos-1.0)/pi - 0.5);
       if(beta<0) beta += 16*360;
       theta = 16*270-beta;
     }
@@ -1471,13 +1471,13 @@ void Diagram::createSmithChart(Axis *Axis, int Mode)
 	root  = (real1+1.0)*(real1+1.0) + im*im;
 	n_cos = (real1*real1 + im*im - 1.0) / root;
 	n_sin = 2.0*im / root;
-	beta  = int(16.0*180.0*atan2(n_sin-1.0/im,n_cos-1.0)/M_PI);
+	beta  = int(16.0*180.0*atan2(n_sin-1.0/im,n_cos-1.0)/pi);
 	if(beta<0) beta += 16*360;
 
 	root  = (real2+1.0)*(real2+1.0) + im*im;
 	n_cos = (real2*real2 + im*im - 1.0) / root;
 	n_sin = 2.0*im / root;
-	theta  = int(16.0*180.0*atan2(n_sin-1/im,n_cos-1)/M_PI);
+	theta  = int(16.0*180.0*atan2(n_sin-1/im,n_cos-1)/pi);
 	if(theta<0) theta += 16*360;
 	theta = theta - beta;   // arc length
 	if(theta < 0) theta = 16*360+theta;
@@ -1524,7 +1524,7 @@ void Diagram::createSmithChart(Axis *Axis, int Mode)
       if(im >= 1.0)
         Arcs.append(new struct Arc(x, (x2+y)>>1, y, y, beta, theta, GridPen));
       else {
-        phi = int(16.0*180.0/M_PI*acos(im));
+        phi = int(16.0*180.0/pi*acos(im));
         len = 16*180-phi;
         if(Above && Below)  len += len;
         else if(Below)  phi = 16*180;
@@ -1634,7 +1634,7 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
       GridNum += GridStep;
       Texts.append(new Text(((x2+z)>>1)-10, tPos, misc::StringNiceNum(GridNum)));
 
-      phi = int(16.0*180.0/M_PI*atan(double(2*tHeight)/zD));
+      phi = int(16.0*180.0/pi*atan(double(2*tHeight)/zD));
       if(!Below)  tmp = beta + phi;
       else  tmp = beta;
       Arcs.append(new struct Arc((x2-z)>>1, (y2+z)>>1, z, z, tmp, len-phi,
@@ -1650,7 +1650,7 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
 
   // create outer circle
   Texts.append(new Text(x2-8, tPos, misc::StringNiceNum(Axis->up)));
-  phi = int(16.0*180.0/M_PI*atan(double(2*tHeight)/double(x2)));
+  phi = int(16.0*180.0/pi*atan(double(2*tHeight)/double(x2)));
   if(!Below)  tmp = phi;
   else  tmp = 0;
   Arcs.append(new struct Arc(0, y2, x2, y2, tmp, 16*360-phi, QPen(Qt::black,0)));

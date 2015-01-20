@@ -196,7 +196,7 @@ QString GraphicText::saveCpp()
     QString ("new Text (%1, %2, \"%3\", QColor (\"%4\"), %5, %6, %7)").
     arg(cx).arg(cy).arg(t).
     arg(Color.name()).arg(Font.pointSize()).
-    arg(cos(M_PI * Angle / 180.0)).arg(sin(M_PI * Angle / 180.0));
+    arg(cos(pi * Angle / 180.0)).arg(sin(pi * Angle / 180.0));
   s = "Texts.append (" + s + ");";
   return s;
 }
@@ -212,7 +212,7 @@ QString GraphicText::saveJSON()
       "\"color\" : \"%4\", \"size\" : %5, \"cos\" : %6, \"sin\" : %7},").
       arg(cx).arg(cy).arg(t).
       arg(Color.name()).arg(Font.pointSize()).
-      arg(cos(M_PI * Angle / 180.0)).arg(sin(M_PI * Angle / 180.0));
+      arg(cos(pi * Angle / 180.0)).arg(sin(pi * Angle / 180.0));
   return s;
 }
 
@@ -250,7 +250,7 @@ bool GraphicText::MousePressing()
 // 5 is the precision the user must point onto the painting.
 bool GraphicText::getSelected(float fX, float fY, float)
 {
-  double phi  = M_PI/180.0*double(Angle);
+  double phi  = pi/180.0*double(Angle);
   float  sine = sin(phi), cosine = cos(phi);
 
   fX -= float(cx);
@@ -267,7 +267,7 @@ bool GraphicText::getSelected(float fX, float fY, float)
 // ------------------------------------------------------------------------
 void GraphicText::Bounding(int& xmin, int& ymin, int& xmax, int& ymax)
 {
-  double phi = M_PI/180.0*double(Angle);
+  double phi = pi/180.0*double(Angle);
   double sine = sin(phi), cosine = cos(phi);
   int dx = int( double(y2) * sine );
   int dy = int( double(y2) * cosine );

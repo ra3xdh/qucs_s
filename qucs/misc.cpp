@@ -57,7 +57,7 @@ QString misc::complexDeg(double real, double imag, int Precision)
   if(fabs(imag) < 1e-250) Text = QString::number(real,'g',Precision);
   else {
     Text  = QString::number(sqrt(real*real+imag*imag),'g',Precision) + " / ";
-    Text += QString::number(180.0/M_PI*atan2(imag,real),'g',Precision) + QString::fromUtf8("°");
+    Text += QString::number(180.0/pi*atan2(imag,real),'g',Precision) + QString::fromUtf8("°");
   }
   return Text;
 }

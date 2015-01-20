@@ -1397,7 +1397,7 @@ void DiagramDialog::slotChangeTab(QWidget*)
 void DiagramDialog::slotNewRotX(int Value)
 {
   rotationX->setText(QString::number(Value));
-  DiagCross->rotX = float(Value) * M_PI/180.0;
+  DiagCross->rotX = float(Value) * pi/180.0;
   DiagCross->update();
 }
 
@@ -1407,7 +1407,7 @@ void DiagramDialog::slotNewRotX(int Value)
 void DiagramDialog::slotNewRotY(int Value)
 {
   rotationY->setText(QString::number(Value));
-  DiagCross->rotY = float(Value) * M_PI/180.0;
+  DiagCross->rotY = float(Value) * pi/180.0;
   DiagCross->update();
 }
 
@@ -1417,7 +1417,7 @@ void DiagramDialog::slotNewRotY(int Value)
 void DiagramDialog::slotNewRotZ(int Value)
 {
   rotationZ->setText(QString::number(Value));
-  DiagCross->rotZ = float(Value) * M_PI/180.0;
+  DiagCross->rotZ = float(Value) * pi/180.0;
   DiagCross->update();
 }
 
@@ -1427,7 +1427,7 @@ void DiagramDialog::slotNewRotZ(int Value)
 void DiagramDialog::slotEditRotX(const QString& Text)
 {
   SliderRotX->setValue(Text.toInt());
-  DiagCross->rotX = Text.toFloat() * M_PI/180.0;
+  DiagCross->rotX = Text.toFloat() * pi/180.0;
   DiagCross->update();
 }
 
@@ -1437,7 +1437,7 @@ void DiagramDialog::slotEditRotX(const QString& Text)
 void DiagramDialog::slotEditRotY(const QString& Text)
 {
   SliderRotY->setValue(Text.toInt());
-  DiagCross->rotY = Text.toFloat() * M_PI/180.0;
+  DiagCross->rotY = Text.toFloat() * pi/180.0;
   DiagCross->update();
 }
 
@@ -1447,6 +1447,6 @@ void DiagramDialog::slotEditRotY(const QString& Text)
 void DiagramDialog::slotEditRotZ(const QString& Text)
 {
   SliderRotZ->setValue(Text.toInt());
-  DiagCross->rotZ = Text.toFloat() * M_PI/180.0;
+  DiagCross->rotZ = Text.toFloat() * pi/180.0;
   DiagCross->update();
 }

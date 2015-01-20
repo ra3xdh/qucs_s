@@ -1082,8 +1082,8 @@ int Component::analyseLine(const QString& Row, int numProps)
     misc::convert2Unicode(s);
 
     Texts.append(new Text(i1, i2, s, Color, float(i3),
-                          float(cos(float(i4)*M_PI/180.0)),
-                          float(sin(float(i4)*M_PI/180.0))));
+                          float(cos(float(i4)*pi/180.0)),
+                          float(sin(float(i4)*pi/180.0))));
 
     QFont Font(QucsSettings.font);
     Font.setPointSizeF(float(i3));

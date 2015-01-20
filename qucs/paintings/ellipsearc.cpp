@@ -251,7 +251,7 @@ void EllipseArc::MouseMoving(
       if(x2 < 0) { cx += x2;  x2 *= -1; }
       if(y2 < 0) { cy += y2;  y2 *= -1; }
 
-      Angle = int(16.0*180.0/M_PI
+      Angle = int(16.0*180.0/pi
 		* atan2(double(x2*(cy+(y2>>1) - fy)),
 			double(y2*(fx - cx-(x2>>1)))));
       if(Angle < 0) Angle += 16*360;
@@ -259,7 +259,7 @@ void EllipseArc::MouseMoving(
       break;
     case 4 :
       paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, 16*180);// erase old painting
-      Angle = int(16.0*180.0/M_PI
+      Angle = int(16.0*180.0/pi
 		* atan2(double(x2*(cy+(y2>>1) - fy)),
 			double(y2*(fx - cx-(x2>>1)))));
       if(Angle < 0) Angle += 16*360;
@@ -268,7 +268,7 @@ void EllipseArc::MouseMoving(
     case 5 :
       State++;
       paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, 16*180);// erase old painting
-      ArcLen = int(16.0*180.0/M_PI
+      ArcLen = int(16.0*180.0/pi
 		* atan2(double(x2*(cy+(y2>>1) - fy)),
 			double(y2*(fx - cx-(x2>>1)))));
       ArcLen -= Angle;
@@ -277,7 +277,7 @@ void EllipseArc::MouseMoving(
       break;
     case 6 :
       paintScale->PostPaintEvent(_Arc, cx, cy, x2, y2, Angle, ArcLen);// erase old painting
-      ArcLen = int(16.0*180.0/M_PI
+      ArcLen = int(16.0*180.0/pi
 		* atan2(double(x2*(cy+(y2>>1) - fy)),
 			double(y2*(fx - cx-(x2>>1)))));
       ArcLen -= Angle;
@@ -323,7 +323,7 @@ bool EllipseArc::getSelected(float fX, float fY, float w)
   fY -= float(cy) + fY2;
 
   int Phase =
-      int(16.0*180.0/M_PI *
+      int(16.0*180.0/pi *
           atan2(-double(x2)*double(fY), double(y2)*double(fX)));
   Phase -= Angle;
   while(Phase < 0) Phase += 16*360;

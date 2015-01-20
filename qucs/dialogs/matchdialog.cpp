@@ -437,7 +437,7 @@ void MatchDialog::c2p(double& Real, double& Imag)
 {
   double Real_ = Real;
   Real = sqrt(Real*Real + Imag*Imag);     // magnitude
-  Imag = 180.0/M_PI * atan2(Imag, Real_); // phase in degree
+  Imag = 180.0/pi * atan2(Imag, Real_); // phase in degree
 }
 
 // -----------------------------------------------------------------------
@@ -445,8 +445,8 @@ void MatchDialog::c2p(double& Real, double& Imag)
 void MatchDialog::p2c(double& Real, double& Imag)
 {
   double Real_ = Real;
-  Real = Real_ * cos(Imag * M_PI/180.0);  // real part
-  Imag = Real_ * sin(Imag * M_PI/180.0);  // imaginary part
+  Real = Real_ * cos(Imag * pi/180.0);  // real part
+  Imag = Real_ * sin(Imag * pi/180.0);  // imaginary part
 }
 
 // -----------------------------------------------------------------------
@@ -488,7 +488,7 @@ QString MatchDialog::calcMatching(double r_real, double r_imag,
   }
 
 
-  double X1, X2, Omega = 2.0 * M_PI * Freq;
+  double X1, X2, Omega = 2.0 * pi * Freq;
   QString Str;
   if(r_real < 0) {
     // ...................................................
