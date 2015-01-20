@@ -33,8 +33,15 @@ static const double ln2         = 0.6931471805599453094172321214581766;  /* log_
 static const double LIGHTSPEED = 299792458.0;
 static const double Z_FIELD = 376.73031346958504364963;
 
-#define coth(x)  (1.0 + 2.0 / (exp(2.0*(x)) - 1.0))
-#define sech(x)  (2.0 / (exp(x) + exp(-(x))))
+/*! coth function */
+static inline double coth(const double x) {
+  return (1.0 + 2.0 / (exp(2.0*(x)) - 1.0));
+}
+
+/*! sech function */
+static inline double sech(const double x) {
+  return  (2.0 / (exp(x) + exp(-(x))));
+}
 
 struct tFilter {
   int Type;
