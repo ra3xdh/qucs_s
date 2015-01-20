@@ -474,10 +474,12 @@ void QucsApp::fillLibrariesTreeView ()
                   "</Components>\n";
 
             compNameAndDefinition.append (s);
-            // The following may produce a warning from the compiler about
-            // unused variable newcompitem, ignore it, we pass the pointer
-            // to the parent item in the constructor
+
             QTreeWidgetItem* newcompitem = new QTreeWidgetItem(newlibitem, compNameAndDefinition);
+
+            // Silence warning from the compiler about unused variable newcompitem
+            // we pass the pointer to the parent item in the constructor
+            Q_UNUSED( newcompitem )
         }
 
         topitems.append (newlibitem);
@@ -539,10 +541,13 @@ void QucsApp::fillLibrariesTreeView ()
                           "</Components>\n";
 
                     compNameAndDefinition.append (s);
-                    // The following may produce a warning from the compiler about
-                    // unused variable newcompitem, ignore it, we pass the pointer
-                    // to the parent item in the constructor
+
+
                     QTreeWidgetItem* newcompitem = new QTreeWidgetItem(newlibitem, compNameAndDefinition);
+
+                    // Silence warning from the compiler about unused variable newcompitem
+                    // we pass the pointer to the parent item in the constructor
+                    Q_UNUSED( newcompitem )
                 }
 
                 topitems.append (newlibitem);
