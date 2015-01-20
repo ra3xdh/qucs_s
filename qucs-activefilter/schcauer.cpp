@@ -191,7 +191,7 @@ void SchCauer::calcBandPass()
 
 void SchCauer::calcBandStop()
 {
-    float R1,R2,R3,R4,R5,R6,R7,C1,C2;
+    float R1,R2,R3,R4,R5,R6,C1,C2;
     float W0 = 2*M_PI*F0;
     float Kv1 = pow(Kv,1.0/order);
     int cnt = 1;
