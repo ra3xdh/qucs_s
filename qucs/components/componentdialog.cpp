@@ -968,7 +968,7 @@ void ComponentDialog::slotApplyInput()
        else {
           // if properties where added in the dialog
           // -> create new on the Comp
-         if (Comp->Props.count() < prop->rowCount() +1) {
+         if ( (int) Comp->Props.count() < prop->rowCount() +1) {
              qDebug() << "adding to Comp ";
              Comp->Props.append(new Property(name, value, display, desc));
              changed = true;
@@ -1003,7 +1003,7 @@ void ComponentDialog::slotApplyInput()
 
     Doc->recreateComponent(Comp);
     Doc->viewport()->repaint();
-    if (Comp->Props.count() != prop->rowCount()) { // If props count was changed after recreation
+    if ( (int) Comp->Props.count() != prop->rowCount()) { // If props count was changed after recreation
         updateCompPropsList(); // of component we need to update properties
     }
   }
