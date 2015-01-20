@@ -55,11 +55,11 @@ QucsHelp::QucsHelp(const QString& page)
   setupActions();
   createSidebar();
 
-  textBrowser->setSource(QucsHelpDir.filePath(links[0]));
+  textBrowser->setSource(QUrl::fromLocalFile(QucsHelpDir.filePath(links[0])));
 
   // .......................................
   if(!page.isEmpty())
-    textBrowser->setSource(QucsHelpDir.filePath(page));
+    textBrowser->setSource(QUrl::fromLocalFile(QucsHelpDir.filePath(page)));
 }
 
 QucsHelp::~QucsHelp()
@@ -183,7 +183,7 @@ void QucsHelp::displaySelectedChapter()
       return;
   int y = chaptersView->currentRow();
   Q_ASSERT(y < links.count());
-  textBrowser->setSource(QucsHelpDir.filePath(links[y]));
+  textBrowser->setSource(QUrl::fromLocalFile(QucsHelpDir.filePath(links[y])));
   cachedSelectedText = chaptersView->currentItem()->text();
 }
 
@@ -231,7 +231,7 @@ void QucsHelp::slotSourceChanged(const QUrl & _str)
   }
   if(found == false) // some error
   {
-    textBrowser->setSource(QucsHelpDir.filePath(links[0]));
+    textBrowser->setSource(QUrl::fromLocalFile(QucsHelpDir.filePath(links[0])));
     currentSource = QucsHelpDir.filePath(links[0]);
     qDebug("QucsHelp::slotSourceChanged():  Link mismatch \n Link: %s",str.toAscii().data());
   }
@@ -244,7 +244,7 @@ void QucsHelp::previousLink()
 {
   if(currentIndex > 0)
     --currentIndex;
-  textBrowser->setSource(QucsHelpDir.filePath(links[currentIndex]));
+  textBrowser->setSource(QUrl::fromLocalFile(QucsHelpDir.filePath(links[currentIndex])));
 }
 
 void QucsHelp::nextLink()
@@ -252,7 +252,7 @@ void QucsHelp::nextLink()
   ++currentIndex;
   if(currentIndex >= links.count())
     currentIndex = links.count();
-  textBrowser->setSource(QucsHelpDir.filePath(links[currentIndex]));
+  textBrowser->setSource(QUrl::fromLocalFile(QucsHelpDir.filePath(links[currentIndex])));
 }
 
 void QucsHelp::slotToggleSidebar(bool b)

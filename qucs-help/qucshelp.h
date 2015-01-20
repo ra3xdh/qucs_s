@@ -48,14 +48,6 @@ class TextBrowser : public QTextBrowser
    public:
       TextBrowser(QWidget *parent = 0) : QTextBrowser(parent)
       {}
-   public slots:
-      void setSource(const QString& name)
-      {
-         // Dont do anything if the clicked link is web url
-         if(!name.startsWith("http://")) {
-            QTextBrowser::setSource(QUrl::fromLocalFile(name));
-         }
-      }
 };
 
 class QucsHelp : public QMainWindow  {
