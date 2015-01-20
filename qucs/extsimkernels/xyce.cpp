@@ -15,6 +15,7 @@ void Xyce::determineUsedSimulations()
            QString sim_typ = pc->Model;
            if (sim_typ==".AC") simulationsQueue.append("ac");
            if (sim_typ==".TR") simulationsQueue.append("tran");
+           if (sim_typ==".HB") simulationsQueue.append("hb");
        }
     }
 }
@@ -71,13 +72,18 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
            QString s = pc->getSpiceNetlist(true);
            if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
            if ((sim_typ==".TR")&&(sim=="tran")) stream<<s;
+           if ((sim_typ==".HB")&&(sim=="hb")) stream<<s;
            if ((sim_typ==".DC")) stream<<s;
        }
     }
 
 
     QString filename = QString("%1_%2.txt").arg(basenam).arg(sim);
-    QString write_str = QString(".PRINT  %1 format=raw file=%2 %3\n").arg(sim).arg(filename).arg(nods);
+    QString format;
+    if (sim=="hb") format="csv";
+    else format="raw";
+    QString write_str = QString(".PRINT  %1 format=%2 file=%3 %4\n").arg(sim).arg(format)
+            .arg(filename).arg(nods);
     stream<<write_str;
     outputs.append(filename);
 

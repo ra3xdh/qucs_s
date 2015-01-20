@@ -142,7 +142,8 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
 void AbstractSpiceKernel::parseHBOutput(QString ngspice_file,
                                         QList<QList<double> > &sim_points, QStringList &var_list)
 {
-
+    var_list.clear();
+    sim_points.clear();
 }
 
 void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
@@ -169,7 +170,11 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
 
         QString ngspice_output_filename;
         foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
-            parseNgSpiceSimOutput(workdir+QDir::separator()+ngspice_output_filename,sim_points,var_list,isComplex);
+            if (ngspice_output_filename.endsWith("_hb.txt")) {
+                parseHBOutput(workdir+QDir::separator()+ngspice_output_filename,sim_points,var_list);
+            } else {
+                parseNgSpiceSimOutput(workdir+QDir::separator()+ngspice_output_filename,sim_points,var_list,isComplex);
+            }
             if (var_list.isEmpty()) continue; // notning to convert
             normalizeVarsNames(var_list);
             QString indep = var_list.first();
