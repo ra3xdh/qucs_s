@@ -25,12 +25,13 @@
 #undef _QF_CAUER_DEBUG
 //#define _QF_CAUER_DEBUG 1
 
+#include "filter.h"
 #include "qf_poly.h"
 #include "qf_filter.h"
 #include "qf_cauer.h"
 
 qf_cauer::qf_cauer (unsigned n, qf_double_t r, qf_double_t t) :
-  qf_filter (CAUER, LOWPASS, 1, M_1_PI / 2, 0), rho (r) {
+  qf_filter (CAUER, LOWPASS, 1, one_over_pi / 2, 0), rho (r) {
   ord = n;
   th = sin (t);
   a = new qf_double_t[ord + 1];
@@ -83,7 +84,7 @@ qf_double_t qf_cauer::K (qf_double_t k) {
     a = 0.5 * (a + b);
     b = sqrt (t * b);
   }
-  return M_PI / (2 * a);
+  return pi / (2 * a);
 }
 
 // sn (u, m) by descending Landen transforms
@@ -151,7 +152,7 @@ qf_double_t qf_cauer::Kp (qf_double_t k) {
   qf_double_t f1 = 1, f2, w = 1;
   qf_double_t kb = 1;
 
-  Kp = f2 = 2 * M_LN2 - log (k);	// K' = ln (4 / k')
+  Kp = f2 = 2 * ln2 - log (k);	// K' = ln (4 / k')
   while (kb > K_ERR2) {
     kb *= k * k;
     f1 *= (w / (w + 1));
@@ -235,7 +236,7 @@ qf_double_t qf_cauer::ellip_sn (qf_double_t x, qf_double_t k) {
 
 // Arc sin in degrees
 static qf_double_t ASIND (qf_double_t ang) {
-  return (180 * asin (ang) / M_PI);
+  return (180 * asin (ang) / pi);
 }
 
 // Normalize the filter parameters to Z = 1 O and w = 1 rad/s
@@ -387,8 +388,8 @@ void qf_cauer::values (void) {
 }
 
 void qf_cauer::synth (qft type) {
-  qf_double_t cnrm = 1 / (2 * M_PI * fc * imp);
-  qf_double_t lnrm = imp / (2 * M_PI * fc);
+  qf_double_t cnrm = 1 / (2 * pi * fc * imp);
+  qf_double_t lnrm = imp / (2 * pi * fc);
   unsigned i, node;
 
   switch (type) {
@@ -606,7 +607,7 @@ void CC (void) {
     r /= 100.0;
     std::cout << "Angle (\x00B0) : ";
     std::cin >> t;
-    t = M_PI * t / 180.0;
+    t = pi * t / 180.0;
     qf_cauer F (o, r, t);
     F.dump ();
   }
