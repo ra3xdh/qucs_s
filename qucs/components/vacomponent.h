@@ -33,9 +33,10 @@ class QScriptValue;
 class vacomponent : public Component
 {
   public:
+    using Component::newOne;
     vacomponent(QString filename);
     ~vacomponent() { };
-    Component* newOne(QString filename);
+    virtual Component* newOne(QString filename);
     static Element* info(QString&, QString &,
                          bool getNewOne=false, QString filename="");
   protected:
