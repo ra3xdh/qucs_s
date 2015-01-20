@@ -205,7 +205,7 @@ void QucsHelp::slotSourceChanged(const QUrl & _str)
     return;
     
   bool found = false;
-  for(unsigned int i=0;i < links.count(); i++)
+  for(int i=0; i < links.count(); i++)
   {
     if(str.endsWith(links[i]))
     {
@@ -215,7 +215,7 @@ void QucsHelp::slotSourceChanged(const QUrl & _str)
       QString temp = cachedSelectedText;
       if(chaptersView->selectedItems().size())
          temp = chaptersView->currentItem()->text();
-      if(temp.toUInt() != i)
+      if(temp.toInt() != i)
       {
         QListWidgetItem *item = chaptersView->item(i);
         if(item != 0l)
@@ -250,7 +250,7 @@ void QucsHelp::previousLink()
 void QucsHelp::nextLink()
 {
   ++currentIndex;
-  if(currentIndex >= links.count())
+  if( (int) currentIndex >= links.count())
     currentIndex = links.count();
   textBrowser->setSource(QUrl::fromLocalFile(QucsHelpDir.filePath(links[currentIndex])));
 }
