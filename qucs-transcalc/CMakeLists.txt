@@ -45,7 +45,10 @@ INCLUDE( ${QT_USE_FILE} )
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 SET(QUCSTRANS_SRCS
-main.cpp qucstrans.cpp helpdialog.cpp optionsdialog.cpp
+  helpdialog.cpp
+  main.cpp
+  optionsdialog.cpp
+  qucstrans.cpp
 )
 
 SET(QUCSTRANS_HDRS
@@ -59,14 +62,20 @@ SET(QUCSTRANS_HDRS
 )
 
 SET(QUCSTRANS_MOC_HDRS
-qucstrans.h helpdialog.h optionsdialog.h
+  helpdialog.h
+  optionsdialog.h
+  qucstrans.h
 )
 
 QT4_WRAP_CPP( QUCSTRANS_MOC_SRCS ${QUCSTRANS_MOC_HDRS} )
 
 SET( LIB_SRC
-microstrip.cpp transline.cpp coax.cpp
-rectwaveguide.cpp c_microstrip.cpp coplanar.cpp
+  c_microstrip.cpp
+  coax.cpp
+  coplanar.cpp
+  microstrip.cpp
+  rectwaveguide.cpp
+  transline.cpp
 )
 
 SET(RESOURCES qucstrans.qrc)
