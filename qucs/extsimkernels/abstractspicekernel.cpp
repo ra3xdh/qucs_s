@@ -144,6 +144,42 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file,
 {
     var_list.clear();
     sim_points.clear();
+    int NumVars=0;
+    QFile ofile(ngspice_file);
+    if (ofile.open(QFile::ReadOnly)) {
+        QTextStream hb_data(&ofile);
+        var_list.append("hbfrequency");
+        bool first_head = true;
+        while (!hb_data.atEnd()) {
+            QRegExp sep("[ \t,]");
+            QRegExp heading("^[a-zA-Z_][a-zA-Z0-9]{1,},");
+            QRegExp dataline("^[0-9]{1,},");
+            QString lin = hb_data.readLine();
+            if (lin.isEmpty()) continue;
+            if (lin.startsWith("Index")) { // CSV heading
+                if (first_head) {
+                    QStringList vars1 = lin.split(" ",QString::SkipEmptyParts);
+                    vars1.removeFirst();
+                    vars1.removeFirst();
+                    var_list.append(vars1);
+                    NumVars = var_list.count();
+                    qDebug()<<vars1;
+                }
+                first_head = false;
+            }
+            if ((lin.contains(QRegExp("\\d*\\.\\d+[+-]*[eE]*[\\d]*")))&&(!first_head)) { // CSV dataline
+                QStringList vals = lin.split(" ",QString::SkipEmptyParts);
+                QList <double> sim_point;
+                sim_point.clear();
+                for (int i=NumVars+1;i<vals.count();i++) {
+                    sim_point.append(vals.at(i).toDouble());
+                }
+                sim_points.append(sim_point);
+                qDebug()<<sim_point;
+            }
+        }
+        ofile.close();
+    }
 }
 
 void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
@@ -172,6 +208,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
             if (ngspice_output_filename.endsWith("_hb.txt")) {
                 parseHBOutput(workdir+QDir::separator()+ngspice_output_filename,sim_points,var_list);
+                isComplex = true;
             } else {
                 parseNgSpiceSimOutput(workdir+QDir::separator()+ngspice_output_filename,sim_points,var_list,isComplex);
             }
@@ -214,18 +251,29 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
 {
     QString prefix="";
     QString indep = var_list.first();
+    bool HB = false;
     qDebug()<<"norm:"<<indep;
     indep = indep.toLower();
     if (indep=="time") {
         prefix = "tran.";
     } else if (indep=="frequency") {
         prefix = "ac.";
+    } else if (indep=="hbfrequency") {
+        HB = true;
     }
 
     if (var_list.count()>1) {
         for (int i=1;i<var_list.count();i++) {
-            if (!var_list[i].startsWith(prefix)) {
-                var_list[i] = prefix + var_list[i];
+            if ((!var_list[i].startsWith(prefix))||(HB)) {
+                if (HB) {
+                    int idx = var_list[i].indexOf('(');  // Add .Vb suffix for correct display
+                    int cnt = var_list[i].count();
+                    var_list[i] = var_list[i].right(cnt-idx-1); // Only node.Vb is displayed correctly
+                    var_list[i].remove(')');
+                    var_list[i] += ".Vb";
+                } else {
+                    var_list[i] = prefix + var_list[i];
+                }
             }
         }
     }

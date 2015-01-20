@@ -3,7 +3,7 @@
 Xyce::Xyce(Schematic *sch_, QObject *parent) :
     AbstractSpiceKernel(sch_, parent)
 {
-    simulator_cmd = "/usr/local/Xyce-Release-6.2.0-OPENSOURCE/bin/runxyce";
+    simulator_cmd = "runxyce";
     simulator_parameters = "-a";
 }
 
@@ -79,11 +79,12 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
 
 
     QString filename = QString("%1_%2.txt").arg(basenam).arg(sim);
-    QString format;
-    if (sim=="hb") format="csv";
-    else format="raw";
-    QString write_str = QString(".PRINT  %1 format=%2 file=%3 %4\n").arg(sim).arg(format)
-            .arg(filename).arg(nods);
+    QString write_str;
+    if (sim=="hb") {
+        write_str = QString(".PRINT  %1 file=%2 %3\n").arg(sim).arg(filename).arg(nods);
+    } else {
+        write_str = QString(".PRINT  %1 format=raw file=%2 %3\n").arg(sim).arg(filename).arg(nods);
+    }
     stream<<write_str;
     outputs.append(filename);
 
