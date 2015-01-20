@@ -45,19 +45,19 @@ INCLUDE( ${QT_USE_FILE} )
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 SET(QUCS-FILTER_SRCS
+  cline_filter.cpp
   eqn_filter.cpp
   filter.cpp
   helpdialog.cpp
   lc_filter.cpp
   line_filter.cpp
+  main.cpp
   qf_cauer.cpp
   qf_filter.cpp
+  qf_poly.cpp
   qucsfilter.cpp
   stepz_filter.cpp
   tl_filter.cpp
-  cline_filter.cpp
-  main.cpp
-  qf_poly.cpp
 )
 
 SET(QUCS-FILTER_HDRS
