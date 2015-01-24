@@ -15,6 +15,10 @@
  *                                                                         *
  ***************************************************************************/
 
+/*! \file id_dialog.h
+  * \brief Dialog to edit parameters in a subcircuit symbol.
+  */
+
 #ifndef ID_DIALOG_H
 #define ID_DIALOG_H
 
@@ -28,7 +32,9 @@ class QCheckBox;
 class QVBoxLayout;
 class QRegExpValidator;
 
-
+/*!
+ * \brief The ID_Dialog class, edit subcircuit symbol properties.
+ */
 class ID_Dialog : public QDialog  {
 Q_OBJECT
 public:
@@ -50,14 +56,10 @@ private:
 
 private slots:
   void slotOk();
+  void slotApply();
   void slotAddParameter();
   void slotRemoveParameter();
   void slotEditParameter();
-  void slotToggleShow(bool);
-  void slotNameChanged(const QString&);
-  void slotValueChanged(const QString&);
-  void slotDescrChanged(const QString&);
-  void slotTypeChanged(const QString&);
 };
 
 #endif

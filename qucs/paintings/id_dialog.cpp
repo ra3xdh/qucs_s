@@ -93,7 +93,6 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
 
   showCheck = new QCheckBox(tr("display in schematic"));
   showCheck->setChecked(true);
-  connect(showCheck, SIGNAL(toggled(bool)), SLOT(slotToggleShow(bool)));
 
   vbox_param->addWidget(showCheck);
 
@@ -109,29 +108,21 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
   NameVal = new QRegExpValidator(Expr, this);
   ParamNameEdit = new QLineEdit;
   ParamNameEdit->setValidator(NameVal);
-  connect(ParamNameEdit, SIGNAL(textChanged(const QString&)),
-          SLOT(slotNameChanged(const QString&)));
 
   Expr.setPattern("[^\"=]*");
   ValueVal = new QRegExpValidator(Expr, this);
   ValueEdit = new QLineEdit;
   ValueEdit->setValidator(ValueVal);
-  connect(ValueEdit, SIGNAL(textChanged(const QString&)),
-          SLOT(slotValueChanged(const QString&)));
 
   Expr.setPattern("[^\"=\\x005B\\x005D]*");
   DescrVal = new QRegExpValidator(Expr, this);
   DescriptionEdit = new QLineEdit;
   DescriptionEdit->setValidator(DescrVal);
-  connect(DescriptionEdit, SIGNAL(textChanged(const QString&)),
-          SLOT(slotDescrChanged(const QString&)));
 
   Expr.setPattern("[\\w_]+");
   TypeVal = new QRegExpValidator(Expr, this);
   TypeEdit = new QLineEdit;
   TypeEdit->setValidator(TypeVal);
-  connect(TypeEdit, SIGNAL(textChanged(const QString&)),
-          SLOT(slotTypeChanged(const QString&)));
 
   paramEditLayout->addWidget(ParamNameEdit, 0, 1);
   paramEditLayout->addWidget(ValueEdit, 1, 1);
@@ -151,6 +142,8 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
 
   QPushButton *ButtOK = new QPushButton(tr("OK"));
   connect(ButtOK, SIGNAL(clicked()), SLOT(slotOk()));
+  QPushButton *ButtApply = new QPushButton(tr("Apply"));
+  connect(ButtApply, SIGNAL(clicked()), SLOT(slotApply()));
   QPushButton *ButtCancel = new QPushButton(tr("Cancel"));
   connect(ButtCancel, SIGNAL(clicked()), SLOT(reject()));
 
@@ -158,10 +151,10 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
   hbox_bottom->setSpacing(5);
   all->addLayout(hbox_bottom);
   hbox_bottom->addWidget(ButtOK);
+  hbox_bottom->addWidget(ButtApply);
   hbox_bottom->addWidget(ButtCancel);
 
   this->setLayout(all);
-  resize(320, 400);
 }
 
 ID_Dialog::~ID_Dialog()
@@ -174,17 +167,15 @@ ID_Dialog::~ID_Dialog()
   delete TypeVal;
 }
 
-// -----------------------------------------------------------
+
+/*!
+ * \brief ID_Dialog::slotEditParameter
+ * Place data from selected table row in the edit fields.
+ */
 void ID_Dialog::slotEditParameter()
 {
   int row = ParamTable->currentRow();
   if (row < 0 || row >= ParamTable->rowCount()) {
-    ParamTable->clearSelection();
-    ParamNameEdit->clear();
-    showCheck->setChecked(true);
-    ValueEdit->clear();
-    DescriptionEdit->clear();
-    TypeEdit->clear();
     return;
   }
 
@@ -195,7 +186,12 @@ void ID_Dialog::slotEditParameter()
   TypeEdit->setText(ParamTable->item(row, 4)->text());
 }
 
-// -----------------------------------------------------------
+
+/*!
+ * \brief ID_Dialog::slotAddParameter
+ * Add new set of parameters from edit fields into table.
+ * Select added row.
+ */
 void ID_Dialog::slotAddParameter()
 {
   if(ParamNameEdit->text().isEmpty())
@@ -237,71 +233,26 @@ void ID_Dialog::slotAddParameter()
   ParamTable->setItem(row, 4, item);
 
   ParamTable->setCurrentCell(row, 0);
-  slotEditParameter();   // clear entry fields
-  ParamTable->clearSelection();
 }
 
-// -----------------------------------------------------------
+
+/*!
+ * \brief ID_Dialog::slotRemoveParameter
+ * Remove selected row from table.
+ */
 void ID_Dialog::slotRemoveParameter()
 {
   int selectedrow = ParamTable->currentRow();
   ParamTable->removeRow(selectedrow);
   int nextRow = (selectedrow == ParamTable->rowCount())? selectedrow-1 : selectedrow;
   ParamTable->setCurrentCell(nextRow, 0);
-  slotEditParameter();
 }
 
-// -----------------------------------------------------------
-void ID_Dialog::slotToggleShow(bool On)
-{
-  int selectedrow = ParamTable->currentRow();
-  QTableWidgetItem *item = ParamTable->item(selectedrow, 0);
-  if (item) {
-    item->setText(On ? tr("yes") : tr("no"));
-  }
-}
 
-// -----------------------------------------------------------
-void ID_Dialog::slotNameChanged(const QString& text)
-{
-  int selectedrow = ParamTable->currentRow();
-  QTableWidgetItem *item = ParamTable->item(selectedrow, 1);
-  if (item) {
-    item->setText(text);
-  }
-}
-
-// -----------------------------------------------------------
-void ID_Dialog::slotValueChanged(const QString& text)
-{
-  int selectedrow = ParamTable->currentRow();
-  QTableWidgetItem *item = ParamTable->item(selectedrow, 2);
-  if (item) {
-    item->setText(text);
-  }
-}
-
-// -----------------------------------------------------------
-void ID_Dialog::slotDescrChanged(const QString& text)
-{
-  int selectedrow = ParamTable->currentRow();
-  QTableWidgetItem *item = ParamTable->item(selectedrow, 3);
-  if (item) {
-    item->setText(text);
-  }
-}
-
-// -----------------------------------------------------------
-void ID_Dialog::slotTypeChanged(const QString& text)
-{
-  int selectedrow = ParamTable->currentRow();
-  QTableWidgetItem *item = ParamTable->item(selectedrow, 4);
-  if (item) {
-    item->setText(text);
-  }
-}
-
-// -----------------------------------------------------------
+/*!
+ * \brief ID_Dialog::slotOk
+ * Commit changes from dialog table to component properties.
+ */
 void ID_Dialog::slotOk()
 {
   bool changed = false;
@@ -347,4 +298,31 @@ void ID_Dialog::slotOk()
 
   if(changed)  accept();
   else  reject();
+}
+
+
+/*!
+ * \brief ID_Dialog::slotApply
+ * Apply data from edit fields to table. Clear edit fields.
+ */
+void ID_Dialog::slotApply()
+{
+  int selectedrow = ParamTable->currentRow();
+  QTableWidgetItem *item;
+  item = ParamTable->item(selectedrow, 0);
+  item->setText(showCheck->isChecked() ? tr("yes") : tr("no"));
+  item = ParamTable->item(selectedrow, 1);
+  item->setText(ParamNameEdit->text());
+  item = ParamTable->item(selectedrow, 2);
+  item->setText(ValueEdit->text());
+  item = ParamTable->item(selectedrow, 3);
+  item->setText(DescriptionEdit->text());
+  item = ParamTable->item(selectedrow, 4);
+  item->setText(TypeEdit->text());
+
+  ParamTable->setCurrentCell(selectedrow,0);
+  ParamNameEdit->clear();
+  ValueEdit->clear();
+  DescriptionEdit->clear();
+  TypeEdit->clear();
 }
