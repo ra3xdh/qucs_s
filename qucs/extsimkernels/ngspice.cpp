@@ -1,8 +1,8 @@
 /***************************************************************************
                                ngspice.cpp
                              ----------------
-    begin                : Sat Jan 10 2014
-    copyright            : (C) 2014 by Vadim Kuznetsov
+    begin                : Sat Jan 10 2015
+    copyright            : (C) 2015 by Vadim Kuznetsov
     email                : ra3xdh@gmail.com
  ***************************************************************************/
 
