@@ -753,7 +753,7 @@ void QucsApp::slotSearchClear()
 // Is called when the mouse is clicked within the Component QIconView.
 void QucsApp::slotSelectComponent(QListWidgetItem *item)
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   // delete previously selected elements
   if(view->selElem != 0)  delete view->selElem;
@@ -1193,7 +1193,7 @@ void QucsApp::readProjects()
 // Is called, when "Create New Project" button is pressed.
 void QucsApp::slotButtonProjNew()
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   NewProjDialog *d = new NewProjDialog(this);
   if(d->exec() != QDialog::Accepted) return;
@@ -1280,7 +1280,7 @@ void QucsApp::readProjectFiles()
 // Opens an existing project.
 void QucsApp::openProject(const QString& Path)
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   QString Name = Path;
   if (Name.endsWith(QDir::separator())) {
@@ -1358,7 +1358,7 @@ void QucsApp::slotListProjOpen(const QModelIndex &idx)
 // Is called when the close project menu is called.
 void QucsApp::slotMenuProjClose()
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   if(!closeAllFiles()) return;   // close files and ask for saving them
   new Schematic(this, "");
@@ -1482,7 +1482,7 @@ void QucsApp::slotButtonProjDel()
 void QucsApp::slotFileNew()
 {
   statusBar()->message(tr("Creating new schematic..."));
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   new Schematic(this, "");
 
@@ -1493,7 +1493,7 @@ void QucsApp::slotFileNew()
 void QucsApp::slotTextNew()
 {
   statusBar()->message(tr("Creating new text editor..."));
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
   new TextDoc(this, "");
 
   statusBar()->message(tr("Ready."));
@@ -1544,7 +1544,7 @@ QString lastDirOpenSave; // to remember last directory and file
 // --------------------------------------------------------------
 void QucsApp::slotFileOpen()
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   statusBar()->message(tr("Opening file..."));
 
@@ -1584,7 +1584,7 @@ void QucsApp::slotFileSave()
 {
   statusBar()->message(tr("Saving file..."));
   DocumentTab->blockSignals(true);   // no user interaction during that time
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   if(!saveFile()) {
     DocumentTab->blockSignals(false);
@@ -1691,7 +1691,7 @@ void QucsApp::slotFileSaveAs()
 {
   statusBar()->message(tr("Saving file under new filename..."));
   DocumentTab->blockSignals(true);   // no user interaction during the time
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   if(!saveAs()) {
     DocumentTab->blockSignals(false);
@@ -1715,7 +1715,7 @@ void QucsApp::slotFileSaveAs()
 void QucsApp::slotFileSaveAll()
 {
   statusBar()->message(tr("Saving all files..."));
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
   DocumentTab->blockSignals(true);   // no user interaction during the time
 
   int No=0;
@@ -1763,7 +1763,7 @@ void QucsApp::slotFileClose(int index)
 void QucsApp::closeFile(int index)
 {
     statusBar()->message(tr("Closing file..."));
-    editText->setHidden(true); // disable text edit of component property
+    slotHideEdit(); // disable text edit of component property
 
     QucsDoc *Doc = getDoc(index);
     if(Doc->DocChanged) {
@@ -1918,7 +1918,7 @@ void QucsApp::slotFileSettings ()
 // --------------------------------------------------------------
 void QucsApp::slotApplSettings()
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   QucsSettingsDialog *d = new QucsSettingsDialog(this);
   d->exec();
@@ -2000,7 +2000,7 @@ void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
 void QucsApp::printCurrentDocument(bool fitToPage)
 {
   statusBar()->message(tr("Printing..."));
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   PrinterWriter *writer = new PrinterWriter();
   writer->setFitToPage(fitToPage);
@@ -2029,7 +2029,7 @@ void QucsApp::slotFilePrintFit()
 void QucsApp::slotFileQuit()
 {
   statusBar()->message(tr("Exiting application..."));
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   int exit = QMessageBox::information(this,
       tr("Quit..."), tr("Do you really want to quit?"),
@@ -2069,7 +2069,7 @@ void QucsApp::closeEvent(QCloseEvent* Event)
 // Is called when the toolbar button is pressed to go into a subcircuit.
 void QucsApp::slotIntoHierarchy()
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   Schematic *Doc = (Schematic*)DocumentTab->currentPage();
   Component *pc = Doc->searchSelSubcircuit();
@@ -2086,7 +2086,7 @@ void QucsApp::slotIntoHierarchy()
 // Is called when the toolbar button is pressed to leave a subcircuit.
 void QucsApp::slotPopHierarchy()
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   if(HierarchyHistory.size() == 0) return;
 
@@ -2105,7 +2105,7 @@ void QucsApp::slotPopHierarchy()
 // --------------------------------------------------------------
 void QucsApp::slotShowAll()
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
   getDoc()->showAll();
 }
 
@@ -2113,14 +2113,14 @@ void QucsApp::slotShowAll()
 // Sets the scale factor to 1.
 void QucsApp::slotShowOne()
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
   getDoc()->showNoZoom();
 }
 
 // -----------------------------------------------------------
 void QucsApp::slotZoomOut()
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
   getDoc()->zoomBy(0.5f);
 }
 
@@ -2131,7 +2131,7 @@ void QucsApp::slotZoomOut()
  */
 void QucsApp::slotSimulate()
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   QucsDoc *Doc;
   QWidget *w = DocumentTab->currentPage();
@@ -2335,7 +2335,7 @@ void QucsApp::slotToPage()
 // Is called when a double-click is made in the content ListView.
 void QucsApp::slotOpenContent(QTreeWidgetItem *item)
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   if(item == 0) return;   // no item was double clicked
   if(item->parent() == 0) return; // no document, but item "schematic", ...
@@ -2413,7 +2413,7 @@ void QucsApp::slotOpenContent(QTreeWidgetItem *item)
 // Is called when the mouse is clicked within the Content QListView.
 void QucsApp::slotSelectSubcircuit(QTreeWidgetItem *item)
 {
-  editText->setHidden(true); // disable text edit of component property
+  slotHideEdit(); // disable text edit of component property
 
   if(item == 0) {   // mouse button pressed not over an item ?
     Content->clearSelection();  // deselect component in ListView
@@ -2651,7 +2651,7 @@ void QucsApp::slotSymbolEdit()
     }
     // in a normal schematic
     else {
-      editText->setHidden(true); // disable text edit of component property
+      slotHideEdit(); // disable text edit of component property
       SDoc->switchPaintMode();   // twist the view coordinates
       changeSchematicSymbolMode(SDoc);
       SDoc->becomeCurrent(true);
