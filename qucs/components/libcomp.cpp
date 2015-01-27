@@ -20,6 +20,7 @@
 #include "main.h"
 #include "schematic.h"
 #include "misc.h"
+#include "extsimkernels/qucs2spice.h"
 
 #include <limits.h>
 
@@ -37,6 +38,7 @@ LibComp::LibComp()
 
   Model = "Lib";
   Name  = "X";
+  SpiceModel = "X";
 
   Props.append(new Property("Lib", "", true,
 		QObject::tr("name of qucs library file")));
@@ -230,6 +232,10 @@ bool LibComp::createSubNetlist(QTextStream *stream, QStringList &FileList,
     r = loadSection("VHDLModel", FileString, &Includes);
   } else if(type&4) {
     r = loadSection("VerilogModel", FileString, &Includes);
+  } else if(type&8) {
+    r = loadSection("Model", FileString, &Includes);
+    Qucs2spice converter;
+    FileString = converter.convert_netlist(FileString);
   }
   if(r < 0)  return false;
 
@@ -318,4 +324,13 @@ QString LibComp::vhdlCode(int)
 
   s += ");\n";
   return s;
+}
+
+QString LibComp::spice_netlist(bool isXyce)
+{
+    QString s = SpiceModel + Name + " ";
+    foreach(Port *p1, Ports)
+      s += " "+p1->Connection->Name;   // node names
+    s += QString(" %1_%2\n").arg(Props.at(0)->Value).arg(Props.at(1)->Value);
+    return s;
 }

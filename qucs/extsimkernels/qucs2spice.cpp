@@ -1,13 +1,13 @@
 #include "qucs2spice.h"
 
-Qucs2spice::Qucs2spice(QString netlist_)
+Qucs2spice::Qucs2spice()
 {
-    netlist = netlist_;
+    //netlist = netlist_;
 }
 
-QString Qucs2spice::convert_netlist()
+QString Qucs2spice::convert_netlist(QString netlist)
 {
-    QFile qnet_file(netlist);
+    QStringList net_lst=netlist.split("\n");
 
     QRegExp res_pattern("^[ \t]*R:[A-Za-z]+.*");
     QRegExp cap_pattern("^[ \t]*C:[A-Za-z]+.*");
@@ -23,29 +23,24 @@ QString Qucs2spice::convert_netlist()
     QRegExp ends_pattern("^[ \t]*\\.Def:End[ \t]*$");
 
     QString s="";
-
-    if (qnet_file.open(QIODevice::ReadOnly)) {
-        QTextStream qucs_netlist(&qnet_file);
-        while (!qucs_netlist.atEnd()) {
-            QString line = qucs_netlist.readLine();
-            if (subckt_head_pattern.exactMatch(line)) {
-                if (ends_pattern.exactMatch(line)) s += ".ENDS\n";
-                else s += convert_header(line);
-            }
-            if (res_pattern.exactMatch(line)) s += convert_rcl(line);
-            if (cap_pattern.exactMatch(line)) s += convert_rcl(line);
-            if (ind_pattern.exactMatch(line)) s += convert_rcl(line);
-            if (diode_pattern.exactMatch(line)) s += convert_diode(line);
-            if (mosfet_pattern.exactMatch(line)) s += convert_mosfet(line);
-            if (bjt_pattern.exactMatch(line)) s += convert_bjt(line);
-            if (vccs_pattern.exactMatch(line)) s += convert_vccs(line);
-            if (vcvs_pattern.exactMatch(line)) s += convert_vcvs(line);
-            if (cccs_pattern.exactMatch(line)) s+= convert_cccs(line);
-            if (ccvs_pattern.exactMatch(line)) s+= convert_ccvs(line);
+    foreach(QString line,net_lst) {
+        if (subckt_head_pattern.exactMatch(line)) {
+            if (ends_pattern.exactMatch(line)) s += ".ENDS\n";
+            else s += convert_header(line);
         }
-        qnet_file.close();
+        if (res_pattern.exactMatch(line)) s += convert_rcl(line);
+        if (cap_pattern.exactMatch(line)) s += convert_rcl(line);
+        if (ind_pattern.exactMatch(line)) s += convert_rcl(line);
+        if (diode_pattern.exactMatch(line)) s += convert_diode(line);
+        if (mosfet_pattern.exactMatch(line)) s += convert_mosfet(line);
+        if (bjt_pattern.exactMatch(line)) s += convert_bjt(line);
+        if (vccs_pattern.exactMatch(line)) s += convert_vccs(line);
+        if (vcvs_pattern.exactMatch(line)) s += convert_vcvs(line);
+        if (cccs_pattern.exactMatch(line)) s+= convert_cccs(line);
+        if (ccvs_pattern.exactMatch(line)) s+= convert_ccvs(line);
     }
 
+    s.replace(" gnd "," 0 ");
     return s;
 }
 

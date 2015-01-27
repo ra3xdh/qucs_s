@@ -6,7 +6,7 @@
 class Qucs2spice
 {
 private:
-    QString netlist;
+    //QString netlist;
 
     QString convert_rcl(QString line);
     QString convert_header(QString line);
@@ -20,8 +20,8 @@ private:
     QString convert_vcvs(QString line);
     QString convert_vcs(QString line, bool voltage);
 public:
-    Qucs2spice(QString netlist_);
-    QString convert_netlist();
+    Qucs2spice();
+    QString convert_netlist(QString netlist);
 };
 
 #endif // QUCS2SPICE_H

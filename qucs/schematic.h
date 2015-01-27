@@ -307,10 +307,10 @@ private:
   void throughAllNodes(bool, QStringList&, int&);
   void propagateNode(QStringList&, int&, Node*);
   void collectDigitalSignals(void);
-  bool giveNodeNames(QTextStream *, int&, QStringList&, QPlainTextEdit*, int);
+  bool giveNodeNames(QTextStream *, int&, QStringList&, QTextEdit*, int,bool spice = false);
   void beginNetlistDigital(QTextStream &);
   void endNetlistDigital(QTextStream &);
-  bool throughAllComps(QTextStream *, int&, QStringList&, QPlainTextEdit *, int);
+  bool throughAllComps(QTextStream *, int&, QStringList&, QTextEdit *, int,bool spice = false);
 
   DigMap Signals; // collecting node names for VHDL signal declarations
   QStringList PortTypes;
