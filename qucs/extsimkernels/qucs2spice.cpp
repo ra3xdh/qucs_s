@@ -1,11 +1,6 @@
 #include "qucs2spice.h"
 
-Qucs2spice::Qucs2spice()
-{
-    //netlist = netlist_;
-}
-
-QString Qucs2spice::convert_netlist(QString netlist)
+QString qucs2spice::convert_netlist(QString netlist)
 {
     QStringList net_lst=netlist.split("\n");
 
@@ -44,7 +39,7 @@ QString Qucs2spice::convert_netlist(QString netlist)
     return s;
 }
 
-QString Qucs2spice::convert_rcl(QString line)
+QString qucs2spice::convert_rcl(QString line)
 {
     QString s="";
     QStringList lst = line.split(" ",QString::SkipEmptyParts);
@@ -59,7 +54,7 @@ QString Qucs2spice::convert_rcl(QString line)
     return s;
 }
 
-QString Qucs2spice::convert_header(QString line)
+QString qucs2spice::convert_header(QString line)
 {
     QString s = line;
     s.replace(".Def:",".SUBCKT ");
@@ -67,7 +62,7 @@ QString Qucs2spice::convert_header(QString line)
     return s;
 }
 
-QString Qucs2spice::convert_diode(QString line)
+QString qucs2spice::convert_diode(QString line)
 {
     QString s="";
     QStringList lst = line.split(" ",QString::SkipEmptyParts);
@@ -83,7 +78,7 @@ QString Qucs2spice::convert_diode(QString line)
     return s;
 }
 
-QString Qucs2spice::convert_mosfet(QString line)
+QString qucs2spice::convert_mosfet(QString line)
 {
     QString s="";
     QStringList lst = line.split(" ",QString::SkipEmptyParts);
@@ -123,7 +118,7 @@ QString Qucs2spice::convert_mosfet(QString line)
     return s;
 }
 
-QString Qucs2spice::convert_bjt(QString line)
+QString qucs2spice::convert_bjt(QString line)
 {
     QString s="";
     QStringList lst = line.split(" ",QString::SkipEmptyParts);
@@ -154,17 +149,17 @@ QString Qucs2spice::convert_bjt(QString line)
     return s;
 }
 
-QString Qucs2spice::convert_cccs(QString line)
+QString qucs2spice::convert_cccs(QString line)
 {
     return convert_ccs(line,false);
 }
 
-QString Qucs2spice::convert_ccvs(QString line)
+QString qucs2spice::convert_ccvs(QString line)
 {
     return convert_ccs(line,true);
 }
 
-QString Qucs2spice::convert_ccs(QString line, bool voltage)
+QString qucs2spice::convert_ccs(QString line, bool voltage)
 {
     QStringList lst = line.split(" ",QString::SkipEmptyParts);
     QString name = lst.takeFirst();
@@ -186,17 +181,17 @@ QString Qucs2spice::convert_ccs(QString line, bool voltage)
     return s;
 }
 
-QString Qucs2spice::convert_vccs(QString line)
+QString qucs2spice::convert_vccs(QString line)
 {
     return convert_vcs(line,false);
 }
 
-QString Qucs2spice::convert_vcvs(QString line)
+QString qucs2spice::convert_vcvs(QString line)
 {
     return convert_vcs(line,true);
 }
 
-QString Qucs2spice::convert_vcs(QString line,bool voltage)
+QString qucs2spice::convert_vcs(QString line,bool voltage)
 {
     QStringList lst = line.split(" ",QString::SkipEmptyParts);
     QString name = lst.takeFirst();

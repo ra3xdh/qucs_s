@@ -3,11 +3,8 @@
 
 #include <QtCore>
 
-class Qucs2spice
+namespace qucs2spice
 {
-private:
-    //QString netlist;
-
     QString convert_rcl(QString line);
     QString convert_header(QString line);
     QString convert_diode(QString line);
@@ -19,9 +16,7 @@ private:
     QString convert_vccs(QString line);
     QString convert_vcvs(QString line);
     QString convert_vcs(QString line, bool voltage);
-public:
-    Qucs2spice();
     QString convert_netlist(QString netlist);
-};
+}
 
 #endif // QUCS2SPICE_H
