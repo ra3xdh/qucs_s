@@ -8,6 +8,7 @@ namespace qucs2spice
     QString convert_rcl(QString line);
     QString convert_header(QString line);
     QString convert_diode(QString line);
+    QString convert_jfet(QString line);
     QString convert_mosfet(QString line);
     QString convert_bjt(QString line);
     QString convert_cccs(QString line);
