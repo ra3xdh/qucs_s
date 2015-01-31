@@ -80,7 +80,7 @@ QString qucs2spice::convert_diode(QString line)
     return s;
 }
 
-QString qucs2spice::convert_mosfet(QString line)
+QString qucs2spice::convert_mosfet(QString line, bool xyce)
 {
     QString s="";
     QStringList lst = line.split(" ",QString::SkipEmptyParts);
@@ -117,10 +117,11 @@ QString qucs2spice::convert_mosfet(QString line)
     QString mod_params = par_lst.join(" ");
     mod_params.remove('\"');
     s += QString(".MODEL MMOD_%1 %2(%3) \n").arg(name).arg(Typ).arg(mod_params);
+    if (xyce) s.replace(" Vt0="," VtO=");
     return s;
 }
 
-QString qucs2spice::convert_jfet(QString line)
+QString qucs2spice::convert_jfet(QString line, bool xyce)
 {
     QString s="";
     QStringList lst = line.split(" ",QString::SkipEmptyParts);
@@ -147,6 +148,7 @@ QString qucs2spice::convert_jfet(QString line)
     QString mod_params = par_lst.join(" ");
     mod_params.remove('\"');
     s += QString(".MODEL JMOD_%1 %2(%3) \n").arg(name).arg(Typ).arg(mod_params);
+    if (xyce) s.replace(" Vt0="," VtO=");
     return s;
 }
 
