@@ -23,6 +23,7 @@
 #endif
 
 #include "abstractspicekernel.h"
+#include <QTextEdit>
 
 
 
@@ -58,6 +59,19 @@ void AbstractSpiceKernel::killThemAll()
     }
 }
 
+
+bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream)
+{
+    QStringList collect;
+    QTextEdit *err = new QTextEdit;
+    Sch->prepareNetlist(stream,collect,err,true);
+    delete err;
+
+    //Sch->Signals.clear();  // was filled in "giveNodeNames()"
+    //Sch->FileList.clear();
+
+    return true; // TODO: Add feature to determine ability of spice simulation
+}
 
 void AbstractSpiceKernel::createNetlist(QTextStream& stream, int NumPorts,QStringList& simulations,
                                         QStringList& vars, QStringList &outputs)

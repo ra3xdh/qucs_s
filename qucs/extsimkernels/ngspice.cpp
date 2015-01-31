@@ -30,7 +30,7 @@ Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
 void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
                        QStringList &simulations, QStringList &vars, QStringList &outputs)
 {
-    if(!Sch->prepareSpiceNetlist(stream)) return; // Unable to perform ngspice simulation
+    if(!prepareSpiceNetlist(stream)) return; // Unable to perform ngspice simulation
 
     QString s;
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {

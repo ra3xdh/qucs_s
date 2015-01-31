@@ -1961,16 +1961,3 @@ QString Schematic::createNetlist(QTextStream& stream, int NumPorts)
 
   return Time;
 }
-
-bool Schematic::prepareSpiceNetlist(QTextStream &stream)
-{
-    QStringList collect;
-    QTextEdit *err = new QTextEdit;
-    prepareNetlist(stream,collect,err,true);
-    delete err;
-
-    Signals.clear();  // was filled in "giveNodeNames()"
-    FileList.clear();
-
-    return true; // TODO: Add feature to determine ability of spice simulation
-}
