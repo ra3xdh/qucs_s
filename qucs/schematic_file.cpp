@@ -1961,3 +1961,9 @@ QString Schematic::createNetlist(QTextStream& stream, int NumPorts)
 
   return Time;
 }
+
+void Schematic::clearSignalsAndFileList()
+{
+    Signals.clear();  // was filled in "giveNodeNames()"
+    FileList.clear();
+}

@@ -66,10 +66,7 @@ bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream)
     QTextEdit *err = new QTextEdit;
     Sch->prepareNetlist(stream,collect,err,true);
     delete err;
-
-    //Sch->Signals.clear();  // was filled in "giveNodeNames()"
-    //Sch->FileList.clear();
-
+    Sch->clearSignalsAndFileList(); // for proper build of subckts
     return true; // TODO: Add feature to determine ability of spice simulation
 }
 
