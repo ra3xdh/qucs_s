@@ -55,6 +55,7 @@
 #include "dialogs/loaddialog.h"
 #include "dialogs/importdialog.h"
 #include "dialogs/packagedialog.h"
+#include "dialogs/aboutdialog.h"
 #include "module.h"
 
 // for editing component name on schematic
@@ -1594,4 +1595,11 @@ void QucsApp::slotBuildModule()
     // shot the message docks
     messageDock->msgDock->show();
 
+}
+
+// ----------------------------------------------------------
+void QucsApp::slotHelpAbout()
+{
+  AboutDialog *ad = new AboutDialog(this);
+  ad->exec();
 }

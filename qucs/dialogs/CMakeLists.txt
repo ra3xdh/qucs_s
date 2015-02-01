@@ -7,6 +7,7 @@ INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR}
 #INCLUDES = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
 SET(DIALOGS_HDRS
+aboutdialog.h
 changedialog.h
 digisettingsdialog.h
 exportdialog.h
@@ -35,9 +36,11 @@ importdialog.cpp		savedialog.cpp labeldialog.cpp
 searchdialog.cpp     librarydialog.cpp settingsdialog.cpp
 matchdialog.cpp			simmessage.cpp newprojdialog.cpp
 sweepdialog.cpp			exportdialog.cpp loaddialog.cpp
+aboutdialog.cpp
 )
 
 SET(DIALOGS_MOC_HDRS
+aboutdialog.h
 changedialog.h
 digisettingsdialog.h
 exportdialog.h
