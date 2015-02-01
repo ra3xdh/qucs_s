@@ -60,11 +60,11 @@ void AbstractSpiceKernel::killThemAll()
 }
 
 
-bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream)
+bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream, bool xyce)
 {
     QStringList collect;
     QTextEdit *err = new QTextEdit;
-    Sch->prepareNetlist(stream,collect,err,true);
+    Sch->prepareNetlist(stream,collect,err,true,xyce);
     delete err;
     Sch->clearSignalsAndFileList(); // for proper build of subckts
     return true; // TODO: Add feature to determine ability of spice simulation

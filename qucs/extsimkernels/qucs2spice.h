@@ -17,7 +17,7 @@ namespace qucs2spice
     QString convert_vccs(QString line);
     QString convert_vcvs(QString line);
     QString convert_vcs(QString line, bool voltage);
-    QString convert_netlist(QString netlist);
+    QString convert_netlist(QString netlist, bool xyce=false);
 }
 
 #endif // QUCS2SPICE_H

@@ -233,8 +233,11 @@ bool LibComp::createSubNetlist(QTextStream *stream, QStringList &FileList,
   } else if(type&4) {
     r = loadSection("VerilogModel", FileString, &Includes);
   } else if(type&8) {
-    r = loadSection("Model", FileString, &Includes);
+    r = loadSection("Model", FileString, &Includes); // Ngspice
     FileString = qucs2spice::convert_netlist(FileString);
+  } else if (type&16) {
+    r = loadSection("Model", FileString, &Includes); // Xyce
+    FileString = qucs2spice::convert_netlist(FileString,true);
   }
   if(r < 0)  return false;
 

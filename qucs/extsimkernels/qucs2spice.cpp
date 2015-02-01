@@ -1,6 +1,6 @@
 #include "qucs2spice.h"
 
-QString qucs2spice::convert_netlist(QString netlist)
+QString qucs2spice::convert_netlist(QString netlist, bool xyce)
 {
     QStringList net_lst=netlist.split("\n");
 
@@ -28,8 +28,8 @@ QString qucs2spice::convert_netlist(QString netlist)
         if (cap_pattern.exactMatch(line)) s += convert_rcl(line);
         if (ind_pattern.exactMatch(line)) s += convert_rcl(line);
         if (diode_pattern.exactMatch(line)) s += convert_diode(line);
-        if (mosfet_pattern.exactMatch(line)) s += convert_mosfet(line);
-        if (jfet_pattern.exactMatch(line)) s += convert_jfet(line);
+        if (mosfet_pattern.exactMatch(line)) s += convert_mosfet(line,xyce);
+        if (jfet_pattern.exactMatch(line)) s += convert_jfet(line,xyce);
         if (bjt_pattern.exactMatch(line)) s += convert_bjt(line);
         if (vccs_pattern.exactMatch(line)) s += convert_vccs(line);
         if (vcvs_pattern.exactMatch(line)) s += convert_vcvs(line);
@@ -109,6 +109,7 @@ QString qucs2spice::convert_mosfet(QString line, bool xyce)
         } else if (s1.startsWith("Type=\"pfet\"")) {
             Typ = "PMOS";
         } else {
+            if (!s1.startsWith("N=")) // add ignore list
             par_lst.append(s1); // usual parameter
         }
     }
