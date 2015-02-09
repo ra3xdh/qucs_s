@@ -1,8 +1,8 @@
 #!/bin/bash
 source gpg_id
 echo "using gpg id: $GPG_ID"
-echo "Press any key..."
-read
+#echo "Press any key..."
+#read
 cd ../..
 
 if [ $# -ne 0 ]
@@ -173,7 +173,7 @@ cd qucs-$RELEASE
 COUNT=-0 #last version number in repository
 for DIST in ${DISTS} ; do
 	COUNT=$(($COUNT-1))
-	dch -D $DIST -m -v $RELEASE$COUNT -b
+	dch -D $DIST -m -v $RELEASE$COUNT -b snapshot
 	debuild -S -k$GPG_ID
 	./configure
 done
