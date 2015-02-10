@@ -162,7 +162,7 @@ tar -zcvhf qucs-$RELEASE.tar.gz qucs-$RELEASE
 rm -rf qucs-$RELEASE
 tar -zxvf qucs-$RELEASE.tar.gz #make the symbolic links actual files
 
-DISTS="trusty utopic"
+DISTS="trusty utopic vivid"
 cd qucs-$RELEASE
 ./configure
 cd ..
