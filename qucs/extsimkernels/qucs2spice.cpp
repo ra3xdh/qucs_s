@@ -17,6 +17,7 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
     QRegExp vccs_pattern("^[ \t]*VCCS:[A-Za-z]+.*");
     QRegExp subckt_head_pattern("^[ \t]*\\.Def:[A-Za-z]+.*");
     QRegExp ends_pattern("^[ \t]*\\.Def:End[ \t]*$");
+    QRegExp dc_pattern("^[ \t]*[VI]dc:[A-Za-z]+.*");
 
     QString s="";
     foreach(QString line,net_lst) {
@@ -27,7 +28,7 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
         if (res_pattern.exactMatch(line)) s += convert_rcl(line);
         if (cap_pattern.exactMatch(line)) s += convert_rcl(line);
         if (ind_pattern.exactMatch(line)) s += convert_rcl(line);
-        if (diode_pattern.exactMatch(line)) s += convert_diode(line);
+        if (diode_pattern.exactMatch(line)) s += convert_diode(line,xyce);
         if (mosfet_pattern.exactMatch(line)) s += convert_mosfet(line,xyce);
         if (jfet_pattern.exactMatch(line)) s += convert_jfet(line,xyce);
         if (bjt_pattern.exactMatch(line)) s += convert_bjt(line);
@@ -35,6 +36,7 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
         if (vcvs_pattern.exactMatch(line)) s += convert_vcvs(line);
         if (cccs_pattern.exactMatch(line)) s+= convert_cccs(line);
         if (ccvs_pattern.exactMatch(line)) s+= convert_ccvs(line);
+        if (dc_pattern.exactMatch(line)) s += convert_dc_src(line);
     }
 
     s.replace(" gnd "," 0 ");
@@ -64,7 +66,7 @@ QString qucs2spice::convert_header(QString line)
     return s;
 }
 
-QString qucs2spice::convert_diode(QString line)
+QString qucs2spice::convert_diode(QString line,bool xyce)
 {
     QString s="";
     QStringList lst = line.split(" ",QString::SkipEmptyParts);
@@ -76,7 +78,8 @@ QString qucs2spice::convert_diode(QString line)
     s += QString("D%1 %2 %3 DMOD_%4 \n").arg(name).arg(A).arg(K).arg(name);
     QString mod_params = lst.join(" ");
     mod_params.remove('\"');
-    s += QString(".MODEL DMOD_%1 D(%2) \n").arg(name).arg(mod_params);
+    if (xyce) s += QString(".MODEL DMOD_%1 D(LEVEL=2 %2) \n").arg(name).arg(mod_params);
+    else  s += QString(".MODEL DMOD_%1 D(%2) \n").arg(name).arg(mod_params);
     return s;
 }
 
@@ -247,3 +250,19 @@ QString qucs2spice::convert_vcs(QString line,bool voltage)
     s += QString("%1 %2 %3 %4 %5 %6\n").arg(name).arg(nod1).arg(nod2).arg(nod0).arg(nod3).arg(val);
     return s;
 }
+
+QString qucs2spice::convert_dc_src(QString line)
+{
+    QString s="";
+    QStringList lst = line.split(" ",QString::SkipEmptyParts);
+    QString s1 = lst.takeFirst();
+    s += s1.remove(':');
+    s += " " + lst.takeFirst();
+    s += " " + lst.takeFirst() + " ";
+    s1 = lst.takeFirst().remove("\"");
+    int idx = s1.indexOf('=');
+    QString val = s1.right(s1.count()-idx-1);
+    s += "DC " + val + "\n";
+    return s;
+}
+
