@@ -455,13 +455,11 @@ void createIcons() {
 /*!
  * \brief createDocData Create data used for documentation.
  *
- * It uses the bitmapp file name to prefix the component data and property files.
- * Creates the following:
- *  - list of categories: cat_list.txt
+ * It creates the following:
+ *  - list of categories: categories.txt
  *  - category directory, ex.: ./lumped components/
- *    - list of components: comp_list.txt
- *    - csv for the objedt fields. Ex [component]_data.csv
- *    - csv for the component properties. Ex [component]_props.csv
+ *    - CSV with component data fields. Ex [component#]_data.csv
+ *    - CSV with component properties. Ex [component#]_props.csv
  */
 void createDocData() {
 
@@ -470,13 +468,10 @@ void createDocData() {
   typeMap.insert(0x30002, "ComponentText");
   typeMap.insert(0x10000, "AnalogComponent");
   typeMap.insert(0x20000, "DigitalComponent") ;
-//##define isComponent        0x30000
-//#define isComponentText    0x30002
-//#define isAnalogComponent  0x10000
-//#define isDigitalComponent 0x20000
 
   Module::registerModules ();
   QStringList cats = Category::getCategories ();
+  int nCats = cats.size();
 
   QStringList catHeader;
   catHeader << "# Note: auto-generated file (changes will be lost on update)";
@@ -486,15 +481,15 @@ void createDocData() {
   out << cats.join("\n");
   file.close();
 
-  // table for quick reference, schematic and netlist entry
-//  QStringList quickReference;
+  int nComps = 0;
 
+  // table for quick reference, schematic and netlist entry
   foreach(QString category, cats) {
 
     QList<Module *> Comps;
     Comps = Category::getModules(category);
 
-    // crash with diagrams, skip
+    // \fixme, crash with diagrams, skip
     if(category == "diagrams") break;
 
     // one dir per category
@@ -510,12 +505,11 @@ void createDocData() {
     int num = 0; // compoment id inside category
 
     foreach (Module *Mod, Comps) {
-      if (Mod->info) {
-
         num += 1;
 
-        Element *e = (Mod->info) (Name, File, true);
+        nComps += 1;
 
+        Element *e = (Mod->info) (Name, File, true);
         Component *c = (Component* ) e;
 
         // object info
@@ -524,14 +518,14 @@ void createDocData() {
         compData << "# Note: auto-generated file (changes will be lost on update)";
         compData << "Caption; "           + Name;
         compData << "Description; "       + c->Description;
-        compData << "Schematic entry; ``" + c->Model + "``"; // entry as code
-        compData << "Netlist entry; ``"   + c->Name  + "``"; // entry as code
+        compData << "Identifier; ``"      + c->Model + "``"; // backticks for reST verbatim
+        compData << "Default name; ``"    + c->Name  + "``";
         compData << "Type; "              + typeMap.value(c->Type);
         compData << "Bitmap file; "       + QString(File);
         compData << "Properties; "        + QString::number(c->Props.count());
         compData << "Category; "          + category;
 
-        // 001_data.csv
+        // 001_data.csv - CSV file with component data
         QString ID = QString("%1").arg(num,3,'d',0,'0');
         QString objDataFile;
         objDataFile = QString("%1_data.csv").arg( ID  ) ;
@@ -541,7 +535,7 @@ void createDocData() {
         QTextStream out(&file);
         out << compData.join("\n");
         file.close();
-
+        fprintf(stdout, "[%s] %s %s \n", category.toAscii().data(), c->Model.toAscii().data(), file.name().toAscii().data());
 
         QStringList compProps;
         compProps << "# Note: auto-generated file (changes will be lost on update)";
@@ -554,7 +548,7 @@ void createDocData() {
                          prop->Description.replace("\"","\"\"")); // escape quote in quote
         }
 
-        // 001_props.csv
+        // 001_props.csv - CSV file with component properties
         QString objPropFile = QString("%1_prop.csv").arg( ID ) ;
 
         QFile fileProps(curDir + objPropFile );
@@ -563,12 +557,12 @@ void createDocData() {
         outProps << compProps.join("\n");
         compProps.clear();
         file.close();
-      }
+        fprintf(stdout, "[%s] %s %s \n", category.toAscii().data(), c->Model.toAscii().data(), fileProps.name().toAscii().data());
     } // module
-
   } // category
-
+  fprintf(stdout, "Created data for %i components from %i categories\n", nComps, nCats);
 }
+
 
 // #########################################################################
 // ##########                                                     ##########
