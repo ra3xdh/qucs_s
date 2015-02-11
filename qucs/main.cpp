@@ -563,6 +563,56 @@ void createDocData() {
   fprintf(stdout, "Created data for %i components from %i categories\n", nComps, nCats);
 }
 
+/*!
+ * \brief createListNetEntry prints to stdout the available netlist formats
+ *
+ * Prints the default component entries format for:
+ *  - Qucs schematic
+ *  - Qucsator netlist
+ */
+void createListComponentEntry(){
+
+  Module::registerModules ();
+  QStringList cats = Category::getCategories ();
+  // table for quick reference, schematic and netlist entry
+  foreach(QString category, cats) {
+
+    QList<Module *> Comps;
+    Comps = Category::getModules(category);
+
+    // \fixme, crash with diagrams, skip
+    if(category == "diagrams") break;
+
+    char * File;
+    QString Name;
+
+    foreach (Module *Mod, Comps) {
+      Element *e = (Mod->info) (Name, File, true);
+      Component *c = (Component* ) e;
+
+      QString qucsEntry = c->save();
+      fprintf(stdout, "%s; qucs    ; %s\n", c->Model.toAscii().data(), qucsEntry.toAscii().data());
+
+      // add dummy ports/wires, avoid segfault
+      int port = 0;
+      foreach (Port *p, c->Ports) {
+        Node *n = new Node(0,0);
+        n->Name="_net"+QString::number(port);
+        p->Connection = n;
+        port +=1;
+      }
+
+      // skip Subcircuit, segfault, there is nothing to netlist
+      if (c->Model == "Sub" or c->Model == ".Opt") {
+        fprintf(stdout, "WARNING, qucsator netlist not generated for %s\n\n", c->Model.toAscii().data());
+        continue;
+      }
+
+      QString qucsatorEntry = c->getNetlist();
+      fprintf(stdout, "%s; qucsator; %s\n", c->Model.toAscii().data(), qucsatorEntry.toAscii().data());
+      } // module
+    } // category
+}
 
 // #########################################################################
 // ##########                                                     ##########
@@ -739,6 +789,7 @@ int main(int argc, char *argv[])
   "  -o FILENAME    use file as output netlist\n"
   "  -icons         create component icons under ./bitmaps_generated\n"
   "  -doc           dump data for documentation\n"
+  "  -list-entries  list components entry format for schematic and netlist\n"
   , argv[0]);
       return 0;
     }
@@ -780,6 +831,10 @@ int main(int argc, char *argv[])
     }
     else if(!strcmp(argv[i], "-doc")) {
       createDocData();
+      return 0;
+    }
+    else if(!strcmp(argv[i], "-list-entries")) {
+      createListComponentEntry();
       return 0;
     }
     else {
