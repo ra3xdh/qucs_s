@@ -788,8 +788,12 @@ int main(int argc, char *argv[])
   "  -i FILENAME    use file as input schematic\n"
   "  -o FILENAME    use file as output netlist\n"
   "  -icons         create component icons under ./bitmaps_generated\n"
-  "  -doc           dump data for documentation\n"
-  "  -list-entries  list components entry format for schematic and netlist\n"
+  "  -doc           dump data for documentation:\n"
+  "                 * file with of categories: categories.txt\n"
+  "                 * one directory per category (e.g. ./lumped components/)\n"
+  "                   - CSV file with component data ([comp#]_data.csv)\n"
+  "                   - CSV file with component properties. ([comp#]_props.csv)\n"
+  "  -list-entries  list component entry formats for schematic and netlist\n"
   , argv[0]);
       return 0;
     }
