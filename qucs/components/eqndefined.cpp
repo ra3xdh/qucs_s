@@ -26,6 +26,7 @@ EqnDefined::EqnDefined()
 
   Model = "EDD";
   Name  = "D";
+  SpiceModel = "B";
 
   // first properties !!!
   Props.append(new Property("Type", "explicit", false,
@@ -88,6 +89,11 @@ QString EqnDefined::netlist()
   }
 
   return s+e;
+}
+
+QString EqnDefined::spice_netlist(bool isXyce)
+{
+
 }
 
 // -------------------------------------------------------

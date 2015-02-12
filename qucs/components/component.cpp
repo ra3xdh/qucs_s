@@ -46,6 +46,7 @@ Component::Component()
 {
   Type = isAnalogComponent;
 
+  SpiceModel = "";
   isSimulation = false;
   isProbe = false;
   mirroredX = false;
