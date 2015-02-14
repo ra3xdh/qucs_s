@@ -105,13 +105,14 @@ QString EqnDefined::spice_netlist(bool isXyce)
                 QString delim = "=()*/+-";
                 if (it->isSpace()) continue;
                 if (delim.contains(*it)) {
-                    tokens.append(tok);
+                    if (!tok.isEmpty()) tokens.append(tok);
                     tokens.append(*it);
                     tok.clear();
                     continue;
                 }
                 tok += *it;
             }
+            if (!tok.isEmpty()) tokens.append(tok);
             qDebug()<<tokens;
             QRegExp volt_pattern("^V[0-9]+$");
             for (QStringList::iterator it = tokens.begin();it != tokens.end();it++) {
@@ -119,11 +120,13 @@ QString EqnDefined::spice_netlist(bool isXyce)
                     QString volt = *it;
                     volt.remove('V');
                     int branch = volt.toInt();
-                    *it = QString("(V(%1)-V(%2))").arg(Ports.at(2*(branch-1))->Connection->Name)
-                            .arg(Ports.at(2*(branch-1)+1)->Connection->Name);
+                    if (branch<=Nbranch) {
+                        *it = QString("(V(%1)-V(%2))").arg(Ports.at(2*(branch-1))->Connection->Name)
+                                .arg(Ports.at(2*(branch-1)+1)->Connection->Name);
+                    }
                 }
             }
-            s += QString("B%1 %2 %3 I=%4\n").arg(Name).arg(Ports.at(2*i)->Connection->Name)
+            s += QString("B%1%2 %3 %4 I=%5\n").arg(Name).arg(i).arg(Ports.at(2*i)->Connection->Name)
                     .arg(Ports.at(2*i+1)->Connection->Name).arg(eqn = tokens.join(""));
         }
     } else {
