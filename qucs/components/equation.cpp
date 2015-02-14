@@ -21,6 +21,7 @@
 
 Equation::Equation()
 {
+  isEquation = true;
   Type = isComponent; // Analogue and digital component.
   Description = QObject::tr("equation");
 

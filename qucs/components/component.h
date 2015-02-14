@@ -80,6 +80,7 @@ public:
   bool showName;
   bool isSimulation; // is it AC,DC,TR or other spice-compatible simulation?
   bool isProbe; // is it Voltage/Current spice-compatible probe?
+  bool isEquation;
   QString  Model, Name;
   QString  Description;
   QString  SpiceModel;

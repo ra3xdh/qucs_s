@@ -49,6 +49,7 @@ Component::Component()
   SpiceModel = "";
   isSimulation = false;
   isProbe = false;
+  isEquation = false;
   mirroredX = false;
   rotated = 0;
   isSelected = false;
