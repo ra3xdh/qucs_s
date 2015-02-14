@@ -17,6 +17,7 @@
 #include "eqndefined.h"
 #include "main.h"
 #include "schematic.h"
+#include <QtCore>
 
 #include <QFileInfo>
 
@@ -93,7 +94,42 @@ QString EqnDefined::netlist()
 
 QString EqnDefined::spice_netlist(bool isXyce)
 {
-
+    QString s;
+    if (Props.at(0)->Value=="explicit") {
+        int Nbranch = Props.at(1)->Value.toInt();
+        for (int i=0;i<Nbranch;i++) {
+            QString eqn = Props.at(2*(i+1))->Value;
+            QString tok = "";
+            QStringList tokens;
+            for (QString::iterator it=eqn.begin();it!=eqn.end();it++) {
+                QString delim = "=()*/+-";
+                if (it->isSpace()) continue;
+                if (delim.contains(*it)) {
+                    tokens.append(tok);
+                    tokens.append(*it);
+                    tok.clear();
+                    continue;
+                }
+                tok += *it;
+            }
+            qDebug()<<tokens;
+            QRegExp volt_pattern("^V[0-9]+$");
+            for (QStringList::iterator it = tokens.begin();it != tokens.end();it++) {
+                if (volt_pattern.exactMatch(*it)) {
+                    QString volt = *it;
+                    volt.remove('V');
+                    int branch = volt.toInt();
+                    *it = QString("(V(%1)-V(%2))").arg(Ports.at(2*(branch-1))->Connection->Name)
+                            .arg(Ports.at(2*(branch-1)+1)->Connection->Name);
+                }
+            }
+            s += QString("B%1 %2 %3 I=%4\n").arg(Name).arg(Ports.at(2*i)->Connection->Name)
+                    .arg(Ports.at(2*i+1)->Connection->Name).arg(eqn = tokens.join(""));
+        }
+    } else {
+        s = "";
+    }
+    return s;
 }
 
 // -------------------------------------------------------
