@@ -98,41 +98,63 @@ QString EqnDefined::spice_netlist(bool isXyce)
     if (Props.at(0)->Value=="explicit") {
         int Nbranch = Props.at(1)->Value.toInt();
         for (int i=0;i<Nbranch;i++) {
-            QString eqn = Props.at(2*(i+1))->Value;
-            QString tok = "";
-            QStringList tokens;
-            for (QString::iterator it=eqn.begin();it!=eqn.end();it++) {
-                QString delim = "=()*/+-";
-                if (it->isSpace()) continue;
-                if (delim.contains(*it)) {
-                    if (!tok.isEmpty()) tokens.append(tok);
-                    tokens.append(*it);
-                    tok.clear();
-                    continue;
-                }
-                tok += *it;
+            QString Ieqn = Props.at(2*(i+1))->Value; // parse current equation
+            Ieqn.replace("^","**");
+            QStringList Itokens;
+            splitEqn(Ieqn,Itokens);
+            qDebug()<<Itokens;
+            subsVoltages(Itokens,Nbranch);
+
+            QString Qeqn = Props.at(2*(i+1)+1)->Value; // parse charge equation only for Xyce
+            Qeqn.replace("^","**");
+            QStringList Qtokens;
+            splitEqn(Qeqn,Qtokens);
+            qDebug()<<Qtokens;
+            subsVoltages(Qtokens,Nbranch);
+            s += QString("B%1I%2 %3 %4 I=%5\n").arg(Name).arg(i).arg(Ports.at(2*i)->Connection->Name)
+                    .arg(Ports.at(2*i+1)->Connection->Name).arg(Itokens.join(""));
+            if (isXyce) {
+                s += QString("B%1Q%2 %3 %4 I=ddt(%5)\n").arg(Name).arg(i).arg(Ports.at(2*i)->Connection->Name)
+                        .arg(Ports.at(2*i+1)->Connection->Name).arg(Qtokens.join(""));
             }
-            if (!tok.isEmpty()) tokens.append(tok);
-            qDebug()<<tokens;
-            QRegExp volt_pattern("^V[0-9]+$");
-            for (QStringList::iterator it = tokens.begin();it != tokens.end();it++) {
-                if (volt_pattern.exactMatch(*it)) {
-                    QString volt = *it;
-                    volt.remove('V');
-                    int branch = volt.toInt();
-                    if (branch<=Nbranch) {
-                        *it = QString("(V(%1)-V(%2))").arg(Ports.at(2*(branch-1))->Connection->Name)
-                                .arg(Ports.at(2*(branch-1)+1)->Connection->Name);
-                    }
-                }
-            }
-            s += QString("B%1%2 %3 %4 I=%5\n").arg(Name).arg(i).arg(Ports.at(2*i)->Connection->Name)
-                    .arg(Ports.at(2*i+1)->Connection->Name).arg(eqn = tokens.join(""));
         }
     } else {
         s = "";
     }
     return s;
+}
+
+void EqnDefined::splitEqn(QString &eqn, QStringList &tokens)
+{
+    QString tok = "";
+    for (QString::iterator it=eqn.begin();it!=eqn.end();it++) {
+        QString delim = "=()*/+-";
+        if (it->isSpace()) continue;
+        if (delim.contains(*it)) {
+            if (!tok.isEmpty()) tokens.append(tok);
+            tokens.append(*it);
+            tok.clear();
+            continue;
+        }
+        tok += *it;
+    }
+    if (!tok.isEmpty()) tokens.append(tok);
+}
+
+void EqnDefined::subsVoltages(QStringList &tokens, int Nbranch)
+{
+    QRegExp volt_pattern("^V[0-9]+$");
+    for (QStringList::iterator it = tokens.begin();it != tokens.end();it++) {
+        if (volt_pattern.exactMatch(*it)) {
+            QString volt = *it;
+            volt.remove('V');
+            int branch = volt.toInt();
+            if (branch<=Nbranch) {
+                *it = QString("(V(%1)-V(%2))").arg(Ports.at(2*(branch-1))->Connection->Name)
+                        .arg(Ports.at(2*(branch-1)+1)->Connection->Name);
+            }
+        }
+    }
 }
 
 // -------------------------------------------------------
