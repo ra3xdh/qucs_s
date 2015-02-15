@@ -23,15 +23,40 @@
 #ifndef ABOUTDIALOG_H
 #define ABOUTDIALOG_H
 
+#include <random>
+#include <array>
+
 #include <QDialog>
 #include <QVBoxLayout>
 
+class QString;
+class QTextBrowser;
+
 class AboutDialog : public QDialog  {
    Q_OBJECT
+
 public:
   AboutDialog(QWidget *parent = 0);
- private:
+
+private:
+  void setAuthorsText(void);
+  void setTrText(void);
+
+  std::array<QString, 8> currAuths; // current Qucs authors
+  std::array<QString, 10> prevDevs; // previous Qucs developers
+  std::array<QString, 18> trAuths; // Qucs translators
+
   QVBoxLayout *all;
+  QTextBrowser *authorsBrowser; // to show authors
+  QTextBrowser *trBrowser; // to show translators
+
+  int prevTab; // previously selected tab
+
+  std::mt19937 rng {std::random_device{}()}; // random number generator
+
+public slots:
+  void currentChangedSlot(int index); // tab selection changed
+
 };
 
 #endif
