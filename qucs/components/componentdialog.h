@@ -59,6 +59,9 @@ private slots:
   void slotButtAdd();
   void slotButtRem();
 
+  void slotButtUp();
+  void slotButtDown();
+
   void slotSimTypeChange(int);
   void slotNumberChanged(const QString&);
   void slotStepChanged(const QString&);
@@ -84,6 +87,7 @@ private:
   QComboBox   *ComboEdit;
   QLabel      *Name, *Description;
   QPushButton *BrowseButt, *EditButt, *ButtAdd, *ButtRem;
+  QPushButton *ButtUp, *ButtDown;
   QCheckBox   *disp;
   Component   *Comp;
   Schematic   *Doc;
