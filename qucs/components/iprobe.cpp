@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include "iprobe.h"
+#include "node.h"
 
 
 iProbe::iProbe()
@@ -51,6 +52,7 @@ iProbe::iProbe()
   ty = y2+4;
   Model = "IProbe";
   Name  = "Pr";
+  isProbe = true;
 }
 
 iProbe::~iProbe()
@@ -69,4 +71,22 @@ Element* iProbe::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new iProbe();
   return 0;
+}
+
+QString iProbe::spice_netlist(bool isXyce)
+{
+    QString s = QString("V%1 %2 %3 DC 0 AC 0\n").arg(Name).arg(Ports.at(0)->Connection->Name)
+            .arg(Ports.at(1)->Connection->Name);
+    return s;
+}
+
+QString iProbe::getProbeVariable(bool isXyce)
+{
+    QString s;
+    if (isXyce) {
+        s = QString("I(V%1)").arg(Name);
+    } else {
+        s = QString("V%1#branch").arg(Name);
+    }
+    return s;
 }

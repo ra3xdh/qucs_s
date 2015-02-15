@@ -46,8 +46,7 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
     QString s;
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
       if(Sch->isAnalog &&
-         !(pc->isSimulation) &&
-         !(pc->isProbe)) {
+         !(pc->isSimulation)) {
         s = pc->getSpiceNetlist(true);
         stream<<s;
       }
@@ -69,6 +68,14 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
           }
       }
     }
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->isProbe) {
+            QString var_pr = pc->getProbeVariable(true);
+            if (!vars.contains(var_pr)) {
+                vars.append(var_pr);
+            }
+        }
+    }
     vars.sort();
     qDebug()<<vars;
 
@@ -80,7 +87,11 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
     QString nod,nods;
     nods.clear();
     foreach (nod,vars) {
-        nods += QString("v(%1) ").arg(nod);
+        if (!nod.startsWith("I(")) {
+            nods += QString("v(%1) ").arg(nod);
+        } else {
+            nods += nod + " ";
+        }
     }
     QString sim = simulations.first();
 

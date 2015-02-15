@@ -37,6 +37,8 @@ public:
   virtual void recreate(Schematic*) {};
   QString getNetlist();
   QString getSpiceNetlist(bool isXyce = false);
+  virtual QString getExpression(bool isXyce = false);
+  virtual QString getProbeVariable(bool isXyce = false);
   QString get_VHDL_Code(int);
   QString get_Verilog_Code(int);
   void    paint(ViewPainter*);

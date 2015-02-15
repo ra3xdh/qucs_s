@@ -27,6 +27,10 @@ public:
   ~iProbe();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+  QString getExpression();
+  QString getProbeVariable(bool isXyce = false);
+protected:
+  QString spice_netlist(bool isXyce);
 };
 
 #endif

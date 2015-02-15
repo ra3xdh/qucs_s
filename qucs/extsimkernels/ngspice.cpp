@@ -17,6 +17,8 @@
 
 
 #include "ngspice.h"
+#include "components/iprobe.h"
+#include "components/vprobe.h"
 
 Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
     AbstractSpiceKernel(sch_, parent)
@@ -35,8 +37,7 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
     QString s;
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
       if(Sch->isAnalog &&
-         !(pc->isSimulation) &&
-         !(pc->isProbe)) {
+         !(pc->isSimulation)) {
         s = pc->getSpiceNetlist();
         stream<<s;
       }
@@ -71,6 +72,14 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
           }
       }
     }
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->isProbe) {
+            QString var_pr = pc->getProbeVariable();
+            if (!vars.contains(var_pr)) {
+                vars.append(var_pr);
+            }
+        }
+    }
     vars.sort();
     qDebug()<<vars;
 
@@ -88,7 +97,11 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
         QString nods;
         nods.clear();
         foreach (nod,vars) {
-            nods += QString("%1.v(%2) ").arg(sim).arg(nod);
+            if (!nod.endsWith("#branch")) {
+                nods += QString("%1.v(%2) ").arg(sim).arg(nod);
+            } else {
+                nods += QString("%1.%2 ").arg(sim).arg(nod);
+            }
         }
         QString filename = QString("%1_%2.txt").arg(basenam).arg(sim);
         QString write_str = QString("write %1 %2\n").arg(filename).arg(nods);
