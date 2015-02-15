@@ -1057,18 +1057,16 @@ void ComponentDialog::slotEditFile()
     y2=1
     Export=yes
 
-  If Name already exists, set it to focus
-  If new name, insert item before Export
+  Behavior:
+   If Name already exists, set it to focus
+   If new name, insert item after selected, set it to focus
 
 */
 void ComponentDialog::slotButtAdd()
 {
-  // Search if property with this name already exist.
-  // loop over all items, select if found by name
+  // Set existing equation into focus, return
   for(int row=0; row < prop->rowCount(); row++) {
-
     QString name  = prop->item(row, 0)->text();
-    //if found, jump to it
     if( name == NameEdit->text()) {
       prop->setCurrentItem(prop->item(row,0));
       slotSelectProperty(prop->item(row,0));
@@ -1076,51 +1074,36 @@ void ComponentDialog::slotButtAdd()
     }
   }
 
-
-
-  //if nothing selected, select last
-//  prop->setCurrentItem(prop->item(prop->rowCount(),0));
-//  slotSelectProperty(prop->item(prop->rowCount(),0));
-
+  // toggle display flag
   QString s = tr("no");
   if(disp->isChecked())
     s = tr("yes");
 
+  // get number for selected row
+  int curRow = prop->currentRow();
 
-  // take last row
-  QList<QTableWidgetItem*> rowItems;
-  for (int col = 0; col < prop->columnCount(); ++col)  {
-    rowItems << prop->takeItem(prop->rowCount()-1, col);
-  }
-
-  // set last row with current info in
-  int row = prop->rowCount()-1;
+  // insert new row under current
+  int insRow = curRow+1;
+  prop->insertRow(insRow);
 
   // append new row
   QTableWidgetItem *cell;
   cell = new QTableWidgetItem(NameEdit->text());
   cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-  prop->setItem(row, 0, cell);
+  prop->setItem(insRow, 0, cell);
   cell = new QTableWidgetItem(edit->text());
   cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-  prop->setItem(row, 1, cell);
+  prop->setItem(insRow, 1, cell);
   cell = new QTableWidgetItem(s);
   cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-  prop->setItem(row, 2, cell);
+  prop->setItem(insRow, 2, cell);
   // no description? add empty cell
   cell = new QTableWidgetItem("");
   cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
-  prop->setItem(row, 3, cell);
+  prop->setItem(insRow, 3, cell);
 
-  // increase list
-  prop->setRowCount(prop->rowCount()+1);
-
-  // add taken item again as last
-  row = prop->rowCount()-1;
-  for (int col = 0; col < prop->columnCount(); ++col)
-  {
-    prop->setItem(row, col, rowItems.at(col));
-  }
+  // select new row
+  prop->selectRow(insRow);
 }
 
 /*!
