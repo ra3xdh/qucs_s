@@ -699,24 +699,24 @@ QString Component::getNetlist()
 
 QString Component::getSpiceNetlist(bool isXyce)
 {
+    QString s;
     switch(isActive) {
       case COMP_IS_ACTIVE:
-        if (isXyce) {
-            return spice_netlist(true);
-        } else {
-            return spice_netlist();
-        }
+           s = spice_netlist(isXyce);
+           s.replace(" gnd "," 0 ");
+           return s;
       case COMP_IS_OPEN:
         return QString("");
     }
 
     // Component is shortened.
     int z=0;
-    QString s;
+
     QString Node1 = Ports.first()->Connection->Name;
     foreach(Port *pp, Ports)
       s += "R"+Name  + QString::number(z++) + " " +
            Node1 + " " + pp->Connection->Name + " 0";
+    s.replace(" gnd "," 0 ");
     return s;
 }
 
