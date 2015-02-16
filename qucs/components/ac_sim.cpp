@@ -18,6 +18,8 @@
 #include "main.h"
 #include "misc.h"
 
+#include <cmath>
+
 
 AC_Sim::AC_Sim()
 {
