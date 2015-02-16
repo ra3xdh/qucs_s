@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include "vprobe.h"
+#include "node.h"
 
 
 vProbe::vProbe()
@@ -51,6 +52,7 @@ vProbe::vProbe()
   ty = y1+4;
   Model = "VProbe";
   Name  = "Pr";
+  isProbe = true;
 }
 
 vProbe::~vProbe()
@@ -69,4 +71,16 @@ Element* vProbe::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new vProbe();
   return 0;
+}
+
+QString vProbe::getProbeVariable(bool isXyce)
+{
+    return Name;
+}
+
+QString vProbe::spice_netlist(bool isXyce)
+{
+    QString s = QString("E%1 %2 0 %3 %4 1.0\n").arg(Name).arg(Name)
+            .arg(Ports.at(0)->Connection->Name).arg(Ports.at(1)->Connection->Name);
+    return s;
 }

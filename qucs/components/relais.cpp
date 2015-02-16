@@ -97,7 +97,6 @@ QString Relais::spice_netlist(bool isXyce)
 
     QString model = " MOD_" + Name;
     s += model + " OFF\n";
-    s += ".model " + model + " sw ";
 
     QString val = Props.at(0)->Value; // Vt
     str2num(val,Vt,unit,fac);
@@ -115,7 +114,11 @@ QString Relais::spice_netlist(bool isXyce)
     str2num(val,Roff,unit,fac);
     Roff *= fac;
 
-    s += QString(" vt=%1 vh=%2 ron=%3 roff=%4 \n").arg(Vt).arg(Vh).arg(Ron).arg(Roff);
+    if (isXyce) {
+        s += QString(".MODEL %1 vswitch von=%2 voff=%3 ron=%4 roff=%5 \n").arg(model).arg(Vt).arg(Vt-Vh).arg(Ron).arg(Roff);
+    } else {
+        s += QString(".MODEL %1 sw vt=%1 vh=%2 ron=%3 roff=%4 \n").arg(Vt).arg(Vh).arg(Ron).arg(Roff);
+    }
 
     return s;
 }
