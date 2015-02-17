@@ -34,10 +34,19 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
 {
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform ngspice simulation
 
+
     QString s;
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->isEquation) {
+            s = pc->getExpression();
+            stream<<s;
+        }
+    }
+
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
       if(Sch->isAnalog &&
-         !(pc->isSimulation)) {
+         !(pc->isSimulation)&&
+         !(pc->isEquation)) {
         s = pc->getSpiceNetlist();
         stream<<s;
       }

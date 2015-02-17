@@ -29,10 +29,16 @@ public:
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
   static void splitEqn(QString &eqn, QStringList &tokens);
+  QString getExpression(bool isXyce);
+
+private:
+  bool containNodes(QStringList &tokens);
+  void convertNodeNames(QStringList &tokens);
 
 protected:
   QString vhdlCode(int);
   QString verilogCode(int);
+  QString spice_netlist(bool isXyce);
 };
 
 #endif

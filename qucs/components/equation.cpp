@@ -107,3 +107,47 @@ void Equation::splitEqn(QString &eqn, QStringList &tokens)
     }
     if (!tok.isEmpty()) tokens.append(tok);
 }
+
+bool Equation::containNodes(QStringList &tokens)
+{
+    QRegExp var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
+    foreach (QString tok,tokens) {
+        if (var_pattern.exactMatch(tok)) return true;
+    }
+    return false;
+}
+
+void Equation::convertNodeNames(QStringList &tokens)
+{
+    QRegExp var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
+    for (QStringList::iterator it=tokens.begin();it!=tokens.end();it++) {
+        if (var_pattern.exactMatch(*it))  {
+            int idx = it->indexOf('.');
+            int cnt = it->count();
+            it->chop(cnt-idx-1);
+            *it = QString("V(%1)").arg(*it);
+        }
+    }
+}
+
+QString Equation::spice_netlist(bool isXyce)
+{
+    QString s;
+    return s;
+}
+
+QString Equation::getExpression(bool isXyce)
+{
+    QString s;
+    s.clear();
+    for (unsigned int i=0;i<Props.count()-1;i++) {
+        QStringList tokens;
+        QString eqn = Props.at(i)->Value;
+        splitEqn(eqn,tokens);
+        eqn.replace("^","**");
+        if (!containNodes(tokens)) {
+            s += QString(".PARAM %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
+        }
+    }
+    return s;
+}
