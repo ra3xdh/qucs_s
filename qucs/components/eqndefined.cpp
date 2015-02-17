@@ -17,6 +17,7 @@
 #include "eqndefined.h"
 #include "main.h"
 #include "schematic.h"
+#include "equation.h"
 #include <QtCore>
 
 #include <QFileInfo>
@@ -101,14 +102,14 @@ QString EqnDefined::spice_netlist(bool isXyce)
             QString Ieqn = Props.at(2*(i+1))->Value; // parse current equation
             Ieqn.replace("^","**");
             QStringList Itokens;
-            splitEqn(Ieqn,Itokens);
+            Equation::splitEqn(Ieqn,Itokens);
             qDebug()<<Itokens;
             subsVoltages(Itokens,Nbranch);
 
             QString Qeqn = Props.at(2*(i+1)+1)->Value; // parse charge equation only for Xyce
             Qeqn.replace("^","**");
             QStringList Qtokens;
-            splitEqn(Qeqn,Qtokens);
+            Equation::splitEqn(Qeqn,Qtokens);
             qDebug()<<Qtokens;
             subsVoltages(Qtokens,Nbranch);
             s += QString("B%1I%2 %3 %4 I=%5\n").arg(Name).arg(i).arg(Ports.at(2*i)->Connection->Name)
@@ -122,23 +123,6 @@ QString EqnDefined::spice_netlist(bool isXyce)
         s = "";
     }
     return s;
-}
-
-void EqnDefined::splitEqn(QString &eqn, QStringList &tokens)
-{
-    QString tok = "";
-    for (QString::iterator it=eqn.begin();it!=eqn.end();it++) {
-        QString delim = "=()*/+-";
-        if (it->isSpace()) continue;
-        if (delim.contains(*it)) {
-            if (!tok.isEmpty()) tokens.append(tok);
-            tokens.append(*it);
-            tok.clear();
-            continue;
-        }
-        tok += *it;
-    }
-    if (!tok.isEmpty()) tokens.append(tok);
 }
 
 void EqnDefined::subsVoltages(QStringList &tokens, int Nbranch)

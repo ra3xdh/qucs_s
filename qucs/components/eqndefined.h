@@ -23,7 +23,6 @@
 
 class EqnDefined : public MultiViewComponent  {
 private:
-  void splitEqn(QString &eqn,QStringList &tokens);
   void subsVoltages(QStringList &tokens, int Nbranch);
 public:
   EqnDefined();

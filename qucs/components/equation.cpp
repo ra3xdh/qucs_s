@@ -90,3 +90,20 @@ Element* Equation::info(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne)  return new Equation();
   return 0;
 }
+
+void Equation::splitEqn(QString &eqn, QStringList &tokens)
+{
+    QString tok = "";
+    for (QString::iterator it=eqn.begin();it!=eqn.end();it++) {
+        QString delim = "=()*/+-";
+        if (it->isSpace()) continue;
+        if (delim.contains(*it)) {
+            if (!tok.isEmpty()) tokens.append(tok);
+            tokens.append(*it);
+            tok.clear();
+            continue;
+        }
+        tok += *it;
+    }
+    if (!tok.isEmpty()) tokens.append(tok);
+}
