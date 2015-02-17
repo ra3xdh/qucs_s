@@ -105,18 +105,22 @@ QString EqnDefined::spice_netlist(bool isXyce)
             Equation::splitEqn(Ieqn,Itokens);
             qDebug()<<Itokens;
             subsVoltages(Itokens,Nbranch);
-
-            QString Qeqn = Props.at(2*(i+1)+1)->Value; // parse charge equation only for Xyce
-            Qeqn.replace("^","**");
-            QStringList Qtokens;
-            Equation::splitEqn(Qeqn,Qtokens);
-            qDebug()<<Qtokens;
-            subsVoltages(Qtokens,Nbranch);
             s += QString("B%1I%2 %3 %4 I=%5\n").arg(Name).arg(i).arg(Ports.at(2*i)->Connection->Name)
                     .arg(Ports.at(2*i+1)->Connection->Name).arg(Itokens.join(""));
-            if (isXyce) {
-                s += QString("B%1Q%2 %3 %4 I=ddt(%5)\n").arg(Name).arg(i).arg(Ports.at(2*i)->Connection->Name)
-                        .arg(Ports.at(2*i+1)->Connection->Name).arg(Qtokens.join(""));
+
+            QString Qeqn = Props.at(2*(i+1)+1)->Value; // parse charge equation only for Xyce
+            if (Qeqn!="0") {
+            //if (isXyce) {
+                Qeqn.replace("^","**");
+                QStringList Qtokens;
+                Equation::splitEqn(Qeqn,Qtokens);
+                qDebug()<<Qtokens;
+                subsVoltages(Qtokens,Nbranch);
+                QString plus = Ports.at(2*i)->Connection->Name;
+                QString minus = Ports.at(2*i+1)->Connection->Name;
+                s += QString("G%1Q%2 %3 %4 n%1Q%2 %4 1.0\n").arg(Name).arg(i).arg(plus).arg(minus);
+                s += QString("L%1Q%2 n%1Q%2 %3 1.0\n").arg(Name).arg(i).arg(minus);
+                s += QString("B%1Q%2 n%1Q%2 %3 I=%4\n").arg(Name).arg(i).arg(minus).arg(Qtokens.join(""));
             }
         }
     } else {
@@ -134,8 +138,11 @@ void EqnDefined::subsVoltages(QStringList &tokens, int Nbranch)
             volt.remove('V');
             int branch = volt.toInt();
             if (branch<=Nbranch) {
-                *it = QString("(V(%1)-V(%2))").arg(Ports.at(2*(branch-1))->Connection->Name)
-                        .arg(Ports.at(2*(branch-1)+1)->Connection->Name);
+                QString plus = Ports.at(2*(branch-1))->Connection->Name;
+                if (plus=="gnd") plus="0";
+                QString minus = Ports.at(2*(branch-1)+1)->Connection->Name;
+                if (minus=="gnd") minus="0";
+                *it = QString("(V(%1)-V(%2))").arg(plus).arg(minus);
             }
         }
     }
