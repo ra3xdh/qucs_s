@@ -33,7 +33,7 @@ public:
 
 private:
   bool containNodes(QStringList &tokens);
-  void convertNodeNames(QStringList &tokens);
+  void convertNodeNames(QStringList &tokens, QStringList &dep_vars);
 
 protected:
   QString vhdlCode(int);

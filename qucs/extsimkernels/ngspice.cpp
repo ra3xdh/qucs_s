@@ -45,8 +45,7 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
 
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
       if(Sch->isAnalog &&
-         !(pc->isSimulation)&&
-         !(pc->isEquation)) {
+         !(pc->isSimulation)) {
         s = pc->getSpiceNetlist();
         stream<<s;
       }
