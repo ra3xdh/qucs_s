@@ -17,6 +17,7 @@
 
 
 #include "xyce.h"
+#include "components/equation.h"
 
 Xyce::Xyce(Schematic *sch_, QObject *parent) :
     AbstractSpiceKernel(sch_, parent)
@@ -74,6 +75,12 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
             if (!vars.contains(var_pr)) {
                 vars.append(var_pr);
             }
+        }
+        if (pc->isEquation) {
+            Equation *eq = (Equation *)pc;
+            QStringList vars_eq;
+            eq->getDepVars(vars_eq);
+            vars.append(vars_eq);
         }
     }
     vars.sort();

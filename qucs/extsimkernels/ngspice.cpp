@@ -19,6 +19,7 @@
 #include "ngspice.h"
 #include "components/iprobe.h"
 #include "components/vprobe.h"
+#include "components/equation.h"
 
 Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
     AbstractSpiceKernel(sch_, parent)
@@ -45,7 +46,8 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
 
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
       if(Sch->isAnalog &&
-         !(pc->isSimulation)) {
+         !(pc->isSimulation) &&
+         !(pc->isEquation)) {
         s = pc->getSpiceNetlist();
         stream<<s;
       }
@@ -87,6 +89,12 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
                 vars.append(var_pr);
             }
         }
+        /*if (pc->isEquation) {
+            Equation *eq = (Equation *)pc;
+            QStringList vars_eq;
+            eq->getDepVars(vars_eq);
+            vars.append(vars_eq);
+        }*/
     }
     vars.sort();
     qDebug()<<vars;
@@ -94,6 +102,22 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
     stream<<".control\n"          //execute simulations
           <<"set filetype=ascii\n"
           <<"run\n";
+
+    QStringList vars_eq;
+    QStringList Eqns;
+    Eqns.clear();
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->isEquation) {
+            Equation *eq = (Equation *)pc;
+            QString s_eq = eq->getEquations();
+            stream<< s_eq;
+            Eqns.append(s_eq.split("\n"));
+            QStringList v1;
+            eq->getDepVars(v1);
+            vars_eq.append(v1);
+        }
+    }
+
 
     QFileInfo inf(Sch->DocName);
     QString basenam = inf.baseName();
@@ -111,17 +135,20 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
                 nods += QString("%1.%2 ").arg(sim).arg(nod);
             }
         }
+        for (int i=0;i<Eqns.count();i++) {
+            if (Eqns.at(i).contains(sim+".")) nods += " " + vars_eq.at(i);
+        }
         QString filename = QString("%1_%2.txt").arg(basenam).arg(sim);
         QString write_str = QString("write %1 %2\n").arg(filename).arg(nods);
         stream<<write_str;
         outputs.append(filename);
-        stream<<endl;
     }
 
     stream<<"exit\n"
           <<".endc\n";
 
     stream<<".END\n";
+    qDebug()<<outputs;
 }
 
 void Ngspice::slotSimulate()

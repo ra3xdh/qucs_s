@@ -30,6 +30,8 @@ public:
   static Element* info(QString&, char* &, bool getNewOne=false);
   static void splitEqn(QString &eqn, QStringList &tokens);
   QString getExpression(bool isXyce);
+  void getDepVars(QStringList &dep_vars);
+  QString getEquations();
 
 private:
   bool containNodes(QStringList &tokens);

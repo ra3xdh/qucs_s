@@ -131,7 +131,6 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
                 for (int i=0;i<NumVars;i++) {
                     if (isComplex) {
                         QStringList lst = ngsp_data.readLine().split(sep,QString::SkipEmptyParts);
-                        qDebug()<<lst;
                         if (lst.count()==2) {
                             double re_dep_val = lst.at(0).toDouble();  // for complex sim results
                             double im_dep_val = lst.at(1).toDouble();  // imaginary part follows
