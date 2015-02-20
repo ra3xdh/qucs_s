@@ -18,6 +18,7 @@
 #include "vccs.h"
 #include "node.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 VCCS::VCCS()
@@ -87,7 +88,7 @@ Element* VCCS::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString VCCS::spice_netlist(bool isXyce)
 {
-    QString s = check_spice_refdes();
+   QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> seq; // nodes sequence
     seq<<1<<2<<0<<3;
     // output all node names

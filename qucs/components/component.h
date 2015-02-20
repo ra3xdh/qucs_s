@@ -92,7 +92,6 @@ protected:
   virtual QString spice_netlist(bool isXyce = false);
   virtual QString vhdlCode(int);
   virtual QString verilogCode(int);
-  QString check_spice_refdes();
   QString form_spice_param_list(QStringList& ignore_list, QStringList& convert_list);
 
   int  analyseLine(const QString&, int);

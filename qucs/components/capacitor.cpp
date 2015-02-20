@@ -19,6 +19,7 @@
 #include "node.h"
 #include "schematic.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Capacitor::Capacitor()
@@ -56,7 +57,7 @@ Element* Capacitor::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString Capacitor::spice_netlist(bool isXyce)
 {
-    QString s=check_spice_refdes();
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
 
     s += QString(" %1 %2 ").arg(Ports.at(0)->Connection->Name)
             .arg(Ports.at(1)->Connection->Name); // output  nodes

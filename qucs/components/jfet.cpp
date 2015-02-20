@@ -17,6 +17,7 @@
 
 #include "jfet.h"
 #include "node.h"
+#include "extsimkernels/spicecompat.h"
 
 
 JFET::JFET()
@@ -92,7 +93,7 @@ Component* JFET::newOne()
 
 QString JFET::spice_netlist(bool isXyce)
 {
-    QString s = check_spice_refdes();
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;
     pin_seq<<1<<0<<2; // Pin sequence: DGS
     // output all node names

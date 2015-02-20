@@ -18,6 +18,7 @@
 #include "mosfet_sub.h"
 #include "node.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 Basic_MOSFET::Basic_MOSFET()
 {
@@ -146,7 +147,7 @@ Component* MOSFET_sub::newOne()
 
 QString MOSFET_sub::spice_netlist(bool isXyce)
 {
-    QString s = check_spice_refdes();
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;
     pin_seq<<1<<0<<2<<3; // Pin sequence: DGS
     // output all node names

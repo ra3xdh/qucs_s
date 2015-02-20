@@ -18,6 +18,7 @@
 #include "volt_ac.h"
 #include "node.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Volt_ac::Volt_ac()
@@ -77,7 +78,7 @@ Element* Volt_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString Volt_ac::spice_netlist(bool isXyce)
 {
-    QString s=check_spice_refdes();
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";

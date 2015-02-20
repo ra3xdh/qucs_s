@@ -17,6 +17,7 @@
 
 #include "bjt.h"
 #include "node.h"
+#include "extsimkernels/spicecompat.h"
 
 
 BJT::BJT()
@@ -41,7 +42,7 @@ Component* BJT::newOne()
 
 QString BJT::spice_netlist(bool isXyce)
 {
-    QString s = check_spice_refdes();
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;
     pin_seq<<1<<0<<2; // Pin sequence: CBE
     // output all node names

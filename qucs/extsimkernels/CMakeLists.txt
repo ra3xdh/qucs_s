@@ -13,6 +13,7 @@ abstractspicekernel.h
 ngspice.h
 xyce.h
 qucs2spice.h
+spicecompat.h
 )
 
 SET(EXTSIMKERNELS_SRCS
@@ -21,6 +22,7 @@ abstractspicekernel.cpp
 ngspice.cpp
 xyce.cpp
 qucs2spice.cpp
+spicecompat.cpp
 )
 
 SET(EXTSIMKERNELS_MOC_HDRS

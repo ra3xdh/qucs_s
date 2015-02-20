@@ -18,6 +18,7 @@
 #include "volt_dc.h"
 #include "node.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Volt_dc::Volt_dc()
@@ -61,7 +62,7 @@ Component* Volt_dc::newOne()
 
 QString Volt_dc::spice_netlist(bool isXyce)
 {
-    QString s=check_spice_refdes();
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";

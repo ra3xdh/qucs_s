@@ -18,6 +18,7 @@
 #include "mosfet.h"
 #include "node.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 MOSFET::MOSFET()
@@ -139,7 +140,7 @@ QString MOSFET::netlist()
 
 QString MOSFET::spice_netlist(bool isXyce)
 {
-    QString s = check_spice_refdes();
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> pin_seq;
     pin_seq<<1<<0<<2<<2; // Pin sequence: DGS; coonect substrate to source
     // output all node names

@@ -18,6 +18,7 @@
 #include "cccs.h"
 #include "node.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 CCCS::CCCS()
@@ -85,7 +86,7 @@ Element* CCCS::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString CCCS::spice_netlist(bool isXyce)
 {
-    QString s = check_spice_refdes(); // spice CCCS consists two sources: output source
+    QString s = spicecompat::check_refdes(Name,SpiceModel); // spice CCCS consists two sources: output source
                         // and zero value controlling source
     QString unit;
     double val,fac;

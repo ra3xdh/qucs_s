@@ -18,6 +18,7 @@
 #include "vpulse.h"
 #include "node.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 vPulse::vPulse()
@@ -71,7 +72,7 @@ vPulse::~vPulse()
 
 QString vPulse::spice_netlist(bool isXyce)
 {
-    QString s=check_spice_refdes();
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
 
     foreach(Port *p1, Ports) {
         QString nam = p1->Connection->Name;

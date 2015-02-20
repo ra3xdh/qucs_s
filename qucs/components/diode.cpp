@@ -18,6 +18,7 @@
 #include "diode.h"
 #include "node.h"
 #include "main.h"
+#include "extsimkernels/spicecompat.h"
 
 Diode::Diode()
 {
@@ -97,7 +98,7 @@ Component* Diode::newOne()
 
 QString Diode::spice_netlist(bool isXyce)
 {
-    QString s = check_spice_refdes();
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
     // output all node names
     QList<int> pin_seq;
     pin_seq<<1<<0; // Pin sequence: CBE

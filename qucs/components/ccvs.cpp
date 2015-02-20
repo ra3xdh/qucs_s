@@ -18,6 +18,7 @@
 #include "ccvs.h"
 #include "node.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 CCVS::CCVS()
 {
@@ -85,7 +86,7 @@ Element* CCVS::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString CCVS::spice_netlist(bool isXyce)
 {
-    QString s = check_spice_refdes(); // spice CCVS consists two sources: output source
+    QString s = spicecompat::check_refdes(Name,SpiceModel); // spice CCVS consists two sources: output source
                         // and zero value controlling source
     QString unit;
     double val,fac;

@@ -632,16 +632,6 @@ QString Component::netlist()
   return s + '\n';
 }
 
-QString Component::check_spice_refdes() // If starting letters of the component name
-{                                       // match spice model (i.e. R1, C1, L1)rerurns Name.
-                                        // Otherwise returns unique Spice Refdes (Name+SpiceModel)
-    if (Name.startsWith(SpiceModel,Qt::CaseInsensitive)) {
-        return Name;
-    } else {
-        return (SpiceModel + Name);
-    }
-}
-
 // Forms spice parameter list
 // ignore_list --- QStringList with spice_incompatible parameters
 // convert_list ---  QString list with parameters that needs names conversion
