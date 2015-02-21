@@ -68,10 +68,8 @@ QString Volt_dc::spice_netlist(bool isXyce)
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }
-    QString unit;
-    double Volt,fac;
-    str2num(Props.at(0)->Value,Volt,unit,fac);
-    s += QString(" DC %1\n").arg(Volt*fac);
+
+    s += QString(" DC %1\n").arg(spicecompat::normalize_value(Props.at(0)->Value));
     return s;
 }
 

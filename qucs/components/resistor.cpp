@@ -63,10 +63,7 @@ QString Resistor::spice_netlist(bool isXyce)
             .arg(Ports.at(1)->Connection->Name); // output 2 nodes
     s.replace(" gnd ", " 0 ");
 
-    QString unit;
-    double R,fac;
-    str2num(Props.at(0)->Value,R,unit,fac);
-    s += QString(" %1\n").arg(R*fac);
+    s += QString(" %1\n").arg(spicecompat::normalize_value(Props.at(0)->Value));
 
     return s;
 }

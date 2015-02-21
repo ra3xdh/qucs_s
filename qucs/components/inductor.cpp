@@ -68,10 +68,7 @@ QString Inductor::spice_netlist(bool isXyce)
             .arg(Ports.at(1)->Connection->Name); // output source nodes
     s.replace(" gnd ", " 0 ");
 
-    double Ind,fac;
-    QString unit;
-    str2num(Props.at(0)->Value,Ind,unit,fac);
-    s += QString(" %1\n").arg(Ind*fac);
+    s += QString(" %1\n").arg(spicecompat::normalize_value(Props.at(0)->Value));
 
     return s;
 }

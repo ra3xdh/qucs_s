@@ -63,10 +63,7 @@ QString Capacitor::spice_netlist(bool isXyce)
             .arg(Ports.at(1)->Connection->Name); // output  nodes
     s.replace(" gnd ", " 0 ");
 
-    double Cap,fac;
-    QString unit;
-    str2num(Props.at(0)->Value,Cap,unit,fac);
-    s += " "+QString::number(Cap*fac) + " ";
+    s += " "+spicecompat::normalize_value(Props.at(0)->Value) + " ";
     QString val = Props.at(1)->Value; // add inial volatge if presents
     val.remove(' ').toUpper();
     if (!val.isEmpty()) {

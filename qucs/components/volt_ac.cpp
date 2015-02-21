@@ -85,14 +85,8 @@ QString Volt_ac::spice_netlist(bool isXyce)
         s += " "+ nam;   // node names
     }
 
-    double freq,volts,fac;
-    QString unit;
-
-    str2num(Props.at(0)->Value,volts,unit,fac);
-    volts *=fac;
-
-    str2num(Props.at(1)->Value,freq,unit,fac);
-    freq *=fac;
+    QString volts = spicecompat::normalize_value(Props.at(0)->Value);
+    QString freq = spicecompat::normalize_value(Props.at(1)->Value);
 
     QString theta = Props.at(3)->Value;
     theta.remove(' ');

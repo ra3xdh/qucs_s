@@ -12,6 +12,20 @@ QString spicecompat::check_refdes(QString &Name,QString &SpiceModel) // If start
 
 QString spicecompat::normalize_value(QString Value)
 {
+    QRegExp r_pattern("^[0-9]+.*Ohm$");
+    QRegExp c_pattern("^[0-9]+.*F$");
+    QRegExp l_pattern("^[0-9]+.*H$");
+    QRegExp v_pattern("^[0-9]+.*V$");
+    QRegExp hz_pattern("^[0-9]+.*Hz$");
 
+    QString s = Value.remove(' ');
+    if (r_pattern.exactMatch(s)) s.remove("Ohm");
+    else if (c_pattern.exactMatch(s)) s.remove("F");
+    else if (l_pattern.exactMatch(s)) s.remove("H");
+    else if (v_pattern.exactMatch(s)) s.remove("V");
+    else if (hz_pattern.exactMatch(s)) s.remove("Hz");
+    s.replace("M","Meg");
+    s.toUpper();
+    return s;
 }
 
