@@ -80,21 +80,16 @@ QString vPulse::spice_netlist(bool isXyce)
         s += " "+ nam;   // node names
     }
 
-
-
-    double T1,T2,Pw,VL,VH,Tr,Tf,fac;
+    double T1,T2,Pw,fac;
     QString unit;
 
-    str2num(Props.at(0)->Value,VL,unit,fac); // VL
-    VL *= fac;
-    str2num(Props.at(1)->Value,VH,unit,fac); // VH
-    VH *= fac;
+    QString VL = spicecompat::normalize_value(Props.at(0)->Value); // VL
+    QString VH = spicecompat::normalize_value(Props.at(1)->Value); // VH
+    QString Tr = spicecompat::normalize_value(Props.at(4)->Value); // Tr
+    QString Tf = spicecompat::normalize_value(Props.at(4)->Value); // Tf
+
     str2num(Props.at(2)->Value,T1,unit,fac); // Td
     T1 *= fac;
-    str2num(Props.at(4)->Value,Tr,unit,fac); // Tr
-    Tr *= fac;
-    str2num(Props.at(5)->Value,Tf,unit,fac); // Tf
-    Tf *= fac;
     str2num(Props.at(3)->Value,T2,unit,fac); //T2
     Pw = T2*fac - T1;
 

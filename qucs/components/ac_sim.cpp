@@ -17,6 +17,7 @@
 #include "ac_sim.h"
 #include "main.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 #include <cmath>
 
@@ -118,12 +119,9 @@ QString AC_Sim::spice_netlist(bool isXyce)
     } else {  // no need conversion
         s += QString("LIN %1 ").arg(Props.at(3)->Value);
     }
-    double Fstart,Fstop,fac;
-    str2num(Props.at(1)->Value,Fstart,unit,fac); // Start freq.
-    Fstart *=fac;
-    str2num(Props.at(2)->Value,Fstop,unit,fac); // Stop freq.
-    Fstop *=fac;
-    s += QString("%1 %2 \n").arg(Fstart).arg(Fstop);
+    QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
+    QString fstop = spicecompat::normalize_value(Props.at(2)->Value); // Stop freq.
+    s += QString("%1 %2 \n").arg(fstart).arg(fstop);
     return s;
 
 }

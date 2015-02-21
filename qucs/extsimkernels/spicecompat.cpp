@@ -17,6 +17,7 @@ QString spicecompat::normalize_value(QString Value)
     QRegExp l_pattern("^[0-9]+.*H$");
     QRegExp v_pattern("^[0-9]+.*V$");
     QRegExp hz_pattern("^[0-9]+.*Hz$");
+    QRegExp s_pattern("^[0-9]+.*S$");
 
     QString s = Value.remove(' ');
     if (r_pattern.exactMatch(s)) s.remove("Ohm");
@@ -24,8 +25,8 @@ QString spicecompat::normalize_value(QString Value)
     else if (l_pattern.exactMatch(s)) s.remove("H");
     else if (v_pattern.exactMatch(s)) s.remove("V");
     else if (hz_pattern.exactMatch(s)) s.remove("Hz");
+    else if (s_pattern.exactMatch(s)) s.remove("S");
     s.replace("M","Meg");
-    s.toUpper();
-    return s;
+    return s.toUpper();
 }
 

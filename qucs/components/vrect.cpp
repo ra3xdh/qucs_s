@@ -82,17 +82,13 @@ QString vRect::spice_netlist(bool isXyce)
         s += " "+ nam;   // node names
     }   
 
-    double T,TL,TH,VH,Td,Tr,Tf,fac;
+    double T,TL,TH,fac;
     QString unit;
 
-    str2num(Props.at(0)->Value,VH,unit,fac); //VH
-    VH *= fac;
-    str2num(Props.at(5)->Value,Td,unit,fac); // Td
-    Td *= fac;
-    str2num(Props.at(3)->Value,Tr,unit,fac); // Tr
-    Tr *= fac;
-    str2num(Props.at(4)->Value,Tf,unit,fac); //Tf
-    Tf *= fac;
+    QString VH = spicecompat::normalize_value(Props.at(0)->Value); //VH
+    QString Td = spicecompat::normalize_value(Props.at(5)->Value); // Td
+    QString Tr = spicecompat::normalize_value(Props.at(3)->Value); // Tr
+    QString Tf = spicecompat::normalize_value(Props.at(4)->Value); //Tf
     str2num(Props.at(1)->Value,TH,unit,fac); //TH
     TH *= fac;
     str2num(Props.at(2)->Value,TL,unit,fac);

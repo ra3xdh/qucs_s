@@ -98,11 +98,7 @@ QString VCCS::spice_netlist(bool isXyce)
         s += " "+ nam;   // node names
     }
 
-    double val,fac;
-    QString unit;
-    str2num(Props.at(0)->Value,val,unit,fac); // Ignore delay time. It is spice-incompatibele
-    val *=fac;
-    s += " " + QString::number(val) + "\n";
+    s += " " + spicecompat::normalize_value(Props.at(0)->Value) + "\n";
 
     return s;
 }

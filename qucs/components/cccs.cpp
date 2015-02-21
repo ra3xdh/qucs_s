@@ -88,10 +88,7 @@ QString CCCS::spice_netlist(bool isXyce)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel); // spice CCCS consists two sources: output source
                         // and zero value controlling source
-    QString unit;
-    double val,fac;
-    str2num(Props.at(0)->Value,val,unit,fac);
-    val *=fac;
+    QString val = spicecompat::normalize_value(Props.at(0)->Value);
     s += QString(" %1 %2 ").arg(Ports.at(1)->Connection->Name)
             .arg(Ports.at(2)->Connection->Name); // output source nodes
     s.replace(" gnd ", " 0 ");

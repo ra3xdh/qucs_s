@@ -17,6 +17,7 @@
 #include "hb_sim.h"
 #include "main.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 HB_Sim::HB_Sim()
@@ -77,12 +78,8 @@ QString HB_Sim::spice_netlist(bool isXyce)
 {
     QString s="";
     if (isXyce) {  // Only in Xyce
-        double val,fac;
-        QString unit;
-        str2num(Props.at(1)->Value,val,unit,fac);
-        s += QString(".options hbint numfreq=%1 STARTUPPERIODS=2\n").arg(val*fac);
-        str2num(Props.at(0)->Value,val,unit,fac);
-        s += QString(".HB %1\n").arg(val*fac);
+        s += QString(".options hbint numfreq=%1 STARTUPPERIODS=2\n").arg(Props.at(1)->Value);
+        s += QString(".HB %1\n").arg(spicecompat::normalize_value(Props.at(0)->Value));
     }
     return s;
 }

@@ -18,6 +18,7 @@
 #include "relais.h"
 #include "node.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Relais::Relais()
@@ -84,7 +85,7 @@ QString Relais::spice_netlist(bool isXyce)
 {
     QString s = Name;
     QString unit;
-    double Vt,Vh,Ron,Roff,fac;
+    double Vt,Vh,fac;
 
     QList<int> seq; // nodes sequence
     seq<<1<<2<<0<<3;
@@ -106,13 +107,8 @@ QString Relais::spice_netlist(bool isXyce)
     str2num(val,Vh,unit,fac);
     Vh *= fac;
 
-    val = Props.at(2)->Value;
-    str2num(val,Ron,unit,fac);
-    Ron *= fac;
-
-    val = Props.at(3)->Value;
-    str2num(val,Roff,unit,fac);
-    Roff *= fac;
+    QString Ron = spicecompat::normalize_value(Props.at(2)->Value);
+    QString Roff = spicecompat::normalize_value(Props.at(3)->Value);
 
     if (isXyce) {
         s += QString(".MODEL %1 vswitch von=%2 voff=%3 ron=%4 roff=%5 \n").arg(model).arg(Vt).arg(Vt-Vh).arg(Ron).arg(Roff);
