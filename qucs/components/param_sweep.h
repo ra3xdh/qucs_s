@@ -28,6 +28,8 @@ public:
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
   void recreate(Schematic*);
+protected:
+  QString spice_netlist(bool isXyce);
 };
 
 #endif

@@ -16,6 +16,7 @@
  ***************************************************************************/
 #include "param_sweep.h"
 #include "main.h"
+#include "misc.h"
 
 
 Param_Sweep::Param_Sweep()
@@ -37,6 +38,7 @@ Param_Sweep::Param_Sweep()
   ty = y2+1;
   Model = ".SW";
   Name  = "SW";
+  isSimulation = true;
 
   // The index of the first 6 properties must not changed. Used in recreate().
   Props.append(new Property("Sim", "", true,
@@ -92,3 +94,18 @@ void Param_Sweep::recreate(Schematic*)
   }
 }
 
+QString Param_Sweep::spice_netlist(bool isXyce)
+{
+    QString s;
+    if (Props.at(0)->Value.startsWith("DC")) {
+        QString src = getProperty("Param")->Value;
+        double start,stop,step,fac,points;
+        QString unit;
+        str2num(getProperty("Start")->Value,start,unit,fac);
+        str2num(getProperty("Stop")->Value,stop,unit,fac);
+        str2num(getProperty("Points")->Value,points,unit,fac);
+        step = (stop-start)/points;
+        s = QString(".DC %1 %2 %3 %4\n").arg(src).arg(start).arg(stop).arg(step);
+    }
+    return s;
+}
