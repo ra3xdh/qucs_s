@@ -168,7 +168,12 @@ QString Equation::getExpression(bool isXyce)
         QString eqn = Props.at(i)->Value;
         splitEqn(eqn,tokens);
         if (isXyce) eqn.replace("^","**");
-        if (eqn.contains(QRegExp("[A-Za-z]+"))) eqn = "{" + eqn + "}"; // wrap equation if it contains vars
+        QRegExp fp_pattern("^[\\+\\-]*\\d*\\.\\d+$"); // float
+        QRegExp fp_exp_pattern("^[\\+\\-]*\\d*\\.*\\d+e[\\+\\-]*\\d+$"); // float with exp
+        QRegExp dec_pattern("^[\\+\\-]*\\d+$"); // integer
+        if (!(fp_pattern.exactMatch(eqn)||
+              dec_pattern.exactMatch(eqn)||
+              fp_exp_pattern.exactMatch(eqn))) eqn = "{" + eqn + "}"; // wrap equation if it contains vars
         if (!containNodes(tokens)) {
             s += QString(".PARAM %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
         }
