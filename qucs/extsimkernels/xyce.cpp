@@ -45,9 +45,18 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
     if(!prepareSpiceNetlist(stream,true)) return; // Unable to perform ngspice simulation
 
     QString s;
+
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->isEquation) {
+            s = pc->getExpression(true);
+            stream<<s;
+        }
+    }
+
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
       if(Sch->isAnalog &&
-         !(pc->isSimulation)) {
+         !(pc->isSimulation) &&
+         !(pc->isEquation)) {
         s = pc->getSpiceNetlist(true);
         stream<<s;
       }
@@ -76,12 +85,12 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
                 vars.append(var_pr);
             }
         }
-        if (pc->isEquation) {
+        /*if (pc->isEquation) {
             Equation *eq = (Equation *)pc;
             QStringList vars_eq;
             eq->getDepVars(vars_eq);
             vars.append(vars_eq);
-        }
+        }*/
     }
     vars.sort();
     qDebug()<<vars;
