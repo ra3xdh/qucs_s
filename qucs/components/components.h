@@ -200,4 +200,7 @@
 // Verilog-A dynamicaly loaded component
 #include "vacomponent.h"
 
+// Spice-specific components
+#include "src_eqndef.h"
+
 #endif

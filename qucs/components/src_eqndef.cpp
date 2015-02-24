@@ -7,11 +7,10 @@ Src_eqndef::Src_eqndef()
 {
   Description = QObject::tr("Equation defined (B-type) voltage or current source");
 
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc( -3, -7,  7,  7,16*270, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc( -3,  0,  7,  7, 16*90, 16*180,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
+  Arcs.append(new Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(7,-10,"Eqn",Qt::black,10.0,0.0,-1.0));
+  Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 18,  5, 18, 11,QPen(Qt::red,1)));
   Lines.append(new Line( 21,  8, 15,  8,QPen(Qt::red,1)));
   Lines.append(new Line(-18,  5,-18, 11,QPen(Qt::black,1)));
@@ -28,8 +27,7 @@ Src_eqndef::Src_eqndef()
   SpiceModel = "B";
   Name  = "B";
 
-  Props.append(new Property("Expression", "U=0", true,
-        QObject::tr("Current or Voltage equation that passed to Spice")));
+  Props.append(new Property("V", "0", true,"Expression"));
 
   rotate();  // fix historical flaw
 }
@@ -45,7 +43,7 @@ Component* Src_eqndef::newOne()
 
 Element* Src_eqndef::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("ac Voltage Source");
+  Name = QObject::tr("Equation defined (B-type) voltage or current source");
   BitmapFile = (char *) "ac_voltage";
 
   if(getNewOne)  return new Src_eqndef();
@@ -65,6 +63,6 @@ QString Src_eqndef::spice_netlist(bool isXyce)
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }
-
+    s += QString(" %1 = %2 ").arg(Props.at(0)->Name).arg(Props.at(0)->Value);
     return s;
 }

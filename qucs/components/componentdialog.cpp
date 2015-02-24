@@ -603,8 +603,21 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
     ComboEdit->setVisible(false);
 
     NameEdit->setFocus();   // edit QLineEdit
-  }
-  else {  // show standard line edit (description and value)
+  } else if (desc=="Expression") { // Single expression
+      // show two line edit fields (name and value)
+      // And disable buttons
+
+      Name->setText("");
+      NameEdit->setText(name);
+      edit->setText(value);
+
+      edit->setVisible(true);
+      NameEdit->setVisible(true);
+      Description->setVisible(false);
+      ComboEdit->setVisible(false);
+
+      NameEdit->setFocus();   // edit QLineEdit
+  } else {  // show standard line edit (description and value)
     ButtAdd->setEnabled(false);
     ButtRem->setEnabled(false);
     ButtUp->setEnabled(false);

@@ -216,6 +216,8 @@ void Module::intoCategory (Module * m) {
   REGISTER_MOD_2 (QObject::tr("paintings"),val,inf1,inf2)
 #define REGISTER_EXTERNAL_1(val) \
   REGISTER_COMP_1 (QObject::tr("external sim components"),val)
+#define REGISTER_SPICE_1(val) \
+  REGISTER_COMP_1 (QObject::tr("spice components"),val)
 
 // This function has to be called once at application startup.  It
 // registers every component available in the application.  Put here
@@ -423,6 +425,9 @@ void Module::registerModules (void) {
   // external simulation
   REGISTER_EXTERNAL_1 (ETR_Sim);
   REGISTER_EXTERNAL_1 (ecvs);
+
+  //spice specific components
+  REGISTER_SPICE_1 (Src_eqndef);
 
   // paintings
   REGISTER_PAINT_1 (GraphicLine);
