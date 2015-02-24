@@ -35,6 +35,8 @@ void Xyce::determineUsedSimulations()
            if (sim_typ==".AC") simulationsQueue.append("ac");
            if (sim_typ==".TR") simulationsQueue.append("tran");
            if (sim_typ==".HB") simulationsQueue.append("hb");
+           if ((sim_typ==".SW")&&
+               (pc->Props.at(0)->Value.startsWith("DC"))) simulationsQueue.append("dc");
        }
     }
 }
@@ -118,6 +120,8 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
            if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
            if ((sim_typ==".TR")&&(sim=="tran")) stream<<s;
            if ((sim_typ==".HB")&&(sim=="hb")) stream<<s;
+           if (((sim_typ==".SW")&&(pc->Props.at(0)->Value.startsWith("DC")))&&
+                (sim=="dc")) stream<<s;
            if ((sim_typ==".DC")) stream<<s;
        }
     }
