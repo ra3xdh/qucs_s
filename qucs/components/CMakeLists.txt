@@ -58,6 +58,7 @@ bsim4v30pMOS.cpp
 vcresistor.cpp
 vacomponent.cpp
 mutualx.cpp
+src_eqndef.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -237,6 +238,7 @@ volt_noise.h
 vprobe.h
 vpulse.h
 vrect.h
+src_eqndef.h
 )
 
 
