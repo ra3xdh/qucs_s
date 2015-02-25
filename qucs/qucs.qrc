@@ -236,5 +236,6 @@
         <file>bitmaps/error.png</file>
         <file>bitmaps/mutualx.png</file>
 	<file>bitmaps/hicolor/128x128/apps/qucs.png</file>
+        <file>bitmaps/src_eqndef.png</file>
     </qresource>
 </RCC>

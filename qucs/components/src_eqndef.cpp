@@ -44,7 +44,7 @@ Component* Src_eqndef::newOne()
 Element* Src_eqndef::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr("Equation defined (B-type) voltage or current source");
-  BitmapFile = (char *) "ac_voltage";
+  BitmapFile = (char *) "src_eqndef";
 
   if(getNewOne)  return new Src_eqndef();
   return 0;
@@ -63,6 +63,6 @@ QString Src_eqndef::spice_netlist(bool isXyce)
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }
-    s += QString(" %1 = %2 ").arg(Props.at(0)->Name).arg(Props.at(0)->Value);
+    s += QString(" %1 = %2 \n").arg(Props.at(0)->Name).arg(Props.at(0)->Value);
     return s;
 }
