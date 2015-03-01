@@ -37,6 +37,7 @@ SubCirPort::SubCirPort()
   ty = y2+4;
   Model = "Port";
   Name  = "P";
+  SpiceModel = "";
 }
 
 // -------------------------------------------------------
@@ -101,6 +102,12 @@ Element* SubCirPort::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString SubCirPort::netlist()
 {
   return QString("");
+}
+
+// -------------------------------------------------------
+QString SubCirPort::spice_netlist(bool isXyce)
+{
+    return QString("");
 }
 
 // -------------------------------------------------------

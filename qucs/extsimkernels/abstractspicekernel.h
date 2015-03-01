@@ -43,12 +43,13 @@ protected:
     virtual void startNetlist(QTextStream& stream, bool xyce = false);
     virtual void createNetlist(QTextStream& stream, int NumPorts,QStringList& simulations,
                                QStringList& vars, QStringList &outputs);
-    virtual void createSubNetlsit(QTextStream& stream, bool xyce = false);
 
 public:
 
     explicit AbstractSpiceKernel(Schematic *sch_, QObject *parent = 0);
     ~AbstractSpiceKernel();
+
+    virtual void createSubNetlsit(QTextStream& stream, bool xyce = false);
 
     void parseNgSpiceSimOutput(QString ngspice_file,
                           QList< QList<double> > &sim_points,

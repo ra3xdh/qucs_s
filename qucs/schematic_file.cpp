@@ -41,6 +41,7 @@
 #include "components/libcomp.h"
 #include "module.h"
 #include "misc.h"
+#include "extsimkernels/abstractspicekernel.h"
 
 
 // Here the subcircuits, SPICE components etc are collected. It must be
@@ -1282,7 +1283,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
       d->isVerilog = isVerilog;
       d->isAnalog = isAnalog;
       d->creatingLib = creatingLib;
-      r = d->createSubNetlist(stream, countInit, Collect, ErrText, NumPorts);
+      r = d->createSubNetlist(stream, countInit, Collect, ErrText, NumPorts,spice,xyce);
       if (r)
       {
         i = 0;
@@ -1485,8 +1486,8 @@ bool Schematic::createLibNetlist(QTextStream *stream, QPlainTextEdit *ErrText,
 #define VHDL_LIBRARIES   "\nlibrary ieee;\nuse ieee.std_logic_1164.all;\n"
 
 // ---------------------------------------------------
-void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrText,
-int NumPorts)
+void Schematic::createSubNetlistPlain(QTextStream *stream, QTextEdit *ErrText,
+int NumPorts, bool spice)
 {
   int i, z;
   QString s;
@@ -1594,156 +1595,162 @@ int NumPorts)
   QString Type = misc::properName(f);
 
   Painting *pi;
-  if(isAnalog) {
-    // ..... analog subcircuit ...................................
-    (*tstream) << "\n.Def:" << Type << " " << SubcircuitPortNames.join(" ");
-    for(pi = SymbolPaints.first(); pi != 0; pi = SymbolPaints.next())
-      if(pi->Name == ".ID ") {
-        ID_Text *pid = (ID_Text*)pi;
-        QList<SubParameter *>::const_iterator it;
-        for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
-          s = (*it)->Name; // keep 'Name' unchanged
-          (*tstream) << " " << s.replace("=", "=\"") << '"';
-        }
-        break;
-      }
-    (*tstream) << '\n';
 
-    // write all components with node names into netlist file
-    for(pc = DocComps.first(); pc != 0; pc = DocComps.next())
-      (*tstream) << pc->getNetlist();
+  if (!spice) {
 
-    (*tstream) << ".Def:End\n";
+        if(isAnalog) {
+            // ..... analog subcircuit ...................................
+            (*tstream) << "\n.Def:" << Type << " " << SubcircuitPortNames.join(" ");
+            for(pi = SymbolPaints.first(); pi != 0; pi = SymbolPaints.next())
+              if(pi->Name == ".ID ") {
+                ID_Text *pid = (ID_Text*)pi;
+                QList<SubParameter *>::const_iterator it;
+                for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
+                  s = (*it)->Name; // keep 'Name' unchanged
+                  (*tstream) << " " << s.replace("=", "=\"") << '"';
+                }
+                break;
+              }
+            (*tstream) << '\n';
 
-  }
-  else {
-    if (isVerilog) {
-      // ..... digital subcircuit ...................................
-      (*tstream) << "\nmodule Sub_" << Type << " ("
-              << SubcircuitPortNames.join(", ") << ");\n";
+            // write all components with node names into netlist file
+            for(pc = DocComps.first(); pc != 0; pc = DocComps.next())
+              (*tstream) << pc->getNetlist();
 
-      // subcircuit in/out connections
-      if(!InPorts.isEmpty())
-        (*tstream) << " input " << InPorts.join(", ") << ";\n";
-      if(!OutPorts.isEmpty())
-        (*tstream) << " output " << OutPorts.join(", ") << ";\n";
-      if(!InOutPorts.isEmpty())
-        (*tstream) << " inout " << InOutPorts.join(", ") << ";\n";
+            (*tstream) << ".Def:End\n";
 
-      // subcircuit connections
-      if(!Signals.isEmpty()) {
-        QList<DigSignal> values = Signals.values();
-        QList<DigSignal>::const_iterator it;
-        for (it = values.constBegin(); it != values.constEnd(); ++it) {
-          (*tstream) << " wire " << (*it).Name << ";\n";
-        }
-      }
-      (*tstream) << "\n";
-
-      // subcircuit parameters
-      for(pi = SymbolPaints.first(); pi != 0; pi = SymbolPaints.next())
-        if(pi->Name == ".ID ") {
-          QList<SubParameter *>::const_iterator it;
-          ID_Text *pid = (ID_Text*)pi;
-          for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
-            s = (*it)->Name.section('=', 0,0);
-            QString v = misc::Verilog_Param((*it)->Name.section('=', 1,1));
-            (*tstream) << " parameter " << s << " = " << v << ";\n";
           }
-          (*tstream) << "\n";
-          break;
-        }
+          else {
+            if (isVerilog) {
+              // ..... digital subcircuit ...................................
+              (*tstream) << "\nmodule Sub_" << Type << " ("
+                      << SubcircuitPortNames.join(", ") << ");\n";
 
-      // write all equations into netlist file
-      for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
-        if(pc->Model == "Eqn") {
-          (*tstream) << pc->get_Verilog_Code(NumPorts);
-        }
-      }
+              // subcircuit in/out connections
+              if(!InPorts.isEmpty())
+                (*tstream) << " input " << InPorts.join(", ") << ";\n";
+              if(!OutPorts.isEmpty())
+                (*tstream) << " output " << OutPorts.join(", ") << ";\n";
+              if(!InOutPorts.isEmpty())
+                (*tstream) << " inout " << InOutPorts.join(", ") << ";\n";
 
-      if(Signals.find("gnd") != Signals.end())
-      (*tstream) << " assign gnd = 0;\n"; // should appear only once
+              // subcircuit connections
+              if(!Signals.isEmpty()) {
+                QList<DigSignal> values = Signals.values();
+                QList<DigSignal>::const_iterator it;
+                for (it = values.constBegin(); it != values.constEnd(); ++it) {
+                  (*tstream) << " wire " << (*it).Name << ";\n";
+                }
+              }
+              (*tstream) << "\n";
 
-      // write all components into netlist file
-      for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
-        if(pc->Model != "Eqn") {
-          s = pc->get_Verilog_Code(NumPorts);
-          if(s.length()>0 && s.at(0) == '\xA7') {  //section symbol
-            ErrText->appendPlainText(s.mid(1));
+              // subcircuit parameters
+              for(pi = SymbolPaints.first(); pi != 0; pi = SymbolPaints.next())
+                if(pi->Name == ".ID ") {
+                  QList<SubParameter *>::const_iterator it;
+                  ID_Text *pid = (ID_Text*)pi;
+                  for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
+                    s = (*it)->Name.section('=', 0,0);
+                    QString v = misc::Verilog_Param((*it)->Name.section('=', 1,1));
+                    (*tstream) << " parameter " << s << " = " << v << ";\n";
+                  }
+                  (*tstream) << "\n";
+                  break;
+                }
+
+              // write all equations into netlist file
+              for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
+                if(pc->Model == "Eqn") {
+                  (*tstream) << pc->get_Verilog_Code(NumPorts);
+                }
+              }
+
+              if(Signals.find("gnd") != Signals.end())
+              (*tstream) << " assign gnd = 0;\n"; // should appear only once
+
+              // write all components into netlist file
+              for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
+                if(pc->Model != "Eqn") {
+                  s = pc->get_Verilog_Code(NumPorts);
+                  if(s.length()>0 && s.at(0) == '\xA7') {  //section symbol
+                    ErrText->insert(s.mid(1));
+                  }
+                  else (*tstream) << s;
+                }
+              }
+
+              (*tstream) << "endmodule\n";
+            } else {
+              // ..... digital subcircuit ...................................
+              (*tstream) << VHDL_LIBRARIES;
+              (*tstream) << "entity Sub_" << Type << " is\n"
+                        << " port ("
+                        << SubcircuitPortNames.join(";\n ") << ");\n";
+
+              for(pi = SymbolPaints.first(); pi != 0; pi = SymbolPaints.next())
+                if(pi->Name == ".ID ") {
+                  ID_Text *pid = (ID_Text*)pi;
+                  QList<SubParameter *>::const_iterator it;
+
+                  (*tstream) << " generic (";
+
+                  for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
+                    s = (*it)->Name;
+                    QString t = (*it)->Type.isEmpty() ? "real" : (*it)->Type;
+                    (*tstream) << s.replace("=", " : "+t+" := ") << ";\n ";
+                  }
+
+                  (*tstream) << ");\n";
+                  break;
+                }
+
+              (*tstream) << "end entity;\n"
+                          << "use work.all;\n"
+                          << "architecture Arch_Sub_" << Type << " of Sub_" << Type
+                          << " is\n";
+
+              if(!Signals.isEmpty()) {
+                QList<DigSignal> values = Signals.values();
+                QList<DigSignal>::const_iterator it;
+                for (it = values.constBegin(); it != values.constEnd(); ++it) {
+                  (*tstream) << " signal " << (*it).Name << " : "
+                  << ((*it).Type.isEmpty() ?
+                  VHDL_SIGNAL_TYPE : (*it).Type) << ";\n";
+                }
+              }
+
+              // write all equations into netlist file
+              for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
+                if(pc->Model == "Eqn") {
+                  ErrText->insert(
+                              QObject::tr("WARNING: Equations in \"%1\" are 'time' typed.").
+                  arg(pc->Name));
+                  (*tstream) << pc->get_VHDL_Code(NumPorts);
+                }
+              }
+
+              (*tstream) << "begin\n";
+
+              if(Signals.find("gnd") != Signals.end())
+              (*tstream) << " gnd <= '0';\n"; // should appear only once
+
+              // write all components into netlist file
+              for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
+                if(pc->Model != "Eqn") {
+                    s = pc->get_VHDL_Code(NumPorts);
+                    if(s.length()>0 && s.at(0) == '\xA7') {  //section symbol
+                      ErrText->insert(s.mid(1));
+                  }
+                  else (*tstream) << s;
+                }
+              }
+
+              (*tstream) << "end architecture;\n";
+            }
           }
-          else (*tstream) << s;
-        }
-      }
 
-      (*tstream) << "endmodule\n";
-    } else {
-      // ..... digital subcircuit ...................................
-      (*tstream) << VHDL_LIBRARIES;
-      (*tstream) << "entity Sub_" << Type << " is\n"
-                << " port ("
-                << SubcircuitPortNames.join(";\n ") << ");\n";
-
-      for(pi = SymbolPaints.first(); pi != 0; pi = SymbolPaints.next())
-        if(pi->Name == ".ID ") {
-          ID_Text *pid = (ID_Text*)pi;
-          QList<SubParameter *>::const_iterator it;
-
-          (*tstream) << " generic (";
-
-          for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
-            s = (*it)->Name;
-            QString t = (*it)->Type.isEmpty() ? "real" : (*it)->Type;
-            (*tstream) << s.replace("=", " : "+t+" := ") << ";\n ";
-          }
-
-          (*tstream) << ");\n";
-          break;
-        }
-
-      (*tstream) << "end entity;\n"
-                  << "use work.all;\n"
-                  << "architecture Arch_Sub_" << Type << " of Sub_" << Type
-                  << " is\n";
-
-      if(!Signals.isEmpty()) {
-        QList<DigSignal> values = Signals.values();
-        QList<DigSignal>::const_iterator it;
-        for (it = values.constBegin(); it != values.constEnd(); ++it) {
-          (*tstream) << " signal " << (*it).Name << " : "
-          << ((*it).Type.isEmpty() ?
-          VHDL_SIGNAL_TYPE : (*it).Type) << ";\n";
-        }
-      }
-
-      // write all equations into netlist file
-      for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
-        if(pc->Model == "Eqn") {
-          ErrText->appendPlainText(
-                      QObject::tr("WARNING: Equations in \"%1\" are 'time' typed.").
-          arg(pc->Name));
-          (*tstream) << pc->get_VHDL_Code(NumPorts);
-        }
-      }
-
-      (*tstream) << "begin\n";
-
-      if(Signals.find("gnd") != Signals.end())
-      (*tstream) << " gnd <= '0';\n"; // should appear only once
-
-      // write all components into netlist file
-      for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
-        if(pc->Model != "Eqn") {
-            s = pc->get_VHDL_Code(NumPorts);
-            if(s.length()>0 && s.at(0) == '\xA7') {  //section symbol
-              ErrText->appendPlainText(s.mid(1));
-          }
-          else (*tstream) << s;
-        }
-      }
-
-      (*tstream) << "end architecture;\n";
     }
-  }
+
 
   // close file
   if(creatingLib) {
@@ -1754,7 +1761,8 @@ int NumPorts)
 // ---------------------------------------------------
 // Write the netlist as subcircuit to the text stream 'stream'.
 bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
-                     QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts)
+                     QStringList& Collect, QTextEdit *ErrText, int NumPorts,
+                                  bool spice, bool xyce)
 {
 //  int Collect_count = Collect.count();   // position for this subcircuit
 
@@ -1771,7 +1779,13 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
       else it++;*/
 
   // Emit subcircuit components
-  createSubNetlistPlain(stream, ErrText, NumPorts);
+   createSubNetlistPlain(stream, ErrText, NumPorts,spice);
+   if (spice) {
+      AbstractSpiceKernel *kern = new AbstractSpiceKernel(this);
+      kern->createSubNetlsit(*stream,xyce);
+      delete kern;
+  }
+
 
   Signals.clear();  // was filled in "giveNodeNames()"
   return true;

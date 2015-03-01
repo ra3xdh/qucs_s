@@ -275,8 +275,8 @@ private:
 public:
   static int testFile(const QString &);
   bool createLibNetlist(QTextStream*, QTextEdit*, int);
-  bool createSubNetlist(QTextStream *, int&, QStringList&, QTextEdit*, int);
-  void createSubNetlistPlain(QTextStream*, QTextEdit*, int);
+  bool createSubNetlist(QTextStream *, int&, QStringList&, QTextEdit*, int, bool spice=false, bool xyce = false);
+  void createSubNetlistPlain(QTextStream*, QTextEdit*, int, bool spice=false);
   int  prepareNetlist(QTextStream&, QStringList&, QTextEdit*,bool spice=false, bool xyce = false);
   QString createNetlist(QTextStream&, int);
   bool loadDocument();

@@ -23,6 +23,8 @@
 #endif
 
 #include "abstractspicekernel.h"
+#include "misc.h"
+#include "../paintings/id_text.h"
 #include <QTextEdit>
 
 
@@ -98,13 +100,36 @@ void AbstractSpiceKernel::createNetlist(QTextStream& stream, int NumPorts,QStrin
 
 void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool xyce)
 {
-    QString header = ".SUBCKT ";
+    QString header;
+    QString f = properFileName(Sch->DocName);
+    header = QString(".SUBCKT %1 ").arg(properName(f));
+
+    QList< QPair<int,QString> > ports;
     if(!prepareSpiceNetlist(stream,xyce)) return; // Unable to perform spice simulation
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
         if (pc->Model=="Port") {
-            header += pc->Ports.first()->Connection->Name + " ";
+            ports.append(qMakePair(pc->Props.first()->Value.toInt(),
+                                   pc->Ports.first()->Connection->Name));
         }
     }
+    qSort(ports);
+    QPair<int,QString> pp;
+    foreach(pp,ports) {
+        header += pp.second + " ";
+    }
+
+    Painting *pi;
+    for(pi = Sch->SymbolPaints.first(); pi != 0; pi = Sch->SymbolPaints.next())
+      if(pi->Name == ".ID ") {
+        ID_Text *pid = (ID_Text*)pi;
+        QList<SubParameter *>::const_iterator it;
+        for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
+            header += (*it)->Name + " "; // keep 'Name' unchanged
+          //(*tstream) << " " << s.replace("=", "=\"") << '"';
+        }
+        break;
+      }
+
     header += "\n";
     stream<<header;
     startNetlist(stream,xyce);
