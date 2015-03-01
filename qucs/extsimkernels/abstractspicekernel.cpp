@@ -70,10 +70,45 @@ bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream, bool xyce)
     return true; // TODO: Add feature to determine ability of spice simulation
 }
 
+void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
+{
+        QString s;
+        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+            if (pc->isEquation) {
+                s = pc->getExpression(xyce);
+                stream<<s;
+            }
+        }
+
+        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+          if(Sch->isAnalog &&
+             !(pc->isSimulation) &&
+             !(pc->isEquation)) {
+            s = pc->getSpiceNetlist(xyce);
+            stream<<s;
+          }
+        }
+}
+
 void AbstractSpiceKernel::createNetlist(QTextStream& stream, int NumPorts,QStringList& simulations,
                                         QStringList& vars, QStringList &outputs)
 {
 
+}
+
+void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool xyce)
+{
+    QString header = ".SUBCKT ";
+    if(!prepareSpiceNetlist(stream,xyce)) return; // Unable to perform spice simulation
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->Model=="Port") {
+            header += pc->Ports.first()->Connection->Name + " ";
+        }
+    }
+    header += "\n";
+    stream<<header;
+    startNetlist(stream,xyce);
+    stream<<".ENDS\n";
 }
 
 void AbstractSpiceKernel::slotSimulate()

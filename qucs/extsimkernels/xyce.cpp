@@ -44,25 +44,9 @@ void Xyce::determineUsedSimulations()
 void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
                     QStringList &vars, QStringList &outputs)
 {
-    if(!prepareSpiceNetlist(stream,true)) return; // Unable to perform ngspice simulation
-
     QString s;
-
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if (pc->isEquation) {
-            s = pc->getExpression(true);
-            stream<<s;
-        }
-    }
-
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-      if(Sch->isAnalog &&
-         !(pc->isSimulation) &&
-         !(pc->isEquation)) {
-        s = pc->getSpiceNetlist(true);
-        stream<<s;
-      }
-    }
+    if(!prepareSpiceNetlist(stream,true)) return; // Unable to perform spice simulation
+    startNetlist(stream,true);
 
     // set variable names for named nodes and wires
     vars.clear();

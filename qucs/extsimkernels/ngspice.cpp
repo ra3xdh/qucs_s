@@ -33,26 +33,9 @@ Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
 void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
                        QStringList &simulations, QStringList &vars, QStringList &outputs)
 {
-    if(!prepareSpiceNetlist(stream)) return; // Unable to perform ngspice simulation
-
-
     QString s;
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if (pc->isEquation) {
-            s = pc->getExpression();
-            stream<<s;
-        }
-    }
-
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-      if(Sch->isAnalog &&
-         !(pc->isSimulation) &&
-         !(pc->isEquation)) {
-        s = pc->getSpiceNetlist();
-        stream<<s;
-      }
-    }
-
+    if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
+    startNetlist(stream); // output .PARAM and components
     // determine which simulations are in use
     simulations.clear();
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
