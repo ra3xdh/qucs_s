@@ -29,7 +29,7 @@ then
   RELEASE=$1
 else
   RELEASE=$(date +"%y%m%d")
-  RELEASE="0.0.18."${RELEASE:0:6}
+  RELEASE="0.0.19."${RELEASE:0:6}
 
   # Get Git short hash
   GIT=$(git log --pretty=format:'%h' -n 1)
@@ -123,7 +123,7 @@ rm qucs.iss
 
 echo Saving copy to ${HOME}/Downloads/qucs-$RELEASE-win32.exe
 # TODO version is hardcoded on the Inno Setup file
-cp ./Output/qucs-0.0.18-setup.exe ${HOME}/Downloads/qucs-$RELEASE-win32.exe
+cp ./Output/qucs-0.0.19-setup.exe ${HOME}/Downloads/qucs-$RELEASE-win32.exe
 #rm -r release/Output
 
 
