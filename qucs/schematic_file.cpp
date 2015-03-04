@@ -1767,7 +1767,7 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
 //  int Collect_count = Collect.count();   // position for this subcircuit
 
   // TODO: NodeSets have to be put into the subcircuit block.
-  if(!giveNodeNames(stream, countInit, Collect, ErrText, NumPorts))
+  if(!giveNodeNames(stream, countInit, Collect, ErrText, NumPorts,spice,xyce))
     return false;
 
 /*  Example for TODO

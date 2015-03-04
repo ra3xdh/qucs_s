@@ -120,7 +120,7 @@ QString EqnDefined::spice_netlist(bool isXyce)
                 QString minus = Ports.at(2*i+1)->Connection->Name;
                 s += QString("G%1Q%2 %3 %4 n%1Q%2 %4 1.0\n").arg(Name).arg(i).arg(plus).arg(minus);
                 s += QString("L%1Q%2 n%1Q%2 %3 1.0\n").arg(Name).arg(i).arg(minus);
-                s += QString("B%1Q%2 n%1Q%2 %3 I=%4\n").arg(Name).arg(i).arg(minus).arg(Qtokens.join(""));
+                s += QString("B%1Q%2 n%1Q%2 %3 I=-(%4)\n").arg(Name).arg(i).arg(minus).arg(Qtokens.join(""));
             }
         }
     } else {
