@@ -100,11 +100,11 @@ QString Relais::spice_netlist(bool isXyce)
     s += model + " OFF\n";
 
     QString val = Props.at(0)->Value; // Vt
-    str2num(val,Vt,unit,fac);
+    misc::str2num(val,Vt,unit,fac);
     Vt *= fac;
 
     val = Props.at(1)->Value;
-    str2num(val,Vh,unit,fac);
+    misc::str2num(val,Vh,unit,fac);
     Vh *= fac;
 
     QString Ron = spicecompat::normalize_value(Props.at(2)->Value);

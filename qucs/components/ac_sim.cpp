@@ -107,11 +107,11 @@ QString AC_Sim::spice_netlist(bool isXyce)
     QString unit;
     if (Props.at(0)->Value=="log") { // convert points number for spice compatibility
         double Np,Fstart,Fstop,fac = 1.0;
-        str2num(Props.at(3)->Value,Np,unit,fac); // Points number
+        misc::str2num(Props.at(3)->Value,Np,unit,fac); // Points number
         Np *= fac;
-        str2num(Props.at(1)->Value,Fstart,unit,fac);
+        misc::str2num(Props.at(1)->Value,Fstart,unit,fac);
         Fstart *= fac;
-        str2num(Props.at(2)->Value,Fstop,unit,fac);
+        misc::str2num(Props.at(2)->Value,Fstop,unit,fac);
         Fstop *= fac;
         double Nd = ceil(log10(Fstop/Fstart)); // number of decades
         double Npd = ceil(Np/Nd); // points per decade

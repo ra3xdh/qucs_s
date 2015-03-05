@@ -650,7 +650,7 @@ QString Component::form_spice_param_list(QStringList& ignore_list, QStringList& 
                 nam = Props.at(i)->Name;
             }
             double val,fac;
-            str2num(Props.at(i)->Value,val,unit,fac);
+            misc::str2num(Props.at(i)->Value,val,unit,fac);
             val *= fac;
             par_str += QString("%1=%2 ").arg(nam).arg(val);
         }

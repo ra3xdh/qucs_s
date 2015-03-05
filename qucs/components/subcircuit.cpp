@@ -220,14 +220,14 @@ QString Subcircuit::netlist()
 QString Subcircuit::spice_netlist(bool isXyce)
 {
     QString s;
-    QString f = properFileName(Props.first()->Value);
+    QString f = misc::properFileName(Props.first()->Value);
     s += QString("X%1 ").arg(Name);
     foreach(Port *p1, Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+nam;   // node names
     }
-    s += " " + properName(f);
+    s += " " + misc::properName(f);
     for(Property *pp = Props.next(); pp != 0; pp = Props.next()) {
         s += QString(" %1=%2").arg(pp->Name).arg(spicecompat::normalize_value(pp->Value));
     }

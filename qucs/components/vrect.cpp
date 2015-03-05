@@ -89,9 +89,9 @@ QString vRect::spice_netlist(bool isXyce)
     QString Td = spicecompat::normalize_value(Props.at(5)->Value); // Td
     QString Tr = spicecompat::normalize_value(Props.at(3)->Value); // Tr
     QString Tf = spicecompat::normalize_value(Props.at(4)->Value); //Tf
-    str2num(Props.at(1)->Value,TH,unit,fac); //TH
+    misc::str2num(Props.at(1)->Value,TH,unit,fac); //TH
     TH *= fac;
-    str2num(Props.at(2)->Value,TL,unit,fac);
+    misc::str2num(Props.at(2)->Value,TL,unit,fac);
     T = TL*fac+TH;
     s += QString(" DC PULSE( 0 %1 %2 %3 %4 %5 %6) AC %7\n").arg(VH).arg(Td).arg(Tr).arg(Tf).arg(TH).arg(T).arg(VH);
 

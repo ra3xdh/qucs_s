@@ -101,8 +101,8 @@ void AbstractSpiceKernel::createNetlist(QTextStream& stream, int NumPorts,QStrin
 void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool xyce)
 {
     QString header;
-    QString f = properFileName(Sch->DocName);
-    header = QString(".SUBCKT %1 ").arg(properName(f));
+    QString f = misc::properFileName(Sch->DocName);
+    header = QString(".SUBCKT %1 ").arg(misc::properName(f));
 
     QList< QPair<int,QString> > ports;
     if(!prepareSpiceNetlist(stream,xyce)) return; // Unable to perform spice simulation

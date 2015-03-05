@@ -166,7 +166,7 @@ QString MOSFET::spice_netlist(bool isXyce)
     check_defaults_list<<"Nsub"<<"Nss";
     foreach (QString parnam,check_defaults_list) { // Check some parameters for default value (zero)
         double val,fac;   // And reduce parameter list
-        str2num(getProperty(parnam)->Value,val,unit,fac);
+        misc::str2num(getProperty(parnam)->Value,val,unit,fac);
         if ((val *= fac)==0.0) {
             spice_incompat.append(parnam);
         }
@@ -177,17 +177,17 @@ QString MOSFET::spice_netlist(bool isXyce)
     QString mosfet_type = getProperty("Type")->Value.at(0).toUpper();
 
     double l,w,as,ad,ps,pd,fac;
-    str2num(getProperty("L")->Value,l,unit,fac);
+    misc::str2num(getProperty("L")->Value,l,unit,fac);
     l *= fac;
-    str2num(getProperty("W")->Value,w,unit,fac);
+    misc::str2num(getProperty("W")->Value,w,unit,fac);
     w *= fac;
-    str2num(getProperty("Ad")->Value,ad,unit,fac);
+    misc::str2num(getProperty("Ad")->Value,ad,unit,fac);
     ad *= fac;
-    str2num(getProperty("As")->Value,as,unit,fac);
+    misc::str2num(getProperty("As")->Value,as,unit,fac);
     as *= fac;
-    str2num(getProperty("Pd")->Value,pd,unit,fac);
+    misc::str2num(getProperty("Pd")->Value,pd,unit,fac);
     pd *= fac;
-    str2num(getProperty("Ps")->Value,ps,unit,fac);
+    misc::str2num(getProperty("Ps")->Value,ps,unit,fac);
     ps *= fac;
 
     s += QString(" MMOD_%1 L=%2 W=%3 Ad=%4 As=%5 Pd=%6 Ps=%7 Temp=%8\n")

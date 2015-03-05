@@ -101,9 +101,9 @@ QString Param_Sweep::spice_netlist(bool isXyce)
         QString src = getProperty("Param")->Value;
         double start,stop,step,fac,points;
         QString unit;
-        str2num(getProperty("Start")->Value,start,unit,fac);
-        str2num(getProperty("Stop")->Value,stop,unit,fac);
-        str2num(getProperty("Points")->Value,points,unit,fac);
+        misc::str2num(getProperty("Start")->Value,start,unit,fac);
+        misc::str2num(getProperty("Stop")->Value,stop,unit,fac);
+        misc::str2num(getProperty("Points")->Value,points,unit,fac);
         step = (stop-start)/points;
         s = QString(".DC %1 %2 %3 %4\n").arg(src).arg(start).arg(stop).arg(step);
     }

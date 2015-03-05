@@ -110,9 +110,9 @@ QString TR_Sim::spice_netlist(bool isXyce)
     QString unit;
     double Tstart,Tstop,Npoints,Tstep,fac;
 
-    str2num(Props.at(1)->Value,Tstart,unit,fac); // Calculate Time Step
+    misc::str2num(Props.at(1)->Value,Tstart,unit,fac); // Calculate Time Step
     Tstart *= fac;
-    str2num(Props.at(2)->Value,Tstop,unit,fac);
+    misc::str2num(Props.at(2)->Value,Tstop,unit,fac);
     Tstop *= fac;
     Npoints = Props.at(3)->Value.toDouble();
     Tstep = (Tstop-Tstart)/Npoints;
