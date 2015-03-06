@@ -71,8 +71,13 @@ echo Exporting git tree recursively...
 echo =================================
 
 # Recursive to clone also ADMS
+# only use submodule if different from upstream
+#git clone --recursive ./ release/
+
+# Clone only Qucs code, add ADMS from stable tarball
+git clone ./ release/
+
 # flatten subdiretories
-git clone --recursive ./ release/
 mv release/examples release/qucs/examples/examples
 mv release/qucs-core release/qucs/
 
@@ -175,6 +180,32 @@ aclocal
 cd ..
 
 
+# only use submodule if different from upstream
+#echo ========================
+#echo Bootstrap ADMS submodule
+#echo ========================
+#cd qucs-core/deps/adms
+#./bootstrap.sh
+#./configure --enable-maintainer-mode
+#make distcheck
+#rm -r adms-*.tar.gz
+#cd ../../..
+
+echo =========================
+echo Download and extract ADMS
+echo =========================
+cd $REPO/release/qucs-$RELEASE
+if [ -f ~/Downloads/adms-2.3.4.tar.gz ]
+then
+	cp ~/Downloads/adms-2.3.4.tar.gz .
+else
+  wget http://sourceforge.net/projects/mot-adms/files/adms-source/2.3/adms-2.3.4.tar.gz -P ~/Downdloads/
+fi
+tar -zxvf adms-2.3.4.tar.gz
+mv adms-2.3.4 adms
+mv adms/* qucs-core/deps/adms/
+
+
 echo ==================================
 echo Set configure.ac into RELEASE mode
 echo ==================================
@@ -208,17 +239,6 @@ make
 make distclean # Verilog-A sources are kept ??
 rm -rf autom4te.cache
 cd ..
-
-
-echo ========================
-echo Bootstrap ADMS submodule
-echo ========================
-cd qucs-core/deps/adms
-./bootstrap.sh
-./configure --enable-maintainer-mode
-make distcheck
-rm -r adms-*.tar.gz
-cd ../../..
 
 
 echo ==========================
