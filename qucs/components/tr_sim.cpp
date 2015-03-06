@@ -117,7 +117,11 @@ QString TR_Sim::spice_netlist(bool isXyce)
     Npoints = Props.at(3)->Value.toDouble();
     Tstep = (Tstop-Tstart)/Npoints;
 
-    s += QString(" %1 %2 %3\n").arg(Tstep).arg(Tstop).arg(Tstart);
+    s += QString(" %1 %2 %3 ").arg(Tstep).arg(Tstop).arg(Tstart);
+    if (!isXyce) { // Xyce ignores this parameter
+        if (Props.at(18)->Value == "no") s += " UIC";
+    }
+    s += "\n";
     return s;
 }
 
