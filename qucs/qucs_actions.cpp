@@ -1367,6 +1367,7 @@ void QucsApp::slotUpdateRecentFiles()
         it.remove();
     }
   }
+
   for (int i = 0; i < MaxRecentFiles; ++i) {
     if (i < QucsSettings.RecentDocs.size()) {
       fileRecentAction[i]->setText(QucsSettings.RecentDocs[i]);
