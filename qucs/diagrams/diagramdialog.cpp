@@ -153,8 +153,8 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   // Tab #1 - Data ...........................................................
   QWidget *Tab1 = new QWidget();
   QVBoxLayout *Tab1Layout = new QVBoxLayout();
+  Tab1Layout->setSpacing(0);
   Tab1->setLayout(Tab1Layout);
-  Tab1Layout->setSpacing(5);
 
   Label4 = 0;     // different types with same content
   yrLabel = 0;
@@ -237,23 +237,15 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     Property2->setText("0");
 
     if((Diag->Name=="Rect") || (Diag->Name=="PS") || (Diag->Name=="SP") || (Diag->Name=="Curve")) {
-
-      QWidget *Box3 = new QWidget();
-      Box2Layout->addWidget(Box3);
-      QHBoxLayout *Box3Layout = new QHBoxLayout();
-      Box3Layout->setSpacing(5);
-      Box3->setLayout(Box3Layout);
-
       Label4 = new QLabel(tr("y-Axis:"));
-      Box3Layout->addWidget(Label4);
+      Box2Layout->addWidget(Label4);
       Label4->setEnabled(false);
       yAxisBox = new QComboBox();
-      Box3Layout->addWidget(yAxisBox);
+      Box2Layout->addWidget(yAxisBox);
       yAxisBox->insertItem(NameY);
       yAxisBox->insertItem(NameZ);
       yAxisBox->setEnabled(false);
       connect(yAxisBox, SIGNAL(activated(int)), SLOT(slotSetYAxis(int)));
-      Box3Layout->setStretchFactor(new QWidget(Box3), 5); // stretchable placeholder
     }
   }
   if(Property2) {
@@ -271,6 +263,7 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   QHBoxLayout *Box1Layout = new QHBoxLayout();
   Box1->setLayout(Box1Layout);
   Box1Layout->setSpacing(5);
+  Box1Layout->setContentsMargins(0, 0, 0, 0);
 
   QGroupBox *DataGroup = new QGroupBox(tr("Dataset"));
   Box1Layout->addWidget(DataGroup);
@@ -278,12 +271,11 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
   DataGroup->setLayout(DataGroupLayout);
   ChooseData = new QComboBox();
   DataGroupLayout->addWidget(ChooseData);
-  ChooseData->setMinimumWidth(200);
+  ChooseData->setMinimumWidth(300); // will force also min width of table below
   connect(ChooseData, SIGNAL(activated(int)), SLOT(slotReadVars(int)));
   // todo: replace by QTableWidget
   // see https://gist.github.com/ClemensFMN/8955411
   ChooseVars = new QTableWidget(1, 3);
-  ChooseVars->setShowGrid(false);
   ChooseVars->verticalHeader()->setVisible(false);
   ChooseVars->horizontalHeader()->setStretchLastSection(true);
   ChooseVars->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
@@ -498,8 +490,7 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     QWidget *VBox1 = new QWidget();
     axisXLayout->addWidget(VBox1);
     QVBoxLayout *VBox1Layout = new QVBoxLayout();
-    VBox1Layout->setStretchFactor(new QWidget(VBox1),5); // stretchable placeholder
-
+    VBox1Layout->addStretch();
     manualX = new QCheckBox(tr("manual"));//, VBox1);
     VBox1Layout->addWidget(manualX);
     VBox1->setLayout(VBox1Layout);
@@ -534,6 +525,7 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
 
     axisX->setLayout(axisXLayout);
     Tab3Layout->addWidget(axisX);
+    Tab3Layout->addStretch();
 
     QGroupBox *axisY = new QGroupBox(NameY);
     QHBoxLayout *axisYLayout = new QHBoxLayout();
@@ -541,7 +533,7 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     QWidget *VBox5 = new QWidget();
     axisYLayout->addWidget(VBox5);
     QVBoxLayout *VBox5Layout = new QVBoxLayout();
-    VBox5Layout->setStretchFactor(new QWidget(VBox5),5); // stretchable placeholder
+    VBox5Layout->addStretch();
     manualY = new QCheckBox(tr("manual"));
     VBox5Layout->addWidget(manualY);
     connect(manualY, SIGNAL(stateChanged(int)), SLOT(slotManualY(int)));
@@ -578,6 +570,7 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
 
     axisY->setLayout(axisYLayout);
     Tab3Layout->addWidget(axisY);
+    Tab3Layout->addStretch();
 
     QGroupBox *axisZ = new QGroupBox(NameZ);
     QHBoxLayout *axisZLayout = new QHBoxLayout();
@@ -585,7 +578,7 @@ DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
     QWidget *VBox9 = new QWidget();
     axisZLayout->addWidget(VBox9);
     QVBoxLayout *VBox9Layout = new QVBoxLayout();
-    VBox9Layout->setStretchFactor(new QWidget(VBox9),5); // stretchable placeholder
+    VBox9Layout->addStretch();
     manualZ = new QCheckBox(tr("manual"));
     VBox9Layout->addWidget(manualZ);
     connect(manualZ, SIGNAL(stateChanged(int)), SLOT(slotManualZ(int)));
