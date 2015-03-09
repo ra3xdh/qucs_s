@@ -135,6 +135,7 @@ SimMessage::SimMessage(QWidget *w, QWidget *parent)
   Butts->addWidget(Abort);
   connect(Abort,SIGNAL(clicked()),SLOT(reject()));
   connect(Abort,SIGNAL(clicked()),SLOT(AbortSim()));
+  connect(this,SIGNAL(rejected()),SLOT(AbortSim()));
 }
 
 /*!
