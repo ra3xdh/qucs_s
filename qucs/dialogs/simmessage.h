@@ -88,6 +88,7 @@ public:
   QProcess       SimProcess;
   QPlainTextEdit *ProgText, *ErrText;
   bool           wasLF;   // linefeed for "ProgText"
+  bool           simKilled; // true if simulation was aborted by the user
   QPushButton    *Display, *Abort;
   QProgressBar   *SimProgress;
   QString        ProgressText;

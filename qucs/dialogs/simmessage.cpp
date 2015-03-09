@@ -96,6 +96,7 @@ SimMessage::SimMessage(QWidget *w, QWidget *parent)
   //ProgText->setWordWrapMode(QTextOption::NoWrap);
   ProgText->setMinimumSize(400,80);
   wasLF = false;
+  simKilled = false;
 
   QGroupBox *HGroup = new QGroupBox();
   QHBoxLayout *hbox = new QHBoxLayout();
@@ -706,7 +707,7 @@ void SimMessage::slotSimEnded(int exitCode, QProcess::ExitStatus exitStatus )
   qDebug() << "SimMessage::slotSimEnded() : exitCode = " << exitCode << ", exitStatus = " << exitStatus;
   qDebug() << "SimMessage::slotSimEnded() : SimProcess.error() = " << SimProcess.error();
   
-  if (exitStatus == QProcess::NormalExit) {
+  if ((exitStatus == QProcess::NormalExit) || simKilled) { // as when killed by user exitStatus will be QProcess::CrashExit
     stat = exitCode;
   } else {
     stat = -1;
@@ -797,5 +798,6 @@ void SimMessage::slotDisplayButton()
 
 void SimMessage::AbortSim()
 {
-    SimProcess.kill();
+  simKilled = true;
+  SimProcess.kill();
 }
