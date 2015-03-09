@@ -264,7 +264,7 @@ int doNetlist(QString schematic, QString netlist)
 
   QStringList Collect;
 
-  QTextEdit *ErrText = new QTextEdit();  //dummy
+  QPlainTextEdit *ErrText = new QPlainTextEdit();  //dummy
   QFile NetlistFile;
   QTextStream   Stream;
 

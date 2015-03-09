@@ -23,7 +23,7 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QStringList>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 #include <Q3PtrList>
 #include <QTextStream>
 #include <QList>
@@ -1184,7 +1184,7 @@ void Schematic::propagateNode(QStringList& Collect,
 // Goes through all schematic components and allows special component
 // handling, e.g. like subcircuit netlisting.
 bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
-                   QStringList& Collect, QTextEdit *ErrText, int NumPorts)
+                   QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts)
 {
   bool r;
   QString s;
@@ -1199,12 +1199,12 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
     // check analog/digital typed components
     if(isAnalog) {
       if((pc->Type & isAnalogComponent) == 0) {
-        ErrText->insert(QObject::tr("ERROR: Component \"%1\" has no analog model.").arg(pc->Name));
+        ErrText->appendPlainText(QObject::tr("ERROR: Component \"%1\" has no analog model.").arg(pc->Name));
         return false;
       }
     } else {
       if((pc->Type & isDigitalComponent) == 0) {
-        ErrText->insert(QObject::tr("ERROR: Component \"%1\" has no digital model.").arg(pc->Name));
+        ErrText->appendPlainText(QObject::tr("ERROR: Component \"%1\" has no digital model.").arg(pc->Name));
         return false;
       }
     }
@@ -1250,7 +1250,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
       if(!d->loadDocument())      // load document if possible
       {
           delete d;
-          ErrText->insert(QObject::tr("ERROR: Cannot load subcircuit \"%1\".").arg(s));
+          ErrText->appendPlainText(QObject::tr("ERROR: Cannot load subcircuit \"%1\".").arg(s));
           return false;
       }
       d->DocName = s;
@@ -1283,7 +1283,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
     // handle library symbols
     if(pc->Model == "Lib") {
       if(creatingLib) {
-	ErrText->insert(
+	ErrText->appendPlainText(
 	    QObject::tr("WARNING: Skipping library component \"%1\".").
 	    arg(pc->Name));
 	continue;
@@ -1303,7 +1303,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
 	  r = ((LibComp*)pc)->createSubNetlist(stream, Collect, 2);
       }
       if(!r) {
-	ErrText->insert(
+	ErrText->appendPlainText(
 	    QObject::tr("ERROR: Cannot load library component \"%1\".").
 	    arg(pc->Name));
 	return false;
@@ -1317,7 +1317,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
       // tell the spice component it belongs to this schematic
       pc->setSchematic (this);
       if(s.isEmpty()) {
-        ErrText->insert(QObject::tr("ERROR: No file name in SPICE component \"%1\".").
+        ErrText->appendPlainText(QObject::tr("ERROR: No file name in SPICE component \"%1\".").
                         arg(pc->Name));
         return false;
       }
@@ -1329,7 +1329,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
 
       SpiceFile *sf = (SpiceFile*)pc;
       r = sf->createSubNetlist(stream);
-      ErrText->insert(sf->getErrorText());
+      ErrText->appendPlainText(sf->getErrorText());
       if(!r) return false;
       continue;
     }
@@ -1342,7 +1342,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
 	continue;
       s = pc->Props.getFirst()->Value;
       if(s.isEmpty()) {
-        ErrText->insert(QObject::tr("ERROR: No file name in %1 component \"%2\".").
+        ErrText->appendPlainText(QObject::tr("ERROR: No file name in %1 component \"%2\".").
 			arg(pc->Model).
                         arg(pc->Name));
         return false;
@@ -1357,13 +1357,13 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
       if(pc->Model == "VHDL") {
 	VHDL_File *vf = (VHDL_File*)pc;
 	r = vf->createSubNetlist(stream);
-	ErrText->insert(vf->getErrorText());
+	ErrText->appendPlainText(vf->getErrorText());
 	if(!r) return false;
       }
       if(pc->Model == "Verilog") {
 	Verilog_File *vf = (Verilog_File*)pc;
 	r = vf->createSubNetlist(stream);
-	ErrText->insert(vf->getErrorText());
+	ErrText->appendPlainText(vf->getErrorText());
 	if(!r) return false;
       }
       continue;
@@ -1377,7 +1377,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
 // each component. Output into "stream", NodeSets are collected in
 // "Collect" and counted with "countInit".
 bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
-                   QStringList& Collect, QTextEdit *ErrText, int NumPorts)
+                   QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts)
 {
   // delete the node names
   for(Node *pn = DocNodes.first(); pn != 0; pn = DocNodes.next()) {
@@ -1417,7 +1417,7 @@ bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
 }
 
 // ---------------------------------------------------
-bool Schematic::createLibNetlist(QTextStream *stream, QTextEdit *ErrText,
+bool Schematic::createLibNetlist(QTextStream *stream, QPlainTextEdit *ErrText,
 				 int NumPorts)
 {
   int countInit = 0;
@@ -1457,7 +1457,7 @@ bool Schematic::createLibNetlist(QTextStream *stream, QTextEdit *ErrText,
 #define VHDL_LIBRARIES   "\nlibrary ieee;\nuse ieee.std_logic_1164.all;\n"
 
 // ---------------------------------------------------
-void Schematic::createSubNetlistPlain(QTextStream *stream, QTextEdit *ErrText,
+void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrText,
 int NumPorts)
 {
   int i, z;
@@ -1478,7 +1478,7 @@ int NumPorts)
     QString f = misc::properAbsFileName(DocName) + ".lst";
     ofile.setFileName(f);
     if(!ofile.open(IO_WriteOnly)) {
-      ErrText->insert(tr("ERROR: Cannot create library file \"%s\".").arg(f));
+      ErrText->appendPlainText(tr("ERROR: Cannot create library file \"%s\".").arg(f));
       return;
     }
     tstream = new QTextStream(&ofile);
@@ -1489,7 +1489,7 @@ int NumPorts)
   PortTypes.clear();
   for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
     if(pc->Model.at(0) == '.') { // no simulations in subcircuits
-      ErrText->insert(
+      ErrText->appendPlainText(
         QObject::tr("WARNING: Ignore simulation component in subcircuit \"%1\".").arg(DocName)+"\n");
       continue;
     }
@@ -1641,7 +1641,7 @@ int NumPorts)
         if(pc->Model != "Eqn") {
           s = pc->get_Verilog_Code(NumPorts);
           if(s.length()>0 && s.at(0) == '\xA7') {  //section symbol
-            ErrText->insert(s.mid(1));
+            ErrText->appendPlainText(s.mid(1));
           }
           else (*tstream) << s;
         }
@@ -1690,7 +1690,7 @@ int NumPorts)
       // write all equations into netlist file
       for(pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
         if(pc->Model == "Eqn") {
-          ErrText->insert(
+          ErrText->appendPlainText(
                       QObject::tr("WARNING: Equations in \"%1\" are 'time' typed.").
           arg(pc->Name));
           (*tstream) << pc->get_VHDL_Code(NumPorts);
@@ -1707,7 +1707,7 @@ int NumPorts)
         if(pc->Model != "Eqn") {
             s = pc->get_VHDL_Code(NumPorts);
             if(s.length()>0 && s.at(0) == '\xA7') {  //section symbol
-              ErrText->insert(s.mid(1));
+              ErrText->appendPlainText(s.mid(1));
           }
           else (*tstream) << s;
         }
@@ -1726,7 +1726,7 @@ int NumPorts)
 // ---------------------------------------------------
 // Write the netlist as subcircuit to the text stream 'stream'.
 bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
-                     QStringList& Collect, QTextEdit *ErrText, int NumPorts)
+                     QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts)
 {
 //  int Collect_count = Collect.count();   // position for this subcircuit
 
@@ -1752,7 +1752,7 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
 // ---------------------------------------------------
 // Determines the node names and writes subcircuits into netlist file.
 int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
-                              QTextEdit *ErrText)
+                              QPlainTextEdit *ErrText)
 {
   if(showBias > 0) showBias = -1;  // do not show DC bias anymore
 
@@ -1767,7 +1767,7 @@ int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
     if(pc->Model.at(0) == '.') {
       if(pc->Model == ".Digi") {
         if(allTypes & isDigitalComponent) {
-          ErrText->insert(
+          ErrText->appendPlainText(
              QObject::tr("ERROR: Only one digital simulation allowed."));
           return -10;
         }
@@ -1780,7 +1780,7 @@ int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
       }
       else allTypes |= isAnalogComponent;
       if((allTypes & isComponent) == isComponent) {
-        ErrText->insert(
+        ErrText->appendPlainText(
            QObject::tr("ERROR: Analog and digital simulations cannot be mixed."));
         return -10;
       }
@@ -1799,7 +1799,7 @@ int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
     }
     else {
       if(NumPorts < 1 && isTruthTable) {
-        ErrText->insert(
+        ErrText->appendPlainText(
            QObject::tr("ERROR: Digital simulation needs at least one digital source."));
         return -10;
       }
