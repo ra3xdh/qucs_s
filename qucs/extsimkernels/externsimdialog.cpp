@@ -106,7 +106,14 @@ void ExternSimDialog::slotSetSimulator()
     }
         break;
     case simXycePar: {
-
+        disconnect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
+        disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()));
+        disconnect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
+        connect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
+        connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessXyceOutput()));
+        connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
+        connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
+        disconnect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
     }
         break;
     default: break;
