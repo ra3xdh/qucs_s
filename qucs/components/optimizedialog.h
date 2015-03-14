@@ -58,6 +58,8 @@ private slots:
   void slotChangeGoalName(const QString&);
   void slotChangeGoalNum(const QString&);
   void slotChangeGoalType(const QString&);
+  void slotCreateEqn();
+  void slotSetPrecision(const QPoint&);
 
 private:
   void createASCOFiles();
@@ -66,6 +68,7 @@ public:
   Optimize_Sim *Comp;
   Schematic *Doc;
   bool changed;
+  int numPrec;
 
   QVBoxLayout *all;
   QLineEdit *NameEdit, *VarNameEdit,

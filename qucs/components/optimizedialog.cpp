@@ -15,6 +15,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
+
+#include "main.h"
+#include "qucs.h"
 #include "optimizedialog.h"
 #include "opt_sim.h"
 #include "schematic.h"
@@ -32,6 +38,11 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
+#include <QApplication>
+#include <QClipboard>
+#include <QAction>
+#include <QMenu>
+#include <QInputDialog>
 
 
 OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
@@ -40,6 +51,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   Comp = c_;
   Doc  = d_;
   changed = false;
+  numPrec = 3;
   setWindowTitle(tr("Edit Optimization Properties"));
 
   Expr.setPattern("[\\w_]+");
@@ -160,6 +172,12 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
       QStringList() << tr("Name") << tr("active") << tr("initial") << tr("min") << tr("max") << tr("Type"));
   VarTable->setSortingEnabled(false);
   VarTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+  VarTable->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+  VarTable->horizontalHeader()->setClickable(false); // no action when clicking on the header 
+
+  // right-click on the table header to open the context menu
+  VarTable->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(VarTable->horizontalHeader(), SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(slotSetPrecision(const QPoint&)));
 
   connect(VarTable, SIGNAL(currentCellChanged(int, int, int, int)),
       SLOT(slotEditVariable()));
@@ -226,6 +244,15 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   VarButtons->addWidget(AddVar_Butt);
   VarButtons->addWidget(DelVar_Butt);
   gp3->addMultiCellLayout(VarButtons, 4,4,0,2);
+
+  // add horizontal line
+  QFrame *line = new QFrame(this);
+  line->setFrameShape(QFrame::HLine);
+  line->setFrameShadow(QFrame::Sunken); 
+  gp3->addWidget(line, 5, 0, 1, -1); // fill the entire width
+  QPushButton *CreateEqn_Butt = new QPushButton(tr("Copy current values to equation"));
+  connect(CreateEqn_Butt, SIGNAL(clicked()), SLOT(slotCreateEqn()));
+  gp3->addWidget(CreateEqn_Butt,6,0);
 
   t->addTab(Tab3, tr("Variables"));
 
@@ -343,21 +370,27 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
       QStringList ValueSplit = pp->Value.split("|");
       int row = VarTable->rowCount();
       VarTable->insertRow(row);
+      // Name
       item = new QTableWidgetItem(ValueSplit.at(0));
       item->setFlags(item->flags() & ~Qt::ItemIsEditable);
       VarTable->setItem(row, 0, item);
+      // active
       item = new QTableWidgetItem((ValueSplit.at(1) == "yes")? tr("yes") : tr("no"));
       item->setFlags(item->flags() & ~Qt::ItemIsEditable);
       VarTable->setItem(row, 1, item);
-      item = new QTableWidgetItem(ValueSplit.at(2));
+      // initial
+      item = new QTableWidgetItem(QString::number(ValueSplit.at(2).toDouble(), 'g', numPrec));
       item->setFlags(item->flags() & ~Qt::ItemIsEditable);
       VarTable->setItem(row, 2, item);
+      // min
       item = new QTableWidgetItem(ValueSplit.at(3));
       item->setFlags(item->flags() & ~Qt::ItemIsEditable);
       VarTable->setItem(row, 3, item);
+      // max
       item = new QTableWidgetItem(ValueSplit.at(4));
       item->setFlags(item->flags() & ~Qt::ItemIsEditable);
       VarTable->setItem(row, 4, new QTableWidgetItem(ValueSplit.at(4)));
+      // Type
       QString typeStr;
       if (ValueSplit.at(5) == "LIN_DOUBLE") {
         typeStr = tr("linear double");
@@ -786,6 +819,72 @@ void OptimizeDialog::slotApply()
 // Is called if the "Cancel"-button is pressed.
 void OptimizeDialog::slotCancel()
 {
-  if(changed) done(1); // changed could have been done before
-  else done(0);        // (by "Apply"-button)
+  if(changed) done(QDialog::Accepted); // changed could have been done before
+  else done(QDialog::Rejected);        // (by "Apply"-button)
 }
+
+
+void OptimizeDialog::slotCreateEqn()
+{
+  QString s = "<Qucs Schematic " PACKAGE_VERSION ">\n"
+              "<Components>\n"
+              //<Model Name ShowName cx cy tx ty mirroredX rotate
+              "<Eqn OptValues 1 0 0 -28 15 0 0 ";
+
+ Property *pp;
+ for(pp = Comp->Props.at(2); pp != 0; pp = Comp->Props.next()) {
+   if(pp->Name == "Var") { // property is an optimization variable
+      QStringList ValueSplit = pp->Value.split("|");
+      // "Name" = "initial (current) value"
+      s += "\"" + ValueSplit.at(0) + "=" + ValueSplit.at(2) + "\" 1 ";
+   }
+ }
+
+ s += QString("\"yes\" 0>\n" // Export yes, no display
+              "</Components>\n"
+	      "<Wires>\n"
+	      "</Wires>\n"
+	      "<Diagrams>\n"
+	      "</Diagrams>\n"
+	      "<Paintings>\n"
+	      "</Paintings>\n");
+
+ QApplication::clipboard()->setText(s, QClipboard::Clipboard);
+ // uncomment to have the dialog close and the Equation pasted...
+ //QucsMain->slotEditPaste(true);
+ //accept();
+}
+
+void OptimizeDialog::slotSetPrecision(const QPoint& pos)
+{
+  QPoint globalPos = VarTable->horizontalHeader()->mapToGlobal(pos);
+  int column = VarTable->horizontalHeader()->logicalIndexAt(pos);
+
+  // change precision is supported only for the 'initial' column
+  if (column != 2) return;
+
+  QMenu cMenu;
+  cMenu.addAction("Set precision");
+
+  QAction* selectedItem = cMenu.exec(globalPos);
+  if (selectedItem) {
+    bool ok;
+    int i = QInputDialog::getInt(this, tr("Set precision"),
+                                 tr("Precision:"), 2, 1, 16, 1, &ok);
+    if (!ok) return;
+    numPrec = i;
+    // update the shown values according to the new precision
+    int row = 0;
+    Property *pp;
+    QTableWidgetItem *item;
+    for(pp = Comp->Props.at(2); pp != 0; pp = Comp->Props.next()) {
+      if(pp->Name == "Var") {
+	QStringList ValueSplit = pp->Value.split("|");
+	// 'initial' column
+	item = VarTable->item(row++, 2);
+	item->setText(QString::number(ValueSplit.at(2).toDouble(), 'g', numPrec));
+      }
+    }
+  }
+}
+
