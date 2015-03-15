@@ -96,16 +96,22 @@ void Param_Sweep::recreate(Schematic*)
 
 QString Param_Sweep::spice_netlist(bool isXyce)
 {
+    double start,stop,step,fac,points;
+    QString unit;
+    misc::str2num(getProperty("Start")->Value,start,unit,fac);
+    misc::str2num(getProperty("Stop")->Value,stop,unit,fac);
+    misc::str2num(getProperty("Points")->Value,points,unit,fac);
+    step = (stop-start)/points;
+
     QString s;
     if (Props.at(0)->Value.startsWith("DC")) {
         QString src = getProperty("Param")->Value;
-        double start,stop,step,fac,points;
-        QString unit;
-        misc::str2num(getProperty("Start")->Value,start,unit,fac);
-        misc::str2num(getProperty("Stop")->Value,stop,unit,fac);
-        misc::str2num(getProperty("Points")->Value,points,unit,fac);
-        step = (stop-start)/points;
         s = QString(".DC %1 %2 %3 %4\n").arg(src).arg(start).arg(stop).arg(step);
+    } else if (isXyce) {
+        QString var = getProperty("Param")->Value;
+        s = QString(".STEP %1 %2 %3 %4\n").arg(var).arg(start).arg(stop).arg(step);
+    } else {
+        s = "";
     }
     return s;
 }

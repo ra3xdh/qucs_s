@@ -106,6 +106,7 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
            if ((sim_typ==".HB")&&(sim=="hb")) stream<<s;
            if (((sim_typ==".SW")&&(pc->Props.at(0)->Value.startsWith("DC")))&&
                 (sim=="dc")) stream<<s;
+           if ((sim_typ==".SW")&&(!pc->Props.at(0)->Value.startsWith("DC"))) stream<<s;
            if ((sim_typ==".DC")) stream<<s;
        }
     }
