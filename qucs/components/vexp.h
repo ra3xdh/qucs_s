@@ -1,9 +1,13 @@
 /***************************************************************************
                          vexp.h  -  description
-                        ------------------------
-    begin                : Fri Mar 9 2007
-    copyright            : (C) 2007 by Gunther Kraut
-    email                : gn.kraut@t-online.de
+                   --------------------------------------
+    begin                    : Fri Mar 9 2007
+    copyright              : (C) 2007 by Gunther Kraut
+    email                     : gn.kraut@t-online.de
+    spice4qucs code added  Wed. 18 March 2015
+    copyright              : (C) 2015 by Mike Brinson
+    email                    : mbrin72043@yahoo.co.uk
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -27,6 +31,7 @@ public:
   ~vExp();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+   QString spice_netlist(bool isXyce = false);
 };
 
 #endif

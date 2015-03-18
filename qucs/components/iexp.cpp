@@ -1,9 +1,13 @@
 /***************************************************************************
                                 iexp.cpp
-                               ----------
-    begin                : Tue Mar 06 2007
-    copyright            : (C) 2007 by Gunther Kraut
-    email                : gn.kraut@t-online.de
+                               ---------------
+    begin                     : Tue Mar 06 2007
+    copyright               : (C) 2007 by Gunther Kraut
+    email                      : gn.kraut@t-online.de
+    spice4qucs code added  Wed. 18 March 2015
+    copyright               : (C) 2015 by Mike Brinson
+    email                     : mbrin72043@yahoo.co.uk 
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -16,7 +20,9 @@
  ***************************************************************************/
 
 #include "iexp.h"
-
+#include "node.h"
+#include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 iExp::iExp()
 {
@@ -51,6 +57,7 @@ iExp::iExp()
   tx = x1+4;
   ty = y2+8;
   Model = "Iexp";
+  SpiceModel = "I";
   Name  = "I";
 
   Props.append(new Property("I1", "0", true,
@@ -86,3 +93,24 @@ Element* iExp::info(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne)  return new iExp();
   return 0;
 }
+
+QString iExp::spice_netlist(bool isXyce)
+{
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
+    foreach(Port *p1, Ports) {
+        QString nam = p1->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+
+   QString U1= spicecompat::normalize_value(Props.at(0)->Value);
+   QString U2 = spicecompat::normalize_value(Props.at(1)->Value);
+   QString T1 = spicecompat::normalize_value(Props.at(2)->Value);
+   QString T2 = spicecompat::normalize_value(Props.at(3)->Value);
+   QString Tr = spicecompat::normalize_value(Props.at(4)->Value);
+   QString Tf = spicecompat::normalize_value(Props.at(5)->Value);
+
+    s += QString(" DC 0 EXP(-%1 -%2 %3 %4 %5 %6) AC 0\n").arg(U1).arg(U2).arg(T1).arg(Tr).arg(T2).arg(Tf);
+    return s;
+}
+
