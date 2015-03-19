@@ -45,6 +45,8 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
                     QStringList &vars, QStringList &outputs)
 {
     QString s;
+    bool hasParSweep = false;
+
     if(!prepareSpiceNetlist(stream,true)) return; // Unable to perform spice simulation
     startNetlist(stream,true);
 
@@ -106,13 +108,18 @@ void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulat
            if ((sim_typ==".HB")&&(sim=="hb")) stream<<s;
            if (((sim_typ==".SW")&&(pc->Props.at(0)->Value.startsWith("DC")))&&
                 (sim=="dc")) stream<<s;
-           if ((sim_typ==".SW")&&(!pc->Props.at(0)->Value.startsWith("DC"))) stream<<s;
+           if ((sim_typ==".SW")&&(!pc->Props.at(0)->Value.startsWith("DC"))) {
+               stream<<s;
+               hasParSweep = true;
+           }
            if ((sim_typ==".DC")) stream<<s;
        }
     }
 
 
-    QString filename = QString("%1_%2.txt").arg(basenam).arg(sim);
+    QString filename;
+    if (hasParSweep) filename = QString("%1_%2_swp.txt").arg(basenam).arg(sim);
+    else filename = QString("%1_%2.txt").arg(basenam).arg(sim);
     QString write_str;
     if (sim=="hb") {
         write_str = QString(".PRINT  %1 file=%2 %3\n").arg(sim).arg(filename).arg(nods);

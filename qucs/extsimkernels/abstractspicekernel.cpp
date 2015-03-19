@@ -276,11 +276,14 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
 
         QString ngspice_output_filename;
         foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
+            QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
             if (ngspice_output_filename.endsWith("_hb.txt")) {
-                parseHBOutput(workdir+QDir::separator()+ngspice_output_filename,sim_points,var_list);
+                parseHBOutput(full_outfile,sim_points,var_list);
                 isComplex = true;
+            } else if (ngspice_output_filename.endsWith("_swp.txt")) {
+                parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
             } else {
-                parseNgSpiceSimOutput(workdir+QDir::separator()+ngspice_output_filename,sim_points,var_list,isComplex);
+                parseNgSpiceSimOutput(full_outfile,sim_points,var_list,isComplex);
             }
             if (var_list.isEmpty()) continue; // notning to convert
             normalizeVarsNames(var_list);
