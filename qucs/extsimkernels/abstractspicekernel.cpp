@@ -259,6 +259,30 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
 
 }
 
+void AbstractSpiceKernel::parseResFile(QString resfile, QString &var, QStringList &values)
+{
+    var.clear();
+    values.clear();
+
+    QFile ofile(resfile);
+    if (ofile.open(QFile::ReadOnly)) {
+        QTextStream swp_data(&ofile);
+        while (!swp_data.atEnd()) {
+            QRegExp point_pattern("^\\s*[0-9]+ .*");
+            QRegExp var_pattern("^STEP\\s+.*");
+            QRegExp sep("\\s");
+            QString lin = swp_data.readLine();
+            if (var_pattern.exactMatch(lin)) {
+                var = lin.split(sep,QString::SkipEmptyParts).last();
+            }
+            if (point_pattern.exactMatch(lin)) {
+                values.append(lin.split(sep,QString::SkipEmptyParts).last());
+            }
+        }
+        ofile.close();
+    }
+}
+
 void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
 {
     QFile dataset(qucs_dataset);
@@ -269,6 +293,11 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
 
         QString sim,indep;
         QStringList indep_vars;
+
+        QString swp_var;
+        QStringList swp_var_val;
+        swp_var.clear();
+        swp_var_val.clear();
 
         QList< QList<double> > sim_points;
         QStringList var_list;
@@ -281,6 +310,14 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 parseHBOutput(full_outfile,sim_points,var_list);
                 isComplex = true;
             } else if (ngspice_output_filename.endsWith("_swp.txt")) {
+                QString simstr = full_outfile;
+                simstr.remove("_swp.txt");
+                simstr = simstr.split('_').last();
+                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                                                           + "spice4qucs." + simstr + ".cir.res");
+                qDebug()<<res_file;
+                parseResFile(res_file,swp_var,swp_var_val);
+
                 parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
             } else {
                 parseNgSpiceSimOutput(full_outfile,sim_points,var_list,isComplex);

@@ -59,6 +59,7 @@ public:
     void parseSTEPOutput(QString ngspice_file,
                          QList< QList<double> > &sim_points,
                          QStringList &var_list, bool &isComplex);
+    void parseResFile(QString resfile, QString &var, QStringList &values);
     void convertToQucsData(const QString &qucs_dataset);
     QString getOutput();
 
