@@ -99,8 +99,11 @@ QString Param_Sweep::spice_netlist(bool isXyce)
     double start,stop,step,fac,points;
     QString unit;
     misc::str2num(getProperty("Start")->Value,start,unit,fac);
+    start *= fac;
     misc::str2num(getProperty("Stop")->Value,stop,unit,fac);
+    stop *= fac;
     misc::str2num(getProperty("Points")->Value,points,unit,fac);
+    points *= fac;
     step = (stop-start)/points;
 
     QString s;
