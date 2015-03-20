@@ -302,6 +302,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         QList< QList<double> > sim_points;
         QStringList var_list;
         bool isComplex = false;
+        bool hasParSweep = false;
 
         QString ngspice_output_filename;
         foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
@@ -310,6 +311,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 parseHBOutput(full_outfile,sim_points,var_list);
                 isComplex = true;
             } else if (ngspice_output_filename.endsWith("_swp.txt")) {
+                hasParSweep = true;
                 QString simstr = full_outfile;
                 simstr.remove("_swp.txt");
                 simstr = simstr.split('_').last();
@@ -331,6 +333,14 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 ds_stream<<QString::number(sim_point.at(0),'e',12)<<endl;
             }
             ds_stream<<"</indep>\n";
+            if (hasParSweep) {
+                ds_stream<<QString("<indep %1 %2>\n").arg(swp_var).arg(swp_var_val.count());
+                foreach (QString val,swp_var_val) {
+                    ds_stream<<val<<endl;
+                }
+                ds_stream<<"</indep>\n";
+                indep += " " + swp_var;
+            }
             for(int i=1;i<var_list.count();i++) { // output dep var
                 ds_stream<<QString("<dep %1 %2>\n").arg(var_list.at(i)).arg(indep);
                 foreach (sim_point,sim_points) {
@@ -349,7 +359,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 }
                 ds_stream<<"</dep>\n";
             }
-
+            hasParSweep = false;
         }
 
         dataset.close();
