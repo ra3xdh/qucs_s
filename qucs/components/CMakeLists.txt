@@ -59,6 +59,7 @@ vcresistor.cpp
 vacomponent.cpp
 mutualx.cpp
 src_eqndef.cpp
+vsffm.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -239,6 +240,7 @@ vprobe.h
 vpulse.h
 vrect.h
 src_eqndef.h
+vsffm.h
 )
 
 
