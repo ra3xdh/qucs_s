@@ -459,33 +459,49 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
 void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
 {
     QString prefix="";
+    QString iprefix="";
     QString indep = var_list.first();
     bool HB = false;
     qDebug()<<"norm:"<<indep;
     indep = indep.toLower();
     if (indep=="time") {
         prefix = "tran.";
+        iprefix = "i(tran.";
     } else if (indep=="frequency") {
         prefix = "ac.";
+        iprefix = "i(ac.";
     } else if (indep=="hbfrequency") {
         HB = true;
     }
 
-    if (var_list.count()>1) {
-        for (int i=1;i<var_list.count();i++) {
-            if ((!var_list[i].startsWith(prefix))||(HB)) {
-                if (HB) {
-                    int idx = var_list[i].indexOf('(');  // Add .Vb suffix for correct display
-                    int cnt = var_list[i].count();
-                    var_list[i] = var_list[i].right(cnt-idx-1); // Only node.Vb is displayed correctly
-                    var_list[i].remove(')');
-                    var_list[i] += ".Vb";
-                } else {
-                    var_list[i] = prefix + var_list[i];
-                }
+    QStringList::iterator it=var_list.begin();
+
+    for (it++;it!=var_list.end();it++) {
+        if ((!(it->startsWith(prefix)||it->startsWith(iprefix)))||(HB)) {
+            if (HB) {
+                int idx = it->indexOf('(');  // Add .Vb suffix for correct display
+                int cnt = it->count();
+                *it = it->right(cnt-idx-1); // Only node.Vb is displayed correctly
+                it->remove(')');
+                *it += ".Vb";
+            } else {
+                *it = prefix + *it;
+            }
+        }
+        QStringList lst = it->split('(');
+        if (lst.count()>1) {
+            QRegExp ivprobe_pattern("^[Vv][Pp][Rr][0-9]+.*");
+            QRegExp ivprobe_pattern_ngspice("^(ac\\.|tran\\.)[Vv][Pp][Rr][0-9]+.*");
+            if (ivprobe_pattern.exactMatch(lst.at(1))) {
+                lst[1].remove(0,1);
+                *it = lst.join("(");
+            } else if (ivprobe_pattern_ngspice.exactMatch(lst.at(1))) {
+                lst[1].replace(".v",".",Qt::CaseInsensitive);
+                *it = lst.join("(");
             }
         }
     }
+
 }
 
 void AbstractSpiceKernel::slotErrors(QProcess::ProcessError err)
