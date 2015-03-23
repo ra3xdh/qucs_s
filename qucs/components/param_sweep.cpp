@@ -94,6 +94,18 @@ void Param_Sweep::recreate(Schematic*)
   }
 }
 
+QString Param_Sweep::getNgspiceBeforeSim()
+{
+    QString s;
+    return s;
+}
+
+QString Param_Sweep::getNgspiceAfterSim()
+{
+    QString s;
+    return s;
+}
+
 QString Param_Sweep::spice_netlist(bool isXyce)
 {
     double start,stop,step,fac,points;
