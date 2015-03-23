@@ -4,6 +4,10 @@
     begin                : Sat Sep 18 2004
     copyright            : (C) 2004 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
+    spice4qucs code added  Wed. 22 March 2015
+    copyright          : (C) 2015 by Mike Brinson
+    email                : mbrin72043@yahoo.co.uk
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -16,6 +20,9 @@
  ***************************************************************************/
 
 #include "irect.h"
+#include "node.h"
+#include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 iRect::iRect()
@@ -49,7 +56,7 @@ iRect::iRect()
   Model = "Irect";
   Name  = "I";
 
-  Props.append(new Property("I", "1 mA", true,
+  Props.append(new Property("U", "1 mA", true,
 		QObject::tr("current at high pulse")));
   Props.append(new Property("TH", "1 ms", true,
 		QObject::tr("duration of high pulses")));
@@ -67,6 +74,37 @@ iRect::iRect()
 
 iRect::~iRect()
 {
+}
+
+QString iRect::spice_netlist(bool isXyce)
+{
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
+
+    foreach(Port *p1, Ports) {
+        QString nam = p1->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }   
+
+    double T, TL, TH, Trval, Tfval, fac;
+    QString unit;
+
+    QString U = spicecompat::normalize_value(Props.at(0)->Value); //VH
+    QString Td = spicecompat::normalize_value(Props.at(5)->Value); // Td
+    QString Tr = spicecompat::normalize_value(Props.at(3)->Value); // Tr
+    QString Tf = spicecompat::normalize_value(Props.at(4)->Value); //Tf
+    misc::str2num(Props.at(1)->Value,TH,unit,fac); //TH
+    TH *= fac;    // TH = pw
+    misc::str2num(Props.at(2)->Value,TL,unit,fac);
+    T = TL*fac+TH;
+   misc::str2num(Props.at(3)->Value,Trval,unit,fac); 
+     T = Trval*fac+T;    
+   misc::str2num(Props.at(4)->Value,Tfval,unit,fac); 
+     T = Tfval*fac+T;    
+     
+    s += QString(" DC 0 PULSE( 0  -%1 %2 %3 %4 %5 %6)  AC 0\n").arg(U).arg(Td).arg(Tr).arg(Tf).arg(TH).arg(T);
+
+    return s;
 }
 
 Component* iRect::newOne()
