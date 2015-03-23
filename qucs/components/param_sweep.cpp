@@ -122,7 +122,7 @@ QString Param_Sweep::getNgspiceAfterSim()
     QString s;
     QString par = getProperty("Param")->Value;
     s = "set appendwrite\n";
-    s += QString("echo \"$&number\" \"$&r_act\" >> spice4qucs.cir.res\n").arg(par);
+    s += QString("echo \"$&number\" \"$&%1_act\" >> spice4qucs.cir.res\n").arg(par);
     s += QString("let %1_act = %1_act + delta\n").arg(par);
     s += "let number = number +1\n";
     s += "end\n";

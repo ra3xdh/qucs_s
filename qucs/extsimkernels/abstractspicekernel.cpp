@@ -359,7 +359,7 @@ void AbstractSpiceKernel::parseResFile(QString resfile, QString &var, QStringLis
     }
 }
 
-void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
+void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xyce)
 {
     QFile dataset(qucs_dataset);
     if (dataset.open(QFile::WriteOnly)) {
@@ -391,8 +391,11 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 QString simstr = full_outfile;
                 simstr.remove("_swp.txt");
                 simstr = simstr.split('_').last();
-                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
-                                                           + "spice4qucs." + simstr + ".cir.res");
+                QString res_file;
+                if (xyce) res_file = QDir::convertSeparators(workdir + QDir::separator()
+                                                        + "spice4qucs." + simstr + ".cir.res");
+                else res_file = QDir::convertSeparators(workdir + QDir::separator()
+                                                        + "spice4qucs.cir.res");
                 qDebug()<<res_file;
                 parseResFile(res_file,swp_var,swp_var_val);
 

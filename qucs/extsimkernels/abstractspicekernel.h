@@ -60,7 +60,7 @@ public:
                          QList< QList<double> > &sim_points,
                          QStringList &var_list, bool &isComplex);
     void parseResFile(QString resfile, QString &var, QStringList &values);
-    void convertToQucsData(const QString &qucs_dataset);
+    void convertToQucsData(const QString &qucs_dataset, bool xyce = false);
     QString getOutput();
 
     

@@ -144,7 +144,7 @@ void ExternSimDialog::slotProcessXyceOutput()
     // Set temporary safe output name
     QFileInfo inf(Sch->DocName);
     QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_xyce.dat";
-    xyce->convertToQucsData(qucs_dataset);
+    xyce->convertToQucsData(qucs_dataset,true);
 }
 
 void ExternSimDialog::slotNgspiceStarted()

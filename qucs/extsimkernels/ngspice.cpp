@@ -20,6 +20,7 @@
 #include "components/iprobe.h"
 #include "components/vprobe.h"
 #include "components/equation.h"
+#include "components/param_sweep.h"
 
 Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
     AbstractSpiceKernel(sch_, parent)
@@ -84,8 +85,20 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
     qDebug()<<vars;
 
     stream<<".control\n"          //execute simulations
-          <<"set filetype=ascii\n"
-          <<"run\n";
+          <<"set filetype=ascii\n";
+
+    bool hasParSWP = false;
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->Model==".SW") {
+            if (!pc->Props.at(0)->Value.startsWith("DC")) {
+                Param_Sweep *ParSWP = (Param_Sweep *)pc;
+                stream<<ParSWP->getNgspiceBeforeSim();
+                hasParSWP = true;
+            }
+        }
+    }
+
+    stream<<"run\n";
 
     QStringList vars_eq;
     QStringList Eqns;
@@ -122,10 +135,23 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
         for (int i=0;i<Eqns.count();i++) {
             if (Eqns.at(i).contains(sim+".")) nods += " " + vars_eq.at(i);
         }
-        QString filename = QString("%1_%2.txt").arg(basenam).arg(sim);
+
+        QString filename;
+        if (hasParSWP) filename = QString("%1_%2_swp.txt").arg(basenam).arg(sim);
+        else filename = QString("%1_%2.txt").arg(basenam).arg(sim);
+
         QString write_str = QString("write %1 %2\n").arg(filename).arg(nods);
         stream<<write_str;
         outputs.append(filename);
+    }
+
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->Model==".SW") {
+            if (!pc->Props.at(0)->Value.startsWith("DC")) {
+                Param_Sweep *ParSWP = (Param_Sweep *)pc;
+                stream<<ParSWP->getNgspiceAfterSim();
+            }
+        }
     }
 
     stream<<"exit\n"
