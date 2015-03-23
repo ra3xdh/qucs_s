@@ -96,13 +96,36 @@ void Param_Sweep::recreate(Schematic*)
 
 QString Param_Sweep::getNgspiceBeforeSim()
 {
-    QString s;
+    QString s,unit;
+    QString par = getProperty("Param")->Value;
+    double start,stop,step,fac,points;
+    misc::str2num(getProperty("Start")->Value,start,unit,fac);
+    start *= fac;
+    misc::str2num(getProperty("Stop")->Value,stop,unit,fac);
+    stop *= fac;
+    misc::str2num(getProperty("Points")->Value,points,unit,fac);
+    points *= fac;
+    step = (stop-start)/points;
+    s = QString("let start_%1 = %2\n").arg(par).arg(start);
+    s += QString("let stop_%1 = %2\n").arg(par).arg(stop);
+    s += QString("let %1_act=start_%1\n").arg(par);
+    s += QString("let delta = %1\n").arg(step);
+    s += "let number = 0\n";
+    s += QString("echo \"STEP %1\" > spice4qucs.cir.res\n").arg(par);
+    s += QString("while %1_act le stop_%1\n").arg(par);
+    s += QString("alter %1 %1_act\n").arg(par);
     return s;
 }
 
 QString Param_Sweep::getNgspiceAfterSim()
 {
     QString s;
+    QString par = getProperty("Param")->Value;
+    s = "set appendwrite\n";
+    s += QString("echo \"$&number\" \"$&r_act\" >> spice4qucs.cir.res\n").arg(par);
+    s += QString("let %1_act = %1_act + delta\n").arg(par);
+    s += "let number = number +1\n";
+    s += "end\n";
     return s;
 }
 
