@@ -203,5 +203,6 @@
 // Spice-specific components
 #include "src_eqndef.h"
 #include "vsffm.h"
+#include "isffm.h"
 
 #endif

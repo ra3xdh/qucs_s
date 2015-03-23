@@ -428,7 +428,8 @@ void Module::registerModules (void) {
 
   //spice specific components
   REGISTER_SPICE_1 (Src_eqndef);
-   REGISTER_SPICE_1 (vSffm);
+  REGISTER_SPICE_1 (vSffm);
+  REGISTER_SPICE_1  (iSffm);
 
   // paintings
   REGISTER_PAINT_1 (GraphicLine);

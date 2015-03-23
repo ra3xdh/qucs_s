@@ -60,6 +60,7 @@ vacomponent.cpp
 mutualx.cpp
 src_eqndef.cpp
 vsffm.cpp
+isffm.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -241,6 +242,7 @@ vpulse.h
 vrect.h
 src_eqndef.h
 vsffm.h
+isffm.h
 )
 
 
