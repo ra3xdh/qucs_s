@@ -308,7 +308,7 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
                 QList<double> sim_point;
                 bool ok = false;
                 qDebug()<<lin;
-                QRegExp dataline_patter("^[0-9]+[ \t]+.*");
+                QRegExp dataline_patter("^ *[0-9]+[ \t]+.*");
                 if (!dataline_patter.exactMatch(lin)) continue;
                 double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble(&ok); // only real indep vars
                 if (!ok) continue;
