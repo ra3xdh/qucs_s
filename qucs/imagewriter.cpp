@@ -26,9 +26,10 @@
 
 #include <QtSvg>
 
-ImageWriter::ImageWriter()
+ImageWriter::ImageWriter(QString lastfile)
 {
   onlyDiagram = false;
+  lastExportFilename = lastfile;
 }
 
 ImageWriter::~ImageWriter()
@@ -118,6 +119,11 @@ ImageWriter::noGuiPrint(QWidget *doc, QString printFile, QString color)
   }
 }
 
+QString ImageWriter::getLastSavedFile()
+{
+    return lastExportFilename;
+}
+
 void
 ImageWriter::print(QWidget *doc)
 {
@@ -126,8 +132,6 @@ ImageWriter::print(QWidget *doc)
 
   int w,h,wsel,hsel,
       xmin, ymin, xmin_sel, ymin_sel;
-
-  QString lastExportFilename = QDir::homePath() + QDir::separator() + "export.png";
 
   sch->getSchWidthAndHeight(w, h, xmin, ymin);
   sch->getSelAreaWidthAndHeight(wsel, hsel, xmin_sel, ymin_sel);
