@@ -20,6 +20,7 @@
  ***************************************************************************/
 #include "vsffm.h"
 #include "node.h"
+#include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
 
@@ -69,11 +70,11 @@ vSffm::vSffm()
 
   tx = x1+4;
   ty = y2+4;
-  Model = "V";
+  Model = "VSffm";
   SpiceModel = "V";
   Name  = "V";
 
-  Props.append(new Property("V0", "0 V", true,
+  Props.append(new Property("Vo", "0 V", true,
 		QObject::tr("offset volage")));
   Props.append(new Property("Va", "1 V", true,
 		QObject::tr("carrier amplitude")));
@@ -119,13 +120,13 @@ QString vSffm::spice_netlist(bool isXyce)
         s += " "+ nam;   // node names
     }
 
-   QString V0= spicecompat::normalize_value(Props.at(0)->Value);
+   QString Vo= spicecompat::normalize_value(Props.at(0)->Value);
    QString Va= spicecompat::normalize_value(Props.at(1)->Value);
    QString Fc= spicecompat::normalize_value(Props.at(2)->Value);
    QString Mdi = spicecompat::normalize_value(Props.at(3)->Value);
    QString Fs = spicecompat::normalize_value(Props.at(4)->Value);
 
 
-    s += QString(" DC 0 SFFM(%1 %2 %3 %4 %5 ) AC 0\n").arg(V0).arg(Va).arg(Fc).arg(Mdi).arg(Fs);
+    s += QString(" DC 0 SFFM(%1 %2 %3 %4 %5 ) AC 0\n").arg(Vo).arg(Va).arg(Fc).arg(Mdi).arg(Fs);
     return s;
 }

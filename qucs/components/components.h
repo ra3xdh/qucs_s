@@ -204,5 +204,7 @@
 #include "src_eqndef.h"
 #include "vsffm.h"
 #include "isffm.h"
+#include "vAmpMod.h"
+#include "iAmpMod.h"
 
 #endif

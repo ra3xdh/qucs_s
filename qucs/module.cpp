@@ -279,6 +279,7 @@ void Module::registerModules (void) {
   REGISTER_SOURCE_1 (vFile);
   REGISTER_SOURCE_1 (iFile);
 
+
   // probes
   REGISTER_PROBE_1 (iProbe);
   REGISTER_PROBE_1 (vProbe);
@@ -428,8 +429,11 @@ void Module::registerModules (void) {
 
   //spice specific components
   REGISTER_SPICE_1 (Src_eqndef);
+  REGISTER_SPICE_1 (iSffm);
+  REGISTER_SPICE_1 (vAmpMod);
+  REGISTER_SPICE_1 (iAmpMod); 
   REGISTER_SPICE_1 (vSffm);
-  REGISTER_SPICE_1  (iSffm);
+
 
   // paintings
   REGISTER_PAINT_1 (GraphicLine);

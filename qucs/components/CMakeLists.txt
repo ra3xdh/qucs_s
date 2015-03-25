@@ -61,6 +61,8 @@ mutualx.cpp
 src_eqndef.cpp
 vsffm.cpp
 isffm.cpp
+vAmpMod.cpp
+iAmpMod.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -243,6 +245,8 @@ vrect.h
 src_eqndef.h
 vsffm.h
 isffm.h
+vAmpMod.h
+iAmpMod.h
 )
 
 
