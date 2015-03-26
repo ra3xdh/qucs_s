@@ -321,6 +321,13 @@ bool SpiceFile::createSubNetlist(QTextStream *stream)
 
 bool SpiceFile::createSpiceSubckt(QTextStream *stream)
 {
+    (*stream)<<"\n";
+    QFile sub_file(getSubcircuitFile());
+    if (sub_file.open(QIODevice::ReadOnly)) {
+        (*stream)<<sub_file.readAll();
+        sub_file.close();
+    }
+    (*stream)<<"\n";
     return true;
 }
 
