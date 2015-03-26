@@ -36,6 +36,7 @@
 #include "main.h"
 #include "qucs.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 SpiceFile::SpiceFile()
@@ -561,14 +562,28 @@ void SpiceFile::slotExited()
 
 QString SpiceFile::getSubcktName()
 {
-    return QString("");
+    QString s = "";
+
+    QFile sub_file(getSubcircuitFile());
+    if (sub_file.open(QIODevice::ReadOnly)) {
+        QStringList lst = QString(sub_file.readAll()).split("\n");
+        foreach (QString str, lst) {
+            QRegExp subckt_header("^\\s*\\.SUBCKT\\s.*");
+            if (subckt_header.exactMatch(str)) {
+                QRegExp sep("\\s");
+                s = str.section(sep,1,1,QString::SectionSkipEmpty);
+            }
+        }
+        sub_file.close();
+    }
+    return s;
 }
 
 QString SpiceFile::spice_netlist(bool isXyce)
 {
-    QString s = SpiceModel + Name + " ";
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports)
       s += " "+p1->Connection->Name;   // node names
-      s += " " + getSubcktName();
+    s += " " + getSubcktName() + "\n";
     return s;
 }
