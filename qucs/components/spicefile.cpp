@@ -49,6 +49,7 @@ SpiceFile::SpiceFile()
   withSim = false;
 
   Model = "SPICE";
+  SpiceModel = "X";
   Name  = "X";
   changed = false;
 
@@ -316,6 +317,12 @@ bool SpiceFile::createSubNetlist(QTextStream *stream)
   return true;
 }
 
+
+bool SpiceFile::createSpiceSubckt(QTextStream *stream)
+{
+    return true;
+}
+
 // -------------------------------------------------------------------------
 bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
 {
@@ -550,4 +557,18 @@ void SpiceFile::slotExited()
       (*filstream) << SimText;
     }
   }
+}
+
+QString SpiceFile::getSubcktName()
+{
+    return QString("");
+}
+
+QString SpiceFile::spice_netlist(bool isXyce)
+{
+    QString s = SpiceModel + Name + " ";
+    foreach(Port *p1, Ports)
+      s += " "+p1->Connection->Name;   // node names
+      s += " " + getSubcktName();
+    return s;
 }
