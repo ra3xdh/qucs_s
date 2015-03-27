@@ -599,7 +599,6 @@ QStringList SpiceFile::getSubcktPorts()
             QRegExp subckt_header("^\\s*\\.SUBCKT\\s.*");
             if (subckt_header.exactMatch(str)) {
                 QRegExp sep("\\s");
-                qDebug()<<str;
                 QStringList lst2 = str.split(sep,QString::SkipEmptyParts);
                 lst2.removeFirst();
                 lst2.removeFirst();
@@ -620,8 +619,7 @@ QString SpiceFile::spice_netlist(bool isXyce)
         if (it->startsWith("_net")) (*it).remove(0,4);
     }
     QStringList nod_lst = getSubcktPorts();
-    qDebug()<<ports_lst;
-    qDebug()<<nod_lst;
+
     QList<int> seq;
     seq.clear();
     for(int i=0;i<nod_lst.count();i++) {
