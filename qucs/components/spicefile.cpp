@@ -323,8 +323,9 @@ bool SpiceFile::createSpiceSubckt(QTextStream *stream)
 {
     (*stream)<<"\n";
     QFile sub_file(getSubcircuitFile());
-    if (sub_file.open(QIODevice::ReadOnly)) {
-        (*stream)<<sub_file.readAll();
+    if (sub_file.open(QIODevice::ReadOnly|QFile::Text)) {
+        QTextStream ts(&sub_file);
+        (*stream)<<ts.readAll().remove(QChar(0x1A));
         sub_file.close();
     }
     (*stream)<<"\n";
@@ -586,11 +587,53 @@ QString SpiceFile::getSubcktName()
     return s;
 }
 
+QStringList SpiceFile::getSubcktPorts()
+{
+    QStringList lst;
+    lst.clear();
+
+    QFile sub_file(getSubcircuitFile());
+    if (sub_file.open(QIODevice::ReadOnly)) {
+        QStringList lst1 = QString(sub_file.readAll()).split("\n");
+        foreach (QString str, lst1) {
+            QRegExp subckt_header("^\\s*\\.SUBCKT\\s.*");
+            if (subckt_header.exactMatch(str)) {
+                QRegExp sep("\\s");
+                qDebug()<<str;
+                QStringList lst2 = str.split(sep,QString::SkipEmptyParts);
+                lst2.removeFirst();
+                lst2.removeFirst();
+                foreach (QString s1, lst2) {
+                    if (!s1.contains('=')) lst.append(s1);
+                }
+            }
+        }
+        sub_file.close();
+    }
+    return lst;
+}
+
 QString SpiceFile::spice_netlist(bool isXyce)
 {
+    QStringList ports_lst = Props.at(1)->Value.split(",");
+    for (QStringList::iterator it = ports_lst.begin();it != ports_lst.end();it++) {
+        if (it->startsWith("_net")) (*it).remove(0,4);
+    }
+    QStringList nod_lst = getSubcktPorts();
+    qDebug()<<ports_lst;
+    qDebug()<<nod_lst;
+    QList<int> seq;
+    seq.clear();
+    for(int i=0;i<nod_lst.count();i++) {
+        seq.append(ports_lst.indexOf(nod_lst.at(i)));
+    }
+
     QString s = spicecompat::check_refdes(Name,SpiceModel);
-    foreach(Port *p1, Ports)
-      s += " "+p1->Connection->Name;   // node names
+    //foreach(Port *p1, Ports) {
+    foreach(int i,seq) {
+        s += " "+Ports.at(i)->Connection->Name;   // node names
+    }
+
     s += " " + getSubcktName() + "\n";
     return s;
 }
