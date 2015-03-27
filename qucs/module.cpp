@@ -433,6 +433,8 @@ void Module::registerModules (void) {
   REGISTER_SPICE_1 (vAmpMod);
   REGISTER_SPICE_1 (iAmpMod); 
   REGISTER_SPICE_1 (vSffm);
+  REGISTER_SPICE_1 (vPWL); 
+  REGISTER_SPICE_1 (iPWL);   
 
 
   // paintings

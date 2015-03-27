@@ -62,7 +62,7 @@ QString Ampere_dc::spice_netlist(bool isXyce)
         s += " "+ nam;   // node names
     }
 
-    s += QString(" DC -%1\n").arg(spicecompat::normalize_value(Props.at(0)->Value));
+    s += QString(" DC %1\n").arg(spicecompat::normalize_value(Props.at(0)->Value));
     return s;
 }
 Component* Ampere_dc::newOne()

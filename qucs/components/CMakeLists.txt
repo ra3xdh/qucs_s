@@ -63,6 +63,8 @@ vsffm.cpp
 isffm.cpp
 vAmpMod.cpp
 iAmpMod.cpp
+vPWL.cpp
+iPWL.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -247,6 +249,8 @@ vsffm.h
 isffm.h
 vAmpMod.h
 iAmpMod.h
+vPWL.h
+iPWL.h
 )
 
 

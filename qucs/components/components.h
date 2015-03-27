@@ -206,5 +206,7 @@
 #include "isffm.h"
 #include "vAmpMod.h"
 #include "iAmpMod.h"
+#include "vPWL.h"
+#include "iPWL.h"
 
 #endif

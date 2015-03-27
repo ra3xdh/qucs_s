@@ -114,7 +114,7 @@ QString iPulse::spice_netlist(bool isXyce)
     Pw = Pw - TfVal*fac;
     Per = 1.0e9*Pw;
 
-    s += QString(" DC 0 PULSE(-%1 -%2 %3 %4 %5 %6 %7) AC 0\n").arg(VL).arg(VH).arg(T1).arg(Tr).arg(Tf).arg(Pw).arg(Per);
+    s += QString(" DC 0 PULSE(%1 %2 %3 %4 %5 %6 %7) AC 0\n").arg(VL).arg(VH).arg(T1).arg(Tr).arg(Tf).arg(Pw).arg(Per);
 
     return s;
 }

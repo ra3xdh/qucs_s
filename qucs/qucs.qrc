@@ -240,6 +240,8 @@
          <file>bitmaps/vsffm.png</file> 
          <file>bitmaps/isffm.png</file> 
          <file>bitmaps/vAmpMod.png</file> 
-          <file>bitmaps/iAmpMod.png</file>       
+         <file>bitmaps/iAmpMod.png</file>   
+         <file>bitmaps/vPWL.png</file> 
+         <file>bitmaps/iPWL.png</file>     
     </qresource>
 </RCC>
