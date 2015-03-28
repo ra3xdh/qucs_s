@@ -540,12 +540,12 @@ void SimMessage::startSimulator()
                   << "-o" << "asco_out";
       }
       else {
-	QString x = env.value("QUCSATOR");
-	if(""!=x){
-	  Program = x;
-	}else{
-	  Program = QucsSettings.BinDir + "qucsator" + executableSuffix;
-	}
+        QString x = env.value("QUCSATOR");
+        if(""!=x){
+          Program = x;
+        }else{
+          Program = QucsSettings.BinDir + "qucsator" + executableSuffix;
+        }
         Arguments << "-b" << "-g" << "-i"
                   << QucsSettings.QucsHomeDir.filePath("netlist.txt")
                   << "-o" << DataSet;
@@ -602,20 +602,14 @@ void SimMessage::startSimulator()
   // insert Qucs bin dir, so ASCO can find qucsator
   env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
   SimProcess.setProcessEnvironment(env);
-  QFile file(Program);
-  if ( !file.exists() ){
-    ErrText->insertPlainText(tr("ERROR: Program not found: %1\n").arg(Program));
-    FinishSimulation(-1);
-    return;
-  }
-  else
-    file.close();
-
   qDebug() << "Command :" << Program << Arguments.join(" ");
   SimProcess.start(Program, Arguments); // launch the program
+  SimProcess.waitForStarted(); // hack (need state())
+                               // don't know how to do properly
 
-  if(!SimProcess.Running) {
-    ErrText->insertPlainText(tr("ERROR: Cannot start simulator!\n"));
+  if(!SimProcess.state()) {
+    ErrText->insertPlainText(tr("ERROR: Cannot start ") + Program +
+       " (" + SimProcess.errorString() + ")\n");
     FinishSimulation(-1);
     return;
   }
