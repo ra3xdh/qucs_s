@@ -47,3 +47,23 @@ QString spicecompat::normalize_value(QString Value)
     return s.toUpper();
 }
 
+QString spicecompat::convert_functions(QString tok, bool isXyce)
+{
+    QStringList conv_list_ngspice; // Put here functions need to be converted
+    conv_list_ngspice<<"q"<<"1.6021765e-19"
+            <<"kB"<<"1.38065e-23"
+            <<"pi"<<"3.1415926539"
+            <<"step"<<"stp";
+    QStringList conv_list_xyce = conv_list_ngspice;
+
+    QStringList conv_list;
+    if (isXyce) conv_list = conv_list_xyce;
+    else conv_list = conv_list_ngspice;
+
+    for(int i=0;i<conv_list.count();i+=2) {
+        if (conv_list.at(i)==tok)
+            return conv_list.at(i+1);
+    }
+
+    return tok;
+}

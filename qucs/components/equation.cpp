@@ -16,6 +16,7 @@
  ***************************************************************************/
 #include "equation.h"
 #include "main.h"
+#include "extsimkernels/spicecompat.h"
 
 #include <QFontMetrics>
 
@@ -96,7 +97,7 @@ void Equation::splitEqn(QString &eqn, QStringList &tokens)
     tokens.clear();
     QString tok = "";
     for (QString::iterator it=eqn.begin();it!=eqn.end();it++) {
-        QString delim = "=()*/+-";
+        QString delim = "=()*/+-^";
         if (it->isSpace()) continue;
         if (delim.contains(*it)) {
             if (!tok.isEmpty()) tokens.append(tok);
@@ -167,6 +168,11 @@ QString Equation::getExpression(bool isXyce)
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
         splitEqn(eqn,tokens);
+        for(QStringList::iterator it = tokens.begin();it != tokens.end(); it++) {
+            qDebug()<<spicecompat::convert_functions(*it,isXyce);
+            *it = spicecompat::convert_functions(*it,isXyce);
+        }
+        eqn = tokens.join("");
         if (isXyce) eqn.replace("^","**");
         QRegExp fp_pattern("^[\\+\\-]*\\d*\\.\\d+$"); // float
         QRegExp fp_exp_pattern("^[\\+\\-]*\\d*\\.*\\d+e[\\+\\-]*\\d+$"); // float with exp
