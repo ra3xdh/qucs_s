@@ -364,6 +364,7 @@ void SimMessage::startSimulator()
 #endif
   SimOpt = NULL;
   bool isVerilog = false;
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
   // Simulate text window.
   if(DocWidget->inherits("QTextEdit")) {
@@ -539,7 +540,12 @@ void SimMessage::startSimulator()
                   << "-o" << "asco_out";
       }
       else {
-        Program = QucsSettings.BinDir + "qucsator" + executableSuffix;
+	QString x = env.value("QUCSATOR");
+	if(""!=x){
+	  Program = x;
+	}else{
+	  Program = QucsSettings.BinDir + "qucsator" + executableSuffix;
+	}
         Arguments << "-b" << "-g" << "-i"
                   << QucsSettings.QucsHomeDir.filePath("netlist.txt")
                   << "-o" << DataSet;
@@ -593,7 +599,6 @@ void SimMessage::startSimulator()
 #endif
 
   // append process PATH
-  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
   // insert Qucs bin dir, so ASCO can find qucsator
   env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
   SimProcess.setProcessEnvironment(env);
