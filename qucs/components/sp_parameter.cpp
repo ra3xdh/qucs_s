@@ -73,7 +73,7 @@ Component* SpiceParam::newOne()
 Element* SpiceParam::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr(".PARAM Section");
-  BitmapFile = (char *) "";
+  BitmapFile = (char *) "sp_param";
 
   if(getNewOne)  return new SpiceParam();
   return 0;

@@ -73,7 +73,7 @@ Component* SpiceGlobalParam::newOne()
 Element* SpiceGlobalParam::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr(".GLOBAL_PARAM Section");
-  BitmapFile = (char *) "";
+  BitmapFile = (char *) "sp_globpar";
 
   if(getNewOne)  return new SpiceGlobalParam();
   return 0;
