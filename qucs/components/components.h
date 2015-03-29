@@ -209,5 +209,6 @@
 #include "vPWL.h"
 #include "iPWL.h"
 #include "sp_parameter.h"
+#include "sp_globalpar.h"
 
 #endif
