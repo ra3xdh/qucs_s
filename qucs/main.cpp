@@ -52,6 +52,12 @@
 #include <Windows.h>  //for OutputDebugString
 #endif
 
+#ifdef __MINGW32__
+#define executableSuffix ".exe"
+#else
+#define executableSuffix ""
+#endif
+
 tQucsSettings QucsSettings;
 
 QucsApp *QucsMain = 0;  // the Qucs application itself
@@ -668,6 +674,13 @@ int main(int argc, char *argv[])
   QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
 
+  var = getenv("QUCSATOR");
+  if(var != NULL) {
+	  QucsSettings.Qucsator = QString(var);
+  }
+  else {
+	  QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator" + executableSuffix;
+  }
 
   var = getenv("ADMSXMLBINDIR");
   if(var != NULL) {

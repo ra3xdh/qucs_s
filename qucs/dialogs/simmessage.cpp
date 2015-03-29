@@ -540,12 +540,7 @@ void SimMessage::startSimulator()
                   << "-o" << "asco_out";
       }
       else {
-        QString x = env.value("QUCSATOR");
-        if(""!=x){
-          Program = x;
-        }else{
-          Program = QucsSettings.BinDir + "qucsator" + executableSuffix;
-        }
+        Program = QucsSettings.Qucsator;
         Arguments << "-b" << "-g" << "-i"
                   << QucsSettings.QucsHomeDir.filePath("netlist.txt")
                   << "-o" << DataSet;
