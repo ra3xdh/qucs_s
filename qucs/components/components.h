@@ -208,5 +208,6 @@
 #include "iAmpMod.h"
 #include "vPWL.h"
 #include "iPWL.h"
+#include "sp_parameter.h"
 
 #endif

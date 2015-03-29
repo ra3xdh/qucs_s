@@ -65,6 +65,8 @@ vAmpMod.cpp
 iAmpMod.cpp
 vPWL.cpp
 iPWL.cpp
+sp_parameter.cpp
+sp_globalpar.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -251,6 +253,8 @@ vAmpMod.h
 iAmpMod.h
 vPWL.h
 iPWL.h
+sp_parameter.h
+sp_globalpar.h
 )
 
 
