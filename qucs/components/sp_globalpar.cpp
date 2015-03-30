@@ -53,18 +53,6 @@ SpiceGlobalParam::~SpiceGlobalParam()
 {
 }
 
-// -------------------------------------------------------
-QString SpiceGlobalParam::verilogCode(int)
-{
-    return QString("");
-}
-
-// -------------------------------------------------------
-QString SpiceGlobalParam::vhdlCode(int)
-{
-    return QString("");
-}
-
 Component* SpiceGlobalParam::newOne()
 {
   return new SpiceGlobalParam();
@@ -79,10 +67,6 @@ Element* SpiceGlobalParam::info(QString& Name, char* &BitmapFile, bool getNewOne
   return 0;
 }
 
-QString SpiceGlobalParam::netlist()
-{
-    return QString("");
-}
 
 QString SpiceGlobalParam::getExpression(bool isXyce)
 {

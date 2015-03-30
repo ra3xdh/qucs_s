@@ -36,9 +36,9 @@ private:
   void convertNodeNames(QStringList &tokens, QStringList &dep_vars);
 
 protected:
-  QString vhdlCode(int);
-  QString verilogCode(int);
-  QString netlist();
+  QString vhdlCode(int) { return QString(""); }
+  QString verilogCode(int) { return QString(""); }
+  QString netlist() { return QString(""); }
 };
 
 #endif
