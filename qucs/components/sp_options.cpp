@@ -46,7 +46,7 @@ SpiceOptions::SpiceOptions()
   Model = "SpiceOptions";
   Name  = "SpiceOptions";
 
-  Props.append(new Property("Xyce Option package. Not necessary for Ngspice", "DEVICE", false,
+  Props.append(new Property("XyceOptionPackage", "DEVICE", false,
         QObject::tr("Xyce package")+" [DEVICE, TIMEINT, NONLIN, NONLIN-TRAN, NONLIN-HB,"
                             " LOCA, LINSOL, LINSOL-HB, OUTPUT, RESTART, SENSITVITY, HBINT]"));
   Props.append(new Property("GMIN", "1e-12", true));
@@ -76,12 +76,12 @@ QString SpiceOptions::getExpression(bool isXyce)
     s.clear();
     if (isXyce) {
         s += QString(".OPTIONS %1 ").arg(Props.at(0)->Value);
-        for (int i=1;i<Props.count();i++) {
+        for (unsigned int i=1;i<Props.count();i++) {
             s += QString(" %1 = %2 ").arg(Props.at(i)->Name).arg(Props.at(i)->Value);
         }
         s += "\n";
     } else {
-        for (int i=1;i<Props.count();i++) {
+        for (unsigned int i=1;i<Props.count();i++) {
             s += QString(".OPTION %1 = %2\n").arg(Props.at(i)->Name).arg(Props.at(i)->Value);
         }
     }
