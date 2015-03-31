@@ -245,5 +245,6 @@
         <file>bitmaps/iPWL.png</file>
         <file>bitmaps/sp_param.png</file>
         <file>bitmaps/sp_globpar.png</file>
+        <file>bitmaps/sp_options.png</file>
     </qresource>
 </RCC>

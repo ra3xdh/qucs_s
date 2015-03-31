@@ -31,10 +31,6 @@ public:
   static void splitEqn(QString &eqn, QStringList &tokens);
   QString getExpression(bool isXyce);
 
-private:
-  bool containNodes(QStringList &tokens);
-  void convertNodeNames(QStringList &tokens, QStringList &dep_vars);
-
 protected:
   QString vhdlCode(int) { return QString(""); }
   QString verilogCode(int) { return QString(""); }

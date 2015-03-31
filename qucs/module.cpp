@@ -441,6 +441,7 @@ void Module::registerModules (void) {
   // specific sections of spice netlists
   REGISTER_SPICE_SEC_1 (SpiceParam);
   REGISTER_SPICE_SEC_1 (SpiceGlobalParam);
+  REGISTER_SPICE_SEC_1 (SpiceOptions);
 
 
   // paintings

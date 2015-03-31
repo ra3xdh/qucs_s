@@ -67,6 +67,7 @@ vPWL.cpp
 iPWL.cpp
 sp_parameter.cpp
 sp_globalpar.cpp
+sp_options.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -255,6 +256,7 @@ vPWL.h
 iPWL.h
 sp_parameter.h
 sp_globalpar.h
+sp_options.h
 )
 
 

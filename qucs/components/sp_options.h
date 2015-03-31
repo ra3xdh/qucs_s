@@ -15,17 +15,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SPGLOBALPAR_H
-#define SPGLOBALPAR_H
+#ifndef SP_OPTIONS_H
+#define SP_OPTIONS_H
 
 #include "component.h"
 
 
-class SpiceGlobalParam : public Component  {
+class SpiceOptions : public Component  {
 
 public:
-  SpiceGlobalParam();
-  ~SpiceGlobalParam();
+  SpiceOptions();
+  ~SpiceOptions();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
   static void splitEqn(QString &eqn, QStringList &tokens);
