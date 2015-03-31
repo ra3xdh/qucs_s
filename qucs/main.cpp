@@ -166,7 +166,7 @@ bool saveApplSettings()
     settings.setValue("Attribute", QucsSettings.Attribute.name());
     settings.setValue("Directive", QucsSettings.Directive.name());
     settings.setValue("Task", QucsSettings.Comment.name());
-    settings.setValue("Qucsator", QucsSettings.Qucsator);
+    //settings.setValue("Qucsator", QucsSettings.Qucsator);
     //settings.setValue("BinDir", QucsSettings.BinDir);
     //settings.setValue("LangDir", QucsSettings.LangDir);
     //settings.setValue("LibDir", QucsSettings.LibDir);
