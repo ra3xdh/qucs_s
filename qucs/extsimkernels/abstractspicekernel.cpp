@@ -335,6 +335,12 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
     }
 }
 
+void AbstractSpiceKernel::parseHBSTEPOutput(QString ngspice_file, QList<QList<double> > &sim_points,
+                                            QStringList &var_list, bool &isComplex)
+{
+
+}
+
 void AbstractSpiceKernel::parseResFile(QString resfile, QString &var, QStringList &values)
 {
     var.clear();
@@ -399,7 +405,12 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
                 qDebug()<<res_file;
                 parseResFile(res_file,swp_var,swp_var_val);
 
-                parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
+                if (ngspice_output_filename.endsWith("_hb_swp.txt")) {
+                    parseHBSTEPOutput(full_outfile,sim_points,var_list,isComplex);
+                } else {
+                    parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
+                }
+
             } else {
                 parseNgSpiceSimOutput(full_outfile,sim_points,var_list,isComplex);
             }
