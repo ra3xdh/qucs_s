@@ -59,15 +59,20 @@ vcresistor.cpp
 vacomponent.cpp
 mutualx.cpp
 src_eqndef.cpp
+sp_parameter.cpp
+sp_globalpar.cpp
+sp_options.cpp
 vsffm.cpp
 isffm.cpp
 vAmpMod.cpp
 iAmpMod.cpp
 vPWL.cpp
 iPWL.cpp
-sp_parameter.cpp
-sp_globalpar.cpp
-sp_options.cpp
+eNL.cpp
+gNL.cpp
+vTRNOISE.cpp
+iTRNOISE.cpp
+vTRRANDOM.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -248,15 +253,20 @@ vprobe.h
 vpulse.h
 vrect.h
 src_eqndef.h
+sp_parameter.h
+sp_globalpar.h
+sp_options.h
 vsffm.h
 isffm.h
 vAmpMod.h
 iAmpMod.h
 vPWL.h
 iPWL.h
-sp_parameter.h
-sp_globalpar.h
-sp_options.h
+eNL.h
+gNL.h
+vTRNOISE.h
+iTRNOISE.h
+vTRRANDOM.h
 )
 
 

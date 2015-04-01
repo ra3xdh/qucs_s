@@ -30,45 +30,21 @@ iSffm::iSffm()
   // normal current source symbol
   
    Arcs.append(new Arc(-12,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
+   Texts.append(new Text(26, 4,"SFFM",Qt::black,10.0,0.0,-1.0)); 
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::darkBlue,3)));
   Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::darkBlue,3)));
   Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::darkBlue,3)));
  
-  // write 'SFFM' by source symbol
-  //
-  // S
-  Lines.append(new Line( 11, 11, 10, 11, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 10, 11, 10, 12,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 10, 12, 16,12,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 16, 12, 16, 13,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 16, 13, 15, 13, QPen(Qt::darkBlue,2)));
-  // F
-  Lines.append(new Line( 10, 15, 16, 15, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 16, 15, 16, 17, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 13, 15, 13, 16, QPen(Qt::darkBlue,2)));
- 
- //F
-  Lines.append(new Line( 10, 19, 16, 19,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 16, 19, 16, 21, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 13, 19, 13, 20,  QPen(Qt::darkBlue,2)));
-
- //M
-  Lines.append(new Line( 10, 23, 16, 23, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 16, 23, 14, 25,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 14, 25, 16, 27,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 16, 27, 10, 27,  QPen(Qt::darkBlue,2)));
-  
-
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
 
   x1 = -30; y1 = -14;
-  x2 =  30; y2 =  14;
+  x2 =  30; y2 =  40;
 
   tx = x1+4;
-  ty = 32;
+  ty = y2+4;
   Model = "I";
   SpiceModel = "I";
   Name  = "I";

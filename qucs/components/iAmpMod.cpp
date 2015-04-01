@@ -28,35 +28,15 @@ iAmpMod::iAmpMod()
 {
   Description = QObject::tr("AM modulated source");
 
-  // normal voltage source symbol
+  // normal current source symbol
   Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(26, 4,"AM",Qt::black,10.0,0.0,-1.0)); 
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::darkBlue,3)));
   Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::darkBlue,3)));
   Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::darkBlue,3)));
   
-  Lines.append(new Line( 18,  5, 18, 11,QPen(Qt::red,1)));
-  Lines.append(new Line( 21,  8, 15,  8,QPen(Qt::red,1)));
-  Lines.append(new Line(-18,  5,-18, 11,QPen(Qt::black,1)));
-
-  // write 'AM' outside voltage source symbol
-  //
- 
- //A
-  Lines.append(new Line( 10, 13, 16, 13,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 16, 13, 16, 19,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 16, 19, 10, 19,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 13, 13, 13, 19,  QPen(Qt::darkBlue,2)));
-
- //M
-  Lines.append(new Line( 10, 23, 16, 23, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 16, 23, 12, 27, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 12, 27, 16, 31, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 16, 31, 10, 31, QPen(Qt::darkBlue,2)));
-  
-  
-
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
 
@@ -69,15 +49,15 @@ iAmpMod::iAmpMod()
   SpiceModel = "I";
   Name  = "I";
 
-  Props.append(new Property("VA", "1 V", true,
+  Props.append(new Property("Va", "1 V", true,
 		QObject::tr("voltage amplitude")));
-  Props.append(new Property("VO", "0 V", true,
+  Props.append(new Property("Vo", "0 V", true,
 		QObject::tr("offset voltage")));
   Props.append(new Property("Mf", "500", true,
 		QObject::tr("modulation frequency")));
-  Props.append(new Property("FC", "10k", true,
+  Props.append(new Property("Fc", "10k", true,
 		QObject::tr("carrier frequency")));
-  Props.append(new Property("TD", "0", true,
+  Props.append(new Property("Td", "0", true,
 		QObject::tr("signal delay")));
 
   rotate();  // fix historical flaw
@@ -115,13 +95,13 @@ QString iAmpMod::spice_netlist(bool isXyce)
         s += " "+ nam;   // node names
     }
 
-   QString VA= spicecompat::normalize_value(Props.at(0)->Value);
-   QString VO= spicecompat::normalize_value(Props.at(1)->Value);
-   QString MF= spicecompat::normalize_value(Props.at(2)->Value);
-   QString FC = spicecompat::normalize_value(Props.at(3)->Value);
-   QString TD = spicecompat::normalize_value(Props.at(4)->Value);
+   QString Va= spicecompat::normalize_value(Props.at(0)->Value);
+   QString Vo= spicecompat::normalize_value(Props.at(1)->Value);
+   QString Mf= spicecompat::normalize_value(Props.at(2)->Value);
+   QString Fc = spicecompat::normalize_value(Props.at(3)->Value);
+   QString Td = spicecompat::normalize_value(Props.at(4)->Value);
 
 
-    s += QString(" DC 0 AM(%1 %2 %3 %4 %5 ) AC 0\n").arg(VA).arg(VO).arg(MF).arg(FC).arg(TD);
+    s += QString(" DC 0 AM(%1 %2 %3 %4 %5 ) AC 0\n").arg(Va).arg(Vo).arg(Mf).arg(Fc).arg(Td);
     return s;
 }

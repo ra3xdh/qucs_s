@@ -237,14 +237,20 @@
         <file>bitmaps/mutualx.png</file>
 	<file>bitmaps/hicolor/128x128/apps/qucs.png</file>
         <file>bitmaps/src_eqndef.png</file>
-        <file>bitmaps/vsffm.png</file>
-        <file>bitmaps/isffm.png</file>
-        <file>bitmaps/vAmpMod.png</file>
-        <file>bitmaps/iAmpMod.png</file>
-        <file>bitmaps/vPWL.png</file>
-        <file>bitmaps/iPWL.png</file>
         <file>bitmaps/sp_param.png</file>
         <file>bitmaps/sp_globpar.png</file>
         <file>bitmaps/sp_options.png</file>
+         <file>bitmaps/vsffm.png</file> 
+         <file>bitmaps/isffm.png</file> 
+         <file>bitmaps/vAmpMod.png</file> 
+         <file>bitmaps/iAmpMod.png</file>   
+         <file>bitmaps/vPWL.png</file> 
+         <file>bitmaps/iPWL.png</file> 
+          <file>bitmaps/eNL.png</file>
+          <file>bitmaps/gNL.png</file>
+          <file>bitmaps/vTRNOISE.png</file>
+          <file>bitmaps/iTRNOISE.png</file>
+          <file>bitmaps/vTRRANDOM.png</file>
+
     </qresource>
 </RCC>

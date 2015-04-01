@@ -436,7 +436,12 @@ void Module::registerModules (void) {
   REGISTER_SPICE_1 (iAmpMod); 
   REGISTER_SPICE_1 (vSffm);
   REGISTER_SPICE_1 (vPWL); 
-  REGISTER_SPICE_1 (iPWL);
+  REGISTER_SPICE_1 (iPWL);   
+  REGISTER_SPICE_1 (eNL);   
+  REGISTER_SPICE_1 (gNL);  
+  REGISTER_SPICE_1 (vTRNOISE);   
+  REGISTER_SPICE_1 (iTRNOISE);   
+  REGISTER_SPICE_1 (vTRRANDOM);        
 
   // specific sections of spice netlists
   REGISTER_SPICE_SEC_1 (SpiceParam);

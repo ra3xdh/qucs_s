@@ -208,6 +208,11 @@
 #include "iAmpMod.h"
 #include "vPWL.h"
 #include "iPWL.h"
+#include "eNL.h"
+#include "gNL.h"
+#include "vTRNOISE.h"
+#include "iTRNOISE.h"
+#include "vTRRANDOM.h"
 
 // Spice netlist sections
 #include "sp_parameter.h"

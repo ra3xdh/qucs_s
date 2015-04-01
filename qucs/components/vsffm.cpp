@@ -30,43 +30,19 @@ vSffm::vSffm()
 
   // normal voltage source symbol
   Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(26, 4,"SFFM",Qt::black,10.0,0.0,-1.0)); 
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line( 18,  5, 18, 11,QPen(Qt::red,1)));
-  Lines.append(new Line( 21,  8, 15,  8,QPen(Qt::red,1)));
-  Lines.append(new Line(-18,  5,-18, 11,QPen(Qt::black,1)));
-
-  // write 'SFFM' inside voltage source symbol
-  //
-  // S
-  Lines.append(new Line( -2, -8, -3, -8, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -3,- 8, -3, -6, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -3, -6,  3, -6, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 3, -6, 3, -4, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 3, -4, 2, -4, QPen(Qt::darkBlue,2)));
-  // F
-  Lines.append(new Line( -3, -3, 3, -3, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 3, -3, 3, 0, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 0, -3, 0, -1, QPen(Qt::darkBlue,2)));
- 
- //F
-  Lines.append(new Line( -3, 1, 3, 1, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 3, 1, 3, 4, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 0, 1, 0, 3, QPen(Qt::darkBlue,2)));
-
- //M
-  Lines.append(new Line( -3, 5, 3, 5, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 3, 5, 1, 7,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 1, 7, 3, 9,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 3,9 ,-3, 9,  QPen(Qt::darkBlue,2)));
-  
+  Lines.append(new Line( 18,  -5, 18, -11,QPen(Qt::red,1)));
+  Lines.append(new Line( 21,  -8, 15,  -8,QPen(Qt::red,1)));
+  Lines.append(new Line(-18,  -5,-18, -11,QPen(Qt::black,1)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
 
   x1 = -30; y1 = -14;
-  x2 =  30; y2 =  14;
+  x2 =  30; y2 =  40;
 
   tx = x1+4;
   ty = y2+4;

@@ -30,32 +30,13 @@ iPWL::iPWL()
 
   // normal voltage source symbol
   Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
+  Texts.append(new Text(20, 12,"PWL",Qt::black,10.0,0.0,-1.0));
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
    Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::darkBlue,3)));
   Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::darkBlue,3)));
   Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::darkBlue,3)));
   
-  
-
-  // write 'PWL outside voltage source symbol
-  //
- 
- //P
-  Lines.append(new Line( 10, 16, 16, 16, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 16, 16, 16, 20,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  16, 20, 13, 20, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 13, 20, 13, 16,  QPen(Qt::darkBlue,2)));
-
- //W
-  Lines.append(new Line( 16, 24, 10, 26,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 10, 26, 13, 28, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 13, 28, 10, 30,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 10, 30, 16, 32, QPen(Qt::darkBlue,2)));
-  
-  //L
-  Lines.append(new Line( 16, 36, 10, 36,  QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 10, 36, 10, 40, QPen(Qt::darkBlue,2))); 
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
@@ -69,16 +50,16 @@ iPWL::iPWL()
   SpiceModel = "I";
   Name  = "I";
 
-  Props.append(new Property("PWL1", " ", true,"Expression"));
- Props.append(new Property("PWL2", " ", false,"Expression"));
- Props.append(new Property("PWL3", " ", false,"Expression"));
- Props.append(new Property("PWL4", " ", false,"Expression"));
- Props.append(new Property("PWL5", " ", false,"Expression"));
- Props.append(new Property("PWL6", " ", false,"Expression"));
- Props.append(new Property("PWL7", " ", false,"Expression"));
- Props.append(new Property("PWL8", " ", false,"Expression"));
- Props.append(new Property("PWL9", " ", false,"Expression"));
- Props.append(new Property("PWL10", " ", false,"Expression"));
+  Props.append(new Property("Line1", "", true,"Expression"));
+ Props.append(new Property("Line2", "", false,"Expression"));
+ Props.append(new Property("Line3", "", false,"Expression"));
+ Props.append(new Property("Line4", "", false,"Expression"));
+ Props.append(new Property("Line5", "", false,"Expression"));
+ Props.append(new Property("Line6", "", false,"Expression"));
+ Props.append(new Property("Line7", "", false,"Expression"));
+ Props.append(new Property("Line8", "", false,"Expression"));
+ Props.append(new Property("Line9", "", false,"Expression"));
+ Props.append(new Property("Line10", "", false,"Expression"));
  
  
   rotate();  // fix historical flaw
@@ -117,18 +98,28 @@ QString iPWL::spice_netlist(bool isXyce)
     }
 
 
-QString PWL1= Props.at(0)->Value;
-QString PWL2= Props.at(1)->Value;
-QString PWL3= Props.at(2)->Value;
-QString PWL4= Props.at(3)->Value;
-QString PWL5= Props.at(4)->Value;
-QString PWL6= Props.at(5)->Value;
-QString PWL7= Props.at(6)->Value;
-QString PWL8= Props.at(7)->Value;
-QString PWL9= Props.at(8)->Value;
-QString PWL10= Props.at(9)->Value;
+QString Line1= Props.at(0)->Value;
+QString Line2= Props.at(1)->Value;
+QString Line3= Props.at(2)->Value;
+QString Line4= Props.at(3)->Value;
+QString Line5= Props.at(4)->Value;
+QString Line6= Props.at(5)->Value;
+QString Line7= Props.at(6)->Value;
+QString Line8= Props.at(7)->Value;
+QString Line9= Props.at(8)->Value;
+QString Line10= Props.at(9)->Value;
 
-    s += QString(" DC 0  AC 0  %1\n%2\n%3\n%4\n%5\n%6\n%7\n%8\n%9\n%10\n").arg(PWL1).arg(PWL2).arg(PWL3).
-                              arg(PWL4).arg(PWL5).arg(PWL6).arg(PWL7).arg(PWL8).arg(PWL9).arg(PWL10);
+    s += QString(" DC 0  AC 0   ");
+ 
+    if(Line1 !="")   s += QString("%1\n").arg(Line1);
+    if(Line2 !="")   s += QString("%1\n").arg(Line2);
+    if(Line3 !="")   s += QString("%1\n").arg(Line3);
+    if(Line4 !="")   s += QString("%1\n").arg(Line4);
+    if(Line5 !="")   s += QString("%1\n").arg(Line5);
+    if(Line6 !="")   s += QString("%1\n").arg(Line6);
+    if(Line7 !="")   s += QString("%1\n").arg(Line7);
+    if(Line8 !="")   s += QString("%1\n").arg(Line8);
+    if(Line9 !="")   s += QString("%1\n").arg(Line9);
+    if(Line10 !="") s += QString("%1\n").arg(Line10);
     return s;
 }
