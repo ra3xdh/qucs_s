@@ -719,7 +719,7 @@ void SimMessage::slotStateChanged(QProcess::ProcessState newState)
       }
     break;
     case QProcess::Starting:
-          ProgText->insertPlainText(tr("Starting ") + Program + ")\n");
+          ProgText->insertPlainText(tr("Starting ") + Program + "\n");
     break;
     case QProcess::Running:
     break;
