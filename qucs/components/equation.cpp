@@ -119,46 +119,22 @@ bool Equation::containNodes(QStringList &tokens)
     return false;
 }
 
-void Equation::convertNodeNames(QStringList &tokens, QStringList &dep_vars)
+void Equation::convertNodeNames(QStringList &tokens, QString &sim)
 {
     QRegExp var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
     for (QStringList::iterator it=tokens.begin();it!=tokens.end();it++) {
         if (var_pattern.exactMatch(*it))  {
-            QString prefix;
-            if (it->endsWith(".v")) prefix = "ac";
-            if (it->endsWith(".Vt")) prefix = "tran";
+            if (it->endsWith(".v")) sim = "ac";
+            if (it->endsWith(".Vt")) sim = "tran";
+            if (it->endsWith(".V")) sim = "dc";
             int idx = it->indexOf('.');
             int cnt = it->count();
             it->chop(cnt-idx);
-            *it = QString("%1.V(%2)").arg(prefix).arg(*it);
-        }
-        if (dep_vars.contains(*it)) {
-            *it = QString("V(%1)").arg(*it);
+            *it = QString("V(%2)").arg(*it);
         }
     }
 }
 
-QString Equation::spice_netlist(bool isXyce)
-{
-    QString s;
-    s.clear();
-    QStringList dep_vars,tokens;
-
-    getDepVars(dep_vars);
-
-    for (unsigned int i=0;i<Props.count()-1;i++) {
-        tokens.clear();
-        QString eqn = Props.at(i)->Value;
-        splitEqn(eqn,tokens);
-        eqn.replace("^","**");
-        if (containNodes(tokens)) {
-            convertNodeNames(tokens,dep_vars);
-            eqn = tokens.join("");
-            s += QString("B%1 %2 0 V=%3\n").arg(Name).arg(Props.at(i)->Name).arg(eqn);
-        }
-    }
-    return s;
-}
 
 QString Equation::getExpression(bool isXyce)
 {
@@ -187,35 +163,25 @@ QString Equation::getExpression(bool isXyce)
     return s;
 }
 
-void Equation::getDepVars(QStringList &dep_vars)
+QString Equation::getEquations(QString sim, QStringList &dep_vars)
 {
+    QString s;
     dep_vars.clear();
     for (unsigned int i=0;i<Props.count()-1;i++) {
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
         splitEqn(eqn,tokens);
-        if (containNodes(tokens)) {
-            dep_vars.append(Props.at(i)->Name);
-        }
-    }
-
-}
-
-QString Equation::getEquations()
-{
-    QString s;
-    for (unsigned int i=0;i<Props.count()-1;i++) {
-        QStringList tokens;
-        QString eqn = Props.at(i)->Value;
-        splitEqn(eqn,tokens);
         eqn.replace("^","**");
-        QStringList dep_vars;
-        dep_vars.clear();
         if (containNodes(tokens)) {
-            convertNodeNames(tokens,dep_vars);
-            eqn = tokens.join("");
-            s += QString("let %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
+            QString used_sim;
+            convertNodeNames(tokens,used_sim);
+            if (sim == used_sim) {
+                eqn = tokens.join("");
+                s += QString("let %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
+                dep_vars.append(Props.at(i)->Name);
+            }
         }
     }
+    qDebug()<<sim;
     return s;
 }

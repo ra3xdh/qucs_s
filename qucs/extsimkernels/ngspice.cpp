@@ -87,7 +87,7 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
     stream<<".control\n"          //execute simulations
           <<"set filetype=ascii\n";
 
-    QString sim;                 // see results
+    QString sim;
     outputs.clear();
 
     foreach(sim, simulations) {
@@ -126,16 +126,16 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
 
 
         QStringList vars_eq;
+        vars_eq.clear();
         QStringList Eqns;
         Eqns.clear();
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             if (pc->Model == "Eqn") {
                 Equation *eq = (Equation *)pc;
-                QString s_eq = eq->getEquations();
+                QStringList v1;
+                QString s_eq = eq->getEquations(sim,v1);
                 stream<< s_eq;
                 Eqns.append(s_eq.split("\n"));
-                QStringList v1;
-                eq->getDepVars(v1);
                 vars_eq.append(v1);
             }
         }
@@ -154,8 +154,8 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
                 nods += QString("%1 ").arg(nod);
             }
         }
-        for (int i=0;i<Eqns.count();i++) {
-            if (Eqns.at(i).contains(sim+".")) nods += " " + vars_eq.at(i);
+        for (QStringList::iterator it = vars_eq.begin();it != vars_eq.end(); it++) {
+            nods += " " + *it;
         }
 
         QString filename;

@@ -30,17 +30,15 @@ public:
   static Element* info(QString&, char* &, bool getNewOne=false);
   static void splitEqn(QString &eqn, QStringList &tokens);
   QString getExpression(bool isXyce);
-  void getDepVars(QStringList &dep_vars);
-  QString getEquations();
+  QString getEquations(QString sim, QStringList &dep_vars);
 
 private:
   bool containNodes(QStringList &tokens);
-  void convertNodeNames(QStringList &tokens, QStringList &dep_vars);
+  void convertNodeNames(QStringList &tokens, QString &sim);
 
 protected:
   QString vhdlCode(int);
   QString verilogCode(int);
-  QString spice_netlist(bool isXyce);
 };
 
 #endif
