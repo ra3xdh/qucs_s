@@ -90,9 +90,10 @@ Element* DC_Sim::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString DC_Sim::spice_netlist(bool isXyce)
 {
-    if (isXyce) {
+    /*if (isXyce) {
         return QString("");
     } else {
         return SpiceModel + "\n";
-    }
+    }*/
+    return QString("");
 }

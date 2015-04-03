@@ -126,6 +126,7 @@ QString Param_Sweep::getNgspiceAfterSim()
     s += QString("let %1_act = %1_act + delta\n").arg(par);
     s += "let number = number +1\n";
     s += "end\n";
+    s += "unset appendwrite\n";
     return s;
 }
 

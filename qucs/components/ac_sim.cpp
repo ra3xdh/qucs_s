@@ -122,6 +122,7 @@ QString AC_Sim::spice_netlist(bool isXyce)
     QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
     QString fstop = spicecompat::normalize_value(Props.at(2)->Value); // Stop freq.
     s += QString("%1 %2 \n").arg(fstart).arg(fstop);
+    if (!isXyce) s.remove(0,1);
     return s;
 
 }

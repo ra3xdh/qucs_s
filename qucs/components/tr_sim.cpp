@@ -122,6 +122,7 @@ QString TR_Sim::spice_netlist(bool isXyce)
         if (Props.at(18)->Value == "no") s += " UIC";
     }
     s += "\n";
+    if (!isXyce) s.remove(0,1);
     return s;
 }
 
