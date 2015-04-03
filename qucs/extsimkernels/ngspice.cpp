@@ -176,6 +176,8 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
                 else if (SwpSim.startsWith("TR")&&(sim=="tran")) stream<<s;
             }
         }
+
+        stream<<"destroy all\n";
     }
 
     stream<<"exit\n"
