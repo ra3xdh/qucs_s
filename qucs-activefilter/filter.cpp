@@ -23,6 +23,8 @@
 #include "qf_poly.h"
 #include "bessel.h"
 
+static const int MaxOrder = 50;
+
 Filter::Filter(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam par)
 {
     ffunc = ffunc_;
@@ -110,24 +112,27 @@ bool Filter::calcFilter()
     Sections.clear();
     Poles.clear();
     Zeros.clear();
+    bool res = false;
 
     switch (ffunc) {
-    case Filter::Chebyshev : calcChebyshev();
+    case Filter::Chebyshev : res = calcChebyshev();
         break;
-    case Filter::Butterworth : calcButterworth();
+    case Filter::Butterworth : res = calcButterworth();
         break;
-    case Filter::Cauer : calcCauer();
+    case Filter::Cauer : res = calcCauer();
         break;
-    case Filter::InvChebyshev : calcInvChebyshev();
+    case Filter::InvChebyshev : res = calcInvChebyshev();
         break;
-    case Filter::Bessel : calcBessel();
+    case Filter::Bessel : res = calcBessel();
         break;
-    case Filter::User : calcUserTrFunc();
+    case Filter::User : res = calcUserTrFunc();
         break;
     default :
         return false;
         break;
     }
+
+    if (!res) return false;
 
     if (Poles.isEmpty()) {
         return false;
@@ -152,7 +157,7 @@ bool Filter::calcFilter()
         break;
     }
 
-    bool res = checkRCL();
+    res = checkRCL();
 
     Nr = Nr1*(order/2);
     Nc = Nc1*(order/2);
@@ -350,13 +355,19 @@ bool Filter::checkRCL()
     return true;
 }
 
-void Filter::calcChebyshev()
+bool Filter::calcChebyshev()
 {
     float kf = std::max(Fs/Fc,Fc/Fs);
     float eps=sqrt(pow(10,0.1*Rp)-1);
 
     float N1 = acosh(sqrt((pow(10,0.1*As)-1)/(eps*eps)))/acosh(kf);
     int N = ceil(N1);
+
+    if (N>MaxOrder) {
+        Poles.clear();
+        Zeros.clear();
+        return false;
+    }
 
     if (ftype==Filter::BandStop) {
         if (N%2!=0) N++; // only even order Cauer.
@@ -376,9 +387,10 @@ void Filter::calcChebyshev()
     }
 
     order = Poles.count();
+    return true;
 }
 
-void Filter::calcButterworth()
+bool Filter::calcButterworth()
 {
     float kf = std::min(Fc/Fs,Fs/Fc);
 
@@ -393,6 +405,8 @@ void Filter::calcButterworth()
     Poles.clear();
     Zeros.clear();
 
+    if (N2>MaxOrder) return false;
+
     for (int k=1;k<=N2;k++) {
         float re =-1*sin(pi*(2*k-1)/(2*N2));
         float im =cos(pi*(2*k-1)/(2*N2));
@@ -401,9 +415,11 @@ void Filter::calcButterworth()
     }
 
     order = Poles.count();
+
+    return true;
 }
 
-void Filter::calcInvChebyshev() // Chebyshev Type-II filter
+bool Filter::calcInvChebyshev() // Chebyshev Type-II filter
 {
     Poles.clear();
     Zeros.clear();
@@ -415,6 +431,8 @@ void Filter::calcInvChebyshev() // Chebyshev Type-II filter
     if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
         if (order%2!=0) order++; // only even order Cauer.
     }
+
+    if (order>MaxOrder) return false;
 
     float eps = 1.0/(sqrt(pow(10.0,0.1*As)-1.0));
     float a = sinh((asinh(1.0/eps))/(order));
@@ -434,6 +452,7 @@ void Filter::calcInvChebyshev() // Chebyshev Type-II filter
         Poles.append(pol);
     }
 
+    return true;
 }
 
 void Filter::cauerOrderEstim() // from Digital Filter Design Handbook page 102
@@ -450,7 +469,7 @@ void Filter::cauerOrderEstim() // from Digital Filter Design Handbook page 102
     }
 }
 
-void Filter::calcCauer() // from Digital Filter Designer's handbook p.103
+bool Filter::calcCauer() // from Digital Filter Designer's handbook p.103
 {
     float P0;
     //float H0;
@@ -458,6 +477,12 @@ void Filter::calcCauer() // from Digital Filter Designer's handbook p.103
     float aa[50],bb[50],cc[50];
 
     cauerOrderEstim();
+    if (order>MaxOrder) {
+        Poles.clear();
+        Zeros.clear();
+        return false;
+    }
+
     float k = Fc/Fs;
     float kk = sqrt(sqrt(1.0-k*k));
     float u = 0.5*(1.0-kk)/(1.0+kk);
@@ -545,23 +570,26 @@ void Filter::calcCauer() // from Digital Filter Designer's handbook p.103
         im = 0.5*sqrt(-1.0*bb[i]*bb[i]+4*cc[i]);
         Poles.append(std::complex<float>(re,-im));
     }
+
+    return true;
 }
 
-void Filter::calcBessel()
+bool Filter::calcBessel()
 {
     Poles.clear();
     Zeros.clear();
 
-    if (order<=0) return;
+    if (order<=0) return false;
 
     for (int i=0;i<order;i++) {
         Poles.append(std::complex<float>(BesselPoles[order-1][2*i],BesselPoles[order-1][2*i+1]));
     }
 
     reformPolesZeros();
+    return true;
 }
 
-void Filter::calcUserTrFunc()
+bool Filter::calcUserTrFunc()
 {
     if ((!vec_A.isEmpty())&&(!vec_B.isEmpty())) {
         long double *a = vec_A.data();
@@ -571,6 +599,7 @@ void Filter::calcUserTrFunc()
         int b_order = vec_B.count() - 1;
 
         order = std::max(a_order,b_order);
+        if (order>MaxOrder) return false;
 
         qf_poly Numenator(b_order,b);
         qf_poly Denomenator(a_order,a);
@@ -585,7 +614,10 @@ void Filter::calcUserTrFunc()
         Denomenator.roots_to_complex(Poles);
 
         reformPolesZeros();
+        return true;
     }
+
+    return false;
 
 }
 

@@ -76,12 +76,12 @@ protected:
 
     int Nr1,Nc1,Nop1; // number of R,C, opamp per stage
 
-    void calcButterworth();
-    void calcChebyshev();
-    void calcInvChebyshev();
-    void calcCauer();
-    void calcBessel();
-    void calcUserTrFunc();
+    bool calcButterworth();
+    bool calcChebyshev();
+    bool calcInvChebyshev();
+    bool calcCauer();
+    bool calcBessel();
+    bool calcUserTrFunc();
     bool checkRCL(); // Checks RCL values. Are one of them NaN or not?
 
     void createFirstOrderComponentsHPF(QString &s,RC_elements stage, int dx);

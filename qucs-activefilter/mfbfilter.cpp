@@ -367,6 +367,7 @@ void MFBfilter::calcBandPass()
         current_section.R3 = 1000*R3;
         current_section.R4 = 0;
         current_section.R5 = 0;
+        current_section.R6 = 0;
         current_section.C1 = C1;
         current_section.C2 = C2;
         Sections.append(current_section);
@@ -403,6 +404,7 @@ void MFBfilter::calcBandPass()
         current_section.R3 = 1000*R3;
         current_section.R4 = 0;
         current_section.R5 = 0;
+        current_section.R6 = 0;
         current_section.C1 = C1;
         current_section.C2 = C2;
         Sections.append(current_section);
@@ -424,6 +426,7 @@ void MFBfilter::calcBandPass()
         current_section.R3 = 1000*R3;
         current_section.R4 = 0;
         current_section.R5 = 0;
+        current_section.R6 = 0;
         current_section.C1 = C1;
         current_section.C2 = C2;
         Sections.append(current_section);
@@ -458,6 +461,7 @@ void MFBfilter::calcBandPass()
         current_section.R3 = 1000*R3;
         current_section.R4 = 0;
         current_section.R5 = 0;
+        current_section.R6 = 0;
         current_section.C1 = C1;
         current_section.C2 = C2;
         Sections.append(current_section);
