@@ -31,6 +31,7 @@ public:
   static void splitEqn(QString &eqn, QStringList &tokens);
   QString getExpression(bool isXyce);
   QString getEquations(QString sim, QStringList &dep_vars);
+  QString getNgspiceScript();
 
 private:
   bool containNodes(QStringList &tokens);

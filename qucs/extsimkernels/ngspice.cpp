@@ -74,12 +74,6 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
                 vars.append(var_pr);
             }
         }
-        /*if (pc->isEquation) {
-            Equation *eq = (Equation *)pc;
-            QStringList vars_eq;
-            eq->getDepVars(vars_eq);
-            vars.append(vars_eq);
-        }*/
     }
     vars.sort();
     qDebug()<<vars;
@@ -89,6 +83,13 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
 
     QString sim;
     outputs.clear();
+
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->Model=="Eqn") {
+            Equation *eq = (Equation *)pc;
+            stream<<eq->getNgspiceScript();
+        }
+    }
 
     foreach(sim, simulations) {
 

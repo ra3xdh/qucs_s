@@ -185,3 +185,23 @@ QString Equation::getEquations(QString sim, QStringList &dep_vars)
     qDebug()<<sim;
     return s;
 }
+
+QString Equation::getNgspiceScript()
+{
+    QString s;
+    s.clear();
+    for (unsigned int i=0;i<Props.count()-1;i++) {
+        QStringList tokens;
+        QString eqn = Props.at(i)->Value;
+        splitEqn(eqn,tokens);
+        for(QStringList::iterator it = tokens.begin();it != tokens.end(); it++) {
+            *it = spicecompat::convert_functions(*it,false);
+        }
+        eqn = tokens.join("");
+
+        if (!containNodes(tokens)) {
+            s += QString("let %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
+        }
+    }
+    return s;
+}
