@@ -125,12 +125,11 @@ QString Param_Sweep::getNgspiceBeforeSim()
     if (par_lst.count()>1) {
         mod_par = par_lst.at(1);
         Schematic *sch = (Schematic *) QucsMain->DocumentTab->currentPage();
-        for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
-            if (pc->Name == par_lst.at(0)) {
-                mod = pc->getSpiceNetlist().section('\n',1,1,QString::SectionSkipEmpty)
-                                           .section(' ',1,1,QString::SectionSkipEmpty);
-                modelsweep = true;
-            }
+        Component *pc = sch->getComponentByName(par_lst.at(0));
+        if (pc != NULL) {
+            mod = pc->getSpiceNetlist().section('\n',1,1,QString::SectionSkipEmpty)
+                                       .section(' ',1,1,QString::SectionSkipEmpty);
+            modelsweep = true;
         }
     }
 

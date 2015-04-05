@@ -16,7 +16,6 @@
  ***************************************************************************/
 #include "resistor.h"
 #include "node.h"
-#include "schematic.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
 

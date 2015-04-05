@@ -245,6 +245,7 @@ public:
   Component* searchSelSubcircuit();
   Component* selectedComponent(int, int);
   void       deleteComp(Component*);
+  Component* getComponentByName(QString compname);
 
   void     oneLabel(Node*);
   int      placeNodeLabel(WireLabel*);

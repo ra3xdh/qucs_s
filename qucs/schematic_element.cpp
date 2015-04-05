@@ -2765,6 +2765,14 @@ void Schematic::deleteComp(Component *c)
     Components->removeRef(c);   // delete component
 }
 
+Component* Schematic::getComponentByName(QString compname)
+{
+    for(Component *pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
+        if (pc->Name == compname) return pc;
+    }
+    return NULL;
+}
+
 // ---------------------------------------------------
 int Schematic::copyComponents(int& x1, int& y1, int& x2, int& y2,
                               QList<Element *> *ElementCache)
