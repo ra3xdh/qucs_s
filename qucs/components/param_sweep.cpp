@@ -16,6 +16,8 @@
  ***************************************************************************/
 #include "param_sweep.h"
 #include "main.h"
+#include "qucs.h"
+#include "schematic.h"
 #include "misc.h"
 
 
@@ -98,6 +100,9 @@ QString Param_Sweep::getNgspiceBeforeSim()
 {
     QString s,unit;
     QString par = getProperty("Param")->Value;
+    QString step_var = par;
+    step_var.remove('.');
+
     double start,stop,step,fac,points;
     misc::str2num(getProperty("Start")->Value,start,unit,fac);
     start *= fac;
@@ -106,14 +111,35 @@ QString Param_Sweep::getNgspiceBeforeSim()
     misc::str2num(getProperty("Points")->Value,points,unit,fac);
     points *= fac;
     step = (stop-start)/points;
-    s = QString("let start_%1 = %2\n").arg(par).arg(start);
-    s += QString("let stop_%1 = %2\n").arg(par).arg(stop);
-    s += QString("let %1_act=start_%1\n").arg(par);
+    s = QString("let start_%1 = %2\n").arg(step_var).arg(start);
+    s += QString("let stop_%1 = %2\n").arg(step_var).arg(stop);
+    s += QString("let %1_act=start_%1\n").arg(step_var);
     s += QString("let delta = %1\n").arg(step);
     s += "let number = 0\n";
-    s += QString("echo \"STEP %1\" > spice4qucs.cir.res\n").arg(par);
-    s += QString("while %1_act le stop_%1\n").arg(par);
-    s += QString("alter %1 %1_act\n").arg(par);
+    s += QString("echo \"STEP %1\" > spice4qucs.cir.res\n").arg(step_var);
+    s += QString("while %1_act le stop_%1\n").arg(step_var);
+
+    bool modelsweep = false; // Find component and its modelstring
+    QStringList par_lst = par.split('.',QString::SkipEmptyParts);
+    QString mod,mod_par;
+    if (par_lst.count()>1) {
+        mod_par = par_lst.at(1);
+        Schematic *sch = (Schematic *) QucsMain->DocumentTab->currentPage();
+        for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
+            if (pc->Name == par_lst.at(0)) {
+                mod = pc->getSpiceNetlist().section('\n',1,1,QString::SectionSkipEmpty)
+                                           .section(' ',1,1,QString::SectionSkipEmpty);
+                modelsweep = true;
+            }
+        }
+    }
+
+
+    if (modelsweep) { // Model parameter sweep
+        s += QString("altermod %1 %2 = %3_act\n").arg(mod).arg(mod_par).arg(step_var);
+    } else {
+        s += QString("alter %1 = %2_act\n").arg(par).arg(step_var);
+    }
     return s;
 }
 
@@ -121,6 +147,7 @@ QString Param_Sweep::getNgspiceAfterSim()
 {
     QString s;
     QString par = getProperty("Param")->Value;
+    par.remove('.');
     s = "set appendwrite\n";
     s += QString("echo \"$&number\" \"$&%1_act\" >> spice4qucs.cir.res\n").arg(par);
     s += QString("let %1_act = %1_act + delta\n").arg(par);
@@ -145,7 +172,7 @@ QString Param_Sweep::spice_netlist(bool isXyce)
     QString s;
     if (Props.at(0)->Value.startsWith("DC")) {
         QString src = getProperty("Param")->Value;
-        s = QString(".DC %1 %2 %3 %4\n").arg(src).arg(start).arg(stop).arg(step);
+        s = QString("DC %1 %2 %3 %4\n").arg(src).arg(start).arg(stop).arg(step);
     } else if (isXyce) {
         QString var = getProperty("Param")->Value;
         s = QString(".STEP %1 %2 %3 %4\n").arg(var).arg(start).arg(stop).arg(step);

@@ -107,6 +107,13 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
                 } else if (SwpSim.startsWith("TR")&&(sim=="tran")) {
                     stream<<s;
                     hasParSWP = true;
+                } else if (SwpSim.startsWith("SW")&&(sim=="dc")) {
+                    for(Component *pc1 = Sch->DocComps.first(); pc1 != 0; pc1 = Sch->DocComps.next()) {
+                        if ((pc1->Name==SwpSim)&&(pc1->Props.at(0)->Value.startsWith("DC"))) {
+                            stream<<s;
+                            hasParSWP = true;
+                        }
+                    }
                 }
             }
         }
@@ -175,6 +182,13 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
                 QString SwpSim = pc->Props.at(0)->Value;
                 if (SwpSim.startsWith("AC")&&(sim=="ac")) stream<<s;
                 else if (SwpSim.startsWith("TR")&&(sim=="tran")) stream<<s;
+                else if (SwpSim.startsWith("SW")&&(sim=="dc")) {
+                    for(Component *pc1 = Sch->DocComps.first(); pc1 != 0; pc1 = Sch->DocComps.next()) {
+                        if ((pc1->Name==SwpSim)&&(pc1->Props.at(0)->Value.startsWith("DC"))) {
+                             stream<<s;
+                        }
+                    }
+               }
             }
         }
 
