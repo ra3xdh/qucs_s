@@ -26,35 +26,35 @@
 
 C_SPICE::C_SPICE()
 {
-  Description = QObject::tr("C SPICE format");
+    Description = QObject::tr("C SPICE format");
 
-   Lines.append(new Line( -4,-11, -4, 11,QPen(Qt::darkRed,4)));
-   Lines.append(new Line(  4,-11,  4, 11, QPen(Qt::darkRed,4)));
-   Lines.append(new Line(-30,  0, -4,  0,  QPen(Qt::darkBlue,2)));
-   Lines.append(new Line(  4,  0, 30,  0,   QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( -4,-11, -4, 11,QPen(Qt::darkRed,4)));
+    Lines.append(new Line(  4,-11,  4, 11, QPen(Qt::darkRed,4)));
+    Lines.append(new Line(-30,  0, -4,  0,  QPen(Qt::darkBlue,2)));
+    Lines.append(new Line(  4,  0, 30,  0,   QPen(Qt::darkBlue,2)));
     
 
-  Ports.append(new Port( 30,  0));
-  Ports.append(new Port(-30,  0));
+    Ports.append(new Port( 30,  0));
+    Ports.append(new Port(-30,  0));
 
     x1 = -30; y1 = -13;
     x2 =  30; y2 =  13;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "C_SPICE";
-  SpiceModel = "C";
-  Name  = "C";
+    tx = x1+4;
+    ty = y2+4;
+    Model = "C_SPICE";
+    SpiceModel = "C";
+    Name  = "C";
 
- Props.append(new Property("C ", "", true,"Expression"));
- Props.append(new Property("C ", "", false,"Expression"));
- Props.append(new Property("C ", "", false,"Expression"));
- Props.append(new Property("C ", "", false,"Expression"));
- Props.append(new Property("C ", "", false,"Expression"));
+    Props.append(new Property("C ", "", true,"Expression"));
+    Props.append(new Property("C ", "", false,"Expression"));
+    Props.append(new Property("C ", "", false,"Expression"));
+    Props.append(new Property("C ", "", false,"Expression"));
+    Props.append(new Property("C ", "", false,"Expression"));
 
- 
- 
-  rotate();  // fix historical flaw
+
+
+    rotate();  // fix historical flaw
 }
 
 C_SPICE::~C_SPICE()
@@ -90,17 +90,16 @@ QString C_SPICE::spice_netlist(bool isXyce)
     }
 
 
-QString Line1 =  Props.at(0)->Value;
-QString Line2 = Props.at(1)->Value;
-QString Line3 = Props.at(2)->Value;
-QString Line4 = Props.at(3)->Value;
-QString Line5 = Props.at(4)->Value;
-  
-    if(Line1 != "")   s += QString("%1\n").arg(Line1);
-    if(Line2 != "")   s += QString("%1\n").arg(Line2);
-    if(Line3 != "")   s += QString("%1\n").arg(Line3);
-    if(Line4 != "")   s += QString("%1\n").arg(Line4);
-   if(Line5 != "")    s += QString("%1\n").arg(Line5);    
+    Property *pp = Props.first();
+    QString val = pp->Value;
+    val.remove(' ');
+    if (!val.isEmpty()) s += " " + val + " ";
+    for(pp = Props.next(); pp != 0; pp = Props.next()) {
+        QString val = pp->Value;
+        val.remove(' ');
+        if (!val.isEmpty()) s += QString(" %1=%2 ").arg(pp->Name).arg(val);
+    }
+    s += '\n';
  
     return s;
 }

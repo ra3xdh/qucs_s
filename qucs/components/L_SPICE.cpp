@@ -26,36 +26,36 @@
 
 L_SPICE::L_SPICE()
 {
-  Description = QObject::tr("L SPICE format");
-  
-   Arcs.append(new Arc(-18, -6, 12, 12,  0, 16*180,QPen(Qt::darkRed,4)));
-  Arcs.append(new Arc( -6, -6, 12, 12,  0, 16*180,QPen(Qt::darkRed,4)));
-  Arcs.append(new Arc(  6, -6, 12, 12,  0, 16*180,QPen(Qt::darkRed,4)));
-  Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
+    Description = QObject::tr("L SPICE format");
 
-  Ports.append(new Port(-30,  0));
-  Ports.append(new Port( 30,  0));
+    Arcs.append(new Arc(-18, -6, 12, 12,  0, 16*180,QPen(Qt::darkRed,4)));
+    Arcs.append(new Arc( -6, -6, 12, 12,  0, 16*180,QPen(Qt::darkRed,4)));
+    Arcs.append(new Arc(  6, -6, 12, 12,  0, 16*180,QPen(Qt::darkRed,4)));
+    Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
 
-  x1 = -30; y1 = -10;
-  x2 =  30; y2 =   6;
+    Ports.append(new Port(-30,  0));
+    Ports.append(new Port( 30,  0));
 
-  tx = x1+4;
-  ty = y2+4;
+    x1 = -30; y1 = -10;
+    x2 =  30; y2 =   6;
 
-   Model = "L_SPICE";
-  SpiceModel = "L";
-  Name  = "L";
+    tx = x1+4;
+    ty = y2+4;
 
- Props.append(new Property("L  ", "", true,"Expression"));
- Props.append(new Property("L  ", "", false,"Expression"));
- Props.append(new Property("L  ", "", false,"Expression"));
- Props.append(new Property("L  ", "", false,"Expression"));
- Props.append(new Property("L  ", "", false,"Expression"));
+    Model = "L_SPICE";
+    SpiceModel = "L";
+    Name  = "L";
 
- 
- 
-  rotate();  // fix historical flaw
+    Props.append(new Property("L  ", "", true,"Expression"));
+    Props.append(new Property("L  ", "", false,"Expression"));
+    Props.append(new Property("L  ", "", false,"Expression"));
+    Props.append(new Property("L  ", "", false,"Expression"));
+    Props.append(new Property("L  ", "", false,"Expression"));
+
+
+
+    rotate();  // fix historical flaw
 }
 
 L_SPICE::~L_SPICE()
@@ -91,18 +91,16 @@ QString L_SPICE::spice_netlist(bool isXyce)
     }
 
 
-QString Line1 =  Props.at(0)->Value;
-QString Line2 = Props.at(1)->Value;
-QString Line3 = Props.at(2)->Value;
-QString Line4 = Props.at(3)->Value;
-QString Line5 = Props.at(4)->Value;
-  
-    if(Line1 != "")   s += QString("%1\n").arg(Line1);
-    if(Line2 != "")   s += QString("%1\n").arg(Line2);
-    if(Line3 != "")   s += QString("%1\n").arg(Line3);
-    if(Line4 != "")   s += QString("%1\n").arg(Line4);
-    if(Line5 != "")   s += QString("%1\n").arg(Line5); 
-    
+    Property *pp = Props.first();
+    QString val = pp->Value;
+    val.remove(' ');
+    if (!val.isEmpty()) s += " " + val + " ";
+    for(pp = Props.next(); pp != 0; pp = Props.next()) {
+        QString val = pp->Value;
+        val.remove(' ');
+        if (!val.isEmpty()) s += QString(" %1=%2 ").arg(pp->Name).arg(val);
+    }
+    s += '\n';
  
     return s;
 }

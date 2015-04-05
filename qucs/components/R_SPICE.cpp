@@ -26,37 +26,37 @@
 
 R_SPICE::R_SPICE()
 {
-  Description = QObject::tr("R SPICE format");
-  
- Lines.append(new Line(-18, -9, 18, -9,QPen(Qt::darkRed,4)));
+    Description = QObject::tr("R SPICE format");
+
+    Lines.append(new Line(-18, -9, 18, -9,QPen(Qt::darkRed,4)));
     Lines.append(new Line( 18, -9, 18,  9,QPen(Qt::darkRed,4)));
     Lines.append(new Line( 18,  9,-18,  9,QPen(Qt::darkRed,4)));
     Lines.append(new Line(-18,  9,-18, -9,QPen(Qt::darkRed,4)));
     Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
     Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
     
-  Ports.append(new Port(-30,  0));
-  Ports.append(new Port( 30,  0));
+    Ports.append(new Port(-30,  0));
+    Ports.append(new Port( 30,  0));
 
- x1 = -30; y1 = -11;
-  x2 =  30; y2 =  11;
-  
-  tx = x1+4;
-  ty = y2+4;
+    x1 = -30; y1 = -11;
+    x2 =  30; y2 =  11;
 
-   Model = "R_SPICE";
-  SpiceModel = "R";
-  Name  = "R";
+    tx = x1+4;
+    ty = y2+4;
 
- Props.append(new Property("R  ", "", true,"Expression"));
- Props.append(new Property("R  ", "", false,"Expression"));
- Props.append(new Property("R  ", "", false,"Expression"));
- Props.append(new Property("R  ", "", false,"Expression"));
- Props.append(new Property("R  ", "", false,"Expression"));
+    Model = "R_SPICE";
+    SpiceModel = "R";
+    Name  = "R";
 
- 
- 
-  rotate();  // fix historical flaw
+    Props.append(new Property("R  ", "", true,"Expression"));
+    Props.append(new Property("R  ", "", false,"Expression"));
+    Props.append(new Property("R  ", "", false,"Expression"));
+    Props.append(new Property("R  ", "", false,"Expression"));
+    Props.append(new Property("R  ", "", false,"Expression"));
+
+
+
+    rotate();  // fix historical flaw
 }
 
 R_SPICE::~R_SPICE()
@@ -91,19 +91,16 @@ QString R_SPICE::spice_netlist(bool isXyce)
         s += " "+ nam+" ";   // node names
     }
 
-
-QString Line1 =  Props.at(0)->Value;
-QString Line2 = Props.at(1)->Value;
-QString Line3 = Props.at(2)->Value;
-QString Line4 = Props.at(3)->Value;
-QString Line5 = Props.at(4)->Value;
-  
-    if(Line1 != "")   s += QString("%1\n").arg(Line1);
-    if(Line2 != "")   s += QString("%1\n").arg(Line2);
-    if(Line3 != "")   s += QString("%1\n").arg(Line3);
-    if(Line4 != "")   s += QString("%1\n").arg(Line4);
-    if(Line5 != "")   s += QString("%1\n").arg(Line5); 
-    
+    Property *pp = Props.first();
+    QString val = pp->Value;
+    val.remove(' ');
+    if (!val.isEmpty()) s += " " + val + " ";
+    for(pp = Props.next(); pp != 0; pp = Props.next()) {
+        QString val = pp->Value;
+        val.remove(' ');
+        if (!val.isEmpty()) s += QString(" %1=%2 ").arg(pp->Name).arg(val);
+    }
+    s += '\n';
  
     return s;
 }
