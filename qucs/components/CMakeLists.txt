@@ -73,6 +73,9 @@ gNL.cpp
 vTRNOISE.cpp
 iTRNOISE.cpp
 vTRRANDOM.cpp
+C_SPICE.cpp
+L_SPICE.cpp
+R_SPICE.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -267,6 +270,9 @@ gNL.h
 vTRNOISE.h
 iTRNOISE.h
 vTRRANDOM.h
+C_SPICE.h
+L_SPICE.h
+R_SPICE.h
 )
 
 

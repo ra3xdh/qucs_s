@@ -441,7 +441,10 @@ void Module::registerModules (void) {
   REGISTER_SPICE_1 (gNL);  
   REGISTER_SPICE_1 (vTRNOISE);   
   REGISTER_SPICE_1 (iTRNOISE);   
-  REGISTER_SPICE_1 (vTRRANDOM);        
+  REGISTER_SPICE_1 (vTRRANDOM); 
+  REGISTER_SPICE_1 (C_SPICE); 
+  REGISTER_SPICE_1 (L_SPICE); 
+  REGISTER_SPICE_1 (R_SPICE);  
 
   // specific sections of spice netlists
   REGISTER_SPICE_SEC_1 (SpiceParam);

@@ -213,6 +213,10 @@
 #include "vTRNOISE.h"
 #include "iTRNOISE.h"
 #include "vTRRANDOM.h"
+#include "C_SPICE.h"
+#include "L_SPICE.h"
+#include "R_SPICE.h"
+
 
 // Spice netlist sections
 #include "sp_parameter.h"
