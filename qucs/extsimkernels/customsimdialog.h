@@ -1,6 +1,8 @@
 #ifndef CUSTOMSIMDIALOG_H
 #define CUSTOMSIMDIALOG_H
 
+#include "schematic.h"
+#include "components/sp_customsim.h"
 #include "components/component.h"
 #include <QtGui>
 
@@ -10,13 +12,16 @@ class CustomSimDialog : public QDialog
 
 private:
 
+    SpiceCustomSim* comp;
+    Schematic *Sch;
+
     QTextEdit* edtCode;
     QPushButton *btnOK;
     QPushButton *btnApply;
     QPushButton *btnCancel;
 
 public:
-    explicit CustomSimDialog(QWidget *parent = 0);
+    explicit CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *parent = 0);
     
 signals:
 

@@ -223,4 +223,7 @@
 #include "sp_globalpar.h"
 #include "sp_options.h"
 
+// Spice simulations
+#include "sp_customsim.h"
+
 #endif

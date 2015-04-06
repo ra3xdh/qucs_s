@@ -220,6 +220,8 @@ void Module::intoCategory (Module * m) {
   REGISTER_COMP_1 (QObject::tr("spice components"),val)
 #define REGISTER_SPICE_SEC_1(val) \
   REGISTER_COMP_1 (QObject::tr("spice specific sections"),val)
+#define REGISTER_SPICE_SIM_1(val) \
+  REGISTER_COMP_1 (QObject::tr("spice simulations"),val)
 
 // This function has to be called once at application startup.  It
 // registers every component available in the application.  Put here
@@ -450,6 +452,9 @@ void Module::registerModules (void) {
   REGISTER_SPICE_SEC_1 (SpiceParam);
   REGISTER_SPICE_SEC_1 (SpiceGlobalParam);
   REGISTER_SPICE_SEC_1 (SpiceOptions);
+
+  // spice simulations
+  REGISTER_SPICE_SIM_1 (SpiceCustomSim);
 
 
   // paintings

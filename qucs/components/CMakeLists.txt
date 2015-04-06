@@ -76,6 +76,7 @@ vTRRANDOM.cpp
 C_SPICE.cpp
 L_SPICE.cpp
 R_SPICE.cpp
+sp_customsim.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -273,6 +274,7 @@ vTRRANDOM.h
 C_SPICE.h
 L_SPICE.h
 R_SPICE.h
+sp_customsim.cpp
 )
 
 

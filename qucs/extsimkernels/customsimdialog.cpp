@@ -1,9 +1,13 @@
 #include "customsimdialog.h"
 
-CustomSimDialog::CustomSimDialog(QWidget *parent) :
+CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *parent) :
     QDialog(parent)
 {
+    comp = pc;
+    Sch = sch;
+
     edtCode = new QTextEdit(this);
+    edtCode->insertPlainText(comp->Props.at(0)->Value);
     btnApply = new QPushButton(tr("Apply"));
     connect(btnApply,SIGNAL(clicked()),this,SLOT(slotApply()));
     btnCancel = new QPushButton(tr("Cancel"));
@@ -25,15 +29,16 @@ CustomSimDialog::CustomSimDialog(QWidget *parent) :
 
 void CustomSimDialog::slotApply()
 {
-
+    comp->Props.at(0)->Value = edtCode->document()->toPlainText();
 }
 
 void CustomSimDialog::slotOK()
 {
-
+    slotApply();
+    accept();
 }
 
 void CustomSimDialog::slotCancel()
 {
-
+    reject();
 }

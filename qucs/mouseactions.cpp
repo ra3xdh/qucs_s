@@ -28,11 +28,13 @@
 #include "components/optimizedialog.h"
 #include "components/componentdialog.h"
 #include "components/vacomponent.h"
+#include "components/sp_customsim.h"
 #include "diagrams/diagramdialog.h"
 #include "diagrams/markerdialog.h"
 #include "diagrams/tabdiagram.h"
 #include "diagrams/timingdiagram.h"
 #include "dialogs/labeldialog.h"
+#include "extsimkernels/customsimdialog.h"
 
 #include <QTextStream>
 #include <Q3PtrList>
@@ -1863,7 +1865,10 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
 //         qDebug() << "cast focusElement into" << c->Name;
          if(c->Model == "GND") return;
 
-         if(c->Model == "SPICE") {
+         if (c->Model == ".CUSTOMSIM") {
+             CustomSimDialog *sd = new CustomSimDialog((SpiceCustomSim*)c, Doc);
+             if(sd->exec() != 1) break;   // dialog is WDestructiveClose
+         } else if(c->Model == "SPICE") {
            SpiceDialog *sd = new SpiceDialog(App, (SpiceFile*)c, Doc);
            if(sd->exec() != 1) break;   // dialog is WDestructiveClose
          }

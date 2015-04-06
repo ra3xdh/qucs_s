@@ -198,7 +198,9 @@ void Component::paint(ViewPainter *p)
     p->Painter->setFont(newFont);
     p->map(cx, cy, x, y);
 
-    p->Painter->setPen(QPen(Qt::darkBlue,2));
+    if (Model==".CUSTOMSIM") p->Painter->setPen(QPen(Qt::darkRed,2));
+    else p->Painter->setPen(QPen(Qt::darkBlue,2));
+
     a = b = 0;
     QRect r, t;
     foreach(Text *pt, Texts) {
