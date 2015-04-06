@@ -7,8 +7,8 @@ Src_eqndef::Src_eqndef()
 {
   Description = QObject::tr("Equation defined (B-type) voltage or current source");
 
-  Arcs.append(new Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::darkBlue,2)));
-  Texts.append(new Text(7,-10,"Eqn",Qt::black,10.0,0.0,-1.0));
+  Arcs.append(new Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::red,3)));
+  Texts.append(new Text(7,-12,"Eqn",Qt::red,10.0,0.0,-1.0));
   Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 18,  5, 18, 11,QPen(Qt::red,1)));
