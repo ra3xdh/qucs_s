@@ -46,13 +46,11 @@ C_SPICE::C_SPICE()
     SpiceModel = "C";
     Name  = "C";
 
-    Props.append(new Property("C ", "", true,"Expression"));
-    Props.append(new Property("C ", "", false,"Expression"));
-    Props.append(new Property("C ", "", false,"Expression"));
-    Props.append(new Property("C ", "", false,"Expression"));
-    Props.append(new Property("C ", "", false,"Expression"));
-
-
+    Props.append(new Property("C", "", true,"Expression"));
+    Props.append(new Property("C_Line 2", "", false,"Expression"));
+    Props.append(new Property("C_Line 3", "", false,"Expression"));
+    Props.append(new Property("C_Line 4", "", false,"Expression"));
+    Props.append(new Property("C_Line 5", "", false,"Expression"));
 
     rotate();  // fix historical flaw
 }
@@ -92,12 +90,10 @@ QString C_SPICE::spice_netlist(bool isXyce)
 
     Property *pp = Props.first();
     QString val = pp->Value;
-    val.remove(' ');
-    if (!val.isEmpty()) s += " " + val + " ";
+    if (!val.isEmpty()) s += " "+val + "\n";
     for(pp = Props.next(); pp != 0; pp = Props.next()) {
         QString val = pp->Value;
-        val.remove(' ');
-        if (!val.isEmpty()) s += QString(" %1=%2 ").arg(pp->Name).arg(val);
+        if (!val.isEmpty()) s += QString("%1\n").arg(val) ;
     }
     s += '\n';
  

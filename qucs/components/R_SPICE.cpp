@@ -48,11 +48,11 @@ R_SPICE::R_SPICE()
     SpiceModel = "R";
     Name  = "R";
 
-    Props.append(new Property("R  ", "", true,"Expression"));
-    Props.append(new Property("R  ", "", false,"Expression"));
-    Props.append(new Property("R  ", "", false,"Expression"));
-    Props.append(new Property("R  ", "", false,"Expression"));
-    Props.append(new Property("R  ", "", false,"Expression"));
+    Props.append(new Property("R", "", true,"Expression"));
+    Props.append(new Property("R_Line 2", "", false,"Expression"));
+    Props.append(new Property("R_Line 3", "", false,"Expression"));
+    Props.append(new Property("R_Line 4", "", false,"Expression"));
+    Props.append(new Property("R_Line 5", "", false,"Expression"));
 
 
 
@@ -90,15 +90,12 @@ QString R_SPICE::spice_netlist(bool isXyce)
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
-
-    Property *pp = Props.first();
+     Property *pp = Props.first();
     QString val = pp->Value;
-    val.remove(' ');
-    if (!val.isEmpty()) s += " " + val + " ";
+    if (!val.isEmpty()) s += " "+val + "\n";
     for(pp = Props.next(); pp != 0; pp = Props.next()) {
         QString val = pp->Value;
-        val.remove(' ');
-        if (!val.isEmpty()) s += QString(" %1=%2 ").arg(pp->Name).arg(val);
+        if (!val.isEmpty()) s += QString("%1\n").arg(val) ;
     }
     s += '\n';
  

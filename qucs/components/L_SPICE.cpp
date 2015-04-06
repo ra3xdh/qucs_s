@@ -47,11 +47,11 @@ L_SPICE::L_SPICE()
     SpiceModel = "L";
     Name  = "L";
 
-    Props.append(new Property("L  ", "", true,"Expression"));
-    Props.append(new Property("L  ", "", false,"Expression"));
-    Props.append(new Property("L  ", "", false,"Expression"));
-    Props.append(new Property("L  ", "", false,"Expression"));
-    Props.append(new Property("L  ", "", false,"Expression"));
+    Props.append(new Property("L", "", true,"Expression"));
+    Props.append(new Property("L_Line 2", "", false,"Expression"));
+    Props.append(new Property("L_Line 3", "", false,"Expression"));
+    Props.append(new Property("L _Line 4", "", false,"Expression"));
+    Props.append(new Property("L _Line 5", "", false,"Expression"));
 
 
 
@@ -90,16 +90,14 @@ QString L_SPICE::spice_netlist(bool isXyce)
         s += " "+ nam+" ";   // node names
     }
 
-
     Property *pp = Props.first();
     QString val = pp->Value;
-    val.remove(' ');
-    if (!val.isEmpty()) s += " " + val + " ";
+    if (!val.isEmpty()) s += " "+val + "\n";
     for(pp = Props.next(); pp != 0; pp = Props.next()) {
         QString val = pp->Value;
-        val.remove(' ');
-        if (!val.isEmpty()) s += QString(" %1=%2 ").arg(pp->Name).arg(val);
+        if (!val.isEmpty()) s += QString("%1\n").arg(val) ;
     }
+ 
     s += '\n';
  
     return s;
