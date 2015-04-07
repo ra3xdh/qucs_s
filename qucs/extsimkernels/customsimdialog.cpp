@@ -1,4 +1,5 @@
 #include "customsimdialog.h"
+#include "node.h"
 
 CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *parent) :
     QDialog(parent)
@@ -58,5 +59,26 @@ void CustomSimDialog::slotCancel()
 
 void CustomSimDialog::slotFindVars()
 {
+    QStringList vars;
+    for(Node *pn = Sch->DocNodes.first(); pn != 0; pn = Sch->DocNodes.next()) {
+      if(pn->Label != 0) {
+          if (!vars.contains(pn->Label->Name)) {
+              vars.append(pn->Label->Name);
+          }
+      }
+    }
+    for(Wire *pw = Sch->DocWires.first(); pw != 0; pw = Sch->DocWires.next()) {
+      if(pw->Label != 0) {
+          if (!vars.contains(pw->Label->Name)) {
+              vars.append(pw->Label->Name);
+          }
+      }
+    }
 
+    qDebug()<<vars;
+    for(QStringList::iterator it = vars.begin();it != vars.end(); it++) {
+        *it=QString("V(%1)").arg(*it);
+    }
+
+    edtVars->setText(vars.join(";"));
 }
