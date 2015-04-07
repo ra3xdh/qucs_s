@@ -29,8 +29,8 @@ vSffm::vSffm()
   Description = QObject::tr("Single frequency FM modulated source");
 
   // normal voltage source symbol
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
-  Texts.append(new Text(26, 4,"SFFM",Qt::black,10.0,0.0,-1.0)); 
+  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::red,3)));
+  Texts.append(new Text(26, 4,"SFFM",Qt::red,10.0,0.0,-1.0)); 
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   

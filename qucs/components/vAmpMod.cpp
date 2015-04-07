@@ -29,8 +29,8 @@ vAmpMod::vAmpMod()
   Description = QObject::tr("AM modulated voltage source");
 
   // normal voltage source symbol
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::red,3)));
-   Texts.append(new Text(26, 4,"AM",Qt::red,10.0,0.0,-1.0)); 
+  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::cyan,3)));
+   Texts.append(new Text(26, 4,"AM",Qt::cyan,10.0,0.0,-1.0)); 
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   
@@ -52,9 +52,9 @@ vAmpMod::vAmpMod()
   SpiceModel = "V";
   Name  = "V";
 
-  Props.append(new Property("Va", "1 V", true,
+  Props.append(new Property("Va", "1 ", true,
 		QObject::tr("voltage amplitude")));
-  Props.append(new Property("Vo", "0 V", true,
+  Props.append(new Property("Vo", "0 ", true,
 		QObject::tr("offset voltage")));
   Props.append(new Property("Mf", "500", true,
 		QObject::tr("modulation frequency")));
