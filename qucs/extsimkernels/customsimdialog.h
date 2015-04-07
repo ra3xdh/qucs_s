@@ -19,6 +19,9 @@ private:
     QPushButton *btnOK;
     QPushButton *btnApply;
     QPushButton *btnCancel;
+    QPushButton *btnPlotAll;
+
+    QLineEdit *edtVars;
 
 public:
     explicit CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *parent = 0);
@@ -29,6 +32,7 @@ private slots:
     void slotApply();
     void slotOK();
     void slotCancel();
+    void slotFindVars();
     
 public slots:
     
