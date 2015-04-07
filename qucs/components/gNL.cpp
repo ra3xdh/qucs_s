@@ -27,8 +27,8 @@ gNL::gNL()
   Description = QObject::tr("Equation defined (E-type) voltage source");
   // Value, Table and POLY forms are allowed: should work with ngspice and Xyce.
 
-  Arcs.append(new Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::darkBlue,2)));
-  Texts.append(new Text(20, 12,"GNL",Qt::black,10.0,0.0,-1.0));
+  Arcs.append(new Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::cyan,3)));
+  Texts.append(new Text(20, 12,"GNL",Qt::cyan,10.0,0.0,-1.0));
   Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::darkBlue,3)));
@@ -47,16 +47,16 @@ gNL::gNL()
   SpiceModel = "G";
   Name  = "G";
 
-  Props.append(new Property("Line1", "", true,"Expression"));
-  Props.append(new Property("Line2", "", false,"Expression"));
-  Props.append(new Property("Line3", "", false,"Expression"));
-  Props.append(new Property("Line4", "", false,"Expression"));
-  Props.append(new Property("Line5", "", false,"Expression"));
-  Props.append(new Property("Line6", "", false,"Expression"));
-  Props.append(new Property("Line7", "", false,"Expression"));
-  Props.append(new Property("Line8", "", false,"Expression"));
-  Props.append(new Property("Line9", "", false,"Expression"));
-  Props.append(new Property("Line10", "", false,"Expression"));
+  Props.append(new Property("G", "", true,"Expression"));
+  Props.append(new Property("Line_2", "", false,"Expression"));
+  Props.append(new Property("Line_3", "", false,"Expression"));
+  Props.append(new Property("Line_4", "", false,"Expression"));
+  Props.append(new Property("Line_5", "", false,"Expression"));
+  Props.append(new Property("Line_6", "", false,"Expression"));
+  Props.append(new Property("Line_7", "", false,"Expression"));
+  Props.append(new Property("Line_8", "", false,"Expression"));
+  Props.append(new Property("Line_9", "", false,"Expression"));
+  Props.append(new Property("Line_10", "", false,"Expression"));
   rotate();  // fix historical flaw
 }
 
@@ -71,7 +71,7 @@ Component* gNL::newOne()
 
 Element* gNL::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("G Non-linear");
+  Name = QObject::tr("G Non-linear independent current source");
   BitmapFile = (char *) "gNL";
 
   if(getNewOne)  return new gNL();
@@ -91,27 +91,26 @@ QString gNL::spice_netlist(bool isXyce)
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }
-    QString Line1= Props.at(0)->Value;
-    QString Line2= Props.at(1)->Value; 
-    QString Line3= Props.at(2)->Value;
-    QString Line4= Props.at(3)->Value;
-    QString Line5= Props.at(4)->Value;
-    QString Line6= Props.at(5)->Value;
-    QString Line7= Props.at(6)->Value;
-    QString Line8= Props.at(7)->Value;
-    QString Line9= Props.at(8)->Value;
-    QString Line10= Props.at(9)->Value;
+    QString G= Props.at(0)->Value;
+    QString Line_2 = Props.at(1)->Value; 
+    QString Line_3 = Props.at(2)->Value;
+    QString Line_4 = Props.at(3)->Value;
+    QString Line_5 = Props.at(4)->Value;
+    QString Line_6 = Props.at(5)->Value;
+    QString Line_7 = Props.at(6)->Value;
+    QString Line_8 = Props.at(7)->Value;
+    QString Line_9 = Props.at(8)->Value;
+    QString Line_10 = Props.at(9)->Value;
     
-    if(Line1 !="")   s += QString("%1\n").arg(Line1);
-    if(Line2 !="")   s += QString("%1\n").arg(Line2);
-    if(Line3 !="")   s += QString("%1\n").arg(Line3);
-    if(Line4 !="")   s += QString("%1\n").arg(Line4);
-    if(Line5 !="")   s += QString("%1\n").arg(Line5);
-    if(Line6 !="")   s += QString("%1\n").arg(Line6);
-    if(Line7 !="")   s += QString("%1\n").arg(Line7);
-    if(Line8 !="")   s += QString("%1\n").arg(Line8);
-    if(Line9 !="")   s += QString("%1\n").arg(Line9);
-    if(Line10 !="") s += QString("%1\n").arg(Line10);
-
-    return s;
+  if(  G.length()  > 2)        s += QString("%1\n").arg(G);
+    if(  Line_2.length() > 2 )     s += QString("%1\n").arg(Line_2);
+    if(  Line_3.length() > 2 )   s += QString("%1\n").arg(Line_3);
+    if(  Line_4.length() > 2 )   s += QString("%1\n").arg(Line_4);
+    if(  Line_5.length() > 2 )   s += QString("%1\n").arg(Line_5);
+    if(  Line_6.length () > 2 )   s += QString("%1\n").arg(Line_6);
+    if(  Line_7.length ()  > 2 )   s += QString("%1\n").arg(Line_7);
+    if(  Line_8.length()  > 2)   s += QString("%1\n").arg(Line_8);
+    if(  Line_9.length()  > 2 )   s += QString("%1\n").arg(Line_9);
+    if(  Line_10.length() > 2 ) s += QString("%1\n").arg(Line_10);
+     return s;
 }

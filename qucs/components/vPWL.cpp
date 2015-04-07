@@ -48,16 +48,16 @@ vPWL::vPWL()
   SpiceModel = "V";
   Name  = "V";
 
-  Props.append(new Property("PWL", " ", true,"Expression"));
- Props.append(new Property("Line_2", " ", false,"Expression"));
- Props.append(new Property("Line_3", " ", false,"Expression"));
- Props.append(new Property("Line_4", " ", false,"Expression"));
- Props.append(new Property("Line_5", " ", false,"Expression"));
- Props.append(new Property("Line_6", " ", false,"Expression"));
- Props.append(new Property("Line_7", " ", false,"Expression"));
- Props.append(new Property("Line_8", " ", false,"Expression"));
- Props.append(new Property("Line_9", " ", false,"Expression"));
- Props.append(new Property("Line_10", " ", false,"Expression"));
+  Props.append(new Property("PWL", "", true,"Expression"));
+ Props.append(new Property("Line_2", "", false,"Expression"));
+ Props.append(new Property("Line_3", "", false,"Expression"));
+ Props.append(new Property("Line_4", "", false,"Expression"));
+ Props.append(new Property("Line_5", "", false,"Expression"));
+ Props.append(new Property("Line_6", "", false,"Expression"));
+ Props.append(new Property("Line_7", "", false,"Expression"));
+ Props.append(new Property("Line_8", "", false,"Expression"));
+ Props.append(new Property("Line_9", "", false,"Expression"));
+ Props.append(new Property("Line_10", "", false,"Expression"));
  
  
   rotate();  // fix historical flaw
@@ -109,16 +109,16 @@ QString Line_10= Props.at(9)->Value;
 
     s += QString(" DC 0  AC 0  PWL( ");
   
-    if(PWL !=" ")   s += QString("%1\n").arg(PWL);
-    if(Line_2 !=" ")   s += QString("%1\n").arg(Line_2);
-    if(Line_3 !=" ")   s += QString("%1\n").arg(Line_3);
-    if(Line_4 !=" ")   s += QString("%1\n").arg(Line_4);
-    if(Line_5 !=" ")   s += QString("%1\n").arg(Line_5);
-    if(Line_6 !=" ")   s += QString("%1\n").arg(Line_6);
-    if(Line_7 !=" ")   s += QString("%1\n").arg(Line_7);
-    if(Line_8 !=" ")   s += QString("%1\n").arg(Line_8);
-    if(Line_9 !=" ")   s += QString("%1\n").arg(Line_9);
-    if(Line_10 !=" ") s += QString("%1\n").arg(Line_10);
-    s+= "+ )\n";
+     if(  PWL.length()  > 2)        s += QString("%1\n").arg(PWL);
+    if(  Line_2.length() > 2 )     s += QString("%1\n").arg(Line_2);
+    if(  Line_3.length() > 2 )   s += QString("%1\n").arg(Line_3);
+    if(  Line_4.length() > 2 )   s += QString("%1\n").arg(Line_4);
+    if(  Line_5.length() > 2 )   s += QString("%1\n").arg(Line_5);
+    if(  Line_6.length () > 2 )   s += QString("%1\n").arg(Line_6);
+    if(  Line_7.length ()  > 2 )   s += QString("%1\n").arg(Line_7);
+    if(  Line_8.length()  > 2)   s += QString("%1\n").arg(Line_8);
+    if(  Line_9.length()  > 2 )   s += QString("%1\n").arg(Line_9);
+    if(  Line_10.length() > 2 ) s += QString("%1\n").arg(Line_10);
+   s+= "+ )\n";
     return s;
 }
