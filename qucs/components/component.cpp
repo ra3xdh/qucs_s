@@ -967,7 +967,7 @@ bool Component::load(const QString& _s)
 
     // for equations
     if(Model != "EDD" && Model != "RFEDD" && Model != "RFEDD2P")
-    if(p1->Description.isEmpty()) {  // unknown number of properties ?
+      if(p1->Description.isEmpty()||p1->Description=="Expression") {  // unknown number of properties ?
       p1->Name = n.section('=',0,0);
       n = n.section('=',1);
       // allocate memory for a new property (e.g. for equations)
