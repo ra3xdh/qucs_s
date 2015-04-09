@@ -45,6 +45,7 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
            QString sim_typ = pc->Model;
            if (sim_typ==".AC") simulations.append("ac");
            if (sim_typ==".TR") simulations.append("tran");
+           if (sim_typ==".CUSTOMSIM") simulations.append("custom");
            if ((sim_typ==".SW")&&
                (pc->Props.at(0)->Value.startsWith("DC"))) simulations.append("dc");
            // stream<<s;
@@ -119,17 +120,35 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
         }
 
 
+        QString custom_vars;
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
            if(pc->isSimulation) {
                QString sim_typ = pc->Model;
                QString s = pc->getSpiceNetlist();
                if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
                if ((sim_typ==".TR")&&(sim=="tran")) stream<<s;
+               if ((sim_typ==".CUSTOMSIM")&&(sim=="custom")) {
+                   stream<<s;
+                   custom_vars = pc->Props.at(1)->Value;
+                   custom_vars.replace(";"," ");
+               }
                if (sim_typ==".SW") {
                    QString SwpSim = pc->Props.at(0)->Value;
                    if (SwpSim.startsWith("DC")&&(sim=="dc")) stream<<s;
                }
            }
+        }
+
+
+        QFileInfo inf(Sch->DocName);
+        QString basenam = inf.baseName();
+
+        if (sim=="custom") {
+            QString filename = basenam + "_custom.txt";
+            outputs.append(filename);
+            QString write_str = QString("write %1 %2\n").arg(filename).arg(custom_vars);
+            stream<<write_str;
+            continue;
         }
 
 
@@ -147,10 +166,6 @@ void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
                 vars_eq.append(v1);
             }
         }
-
-
-        QFileInfo inf(Sch->DocName);
-        QString basenam = inf.baseName();
 
         QString nod;
         QString nods;
