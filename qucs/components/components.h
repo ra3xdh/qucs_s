@@ -216,6 +216,7 @@
 #include "C_SPICE.h"
 #include "L_SPICE.h"
 #include "R_SPICE.h"
+#include "K_SPICE.h"
 
 
 // Spice netlist sections

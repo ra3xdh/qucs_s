@@ -76,6 +76,7 @@ vTRRANDOM.cpp
 C_SPICE.cpp
 L_SPICE.cpp
 R_SPICE.cpp
+K_SPICE.cpp
 sp_customsim.cpp
 )
 
@@ -274,6 +275,7 @@ vTRRANDOM.h
 C_SPICE.h
 L_SPICE.h
 R_SPICE.h
+K_SPICE.h
 sp_customsim.cpp
 )
 

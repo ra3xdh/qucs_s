@@ -90,14 +90,18 @@ QString R_SPICE::spice_netlist(bool isXyce)
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
-     Property *pp = Props.first();
-    QString val = pp->Value;
-    if (!val.isEmpty()) s += " "+val + "\n";
-    for(pp = Props.next(); pp != 0; pp = Props.next()) {
-        QString val = pp->Value;
-        if (!val.isEmpty()) s += QString("%1\n").arg(val) ;
-    }
-    s += '\n';
+
+    QString R= Props.at(0)->Value;
+    QString R_Line_2= Props.at(1)->Value;
+    QString R_Line_3= Props.at(2)->Value;
+    QString R_Line_4= Props.at(3)->Value;
+    QString R_Line_5= Props.at(4)->Value;
+
+     if(  R.length()  > 0)                 s += QString("%1\n").arg(R);
+    if(  R_Line_2.length() > 0 )   s += QString("%1\n").arg(R_Line_2);
+    if(  R_Line_3.length() > 0 )   s += QString("%1\n").arg(R_Line_3);
+    if(  R_Line_4.length() > 0 )   s += QString("%1\n").arg(R_Line_4);
+    if( R_Line_5.length() > 0)   s += QString("%1\n").arg(R_Line_5);
  
     return s;
 }

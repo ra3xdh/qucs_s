@@ -254,5 +254,7 @@
           <file>bitmaps/C_SPICE.png</file>
           <file>bitmaps/L_SPICE.png</file>
           <file>bitmaps/R_SPICE.png</file>
+         <file>bitmaps/K_SPICE.png</file>
+
     </qresource>
 </RCC>
