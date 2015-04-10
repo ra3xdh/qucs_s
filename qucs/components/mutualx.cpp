@@ -148,9 +148,6 @@ void MutualX::createSymbol()
     int oldCoils = rint(0.5*(sqrt(8*oldNumProps-7)-1.0)); // calculate old number of coils
     // we need to solve quadratic equation
     int dCoils = abs(oldCoils - Num);          // how many coils were added/removed?
-    int k_cnt = (Num*(Num-1))/2;
-    int old_k_cnt = (oldCoils*(oldCoils-1))/2;
-    int delta_cnt = abs(old_k_cnt-k_cnt);
 
     if (oldCoils>Num) { // reduce coils number
       for(int i = 0; i < dCoils; i++)
@@ -175,17 +172,12 @@ void MutualX::createSymbol()
 					      false, 
 					      QObject::tr("inductance of coil") + " " + QString::number(Num-i)));
       }
-      int curridx = Num + 1; // point to the last property
-      int maxp = Num - 1; // number of k on this row
-      while (curridx < NumProps) {
-        if (maxp > dCoils)
-          curridx += (maxp-dCoils);
-        maxp--;
-        for(int i = 0; (i < dCoils) && (i < maxp); i++) {
-          Props.insert(curridx, new Property("k", "0.9", false, " "));
-          curridx++;
-        }
+
+      int d_kcnt = NumProps - oldNumProps - dCoils;
+      for (int i=0;i<d_kcnt;i++) {
+          Props.append(new Property("k", "0.9", false, " "));
       }
+
     }
   }
 
