@@ -55,34 +55,32 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDo
 
   tmpPosX = tmpPosY = 1;  // set to 1 to trigger line highlighting
   Scale = (float)TextFont.pointSize();
-  //TODO (not supported) setUndoDepth(QucsSettings.maxUndo);
   setLanguage (Name_);
-  QFileInfo Info (Name_);
 
-  if(App) {
-    if(Name_.isEmpty()) {
-      App->DocumentTab->addTab(this, QPixmap(empty_xpm), QObject::tr("untitled"));
-      }
-    else {
-      App->DocumentTab->addTab(this, QPixmap(empty_xpm), Info.fileName());
-    }
-    App->DocumentTab->setCurrentPage(App->DocumentTab->indexOf(this));
+  viewport()->setFocus();
 
-    viewport()->setFocus();
-
-    setWordWrapMode(QTextOption::NoWrap);
-    setPaletteBackgroundColor(QucsSettings.BGColor);
-    connect(this, SIGNAL(textChanged()), SLOT(slotSetChanged()));
-    connect(this, SIGNAL(cursorPositionChanged()),
-            SLOT(slotCursorPosChanged()));
-
-    syntaxHighlight = new SyntaxHighlighter(this);
-    syntaxHighlight->setLanguage(language);
-    syntaxHighlight->setDocument(document());
-
-    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
-    highlightCurrentLine();
+  setWordWrapMode(QTextOption::NoWrap);
+  setPaletteBackgroundColor(QucsSettings.BGColor);
+  connect(this, SIGNAL(textChanged()), SLOT(slotSetChanged()));
+  connect(this, SIGNAL(cursorPositionChanged()),
+          SLOT(slotCursorPosChanged()));
+  if (App_) {
+    connect(this, SIGNAL(signalCursorPosChanged(int, int)),
+        App_, SLOT(printCursorPosition(int, int)));
+    connect(this, SIGNAL(signalUndoState(bool)),
+        App_, SLOT(slotUpdateUndo(bool)));
+    connect(this, SIGNAL(signalRedoState(bool)),
+        App_, SLOT(slotUpdateRedo(bool)));
+    connect(this, SIGNAL(signalFileChanged(bool)),
+        App_, SLOT(slotFileChanged(bool)));
   }
+
+  syntaxHighlight = new SyntaxHighlighter(this);
+  syntaxHighlight->setLanguage(language);
+  syntaxHighlight->setDocument(document());
+
+  connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+  highlightCurrentLine();
 }
 
 /*!
@@ -90,10 +88,7 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDo
  */
 TextDoc::~TextDoc()
 {
-  if(App) {
-    delete syntaxHighlight;
-    App->DocumentTab->removePage(this);  // delete tab in TabBar
-  }
+  delete syntaxHighlight;
 }
 
 /*!
@@ -209,8 +204,6 @@ void TextDoc::setName (const QString& Name_)
   setLanguage (DocName);
 
   QFileInfo Info (DocName);
-  if (App)
-    App->DocumentTab->setTabLabel (this, Info.fileName ());
 
   DataSet = Info.baseName (true) + ".dat";
   DataDisplay = Info.baseName (true) + ".dpl";
@@ -228,14 +221,8 @@ void TextDoc::becomeCurrent (bool)
   slotCursorPosChanged();
   viewport()->setFocus ();
 
-  if (document()->isUndoAvailable())
-    App->undo->setEnabled (true);
-  else
-    App->undo->setEnabled (false);
-  if (document()->isRedoAvailable ())
-    App->redo->setEnabled (true);
-  else
-    App->redo->setEnabled (false);
+  emit signalUndoState(document()->isUndoAvailable());
+  emit signalRedoState(document()->isRedoAvailable());
 
   // update appropriate menu entries
   App->symEdit->setMenuText (tr("Edit Text Symbol"));
@@ -336,7 +323,7 @@ void TextDoc::slotCursorPosChanged()
   QTextCursor pos = textCursor();
   int x = pos.blockNumber();
   int y = pos.columnNumber();
-  App->printCursorPosition(x+1, y+1);
+  emit signalCursorPosChanged(x+1, y+1);
   tmpPosX = x;
   tmpPosY = y;
 }
@@ -347,16 +334,14 @@ void TextDoc::slotCursorPosChanged()
 void TextDoc::slotSetChanged()
 {
   if((document()->isModified() && !DocChanged) || SetChanged) {
-    App->DocumentTab->setTabIconSet(this, QPixmap(smallsave_xpm));
     DocChanged = true;
   }
   else if((!document()->isModified() && DocChanged)) {
-    App->DocumentTab->setTabIconSet(this, QPixmap(empty_xpm));
     DocChanged = false;
   }
-
-  App->undo->setEnabled(document()->isUndoAvailable());
-  App->redo->setEnabled(document()->isRedoAvailable());
+  emit signalFileChanged(DocChanged);
+  emit signalUndoState(document()->isUndoAvailable());
+  emit signalRedoState(document()->isRedoAvailable());
 }
 
 /*!

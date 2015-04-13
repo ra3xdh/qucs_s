@@ -93,64 +93,42 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
 
   isVerilog = false;
   creatingLib = false;
-  FileInfo = QFileInfo (Name_);
-  if(App) {
-    if(Name_.isEmpty())
-      App->DocumentTab->addTab(this, QPixmap(empty_xpm),
-                            QObject::tr("untitled"));
-    else
-      App->DocumentTab->addTab(this, QPixmap(empty_xpm),
-                            FileInfo.fileName());
 
-    // calls indirectly "becomeCurrent"
-    App->DocumentTab->setCurrentIndex(App->DocumentTab->indexOf(this));
+  showFrame = 0;  // don't show
+  Frame_Text0 = tr("Title");
+  Frame_Text1 = tr("Drawn By:");
+  Frame_Text2 = tr("Date:");
+  Frame_Text3 = tr("Revision:");
 
-    showFrame = 0;  // don't show
-    Frame_Text0 = tr("Title");
-    Frame_Text1 = tr("Drawn By:");
-    Frame_Text2 = tr("Date:");
-    Frame_Text3 = tr("Revision:");
+  setVScrollBarMode(Q3ScrollView::AlwaysOn);
+  setHScrollBarMode(Q3ScrollView::AlwaysOn);
+  viewport()->setPaletteBackgroundColor(QucsSettings.BGColor);
+  viewport()->setMouseTracking(true);
+  viewport()->setAcceptDrops(true);  // enable drag'n drop
 
-    setVScrollBarMode(Q3ScrollView::AlwaysOn);
-    setHScrollBarMode(Q3ScrollView::AlwaysOn);
-    //viewport()->setPaletteBackgroundColor(QucsSettings.BGColor);
-
-    QPalette p = palette(); 
-    p.setColor(viewport()->backgroundRole(), QucsSettings.BGColor); 
-    viewport()->setPalette(p);
-
-    viewport()->setMouseTracking(true);
-    viewport()->setAcceptDrops(true);  // enable drag'n drop
-// FIXME #warning removed those signals, crashes on it...
-    /*connect(horizontalScrollBar(),
-		SIGNAL(prevLine()), SLOT(slotScrollLeft()));
-    connect(horizontalScrollBar(),
-		SIGNAL(nextLine()), SLOT(slotScrollRight()));
-    connect(verticalScrollBar(),
-		SIGNAL(prevLine()), SLOT(slotScrollUp()));
-    connect(verticalScrollBar(),
-		SIGNAL(nextLine()), SLOT(slotScrollDown()));*/
-
-    // ...........................................................
-
-    // to repair some strange  scrolling artefacts
-    connect(this, SIGNAL(horizontalSliderReleased()),
-		viewport(), SLOT(update()));
-    connect(this, SIGNAL(verticalSliderReleased()),
-		viewport(), SLOT(update()));
-
-    // to prevent user from editing something that he doesn't see
-    connect(this, SIGNAL(horizontalSliderPressed()), App, SLOT(slotHideEdit()));
-    connect(this, SIGNAL(verticalSliderPressed()), App, SLOT(slotHideEdit()));
-  } // of "if(App)"
+  // to repair some strange  scrolling artefacts
+  connect(this, SIGNAL(horizontalSliderReleased()),
+      viewport(), SLOT(update()));
+  connect(this, SIGNAL(verticalSliderReleased()),
+      viewport(), SLOT(update()));
+  if (App_) {
+    connect(this, SIGNAL(signalCursorPosChanged(int, int)), 
+        App_, SLOT(printCursorPosition(int, int)));
+    connect(this, SIGNAL(horizontalSliderPressed()), 
+        App_, SLOT(slotHideEdit()));
+    connect(this, SIGNAL(verticalSliderPressed()),
+        App_, SLOT(slotHideEdit()));
+    connect(this, SIGNAL(signalUndoState(bool)),
+        App_, SLOT(slotUpdateUndo(bool)));
+    connect(this, SIGNAL(signalRedoState(bool)),
+        App_, SLOT(slotUpdateRedo(bool)));
+    connect(this, SIGNAL(signalFileChanged(bool)),
+        App_, SLOT(slotFileChanged(bool)));
+  }
 }
 
 Schematic::~Schematic()
 {
-  if(App) {
-    App->editText->setParent(App, 0); // reparent QLineEdit instance used for changing component properties
-    App->DocumentTab->removeTab(App->DocumentTab->indexOf(this));  // delete tab in TabBar
-  }
 }
 
 // ---------------------------------------------------
@@ -195,7 +173,8 @@ bool Schematic::createSubcircuitSymbol()
 // ---------------------------------------------------
 void Schematic::becomeCurrent(bool update)
 {
-  App->printCursorPosition(0, 0);
+  QString *ps;
+  emit signalCursorPosChanged(0, 0);
 
   // update appropriate menu entry
   if (symbolMode) {
@@ -230,8 +209,8 @@ void Schematic::becomeCurrent(bool update)
       setChanged(true, true);
     }
 
-    App->undo->setEnabled(undoSymbolIdx != 0);
-    App->redo->setEnabled(undoSymbolIdx != undoSymbol.size()-1);
+    emit signalUndoState(undoSymbolIdx != 0);
+    emit signalRedoState(undoSymbolIdx != undoSymbol.size()-1);
   }
   else {
     Nodes = &DocNodes;
@@ -240,9 +219,8 @@ void Schematic::becomeCurrent(bool update)
     Paintings = &DocPaints;
     Components = &DocComps;
 
-    App->undo->setEnabled(undoActionIdx != 0);
-    App->redo->setEnabled(undoActionIdx != undoAction.size()-1);
-
+    emit signalUndoState(undoActionIdx != 0);
+    emit signalRedoState(undoActionIdx != undoAction.size()-1);
     if(update)
       reloadGraphs();   // load recent simulation data
   }
@@ -253,7 +231,6 @@ void Schematic::setName (const QString& Name_)
 {
   DocName = Name_;
   QFileInfo Info (DocName);
-  if (App) App->DocumentTab->setTabText(App->DocumentTab->indexOf(this), Info.fileName());
   QString base = Info.completeBaseName ();
   QString ext = Info.suffix();
   DataSet = base + ".dat";
@@ -269,9 +246,9 @@ void Schematic::setName (const QString& Name_)
 void Schematic::setChanged(bool c, bool fillStack, char Op)
 {
   if((!DocChanged) && c)
-    App->DocumentTab->setTabIcon(App->DocumentTab->indexOf(this), QPixmap(smallsave_xpm));
+    emit signalFileChanged(true);
   else if(DocChanged && (!c))
-    App->DocumentTab->setTabIcon(App->DocumentTab->indexOf(this), QPixmap(empty_xpm));
+    emit signalFileChanged(false);
   DocChanged = c;
 
   showBias = -1;   // schematic changed => bias points may be invalid
@@ -290,8 +267,8 @@ void Schematic::setChanged(bool c, bool fillStack, char Op)
     undoSymbol.append(new QString(createSymbolUndoString(Op)));
     undoSymbolIdx++;
 
-    if(!App->undo->isEnabled()) App->undo->setEnabled(true);
-    if(App->redo->isEnabled())  App->redo->setEnabled(false);
+    emit signalUndoState(true);
+    emit signalRedoState(false);
 
     while(static_cast<unsigned int>(undoSymbol.size()) > QucsSettings.maxUndo) { // "while..." because
       delete undoSymbol.first();
@@ -319,8 +296,8 @@ void Schematic::setChanged(bool c, bool fillStack, char Op)
   undoAction.append(new QString(createUndoString(Op)));
   undoActionIdx++;
 
-  if(!App->undo->isEnabled()) App->undo->setEnabled(true);
-  if(App->redo->isEnabled())  App->redo->setEnabled(false);
+  emit signalUndoState(true);
+  emit signalRedoState(false);
 
   while(static_cast<unsigned int>(undoAction.size()) > QucsSettings.maxUndo) { // "while..." because
     delete undoAction.first(); // "maxUndo" could be decreased meanwhile
@@ -545,7 +522,7 @@ void Schematic::PostPaintEvent (PE pe, int x1, int y1, int x2, int y2, int a, in
 // ---------------------------------------------------
 void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
 {
-  App->printCursorPosition(Event->pos().x(), Event->pos().y());
+  emit signalCursorPosChanged(Event->pos().x(), Event->pos().y());
   if(App->MouseMoveAction)
     (App->view->*(App->MouseMoveAction))(this, Event);
 }
@@ -1344,6 +1321,9 @@ bool Schematic::load()
 
   // The undo stack of the circuit symbol is initialized when first
   // entering its edit mode.
+  
+  // have to call this to avoid crash at sizeOfAll
+  becomeCurrent(false);
 
   sizeOfAll(UsedX1, UsedY1, UsedX2, UsedY2);
   if(ViewX1 > UsedX1)  ViewX1 = UsedX1;
@@ -1637,8 +1617,8 @@ bool Schematic::undo()
     rebuildSymbol(undoSymbol.at(--undoSymbolIdx));
     adjustPortNumbers();  // set port names
 
-    App->undo->setEnabled(undoSymbolIdx != 0);
-    App->redo->setEnabled(undoSymbolIdx != undoSymbol.size()-1);
+    emit signalUndoState(undoSymbolIdx != 0);
+    emit signalRedoState(undoSymbolIdx != undoSymbol.size()-1);
 
     if(undoSymbol.at(undoSymbolIdx)->at(1) == 'i' && 
         undoAction.at(undoActionIdx)->at(1) == 'i') {
@@ -1657,8 +1637,8 @@ bool Schematic::undo()
   rebuild(undoAction.at(--undoActionIdx));
   reloadGraphs();  // load recent simulation data
 
-  App->undo->setEnabled(undoActionIdx != 0);
-  App->redo->setEnabled(undoActionIdx != undoAction.size()-1);
+  emit signalUndoState(undoActionIdx != 0);
+  emit signalRedoState(undoActionIdx != undoAction.size()-1);
 
   if(undoAction.at(undoActionIdx)->at(1) == 'i') {
     if(undoSymbol.isEmpty()) {
@@ -1684,8 +1664,8 @@ bool Schematic::redo()
     rebuildSymbol(undoSymbol.at(++undoSymbolIdx));
     adjustPortNumbers();  // set port names
 
-    App->undo->setEnabled(undoSymbolIdx != 0);
-    App->redo->setEnabled(undoSymbolIdx != undoSymbol.size()-1);
+    emit signalUndoState(undoSymbolIdx != 0);
+    emit signalRedoState(undoSymbolIdx != undoSymbol.size()-1);
 
     if(undoSymbol.at(undoSymbolIdx)->at(1) == 'i'
         && undoAction.at(undoActionIdx)->at(1) == 'i') {
@@ -1705,8 +1685,8 @@ bool Schematic::redo()
   rebuild(undoAction.at(++undoActionIdx));
   reloadGraphs();  // load recent simulation data
 
-  App->undo->setEnabled(undoActionIdx != 0);
-  App->redo->setEnabled(undoActionIdx != undoAction.size()-1);
+  emit signalUndoState(undoActionIdx != 0);
+  emit signalRedoState(undoActionIdx != undoAction.size()-1);
 
   if (undoAction.at(undoActionIdx)->at(1) == 'i') {
     if(undoSymbol.isEmpty()) {

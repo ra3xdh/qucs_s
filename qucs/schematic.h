@@ -148,6 +148,12 @@ public:
 
   QFileInfo getFileInfo (void) { return FileInfo; }
 
+signals:
+  void signalCursorPosChanged(int, int);
+  void signalUndoState(bool);
+  void signalRedoState(bool);
+  void signalFileChanged(bool);
+
 protected:
   bool sizeOfFrame(int&, int&);
   void paintFrame(ViewPainter*);
