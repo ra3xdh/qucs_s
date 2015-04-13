@@ -836,14 +836,6 @@ AC_CONFIG_FILES([Makefile
     qucs/dialogs/Makefile
     translations/Makefile])
 
-# The incomplete filter-v2 only builds withs -stdlib=libstc++
-# OSX defaults to libstc++. Skip filter-v2 on Darwin.
-# See also Makefile.am
-if test "x$MACOSX" = xno ; then
-  AC_CONFIG_FILES([ qucs-filter-v2/Makefile ])
-fi
-
-
 dnl Check for Git short SHA to tag version
 dnl The release package should also keep it on the config.h
 GIT="unknown"

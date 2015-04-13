@@ -22,11 +22,6 @@
 # Boston, MA 02110-1301, USA.  
 #
 
-# Skip filter-v2 on Darwin. See configure.ac
-if !COND_MACOSX
-  FILTERV2= qucs-filter-v2
-endif
-
 SUBDIRS = \
   qucs \
 	qucs-activefilter \
@@ -39,7 +34,6 @@ SUBDIRS = \
 	qucs-transcalc \
 	translations \
 	contrib \
-	$(FILTERV2) \
 	$(RELEASEDIRS)
 
 EXTRA_DIST = autogen.sh depcomp PLATFORMS RELEASE Info.plist
