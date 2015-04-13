@@ -113,8 +113,12 @@ void Equation::splitEqn(QString &eqn, QStringList &tokens)
 bool Equation::containNodes(QStringList &tokens)
 {
     QRegExp var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
+    QStringList system_vars;
+    system_vars.clear();
+    system_vars<<"frequency"<<"acfrequency"<<"time"<<"hbfrequncy";
     foreach (QString tok,tokens) {
         if (var_pattern.exactMatch(tok)) return true;
+        if (system_vars.contains(tok)) return true;
     }
     return false;
 }
@@ -131,6 +135,10 @@ void Equation::convertNodeNames(QStringList &tokens, QString &sim)
             int cnt = it->count();
             it->chop(cnt-idx);
             *it = QString("V(%2)").arg(*it);
+        } else if ((*it=="frequency")||(*it=="acfrequency")) {
+            sim = "ac";
+        } else if (*it=="time") {
+            sim = "tran";
         }
     }
 }
