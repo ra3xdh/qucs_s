@@ -80,5 +80,17 @@ void CustomSimDialog::slotFindVars()
         *it=QString("V(%1)").arg(*it);
     }
 
+    QStringList strings = edtCode->toPlainText().split('\n');
+    foreach(QString line,strings) {
+        QRegExp let_pattern("^\\s*let\\s+[A-Za-z]+\\w*\\s*\\=\\s*[A-Za-z]+.*$");
+        if (let_pattern.exactMatch(line)) {
+            qDebug()<<line;
+            QString var = line.section('=',0,0);
+            var.remove("let ");
+            var.remove(' ');
+            vars.append(var);
+        }
+    }
+
     edtVars->setText(vars.join(";"));
 }
