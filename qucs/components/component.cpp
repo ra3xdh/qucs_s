@@ -639,11 +639,13 @@ QString Component::getNetlist()
 
   // Component is shortened.
   int z=0;
-  QString s;
-  QString Node1 = Ports.first()->Connection->Name;
-  foreach(Port *pp, Ports)
+  QListIterator<Port *> iport(Ports);
+  Port *pp = iport.next();
+  QString Node1 = pp->Connection->Name;
+  QString s = "";
+  while (iport.hasNext())
     s += "R:" + Name + "." + QString::number(z++) + " " +
-         Node1 + " " + pp->Connection->Name + " R=\"0\"\n";
+      Node1 + " " + iport.next()->Connection->Name + " R=\"0\"\n";
   return s;
 }
 
@@ -664,11 +666,12 @@ QString Component::get_Verilog_Code(int NumPorts)
   }
 
   // Component is shortened.
-  Port *p = Ports.first();
-  QString Node1 = p->Connection->Name;
+  QListIterator<Port *> iport(Ports);
+  Port *pp = iport.next();
+  QString Node1 = pp->Connection->Name;
   QString s = "";
-  foreach(Port *p, Ports)
-    s += "  assign " + p->Connection->Name + " = " + Node1 + ";\n";
+  while (iport.hasNext())
+    s += "  assign " + iport.next()->Connection->Name + " = " + Node1 + ";\n";
   return s;
 }
 
