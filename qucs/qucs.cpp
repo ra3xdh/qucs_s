@@ -1636,8 +1636,8 @@ void QucsApp::closeFile(int index)
     editText->move(QPoint(0, 0));
     editText->hide();
 
-    delete Doc;
     DocumentTab->removeTab(index);
+    delete Doc;
 
     if(DocumentTab->count() < 1) { // if no document left, create an untitled
       Schematic *d = new Schematic(this, "");
