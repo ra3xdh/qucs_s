@@ -1,4 +1,5 @@
 #include "qucs2spice.h"
+#include "components/equation.h"
 
 namespace qucs2spice
 {
@@ -16,6 +17,10 @@ namespace qucs2spice
    QString convert_vcs(QString line, bool voltage);
    QString convert_dc_src(QString line);
    QString convert_edd(QString line, QStringList &EqnsAndVars);
+   QString convert_subckt(QString line);
+
+   void ExtractVarsAndValues(QString line,QStringList& VarsAndVals);
+   void subsVoltages(QStringList &tokens, QString plus, QString minus);
 }
 
 QString qucs2spice::convert_netlist(QString netlist, bool xyce)
@@ -36,35 +41,18 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
     QRegExp subckt_head_pattern("^[ \t]*\\.Def:[A-Za-z]+.*");
     QRegExp ends_pattern("^[ \t]*\\.Def:End[ \t]*$");
     QRegExp dc_pattern("^[ \t]*[VI]dc:[A-Za-z]+.*");
+    QRegExp edd_pattern("^[ \t]*EDD:[A-Za-z]+.*");
     QRegExp eqn_pattern("^[ \t]*Eqn:[A-Za-z]+.*");
+    QRegExp subckt_pattern("^[ \t]*Sub:[A-Za-z]+.*");
 
     QString s="";
 
     QStringList EqnsAndVars;
-    EqnsAndVars.clear();
 
     foreach(QString line,net_lst) {  // Find equations
         if (eqn_pattern.exactMatch(line)) {
             line.remove(QRegExp("^[ \t]*Eqn:[A-Za-z]+\\w+\\s+"));
-            QString var;
-            for(QString::iterator it = line.begin();it != line.end(); it++) {
-                if ((*it).isLetterOrNumber()) {
-                    while ((*it)!='=') {
-                        var.append(*it);
-                        it++;
-                    }
-                    EqnsAndVars.append(var);
-                    var.clear();
-                } else if ((*it)=='"') {
-                    it++;
-                    do {
-                        var.append(*it);
-                        it++;
-                    } while ((*it)!='"');
-                    EqnsAndVars.append(var);
-                    var.clear();
-                }
-            }
+            ExtractVarsAndValues(line,EqnsAndVars);
         }
     }
     EqnsAndVars.removeAll("Export");
@@ -90,6 +78,8 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
         if (cccs_pattern.exactMatch(line)) s+= convert_cccs(line);
         if (ccvs_pattern.exactMatch(line)) s+= convert_ccvs(line);
         if (dc_pattern.exactMatch(line)) s += convert_dc_src(line);
+        if (edd_pattern.exactMatch(line)) s += convert_edd(line,EqnsAndVars);
+        if (subckt_pattern.exactMatch(line)) s+= convert_subckt(line);
     }
 
     s.replace(" gnd "," 0 ");
@@ -321,8 +311,9 @@ QString qucs2spice::convert_dc_src(QString line)
 
 QString qucs2spice::convert_edd(QString line, QStringList &EqnsAndVars)
 {
+    qDebug()<<line;
     QString s="";
-    QStringList lst = line.split(" ");
+    QStringList lst = line.split(" ",QString::SkipEmptyParts);
     QStringList nods;
     QString nam = lst.takeFirst().remove(':');
 
@@ -341,7 +332,12 @@ QString qucs2spice::convert_edd(QString line, QStringList &EqnsAndVars)
         QString Ieqn = EqnsAndVars.at(EqnsAndVars.indexOf(Ivar)+1);
         QString plus = nods.at(2*i+1);
         QString minus = nods.at(2*i);
-        s += QString("BI%1 %2 %3 I=%4\n").arg(nam).arg(minus).arg(plus).arg(Ieqn);
+
+        QStringList Itokens;
+        Equation::splitEqn(Ieqn,Itokens);
+        subsVoltages(Itokens,plus,minus);
+
+        s += QString("BI%1 %2 %3 I=%4\n").arg(nam).arg(minus).arg(plus).arg(Itokens.join(""));
         // charge part
         QString Qvar = line.section('"',2*i+3,2*i+3,QString::SectionSkipEmpty);
         QString Qeqn = EqnsAndVars.at(EqnsAndVars.indexOf(Qvar)+1);
@@ -355,5 +351,78 @@ QString qucs2spice::convert_edd(QString line, QStringList &EqnsAndVars)
     }
 
     return s;
+}
+
+
+QString qucs2spice::convert_subckt(QString line)
+{
+    QString s="";
+    QStringList lst = line.split(" ",QString::SkipEmptyParts);
+    QString s1 = lst.takeFirst();
+    s += "X" + s1.remove("Sub:");
+
+    QStringList::iterator it = lst.begin();
+
+    while(!((*it).contains('='))) {
+        (*it).replace("gnd","0");
+        s += " " + (*it) + " ";
+        it++;
+    };
+
+    QStringList Par;
+    ExtractVarsAndValues(lst.join(" "),Par);
+
+    Par.removeFirst();
+    QString sub_nam = Par.takeFirst();
+    s += " " + sub_nam +" ";
+
+    for (QStringList::iterator it = Par.begin();it!=Par.end();it++) {
+        QString var = (*it);
+        it++;
+        QString val = (*it);
+        val.remove(' ');
+        s += QString("%1=%2 ").arg(var).arg(val);
+    }
+    s += '\n';
+
+    return s;
+}
+
+void qucs2spice::ExtractVarsAndValues(QString line,QStringList& VarsAndVals)
+{
+    QString var;
+    for(QString::iterator it = line.begin();it != line.end(); it++) {
+        if ((*it).isLetterOrNumber()) {
+            while ((*it)!='=') {
+                var.append(*it);
+                it++;
+            }
+            VarsAndVals.append(var);
+            var.clear();
+        } else if ((*it)=='"') {
+            it++;
+            do {
+                var.append(*it);
+                it++;
+            } while ((*it)!='"');
+            VarsAndVals.append(var);
+            var.clear();
+        }
+    }
+}
+
+
+void qucs2spice::subsVoltages(QStringList &tokens, QString plus, QString minus)
+{
+    QRegExp volt_pattern("^V[0-9]+$");
+    for (QStringList::iterator it = tokens.begin();it != tokens.end();it++) {
+        if (volt_pattern.exactMatch(*it)) {
+            QString volt = *it;
+            volt.remove('V');
+            if (plus=="gnd") plus="0";
+            if (minus=="gnd") minus="0";
+            *it = QString("(V(%1)-V(%2))").arg(plus).arg(minus);
+        }
+    }
 }
 
