@@ -61,7 +61,27 @@ libcomponents_a_SOURCES = phaseshifter.cpp gyrator.cpp componentdialog.cpp    \
   hicumL0V1p2g.cpp hybrid.cpp ctline.cpp tunneldiode.cpp hicumL0V1p3.cpp      \
   hicumL2V2p31n.cpp  bsim3v34nMOS.cpp bsim3v34pMOS.cpp bsim4v30nMOS.cpp       \
   bsim4v30pMOS.cpp etr_sim.cpp ecvs.cpp vcresistor.cpp vacomponent.cpp        \
-  mutualx.cpp
+  mutualx.cpp \
+  src_eqndef.cpp \
+	sp_parameter.cpp \
+	sp_globalpar.cpp \
+	sp_options.cpp \
+	vsffm.cpp \
+	isffm.cpp \
+	vAmpMod.cpp \
+	iAmpMod.cpp \
+	vPWL.cpp \
+	iPWL.cpp \
+	eNL.cpp \
+	gNL.cpp \
+	vTRNOISE.cpp \
+	iTRNOISE.cpp \
+	vTRRANDOM.cpp \
+	C_SPICE.cpp \
+	L_SPICE.cpp \
+	R_SPICE.cpp \
+	K_SPICE.cpp \
+	sp_customsim.cpp
 
 nodist_libcomponents_a_SOURCES = $(MOCFILES)
 
@@ -92,7 +112,27 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
   vafile.h hicumL2V2p24.h hicumL0V1p2g.h hybrid.h ctline.h tunneldiode.h      \
   hicumL0V1p3.h hicumL2V2p31n.h  bsim3v34nMOS.h bsim3v34pMOS.h bsim4v30nMOS.h \
   bsim4v30pMOS.h etr_sim.h ecvs.h vcresistor.h vacomponent.h                  \
-  mutualx.h
+  mutualx.h \
+	src_eqndef.h \
+	sp_parameter.h \
+	sp_globalpar.h \
+	sp_options.h \
+	vsffm.h \
+	isffm.h \
+	vAmpMod.h \
+	iAmpMod.h \
+	vPWL.h \
+	iPWL.h \
+	eNL.h \
+	gNL.h \
+	vTRNOISE.h \
+	iTRNOISE.h \
+	vTRRANDOM.h \
+	C_SPICE.h \
+	L_SPICE.h \
+	R_SPICE.h \
+	K_SPICE.h \
+	sp_customsim.h
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 

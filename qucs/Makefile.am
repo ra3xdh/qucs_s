@@ -22,7 +22,7 @@
 # Boston, MA 02110-1301, USA.
 #
 
-SUBDIRS = components diagrams paintings dialogs octave
+SUBDIRS = components diagrams paintings dialogs octave extsimkernels
 
 if COND_WIN32
 bin_SCRIPTS = qucsdigi.bat qucsveri.bat qucsdigilib.bat
@@ -57,7 +57,7 @@ nodist_qucs_SOURCES = $(MOCFILES)
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs-lib
 qucs_LDFLAGS = $(X11_LDFLAGS) $(QT_LDFLAGS)
 qucs_LDADD = components/libcomponents.a diagrams/libdiagrams.a \
-  paintings/libpaintings.a dialogs/libdialogs.a \
+  paintings/libpaintings.a dialogs/libdialogs.a extsimkernels/libextsimkernels.a \
   $(X11_LIBS) $(QT_LIBS)
 
 noinst_HEADERS = $(MOCHEADERS) main.h wire.h qucsdoc.h element.h node.h \
