@@ -34,7 +34,7 @@ L_SPICE::L_SPICE()
     Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
     Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
     // DOT
-    Lines.append(new Line( 18,  -12, 18,  -11,QPen(Qt::red,4)));
+      Arcs.append(new Arc(-18, -20,  5,  5,  0, 16*360,QPen(Qt::red,3)));
 
     Ports.append(new Port(-30,  0));
     Ports.append(new Port( 30,  0));
