@@ -53,7 +53,9 @@ QString spicecompat::convert_functions(QString tok, bool isXyce)
     conv_list_ngspice<<"q"<<"1.6021765e-19"
             <<"kB"<<"1.38065e-23"
             <<"pi"<<"3.1415926539"
-            <<"step"<<"stp";
+            <<"step"<<"stp"
+            <<"sign"<<"sgn"
+            <<"log10"<<"log";
     QStringList conv_list_xyce = conv_list_ngspice;
 
     QStringList conv_list;

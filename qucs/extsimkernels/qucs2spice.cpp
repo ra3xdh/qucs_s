@@ -1,4 +1,5 @@
 #include "qucs2spice.h"
+#include "spicecompat.h"
 #include "components/equation.h"
 
 namespace qucs2spice
@@ -336,6 +337,9 @@ QString qucs2spice::convert_edd(QString line, QStringList &EqnsAndVars)
         QStringList Itokens;
         Equation::splitEqn(Ieqn,Itokens);
         subsVoltages(Itokens,plus,minus);
+        for(QStringList::iterator it = Itokens.begin();it != Itokens.end(); it++) {
+            *it = spicecompat::convert_functions(*it,false);
+        }
 
         s += QString("BI%1 %2 %3 I=%4\n").arg(nam).arg(minus).arg(plus).arg(Itokens.join(""));
         // charge part
