@@ -612,7 +612,7 @@ QStringList SpiceFile::getSubcktPorts()
     return lst;
 }
 
-QString SpiceFile::spice_netlist(bool isXyce)
+QString SpiceFile::spice_netlist(bool)
 {
     QStringList ports_lst = Props.at(1)->Value.split(",");
     for (QStringList::iterator it = ports_lst.begin();it != ports_lst.end();it++) {

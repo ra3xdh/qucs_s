@@ -55,7 +55,7 @@ QString Src_eqndef::netlist()
     return QString("");
 }
 
-QString Src_eqndef::spice_netlist(bool isXyce)
+QString Src_eqndef::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {

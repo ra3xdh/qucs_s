@@ -77,7 +77,7 @@ Element* Ampere_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 }
 
 
-QString Ampere_ac::spice_netlist(bool isXyce)
+QString Ampere_ac::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {

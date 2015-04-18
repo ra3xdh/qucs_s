@@ -76,7 +76,7 @@ iRect::~iRect()
 {
 }
 
-QString iRect::spice_netlist(bool isXyce)
+QString iRect::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 

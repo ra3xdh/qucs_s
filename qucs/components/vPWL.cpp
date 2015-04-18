@@ -86,7 +86,7 @@ QString vPWL::netlist()
     return QString("");
 }
 
-QString vPWL::spice_netlist(bool isXyce)
+QString vPWL::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {

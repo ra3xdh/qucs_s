@@ -93,7 +93,7 @@ QString vTRNOISE::netlist()
     return QString("");
 }
 
-QString vTRNOISE::spice_netlist(bool isXyce)
+QString vTRNOISE::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {

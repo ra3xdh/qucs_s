@@ -60,7 +60,7 @@ Component* Volt_dc::newOne()
   return new Volt_dc();
 }
 
-QString Volt_dc::spice_netlist(bool isXyce)
+QString Volt_dc::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {

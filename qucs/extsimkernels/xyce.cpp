@@ -41,7 +41,7 @@ void Xyce::determineUsedSimulations()
     }
 }
 
-void Xyce::createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
+void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
                     QStringList &vars, QStringList &outputs)
 {
     QString s;

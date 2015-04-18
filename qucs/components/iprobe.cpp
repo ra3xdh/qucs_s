@@ -73,7 +73,7 @@ Element* iProbe::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString iProbe::spice_netlist(bool isXyce)
+QString iProbe::spice_netlist(bool)
 {
     QString s = QString("V%1 %2 %3 DC 0 AC 0\n").arg(Name).arg(Ports.at(0)->Connection->Name)
             .arg(Ports.at(1)->Connection->Name);

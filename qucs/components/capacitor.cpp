@@ -54,7 +54,7 @@ Element* Capacitor::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Capacitor::spice_netlist(bool isXyce)
+QString Capacitor::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 

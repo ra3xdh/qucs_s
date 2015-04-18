@@ -87,7 +87,7 @@ Element* VCVS::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString VCVS::spice_netlist(bool isXyce)
+QString VCVS::spice_netlist(bool)
 {
    QString s = spicecompat::check_refdes(Name,SpiceModel);
     QList<int> seq; // nodes sequence

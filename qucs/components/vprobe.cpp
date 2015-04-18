@@ -73,12 +73,12 @@ Element* vProbe::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString vProbe::getProbeVariable(bool isXyce)
+QString vProbe::getProbeVariable(bool)
 {
     return Name;
 }
 
-QString vProbe::spice_netlist(bool isXyce)
+QString vProbe::spice_netlist(bool)
 {
     QString s = QString("E%1 %2 0 %3 %4 1.0\n").arg(Name).arg(Name)
             .arg(Ports.at(0)->Connection->Name).arg(Ports.at(1)->Connection->Name);

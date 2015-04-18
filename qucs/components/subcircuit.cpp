@@ -217,7 +217,7 @@ QString Subcircuit::netlist()
   return s + '\n';
 }
 
-QString Subcircuit::spice_netlist(bool isXyce)
+QString Subcircuit::spice_netlist(bool)
 {
     QString s;
     QString f = misc::properFileName(Props.first()->Value);

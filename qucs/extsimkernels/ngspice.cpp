@@ -31,7 +31,7 @@ Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
 
 // Reads ngspice simulation results and merges it in single Qucs dataset
 
-void Ngspice::createNetlist(QTextStream &stream, int NumPorts,
+void Ngspice::createNetlist(QTextStream &stream, int ,
                        QStringList &simulations, QStringList &vars, QStringList &outputs)
 {
     QString s;

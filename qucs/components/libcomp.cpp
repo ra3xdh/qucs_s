@@ -328,7 +328,7 @@ QString LibComp::vhdlCode(int)
   return s;
 }
 
-QString LibComp::spice_netlist(bool isXyce)
+QString LibComp::spice_netlist(bool)
 {
     QString s = SpiceModel + Name + " ";
     foreach(Port *p1, Ports)

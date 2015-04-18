@@ -92,8 +92,8 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
         }
 }
 
-void AbstractSpiceKernel::createNetlist(QTextStream& stream, int NumPorts,QStringList& simulations,
-                                        QStringList& vars, QStringList &outputs)
+void AbstractSpiceKernel::createNetlist(QTextStream&, int ,QStringList&,
+                                        QStringList&, QStringList &)
 {
 
 }
@@ -335,8 +335,8 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
     }
 }
 
-void AbstractSpiceKernel::parseHBSTEPOutput(QString ngspice_file, QList<QList<double> > &sim_points,
-                                            QStringList &var_list, bool &isComplex)
+void AbstractSpiceKernel::parseHBSTEPOutput(QString , QList<QList<double> >&,
+                                            QStringList&, bool&)
 {
 
 }

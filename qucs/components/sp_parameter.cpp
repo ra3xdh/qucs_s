@@ -67,7 +67,7 @@ Element* SpiceParam::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceParam::getExpression(bool isXyce)
+QString SpiceParam::getExpression(bool)
 {
     QString s;
     s.clear();

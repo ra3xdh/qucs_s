@@ -95,7 +95,7 @@ Element* vExp::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString vExp::spice_netlist(bool isXyce)
+QString vExp::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {

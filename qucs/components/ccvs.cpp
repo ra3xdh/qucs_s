@@ -84,7 +84,7 @@ Element* CCVS::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString CCVS::spice_netlist(bool isXyce)
+QString CCVS::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel); // spice CCVS consists two sources: output source
                         // and zero value controlling source
