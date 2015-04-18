@@ -63,8 +63,8 @@ QString Capacitor::spice_netlist(bool isXyce)
     s.replace(" gnd ", " 0 ");
 
     s += " "+spicecompat::normalize_value(Props.at(0)->Value) + " ";
-    QString val = Props.at(1)->Value; // add inial volatge if presents
-    val.remove(' ').toUpper();
+    QString val = Props.at(1)->Value; // add inial voltage if presents
+    val = val.remove(' ').toUpper();
     if (!val.isEmpty()) {
         s += " IC=" + val;
     }
