@@ -330,7 +330,7 @@ QString LibComp::vhdlCode(int)
 
 QString LibComp::spice_netlist(bool)
 {
-    QString s = SpiceModel + Name + " ";
+    QString s = SpiceModel + Name + " 0 "; // connect ground of subckt to circuit ground
     foreach(Port *p1, Ports)
       s += " "+p1->Connection->Name;   // node names
     QFileInfo inf(Props.at(0)->Value);
