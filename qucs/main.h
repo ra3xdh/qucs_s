@@ -64,6 +64,8 @@ struct tQucsSettings {
   QDir AdmsXmlBinDir;  // dir of admsXml executable
   QDir AscoBinDir;     // dir of asco executable
   QDir OctaveBinDir;   // dir of octave executable
+  QString NgspiceExecutable;  // Executables of external simulators
+  QString XyceExecutable;
 
   // registered filename extensions with program to open the file
   QStringList FileTypes;

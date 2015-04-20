@@ -18,11 +18,12 @@
 
 #include "xyce.h"
 #include "components/equation.h"
+#include "main.h"
 
 Xyce::Xyce(Schematic *sch_, QObject *parent) :
     AbstractSpiceKernel(sch_, parent)
 {
-    simulator_cmd = "/usr/local/Xyce-Release-6.2.0-OPENSOURCE/bin/runxyce";
+    simulator_cmd = QucsSettings.XyceExecutable;
     simulator_parameters = "-a";
 }
 

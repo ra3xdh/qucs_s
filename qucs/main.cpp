@@ -102,6 +102,10 @@ bool loadSettings()
     //if(settings.contains("ExamplesDir"))QucsSettings.ExamplesDir = settings.value("ExamplesDir").toString();
     //if(settings.contains("DocDir"))QucsSettings.DocDir = settings.value("DocDir").toString();
     if(settings.contains("OctaveBinDir"))QucsSettings.OctaveBinDir.setPath(settings.value("OctaveBinDir").toString());
+    if(settings.contains("NgspiceExecutable")) QucsSettings.NgspiceExecutable = settings.value("NgspiceExecutable").toString();
+    else QucsSettings.NgspiceExecutable = "ngspice";
+    if(settings.contains("XyceExecutable")) QucsSettings.XyceExecutable = settings.value("XyceExecutable").toString();
+    else QucsSettings.XyceExecutable = "/usr/local/Xyce-Release-6.2.0-OPENSOURCE/bin/runxyce";
     if(settings.contains("QucsHomeDir"))
       if(settings.value("QucsHomeDir").toString() != "")
          QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());

@@ -21,11 +21,12 @@
 #include "components/vprobe.h"
 #include "components/equation.h"
 #include "components/param_sweep.h"
+#include "main.h"
 
 Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
     AbstractSpiceKernel(sch_, parent)
 {
-    simulator_cmd = "ngspice";
+    simulator_cmd = QucsSettings.NgspiceExecutable;
     simulator_parameters = "";
 }
 
