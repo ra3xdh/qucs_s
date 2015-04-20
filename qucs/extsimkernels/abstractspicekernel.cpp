@@ -162,18 +162,18 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
                 continue;         // maybe ac_analysis
             }
             if (lin.contains("No. Variables")) {  // get number of variables
-                NumVars=lin.split(sep,QString::SkipEmptyParts).at(2).toInt();
+                NumVars=lin.section(sep,2,2,QString::SectionSkipEmpty).toInt();
                 qDebug()<<NumVars;
                 continue;
             }
             if (lin=="Variables:") {
                 var_list.clear();
-                QString indep_var = ngsp_data.readLine().split(sep,QString::SkipEmptyParts).at(1); // Achtung!!! Vorsicht!!!
+                QString indep_var = ngsp_data.readLine().section(sep,1,1,QString::SectionSkipEmpty);
                 var_list.append(indep_var);
 
                 for (int i=1;i<NumVars;i++) {
                     lin = ngsp_data.readLine();
-                    QString dep_var = lin.split(sep,QString::SkipEmptyParts).at(1);
+                    QString dep_var = lin.section(sep,1,1,QString::SectionSkipEmpty);
                     qDebug()<<dep_var;
                     var_list.append(dep_var);
                 }
@@ -186,7 +186,7 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
             }
             if (start_values_sec) {
                 QList<double> sim_point;
-                double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble(); // only real indep vars
+                double indep_val = lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble();
                 sim_point.append(indep_val);
                 for (int i=0;i<NumVars;i++) {
                     if (isComplex) {
@@ -279,18 +279,18 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
                     continue;         // maybe ac_analysis
                 }
                 if (lin.contains("No. Variables")) {  // get number of variables
-                    NumVars=lin.split(sep,QString::SkipEmptyParts).at(2).toInt();
+                    NumVars=lin.section(sep,2,2,QString::SectionSkipEmpty).toInt();
                     qDebug()<<NumVars;
                     continue;
                 }
                 if (lin=="Variables:") {
                     var_list.clear();
-                    QString indep_var = ngsp_data.readLine().split(sep,QString::SkipEmptyParts).at(1); // Achtung!!! Vorsicht!!!
+                    QString indep_var = ngsp_data.readLine().section(sep,1,1,QString::SectionSkipEmpty);
                     var_list.append(indep_var);
 
                     for (int i=1;i<NumVars;i++) {
                         lin = ngsp_data.readLine();
-                        QString dep_var = lin.split(sep,QString::SkipEmptyParts).at(1);
+                        QString dep_var = lin.section(sep,1,1,QString::SectionSkipEmpty);
                         qDebug()<<dep_var;
                         var_list.append(dep_var);
                     }
@@ -310,7 +310,8 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
                 qDebug()<<lin;
                 QRegExp dataline_patter("^ *[0-9]+[ \t]+.*");
                 if (!dataline_patter.exactMatch(lin)) continue;
-                double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble(&ok); // only real indep vars
+                double indep_val = lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble(&ok);
+                //double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble(&ok); // only real indep vars
                 if (!ok) continue;
                 sim_point.append(indep_val);
                 for (int i=0;i<NumVars;i++) {
