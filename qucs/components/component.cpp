@@ -820,7 +820,7 @@ bool Component::load(const QString& _s)
   else if(Model == "VHDL")
     tmp = 2;
   else if(Model == "MUTX")
-    tmp = 12; // number of properties for the default MUTX (4 inductors)
+    tmp = 5; // number of properties for the default MUTX (2 inductors)
   else tmp = counts + 1;    // "+1" because "counts" could be zero
 
   for(; tmp<=(int)counts/2; tmp++)

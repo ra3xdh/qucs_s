@@ -29,7 +29,7 @@ MutualX::MutualX()
   Model = "MUTX";
   Name  = "Tr";
 
-  const int init_coils=4; // initial number of coils
+  const int init_coils=2; // initial number of coils
   // must be the first property!
   Props.append(new Property("coils", QString::number(init_coils), false,
                 QObject::tr("number of mutual inductances")));
@@ -57,7 +57,7 @@ Element* MutualX::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne) {
       MutualX* p =  new MutualX();
-      p->Props.at(0)->Value = "4";
+      p->Props.at(0)->Value = "2";
       p->recreate(0);
       return p;
   }
@@ -135,8 +135,8 @@ void MutualX::createSymbol()
 {
   // adjust port number
   int Num = Props.first()->Value.toInt();
-  if(Num < 1)
-    Num = 1;
+  if(Num < 2)
+    Num = 2;
   else if(Num > 8)
     Num = 8;
   Props.first()->Value = QString::number(Num);
@@ -154,17 +154,14 @@ void MutualX::createSymbol()
         Props.remove(Num+1); // remove excess coils
       // remove only the no longer valid coupling coefficients, leave the
       //   ones related to existing coils untouched
-      int curridx = oldNumProps - dCoils - 1; // point to the last property
-      int maxp = 1; // number of k on this row
-      while (curridx > Num) {
-        for(int i = 0; (i < dCoils) && (i < maxp); i++) {
-          Props.remove(curridx);
-          curridx--;
+      for(int i = 1,state=1; i < oldCoils; i++)
+        for(int j = i+1; j <= oldCoils; j++,state++) {
+            if ((i>Num)||(j>Num)) {
+                Props.remove(Num + state);
+                state--;
+            }
         }
-        if (maxp > dCoils)
-          curridx -= (maxp-dCoils);
-        maxp++;
-      }
+
     } else { // add new coils
       for(int i = 0; i < dCoils; i++) { // add new properties for coils
         Props.insert(oldCoils+1, new Property("L"+QString::number(Num-i), 
@@ -173,10 +170,12 @@ void MutualX::createSymbol()
 					      QObject::tr("inductance of coil") + " " + QString::number(Num-i)));
       }
 
-      int d_kcnt = NumProps - oldNumProps - dCoils;
-      for (int i=0;i<d_kcnt;i++) {
-          Props.append(new Property("k", "0.9", false, " "));
-      }
+      for(int i = 1,state=1; i < Num; i++)
+        for(int j = i+1; j <= Num; j++,state++) {
+            if ((i>oldCoils)||(j>oldCoils)) {
+                Props.insert(Num + state, new Property("k", "0.9", false, " "));
+            }
+        }
 
     }
   }
