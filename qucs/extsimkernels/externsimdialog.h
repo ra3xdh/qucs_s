@@ -36,6 +36,7 @@ private:
     QPushButton *buttonSimulate;
     QPushButton *buttonStopSim;
     QPushButton *buttonSimSettings;
+    QPushButton *buttonSaveNetlist;
 
     QTextEdit *editSimConsole;
 
@@ -63,6 +64,7 @@ private slots:
     void slotStop();
     void slotSetSimulator();
     void slotSimSettings();
+    void slotSaveNetlist();
     
 };
 

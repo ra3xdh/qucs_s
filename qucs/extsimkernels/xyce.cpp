@@ -170,6 +170,18 @@ void Xyce::slotSimulate()
 
 }
 
+void Xyce::SaveNetlist(QString filename)
+{
+    determineUsedSimulations();
+    int num = 0;
+    QFile spice_file(filename);
+    if (spice_file.open(QFile::WriteOnly)) {
+        QTextStream stream(&spice_file);
+        createNetlist(stream,num,simulationsQueue,vars,output_files);
+        spice_file.close();
+    }
+}
+
 void Xyce::slotFinished()
 {
     output += SimProcess->readAllStandardOutput();

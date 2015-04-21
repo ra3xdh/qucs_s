@@ -67,6 +67,7 @@ public:
     QString getOutput();
 
     void setSimulatorCmd(QString cmd);
+    virtual void SaveNetlist(QString filename);
     
 signals:
     void started();

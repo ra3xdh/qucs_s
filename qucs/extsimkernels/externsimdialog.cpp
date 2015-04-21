@@ -47,6 +47,9 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     connect(buttonStopSim,SIGNAL(clicked()),ngspice,SLOT(killThemAll()));
     buttonStopSim->setEnabled(false);
 
+    buttonSaveNetlist = new QPushButton(tr("Save netlsit"),this);
+    connect(buttonSaveNetlist,SIGNAL(clicked()),this,SLOT(slotSaveNetlist()));
+
     buttonSimSettings = new QPushButton(tr("Settings"),this);
     connect(buttonSimSettings,SIGNAL(clicked()),this,SLOT(slotSimSettings()));
 
@@ -75,6 +78,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     QHBoxLayout *hl1 = new QHBoxLayout;
     hl1->addWidget(buttonSimulate);
     hl1->addWidget(buttonStopSim);
+    hl1->addWidget(buttonSaveNetlist);
     vl_top->addLayout(hl1);
     this->setLayout(vl_top);
 
@@ -129,6 +133,7 @@ void ExternSimDialog::slotSetSimulator()
 
 void ExternSimDialog::slotProcessNgspiceOutput()
 {
+    buttonSaveNetlist->setEnabled(true);
     buttonStopSim->setEnabled(false);
     cbxSimualor->setEnabled(true);
     QString out = ngspice->getOutput();
@@ -168,12 +173,14 @@ void ExternSimDialog::slotStart()
 {
     buttonStopSim->setEnabled(true);
     cbxSimualor->setEnabled(false);
+    buttonSaveNetlist->setEnabled(false);
 }
 
 void ExternSimDialog::slotStop()
 {
     buttonStopSim->setEnabled(false);
     cbxSimualor->setEnabled(true);
+    buttonSaveNetlist->setEnabled(true);
     ngspice->killThemAll();
 }
 
@@ -187,5 +194,33 @@ void ExternSimDialog::slotSimSettings()
     delete SetDlg;
 }
 
+void ExternSimDialog::slotSaveNetlist()
+{
+    QString filename;
+    QFileDialog dialog(this,tr("Save netlist"),QDir::homeDirPath()+QDir::separator()+"netlist.cir",
+                       "All files (*)");
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    if (dialog.exec()) {
+        filename = dialog.selectedFile();
+    } else return;
+
+    switch (cbxSimualor->currentIndex()) {
+    case simNgspice: {
+        ngspice->SaveNetlist(filename);
+        }
+        break;
+    case simXyceSer:
+    case simXycePar: {
+        xyce->SaveNetlist(filename);
+        }
+        break;
+    default: break;
+    }
+
+    if (!QFile::exists(filename)) {
+      QMessageBox::critical(0, QObject::tr("Save netlist"),
+          QObject::tr("Disk write error!"), QMessageBox::Ok);
+    }
+}
 
 

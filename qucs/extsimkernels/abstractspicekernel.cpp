@@ -540,3 +540,8 @@ void AbstractSpiceKernel::setSimulatorCmd(QString cmd)
 {
     simulator_cmd = cmd;
 }
+
+void AbstractSpiceKernel::SaveNetlist(QString)
+{
+
+}

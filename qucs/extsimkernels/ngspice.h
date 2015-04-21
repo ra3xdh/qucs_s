@@ -28,6 +28,7 @@ class Ngspice : public AbstractSpiceKernel
     Q_OBJECT
 public:
     explicit Ngspice(Schematic *sch_, QObject *parent = 0);
+    void SaveNetlist(QString filename);
     
 protected:
     void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
