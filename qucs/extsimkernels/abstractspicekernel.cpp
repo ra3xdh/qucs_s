@@ -535,3 +535,8 @@ QString AbstractSpiceKernel::getOutput()
 {
     return output;
 }
+
+void AbstractSpiceKernel::setSimulatorCmd(QString cmd)
+{
+    simulator_cmd = cmd;
+}

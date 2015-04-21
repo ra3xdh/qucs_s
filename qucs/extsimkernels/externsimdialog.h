@@ -35,6 +35,7 @@ private:
     QComboBox *cbxSimualor;
     QPushButton *buttonSimulate;
     QPushButton *buttonStopSim;
+    QPushButton *buttonSimSettings;
 
     QTextEdit *editSimConsole;
 
@@ -61,6 +62,7 @@ private slots:
     void slotStart();
     void slotStop();
     void slotSetSimulator();
+    void slotSimSettings();
     
 };
 

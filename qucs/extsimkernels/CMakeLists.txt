@@ -15,6 +15,7 @@ xyce.h
 qucs2spice.h
 spicecompat.h
 customsimdialog.h
+simsettingsdialog.h
 )
 
 SET(EXTSIMKERNELS_SRCS
@@ -25,6 +26,7 @@ xyce.cpp
 qucs2spice.cpp
 spicecompat.cpp
 customsimdialog.cpp
+simsettingsdialog.cpp
 )
 
 SET(EXTSIMKERNELS_MOC_HDRS
@@ -33,6 +35,7 @@ abstractspicekernel.h
 ngspice.h
 xyce.h
 customsimdialog.h
+simsettingsdialog.h
 )
 
 QT4_WRAP_CPP( EXTSIMKERNELS_MOC_SRCS ${EXTSIMKERNELS_MOC_HDRS} )

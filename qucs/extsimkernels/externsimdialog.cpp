@@ -20,6 +20,8 @@
 #endif
 
 #include "externsimdialog.h"
+#include "simsettingsdialog.h"
+#include "main.h"
 
 ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     QDialog(parent)
@@ -45,6 +47,9 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     connect(buttonStopSim,SIGNAL(clicked()),ngspice,SLOT(killThemAll()));
     buttonStopSim->setEnabled(false);
 
+    buttonSimSettings = new QPushButton(tr("Settings"),this);
+    connect(buttonSimSettings,SIGNAL(clicked()),this,SLOT(slotSimSettings()));
+
     lblSimulator = new QLabel(tr("Select external simulator:"));
     QGroupBox *grp1 = new QGroupBox(tr("Simulation console"),this);
     QVBoxLayout *vbl1 = new QVBoxLayout;
@@ -64,6 +69,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     QHBoxLayout *hl2 = new QHBoxLayout;
     hl2->addWidget(lblSimulator);
     hl2->addWidget(cbxSimualor);
+    hl2->addWidget(buttonSimSettings);
     vl_top->addLayout(hl2);
     vl_top->addWidget(grp1);
     QHBoxLayout *hl1 = new QHBoxLayout;
@@ -171,6 +177,15 @@ void ExternSimDialog::slotStop()
     ngspice->killThemAll();
 }
 
+void ExternSimDialog::slotSimSettings()
+{
+    SimSettingsDialog *SetDlg = new SimSettingsDialog(this);
+    if (SetDlg->exec()) {
+        ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable);
+        xyce->setSimulatorCmd(QucsSettings.XyceExecutable);
+    }
+    delete SetDlg;
+}
 
 
 

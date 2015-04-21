@@ -66,6 +66,7 @@ public:
     void convertToQucsData(const QString &qucs_dataset, bool xyce = false);
     QString getOutput();
 
+    void setSimulatorCmd(QString cmd);
     
 signals:
     void started();

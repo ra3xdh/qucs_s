@@ -182,6 +182,8 @@ bool saveApplSettings()
     //settings.setValue("ExamplesDir", QucsSettings.ExamplesDir);
     //settings.setValue("DocDir", QucsSettings.DocDir);
     settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
+    settings.setValue("NgspiceExecutable",QucsSettings.NgspiceExecutable);
+    settings.setValue("XyceExecutable",QucsSettings.XyceExecutable);
     settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
     settings.setValue("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
     settings.setValue("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
