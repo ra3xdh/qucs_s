@@ -29,7 +29,8 @@ MOCHEADERS = \
 		customsimdialog.h \
 		externsimdialog.h \
 		ngspice.h \
-		xyce.h
+		xyce.h \
+		simsettingsdialog.h
 
 MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
@@ -40,7 +41,8 @@ libextsimkernels_a_SOURCES = \
 		ngspice.cpp \
 		qucs2spice.cpp \
 		spicecompat.cpp \
-		xyce.cpp
+		xyce.cpp  \
+		simsettingsdialog.cpp
 
 nodist_libextsimkernels_a_SOURCES = $(MOCFILES)
 
@@ -51,7 +53,8 @@ noinst_HEADERS = $(MOCHEADERS) \
 		ngspice.h \
 		qucs2spice.h \
 		spicecompat.h \
-		xyce.h
+		xyce.h \
+		simsettingsdialog.h
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
