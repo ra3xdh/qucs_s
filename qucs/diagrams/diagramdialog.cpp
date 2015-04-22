@@ -282,6 +282,18 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   connect(ChooseData, SIGNAL(activated(int)), SLOT(slotReadVars(int)));
   // todo: replace by QTableWidget
   // see https://gist.github.com/ClemensFMN/8955411
+
+  QHBoxLayout *hb1 = new QHBoxLayout;
+  ChooseSimulator = new QComboBox;
+  QStringList lst_sim;
+  lst_sim<<"Qucsator (built-in)"<<"Ngspice"<<"Xyce";
+  ChooseSimulator->addItems(lst_sim);
+  connect(ChooseSimulator,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSelectSimulator()));
+  lblSim = new QLabel(tr("Data from simulator:"));
+  hb1->addWidget(lblSim);
+  hb1->addWidget(ChooseSimulator);
+  DataGroupLayout->addLayout(hb1);
+
   ChooseVars = new QTableWidget(1, 3);
   ChooseVars->verticalHeader()->setVisible(false);
   ChooseVars->horizontalHeader()->setStretchLastSection(true);
@@ -302,7 +314,6 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   ChooseVars->setHorizontalHeaderLabels(headers);
 
   connect(ChooseVars, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), SLOT(slotTakeVar(QTableWidgetItem*)));
-
 
   QGroupBox *GraphGroup = new QGroupBox(tr("Graph"));
   Box1Layout->addWidget(GraphGroup);
@@ -1456,4 +1467,26 @@ void DiagramDialog::slotEditRotZ(const QString& Text)
   DiagCross->update();
 }
 
-// vim:ts=8:sw=2:noet
+void DiagramDialog::slotSelectSimulator()
+{
+    int idx = ChooseSimulator->currentIndex();
+    QFileInfo inf(defaultDataSet);
+    QString dataset_base = inf.baseName();
+    QString dataset;
+    switch (idx) {
+    case 0 : dataset = dataset_base;
+        break;
+    case 1: dataset = dataset_base+"_ngspice";
+        break;
+    case 2: dataset = dataset_base+"_xyce";
+    default: break;
+    }
+
+    int new_idx = ChooseData->findText(dataset);
+    if (new_idx>-1) {
+        ChooseData->setCurrentIndex(new_idx);
+        slotReadVars(ChooseData->currentIndex());
+    } else {
+        ChooseSimulator->setCurrentIndex(0); // revert default if not exists
+    }
+}

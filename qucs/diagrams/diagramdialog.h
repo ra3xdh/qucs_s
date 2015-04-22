@@ -83,6 +83,7 @@ private slots:
   void slotEditRotX(const QString&);
   void slotEditRotY(const QString&);
   void slotEditRotZ(const QString&);
+  void slotSelectSimulator();
 
 protected slots:
     void reject();
@@ -98,7 +99,9 @@ private:
   QIntValidator    *ValInteger;
   QRegExpValidator *Validator;
 
+  QLabel *lblSim;
   QComboBox *ChooseData;
+  QComboBox *ChooseSimulator;
   QTableWidget *ChooseVars;
   QListWidget  *GraphList;
 

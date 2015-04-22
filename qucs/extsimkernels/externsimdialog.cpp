@@ -81,6 +81,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     hl1->addWidget(buttonSaveNetlist);
     vl_top->addLayout(hl1);
     this->setLayout(vl_top);
+    this->setWindowTitle(tr("Simulate with external simulator"));
 
     slotSetSimulator();
 }
