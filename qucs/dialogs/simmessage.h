@@ -57,6 +57,7 @@ private slots:
   void slotDisplayMsg();
   void slotDisplayErr();
   void slotCloseStdin();
+  void slotStateChanged(QProcess::ProcessState newState);
   void slotSimEnded(int exitCode, QProcess::ExitStatus exitStatus);
   void slotDisplayButton();
   void AbortSim();
@@ -100,6 +101,8 @@ public:
   QTextStream   Stream;
 
   QVBoxLayout  *all;
+protected:
+  QString Program;
 };
 
 #endif

@@ -351,7 +351,6 @@ void SimMessage::startSimulator()
   // faster than the user (I have no other idea).
 
   QString SimTime;
-  QString Program;
   QStringList Arguments;
   QString SimPath = QDir::convertSeparators (QucsSettings.QucsHomeDir.absolutePath());
 #ifdef __MINGW32__
@@ -365,6 +364,7 @@ void SimMessage::startSimulator()
 #endif
   SimOpt = NULL;
   bool isVerilog = false;
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
   // Simulate text window.
   if(DocWidget->inherits("QTextEdit")) {
@@ -540,7 +540,7 @@ void SimMessage::startSimulator()
                   << "-o" << "asco_out";
       }
       else {
-        Program = QucsSettings.BinDir + "qucsator" + executableSuffix;
+        Program = QucsSettings.Qucsator;
         Arguments << "-b" << "-g" << "-i"
                   << QucsSettings.QucsHomeDir.filePath("netlist.txt")
                   << "-o" << DataSet;
@@ -578,7 +578,10 @@ void SimMessage::startSimulator()
   disconnect(&SimProcess, 0, 0, 0);
   connect(&SimProcess, SIGNAL(readyReadStandardError()), SLOT(slotDisplayErr()));
   connect(&SimProcess, SIGNAL(readyReadStandardOutput()), SLOT(slotDisplayMsg()));
-  connect(&SimProcess, SIGNAL(finished(int, QProcess::ExitStatus)), SLOT(slotSimEnded(int, QProcess::ExitStatus)));
+  connect(&SimProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
+                       SLOT(slotSimEnded(int, QProcess::ExitStatus)));
+  connect(&SimProcess, SIGNAL(stateChanged(QProcess::ProcessState)),
+                       SLOT(slotStateChanged(QProcess::ProcessState)));
 
 #ifdef SPEEDUP_PROGRESSBAR
   waitForUpdate = false;
@@ -594,28 +597,11 @@ void SimMessage::startSimulator()
 #endif
 
   // append process PATH
-  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
   // insert Qucs bin dir, so ASCO can find qucsator
   env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
   SimProcess.setProcessEnvironment(env);
-  QFile file(Program);
-  if ( !file.exists() ){
-    ErrText->insertPlainText(tr("ERROR: Program not found: %1\n").arg(Program));
-    FinishSimulation(-1);
-    return;
-  }
-  else
-    file.close();
-
   qDebug() << "Command :" << Program << Arguments.join(" ");
   SimProcess.start(Program, Arguments); // launch the program
-
-  if(!SimProcess.Running) {
-    ErrText->insertPlainText(tr("ERROR: Cannot start simulator!\n"));
-    FinishSimulation(-1);
-    return;
-  }
-
 }
 
 // ------------------------------------------------------------------------
@@ -692,6 +678,54 @@ void SimMessage::slotDisplayErr()
   QTextCursor cursor = ErrText->textCursor();
   cursor.movePosition(QTextCursor::End);
   ErrText->insertPlainText(QString(SimProcess.readAllStandardError()));
+}
+
+/*!
+ * \brief The process state changes.
+ *
+ *  Called when the process changes state;
+ *  \param[in] newState new status of the process
+ */
+void SimMessage::slotStateChanged(QProcess::ProcessState newState)
+{
+  static QProcess::ProcessState oldState;
+  qDebug() << "SimMessage::slotStateChanged() : newState = " << newState 
+           << " " << SimProcess.error();
+  switch(newState){
+    case QProcess::NotRunning:
+      switch(SimProcess.error()){
+        case QProcess::FailedToStart: // does not happen (?)
+        case QProcess::UnknownError: // getting here instead
+          switch(oldState){
+            case QProcess::Starting: // failed to start.
+              ErrText->insertPlainText(tr("ERROR: Cannot start ") + Program +
+                  " (" + SimProcess.errorString() + ")\n");
+              FinishSimulation(-1);
+              break;
+            case QProcess::Running:
+              // process ended without trouble.
+              // slotSimEnded will be invoked soon.
+              break;
+            case QProcess::NotRunning:
+              // impossible.
+              break;
+          }
+          break;
+        case QProcess::Crashed:
+        case QProcess::Timedout:
+        case QProcess::WriteError:
+        case QProcess::ReadError:
+          // nothing (yet)
+          break;
+      }
+    break;
+    case QProcess::Starting:
+          ProgText->insertPlainText(tr("Starting ") + Program + "\n");
+    break;
+    case QProcess::Running:
+    break;
+  }
+  oldState = newState;
 }
 
 /*!
@@ -804,3 +838,4 @@ void SimMessage::AbortSim()
 {
     SimProcess.kill();
 }
+// vim:ts=8:sw=2:et

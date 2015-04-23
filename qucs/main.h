@@ -49,6 +49,7 @@ struct tQucsSettings {
 
   unsigned int maxUndo;    // size of undo stack
   QString Editor;
+  QString Qucsator;
   QString BinDir;
   QString LangDir;
   QString LibDir;
