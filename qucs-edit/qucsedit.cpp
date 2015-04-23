@@ -186,6 +186,7 @@ bool QucsEdit::loadFile(const QString& Name)
   QTextStream stream(&file);
   text->document()->setPlainText(stream.readAll());
   file.close();
+  text->document()->setModified(false);
 
   FileName = Name;
   setWindowTitle("Qucs Editor " PACKAGE_VERSION " - " + tr("File: ")+FileName);

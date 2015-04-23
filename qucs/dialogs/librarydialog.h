@@ -40,6 +40,7 @@
 class QLabel;
 class QLineEdit;
 class QTextEdit;
+class QPlainTextEdit;
 class QPushButton;
 class QVBoxLayout;
 class QTreeWidgetItem;
@@ -80,7 +81,7 @@ private:
   QLabel *checkedCktName;
   QLabel *libSaveName;
   QLineEdit *NameEdit;
-  QTextEdit *ErrText;
+  QPlainTextEdit *ErrText;
   QTextEdit *textDescr;
   QGroupBox *Group;
   QPushButton *ButtCreateNext, *ButtCancel, *ButtSelectAll, *ButtSelectNone;

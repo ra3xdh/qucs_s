@@ -235,6 +235,8 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     item2->setText(tr("Program"));
 
     fileTypesTableWidget->horizontalHeader()->setStretchLastSection(true);
+    fileTypesTableWidget->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    fileTypesTableWidget->horizontalHeader()->setClickable(false); // no action when clicking on the header 
     fileTypesTableWidget->verticalHeader()->hide();
     connect(fileTypesTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotTableClicked(int,int)));
     fileTypesGrid->addWidget(fileTypesTableWidget,1,0,3,1);

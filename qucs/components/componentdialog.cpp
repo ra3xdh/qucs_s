@@ -39,11 +39,12 @@
 ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 			: QDialog(d)
 {
-  resize(600, 250);
+  resize(450, 250);
   setWindowTitle(tr("Edit Component Properties"));
   Comp  = c;
   Doc   = d;
   QString s;
+  setAllVisible = true; // state when toggling properties visibility
 
   all = new QVBoxLayout; // to provide neccessary size
   this->setLayout(all);
@@ -61,8 +62,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 
   checkSim  = 0;  comboSim  = 0;  comboType  = 0;  checkParam = 0;
   editStart = 0;  editStop = 0;  editNumber = 0;
-
-  Property *pp = 0;   // last property not to put in ListView
+  
+  Property *pp = 0; // last property shown elsewhere outside the properties table, not to put in TableView
   // ...........................................................
   // if simulation component: .TR, .AC, .SW, (.SP ?)
   if((Comp->Model[0] == '.') &&
@@ -297,11 +298,18 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   /// \todo column min width
   prop = new QTableWidget(0,4); //initialize
   vL->addWidget(prop);
+  prop->verticalHeader()->setVisible(false);
   prop->setSelectionBehavior(QAbstractItemView::SelectRows);
   prop->setSelectionMode(QAbstractItemView::SingleSelection);
   prop->setMinimumSize(200, 150);
-//  prop->horizontalHeader()->setStretchLastSection(true);
-  prop->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+  prop->horizontalHeader()->setStretchLastSection(true);
+  // set automatic resize so all content will be visible, 
+  //  horizontal scrollbar will appear if table becomes too large
+  prop->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+  prop->horizontalHeader()->setClickable(false); // no action when clicking on the header 
+
+  connect(prop->horizontalHeader(),SIGNAL(sectionDoubleClicked(int)),
+              this, SLOT(slotHHeaderClicked(int)));
 
   QStringList headers;
   headers << tr("Name")
@@ -317,7 +325,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 
   v1->setSpacing(3);
 
-  hProps->addWidget(vboxPropsL);
+  hProps->addWidget(vboxPropsL, 5); // stretch the left pane (with the table) when resized
   hProps->addWidget(vboxPropsR);
 
   Name = new QLabel;
@@ -364,6 +372,9 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   disp = new QCheckBox(tr("display in schematic"));
   v1->addWidget(disp);
   connect(disp, SIGNAL(stateChanged(int)), SLOT(slotApplyState(int)));
+
+  // keep group above together
+  v1->addStretch(5);
 
   QHBoxLayout *h4 = new QHBoxLayout;
   v1->addLayout(h4);
@@ -471,9 +482,7 @@ ComponentDialog::~ComponentDialog()
   delete ValInteger;
 }
 
-
 // Updates component property list. Useful for MultiViewComponents
-
 void ComponentDialog::updateCompPropsList()
 {
     int last_prop=0; // last property not to put in ListView
@@ -621,7 +630,9 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
 
     // use the screen-compatible metric
     QFontMetrics metrics(QucsSettings.font, 0);   // get size of text
-    while(metrics.width(desc) > 270) {  // if description too long, cut it
+    qDebug() << "desc = " << desc << metrics.width(desc);
+    while(metrics.width(desc) > 270) {  // if description too long, cut it nicely
+      // so 270 above will be the maximum size of the name label and associated edit line widget 
       if (desc.lastIndexOf(' ') != -1)
         desc = desc.left(desc.lastIndexOf(' ')) + "....";
       else
@@ -987,8 +998,9 @@ void ComponentDialog::slotApplyInput()
          pp->Description = desc;
          }
        else {
-          // if properties where added in the dialog
-          // -> create new on the Comp
+         // if properties where added in the dialog
+         // -> create new on the Comp
+         Q_ASSERT(prop->rowCount() >= 0);
          if ( (int) Comp->Props.count() < prop->rowCount() +1) {
              qDebug() << "adding to Comp ";
              Comp->Props.append(new Property(name, value, display, desc));
@@ -1025,7 +1037,8 @@ void ComponentDialog::slotApplyInput()
     Doc->recreateComponent(Comp);
     Doc->viewport()->repaint();
     if ( (int) Comp->Props.count() != prop->rowCount()) { // If props count was changed after recreation
-        updateCompPropsList(); // of component we need to update properties
+      Q_ASSERT(prop->rowCount() >= 0);
+      updateCompPropsList(); // of component we need to update properties
     }
   }
 
@@ -1034,10 +1047,46 @@ void ComponentDialog::slotApplyInput()
 // -------------------------------------------------------------------------
 void ComponentDialog::slotBrowseFile()
 {
+  // current file name from the component properties
+  QString currFileName = prop->item(prop->currentRow(), 1)->text();
+  QFileInfo currFileInfo(currFileName);
+  // name of the schematic where component is instantiated (may be empty)
+  QFileInfo schematicFileInfo = Comp->getSchematic()->getFileInfo();
+  QString schematicFileName = schematicFileInfo.fileName();
+  // directory to use for the file open dialog
+  QString currDir;
+
+  if (!currFileName.isEmpty()) { // a file name is already defined
+    if (currFileInfo.isRelative()) { // but has no absolute path
+      if (!schematicFileName.isEmpty()) { // if schematic has a filename
+	// build the an absolute file name using the schematic path
+	currDir = schematicFileInfo.absolutePath() + 
+	          QDir::separator() +
+                  currFileInfo.fileName();
+      } else { // no absolute paths around
+	// use the WorkDir path
+	currDir = QucsSettings.QucsWorkDir.path() + 
+	          QDir::separator() +
+	  currFileInfo.fileName();
+      }
+    } else { // current file name is absolute
+      // use it
+      currDir = currFileName;
+    }
+  } else { // a file name is not defined
+    if (!schematicFileName.isEmpty()) { // if schematic has a filename
+      // use the schematic absolute path
+      currDir = schematicFileInfo.absolutePath();
+    } else { // no absolute paths around
+      // use the WorkDir path
+      currDir = QucsSettings.QucsWorkDir.path();
+    }
+  }
+  
   QString s = QFileDialog::getOpenFileName (
           this,
           tr("Select a file"),
-          QucsSettings.QucsWorkDir.path(),
+          currDir,
           tr("All Files")+" (*.*);;"
             + tr("Touchstone files") + " (*.s?p);;"
             + tr("CSV files") + " (*.csv);;"
@@ -1381,3 +1430,23 @@ void ComponentDialog::slotNumberEntered()
   slotButtOK();
 }
 
+// if clicked on 'display' header toggle visibility for all items
+void ComponentDialog::slotHHeaderClicked(int headerIdx)
+{
+  if (headerIdx != 2) return; // clicked on header other than 'display'
+
+  QString s;
+  QTableWidgetItem *cell;
+
+  if (setAllVisible)
+    s = tr("yes");
+  else
+    s = tr("no");
+
+  // go through all the properties table and set the visibility cell
+  for (int row = 0; row < prop->rowCount(); row++) {
+    cell = prop->item(row, 2);
+    cell->setText(s);
+  }
+  setAllVisible = not setAllVisible; // toggle visibility for the next double-click
+}

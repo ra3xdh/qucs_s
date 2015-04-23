@@ -922,7 +922,8 @@ float Schematic::textCorr()
 {
   QFont Font = QucsSettings.font;
   Font.setPointSizeF( Scale * float(Font.pointSize()) );
-  QFontMetrics  metrics(Font);
+  // use the screen-compatible metric
+  QFontMetrics  metrics(Font, 0);
   return (Scale / float(metrics.lineSpacing()));
 }
 

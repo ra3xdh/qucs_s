@@ -25,7 +25,7 @@
 #include <QTextStream>
 #include <QVBoxLayout>
 
-class QTextEdit;
+class QPlainTextEdit;
 class QTextStream;
 class QVBoxLayout;
 class QPushButton;
@@ -86,19 +86,20 @@ public:
   bool SimRunScript;
   QString DocName, DataSet, DataDisplay, Script;
 
-  QProcess      SimProcess;
-  QTextEdit    *ProgText, *ErrText;
-  bool          wasLF;   // linefeed for "ProgText"
-  QPushButton  *Display, *Abort;
-  QProgressBar *SimProgress;
-  QString       ProgressText;
+  QProcess       SimProcess;
+  QPlainTextEdit *ProgText, *ErrText;
+  bool           wasLF;   // linefeed for "ProgText"
+  bool           simKilled; // true if simulation was aborted by the user
+  QPushButton    *Display, *Abort;
+  QProgressBar   *SimProgress;
+  QString        ProgressText;
 
-  Component    *SimOpt;
-  int           SimPorts;
-  bool          makeSubcircuit, insertSim;
-  QStringList   Collect;
-  QFile         NetlistFile;
-  QTextStream   Stream;
+  Component      *SimOpt;
+  int            SimPorts;
+  bool           makeSubcircuit, insertSim;
+  QStringList    Collect;
+  QFile          NetlistFile;
+  QTextStream    Stream;
 
   QVBoxLayout  *all;
 protected:

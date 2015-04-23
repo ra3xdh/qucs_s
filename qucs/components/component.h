@@ -61,6 +61,7 @@ public:
   virtual QString getSubcircuitFile() { return ""; }
   // set the pointer scematic associated with the component
   virtual void setSchematic (Schematic* p) { containingSchematic = p; }
+  virtual Schematic* getSchematic () {return containingSchematic; }
 
   QList<Line *>     Lines;
   QList<struct Arc *>      Arcs;

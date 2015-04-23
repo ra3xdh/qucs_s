@@ -263,6 +263,7 @@ bool Optimize_Sim::loadASCOout()
   if(!infile.open(QIODevice::ReadOnly)) return false;
   QTextStream instream(&infile);
   QString Line;
+  // we need just the last line with the final result
   while(!instream.atEnd()) Line = instream.readLine();
   infile.close();
 
@@ -275,14 +276,14 @@ bool Optimize_Sim::loadASCOout()
       for(pp = Props.at(2); pp != 0; pp = Props.next()) {
 	if(pp->Name == "Var") {
 	  QString val[6];
-	  val[0] = pp->Value.section('|',0,0);
+	  val[0] = pp->Value.section('|',0,0); // variable name
 	  if(val[0]==Name) {
 	    val[1] = pp->Value.section('|',1,1);
 	    val[2] = pp->Value.section('|',2,2);
 	    val[3] = pp->Value.section('|',3,3);
 	    val[4] = pp->Value.section('|',4,4);
 	    val[5] = pp->Value.section('|',5,5);
-	    ++it;
+	    ++it; // field after variable name is its value
 	    QString Value = *it;
 	    Value = Value.trimmed();
 	    val[2] = Value;

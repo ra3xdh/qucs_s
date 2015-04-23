@@ -34,6 +34,7 @@
 
 class QTextStream;
 class QTextEdit;
+class QPlainTextEdit;
 class QDragMoveEvent;
 class QDropEvent;
 class QDragLeaveEvent;
@@ -261,10 +262,10 @@ private:
 
 public:
   static int testFile(const QString &);
-  bool createLibNetlist(QTextStream*, QTextEdit*, int);
-  bool createSubNetlist(QTextStream *, int&, QStringList&, QTextEdit*, int);
-  void createSubNetlistPlain(QTextStream*, QTextEdit*, int);
-  int  prepareNetlist(QTextStream&, QStringList&, QTextEdit*);
+  bool createLibNetlist(QTextStream*, QPlainTextEdit*, int);
+  bool createSubNetlist(QTextStream *, int&, QStringList&, QPlainTextEdit*, int);
+  void createSubNetlistPlain(QTextStream*, QPlainTextEdit*, int);
+  int  prepareNetlist(QTextStream&, QStringList&, QPlainTextEdit*);
   QString createNetlist(QTextStream&, int);
   bool loadDocument();
   void highlightWireLabels (void);
@@ -293,10 +294,10 @@ private:
   void throughAllNodes(bool, QStringList&, int&);
   void propagateNode(QStringList&, int&, Node*);
   void collectDigitalSignals(void);
-  bool giveNodeNames(QTextStream *, int&, QStringList&, QTextEdit*, int);
+  bool giveNodeNames(QTextStream *, int&, QStringList&, QPlainTextEdit*, int);
   void beginNetlistDigital(QTextStream &);
   void endNetlistDigital(QTextStream &);
-  bool throughAllComps(QTextStream *, int&, QStringList&, QTextEdit *, int);
+  bool throughAllComps(QTextStream *, int&, QStringList&, QPlainTextEdit *, int);
 
   DigMap Signals; // collecting node names for VHDL signal declarations
   QStringList PortTypes;

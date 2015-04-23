@@ -73,6 +73,7 @@ private slots:
   void slotStopEntered();
   void slotStepEntered();
   void slotNumberEntered();
+  void slotHHeaderClicked(int headerIdx);
 
 protected slots:
     void reject();
@@ -93,7 +94,8 @@ private:
   Schematic   *Doc;
   bool        changed;
   int         tx_Dist, ty_Dist;   // remember the text position
-
+  bool        setAllVisible; // used for toggling visibility of properties
+ 
   QLabel    *textType;
   QLabel    *textSim, *textParam, *textValues, *textStart, *textStop,
             *textStep, *textNumber;

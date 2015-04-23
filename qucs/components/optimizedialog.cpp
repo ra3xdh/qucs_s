@@ -15,6 +15,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
+
+#include "main.h"
+#include "qucs.h"
 #include "optimizedialog.h"
 #include "opt_sim.h"
 #include "schematic.h"
@@ -32,14 +38,20 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
+#include <QApplication>
+#include <QClipboard>
+#include <QAction>
+#include <QMenu>
+#include <QInputDialog>
 
 
 OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
-			: QDialog(d_, 0, TRUE, Qt::WDestructiveClose)
+			: QDialog(d_)
 {
   Comp = c_;
   Doc  = d_;
   changed = false;
+  numPrec = 3;
   setWindowTitle(tr("Edit Optimization Properties"));
 
   Expr.setPattern("[\\w_]+");
@@ -77,16 +89,16 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   Tab2->setLayout(gp2);
 
   MethodCombo = new QComboBox();
-  MethodCombo->insertItem("DE/best/1/exp");
-  MethodCombo->insertItem("DE/rand/1/exp");
-  MethodCombo->insertItem("DE/rand-to-best/1/exp");
-  MethodCombo->insertItem("DE/best/2/exp");
-  MethodCombo->insertItem("DE/rand/1/exp");
-  MethodCombo->insertItem("DE/best/1/bin");
-  MethodCombo->insertItem("DE/rand/1/bin");
-  MethodCombo->insertItem("DE/rand-to-best/1/bin");
-  MethodCombo->insertItem("DE/best/2/bin");
-  MethodCombo->insertItem("DE/rand/2/bin");
+  MethodCombo->insertItems(-1, QString("DE/best/1/exp;"
+				       "DE/rand/1/exp;"
+				       "DE/rand-to-best/1/exp;"
+				       "DE/best/2/exp;"
+				       "DE/rand/1/exp;"
+				       "DE/best/1/bin;"
+				       "DE/rand/1/bin;"
+				       "DE/rand-to-best/1/bin;"
+				       "DE/best/2/bin;"
+				       "DE/rand/2/bin").split(";"));
 
   gp2->addWidget(new QLabel(tr("Method:")), 0,0);
   gp2->addWidget(MethodCombo,0,1);
@@ -160,10 +172,16 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
       QStringList() << tr("Name") << tr("active") << tr("initial") << tr("min") << tr("max") << tr("Type"));
   VarTable->setSortingEnabled(false);
   VarTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+  VarTable->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+  VarTable->horizontalHeader()->setClickable(false); // no action when clicking on the header 
+
+  // right-click on the table header to open the context menu
+  VarTable->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(VarTable->horizontalHeader(), SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(slotSetPrecision(const QPoint&)));
 
   connect(VarTable, SIGNAL(currentCellChanged(int, int, int, int)),
       SLOT(slotEditVariable()));
-  gp3->addMultiCellWidget(VarTable,0,0,0,2);
+  gp3->addWidget(VarTable, 0, 0, 1, 3);
 
   VarNameEdit = new QLineEdit();
   VarNameEdit->setValidator(Validator);
@@ -179,7 +197,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   VarLine->addWidget(new QLabel(tr("Name:")));
   VarLine->addWidget(VarNameEdit);
   VarLine->addWidget(VarActiveCheck);
-  gp3->addMultiCellLayout(VarLine, 1,1,0,2);
+  gp3->addLayout(VarLine, 1, 0, 1, 3);
 
   VarInitEdit = new QLineEdit();
   VarInitEdit->setValidator(numVal);
@@ -206,10 +224,10 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   setTabOrder(VarMinEdit, VarMaxEdit);
 
   VarTypeCombo = new QComboBox();
-  VarTypeCombo->insertItem(tr("linear double"));
-  VarTypeCombo->insertItem(tr("logarithmic double"));
-  VarTypeCombo->insertItem(tr("linear integer"));
-  VarTypeCombo->insertItem(tr("logarithmic integer"));
+  VarTypeCombo->insertItem(0, tr("linear double"));
+  VarTypeCombo->insertItem(1, tr("logarithmic double"));
+  VarTypeCombo->insertItem(2, tr("linear integer"));
+  VarTypeCombo->insertItem(3, tr("logarithmic integer"));
   connect(VarTypeCombo, SIGNAL(activated(const QString&)),
           SLOT(slotChangeVarType(const QString&)));
 
@@ -225,7 +243,16 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   VarButtons->addStretch();
   VarButtons->addWidget(AddVar_Butt);
   VarButtons->addWidget(DelVar_Butt);
-  gp3->addMultiCellLayout(VarButtons, 4,4,0,2);
+  gp3->addLayout(VarButtons, 4, 0, 1, 3);
+
+  // add horizontal line
+  QFrame *line = new QFrame(this);
+  line->setFrameShape(QFrame::HLine);
+  line->setFrameShadow(QFrame::Sunken); 
+  gp3->addWidget(line, 5, 0, 1, -1); // fill the entire width
+  QPushButton *CreateEqn_Butt = new QPushButton(tr("Copy current values to equation"));
+  connect(CreateEqn_Butt, SIGNAL(clicked()), SLOT(slotCreateEqn()));
+  gp3->addWidget(CreateEqn_Butt,6,0);
 
   t->addTab(Tab3, tr("Variables"));
 
@@ -244,7 +271,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   GoalTable->setSelectionBehavior(QAbstractItemView::SelectRows);
   connect(GoalTable, SIGNAL(currentCellChanged(int, int, int, int)),
                     SLOT(slotEditGoal()));
-  gp4->addMultiCellWidget(GoalTable,0,0,0,2);
+  gp4->addWidget(GoalTable, 0, 0, 1, 3);
 
   GoalNameEdit = new QLineEdit();
   GoalNameEdit->setValidator(Validator);
@@ -263,12 +290,12 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   gp4->addWidget(GoalNumEdit,2,1);
 
   GoalTypeCombo = new QComboBox();
-  GoalTypeCombo->insertItem(tr("minimize"));
-  GoalTypeCombo->insertItem(tr("maximize"));
-  GoalTypeCombo->insertItem(tr("less"));
-  GoalTypeCombo->insertItem(tr("greater"));
-  GoalTypeCombo->insertItem(tr("equal"));
-  GoalTypeCombo->insertItem(tr("monitor"));
+  GoalTypeCombo->insertItem(0, tr("minimize"));
+  GoalTypeCombo->insertItem(1, tr("maximize"));
+  GoalTypeCombo->insertItem(2, tr("less"));
+  GoalTypeCombo->insertItem(3, tr("greater"));
+  GoalTypeCombo->insertItem(4, tr("equal"));
+  GoalTypeCombo->insertItem(5, tr("monitor"));
   connect(GoalTypeCombo, SIGNAL(activated(const QString&)),
           SLOT(slotChangeGoalType(const QString&)));
   gp4->addWidget(GoalTypeCombo,2,2);
@@ -283,7 +310,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   GoalButtons->addStretch();
   GoalButtons->addWidget(AddGoal_Butt);
   GoalButtons->addWidget(DelGoal_Butt);
-  gp4->addMultiCellLayout(GoalButtons, 3,3,0,2);
+  gp4->addLayout(GoalButtons, 3, 0, 1, 3);
 
   t->addTab(Tab4, tr("Goals"));
 
@@ -314,16 +341,22 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   for(pc=Doc->Components->first(); pc!=0; pc=Doc->Components->next())
     if(pc != Comp)
       if(pc->Model[0] == '.' && pc->Model != ".Opt")
-        SimEdit->insertItem(pc->Name);
+        SimEdit->insertItem(SimEdit->count(), pc->Name);
 
   Property *pp;
   pp = Comp->Props.at(0);
-  if(!pp->Value.isEmpty())
-    SimEdit->setCurrentText(pp->Value);
+  if(!pp->Value.isEmpty()) {
+    // set selected simulation in combo box to the currently used one
+    int i = SimEdit->findText(pp->Value);
+    if (i != -1) // current simulation is in the available simulations list (normal case)
+      SimEdit->setCurrentIndex(i);
+    else  // current simulation not in the available simulations list
+      SimEdit->setEditText(pp->Value);
+  }
 
   pp = Comp->Props.at(1);
   if(!pp->Value.isEmpty()) {
-    MethodCombo->setCurrentItem(pp->Value.section('|',0,0).toInt()-1);
+    MethodCombo->setCurrentIndex(pp->Value.section('|',0,0).toInt()-1);
     IterEdit->setText(pp->Value.section('|',1,1));
     RefreshEdit->setText(pp->Value.section('|',2,2));
     ParentsEdit->setText(pp->Value.section('|',3,3));
@@ -343,21 +376,27 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
       QStringList ValueSplit = pp->Value.split("|");
       int row = VarTable->rowCount();
       VarTable->insertRow(row);
+      // Name
       item = new QTableWidgetItem(ValueSplit.at(0));
       item->setFlags(item->flags() & ~Qt::ItemIsEditable);
       VarTable->setItem(row, 0, item);
+      // active
       item = new QTableWidgetItem((ValueSplit.at(1) == "yes")? tr("yes") : tr("no"));
       item->setFlags(item->flags() & ~Qt::ItemIsEditable);
       VarTable->setItem(row, 1, item);
-      item = new QTableWidgetItem(ValueSplit.at(2));
+      // initial
+      item = new QTableWidgetItem(QString::number(ValueSplit.at(2).toDouble(), 'g', numPrec));
       item->setFlags(item->flags() & ~Qt::ItemIsEditable);
       VarTable->setItem(row, 2, item);
+      // min
       item = new QTableWidgetItem(ValueSplit.at(3));
       item->setFlags(item->flags() & ~Qt::ItemIsEditable);
       VarTable->setItem(row, 3, item);
+      // max
       item = new QTableWidgetItem(ValueSplit.at(4));
       item->setFlags(item->flags() & ~Qt::ItemIsEditable);
       VarTable->setItem(row, 4, new QTableWidgetItem(ValueSplit.at(4)));
+      // Type
       QString typeStr;
       if (ValueSplit.at(5) == "LIN_DOUBLE") {
         typeStr = tr("linear double");
@@ -426,7 +465,7 @@ void OptimizeDialog::slotEditVariable()
     VarInitEdit->clear();
     VarMinEdit->clear();
     VarMaxEdit->clear();
-    VarTypeCombo->setCurrentItem(0);
+    VarTypeCombo->setCurrentIndex(0);
 
     VarNameEdit->blockSignals(false);
     return;
@@ -437,7 +476,7 @@ void OptimizeDialog::slotEditVariable()
   VarInitEdit->setText(VarTable->item(row, 2)->text());
   VarMinEdit->setText(VarTable->item(row, 3)->text());
   VarMaxEdit->setText(VarTable->item(row, 4)->text());
-  VarTypeCombo->setCurrentText(VarTable->item(row, 5)->text());
+  VarTypeCombo->setCurrentIndex(VarTypeCombo->findText(VarTable->item(row, 5)->text()));
 
   VarNameEdit->blockSignals(false);
 }
@@ -562,14 +601,14 @@ void OptimizeDialog::slotEditGoal()
   int row = GoalTable->currentRow();
   if(row < 0 || row >= GoalTable->rowCount()) {
     GoalNameEdit->clear();
-    GoalTypeCombo->setCurrentItem(0);
+    GoalTypeCombo->setCurrentIndex(0);
     GoalNumEdit->clear();
     GoalNameEdit->blockSignals(false);
     return;
   }
 
   GoalNameEdit->setText(GoalTable->item(row, 0)->text());
-  GoalTypeCombo->setCurrentText(GoalTable->item(row, 1)->text());
+  GoalTypeCombo->setCurrentIndex(GoalTypeCombo->findText(GoalTable->item(row, 1)->text()));
   GoalNumEdit->setText(GoalTable->item(row, 2)->text());
 
   GoalNameEdit->blockSignals(false);
@@ -678,7 +717,7 @@ void OptimizeDialog::slotApply()
     Comp->Props.at(0)->Value = SimEdit->currentText();
     changed = true;
   }
-  Prop = QString::number(MethodCombo->currentItem()+1) + "|" +
+  Prop = QString::number(MethodCombo->currentIndex()+1) + "|" +
     IterEdit->text() + "|" +
     RefreshEdit->text() + "|" +
     ParentsEdit->text() + "|" +
@@ -786,6 +825,72 @@ void OptimizeDialog::slotApply()
 // Is called if the "Cancel"-button is pressed.
 void OptimizeDialog::slotCancel()
 {
-  if(changed) done(1); // changed could have been done before
-  else done(0);        // (by "Apply"-button)
+  if(changed) done(QDialog::Accepted); // changed could have been done before
+  else done(QDialog::Rejected);        // (by "Apply"-button)
 }
+
+
+void OptimizeDialog::slotCreateEqn()
+{
+  QString s = "<Qucs Schematic " PACKAGE_VERSION ">\n"
+              "<Components>\n"
+              //<Model Name ShowName cx cy tx ty mirroredX rotate
+              "<Eqn OptValues 1 0 0 -28 15 0 0 ";
+
+ Property *pp;
+ for(pp = Comp->Props.at(2); pp != 0; pp = Comp->Props.next()) {
+   if(pp->Name == "Var") { // property is an optimization variable
+      QStringList ValueSplit = pp->Value.split("|");
+      // "Name" = "initial (current) value"
+      s += "\"" + ValueSplit.at(0) + "=" + ValueSplit.at(2) + "\" 1 ";
+   }
+ }
+
+ s += QString("\"yes\" 0>\n" // Export yes, no display
+              "</Components>\n"
+	      "<Wires>\n"
+	      "</Wires>\n"
+	      "<Diagrams>\n"
+	      "</Diagrams>\n"
+	      "<Paintings>\n"
+	      "</Paintings>\n");
+
+ QApplication::clipboard()->setText(s, QClipboard::Clipboard);
+ // uncomment to have the dialog close and the Equation pasted...
+ //QucsMain->slotEditPaste(true);
+ //accept();
+}
+
+void OptimizeDialog::slotSetPrecision(const QPoint& pos)
+{
+  QPoint globalPos = VarTable->horizontalHeader()->mapToGlobal(pos);
+  int column = VarTable->horizontalHeader()->logicalIndexAt(pos);
+
+  // change precision is supported only for the 'initial' column
+  if (column != 2) return;
+
+  QMenu cMenu;
+  cMenu.addAction("Set precision");
+
+  QAction* selectedItem = cMenu.exec(globalPos);
+  if (selectedItem) {
+    bool ok;
+    int i = QInputDialog::getInt(this, tr("Set precision"),
+                                 tr("Precision:"), 2, 1, 16, 1, &ok);
+    if (!ok) return;
+    numPrec = i;
+    // update the shown values according to the new precision
+    int row = 0;
+    Property *pp;
+    QTableWidgetItem *item;
+    for(pp = Comp->Props.at(2); pp != 0; pp = Comp->Props.next()) {
+      if(pp->Name == "Var") {
+	QStringList ValueSplit = pp->Value.split("|");
+	// 'initial' column
+	item = VarTable->item(row++, 2);
+	item->setText(QString::number(ValueSplit.at(2).toDouble(), 'g', numPrec));
+      }
+    }
+  }
+}
+

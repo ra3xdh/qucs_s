@@ -167,7 +167,7 @@ int Component::getTextSelected(int x_, int y_, float Corr)
 
   // get width of text
   w = metrics.width(pp->Name+"="+pp->Value);
-  if(x_ > w) return -1;
+  if(x_ > w) return -1; // clicked past the property text end - selection invalid
   return Props.at()+1;  // number the property
 }
 

@@ -41,7 +41,7 @@ if test "$enable_qucs_gui_debug" = yes; then
   QT_DEF="-DQT_DEBUG"
 else
   AC_DEFINE(NDEBUG, 1, [Define if debug code should be suppressed.])
-  QT_DEF="-DQT_NO_DEBUG"
+  QT_DEF="-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT"
   if test "x$GCC" = xyes; then
     CFLAGS="`echo $CFLAGS | sed -e 's/\-g //g'`"
     CXXFLAGS="`echo $CXXFLAGS | sed -e 's/\-g //g'`"
@@ -300,7 +300,7 @@ case $host_os in
     if test "$enable_mt" = yes; then
       QT_LDF=""
       QT_LIB="-lQtCore -lQtGui -lQtXml -lQt3Support -lQtSvg -lQtScript"
-      QT_INC="$QT_DEF -DQT3_SUPPORT -DQT_THREAD_SUPPORT -D_REENTRANT"
+      QT_INC="$QT_DEF -DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS -DQT_THREAD_SUPPORT -D_REENTRANT"
       [case $host_os in
         *freebsd*) QT_LIB="$QT_LIB -pthread" ;;
         *mingw*) QT_INC="$QT_INC -mthreads"; QT_LDF="$QT_LDF -mthreads" ;;

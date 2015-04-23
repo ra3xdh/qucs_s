@@ -26,7 +26,7 @@
 #endif
 #include <QLabel>
 #include <QLineEdit>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 #include <QTextStream>
 
 #include <QDataStream>
@@ -195,8 +195,7 @@ LibraryDialog::LibraryDialog(QWidget *parent)
 
   QGroupBox *msgBox = new QGroupBox(tr("Message:"));
   msgLayout->addWidget(msgBox);
-  ErrText = new QTextEdit();
-  ErrText->setTextFormat(Qt::PlainText);
+  ErrText = new QPlainTextEdit();
   ErrText->setWordWrapMode(QTextOption::NoWrap);
   ErrText->setReadOnly(true);
   QVBoxLayout *vbox1 = new QVBoxLayout();
@@ -322,7 +321,7 @@ int LibraryDialog::intoFile(QString &ifn, QString &ofn, QStringList &IFiles)
   int error = 0;
   QFile ifile(ifn);
   if(!ifile.open(QIODevice::ReadOnly)) {
-    ErrText->insert(QObject::tr("ERROR: Cannot open file \"%1\".\n").
+    ErrText->insertPlainText(QObject::tr("ERROR: Cannot open file \"%1\".\n").
 		    arg(ifn));
     error++;
   }
@@ -334,7 +333,7 @@ int LibraryDialog::intoFile(QString &ifn, QString &ofn, QStringList &IFiles)
     QDir LibDirSub(LibDir);
     if(!LibDirSub.cd(NameEdit->text())) {
       if(!LibDirSub.mkdir(NameEdit->text())) {
-	ErrText->insert(
+	ErrText->insertPlainText(
           QObject::tr("ERROR: Cannot create user library subdirectory !\n"));
 	error++;
       }
@@ -346,7 +345,7 @@ int LibraryDialog::intoFile(QString &ifn, QString &ofn, QStringList &IFiles)
     QFile ofile;
     ofile.setFileName(LibDirSub.absFilePath(ofn));
     if(!ofile.open(QIODevice::WriteOnly)) {
-      ErrText->insert(
+      ErrText->insertPlainText(
         QObject::tr("ERROR: Cannot create file \"%1\".\n").arg(ofn));
       error++;
     }
@@ -416,10 +415,10 @@ void LibraryDialog::slotSave()
   stackedWidgets->setCurrentIndex(2); //message window
   libSaveName->setText(NameEdit->text() + ".lib");
 
-  ErrText->insert(tr("Saving library..."));
+  ErrText->insertPlainText(tr("Saving library..."));
 
   if(!LibFile.open(QIODevice::WriteOnly)) {
-    ErrText->append(tr("Error: Cannot create library!"));
+    ErrText->appendPlainText(tr("Error: Cannot create library!"));
     return;
   }
   QTextStream Stream;
@@ -433,7 +432,7 @@ void LibraryDialog::slotSave()
   QTextStream ts(&tmp, QIODevice::WriteOnly);
 
   for (int i=0; i < SelectedNames.count(); i++) {
-    ErrText->insert("\n=================\n");
+    ErrText->insertPlainText("\n=================\n");
 
     QString description = "";
     if(checkDescr->checkState() == Qt::Checked)
@@ -445,10 +444,10 @@ void LibraryDialog::slotSave()
            << "\n  </Description>\n";
 
     Schematic *Doc = new Schematic(0, QucsSettings.QucsWorkDir.filePath(SelectedNames[i]));
-    ErrText->insert(tr("Loading subcircuit \"%1\".\n").arg(SelectedNames[i]));
+    ErrText->insertPlainText(tr("Loading subcircuit \"%1\".\n").arg(SelectedNames[i]));
     if(!Doc->loadDocument()) {  // load document if possible
         delete Doc;
-        ErrText->append(tr("Error: Cannot load subcircuit \"%1\".").
+        ErrText->appendPlainText(tr("Error: Cannot load subcircuit \"%1\".").
 			arg(SelectedNames[i]));
         break;
     }
@@ -459,8 +458,8 @@ void LibraryDialog::slotSave()
     tmp.truncate(0);
     Doc->isAnalog = true;
 
-    ErrText->insert("\n");
-    ErrText->insert(tr("Creating Qucs netlist.\n"));
+    ErrText->insertPlainText("\n");
+    ErrText->insertPlainText(tr("Creating Qucs netlist.\n"));
     ret = Doc->createLibNetlist(&ts, ErrText, -1);
     if(ret) {
       intoStream(Stream, tmp, "Model");
@@ -488,8 +487,8 @@ void LibraryDialog::slotSave()
       Success = error > 0 ? false : true;
     }
     else {
-        ErrText->insert("\n");
-        ErrText->insert(tr("Error: Cannot create netlist for \"%1\".\n").arg(SelectedNames[i]));
+        ErrText->insertPlainText("\n");
+        ErrText->insertPlainText(tr("Error: Cannot create netlist for \"%1\".\n").arg(SelectedNames[i]));
     }
 
     // save verilog model
@@ -497,8 +496,8 @@ void LibraryDialog::slotSave()
     Doc->isVerilog = true;
     Doc->isAnalog = false;
 
-    ErrText->insert("\n");
-    ErrText->insert(tr("Creating Verilog netlist.\n"));
+    ErrText->insertPlainText("\n");
+    ErrText->insertPlainText(tr("Creating Verilog netlist.\n"));
     ret = Doc->createLibNetlist(&ts, ErrText, 0);
     if(ret) {
       intoStream(Stream, tmp, "VerilogModel");
@@ -527,7 +526,7 @@ void LibraryDialog::slotSave()
       Success = error > 0 ? false : true;
     }
     else {
-        ErrText->insert("\n");
+        ErrText->insertPlainText("\n");
     }
 
     // save vhdl model
@@ -535,7 +534,7 @@ void LibraryDialog::slotSave()
     Doc->isVerilog = false;
     Doc->isAnalog = false;
 
-    ErrText->insert(tr("Creating VHDL netlist.\n"));
+    ErrText->insertPlainText(tr("Creating VHDL netlist.\n"));
     ret = Doc->createLibNetlist(&ts, ErrText, 0);
     if(ret) {
       intoStream(Stream, tmp, "VHDLModel");
@@ -564,7 +563,7 @@ void LibraryDialog::slotSave()
       Success = error > 0 ? false : true;
       }
       else {
-          ErrText->insert("\n");
+          ErrText->insertPlainText("\n");
       }
 
       Stream << "  <Symbol>\n";
@@ -585,11 +584,11 @@ void LibraryDialog::slotSave()
   LibFile.close();
   if(!Success) {
     LibFile.remove();
-    ErrText->append(tr("Error creating library."));
+    ErrText->appendPlainText(tr("Error creating library."));
     return;
   }
 
-  ErrText->append(tr("Successfully created library."));
+  ErrText->appendPlainText(tr("Successfully created library."));
 }
 
 // ---------------------------------------------------------------
