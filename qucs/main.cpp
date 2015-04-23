@@ -387,7 +387,7 @@ void createIcons() {
           scene->addLine(l->x1, l->y1, l->x2, l->y2, l->style);
         }
 
-        foreach(Arc *a, Arcs) {
+        foreach(struct Arc *a, Arcs) {
           // we need an open item here; QGraphisEllipseItem draws a filled ellipse and doesn't do the job here...
           QPainterPath *path = new QPainterPath();
           // the components do not contain the angles in degrees but in 1/16th degrees -> conversion needed
