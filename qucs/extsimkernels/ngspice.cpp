@@ -23,6 +23,11 @@
 #include "components/param_sweep.h"
 #include "main.h"
 
+/*!
+ * \brief Ngspice::Ngspice Class constructor
+ * \param sch_ Schematic that need to be simualted with Ngspice.
+ * \param parent Parent object
+ */
 Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
     AbstractSpiceKernel(sch_, parent)
 {
@@ -30,8 +35,14 @@ Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
     simulator_parameters = "";
 }
 
-// Reads ngspice simulation results and merges it in single Qucs dataset
-
+/*!
+ * \brief Ngspice::createNetlist Output Ngspice-style netlist to text stream.
+ *        Netlist contains sections necessary for Ngspice.
+ * \param[out] stream QTextStream that associated with spice netlist file
+ * \param[out] simulations The list of simulations used by schematic.
+ * \param[out] vars The list of output variables and node names.
+ * \param[out] outputs The list of spice output raw text files.
+ */
 void Ngspice::createNetlist(QTextStream &stream, int ,
                        QStringList &simulations, QStringList &vars, QStringList &outputs)
 {
@@ -218,6 +229,10 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     qDebug()<<outputs;
 }
 
+/*!
+ * \brief Ngspice::slotSimulate Create netlist and execute Ngspice simualtor. Netlist
+ *        is saved at $HOME/.qucs/spice4qucs/spice4qucs.cir
+ */
 void Ngspice::slotSimulate()
 {
     QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs.cir");
@@ -230,6 +245,11 @@ void Ngspice::slotSimulate()
     emit started();
 }
 
+/*!
+ * \brief Ngspice::SaveNetlist Create netlist and save it to file without execution
+ *        of simulator.
+ * \param[in] filename Absolute path to netlist
+ */
 void Ngspice::SaveNetlist(QString filename)
 {
     int num=0;

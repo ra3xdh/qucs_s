@@ -23,6 +23,12 @@
 #include <QtCore>
 #include "schematic.h"
 
+/*!
+ * \brief AbstractSpiceKernel class contains common methods for
+ *        Ngspice and Xyce simulation kernels. Contains spice netlist builder
+ *        and responsible for simulator execution. Ngspice and Xyce classes
+ *        inherit this class.
+ */
 class AbstractSpiceKernel : public QObject
 {
     Q_OBJECT

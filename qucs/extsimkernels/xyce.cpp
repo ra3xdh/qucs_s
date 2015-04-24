@@ -20,6 +20,11 @@
 #include "components/equation.h"
 #include "main.h"
 
+/*!
+ * \brief Xyce::Xyce Class constructor
+ * \param sch_ Schematic that need to be simualted with Ngspice.
+ * \param parent Parent object
+ */
 Xyce::Xyce(Schematic *sch_, QObject *parent) :
     AbstractSpiceKernel(sch_, parent)
 {
@@ -27,6 +32,10 @@ Xyce::Xyce(Schematic *sch_, QObject *parent) :
     simulator_parameters = "-a";
 }
 
+/*!
+ * \brief Xyce::determineUsedSimulations Determine simulation used
+ *        in schematic and add them into simulationsQueue list
+ */
 void Xyce::determineUsedSimulations()
 {
 
@@ -42,6 +51,13 @@ void Xyce::determineUsedSimulations()
     }
 }
 
+/*!
+ * \brief Xyce::createNetlist
+ * \param[out] stream QTextStream that associated with spice netlist file
+ * \param[in] simulations The list of simulations that need to included in netlist.
+ * \param[out] vars The list of output variables and node names.
+ * \param[out] outputs The list of spice output raw text files.
+ */
 void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
                     QStringList &vars, QStringList &outputs)
 {
@@ -141,6 +157,10 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     stream<<".END\n";
 }
 
+/*!
+ * \brief Xyce::slotSimulate Execute Xyce simualtor and perform all
+ *        simulations from the simulationQueue list
+ */
 void Xyce::slotSimulate()
 {
 
@@ -170,6 +190,11 @@ void Xyce::slotSimulate()
 
 }
 
+/*!
+ * \brief Xyce::SaveNetlist Save netlist into specified file without
+ *        execution of simulator.
+ * \param[in] filename The name of file in which netlist is saved
+ */
 void Xyce::SaveNetlist(QString filename)
 {
     determineUsedSimulations();
@@ -182,6 +207,10 @@ void Xyce::SaveNetlist(QString filename)
     }
 }
 
+/*!
+ * \brief Xyce::slotFinished Simualtor finished handler. End simulation or
+ *        execute the next simulation from queue.
+ */
 void Xyce::slotFinished()
 {
     output += SimProcess->readAllStandardOutput();
@@ -193,6 +222,9 @@ void Xyce::slotFinished()
     }
 }
 
+/*!
+ * \brief Xyce::nextSimulation Execute the next simulation from queue.
+ */
 void Xyce::nextSimulation()
 {
     if (!netlistQueue.isEmpty()) {

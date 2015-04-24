@@ -1,8 +1,15 @@
 #include "spicecompat.h"
 
-QString spicecompat::check_refdes(QString &Name,QString &SpiceModel) // If starting letters of the component name
-{                                       // match spice model (i.e. R1, C1, L1)returns Name.
-                                        // Otherwise returns unique Spice Refdes (Name+SpiceModel)
+/*!
+ * \brief spicecompat::check_refdes If starting letters of the component name
+ *        match spice model (i.e. R1, C1, L1)returns Name. Otherwise function
+ *        returns an unique Spice Refdes (Name+SpiceModel)
+ * \param Name
+ * \param SpiceModel
+ * \return
+ */
+QString spicecompat::check_refdes(QString &Name,QString &SpiceModel)
+{
     if (Name.startsWith(SpiceModel,Qt::CaseInsensitive)) {
         return Name;
     } else {
@@ -10,6 +17,13 @@ QString spicecompat::check_refdes(QString &Name,QString &SpiceModel) // If start
     }
 }
 
+/*!
+ * \brief spicecompat::normalize_value Remove units from component values and
+ *        replace Spice-incompatible factors (i.e M, Meg). Wrap value in braces
+ *        if it contains variables.
+ * \param[in] Value Qucs-style component value
+ * \return Spice-style component value
+ */
 QString spicecompat::normalize_value(QString Value)
 {
     QRegExp r_pattern("^[0-9]+.*Ohm$");
@@ -47,6 +61,13 @@ QString spicecompat::normalize_value(QString Value)
     return s.toUpper();
 }
 
+/*!
+ * \brief spicecompat::convert_functions Convert Qucs mathematical function name
+ *        to Spice mathematical function name.
+ * \param tok[in] Qucs function name
+ * \param isXyce[in] True if Xyce is used, False by default.
+ * \return
+ */
 QString spicecompat::convert_functions(QString tok, bool isXyce)
 {
     QStringList conv_list_ngspice; // Put here functions need to be converted

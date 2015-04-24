@@ -1,3 +1,23 @@
+/***************************************************************************
+                             qucs2spice.cpp
+                             ----------------
+    begin                : Mon Dec 1 2014
+    copyright            : (C) 2014 by Vadim Kuznetsov
+    email                : ra3xdh@gmail.com
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+
+
+
 #include "qucs2spice.h"
 #include "spicecompat.h"
 #include "components/equation.h"
@@ -25,6 +45,12 @@ namespace qucs2spice
    void subsVoltages(QStringList &tokens, QStringList& nods);
 }
 
+/*!
+ * \brief qucs2spice::convert_netlist Convert Qucs netlist to Spice netlist
+ * \param[in] netlist Qucs netlist as single string
+ * \param xyce True if xyce-compatible netlist is needed.
+ * \return Spice netlist as a single string
+ */
 QString qucs2spice::convert_netlist(QString netlist, bool xyce)
 {
     QStringList net_lst=netlist.split("\n");

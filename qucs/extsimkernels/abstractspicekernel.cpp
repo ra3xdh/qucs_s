@@ -28,7 +28,12 @@
 #include <QTextEdit>
 
 
-
+/*!
+ * \brief AbstractSpiceKernel::AbstractSpiceKernel class constructor
+ * \param sch_ Schematic that schould be simualted with Spice-comaptibele
+ *        simulator
+ * \param parent Parent object
+ */
 AbstractSpiceKernel::AbstractSpiceKernel(Schematic *sch_, QObject *parent) :
     QObject(parent)
 {
@@ -61,7 +66,14 @@ void AbstractSpiceKernel::killThemAll()
     }
 }
 
-
+/*!
+ * \brief AbstractSpiceKernel::prepareSpiceNetlist Fill components nodes
+ *        with approate node numbers
+ * \param stream QTextStream that associated with spice netlist file
+ * \param xyce Default is false. Should be set in true if netlist is
+ *        prepared for Xyce simulator. For Ngspice should be false.
+ * \return Returns true if success, false if netlist preparation fails
+ */
 bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream, bool xyce)
 {
     QStringList collect;
@@ -72,6 +84,15 @@ bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream, bool xyce)
     return true; // TODO: Add feature to determine ability of spice simulation
 }
 
+/*!
+ * \brief AbstractSpiceKernel::startNetlist Outputs .PARAM , .GLOABAL_PARAM,
+ *        and .OPTIONS sections to netlist. These sections are placed on schematic
+ *        directly or converted form Equation components. Then outputs common
+ *        components to netlist.
+ * \param stream QTextStream that associated with spice netlist file
+ * \param xyce Default is false. Should be set in true if netlist is
+ *        prepared for Xyce simulator. For Ngspice should be false.
+ */
 void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
 {
         QString s;
@@ -92,12 +113,23 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
         }
 }
 
+/*!
+ * \brief AbstractSpiceKernel::createNetlist Writes netlist in stream TextStream.
+ *        This is overloaded method. Should be reimplemted for Ngspice and Xyce.
+ */
 void AbstractSpiceKernel::createNetlist(QTextStream&, int ,QStringList&,
                                         QStringList&, QStringList &)
 {
 
 }
 
+/*!
+ * \brief AbstractSpiceKernel::createSubNetlsit Output Netlist with
+ *        Subcircuit header .SUBCKT
+ * \param stream QTextStream that associated with spice netlist file
+ * \param xyce Default is false. Should be set in true if netlist is
+ *        prepared for Xyce simulator. For Ngspice should be false.
+ */
 void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool xyce)
 {
     QString header;
@@ -136,6 +168,9 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool xyce)
     stream<<".ENDS\n";
 }
 
+/*!
+ * \brief AbstractSpiceKernel::slotSimulate Executes simulator
+ */
 void AbstractSpiceKernel::slotSimulate()
 {
 
@@ -143,7 +178,16 @@ void AbstractSpiceKernel::slotSimulate()
 
 
 
-
+/*!
+ * \brief AbstractSpiceKernel::parseNgSpiceSimOutput This method parses text raw spice
+ *        output. Extracts a simulation points array and variables names and types (Real
+ *        or Complex) from output.
+ * \param ngspice_file Spice output file name
+ * \param sim_points 2D array in which simulation points should be extracted
+ * \param var_list This list is filled by simualtion variables. There is a list of dependent
+ *        and independent varibales. An independent variable is the first in list.
+ * \param isComplex Type of variables. True if complex. False if real.
+ */
 void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QList<double> > &sim_points,QStringList &var_list, bool &isComplex)
 {
     isComplex = false;
@@ -209,6 +253,14 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
     }
 }
 
+
+/*!
+ * \brief AbstractSpiceKernel::parseHBOutput Parse Xyce Harmonic balance (HB) simulation output.
+ * \param ngspice_file Spice output file name
+ * \param sim_points 2D array in which simulation points should be extracted
+ * \param var_list This list is filled by simualtion variables. There is a list of dependent
+ *        varibales. Independent hbfrequency variable is always the first in this list.
+ */
 void AbstractSpiceKernel::parseHBOutput(QString ngspice_file,
                                         QList<QList<double> > &sim_points, QStringList &var_list)
 {
@@ -252,6 +304,18 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file,
     }
 }
 
+/*!
+ * \brief AbstractSpiceKernel::parseSTEPOutput This method parses text raw spice
+ *        output from Parameter sweep analysis. Can parse data that uses appedwrite.
+ *        Extracts a simulation points array and variables names and types (Real
+ *        or Complex) from output.
+ * \param ngspice_file Spice output file name
+ * \param sim_points 2D array in which simulation points should be extracted. All simulation
+ *        points from all sweep variable steps are extracted in a single array
+ * \param var_list This list is filled by simualtion variables. There is a list of dependent
+ *        and independent varibales. An independent variable is the first in list.
+ * \param isComplex Type of variables. True if complex. False if real.
+ */
 void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
                      QList< QList<double> > &sim_points,
                      QStringList &var_list, bool &isComplex)
@@ -342,6 +406,13 @@ void AbstractSpiceKernel::parseHBSTEPOutput(QString , QList<QList<double> >&,
 
 }
 
+/*!
+ * \brief AbstractSpiceKernel::parseResFile Extract sweep variable name and
+ *        values from Ngspice or Xyce *.res output
+ * \param resfile A name of a *.res file
+ * \param var QString in which war is stored
+ * \param values String list in which values are extracted
+ */
 void AbstractSpiceKernel::parseResFile(QString resfile, QString &var, QStringList &values)
 {
     var.clear();
@@ -366,6 +437,13 @@ void AbstractSpiceKernel::parseResFile(QString resfile, QString &var, QStringLis
     }
 }
 
+/*!
+ * \brief AbstractSpiceKernel::convertToQucsData Put data extracted from spice raw
+ *        text output files (given in outputs_files property) into single XML
+ *        Qucs Dataset.
+ * \param qucs_dataset A file name of Qucs Dataset to create
+ * \param xyce True if Xyce simulator was used.
+ */
 void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xyce)
 {
     QFile dataset(qucs_dataset);
@@ -470,7 +548,12 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
     }
 }
 
-// Normalize Ngspice and Xyce variables naming
+/*!
+ * \brief AbstractSpiceKernel::normalizeVarsNames Convert spice-style variable names to
+ *        Qucs style and add simualation type prefix (i.e. AC, TRAN, DC). Conversion
+ *        for harmonic balance variable and current probes variables are supported.
+ * \param var_list This list contains variable names that need normalization.
+ */
 void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
 {
     QString prefix="";
@@ -519,11 +602,18 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
 
 }
 
+/*!
+ * \brief AbstractSpiceKernel::slotErrors Simulator errors handler
+ * \param err
+ */
 void AbstractSpiceKernel::slotErrors(QProcess::ProcessError err)
 {
     emit errors(err);
 }
 
+/*!
+ * \brief AbstractSpiceKernel::slotFinished Simulation process normal finish handler
+ */
 void AbstractSpiceKernel::slotFinished()
 {
     output.clear();
@@ -531,16 +621,29 @@ void AbstractSpiceKernel::slotFinished()
     emit finished();
 }
 
+/*!
+ * \brief AbstractSpiceKernel::getOutput Get sdtout and stderr output of simulation
+ *        process.
+ * \return Simulation process output
+ */
 QString AbstractSpiceKernel::getOutput()
 {
     return output;
 }
 
+/*!
+ * \brief AbstractSpiceKernel::setSimulatorCmd Set simualtor executable location
+ * \param cmd Simulator executable absolute path. For example /usr/bin/ngspice
+ */
 void AbstractSpiceKernel::setSimulatorCmd(QString cmd)
 {
     simulator_cmd = cmd;
 }
 
+/*!
+ * \brief AbstractSpiceKernel::SaveNetlist Save netlist to file. Reimplemented
+ *        in Ngspice and Xyce classes.
+ */
 void AbstractSpiceKernel::SaveNetlist(QString)
 {
 

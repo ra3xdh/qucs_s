@@ -22,6 +22,9 @@
 #include "abstractspicekernel.h"
 #include "ngspice.h"
 
+/*!
+ * \brief The Xyce class responsible for execution of Xyce simulator.
+ */
 class Xyce : public AbstractSpiceKernel
 {
     Q_OBJECT

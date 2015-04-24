@@ -1,6 +1,31 @@
+/***************************************************************************
+                             customdialog.cpp
+                             ----------------
+    begin                : Mon Apr 13 2015
+    copyright            : (C) 2015 by Vadim Kuznetsov
+    email                : ra3xdh@gmail.com
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+
+
 #include "customsimdialog.h"
 #include "node.h"
 
+/*!
+ * \brief CustomSimDialog::CustomSimDialog class constructor
+ * \param pc[in] Component that need to be edit.
+ * \param sch[in] Schematic on which component presents.
+ * \param parent[in] Parent object.
+ */
 CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *parent) :
     QDialog(parent)
 {
@@ -40,23 +65,36 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     this->setLayout(vl1);
 }
 
+/*!
+ * \brief CustomSimDialog::slotApply Aplly changes of component properties.
+ */
 void CustomSimDialog::slotApply()
 {
     comp->Props.at(0)->Value = edtCode->document()->toPlainText();
     comp->Props.at(1)->Value = edtVars->text();
 }
 
+/*!
+ * \brief CustomSimDialog::slotOK Apply changes and exit.
+ */
 void CustomSimDialog::slotOK()
 {
     slotApply();
     accept();
 }
 
+/*!
+ * \brief CustomSimDialog::slotCancel Close dialog without apply chages.
+ */
 void CustomSimDialog::slotCancel()
 {
     reject();
 }
 
+/*!
+ * \brief CustomSimDialog::slotFindVars Auto-find used variables and nodes
+ *        in simulation script and place them into edtVars line edit.
+ */
 void CustomSimDialog::slotFindVars()
 {
     QStringList vars;
