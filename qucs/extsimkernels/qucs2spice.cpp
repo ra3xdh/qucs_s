@@ -365,7 +365,7 @@ QString qucs2spice::convert_edd(QString line, QStringList &EqnsAndVars)
         QString Ieqn = EqnsAndVars.at(EqnsAndVars.indexOf(Ivar)+1);
 
         QStringList Itokens;
-        Equation::splitEqn(Ieqn,Itokens);
+        spicecompat::splitEqn(Ieqn,Itokens);
         subsVoltages(Itokens,nods);
         for(QStringList::iterator it = Itokens.begin();it != Itokens.end(); it++) {
             *it = spicecompat::convert_functions(*it,false);

@@ -28,14 +28,9 @@ public:
   ~Equation();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  static void splitEqn(QString &eqn, QStringList &tokens);
   QString getExpression(bool isXyce);
   QString getEquations(QString sim, QStringList &dep_vars);
   QString getNgspiceScript();
-
-private:
-  bool containNodes(QStringList &tokens);
-  void convertNodeNames(QStringList &tokens, QString &sim);
 
 protected:
   QString vhdlCode(int);

@@ -90,3 +90,77 @@ QString spicecompat::convert_functions(QString tok, bool isXyce)
 
     return tok;
 }
+
+/*!
+ * \brief spicecompat::splitEqn Split Equation into tokens. Token delimenters are mathamatical
+ *        operation signs:  = ^ + - * /  and parentheses ()
+ * \param[in] eqn Equation to split
+ * \param[out] tokens String list in which to put tokens.
+ */
+void spicecompat::splitEqn(QString &eqn, QStringList &tokens)
+{
+    tokens.clear();
+    QString tok = "";
+    for (QString::iterator it=eqn.begin();it!=eqn.end();it++) {
+        QString delim = "=()*/+-^";
+        if (it->isSpace()) continue;
+        if (delim.contains(*it)) {
+            if (!tok.isEmpty()) tokens.append(tok);
+            tokens.append(*it);
+            tok.clear();
+            continue;
+        }
+        tok += *it;
+    }
+    if (!tok.isEmpty()) tokens.append(tok);
+}
+
+
+/*!
+ * \brief spicecompat::containNodes Determine are there in equaton node voltages
+ *        and/or current porbes.
+ * \param tokens List of tokens. Should be obtained with splitEqn().
+ * \return Return true if equation contain node voltages and/or current probe variables
+ */
+bool spicecompat::containNodes(QStringList &tokens)
+{
+    QRegExp var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
+    QStringList system_vars;
+    system_vars.clear();
+    system_vars<<"frequency"<<"acfrequency"<<"time"<<"hbfrequncy";
+    foreach (QString tok,tokens) {
+        if (var_pattern.exactMatch(tok)) return true;
+        if (system_vars.contains(tok)) return true;
+    }
+    return false;
+}
+
+/*!
+ * \brief spicecompat::convertNodeNames convert node names form Qucs-notation to
+ *        Spice-notation (i.e. Node.Vt --> V(Node) ) and determine used simualtion.
+ *        This method modifies the input list of tokens.
+ * \param[in/out] tokens
+ * \param[out] sim Used simulation.
+ *             "ac" --- AC simulation;
+ *             "dc" --- DC simulation;
+ *             "tran" --- Transient simulation;
+ */
+void spicecompat::convertNodeNames(QStringList &tokens, QString &sim)
+{
+    QRegExp var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
+    for (QStringList::iterator it=tokens.begin();it!=tokens.end();it++) {
+        if (var_pattern.exactMatch(*it))  {
+            if (it->endsWith(".v")) sim = "ac";
+            if (it->endsWith(".Vt")) sim = "tran";
+            if (it->endsWith(".V")) sim = "dc";
+            int idx = it->indexOf('.');
+            int cnt = it->count();
+            it->chop(cnt-idx);
+            *it = QString("V(%2)").arg(*it);
+        } else if ((*it=="frequency")||(*it=="acfrequency")) {
+            sim = "ac";
+        } else if (*it=="time") {
+            sim = "tran";
+        }
+    }
+}

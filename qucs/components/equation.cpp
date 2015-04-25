@@ -92,58 +92,12 @@ Element* Equation::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-void Equation::splitEqn(QString &eqn, QStringList &tokens)
-{
-    tokens.clear();
-    QString tok = "";
-    for (QString::iterator it=eqn.begin();it!=eqn.end();it++) {
-        QString delim = "=()*/+-^";
-        if (it->isSpace()) continue;
-        if (delim.contains(*it)) {
-            if (!tok.isEmpty()) tokens.append(tok);
-            tokens.append(*it);
-            tok.clear();
-            continue;
-        }
-        tok += *it;
-    }
-    if (!tok.isEmpty()) tokens.append(tok);
-}
-
-bool Equation::containNodes(QStringList &tokens)
-{
-    QRegExp var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
-    QStringList system_vars;
-    system_vars.clear();
-    system_vars<<"frequency"<<"acfrequency"<<"time"<<"hbfrequncy";
-    foreach (QString tok,tokens) {
-        if (var_pattern.exactMatch(tok)) return true;
-        if (system_vars.contains(tok)) return true;
-    }
-    return false;
-}
-
-void Equation::convertNodeNames(QStringList &tokens, QString &sim)
-{
-    QRegExp var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
-    for (QStringList::iterator it=tokens.begin();it!=tokens.end();it++) {
-        if (var_pattern.exactMatch(*it))  {
-            if (it->endsWith(".v")) sim = "ac";
-            if (it->endsWith(".Vt")) sim = "tran";
-            if (it->endsWith(".V")) sim = "dc";
-            int idx = it->indexOf('.');
-            int cnt = it->count();
-            it->chop(cnt-idx);
-            *it = QString("V(%2)").arg(*it);
-        } else if ((*it=="frequency")||(*it=="acfrequency")) {
-            sim = "ac";
-        } else if (*it=="time") {
-            sim = "tran";
-        }
-    }
-}
-
-
+/*!
+ * \brief Equation::getExpression Extract equations that don't contain simualtion variables
+ *        (voltages/cureents) in .PARAM section of spice netlist
+ * \param isXyce True if Xyce is used.
+ * \return .PARAM section of spice netlist as a single string.
+ */
 QString Equation::getExpression(bool isXyce)
 {
     QString s;
@@ -151,7 +105,7 @@ QString Equation::getExpression(bool isXyce)
     for (unsigned int i=0;i<Props.count()-1;i++) {
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
-        splitEqn(eqn,tokens);
+        spicecompat::splitEqn(eqn,tokens);
         for(QStringList::iterator it = tokens.begin();it != tokens.end(); it++) {
             qDebug()<<spicecompat::convert_functions(*it,isXyce);
             *it = spicecompat::convert_functions(*it,isXyce);
@@ -164,13 +118,22 @@ QString Equation::getExpression(bool isXyce)
         if (!(fp_pattern.exactMatch(eqn)||
               dec_pattern.exactMatch(eqn)||
               fp_exp_pattern.exactMatch(eqn))) eqn = "{" + eqn + "}"; // wrap equation if it contains vars
-        if (!containNodes(tokens)) {
+        if (!spicecompat::containNodes(tokens)) {
             s += QString(".PARAM %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
         }
     }
     return s;
 }
 
+/*!
+ * \brief Equation::getEquations Convert equations that contains simulation variables
+ *        (voltages/currents) into ngspice script. This script is placed between
+ *        .control .endc sections of ngspice netlist. Also determines output variables
+ *        that need to be plot.
+ * \param[in] sim Used simulation (i.e "ac", "dc", "tran" )
+ * \param[out] dep_vars The list of variables that need to place in dataset and to plot.
+ * \return Ngspice script as a single string.
+ */
 QString Equation::getEquations(QString sim, QStringList &dep_vars)
 {
     QString s;
@@ -178,11 +141,11 @@ QString Equation::getEquations(QString sim, QStringList &dep_vars)
     for (unsigned int i=0;i<Props.count()-1;i++) {
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
-        splitEqn(eqn,tokens);
+        spicecompat::splitEqn(eqn,tokens);
         eqn.replace("^","**");
-        if (containNodes(tokens)) {
+        if (spicecompat::containNodes(tokens)) {
             QString used_sim;
-            convertNodeNames(tokens,used_sim);
+            spicecompat::convertNodeNames(tokens,used_sim);
             if (sim == used_sim) {
                 eqn = tokens.join("");
                 s += QString("let %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
@@ -194,6 +157,11 @@ QString Equation::getEquations(QString sim, QStringList &dep_vars)
     return s;
 }
 
+/*!
+ * \brief Equation::getNgspiceScript Duplicate variables from .PARAM section
+ *        in .control .endc section of Ngspice netlist.
+ * \return Ngspice script as a single string.
+ */
 QString Equation::getNgspiceScript()
 {
     QString s;
@@ -201,13 +169,13 @@ QString Equation::getNgspiceScript()
     for (unsigned int i=0;i<Props.count()-1;i++) {
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
-        splitEqn(eqn,tokens);
+        spicecompat::splitEqn(eqn,tokens);
         for(QStringList::iterator it = tokens.begin();it != tokens.end(); it++) {
             *it = spicecompat::convert_functions(*it,false);
         }
         eqn = tokens.join("");
 
-        if (!containNodes(tokens)) {
+        if (!spicecompat::containNodes(tokens)) {
             s += QString("let %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
         }
     }
