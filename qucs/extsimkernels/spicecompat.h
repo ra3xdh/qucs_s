@@ -3,6 +3,12 @@
 
 #include <QtCore>
 
+/*!
+  \brief spicecompat namespace contains definitions responsible
+         for conversion of variables and node names from Qucs
+         notation to Spice notation
+ *
+ */
 namespace spicecompat {
      QString check_refdes(QString &Name, QString &Model);
      QString normalize_value(QString Value);

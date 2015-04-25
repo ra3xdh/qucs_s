@@ -25,6 +25,12 @@
 #include "components/component.h"
 #include <QtGui>
 
+
+/*!
+  \file customsimdialog.h
+  \brief Implementation of the CustomSimDialog class
+*/
+
 /*!
  * \brief The CustomSimDialog class is responsible for editing properties
  *        of Ngspice Custom Simualtion component. You can edit multiline

@@ -22,6 +22,11 @@
 #include "spicecompat.h"
 #include "components/equation.h"
 
+/*!
+  \file qucs2spice.cpp
+  \brief Implementation of qucs2spice namespace
+*/
+
 namespace qucs2spice
 {
    QString convert_rcl(QString line);

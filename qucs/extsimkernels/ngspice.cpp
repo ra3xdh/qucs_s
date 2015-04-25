@@ -24,6 +24,11 @@
 #include "main.h"
 
 /*!
+  \file ngspice.cpp
+  \brief Implementation of the Ngspice class
+*/
+
+/*!
  * \brief Ngspice::Ngspice Class constructor
  * \param sch_ Schematic that need to be simualted with Ngspice.
  * \param parent Parent object

@@ -22,7 +22,13 @@
 
 #include <QtCore>
 
-/*! \brief qucs2spice namespace contains functions responsible for
+/*!
+  \file qucs2spice.h
+  \brief Implementation qucs2spice namespace
+*/
+
+/*!
+   \brief qucs2spice namespace contains functions responsible for
  *         conversion of Qucs netlist into Spice netlist
  *
  */

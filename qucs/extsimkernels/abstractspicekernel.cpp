@@ -27,6 +27,11 @@
 #include "../paintings/id_text.h"
 #include <QTextEdit>
 
+/*!
+  \file abstractspicekernel.h
+  \brief Definition of the AbstractSpiceKernel class
+*/
+
 
 /*!
  * \brief AbstractSpiceKernel::AbstractSpiceKernel class constructor

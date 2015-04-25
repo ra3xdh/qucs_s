@@ -21,6 +21,11 @@
 #include "main.h"
 
 /*!
+  \file xyce.cpp
+  \brief Implementation of the Xyce class
+*/
+
+/*!
  * \brief Xyce::Xyce Class constructor
  * \param sch_ Schematic that need to be simualted with Ngspice.
  * \param parent Parent object

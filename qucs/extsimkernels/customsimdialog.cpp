@@ -21,6 +21,11 @@
 #include "node.h"
 
 /*!
+  \file customsimdialog.cpp
+  \brief Implementation of the CustomSimDialog class
+*/
+
+/*!
  * \brief CustomSimDialog::CustomSimDialog class constructor
  * \param pc[in] Component that need to be edit.
  * \param sch[in] Schematic on which component presents.

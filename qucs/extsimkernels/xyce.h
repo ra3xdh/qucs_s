@@ -20,7 +20,11 @@
 
 #include <QtCore>
 #include "abstractspicekernel.h"
-#include "ngspice.h"
+
+/*!
+  \file xyce.h
+  \brief Declaration of the Xyce class
+*/
 
 /*!
  * \brief The Xyce class responsible for execution of Xyce simulator.

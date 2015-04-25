@@ -23,6 +23,14 @@
 #include "schematic.h"
 #include "abstractspicekernel.h"
 
+/*!
+  \file ngspice.h
+  \brief Declaration of the Ngspice class
+*/
+
+/*!
+ * \brief The Ngspice class Responsible for Ngspice simulator execution.
+ */
 class Ngspice : public AbstractSpiceKernel
 {
     Q_OBJECT
