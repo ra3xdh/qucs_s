@@ -113,10 +113,20 @@ void CustomSimDialog::slotFindVars()
       }
     }
 
+    for(Component *pc=Sch->DocComps.first();pc!=0;pc=Sch->DocComps.next()) {
+        if(pc->isProbe) {
+            if (!vars.contains(pc->getProbeVariable())) {
+                vars.append(pc->getProbeVariable());
+            }
+        }
+    }
+
     qDebug()<<vars;
     for(QStringList::iterator it = vars.begin();it != vars.end(); it++) {
-        *it=QString("V(%1)").arg(*it);
+        if (!(it->endsWith("#branch"))) *it=QString("V(%1)").arg(*it);
     }
+
+
 
     QStringList strings = edtCode->toPlainText().split('\n');
     foreach(QString line,strings) {

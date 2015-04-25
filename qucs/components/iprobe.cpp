@@ -80,6 +80,11 @@ QString iProbe::spice_netlist(bool)
     return s;
 }
 
+/*!
+ * \brief iProbe::getProbeVariable Get current probe variable
+ * \param isXyce True if Xyce simulator
+ * \return Current probe variable in Ngspice or Xyce notation
+ */
 QString iProbe::getProbeVariable(bool isXyce)
 {
     QString s;
