@@ -95,6 +95,7 @@ void ExternSimDialog::slotSetSimulator()
 {
     switch (cbxSimualor->currentIndex()) {
     case simNgspice: {
+        xyce->setParallel(false);
         disconnect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessXyceOutput()));
         disconnect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
@@ -106,6 +107,7 @@ void ExternSimDialog::slotSetSimulator()
     }
         break;
     case simXyceSer: {
+        xyce->setParallel(false);
         disconnect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()));
         disconnect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
@@ -117,6 +119,7 @@ void ExternSimDialog::slotSetSimulator()
     }
         break;
     case simXycePar: {
+        xyce->setParallel(true);
         disconnect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()));
         disconnect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));

@@ -33,6 +33,7 @@ class Xyce : public AbstractSpiceKernel
 {
     Q_OBJECT
 private:
+    unsigned int Nprocs;
     QStringList simulationsQueue;
     QStringList netlistQueue;
     void determineUsedSimulations();
@@ -42,6 +43,7 @@ public:
     explicit Xyce(Schematic *sch_, QObject *parent = 0);
 
     void SaveNetlist(QString filename);
+    void setParallel(bool par);
     
 protected:
     void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,

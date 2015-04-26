@@ -28,9 +28,14 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
 {
     lblNgspice = new QLabel(tr("Ngspice executable location"));
     lblXyce = new QLabel(tr("Xyce executable location"));
+    lblXycePar = new QLabel(tr("Xyce Parallel executable location (openMPI installed required)"));
+    lblNprocs = new QLabel(tr("Number of processors in a system:"));
 
     edtNgspice = new QLineEdit(QucsSettings.NgspiceExecutable);
     edtXyce = new QLineEdit(QucsSettings.XyceExecutable);
+    edtXycePar = new QLineEdit(QucsSettings.XyceParExecutable);
+    spbNprocs = new QSpinBox(1,256,1,this);
+    spbNprocs->setValue(QucsSettings.NProcs);
 
     btnOK = new QPushButton(tr("Apply changes"));
     connect(btnOK,SIGNAL(clicked()),this,SLOT(slotApply()));
@@ -41,6 +46,8 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     connect(btnSetNgspice,SIGNAL(clicked()),this,SLOT(slotSetNgspice()));
     btnSetXyce = new QPushButton(tr("Select.."));
     connect(btnSetXyce,SIGNAL(clicked()),this,SLOT(slotSetXyce()));
+    btnSetXycePar = new QPushButton(tr("Select..."));
+    connect(btnSetXycePar,SIGNAL(clicked()),this,SLOT(slotSetXycePar()));
 
     QVBoxLayout *top = new QVBoxLayout;
     top->addWidget(lblNgspice);
@@ -54,6 +61,17 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     h2->addWidget(edtXyce,3);
     h2->addWidget(btnSetXyce,1);
     top->addLayout(h2);
+
+    top->addWidget(lblXycePar);
+    QHBoxLayout *h4 = new QHBoxLayout;
+    h4->addWidget(edtXycePar,3);
+    h4->addWidget(btnSetXycePar,1);
+    top->addLayout(h4);
+
+    QHBoxLayout *h5 = new QHBoxLayout;
+    h5->addWidget(lblNprocs);
+    h5->addWidget(spbNprocs);
+    top->addLayout(h5);
 
     QHBoxLayout *h3 = new QHBoxLayout;
     h3->addWidget(btnOK);
@@ -72,6 +90,8 @@ void SimSettingsDialog::slotApply()
 {
     QucsSettings.NgspiceExecutable = edtNgspice->text();
     QucsSettings.XyceExecutable = edtXyce->text();
+    QucsSettings.XyceParExecutable = edtXycePar->text();
+    QucsSettings.NProcs = spbNprocs->value();
     accept();
 }
 
@@ -90,5 +110,14 @@ void SimSettingsDialog::slotSetXyce()
     dialog.setAcceptMode(QFileDialog::AcceptOpen);
     if (dialog.exec()) {
         edtXyce->setText(dialog.selectedFile());
+    }
+}
+
+void SimSettingsDialog::slotSetXycePar()
+{
+    QFileDialog dialog(this,tr("Select Xyce Parallel executable location"),edtXycePar->text(),"All files (*)");
+    dialog.setAcceptMode(QFileDialog::AcceptOpen);
+    if (dialog.exec()) {
+        edtXycePar->setText(dialog.selectedFile());
     }
 }

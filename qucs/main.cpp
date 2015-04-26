@@ -106,6 +106,10 @@ bool loadSettings()
     else QucsSettings.NgspiceExecutable = "ngspice";
     if(settings.contains("XyceExecutable")) QucsSettings.XyceExecutable = settings.value("XyceExecutable").toString();
     else QucsSettings.XyceExecutable = "/usr/local/Xyce-Release-6.2.0-OPENSOURCE/bin/runxyce";
+    if(settings.contains("XyceParExecutable")) QucsSettings.XyceParExecutable = settings.value("XyceParExecutable").toString();
+    else QucsSettings.XyceParExecutable = "/usr/local/Xyce-Release-6.2.0-OPENMPI-OPENSOURCE/bin/xmpirun";
+    if(settings.contains("Nprocs")) QucsSettings.NProcs = settings.value("Nprocs").toInt();
+    else QucsSettings.NProcs = 4;
     if(settings.contains("QucsHomeDir"))
       if(settings.value("QucsHomeDir").toString() != "")
          QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
@@ -184,6 +188,8 @@ bool saveApplSettings()
     settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
     settings.setValue("NgspiceExecutable",QucsSettings.NgspiceExecutable);
     settings.setValue("XyceExecutable",QucsSettings.XyceExecutable);
+    settings.setValue("XyceParExecutable",QucsSettings.XyceParExecutable);
+    settings.setValue("Nprocs",QucsSettings.NProcs);
     settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
     settings.setValue("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
     settings.setValue("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);

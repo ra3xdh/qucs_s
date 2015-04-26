@@ -28,15 +28,20 @@ class SimSettingsDialog : public QDialog
 private:
     QLabel *lblXyce;
     QLabel *lblNgspice;
+    QLabel *lblXycePar;
+    QLabel *lblNprocs;
 
     QLineEdit *edtNgspice;
     QLineEdit *edtXyce;
+    QLineEdit *edtXycePar;
+    QSpinBox  *spbNprocs;
 
     QPushButton *btnOK;
     QPushButton *btnCancel;
 
     QPushButton *btnSetNgspice;
     QPushButton *btnSetXyce;
+    QPushButton *btnSetXycePar;
 
 public:
     explicit SimSettingsDialog(QWidget *parent = 0);
@@ -46,6 +51,7 @@ private slots:
     void slotApply();
     void slotSetNgspice();
     void slotSetXyce();
+    void slotSetXycePar();
     
 };
 

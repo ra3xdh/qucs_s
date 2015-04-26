@@ -35,6 +35,7 @@ Xyce::Xyce(Schematic *sch_, QObject *parent) :
 {
     simulator_cmd = QucsSettings.XyceExecutable;
     simulator_parameters = "-a";
+    Nprocs = QucsSettings.NProcs;
 }
 
 /*!
@@ -239,5 +240,16 @@ void Xyce::nextSimulation()
         SimProcess->start(cmd);
     } else {
         emit finished(); // nothing to simulate
+    }
+}
+
+void Xyce::setParallel(bool par)
+{
+    if (par) {
+        simulator_cmd = QucsSettings.XyceParExecutable;
+        simulator_parameters = QString(" -np %1 -a ").arg(QucsSettings.NProcs);
+    } else {
+        simulator_cmd = QucsSettings.XyceExecutable;
+        simulator_parameters = "-a";
     }
 }
