@@ -793,6 +793,7 @@ QString Component::save()
   for (Property *pr = Props.first(); pr != 0; pr = Props.next()) {
     QString val = pr->Value;
     val.replace("\n","\\n");
+    val.replace("\"","''");
     el.setAttribute (pr->Name, (pr->display ? "1@" : "0@") + val);
   }
   qDebug (doc.toString());
@@ -817,6 +818,7 @@ QString Component::save()
   for(Property *p1 = Props.first(); p1 != 0; p1 = Props.next()) {
       QString val = p1->Value; // enable newline in properties
       val.replace("\n","\\n");
+      val.replace("\"","''");
       if(p1->Description.isEmpty()||(p1->Description=="Expression"))
       s += " \""+p1->Name+"="+val+"\"";   // e.g. for equations
     else s += " \""+val+"\"";
@@ -909,6 +911,7 @@ bool Component::load(const QString& _s)
     z++;
     n = s.section('"',z,z);    // property value
     n.replace("\\n","\n");
+    n.replace("''","\"");
     z++;
     //qDebug() << "LOAD: " << p1->Description;
 

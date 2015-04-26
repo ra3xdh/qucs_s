@@ -83,6 +83,14 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     this->setFixedWidth(500);
     this->setWindowTitle(tr("Setup simulators executable location"));
 
+#ifndef Q_OS_UNIX
+    // Only Unix supports Xyce-parallel
+    edtXycePar->setDisabled(true);
+    lblXycePar->setDisabled(true);
+    lblNprocs->setDisabled(true);
+    spbNprocs->setDisabled(true);
+#endif
+
 }
 
 

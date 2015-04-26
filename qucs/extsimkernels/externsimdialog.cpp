@@ -119,7 +119,11 @@ void ExternSimDialog::slotSetSimulator()
     }
         break;
     case simXycePar: {
+#ifdef Q_OS_UNIX
         xyce->setParallel(true);
+#else
+        xyce->setParallel(false);
+#endif
         disconnect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()));
         disconnect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
