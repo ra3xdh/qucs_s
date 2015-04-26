@@ -956,8 +956,8 @@ void QucsApp::slotCMenuCopy()
     }
   }
 
-  QString suffix = fileinfo.completeSuffix();
-  QString base = fileinfo.baseName();
+  QString suffix = fileinfo.suffix();
+  QString base = fileinfo.completeBaseName();
   if(base.isEmpty()) {
     base = filename;
   }
@@ -1015,8 +1015,8 @@ void QucsApp::slotCMenuRename()
     return;
   }
 
-  QString suffix = fileinfo.completeSuffix();
-  QString base = fileinfo.baseName();
+  QString suffix = fileinfo.suffix();
+  QString base = fileinfo.completeBaseName();
   if(base.isEmpty()) {
     base = filename;
   }
@@ -2195,7 +2195,7 @@ void QucsApp::slotOpenContent(const QModelIndex &idx)
   QString filename = idx.sibling(idx.row(), 0).data().toString();
   QString note = idx.sibling(idx.row(), 1).data().toString();
   QFileInfo Info(QucsSettings.QucsWorkDir.filePath(filename));
-  QString extName = Info.completeSuffix();
+  QString extName = Info.suffix();
 
   if (extName == "sch" || extName == "dpl" || extName == "vhdl" ||
       extName == "vhd" || extName == "v" || extName == "va" ||
