@@ -172,6 +172,7 @@ QString Param_Sweep::spice_netlist(bool isXyce)
     if (Props.at(0)->Value.startsWith("DC")) {
         QString src = getProperty("Param")->Value;
         s = QString("DC %1 %2 %3 %4\n").arg(src).arg(start).arg(stop).arg(step);
+        if (isXyce) s.prepend('.');
     } else if (isXyce) {
         QString var = getProperty("Param")->Value;
         s = QString(".STEP %1 %2 %3 %4\n").arg(var).arg(start).arg(stop).arg(step);
