@@ -78,6 +78,7 @@ L_SPICE.cpp
 R_SPICE.cpp
 K_SPICE.cpp
 MESFET_SPICE.cpp
+Cmeter_SPICE.cpp
 sp_customsim.cpp
 )
 
@@ -278,6 +279,7 @@ L_SPICE.h
 R_SPICE.h
 K_SPICE.h
 MESFET_SPICE.h
+Cmeter_SPICE.h
 sp_customsim.h
 )
 

@@ -256,6 +256,7 @@
           <file>bitmaps/R_SPICE.png</file>
          <file>bitmaps/K_SPICE.png</file>
          <file>bitmaps/MESFET_SPICE.png</file>
+         <file>bitmaps/Cmeter_SPICE.png</file>
 
     </qresource>
 </RCC>
