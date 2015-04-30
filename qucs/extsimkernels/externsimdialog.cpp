@@ -47,7 +47,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     connect(buttonStopSim,SIGNAL(clicked()),ngspice,SLOT(killThemAll()));
     buttonStopSim->setEnabled(false);
 
-    buttonSaveNetlist = new QPushButton(tr("Save netlsit"),this);
+    buttonSaveNetlist = new QPushButton(tr("Save netlist"),this);
     connect(buttonSaveNetlist,SIGNAL(clicked()),this,SLOT(slotSaveNetlist()));
 
     buttonSimSettings = new QPushButton(tr("Settings"),this);
