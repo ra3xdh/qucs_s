@@ -108,7 +108,7 @@ ProjectView::refresh()
 
   for(it = files.begin(); it != files.end(); ++it) {
     fileName = (*it).toAscii();
-    extName = QFileInfo(workPath.filePath(fileName)).completeSuffix();
+    extName = QFileInfo(workPath.filePath(fileName)).suffix();
 
     columnData.clear();
     columnData.append(new QStandardItem(fileName));
