@@ -251,6 +251,9 @@ QString qucs2spice::convert_bjt(QString line)
     QString Typ = "NPN";
     QStringList par_lst;
     par_lst.clear();
+
+    QStringList spice_incompat; // spice incompatibel parameters;
+    spice_incompat<<"Type="<<"Area="<<"Temp="<<"Ffe="<<"Kb="<<"Ab="<<"Fb=";
     for(int i=0;i<lst.count();i++) {
         QString s1 = lst.at(i);
         if (s1.startsWith("Type=\"npn\"")) {
@@ -258,7 +261,14 @@ QString qucs2spice::convert_bjt(QString line)
         } else if (s1.startsWith("Type=\"pnp\"")) {
             Typ = "PNP";
         } else {
-            par_lst.append(s1); // usual parameter
+            bool is_incompat = false;
+            foreach (QString incompat,spice_incompat) {
+               if (s1.startsWith(incompat)) {
+                   is_incompat = true;
+                   break;
+               }
+            }
+            if (!is_incompat) par_lst.append(s1); // usual parameter
         }
     }
     s += QString("Q%1 %2 %3 %4 %5 QMOD_%6 \n").arg(name).arg(C).arg(B).arg(E).arg(Sub).arg(name);
