@@ -240,6 +240,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
  */
 void Ngspice::slotSimulate()
 {
+    //output.clear();
     QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs.cir");
     SaveNetlist(tmp_path);
 
@@ -248,6 +249,21 @@ void Ngspice::slotSimulate()
     QString cmd = QString("%1 %2 %3").arg(simulator_cmd,simulator_parameters,tmp_path);
     SimProcess->start(cmd);
     emit started();
+}
+
+/*!
+ * \brief Ngspice::slotProcessOutput Process Ngspice output and report completetion
+ *        percentage.
+ */
+void Ngspice::slotProcessOutput()
+{
+    QString s = SimProcess->readAllStandardOutput();
+    QRegExp percentage_pattern("^%\\d\\d.\\d\\d.*$");
+    if (percentage_pattern.exactMatch(s)) {
+        int percent = round(s.mid(1,5).toFloat());
+        emit progress(percent);
+    }
+    output += s;
 }
 
 /*!

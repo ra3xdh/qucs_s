@@ -43,6 +43,9 @@ protected:
                   QStringList &vars, QStringList &outputs);
 public slots:
     void slotSimulate();
+
+protected slots:
+    void slotProcessOutput();
 };
 
 #endif // NGSPICE_H

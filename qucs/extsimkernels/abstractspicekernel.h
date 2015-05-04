@@ -84,9 +84,11 @@ signals:
     void started();
     void finished();
     void errors(QProcess::ProcessError);
+    void progress(int);
 
 protected slots:
     virtual void slotFinished();
+    virtual void slotProcessOutput();
 
 public slots:
     virtual void slotSimulate();

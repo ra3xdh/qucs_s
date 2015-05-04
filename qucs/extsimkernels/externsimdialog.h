@@ -40,6 +40,8 @@ private:
 
     QTextEdit *editSimConsole;
 
+    QProgressBar *simProgress;
+
     QString workdir;
 
     Ngspice *ngspice;

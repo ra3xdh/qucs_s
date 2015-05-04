@@ -68,6 +68,10 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     vbl1->addWidget(editSimConsole);
     grp1->setLayout(vbl1);
 
+    simProgress = new QProgressBar(this);
+    connect(ngspice,SIGNAL(progress(int)),simProgress,SLOT(setValue(int)));
+    connect(xyce,SIGNAL(progress(int)),simProgress,SLOT(setValue(int)));
+
     QVBoxLayout *vl_top = new QVBoxLayout;
     QHBoxLayout *hl2 = new QHBoxLayout;
     hl2->addWidget(lblSimulator);
@@ -75,6 +79,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     hl2->addWidget(buttonSimSettings);
     vl_top->addLayout(hl2);
     vl_top->addWidget(grp1);
+    vl_top->addWidget(simProgress);
     QHBoxLayout *hl1 = new QHBoxLayout;
     hl1->addWidget(buttonSimulate);
     hl1->addWidget(buttonStopSim);

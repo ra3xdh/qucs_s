@@ -54,6 +54,7 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *sch_, QObject *parent) :
     SimProcess = new QProcess(this);
     SimProcess->setProcessChannelMode(QProcess::MergedChannels);
     connect(SimProcess,SIGNAL(finished(int)),this,SLOT(slotFinished()));
+    connect(SimProcess,SIGNAL(readyRead()),this,SLOT(slotProcessOutput()));
     connect(this,SIGNAL(destroyed()),this,SLOT(killThemAll()));
 
 }
@@ -621,9 +622,18 @@ void AbstractSpiceKernel::slotErrors(QProcess::ProcessError err)
  */
 void AbstractSpiceKernel::slotFinished()
 {
-    output.clear();
-    output = SimProcess->readAllStandardOutput();
+    //output.clear();
+    output += SimProcess->readAllStandardOutput();
     emit finished();
+    //emit progress(100);
+}
+
+/*!
+ * \brief AbstractSpiceKernel::slotProcessOutput Process SimProcess output and report progress
+ */
+void AbstractSpiceKernel::slotProcessOutput()
+{
+
 }
 
 /*!
