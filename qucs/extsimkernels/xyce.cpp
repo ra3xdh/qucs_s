@@ -229,6 +229,21 @@ void Xyce::slotFinished()
 }
 
 /*!
+ * \brief Xyce::slotProcessOutput Process Xyce output and report progress.
+ */
+void Xyce::slotProcessOutput()
+{
+    //***** Percent complete: 85.4987 %
+    QString s = SimProcess->readAllStandardOutput();
+    if (s.contains("Percent complete:")) {
+        int percent = round(s.section(' ',3,3,QString::SectionSkipEmpty).toFloat());
+        emit progress(percent);
+    }
+    output += s;
+
+}
+
+/*!
  * \brief Xyce::nextSimulation Execute the next simulation from queue.
  */
 void Xyce::nextSimulation()

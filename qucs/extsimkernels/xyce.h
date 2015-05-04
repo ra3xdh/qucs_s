@@ -50,6 +50,7 @@ protected:
                   QStringList &vars, QStringList &outputs);
 protected slots:
     void slotFinished();
+    void slotProcessOutput();
 
 public slots:
     void slotSimulate();

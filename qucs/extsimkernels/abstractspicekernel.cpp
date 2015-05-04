@@ -625,7 +625,7 @@ void AbstractSpiceKernel::slotFinished()
     //output.clear();
     output += SimProcess->readAllStandardOutput();
     emit finished();
-    //emit progress(100);
+    emit progress(100);
 }
 
 /*!
