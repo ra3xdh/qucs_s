@@ -96,7 +96,7 @@ void Param_Sweep::recreate(Schematic*)
   }
 }
 
-QString Param_Sweep::getNgspiceBeforeSim()
+QString Param_Sweep::getNgspiceBeforeSim(QString sim)
 {
     QString s,unit;
     QString par = getProperty("Param")->Value;
@@ -116,7 +116,7 @@ QString Param_Sweep::getNgspiceBeforeSim()
     s += QString("let %1_act=start_%1\n").arg(step_var);
     s += QString("let delta = %1\n").arg(step);
     s += "let number = 0\n";
-    s += QString("echo \"STEP %1\" > spice4qucs.cir.res\n").arg(step_var);
+    s += QString("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res\n").arg(sim).arg(step_var).arg(sim);
     s += QString("while %1_act le stop_%1\n").arg(step_var);
 
     bool modelsweep = false; // Find component and its modelstring
@@ -142,13 +142,13 @@ QString Param_Sweep::getNgspiceBeforeSim()
     return s;
 }
 
-QString Param_Sweep::getNgspiceAfterSim()
+QString Param_Sweep::getNgspiceAfterSim(QString sim)
 {
     QString s;
     QString par = getProperty("Param")->Value;
     par.remove('.');
     s = "set appendwrite\n";
-    s += QString("echo \"$&number\" \"$&%1_act\" >> spice4qucs.cir.res\n").arg(par);
+    s += QString("echo \"$&number\" \"$&%1_act\" >> spice4qucs.%2.cir.res\n").arg(par).arg(sim);
     s += QString("let %1_act = %1_act + delta\n").arg(par);
     s += "let number = number +1\n";
     s += "end\n";

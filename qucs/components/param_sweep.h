@@ -29,8 +29,8 @@ public:
   static Element* info(QString&, char* &, bool getNewOne=false);
   void recreate(Schematic*);
 
-  QString getNgspiceBeforeSim();
-  QString getNgspiceAfterSim();
+  QString getNgspiceBeforeSim(QString sim);
+  QString getNgspiceAfterSim(QString sim);
 
 protected:
   QString spice_netlist(bool isXyce);

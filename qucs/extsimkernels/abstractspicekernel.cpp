@@ -482,12 +482,8 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
                 QString simstr = full_outfile;
                 simstr.remove("_swp.txt");
                 simstr = simstr.split('_').last();
-                QString res_file;
-                if (xyce) res_file = QDir::convertSeparators(workdir + QDir::separator()
+                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
                                                         + "spice4qucs." + simstr + ".cir.res");
-                else res_file = QDir::convertSeparators(workdir + QDir::separator()
-                                                        + "spice4qucs.cir.res");
-                qDebug()<<res_file;
                 parseResFile(res_file,swp_var,swp_var_val);
 
                 if (ngspice_output_filename.endsWith("_hb_swp.txt")) {

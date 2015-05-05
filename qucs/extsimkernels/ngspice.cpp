@@ -118,7 +118,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             if (sim_typ==".SW") {
                 QString SwpSim = pc->Props.at(0)->Value;
                 Param_Sweep *ParSWP = (Param_Sweep *)pc;
-                QString s = ParSWP->getNgspiceBeforeSim();
+                QString s = ParSWP->getNgspiceBeforeSim(sim);
                 if (SwpSim.startsWith("AC")&&(sim=="ac")) {
                     stream<<s;
                     hasParSWP = true;
@@ -210,7 +210,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             QString sim_typ = pc->Model;
             if (sim_typ==".SW") {
                 Param_Sweep *ParSWP = (Param_Sweep *)pc;
-                QString s = ParSWP->getNgspiceAfterSim();
+                QString s = ParSWP->getNgspiceAfterSim(sim);
                 QString SwpSim = pc->Props.at(0)->Value;
                 if (SwpSim.startsWith("AC")&&(sim=="ac")) stream<<s;
                 else if (SwpSim.startsWith("TR")&&(sim=="tran")) stream<<s;
