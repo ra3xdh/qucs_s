@@ -598,23 +598,9 @@ void SimMessage::startSimulator()
   // insert Qucs bin dir, so ASCO can find qucsator
   env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
   SimProcess.setProcessEnvironment(env);
-  QFile file(Program);
-  if ( !file.exists() ){
-    ErrText->appendPlainText(tr("ERROR: Program not found: %1").arg(Program));
-    FinishSimulation(-1);
-    return;
-  }
-  else
-    file.close();
 
   qDebug() << "Command :" << Program << Arguments.join(" ");
   SimProcess.start(Program, Arguments); // launch the program
-
-  if(!SimProcess.Running) {
-    ErrText->appendPlainText(tr("ERROR: Cannot start simulator!"));
-    FinishSimulation(-1);
-    return;
-  }
 
 }
 
