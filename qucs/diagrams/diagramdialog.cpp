@@ -25,6 +25,7 @@
 #include "rect3ddiagram.h"
 
 #include <cmath>
+#include <assert.h>
 
 #include <QPaintEvent>
 #include <QPushButton>
@@ -103,14 +104,20 @@ static const QRgb DefaultColors[]
 static const int NumDefaultColors = 8;
 
 
-DiagramDialog::DiagramDialog(Diagram *d, const QString& _DataSet,
-                             QWidget *parent, Graph *currentGraph)
+DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
                     : QDialog(parent, 0, TRUE, Qt::WDestructiveClose)
 {
   Diag = d;
   Graphs.setAutoDelete(true);
   copyDiagramGraphs();   // make a copy of all graphs
-  defaultDataSet = _DataSet;
+  if(parent){
+	  const Schematic* s = dynamic_cast<const Schematic*>(parent);
+	  assert(s);
+	  QFileInfo Info(s->DocName);
+	  defaultDataSet = Info.dirPath() + QDir::separator() + s->DataSet;
+  }else{
+	  defaultDataSet = "unknown";
+  }
   setWindowTitle(tr("Edit Diagram Properties"));
   changed = false;
   transfer = false;  // have changes be applied ? (used by "Cancel")

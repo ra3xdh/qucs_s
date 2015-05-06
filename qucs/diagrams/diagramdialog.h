@@ -47,7 +47,7 @@ class QListWidget;
 class DiagramDialog : public QDialog  {
 Q_OBJECT
 public:
-  DiagramDialog(Diagram *d, const QString& _DataSet, QWidget *parent=0,
+  DiagramDialog(Diagram *d, QWidget *parent=0,
 		Graph *currentGraph=0);
   ~DiagramDialog();
 
