@@ -81,6 +81,8 @@ libcomponents_a_SOURCES = phaseshifter.cpp gyrator.cpp componentdialog.cpp    \
 	L_SPICE.cpp \
 	R_SPICE.cpp \
 	K_SPICE.cpp \
+	MESFET_SPICE.cpp \
+	Cmeter_SPICE.cpp \
 	sp_customsim.cpp
 
 nodist_libcomponents_a_SOURCES = $(MOCFILES)
@@ -132,6 +134,8 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
 	L_SPICE.h \
 	R_SPICE.h \
 	K_SPICE.h \
+	MESFET_SPICE.h \
+	Cmeter_SPICE.h \
 	sp_customsim.h
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
