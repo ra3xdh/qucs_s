@@ -374,7 +374,7 @@ void Rect3DDiagram::removeHiddenLines(char *zBuffer, tBound *Bounds)
   // pre-calculate buffer size to avoid reallocations in the first step
   foreach(Graph *g, Graphs)
     if(g->cPointsY)
-      Size += g->cPointsX.getFirst()->count * g->countY;
+      Size += g->axis(0)->count * g->countY;
 
   // "Mem" should be the last malloc to simplify realloc
   tPointZ *zMem = (tPointZ*)malloc( (Size+2)*sizeof(tPointZ) );
@@ -388,20 +388,20 @@ void Rect3DDiagram::removeHiddenLines(char *zBuffer, tBound *Bounds)
 
     pz = g->cPointsY;
     if(!pz) continue;
-    if(g->cPointsX.count() < 1) continue;
+    if(g->numAxes() < 1) continue;
 
     py = &Dummy;
-    if(g->countY > 1)  py = g->cPointsX.at(1)->Points;
+    if(g->countY > 1)  py = g->axis(1)->Points;
 
     p = pMem;  // save status for cross grid
     zp_tmp = zp;
     // ..........................................
     // calculate coordinates of all lines
-    dx = g->cPointsX.first()->count;
-    if(g->countY > 1)  dy = g->cPointsX.next()->count;
+    dx = g->axis(0)->count;
+    if(g->countY > 1)  dy = g->axis(1)->count;
     else  dy = 0;
     for(i=g->countY-1; i>=0; i--) {   // y coordinates
-      px = g->cPointsX.getFirst()->Points;
+      px = g->axis(0)->Points;
     
       for(j=dx; j>0; j--) { // x coordinates
         calcCoordinate3D(*(px++), *py, *pz, *(pz+1), pMem++, zp++);
@@ -411,7 +411,7 @@ void Rect3DDiagram::removeHiddenLines(char *zBuffer, tBound *Bounds)
       (pMem-1)->done |= 8;  // mark as "last in line"
       py++;
       if(dy > 0) if((i % dy) == 0)
-        py = g->cPointsX.at(1)->Points;
+        py = g->axis(1)->Points;
     }
     (pMem-1)->done |= 512;  // mark as "last point before grid"
 
@@ -508,8 +508,8 @@ void Rect3DDiagram::removeHiddenLines(char *zBuffer, tBound *Bounds)
   zp = zMem;
   foreach(Graph *g, Graphs) {
     if(!g->cPointsY) continue;
-    dx = g->cPointsX.first()->count;
-    if(g->countY > 1)  dy = g->cPointsX.next()->count;
+    dx = g->axis(0)->count;
+    if(g->countY > 1)  dy = g->axis(1)->count;
     else  dy = 1;
 
     // look for hidden lines ...
@@ -768,7 +768,7 @@ void Rect3DDiagram::createAxis(Axis *Axis, bool Right,
           pg->cPointsY = 0;
           continue;
         }
-        pD = pg->cPointsX.at(Index);
+        pD = pg->axis(Index);
         if(!pD) continue;
         s = pD->Var;
       }
@@ -952,11 +952,11 @@ void Rect3DDiagram::calcData(Graph *g)
   if(!pMem)  return;
   if(!g->cPointsY) return;
 
-  int Size = ((2*(g->cPointsX.getFirst()->count) + 1) * g->countY) + 10;
+  int Size = ((2*(g->axis(0)->count) + 1) * g->countY) + 10;
   Size *= 2;  // memory for cross grid lines
 
   double *py;
-  if(g->countY > 1)  py = g->cPointsX.at(1)->Points;
+  if(g->countY > 1)  py = g->axis(1)->Points;
 
   g->resizeScrPoints(Size);
   auto p = g->begin();

@@ -100,14 +100,14 @@ int TruthDiagram::calcDiagram()
   int startWriting, z;
 
   // any graph with data ?
-  while(g->cPointsX.isEmpty()) {
+  while(g->isEmpty()) {
     if (!ig.hasNext()) break; // no more graphs, exit loop
     g = ig.next(); // point to next graph
   }
 
-  if(!g->cPointsX.isEmpty()) { // did we find a graph with data ?
+  if(!g->isEmpty()) { // did we find a graph with data ?
     // ................................................
-    NumAll = g->cPointsX.getFirst()->count * g->countY;  // number of values
+    NumAll = g->axis(0)->count * g->countY;  // number of values
     
     invisibleCount = NumAll - y/tHeight;
     if(invisibleCount <= 0)  xAxis.limit_min = 0.0;// height bigger than needed
@@ -164,7 +164,7 @@ int TruthDiagram::calcDiagram()
 
 
     startWriting = int(xAxis.limit_min + 0.5);  // when to reach visible area
-    if(g->cPointsX.getFirst()) {
+    if(g->axis(0)) {
 
       if(sameDependencies(g, firstGraph)) {
 

@@ -66,12 +66,12 @@ SweepDialog::SweepDialog(Schematic *Doc_)
 
   pGraph = setBiasPoints();
   // if simulation has no sweeps, terminate dialog before showing it
-  if(pGraph->cPointsX.count() == 0) {
+  if(!pGraph->numAxes()) {
     reject();
     return;
   }
-  if(pGraph->cPointsX.count() <= 1)
-    if(pGraph->cPointsX.getFirst()->count <= 1) {
+  if(pGraph->numAxes() <= 1)
+    if(pGraph->axis(0)->count <= 1) {
       reject();
       return;
     }
@@ -89,7 +89,7 @@ SweepDialog::SweepDialog(Schematic *Doc_)
   DataX *pD;
   mySpinBox *Box;
   
-  for(pD = pGraph->cPointsX.first(); pD!=0; pD = pGraph->cPointsX.next()) {
+  for(unsigned ii=0; (pD=pGraph->axis(ii)); ++ii) {
     all->addWidget(new QLabel(pD->Var, this), i,0);
   //cout<<"count: "<<pD->count-1<<", points: "<<*pD->Points<<endl;
     //works only for linear:
@@ -125,7 +125,7 @@ SweepDialog::~SweepDialog()
 // ---------------------------------------------------------------
 void SweepDialog::slotNewValue(int)
 {
-  DataX *pD = pGraph->cPointsX.first();
+  DataX *pD = pGraph->axis(0);
   int Factor = 1, Index = 0;
   QList<mySpinBox *>::const_iterator it;
   for(it = BoxList.constBegin(); it != BoxList.constEnd(); it++) {

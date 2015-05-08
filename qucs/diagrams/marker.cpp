@@ -68,7 +68,7 @@ Marker::~Marker()
 // ---------------------------------------------------------------------
 void Marker::initText(int n)
 {
-  if(pGraph->cPointsX.isEmpty()) {
+  if(pGraph->isEmpty()) {
       makeInvalid();
       return;
   }
@@ -82,10 +82,10 @@ void Marker::initText(int n)
 
   bool isCross = false;
   int nn, nnn, m, x, y, d, dmin = INT_MAX;
-  DataX *pD = pGraph->cPointsX.first();
+  DataX *pD = pGraph->axis(0);
   px  = pD->Points;
   nnn = pD->count;
-  DataX *pDy = pGraph->cPointsX.next();
+  DataX *pDy = pGraph->axis(1);
   if(pDy) {   // only for 3D diagram
     nn = pGraph->countY * pD->count;
     py  = pDy->Points;
@@ -94,7 +94,7 @@ void Marker::initText(int n)
       n -= nn;
       n /= nnn;
       px += (n % nnn);
-      if(pGraph->cPointsX.next())   // more than 2 indep variables ?
+      if(pGraph->axis(2))   // more than 2 indep variables ?
         n  = (n % nnn) + (n / nnn) * nnn * pDy->count;
       nnn = pDy->count;
     }
@@ -123,7 +123,7 @@ void Marker::initText(int n)
   n += m;
 
   nVarPos = 0;
-  nn = (pGraph->cPointsX.count() + 2) * sizeof(double);
+  nn = (pGraph->numAxes() + 2) * sizeof(double);
   if(VarPos)
     VarPos = (double*)realloc(VarPos, nn);
   else
@@ -131,7 +131,7 @@ void Marker::initText(int n)
 
   // gather text of all independent variables
   nn = n;
-  for(pD = pGraph->cPointsX.first(); pD!=0; pD = pGraph->cPointsX.next()) {
+  for(unsigned i=0; (pD = pGraph->axis(i)); ++i) {
     px = pD->Points + (nn % pD->count);
     VarPos[nVarPos++] = *px;
     Text += pD->Var + ": " + QString::number(*px,'g',Precision) + "\n";
@@ -150,9 +150,9 @@ void Marker::createText()
   }
 
   VarPos = (double*)realloc(VarPos,
-              (pGraph->cPointsX.count() + 2) * sizeof(double));
+              (pGraph->numAxes() + 2) * sizeof(double));
 
-  while((unsigned int)nVarPos < pGraph->cPointsX.count())
+  while((unsigned int)nVarPos < pGraph->numAxes())
     VarPos[nVarPos++] = 0.0;   // fill up VarPos
 
 
@@ -160,9 +160,9 @@ void Marker::createText()
   Text = "";
   double *pp, v;
   int n = 0, m = 1, i;
-  DataX *pD;
   nVarPos = 0;
-  for(pD = pGraph->cPointsX.first(); pD!=0; pD = pGraph->cPointsX.next()) {
+  DataX *pD;
+  for(unsigned ii=0; (pD=pGraph->axis(ii)); ++ii) {
     pp = pD->Points;
     v  = VarPos[nVarPos];
     for(i=pD->count; i>1; i--) {  // find appropiate marker position
@@ -179,10 +179,10 @@ void Marker::createText()
 
   v = 0.0;   // needed for 2D graph in 3D diagram
   double *py=&v, *pz = pGraph->cPointsY + 2*n;
-  pD = pGraph->cPointsX.first();
-  if(pGraph->cPointsX.next()) {
-    py = pGraph->cPointsX.current()->Points;   // only for 3D diagram
-    py += (n / pD->count) % pGraph->cPointsX.current()->count;
+  pD = pGraph->axis(0);
+  if(pGraph->axis(1)) {
+    py = pGraph->axis(1)->Points;   // only for 3D diagram
+    py += (n / pD->count) % pGraph->axis(1)->count;
   }
 
   Text += pGraph->Var + ": ";
@@ -251,7 +251,7 @@ bool Marker::moveLeftRight(bool left)
   int n;
   double *px;
 
-  DataX *pD = pGraph->cPointsX.getFirst();
+  DataX *pD = pGraph->axis(0);
   px = pD->Points;
   if(!px) return false;
   for(n=0; n<pD->count; n++) {
@@ -280,13 +280,12 @@ bool Marker::moveUpDown(bool up)
   int n, i=0;
   double *px;
 
-  DataX *pD = pGraph->cPointsX.first();
+  DataX *pD = pGraph->axis(0);
   if(!pD) return false;
 
   if(up) {  // move upwards ? **********************
     do {
-      i++;
-      pD = pGraph->cPointsX.next();
+      pD = pGraph->axis(++i);
       if(!pD) return false;
       px = pD->Points;
       if(!px) return false;
@@ -300,15 +299,13 @@ bool Marker::moveUpDown(bool up)
     px++;  // one position up
     VarPos[i] = *px;
     while(i > 1) {
-      pD = pGraph->cPointsX.prev();
-      i--;
+      pD = pGraph->axis(--i);
       VarPos[i] = *(pD->Points);
     }
   }
   else {  // move downwards **********************
     do {
-      i++;
-      pD = pGraph->cPointsX.next();
+      pD = pGraph->axis(++i);
       if(!pD) return false;
       px = pD->Points;
       if(!px) return false;
@@ -322,8 +319,7 @@ bool Marker::moveUpDown(bool up)
     px--;  // one position down
     VarPos[i] = *px;
     while(i > 1) {
-      pD = pGraph->cPointsX.prev();
-      i--;
+      pD = pGraph->axis(--i);
       VarPos[i] = *(pD->Points + pD->count - 1);
     }
   }

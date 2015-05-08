@@ -165,12 +165,12 @@ int TimingDiagram::calcDiagram()
 
   double *px;
   // any graph with data ?
-  while(g->cPointsX.isEmpty()) {
+  while(g->isEmpty()) {
     if (!ig.hasNext()) break; // no more graphs, exit loop
     g = ig.next(); // point to next graph
   }
   
-  if(g->cPointsX.isEmpty()) { // no graph with data found ?
+  if(g->isEmpty()) { // no graph with data found ?
     Str = QObject::tr("no data");
     colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
     if(colWidth < 0)  return 0;
@@ -201,9 +201,9 @@ int TimingDiagram::calcDiagram()
 
 
   colWidth = 0;
-if(!firstGraph->cPointsX.isEmpty()) {
+if(!firstGraph->isEmpty()) {
   // ................................................
-  if(firstGraph->cPointsX.count() > 1) {
+  if(firstGraph->numAxes() > 1) {
     Str = QObject::tr("wrong dependency");
     colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
     if(colWidth >= 0)
@@ -213,7 +213,7 @@ if(!firstGraph->cPointsX.isEmpty()) {
 
 
   // first, write name of independent variable
-  DataX *pD = firstGraph->cPointsX.getFirst();
+  DataX *pD = firstGraph->axis(0);
   NumAll = pD->count;
   Str = pD->Var;
   colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
@@ -312,7 +312,7 @@ if(!firstGraph->cPointsX.isEmpty()) {
     if(g->Var.right(2) != ".X") {  // not digital variable ?
       px = g->cPointsY;
       px += 2 * z;
-      z = g->cPointsX.getFirst()->count - z;
+      z = g->axis(0)->count - z;
       yNow = 1 + ((tHeight - 6) >> 1);
       Lines.append(new Line(x, y-yNow, x+2, y-1, Pen));
       Lines.append(new Line(x+2, y-tHeight+5, x, y-yNow, Pen));
@@ -359,7 +359,7 @@ if(!firstGraph->cPointsX.isEmpty()) {
           yLast = 1 + ((tHeight - 6) >> 1);
       }
 
-      z = g->cPointsX.getFirst()->count - z;
+      z = g->axis(0)->count - z;
       for( ; z>0; z--) {
 
         switch(*pcx) {
@@ -396,7 +396,7 @@ if(!firstGraph->cPointsX.isEmpty()) {
     }
     else {  // It is a bit vector !!!
 
-      z = g->cPointsX.getFirst()->count - z;
+      z = g->axis(0)->count - z;
       yNow = 1 + ((tHeight - 6) >> 1);
       Lines.append(new Line(x, y-yNow, x+2, y-1, Pen));
       Lines.append(new Line(x+2, y-tHeight+5, x, y-yNow, Pen));
@@ -434,7 +434,7 @@ funcEnd:
     y  = NumAll - NumLeft - z;
 
     // number of data (times) 
-    zAxis.limit_max = double(firstGraph->cPointsX.getFirst()->count);
+    zAxis.limit_max = double(firstGraph->axis(0)->count);
 
     // position of scroll bar in pixel
     yAxis.numGraphs = x * z / NumAll + xAxis.numGraphs + 19;

@@ -175,14 +175,14 @@ int TabDiagram::calcDiagram()
   int startWriting, lastCount = 1;
 
   // any graph with data ?
-  while(g->cPointsX.isEmpty()) {
+  while(g->isEmpty()) {
     if (!ig.hasNext()) break; // no more graphs
     g = ig.next(); // point to next graph
   }
 
-  if(!g->cPointsX.isEmpty()) { // did we find a graph with data ?
+  if(!g->isEmpty()) { // did we find a graph with data ?
     // ................................................
-    counting = g->cPointsX.getFirst()->count * g->countY;  // number of values
+    counting = g->axis(0)->count * g->countY;  // number of values
     NumAll = counting;
     
     invisibleCount = counting - y/tHeight;
@@ -193,7 +193,8 @@ int TabDiagram::calcDiagram()
 	xAxis.limit_min = double(invisibleCount); // adjust limit of scroll bar
     }
     
-    for(DataX *pD = g->cPointsX.last(); pD!=0; pD = g->cPointsX.prev()) {
+    for(int h = g->numAxes(); h>0;){
+		DataX *pD = g->axis(--h);
       colWidth = 0;
       Str = pD->Var;
       colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
@@ -221,7 +222,7 @@ int TabDiagram::calcDiagram()
 	    else startWriting -= counting;
 	    px++;
 	  }
-	  if(pD == g->cPointsX.getFirst())   // only paint one time
+	  if(pD == g->axis(0))   // only paint one time
 	    if(y >= tHeight) if(y < y2-tHeight-5)
 	      Lines.append(new Line(0, y+1, x2, y+1, QPen(Qt::black,0)));
 	}
@@ -249,7 +250,7 @@ int TabDiagram::calcDiagram()
 
     startWriting = int(xAxis.limit_min + 0.5); // when to reach visible area
     py = g->cPointsY - 2;
-    if(g->cPointsX.getFirst()) {
+    if(g->axis(0)) {
 
       if (!g->cPointsY) {   // no data points
 	Str = QObject::tr("invalid");
@@ -258,7 +259,7 @@ int TabDiagram::calcDiagram()
 	Texts.append(new Text(x, y, Str));
       }
       else if(sameDependencies(g, firstGraph)) {
-        int z=g->cPointsX.getFirst()->count * g->countY;
+        int z=g->axis(0)->count * g->countY;
         if(z > NumAll)  NumAll = z;
 
         if(g->Var.right(2) != ".X")
