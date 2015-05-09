@@ -48,6 +48,7 @@
 #include <QRegExp>
 #include <QDateTime>
 #include <QPainter>
+#include <QDebug>
 
 Diagram::Diagram(int _cx, int _cy)
 {
@@ -699,6 +700,8 @@ bool Diagram::resizeTouched(float fX, float fY, float len)
 // --------------------------------------------------------------------------
 void Diagram::getAxisLimits(Graph *pg)
 {
+  // FIXME: Graph should know the limits. but it doesn't yet.
+  //        we should only copy here. better: just wrap, dont use {x,y,z}Axis
   int z;
   double x, y, *p;
   DataX *pD = pg->axis(0);
@@ -773,11 +776,10 @@ void Diagram::loadGraphData(const QString& defaultDataSet)
 
   int No=0;
   foreach(Graph *pg, Graphs) {
-    if(loadVarData(defaultDataSet, pg) != 1)   // load data, determine max/min values
+    qDebug() << "load GraphData load" << defaultDataSet;
+    if(pg->loadDatFile(defaultDataSet) != 1)   // load data, determine max/min values
       No++;
-    else
-      getAxisLimits(pg);
-    pg->lastLoaded = QDateTime::currentDateTime();
+    getAxisLimits(pg);
   }
 
   if(No <= 0) {   // All dataset files unchanged ?
@@ -861,8 +863,9 @@ void Diagram::updateGraphData()
 }
 
 // --------------------------------------------------------------------------
-int Diagram::loadVarData(const QString& fileName, Graph *g)
+int Graph::loadDatFile(const QString& fileName)
 {
+  Graph* g = this;
   QFile file;
   QString Variable;
   QFileInfo Info(fileName);
@@ -895,9 +898,11 @@ int Diagram::loadVarData(const QString& fileName, Graph *g)
   if(g->cPointsY) { delete[] g->cPointsY;  g->cPointsY = 0; }
   if(Variable.isEmpty()) return 0;
 
+#if 0 // FIXME encapsulation. implement digital waves later.
   if(Variable.right(2) == ".X")
     if(Name.at(0) != 'T')
       return 0;  // digital variables only for tabulars and ziming diagram
+#endif
 
 
   if(!file.open(QIODevice::ReadOnly))  return 0;
@@ -967,25 +972,32 @@ int Diagram::loadVarData(const QString& fileName, Graph *g)
     g->countY = 1;
     g->mutable_axes().current()->Points = p;
     for(int z=1; z<=counting; z++)  *(p++) = double(z);
-    if(xAxis.min > 1.0)  xAxis.min = 1.0;
-    if(xAxis.max < double(counting))  xAxis.max = double(counting);
+    auto Axis = g->mutable_axes().current();
+    Axis->min(1.);
+    Axis->max(double(counting));
   }
   else {  // ...................................
     // get independent variables from data file
     g->countY = 1;
     DataX *bLast = 0;
+#if 0 // FIXME: we do not have a Name.
     if(Name == "Rect3D")  bLast = g->axis(1);  // y axis for Rect3D
+#endif
 
+#if 0 // FIXME: this is about diagram. do after load.
     double min_tmp = xAxis.min, max_tmp = xAxis.max;
+#endif
     DataX *pD;
     for(int ii= g->numAxes(); (pD = g->axis(--ii)); ) {
+#if 0 // FIXME: this is about diagram. do after load.
       pa = &xAxis;
       if(pD == g->axis(0)) {
         xAxis.min = min_tmp;    // only count first independent variable
         xAxis.max = max_tmp;
       }
       else if(pD == bLast)  pa = &yAxis;   // y axis for Rect3D
-      counting = loadIndepVarData(pD->Var, FileString, pa, g);
+#endif
+      counting = loadIndepVarData(pD->Var, FileString);
       if(counting <= 0)  return 0;
 
       g->countY *= counting;
@@ -999,15 +1011,17 @@ int Diagram::loadVarData(const QString& fileName, Graph *g)
   counting  *= g->countY;
   p = new double[2*counting]; // memory for dependent variables
   g->cPointsY = p;
+#if 0 // FIXME: what does this do?!
   if(g->yAxisNo == 0)  pa = &yAxis;   // for which axis
   else  pa = &zAxis;
   (pa->numGraphs)++;    // count graphs
+#endif
 
   char *pEnd;
   double x, y;
   pPos = pFile;
 
-if(Variable.right(3) != ".X ")
+if(Variable.right(3) != ".X ") { // not "digital"
 
   for(int z=counting; z>0; z--) {
     pEnd = 0;
@@ -1029,13 +1043,19 @@ if(Variable.right(3) != ".X ")
     }
     *(p++) = x;
     *(p++) = y;
-    if(Name[0] != 'C') {
+#if 0 // FIXME there is no Name here.
+    if(Name[0] != 'C')
+#endif
+	 {
       if(fabs(y) >= 1e-250) x = sqrt(x*x+y*y);
       if(std::isfinite(x)) {
-        if(x > pa->max) pa->max = x;
-        if(x < pa->min) pa->min = x;
+			auto Axis = g->mutable_axes().current();
+			Axis->min(x);
+			Axis->max(x);
       }
     }
+
+#if 0 // this is not location curce code.
     else {   // location curve needs different treatment
       if(std::isfinite(x)) {
         if(x > xAxis.max) xAxis.max = x;
@@ -1046,10 +1066,10 @@ if(Variable.right(3) != ".X ")
         if(y < pa->min) pa->min = y;
       }
     }
+#endif
   }
 
-
-else {  // of "if not digital"
+} else {  // of "if not digital"
 
   char *pc = (char*)p;
   pEnd = pc + 2*(counting-1)*sizeof(double);
@@ -1078,15 +1098,17 @@ else {  // of "if not digital"
 
 }  // of "if not digital"
 
+  lastLoaded = QDateTime::currentDateTime();
   return 2;
 }
 
 /*!
    Reads the data of an independent variable. Returns the number of points.
 */
-int Diagram::loadIndepVarData(const QString& Variable,
-			      char *FileString, Axis *pa, Graph *pg)
+int Graph::loadIndepVarData(const QString& Variable,
+			      char *FileString)
 {
+  Graph* pg = this;
   bool isIndep = false;
   QString Line, tmp;
 
@@ -1156,11 +1178,13 @@ int Diagram::loadIndepVarData(const QString& Variable,
     }
     
     *(p++) = x;
+#if 0 // this is not location curve code
     if(Name[0] != 'C')   // not for location curves
       if(std::isfinite(x)) {
         if(x > pa->max) pa->max = x;
         if(x < pa->min) pa->min = x;
       }
+#endif
     
     pPos = pEnd;
     while((*pPos) && (*pPos <= ' '))  pPos++;  // find start of next number

@@ -2550,30 +2550,31 @@ void QucsApp::slot2PortMatching()
 
   Diagram *Diag = new Diagram();
 
+  // FIXME: use normal Diagrams.
   Graph *pg = new Graph("S[1,1]");
   Diag->Graphs.append(pg);
-  if(!Diag->loadVarData(DataSet, pg)) {
+  if(!pg->loadDatFile(DataSet)) {
     QMessageBox::critical(0, tr("Error"), tr("Could not load S[1,1]."));
     return;
   }
 
   pg = new Graph("S[1,2]");
   Diag->Graphs.append(pg);
-  if(!Diag->loadVarData(DataSet, pg)) {
+  if(!pg->loadDatFile(DataSet)) {
     QMessageBox::critical(0, tr("Error"), tr("Could not load S[1,2]."));
     return;
   }
 
   pg = new Graph("S[2,1]");
   Diag->Graphs.append(pg);
-  if(!Diag->loadVarData(DataSet, pg)) {
+  if(!pg->loadDatFile(DataSet)) {
     QMessageBox::critical(0, tr("Error"), tr("Could not load S[2,1]."));
     return;
   }
 
   pg = new Graph("S[2,2]");
   Diag->Graphs.append(pg);
-  if(!Diag->loadVarData(DataSet, pg)) {
+  if(!pg->loadDatFile(DataSet)) {
     QMessageBox::critical(0, tr("Error"), tr("Could not load S[2,2]."));
     return;
   }

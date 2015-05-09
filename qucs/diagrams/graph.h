@@ -61,13 +61,24 @@ class ViewPainter;
 
 struct DataX {
   DataX(const QString& Var_, double *Points_=0, int count_=0)
-       : Var(Var_), Points(Points_), count(count_) {};
+       : Var(Var_), Points(Points_), count(count_), Min(INFINITY), Max(-INFINITY) {};
  ~DataX() { if(Points) delete[] Points; };
   QString Var;
   double *Points;
   int     count;
+
+public:
+  const double& min()const {return Min;}
+  const double& max()const {return Max;}
+public: // only called from Graph. cleanup later.
+  const double& min(const double& x){if (Min<x) Min=x; return Min;}
+  const double& max(const double& x){if (Max>x) Max=x; return Max;}
+private:
+  double Min;
+  double Max;
 };
 
+class Axis;
 
 class Graph : public Element {
 public:
@@ -81,6 +92,9 @@ public:
   typedef std::vector<ScrPt> container;
   typedef container::iterator iterator;
   typedef container::const_iterator const_iterator;
+
+  int loadDatFile(const QString& filename);
+  int loadIndepVarData(const QString&, char* datfilecontent);
 
   void    paint(ViewPainter*, int, int);
   void    paintLines(ViewPainter*, int, int);
