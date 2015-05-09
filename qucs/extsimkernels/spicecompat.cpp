@@ -131,6 +131,13 @@ bool spicecompat::containNodes(QStringList &tokens)
     foreach (QString tok,tokens) {
         if (var_pattern.exactMatch(tok)) return true;
         if (system_vars.contains(tok)) return true;
+        if (tok.endsWith("#branch")) return true;
+    }
+    for (QStringList::iterator it=tokens.begin();it!=tokens.end();it++) {
+        if ((*it).toUpper()=="V") { // voltages  in spice notation
+            it++;
+            if ((*it)=="(") return true;
+        }
     }
     return false;
 }
@@ -149,14 +156,22 @@ void spicecompat::convertNodeNames(QStringList &tokens, QString &sim)
 {
     QRegExp var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
     for (QStringList::iterator it=tokens.begin();it!=tokens.end();it++) {
+        if ((*it).endsWith("#branch")) sim="all";
+        if ((*it).toUpper()=="V") {
+            it++;
+            if ((*it)=="(") sim="all";
+        }
         if (var_pattern.exactMatch(*it))  {
-            if (it->endsWith(".v")) sim = "ac";
-            if (it->endsWith(".Vt")) sim = "tran";
-            if (it->endsWith(".V")) sim = "dc";
+            if ((it->endsWith(".v"))||(it->endsWith(".i"))) sim = "ac";
+            if ((it->endsWith(".Vt"))||(it->endsWith(".It"))) sim = "tran";
+            if ((it->endsWith(".V"))||(it->endsWith(".I"))) sim = "dc";
+            QString suffix = it->section('.',1,1);
             int idx = it->indexOf('.');
             int cnt = it->count();
             it->chop(cnt-idx);
-            *it = QString("V(%2)").arg(*it);
+            if (suffix.toUpper().startsWith("I"))
+                *it = QString("V%1#branch").arg(*it);
+            else *it = QString("V(%2)").arg(*it);
         } else if ((*it=="frequency")||(*it=="acfrequency")) {
             sim = "ac";
         } else if (*it=="time") {

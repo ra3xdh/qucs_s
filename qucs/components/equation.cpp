@@ -146,7 +146,7 @@ QString Equation::getEquations(QString sim, QStringList &dep_vars)
         if (spicecompat::containNodes(tokens)) {
             QString used_sim;
             spicecompat::convertNodeNames(tokens,used_sim);
-            if (sim == used_sim) {
+            if ((sim == used_sim)||(used_sim=="all")) {
                 eqn = tokens.join("");
                 s += QString("let %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
                 dep_vars.append(Props.at(i)->Name);
