@@ -106,6 +106,8 @@ void Marker::initText(int n)
   pz = pGraph->cPointsY + 2*n;
   for(nn=0; nn<nnn; nn++) {
     Diag->calcCoordinate(px, pz, py, &fCX, &fCY, pa);
+    ++px;
+    pz += 2;
     if(isCross) {
       px--;
       py++;

@@ -78,19 +78,19 @@ void Rect3DDiagram::calcCoefficients()
 }
 
 // ------------------------------------------------------------
-double Rect3DDiagram::calcX_2D(double x, double y, double z)
+double Rect3DDiagram::calcX_2D(double x, double y, double z) const
 {
   return (cxx * x + cxy * y + cxz * z) * scaleX;
 }
 
 // ------------------------------------------------------------
-double Rect3DDiagram::calcY_2D(double x, double y, double z)
+double Rect3DDiagram::calcY_2D(double x, double y, double z) const
 {
   return (cyx * x + cyy * y + cyz * z) * scaleY;
 }
 
 // ------------------------------------------------------------
-double Rect3DDiagram::calcZ_2D(double x, double y, double z)
+double Rect3DDiagram::calcZ_2D(double x, double y, double z) const
 {
   return czx * x + czy * y + czz * z;
 }
@@ -136,11 +136,11 @@ int Rect3DDiagram::calcCross(int *Xses, int *Yses)
 
 // ------------------------------------------------------------
 // Is needed for markers.
-void Rect3DDiagram::calcCoordinate(double* &xD, double* &zD, double* &yD,
-                                   float *px, float *py, Axis*)
+void Rect3DDiagram::calcCoordinate(const double* xD, const double* zD, const double* yD,
+                                   float *px, float *py, Axis*) const
 {
-  double x3D = *(zD++);
-  double y3D = *(zD++);
+  double x3D = zD[0];
+  double y3D = zD[1];
   double z3D;
   if(zAxis.log) {
     z3D = sqrt(x3D*x3D + y3D*y3D);

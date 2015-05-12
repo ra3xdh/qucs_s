@@ -51,11 +51,11 @@ CurveDiagram::~CurveDiagram()
 }
 
 // ------------------------------------------------------------
-void CurveDiagram::calcCoordinate(double* &, double* &yD, double* &,
-				  float *px, float *py, Axis *pa)
+void CurveDiagram::calcCoordinate(const double*, const double* yD, const double*,
+				  float *px, float *py, Axis *pa) const
 {
-  double yr = *(yD++);
-  double yi = *(yD++);
+  double yr = yD[0];
+  double yi = yD[1];
   if(xAxis.log)
     *px = float(log10(yr / xAxis.low)/log10(xAxis.up / xAxis.low)
 		*double(x2));

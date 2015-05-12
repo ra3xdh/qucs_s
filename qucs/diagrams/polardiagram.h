@@ -31,7 +31,7 @@ public:
   static Element* info(QString&, char* &, bool getNewOne=false);
   int  calcDiagram();
   void calcLimits();
-  void calcCoordinate(double* &, double* &, double* &, float*, float*, Axis*);
+  void calcCoordinate(const double*, const double*, const double*, float*, float*, Axis*) const;
 };
 
 #endif

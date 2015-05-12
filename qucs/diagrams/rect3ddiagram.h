@@ -46,7 +46,7 @@ public:
   static Element* info(QString&, char* &, bool getNewOne=false);
   int  calcDiagram();
   void calcLimits();
-  void calcCoordinate(double* &, double* &, double* &, float*, float*, Axis*);
+  void calcCoordinate(const double*, const double*, const double*, float*, float*, Axis*) const;
   void finishMarkerCoordinates(float&, float&) const;
 
   void createAxisLabels();
@@ -65,9 +65,9 @@ private:
 
   void   calcCoefficients();
   int    calcCross(int*, int*);
-  double calcX_2D(double, double, double);
-  double calcY_2D(double, double, double);
-  double calcZ_2D(double, double, double);
+  double calcX_2D(double, double, double) const;
+  double calcY_2D(double, double, double) const;
+  double calcZ_2D(double, double, double) const;
 
   static int comparePoint3D(const void*, const void*);
   static int comparePointZ(const void*, const void*);
