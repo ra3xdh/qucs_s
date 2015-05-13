@@ -100,6 +100,9 @@ Element* Equation::info(QString& Name, char* &BitmapFile, bool getNewOne)
  */
 QString Equation::getExpression(bool isXyce)
 {
+    QStringList ng_vars,ngsims;
+    getNgnutmegVars(ng_vars,ngsims);
+
     QString s;
     s.clear();
     for (unsigned int i=0;i<Props.count()-1;i++) {
@@ -118,7 +121,7 @@ QString Equation::getExpression(bool isXyce)
         if (!(fp_pattern.exactMatch(eqn)||
               dec_pattern.exactMatch(eqn)||
               fp_exp_pattern.exactMatch(eqn))) eqn = "{" + eqn + "}"; // wrap equation if it contains vars
-        if (!spicecompat::containNodes(tokens)) {
+        if (!spicecompat::containNodes(tokens,ng_vars)) {
             s += QString(".PARAM %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
         }
     }
@@ -136,6 +139,9 @@ QString Equation::getExpression(bool isXyce)
  */
 QString Equation::getEquations(QString sim, QStringList &dep_vars)
 {
+    QStringList ng_vars,ngsims;
+    getNgnutmegVars(ng_vars,ngsims);
+
     QString s;
     dep_vars.clear();
     for (unsigned int i=0;i<Props.count()-1;i++) {
@@ -143,9 +149,13 @@ QString Equation::getEquations(QString sim, QStringList &dep_vars)
         QString eqn = Props.at(i)->Value;
         spicecompat::splitEqn(eqn,tokens);
         eqn.replace("^","**");
-        if (spicecompat::containNodes(tokens)) {
-            QString used_sim;
+        if (spicecompat::containNodes(tokens,ng_vars)) {
+            QString used_sim="";
             spicecompat::convertNodeNames(tokens,used_sim);
+            if (used_sim.isEmpty()) {
+                int idx = ng_vars.indexOf(Props.at(i)->Name);
+                if (idx>=0) used_sim = ngsims.at(idx);
+            }
             if ((sim == used_sim)||(used_sim=="all")) {
                 eqn = tokens.join("");
                 s += QString("let %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
@@ -164,6 +174,9 @@ QString Equation::getEquations(QString sim, QStringList &dep_vars)
  */
 QString Equation::getNgspiceScript()
 {
+    QStringList ng_vars,ngsims;
+    getNgnutmegVars(ng_vars,ngsims);
+
     QString s;
     s.clear();
     for (unsigned int i=0;i<Props.count()-1;i++) {
@@ -175,9 +188,50 @@ QString Equation::getNgspiceScript()
         }
         eqn = tokens.join("");
 
-        if (!spicecompat::containNodes(tokens)) {
+        if (!spicecompat::containNodes(tokens,ng_vars)) {
             s += QString("let %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
         }
     }
     return s;
+}
+
+/*!
+ * \brief Equation::getNgnutmegVars Extract variables and simulations that are used
+ *        in Ngnutneg script in nested variables
+ * \param[out] vars
+ * \param[sims] simulations
+ */
+void Equation::getNgnutmegVars(QStringList &vars, QStringList &sims)
+{
+    vars.clear();
+    sims.clear();
+    for (unsigned int i=0;i<Props.count()-1;i++) {
+        QStringList tokens;
+        QString eqn = Props.at(i)->Value;
+        spicecompat::splitEqn(eqn,tokens);
+        if (spicecompat::containNodes(tokens,vars)) {
+            vars.append(Props.at(i)->Name);
+            QString used_sim="";
+            spicecompat::convertNodeNames(tokens,used_sim);
+            if (used_sim.isEmpty()) {
+                sims.append("all");
+            } else {
+                sims.append(used_sim);
+            }
+        }
+    }
+    foreach (QString var,vars) {
+        QString sim;
+        int idx = vars.indexOf(var);
+        if (idx>=0) sim = sims.at(idx);
+        if (sim=="all") {
+            QString eqn = getProperty(var)->Value;
+            QStringList tokens;
+            spicecompat::splitEqn(eqn,tokens);
+            foreach (QString tok,tokens) {
+                int idx1 = vars.indexOf(tok);
+                if ((idx1>=0)&&(sims[idx1]!="all")) sims[idx]=sims[idx1];
+            }
+        }
+    }
 }

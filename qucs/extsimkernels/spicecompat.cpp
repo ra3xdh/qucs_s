@@ -120,9 +120,10 @@ void spicecompat::splitEqn(QString &eqn, QStringList &tokens)
  * \brief spicecompat::containNodes Determine are there in equaton node voltages
  *        and/or current porbes.
  * \param tokens List of tokens. Should be obtained with splitEqn().
+ * \param vars List of vars that are used in ngnutmeg script.
  * \return Return true if equation contain node voltages and/or current probe variables
  */
-bool spicecompat::containNodes(QStringList &tokens)
+bool spicecompat::containNodes(QStringList &tokens, QStringList &vars)
 {
     QRegExp var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
     QStringList system_vars;
@@ -132,6 +133,7 @@ bool spicecompat::containNodes(QStringList &tokens)
         if (var_pattern.exactMatch(tok)) return true;
         if (system_vars.contains(tok)) return true;
         if (tok.endsWith("#branch")) return true;
+        if (vars.contains(tok)) return true;
     }
     for (QStringList::iterator it=tokens.begin();it!=tokens.end();it++) {
         if ((*it).toUpper()=="V") { // voltages  in spice notation
@@ -151,6 +153,7 @@ bool spicecompat::containNodes(QStringList &tokens)
  *             "ac" --- AC simulation;
  *             "dc" --- DC simulation;
  *             "tran" --- Transient simulation;
+ *             "all" --- All simulations;
  */
 void spicecompat::convertNodeNames(QStringList &tokens, QString &sim)
 {

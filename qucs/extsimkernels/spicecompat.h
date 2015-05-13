@@ -14,7 +14,7 @@ namespace spicecompat {
      QString normalize_value(QString Value);
      QString convert_functions(QString tok, bool isXyce);
      void splitEqn(QString &eqn, QStringList &tokens);
-     bool containNodes(QStringList &tokens);
+     bool containNodes(QStringList &tokens, QStringList &vars);
      void convertNodeNames(QStringList &tokens, QString &sim);
 }
 

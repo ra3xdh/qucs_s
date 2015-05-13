@@ -32,6 +32,9 @@ public:
   QString getEquations(QString sim, QStringList &dep_vars);
   QString getNgspiceScript();
 
+private:
+  void getNgnutmegVars(QStringList &vars,QStringList &sims);
+
 protected:
   QString vhdlCode(int);
   QString verilogCode(int);
