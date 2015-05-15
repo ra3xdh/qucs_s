@@ -96,7 +96,7 @@ void Param_Sweep::recreate(Schematic*)
   }
 }
 
-QString Param_Sweep::getNgspiceBeforeSim(QString sim)
+QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
 {
     QString s,unit;
     QString par = getProperty("Param")->Value;
@@ -114,9 +114,10 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim)
     s = QString("let start_%1 = %2\n").arg(step_var).arg(start);
     s += QString("let stop_%1 = %2\n").arg(step_var).arg(stop);
     s += QString("let %1_act=start_%1\n").arg(step_var);
-    s += QString("let delta = %1\n").arg(step);
-    s += "let number = 0\n";
-    s += QString("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res\n").arg(sim).arg(step_var).arg(sim);
+    s += QString("let delta_%1 = %2\n").arg(step_var).arg(step);
+    s += QString("let number_%1 = 0\n").arg(step_var);
+    if (lvl==0) s += QString("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res\n").arg(sim).arg(step_var).arg(sim);
+    else s += QString("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res%4\n").arg(sim).arg(step_var).arg(sim).arg(lvl);
     s += QString("while %1_act le stop_%1\n").arg(step_var);
 
     bool modelsweep = false; // Find component and its modelstring
@@ -142,15 +143,16 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim)
     return s;
 }
 
-QString Param_Sweep::getNgspiceAfterSim(QString sim)
+QString Param_Sweep::getNgspiceAfterSim(QString sim, int lvl)
 {
     QString s;
     QString par = getProperty("Param")->Value;
     par.remove('.');
     s = "set appendwrite\n";
-    s += QString("echo \"$&number\" \"$&%1_act\" >> spice4qucs.%2.cir.res\n").arg(par).arg(sim);
-    s += QString("let %1_act = %1_act + delta\n").arg(par);
-    s += "let number = number +1\n";
+    if (lvl==0) s += QString("echo \"$&number_%1\" \"$&%1_act\" >> spice4qucs.%2.cir.res\n").arg(par).arg(sim);
+    else s += QString("echo \"$&number_%1\" \"$&%1_act\" >> spice4qucs.%2.cir.res%3\n").arg(par).arg(sim).arg(lvl);
+    s += QString("let %1_act = %1_act + delta_%1\n").arg(par);
+    s += QString("let number_%1 = number_%1 +1\n").arg(par);
     s += "end\n";
     s += "unset appendwrite\n";
     return s;

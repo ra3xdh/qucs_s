@@ -112,23 +112,26 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     foreach(sim, simulations) {
 
         bool hasParSWP = false;
+        bool hasDblSWP = false;
 
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             QString sim_typ = pc->Model;
             if (sim_typ==".SW") {
                 QString SwpSim = pc->Props.at(0)->Value;
-                Param_Sweep *ParSWP = (Param_Sweep *)pc;
-                QString s = ParSWP->getNgspiceBeforeSim(sim);
+                QString s = pc->getNgspiceBeforeSim(sim);
                 if (SwpSim.startsWith("AC")&&(sim=="ac")) {
-                    stream<<s;
+                    QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
+                    stream<<(s2+s);
                     hasParSWP = true;
                 } else if (SwpSim.startsWith("TR")&&(sim=="tran")) {
-                    stream<<s;
+                    QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
+                    stream<<(s2+s);
                     hasParSWP = true;
                 } else if (SwpSim.startsWith("SW")&&(sim=="dc")) {
                     for(Component *pc1 = Sch->DocComps.first(); pc1 != 0; pc1 = Sch->DocComps.next()) {
                         if ((pc1->Name==SwpSim)&&(pc1->Props.at(0)->Value.startsWith("DC"))) {
-                            stream<<s;
+                            QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
+                            stream<<(s2+s);
                             hasParSWP = true;
                         }
                     }
@@ -199,7 +202,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         }
 
         QString filename;
-        if (hasParSWP) filename = QString("%1_%2_swp.txt").arg(basenam).arg(sim);
+        if (hasParSWP&&hasDblSWP) filename = QString("%1_%2_swp_swp.txt").arg(basenam).arg(sim);
+        else if (hasParSWP) filename = QString("%1_%2_swp.txt").arg(basenam).arg(sim);
         else filename = QString("%1_%2.txt").arg(basenam).arg(sim);
 
         QString write_str = QString("write %1 %2\n").arg(filename).arg(nods);
@@ -209,14 +213,19 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             QString sim_typ = pc->Model;
             if (sim_typ==".SW") {
-                Param_Sweep *ParSWP = (Param_Sweep *)pc;
-                QString s = ParSWP->getNgspiceAfterSim(sim);
+                QString s = pc->getNgspiceAfterSim(sim);
                 QString SwpSim = pc->Props.at(0)->Value;
-                if (SwpSim.startsWith("AC")&&(sim=="ac")) stream<<s;
-                else if (SwpSim.startsWith("TR")&&(sim=="tran")) stream<<s;
-                else if (SwpSim.startsWith("SW")&&(sim=="dc")) {
+                bool b; // value drain
+                if (SwpSim.startsWith("AC")&&(sim=="ac")) {
+                    s += getParentSWPscript(pc,sim,false,b);
+                    stream<<s;
+                } else if (SwpSim.startsWith("TR")&&(sim=="tran")) {
+                    s += getParentSWPscript(pc,sim,false,b);
+                    stream<<s;
+                } else if (SwpSim.startsWith("SW")&&(sim=="dc")) {
                     for(Component *pc1 = Sch->DocComps.first(); pc1 != 0; pc1 = Sch->DocComps.next()) {
                         if ((pc1->Name==SwpSim)&&(pc1->Props.at(0)->Value.startsWith("DC"))) {
+                             s += getParentSWPscript(pc,sim,false,b);
                              stream<<s;
                         }
                     }
@@ -232,6 +241,38 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
     stream<<".END\n";
     qDebug()<<outputs;
+}
+
+/*!
+ * \brief Ngspice::getParentSWPscript
+ * \param pc_swp
+ * \param sim
+ * \param before
+ * \return
+ */
+QString Ngspice::getParentSWPscript(Component *pc_swp, QString sim, bool before, bool &hasDblSwp)
+{
+    hasDblSwp = false;
+    QString swp = pc_swp->Name;
+    if (swp.startsWith("DC")) return QString("");
+    Q3PtrList<Component> Comps(Sch->DocComps);
+    if (Comps.count()>0) {
+        for (unsigned int i=0;i<Comps.count();i++) {
+            Component *pc2 = Comps.at(i);
+            if (pc2->Model.startsWith(".SW")) {
+                if (pc2->Props.at(0)->Value==swp) {
+                    if (before) {
+                        hasDblSwp = true;
+                        return pc2->getNgspiceBeforeSim(sim,1);
+                    } else {
+                        hasDblSwp = true;
+                        return pc2->getNgspiceAfterSim(sim,1);
+                    }
+                }
+            }
+        }
+    }
+    return QString("");
 }
 
 /*!

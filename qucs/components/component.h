@@ -39,6 +39,8 @@ public:
   QString getSpiceNetlist(bool isXyce = false);
   virtual QString getExpression(bool isXyce = false);
   virtual QString getProbeVariable(bool isXyce = false);
+  virtual QString getNgspiceBeforeSim(QString sim, int lvl=0) { return QString("");};
+  virtual QString getNgspiceAfterSim(QString sim, int lvl=0) { return QString("");};
   QString get_VHDL_Code(int);
   QString get_Verilog_Code(int);
   void    paint(ViewPainter*);
