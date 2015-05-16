@@ -234,6 +234,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         }
 
         stream<<"destroy all\n";
+        stream<<"reset\n\n";
     }
 
     stream<<"exit\n"
