@@ -30,10 +30,10 @@ UDRCTL_SPICE::UDRCTL_SPICE()
 
   Lines.append(new Line(-40, -10,-25, -10,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line(-25, -18, 25, -18,QPen(Qt::red,3)));
-  Lines.append(new Line( 25, -18, 25,  -2,QPen(Qt::red,3)));
-  Lines.append(new Line( 25,  -2,-25,  -2,QPen(Qt::red,3)));
-  Lines.append(new Line(-25,  -2,-25, -18,QPen(Qt::red,3)));
+  Lines.append(new Line(-25, -18, 25, -18,QPen(Qt::cyan,3)));
+  Lines.append(new Line( 25, -18, 25,  -2,QPen(Qt::cyan,3)));
+  Lines.append(new Line( 25,  -2,-25,  -2,QPen(Qt::cyan,3)));
+  Lines.append(new Line(-25,  -2,-25, -18,QPen(Qt::cyan,3)));
   
   Lines.append(new Line( 25, -10, 35, -10,QPen(Qt::darkBlue,2)));
   Lines.append(new Line(  0,  -2,  0,  10,QPen(Qt::darkBlue,2))); 
