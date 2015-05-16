@@ -220,6 +220,7 @@
 #include "MESFET_SPICE.h"
 #include "Cmeter_SPICE.h"
 #include "LTL_SPICE.h"
+#include "UDRCTL_SPICE.h"
 
 
 // Spice netlist sections

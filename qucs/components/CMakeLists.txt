@@ -80,6 +80,7 @@ K_SPICE.cpp
 MESFET_SPICE.cpp
 Cmeter_SPICE.cpp
 LTL_SPICE.cpp
+UDRCTL_SPICE.cpp
 sp_customsim.cpp
 )
 
@@ -282,6 +283,7 @@ K_SPICE.h
 MESFET_SPICE.h
 Cmeter_SPICE.h
 LTL_SPICE.h
+UDRCTL_SPICE.h
 sp_customsim.h
 )
 
