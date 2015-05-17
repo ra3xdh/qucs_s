@@ -68,7 +68,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   // if simulation component: .TR, .AC, .SW, (.SP ?)
   if((Comp->Model[0] == '.') &&
      (Comp->Model != ".DC") && (Comp->Model != ".HB") &&
-     (Comp->Model != ".Digi") && (Comp->Model != ".ETR")) {
+     (Comp->Model != ".Digi") && (Comp->Model != ".ETR") &&
+     (Comp->Model != ".FOURIER")) {
     QTabWidget *t = new QTabWidget(this);
     all->addWidget(t);
 

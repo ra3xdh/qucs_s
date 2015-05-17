@@ -459,6 +459,7 @@ void Module::registerModules (void) {
   REGISTER_SPICE_SEC_1 (SpiceOptions);
 
   // spice simulations
+  REGISTER_SPICE_SIM_1 (SpiceFourier);
   REGISTER_SPICE_SIM_1 (SpiceCustomSim);
 
 

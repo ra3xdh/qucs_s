@@ -229,6 +229,7 @@
 #include "sp_options.h"
 
 // Spice simulations
+#include "sp_fourier.h"
 #include "sp_customsim.h"
 
 #endif
