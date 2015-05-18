@@ -72,7 +72,7 @@ QString SpiceFourier::spice_netlist(bool isXyce)
     QString s;
     if (!isXyce) {
         s = QString("set nfreqs=%1\n").arg(Props.at(1)->Value);
-        s += QString("FOURIER %1 %2\n").arg(Props.at(2)->Value).arg(Props.at(3)->Value);
+        s += QString("FOURIER %1 %2 > spice4qucs.four\n").arg(Props.at(2)->Value).arg(Props.at(3)->Value);
     }
 
     return s;

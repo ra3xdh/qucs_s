@@ -146,7 +146,19 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                QString sim_typ = pc->Model;
                QString s = pc->getSpiceNetlist();
                if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
-               if ((sim_typ==".TR")&&(sim=="tran")) stream<<s;
+               if ((sim_typ==".TR")&&(sim=="tran")) {
+                   stream<<s;
+                   Q3PtrList<Component> comps(Sch->DocComps); // find Fourier tran
+                   for(Component *pc1 = comps.first(); pc1 != 0; pc1 = comps.next()) {
+                       if (pc1->Model==".FOURIER") {
+                           if (pc1->Props.at(0)->Value==pc->Name) {
+                               QString s1 = pc1->getSpiceNetlist();
+                               outputs.append("spice4qucs.four");
+                               stream<<s1;
+                           }
+                       }
+                   }
+               }
                if ((sim_typ==".CUSTOMSIM")&&(sim=="custom")) {
                    stream<<s;
                    custom_vars = pc->Props.at(1)->Value;
