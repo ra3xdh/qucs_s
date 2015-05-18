@@ -28,8 +28,8 @@
 #include <QTextEdit>
 
 /*!
-  \file abstractspicekernel.h
-  \brief Definition of the AbstractSpiceKernel class
+  \file abstractspicekernel.cpp
+  \brief Implementation of the AbstractSpiceKernel class
 */
 
 
@@ -318,7 +318,7 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file,
  *        and independent varibales. An independent variable is the first in list.
  */
 void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<double> > &sim_points,
-                                             QStringList &var_list)
+                                             QStringList &var_list, bool xyce)
 {
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {
@@ -344,7 +344,7 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
                 if (ss.endsWith(',')) ss.chop(1);
                 Nharm = ss.toInt();
                 while (!ngsp_data.readLine().contains(QRegExp("Harmonic\\s+Frequency")));
-                lin = ngsp_data.readLine(); // dummy line
+                if (!xyce) lin = ngsp_data.readLine(); // dummy line
                 for (int i=0;i<Nharm;i++) {
                     lin = ngsp_data.readLine();
                     if (!firstgroup) {
@@ -536,7 +536,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
                 parseHBOutput(full_outfile,sim_points,var_list);
                 isComplex = true;
             } else if (ngspice_output_filename.endsWith(".four")) {
-                parseFourierOutput(full_outfile,sim_points,var_list);
+                parseFourierOutput(full_outfile,sim_points,var_list,xyce);
             } else if (ngspice_output_filename.endsWith("_swp.txt")) {
                 hasParSweep = true;
                 QString simstr = full_outfile;

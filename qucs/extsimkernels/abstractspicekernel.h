@@ -68,7 +68,7 @@ public:
     void parseHBOutput(QString ngspice_file, QList< QList<double> > &sim_points,
                        QStringList &var_list);
     void parseFourierOutput(QString ngspice_file, QList< QList<double> > &sim_points,
-                            QStringList &var_list);
+                            QStringList &var_list, bool xyce);
     void parseSTEPOutput(QString ngspice_file,
                          QList< QList<double> > &sim_points,
                          QStringList &var_list, bool &isComplex);

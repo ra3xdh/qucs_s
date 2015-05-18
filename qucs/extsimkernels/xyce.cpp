@@ -127,7 +127,19 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
            QString sim_typ = pc->Model;              // Multiple simulations are forbidden.
            QString s = pc->getSpiceNetlist(true);
            if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
-           if ((sim_typ==".TR")&&(sim=="tran")) stream<<s;
+           if ((sim_typ==".TR")&&(sim=="tran")){
+               stream<<s;
+               Q3PtrList<Component> comps(Sch->DocComps); // find Fourier tran
+               for(Component *pc1 = comps.first(); pc1 != 0; pc1 = comps.next()) {
+                   if (pc1->Model==".FOURIER") {
+                       if (pc1->Props.at(0)->Value==pc->Name) {
+                           QString s1 = pc1->getSpiceNetlist(true);
+                           outputs.append("spice4qucs.tran.cir.four");
+                           stream<<s1;
+                       }
+                   }
+               }
+           }
            if ((sim_typ==".HB")&&(sim=="hb")) stream<<s;
            if (sim_typ==".SW") {
                QString SwpSim = pc->Props.at(0)->Value;
