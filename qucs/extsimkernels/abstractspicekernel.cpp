@@ -327,6 +327,7 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
         var_list.clear();
         var_list.append("fourierfreq");
         int Nharm; // number of harmonics
+        bool firstgroup = false;
         while (!ngsp_data.atEnd()) {
             QRegExp sep("[ \t,]");
             QString lin = ngsp_data.readLine();
@@ -346,12 +347,18 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
                 lin = ngsp_data.readLine(); // dummy line
                 for (int i=0;i<Nharm;i++) {
                     lin = ngsp_data.readLine();
-                    QList<double> sim_point;
-                    sim_point.append(lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble()); // freq
-                    sim_point.append(lin.section(sep,2,2,QString::SectionSkipEmpty).toDouble()); // magnitude
-                    sim_point.append(lin.section(sep,3,3,QString::SectionSkipEmpty).toDouble()); // phase
-                    sim_points.append(sim_point);
+                    if (!firstgroup) {
+                        QList<double> sim_point;
+                        sim_point.append(lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble()); // freq
+                        sim_point.append(lin.section(sep,2,2,QString::SectionSkipEmpty).toDouble()); // magnitude
+                        sim_point.append(lin.section(sep,3,3,QString::SectionSkipEmpty).toDouble()); // phase
+                        sim_points.append(sim_point);
+                    } else {
+                        sim_points[i].append(lin.section(sep,2,2,QString::SectionSkipEmpty).toDouble()); // magnitude
+                        sim_points[i].append(lin.section(sep,3,3,QString::SectionSkipEmpty).toDouble()); // phase
+                    }
                 }
+                firstgroup = true;
             }
         }
         ofile.close();
