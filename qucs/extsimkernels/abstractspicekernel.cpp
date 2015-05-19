@@ -337,6 +337,8 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
                 if (var.endsWith(':')) var.chop(1);
                 var_list.append("magnitude("+var+")");
                 var_list.append("phase("+var+")");
+                var_list.append("norm(mag("+var+"))");
+                var_list.append("norm(phase("+var+"))");
                 continue;
             }
             if (lin.contains("No. Harmonics:")) {
@@ -352,10 +354,14 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
                         sim_point.append(lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble()); // freq
                         sim_point.append(lin.section(sep,2,2,QString::SectionSkipEmpty).toDouble()); // magnitude
                         sim_point.append(lin.section(sep,3,3,QString::SectionSkipEmpty).toDouble()); // phase
+                        sim_point.append(lin.section(sep,4,4,QString::SectionSkipEmpty).toDouble()); // normalized magnitude
+                        sim_point.append(lin.section(sep,5,5,QString::SectionSkipEmpty).toDouble()); // normalized phase
                         sim_points.append(sim_point);
                     } else {
                         sim_points[i].append(lin.section(sep,2,2,QString::SectionSkipEmpty).toDouble()); // magnitude
                         sim_points[i].append(lin.section(sep,3,3,QString::SectionSkipEmpty).toDouble()); // phase
+                        sim_points[i].append(lin.section(sep,4,4,QString::SectionSkipEmpty).toDouble()); // normalized magnitude
+                        sim_points[i].append(lin.section(sep,5,5,QString::SectionSkipEmpty).toDouble()); // normalized phase
                     }
                 }
                 firstgroup = true;
