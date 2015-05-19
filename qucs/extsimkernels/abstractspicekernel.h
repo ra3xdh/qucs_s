@@ -39,6 +39,7 @@ class AbstractSpiceKernel : public QObject
     Q_OBJECT
 private:
     void normalizeVarsNames(QStringList &var_list);
+    bool checkRawOutupt(QString ngspice_file, QStringList &values);
 
 protected:
     QString netlist,workdir, simulator_cmd,

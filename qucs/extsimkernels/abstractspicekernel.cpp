@@ -499,6 +499,34 @@ void AbstractSpiceKernel::parseResFile(QString resfile, QString &var, QStringLis
 }
 
 /*!
+ * \brief AbstractSpiceKernel::checkRawOutupt Determine Ngspice Raw output contains
+ *        parameter sweep.
+ * \param ngspice_file[in] Raw output file name
+ * \param values[out] Numbers of parameter sweep steps
+ * \return true if parameter sweep presents, false otherwise
+ */
+bool AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &values)
+{
+    values.clear();
+
+    QFile ofile(ngspice_file);
+    int plots_cnt = 0;
+    if (ofile.open(QFile::ReadOnly)) {
+        QTextStream ngsp_data(&ofile);
+        while (!ngsp_data.atEnd()) {
+            QString lin = ngsp_data.readLine();
+            if (lin.startsWith("Plotname: ")) {
+                plots_cnt++;
+                values.append(QString::number(plots_cnt));
+            }
+        }
+        ofile.close();
+    }
+    if (plots_cnt>1) return true;
+    else return false;
+}
+
+/*!
  * \brief AbstractSpiceKernel::convertToQucsData Put data extracted from spice raw
  *        text output files (given in outputs_files property) into single XML
  *        Qucs Dataset.
@@ -564,7 +592,13 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
 
 
             } else {
-                parseNgSpiceSimOutput(full_outfile,sim_points,var_list,isComplex);
+                hasParSweep = checkRawOutupt(full_outfile,swp_var_val);
+                if (hasParSweep) {
+                    swp_var = "Number";
+                    parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
+                } else {
+                    parseNgSpiceSimOutput(full_outfile,sim_points,var_list,isComplex);
+                }
             }
             if (var_list.isEmpty()) continue; // notning to convert
             normalizeVarsNames(var_list);
