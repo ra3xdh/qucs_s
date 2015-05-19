@@ -63,7 +63,7 @@ Component* SpiceCustomSim::newOne()
 Element* SpiceCustomSim::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr("Ngspice custom simulation");
-  BitmapFile = (char *) "tran";
+  BitmapFile = (char *) "sp_customsim";
 
   if(getNewOne)  return new SpiceCustomSim();
   return 0;

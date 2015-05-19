@@ -61,7 +61,7 @@ Component* SpiceFourier::newOne()
 Element* SpiceFourier::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr("Fourier simulation");
-  BitmapFile = (char *) "tran";
+  BitmapFile = (char *) "sp_fourier";
 
   if(getNewOne)  return new SpiceFourier();
   return 0;
