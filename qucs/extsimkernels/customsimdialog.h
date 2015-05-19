@@ -52,6 +52,7 @@ private:
     QPushButton *btnPlotAll;
 
     QLineEdit *edtVars;
+    QLineEdit *edtOutputs;
 
 public:
     explicit CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *parent = 0);

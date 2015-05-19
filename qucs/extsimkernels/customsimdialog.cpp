@@ -44,6 +44,9 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     QLabel* lblVars = new QLabel(tr("Variables to plot (semicolon separated)"));
     edtVars = new QLineEdit(comp->Props.at(1)->Value);
 
+    QLabel* lblOut = new QLabel(tr("Extra outputs (semicolon separated; raw ASCII spice output)"));
+    edtOutputs = new QLineEdit(comp->Props.at(2)->Value);
+
     btnApply = new QPushButton(tr("Apply"));
     connect(btnApply,SIGNAL(clicked()),this,SLOT(slotApply()));
     btnCancel = new QPushButton(tr("Cancel"));
@@ -61,6 +64,8 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     vl1->addWidget(lblVars);
     vl1->addWidget(edtVars);
     vl1->addWidget(btnPlotAll);
+    vl1->addWidget(lblOut);
+    vl1->addWidget(edtOutputs);
 
     hl1->addWidget(btnOK);
     hl1->addWidget(btnApply);
@@ -77,6 +82,7 @@ void CustomSimDialog::slotApply()
 {
     comp->Props.at(0)->Value = edtCode->document()->toPlainText();
     comp->Props.at(1)->Value = edtVars->text();
+    comp->Props.at(2)->Value = edtOutputs->text();
 }
 
 /*!
