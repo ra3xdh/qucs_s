@@ -221,6 +221,7 @@
 #include "Cmeter_SPICE.h"
 #include "LTL_SPICE.h"
 #include "UDRCTL_SPICE.h"
+#include "LTRA_SPICE.h"
 
 
 // Spice netlist sections

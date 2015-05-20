@@ -76,7 +76,7 @@ Component* LTL_SPICE::newOne()
 
 Element* LTL_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("LTL_SPICE");
+  Name = QObject::tr("LTL");
   BitmapFile = (char *) "LTL_SPICE";
 
   if(getNewOne)  return new LTL_SPICE();

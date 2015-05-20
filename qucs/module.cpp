@@ -452,6 +452,7 @@ void Module::registerModules (void) {
   REGISTER_SPICE_1 (MESFET_SPICE);
   REGISTER_SPICE_1 (LTL_SPICE);
   REGISTER_SPICE_1 (UDRCTL_SPICE);
+  REGISTER_SPICE_1 (LTRA_SPICE);
 
   // specific sections of spice netlists
   REGISTER_SPICE_SEC_1 (SpiceParam);

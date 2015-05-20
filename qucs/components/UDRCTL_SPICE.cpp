@@ -28,48 +28,30 @@ UDRCTL_SPICE::UDRCTL_SPICE()
 {
   Description = QObject::tr("Uniform Distributed RC transmission Line");
 
-  Lines.append(new Line(-40, -10,-25, -10,QPen(Qt::darkBlue,2)));
+   
+  Lines.append(new Line(  -60,  0, -45,   0,QPen(Qt::darkBlue,2))); 
+  Lines.append(new Line(  -45, 20,  45,  20,QPen(Qt::cyan,4)));
+  Lines.append(new Line(   60,  0,  45,   0,QPen(Qt::darkBlue,2)));  
+  Lines.append(new Line(   0,  20,   0,  40,QPen(Qt::darkBlue,2))); 
   
-  Lines.append(new Line(-25, -18, 25, -18,QPen(Qt::cyan,3)));
-  Lines.append(new Line( 25, -18, 25,  -2,QPen(Qt::cyan,3)));
-  Lines.append(new Line( 25,  -2,-25,  -2,QPen(Qt::cyan,3)));
-  Lines.append(new Line(-25,  -2,-25, -18,QPen(Qt::cyan,3)));
-  
-  Lines.append(new Line( 25, -10, 35, -10,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0,  -2,  0,  10,QPen(Qt::darkBlue,2))); 
-  
-  //Sows series R
-  Lines.append(new Line( -25, -10, -20, -10,QPen(Qt::darkBlue,2)));
-  
-  Lines.append(new Line( -20, -12, -10, -12,QPen(Qt::darkBlue,2))); 
-  Lines.append(new Line( -10, -12, -10, -8,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -10, -8,  -20, -8,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -20, -8,  -20, -12,QPen(Qt::darkBlue,2))); 
+  Lines.append(new Line(-45,    0,  -37,  0,QPen(Qt::cyan,4)));
+  Lines.append(new Line(-37,    0,  -30, -10,QPen(Qt::cyan,4)));
+  Lines.append(new Line(-30,  -10,  -15,  10,QPen(Qt::cyan,4)));
+  Lines.append(new Line(-15,   10,   0,  -10,QPen(Qt::cyan,4)));
+  Lines.append(new Line(  0,  -10,   15,  10,QPen(Qt::cyan,4)));
+  Lines.append(new Line(  15,  10,   30, -10,QPen(Qt::cyan,4))); 
+  Lines.append(new Line(  30, -10,  37,   0,QPen(Qt::cyan,4))); 
+  Lines.append(new Line(  37,   0,  45,   0,QPen(Qt::cyan,4)));   
 
-  Lines.append(new Line( -10, -10, -5, -10,QPen(Qt::darkBlue,2)));
-  
-  Lines.append(new Line( -5 , -12,   5, -12,QPen(Qt::darkBlue,2))); 
-  Lines.append(new Line(  5,  -12,   5, -8,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  5,   -8,  -5, -8,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -5,  -8,   -5, -12,QPen(Qt::darkBlue,2)));
-  
-  Lines.append(new Line(   5, -10,  10, -10,QPen(Qt::darkBlue,2)));
-  
-  Lines.append(new Line(  10, -12,  20, -12,QPen(Qt::darkBlue,2))); 
-  Lines.append(new Line(  20, -12,  20, -8,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  20, -8,   10, -8,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  10, -8,   10, -12,QPen(Qt::darkBlue,2))); 
-  
-  Lines.append(new Line(   40, -10,  25, -10,QPen(Qt::darkBlue,2))); 
 
 
     
-  Ports.append(new Port(  -40,-10)); // P1
-  Ports.append(new Port(   40,-10)); // P2
-  Ports.append(new Port(    0, 10)); // P3
+  Ports.append(new Port(  -60, 0)); // P1
+  Ports.append(new Port(   60, 0)); // P2
+  Ports.append(new Port(    0, 40)); // P3
 
-  x1 = -40; y1 = -20;
-  x2 =  40; y2 =  15;
+  x1 = -60; y1 = -20;
+  x2 =  60; y2 =  40;
 
     tx = x1+4;
     ty = y2+4;
