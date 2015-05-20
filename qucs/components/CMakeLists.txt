@@ -83,6 +83,7 @@ LTL_SPICE.cpp
 UDRCTL_SPICE.cpp
 sp_customsim.cpp
 sp_fourier.cpp
+sp_disto.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -287,6 +288,7 @@ LTL_SPICE.h
 UDRCTL_SPICE.h
 sp_customsim.h
 sp_fourier.h
+sp_disto.h
 )
 
 

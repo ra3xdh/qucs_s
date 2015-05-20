@@ -230,6 +230,7 @@
 
 // Spice simulations
 #include "sp_fourier.h"
+#include "sp_disto.h"
 #include "sp_customsim.h"
 
 #endif

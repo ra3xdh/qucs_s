@@ -261,5 +261,6 @@
         <file>bitmaps/UDRCTL_SPICE.png</file>
         <file>bitmaps/sp_fourier.png</file>
         <file>bitmaps/sp_customsim.png</file>
+        <file>bitmaps/sp_disto.png</file>
     </qresource>
 </RCC>

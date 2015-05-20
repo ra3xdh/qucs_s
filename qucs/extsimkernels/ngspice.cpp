@@ -63,6 +63,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
            if (sim_typ==".AC") simulations.append("ac");
            if (sim_typ==".TR") simulations.append("tran");
            if (sim_typ==".CUSTOMSIM") simulations.append("custom");
+           if (sim_typ==".DISTO") simulations.append("disto");
            if ((sim_typ==".SW")&&
                (pc->Props.at(0)->Value.startsWith("DC"))) simulations.append("dc");
            // stream<<s;
@@ -146,6 +147,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                QString sim_typ = pc->Model;
                QString s = pc->getSpiceNetlist();
                if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
+               if ((sim_typ==".DISTO")&&(sim=="disto")) stream<<s;
                if ((sim_typ==".TR")&&(sim=="tran")) {
                    stream<<s;
                    Q3PtrList<Component> comps(Sch->DocComps); // find Fourier tran

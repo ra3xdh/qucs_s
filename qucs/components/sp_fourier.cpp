@@ -17,6 +17,7 @@
 #include "sp_fourier.h"
 #include "main.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 SpiceFourier::SpiceFourier()
@@ -70,11 +71,12 @@ Element* SpiceFourier::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString SpiceFourier::spice_netlist(bool isXyce)
 {
     QString s;
+    QString f0 = spicecompat::normalize_value(Props.at(2)->Value);
     if (!isXyce) {
         s = QString("set nfreqs=%1\n").arg(Props.at(1)->Value);
-        s += QString("FOURIER %1 %2 > spice4qucs.four\n").arg(Props.at(2)->Value).arg(Props.at(3)->Value);
+        s += QString("FOURIER %1 %2 > spice4qucs.four\n").arg(f0).arg(Props.at(3)->Value);
     } else {
-        s = QString(".FOUR %1 %2\n").arg(Props.at(2)->Value).arg(Props.at(3)->Value);
+        s = QString(".FOUR %1 %2\n").arg(f0).arg(Props.at(3)->Value);
     }
 
     return s;

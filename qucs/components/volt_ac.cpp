@@ -76,7 +76,7 @@ Element* Volt_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString Volt_ac::spice_netlist(bool)
+QString Volt_ac::spice_netlist(bool isXyce)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {
@@ -91,6 +91,7 @@ QString Volt_ac::spice_netlist(bool)
     QString theta = Props.at(3)->Value;
     theta.remove(' ');
     if (theta.isEmpty()) theta="0";
-    s += QString(" DC 0 SIN(0 %1 %2 0 %3) AC %4\n").arg(volts).arg(freq).arg(theta).arg(volts);
+    if (isXyce) s += QString(" DC 0 SIN(0 %1 %2 0 %3) AC %4\n").arg(volts).arg(freq).arg(theta).arg(volts);
+    else s += QString(" DISTOF1 %1 DC 0 SIN(0 %1 %2 0 %3) AC %4\n").arg(volts).arg(freq).arg(theta).arg(volts);
     return s;
 }
