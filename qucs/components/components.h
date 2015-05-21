@@ -222,6 +222,7 @@
 #include "LTL_SPICE.h"
 #include "UDRCTL_SPICE.h"
 #include "LTRA_SPICE.h"
+#include "volt_ac_SPICE.h"
 
 
 // Spice netlist sections

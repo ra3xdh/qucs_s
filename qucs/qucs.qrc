@@ -240,25 +240,29 @@
         <file>bitmaps/sp_param.png</file>
         <file>bitmaps/sp_globpar.png</file>
         <file>bitmaps/sp_options.png</file>
-         <file>bitmaps/vsffm.png</file> 
-         <file>bitmaps/isffm.png</file> 
-         <file>bitmaps/vAmpMod.png</file> 
-         <file>bitmaps/iAmpMod.png</file>   
-         <file>bitmaps/vPWL.png</file> 
-         <file>bitmaps/iPWL.png</file> 
-          <file>bitmaps/eNL.png</file>
-          <file>bitmaps/gNL.png</file>
-          <file>bitmaps/vTRNOISE.png</file>
-          <file>bitmaps/iTRNOISE.png</file>
-          <file>bitmaps/vTRRANDOM.png</file>
-          <file>bitmaps/C_SPICE.png</file>
-          <file>bitmaps/L_SPICE.png</file>
-          <file>bitmaps/R_SPICE.png</file>
-         <file>bitmaps/K_SPICE.png</file>
-         <file>bitmaps/MESFET_SPICE.png</file>
-         <file>bitmaps/Cmeter_SPICE.png</file>
-         <file>bitmaps/LTL_SPICE.png</file>
-         <file>bitmaps/UDRCTL_SPICE.png</file>
-         <file>bitmaps/LTRA_SPICE.png</file>
+        <file>bitmaps/vsffm.png</file>
+        <file>bitmaps/isffm.png</file>
+        <file>bitmaps/vAmpMod.png</file>
+        <file>bitmaps/iAmpMod.png</file>
+        <file>bitmaps/vPWL.png</file>
+        <file>bitmaps/iPWL.png</file>
+        <file>bitmaps/eNL.png</file>
+        <file>bitmaps/gNL.png</file>
+        <file>bitmaps/vTRNOISE.png</file>
+        <file>bitmaps/iTRNOISE.png</file>
+        <file>bitmaps/vTRRANDOM.png</file>
+        <file>bitmaps/C_SPICE.png</file>
+        <file>bitmaps/L_SPICE.png</file>
+        <file>bitmaps/R_SPICE.png</file>
+        <file>bitmaps/K_SPICE.png</file>
+        <file>bitmaps/MESFET_SPICE.png</file>
+        <file>bitmaps/Cmeter_SPICE.png</file>
+        <file>bitmaps/LTL_SPICE.png</file>
+        <file>bitmaps/UDRCTL_SPICE.png</file>
+        <file>bitmaps/sp_fourier.png</file>
+        <file>bitmaps/sp_customsim.png</file>
+        <file>bitmaps/sp_disto.png</file>
+        <file>bitmaps/Vac_SPICE.png</file>
+        <file>bitmaps/LTRA_SPICE.png</file>
     </qresource>
 </RCC>
