@@ -718,6 +718,11 @@ QString Component::getExpression(bool)
     return QString("");
 }
 
+QString Component::getEquations(QString, QStringList &)
+{
+    return QString("");
+}
+
 QString Component::getProbeVariable(bool)
 {
     return QString("");

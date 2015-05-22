@@ -196,10 +196,9 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         QStringList Eqns;
         Eqns.clear();
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-            if (pc->Model == "Eqn") {
-                Equation *eq = (Equation *)pc;
+            if ((pc->Model == "Eqn")||(pc->Model== "NutmegEq")) {
                 QStringList v1;
-                QString s_eq = eq->getEquations(sim,v1);
+                QString s_eq = pc->getEquations(sim,v1);
                 stream<< s_eq;
                 Eqns.append(s_eq.split("\n"));
                 vars_eq.append(v1);

@@ -229,6 +229,7 @@
 #include "sp_parameter.h"
 #include "sp_globalpar.h"
 #include "sp_options.h"
+#include "sp_nutmeg.h"
 
 // Spice simulations
 #include "sp_fourier.h"

@@ -62,6 +62,7 @@ src_eqndef.cpp
 sp_parameter.cpp
 sp_globalpar.cpp
 sp_options.cpp
+sp_nutmeg.cpp
 vsffm.cpp
 isffm.cpp
 vAmpMod.cpp
@@ -269,6 +270,7 @@ src_eqndef.h
 sp_parameter.h
 sp_globalpar.h
 sp_options.h
+sp_nutmeg.h
 vsffm.h
 isffm.h
 vAmpMod.h

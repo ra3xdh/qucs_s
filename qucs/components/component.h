@@ -38,6 +38,7 @@ public:
   QString getNetlist();
   QString getSpiceNetlist(bool isXyce = false);
   virtual QString getExpression(bool isXyce = false);
+  virtual QString getEquations(QString sim, QStringList &dep_vars);
   virtual QString getProbeVariable(bool isXyce = false);
   virtual QString getNgspiceBeforeSim(QString sim, int lvl=0) { return QString("");};
   virtual QString getNgspiceAfterSim(QString sim, int lvl=0) { return QString("");};

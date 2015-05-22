@@ -1,9 +1,9 @@
 /***************************************************************************
-                          equation.cpp  -  description
+                          sp_nutmeg.cpp  -  description
                              -------------------
-    begin                : Sat Aug 23 2003
-    copyright            : (C) 2003 by Michael Margraf
-    email                : michael.margraf@alumni.tu-berlin.de
+    begin                : Fri May 22 2015
+    copyright            : (C) 2015 by Vadim Kuznetsov
+    email                : ra3xdh@gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -14,28 +14,28 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "sp_parameter.h"
+#include "sp_nutmeg.h"
 #include "main.h"
 
 #include <QFontMetrics>
 
-SpiceParam::SpiceParam()
+NutmegEquation::NutmegEquation()
 {
   isEquation = true;
   Type = isComponent; // Analogue and digital component.
-  Description = QObject::tr(".PARAM section");
+  Description = QObject::tr("Nutmeg equation");
 
   QFont f = QucsSettings.font;
   f.setWeight(QFont::Light);
   f.setPointSizeF(12.0);
   QFontMetrics  metrics(f, 0);  // use the the screen-compatible metric
-  QSize r = metrics.size(0, QObject::tr(".PARAM"));
+  QSize r = metrics.size(0, QObject::tr("Nutmeg"));
   int xb = r.width()  >> 1;
   int yb = r.height() >> 1;
 
-  Lines.append(new Line(-xb, -yb, -xb,  yb,QPen(Qt::darkRed,2)));
-  Lines.append(new Line(-xb,  yb,  xb+3,yb,QPen(Qt::darkRed,2)));
-  Texts.append(new Text(-xb+4,  -yb-3, QObject::tr(".PARAM"),
+  Lines.append(new Line(-xb, -yb, -xb,  yb,QPen(Qt::cyan,2)));
+  Lines.append(new Line(-xb,  yb,  xb+3,yb,QPen(Qt::cyan,2)));
+  Texts.append(new Text(-xb+4,  -yb-3, QObject::tr("Nutmeg"),
 			QColor(0,0,0), 12.0));
 
   x1 = -xb-3;  y1 = -yb-5;
@@ -43,36 +43,44 @@ SpiceParam::SpiceParam()
 
   tx = x1+4;
   ty = y2+4;
-  Model = "SpicePar";
-  Name  = "SpicePar";
+  Model = "NutmegEq";
+  SpiceModel = "NutmegEq";
+  Name  = "NutmegEq";
 
+  Props.append(new Property("Simulation","ac",true,
+                            "Used simulation [ac, tran, dc, disto, all]"));
   Props.append(new Property("y", "1", true));
 }
 
-SpiceParam::~SpiceParam()
+NutmegEquation::~NutmegEquation()
 {
 }
 
-Component* SpiceParam::newOne()
+Component* NutmegEquation::newOne()
 {
-  return new SpiceParam();
+  return new NutmegEquation();
 }
 
-Element* SpiceParam::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* NutmegEquation::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr(".PARAM Section");
-  BitmapFile = (char *) "sp_param";
+  Name = QObject::tr("Nutmeg Equation");
+  BitmapFile = (char *) "sp_nutmeg";
 
-  if(getNewOne)  return new SpiceParam();
+  if(getNewOne)  return new NutmegEquation();
   return 0;
 }
 
-QString SpiceParam::getExpression(bool)
+QString NutmegEquation::getEquations(QString sim, QStringList &dep_vars)
 {
     QString s;
     s.clear();
-    foreach (Property *pp, Props) {
-        s += QString(".PARAM %1 = %2\n").arg(pp->Name).arg(pp->Value);
+    if (Props.at(0)->Value==sim) {
+        Property *pp = Props.first();
+        pp = Props.next();
+        for (;pp!=0;pp=Props.next()) {
+            s += QString("let %1 = %2\n").arg(pp->Name).arg(pp->Value);
+            dep_vars.append(pp->Name);
+        }
     }
     return s;
 }

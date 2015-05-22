@@ -264,5 +264,6 @@
         <file>bitmaps/sp_disto.png</file>
         <file>bitmaps/Vac_SPICE.png</file>
         <file>bitmaps/LTRA_SPICE.png</file>
+        <file>bitmaps/sp_nutmeg.png</file>
     </qresource>
 </RCC>
