@@ -199,11 +199,12 @@ if [ -f ~/Downloads/adms-2.3.4.tar.gz ]
 then
 	cp ~/Downloads/adms-2.3.4.tar.gz .
 else
-  wget http://sourceforge.net/projects/mot-adms/files/adms-source/2.3/adms-2.3.4.tar.gz -P ~/Downdloads/
+  wget http://sourceforge.net/projects/mot-adms/files/adms-source/2.3/adms-2.3.4.tar.gz -P ~/Downloads/
 fi
 tar -zxvf adms-2.3.4.tar.gz
 mv adms-2.3.4 adms
 mv adms/* qucs-core/deps/adms/
+rm -r adms/
 
 
 echo ==================================
