@@ -28,7 +28,7 @@
 #define RELEASE "0.0.19"
 #define BASENAME "qucs"
 #define APPNAME "Qucs"
-#define APPVERNAME "Quite Universal Circuit Simulator 0.0.18 binary package for Win32"
+#define APPVERNAME "Quite Universal Circuit Simulator 0.0.19 binary package for Win32"
 #define URL "http://qucs.sourceforge.net"
 #define TREE "c:\qucs-win32-bin\"
 #define octaveversion "3.6.4"
