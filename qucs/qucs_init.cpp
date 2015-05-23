@@ -1066,7 +1066,7 @@ void QucsApp::slotHelpAbout()
     tr("Quite Universal Circuit Simulator")+"\n"+
     tr("Copyright (C)")+" 2003-2009 "+
     tr("by Michael Margraf")+"\n"+
-    tr("Copyright (C)")+" 2011-2014 "+
+    tr("Copyright (C)")+" 2011-2015 "+
     tr("Qucs Team")+"\n"+
     "\nThis is free software; see the source for copying conditions."
     "\nThere is NO warranty; not even for MERCHANTABILITY or "
