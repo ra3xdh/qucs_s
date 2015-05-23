@@ -61,13 +61,15 @@ cp -r ${REPO}/qucs/contrib/innosetup/misc $WINDIR
 echo Copy Icarus Verilog...
 #ICARUS_VER="0.9.7"
 ICARUS_VER="20130827" # fixed Win7 issue, DLL hell, picking up wrong libs.
-if [ -f ~/Downloads/iverilog-${ICARUS_VER}_setup.exe ]
+icarus=iverilog-${ICARUS_VER}_setup.exe
+if [ -f ${HOME}/Downloads/$icarus ]
 then
-	cp ~/Downloads/iverilog-${ICARUS_VER}_setup.exe .
+	cp ${HOME}/Downloads/$icarus .
 else
-  wget http://bleyer.org/icarus/iverilog-${ICARUS_VER}_setup.exe -P ${HOME}/Downloads/
+  wget http://bleyer.org/icarus/$icarus -P ${HOME}/Downloads/
+	cp ${HOME}/Downloads/$icarus .
 fi
-mv iverilog-${ICARUS_VER}_setup.exe $WINDIR
+cp $icarus $WINDIR
 
 
 # add FreeHDL into installer
@@ -80,35 +82,39 @@ else
   # TODO upload
   echo Downloading FreeHDL...
 	wget https://downloads.sourceforge.net/project/qucs/freehdl/$freehdl -P ${HOME}/Downloads/
+	cp ${HOME}/Downloads/$freehdl .
 fi
 cp $freehdl $WINDIR
 
 
-# add Mingw-w64 to installer
+# Add Mingw-w64 to installer
+# Use repackaged instarller version from the original from http://sourceforge.net/projects/mingw-w64/
+# See installer in ~/git/qucs/qucs/contrib/innosetup/mingw-w64.iss
 mingw=mingw-w64-i686-4.8.2-release-posix-dwarf-rt_v3-rev3-setup.exe
 if [ -e ${HOME}/Downloads/$mingw ]; then
   echo Copy MinGW...
 	cp ${HOME}/Downloads/$mingw .
 else
-  # TODO upload
+  # TODO upload it somewhere or figure out a way to use a .7z file with Inno setup
   echo Downloading Mingw...
 	wget https://downloads.sourceforge.net/project/qucs/freehdl/$mingw -P ${HOME}/Downloads/
+	cp ${HOME}/Downloads/$mingw .
 fi
 cp $mingw $WINDIR
 
 
 echo Copy runtime libraries...
-cp $QTDIR/bin/Qt3Support4.dll  $WINDIR/bin
-cp $QTDIR/bin/QtCore4.dll  $WINDIR/bin
-cp $QTDIR/bin/QtGui4.dll  $WINDIR/bin
+cp $QTDIR/bin/Qt3Support4.dll $WINDIR/bin
+cp $QTDIR/bin/QtCore4.dll     $WINDIR/bin
+cp $QTDIR/bin/QtGui4.dll      $WINDIR/bin
 cp $QTDIR/bin/QtNetwork4.dll  $WINDIR/bin
-cp $QTDIR/bin/QtXml4.dll  $WINDIR/bin
-cp $QTDIR/bin/QtSql4.dll  $WINDIR/bin
-cp $QTDIR/bin/QtSvg4.dll $WINDIR/bin
-cp $QTDIR/bin/QtScript4.dll $WINDIR/bin
+cp $QTDIR/bin/QtXml4.dll      $WINDIR/bin
+cp $QTDIR/bin/QtSql4.dll      $WINDIR/bin
+cp $QTDIR/bin/QtSvg4.dll      $WINDIR/bin
+cp $QTDIR/bin/QtScript4.dll   $WINDIR/bin
 
-cp $QTDIR/bin/libgcc_s_dw2-1.dll $WINDIR/bin
-cp $QTDIR/bin/libstdc++-6.dll $WINDIR/bin
+cp $QTDIR/bin/libgcc_s_dw2-1.dll  $WINDIR/bin
+cp $QTDIR/bin/libstdc++-6.dll     $WINDIR/bin
 cp $QTDIR/bin/libwinpthread-1.dll $WINDIR/bin
 
 #cp $QTDIR/bin/mingwm10.dll $WINDIR/bin
