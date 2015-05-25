@@ -95,6 +95,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     LanguageCombo->insertItem(tr("Arabic")+" (ar)");
     LanguageCombo->insertItem(tr("Catalan")+" (ca)");
     LanguageCombo->insertItem(tr("Czech")+" (cs)");
+    LanguageCombo->insertItem(tr("Chinese")+" (zh_CN)");
     LanguageCombo->insertItem(tr("French")+" (fr)");
     LanguageCombo->insertItem(tr("German")+" (de)");
     LanguageCombo->insertItem(tr("Hebrew")+" (he)");
