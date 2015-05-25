@@ -459,6 +459,8 @@ void Module::registerModules (void) {
   REGISTER_SPICE_SEC_1 (SpiceParam);
   REGISTER_SPICE_SEC_1 (SpiceGlobalParam);
   REGISTER_SPICE_SEC_1 (SpiceOptions);
+  REGISTER_SPICE_SEC_1 (SpiceIC);
+  REGISTER_SPICE_SEC_1 (SpiceNodeset);
   REGISTER_SPICE_SEC_1 (NutmegEquation);
 
   // spice simulations

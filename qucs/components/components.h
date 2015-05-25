@@ -230,6 +230,8 @@
 #include "sp_globalpar.h"
 #include "sp_options.h"
 #include "sp_nutmeg.h"
+#include "sp_nodeset.h"
+#include "sp_ic.h"
 
 // Spice simulations
 #include "sp_fourier.h"

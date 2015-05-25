@@ -63,6 +63,8 @@ sp_parameter.cpp
 sp_globalpar.cpp
 sp_options.cpp
 sp_nutmeg.cpp
+sp_ic.cpp
+sp_nodeset.cpp
 vsffm.cpp
 isffm.cpp
 vAmpMod.cpp
@@ -271,6 +273,8 @@ sp_parameter.h
 sp_globalpar.h
 sp_options.h
 sp_nutmeg.h
+sp_ic.h
+sp_nodeset.h
 vsffm.h
 isffm.h
 vAmpMod.h
