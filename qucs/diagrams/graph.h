@@ -22,6 +22,7 @@
 #include "marker.h"
 #include "element.h"
 
+#include <cmath>
 #include <QColor>
 #include <Q3PtrList>
 #include <QDateTime>
