@@ -35,7 +35,7 @@ TRANSLATIONS = \
 	qucs_hu.ts \
 	qucs_it.ts \
 	qucs_ja.ts \
-	qucs_kk.ts
+	qucs_kk.ts \
 	qucs_pl.ts \
 	qucs_pt_BR.ts \
 	qucs_pt_PT.ts \
@@ -43,7 +43,8 @@ TRANSLATIONS = \
 	qucs_ru.ts \
 	qucs_sv.ts \
 	qucs_tr.ts \
-	qucs_uk.ts
+	qucs_uk.ts \
+	qucs_zh_CN.ts
 
 GENTRANSLATIONS = \
 	qtgeneric_en.ts \
