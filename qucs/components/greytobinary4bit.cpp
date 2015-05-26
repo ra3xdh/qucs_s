@@ -22,7 +22,7 @@
 greytobinary4bit::greytobinary4bit()
 {
   Type = isComponent; // Analogue and digital component.
-  Description = QObject::tr ("4bit grey to binary converter verilog device");
+  Description = QObject::tr ("4bit Gray to binary converter verilog device");
 
   Props.append (new Property ("TR", "6", false,
     QObject::tr ("transfer function scaling factor")));
@@ -47,7 +47,7 @@ Component * greytobinary4bit::newOne()
 
 Element * greytobinary4bit::info(QString& Name, char * &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("4Bit Grey2Bin");
+  Name = QObject::tr("4Bit Gray2Bin");
   BitmapFile = (char *) "greytobinary4bit";
 
   if(getNewOne) return new greytobinary4bit();
@@ -147,7 +147,7 @@ QString greytobinary4bit::verilogCode( int )
   QString B2R = "net_reg" + Name + B2;
   QString B3R = "net_reg" + Name + B3;
   
-  l = "\n  // " + Name + " 4bit grey to binary\n" +
+  l = "\n  // " + Name + " 4bit Gray to binary\n" +
       "  assign  " + B0 + " = " + B0R + ";\n" +
       "  reg     " + B0R + " = 0;\n" +
       "  assign  " + B1 + " = " + B1R + ";\n" +

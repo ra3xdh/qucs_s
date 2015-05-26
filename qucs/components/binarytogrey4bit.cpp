@@ -22,7 +22,7 @@
 binarytogrey4bit::binarytogrey4bit()
 {
   Type = isComponent; // Analogue and digital component.
-  Description = QObject::tr ("4bit binary to grey converter verilog device");
+  Description = QObject::tr ("4bit binary to Gray converter verilog device");
 
   Props.append (new Property ("TR", "6", false,
     QObject::tr ("transfer function scaling factor")));
@@ -47,7 +47,7 @@ Component * binarytogrey4bit::newOne()
 
 Element * binarytogrey4bit::info(QString& Name, char * &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("4Bit Bin2Grey");
+  Name = QObject::tr("4Bit Bin2Gray");
   BitmapFile = (char *) "binarytogrey4bit";
 
   if(getNewOne) return new binarytogrey4bit();
@@ -148,7 +148,7 @@ QString binarytogrey4bit::verilogCode( int )
   QString G2R = "net_reg" + Name + G2;
   QString G3R = "net_reg" + Name + G3;
   
-  l = "\n  // " + Name + " 4bit binary to grey\n" +
+  l = "\n  // " + Name + " 4bit binary to Gray\n" +
       "  assign  " + G0 + " = " + G0R + ";\n" +
       "  reg     " + G0R + " = 0;\n" +
       "  assign  " + G1 + " = " + G1R + ";\n" +
