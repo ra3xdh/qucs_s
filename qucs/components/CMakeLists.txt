@@ -89,6 +89,7 @@ volt_ac_SPICE.cpp
 sp_customsim.cpp
 sp_fourier.cpp
 sp_disto.cpp
+sp_noise.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -299,6 +300,7 @@ volt_ac_SPICE.h
 sp_customsim.h
 sp_fourier.h
 sp_disto.h
+sp_noise.h
 )
 
 

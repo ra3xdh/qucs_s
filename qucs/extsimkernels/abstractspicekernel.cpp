@@ -372,6 +372,20 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
 }
 
 /*!
+ * \brief AbstractSpiceKernel::parseNoiseOutput Parse output of .NOISE simulation.
+ * \param ngspice_file Spice output file name
+ * \param sim_points 2D array in which simulation points should be extracted. All simulation
+ *        points from all sweep variable steps are extracted in a single array
+ * \param var_list This list is filled by simualtion variables. There is a list of dependent
+ *        and independent varibales. An independent variable is the first in list.
+ */
+void AbstractSpiceKernel::parseNoiseOutput(QString ngspice_file, QList<QList<double> > &sim_points,
+                                           QStringList &var_list)
+{
+
+}
+
+/*!
  * \brief AbstractSpiceKernel::parseSTEPOutput This method parses text raw spice
  *        output from Parameter sweep analysis. Can parse data that uses appedwrite.
  *        Extracts a simulation points array and variables names and types (Real

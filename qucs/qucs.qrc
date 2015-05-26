@@ -267,5 +267,6 @@
         <file>bitmaps/sp_nutmeg.png</file>
         <file>bitmaps/sp_ic.png</file>
         <file>bitmaps/sp_nodeset.png</file>
+        <file>bitmaps/sp_noise.png</file>
     </qresource>
 </RCC>
