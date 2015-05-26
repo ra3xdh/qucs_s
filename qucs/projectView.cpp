@@ -81,14 +81,14 @@ ProjectView::refresh()
   header << tr("Content of %1").arg(m_projName) << tr("Note");
   m_model->setHorizontalHeaderLabels(header);
 
-  APPEND_ROW(m_model, FILETYPE1);
-  APPEND_ROW(m_model, FILETYPE2);
-  APPEND_ROW(m_model, FILETYPE3);
-  APPEND_ROW(m_model, FILETYPE4);
-  APPEND_ROW(m_model, FILETYPE5);
-  APPEND_ROW(m_model, FILETYPE6);
-  APPEND_ROW(m_model, FILETYPE7);
-  APPEND_ROW(m_model, FILETYPE8);
+  APPEND_ROW(m_model, tr("Datasets")     );
+  APPEND_ROW(m_model, tr("Data Displays"));
+  APPEND_ROW(m_model, tr("Verilog")      );
+  APPEND_ROW(m_model, tr("Verilog-A")    );
+  APPEND_ROW(m_model, tr("VHDL")         );
+  APPEND_ROW(m_model, tr("Octave")       );
+  APPEND_ROW(m_model, tr("Schematics")   );
+  APPEND_ROW(m_model, tr("Others")       );
 
   setExpanded(m_model->index(6, 0), true);
 

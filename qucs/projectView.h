@@ -27,15 +27,6 @@
 #include <QTreeView>
 #include <QString>
 
-#define FILETYPE1 tr("Datasets")
-#define FILETYPE2 tr("Data Displays")
-#define FILETYPE3 tr("Verilog")
-#define FILETYPE4 tr("Verilog-A")
-#define FILETYPE5 tr("VHDL")
-#define FILETYPE6 tr("Octave")
-#define FILETYPE7 tr("Schematics")
-#define FILETYPE8 tr("Others")
-
 #define APPEND_ROW(parent, data) \
 ({ \
   QList<QStandardItem*> c; \
