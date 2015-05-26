@@ -3396,8 +3396,8 @@ Resistor color code computation program
     </message>
     <message>
         <location filename="../qucs/components/binarytogrey4bit.cpp" line="-6"/>
-        <source>4bit binary to grey converter verilog device</source>
-        <translation>4 битті бинарлық пішінді grey түрлендіргіш логикалық құрылғысы</translation>
+        <source>4bit binary to Gray converter verilog device</source>
+        <translation>4 битті бинарлық пішінді Gray түрлендіргіш логикалық құрылғысы</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3411,8 +3411,8 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+22"/>
-        <source>4Bit Bin2Grey</source>
-        <translation>4 биттік Bin2Grey</translation>
+        <source>4Bit Bin2Gray</source>
+        <translation>4 биттік Bin2Gray</translation>
     </message>
     <message>
         <location filename="../qucs/components/bjt.cpp" line="+25"/>
@@ -6998,12 +6998,12 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
-        <source>4bit grey to binary converter verilog device</source>
-        <translation>4 битті grey түрлендіргіш логикалық құрылғысы</translation>
+        <source>4bit Gray to binary converter verilog device</source>
+        <translation>4 битті Gray түрлендіргіш логикалық құрылғысы</translation>
     </message>
     <message>
         <location line="+25"/>
-        <source>4Bit Grey2Bin</source>
+        <source>4Bit Gray2Bin</source>
         <translation>4 биттік Bin2Bin</translation>
     </message>
     <message>

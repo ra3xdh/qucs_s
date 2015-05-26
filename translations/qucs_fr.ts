@@ -3399,7 +3399,7 @@ Resistor color code computation program
     </message>
     <message>
         <location filename="../qucs/components/binarytogrey4bit.cpp" line="-6"/>
-        <source>4bit binary to grey converter verilog device</source>
+        <source>4bit binary to Gray converter verilog device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3414,7 +3414,7 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+22"/>
-        <source>4Bit Bin2Grey</source>
+        <source>4Bit Bin2Gray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7002,12 +7002,12 @@ Ligne « composant » incohérente !</translation>
     </message>
     <message>
         <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
-        <source>4bit grey to binary converter verilog device</source>
+        <source>4bit Gray to binary converter verilog device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
-        <source>4Bit Grey2Bin</source>
+        <source>4Bit Gray2Bin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
