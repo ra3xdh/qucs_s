@@ -1,10 +1,10 @@
 /***************************************************************************
-                         NMF MESFET_SPICE.cpp  -  description
+                         PMF_MESFET_SPICE.cpp  -  description
                    --------------------------------------
     begin                    : Fri Mar 9 2007
     copyright              : (C) 2007 by Gunther Kraut
     email                     : gn.kraut@t-online.de
-    spice4qucs code added  Sun. 19 April 2015
+    spice4qucs code added  Mon. 25 May 2015
     copyright              : (C) 2015 by Mike Brinson
     email                    : mbrin72043@yahoo.co.uk
 
@@ -18,32 +18,33 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "MESFET_SPICE.h"
+#include "PMF_MESFET_SPICE.h"
 #include "node.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
 
-MESFET_SPICE::MESFET_SPICE()
+PMF_MESFET_SPICE::PMF_MESFET_SPICE()
 {
-    Description = QObject::tr("NMF MESFET SPICE format");
+    Description = QObject::tr("PMF MESFET SPICE format");
 
   Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::red,3)));
   Lines.append(new Line(-30,  0,-10,  0,QPen(Qt::red,3)));
   Lines.append(new Line(-10,-10,  0,-10,QPen(Qt::red,3)));
   Lines.append(new Line(  0,-10,  0,-20,QPen(Qt::red,3)));
-  Lines.append(new Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3))); 
-
+  Lines.append(new Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
+   
   Lines.append(new Line(-10, 10,  0, 10,QPen(Qt::red,3)));
   Lines.append(new Line(  0, 10,  0, 20,QPen(Qt::red,3)));
-  Lines.append(new Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));  
+  Lines.append(new Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3))); 
 
-// N
+// P
   Lines.append(new Line( 10, 30,  10, 20,QPen(Qt::red,2)));
-  Lines.append(new Line( 10, 20,  20, 30,QPen(Qt::red,2)));
-  Lines.append(new Line( 20, 30,  20, 20,QPen(Qt::red,2)));  
+  Lines.append(new Line( 10, 20,  20, 20,QPen(Qt::red,2)));
+  Lines.append(new Line( 20, 20,  20, 25,QPen(Qt::red,2))); 
+  Lines.append(new Line( 20, 25,  10, 25,QPen(Qt::red,2))); 
 //M
-  Lines.append(new Line( 25, 30,  25, 20,QPen(Qt::red,2)));
+  Lines.append(new Line( 25, 30,  25, 20,QPen(Qt::red,2))); 
   Lines.append(new Line( 25, 20,  30, 25,QPen(Qt::red,2)));  
   Lines.append(new Line( 30, 25,  35, 20,QPen(Qt::red,2)));
   Lines.append(new Line( 35, 20,  35, 30,QPen(Qt::red,2))); 
@@ -51,7 +52,7 @@ MESFET_SPICE::MESFET_SPICE()
   Lines.append(new Line( 40, 30,  40, 20,QPen(Qt::red,2)));
   Lines.append(new Line( 40, 20,  45, 20,QPen(Qt::red,2)));
   Lines.append(new Line( 40, 25,  45, 25,QPen(Qt::red,2)));  
-     
+  
   Ports.append(new Port(  0,-30));
   Ports.append(new Port(-30,  0));
   Ports.append(new Port(  0, 30));
@@ -62,7 +63,7 @@ MESFET_SPICE::MESFET_SPICE()
     tx = x1+4;
     ty = y2+4;
 
-    Model = "MESFET_SPICE";
+    Model = "PMF_MESFET_SPICE";
     SpiceModel = "Z";
     Name  = "Z";
 
@@ -74,30 +75,30 @@ MESFET_SPICE::MESFET_SPICE()
 
 }
 
-MESFET_SPICE::~MESFET_SPICE()
+PMF_MESFET_SPICE::~PMF_MESFET_SPICE()
 {
 }
 
-Component* MESFET_SPICE::newOne()
+Component* PMF_MESFET_SPICE::newOne() 
 {
-  return new MESFET_SPICE();
+  return new PMF_MESFET_SPICE();
 }
 
-Element* MESFET_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* PMF_MESFET_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("NMF MESFET");
-  BitmapFile = (char *) "MESFET_SPICE";
+  Name = QObject::tr("PMF MESFET");
+  BitmapFile = (char *) "PMF_MESFET_SPICE";
 
-  if(getNewOne)  return new MESFET_SPICE();
+  if(getNewOne)  return new PMF_MESFET_SPICE();
   return 0;
 }
 
-QString MESFET_SPICE::netlist()
+QString PMF_MESFET_SPICE::netlist()
 {
     return QString("");
 }
 
-QString MESFET_SPICE::spice_netlist(bool isXyce)
+QString PMF_MESFET_SPICE::spice_netlist(bool isXyce)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {

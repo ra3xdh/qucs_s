@@ -218,6 +218,7 @@
 #include "R_SPICE.h"
 #include "K_SPICE.h"
 #include "MESFET_SPICE.h"
+#include "PMF_MESFET_SPICE.h"
 #include "Cmeter_SPICE.h"
 #include "LTL_SPICE.h"
 #include "UDRCTL_SPICE.h"
