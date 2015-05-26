@@ -48,7 +48,7 @@ function getValues() {
 
     UNTRANSLATED=$(grep "<translation.*></translation>" $1 | wc -l )
 
-    UNFINISHED=$(grep "<translation type=\"unfinished\">" $1 | wc -l )
+    UNFINISHED=$(grep "<translation type=\"unfinished\"" $1 | wc -l )
 
     TRANSLATED=$(grep "<translation.*>.\+<" $1 | wc -l )
 
