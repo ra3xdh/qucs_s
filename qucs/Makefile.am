@@ -32,7 +32,14 @@ endif
 
 bin_PROGRAMS = qucs
 
-MOCHEADERS = qucs.h schematic.h textdoc.h octave_window.h messagedock.h
+MOCHEADERS = \
+  messagedock.h \
+  octave_window.h \
+  projectView.h \
+  schematic.h \
+  textdoc.h \
+  qucs.h
+
 MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
 qucs_SOURCES = node.cpp element.cpp qucsdoc.cpp wire.cpp mouseactions.cpp   \

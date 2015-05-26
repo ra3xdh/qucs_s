@@ -163,6 +163,7 @@ SET(QUCS_MOC_HDRS
   schematic.h
   textdoc.h
   messagedock.h
+  projectView.h
 )
 
 #
