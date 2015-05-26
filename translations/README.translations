@@ -35,6 +35,8 @@ Spanish).  This type translation files may change as the source code
 of Qucs changes as well.
 
 The TS files can be updated by running:
+  $ cd ~/git/qucs/qucs/
+  $ ./autogen.sh && ./configure
   $ cd ~/git/qucs/qucs/translations
   $ make qucs_.ts
 
