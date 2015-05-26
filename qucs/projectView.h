@@ -47,6 +47,7 @@ class QStandardItemModel;
 
 class ProjectView : public QTreeView
 {
+  Q_OBJECT
 public:
   ProjectView (QWidget *parent);
   virtual ~ProjectView ();
