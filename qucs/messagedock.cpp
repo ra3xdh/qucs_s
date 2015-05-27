@@ -56,7 +56,7 @@ MessageDock::MessageDock(QucsApp *App_): QWidget()
 
     builderTabs->insertTab(1,cppOutput,tr("Compiler"));
 
-    msgDock = new QDockWidget();
+    msgDock = new QDockWidget(tr("admsXml Dock"));
     msgDock->setWidget(builderTabs);
     App_->addDockWidget(Qt::BottomDockWidgetArea, msgDock);
 

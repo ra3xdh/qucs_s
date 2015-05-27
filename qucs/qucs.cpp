@@ -222,7 +222,7 @@ void QucsApp::initView()
   DocumentTab->setMovable (true);
 #endif
 
-  dock = new QDockWidget(this);
+  dock = new QDockWidget(tr("Main Dock"),this);
   TabView = new QTabWidget(dock);
   TabView->setTabPosition(QTabWidget::West);
 
@@ -364,15 +364,12 @@ void QucsApp::initView()
 
   // ----------------------------------------------------------
   // Octave docking window
-  //octDock = new Q3DockWindow(Q3DockWindow::InDock, this);
-  //octDock->setCloseMode(Q3DockWindow::Always);
-  octDock = new QDockWidget();
+  octDock = new QDockWidget(tr("Octave Dock"));
 
   connect(octDock, SIGNAL(visibilityChanged(bool)), SLOT(slotToggleOctave(bool)));
   octave = new OctaveWindow(octDock);
   this->addDockWidget(Qt::BottomDockWidgetArea, octDock);
   this->setCorner(Qt::BottomLeftCorner  , Qt::LeftDockWidgetArea);
-  //| Qt::BottomRightCorner
 
   // ............................................
 
