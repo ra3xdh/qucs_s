@@ -86,6 +86,7 @@ Cmeter_SPICE.cpp
 LTL_SPICE.cpp
 UDRCTL_SPICE.cpp
 LTRA_SPICE.cpp
+DIODE_SPICE.cpp
 volt_ac_SPICE.cpp
 sp_customsim.cpp
 sp_fourier.cpp
@@ -298,6 +299,7 @@ Cmeter_SPICE.h
 LTL_SPICE.h
 UDRCTL_SPICE.h
 LTRA_SPICE.h
+DIODE_SPICE.h
 volt_ac_SPICE.h
 sp_customsim.h
 sp_fourier.h
