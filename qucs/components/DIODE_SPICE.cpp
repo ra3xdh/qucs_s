@@ -1,5 +1,5 @@
 /***************************************************************************
-                         NMF MESFET_SPICE.cpp  -  description
+                         DIODE_SPICE.cpp  -  description
                    --------------------------------------
     begin                    : Fri Mar 9 2007
     copyright              : (C) 2007 by Gunther Kraut

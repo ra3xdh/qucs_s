@@ -261,7 +261,9 @@
         <file>bitmaps/LTL_SPICE.png</file>
         <file>bitmaps/UDRCTL_SPICE.png</file>
         <file>bitmaps/LTRA_SPICE.png</file>
-        <file>bitmaps/DIODE_SPICE.png</file>       
+        <file>bitmaps/DIODE_SPICE.png</file>
+        <file>bitmaps/NPN_SPICE.png</file>
+        <file>bitmaps/PNP_SPICE.png</file>                      
         <file>bitmaps/sp_fourier.png</file>
         <file>bitmaps/sp_customsim.png</file>
         <file>bitmaps/sp_disto.png</file>

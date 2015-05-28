@@ -217,15 +217,16 @@
 #include "L_SPICE.h"
 #include "R_SPICE.h"
 #include "K_SPICE.h"
-#include "MESFET_SPICE.h"
-#include "PMF_MESFET_SPICE.h"
-#include "Cmeter_SPICE.h"
 #include "LTL_SPICE.h"
 #include "UDRCTL_SPICE.h"
 #include "LTRA_SPICE.h"
 #include "volt_ac_SPICE.h"
 #include "DIODE_SPICE.h"
-
+#include "NPN_SPICE.h"
+#include "PNP_SPICE.h"
+#include "MESFET_SPICE.h"
+#include "PMF_MESFET_SPICE.h"
+#include "Cmeter_SPICE.h"
 
 // Spice netlist sections
 #include "sp_parameter.h"
