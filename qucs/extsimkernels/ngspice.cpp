@@ -64,6 +64,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
            if (sim_typ==".TR") simulations.append("tran");
            if (sim_typ==".CUSTOMSIM") simulations.append("custom");
            if (sim_typ==".DISTO") simulations.append("disto");
+           if (sim_typ==".NOISE") simulations.append("noise");
            if ((sim_typ==".SW")&&
                (pc->Props.at(0)->Value.startsWith("DC"))) simulations.append("dc");
            // stream<<s;
@@ -148,7 +149,10 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                QString s = pc->getSpiceNetlist();
                if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
                if ((sim_typ==".DISTO")&&(sim=="disto")) stream<<s;
-               if ((sim_typ==".TR")&&(sim=="tran")) {
+               if ((sim_typ==".NOISE")&&(sim=="noise")) {
+                   outputs.append("spice4qucs.cir.noise");
+                   stream<<s;
+               } if ((sim_typ==".TR")&&(sim=="tran")) {
                    stream<<s;
                    Q3PtrList<Component> comps(Sch->DocComps); // find Fourier tran
                    for(Component *pc1 = comps.first(); pc1 != 0; pc1 = comps.next()) {
@@ -219,14 +223,17 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             nods += " " + *it;
         }
 
-        QString filename;
-        if (hasParSWP&&hasDblSWP) filename = QString("%1_%2_swp_swp.txt").arg(basenam).arg(sim);
-        else if (hasParSWP) filename = QString("%1_%2_swp.txt").arg(basenam).arg(sim);
-        else filename = QString("%1_%2.txt").arg(basenam).arg(sim);
+        if (sim!="noise") {
+            QString filename;
+            if (hasParSWP&&hasDblSWP) filename = QString("%1_%2_swp_swp.txt").arg(basenam).arg(sim);
+            else if (hasParSWP) filename = QString("%1_%2_swp.txt").arg(basenam).arg(sim);
+            else filename = QString("%1_%2.txt").arg(basenam).arg(sim);
 
-        QString write_str = QString("write %1 %2\n").arg(filename).arg(nods);
-        stream<<write_str;
-        outputs.append(filename);
+            QString write_str = QString("write %1 %2\n").arg(filename).arg(nods);
+            stream<<write_str;
+            outputs.append(filename);
+        }
+
 
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             QString sim_typ = pc->Model;
