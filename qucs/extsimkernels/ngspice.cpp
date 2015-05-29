@@ -99,7 +99,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     qDebug()<<vars;
 
     stream<<".control\n"          //execute simulations
-          <<"set filetype=ascii\n";
+          <<"set filetype=ascii\n"
+          <<"echo \"\" > spice4qucs.cir.noise\n";
 
     QString sim;
     outputs.clear();
@@ -122,6 +123,14 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                 QString SwpSim = pc->Props.at(0)->Value;
                 QString s = pc->getNgspiceBeforeSim(sim);
                 if (SwpSim.startsWith("AC")&&(sim=="ac")) {
+                    QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
+                    stream<<(s2+s);
+                    hasParSWP = true;
+                } else if (SwpSim.startsWith("DISTO")&&(sim=="disto")) {
+                    QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
+                    stream<<(s2+s);
+                    hasParSWP = true;
+                } else if (SwpSim.startsWith("NOISE")&&(sim=="noise")) {
                     QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
                     stream<<(s2+s);
                     hasParSWP = true;
@@ -242,6 +251,12 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                 QString SwpSim = pc->Props.at(0)->Value;
                 bool b; // value drain
                 if (SwpSim.startsWith("AC")&&(sim=="ac")) {
+                    s += getParentSWPscript(pc,sim,false,b);
+                    stream<<s;
+                } else if (SwpSim.startsWith("DISTO")&&(sim=="disto")) {
+                    s += getParentSWPscript(pc,sim,false,b);
+                    stream<<s;
+                } else if (SwpSim.startsWith("NOISE")&&(sim=="noise")) {
                     s += getParentSWPscript(pc,sim,false,b);
                     stream<<s;
                 } else if (SwpSim.startsWith("TR")&&(sim=="tran")) {
