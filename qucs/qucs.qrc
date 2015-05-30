@@ -265,7 +265,9 @@
         <file>bitmaps/NPN_SPICE.png</file>
         <file>bitmaps/PNP_SPICE.png</file>
         <file>bitmaps/NJF_SPICE.png</file> 
-        <file>bitmaps/PJF_SPICE.png</file>                                     
+        <file>bitmaps/PJF_SPICE.png</file> 
+        <file>bitmaps/NMOS_SPICE.png</file>  
+        <file>bitmaps/PMOS_SPICE.png</file>                                                   
         <file>bitmaps/sp_fourier.png</file>
         <file>bitmaps/sp_customsim.png</file>
         <file>bitmaps/sp_disto.png</file>
