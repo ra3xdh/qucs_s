@@ -224,6 +224,8 @@
 #include "DIODE_SPICE.h"
 #include "NPN_SPICE.h"
 #include "PNP_SPICE.h"
+#include "NJF_SPICE.h"
+#include "PJF_SPICE.h"
 #include "MESFET_SPICE.h"
 #include "PMF_MESFET_SPICE.h"
 #include "Cmeter_SPICE.h"

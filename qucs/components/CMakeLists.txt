@@ -89,6 +89,8 @@ LTRA_SPICE.cpp
 DIODE_SPICE.cpp
 NPN_SPICE.cpp
 PNP_SPICE.cpp
+NJF_SPICE.cpp
+PJF_SPICE.cpp
 volt_ac_SPICE.cpp
 sp_customsim.cpp
 sp_fourier.cpp
@@ -304,6 +306,8 @@ LTRA_SPICE.h
 DIODE_SPICE.h
 NPN_SPICE.h
 PNP_SPICE.h
+NJF_SPICE.h
+PJF_SPICE.h
 volt_ac_SPICE.h
 sp_customsim.h
 sp_fourier.h
