@@ -609,6 +609,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
                 parseHBOutput(full_outfile,sim_points,var_list);
                 isComplex = true;
             } else if (ngspice_output_filename.endsWith(".four")) {
+                isComplex=false;
                 parseFourierOutput(full_outfile,sim_points,var_list,xyce);
             } else if (ngspice_output_filename.endsWith(".noise")) {
                 isComplex = false;
