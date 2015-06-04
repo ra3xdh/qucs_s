@@ -35,6 +35,8 @@ Switch::Switch()
 		QObject::tr("simulation temperature in degree Celsius")));
   Props.append(new Property("MaxDuration", "1e-6", false,
 		QObject::tr("Max possible switch transition time (transition time 1/100 smallest value in 'time', or this number)")));
+  Props.append(new Property("Transition", "spline", false,
+		QObject::tr("Resistance transition shape")+" [abrupt, linear, spline]"));
 
   createSymbol();
   tx = x1+4;
