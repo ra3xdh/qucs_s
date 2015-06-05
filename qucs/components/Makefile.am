@@ -66,6 +66,9 @@ libcomponents_a_SOURCES = phaseshifter.cpp gyrator.cpp componentdialog.cpp    \
 	sp_parameter.cpp \
 	sp_globalpar.cpp \
 	sp_options.cpp \
+	sp_nutmeg.cpp \
+	sp_ic.cpp \
+	sp_nodeset.cpp \
 	vsffm.cpp \
 	isffm.cpp \
 	vAmpMod.cpp \
@@ -82,8 +85,23 @@ libcomponents_a_SOURCES = phaseshifter.cpp gyrator.cpp componentdialog.cpp    \
 	R_SPICE.cpp \
 	K_SPICE.cpp \
 	MESFET_SPICE.cpp \
+	PMF_MESFET_SPICE.cpp \
 	Cmeter_SPICE.cpp \
-	sp_customsim.cpp
+	LTL_SPICE.cpp \
+        UDRCTL_SPICE.cpp \
+        LTRA_SPICE.cpp \
+        DIODE_SPICE.cpp \
+        NPN_SPICE.cpp \
+        PNP_SPICE.cpp \
+        NJF_SPICE.cpp \
+        PJF_SPICE.cpp \
+        NMOS_SPICE.cpp \
+        PMOS_SPICE.cpp \
+        volt_ac_SPICE.cpp \
+	sp_customsim.cpp \
+	sp_fourier.cpp \
+	sp_disto.cpp \
+	sp_noise.cpp 
 
 nodist_libcomponents_a_SOURCES = $(MOCFILES)
 
@@ -119,6 +137,9 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
 	sp_parameter.h \
 	sp_globalpar.h \
 	sp_options.h \
+	sp_nodeset.h \
+	sp_nutmeg.h \
+	sp_ic.h \
 	vsffm.h \
 	isffm.h \
 	vAmpMod.h \
@@ -135,8 +156,23 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
 	R_SPICE.h \
 	K_SPICE.h \
 	MESFET_SPICE.h \
+	PMF_MESFET_SPICE.h \
 	Cmeter_SPICE.h \
-	sp_customsim.h
+	LTL_SPICE.h \
+	UDRCTL_SPICE.h \
+	LTRA_SPICE.h \
+	DIODE_SPICE.h \
+	NPN_SPICE.h \
+	PNP_SPICE.h \
+	NJF_SPICE.h \
+	PJF_SPICE.h \
+	NMOS_SPICE.h \
+	PMOS_SPICE.h \
+	volt_ac_SPICE.h \
+	sp_customsim.h \
+	sp_fourier.h \
+        sp_disto.h \
+	sp_noise.h
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
