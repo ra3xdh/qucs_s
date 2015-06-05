@@ -98,6 +98,8 @@ void Param_Sweep::recreate(Schematic*)
 
 QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
 {
+    if (isActive != COMP_IS_ACTIVE) return QString("");
+
     QString s,unit;
     QString par = getProperty("Param")->Value;
     QString step_var = par;
@@ -145,6 +147,8 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
 
 QString Param_Sweep::getNgspiceAfterSim(QString sim, int lvl)
 {
+    if (isActive != COMP_IS_ACTIVE) return QString("");
+
     QString s;
     QString par = getProperty("Param")->Value;
     par.remove('.');

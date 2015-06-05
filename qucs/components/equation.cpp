@@ -100,6 +100,8 @@ Element* Equation::info(QString& Name, char* &BitmapFile, bool getNewOne)
  */
 QString Equation::getExpression(bool isXyce)
 {
+    if (isActive != COMP_IS_ACTIVE) return QString("");
+
     QStringList ng_vars,ngsims;
     getNgnutmegVars(ng_vars,ngsims);
 
@@ -139,6 +141,8 @@ QString Equation::getExpression(bool isXyce)
  */
 QString Equation::getEquations(QString sim, QStringList &dep_vars)
 {
+    if (isActive != COMP_IS_ACTIVE) return QString("");
+
     QStringList ng_vars,ngsims;
     getNgnutmegVars(ng_vars,ngsims);
 
