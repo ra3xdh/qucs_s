@@ -25,7 +25,7 @@
 #include "abstractspicekernel.h"
 #include "misc.h"
 #include "../paintings/id_text.h"
-#include <QTextEdit>
+#include <QPlainTextEdit>
 
 /*!
   \file abstractspicekernel.cpp
@@ -83,7 +83,7 @@ void AbstractSpiceKernel::killThemAll()
 bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream, bool xyce)
 {
     QStringList collect;
-    QTextEdit *err = new QTextEdit;
+    QPlainTextEdit *err = new QPlainTextEdit;
     Sch->prepareNetlist(stream,collect,err,true,xyce);
     delete err;
     Sch->clearSignalsAndFileList(); // for proper build of subckts
