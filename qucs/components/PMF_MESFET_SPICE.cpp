@@ -98,7 +98,7 @@ QString PMF_MESFET_SPICE::netlist()
     return QString("");
 }
 
-QString PMF_MESFET_SPICE::spice_netlist(bool isXyce)
+QString PMF_MESFET_SPICE::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {

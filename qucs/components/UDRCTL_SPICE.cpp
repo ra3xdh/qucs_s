@@ -92,7 +92,7 @@ QString UDRCTL_SPICE::netlist()
     return QString("");
 }
 
-QString UDRCTL_SPICE::spice_netlist(bool isXyce)
+QString UDRCTL_SPICE::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {

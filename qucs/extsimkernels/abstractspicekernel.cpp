@@ -397,7 +397,7 @@ void AbstractSpiceKernel::parseNoiseOutput(QString ngspice_file, QList<QList<dou
             QString line = ngsp_data.readLine();
             if (line.contains('=')) {
                 QList <double> sim_point;
-                sim_point.append(0.0d);
+                sim_point.append(0.0);
                 sim_point.append(line.section('=',1,1).toDouble());
                 line = ngsp_data.readLine();
                 sim_point.append(line.section('=',1,1).toDouble());

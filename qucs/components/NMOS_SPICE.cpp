@@ -106,7 +106,7 @@ QString NMOS_SPICE::netlist()
     return QString("");
 }
 
-QString NMOS_SPICE::spice_netlist(bool isXyce)
+QString NMOS_SPICE::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {
