@@ -234,6 +234,7 @@ void Xyce::slotFinished()
     output += SimProcess->readAllStandardOutput();
     if (netlistQueue.isEmpty()) {
         emit finished();
+        emit progress(100);
         return;
     } else {
         nextSimulation();
