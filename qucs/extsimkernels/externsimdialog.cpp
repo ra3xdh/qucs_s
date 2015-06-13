@@ -103,10 +103,10 @@ void ExternSimDialog::slotSetSimulator()
         xyce->setParallel(false);
         disconnect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessXyceOutput()));
-        disconnect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
+        disconnect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()));
-        connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
+        connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         disconnect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
         connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
     }
@@ -115,10 +115,10 @@ void ExternSimDialog::slotSetSimulator()
         xyce->setParallel(false);
         disconnect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()));
-        disconnect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
+        disconnect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessXyceOutput()));
-        connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
+        connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
         disconnect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
     }
@@ -131,10 +131,10 @@ void ExternSimDialog::slotSetSimulator()
 #endif
         disconnect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()));
-        disconnect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
+        disconnect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessXyceOutput()));
-        connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError()));
+        connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
         disconnect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
     }
@@ -177,8 +177,18 @@ void ExternSimDialog::slotNgspiceStarted()
     editSimConsole->append(tr("ngspice started...\n"));
 }
 
-void ExternSimDialog::slotNgspiceStartError()
+void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
 {
+    QString msg;
+    switch (err) {
+    case QProcess::FailedToStart : msg = tr("Failed to start simulator!");
+        break;
+    case QProcess::Crashed : msg = tr("Simulator crashed!");
+        break;
+    default : msg = tr("Simualtor error!");
+    }
+
+    QMessageBox::critical(this,tr("Simulate with SPICE"),msg,QMessageBox::Ok);
     editSimConsole->append(tr("ngspice error..."));
 }
 

@@ -61,7 +61,7 @@ private slots:
     void slotProcessNgspiceOutput();
     void slotProcessXyceOutput();
     void slotNgspiceStarted();
-    void slotNgspiceStartError();
+    void slotNgspiceStartError(QProcess::ProcessError err);
     void slotStart();
     void slotStop();
     void slotSetSimulator();
