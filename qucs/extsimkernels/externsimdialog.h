@@ -52,8 +52,11 @@ private:
 public:
     explicit ExternSimDialog(Schematic *sch,QWidget *parent = 0);
     ~ExternSimDialog();
+
+    bool wasSimulated;
     
 signals:
+    void simulated();
     
 public slots:
 

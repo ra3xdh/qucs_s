@@ -27,6 +27,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     QDialog(parent)
 {
     Sch = sch;
+    wasSimulated = false;
 
     workdir = QDir::convertSeparators(QDir::homePath()+"/.qucs/spice4qucs");
     QFileInfo inf(workdir);
@@ -156,6 +157,8 @@ void ExternSimDialog::slotProcessNgspiceOutput()
     QFileInfo inf(Sch->DocName);
     QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
     ngspice->convertToQucsData(qucs_dataset);
+    emit simulated();
+    wasSimulated = true;
 }
 
 void ExternSimDialog::slotProcessXyceOutput()
@@ -169,6 +172,8 @@ void ExternSimDialog::slotProcessXyceOutput()
     QFileInfo inf(Sch->DocName);
     QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_xyce.dat";
     xyce->convertToQucsData(qucs_dataset,true);
+    emit simulated();
+    wasSimulated = true;
 }
 
 void ExternSimDialog::slotNgspiceStarted()

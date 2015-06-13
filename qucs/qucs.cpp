@@ -2839,9 +2839,17 @@ void QucsApp::slotSimulateWithSpice()
         Schematic *sch = (Schematic*)DocumentTab->currentPage();
 
         ExternSimDialog *SimDlg = new ExternSimDialog(sch);
+        connect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
         SimDlg->exec();
+        disconnect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
+        if (SimDlg->wasSimulated) slotChangePage(sch->DocName,sch->DataDisplay);
         delete SimDlg;
-        sch->reloadGraphs();
-        sch->viewport()->update();
     }
+}
+
+void QucsApp::slotAfterSpiceSimulation()
+{
+    Schematic *sch = (Schematic*)DocumentTab->currentPage();
+    sch->reloadGraphs();
+    sch->viewport()->update();
 }
