@@ -105,27 +105,24 @@ void SimSettingsDialog::slotApply()
 
 void SimSettingsDialog::slotSetNgspice()
 {
-    QFileDialog dialog(this,tr("Select Ngspice executable location"),edtNgspice->text(),"All files (*)");
-    dialog.setAcceptMode(QFileDialog::AcceptOpen);
-    if (dialog.exec()) {
-        edtNgspice->setText(dialog.selectedFile());
+    QString s = QFileDialog::getOpenFileName(this,tr("Select Ngspice executable location"),edtNgspice->text(),"All files (*)");
+    if (!s.isEmpty()) {
+        edtNgspice->setText(s);
     }
 }
 
 void SimSettingsDialog::slotSetXyce()
 {
-    QFileDialog dialog(this,tr("Select Xyce executable location"),edtXyce->text(),"All files (*)");
-    dialog.setAcceptMode(QFileDialog::AcceptOpen);
-    if (dialog.exec()) {
-        edtXyce->setText(dialog.selectedFile());
+    QString s = QFileDialog::getOpenFileName(this,tr("Select Xyce executable location"),edtXyce->text(),"All files (*)");
+    if (!s.isEmpty()) {
+        edtXyce->setText(s);
     }
 }
 
 void SimSettingsDialog::slotSetXycePar()
 {
-    QFileDialog dialog(this,tr("Select Xyce Parallel executable location"),edtXycePar->text(),"All files (*)");
-    dialog.setAcceptMode(QFileDialog::AcceptOpen);
-    if (dialog.exec()) {
-        edtXycePar->setText(dialog.selectedFile());
+    QString s = QFileDialog::getOpenFileName(this,tr("Select Xyce Parallel executable location"),edtXycePar->text(),"All files (*)");
+    if (!s.isEmpty()) {
+        edtXycePar->setText(s);
     }
 }

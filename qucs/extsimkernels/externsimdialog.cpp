@@ -219,13 +219,9 @@ void ExternSimDialog::slotSimSettings()
 
 void ExternSimDialog::slotSaveNetlist()
 {
-    QString filename;
-    QFileDialog dialog(this,tr("Save netlist"),QDir::homeDirPath()+QDir::separator()+"netlist.cir",
+    QString filename = QFileDialog::getSaveFileName(this,tr("Save netlist"),QDir::homeDirPath()+QDir::separator()+"netlist.cir",
                        "All files (*)");
-    dialog.setAcceptMode(QFileDialog::AcceptSave);
-    if (dialog.exec()) {
-        filename = dialog.selectedFile();
-    } else return;
+    if (filename.isEmpty()) return;
 
     switch (cbxSimualor->currentIndex()) {
     case simNgspice: {
