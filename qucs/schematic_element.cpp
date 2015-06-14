@@ -920,27 +920,14 @@ int Schematic::copyWires(int& x1, int& y1, int& x2, int& y2,
 
 Marker* Schematic::setMarker(int x, int y)
 {
-    int n;
-    // test all diagrams
-    for(Diagram *pd = Diagrams->last(); pd != 0; pd = Diagrams->prev())
-        if(pd->getSelected(x, y))
-        {
-
-            // test all graphs of the diagram
-            foreach(Graph *pg,pd->Graphs)
-            {
-                n  = pg->getSelected(x-pd->cx, pd->cy-y);
-                if(n >= 0)
-                {
-                    Marker *pm = new Marker(pd, pg, n, x-pd->cx, y-pd->cy);
-                    pg->Markers.append(pm);
-                    setChanged(true, true);
-                    return pm;
-                }
-            }
-        }
-
-    return 0;
+  // only diagrams ...
+  for(Diagram *pd = Diagrams->last(); pd != 0; pd = Diagrams->prev()){
+    if(Marker* m=pd->setMarker(x,y)){
+      setChanged(true, true);
+      return m;
+    }
+  }
+  return NULL;
 }
 
 // ---------------------------------------------------
@@ -3095,3 +3082,5 @@ void Schematic::copyPaintings(int& x1, int& y1, int& x2, int& y2,
         }
         else pp = Paintings->next();
 }
+
+// vim:ts=8:sw=2:noet

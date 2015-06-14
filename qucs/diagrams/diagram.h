@@ -87,6 +87,7 @@ public:
   int  checkColumnWidth(const QString&, const QFontMetrics&, int, int, int);
 
   virtual bool insideDiagram(float, float);
+  Marker* setMarker(int x, int y);
 
   QString Name; // identity of diagram type (e.g. Polar), used for saving etc.
   QPen    GridPen;

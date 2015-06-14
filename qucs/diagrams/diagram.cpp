@@ -315,6 +315,25 @@ bool Diagram::insideDiagram(float x, float y)
 }
 
 /*!
+   (try to) set a Marker to a diagram
+*/
+Marker* Diagram::setMarker(int x, int y)
+{
+  if(getSelected(x, y)) {
+    // test all graphs of the diagram
+    foreach(Graph *pg,Graphs) {
+      int n  = pg->getSelected(x-cx, cy-y); // sic!
+      if(n >= 0) {
+	Marker *pm = new Marker(this, pg, n, x-cx, y-cy);
+	pg->Markers.append(pm);
+	return pm;
+      }
+    }
+  }
+  return NULL;
+}
+
+/*!
    Cohen-Sutherland clipping algorithm
 */
 void Diagram::rectClip(float* &p)
@@ -1967,3 +1986,5 @@ else {  // not logarithmical
   else  x3 = x2+maxWidth+14;
   return true;
 }
+
+// vim:ts=8:sw=2:noet
