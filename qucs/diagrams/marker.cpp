@@ -168,16 +168,7 @@ void Marker::initText(int n)
   if(py != &Dummy)   // 2D in 3D diagram ?
     py = VarPos + 1;
   Diag->calcCoordinate(px, pz, py, &fCX, &fCY, pa);
-
-  if(!Diag->insideDiagram(fCX, fCY)) {
-    // if marker out of valid bounds, point to origin
-    if((Diag->Name.left(4) != "Rect") && (Diag->Name != "Curve")) {
-      fCX = float(Diag->x2 >> 1);
-      fCY = float(Diag->y2 >> 1);
-    }
-    else
-      fCX = fCY = 0.0;
-  }
+  Diag->finishMarkerCoordinates(fCX, fCY);
 
   cx = int(fCX+0.5);
   cy = int(fCY+0.5);

@@ -65,6 +65,7 @@ public:
   virtual int  calcDiagram() { return 0; };
   virtual void calcCoordinate
                (double* &, double* &, double* &, float*, float*, Axis*) {};
+  virtual void finishMarkerCoordinates(float&, float&) const;
   virtual void calcLimits() {};
   
   virtual void paint(ViewPainter*);
@@ -86,7 +87,7 @@ public:
   bool sameDependencies(Graph*, Graph*);
   int  checkColumnWidth(const QString&, const QFontMetrics&, int, int, int);
 
-  virtual bool insideDiagram(float, float);
+  virtual bool insideDiagram(float, float) const;
   Marker* setMarker(int x, int y);
 
   QString Name; // identity of diagram type (e.g. Polar), used for saving etc.
@@ -115,7 +116,7 @@ protected:
   bool calcYAxis(Axis*, int);
   virtual void createAxisLabels();
 
-  int  regionCode(float, float);
+  int  regionCode(float, float) const;
   virtual void clip(float* &);
   void rectClip(float* &);
 

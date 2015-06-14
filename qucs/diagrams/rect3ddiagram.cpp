@@ -47,7 +47,7 @@ Rect3DDiagram::Rect3DDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
 
   Mem = pMem = 0;  // auxiliary buffer for hidden lines
 
-  Name = "Rect3D";
+  Name = "Rect3D"; // BUG
   // symbolic diagram painting
   Lines.append(new Line(0, 0, cx,  0, QPen(Qt::black,0)));
   Lines.append(new Line(0, 0,  0, cy, QPen(Qt::black,0)));
@@ -185,6 +185,14 @@ void Rect3DDiagram::calcCoordinate(double* &xD, double* &zD, double* &yD,
 
   *px = float(xorig);
   *py = float(yorig);
+}
+
+// --------------------------------------------------------------
+void Rect3DDiagram::finishMarkerCoordinates(float& fCX, float& fCY) const
+{
+  if(!insideDiagram(fCX, fCY)) {
+	  fCX = fCY = 0.0;
+  }
 }
 
 // ------------------------------------------------------------
@@ -1133,7 +1141,7 @@ void Rect3DDiagram::createAxisLabels()
 }
 
 // ------------------------------------------------------------
-bool Rect3DDiagram::insideDiagram(float x, float y)
+bool Rect3DDiagram::insideDiagram(float x, float y) const
 {
   return (regionCode(x, y) == 0);
 }

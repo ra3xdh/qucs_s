@@ -288,7 +288,7 @@ void Diagram::createAxisLabels()
 }
 
 // ------------------------------------------------------------
-int Diagram::regionCode(float x, float y)
+int Diagram::regionCode(float x, float y) const
 {
   int code=0;   // code for clipping
   if(x < 0.0)
@@ -306,7 +306,7 @@ int Diagram::regionCode(float x, float y)
 
 // ------------------------------------------------------------
 // Is virtual. This one is for round diagrams only.
-bool Diagram::insideDiagram(float x, float y)
+bool Diagram::insideDiagram(float x, float y) const
 {
   float R = float(x2)/2.0 + 1.0; // +1 seems better (graph sometimes little outside)
   x -= R;
@@ -1219,6 +1219,15 @@ void Diagram::getCenter(int& x, int& y)
 Diagram* Diagram::newOne()
 {
   return new Diagram();
+}
+
+// ------------------------------------------------------------
+void Diagram::finishMarkerCoordinates(float& fCX, float& fCY) const
+{
+  if(!insideDiagram(fCX, fCY)) {
+      fCX = float(x2 >> 1);
+      fCY = float(y2 >> 1);
+  }
 }
 
 // ------------------------------------------------------------

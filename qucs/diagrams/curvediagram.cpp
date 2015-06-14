@@ -42,7 +42,7 @@ CurveDiagram::CurveDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
   x2 = y2 = 200;    // initial size of diagram
   x3 = 207;    // with some distance for right axes text
 
-  Name = "Curve";
+  Name = "Curve"; // BUG.
   calcDiagram();
 }
 
@@ -74,6 +74,14 @@ void CurveDiagram::calcCoordinate(double* &, double* &yD, double* &,
 }
 
 // --------------------------------------------------------------
+void CurveDiagram::finishMarkerCoordinates(float& fCX, float& fCY) const
+{
+  if(!insideDiagram(fCX, fCY)) {
+	  fCX = fCY = 0.0;
+  }
+}
+
+// ------------------------------------------------------------
 void CurveDiagram::calcLimits()
 {
   int i;
@@ -227,7 +235,7 @@ Frame:
 }
 
 // ------------------------------------------------------------
-bool CurveDiagram::insideDiagram(float x, float y)
+bool CurveDiagram::insideDiagram(float x, float y) const
 {
   return (regionCode(x, y) == 0);
 }

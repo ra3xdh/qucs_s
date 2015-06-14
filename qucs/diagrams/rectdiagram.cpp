@@ -44,7 +44,7 @@ RectDiagram::RectDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
   y2 = 160;
   x3 = 247;    // with some distance for right axes text
 
-  Name = "Rect";
+  Name = "Rect"; // BUG
   calcDiagram();
 }
 
@@ -80,6 +80,14 @@ void RectDiagram::calcCoordinate(double* &xD, double* &yD, double* &,
 
   if(!std::isfinite(*px))  *px = 0.0;
   if(!std::isfinite(*py))  *py = 0.0;
+}
+
+// --------------------------------------------------------------
+void RectDiagram::finishMarkerCoordinates(float& fCX, float& fCY) const
+{
+  if(!insideDiagram(fCX, fCY)) {
+	  fCX = fCY = 0.0;
+  }
 }
 
 // --------------------------------------------------------------
@@ -225,7 +233,7 @@ Frame:
 }
 
 // ------------------------------------------------------------
-bool RectDiagram::insideDiagram(float x, float y)
+bool RectDiagram::insideDiagram(float x, float y) const
 {
   return (regionCode(x, y) == 0);
 }
