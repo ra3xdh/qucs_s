@@ -45,14 +45,20 @@ public:
   bool    getSelected(int, int);
   Marker* sameNewOne(Graph*);
   void    getTextSize();
+public: // power matching stuff. some sort of VarPos (ab?)use
+  double  powFreq() const {return VarPos[0];}
+  double  powReal() const {return VarPos[nVarPos];}
+  double  powImag() const {return VarPos[nVarPos+1];}
 
   Diagram *Diag;     // the corresponding diagram
   Graph   *pGraph;   // the corresponding graph
 
+private:
   int    nVarPos;   // number of values in "VarPos"
   double *VarPos;   // values the marker is pointing to
   float  fCX, fCY;  // coordinates for the line from graph to marker body
 
+public:
   QString Text;     // the string to be displayed in the marker text
   bool transparent; // background shines through marker body
 
