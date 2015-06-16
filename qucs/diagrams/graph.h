@@ -26,6 +26,7 @@
 #include <Q3PtrList>
 #include <QDateTime>
 
+#include <assert.h>
 
 // meaning of the values in a graph "Points" list
 #define STROKEEND   -2
@@ -59,18 +60,31 @@ public:
   Graph(const QString& _Line="");
  ~Graph();
 
+  struct ScrPt{
+	  float Scr;
+	  //double Data; not yet
+  };
+  typedef std::vector<ScrPt> container;
+  typedef container::iterator iterator;
+  typedef container::const_iterator const_iterator;
+
   void    paint(ViewPainter*, int, int);
   void    paintLines(ViewPainter*, int, int);
   QString save();
   bool    load(const QString&);
   int     getSelected(int, int);
   Graph*  sameNewOne();
+  void clear(){ScrPoints.resize(0);}
+  void resizeScrPoints(size_t s){assert(s>=ScrPoints.size()); ScrPoints.resize(s);}
+  iterator begin(){return ScrPoints.begin();}
+  iterator end(){return ScrPoints.end();}
+  const_iterator begin() const{return ScrPoints.begin();}
+  const_iterator end() const{return ScrPoints.end();}
 
   QDateTime lastLoaded;  // when it was loaded into memory
   int     yAxisNo;       // which y axis is used
   Q3PtrList<DataX>  cPointsX;
   double *cPointsY;
-  float  *ScrPoints; // data in screen coordinates
   int     countY;    // number of curves
   QString Var;
   QColor  Color;
@@ -81,6 +95,15 @@ public:
   // for tabular diagram
   int  Precision;   // number of digits to show
   int  numMode;     // real/imag or polar (deg/rad)
+
+private: // painting
+  void drawLines(int, int, ViewPainter*) const;
+  void drawStarSymbols(int, int, ViewPainter*) const;
+  void drawCircleSymbols(int, int, ViewPainter*) const;
+  void drawArrowSymbols(int, int, ViewPainter*) const;
+
+private:
+  std::vector<ScrPt> ScrPoints; // data in screen coordinates
 };
 
 #endif

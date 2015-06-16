@@ -239,7 +239,7 @@ bool RectDiagram::insideDiagram(float x, float y) const
 }
 
 // ------------------------------------------------------------
-void RectDiagram::clip(float* &p)
+void RectDiagram::clip(Graph::iterator &p) const
 {
   rectClip(p);
 }

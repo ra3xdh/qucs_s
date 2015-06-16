@@ -952,20 +952,20 @@ void Rect3DDiagram::calcData(Graph *g)
   if(!pMem)  return;
   if(!g->cPointsY) return;
 
-  int tmp;
   int Size = ((2*(g->cPointsX.getFirst()->count) + 1) * g->countY) + 10;
   Size *= 2;  // memory for cross grid lines
 
   double *py;
   if(g->countY > 1)  py = g->cPointsX.at(1)->Points;
 
-  float *p = (float*)malloc( Size*sizeof(float) );  // create memory for points
-  float *p_end;
-  g->ScrPoints = p_end = p;
+  g->resizeScrPoints(Size);
+  auto p = g->begin();
+  auto p_end = g->begin();
   p_end += Size - 9;   // limit of buffer
 
 
-  *(p++) = STROKEEND;
+  p->Scr = STROKEEND;
+  ++p;
   float dx=0.0, dy=0.0, xtmp=0.0, ytmp=0.0;
   double Stroke=10.0, Space=10.0; // length of strokes and spaces in pixel
   switch(g->Style) {
@@ -981,22 +981,21 @@ void Rect3DDiagram::calcData(Graph *g)
               }
               else  break;
 	    }
-
           FIT_MEMORY_SIZE;  // need to enlarge memory block ?
-          *(p++) = pMem->x;
-          *(p++) = pMem->y;
+	  (p++)->Scr = pMem->x;
+	  (p++)->Scr = pMem->y;
           break;
         }
 
         FIT_MEMORY_SIZE;  // need to enlarge memory block ?
-        if(pMem->done & 8)  *(p++) = BRANCHEND;  // new branch
+        if(pMem->done & 8)  (p++)->Scr = BRANCHEND;  // new branch
 
         if(pMem->done & 4)   // point invisible ?
-          if( *(p-1) >= 0 )  // line already interrupted ?
-            *(p++) = STROKEEND;
+          if( (p-1)->Scr >= 0 )  // line already interrupted ?
+            (p++)->Scr = STROKEEND;
 
       } while(((pMem++)->done & 256) == 0);
-      *p = GRAPHEND;
+      p->Scr = GRAPHEND;
       return;
 
     case GRAPHSTYLE_DASH:
@@ -1021,15 +1020,15 @@ void Rect3DDiagram::calcData(Graph *g)
               else  break;
 	    }
 
-          *(p++) = pMem->x;
-          *(p++) = pMem->y;
+          (p++)->Scr = pMem->x;
+          (p++)->Scr = pMem->y;
           break;
         }
 
         if(pMem->done & 8)
-          *(p++) = BRANCHEND;  // new branch
+          (p++)->Scr = BRANCHEND;  // new branch
       } while(((pMem++)->done & 512) == 0);
-      *p = GRAPHEND;
+      p->Scr = GRAPHEND;
       return;
   }
 
@@ -1058,36 +1057,36 @@ void Rect3DDiagram::calcData(Graph *g)
  
     if(Counter > 1) {
       if(Counter == 2) {
-	*(p++) = dx;    // if first points of branch -> paint first one
-	*(p++) = dy;
+	(p++)->Scr = dx;    // if first points of branch -> paint first one
+	(p++)->Scr = dy;
       }
       dx = xtmp - dx;
       dy = ytmp - dy;
       dist += sqrt(double(dx*dx + dy*dy)); // distance between points
       if((Flag == 1) && (dist <= 0.0)) {
 	FIT_MEMORY_SIZE;  // need to enlarge memory block ?
-	*(p++) = xtmp;    // if stroke then save points
-	*(p++) = ytmp;
+	(p++)->Scr = xtmp;    // if stroke then save points
+	(p++)->Scr = ytmp;
       }
       else {
         alpha = atan2(double(dy), double(dx));   // slope for interpolation
         while(dist > 0) {   // stroke or space finished ?
 	  FIT_MEMORY_SIZE;  // need to enlarge memory block ?
 
-	  *(p++) = xtmp - float(dist*cos(alpha)); // linearly interpolate
-	  *(p++) = ytmp - float(dist*sin(alpha));
+	  (p++)->Scr = xtmp - float(dist*cos(alpha)); // linearly interpolate
+	  (p++)->Scr = ytmp - float(dist*sin(alpha));
 
           if(Flag == 0) {
             dist -= Stroke;
             if(dist <= 0) {
-	      *(p++) = xtmp;  // don't forget point after ...
-	      *(p++) = ytmp;  // ... interpolated point
+	      (p++)->Scr = xtmp;  // don't forget point after ...
+	      (p++)->Scr = ytmp;  // ... interpolated point
             }
           }
           else {
 	    dist -= Space;
-	    if(*(p-3) < 0)  p -= 2;
-	    else *(p++) = STROKEEND;
+	    if((p-3)->Scr < 0)  p -= 2;
+	    else (p++)->Scr = STROKEEND;
           }
           Flag ^= 1; // toggle between stroke and space
         }
@@ -1100,25 +1099,25 @@ void Rect3DDiagram::calcData(Graph *g)
     dy = ytmp;
 
     if(pMem->done & 8) {
-      if(*(p-3) == STROKEEND)
+      if((p-3)->Scr == STROKEEND)
         p -= 3;  // no single point after "no stroke"
-      else if(*(p-3) == BRANCHEND) {
-        if((*(p-2) < 0) || (*(p-1) < 0))
+      else if((p-3)->Scr == BRANCHEND) {
+        if(((p-2)->Scr < 0) || ((p-1)->Scr < 0))
           p -= 2;  // erase last hidden point
       }
-      *(p++) = BRANCHEND;  // new branch
+      (p++)->Scr = BRANCHEND;  // new branch
       Counter = 0;
       Flag = 1;
       dist = -Stroke;
     }
 
     if(pMem->done & 4)   // point invisible ?
-      if( *(p-1) >= 0 )  // line already interrupted ?
-        *(p++) = STROKEEND;
+      if( (p-1)->Scr >= 0 )  // line already interrupted ?
+        (p++)->Scr = STROKEEND;
 
   } while(((pMem++)->done & 256) == 0);
 
-  *p = GRAPHEND;
+  p->Scr = GRAPHEND;
 
 
 /*
@@ -1161,3 +1160,5 @@ Element* Rect3DDiagram::info(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne)  return new Rect3DDiagram();
   return 0;
 }
+
+// vim:ts=8:sw=2:noet

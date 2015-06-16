@@ -35,13 +35,13 @@
 // Enlarge memory block if neccessary.
 #define  FIT_MEMORY_SIZE  \
   if(p >= p_end) {     \
+    int pos = p - g->begin(); \
+    assert(pos<Size); \
     Size += 256;        \
-    tmp = p - g->ScrPoints; \
-    p = p_end = g->ScrPoints = (float*)realloc(g->ScrPoints, Size*sizeof(float)); \
-    p += tmp; \
-    p_end += Size - 9; \
-  } \
-
+    g->resizeScrPoints(Size); \
+    p = g->begin() + pos; \
+    p_end = g->begin() + (Size - 9); \
+  }
 
 struct Axis {
   double  min, max; // least and greatest values of all graph data
@@ -117,8 +117,8 @@ protected:
   virtual void createAxisLabels();
 
   int  regionCode(float, float) const;
-  virtual void clip(float* &);
-  void rectClip(float* &);
+  virtual void clip(Graph::iterator &) const;
+  void rectClip(Graph::iterator &) const;
 
   virtual void calcData(Graph*);
 

@@ -42,7 +42,6 @@ public:
   void map(int, int, int&, int&);
   void drawPoint(int, int);
   void drawLine (int, int, int, int);
-  void drawLines(int, int, float*);
   void drawRect (int, int, int, int);
   void drawRectD(int, int, int, int);
   void drawRoundRect(int, int, int, int);
@@ -53,9 +52,6 @@ public:
   void fillRect(int, int, int, int, const QColor&);
   void eraseRect(int, int, int, int);
   void drawResizeRect(int, int);
-  void drawStarSymbols(int, int, float*);
-  void drawCircleSymbols(int, int, float*);
-  void drawArrowSymbols(int, int, float*);
 
   QPainter *Painter;
   float Scale, FontScale, PrintScale, DX , DY;
