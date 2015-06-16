@@ -586,7 +586,11 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
     ButtAdd->setEnabled(true);
     ButtRem->setEnabled(true);
 
-    if (Comp->Description == "equation") {
+    QStringList eqns_desc;
+    eqns_desc<<"equation"<<".PARAM section"
+             <<".GLOBAL_PARAM section"
+             <<".IC section"<<".NODESET section";
+    if (eqns_desc.contains(Comp->Description)) {
       ButtUp->setEnabled(true);
       ButtDown->setEnabled(true);
     }
@@ -1198,8 +1202,11 @@ void ComponentDialog::slotButtAdd()
 */
 void ComponentDialog::slotButtRem()
 {
-  if(prop->rowCount() < 3)
-    return;  // the last property cannot be removed
+  if ((prop->rowCount() < 3)&&Comp->Model=="Eqn")
+     return;  // the last property cannot be removed
+  if (prop->rowCount() < 2)
+     return;  // the last property cannot be removed
+
 
   QTableWidgetItem *item = prop->selectedItems()[0];
   int row = item->row();
