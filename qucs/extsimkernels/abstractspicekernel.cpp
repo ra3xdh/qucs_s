@@ -384,6 +384,7 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
 void AbstractSpiceKernel::parseNoiseOutput(QString ngspice_file, QList<QList<double> > &sim_points,
                                            QStringList &var_list, bool &ParSwp)
 {
+    var_list.clear();
     var_list.append(""); // dummy indep var
     var_list.append("inoise_total");
     var_list.append("onoise_total");
