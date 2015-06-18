@@ -184,8 +184,8 @@ int Graph::getSelected(int x, int y)
     // for graph symbols
     while(!pp->isGraphEnd()) {
       if(!pp->isStrokeEnd()) {
-        dx  = x - int((pp++)->Scr);
-        dy  = y - int((pp++)->Scr);
+        dx  = x - int((pp++)->getScr());
+        dy  = y - int((pp++)->getScr());
 
         if(dx < -5) continue;
         if(dx >  5) continue;
@@ -204,22 +204,23 @@ int Graph::getSelected(int x, int y)
   // for graph lines
   while(!pp->isGraphEnd()) {
     while(!pp->isBranchEnd()) {
-      x1 = int((pp++)->Scr);
-      y1 = int((pp++)->Scr);
+      x1 = int((pp++)->getScr());
+      y1 = int((pp++)->getScr());
       dx  = x - x1;
       dy  = y - y1;
 
-      dx2 = int(pp->Scr);
-      if(pp->isStrokeEnd()) {  // end of stroke ?
+      if(pp->isData()){
+        dx2 = int(pp->getScr());
+      }else if(pp->isStrokeEnd()) {  // end of stroke ?
         if(pp->isBranchEnd()) break;
         pp++;
-        dx2 = int(pp->Scr);  // go on as graph can also be selected between strokes
+        dx2 = int(pp->getScr());  // go on as graph can also be selected between strokes
         if(pp->isBranchEnd()) break;
       }
       if(dx < -5) { if(x < dx2-5) continue; } // point between x coordinates ?
       else { if(x > 5) if(x > dx2+5) continue; }
 
-      dy2 = int((pp+1)->Scr);
+      dy2 = int((pp+1)->getScr());
       if(dy < -5) { if(y < dy2-5) continue; } // point between y coordinates ?
       else { if(y > 5) if(y > dy2+5) continue; }
 
@@ -290,11 +291,36 @@ void Graph::findSample(double*VarPos) const
 #define GRAPHEND    -100
 // -----------------------------------------------------------------------
 // screen points pseudo iterator implementation.
-void Graph::ScrPt::setStrokeEnd(){Scr=STROKEEND;}
-void Graph::ScrPt::setBranchEnd(){Scr=BRANCHEND;}
-void Graph::ScrPt::setGraphEnd(){Scr=GRAPHEND;}
+void Graph::ScrPt::setStrokeEnd()
+{
+  Scr = STROKEEND;
+}
+void Graph::ScrPt::setBranchEnd()
+{
+  Scr = BRANCHEND;
+}
+void Graph::ScrPt::setGraphEnd()
+{
+  Scr = GRAPHEND;
+}
+bool Graph::ScrPt::isData() const{return Scr>=0.;}
 bool Graph::ScrPt::isStrokeEnd() const{return Scr<=STROKEEND;}
 bool Graph::ScrPt::isBranchEnd() const{return Scr<=BRANCHEND;}
 bool Graph::ScrPt::isGraphEnd() const{return Scr<=GRAPHEND;}
+
+void Graph::ScrPt::setScr(float x)
+{
+  assert(x>=0);
+  if(Scr>=0){
+    Scr = x;
+  }else{
+    assert(false); // incomplete;
+  }
+}
+float Graph::ScrPt::getScr() const
+{
+  assert(Scr>=0);
+  return Scr;
+}
 
 // vim:ts=8:sw=2:et

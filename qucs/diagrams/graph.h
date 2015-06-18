@@ -88,16 +88,24 @@ public:
   Graph(const Diagram*, const QString& _Line="");
  ~Graph();
 
-  struct ScrPt{
+  class ScrPt{
     float Scr;
     //double Data; not yet
+  public:
+    ScrPt() : Scr(0){}
+    ~ScrPt(){}
 
     void setStrokeEnd();
     void setBranchEnd();
     void setGraphEnd();
+    void setScr(float);
+
+    bool isData() const;
     bool isStrokeEnd() const;
     bool isBranchEnd() const;
     bool isGraphEnd() const;
+
+    float getScr() const;
   };
   typedef std::vector<ScrPt> container;
   typedef container::iterator iterator;
@@ -160,3 +168,5 @@ private:
 };
 
 #endif
+
+// vim:ts=8:sw=2:noet

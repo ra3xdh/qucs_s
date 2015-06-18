@@ -342,14 +342,14 @@ void Diagram::rectClip(Graph::iterator &p) const
 {
   int code, z=0;
   float x=0, y=0, dx, dy;
-  float x_1 = (p-4)->Scr, y_1 = (p-3)->Scr;
-  float x_2 = (p-2)->Scr, y_2 = (p-1)->Scr;
+  float x_1 = (p-4)->getScr(), y_1 = (p-3)->getScr();
+  float x_2 = (p-2)->getScr(), y_2 = (p-1)->getScr();
 
   int code1 = regionCode(x_1, y_1);
   int code2 = regionCode(x_2, y_2);
   if((code1 | code2) == 0)  return;  // line completly inside ?
 
-  if(code1 != 0) if((p-5)->Scr >= 0) { // is there already a line end flag ?
+  if(code1 != 0) if((p-5)->isData()) {
     p++;
     (p-5)->setStrokeEnd();
   }
@@ -358,8 +358,8 @@ void Diagram::rectClip(Graph::iterator &p) const
 
   if(code2 != 0) {
     p->setStrokeEnd();
-    (p+1)->Scr = x_2;
-    (p+2)->Scr = y_2;
+    (p+1)->setScr(x_2);
+    (p+2)->setScr(y_2);
     z += 3;
   }
 
@@ -403,16 +403,16 @@ void Diagram::rectClip(Graph::iterator &p) const
       goto endWithHidden; // line not visible at all ?
   }
 
-  (p-4)->Scr = x_1;
-  (p-3)->Scr = y_1;
-  (p-2)->Scr = x_2;
-  (p-1)->Scr = y_2;
+  (p-4)->setScr(x_1);
+  (p-3)->setScr(y_1);
+  (p-2)->setScr(x_2);
+  (p-1)->setScr(y_2);
   p += z;
   return;
 
 endWithHidden:
-    (p-4)->Scr = x_2;
-    (p-3)->Scr = y_2;
+    (p-4)->setScr(x_2);
+    (p-3)->setScr(y_2);
     p -= 2;
 }
 
@@ -422,8 +422,8 @@ endWithHidden:
 void Diagram::clip(Graph::iterator &p) const
 {
   float R = float(x2) / 2.0;
-  float x_1 = (p-4)->Scr - R, y_1 = (p-3)->Scr - R;
-  float x_2 = (p-2)->Scr - R, y_2 = (p-1)->Scr - R;
+  float x_1 = (p-4)->getScr() - R, y_1 = (p-3)->getScr() - R;
+  float x_2 = (p-2)->getScr() - R, y_2 = (p-1)->getScr() - R;
 
   float dt1 = R*R;   // square of radius
   float dt2 = dt1 - x_2*x_2 - y_2*y_2;
@@ -431,7 +431,7 @@ void Diagram::clip(Graph::iterator &p) const
 
   if(dt1 >= 0.0) if(dt2 >= 0.0)  return;  // line completly inside ?
 
-  if(dt1 < 0.0) if((p-5)->Scr >= 0.0) { // is there already a line end flag ?
+  if(dt1 < 0.0) if((p-5)->isData()) { // is there already a line end flag ?
     p++;
     (p-5)->setStrokeEnd();
   }
@@ -447,8 +447,8 @@ void Diagram::clip(Graph::iterator &p) const
   x_2 += R;
   y_2 += R;
   if(F <= 0.0) {   // line not visible at all ?
-    (p-4)->Scr = x_2;
-    (p-3)->Scr = y_2;
+    (p-4)->setScr(x_2);
+    (p-3)->setScr(y_2);
     p -= 2;
     return;
   }
@@ -457,29 +457,29 @@ void Diagram::clip(Graph::iterator &p) const
   R   = sqrt(F);
   dt1 = C - R;
   if((dt1 > 0.0) && (dt1 < D)) { // intersection outside start/end point ?
-    (p-4)->Scr = x_1 - x*dt1 / D;
-    (p-3)->Scr = y_1 - y*dt1 / D;
+    (p-4)->setScr(x_1 - x*dt1 / D);
+    (p-3)->setScr(y_1 - y*dt1 / D);
     code |= 1;
   }
   else {
-    (p-4)->Scr = x_1;
-    (p-3)->Scr = y_1;
+    (p-4)->setScr(x_1);
+    (p-3)->setScr(y_1);
   }
 
   dt2 = C + R;
   if((dt2 > 0.0) && (dt2 < D)) { // intersection outside start/end point ?
-    (p-2)->Scr = x_1 - x*dt2 / D;
-    (p-1)->Scr = y_1 - y*dt2 / D;
+    (p-2)->setScr(x_1 - x*dt2 / D);
+    (p-1)->setScr(y_1 - y*dt2 / D);
     p->setStrokeEnd();
     p += 3;
     code |= 2;
   }
-  (p-2)->Scr = x_2;
-  (p-1)->Scr = y_2;
+  (p-2)->setScr(x_2);
+  (p-1)->setScr(y_2);
 
   if(code == 0) {   // intersections both lie outside ?
-    (p-4)->Scr = x_2;
-    (p-3)->Scr = y_2;
+    (p-4)->setScr(x_2);
+    (p-3)->setScr(y_2);
     p -= 2;
   }
 
@@ -523,13 +523,13 @@ void Diagram::calcData(Graph *g)
     case GRAPHSTYLE_SOLID: // ***** solid line ****************************
       for(i=g->countY; i>0; i--) {  // every branch of curves
 	px = g->axis(0)->Points;
-	calcCoordinate(px, pz, py, &p->Scr, &(p+1)->Scr, pa);
+	calcCoordinateP(px, pz, py, p, pa);
 	++px;
 	pz += 2;
 	p += 2;
 	for(z=g->axis(0)->count-1; z>0; z--) {  // every point
 	  FIT_MEMORY_SIZE;  // need to enlarge memory block ?
-	  calcCoordinate(px, pz, py, &p->Scr, &(p+1)->Scr, pa);
+	  calcCoordinateP(px, pz, py, p, pa);
 	  ++px;
 	  pz += 2;
 	  p += 2;
@@ -539,7 +539,7 @@ void Diagram::calcData(Graph *g)
 	if((p-3)->isStrokeEnd() && !(p-3)->isBranchEnd())
 	  p -= 3;  // no single point after "no stroke"
 	else if((p-3)->isBranchEnd() && !(p-1)->isGraphEnd()) {
-	  if(((p-2)->Scr < 0) || ((p-1)->Scr < 0))
+	  if((!(p-2)->isData()) || (!(p-1)->isData()))
 	    p -= 2;  // erase last hidden point
 	}
 	(p++)->setBranchEnd();
@@ -567,10 +567,10 @@ for(int zz=0; zz<z; zz+=2)
       for(i=g->countY; i>0; i--) {  // every branch of curves
         px = g->axis(0)->Points;
         for(z=g->axis(0)->count; z>0; z--) {  // every point
-          calcCoordinate(px, pz, py, &p->Scr, &(p+1)->Scr, pa);
+          calcCoordinateP(px, pz, py, p, pa);
           ++px;
           pz += 2;
-          if(insideDiagram(p->Scr, (p+1)->Scr))    // within diagram ?
+          if(insideDiagramP(p))    // within diagram ?
             p += 2;
         }
 	(p++)->setBranchEnd();
@@ -592,9 +592,9 @@ for(int zz=0; zz<60; zz+=2)
     calcCoordinate(px, pz, py, &xtmp, &ytmp, pa);
     ++px;
     pz += 2;
-    (p++)->Scr = xtmp;
+    (p++)->setScr(xtmp);
     assert(p!=g->end());
-    (p++)->Scr = ytmp;
+    (p++)->setScr(ytmp);
     assert(p!=g->end());
     Counter = 1;
     for(z=g->axis(0)->count-1; z>0; z--) {
@@ -609,9 +609,9 @@ for(int zz=0; zz<60; zz+=2)
       if(Flag == 1) if(dist <= 0.0) {
 	FIT_MEMORY_SIZE;  // need to enlarge memory block ?
 
-	(p++)->Scr = xtmp;    // if stroke then save points
+	(p++)->setScr(xtmp);    // if stroke then save points
 	assert(p!=g->end());
-	(p++)->Scr = ytmp;
+	(p++)->setScr(ytmp);
 	assert(p!=g->end());
 	if((++Counter) >= 2)  clip(p);
 	continue;
@@ -620,18 +620,18 @@ for(int zz=0; zz<60; zz+=2)
       while(dist > 0) {   // stroke or space finished ?
 	FIT_MEMORY_SIZE;  // need to enlarge memory block ?
 
-	(p++)->Scr = xtmp - float(dist*cos(alpha)); // linearly interpolate
+	(p++)->setScr(xtmp - float(dist*cos(alpha))); // linearly interpolate
 	assert(p!=g->end());
-	(p++)->Scr = ytmp - float(dist*sin(alpha));
+	(p++)->setScr(ytmp - float(dist*sin(alpha)));
 	assert(p!=g->end());
 	if((++Counter) >= 2)  clip(p);
 
         if(Flag == 0) {
           dist -= Stroke;
           if(dist <= 0) {
-	    (p++)->Scr = xtmp;  // don't forget point after ...
+	    (p++)->setScr(xtmp);  // don't forget point after ...
 	    assert(p!=g->end());
-	    (p++)->Scr = ytmp;  // ... interpolated point
+	    (p++)->setScr(ytmp);  // ... interpolated point
 	    assert(p!=g->end());
 	    if((++Counter) >= 2)  clip(p);
 	    assert(p<g->end());
@@ -639,7 +639,7 @@ for(int zz=0; zz<60; zz+=2)
         }
         else {
 	  dist -= Space;
-	  if((p-3)->Scr < 0)  p -= 2;
+	  if(!(p-3)->isData())  p -= 2;
 	  else (p++)->setStrokeEnd();
 	  if(Counter < 0)  Counter = -50000;   // if auto-scale
 	  else  Counter = 0;
@@ -653,7 +653,7 @@ for(int zz=0; zz<60; zz+=2)
       p -= 3;  // no single point after "no stroke"
       assert(p>g->begin());
     } else if((p-3)->isBranchEnd() && !(p-3)->isGraphEnd()) {
-      if(((p-2)->Scr < 0) || ((p-1)->Scr < 0))
+      if((!(p-2)->isData()) || (!(p-1)->isData()))
         p -= 2;  // erase last hidden point
 	assert(p>g->begin());
     }
@@ -2044,5 +2044,21 @@ else {  // not logarithmical
   else  x3 = x2+maxWidth+14;
   return true;
 }
+
+// convenience wrappers
+bool Diagram::insideDiagramP(Graph::iterator const& p) const
+{
+  float f1 = p->getScr();
+  float f2 = (p+1)->getScr();
+  return insideDiagram(f1,f2);
+}
+void Diagram::calcCoordinateP (const double*x, const double*y, const double*z, Graph::iterator& p, Axis const* A) const
+{
+  float f1, f2;
+  calcCoordinate(x, y, z, &f1, &f2, A);
+  p->setScr(f1);
+  (p+1)->setScr(f2);
+};
+
 
 // vim:ts=8:sw=2:noet
