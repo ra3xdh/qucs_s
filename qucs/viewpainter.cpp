@@ -111,29 +111,29 @@ void Graph::drawLines(int x0, int y0, ViewPainter *p) const
   DX_ = p->DX + float(x0)*Scale;
   DY_ = p->DY + float(y0)*Scale;
 
-  while(pp->Scr > GRAPHEND) {
+  while(!pp->isGraphEnd()) {
     if(pp->Scr >= 0) {
       x1 = DX_ + (pp)->Scr*Scale;
       y1 = DY_ - (pp+1)->Scr*Scale;
       Painter->drawPoint(QPointF(x1, y1));
     }
-    while(pp->Scr > BRANCHEND) {   // until end of branch
+    while(!pp->isBranchEnd()) {
       x1 = DX_ + (pp)->Scr*Scale;
       y1 = DY_ - (pp+1)->Scr*Scale;
       pp += 2;
-      while(pp->Scr > STROKEEND) { // until end of stroke
+      while(!pp->isStrokeEnd()) {
         x2 = DX_ + (pp)->Scr*Scale;
         y2 = DY_ - (pp+1)->Scr*Scale;
         Painter->drawLine(QLineF(x1, y1, x2, y2));
         pp += 2;
-        if(pp->Scr <= STROKEEND)  break;
+        if(pp->isStrokeEnd())  break;
 
         x1 = DX_ + pp->Scr*Scale;
         y1 = DY_ - (pp+1)->Scr*Scale;
         Painter->drawLine(QLineF(x2, y2, x1, y1));
         pp += 2;
       }
-      if(pp->Scr <= BRANCHEND)  break;   // end of line ?
+      if(pp->isBranchEnd())  break;
       pp++;
     }
     pp++;
@@ -154,7 +154,7 @@ void Graph::drawStarSymbols(int x0i, int y0i, ViewPainter *p) const
   DX_ = p->DX + float(x0i)*Scale;
   DY_ = p->DY + float(y0i)*Scale;
 
-  while(pp->Scr > GRAPHEND) {
+  while(!pp->isGraphEnd()) {
     if(pp->Scr >= 0) {
       z = DX_ + (pp++)->Scr*Scale;
       x0 = z-5.0*Scale;
@@ -188,7 +188,7 @@ void Graph::drawCircleSymbols(int x0i, int y0i, ViewPainter *p) const
   DX_ = p->DX + float(x0i)*Scale;
   DY_ = p->DY + float(y0i)*Scale;
 
-  while(pp->Scr > GRAPHEND) {
+  while(!pp->isGraphEnd()) {
     if(pp->Scr >= 0) {
       x0 = DX_ + ((pp++)->Scr-4.0)*Scale;
       y0 = DY_ - ((pp++)->Scr+4.0)*Scale;
@@ -213,7 +213,7 @@ void Graph::drawArrowSymbols(int x0i, int y0i, ViewPainter *p) const
   DY_ = p->DY + float(y0i)*Scale;
   y2 = DY_;
 
-  while(pp->Scr > GRAPHEND) {
+  while(!pp->isGraphEnd()) {
     if(pp->Scr >= 0) {
       x0 = DX_ + (pp++)->Scr*Scale;
       x1 = x0-4.0*Scale;

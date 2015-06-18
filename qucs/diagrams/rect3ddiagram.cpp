@@ -964,7 +964,7 @@ void Rect3DDiagram::calcData(Graph *g)
   p_end += Size - 9;   // limit of buffer
 
 
-  p->Scr = STROKEEND;
+  p->setStrokeEnd();
   ++p;
   float dx=0.0, dy=0.0, xtmp=0.0, ytmp=0.0;
   double Stroke=10.0, Space=10.0; // length of strokes and spaces in pixel
@@ -988,14 +988,14 @@ void Rect3DDiagram::calcData(Graph *g)
         }
 
         FIT_MEMORY_SIZE;  // need to enlarge memory block ?
-        if(pMem->done & 8)  (p++)->Scr = BRANCHEND;  // new branch
+        if(pMem->done & 8)  (p++)->setBranchEnd();
 
         if(pMem->done & 4)   // point invisible ?
           if( (p-1)->Scr >= 0 )  // line already interrupted ?
-            (p++)->Scr = STROKEEND;
+            (p++)->setStrokeEnd();
 
       } while(((pMem++)->done & 256) == 0);
-      p->Scr = GRAPHEND;
+      p->setGraphEnd();
       return;
 
     case GRAPHSTYLE_DASH:
@@ -1026,9 +1026,9 @@ void Rect3DDiagram::calcData(Graph *g)
         }
 
         if(pMem->done & 8)
-          (p++)->Scr = BRANCHEND;  // new branch
+          (p++)->setBranchEnd();
       } while(((pMem++)->done & 512) == 0);
-      p->Scr = GRAPHEND;
+      p->setGraphEnd();
       return;
   }
 
@@ -1086,7 +1086,7 @@ void Rect3DDiagram::calcData(Graph *g)
           else {
 	    dist -= Space;
 	    if((p-3)->Scr < 0)  p -= 2;
-	    else (p++)->Scr = STROKEEND;
+	    else (p++)->setStrokeEnd();
           }
           Flag ^= 1; // toggle between stroke and space
         }
@@ -1099,13 +1099,13 @@ void Rect3DDiagram::calcData(Graph *g)
     dy = ytmp;
 
     if(pMem->done & 8) {
-      if((p-3)->Scr == STROKEEND)
+      if((p-3)->isStrokeEnd() && !(p-3)->isBranchEnd()) {
         p -= 3;  // no single point after "no stroke"
-      else if((p-3)->Scr == BRANCHEND) {
+      }else if((p-3)->isBranchEnd() && !(p-3)->isGraphEnd()) {
         if(((p-2)->Scr < 0) || ((p-1)->Scr < 0))
           p -= 2;  // erase last hidden point
       }
-      (p++)->Scr = BRANCHEND;  // new branch
+      (p++)->setBranchEnd();
       Counter = 0;
       Flag = 1;
       dist = -Stroke;
@@ -1113,11 +1113,11 @@ void Rect3DDiagram::calcData(Graph *g)
 
     if(pMem->done & 4)   // point invisible ?
       if( (p-1)->Scr >= 0 )  // line already interrupted ?
-        (p++)->Scr = STROKEEND;
+        (p++)->setStrokeEnd();
 
   } while(((pMem++)->done & 256) == 0);
 
-  p->Scr = GRAPHEND;
+  p->setGraphEnd();
 
 
 /*
