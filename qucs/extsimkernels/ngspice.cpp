@@ -105,17 +105,18 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     QString sim;
     outputs.clear();
 
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if (pc->Model=="Eqn") {
-            Equation *eq = (Equation *)pc;
-            stream<<eq->getNgspiceScript();
-        }
-    }
-
     foreach(sim, simulations) {
 
         bool hasParSWP = false;
         bool hasDblSWP = false;
+
+        // Duplicate .PARAM in .control section. They may be used in euqations
+        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+            if (pc->Model=="Eqn") {
+                Equation *eq = (Equation *)pc;
+                stream<<eq->getNgspiceScript();
+            }
+        }
 
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             QString sim_typ = pc->Model;
