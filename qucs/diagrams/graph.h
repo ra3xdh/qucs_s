@@ -33,13 +33,27 @@
 #define BRANCHEND   -10
 #define GRAPHEND    -100
 
-#define GRAPHSTYLE_SOLID    0
-#define GRAPHSTYLE_DASH     1
-#define GRAPHSTYLE_DOT      2
-#define GRAPHSTYLE_LONGDASH 3
-#define GRAPHSTYLE_STAR     4
-#define GRAPHSTYLE_CIRCLE   5
-#define GRAPHSTYLE_ARROW    6
+typedef enum{
+  GRAPHSTYLE_INVALID = -1,
+  GRAPHSTYLE_SOLID = 0,
+  GRAPHSTYLE_DASH,
+  GRAPHSTYLE_DOT,
+  GRAPHSTYLE_LONGDASH,
+  GRAPHSTYLE_STAR,
+  GRAPHSTYLE_CIRCLE,
+  GRAPHSTYLE_ARROW,
+  GRAPHSTYLE_COUNT,
+} graphstyle_t;
+
+inline graphstyle_t toGraphStyle(int x){
+  if (x<0){
+    return GRAPHSTYLE_INVALID;
+  }else if(x<GRAPHSTYLE_COUNT){
+    return graphstyle_t(x);
+  }else{
+    return GRAPHSTYLE_INVALID;
+  }
+}
 
 class Diagram;
 class ViewPainter;
@@ -89,7 +103,7 @@ public:
   QString Var;
   QColor  Color;
   int     Thick;
-  int     Style;
+  graphstyle_t Style;
   QList<Marker *> Markers;
 
   // for tabular diagram

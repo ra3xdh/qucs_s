@@ -830,7 +830,8 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
         if(g->Var.right(3) == ".Vb")   // harmonic balance output ?
           if(PropertyBox->count() >= GRAPHSTYLE_ARROW)
             PropertyBox->setCurrentItem(GRAPHSTYLE_ARROW);
-        g->Style   = PropertyBox->currentItem();
+        g->Style = toGraphStyle(PropertyBox->currentItem());
+        assert(g->Style!=GRAPHSTYLE_INVALID);
         if(yAxisBox) {
           g->yAxisNo = yAxisBox->currentItem();
           yAxisBox->setEnabled(true);
@@ -981,7 +982,8 @@ void DiagramDialog::slotNewGraph()
     if(Diag->Name != "Truth") {
       g->Color = ColorButt->paletteBackgroundColor();
       g->Thick = Property2->text().toInt();
-      g->Style = PropertyBox->currentItem();
+      g->Style = toGraphStyle(PropertyBox->currentItem());
+      assert(g->Style!=GRAPHSTYLE_INVALID);
       if(yAxisBox)  g->yAxisNo = yAxisBox->currentItem();
       else if(Diag->Name == "Rect3D")  g->yAxisNo = 1;
     }
@@ -1284,7 +1286,8 @@ void DiagramDialog::slotSetGraphStyle(int style)
   if(i < 0) return;   // return, if no item selected
 
   Graph *g = Graphs.at(i);
-  g->Style = style;
+  g->Style = toGraphStyle(style);
+  assert(g->Style!=GRAPHSTYLE_INVALID);
   changed = true;
   toTake  = false;
 }

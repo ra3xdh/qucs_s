@@ -20,7 +20,8 @@
 
 #include <QPainter>
 
-Graph::Graph(const QString& _Line) : Element()
+Graph::Graph(const QString& _Line) : Element(),
+  Style(GRAPHSTYLE_SOLID)
 {
   Type = isGraph;
 
@@ -28,7 +29,6 @@ Graph::Graph(const QString& _Line) : Element()
   countY = 0;    // no points in graph
   Thick  = numMode = 0;
   Color  = 0x0000ff;   // blue
-  Style  = 0;    // solid line
   Precision  = 3;
   isSelected = false;
   yAxisNo = 0;   // left y axis
@@ -126,8 +126,10 @@ bool Graph::load(const QString& _s)
   if(!ok) return false;
 
   n  = s.section(' ',5,5);    // Style
-  Style = n.toInt(&ok);
+  int st = n.toInt(&ok);
   if(!ok) return false;
+  Style = toGraphStyle(st);
+  if(Style==GRAPHSTYLE_INVALID) return false;
 
   n  = s.section(' ',6,6);    // yAxisNo
   if(n.isEmpty()) return true;   // backward compatible
