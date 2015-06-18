@@ -237,21 +237,21 @@ public:
   int      placeNodeLabel(WireLabel*);
   Element* getWireLabel(Node*);
   void     insertNodeLabel(WireLabel*);
-  void     copyLabels(int&, int&, int&, int&, Q3PtrList<Element>*);
+  void     copyLabels(int&, int&, int&, int&, QList<Element *> *);
 
   Painting* selectedPainting(float, float);
-  void      copyPaintings(int&, int&, int&, int&, Q3PtrList<Element>*);
+  void      copyPaintings(int&, int&, int&, int&, QList<Element *> *);
 
   void      getSchWidthAndHeight(int& w, int& h, int& xmin_, int& ymin_); // calculates schematic
   void      getSelAreaWidthAndHeight(int &wsel, int& hsel, int& xmin_sel_, int& ymin_sel_); // and selected area width and height in pixels
 
 private:
   void insertComponentNodes(Component*, bool);
-  int  copyWires(int&, int&, int&, int&, Q3PtrList<Element>*);
-  int  copyComponents(int&, int&, int&, int&, Q3PtrList<Element>*);
-  void copyComponents2(int&, int&, int&, int&, Q3PtrList<Element>*);
-  bool copyComps2WiresPaints(int&, int&, int&, int&, Q3PtrList<Element>*);
-  int  copyElements(int&, int&, int&, int&, Q3PtrList<Element>*);
+  int  copyWires(int&, int&, int&, int&, QList<Element *> *);
+  int  copyComponents(int&, int&, int&, int&, QList<Element *> *);
+  void copyComponents2(int&, int&, int&, int&, QList<Element *> *);
+  bool copyComps2WiresPaints(int&, int&, int&, int&, QList<Element *> *);
+  int  copyElements(int&, int&, int&, int&, QList<Element *> *);
 
 
 /* ********************************************************************
