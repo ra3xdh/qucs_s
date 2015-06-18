@@ -167,8 +167,8 @@ int Graph::getSelected(int x, int y)
     // for graph symbols
     while(pp->Scr > GRAPHEND) {
       if(pp->Scr > STROKEEND) {
-        dx  = x - int((++pp)->Scr);
-        dy  = y - int((++pp)->Scr);
+        dx  = x - int((pp++)->Scr);
+        dy  = y - int((pp++)->Scr);
 
         if(dx < -5) continue;
         if(dx >  5) continue;
@@ -187,8 +187,8 @@ int Graph::getSelected(int x, int y)
   // for graph lines
   while(pp->Scr > GRAPHEND) {
     while(pp->Scr >= STROKEEND) {
-      x1 = int((++pp)->Scr);
-      y1 = int((++pp)->Scr);
+      x1 = int((pp++)->Scr);
+      y1 = int((pp++)->Scr);
       dx  = x - x1;
       dy  = y - y1;
 
