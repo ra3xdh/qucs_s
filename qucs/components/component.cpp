@@ -729,6 +729,20 @@ QString Component::getProbeVariable(bool)
     return QString("");
 }
 
+QString Component::getNgspiceBeforeSim(QString sim, int lvl)
+{
+    Q_UNUSED(sim); // To supress warning
+    Q_UNUSED(lvl);
+    return QString("");
+}
+
+QString Component::getNgspiceAfterSim(QString sim, int lvl)
+{
+    Q_UNUSED(sim); // To supress warning
+    Q_UNUSED(lvl);
+    return QString("");
+}
+
 // -------------------------------------------------------
 QString Component::verilogCode(int)
 {
