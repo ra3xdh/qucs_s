@@ -2284,6 +2284,10 @@ void QucsApp::slotSelectSubcircuit(const QModelIndex &idx)
 
   QString filename = idx.sibling(idx.row(), 0).data().toString();
   QString note = idx.sibling(idx.row(), 1).data().toString();
+  int idx_pag = DocumentTab->currentIndex();
+  QString tab_titl = "";
+  if (idx_pag>=0) tab_titl = DocumentTab->tabText(idx_pag);
+  if (filename == tab_titl ) return; // Forbid to paste subcircuit into itself.
 
   // delete previously selected elements
   if(view->selElem != 0)  delete view->selElem;
