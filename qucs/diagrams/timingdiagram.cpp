@@ -305,6 +305,7 @@ if(!firstGraph->cPointsX.isEmpty()) {
     switch(g->Style) {
       case 1: Pen.setStyle(Qt::DashLine); break;
       case 2: Pen.setStyle(Qt::DotLine);  break;
+		default: break;
     }
 
     z = int(xAxis.limit_min + 0.5);

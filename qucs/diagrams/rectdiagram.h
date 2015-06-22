@@ -32,10 +32,11 @@ public:
   int  calcDiagram();
   void calcLimits();
   void calcCoordinate(double* &, double* &, double* &, float*, float*, Axis*);
-  bool insideDiagram(float, float);
+  void finishMarkerCoordinates(float&, float&) const;
+  bool insideDiagram(float, float) const;
 
 protected:
-  void clip(float* &);
+  void clip(Graph::iterator &) const;
 };
 
 #endif

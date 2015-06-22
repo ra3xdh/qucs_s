@@ -26,19 +26,34 @@
 #include <Q3PtrList>
 #include <QDateTime>
 
+#include <assert.h>
 
 // meaning of the values in a graph "Points" list
 #define STROKEEND   -2
 #define BRANCHEND   -10
 #define GRAPHEND    -100
 
-#define GRAPHSTYLE_SOLID    0
-#define GRAPHSTYLE_DASH     1
-#define GRAPHSTYLE_DOT      2
-#define GRAPHSTYLE_LONGDASH 3
-#define GRAPHSTYLE_STAR     4
-#define GRAPHSTYLE_CIRCLE   5
-#define GRAPHSTYLE_ARROW    6
+typedef enum{
+  GRAPHSTYLE_INVALID = -1,
+  GRAPHSTYLE_SOLID = 0,
+  GRAPHSTYLE_DASH,
+  GRAPHSTYLE_DOT,
+  GRAPHSTYLE_LONGDASH,
+  GRAPHSTYLE_STAR,
+  GRAPHSTYLE_CIRCLE,
+  GRAPHSTYLE_ARROW,
+  GRAPHSTYLE_COUNT,
+} graphstyle_t;
+
+inline graphstyle_t toGraphStyle(int x){
+  if (x<0){
+    return GRAPHSTYLE_INVALID;
+  }else if(x<GRAPHSTYLE_COUNT){
+    return graphstyle_t(x);
+  }else{
+    return GRAPHSTYLE_INVALID;
+  }
+}
 
 class Diagram;
 class ViewPainter;
@@ -59,28 +74,50 @@ public:
   Graph(const QString& _Line="");
  ~Graph();
 
+  struct ScrPt{
+	  float Scr;
+	  //double Data; not yet
+  };
+  typedef std::vector<ScrPt> container;
+  typedef container::iterator iterator;
+  typedef container::const_iterator const_iterator;
+
   void    paint(ViewPainter*, int, int);
   void    paintLines(ViewPainter*, int, int);
   QString save();
   bool    load(const QString&);
   int     getSelected(int, int);
   Graph*  sameNewOne();
+  void clear(){ScrPoints.resize(0);}
+  void resizeScrPoints(size_t s){assert(s>=ScrPoints.size()); ScrPoints.resize(s);}
+  iterator begin(){return ScrPoints.begin();}
+  iterator end(){return ScrPoints.end();}
+  const_iterator begin() const{return ScrPoints.begin();}
+  const_iterator end() const{return ScrPoints.end();}
 
   QDateTime lastLoaded;  // when it was loaded into memory
   int     yAxisNo;       // which y axis is used
   Q3PtrList<DataX>  cPointsX;
   double *cPointsY;
-  float  *ScrPoints; // data in screen coordinates
   int     countY;    // number of curves
   QString Var;
   QColor  Color;
   int     Thick;
-  int     Style;
+  graphstyle_t Style;
   QList<Marker *> Markers;
 
   // for tabular diagram
   int  Precision;   // number of digits to show
   int  numMode;     // real/imag or polar (deg/rad)
+
+private: // painting
+  void drawLines(int, int, ViewPainter*) const;
+  void drawStarSymbols(int, int, ViewPainter*) const;
+  void drawCircleSymbols(int, int, ViewPainter*) const;
+  void drawArrowSymbols(int, int, ViewPainter*) const;
+
+private:
+  std::vector<ScrPt> ScrPoints; // data in screen coordinates
 };
 
 #endif

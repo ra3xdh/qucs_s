@@ -138,50 +138,7 @@ void Marker::initText(int n)
     nn /= pD->count;
   }
 
-  // gather text of dependent variable
-  pz = pGraph->cPointsY + 2*n;
-  Text += pGraph->Var + ": ";
-  switch(numMode) {
-    case 0: Text += misc::complexRect(*pz, *(pz+1), Precision);
-            break;
-    case 1: Text += misc::complexDeg(*pz, *(pz+1), Precision);
-            break;
-    case 2: Text += misc::complexRad(*pz, *(pz+1), Precision);
-            break;
-  }
-  VarPos[nVarPos] = *pz;
-  VarPos[nVarPos+1] = *(pz+1);
-  if(Diag->Name=="Smith") //impedance is useful as well here
-  {
-    double Zr, Zi;
-    Zr = *pz;
-    Zi = *(pz+1);
-
-    MatchDialog::r2z(Zr, Zi, Z0);
-    QString Var = pGraph->Var;
-    if(Var.startsWith("S"))
-        Text += "\n"+ Var.replace('S', 'Z')+": " +misc::complexRect(Zr, Zi, Precision);
-    else
-        Text += "\nZ("+ Var+"): " +misc::complexRect(Zr, Zi, Precision);
-  }
-  px = VarPos;
-  if(py != &Dummy)   // 2D in 3D diagram ?
-    py = VarPos + 1;
-  Diag->calcCoordinate(px, pz, py, &fCX, &fCY, pa);
-
-  if(!Diag->insideDiagram(fCX, fCY)) {
-    // if marker out of valid bounds, point to origin
-    if((Diag->Name.left(4) != "Rect") && (Diag->Name != "Curve")) {
-      fCX = float(Diag->x2 >> 1);
-      fCY = float(Diag->y2 >> 1);
-    }
-    else
-      fCX = fCY = 0.0;
-  }
-
-  cx = int(fCX+0.5);
-  cy = int(fCY+0.5);
-  getTextSize();
+  createText();
 }
 
 // ---------------------------------------------------------------------
@@ -259,16 +216,7 @@ void Marker::createText()
   pp = &(VarPos[0]);
 
   Diag->calcCoordinate(pp, pz, py, &fCX, &fCY, pa);
-
-  if(!Diag->insideDiagram(fCX, fCY)) {
-    // if marker out of valid bounds, point to origin
-    if((Diag->Name.left(4) != "Rect") && (Diag->Name != "Curve")) {
-      fCX = float(Diag->x2 >> 1);
-      fCY = float(Diag->y2 >> 1);
-    }
-    else
-      fCX = fCY = 0.0;
-  }
+  Diag->finishMarkerCoordinates(fCX, fCY);
 
   cx = int(fCX+0.5);
   cy = int(fCY+0.5);
@@ -278,16 +226,12 @@ void Marker::createText()
 // ---------------------------------------------------------------------
 void Marker::makeInvalid()
 {
-  cx = 0;
-  cy = 0;
-  if(Diag) if(Diag->Name.left(4) != "Rect") if(Diag->Name != "Curve") {
-    cx = Diag->x2 >> 1;
-    cy = Diag->y2 >> 1;
-  }
-  Text = QObject::tr("invalid");
+  fCX = fCY = -1e3; // invalid coordinates
+  Diag->finishMarkerCoordinates(fCX, fCY); // leave to diagram
+  cx = int(fCX+0.5);
+  cy = int(fCY+0.5);
 
-  fCX = float(cx);
-  fCY = float(cy);
+  Text = QObject::tr("invalid");
   getTextSize();
 }
 

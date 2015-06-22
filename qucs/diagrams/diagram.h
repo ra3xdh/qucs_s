@@ -35,13 +35,13 @@
 // Enlarge memory block if neccessary.
 #define  FIT_MEMORY_SIZE  \
   if(p >= p_end) {     \
+    int pos = p - g->begin(); \
+    assert(pos<Size); \
     Size += 256;        \
-    tmp = p - g->ScrPoints; \
-    p = p_end = g->ScrPoints = (float*)realloc(g->ScrPoints, Size*sizeof(float)); \
-    p += tmp; \
-    p_end += Size - 9; \
-  } \
-
+    g->resizeScrPoints(Size); \
+    p = g->begin() + pos; \
+    p_end = g->begin() + (Size - 9); \
+  }
 
 struct Axis {
   double  min, max; // least and greatest values of all graph data
@@ -65,6 +65,7 @@ public:
   virtual int  calcDiagram() { return 0; };
   virtual void calcCoordinate
                (double* &, double* &, double* &, float*, float*, Axis*) {};
+  virtual void finishMarkerCoordinates(float&, float&) const;
   virtual void calcLimits() {};
   
   virtual void paint(ViewPainter*);
@@ -86,7 +87,8 @@ public:
   bool sameDependencies(Graph*, Graph*);
   int  checkColumnWidth(const QString&, const QFontMetrics&, int, int, int);
 
-  virtual bool insideDiagram(float, float);
+  virtual bool insideDiagram(float, float) const;
+  Marker* setMarker(int x, int y);
 
   QString Name; // identity of diagram type (e.g. Polar), used for saving etc.
   QPen    GridPen;
@@ -114,9 +116,9 @@ protected:
   bool calcYAxis(Axis*, int);
   virtual void createAxisLabels();
 
-  int  regionCode(float, float);
-  virtual void clip(float* &);
-  void rectClip(float* &);
+  int  regionCode(float, float) const;
+  virtual void clip(Graph::iterator &) const;
+  void rectClip(Graph::iterator &) const;
 
   virtual void calcData(Graph*);
 

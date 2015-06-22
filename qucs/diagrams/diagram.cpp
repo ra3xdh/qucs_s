@@ -288,7 +288,7 @@ void Diagram::createAxisLabels()
 }
 
 // ------------------------------------------------------------
-int Diagram::regionCode(float x, float y)
+int Diagram::regionCode(float x, float y) const
 {
   int code=0;   // code for clipping
   if(x < 0.0)
@@ -306,7 +306,7 @@ int Diagram::regionCode(float x, float y)
 
 // ------------------------------------------------------------
 // Is virtual. This one is for round diagrams only.
-bool Diagram::insideDiagram(float x, float y)
+bool Diagram::insideDiagram(float x, float y) const
 {
   float R = float(x2)/2.0 + 1.0; // +1 seems better (graph sometimes little outside)
   x -= R;
@@ -315,30 +315,49 @@ bool Diagram::insideDiagram(float x, float y)
 }
 
 /*!
+   (try to) set a Marker to a diagram
+*/
+Marker* Diagram::setMarker(int x, int y)
+{
+  if(getSelected(x, y)) {
+    // test all graphs of the diagram
+    foreach(Graph *pg,Graphs) {
+      int n  = pg->getSelected(x-cx, cy-y); // sic!
+      if(n >= 0) {
+	Marker *pm = new Marker(this, pg, n, x-cx, y-cy);
+	pg->Markers.append(pm);
+	return pm;
+      }
+    }
+  }
+  return NULL;
+}
+
+/*!
    Cohen-Sutherland clipping algorithm
 */
-void Diagram::rectClip(float* &p)
+void Diagram::rectClip(Graph::iterator &p) const
 {
   int code, z=0;
   float x=0, y=0, dx, dy;
-  float x_1 = *(p-4), y_1 = *(p-3);
-  float x_2 = *(p-2), y_2 = *(p-1);
+  float x_1 = (p-4)->Scr, y_1 = (p-3)->Scr;
+  float x_2 = (p-2)->Scr, y_2 = (p-1)->Scr;
 
   int code1 = regionCode(x_1, y_1);
   int code2 = regionCode(x_2, y_2);
   if((code1 | code2) == 0)  return;  // line completly inside ?
 
-  if(code1 != 0) if(*(p-5) >= 0) { // is there already a line end flag ?
+  if(code1 != 0) if((p-5)->Scr >= 0) { // is there already a line end flag ?
     p++;
-    *(p-5) = STROKEEND;
+    (p-5)->Scr = STROKEEND;
   }
   if(code1 & code2)   // line not visible at all ?
     goto endWithHidden;
 
   if(code2 != 0) {
-    *p = STROKEEND;
-    *(p+1) = x_2;
-    *(p+2) = y_2;
+    p->Scr = STROKEEND;
+    (p+1)->Scr = x_2;
+    (p+2)->Scr = y_2;
     z += 3;
   }
 
@@ -382,27 +401,27 @@ void Diagram::rectClip(float* &p)
       goto endWithHidden; // line not visible at all ?
   }
 
-  *(p-4) = x_1;
-  *(p-3) = y_1;
-  *(p-2) = x_2;
-  *(p-1) = y_2;
+  (p-4)->Scr = x_1;
+  (p-3)->Scr = y_1;
+  (p-2)->Scr = x_2;
+  (p-1)->Scr = y_2;
   p += z;
   return;
 
 endWithHidden:
-    *(p-4) = x_2;
-    *(p-3) = y_2;
+    (p-4)->Scr = x_2;
+    (p-3)->Scr = y_2;
     p -= 2;
 }
 
 /*!
    Clipping for round diagrams (smith, polar, ...)
 */
-void Diagram::clip(float* &p)
+void Diagram::clip(Graph::iterator &p) const
 {
   float R = float(x2) / 2.0;
-  float x_1 = *(p-4) - R, y_1 = *(p-3) - R;
-  float x_2 = *(p-2) - R, y_2 = *(p-1) - R;
+  float x_1 = (p-4)->Scr - R, y_1 = (p-3)->Scr - R;
+  float x_2 = (p-2)->Scr - R, y_2 = (p-1)->Scr - R;
 
   float dt1 = R*R;   // square of radius
   float dt2 = dt1 - x_2*x_2 - y_2*y_2;
@@ -410,9 +429,9 @@ void Diagram::clip(float* &p)
 
   if(dt1 >= 0.0) if(dt2 >= 0.0)  return;  // line completly inside ?
 
-  if(dt1 < 0.0) if(*(p-5) >= 0.0) { // is there already a line end flag ?
+  if(dt1 < 0.0) if((p-5)->Scr >= 0.0) { // is there already a line end flag ?
     p++;
-    *(p-5) = STROKEEND;
+    (p-5)->Scr = STROKEEND;
   }
 
   float x = x_1-x_2;
@@ -426,8 +445,8 @@ void Diagram::clip(float* &p)
   x_2 += R;
   y_2 += R;
   if(F <= 0.0) {   // line not visible at all ?
-    *(p-4) = x_2;
-    *(p-3) = y_2;
+    (p-4)->Scr = x_2;
+    (p-3)->Scr = y_2;
     p -= 2;
     return;
   }
@@ -436,29 +455,29 @@ void Diagram::clip(float* &p)
   R   = sqrt(F);
   dt1 = C - R;
   if((dt1 > 0.0) && (dt1 < D)) { // intersection outside start/end point ?
-    *(p-4) = x_1 - x*dt1 / D;
-    *(p-3) = y_1 - y*dt1 / D;
+    (p-4)->Scr = x_1 - x*dt1 / D;
+    (p-3)->Scr = y_1 - y*dt1 / D;
     code |= 1;
   }
   else {
-    *(p-4) = x_1;
-    *(p-3) = y_1;
+    (p-4)->Scr = x_1;
+    (p-3)->Scr = y_1;
   }
 
   dt2 = C + R;
   if((dt2 > 0.0) && (dt2 < D)) { // intersection outside start/end point ?
-    *(p-2) = x_1 - x*dt2 / D;
-    *(p-1) = y_1 - y*dt2 / D;
-    *p = STROKEEND;
+    (p-2)->Scr = x_1 - x*dt2 / D;
+    (p-1)->Scr = y_1 - y*dt2 / D;
+    p->Scr = STROKEEND;
     p += 3;
     code |= 2;
   }
-  *(p-2) = x_2;
-  *(p-1) = y_2;
+  (p-2)->Scr = x_2;
+  (p-1)->Scr = y_2;
 
   if(code == 0) {   // intersections both lie outside ?
-    *(p-4) = x_2;
-    *(p-3) = y_2;
+    (p-4)->Scr = x_2;
+    (p-3)->Scr = y_2;
     p -= 2;
   }
 
@@ -467,6 +486,7 @@ void Diagram::clip(float* &p)
 
 // ------------------------------------------------------------
 // g->Points must already be empty!!!
+// is this a Graph Member?
 void Diagram::calcData(Graph *g)
 {
   double *px;
@@ -474,7 +494,7 @@ void Diagram::calcData(Graph *g)
   if(!pz)  return;
   if(g->cPointsX.count() < 1) return;
 
-  int i, z, tmp, Counter=2;
+  int i, z, Counter=2;
   float dx, dy, xtmp, ytmp;
   int Size = ((2*(g->cPointsX.getFirst()->count) + 1) * g->countY) + 10;
   
@@ -484,11 +504,13 @@ void Diagram::calcData(Graph *g)
   double Dummy = 0.0;  // not used
   double *py = &Dummy;
 
-  float *p = (float*)malloc( Size*sizeof(float) ); // create memory for points
-  float *p_end;
-  g->ScrPoints = p_end = p;
+  g->resizeScrPoints(Size);
+  auto p = g->begin();
+  auto p_end = g->begin();
   p_end += Size - 9;   // limit of buffer
-  *(p++) = STROKEEND;
+  p->Scr = STROKEEND;
+  ++p;
+  assert(p!=g->end());
 
   Axis *pa;
   if(g->yAxisNo == 0)  pa = &yAxis;
@@ -499,26 +521,26 @@ void Diagram::calcData(Graph *g)
     case GRAPHSTYLE_SOLID: // ***** solid line ****************************
       for(i=g->countY; i>0; i--) {  // every branch of curves
 	px = g->cPointsX.getFirst()->Points;
-	calcCoordinate(px, pz, py, p, p+1, pa);
+	calcCoordinate(px, pz, py, &p->Scr, &(p+1)->Scr, pa);
 	p += 2;
 	for(z=g->cPointsX.getFirst()->count-1; z>0; z--) {  // every point
 	  FIT_MEMORY_SIZE;  // need to enlarge memory block ?
-	  calcCoordinate(px, pz, py, p, p+1, pa);
+	  calcCoordinate(px, pz, py, &p->Scr, &(p+1)->Scr, pa);
 	  p += 2;
 	  if(Counter >= 2)   // clipping only if an axis is manual
 	    clip(p);
 	}
-	if(*(p-3) == STROKEEND)
+	if((p-3)->Scr == STROKEEND)
 	  p -= 3;  // no single point after "no stroke"
-	else if(*(p-3) == BRANCHEND) {
-	  if((*(p-2) < 0) || (*(p-1) < 0))
+	else if((p-3)->Scr == BRANCHEND) {
+	  if(((p-2)->Scr < 0) || ((p-1)->Scr < 0))
 	    p -= 2;  // erase last hidden point
 	}
-	*(p++) = BRANCHEND;
+	(p++)->Scr = BRANCHEND;
       }
 
 
-      *p = GRAPHEND;
+      p->Scr = GRAPHEND;
 /*z = p-g->Points+1;
 p = g->Points;
 qDebug("\n****** p=%p", p);
@@ -540,13 +562,14 @@ for(int zz=0; zz<z; zz+=2)
       for(i=g->countY; i>0; i--) {  // every branch of curves
         px = g->cPointsX.getFirst()->Points;
         for(z=g->cPointsX.getFirst()->count; z>0; z--) {  // every point
-          calcCoordinate(px, pz, py, p, p+1, pa);
-          if(insideDiagram(*p, *(p+1)))    // within diagram ?
+          calcCoordinate(px, pz, py, &p->Scr, &(p+1)->Scr, pa);
+          if(insideDiagram(p->Scr, (p+1)->Scr))    // within diagram ?
             p += 2;
         }
-        *(p++) = BRANCHEND;
+        (p++)->Scr = BRANCHEND;
+	assert(p!=g->end());
       }
-      *p = GRAPHEND;
+      p->Scr = GRAPHEND;
 /*qDebug("\n******");
 for(int zz=0; zz<60; zz+=2)
   qDebug("c: %d/%d", *(g->Points+zz), *(g->Points+zz+1));*/
@@ -560,8 +583,10 @@ for(int zz=0; zz<60; zz+=2)
     dist = -Stroke;
     px = g->cPointsX.getFirst()->Points;
     calcCoordinate(px, pz, py, &xtmp, &ytmp, pa);
-    *(p++) = xtmp;
-    *(p++) = ytmp;
+    (p++)->Scr = xtmp;
+    assert(p!=g->end());
+    (p++)->Scr = ytmp;
+    assert(p!=g->end());
     Counter = 1;
     for(z=g->cPointsX.getFirst()->count-1; z>0; z--) {
       dx = xtmp;
@@ -573,8 +598,10 @@ for(int zz=0; zz<60; zz+=2)
       if(Flag == 1) if(dist <= 0.0) {
 	FIT_MEMORY_SIZE;  // need to enlarge memory block ?
 
-	*(p++) = xtmp;    // if stroke then save points
-	*(p++) = ytmp;
+	(p++)->Scr = xtmp;    // if stroke then save points
+	assert(p!=g->end());
+	(p++)->Scr = ytmp;
+	assert(p!=g->end());
 	if((++Counter) >= 2)  clip(p);
 	continue;
       }
@@ -582,22 +609,27 @@ for(int zz=0; zz<60; zz+=2)
       while(dist > 0) {   // stroke or space finished ?
 	FIT_MEMORY_SIZE;  // need to enlarge memory block ?
 
-	*(p++) = xtmp - float(dist*cos(alpha)); // linearly interpolate
-	*(p++) = ytmp - float(dist*sin(alpha));
+	(p++)->Scr = xtmp - float(dist*cos(alpha)); // linearly interpolate
+	assert(p!=g->end());
+	(p++)->Scr = ytmp - float(dist*sin(alpha));
+	assert(p!=g->end());
 	if((++Counter) >= 2)  clip(p);
 
         if(Flag == 0) {
           dist -= Stroke;
           if(dist <= 0) {
-	    *(p++) = xtmp;  // don't forget point after ...
-	    *(p++) = ytmp;  // ... interpolated point
+	    (p++)->Scr = xtmp;  // don't forget point after ...
+	    assert(p!=g->end());
+	    (p++)->Scr = ytmp;  // ... interpolated point
+	    assert(p!=g->end());
 	    if((++Counter) >= 2)  clip(p);
+	    assert(p<g->end());
           }
         }
         else {
 	  dist -= Space;
-	  if(*(p-3) < 0)  p -= 2;
-	  else *(p++) = STROKEEND;
+	  if((p-3)->Scr < 0)  p -= 2;
+	  else (p++)->Scr = STROKEEND;
 	  if(Counter < 0)  Counter = -50000;   // if auto-scale
 	  else  Counter = 0;
         }
@@ -606,17 +638,17 @@ for(int zz=0; zz<60; zz+=2)
 
     } // of x loop
 
-    if(*(p-3) == STROKEEND)
+    if((p-3)->Scr == STROKEEND)
       p -= 3;  // no single point after "no stroke"
-    else if(*(p-3) == BRANCHEND) {
-      if((*(p-2) < 0) || (*(p-1) < 0))
+    else if((p-3)->Scr == BRANCHEND) {
+      if(((p-2)->Scr < 0) || ((p-1)->Scr < 0))
         p -= 2;  // erase last hidden point
     }
-    *(p++) = BRANCHEND;
+    (p++)->Scr = BRANCHEND;
   } // of y loop
 
 
-  *p = GRAPHEND;
+  p->Scr = GRAPHEND;
 /*z = p-g->Points+1;
 p = g->Points;
 qDebug("\n****** p=%p", p);
@@ -810,10 +842,7 @@ void Diagram::updateGraphData()
   int valid = calcDiagram();   // do not calculate graph data if invalid
 
   foreach(Graph *pg, Graphs) {
-    if(pg->ScrPoints != 0) {
-      free(pg->ScrPoints);
-      pg->ScrPoints = 0;
-    }
+    pg->clear();
     if((valid & (pg->yAxisNo+1)) != 0)
       calcData(pg);   // calculate screen coordinates
     else if(pg->cPointsY) {
@@ -1200,6 +1229,15 @@ void Diagram::getCenter(int& x, int& y)
 Diagram* Diagram::newOne()
 {
   return new Diagram();
+}
+
+// ------------------------------------------------------------
+void Diagram::finishMarkerCoordinates(float& fCX, float& fCY) const
+{
+  if(!insideDiagram(fCX, fCY)) {
+      fCX = float(x2 >> 1);
+      fCY = float(y2 >> 1);
+  }
 }
 
 // ------------------------------------------------------------
@@ -1967,3 +2005,5 @@ else {  // not logarithmical
   else  x3 = x2+maxWidth+14;
   return true;
 }
+
+// vim:ts=8:sw=2:noet

@@ -20,7 +20,8 @@
 
 #include <QPainter>
 
-Graph::Graph(const QString& _Line)
+Graph::Graph(const QString& _Line) : Element(),
+  Style(GRAPHSTYLE_SOLID)
 {
   Type = isGraph;
 
@@ -28,12 +29,10 @@ Graph::Graph(const QString& _Line)
   countY = 0;    // no points in graph
   Thick  = numMode = 0;
   Color  = 0x0000ff;   // blue
-  Style  = 0;    // solid line
   Precision  = 3;
   isSelected = false;
   yAxisNo = 0;   // left y axis
 
-  ScrPoints = 0;
   cPointsY = 0;
 
   cPointsX.setAutoDelete(true);
@@ -41,8 +40,6 @@ Graph::Graph(const QString& _Line)
 
 Graph::~Graph()
 {
-  if(ScrPoints != 0)
-    free(ScrPoints);
   if(cPointsY != 0)
     delete[] cPointsY;
 }
@@ -50,7 +47,7 @@ Graph::~Graph()
 // ---------------------------------------------------------------------
 void Graph::paint(ViewPainter *p, int x0, int y0)
 {
-  if(ScrPoints == 0)
+  if(!ScrPoints.size())
     return;
 
   if(isSelected) {
@@ -72,16 +69,16 @@ void Graph::paintLines(ViewPainter *p, int x0, int y0)
 {
   switch(Style) {
     case GRAPHSTYLE_STAR:
-      p->drawStarSymbols(x0, y0, ScrPoints);
+      drawStarSymbols(x0, y0, p);
       break;
     case GRAPHSTYLE_CIRCLE:
-      p->drawCircleSymbols(x0, y0, ScrPoints);
+      drawCircleSymbols(x0, y0, p);
       break;
     case GRAPHSTYLE_ARROW:
-      p->drawArrowSymbols(x0, y0, ScrPoints);
+      drawArrowSymbols(x0, y0, p);
       break;
     default:
-      p->drawLines(x0, y0, ScrPoints);
+      drawLines(x0, y0, p);
   }
 }
 
@@ -129,8 +126,10 @@ bool Graph::load(const QString& _s)
   if(!ok) return false;
 
   n  = s.section(' ',5,5);    // Style
-  Style = n.toInt(&ok);
+  int st = n.toInt(&ok);
   if(!ok) return false;
+  Style = toGraphStyle(st);
+  if(Style==GRAPHSTYLE_INVALID) return false;
 
   n  = s.section(' ',6,6);    // yAxisNo
   if(n.isEmpty()) return true;   // backward compatible
@@ -145,31 +144,31 @@ bool Graph::load(const QString& _s)
 // diagram cx/cy. 5 is the precision the user must point onto the graph.
 int Graph::getSelected(int x, int y)
 {
-  float *pp = ScrPoints;
-  if(pp == 0) return -1;
+  auto pp = ScrPoints.begin();
+  if(pp == ScrPoints.end()) return -1;
 
   int A, z=0;
   int dx, dx2, x1;
   int dy, dy2, y1;
 
   int countX = cPointsX.getFirst()->count;
-  if(*pp <= STROKEEND) {
-    if(*pp <= BRANCHEND) z++;
+  if(pp->Scr <= STROKEEND) {
+    if(pp->Scr <= BRANCHEND) z++;
     pp++;
-    if(*pp <= BRANCHEND) {
-      if(*pp <= GRAPHEND)  return -1;   // not even one point ?
+    if(pp->Scr <= BRANCHEND) {
+      if(pp->Scr <= GRAPHEND)  return -1;   // not even one point ?
       z++;
       pp++;
-      if(*pp < BRANCHEND)  return -1;   // not even one point ?
+      if(pp->Scr < BRANCHEND)  return -1;   // not even one point ?
     }
   }
 
   if(Style >= GRAPHSTYLE_STAR) {
     // for graph symbols
-    while(*pp > GRAPHEND) {
-      if(*pp > STROKEEND) {
-        dx  = x - int(*(pp++));
-        dy  = y - int(*(pp++));
+    while(pp->Scr > GRAPHEND) {
+      if(pp->Scr > STROKEEND) {
+        dx  = x - int((pp++)->Scr);
+        dy  = y - int((pp++)->Scr);
 
         if(dx < -5) continue;
         if(dx >  5) continue;
@@ -186,24 +185,24 @@ int Graph::getSelected(int x, int y)
   }
 
   // for graph lines
-  while(*pp > GRAPHEND) {
-    while(*pp >= STROKEEND) {
-      x1 = int(*(pp++));
-      y1 = int(*(pp++));
+  while(pp->Scr > GRAPHEND) {
+    while(pp->Scr >= STROKEEND) {
+      x1 = int((pp++)->Scr);
+      y1 = int((pp++)->Scr);
       dx  = x - x1;
       dy  = y - y1;
 
-      dx2 = int(*pp);
+      dx2 = int(pp->Scr);
       if(dx2 <= STROKEEND) {  // end of stroke ?
         if(dx2 <= BRANCHEND) break;
         pp++;
-        dx2 = int(*pp);  // go on as graph can also be selected between strokes
+        dx2 = int(pp->Scr);  // go on as graph can also be selected between strokes
         if(dx2 <= BRANCHEND) break;
       }
       if(dx < -5) { if(x < dx2-5) continue; } // point between x coordinates ?
       else { if(x > 5) if(x > dx2+5) continue; }
 
-      dy2 = int(*(pp+1));
+      dy2 = int((pp+1)->Scr);
       if(dy < -5) { if(y < dy2-5) continue; } // point between y coordinates ?
       else { if(y > 5) if(y > dy2+5) continue; }
 
@@ -242,3 +241,5 @@ Graph* Graph::sameNewOne()
 
   return pg;
 }
+
+// vim:ts=8:sw=2:et

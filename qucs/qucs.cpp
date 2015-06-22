@@ -2514,7 +2514,7 @@ void QucsApp::slotPowerMatching()
 
 //  double Z0 = 50.0;
   QString Var = pm->pGraph->Var;
-  double Imag = pm->VarPos[pm->nVarPos+1];
+  double Imag = pm->powImag();
   if(Var == "Sopt")  // noise matching ?
     Imag *= -1.0;
 
@@ -2522,9 +2522,9 @@ void QucsApp::slotPowerMatching()
   Dia->TwoCheck->setChecked(false);
   Dia->TwoCheck->setEnabled(false);
 //  Dia->Ref1Edit->setText(QString::number(Z0));
-  Dia->S11magEdit->setText(QString::number(pm->VarPos[pm->nVarPos]));
+  Dia->S11magEdit->setText(QString::number(pm->powReal()));
   Dia->S11degEdit->setText(QString::number(Imag));
-  Dia->setFrequency(pm->VarPos[0]);
+  Dia->setFrequency(pm->powFreq());
 
   slotToPage();
   if(Dia->exec() != QDialog::Accepted)
@@ -2543,7 +2543,7 @@ void QucsApp::slot2PortMatching()
   int z = pm->pGraph->Var.indexOf(':');
   if(z <= 0)  DataSet = Doc->DataSet;
   else  DataSet = pm->pGraph->Var.mid(z+1);
-  double Freq = pm->VarPos[0];
+  double Freq = pm->powFreq();
 
   QFileInfo Info(Doc->DocName);
   DataSet = Info.dirPath()+QDir::separator()+DataSet;
