@@ -957,7 +957,6 @@ int Graph::loadDatFile(const QString& fileName)
     }
   }
 
-  Axis *pa;
   // *****************************************************************
   // get independent variable ****************************************
   bool ok=true;
@@ -979,8 +978,8 @@ int Graph::loadDatFile(const QString& fileName)
   else {  // ...................................
     // get independent variables from data file
     g->countY = 1;
-    DataX *bLast = 0;
 #if 0 // FIXME: we do not have a Name.
+    DataX *bLast = 0;
     if(Name == "Rect3D")  bLast = g->axis(1);  // y axis for Rect3D
 #endif
 
