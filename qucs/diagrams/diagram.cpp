@@ -523,10 +523,14 @@ void Diagram::calcData(Graph *g)
       for(i=g->countY; i>0; i--) {  // every branch of curves
 	px = g->axis(0)->Points;
 	calcCoordinate(px, pz, py, &p->Scr, &(p+1)->Scr, pa);
+	++px;
+	pz += 2;
 	p += 2;
 	for(z=g->axis(0)->count-1; z>0; z--) {  // every point
 	  FIT_MEMORY_SIZE;  // need to enlarge memory block ?
 	  calcCoordinate(px, pz, py, &p->Scr, &(p+1)->Scr, pa);
+	  ++px;
+	  pz += 2;
 	  p += 2;
 	  if(Counter >= 2)   // clipping only if an axis is manual
 	    clip(p);
@@ -564,6 +568,8 @@ for(int zz=0; zz<z; zz+=2)
         px = g->axis(0)->Points;
         for(z=g->axis(0)->count; z>0; z--) {  // every point
           calcCoordinate(px, pz, py, &p->Scr, &(p+1)->Scr, pa);
+          ++px;
+          pz += 2;
           if(insideDiagram(p->Scr, (p+1)->Scr))    // within diagram ?
             p += 2;
         }
@@ -584,6 +590,8 @@ for(int zz=0; zz<60; zz+=2)
     dist = -Stroke;
     px = g->axis(0)->Points;
     calcCoordinate(px, pz, py, &xtmp, &ytmp, pa);
+    ++px;
+    pz += 2;
     (p++)->Scr = xtmp;
     assert(p!=g->end());
     (p++)->Scr = ytmp;
@@ -593,6 +601,8 @@ for(int zz=0; zz<60; zz+=2)
       dx = xtmp;
       dy = ytmp;
       calcCoordinate(px, pz, py, &xtmp, &ytmp, pa);
+      ++px;
+      pz += 2;
       dx = xtmp - dx;
       dy = ytmp - dy;
       dist += sqrt(double(dx*dx + dy*dy)); // distance between points

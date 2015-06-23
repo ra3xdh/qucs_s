@@ -50,11 +50,11 @@ PolarDiagram::~PolarDiagram()
 }
 
 // ------------------------------------------------------------
-void PolarDiagram::calcCoordinate(double* &, double* &yD, double* &,
-				  float *px, float *py, Axis*)
+void PolarDiagram::calcCoordinate(const double*, const double* yD, const double*,
+				  float *px, float *py, Axis*) const
 {
-  double yr = *(yD++);
-  double yi = *(yD++);
+  double yr = yD[0];
+  double yi = yD[1];
   *px = float((yr/yAxis.up + 1.0)*double(x2)/2.0);
   *py = float((yi/yAxis.up + 1.0)*double(y2)/2.0);
 

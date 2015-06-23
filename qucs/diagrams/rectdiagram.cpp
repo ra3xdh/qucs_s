@@ -53,12 +53,12 @@ RectDiagram::~RectDiagram()
 }
 
 // ------------------------------------------------------------
-void RectDiagram::calcCoordinate(double* &xD, double* &yD, double* &,
-                                 float *px, float *py, Axis *pa)
+void RectDiagram::calcCoordinate(const double* xD, const double* yD, const double*,
+                                 float *px, float *py, Axis *pa) const
 {
-  double x  = *(xD++);
-  double yr = *(yD++);
-  double yi = *(yD++);
+  double x  = *xD;
+  double yr = yD[0];
+  double yi = yD[1];
   if(xAxis.log) {
     x /= xAxis.low;
     if(x <= 0.0)  *px = -1e5;   // "negative infinity"

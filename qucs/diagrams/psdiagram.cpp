@@ -52,11 +52,11 @@ PSDiagram::~PSDiagram()
 }
 
 // ------------------------------------------------------------
-void PSDiagram::calcCoordinate(double* &, double* &yD, double* &,
-                               float *px, float *py, Axis *pa)
+void PSDiagram::calcCoordinate(const double*, const double* yD, const double*,
+                               float *px, float *py, Axis *pa) const
 {
-  double yr = *(yD++);
-  double yi = *(yD++);
+  double yr = yD[0];
+  double yi = yD[1];
   *px = float((yr/pa->up + 1.0)*double(x2)/2.0);
   *py = float((yi/pa->up + 1.0)*double(y2)/2.0);
 

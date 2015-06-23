@@ -64,7 +64,7 @@ public:
   virtual Diagram* newOne();
   virtual int  calcDiagram() { return 0; };
   virtual void calcCoordinate
-               (double* &, double* &, double* &, float*, float*, Axis*) {};
+               (const double*, const double*, const double*, float*, float*, Axis*) const {};
   virtual void finishMarkerCoordinates(float&, float&) const;
   virtual void calcLimits() {};
   
