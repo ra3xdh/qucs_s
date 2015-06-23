@@ -1793,8 +1793,7 @@ void QucsApp::slotRefreshSchPath()
   this->updateSchNameHash();
   this->updateSpiceNameHash();
 
-  QMessageBox::information(this, tr("Update schematic path"),
-      tr("The schematic file path has been refreshed."), tr("OK"));
+  statusBar()->showMessage(tr("The schematic search path has been refreshed."), 2000);
 }
 
 // --------------------------------------------------------------
