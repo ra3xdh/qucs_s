@@ -152,21 +152,21 @@ int Graph::getSelected(int x, int y)
   int dy, dy2, y1;
 
   int countX = cPointsX.getFirst()->count;
-  if(pp->Scr <= STROKEEND) {
-    if(pp->Scr <= BRANCHEND) z++;
+  if(pp->isStrokeEnd()) {
+    if(pp->isBranchEnd()) z++;
     pp++;
-    if(pp->Scr <= BRANCHEND) {
-      if(pp->Scr <= GRAPHEND)  return -1;   // not even one point ?
+    if(pp->isBranchEnd()) {
+      if(pp->isGraphEnd())  return -1;   // not even one point ?
       z++;
       pp++;
-      if(pp->Scr < BRANCHEND)  return -1;   // not even one point ?
+      if(pp->isGraphEnd())  return -1;   // not even one point ?
     }
   }
 
   if(Style >= GRAPHSTYLE_STAR) {
     // for graph symbols
-    while(pp->Scr > GRAPHEND) {
-      if(pp->Scr > STROKEEND) {
+    while(!pp->isGraphEnd()) {
+      if(!pp->isStrokeEnd()) {
         dx  = x - int((pp++)->Scr);
         dy  = y - int((pp++)->Scr);
 
@@ -185,19 +185,19 @@ int Graph::getSelected(int x, int y)
   }
 
   // for graph lines
-  while(pp->Scr > GRAPHEND) {
-    while(pp->Scr >= STROKEEND) {
+  while(!pp->isGraphEnd()) {
+    while(!pp->isBranchEnd()) {
       x1 = int((pp++)->Scr);
       y1 = int((pp++)->Scr);
       dx  = x - x1;
       dy  = y - y1;
 
       dx2 = int(pp->Scr);
-      if(dx2 <= STROKEEND) {  // end of stroke ?
-        if(dx2 <= BRANCHEND) break;
+      if(pp->isStrokeEnd()) {  // end of stroke ?
+        if(pp->isBranchEnd()) break;
         pp++;
         dx2 = int(pp->Scr);  // go on as graph can also be selected between strokes
-        if(dx2 <= BRANCHEND) break;
+        if(pp->isBranchEnd()) break;
       }
       if(dx < -5) { if(x < dx2-5) continue; } // point between x coordinates ?
       else { if(x > 5) if(x > dx2+5) continue; }
@@ -241,5 +241,19 @@ Graph* Graph::sameNewOne()
 
   return pg;
 }
+
+// -----------------------------------------------------------------------
+// meaning of the values in a graph "Points" list
+#define STROKEEND   -2
+#define BRANCHEND   -10
+#define GRAPHEND    -100
+// -----------------------------------------------------------------------
+// screen points pseudo iterator implementation.
+void Graph::ScrPt::setStrokeEnd(){Scr=STROKEEND;}
+void Graph::ScrPt::setBranchEnd(){Scr=BRANCHEND;}
+void Graph::ScrPt::setGraphEnd(){Scr=GRAPHEND;}
+bool Graph::ScrPt::isStrokeEnd() const{return Scr<=STROKEEND;}
+bool Graph::ScrPt::isBranchEnd() const{return Scr<=BRANCHEND;}
+bool Graph::ScrPt::isGraphEnd() const{return Scr<=GRAPHEND;}
 
 // vim:ts=8:sw=2:et

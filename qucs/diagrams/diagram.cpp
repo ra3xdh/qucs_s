@@ -350,13 +350,13 @@ void Diagram::rectClip(Graph::iterator &p) const
 
   if(code1 != 0) if((p-5)->Scr >= 0) { // is there already a line end flag ?
     p++;
-    (p-5)->Scr = STROKEEND;
+    (p-5)->setStrokeEnd();
   }
   if(code1 & code2)   // line not visible at all ?
     goto endWithHidden;
 
   if(code2 != 0) {
-    p->Scr = STROKEEND;
+    p->setStrokeEnd();
     (p+1)->Scr = x_2;
     (p+2)->Scr = y_2;
     z += 3;
@@ -432,7 +432,7 @@ void Diagram::clip(Graph::iterator &p) const
 
   if(dt1 < 0.0) if((p-5)->Scr >= 0.0) { // is there already a line end flag ?
     p++;
-    (p-5)->Scr = STROKEEND;
+    (p-5)->setStrokeEnd();
   }
 
   float x = x_1-x_2;
@@ -469,7 +469,7 @@ void Diagram::clip(Graph::iterator &p) const
   if((dt2 > 0.0) && (dt2 < D)) { // intersection outside start/end point ?
     (p-2)->Scr = x_1 - x*dt2 / D;
     (p-1)->Scr = y_1 - y*dt2 / D;
-    p->Scr = STROKEEND;
+    p->setStrokeEnd();
     p += 3;
     code |= 2;
   }
@@ -509,7 +509,7 @@ void Diagram::calcData(Graph *g)
   auto p = g->begin();
   auto p_end = g->begin();
   p_end += Size - 9;   // limit of buffer
-  p->Scr = STROKEEND;
+  p->setStrokeEnd();
   ++p;
   assert(p!=g->end());
 
@@ -535,17 +535,16 @@ void Diagram::calcData(Graph *g)
 	  if(Counter >= 2)   // clipping only if an axis is manual
 	    clip(p);
 	}
-	if((p-3)->Scr == STROKEEND)
+	if((p-3)->isStrokeEnd() && !(p-3)->isBranchEnd())
 	  p -= 3;  // no single point after "no stroke"
-	else if((p-3)->Scr == BRANCHEND) {
+	else if((p-3)->isBranchEnd() && !(p-1)->isGraphEnd()) {
 	  if(((p-2)->Scr < 0) || ((p-1)->Scr < 0))
 	    p -= 2;  // erase last hidden point
 	}
-	(p++)->Scr = BRANCHEND;
+	(p++)->setBranchEnd();
       }
 
-
-      p->Scr = GRAPHEND;
+      p->setGraphEnd();
 /*z = p-g->Points+1;
 p = g->Points;
 qDebug("\n****** p=%p", p);
@@ -573,10 +572,10 @@ for(int zz=0; zz<z; zz+=2)
           if(insideDiagram(p->Scr, (p+1)->Scr))    // within diagram ?
             p += 2;
         }
-        (p++)->Scr = BRANCHEND;
+	(p++)->setBranchEnd();
 	assert(p!=g->end());
       }
-      p->Scr = GRAPHEND;
+      (p++)->setGraphEnd();
 /*qDebug("\n******");
 for(int zz=0; zz<60; zz+=2)
   qDebug("c: %d/%d", *(g->Points+zz), *(g->Points+zz+1));*/
@@ -640,7 +639,7 @@ for(int zz=0; zz<60; zz+=2)
         else {
 	  dist -= Space;
 	  if((p-3)->Scr < 0)  p -= 2;
-	  else (p++)->Scr = STROKEEND;
+	  else (p++)->setStrokeEnd();
 	  if(Counter < 0)  Counter = -50000;   // if auto-scale
 	  else  Counter = 0;
         }
@@ -649,17 +648,19 @@ for(int zz=0; zz<60; zz+=2)
 
     } // of x loop
 
-    if((p-3)->Scr == STROKEEND)
+    if((p-3)->isStrokeEnd() && !(p-3)->isBranchEnd()) {
       p -= 3;  // no single point after "no stroke"
-    else if((p-3)->Scr == BRANCHEND) {
+      assert(p>g->begin());
+    } else if((p-3)->isBranchEnd() && !(p-3)->isGraphEnd()) {
       if(((p-2)->Scr < 0) || ((p-1)->Scr < 0))
         p -= 2;  // erase last hidden point
+	assert(p>g->begin());
     }
-    (p++)->Scr = BRANCHEND;
+    (p++)->setBranchEnd();
   } // of y loop
 
 
-  p->Scr = GRAPHEND;
+  p->setGraphEnd();
 /*z = p-g->Points+1;
 p = g->Points;
 qDebug("\n****** p=%p", p);

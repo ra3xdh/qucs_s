@@ -29,11 +29,6 @@
 
 #include <assert.h>
 
-// meaning of the values in a graph "Points" list
-#define STROKEEND   -2
-#define BRANCHEND   -10
-#define GRAPHEND    -100
-
 typedef enum{
   GRAPHSTYLE_INVALID = -1,
   GRAPHSTYLE_SOLID = 0,
@@ -87,8 +82,15 @@ public:
  ~Graph();
 
   struct ScrPt{
-	  float Scr;
-	  //double Data; not yet
+    float Scr;
+    //double Data; not yet
+
+    void setStrokeEnd();
+    void setBranchEnd();
+    void setGraphEnd();
+    bool isStrokeEnd() const;
+    bool isBranchEnd() const;
+    bool isGraphEnd() const;
   };
   typedef std::vector<ScrPt> container;
   typedef container::iterator iterator;
