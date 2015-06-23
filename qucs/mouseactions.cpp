@@ -1813,8 +1813,8 @@ void MouseActions::MReleaseZoomIn(Schematic *Doc, QMouseEvent *Event)
     xShift = scale * Event->pos().x();
     yShift = scale * Event->pos().y();
   } else {
-    float xScale = float(Doc->visibleWidth())  / abs(DX);
-    float yScale = float(Doc->visibleHeight()) / abs(DY);
+    float xScale = float(Doc->visibleWidth())  / std::abs(DX);
+    float yScale = float(Doc->visibleHeight()) / std::abs(DY);
     scale = qMin(xScale, yScale)/initialScale;
     scale = Doc->zoom(scale)/initialScale;
 

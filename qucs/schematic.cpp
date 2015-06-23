@@ -173,7 +173,6 @@ bool Schematic::createSubcircuitSymbol()
 // ---------------------------------------------------
 void Schematic::becomeCurrent(bool update)
 {
-  QString *ps;
   emit signalCursorPosChanged(0, 0);
 
   // update appropriate menu entry

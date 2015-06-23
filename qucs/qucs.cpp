@@ -672,7 +672,7 @@ void QucsApp::slotSetCompView (int index)
     for (it = Comps.constBegin(); it != Comps.constEnd(); it++) {
       if ((*it)->info) {
         /// \todo warning: expression result unused, can we rewrite this?
-        *((*it)->info) (Name, File, false);
+        (void) *((*it)->info) (Name, File, false);
         QListWidgetItem *icon = new QListWidgetItem(QPixmap(":/bitmaps/" + QString (File) + ".png"), Name);
         icon->setToolTip(Name);
         CompComps->addItem(icon);
@@ -705,7 +705,7 @@ void QucsApp::slotSearchComponent(const QString &searchText)
       for (modit = Comps.constBegin(); modit != Comps.constEnd(); modit++) {
         if ((*modit)->info) {
           /// \todo warning: expression result unused, can we rewrite this?
-          *((*modit)->info) (Name, File, false);
+          (void) *((*modit)->info) (Name, File, false);
 
           if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
             //match
@@ -1793,7 +1793,7 @@ void QucsApp::slotRefreshSchPath()
   this->updateSchNameHash();
   this->updateSpiceNameHash();
 
-  int exit = QMessageBox::information(this, tr("Update schematic path"),
+  QMessageBox::information(this, tr("Update schematic path"),
       tr("The schematic file path has been refreshed."), tr("OK"));
 }
 
