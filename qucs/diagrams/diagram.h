@@ -82,7 +82,7 @@ public:
   void updateGraphData();
   void loadGraphData(const QString&);
   void recalcGraphData();
-  bool sameDependencies(Graph*, Graph*);
+  bool sameDependencies(Graph const*, Graph const*) const;
   int  checkColumnWidth(const QString&, const QFontMetrics&, int, int, int);
 
   virtual bool insideDiagram(float, float) const;

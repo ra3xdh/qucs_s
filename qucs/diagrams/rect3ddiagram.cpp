@@ -733,7 +733,7 @@ void Rect3DDiagram::createAxis(Axis *Axis, bool Right,
 {
   Q_UNUSED(Right);
 
-  DataX *pD;
+  DataX const *pD;
   double phi, cos_phi, sin_phi;
   int x, y, z, w, valid, Index = 0;
   if(Axis == &yAxis)  Index = 1;

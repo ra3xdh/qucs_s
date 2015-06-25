@@ -34,8 +34,6 @@ Graph::Graph(const QString& _Line) : Element(),
   yAxisNo = 0;   // left y axis
 
   cPointsY = 0;
-
-  cPointsX.setAutoDelete(true);
 }
 
 Graph::~Graph()
@@ -151,7 +149,7 @@ int Graph::getSelected(int x, int y)
   int dx, dx2, x1;
   int dy, dy2, y1;
 
-  int countX = cPointsX.getFirst()->count;
+  int countX = cPointsX.at(0)->count;
   if(pp->isStrokeEnd()) {
     if(pp->isBranchEnd()) z++;
     pp++;

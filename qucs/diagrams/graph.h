@@ -97,7 +97,7 @@ public:
   typedef container::const_iterator const_iterator;
 
   int loadDatFile(const QString& filename);
-  int loadIndepVarData(const QString&, char* datfilecontent);
+  int loadIndepVarData(const QString&, char* datfilecontent, DataX* where);
 
   void    paint(ViewPainter*, int, int);
   void    paintLines(ViewPainter*, int, int);
@@ -106,10 +106,15 @@ public:
   int     getSelected(int, int);
   Graph*  sameNewOne();
   
-  unsigned numAxes() const { return cPointsX.count(); }
-  DataX* axis(uint i) { return cPointsX.at(i); }
-  bool isEmpty() const { return cPointsX.isEmpty(); }
-  Q3PtrList<DataX>& mutable_axes(){return cPointsX;} // HACK
+private: // tmp hack
+  DataX* mutable_axis(uint i) { if(i<(uint)cPointsX.size()) return cPointsX.at(i); return NULL;}
+public:
+  unsigned numAxes() const { return cPointsX.size(); }
+  DataX const* axis(uint i) const { if(i<(uint)cPointsX.size()) return cPointsX.at(i); return NULL;}
+  size_t count(uint i) const { if(axis(i)) return axis(i)->count; return 0; }
+  QString axisName(unsigned i) const {if(axis(i))return axis(i)->Var; return "";}
+  bool isEmpty() const { return !cPointsX.size(); }
+  QVector<DataX*>& mutable_axes(){return cPointsX;} // HACK
 
   void clear(){ScrPoints.resize(0);}
   void resizeScrPoints(size_t s){assert(s>=ScrPoints.size()); ScrPoints.resize(s);}
@@ -139,7 +144,7 @@ private: // painting
   void drawArrowSymbols(int, int, ViewPainter*) const;
 
 private:
-  Q3PtrList<DataX>  cPointsX;
+  QVector<DataX*>  cPointsX;
   std::vector<ScrPt> ScrPoints; // data in screen coordinates
 };
 

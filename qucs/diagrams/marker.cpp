@@ -82,10 +82,10 @@ void Marker::initText(int n)
 
   bool isCross = false;
   int nn, nnn, m, x, y, d, dmin = INT_MAX;
-  DataX *pD = pGraph->axis(0);
+  DataX const *pD = pGraph->axis(0);
   px  = pD->Points;
   nnn = pD->count;
-  DataX *pDy = pGraph->axis(1);
+  DataX const *pDy = pGraph->axis(1);
   if(pDy) {   // only for 3D diagram
     nn = pGraph->countY * pD->count;
     py  = pDy->Points;
@@ -163,7 +163,7 @@ void Marker::createText()
   double *pp, v;
   int n = 0, m = 1, i;
   nVarPos = 0;
-  DataX *pD;
+  DataX const *pD;
   for(unsigned ii=0; (pD=pGraph->axis(ii)); ++ii) {
     pp = pD->Points;
     v  = VarPos[nVarPos];
@@ -253,7 +253,7 @@ bool Marker::moveLeftRight(bool left)
   int n;
   double *px;
 
-  DataX *pD = pGraph->axis(0);
+  DataX const *pD = pGraph->axis(0);
   px = pD->Points;
   if(!px) return false;
   for(n=0; n<pD->count; n++) {
@@ -282,7 +282,7 @@ bool Marker::moveUpDown(bool up)
   int n, i=0;
   double *px;
 
-  DataX *pD = pGraph->axis(0);
+  DataX const *pD = pGraph->axis(0);
   if(!pD) return false;
 
   if(up) {  // move upwards ? **********************

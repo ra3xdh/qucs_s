@@ -173,7 +173,7 @@ void Diagram::createAxisLabels()
   if(xAxis.Label.isEmpty()) {
     // write all x labels ----------------------------------------
     foreach(Graph *pg, Graphs) {
-	DataX *pD = pg->axis(0);
+	DataX const *pD = pg->axis(0);
 	if(!pD) continue;
 	y -= LineSpacing;
 	if(Name[0] != 'C') {   // locus curve ?
@@ -497,7 +497,7 @@ void Diagram::calcData(Graph *g)
 
   int i, z, Counter=2;
   float dx, dy, xtmp, ytmp;
-  int Size = ((2*(g->axis(0)->count) + 1) * g->countY) + 10;
+  int Size = ((2*(g->count(0)) + 1) * g->countY) + 10;
   
   if(xAxis.autoScale)  if(yAxis.autoScale)  if(zAxis.autoScale)
     Counter = -50000;
@@ -715,7 +715,7 @@ void Diagram::getAxisLimits(Graph *pg)
   //        we should only copy here. better: just wrap, dont use {x,y,z}Axis
   int z;
   double x, y, *p;
-  DataX *pD = pg->axis(0);
+  DataX const *pD = pg->axis(0);
   if(pD == 0) return;
 
   if(Name[0] != 'C') {   // not for location curves
@@ -730,7 +730,7 @@ void Diagram::getAxisLimits(Graph *pg)
   }
 
   if(Name == "Rect3D") {
-    DataX *pDy = pg->axis(1);
+    DataX const *pDy = pg->axis(1);
     if(pDy) {
       p = pDy->Points;
       for(z=pDy->count; z>0; z--) { // check y coordinates (2. dimension)
@@ -962,7 +962,7 @@ int Graph::loadDatFile(const QString& fileName)
     pos = 0;
     tmp = Line.section(' ', pos, pos);
     while(!tmp.isEmpty()) {
-      g->mutable_axes().append(new DataX(tmp));  // name of independet variable
+      g->mutable_axes().push_back(new DataX(tmp));  // name of independet variable
       pos++;
       tmp = Line.section(' ', pos, pos);
     }
@@ -975,14 +975,14 @@ int Graph::loadDatFile(const QString& fileName)
   int counting = 0;
   if(isIndep) {    // create independent variable by myself ?
     counting = Line.toInt(&ok);  // get number of values
-    g->mutable_axes().append(new DataX("number", 0, counting));
+    g->mutable_axes().push_back(new DataX("number", 0, counting));
     if(!ok)  return 0;
 
     p = new double[counting];  // memory of new independent variable
     g->countY = 1;
-    g->mutable_axes().current()->Points = p;
+    g->mutable_axes().back()->Points = p;
     for(int z=1; z<=counting; z++)  *(p++) = double(z);
-    auto Axis = g->mutable_axes().current();
+    auto Axis = g->mutable_axes().back();
     Axis->min(1.);
     Axis->max(double(counting));
   }
@@ -997,7 +997,7 @@ int Graph::loadDatFile(const QString& fileName)
 #if 0 // FIXME: this is about diagram. do after load.
     double min_tmp = xAxis.min, max_tmp = xAxis.max;
 #endif
-    DataX *pD;
+    DataX const *pD;
     for(int ii= g->numAxes(); (pD = g->axis(--ii)); ) {
 #if 0 // FIXME: this is about diagram. do after load.
       pa = &xAxis;
@@ -1007,7 +1007,7 @@ int Graph::loadDatFile(const QString& fileName)
       }
       else if(pD == bLast)  pa = &yAxis;   // y axis for Rect3D
 #endif
-      counting = loadIndepVarData(pD->Var, FileString);
+      counting = loadIndepVarData(pD->Var, FileString, mutable_axis(ii));
       if(counting <= 0)  return 0;
 
       g->countY *= counting;
@@ -1059,7 +1059,7 @@ if(Variable.right(3) != ".X ") { // not "digital"
 	 {
       if(fabs(y) >= 1e-250) x = sqrt(x*x+y*y);
       if(std::isfinite(x)) {
-			auto Axis = g->mutable_axes().current();
+			auto Axis = g->mutable_axes().back();
 			Axis->min(x);
 			Axis->max(x);
       }
@@ -1116,9 +1116,8 @@ if(Variable.right(3) != ".X ") { // not "digital"
    Reads the data of an independent variable. Returns the number of points.
 */
 int Graph::loadIndepVarData(const QString& Variable,
-			      char *FileString)
+			      char *FileString, DataX* pD)
 {
-  Graph* pg = this;
   bool isIndep = false;
   QString Line, tmp;
 
@@ -1169,7 +1168,7 @@ int Graph::loadIndepVarData(const QString& Variable,
   if(!ok)  return -1;
 
   double *p = new double[n];     // memory for new independent variable
-  DataX *pD = pg->mutable_axes().current();
+//  DataX *pD = pg->mutable_axes().back();
   pD->Points = p;
   pD->count  = n;
 
@@ -1206,22 +1205,17 @@ int Graph::loadIndepVarData(const QString& Variable,
 /*!
    Checks if the two graphs have the same independent variables.
 */
-bool Diagram::sameDependencies(Graph *g1, Graph *g2)
+bool Diagram::sameDependencies(Graph const*g1, Graph const*g2) const
 {
   // FIXME
-  // return g1>same(*g2);
+  // return g1->same(*g2);
   if(g1 == g2)  return true;
+  if(g1->numAxes()!=g2->numAxes()) return false;
 
-  DataX *g1Data = g1->mutable_axes().first();
-  DataX *g2Data = g2->mutable_axes().first();
-  while(g1Data && g2Data) {
-    if(g1Data->Var != g2Data->Var)  return false;
-    g1Data = g1->mutable_axes().next();
-    g2Data = g2->mutable_axes().next();
+  for(unsigned i=0; i<g1->numAxes(); ++i) {
+    if(g1->axisName(i) != g2->axisName(i))  return false;
   }
 
-  if(g1Data)  return false;  // Is there more data ?
-  if(g2Data)  return false;  // Is there more data ?
   return true;
 }
 

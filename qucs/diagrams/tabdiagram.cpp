@@ -194,7 +194,7 @@ int TabDiagram::calcDiagram()
     }
     
     for(int h = g->numAxes(); h>0;){
-		DataX *pD = g->axis(--h);
+		DataX const *pD = g->axis(--h); // BUG
       colWidth = 0;
       Str = pD->Var;
       colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);

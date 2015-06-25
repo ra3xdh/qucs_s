@@ -1306,7 +1306,7 @@ void QucsApp::slotExportGraphAsCsv()
   QTextStream Stream(&File);
 
 
-  DataX *pD;
+  DataX const *pD;
   Graph *g = (Graph*)view->focusElement;
   // First output the names of independent and dependent variables.
   for(unsigned ii=0; (pD=g->axis(ii)); ++ii)

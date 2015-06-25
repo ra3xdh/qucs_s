@@ -2582,7 +2582,7 @@ void QucsApp::slot2PortMatching()
     return;
   }
 
-  DataX *Data = Diag->Graphs.first()->axis(0);
+  DataX const *Data = Diag->Graphs.first()->axis(0);
   if(Data->Var != "frequency") {
     QMessageBox::critical(0, tr("Error"), tr("Wrong dependency!"));
     return;

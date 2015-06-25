@@ -213,7 +213,7 @@ if(!firstGraph->isEmpty()) {
 
 
   // first, write name of independent variable
-  DataX *pD = firstGraph->axis(0);
+  DataX const *pD = firstGraph->axis(0);
   NumAll = pD->count;
   Str = pD->Var;
   colWidth = checkColumnWidth(Str, metrics, colWidth, x, y2);
