@@ -27,6 +27,7 @@
 #include <QLineEdit>
 #include <QValidator>
 #include <QPushButton>
+#include <QDebug>
 
 // SpinBoxes are used to show the calculated bias points at the given set of sweep points
 mySpinBox::mySpinBox(int Min, int Max, int Step, double *Val, QWidget *Parent)
@@ -46,7 +47,9 @@ mySpinBox::mySpinBox(int Min, int Max, int Step, double *Val, QWidget *Parent)
 using namespace std;
 QString mySpinBox::textFromValue(int Val) const
 {
-  cout<<"Values + Val"<<*(Values+Val)<<endl;
+  if (Values == NULL) return "";
+
+  qDebug() << "Values + Val" << *(Values+Val) << endl;
   return QString::number(*(Values+Val));
 }
 
@@ -62,6 +65,8 @@ QValidator::State mySpinBox::validate ( QString & text, int & pos ) const
 SweepDialog::SweepDialog(Schematic *Doc_)
 			: QDialog(Doc_)
 {
+  qDebug() << "SweepDialog::SweepDialog()";
+
   Doc = Doc_;
 
   pGraph = setBiasPoints();
@@ -91,7 +96,7 @@ SweepDialog::SweepDialog(Schematic *Doc_)
   
   for(unsigned ii=0; (pD=pGraph->axis(ii)); ++ii) {
     all->addWidget(new QLabel(pD->Var, this), i,0);
-  //cout<<"count: "<<pD->count-1<<", points: "<<*pD->Points<<endl;
+    //cout<<"count: "<<pD->count-1<<", points: "<<*pD->Points<<endl;
     //works only for linear:
     /*double Min = pD->Points[0];
     double Max = pD->Points[pD->count-1];
@@ -126,6 +131,9 @@ SweepDialog::~SweepDialog()
 void SweepDialog::slotNewValue(int)
 {
   DataX *pD = pGraph->axis(0);
+
+  qDebug() << "SweepDialog::slotNewValue:pD->count:" << pD->count;
+
   int Factor = 1, Index = 0;
   QList<mySpinBox *>::const_iterator it;
   for(it = BoxList.constBegin(); it != BoxList.constEnd(); it++) {
@@ -135,8 +143,9 @@ void SweepDialog::slotNewValue(int)
   Index *= 2;  // because of complex values
 
   QList<Node *>::iterator node_it;
-  QList<double *>::const_iterator value_it;
+  QList<double *>::const_iterator value_it = ValueList.begin();
   for(node_it = NodeList.begin(); node_it != NodeList.end(); node_it++) {
+    qDebug() << "SweepDialog::slotNewValue:(*node_it)->Name:" << (*node_it)->Name;
     (*node_it)->Name = misc::num2str(*((*value_it)+Index));
     (*node_it)->Name += ((*node_it)->x1 & 0x10)? "A" : "V";
     value_it++;
@@ -151,14 +160,24 @@ Graph* SweepDialog::setBiasPoints()
   // When this function is entered, a simulation was performed.
   // Thus, the node names are still in "node->Name".
 
+  qDebug() << "SweepDialog::setBiasPoints()";
+
   bool hasNoComp;
   Graph *pg = new Graph("");
-  Diagram *Diag = new Diagram();
   QFileInfo Info(Doc->DocName);
   QString DataSet = Info.dirPath() + QDir::separator() + Doc->DataSet;
 
   Node *pn;
   Element *pe;
+
+  // Note 1:
+  // Invalidate it so that "Graph::loadDatFile()" does not check for the previously loaded time.
+  // This is a current hack as "Graph::loadDatFile()" does not support multi-node data loading
+  // from the simulation results without refreshing (changing) or invalidating the timestamp.
+
+  NodeList.clear();
+  ValueList.clear();
+
   // create DC voltage for all nodes
   for(pn = Doc->Nodes->first(); pn != 0; pn = Doc->Nodes->next()) {
     if(pn->Name.isEmpty()) continue;
@@ -190,7 +209,8 @@ Graph* SweepDialog::setBiasPoints()
     }
 
     pg->Var = pn->Name + ".V";
-    if(pg->loadDatFile(DataSet)) {
+    pg->lastLoaded = QDateTime(); // Note 1 at the start of this function
+    if(pg->loadDatFile(DataSet) == 2) {
       pn->Name = misc::num2str(*(pg->cPointsY)) + "V";
       NodeList.append(pn);             // remember node ...
       ValueList.append(pg->cPointsY);  // ... and all of its values
@@ -219,7 +239,8 @@ Graph* SweepDialog::setBiasPoints()
 
       pn->x1 = 0x10;   // mark current
       pg->Var = pc->Name + ".I";
-      if(pg->loadDatFile(DataSet)) {
+      pg->lastLoaded = QDateTime(); // Note 1 at the start of this function
+      if(pg->loadDatFile(DataSet) == 2) {
         pn->Name = misc::num2str(*(pg->cPointsY)) + "A";
         NodeList.append(pn);             // remember node ...
         ValueList.append(pg->cPointsY);  // ... and all of its values
@@ -239,6 +260,6 @@ Graph* SweepDialog::setBiasPoints()
 
 
   Doc->showBias = 1;
-  delete Diag;
+
   return pg;
 }

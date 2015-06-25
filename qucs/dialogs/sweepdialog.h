@@ -31,7 +31,6 @@ class Graph;
 class Schematic;
 class QGridLayout;
 
-
 class mySpinBox : public QSpinBox {
    Q_OBJECT
 public:
@@ -42,11 +41,9 @@ protected:
   QValidator::State validate ( QString & text, int & pos ) const;
 
 private:
-  double *Values;
+  double *Values = NULL;
   int ValueSize;
 };
-
-
 
 class SweepDialog : public QDialog {
    Q_OBJECT
