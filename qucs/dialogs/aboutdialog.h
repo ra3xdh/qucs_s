@@ -38,6 +38,9 @@ class AboutDialog : public QDialog  {
 public:
   AboutDialog(QWidget *parent = 0);
 
+protected:
+  bool eventFilter(QObject *obj, QEvent *ev);
+
 private:
   void setAuthorsText(void);
   void setTrText(void);

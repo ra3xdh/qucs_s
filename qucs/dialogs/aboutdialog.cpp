@@ -44,6 +44,7 @@
 #include <QTextBrowser>
 #include <QLabel>
 #include <QPushButton>
+#include <QApplication>
 #include <QDebug>
 
 
@@ -147,12 +148,12 @@ AboutDialog::AboutDialog(QWidget *parent)
   QTabWidget *t = new QTabWidget();
   all->addWidget(t);
   connect(t, SIGNAL(currentChanged(int)), this, SLOT(currentChangedSlot(int)));
-  
 
   authorsBrowser = new QTextBrowser;
+  // the Ctrl-Wheel event we would like to filter is handled by the viewport
+  authorsBrowser->viewport()->installEventFilter(this);
   trBrowser = new QTextBrowser;
-
-
+  trBrowser->viewport()->installEventFilter(this);
 
   QString supportText;
   // link to home page, help mailing list, IRC ?
@@ -167,6 +168,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     tr("Additional resources") + " : <a href='https://github.com/Qucs/qucs#resources'>https://github.com/Qucs/qucs#resources</a>";
 
   QTextBrowser *supportBrowser = new QTextBrowser;
+  supportBrowser->viewport()->installEventFilter(this);
   supportBrowser->setOpenExternalLinks(true);
   supportBrowser->setHtml(supportText);
 
@@ -174,6 +176,7 @@ AboutDialog::AboutDialog(QWidget *parent)
   licenseText = "Qucs is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2, or (at your option) any later version.<br/><br/>This software is distributed in the hope that it will be useful,but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details..<br/><br/> You should have received a copy of the GNU General Public License along with Qucs, see the file COPYING. If not see <a href='http://www.gnu.org/licenses/'>http://www.gnu.org/licenses/</a> or write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,Boston, MA 02110-1301, USA.";
 
   QTextBrowser *licenseBrowser = new QTextBrowser;
+  licenseBrowser->viewport()->installEventFilter(this);
   licenseBrowser->setOpenExternalLinks(true);
   licenseBrowser->setHtml(licenseText);
 
@@ -240,3 +243,16 @@ void AboutDialog::setTrText() {
   
   trBrowser->setHtml(trText);	
 }
+
+// event filter to remove the Ctrl-Wheel (text zoom) event
+bool AboutDialog::eventFilter(QObject *obj, QEvent *event) {
+  if ((event->type() == QEvent::Wheel) &&
+      (QApplication::keyboardModifiers() & Qt::ControlModifier )) {    
+    return true; // eat Ctrl-Wheel event
+  } else {
+    // pass the event on to the parent class
+    return QDialog::eventFilter(obj, event);
+  }
+}
+
+
