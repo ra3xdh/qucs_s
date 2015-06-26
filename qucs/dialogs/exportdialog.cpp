@@ -43,7 +43,7 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     filename = filename_;
 
     lblFilename = new QLabel(tr("Save to file (Graphics format by extension)"));
-    lblResolutionX = new QLabel(tr("Width  in pixels"));
+    lblResolutionX = new QLabel(tr("Width in pixels"));
     lblResolutionY = new QLabel(tr("Height in pixels"));
     lblRatio = new QLabel(tr("Scale factor: "));
     lblFormat = new QLabel(tr("Image format:"));
@@ -52,7 +52,7 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     connect(ExportButt,SIGNAL(clicked()),this,SLOT(accept()));
     CancelButt = new QPushButton(tr("Cancel"));
     connect(CancelButt,SIGNAL(clicked()),this,SLOT(reject()));
-    SaveButt = new QPushButton(tr("File"));
+    SaveButt = new QPushButton(tr("Browse"));
     connect(SaveButt,SIGNAL(clicked()),this,SLOT(setFileName()));
 
     editFilename = new QLineEdit(filename);
@@ -156,35 +156,45 @@ int ExportDialog::Ypixels()
 
 void ExportDialog::setFileName()
 {
-    /*QString nam = dialog.getSaveFileName(this,tr("Export diagram to file"),QDir::homeDirPath(),
-                                         "SVG vector graphics (*.svg) ;;"
-                                         "PNG images (*.png) ;;"
-                                         "JPEG images (*.jpg *.jpeg)");
-    */
-    //QFileInfo inf(filename);
-    QFileDialog dialog(this, tr("Export to image"), editFilename->text(),
-                       "SVG vector graphics (*.svg) ;;"
-                       "PNG images (*.png) ;;"
-                       "JPEG images (*.jpg *.jpeg) ;;"
-                       "PDF (*.pdf) ;;"
-                       "PDF + LaTeX (*.pdf_tex) ;;"
-                       "EPS Encapsulated Postscript (*.eps)");
-    dialog.setAcceptMode(QFileDialog::AcceptSave);
-    if(dialog.exec())
-    {
-        QString nam = dialog.selectedFile();
-        QString extension;
-        if(dialog.selectedNameFilter().contains("*.png")) extension=QString(".png");
-        if(dialog.selectedNameFilter().contains("*.jpg")) extension=QString(".jpg");
-        if(dialog.selectedNameFilter().contains("*.svg")) extension=QString(".svg");
-        if(dialog.selectedNameFilter().contains("*.pdf")) extension=QString(".pdf");
-        if(dialog.selectedNameFilter().contains("*.pdf_tex")) extension=QString(".pdf_tex");
-        if(dialog.selectedNameFilter().contains("*.eps")) extension=QString(".eps");
-        if(nam.toLower().section("/",-1,-1).contains(".")) //has the user specified an extension?
-            editFilename->setText(nam); //yes, just leave unchanged
-        else
-            editFilename->setText(nam+extension); //no, add extension
+  QString selectedFilter;
+  QString currentExtension;
+  QString filterExtension;
+
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Export Schematic to Image"),
+      editFilename->text(),
+      "PNG images (*.png);;"
+      "JPEG images (*.jpg *.jpeg);;"
+      "SVG vector graphics (*.svg);;"
+      "PDF (*.pdf);;"
+      "PDF + LaTeX (*.pdf_tex);;"
+      "EPS Encapsulated Postscript (*.eps)",
+      &selectedFilter);
+
+  if (fileName.isEmpty()) return;
+
+  if (selectedFilter.contains("*.png", Qt::CaseInsensitive)) filterExtension = QString(".png");
+  if (selectedFilter.contains("*.jpg", Qt::CaseInsensitive)) filterExtension = QString(".jpg");
+  if (selectedFilter.contains("*.svg", Qt::CaseInsensitive)) filterExtension = QString(".svg");
+  if (selectedFilter.contains("*.pdf", Qt::CaseInsensitive)) filterExtension = QString(".pdf");
+  if (selectedFilter.contains("*.pdf_tex", Qt::CaseInsensitive)) filterExtension = QString(".pdf_tex");
+  if (selectedFilter.contains("*.eps", Qt::CaseInsensitive)) filterExtension = QString(".eps");
+
+  QFileInfo fileInfo(fileName);
+
+  currentExtension = fileInfo.suffix();
+
+  QString allowedExtensions = "png;jpg;jpeg;svg;pdf;pdf_tex;eps";
+  QStringList extensionsList = allowedExtensions.split (';');
+
+  if (currentExtension.isEmpty()) {
+    fileName.append(filterExtension);
+  } else {
+    if (!extensionsList.contains(currentExtension)) {
+      fileName.append(filterExtension);
     }
+  }
+
+  editFilename->setText(fileName);
 }
 
 void ExportDialog::calcWidth()

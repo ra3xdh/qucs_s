@@ -269,8 +269,10 @@ void QucsApp::initActions()
   //mainAccel->connectItem(mainAccel->insertItem(Qt::Key_Backspace),
   //                       editDelete, SLOT(toggle()) );
 
-  exportAsImage = new QAction(tr("Export as image"),this);
+  exportAsImage = new QAction(tr("Export the schematic to an image..."),this);
   connect(exportAsImage,SIGNAL(triggered()),SLOT(slotSaveSchematicToGraphicsFile()));
+  exportAsImage->setStatusTip(tr("Exports the schematic to an image file"));
+  exportAsImage->setWhatsThis(tr("Export the schematic to an image\n\nExports the schematic to an image file"));
 
   // cursor left/right/up/down to move marker on a graph
   cursorLeft = new QShortcut(QKeySequence(Qt::Key_Left), this);

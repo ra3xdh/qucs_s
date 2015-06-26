@@ -23,8 +23,11 @@
 #include "schematic.h"
 #include "imagewriter.h"
 #include "dialogs/exportdialog.h"
+#include "qucs.h"
 
 #include <QtSvg>
+
+extern QucsApp *QucsMain;
 
 ImageWriter::ImageWriter(QString lastfile)
 {
@@ -256,8 +259,9 @@ ImageWriter::print(QWidget *doc)
       }
 
       if (QFile::exists(filename)) {
-        QMessageBox::information(0, QObject::tr("Export to image"),
-            QObject::tr("Successfully exported"), QMessageBox::Ok);
+        //QMessageBox::information(0, QObject::tr("Export to image"),
+        //    QObject::tr("Successfully exported"), QMessageBox::Ok);
+        QucsMain->statusBar()->showMessage(QObject::tr("Successfully exported"), 2000);
       } 
       else {
         QMessageBox::information(0, QObject::tr("Export to image"),
