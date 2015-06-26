@@ -42,7 +42,7 @@ private:
   void setAuthorsText(void);
   void setTrText(void);
 
-  std::array<QString, 8> currAuths; // current Qucs authors
+  std::array<QString, 9> currAuths; // current Qucs authors
   std::array<QString, 10> prevDevs; // previous Qucs developers
   std::array<QString, 18> trAuths; // Qucs translators
 

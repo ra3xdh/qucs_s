@@ -58,7 +58,8 @@ AboutDialog::AboutDialog(QWidget *parent)
     tr("Frans Schreuder - GUI programmer, release"),
     tr("Clemens Novak - GUI programmer"),
     tr("Vadim Kuznetsov - filter synthesis (qucs-activefilter), SPICE integration (NGSPICE, Xyce)"),
-    tr("You-Tang Lee (YodaLee) - GUI programmer, Qt4 porter")
+    tr("You-Tang Lee (YodaLee) - GUI programmer, Qt4 porter"),
+    tr("Claudio Girardi - testing, general fixes")
   }};
   
   prevDevs = {{
@@ -157,8 +158,13 @@ AboutDialog::AboutDialog(QWidget *parent)
   // link to home page, help mailing list, IRC ?
   supportText = tr("Home Page") + " : <a href='http://qucs.sourceforge.net/'>http://qucs.sourceforge.net/</a><br/>"+
     tr("Documentation start page") + " : <a href='http://qucs.sourceforge.net/docs.html'>http://qucs.sourceforge.net/docs.html</a><br/>" +
-    tr("Components reference manual") + " : <a href='http://qucs.sourceforge.net/doc/0.0.19/html/index.html'>http://qucs.sourceforge.net/doc/0.0.19/html/index.html</a><br/>" +
-    tr("Help mailing list") + " : <a href='https://sourceforge.net/p/qucs/mailman/qucs-help/'>" + tr("qucs-help on SourceForge") + "</a>";
+    tr("Components reference manual") + " : <a href='http://qucs.github.io/qucs-manual/'>http://qucs.github.io/qucs-manual/</a><br/><br/>" +
+    tr("If you need help on using Qucs, please join the") + "<br/>" +
+    tr("help mailing list") + " : <a href='https://sourceforge.net/p/qucs/mailman/qucs-help/'>" + tr("qucs-help on SourceForge") + "</a><br/>" +
+    "<small>(" + tr("please attach the schematic you are having problems with") + ")</small><br/><br/>" + 
+    // use http://webchat.freenode.net/?channels=qucs ?
+    tr("IRC general discussion channel") + " : <a href='irc://irc.freenode.net/qucs'>#qucs on freenode.net</a><br/><br/>" +
+    tr("Additional resources") + " : <a href='https://github.com/Qucs/qucs#resources'>https://github.com/Qucs/qucs#resources</a>";
 
   QTextBrowser *supportBrowser = new QTextBrowser;
   supportBrowser->setOpenExternalLinks(true);
