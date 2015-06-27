@@ -25,13 +25,21 @@ class QPainter;
 class Diagram;
 class Graph;
 
+typedef enum{
+	nM_Rect = 0,
+	nM_Deg,
+	nM_Rad
+} numMode_t;
+
 
 class Marker : public Element {
 public:
   Marker(Diagram *Diag_, Graph *pg_=0, int _nn=0, int cx_=0, int cy_=0);
  ~Marker();
 
+private:
   void    initText(int);
+public:
   void    createText();
   void    makeInvalid();
   bool    moveLeftRight(bool);
@@ -45,11 +53,15 @@ public:
   bool    getSelected(int, int);
   Marker* sameNewOne(Graph*);
   void    getTextSize();
+  Graph const* graph() const {return pGraph;}
+  int precision() const {return Precision;}
+  double const* varPos() const {return VarPos;}
 public: // power matching stuff. some sort of VarPos (ab?)use
   double  powFreq() const {return VarPos[0];}
   double  powReal() const {return VarPos[nVarPos];}
   double  powImag() const {return VarPos[nVarPos+1];}
 
+// private: // not yet
   Diagram *Diag;     // the corresponding diagram
   Graph   *pGraph;   // the corresponding graph
 
@@ -62,8 +74,11 @@ public:
   QString Text;     // the string to be displayed in the marker text
   bool transparent; // background shines through marker body
 
+// private: // not yet
   int Precision; // number of digits to show
   int numMode;   // real/imag or polar (deg/rad)
+
+public: // ouch. how to sort this out?
 	double Z0;		//Only used in smith chart marker, to convert S to Z
 };
 

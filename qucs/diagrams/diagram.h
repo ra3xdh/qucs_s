@@ -67,6 +67,7 @@ public:
                (const double*, const double*, const double*, float*, float*, Axis*) const {};
   virtual void finishMarkerCoordinates(float&, float&) const;
   virtual void calcLimits() {};
+  virtual QString extraMarkerText(Marker const*) const {return "";}
   
   virtual void paint(ViewPainter*);
   void    setCenter(int, int, bool relative=false);

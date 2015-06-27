@@ -25,7 +25,6 @@
 #include "diagram.h"
 #include "graph.h"
 #include "main.h"
-#include "../dialogs/matchdialog.h" // For r2z function
 
 #include <QString>
 #include <QPainter>
@@ -36,24 +35,36 @@
 
 #include "misc.h"
 
+/*!
+ * create a marker based on click position and
+ * the branch number.
+ *
+ * the click position is used to compute the marker position. currently, the
+ * marker position is the sampling point closest to the click.
+ */
 
-Marker::Marker(Diagram *Diag_, Graph *pg_, int _nn, int cx_, int cy_)
+Marker::Marker(Diagram *Diag_, Graph *pg_, int branchNo, int cx_, int cy_) :
+  Element(),
+  Diag(Diag_),
+  pGraph(pg_),
+  nVarPos(0),
+  VarPos(NULL),
+  Precision(3),
+  numMode(0)
 {
   Type = isMarker;
   isSelected = transparent = false;
 
-  Diag   = Diag_;
-  pGraph = pg_;
-  Precision = 3;   // before createText()
-  VarPos = 0;
-  numMode = nVarPos = 0;
   cx =  cx_;
   cy = -cy_;
   fCX = float(cx);
   fCY = float(cy);
-  Z0 = 50;		//Used for Smith chart marker, to calculate impedance
-  if(!pGraph)  makeInvalid();
-  else initText(_nn);   // finally create marker
+  if(!pGraph){
+    makeInvalid();
+  }else{
+    initText(branchNo);   // finally create marker
+    createText();
+  }
 
   x1 =  cx + 60;
   y1 = -cy - 60;
@@ -66,6 +77,12 @@ Marker::~Marker()
 }
 
 // ---------------------------------------------------------------------
+/*!
+ * compute VarPos from branch number n and click position (cx, cy)
+ * this is done by recreating branch samples and comparing against click
+ *
+ * FIXME: should use ScrPoints instead. do not call calcCoordinate from here!
+ */
 void Marker::initText(int n)
 {
   if(pGraph->isEmpty()) {
@@ -140,10 +157,15 @@ void Marker::initText(int n)
     nn /= pD->count;
   }
 
-  createText();
+  // createText();
 }
 
 // ---------------------------------------------------------------------
+/*!
+ * (should)
+ * create marker label Text the screen position cx and cy from VarPos.
+ * does a lot of fancy stuff to be sorted out.
+ */
 void Marker::createText()
 {
   if(!(pGraph->cPointsY)) {
@@ -160,57 +182,42 @@ void Marker::createText()
 
   // independent variables
   Text = "";
-  double *pp, v;
-  int n = 0, m = 1, i;
+  double *pp;
+  int n = 0;
   nVarPos = 0;
   DataX const *pD;
-  for(unsigned ii=0; (pD=pGraph->axis(ii)); ++ii) {
-    pp = pD->Points;
-    v  = VarPos[nVarPos];
-    for(i=pD->count; i>1; i--) {  // find appropiate marker position
-      if(fabs(v-(*pp)) < fabs(v-(*(pp+1)))) break;
-      pp++;
-      n += m;
-    }
 
-    m *= pD->count;
-    VarPos[nVarPos++] = *pp;
-    Text += pD->Var + ": " + QString::number(*pp,'g',Precision) + "\n";
-  }
+  n = pGraph->getSampleNo(VarPos);
+  nVarPos = pGraph->numAxes();
 
-
-  v = 0.0;   // needed for 2D graph in 3D diagram
-  double *py=&v, *pz = pGraph->cPointsY + 2*n;
+  v = 0.;   // needed for 2D graph in 3D diagram
+  double *py=&v;
   pD = pGraph->axis(0);
   if(pGraph->axis(1)) {
     py = pGraph->axis(1)->Points;   // only for 3D diagram
     py += (n / pD->count) % pGraph->axis(1)->count;
   }
 
+  double pz[2];
+  pz[0] = VarPos[nVarPos];
+  pz[1] = VarPos[nVarPos+1];
+
+  // now actually create text.
+  for(unsigned ii=0; (pD=pGraph->axis(ii)); ++ii) {
+    Text += pD->Var + ": " + QString::number(VarPos[ii],'g',Precision) + "\n";
+  }
+
   Text += pGraph->Var + ": ";
   switch(numMode) {
-    case 0: Text += misc::complexRect(*pz, *(pz+1), Precision);
+    case nM_Rect: Text += misc::complexRect(*pz, *(pz+1), Precision);
       break;
-    case 1: Text += misc::complexDeg(*pz, *(pz+1), Precision);
+    case nM_Deg: Text += misc::complexDeg(*pz, *(pz+1), Precision);
       break;
-    case 2: Text += misc::complexRad(*pz, *(pz+1), Precision);
+    case nM_Rad: Text += misc::complexRad(*pz, *(pz+1), Precision);
       break;
   }
-  if(Diag->Name=="Smith") //impedance is useful as well here
-  {
-	double Zr, Zi; 
-	Zr = *pz;
-	Zi = *(pz+1);
-	  
-	MatchDialog::r2z(Zr, Zi, Z0);
-	QString Var = pGraph->Var;
-	if(Var.startsWith("S"))
-  		Text += "\n"+ Var.replace('S', 'Z')+": " +misc::complexRect(Zr, Zi, Precision);
-	else
-		Text += "\nZ("+ Var+"): " +misc::complexRect(Zr, Zi, Precision);
-  }
-  VarPos[nVarPos] = *pz;
-  VarPos[nVarPos+1] = *(pz+1);
+
+  Text += Diag->extraMarkerText(this);
 
   Axis *pa;
   if(pGraph->yAxisNo == 0)  pa = &(Diag->yAxis);
@@ -544,3 +551,5 @@ Marker* Marker::sameNewOne(Graph *pGraph_)
 
   return pm;
 }
+
+// vim:ts=8:sw=2:noet

@@ -868,12 +868,18 @@ void Diagram::updateGraphData()
 
   // Setting markers must be done last, because in 3D diagram "Mem"
   // is released in "createAxisLabels()".
-  foreach(Graph *pg, Graphs)
-    foreach(Marker *pm, pg->Markers)
-      pm->createText();
+  foreach(Graph *pg, Graphs){
+    pg->createMarkerText();
+  }
 }
 
 // --------------------------------------------------------------------------
+/*!
+ * does not (yet) load a dat file. only part of it.
+ * this way, it would belong to graph.cpp. but it's too obsolete, lets see..
+ *
+ * FIXME: must invalidate markers.
+ */
 int Graph::loadDatFile(const QString& fileName)
 {
   Graph* g = this;

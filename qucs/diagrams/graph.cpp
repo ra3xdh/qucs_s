@@ -43,6 +43,14 @@ Graph::~Graph()
 }
 
 // ---------------------------------------------------------------------
+void Graph::createMarkerText() const
+{
+  for(auto pm : Markers) {
+    pm->createText();
+  }
+}
+
+// ---------------------------------------------------------------------
 void Graph::paint(ViewPainter *p, int x0, int y0)
 {
   if(!ScrPoints.size())
@@ -138,8 +146,15 @@ bool Graph::load(const QString& _s)
 }
 
 // -----------------------------------------------------------------------
-// Checks if the coordinates x/y point to the graph. x/y are relative to
-// diagram cx/cy. 5 is the precision the user must point onto the graph.
+/*!
+ * Checks if the coordinates x/y point to the graph. returns the number of the
+ * branch of the graph, -1 upon a miss.
+ *
+ * x/y are relative to diagram cx/cy. 5 is the precision the user must point
+ * onto the graph.
+ *
+ * FIXME: should return reference to hit sample point or some context.
+ */
 int Graph::getSelected(int x, int y)
 {
   auto pp = ScrPoints.begin();
@@ -238,6 +253,32 @@ Graph* Graph::sameNewOne()
     pg->Markers.append(pm->sameNewOne(pg));
 
   return pg;
+}
+
+int Graph::getSampleNo(double*VarPos) const
+{
+  DataX const* pD;
+  unsigned nVarPos=0;
+  unsigned n=0;
+  unsigned m=1;
+
+  for(unsigned ii=0; (pD=axis(ii)); ++ii) {
+    double* pp = pD->Points;
+    double v = VarPos[nVarPos];
+    for(unsigned i=pD->count; i>1; i--) {  // find appropiate marker position
+      if(fabs(v-(*pp)) < fabs(v-(*(pp+1)))) break;
+      pp++;
+      n += m;
+    }
+
+    m *= pD->count;
+    VarPos[nVarPos++] = *pp;
+  }
+
+  VarPos[nVarPos] = cPointsY[2*n];
+  VarPos[nVarPos+1] = cPointsY[2*n + 1];
+
+  return n;
 }
 
 // -----------------------------------------------------------------------

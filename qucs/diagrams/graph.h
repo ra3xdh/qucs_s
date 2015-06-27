@@ -76,6 +76,13 @@ private:
 
 struct Axis;
 
+/*!
+ * prepare data for plotting purposes in Diagram.
+ * a Graph is a list of graphs (bug?!)
+ * iterating yields points (in screen coordinates) and control tokens.
+ *
+ * also stores markers.
+ */
 class Graph : public Element {
 public:
   Graph(const QString& _Line="");
@@ -137,12 +144,14 @@ public:
   int  Precision;   // number of digits to show
   int  numMode;     // real/imag or polar (deg/rad)
 
-private: // painting
+private: // painting and markers
   void drawLines(int, int, ViewPainter*) const;
   void drawStarSymbols(int, int, ViewPainter*) const;
   void drawCircleSymbols(int, int, ViewPainter*) const;
   void drawArrowSymbols(int, int, ViewPainter*) const;
-
+public: // marker related
+  void createMarkerText() const;
+  int getSampleNo(double*VarPos) const;
 private:
   QVector<DataX*>  cPointsX;
   std::vector<ScrPt> ScrPoints; // data in screen coordinates

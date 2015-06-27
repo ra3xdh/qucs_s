@@ -30,6 +30,8 @@
 #endif
 
 #include "smithdiagram.h"
+#include "misc.h"
+#include "../dialogs/matchdialog.h" // For r2z function
 
 
 SmithDiagram::SmithDiagram(int _cx, int _cy, bool ImpMode) : Diagram(_cx, _cy)
@@ -124,3 +126,30 @@ Element* SmithDiagram::info_y(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne)  return new SmithDiagram(0, 0, false);
   return 0;
 }
+
+QString SmithDiagram::extraMarkerText(Marker const* m) const
+{
+  assert(m);
+  Graph const* pGraph = m->graph();
+  assert(pGraph);
+  double const* Pos = m->varPos();
+  assert(Pos);
+  unsigned nVarPos = pGraph->numAxes();
+  double Zr, Zi;
+  double Z0 = m->Z0;
+  double Precision = m->precision(); // hmmm
+
+  Zr = Pos[nVarPos];
+  Zi = Pos[nVarPos+1];
+
+  MatchDialog::r2z(Zr, Zi, Z0);
+  QString Var = pGraph->Var;
+
+  if(Var.startsWith("S")) { // uuh, ooh hack.
+    return "\n"+ Var.replace('S', 'Z')+": " +misc::complexRect(Zr, Zi, Precision);
+  }else{
+    return "\nZ("+ Var+"): " +misc::complexRect(Zr, Zi, Precision);
+  }
+}
+
+// vim:ts=8:sw=2:noet

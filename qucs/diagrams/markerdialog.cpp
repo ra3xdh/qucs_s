@@ -50,8 +50,9 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   g->addWidget(new QLabel(tr("Number Notation: ")), 1,0);
   g->addWidget(NumberBox, 1, 1);
 
-	if(pMarker->Diag->Name=="Smith") //S parameter also displayed as Z, need Z0 here
+  if(pMarker->Diag->Name=="Smith") // BUG
   {
+    //S parameter also displayed as Z, need Z0 here
 		SourceImpedance = new QLineEdit();
   	SourceImpedance->setText(QString::number(pMarker->Z0));
 
@@ -92,7 +93,7 @@ void MarkerDialog::slotAcceptValues()
     pMarker->Precision = tmp;
     changed = true;
   }
-	if(pMarker->Diag->Name=="Smith")
+	if(pMarker->Diag->Name=="Smith") // BUG
 	{
 			double SrcImp = SourceImpedance->text().toDouble();
 			if(SrcImp != pMarker->Z0)
@@ -116,3 +117,5 @@ void MarkerDialog::slotAcceptValues()
   }
   else done(1);
 }
+
+// vim:ts=8:sw=2:noet
