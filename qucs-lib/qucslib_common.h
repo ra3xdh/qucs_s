@@ -120,7 +120,6 @@ inline int makeModelString (QString libname, QString compname, QString compstrin
     {
         return QUCS_COMP_LIB_CORRUPT;
     }
-
     // check for a single component line
     if(!modelstring.isEmpty())
     {
@@ -151,10 +150,10 @@ inline int makeModelString (QString libname, QString compname, QString compstrin
 
     for (int i = 0; i < symbolstringLines.count (); i++)
     {
-        if(symbolstringLines[i].isEmpty()) continue;
-
         // remove white space from start and end of line
         symbolstringLines[i] = symbolstringLines[i].trimmed ();
+
+        if(symbolstringLines[i].isEmpty()) continue;
 
         // check for and strip the surrounding < >, returning an empty
         // string if they're not found
@@ -217,6 +216,8 @@ inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
     QString LibraryString = ReadWhole.readAll();
     file.close();
 
+	LibraryString.replace(QRegExp("\\r\\n"), "\n");
+	
     // The libraries have a header statement like the following:
     //
     // <Qucs Library 0.0.18 "libname">
