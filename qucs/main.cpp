@@ -627,6 +627,7 @@ void createListComponentEntry(){
 // #########################################################################
 int main(int argc, char *argv[])
 {
+  qInstallMsgHandler(qucsMessageOutput);
   // apply default settings
   QucsSettings.font = QFont("Helvetica", 12);
   QucsSettings.largeFontSize = 16.0;
@@ -884,7 +885,7 @@ int main(int argc, char *argv[])
 
   QucsMain = new QucsApp();
   a.setMainWidget(QucsMain);
-  qInstallMsgHandler(qucsMessageOutput);
+  
   QucsMain->show();
   int result = a.exec();
   //saveApplSettings(QucsMain);
