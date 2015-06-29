@@ -43,9 +43,8 @@
  * marker position is the sampling point closest to the click.
  */
 
-Marker::Marker(Diagram *Diag_, Graph *pg_, int branchNo, int cx_, int cy_) :
+Marker::Marker(Graph *pg_, int branchNo, int cx_, int cy_) :
   Element(),
-  Diag(Diag_),
   pGraph(pg_),
   nVarPos(0),
   VarPos(NULL),
@@ -90,9 +89,10 @@ void Marker::initText(int n)
       return;
   }
 
-  Axis *pa;
-  if(pGraph->yAxisNo == 0)  pa = &(Diag->yAxis);
-  else  pa = &(Diag->zAxis);
+  Axis const *pa;
+  assert(diag());
+  if(pGraph->yAxisNo == 0)  pa = &(diag()->yAxis);
+  else  pa = &(diag()->zAxis);
   double Dummy = 0.0;   // needed for 2D graph in 3D diagram
   double *px, *py=&Dummy, *pz;
   Text = "";
@@ -122,7 +122,7 @@ void Marker::initText(int n)
   m  = nnn - 1;
   pz = pGraph->cPointsY + 2*n;
   for(nn=0; nn<nnn; nn++) {
-    Diag->calcCoordinate(px, pz, py, &fCX, &fCY, pa);
+    diag()->calcCoordinate(px, pz, py, &fCX, &fCY, pa);
     ++px;
     pz += 2;
     if(isCross) {
@@ -190,7 +190,7 @@ void Marker::createText()
   n = pGraph->getSampleNo(VarPos);
   nVarPos = pGraph->numAxes();
 
-  v = 0.;   // needed for 2D graph in 3D diagram
+  double v=0.;   // needed for 2D graph in 3D diagram
   double *py=&v;
   pD = pGraph->axis(0);
   if(pGraph->axis(1)) {
@@ -217,15 +217,16 @@ void Marker::createText()
       break;
   }
 
-  Text += Diag->extraMarkerText(this);
+  assert(diag());
+  Text += diag()->extraMarkerText(this);
 
-  Axis *pa;
-  if(pGraph->yAxisNo == 0)  pa = &(Diag->yAxis);
-  else  pa = &(Diag->zAxis);
+  Axis const *pa;
+  if(pGraph->yAxisNo == 0)  pa = &(diag()->yAxis);
+  else  pa = &(diag()->zAxis);
   pp = &(VarPos[0]);
 
-  Diag->calcCoordinate(pp, pz, py, &fCX, &fCY, pa);
-  Diag->finishMarkerCoordinates(fCX, fCY);
+  diag()->calcCoordinate(pp, pz, py, &fCX, &fCY, pa);
+  diag()->finishMarkerCoordinates(fCX, fCY);
 
   cx = int(fCX+0.5);
   cy = int(fCY+0.5);
@@ -236,7 +237,8 @@ void Marker::createText()
 void Marker::makeInvalid()
 {
   fCX = fCY = -1e3; // invalid coordinates
-  Diag->finishMarkerCoordinates(fCX, fCY); // leave to diagram
+  assert(diag());
+  diag()->finishMarkerCoordinates(fCX, fCY); // leave to diagram
   cx = int(fCX+0.5);
   cy = int(fCY+0.5);
 
@@ -396,8 +398,9 @@ void Marker::paint(ViewPainter *p, int x0, int y0)
 // ---------------------------------------------------------------------
 void Marker::paintScheme(QPainter *p)
 {
-  int x0 = Diag->cx;
-  int y0 = Diag->cy;
+  assert(diag());
+  int x0 = diag()->cx;
+  int y0 = diag()->cy;
   p->drawRect(x0+x1, y0+y1, x2, y2);
 
   // which corner of rectangle should be connected to line ?
@@ -429,11 +432,11 @@ void Marker::setCenter(int x, int y, bool relative)
 // -------------------------------------------------------
 void Marker::Bounding(int& _x1, int& _y1, int& _x2, int& _y2)
 {
-  if(Diag) {
-    _x1 = Diag->cx + x1;
-    _y1 = Diag->cy + y1;
-    _x2 = Diag->cx + x1+x2;
-    _y2 = Diag->cy + y1+y2;
+  if(diag()) {
+    _x1 = diag()->cx + x1;
+    _y1 = diag()->cy + y1;
+    _x2 = diag()->cx + x1+x2;
+    _y2 = diag()->cy + y1+y2;
   }
   else {
     _x1 = x1;
@@ -527,9 +530,19 @@ bool Marker::getSelected(int x_, int y_)
 }
 
 // ------------------------------------------------------------------------
+/*
+ * the diagram this belongs to
+ */
+const Diagram* Marker::diag() const
+{
+  if(!pGraph) return NULL;
+  return pGraph->parentDiagram();
+}
+
+// ------------------------------------------------------------------------
 Marker* Marker::sameNewOne(Graph *pGraph_)
 {
-  Marker *pm = new Marker(Diag, pGraph_, 0, cx ,cy);
+  Marker *pm = new Marker(pGraph_, 0, cx ,cy);
 
   pm->x1 = x1;  pm->y1 = y1;
   pm->x2 = x2;  pm->y2 = y2;

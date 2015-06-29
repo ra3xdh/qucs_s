@@ -325,7 +325,8 @@ Marker* Diagram::setMarker(int x, int y)
     foreach(Graph *pg,Graphs) {
       int n  = pg->getSelected(x-cx, cy-y); // sic!
       if(n >= 0) {
-	Marker *pm = new Marker(this, pg, n, x-cx, y-cy);
+	assert(pg->parentDiagram() == this);
+	Marker *pm = new Marker(pg, n, x-cx, y-cy);
 	pg->Markers.append(pm);
 	return pm;
       }
@@ -1455,7 +1456,8 @@ bool Diagram::load(const QString& Line, QTextStream *stream)
       // load markers of the diagram
       pg = Graphs.last();
       if(!pg)  return false;
-      Marker *pm = new Marker(this, pg);
+      assert(pg->parentDiagram() == this);
+      Marker *pm = new Marker(pg);
       if(!pm->load(s)) {
 	delete pm;
 	return false;
@@ -1464,7 +1466,7 @@ bool Diagram::load(const QString& Line, QTextStream *stream)
       continue;
     }
 
-    pg = new Graph();
+    pg = new Graph(this);
     if(!pg->load(s)) {
       delete pg;
       return false;

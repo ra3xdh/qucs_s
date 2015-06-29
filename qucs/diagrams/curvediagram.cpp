@@ -52,7 +52,7 @@ CurveDiagram::~CurveDiagram()
 
 // ------------------------------------------------------------
 void CurveDiagram::calcCoordinate(const double*, const double* yD, const double*,
-				  float *px, float *py, Axis *pa) const
+				  float *px, float *py, Axis const *pa) const
 {
   double yr = yD[0];
   double yi = yD[1];

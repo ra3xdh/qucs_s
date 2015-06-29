@@ -34,7 +34,7 @@ typedef enum{
 
 class Marker : public Element {
 public:
-  Marker(Diagram *Diag_, Graph *pg_=0, int _nn=0, int cx_=0, int cy_=0);
+  Marker(Graph *pg_=0, int _nn=0, int cx_=0, int cy_=0);
  ~Marker();
 
 private:
@@ -56,13 +56,13 @@ public:
   Graph const* graph() const {return pGraph;}
   int precision() const {return Precision;}
   double const* varPos() const {return VarPos;}
+  const Diagram *diag() const;
 public: // power matching stuff. some sort of VarPos (ab?)use
   double  powFreq() const {return VarPos[0];}
   double  powReal() const {return VarPos[nVarPos];}
   double  powImag() const {return VarPos[nVarPos+1];}
 
 // private: // not yet
-  Diagram *Diag;     // the corresponding diagram
   Graph   *pGraph;   // the corresponding graph
 
 private:

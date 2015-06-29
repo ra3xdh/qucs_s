@@ -137,7 +137,7 @@ int Rect3DDiagram::calcCross(int *Xses, int *Yses)
 // ------------------------------------------------------------
 // Is needed for markers.
 void Rect3DDiagram::calcCoordinate(const double* xD, const double* zD, const double* yD,
-                                   float *px, float *py, Axis*) const
+                                   float *px, float *py, Axis const*) const
 {
   double x3D = zD[0];
   double y3D = zD[1];

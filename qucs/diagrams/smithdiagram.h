@@ -32,7 +32,7 @@ public:
   static Element* info_y(QString&, char* &, bool getNewOne=false);
   int  calcDiagram();
   void calcLimits();
-  void calcCoordinate(const double*, const double*, const double*, float*, float*, Axis*) const;
+  void calcCoordinate(const double*, const double*, const double*, float*, float*, Axis const*) const;
   QString extraMarkerText(Marker const*) const;
 };
 

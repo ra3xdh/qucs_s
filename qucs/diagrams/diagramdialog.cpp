@@ -824,7 +824,7 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
     GraphList->addItem(GraphInput->text());////insertItem(i, GraphInput->text());
     GraphList->setCurrentRow(GraphList->count()-1);
 
-    Graph *g = new Graph(GraphInput->text());   // create a new graph
+    Graph *g = new Graph(Diag, GraphInput->text());   // create a new graph
 
     if(Diag->Name != "Tab") {
       if(Diag->Name != "Truth") {
@@ -980,13 +980,15 @@ void DiagramDialog::slotDeleteGraph()
 // --------------------------------------------------------------------------
 void DiagramDialog::slotNewGraph()
 {
+  assert(Diag);
   if(GraphInput->text().isEmpty()) return;
 
   GraphList->addItem(GraphInput->text());
 
-  Graph *g = new Graph(GraphInput->text());   // create a new graph
-  if(Diag->Name != "Tab") {
-    if(Diag->Name != "Truth") {
+  Graph *g = new Graph(Diag, GraphInput->text());
+// FIXME: call  Diag->whateverelse();
+  if(Diag->Name != "Tab") { // BUG
+    if(Diag->Name != "Truth") { // BUG
       g->Color = ColorButt->paletteBackgroundColor();
       g->Thick = Property2->text().toInt();
       g->Style = toGraphStyle(PropertyBox->currentItem());
@@ -1453,3 +1455,5 @@ void DiagramDialog::slotEditRotZ(const QString& Text)
   DiagCross->rotZ = Text.toFloat() * pi/180.0;
   DiagCross->update();
 }
+
+// vim:ts=8:sw=2:noet

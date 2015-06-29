@@ -20,8 +20,12 @@
 
 #include <QPainter>
 
-Graph::Graph(const QString& _Line) : Element(),
-  Style(GRAPHSTYLE_SOLID)
+class Diagram;
+
+Graph::Graph(Diagram const* d, const QString& _Line) :
+  Element(),
+  Style(GRAPHSTYLE_SOLID),
+  diagram(d)
 {
   Type = isGraph;
 
@@ -239,7 +243,7 @@ int Graph::getSelected(int x, int y)
 // Creates a new graph and copies all the properties into it.
 Graph* Graph::sameNewOne()
 {
-  Graph *pg = new Graph(Var);
+  Graph *pg = new Graph(diagram, Var);
 
   pg->Color = Color;
   pg->Thick = Thick;

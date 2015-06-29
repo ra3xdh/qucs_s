@@ -56,7 +56,7 @@ SmithDiagram::~SmithDiagram()
 // ------------------------------------------------------------
 // calculate the screen coordinates for the graph data
 void SmithDiagram::calcCoordinate(const double*, const double* yD, const double*,
-                                  float *px, float *py, Axis*) const
+                                  float *px, float *py, Axis const*) const
 {
   double yr = yD[0];
   double yi = yD[1];

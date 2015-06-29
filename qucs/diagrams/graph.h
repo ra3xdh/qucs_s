@@ -85,7 +85,7 @@ struct Axis;
  */
 class Graph : public Element {
 public:
-  Graph(const QString& _Line="");
+  Graph(const Diagram*, const QString& _Line="");
  ~Graph();
 
   struct ScrPt{
@@ -144,7 +144,7 @@ public:
   int  Precision;   // number of digits to show
   int  numMode;     // real/imag or polar (deg/rad)
 
-private: // painting and markers
+private: // painting
   void drawLines(int, int, ViewPainter*) const;
   void drawStarSymbols(int, int, ViewPainter*) const;
   void drawCircleSymbols(int, int, ViewPainter*) const;
@@ -152,9 +152,11 @@ private: // painting and markers
 public: // marker related
   void createMarkerText() const;
   int getSampleNo(double*VarPos) const;
+  Diagram const* parentDiagram() const{return diagram;}
 private:
   QVector<DataX*>  cPointsX;
   std::vector<ScrPt> ScrPoints; // data in screen coordinates
+  Diagram const* diagram;
 };
 
 #endif

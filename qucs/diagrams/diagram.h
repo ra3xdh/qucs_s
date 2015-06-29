@@ -64,7 +64,7 @@ public:
   virtual Diagram* newOne();
   virtual int  calcDiagram() { return 0; };
   virtual void calcCoordinate
-               (const double*, const double*, const double*, float*, float*, Axis*) const {};
+               (const double*, const double*, const double*, float*, float*, Axis const*) const {};
   virtual void finishMarkerCoordinates(float&, float&) const;
   virtual void calcLimits() {};
   virtual QString extraMarkerText(Marker const*) const {return "";}
