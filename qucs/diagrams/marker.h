@@ -55,19 +55,19 @@ public:
   void    getTextSize();
   Graph const* graph() const {return pGraph;}
   int precision() const {return Precision;}
-  double const* varPos() const {return VarPos;}
+  std::vector<double> const& varPos() const {return VarPos;}
   const Diagram *diag() const;
 public: // power matching stuff. some sort of VarPos (ab?)use
   double  powFreq() const {return VarPos[0];}
-  double  powReal() const {return VarPos[nVarPos];}
-  double  powImag() const {return VarPos[nVarPos+1];}
+  double  powReal() const {return VarDep[0];}
+  double  powImag() const {return VarDep[1];}
 
 // private: // not yet
   Graph   *pGraph;   // the corresponding graph
 
 private:
-  int    nVarPos;   // number of values in "VarPos"
-  double *VarPos;   // values the marker is pointing to
+  std::vector<double> VarPos;   // values the marker is pointing to
+  double VarDep[2];   // dependent value
   float  fCX, fCY;  // coordinates for the line from graph to marker body
 
 public:

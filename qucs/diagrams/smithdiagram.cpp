@@ -132,15 +132,15 @@ QString SmithDiagram::extraMarkerText(Marker const* m) const
   assert(m);
   Graph const* pGraph = m->graph();
   assert(pGraph);
-  double const* Pos = m->varPos();
-  assert(Pos);
+  std::vector<double> const& Pos = m->varPos();
   unsigned nVarPos = pGraph->numAxes();
+  assert(nVarPos == Pos.size());
   double Zr, Zi;
   double Z0 = m->Z0;
   double Precision = m->precision(); // hmmm
 
-  Zr = Pos[nVarPos];
-  Zi = Pos[nVarPos+1];
+  Zr = m->powReal();
+  Zi = m->powImag();
 
   MatchDialog::r2z(Zr, Zi, Z0);
   QString Var = pGraph->Var;

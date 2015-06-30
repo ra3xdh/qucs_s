@@ -170,7 +170,7 @@ private: // painting
   void drawArrowSymbols(int, int, ViewPainter*) const;
 public: // marker related
   void createMarkerText() const;
-  void findSample(double*VarPos) const;
+  std::pair<double,double> findSample(std::vector<double>&) const;
   Diagram const* parentDiagram() const{return diagram;}
 private:
   QVector<DataX*>  cPointsX;

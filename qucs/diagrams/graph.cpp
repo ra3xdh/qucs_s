@@ -261,7 +261,10 @@ Graph* Graph::sameNewOne()
   return pg;
 }
 
-void Graph::findSample(double*VarPos) const
+/*!
+ * find a sample point close to VarPos, snap to it, and return data at VarPos
+ */
+std::pair<double,double> Graph::findSample(std::vector<double>& VarPos) const
 {
   DataX const* pD;
   unsigned nVarPos=0;
@@ -281,8 +284,7 @@ void Graph::findSample(double*VarPos) const
     VarPos[nVarPos++] = *pp;
   }
 
-  VarPos[nVarPos] = cPointsY[2*n];
-  VarPos[nVarPos+1] = cPointsY[2*n + 1];
+  return std::pair<double,double>(cPointsY[2*n], cPointsY[2*n+1]);
 }
 
 // -----------------------------------------------------------------------

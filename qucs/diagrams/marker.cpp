@@ -47,8 +47,6 @@
 Marker::Marker(Graph *pg_, int branchNo, int cx_, int cy_) :
   Element(),
   pGraph(pg_),
-  nVarPos(0),
-  VarPos(NULL),
   Precision(3),
   numMode(0)
 {
@@ -73,7 +71,6 @@ Marker::Marker(Graph *pg_, int branchNo, int cx_, int cy_) :
 
 Marker::~Marker()
 {
-  if(VarPos)  free(VarPos);
 }
 
 // ---------------------------------------------------------------------
@@ -142,18 +139,17 @@ void Marker::initText(int n)
   if(isCross) m *= pD->count;
   n += m;
 
-  nVarPos = 0;
-  nn = (pGraph->numAxes() + 2) * sizeof(double);
-  if(VarPos)
-    VarPos = (double*)realloc(VarPos, nn);
-  else
-    VarPos = (double*)malloc(nn);
+  // why check over and over again?! do in the right place and just assert otherwise.
+  if(VarPos.size() != pGraph->numAxes()){
+    qDebug() << "huh, wrong size" << VarPos.size() << pGraph->numAxes();
+    VarPos.resize(pGraph->numAxes());
+  }
 
   // gather text of all independent variables
   nn = n;
   for(unsigned i=0; (pD = pGraph->axis(i)); ++i) {
     px = pD->Points + (nn % pD->count);
-    VarPos[nVarPos++] = *px;
+    VarPos[i] = *px;
     Text += pD->Var + ": " + QString::number(*px,'g',Precision) + "\n";
     nn /= pD->count;
   }
@@ -174,22 +170,28 @@ void Marker::createText()
     return;
   }
 
-  VarPos = (double*)realloc(VarPos,
-              (pGraph->numAxes() + 2) * sizeof(double));
+  unsigned nVarPos = VarPos.size();
 
-  while((unsigned int)nVarPos < pGraph->numAxes())
-    VarPos[nVarPos++] = 0.0;   // fill up VarPos
-
+  if(nVarPos > pGraph->numAxes()){
+    qDebug() << "huh, VarPos too big?!";
+  }
+  if(nVarPos != pGraph->numAxes()){
+    qDebug() << "padding" << VarPos.size() << pGraph->numAxes();
+    VarPos.resize(pGraph->numAxes());
+    while((unsigned int)nVarPos < pGraph->numAxes()){
+      VarPos[nVarPos++] = 0.; // pad
+    }
+  }
 
   // independent variables
   Text = "";
   double *pp;
-  int n = 0;
-  nVarPos = 0;
+  nVarPos = pGraph->numAxes();
   DataX const *pD;
 
-  pGraph->findSample(VarPos);
-  nVarPos = pGraph->numAxes();
+  auto p = pGraph->findSample(VarPos);
+  VarDep[0] = p.first;
+  VarDep[1] = p.second;
 
   double v=0.;   // needed for 2D graph in 3D diagram
   double *py=&v;
@@ -201,8 +203,8 @@ void Marker::createText()
   }
 
   double pz[2];
-  pz[0] = VarPos[nVarPos];
-  pz[1] = VarPos[nVarPos+1];
+  pz[0] = VarDep[0];
+  pz[1] = VarDep[1];
 
   // now actually create text.
   for(unsigned ii=0; (pD=pGraph->axis(ii)); ++ii) {
@@ -453,8 +455,9 @@ QString Marker::save()
 {
   QString s  = "<Mkr ";
 
-  for(int i=0; i<nVarPos; i++)
-    s += QString::number(VarPos[i])+"/";
+  for(auto i : VarPos){
+    s += QString::number(i)+"/";
+  }
   s.replace(s.length()-1,1,' ');
   //s.at(s.length()-1) = (const QChar&)' ';
 
@@ -482,12 +485,9 @@ bool Marker::load(const QString& _s)
   int i=0, j;
   QString n = s.section(' ',1,1);    // VarPos
 
-  nVarPos = 0;
-  j = (n.count('/') + 3) * sizeof(double);
-  if(VarPos)
-    VarPos = (double*)realloc(VarPos, j);
-  else
-    VarPos = (double*)malloc(j);
+  unsigned nVarPos = 0;
+  j = (n.count('/') + 3);
+  VarPos.resize(j);
 
   do {
     j = n.indexOf('/', i);
@@ -549,15 +549,7 @@ Marker* Marker::sameNewOne(Graph *pGraph_)
   pm->x1 = x1;  pm->y1 = y1;
   pm->x2 = x2;  pm->y2 = y2;
 
-  int z = (nVarPos+2) * sizeof(double);
-  if(pm->VarPos)
-    pm->VarPos = (double*)realloc(pm->VarPos, z);
-  else
-    pm->VarPos = (double*)malloc(z);
-
-  pm->nVarPos = nVarPos;
-  for(z=0; z<nVarPos; z++)
-    pm->VarPos[z] = VarPos[z];
+  pm->VarPos = VarPos;
 
   pm->Text        = Text;
   pm->transparent = transparent;
