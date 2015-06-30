@@ -89,23 +89,34 @@ public:
  ~Graph();
 
   class ScrPt{
-    float Scr;
-    //double Data; not yet
+    float ScrX;
+    float ScrY;
+
+    double indep; // top level indep value (sweep)
+    double dep; // top level dep value // FIXME: type?!
   public:
-    ScrPt() : Scr(0){}
+    ScrPt() : ScrX(0){}
     ~ScrPt(){}
 
     void setStrokeEnd();
     void setBranchEnd();
     void setGraphEnd();
-    void setScr(float);
+    void setScrX(float); // screen horizontal coordinate
+    void setScrY(float); // screen vertical coordinate
+    void setScr(float,float); // both @ once.
+    void setIndep(double);
+    void setDep(double);
+//    void attachCoords(double*);
 
-    bool isData() const;
+    bool isPt() const; // indicate if this is a point on the screen
     bool isStrokeEnd() const;
     bool isBranchEnd() const;
     bool isGraphEnd() const;
 
-    float getScr() const;
+    float getScrX() const;
+    float getScrY() const;
+    double getIndep() const;
+    double getDep() const;
   };
   typedef std::vector<ScrPt> container;
   typedef container::iterator iterator;

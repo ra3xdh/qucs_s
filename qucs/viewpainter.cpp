@@ -105,33 +105,33 @@ void Graph::drawLines(int x0, int y0, ViewPainter *p) const
   auto Scale = p->Scale;
   auto Painter = p->Painter;
   auto pp = begin();
-  if(!pp->isData())
+  if(!pp->isPt())
     pp++;
 
   DX_ = p->DX + float(x0)*Scale;
   DY_ = p->DY + float(y0)*Scale;
 
   while(!pp->isGraphEnd()) {
-    if(pp->isData()) {
-      x1 = DX_ + (pp)->getScr()*Scale;
-      y1 = DY_ - (pp+1)->getScr()*Scale;
+    if(pp->isPt()) {
+      x1 = DX_ + pp->getScrX()*Scale;
+      y1 = DY_ - pp->getScrY()*Scale;
       Painter->drawPoint(QPointF(x1, y1));
     }
     while(!pp->isBranchEnd()) {
-      x1 = DX_ + (pp)->getScr()*Scale;
-      y1 = DY_ - (pp+1)->getScr()*Scale;
-      pp += 2;
+      x1 = DX_ + pp->getScrX()*Scale;
+      y1 = DY_ - pp->getScrY()*Scale;
+		++pp;
       while(!pp->isStrokeEnd()) {
-        x2 = DX_ + (pp)->getScr()*Scale;
-        y2 = DY_ - (pp+1)->getScr()*Scale;
+        x2 = DX_ + pp->getScrX()*Scale;
+        y2 = DY_ - pp->getScrY()*Scale;
         Painter->drawLine(QLineF(x1, y1, x2, y2));
-        pp += 2;
+        ++pp;
         if(pp->isStrokeEnd())  break;
 
-        x1 = DX_ + pp->getScr()*Scale;
-        y1 = DY_ - (pp+1)->getScr()*Scale;
+        x1 = DX_ + pp->getScrX()*Scale;
+        y1 = DY_ - pp->getScrY()*Scale;
         Painter->drawLine(QLineF(x2, y2, x1, y1));
-        pp += 2;
+        ++pp;
       }
       if(pp->isBranchEnd())  break;
       pp++;
@@ -148,20 +148,20 @@ void Graph::drawStarSymbols(int x0i, int y0i, ViewPainter *p) const
   auto Scale = p->Scale;
   auto Painter = p->Painter;
   auto pp = begin();
-  if(!pp->isData())
+  if(!pp->isPt())
     pp++;
 
   DX_ = p->DX + float(x0i)*Scale;
   DY_ = p->DY + float(y0i)*Scale;
 
   while(!pp->isGraphEnd()) {
-    if(pp->isData()) {
-      z = DX_ + (pp++)->getScr()*Scale;
+    if(pp->isPt()) {
+      z = DX_ + pp->getScrX()*Scale;
       x0 = z-5.0*Scale;
       x3 = z+5.0*Scale;
       x1 = z-4.0*Scale;
       x2 = z+4.0*Scale;
-      z = DY_ - (pp++)->getScr()*Scale;
+      z = DY_ - (pp++)->getScrY()*Scale;
       y0 = z;
       y1 = z-4.0*Scale;
       y2 = z+4.0*Scale;
@@ -181,7 +181,7 @@ void Graph::drawCircleSymbols(int x0i, int y0i, ViewPainter *p) const
   auto Scale = p->Scale;
   auto Painter = p->Painter;
   auto pp = begin();
-  if(!pp->isData())
+  if(!pp->isPt())
     pp++;
 
   z = 8.0*Scale;
@@ -189,9 +189,9 @@ void Graph::drawCircleSymbols(int x0i, int y0i, ViewPainter *p) const
   DY_ = p->DY + float(y0i)*Scale;
 
   while(!pp->isGraphEnd()) {
-    if(pp->isData()) {
-      x0 = DX_ + ((pp++)->getScr()-4.0)*Scale;
-      y0 = DY_ - ((pp++)->getScr()+4.0)*Scale;
+    if(pp->isPt()) {
+      x0 = DX_ + (pp->getScrX()-4.0)*Scale;
+      y0 = DY_ - ((pp++)->getScrY()+4.0)*Scale;
       Painter->drawEllipse(QRectF(x0, y0, z, z));
     }
     else  pp++;
@@ -206,7 +206,7 @@ void Graph::drawArrowSymbols(int x0i, int y0i, ViewPainter *p) const
   auto Scale = p->Scale;
   auto Painter = p->Painter;
   auto pp = begin();
-  if(!pp->isData())
+  if(!pp->isPt())
     pp++;
 
   DX_ = p->DX + float(x0i)*Scale;
@@ -214,11 +214,11 @@ void Graph::drawArrowSymbols(int x0i, int y0i, ViewPainter *p) const
   y2 = DY_;
 
   while(!pp->isGraphEnd()) {
-    if(pp->isData()) {
-      x0 = DX_ + (pp++)->getScr()*Scale;
+    if(pp->isPt()) {
+      x0 = DX_ + pp->getScrX()*Scale;
       x1 = x0-4.0*Scale;
       x2 = x0+4.0*Scale;
-      y0 = DY_ - (pp++)->getScr()*Scale;
+      y0 = DY_ - (pp++)->getScrY()*Scale;
       y1 = y0+7.0*Scale;
       Painter->drawLine(QLineF(x0, y0, x0, y2));
       Painter->drawLine(QLineF(x1, y1, x0, y0));
