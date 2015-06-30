@@ -196,6 +196,7 @@ private:
   QString  QucsFileFilter;
   QFileSystemModel *m_homeDirModel;
   QFileSystemModel *m_projModel;
+  int ccCurIdx; // CompChooser current index (used during search)
 
 // ********** Methods ***************************************************
   void initView();
