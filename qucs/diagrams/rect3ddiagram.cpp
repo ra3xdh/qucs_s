@@ -966,10 +966,11 @@ void Rect3DDiagram::calcData(Graph *g)
 
   p->setStrokeEnd();
   ++p;
-  float dx=0.0, dy=0.0, xtmp=0.0, ytmp=0.0;
-  double Stroke=10.0, Space=10.0; // length of strokes and spaces in pixel
   switch(g->Style) {
-    case 0:      // ***** solid line **********************************
+    case GRAPHSTYLE_SOLID:
+    case GRAPHSTYLE_DASH:
+    case GRAPHSTYLE_DOT:
+    case GRAPHSTYLE_LONGDASH:
       do {
 
         while(1) {
@@ -995,16 +996,6 @@ void Rect3DDiagram::calcData(Graph *g)
 
       } while(((pMem++)->done & 256) == 0);
       p->setGraphEnd();
-      return;
-
-    case GRAPHSTYLE_DASH:
-      Stroke = 10.0; Space =  6.0;
-      break;
-    case GRAPHSTYLE_DOT:
-      Stroke =  2.0; Space =  4.0;
-      break;
-    case GRAPHSTYLE_LONGDASH:
-      Stroke = 24.0; Space =  8.0;
       break;
 
     default:  // symbol (e.g. star) at each point **********************
@@ -1027,106 +1018,9 @@ void Rect3DDiagram::calcData(Graph *g)
           (p++)->setBranchEnd();
       } while(((pMem++)->done & 512) == 0);
       p->setGraphEnd();
-      return;
   }
 
-
-  // **********  dashed, dotted, ...  *******************************
-  int Counter = 0;  // counter for number of points in queue
-  double alpha, dist = -Stroke;
-  int Flag = 1;    // current state: 1=stroke, 0=space
-  do {
-    while(1) {
-      if(pMem->done & 11)    // is grid point ?
-        if(pMem->done & 4) { // is hidden
-          if(pMem > Mem) {
-            if((pMem-1)->done & 12)
-              break;
-          }
-          else break;
-	}
-
-      xtmp = pMem->x;
-      ytmp = pMem->y;
-      Counter++;
-      break;
-    }
-
- 
-    if(Counter > 1) {
-      if(Counter == 2) {
-	(p++)->setScr(dx, dy);    // if first points of branch -> paint first one
-      }
-      dx = xtmp - dx;
-      dy = ytmp - dy;
-      dist += sqrt(double(dx*dx + dy*dy)); // distance between points
-      if((Flag == 1) && (dist <= 0.0)) {
-	FIT_MEMORY_SIZE;  // need to enlarge memory block ?
-	(p++)->setScr(xtmp, ytmp);    // if stroke then save points
-      }
-      else {
-        alpha = atan2(double(dy), double(dx));   // slope for interpolation
-        while(dist > 0) {   // stroke or space finished ?
-	  FIT_MEMORY_SIZE;  // need to enlarge memory block ?
-
-	  (p++)->setScr(xtmp - float(dist*cos(alpha)), // linearly interpolate
-		        ytmp - float(dist*sin(alpha)));
-
-          if(Flag == 0) {
-            dist -= Stroke;
-            if(dist <= 0) {
-	      (p++)->setScr(xtmp,  // don't forget point after ...
-	                    ytmp); // ... interpolated point
-            }
-          }
-          else {
-	    dist -= Space;
-	    if(!(p-2)->isPt()){
-	      --p;
-	    }else{
-	      (p++)->setStrokeEnd();
-	    }
-          }
-          Flag ^= 1; // toggle between stroke and space
-        }
-      }
-
-    } // of "if(Counter > 1)"
-
-
-    dx = xtmp;
-    dy = ytmp;
-
-    if(pMem->done & 8) {
-      if((p-2)->isStrokeEnd() && (p-2)->isBranchEnd()) {
-        p -= 2;  // no single point after "no stroke"
-      }else if((p-2)->isBranchEnd() && !(p-2)->isGraphEnd()) {
-        if((!(p-1)->isPt())){
-          p -= 1;  // erase last hidden point
-	}
-      }
-      (p++)->setBranchEnd();
-      Counter = 0;
-      Flag = 1;
-      dist = -Stroke;
-    }
-
-    if(pMem->done & 4)   // point invisible ?
-      if((p-1)->isPt())
-        (p++)->setStrokeEnd();
-
-  } while(((pMem++)->done & 256) == 0);
-
-  p->setGraphEnd();
-
-
-/*
-int z = p-g->Points+1;
-p = g->Points;
-qDebug("\n****** p=%p", p);
-for(int zz=0; zz<z; zz+=2)
-  qDebug("c: %d/%d", *(p+zz), *(p+zz+1));
-qDebug("ENDE");*/
+  return;
 }
 
 // ------------------------------------------------------------

@@ -487,7 +487,6 @@ void Diagram::calcData(Graph *g)
   if(g->numAxes() < 1) return;
 
   int i, z, Counter=2;
-  float dx, dy, xtmp, ytmp;
   int Size = ((2*(g->count(0)) + 1) * g->countY) + 10;
   
   if(xAxis.autoScale)  if(yAxis.autoScale)  if(zAxis.autoScale)
@@ -508,9 +507,12 @@ void Diagram::calcData(Graph *g)
   if(g->yAxisNo == 0)  pa = &yAxis;
   else  pa = &zAxis;
 
-  double Stroke=10.0, Space=10.0; // length of strokes and spaces in pixel
   switch(g->Style) {
     case GRAPHSTYLE_SOLID: // ***** solid line ****************************
+    case GRAPHSTYLE_DASH:
+    case GRAPHSTYLE_DOT:
+    case GRAPHSTYLE_LONGDASH:
+
       for(i=g->countY; i>0; i--) {  // every branch of curves
 	px = g->axis(0)->Points;
 	calcCoordinateP(px, pz, py, p, pa);
@@ -543,16 +545,6 @@ for(int zz=0; zz<z; zz+=2)
   qDebug("c: %d/%d", *(p+zz), *(p+zz+1));*/
       return;
 
-    case GRAPHSTYLE_DASH:
-      Stroke = 10.0; Space =  6.0;
-      break;
-    case GRAPHSTYLE_DOT:
-      Stroke =  2.0; Space =  4.0;
-      break;
-    case GRAPHSTYLE_LONGDASH:
-      Stroke = 24.0; Space =  8.0;
-      break;
-
     default:  // symbol (e.g. star) at each point **********************
       for(i=g->countY; i>0; i--) {  // every branch of curves
         px = g->axis(0)->Points;
@@ -573,87 +565,7 @@ for(int zz=0; zz<60; zz+=2)
       return;
   }
 
-  double alpha, dist;
-  int Flag;    // current state: 1=stroke, 0=space
-  for(i=g->countY; i>0; i--) {  // every branch of curves
-    Flag = 1;
-    dist = -Stroke;
-    px = g->axis(0)->Points;
-    calcCoordinate(px, pz, py, &xtmp, &ytmp, pa);
-    ++px;
-    pz += 2;
-    (p++)->setScr(xtmp, ytmp);
-    assert(p!=g->end());
-    Counter = 1;
-    for(z=g->axis(0)->count-1; z>0; z--) {
-      dx = xtmp;
-      dy = ytmp;
-      calcCoordinate(px, pz, py, &xtmp, &ytmp, pa);
-      ++px;
-      pz += 2;
-      dx = xtmp - dx;
-      dy = ytmp - dy;
-      dist += sqrt(double(dx*dx + dy*dy)); // distance between points
-      if(Flag == 1) if(dist <= 0.0) {
-	FIT_MEMORY_SIZE;  // need to enlarge memory block ?
-
-	(p++)->setScr(xtmp, ytmp);    // if stroke then save points
-	assert(p!=g->end());
-	if((++Counter) >= 2)  clip(p);
-	continue;
-      }
-      alpha = atan2(double(dy), double(dx));   // slope for interpolation
-      while(dist > 0) {   // stroke or space finished ?
-	FIT_MEMORY_SIZE;  // need to enlarge memory block ?
-
-	(p++)->setScr(xtmp - float(dist*cos(alpha)), // linearly interpolate
-	              ytmp - float(dist*sin(alpha)));
-	assert(p!=g->end());
-	if((++Counter) >= 2)  clip(p);
-
-        if(Flag == 0) {
-          dist -= Stroke;
-          if(dist <= 0) {
-	    (p++)->setScr(xtmp, ytmp);  // don't forget point after ...
-	    assert(p!=g->end());
-	    if((++Counter) >= 2)  clip(p);
-	    assert(p<g->end());
-          }
-        }
-        else {
-	  dist -= Space;
-	  if(!(p-2)->isPt()){
-	    --p;
-	  }else{
-	    (p++)->setStrokeEnd();
-	  }
-	  if(Counter < 0)  Counter = -50000;   // if auto-scale
-	  else  Counter = 0;
-        }
-        Flag ^= 1; // toggle between stroke and space
-      }
-
-    } // of x loop
-
-    if((p-2)->isStrokeEnd() && !(p-2)->isBranchEnd()) {
-      p -= 2;  // no single point after "no stroke"
-      assert(p>g->begin());
-    } else if((p-2)->isBranchEnd() && !(p-2)->isGraphEnd()) {
-      if((!(p-1)->isPt())){
-        p -= 1;  // erase last hidden point
-	assert(p>g->begin());
-      }
-    }
-    (p++)->setBranchEnd();
-  } // of y loop
-
-
-  p->setGraphEnd();
-/*z = p-g->Points+1;
-p = g->Points;
-qDebug("\n****** p=%p", p);
-for(int zz=0; zz<z; zz+=2)
-  qDebug("c: %d/%d", *(p+zz), *(p+zz+1));*/
+  // unreachable
 }
 
 // -------------------------------------------------------

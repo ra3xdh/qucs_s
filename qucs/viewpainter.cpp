@@ -98,12 +98,47 @@ void ViewPainter::drawLine(int x1i, int y1i, int x2i, int y2i)
 }
 
 // -------------------------------------------------------------
+/*!
+ * draw a (line) graph from screen coord pairs
+ */
 void Graph::drawLines(int x0, int y0, ViewPainter *p) const
 {
   float DX_, DY_;
-  float x1, x2, y1, y2;
+  float x1, y1;
   auto Scale = p->Scale;
   auto Painter = p->Painter;
+  QVector<qreal> dashes;
+
+  double Stroke=10., Space=0.;
+  switch(Style) {
+    case GRAPHSTYLE_DASH:
+      Stroke = 10.; Space =  6.;
+      break;
+    case GRAPHSTYLE_DOT:
+      Stroke =  2.; Space =  4.;
+      break;
+    case GRAPHSTYLE_LONGDASH:
+      Stroke = 24.; Space =  8.;
+      break;
+    default:
+      break;
+  }
+
+  QPen pen = Painter->pen();
+  switch(Style) {
+    case GRAPHSTYLE_DASH:
+    case GRAPHSTYLE_DOT:
+    case GRAPHSTYLE_LONGDASH:
+      dashes << Stroke << Space;
+      pen.setDashPattern(dashes);
+      Painter->setPen(pen);
+      break;
+    default:
+      pen.setStyle(Qt::SolidLine);
+      break;
+  }
+  Painter->setPen(pen);
+
   auto pp = begin();
   if(!pp->isPt())
     pp++;
@@ -112,31 +147,25 @@ void Graph::drawLines(int x0, int y0, ViewPainter *p) const
   DY_ = p->DY + float(y0)*Scale;
 
   while(!pp->isGraphEnd()) {
+    if(pp->isStrokeEnd()) ++pp; // ??
+    QPainterPath path;
     if(pp->isPt()) {
       x1 = DX_ + pp->getScrX()*Scale;
       y1 = DY_ - pp->getScrY()*Scale;
-      Painter->drawPoint(QPointF(x1, y1));
+      path.moveTo(x1,y1);
+      ++pp;
+    }else{
+      break;
     }
-    while(!pp->isBranchEnd()) {
+
+    while(!pp->isStrokeEnd()) {
       x1 = DX_ + pp->getScrX()*Scale;
       y1 = DY_ - pp->getScrY()*Scale;
-		++pp;
-      while(!pp->isStrokeEnd()) {
-        x2 = DX_ + pp->getScrX()*Scale;
-        y2 = DY_ - pp->getScrY()*Scale;
-        Painter->drawLine(QLineF(x1, y1, x2, y2));
-        ++pp;
-        if(pp->isStrokeEnd())  break;
-
-        x1 = DX_ + pp->getScrX()*Scale;
-        y1 = DY_ - pp->getScrY()*Scale;
-        Painter->drawLine(QLineF(x2, y2, x1, y1));
-        ++pp;
-      }
-      if(pp->isBranchEnd())  break;
-      pp++;
+      path.lineTo(x1,y1);
+      ++pp;
     }
-    pp++;
+
+    Painter->drawPath(path);
   }
 }
 
@@ -417,3 +446,5 @@ void ViewPainter::drawResizeRect(int x1i, int y1i)
 
   Painter->drawRect(QRectF(x1-5, y1-5, 10, 10));
 }
+
+// vim:ts=8:sw=2:noet
