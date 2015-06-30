@@ -151,7 +151,7 @@ private: // painting
   void drawArrowSymbols(int, int, ViewPainter*) const;
 public: // marker related
   void createMarkerText() const;
-  int getSampleNo(double*VarPos) const;
+  void findSample(double*VarPos) const;
   Diagram const* parentDiagram() const{return diagram;}
 private:
   QVector<DataX*>  cPointsX;

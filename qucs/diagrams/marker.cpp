@@ -28,6 +28,7 @@
 
 #include <QString>
 #include <QPainter>
+#include <QDebug>
 
 #include <limits.h>
 #include <cmath>
@@ -187,15 +188,16 @@ void Marker::createText()
   nVarPos = 0;
   DataX const *pD;
 
-  n = pGraph->getSampleNo(VarPos);
+  pGraph->findSample(VarPos);
   nVarPos = pGraph->numAxes();
 
   double v=0.;   // needed for 2D graph in 3D diagram
   double *py=&v;
   pD = pGraph->axis(0);
   if(pGraph->axis(1)) {
-    py = pGraph->axis(1)->Points;   // only for 3D diagram
-    py += (n / pD->count) % pGraph->axis(1)->count;
+    *py = VarPos[1];
+  }else{
+    qDebug() << *py << "is not" << VarPos[1]; // does it really matter?!
   }
 
   double pz[2];

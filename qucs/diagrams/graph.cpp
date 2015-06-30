@@ -259,7 +259,7 @@ Graph* Graph::sameNewOne()
   return pg;
 }
 
-int Graph::getSampleNo(double*VarPos) const
+void Graph::findSample(double*VarPos) const
 {
   DataX const* pD;
   unsigned nVarPos=0;
@@ -281,8 +281,6 @@ int Graph::getSampleNo(double*VarPos) const
 
   VarPos[nVarPos] = cPointsY[2*n];
   VarPos[nVarPos+1] = cPointsY[2*n + 1];
-
-  return n;
 }
 
 // -----------------------------------------------------------------------
