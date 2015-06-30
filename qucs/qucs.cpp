@@ -767,7 +767,7 @@ void QucsApp::slotSearchComponent(const QString &searchText)
 
         // Add icon an name tag to dock
         QListWidgetItem *icon = new QListWidgetItem(vaIcon, Name);
-        icon->setToolTip("verilog-a user devices: " + Name);
+        icon->setToolTip(tr("verilog-a user devices") + ": " + Name);
         CompComps->addItem(icon);
       }
     }
