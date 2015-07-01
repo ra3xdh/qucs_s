@@ -18,8 +18,12 @@ SET(CMAKE_BUILD_TYPE Debug)
 ADD_DEFINITIONS( -DHAVE_CONFIG_H )
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-register ")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ")
+
+# flag not available in mingw 4.8.2, MSVC10
+IF(NOT WIN32)
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-register ")
+ENDIF()
 
 # define variables
 SET(BINARYDIR "${CMAKE_INSTALL_PREFIX}/bin/")
