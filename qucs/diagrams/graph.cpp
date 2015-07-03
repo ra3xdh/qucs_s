@@ -19,6 +19,7 @@
 #include <stdlib.h>
 
 #include <QPainter>
+#include <QDebug>
 
 class Diagram;
 
@@ -322,7 +323,9 @@ void Graph::ScrPt::setScrX(float x)
 }
 void Graph::ScrPt::setScrY(float x)
 {
-  assert(x>=0);
+  if(x<0){ // need to investigate...
+    qDebug() << "setting negative screen coordinate" << x << "at" << ScrX;
+  }
   ScrY = x;
 }
 void Graph::ScrPt::setScr(float x, float y)

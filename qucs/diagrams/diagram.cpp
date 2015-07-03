@@ -775,7 +775,7 @@ void Diagram::loadGraphData(const QString& defaultDataSet)
 
   int No=0;
   foreach(Graph *pg, Graphs) {
-    qDebug() << "load GraphData load" << defaultDataSet;
+    qDebug() << "load GraphData load" << defaultDataSet << pg->Var;
     if(pg->loadDatFile(defaultDataSet) != 1)   // load data, determine max/min values
       No++;
     getAxisLimits(pg);
