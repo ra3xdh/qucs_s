@@ -27,6 +27,21 @@ set(PROJECT_DOMAIN_SECOND "org")
 #
 SET(CMAKE_BUILD_TYPE Debug)
 
+# If Git hash not defined, try to define it
+IF(NOT GIT)
+  IF(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../../.git )
+    FIND_PACKAGE(Git)
+    # Get the latest abbreviated commit hash of the working branch
+    execute_process(
+      COMMAND ${GIT_EXECUTABLE} log --pretty=format:%h -n 1u
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+      OUTPUT_VARIABLE GIT_COMMIT_HASH
+    )
+    set(GIT ${GIT_COMMIT_HASH})
+    message(STATUS "Found Git repository, last commit hash: ${GIT}")
+  ENDIF()
+ENDIF()
+
 if(UNIX AND NOT APPLE)
   #string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWERCASE)
   #set(BIN_INSTALL_DIR "bin")
