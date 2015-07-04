@@ -19,9 +19,14 @@
 #include <stdlib.h>
 
 #include <QPainter>
+#include <QDebug>
 
-Graph::Graph(const QString& _Line) : Element(),
-  Style(GRAPHSTYLE_SOLID)
+class Diagram;
+
+Graph::Graph(Diagram const* d, const QString& _Line) :
+  Element(),
+  Style(GRAPHSTYLE_SOLID),
+  diagram(d)
 {
   Type = isGraph;
 
@@ -34,14 +39,20 @@ Graph::Graph(const QString& _Line) : Element(),
   yAxisNo = 0;   // left y axis
 
   cPointsY = 0;
-
-  cPointsX.setAutoDelete(true);
 }
 
 Graph::~Graph()
 {
   if(cPointsY != 0)
     delete[] cPointsY;
+}
+
+// ---------------------------------------------------------------------
+void Graph::createMarkerText() const
+{
+  for(auto pm : Markers) {
+    pm->createText();
+  }
 }
 
 // ---------------------------------------------------------------------
@@ -140,8 +151,15 @@ bool Graph::load(const QString& _s)
 }
 
 // -----------------------------------------------------------------------
-// Checks if the coordinates x/y point to the graph. x/y are relative to
-// diagram cx/cy. 5 is the precision the user must point onto the graph.
+/*!
+ * Checks if the coordinates x/y point to the graph. returns the number of the
+ * branch of the graph, -1 upon a miss.
+ *
+ * x/y are relative to diagram cx/cy. 5 is the precision the user must point
+ * onto the graph.
+ *
+ * FIXME: should return reference to hit sample point or some context.
+ */
 int Graph::getSelected(int x, int y)
 {
   auto pp = ScrPoints.begin();
@@ -151,7 +169,7 @@ int Graph::getSelected(int x, int y)
   int dx, dx2, x1;
   int dy, dy2, y1;
 
-  int countX = cPointsX.getFirst()->count;
+  int countX = cPointsX.at(0)->count;
   if(pp->isStrokeEnd()) {
     if(pp->isBranchEnd()) z++;
     pp++;
@@ -167,8 +185,8 @@ int Graph::getSelected(int x, int y)
     // for graph symbols
     while(!pp->isGraphEnd()) {
       if(!pp->isStrokeEnd()) {
-        dx  = x - int((pp++)->Scr);
-        dy  = y - int((pp++)->Scr);
+        dx  = x - int((pp)->getScrX());
+        dy  = y - int((pp++)->getScrY());
 
         if(dx < -5) continue;
         if(dx >  5) continue;
@@ -187,22 +205,24 @@ int Graph::getSelected(int x, int y)
   // for graph lines
   while(!pp->isGraphEnd()) {
     while(!pp->isBranchEnd()) {
-      x1 = int((pp++)->Scr);
-      y1 = int((pp++)->Scr);
+      x1 = int(pp->getScrX());
+      y1 = int((pp++)->getScrY());
       dx  = x - x1;
       dy  = y - y1;
 
-      dx2 = int(pp->Scr);
-      if(pp->isStrokeEnd()) {  // end of stroke ?
-        if(pp->isBranchEnd()) break;
+      if(pp->isPt()){
+        dx2 = int(pp->getScrX());
+      }else if(pp->isBranchEnd()) {
+        break;
+      }else if(pp->isStrokeEnd()) {
         pp++;
-        dx2 = int(pp->Scr);  // go on as graph can also be selected between strokes
+        dx2 = int(pp->getScrX());  // go on as graph can also be selected between strokes
         if(pp->isBranchEnd()) break;
       }
       if(dx < -5) { if(x < dx2-5) continue; } // point between x coordinates ?
       else { if(x > 5) if(x > dx2+5) continue; }
 
-      dy2 = int((pp+1)->Scr);
+      dy2 = int(pp->getScrY());
       if(dy < -5) { if(y < dy2-5) continue; } // point between y coordinates ?
       else { if(y > 5) if(y > dy2+5) continue; }
 
@@ -226,7 +246,7 @@ int Graph::getSelected(int x, int y)
 // Creates a new graph and copies all the properties into it.
 Graph* Graph::sameNewOne()
 {
-  Graph *pg = new Graph(Var);
+  Graph *pg = new Graph(diagram, Var);
 
   pg->Color = Color;
   pg->Thick = Thick;
@@ -242,6 +262,32 @@ Graph* Graph::sameNewOne()
   return pg;
 }
 
+/*!
+ * find a sample point close to VarPos, snap to it, and return data at VarPos
+ */
+std::pair<double,double> Graph::findSample(std::vector<double>& VarPos) const
+{
+  DataX const* pD;
+  unsigned nVarPos=0;
+  unsigned n=0;
+  unsigned m=1;
+
+  for(unsigned ii=0; (pD=axis(ii)); ++ii) {
+    double* pp = pD->Points;
+    double v = VarPos[nVarPos];
+    for(unsigned i=pD->count; i>1; i--) {  // find appropiate marker position
+      if(fabs(v-(*pp)) < fabs(v-(*(pp+1)))) break;
+      pp++;
+      n += m;
+    }
+
+    m *= pD->count;
+    VarPos[nVarPos++] = *pp;
+  }
+
+  return std::pair<double,double>(cPointsY[2*n], cPointsY[2*n+1]);
+}
+
 // -----------------------------------------------------------------------
 // meaning of the values in a graph "Points" list
 #define STROKEEND   -2
@@ -249,11 +295,72 @@ Graph* Graph::sameNewOne()
 #define GRAPHEND    -100
 // -----------------------------------------------------------------------
 // screen points pseudo iterator implementation.
-void Graph::ScrPt::setStrokeEnd(){Scr=STROKEEND;}
-void Graph::ScrPt::setBranchEnd(){Scr=BRANCHEND;}
-void Graph::ScrPt::setGraphEnd(){Scr=GRAPHEND;}
-bool Graph::ScrPt::isStrokeEnd() const{return Scr<=STROKEEND;}
-bool Graph::ScrPt::isBranchEnd() const{return Scr<=BRANCHEND;}
-bool Graph::ScrPt::isGraphEnd() const{return Scr<=GRAPHEND;}
+void Graph::ScrPt::setStrokeEnd()
+{
+  ScrX = STROKEEND;
+}
+void Graph::ScrPt::setBranchEnd()
+{
+  ScrX = BRANCHEND;
+}
+void Graph::ScrPt::setGraphEnd()
+{
+  ScrX = GRAPHEND;
+}
+bool Graph::ScrPt::isPt() const{return ScrX>=0.;}
+bool Graph::ScrPt::isStrokeEnd() const{return ScrX<=STROKEEND;}
+bool Graph::ScrPt::isBranchEnd() const{return ScrX<=BRANCHEND;}
+bool Graph::ScrPt::isGraphEnd() const{return ScrX<=GRAPHEND;}
+
+void Graph::ScrPt::setScrX(float x)
+{
+  assert(x>=0);
+  if(ScrX>=0){
+    ScrX = x;
+  }else{
+    assert(false); // incomplete;
+  }
+}
+void Graph::ScrPt::setScrY(float x)
+{
+  if(x<0){ // need to investigate...
+    qDebug() << "setting negative screen coordinate" << x << "at" << ScrX;
+  }
+  ScrY = x;
+}
+void Graph::ScrPt::setScr(float x, float y)
+{
+  setScrX(x);
+  setScrY(y);
+}
+void Graph::ScrPt::setIndep(double x)
+{
+  assert(ScrX>=0);
+  indep = x;
+}
+void Graph::ScrPt::setDep(double x)
+{
+  assert(ScrX>=0);
+  dep = x;
+}
+float Graph::ScrPt::getScrX() const
+{
+  assert(ScrX>=0);
+  return ScrX;
+}
+float Graph::ScrPt::getScrY() const
+{
+  return ScrY;
+}
+double Graph::ScrPt::getIndep() const
+{
+  assert(ScrX>=0);
+  return indep;
+}
+double Graph::ScrPt::getDep() const
+{
+  assert(ScrX>=0);
+  return dep;
+}
 
 // vim:ts=8:sw=2:et

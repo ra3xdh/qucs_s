@@ -25,10 +25,10 @@
 #include "diagram.h"
 #include "graph.h"
 #include "main.h"
-#include "../dialogs/matchdialog.h" // For r2z function
 
 #include <QString>
 #include <QPainter>
+#include <QDebug>
 
 #include <limits.h>
 #include <cmath>
@@ -36,24 +36,33 @@
 
 #include "misc.h"
 
+/*!
+ * create a marker based on click position and
+ * the branch number.
+ *
+ * the click position is used to compute the marker position. currently, the
+ * marker position is the sampling point closest to the click.
+ */
 
-Marker::Marker(Diagram *Diag_, Graph *pg_, int _nn, int cx_, int cy_)
+Marker::Marker(Graph *pg_, int branchNo, int cx_, int cy_) :
+  Element(),
+  pGraph(pg_),
+  Precision(3),
+  numMode(0)
 {
   Type = isMarker;
   isSelected = transparent = false;
 
-  Diag   = Diag_;
-  pGraph = pg_;
-  Precision = 3;   // before createText()
-  VarPos = 0;
-  numMode = nVarPos = 0;
   cx =  cx_;
   cy = -cy_;
   fCX = float(cx);
   fCY = float(cy);
-  Z0 = 50;		//Used for Smith chart marker, to calculate impedance
-  if(!pGraph)  makeInvalid();
-  else initText(_nn);   // finally create marker
+  if(!pGraph){
+    makeInvalid();
+  }else{
+    initText(branchNo);   // finally create marker
+    createText();
+  }
 
   x1 =  cx + 60;
   y1 = -cy - 60;
@@ -62,10 +71,15 @@ Marker::Marker(Diagram *Diag_, Graph *pg_, int _nn, int cx_, int cy_)
 
 Marker::~Marker()
 {
-  if(VarPos)  free(VarPos);
 }
 
 // ---------------------------------------------------------------------
+/*!
+ * compute VarPos from branch number n and click position (cx, cy)
+ * this is done by recreating branch samples and comparing against click
+ *
+ * FIXME: should use ScrPoints instead. do not call calcCoordinate from here!
+ */
 void Marker::initText(int n)
 {
   if(pGraph->isEmpty()) {
@@ -73,19 +87,20 @@ void Marker::initText(int n)
       return;
   }
 
-  Axis *pa;
-  if(pGraph->yAxisNo == 0)  pa = &(Diag->yAxis);
-  else  pa = &(Diag->zAxis);
+  Axis const *pa;
+  assert(diag());
+  if(pGraph->yAxisNo == 0)  pa = &(diag()->yAxis);
+  else  pa = &(diag()->zAxis);
   double Dummy = 0.0;   // needed for 2D graph in 3D diagram
   double *px, *py=&Dummy, *pz;
   Text = "";
 
   bool isCross = false;
   int nn, nnn, m, x, y, d, dmin = INT_MAX;
-  DataX *pD = pGraph->axis(0);
+  DataX const *pD = pGraph->axis(0);
   px  = pD->Points;
   nnn = pD->count;
-  DataX *pDy = pGraph->axis(1);
+  DataX const *pDy = pGraph->axis(1);
   if(pDy) {   // only for 3D diagram
     nn = pGraph->countY * pD->count;
     py  = pDy->Points;
@@ -105,7 +120,7 @@ void Marker::initText(int n)
   m  = nnn - 1;
   pz = pGraph->cPointsY + 2*n;
   for(nn=0; nn<nnn; nn++) {
-    Diag->calcCoordinate(px, pz, py, &fCX, &fCY, pa);
+    diag()->calcCoordinate(px, pz, py, &fCX, &fCY, pa);
     ++px;
     pz += 2;
     if(isCross) {
@@ -124,26 +139,30 @@ void Marker::initText(int n)
   if(isCross) m *= pD->count;
   n += m;
 
-  nVarPos = 0;
-  nn = (pGraph->numAxes() + 2) * sizeof(double);
-  if(VarPos)
-    VarPos = (double*)realloc(VarPos, nn);
-  else
-    VarPos = (double*)malloc(nn);
+  // why check over and over again?! do in the right place and just assert otherwise.
+  if(VarPos.size() != pGraph->numAxes()){
+    qDebug() << "huh, wrong size" << VarPos.size() << pGraph->numAxes();
+    VarPos.resize(pGraph->numAxes());
+  }
 
   // gather text of all independent variables
   nn = n;
   for(unsigned i=0; (pD = pGraph->axis(i)); ++i) {
     px = pD->Points + (nn % pD->count);
-    VarPos[nVarPos++] = *px;
+    VarPos[i] = *px;
     Text += pD->Var + ": " + QString::number(*px,'g',Precision) + "\n";
     nn /= pD->count;
   }
 
-  createText();
+  // createText();
 }
 
 // ---------------------------------------------------------------------
+/*!
+ * (should)
+ * create marker label Text the screen position cx and cy from VarPos.
+ * does a lot of fancy stuff to be sorted out.
+ */
 void Marker::createText()
 {
   if(!(pGraph->cPointsY)) {
@@ -151,74 +170,67 @@ void Marker::createText()
     return;
   }
 
-  VarPos = (double*)realloc(VarPos,
-              (pGraph->numAxes() + 2) * sizeof(double));
+  unsigned nVarPos = VarPos.size();
 
-  while((unsigned int)nVarPos < pGraph->numAxes())
-    VarPos[nVarPos++] = 0.0;   // fill up VarPos
-
+  if(nVarPos > pGraph->numAxes()){
+    qDebug() << "huh, VarPos too big?!";
+  }
+  if(nVarPos != pGraph->numAxes()){
+    qDebug() << "padding" << VarPos.size() << pGraph->numAxes();
+    VarPos.resize(pGraph->numAxes());
+    while((unsigned int)nVarPos < pGraph->numAxes()){
+      VarPos[nVarPos++] = 0.; // pad
+    }
+  }
 
   // independent variables
   Text = "";
-  double *pp, v;
-  int n = 0, m = 1, i;
-  nVarPos = 0;
-  DataX *pD;
-  for(unsigned ii=0; (pD=pGraph->axis(ii)); ++ii) {
-    pp = pD->Points;
-    v  = VarPos[nVarPos];
-    for(i=pD->count; i>1; i--) {  // find appropiate marker position
-      if(fabs(v-(*pp)) < fabs(v-(*(pp+1)))) break;
-      pp++;
-      n += m;
-    }
+  double *pp;
+  nVarPos = pGraph->numAxes();
+  DataX const *pD;
 
-    m *= pD->count;
-    VarPos[nVarPos++] = *pp;
-    Text += pD->Var + ": " + QString::number(*pp,'g',Precision) + "\n";
-  }
+  auto p = pGraph->findSample(VarPos);
+  VarDep[0] = p.first;
+  VarDep[1] = p.second;
 
-
-  v = 0.0;   // needed for 2D graph in 3D diagram
-  double *py=&v, *pz = pGraph->cPointsY + 2*n;
+  double v=0.;   // needed for 2D graph in 3D diagram
+  double *py=&v;
   pD = pGraph->axis(0);
   if(pGraph->axis(1)) {
-    py = pGraph->axis(1)->Points;   // only for 3D diagram
-    py += (n / pD->count) % pGraph->axis(1)->count;
+    *py = VarPos[1];
+  }else{
+    qDebug() << *py << "is not" << VarPos[1]; // does it really matter?!
+  }
+
+  double pz[2];
+  pz[0] = VarDep[0];
+  pz[1] = VarDep[1];
+
+  // now actually create text.
+  for(unsigned ii=0; (pD=pGraph->axis(ii)); ++ii) {
+    Text += pD->Var + ": " + QString::number(VarPos[ii],'g',Precision) + "\n";
   }
 
   Text += pGraph->Var + ": ";
   switch(numMode) {
-    case 0: Text += misc::complexRect(*pz, *(pz+1), Precision);
+    case nM_Rect: Text += misc::complexRect(*pz, *(pz+1), Precision);
       break;
-    case 1: Text += misc::complexDeg(*pz, *(pz+1), Precision);
+    case nM_Deg: Text += misc::complexDeg(*pz, *(pz+1), Precision);
       break;
-    case 2: Text += misc::complexRad(*pz, *(pz+1), Precision);
+    case nM_Rad: Text += misc::complexRad(*pz, *(pz+1), Precision);
       break;
   }
-  if(Diag->Name=="Smith") //impedance is useful as well here
-  {
-	double Zr, Zi; 
-	Zr = *pz;
-	Zi = *(pz+1);
-	  
-	MatchDialog::r2z(Zr, Zi, Z0);
-	QString Var = pGraph->Var;
-	if(Var.startsWith("S"))
-  		Text += "\n"+ Var.replace('S', 'Z')+": " +misc::complexRect(Zr, Zi, Precision);
-	else
-		Text += "\nZ("+ Var+"): " +misc::complexRect(Zr, Zi, Precision);
-  }
-  VarPos[nVarPos] = *pz;
-  VarPos[nVarPos+1] = *(pz+1);
 
-  Axis *pa;
-  if(pGraph->yAxisNo == 0)  pa = &(Diag->yAxis);
-  else  pa = &(Diag->zAxis);
+  assert(diag());
+  Text += diag()->extraMarkerText(this);
+
+  Axis const *pa;
+  if(pGraph->yAxisNo == 0)  pa = &(diag()->yAxis);
+  else  pa = &(diag()->zAxis);
   pp = &(VarPos[0]);
 
-  Diag->calcCoordinate(pp, pz, py, &fCX, &fCY, pa);
-  Diag->finishMarkerCoordinates(fCX, fCY);
+  diag()->calcCoordinate(pp, pz, py, &fCX, &fCY, pa);
+  diag()->finishMarkerCoordinates(fCX, fCY);
 
   cx = int(fCX+0.5);
   cy = int(fCY+0.5);
@@ -229,7 +241,8 @@ void Marker::createText()
 void Marker::makeInvalid()
 {
   fCX = fCY = -1e3; // invalid coordinates
-  Diag->finishMarkerCoordinates(fCX, fCY); // leave to diagram
+  assert(diag());
+  diag()->finishMarkerCoordinates(fCX, fCY); // leave to diagram
   cx = int(fCX+0.5);
   cy = int(fCY+0.5);
 
@@ -253,7 +266,7 @@ bool Marker::moveLeftRight(bool left)
   int n;
   double *px;
 
-  DataX *pD = pGraph->axis(0);
+  DataX const *pD = pGraph->axis(0);
   px = pD->Points;
   if(!px) return false;
   for(n=0; n<pD->count; n++) {
@@ -282,7 +295,7 @@ bool Marker::moveUpDown(bool up)
   int n, i=0;
   double *px;
 
-  DataX *pD = pGraph->axis(0);
+  DataX const *pD = pGraph->axis(0);
   if(!pD) return false;
 
   if(up) {  // move upwards ? **********************
@@ -389,8 +402,9 @@ void Marker::paint(ViewPainter *p, int x0, int y0)
 // ---------------------------------------------------------------------
 void Marker::paintScheme(QPainter *p)
 {
-  int x0 = Diag->cx;
-  int y0 = Diag->cy;
+  assert(diag());
+  int x0 = diag()->cx;
+  int y0 = diag()->cy;
   p->drawRect(x0+x1, y0+y1, x2, y2);
 
   // which corner of rectangle should be connected to line ?
@@ -422,11 +436,11 @@ void Marker::setCenter(int x, int y, bool relative)
 // -------------------------------------------------------
 void Marker::Bounding(int& _x1, int& _y1, int& _x2, int& _y2)
 {
-  if(Diag) {
-    _x1 = Diag->cx + x1;
-    _y1 = Diag->cy + y1;
-    _x2 = Diag->cx + x1+x2;
-    _y2 = Diag->cy + y1+y2;
+  if(diag()) {
+    _x1 = diag()->cx + x1;
+    _y1 = diag()->cy + y1;
+    _x2 = diag()->cx + x1+x2;
+    _y2 = diag()->cy + y1+y2;
   }
   else {
     _x1 = x1;
@@ -441,8 +455,9 @@ QString Marker::save()
 {
   QString s  = "<Mkr ";
 
-  for(int i=0; i<nVarPos; i++)
-    s += QString::number(VarPos[i])+"/";
+  for(auto i : VarPos){
+    s += QString::number(i)+"/";
+  }
   s.replace(s.length()-1,1,' ');
   //s.at(s.length()-1) = (const QChar&)' ';
 
@@ -470,12 +485,9 @@ bool Marker::load(const QString& _s)
   int i=0, j;
   QString n = s.section(' ',1,1);    // VarPos
 
-  nVarPos = 0;
-  j = (n.count('/') + 3) * sizeof(double);
-  if(VarPos)
-    VarPos = (double*)realloc(VarPos, j);
-  else
-    VarPos = (double*)malloc(j);
+  unsigned nVarPos = 0;
+  j = (n.count('/') + 3);
+  VarPos.resize(j);
 
   do {
     j = n.indexOf('/', i);
@@ -520,22 +532,24 @@ bool Marker::getSelected(int x_, int y_)
 }
 
 // ------------------------------------------------------------------------
+/*
+ * the diagram this belongs to
+ */
+const Diagram* Marker::diag() const
+{
+  if(!pGraph) return NULL;
+  return pGraph->parentDiagram();
+}
+
+// ------------------------------------------------------------------------
 Marker* Marker::sameNewOne(Graph *pGraph_)
 {
-  Marker *pm = new Marker(Diag, pGraph_, 0, cx ,cy);
+  Marker *pm = new Marker(pGraph_, 0, cx ,cy);
 
   pm->x1 = x1;  pm->y1 = y1;
   pm->x2 = x2;  pm->y2 = y2;
 
-  int z = (nVarPos+2) * sizeof(double);
-  if(pm->VarPos)
-    pm->VarPos = (double*)realloc(pm->VarPos, z);
-  else
-    pm->VarPos = (double*)malloc(z);
-
-  pm->nVarPos = nVarPos;
-  for(z=0; z<nVarPos; z++)
-    pm->VarPos[z] = VarPos[z];
+  pm->VarPos = VarPos;
 
   pm->Text        = Text;
   pm->transparent = transparent;
@@ -544,3 +558,5 @@ Marker* Marker::sameNewOne(Graph *pGraph_)
 
   return pm;
 }
+
+// vim:ts=8:sw=2:noet

@@ -2554,35 +2554,35 @@ void QucsApp::slot2PortMatching()
   Diagram *Diag = new Diagram();
 
   // FIXME: use normal Diagrams.
-  Graph *pg = new Graph("S[1,1]");
+  Graph *pg = new Graph(Diag, "S[1,1]");
   Diag->Graphs.append(pg);
   if(!pg->loadDatFile(DataSet)) {
     QMessageBox::critical(0, tr("Error"), tr("Could not load S[1,1]."));
     return;
   }
 
-  pg = new Graph("S[1,2]");
+  pg = new Graph(Diag, "S[1,2]");
   Diag->Graphs.append(pg);
   if(!pg->loadDatFile(DataSet)) {
     QMessageBox::critical(0, tr("Error"), tr("Could not load S[1,2]."));
     return;
   }
 
-  pg = new Graph("S[2,1]");
+  pg = new Graph(Diag, "S[2,1]");
   Diag->Graphs.append(pg);
   if(!pg->loadDatFile(DataSet)) {
     QMessageBox::critical(0, tr("Error"), tr("Could not load S[2,1]."));
     return;
   }
 
-  pg = new Graph("S[2,2]");
+  pg = new Graph(Diag, "S[2,2]");
   Diag->Graphs.append(pg);
   if(!pg->loadDatFile(DataSet)) {
     QMessageBox::critical(0, tr("Error"), tr("Could not load S[2,2]."));
     return;
   }
 
-  DataX *Data = Diag->Graphs.first()->axis(0);
+  DataX const *Data = Diag->Graphs.first()->axis(0);
   if(Data->Var != "frequency") {
     QMessageBox::critical(0, tr("Error"), tr("Wrong dependency!"));
     return;

@@ -25,13 +25,21 @@ class QPainter;
 class Diagram;
 class Graph;
 
+typedef enum{
+	nM_Rect = 0,
+	nM_Deg,
+	nM_Rad
+} numMode_t;
+
 
 class Marker : public Element {
 public:
-  Marker(Diagram *Diag_, Graph *pg_=0, int _nn=0, int cx_=0, int cy_=0);
+  Marker(Graph *pg_=0, int _nn=0, int cx_=0, int cy_=0);
  ~Marker();
 
+private:
   void    initText(int);
+public:
   void    createText();
   void    makeInvalid();
   bool    moveLeftRight(bool);
@@ -45,25 +53,32 @@ public:
   bool    getSelected(int, int);
   Marker* sameNewOne(Graph*);
   void    getTextSize();
+  Graph const* graph() const {return pGraph;}
+  int precision() const {return Precision;}
+  std::vector<double> const& varPos() const {return VarPos;}
+  const Diagram *diag() const;
 public: // power matching stuff. some sort of VarPos (ab?)use
   double  powFreq() const {return VarPos[0];}
-  double  powReal() const {return VarPos[nVarPos];}
-  double  powImag() const {return VarPos[nVarPos+1];}
+  double  powReal() const {return VarDep[0];}
+  double  powImag() const {return VarDep[1];}
 
-  Diagram *Diag;     // the corresponding diagram
+// private: // not yet
   Graph   *pGraph;   // the corresponding graph
 
 private:
-  int    nVarPos;   // number of values in "VarPos"
-  double *VarPos;   // values the marker is pointing to
+  std::vector<double> VarPos;   // values the marker is pointing to
+  double VarDep[2];   // dependent value
   float  fCX, fCY;  // coordinates for the line from graph to marker body
 
 public:
   QString Text;     // the string to be displayed in the marker text
   bool transparent; // background shines through marker body
 
+// private: // not yet
   int Precision; // number of digits to show
   int numMode;   // real/imag or polar (deg/rad)
+
+public: // ouch. how to sort this out?
 	double Z0;		//Only used in smith chart marker, to convert S to Z
 };
 

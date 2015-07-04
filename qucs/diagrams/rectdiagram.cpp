@@ -54,7 +54,7 @@ RectDiagram::~RectDiagram()
 
 // ------------------------------------------------------------
 void RectDiagram::calcCoordinate(const double* xD, const double* yD, const double*,
-                                 float *px, float *py, Axis *pa) const
+                                 float *px, float *py, Axis const *pa) const
 {
   double x  = *xD;
   double yr = yD[0];

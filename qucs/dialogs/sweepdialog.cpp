@@ -91,7 +91,7 @@ SweepDialog::SweepDialog(Schematic *Doc_)
   all->setSpacing(5);
   all->setColStretch(1,5);
 
-  DataX *pD;
+  DataX const *pD;
   mySpinBox *Box;
   
   for(unsigned ii=0; (pD=pGraph->axis(ii)); ++ii) {
@@ -130,9 +130,7 @@ SweepDialog::~SweepDialog()
 // ---------------------------------------------------------------
 void SweepDialog::slotNewValue(int)
 {
-  DataX *pD = pGraph->axis(0);
-
-  qDebug() << "SweepDialog::slotNewValue:pD->count:" << pD->count;
+  DataX const*pD = pGraph->axis(0);
 
   int Factor = 1, Index = 0;
   QList<mySpinBox *>::const_iterator it;
@@ -163,7 +161,7 @@ Graph* SweepDialog::setBiasPoints()
   qDebug() << "SweepDialog::setBiasPoints()";
 
   bool hasNoComp;
-  Graph *pg = new Graph("");
+  Graph *pg = new Graph(NULL, ""); // HACK!
   QFileInfo Info(Doc->DocName);
   QString DataSet = Info.dirPath() + QDir::separator() + Doc->DataSet;
 

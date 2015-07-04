@@ -98,45 +98,74 @@ void ViewPainter::drawLine(int x1i, int y1i, int x2i, int y2i)
 }
 
 // -------------------------------------------------------------
+/*!
+ * draw a (line) graph from screen coord pairs
+ */
 void Graph::drawLines(int x0, int y0, ViewPainter *p) const
 {
   float DX_, DY_;
-  float x1, x2, y1, y2;
+  float x1, y1;
   auto Scale = p->Scale;
   auto Painter = p->Painter;
+  QVector<qreal> dashes;
+
+  double Stroke=10., Space=0.;
+  switch(Style) {
+    case GRAPHSTYLE_DASH:
+      Stroke = 10.; Space =  6.;
+      break;
+    case GRAPHSTYLE_DOT:
+      Stroke =  2.; Space =  4.;
+      break;
+    case GRAPHSTYLE_LONGDASH:
+      Stroke = 24.; Space =  8.;
+      break;
+    default:
+      break;
+  }
+
+  QPen pen = Painter->pen();
+  switch(Style) {
+    case GRAPHSTYLE_DASH:
+    case GRAPHSTYLE_DOT:
+    case GRAPHSTYLE_LONGDASH:
+      dashes << Stroke << Space;
+      pen.setDashPattern(dashes);
+      Painter->setPen(pen);
+      break;
+    default:
+      pen.setStyle(Qt::SolidLine);
+      break;
+  }
+  Painter->setPen(pen);
+
   auto pp = begin();
-  if(pp->Scr < 0)
+  if(!pp->isPt())
     pp++;
 
   DX_ = p->DX + float(x0)*Scale;
   DY_ = p->DY + float(y0)*Scale;
 
   while(!pp->isGraphEnd()) {
-    if(pp->Scr >= 0) {
-      x1 = DX_ + (pp)->Scr*Scale;
-      y1 = DY_ - (pp+1)->Scr*Scale;
-      Painter->drawPoint(QPointF(x1, y1));
+    if(pp->isStrokeEnd()) ++pp; // ??
+    QPainterPath path;
+    if(pp->isPt()) {
+      x1 = DX_ + pp->getScrX()*Scale;
+      y1 = DY_ - pp->getScrY()*Scale;
+      path.moveTo(x1,y1);
+      ++pp;
+    }else{
+      break;
     }
-    while(!pp->isBranchEnd()) {
-      x1 = DX_ + (pp)->Scr*Scale;
-      y1 = DY_ - (pp+1)->Scr*Scale;
-      pp += 2;
-      while(!pp->isStrokeEnd()) {
-        x2 = DX_ + (pp)->Scr*Scale;
-        y2 = DY_ - (pp+1)->Scr*Scale;
-        Painter->drawLine(QLineF(x1, y1, x2, y2));
-        pp += 2;
-        if(pp->isStrokeEnd())  break;
 
-        x1 = DX_ + pp->Scr*Scale;
-        y1 = DY_ - (pp+1)->Scr*Scale;
-        Painter->drawLine(QLineF(x2, y2, x1, y1));
-        pp += 2;
-      }
-      if(pp->isBranchEnd())  break;
-      pp++;
+    while(!pp->isStrokeEnd()) {
+      x1 = DX_ + pp->getScrX()*Scale;
+      y1 = DY_ - pp->getScrY()*Scale;
+      path.lineTo(x1,y1);
+      ++pp;
     }
-    pp++;
+
+    Painter->drawPath(path);
   }
 }
 
@@ -148,20 +177,20 @@ void Graph::drawStarSymbols(int x0i, int y0i, ViewPainter *p) const
   auto Scale = p->Scale;
   auto Painter = p->Painter;
   auto pp = begin();
-  if(pp->Scr < 0)
+  if(!pp->isPt())
     pp++;
 
   DX_ = p->DX + float(x0i)*Scale;
   DY_ = p->DY + float(y0i)*Scale;
 
   while(!pp->isGraphEnd()) {
-    if(pp->Scr >= 0) {
-      z = DX_ + (pp++)->Scr*Scale;
+    if(pp->isPt()) {
+      z = DX_ + pp->getScrX()*Scale;
       x0 = z-5.0*Scale;
       x3 = z+5.0*Scale;
       x1 = z-4.0*Scale;
       x2 = z+4.0*Scale;
-      z = DY_ - (pp++)->Scr*Scale;
+      z = DY_ - (pp++)->getScrY()*Scale;
       y0 = z;
       y1 = z-4.0*Scale;
       y2 = z+4.0*Scale;
@@ -181,7 +210,7 @@ void Graph::drawCircleSymbols(int x0i, int y0i, ViewPainter *p) const
   auto Scale = p->Scale;
   auto Painter = p->Painter;
   auto pp = begin();
-  if(pp->Scr < 0)
+  if(!pp->isPt())
     pp++;
 
   z = 8.0*Scale;
@@ -189,9 +218,9 @@ void Graph::drawCircleSymbols(int x0i, int y0i, ViewPainter *p) const
   DY_ = p->DY + float(y0i)*Scale;
 
   while(!pp->isGraphEnd()) {
-    if(pp->Scr >= 0) {
-      x0 = DX_ + ((pp++)->Scr-4.0)*Scale;
-      y0 = DY_ - ((pp++)->Scr+4.0)*Scale;
+    if(pp->isPt()) {
+      x0 = DX_ + (pp->getScrX()-4.0)*Scale;
+      y0 = DY_ - ((pp++)->getScrY()+4.0)*Scale;
       Painter->drawEllipse(QRectF(x0, y0, z, z));
     }
     else  pp++;
@@ -206,7 +235,7 @@ void Graph::drawArrowSymbols(int x0i, int y0i, ViewPainter *p) const
   auto Scale = p->Scale;
   auto Painter = p->Painter;
   auto pp = begin();
-  if(pp->Scr < 0)
+  if(!pp->isPt())
     pp++;
 
   DX_ = p->DX + float(x0i)*Scale;
@@ -214,11 +243,11 @@ void Graph::drawArrowSymbols(int x0i, int y0i, ViewPainter *p) const
   y2 = DY_;
 
   while(!pp->isGraphEnd()) {
-    if(pp->Scr >= 0) {
-      x0 = DX_ + (pp++)->Scr*Scale;
+    if(pp->isPt()) {
+      x0 = DX_ + pp->getScrX()*Scale;
       x1 = x0-4.0*Scale;
       x2 = x0+4.0*Scale;
-      y0 = DY_ - (pp++)->Scr*Scale;
+      y0 = DY_ - (pp++)->getScrY()*Scale;
       y1 = y0+7.0*Scale;
       Painter->drawLine(QLineF(x0, y0, x0, y2));
       Painter->drawLine(QLineF(x1, y1, x0, y0));
@@ -417,3 +446,5 @@ void ViewPainter::drawResizeRect(int x1i, int y1i)
 
   Painter->drawRect(QRectF(x1-5, y1-5, 10, 10));
 }
+
+// vim:ts=8:sw=2:noet

@@ -64,9 +64,11 @@ public:
   virtual Diagram* newOne();
   virtual int  calcDiagram() { return 0; };
   virtual void calcCoordinate
-               (const double*, const double*, const double*, float*, float*, Axis*) const {};
+               (const double*, const double*, const double*, float*, float*, Axis const*) const {};
+  void calcCoordinateP (const double*x, const double*y, const double*z, Graph::iterator& p, Axis const* A) const;
   virtual void finishMarkerCoordinates(float&, float&) const;
   virtual void calcLimits() {};
+  virtual QString extraMarkerText(Marker const*) const {return "";}
   
   virtual void paint(ViewPainter*);
   void    setCenter(int, int, bool relative=false);
@@ -82,10 +84,11 @@ public:
   void updateGraphData();
   void loadGraphData(const QString&);
   void recalcGraphData();
-  bool sameDependencies(Graph*, Graph*);
+  bool sameDependencies(Graph const*, Graph const*) const;
   int  checkColumnWidth(const QString&, const QFontMetrics&, int, int, int);
 
   virtual bool insideDiagram(float, float) const;
+  bool insideDiagramP(Graph::iterator const& ) const;
   Marker* setMarker(int x, int y);
 
   QString Name; // identity of diagram type (e.g. Polar), used for saving etc.

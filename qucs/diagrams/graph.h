@@ -76,28 +76,54 @@ private:
 
 struct Axis;
 
+/*!
+ * prepare data for plotting purposes in Diagram.
+ * a Graph is a list of graphs (bug?!)
+ * iterating yields points (in screen coordinates) and control tokens.
+ *
+ * also stores markers.
+ */
 class Graph : public Element {
 public:
-  Graph(const QString& _Line="");
+  Graph(const Diagram*, const QString& _Line="");
  ~Graph();
 
-  struct ScrPt{
-    float Scr;
-    //double Data; not yet
+  class ScrPt{
+    float ScrX;
+    float ScrY;
+
+    double indep; // top level indep value (sweep)
+    double dep; // top level dep value // FIXME: type?!
+  public:
+    ScrPt() : ScrX(0){}
+    ~ScrPt(){}
 
     void setStrokeEnd();
     void setBranchEnd();
     void setGraphEnd();
+    void setScrX(float); // screen horizontal coordinate
+    void setScrY(float); // screen vertical coordinate
+    void setScr(float,float); // both @ once.
+    void setIndep(double);
+    void setDep(double);
+//    void attachCoords(double*);
+
+    bool isPt() const; // indicate if this is a point on the screen
     bool isStrokeEnd() const;
     bool isBranchEnd() const;
     bool isGraphEnd() const;
+
+    float getScrX() const;
+    float getScrY() const;
+    double getIndep() const;
+    double getDep() const;
   };
   typedef std::vector<ScrPt> container;
   typedef container::iterator iterator;
   typedef container::const_iterator const_iterator;
 
   int loadDatFile(const QString& filename);
-  int loadIndepVarData(const QString&, char* datfilecontent);
+  int loadIndepVarData(const QString&, char* datfilecontent, DataX* where);
 
   void    paint(ViewPainter*, int, int);
   void    paintLines(ViewPainter*, int, int);
@@ -106,10 +132,15 @@ public:
   int     getSelected(int, int);
   Graph*  sameNewOne();
   
-  unsigned numAxes() const { return cPointsX.count(); }
-  DataX* axis(uint i) { return cPointsX.at(i); }
-  bool isEmpty() const { return cPointsX.isEmpty(); }
-  Q3PtrList<DataX>& mutable_axes(){return cPointsX;} // HACK
+private: // tmp hack
+  DataX* mutable_axis(uint i) { if(i<(uint)cPointsX.size()) return cPointsX.at(i); return NULL;}
+public:
+  unsigned numAxes() const { return cPointsX.size(); }
+  DataX const* axis(uint i) const { if(i<(uint)cPointsX.size()) return cPointsX.at(i); return NULL;}
+  size_t count(uint i) const { if(axis(i)) return axis(i)->count; return 0; }
+  QString axisName(unsigned i) const {if(axis(i))return axis(i)->Var; return "";}
+  bool isEmpty() const { return !cPointsX.size(); }
+  QVector<DataX*>& mutable_axes(){return cPointsX;} // HACK
 
   void clear(){ScrPoints.resize(0);}
   void resizeScrPoints(size_t s){assert(s>=ScrPoints.size()); ScrPoints.resize(s);}
@@ -137,10 +168,16 @@ private: // painting
   void drawStarSymbols(int, int, ViewPainter*) const;
   void drawCircleSymbols(int, int, ViewPainter*) const;
   void drawArrowSymbols(int, int, ViewPainter*) const;
-
+public: // marker related
+  void createMarkerText() const;
+  std::pair<double,double> findSample(std::vector<double>&) const;
+  Diagram const* parentDiagram() const{return diagram;}
 private:
-  Q3PtrList<DataX>  cPointsX;
+  QVector<DataX*>  cPointsX;
   std::vector<ScrPt> ScrPoints; // data in screen coordinates
+  Diagram const* diagram;
 };
 
 #endif
+
+// vim:ts=8:sw=2:noet

@@ -1413,8 +1413,9 @@ void MouseActions::MPressMarker(Schematic *Doc, QMouseEvent*, float fX, float fY
   Marker *pm = Doc->setMarker(MAx1, MAy1);
 
   if(pm) {
-    int x0 = pm->Diag->cx;
-    int y0 = pm->Diag->cy;
+    assert(pm->diag());
+    int x0 = pm->diag()->cx;
+    int y0 = pm->diag()->cy;
     Doc->enlargeView(x0+pm->x1, y0-pm->y1-pm->y2, x0+pm->x1+pm->x2, y0-pm->y1);
   }
   Doc->viewport()->update();
@@ -1984,3 +1985,5 @@ void MouseActions::MDoubleClickWire2(Schematic *Doc, QMouseEvent *Event)
     QucsMain->MouseDoubleClickAction = 0;
   }
 }
+
+// vim:ts=8:sw=2:noet

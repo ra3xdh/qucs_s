@@ -30,6 +30,8 @@
 #endif
 
 #include "smithdiagram.h"
+#include "misc.h"
+#include "../dialogs/matchdialog.h" // For r2z function
 
 
 SmithDiagram::SmithDiagram(int _cx, int _cy, bool ImpMode) : Diagram(_cx, _cy)
@@ -54,7 +56,7 @@ SmithDiagram::~SmithDiagram()
 // ------------------------------------------------------------
 // calculate the screen coordinates for the graph data
 void SmithDiagram::calcCoordinate(const double*, const double* yD, const double*,
-                                  float *px, float *py, Axis*) const
+                                  float *px, float *py, Axis const*) const
 {
   double yr = yD[0];
   double yi = yD[1];
@@ -124,3 +126,30 @@ Element* SmithDiagram::info_y(QString& Name, char* &BitmapFile, bool getNewOne)
   if(getNewOne)  return new SmithDiagram(0, 0, false);
   return 0;
 }
+
+QString SmithDiagram::extraMarkerText(Marker const* m) const
+{
+  assert(m);
+  Graph const* pGraph = m->graph();
+  assert(pGraph);
+  std::vector<double> const& Pos = m->varPos();
+  unsigned nVarPos = pGraph->numAxes();
+  assert(nVarPos == Pos.size());
+  double Zr, Zi;
+  double Z0 = m->Z0;
+  double Precision = m->precision(); // hmmm
+
+  Zr = m->powReal();
+  Zi = m->powImag();
+
+  MatchDialog::r2z(Zr, Zi, Z0);
+  QString Var = pGraph->Var;
+
+  if(Var.startsWith("S")) { // uuh, ooh hack.
+    return "\n"+ Var.replace('S', 'Z')+": " +misc::complexRect(Zr, Zi, Precision);
+  }else{
+    return "\nZ("+ Var+"): " +misc::complexRect(Zr, Zi, Precision);
+  }
+}
+
+// vim:ts=8:sw=2:noet
