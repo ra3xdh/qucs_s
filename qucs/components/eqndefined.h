@@ -24,6 +24,9 @@
 class EqnDefined : public MultiViewComponent  {
 private:
   void subsVoltages(QStringList &tokens, int Nbranch);
+  void findCurrents(QStringList &tokens, QList<int> &branches);
+  void subsCurrents(QStringList &tokens);
+
 public:
   EqnDefined();
  ~EqnDefined() {};
