@@ -68,7 +68,7 @@ QString spicecompat::normalize_value(QString Value)
  * \param isXyce[in] True if Xyce is used, False by default.
  * \return
  */
-QString spicecompat::convert_functions(QString tok, bool isXyce)
+QString spicecompat::convert_function(QString tok, bool isXyce)
 {
     QStringList conv_list_ngspice; // Put here functions need to be converted
     conv_list_ngspice<<"q"<<"1.6021765e-19"
@@ -89,6 +89,19 @@ QString spicecompat::convert_functions(QString tok, bool isXyce)
     }
 
     return tok;
+}
+
+/*!
+ * \brief spicecompat::convert_functions Convert Qucs mathematical function name
+ *        to Spice mathematical function name
+ * \param tokens[in/out] String list in which to put tokens
+ * \param isXyce[in] True if Xyce is used, False by default.
+ */
+void spicecompat::convert_functions(QStringList &tokens, bool isXyce)
+{
+    for(QStringList::iterator it = tokens.begin();it != tokens.end(); it++) {
+        *it = spicecompat::convert_function(*it,isXyce);
+    }
 }
 
 /*!

@@ -93,7 +93,7 @@ QString EqnDefined::netlist()
   return s+e;
 }
 
-QString EqnDefined::spice_netlist(bool)
+QString EqnDefined::spice_netlist(bool isXyce)
 {    
     QString s;
 
@@ -120,6 +120,7 @@ QString EqnDefined::spice_netlist(bool)
             Ieqn.replace("^","**");
             QStringList Itokens;
             spicecompat::splitEqn(Ieqn,Itokens);
+            spicecompat::convert_functions(Itokens,isXyce);
             qDebug()<<Itokens;
             subsVoltages(Itokens,Nbranch);
             subsCurrents(Itokens);
@@ -138,6 +139,7 @@ QString EqnDefined::spice_netlist(bool)
                 Qeqn.replace("^","**");
                 QStringList Qtokens;
                 spicecompat::splitEqn(Qeqn,Qtokens);
+                spicecompat::convert_functions(Qtokens,isXyce);
                 qDebug()<<Qtokens;
                 subsVoltages(Qtokens,Nbranch);
                 subsCurrents(Qtokens);
@@ -207,8 +209,8 @@ void EqnDefined::subsCurrents(QStringList &tokens)
     for (QStringList::iterator it = tokens.begin();it != tokens.end();it++) {
         if (curr_pattern.exactMatch(*it)) {
             QString curr = *it;
-            int branch = curr.remove('V').toInt();
-            *it = QString("i(V_%1sens_%2)").arg(Name).arg(branch);
+            int branch = curr.remove('I').toInt();
+            *it = QString("i(V_%1sens_%2)").arg(Name).arg(branch-1);
         }
     }
 }

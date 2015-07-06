@@ -111,10 +111,7 @@ QString Equation::getExpression(bool isXyce)
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
         spicecompat::splitEqn(eqn,tokens);
-        for(QStringList::iterator it = tokens.begin();it != tokens.end(); it++) {
-            qDebug()<<spicecompat::convert_functions(*it,isXyce);
-            *it = spicecompat::convert_functions(*it,isXyce);
-        }
+        spicecompat::convert_functions(tokens,isXyce);
         eqn = tokens.join("");
         if (isXyce) eqn.replace("^","**");
         QRegExp fp_pattern("^[\\+\\-]*\\d*\\.\\d+$"); // float
@@ -187,9 +184,7 @@ QString Equation::getNgspiceScript()
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
         spicecompat::splitEqn(eqn,tokens);
-        for(QStringList::iterator it = tokens.begin();it != tokens.end(); it++) {
-            *it = spicecompat::convert_functions(*it,false);
-        }
+        spicecompat::convert_functions(tokens,false);
         eqn = tokens.join("");
 
         if (!spicecompat::containNodes(tokens,ng_vars)) {

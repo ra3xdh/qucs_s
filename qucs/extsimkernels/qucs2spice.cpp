@@ -382,9 +382,7 @@ QString qucs2spice::convert_edd(QString line, QStringList &EqnsAndVars)
         QStringList Itokens;
         spicecompat::splitEqn(Ieqn,Itokens);
         subsVoltages(Itokens,nods);
-        for(QStringList::iterator it = Itokens.begin();it != Itokens.end(); it++) {
-            *it = spicecompat::convert_functions(*it,false);
-        }
+        spicecompat::convert_functions(Itokens,false);
         QString plus = nods.at(2*i+1);
         QString minus = nods.at(2*i);
 
