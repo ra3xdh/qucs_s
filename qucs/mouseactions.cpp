@@ -182,7 +182,7 @@ void MouseActions::endElementMoving(Schematic *Doc, Q3PtrList<Element> *movEleme
   Element *pe;
   for(pe = movElements->first(); pe!=0; pe = movElements->next()) {
 //    pe->isSelected = false;  // deselect first (maybe afterwards pe == NULL)
-    switch(pe->Type) {
+    switch(pe->Type) { // FIXME: use casts.
       case isWire:
         if(pe->x1 == pe->x2)
           if(pe->y1 == pe->y2) {
@@ -214,7 +214,7 @@ void MouseActions::endElementMoving(Schematic *Doc, Q3PtrList<Element> *movEleme
 	Doc->insertNodeLabel((WireLabel*)pe);
 	break;
       case isMarker:
-	((Marker*)pe)->pGraph->Markers.append((Marker*)pe);
+	assert(dynamic_cast<Marker*>(pe));
 	break;
     }
   }

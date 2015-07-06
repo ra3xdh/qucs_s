@@ -958,8 +958,12 @@ void QucsApp::slotAddToProject()
 }
 
 // -----------------------------------------------------------
-void QucsApp::slotCursorLeft()
+void QucsApp::slotCursorLeft(bool left)
 {
+  int sign = 1;
+  if(left){
+    sign = -1;
+  }
   if(!editText->isHidden()) return;  // for edit of component property ?
 
   Q3PtrList<Element> movingElements;
@@ -968,39 +972,11 @@ void QucsApp::slotCursorLeft()
 
   if((movingElements.count() - markerCount) < 1) {
     if(markerCount > 0) {  // only move marker if nothing else selected
-      Doc->markerLeftRight(true, &movingElements);
-      movingElements.clear();
-    }
-    else {
+      Doc->markerLeftRight(left, &movingElements);
+    } else if(left) {
       if(Doc->scrollLeft(Doc->horizontalScrollBar()->lineStep()))
         Doc->scrollBy(-Doc->horizontalScrollBar()->lineStep(), 0);
-    }
-
-    Doc->viewport()->update();
-    view->drawn = false;
-    return;
-  }
-
-  view->moveElements(&movingElements, -Doc->GridX, 0);  // move "GridX" to left
-  view->MAx3 = 1;  // sign for moved elements
-  view->endElementMoving(Doc, &movingElements);
-}
-
-// -----------------------------------------------------------
-void QucsApp::slotCursorRight()
-{
-  if(!editText->isHidden()) return;  // for edit of component property ?
-
-  Q3PtrList<Element> movingElements;
-  Schematic *Doc = (Schematic*)DocumentTab->currentPage();
-  int markerCount = Doc->copySelectedElements(&movingElements);
-
-  if((movingElements.count() - markerCount) < 1) {
-    if(markerCount > 0) {  // only move marker if nothing else selected
-      Doc->markerLeftRight(false, &movingElements);
-      movingElements.clear();
-    }
-    else {
+    }else{ // right
       if(Doc->scrollRight(-Doc->horizontalScrollBar()->lineStep()))
         Doc->scrollBy(Doc->horizontalScrollBar()->lineStep(), 0);
     }
@@ -1008,17 +984,18 @@ void QucsApp::slotCursorRight()
     Doc->viewport()->update();
     view->drawn = false;
     return;
+  } else { // random selection. move all of them
+    view->moveElements(&movingElements, sign*Doc->GridX, 0);
+    view->MAx3 = 1;  // sign for moved elements
+    view->endElementMoving(Doc, &movingElements);
   }
-
-  view->moveElements(&movingElements, Doc->GridX, 0);  // move "GridX" to right
-  view->MAx3 = 1;  // sign for moved elements
-  view->endElementMoving(Doc, &movingElements);
 }
 
 // -----------------------------------------------------------
-void QucsApp::slotCursorUp()
+void QucsApp::slotCursorUp(bool up)
 {
-  if(!editText->isHidden()) {  // for edit of component property ?
+  if(editText->isHidden()) {  // for edit of component property ?
+  }else if(up){
     if(view->MAx3 == 0) return;  // edit component namen ?
     Component *pc = (Component*)view->focusElement;
     Property *pp = pc->Props.at(view->MAx3-1);  // current property
@@ -1036,36 +1013,7 @@ void QucsApp::slotCursorUp()
     editText->setText(pp->Description.mid(Pos, End-Pos+1));
     editText->selectAll();
     return;
-  }
-
-  Q3PtrList<Element> movingElements;
-  Schematic *Doc = (Schematic*)DocumentTab->currentPage();
-  int markerCount = Doc->copySelectedElements(&movingElements);
-
-  if((movingElements.count() - markerCount) < 1) {
-    if(markerCount > 0) {  // only move marker if nothing else selected
-      Doc->markerUpDown(true, &movingElements);
-      movingElements.clear();
-    }
-    else {
-      if(Doc->scrollUp(Doc->verticalScrollBar()->lineStep()))
-        Doc->scrollBy(0, -Doc->verticalScrollBar()->lineStep());
-    }
-
-    Doc->viewport()->update();
-    view->drawn = false;
-    return;
-  }
-
-  view->moveElements(&movingElements, 0, -Doc->GridY);  // move "GridY" up
-  view->MAx3 = 1;  // sign for moved elements
-  view->endElementMoving(Doc, &movingElements);
-}
-
-// -----------------------------------------------------------
-void QucsApp::slotCursorDown()
-{
-  if(!editText->isHidden()) {  // for edit of component property ?
+  }else{ // down
     if(view->MAx3 == 0) return;  // edit component namen ?
     Component *pc = (Component*)view->focusElement;
     Property *pp = pc->Props.at(view->MAx3-1);  // current property
@@ -1091,12 +1039,13 @@ void QucsApp::slotCursorDown()
   Schematic *Doc = (Schematic*)DocumentTab->currentPage();
   int markerCount = Doc->copySelectedElements(&movingElements);
 
-  if((movingElements.count() - markerCount) < 1) {
+  if((movingElements.count() - markerCount) < 1) { // all selections are markers
     if(markerCount > 0) {  // only move marker if nothing else selected
-      Doc->markerUpDown(false, &movingElements);
-      movingElements.clear();
-    }
-    else {
+      Doc->markerUpDown(up, &movingElements);
+    } else if(up) { // nothing selected at all
+      if(Doc->scrollUp(Doc->verticalScrollBar()->lineStep()))
+        Doc->scrollBy(0, -Doc->verticalScrollBar()->lineStep());
+    } else { // down
       if(Doc->scrollDown(-Doc->verticalScrollBar()->lineStep()))
         Doc->scrollBy(0, Doc->verticalScrollBar()->lineStep());
     }
@@ -1104,11 +1053,11 @@ void QucsApp::slotCursorDown()
     Doc->viewport()->update();
     view->drawn = false;
     return;
+  }else{ // some random selection, put it back
+    view->moveElements(&movingElements, 0, ((up)?-1:1) * Doc->GridY);
+    view->MAx3 = 1;  // sign for moved elements
+    view->endElementMoving(Doc, &movingElements);
   }
-
-  view->moveElements(&movingElements, 0, Doc->GridY);  // move "GridY" down
-  view->MAx3 = 1;  // sign for moved elements
-  view->endElementMoving(Doc, &movingElements);
 }
 
 // -----------------------------------------------------------
@@ -1603,3 +1552,5 @@ void QucsApp::slotHelpAbout()
   AboutDialog *ad = new AboutDialog(this);
   ad->exec();
 }
+
+// vim:ts=8:sw=2:noet

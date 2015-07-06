@@ -18,6 +18,15 @@
 #ifndef SCHEMATIC_H
 #define SCHEMATIC_H
 
+// maybe in another place...
+#ifdef NDEBUG
+// cast without overhead
+#  define prechecked_cast static_cast
+#else
+// cast safely, for debugging purposes
+#  define prechecked_cast dynamic_cast
+#endif
+
 #include "wire.h"
 #include "node.h"
 #include "qucsdoc.h"

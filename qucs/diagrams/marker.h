@@ -63,7 +63,7 @@ public: // power matching stuff. some sort of VarPos (ab?)use
   double  powImag() const {return VarDep[1];}
 
 // private: // not yet
-  Graph   *pGraph;   // the corresponding graph
+  Graph const *pGraph;   // the corresponding graph
 
 private:
   std::vector<double> VarPos;   // values the marker is pointing to

@@ -349,10 +349,10 @@ public slots:
   void slotSaveSchematicToGraphicsFile(bool diagram = false);
 
 private slots:
-  void slotCursorLeft();
-  void slotCursorRight();
-  void slotCursorUp();
-  void slotCursorDown();
+  void slotCursorLeft(bool left=true);
+  void slotCursorRight() {return slotCursorLeft(false);}
+  void slotCursorUp(bool up=true);
+  void slotCursorDown() {return slotCursorUp(false);}
   void slotResizePropEdit(const QString&);
   void slotCreateLib();
   void slotImportData();
