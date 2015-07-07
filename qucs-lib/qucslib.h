@@ -64,7 +64,8 @@ private slots:
   void slotCopyToClipBoard();
   void slotShowModel();
   void slotSelectLibrary(int);
-  void slotSearchComponent();
+  void slotSearchComponent(const QString &);
+  void slotSearchClear();
   void slotShowComponent(QListWidgetItem*);
   void slotManageLib();
 
@@ -76,10 +77,11 @@ private:
   QMenu *fileMenu, *helpMenu;
 
   int UserLibCount;
+  int libCurIdx;
   SymbolWidget *Symbol;
   QTextEdit    *CompDescr;
   QVBoxLayout  *all;
-
+  QLineEdit *CompSearch;
 };
 
 #endif /* QUCSLIB_H */

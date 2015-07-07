@@ -49,11 +49,11 @@ INCLUDE( ${QT_USE_FILE} )
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 SET(QUCSLIB_SRCS
-main.cpp qucslib.cpp displaydialog.cpp symbolwidget.cpp searchdialog.cpp librarydialog.cpp
+main.cpp qucslib.cpp displaydialog.cpp symbolwidget.cpp librarydialog.cpp
 )
 
 SET(QUCSLIB_MOC_HDRS
-qucslib.h displaydialog.h symbolwidget.h searchdialog.h librarydialog.h
+qucslib.h displaydialog.h symbolwidget.h librarydialog.h
 )
 
 QT4_WRAP_CPP( QUCSLIB_MOC_SRCS ${QUCSLIB_MOC_HDRS} )

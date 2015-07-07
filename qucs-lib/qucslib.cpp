@@ -40,13 +40,13 @@
 #include <QPixmap>
 #include <QWidget>
 #include <QBrush>
+#include <QLineEdit>
 
 #include "qucslib.h"
 #include "qucslib_common.h"
 #include "librarydialog.h"
 #include "displaydialog.h"
 #include "symbolwidget.h"
-#include "searchdialog.h"
 
 
 /* Constructor setups the GUI. */
@@ -84,6 +84,12 @@ QucsLib::QucsLib()
     helpMenu->addAction(helpAbout);
     connect(helpAbout, SIGNAL(activated()), SLOT(slotAbout()));
 
+    // use Escape key to clear search
+    QAction *escape = new QAction(this);
+    escape->setShortcut(Qt::Key_Escape);
+    connect(escape, SIGNAL(triggered()), SLOT(slotSearchClear()));
+    this->addAction(escape);
+
     // setup menu bar
     menuBar()->addMenu(fileMenu);
     menuBar()->addSeparator();
@@ -106,12 +112,19 @@ QucsLib::QucsLib()
     CompList = new QListWidget();
     connect(CompList, SIGNAL(itemActivated(QListWidgetItem*)), SLOT(slotShowComponent(QListWidgetItem*)));
     connect(CompList,SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),SLOT(slotShowComponent(QListWidgetItem*)));
-    QPushButton *SearchButton = new QPushButton (tr("Search..."));
-    connect(SearchButton, SIGNAL(clicked()), SLOT(slotSearchComponent()));
+
+    CompSearch = new QLineEdit(this);
+    CompSearch->setPlaceholderText(tr("Search Lib Components"));
+    QPushButton *CompSearchClear = new QPushButton(tr("Clear"));
+    connect(CompSearch, SIGNAL(textEdited(const QString &)), SLOT(slotSearchComponent(const QString &)));
+    connect(CompSearchClear, SIGNAL(clicked()), SLOT(slotSearchClear()));
 
     LibGroupLayout->addWidget(Library);
     LibGroupLayout->addWidget(CompList);
-    LibGroupLayout->addWidget(SearchButton);
+    QHBoxLayout *CompSearchLayout = new QHBoxLayout();
+    LibGroupLayout->addLayout(CompSearchLayout);
+    CompSearchLayout->addWidget(CompSearch);
+    CompSearchLayout->addWidget(CompSearchClear);
 
     LibGroup->setLayout(LibGroupLayout);
 
@@ -171,21 +184,24 @@ void QucsLib::putLibrariesIntoCombobox()
     UserLibCount = 0;
     QStringList LibFiles;
     QStringList::iterator it;
+
     if(UserLibDir.cd("."))   // user library directory exists ?
     {
         //LibFiles = UserLibDir.entryList("*.lib", QDir::Files, QDir::Name);
         LibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+
         UserLibCount = LibFiles.count();
 
         for(it = LibFiles.begin(); it != LibFiles.end(); it++)
         {
             Library->addItem(QPixmap(":/bitmaps/home.png"), (*it).left((*it).length()-4));
         }
+
+	if (UserLibCount > 0) {
+	// add a separator to distinguish between user libraries and system libs
+	Library->insertSeparator(LibFiles.size());
+	}
     }
-
-
-    // add a separator to distinguish between user libraries and system libs
-    Library->insertSeparator(LibFiles.size());
 
     QDir LibDir(QucsSettings.LibDir);
     LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
@@ -237,6 +253,7 @@ void QucsLib::slotManageLib()
 {
     (new LibraryDialog(this))->exec();
     putLibrariesIntoCombobox();
+    CompSearch->clear(); // in case "search mode" was previously active
 }
 
 // ----------------------------------------------------
@@ -283,27 +300,19 @@ void QucsLib::slotShowModel()
 // ----------------------------------------------------
 void QucsLib::slotSelectLibrary(int Index)
 {
-    int End;
-
-    End = Library->count ()-1;
-
-    if(Library->itemText (End) == tr("Search result"))
-    {
-        if(Index < End)
-        {
-            // if search result still there -> remove it
-            Library->removeItem (End);
-        }
-        else
-        {
-            return;
-        }
+    // was in "search mode" ?
+    if (Library->itemText(0) == tr("Search results")) {
+      if (Index == 0) // user selected "Search results" item
+        return;
+      Library->removeItem(0); // remove the added "Search results" item
+      CompSearch->clear();
+      --Index; // adjust requested index since item 0 was removed
     }
 
-    if(Library->itemText (0) == "")
-    {
-        Library->removeItem (0);
-    }
+    // make sure the right index is selected
+    //  (might have been called by a cleared search and not by user action)
+    Library->setCurrentIndex(Index);
+
     CompList->clear ();
     LibraryComps.clear ();
     DefaultSymbol = "";
@@ -351,14 +360,87 @@ void QucsLib::slotSelectLibrary(int Index)
 }
 
 // ----------------------------------------------------
-void QucsLib::slotSearchComponent()
+void QucsLib::slotSearchComponent(const QString &searchText)
 {
-    SearchDialog *d = new SearchDialog(this);
-    d->setWindowTitle(tr("Search Library Component"));
-    if(d->exec() == QDialog::Accepted)
-        QMessageBox::information(this, tr("Result"),
-                                 tr("No appropriate component found."));
+  // clear the components view
+  //   (search restarts anew at every keypress)
+  CompList->clear ();
+
+  if (Library->itemText(0) != tr("Search results")) {
+    // not already in "search mode"
+    libCurIdx = Library->currentIndex(); // remember current selected item
+    // insert "Search results" at the beginning, so that it is visible
+    Library->insertItem(-1, tr("Search results"));
+    Library->setCurrentIndex(0);
+  }
+
+  if(searchText.isEmpty()) {
+    return;
+  }
+
+  bool findComponent = false;
+  QDir LibDir(QucsSettings.LibDir);
+  QStringList LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+
+  QFile File;
+  QTextStream ReadWhole;
+  QString LibraryString, LibName, CompName;
+  QStringList::iterator it;
+  int Start, End, NameStart, NameEnd;
+  for(it = LibFiles.begin(); it != LibFiles.end(); it++) { // all library files
+    File.setFileName(QucsSettings.LibDir + (*it));
+    if(!File.open(QIODevice::ReadOnly))  continue;
+
+    ReadWhole.setDevice(&File);
+    LibraryString = ReadWhole.readAll();
+    File.close();
+
+    Start = LibraryString.indexOf("<Qucs Library ");
+    if(Start < 0)  continue;
+    End = LibraryString.indexOf('>', Start);
+    if(End < 0)  continue;
+    LibName = LibraryString.mid(Start, End-Start).section('"', 1, 1);
+
+    // check all components of the current library
+    while((Start=LibraryString.indexOf("\n<Component ", Start)) > 0) {
+      Start++;
+      NameStart = Start + 11;
+      NameEnd = LibraryString.indexOf('>', NameStart);
+      if(NameEnd < 0)  continue;
+      CompName = LibraryString.mid(NameStart, NameEnd-NameStart);
+
+      End = LibraryString.indexOf("\n</Component>", NameEnd);
+      if(End < 0)  continue;
+      End += 13;
+
+      // does search criterion match ?
+      if(CompName.indexOf(searchText, 0, Qt::CaseInsensitive) >= 0) {
+        if(!findComponent) {
+	  DefaultSymbol = "";
+	  CompList->clear();
+	  LibraryComps.clear();
+        }
+        findComponent = true;
+	CompList->addItem(CompName);
+        LibraryComps.append(LibName+'\n'+LibraryString.mid(Start, End-Start));
+      }
+      Start = End;
+    }
+  }
 }
+
+
+void QucsLib::slotSearchClear()
+{
+  // was in "search mode" ?
+  if (Library->itemText(0) == tr("Search results")) {
+    Library->removeItem(0); // remove the added "Search results" item
+    CompSearch->clear();
+    // go back to the panel selected before search started
+    slotSelectLibrary(libCurIdx);
+  }
+}
+
 
 // ----------------------------------------------------
 void QucsLib::slotShowComponent(QListWidgetItem *Item)
