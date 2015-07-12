@@ -37,6 +37,7 @@ private:
     QPushButton *buttonStopSim;
     QPushButton *buttonSimSettings;
     QPushButton *buttonSaveNetlist;
+    QPushButton *buttonExit;
 
     QTextEdit *editSimConsole;
 

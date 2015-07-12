@@ -44,8 +44,8 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     connect(buttonSimulate,SIGNAL(clicked()),this,SLOT(slotStart()));
 
     buttonStopSim = new QPushButton(tr("Stop"),this);
-    connect(buttonStopSim,SIGNAL(clicked()),this,SLOT(reject()));
     connect(buttonStopSim,SIGNAL(clicked()),ngspice,SLOT(killThemAll()));
+    connect(buttonStopSim,SIGNAL(clicked()),xyce,SLOT(killThemAll()));
     buttonStopSim->setEnabled(false);
 
     buttonSaveNetlist = new QPushButton(tr("Save netlist"),this);
@@ -53,6 +53,11 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
 
     buttonSimSettings = new QPushButton(tr("Settings"),this);
     connect(buttonSimSettings,SIGNAL(clicked()),this,SLOT(slotSimSettings()));
+
+    buttonExit = new QPushButton(tr("Exit"),this);
+    connect(buttonExit,SIGNAL(clicked()),this,SLOT(reject()));
+    connect(buttonExit,SIGNAL(clicked()),ngspice,SLOT(killThemAll()));
+    connect(buttonExit,SIGNAL(clicked()),xyce,SLOT(killThemAll()));
 
     lblSimulator = new QLabel(tr("Select external simulator:"));
     QGroupBox *grp1 = new QGroupBox(tr("Simulation console"),this);
@@ -104,6 +109,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     hl1->addWidget(buttonSimulate);
     hl1->addWidget(buttonStopSim);
     hl1->addWidget(buttonSaveNetlist);
+    hl1->addWidget(buttonExit);
     vl_top->addLayout(hl1);
     this->setLayout(vl_top);
     this->setWindowTitle(tr("Simulate with external simulator"));
