@@ -92,7 +92,6 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
     EqnsAndVars.removeAll("Export");
     EqnsAndVars.removeAll("no");
     EqnsAndVars.removeAll("yes");
-    qDebug()<<EqnsAndVars;
 
 
     foreach(QString line,net_lst) {
@@ -359,7 +358,6 @@ QString qucs2spice::convert_dc_src(QString line)
 
 QString qucs2spice::convert_edd(QString line, QStringList &EqnsAndVars)
 {
-    qDebug()<<line;
     QString s="";
     QStringList lst = line.split(" ",QString::SkipEmptyParts);
     QStringList nods;

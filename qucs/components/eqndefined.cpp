@@ -121,7 +121,6 @@ QString EqnDefined::spice_netlist(bool isXyce)
             QStringList Itokens;
             spicecompat::splitEqn(Ieqn,Itokens);
             spicecompat::convert_functions(Itokens,isXyce);
-            qDebug()<<Itokens;
             subsVoltages(Itokens,Nbranch);
             subsCurrents(Itokens);
             QString plus = Ports.at(2*i)->Connection->Name;
@@ -140,7 +139,6 @@ QString EqnDefined::spice_netlist(bool isXyce)
                 QStringList Qtokens;
                 spicecompat::splitEqn(Qeqn,Qtokens);
                 spicecompat::convert_functions(Qtokens,isXyce);
-                qDebug()<<Qtokens;
                 subsVoltages(Qtokens,Nbranch);
                 subsCurrents(Qtokens);
                 s += QString("G%1Q%2 %3 %4 n%1Q%2 %4 1.0\n").arg(Name).arg(i).arg(plus).arg(minus);

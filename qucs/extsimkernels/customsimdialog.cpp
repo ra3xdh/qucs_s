@@ -132,7 +132,6 @@ void CustomSimDialog::slotFindVars()
         }
     }
 
-    qDebug()<<vars;
     for(QStringList::iterator it = vars.begin();it != vars.end(); it++) {
         if (!(it->endsWith("#branch"))) *it=QString("V(%1)").arg(*it);
     }
@@ -143,7 +142,6 @@ void CustomSimDialog::slotFindVars()
     foreach(QString line,strings) {
         QRegExp let_pattern("^\\s*let\\s+[A-Za-z]+\\w*\\s*\\=\\s*[A-Za-z]+.*$");
         if (let_pattern.exactMatch(line)) {
-            qDebug()<<line;
             QString var = line.section('=',0,0);
             var.remove("let ");
             var.remove(' ');

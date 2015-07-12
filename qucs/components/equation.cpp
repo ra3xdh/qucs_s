@@ -164,7 +164,6 @@ QString Equation::getEquations(QString sim, QStringList &dep_vars)
             }
         }
     }
-    qDebug()<<sim;
     return s;
 }
 

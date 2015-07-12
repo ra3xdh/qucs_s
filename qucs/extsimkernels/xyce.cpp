@@ -104,7 +104,6 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
         }*/
     }
     vars.sort();
-    qDebug()<<vars;
 
     //execute simulations
 

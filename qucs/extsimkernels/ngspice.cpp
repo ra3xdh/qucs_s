@@ -96,7 +96,6 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         }
     }
     vars.sort();
-    qDebug()<<vars;
 
     stream<<".control\n"          //execute simulations
           <<"set filetype=ascii\n"
@@ -282,7 +281,6 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
           <<".endc\n";
 
     stream<<".END\n";
-    qDebug()<<outputs;
 }
 
 /*!

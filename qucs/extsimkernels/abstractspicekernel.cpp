@@ -214,7 +214,6 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
             }
             if (lin.contains("No. Variables")) {  // get number of variables
                 NumVars=lin.section(sep,2,2,QString::SectionSkipEmpty).toInt();
-                qDebug()<<NumVars;
                 continue;
             }
             if (lin=="Variables:") {
@@ -228,7 +227,6 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
                     qDebug()<<dep_var;
                     var_list.append(dep_var);
                 }
-                qDebug()<<var_list;
                 continue;
             }
             if (lin=="Values:") {
@@ -292,7 +290,6 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file,
                     vars1.removeFirst();
                     var_list.append(vars1);
                     NumVars = var_list.count();
-                    qDebug()<<vars1;
                 }
                 first_head = false;
             }
@@ -304,7 +301,6 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file,
                     sim_point.append(vals.at(i).toDouble());
                 }
                 sim_points.append(sim_point);
-                qDebug()<<sim_point;
             }
         }
         ofile.close();
@@ -452,7 +448,6 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
                 }
                 if (lin.contains("No. Variables")) {  // get number of variables
                     NumVars=lin.section(sep,2,2,QString::SectionSkipEmpty).toInt();
-                    qDebug()<<NumVars;
                     continue;
                 }
                 if (lin=="Variables:") {
@@ -463,10 +458,8 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
                     for (int i=1;i<NumVars;i++) {
                         lin = ngsp_data.readLine();
                         QString dep_var = lin.section(sep,1,1,QString::SectionSkipEmpty);
-                        qDebug()<<dep_var;
                         var_list.append(dep_var);
                     }
-                    qDebug()<<var_list;
                     header_parsed = true;
                     continue;
                 }
@@ -479,7 +472,6 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
             if (start_values_sec) {
                 QList<double> sim_point;
                 bool ok = false;
-                qDebug()<<lin;
                 QRegExp dataline_patter("^ *[0-9]+[ \t]+.*");
                 if (!dataline_patter.exactMatch(lin)) continue;
                 double indep_val = lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble(&ok);
@@ -737,7 +729,6 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
     QString iprefix="";
     QString indep = var_list.first();
     bool HB = false;
-    qDebug()<<"norm:"<<indep;
     indep = indep.toLower();
     if (indep=="time") {
         prefix = "tran.";
