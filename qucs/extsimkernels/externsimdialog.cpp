@@ -179,7 +179,18 @@ void ExternSimDialog::slotProcessXyceOutput()
 void ExternSimDialog::slotNgspiceStarted()
 {
     editSimConsole->clear();
-    editSimConsole->append(tr("ngspice started...\n"));
+    QString sim;
+    switch (cbxSimualor->currentIndex()) {
+    case simNgspice: sim = "Ngspice";
+        break;
+    case simXyceSer: sim = "Xyce (serial) ";
+        break;
+    case simXycePar: sim = "Xyce (parallel) ";
+        break;
+    default: sim = "Simulator "; // Some other simulators could be added ...
+        break;
+    }
+    editSimConsole->append(sim + tr(" started...\n"));
 }
 
 void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)

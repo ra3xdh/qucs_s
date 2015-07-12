@@ -224,7 +224,6 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
                 for (int i=1;i<NumVars;i++) {
                     lin = ngsp_data.readLine();
                     QString dep_var = lin.section(sep,1,1,QString::SectionSkipEmpty);
-                    qDebug()<<dep_var;
                     var_list.append(dep_var);
                 }
                 continue;
