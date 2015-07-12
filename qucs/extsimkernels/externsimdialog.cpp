@@ -73,7 +73,26 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     connect(ngspice,SIGNAL(progress(int)),simProgress,SLOT(setValue(int)));
     connect(xyce,SIGNAL(progress(int)),simProgress,SLOT(setValue(int)));
 
+    QLabel *lbl_warn = new QLabel(this);
+    lbl_warn->setAutoFillBackground(true);
+    lbl_warn->setStyleSheet("background-color: #F0FFFF; border: 3px solid red ;");
+    lbl_warn->setText("<HTML>"
+                      "<CENTER>"
+                      "<FONT color = #FF0000>"
+                      "External simulators support is unstable. <BR>"
+                      "Use on your own risk! It will be stable in <BR>"
+                      "the next relases. See spice4qucs initiative <BR>"
+                      " documentation "
+                      "<A href=\"https://qucs-help.readthedocs.org/en/spice4qucs/\"> here </A>"
+                      "for more info <BR>"
+                      "and development status"
+                      "</FONT>"
+                      "</CENTER>"
+                      "</HTML>");
+    //lbl_warn->setBackgroundColor(Qt::white);
+
     QVBoxLayout *vl_top = new QVBoxLayout;
+    vl_top->addWidget(lbl_warn);
     QHBoxLayout *hl2 = new QHBoxLayout;
     hl2->addWidget(lblSimulator);
     hl2->addWidget(cbxSimualor);
