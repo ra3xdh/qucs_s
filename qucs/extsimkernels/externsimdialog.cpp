@@ -178,6 +178,7 @@ void ExternSimDialog::slotProcessNgspiceOutput()
     QString out = ngspice->getOutput();
     //editSimConsole->clear();
     editSimConsole->append(out);
+    saveLog();
     // Set temporary safe output name
     QFileInfo inf(Sch->DocName);
     QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
@@ -193,6 +194,7 @@ void ExternSimDialog::slotProcessXyceOutput()
     QString out = xyce->getOutput();
     //editSimConsole->clear();
     editSimConsole->append(out);
+    saveLog();
     // Set temporary safe output name
     QFileInfo inf(Sch->DocName);
     QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_xyce.dat";
@@ -280,6 +282,18 @@ void ExternSimDialog::slotSaveNetlist()
     if (!QFile::exists(filename)) {
       QMessageBox::critical(0, QObject::tr("Save netlist"),
           QObject::tr("Disk write error!"), QMessageBox::Ok);
+    }
+}
+
+void ExternSimDialog::saveLog()
+{
+    QString filename = QucsSettings.QucsHomeDir.filePath("log.txt");
+    QFile log(filename);
+    if (log.open(QIODevice::WriteOnly)) {
+        QTextStream ts_log(&log);
+        ts_log<<editSimConsole->toPlainText();
+        log.flush();
+        log.close();
     }
 }
 

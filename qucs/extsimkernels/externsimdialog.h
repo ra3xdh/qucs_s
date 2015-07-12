@@ -55,6 +55,9 @@ public:
     ~ExternSimDialog();
 
     bool wasSimulated;
+
+private:
+    void saveLog();
     
 signals:
     void simulated();
