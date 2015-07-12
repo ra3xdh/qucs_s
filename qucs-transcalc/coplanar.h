@@ -54,8 +54,8 @@ class coplanar : public transline {
   void show_results();
   void getProperties();
 
-  void ellipke(double, double&, double&);
   double ellipk(double);
+  double KoverKp(double);
 };
 
 
