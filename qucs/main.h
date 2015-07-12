@@ -67,6 +67,7 @@ struct tQucsSettings {
   QString NgspiceExecutable;  // Executables of external simulators
   QString XyceExecutable;
   QString XyceParExecutable;
+  QString S4Qworkdir;
   unsigned int NProcs; // Number of processors for Xyce
 
   // registered filename extensions with program to open the file

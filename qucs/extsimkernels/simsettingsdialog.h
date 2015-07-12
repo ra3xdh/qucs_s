@@ -30,11 +30,13 @@ private:
     QLabel *lblNgspice;
     QLabel *lblXycePar;
     QLabel *lblNprocs;
+    QLabel *lblWorkdir;
 
     QLineEdit *edtNgspice;
     QLineEdit *edtXyce;
     QLineEdit *edtXycePar;
     QSpinBox  *spbNprocs;
+    QLineEdit *edtWorkdir;
 
     QPushButton *btnOK;
     QPushButton *btnCancel;
@@ -42,6 +44,7 @@ private:
     QPushButton *btnSetNgspice;
     QPushButton *btnSetXyce;
     QPushButton *btnSetXycePar;
+    QPushButton *btnSetWorkdir;
 
 public:
     explicit SimSettingsDialog(QWidget *parent = 0);
@@ -52,6 +55,7 @@ private slots:
     void slotSetNgspice();
     void slotSetXyce();
     void slotSetXycePar();
+    void slotSetWorkdir();
     
 };
 

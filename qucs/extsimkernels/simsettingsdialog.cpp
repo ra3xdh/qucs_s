@@ -30,12 +30,14 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     lblXyce = new QLabel(tr("Xyce executable location"));
     lblXycePar = new QLabel(tr("Xyce Parallel executable location (openMPI installed required)"));
     lblNprocs = new QLabel(tr("Number of processors in a system:"));
+    lblWorkdir = new QLabel(tr("Directory to store netlist and simulator output"));
 
     edtNgspice = new QLineEdit(QucsSettings.NgspiceExecutable);
     edtXyce = new QLineEdit(QucsSettings.XyceExecutable);
     edtXycePar = new QLineEdit(QucsSettings.XyceParExecutable);
     spbNprocs = new QSpinBox(1,256,1,this);
     spbNprocs->setValue(QucsSettings.NProcs);
+    edtWorkdir = new QLineEdit(QucsSettings.S4Qworkdir);
 
     btnOK = new QPushButton(tr("Apply changes"));
     connect(btnOK,SIGNAL(clicked()),this,SLOT(slotApply()));
@@ -44,10 +46,12 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
 
     btnSetNgspice = new QPushButton(tr("Select ..."));
     connect(btnSetNgspice,SIGNAL(clicked()),this,SLOT(slotSetNgspice()));
-    btnSetXyce = new QPushButton(tr("Select.."));
+    btnSetXyce = new QPushButton(tr("Select ..."));
     connect(btnSetXyce,SIGNAL(clicked()),this,SLOT(slotSetXyce()));
-    btnSetXycePar = new QPushButton(tr("Select..."));
+    btnSetXycePar = new QPushButton(tr("Select ..."));
     connect(btnSetXycePar,SIGNAL(clicked()),this,SLOT(slotSetXycePar()));
+    btnSetWorkdir = new QPushButton(tr("Select ..."));
+    connect(btnSetWorkdir,SIGNAL(clicked()),this,SLOT(slotSetWorkdir()));
 
     QVBoxLayout *top = new QVBoxLayout;
     top->addWidget(lblNgspice);
@@ -72,6 +76,12 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     h5->addWidget(lblNprocs);
     h5->addWidget(spbNprocs);
     top->addLayout(h5);
+
+    top->addWidget(lblWorkdir);
+    QHBoxLayout *h6 = new QHBoxLayout;
+    h6->addWidget(edtWorkdir,3);
+    h6->addWidget(btnSetWorkdir,1);
+    top->addLayout(h6);
 
     QHBoxLayout *h3 = new QHBoxLayout;
     h3->addWidget(btnOK);
@@ -100,6 +110,7 @@ void SimSettingsDialog::slotApply()
     QucsSettings.XyceExecutable = edtXyce->text();
     QucsSettings.XyceParExecutable = edtXycePar->text();
     QucsSettings.NProcs = spbNprocs->value();
+    QucsSettings.S4Qworkdir = edtWorkdir->text();
     accept();
 }
 
@@ -124,5 +135,16 @@ void SimSettingsDialog::slotSetXycePar()
     QString s = QFileDialog::getOpenFileName(this,tr("Select Xyce Parallel executable location"),edtXycePar->text(),"All files (*)");
     if (!s.isEmpty()) {
         edtXycePar->setText(s);
+    }
+}
+
+void SimSettingsDialog::slotSetWorkdir()
+{
+    QFileDialog dlg( this, tr("Select directory to store netlist and simulator output"), edtWorkdir->text() );
+    dlg.setAcceptMode(QFileDialog::AcceptOpen);
+    dlg.setFileMode(QFileDialog::DirectoryOnly);
+    if (dlg.exec()) {
+        QString s = dlg.selectedFile();
+        if (!s.isEmpty()) edtWorkdir->setText(s);
     }
 }
