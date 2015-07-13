@@ -62,6 +62,7 @@ SET(QUCS-FILTER_SRCS
   qucsfilter.cpp
   stepz_filter.cpp
   tl_filter.cpp
+  quarterwave_filter.cpp
 )
 
 SET(QUCS-FILTER_HDRS
@@ -77,6 +78,7 @@ SET(QUCS-FILTER_HDRS
   qf_poly.h
   stepz_filter.h
   tl_filter.h
+  quarterwave_filter.h
 )
 
 SET(QUCS-FILTER_MOC_HDRS

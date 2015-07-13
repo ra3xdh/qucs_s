@@ -43,6 +43,7 @@ qucsfilter_SOURCES =  \
 	cline_filter.cpp \
 	main.cpp  \
 	qf_poly.cpp \
+	quarterwave_filter.cpp \
 	qrc_qucsfilter.cpp
 
 qrc_qucsfilter.cpp: qucsfilter.qrc
@@ -60,6 +61,7 @@ noinst_HEADERS = \
 	qf_poly.h \
 	qf_filter.h \
 	qf_cauer.h \
+	quarterwave_filter.h \
 	qf_matrix.h
 
 SUFFIXES = .moc.cpp
