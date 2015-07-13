@@ -29,7 +29,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     Sch = sch;
     wasSimulated = false;
 
-    workdir = QDir::convertSeparators(QDir::homePath()+"/.qucs/spice4qucs");
+    workdir = QucsSettings.S4Qworkdir;
     QFileInfo inf(workdir);
     if (!inf.exists()) {
         QDir dir;
@@ -256,6 +256,12 @@ void ExternSimDialog::slotSimSettings()
     if (SetDlg->exec()) {
         ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable);
         xyce->setSimulatorCmd(QucsSettings.XyceExecutable);
+        workdir = QucsSettings.S4Qworkdir;
+        QFileInfo inf(workdir);
+        if (!inf.exists()) {
+            QDir dir;
+            dir.mkpath(workdir);
+        }
     }
     delete SetDlg;
 }
