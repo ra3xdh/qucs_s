@@ -40,6 +40,7 @@ Param_Sweep::Param_Sweep()
   ty = y2+1;
   Model = ".SW";
   Name  = "SW";
+  SpiceModel = "*";
   isSimulation = true;
 
   // The index of the first 6 properties must not changed. Used in recreate().

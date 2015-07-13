@@ -24,6 +24,7 @@
 
 #include "abstractspicekernel.h"
 #include "misc.h"
+#include "main.h"
 #include "../paintings/id_text.h"
 #include <QPlainTextEdit>
 
@@ -44,7 +45,7 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *sch_, QObject *parent) :
 {
     Sch = sch_;
 
-    workdir = QDir::convertSeparators(QDir::homePath()+"/.qucs/spice4qucs");
+    workdir = QucsSettings.S4Qworkdir;
     QFileInfo inf(workdir);
     if (!inf.exists()) {
         QDir dir;
@@ -89,6 +90,25 @@ bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream, bool xyce)
     delete err;
     Sch->clearSignalsAndFileList(); // for proper build of subckts
     return true; // TODO: Add feature to determine ability of spice simulation
+}
+
+
+/*!
+ * \brief AbstractSpiceKernel::checkSchematic Check SPICE-compatibility of
+ *        all components.
+ * \param incompat[out] QStringList filled by incompatible components names
+ * \return true --- All components are SPICE-compatible; false --- otherwise
+ */
+bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
+{
+    incompat.clear();
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if ((!pc->isEquation)&&!(pc->isProbe)) {
+            if (pc->SpiceModel.isEmpty()) incompat.append(pc->Name);
+        }
+    }
+
+    return incompat.isEmpty();
 }
 
 /*!
@@ -814,6 +834,21 @@ QString AbstractSpiceKernel::getOutput()
 void AbstractSpiceKernel::setSimulatorCmd(QString cmd)
 {
     simulator_cmd = cmd;
+}
+
+/*!
+ * \brief AbstractSpiceKernel::setWorkdir Set simulator working directory path
+ *        to store netlist and temp data.
+ * \param path[in] New working directory path
+ */
+void AbstractSpiceKernel::setWorkdir(QString path)
+{
+    workdir = path;
+    QFileInfo inf(workdir);
+    if (!inf.exists()) {
+        QDir dir;
+        dir.mkpath(workdir);
+    }
 }
 
 /*!

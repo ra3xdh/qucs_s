@@ -262,6 +262,8 @@ void ExternSimDialog::slotSimSettings()
             QDir dir;
             dir.mkpath(workdir);
         }
+        ngspice->setWorkdir(QucsSettings.S4Qworkdir);
+        xyce->setWorkdir(QucsSettings.S4Qworkdir);
     }
     delete SetDlg;
 }

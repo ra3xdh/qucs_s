@@ -55,6 +55,7 @@ iRect::iRect()
   ty = y2+4;
   Model = "Irect";
   Name  = "I";
+  SpiceModel = "I";
 
   Props.append(new Property("U", "1 mA", true,
 		QObject::tr("current at high pulse")));

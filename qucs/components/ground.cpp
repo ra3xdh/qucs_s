@@ -38,6 +38,7 @@ Ground::Ground()
   ty = 0;
   Model = "GND";
   Name  = "";
+  SpiceModel = "*";
 }
 
 Ground::~Ground()

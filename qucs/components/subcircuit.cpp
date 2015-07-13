@@ -40,6 +40,7 @@ Subcircuit::Subcircuit()
 
   Model = "Sub";
   Name  = "SUB";
+  SpiceModel = "X";
 
   // Do NOT call createSymbol() here. But create port to let it rotate.
   Ports.append(new Port(0, 0, false));

@@ -42,6 +42,7 @@ Ampere_dc::Ampere_dc()
   ty = y2+4;
   Model = "Idc";
   Name  = "I";
+  SpiceModel = "I";
 
   Props.append(new Property("I", "1 mA", true,
 		QObject::tr("current in Ampere")));

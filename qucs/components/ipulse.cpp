@@ -51,6 +51,7 @@ iPulse::iPulse()
   ty = y2+4;
   Model = "Ipulse";
   Name  = "I";
+  SpiceModel = "I";
 
   Props.append(new Property("I1", "0", true,
 		QObject::tr("current before and after the pulse")));

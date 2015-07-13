@@ -37,7 +37,7 @@ SubCirPort::SubCirPort()
   ty = y2+4;
   Model = "Port";
   Name  = "P";
-  SpiceModel = "";
+  SpiceModel = "*";
 }
 
 // -------------------------------------------------------

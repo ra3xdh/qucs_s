@@ -52,6 +52,7 @@ Gyrator::Gyrator()
   ty = y2+4;
   Model = "Gyrator";
   Name  = "X";
+  SpiceModel = "*";
 
   Props.append(new Property("R", "50 Ohm", true,
 		QObject::tr("gyrator ratio")));
