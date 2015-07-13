@@ -232,7 +232,19 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
     }
 
     QMessageBox::critical(this,tr("Simulate with SPICE"),msg,QMessageBox::Ok);
-    editSimConsole->append(tr("ngspice error..."));
+
+    QString sim;
+    switch (cbxSimualor->currentIndex()) {
+    case simNgspice: sim = "Ngspice";
+        break;
+    case simXyceSer: sim = "Xyce (serial) ";
+        break;
+    case simXycePar: sim = "Xyce (parallel) ";
+        break;
+    default: sim = "Simulator "; // Some other simulators could be added ...
+        break;
+    }
+    editSimConsole->append(sim + tr(" error..."));
 }
 
 void ExternSimDialog::slotStart()

@@ -188,6 +188,16 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
 void Xyce::slotSimulate()
 {
 
+    QStringList incompat;
+    if (!checkSchematic(incompat)) {
+        QString s = incompat.join("; ");
+        output.append("There were SPICE-incompatible components. Simulator cannot proceed.");
+        output.append("Incompatible components are: " + s);
+        emit finished();
+        emit errors(QProcess::FailedToStart);
+        return;
+    }
+
     int num=0;
     netlistQueue.clear();
     output_files.clear();

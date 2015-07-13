@@ -322,6 +322,16 @@ QString Ngspice::getParentSWPscript(Component *pc_swp, QString sim, bool before,
 void Ngspice::slotSimulate()
 {
     //output.clear();
+    QStringList incompat;
+    if (!checkSchematic(incompat)) {
+        QString s = incompat.join("; ");
+        output.append("There were SPICE-incompatible components. Simulator cannot proceed.");
+        output.append("Incompatible components are: " + s);
+        emit finished();
+        emit errors(QProcess::FailedToStart);
+        return;
+    }
+
     QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs.cir");
     SaveNetlist(tmp_path);
 
