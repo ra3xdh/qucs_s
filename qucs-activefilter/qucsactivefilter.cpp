@@ -35,6 +35,10 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     Fc = 1000;
     ftyp = Filter::NoFilter;
 
+    // set application icon
+    setWindowIcon(QPixmap(":/images/bitmaps/big.qucs.xpm"));
+    setWindowTitle("Qucs Active Filter " PACKAGE_VERSION);
+
     QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 
     // --------  create menubar  -------------------

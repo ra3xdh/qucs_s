@@ -24,6 +24,15 @@
 #include <complex>
 #include "filter.h"
 
+struct tQucsSettings {
+  int x, y;      // position of main window
+  QFont font;
+  QString LangDir;
+  QString Language;
+};
+
+extern struct tQucsSettings QucsSettings;
+
 class QucsActiveFilter : public QMainWindow
 {
     Q_OBJECT

@@ -22,16 +22,52 @@
 #include <stdlib.h>
 #include <QtCore>
 #include <QApplication>
+
 #include "qucsactivefilter.h"
+
+struct tQucsSettings QucsSettings;
+
+
+// #########################################################################
+// Loads the settings file and stores the settings.
+bool loadSettings()
+{
+    QSettings settings("qucs","qucs");
+    settings.beginGroup("QucsActiveFilter");
+    if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
+    if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
+    settings.endGroup();
+
+    if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
+    if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
+
+  return true;
+}
+
+
+// #########################################################################
+// Saves the settings in the settings file.
+bool saveApplSettings(QucsActiveFilter *qucs)
+{
+    QSettings settings ("qucs","qucs");
+    settings.beginGroup("QucsActiveFilter");
+    settings.setValue("x", qucs->x());
+    settings.setValue("y", qucs->y());
+    settings.endGroup();
+  return true;
+
+}
+
 
 int main(int argc, char *argv[])
 {
-    QString Lang,LangDir;
-    QSettings settings("qucs","qucs");
-    if(settings.contains("Language")) {
-        Lang=settings.value("Language").toString();
-    }
+  QString LangDir;
+    // apply default settings
+    QucsSettings.x = 200;
+    QucsSettings.y = 100;
+    QucsSettings.font = QFont("Helvetica", 12);
 
+    // is application relocated?
     char * var = getenv ("QUCSDIR");
     if (var != NULL) {
       QDir QucsDir = QDir (var);
@@ -42,16 +78,24 @@ int main(int argc, char *argv[])
       LangDir = LANGUAGEDIR;
     }
 
+    loadSettings();
+
     QApplication a(argc, argv);
+    a.setFont(QucsSettings.font);
 
     QTranslator tor( 0 );
+    QString Lang = QucsSettings.Language;
     if(Lang.isEmpty())
       Lang = QString(QLocale::system().name());
     tor.load( QString("qucs_") + Lang, LangDir);
     a.installTranslator( &tor );
 
-    QucsActiveFilter w;
-    w.show();
+    QucsActiveFilter *w = new QucsActiveFilter();
+    w->raise();
+    w->move(QucsSettings.x, QucsSettings.y);  // position before "show" !!!
+    w->show();
     
-    return a.exec();
+    int result = a.exec();
+    saveApplSettings(w);
+    return result;
 }
