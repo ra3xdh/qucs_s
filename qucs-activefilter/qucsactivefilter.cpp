@@ -71,7 +71,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     //lblInputData = new QLabel(tr("Входные данные"));
     lblA1 = new QLabel(tr("Passband attenuation, Ap (dB)"));
     lblA2 = new QLabel(tr("Stopband attenuation, As (dB)"));
-    lblF1 = new QLabel(tr("Cuttof frequency, Fc (Hz)"));
+    lblF1 = new QLabel(tr("Cutoff frequency, Fc (Hz)"));
     lblF2 = new QLabel(tr("Stopband frequency, Fs (Hz)"));
     lblRpl1 = new QLabel(tr("Passband ripple Rp(dB)"));
     //lblRpl2 = new QLabel(tr("Stopband ripple (dB)"));
@@ -125,7 +125,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     lblResp = new QLabel(tr("Filter type:"));
     cbxResponse = new QComboBox;
     QStringList lst3;
-    lst3<<tr("LowPass")
+    lst3<<tr("Low Pass")
         <<tr("High Pass")
         <<tr("Band Pass")
         <<tr("Band Stop");
@@ -146,7 +146,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     this->slotSwitchParameters();
     cbxFilterType->setMaxCount(3);
 
-    lblAFR = new QLabel(tr("General amplitude frequency response"));
+    lblAFR = new QLabel(tr("General amplitude-frequency response"));
     lblTopology = new QLabel(tr("Filter topology preview (one stage)"));
 
     QString s1 = ":/images/bitmaps/AFR.svg";
@@ -221,7 +221,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
 
     left->addStretch();
 
-    QGroupBox *gpbAFR = new QGroupBox(tr("General filter amplidure-frequency response"));
+    QGroupBox *gpbAFR = new QGroupBox(tr("General filter amplitude-frequency response"));
     QVBoxLayout *vl1 = new QVBoxLayout;
     vl1->addWidget(imgAFR);
     gpbAFR->setLayout(vl1);
@@ -347,7 +347,7 @@ void QucsActiveFilter::slotCalcSchematic()
                        cauer.createSchematic(s);
                    } else {
                        errorMessage(tr("Unable to implement filter with such parameters and topology \n"
-                                       "Change parapeters and/or topology and try again!"));
+                                       "Change parameters and/or topology and try again!"));
                    }
                 } else {
                     errorMessage(tr("Unable to use Cauer section for Chebyshev or Butterworth \n"
@@ -370,7 +370,7 @@ void QucsActiveFilter::slotCalcSchematic()
                         mfb.createSchematic(s);
                     } else {
                         errorMessage(tr("Unable to implement filter with such parameters and topology \n"
-                                        "Change parapeters and/or topology and try again!"));
+                                        "Change parameters and/or topology and try again!"));
                     }
                 } else {
                     errorMessage(tr("Unable to use MFB filter for Cauer or Inverse Chebyshev \n"
@@ -391,7 +391,7 @@ void QucsActiveFilter::slotCalcSchematic()
                    sk.createSchematic(s);
                } else {
                    errorMessage(tr("Unable to implement filter with such parameters and topology \n"
-                                   "Change parapeters and/or topology and try again!"));
+                                   "Change parameters and/or topology and try again!"));
                }
              }
              break;
@@ -400,7 +400,7 @@ void QucsActiveFilter::slotCalcSchematic()
     }
 
     if (ok) {
-        txtResult->append(tr("\nFilter calculation was sucessfull"));
+        txtResult->append(tr("\nFilter calculation was successful"));
     } else {
         txtResult->append(tr("\nFilter calculation terminated with error"));
     }
@@ -543,12 +543,12 @@ void QucsActiveFilter::slotSetLabels()
     if ((cbxResponse->currentIndex()==tBandPass)|| // set proper labels
         (cbxResponse->currentIndex()==tBandStop)) {
         lblF1->setText(tr("Upper cutoff frequency, Fu (Hz)"));
-        lblF2->setText(tr("Lower cuttoff frequency, Fl (Hz)"));
+        lblF2->setText(tr("Lower cutoff frequency, Fl (Hz)"));
         lblA1->setText(tr("Transient bandwidth, TW (Hz)"));
         //lblA2->setEnabled(false);
         //edtA2->setEnabled(false);
     } else {
-        lblF1->setText(tr("Cuttof frequency, Fc (Hz)"));
+        lblF1->setText(tr("Cutoff frequency, Fc (Hz)"));
         lblF2->setText(tr("Stopband frequency, Fs (Hz)"));
         lblA1->setText(tr("Passband attenuation, Ap (dB)"));
         //lblA2->setEnabled(true);
