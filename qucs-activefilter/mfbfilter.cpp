@@ -316,9 +316,15 @@ void MFBfilter::calcLowPass()
         float B = -2.0*re;
         float C = re*re + im*im;
 
-        C2 = (10.0/Fc);
-        C1 = (B*B*C2)/(4*C*(Kv1+1));
-        R2 = (2*(Kv1+1))/(Wc*(B*C2+sqrt(B*B*C2*C2-4*C*C1*C2*(Kv+1))));
+        C2 = (10.0/Fc); // ballpark formula giving usually a good value
+        // C1 maximum, can be smaller to have a convenient value
+        C1 = (B*B*C2)/(4*C*(Kv1+1)); 
+        // the following is the general expression for C2
+        //R2 = (2*(Kv1+1))/(Wc*(B*C2+sqrt(B*B*C2*C2-4*C*C1*C2*(Kv+1))));
+        // with C1 assigned as above, this simplifies to
+        R2 = (2*(Kv1+1))/(Wc*B*C2*(1+sqrt((Kv1-Kv)/(Kv1+1))));
+        // simplification above avoids negative argument to sqrt() due
+        //   to numerical errors
         R1 = R2/Kv1;
         R3 = 1.0/(C*C1*C2*Wc*Wc*R2);
 
