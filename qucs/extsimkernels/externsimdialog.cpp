@@ -282,7 +282,8 @@ void ExternSimDialog::slotSimSettings()
 
 void ExternSimDialog::slotSaveNetlist()
 {
-    QString filename = QFileDialog::getSaveFileName(this,tr("Save netlist"),QDir::homeDirPath()+QDir::separator()+"netlist.cir",
+    QFileInfo inf(Sch->DocName);
+    QString filename = QFileDialog::getSaveFileName(this,tr("Save netlist"),inf.path()+QDir::separator()+"netlist.cir",
                        "All files (*)");
     if (filename.isEmpty()) return;
 
