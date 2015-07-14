@@ -52,7 +52,6 @@ protected:
     Schematic *Sch;
 
     bool prepareSpiceNetlist(QTextStream &stream, bool xyce = false);
-    bool checkSchematic(QStringList &incompat);
     virtual void startNetlist(QTextStream& stream, bool xyce = false);
     virtual void createNetlist(QTextStream& stream, int NumPorts,QStringList& simulations,
                                QStringList& vars, QStringList &outputs);
@@ -62,6 +61,7 @@ public:
     explicit AbstractSpiceKernel(Schematic *sch_, QObject *parent = 0);
     ~AbstractSpiceKernel();
 
+    bool checkSchematic(QStringList &incompat);
     virtual void createSubNetlsit(QTextStream& stream, bool xyce = false);
 
     void parseNgSpiceSimOutput(QString ngspice_file,

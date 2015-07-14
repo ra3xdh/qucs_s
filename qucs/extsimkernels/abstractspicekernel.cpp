@@ -86,7 +86,11 @@ bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream, bool xyce)
 {
     QStringList collect;
     QPlainTextEdit *err = new QPlainTextEdit;
-    Sch->prepareNetlist(stream,collect,err,true,xyce);
+    if (Sch->prepareNetlist(stream,collect,err,true,xyce)==-10) { // Broken netlist
+        output.append(err->toPlainText());
+        delete err;
+        return false;
+    }
     delete err;
     Sch->clearSignalsAndFileList(); // for proper build of subckts
     return true; // TODO: Add feature to determine ability of spice simulation
@@ -164,7 +168,11 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool xyce)
     header = QString(".SUBCKT %1 ").arg(misc::properName(f));
 
     QList< QPair<int,QString> > ports;
-    if(!prepareSpiceNetlist(stream,xyce)) return; // Unable to perform spice simulation
+    if(!prepareSpiceNetlist(stream,xyce)) {
+        emit finished();
+        emit errors(QProcess::FailedToStart);
+        return;
+    } // Unable to perform spice simulation
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
         if (pc->Model=="Port") {
             ports.append(qMakePair(pc->Props.first()->Value.toInt(),
