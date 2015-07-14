@@ -448,7 +448,8 @@ void QucsActiveFilter::slotUpdateResponse()
 void QucsActiveFilter::slotUpdateSchematic()
 {
     slotUpdateResponse();
-    QString s;
+    // provide a default for cases not defined below (transient)
+    QString s = ":/images/bitmaps/mfb-lowpass.svg";
     switch (cbxFilterType->currentIndex()) {
     case topoCauer : if ((ftyp==Filter::BandStop)||
                          (ftyp==Filter::BandPass)) {
@@ -473,9 +474,7 @@ void QucsActiveFilter::slotUpdateSchematic()
            s = ":/images/bitmaps/sk-bandpass.svg";
         }
         break;
-    case 3 : s = ":/images/bitmaps/mfb-lowpass.svg";
-        break;
-    default:
+    default : s = ":/images/bitmaps/mfb-lowpass.svg";
         break;
     }
 
