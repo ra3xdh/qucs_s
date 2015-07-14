@@ -73,7 +73,7 @@ private:
     QPushButton *btnDefineTransferFunc;
 
     QLabel *lblResult;
-    QTextEdit *txtResult;
+    QPlainTextEdit *txtResult;
 
     QSvgWidget *imgAFR;
     QLabel *lblSch;

@@ -122,8 +122,9 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     connect(btnCalcSchematic,SIGNAL(clicked()),SLOT(slotCalcSchematic()));
 
     lblResult = new QLabel(tr("Calculation console"));
-    txtResult = new QTextEdit;
-
+    txtResult = new QPlainTextEdit;
+    txtResult->setReadOnly(true);
+    //txtResult->setWordWrapMode(QTextOption::NoWrap);
 
     lblSch = new QLabel(tr("Filter topology"));
     lblResp = new QLabel(tr("Filter type:"));
@@ -274,6 +275,7 @@ QucsActiveFilter::~QucsActiveFilter()
 
 void QucsActiveFilter::slotCalcSchematic()
 {
+    txtResult->clear();
 
     FilterParam par;
     if ((cbxResponse->currentIndex()==tLowPass)||
@@ -346,7 +348,7 @@ void QucsActiveFilter::slotCalcSchematic()
                    ok = cauer.calcFilter();
                    cauer.createPolesZerosList(lst);
                    cauer.createPartList(lst);
-                   txtResult->setText(lst.join("\n"));
+		   txtResult->appendHtml("<pre>" + lst.join("\n") + "</pre>");
                    if (ok) {
                        cauer.createSchematic(s);
                    } else {
@@ -369,7 +371,7 @@ void QucsActiveFilter::slotCalcSchematic()
                     ok = mfb.calcFilter();
                     mfb.createPolesZerosList(lst);
                     mfb.createPartList(lst);
-                    txtResult->setText(lst.join("\n"));
+                    txtResult->appendHtml("<pre>" + lst.join("\n") + "</pre>");
                     if (ok) {
                         mfb.createSchematic(s);
                     } else {
@@ -390,7 +392,7 @@ void QucsActiveFilter::slotCalcSchematic()
                ok = sk.calcFilter();
                sk.createPolesZerosList(lst);
                sk.createPartList(lst);
-               txtResult->setText(lst.join("\n"));
+	       txtResult->appendHtml("<pre>" + lst.join("\n") + "</pre>");
                if (ok) {
                    sk.createSchematic(s);
                } else {
@@ -404,9 +406,13 @@ void QucsActiveFilter::slotCalcSchematic()
     }
 
     if (ok) {
-        txtResult->append(tr("\nFilter calculation was successful"));
+        txtResult->appendHtml("<pre>\r\n" + 
+			      tr("Filter calculation was successful") +
+			      "</pre>");
     } else {
-        txtResult->append(tr("\nFilter calculation terminated with error"));
+        txtResult->appendHtml("<pre>\r\n" +
+			      tr("Filter calculation terminated with error") +
+			      "</pre>");
     }
 
     QClipboard *cb = QApplication::clipboard();
