@@ -176,6 +176,10 @@ void ExternSimDialog::slotProcessNgspiceOutput()
     buttonStopSim->setEnabled(false);
     cbxSimualor->setEnabled(true);
     QString out = ngspice->getOutput();
+    if (out.contains("warning",Qt::CaseInsensitive)||
+       (out.contains("error"),Qt::CaseInsensitive)) {
+        emit warnings();
+    } else emit success();
     //editSimConsole->clear();
     editSimConsole->append(out);
     saveLog();
@@ -194,6 +198,10 @@ void ExternSimDialog::slotProcessXyceOutput()
     QString out = xyce->getOutput();
     //editSimConsole->clear();
     editSimConsole->append(out);
+    if (out.contains("warning",Qt::CaseInsensitive)||
+       (out.contains("error"),Qt::CaseInsensitive)) {
+        emit warnings();
+    } else emit success();
     saveLog();
     // Set temporary safe output name
     QFileInfo inf(Sch->DocName);

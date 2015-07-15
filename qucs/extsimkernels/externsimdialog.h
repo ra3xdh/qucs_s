@@ -61,6 +61,8 @@ private:
     
 signals:
     void simulated();
+    void warnings();
+    void success();
     
 public slots:
 

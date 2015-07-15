@@ -35,7 +35,9 @@ QString spicecompat::normalize_value(QString Value)
     QRegExp var_pattern("^[A-Za-z].*$");
 
     QString s = Value.remove(' ');
-    if (r_pattern.exactMatch(s)) {
+    if (s.startsWith('\'')&&s.endsWith('\'')) return Value; // Expression detected
+
+    if (r_pattern.exactMatch(s)) { // Component value
         s.remove("Ohm");
         s.replace("M","Meg");
     } else if (c_pattern.exactMatch(s)) {
