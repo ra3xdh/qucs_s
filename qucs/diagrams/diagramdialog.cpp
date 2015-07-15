@@ -280,7 +280,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   DataGroupLayout->addWidget(ChooseData);
   ChooseData->setMinimumWidth(300); // will force also min width of table below
   connect(ChooseData, SIGNAL(activated(int)), SLOT(slotReadVars(int)));
-  connect(ChooseData, SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetSimulator()));
+  // connect(ChooseData, SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetSimulator()));
   // todo: replace by QTableWidget
   // see https://gist.github.com/ClemensFMN/8955411
 
@@ -289,7 +289,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   QStringList lst_sim;
   lst_sim<<"Qucsator (built-in)"<<"Ngspice"<<"Xyce";
   ChooseSimulator->addItems(lst_sim);
-  connect(ChooseSimulator,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSelectSimulatorDataset()));
+  connect(ChooseSimulator,SIGNAL(currentIndexChanged(int)),this,SLOT(slotReadVars(int)));
   lblSim = new QLabel(tr("Data from simulator:"));
   hb1->addWidget(lblSim);
   hb1->addWidget(ChooseSimulator);
@@ -749,6 +749,12 @@ void DiagramDialog::slotReadVars(int)
   QFileInfo Info(defaultDataSet);
   QString DocName = ChooseData->currentText()+".dat";
 
+  if (ChooseSimulator->currentText()=="Ngspice") {
+      DocName += ".ngspice";
+  } else if (ChooseSimulator->currentText()=="Xyce") {
+      DocName += ".xyce";
+  }
+
   QFile file(Info.dirPath() + QDir::separator() + DocName);
   if(!file.open(QIODevice::ReadOnly)) {
     return;
@@ -832,6 +838,11 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
   QFileInfo Info(defaultDataSet);
   if(ChooseData->currentText() != Info.baseName(true))
     s1 = ChooseData->currentText() + ":" + s1;
+  if (ChooseSimulator->currentText()=="Ngspice") {
+      s1 = "ngspice/" + s1;
+  } else if (ChooseSimulator->currentText()=="Xyce") {
+      s1 = "xyce/" + s1;
+  }
   GraphInput->setText(s1);
 
   //if(s.isEmpty()) {
