@@ -35,6 +35,8 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     Fc = 1000;
     ftyp = Filter::NoFilter;
 
+    // preset size to make room for the TextEdit output
+    resize(900, 800); // need quite some space to fill everything in
     // set application icon
     setWindowIcon(QPixmap(":/images/bitmaps/big.qucs.xpm"));
     setWindowTitle("Qucs Active Filter " PACKAGE_VERSION);
@@ -124,7 +126,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     lblResult = new QLabel(tr("Calculation console"));
     txtResult = new QPlainTextEdit;
     txtResult->setReadOnly(true);
-    //txtResult->setWordWrapMode(QTextOption::NoWrap);
+    txtResult->setWordWrapMode(QTextOption::NoWrap);
 
     lblSch = new QLabel(tr("Filter topology"));
     lblResp = new QLabel(tr("Filter type:"));
@@ -151,35 +153,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     this->slotSwitchParameters();
     cbxFilterType->setMaxCount(3);
 
-    lblAFR = new QLabel(tr("General amplitude-frequency response"));
-    lblTopology = new QLabel(tr("Filter topology preview (one stage)"));
-
-    QString s1 = ":/images/bitmaps/AFR.svg";
-    QSvgRenderer *ren = new QSvgRenderer(s1);
-    QSize sz = ren->defaultSize();
-    sz *= 1.3;
-    delete ren;
-    imgAFR = new QSvgWidget(s1);
-    imgAFR->setFixedSize(sz);
-    imgAFR->show();
-
-    s1 = ":/images/bitmaps/cauer.svg";
-    ren = new QSvgRenderer(s1);
-    sz = ren->defaultSize();
-    sz *= 0.65;
-    delete ren;
-
-    sch_pic = new QSvgWidget(s1);
-    sch_pic->setFixedSize(sz);
-    sch_pic->show();
-    this->slotUpdateSchematic();
-
-    top = new QHBoxLayout;
-    left = new QVBoxLayout;
-    center = new QVBoxLayout;
-    right = new QHBoxLayout;
-
-    //left->addWidget(lblInputData);
+    // first parameters group, will go top-left
     QGroupBox *gpbPar = new QGroupBox(tr("Filter parameters"));
     QGridLayout *vl3 = new QGridLayout;
     vl3->setSpacing(3);
@@ -197,10 +171,10 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     vl3->addWidget(edtKv,5,1);
     vl3->addWidget(lblOrder,6,0);
     vl3->addWidget(edtOrder,6,1);
-    left->addWidget(gpbPar);
     gpbPar->setLayout(vl3);
+    gpbPar->show(); // show now since we need its actual size later
 
-
+    // second parameters group, below the previous one
     QGroupBox *gpbFunc = new QGroupBox(tr("Transfer function and Topology"));
     QVBoxLayout *vl4 = new QVBoxLayout;
 
@@ -222,37 +196,49 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     vl4->addWidget(btnCalcSchematic);
 
     gpbFunc->setLayout(vl4);
-    left->addWidget(gpbFunc);
+    gpbFunc->show(); // show now since we need its actual size later
 
-    left->addStretch();
-
+    // filter response box, top-right
     QGroupBox *gpbAFR = new QGroupBox(tr("General filter amplitude-frequency response"));
     QVBoxLayout *vl1 = new QVBoxLayout;
-    vl1->addWidget(imgAFR);
     gpbAFR->setLayout(vl1);
-    right->addWidget(gpbAFR);
 
+    QSize sz;
+    QString s1 = ":/images/bitmaps/AFR.svg";
+    imgAFR = new QSvgWidget(s1);
+    sz = gpbPar->size(); // take left box size as reference size
+    sz *= 0.6;
+    imgAFR->setFixedSize(sz);
+    vl1->addWidget(imgAFR);
+    vl1->setAlignment(imgAFR, Qt::AlignHCenter);
+
+    // filter section schematic box, below the previous one
     QGroupBox *gpbSCH = new QGroupBox(tr("Filter topology preview"));
     QVBoxLayout *vl2 = new QVBoxLayout;
-    vl2->addWidget(sch_pic);
     gpbSCH->setLayout(vl2);
-    right->addWidget(gpbSCH);
+    s1 = ":/images/bitmaps/cauer.svg";
+    sch_pic = new QSvgWidget(s1);
+    sz = gpbFunc->size(); // take lefbox size as reference size
+    sz *= 0.95;
+    sch_pic->setFixedSize(sz);
+    vl2->addWidget(sch_pic);
+    vl2->setAlignment(sch_pic, Qt::AlignHCenter);
 
-    /*right->addWidget(lblAFR);
-    right->addWidget(imgAFR);
-    right->addWidget(lblTopology);
-    right->addWidget(sch_pic);
-    right->addStretch();*/
+    this->slotUpdateSchematic();
 
-    top->addLayout(left);
-    top->addLayout(center);
-    top->addLayout(right);
+    // place the boxes in a grid, so they will align nicely
+    QGridLayout *layout = new QGridLayout();
+    layout->setColumnStretch(1, 5); // stretch only the right part
+    layout->setColumnStretch(3, 5); // stretch only the right part
+    layout->addWidget(gpbPar, 0, 0);
+    layout->addWidget(gpbAFR, 0, 2);
+    layout->addWidget(gpbFunc, 1, 0);
+    layout->addWidget(gpbSCH, 1, 2);
 
     top1 = new QVBoxLayout;
-    top1->addLayout(top);
+    top1->addLayout(layout);
     QSplitter *sp1 = new QSplitter;
     top1->addWidget(sp1);
-    txtResult->setReadOnly(true);
 
     QGroupBox *gpbCons = new QGroupBox(tr("Filter calculation console"));
     QVBoxLayout *vl5 = new QVBoxLayout;
@@ -442,13 +428,7 @@ void QucsActiveFilter::slotUpdateResponse()
             break;
         }
 
-    QSvgRenderer *ren = new QSvgRenderer(s);
-    QSize sz = ren->defaultSize();
-    sz *= 1.1;
-    delete ren;
-
     imgAFR->load(s);
-    imgAFR->setFixedSize(sz);
 }
 
 void QucsActiveFilter::slotUpdateSchematic()
@@ -484,13 +464,7 @@ void QucsActiveFilter::slotUpdateSchematic()
         break;
     }
 
-    QSvgRenderer *ren = new QSvgRenderer(s);
-    QSize sz = ren->defaultSize();
-    sz *= 0.65;
-    delete ren;
-
     sch_pic->load(s);
-    sch_pic->setFixedSize(sz);
 }
 
 void QucsActiveFilter::slotSwitchParameters()

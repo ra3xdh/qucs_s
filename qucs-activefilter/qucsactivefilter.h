@@ -89,10 +89,6 @@ private:
     QPushButton *btnElements;
     //QPushButton *btnPassive;
 
-    QHBoxLayout *top;
-    QVBoxLayout *left;
-    QVBoxLayout *center;
-    QHBoxLayout *right;
     QVBoxLayout *top1;
     
     QSvgWidget *sch_pic;
