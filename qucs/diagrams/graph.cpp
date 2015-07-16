@@ -17,6 +17,7 @@
 #include "graph.h"
 
 #include <stdlib.h>
+#include <iostream>
 
 #include <QPainter>
 #include <QDebug>
@@ -312,14 +313,21 @@ bool Graph::ScrPt::isStrokeEnd() const{return ScrX<=STROKEEND;}
 bool Graph::ScrPt::isBranchEnd() const{return ScrX<=BRANCHEND;}
 bool Graph::ScrPt::isGraphEnd() const{return ScrX<=GRAPHEND;}
 
+/*!
+ * set screen coordinate for graph sampling point
+ * these must be nonnegative, but sometimes aren't,
+ * eg. between calcCoordinate and clip.
+ * (negative values are reserved for control.)
+ */
 void Graph::ScrPt::setScrX(float x)
 {
-  assert(x>=0);
-  if(ScrX>=0){
-    ScrX = x;
-  }else{
-    assert(false); // incomplete;
+  if(x<0){
+    std::cerr << "dangerous: negative screen coordinate" << x;
   }
+  if(ScrX<0){
+    std::cerr << "dangerous: (maybe) overwriting control token" << x;
+  }
+  ScrX = x;
 }
 void Graph::ScrPt::setScrY(float x)
 {
@@ -345,7 +353,9 @@ void Graph::ScrPt::setDep(double x)
 }
 float Graph::ScrPt::getScrX() const
 {
-  assert(ScrX>=0);
+  if(ScrX<0){
+    std::cerr << "dangerous: returning negative screen coordinate" << ScrX;
+  }
   return ScrX;
 }
 float Graph::ScrPt::getScrY() const
