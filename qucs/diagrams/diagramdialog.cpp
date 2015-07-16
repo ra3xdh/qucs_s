@@ -751,7 +751,6 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     }
   }
 
-  slotSetSimulator();
 }
 
 DiagramDialog::~DiagramDialog()
@@ -1500,35 +1499,3 @@ void DiagramDialog::slotEditRotZ(const QString& Text)
   DiagCross->update();
 }
 
-void DiagramDialog::slotSelectSimulatorDataset()
-{
-    int idx = ChooseSimulator->currentIndex();
-    QFileInfo inf(defaultDataSet);
-    QString dataset_base = inf.baseName();
-    QString dataset;
-    switch (idx) {
-    case 0 : dataset = dataset_base;
-        break;
-    case 1: dataset = dataset_base+"_ngspice";
-        break;
-    case 2: dataset = dataset_base+"_xyce";
-    default: break;
-    }
-
-    int new_idx = ChooseData->findText(dataset);
-    if (new_idx>-1) {
-        ChooseData->setCurrentIndex(new_idx);
-        slotReadVars(ChooseData->currentIndex());
-    } /* else {
-        ChooseSimulator->setCurrentIndex(0); // revert default if not exists
-    }*/
-    //slotSetSimulator();
-}
-
-void DiagramDialog::slotSetSimulator()
-{
-    QString s = ChooseData->currentText();
-    if (s.endsWith("_ngspice")) ChooseSimulator->setCurrentIndex(1);
-    else if (s.endsWith("_xyce")) ChooseSimulator->setCurrentIndex(2);
-    else ChooseSimulator->setCurrentIndex(0);
-}
