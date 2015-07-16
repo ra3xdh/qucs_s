@@ -767,6 +767,23 @@ void DiagramDialog::slotReadVars(int)
   QFileInfo Info(defaultDataSet);
   QString DocName = ChooseData->currentText()+".dat";
 
+  QString curr_sim = ChooseSimulator->currentText();
+
+  // Recreate items of ChooseSimulator. Only existing datasets
+  // should be shown
+  ChooseSimulator->blockSignals(true); // Lock signals firing
+  ChooseSimulator->clear();
+  Info.setFile(Info.dirPath() + QDir::separator() + DocName);
+  if (Info.exists()) ChooseSimulator->addItem("Qucsator (built-in)");
+  Info.setFile(Info.dirPath() + QDir::separator() + DocName + ".ngspice");
+  if (Info.exists()) ChooseSimulator->addItem("Ngspice");
+  Info.setFile(Info.dirPath() + QDir::separator() + DocName + ".xyce");
+  if (Info.exists()) ChooseSimulator->addItem("Xyce");
+  Info.setFile(defaultDataSet);
+  int sim_pos = ChooseSimulator->findText(curr_sim); // revert recent simulator if possible
+  if (sim_pos>=0) ChooseSimulator->setCurrentIndex(sim_pos);
+  ChooseSimulator->blockSignals(false); // Unlock signals
+
   if (ChooseSimulator->currentText()=="Ngspice") {
       DocName += ".ngspice";
   } else if (ChooseSimulator->currentText()=="Xyce") {
