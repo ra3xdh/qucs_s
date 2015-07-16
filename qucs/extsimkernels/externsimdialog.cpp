@@ -69,7 +69,11 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     cbxSimualor->addItems(items);
     connect(cbxSimualor,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetSimulator()));
 
-    editSimConsole = new QTextEdit(this);
+    editSimConsole = new QPlainTextEdit(this);
+    QFont font;
+    font.setFamily("monospace");
+    font.setPointSize(10);
+    editSimConsole->setFont(font);
     editSimConsole->setReadOnly(true);
     vbl1->addWidget(editSimConsole);
     grp1->setLayout(vbl1);
@@ -181,7 +185,7 @@ void ExternSimDialog::slotProcessNgspiceOutput()
         emit warnings();
     } else emit success();
     //editSimConsole->clear();
-    editSimConsole->append(out);
+    editSimConsole->insertPlainText(out);
     saveLog();
     // Set temporary safe output name
     QFileInfo inf(Sch->DocName);
@@ -198,7 +202,7 @@ void ExternSimDialog::slotProcessXyceOutput()
     cbxSimualor->setEnabled(true);
     QString out = xyce->getOutput();
     //editSimConsole->clear();
-    editSimConsole->append(out);
+    editSimConsole->insertPlainText(out);
     if (out.contains("warning",Qt::CaseInsensitive)||
        (out.contains("error"),Qt::CaseInsensitive)) {
         emit warnings();
@@ -227,7 +231,7 @@ void ExternSimDialog::slotNgspiceStarted()
     default: sim = "Simulator "; // Some other simulators could be added ...
         break;
     }
-    editSimConsole->append(sim + tr(" started...\n"));
+    editSimConsole->insertPlainText(sim + tr(" started...\n"));
 }
 
 void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
@@ -254,7 +258,7 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
     default: sim = "Simulator "; // Some other simulators could be added ...
         break;
     }
-    editSimConsole->append(sim + tr(" error..."));
+    editSimConsole->insertPlainText(sim + tr(" error..."));
 }
 
 void ExternSimDialog::slotStart()

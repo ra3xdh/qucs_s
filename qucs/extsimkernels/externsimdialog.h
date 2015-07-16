@@ -39,7 +39,7 @@ private:
     QPushButton *buttonSaveNetlist;
     QPushButton *buttonExit;
 
-    QTextEdit *editSimConsole;
+    QPlainTextEdit *editSimConsole;
 
     QProgressBar *simProgress;
 
