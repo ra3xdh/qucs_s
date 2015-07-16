@@ -701,10 +701,29 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   // put all data files into ComboBox
   QFileInfo Info(defaultDataSet);
   QDir ProjDir(Info.dirPath());
-  QStringList Elements = ProjDir.entryList("*.dat", QDir::Files, QDir::Name);
+  QStringList entries;
+  entries<<"*.dat"<<"*.dat.ngspice"<<".dat.xyce";
+  QStringList Elements = ProjDir.entryList(entries, QDir::Files, QDir::Name);
   QStringList::iterator it;
   for(it = Elements.begin(); it != Elements.end(); ++it) {
-    ChooseData->insertItem((*it).left((*it).length()-4));
+      if (it->endsWith(".dat")) {
+          QString dat = (*it).left((*it).length()-4);
+          if (ChooseData->findText(dat)<0)
+              ChooseData->insertItem((*it).left((*it).length()-4));
+      } else if (it->endsWith(".dat.ngspice")) {
+          QString dat = (*it).left((*it).length()-12);
+          if (ChooseData->findText(dat)<0)
+              ChooseData->insertItem((*it).left((*it).length()-12));
+          if((*it).left((*it).length()-8) == Info.fileName()) // default dataset should be the current
+            ChooseData->setCurrentItem(ChooseData->count()-1);
+      } else if (it->endsWith(".dat.xyce")) {
+          QString dat = (*it).left((*it).length()-9);
+          if (ChooseData->findText(dat)<0)
+              ChooseData->insertItem((*it).left((*it).length()-9));
+          if((*it).left((*it).length()-5) == Info.fileName()) // default dataset should be the current
+            ChooseData->setCurrentItem(ChooseData->count()-1);
+      }
+
     if((*it) == Info.fileName())
       // default dataset should be the current
       ChooseData->setCurrentItem(ChooseData->count()-1);
