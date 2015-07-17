@@ -32,7 +32,7 @@ class ImageWriter
 public:
   ImageWriter (QString lastfile);
   virtual ~ImageWriter ();
-  void print(QWidget *);
+  int print(QWidget *);
   void noGuiPrint(QWidget *, QString printFile, QString color);
 
   QString getLastSavedFile();

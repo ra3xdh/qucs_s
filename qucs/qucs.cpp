@@ -2793,7 +2793,9 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
 {
   ImageWriter *writer = new ImageWriter(lastExportFilename);
   writer->setDiagram(diagram);
-  writer->print(DocumentTab->currentWidget());
-  lastExportFilename = writer->getLastSavedFile();
+  if (!writer->print(DocumentTab->currentWidget())) {
+    lastExportFilename = writer->getLastSavedFile();
+    statusBar()->showMessage(QObject::tr("Successfully exported"), 2000);
+  }
   delete writer;
 }

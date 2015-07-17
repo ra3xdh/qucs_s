@@ -23,11 +23,9 @@
 #include "schematic.h"
 #include "imagewriter.h"
 #include "dialogs/exportdialog.h"
-#include "qucs.h"
 
 #include <QtSvg>
 
-extern QucsApp *QucsMain;
 
 ImageWriter::ImageWriter(QString lastfile)
 {
@@ -127,14 +125,15 @@ QString ImageWriter::getLastSavedFile()
     return lastExportFilename;
 }
 
-void
-ImageWriter::print(QWidget *doc)
+// FIXME: should check if filename exists and not silently overwrite
+int ImageWriter::print(QWidget *doc)
 {
   Schematic *sch = static_cast<Schematic*>(doc);
   const int border = 30;
 
   int w,h,wsel,hsel,
       xmin, ymin, xmin_sel, ymin_sel;
+  int status = -1;
 
   sch->getSchWidthAndHeight(w, h, xmin, ymin);
   sch->getSelAreaWidthAndHeight(wsel, hsel, xmin_sel, ymin_sel);
@@ -261,17 +260,20 @@ ImageWriter::print(QWidget *doc)
       if (QFile::exists(filename)) {
         //QMessageBox::information(0, QObject::tr("Export to image"),
         //    QObject::tr("Successfully exported"), QMessageBox::Ok);
-        QucsMain->statusBar()->showMessage(QObject::tr("Successfully exported"), 2000);
+	status = 0;
       } 
       else {
         QMessageBox::information(0, QObject::tr("Export to image"),
             QObject::tr("Disk write error!"), QMessageBox::Ok);
+	status = -1;
       }
     } else {
         QMessageBox::critical(0, QObject::tr("Export to image"), 
             QObject::tr("Unsupported format of graphics file. \n"
             "Use PNG, JPEG or SVG graphics!"), QMessageBox::Ok);
+	status = -1;
     }
   }
   delete dlg;
+  return status;
 }
