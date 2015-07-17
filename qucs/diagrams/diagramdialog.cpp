@@ -702,7 +702,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   QFileInfo Info(defaultDataSet);
   QDir ProjDir(Info.dirPath());
   QStringList entries;
-  entries<<"*.dat"<<"*.dat.ngspice"<<".dat.xyce";
+  entries<<"*.dat"<<"*.dat.ngspice"<<"*.dat.xyce";
   QStringList Elements = ProjDir.entryList(entries, QDir::Files, QDir::Name);
   QStringList::iterator it;
   for(it = Elements.begin(); it != Elements.end(); ++it) {
