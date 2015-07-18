@@ -935,11 +935,10 @@ Marker* Schematic::setMarker(int x, int y)
 // Moves the marker pointer left/right on the graph.
 void Schematic::markerLeftRight(bool left, Q3PtrList<Element> *Elements)
 {
-    Marker *pm;
     bool acted = false;
-    for(pm = (Marker*)Elements->first(); pm!=0; pm = (Marker*)Elements->next())
-    {
-        pm->pGraph->Markers.append(pm);
+    for(auto i : *Elements) {
+        Marker* pm = prechecked_cast<Marker*>(i);
+        assert(pm);
         if(pm->moveLeftRight(left))
             acted = true;
     }
@@ -955,7 +954,6 @@ void Schematic::markerUpDown(bool up, Q3PtrList<Element> *Elements)
     bool acted = false;
     for(pm = (Marker*)Elements->first(); pm!=0; pm = (Marker*)Elements->next())
     {
-        pm->pGraph->Markers.append(pm);
         if(pm->moveUpDown(up))
             acted = true;
     }
@@ -1641,6 +1639,9 @@ void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
 // ---------------------------------------------------
 // For moving of elements: Copies all selected elements into the
 // list 'p' and deletes them from the document.
+// BUG: does not (only) copy, as the name suggests.
+//      cannot be used to make copies.
+// returns the number of "copied" _Markers_ only
 int Schematic::copySelectedElements(Q3PtrList<Element> *p)
 {
     int i, count = 0;
@@ -1790,7 +1791,6 @@ int Schematic::copySelectedElements(Q3PtrList<Element> *p)
                     {
                         count++;
                         p->append(pm);
-                        im.remove();
                     }
                 }
             }
