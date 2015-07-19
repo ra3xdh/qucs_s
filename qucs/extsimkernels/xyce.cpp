@@ -290,8 +290,10 @@ void Xyce::nextSimulation()
 void Xyce::setParallel(bool par)
 {
     if (par) {
-        simulator_cmd = QucsSettings.XyceParExecutable;
-        simulator_parameters = QString(" -np %1 -a ").arg(QucsSettings.NProcs);
+        QString xyce_par = QucsSettings.XyceParExecutable;
+        xyce_par.replace("%p",QString::number(QucsSettings.NProcs));
+        simulator_cmd = xyce_par;
+        simulator_parameters = QString(" -a ");
     } else {
         simulator_cmd = QucsSettings.XyceExecutable;
         simulator_parameters = "-a";

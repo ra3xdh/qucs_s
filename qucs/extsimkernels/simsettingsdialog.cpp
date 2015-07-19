@@ -134,6 +134,7 @@ void SimSettingsDialog::slotSetXycePar()
 {
     QString s = QFileDialog::getOpenFileName(this,tr("Select Xyce Parallel executable location"),edtXycePar->text(),"All files (*)");
     if (!s.isEmpty()) {
+        if (s.endsWith("xmpirun")) s += " -np %p";
         edtXycePar->setText(s);
     }
 }
