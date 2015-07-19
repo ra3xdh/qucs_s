@@ -612,6 +612,9 @@ void QucsApp::initActions()
 
   simSpice = new QAction(tr("Simulate with spice"),this);
   connect(simSpice,SIGNAL(activated()),SLOT(slotSimulateWithSpice()));
+  buildVAModule = new QAction(tr("Build Verilog-A module from subcircuit"),this);
+  connect(buildVAModule,SIGNAL(activated()),SLOT(slotBuildVAModule()));
+
 
   viewToolBar = new QAction(tr("Tool&bar"), this);
   viewToolBar->setCheckable(true);
@@ -786,6 +789,7 @@ void QucsApp::initMenuBar()
   simMenu->addAction(showMsg);
   simMenu->addAction(showNet);
   simMenu->addAction(simSpice);
+  simMenu->addAction(buildVAModule);
 
 
   viewMenu = new QMenu(tr("&View"));  // menuBar entry viewMenu

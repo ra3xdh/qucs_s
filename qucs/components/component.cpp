@@ -669,6 +669,11 @@ QString Component::spice_netlist(bool)
     return QString("\n"); // ignore if not implemented
 }
 
+QString Component::va_code()
+{
+    return QString("\n"); // ignore if not implemented
+}
+
 // -------------------------------------------------------
 QString Component::getNetlist()
 {
@@ -712,6 +717,18 @@ QString Component::getSpiceNetlist(bool isXyce)
            Node1 + " " + pp->Connection->Name + " 0";
     s.replace(" gnd "," 0 ");
     return s;
+}
+
+QString Component::getVerilogACode()
+{
+    QString s;
+    switch(isActive) {
+      case COMP_IS_ACTIVE:
+           s = va_code();
+           return s;
+      case COMP_IS_OPEN:
+        return QString("");
+    }
 }
 
 QString Component::getExpression(bool)

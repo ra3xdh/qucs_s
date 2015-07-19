@@ -37,6 +37,7 @@ public:
   virtual void recreate(Schematic*) {};
   QString getNetlist();
   QString getSpiceNetlist(bool isXyce = false);
+  QString getVerilogACode();
   virtual QString getExpression(bool isXyce = false);
   virtual QString getEquations(QString sim, QStringList &dep_vars);
   virtual QString getProbeVariable(bool isXyce = false);
@@ -93,6 +94,7 @@ public:
 protected:
   virtual QString netlist();
   virtual QString spice_netlist(bool isXyce = false);
+  virtual QString va_code();
   virtual QString vhdlCode(int);
   virtual QString verilogCode(int);
   QString form_spice_param_list(QStringList& ignore_list, QStringList& convert_list);

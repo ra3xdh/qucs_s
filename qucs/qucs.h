@@ -152,6 +152,7 @@ private slots:
   void slotFileChanged(bool);
   void slotSimulateWithSpice();
   void slotAfterSpiceSimulation();
+  void slotBuildVAModule();
 
 signals:
   void signalKillEmAll();
@@ -298,6 +299,7 @@ public:
           *createLib, *importData, *graph2csv, *createPkg, *extractPkg,
           *callAtt, *callRes, *centerHor, *centerVert, *loadModule, *buildModule;
   QAction *simSpice;
+  QAction *buildVAModule;
 
 public slots:
   void slotEditRotate(bool);  // rotate the selected items
