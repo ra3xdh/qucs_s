@@ -2861,12 +2861,23 @@ void QucsApp::slotAfterSpiceSimulation()
 
 void QucsApp::slotBuildVAModule()
 {
-    QFile f("/tmp/testmodule.va");
-    if (f.open(QIODevice::WriteOnly)) {
-        QTextStream stream(&f);
-        VerilogAwriter *writer = new VerilogAwriter;
-        writer->createVA_module(stream,(Schematic*)DocumentTab->currentPage());
-        delete writer;
-        f.close();
+    if (!isTextDocument(DocumentTab->currentPage())) {
+        Schematic *Sch = (Schematic*)DocumentTab->currentPage();
+
+        QFileInfo inf(Sch->DocName);
+        QString filename = QFileDialog::getSaveFileName(this,tr("Save Verilog-A module"),
+                                                        inf.path()+QDir::separator()+"testmodule.va",
+                                                        "Verilog-A (*.va)");
+        if (filename.isEmpty()) return;
+
+        QFile f(filename);
+        if (f.open(QIODevice::WriteOnly)) {
+            QTextStream stream(&f);
+            VerilogAwriter *writer = new VerilogAwriter;
+            writer->createVA_module(stream,Sch);
+            delete writer;
+            f.close();
+        }
     }
+
 }

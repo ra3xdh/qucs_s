@@ -71,7 +71,7 @@ QString Resistor::spice_netlist(bool )
 QString Resistor::va_code()
 {
     QString val = vacompat::normalize_value(Props.at(0)->Value);
-    return QString("V(%1,%2) <+ I(%1,%2)*(%3)\n").arg(Ports.at(0)->Connection->Name)
+    return QString("V(%1,%2) <+ I(%1,%2)*(%3);\n").arg(Ports.at(0)->Connection->Name)
             .arg(Ports.at(1)->Connection->Name).arg(val);
 
 }
