@@ -65,7 +65,7 @@ QString vacompat::normalize_value(QString Value)
         s.remove("Hz");
     } else if (s_pattern.exactMatch(s)) {
         s.remove("S");
-    } else
+    }
 
     return s;
 }

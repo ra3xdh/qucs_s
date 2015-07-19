@@ -29,9 +29,9 @@ public:
   static Element* info(QString&, char* &, bool getNewOne=false);
   static Element* info_us(QString&, char* &, bool getNewOne=false);
 
-  QString spice_netlist(bool isXyce = false);
-
 protected:
+  QString spice_netlist(bool isXyce = false);
+  QString va_code();
   void createSymbol();
 };
 

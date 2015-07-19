@@ -18,6 +18,7 @@
 #include "node.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
+#include "extsimkernels/verilogawriter.h"
 
 
 Resistor::Resistor(bool european)
@@ -65,6 +66,14 @@ QString Resistor::spice_netlist(bool )
     s += QString(" %1\n").arg(spicecompat::normalize_value(Props.at(0)->Value));
 
     return s;
+}
+
+QString Resistor::va_code()
+{
+    QString val = vacompat::normalize_value(Props.at(0)->Value);
+    return QString("V(%1,%2) <+ I(%1,%2)*(%3)\n").arg(Ports.at(0)->Connection->Name)
+            .arg(Ports.at(1)->Connection->Name).arg(val);
+
 }
 
 // -------------------------------------------------------

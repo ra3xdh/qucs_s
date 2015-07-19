@@ -727,6 +727,7 @@ QString Component::getVerilogACode()
            s = va_code();
            return s;
       case COMP_IS_OPEN:
+      default:
         return QString("");
     }
 }
