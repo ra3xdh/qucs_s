@@ -17,6 +17,7 @@
 #include "equation.h"
 #include "main.h"
 #include "extsimkernels/spicecompat.h"
+#include "extsimkernels/verilogawriter.h"
 
 #include <QFontMetrics>
 
@@ -90,6 +91,28 @@ Element* Equation::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new Equation();
   return 0;
+}
+
+QString Equation::getVAvariables()
+{
+    QStringList vars;
+    for (unsigned int i=0;i<Props.count()-1;i++) {
+        vars.append(Props.at(i)->Name);
+    }
+
+    return QString("real %1;\n").arg(vars.join(", "));
+}
+
+QString Equation::getVAExpressions()
+{
+    QString s;
+    for (unsigned int i=0;i<Props.count()-1;i++) {
+        QStringList tokens;
+        spicecompat::splitEqn(Props.at(i)->Value,tokens);
+        vacompat::convert_functions(tokens);
+        s += QString("%1=%2;\n").arg(Props.at(i)->Name).arg(tokens.join(""));
+    }
+    return s;
 }
 
 /*!

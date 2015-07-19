@@ -30,6 +30,8 @@ public:
   static Element* info(QString&, char* &, bool getNewOne=false);
   QString getExpression(bool isXyce);
   QString getEquations(QString sim, QStringList &dep_vars);
+  QString getVAvariables();
+  QString getVAExpressions();
   QString getNgspiceScript();
 
 private:

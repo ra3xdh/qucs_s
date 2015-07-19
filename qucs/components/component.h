@@ -43,6 +43,8 @@ public:
   virtual QString getProbeVariable(bool isXyce = false);
   virtual QString getNgspiceBeforeSim(QString sim, int lvl=0);
   virtual QString getNgspiceAfterSim(QString sim, int lvl=0);
+  virtual QString getVAvariables() {return QString("");};
+  virtual QString getVAExpressions() {return QString("");};
   QString get_VHDL_Code(int);
   QString get_Verilog_Code(int);
   void    paint(ViewPainter*);

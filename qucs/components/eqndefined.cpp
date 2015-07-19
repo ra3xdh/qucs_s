@@ -18,6 +18,7 @@
 #include "main.h"
 #include "schematic.h"
 #include "extsimkernels/spicecompat.h"
+#include "extsimkernels/verilogawriter.h"
 #include <QtCore>
 
 #include <QFileInfo>
@@ -152,6 +153,37 @@ QString EqnDefined::spice_netlist(bool isXyce)
     return s;
 }
 
+QString EqnDefined::va_code()
+{
+    QString s;
+
+    if (Props.at(0)->Value=="explicit") {
+        int Nbranch = Props.at(1)->Value.toInt();
+
+        for (int i=0;i<Nbranch;i++) {
+            QString Ieqn = Props.at(2*(i+1))->Value; // parse current equation
+            QStringList Itokens;
+            spicecompat::splitEqn(Ieqn,Itokens);
+            vacompat::convert_functions(Itokens);
+            subsVoltages(Itokens,Nbranch);
+            QString plus = Ports.at(2*i)->Connection->Name;
+            QString minus = Ports.at(2*i+1)->Connection->Name;
+            s += QString("I(%1,%2) <+ %3;\n").arg(plus).arg(minus).arg(Itokens.join(""));
+            QString Qeqn = Props.at(2*(i+1)+1)->Value; // parse charge equation only for Xyce
+            if (Qeqn!="0") {
+                QStringList Qtokens;
+                spicecompat::splitEqn(Qeqn,Qtokens);
+                vacompat::convert_functions(Qtokens);
+                subsVoltages(Qtokens,Nbranch);
+                s += QString("I(%1,%2) <+ ddt(%3);\n").arg(plus).arg(minus).arg(Qtokens.join(""));
+            }
+        }
+    } else {
+        s = "";
+    }
+    return s;
+}
+
 /*!
  * \brief EqnDefined::subsVoltages Substitute volatges in spice Notation in token list
  * \param[in/out] tokens Token list. Should be obtained from spicecompat::splitEqn().
@@ -171,7 +203,7 @@ void EqnDefined::subsVoltages(QStringList &tokens, int Nbranch)
                 if (plus=="gnd") plus="0";
                 QString minus = Ports.at(2*(branch-1)+1)->Connection->Name;
                 if (minus=="gnd") minus="0";
-                *it = QString("(V(%1)-V(%2))").arg(plus).arg(minus);
+                *it = QString("V(%1,%2)").arg(plus).arg(minus);
             }
         }
     }
