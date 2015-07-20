@@ -691,6 +691,8 @@ void QucsApp::initMenuBar()
   fileMenu->addAction(filePrint);
   fileMenu->addAction(filePrintFit);
   fileMenu->insertSeparator();
+  fileMenu->addAction(buildVAModule);
+  fileMenu->insertSeparator();
   fileMenu->addAction(fileExamples);
   fileMenu->insertSeparator();
   fileMenu->addAction(fileSettings);
@@ -789,7 +791,6 @@ void QucsApp::initMenuBar()
   simMenu->addAction(showMsg);
   simMenu->addAction(showNet);
   simMenu->addAction(simSpice);
-  simMenu->addAction(buildVAModule);
 
 
   viewMenu = new QMenu(tr("&View"));  // menuBar entry viewMenu
