@@ -19,6 +19,7 @@
 #include "node.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
+#include "extsimkernels/verilogawriter.h"
 
 
 Capacitor::Capacitor()
@@ -70,6 +71,13 @@ QString Capacitor::spice_netlist(bool)
     }
 
     return s+'\n';
+}
+
+QString Capacitor::va_code()
+{
+    QString val = vacompat::normalize_value(Props.at(0)->Value);
+    return QString("I(%1,%2) <+ ddt(V(%1,%2)*(%3));\n").arg(Ports.at(0)->Connection->Name)
+            .arg(Ports.at(1)->Connection->Name).arg(val);
 }
 
 void Capacitor::createSymbol()
