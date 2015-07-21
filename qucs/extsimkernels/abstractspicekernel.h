@@ -86,6 +86,7 @@ public:
     void setSimulatorCmd(QString cmd);
     void setWorkdir(QString path);
     virtual void SaveNetlist(QString filename);
+    virtual bool waitEndOfSimulation();
     
 signals:
     void started();

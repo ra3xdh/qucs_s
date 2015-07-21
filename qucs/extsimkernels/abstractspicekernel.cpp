@@ -867,3 +867,8 @@ void AbstractSpiceKernel::SaveNetlist(QString)
 {
 
 }
+
+bool AbstractSpiceKernel::waitEndOfSimulation()
+{
+    return SimProcess->waitForFinished(10000);
+}

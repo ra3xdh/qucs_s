@@ -257,6 +257,16 @@ void Xyce::slotFinished()
     }
 }
 
+bool Xyce::waitEndOfSimulation()
+{
+    bool ok = false;
+    while (!netlistQueue.isEmpty()) {
+        ok = SimProcess->waitForFinished(10000);
+    }
+    ok = SimProcess->waitForFinished(10000);
+    return ok;
+}
+
 /*!
  * \brief Xyce::slotProcessOutput Process Xyce output and report progress.
  */

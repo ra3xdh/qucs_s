@@ -44,6 +44,7 @@ public:
 
     void SaveNetlist(QString filename);
     void setParallel(bool par);
+    bool waitEndOfSimulation();
     
 protected:
     void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
