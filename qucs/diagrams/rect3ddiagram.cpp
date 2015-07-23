@@ -659,10 +659,10 @@ int Rect3DDiagram::calcAxis(Axis *Axis, int x, int y,
 
     bool back = calcAxisLogScale(Axis, w, yD, stepD, corr, int(xD));
 
-    double upD  = Axis->up;
+    //double upD  = Axis->up;
     if(yD > 1.5*stepD)  yD = 10.0*stepD;  // always start at power of 10
     if(back) {
-      upD  = Axis->low;
+      //upD  = Axis->low;
       phi += pi;
       xD   = 0.0;
     }
@@ -954,9 +954,6 @@ void Rect3DDiagram::calcData(Graph *g)
 
   int Size = ((2*(g->axis(0)->count) + 1) * g->countY) + 10;
   Size *= 2;  // memory for cross grid lines
-
-  double *py;
-  if(g->countY > 1)  py = g->axis(1)->Points;
 
   g->resizeScrPoints(Size);
   auto p = g->begin();
