@@ -91,6 +91,7 @@ public:
   void PostPaintEvent(PE pe, int x1=0, int y1=0, int x2=0, int y2=0, int a=0, int b=0,bool PaintOnViewport=false);
 
   float textCorr();
+  bool sizeOfFrame(int&, int&);
   void  sizeOfAll(int&, int&, int&, int&);
   bool  rotateElements();
   bool  mirrorXComponents();
@@ -165,7 +166,6 @@ signals:
   void signalFileChanged(bool);
 
 protected:
-  bool sizeOfFrame(int&, int&);
   void paintFrame(ViewPainter*);
 
   // overloaded function to get actions of user
@@ -251,7 +251,6 @@ public:
   Painting* selectedPainting(float, float);
   void      copyPaintings(int&, int&, int&, int&, QList<Element *> *);
 
-  void      getSchWidthAndHeight(int& w, int& h, int& xmin_, int& ymin_); // calculates schematic
   void      getSelAreaWidthAndHeight(int &wsel, int& hsel, int& xmin_sel_, int& ymin_sel_); // and selected area width and height in pixels
 
 private:

@@ -41,6 +41,8 @@ public:
 private:
   bool onlyDiagram;
   QString lastExportFilename;
+
+  void getSchWidthAndHeight(Schematic *sch, int &w, int &h, int &xmin, int &ymin);
 };
 
 #endif

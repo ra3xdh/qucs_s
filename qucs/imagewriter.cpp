@@ -44,8 +44,7 @@ ImageWriter::noGuiPrint(QWidget *doc, QString printFile, QString color)
   const int bourder = 30;
   int w,h,wsel,hsel,
       xmin, ymin, xmin_sel, ymin_sel;
-
-  sch->getSchWidthAndHeight(w, h, xmin, ymin);
+  getSchWidthAndHeight(sch, w,h,xmin,ymin);
   sch->getSelAreaWidthAndHeight(wsel, hsel, xmin_sel, ymin_sel);
   w += bourder;
   h += bourder;
@@ -135,7 +134,7 @@ int ImageWriter::print(QWidget *doc)
       xmin, ymin, xmin_sel, ymin_sel;
   int status = -1;
 
-  sch->getSchWidthAndHeight(w, h, xmin, ymin);
+  getSchWidthAndHeight(sch, w, h, xmin, ymin);
   sch->getSelAreaWidthAndHeight(wsel, hsel, xmin_sel, ymin_sel);
   w += border;
   h += border;
@@ -276,4 +275,20 @@ int ImageWriter::print(QWidget *doc)
   }
   delete dlg;
   return status;
+}
+
+void ImageWriter::getSchWidthAndHeight(Schematic *sch, int &w, int &h, int &xmin, int &ymin)
+{
+    xmin = sch->UsedX1;
+    ymin = sch->UsedY1;
+    w = abs(sch->UsedX2 - xmin);
+    h = abs(sch->UsedY2 - ymin);
+
+    int f_w, f_h;
+    if (sch->sizeOfFrame(f_w,f_h)) {
+        xmin = 0;
+        ymin = 0;
+        w = f_w;
+        h = f_h;
+    }
 }

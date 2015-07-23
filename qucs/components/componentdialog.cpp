@@ -1218,6 +1218,11 @@ void ComponentDialog::slotButtUp()
   QTableWidgetItem *target = prop->takeItem(curRow-1,0);
   prop->setItem(curRow-1, 0, source);
   prop->setItem(curRow, 0, target);
+  source = prop->takeItem(curRow  ,1);
+  target = prop->takeItem(curRow-1,1);
+  prop->setItem(curRow-1, 1, source);
+  prop->setItem(curRow, 1, target);
+
 
   // select moved row
   prop->selectRow(curRow-1);
@@ -1241,6 +1246,10 @@ void ComponentDialog::slotButtDown()
   QTableWidgetItem *target = prop->takeItem(curRow+1,0);
   prop->setItem(curRow+1, 0, source);
   prop->setItem(curRow, 0, target);
+  source = prop->takeItem(curRow,1);
+  target = prop->takeItem(curRow+1,1);
+  prop->setItem(curRow+1, 1, source);
+  prop->setItem(curRow, 1, target);
 
   // select moved row
   prop->selectRow(curRow+1);
