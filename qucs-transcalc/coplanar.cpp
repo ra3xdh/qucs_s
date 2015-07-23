@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
+#include <limits>
 #include <float.h>
 
 
@@ -78,7 +79,7 @@ void coplanar::calc()
   // backside is metal
   if (backMetal) {
     k3  = tanh ((pi / 4) * (w / h)) / tanh ((pi / 4) * (w + s + s) / h);
-    q3 = ellipk (k3) / ellipk (sqrt (1 - k3 * k3));
+    q3 = KoverKp(k3);
     qz  = 1 / (q1 + q3);
     er0 = 1 + q3 * qz * (er - 1);
     zl_factor = ZF0 / 2 * qz;
@@ -86,7 +87,7 @@ void coplanar::calc()
   // backside is air
   else {
     k2  = sinh ((pi / 4) * (w / h)) / sinh ((pi / 4) * (w + s + s) / h);
-    q2 = ellipk (k2) / ellipk (sqrt (1 - k2 * k2));
+    q2 = KoverKp(k2);
     er0 = 1 + (er - 1) / 2 * q2 / q1;
     zl_factor = ZF0 / 4 / q1;
   }
@@ -99,12 +100,13 @@ void coplanar::calc()
     We = w + d;
 
     // modifies k1 accordingly (k1 = ke)
-    ke = We / (We + se + se); // ke = k1 + (1 - k1 * k1) * d / 2 / s;
-    qe = ellipk (ke) / ellipk (sqrt (1 - ke * ke));
+    //ke = We / (We + se + se); 
+    ke = k1 + (1 - k1 * k1) * d / 2 / s;
+    qe = KoverKp(ke);
     // backside is metal
     if (backMetal) {
       qz  = 1 / (qe + q3);
-      er0 = 1 + q3 * qz * (er - 1);
+      //er0 = 1 + q3 * qz * (er - 1);
       zl_factor = ZF0 / 2 * qz;
     }
     // backside is air
@@ -272,59 +274,32 @@ int coplanar::synthesize()
    **********                                             **********
    ***************************************************************** */
 
-
 /* The function computes the complete elliptic integral of first kind
-   K() and the second kind E() using the arithmetic-geometric mean
-   algorithm (AGM) by Abramowitz and Stegun. */
-void coplanar::ellipke (double arg, double &k, double &e) {
-  int iMax = 16;
-  if (arg == 1.0) {
-    k = INFINITY; // infinite
-    e = 0;
+   K(k) using the arithmetic-geometric mean algorithm (AGM) found e.g.
+   in Abramowitz and Stegun (17.6.1). 
+   Note that the argument of the function here is the elliptic modulus k
+   and not the parameter m=k^2 . */
+double coplanar::ellipk (double k) {
+  if ((k < 0.0) || (k >= 1.0))
+    // we use only the range from 0 <= k < 1
+    return std::numeric_limits<double>::quiet_NaN();
+
+  double a = 1.0;
+  double b = sqrt(1-k*k);
+  double c = k;
+
+  while (c >  NR_EPSI) {
+    double tmp = (a + b) / 2.0;
+    c = (a - b) / 2.0;
+    b = sqrt(a * b);
+    a = tmp;
   }
-  else if (std::isinf (arg) && arg < 0) {
-    k = 0;
-    e = INFINITY; // infinite
-  }
-  else {
-    double a, b, c, f, s, fk = 1, fe = 1, t, da = arg;
-    int i;
-    if (arg < 0) {
-      fk = 1 / sqrt (1 - arg);
-      fe = sqrt (1 - arg);
-      da = -arg / (1 - arg);
-    }
-    a = 1;
-    b = sqrt (1 - da);
-    c = sqrt (da);
-    f = 0.5;
-    s = f * c * c;
-    for (i = 0; i < iMax; i++) {
-      t = (a + b) / 2;
-      c = (a - b) / 2;
-      b = sqrt (a * b);
-      a = t;
-      f *= 2;
-      s += f * c * c;
-      if (c / a < NR_EPSI) break;
-    }
-    if (i >= iMax) {
-      k = 0; e = 0;
-    }
-    else {
-      k = pi_over_2 / a;
-      e = pi_over_2 * (1 - s) / a;
-      if (arg < 0) {
-        k *= fk;
-        e *= fe;
-      }
-    }
-  }
+  return (pi_over_2 / a);
 }
 
-/* We need to know only K(k), and if possible KISS. */
-double coplanar::ellipk (double k) {
-  double r, lost;
-  ellipke (k, r, lost);
-  return r;
+double coplanar::KoverKp(double k) {
+  if ((k < 0.0) || (k >= 1.0))
+    return std::numeric_limits<double>::quiet_NaN();
+
+  return (ellipk(k) / ellipk(sqrt(1-k*k)));
 }
