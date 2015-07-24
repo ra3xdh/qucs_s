@@ -145,7 +145,7 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
     }
 
     stream<<"analog begin \n"
-            "@(initial model)\n"
+            "@(initial_model)\n"
             "begin \n";
     // Output expressions
     for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
