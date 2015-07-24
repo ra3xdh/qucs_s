@@ -99,7 +99,7 @@ private:
 
     QVector< std::complex<float> > Poles;
 
-    float Fc;
+    double  Fc;
     int Nfil;
 
     QVector<long double> coeffB;

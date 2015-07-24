@@ -283,7 +283,7 @@ void QucsActiveFilter::slotCalcSchematic()
     }
     par.As = edtA2->text().toFloat();
     par.Rp = edtPassbRpl->text().toFloat();
-    float G = edtKv->text().toFloat();
+    double  G = edtKv->text().toFloat();
     par.Kv = pow(10,G/20.0);
 
     QStringList lst;

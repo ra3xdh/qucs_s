@@ -35,17 +35,17 @@ SallenKey::SallenKey(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam
 
 void SallenKey::calcLowPass()
 {
-    float R1,R2,R3,R4,C1,C2;
-    float Wc = 2*pi*Fc;
-    float Nst = order/2 + order%2;
-    float Kv1 = pow(Kv,1.0/Nst);
+    double  R1,R2,R3,R4,C1,C2;
+    double  Wc = 2*pi*Fc;
+    double  Nst = order/2 + order%2;
+    double  Kv1 = pow(Kv,1.0/Nst);
 
     for (int k=1; k <= order/2; k++) {
 
-        float re = Poles.at(k-1).real();
-        float im = Poles.at(k-1).imag();
-        float B = -2.0*re;
-        float C = re*re + im*im;
+        double  re = Poles.at(k-1).real();
+        double  im = Poles.at(k-1).imag();
+        double  B = -2.0*re;
+        double  C = re*re + im*im;
 
         C2 = 10 / Fc;
         C1 = (B*B+4*C*(Kv1-1))*C2/(4*C);
@@ -79,18 +79,18 @@ void SallenKey::calcLowPass()
 
 void SallenKey::calcHighPass()
 {
-    float R1,R2,R3,R4,C1;
-    float Wc = 2*pi*Fc;
+    double  R1,R2,R3,R4,C1;
+    double  Wc = 2*pi*Fc;
 
-    float Nst = order/2 + order%2;
-    float Kv1 = pow(Kv,1.0/Nst);
+    double  Nst = order/2 + order%2;
+    double  Kv1 = pow(Kv,1.0/Nst);
 
     for (int k=1; k <= order/2; k++) {
 
-        float re = Poles.at(k-1).real();
-        float im = Poles.at(k-1).imag();
-        float B = -2.0*re;
-        float C = re*re + im*im;
+        double  re = Poles.at(k-1).real();
+        double  im = Poles.at(k-1).imag();
+        double  B = -2.0*re;
+        double  C = re*re + im*im;
 
         C1 = 10 / Fc;
 
@@ -124,17 +124,17 @@ void SallenKey::calcHighPass()
 
 void SallenKey::calcBandPass()
 {
-    float W0 = 2*pi*F0;
-    float R1,R2,R3,R4,C1;
+    double  W0 = 2*pi*F0;
+    double  R1,R2,R3,R4,C1;
     //float rho = Kv/Q;
     //float gamma = 1.0;
     int cnt = 1;
-    float Kv1 = pow(Kv,1.0/order);
+    double  Kv1 = pow(Kv,1.0/order);
 
     if (order==1) {  // Filter contains only 1 1st-order section
-        float rho = Kv1/Q;
-        float beta = 1.0/Q;
-        float gamma = 1.0;
+        double  rho = Kv1/Q;
+        double  beta = 1.0/Q;
+        double  gamma = 1.0;
 
         C1 = 10.0/F0;
         R1 = 2.0/(rho*W0*C1);
@@ -158,21 +158,21 @@ void SallenKey::calcBandPass()
     }
 
     for (int k=1; k <= order/2; k++) { // Usually 2nd-order section
-        float re = Poles.at(k-1).real();
-        float im = Poles.at(k-1).imag();
-        float B = -2.0*re;
-        float C = re*re + im*im;
+        double  re = Poles.at(k-1).real();
+        double  im = Poles.at(k-1).imag();
+        double  B = -2.0*re;
+        double  C = re*re + im*im;
 
-        float H = C + 4.0*Q*Q;
-        float E = (1.0/B)*sqrt(0.5*(H+sqrt(H*H-(4.0*B*B*Q*Q))));
-        float F = (B*E)/Q;
-        float D = 0.5*(F+sqrt(F*F-4.0));
+        double  H = C + 4.0*Q*Q;
+        double  E = (1.0/B)*sqrt(0.5*(H+sqrt(H*H-(4.0*B*B*Q*Q))));
+        double  F = (B*E)/Q;
+        double  D = 0.5*(F+sqrt(F*F-4.0));
 
         qDebug()<<D<<E<<Q;
 
-        float rho = Kv1*sqrt(C)/Q;
-        float beta = D/E;
-        float gamma = D*D;
+        double  rho = Kv1*sqrt(C)/Q;
+        double  beta = D/E;
+        double  gamma = D*D;
 
         C1 = 10.0/F0;
         R1 = 2.0/(rho*W0*C1);
@@ -219,14 +219,14 @@ void SallenKey::calcBandPass()
 
     if (order%2 != 0) { // Need to implement first-order section
 
-        float R1,R2,R3,R4,C1;
+        double  R1,R2,R3,R4,C1;
 
         int k = order/2 + 1;
-        float re = Poles.at(k-1).real();
-        float C = -re;
-        float rho = Kv1*C/Q;
-        float beta = C/Q;
-        float gamma = 1.0;
+        double  re = Poles.at(k-1).real();
+        double  C = -re;
+        double  rho = Kv1*C/Q;
+        double  beta = C/Q;
+        double  gamma = 1.0;
 
         C1 = 10.0/F0;
         R1 = 2.0/(rho*W0*C1);
@@ -275,8 +275,8 @@ void SallenKey::createHighPassSchematic(QString &s)
     for (int i=1; i<=N2ord; i++) {
         stage = Sections.at(i-1);
         QString suffix1, suffix2;
-        float C1 = autoscaleCapacitor(stage.C1,suffix1);
-        float C2 = autoscaleCapacitor(stage.C2,suffix2);
+        double  C1 = autoscaleCapacitor(stage.C1,suffix1);
+        double  C2 = autoscaleCapacitor(stage.C2,suffix2);
         s += QString("<OpAmp OP%1 1 %2 160 -26 42 0 0 \"1e6\" 1 \"15 V\" 0>\n").arg(stage.N).arg(370+dx);
         s += QString("<GND * 1 %1 270 0 0 0 0>\n").arg(270+dx);
         s += QString("<GND * 1 %1 370 0 0 0 0>\n").arg(320+dx);
@@ -357,8 +357,8 @@ void SallenKey::createLowPassSchematic(QString &s)
         stage = Sections.at(i-1);
         //qDebug()<<stage.N;
         QString suffix1, suffix2;
-        float C1 = autoscaleCapacitor(stage.C1,suffix1);
-        float C2 = autoscaleCapacitor(stage.C2,suffix2);
+        double  C1 = autoscaleCapacitor(stage.C1,suffix1);
+        double  C2 = autoscaleCapacitor(stage.C2,suffix2);
         s += QString("<OpAmp OP%1 1 %2 160 -26 42 0 0 \"1e6\" 1 \"15 V\" 0>\n").arg(stage.N).arg(370+dx);
         s += QString("<GND * 1 %1 270 0 0 0 0>\n").arg(270+dx);
         s += QString("<GND * 1 %1 370 0 0 0 0>\n").arg(320+dx);
@@ -435,8 +435,8 @@ void SallenKey::createBandPassSchematic(QString &s)
         stage = Sections.at(i-1);
         //qDebug()<<stage.N;
         QString suffix1, suffix2;
-        float C1 = autoscaleCapacitor(stage.C1,suffix1);
-        float C2 = autoscaleCapacitor(stage.C2,suffix2);
+        double  C1 = autoscaleCapacitor(stage.C1,suffix1);
+        double  C2 = autoscaleCapacitor(stage.C2,suffix2);
         s += QString("<OpAmp OP%1 1 %2 160 -26 42 0 0 \"1e6\" 1 \"15 V\" 0>\n").arg(stage.N).arg(370+dx);
         s += QString("<GND * 1 %1 270 0 0 0 0>\n").arg(270+dx);
         s += QString("<GND * 1 %1 370 0 0 0 0>\n").arg(320+dx);

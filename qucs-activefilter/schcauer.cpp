@@ -35,20 +35,20 @@ SchCauer::SchCauer(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam p
 
 void SchCauer::calcLowPass()
 {
-    float R1,R2,R3,R4,R5,C1,C2;
-    float Wc = 2*pi*Fc;
-    float Nst = order/2 + order%2;
-    float Kv1 = pow(Kv,1.0/Nst);
+    double  R1,R2,R3,R4,R5,C1,C2;
+    double  Wc = 2*pi*Fc;
+    double  Nst = order/2 + order%2;
+    double  Kv1 = pow(Kv,1.0/Nst);
     //qDebug()<<Kv1;
 
     for (int k=1; k <= order/2; k++) {
 
-        float re = Poles.at(k-1).real();
-        float im = Poles.at(k-1).imag();
-        float B = -2.0*re;
-        float C = re*re + im*im;
+        double  re = Poles.at(k-1).real();
+        double  im = Poles.at(k-1).imag();
+        double  B = -2.0*re;
+        double  C = re*re + im*im;
         im = Zeros.at(k-1).imag();
-        float A = im*im;
+        double  A = im*im;
 
         C1 = 10.0/Fc;
         C2 = C1;
@@ -78,20 +78,20 @@ void SchCauer::calcLowPass()
 
 void SchCauer::calcHighPass()
 {
-    float R1,R2,R3,R4,R5,C1,C2;
-    float Wc = 2*pi*Fc;
-    float Nst = order/2 + order%2;
-    float Kv1 = pow(Kv,1.0/Nst);
+    double  R1,R2,R3,R4,R5,C1,C2;
+    double  Wc = 2*pi*Fc;
+    double  Nst = order/2 + order%2;
+    double  Kv1 = pow(Kv,1.0/Nst);
     //qDebug()<<Kv1;
 
     for (int k=1; k <= order/2; k++) {
 
-        float re = Poles.at(k-1).real();
-        float im = Poles.at(k-1).imag();
-        float B = -2.0*re;
-        float C = re*re + im*im;
+        double  re = Poles.at(k-1).real();
+        double  im = Poles.at(k-1).imag();
+        double  B = -2.0*re;
+        double  C = re*re + im*im;
         im = Zeros.at(k-1).imag();
-        float A = im*im;
+        double  A = im*im;
 
         C1 = 10.0/Fc;
         C2 = C1;
@@ -120,26 +120,26 @@ void SchCauer::calcHighPass()
 
 void SchCauer::calcBandPass()
 {
-    float R1,R2,R3,R4,R5,R6,R7,C1,C2;
-    float W0 = 2*pi*F0;
-    float Kv1 = pow(Kv,1.0/order);
+    double  R1,R2,R3,R4,R5,R6,R7,C1,C2;
+    double  W0 = 2*pi*F0;
+    double  Kv1 = pow(Kv,1.0/order);
     int cnt = 1;
 
     for (int k=1; k <= order/2; k++) {
 
-        float re = Poles.at(k-1).real();
-        float im = Poles.at(k-1).imag();
-        float B = -2.0*re;
-        float C = re*re + im*im;
+        double  re = Poles.at(k-1).real();
+        double  im = Poles.at(k-1).imag();
+        double  B = -2.0*re;
+        double  C = re*re + im*im;
         im = Zeros.at(k-1).imag();
-        float A = im*im;
-        float mu = 2.0;
+        double  A = im*im;
+        double  mu = 2.0;
 
-        float A1 = 1+(A+sqrt(A*A+4*A*Q*Q))/(2*Q*Q);
-        float H = C + 4.0*Q*Q;
-        float E = (1.0/B)*sqrt(0.5*(H+sqrt(H*H-(4.0*B*B*Q*Q))));
-        float F = (B*E)/Q;
-        float D = 0.5*(F+sqrt(F*F-4.0));
+        double  A1 = 1+(A+sqrt(A*A+4*A*Q*Q))/(2*Q*Q);
+        double  H = C + 4.0*Q*Q;
+        double  E = (1.0/B)*sqrt(0.5*(H+sqrt(H*H-(4.0*B*B*Q*Q))));
+        double  F = (B*E)/Q;
+        double  D = 0.5*(F+sqrt(F*F-4.0));
 
         C1 = 10.0/F0;
         C2 = C1;
@@ -191,18 +191,18 @@ void SchCauer::calcBandPass()
 
 void SchCauer::calcBandStop()
 {
-    float R1,R2,R3,R4,R5,R6,C1,C2;
-    float W0 = 2*pi*F0;
-    float Kv1 = pow(Kv,1.0/order);
+    double  R1,R2,R3,R4,R5,R6,C1,C2;
+    double  W0 = 2*pi*F0;
+    double  Kv1 = pow(Kv,1.0/order);
     int cnt = 1;
-    float A=0,A2;
+    double  A=0,A2;
 
     for (int k=1; k <= order/2; k++) {
 
-        float re = Poles.at(k-1).real();
-        float im = Poles.at(k-1).imag();
-        float B = -2.0*re;
-        float C = re*re + im*im;
+        double  re = Poles.at(k-1).real();
+        double  im = Poles.at(k-1).imag();
+        double  B = -2.0*re;
+        double  C = re*re + im*im;
         if ((ffunc==Filter::Cauer)||
             (ffunc==Filter::InvChebyshev)) {
             im = Zeros.at(k-1).imag();
@@ -211,16 +211,16 @@ void SchCauer::calcBandStop()
         } else {
             A2 = 1.0;
         }
-        float mu = 2.0;
+        double  mu = 2.0;
 
-        float H = 1.0+4.0*C*Q*Q;
-        float E1 = (1.0/B)*sqrt(0.5*C*(H+sqrt(H*H-4.0*B*B*Q*Q)));
-        float G = (B*E1)/(Q*C);
-        float D1 = 0.5*(G+sqrt(G*G-4));
+        double  H = 1.0+4.0*C*Q*Q;
+        double  E1 = (1.0/B)*sqrt(0.5*C*(H+sqrt(H*H-4.0*B*B*Q*Q)));
+        double  G = (B*E1)/(Q*C);
+        double  D1 = 0.5*(G+sqrt(G*G-4));
 
-        float alpha = A2;
-        float beta = D1/E1;
-        float gamma = D1*D1;
+        double  alpha = A2;
+        double  beta = D1/E1;
+        double  gamma = D1*D1;
 
         C1 = 10.0/F0;
         C2 = C1;
@@ -301,7 +301,7 @@ void SchCauer::createGenericSchematic(QString &s)
     RC_elements stage;
     int dx = 0;
     int N2ord, N1stOrd;
-    float Fac;
+    double  Fac;
 
     if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
         N2ord = Sections.count();
@@ -326,8 +326,8 @@ void SchCauer::createGenericSchematic(QString &s)
     for (int i=1; i<=N2ord; i++) {
         stage = Sections.at(i-1);
         QString suffix1, suffix2;
-        float C1 = autoscaleCapacitor(stage.C1,suffix1);
-        float C2 = autoscaleCapacitor(stage.C2,suffix2);
+        double  C1 = autoscaleCapacitor(stage.C1,suffix1);
+        double  C2 = autoscaleCapacitor(stage.C2,suffix2);
         s += QString("<OpAmp OP%1 1 %2 240 -26 -70 1 0 \"1e6\" 1 \"15 V\" 0>\n").arg(1+(i-1)*Nop1).arg(270+dx);
         s += QString("<OpAmp OP%1 1 %2 400 -26 -70 1 0 \"1e6\" 1 \"15 V\" 0>\n").arg(2+(i-1)*Nop1).arg(300+dx);
         s += QString("<OpAmp OP%1 1 %2 260 -26 42 0 0 \"1e6\" 1 \"15 V\" 0>\n").arg(3+(i-1)*Nop1).arg(560+dx);
