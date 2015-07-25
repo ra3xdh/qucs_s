@@ -425,3 +425,81 @@ bool misc::checkVersion(QString& Line)
     return false;
   return true;
 }
+
+// a small class to handle the application version string
+//   loosely modeled after the standard Semantic Versioning...
+VersionTriplet::VersionTriplet(const QString& version) {
+  // TODO should be likely made more robust...
+  if (version.isEmpty()) {
+    major = minor = patch = 0;
+  } else {
+    QStringList vl = QStringList::split('.', version);
+    major = vl.at(0).toUInt();
+    minor = vl.at(1).toUInt();
+    patch = vl.at(2).toUInt();
+  }
+}
+
+VersionTriplet::VersionTriplet(){
+  major = minor = patch = 0;
+}
+
+bool VersionTriplet::operator==(const VersionTriplet& v2) {
+  if (this->major != v2.major)
+    return false;
+  if (this->minor != v2.minor)
+    return false;
+  if (this->patch != v2.patch)
+    return false;
+  return true;
+}
+
+bool VersionTriplet::operator>(const VersionTriplet& v2) {
+  if (this->major < v2.major)
+    return false;
+  if (this->major > v2.major)
+    return true;
+
+  if (this->minor < v2.minor)
+    return false;
+  if (this->minor > v2.minor)
+    return true;
+
+  if (this->patch < v2.patch)
+    return false;
+  if (this->patch > v2.patch)
+    return true;
+
+  return false;
+}
+
+bool VersionTriplet::operator<(const VersionTriplet& v2) {
+  if (this->major > v2.major)
+    return false;
+  if (this->major < v2.major)
+    return true;
+
+  if (this->minor > v2.minor)
+    return false;
+  if (this->minor < v2.minor)
+    return true;
+
+  if (this->patch > v2.patch)
+    return false;
+  if (this->patch < v2.patch)
+    return true;
+
+  return false;
+}
+
+bool VersionTriplet::operator>=(const VersionTriplet& v2) {
+  return !((*this) < v2);
+}
+
+bool VersionTriplet::operator<=(const VersionTriplet& v2) {
+  return !((*this) > v2);
+}
+
+QString VersionTriplet::toString() {
+  return QString("%1.%2.%3").arg(major).arg(minor).arg(patch);
+}

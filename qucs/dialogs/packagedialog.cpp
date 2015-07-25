@@ -365,6 +365,7 @@ void PackageDialog::extractPackage()
 
   QDir currDir = QucsSettings.QucsHomeDir;
   QString Version;
+  VersionTriplet PackageVersion;
   Q_UINT16 Checksum;
   Q_UINT32 Code, Length;
 
@@ -376,7 +377,8 @@ void PackageDialog::extractPackage()
   }
 
   Version = QString(Content.data()+13);
-  if(!misc::checkVersion(Version)) {
+  PackageVersion = VersionTriplet(Version);
+  if (PackageVersion > QucsVersion) { // wrong version number ?
     MsgText->append(tr("ERROR: Wrong version number!"));
     goto ErrorEnd;
   }

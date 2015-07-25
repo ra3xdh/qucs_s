@@ -41,3 +41,24 @@ namespace misc {
   QString Verilog_Param(const QString);
   bool    checkVersion(QString&);
 }
+
+/*! handle the application version string
+ *
+ *  loosely modeled after the standard Semantic Versioning
+ */
+class VersionTriplet {
+ public:
+  VersionTriplet();
+  VersionTriplet(const QString&);
+
+  bool operator==(const VersionTriplet& v2);
+  bool operator>(const VersionTriplet& v2);
+  bool operator<(const VersionTriplet& v2);
+  bool operator>=(const VersionTriplet& v2);
+  bool operator<=(const VersionTriplet& v2);
+
+  QString toString();
+
+ private:
+  int major, minor, patch;
+};

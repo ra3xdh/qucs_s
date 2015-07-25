@@ -865,7 +865,8 @@ bool Schematic::loadDocument()
   }
 
   Line = Line.mid(16, Line.length()-17);
-  if(!misc::checkVersion(Line)) { // wrong version number ?
+  VersionTriplet DocVersion = VersionTriplet(Line);
+  if (DocVersion > QucsVersion) { // wrong version number ?
 
     QMessageBox::StandardButton result;
     result = QMessageBox::warning(0,
@@ -1103,7 +1104,8 @@ int Schematic::testFile(const QString& DocName)
   }
 
   Line = Line.mid(16, Line.length()-17);
-  if(!misc::checkVersion(Line)) { // wrong version number ?
+  VersionTriplet DocVersion = VersionTriplet(Line);
+  if (DocVersion > QucsVersion) { // wrong version number ?
       if (!QucsSettings.IgnoreFutureVersion) {
           file.close();
           return -4;

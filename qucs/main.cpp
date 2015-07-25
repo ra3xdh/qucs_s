@@ -45,6 +45,7 @@
 
 #include "schematic.h"
 #include "module.h"
+#include "misc.h"
 
 #include "components/components.h"
 
@@ -63,6 +64,7 @@ tQucsSettings QucsSettings;
 QucsApp *QucsMain = 0;  // the Qucs application itself
 QString lastDir;    // to remember last directory for several dialogs
 QStringList qucsPathList;
+VersionTriplet QucsVersion; // Qucs version string
 
 // #########################################################################
 // Loads the settings file and stores the settings.
@@ -641,6 +643,9 @@ void createListComponentEntry(){
 int main(int argc, char *argv[])
 {
   qInstallMsgHandler(qucsMessageOutput);
+  // set the Qucs version string
+  QucsVersion = VersionTriplet(PACKAGE_VERSION);
+
   // apply default settings
   QucsSettings.font = QFont("Helvetica", 12);
   QucsSettings.largeFontSize = 16.0;
