@@ -335,7 +335,7 @@ int doNetlist(QString schematic, QString netlist)
   return 0;
 }
 
-int runNgspice(QString schematic)
+int runNgspice(QString schematic, QString dataset)
 {
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
@@ -350,16 +350,14 @@ int runNgspice(QString schematic)
         delete ngspice;
         return -1;
     } else {
-        QFileInfo inf(schematic);
-        QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+".dat.ngspice";
-        ngspice->convertToQucsData(qucs_dataset);
+        ngspice->convertToQucsData(dataset);
     }
 
     delete ngspice;
     return 0;
 }
 
-int runXyce(QString schematic)
+int runXyce(QString schematic, QString dataset)
 {
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
@@ -374,9 +372,7 @@ int runXyce(QString schematic)
         delete xyce;
         return -1;
     } else {
-        QFileInfo inf(schematic);
-        QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+".dat.xyce";
-        xyce->convertToQucsData(qucs_dataset);
+        xyce->convertToQucsData(dataset);
     }
 
     delete xyce;
@@ -1014,8 +1010,8 @@ int main(int argc, char *argv[])
             else if (xyce_flag) return doXyceNetlist(inputfile, outputfile);
             else return doNetlist(inputfile, outputfile);
         } else {
-            if (ngspice_flag) return runNgspice(inputfile);
-            else if (xyce_flag) return runXyce(inputfile);
+            if (ngspice_flag) return runNgspice(inputfile, outputfile);
+            else if (xyce_flag) return runXyce(inputfile, outputfile);
             else return 1;
         }
     } else if (print_flag) {
