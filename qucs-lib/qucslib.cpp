@@ -218,6 +218,7 @@ void QucsLib::slotAbout()
     QMessageBox::about(this, tr("About..."),
                        "QucsLib Version " PACKAGE_VERSION "\n"+
                        tr("Library Manager for Qucs\n")+
+                       tr("Copyright (C) 2011-2015 Qucs Team\n")+
                        tr("Copyright (C) 2005 by Michael Margraf\n")+
                        "\nThis is free software; see the source for copying conditions."
                        "\nThere is NO warranty; not even for MERCHANTABILITY or "
@@ -465,6 +466,9 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
     CompDescr->append("Library: " + LibName);
     CompDescr->append("----------------------------");
 
+    // FIXME: here we assume that LibName is the same as the actual filename...
+    int i = Library->findText(LibName);
+
     if(Library->currentIndex() < UserLibCount)
         LibName = UserLibDir.absolutePath() + QDir::separator() + LibName;
 
@@ -509,6 +513,14 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
     else if(!DefaultSymbol.isEmpty())   // has library a default symbol ?
         Symbol->setSymbol(DefaultSymbol, LibName, Item->text());
 
+    // change currently selected category, so the user will 
+    //   learn where the component comes from
+    Library->setCurrentIndex(i);
+    // remove 1 to find the actual index (when in Search Mode ther is one more
+    //   item  due to the added "Search Results" item)
+    libCurIdx = i-1; // remember the category to select when exiting search
+    //!! comment out the above two lines if you would like that the search
+    //!!   returns back to the last selected category instead
 }
 
 
