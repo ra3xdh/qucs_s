@@ -362,6 +362,7 @@ void QucsLib::slotSelectLibrary(int Index)
 // ----------------------------------------------------
 void QucsLib::slotSearchComponent(const QString &searchText)
 {
+  QStringList LibFiles;
   // clear the components view
   //   (search restarts anew at every keypress)
   CompList->clear ();
@@ -379,8 +380,17 @@ void QucsLib::slotSearchComponent(const QString &searchText)
   }
 
   bool findComponent = false;
+
+  // user libraries
+  QStringList UserLibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+  foreach(QString s, UserLibFiles) // build list with full path
+    LibFiles += (UserLibDir.absoluteFilePath(s));
+
+  // system libraries
   QDir LibDir(QucsSettings.LibDir);
-  QStringList LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+  QStringList SysLibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+  foreach(QString s, SysLibFiles) // build list with full path
+    LibFiles += (LibDir.absoluteFilePath(s));
 
   QFile File;
   QTextStream ReadWhole;
@@ -388,7 +398,7 @@ void QucsLib::slotSearchComponent(const QString &searchText)
   QStringList::iterator it;
   int Start, End, NameStart, NameEnd;
   for(it = LibFiles.begin(); it != LibFiles.end(); it++) { // all library files
-    File.setFileName(QucsSettings.LibDir + (*it));
+    File.setFileName((*it));
     if(!File.open(QIODevice::ReadOnly))  continue;
 
     ReadWhole.setDevice(&File);
