@@ -326,7 +326,7 @@ void Ngspice::slotSimulate()
     if (!checkSchematic(incompat)) {
         QString s = incompat.join("; ");
         output.append("There were SPICE-incompatible components. Simulator cannot proceed.");
-        output.append("Incompatible components are: " + s);
+        output.append("Incompatible components are: " + s + "\n");
         emit finished();
         emit errors(QProcess::FailedToStart);
         return;

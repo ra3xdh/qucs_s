@@ -108,7 +108,7 @@ bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
     incompat.clear();
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
         if ((!pc->isEquation)&&!(pc->isProbe)) {
-            if (pc->SpiceModel.isEmpty()) incompat.append(pc->Name);
+            if (pc->SpiceModel.isEmpty() && pc->isActive) incompat.append(pc->Name);
         }
     }
 
