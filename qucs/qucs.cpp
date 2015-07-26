@@ -846,7 +846,12 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
         if (mod->info) {
           (*mod->info)(CompName, CompFile_cptr, false);
           if (CompName == name) {
-            //CompChoose->setCurrentIndex(i);
+	    // change currently selected category, so the user will 
+	    //   learn where the component comes from
+            CompChoose->setCurrentIndex(i+1); // +1 due to the added "Search Results" item
+	    ccCurIdx = i; // remember the category to select when exiting search
+	    //!! comment out the above two lines if you would like that the search
+	    //!!   returns back to the last selected category instead
             view->selElem = (*mod->info) (CompName, CompFile_cptr, true);
 	    // TODO: component found, exit the loops now...
           }
