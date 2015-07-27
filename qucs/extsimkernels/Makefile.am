@@ -42,7 +42,8 @@ libextsimkernels_a_SOURCES = \
 		qucs2spice.cpp \
 		spicecompat.cpp \
 		xyce.cpp  \
-		simsettingsdialog.cpp
+		simsettingsdialog.cpp \
+		verilogawriter.cpp
 
 nodist_libextsimkernels_a_SOURCES = $(MOCFILES)
 
@@ -54,7 +55,8 @@ noinst_HEADERS = $(MOCHEADERS) \
 		qucs2spice.h \
 		spicecompat.h \
 		xyce.h \
-		simsettingsdialog.h
+		simsettingsdialog.h \
+		verilogawriter.h
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
