@@ -181,7 +181,7 @@ void ExternSimDialog::slotProcessNgspiceOutput()
     cbxSimualor->setEnabled(true);
     QString out = ngspice->getOutput();
     if (out.contains("warning",Qt::CaseInsensitive)||
-       (out.contains("error"),Qt::CaseInsensitive)) {
+        out.contains("error",Qt::CaseInsensitive)) {
         emit warnings();
     } else emit success();
     //editSimConsole->clear();
@@ -204,7 +204,7 @@ void ExternSimDialog::slotProcessXyceOutput()
     //editSimConsole->clear();
     editSimConsole->insertPlainText(out);
     if (out.contains("warning",Qt::CaseInsensitive)||
-       (out.contains("error"),Qt::CaseInsensitive)) {
+        out.contains("error",Qt::CaseInsensitive)) {
         emit warnings();
     } else emit success();
     saveLog();

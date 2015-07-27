@@ -17,6 +17,7 @@
 #include "tr_sim.h"
 #include "main.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 TR_Sim::TR_Sim()
@@ -118,6 +119,10 @@ QString TR_Sim::spice_netlist(bool isXyce)
     Tstep = (Tstop-Tstart)/Npoints;
 
     s += QString(" %1 %2 %3 ").arg(Tstep).arg(Tstop).arg(Tstart);
+
+    QString max_step = spicecompat::normalize_value(getProperty("MaxStep")->Value);
+    if (max_step!="0") s+= max_step;
+
     if (!isXyce) { // Xyce ignores this parameter
         if (Props.at(18)->Value == "no") s += " UIC";
     }

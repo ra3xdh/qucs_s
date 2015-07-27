@@ -32,6 +32,7 @@ QString spicecompat::normalize_value(QString Value)
     QRegExp v_pattern("^[0-9]+.*V$");
     QRegExp hz_pattern("^[0-9]+.*Hz$");
     QRegExp s_pattern("^[0-9]+.*S$");
+    QRegExp sec_pattern("^[0-9]+.*s$");
     QRegExp var_pattern("^[A-Za-z].*$");
 
     QString s = Value.remove(' ');
@@ -54,6 +55,9 @@ QString spicecompat::normalize_value(QString Value)
         s.replace("M","Meg");
     } else if (s_pattern.exactMatch(s)) {
         s.remove("S");
+        s.replace("M","Meg");
+    } else if (sec_pattern.exactMatch(s)) {
+        s.remove("s");
         s.replace("M","Meg");
     } else if (var_pattern.exactMatch(s)) {
         s = "{" + s + "}";
