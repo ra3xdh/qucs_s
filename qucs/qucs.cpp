@@ -2874,7 +2874,12 @@ void QucsApp::slotBuildVAModule()
         if (f.open(QIODevice::WriteOnly)) {
             QTextStream stream(&f);
             VerilogAwriter *writer = new VerilogAwriter;
-            writer->createVA_module(stream,Sch);
+            if (!writer->createVA_module(stream,Sch)) {
+                QMessageBox::critical(this,tr("Build Verilog-A module"),
+                                      tr("This schematic is not a subcircuit!\n"
+                                         "Use subcircuit to crete Verilog-A module!"),
+                                          QMessageBox::Ok);
+            }
             delete writer;
             f.close();
         }

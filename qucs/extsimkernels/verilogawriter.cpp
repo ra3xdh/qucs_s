@@ -104,6 +104,9 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
 
     QStringList ports;
     QStringList nodes;
+    ports.clear();
+    nodes.clear();
+
     for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
         if (pc->Model=="Port") { // Find module ports
             QString s = pc->Ports.first()->Connection->Name;
@@ -115,6 +118,8 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
             }
         }
     }
+
+    if (ports.isEmpty()) return false; // Not a subcircuit
 
     QFileInfo inf(sch->DocName);
     QString base = inf.completeBaseName();
