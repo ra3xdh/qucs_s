@@ -328,7 +328,10 @@ QString Subcircuit::getSubcircuitFile()
     // search the home directory which is always hashed
     QMutex mutex;
     mutex.lock();
-    QString hashsearchresult = QucsMain->schNameHash.value(baseName);
+    QString hashsearchresult = "";
+    // check if GUI is running and there is something in the search path lookup
+    if ( (QucsMain != 0) && !QucsMain->schNameHash.isEmpty() )
+      hashsearchresult = QucsMain->schNameHash.value(baseName);
     mutex.unlock();
 
     if (hashsearchresult.isEmpty())
