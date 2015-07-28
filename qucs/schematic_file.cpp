@@ -823,15 +823,26 @@ bool Schematic::loadPaintings(QTextStream *stream, Q3PtrList<Painting> *List)
   return false;
 }
 
-// -------------------------------------------------------------
+/*!
+ * \brief Schematic::loadDocument tries to load a schematic document.
+ * \return true/false in case of success/failure
+ */
 bool Schematic::loadDocument()
 {
   QFile file(DocName);
   if(!file.open(QIODevice::ReadOnly)) {
-    QMessageBox::critical(0, QObject::tr("Error"),
+    /// \todo implement unified error/warning handling GUI and CLI
+    if (QucsMain)
+      QMessageBox::critical(0, QObject::tr("Error"),
                  QObject::tr("Cannot load document: ")+DocName);
+    else
+      qCritical() << "Schematic::loadDocument:"
+                  << QObject::tr("Cannot load document: ")+DocName;
     return false;
   }
+
+  // Keep reference to source file (the schematic file)
+  setFileInfo(DocName);
 
   QString Line;
   QTextStream stream(&file);
@@ -1180,9 +1191,18 @@ void Schematic::propagateNode(QStringList& Collect,
 }
 
 #include <iostream>
-// ---------------------------------------------------
-// Goes through all schematic components and allows special component
-// handling, e.g. like subcircuit netlisting.
+
+/*!
+ * \brief Schematic::throughAllComps
+ * Goes through all schematic components and allows special component
+ * handling, e.g. like subcircuit netlisting.
+ * \param stream is a pointer to the text stream used to collect the netlist
+ * \param countInit is the reference to a counter for nodesets (initial conditions)
+ * \param Collect is the reference to a list of collected nodesets
+ * \param ErrText is pointer to the QPlainTextEdit used for error messages
+ * \param NumPorts counter for the number of ports
+ * \return true in case of success (false otherwise)
+ */
 bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
                    QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts)
 {
@@ -1250,7 +1270,12 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
       if(!d->loadDocument())      // load document if possible
       {
           delete d;
-          ErrText->appendPlainText(QObject::tr("ERROR: Cannot load subcircuit \"%1\".").arg(s));
+          /// \todo implement error/warning message dispatcher for GUI and CLI modes.
+          QString message = QObject::tr("ERROR: Cannot load subcircuit \"%1\".").arg(s);
+          if (QucsMain) // GUI is running
+            ErrText->appendPlainText(message);
+          else // command line
+            qCritical() << "Schematic::throughAllComps" << message;
           return false;
       }
       d->DocName = s;
