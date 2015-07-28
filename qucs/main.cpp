@@ -122,6 +122,8 @@ bool loadSettings()
     QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
 
 
+    QucsSettings.spiceExtensions << "*.sp" << "*.cir" << "*.spc" << "*.spi";
+
     // If present read in the list of directory paths in which Qucs should
     // search for subcircuit schematics
     int npaths = settings.beginReadArray("Paths");

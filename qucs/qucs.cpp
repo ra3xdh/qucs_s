@@ -120,8 +120,6 @@ QucsApp::QucsApp()
 {
   setWindowTitle("Qucs " PACKAGE_VERSION);
 
-  QucsSettings.spiceExtensions << "*.sp" << "*.cir" << "*.spc" << "*.spi";
-
   QucsFileFilter =
     tr("Schematic") + " (*.sch);;" +
     tr("Data Display") + " (*.dpl);;" +
