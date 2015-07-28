@@ -67,6 +67,9 @@ struct tQucsSettings {
   // registered filename extensions with program to open the file
   QStringList FileTypes;
 
+  // List of extensions used for spice files
+  QStringList spiceExtensions;
+
   unsigned int numRecentDocs;
   QStringList RecentDocs;
 

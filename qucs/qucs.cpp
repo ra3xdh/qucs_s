@@ -120,7 +120,7 @@ QucsApp::QucsApp()
 {
   setWindowTitle("Qucs " PACKAGE_VERSION);
 
-  spiceExtensions << "*.sp" << "*.cir" << "*.spc" << "*.spi";
+  QucsSettings.spiceExtensions << "*.sp" << "*.cir" << "*.spc" << "*.spi";
 
   QucsFileFilter =
     tr("Schematic") + " (*.sch);;" +
@@ -130,7 +130,7 @@ QucsApp::QucsApp()
     tr("Verilog Sources") + " (*.v);;" +
     tr("Verilog-A Sources") + " (*.va);;" +
     tr("Octave Scripts") + " (*.m *.oct);;" +
-    tr("Spice Files") + QString(" (") + spiceExtensions.join(" ") + QString(");;") +
+    tr("Spice Files") + QString(" (") + QucsSettings.spiceExtensions.join(" ") + QString(");;") +
     tr("Any File")+" (*)";
 
   updateSchNameHash();
@@ -2716,7 +2716,7 @@ void QucsApp::updateSpiceNameHash(void)
     foreach (QString qucspath, qucsPathList) {
         QDir thispath(qucspath);
         // get all the schematic files in the directory
-        QFileInfoList spicefilesList = thispath.entryInfoList( spiceExtensions, QDir::Files );
+        QFileInfoList spicefilesList = thispath.entryInfoList( QucsSettings.spiceExtensions, QDir::Files );
         // put each one in the hash table with the unique key the base name of
         // the file, note this will overwrite the value if the key already exists
         foreach (QFileInfo spicefile, spicefilesList) {
@@ -2727,7 +2727,7 @@ void QucsApp::updateSpiceNameHash(void)
 
     // finally check the home/working directory
     QDir thispath(QucsSettings.QucsWorkDir);
-    QFileInfoList spicefilesList = thispath.entryInfoList( spiceExtensions, QDir::Files );
+    QFileInfoList spicefilesList = thispath.entryInfoList( QucsSettings.spiceExtensions, QDir::Files );
     // put each one in the hash table with the unique key the base name of
     // the file, note this will overwrite the value if the key already exists
     foreach (QFileInfo spicefile, spicefilesList) {

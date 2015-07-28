@@ -198,10 +198,10 @@ QString SpiceFile::getSubcircuitFile()
             // which case we use this one
             QFileInfo schematicFileInfo = containingSchematic->getFileInfo ();
 
-            for (int i = 0; i < QucsMain->spiceExtensions.count (); i++)
+            for (int i = 0; i < QucsSettings.spiceExtensions.count (); i++)
             {
                 QFileInfo localFIleInfo (schematicFileInfo.canonicalPath ()
-                                         + "/" + baseName + QucsMain->spiceExtensions[i]);
+                                         + "/" + baseName + QucsSettings.spiceExtensions[i]);
                 if (localFIleInfo.exists ())
                 {
                     // return the subcircuit saved in the same directory
@@ -217,7 +217,10 @@ QString SpiceFile::getSubcircuitFile()
     // search the home directory which is always hashed
     QMutex mutex;
     mutex.lock();
-    QString hashsearchresult = QucsMain->spiceNameHash.value(baseName);
+    QString hashsearchresult = "";
+    // if GUI is running and has something in the hash
+    if ( (QucsMain != 0) && !QucsMain->spiceNameHash.isEmpty() )
+      hashsearchresult = QucsMain->spiceNameHash.value(baseName);
     mutex.unlock();
 
     if (hashsearchresult.isEmpty())
