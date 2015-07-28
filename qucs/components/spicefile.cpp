@@ -200,13 +200,22 @@ QString SpiceFile::getSubcircuitFile()
 
             for (int i = 0; i < QucsSettings.spiceExtensions.count (); i++)
             {
-                QFileInfo localFIleInfo (schematicFileInfo.canonicalPath ()
-                                         + "/" + baseName + QucsSettings.spiceExtensions[i]);
-                if (localFIleInfo.exists ())
+                QString extension = QucsSettings.spiceExtensions[i];
+                extension.remove(0, 1); // take leading '*' out, issue with exits()
+
+                QFileInfo localFileInfo (schematicFileInfo.canonicalPath ()
+                                         + "/" + baseName + extension);
+
+                if (localFileInfo.exists ())
                 {
                     // return the subcircuit saved in the same directory
                     // as the schematic file
-                    return localFIleInfo.absoluteFilePath();
+                    return localFileInfo.absoluteFilePath();
+                }
+                else
+                {
+                    /// \todo improve GUI/CLI error/warning
+                    qCritical() << "Spice file not found:" << localFileInfo.absFilePath();
                 }
             }
         }
