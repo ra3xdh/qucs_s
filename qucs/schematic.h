@@ -157,7 +157,10 @@ public:
   int undoSymbolIdx;
   QVector<QString *> undoSymbol;    // undo stack for circuit symbol
 
+  /*! \brief Get (schematic) file reference */
   QFileInfo getFileInfo (void) { return FileInfo; }
+  /*! \brief Set reference to file (schematic) */
+  void setFileInfo(QString FileName) { FileInfo = QFileInfo(FileName); }
 
 signals:
   void signalCursorPosChanged(int, int);
@@ -188,6 +191,7 @@ protected slots:
 
 private:
   bool dragIsOkay;
+  /*! \brief hold system-independent information about a schematic file */
   QFileInfo FileInfo;
 
 /* ********************************************************************
