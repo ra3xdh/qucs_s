@@ -648,14 +648,17 @@ void SimMessage::slotDisplayMsg()
     i = ProgressText.indexOf('\t'); // marker for progress indicator
     if(i >= 0) {
       wasLF = true;
-      qDebug() << "Tab idx = " << i; // << " (" << ProgressText << ")";
-      ProgText->appendPlainText(ProgressText.left(i).trimmed());
+      QString tmps = ProgressText.left(i).trimmed();
+      if (!tmps.isEmpty()) // avoid adding a newline if no text to show
+	ProgText->appendPlainText(tmps);
       ProgressText.remove(0, i+1);
       return;
     }
   }
 
-  ProgText->appendPlainText(ProgressText.trimmed());
+  QString tmps = ProgressText.trimmed();
+  if (!tmps.isEmpty()) // avoid adding a newline if no text to show
+    ProgText->appendPlainText(tmps);
   ProgressText = "";
   wasLF = false;
 }
