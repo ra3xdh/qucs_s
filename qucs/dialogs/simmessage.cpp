@@ -796,7 +796,8 @@ void SimMessage::FinishSimulation(int Status)
     stream << tr("Output:\n-------") << "\n\n";
     for(int z=0; z<ProgText->document()->blockCount(); z++)
       stream << ProgText->document()->findBlockByNumber(z).text() << "\n";
-    stream << "\n\n\n" << tr("Errors:\n-------") << "\n\n";
+    stream << "\n\n\n" << 
+      tr("Errors and Warnings:\n--------------------") << "\n\n";
     for(int z=0; z<ErrText->document()->blockCount(); z++)
       stream << ErrText->document()->findBlockByNumber(z).text() << "\n";
     file.close();
