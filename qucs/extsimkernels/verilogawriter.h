@@ -26,6 +26,11 @@
 #include <QtCore>
 #include <schematic.h>
 
+/*!
+  \file verilogawriter.h
+  \brief Declaration of the AbstractSpiceKernel class and vacompat namespace
+*/
+
 namespace vacompat {
     QString normalize_value(QString Value);
     void convert_functions(QStringList &tokens);

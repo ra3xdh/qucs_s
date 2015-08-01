@@ -25,6 +25,17 @@
 #include <QPlainTextEdit>
 #include "paintings/id_text.h"
 
+/*!
+  \file verilogawriter.cpp
+  \brief Implementation of the VerilogAwriter class and vacompat namespace.
+*/
+
+
+/*!
+ * \brief vacompat::convert_functions convert Qucs mathematical function or constant to
+ *        Verilog-A equivalent
+ * \param tokens[in/out] QStringList contains equation tokens
+ */
 void vacompat::convert_functions(QStringList &tokens)
 {
     QStringList conv_list; // Put here functions need to be converted
@@ -41,6 +52,12 @@ void vacompat::convert_functions(QStringList &tokens)
 
 }
 
+/*!
+ * \brief vacompat::normalize_value Convert value from Qucs or SPICE notation
+ *        to Verilog-A notation
+ * \param Value[in] Componrt value to convert
+ * \return Converted value
+ */
 QString vacompat::normalize_value(QString Value)
 {
     QRegExp r_pattern("^[0-9]+.*Ohm$");
@@ -80,6 +97,12 @@ VerilogAwriter::~VerilogAwriter()
 
 }
 
+/*!
+ * \brief VerilogAwriter::prepareToVerilogA Prepare scheamtic for Verilog-A
+ *        module building. Schematic must be subcircuit.
+ * \param sch[in] Schematic pointer
+ * \return true if schematic is subcircuit; false otherwise.
+ */
 bool VerilogAwriter::prepareToVerilogA(Schematic *sch)
 {
     QStringList collect;
@@ -94,6 +117,12 @@ bool VerilogAwriter::prepareToVerilogA(Schematic *sch)
     return true;
 }
 
+/*!
+ * \brief VerilogAwriter::createVA_module Build Verilog-A module from the subcircuit.
+ * \param stream[out] QTextStream where Verilog-A module should be written.
+ * \param sch[in] Schematic that should be converted to Verilog-A module
+ * \return true on success; false otherwise
+ */
 bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
 {
     prepareToVerilogA(sch);
