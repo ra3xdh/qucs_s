@@ -52,6 +52,17 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
 
     fileMenu->addAction(fileQuit);
 
+    // View menu
+    QMenu *viewMenu = new QMenu(tr("&View"));
+    viewConsole = new QAction(tr("&Console"), this);
+    viewConsole->setCheckable(true);
+    viewConsole->setChecked(QucsSettings.showConsole);
+    viewConsole->setStatusTip(tr("Enables/disables the filter calculation console"));
+    viewConsole->setWhatsThis(tr("Console\n\nEnables/disables the filter calculation console"));
+    connect(viewConsole, SIGNAL(toggled(bool)), SLOT(slotViewConsole(bool)));
+    viewMenu->addAction(viewConsole);
+
+    // Help menu
     QMenu *helpMenu = new QMenu(tr("&Help"), this);
     QAction * helpHelp = new QAction(tr("Help..."), this);
     helpHelp->setShortcut(Qt::Key_F1);
@@ -71,6 +82,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     helpMenu->addAction(helpAboutQt);
 
     menuBar()->addMenu(fileMenu);
+    menuBar()->addMenu(viewMenu);
     menuBar()->addSeparator();
     menuBar()->addMenu(helpMenu);
 
@@ -82,7 +94,6 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     lblRpl1 = new QLabel(tr("Passband ripple Rp(dB)"));
     //lblRpl2 = new QLabel(tr("Stopband ripple (dB)"));
     lblKv = new QLabel(tr("Passband gain, Kv (dB)"));
-
 
     edtA1 = new QLineEdit("3");
     QDoubleValidator *val1 = new QDoubleValidator(0,100000,3);
@@ -123,7 +134,6 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     btnCalcSchematic = new QPushButton(tr("Calculate and copy to clipboard"));
     connect(btnCalcSchematic,SIGNAL(clicked()),SLOT(slotCalcSchematic()));
 
-    lblResult = new QLabel(tr("Calculation console"));
     txtResult = new QPlainTextEdit;
     txtResult->setReadOnly(true);
     txtResult->setWordWrapMode(QTextOption::NoWrap);
@@ -172,7 +182,10 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     vl3->addWidget(lblOrder,6,0);
     vl3->addWidget(edtOrder,6,1);
     gpbPar->setLayout(vl3);
-    gpbPar->show(); // show now since we need its actual size later
+    // do not actually show on screen (yet)
+    gpbPar->setAttribute(Qt::WA_DontShowOnScreen);
+    // call show() now since we need its actual size later
+    gpbPar->show(); 
 
     // second parameters group, below the previous one
     QGroupBox *gpbFunc = new QGroupBox(tr("Transfer function and Topology"));
@@ -196,7 +209,10 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     vl4->addWidget(btnCalcSchematic);
 
     gpbFunc->setLayout(vl4);
-    gpbFunc->show(); // show now since we need its actual size later
+    // do not actually show on screen (yet)
+    gpbFunc->setAttribute(Qt::WA_DontShowOnScreen); 
+    // call show() now since we need its actual size later
+    gpbFunc->show(); 
 
     // filter response box, top-right
     QGroupBox *gpbAFR = new QGroupBox(tr("General filter amplitude-frequency response"));
@@ -237,16 +253,18 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
 
     top1 = new QVBoxLayout;
     top1->addLayout(layout);
-    QSplitter *sp1 = new QSplitter;
-    top1->addWidget(sp1);
 
-    QGroupBox *gpbCons = new QGroupBox(tr("Filter calculation console"));
+    gpbCons = new QGroupBox(tr("Filter calculation console"));
     QVBoxLayout *vl5 = new QVBoxLayout;
     vl5->addWidget(txtResult);
     gpbCons->setLayout(vl5);
+    slotViewConsole(QucsSettings.showConsole);
 
     top1->addWidget(gpbCons);
     txtResult->setMinimumHeight(180);
+
+    // init status bar
+    statusBar()->showMessage(tr("Ready."));
 
     zenter = new QWidget;
     this->setCentralWidget(zenter);
@@ -257,7 +275,6 @@ QucsActiveFilter::~QucsActiveFilter()
 {
     
 }
-
 
 void QucsActiveFilter::slotCalcSchematic()
 {
@@ -392,10 +409,12 @@ void QucsActiveFilter::slotCalcSchematic()
     }
 
     if (ok) {
+      statusBar()->showMessage(tr("Filter calculation was successful"), 2000);
         txtResult->appendHtml("<pre>\r\n" + 
 			      tr("Filter calculation was successful") +
 			      "</pre>");
     } else {
+      statusBar()->showMessage(tr("Filter calculation terminated with error!"), 2000);
         txtResult->appendHtml("<pre>\r\n" +
 			      tr("Filter calculation terminated with error") +
 			      "</pre>");
@@ -551,6 +570,7 @@ void QucsActiveFilter::slotDefineTransferFunc()
 
 void QucsActiveFilter::errorMessage(QString str)
 {
+    statusBar()->showMessage(tr("Error!"));
     QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,tr("Active filter design"),
                                         str,
                                         QMessageBox::Ok);
@@ -558,13 +578,29 @@ void QucsActiveFilter::errorMessage(QString str)
     delete msg;
 }
 
+void QucsActiveFilter::fixSize()
+{
+  // make main window fit widgets height
+  resize(width(), 1);
+  statusBar()->showMessage(tr("Ready."));
+}
+
+void QucsActiveFilter::slotViewConsole(bool toggle) {
+  gpbCons->setVisible(toggle);
+  QucsSettings.showConsole = toggle;
+
+  // a QMainWindow does not automatically resize when a child widget is hidden
+  //  only way seems to force a resize after all the events have been processed
+  QApplication::processEvents();
+  QTimer::singleShot(0, this, SLOT(fixSize()));
+}
 
 void QucsActiveFilter::slotHelpAbout()
 {
   QMessageBox::about(this, tr("About..."),
     "QucsActiveFilter Version " PACKAGE_VERSION+
     tr("\nActive Filter synthesis program\n")+
-    tr("Copyright (C) 2014 by")+
+    tr("Copyright (C) 2014, 2015 by")+
     "\nVadim Kuznetsov\n"
     "\nThis is free software; see the source for copying conditions."
     "\nThere is NO warranty; not even for MERCHANTABILITY or "

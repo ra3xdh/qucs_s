@@ -36,6 +36,7 @@ bool loadSettings()
     settings.beginGroup("QucsActiveFilter");
     if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
     if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
+    if(settings.contains("showConsole")) QucsSettings.showConsole=settings.value("showConsole").toBool();
     settings.endGroup();
 
     if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
@@ -53,6 +54,7 @@ bool saveApplSettings(QucsActiveFilter *qucs)
     settings.beginGroup("QucsActiveFilter");
     settings.setValue("x", qucs->x());
     settings.setValue("y", qucs->y());
+    settings.setValue("showConsole", QucsSettings.showConsole);
     settings.endGroup();
   return true;
 
@@ -66,6 +68,7 @@ int main(int argc, char *argv[])
     QucsSettings.x = 200;
     QucsSettings.y = 100;
     QucsSettings.font = QFont("Helvetica", 12);
+    QucsSettings.showConsole = true;
 
     // is application relocated?
     char * var = getenv ("QUCSDIR");

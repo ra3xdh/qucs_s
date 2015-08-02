@@ -29,6 +29,7 @@ struct tQucsSettings {
   QFont font;
   QString LangDir;
   QString Language;
+  bool showConsole;
 };
 
 extern struct tQucsSettings QucsSettings;
@@ -72,7 +73,8 @@ private:
     QPushButton *btnCalcSchematic;
     QPushButton *btnDefineTransferFunc;
 
-    QLabel *lblResult;
+    QGroupBox *gpbCons;
+    QAction *viewConsole;
     QPlainTextEdit *txtResult;
 
     QSvgWidget *imgAFR;
@@ -118,6 +120,8 @@ private slots:
     void slotHelpAbout();
     void slotHelpAboutQt();
     void slotHelpIntro();
+    void slotViewConsole(bool toggle);
+    void fixSize();
 
 public:
     QucsActiveFilter(QWidget *parent = 0);
