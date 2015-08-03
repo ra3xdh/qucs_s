@@ -55,6 +55,7 @@ protected:
     virtual void startNetlist(QTextStream& stream, bool xyce = false);
     virtual void createNetlist(QTextStream& stream, int NumPorts,QStringList& simulations,
                                QStringList& vars, QStringList &outputs);
+    void removeAllSimulatorOutputs();
 
 public:
 

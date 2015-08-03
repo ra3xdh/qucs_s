@@ -742,6 +742,21 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
 
         dataset.close();
     }
+#ifdef NDEBUG
+    removeAllSimulatorOutputs();
+#endif
+}
+
+/*!
+ * \brief AbstractSpiceKernel::removeAllSimulatorOutputs Clean temporary simulator
+ *        datasets.
+ */
+void AbstractSpiceKernel::removeAllSimulatorOutputs()
+{
+    foreach(QString output_filename,output_files) {
+        QString full_outfile = workdir+QDir::separator()+output_filename;
+        QFile::remove(full_outfile);
+    }
 }
 
 /*!
