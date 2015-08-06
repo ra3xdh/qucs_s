@@ -1462,11 +1462,9 @@ bool QucsApp::saveAs()
   QucsDoc *Doc = getDoc();
 
   int n = -1;
-  bool intoView = true;
   QString s, Filter;
   QFileInfo Info;
   while(true) {
-    intoView = true;
     s = Doc->DocName;
     Info.setFile(s);
     if(s.isEmpty()) {   // which is default directory ?
@@ -1517,7 +1515,6 @@ bool QucsApp::saveAs()
 		tr("No"), tr("Yes"), tr("Cancel"));
       if(n == 2) return false;    // cancel
       if(n == 0) continue;
-      intoView = false;    // file already exists
     }
 
     // search, if document is open

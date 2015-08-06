@@ -269,6 +269,7 @@ void Component::paint(ViewPainter *p)
       } else {
 	int w, h;
 	w = p->drawTextMapped (pt->s, 0, 0, &h);
+    Q_UNUSED(w);
       }
     }
     p->Painter->setWorldMatrix(wm);
