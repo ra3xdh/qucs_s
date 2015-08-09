@@ -200,10 +200,10 @@ void EqnDefined::subsVoltages(QStringList &tokens, int Nbranch)
             int branch = volt.toInt();
             if (branch<=Nbranch) {
                 QString plus = Ports.at(2*(branch-1))->Connection->Name;
-                if (plus=="gnd") plus="0";
                 QString minus = Ports.at(2*(branch-1)+1)->Connection->Name;
-                if (minus=="gnd") minus="0";
-                *it = QString("V(%1,%2)").arg(plus).arg(minus);
+                if (minus=="gnd") *it = QString("V(%1)").arg(plus);
+                else if (plus=="gnd") *it = QString("(-V(%1))").arg(minus);
+                else *it = QString("V(%1,%2)").arg(plus).arg(minus);
             }
         }
     }
