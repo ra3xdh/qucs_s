@@ -71,9 +71,10 @@ QString Resistor::spice_netlist(bool )
 QString Resistor::va_code()
 {
     QString val = vacompat::normalize_value(Props.at(0)->Value);
-    return QString("I(%1,%2) <+ V(%1,%2)/(%3);\n").arg(Ports.at(0)->Connection->Name)
-            .arg(Ports.at(1)->Connection->Name).arg(val);
-
+    QString valTemp = vacompat::normalize_value(Props.at(1)->Value);
+    return QString("I( %1 , %2 ) <+ V( %1 , %2 )/( %3 );\nI( %1 , %2 ) <+ white_noise( 4.0*`P_K*( %4 + 273.15) / ( %3 ), \"thermal\" );\n")
+                  .arg((Ports.at(0)->Connection->Name).replace(" 0 ", "gnd"))
+                  .arg((Ports.at(1)->Connection->Name).replace(" 0 ", "gnd")).arg(val).arg(valTemp);
 }
 
 // -------------------------------------------------------
