@@ -19,6 +19,7 @@
 #include "node.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
+#include "extsimkernels/verilogawriter.h"
 
 
 Inductor::Inductor()
@@ -75,6 +76,18 @@ QString Inductor::spice_netlist(bool)
     }
     s += '\n';
 
+    return s;
+}
+
+QString Inductor::va_code()
+{
+    QString val = vacompat::normalize_value(Props.at(0)->Value);
+    QString plus = Ports.at(0)->Connection->Name;
+    QString minus = Ports.at(1)->Connection->Name;
+    QString tmpnod = "_net0" + Name;
+    QString s = QString("I(gnd,%1) <+ ddt(-V(%1))+V(%2,%3); // Inductor: %4 \n")
+            .arg(tmpnod).arg(plus).arg(minus).arg(Name);
+    s += QString("I(%1,%2) <+ V(%3)/(%4+1e-15);\n").arg(plus).arg(minus).arg(tmpnod).arg(val);
     return s;
 }
 

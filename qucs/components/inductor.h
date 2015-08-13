@@ -26,8 +26,10 @@ public:
   Inductor();
  ~Inductor();
   Component* newOne();
-  QString spice_netlist(bool isXyce = false);
   static Element* info(QString&, char* &, bool getNewOne=false);
+protected:
+  QString va_code();
+  QString spice_netlist(bool isXyce = false);
 };
 
 #endif
