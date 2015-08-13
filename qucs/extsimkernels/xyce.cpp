@@ -219,8 +219,8 @@ void Xyce::slotSimulate()
     }
 
     output.clear();
-    nextSimulation();
     emit started();
+    nextSimulation();
 
 }
 
@@ -293,6 +293,9 @@ void Xyce::nextSimulation()
         QString cmd = QString("\"%1\" %2 \"%3\"").arg(simulator_cmd,simulator_parameters,file);
         SimProcess->start(cmd);
     } else {
+        output += "No simulations!\n"
+                  "Exiting...\n";
+        emit progress(100);
         emit finished(); // nothing to simulate
     }
 }
