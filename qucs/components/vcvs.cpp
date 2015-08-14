@@ -19,6 +19,7 @@
 #include "node.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
+#include "extsimkernels/verilogawriter.h"
 
 
 VCVS::VCVS()
@@ -87,6 +88,11 @@ Element* VCVS::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
+QString VCVS::va_code()
+{   QString val = vacompat::normalize_value(Props.at(0)->Value);
+    return QString("I( %1 , %4 ) <+ V( %1 , %4 )*1e-9;\nI( %3 , %2 ) <+ V( %3 , %2 )*1e3;\nI( %3 , %2 ) <+ V( %1 , %4 )*1e3 *  %5 ;\n")
+                  .arg(Ports.at(0)->Connection->Name).arg(Ports.at(1)->Connection->Name).arg(Ports.at(2)->Connection->Name).arg(Ports.at(3)->Connection->Name).arg(val); 
+}
 QString VCVS::spice_netlist(bool)
 {
    QString s = spicecompat::check_refdes(Name,SpiceModel);
