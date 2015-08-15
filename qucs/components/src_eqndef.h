@@ -12,6 +12,7 @@ public:
 protected:
   QString netlist();
   QString spice_netlist(bool isXyce = false);
+  QString va_code();
 };
 
 #endif // SRC_EQNDEF_H

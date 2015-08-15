@@ -1,6 +1,7 @@
 #include "src_eqndef.h"
 #include "node.h"
 #include "extsimkernels/spicecompat.h"
+#include "extsimkernels/verilogawriter.h"
 
 
 Src_eqndef::Src_eqndef()
@@ -64,5 +65,14 @@ QString Src_eqndef::spice_netlist(bool)
         s += " "+ nam;   // node names
     }
     s += QString(" %1 = %2 \n").arg(Props.at(0)->Name).arg(Props.at(0)->Value);
+    return s;
+}
+
+QString Src_eqndef::va_code()
+{
+    QString s;
+    s = QString(" %1(%2,%3) <+ %4; // %5 source\n").arg(Props.at(0)->Name)
+            .arg(Ports.at(0)->Connection->Name).arg(Ports.at(1)->Connection->Name)
+            .arg(Props.at(0)->Value).arg(Name);
     return s;
 }
