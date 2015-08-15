@@ -16,6 +16,8 @@
  ***************************************************************************/
 
 #include "ampere_noise.h"
+#include "node.h"
+#include "extsimkernels/verilogawriter.h"
 
 
 Ampere_noise::Ampere_noise()
@@ -75,4 +77,14 @@ Element* Ampere_noise::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new Ampere_noise();
   return 0;
+}
+
+QString Ampere_noise::va_code()
+{
+    QString u = vacompat::normalize_value(getProperty("i")->Value);
+    QString e = vacompat::normalize_value(getProperty("e")->Value);
+    QString s = QString("I(%1,%2) <+ flicker_noise(%3,%4); // %5 noise source \n")
+            .arg(Ports.at(0)->Connection->Name).arg(Ports.at(1)->Connection->Name)
+            .arg(u).arg(e).arg(Name);
+    return s;
 }

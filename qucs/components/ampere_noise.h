@@ -27,6 +27,8 @@ public:
   ~Ampere_noise();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+protected:
+  QString va_code();
 };
 
 #endif
