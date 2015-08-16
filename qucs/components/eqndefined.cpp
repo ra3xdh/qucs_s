@@ -162,13 +162,15 @@ QString EqnDefined::va_code()
 
         for (int i=0;i<Nbranch;i++) {
             QString Ieqn = Props.at(2*(i+1))->Value; // parse current equation
-            QStringList Itokens;
-            spicecompat::splitEqn(Ieqn,Itokens);
-            vacompat::convert_functions(Itokens);
-            subsVoltages(Itokens,Nbranch);
             QString plus = Ports.at(2*i)->Connection->Name;
             QString minus = Ports.at(2*i+1)->Connection->Name;
-            s += QString("I(%1,%2) <+ %3;\n").arg(plus).arg(minus).arg(Itokens.join(""));
+            if (Ieqn!="0") { // check for default
+                QStringList Itokens;
+                spicecompat::splitEqn(Ieqn,Itokens);
+                vacompat::convert_functions(Itokens);
+                subsVoltages(Itokens,Nbranch);
+                s += QString("I(%1,%2) <+ %3;\n").arg(plus).arg(minus).arg(Itokens.join(""));
+            }
             QString Qeqn = Props.at(2*(i+1)+1)->Value; // parse charge equation only for Xyce
             if (Qeqn!="0") {
                 QStringList Qtokens;
