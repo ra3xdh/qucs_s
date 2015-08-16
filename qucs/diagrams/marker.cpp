@@ -36,6 +36,8 @@
 
 #include "misc.h"
 
+static double default_Z0=50;
+
 /*!
  * create a marker based on click position and
  * the branch number.
@@ -48,7 +50,8 @@ Marker::Marker(Graph *pg_, int branchNo, int cx_, int cy_) :
   Element(),
   pGraph(pg_),
   Precision(3),
-  numMode(0)
+  numMode(0),
+  Z0(default_Z0) // BUG: see declaration.
 {
   Type = isMarker;
   isSelected = transparent = false;

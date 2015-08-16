@@ -95,7 +95,7 @@ void MarkerDialog::slotAcceptValues()
     changed = true;
   }
   assert(pMarker->diag());
-  if(pMarker->diag()->Name=="Smith") // BUG
+  if(pMarker->diag()->Name=="Smith") // BUG: need generic MarkerDialog.
 	{
 			double SrcImp = SourceImpedance->text().toDouble();
 			if(SrcImp != pMarker->Z0)
