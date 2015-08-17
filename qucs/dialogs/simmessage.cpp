@@ -131,8 +131,8 @@ SimMessage::SimMessage(QWidget *w, QWidget *parent)
 
   Abort = new QPushButton(tr("Abort simulation"));
   Butts->addWidget(Abort);
+  // Abort will close the window, which in turn will abort the simulation
   connect(Abort,SIGNAL(clicked()),SLOT(reject()));
-  connect(Abort,SIGNAL(clicked()),SLOT(AbortSim()));
   connect(this,SIGNAL(rejected()),SLOT(AbortSim()));
 }
 
@@ -648,14 +648,17 @@ void SimMessage::slotDisplayMsg()
     i = ProgressText.indexOf('\t'); // marker for progress indicator
     if(i >= 0) {
       wasLF = true;
-      qDebug() << "Tab idx = " << i; // << " (" << ProgressText << ")";
-      ProgText->appendPlainText(ProgressText.left(i).trimmed());
+      QString tmps = ProgressText.left(i).trimmed();
+      if (!tmps.isEmpty()) // avoid adding a newline if no text to show
+	ProgText->appendPlainText(tmps);
       ProgressText.remove(0, i+1);
       return;
     }
   }
 
-  ProgText->appendPlainText(ProgressText.trimmed());
+  QString tmps = ProgressText.trimmed();
+  if (!tmps.isEmpty()) // avoid adding a newline if no text to show
+    ProgText->appendPlainText(tmps);
   ProgressText = "";
   wasLF = false;
 }
@@ -710,6 +713,8 @@ void SimMessage::slotStateChanged(QProcess::ProcessState newState)
               break;
           }
           break;
+        // note that on Windows negative exit codes are treated as 'crash'
+        //   see comments in slotSimEnded() to handle this properly
         case QProcess::Crashed:
         case QProcess::Timedout:
         case QProcess::WriteError:
@@ -730,7 +735,7 @@ void SimMessage::slotStateChanged(QProcess::ProcessState newState)
 /*!
  * \brief Check the simulation process exit status.
  *
- *  Called when the simulation process terminates; inserts an error 
+ *  Called when the simulation process terminates; inserts an error
  *  message in the Error Message output window in case the simulation
  *  process does not exit normally.
  *  \param[in] exitCode exit code of the process
@@ -739,19 +744,21 @@ void SimMessage::slotStateChanged(QProcess::ProcessState newState)
  */
 void SimMessage::slotSimEnded(int exitCode, QProcess::ExitStatus exitStatus )
 {
-  int stat;
-  
-  qDebug() << "SimMessage::slotSimEnded() : exitCode = " << exitCode << ", exitStatus = " << exitStatus;
-  qDebug() << "SimMessage::slotSimEnded() : SimProcess.error() = " << SimProcess.error();
-  
-  if ((exitStatus == QProcess::NormalExit) || simKilled) { // as when killed by user exitStatus will be QProcess::CrashExit
-    stat = exitCode;
-  } else {
+  int stat = exitCode;
+
+  if ((exitStatus != QProcess::NormalExit) &&
+#ifdef _WIN32
+// due to a bug in Qt, negative error codes are erroneously interpreted
+//   as "program crashed", see https://bugreports.qt.io/browse/QTBUG-28735
+// When we will switch to Qt5(.1) this code can be removed...
+      (uint)stat >= 0x80000000U && (uint)stat < 0xD0000000U &&
+#endif
+      !simKilled) { // as when killed by user exitStatus will be QProcess::CrashExit
     stat = -1;
     ErrText->appendPlainText(tr("ERROR: Simulator crashed!"));
     ErrText->appendPlainText(tr("Please report this error to qucs-bugs@lists.sourceforge.net"));
   }
-  FinishSimulation(stat); // 0 = normal  | -1 = crash
+  FinishSimulation(stat); // 0 = normal , !=0 = error
 }
 
 /*!
@@ -759,7 +766,7 @@ void SimMessage::slotSimEnded(int exitCode, QProcess::ExitStatus exitStatus )
  *
  *  Called when the simulation ended with errors before starting the 
  *  simulator process.
- *  \param[in] Status exit status of the process (0 = normal, -1 = crash)
+ *  \param[in] Status exit status of the process (0 = normal, !=0 = error)
  */
 void SimMessage::FinishSimulation(int Status)
 {
@@ -789,7 +796,8 @@ void SimMessage::FinishSimulation(int Status)
     stream << tr("Output:\n-------") << "\n\n";
     for(int z=0; z<ProgText->document()->blockCount(); z++)
       stream << ProgText->document()->findBlockByNumber(z).text() << "\n";
-    stream << "\n\n\n" << tr("Errors:\n-------") << "\n\n";
+    stream << "\n\n\n" << 
+      tr("Errors and Warnings:\n--------------------") << "\n\n";
     for(int z=0; z<ErrText->document()->blockCount(); z++)
       stream << ErrText->document()->findBlockByNumber(z).text() << "\n";
     file.close();
@@ -835,6 +843,7 @@ void SimMessage::slotDisplayButton()
 
 void SimMessage::AbortSim()
 {
+  ErrText->appendPlainText(tr("Simulation aborted by the user!"));
   simKilled = true;
   SimProcess.kill();
 }
