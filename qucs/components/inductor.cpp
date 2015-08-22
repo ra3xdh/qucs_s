@@ -85,10 +85,11 @@ QString Inductor::va_code()
     QString plus = Ports.at(0)->Connection->Name;
     QString minus = Ports.at(1)->Connection->Name;
     QString tmpnod = "_net0" + Name;
-    QString s = QString("I(gnd,%1) <+ ddt(-V(%1))+V(%2,%3); // Inductor: %4 \n")
-            .arg(tmpnod).arg(plus).arg(minus).arg(Name);
-    s += QString("I(%1,%2) <+ V(%3)/(%4+1e-15);\n").arg(plus).arg(minus).arg(tmpnod).arg(val);
+    QString s = "";
+    s +=  QString("I(%1) <+ ddt(-V(%1));\nI(%1) <+ V(%2,%3);\n").arg(tmpnod).arg(plus).arg(minus);
+    s +=  QString("I(%1, %2) <+ V(%3)/(%4+1e-20);\n").arg(plus).arg(minus).arg(tmpnod).arg(val);
     return s;
+    
 }
 
 Element* Inductor::info(QString& Name, char* &BitmapFile, bool getNewOne)
