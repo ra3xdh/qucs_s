@@ -72,10 +72,23 @@ QString Resistor::va_code()
 {
     QString val = vacompat::normalize_value(Props.at(0)->Value);
     QString valTemp = vacompat::normalize_value(Props.at(1)->Value);
-    return QString("I( %1 , %2 ) <+ V( %1 , %2 )/( %3 );\n"
-                   "I( %1 , %2 ) <+ white_noise( 4.0*`P_K*( %4 + 273.15) / ( %3 ), \"thermal\" );\n")
-                  .arg(Ports.at(0)->Connection->Name)
-                  .arg(Ports.at(1)->Connection->Name).arg(val).arg(valTemp);
+    QString plus =  Ports.at(0)->Connection->Name;
+    QString minus = Ports.at(1)->Connection->Name;
+    QString s = "";
+    
+    if( (plus != "gnd")  && (minus != "gnd") ) 
+    s += QString("I( %1 , %2 ) <+ V( %1 , %2 )/( %3 );\nI( %1 , %2 ) <+ white_noise( 4.0*`P_K*( %4 + 273.15) / ( %3 ), \"thermal\" );\n")
+                  .arg(Ports.at(0)->Connection->Name).arg(Ports.at(1)->Connection->Name).arg(val).arg(valTemp);
+    
+    if( plus == "gnd" ) 
+    s += QString("I( %1 ) <+ V( %1 )/( %2 );\nI( %1 ) <+ white_noise( 4.0*`P_K*( %3 + 273.15) / ( %2 ), \"thermal\" );\n")
+                  .arg(minus).arg(val).arg(valTemp);
+    
+    if( (minus == "gnd")  ) 
+    s += QString("I( %1 ) <+ V( %1 )/( %2 );\nI( %1 ) <+ white_noise( 4.0*`P_K*( %3 + 273.15) / ( %3 ), \"thermal\" );\n")
+                  .arg(plus).arg(val).arg(valTemp);
+                  
+    return s;
 }
 
 // -------------------------------------------------------
