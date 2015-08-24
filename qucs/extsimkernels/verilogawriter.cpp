@@ -66,7 +66,7 @@ QString vacompat::normalize_current(QString &plus, QString &minus, bool left_sid
     QString s;
     if (plus=="gnd") {
         if (left_side) s = QString("I(%1)").arg(minus);
-        else s = QString("(-I(%1))").arg(minus);
+       else s = QString("(-I(%1))").arg(minus);
     } else if (minus=="gnd") s = QString("I(%1)").arg(plus);
     else s = QString("I(%1,%2)").arg(plus).arg(minus);
     return s;

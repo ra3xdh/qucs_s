@@ -86,10 +86,13 @@ QString Inductor::va_code()
     QString minus = Ports.at(1)->Connection->Name;
     QString tmpnod = "_net0" + Name;
     QString s = "";
-    s +=  QString("I(%1) <+ ddt(-V(%1));\nI(%1) <+ V(%2,%3);\n").arg(tmpnod).arg(plus).arg(minus);
-    s +=  QString("I(%1, %2) <+ V(%3)/(%4+1e-20);\n").arg(plus).arg(minus).arg(tmpnod).arg(val);
-    return s;
+    QString Vpm = vacompat::normalize_voltage(plus,minus);
+    QString Ipm = vacompat::normalize_current(plus,minus,true); 
+    s +=  QString("I(%1) <+ ddt(V(%1));\nI(%1) <+ %2;\n").arg(tmpnod).arg(Vpm);
+    s +=  QString("%1 <+ V(%2)/(%3+1e-20);\n").arg(Ipm).arg(tmpnod).arg(val);
     
+    return s;
+
 }
 
 Element* Inductor::info(QString& Name, char* &BitmapFile, bool getNewOne)

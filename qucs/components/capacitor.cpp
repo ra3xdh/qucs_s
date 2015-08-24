@@ -76,8 +76,14 @@ QString Capacitor::spice_netlist(bool)
 QString Capacitor::va_code()
 {
     QString val = vacompat::normalize_value(Props.at(0)->Value);
-    return QString("I(%1,%2) <+ ddt(V(%1,%2)*(%3));\n").arg(Ports.at(0)->Connection->Name)
-            .arg(Ports.at(1)->Connection->Name).arg(val);
+    QString plus =  Ports.at(0)->Connection->Name;
+    QString minus = Ports.at(1)->Connection->Name; 
+    QString s = "";
+    QString Vpm = vacompat::normalize_voltage(plus,minus);
+    QString Ipm = vacompat::normalize_current(plus,minus,true); 
+    s  += QString("%1  <+ ddt( %2 *  %3  );\n").arg(Ipm).arg(Vpm).arg(val);
+            
+    return s;
 }
 
 void Capacitor::createSymbol()
