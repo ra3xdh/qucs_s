@@ -52,6 +52,27 @@ void vacompat::convert_functions(QStringList &tokens)
 
 }
 
+QString vacompat::normalize_voltage(QString &plus, QString &minus)
+{
+    QString s;
+    if (plus=="gnd") s = QString("(-V(%1))").arg(minus);
+    else if (minus=="gnd") s = QString("V(%1)").arg(plus);
+    else s = QString("V(%1,%2)").arg(plus).arg(minus);
+    return s;
+}
+
+QString vacompat::normalize_current(QString &plus, QString &minus, bool left_side)
+{
+    QString s;
+    if (plus=="gnd") {
+        if (left_side) s = QString("I(%1)").arg(minus);
+        else s = QString("(-I(%1))").arg(minus);
+    } else if (minus=="gnd") s = QString("I(%1)").arg(plus);
+    else s = QString("I(%1,%2)").arg(plus).arg(minus);
+    return s;
+}
+
+
 /*!
  * \brief vacompat::normalize_value Convert value from Qucs or SPICE notation
  *        to Verilog-A notation
@@ -153,6 +174,7 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
     QFileInfo inf(sch->DocName);
     QString base = inf.completeBaseName();
     base.remove('-').remove(' ');
+    nodes.removeAll("gnd"); // Exclude ground node
 
     stream<<QString("module %1(%2);\n").arg(base).arg(ports.join(", "));
     stream<<QString("inout %1;\n").arg(ports.join(", "));
