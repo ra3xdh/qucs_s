@@ -86,12 +86,19 @@ QString Ampere_noise::va_code()
     QString c = vacompat::normalize_value(getProperty("c")->Value);
     QString a = vacompat::normalize_value(getProperty("a")->Value);
     
-    if ( e == "0" ) {
-    return QString("I(%1,%2) <+ white_noise(%3,\"shot\" );\n")
-            .arg(Ports.at(0)->Connection->Name).arg(Ports.at(1)->Connection->Name).arg(u);
+    QString plus =  Ports.at(0)->Connection->Name;
+    QString minus = Ports.at(1)->Connection->Name; 
+    QString s = "";
+    QString Ipm = vacompat::normalize_current(plus,minus,true); 
+
+    if ( e == "0" ) 
+    {
+       s += QString("%1 <+ white_noise(%2,\"shot\" );\n").arg(Ipm).arg(u);
     }
-    else {
-	 return QString("I(%1,%2) <+ flicker_noise(%3, %4, \"flicker\" );\n" )
-            .arg(Ports.at(0)->Connection->Name).arg(Ports.at(1)->Connection->Name).arg(u).arg(e);
+    else 
+    {
+	  s += QString("%1 <+ flicker_noise(%2, %3, \"flicker\" );\n" ).arg(Ipm).arg(u).arg(e);
     }
+
+    return s;
 }
