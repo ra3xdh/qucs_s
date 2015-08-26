@@ -71,8 +71,13 @@ QString Src_eqndef::spice_netlist(bool)
 QString Src_eqndef::va_code()
 {
     QString s;
-    s = QString(" %1(%2,%3) <+ %4; // %5 source\n").arg(Props.at(0)->Name)
-            .arg(Ports.at(0)->Connection->Name).arg(Ports.at(1)->Connection->Name)
-            .arg(Props.at(0)->Value).arg(Name);
+    QString plus = Ports.at(0)->Connection->Name;
+    QString minus = Ports.at(1)->Connection->Name;
+    QString Src;
+    if (Props.at(0)->Name=="I") Src = vacompat::normalize_current(plus,minus,true);
+    else Src = vacompat::normalize_voltage(plus,minus); // Voltage contribution is reserved for future
+    // B-source may be polar
+    if (plus=="gnd") s = QString(" %1 <+ -(%2); // %3 source\n").arg(Src).arg(Props.at(0)->Value).arg(Name);
+    else s = QString(" %1 <+ %2; // %3 source\n").arg(Src).arg(Props.at(0)->Value).arg(Name);
     return s;
 }
