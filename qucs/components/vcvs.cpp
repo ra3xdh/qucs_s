@@ -89,10 +89,22 @@ Element* VCVS::info(QString& Name, char* &BitmapFile, bool getNewOne)
 }
 
 QString VCVS::va_code()
-{   QString val = vacompat::normalize_value(Props.at(0)->Value);
-    return QString("I( %1 , %4 ) <+ V( %1 , %4 )*1e-9;\nI( %3 , %2 ) <+ V( %3 , %2 )*1e3;\nI( %3 , %2 ) <+ V( %1 , %4 )*1e3 *  %5 ;\n")
-                  .arg(Ports.at(0)->Connection->Name).arg(Ports.at(1)->Connection->Name).arg(Ports.at(2)->Connection->Name).arg(Ports.at(3)->Connection->Name).arg(val); 
-}
+{   QString Gain = vacompat::normalize_value(Props.at(0)->Value);
+	QString P1 = Ports.at(0)->Connection->Name;
+    QString P4 = Ports.at(1)->Connection->Name;
+    QString P3 = Ports.at(2)->Connection->Name;
+    QString P2 = Ports.at(3)->Connection->Name;
+    QString s = "";
+    
+    QString Vpm = vacompat::normalize_voltage(P1,P2);
+    QString Ipm = vacompat::normalize_current(P1,P2,true); 
+    s += QString(" %1  <+  %2 * 1e-9;\n").arg(Ipm).arg(Vpm);
+    QString Ipm2 = vacompat::normalize_current(P3,P4,true); 
+    s += QString("%1  <+  %1 *1e3;\n").arg(Ipm2);
+    s += QString("%1  <+  %2 * 1e3 * %3 ;\n").arg(Ipm2).arg(Vpm).arg(Gain);
+    
+    return s;
+ }
 QString VCVS::spice_netlist(bool)
 {
    QString s = spicecompat::check_refdes(Name,SpiceModel);
