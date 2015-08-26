@@ -164,12 +164,14 @@ QString EqnDefined::va_code()
             QString Ieqn = Props.at(2*(i+1))->Value; // parse current equation
             QString plus = Ports.at(2*i)->Connection->Name;
             QString minus = Ports.at(2*i+1)->Connection->Name;
+            QString Ipm = vacompat::normalize_current(plus,minus,true);
             if (Ieqn!="0") { // check for default
                 QStringList Itokens;
                 spicecompat::splitEqn(Ieqn,Itokens);
                 vacompat::convert_functions(Itokens);
                 subsVoltages(Itokens,Nbranch);
-                s += QString("I(%1,%2) <+ %3;\n").arg(plus).arg(minus).arg(Itokens.join(""));
+                if (plus=="gnd") s += QString("%1 <+ -(%2);\n").arg(Ipm).arg(Itokens.join(""));
+                else s += QString("%1 <+ %2;\n").arg(Ipm).arg(Itokens.join(""));
             }
             QString Qeqn = Props.at(2*(i+1)+1)->Value; // parse charge equation only for Xyce
             if (Qeqn!="0") {
@@ -177,7 +179,8 @@ QString EqnDefined::va_code()
                 spicecompat::splitEqn(Qeqn,Qtokens);
                 vacompat::convert_functions(Qtokens);
                 subsVoltages(Qtokens,Nbranch);
-                s += QString("I(%1,%2) <+ ddt(%3);\n").arg(plus).arg(minus).arg(Qtokens.join(""));
+                if (plus=="gnd") s += QString("%1 <+ -ddt( %2 );\n").arg(Ipm).arg(Qtokens.join(""));
+		else s += QString("%1 <+ ddt( %2 );\n").arg(Ipm).arg(Qtokens.join(""));
             }
         }
     } else {
