@@ -203,9 +203,7 @@ void EqnDefined::subsVoltages(QStringList &tokens, int Nbranch)
             if (branch<=Nbranch) {
                 QString plus = Ports.at(2*(branch-1))->Connection->Name;
                 QString minus = Ports.at(2*(branch-1)+1)->Connection->Name;
-                if (minus=="gnd") *it = QString("V(%1)").arg(plus);
-                else if (plus=="gnd") *it = QString("(-V(%1))").arg(minus);
-                else *it = QString("V(%1,%2)").arg(plus).arg(minus);
+                *it = vacompat::normalize_voltage(plus,minus);
             }
         }
     }
