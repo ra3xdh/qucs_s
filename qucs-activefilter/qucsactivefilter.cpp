@@ -269,6 +269,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     zenter = new QWidget;
     this->setCentralWidget(zenter);
     zenter->setLayout(top1);
+    this->resize(this->width(),1);
 }
 
 QucsActiveFilter::~QucsActiveFilter()
