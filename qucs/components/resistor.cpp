@@ -78,9 +78,10 @@ QString Resistor::va_code()
     QString Vpm = vacompat::normalize_voltage(plus,minus);
     QString Ipm = vacompat::normalize_current(plus,minus,true);
     
-    s += QString("%1 <+ %2/( %3 );\n"
-                 "%1 <+ white_noise( 4.0*`P_K*( %4 + 273.15) / ( %3 ), \"thermal\" );\n")
-                 .arg(Ipm).arg(Vpm).arg(val).arg(valTemp);
+    if (plus=="gnd") s += QString("%1 <+ -(%2/( %3 ));\n").arg(Ipm).arg(Vpm).arg(val);
+    else s+= QString("%1 <+ %2/( %3 );\n").arg(Ipm).arg(Vpm).arg(val);
+    s += QString("%1 <+ white_noise( 4.0*`P_K*( %2 + 273.15) / ( %3 ), \"thermal\" );\n")
+                 .arg(Ipm).arg(valTemp).arg(val);
                   
     return s;
 }
