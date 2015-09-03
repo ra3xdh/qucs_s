@@ -237,6 +237,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             if (hasParSWP&&hasDblSWP) filename = QString("%1_%2_swp_swp.txt").arg(basenam).arg(sim);
             else if (hasParSWP) filename = QString("%1_%2_swp.txt").arg(basenam).arg(sim);
             else filename = QString("%1_%2.txt").arg(basenam).arg(sim);
+            filename.replace(' ','_'); // Ngspice cannot understand spaces in filename
 
             QString write_str = QString("write %1 %2\n").arg(filename).arg(nods);
             stream<<write_str;
