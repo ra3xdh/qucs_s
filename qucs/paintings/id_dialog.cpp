@@ -312,6 +312,8 @@ void ID_Dialog::slotOk()
 void ID_Dialog::slotApply()
 {
   int selectedrow = ParamTable->currentRow();
+  if (selectedrow<0) return; // Nothing selected
+
   QTableWidgetItem *item;
   item = ParamTable->item(selectedrow, 0);
   item->setText(showCheck->isChecked() ? tr("yes") : tr("no"));
