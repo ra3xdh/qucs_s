@@ -98,7 +98,15 @@ sp_customsim.cpp
 sp_fourier.cpp
 sp_disto.cpp
 sp_noise.cpp
+
+# 
+# Qucs-S new components cpp list
+#
+
+S4Q_V_DC.cpp
+S4Q_V.cpp
 )
+
 
 SET(COMPONENTS_HDRS
 ac_sim.h
@@ -317,6 +325,12 @@ sp_customsim.h
 sp_fourier.h
 sp_disto.h
 sp_noise.h
+# 
+# Qucs-S new components h list
+#
+
+S4Q_V_DC.h
+S4Q_V.h
 )
 
 

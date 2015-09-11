@@ -200,7 +200,12 @@
 // Verilog-A dynamicaly loaded component
 #include "vacomponent.h"
 
-// Spice-specific components
+//
+// Qucs-S ngspice and Xyce components
+#include "S4Q_V_DC.h"
+#include "S4Q_V.h"
+//
+//
 #include "src_eqndef.h"
 #include "vsffm.h"
 #include "isffm.h"

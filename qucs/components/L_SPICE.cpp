@@ -28,13 +28,13 @@ L_SPICE::L_SPICE()
 {
     Description = QObject::tr("L SPICE format");
 
-    Arcs.append(new Arc(-18, -6, 12, 12,  0, 16*180,QPen(Qt::red,3)));
-    Arcs.append(new Arc( -6, -6, 12, 12,  0, 16*180,QPen(Qt::red,3)));
-    Arcs.append(new Arc(  6, -6, 12, 12,  0, 16*180,QPen(Qt::red,3)));
+    Arcs.append(new Arc(-18, -6, 12, 12,  0, 16*180,QPen(Qt::darkRed,3)));
+    Arcs.append(new Arc( -6, -6, 12, 12,  0, 16*180,QPen(Qt::darkRed,3)));
+    Arcs.append(new Arc(  6, -6, 12, 12,  0, 16*180,QPen(Qt::darkRed,3)));
     Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
     Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
     // DOT
-      Arcs.append(new Arc(-18, -20,  5,  5,  0, 16*360,QPen(Qt::red,3)));
+      Arcs.append(new Arc(-18, -20,  5,  5,  0, 16*360,QPen(Qt::darkRed,3)));
 
     Ports.append(new Port(-30,  0));
     Ports.append(new Port( 30,  0));

@@ -28,10 +28,10 @@ R_SPICE::R_SPICE()
 {
     Description = QObject::tr("R SPICE format");
 
-    Lines.append(new Line(-18, -9, 18, -9,QPen(Qt::red,3)));
-    Lines.append(new Line( 18, -9, 18,  9,QPen(Qt::red,3)));
-    Lines.append(new Line( 18,  9,-18,  9,QPen(Qt::red,3)));
-    Lines.append(new Line(-18,  9,-18, -9,QPen(Qt::red,3)));
+    Lines.append(new Line(-18, -9, 18, -9,QPen(Qt::darkRed,3)));
+    Lines.append(new Line( 18, -9, 18,  9,QPen(Qt::darkRed,3)));
+    Lines.append(new Line( 18,  9,-18,  9,QPen(Qt::darkRed,3)));
+    Lines.append(new Line(-18,  9,-18, -9,QPen(Qt::darkRed,3)));
     Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
     Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
     

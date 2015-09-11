@@ -64,18 +64,6 @@ QString Src_eqndef::netlist()
     return QString("");
 }
 
-//QString Src_eqndef::spice_netlist(bool)
-//{
-//    QString s = spicecompat::check_refdes(Name,SpiceModel);
-//    foreach(Port *p1, Ports) {
-//        QString nam = p1->Connection->Name;
-//        if (nam=="gnd") nam = "0";
-//        s += " "+ nam;   // node names
-//    }
-//    s += QString(" %1 = %2 \n").arg(Props.at(0)->Name).arg(Props.at(0)->Value);
-//    return s;
-//}
-
 QString Src_eqndef::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
@@ -84,8 +72,6 @@ QString Src_eqndef::spice_netlist(bool)
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }
-//    s += QString(" %1 = %2 \n").arg(Props.at(0)->Name).arg(Props.at(0)->Value);
-    
     
     QString VI  = Props.at(0)-> Name;
     QString VI2 = Props.at(0)->Value;

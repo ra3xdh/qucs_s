@@ -30,15 +30,15 @@ DIODE_SPICE::DIODE_SPICE()
 
 
     Lines.append(new Line(-30,  0, -20,  0,QPen(Qt::darkBlue,3)));
-    Lines.append(new Line( -20, 0, -6,   0,QPen(Qt::red,3)));
-    Lines.append(new Line(  6,  0, 20,   0,QPen(Qt::red,3)));
+    Lines.append(new Line( -20, 0, -6,   0,QPen(Qt::darkRed,3)));
+    Lines.append(new Line(  6,  0, 20,   0,QPen(Qt::darkRed,3)));
     Lines.append(new Line( 20,  0, 30,   0,QPen(Qt::darkBlue,3)));    
  
  
-    Lines.append(new Line( -6, -9, -6,  9,QPen(Qt::red,3)));
-    Lines.append(new Line(  6, -9,  6,  9,QPen(Qt::red,3)));
-    Lines.append(new Line( -6,  0,  6, -9,QPen(Qt::red,3)));
-    Lines.append(new Line( -6,  0,  6,  9,QPen(Qt::red,3)));
+    Lines.append(new Line( -6, -9, -6,  9,QPen(Qt::darkRed,3)));
+    Lines.append(new Line(  6, -9,  6,  9,QPen(Qt::darkRed,3)));
+    Lines.append(new Line( -6,  0,  6, -9,QPen(Qt::darkRed,3)));
+    Lines.append(new Line( -6,  0,  6,  9,QPen(Qt::darkRed,3)));
 
   Ports.append(new Port(-30, 0));
   Ports.append(new Port( 30, 0));
@@ -72,7 +72,7 @@ Component* DIODE_SPICE::newOne()
 
 Element* DIODE_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr(" Diode");
+  Name = QObject::tr("Diode (D)");
   BitmapFile = (char *) "DIODE_SPICE";
 
   if(getNewOne)  return new DIODE_SPICE();

@@ -28,11 +28,11 @@ K_SPICE::K_SPICE()
 {
     Description = QObject::tr("K SPICE format");
 
-    Lines.append(new Line(-10,  0, 10,  0,QPen(Qt::red,3)));
-    Lines.append(new Line(-10,  0, -6,   4,QPen(Qt::red,3)));
-    Lines.append(new Line(-10,  0, -6,  -4,QPen(Qt::red,3)));
-    Lines.append(new Line( 10,  0,   6,  4,QPen(Qt::red,3)));
-    Lines.append(new Line( 10,  0,   6,  -4,QPen(Qt::red,3)));
+    Lines.append(new Line(-10,  0, 10,  0,QPen(Qt::darkRed,3)));
+    Lines.append(new Line(-10,  0, -6,   4,QPen(Qt::darkRed,3)));
+    Lines.append(new Line(-10,  0, -6,  -4,QPen(Qt::darkRed,3)));
+    Lines.append(new Line( 10,  0,   6,  4,QPen(Qt::darkRed,3)));
+    Lines.append(new Line( 10,  0,   6,  -4,QPen(Qt::darkRed,3)));
    
  
     x1 = -30; y1 = -13;
@@ -63,7 +63,7 @@ Component* K_SPICE::newOne()
 
 Element* K_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Inductive coupling");
+  Name = QObject::tr("K coupling");
   BitmapFile = (char *) "K_SPICE";
 
   if(getNewOne)  return new K_SPICE();
