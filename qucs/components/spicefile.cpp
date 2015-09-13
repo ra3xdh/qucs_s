@@ -29,6 +29,7 @@
 #include <QFileInfo>
 #include <QMutex>
 #include <QDebug>
+#include <QStatusBar>
 
 #include "spicefile.h"
 #include "schematic.h"
@@ -415,15 +416,11 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
     *SpiceFile = PrepName;
   }
 
-  QString executableSuffix = "";
-#ifdef __MINGW32__
-  executableSuffix = ".exe";
-#endif
-
   // begin command line construction
   QString prog;
   QStringList com;
-  prog =  QucsSettings.BinDir + "qucsconv"  + executableSuffix;
+  //prog =  QucsSettings.BinDir + "qucsconv"  + executableSuffix;
+  prog =  QucsSettings.Qucsconv;
 
   if(makeSubcircuit) com << "-g" << "_ref";
   com << "-if" << "spice" << "-of" << "qucs";
@@ -446,7 +443,7 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
   env.insert("PATH", env.value("PATH") );
   QucsConv->setProcessEnvironment(env);
 
-  qDebug() << "Command:" << prog << com.join(" ");
+  qDebug() << "SpiceFile::recreateSubNetlist :Command:" << prog << com.join(" ");
 //  QucsConv->start(com.join(" "));
   QucsConv->start(prog, com);
 
@@ -463,17 +460,15 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
   (*outstream) << NetText;
   (*filstream) << NetText;
 
-  // waiting info dialog box
-  QMessageBox *MBox = 
-    new QMessageBox(QMessageBox::NoIcon, 
-                    QObject::tr("Info"),
-                    QObject::tr("Converting SPICE file \"%1\".").arg(*SpiceFile),
-                    QMessageBox::Abort);
-  MBox->setAttribute(Qt::WA_DeleteOnClose);
-  connect(QucsConv, SIGNAL(finished(int)), MBox, SLOT(close()));
-  MBox->exec();
+  // only interact with the GUI if it was launched
+  if (QucsMain) {
+    QucsMain->statusBar()->showMessage(tr("Converting SPICE file \"%1\".").arg(*SpiceFile), 2000);
+  }
+  else
+    qDebug() << QObject::tr("Converting SPICE file \"%1\".").arg(*SpiceFile);
 
   // finish
+  QucsConv->waitForFinished();
   delete QucsConv;
   lastLoaded = QDateTime::currentDateTime();
   return true;

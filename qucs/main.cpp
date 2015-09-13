@@ -679,13 +679,26 @@ int main(int argc, char *argv[])
   QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
 
+  /// \todo Make the setting up of all executables below more consistent
   var = getenv("QUCSATOR");
   if(var != NULL) {
-	  QucsSettings.Qucsator = QString(var);
+      QucsSettings.Qucsator = QString(var);
   }
   else {
-	  QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator" + executableSuffix;
+      QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator" + executableSuffix;
   }
+
+  var = getenv("QUCSCONV");
+  if(var != NULL) {
+      QucsSettings.Qucsconv = QString(var);
+  }
+  else {
+      QucsSettings.Qucsconv = QucsSettings.BinDir + "qucsconv" + executableSuffix;
+  }
+  QFile file(QucsSettings.Qucsconv);
+  if(!file.exists())
+      qWarning() << "QucsConv not found: " << QucsSettings.Qucsconv;
+
 
   var = getenv("ADMSXMLBINDIR");
   if(var != NULL) {

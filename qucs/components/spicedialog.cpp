@@ -425,14 +425,9 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
   // Now do the spice->qucs netlist conversion using the qucsconv program ...
   QucsConv = new QProcess(this);
 
-  QString executableSuffix = "";
-#ifdef __MINGW32__
-  executableSuffix = ".exe";
-#endif
-
   QString Program;
   QStringList Arguments;
-  Program = QucsSettings.BinDir + "qucsconv" + executableSuffix;
+  Program = QucsSettings.Qucsconv;
   Arguments << "-if" << "spice"
             << "-of" <<  "qucs"
             << "-i" << FileInfo.filePath();
@@ -453,11 +448,10 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
 
   QucsConv->start(Program, Arguments);
 
-//    if((QucsConv->state() != QProcess::Starting) && (QucsConv->state()!=QProcess::Running))
   if(!QucsConv->Running)
   {
     QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot execute \"%1\".").arg(QucsSettings.BinDir + "qucsconv" + executableSuffix));
+                          tr("Cannot execute \"%1\".").arg(QucsSettings.Qucsconv));
     return false;
   }
 

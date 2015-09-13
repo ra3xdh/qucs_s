@@ -181,12 +181,7 @@ void ImportDialog::slotImport()
   QString Program;
   QStringList CommandLine;
 
-  QString executableSuffix = "";
-#ifdef __MINGW32__
-  executableSuffix = ".exe";
-#endif
-
-  Program = QucsSettings.BinDir + "qucsconv" + executableSuffix;
+  Program = QucsSettings.Qucsconv;
   CommandLine  << "-if";
   
   if((Suffix == "citi") || (Suffix == "cit"))

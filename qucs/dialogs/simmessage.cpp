@@ -236,7 +236,7 @@ void SimMessage::nextSPICE()
 
   QString prog;
   QStringList com;
-  prog = QucsSettings.BinDir + "qucsconv" + executableSuffix;
+  prog = QucsSettings.Qucsconv;
   if(makeSubcircuit)
     com << "-g" << "_ref";
   com << "-if" << "spice" << "-of" << "qucs";
