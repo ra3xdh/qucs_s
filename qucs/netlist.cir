@@ -1,0 +1,8 @@
+* Qucs 0.0.19  
+B1 _net0 _net1 I = 100+56*FRT 
+.control
+set filetype=ascii
+echo "" > spice4qucs.cir.noise
+exit
+.endc
+.END

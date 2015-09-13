@@ -441,6 +441,8 @@ void Module::registerModules (void) {
   REGISTER_SPICE_1 (K_SPICE);
   REGISTER_SPICE_1 (S4Q_V_DC);
   REGISTER_SPICE_1 (S4Q_V); 
+  REGISTER_SPICE_1 (Src_eqndef);
+  REGISTER_SPICE_1 (S4Q_Ieqndef);  
   REGISTER_SPICE_1 (DIODE_SPICE);
   REGISTER_SPICE_1 (NPN_SPICE); 
   REGISTER_SPICE_1 (PNP_SPICE); 
@@ -453,7 +455,6 @@ void Module::registerModules (void) {
      
   //
   REGISTER_SPICE_1 (Vac_SPICE);
-  REGISTER_SPICE_1 (Src_eqndef);
   REGISTER_SPICE_1 (iSffm);
   REGISTER_SPICE_1 (vAmpMod);
   REGISTER_SPICE_1 (iAmpMod); 

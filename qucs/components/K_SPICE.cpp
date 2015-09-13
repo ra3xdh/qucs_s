@@ -26,7 +26,7 @@
 
 K_SPICE::K_SPICE()
 {
-    Description = QObject::tr("K SPICE format");
+    Description = QObject::tr("SPICE K:\nEnter the names of the coupled inductances and their coupling factor.");
 
     Lines.append(new Line(-10,  0, 10,  0,QPen(Qt::darkRed,3)));
     Lines.append(new Line(-10,  0, -6,   4,QPen(Qt::darkRed,3)));
@@ -45,9 +45,9 @@ K_SPICE::K_SPICE()
     Name  = "K";
 
     
-      Props.append(new Property("Ind1", "", true, "Expression"));
-      Props.append(new Property("Ind2", "", true, "Expression"));
-      Props.append(new Property("K", "0.1", true, QObject::tr("Coupling factor ( 0  <  K  <= 1)")));
+      Props.append(new Property("Ind1", "L1", true, "Inductance 1 name"));
+      Props.append(new Property("Ind2", "L2", true, "Inductance 2 name"));
+      Props.append(new Property("K",   "0.1", true, QObject::tr("Coupling factor ( 0  <  K  <= 1)")));
   
     rotate();  // fix historical flaw
 }

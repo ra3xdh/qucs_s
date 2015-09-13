@@ -204,6 +204,7 @@
 // Qucs-S ngspice and Xyce components
 #include "S4Q_V_DC.h"
 #include "S4Q_V.h"
+#include "S4Q_Ieqndef.h"
 //
 //
 #include "src_eqndef.h"

@@ -72,7 +72,7 @@ Component* DIODE_SPICE::newOne()
 
 Element* DIODE_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Diode (D)");
+  Name = QObject::tr("D Diode");
   BitmapFile = (char *) "DIODE_SPICE";
 
   if(getNewOne)  return new DIODE_SPICE();

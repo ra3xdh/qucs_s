@@ -1,20 +1,44 @@
-#include "src_eqndef.h"
+/***************************************************************************
+                         S4Q_Ieqndef.cpp  -  description
+                   ---------------------------------------
+    begin                    : 13 September 2015
+    copyright                : (C) 2015 by Vadim Kaznetsov and Mike Brinson
+    email                    : ra3xdh@gmil.co and mbrin72043@yahoo.co.uk
+ 
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+#include "S4Q_Ieqndef.h"
 #include "node.h"
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
 
 
-Src_eqndef::Src_eqndef()
+S4Q_Ieqndef::S4Q_Ieqndef()
 {
   Description = QObject::tr("SPICE B:\nMultiple line ngspice or Xyce specifications are allowed using SPICE \"+\" continuaton lines."); 
 
   Arcs.append(new Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::darkRed,3)));
-  Texts.append(new Text(10,-12,"Eqn",Qt::darkRed,10.0,0.0,-1.0));
+ 
   Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 18,  5, 18, 11,QPen(Qt::darkRed,1)));
   Lines.append(new Line( 21,  8, 15,  8,QPen(Qt::darkRed,1)));
   Lines.append(new Line(-18,  5,-18, 11,QPen(Qt::black,1)));
+  
+  Lines.append(new Line( -8,  0, 8, 0,QPen(Qt::darkRed,2)));
+  Lines.append(new Line( -8,  0, -4,  -4,QPen(Qt::darkRed,2)));
+  Lines.append(new Line( -8,  0, -4,   4,QPen(Qt::darkRed,2)));
+  
+  Texts.append(new Text(30,-30,"Eqn",Qt::darkRed,10.0,0.0,-1.0));
+  
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
@@ -28,7 +52,7 @@ Src_eqndef::Src_eqndef()
   SpiceModel = "B";
   Name  = "B";
   
-  Props.append(new Property("V", "0", true,"Specification expression"));
+  Props.append(new Property("I", "0", true,"Specification expression"));
   Props.append(new Property("Line 2", "", false,"+ continuation line 1"));
   Props.append(new Property("Line 3", "", false,"+ continuation line 2"));
   Props.append(new Property("Line 4", "", false,"+ continuation line 3"));
@@ -36,35 +60,35 @@ Src_eqndef::Src_eqndef()
 
 
 
-// Props.append(new Property("V", "0", true,"Expression"));
+// Props.append(new Property("I", "0", true,"Expression"));
 
   rotate();  // fix historical flaw
 }
 
-Src_eqndef::~Src_eqndef()
+S4Q_Ieqndef::~S4Q_Ieqndef()
 {
 }
 
-Component* Src_eqndef::newOne()
+Component* S4Q_Ieqndef::newOne()
 {
-  return new Src_eqndef();
+  return new S4Q_Ieqndef();
 }
 
-Element* Src_eqndef::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* S4Q_Ieqndef::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("B source (V)");
-  BitmapFile = (char *) "src_eqndef";
+  Name = QObject::tr("B source (I)");
+  BitmapFile = (char *) "S4Q_Ieqndef";
 
-  if(getNewOne)  return new Src_eqndef();
+  if(getNewOne)  return new S4Q_Ieqndef();
   return 0;
 }
 
-QString Src_eqndef::netlist()
+QString S4Q_Ieqndef::netlist()
 {
     return QString("");
 }
 
-QString Src_eqndef::spice_netlist(bool)
+QString S4Q_Ieqndef::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {
@@ -89,7 +113,7 @@ QString Src_eqndef::spice_netlist(bool)
     return s;
 }
 
-QString Src_eqndef::va_code()
+QString S4Q_Ieqndef::va_code()
 {
     QString s;
     QString plus = Ports.at(0)->Connection->Name;

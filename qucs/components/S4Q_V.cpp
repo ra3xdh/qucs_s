@@ -27,7 +27,7 @@
 
 S4Q_V::S4Q_V()
 {
-  Description = QObject::tr("Independent V source");
+   Description = QObject::tr("SPICE V:\nMultiple line ngspice or Xyce V specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
 
   Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkRed,2)));
 
@@ -50,11 +50,11 @@ S4Q_V::S4Q_V()
   SpiceModel = "V";
   Name  = "V";
 
-  Props.append(new Property("V", "", true,"Expression"));
-  Props.append(new Property("V_Line 2", "", false,"Expression"));
-  Props.append(new Property("V_Line 3", "", false,"Expression"));
-  Props.append(new Property("V_Line 4", "", false,"Expression"));
-  Props.append(new Property("V_Line 5", "", false,"Expression"));
+  Props.append(new Property("V", "", true,"Specification xpression"));
+  Props.append(new Property("V_Line 2", "", false,"+ continuation line 1"));
+  Props.append(new Property("V_Line 3", "", false,"+ continuation line 2"));
+  Props.append(new Property("V_Line 4", "", false,"+ continuation line 3"));
+  Props.append(new Property("V_Line 5", "", false,"+ continuation line 4"));
 
   rotate();  // fix historical flaw
 }
@@ -70,7 +70,7 @@ Component* S4Q_V::newOne()
 
 Element* S4Q_V::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Voltage Source");
+  Name = QObject::tr("V Source");
   BitmapFile = (char *) "S4Q_V";
 
   if(getNewOne)  return new S4Q_V();

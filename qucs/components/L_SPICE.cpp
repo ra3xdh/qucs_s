@@ -26,7 +26,7 @@
 
 L_SPICE::L_SPICE()
 {
-    Description = QObject::tr("L SPICE format");
+    Description = QObject::tr("SPICE L:\nMultiple line ngspice or Xyce L specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
 
     Arcs.append(new Arc(-18, -6, 12, 12,  0, 16*180,QPen(Qt::darkRed,3)));
     Arcs.append(new Arc( -6, -6, 12, 12,  0, 16*180,QPen(Qt::darkRed,3)));
@@ -49,11 +49,11 @@ L_SPICE::L_SPICE()
     SpiceModel = "L";
     Name  = "L";
 
-    Props.append(new Property("L", "", true,"Expression"));
-    Props.append(new Property("L_Line 2", "", false,"Expression"));
-    Props.append(new Property("L_Line 3", "", false,"Expression"));
-    Props.append(new Property("L _Line 4", "", false,"Expression"));
-    Props.append(new Property("L _Line 5", "", false,"Expression"));
+    Props.append(new Property("L", "", true,"Specification expression"));
+    Props.append(new Property("L_Line 2", "", false,"+ continuation line 1"));
+    Props.append(new Property("L_Line 3", "", false,"+ continuation line 2"));
+    Props.append(new Property("L_Line 4", "", false,"+ continuation line 3"));
+    Props.append(new Property("L_Line 5", "", false,"+ continuation line 4"));
 
 
 
@@ -71,7 +71,7 @@ Component* L_SPICE::newOne()
 
 Element* L_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Inductor");
+  Name = QObject::tr("L Inductor");
   BitmapFile = (char *) "L_SPICE";
 
   if(getNewOne)  return new L_SPICE();
