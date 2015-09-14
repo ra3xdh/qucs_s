@@ -1,5 +1,5 @@
 /***************************************************************************
-                             S4Q_V.cpp
+                             S4Q_I.cpp
                               -------------
     begin                : Thu May 21 2015
     copyright            : (C) 2015 by Vadim Kuznetsov
@@ -19,26 +19,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "S4Q_V.h"
+#include "S4Q_I.h"
 #include "node.h"
 #include "misc.h"
-#include "extsimkernels/spicecompat.h" 
+#include "extsimkernels/spicecompat.h"
 
 
-S4Q_V::S4Q_V()
+S4Q_I::S4Q_I()
 {
-   Description = QObject::tr("SPICE V:\nMultiple line ngspice or Xyce V specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
+   Description = QObject::tr("SPICE I:\nMultiple line ngspice or Xyce I specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
 
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkRed,2)));
-
-  Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
+  Arcs.append(new Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::darkRed,3)));
  
-  Lines.append(new Line( 18,  5, 18, 11,QPen(Qt::red,1)));
-  Lines.append(new Line( 21,  8, 15,  8,QPen(Qt::red,1)));
+  Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 18,  5, 18, 11,QPen(Qt::darkRed,1)));
+  Lines.append(new Line( 21,  8, 15,  8,QPen(Qt::darkRed,1)));
   Lines.append(new Line(-18,  5,-18, 11,QPen(Qt::black,1)));
-
-  Ports.append(new Port( 30,  0));
+  
+  Lines.append(new Line( -8,  0, 8, 0,QPen(Qt::darkRed,2)));
+  Lines.append(new Line( -8,  0, -4,  -4,QPen(Qt::darkRed,2)));
+  Lines.append(new Line( -8,  0, -4,   4,QPen(Qt::darkRed,2)));
+  
+   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
 
   x1 = -30; y1 = -14;
@@ -46,38 +49,38 @@ S4Q_V::S4Q_V()
 
   tx = x1+4;
   ty = y2+4;
-  Model = "S4Q_V";
-  SpiceModel = "V";
-  Name  = "V";
+  Model = "S4Q_I";
+  SpiceModel = "I";
+  Name  = "I";
 
-  Props.append(new Property("V", "", true,"Specification expression"));
-  Props.append(new Property("V_Line 2", "", false,"+ continuation line 1"));
-  Props.append(new Property("V_Line 3", "", false,"+ continuation line 2"));
-  Props.append(new Property("V_Line 4", "", false,"+ continuation line 3"));
-  Props.append(new Property("V_Line 5", "", false,"+ continuation line 4"));
+  Props.append(new Property("I", "", true,"Specification expression"));
+  Props.append(new Property("I_Line 2", "", false,"+ continuation line 1"));
+  Props.append(new Property("I_Line 3", "", false,"+ continuation line 2"));
+  Props.append(new Property("I_Line 4", "", false,"+ continuation line 3"));
+  Props.append(new Property("I_Line 5", "", false,"+ continuation line 4"));
 
   rotate();  // fix historical flaw
 }
 
-S4Q_V::~S4Q_V()
+S4Q_I::~S4Q_I()
 {
 }
 
-Component* S4Q_V::newOne()
+Component* S4Q_I::newOne()
 {
-  return new S4Q_V();
+  return new S4Q_I();
 }
 
-Element* S4Q_V::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* S4Q_I::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("V Source");
-  BitmapFile = (char *) "S4Q_V";
+  Name = QObject::tr("I Source");
+  BitmapFile = (char *) "S4Q_I";
 
-  if(getNewOne)  return new S4Q_V();
+  if(getNewOne)  return new S4Q_I();
   return 0;
 }
 
-QString S4Q_V::spice_netlist(bool)
+QString S4Q_I::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {

@@ -441,6 +441,7 @@ void Module::registerModules (void) {
   REGISTER_SPICE_1 (K_SPICE);
   REGISTER_SPICE_1 (S4Q_V_DC);
   REGISTER_SPICE_1 (S4Q_V); 
+  REGISTER_SPICE_1 (S4Q_I); 
   REGISTER_SPICE_1 (Src_eqndef);
   REGISTER_SPICE_1 (S4Q_Ieqndef);  
   REGISTER_SPICE_1 (DIODE_SPICE);

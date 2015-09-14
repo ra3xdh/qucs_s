@@ -23,7 +23,7 @@
 
 S4Q_Ieqndef::S4Q_Ieqndef()
 {
-  Description = QObject::tr("SPICE B:\nMultiple line ngspice or Xyce specifications are allowed using SPICE \"+\" continuaton lines."); 
+  Description = QObject::tr("SPICE B (I type):\nMultiple line ngspice or Xyce B specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  "); 
 
   Arcs.append(new Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::darkRed,3)));
  

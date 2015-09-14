@@ -205,6 +205,7 @@
 #include "S4Q_V_DC.h"
 #include "S4Q_V.h"
 #include "S4Q_Ieqndef.h"
+#include "S4Q_I.h"
 //
 //
 #include "src_eqndef.h"
