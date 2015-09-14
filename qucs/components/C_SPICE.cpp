@@ -46,7 +46,7 @@ C_SPICE::C_SPICE()
     SpiceModel = "C";
     Name  = "C";
 
-    Props.append(new Property("C", "", true,"Specification expression"));
+    Props.append(new Property("C", "", true,"C param list and\n .model spec."));
     Props.append(new Property("C_Line 2", "", false,"+ continuation line 1"));
     Props.append(new Property("C_Line 3", "", false,"+ continuation line 2"));
     Props.append(new Property("C_Line 4", "", false,"+ continuation line 3"));

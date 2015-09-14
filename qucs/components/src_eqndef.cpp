@@ -12,9 +12,9 @@ Src_eqndef::Src_eqndef()
   Texts.append(new Text(10,-12,"Eqn",Qt::darkRed,10.0,0.0,-1.0));
   Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 18,  5, 18, 11,QPen(Qt::darkRed,1)));
-  Lines.append(new Line( 21,  8, 15,  8,QPen(Qt::darkRed,1)));
-  Lines.append(new Line(-18,  5,-18, 11,QPen(Qt::black,1)));
+  Lines.append(new Line( 18,  5, 18, 11,QPen(Qt::red,2)));
+  Lines.append(new Line( 21,  8, 15,  8,QPen(Qt::red,2)));
+  Lines.append(new Line(-18,  5,-18, 11,QPen(Qt::black,2)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
@@ -28,11 +28,11 @@ Src_eqndef::Src_eqndef()
   SpiceModel = "B";
   Name  = "B";
   
-  Props.append(new Property("V", "0", true,"Specification expression"));
-  Props.append(new Property("Line 2", "", false,"+ continuation line 1"));
-  Props.append(new Property("Line 3", "", false,"+ continuation line 2"));
-  Props.append(new Property("Line 4", "", false,"+ continuation line 3"));
-  Props.append(new Property("Line 5", "", false,"+ continuation line 4"));
+  Props.append(new Property("V", "", true,"B(V) specification"));
+  Props.append(new Property("Line_2", "", false,"+ continuation line 1"));
+  Props.append(new Property("Line_3", "", false,"+ continuation line 2"));
+  Props.append(new Property("Line_4", "", false,"+ continuation line 3"));
+  Props.append(new Property("Line_5", "", false,"+ continuation line 4"));
 
 
 

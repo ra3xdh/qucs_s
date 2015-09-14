@@ -48,7 +48,7 @@ R_SPICE::R_SPICE()
     SpiceModel = "R";
     Name  = "R";
 
-    Props.append(new Property("R", "", true,"Specification expression"));
+    Props.append(new Property("R", "", true,"R param list and\n .model spec."));
     Props.append(new Property("R_Line 2", "", false,"+ continuation line 1"));
     Props.append(new Property("R_Line 3", "", false,"+ continuation line 2"));
     Props.append(new Property("R_Line 4", "", false,"+ continuation line 3"));

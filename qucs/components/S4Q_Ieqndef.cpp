@@ -29,13 +29,11 @@ S4Q_Ieqndef::S4Q_Ieqndef()
  
   Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 18,  5, 18, 11,QPen(Qt::darkRed,1)));
-  Lines.append(new Line( 21,  8, 15,  8,QPen(Qt::darkRed,1)));
-  Lines.append(new Line(-18,  5,-18, 11,QPen(Qt::black,1)));
+ 
   
-  Lines.append(new Line( -8,  0, 8, 0,QPen(Qt::darkRed,2)));
-  Lines.append(new Line( -8,  0, -4,  -4,QPen(Qt::darkRed,2)));
-  Lines.append(new Line( -8,  0, -4,   4,QPen(Qt::darkRed,2)));
+  Lines.append(new Line( -8,  0, 8, 0,QPen(Qt::darkRed,3)));
+  Lines.append(new Line( -8,  0, -4,  -4,QPen(Qt::darkRed,3)));
+  Lines.append(new Line( -8,  0, -4,   4,QPen(Qt::darkRed,3)));
   
   Texts.append(new Text(30,-30,"Eqn",Qt::darkRed,10.0,0.0,-1.0));
   
@@ -52,11 +50,11 @@ S4Q_Ieqndef::S4Q_Ieqndef()
   SpiceModel = "B";
   Name  = "B";
   
-  Props.append(new Property("I", "0", true,"Specification expression"));
-  Props.append(new Property("Line 2", "", false,"+ continuation line 1"));
-  Props.append(new Property("Line 3", "", false,"+ continuation line 2"));
-  Props.append(new Property("Line 4", "", false,"+ continuation line 3"));
-  Props.append(new Property("Line 5", "", false,"+ continuation line 4"));
+  Props.append(new Property("I", "", true,"B(I) specification."));
+  Props.append(new Property("Line_2", "", false,"+ continuation line 1"));
+  Props.append(new Property("Line_3", "", false,"+ continuation line 2"));
+  Props.append(new Property("Line_4", "", false,"+ continuation line 3"));
+  Props.append(new Property("Line_5", "", false,"+ continuation line 4"));
 
 
 

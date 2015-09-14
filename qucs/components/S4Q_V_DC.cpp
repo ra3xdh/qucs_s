@@ -29,17 +29,17 @@ S4Q_V_DC::S4Q_V_DC()
 {
   Description = QObject::tr("Battery");
 
-  Lines.append(new Line(  4,-13,  4, 13,QPen(Qt::darkRed,2)));
-  Lines.append(new Line( -4, -6, -4,  6,QPen(Qt::darkRed,4))); 
+  Lines.append(new Line(  4,-13,  4, 13,QPen(Qt::darkRed,3)));
+  Lines.append(new Line( -4, -6, -4,  6,QPen(Qt::darkRed,3))); 
   Lines.append(new Line( 30,  0,  15,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 15,  0,   4,  0,QPen(Qt::darkRed,2)));
   
    Lines.append(new Line(-30,  0,  -15,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( -15,  0,   -4,  0,QPen(Qt::darkRed,2)));
 
-  Lines.append(new Line( 11,  5, 11, 11,QPen(Qt::red,1)));
-  Lines.append(new Line( 14,  8,  8,  8,QPen(Qt::red,1)));
-  Lines.append(new Line(-11,  5,-11, 11,QPen(Qt::black,1)));
+  Lines.append(new Line( 11,  5, 11, 11,QPen(Qt::red,2)));
+  Lines.append(new Line( 14,  8,  8,  8,QPen(Qt::red,2)));
+  Lines.append(new Line(-11,  5,-11, 11,QPen(Qt::black,2)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

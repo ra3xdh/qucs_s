@@ -31,15 +31,11 @@ S4Q_I::S4Q_I()
 
   Arcs.append(new Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::darkRed,3)));
  
-  Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 18,  5, 18, 11,QPen(Qt::darkRed,1)));
-  Lines.append(new Line( 21,  8, 15,  8,QPen(Qt::darkRed,1)));
-  Lines.append(new Line(-18,  5,-18, 11,QPen(Qt::black,1)));
-  
-  Lines.append(new Line( -8,  0, 8, 0,QPen(Qt::darkRed,2)));
-  Lines.append(new Line( -8,  0, -4,  -4,QPen(Qt::darkRed,2)));
-  Lines.append(new Line( -8,  0, -4,   4,QPen(Qt::darkRed,2)));
+ Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
+ Lines.append(new Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
+ Lines.append(new Line( -8,  0, 8, 0,QPen(Qt::darkRed,3)));
+ Lines.append(new Line( -8,  0, -4,  -4,QPen(Qt::darkRed,3)));
+ Lines.append(new Line( -8,  0, -4,   4,QPen(Qt::darkRed,3)));
   
    Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

@@ -26,26 +26,26 @@
 
 PNP_SPICE::PNP_SPICE()
 {
-    Description = QObject::tr("PNP BJT SPICE format");
+    Description = QObject::tr("Q(PNP) BJT:\nMultiple line ngspice or Xyce Q model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
 
-  Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::red,3)));
+  Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkRed,3)));
   
   Lines.append(new Line(-30,  0,-20,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line(-20,  0,-10,  0,QPen(Qt::red,3)));
+  Lines.append(new Line(-20,  0,-10,  0,QPen(Qt::darkRed,3)));
   
-  Lines.append(new Line(-10, -5,  0,-15,QPen(Qt::red,3)));
+  Lines.append(new Line(-10, -5,  0,-15,QPen(Qt::darkRed,3)));
   
-  Lines.append(new Line(  0,-15,  0,-20,QPen(Qt::red,3)));
+  Lines.append(new Line(  0,-15,  0,-20,QPen(Qt::darkRed,3)));
   Lines.append(new Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
     
-  Lines.append(new Line(-10,  5,  0, 15,QPen(Qt::red,3)));
+  Lines.append(new Line(-10,  5,  0, 15,QPen(Qt::darkRed,3)));
   
-  Lines.append(new Line(  0, 15,  0, 20,QPen(Qt::red,3)));
+  Lines.append(new Line(  0, 15,  0, 20,QPen(Qt::darkRed,3)));
   Lines.append(new Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));
 
   
-  Lines.append(new Line( -5, 10, -5, 16,QPen(Qt::red,3)));
-  Lines.append(new Line( -5, 10,  1, 10,QPen(Qt::red,3)));
+  Lines.append(new Line( -5, 10, -5, 16,QPen(Qt::darkRed,3)));
+  Lines.append(new Line( -5, 10,  1, 10,QPen(Qt::darkRed,3)));
  
   Ports.append(new Port(  0,-30));
   Ports.append(new Port(-30,  0));
@@ -61,11 +61,11 @@ PNP_SPICE::PNP_SPICE()
     SpiceModel = "Q";
     Name  = "Q";
 
-    Props.append(new Property("Q", "", true,"Expression"));
-    Props.append(new Property("Q_Line 2", "", false,"Expression"));
-    Props.append(new Property("Q_Line 3", "", false,"Expression"));
-    Props.append(new Property("Q _Line 4", "", false,"Expression"));
-    Props.append(new Property("Q _Line 5", "", false,"Expression"));
+    Props.append(new Property("Q", "", true,"Q(PNP) param list and\n .model spec."));
+    Props.append(new Property("Q_Line 2", "", false,"+ continuation line 1"));
+    Props.append(new Property("Q_Line 3", "", false,"+ continuation line 2"));
+    Props.append(new Property("Q_Line 4", "", false,"+ continuation line 3"));
+    Props.append(new Property("Q_Line 5", "", false,"+ continuation line 4"));
 
 }
 
@@ -80,7 +80,7 @@ Component* PNP_SPICE::newOne()
 
 Element* PNP_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr(" PNP BJT");
+  Name = QObject::tr("Q(PNP) BJT");
   BitmapFile = (char *) "PNP_SPICE";
 
   if(getNewOne)  return new PNP_SPICE();

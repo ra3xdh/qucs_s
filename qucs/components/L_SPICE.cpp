@@ -49,7 +49,7 @@ L_SPICE::L_SPICE()
     SpiceModel = "L";
     Name  = "L";
 
-    Props.append(new Property("L", "", true,"Specification expression"));
+    Props.append(new Property("L", "", true,"L param list and\n .model spec."));
     Props.append(new Property("L_Line 2", "", false,"+ continuation line 1"));
     Props.append(new Property("L_Line 3", "", false,"+ continuation line 2"));
     Props.append(new Property("L_Line 4", "", false,"+ continuation line 3"));
