@@ -186,7 +186,7 @@
         <translation>编辑元件属性</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+33"/>
         <source>Sweep</source>
         <translation>扫描</translation>
     </message>
@@ -199,12 +199,12 @@
         <location line="+9"/>
         <location line="+16"/>
         <location line="+106"/>
-        <location line="+87"/>
+        <location line="+94"/>
         <source>display in schematic</source>
         <translation>在原理图中显示</translation>
     </message>
     <message>
-        <location line="-276"/>
+        <location line="-283"/>
         <source>Simulation:</source>
         <translation>仿真</translation>
     </message>
@@ -255,13 +255,13 @@
     </message>
     <message>
         <location line="+9"/>
-        <location line="+1026"/>
+        <location line="+1123"/>
         <location line="+22"/>
         <source>Step:</source>
         <translation>步进值</translation>
     </message>
     <message>
-        <location line="-1041"/>
+        <location line="-1138"/>
         <source>Number:</source>
         <translation>点数</translation>
     </message>
@@ -277,7 +277,7 @@
         <translation>名称：</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+45"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
@@ -307,7 +307,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+16"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
@@ -315,6 +315,16 @@
         <location line="+3"/>
         <source>Remove</source>
         <translation>删除</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Move Up</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Move Down</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location line="+12"/>
@@ -333,24 +343,26 @@
     </message>
     <message>
         <location line="+29"/>
-        <location line="+76"/>
+        <location line="+74"/>
         <location line="+54"/>
-        <location line="+189"/>
+        <location line="+201"/>
         <location line="+215"/>
-        <location line="+136"/>
+        <location line="+167"/>
+        <location line="+292"/>
         <source>yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location line="-668"/>
-        <location line="+76"/>
-        <location line="+243"/>
-        <location line="+347"/>
+        <location line="-1001"/>
+        <location line="+74"/>
+        <location line="+255"/>
+        <location line="+378"/>
+        <location line="+296"/>
         <source>no</source>
         <translation>否</translation>
     </message>
     <message>
-        <location line="-67"/>
+        <location line="-356"/>
         <source>Select a file</source>
         <translation>选择文件</translation>
     </message>
@@ -385,7 +397,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+157"/>
+        <location line="+185"/>
         <source>Points per decade:</source>
         <translation type="unfinished"/>
     </message>
@@ -473,24 +485,24 @@
     </message>
     <message>
         <location line="+5"/>
-        <location line="+159"/>
+        <location line="+151"/>
         <source>solid line</source>
         <translation>实线</translation>
     </message>
     <message>
-        <location line="-158"/>
-        <location line="+159"/>
+        <location line="-150"/>
+        <location line="+151"/>
         <source>dash line</source>
         <translation>虚线</translation>
     </message>
     <message>
-        <location line="-158"/>
-        <location line="+159"/>
+        <location line="-150"/>
+        <location line="+151"/>
         <source>dot line</source>
         <translation>点线</translation>
     </message>
     <message>
-        <location line="-157"/>
+        <location line="-149"/>
         <source>long dash line</source>
         <translation type="unfinished"/>
     </message>
@@ -515,7 +527,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+10"/>
         <source>y-Axis:</source>
         <translation type="unfinished"/>
     </message>
@@ -525,7 +537,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+26"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
@@ -653,36 +665,36 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+8"/>
-        <location line="+42"/>
-        <location line="+44"/>
+        <location line="+7"/>
+        <location line="+43"/>
+        <location line="+45"/>
         <source>manual</source>
         <translation>手册</translation>
     </message>
     <message>
-        <location line="-78"/>
-        <location line="+42"/>
-        <location line="+44"/>
+        <location line="-80"/>
+        <location line="+43"/>
+        <location line="+45"/>
         <source>start</source>
         <translation>开始值</translation>
     </message>
     <message>
-        <location line="-77"/>
+        <location line="-79"/>
+        <location line="+45"/>
         <location line="+44"/>
-        <location line="+43"/>
         <source>step</source>
         <translation>步进值</translation>
     </message>
     <message>
-        <location line="-78"/>
+        <location line="-80"/>
+        <location line="+45"/>
         <location line="+44"/>
-        <location line="+43"/>
         <source>stop</source>
         <translation>结束值</translation>
     </message>
     <message>
-        <location line="-53"/>
-        <location line="+43"/>
+        <location line="-54"/>
+        <location line="+44"/>
         <source>number</source>
         <translation>点数</translation>
     </message>
@@ -1383,7 +1395,7 @@ Filter synthesis program
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
         <source>display</source>
         <translation>显示</translation>
     </message>
@@ -1409,27 +1421,27 @@ Filter synthesis program
     </message>
     <message>
         <location line="+10"/>
-        <location line="+115"/>
-        <location line="+32"/>
+        <location line="+106"/>
         <location line="+37"/>
-        <location line="+57"/>
+        <location line="+49"/>
+        <location line="+45"/>
         <source>yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location line="-241"/>
-        <location line="+147"/>
-        <location line="+37"/>
+        <location line="-237"/>
+        <location line="+143"/>
+        <location line="+94"/>
         <source>no</source>
         <translation>否</translation>
     </message>
     <message>
-        <location line="-166"/>
+        <location line="-219"/>
         <source>display in schematic</source>
         <translation>在原理图中显示</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Name:</source>
         <translation>名称：</translation>
     </message>
@@ -1449,7 +1461,7 @@ Filter synthesis program
         <translation>类型</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+27"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
@@ -1465,11 +1477,16 @@ Filter synthesis program
     </message>
     <message>
         <location line="+2"/>
+        <source>Apply</source>
+        <translation>应用 </translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+54"/>
         <location line="+8"/>
         <source>Error</source>
         <translation>错误</translation>
@@ -1716,7 +1733,7 @@ Filter synthesis program
 <context>
     <name>LibraryDialog</name>
     <message>
-        <location filename="../qucs/dialogs/librarydialog.cpp" line="+51"/>
+        <location filename="../qucs/dialogs/librarydialog.cpp" line="+56"/>
         <source>Create Library</source>
         <translation>新建元件库</translation>
     </message>
@@ -1775,28 +1792,28 @@ Filter synthesis program
     </message>
     <message>
         <location line="+12"/>
-        <location line="+193"/>
+        <location line="+190"/>
         <source>Create</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-172"/>
+        <location line="-169"/>
         <source>Message:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+11"/>
         <location filename="../qucs-lib/librarydialog.cpp" line="+74"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+20"/>
         <source>No projects!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+15"/>
         <location line="+17"/>
         <location line="+16"/>
         <location line="+6"/>
@@ -2245,7 +2262,7 @@ but is %1 !</source>
 <context>
     <name>MyWidget</name>
     <message>
-        <location filename="../qucs-rescodes/main.cpp" line="+58"/>
+        <location filename="../qucs-rescodes/main.cpp" line="+60"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"/>
     </message>
@@ -2336,19 +2353,19 @@ Resistor color code computation program
 <context>
     <name>OptimizeDialog</name>
     <message>
-        <location filename="../qucs/components/optimizedialog.cpp" line="+43"/>
+        <location filename="../qucs/components/optimizedialog.cpp" line="+55"/>
         <source>Edit Optimization Properties</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+22"/>
-        <location line="+114"/>
-        <location line="+75"/>
+        <location line="+120"/>
+        <location line="+84"/>
         <source>Name:</source>
         <translation>名称：</translation>
     </message>
     <message>
-        <location line="-187"/>
+        <location line="-202"/>
         <source>Simulation:</source>
         <translation>仿真</translation>
     </message>
@@ -2414,18 +2431,18 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+12"/>
-        <location line="+82"/>
+        <location line="+97"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location line="-82"/>
-        <location line="+12"/>
+        <location line="-97"/>
+        <location line="+18"/>
         <source>active</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-12"/>
+        <location line="-18"/>
         <source>initial</source>
         <translation type="unfinished"/>
     </message>
@@ -2441,12 +2458,12 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+0"/>
-        <location line="+82"/>
+        <location line="+97"/>
         <source>Type</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-45"/>
+        <location line="-54"/>
         <source>initial:</source>
         <translation type="unfinished"/>
     </message>
@@ -2462,50 +2479,55 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+10"/>
-        <location line="+154"/>
+        <location line="+175"/>
         <location line="+344"/>
         <source>linear double</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-497"/>
-        <location line="+155"/>
+        <location line="-518"/>
+        <location line="+176"/>
         <location line="+344"/>
         <source>logarithmic double</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-498"/>
-        <location line="+156"/>
+        <location line="-519"/>
+        <location line="+177"/>
         <location line="+344"/>
         <source>linear integer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-499"/>
-        <location line="+157"/>
+        <location line="-520"/>
+        <location line="+178"/>
         <source>logarithmic integer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-153"/>
-        <location line="+60"/>
+        <location line="-174"/>
+        <location line="+69"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
     <message>
-        <location line="-58"/>
-        <location line="+60"/>
+        <location line="-67"/>
+        <location line="+69"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location line="-55"/>
+        <location line="-64"/>
         <source>Type:</source>
         <translation>类型</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+12"/>
+        <source>Copy current values to equation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Variables</source>
         <translation type="unfinished"/>
     </message>
@@ -2521,47 +2543,47 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+4"/>
-        <location line="+119"/>
+        <location line="+131"/>
         <location line="+354"/>
         <source>minimize</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-472"/>
-        <location line="+120"/>
+        <location line="-484"/>
+        <location line="+132"/>
         <location line="+354"/>
         <source>maximize</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-473"/>
-        <location line="+121"/>
+        <location line="-485"/>
+        <location line="+133"/>
         <location line="+354"/>
         <source>less</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-474"/>
-        <location line="+122"/>
+        <location line="-486"/>
+        <location line="+134"/>
         <location line="+354"/>
         <source>greater</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-475"/>
-        <location line="+123"/>
+        <location line="-487"/>
+        <location line="+135"/>
         <location line="+354"/>
         <source>equal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-476"/>
-        <location line="+124"/>
+        <location line="-488"/>
+        <location line="+136"/>
         <source>monitor</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-107"/>
+        <location line="-119"/>
         <source>Goals</source>
         <translation type="unfinished"/>
     </message>
@@ -2581,8 +2603,8 @@ Resistor color code computation program
         <translation>取消</translation>
     </message>
     <message>
-        <location line="+49"/>
-        <location line="+87"/>
+        <location line="+57"/>
+        <location line="+91"/>
         <location line="+34"/>
         <location line="+37"/>
         <location line="+195"/>
@@ -2590,8 +2612,8 @@ Resistor color code computation program
         <translation>是</translation>
     </message>
     <message>
-        <location line="-353"/>
-        <location line="+121"/>
+        <location line="-357"/>
+        <location line="+125"/>
         <location line="+37"/>
         <source>no</source>
         <translation>否</translation>
@@ -2618,6 +2640,16 @@ Resistor color code computation program
     <message>
         <location line="+132"/>
         <source>Goal &quot;%1&quot; already in list!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+248"/>
+        <source>Set precision</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Precision:</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2866,6 +2898,64 @@ Resistor color code computation program
     <message>
         <location line="+6"/>
         <source>Create library &quot;%1&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ProjectView</name>
+    <message>
+        <location filename="../qucs/projectView.cpp" line="+81"/>
+        <source>Content of %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Note</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Datasets</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Data Displays</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Verilog</source>
+        <translation>Verilog</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Verilog-A</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>VHDL</source>
+        <translation>VHDL</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Octave</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Schematics</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Others</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+47"/>
+        <source>-port</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3310,7 +3400,7 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../qucs/components/component.cpp" line="+1302"/>
+        <location filename="../qucs/components/component.cpp" line="+1309"/>
         <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
         <location filename="../qucs/components/hpribin4bit.cpp" line="-3"/>
         <location filename="../qucs/components/logical_buf.cpp" line="+34"/>
@@ -5334,7 +5424,7 @@ Resistor color code computation program
         <location line="+8"/>
         <location filename="../qucs/components/vacomponent.cpp" line="+306"/>
         <location filename="../qucs/octave_window.cpp" line="-31"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+1435"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+1301"/>
         <location filename="../qucs/schematic_file.cpp" line="+114"/>
         <location line="+18"/>
         <location line="+21"/>
@@ -10879,18 +10969,19 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+127"/>
+        <location line="+131"/>
+        <location line="+19"/>
         <source>inductance of coil</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-121"/>
-        <location line="+132"/>
+        <location line="-144"/>
+        <location line="+152"/>
         <source>coupling factor between coil %1 and coil %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-122"/>
+        <location line="-142"/>
         <source>N Mutual Inductors</source>
         <translation type="unfinished"/>
     </message>
@@ -12138,7 +12229,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+98"/>
         <source>verilog</source>
-        <translation type="unfinished"/>
+        <translation>Verilog</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -12207,7 +12298,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+111"/>
         <source>vhdl</source>
-        <translation type="unfinished"/>
+        <translation>VHDL</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -12327,7 +12418,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qucs/diagrams/rect3ddiagram.cpp" line="+1148"/>
+        <location filename="../qucs/diagrams/rect3ddiagram.cpp" line="+1150"/>
         <source>3D-Cartesian</source>
         <translation type="unfinished"/>
     </message>
@@ -12403,7 +12494,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qucs/imagewriter.cpp" line="+247"/>
+        <location filename="../qucs/imagewriter.cpp" line="+251"/>
         <location line="+8"/>
         <location line="+4"/>
         <location line="+4"/>
@@ -12439,10 +12530,10 @@ Use PNG, JPEG or SVG graphics!</source>
     </message>
     <message>
         <location filename="../qucs/module.cpp" line="+116"/>
-        <location filename="../qucs/qucs.cpp" line="+650"/>
-        <location line="+202"/>
+        <location filename="../qucs/qucs.cpp" line="+627"/>
+        <location line="+203"/>
         <location line="+15"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+155"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+149"/>
         <source>verilog-a user devices</source>
         <translation type="unfinished"/>
     </message>
@@ -12499,14 +12590,14 @@ Use PNG, JPEG or SVG graphics!</source>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="+1546"/>
+        <location filename="../qucs/qucs.cpp" line="+1316"/>
         <source>diagrams</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="-1792"/>
+        <location filename="../qucs/qucs.cpp" line="-1563"/>
         <source>paintings</source>
         <translation type="unfinished"/>
     </message>
@@ -12555,7 +12646,7 @@ Set the Octave location on the application settings.</source>
     <message>
         <location filename="../qucs/paintings/arrow.cpp" line="+141"/>
         <source>Arrow</source>
-        <translation type="unfinished"/>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../qucs/paintings/ellipse.cpp" line="+98"/>
@@ -12618,13 +12709,17 @@ Set the Octave location on the application settings.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-154"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-148"/>
         <source>Cannot create output file!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qucs/schematic.cpp" line="+100"/>
-        <location filename="../qucs/textdoc.cpp" line="+64"/>
+        <location filename="../qucs/qucs.cpp" line="-433"/>
+        <location line="+976"/>
+        <location line="+69"/>
+        <location line="+122"/>
+        <location line="+12"/>
+        <location line="+299"/>
         <source>untitled</source>
         <translation type="unfinished"/>
     </message>
@@ -12823,7 +12918,7 @@ Unknown field!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qucs-activefilter/filter.cpp" line="+229"/>
+        <location filename="../qucs-activefilter/filter.cpp" line="+234"/>
         <source>Part list</source>
         <translation type="unfinished"/>
     </message>
@@ -13216,7 +13311,7 @@ Active Filter synthesis program
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-507"/>
+        <location filename="../qucs/qucs.cpp" line="-1517"/>
         <source>Schematic</source>
         <translation type="unfinished"/>
     </message>
@@ -13232,102 +13327,72 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+1"/>
-        <location line="+1573"/>
+        <location line="+1355"/>
         <source>VHDL Sources</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-1572"/>
-        <location line="+1573"/>
+        <location line="-1354"/>
+        <location line="+1355"/>
         <source>Verilog Sources</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-1572"/>
-        <location line="+1573"/>
+        <location line="-1354"/>
+        <location line="+1355"/>
         <source>Verilog-A Sources</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-1572"/>
-        <location line="+1573"/>
+        <location line="-1354"/>
+        <location line="+1355"/>
         <source>Octave Scripts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-1572"/>
+        <location line="-1354"/>
         <source>Spice Files</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+1574"/>
+        <location line="+1356"/>
         <location filename="../qucs/qucs_actions.cpp" line="-19"/>
         <source>Any File</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-1499"/>
-        <source>Others</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Datasets</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Data Displays</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Octave</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+2331"/>
+        <location line="+790"/>
         <source>Verilog</source>
         <translation>Verilog</translation>
     </message>
     <message>
-        <location line="-2329"/>
-        <source>Verilog-A</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+2325"/>
+        <location line="-2"/>
         <source>VHDL</source>
         <translation>VHDL</translation>
     </message>
     <message>
-        <location line="-2323"/>
-        <location line="+2319"/>
+        <location line="-4"/>
         <source>Schematics</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-2264"/>
+        <location line="-2027"/>
         <source>New</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+630"/>
         <source>Open</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-628"/>
-        <location line="+640"/>
+        <location line="+2"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location line="-624"/>
+        <location line="+16"/>
         <source>Projects</source>
         <translation type="unfinished"/>
     </message>
@@ -13338,19 +13403,6 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+10"/>
-        <location line="+1130"/>
-        <source>Content of</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="-1130"/>
-        <location line="+1066"/>
-        <location line="+64"/>
-        <source>Note</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="-1120"/>
         <source>Content</source>
         <translation type="unfinished"/>
     </message>
@@ -13385,7 +13437,7 @@ Active Filter synthesis program
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <location line="+8"/>
         <source>Libraries</source>
         <translation type="unfinished"/>
@@ -13398,118 +13450,93 @@ Active Filter synthesis program
     <message>
         <location line="+77"/>
         <location line="+3"/>
-        <location line="+62"/>
+        <location line="+64"/>
         <location line="+3"/>
-        <location line="+504"/>
-        <location line="+21"/>
-        <location line="+22"/>
-        <location line="+14"/>
-        <location line="+12"/>
-        <location line="+54"/>
-        <location line="+31"/>
-        <location line="+175"/>
-        <location line="+1042"/>
+        <location line="+492"/>
+        <location line="+25"/>
+        <location line="+20"/>
+        <location line="+19"/>
+        <location line="+10"/>
+        <location line="+88"/>
+        <location line="+995"/>
         <location line="+28"/>
-        <location line="+77"/>
-        <location line="+315"/>
+        <location line="+70"/>
+        <location line="+309"/>
         <location line="+7"/>
         <location line="+7"/>
         <location line="+7"/>
         <location line="+6"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-708"/>
-        <location line="+55"/>
-        <location line="+31"/>
-        <location line="+31"/>
-        <location line="+33"/>
-        <location line="+40"/>
-        <location line="+31"/>
-        <location line="+44"/>
-        <location line="+42"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-567"/>
+        <location line="+103"/>
+        <location line="+62"/>
         <location line="+32"/>
         <location line="+16"/>
         <location line="+10"/>
         <location line="+5"/>
         <location line="+295"/>
-        <location line="+14"/>
+        <location line="+15"/>
         <location line="+19"/>
-        <location line="+144"/>
+        <location line="+138"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location line="-2390"/>
-        <location line="+65"/>
+        <location line="-2153"/>
+        <location line="+67"/>
         <source>Cannot open &quot;%1&quot;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-62"/>
-        <location line="+65"/>
+        <location line="-64"/>
+        <location line="+67"/>
         <source>Library is corrupt.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+157"/>
-        <location line="+565"/>
-        <location line="+152"/>
-        <location line="+53"/>
+        <location line="+160"/>
+        <location line="+461"/>
+        <location line="+70"/>
+        <location line="+52"/>
         <location line="+8"/>
         <location line="+28"/>
         <location line="+11"/>
         <location line="+26"/>
-        <location line="+209"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-1042"/>
+        <location line="+213"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-895"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+38"/>
         <location line="+14"/>
-        <location line="+826"/>
+        <location line="+685"/>
         <source>Info</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-1051"/>
+        <location line="-868"/>
         <source>Default icon not found:
  %1.png</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+222"/>
-        <source>Duplicate</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Rename</source>
-        <translation>重命名</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Insert</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+19"/>
-        <location line="+361"/>
-        <location line="+770"/>
+        <location line="+240"/>
         <source>-port</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-1079"/>
+        <location line="+53"/>
         <source>Copying Qucs document</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+874"/>
+        <location line="+678"/>
         <source>The document contains unsaved changes!
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-873"/>
+        <location line="-677"/>
         <source>Do you want to save the changes before copying?</source>
         <translation type="unfinished"/>
     </message>
@@ -13520,95 +13547,71 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+0"/>
-        <location line="+874"/>
-        <location filename="../qucs/qucs_init.cpp" line="+65"/>
+        <location line="+678"/>
+        <location filename="../qucs/qucs_init.cpp" line="+66"/>
         <source>&amp;Save</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-854"/>
+        <location line="-656"/>
         <source>Copy file</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+0"/>
-        <location line="+49"/>
         <source>Enter new name:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-37"/>
+        <location line="+8"/>
         <source>error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+0"/>
-        <source>Cannot copy file to identical name: </source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Cannot copy schematic: </source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+22"/>
+        <location line="+31"/>
         <source>Cannot rename an open file!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+11"/>
         <source>Rename file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Cannot rename file: </source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+15"/>
+        <location line="+27"/>
         <source>Cannot delete an open file!</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+5"/>
-        <location line="+77"/>
-        <location line="+50"/>
-        <location line="+275"/>
-        <location line="+228"/>
-        <location line="+542"/>
+        <location line="+32"/>
+        <location line="+192"/>
+        <location line="+232"/>
+        <location line="+492"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location line="-1171"/>
+        <location line="-947"/>
         <source>This will delete the file permanently! Continue ?</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+77"/>
-        <location line="+554"/>
-        <location line="+419"/>
+        <location line="+457"/>
+        <location line="+369"/>
         <source>No</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-1050"/>
-        <location line="+77"/>
-        <location line="+554"/>
-        <location line="+419"/>
+        <location line="-826"/>
+        <location line="+457"/>
+        <location line="+369"/>
         <source>Yes</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location line="-1045"/>
-        <source>Cannot delete schematic: </source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+10"/>
+        <location line="-979"/>
         <source>unknown</source>
         <translation type="unfinished"/>
     </message>
@@ -13658,22 +13661,7 @@ Active Filter synthesis program
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+25"/>
-        <source>Cannot delete the open file &quot;%1&quot;!</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>This will delete the files%1permanently! Continue ?</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Cannot delete %1: &quot;%2&quot;!</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+37"/>
+        <location line="+166"/>
         <source>Cannot create work directory !</source>
         <translation type="unfinished"/>
     </message>
@@ -13683,23 +13671,18 @@ Active Filter synthesis program
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+111"/>
+        <location line="+33"/>
         <source>Cannot access project directory: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Content of </source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+9"/>
-        <location line="+50"/>
+        <location line="+12"/>
+        <location line="+53"/>
         <source> - Project: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-42"/>
+        <location line="-45"/>
         <source>Choose Project Directory for Opening</source>
         <translation type="unfinished"/>
     </message>
@@ -13709,17 +13692,38 @@ Active Filter synthesis program
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+52"/>
         <source>Cannot remove directory: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-177"/>
+        <location line="+185"/>
         <source>Cannot delete file: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="-265"/>
+        <source>Cannot copy file to identical name: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Cannot copy schematic: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+37"/>
+        <source>Enter new filename:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Cannot rename file: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+243"/>
         <source>Cannot delete an open project !</source>
         <translation type="unfinished"/>
     </message>
@@ -13761,34 +13765,34 @@ Active Filter synthesis program
         <translation type="unfinished"/>
     </message>
     <message>
+        <location line="+7"/>
+        <location line="+12"/>
+        <location line="+68"/>
+        <location line="+31"/>
         <location line="+5"/>
-        <location line="+10"/>
-        <location line="+69"/>
-        <location line="+30"/>
+        <location line="+104"/>
         <location line="+5"/>
-        <location line="+129"/>
-        <location line="+5"/>
-        <location line="+34"/>
-        <location line="+49"/>
+        <location line="+33"/>
+        <location line="+54"/>
         <location line="+35"/>
-        <location line="+206"/>
+        <location line="+177"/>
         <location line="+34"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-1158"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-1017"/>
         <location line="+15"/>
         <location line="+379"/>
-        <location line="+424"/>
-        <location filename="../qucs/qucs_init.cpp" line="+884"/>
+        <location line="+282"/>
+        <location filename="../qucs/qucs_init.cpp" line="+883"/>
         <source>Ready.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-600"/>
+        <location line="-552"/>
         <source>Creating new text editor...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+54"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-433"/>
+        <location line="+61"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-291"/>
         <source>Opening file...</source>
         <translation type="unfinished"/>
     </message>
@@ -13803,18 +13807,18 @@ Active Filter synthesis program
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+31"/>
         <source>Saving file...</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+134"/>
+        <location line="+109"/>
         <source>Saving aborted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-91"/>
+        <location line="-66"/>
         <source>Qucs Netlist</source>
         <translation type="unfinished"/>
     </message>
@@ -13846,22 +13850,22 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+1"/>
-        <location line="+140"/>
+        <location line="+115"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location line="-130"/>
+        <location line="-105"/>
         <source>Cannot overwrite an open document</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+22"/>
         <source>Saving file under new filename...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+25"/>
         <source>Saving all files...</source>
         <translation type="unfinished"/>
     </message>
@@ -13871,7 +13875,7 @@ Active Filter synthesis program
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Closing Qucs document</source>
         <translation type="unfinished"/>
     </message>
@@ -13886,12 +13890,27 @@ Active Filter synthesis program
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+48"/>
         <source>Open examples directory...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+201"/>
+        <location line="+117"/>
+        <source>Update schematic path</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The schematic file path has been refreshed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>OK</source>
+        <translation>确定</translation>
+    </message>
+    <message>
+        <location line="+54"/>
         <source>Printing...</source>
         <translation type="unfinished"/>
     </message>
@@ -13931,7 +13950,7 @@ Active Filter synthesis program
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+133"/>
+        <location line="+137"/>
         <source>Cannot create </source>
         <translation type="unfinished"/>
     </message>
@@ -13941,12 +13960,12 @@ Active Filter synthesis program
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+78"/>
+        <location line="+71"/>
         <source>Cannot start &quot;%1&quot;!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+314"/>
+        <location line="+308"/>
         <source>Could not load S[1,1].</source>
         <translation type="unfinished"/>
     </message>
@@ -14003,50 +14022,14 @@ Active Filter synthesis program
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+56"/>
-        <location line="+31"/>
-        <source>Cannot start filter synthesis program! 
+        <location line="+104"/>
+        <source>Cannot start %1 program! 
 
-%1</source>
+(%2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+31"/>
-        <source>Cannot start line calculation program! 
-
-%1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+33"/>
-        <source>Cannot start library program! 
-
-%1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+40"/>
-        <source>Cannot start attenuator calculation program! 
-
-%1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+31"/>
-        <source>Cannot start resistor color code calculation program! 
-
-%1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+43"/>
-        <source>Cannot start qucshelp! 
-
-%1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+42"/>
+        <location line="+61"/>
         <source>No project open!</source>
         <translation type="unfinished"/>
     </message>
@@ -14097,7 +14080,7 @@ Overwrite ?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Please open project first!</source>
         <translation type="unfinished"/>
     </message>
@@ -14127,12 +14110,7 @@ Overwrite ?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+87"/>
-        <source>Clear list</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+35"/>
+        <location line="+116"/>
         <source>Symbol files not found in: %1
 
 Is the project open?
@@ -14140,7 +14118,7 @@ Have you saved the Verilog-A symbols?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qucs/qucs_init.cpp" line="-903"/>
+        <location filename="../qucs/qucs_init.cpp" line="-902"/>
         <source>&amp;New</source>
         <translation type="unfinished"/>
     </message>
@@ -14251,6 +14229,11 @@ Saves all open documents</source>
         <source>Close File
 
 Closes the current document</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Clear Recent</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -14669,7 +14652,7 @@ Searches for a piece of text</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+16"/>
         <source>&amp;Undo</source>
         <translation type="unfinished"/>
     </message>
@@ -15592,12 +15575,11 @@ About the application</source>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+446"/>
         <source>About Qt</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-445"/>
+        <location line="+1"/>
         <source>About Qt
 
 About Qt by Trolltech</source>
@@ -15614,7 +15596,7 @@ About Qt by Trolltech</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+26"/>
         <source>&amp;Edit</source>
         <translation type="unfinished"/>
     </message>
@@ -15707,7 +15689,7 @@ About Qt by Trolltech</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+99"/>
         <source>About...</source>
         <translation>关于</translation>
     </message>
@@ -16027,12 +16009,12 @@ Attenuator synthesis program
     <name>QucsEdit</name>
     <message>
         <location filename="../qucs-edit/qucsedit.cpp" line="+44"/>
-        <location line="+147"/>
+        <location line="+148"/>
         <source>File: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-136"/>
+        <location line="-137"/>
         <location line="+49"/>
         <source>Line: %1  -  Column: %2</source>
         <translation type="unfinished"/>
@@ -16092,7 +16074,7 @@ Very simple text editor for Qucs
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Closing document</source>
         <translation type="unfinished"/>
     </message>
@@ -16324,7 +16306,7 @@ Filter synthesis program
         <location line="+16"/>
         <location line="+17"/>
         <source>Successful</source>
-        <translation type="unfinished"/>
+        <translation>确定</translation>
     </message>
     <message>
         <location line="-9"/>
@@ -16607,57 +16589,57 @@ Enables/disables the table of contents</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+6"/>
         <source>German</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>French</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+12"/>
         <source>Spanish</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-8"/>
         <source>Italian</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Polish</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Romanian</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-5"/>
         <source>Japanese</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+8"/>
         <source>Swedish</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-10"/>
         <source>Hungarian</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>Hebrew</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+6"/>
         <source>Portuguese-BR</source>
         <translation type="unfinished"/>
     </message>
@@ -16667,7 +16649,7 @@ Enables/disables the table of contents</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+5"/>
         <source>Turkish</source>
         <translation type="unfinished"/>
     </message>
@@ -16677,32 +16659,37 @@ Enables/disables the table of contents</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-4"/>
         <source>Russian</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-13"/>
         <source>Czech</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>Catalan</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>Arabic</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
+        <source>Chinese</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Kazakh</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+13"/>
         <source>Maximum undo operations:</source>
         <translation type="unfinished"/>
     </message>
@@ -16828,7 +16815,7 @@ open files with an appropriate program.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+24"/>
         <source>Suffix:</source>
         <translation type="unfinished"/>
     </message>
@@ -17084,14 +17071,14 @@ open files with an appropriate program.</source>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+569"/>
+        <location line="+571"/>
         <location line="+157"/>
         <location line="+19"/>
         <source>Ready.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-696"/>
+        <location line="-698"/>
         <location line="+6"/>
         <location line="+6"/>
         <location line="+6"/>
@@ -17334,7 +17321,7 @@ open files with an appropriate program.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+138"/>
+        <location line="+140"/>
         <source>Selected for Calculation</source>
         <translation type="unfinished"/>
     </message>
@@ -17494,7 +17481,7 @@ open files with an appropriate program.</source>
 <context>
     <name>Schematic</name>
     <message>
-        <location filename="../qucs/schematic.cpp" line="+9"/>
+        <location filename="../qucs/schematic.cpp" line="+98"/>
         <source>Title</source>
         <translation type="unfinished"/>
     </message>
@@ -17514,7 +17501,7 @@ open files with an appropriate program.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+91"/>
+        <location line="+81"/>
         <source>Edit Text</source>
         <translation type="unfinished"/>
     </message>
@@ -17565,7 +17552,7 @@ Edits the symbol for this schematic</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+1251"/>
+        <location line="+1253"/>
         <source>generic</source>
         <translation type="unfinished"/>
     </message>
@@ -17597,64 +17584,55 @@ Set the admsXml location on the application settings.</source>
     <name>SearchDialog</name>
     <message>
         <location filename="../qucs/dialogs/searchdialog.ui" line="+14"/>
-        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+145"/>
-        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+145"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+145"/>
         <source>Dialog</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
-        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Text to search for</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+12"/>
-        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
-        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Text to replace with</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+14"/>
-        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
-        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Ask before replacing</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
-        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Case sensitive</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
-        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Whole words only</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
-        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Search backwards</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+13"/>
-        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
-        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Next</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+10"/>
-        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
-        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <location filename="../qucs-lib/searchdialog.cpp" line="+65"/>
         <source>Close</source>
         <translation>关闭</translation>
@@ -17819,7 +17797,7 @@ are included in the search.</source>
 <context>
     <name>SimMessage</name>
     <message>
-        <location filename="../qucs/dialogs/simmessage.cpp" line="+68"/>
+        <location filename="../qucs/dialogs/simmessage.cpp" line="+67"/>
         <source>Qucs Simulation Messages</source>
         <translation type="unfinished"/>
     </message>
@@ -17835,13 +17813,13 @@ are included in the search.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+14"/>
         <source>Goto display page</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+5"/>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>Abort simulation</source>
         <translation type="unfinished"/>
     </message>
@@ -17851,61 +17829,12 @@ are included in the search.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+9"/>
-        <source>ERROR: Simulator is still running!
-</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+15"/>
         <source>creating netlist... </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+3"/>
-        <source>ERROR: Cannot write netlist file!
-</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>ERROR: Cannot simulate a text file!
-</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+63"/>
-        <source>ERROR: Cannot open SPICE file &quot;%1&quot;.
-</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>SIM ERROR: Cannot start QucsConv!
-</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+104"/>
-        <location line="+101"/>
-        <source>done.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="-61"/>
-        <location line="+7"/>
-        <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!
-</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>ERROR: Cannot create &quot;%1&quot;!
-</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location line="+66"/>
+        <location line="+324"/>
         <location line="+24"/>
         <source>Error</source>
         <translation>错误</translation>
@@ -17917,27 +17846,66 @@ are included in the search.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+81"/>
-        <source>ERROR: Program not found: %1
+        <location line="-354"/>
+        <source>ERROR: Simulator is still running!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>ERROR: Cannot write netlist file!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>ERROR: Cannot simulate a text file!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+63"/>
+        <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>SIM ERROR: Cannot start QucsConv!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+105"/>
+        <location line="+101"/>
+        <source>done.
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+11"/>
-        <source>ERROR: Cannot start simulator!
-</source>
+        <location line="-61"/>
+        <location line="+7"/>
+        <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location line="+104"/>
-        <source>ERROR: Simulator crashed!
-</source>
+        <location line="+8"/>
+        <source>ERROR: Cannot create &quot;%1&quot;!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+270"/>
+        <source>ERROR: Cannot start </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Starting </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>ERROR: Simulator crashed!</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location line="+1"/>
-        <source>Please report this error to qucs-bugs@lists.sourceforge.net
-</source>
+        <source>Please report this error to qucs-bugs@lists.sourceforge.net</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -18144,7 +18112,7 @@ are included in the search.</source>
 <context>
     <name>TextDoc</name>
     <message>
-        <location filename="../qucs/textdoc.cpp" line="+177"/>
+        <location filename="../qucs/textdoc.cpp" line="+228"/>
         <source>Edit Text Symbol</source>
         <translation type="unfinished"/>
     </message>
