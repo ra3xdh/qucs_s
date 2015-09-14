@@ -318,12 +318,12 @@
     <message>
         <location line="+9"/>
         <source>Move Up</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Move Down</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
@@ -777,7 +777,7 @@
     <message>
         <location filename="../qucs-lib/displaydialog.cpp" line="+39"/>
         <source>Analogue</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1046,7 +1046,7 @@
     <message>
         <location line="+4"/>
         <source>&amp;About Qucs Filter...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1066,192 +1066,192 @@
     <message>
         <location line="+18"/>
         <source>Specify order</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>b</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>c</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Cutoff/Center</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <location line="+40"/>
         <location line="+13"/>
         <source>Hz</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-52"/>
         <location line="+40"/>
         <location line="+13"/>
         <source>kHz</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-52"/>
         <location line="+40"/>
         <location line="+13"/>
         <source>MHz</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-52"/>
         <location line="+40"/>
         <location line="+13"/>
         <source>GHz</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-50"/>
         <source>Ripple</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+53"/>
         <source>dB</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-50"/>
         <source>Angle</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Â°</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Zin</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+8"/>
         <source>Ohm</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-5"/>
         <source>Zout</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Stopband corner</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Attenuation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>dual</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Stopband is first pole</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Optimize cauer</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Equal inductors</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>+ rather than T</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Optimize C</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cmin</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cmax</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>noC</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Optimize L</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Lmin</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Lmax</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>noL</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>LC Filters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Microstrip Filters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Active Filters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Calculate</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1263,12 +1263,12 @@
         <source>
 Filter synthesis program
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copyright (C) 2009 by</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1334,7 +1334,7 @@ Filter synthesis program
     <message>
         <location filename="../qucs-activefilter/helpdialog.cpp" line="+38"/>
         <source>QucsActiveFilter is a active filter synthesis program. Butterworth, Chebyshev, Inverse Chebyshev, Cauer, Bessel and User defined transfer function are supported.To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediatly, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1346,32 +1346,32 @@ Filter synthesis program
     <message>
         <location filename="../qucs-filter/helpdialog.cpp" line="-29"/>
         <source>QucsFilter is a filter synthesis program. To create a filter, simply enter all parameters and press the big button at the bottom of the main window. Immediatly, the schematic of the filter is calculated and put into the clipboard. Now go to Qucs, open an empty schematic and press CTRL-V (paste from clipboard). The filter schematic can now be inserted and  simulated. Have lots of fun!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs-rescodes/helpdialog.cpp" line="-31"/>
         <source>A program to compute color codes for resistors and resistance values for color codes. To obtain the color codes, simply enter the resistance and tolerance values and press the &quot;To Colors&quot; button. Alternatively to obtain the resistance, select the appropriate color bands and press the &quot;To Resistance&quot; button. The program computes the closest standard resistor value. You can paste the computed resistor in the schematic (by pressing ctrl+v). Have fun!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs-transcalc/helpdialog.cpp" line="+32"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>QucsTranscalc is an analysis and synthesis tool for calculating the electrical and physical properties of different kinds of RF and microwave transmission lines.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>For each type of transmission line, using dialog boxes, you can enter values for the various parameters, and either calculate its electrical properties, or use the given electrical requirements to synthesize physical parameters of the required transmission line.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1925,17 +1925,17 @@ Filter synthesis program
     <message>
         <location filename="../qucs-lib/librarydialog.cpp" line="-123"/>
         <source>Manage User Libraries</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Choose library:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>New Name:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1950,53 +1950,53 @@ Filter synthesis program
     <message>
         <location line="+62"/>
         <source>Please insert a new library name!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+93"/>
         <source>Please choose a library!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-69"/>
         <source>Cannot rename library subdirectory!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Cannot open library!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
         <source>No permission to modify library!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Writing new library not successful!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Cannot delete old library.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Library file is corrupt!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+26"/>
         <source>No permission to delete library &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+13"/>
         <source>No permission to delete library subdirectory &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2271,17 +2271,17 @@ but is %1 !</source>
     <message>
         <location line="+3"/>
         <source>Help...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>&amp;About ResistorCodes...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&amp;About Qt...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2298,12 +2298,12 @@ but is %1 !</source>
         <source>
 Resistor color code computation program
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copyright (c) 2012 by</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2389,7 +2389,7 @@ Resistor color code computation program
     <message>
         <location line="+6"/>
         <source>Number of parents:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2399,7 +2399,7 @@ Resistor color code computation program
     <message>
         <location line="+6"/>
         <source>Crossing over factor:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2521,7 +2521,7 @@ Resistor color code computation program
     <message>
         <location line="+12"/>
         <source>Copy current values to equation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2577,7 +2577,7 @@ Resistor color code computation program
         <location line="-488"/>
         <location line="+136"/>
         <source>monitor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-119"/>
@@ -2632,7 +2632,7 @@ Resistor color code computation program
     <message>
         <location line="-124"/>
         <source>Variable &quot;%1&quot; aleardy in list!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+132"/>
@@ -2642,7 +2642,7 @@ Resistor color code computation program
     <message>
         <location line="+248"/>
         <source>Set precision</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2655,42 +2655,42 @@ Resistor color code computation program
     <message>
         <location filename="../qucs-transcalc/optionsdialog.cpp" line="+36"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Units</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Frequency</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Angle</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Save as Default</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2903,7 +2903,7 @@ Resistor color code computation program
     <message>
         <location filename="../qucs/projectView.cpp" line="+81"/>
         <source>Content of %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+0"/>
@@ -3156,7 +3156,7 @@ Resistor color code computation program
     <message>
         <location filename="../qucs/components/andor4x2.cpp" line="+25"/>
         <source>4x2 andor verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3175,7 +3175,7 @@ Resistor color code computation program
         <location filename="../qucs/components/mux4to1.cpp" line="+28"/>
         <location filename="../qucs/components/mux8to1.cpp" line="+28"/>
         <source>transfer function high scaling factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3287,32 +3287,32 @@ Resistor color code computation program
         <location line="+3"/>
         <location filename="../qucs/components/tff_SR.cpp" line="+33"/>
         <source>s</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+19"/>
         <source>4x2 AndOr</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/andor4x3.cpp" line="-6"/>
         <source>4x3 andor verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>4x3 AndOr</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/andor4x4.cpp" line="-6"/>
         <source>4x4 andor verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>4x4 AndOr</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/attenuator.cpp" line="+23"/>
@@ -3393,7 +3393,7 @@ Resistor color code computation program
     <message>
         <location filename="../qucs/components/binarytogrey4bit.cpp" line="-6"/>
         <source>4bit binary to Gray converter verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3403,12 +3403,12 @@ Resistor color code computation program
         <location filename="../qucs/components/logical_buf.cpp" line="+34"/>
         <location filename="../qucs/components/logical_inv.cpp" line="+34"/>
         <source>transfer function scaling factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
         <source>4Bit Bin2Gray</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/bjt.cpp" line="+25"/>
@@ -3453,150 +3453,150 @@ Resistor color code computation program
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-30"/>
         <source>forward emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+2"/>
         <source>reverse emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+30"/>
         <source>high current corner for forward beta</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+3"/>
         <source>high current corner for reverse beta</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-31"/>
         <source>forward early voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+3"/>
         <source>reverse early voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>base-emitter leakage saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>base-emitter leakage emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>base-collector leakage saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>base-collector leakage emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-14"/>
         <source>forward beta</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+2"/>
         <source>reverse beta</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>minimum base resistance for high currents</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>current for base resistance midpoint</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>collector ohmic resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>emitter ohmic resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>zero-bias base resistance (may be high-current dependent)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+20"/>
         <source>base-emitter zero-bias depletion capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-3"/>
         <source>base-emitter junction built-in potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-2"/>
         <source>base-emitter junction exponential factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+13"/>
         <source>base-collector zero-bias depletion capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-3"/>
         <source>base-collector junction built-in potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-2"/>
         <source>base-collector junction exponential factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>fraction of Cjc that goes to internal base pin</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>zero-bias collector-substrate capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>substrate junction built-in potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>substrate junction exponential factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3605,34 +3605,34 @@ Resistor color code computation program
         <location filename="../qucs/components/MESFET.cpp" line="-3"/>
         <location filename="../qucs/components/photodiode.cpp" line="-3"/>
         <source>forward-bias depletion capacitance coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+11"/>
         <source>ideal forward transit time</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>coefficient of bias-dependence for Tf</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>voltage dependence of Tf on base-collector voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>high-current effect on Tf</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-3"/>
         <source>ideal reverse transit time</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3649,7 +3649,7 @@ Resistor color code computation program
         <location filename="../qucs/components/phototransistor.cpp" line="+21"/>
         <location line="+2"/>
         <source>flicker noise coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3661,7 +3661,7 @@ Resistor color code computation program
         <location filename="../qucs/components/photodiode.cpp" line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+2"/>
         <source>flicker noise exponent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3670,32 +3670,32 @@ Resistor color code computation program
         <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
         <location filename="../qucs/components/photodiode.cpp" line="+2"/>
         <source>flicker noise frequency exponent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>burst noise coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>burst noise exponent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>burst noise corner frequency in Hertz</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>excess phase in degrees</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>temperature exponent for forward- and reverse beta</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3704,13 +3704,13 @@ Resistor color code computation program
         <location filename="../qucs/components/jfet.cpp" line="+4"/>
         <location filename="../qucs/components/photodiode.cpp" line="-23"/>
         <source>saturation current temperature exponent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+2"/>
         <source>energy bandgap in eV</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3718,52 +3718,52 @@ Resistor color code computation program
         <location filename="../qucs/components/jfet.cpp" line="+6"/>
         <location filename="../qucs/components/resistor.cpp" line="+6"/>
         <source>temperature at which parameters were extracted</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>default area for bipolar transistor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>bipolar junction transistor with substrate</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/bondwire.cpp" line="-35"/>
         <source>bond wire</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
         <source>length of the wire</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>diameter of the wire</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>height above ground plane</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>specific resistance of the metal</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>relative permeability of the metal</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>bond wire model</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3774,17 +3774,17 @@ Resistor color code computation program
         <location filename="../qucs/components/mstee.cpp" line="+38"/>
         <location filename="../qucs/components/msvia.cpp" line="-4"/>
         <source>substrate</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Bond Wire</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/bsim3v34nMOS.cpp" line="+15"/>
         <source>bsim3v34nMOS verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -5158,7 +5158,7 @@ Resistor color code computation program
         <location line="+2"/>
         <location line="+2"/>
         <source>-</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5183,42 +5183,42 @@ Resistor color code computation program
         <location filename="../qucs/components/thyristor.cpp" line="+8"/>
         <location filename="../qucs/components/triac.cpp" line="+8"/>
         <source>simulation temperature</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+19"/>
         <source>bsim3v34nMOS</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/bsim3v34pMOS.cpp" line="-817"/>
         <source>bsim3v34pMOS verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+836"/>
         <source>bsim3v34pMOS</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/bsim4v30nMOS.cpp" line="-558"/>
         <source>bsim4v30nMOS verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+577"/>
         <source>bsim4v30nMOS</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/bsim4v30pMOS.cpp" line="-557"/>
         <source>bsim4v30pMOS verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+576"/>
         <source>bsim4v30pMOS</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/capacitor.cpp" line="+23"/>
@@ -5375,37 +5375,37 @@ Resistor color code computation program
     <message>
         <location filename="../qucs/components/comp_1bit.cpp" line="-6"/>
         <source>1bit comparator verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>1Bit Comparator</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/comp_2bit.cpp" line="-6"/>
         <source>2bit comparator verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>2Bit Comparator</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/comp_4bit.cpp" line="-6"/>
         <source>4bit comparator verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>4Bit Comparator</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/component.cpp" line="-4"/>
         <source>number of input ports</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5413,7 +5413,7 @@ Resistor color code computation program
         <location filename="../qucs/components/logical_buf.cpp" line="-2"/>
         <location filename="../qucs/components/logical_inv.cpp" line="-2"/>
         <source>voltage of high level</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+248"/>
@@ -5454,7 +5454,7 @@ Resistor color code computation program
         <location line="-27"/>
         <source>Format Error:
 Wrong line start!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
@@ -5463,13 +5463,13 @@ Unknown component!
 %1
 
 Do you make use of loadable components?</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Format Error:
 Wrong &apos;component&apos; line format!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/coplanar.cpp" line="+23"/>
@@ -5677,12 +5677,12 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/d_flipflop.cpp" line="-2"/>
         <source>D flip flop with asynchron reset</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+92"/>
         <source>D-FlipFlop</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/dc_sim.cpp" line="-24"/>
@@ -5747,7 +5747,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/dcblock.cpp" line="-24"/>
         <source>dc block</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+38"/>
@@ -5767,7 +5767,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/dff_SR.cpp" line="-8"/>
         <source>D flip flop with set and reset verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -5775,7 +5775,7 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/jkff_SR.cpp" line="-5"/>
         <location filename="../qucs/components/tff_SR.cpp" line="-5"/>
         <source>cross coupled gate transfer function high scaling factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5783,7 +5783,7 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/jkff_SR.cpp" line="+2"/>
         <location filename="../qucs/components/tff_SR.cpp" line="+2"/>
         <source>cross coupled gate transfer function low scaling factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5791,35 +5791,35 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/jkff_SR.cpp" line="+2"/>
         <location filename="../qucs/components/tff_SR.cpp" line="+2"/>
         <source>cross coupled gate delay</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
         <source>D-FlipFlop w/ SR</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/diac.cpp" line="-36"/>
         <source>diac (bidirectional trigger diode)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+24"/>
         <location filename="../qucs/components/triac.cpp" line="-14"/>
         <source>(bidirectional) breakover voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>(bidirectional) breakover current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/thyristor.cpp" line="-10"/>
         <location filename="../qucs/components/triac.cpp" line="+4"/>
         <source>parasitic capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5828,19 +5828,19 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/thyristor.cpp" line="+4"/>
         <location filename="../qucs/components/triac.cpp" line="+4"/>
         <source>emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/thyristor.cpp" line="+2"/>
         <location filename="../qucs/components/triac.cpp" line="+2"/>
         <source>intrinsic junction resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Diac</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/digi_sim.cpp" line="+24"/>
@@ -5851,39 +5851,39 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="-21"/>
         <source>type of simulation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>duration of TimeList simulation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>netlist format</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/digi_source.cpp" line="-33"/>
         <location line="+50"/>
         <source>digital source</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-23"/>
         <location filename="../qucs/components/source_ac.cpp" line="-8"/>
         <source>number of the port</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>initial output value</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>list of times for changing output value</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/diode.cpp" line="-5"/>
@@ -5895,7 +5895,7 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/EKV26MOS.cpp" line="+14"/>
         <location filename="../qucs/components/photodiode.cpp" line="-40"/>
         <source>zero-bias junction capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5904,7 +5904,7 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/photodiode.cpp" line="+3"/>
         <location filename="../qucs/components/tunneldiode.cpp" line="-7"/>
         <source>grading coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5912,89 +5912,89 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/photodiode.cpp" line="-6"/>
         <location filename="../qucs/components/tunneldiode.cpp" line="+2"/>
         <source>junction potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>linear capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>recombination current parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>emission coefficient for Isr</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ohmic series resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/EKV26MOS.cpp" line="+12"/>
         <location filename="../qucs/components/photodiode.cpp" line="+15"/>
         <source>transit time</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>high-injection knee current (0=infinity)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <location filename="../qucs/components/EKV26MOS.cpp" line="-18"/>
         <location filename="../qucs/components/photodiode.cpp" line="-21"/>
         <source>reverse breakdown voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/EKV26MOS.cpp" line="+3"/>
         <location filename="../qucs/components/photodiode.cpp" line="+3"/>
         <source>current at reverse breakdown voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Bv linear temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rs linear temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Tt linear temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Tt quadratic temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>M linear temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>M quadratic temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <location filename="../qucs/components/tunneldiode.cpp" line="+7"/>
         <source>default area for diode</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
@@ -6004,29 +6004,29 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/DLS_1ton.cpp" line="-6"/>
         <source>data voltage level shifter (digital to analogue) verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <location filename="../qucs/components/DLS_nto1.cpp" line="-4"/>
         <source>voltage level</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/DLS_nto1.cpp" line="+3"/>
         <source>time delay</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
         <source>D2A Level Shifter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/DLS_nto1.cpp" line="-6"/>
         <source>data voltage level shifter (analogue to digital) verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -6188,73 +6188,73 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+5"/>
         <location line="+8"/>
         <source>V</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
         <source>A2D Level Shifter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/dmux2to4.cpp" line="-6"/>
         <source>2to4 demultiplexer verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>2to4 Demux</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/dmux3to8.cpp" line="-6"/>
         <source>3to8 demultiplexer verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>3to8 Demux</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/dmux4to16.cpp" line="-6"/>
         <source>4to16 demultiplexer verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>4to16 Demux</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/ecvs.cpp" line="+21"/>
         <source>externally controlled voltage source</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+45"/>
         <location filename="../qucs/components/volt_dc.cpp" line="+45"/>
         <source>voltage in Volts</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Externally Controlled Voltage Source</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/EKV26MOS.cpp" line="-126"/>
         <source>EPFL-EKV MOS 2.6 verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>long = 1, short = 2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>length parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -6267,85 +6267,85 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+36"/>
         <location filename="../qucs/components/nigbt.cpp" line="-33"/>
         <source>m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-99"/>
         <source>Width parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>parallel multiple device number</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>series multiple device number</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate oxide capacitance per unit area</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>F/m**2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>metallurgical junction depth</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>channel width correction</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>channel length correction</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>long channel threshold voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>body effect parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>V**(1/2)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>bulk Fermi potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <location filename="../qucs/components/jfet.cpp" line="-40"/>
         <location filename="../qucs/components/MESFET.cpp" line="-39"/>
         <source>transconductance parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../qucs/components/nigbt.cpp" line="-6"/>
         <source>A/V**2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>mobility reduction coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -6358,55 +6358,55 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+3"/>
         <location filename="../qucs/components/nigbt.cpp" line="+33"/>
         <source>1/V</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>mobility coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+3"/>
         <location line="+49"/>
         <source>V/m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-50"/>
         <location line="+7"/>
         <source>longitudinal critical field</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-4"/>
         <source>depletion length coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>narrow-channel effect coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>reverse short channel charge density</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A*s/m**2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>characteristic length</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>threshold voltage temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -6419,22 +6419,22 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <location line="+3"/>
         <source>V/K</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>mobility temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Longitudinal critical field temperature exponent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ibb temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -6485,27 +6485,27 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+30"/>
         <location line="+17"/>
         <source>1/K</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>heavily doped diffusion length</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>drain/source diffusion sheet resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ohm/square</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>source contact resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -6565,17 +6565,17 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/potentiometer.cpp" line="-27"/>
         <location line="+19"/>
         <source>Ohm</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-1"/>
         <source>drain contact resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>gate to source overlap capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -6583,62 +6583,62 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+3"/>
         <location filename="../qucs/components/rlcg.cpp" line="-4"/>
         <source>F/m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-4"/>
         <source>gate to drain overlap capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>gate to bulk overlap capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>first impact ionization coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>1/m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>second impact ionization coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>saturation voltage factor for impact ionization</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <source>area related theshold voltage mismatch parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>V*m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>area related gain mismatch parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>area related body effect mismatch parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>sqrt(V)*m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -6730,7 +6730,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+35"/>
         <location line="+3"/>
         <source>A</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -6797,18 +6797,18 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/phototransistor.cpp" line="-20"/>
         <location line="+8"/>
         <source>F</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <location filename="../qucs/components/photodiode.cpp" line="+4"/>
         <source>diode relative area</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>charge partition parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -6819,7 +6819,7 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/photodiode.cpp" line="+2"/>
         <location filename="../qucs/components/potentiometer.cpp" line="+5"/>
         <source>parameter measurement temperature</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -6830,17 +6830,17 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/photodiode.cpp" line="+1"/>
         <location filename="../qucs/components/potentiometer.cpp" line="+1"/>
         <source>Celsius</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
         <source>EPFL-EKV NMOS 2.6</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>EPFL-EKV PMOS 2.6</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/eqndefined.cpp" line="+25"/>
@@ -6936,25 +6936,25 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+2"/>
         <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
         <source>overestimation of local truncation error</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../qucs/components/tr_sim.cpp" line="+5"/>
         <source>relax time step raster</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
         <source>perform an initial DC analysis</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
         <source>maximum step size in seconds</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
@@ -6965,47 +6965,47 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/fa1b.cpp" line="-6"/>
         <source>1bit full adder verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>1Bit FullAdder</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/fa2b.cpp" line="-6"/>
         <source>2bit full adder verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>2Bit FullAdder</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/gatedDlatch.cpp" line="-7"/>
         <source>gated D latch verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Gated D-Latch</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
         <source>4bit Gray to binary converter verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>4Bit Gray2Bin</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/ground.cpp" line="+25"/>
         <source>ground (reference potential)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+30"/>
@@ -7015,27 +7015,27 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/gyrator.cpp" line="-34"/>
         <source>gyrator (impedance inverter)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+32"/>
         <source>gyrator ratio</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Gyrator</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/ha1b.cpp" line="-6"/>
         <source>1bit half adder verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>1Bit HalfAdder</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hb_sim.cpp" line="-29"/>
@@ -7055,7 +7055,7 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/HBT_X.cpp" line="+15"/>
         <source>HBT model by Ferdinand-Braun-Institut (FBH), Berlin</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7063,17 +7063,17 @@ Externo</translation>
         <location line="+2"/>
         <location line="+2"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device operating temperature, Celsius</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Thermal resistance, K/W</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7087,370 +7087,370 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+69"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+87"/>
         <source>Thermal capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Scaling factor, number of emitter fingers</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Length of emitter finger, m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Width of emitter finger, m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Forward saturation current density, A/um^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Forward current emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Forward thermal activation energy, V, (0 == disables temperature dependence)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-E leakage saturation current density, A/um^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-E leakage emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limiting resistor of B-E leakage diode, Ohm</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-E leakage thermal activation energy, V, (0 == disables temperature dependence)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>2nd B-E leakage saturation current density, A/um^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>2nd B-E leakage emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>2nd Limiting resistor of B-E leakage diode, Ohm</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>2nd B-E leakage thermal activation energy, V, (0 == disables temperature dependence)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reverse saturation current density, A/um^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reverse current emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reverse thermal activation energy, V, (0 == disables temperature dependence)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Fraction of Cjc that goes to internal base node</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-C leakage saturation current density, A/um^2 (0. switches off diode)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-C leakage emission coefficient (0. switches off diode)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limiting resistor of B-C leakage diode, Ohm</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-C leakage thermal activation energy, V, (0 == disables temperature dependence)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ideal forward beta</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Temperature coefficient of forward current gain, -1/K,  (0 == disables temperature dependence)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ideal reverse beta</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Forward Early voltage, V,  (0 == disables Early Effect)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reverse Early voltage, V, (0 == disables Early Effect)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Forward high-injection knee current, A, (0 == disables Webster Effect)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reverse high-injection knee current, A, (0 == disables Webster Effect)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>C-E breakdown exponent, (0 == disables collector break-down)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>C-E breakdown voltage, V, (0 == disables collector break-down)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>C-E breakdown factor, (0 == disables collector break-down)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-E breakdown voltage, V, (0 == disables emitter break-down)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ideal reverse transit time, s</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Extrinsic BC diffusion capacitance, F</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ideal forward transit time, s</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Temperature coefficient of forward transit time</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Excess transit time coefficient at base push-out</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Smoothing parameter for Thcs</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-E zero-bias depletion capacitance, F/um^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-E junction exponential factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-E junction built-in potential, V</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-C zero-bias depletion capacitance, F/um^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-C junction exponential factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>B-C junction built-in potential, V</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>not used</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Minimum B-C depletion capacitance (Vbc dependence), F/um^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Collector current where Cbc reaches Cmin, A/um^2 (0 == disables Cbc reduction)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Fraction of Cmin, lower limit of BC capacitance (Ic dependence)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Onset of base push-out at low voltages, Ohm*um^2 (0 == disables base push-out)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Onset of base push-out at high voltages, A/um^2, (0 == disables base push-out)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Slope of Jk at high currents , Ohm*um^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Voltage shift of base push-out onset, V</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Collector resistance, Ohm/finger</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emitter resistance, Ohm/finger</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Extrinsic base resistance, Ohm/finger</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Inner Base ohmic resistance, Ohm/finger</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Collector inductance, H</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emitter inductance, H</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Base inductance, H</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Extrinsic B-C capacitance, F</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Extrinsic base capacitance, F</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Extrinsic collector capacitance, F</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+12"/>
         <source>Flicker-noise coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-10"/>
         <location line="+12"/>
         <source>Flicker-noise exponent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-10"/>
         <location line="+12"/>
         <source>Flicker-noise frequency exponent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-10"/>
         <source>Burst noise coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Burst noise exponent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Burst noise corner frequency, Hz</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Ambient temperature at which the parameters were determined</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+57"/>
         <source>FBH HBT</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hic0_full.cpp" line="-220"/>
         <source>HICUM Level 0 v1.12 verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -7458,7 +7458,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-233"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="-251"/>
         <source>(Modified) saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7466,7 +7466,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+5"/>
         <source>Non-ideality coefficient of forward collector current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7474,7 +7474,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Non-ideality coefficient of reverse collector current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7490,7 +7490,7 @@ Externo</translation>
         <location line="+116"/>
         <location line="+3"/>
         <source>forward Early voltage (normalization volt.)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-100"/>
@@ -7498,7 +7498,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-111"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="-111"/>
         <source>forward d.c. high-injection roll-off current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7506,7 +7506,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+5"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+5"/>
         <source>inverse d.c. high-injection roll-off current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7514,14 +7514,14 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>high-injection correction current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <location filename="../qucs/components/hicumL0V1p2.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>high-injection correction factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7529,7 +7529,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+7"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+4"/>
         <source>BE saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7537,7 +7537,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>BE non-ideality factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7545,7 +7545,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>BE recombination saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7553,7 +7553,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>BE recombination non-ideality factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7561,7 +7561,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>BC saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7569,7 +7569,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>BC non-ideality factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7577,7 +7577,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Zero-bias BE depletion capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7585,7 +7585,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>BE built-in voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7593,7 +7593,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>BE exponent factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7601,7 +7601,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Ratio of maximum to zero-bias value</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7609,7 +7609,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+9"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+9"/>
         <source>low current transit time at Vbici=0</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7617,7 +7617,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Base width modulation contribution</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7625,7 +7625,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>SCR width modulation contribution</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7633,7 +7633,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Storage time in neutral emitter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7641,7 +7641,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Exponent factor for emitter transit time</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7649,7 +7649,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Saturation time at high current densities</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7657,7 +7657,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Smoothing factor for current dependence</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7665,7 +7665,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Storage time at inverse operation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7673,7 +7673,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Low-field collector resistance under emitter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7681,7 +7681,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Voltage dividing ohmic and satur.region</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7693,7 +7693,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <location line="+25"/>
         <source>Punch-through voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-22"/>
@@ -7701,7 +7701,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-22"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="-22"/>
         <source>Saturation voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7709,7 +7709,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Total zero-bias BC depletion capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7717,7 +7717,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>BC built-in voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7725,7 +7725,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>BC exponent factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7733,7 +7733,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Punch-through voltage of BC junction</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7741,7 +7741,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Zero-bias external BC depletion capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7749,7 +7749,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>External BC built-in voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7757,7 +7757,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>External BC exponent factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -7765,7 +7765,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+5"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+5"/>
         <source>Split factor = Cjci0/Cjc0</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7773,7 +7773,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Internal base resistance at zero-bias</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
@@ -7781,7 +7781,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+9"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+9"/>
         <source>Geometry factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7794,7 +7794,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="-202"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="-230"/>
         <source>External base series resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7807,7 +7807,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+11"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+11"/>
         <source>Emitter series resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7820,7 +7820,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>External collector series resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7833,7 +7833,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Substrate transistor transfer saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7841,7 +7841,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Substrate transistor transfer current non-ideality factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7849,7 +7849,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>SC saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7857,7 +7857,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>SC non-ideality factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7865,7 +7865,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Zero-bias SC depletion capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7873,7 +7873,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>SC built-in voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7881,7 +7881,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>External SC exponent factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7889,7 +7889,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>SC punch-through voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7897,7 +7897,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Collector-base isolation (overlap) capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7905,7 +7905,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Emitter-base oxide capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7913,7 +7913,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Exponent factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7921,7 +7921,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Prefactor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7929,7 +7929,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>M^(1-AF)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7937,7 +7937,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>flicker noise exponent factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7945,7 +7945,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Bandgap-voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7953,7 +7953,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Effective emitter bandgap-voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7961,7 +7961,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Effective collector bandgap-voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7969,7 +7969,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Effective substrate bandgap-voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7977,7 +7977,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Coefficient K1 in T-dependent bandgap equation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7985,7 +7985,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Coefficient K2 in T-dependent bandgap equation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -7993,7 +7993,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Frist-order TC of tf0</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8001,7 +8001,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Second-order TC of tf0</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -8010,7 +8010,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+1"/>
         <location line="+44"/>
         <source>1/K^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8022,7 +8022,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+173"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+189"/>
         <source>Exponent coefficient in transfer current temperature dependence</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8030,7 +8030,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Exponent coefficient in BE junction current temperature dependence</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8038,7 +8038,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>TC of epi-collector diffusivity</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8046,7 +8046,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Relative TC of satur.drift velocity</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8054,7 +8054,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Relative TC of vces</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8062,7 +8062,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>TC of internal base resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8070,7 +8070,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>TC of external base resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8078,7 +8078,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>TC of external collector resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8086,21 +8086,21 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>TC of emitter resistances</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/hicumL0V1p2.cpp" line="+4"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+4"/>
         <source>TC of avalanche prefactor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <location filename="../qucs/components/hicumL0V1p2.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>TC of avalanche exponential factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8108,7 +8108,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+10"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+19"/>
         <source>Flag for self-heating calculation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8121,7 +8121,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+9"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+16"/>
         <source>Thermal resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -8133,7 +8133,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+1"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+1"/>
         <source>K/W</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8141,7 +8141,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+5"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>Ws/K</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8149,7 +8149,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Temperature for which parameters are valid</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -8161,7 +8161,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+8"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+13"/>
         <source>C</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8169,7 +8169,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>Temperature change for particular transistor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -8181,22 +8181,22 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>K</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
         <source>npn HICUM L0 v1.12</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>pnp HICUM L0 v1.12</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hic2_full.cpp" line="-288"/>
         <source>HICUM Level 2 v2.22 verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8205,7 +8205,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="-285"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="-319"/>
         <source>GICCR constant</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -8213,7 +8213,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+1"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+1"/>
         <source>A^2s</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8222,7 +8222,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Zero-bias hole charge</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -8234,7 +8234,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+1"/>
         <location line="+65"/>
         <source>Coul</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-57"/>
@@ -8243,7 +8243,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="-57"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="-63"/>
         <source>High-current correction for 2D and 3D effects</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8252,7 +8252,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+5"/>
         <source>Emitter minority charge weighting factor in HBTs</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8261,7 +8261,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Collector minority charge weighting factor in HBTs</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8270,7 +8270,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>B-E depletion charge weighting factor in HBTs</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8279,7 +8279,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+6"/>
         <source>B-C depletion charge weighting factor in HBTs</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8288,7 +8288,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Internal B-E saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8297,7 +8297,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Internal B-E current ideality factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8306,7 +8306,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Internal B-E recombination saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8315,7 +8315,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Internal B-E recombination current ideality factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8324,7 +8324,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Peripheral B-E saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8333,7 +8333,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Peripheral B-E current ideality factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8342,7 +8342,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Peripheral B-E recombination saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8351,7 +8351,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Peripheral B-E recombination current ideality factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8360,7 +8360,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Non-ideality factor for III-V HBTs</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8368,7 +8368,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Base current recombination time constant at B-C barrier for high forward injection</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8377,7 +8377,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Internal B-C saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8386,7 +8386,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Internal B-C current ideality factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8395,7 +8395,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>External B-C saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8404,7 +8404,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>External B-C current ideality factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8413,7 +8413,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>B-E tunneling saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8422,7 +8422,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Exponent factor for tunneling current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8430,7 +8430,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Specifies the base node connection for the tunneling current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8439,7 +8439,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Avalanche current factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8448,7 +8448,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Exponent factor for avalanche current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8457,7 +8457,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Relative TC for FAVL</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8466,7 +8466,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Relative TC for QAVL</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8475,7 +8475,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Zero bias internal base resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -8484,7 +8484,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+6"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+6"/>
         <source>Factor for geometry dependence of emitter current crowding</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8493,7 +8493,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Correction factor for modulation by B-E and B-C space charge layer</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8502,7 +8502,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Ratio of HF shunt to total internal capacitance (lateral NQS effect)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8511,7 +8511,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Ration of internal to total minority charge</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
@@ -8520,7 +8520,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+11"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+11"/>
         <source>Forward ideality factor of substrate transfer current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8529,7 +8529,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>C-S diode saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8538,7 +8538,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Ideality factor of C-S diode current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8547,7 +8547,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Transit time for forward operation of substrate transistor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8556,7 +8556,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Substrate series resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8565,7 +8565,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Substrate shunt capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8574,7 +8574,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Internal B-E zero-bias depletion capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8583,7 +8583,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Internal B-E built-in potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8592,7 +8592,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Internal B-E grading coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8601,7 +8601,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Ratio of maximum to zero-bias value of internal B-E capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8610,7 +8610,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Peripheral B-E zero-bias depletion capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8619,7 +8619,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Peripheral B-E built-in potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8628,7 +8628,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Peripheral B-E grading coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8637,7 +8637,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Ratio of maximum to zero-bias value of peripheral B-E capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8646,7 +8646,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Internal B-C zero-bias depletion capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8655,7 +8655,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Internal B-C built-in potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8664,7 +8664,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Internal B-C grading coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8673,7 +8673,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Internal B-C punch-through voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8682,7 +8682,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>External B-C zero-bias depletion capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8691,7 +8691,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>External B-C built-in potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8700,7 +8700,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>External B-C grading coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8709,7 +8709,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>External B-C punch-through voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8717,7 +8717,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Partitioning factor of parasitic B-C cap</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8725,7 +8725,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Partitioning factor of parasitic B-E cap</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8734,7 +8734,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>C-S zero-bias depletion capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8743,7 +8743,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>C-S built-in potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8752,7 +8752,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>C-S grading coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8761,7 +8761,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>C-S punch-through voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8770,7 +8770,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Low current forward transit time at VBC=0V</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8779,7 +8779,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Time constant for base and B-C space charge layer width modulation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8787,7 +8787,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p23.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <source>Time constant for modelling carrier jam at low VCE</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8796,7 +8796,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+6"/>
         <source>Neutral emitter storage time</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8805,7 +8805,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Exponent factor for current dependence of neutral emitter storage time</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8814,7 +8814,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Saturation time constant at high current densities</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8823,7 +8823,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Smoothing factor for current dependence of base and collector transit time</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8832,7 +8832,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Partitioning factor for base and collector portion</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8841,7 +8841,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Internal collector resistance at low electric field</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8850,7 +8850,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Voltage separating ohmic and saturation velocity regime</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8859,7 +8859,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Internal C-E saturation voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8868,7 +8868,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Collector punch-through voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8877,7 +8877,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Storage time for inverse operation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8886,7 +8886,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+13"/>
         <source>Total parasitic B-E capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8895,7 +8895,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Total parasitic B-C capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8904,7 +8904,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Factor for additional delay time of minority charge</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8913,7 +8913,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Factor for additional delay time of transfer current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8921,7 +8921,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Flag for turning on and off of vertical NQS effect</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8930,7 +8930,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Flicker noise coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8939,7 +8939,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Flicker noise exponent factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8947,7 +8947,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Flag for determining where to tag the flicker noise source</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8956,7 +8956,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+8"/>
         <source>Scaling factor for collector minority charge in direction of emitter width</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8965,7 +8965,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Scaling factor for collector minority charge in direction of emitter length</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -8974,7 +8974,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Bandgap voltage extrapolated to 0 K</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8983,7 +8983,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>First order relative TC of parameter T0</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -8992,7 +8992,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Second order relative TC of parameter T0</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9001,7 +9001,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Temperature exponent for RCI0</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9010,7 +9010,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Relative TC of saturation drift velocity</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -9019,7 +9019,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Relative TC of VCES</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -9028,7 +9028,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Temperature exponent of internal base resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9037,7 +9037,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Temperature exponent of external base resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9046,7 +9046,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Temperature exponent of external collector resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9055,7 +9055,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Temperature exponent of emitter resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9064,7 +9064,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Temperature exponent of mobility in substrate transistor transit time</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9072,7 +9072,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Effective emitter bandgap voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -9080,7 +9080,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Effective collector bandgap voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -9088,7 +9088,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Effective substrate bandgap voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -9096,7 +9096,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Coefficient K1 in T-dependent band-gap equation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9104,7 +9104,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Coefficient K2 in T-dependent band-gap equation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -9112,7 +9112,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+4"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+4"/>
         <source>Exponent coefficient in B-E junction current temperature dependence</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9121,7 +9121,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Relative TC of forward current gain for V2.1 model</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -9129,7 +9129,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+10"/>
         <source>Flag for turning on and off self-heating effect</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -9137,7 +9137,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+6"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+11"/>
         <source>J/W</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9145,7 +9145,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Flag for compatibility with v2.1 model (0=v2.1)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9154,7 +9154,7 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+2"/>
         <source>Temperature at which parameters are specified</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -9163,390 +9163,390 @@ Externo</translation>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="+3"/>
         <source>Temperature change w.r.t. chip temperature for particular transistor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
         <source>HICUM L2 v2.22</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hicumL0V1p2.cpp" line="-245"/>
         <source>HICUM Level 0 v1.2 verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-230"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="-246"/>
         <source>reverse Early voltage (normalization volt.)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+6"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+8"/>
         <source>flag for turning on base related critical current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+10"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+10"/>
         <source>Smoothing factor for the d.c. injection width</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+27"/>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+27"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+27"/>
         <source>BE charge built-in voltage for d.c. transfer current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>charge BE exponent factor for d.c. transfer current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+2"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+2"/>
         <source>BE capacitance ratio (maximum to zero-bias value) for d.c. transfer current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+160"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+160"/>
         <source>TC of iqf</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+173"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+8"/>
         <source>Exponent factor for temperature dependent thermal resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+35"/>
         <source>npn HICUM L0 v1.2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>pnp HICUM L0 v1.2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="-236"/>
         <source>HICUM Level 0 v1.2g verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+29"/>
         <source>high-injection roll-off current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+194"/>
         <source>TC of iqf (bandgap coefficient of zero bias hole charge)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>TC of avalanche prefactor, identical to alfav of Hicum/L2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>TC of avalanche exponential factor, identical to alqav of Hicum/L2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Emitter part coefficient of the zero bias hole charge temperature variation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Collector part coefficient of the zero bias hole charge temperature variation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Bandgap TC parameter of ver</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Bandgap TC parameter of vef</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Specific recombination current at the BC barrier for high forward injection</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
         <source>npn HICUM L0 v1.2g</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>pnp HICUM L0 v1.2g</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="-235"/>
         <source>HICUM Level 0 v1.3 verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Flag for using third order solution for transfer current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
         <source>bias dependence for reverse Early voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+217"/>
         <source>Flag for turning temperature dependence of tef0 on and off</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>TC of Reverse Early voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>TC of AVER</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Bandgap difference between base and BE-junction</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Frist-order TC of iqfh</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Second-order TC of iqfh</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+36"/>
         <source>npn HICUM L0 v1.3</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>pnp HICUM L0 v1.3</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hicumL2V2p1.cpp" line="-201"/>
         <source>HICUM Level 2 v2.1 verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+117"/>
         <source>Partitioning factor of parasitic B-C capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Noise factor for internal base resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+57"/>
         <source>HICUM L2 v2.1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hicumL2V2p23.cpp" line="-287"/>
         <source>HICUM Level 2 v2.23 verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+309"/>
         <source>HICUM L2 v2.23</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hicumL2V2p24.cpp" line="-287"/>
         <source>HICUM Level 2 v2.24 verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+309"/>
         <source>HICUM L2 v2.24</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hicumL2V2p31n.cpp" line="-321"/>
         <source>hicumL2V2p31n verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Weight factor for the low current minority charge</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Parameter describing the slope of hjEi(VBE)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Smoothing parameter for hjEi(VBE) at high voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+160"/>
         <source>Time constant for modeling carrier jam at low VCE</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Barrier voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Normalization parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Smoothing parameter for barrier voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>fitting factor for critical current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Flag for turning on and off of correlated noise implementation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emitter resistance flicker noise coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emitter resistance flicker noise exponent factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+52"/>
         <source>Bandgap difference between B and B-E junction used for hjEi0 and hf0</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Temperature coefficient for ahjEi</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Temperature coefficient for hjEi0</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Temperature coefficient for Rth</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>First order relative TC of parameter Rth</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+33"/>
         <source>HICUM L2 V2.31</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hpribin4bit.cpp" line="-3"/>
         <source>4bit highest priority encoder (binary form) verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>4Bit HPRI-Bin</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hybrid.cpp" line="-39"/>
         <source>hybrid (unsymmetrical 3dB coupler)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+37"/>
         <location filename="../qucs/components/phaseshifter.cpp" line="-2"/>
         <source>phase shift in degree</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Hybrid</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/iexp.cpp" line="+23"/>
         <source>exponential current source</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+34"/>
         <source>current before rising edge</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>maximum current of the pulse</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/vexp.cpp" line="+61"/>
         <source>start time of the exponentially rising edge</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/vexp.cpp" line="+2"/>
         <source>start of exponential decay</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>time constant of the rising edge</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>time constant of the falling edge</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
@@ -9620,29 +9620,29 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/ipulse.cpp" line="+23"/>
         <source>ideal current pulse source</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+28"/>
         <source>current before and after the pulse</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>current of the pulse</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/vpulse.cpp" line="+54"/>
         <source>start time of the pulse</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/vpulse.cpp" line="+2"/>
         <source>ending time of the pulse</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9650,7 +9650,7 @@ Externo</translation>
         <location filename="../qucs/components/vpulse.cpp" line="+2"/>
         <location filename="../qucs/components/vrect.cpp" line="+58"/>
         <source>rise time of the leading edge</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9658,7 +9658,7 @@ Externo</translation>
         <location filename="../qucs/components/vpulse.cpp" line="+2"/>
         <location filename="../qucs/components/vrect.cpp" line="+2"/>
         <source>fall time of the trailing edge</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
@@ -9668,30 +9668,30 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/irect.cpp" line="-38"/>
         <source>ideal rectangle current source</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+30"/>
         <source>current at high pulse</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/vrect.cpp" line="-6"/>
         <source>duration of high pulses</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/vrect.cpp" line="+2"/>
         <source>duration of low pulses</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../qucs/components/vrect.cpp" line="+6"/>
         <source>initial delay time</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
@@ -9711,148 +9711,148 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/jfet.cpp" line="-8"/>
         <source>junction field-effect transistor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../qucs/components/nigbt.cpp" line="-10"/>
         <source>threshold voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>channel-length modulation parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>parasitic drain resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>parasitic source resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate-junction saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate-junction emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate-junction recombination current parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Isr emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>zero-bias gate-source junction capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>zero-bias gate-drain junction capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate-junction potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>forward-bias junction capacitance coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate P-N grading coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Vt0 temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Beta exponential temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>default area for JFET</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
         <source>n-JFET</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
         <source>p-JFET</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/jk_flipflop.cpp" line="-2"/>
         <source>JK flip flop with asynchron set and reset</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+119"/>
         <source>JK-FlipFlop</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/jkff_SR.cpp" line="-7"/>
         <source>jk flip flop with set and reset verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+27"/>
         <source>JK-FlipFlop w/ SR</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/libcomp.cpp" line="+34"/>
         <source>Component taken from Qucs library</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>name of qucs library file</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>name of component in library</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/log_amp.cpp" line="-47"/>
         <source>Logarithmic Amplifier verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>scale factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>scale factor error</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -9861,58 +9861,58 @@ Externo</translation>
         <location filename="../qucs/components/potentiometer.cpp" line="-12"/>
         <location line="+3"/>
         <source>%</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-9"/>
         <source>input I1 bias current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>input reference bias current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>number of decades</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/potentiometer.cpp" line="-4"/>
         <source>conformity error</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>output offset error</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>amplifier input resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>amplifier 3dB frequency</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hz</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>amplifier output resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>conformity error temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -9921,368 +9921,368 @@ Externo</translation>
         <location line="+3"/>
         <location line="+3"/>
         <source>%/Celsius</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-4"/>
         <source>offset temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>V/Celsius</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>scale factor error temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>input I1 bias current temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+3"/>
         <source>A/Celsius</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-1"/>
         <source>input reference bias current temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Logarithmic Amplifier</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
         <location filename="../qucs/components/MESFET.cpp" line="-43"/>
         <source>I</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>R</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/logic_0.cpp" line="-4"/>
         <source>logic 0 verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>logic 0 voltage level</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Logic 0</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/logic_1.cpp" line="-4"/>
         <source>logic 1 verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>logic 1 voltage level</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Logic 1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/logical_and.cpp" line="+22"/>
         <source>logical AND</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
         <source>n-port AND</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/logical_buf.cpp" line="-4"/>
         <source>logical buffer</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+104"/>
         <source>Buffer</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/logical_inv.cpp" line="-4"/>
         <source>logical inverter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+121"/>
         <source>Inverter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/logical_nand.cpp" line="+22"/>
         <source>logical NAND</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
         <source>n-port NAND</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/logical_nor.cpp" line="+22"/>
         <source>logical NOR</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
         <source>n-port NOR</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/logical_or.cpp" line="+22"/>
         <source>logical OR</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
         <source>n-port OR</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/logical_xnor.cpp" line="+22"/>
         <source>logical XNOR</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
         <source>n-port XNOR</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/logical_xor.cpp" line="+22"/>
         <source>logical XOR</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
         <source>n-port XOR</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/MESFET.cpp" line="-39"/>
         <source>MESFET verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>model selector</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>pinch-off voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>A/(V*V)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>saturation voltage parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>channel length modulation parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>doping profile parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>power law exponent parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>power feedback parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>1/W</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>maximum junction voltage limit before capacitance limiting</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>capacitance saturation transition voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>capacitance threshold transition voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>dc drain pull coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>subthreshold conductance parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>diode saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>diode emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>built-in gate potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>gate-drain junction reverse bias breakdown voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>diode saturation current temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>transit time under gate</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>channel resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>area factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/photodiode.cpp" line="-10"/>
         <source>energy gap</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../qucs/components/photodiode.cpp" line="+1"/>
         <source>eV</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>zero bias gate-drain junction capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>zero bias gate-source junction capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>zero bias drain-source junction capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Beta temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Alpha temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Gamma temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Subthreshold slope gate parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>subthreshold drain pull parameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate-source current equation selector</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate-drain current equation selector</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate-source charge equation selector</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate-drain charge equation selector</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>drain-source charge equation selector</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Vto temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/thyristor.cpp" line="+2"/>
         <location filename="../qucs/components/triac.cpp" line="+2"/>
         <source>gate resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -10291,377 +10291,377 @@ Externo</translation>
         <location line="+15"/>
         <location line="+3"/>
         <source>Ohms</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-22"/>
         <source>drain resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>source resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>gate resistance temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+3"/>
         <location line="+3"/>
         <source>1/Celsius</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-4"/>
         <source>drain resistance temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>source resistance temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>gate reverse breakdown currrent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>forward bias slope resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>breakdown slope resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>shot noise coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+24"/>
         <source>MESFET</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mod_amp.cpp" line="+15"/>
         <source>Modular Operational Amplifier verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Gain bandwidth product (Hz)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Open-loop differential gain at DC (dB)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Second pole frequency (Hz)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Output resistance (Ohm)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Differential input capacitance (F)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Differential input resistance (Ohm)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Input offset current (A)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Input bias current (A)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Input offset voltage (V)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Common-mode rejection ratio at DC (dB)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Common-mode zero corner frequency (Hz)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Positive slew rate (V/s)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Negative slew rate (V/s)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Positive output voltage limit (V)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Negative output voltage limit (V)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Maximum DC output current (A)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Current limit scale factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Modular OpAmp</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mosfet.cpp" line="+25"/>
         <source>MOS field-effect transistor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
         <location filename="../qucs/components/mosfet_sub.cpp" line="+27"/>
         <source>n-MOSFET</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
         <location filename="../qucs/components/mosfet_sub.cpp" line="+11"/>
         <source>p-MOSFET</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
         <location filename="../qucs/components/mosfet_sub.cpp" line="+17"/>
         <source>depletion MOSFET</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mosfet_sub.cpp" line="-149"/>
         <source>zero-bias threshold voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>transconductance coefficient in A/V^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>bulk threshold in sqrt(V)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>surface potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>channel-length modulation parameter in 1/V</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>drain ohmic resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>source ohmic resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate ohmic resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>bulk junction saturation current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>bulk junction emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>channel width</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>channel length</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>lateral diffusion length</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>oxide thickness</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate-source overlap capacitance per meter of channel width in F/m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>gate-drain overlap capacitance per meter of channel width in F/m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>gate-bulk overlap capacitance per meter of channel length in F/m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>zero-bias bulk-drain junction capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>zero-bias bulk-source junction capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>bulk junction potential</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>bulk junction bottom grading coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>bulk junction forward-bias depletion capacitance coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>zero-bias bulk junction periphery capacitance per meter of junction perimeter in F/m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>bulk junction periphery grading coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>bulk transit time</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>substrate bulk doping density in 1/cm^3</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>surface state density in 1/cm^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate material type: 0 = alumina; -1 = same as bulk; 1 = opposite to bulk</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>surface mobility in cm^2/Vs</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>drain and source diffusion sheet resistance in Ohms/square</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>number of equivalent drain squares</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>number of equivalent source squares</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>zero-bias bulk junction bottom capacitance per square meter of junction area in F/m^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>bulk junction saturation current per square meter of junction area in A/m^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>drain diffusion area in m^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>source diffusion area in m^2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>drain junction perimeter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>source junction perimeter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+17"/>
         <source>MOS field-effect transistor with substrate</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mscorner.cpp" line="-23"/>
@@ -10672,7 +10672,7 @@ Externo</translation>
         <location line="+25"/>
         <location filename="../qucs/components/msmbend.cpp" line="+2"/>
         <source>width of line</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
@@ -10682,19 +10682,19 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/mscoupled.cpp" line="-38"/>
         <source>coupled microstrip line</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+40"/>
         <location filename="../qucs/components/mslange.cpp" line="+2"/>
         <source>spacing between the lines</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/mslange.cpp" line="+2"/>
         <source>microstrip model</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -10706,12 +10706,12 @@ Externo</translation>
         <location filename="../qucs/components/msstep.cpp" line="+9"/>
         <location filename="../qucs/components/mstee.cpp" line="+7"/>
         <source>microstrip dispersion model</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Coupled Microstrip Line</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mscross.cpp" line="-19"/>
@@ -10722,12 +10722,12 @@ Externo</translation>
         <location line="+12"/>
         <location filename="../qucs/components/mstee.cpp" line="-5"/>
         <source>width of line 3</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>width of line 4</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -10737,13 +10737,13 @@ Externo</translation>
         <location filename="../qucs/components/msstep.cpp" line="-3"/>
         <location filename="../qucs/components/mstee.cpp" line="+2"/>
         <source>quasi-static microstrip model</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../qucs/components/mstee.cpp" line="+8"/>
         <source>show port numbers in symbol or not</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+17"/>
@@ -10753,37 +10753,37 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/msgap.cpp" line="-36"/>
         <source>microstrip gap</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+30"/>
         <source>width of the line 1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>width of the line 2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>spacing between the microstrip ends</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Microstrip Gap</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mslange.cpp" line="-36"/>
         <source>microstrip lange coupler</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+53"/>
         <source>Microstrip Lange Coupler</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/msline.cpp" line="-27"/>
@@ -10798,363 +10798,363 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/msmbend.cpp" line="-26"/>
         <source>microstrip mitered bend</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Microstrip Mitered Bend</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/msopen.cpp" line="-23"/>
         <source>microstrip open</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+29"/>
         <source>microstrip open end model</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Microstrip Open</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/msrstub.cpp" line="-20"/>
         <source>microstrip radial stub</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
         <source>inner radius</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>outer radius</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>stub angle</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+0"/>
         <location filename="../qucs/components/potentiometer.cpp" line="-9"/>
         <location line="+7"/>
         <source>degrees</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Microstrip Radial Stub</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/msstep.cpp" line="-33"/>
         <source>microstrip impedance step</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+29"/>
         <source>width 1 of the line</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>width 2 of the line</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Microstrip Step</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mstee.cpp" line="-29"/>
         <source>microstrip tee</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+27"/>
         <source>temperature in degree Celsius</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Microstrip Tee</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/msvia.cpp" line="-21"/>
         <source>microstrip via</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
         <source>diameter of round via conductor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Microstrip Via</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mutual.cpp" line="+23"/>
         <source>two mutual inductors</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+35"/>
         <location filename="../qucs/components/mutual2.cpp" line="+83"/>
         <source>inductance of coil 1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/mutual2.cpp" line="+2"/>
         <source>inductance of coil 2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/mutual2.cpp" line="+4"/>
         <source>coupling factor between coil 1 and 2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Mutual Inductors</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mutual2.cpp" line="-63"/>
         <source>three mutual inductors</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+61"/>
         <source>inductance of coil 3</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>coupling factor between coil 1 and 3</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>coupling factor between coil 2 and 3</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
         <source>3 Mutual Inductors</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mutualx.cpp" line="+27"/>
         <source>several mutual inductors</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>number of mutual inductances</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+131"/>
         <location line="+19"/>
         <source>inductance of coil</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-144"/>
         <location line="+152"/>
         <source>coupling factor between coil %1 and coil %2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-142"/>
         <source>N Mutual Inductors</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mux2to1.cpp" line="-6"/>
         <source>2to1 multiplexer verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>2to1 Mux</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mux4to1.cpp" line="-6"/>
         <source>4to1 multiplexer verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>4to1 Mux</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/mux8to1.cpp" line="-6"/>
         <source>8to1 multiplexer verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>8to1 Mux</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/nigbt.cpp" line="-45"/>
         <source>NIGBT verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>gate-drain overlap area</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+3"/>
         <source>m**2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-1"/>
         <source>area of the device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>MOS transconductance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>ambipolar recombination lifetime</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>metallurgical base width</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>avalanche uniformity factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>avalanche multiplication exponent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate-source capacitance per unit area</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+3"/>
         <source>F/cm**2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-1"/>
         <source>gate-drain oxide capacitance per unit area</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>emitter saturation current density</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A/cm**2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>triode region factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>electron mobility</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+3"/>
         <source>cm**2/Vs</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-1"/>
         <source>hole mobility</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>base doping</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>1/cm**3</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>transverse field factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <source>gate-drain overlap depletion threshold</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+26"/>
         <source>NIGBT</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/noise_ii.cpp" line="-58"/>
         <location filename="../qucs/components/noise_iv.cpp" line="-53"/>
         <location filename="../qucs/components/noise_vv.cpp" line="-48"/>
         <source>correlated current sources</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+48"/>
         <location filename="../qucs/components/noise_iv.cpp" line="+43"/>
         <source>current power spectral density of source 1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>current power spectral density of source 2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/noise_iv.cpp" line="+4"/>
         <location filename="../qucs/components/noise_vv.cpp" line="+42"/>
         <source>normalized correlation coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
@@ -11182,12 +11182,12 @@ Externo</translation>
     <message>
         <location line="+29"/>
         <source>absolute value of maximum and minimum output voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
         <source>OpAmp</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/opt_sim.cpp" line="+30"/>
@@ -11202,39 +11202,39 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/pad2bit.cpp" line="+17"/>
         <source>2bit pattern generator verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <location filename="../qucs/components/pad3bit.cpp" line="+20"/>
         <location filename="../qucs/components/pad4bit.cpp" line="+20"/>
         <source>pad output value</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+19"/>
         <source>2Bit Pattern</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/pad3bit.cpp" line="-3"/>
         <source>3bit pattern generator verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
         <source>3Bit Pattern</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/pad4bit.cpp" line="-3"/>
         <source>4bit pattern generator verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
         <source>4Bit Pattern</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/param_sweep.cpp" line="-30"/>
@@ -11265,103 +11265,103 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/phaseshifter.cpp" line="-24"/>
         <source>phase shifter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Phase Shifter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/photodiode.cpp" line="-38"/>
         <source>Photodiode verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>photodiode emission coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>series lead resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>diode dark current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+32"/>
         <source>responsivity</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+30"/>
         <source>A/W</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>shunt resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>quantum efficiency</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>light wavelength</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>nm</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>responsivity calculator selector</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Photodiode</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/phototransistor.cpp" line="-64"/>
         <source>Phototransistor verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>dark current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+41"/>
         <source>collector series resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>emitter series resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>base series resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>responsivity at relative selectivity=100%</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -11370,7 +11370,7 @@ Externo</translation>
         <location line="+2"/>
         <location line="+2"/>
         <source>relative selectivity polynomial coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
@@ -11380,7 +11380,7 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/pm_modulator.cpp" line="-33"/>
         <source>ac voltage source with phase modulator</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
@@ -11390,7 +11390,7 @@ Externo</translation>
     <message>
         <location line="+21"/>
         <source>modulation index</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
@@ -11400,67 +11400,67 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/potentiometer.cpp" line="-14"/>
         <source>Potentiometer verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>nominal device resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>shaft/wiper arm rotation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>resistive law taper coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>device type selector</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>maximum shaft/wiper rotation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <source>linearity error</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>wiper arm contact resistance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>resistance temperature coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>PPM/Celsius</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Potentiometer</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+34"/>
         <source>B</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>T</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/rectline.cpp" line="-38"/>
@@ -11471,47 +11471,47 @@ Externo</translation>
     <message>
         <location line="-31"/>
         <source>widest side</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>shortest side</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
         <source>material parameter for temperature model</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/relais.cpp" line="-45"/>
         <source>relay</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+37"/>
         <source>threshold voltage in Volts</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>hysteresis voltage in Volts</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>resistance of &quot;on&quot; state in Ohms</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>resistance of &quot;off&quot; state in Ohms</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Relay</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/resistor.cpp" line="-15"/>
@@ -11620,7 +11620,7 @@ Externo</translation>
     <message>
         <location line="+0"/>
         <source>Ohm/m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -11630,7 +11630,7 @@ Externo</translation>
     <message>
         <location line="+0"/>
         <source>H/m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -11640,12 +11640,12 @@ Externo</translation>
     <message>
         <location line="+2"/>
         <source>conductive load</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+0"/>
         <source>S/m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
@@ -11655,12 +11655,12 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/rs_flipflop.cpp" line="-2"/>
         <source>RS flip flop</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+87"/>
         <source>RS-FlipFlop</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/source_ac.cpp" line="-36"/>
@@ -11690,27 +11690,27 @@ Externo</translation>
     <message>
         <location line="+32"/>
         <source>calculate noise parameters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>input port for noise figure</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>output port for noise figure</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>put characteristic values into dataset</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>save subcircuit characteristic values into dataset</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
@@ -11720,22 +11720,22 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/sparamfile.cpp" line="-13"/>
         <source>S parameter file</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>name of the s parameter file</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>data type</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+26"/>
         <source>n-port S parameter file</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
@@ -11745,17 +11745,17 @@ Externo</translation>
     <message>
         <location line="+10"/>
         <source>2-port S parameter file</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+77"/>
         <source>file</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/spicefile.cpp" line="+42"/>
         <source>SPICE netlist file</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+27"/>
@@ -11765,33 +11765,33 @@ Externo</translation>
     <message>
         <location line="+36"/>
         <source>sim</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>spice</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+148"/>
         <location filename="../qucs/schematic_file.cpp" line="+415"/>
         <source>ERROR: No file name in SPICE component &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
         <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+13"/>
         <source>ERROR: Cannot save converted SPICE file &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
         <source>ERROR: Cannot open converted SPICE file &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+67"/>
@@ -11808,17 +11808,17 @@ Externo</translation>
     <message>
         <location line="+9"/>
         <source>ERROR: Cannot save preprocessed SPICE file &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
         <source>ERROR: Cannot execute &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+61"/>
         <source>COMP ERROR: Cannot start QucsConv!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -11828,37 +11828,37 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/subcircuit.cpp" line="+35"/>
         <source>subcircuit</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>name of qucs schematic file</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Subcircuit</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/subcirport.cpp" line="+25"/>
         <source>port of a subcircuit</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>number of the port within the subcircuit</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>type of the port (for digital simulation only)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+61"/>
         <source>Subcircuit Port</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/substrate.cpp" line="-42"/>
@@ -11868,27 +11868,27 @@ Externo</translation>
     <message>
         <location line="+36"/>
         <source>relative permittivity</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>thickness in meters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>thickness of metalization</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>specific resistance of metal</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>rms substrate roughness</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
@@ -11898,52 +11898,52 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/switch.cpp" line="-11"/>
         <source>switch (time controlled)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>initial state</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>time when state changes (semicolon separated list possible, even numbered lists are repeated)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>resistance of &quot;on&quot; state in ohms</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>resistance of &quot;off&quot; state in ohms</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Max possible switch transition time (transition time 1/100 smallest value in &apos;time&apos;, or this number)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Switch</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/symtrafo.cpp" line="+26"/>
         <source>ideal symmetrical transformer</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+63"/>
         <source>voltage transformation ratio of coil 1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>voltage transformation ratio of coil 2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
@@ -11953,49 +11953,49 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/tff_SR.cpp" line="-7"/>
         <source>T flip flop with set and reset verilog device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+27"/>
         <source>T-FlipFlop w/ SR</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/thyristor.cpp" line="-36"/>
         <source>silicon controlled rectifier (SCR)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+24"/>
         <source>breakover voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>gate trigger current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Thyristor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/tline.cpp" line="-28"/>
         <source>ideal transmission line</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+26"/>
         <location filename="../qucs/components/tline_4port.cpp" line="-2"/>
         <source>characteristic impedance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <location filename="../qucs/components/tline_4port.cpp" line="+4"/>
         <source>attenuation factor per length in 1/m</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
@@ -12005,12 +12005,12 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/tline_4port.cpp" line="-34"/>
         <source>ideal 4-terminal transmission line</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+50"/>
         <source>4-Terminal Transmission Line</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/tr_sim.cpp" line="-60"/>
@@ -12040,7 +12040,7 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/transformer.cpp" line="+23"/>
         <source>ideal transformer</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+38"/>
@@ -12055,82 +12055,82 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/triac.cpp" line="-40"/>
         <source>triac (bidirectional thyristor)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+30"/>
         <source>(bidirectional) gate trigger current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Triac</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/tunneldiode.cpp" line="-35"/>
         <source>resonance tunnel diode</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>peak current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>valley current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>valley voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>resonance energy in Ws</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Fermi energy in Ws</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>resonance width in Ws</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>maximum of transmission</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>fitting factor for electron density</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>fitting factor for voltage drop</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>fitting factor for diode current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>zero-bias depletion capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <source>life-time of electrons</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+35"/>
@@ -12175,7 +12175,7 @@ Externo</translation>
     <message>
         <location filename="../qucs/components/vacomponent.cpp" line="+1"/>
         <source>Symbol file not found: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/vccs.cpp" line="-41"/>
@@ -12234,13 +12234,13 @@ Externo</translation>
         <location filename="../qucs/components/vhdlfile.cpp" line="+221"/>
         <location filename="../qucs/schematic_file.cpp" line="+25"/>
         <source>ERROR: No file name in %1 component &quot;%2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
         <location filename="../qucs/components/vhdlfile.cpp" line="+11"/>
         <source>ERROR: Cannot open %1 file &quot;%2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/vexp.cpp" line="-40"/>
@@ -12302,7 +12302,7 @@ Externo</translation>
         <location line="+41"/>
         <location line="+7"/>
         <source>generic variable</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/volt_ac.cpp" line="-29"/>
@@ -12392,7 +12392,7 @@ Externo</translation>
     <message>
         <location filename="../qucs/diagrams/diagram.h" line="+32"/>
         <source> &lt;invalid&gt;</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/diagrams/marker.cpp" line="+287"/>
@@ -12408,12 +12408,12 @@ Externo</translation>
     <message>
         <location filename="../qucs/diagrams/psdiagram.cpp" line="+128"/>
         <source>Polar-Smith Combi</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Smith-Polar Combi</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/diagrams/rect3ddiagram.cpp" line="+1150"/>
@@ -12440,7 +12440,7 @@ Externo</translation>
         <location filename="../qucs/diagrams/timingdiagram.cpp" line="+158"/>
         <location filename="../qucs/diagrams/truthdiagram.cpp" line="+88"/>
         <source>no variables</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+141"/>
@@ -12448,7 +12448,7 @@ Externo</translation>
         <location line="+89"/>
         <location filename="../qucs/diagrams/truthdiagram.cpp" line="+133"/>
         <source>wrong dependency</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
@@ -12456,7 +12456,7 @@ Externo</translation>
         <location line="+113"/>
         <location filename="../qucs/diagrams/truthdiagram.cpp" line="+7"/>
         <source>no data</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+98"/>
@@ -12477,19 +12477,19 @@ Externo</translation>
         <location filename="../qucs/dialogs/librarydialog.cpp" line="-267"/>
         <source>ERROR: Cannot open file &quot;%1&quot;.
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+13"/>
         <source>ERROR: Cannot create user library subdirectory !
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
         <source>ERROR: Cannot create file &quot;%1&quot;.
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/imagewriter.cpp" line="+251"/>
@@ -12502,29 +12502,29 @@ Externo</translation>
     <message>
         <location line="-15"/>
         <source>Inkscape start error!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Successfully exported</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Disk write error!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Unsupported format of graphics file. 
 Use PNG, JPEG or SVG graphics!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/misc.cpp" line="+343"/>
         <location line="+63"/>
         <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/module.cpp" line="+116"/>
@@ -12533,7 +12533,7 @@ Use PNG, JPEG or SVG graphics!</source>
         <location line="+15"/>
         <location filename="../qucs/qucs_actions.cpp" line="+149"/>
         <source>verilog-a user devices</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+66"/>
@@ -12706,7 +12706,7 @@ Defina a localização do Octave nas Definições do Programa.</translation>
     <message>
         <location filename="../qucs/printerwriter.cpp" line="+96"/>
         <source>Print Document</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/qucs_actions.cpp" line="-148"/>
@@ -12728,7 +12728,7 @@ Defina a localização do Octave nas Definições do Programa.</translation>
         <location line="+707"/>
         <source>Format Error:
 &apos;Painting&apos; field is not closed!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-689"/>
@@ -12934,85 +12934,85 @@ Campo desconhecido!</translation>
     <message>
         <location filename="../qucs-activefilter/filter.cpp" line="+234"/>
         <source>Part list</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Filter order = %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Zeros list Pk=Re+j*Im</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>LPF prototype poles list Pk=Re+j*Im</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Poles list Pk=Re+j*Im</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs-edit/main.cpp" line="+76"/>
         <source>Qucs Editor Version </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>
 Very simple text editor for Qucs
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copyright (C) 2004, 2005 by Michael Margraf
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>
 Usage:  qucsedit [-r] file
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>    -h  display this help and exit
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>    -r  open file read-only
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Too long command line argument!
 
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Wrong command line argument!
 
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Only one filename allowed!
 
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs-filter/stepz_filter.cpp" line="+1"/>
@@ -13020,18 +13020,18 @@ Usage:  qucsedit [-r] file
 To get acceptable results it is recommended to use
 a substrate with lower permittivity and larger height.
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs-filter-v2/qf_settings.cpp" line="-71"/>
         <location filename="../qucs-help/main.cpp" line="+1"/>
         <source>Cannot save settings !</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+72"/>
         <source>Cannot save settings file !</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13054,12 +13054,12 @@ a substrate with lower permittivity and larger height.
     <message>
         <location line="+1"/>
         <source>Help...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>&amp;About QucsActiveFilter...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -13070,177 +13070,177 @@ a substrate with lower permittivity and larger height.
         <location line="+14"/>
         <location line="+481"/>
         <source>Passband attenuation, Ap (dB)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-480"/>
         <source>Stopband attenuation, As (dB)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+477"/>
         <source>Cuttof frequency, Fc (Hz)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-476"/>
         <location line="+477"/>
         <source>Stopband frequency, Fs (Hz)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-476"/>
         <source>Passband ripple Rp(dB)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Passband gain, Kv (dB)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Filter order</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Approximation type:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Butterworth</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Chebyshev</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Inverse Chebyshev</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cauer (Elliptic)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Bessel</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>User defined</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Manually define transfer function</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Calculate and copy to clipboard</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Calculation console</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Filter topology</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Filter type:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>LowPass</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>High Pass</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Band Pass</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Band Stop</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Multifeedback (MFB)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sallen-Key (S-K)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+369"/>
         <source>Cauer section</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-362"/>
         <source>General amplitude frequency response</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Filter topology preview (one stage)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Filter parameters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Transfer function and Topology</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>General filter amplidure-frequency response</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Filter topology preview</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Filter calculation console</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+34"/>
         <source>Upper cutoff frequency of band-pass/band-stop filter is
 less than lower. Unable to implement such filter.
 Change parameters and try again.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+63"/>
@@ -13248,56 +13248,56 @@ Change parameters and try again.</source>
         <location line="+21"/>
         <source>Unable to implement filter with such parameters and topology 
 Change parapeters and/or topology and try again!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-40"/>
         <source>Unable to use Cauer section for Chebyshev or Butterworth 
 frequency response. Try to use another topology.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Unable to use MFB filter for Cauer or Inverse Chebyshev 
 frequency response. Try to use another topology.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Function will be implemented in future version</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>
 Filter calculation was sucessfull</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>
 Filter calculation terminated with error</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+140"/>
         <source>Upper cutoff frequency, Fu (Hz)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Lower cuttoff frequency, Fl (Hz)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Transient bandwidth, TW (Hz)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Active filter design</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -13309,12 +13309,12 @@ Filter calculation terminated with error</source>
         <source>
 Active Filter synthesis program
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copyright (C) 2014 by</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -13428,12 +13428,12 @@ Active Filter synthesis program
     <message>
         <location line="+19"/>
         <source>Search Components</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -13709,33 +13709,33 @@ Active Filter synthesis program
     <message>
         <location line="+52"/>
         <source>Cannot remove directory: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-177"/>
         <location line="+185"/>
         <source>Cannot delete file: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-265"/>
         <source>Cannot copy file to identical name: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Cannot copy schematic: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Enter new filename:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Cannot rename file: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+243"/>
@@ -13762,7 +13762,7 @@ Active Filter synthesis program
     <message>
         <location line="+4"/>
         <source>Cannot remove project directory!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
@@ -13772,7 +13772,7 @@ Active Filter synthesis program
     <message>
         <location line="+15"/>
         <source>No project is selected!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
@@ -13912,12 +13912,12 @@ Active Filter synthesis program
     <message>
         <location line="+117"/>
         <source>Update schematic path</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The schematic file path has been refreshed.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+0"/>
@@ -13982,22 +13982,22 @@ Active Filter synthesis program
     <message>
         <location line="+308"/>
         <source>Could not load S[1,1].</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Could not load S[1,2].</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Could not load S[2,1].</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Could not load S[2,2].</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -14041,7 +14041,7 @@ Active Filter synthesis program
         <source>Cannot start %1 program! 
 
 (%2)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+61"/>
@@ -14266,7 +14266,7 @@ Fecha o documento actual</translation>
     <message>
         <location line="+9"/>
         <source>Clear Recent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -14964,34 +14964,34 @@ Converte dados para um ficheiro CSV (valores separados por vírgulas)</translati
     <message>
         <location line="+3"/>
         <source>Build Verilog-A module...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Run admsXml and C++ compiler</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Build Verilog-A module
 Runs amdsXml and C++ compiler</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Load Verilog-A module...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select Verilog-A symbols to be loaded</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Load Verilog-A module
 Let the user select and load symbols</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -15395,19 +15395,19 @@ Inicia o QucsFilter</translation>
     <message>
         <location line="+3"/>
         <source>Active filter synthesis</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Starts QucsActiveFilter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Active filter synthesis
 
 Starts QucsActiveFilter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -15488,19 +15488,19 @@ Inicia o programa de síntese de atenuadores QucsAttenuator</translation>
     <message>
         <location line="+3"/>
         <source>Resistor color codes</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Starts Qucs resistor color codes</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Resistor color codes
 
 Starts standard resistor color code computation program</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -15885,148 +15885,148 @@ Acerca do Qt, da Trolltech</translation>
     <message>
         <location line="+5"/>
         <source>Quite Universal Circuit Simulator</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Copyright (C)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-1"/>
         <source>by Michael Margraf</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Qucs Team</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Simulator by Stefan Jahn</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>VHDL simulator &apos;FreeHDL&apos; by Edwin Naroska and Marius Vollmer</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Special thanks to Jens Flucke and Raimund Jacob</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Many thanks to Mike Brinson for correcting the VHDL output</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>GUI improvements by Gopala Krishna A</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Verilog-AMS interface by Helene Parruitte</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Verilog-AMS dynamic loader by Guilherme Brondani Torri</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Translations:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>German by Stefan Jahn</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Polish by Dariusz Pienkowski</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Romanian by Radu Circa</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>French by Vincent Habchi, F5RCS</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Portuguese by Luciano Franca, Helio de Sousa, Guilherme Brondani Torri</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Spanish by Jose L. Redrejo Rodriguez</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Japanese by Toyoyuki Ishikawa</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Italian by Giorgio Luparia and Claudio Girardi</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hebrew by Dotan Nahum</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Swedish by Peter Landgren</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Turkish by Onur and Ozgur Cobanoglu</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hungarian by Jozsef Bus</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Russian by Igor Gorbounov</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Czech by Marek Straka</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Catalan by Antoni Subirats</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Arabic by Chabane Noureddine</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Kazakh by Erbol Keshubaev</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -16039,7 +16039,7 @@ Acerca do Qt, da Trolltech</translation>
     <message>
         <location line="+2"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -16050,7 +16050,7 @@ Acerca do Qt, da Trolltech</translation>
     <message>
         <location line="+5"/>
         <source>&amp;About</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
@@ -16060,38 +16060,38 @@ Acerca do Qt, da Trolltech</translation>
     <message>
         <location line="+12"/>
         <source>Topology</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Input</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Attenuation:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>dB</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Zin:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+11"/>
         <source>50</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-5"/>
@@ -16100,60 +16100,60 @@ Acerca do Qt, da Trolltech</translation>
         <location line="+7"/>
         <location line="+7"/>
         <source>Ohm</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-41"/>
         <source>Zout:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Calculate and put into Clipboard</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Output</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>R1:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+7"/>
         <location line="+7"/>
         <source>--</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-9"/>
         <source>R2:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>R3:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
         <location line="+125"/>
         <source>Result:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-107"/>
         <source>Qucs Attenuator Help</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediatly, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
@@ -16170,23 +16170,23 @@ Acerca do Qt, da Trolltech</translation>
         <source>
 Attenuator synthesis program
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Copyright (C) 2006 by</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+82"/>
         <source>Success!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Error: Set Attenuation less than %1 dB</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -16195,23 +16195,23 @@ Attenuator synthesis program
         <location filename="../qucs-edit/qucsedit.cpp" line="+44"/>
         <location line="+148"/>
         <source>File: </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-137"/>
         <location line="+49"/>
         <source>Line: %1  -  Column: %2</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-47"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+50"/>
@@ -16223,18 +16223,18 @@ Attenuator synthesis program
         <source>
 Very simple text editor for Qucs
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copyright (C) 2004, 2005 by Michael Margraf
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Enter a Filename</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
@@ -16250,28 +16250,28 @@ Very simple text editor for Qucs
     <message>
         <location line="-38"/>
         <source>Cannot write file: </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Cannot read file: </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Closing document</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The text contains unsaved changes!
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you want to save the changes?</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -16309,12 +16309,12 @@ Very simple text editor for Qucs
     <message>
         <location line="+1"/>
         <source>Help...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>&amp;About QucsFilter...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -16324,115 +16324,115 @@ Very simple text editor for Qucs
     <message>
         <location line="+21"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Realization:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Filter type:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Filter class:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Low pass</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>High pass</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Band pass</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Band stop</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Order:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+399"/>
         <source>Corner frequency:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-386"/>
         <source>Stop frequency:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+13"/>
         <location line="+384"/>
         <source>Stop band frequency:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-371"/>
         <location line="+372"/>
         <source>Pass band ripple:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-364"/>
         <source>Stop band attenuation:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Impedance:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Microstrip Substrate</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Relative permittivity:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Substrate height:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>metal thickness:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>minimum width:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>maximum width:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Calculate and put into Clipboard</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+39"/>
@@ -16444,12 +16444,12 @@ Very simple text editor for Qucs
         <source>
 Filter synthesis program
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copyright (C) 2005, 2006 by</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
@@ -16461,7 +16461,7 @@ Filter synthesis program
         <location line="+138"/>
         <location line="+18"/>
         <source>Result:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-155"/>
@@ -16472,17 +16472,17 @@ Filter synthesis program
     <message>
         <location line="+111"/>
         <source>Stop frequency must be greater than start frequency.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Filter order must not be less than two.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Bessel filter order must not be greater than 19.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
@@ -16493,22 +16493,22 @@ Filter synthesis program
     <message>
         <location line="-9"/>
         <source>Result: --</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+71"/>
         <source>Start frequency:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Pass band frequency:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Pass band attenuation:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -16516,59 +16516,59 @@ Filter synthesis program
     <message>
         <location filename="../qucs-help/qucshelp.cpp" line="+50"/>
         <source>Qucs Help System</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+29"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>&amp;Back</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>&amp;Forward</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>&amp;Home</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&amp;Previous</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>&amp;Next</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&amp;Table of Contents</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Enables/disables the table of contents</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Table of Contents
 
 Enables/disables the table of contents</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+40"/>
         <source>&amp;About Qt</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -16588,12 +16588,12 @@ Enables/disables the table of contents</source>
     <message>
         <location line="+5"/>
         <source>Contents</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Home</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -16606,12 +16606,12 @@ Enables/disables the table of contents</source>
     <message>
         <location line="+2"/>
         <source>Manage User &amp;Libraries...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -16622,32 +16622,32 @@ Enables/disables the table of contents</source>
     <message>
         <location line="+5"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Component Selection</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Search...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Component</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Copy to clipboard</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show Model</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+69"/>
@@ -16658,38 +16658,38 @@ Enables/disables the table of contents</source>
         <location line="+2"/>
         <source>Library Manager for Qucs
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copyright (C) 2005 by Michael Margraf
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+41"/>
         <source>QucsLib Help</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>QucsLib is a program to manage Qucs component libraries. On the left side of the application window the available libraries can be browsed to find the wanted component. By clicking on the component name its description can be seen on the right side. The selected component is transported to the Qucs application by clicking on the button &quot;Copy to Clipboard&quot;. Being back in the schematic window the component can be inserted by pressing CTRL-V  (paste from clipboard).</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>A more comfortable way: The component can also be placed onto the schematic by using Drag n&apos;Drop.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Model</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Search result</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+39"/>
@@ -16720,17 +16720,17 @@ Enables/disables the table of contents</source>
     <message>
         <location line="-55"/>
         <source>Search Library Component</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Result</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No appropriate component found.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -16748,7 +16748,7 @@ Enables/disables the table of contents</source>
     <message>
         <location line="+6"/>
         <source>Large font size:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -16823,12 +16823,12 @@ Enables/disables the table of contents</source>
     <message>
         <location line="+6"/>
         <source>Portuguese-BR</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Portuguese-PT</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -16863,7 +16863,7 @@ Enables/disables the table of contents</source>
     <message>
         <location line="+3"/>
         <source>Chinese</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
@@ -16873,12 +16873,12 @@ Enables/disables the table of contents</source>
     <message>
         <location line="+13"/>
         <source>Maximum undo operations:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Text editor:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -16888,37 +16888,37 @@ Enables/disables the table of contents</source>
     <message>
         <location line="+3"/>
         <source>Start wiring when clicking open node:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Load documents from future versions:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Try to load also documents created with newer versions of Qucs.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Draw diagrams with anti-aliasing feature:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Use anti-aliasing for graphs for a smoother appereance.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Draw text with anti-aliasing feature:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Use anti-aliasing for text for a smoother appereance.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -17123,7 +17123,7 @@ open files with an appropriate program.</source>
     <message>
         <location line="+2"/>
         <source>&amp;Load</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -17133,32 +17133,32 @@ open files with an appropriate program.</source>
     <message>
         <location line="+7"/>
         <source>&amp;Options</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <source>&amp;Execute</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>&amp;Copy to Clipboard</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>&amp;Analyze</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>&amp;Synthesize</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -17169,12 +17169,12 @@ open files with an appropriate program.</source>
     <message>
         <location line="+5"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Transmission Line Type</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -17184,12 +17184,12 @@ open files with an appropriate program.</source>
     <message>
         <location line="+1"/>
         <source>Coplanar Waveguide</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Grounded Coplanar</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -17204,52 +17204,52 @@ open files with an appropriate program.</source>
     <message>
         <location line="+1"/>
         <source>Coupled Microstrip</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Substrate Parameters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Component Parameters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Physical Parameters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Analyze</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Derive Electrical Parameters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Synthesize</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Compute Physical Parameters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Electrical Parameters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Calculated Results</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -17265,7 +17265,7 @@ open files with an appropriate program.</source>
         <location line="+6"/>
         <location line="+6"/>
         <source>ErEff</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-17"/>
@@ -17274,7 +17274,7 @@ open files with an appropriate program.</source>
         <location line="+6"/>
         <location line="+6"/>
         <source>Conductor Losses</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-23"/>
@@ -17283,7 +17283,7 @@ open files with an appropriate program.</source>
         <location line="+6"/>
         <location line="+6"/>
         <source>Dielectric Losses</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-23"/>
@@ -17291,49 +17291,49 @@ open files with an appropriate program.</source>
         <location line="+6"/>
         <location line="+22"/>
         <source>Skin Depth</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-16"/>
         <location line="+6"/>
         <source>TE-Modes</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-5"/>
         <location line="+6"/>
         <source>TM-Modes</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>ErEff Even</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>ErEff Odd</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Conductor Losses Even</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Conductor Losses Odd</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Dielectric Losses Even</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Dielectric Losses Odd</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -17343,7 +17343,7 @@ open files with an appropriate program.</source>
         <location line="+13"/>
         <location line="+12"/>
         <source>Relative Permittivity</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-65"/>
@@ -17351,7 +17351,7 @@ open files with an appropriate program.</source>
         <location line="+13"/>
         <location line="+12"/>
         <source>Relative Permeability</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-65"/>
@@ -17359,13 +17359,13 @@ open files with an appropriate program.</source>
         <location line="+13"/>
         <location line="+39"/>
         <source>Height of Substrate</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-65"/>
         <location line="+66"/>
         <source>Height of Box Top</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-65"/>
@@ -17373,7 +17373,7 @@ open files with an appropriate program.</source>
         <location line="+13"/>
         <location line="+40"/>
         <source>Strip Thickness</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-65"/>
@@ -17381,7 +17381,7 @@ open files with an appropriate program.</source>
         <location line="+13"/>
         <location line="+40"/>
         <source>Strip Conductivity</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-65"/>
@@ -17391,13 +17391,13 @@ open files with an appropriate program.</source>
         <location line="+12"/>
         <location line="+16"/>
         <source>Dielectric Loss Tangent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-65"/>
         <location line="+66"/>
         <source>Conductor Roughness</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-65"/>
@@ -17407,7 +17407,7 @@ open files with an appropriate program.</source>
         <location line="+12"/>
         <location line="+16"/>
         <source>Frequency</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-65"/>
@@ -17415,14 +17415,14 @@ open files with an appropriate program.</source>
         <location line="+13"/>
         <location line="+41"/>
         <source>Line Width</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-65"/>
         <location line="+13"/>
         <location line="+13"/>
         <source>Line Length</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-25"/>
@@ -17431,7 +17431,7 @@ open files with an appropriate program.</source>
         <location line="+13"/>
         <location line="+12"/>
         <source>Characteristic Impedance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-50"/>
@@ -17441,76 +17441,76 @@ open files with an appropriate program.</source>
         <location line="+12"/>
         <location line="+17"/>
         <source>Electrical Length</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-58"/>
         <location line="+13"/>
         <location line="+41"/>
         <source>Gap Width</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-33"/>
         <location line="+14"/>
         <source>Conductivity of Metal</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-12"/>
         <source>Magnetic Loss Tangent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Width of Waveguide</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Height of Waveguide</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Waveguide Length</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Inner Diameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Outer Diameter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+16"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Even-Mode Impedance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Odd-Mode Impedance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+140"/>
         <source>Selected for Calculation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Check item for Calculation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+217"/>
@@ -17521,64 +17521,64 @@ open files with an appropriate program.</source>
         <location line="+2"/>
         <source>Transmission Line Calculator for Qucs
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copyright (C) 2001 by Gopal Narayanan
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copyright (C) 2002 by Claudio Girardi
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copyright (C) 2005 by Stefan Jahn
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copyright (C) 2008 by Michael Margraf
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+41"/>
         <location line="+11"/>
         <source>Values are consistent.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Failed to converge!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Values are inconsistent.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+118"/>
         <source>Loading file...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+19"/>
         <source>Enter a Filename</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-17"/>
         <location line="+19"/>
         <source>Transcalc File</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-15"/>
@@ -17589,12 +17589,12 @@ open files with an appropriate program.</source>
     <message>
         <location line="-18"/>
         <source>Cannot load file:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Loading aborted.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
@@ -17604,22 +17604,22 @@ open files with an appropriate program.</source>
     <message>
         <location line="+9"/>
         <source>Cannot save file:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Saving aborted.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+298"/>
         <source>Schematic copied into clipboard.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Transmission line type not available.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -17776,7 +17776,7 @@ Defina a localização do admsXml nas definições da aplicação.</translation>
         <location filename="../qucs/dialogs/searchdialog.ui" line="+14"/>
         <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+145"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
@@ -17818,7 +17818,7 @@ Defina a localização do admsXml nas definições da aplicação.</translation>
         <location line="+13"/>
         <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Next</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -17842,12 +17842,12 @@ Defina a localização do admsXml nas definições da aplicação.</translation>
         <source>The search result contains all components whose
 name contains the search string. All libraries
 are included in the search.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Search string:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
@@ -17858,7 +17858,7 @@ are included in the search.</source>
         <location line="+91"/>
         <location line="+1"/>
         <source>Search result</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -18038,65 +18038,65 @@ are included in the search.</source>
     <message>
         <location line="-354"/>
         <source>ERROR: Simulator is still running!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>ERROR: Cannot write netlist file!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
         <source>ERROR: Cannot simulate a text file!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+63"/>
         <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
         <source>SIM ERROR: Cannot start QucsConv!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+105"/>
         <location line="+101"/>
         <source>done.
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-61"/>
         <location line="+7"/>
         <source>ERROR: Cannot create VHDL directory &quot;%1&quot;!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>ERROR: Cannot create &quot;%1&quot;!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+270"/>
         <source>ERROR: Cannot start </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Starting </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+29"/>
         <source>ERROR: Simulator crashed!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please report this error to qucs-bugs@lists.sourceforge.net</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
@@ -18293,12 +18293,12 @@ are included in the search.</source>
     <message>
         <location filename="../qucs-lib/symbolwidget.cpp" line="+47"/>
         <source>Symbol:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>! Drag n&apos;Drop me !</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -18387,7 +18387,7 @@ Insere um esqueleto de função do Octave</translation>
     <message>
         <location line="+0"/>
         <source>Cannot find target: %1</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+26"/>
@@ -18397,7 +18397,7 @@ Insere um esqueleto de função do Octave</translation>
     <message>
         <location line="+0"/>
         <source>Replace occurrence ?</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -18405,32 +18405,32 @@ Insere um esqueleto de função do Octave</translation>
     <message>
         <location filename="../qucs-activefilter/transferfuncdialog.cpp" line="+24"/>
         <source>Define filter transfer function</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Numerator b[i]=</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Denominator a[i]=</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
         <source>a[i]</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
         <source>b[i]</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>

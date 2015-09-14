@@ -1152,7 +1152,7 @@
     <message>
         <location line="+8"/>
         <source>Stopband corner</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1187,7 +1187,7 @@
     <message>
         <location line="+3"/>
         <source>+ rather than T</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1207,7 +1207,7 @@
     <message>
         <location line="+1"/>
         <source>noC</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1227,7 +1227,7 @@
     <message>
         <location line="+1"/>
         <source>noL</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3417,7 +3417,7 @@ Resistor color code computation program
     <message>
         <location line="+22"/>
         <source>4Bit Bin2Gray</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/bjt.cpp" line="+25"/>
@@ -6909,7 +6909,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/etr_sim.cpp" line="-44"/>
         <source>externally driven transient simulation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+19"/>
@@ -7014,7 +7014,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+25"/>
         <source>4Bit Gray2Bin</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/ground.cpp" line="+25"/>
@@ -7943,7 +7943,7 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/hicumL0V1p2g.cpp" line="+3"/>
         <location filename="../qucs/components/hicumL0V1p3.cpp" line="+3"/>
         <source>M^(1-AF)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9267,7 +9267,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+194"/>
         <source>TC of iqf (bandgap coefficient of zero bias hole charge)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9282,27 +9282,27 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+19"/>
         <source>Emitter part coefficient of the zero bias hole charge temperature variation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Collector part coefficient of the zero bias hole charge temperature variation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Bandgap TC parameter of ver</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Bandgap TC parameter of vef</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Specific recombination current at the BC barrier for high forward injection</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
@@ -9322,7 +9322,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+8"/>
         <source>Flag for using third order solution for transfer current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
@@ -9332,7 +9332,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+217"/>
         <source>Flag for turning temperature dependence of tef0 on and off</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9417,12 +9417,12 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+12"/>
         <source>Weight factor for the low current minority charge</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Parameter describing the slope of hjEi(VBE)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -9452,27 +9452,27 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>fitting factor for critical current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Flag for turning on and off of correlated noise implementation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emitter resistance flicker noise coefficient</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emitter resistance flicker noise exponent factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+52"/>
         <source>Bandgap difference between B and B-E junction used for hjEi0 and hf0</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -9507,12 +9507,12 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+25"/>
         <source>4Bit HPRI-Bin</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/hybrid.cpp" line="-39"/>
         <source>hybrid (unsymmetrical 3dB coupler)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+37"/>
@@ -9523,7 +9523,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+13"/>
         <source>Hybrid</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/iexp.cpp" line="+23"/>
@@ -10792,12 +10792,12 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/mslange.cpp" line="-36"/>
         <source>microstrip lange coupler</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+53"/>
         <source>Microstrip Lange Coupler</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/msline.cpp" line="-27"/>
@@ -11035,7 +11035,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+3"/>
         <source>gate-drain overlap area</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -11056,22 +11056,22 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+3"/>
         <source>ambipolar recombination lifetime</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>metallurgical base width</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>avalanche uniformity factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>avalanche multiplication exponent</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -11092,7 +11092,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+3"/>
         <source>emitter saturation current density</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -11102,7 +11102,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>triode region factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -11133,17 +11133,17 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>transverse field factor</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
         <source>gate-drain overlap depletion threshold</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+26"/>
         <source>NIGBT</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/noise_ii.cpp" line="-58"/>
@@ -11474,7 +11474,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <source>T</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/components/rectline.cpp" line="-38"/>
@@ -11624,7 +11624,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+20"/>
         <source>RLCG</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
@@ -11922,7 +11922,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>time when state changes (semicolon separated list possible, even numbered lists are repeated)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -11937,7 +11937,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+4"/>
         <source>Max possible switch transition time (transition time 1/100 smallest value in &apos;time&apos;, or this number)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
@@ -12094,12 +12094,12 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>valley current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>valley voltage</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -12124,22 +12124,22 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>fitting factor for electron density</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>fitting factor for voltage drop</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>fitting factor for diode current</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>zero-bias depletion capacitance</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -12935,7 +12935,7 @@ Unknown field!</source>
     <message>
         <location line="+201"/>
         <source>WARNING: Equations in &quot;%1&quot; are &apos;time&apos; typed.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+77"/>
@@ -12965,12 +12965,12 @@ Unknown field!</source>
     <message>
         <location line="+2"/>
         <source>Zeros list Pk=Re+j*Im</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>LPF prototype poles list Pk=Re+j*Im</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -13054,7 +13054,7 @@ Usage:  qucsedit [-r] file
 To get acceptable results it is recommended to use
 a substrate with lower permittivity and larger height.
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs-filter-v2/qf_settings.cpp" line="-71"/>
@@ -13237,7 +13237,7 @@ a substrate with lower permittivity and larger height.
     <message>
         <location line="-362"/>
         <source>General amplitude frequency response</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13257,7 +13257,7 @@ a substrate with lower permittivity and larger height.
     <message>
         <location line="+25"/>
         <source>General filter amplidure-frequency response</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -13295,7 +13295,7 @@ frequency response. Try to use another topology.</source>
         <location line="+23"/>
         <source>Unable to use MFB filter for Cauer or Inverse Chebyshev 
 frequency response. Try to use another topology.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
@@ -16462,7 +16462,7 @@ Very simple text editor for Qucs
     <message>
         <location line="+9"/>
         <source>Microstrip Substrate</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
