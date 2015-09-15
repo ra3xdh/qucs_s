@@ -1,9 +1,9 @@
 /***************************************************************************
                          eNL.cpp  -  description
                    --------------------------------------
-    begin                    : Fri Mar 27 2015
+    begin                  : Fri Mar 27 2015
     copyright              : (C) by Mike Brinson (mbrin72043@yahoo.co.uk),
-														Vadim Kuznetsov (ra3xdh@gmail.com)
+						   :  Vadim Kuznetsov (ra3xdh@gmail.com)
 
  ***************************************************************************/
 
@@ -24,16 +24,16 @@
 
 eNL::eNL()
 {
-  Description = QObject::tr("Equation defined (E-type) voltage source");
-  // Value, Table and POLY forms are allowed: should work with ngspice and Xyce.
+  Description = QObject::tr("SPICE E (Non-linear):\nMultiple line ngspice non-linear E specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
+  // Value, Table and POLY forms are allowed.
 
   Arcs.append(new Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::cyan,3)));
-  Texts.append(new Text(20,12,"ENL",Qt::cyan,10.0,0.0,-1.0));
+  Texts.append(new Text(30,12,"ENL",Qt::cyan,10.0,0.0,-1.0));
   Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 18,  -5, 18, -11,QPen(Qt::red,1)));
-  Lines.append(new Line( 21,  -8, 15,  -8,QPen(Qt::red,1)));
-  Lines.append(new Line(-18,  -5,-18, -11,QPen(Qt::black,1))); 
+  Lines.append(new Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
+  Lines.append(new Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
+  Lines.append(new Line(-18,  -5,-18, -11,QPen(Qt::black,2))); 
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
@@ -47,16 +47,12 @@ eNL::eNL()
   SpiceModel = "E";
   Name  = "E";
 
-  Props.append(new Property("E", "", true,"Expression"));
-  Props.append(new Property("Line_2", "", false,"Expression"));
-  Props.append(new Property("Line_3", "", false,"Expression"));
-  Props.append(new Property("Line_4", "", false,"Expression"));
-  Props.append(new Property("Line_5", "", false,"Expression"));
-  Props.append(new Property("Line_6", "", false,"Expression"));
-  Props.append(new Property("Line_7", "", false,"Expression"));
-  Props.append(new Property("Line_8", "", false,"Expression"));
-  Props.append(new Property("Line_9", "", false,"Expression"));
-  Props.append(new Property("Line_10", "", false,"Expression"));
+  Props.append(new Property("E", "", true,"Non-linear spec.\n(with control nodes)"));
+  Props.append(new Property("Line_2", "", false,"+ continuation line 1"));
+  Props.append(new Property("Line_3", "", false,"+ continuation line 2"));
+  Props.append(new Property("Line_4", "", false,"+ continuation line 3"));
+  Props.append(new Property("Line_5", "", false,"+ continuation line 4"));
+  
   rotate();  // fix historical flaw
 }
 
@@ -71,8 +67,8 @@ Component* eNL::newOne()
 
 Element* eNL::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("E Non-linear independent voltage source");
-  BitmapFile = (char *) "eNL";
+  Name = QObject::tr("E non-lin");
+  BitmapFile = (char *) "eNL"; 
 
   if(getNewOne)  return new eNL();
   return 0;
@@ -96,22 +92,13 @@ QString eNL::spice_netlist(bool)
     QString Line_3 = Props.at(2)->Value;
     QString Line_4 = Props.at(3)->Value;
     QString Line_5 = Props.at(4)->Value;
-    QString Line_6 = Props.at(5)->Value;
-    QString Line_7 = Props.at(6)->Value;
-    QString Line_8 = Props.at(7)->Value;
-    QString Line_9 = Props.at(8)->Value;
-    QString Line_10 = Props.at(9)->Value;
+ 
     
- if(  E.length()  > 2)        s += QString("%1\n").arg(E);
-    if(  Line_2.length() > 2 )     s += QString("%1\n").arg(Line_2);
-    if(  Line_3.length() > 2 )   s += QString("%1\n").arg(Line_3);
-    if(  Line_4.length() > 2 )   s += QString("%1\n").arg(Line_4);
-    if(  Line_5.length() > 2 )   s += QString("%1\n").arg(Line_5);
-    if(  Line_6.length () > 2 )   s += QString("%1\n").arg(Line_6);
-    if(  Line_7.length ()  > 2 )   s += QString("%1\n").arg(Line_7);
-    if(  Line_8.length()  > 2)   s += QString("%1\n").arg(Line_8);
-    if(  Line_9.length()  > 2 )   s += QString("%1\n").arg(Line_9);
-    if(  Line_10.length() > 2 ) s += QString("%1\n").arg(Line_10);
+    if(  E.length()  > 0)        s += QString("%1\n").arg(E);
+    if(  Line_2.length() > 0 )   s += QString("%1\n").arg(Line_2);
+    if(  Line_3.length() > 0 )   s += QString("%1\n").arg(Line_3);
+    if(  Line_4.length() > 0 )   s += QString("%1\n").arg(Line_4);
+    if(  Line_5.length() > 0 )   s += QString("%1\n").arg(Line_5);
  
     return s;
 }

@@ -234,8 +234,7 @@
         <file>bitmaps/vcresistor.png</file>
         <file>bitmaps/tick.png</file>
         <file>bitmaps/error.png</file>
-	    <file>bitmaps/hicolor/128x128/apps/qucs.png</file>
-  <file>bitmaps/S4Q_V_DC.png</file>
+	<file>bitmaps/hicolor/128x128/apps/qucs.png</file>
   <file>bitmaps/S4Q_V.png</file>
   <file>bitmaps/S4Q_I.png</file>  
   <file>bitmaps/S4Q_Ieqndef.png</file>  

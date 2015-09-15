@@ -53,7 +53,7 @@ DIODE_SPICE::DIODE_SPICE()
     SpiceModel = "D";
     Name  = "D";
 
-    Props.append(new Property("D", "", true,"D param list and\n .model spec."));
+    Props.append(new Property("D", "", true,"Param list and\n .model spec."));
     Props.append(new Property("D_Line 2", "", false,"+ continuation line 1"));
     Props.append(new Property("D_Line 3", "", false,"+ continuation line 2"));
     Props.append(new Property("D_Line 4", "", false,"+ continuation line 3"));

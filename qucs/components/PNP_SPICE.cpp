@@ -61,7 +61,7 @@ PNP_SPICE::PNP_SPICE()
     SpiceModel = "Q";
     Name  = "Q";
 
-    Props.append(new Property("Q", "", true,"Q(PNP) param list and\n .model spec."));
+    Props.append(new Property("Q", "", true,"Param list and\n .model spec."));
     Props.append(new Property("Q_Line 2", "", false,"+ continuation line 1"));
     Props.append(new Property("Q_Line 3", "", false,"+ continuation line 2"));
     Props.append(new Property("Q_Line 4", "", false,"+ continuation line 3"));
