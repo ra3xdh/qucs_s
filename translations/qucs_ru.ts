@@ -1,4 +1,305 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="ru">
+<context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="../qucs/dialogs/aboutdialog.cpp" line="+55"/>
+        <source>Guilherme Brondani Torri - GUI programmer, Verilog-A dynamic loader</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Mike Brinson - testing, modelling and documentation, tutorial contributor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Richard Crozier - testing, modelling, Octave.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Bastien Roucaries - bondwire and rectangular waveguide model implementation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Frans Schreuder - GUI programmer, release</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Clemens Novak - GUI programmer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Vadim Kuznetsov - filter synthesis (qucs-activefilter), SPICE integration (NGSPICE, Xyce)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>You-Tang Lee (YodaLee) - GUI programmer, Qt4 porter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Claudio Girardi - testing, general fixes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Michael Margraf - founder of the project, GUI programmer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Stefan Jahn - Programmer of simulator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Jens Flucke - webpages and translator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Raimund Jacob - tester and applyer of Stefan&apos;s patches, author of documentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Vincent Habchi - coplanar line and filter synthesis code, documentation contributor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Toyoyuki Ishikawa - some filter synthesis code and attenuator synthesis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Gopala Krishna A - GUI programmer, Qt4 porter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Helene Parruitte - programmer of the Verilog-AMS interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Gunther Kraut - equation solver contributions, exponential sources, author of documentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Andrea Zonca - temperature model for rectangular waveguide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>German by Stefan Jahn</source>
+        <translation type="unfinished">Немецкий - Stefan Jahn</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Polish by Dariusz Pienkowski</source>
+        <translation type="unfinished">Польский - Dariusz Pienkowski</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Romanian by Radu Circa</source>
+        <translation type="unfinished">Румынский - Radu Circa</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>French by Vincent Habchi, F5RCS</source>
+        <translation type="unfinished">Французский - Vincent Habchi, F5RCS</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Portuguese by Luciano Franca, Helio de Sousa, Guilherme Brondani Torri</source>
+        <translation type="unfinished">Португальский - Luciano Franca, Helio de Sousa, Guilherme Brondani Torri</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Spanish by Jose L. Redrejo Rodriguez</source>
+        <translation type="unfinished">Испанский - Jose L. Redrejo Rodriguez</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Japanese by Toyoyuki Ishikawa</source>
+        <translation type="unfinished">Японский - Toyoyuki Ishikawa</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Italian by Giorgio Luparia and Claudio Girardi</source>
+        <translation type="unfinished">Итальянский - Giorgio Luparia и Claudio Girardi</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Hebrew by Dotan Nahum</source>
+        <translation type="unfinished">Еврейский - Dotan Nahum</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Swedish by Markus Gothe and Peter Landgren</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Turkish by Onur and Ozgur Cobanoglu</source>
+        <translation type="unfinished">Турецкий - Onur и Ozgur Cobanoglu</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Hungarian by Jozsef Bus</source>
+        <translation type="unfinished">Венгерский - Jozsef Bus</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Russian by Igor Gorbounov</source>
+        <translation type="unfinished">Русский - Игорь Горбунов</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Czech by Marek Straka and Martin Stejskal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Catalan by Antoni Subirats</source>
+        <translation type="unfinished">Каталанский - Antoni Subirats</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ukrainian by Dystryk</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Arabic by Chabane Noureddine</source>
+        <translation type="unfinished">Арабский - Chabane Noureddine</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Kazakh by Erbol Keshubaev</source>
+        <translation type="unfinished">Казахский - Erbol Keshubaev</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>About Qucs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <location line="+2"/>
+        <source>Copyright (C)</source>
+        <translation type="unfinished">Copyright (C)</translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>by Michael Margraf</source>
+        <translation type="unfinished">Michael Margraf</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Qucs Team</source>
+        <translation type="unfinished">Команда Qucs</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Home Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Documentation start page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Components reference manual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>If you need help on using Qucs, please join the</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>help mailing list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>qucs-help on SourceForge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>please attach the schematic you are having problems with</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>IRC general discussion channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Additional resources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Authors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Translations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Support</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>License</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>Current Qucs Team:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Previous Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>GUI translations :</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>ArrowDialog</name>
     <message>
@@ -255,13 +556,13 @@
     </message>
     <message>
         <location line="+9"/>
-        <location line="+1123"/>
+        <location line="+1132"/>
         <location line="+22"/>
         <source>Step:</source>
         <translation>Шаг:</translation>
     </message>
     <message>
-        <location line="-1138"/>
+        <location line="-1147"/>
         <source>Number:</source>
         <translation>Количество:</translation>
     </message>
@@ -348,21 +649,21 @@
         <location line="+201"/>
         <location line="+215"/>
         <location line="+167"/>
-        <location line="+292"/>
+        <location line="+301"/>
         <source>yes</source>
         <translation>да</translation>
     </message>
     <message>
-        <location line="-1001"/>
+        <location line="-1010"/>
         <location line="+74"/>
         <location line="+255"/>
         <location line="+378"/>
-        <location line="+296"/>
+        <location line="+305"/>
         <source>no</source>
         <translation>нет</translation>
     </message>
     <message>
-        <location line="-356"/>
+        <location line="-365"/>
         <source>Select a file</source>
         <translation>Выбрать файл</translation>
     </message>
@@ -397,7 +698,7 @@
         <translation>Файлы Verilog</translation>
     </message>
     <message>
-        <location line="+185"/>
+        <location line="+194"/>
         <source>Points per decade:</source>
         <translation>Число точек на декаду:</translation>
     </message>
@@ -405,7 +706,7 @@
 <context>
     <name>DiagramDialog</name>
     <message>
-        <location filename="../qucs/diagrams/diagramdialog.cpp" line="+114"/>
+        <location filename="../qucs/diagrams/diagramdialog.cpp" line="+121"/>
         <source>Edit Diagram Properties</source>
         <translation>Изменить свойства диаграммы</translation>
     </message>
@@ -809,12 +1110,11 @@
         <translation>Сохранить как изображение (формат файла по расширению)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Width  in pixels</source>
-        <translation>Ширина в пикселях</translation>
+        <translation type="obsolete">Ширина в пикселях</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Height in pixels</source>
         <translation>Высота в пикселях</translation>
     </message>
@@ -839,9 +1139,18 @@
         <translation>Отменить</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>File</source>
-        <translation>Файл</translation>
+        <translation type="obsolete">Файл</translation>
+    </message>
+    <message>
+        <location line="-7"/>
+        <source>Width in pixels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Browse</source>
+        <translation type="unfinished">Просмотр</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -874,12 +1183,16 @@
         <translation>Экспортировать схему в растровое или векторное изображение</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Export to image</source>
-        <translation>Сохранить как изображение</translation>
+        <location line="+31"/>
+        <source>Export Schematic to Image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+156"/>
+        <source>Export to image</source>
+        <translation type="obsolete">Сохранить как изображение</translation>
+    </message>
+    <message>
+        <location line="+168"/>
         <source>Export diagram to raster or vector image</source>
         <translation>Сохранить диаграмму как изображение</translation>
     </message>
@@ -1425,19 +1738,19 @@ Filter synthesis program
         <location line="+106"/>
         <location line="+37"/>
         <location line="+49"/>
-        <location line="+45"/>
+        <location line="+47"/>
         <source>yes</source>
         <translation>да</translation>
     </message>
     <message>
-        <location line="-237"/>
+        <location line="-239"/>
         <location line="+143"/>
-        <location line="+94"/>
+        <location line="+96"/>
         <source>no</source>
         <translation>нет</translation>
     </message>
     <message>
-        <location line="-219"/>
+        <location line="-221"/>
         <source>display in schematic</source>
         <translation>показывать на схеме</translation>
     </message>
@@ -1666,7 +1979,7 @@ Filter synthesis program
         <translation>&amp;Нет</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+38"/>
         <source>ERROR: Unknown file format! Please check file name extension!</source>
         <translation>ОШИБКА: Неизвестный формат файла! Проверьте расширение имени файла!</translation>
     </message>
@@ -2119,7 +2432,7 @@ Filter synthesis program
         <translation>Представление чисел:</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+10"/>
         <source>Z0: </source>
         <translation>Z0:</translation>
     </message>
@@ -2263,6 +2576,11 @@ but is %1 !</source>
         <location line="+7"/>
         <source>Compiler</source>
         <translation>Компилятор</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>admsXml Dock</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3406,7 +3724,7 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../qucs/components/component.cpp" line="+1309"/>
+        <location filename="../qucs/components/component.cpp" line="+1310"/>
         <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
         <location filename="../qucs/components/hpribin4bit.cpp" line="-3"/>
         <location filename="../qucs/components/logical_buf.cpp" line="+34"/>
@@ -5430,7 +5748,7 @@ Resistor color code computation program
         <location line="+8"/>
         <location filename="../qucs/components/vacomponent.cpp" line="+306"/>
         <location filename="../qucs/octave_window.cpp" line="-31"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+1301"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+1251"/>
         <location filename="../qucs/schematic_file.cpp" line="+114"/>
         <location line="+18"/>
         <location line="+21"/>
@@ -5453,8 +5771,8 @@ Resistor color code computation program
         <location line="+16"/>
         <location line="+6"/>
         <location line="+8"/>
-        <location line="+10"/>
-        <location line="+20"/>
+        <location line="+15"/>
+        <location line="+26"/>
         <location line="+54"/>
         <source>Error</source>
         <translation>Ошибка</translation>
@@ -11767,7 +12085,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>файл</translation>
     </message>
     <message>
-        <location filename="../qucs/components/spicefile.cpp" line="+42"/>
+        <location filename="../qucs/components/spicefile.cpp" line="+43"/>
         <source>SPICE netlist file</source>
         <translation>файл схемы SPICE</translation>
     </message>
@@ -11787,8 +12105,8 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Spice</translation>
     </message>
     <message>
-        <location line="+148"/>
-        <location filename="../qucs/schematic_file.cpp" line="+415"/>
+        <location line="+160"/>
+        <location filename="../qucs/schematic_file.cpp" line="+429"/>
         <source>ERROR: No file name in SPICE component &quot;%1&quot;.</source>
         <translation>ОШИБКА: Нет имени файла в компоненте SPICE &quot;%1&quot;.</translation>
     </message>
@@ -11809,13 +12127,12 @@ Wrong &apos;component&apos; line format!</source>
     </message>
     <message>
         <location line="+67"/>
-        <location line="+95"/>
         <location filename="../qucs/mouseactions.cpp" line="+847"/>
         <source>Info</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location line="-94"/>
+        <location line="+1"/>
         <source>Preprocessing SPICE file &quot;%1&quot;.</source>
         <translation>Предварительная обработка SPICE-файла &quot;%1&quot;.</translation>
     </message>
@@ -11830,12 +12147,12 @@ Wrong &apos;component&apos; line format!</source>
         <translation>ОШИБКА: Не удаётся выполнить &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+57"/>
         <source>COMP ERROR: Cannot start QucsConv!</source>
         <translation>ОШИБКА COMP: Не удаётся запустить QucsConv!</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>Converting SPICE file &quot;%1&quot;.</source>
         <translation>Преобразование SPICE-файла &quot;%1&quot;.</translation>
     </message>
@@ -11937,6 +12254,11 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+4"/>
         <source>Max possible switch transition time (transition time 1/100 smallest value in &apos;time&apos;, or this number)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Resistance transition shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12399,7 +12721,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Источник напряжения прямоугольной формы</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/curvediagram.cpp" line="+250"/>
+        <location filename="../qucs/diagrams/curvediagram.cpp" line="+258"/>
         <source>Locus Curve</source>
         <translation>Круговая диаграмма</translation>
     </message>
@@ -12409,8 +12731,8 @@ Wrong &apos;component&apos; line format!</source>
         <translation>&lt;неправильно&gt;</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/marker.cpp" line="+287"/>
-        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+255"/>
+        <location filename="../qucs/diagrams/marker.cpp" line="+249"/>
+        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+256"/>
         <source>invalid</source>
         <translation>неправильно</translation>
     </message>
@@ -12430,17 +12752,17 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Смешанная Смита-полярная</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/rect3ddiagram.cpp" line="+1150"/>
+        <location filename="../qucs/diagrams/rect3ddiagram.cpp" line="+1048"/>
         <source>3D-Cartesian</source>
         <translation>Трёхмерная декартовая</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/rectdiagram.cpp" line="+248"/>
+        <location filename="../qucs/diagrams/rectdiagram.cpp" line="+256"/>
         <source>Cartesian</source>
         <translation>Декартовая</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/smithdiagram.cpp" line="+111"/>
+        <location filename="../qucs/diagrams/smithdiagram.cpp" line="+113"/>
         <source>Smith Chart</source>
         <translation>Диаграмма Смита</translation>
     </message>
@@ -12450,14 +12772,14 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Диаграмма Смита (проводимости)</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/tabdiagram.cpp" line="-92"/>
+        <location filename="../qucs/diagrams/tabdiagram.cpp" line="-93"/>
         <location filename="../qucs/diagrams/timingdiagram.cpp" line="+158"/>
         <location filename="../qucs/diagrams/truthdiagram.cpp" line="+88"/>
         <source>no variables</source>
         <translation>нет переменных</translation>
     </message>
     <message>
-        <location line="+141"/>
+        <location line="+142"/>
         <location filename="../qucs/diagrams/timingdiagram.cpp" line="+49"/>
         <location line="+89"/>
         <location filename="../qucs/diagrams/truthdiagram.cpp" line="+133"/>
@@ -12478,7 +12800,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation>Табличная</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+232"/>
+        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+233"/>
         <source>Timing Diagram</source>
         <translation>Временная диаграмма</translation>
     </message>
@@ -12509,30 +12831,29 @@ Wrong &apos;component&apos; line format!</source>
 </translation>
     </message>
     <message>
-        <location filename="../qucs/imagewriter.cpp" line="+251"/>
-        <location line="+8"/>
-        <location line="+4"/>
-        <location line="+4"/>
+        <location filename="../qucs/imagewriter.cpp" line="+252"/>
+        <location line="+13"/>
+        <location line="+5"/>
         <source>Export to image</source>
         <translation>Сохранить как изображение</translation>
     </message>
     <message>
-        <location line="-15"/>
+        <location line="-17"/>
         <source>Inkscape start error!</source>
         <translation>Ошибка запуска Inkscape!</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location filename="../qucs/qucs.cpp" line="+2793"/>
         <source>Successfully exported</source>
         <translation>Успешно экспортировано</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location filename="../qucs/imagewriter.cpp" line="+13"/>
         <source>Disk write error!</source>
         <translation>Ошибка записи на диск!</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Unsupported format of graphics file. 
 Use PNG, JPEG or SVG graphics!</source>
         <translation>Неподдерживаемый формат графического файла. 
@@ -12546,7 +12867,7 @@ Use PNG, JPEG or SVG graphics!</source>
     </message>
     <message>
         <location filename="../qucs/module.cpp" line="+116"/>
-        <location filename="../qucs/qucs.cpp" line="+627"/>
+        <location filename="../qucs/qucs.cpp" line="-2167"/>
         <location line="+203"/>
         <location line="+15"/>
         <location filename="../qucs/qucs_actions.cpp" line="+149"/>
@@ -12606,14 +12927,14 @@ Use PNG, JPEG or SVG graphics!</source>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="+1316"/>
+        <location filename="../qucs/qucs.cpp" line="+1313"/>
         <source>diagrams</source>
         <translation>диаграммы</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="-1563"/>
+        <location filename="../qucs/qucs.cpp" line="-1560"/>
         <source>paintings</source>
         <translation>рисунки</translation>
     </message>
@@ -12732,17 +13053,17 @@ Set the Octave location on the application settings.</source>
         <translation>Не удаежётся создать выходной файл!</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-433"/>
-        <location line="+976"/>
+        <location filename="../qucs/qucs.cpp" line="-434"/>
+        <location line="+977"/>
         <location line="+69"/>
         <location line="+122"/>
         <location line="+12"/>
-        <location line="+299"/>
+        <location line="+297"/>
         <source>untitled</source>
         <translation>без названия</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="-1230"/>
+        <location filename="../qucs/schematic_file.cpp" line="-1255"/>
         <location line="+707"/>
         <source>Format Error:
 &apos;Painting&apos; field is not closed!</source>
@@ -12870,12 +13191,13 @@ Wrong &apos;painting&apos; line format!</source>
 Неправильный формат строки у &apos;painting&apos;!</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+23"/>
+        <location line="+3"/>
         <source>Cannot load document: </source>
         <translation>Не удаётся загрузить документ: </translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>Wrong document type: </source>
         <translation>Неправильный тип документа: </translation>
     </message>
@@ -12903,7 +13225,7 @@ Unknown field!</source>
 Неизвестное поле!</translation>
     </message>
     <message>
-        <location line="+296"/>
+        <location line="+305"/>
         <source>ERROR: Component &quot;%1&quot; has no analog model.</source>
         <translation>ОШИБКА: У компонента &quot;%1&quot; нет аналоговой модели.</translation>
     </message>
@@ -12913,12 +13235,12 @@ Unknown field!</source>
         <translation>ОШИБКА: У компонента &quot;%1&quot; нет цифровой модели.</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+47"/>
         <source>ERROR: Cannot load subcircuit &quot;%1&quot;.</source>
         <translation>ОШИБКА: Не удаётся загрузить подсхему &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+38"/>
         <source>WARNING: Skipping library component &quot;%1&quot;.</source>
         <translation>ПРЕДУПРЕЖДЕНИЕ: Пропускается библиотечный компонент &quot;%1&quot;.</translation>
     </message>
@@ -13364,7 +13686,7 @@ Active Filter synthesis program
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-1517"/>
+        <location filename="../qucs/qucs.cpp" line="-1516"/>
         <source>Schematic</source>
         <translation>Схема</translation>
     </message>
@@ -13380,42 +13702,47 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+1"/>
-        <location line="+1355"/>
+        <location line="+1354"/>
         <source>VHDL Sources</source>
         <translation>Исходники VHDL</translation>
     </message>
     <message>
-        <location line="-1354"/>
-        <location line="+1355"/>
+        <location line="-1353"/>
+        <location line="+1354"/>
         <source>Verilog Sources</source>
         <translation>Исходные тексты Verilog</translation>
     </message>
     <message>
-        <location line="-1354"/>
-        <location line="+1355"/>
+        <location line="-1353"/>
+        <location line="+1354"/>
         <source>Verilog-A Sources</source>
         <translation>Исходные тексты Verilog-A</translation>
     </message>
     <message>
-        <location line="-1354"/>
-        <location line="+1355"/>
+        <location line="-1353"/>
+        <location line="+1354"/>
         <source>Octave Scripts</source>
         <translation>Скрипты Octave</translation>
     </message>
     <message>
-        <location line="-1354"/>
+        <location line="-1353"/>
         <source>Spice Files</source>
         <translation>Файлы Spice</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+1356"/>
+        <location line="+1355"/>
         <location filename="../qucs/qucs_actions.cpp" line="-19"/>
         <source>Any File</source>
         <translation>Любой файл</translation>
     </message>
     <message>
-        <location line="+790"/>
+        <location line="+306"/>
+        <source>The schematic search path has been refreshed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+485"/>
         <source>Verilog</source>
         <translation>Verilog</translation>
     </message>
@@ -13430,12 +13757,17 @@ Active Filter synthesis program
         <translation>Схемы</translation>
     </message>
     <message>
-        <location line="-2027"/>
+        <location line="-2023"/>
         <source>New</source>
         <translation>Создать</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-26"/>
+        <source>Main Dock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
@@ -13501,7 +13833,12 @@ Active Filter synthesis program
         <translation>системные и пользовательские библиотеки компонентов</translation>
     </message>
     <message>
-        <location line="+77"/>
+        <location line="+14"/>
+        <source>Octave Dock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+60"/>
         <location line="+3"/>
         <location line="+64"/>
         <location line="+3"/>
@@ -13511,22 +13848,22 @@ Active Filter synthesis program
         <location line="+19"/>
         <location line="+10"/>
         <location line="+88"/>
-        <location line="+995"/>
+        <location line="+992"/>
         <location line="+28"/>
-        <location line="+70"/>
-        <location line="+309"/>
+        <location line="+72"/>
+        <location line="+314"/>
         <location line="+7"/>
         <location line="+7"/>
         <location line="+7"/>
         <location line="+6"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-567"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-516"/>
         <location line="+103"/>
         <location line="+62"/>
         <location line="+32"/>
         <location line="+16"/>
         <location line="+10"/>
         <location line="+5"/>
-        <location line="+295"/>
+        <location line="+244"/>
         <location line="+15"/>
         <location line="+19"/>
         <location line="+138"/>
@@ -13534,7 +13871,7 @@ Active Filter synthesis program
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location line="-2153"/>
+        <location line="-2157"/>
         <location line="+67"/>
         <source>Cannot open &quot;%1&quot;.</source>
         <translation>Не удаётся открыть &quot;%1&quot;.</translation>
@@ -13554,19 +13891,19 @@ Active Filter synthesis program
         <location line="+28"/>
         <location line="+11"/>
         <location line="+26"/>
-        <location line="+213"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-895"/>
+        <location line="+210"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-844"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+14"/>
         <location line="+38"/>
         <location line="+14"/>
-        <location line="+685"/>
+        <location line="+634"/>
         <source>Info</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location line="-868"/>
+        <location line="-865"/>
         <source>Default icon not found:
  %1.png</source>
         <translation>Значок по умолчанию не найден:
@@ -13584,14 +13921,14 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+1"/>
-        <location line="+678"/>
+        <location line="+676"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>В документе есть несохранённые изменения!
 </translation>
     </message>
     <message>
-        <location line="-677"/>
+        <location line="-675"/>
         <source>Do you want to save the changes before copying?</source>
         <translation>Хотите сохранить изменения перед копированием?</translation>
     </message>
@@ -13602,13 +13939,13 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+0"/>
-        <location line="+678"/>
+        <location line="+676"/>
         <location filename="../qucs/qucs_init.cpp" line="+66"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location line="-656"/>
+        <location line="-654"/>
         <source>Copy file</source>
         <translation>Копировать файл</translation>
     </message>
@@ -13641,32 +13978,32 @@ Active Filter synthesis program
         <location line="+5"/>
         <location line="+32"/>
         <location line="+192"/>
-        <location line="+232"/>
-        <location line="+492"/>
+        <location line="+230"/>
+        <location line="+491"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location line="-947"/>
+        <location line="-944"/>
         <source>This will delete the file permanently! Continue ?</source>
         <translation>Это безвозвратно удалит файл! Продолжить ?</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+457"/>
-        <location line="+369"/>
+        <location line="+455"/>
+        <location line="+368"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location line="-826"/>
-        <location line="+457"/>
-        <location line="+369"/>
+        <location line="-823"/>
+        <location line="+455"/>
+        <location line="+368"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location line="-979"/>
+        <location line="-976"/>
         <source>unknown</source>
         <translation>неизвестный</translation>
     </message>
@@ -13825,23 +14162,23 @@ Active Filter synthesis program
         <location line="+68"/>
         <location line="+31"/>
         <location line="+5"/>
-        <location line="+104"/>
+        <location line="+101"/>
         <location line="+5"/>
-        <location line="+33"/>
+        <location line="+34"/>
         <location line="+54"/>
         <location line="+35"/>
-        <location line="+177"/>
+        <location line="+176"/>
         <location line="+34"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-1017"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-966"/>
         <location line="+15"/>
         <location line="+379"/>
         <location line="+282"/>
-        <location filename="../qucs/qucs_init.cpp" line="+883"/>
+        <location filename="../qucs/qucs_init.cpp" line="+885"/>
         <source>Ready.</source>
         <translation>Готово.</translation>
     </message>
     <message>
-        <location line="-552"/>
+        <location line="-549"/>
         <source>Creating new text editor...</source>
         <translation>Создание нового текстового редактора...</translation>
     </message>
@@ -13868,12 +14205,12 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+6"/>
-        <location line="+109"/>
+        <location line="+106"/>
         <source>Saving aborted</source>
         <translation>Сохранение прервано</translation>
     </message>
     <message>
-        <location line="-66"/>
+        <location line="-65"/>
         <source>Qucs Netlist</source>
         <translation>Схема Qucs</translation>
     </message>
@@ -13894,7 +14231,7 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+0"/>
-        <source>' already exists!
+        <source>&apos; already exists!
 </source>
         <translation>&apos; уже существует!
 </translation>
@@ -13911,7 +14248,7 @@ Active Filter synthesis program
         <translation>Отменить</translation>
     </message>
     <message>
-        <location line="-105"/>
+        <location line="-106"/>
         <source>Cannot overwrite an open document</source>
         <translation>Не удаётся перезаписать открытый документ</translation>
     </message>
@@ -13926,7 +14263,7 @@ Active Filter synthesis program
         <translation>Сохранение всех файлов...</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+50"/>
         <source>Closing file...</source>
         <translation>Закрытие файла...</translation>
     </message>
@@ -13951,22 +14288,19 @@ Active Filter synthesis program
         <translation>Отрыть каталог с примерами</translation>
     </message>
     <message>
-        <location line="+117"/>
         <source>Update schematic path</source>
-        <translation>Обновить путь к схеме</translation>
+        <translation type="obsolete">Обновить путь к схеме</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>The schematic file path has been refreshed.</source>
-        <translation>Путь к файлу схемы был обновлён.</translation>
+        <translation type="obsolete">Путь к файлу схемы был обновлён.</translation>
     </message>
     <message>
-        <location line="+0"/>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="obsolete">OK</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+171"/>
         <source>Printing...</source>
         <translation>Печать...</translation>
     </message>
@@ -14016,12 +14350,12 @@ Active Filter synthesis program
         <translation>Не настроена страница !</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+73"/>
         <source>Cannot start &quot;%1&quot;!</source>
         <translation>Не удаётся запустить программу &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location line="+308"/>
+        <location line="+313"/>
         <source>Could not load S[1,1].</source>
         <translation>Невозможно загрузить S[1,1].</translation>
     </message>
@@ -14136,7 +14470,7 @@ Overwrite ?</source>
         <translation>Не удаётся записать файл &quot;%1&quot; !</translation>
     </message>
     <message>
-        <location line="+295"/>
+        <location line="+244"/>
         <source>Please open project with subcircuits!</source>
         <translation>Откройте проект с подсхемами!</translation>
     </message>
@@ -14182,7 +14516,7 @@ Have you saved the Verilog-A symbols?</source>
 Вы сохранили обозначения Verilog-A?</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_init.cpp" line="-902"/>
+        <location filename="../qucs/qucs_init.cpp" line="-904"/>
         <source>&amp;New</source>
         <translation>&amp;Создать</translation>
     </message>
@@ -14775,12 +15109,28 @@ Searches for a piece of text</source>
 Поиск текста</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Export as image</source>
-        <translation>Сохранить как изображение</translation>
+        <translation type="obsolete">Сохранить как изображение</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+8"/>
+        <source>Export as image...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Exports the current document to an image file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Export as image
+
+Exports the current document to an image file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>&amp;Undo</source>
         <translation>&amp;Отменить</translation>
     </message>
@@ -15927,160 +16277,128 @@ About Qt by Trolltech</source>
         <translation>Предупреждения в последнем моделировании! Нажмите F5</translation>
     </message>
     <message>
-        <location line="+99"/>
         <source>About...</source>
-        <translation>О...</translation>
+        <translation type="obsolete">О...</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Qucs Version</source>
-        <translation>Версия Qucs</translation>
+        <translation type="obsolete">Версия Qucs</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>Quite Universal Circuit Simulator</source>
-        <translation>Почти универсальный симулятор цепей</translation>
+        <translation type="obsolete">Почти универсальный симулятор цепей</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+2"/>
         <source>Copyright (C)</source>
-        <translation>Copyright (C)</translation>
+        <translation type="obsolete">Copyright (C)</translation>
     </message>
     <message>
-        <location line="-1"/>
         <source>by Michael Margraf</source>
-        <translation>Michael Margraf</translation>
+        <translation type="obsolete">Michael Margraf</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Qucs Team</source>
-        <translation>Команда Qucs</translation>
+        <translation type="obsolete">Команда Qucs</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>Simulator by Stefan Jahn</source>
-        <translation>Симулятор Штефана Яна (Stefan Jahn)</translation>
+        <translation type="obsolete">Симулятор Штефана Яна (Stefan Jahn)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>VHDL simulator &apos;FreeHDL&apos; by Edwin Naroska and Marius Vollmer</source>
-        <translation>VHDL симулятор &apos;FreeHDL&apos; Эдвина Нароска (Edwin Naroska) и Мариуса Вольмера (Marius Vollmer)</translation>
+        <translation type="obsolete">VHDL симулятор &apos;FreeHDL&apos; Эдвина Нароска (Edwin Naroska) и Мариуса Вольмера (Marius Vollmer)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Special thanks to Jens Flucke and Raimund Jacob</source>
-        <translation>Особая благодарность Йенсу Флюкке (Jens Flucke) и Раймунду Джакобу (Raimund Jacob)</translation>
+        <translation type="obsolete">Особая благодарность Йенсу Флюкке (Jens Flucke) и Раймунду Джакобу (Raimund Jacob)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Many thanks to Mike Brinson for correcting the VHDL output</source>
-        <translation>Большая благодарность Майку Бринсону (Mike Brinson) за внесение поправок в результаты VHDL</translation>
+        <translation type="obsolete">Большая благодарность Майку Бринсону (Mike Brinson) за внесение поправок в результаты VHDL</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>GUI improvements by Gopala Krishna A</source>
-        <translation>Переделка графического интерфейса - Gopala Krishna A</translation>
+        <translation type="obsolete">Переделка графического интерфейса - Gopala Krishna A</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Verilog-AMS interface by Helene Parruitte</source>
-        <translation>Интерфейс с Verilog-AMS: Helene Parruitte</translation>
+        <translation type="obsolete">Интерфейс с Verilog-AMS: Helene Parruitte</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Verilog-AMS dynamic loader by Guilherme Brondani Torri</source>
-        <translation>Динамический загрузчик Verilog-AMS от Guilherme Brondani Torri</translation>
+        <translation type="obsolete">Динамический загрузчик Verilog-AMS от Guilherme Brondani Torri</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Translations:</source>
-        <translation>Перевод:</translation>
+        <translation type="obsolete">Перевод:</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>German by Stefan Jahn</source>
-        <translation>Немецкий - Stefan Jahn</translation>
+        <translation type="obsolete">Немецкий - Stefan Jahn</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Polish by Dariusz Pienkowski</source>
-        <translation>Польский - Dariusz Pienkowski</translation>
+        <translation type="obsolete">Польский - Dariusz Pienkowski</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Romanian by Radu Circa</source>
-        <translation>Румынский - Radu Circa</translation>
+        <translation type="obsolete">Румынский - Radu Circa</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>French by Vincent Habchi, F5RCS</source>
-        <translation>Французский - Vincent Habchi, F5RCS</translation>
+        <translation type="obsolete">Французский - Vincent Habchi, F5RCS</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Portuguese by Luciano Franca, Helio de Sousa, Guilherme Brondani Torri</source>
-        <translation>Португальский - Luciano Franca, Helio de Sousa, Guilherme Brondani Torri</translation>
+        <translation type="obsolete">Португальский - Luciano Franca, Helio de Sousa, Guilherme Brondani Torri</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Spanish by Jose L. Redrejo Rodriguez</source>
-        <translation>Испанский - Jose L. Redrejo Rodriguez</translation>
+        <translation type="obsolete">Испанский - Jose L. Redrejo Rodriguez</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Japanese by Toyoyuki Ishikawa</source>
-        <translation>Японский - Toyoyuki Ishikawa</translation>
+        <translation type="obsolete">Японский - Toyoyuki Ishikawa</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Italian by Giorgio Luparia and Claudio Girardi</source>
-        <translation>Итальянский - Giorgio Luparia и Claudio Girardi</translation>
+        <translation type="obsolete">Итальянский - Giorgio Luparia и Claudio Girardi</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Hebrew by Dotan Nahum</source>
-        <translation>Еврейский - Dotan Nahum</translation>
+        <translation type="obsolete">Еврейский - Dotan Nahum</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Swedish by Peter Landgren</source>
-        <translation>Шведский - Peter Landgren</translation>
+        <translation type="obsolete">Шведский - Peter Landgren</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Turkish by Onur and Ozgur Cobanoglu</source>
-        <translation>Турецкий - Onur и Ozgur Cobanoglu</translation>
+        <translation type="obsolete">Турецкий - Onur и Ozgur Cobanoglu</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Hungarian by Jozsef Bus</source>
-        <translation>Венгерский - Jozsef Bus</translation>
+        <translation type="obsolete">Венгерский - Jozsef Bus</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Russian by Igor Gorbounov</source>
-        <translation>Русский - Игорь Горбунов</translation>
+        <translation type="obsolete">Русский - Игорь Горбунов</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Czech by Marek Straka</source>
-        <translation>Чешский - Marek Straka</translation>
+        <translation type="obsolete">Чешский - Marek Straka</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Catalan by Antoni Subirats</source>
-        <translation>Каталанский - Antoni Subirats</translation>
+        <translation type="obsolete">Каталанский - Antoni Subirats</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Arabic by Chabane Noureddine</source>
-        <translation>Арабский - Chabane Noureddine</translation>
+        <translation type="obsolete">Арабский - Chabane Noureddine</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Kazakh by Erbol Keshubaev</source>
-        <translation>Казахский - Erbol Keshubaev</translation>
+        <translation type="obsolete">Казахский - Erbol Keshubaev</translation>
     </message>
 </context>
 <context>
@@ -17756,7 +18074,7 @@ open files with an appropriate program.</source>
         <translation>Версия:</translation>
     </message>
     <message>
-        <location line="+81"/>
+        <location line="+80"/>
         <source>Edit Text</source>
         <translation>Редактировать текст</translation>
     </message>
@@ -17812,12 +18130,12 @@ Edits the symbol for this schematic</source>
 Правка обозначения для этой схемы</translation>
     </message>
     <message>
-        <location line="+1253"/>
+        <location line="+1258"/>
         <source>generic</source>
         <translation>обобщённый</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="-1342"/>
+        <location filename="../qucs/schematic_file.cpp" line="-1367"/>
         <location line="+22"/>
         <source>Error</source>
         <translation>Ошибка</translation>
@@ -17837,7 +18155,7 @@ Set the admsXml location on the application settings.</source>
         <translation>Статус</translation>
     </message>
     <message>
-        <location line="+993"/>
+        <location line="+1018"/>
         <source>ERROR: Cannot create library file &quot;%s&quot;.</source>
         <translation>ОШИБКА: Не удаётся создать библиотечный файл &quot;%s&quot;.</translation>
     </message>
@@ -17847,54 +18165,81 @@ Set the admsXml location on the application settings.</source>
     <message>
         <location filename="../qucs/dialogs/searchdialog.ui" line="+14"/>
         <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+145"/>
+        <location filename="../qucs/build/dialogs/ui_searchdialog.h" line="+145"/>
+        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+145"/>
+        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+145"/>
         <source>Dialog</source>
         <translation>Диалог</translation>
     </message>
     <message>
         <location line="+8"/>
         <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Text to search for</source>
         <translation>Найти</translation>
     </message>
     <message>
         <location line="+12"/>
         <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Text to replace with</source>
         <translation>Заменить на</translation>
     </message>
     <message>
         <location line="+14"/>
         <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Ask before replacing</source>
         <translation>Спрашивать перед заменой</translation>
     </message>
     <message>
         <location line="+7"/>
         <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Case sensitive</source>
         <translation>Учитывать регистр</translation>
     </message>
     <message>
         <location line="+7"/>
         <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Whole words only</source>
         <translation>Только полные слова</translation>
     </message>
     <message>
         <location line="+7"/>
         <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Search backwards</source>
         <translation>Обратный поиск</translation>
     </message>
     <message>
         <location line="+13"/>
         <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
         <source>Next</source>
         <translation>Следующий</translation>
     </message>
     <message>
         <location line="+10"/>
         <location filename="../build/qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/build/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs/dialogs/ui_searchdialog.h" line="+1"/>
+        <location filename="../qucs-build/dialogs/ui_searchdialog.h" line="+1"/>
         <location filename="../qucs-lib/searchdialog.cpp" line="+65"/>
         <source>Close</source>
         <translation>Закрыть</translation>
@@ -18154,17 +18499,17 @@ are included in the search.</source>
         <translation>ОШИБКА: Не удаётся создать &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location line="+270"/>
+        <location line="+273"/>
         <source>ERROR: Cannot start </source>
         <translation>ОШИБКА: Невозможно запустить</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+24"/>
         <source>Starting </source>
         <translation>Запуск</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+31"/>
         <source>ERROR: Simulator crashed!</source>
         <translation>ОШИБКА: Симулятор потерпел крах!</translation>
     </message>
@@ -18206,10 +18551,20 @@ are included in the search.</source>
 -------</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
+        <source>Errors and Warnings:
+--------------------</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>Simulation aborted by the user!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Errors:
 -------</source>
-        <translation>Ошибки:
+        <translation type="obsolete">Ошибки:
 -------</translation>
     </message>
 </context>
@@ -18307,53 +18662,61 @@ are included in the search.</source>
     </message>
     <message>
         <location line="+90"/>
-        <location line="+72"/>
+        <location line="+67"/>
         <source>Info</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location line="-71"/>
+        <location line="-66"/>
         <source>Preprocessing SPICE file &quot;%1&quot;.</source>
         <translation>Предварительная обработка SPICE-файла &quot;%1&quot;.</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+11"/>
-        <location line="+61"/>
+        <location line="+55"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location line="-71"/>
+        <location line="-65"/>
         <source>Cannot save preprocessed SPICE file &quot;%1&quot;.</source>
         <translation>Не удаётся сохранить предобработанный SPICE-файл &quot;%1&quot;.</translation>
     </message>
     <message>
         <location line="+11"/>
-        <location line="+61"/>
+        <location line="+55"/>
         <source>Cannot execute &quot;%1&quot;.</source>
         <translation>Не удаётся выполнить &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location line="-41"/>
+        <location line="-35"/>
         <source>SPICE Preprocessor Error</source>
         <translation>Ошибка препроцессора SPICE</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+23"/>
         <source>Converting SPICE file &quot;%1&quot;.</source>
         <translation>Преобразование SPICE-файла &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+19"/>
         <source>QucsConv Error</source>
         <translation>Ошибка QucsConv</translation>
     </message>
 </context>
 <context>
+    <name>SpiceFile</name>
+    <message>
+        <location filename="../qucs/components/spicefile.cpp" line="-3"/>
+        <source>Converting SPICE file &quot;%1&quot;.</source>
+        <translation type="unfinished">Преобразование SPICE-файла &quot;%1&quot;.</translation>
+    </message>
+</context>
+<context>
     <name>SweepDialog</name>
     <message>
-        <location filename="../qucs/dialogs/sweepdialog.cpp" line="+80"/>
+        <location filename="../qucs/dialogs/sweepdialog.cpp" line="+85"/>
         <source>Bias Points</source>
         <translation>Рабочие точки</translation>
     </message>
