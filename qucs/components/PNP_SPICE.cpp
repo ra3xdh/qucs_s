@@ -46,6 +46,9 @@ PNP_SPICE::PNP_SPICE()
   
   Lines.append(new Line( -5, 10, -5, 16,QPen(Qt::darkRed,3)));
   Lines.append(new Line( -5, 10,  1, 10,QPen(Qt::darkRed,3)));
+  
+  Texts.append(new Text(30,12,"PNP",Qt::darkRed,10.0,0.0,-1.0));
+
  
   Ports.append(new Port(  0,-30));
   Ports.append(new Port(-30,  0));

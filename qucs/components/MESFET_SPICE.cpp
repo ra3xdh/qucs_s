@@ -26,31 +26,18 @@
 
 MESFET_SPICE::MESFET_SPICE()
 {
-    Description = QObject::tr("NMF MESFET SPICE format");
+    Description = QObject::tr("Z(NMF) MESFET:\nMultiple line ngspice or Xyce Z model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
 
-  Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::red,3)));
-  Lines.append(new Line(-30,  0,-10,  0,QPen(Qt::red,3)));
-  Lines.append(new Line(-10,-10,  0,-10,QPen(Qt::red,3)));
-  Lines.append(new Line(  0,-10,  0,-20,QPen(Qt::red,3)));
+  Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkRed,3)));
+  Lines.append(new Line(-30,  0,-10,  0,QPen(Qt::darkRed,3)));
+  Lines.append(new Line(-10,-10,  0,-10,QPen(Qt::darkRed,3)));
+  Lines.append(new Line(  0,-10,  0,-20,QPen(Qt::darkRed,3)));
   Lines.append(new Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3))); 
 
-  Lines.append(new Line(-10, 10,  0, 10,QPen(Qt::red,3)));
-  Lines.append(new Line(  0, 10,  0, 20,QPen(Qt::red,3)));
+  Lines.append(new Line(-10, 10,  0, 10,QPen(Qt::darkRed,3)));
+  Lines.append(new Line(  0, 10,  0, 20,QPen(Qt::darkRed,3)));
   Lines.append(new Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));  
 
-// N
-  Lines.append(new Line( 10, 30,  10, 20,QPen(Qt::red,2)));
-  Lines.append(new Line( 10, 20,  20, 30,QPen(Qt::red,2)));
-  Lines.append(new Line( 20, 30,  20, 20,QPen(Qt::red,2)));  
-//M
-  Lines.append(new Line( 25, 30,  25, 20,QPen(Qt::red,2)));
-  Lines.append(new Line( 25, 20,  30, 25,QPen(Qt::red,2)));  
-  Lines.append(new Line( 30, 25,  35, 20,QPen(Qt::red,2)));
-  Lines.append(new Line( 35, 20,  35, 30,QPen(Qt::red,2))); 
-//F
-  Lines.append(new Line( 40, 30,  40, 20,QPen(Qt::red,2)));
-  Lines.append(new Line( 40, 20,  45, 20,QPen(Qt::red,2)));
-  Lines.append(new Line( 40, 25,  45, 25,QPen(Qt::red,2)));  
      
   Ports.append(new Port(  0,-30));
   Ports.append(new Port(-30,  0));
@@ -66,11 +53,13 @@ MESFET_SPICE::MESFET_SPICE()
     SpiceModel = "Z";
     Name  = "Z";
 
-    Props.append(new Property("Z", "", true,"Expression"));
-    Props.append(new Property("Z_Line 2", "", false,"Expression"));
-    Props.append(new Property("Z_Line 3", "", false,"Expression"));
-    Props.append(new Property("Z _Line 4", "", false,"Expression"));
-    Props.append(new Property("Z _Line 5", "", false,"Expression"));
+    Props.append(new Property("Z", "", true,"Param list and\n .model spec."));
+    Props.append(new Property("Z_Line 2", "", false,"+ continuation line 1"));
+    Props.append(new Property("Z_Line 3", "", false,"+ continuation line 2"));
+    Props.append(new Property("Z_Line 4", "", false,"+ continuation line 3"));
+    Props.append(new Property("Z_Line 5", "", false,"+ continuation line 4"));
+    
+    Texts.append(new Text(30,12,"NMF",Qt::darkRed,10.0,0.0,-1.0));
 
 }
 
@@ -85,7 +74,7 @@ Component* MESFET_SPICE::newOne()
 
 Element* MESFET_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("NMF MESFET");
+  Name = QObject::tr("Z(NMF)");
   BitmapFile = (char *) "MESFET_SPICE";
 
   if(getNewOne)  return new MESFET_SPICE();
@@ -112,11 +101,11 @@ QString MESFET_SPICE::spice_netlist(bool)
     QString Z_Line_4= Props.at(3)->Value;
     QString Z_Line_5= Props.at(4)->Value;
 
-     if(  Z.length()  > 0)                 s += QString("%1\n").arg(Z);
+    if(  Z.length()  > 0)          s += QString("%1\n").arg(Z);
     if(  Z_Line_2.length() > 0 )   s += QString("%1\n").arg(Z_Line_2);
     if(  Z_Line_3.length() > 0 )   s += QString("%1\n").arg(Z_Line_3);
     if(  Z_Line_4.length() > 0 )   s += QString("%1\n").arg(Z_Line_4);
-    if( Z_Line_5.length() >  0 )   s += QString("%1\n").arg(Z_Line_5);
+    if(  Z_Line_5.length() >  0 )  s += QString("%1\n").arg(Z_Line_5);
  
     return s;
 }

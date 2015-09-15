@@ -26,15 +26,15 @@
 
 vPWL::vPWL()
 {
-  Description = QObject::tr("PWL voltage source");
+  Description = QObject::tr("SPICE V(PWL):\nMultiple line ngspice or Xyce V specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use. ");
 
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::red,3)));
-  Texts.append(new Text(20, 12,"PWL",Qt::red,10.0,0.0,-1.0));
-  Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 18,  -5, 18, -11,QPen(Qt::red,1)));
-  Lines.append(new Line( 21,  -8, 15,  -8,QPen(Qt::red,1)));
-  Lines.append(new Line(-18,  -5,-18, -11,QPen(Qt::black,1)));
+  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkRed,3)));
+  Texts.append(new Text(30, 12,"PWL",Qt::red,10.0,0.0,-1.0));
+  Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line( 18,  -5, 18, -11,QPen(Qt::red,3)));
+  Lines.append(new Line( 21,  -8, 15,  -8,QPen(Qt::red,3)));
+  Lines.append(new Line(-18,  -5,-18, -11,QPen(Qt::black,3)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
@@ -48,16 +48,16 @@ vPWL::vPWL()
   SpiceModel = "V";
   Name  = "V";
 
-  Props.append(new Property("PWL", "", true,"Expression"));
- Props.append(new Property("Line_2", "", false,"Expression"));
- Props.append(new Property("Line_3", "", false,"Expression"));
- Props.append(new Property("Line_4", "", false,"Expression"));
- Props.append(new Property("Line_5", "", false,"Expression"));
- Props.append(new Property("Line_6", "", false,"Expression"));
- Props.append(new Property("Line_7", "", false,"Expression"));
- Props.append(new Property("Line_8", "", false,"Expression"));
- Props.append(new Property("Line_9", "", false,"Expression"));
- Props.append(new Property("Line_10", "", false,"Expression"));
+  Props.append(new Property("PWL", "", true,"Piece-Wise Linear\nSpecification"));
+ Props.append(new Property("Line_2", "", false,"+ continuation line 1"));
+ Props.append(new Property("Line_3", "", false,"+ continuation line 2"));
+ Props.append(new Property("Line_4", "", false,"+ continuation line 3"));
+ Props.append(new Property("Line_5", "", false,"+ continuation line 4"));
+ Props.append(new Property("Line_6", "", false,"+ continuation line 5"));
+ Props.append(new Property("Line_7", "", false,"+ continuation line 6"));
+ Props.append(new Property("Line_8", "", false,"+ continuation line 7"));
+ Props.append(new Property("Line_9", "", false,"+ continuation line 8"));
+ Props.append(new Property("Line_10", "", false,"+ continuation line 9"));
  
  
   rotate();  // fix historical flaw
@@ -74,7 +74,7 @@ Component* vPWL::newOne()
 
 Element* vPWL::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("PWL");
+  Name = QObject::tr("V(PWL)");
   BitmapFile = (char *) "vPWL";
 
   if(getNewOne)  return new vPWL();
@@ -92,7 +92,7 @@ QString vPWL::spice_netlist(bool)
     foreach(Port *p1, Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
+        s += " "+ nam+" ";   // node names
     }
 
 
@@ -107,18 +107,17 @@ QString Line_8= Props.at(7)->Value;
 QString Line_9= Props.at(8)->Value;
 QString Line_10= Props.at(9)->Value;
 
-    s += QString(" DC 0  AC 0  PWL( ");
+    s += QString("");
   
-     if(  PWL.length()  > 2)        s += QString("%1\n").arg(PWL);
-    if(  Line_2.length() > 2 )     s += QString("%1\n").arg(Line_2);
-    if(  Line_3.length() > 2 )   s += QString("%1\n").arg(Line_3);
-    if(  Line_4.length() > 2 )   s += QString("%1\n").arg(Line_4);
-    if(  Line_5.length() > 2 )   s += QString("%1\n").arg(Line_5);
-    if(  Line_6.length () > 2 )   s += QString("%1\n").arg(Line_6);
-    if(  Line_7.length ()  > 2 )   s += QString("%1\n").arg(Line_7);
-    if(  Line_8.length()  > 2)   s += QString("%1\n").arg(Line_8);
-    if(  Line_9.length()  > 2 )   s += QString("%1\n").arg(Line_9);
-    if(  Line_10.length() > 2 ) s += QString("%1\n").arg(Line_10);
-   s+= "+ )\n";
+    if(  PWL.length()  > 0)        s += QString("%1\n").arg(PWL);
+    if(  Line_2.length() > 0 )     s += QString("%1\n").arg(Line_2);
+    if(  Line_3.length() > 0 )     s += QString("%1\n").arg(Line_3);
+    if(  Line_4.length() > 0 )     s += QString("%1\n").arg(Line_4);
+    if(  Line_5.length() > 0 )     s += QString("%1\n").arg(Line_5);
+    if(  Line_6.length() > 0 )     s += QString("%1\n").arg(Line_6);
+    if(  Line_7.length() > 0 )     s += QString("%1\n").arg(Line_7);
+    if(  Line_8.length() > 0)      s += QString("%1\n").arg(Line_8);
+    if(  Line_9.length() > 0 )     s += QString("%1\n").arg(Line_9);
+    if(  Line_10.length() > 0 )    s += QString("%1\n").arg(Line_10);
     return s;
 }

@@ -40,10 +40,11 @@ PJF_SPICE::PJF_SPICE()
   Lines.append(new Line(  0, 10,  0, 20,QPen(Qt::darkRed,3)));
   Lines.append(new Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));
   
-  Lines.append(new Line(-16, -5,-11,  0,QPen(Qt::darkRed,3)));
-  Lines.append(new Line(-16,  5,-11,  0,QPen(Qt::darkRed,3)));
+  Lines.append(new Line(-16, -5,-21,  0,QPen(Qt::darkRed,3)));
+  Lines.append(new Line(-16,  5,-21,  0,QPen(Qt::darkRed,3)));
   
-
+  Texts.append(new Text(30,12,"PJF",Qt::darkRed,10.0,0.0,-1.0));
+  
   Ports.append(new Port(  0,-30)); //D
   Ports.append(new Port(-30,  0)); //G
   Ports.append(new Port(  0, 30)); //S

@@ -26,37 +26,34 @@
 
 PMOS_SPICE::PMOS_SPICE()
 {
-    Description = QObject::tr("PMOS SPICE format");
+    Description = QObject::tr("M(PMOS) MOS:\nMultiple line ngspice or Xyce M model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
 
-  Lines.append(new Line(-14,-13,-14, 13,QPen(Qt::red,3)));
+  Lines.append(new Line(-14,-13,-14, 13,QPen(Qt::darkRed,3)));
 
   Lines.append(new Line(-30,  0,-20,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line(-20,  0,-14,  0,QPen(Qt::red,3)));
+  Lines.append(new Line(-20,  0,-14,  0,QPen(Qt::darkRed,3)));
   
-  Lines.append(new Line(-10,-11,  0,-11,QPen(Qt::red,3)));
+  Lines.append(new Line(-10,-11,  0,-11,QPen(Qt::darkRed,3)));
 
-  Lines.append(new Line(  0,-11,  0,-20,QPen(Qt::red,3)));
+  Lines.append(new Line(  0,-11,  0,-20,QPen(Qt::darkRed,3)));
   Lines.append(new Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
 
-  Lines.append(new Line(-10, 11,  0, 11,QPen(Qt::red,3)));
-  Lines.append(new Line(  0, 11,  0, 20,QPen(Qt::red,3))); 
+  Lines.append(new Line(-10, 11,  0, 11,QPen(Qt::darkRed,3)));
+  Lines.append(new Line(  0, 11,  0, 20,QPen(Qt::darkRed,3))); 
   Lines.append(new Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));
   
-  Lines.append(new Line(-10,  0, 10,  0,QPen(Qt::red,3)));
+  Lines.append(new Line(-10,  0, 10,  0,QPen(Qt::darkRed,3)));
   Lines.append(new Line( 10,  0, 20,  0,QPen(Qt::darkBlue,3)));
   
-  Lines.append(new Line(-10,-16,-10, -7,QPen(Qt::red,3)));
-  Lines.append(new Line(-10,  7,-10, 16,QPen(Qt::red,3)));
+  Lines.append(new Line(-10,-16,-10, -7,QPen(Qt::darkRed,3)));
+  Lines.append(new Line(-10,  7,-10, 16,QPen(Qt::darkRed,3)));
 
- //   Lines.append(new Line( -9,  0, -4, -5,QPen(Qt::red,3)));
- //   Lines.append(new Line( -9,  0, -4,  5,QPen(Qt::red,3)));
-
-    Lines.append(new Line( -1,  0, -6, -5,QPen(Qt::red,3)));
-    Lines.append(new Line( -1,  0, -6,  5,QPen(Qt::red,3)));
+    Lines.append(new Line( -1,  0, -6, -5,QPen(Qt::darkRed,3)));
+    Lines.append(new Line( -1,  0, -6,  5,QPen(Qt::darkRed,3)));
   
-
-
-    Lines.append(new Line(-10, -8,-10,  8,QPen(Qt::red,3)));
+    Lines.append(new Line(-10, -8,-10,  8,QPen(Qt::darkRed,3)));
+    
+    Texts.append(new Text(30,12,"PMOS",Qt::darkRed,10.0,0.0,-1.0));
  
   Ports.append(new Port(  0,-30)); //D
   Ports.append(new Port(-30,  0)); //G
@@ -73,11 +70,11 @@ PMOS_SPICE::PMOS_SPICE()
     SpiceModel = "M";
     Name  = "M";
 
-    Props.append(new Property("M", "", true,"Expression"));
-    Props.append(new Property("M_Line 2", "", false,"Expression"));
-    Props.append(new Property("M_Line 3", "", false,"Expression"));
-    Props.append(new Property("M _Line 4", "", false,"Expression"));
-    Props.append(new Property("M _Line 5", "", false,"Expression"));
+    Props.append(new Property("M", "", true,"Param list and\n .model spec."));
+    Props.append(new Property("M_Line 2", "", false,"+ continuation line 1"));
+    Props.append(new Property("M_Line 3", "", false,"+ continuation line 2"));
+    Props.append(new Property("M_Line 4", "", false,"+ continuation line 3"));
+    Props.append(new Property("M_Line 5", "", false,"+ continuation line 4"));
 
 }
 
@@ -92,7 +89,7 @@ Component* PMOS_SPICE::newOne()
 
 Element* PMOS_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr(" PMOS");
+  Name = QObject::tr("M(PMOS)");
   BitmapFile = (char *) "PMOS_SPICE";
 
   if(getNewOne)  return new PMOS_SPICE();

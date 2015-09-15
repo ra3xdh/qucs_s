@@ -92,7 +92,7 @@ QString S4Q_Ieqndef::spice_netlist(bool)
     foreach(Port *p1, Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
+        s += " "+ nam  + " ";   // node names
     }
     
     QString VI  = Props.at(0)-> Name;

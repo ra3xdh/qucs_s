@@ -45,6 +45,8 @@ NPN_SPICE::NPN_SPICE()
 
   Lines.append(new Line( -6, 15,  0, 15,QPen(Qt::darkRed,3)));
   Lines.append(new Line(  0,  9,  0, 15,QPen(Qt::darkRed,3)));
+  
+  Texts.append(new Text(30,12,"NPN",Qt::darkRed,10.0,0.0,-1.0));
  
 
   Ports.append(new Port(0, -30));
