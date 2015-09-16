@@ -106,6 +106,8 @@ sp_noise.cpp
 S4Q_V.cpp
 S4Q_Ieqndef.cpp
 S4Q_I.cpp
+S4Q_S.cpp
+S4Q_W.cpp
 )
 
 
@@ -333,6 +335,8 @@ sp_noise.h
 S4Q_V.h
 S4Q_Ieqndef.h
 S4Q_I.h
+S4Q_S.h
+S4Q_W.h
 )
 
 
