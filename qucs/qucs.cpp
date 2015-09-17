@@ -1575,7 +1575,9 @@ void QucsApp::slotFileSaveAll()
   while((Doc=getDoc(No++)) != 0) {
     if(Doc->DocName.isEmpty())  // make document the current ?
       DocumentTab->setCurrentIndex(No-1);
-    saveFile(Doc);
+    if (saveFile(Doc)) { // Hack! TODO: Maybe it's better to let slotFileChanged()
+        DocumentTab->setTabIcon(No-1,QPixmap(empty_xpm)); // know about Tab number?
+    }
   }
 
   DocumentTab->blockSignals(false);
