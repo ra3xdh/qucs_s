@@ -36,6 +36,8 @@ MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 qucslib_SOURCES = main.cpp qucslib.cpp displaydialog.cpp symbolwidget.cpp \
        searchdialog.cpp librarydialog.cpp qrc_qucslib.cpp
 
+EXTRA_DIST = qucslib.qrc
+
 qrc_qucslib.cpp: qucslib.qrc
 	$(RCC) -o $@ $<
 

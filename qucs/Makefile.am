@@ -61,7 +61,8 @@ qucs_LDADD = components/libcomponents.a diagrams/libdiagrams.a \
   $(X11_LIBS) $(QT_LIBS)
 
 noinst_HEADERS = $(MOCHEADERS) main.h wire.h qucsdoc.h element.h node.h \
-  wirelabel.h viewpainter.h mnemo.h mouseactions.h syntax.h module.h misc.h
+  wirelabel.h viewpainter.h mnemo.h mouseactions.h syntax.h module.h misc.h \
+  projectView.h printerwriter.h imagewriter.h
 
 hicolor16dir = ${prefix}/share/icons/hicolor/16x16/apps
 hicolor16_DATA =  bitmaps/hicolor/16x16/apps/qucs.png
@@ -91,8 +92,9 @@ EXTRA_DIST = \
 	qucsdigi qucsdigilib qucsdigi.bat qucsdigilib.bat qucsveri qucsveri.bat \
 	$(hicolor16_DATA) $(hicolor22_DATA) $(hicolor32_DATA) $(hicolor48_DATA) \
 	$(hicolor64_DATA) $(hicolor128_DATA) $(hicolor256_DATA) $(hicolor512_DATA) \
-	$(hicolorsc_DATA) $(desktop_DATA)
+	$(hicolorsc_DATA) $(desktop_DATA) qucs.qrc
 
+SUFFIXES = .h .moc.cpp
 
 .h.moc.cpp:
 	$(MOC) -o $@ $<

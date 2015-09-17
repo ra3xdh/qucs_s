@@ -39,6 +39,8 @@ qucsrescodes_SOURCES = \
 	resistor.cpp \
   qrc_qucsrescodes.cpp
 
+EXTRA_DIST = qucsrescodes.qrc
+
 qrc_qucsrescodes.cpp: qucsrescodes.qrc
 	$(RCC) -o $@ $<
 
@@ -49,6 +51,8 @@ qucsrescodes_LDFLAGS = $(X11_LDFLAGS) $(QT_LDFLAGS)
 qucsrescodes_LDADD = $(X11_LIBS) $(QT_LIBS)
 
 noinst_HEADERS = $(MOCHEADERS) classproto.h
+
+SUFFIXES = .h .moc.cpp
 
 .h.moc.cpp:
 	$(MOC) -o $@ $<

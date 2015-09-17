@@ -50,6 +50,8 @@ qucsfilter_SOURCES = qf_api.cpp\
        qrc_qucsfilter.cpp
 
 
+EXTRA_DIST = qucsfilter.qrc
+
 qrc_qucsfilter.cpp: qucsfilter.qrc
 	$(RCC) -o $@ $<
 

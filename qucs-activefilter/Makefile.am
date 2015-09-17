@@ -36,13 +36,17 @@ mfbfilter.cpp schcauer.cpp qf_poly.cpp qrc_qucsactivefilter.cpp
 qrc_qucsactivefilter.cpp: qucsactivefilter.qrc
 	$(RCC) -o $@ $<
 
+EXTRA_DIST = qucsactivefilter.qrc
+
 nodist_qucsactivefilter_SOURCES = $(MOCFILES)
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES)
 qucsactivefilter_LDFLAGS = $(X11_LDFLAGS) $(QT_LDFLAGS)
 qucsactivefilter_LDADD = $(X11_LIBS) $(QT_LIBS)
 
-noinst_HEADERS = $(MOCHEADERS) qf_matrix.h bessel.h
+noinst_HEADERS = $(MOCHEADERS) qf_matrix.h bessel.h \
+                 sallenkey.h filter.h mfbfilter.h \
+                 schcauer.h qf_poly.h
 
 SUFFIXES = .moc.cpp
 

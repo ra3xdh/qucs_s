@@ -49,6 +49,8 @@ qucsfilter_SOURCES =  \
 qrc_qucsfilter.cpp: qucsfilter.qrc
 	$(RCC) -o $@ $<
 
+EXTRA_DIST = qucsfilter.qrc
+
 nodist_qucsfilter_SOURCES = $(MOCFILES)
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES)
@@ -57,12 +59,19 @@ qucsfilter_LDADD = $(X11_LIBS) $(QT_LIBS)
 
 noinst_HEADERS = \
   $(MOCHEADERS) \
+	eqn_filter.h \
 	lc_filter.h \
 	qf_poly.h \
 	qf_filter.h \
 	qf_cauer.h \
 	quarterwave_filter.h \
-	qf_matrix.h
+	qf_matrix.h \
+	line_filter.h \
+	filter.h \
+	stepz_filter.h \
+	tl_filter.h \
+	material_props.h \
+	cline_filter.h
 
 SUFFIXES = .moc.cpp
 

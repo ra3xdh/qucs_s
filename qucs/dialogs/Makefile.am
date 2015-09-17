@@ -57,6 +57,8 @@ SUFFIXES = .moc.cpp
 ui_searchdialog.h: searchdialog.ui
 	$(UIC) -o $@ $<
 
+EXTRA_DIST = searchdialog.ui
+
 CLEANFILES = *~
 MAINTAINERCLEANFILES = Makefile.in *.moc.cpp
 DISTCLEANFILES = *.moc.cpp ui_*.h

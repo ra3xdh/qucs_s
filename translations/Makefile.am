@@ -66,6 +66,8 @@ GENTRANSLATIONS = \
 	qtgeneric_ar.ts \
 	qtgeneric_kk.ts
 
+EXTRA_DIST = $(TRANSLATIONS) $(GENTRANSLATIONS)
+
 TRANSFILES = $(TRANSLATIONS:.ts=.qm)
 
 qucs_.ts: $(qucs_SOURCES)
