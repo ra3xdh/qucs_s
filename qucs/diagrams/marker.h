@@ -74,11 +74,12 @@ public:
   QString Text;     // the string to be displayed in the marker text
   bool transparent; // background shines through marker body
 
-// private: // not yet
+// private: // not yet, cross-manipulated by MarkerDialog
   int Precision; // number of digits to show
   int numMode;   // real/imag or polar (deg/rad)
 
-public: // ouch. how to sort this out?
+public: // shouldn't be there, cross-manipulated by MarkerDialog
+        // to be implemented within SmithDiagram.
 	double Z0;		//Only used in smith chart marker, to convert S to Z
 };
 
