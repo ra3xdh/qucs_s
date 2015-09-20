@@ -148,7 +148,7 @@ public:
   bool    isSelected (QString);
 
   void    saveMode (QTextStream&);
-  void    saveModes (QTextStream&);
+  bool    saveModes (QString);
   bool    loadFile (QString, int * _mode = 0);
   QString getMode (void);
   void    setMode (QString);
