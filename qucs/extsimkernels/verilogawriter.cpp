@@ -166,6 +166,7 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
                 QString s = pp->Connection->Name;
                 if (!nodes.contains(s)) nodes.append(s);
             }
+            pc->getExtraVANodes(nodes);
         }
     }
 

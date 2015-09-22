@@ -95,6 +95,11 @@ QString Inductor::va_code()
 
 }
 
+void Inductor::getExtraVANodes(QStringList &nodes)
+{
+    nodes.append("_net0" + Name);
+}
+
 Element* Inductor::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr("Inductor");

@@ -45,6 +45,7 @@ public:
   virtual QString getNgspiceAfterSim(QString sim, int lvl=0);
   virtual QString getVAvariables() {return QString("");};
   virtual QString getVAExpressions() {return QString("");};
+  virtual void getExtraVANodes(QStringList& ) {};
   QString get_VHDL_Code(int);
   QString get_Verilog_Code(int);
   void    paint(ViewPainter*);

@@ -29,6 +29,7 @@ public:
   static Element* info(QString&, char* &, bool getNewOne=false);
 protected:
   QString va_code();
+  void getExtraVANodes(QStringList& nodes);
   QString spice_netlist(bool isXyce = false);
 };
 
