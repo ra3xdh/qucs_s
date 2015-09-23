@@ -26,17 +26,17 @@
 
 vSffm::vSffm()
 {
-  Description = QObject::tr("Single frequency FM modulated source");
+  Description = QObject::tr("SPICE V(SFFM):");
 
   // normal voltage source symbol
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::red,3)));
-  Texts.append(new Text(26, 4,"SFFM",Qt::red,10.0,0.0,-1.0)); 
+  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkRed,3)));
+  Texts.append(new Text(36, 4," SFFM",Qt::red,10.0,0.0,-1.0)); 
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line( 18,  -5, 18, -11,QPen(Qt::red,1)));
-  Lines.append(new Line( 21,  -8, 15,  -8,QPen(Qt::red,1)));
-  Lines.append(new Line(-18,  -5,-18, -11,QPen(Qt::black,1)));
+  Lines.append(new Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
+  Lines.append(new Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
+  Lines.append(new Line(-18,  -5,-18, -11,QPen(Qt::black,2)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
@@ -46,7 +46,7 @@ vSffm::vSffm()
 
   tx = x1+4;
   ty = y2+4;
-  Model = "VSffm";
+  Model = "vSffm";
   SpiceModel = "V";
   Name  = "V";
 
@@ -73,9 +73,9 @@ Component* vSffm::newOne()
   return new vSffm();
 }
 
-Element* vSffm::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* vSffm::info(QString& Name, char* &BitmapFile, bool getNewOne) 
 {
-  Name = QObject::tr("SFFM");
+  Name = QObject::tr("V(SFFM)");
   BitmapFile = (char *) "vsffm";
 
   if(getNewOne)  return new vSffm();

@@ -26,24 +26,24 @@
 
 LTRA_SPICE::LTRA_SPICE()
 {
-  Description = QObject::tr("Lossy transmission Line");
+  Description = QObject::tr("SPICE O(LTRA):");
 
   Lines.append(new Line(-60,  -20,-45,  -20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-45,  -20, 45,  -20,QPen(Qt::red,4))); 
+  Lines.append(new Line(-45,  -20, 45,  -20,QPen(Qt::darkRed,4))); 
   Lines.append(new Line( 45,  -20, 60,  -20,QPen(Qt::darkBlue,2)));
   
   Lines.append(new Line(-60,   20,-45,   20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-45,   20, 45,   20,QPen(Qt::red,4))); 
+  Lines.append(new Line(-45,   20, 45,   20,QPen(Qt::darkRed,4))); 
   Lines.append(new Line( 45,   20, 60,   20,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line(-45,    0,  -37,  0,QPen(Qt::red,4)));
-  Lines.append(new Line(-37,    0,  -30, -10,QPen(Qt::red,4)));
-  Lines.append(new Line(-30,  -10,  -15,  10,QPen(Qt::red,4)));
-  Lines.append(new Line(-15,   10,   0,  -10,QPen(Qt::red,4)));
-  Lines.append(new Line(  0,  -10,   15,  10,QPen(Qt::red,4)));
-  Lines.append(new Line(  15,  10,   30, -10,QPen(Qt::red,4))); 
-  Lines.append(new Line(  30, -10,  37,   0,QPen(Qt::red,4))); 
-  Lines.append(new Line(  37,   0,  45,   0,QPen(Qt::red,4)));   
+  Lines.append(new Line(-45,    0,  -37,  0,QPen(Qt::darkRed,4)));
+  Lines.append(new Line(-37,    0,  -30, -10,QPen(Qt::darkRed,4)));
+  Lines.append(new Line(-30,  -10,  -15,  10,QPen(Qt::darkRed,4)));
+  Lines.append(new Line(-15,   10,   0,  -10,QPen(Qt::darkRed,4)));
+  Lines.append(new Line(  0,  -10,   15,  10,QPen(Qt::darkRed,4)));
+  Lines.append(new Line(  15,  10,   30, -10,QPen(Qt::darkRed,4))); 
+  Lines.append(new Line(  30, -10,  37,   0,QPen(Qt::darkRed,4))); 
+  Lines.append(new Line(  37,   0,  45,   0,QPen(Qt::darkRed,4)));   
 
  
     
@@ -62,11 +62,11 @@ LTRA_SPICE::LTRA_SPICE()
     SpiceModel = "O";
     Name  = "O";
 
-    Props.append(new Property("O",        "", true,"Expression"));
-    Props.append(new Property("O_Line 2", "", false,"Expression"));
-    Props.append(new Property("O_Line 3", "", false,"Expression"));
-    Props.append(new Property("O_Line 4", "", false,"Expression"));
-    Props.append(new Property("O_Line 5", "", false,"Expression"));
+    Props.append(new Property("O",        "", true,"LTRL specification"));
+    Props.append(new Property("O_Line 2", "", false,"+ continuation line 1"));
+    Props.append(new Property("O_Line 3", "", false,"+ continuation line 2"));
+    Props.append(new Property("O_Line 4", "", false,"+ continuation line 3"));
+    Props.append(new Property("O_Line 5", "", false,"+ continuation line 4"));
 
 //    rotate();  // fix historical flaw
 }
@@ -82,7 +82,7 @@ Component* LTRA_SPICE::newOne()
 
 Element* LTRA_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("LTRA");
+  Name = QObject::tr("O(LTRA)");
   BitmapFile = (char *) "LTRA_SPICE";
 
   if(getNewOne)  return new LTRA_SPICE();

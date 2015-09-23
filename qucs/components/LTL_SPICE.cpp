@@ -23,13 +23,13 @@
 
 LTL_SPICE::LTL_SPICE()
 {
-  Description = QObject::tr("Lossless transmission line");
+  Description = QObject::tr("SPICE T:");
   
   Arcs.append(new Arc(-28,-40, 18, 38,16*232, 16*33,QPen(Qt::darkBlue,2)));
   Arcs.append(new Arc(-28,  2, 18, 38, 16*95, 16*33,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-20,-2, 20,-2,QPen(Qt::red,3)));
-  Lines.append(new Line(-20, 2, 20, 2,QPen(Qt::red,3)));
+  Lines.append(new Line(-20,-2, 20,-2,QPen(Qt::darkRed,3)));
+  Lines.append(new Line(-20, 2, 20, 2,QPen(Qt::darkRed,3)));
 
   Arcs.append(new Arc( 10,-40, 18, 38,16*270, 16*40,QPen(Qt::darkBlue,2)));
   Arcs.append(new Arc( 10,  2, 18, 38, 16*50, 16*40,QPen(Qt::darkBlue,2)));
@@ -76,7 +76,7 @@ Component* LTL_SPICE::newOne()
 
 Element* LTL_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("LTL");
+  Name = QObject::tr("T");
   BitmapFile = (char *) "LTL_SPICE";
 
   if(getNewOne)  return new LTL_SPICE();

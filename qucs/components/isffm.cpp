@@ -25,17 +25,17 @@
 
 iSffm::iSffm()
 {
-  Description = QObject::tr("Single frequency FM modulated source");
+  Description = QObject::tr("SPICE I(SFFM):");
 
   // normal current source symbol
   
-   Arcs.append(new Arc(-12,-12, 24, 24,  0, 16*360,QPen(Qt::red,3)));
-   Texts.append(new Text(26, 4,"SFFM",Qt::red,10.0,0.0,-1.0)); 
+   Arcs.append(new Arc(-12,-12, 24, 24,  0, 16*360,QPen(Qt::darkRed,3)));
+   Texts.append(new Text(36, 4," SFFM",Qt::red,10.0,0.0,-1.0)); 
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::red,3)));
-  Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::red,3)));
-  Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::red,3)));
+  Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::darkRed,3)));
+  Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::darkRed,3)));
+  Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::darkRed,3)));
  
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
@@ -74,7 +74,7 @@ Component* iSffm::newOne()
 
 Element* iSffm::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("SFFM");
+  Name = QObject::tr("I(SFFM)");
   BitmapFile = (char *) "isffm";
 
   if(getNewOne)  return new iSffm();
@@ -95,11 +95,11 @@ QString iSffm::spice_netlist(bool)
         s += " "+ nam;   // node names
     }
 
-   QString I0= spicecompat::normalize_value(Props.at(0)->Value);
-   QString Ia= spicecompat::normalize_value(Props.at(1)->Value);
-   QString Fc= spicecompat::normalize_value(Props.at(2)->Value);
+   QString I0  = spicecompat::normalize_value(Props.at(0)->Value);
+   QString Ia  = spicecompat::normalize_value(Props.at(1)->Value);
+   QString Fc  = spicecompat::normalize_value(Props.at(2)->Value);
    QString Mdi = spicecompat::normalize_value(Props.at(3)->Value);
-   QString Fs = spicecompat::normalize_value(Props.at(4)->Value);
+   QString Fs  = spicecompat::normalize_value(Props.at(4)->Value);
 
 
     s += QString(" DC 0 SFFM(%1 %2 %3 %4 %5 ) AC 0\n").arg(I0).arg(Ia).arg(Fc).arg(Mdi).arg(Fs);
