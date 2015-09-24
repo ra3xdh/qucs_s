@@ -26,11 +26,11 @@
 
 iTRNOISE::iTRNOISE()
 {
-  Description = QObject::tr("TRAN noise current source");
+  Description = QObject::tr("SPICE I(TRNOISE):");
 
   // normal voltage source symbol
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::cyan,3)));
-   Texts.append(new Text(26, 4,"TRN",Qt::cyan,10.0,0.0,-1.0)); 
+  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::blue,3)));
+   Texts.append(new Text(36, 4,"ITRN",Qt::blue,10.0,0.0,-1.0)); 
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   
@@ -39,9 +39,9 @@ iTRNOISE::iTRNOISE()
   Lines.append(new Line( -7, 10, 10, -7,QPen(Qt::darkGray,3)));
   Lines.append(new Line( -2, 12, 12, -2,QPen(Qt::darkGray,3)));
   
-  Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::cyan,3)));
-  Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::cyan,3)));
-  Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::cyan,3)));
+  Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::blue,3)));
+  Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::blue,3)));
+  Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::blue,3)));
 
   
   Ports.append(new Port( 30,  0));
@@ -85,7 +85,7 @@ Component* iTRNOISE::newOne()
 
 Element* iTRNOISE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("TRAN noise");
+  Name = QObject::tr("I(TRNOISE)");
   BitmapFile = (char *) "iTRNOISE";
 
   if(getNewOne)  return new iTRNOISE();

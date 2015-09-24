@@ -24,11 +24,11 @@
 
 eNL::eNL()
 {
-  Description = QObject::tr("SPICE E (Non-linear):\nMultiple line ngspice non-linear E specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
+  Description = QObject::tr("SPICE E (CUR, VALUE, TABLE, POLY):\nMultiple line ngspice non-linear E specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
   // Value, Table and POLY forms are allowed.
 
-  Arcs.append(new Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::cyan,3)));
-  Texts.append(new Text(30,12,"ENL",Qt::cyan,10.0,0.0,-1.0));
+  Arcs.append(new Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::blue,3)));
+  Texts.append(new Text(30,12,"ENL",Qt::blue,10.0,0.0,-1.0));
   Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
@@ -67,7 +67,7 @@ Component* eNL::newOne()
 
 Element* eNL::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("E non-lin");
+  Name = QObject::tr("E");
   BitmapFile = (char *) "eNL"; 
 
   if(getNewOne)  return new eNL();

@@ -26,16 +26,16 @@
 
 iAmpMod::iAmpMod()
 {
-  Description = QObject::tr("AM modulated source");
+  Description = QObject::tr("SPICE I(AM): ngspice only.");
 
   // normal current source symbol
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::cyan,3)));
-  Texts.append(new Text(26, 4,"AM",Qt::cyan,10.0,0.0,-1.0)); 
+  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::blue,3)));
+  Texts.append(new Text(36, 4,"AM",Qt::blue,10.0,0.0,-1.0)); 
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::cyan,3)));
-  Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::cyan,3)));
-  Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::cyan,3)));
+  Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::blue,3)));
+  Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::blue,3)));
+  Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::blue,3)));
   
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
@@ -74,7 +74,7 @@ Component* iAmpMod::newOne()
 
 Element* iAmpMod::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("AM");
+  Name = QObject::tr("I(AM)");
   BitmapFile = (char *) "iAmpMod";
 
   if(getNewOne)  return new iAmpMod();

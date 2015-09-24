@@ -26,11 +26,11 @@
 
 vTRNOISE::vTRNOISE()
 {
-  Description = QObject::tr("TRAN noise voltage source");
+  Description = QObject::tr("SPICE V(TRNOISE): ");
 
   // normal voltage source symbol
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::cyan,3)));
-   Texts.append(new Text(26, 4,"TRN",Qt::cyan,10.0,0.0,-1.0)); 
+  Arcs.append(new Arc(-12,-12, 24, 24, 0, 16*360,QPen(Qt::blue,3)));
+   Texts.append(new Text(36, 4,"VTRN",Qt::blue,10.0,0.0,-1.0)); 
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   
@@ -81,7 +81,7 @@ Component* vTRNOISE::newOne()
 
 Element* vTRNOISE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("TRAN noise");
+  Name = QObject::tr("V(TRNOISE)");
   BitmapFile = (char *) "vTRNOISE";
 
   if(getNewOne)  return new vTRNOISE();

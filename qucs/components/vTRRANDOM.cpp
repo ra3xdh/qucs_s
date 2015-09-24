@@ -26,18 +26,23 @@
 
 vTRRANDOM::vTRRANDOM()
 {
-  Description = QObject::tr("RANDOM voltage source");
+  Description = QObject::tr("SPICE V(TRRANDOM):");
 
   // normal voltage source symbol
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::cyan,3)));
-   Texts.append(new Text(26, 4,"TRR",Qt::cyan,10.0,0.0,-1.0)); 
+  Arcs.append(new Arc(-12,-12, 24, 24, 0, 16*360,QPen(Qt::blue,3)));
+   Texts.append(new Text(36, 4,"TRR",Qt::blue,10.0,0.0,-1.0)); 
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line(-12,  1,  1,-12,QPen(Qt::darkCyan,3)));
-  Lines.append(new Line(-10,  6,  6,-10,QPen(Qt::darkCyan,3)));
-  Lines.append(new Line( -7, 10, 10, -7,QPen(Qt::darkCyan,3)));
-  Lines.append(new Line( -2, 12, 12, -2,QPen(Qt::darkCyan,3)));
+  Lines.append(new Line(-12,  1,  1,-12,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line(-10,  6,  6,-10,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line( -7, 10, 10, -7,QPen(Qt::darkBlue,3)));
+  Lines.append(new Line( -2, 12, 12, -2,QPen(Qt::darkBlue,3)));
+  
+  Lines.append(new Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
+  Lines.append(new Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
+  Lines.append(new Line(-18,  -5,-18, -11,QPen(Qt::black,2))); 
+
 
   
   Ports.append(new Port( 30,  0));
@@ -77,7 +82,7 @@ Component* vTRRANDOM::newOne()
 
 Element* vTRRANDOM::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("TRAN random voltages");
+  Name = QObject::tr("V(TRRANDOM)");
   BitmapFile = (char *) "vTRRANDOM";
 
   if(getNewOne)  return new vTRRANDOM();

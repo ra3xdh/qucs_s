@@ -29,7 +29,7 @@ vPWL::vPWL()
   Description = QObject::tr("SPICE V(PWL):\nMultiple line ngspice or Xyce V specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use. ");
 
   Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkRed,3)));
-  Texts.append(new Text(30, 12,"PWL",Qt::red,10.0,0.0,-1.0));
+  Texts.append(new Text(30, 12,"PWL",Qt::darkRed,10.0,0.0,-1.0));
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,3)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,3)));
   Lines.append(new Line( 18,  -5, 18, -11,QPen(Qt::red,3)));

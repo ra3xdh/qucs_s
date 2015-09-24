@@ -26,11 +26,11 @@
 
 vAmpMod::vAmpMod()
 {
-  Description = QObject::tr("AM modulated voltage source");
+  Description = QObject::tr("SPICE V(AM): ngspice only.");
 
   // normal voltage source symbol
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::cyan,3)));
-   Texts.append(new Text(26, 4,"AM",Qt::cyan,10.0,0.0,-1.0)); 
+  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::blue,3)));
+   Texts.append(new Text(36, 4,"AM",Qt::blue,10.0,0.0,-1.0)); 
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   
@@ -77,7 +77,7 @@ Component* vAmpMod::newOne()
 
 Element* vAmpMod::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("AM");
+  Name = QObject::tr("V(AM)");
   BitmapFile = (char *) "vAmpMod";
 
   if(getNewOne)  return new vAmpMod();
