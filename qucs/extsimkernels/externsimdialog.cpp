@@ -186,6 +186,7 @@ void ExternSimDialog::slotProcessNgspiceOutput()
     } else emit success();
     //editSimConsole->clear();
     editSimConsole->insertPlainText(out);
+    editSimConsole->moveCursor(QTextCursor::End);
     saveLog();
     // Set temporary safe output name
     QFileInfo inf(Sch->DocName);
@@ -203,6 +204,7 @@ void ExternSimDialog::slotProcessXyceOutput()
     QString out = xyce->getOutput();
     //editSimConsole->clear();
     editSimConsole->insertPlainText(out);
+    editSimConsole->moveCursor(QTextCursor::End);
     if (out.contains("warning",Qt::CaseInsensitive)||
         out.contains("error",Qt::CaseInsensitive)) {
         emit warnings();
