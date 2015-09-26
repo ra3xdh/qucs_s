@@ -832,6 +832,15 @@ int Graph::loadDatFile(const QString& fileName)
       return 0;  // digital variables only for tabulars and ziming diagram
 #endif
 
+  // PlotVs() emulation
+  bool hasExplIndep = false; // Ex[licit indep var
+  QString ExplIndep = "";
+  if (Variable.contains("@")) {
+      hasExplIndep = true;
+      ExplIndep = Variable.section("@",1,1);
+      Variable = Variable.section("@",0,0);
+  }
+
 
   if(!file.open(QIODevice::ReadOnly))  return 0;
 
@@ -879,7 +888,8 @@ int Graph::loadDatFile(const QString& fileName)
     pos = 0;
     tmp = Line.section(' ', pos, pos);
     while(!tmp.isEmpty()) {
-      g->mutable_axes().push_back(new DataX(tmp));  // name of independet variable
+      if (hasExplIndep)g->mutable_axes().push_back(new DataX(ExplIndep));
+      else g->mutable_axes().push_back(new DataX(tmp));  // name of independet variable
       pos++;
       tmp = Line.section(' ', pos, pos);
     }
