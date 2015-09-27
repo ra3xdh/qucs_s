@@ -217,11 +217,13 @@ void Module::intoCategory (Module * m) {
 #define REGISTER_EXTERNAL_1(val) \
   REGISTER_COMP_1 (QObject::tr("external sim components"),val)
 #define REGISTER_SPICE_1(val) \
-  REGISTER_COMP_1 (QObject::tr("spice components"),val)
+  REGISTER_COMP_1 (QObject::tr("SPICE components"),val)
 #define REGISTER_SPICE_SEC_1(val) \
-  REGISTER_COMP_1 (QObject::tr("spice specific sections"),val)
+  REGISTER_COMP_1 (QObject::tr("SPICE specific sections"),val)
 #define REGISTER_SPICE_SIM_1(val) \
-  REGISTER_COMP_1 (QObject::tr("spice simulations"),val)
+  REGISTER_COMP_1 (QObject::tr("SPICE simulations"),val)
+#define REGISTER_XSPICE_ANALOGUE_1(val) \
+  REGISTER_COMP_1 (QObject::tr("XSPICE analogue blocks"),val)  
 
 // This function has to be called once at application startup.  It
 // registers every component available in the application.  Put here
@@ -287,7 +289,7 @@ void Module::registerModules (void) {
   // probes
   REGISTER_PROBE_1 (iProbe);
   REGISTER_PROBE_1 (vProbe);
-  REGISTER_PROBE_1 (Cmeter_SPICE);
+ // REGISTER_PROBE_1 (Cmeter_SPICE);
 
   // transmission lines
   REGISTER_TRANS_1 (TLine);
@@ -471,6 +473,10 @@ void Module::registerModules (void) {
   REGISTER_SPICE_1 (Vac_SPICE);
 //
 
+  // XSPICE analogue component blocks
+  REGISTER_XSPICE_ANALOGUE_1 (Cmeter_SPICE);
+  REGISTER_XSPICE_ANALOGUE_1 (SE_V_amp);  
+  
   // specific sections of spice netlists
   REGISTER_SPICE_SEC_1 (SpiceParam);
   REGISTER_SPICE_SEC_1 (SpiceGlobalParam);

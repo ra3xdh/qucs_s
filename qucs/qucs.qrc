@@ -261,7 +261,6 @@
         <file>bitmaps/K_SPICE.png</file>
         <file>bitmaps/MESFET_SPICE.png</file>
         <file>bitmaps/PMF_MESFET_SPICE.png</file>
-        <file>bitmaps/Cmeter_SPICE.png</file>
         <file>bitmaps/LTL_SPICE.png</file>
         <file>bitmaps/UDRCTL_SPICE.png</file>
         <file>bitmaps/LTRA_SPICE.png</file>
@@ -280,5 +279,8 @@
         <file>bitmaps/sp_ic.png</file>
         <file>bitmaps/sp_nodeset.png</file>
         <file>bitmaps/sp_noise.png</file>
+        
+        <file>bitmaps/Cmeter_SPICE.png</file>
+        <file>bitmaps/SE_V_amp.png</file>
     </qresource>
 </RCC>

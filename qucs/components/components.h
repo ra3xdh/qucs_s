@@ -238,7 +238,10 @@
 #include "PMOS_SPICE.h"
 #include "MESFET_SPICE.h"
 #include "PMF_MESFET_SPICE.h"
+
+// XSPICE analogue blocks
 #include "Cmeter_SPICE.h"
+#include "SE_V_amp.h"
 
 // Spice netlist sections
 #include "sp_parameter.h"

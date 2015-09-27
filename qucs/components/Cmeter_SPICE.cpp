@@ -26,21 +26,19 @@
 
 Cmeter_SPICE::Cmeter_SPICE()
 {
-    Description = QObject::tr("SPICE Cmeter Probe");
- Lines.append(new Line(-30,  0,-20,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 40,  0, 20,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-20,  0, -4,  0,QPen(Qt::cyan,3)));
-  Lines.append(new Line(4,  0, 20,  0,QPen(Qt::cyan,3)));
-  Lines.append(new Line(  -4, 4, -4, -4, QPen(Qt::cyan,3)));
-  Lines.append(new Line(  4,  4,  4, -4, QPen(Qt::cyan,3)));
-  Lines.append(new Line(  30, 4, 34, 0, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  30, -4, 34, 0, QPen(Qt::darkBlue,2)));
-
-
-  Lines.append(new Line(-20,-31, 20,-31,QPen(Qt::cyan,3)));
-  Lines.append(new Line(-20,  9, 20,  9,QPen(Qt::cyan,3)));
-  Lines.append(new Line(-20,-31,-20,  9,QPen(Qt::cyan,3)));
-  Lines.append(new Line( 20,-31, 20,  9,QPen(Qt::cyan,3)));
+    Description = QObject::tr("XSPICE A(cmeter):");
+ 
+  Lines.append(new Line(-30,  0,-20,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 30,  0, 20,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-20,  0, -4,  0,QPen(Qt::blue,3)));
+  Lines.append(new Line(4,  0, 20,  0,QPen(Qt::blue,3)));
+  Lines.append(new Line(  -4, 4, -4, -4, QPen(Qt::blue,3)));
+  Lines.append(new Line(  4,  4,  4, -4, QPen(Qt::blue,3)));
+ 
+  Lines.append(new Line(-20,-31, 20,-31,QPen(Qt::blue,3)));
+  Lines.append(new Line(-20,  9, 20,  9,QPen(Qt::blue,3)));
+  Lines.append(new Line(-20,-31,-20,  9,QPen(Qt::blue,3)));
+  Lines.append(new Line( 20,-31, 20,  9,QPen(Qt::blue,3)));
 
   Lines.append(new Line(-16,-27, 16,-27,QPen(Qt::darkBlue,2)));
   Lines.append(new Line(-16, -9, 16, -9,QPen(Qt::darkBlue,2)));
@@ -48,11 +46,11 @@ Cmeter_SPICE::Cmeter_SPICE()
   Lines.append(new Line( 16,-27, 16, -9,QPen(Qt::darkBlue,2)));
 
   Arcs.append(new Arc(-20,-23, 39, 39, 16*50, 16*80,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-11,-24, -2, -9,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-11,-24, -2, -9,QPen(Qt::red,2)));
   
 
   Ports.append(new Port(-30,  0));
-  Ports.append(new Port( 40,  0));
+  Ports.append(new Port( 30,  0));
 
   x1 = -30; y1 = -34;
   x2 =  40; y2 =  12;
@@ -64,8 +62,8 @@ Cmeter_SPICE::Cmeter_SPICE()
     SpiceModel = "A";
     Name  = "Cmeter";
 
-    Props.append(new Property("A", "", true,"Expression"));
-    Props.append(new Property("A_Line 2", "", false,"Expression"));
+    Props.append(new Property("A ", "", true,"Netlist specification."));
+    Props.append(new Property("A_Line 2 ", "", false,"Model specification."));
   
   //  rotate();  // fix historical flaw
 }
@@ -81,7 +79,7 @@ Component* Cmeter_SPICE::newOne()
 
 Element* Cmeter_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Cmeter");
+  Name = QObject::tr("A(cmeter)");
   BitmapFile = (char *) "Cmeter_SPICE";
 
   if(getNewOne)  return new Cmeter_SPICE();
@@ -105,7 +103,7 @@ QString Cmeter_SPICE::spice_netlist(bool)
     QString Cmeter= Props.at(0)->Value;
     QString Cmeter_Line_2= Props.at(1)->Value;
  
-     if(  Cmeter.length()  > 0)                 s += QString("%1\n").arg(Cmeter);
+    if(  Cmeter.length()        > 0 )   s += QString("%1\n").arg(Cmeter);
     if(  Cmeter_Line_2.length() > 0 )   s += QString("%1\n").arg(Cmeter_Line_2);
  
     return s;

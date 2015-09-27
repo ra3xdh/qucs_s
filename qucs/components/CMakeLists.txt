@@ -82,7 +82,6 @@ R_SPICE.cpp
 K_SPICE.cpp
 MESFET_SPICE.cpp
 PMF_MESFET_SPICE.cpp
-Cmeter_SPICE.cpp
 LTL_SPICE.cpp
 UDRCTL_SPICE.cpp
 LTRA_SPICE.cpp
@@ -103,13 +102,20 @@ sp_noise.cpp
 # Qucs-S new components cpp list
 #
 
+
 S4Q_V.cpp
 S4Q_Ieqndef.cpp
 S4Q_I.cpp
 S4Q_S.cpp
 S4Q_W.cpp
-)
+#
+# XSPICE cpp list
+#
 
+Cmeter_SPICE.cpp
+SE_V_amp.cpp 
+
+)
 
 SET(COMPONENTS_HDRS
 ac_sim.h
@@ -312,7 +318,6 @@ R_SPICE.h
 K_SPICE.h
 MESFET_SPICE.h
 PMF_MESFET_SPICE.h
-Cmeter_SPICE.h
 LTL_SPICE.h
 UDRCTL_SPICE.h
 LTRA_SPICE.h
@@ -337,6 +342,12 @@ S4Q_Ieqndef.h
 S4Q_I.h
 S4Q_S.h
 S4Q_W.h
+#
+# XSPICE component headers
+#
+
+Cmeter_SPICE.h
+SE_V_amp.h
 )
 
 
