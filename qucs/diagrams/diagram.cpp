@@ -1108,6 +1108,10 @@ int Graph::loadIndepVarData(const QString& Variable,
   for(int z=0; z<n; z++) {
     pEnd = 0;
     x = strtod(pPos, &pEnd);  // real part
+
+    if (*pEnd > ' ')  // drop imaginary part because
+        while (*pEnd > ' ') pEnd++; // Complex number on X-axis has no sense
+
     if(pPos == pEnd) {
       delete[] pD->Points;  pD->Points = 0;
       return -1;
