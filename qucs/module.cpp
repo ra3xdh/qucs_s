@@ -475,7 +475,8 @@ void Module::registerModules (void) {
 
   // XSPICE analogue component blocks
   REGISTER_XSPICE_ANALOGUE_1 (Cmeter_SPICE);
-  REGISTER_XSPICE_ANALOGUE_1 (SE_V_amp);  
+  REGISTER_XSPICE_ANALOGUE_1 (SE_V_amp); 
+  REGISTER_XSPICE_ANALOGUE_1 (DE_V_amp);    
   
   // specific sections of spice netlists
   REGISTER_SPICE_SEC_1 (SpiceParam);

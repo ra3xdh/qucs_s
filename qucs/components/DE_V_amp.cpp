@@ -1,7 +1,7 @@
 /***************************************************************************
-                         SE_V_amp.cpp  -  description
+                         DE_V_amp.cpp  -  description
                    --------------------------------------
-    begin                  : Fri Mar 27 2015
+    begin                  : Sun September 24 2015
     copyright              : (C) by Mike Brinson (mbrin72043@yahoo.co.uk),
 						   :  Vadim Kuznetsov (ra3xdh@gmail.com)
 
@@ -16,41 +16,53 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "SE_V_amp.h"
+#include "DE_V_amp.h"
 #include "node.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
 
-SE_V_amp::SE_V_amp()
+DE_V_amp::DE_V_amp()
 {
-  Description = QObject::tr("XSPICE A_gain_SE block:\nTwo line XSPICE specification. ");
+  Description = QObject::tr("XSPICE A_gain_DE block:\nTwo line XSPICE specification. ");
 
- // Texts.append(new Text( 15,-10,"A",Qt::blue,16.0,0.0,1.0));
-  Lines.append(new Line(-40,  0,-20,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 40,  0, 20,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-50,  -20, -30,  -20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-50,   20, -30,   20,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 50,  -10,  30,  -10,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 50,   10,  30,   10,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line( -20,   20, -20, -20,QPen(Qt::blue,3)));
-  Lines.append(new Line( -20,  -20,  20, -10,QPen(Qt::blue,3)));
-  Lines.append(new Line(  20,  -10,  20,  10,QPen(Qt::blue,3))); 
-  Lines.append(new Line(  20,   10, -20,  20,QPen(Qt::blue,3))); 
+  Lines.append(new Line( -30,   30, -30, -30,QPen(Qt::blue,3)));
+  Lines.append(new Line( -30,  -30,  30, -10,QPen(Qt::blue,3)));
+  Lines.append(new Line(  30,  -10,  30,  10,QPen(Qt::blue,3))); 
+  Lines.append(new Line(  30,   10, -30,  30,QPen(Qt::blue,3))); 
   
   Lines.append(new Line( -5,   5, -5, -5,QPen(Qt::blue,3)));
   Lines.append(new Line( -5,  -5,  5, -5,QPen(Qt::blue,3)));
   Lines.append(new Line(  5,  -5,  5,  5,QPen(Qt::blue,3))); 
   Lines.append(new Line(  -5,  0,  5,  0,QPen(Qt::blue,3))); 
   
-  Ports.append(new Port( -40,  0));  // P1
-  Ports.append(new Port(  40,  0));  // P2
+  Lines.append(new Line( -43,  -40, -37, -40,QPen(Qt::red,3)));  // Input pins
+  Lines.append(new Line( -40,  -37, -40,  -43,QPen(Qt::red,3)));
+  Lines.append(new Line( -43,   40, -37,  40,QPen(Qt::black,3))); 
+  
+  Lines.append(new Line( 43,   -40, 37,  -40,QPen(Qt::red,3)));  // Output pins
+  Lines.append(new Line( 40,   -37, 40,  -43,QPen(Qt::red,3)));
+  Lines.append(new Line( 43,   40,  37,  40,QPen(Qt::black,3))); 
+  
+  
+  Ports.append(new Port( -50,  -20));  // PIN+
+  Ports.append(new Port( -50,   20));  // PIN-
+  Ports.append(new Port(  50,  -10));  // POUT+
+  Ports.append(new Port(  50,   10));  // POUT-
 
   x1 = -40; y1 = -24;
   x2 =  40; y2 =  24;
 
-  tx = x1+4;
-  ty = y2+4;
-  Model = "SE_V_amp";
+  tx = x1+12;
+  ty = y2+12;
+  Model = "DE_V_amp";
   SpiceModel = "A";
-  Name  = "A_gain_SE";
+  Name  = "A_gain_DE";
   
   Props.append(new Property("A", "", true,"Parameter list and\n .model spec."));
   Props.append(new Property("A_Line 2", "", false,".model line"));
@@ -58,30 +70,30 @@ SE_V_amp::SE_V_amp()
   //rotate();  // fix historical flaw
 }
 
-SE_V_amp::~SE_V_amp()
+DE_V_amp::~DE_V_amp()
 {
 }
 
-Component* SE_V_amp::newOne()
+Component* DE_V_amp::newOne()
 {
-  return new SE_V_amp();
+  return new DE_V_amp();
 }
 
-Element* SE_V_amp::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* DE_V_amp::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("A_gain_SE");
-  BitmapFile = (char *) "SE_V_amp"; 
+  Name = QObject::tr("A_gain_DE");
+  BitmapFile = (char *) "DE_V_amp"; 
 
-  if(getNewOne)  return new SE_V_amp();
+  if(getNewOne)  return new DE_V_amp();
   return 0;
 }
 
-QString SE_V_amp::netlist()
+QString DE_V_amp::netlist()
 {
     return QString("");
 }
 
-QString SE_V_amp::spice_netlist(bool)
+QString DE_V_amp::spice_netlist(bool)
 {
   
     QString s = spicecompat::check_refdes(Name,SpiceModel);
@@ -89,7 +101,12 @@ QString SE_V_amp::spice_netlist(bool)
     if (P1=="gnd") P1 = "0";
     QString P2 = Ports.at(1)->Connection->Name;
     if (P2=="gnd") P2 = "0";
-    s += " %v( " + P1 +" ) %v( " + P2 + " ) ";
+    QString P3 = Ports.at(2)->Connection->Name;
+    if (P3=="gnd") P3 = "0";
+    QString P4 = Ports.at(3)->Connection->Name;
+    if (P4=="gnd") P4 = "0";
+    
+    s += " %vd( " + P1 + " " + P2 + " ) %vd( " + P3 + " " + P4 + " ) ";
     
  
  
