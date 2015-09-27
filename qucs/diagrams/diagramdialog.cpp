@@ -176,7 +176,13 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   InputGroup->setLayout(InputGroupLayout);
   Tab1Layout->addWidget(InputGroup);
   GraphInput = new QLineEdit();
-  InputGroupLayout->addWidget(GraphInput);
+  lblPlotVs = new QLabel(tr("Plot Vs."));
+  ChooseXVar = new QComboBox();
+  QHBoxLayout *InpSubHL = new QHBoxLayout();
+  InpSubHL->addWidget(GraphInput);
+  InpSubHL->addWidget(lblPlotVs);
+  InpSubHL->addWidget(ChooseXVar);
+  InputGroupLayout->addLayout(InpSubHL);
   GraphInput->setValidator(Validator);
   connect(GraphInput, SIGNAL(textChanged(const QString&)), SLOT(slotResetToTake(const QString&)));
   QWidget *Box2 = new QWidget();
@@ -805,6 +811,9 @@ void DiagramDialog::slotReadVars(int)
   // make sure sorting is disabled before inserting items
   ChooseVars->setSortingEnabled(false);
   ChooseVars->clearContents();
+  ChooseXVar->clear();
+  ChooseXVar->addItem("default");
+
   int i=0, j=0;
   i = FileString.indexOf('<')+1;
   if(i > 0)
@@ -824,6 +833,7 @@ void DiagramDialog::slotReadVars(int)
       qDebug() << varNumber << Var << tmp.remove('>');
       ChooseVars->setRowCount(varNumber+1);
       QTableWidgetItem *cell = new QTableWidgetItem(Var);
+      ChooseXVar->addItem(Var);
       cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
       ChooseVars->setItem(varNumber, 0, cell);
       cell = new QTableWidgetItem("dep");
@@ -840,6 +850,7 @@ void DiagramDialog::slotReadVars(int)
       qDebug() << varNumber << Var << tmp.remove('>');
       ChooseVars->setRowCount(varNumber+1);
       QTableWidgetItem *cell = new QTableWidgetItem(Var);
+      ChooseXVar->addItem(Var);
       cell->setFlags(cell->flags() ^ Qt::ItemIsEditable);
       ChooseVars->setItem(varNumber, 0, cell);
       cell = new QTableWidgetItem("indep");

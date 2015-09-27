@@ -99,8 +99,10 @@ private:
   QRegExpValidator *Validator;
 
   QLabel *lblSim;
+  QLabel *lblPlotVs;
   QComboBox *ChooseData;
   QComboBox *ChooseSimulator;
+  QComboBox *ChooseXVar;
   QTableWidget *ChooseVars;
   QListWidget  *GraphList;
 
