@@ -44,6 +44,12 @@ SymbolWidget::SymbolWidget(QWidget *parent) : QWidget(parent)
 {
 
   Text_x = Text_y = 0;
+  cx = 0;
+  cy = 0;
+  x1 = 0;
+  x2 = 0;
+  y1 = 0;
+  y2 = 0;
   PaintText = tr("Symbol:");
   QFontMetrics  metrics(QucsSettings.font, 0); // use the the screen-compatible metric
   TextWidth = metrics.width(PaintText) + 4;    // get size of text
