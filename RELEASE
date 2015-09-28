@@ -36,7 +36,7 @@ Distribution process:
      + Qt installation >= version 4.6 (by Digia)
   - Get latest `config.guess' and `config.sub' from GNU servers or run the
     command `automake -a -f -c' with latest automake version installed.
-  - Run `make distclean', `sh autogen.sh' and `make all'.
+  - Run `make distclean', `sh bootstrap' and `make all'.
   - Run `make distcheck'.
   - Check this status into GIT and tag it.
 
@@ -76,7 +76,7 @@ the tarballs created using `make distcheck'.
 * Slightly modify and rebuild package.
   - Modify the lines marked with "release specific" in the `configure.ac'
     file.
-  - Run `sh autogen.sh' first in the qucs-core directory and then in main
+  - Run `sh bootstrap' first in the qucs-core directory and then in main
     directory.
   - Run `make all' and finally `make distcheck'.
 

@@ -36,7 +36,7 @@ SUBDIRS = \
 	contrib \
 	$(RELEASEDIRS)
 
-EXTRA_DIST = autogen.sh depcomp PLATFORMS RELEASE Info.plist
+EXTRA_DIST = bootstrap depcomp PLATFORMS RELEASE Info.plist
 
 # MacOSX specific installation of applications
 if COND_MACOSX

@@ -22,7 +22,7 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="Makefile.am" />
-		<Unit filename="autogen.sh" />
+		<Unit filename="bootstrap" />
 		<Unit filename="config.h" />
 		<Unit filename="configure.ac" />
 		<Unit filename="contrib/Makefile.am" />
@@ -39,7 +39,7 @@
 		<Unit filename="qucs-attenuator/qucsattenuator.cpp" />
 		<Unit filename="qucs-attenuator/qucsattenuator.h" />
 		<Unit filename="qucs-doc/Makefile.am" />
-		<Unit filename="qucs-doc/autogen.sh" />
+		<Unit filename="qucs-doc/bootstrap" />
 		<Unit filename="qucs-doc/configure.ac" />
 		<Unit filename="qucs-edit/Makefile.am" />
 		<Unit filename="qucs-edit/main.cpp" />
