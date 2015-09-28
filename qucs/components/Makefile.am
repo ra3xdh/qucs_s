@@ -101,7 +101,17 @@ libcomponents_a_SOURCES = phaseshifter.cpp gyrator.cpp componentdialog.cpp    \
 	sp_customsim.cpp \
 	sp_fourier.cpp \
 	sp_disto.cpp \
-	sp_noise.cpp 
+	sp_noise.cpp \
+        S4Q_V.cpp \
+        S4Q_Ieqndef.cpp \
+        S4Q_I.cpp \
+        S4Q_S.cpp \
+        S4Q_W.cpp \
+        Cmeter_SPICE.cpp \
+        SE_V_amp.cpp \
+        DE_V_amp.cpp
+
+
 
 nodist_libcomponents_a_SOURCES = $(MOCFILES)
 
@@ -172,7 +182,16 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
 	sp_customsim.h \
 	sp_fourier.h \
         sp_disto.h \
-	sp_noise.h
+	sp_noise.h \
+        S4Q_V.h \
+        S4Q_Ieqndef.h \
+        S4Q_I.h \
+        S4Q_S.h \
+        S4Q_W.h \
+        Cmeter_SPICE.h \
+        SE_V_amp.h \
+        DE_V_amp.h
+
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
