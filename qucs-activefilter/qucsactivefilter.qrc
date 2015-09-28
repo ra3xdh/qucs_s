@@ -13,5 +13,6 @@
         <file>bitmaps/cauer-bandpass.svg</file>
         <file>bitmaps/mfb-bandpass.svg</file>
         <file>bitmaps/sk-bandpass.svg</file>
+        <file>bitmaps/big.qucs.xpm</file>
     </qresource>
 </RCC>

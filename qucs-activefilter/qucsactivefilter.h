@@ -24,6 +24,16 @@
 #include <complex>
 #include "filter.h"
 
+struct tQucsSettings {
+  int x, y;      // position of main window
+  QFont font;
+  QString LangDir;
+  QString Language;
+  bool showConsole;
+};
+
+extern struct tQucsSettings QucsSettings;
+
 class QucsActiveFilter : public QMainWindow
 {
     Q_OBJECT
@@ -63,8 +73,9 @@ private:
     QPushButton *btnCalcSchematic;
     QPushButton *btnDefineTransferFunc;
 
-    QLabel *lblResult;
-    QTextEdit *txtResult;
+    QGroupBox *gpbCons;
+    QAction *viewConsole;
+    QPlainTextEdit *txtResult;
 
     QSvgWidget *imgAFR;
     QLabel *lblSch;
@@ -80,10 +91,6 @@ private:
     QPushButton *btnElements;
     //QPushButton *btnPassive;
 
-    QHBoxLayout *top;
-    QVBoxLayout *left;
-    QVBoxLayout *center;
-    QHBoxLayout *right;
     QVBoxLayout *top1;
     
     QSvgWidget *sch_pic;
@@ -94,7 +101,7 @@ private:
 
     QVector< std::complex<float> > Poles;
 
-    float Fc;
+    double  Fc;
     int Nfil;
 
     QVector<long double> coeffB;
@@ -113,6 +120,8 @@ private slots:
     void slotHelpAbout();
     void slotHelpAboutQt();
     void slotHelpIntro();
+    void slotViewConsole(bool toggle);
+    void fixSize();
 
 public:
     QucsActiveFilter(QWidget *parent = 0);

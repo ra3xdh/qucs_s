@@ -26,27 +26,27 @@ static const double pi = 3.1415926535897932384626433832795029;  /* pi   */
 
 struct RC_elements {
     int   N;
-    float R1;
-    float R2;
-    float R3;
-    float R4;
-    float R5;
-    float R6;
-    float C1;
-    float C2;
+    double  R1;
+    double  R2;
+    double  R3;
+    double  R4;
+    double  R5;
+    double  R6;
+    double  C1;
+    double  C2;
 };
 
 struct FilterParam {
-    float Ap; // Band pass atten.
-    float As; // Band stop atten.
-    float Fc; // Cutoff frequency
-    float Fs; // Stopband freq.
-    float Rp; // Passband ripple
-    float Kv; // Passband gain
-    float Fl; // Lower freq.
-    float Fu; // Upper freq.
-    float TW; // Band width
-    float Q; // Quality factor
+    double  Ap; // Band pass atten.
+    double  As; // Band stop atten.
+    double  Fc; // Cutoff frequency
+    double  Fs; // Stopband freq.
+    double  Rp; // Passband ripple
+    double  Kv; // Passband gain
+    double  Fl; // Lower freq.
+    double  Fu; // Upper freq.
+    double  TW; // Band width
+    double  Q; // Quality factor
     int order;
 };
 
@@ -71,7 +71,7 @@ protected:
     Filter::FType ftype;
     Filter::FilterFunc ffunc;
     int order;
-    float Fc,Kv,Fs,Ap,As,Rp,Fl,Fu,TW,Q,BW,F0;
+    double  Fc,Kv,Fs,Ap,As,Rp,Fl,Fu,TW,Q,BW,F0;
     int Nr,Nc,Nopamp; // total number of R,C, opamp
 
     int Nr1,Nc1,Nop1; // number of R,C, opamp per stage
@@ -87,7 +87,7 @@ protected:
     void createFirstOrderComponentsHPF(QString &s,RC_elements stage, int dx);
     void createFirstOrderComponentsLPF(QString &s,RC_elements stage, int dx);
     void createFirstOrderWires(QString &s, int dx, int y);
-    float autoscaleCapacitor(float C, QString &suffix);
+    double  autoscaleCapacitor(double C, QString &suffix);
     virtual void calcHighPass();
     virtual void calcLowPass();
     virtual void calcBandPass();

@@ -43,10 +43,10 @@ Filter::Filter(Filter::FilterFunc ffunc_, Filter::FType type_, FilterParam par)
         if ((ftype==Filter::BandPass)||
             (ftype==Filter::BandStop)) { // BandPass
             Fc=BW;          // cutoff freq. of LPF prototype
-            float Fs1 = Fu + TW;
-            float Fs1lp = fabsf(Fs1 - (F0*F0)/Fs1);    // stopband freq. of LPF prototype
-            float Fs2 = Fl - TW;
-            float Fs2lp = fabsf(Fs2 - (F0*F0)/Fs2);
+            double  Fs1 = Fu + TW;
+            double  Fs1lp = fabsf(Fs1 - (F0*F0)/Fs1);    // stopband freq. of LPF prototype
+            double  Fs2 = Fl - TW;
+            double  Fs2lp = fabsf(Fs2 - (F0*F0)/Fs2);
             Fs = std::min(Fs1lp,Fs2lp);
         }
         Ap = 3.0;        
@@ -190,15 +190,15 @@ void Filter::calcFirstOrder()
 {
     if (order%2 != 0) {
 
-        float R1, R2,R3;
+        double  R1, R2,R3;
 
         int k = order/2 + 1;
-        float Wc = 2*pi*Fc;
-        float re = Poles.at(k-1).real();
+        double  Wc = 2*pi*Fc;
+        double  re = Poles.at(k-1).real();
         //float im = Poles.at(k-1).imag();
         //float C = re*re + im*im;
-        float C = -re;
-        float C1 = 10/Fc;
+        double  C = -re;
+        double  C1 = 10/Fc;
 
         if (ftype==Filter::HighPass) {
             R1 = 1.0*C/(Wc*C1);
@@ -238,8 +238,8 @@ void Filter::createPartList(QStringList &lst)
 
     foreach (stage,Sections) {
         QString suff1,suff2;
-        float C1=autoscaleCapacitor(stage.C1,suff1);
-        float C2=autoscaleCapacitor(stage.C2,suff2);
+        double  C1=autoscaleCapacitor(stage.C1,suff1);
+        double  C2=autoscaleCapacitor(stage.C2,suff2);
 
         lst<<QString("%1%2%3%4%5%6%7%8%9%10%11").arg(stage.N,6).arg(C1,10,'f',3).arg(suff1).arg(C2,10,'f',3).arg(suff2)
              .arg(stage.R1,10,'f',3).arg(stage.R2,10,'f',3).arg(stage.R3,10,'f',3).arg(stage.R4,10,'f',3).arg(stage.R5,10,'f',3).arg(stage.R6,10,'f',3);
@@ -274,7 +274,7 @@ void Filter::createPolesZerosList(QStringList &lst)
 void Filter::createFirstOrderComponentsHPF(QString &s,RC_elements stage,int dx)
 {
     QString suf;
-    float C1 = autoscaleCapacitor(stage.C1,suf);
+    double  C1 = autoscaleCapacitor(stage.C1,suf);
     s += QString("<OpAmp OP%1 1 %2 160 -26 42 0 0 \"1e6\" 1 \"15 V\" 0>\n").arg(Nopamp+1).arg(270+dx);
     s += QString("<GND * 1 %1 270 0 0 0 0>\n").arg(170+dx);
     s += QString("<GND * 1 %1 370 0 0 0 0>\n").arg(220+dx);
@@ -288,7 +288,7 @@ void Filter::createFirstOrderComponentsHPF(QString &s,RC_elements stage,int dx)
 void Filter::createFirstOrderComponentsLPF(QString &s,RC_elements stage,int dx)
 {
     QString suf;
-    float C1 = autoscaleCapacitor(stage.C1,suf);
+    double  C1 = autoscaleCapacitor(stage.C1,suf);
     s += QString("<OpAmp OP%1 1 %2 160 -26 42 0 0 \"1e6\" 1 \"15 V\" 0>\n").arg(Nopamp+1).arg(270+dx);
     s += QString("<GND * 1 %1 270 0 0 0 0>\n").arg(170+dx);
     s += QString("<GND * 1 %1 370 0 0 0 0>\n").arg(220+dx);
@@ -318,9 +318,9 @@ void Filter::createFirstOrderWires(QString &s, int dx, int y)
 }
 
 
-float Filter::autoscaleCapacitor(float C, QString &suffix)
+double Filter::autoscaleCapacitor(double C, QString &suffix)
 {
-    float C1 = C*1e-6;
+    double  C1 = C*1e-6;
 
     if (C1>=1e-7) {
         suffix = "uF";
@@ -357,10 +357,10 @@ bool Filter::checkRCL()
 
 bool Filter::calcChebyshev()
 {
-    float kf = std::max(Fs/Fc,Fc/Fs);
-    float eps=sqrt(pow(10,0.1*Rp)-1);
+    double  kf = std::max(Fs/Fc,Fc/Fs);
+    double  eps=sqrt(pow(10,0.1*Rp)-1);
 
-    float N1 = acosh(sqrt((pow(10,0.1*As)-1)/(eps*eps)))/acosh(kf);
+    double  N1 = acosh(sqrt((pow(10,0.1*As)-1)/(eps*eps)))/acosh(kf);
     int N = ceil(N1);
 
     if (N>MaxOrder) {
@@ -373,15 +373,15 @@ bool Filter::calcChebyshev()
         if (N%2!=0) N++; // only even order Cauer.
     }
 
-    float a = sinh((asinh(1/eps))/N);
-    float b = cosh((asinh(1/eps))/N);
+    double  a = sinh((asinh(1/eps))/N);
+    double  b = cosh((asinh(1/eps))/N);
 
     Poles.clear();
     Zeros.clear();
 
     for (int k=1;k<=N;k++) {
-            float re = -1*a*sin(pi*(2*k-1)/(2*N));
-            float im = b*cos(pi*(2*k-1)/(2*N));
+            double  re = -1*a*sin(pi*(2*k-1)/(2*N));
+            double  im = b*cos(pi*(2*k-1)/(2*N));
             std::complex<float> pol(re,im);
             Poles.append(pol);
     }
@@ -392,10 +392,10 @@ bool Filter::calcChebyshev()
 
 bool Filter::calcButterworth()
 {
-    float kf = std::min(Fc/Fs,Fs/Fc);
+    double  kf = std::min(Fc/Fs,Fs/Fc);
 
-    float C1=(pow(10,(0.1*Ap))-1)/(pow(10,(0.1*As))-1);
-    float J2=log10(C1)/(2*log10(kf));
+    double  C1=(pow(10,(0.1*Ap))-1)/(pow(10,(0.1*As))-1);
+    double  J2=log10(C1)/(2*log10(kf));
     int N2 = round(J2+1);
 
     if (ftype==Filter::BandStop) {
@@ -408,8 +408,8 @@ bool Filter::calcButterworth()
     if (N2>MaxOrder) return false;
 
     for (int k=1;k<=N2;k++) {
-        float re =-1*sin(pi*(2*k-1)/(2*N2));
-        float im =cos(pi*(2*k-1)/(2*N2));
+        double  re =-1*sin(pi*(2*k-1)/(2*N2));
+        double  im =cos(pi*(2*k-1)/(2*N2));
         std::complex<float> pol(re,im);
         Poles.append(pol);
     }
@@ -424,7 +424,7 @@ bool Filter::calcInvChebyshev() // Chebyshev Type-II filter
     Poles.clear();
     Zeros.clear();
 
-    float kf = std::max(Fs/Fc,Fc/Fs);
+    double  kf = std::max(Fs/Fc,Fc/Fs);
 
     order = ceil(acosh(sqrt(pow(10.0,0.1*As)-1.0))/acosh(kf));
 
@@ -434,18 +434,18 @@ bool Filter::calcInvChebyshev() // Chebyshev Type-II filter
 
     if (order>MaxOrder) return false;
 
-    float eps = 1.0/(sqrt(pow(10.0,0.1*As)-1.0));
-    float a = sinh((asinh(1.0/eps))/(order));
-    float b = cosh((asinh(1.0/eps))/(order));
+    double  eps = 1.0/(sqrt(pow(10.0,0.1*As)-1.0));
+    double  a = sinh((asinh(1.0/eps))/(order));
+    double  b = cosh((asinh(1.0/eps))/(order));
 
     for (int k=1;k<=order;k++) {
-        float im = 1.0/(cos(((2*k-1)*pi)/(2*order)));
+        double  im = 1.0/(cos(((2*k-1)*pi)/(2*order)));
         Zeros.append(std::complex<float>(0,im));
     }
 
     for (int k=1;k<=order;k++) {
-        float re = -1*a*sin(pi*(2*k-1)/(2*order));
-        float im = b*cos(pi*(2*k-1)/(2*order));
+        double  re = -1*a*sin(pi*(2*k-1)/(2*order));
+        double  im = b*cos(pi*(2*k-1)/(2*order));
         std::complex<float> invpol(re,im); // inverse pole
         std::complex<float> pol;
         pol = std::complex<float>(1.0,0) / invpol; // pole
@@ -457,11 +457,11 @@ bool Filter::calcInvChebyshev() // Chebyshev Type-II filter
 
 void Filter::cauerOrderEstim() // from Digital Filter Design Handbook page 102
 {
-    float k = std::min(Fc/Fs,Fs/Fc);
-    float kk = sqrt(sqrt(1.0-k*k));
-    float u = 0.5*(1.0-kk)/(1.0+kk);
-    float q = 150.0*pow(u,13) + 2.0*pow(u,9) + 2.0*pow(u,5) + u;
-    float dd = (pow(10.0,As/10.0)-1.0)/(pow(10.0,Rp/10.0)-1.0);
+    double  k = std::min(Fc/Fs,Fs/Fc);
+    double  kk = sqrt(sqrt(1.0-k*k));
+    double  u = 0.5*(1.0-kk)/(1.0+kk);
+    double  q = 150.0*pow(u,13) + 2.0*pow(u,9) + 2.0*pow(u,5) + u;
+    double  dd = (pow(10.0,As/10.0)-1.0)/(pow(10.0,Rp/10.0)-1.0);
     order = ceil(log10(16.0*dd)/log10(1.0/q));
 
     if ((ftype==Filter::BandPass)||(ftype==Filter::BandStop)) {
@@ -471,10 +471,10 @@ void Filter::cauerOrderEstim() // from Digital Filter Design Handbook page 102
 
 bool Filter::calcCauer() // from Digital Filter Designer's handbook p.103
 {
-    float P0;
+    double  P0;
     //float H0;
-    float mu;
-    float aa[50],bb[50],cc[50];
+    double  mu;
+    double  aa[50],bb[50],cc[50];
 
     cauerOrderEstim();
     if (order>MaxOrder) {
@@ -483,15 +483,15 @@ bool Filter::calcCauer() // from Digital Filter Designer's handbook p.103
         return false;
     }
 
-    float k = Fc/Fs;
-    float kk = sqrt(sqrt(1.0-k*k));
-    float u = 0.5*(1.0-kk)/(1.0+kk);
-    float q = 150.0*pow(u,13) + 2.0*pow(u,9) + 2.0*pow(u,5) + u;
-    float numer = pow(10.0,Rp/20.0)+1.0;
-    float vv = log(numer/(pow(10.0,Rp/20.0)-1.0))/(2.0*order);
-    float sum = 0.0;
+    double  k = Fc/Fs;
+    double  kk = sqrt(sqrt(1.0-k*k));
+    double  u = 0.5*(1.0-kk)/(1.0+kk);
+    double  q = 150.0*pow(u,13) + 2.0*pow(u,9) + 2.0*pow(u,5) + u;
+    double  numer = pow(10.0,Rp/20.0)+1.0;
+    double  vv = log(numer/(pow(10.0,Rp/20.0)-1.0))/(2.0*order);
+    double  sum = 0.0;
     for (int m=0;m<5;m++) {
-        float term = pow(-1.0,m);
+        double  term = pow(-1.0,m);
         term = term*pow(q,m*(m+1));
         term = term*sinh((2*m+1)*vv);
         sum = sum +term;
@@ -500,14 +500,14 @@ bool Filter::calcCauer() // from Digital Filter Designer's handbook p.103
 
     sum=0.0;
     for (int m=1;m<5;m++) {
-        float term = pow(-1.0,m);
+        double  term = pow(-1.0,m);
         term = term*pow(q,m*m);
         term = term*cosh(2.0*m*vv);
         sum += term;
     }
-    float denom = 1.0+2.0*sum;
+    double  denom = 1.0+2.0*sum;
     P0 = fabs(numer/denom);
-    float ww = 1.0+k*P0*P0;
+    double  ww = 1.0+k*P0*P0;
     ww = sqrt(ww*(1.0+P0*P0/k));
     int r = (order-(order%2))/2;
     //float numSecs = r;
@@ -520,7 +520,7 @@ bool Filter::calcCauer() // from Digital Filter Designer's handbook p.103
         }
         sum = 0.0;
         for(int m=0;m<5;m++) {
-            float term = pow(-1.0,m)*pow(q,m*(m+1));
+            double  term = pow(-1.0,m)*pow(q,m*(m+1));
             term = term*sin((2*m+1)*pi*mu/order);
             sum += term;
         }
@@ -528,13 +528,13 @@ bool Filter::calcCauer() // from Digital Filter Designer's handbook p.103
 
         sum = 0.0;
         for(int m=1;m<5;m++) {
-            float term = pow(-1.0,m)*pow(q,m*m);
+            double  term = pow(-1.0,m)*pow(q,m*m);
             term = term*cos(2.0*m*pi*mu/order);
             sum += term;
         }
         denom = 1.0+2.0*sum;
-        float xx = numer/denom;
-        float yy = 1.0 - k*xx*xx;
+        double  xx = numer/denom;
+        double  yy = 1.0 - k*xx*xx;
         yy = sqrt(yy*(1.0-(xx*xx/k)));
         aa[i-1] = 1.0/(xx*xx);
         denom = 1.0 + pow(P0*xx,2);
@@ -552,9 +552,9 @@ bool Filter::calcCauer() // from Digital Filter Designer's handbook p.103
     Zeros.clear();
     Poles.clear();
     for (int i=0;i<r;i++) {
-        float im = sqrt(aa[i]);
+        double  im = sqrt(aa[i]);
         Zeros.append(std::complex<float>(0,im));
-        float re = -0.5*bb[i];
+        double  re = -0.5*bb[i];
         im = 0.5*sqrt(-1.0*bb[i]*bb[i]+4*cc[i]);
         Poles.append(std::complex<float>(re,im));
     }
@@ -564,9 +564,9 @@ bool Filter::calcCauer() // from Digital Filter Designer's handbook p.103
     }
 
     for (int i=r-1;i>=0;i--) {
-        float im = sqrt(aa[i]);
+        double  im = sqrt(aa[i]);
         Zeros.append(std::complex<float>(0,-im));
-        float re = -0.5*bb[i];
+        double  re = -0.5*bb[i];
         im = 0.5*sqrt(-1.0*bb[i]*bb[i]+4*cc[i]);
         Poles.append(std::complex<float>(re,-im));
     }
