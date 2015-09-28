@@ -84,6 +84,8 @@ private slots:
   void slotEditRotY(const QString&);
   void slotEditRotZ(const QString&);
 
+  void slotPlotVs(int);
+
 protected slots:
     void reject();
 

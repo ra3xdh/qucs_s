@@ -178,6 +178,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   GraphInput = new QLineEdit();
   lblPlotVs = new QLabel(tr("Plot Vs."));
   ChooseXVar = new QComboBox();
+  connect(ChooseXVar,SIGNAL(currentIndexChanged(int)),this,SLOT(slotPlotVs(int)));
   QHBoxLayout *InpSubHL = new QHBoxLayout();
   InpSubHL->addWidget(GraphInput);
   InpSubHL->addWidget(lblPlotVs);
@@ -1525,5 +1526,15 @@ void DiagramDialog::slotEditRotZ(const QString& Text)
   SliderRotZ->setValue(Text.toInt());
   DiagCross->rotZ = Text.toFloat() * pi/180.0;
   DiagCross->update();
+}
+
+void DiagramDialog::slotPlotVs(int)
+{
+    QString s = GraphInput->text();
+    s.remove(QRegExp("@.*$")); // remove all after "@" symbol
+    if (ChooseXVar->currentIndex()!=0) {
+        s += "@" + ChooseXVar->currentText();
+    }
+    GraphInput->setText(s);
 }
 
