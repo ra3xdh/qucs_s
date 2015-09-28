@@ -43,6 +43,7 @@
 #include "line_filter.h"
 #include "cline_filter.h"
 #include "stepz_filter.h"
+#include "quarterwave_filter.h"
 
 #include "qf_poly.h"
 #include "qf_filter.h"
@@ -118,7 +119,10 @@ QucsFilter::QucsFilter()
   ComboRealize->addItem("Coupled microstrip");
   ComboRealize->addItem("Stepped-impedance");
   ComboRealize->addItem("Stepped-impedance microstrip");
+  ComboRealize->addItem("Quarter wave");
+  ComboRealize->addItem("Quarter wave microstrip");
   ComboRealize->addItem("Equation-defined");
+
   gbox1->addWidget(ComboRealize, 0,1);
   connect(ComboRealize, SIGNAL(activated(int)), SLOT(slotRealizationChanged(int)));
 
@@ -378,9 +382,17 @@ QString * QucsFilter::calculateFilter(struct tFilter * Filter)
       case 7:  // stepped-impedance microstrip line filter
         s = StepImpedance_Filter::createSchematic(Filter, &Substrate, true);
         return s;
-      case 8:  // equation defined filter
+      case 8: // Quarter wave transmission line filter
+        s = QuarterWave_Filter::createSchematic(Filter, &Substrate, false);
+        return s;
+      case 9: // Quarter wave microstrip line  filter
+        s = QuarterWave_Filter::createSchematic(Filter, &Substrate, true);
+        return s;
+      case 10:  // equation defined filter
         s = Equation_Filter::createSchematic(Filter);
         return s;
+
+
     }
 
     if (Filter->Type != TYPE_CAUER) {
@@ -590,10 +602,16 @@ void QucsFilter::slotRealizationChanged(int index)
   else
     ComboClass->setEnabled(true);
 
-  if((index == 3)||(index == 5)||(index == 7))
+  if((index == 3)||(index == 5)||(index == 7)||(index == 9))
     box2->setEnabled(true);
   else
     box2->setEnabled(false);
+
+  if ((index == 8)||(index == 9))
+  {
+     ComboClass->setCurrentIndex(CLASS_BANDPASS);
+     slotClassChanged(CLASS_BANDPASS);
+  }
 }
 
 // ************************************************************
