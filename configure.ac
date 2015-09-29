@@ -14,7 +14,6 @@ AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([no-define])
-AM_MAINTAINER_MODE
 AC_PREFIX_DEFAULT([/usr/local])
 
 dnl Checks for programs.
@@ -33,9 +32,6 @@ AC_ARG_ENABLE([debug],
    *)   enable_qucs_gui_debug="no"  ;;
    esac],
   [enable_qucs_gui_debug="no"])
-if test $USE_MAINTAINER_MODE = yes; then
-  enable_qucs_gui_debug="yes"
-fi
 if test "$enable_qucs_gui_debug" = yes; then
   AC_DEFINE(DEBUG, 1, [Define if debug output should be supported.])
   QT_DEF="-DQT_DEBUG"
@@ -243,7 +239,7 @@ case $host_os in
       fi
     fi
 
-    if test $USE_MAINTAINER_MODE = yes; then
+    if test "$enable_qucs_gui_debug" = yes; then
       CFLAGS="$CFLAGS -W -Wall -Wmissing-prototypes"
       CXXFLAGS="$CXXFLAGS -W -Wall"
     fi
@@ -416,7 +412,7 @@ case $host_os in
     CPPFLAGS="$CPPFLAGS $QT_DEF"
     QT_LDFLAGS="-headerpad_max_install_names"
 
-    if test $USE_MAINTAINER_MODE = yes; then
+    if test "$enable_qucs_gui_debug" = yes; then
       CPPFLAGS="$CPPFLAGS -W -Wall"
     fi
 
@@ -875,3 +871,4 @@ Configure Information:
 ])
 AC_MSG_RESULT([])
 
+dnl vim:ts=8:sw=2:noet
