@@ -37,22 +37,3 @@ echo "done."
 echo -n "Creating configure... "
 autoconf
 echo "done."
-
-#
-# run configure, maybe with parameters recorded in config.status
-#
-#if [ -r config.status ]; then
-#  # Autoconf 2.13
-#  CMD=`awk '/^#.*\/?configure .*/ { $1 = ""; print; exit }' < config.status`
-#  if test "x$CMD" = "x" ; then
-#    # Autoconf 2.5x
-#    eval set -- ./configure `grep "with options" < config.status | \
-#         sed 's/^[^"]*["]\(.*\)\\\"$/\1/'` '"$@"'
-#  else
-#    set -- $CMD "$@"
-#  fi
-#else
-#  set -- ./configure --enable-maintainer-mode "$@"
-#fi
-#echo Running `for i; do echo "'$i'"; done` ...
-#"$@"
