@@ -891,6 +891,7 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
       s1 = "xyce/" + s1;
   }
   GraphInput->setText(s1);
+  updateXVar();
 
   //if(s.isEmpty()) {
     GraphList->addItem(GraphInput->text());////insertItem(i, GraphInput->text());
@@ -963,6 +964,7 @@ void DiagramDialog::SelectGraph(Graph *g)
   GraphInput->blockSignals(true);
   GraphInput->setText(g->Var);
   GraphInput->blockSignals(false);
+  updateXVar();
 
   if(Diag->Name != "Tab") {
     if(Diag->Name != "Truth") {
@@ -1308,6 +1310,7 @@ void DiagramDialog::slotResetToTake(const QString& s)
   // \todo GraphList->changeItem(s, i);   // must done after the graph settings !!!
   changed = true;
   toTake  = false;
+  updateXVar();
 }
 
 /*!
@@ -1538,3 +1541,17 @@ void DiagramDialog::slotPlotVs(int)
     GraphInput->setText(s);
 }
 
+void DiagramDialog::updateXVar()
+{
+    ChooseXVar->blockSignals(true);
+    QString s = GraphInput->text();
+    if (s.contains("@")) {
+        QString xvar = s.section("@",1,1);
+        int n = ChooseXVar->findText(xvar);
+        if (n != -1) ChooseXVar->setCurrentIndex(n);
+        else ChooseXVar->setCurrentIndex(0);
+    } else {
+        ChooseXVar->setCurrentIndex(0);
+    }
+    ChooseXVar->blockSignals(false);
+}

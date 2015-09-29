@@ -91,6 +91,7 @@ protected slots:
 
 private:
   void SelectGraph(Graph*);
+  void updateXVar();
 
   Diagram *Diag;
   QString defaultDataSet;
