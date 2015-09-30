@@ -22,18 +22,17 @@
 # Boston, MA 02110-1301, USA.
 #
 
-here=`pwd`
-cd `dirname $0`
-
 echo -n "Creating aclocal.m4... "
 ${ACLOCAL:-aclocal} -I m4
 echo "done."
 echo -n "Creating config.h.in... "
 autoheader
 echo "done."
-echo -n "Creating Makefile.in(s)... "
-${AUTOMAKE:-automake} -a -f -c
+
+echo -n "Running ${AUTOMAKE:-automake}... "
+${AUTOMAKE:-automake} -a -f -c --gnu -Wall
 echo "done."
-echo -n "Creating configure... "
+
+echo -n "Running autoconf... "
 autoconf
 echo "done."

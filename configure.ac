@@ -9,11 +9,13 @@ m4_define([QUCS_VERSION], m4_esyscmd([tr -d '\n' < VERSION]))
 AC_INIT([qucs], [QUCS_VERSION], [qucs-bugs@lists.sourceforge.net])
 AC_CONFIG_SRCDIR([qucs/qucs.cpp])
 AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_AUX_DIR([.])
 
 AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([no-define])
+AM_PROG_AR
 AC_PREFIX_DEFAULT([/usr/local])
 
 dnl Checks for programs.
