@@ -243,6 +243,7 @@
 #include "Cmeter_SPICE.h"
 #include "SE_V_amp.h"
 #include "DE_V_amp.h"
+#include "SE_V_int.h"
 
 // Spice netlist sections
 #include "sp_parameter.h"

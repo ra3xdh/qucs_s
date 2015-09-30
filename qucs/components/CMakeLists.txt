@@ -115,6 +115,7 @@ S4Q_W.cpp
 Cmeter_SPICE.cpp
 SE_V_amp.cpp 
 DE_V_amp.cpp
+SE_V_int.cpp
 
 )
 
@@ -350,6 +351,7 @@ S4Q_W.h
 Cmeter_SPICE.h
 SE_V_amp.h
 DE_V_amp.h
+SE_V_int.h
 )
 
 
