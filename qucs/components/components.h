@@ -252,6 +252,7 @@
 #include "sp_nutmeg.h"
 #include "sp_nodeset.h"
 #include "sp_ic.h"
+#include "sp_model.h"
 
 // Spice simulations
 #include "sp_fourier.h"

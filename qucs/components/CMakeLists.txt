@@ -59,12 +59,19 @@ vcresistor.cpp
 vacomponent.cpp
 mutualx.cpp
 src_eqndef.cpp
+
+#SPICE sections
+
 sp_parameter.cpp
 sp_globalpar.cpp
 sp_options.cpp
 sp_nutmeg.cpp
 sp_ic.cpp
 sp_nodeset.cpp
+sp_model.cpp
+
+#end of SPICE section
+
 vsffm.cpp
 isffm.cpp
 vAmpMod.cpp
@@ -297,12 +304,19 @@ vprobe.h
 vpulse.h
 vrect.h
 src_eqndef.h
+
+#SPICE sections
+
 sp_parameter.h
 sp_globalpar.h
 sp_options.h
 sp_nutmeg.h
 sp_ic.h
 sp_nodeset.h
+sp_model.h
+
+#end SPICE sections
+
 vsffm.h
 isffm.h
 vAmpMod.h
