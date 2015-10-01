@@ -92,7 +92,16 @@ EXTRA_DIST = \
 	qucsdigi qucsdigilib qucsdigi.bat qucsdigilib.bat qucsveri qucsveri.bat \
 	$(hicolor16_DATA) $(hicolor22_DATA) $(hicolor32_DATA) $(hicolor48_DATA) \
 	$(hicolor64_DATA) $(hicolor128_DATA) $(hicolor256_DATA) $(hicolor512_DATA) \
-	$(hicolorsc_DATA) $(desktop_DATA) qucs.qrc
+	$(hicolorsc_DATA) $(desktop_DATA) qucs.qrc \
+	bitmaps/qucs.icns \
+	bitmaps/qucsattenuator.icns \
+	bitmaps/qucsfilter.icns \
+	bitmaps/qucsactivefilter.icns \
+	bitmaps/qucshelp.icns \
+	bitmaps/qucslib.icns \
+	bitmaps/qucsedit.icns \
+	bitmaps/qucsrescodes.icns \
+	bitmaps/qucstrans.icns
 
 SUFFIXES = .h .moc.cpp
 
