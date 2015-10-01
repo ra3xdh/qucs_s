@@ -28,7 +28,7 @@ public:
   ~S4Q_Model();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
-  QString getExpression(bool isXyce);
+  QString getSpiceModel();
 
 protected:
   QString vhdlCode(int) { return QString(""); }

@@ -41,6 +41,7 @@ public:
   virtual QString getExpression(bool isXyce = false);
   virtual QString getEquations(QString sim, QStringList &dep_vars);
   virtual QString getProbeVariable(bool isXyce = false);
+  virtual QString getSpiceModel();
   virtual QString getNgspiceBeforeSim(QString sim, int lvl=0);
   virtual QString getNgspiceAfterSim(QString sim, int lvl=0);
   virtual QString getVAvariables() {return QString("");};

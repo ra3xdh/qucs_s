@@ -747,6 +747,11 @@ QString Component::getProbeVariable(bool)
     return QString("");
 }
 
+QString Component::getSpiceModel()
+{
+    return QString("");
+}
+
 QString Component::getNgspiceBeforeSim(QString sim, int lvl)
 {
     Q_UNUSED(sim); // To supress warning

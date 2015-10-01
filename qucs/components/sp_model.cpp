@@ -74,14 +74,16 @@ Element* S4Q_Model::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString S4Q_Model::getExpression(bool)
+QString S4Q_Model::getSpiceModel()
 {
     if (isActive != COMP_IS_ACTIVE) return QString("");
 
     QString s;
     s.clear();
-    foreach (Property *pp, Props)
-        s += pp->Value;
+    foreach (Property *pp, Props) {
+        if (!pp->Value.isEmpty())
+            s += pp->Value + "\n";
+    }
     return s;
 }
 

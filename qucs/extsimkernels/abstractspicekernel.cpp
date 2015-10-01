@@ -127,6 +127,7 @@ bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
 void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
 {
         QString s;
+        // Parameters, Initial conditions, Options
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             if (pc->isEquation) {
                 s = pc->getExpression(xyce);
@@ -134,6 +135,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
             }
         }
 
+        // Components
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
           if(Sch->isAnalog &&
              !(pc->isSimulation) &&
@@ -141,6 +143,12 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
             s = pc->getSpiceNetlist(xyce);
             stream<<s;
           }
+        }
+
+        // Modelcards
+        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+            s = pc->getSpiceModel();
+            stream<<s;
         }
 }
 
