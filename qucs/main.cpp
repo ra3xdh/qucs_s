@@ -289,7 +289,8 @@ int doNetlist(QString schematic, QString netlist)
 
   if(SimPorts < -5) {
     NetlistFile.close();
-    fprintf(stderr, "Error: Could not prepare the netlist...\n");
+    QByteArray ba = netlist.toLatin1();
+    fprintf(stderr, "Error: Could not prepare netlist %s\n", ba.data());
     /// \todo better handling for error/warnings
     qCritical() << ErrText->toPlainText();
     return 1;
