@@ -296,6 +296,7 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
   else if(Comp == "hicumL2V2p1" || Comp == "hic2_full" ||
 	  Comp == "hic0_full" || Comp == "hicumL0V1p2" ||
 	  Comp == "hicumL2V2p23" || Comp == "hicumL2V2p24" ||
+      Comp == "hicumL2V2p31n" ||
 	  Comp == "hicumL0V1p2g" || Comp == "hicumL0V1p3") {
     // normal bipolar
     Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkBlue,3)));
