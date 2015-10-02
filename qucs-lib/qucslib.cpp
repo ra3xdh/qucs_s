@@ -61,11 +61,11 @@ QucsLib::QucsLib()
 
     QAction * manageLib =new QAction (tr("Manage User &Libraries..."), this);
     manageLib->setShortcut(Qt::CTRL+Qt::Key_M);
-    connect(manageLib, SIGNAL(activated()), SLOT(slotManageLib()));
+    connect(manageLib, SIGNAL(triggered()), SLOT(slotManageLib()));
 
     QAction * fileQuit = new QAction(tr("&Quit"), this);
     fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
-    connect(fileQuit, SIGNAL(activated()), SLOT(slotQuit()));
+    connect(fileQuit, SIGNAL(triggered()), SLOT(slotQuit()));
 
     fileMenu->addAction(manageLib);
     fileMenu->addSeparator();
@@ -78,11 +78,11 @@ QucsLib::QucsLib()
     QAction * helpHelp = new QAction(tr("&Help"), this);
     helpHelp->setShortcut(Qt::Key_F1);
     helpMenu->addAction(helpHelp);
-    connect(helpHelp, SIGNAL(activated()), SLOT(slotHelp()));
+    connect(helpHelp, SIGNAL(triggered()), SLOT(slotHelp()));
 
     QAction * helpAbout = new QAction(tr("About"), this);
     helpMenu->addAction(helpAbout);
-    connect(helpAbout, SIGNAL(activated()), SLOT(slotAbout()));
+    connect(helpAbout, SIGNAL(triggered()), SLOT(slotAbout()));
 
     // use Escape key to clear search
     QAction *escape = new QAction(this);
