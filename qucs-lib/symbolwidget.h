@@ -64,7 +64,9 @@ private:
   bool getPen  (const QString&, QPen&, int);
   bool getBrush(const QString&, QBrush&, int);
 
-  QString PaintText, DragNDropText;
+  QString PaintText;
+  QString DragNDropText;
+  QString Warning;
   int TextWidth, DragNDropWidth, TextHeight;
   int cx, cy, x1, x2, y1, y2;
   QList<Line *> Lines;

@@ -105,6 +105,9 @@ void SymbolWidget::paintEvent(QPaintEvent*)
   QPainter Painter(this);
   Painter.drawText(2, 2, 0, 0, Qt::AlignLeft | Qt::TextDontClip, PaintText);
 
+  QFontMetrics metrics(QucsSettings.font, 0);
+  Painter.drawText(2, metrics.height(), 0, 0, Qt::AlignLeft | Qt::TextDontClip, Warning);
+
   int dx = (x2-x1)/2 + TextWidth - DragNDropWidth/2;
   if(dx < 2)  dx = 2;
   Painter.drawText(dx, y2-y1+2, 0, 0, Qt::AlignLeft | Qt::TextDontClip, DragNDropText);
@@ -167,6 +170,8 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
   Texts.clear();
   LibraryName = Lib_;
   ComponentName = Comp_;
+
+  Warning.clear();
 
   int PortNo = 0;
   QString Comp = ModelString.section(' ', 0,0);
@@ -383,6 +388,13 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
     PortNo = 0;
     x1 = -34; y1 =-44;
     x2 =  84; y2 = 20;
+  }
+  else {
+    // Warn in case a default component symbol is not
+    // mapped or implemented.
+    Warning = tr("Warning: Symbol '%1' missing in Qucs Library.\n"
+                 "Drag and Drop may still work.\n"
+                 "Please contact the developers.").arg(Comp);
   }
 
   x1 -= 4;   // enlarge component boundings a little
