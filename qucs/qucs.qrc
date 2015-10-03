@@ -283,6 +283,8 @@
         <file>bitmaps/SE_V_amp.png</file>
         <file>bitmaps/DE_V_amp.png</file>
         <file>bitmaps/SE_V_int.png</file>
+        <file>bitmaps/SE_V_int.png</file>
+        <file>bitmaps/DE_V_int.png</file>
         <file>bitmaps/sp_model.png</file>
     </qresource>
 </RCC>

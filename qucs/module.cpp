@@ -289,7 +289,6 @@ void Module::registerModules (void) {
   // probes
   REGISTER_PROBE_1 (iProbe);
   REGISTER_PROBE_1 (vProbe);
- // REGISTER_PROBE_1 (Cmeter_SPICE);
 
   // transmission lines
   REGISTER_TRANS_1 (TLine);
@@ -477,8 +476,9 @@ void Module::registerModules (void) {
   REGISTER_XSPICE_ANALOGUE_1 (Cmeter_SPICE);
   REGISTER_XSPICE_ANALOGUE_1 (SE_V_amp); 
   REGISTER_XSPICE_ANALOGUE_1 (DE_V_amp); 
-  REGISTER_XSPICE_ANALOGUE_1 (SE_V_int);     
-  
+  REGISTER_XSPICE_ANALOGUE_1 (SE_V_int);  
+  REGISTER_XSPICE_ANALOGUE_1 (DE_V_int);  
+
   // specific sections of spice netlists
   REGISTER_SPICE_SEC_1 (SpiceParam);
   REGISTER_SPICE_SEC_1 (SpiceGlobalParam);
