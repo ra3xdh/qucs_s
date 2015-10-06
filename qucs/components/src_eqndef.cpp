@@ -24,7 +24,7 @@ Src_eqndef::Src_eqndef()
 
   tx = x1+4;
   ty = y2+4;
-  Model = "B";
+  Model = "src_eqndef";
   SpiceModel = "B";
   Name  = "B";
   

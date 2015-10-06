@@ -46,7 +46,7 @@ S4Q_Ieqndef::S4Q_Ieqndef()
 
   tx = x1+4;
   ty = y2+4;
-  Model = "B";
+  Model = "S4Q_Ieqndef";
   SpiceModel = "B";
   Name  = "B";
   
