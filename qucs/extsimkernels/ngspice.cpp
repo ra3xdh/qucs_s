@@ -322,7 +322,7 @@ QString Ngspice::getParentSWPscript(Component *pc_swp, QString sim, bool before,
  */
 void Ngspice::slotSimulate()
 {
-    //output.clear();
+    output.clear();
     QStringList incompat;
     if (!checkSchematic(incompat)) {
         QString s = incompat.join("; ");

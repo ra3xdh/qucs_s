@@ -65,7 +65,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
 
     cbxSimualor = new QComboBox(this);
     QStringList items;
-    items<<"Ngspice"<<"Xyce (Serial)"<<"Xyce (Parallel)";
+    items<<"Ngspice"<<"Xyce (Serial)"<<"Xyce (Parallel)"<<"SpiceOpus";
     cbxSimualor->addItems(items);
     connect(cbxSimualor,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetSimulator()));
 
@@ -134,11 +134,12 @@ void ExternSimDialog::slotSetSimulator()
         disconnect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessXyceOutput()));
         disconnect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
-        connect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()));
-        connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
+        connect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()),Qt::UniqueConnection);
+        connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()),Qt::UniqueConnection);
+        connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)),Qt::UniqueConnection);
         disconnect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
-        connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
+        connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()),Qt::UniqueConnection);
+        ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable);
     }
         break;
     case simXyceSer: {
@@ -167,6 +168,19 @@ void ExternSimDialog::slotSetSimulator()
         connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
         disconnect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
+    }
+        break;
+    case simSpiceOpus: {
+        xyce->setParallel(false);
+        disconnect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
+        disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessXyceOutput()));
+        disconnect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
+        connect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()),Qt::UniqueConnection);
+        connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()),Qt::UniqueConnection);
+        connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)),Qt::UniqueConnection);
+        disconnect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
+        connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()),Qt::UniqueConnection);
+        ngspice->setSimulatorCmd(QucsSettings.SpiceOpusExecutable);
     }
         break;
     default: break;

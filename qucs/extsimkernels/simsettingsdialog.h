@@ -28,11 +28,13 @@ class SimSettingsDialog : public QDialog
 private:
     QLabel *lblXyce;
     QLabel *lblNgspice;
+    QLabel *lblSpiceOpus;
     QLabel *lblXycePar;
     QLabel *lblNprocs;
     QLabel *lblWorkdir;
 
     QLineEdit *edtNgspice;
+    QLineEdit *edtSpiceOpus;
     QLineEdit *edtXyce;
     QLineEdit *edtXycePar;
     QSpinBox  *spbNprocs;
@@ -42,6 +44,7 @@ private:
     QPushButton *btnCancel;
 
     QPushButton *btnSetNgspice;
+    QPushButton *btnSetSpOpus;
     QPushButton *btnSetXyce;
     QPushButton *btnSetXycePar;
     QPushButton *btnSetWorkdir;
@@ -55,6 +58,7 @@ private slots:
     void slotSetNgspice();
     void slotSetXyce();
     void slotSetXycePar();
+    void slotSetSpiceOpus();
     void slotSetWorkdir();
     
 };

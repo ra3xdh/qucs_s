@@ -111,6 +111,8 @@ bool loadSettings()
     else QucsSettings.XyceExecutable = "/usr/local/Xyce-Release-6.2.0-OPENSOURCE/bin/runxyce";
     if(settings.contains("XyceParExecutable")) QucsSettings.XyceParExecutable = settings.value("XyceParExecutable").toString();
     else QucsSettings.XyceParExecutable = "/usr/local/Xyce-Release-6.2.0-OPENMPI-OPENSOURCE/bin/xmpirun -np %p";
+    if(settings.contains("SpiceOpusExecutable")) QucsSettings.SpiceOpusExecutable = settings.value("SpiceOpusExecutable").toString();
+    else QucsSettings.SpiceOpusExecutable = "spiceopus";
     if(settings.contains("Nprocs")) QucsSettings.NProcs = settings.value("Nprocs").toInt();
     else QucsSettings.NProcs = 4;
     if(settings.contains("S4Q_workdir")) QucsSettings.S4Qworkdir = settings.value("S4Q_workdir").toString();
@@ -194,6 +196,7 @@ bool saveApplSettings()
     settings.setValue("NgspiceExecutable",QucsSettings.NgspiceExecutable);
     settings.setValue("XyceExecutable",QucsSettings.XyceExecutable);
     settings.setValue("XyceParExecutable",QucsSettings.XyceParExecutable);
+    settings.setValue("SpiceOpusExecutable",QucsSettings.SpiceOpusExecutable);
     settings.setValue("Nprocs",QucsSettings.NProcs);
     settings.setValue("S4Q_workdir",QucsSettings.S4Qworkdir);
     settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());

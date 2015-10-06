@@ -29,12 +29,14 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     lblNgspice = new QLabel(tr("Ngspice executable location"));
     lblXyce = new QLabel(tr("Xyce executable location"));
     lblXycePar = new QLabel(tr("Xyce Parallel executable location (openMPI installed required)"));
+    lblSpiceOpus = new QLabel(tr("SpiceOpus executable location"));
     lblNprocs = new QLabel(tr("Number of processors in a system:"));
     lblWorkdir = new QLabel(tr("Directory to store netlist and simulator output"));
 
     edtNgspice = new QLineEdit(QucsSettings.NgspiceExecutable);
     edtXyce = new QLineEdit(QucsSettings.XyceExecutable);
     edtXycePar = new QLineEdit(QucsSettings.XyceParExecutable);
+    edtSpiceOpus = new QLineEdit(QucsSettings.SpiceOpusExecutable);
     spbNprocs = new QSpinBox(1,256,1,this);
     spbNprocs->setValue(QucsSettings.NProcs);
     edtWorkdir = new QLineEdit(QucsSettings.S4Qworkdir);
@@ -50,6 +52,8 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     connect(btnSetXyce,SIGNAL(clicked()),this,SLOT(slotSetXyce()));
     btnSetXycePar = new QPushButton(tr("Select ..."));
     connect(btnSetXycePar,SIGNAL(clicked()),this,SLOT(slotSetXycePar()));
+    btnSetSpOpus = new QPushButton(tr("Select ..."));
+    connect(btnSetSpOpus,SIGNAL(clicked()),this,SLOT(slotSetSpiceOpus()));
     btnSetWorkdir = new QPushButton(tr("Select ..."));
     connect(btnSetWorkdir,SIGNAL(clicked()),this,SLOT(slotSetWorkdir()));
 
@@ -76,6 +80,13 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     h5->addWidget(lblNprocs);
     h5->addWidget(spbNprocs);
     top->addLayout(h5);
+
+    top->addWidget(lblSpiceOpus);
+    QHBoxLayout *h7 = new QHBoxLayout;
+    h7->addWidget(edtSpiceOpus,3);
+    h7->addWidget(btnSetSpOpus,1);
+    top->addLayout(h7);
+
 
     top->addWidget(lblWorkdir);
     QHBoxLayout *h6 = new QHBoxLayout;
@@ -109,6 +120,7 @@ void SimSettingsDialog::slotApply()
     QucsSettings.NgspiceExecutable = edtNgspice->text();
     QucsSettings.XyceExecutable = edtXyce->text();
     QucsSettings.XyceParExecutable = edtXycePar->text();
+    QucsSettings.SpiceOpusExecutable = edtSpiceOpus->text();
     QucsSettings.NProcs = spbNprocs->value();
     QucsSettings.S4Qworkdir = edtWorkdir->text();
     accept();
@@ -136,6 +148,14 @@ void SimSettingsDialog::slotSetXycePar()
     if (!s.isEmpty()) {
         if (s.endsWith("xmpirun")) s += " -np %p";
         edtXycePar->setText(s);
+    }
+}
+
+void SimSettingsDialog::slotSetSpiceOpus()
+{
+    QString s = QFileDialog::getOpenFileName(this,tr("Select SpiceOpus executable location"),edtSpiceOpus->text(),"All files (*)");
+    if (!s.isEmpty()) {
+        edtSpiceOpus->setText(s);
     }
 }
 
