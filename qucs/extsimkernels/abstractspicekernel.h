@@ -84,7 +84,7 @@ public:
     void convertToQucsData(const QString &qucs_dataset, bool xyce = false);
     QString getOutput();
 
-    void setSimulatorCmd(QString cmd);
+    virtual void setSimulatorCmd(QString cmd);
     void setWorkdir(QString path);
     virtual void SaveNetlist(QString filename);
     virtual bool waitEndOfSimulation();

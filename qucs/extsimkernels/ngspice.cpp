@@ -376,3 +376,19 @@ void Ngspice::SaveNetlist(QString filename)
         spice_file.close();
     }
 }
+
+void Ngspice::setSimulatorCmd(QString cmd)
+{
+    if (cmd.contains(QRegExp("spiceopus(....|)$"))) {
+        // spiceopus needs English locale to produce correct decimal point (dot symbol)
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+        env.remove("LANG");
+        env.insert("LANG","en_US");
+        SimProcess->setProcessEnvironment(env);
+    } else { // restore system environment
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+        SimProcess->setProcessEnvironment(env);
+    }
+
+    simulator_cmd = cmd;
+}
