@@ -128,7 +128,7 @@ QString TR_Sim::spice_netlist(bool isXyce)
     }
     s += "\n";
     if (!isXyce) s.remove(0,1);
-    return s;
+    return s.toLower();
 }
 
 void TR_Sim::recreate(Schematic*)

@@ -186,5 +186,5 @@ QString Param_Sweep::spice_netlist(bool isXyce)
     } else {
         s = "";
     }
-    return s;
+    return s.toLower();
 }
