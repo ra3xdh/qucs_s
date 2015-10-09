@@ -124,6 +124,8 @@ SE_V_amp.cpp
 DE_V_amp.cpp
 SE_V_int.cpp
 DE_V_int.cpp
+SE_V_diff.cpp
+DE_V_diff.cpp
 
 )
 
@@ -368,6 +370,8 @@ SE_V_amp.h
 DE_V_amp.h
 SE_V_int.h
 DE_V_int.h
+SE_V_diff.h
+DE_V_diff.h
 )
 
 

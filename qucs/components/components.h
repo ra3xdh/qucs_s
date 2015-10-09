@@ -245,6 +245,8 @@
 #include "DE_V_amp.h"
 #include "SE_V_int.h"
 #include "DE_V_int.h"
+#include "SE_V_diff.h"
+#include "DE_V_diff.h"
 
 // Spice netlist sections
 #include "sp_parameter.h"
