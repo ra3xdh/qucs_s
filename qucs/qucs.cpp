@@ -2847,7 +2847,8 @@ void QucsApp::slotSimulateWithSpice()
         disconnect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
         disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
         disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
-        if (SimDlg->wasSimulated) slotChangePage(sch->DocName,sch->DataDisplay);
+        if (SimDlg->wasSimulated && sch->SimOpenDpl)
+            slotChangePage(sch->DocName,sch->DataDisplay);
         delete SimDlg;
     }
 }
@@ -2857,6 +2858,11 @@ void QucsApp::slotAfterSpiceSimulation()
     Schematic *sch = (Schematic*)DocumentTab->currentPage();
     sch->reloadGraphs();
     sch->viewport()->update();
+    if(sch->SimRunScript) {
+      // run script
+      octave->startOctave();
+      octave->runOctaveScript(sch->Script);
+    }
 }
 
 void QucsApp::slotBuildVAModule()
