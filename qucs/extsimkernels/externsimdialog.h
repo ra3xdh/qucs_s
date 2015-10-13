@@ -67,8 +67,8 @@ signals:
 public slots:
 
 private slots:
-    void slotProcessNgspiceOutput();
-    void slotProcessXyceOutput();
+    void slotProcessOutput();
+    //void slotProcessXyceOutput();
     void slotNgspiceStarted();
     void slotNgspiceStartError(QProcess::ProcessError err);
     void slotStart();

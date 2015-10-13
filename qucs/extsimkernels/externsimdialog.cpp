@@ -132,10 +132,10 @@ void ExternSimDialog::slotSetSimulator()
     case simNgspice: {
         xyce->setParallel(false);
         disconnect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessXyceOutput()));
+        disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         disconnect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()),Qt::UniqueConnection);
-        connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()),Qt::UniqueConnection);
+        connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()),Qt::UniqueConnection);
         connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)),Qt::UniqueConnection);
         disconnect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
         connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()),Qt::UniqueConnection);
@@ -145,10 +145,10 @@ void ExternSimDialog::slotSetSimulator()
     case simXyceSer: {
         xyce->setParallel(false);
         disconnect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()));
+        disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         disconnect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessXyceOutput()));
+        connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
         disconnect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
@@ -161,10 +161,10 @@ void ExternSimDialog::slotSetSimulator()
         xyce->setParallel(false);
 #endif
         disconnect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()));
+        disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         disconnect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessXyceOutput()));
+        connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
         disconnect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
@@ -173,10 +173,10 @@ void ExternSimDialog::slotSetSimulator()
     case simSpiceOpus: {
         xyce->setParallel(false);
         disconnect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessXyceOutput()));
+        disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         disconnect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()),Qt::UniqueConnection);
-        connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessNgspiceOutput()),Qt::UniqueConnection);
+        connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()),Qt::UniqueConnection);
         connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)),Qt::UniqueConnection);
         disconnect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
         connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()),Qt::UniqueConnection);
@@ -188,12 +188,36 @@ void ExternSimDialog::slotSetSimulator()
 }
 
 
-void ExternSimDialog::slotProcessNgspiceOutput()
+void ExternSimDialog::slotProcessOutput()
 {
     buttonSaveNetlist->setEnabled(true);
     buttonStopSim->setEnabled(false);
     cbxSimualor->setEnabled(true);
-    QString out = ngspice->getOutput();
+    QString out;
+
+    // Set temporary safe output name
+
+    QString ext;
+    switch (cbxSimualor->currentIndex()) {
+    case simNgspice:
+        ext = ".dat.ngspice";
+        out = ngspice->getOutput();
+        break;
+    case simXycePar:
+    case simXyceSer:
+        ext = ".dat.xyce";
+        out = xyce->getOutput();
+        break;
+    case simSpiceOpus:
+        out = ngspice->getOutput();
+        ext = ".dat.spopus";
+        break;
+    default:
+        out = "dummy";
+        ext = ".dat";
+        break;
+    }
+
     if (out.contains("warning",Qt::CaseInsensitive)||
         out.contains("error",Qt::CaseInsensitive)) {
         emit warnings();
@@ -202,36 +226,25 @@ void ExternSimDialog::slotProcessNgspiceOutput()
     editSimConsole->insertPlainText(out);
     editSimConsole->moveCursor(QTextCursor::End);
     saveLog();
-    // Set temporary safe output name
+
     QFileInfo inf(Sch->DocName);
     //QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
-    QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+".dat.ngspice";
-    ngspice->convertToQucsData(qucs_dataset);
+    QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+ext;
+    switch (cbxSimualor->currentIndex()) {
+    case simNgspice:
+    case simSpiceOpus:
+        ngspice->convertToQucsData(qucs_dataset);
+        break;
+    case simXycePar:
+    case simXyceSer:
+        xyce->convertToQucsData(qucs_dataset);
+        break;
+    default:break;
+    }
     emit simulated();
     wasSimulated = true;
 }
 
-void ExternSimDialog::slotProcessXyceOutput()
-{
-    buttonStopSim->setEnabled(false);
-    cbxSimualor->setEnabled(true);
-    QString out = xyce->getOutput();
-    //editSimConsole->clear();
-    editSimConsole->insertPlainText(out);
-    editSimConsole->moveCursor(QTextCursor::End);
-    if (out.contains("warning",Qt::CaseInsensitive)||
-        out.contains("error",Qt::CaseInsensitive)) {
-        emit warnings();
-    } else emit success();
-    saveLog();
-    // Set temporary safe output name
-    QFileInfo inf(Sch->DocName);
-    // QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_xyce.dat";
-    QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+".dat.xyce";
-    xyce->convertToQucsData(qucs_dataset,true);
-    emit simulated();
-    wasSimulated = true;
-}
 
 void ExternSimDialog::slotNgspiceStarted()
 {
