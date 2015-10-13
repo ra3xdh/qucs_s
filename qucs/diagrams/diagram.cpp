@@ -798,9 +798,8 @@ int Graph::loadDatFile(const QString& fileName)
 
   QString tail = "";
   QString svar = g->Var;
-  if (pos1 > 0) {
-      if (g->Var.startsWith("ngspice/")) tail = ".ngspice";
-      else if (g->Var.startsWith("xyce/")) tail = ".xyce";
+  if (pos1 > 0) {  // remove simulator signature
+      tail = '.' + g->Var.section('/',0,0);
       svar = g->Var.mid(pos1 + 1);
   }
 

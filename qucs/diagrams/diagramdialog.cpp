@@ -294,7 +294,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   QHBoxLayout *hb1 = new QHBoxLayout;
   ChooseSimulator = new QComboBox;
   QStringList lst_sim;
-  lst_sim<<"Qucsator (built-in)"<<"Ngspice"<<"Xyce";
+  lst_sim<<"Qucsator (built-in)"<<"Ngspice"<<"Xyce"<<"SpiceOpus";
   ChooseSimulator->addItems(lst_sim);
   connect(ChooseSimulator,SIGNAL(currentIndexChanged(int)),this,SLOT(slotReadVars(int)));
   lblSim = new QLabel(tr("Data from simulator:"));
@@ -786,6 +786,8 @@ void DiagramDialog::slotReadVars(int)
   if (Info.exists()) ChooseSimulator->addItem("Ngspice");
   Info.setFile(Info.dirPath() + QDir::separator() + DocName + ".xyce");
   if (Info.exists()) ChooseSimulator->addItem("Xyce");
+  Info.setFile(Info.dirPath() + QDir::separator() + DocName + ".spopus");
+  if (Info.exists()) ChooseSimulator->addItem("SpiceOpus");
   Info.setFile(defaultDataSet);
   int sim_pos = ChooseSimulator->findText(curr_sim); // revert recent simulator if possible
   if (sim_pos>=0) ChooseSimulator->setCurrentIndex(sim_pos);
@@ -795,6 +797,8 @@ void DiagramDialog::slotReadVars(int)
       DocName += ".ngspice";
   } else if (ChooseSimulator->currentText()=="Xyce") {
       DocName += ".xyce";
+  } else if (ChooseSimulator->currentText()=="SpiceOpus") {
+      DocName += ".spopus";
   }
 
   QFile file(Info.dirPath() + QDir::separator() + DocName);
@@ -889,6 +893,8 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
       s1 = "ngspice/" + s1;
   } else if (ChooseSimulator->currentText()=="Xyce") {
       s1 = "xyce/" + s1;
+  } else if (ChooseSimulator->currentText()=="SpiceOpus") {
+      s1 = "spopus/" + s1;
   }
   GraphInput->setText(s1);
   updateXVar();
