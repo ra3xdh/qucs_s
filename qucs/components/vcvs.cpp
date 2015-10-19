@@ -99,7 +99,7 @@ QString VCVS::va_code()
     QString Vpm = vacompat::normalize_voltage(P1,P2);
     QString Ipm = vacompat::normalize_current(P1,P2,true); 
     s += QString(" %1  <+  %2 * 1e-9;\n").arg(Ipm).arg(Vpm);
-    QString Ipm2 = vacompat::normalize_current(P3,P4,true); 
+    QString Ipm2 = vacompat::normalize_current(P4,P3,true); 
     s += QString("%1  <+  %1 *1e3;\n").arg(Ipm2);
     s += QString("%1  <+  %2 * 1e3 * %3 ;\n").arg(Ipm2).arg(Vpm).arg(Gain);
     
