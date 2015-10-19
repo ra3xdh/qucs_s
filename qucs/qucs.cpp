@@ -608,15 +608,26 @@ void QucsApp::fillComboBox (bool setAll)
 // Component IconView with the appropriate components.
 void QucsApp::slotSetCompView (int index)
 {
-//  qDebug() << "QucsApp::slotSetCompView (int index)";
+  //qDebug() << "QucsApp::slotSetCompView(" << index << ")";
 
   editText->setHidden (true); // disable text edit of component property
-  CompSearch->clear();
 
   QList<Module *> Comps;
   CompComps->clear ();   // clear the IconView
   if (CompChoose->count () <= 0) return;
 
+  // was in "search mode" ?
+  if (CompChoose->itemText(0) == tr("Search results")) {
+    if (index == 0) // user selected "Search results" item
+      return;
+    CompChoose->removeItem(0);
+    CompSearch->clear();
+    --index; // adjust requested index since item 0 was removed
+  }
+
+  // make sure the right index is selected
+  //  (might have been called by a cleared search and not by user action)
+  CompChoose->setCurrentIndex(index);
   QString item = CompChoose->itemText (index);
 
   Comps = Category::getModules(item);
@@ -687,6 +698,15 @@ void QucsApp::slotSearchComponent(const QString &searchText)
 {
   qDebug() << "User search: " << searchText;
   CompComps->clear ();   // clear the IconView
+
+  // not already in "search mode"
+  if (CompChoose->itemText(0) != tr("Search results")) {
+    ccCurIdx = CompChoose->currentIndex(); // remember current panel
+    // insert "Search results" at the beginning, so that it is visible
+    CompChoose->insertItem(-1, tr("Search results"));
+    CompChoose->setCurrentIndex(0);
+  }
+
   if (searchText.isEmpty()) {
     slotSetCompView(CompChoose->currentIndex());
   } else {
@@ -745,7 +765,7 @@ void QucsApp::slotSearchComponent(const QString &searchText)
 
         // Add icon an name tag to dock
         QListWidgetItem *icon = new QListWidgetItem(vaIcon, Name);
-        icon->setToolTip("verilog-a user devices: " + Name);
+        icon->setToolTip(tr("verilog-a user devices") + ": " + Name);
         CompComps->addItem(icon);
       }
     }
@@ -755,8 +775,14 @@ void QucsApp::slotSearchComponent(const QString &searchText)
 // ------------------------------------------------------------------
 void QucsApp::slotSearchClear()
 {
-  CompSearch->clear();
-  slotSetCompView(CompChoose->currentIndex());
+  // was in "search mode" ?
+  if (CompChoose->itemText(0) == tr("Search results")) {
+    CompChoose->removeItem(0); // remove the added "Search results" item
+    CompSearch->clear();
+    // go back to the panel selected before search started
+    slotSetCompView(ccCurIdx);
+    // the added "Search results" panel text will be removed by slotSetCompView()
+  }
 }
 
 // ------------------------------------------------------------------
@@ -818,8 +844,14 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
         if (mod->info) {
           (*mod->info)(CompName, CompFile_cptr, false);
           if (CompName == name) {
-            CompChoose->setCurrentIndex(i);
+	    // change currently selected category, so the user will 
+	    //   learn where the component comes from
+            CompChoose->setCurrentIndex(i+1); // +1 due to the added "Search Results" item
+	    ccCurIdx = i; // remember the category to select when exiting search
+	    //!! comment out the above two lines if you would like that the search
+	    //!!   returns back to the last selected category instead
             view->selElem = (*mod->info) (CompName, CompFile_cptr, true);
+	    // TODO: component found, exit the loops now...
           }
         }
       }
