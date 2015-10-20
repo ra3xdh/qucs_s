@@ -136,13 +136,20 @@ QString Equation::getExpression(bool isXyce)
         spicecompat::splitEqn(eqn,tokens);
         spicecompat::convert_functions(tokens,isXyce);
         eqn = tokens.join("");
-        if (isXyce) eqn.replace("^","**");
-        QRegExp fp_pattern("^[\\+\\-]*\\d*\\.\\d+$"); // float
-        QRegExp fp_exp_pattern("^[\\+\\-]*\\d*\\.*\\d+e[\\+\\-]*\\d+$"); // float with exp
-        QRegExp dec_pattern("^[\\+\\-]*\\d+$"); // integer
-        if (!(fp_pattern.exactMatch(eqn)||
-              dec_pattern.exactMatch(eqn)||
-              fp_exp_pattern.exactMatch(eqn))) eqn = "{" + eqn + "}"; // wrap equation if it contains vars
+        if (isXyce) {
+            eqn.replace("^","**");
+            QRegExp fp_pattern("^[\\+\\-]*\\d*\\.\\d+$"); // float
+            QRegExp fp_exp_pattern("^[\\+\\-]*\\d*\\.*\\d+e[\\+\\-]*\\d+$"); // float with exp
+            QRegExp dec_pattern("^[\\+\\-]*\\d+$"); // integer
+            QRegExp spicefp_pattern("^[\\+\\-]*\\d*\\.\\d+[A-Za-z]{,3}$"); // float and scaling suffix
+            QRegExp spicedec_pattern("^[\\+\\-]*\\d+[A-Za-z]{,3}$"); // decimal and scaling suffix
+            if (!(fp_pattern.exactMatch(eqn)||
+                  dec_pattern.exactMatch(eqn)||
+                  fp_exp_pattern.exactMatch(eqn)||
+                  spicefp_pattern.exactMatch(eqn)||
+                  spicedec_pattern.exactMatch(eqn))) eqn = "{" + eqn + "}"; // wrap equation if it contains vars
+        }
+
         if (!spicecompat::containNodes(tokens,ng_vars)) {
             s += QString(".PARAM %1=%2\n").arg(Props.at(i)->Name).arg(eqn);
         }
