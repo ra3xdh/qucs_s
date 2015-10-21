@@ -290,7 +290,7 @@ void Xyce::nextSimulation()
     if (!netlistQueue.isEmpty()) {
         QString file = netlistQueue.takeFirst();
         SimProcess->setWorkingDirectory(workdir);
-        QString cmd = QString("\"%1\" %2 \"%3\"").arg(simulator_cmd,simulator_parameters,file);
+        QString cmd = QString("%1 %2 \"%3\"").arg(simulator_cmd,simulator_parameters,file);
         SimProcess->start(cmd);
     } else {
         output += "No simulations!\n"
@@ -308,7 +308,7 @@ void Xyce::setParallel(bool par)
         simulator_cmd = xyce_par;
         simulator_parameters = QString(" -a ");
     } else {
-        simulator_cmd = QucsSettings.XyceExecutable;
+        simulator_cmd = "\"" + QucsSettings.XyceExecutable + "\"";
         simulator_parameters = "-a";
     }
 }
