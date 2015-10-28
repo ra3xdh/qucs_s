@@ -109,7 +109,12 @@ libcomponents_a_SOURCES = phaseshifter.cpp gyrator.cpp componentdialog.cpp    \
         S4Q_W.cpp \
         Cmeter_SPICE.cpp \
         SE_V_amp.cpp \
-        DE_V_amp.cpp
+        DE_V_amp.cpp \
+	SE_V_int.cpp \
+	DE_V_int.cpp \
+	SE_V_diff.cpp \
+	DE_V_diff.cpp \
+	sp_model.cpp
 
 
 
@@ -190,7 +195,12 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
         S4Q_W.h \
         Cmeter_SPICE.h \
         SE_V_amp.h \
-        DE_V_amp.h
+        DE_V_amp.h \
+	SE_V_int.h \
+	DE_V_int.h \
+	SE_V_diff.h \
+	DE_V_diff.h \
+	sp_model.h
 
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
