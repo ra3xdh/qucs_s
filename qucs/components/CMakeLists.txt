@@ -104,6 +104,7 @@ sp_customsim.cpp
 sp_fourier.cpp
 sp_disto.cpp
 sp_noise.cpp
+sp_pz.cpp
 
 # 
 # Qucs-S new components cpp list
@@ -352,6 +353,8 @@ sp_customsim.h
 sp_fourier.h
 sp_disto.h
 sp_noise.h
+sp_pz.h
+
 # 
 # Qucs-S new components h list
 #

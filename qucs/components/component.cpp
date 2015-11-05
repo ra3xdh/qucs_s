@@ -198,7 +198,8 @@ void Component::paint(ViewPainter *p)
     p->Painter->setFont(newFont);
     p->map(cx, cy, x, y);
 
-    if ((Model==".CUSTOMSIM")||(Model==".DISTO")||(Model==".NOISE"))
+    if ((Model==".CUSTOMSIM")||(Model==".DISTO")
+            ||(Model==".NOISE")||(Model==".PZ"))
         p->Painter->setPen(QPen(Qt::blue,2));
     else if (Model==".FOURIER") p->Painter->setPen(QPen(Qt::darkRed,2));
     else p->Painter->setPen(QPen(Qt::darkBlue,2));

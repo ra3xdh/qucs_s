@@ -287,5 +287,6 @@
         <file>bitmaps/SE_V_diff.png</file>
         <file>bitmaps/DE_V_diff.png</file>
         <file>bitmaps/sp_model.png</file>
+        <file>bitmaps/sp_pz.png</file>
     </qresource>
 </RCC>
