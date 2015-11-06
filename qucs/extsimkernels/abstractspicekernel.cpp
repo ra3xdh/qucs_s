@@ -443,6 +443,44 @@ void AbstractSpiceKernel::parseNoiseOutput(QString ngspice_file, QList<QList<dou
     }
 }
 
+void AbstractSpiceKernel::parsePZOutput(QString ngspice_file, QList<QList<double> > &sim_points,
+                                        QStringList &var_list, bool &ParSwp)
+{
+    var_list.clear();
+    var_list.append("");
+    sim_points.clear();
+    ParSwp = false;
+    QFile ofile(ngspice_file);
+    if (ofile.open(QFile::ReadOnly)) {
+        QTextStream ngsp_data(&ofile);
+        QStringList lines = ngsp_data.readAll().split("\n");
+        foreach (QString lin, lines) {  // Extract poles
+            if (lin.contains("pole(")) {
+                if (!var_list.contains("pole")) var_list.append("pole");
+                QList <double> sim_point;
+                sim_point.append(0.0);
+                QString right = lin.section("=",1,1);
+                sim_point.append(right.section(",",0,0).toDouble());
+                sim_point.append(right.section(",",1,1).toDouble());
+                sim_points.append(sim_point);
+            }
+        }
+        /*foreach (QString lin, lines) {   // Extract zeros
+            if (lin.contains("zero(")) {
+                if (!var_list.contains("zero")) var_list.append("zero");
+                QList <double> sim_point;
+                sim_point.append(0.0);
+                QString right = lin.section("=",1,1);
+                sim_point.append(right.section(",",0,0).toDouble());
+                sim_point.append(right.section(",",1,1).toDouble());
+                sim_points.append(sim_point);
+            }
+        }*/
+        ofile.close();
+    }
+}
+
+
 /*!
  * \brief AbstractSpiceKernel::parseSTEPOutput This method parses text raw spice
  *        output from Parameter sweep analysis. Can parse data that uses appedwrite.
@@ -648,6 +686,9 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
                                                             + "spice4qucs.noise.cir.res");
                     parseResFile(res_file,swp_var,swp_var_val);
                 }
+            } else if (ngspice_output_filename.endsWith(".pz")) {
+                isComplex = true;
+                parsePZOutput(full_outfile,sim_points,var_list,hasParSweep);
             } else if (ngspice_output_filename.endsWith("_swp.txt")) {
                 hasParSweep = true;
                 QString simstr = full_outfile;

@@ -74,6 +74,8 @@ public:
                             QStringList &var_list, bool xyce);
     void parseNoiseOutput(QString ngspice_file, QList< QList<double> > &sim_points,
                           QStringList &var_list, bool &ParSwp);
+    void parsePZOutput(QString ngspice_file, QList< QList<double> > &sim_points,
+                       QStringList &var_list, bool &ParSwp);
     void parseSTEPOutput(QString ngspice_file,
                          QList< QList<double> > &sim_points,
                          QStringList &var_list, bool &isComplex);

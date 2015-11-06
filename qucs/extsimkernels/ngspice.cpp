@@ -65,6 +65,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
            if (sim_typ==".CUSTOMSIM") simulations.append("custom");
            if (sim_typ==".DISTO") simulations.append("disto");
            if (sim_typ==".NOISE") simulations.append("noise");
+           if (sim_typ==".PZ") simulations.append("pz");
            if ((sim_typ==".SW")&&
                (pc->Props.at(0)->Value.startsWith("DC"))) simulations.append("dc");
            // stream<<s;
@@ -99,7 +100,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
     stream<<".control\n"          //execute simulations
           <<"set filetype=ascii\n"
-          <<"echo \"\" > spice4qucs.cir.noise\n";
+          <<"echo \"\" > spice4qucs.cir.noise\n"
+          <<"echo \"\" > spice4qucs.cir.pz\n";
 
     QString sim;
     outputs.clear();
@@ -160,6 +162,9 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                if ((sim_typ==".DISTO")&&(sim=="disto")) stream<<s;
                if ((sim_typ==".NOISE")&&(sim=="noise")) {
                    outputs.append("spice4qucs.cir.noise");
+                   stream<<s;
+               } if ((sim_typ==".PZ")&&(sim=="pz")) {
+                   outputs.append("spice4qucs.cir.pz");
                    stream<<s;
                } if ((sim_typ==".TR")&&(sim=="tran")) {
                    stream<<s;
@@ -232,7 +237,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             nods += " " + *it;
         }
 
-        if (sim!="noise") {
+        if ((sim!="noise")&&(sim!="pz")) {
             QString filename;
             if (hasParSWP&&hasDblSWP) filename = QString("%1_%2_swp_swp.txt").arg(basenam).arg(sim);
             else if (hasParSWP) filename = QString("%1_%2_swp.txt").arg(basenam).arg(sim);
