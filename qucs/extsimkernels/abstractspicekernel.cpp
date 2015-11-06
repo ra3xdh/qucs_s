@@ -446,6 +446,12 @@ void AbstractSpiceKernel::parseNoiseOutput(QString ngspice_file, QList<QList<dou
 void AbstractSpiceKernel::parsePZOutput(QString ngspice_file, QList<QList<double> > &sim_points,
                                         QStringList &var_list, bool &ParSwp)
 {
+    static bool zeros = false; // first run --- poles; second run --- zeros
+                        // because poles and zeros vectors have unequal dimension
+    QString var;
+    if (zeros) var = "zero";
+    else var = "pole";
+
     var_list.clear();
     var_list.append("");
     sim_points.clear();
@@ -455,8 +461,8 @@ void AbstractSpiceKernel::parsePZOutput(QString ngspice_file, QList<QList<double
         QTextStream ngsp_data(&ofile);
         QStringList lines = ngsp_data.readAll().split("\n");
         foreach (QString lin, lines) {  // Extract poles
-            if (lin.contains("pole(")) {
-                if (!var_list.contains("pole")) var_list.append("pole");
+            if (lin.contains(var + "(")) {
+                if (!var_list.contains(var)) var_list.append(var);
                 QList <double> sim_point;
                 sim_point.append(0.0);
                 QString right = lin.section("=",1,1);
@@ -465,17 +471,7 @@ void AbstractSpiceKernel::parsePZOutput(QString ngspice_file, QList<QList<double
                 sim_points.append(sim_point);
             }
         }
-        /*foreach (QString lin, lines) {   // Extract zeros
-            if (lin.contains("zero(")) {
-                if (!var_list.contains("zero")) var_list.append("zero");
-                QList <double> sim_point;
-                sim_point.append(0.0);
-                QString right = lin.section("=",1,1);
-                sim_point.append(right.section(",",0,0).toDouble());
-                sim_point.append(right.section(",",1,1).toDouble());
-                sim_points.append(sim_point);
-            }
-        }*/
+        zeros = !zeros;
         ofile.close();
     }
 }

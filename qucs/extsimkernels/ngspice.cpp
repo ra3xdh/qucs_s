@@ -164,6 +164,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                    outputs.append("spice4qucs.cir.noise");
                    stream<<s;
                } if ((sim_typ==".PZ")&&(sim=="pz")) {
+                   outputs.append("spice4qucs.cir.pz"); // Add it twice for poles and zeros
                    outputs.append("spice4qucs.cir.pz");
                    stream<<s;
                } if ((sim_typ==".TR")&&(sim=="tran")) {
