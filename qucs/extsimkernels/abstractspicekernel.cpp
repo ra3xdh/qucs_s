@@ -453,18 +453,23 @@ void AbstractSpiceKernel::parsePZOutput(QString ngspice_file, QList<QList<double
     else var = "pole";
 
     var_list.clear();
-    var_list.append("");
     sim_points.clear();
     ParSwp = false;
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream ngsp_data(&ofile);
         QStringList lines = ngsp_data.readAll().split("\n");
+
+        if (lines.count("PZ analysis")>1) ParSwp = true;
+
         foreach (QString lin, lines) {  // Extract poles
             if (lin.contains(var + "(")) {
-                if (!var_list.contains(var)) var_list.append(var);
+                if (!var_list.contains(var)) {
+                    var_list.append(var+"_number");
+                    var_list.append(var);
+                }
                 QList <double> sim_point;
-                sim_point.append(0.0);
+                sim_point.append(lin.section('(',1,1).section(')',0,0).toDouble());
                 QString right = lin.section("=",1,1);
                 sim_point.append(right.section(",",0,0).toDouble());
                 sim_point.append(right.section(",",1,1).toDouble());
@@ -685,6 +690,11 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
             } else if (ngspice_output_filename.endsWith(".pz")) {
                 isComplex = true;
                 parsePZOutput(full_outfile,sim_points,var_list,hasParSweep);
+                if (hasParSweep) {
+                    QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                                                            + "spice4qucs.pz.cir.res");
+                    parseResFile(res_file,swp_var,swp_var_val);
+                }
             } else if (ngspice_output_filename.endsWith("_swp.txt")) {
                 hasParSweep = true;
                 QString simstr = full_outfile;

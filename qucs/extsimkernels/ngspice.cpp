@@ -136,7 +136,11 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                     QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
                     stream<<(s2+s);
                     hasParSWP = true;
-                } else if (SwpSim.startsWith("TR")&&(sim=="tran")) {
+                } else if (SwpSim.startsWith("PZ")&&(sim=="pz")) {
+                    QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
+                    stream<<(s2+s);
+                    hasParSWP = true;
+                } if (SwpSim.startsWith("TR")&&(sim=="tran")) {
                     QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
                     stream<<(s2+s);
                     hasParSWP = true;
@@ -264,6 +268,9 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                     s += getParentSWPscript(pc,sim,false,b);
                     stream<<s;
                 } else if (SwpSim.startsWith("NOISE")&&(sim=="noise")) {
+                    s += getParentSWPscript(pc,sim,false,b);
+                    stream<<s;
+                } else if (SwpSim.startsWith("PZ")&&(sim=="pz")) {
                     s += getParentSWPscript(pc,sim,false,b);
                     stream<<s;
                 } else if (SwpSim.startsWith("TR")&&(sim=="tran")) {
