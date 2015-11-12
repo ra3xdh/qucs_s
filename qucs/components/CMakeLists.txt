@@ -127,6 +127,8 @@ SE_V_int.cpp
 DE_V_int.cpp
 SE_V_diff.cpp
 DE_V_diff.cpp
+ABV.cpp
+ABCV.cpp
 
 )
 
@@ -375,6 +377,8 @@ SE_V_int.h
 DE_V_int.h
 SE_V_diff.h
 DE_V_diff.h
+ABV.h
+ABCV.h
 )
 
 

@@ -480,6 +480,8 @@ void Module::registerModules (void) {
   REGISTER_XSPICE_ANALOGUE_1 (DE_V_int);
   REGISTER_XSPICE_ANALOGUE_1 (SE_V_diff);
   REGISTER_XSPICE_ANALOGUE_1 (DE_V_diff);
+  REGISTER_XSPICE_ANALOGUE_1 (ABV); 
+  REGISTER_XSPICE_ANALOGUE_1 (ABCV);    
 
 
   // specific sections of spice netlists

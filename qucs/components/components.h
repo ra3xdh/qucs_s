@@ -247,6 +247,8 @@
 #include "DE_V_int.h"
 #include "SE_V_diff.h"
 #include "DE_V_diff.h"
+#include "ABV.h"
+#include "ABCV.h"
 
 // Spice netlist sections
 #include "sp_parameter.h"
