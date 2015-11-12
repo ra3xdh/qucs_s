@@ -290,6 +290,8 @@
         <file>bitmaps/sp_pz.png</file>
         <file>bitmaps/ABV.png</file>
         <file>bitmaps/ABCV.png</file>
+        <file>bitmaps/APBV.png</file>
+        <file>bitmaps/APBPCV.png</file>
         
     </qresource>
 </RCC>

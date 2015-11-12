@@ -129,6 +129,8 @@ SE_V_diff.cpp
 DE_V_diff.cpp
 ABV.cpp
 ABCV.cpp
+APBV.cpp
+APBPCV.cpp
 
 )
 
@@ -379,6 +381,8 @@ SE_V_diff.h
 DE_V_diff.h
 ABV.h
 ABCV.h
+APBV.h
+APBPCV.h
 )
 
 
