@@ -292,6 +292,7 @@
         <file>bitmaps/ABCV.png</file>
         <file>bitmaps/APBV.png</file>
         <file>bitmaps/APBPCV.png</file>
+        <file>bitmaps/DivV.png</file>
         
     </qresource>
 </RCC>
