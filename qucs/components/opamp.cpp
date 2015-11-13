@@ -4,6 +4,7 @@
     begin                : Sun Oct 31 2004
     copyright            : (C) 2004 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
+    SPICE model added by Vadim Kuznetsov <ra3xdh@gmail.com>
  ***************************************************************************/
 
 /***************************************************************************
@@ -16,6 +17,8 @@
  ***************************************************************************/
 
 #include "opamp.h"
+#include "node.h"
+#include "extsimkernels/spicecompat.h"
 
 
 OpAmp::OpAmp()
@@ -45,6 +48,7 @@ OpAmp::OpAmp()
   ty = y2+4;
   Model = "OpAmp";
   Name  = "OP";
+  SpiceModel = "B";
 
   Props.append(new Property("G", "1e6", true,
 		QObject::tr("voltage gain")));
@@ -68,4 +72,28 @@ Element* OpAmp::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new OpAmp();
   return 0;
+}
+
+QString OpAmp::spice_netlist(bool isXyce)
+{
+    QString in_p = Ports.at(0)->Connection->Name;
+    QString in_m = Ports.at(1)->Connection->Name;
+    QString out = Ports.at(2)->Connection->Name;
+
+    QString G = spicecompat::normalize_value(Props.at(0)->Value);
+    QString Vmax = spicecompat::normalize_value(Props.at(1)->Value);
+
+    QString s;
+    s = QString("B_%1 %2 0 V = ").arg(Name).arg(out);
+
+    if (isXyce) {
+        s += QString("%1*V(%2,%3)*stp(%4-%1*V(%2,%3))*stp(%1*V(%2,%3)-(-%4))"
+                    "+%4*stp(%1*V(%2,%3)-%4)"
+                    "+(-%4)*stp((-%4)-%1*V(%2,%3))\n").arg(G).arg(in_p).arg(in_m).arg(Vmax);
+    } else {
+        s += QString("%1*V(%2,%3)*u(%4-%1*V(%2,%3))*u(%1*V(%2,%3)-(-%4))"
+                    "+%4*u(%1*V(%2,%3)-%4)"
+                    "+(-%4)*u((-%4)-%1*V(%2,%3))\n").arg(G).arg(in_p).arg(in_m).arg(Vmax);
+    }
+    return s;
 }
