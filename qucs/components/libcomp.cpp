@@ -21,6 +21,7 @@
 #include "schematic.h"
 #include "misc.h"
 #include "extsimkernels/qucs2spice.h"
+#include "extsimkernels/spicecompat.h"
 
 #include <limits.h>
 
@@ -339,6 +340,14 @@ QString LibComp::spice_netlist(bool)
     QString s = SpiceModel + Name + " 0 "; // connect ground of subckt to circuit ground
     foreach(Port *p1, Ports)
       s += " "+p1->Connection->Name;   // node names
-    s += QString(" %1\n").arg(createType());
+    s += " " + createType();
+
+    // output user defined parameters
+    for(Property *pp = Props.at(2); pp != 0; pp = Props.next()) {
+      QString val = spicecompat::normalize_value(pp->Value);
+      s += " "+pp->Name+"="+val;
+    }
+    s +="\n";
+
     return s;
 }
