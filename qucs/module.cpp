@@ -485,6 +485,8 @@ void Module::registerModules (void) {
   REGISTER_XSPICE_ANALOGUE_1 (APBV);
   REGISTER_XSPICE_ANALOGUE_1 (APBPCV);
   REGISTER_XSPICE_ANALOGUE_1 (DivV);
+  REGISTER_XSPICE_ANALOGUE_1 (Icouple); 
+  REGISTER_XSPICE_ANALOGUE_1 (core);  
 
   // specific sections of spice netlists
   REGISTER_SPICE_SEC_1 (SpiceParam);

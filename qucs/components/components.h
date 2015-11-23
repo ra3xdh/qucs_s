@@ -252,6 +252,8 @@
 #include "APBV.h"
 #include "APBPCV.h"
 #include "DivV.h"
+#include "Icouple.h"
+#include "core.h"
 
 // Spice netlist sections
 #include "sp_parameter.h"

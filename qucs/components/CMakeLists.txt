@@ -132,6 +132,8 @@ ABCV.cpp
 APBV.cpp
 APBPCV.cpp
 DivV.cpp
+Icouple.cpp
+core.cpp
 
 )
 
@@ -385,6 +387,8 @@ ABCV.h
 APBV.h
 APBPCV.h
 DivV.h
+Icouple.h
+core.h
 )
 
 

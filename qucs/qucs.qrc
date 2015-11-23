@@ -293,6 +293,8 @@
         <file>bitmaps/APBV.png</file>
         <file>bitmaps/APBPCV.png</file>
         <file>bitmaps/DivV.png</file>
+        <file>bitmaps/Icouple.png</file> 
+        <file>bitmaps/core.png</file> 
         
     </qresource>
 </RCC>

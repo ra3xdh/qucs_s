@@ -119,6 +119,9 @@ libcomponents_a_SOURCES = phaseshifter.cpp gyrator.cpp componentdialog.cpp    \
         ABCV.cpp \
 	ABV.cpp \
 	APBPCV.cpp \
+	DivV.cpp \
+	core.cpp \
+	Icouple.cpp \
 	APBV.cpp
 
 
@@ -210,6 +213,9 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
         ABCV.h \
 	ABV.h \
 	APBPCV.h \
+	DivV.h \
+	core.h \
+	Icouple.h \
 	APBV.h
 
 
