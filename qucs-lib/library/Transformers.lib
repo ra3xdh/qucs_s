@@ -1,0 +1,655 @@
+<Qucs Library 0.0.19 "Transformers">
+
+<Component LossyTransformer1>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 24 Nov. 2015
+
+A two winding transformer with fringing inductance and resistive losses.
+Lmo is the primary winding inductance with the secondary winding OPEN circut.
+Lmf  is the primary winding inductance with the secondary winding SHORT circut.
+Rp is the primary winding DC resistance.
+Rs is the secondary winding DC resistance.
+Np = number of turns in primary winding.
+Ns = number of turns in secondary winding.
+N = Np/NS, K = sqrt(2-Lmf/Lmo), Lp = K*Lmo, Lpf = (1-K)*Lmo Ls=K*Lmo*(1/N^2), 
+Lsf=(1-K)*LMo*(1/N^2)
+
+  </Description>
+
+  <Spice>
+.SUBCKT Transformers_LossyTransformer1 gnd nPplus nPneg nSplus nSneg Lmo=12u Lmf=0.24u Np=11 Ns=22 Rp=0.017 Rs=0.143
+.PARAM K= {sqrt(1-Lmf/Lmo)}
+.PARAM Lp={K*Lmo}
+.PARAM N={Np/Ns}
+.PARAM Ls={K*Lmo*(1/(N*N))}
+.PARAM Lpf={(1-K)*Lmo}
+.PARAM Lsf={(1-K)*Lmo*(1/(N*N))}
+R2 nSneg  n4 Rs
+L1 n1  n2 Lp
+L2 n3  n4 Ls
+L3 n1  nPplus Lpf
+R1 n2  nPneg Rp
+L4 n3  nSplus Lsf
+K1 L1 L2 K 
+.ENDS
+</Spice>
+
+
+  <Model>
+.Def:Transformers_LossyTransformer1 gnd _net5 _net6 _net7 _net0 Lmo="12u" Lmf="0.24u" Np="11" Ns="22" Rp="0.017" Rs="0.143"
+Eqn:Eqn1 K="sqrt(1-Lmf/Lmo)" Lp="K*Lmo" N="Np/Ns" Ls="K*Lmo*(1/(N*N))" Lpf="(1-K)*Lmo" Lsf="(1-K)*Lmo*(1/(N*N))" Export="yes"
+.Def:End
+  </Model>
+
+
+  <Symbol>
+    <.ID -20 50 TRAN "1=Lmo=12u==" "1=Lmf=0.24u==" "1=Np=11==" "1=Ns=22==" "1=Rp=0.017==" "1=Rs=0.143==">
+    <Line 0 -30 0 0 #000000 0 1>
+    <Line 0 20 0 0 #000000 0 1>
+    <Line 20 -30 -10 0 #aa0000 3 1>
+    <Line 10 -30 0 10 #aa0000 3 1>
+    <Line 10 -20 10 0 #aa0000 3 1>
+    <Line 20 -20 0 10 #aa0000 3 1>
+    <Line 20 -10 -10 0 #aa0000 3 1>
+    <Line 10 -10 0 10 #aa0000 3 1>
+    <Line 10 0 10 0 #aa0000 3 1>
+    <Line 20 0 0 10 #aa0000 3 1>
+    <Line 20 10 -10 0 #aa0000 3 1>
+    <Line 10 10 0 10 #aa0000 3 1>
+    <Line 10 20 10 0 #aa0000 3 1>
+    <Line 20 -30 0 -10 #aa0000 3 1>
+    <Line 20 20 0 10 #aa0000 3 1>
+    <Line -20 -30 10 0 #aa0000 3 1>
+    <Line -10 -30 0 10 #aa0000 3 1>
+    <Line -10 -20 -10 0 #aa0000 3 1>
+    <Line -20 -20 0 10 #aa0000 3 1>
+    <Line -20 -10 10 0 #aa0000 3 1>
+    <Line -10 -10 0 10 #aa0000 3 1>
+    <Line -10 0 -10 0 #aa0000 3 1>
+    <Line -20 0 0 10 #aa0000 3 1>
+    <Line -20 10 10 0 #aa0000 3 1>
+    <Line -10 10 0 10 #aa0000 3 1>
+    <Line -10 20 -10 0 #aa0000 3 1>
+    <Line -20 -30 0 -10 #aa0000 3 1>
+    <Line -20 20 0 10 #aa0000 3 1>
+    <Line -4 -30 0 50 #000000 2 1>
+    <Line 1 -30 0 50 #000000 2 1>
+    <Line -40 -40 20 0 #000080 2 1>
+    <Line 20 -40 20 0 #000080 2 1>
+    <Line -40 30 20 0 #000080 2 1>
+    <Line 20 30 20 0 #00007f 2 1>
+    <Ellipse -16 -42 8 8 #aa0000 1 1 #aa0000 1 1>
+    <Ellipse 8 -42 8 8 #aa0000 1 1 #aa0000 1 1>
+    <.PortSym -40 -40 1 0>
+    <.PortSym -40 30 2 0>
+    <Line 5 -30 0 50 #000000 2 1>
+    <.PortSym 40 30 4 180>
+    <.PortSym 40 -40 3 180>
+  </Symbol>
+</Component>
+
+
+
+<Component LossyTransformer2>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 25 Nov. 2015
+
+A two winding transformer with core saturation effects and resistive losses.
+Background details and use of this model can be found in the "spice4qucs-help"
+document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+
+Outputs H abd B allow the B versus curve to be plotted using the Qucs-0.0.19S emulation of
+Qucs function PlotVs().
+  </Description>
+
+
+  <Spice>
+.SUBCKT Transformers_LossyTransformer2 gnd nPlus nPneg nSplus nSneg nH nB np=4470 ns=870 Rp=30 Rs=5 L=0.2 A=2e-4 
+L3 ndB  0 1
+B3 0  n1  I = pwl ( V(nH), -10000, -1.506, -9000, -1.504, -8000, -1.5035, -7000, -1.053, -6000, -1.502, -5000, -1.501, 
++ -4000, -1.5005, -3000, -1.5, -2500, -1.48, -2000, -1.45, -1500, -1.37, -1000, -1.0, -750, -0.825, -500, -0.55, -250, -0.3,
++ 0, 0, 250, 0.3, 500, 0.55, 750, 0.85, 1000, 1.0, 1500, 1.37, 2000, 1.45, 2500, 1.48,
++ 3000, 1.50, 4000, 1.5005, 5000, 1.501, 6000, 1.502, 7000, 1.503, 8000, 1.5035, 9000, 1.504, 10000, 1.506)
+R4 0  nH 1
+ESRC1 nP2 nPneg ndB 0 {np*A}
+ESRC2 nS2 nSneg ndB 0 {ns*A}
+R1 nP1  nPlus Rp
+R2 nSplus  nS1 Rs
+HSRC3 nB 0  VSRC3 1
+VSRC3 n1 ndB DC 0 
+HSRC4 nIp 0  VSRC4 1
+VSRC4 nP1 nP2 DC 0 
+HSRC5 nIs 0  VSRC5 1
+VSRC5 nS1 nS2 DC 0 
+BD2I0 0 nH I=({np}*V(nIp)+{ns}*V(nIs))/{L}
+.ENDS
+  </Spice>
+
+
+  <Model>
+.Def:Transformers_LossyTransformer2 gnd nPlus nPneg nSplus nSneg nH nB np="4470" ns="870" Rp="30" Rs="5" L="0.2" A="2e-4"
+VCVS:SRC1 ndB nP2 nPneg gnd G="{np*A}" T="0"
+VCVS:SRC2 ndB nS2 nSneg gnd G="{ns*A}" T="0"
+CCVS:SRC3 n1 nB gnd ndB G="1 Ohm" T="0"
+CCVS:SRC4 nP1 nIp gnd nP2 G="1 Ohm" T="0"
+CCVS:SRC5 nS1 nIs gnd nS2 G="1 Ohm" T="0"
+EDD:D2 gnd nH I1="D2.I1" Q1="D2.Q1"
+  Eqn:EqnD2I1 D2.I1="({np}*V(nIp)+{ns}*V(nIs))/{L}" Export="no"
+  Eqn:EqnD2Q1 D2.Q1="0" Export="no"
+.Def:End
+  </Model>
+
+
+  <Symbol>
+    <Line 0 -20 0 0 #000000 0 1>
+    <Line 0 30 0 0 #000000 0 1>
+    <Line 20 -20 -10 0 #aa0000 3 1>
+    <Line 10 -20 0 10 #aa0000 3 1>
+    <Line 10 -10 10 0 #aa0000 3 1>
+    <Line 20 -10 0 10 #aa0000 3 1>
+    <Line 20 0 -10 0 #aa0000 3 1>
+    <Line 10 0 0 10 #aa0000 3 1>
+    <Line 10 10 10 0 #aa0000 3 1>
+    <Line 20 10 0 10 #aa0000 3 1>
+    <Line 20 20 -10 0 #aa0000 3 1>
+    <Line 10 20 0 10 #aa0000 3 1>
+    <Line 10 30 10 0 #aa0000 3 1>
+    <Line 20 -20 0 -10 #aa0000 3 1>
+    <Line 20 30 0 10 #aa0000 3 1>
+    <Line -20 -20 10 0 #aa0000 3 1>
+    <Line -10 -20 0 10 #aa0000 3 1>
+    <Line -10 -10 -10 0 #aa0000 3 1>
+    <Line -20 -10 0 10 #aa0000 3 1>
+    <Line -20 0 10 0 #aa0000 3 1>
+    <Line -10 0 0 10 #aa0000 3 1>
+    <Line -10 10 -10 0 #aa0000 3 1>
+    <Line -20 10 0 10 #aa0000 3 1>
+    <Line -20 20 10 0 #aa0000 3 1>
+    <Line -10 20 0 10 #aa0000 3 1>
+    <Line -10 30 -10 0 #aa0000 3 1>
+    <Line -20 -20 0 -10 #aa0000 3 1>
+    <Line -20 30 0 10 #aa0000 3 1>
+    <Line -4 -20 0 50 #000000 2 1>
+    <Line 1 -20 0 50 #000000 2 1>
+    <Line -40 -30 20 0 #000080 2 1>
+    <Line 20 -30 20 0 #000080 2 1>
+    <Line -40 40 20 0 #000080 2 1>
+    <Line 20 40 20 0 #00007f 2 1>
+    <Ellipse -16 -32 8 8 #aa0000 1 1 #aa0000 1 1>
+    <Ellipse 8 -32 8 8 #aa0000 1 1 #aa0000 1 1>
+    <Line 5 -20 0 50 #000000 2 1>
+    <.PortSym -40 -30 1 0>
+    <.PortSym -40 40 2 0>
+    <.PortSym 40 -30 3 180>
+    <.PortSym 40 40 4 180>
+    <.ID -20 120 TRAN "1=np=4470==" "1=ns=870==" "1=Rp=30==" "1=Rs=5==" "1=L=0.2==" "1=A=2e-4==">
+    <Line -10 80 -10 0 #aa0000 2 1>
+    <Line -10 50 0 30 #aa0000 2 1>
+    <Line 10 50 0 30 #aa0000 2 1>
+    <Line 20 80 -10 0 #aa0000 2 1>
+    <.PortSym 20 80 6 180>
+    <.PortSym -20 80 5 0>
+    <Rectangle -30 -40 60 90 #000000 3 1 #c0c0c0 1 0>
+    <Text -20 90 12 #000000 0 "H">
+    <Text 10 90 12 #000000 0 "B">
+  </Symbol>
+</Component>
+
+
+
+<Component TransformerPS1S2>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 24 Nov. 2015
+
+A three winding transformer(P and S1 and S2) with SPICE K style coupling and
+winding resistors (Rp, Rs1 and Rs2). Background details and use of this 
+model can be found in the "spice4qucs-help" document, at 
+https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+  </Description>
+
+
+  <Spice>
+.SUBCKT Transformers_TransformerPS1S2  gnd nPplus nPneg nSplus nSneg nSPct L1=0.5 L2=0.125 L3=0.125 K12=0.99 K13=0.99 K23=0.99 Rp=2 Rs1=1 Rs2=1 
+L1 nP1  nPneg L1
+L2 nSPlus  nSPct L2
+L3 nSPct  nSPneg L3
+R1 nPplus nP1  {RP}
+K13 L1 L3 {K13} 
+K12 L1 L2 {K12} 
+K23 L2 L3 {K23} 
+R2 nSneg nSPneg  {RS2}
+R3 nSPlus nSplus  {RS1}
+.ENDS
+  </Spice>
+
+
+  <Model>
+.Def:Transformers_TransformerPS1S2 gnd nPplus nPneg nSplus nSneg nSPct L1="0.5" L2="0.125" L3="0.125" K12="0.99" K13="0.99" K23="0.99" Rp="2" Rs1="1" Rs2="1"
+R:R1 nPplus nP1 R="Rp" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 nSneg nSPneg R="Rs2" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R3 nSPlus nSplus R="Rs1" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.Def:End
+  </Model>
+  
+  
+  <Symbol>
+    <Line 60 -60 0 0 #000000 0 1>
+    <Line 60 -10 0 0 #000000 0 1>
+    <Line 80 40 -40 0 #00007f 2 1>
+    <Line 40 -30 10 0 #aa0000 3 1>
+    <Line 50 -30 0 10 #aa0000 3 1>
+    <Line 50 -20 -10 0 #aa0000 3 1>
+    <Line 40 -20 0 10 #aa0000 3 1>
+    <Line 40 -10 10 0 #aa0000 3 1>
+    <Line 50 -10 0 10 #aa0000 3 1>
+    <Line 50 0 -10 0 #aa0000 3 1>
+    <Line 40 0 0 10 #aa0000 3 1>
+    <Line 40 10 10 0 #aa0000 3 1>
+    <Line 50 10 0 10 #aa0000 3 1>
+    <Line 50 20 -10 0 #aa0000 3 1>
+    <Line 60 70 0 0 #000000 0 1>
+    <Line 60 120 0 0 #000000 0 1>
+    <Line 40 70 10 0 #aa0000 3 1>
+    <Line 50 70 0 10 #aa0000 3 1>
+    <Line 50 80 -10 0 #aa0000 3 1>
+    <Line 40 80 0 10 #aa0000 3 1>
+    <Line 40 90 10 0 #aa0000 3 1>
+    <Line 50 90 0 10 #aa0000 3 1>
+    <Line 50 100 -10 0 #aa0000 3 1>
+    <Line 40 100 0 10 #aa0000 3 1>
+    <Line 40 110 10 0 #aa0000 3 1>
+    <Line 50 110 0 10 #aa0000 3 1>
+    <Line 50 120 -10 0 #aa0000 3 1>
+    <Line 40 70 0 -10 #aa0000 3 1>
+    <Line 40 20 0 40 #aa0000 3 1>
+    <Line 40 -30 0 -20 #aa0000 3 1>
+    <Line 40 -50 40 0 #000080 2 1>
+    <Line 40 120 0 20 #aa0000 3 1>
+    <Line 40 140 40 0 #000080 2 1>
+    <Line 30 -30 0 150 #000000 2 1>
+    <Line 24 -30 0 150 #000000 2 1>
+    <Line 18 -30 0 150 #000000 2 1>
+    <Line 20 10 0 0 #000000 0 1>
+    <Line 20 60 0 0 #000000 0 1>
+    <Line 0 10 10 0 #aa0000 3 1>
+    <Line 10 10 0 10 #aa0000 3 1>
+    <Line 10 20 -10 0 #aa0000 3 1>
+    <Line 0 20 0 10 #aa0000 3 1>
+    <Line 0 30 10 0 #aa0000 3 1>
+    <Line 10 30 0 10 #aa0000 3 1>
+    <Line 10 40 -10 0 #aa0000 3 1>
+    <Line 0 40 0 10 #aa0000 3 1>
+    <Line 0 50 10 0 #aa0000 3 1>
+    <Line 10 50 0 10 #aa0000 3 1>
+    <Line 10 60 -10 0 #aa0000 3 1>
+    <Line 0 10 0 -60 #aa0000 3 1>
+    <Line 0 60 0 80 #aa0000 3 1>
+    <Line -50 140 50 0 #000080 2 1>
+    <Ellipse 4 -2 8 8 #aa0000 1 1 #aa0000 1 1>
+    <Ellipse 44 -42 8 8 #aa0000 1 1 #aa0000 1 1>
+    <Ellipse 44 58 8 8 #aa0000 1 1 #aa0000 1 1>
+    <.ID -20 152 TRAN "1=L1=0.5==" "1=L2=0.125==" "1=L3=0.125==" "1=K12=0.99==" "1=K13=0.99==" "1=K23=0.99==" "1=Rp=2==" "1=Rs1=1==" "1=Rs2=1==">
+    <Line -40 -50 40 0 #000080 2 1>
+    <.PortSym 80 -50 3 180>
+    <.PortSym 80 40 5 180>
+    <.PortSym 80 140 4 180>
+    <.PortSym -50 140 2 0>
+    <.PortSym -40 -50 1 0>
+  </Symbol>
+</Component>
+
+
+
+<Component PositiveCouplingPS>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 24 Nov. 2015
+
+A two winding transformer(P and S) with SPICE K style coupling and
+winding resistors (Rp, Rs). Background details and use of this 
+model can be found in the "spice4qucs-help" document, at 
+https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+  </Description> 
+
+  <Spice>
+.SUBCKT Transformers_PositiveCouplingPS gnd PL1neg PL1plus PL2plus PL2neg K=0.99 L1=0.5 L2=0.125 Rp=2 Rs=1 
+L2 nS1  PL2neg L2
+L1 nP1  PL1neg L1
+K1 L1 L2 {K} 
+R1 PL1plus nP1  {RP}
+R2 nS1 PL2plus  {RS}
+.ENDS
+  </Spice>
+
+  <Model>
+.Def:Ttansformers_PositiveCouplingPS gnd PL1neg PL1plus PL2plus PL2neg K="0.99" L1="0.5" L2="0.125" Rp="2" Rs="1"
+R:R1 PL1plus nP1 R="Rp" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 nS1 PL2plus R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.Def:End
+  </Model>
+
+
+  <Symbol>
+    <Line 10 30 0 0 #000000 0 1>
+    <Line 10 80 0 0 #000000 0 1>
+    <Line 30 30 -10 0 #aa0000 3 1>
+    <Line 20 30 0 10 #aa0000 3 1>
+    <Line 20 40 10 0 #aa0000 3 1>
+    <Line 30 40 0 10 #aa0000 3 1>
+    <Line 30 50 -10 0 #aa0000 3 1>
+    <Line 20 50 0 10 #aa0000 3 1>
+    <Line 20 60 10 0 #aa0000 3 1>
+    <Line 30 60 0 10 #aa0000 3 1>
+    <Line 30 70 -10 0 #aa0000 3 1>
+    <Line 20 70 0 10 #aa0000 3 1>
+    <Line 20 80 10 0 #aa0000 3 1>
+    <Line 30 30 0 -10 #aa0000 3 1>
+    <Line 30 80 0 10 #aa0000 3 1>
+    <Line -10 30 10 0 #aa0000 3 1>
+    <Line 0 30 0 10 #aa0000 3 1>
+    <Line 0 40 -10 0 #aa0000 3 1>
+    <Line -10 40 0 10 #aa0000 3 1>
+    <Line -10 50 10 0 #aa0000 3 1>
+    <Line 0 50 0 10 #aa0000 3 1>
+    <Line 0 60 -10 0 #aa0000 3 1>
+    <Line -10 60 0 10 #aa0000 3 1>
+    <Line -10 70 10 0 #aa0000 3 1>
+    <Line 0 70 0 10 #aa0000 3 1>
+    <Line 0 80 -10 0 #aa0000 3 1>
+    <Line -10 30 0 -10 #aa0000 3 1>
+    <Line -10 80 0 10 #aa0000 3 1>
+    <Line 15 30 0 50 #000000 2 1>
+    <Line 6 30 0 50 #000000 2 1>
+    <Line 11 30 0 50 #000000 2 1>
+    <Line -20 20 10 0 #000080 2 1>
+    <Line 30 20 10 0 #000080 2 1>
+    <Line -20 90 10 0 #000080 2 1>
+    <Line 30 90 10 0 #00007f 2 1>
+    <.PortSym 40 20 3 180>
+    <.PortSym 40 90 4 180>
+    <.ID -20 100 TRAN "1=K=0.99==" "1=L1=0.5==" "1=L2=0.125==" "1=Rp=2==" "1=Rs=1==">
+    <Ellipse -6 18 8 8 #aa0000 1 1 #aa0000 1 1>
+    <Ellipse 18 18 8 8 #aa0000 1 1 #aa0000 1 1>
+    <.PortSym -20 20 2 0>
+    <.PortSym -20 90 1 0>
+  </Symbol>
+</Component>
+
+
+
+<Component NegativeCouplingPS>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 24 Nov. 2015
+
+A two winding transformer(P and S) with SPICE K style coupling and
+winding resistors (Rp, Rs). Background details and use of this 
+model can be found in the "spice4qucs-help" document, at 
+https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+  </Description>
+  
+
+<Spice>
+.SUBCKT Transformers_NegativeCouplingPS gnd nPplus nPneg nSplus nSneg K=0.999 L1=0.5 L2=0.125 Rp=2 Rs=1 
+K1 L1 L2 {K} 
+L2 nSneg  _net0 L2
+L1 _net1  nPneg L1
+R1 nPplus _net1  {RP}
+R2 _net0 nSplus  {RS}
+.ENDS
+</Spice>
+
+  
+  <Model>
+.Def:Transformers_NegativeCouplingPS gnd nPplus nPneg nSplus nSneg K="0.999" L1="0.5" L2="0.125" Rp="2" Rs="1"
+R:R1 nPplus _net1 R="Rp" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net0 nSplus R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.Def:End
+  </Model>
+  
+  
+  <Symbol>
+    <Line 0 -30 0 0 #000000 0 1>
+    <Line 0 20 0 0 #000000 0 1>
+    <Line 20 -30 -10 0 #aa0000 3 1>
+    <Line 10 -30 0 10 #aa0000 3 1>
+    <Line 10 -20 10 0 #aa0000 3 1>
+    <Line 20 -20 0 10 #aa0000 3 1>
+    <Line 20 -10 -10 0 #aa0000 3 1>
+    <Line 10 -10 0 10 #aa0000 3 1>
+    <Line 10 0 10 0 #aa0000 3 1>
+    <Line 20 0 0 10 #aa0000 3 1>
+    <Line 20 10 -10 0 #aa0000 3 1>
+    <Line 10 10 0 10 #aa0000 3 1>
+    <Line 10 20 10 0 #aa0000 3 1>
+    <Line 20 -30 0 -10 #aa0000 3 1>
+    <Line 20 20 0 10 #aa0000 3 1>
+    <Line -20 -30 10 0 #aa0000 3 1>
+    <Line -10 -30 0 10 #aa0000 3 1>
+    <Line -10 -20 -10 0 #aa0000 3 1>
+    <Line -20 -20 0 10 #aa0000 3 1>
+    <Line -20 -10 10 0 #aa0000 3 1>
+    <Line -10 -10 0 10 #aa0000 3 1>
+    <Line -20 0 0 10 #aa0000 3 1>
+    <Line -20 10 10 0 #aa0000 3 1>
+    <Line -10 10 0 10 #aa0000 3 1>
+    <Line -10 20 -10 0 #aa0000 3 1>
+    <Line -20 -30 0 -10 #aa0000 3 1>
+    <Line -20 20 0 10 #aa0000 3 1>
+    <Line 5 -30 0 50 #000000 2 1>
+    <Line -4 -30 0 50 #000000 2 1>
+    <Line 1 -30 0 50 #000000 2 1>
+    <Line -30 -40 10 0 #000080 2 1>
+    <Line 20 -40 10 0 #000080 2 1>
+    <Line -30 30 10 0 #000080 2 1>
+    <Line 20 30 10 0 #00007f 2 1>
+    <.PortSym -30 -40 1 0>
+    <.PortSym -30 30 2 0>
+    <.PortSym 30 -40 3 180>
+    <.PortSym 30 30 4 180>
+    <.ID -30 54 TRAN "1=K=0.999==" "1=L1=0.5==" "1=L2=0.125==" "1=Rp=2==" "1=Rs=1==">
+    <Ellipse -16 -42 8 8 #aa0000 1 1 #aa0000 1 1>
+    <Ellipse 8 26 8 8 #aa0000 1 1 #aa0000 1 1>
+    <Line -10 0 -10 0 #aa0000 3 1>
+  </Symbol>
+</Component>
+
+
+
+<Component XSPICEPS1>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 25 Nov. 2015
+
+A two winding transformer with core saturation effects and resistive losses.
+Background details and use of this model can be found in the "spice4qucs-help"
+document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+  </Description>
+
+ < Spice>
+.SUBCKT Transformers_XSPICEPS1 gnd Pplus Pneg Sneg Splus Rp=20 Rs=5 ntp=4350 nts=870 
+R1 Pplus n3  {RP}
+R2 n4 Sneg  {RS}
+AICOUPLE2 n4 Splus n2 0 SIcouple
+.model SIcouple lcouple (num_turns={nts})
+AICOUPLE1 n3 Pneg n1 0 PIcouple
+.model PIcouple lcouple (num_turns={ntp})
+ACORE1 n1 n2  Steel
+.model Steel core length = 0.2 area=2e-4
++ H_array= [-10000 -9000 -8000 -7000 -6000 -5000 -4000 -3000 -2500 -2000 -1500  -1000 -750 -500 -250 0
++ 250 500 750 1000 1500 2000 2500 3000 4000 5000 6000 7000 8000 9000 10000]
++ B_array=[-1.506 -1.504 -1.5035 -1.503 -1.502 -1.501 -1.5005 -1.5 -1.48 -1.45 -1.37 -1.0 -0.825 -0.55 -0.3 0
++ 0.3 0.55 0.825 1.0 1.37 1.45 1.48 1.5 1.5005 1.501 1.502 1.503 1.5035 1.504 1.506 ] )
+.ENDS
+  </Spice>
+
+
+  <Model>
+.Def:Transformers_XSPICEPS1 gnd _net0 _net1 _net4 _net5 Rp="20" Rs="5" ntp="4350" nts="870"
+R:R1 _net0 _net2 R="Rp" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net3 _net4 R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.Def:End
+  </Model>
+  
+  
+  <Symbol>
+    <.ID -20 44 TRAN "1=Rp=20==" "1=Rs=5==" "1=ntp=4350==" "1=nts=870==">
+    <Line 0 -30 0 0 #000000 0 1>
+    <Line 0 20 0 0 #000000 0 1>
+    <Line 20 -30 -10 0 #aa0000 3 1>
+    <Line 10 -30 0 10 #aa0000 3 1>
+    <Line 10 -20 10 0 #aa0000 3 1>
+    <Line 20 -20 0 10 #aa0000 3 1>
+    <Line 20 -10 -10 0 #aa0000 3 1>
+    <Line 10 -10 0 10 #aa0000 3 1>
+    <Line 10 0 10 0 #aa0000 3 1>
+    <Line 20 0 0 10 #aa0000 3 1>
+    <Line 20 10 -10 0 #aa0000 3 1>
+    <Line 10 10 0 10 #aa0000 3 1>
+    <Line 10 20 10 0 #aa0000 3 1>
+    <Line 20 -30 0 -10 #aa0000 3 1>
+    <Line 20 20 0 10 #aa0000 3 1>
+    <Line -20 -30 10 0 #aa0000 3 1>
+    <Line -10 -30 0 10 #aa0000 3 1>
+    <Line -10 -20 -10 0 #aa0000 3 1>
+    <Line -20 -20 0 10 #aa0000 3 1>
+    <Line -20 -10 10 0 #aa0000 3 1>
+    <Line -10 -10 0 10 #aa0000 3 1>
+    <Line -10 0 -10 0 #aa0000 3 1>
+    <Line -20 0 0 10 #aa0000 3 1>
+    <Line -20 10 10 0 #aa0000 3 1>
+    <Line -10 10 0 10 #aa0000 3 1>
+    <Line -10 20 -10 0 #aa0000 3 1>
+    <Line -20 -30 0 -10 #aa0000 3 1>
+    <Line -20 20 0 10 #aa0000 3 1>
+    <Line -4 -30 0 50 #000000 2 1>
+    <Line 1 -30 0 50 #000000 2 1>
+    <Line -40 -40 20 0 #000080 2 1>
+    <Line 20 -40 20 0 #000080 2 1>
+    <Line -40 30 20 0 #000080 2 1>
+    <Line 20 30 20 0 #00007f 2 1>
+    <Ellipse -16 -42 8 8 #aa0000 1 1 #aa0000 1 1>
+    <Line 5 -30 0 50 #000000 2 1>
+    <Rectangle -30 -50 60 90 #000000 3 1 #c0c0c0 1 0>
+    <Ellipse 8 -42 8 8 #aa0000 1 1 #aa0000 1 1>
+    <.PortSym -40 -40 1 0>
+    <.PortSym -40 30 2 0>
+    <.PortSym 40 -40 4 180>
+    <.PortSym 40 30 3 180>
+  </Symbol>
+</Component>
+
+
+
+<Component XSPICEPS1S2>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 25 Nov. 2015
+
+A three winding transformer with core saturation effects and resistive losses.
+Background details and use of this model can be found in the "spice4qucs-help"
+document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+  </Description>
+
+
+  <Spice>
+.SUBCKT Transformers_XSPICEPS1S2 gnd Pplus Pneg S1plus PCT S2neg ntp=2500 nts1=1000 nts2=1000 Rp=5 Rs1=2 Rs2=2 
+AICOUPLE1 _net0 Pneg n1 0 PIcouple
+.model PIcouple lcouple (num_turns={ntp})
+R3 S2neg  _net1 Rs2
+R2 S1plus  _net2 RS1
+R1 _net0  Pplus Rp
+AICOUPLE3 PCT _net1 n3 0 SIcouple
+.model SIcouple lcouple (num_turns={nts2})
+AICOUPLE2 _net2 PCT n2 0 SIcouple
+.model SIcouple lcouple (num_turns={nts1})
+ACORE1 n1 n2  Steel
+.model Steel core length = 0.2 area=2e-4
++ H_array= [-10000 -9000 -8000 -7000 -6000 -5000 -4000 -3000 -2500 -2000 -1500  -1000 -750 -500 -250 0
++ 250 500 750 1000 1500 2000 2500 3000 4000 5000 6000 7000 8000 9000 10000]
++ B_array=[-1.506 -1.504 -1.5035 -1.503 -1.502 -1.501 -1.5005 -1.5 -1.48 -1.45 -1.37 -1.0 -0.825 -0.55 -0.3 0
++ 0.3 0.55 0.825 1.0 1.37 1.45 1.48 1.5 1.5005 1.501 1.502 1.503 1.5035 1.504 1.506 ] )
+ACORE2 n1 n3  Steel
+.model Steel core length = 0.2 area=2e-4
++ H_array= [-10000 -9000 -8000 -7000 -6000 -5000 -4000 -3000 -2500 -2000 -1500  -1000 -750 -500 -250 0
++ 250 500 750 1000 1500 2000 2500 3000 4000 5000 6000 7000 8000 9000 10000]
++ B_array=[-1.506 -1.504 -1.5035 -1.503 -1.502 -1.501 -1.5005 -1.5 -1.48 -1.45 -1.37 -1.0 -0.825 -0.55 -0.3 0
++ 0.3 0.55 0.825 1.0 1.37 1.45 1.48 1.5 1.5005 1.501 1.502 1.503 1.5035 1.504 1.506 ] )
+ACORE3 n2 n3  Steel
+.model Steel core length = 0.2 area=2e-4
++ H_array= [-10000 -9000 -8000 -7000 -6000 -5000 -4000 -3000 -2500 -2000 -1500  -1000 -750 -500 -250 0
++ 250 500 750 1000 1500 2000 2500 3000 4000 5000 6000 7000 8000 9000 10000]
++ B_array=[-1.506 -1.504 -1.5035 -1.503 -1.502 -1.501 -1.5005 -1.5 -1.48 -1.45 -1.37 -1.0 -0.825 -0.55 -0.3 0
++ 0.3 0.55 0.825 1.0 1.37 1.45 1.48 1.5 1.5005 1.501 1.502 1.503 1.5035 1.504 1.506 ] )
+.ENDS
+  </Spice>
+
+
+  <Model>
+.Def:Transformers_XSPICEPS1S2 gnd _net3 _net1 _net4 _net5 _net6 ntp="2500" nts1="1000" nts2="1000" Rp="5" Rs1="2" Rs2="2"
+.Def:End
+  </Model>
+
+
+  <Symbol>
+    <Line 20 -110 0 0 #000000 0 1>
+    <Line 20 -60 0 0 #000000 0 1>
+    <Line 40 -10 -40 0 #00007f 2 1>
+    <Line 0 -80 10 0 #aa0000 3 1>
+    <Line 10 -80 0 10 #aa0000 3 1>
+    <Line 10 -70 -10 0 #aa0000 3 1>
+    <Line 0 -70 0 10 #aa0000 3 1>
+    <Line 0 -60 10 0 #aa0000 3 1>
+    <Line 10 -60 0 10 #aa0000 3 1>
+    <Line 10 -50 -10 0 #aa0000 3 1>
+    <Line 0 -50 0 10 #aa0000 3 1>
+    <Line 0 -40 10 0 #aa0000 3 1>
+    <Line 10 -40 0 10 #aa0000 3 1>
+    <Line 10 -30 -10 0 #aa0000 3 1>
+    <Line 20 20 0 0 #000000 0 1>
+    <Line 20 70 0 0 #000000 0 1>
+    <Line 0 20 10 0 #aa0000 3 1>
+    <Line 10 20 0 10 #aa0000 3 1>
+    <Line 10 30 -10 0 #aa0000 3 1>
+    <Line 0 30 0 10 #aa0000 3 1>
+    <Line 0 40 10 0 #aa0000 3 1>
+    <Line 10 40 0 10 #aa0000 3 1>
+    <Line 10 50 -10 0 #aa0000 3 1>
+    <Line 0 50 0 10 #aa0000 3 1>
+    <Line 0 60 10 0 #aa0000 3 1>
+    <Line 10 60 0 10 #aa0000 3 1>
+    <Line 10 70 -10 0 #aa0000 3 1>
+    <Line 0 20 0 -10 #aa0000 3 1>
+    <Line 0 -30 0 40 #aa0000 3 1>
+    <Line 0 -80 0 -20 #aa0000 3 1>
+    <Line 0 -100 40 0 #000080 2 1>
+    <Line 0 70 0 20 #aa0000 3 1>
+    <Line 0 90 40 0 #000080 2 1>
+    <Line -10 -80 0 150 #000000 2 1>
+    <Line -16 -80 0 150 #000000 2 1>
+    <Line -22 -80 0 150 #000000 2 1>
+    <Line -20 -40 0 0 #000000 0 1>
+    <Line -20 10 0 0 #000000 0 1>
+    <Line -40 -40 10 0 #aa0000 3 1>
+    <Line -30 -40 0 10 #aa0000 3 1>
+    <Line -30 -30 -10 0 #aa0000 3 1>
+    <Line -40 -30 0 10 #aa0000 3 1>
+    <Line -40 -20 10 0 #aa0000 3 1>
+    <Line -30 -20 0 10 #aa0000 3 1>
+    <Line -30 -10 -10 0 #aa0000 3 1>
+    <Line -40 -10 0 10 #aa0000 3 1>
+    <Line -40 0 10 0 #aa0000 3 1>
+    <Line -30 0 0 10 #aa0000 3 1>
+    <Line -30 10 -10 0 #aa0000 3 1>
+    <Line -40 -40 0 -60 #aa0000 3 1>
+    <Line -40 10 0 80 #aa0000 3 1>
+    <Line -90 90 50 0 #000080 2 1>
+    <Ellipse -36 -52 8 8 #aa0000 1 1 #aa0000 1 1>
+    <Ellipse 4 -92 8 8 #aa0000 1 1 #aa0000 1 1>
+    <Ellipse 4 8 8 8 #aa0000 1 1 #aa0000 1 1>
+    <Line -80 -100 40 0 #000080 2 1>
+    <.ID -60 114 TRAN "1=ntp=2500==" "1=nts1=1000==" "1=nts2=1000==" "1=Rp=5==" "1=Rs1=2==" "1=Rs2=2==">
+    <.PortSym -80 -100 1 0>
+    <.PortSym -90 90 2 0>
+    <.PortSym 40 -10 4 180>
+    <.PortSym 40 -100 3 180>
+    <.PortSym 40 90 5 180>
+  </Symbol>
+</Component>
+
