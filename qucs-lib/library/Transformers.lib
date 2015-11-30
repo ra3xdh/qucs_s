@@ -463,7 +463,7 @@ Background details and use of this model can be found in the "spice4qucs-help"
 document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
   </Description>
 
- < Spice>
+ <Spice>
 .SUBCKT Transformers_XSPICEPS1 gnd Pplus Pneg Sneg Splus Rp=20 Rs=5 ntp=4350 nts=870 
 R1 Pplus n3  {RP}
 R2 n4 Sneg  {RS}
