@@ -122,7 +122,8 @@ libcomponents_a_SOURCES = phaseshifter.cpp gyrator.cpp componentdialog.cpp    \
 	DivV.cpp \
 	core.cpp \
 	Icouple.cpp \
-	APBV.cpp
+	APBV.cpp \
+	SDTF.cpp
 
 
 
@@ -216,7 +217,8 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
 	DivV.h \
 	core.h \
 	Icouple.h \
-	APBV.h
+	APBV.h \
+	SDTF.h 
 
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs

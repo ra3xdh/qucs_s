@@ -295,6 +295,7 @@
         <file>bitmaps/DivV.png</file>
         <file>bitmaps/Icouple.png</file> 
         <file>bitmaps/core.png</file> 
+        <file>bitmaps/SDTF.png</file> 
         
     </qresource>
 </RCC>

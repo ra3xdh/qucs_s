@@ -254,6 +254,7 @@
 #include "DivV.h"
 #include "Icouple.h"
 #include "core.h"
+#include "SDTF.h"
 
 // Spice netlist sections
 #include "sp_parameter.h"
