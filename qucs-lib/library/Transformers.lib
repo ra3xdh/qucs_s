@@ -43,7 +43,7 @@ Eqn:Eqn1 K="sqrt(1-Lmf/Lmo)" Lp="K*Lmo" N="Np/Ns" Ls="K*Lmo*(1/(N*N))" Lpf="(1-K
 
 
   <Symbol>
-    <.ID -20 50 TRAN "1=Lmo=12u==" "1=Lmf=0.24u==" "1=Np=11==" "1=Ns=22==" "1=Rp=0.017==" "1=Rs=0.143==">
+    <.ID -20 50 TRAN "1=Lmo=12u=primary inductance with secondary OPEN circuit (Henries)." "1=Lmf=0.24u=primary inductance with secondary SHORT circuit (Henries)." "1=Np=11=number of primary turns."    "1=Ns=22=number of secondary turns." "1=Rp=0.017=primary winding resistance (Ohms)." "1=Rs=0.143=secondary winding resistance (Ohms).">
     <Line 0 -30 0 0 #000000 0 1>
     <Line 0 20 0 0 #000000 0 1>
     <Line 20 -30 -10 0 #aa0000 3 1>
@@ -182,7 +182,7 @@ EDD:D2 gnd nH I1="D2.I1" Q1="D2.Q1"
     <.PortSym -40 40 2 0>
     <.PortSym 40 -30 3 180>
     <.PortSym 40 40 4 180>
-    <.ID -20 120 TRAN "1=np=4470==" "1=ns=870==" "1=Rp=30==" "1=Rs=5==" "1=L=0.2==" "1=A=2e-4==">
+    <.ID -20 120 TRAN "1=np=4470=number of primary turns." "1=ns=870=number of Secondary turns." "1=Rp=30=primary winding resistance (Ohms)." "1=Rs=5=secondary winding resistance (Ohms)." "1=L=0.2=transformer core magnetic path length (m)." "1=A=2e-4=transformer core cross-sectional area (m^2).">
     <Line -10 80 -10 0 #aa0000 2 1>
     <Line -10 50 0 30 #aa0000 2 1>
     <Line 10 50 0 30 #aa0000 2 1>
@@ -288,7 +288,7 @@ R:R3 nSPlus nSplus R="Rs1" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
     <Ellipse 4 -2 8 8 #aa0000 1 1 #aa0000 1 1>
     <Ellipse 44 -42 8 8 #aa0000 1 1 #aa0000 1 1>
     <Ellipse 44 58 8 8 #aa0000 1 1 #aa0000 1 1>
-    <.ID -20 152 TRAN "1=L1=0.5==" "1=L2=0.125==" "1=L3=0.125==" "1=K12=0.99==" "1=K13=0.99==" "1=K23=0.99==" "1=Rp=2==" "1=Rs1=1==" "1=Rs2=1==">
+    <.ID -20 152 TRAN "1=L1=0.5=primary inductance (Henries)" "1=L2=0.125=secondary one inductance (Henries)." "1=L3=0.125=secondary two inductance (Henries)." "1=K12=0.99=primary to secondary one coupling factor (0 < K12 <1)." "1=K13=0.99=primary to secondary two coupling factor ( 0 < K13 <1)." "1=K23=0.99=secondary one to secondary two coupling factor (0 < K23 <1)." "1=Rp=2=primary winding resistance (Ohms)." "1=Rs1=1=secondary one winding resistance (Ohms)." "1=Rs2=1=secondary two winding resistance (Ohms).">
     <Line -40 -50 40 0 #000080 2 1>
     <.PortSym 80 -50 3 180>
     <.PortSym 80 40 5 180>
@@ -366,7 +366,7 @@ R:R2 nS1 PL2plus R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
     <Line 30 90 10 0 #00007f 2 1>
     <.PortSym 40 20 3 180>
     <.PortSym 40 90 4 180>
-    <.ID -20 100 TRAN "1=K=0.99==" "1=L1=0.5==" "1=L2=0.125==" "1=Rp=2==" "1=Rs=1==">
+    <.ID -20 100 TRAN "1=K=0.99=primary to secondary coupling factor (0 < K < 1)." "1=L1=0.5=primary inductance (Henries)," "1=L2=0.125=secondary inductance (Henries)," "1=Rp=2=primary winding resistance (Ohms)." "1=Rs=1=secondary winding resistance (Ohms).">
     <Ellipse -6 18 8 8 #aa0000 1 1 #aa0000 1 1>
     <Ellipse 18 18 8 8 #aa0000 1 1 #aa0000 1 1>
     <.PortSym -20 20 2 0>
@@ -445,7 +445,7 @@ R:R2 _net0 nSplus R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
     <.PortSym -30 30 2 0>
     <.PortSym 30 -40 3 180>
     <.PortSym 30 30 4 180>
-    <.ID -30 54 TRAN "1=K=0.999==" "1=L1=0.5==" "1=L2=0.125==" "1=Rp=2==" "1=Rs=1==">
+    <.ID -30 54 TRAN "1=K=0.999=primary to secondary coupling factor (0 < K <1)." "1=L1=0.5=primary inductance (Henries)." "1=L2=0.125=secondary inductance (Henries)" "1=Rp=2=primary winding resistance {Ohms)." "1=Rs=1=secondary winding resistance (Ohms).">
     <Ellipse -16 -42 8 8 #aa0000 1 1 #aa0000 1 1>
     <Ellipse 8 26 8 8 #aa0000 1 1 #aa0000 1 1>
     <Line -10 0 -10 0 #aa0000 3 1>
@@ -490,7 +490,7 @@ R:R2 _net3 _net4 R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
   
   
   <Symbol>
-    <.ID -20 44 TRAN "1=Rp=20==" "1=Rs=5==" "1=ntp=4350==" "1=nts=870==">
+    <.ID -20 44 TRAN "1=Rp=20=primary winding resistance (Ohms)." "1=Rs=5=secondary winding resistance (Ohms)." "1=ntp=4350=number of primary turns," "1=nts=870=number of secondary turns.">
     <Line 0 -30 0 0 #000000 0 1>
     <Line 0 20 0 0 #000000 0 1>
     <Line 20 -30 -10 0 #aa0000 3 1>
@@ -644,7 +644,7 @@ ACORE3 n2 n3  Steel
     <Ellipse 4 -92 8 8 #aa0000 1 1 #aa0000 1 1>
     <Ellipse 4 8 8 8 #aa0000 1 1 #aa0000 1 1>
     <Line -80 -100 40 0 #000080 2 1>
-    <.ID -60 114 TRAN "1=ntp=2500==" "1=nts1=1000==" "1=nts2=1000==" "1=Rp=5==" "1=Rs1=2==" "1=Rs2=2==">
+    <.ID -60 114 TRAN "1=ntp=2500=number of primary turns." "1=nts1=1000=number of secondary one turns." "1=nts2=1000=number of secondary two turns." "1=Rp=5=primary winding resistance (Ohms)." "1=Rs1=2=secondary one winding resistance (Ohms)." "1=Rs2=2=secondary two winding resistance (Ohms).">
     <.PortSym -80 -100 1 0>
     <.PortSym -90 90 2 0>
     <.PortSym 40 -10 4 180>
