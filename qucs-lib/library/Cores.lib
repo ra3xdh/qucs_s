@@ -1,0 +1,364 @@
+<Qucs Library 0.0.19 "Cores">
+
+<Component CastSteel>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 6 Dec. 2015
+
+Cast steel magnetic core.
+Background details and use of this model can be found in the "spice4qucs-help"
+document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+  </Description>
+  
+  
+  <Spice>
+.SUBCKT Cores_CastSteel gnd nPplus nPneg Length=0.2 Area=2e-4 
+ACORE nPplus nPneg  CastSteel
+.model CastSteel core ( mode=1 length = {Length} area={Area}
++ H_array = [ -6299 -5906  -5512 -5118 -4724 -4367 -3937 -3543 -3150 -2756 -2362 -1969 -1575 -1378 -1181 -984 -787 -591 -394 -197 0 
++                     197 394 591 787 984 1181 1378 1575 1969 2362 2756 3150 3543 3937 4367 4724 5118 5512 5906 6299 ] 
++ B_array= [ -1.83 -1.82 -180 -1.79 -1.77 -1.75 -1.72 -1.69 -1.67 -1.64 -1.6 -1.56 -1.5 -1.45 -1.4 -1.35 -1.27 -1.15 -0.95 -0.5 0
++           0.5 0.95 1.15 1.27 1.35 1.4 1.45 1.5 1.56 1.6 1.64 1.67 1.69 1.72 1.75 1.77 1.79 1.8 1.82 1.83 ] )
+.ENDS 
+  </Spice>
+  
+  
+  <Model>
+.Def:Cores_CastSteel gnd nPplus nPneg Length="0.2" Area="2e-4"
+.Def:End
+  </Model>
+  
+  <Symbol>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 1 0>
+    <Line -10 -10 100 0 #000000 3 1>
+    <Line -10 0 100 0 #000000 3 1>
+    <Line -10 10 100 0 #000000 3 1>
+    <Line 100 0 20 0 #000080 2 1>
+    <Rectangle -20 -40 120 80 #0000ff 3 1 #c0c0c0 1 0>
+    <.ID 0 44 CORE "1=Length=0.2=core magnetic path length (m).=" "1=Area=2e-4=core cross sectional area (m^2).=">
+    <.PortSym 120 0 2 180>
+    <Text 14 9 16 #0000ff 0 "PWL">
+    <Text -1 -39 14 #0000ff 0 "Cast_{-}Steel">
+  </Symbol>
+</Component>
+
+
+
+
+<Component Cobalt>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 6 Dec. 2015
+  
+Cobalt magnetic core.
+Background details and use of this model can be found in the "spice4qucs-help"
+document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+  </Description>
+  
+  
+  <Spice>
+.SUBCKT Cores_Cobalt gnd nPplus nPneg Length=0.2 Area=2e-4 
+ACORE nPplus nPneg  Cobalt
+.model Cobalt core ( mode=1 length = {Length} area={Area}
++ H_array = [ -6299 -5906  -5512 -5118 -4724 -4367 -3937 -3543 -3150 -2756 -2362 -1969 -1575 -1378 -1181 -984 -787 -591 -394 -197 0 
++                     197 394 591 787 984 1181 1378 1575 1969 2362 2756 3150 3543 3937 4367 4724 5118 5512 5906 6299 ] 
++ B_array = [ -0.7 -0.68 -0.66 -0.65 -0.63 -0.6 -0.57 -0.545 -0.52 -0.48 -0.45 -0.4 -0.34 -0.3 -0.26 -0.2 -0.16 -0.1 -0.06 -0.02 0 
++                     0.02 0.06 0.1 0.16 0.2 0.26 0.3 0.34 0.4 0.45 0.48 0.52 0.545 0.57 0.6 0.63 0.65 0.66 0.68 0.7   ] )
+.ENDS
+  </Spice>
+  
+  
+  <Model>
+.Def:Cores_Cobalt gnd nPplus nPneg Length="0.2" Area="2e-4"
+.Def:End
+  </Model>
+  
+  
+  <Symbol>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 1 0>
+    <Line -10 -10 100 0 #000000 3 1>
+    <Line -10 0 100 0 #000000 3 1>
+    <Line -10 10 100 0 #000000 3 1>
+    <Line 100 0 20 0 #000080 2 1>
+    <Rectangle -20 -40 120 80 #0000ff 3 1 #c0c0c0 1 0>
+    <.ID 0 44 CORE "1=Length=0.2=core magnetic path length (m).=" "1=Area=2e-4=core cross sectional area (m^2).=">
+    <.PortSym 120 0 2 180>
+    <Text 14 9 16 #0000ff 0 "PWL">
+    <Text 13 -37 12 #0000ff 0 "Cobalt">
+  </Symbol>
+</Component>
+
+
+
+
+
+<Component MagneticSteel>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 6 Dec. 2015
+  
+Magnetic steel core.
+Background details and use of this model can be found in the "spice4qucs-help"
+document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+  </Description>
+  
+  
+  <Spice>
+.SUBCKT Cores_MagneticSteel gnd nPplus nPneg Length=0.2 Area=2e-4 
+ACORE nPplus nPneg  MagneticSteel
+.model MagneticSteel core ( mode=1 length = {Length} area={Area}
++ H_array = [ -6299 -5906  -5512 -5118 -4724 -4367 -3937 -3543 -3150 -2756 -2362 -1969 -1575 -1378 -1181 -984 -787 -591 -394 -197 0 
++                     197 394 591 787 984 1181 1378 1575 1969 2362 2756 3150 3543 3937 4367 4724 5118 5512 5906 6299 ] 
++ B_array = [ -1.37 -1.35 -1.31 -1.29 -1.26 -1.22 -1.18 -1.14 -1.08 -1.03 -0.96 -0.86 -0.70 -0.63 -0.46 -0.31 -0.2 -0.12 -0.06 -0.02 0
++        0.02 0.06 0.12 0.20 0.33 0.46 0.63 0.70 0.86 0.96 1.03 1.08 1.14 1.18 1.22 1.26 1.29 1.31 1.35 1.37     ] )
+.ENDS
+  </Spice>
+  
+  
+  <Model>
+.Def:Cores_MagneticSteel gnd nPplus nPneg Length="0.2" Area="2e-4"
+.Def:End
+  </Model>
+  
+  
+  <Symbol>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 1 0>
+    <Line -10 -10 100 0 #000000 3 1>
+    <Line -10 0 100 0 #000000 3 1>
+    <Line -10 10 100 0 #000000 3 1>
+    <Line 100 0 20 0 #000080 2 1>
+    <Rectangle -20 -40 120 80 #0000ff 3 1 #c0c0c0 1 0>
+    <.ID 0 44 CORE "1=Length=0.2=core magnetic path length (m).=" "1=Area=2e-4=core cross sectional area (m^2).=">
+    <.PortSym 120 0 2 180>
+    <Text 14 9 16 #0000ff 0 "PWL">
+    <Text -11 -37 12 #0000ff 0 "Magnetic_{-}Steel">
+  </Symbol>
+</Component>
+
+
+
+
+<Component Nickel>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 6 Dec. 2015
+  
+Nickel magnetic core.
+Background details and use of this model can be found in the "spice4qucs-help"
+document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+  </Description>
+  
+  
+  <Spice>
+.SUBCKT Cores_Nickel gnd nPplus nPneg Length=0.2 Area=2e-4 
+ACORE nPplus nPneg  Nickel
+.model Nickel core ( mode=1 length = {Length} area={Area}
++ H_array = [ -6299 -5906  -5512 -5118 -4724 -4367 -3937 -3543 -3150 -2756 -2362 -1969 -1575 -1378 -1181 -984 -787 -591 -394 -197 0 
++                     197 394 591 787 984 1181 1378 1575 1969 2362 2756 3150 3543 3937 4367 4724 5118 5512 5906 6299 ] 
++ B_array = [ -0.58 -0.575 -0.570 -0.565 -0.560 -0.555 -0.550 -0.545 -0.540 -0.530 -0.510 -0.500 -0.480 -0.465 -0.460 -0.435 -0.400 -0.370 -0.300 -0.220 0
++        0.220 0.300 0.370 0.400 0.455 0.460 0.465 0.480 0.500 0.510 0.530 0.540 0.545 0.550 0.555 0.560 0.565 0.570 0.575 0.580   ] )
+.ENDS
+  </Spice>
+  
+  
+  <Model>
+.Def:Cores_Nickel gnd nPplus nPneg Length="0.2" Area="2e-4"
+.Def:End
+  </Model>
+  
+  
+  <Symbol>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 1 0>
+    <Line -10 -10 100 0 #000000 3 1>
+    <Line -10 0 100 0 #000000 3 1>
+    <Line -10 10 100 0 #000000 3 1>
+    <Line 100 0 20 0 #000080 2 1>
+    <Rectangle -20 -40 120 80 #0000ff 3 1 #c0c0c0 1 0>
+    <.ID 0 44 CORE "1=Length=0.2=core magnetic path length (m).=" "1=Area=2e-4=core cross sectional area (m^2).=">
+    <.PortSym 120 0 2 180>
+    <Text 14 9 16 #0000ff 0 "PWL">
+    <Text 13 -37 12 #0000ff 0 "Nickel">
+  </Symbol>
+</Component>
+
+
+
+
+
+<Component SheetSteel>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 6 Dec. 2015
+
+Sheet steel magnetic core.
+Background details and use of this model can be found in the "spice4qucs-help"
+document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+  </Description>
+  
+  
+  <Spice>
+  .SUBCKT Cores_SheetSteel gnd nPplus nPneg Length=0.2 Area=2e-4 
+ACORE nPplus nPneg  SheetSteel
+.model SheetSteel core ( mode=1 length = {Length} area={Area}
++ H_array = [ -6299 -5906  -5512 -5118 -4724 -4367 -3937 -3543 -3150 -2756 -2362 -1969 -1575 -1378 -1181 -984 -787 -591 -394 -197 0 
++                     197 394 591 787 984 1181 1378 1575 1969 2362 2756 3150 3543 3937 4367 4724 5118 5512 5906 6299 ] 
++ B_array = [ -1.83 -1.82 -1.81 -1.80 -1.79 -1.77 -1.75 -1.73 -1.72 -1.70 -1.68 -1.65 -1.63 -1.61 -1.59 -1.57 -1.54 -1.50 -1.44 -1.30 0
++            1.30 1.44 1.50 1.54 1.57 1.59 1.61 1.63 1.65 1.68 1.70 1.72 1.73 1.75 1.77 1.79 1.80 1.81 1.82 1.83   ] )
+.ENDS
+  </Spice>
+  
+  
+  <Model>
+.Def:Cores_SheetSteel gnd nPplus nPneg Length="0.2" Area="2e-4"
+.Def:End
+  </Model>
+  
+  
+  <Symbol>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 1 0>
+    <Line -10 -10 100 0 #000000 3 1>
+    <Line -10 0 100 0 #000000 3 1>
+    <Line -10 10 100 0 #000000 3 1>
+    <Line 100 0 20 0 #000080 2 1>
+    <Rectangle -20 -40 120 80 #0000ff 3 1 #c0c0c0 1 0>
+    <.ID 0 44 CORE "1=Length=0.2=core magnetic path length (m).=" "1=Area=2e-4=core cross sectional area (m^2).=">
+    <.PortSym 120 0 2 180>
+    <Text -7 -39 14 #0000ff 0 "Sheet_{-}Steel">
+    <Text 14 9 16 #0000ff 0 "PWL">
+  </Symbol>
+</Component>
+
+<Component SiliconSteel>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 6 Dec. 2015
+  
+Silicon steel magnetic core.
+Background details and use of this model can be found in the "spice4qucs-help"
+document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+  </Description>
+  
+  
+   <Spice>
+  .SUBCKT Cores_SiliconSteel gnd nPplus nPneg Length=0.2 Area=2e-4 
+ACORE nPplus nPneg  SiliconSteel
+.model SiliconSteel core ( mode=1 length = {Length} area={Area}
++ H_array = [ -6299 -5906  -5512 -5118 -4724 -4367 -3937 -3543 -3150 -2756 -2362 -1969 -1575 -1378 -1181 -984 -787 -591 -394 -197 0 
++                     197 394 591 787 984 1181 1378 1575 1969 2362 2756 3150 3543 3937 4367 4724 5118 5512 5906 6299 ] 
++ B_array = [ -1.72 -1.71 -1.70 -1.69 -1.67 -1.64 -1.63 -1.61 -1.60 -1.58 -1.56 -1.53 -1.50 -1.48 -1.46 -1.45 -1.41 -1.38 -1.30 -1.20 0
++        1.20 1.30 1.38 1.41 1.45 1.46 1.48 1.50 1.53 1.56 1.58 1.60 1.61 1.63 1.64 1.67 1.69 1.70 1.7 1.72      ] )
+.ENDS
+   </Spice>
+   
+   
+  <Model>
+.Def:Cores_SiliconSteel gnd nPplus nPneg Length="0.2" Area="2e-4"
+.Def:End
+  </Model>
+  
+  
+  <Symbol>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 1 0>
+    <Line -10 -10 100 0 #000000 3 1>
+    <Line -10 0 100 0 #000000 3 1>
+    <Line -10 10 100 0 #000000 3 1>
+    <Line 100 0 20 0 #000080 2 1>
+    <Rectangle -20 -40 120 80 #0000ff 3 1 #c0c0c0 1 0>
+    <.ID 0 44 CORE "1=Length=0.2=core magnetic path length (m).=" "1=Area=2e-4=core cross sectional area (m^2).=">
+    <.PortSym 120 0 2 180>
+    <Text 14 9 16 #0000ff 0 "PWL">
+    <Text -11 -39 14 #0000ff 0 "Silicon_{-}Steel">
+  </Symbol>
+</Component>
+
+
+
+
+<Component TungstenSteel>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 6 Dec. 2015
+  
+Tungsten steel magnetic core.
+Background details and use of this model can be found in the "spice4qucs-help"
+document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+  </Description>
+  
+  
+  <Spice>
+.SUBCKT Cores_TungstenSteel gnd nPplus nPneg Length=0.2 Area=2e-4 
+ACORE nPplus nPneg  TungstenSteel
+.model TungstenSteel core ( mode=1 length = {Length} area={Area}
++ H_array = [ -6299 -5906  -5512 -5118 -4724 -4367 -3937 -3543 -3150 -2756 -2362 -1969 -1575 -1378 -1181 -984 -787 -591 -394 -197 0 
++                     197 394 591 787 984 1181 1378 1575 1969 2362 2756 3150 3543 3937 4367 4724 5118 5512 5906 6299 ] 
++ B_array = [ -1.74 -1.73 -1.70 -1.69 -1.67 -1.65 -1.61 -1.57 -1.54 -1.48 -1.41 -1.32 -1.13 -0.95 -0.75 -0.5 -0.38 -0.15 -0.06 -0.03 0
++        0.03 0.06 0.15 0.38 0.5 0.75 0.95 1.13 1.32 1.41 1.48 1.54 1.57 1.61 1.65 1.67 1.69 1.70 1.73 1.74     ] )
+.ENDS 
+  </Spice>
+  
+   
+  <Model>
+.Def:Cores_TungstenSteel gnd nPplus nPneg Length="0.2" Area="2e-4"
+.Def:End
+  </Model>
+  
+  
+  <Symbol>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 1 0>
+    <Line -10 -10 100 0 #000000 3 1>
+    <Line -10 0 100 0 #000000 3 1>
+    <Line -10 10 100 0 #000000 3 1>
+    <Line 100 0 20 0 #000080 2 1>
+    <Rectangle -20 -40 120 80 #0000ff 3 1 #c0c0c0 1 0>
+    <.ID 0 44 CORE "1=Length=0.2=core magnetic path length (m).=" "1=Area=2e-4=core cross sectional area (m^2).=">
+    <.PortSym 120 0 2 180>
+    <Text 14 9 16 #0000ff 0 "PWL">
+    <Text -11 -37 12 #0000ff 0 "Tungsten_{-}Steel">
+  </Symbol>
+</Component>
+
+
+
+<Component CastIron>
+  <Description>
+Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 6 Dec. 2015
+  
+Cast iron magnetic core.
+Background details and use of this model can be found in the "spice4qucs-help"
+document, at https://qucs-help.readthedocs.org/en/spice4qucs/index.html. 
+  </Description>
+  
+  
+  <Spice>
+.SUBCKT Cores_CastIron gnd nPplus nPneg Length=0.2 Area=2e-4 
+ACORE nPplus nPneg  CastIron
+.model CastIron core ( mode=1 length = {Length} area={Area}
++ H_array = [ -6299 -5906  -5512 -5118 -4724 -4367 -3937 -3543 -3150 -2756 -2362 -1969 -1575 -1378 -1181 -984 -787 -591 -394 -197 0 
++                     197 394 591 787 984 1181 1378 1575 1969 2362 2756 3150 3543 3937 4367 4724 5118 5512 5906 6299 ] 
++ B_array = [ -1.06 -1.03 -1.01 -0.97 -0.95 -0.93 -0.89 -0.86 -0.83 -0.79 -0.76 -0.71 -0.66 -0.63 -0.58 -0.55 -0.50 -0.45 -0.35 -0.22 0
++        0.22 0.36 0.45 0.50 0.55 0.58 0.63 0.66 0.71 0.76 0.79 0.83 0.86 0.89 0.93 0.95 0.97 1.01 1.03 1.06    ] )
+.ENDS
+  </Spice>
+  
+   
+  <Model>
+.Def:Cores_CastIron gnd nPplus nPneg Length="0.2" Area="2e-4"
+.Def:End
+  </Model>
+  
+  
+  <Symbol>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 1 0>
+    <Line -10 -10 100 0 #000000 3 1>
+    <Line -10 0 100 0 #000000 3 1>
+    <Line -10 10 100 0 #000000 3 1>
+    <Line 100 0 20 0 #000080 2 1>
+    <Rectangle -20 -40 120 80 #0000ff 3 1 #c0c0c0 1 0>
+    <.ID 0 44 CORE "1=Length=0.2=core magnetic path length (m).=" "1=Area=2e-4=core cross sectional area (m^2).=">
+    <.PortSym 120 0 2 180>
+    <Text 14 9 16 #0000ff 0 "PWL">
+    <Text -11 -37 12 #0000ff 0 "   Cast_{-}Iron">
+  </Symbol>
+</Component>
+
