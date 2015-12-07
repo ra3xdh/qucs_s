@@ -296,6 +296,7 @@
         <file>bitmaps/Icouple.png</file> 
         <file>bitmaps/core.png</file> 
         <file>bitmaps/SDTF.png</file> 
-        
+        <file>bitmaps/sp_include.png</file>
+ 
     </qresource>
 </RCC>

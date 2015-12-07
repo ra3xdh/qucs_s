@@ -264,6 +264,7 @@
 #include "sp_nodeset.h"
 #include "sp_ic.h"
 #include "sp_model.h"
+#include "sp_include.h"
 
 // Spice simulations
 #include "sp_fourier.h"

@@ -69,6 +69,7 @@ sp_nutmeg.cpp
 sp_ic.cpp
 sp_nodeset.cpp
 sp_model.cpp
+sp_include.cpp
 
 #end of SPICE section
 
@@ -326,6 +327,7 @@ sp_nutmeg.h
 sp_ic.h
 sp_nodeset.h
 sp_model.h
+sp_include.h
 
 #end SPICE sections
 

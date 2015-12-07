@@ -497,6 +497,7 @@ void Module::registerModules (void) {
   REGISTER_SPICE_SEC_1 (SpiceNodeset);
   REGISTER_SPICE_SEC_1 (NutmegEquation);
   REGISTER_SPICE_SEC_1 (S4Q_Model);
+  REGISTER_SPICE_SEC_1 (S4Q_Include);
 
   // spice simulations
   REGISTER_SPICE_SIM_1 (SpiceFourier);
