@@ -127,6 +127,15 @@ bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
 void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
 {
         QString s;
+
+        // Include Directives
+        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+            if (pc->SpiceModel==".INCLUDE") {
+                s = pc->getSpiceModel();
+                stream<<s;
+            }
+        }
+
         // Parameters, Initial conditions, Options
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             if (pc->isEquation) {
@@ -147,8 +156,10 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
 
         // Modelcards
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-            s = pc->getSpiceModel();
-            stream<<s;
+            if (pc->SpiceModel==".MODEL") {
+                s = pc->getSpiceModel();
+                stream<<s;
+            }
         }
 }
 

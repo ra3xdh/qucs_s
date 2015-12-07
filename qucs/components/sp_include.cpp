@@ -47,11 +47,11 @@ S4Q_Include::S4Q_Include()
   Name  = "SpiceInclude";
   SpiceModel = ".INCLUDE";
 
-  Props.append(new Property("Filename_1", "~/home/user/library.inc", true,"SPICE file to include"));
-  Props.append(new Property("Filename_2", "", false,"SPICE file to include"));
-  Props.append(new Property("Filename_3", "", false,"SPICE file to include"));
-  Props.append(new Property("Filename_4", "", false,"SPICE file to include"));
-  Props.append(new Property("Filename_5", "", false,"SPICE file to include"));
+  Props.append(new Property("File", "~/home/user/library.inc", true,"SPICE file to include"));
+  Props.append(new Property("File", "", false,"SPICE file to include"));
+  Props.append(new Property("File", "", false,"SPICE file to include"));
+  Props.append(new Property("File", "", false,"SPICE file to include"));
+  Props.append(new Property("File", "", false,"SPICE file to include"));
 }
 
 S4Q_Include::~S4Q_Include()
@@ -80,7 +80,7 @@ QString S4Q_Include::getSpiceModel()
 
     foreach (Property *pp, Props) {
         QString val = pp->Value;
-        if (!val.isEmpty()) s += SpiceModel + " " + pp->Value;
+        if (!val.isEmpty()) s += QString("%1 \"%2\"\n").arg(SpiceModel).arg(pp->Value);
     }
 
     return s;
