@@ -171,12 +171,15 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     else filename = QString("%1_%2.txt").arg(basenam).arg(sim);
     QString write_str;
     if (sim=="hb") {
-        write_str = QString(".PRINT  %1 file=%2 %3\n").arg(sim).arg(filename).arg(nods);
+        // write_str = QString(".PRINT  %1 file=%2 %3\n").arg(sim).arg(filename).arg(nods);
+        write_str = QString(".PRINT  %1 %2\n").arg(sim).arg(nods);
+        outputs.append("spice4qucs.hb.cir.HB.FD.prn");
     } else {
         write_str = QString(".PRINT  %1 format=raw file=%2 %3\n").arg(sim).arg(filename).arg(nods);
+        outputs.append(filename);
     }
     stream<<write_str;
-    outputs.append(filename);
+
 
     stream<<".END\n";
 }

@@ -317,33 +317,31 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file,
 {
     var_list.clear();
     sim_points.clear();
-    int NumVars=0;
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream hb_data(&ofile);
         var_list.append("hbfrequency");
-        bool first_head = true;
         while (!hb_data.atEnd()) {
-            QRegExp sep("[ \t,]");
-            QRegExp heading("^[a-zA-Z_][a-zA-Z0-9]{1,},");
-            QRegExp dataline("^[0-9]{1,},");
             QString lin = hb_data.readLine();
             if (lin.isEmpty()) continue;
             if (lin.startsWith("Index")) { // CSV heading
-                if (first_head) {
                     QStringList vars1 = lin.split(" ",QString::SkipEmptyParts);
                     vars1.removeFirst();
                     vars1.removeFirst();
-                    var_list.append(vars1);
-                    NumVars = var_list.count();
-                }
-                first_head = false;
+                    QStringList norm_vars;
+                    foreach(QString v, vars1) { // Normalize variables
+                        QString nv = v;
+                        nv.remove(0,3).chop(1); // extract variable between "Re|Im(" and ")"
+                        if (!norm_vars.contains(nv))
+                            norm_vars.append(nv);
+                    }
+                    var_list.append(norm_vars);
             }
-            if ((lin.contains(QRegExp("\\d*\\.\\d+[+-]*[eE]*[\\d]*")))&&(!first_head)) { // CSV dataline
+            if ((lin.contains(QRegExp("\\d*\\.\\d+[+-]*[eE]*[\\d]*")))) { // CSV dataline
                 QStringList vals = lin.split(" ",QString::SkipEmptyParts);
                 QList <double> sim_point;
                 sim_point.clear();
-                for (int i=NumVars+1;i<vals.count();i++) {
+                for (int i=1;i<vals.count();i++) {
                     sim_point.append(vals.at(i).toDouble());
                 }
                 sim_points.append(sim_point);
@@ -684,7 +682,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
         QString ngspice_output_filename;
         foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
             QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
-            if (ngspice_output_filename.endsWith("_hb.txt")) {
+            if (ngspice_output_filename.endsWith("HB.FD.prn")) {
                 parseHBOutput(full_outfile,sim_points,var_list);
                 isComplex = true;
             } else if (ngspice_output_filename.endsWith(".four")) {
