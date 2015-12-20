@@ -590,7 +590,8 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
     QStringList eqns_desc;
     eqns_desc<<"equation"<<".PARAM section"
              <<".GLOBAL_PARAM section"
-             <<".IC section"<<".NODESET section";
+             <<".IC section"<<".NODESET section"
+            <<"Nutmeg equation";
     if (eqns_desc.contains(Comp->Description)) {
       ButtUp->setEnabled(true);
       ButtDown->setEnabled(true);
@@ -1203,7 +1204,8 @@ void ComponentDialog::slotButtAdd()
 */
 void ComponentDialog::slotButtRem()
 {
-  if ((prop->rowCount() < 3)&&Comp->Model=="Eqn")
+  if ((prop->rowCount() < 3)&&
+          (Comp->Model=="Eqn"||Comp->Model=="NutmegEq"))
      return;  // the last property cannot be removed
   if (prop->rowCount() < 2)
      return;  // the last property cannot be removed
@@ -1240,6 +1242,8 @@ void ComponentDialog::slotButtUp()
   int curRow = prop->currentRow();
   if (curRow == 0)
     return;
+  if ((curRow == 1)&&(Comp->Model=="NutmegEq"))
+    return;
 
   // swap current and row above it
   QTableWidgetItem *source = prop->takeItem(curRow  ,0);
@@ -1266,7 +1270,11 @@ void ComponentDialog::slotButtDown()
 
   int curRow = prop->currentRow();
   // Leave Export as last
-  if (curRow == prop->rowCount()-2)
+  if ((curRow == prop->rowCount()-2)&&(Comp->Model=="Eqn"))
+    return;
+  if ((curRow == 0)&&(Comp->Model=="NutmegEq")) // Don't let to shift the first property "Simulation="
+    return;
+  if ((curRow ==  prop->rowCount()-1)) // Last property
     return;
 
   // swap current and row below it
