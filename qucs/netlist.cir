@@ -1,9 +1,0 @@
-* Qucs 0.0.19  
-R1 n2  n1 1k
-C1 node1  node_2      20u
-.control
-set filetype=ascii
-echo "" > spice4qucs.cir.noise
-exit
-.endc
-.END
