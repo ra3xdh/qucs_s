@@ -37,8 +37,8 @@ DIODE_SPICE::DIODE_SPICE()
  
     Lines.append(new Line( -6, -9, -6,  9,QPen(Qt::darkRed,3)));
     Lines.append(new Line(  6, -9,  6,  9,QPen(Qt::darkRed,3)));
-    Lines.append(new Line( -6,  0,  6, -9,QPen(Qt::darkRed,3)));
-    Lines.append(new Line( -6,  0,  6,  9,QPen(Qt::darkRed,3)));
+    Lines.append(new Line( -6, -9,  6,  0,QPen(Qt::darkRed,3)));
+    Lines.append(new Line( -6,  9,  6,  0,QPen(Qt::darkRed,3)));
 
   Ports.append(new Port(-30, 0));
   Ports.append(new Port( 30, 0));
