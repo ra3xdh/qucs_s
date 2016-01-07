@@ -104,6 +104,8 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     this->setWindowTitle(tr("Simulate with external simulator"));
 
     slotSetSimulator();
+    buttonSimulate->click(); // Start simulation
+
 }
 
 ExternSimDialog::~ExternSimDialog()
@@ -285,24 +287,6 @@ void ExternSimDialog::slotStop()
     buttonStopSim->setEnabled(false);
     buttonSaveNetlist->setEnabled(true);
     ngspice->killThemAll();
-}
-
-void ExternSimDialog::slotSimSettings()
-{
-    SimSettingsDialog *SetDlg = new SimSettingsDialog(this);
-    if (SetDlg->exec()) {
-        ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable);
-        xyce->setSimulatorCmd(QucsSettings.XyceExecutable);
-        workdir = QucsSettings.S4Qworkdir;
-        QFileInfo inf(workdir);
-        if (!inf.exists()) {
-            QDir dir;
-            dir.mkpath(workdir);
-        }
-        ngspice->setWorkdir(QucsSettings.S4Qworkdir);
-        xyce->setWorkdir(QucsSettings.S4Qworkdir);
-    }
-    delete SetDlg;
 }
 
 void ExternSimDialog::slotSaveNetlist()

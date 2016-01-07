@@ -70,7 +70,6 @@ private slots:
     void slotStart();
     void slotStop();
     void slotSetSimulator();
-    void slotSimSettings();
     void slotSaveNetlist();
     
 };
