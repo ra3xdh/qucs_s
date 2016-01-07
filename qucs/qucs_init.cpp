@@ -610,8 +610,6 @@ void QucsApp::initActions()
 	tr("Show Last Netlist\n\nShows the netlist of the last simulation"));
   connect(showNet, SIGNAL(triggered()), SLOT(slotShowLastNetlist()));
 
-  simSpice = new QAction(tr("Simulate with spice"),this);
-  connect(simSpice,SIGNAL(activated()),SLOT(slotSimulateWithSpice()));
   simSettings = new QAction(tr("Select default simulator"),this);
   connect(simSettings,SIGNAL(activated()),SLOT(slotSimSettings()));
   buildVAModule = new QAction(tr("Build Verilog-A module from subcircuit"),this);
@@ -793,7 +791,6 @@ void QucsApp::initMenuBar()
   simMenu->addAction(showMsg);
   simMenu->addAction(showNet);
   simMenu->addAction(simSettings);
-  simMenu->addAction(simSpice);
 
 
   viewMenu = new QMenu(tr("&View"));  // menuBar entry viewMenu
