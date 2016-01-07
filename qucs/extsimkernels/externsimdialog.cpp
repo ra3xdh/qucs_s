@@ -129,7 +129,7 @@ ExternSimDialog::~ExternSimDialog()
 void ExternSimDialog::slotSetSimulator()
 {
     switch (cbxSimualor->currentIndex()) {
-    case simNgspice: {
+    case spicecompat::simNgspice: {
         xyce->setParallel(false);
         disconnect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
@@ -142,7 +142,7 @@ void ExternSimDialog::slotSetSimulator()
         ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable);
     }
         break;
-    case simXyceSer: {
+    case spicecompat::simXyceSer: {
         xyce->setParallel(false);
         disconnect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
@@ -154,7 +154,7 @@ void ExternSimDialog::slotSetSimulator()
         disconnect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
     }
         break;
-    case simXycePar: {
+    case spicecompat::simXycePar: {
 #ifdef Q_OS_UNIX
         xyce->setParallel(true);
 #else
@@ -170,7 +170,7 @@ void ExternSimDialog::slotSetSimulator()
         disconnect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
     }
         break;
-    case simSpiceOpus: {
+    case spicecompat::simSpiceOpus: {
         xyce->setParallel(false);
         disconnect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
@@ -199,16 +199,16 @@ void ExternSimDialog::slotProcessOutput()
 
     QString ext;
     switch (cbxSimualor->currentIndex()) {
-    case simNgspice:
+    case spicecompat::simNgspice:
         ext = ".dat.ngspice";
         out = ngspice->getOutput();
         break;
-    case simXycePar:
-    case simXyceSer:
+    case spicecompat::simXycePar:
+    case spicecompat::simXyceSer:
         ext = ".dat.xyce";
         out = xyce->getOutput();
         break;
-    case simSpiceOpus:
+    case spicecompat::simSpiceOpus:
         out = ngspice->getOutput();
         ext = ".dat.spopus";
         break;
@@ -231,12 +231,12 @@ void ExternSimDialog::slotProcessOutput()
     //QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
     QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+ext;
     switch (cbxSimualor->currentIndex()) {
-    case simNgspice:
-    case simSpiceOpus:
+    case spicecompat::simNgspice:
+    case spicecompat::simSpiceOpus:
         ngspice->convertToQucsData(qucs_dataset);
         break;
-    case simXycePar:
-    case simXyceSer:
+    case spicecompat::simXycePar:
+    case spicecompat::simXyceSer:
         xyce->convertToQucsData(qucs_dataset);
         break;
     default:break;
@@ -251,11 +251,11 @@ void ExternSimDialog::slotNgspiceStarted()
     editSimConsole->clear();
     QString sim;
     switch (cbxSimualor->currentIndex()) {
-    case simNgspice: sim = "Ngspice";
+    case spicecompat::simNgspice: sim = "Ngspice";
         break;
-    case simXyceSer: sim = "Xyce (serial) ";
+    case spicecompat::simXyceSer: sim = "Xyce (serial) ";
         break;
-    case simXycePar: sim = "Xyce (parallel) ";
+    case spicecompat::simXycePar: sim = "Xyce (parallel) ";
         break;
     default: sim = "Simulator "; // Some other simulators could be added ...
         break;
@@ -278,11 +278,11 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
 
     QString sim;
     switch (cbxSimualor->currentIndex()) {
-    case simNgspice: sim = "Ngspice";
+    case spicecompat::simNgspice: sim = "Ngspice";
         break;
-    case simXyceSer: sim = "Xyce (serial) ";
+    case spicecompat::simXyceSer: sim = "Xyce (serial) ";
         break;
-    case simXycePar: sim = "Xyce (parallel) ";
+    case spicecompat::simXycePar: sim = "Xyce (parallel) ";
         break;
     default: sim = "Simulator "; // Some other simulators could be added ...
         break;
@@ -331,12 +331,12 @@ void ExternSimDialog::slotSaveNetlist()
     if (filename.isEmpty()) return;
 
     switch (cbxSimualor->currentIndex()) {
-    case simNgspice: {
+    case spicecompat::simNgspice: {
         ngspice->SaveNetlist(filename);
         }
         break;
-    case simXyceSer:
-    case simXycePar: {
+    case spicecompat::simXyceSer:
+    case spicecompat::simXycePar: {
         xyce->SaveNetlist(filename);
         }
         break;

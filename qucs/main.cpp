@@ -74,8 +74,8 @@ bool loadSettings()
     QSettings settings("qucs","qucs");
 
     if(settings.contains("DefaultSimulator"))
-        QucsSettings.DefaultSimulator = settings.value("DefaultSimulator").toString();
-    else QucsSettings.DefaultSimulator = "Qucsator";
+        QucsSettings.DefaultSimulator = settings.value("DefaultSimulator").toInt();
+    else QucsSettings.DefaultSimulator = spicecompat::simQucsator;
 
     if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
     if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();

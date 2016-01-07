@@ -32,6 +32,9 @@ private:
     QLabel *lblXycePar;
     QLabel *lblNprocs;
     QLabel *lblWorkdir;
+    QLabel *lblSimulator;
+
+    QComboBox *cbxSimulator;
 
     QLineEdit *edtNgspice;
     QLineEdit *edtSpiceOpus;

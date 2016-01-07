@@ -17,6 +17,8 @@ namespace spicecompat {
      void splitEqn(QString &eqn, QStringList &tokens);
      bool containNodes(QStringList &tokens, QStringList &vars);
      void convertNodeNames(QStringList &tokens, QString &sim);
+
+     enum Simulator {simNgspice = 0, simXyceSer = 1, simXycePar = 2, simSpiceOpus = 3, simQucsator = 4};
 }
 
 #endif // SPICECOMPAT_H

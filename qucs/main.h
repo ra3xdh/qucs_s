@@ -30,6 +30,7 @@
 #include "wire.h"
 #include "node.h"
 #include "diagrams/diagram.h"
+#include "extsimkernels/spicecompat.h"
 
 class QucsApp;
 class Component;
@@ -37,7 +38,7 @@ class Component;
 static const double pi = 3.1415926535897932384626433832795029;  /* pi   */
 
 struct tQucsSettings {
-  QString DefaultSimulator;
+  int DefaultSimulator;
 
   int x, y, dx, dy;    // position and size of main window
   QFont font;
