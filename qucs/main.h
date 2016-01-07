@@ -37,6 +37,8 @@ class Component;
 static const double pi = 3.1415926535897932384626433832795029;  /* pi   */
 
 struct tQucsSettings {
+  QString DefaultSimulator;
+
   int x, y, dx, dy;    // position and size of main window
   QFont font;
   float largeFontSize;

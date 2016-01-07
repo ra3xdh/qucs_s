@@ -73,6 +73,10 @@ bool loadSettings()
 {
     QSettings settings("qucs","qucs");
 
+    if(settings.contains("DefaultSimulator"))
+        QucsSettings.DefaultSimulator = settings.value("DefaultSimulator").toString();
+    else QucsSettings.DefaultSimulator = "Qucsator";
+
     if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
     if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
     if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
@@ -160,6 +164,8 @@ bool loadSettings()
 bool saveApplSettings()
 {
     QSettings settings ("qucs","qucs");
+
+    settings.setValue("DefaultSimulator", QucsSettings.DefaultSimulator);
 
     settings.setValue("x", QucsSettings.x);
     settings.setValue("y", QucsSettings.y);
