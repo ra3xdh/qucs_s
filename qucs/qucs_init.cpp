@@ -612,6 +612,8 @@ void QucsApp::initActions()
 
   simSpice = new QAction(tr("Simulate with spice"),this);
   connect(simSpice,SIGNAL(activated()),SLOT(slotSimulateWithSpice()));
+  simSettings = new QAction(tr("Select default simulator"),this);
+  connect(simSettings,SIGNAL(activated()),SLOT(slotSimSettings()));
   buildVAModule = new QAction(tr("Build Verilog-A module from subcircuit"),this);
   connect(buildVAModule,SIGNAL(activated()),SLOT(slotBuildVAModule()));
 
@@ -790,6 +792,7 @@ void QucsApp::initMenuBar()
   simMenu->addAction(dcbias);
   simMenu->addAction(showMsg);
   simMenu->addAction(showNet);
+  simMenu->addAction(simSettings);
   simMenu->addAction(simSpice);
 
 

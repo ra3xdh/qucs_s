@@ -32,11 +32,8 @@ private:
 
     Schematic *Sch;
 
-    QLabel *lblSimulator;
-    QComboBox *cbxSimualor;
     QPushButton *buttonSimulate;
     QPushButton *buttonStopSim;
-    QPushButton *buttonSimSettings;
     QPushButton *buttonSaveNetlist;
     QPushButton *buttonExit;
 

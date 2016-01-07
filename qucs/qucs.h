@@ -150,6 +150,7 @@ private slots:
   void slotChangePage(QString&, QString&);
   void slotHideEdit();
   void slotFileChanged(bool);
+  void slotSimSettings();
   void slotSimulateWithSpice();
   void slotAfterSpiceSimulation();
   void slotBuildVAModule();
@@ -298,7 +299,7 @@ public:
           *addToProj, *editFind, *insEntity, *selectMarker,
           *createLib, *importData, *graph2csv, *createPkg, *extractPkg,
           *callAtt, *callRes, *centerHor, *centerVert, *loadModule, *buildModule;
-  QAction *simSpice;
+  QAction *simSpice, *simSettings;
   QAction *buildVAModule;
 
 public slots:
