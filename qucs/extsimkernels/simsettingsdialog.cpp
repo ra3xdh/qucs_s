@@ -137,6 +137,10 @@ void SimSettingsDialog::slotApply()
     QucsSettings.SpiceOpusExecutable = edtSpiceOpus->text();
     QucsSettings.NProcs = spbNprocs->value();
     QucsSettings.S4Qworkdir = edtWorkdir->text();
+    if (QucsSettings.DefaultSimulator != cbxSimulator->currentIndex()) {
+        QMessageBox::warning(this,tr("Simulator settings"),tr("Default simulator engine was changed!\n"
+                                                              "Please restart Qucs to affect changes!"));
+    }
     QucsSettings.DefaultSimulator = cbxSimulator->currentIndex();
     accept();
 }
