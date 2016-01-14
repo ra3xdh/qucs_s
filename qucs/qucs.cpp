@@ -183,6 +183,15 @@ QucsApp::QucsApp()
       gotoPage(arg);
     }
   }
+
+  if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) {
+      QMessageBox::information(this,tr("Qucs"),tr("Default simulator is not specified yet.\n"
+                                         "Please setup it in the next dialog window.\n"
+                                         "If you have no simulators except Qucs installed\n"
+                                         "in your system leave default Qucsator setting\n"
+                                         "and simple press Apply button"));
+      slotSimSettings();
+  }
 }
 
 QucsApp::~QucsApp()

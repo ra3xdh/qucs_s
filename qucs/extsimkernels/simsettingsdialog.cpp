@@ -40,6 +40,8 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     cbxSimulator->addItems(items);
     qDebug()<<QucsSettings.DefaultSimulator;
     cbxSimulator->setCurrentIndex(QucsSettings.DefaultSimulator);
+    if (QucsSettings.DefaultSimulator==spicecompat::simNotSpecified)
+        cbxSimulator->setCurrentIndex(spicecompat::simQucsator);
 
     edtNgspice = new QLineEdit(QucsSettings.NgspiceExecutable);
     edtXyce = new QLineEdit(QucsSettings.XyceExecutable);
@@ -137,12 +139,20 @@ void SimSettingsDialog::slotApply()
     QucsSettings.SpiceOpusExecutable = edtSpiceOpus->text();
     QucsSettings.NProcs = spbNprocs->value();
     QucsSettings.S4Qworkdir = edtWorkdir->text();
-    if (QucsSettings.DefaultSimulator != cbxSimulator->currentIndex()) {
+    if ((QucsSettings.DefaultSimulator != cbxSimulator->currentIndex())&&
+        (QucsSettings.DefaultSimulator != spicecompat::simNotSpecified)) {
         QMessageBox::warning(this,tr("Simulator settings"),tr("Default simulator engine was changed!\n"
                                                               "Please restart Qucs to affect changes!"));
     }
     QucsSettings.DefaultSimulator = cbxSimulator->currentIndex();
     accept();
+}
+
+void SimSettingsDialog::slotCancel()
+{
+    if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified)
+    QucsSettings.DefaultSimulator = spicecompat::simQucsator;
+    reject();
 }
 
 void SimSettingsDialog::slotSetNgspice()

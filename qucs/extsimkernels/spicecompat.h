@@ -18,7 +18,7 @@ namespace spicecompat {
      bool containNodes(QStringList &tokens, QStringList &vars);
      void convertNodeNames(QStringList &tokens, QString &sim);
 
-     enum Simulator {simNgspice = 0, simXyceSer = 1, simXycePar = 2, simSpiceOpus = 3, simQucsator = 4};
+     enum Simulator {simNgspice = 0, simXyceSer = 1, simXycePar = 2, simSpiceOpus = 3, simQucsator = 4, simNotSpecified=10};
 }
 
 #endif // SPICECOMPAT_H

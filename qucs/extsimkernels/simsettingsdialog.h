@@ -58,6 +58,7 @@ public:
     
 private slots:
     void slotApply();
+    void slotCancel();
     void slotSetNgspice();
     void slotSetXyce();
     void slotSetXycePar();
