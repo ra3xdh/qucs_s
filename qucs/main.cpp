@@ -290,6 +290,7 @@ Schematic *openSchematic(QString schematic)
 
 int doNetlist(QString schematic, QString netlist)
 {
+  QucsSettings.DefaultSimulator = spicecompat::simQucsator;
   Schematic *sch = openSchematic(schematic);
   if (sch == NULL) {
     return 1;
@@ -346,6 +347,7 @@ int doNetlist(QString schematic, QString netlist)
 
 int runNgspice(QString schematic, QString dataset)
 {
+    QucsSettings.DefaultSimulator = spicecompat::simNgspice;
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;
@@ -368,6 +370,7 @@ int runNgspice(QString schematic, QString dataset)
 
 int runXyce(QString schematic, QString dataset)
 {
+    QucsSettings.DefaultSimulator = spicecompat::simXyceSer;
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;
@@ -390,7 +393,7 @@ int runXyce(QString schematic, QString dataset)
 
 int doNgspiceNetlist(QString schematic, QString netlist)
 {
-
+    QucsSettings.DefaultSimulator = spicecompat::simNgspice;
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;
@@ -405,7 +408,7 @@ int doNgspiceNetlist(QString schematic, QString netlist)
 
 int doXyceNetlist(QString schematic, QString netlist)
 {
-
+    QucsSettings.DefaultSimulator = spicecompat::simXyceSer;
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;
@@ -421,6 +424,7 @@ int doXyceNetlist(QString schematic, QString netlist)
 int doPrint(QString schematic, QString printFile,
     QString page, int dpi, QString color, QString orientation)
 {
+  QucsSettings.DefaultSimulator = spicecompat::simQucsator;
   Schematic *sch = openSchematic(schematic);
   if (sch == NULL) {
     return 1;
