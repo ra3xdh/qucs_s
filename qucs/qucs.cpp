@@ -76,6 +76,7 @@
 #include "../qucs-lib/qucslib_common.h"
 #include "misc.h"
 #include "extsimkernels/verilogawriter.h"
+#include "extsimkernels/simsettingsdialog.h"
 
 // icon for unsaved files (diskette)
 const char *smallsave_xpm[] = {
@@ -181,6 +182,15 @@ QucsApp::QucsApp()
       arg = QucsSettings.QucsWorkDir.filePath(Info.fileName());
       gotoPage(arg);
     }
+  }
+
+  if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) {
+      QMessageBox::information(this,tr("Qucs"),tr("Default simulator is not specified yet.\n"
+                                         "Please setup it in the next dialog window.\n"
+                                         "If you have no simulators except Qucs installed\n"
+                                         "in your system leave default Qucsator setting\n"
+                                         "and simple press Apply button"));
+      slotSimSettings();
   }
 }
 
@@ -2014,6 +2024,12 @@ void QucsApp::slotZoomOut()
  */
 void QucsApp::slotSimulate()
 {
+
+  if (QucsSettings.DefaultSimulator!=spicecompat::simQucsator) {
+      slotSimulateWithSpice();
+      return;
+  }
+
   slotHideEdit(); // disable text edit of component property
 
   QucsDoc *Doc;
@@ -2833,6 +2849,13 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
   delete writer;
 }
 
+
+void QucsApp::slotSimSettings()
+{
+    SimSettingsDialog *SetDlg = new SimSettingsDialog(this);
+    SetDlg->exec();
+    delete SetDlg;
+}
 
 void QucsApp::slotSimulateWithSpice()
 {

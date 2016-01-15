@@ -26,12 +26,22 @@
 SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     QDialog(parent)
 {
+    lblSimulator = new QLabel(tr("Default simulator"));
     lblNgspice = new QLabel(tr("Ngspice executable location"));
     lblXyce = new QLabel(tr("Xyce executable location"));
     lblXycePar = new QLabel(tr("Xyce Parallel executable location (openMPI installed required)"));
     lblSpiceOpus = new QLabel(tr("SpiceOpus executable location"));
     lblNprocs = new QLabel(tr("Number of processors in a system:"));
     lblWorkdir = new QLabel(tr("Directory to store netlist and simulator output"));
+
+    cbxSimulator = new QComboBox(this);
+    QStringList items;
+    items<<"Ngspice"<<"Xyce (Serial)"<<"Xyce (Parallel)"<<"SpiceOpus"<<"Qucsator";
+    cbxSimulator->addItems(items);
+    qDebug()<<QucsSettings.DefaultSimulator;
+    cbxSimulator->setCurrentIndex(QucsSettings.DefaultSimulator);
+    if (QucsSettings.DefaultSimulator==spicecompat::simNotSpecified)
+        cbxSimulator->setCurrentIndex(spicecompat::simQucsator);
 
     edtNgspice = new QLineEdit(QucsSettings.NgspiceExecutable);
     edtXyce = new QLineEdit(QucsSettings.XyceExecutable);
@@ -58,6 +68,12 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     connect(btnSetWorkdir,SIGNAL(clicked()),this,SLOT(slotSetWorkdir()));
 
     QVBoxLayout *top = new QVBoxLayout;
+
+    QHBoxLayout *h8 = new QHBoxLayout;
+    h8->addWidget(lblSimulator,1);
+    h8->addWidget(cbxSimulator,3);
+    top->addLayout(h8);
+
     top->addWidget(lblNgspice);
     QHBoxLayout *h1 = new QHBoxLayout;
     h1->addWidget(edtNgspice,3);
@@ -123,7 +139,20 @@ void SimSettingsDialog::slotApply()
     QucsSettings.SpiceOpusExecutable = edtSpiceOpus->text();
     QucsSettings.NProcs = spbNprocs->value();
     QucsSettings.S4Qworkdir = edtWorkdir->text();
+    if ((QucsSettings.DefaultSimulator != cbxSimulator->currentIndex())&&
+        (QucsSettings.DefaultSimulator != spicecompat::simNotSpecified)) {
+        QMessageBox::warning(this,tr("Simulator settings"),tr("Default simulator engine was changed!\n"
+                                                              "Please restart Qucs to affect changes!"));
+    }
+    QucsSettings.DefaultSimulator = cbxSimulator->currentIndex();
     accept();
+}
+
+void SimSettingsDialog::slotCancel()
+{
+    if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified)
+    QucsSettings.DefaultSimulator = spicecompat::simQucsator;
+    reject();
 }
 
 void SimSettingsDialog::slotSetNgspice()

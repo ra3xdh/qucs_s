@@ -51,23 +51,13 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     buttonSaveNetlist = new QPushButton(tr("Save netlist"),this);
     connect(buttonSaveNetlist,SIGNAL(clicked()),this,SLOT(slotSaveNetlist()));
 
-    buttonSimSettings = new QPushButton(tr("Settings"),this);
-    connect(buttonSimSettings,SIGNAL(clicked()),this,SLOT(slotSimSettings()));
-
     buttonExit = new QPushButton(tr("Exit"),this);
     connect(buttonExit,SIGNAL(clicked()),this,SLOT(reject()));
     connect(buttonExit,SIGNAL(clicked()),ngspice,SLOT(killThemAll()));
     connect(buttonExit,SIGNAL(clicked()),xyce,SLOT(killThemAll()));
 
-    lblSimulator = new QLabel(tr("Select external simulator:"));
     QGroupBox *grp1 = new QGroupBox(tr("Simulation console"),this);
     QVBoxLayout *vbl1 = new QVBoxLayout;
-
-    cbxSimualor = new QComboBox(this);
-    QStringList items;
-    items<<"Ngspice"<<"Xyce (Serial)"<<"Xyce (Parallel)"<<"SpiceOpus";
-    cbxSimualor->addItems(items);
-    connect(cbxSimualor,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetSimulator()));
 
     editSimConsole = new QPlainTextEdit(this);
     QFont font;
@@ -102,11 +92,6 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
 
     QVBoxLayout *vl_top = new QVBoxLayout;
     vl_top->addWidget(lbl_warn);
-    QHBoxLayout *hl2 = new QHBoxLayout;
-    hl2->addWidget(lblSimulator);
-    hl2->addWidget(cbxSimualor);
-    hl2->addWidget(buttonSimSettings);
-    vl_top->addLayout(hl2);
     vl_top->addWidget(grp1);
     vl_top->addWidget(simProgress);
     QHBoxLayout *hl1 = new QHBoxLayout;
@@ -119,6 +104,8 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     this->setWindowTitle(tr("Simulate with external simulator"));
 
     slotSetSimulator();
+    buttonSimulate->click(); // Start simulation
+
 }
 
 ExternSimDialog::~ExternSimDialog()
@@ -128,57 +115,41 @@ ExternSimDialog::~ExternSimDialog()
 
 void ExternSimDialog::slotSetSimulator()
 {
-    switch (cbxSimualor->currentIndex()) {
-    case simNgspice: {
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simNgspice: {
         xyce->setParallel(false);
-        disconnect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
-        disconnect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
-        connect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()),Qt::UniqueConnection);
-        connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()),Qt::UniqueConnection);
-        connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)),Qt::UniqueConnection);
-        disconnect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
-        connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()),Qt::UniqueConnection);
+        connect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
+        connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
+        connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
+        connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
         ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable);
     }
         break;
-    case simXyceSer: {
+    case spicecompat::simXyceSer: {
         xyce->setParallel(false);
-        disconnect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
-        disconnect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
-        disconnect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
     }
         break;
-    case simXycePar: {
+    case spicecompat::simXycePar: {
 #ifdef Q_OS_UNIX
         xyce->setParallel(true);
 #else
         xyce->setParallel(false);
 #endif
-        disconnect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        disconnect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
-        disconnect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
         connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
-        disconnect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
     }
         break;
-    case simSpiceOpus: {
+    case spicecompat::simSpiceOpus: {
         xyce->setParallel(false);
-        disconnect(xyce,SIGNAL(started()),this,SLOT(slotNgspiceStarted()));
-        disconnect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
-        disconnect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(ngspice,SIGNAL(started()),this,SLOT(slotNgspiceStarted()),Qt::UniqueConnection);
         connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()),Qt::UniqueConnection);
         connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)),Qt::UniqueConnection);
-        disconnect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
         connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()),Qt::UniqueConnection);
         ngspice->setSimulatorCmd(QucsSettings.SpiceOpusExecutable);
     }
@@ -192,23 +163,22 @@ void ExternSimDialog::slotProcessOutput()
 {
     buttonSaveNetlist->setEnabled(true);
     buttonStopSim->setEnabled(false);
-    cbxSimualor->setEnabled(true);
     QString out;
 
     // Set temporary safe output name
 
     QString ext;
-    switch (cbxSimualor->currentIndex()) {
-    case simNgspice:
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simNgspice:
         ext = ".dat.ngspice";
         out = ngspice->getOutput();
         break;
-    case simXycePar:
-    case simXyceSer:
+    case spicecompat::simXycePar:
+    case spicecompat::simXyceSer:
         ext = ".dat.xyce";
         out = xyce->getOutput();
         break;
-    case simSpiceOpus:
+    case spicecompat::simSpiceOpus:
         out = ngspice->getOutput();
         ext = ".dat.spopus";
         break;
@@ -230,13 +200,13 @@ void ExternSimDialog::slotProcessOutput()
     QFileInfo inf(Sch->DocName);
     //QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
     QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+ext;
-    switch (cbxSimualor->currentIndex()) {
-    case simNgspice:
-    case simSpiceOpus:
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simNgspice:
+    case spicecompat::simSpiceOpus:
         ngspice->convertToQucsData(qucs_dataset);
         break;
-    case simXycePar:
-    case simXyceSer:
+    case spicecompat::simXycePar:
+    case spicecompat::simXyceSer:
         xyce->convertToQucsData(qucs_dataset);
         break;
     default:break;
@@ -250,12 +220,12 @@ void ExternSimDialog::slotNgspiceStarted()
 {
     editSimConsole->clear();
     QString sim;
-    switch (cbxSimualor->currentIndex()) {
-    case simNgspice: sim = "Ngspice";
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simNgspice: sim = "Ngspice";
         break;
-    case simXyceSer: sim = "Xyce (serial) ";
+    case spicecompat::simXyceSer: sim = "Xyce (serial) ";
         break;
-    case simXycePar: sim = "Xyce (parallel) ";
+    case spicecompat::simXycePar: sim = "Xyce (parallel) ";
         break;
     default: sim = "Simulator "; // Some other simulators could be added ...
         break;
@@ -277,12 +247,12 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
     QMessageBox::critical(this,tr("Simulate with SPICE"),msg,QMessageBox::Ok);
 
     QString sim;
-    switch (cbxSimualor->currentIndex()) {
-    case simNgspice: sim = "Ngspice";
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simNgspice: sim = "Ngspice";
         break;
-    case simXyceSer: sim = "Xyce (serial) ";
+    case spicecompat::simXyceSer: sim = "Xyce (serial) ";
         break;
-    case simXycePar: sim = "Xyce (parallel) ";
+    case spicecompat::simXycePar: sim = "Xyce (parallel) ";
         break;
     default: sim = "Simulator "; // Some other simulators could be added ...
         break;
@@ -293,34 +263,14 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
 void ExternSimDialog::slotStart()
 {
     buttonStopSim->setEnabled(true);
-    cbxSimualor->setEnabled(false);
     buttonSaveNetlist->setEnabled(false);
 }
 
 void ExternSimDialog::slotStop()
 {
     buttonStopSim->setEnabled(false);
-    cbxSimualor->setEnabled(true);
     buttonSaveNetlist->setEnabled(true);
     ngspice->killThemAll();
-}
-
-void ExternSimDialog::slotSimSettings()
-{
-    SimSettingsDialog *SetDlg = new SimSettingsDialog(this);
-    if (SetDlg->exec()) {
-        ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable);
-        xyce->setSimulatorCmd(QucsSettings.XyceExecutable);
-        workdir = QucsSettings.S4Qworkdir;
-        QFileInfo inf(workdir);
-        if (!inf.exists()) {
-            QDir dir;
-            dir.mkpath(workdir);
-        }
-        ngspice->setWorkdir(QucsSettings.S4Qworkdir);
-        xyce->setWorkdir(QucsSettings.S4Qworkdir);
-    }
-    delete SetDlg;
 }
 
 void ExternSimDialog::slotSaveNetlist()
@@ -330,13 +280,13 @@ void ExternSimDialog::slotSaveNetlist()
                        "All files (*)");
     if (filename.isEmpty()) return;
 
-    switch (cbxSimualor->currentIndex()) {
-    case simNgspice: {
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simNgspice: {
         ngspice->SaveNetlist(filename);
         }
         break;
-    case simXyceSer:
-    case simXycePar: {
+    case spicecompat::simXyceSer:
+    case spicecompat::simXycePar: {
         xyce->SaveNetlist(filename);
         }
         break;

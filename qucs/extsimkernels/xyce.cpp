@@ -70,7 +70,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     QString s;
     bool hasParSweep = false;
 
-    if(!prepareSpiceNetlist(stream,true)) return; // Unable to perform spice simulation
+    if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
     startNetlist(stream,true);
 
     // set variable names for named nodes and wires

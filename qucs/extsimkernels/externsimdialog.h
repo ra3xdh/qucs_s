@@ -23,6 +23,7 @@
 #include "schematic.h"
 #include "ngspice.h"
 #include "xyce.h"
+#include "spicecompat.h"
 
 class ExternSimDialog : public QDialog
 {
@@ -31,11 +32,8 @@ private:
 
     Schematic *Sch;
 
-    QLabel *lblSimulator;
-    QComboBox *cbxSimualor;
     QPushButton *buttonSimulate;
     QPushButton *buttonStopSim;
-    QPushButton *buttonSimSettings;
     QPushButton *buttonSaveNetlist;
     QPushButton *buttonExit;
 
@@ -47,8 +45,6 @@ private:
 
     Ngspice *ngspice;
     Xyce *xyce;
-
-    enum Simulator {simNgspice = 0, simXyceSer = 1, simXycePar = 2, simSpiceOpus = 3};
 
 public:
     explicit ExternSimDialog(Schematic *sch,QWidget *parent = 0);
@@ -74,7 +70,6 @@ private slots:
     void slotStart();
     void slotStop();
     void slotSetSimulator();
-    void slotSimSettings();
     void slotSaveNetlist();
     
 };

@@ -51,7 +51,7 @@ protected:
 
     Schematic *Sch;
 
-    bool prepareSpiceNetlist(QTextStream &stream, bool xyce = false);
+    bool prepareSpiceNetlist(QTextStream &stream);
     virtual void startNetlist(QTextStream& stream, bool xyce = false);
     virtual void createNetlist(QTextStream& stream, int NumPorts,QStringList& simulations,
                                QStringList& vars, QStringList &outputs);

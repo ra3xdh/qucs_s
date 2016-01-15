@@ -82,11 +82,11 @@ void AbstractSpiceKernel::killThemAll()
  *        prepared for Xyce simulator. For Ngspice should be false.
  * \return Returns true if success, false if netlist preparation fails
  */
-bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream, bool xyce)
+bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream)
 {
     QStringList collect;
     QPlainTextEdit *err = new QPlainTextEdit;
-    if (Sch->prepareNetlist(stream,collect,err,true,xyce)==-10) { // Broken netlist
+    if (Sch->prepareNetlist(stream,collect,err)==-10) { // Broken netlist
         output.append(err->toPlainText());
         delete err;
         return false;
@@ -187,7 +187,7 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool xyce)
     header = QString(".SUBCKT %1 ").arg(misc::properName(f));
 
     QList< QPair<int,QString> > ports;
-    if(!prepareSpiceNetlist(stream,xyce)) {
+    if(!prepareSpiceNetlist(stream)) {
         emit finished();
         emit errors(QProcess::FailedToStart);
         return;
