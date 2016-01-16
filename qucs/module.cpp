@@ -488,8 +488,9 @@ void Module::registerModules (void) {
 
   // file components
   REGISTER_FILE_1 (SpiceFile);
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
+  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       REGISTER_FILE_3 (SParamFile, info1, info2, info);
+  }
   REGISTER_FILE_1 (Subcircuit);
 
   // simulations
