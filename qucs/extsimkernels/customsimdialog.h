@@ -21,7 +21,7 @@
 #define CUSTOMSIMDIALOG_H
 
 #include "schematic.h"
-#include "components/sp_customsim.h"
+#include "spicecomponents/sp_customsim.h"
 #include "components/component.h"
 #include <QtGui>
 

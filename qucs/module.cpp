@@ -23,6 +23,7 @@
 #include "element.h"
 #include "components/component.h"
 #include "components/components.h"
+#include "spicecomponents/spicecomponents.h"
 #include "paintings/paintings.h"
 #include "diagrams/diagrams.h"
 #include "module.h"
