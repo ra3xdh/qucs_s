@@ -57,13 +57,13 @@ Ampere_dc::~Ampere_dc()
 QString Ampere_dc::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
-    foreach(Port *p1, Ports) {
-        QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
-    }
 
-    s += QString(" DC %1\n").arg(spicecompat::normalize_value(Props.at(0)->Value));
+    QString plus = Ports.at(1)->Connection->Name;
+    if (plus=="gnd") plus = "0";
+    QString minus = Ports.at(0)->Connection->Name;
+    if (minus=="gnd") minus = "0";
+    s += QString(" %1 %2 DC %3\n").arg(plus).arg(minus)
+            .arg(spicecompat::normalize_value(Props.at(0)->Value));
     return s;
 }
 Component* Ampere_dc::newOne()
