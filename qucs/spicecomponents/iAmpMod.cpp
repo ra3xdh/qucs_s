@@ -34,8 +34,8 @@ iAmpMod::iAmpMod()
   Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::blue,3)));
-  Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::blue,3)));
-  Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::blue,3)));
+  Lines.append(new Line(  -6,  0,  0, -4,QPen(Qt::blue,3)));
+  Lines.append(new Line(  -6,  0,  0,  4,QPen(Qt::blue,3)));
   
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));
