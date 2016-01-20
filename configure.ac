@@ -62,7 +62,7 @@ AM_CONDITIONAL(COND_LINUX, test x$LINUX = xyes)
 
 dnl Check for Win32.
 case $host_os in
-  *mingw*) WIN32=yes ;;
+  *mingw* | *msys* ) WIN32=yes ;;
   *)       WIN32=no  ;;
 esac
 AM_CONDITIONAL(COND_WIN32, test x$WIN32 = xyes)
@@ -224,7 +224,7 @@ AC_ARG_WITH(macosx-version-max-allowed,
 
 dnl Platform specific, find libraries, setup compiler flags
 case $host_os in
-  *linux* | *cygwin* | *mingw* | *bsd* )
+  *linux* | *cygwin* | *mingw* | *msys* | *bsd* )
 
     dnl Set Clang
     if test "$CXX -dM -E - < /dev/null | grep __clang__" ; then
@@ -267,7 +267,8 @@ case $host_os in
     QT_INCLUDES=""
     QT_VER=2
     AC_MSG_CHECKING([for Qt headers])
-    paths="$QTDIR/include /usr/local/qt4/include /usr/include/qt4 \
+    paths="$QTDIR/include $QTDIR/include/qt4 \
+      /usr/local/qt4/include /usr/include/qt4 \
       /usr/include /usr/lib/qt/include /usr/X11R6/include/X11/qt4 \
       /usr/X11R6/include/qt4 /usr/X11R6/include /sw/include/qt4 \
       /usr/local/include/qt4"
@@ -303,7 +304,7 @@ case $host_os in
       QT_INC="$QT_DEF -DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS -DQT_THREAD_SUPPORT -D_REENTRANT"
       [case $host_os in
         *freebsd*) QT_LIB="$QT_LIB -pthread" ;;
-        *mingw*) QT_INC="$QT_INC -mthreads"; QT_LDF="$QT_LDF -mthreads" ;;
+        *mingw* | *msys*) QT_INC="$QT_INC -mthreads"; QT_LDF="$QT_LDF -mthreads" ;;
       esac]
       QT_MTS="multi-threaded"
     else
@@ -313,7 +314,7 @@ case $host_os in
       QT_MTS="non-threaded"
     fi
     case $host_os in
-      *mingw*)
+      *mingw* | *msys*)
       QT_LIB="-lQtCore4 -lQtGui4 -lQtXml4 -lQt3Support4 -lQtSvg4 -lQtScript4"
       QT_INC="$QT_INC -DQT_DLL -DUNICODE"
       QT_LDF="$QT_LDF -mwindows"
@@ -756,7 +757,7 @@ dnl AC_LANG(C)
 
 dnl Check for path transformation.
 case $build_os in
-mingw* | cygwin*)
+mingw* | *msys* | cygwin*)
   PATHXFORM="cygpath -w"
   ;;
 *)
