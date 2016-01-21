@@ -580,6 +580,7 @@ QString SpiceFile::getSubcktName()
             if (subckt_header.exactMatch(str)) {
                 QRegExp sep("\\s");
                 s = str.section(sep,1,1,QString::SectionSkipEmpty);
+                break;
             }
         }
         sub_file.close();
@@ -605,6 +606,7 @@ QStringList SpiceFile::getSubcktPorts()
                 foreach (QString s1, lst2) {
                     if (!s1.contains('=')) lst.append(s1);
                 }
+                break;
             }
         }
         sub_file.close();
