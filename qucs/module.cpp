@@ -233,6 +233,8 @@ void Module::intoCategory (Module * m) {
   REGISTER_COMP_2 (QObject::tr("Qucs legacy devices"),val,inf1,inf2)
 #define REGISTER_QUCS_3(val,inf1,inf2,inf3) \
   REGISTER_COMP_3 (QObject::tr("Qucs legacy devices"),val,inf1,inf2,inf3)
+#define REGISTER_XSPICEFILE_1(val) \
+  REGISTER_COMP_1 (QObject::tr("XSPICE file devices"),val)
 
 // This function has to be called once at application startup.  It
 // registers every component available in the application.  Put here
@@ -548,6 +550,9 @@ void Module::registerModules (void) {
       REGISTER_XSPICE_ANALOGUE_1 (Icouple);
       REGISTER_XSPICE_ANALOGUE_1 (core);
       REGISTER_XSPICE_ANALOGUE_1 (SDTF);
+
+      // XSPICE file devices
+      REGISTER_XSPICEFILE_1 (XspiceGeneric);
 
       // specific sections of spice netlists
       REGISTER_SPICE_SEC_1 (SpiceParam);

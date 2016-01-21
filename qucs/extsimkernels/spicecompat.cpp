@@ -208,3 +208,9 @@ void spicecompat::convertNodeNames(QStringList &tokens, QString &sim)
         }
     }
 }
+
+QString spicecompat::normalize_node_name(QString nod)
+{
+    if (nod=="gnd") return QString("0");
+    else return nod;
+}

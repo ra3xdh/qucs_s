@@ -88,3 +88,6 @@
 #include "sp_customsim.h"
 #include "sp_noise.h"
 #include "sp_pz.h"
+
+// Spice file compoents
+#include "xspicegeneric.h"

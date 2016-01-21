@@ -299,6 +299,7 @@
         <file>bitmaps/core.png</file> 
         <file>bitmaps/SDTF.png</file> 
         <file>bitmaps/sp_include.png</file>
+        <file>bitmaps/xspicegeneric.png</file>
  
     </qresource>
 </RCC>

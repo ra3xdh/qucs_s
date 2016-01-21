@@ -87,6 +87,9 @@ Icouple.cpp
 core.cpp
 SDTF.cpp
 
+#XSPICE CodeModel
+xspicegeneric.cpp
+
 )
 
 SET(COMPONENTS_HDRS
@@ -171,6 +174,11 @@ DivV.h
 Icouple.h
 core.h
 SDTF.h
+
+#XSPICE codemodel
+
+xspicegeneric.h
+
 )
 
 
