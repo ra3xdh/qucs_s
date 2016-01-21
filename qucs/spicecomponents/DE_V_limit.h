@@ -1,5 +1,5 @@
 /***************************************************************************
-                         DE_V_amp.h  -  description
+                         DE_V_limit.h  -  description
                    --------------------------------------
     begin                     : Fri Mar 9 2007
     copyright                 : (C) 2007 by Gunther Kraut
@@ -18,15 +18,15 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef DE_V_amp_H
-#define DE_V_amp_H
+ #ifndef DE_V_limit_H
+#define DE_V_limit_H
 
 #include "components/component.h"
 
-class DE_V_amp: public Component {
+class DE_V_limit: public Component {
 public:
-  DE_V_amp();
-  ~DE_V_amp();
+  DE_V_limit();
+  ~DE_V_limit();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
 protected:
@@ -34,4 +34,4 @@ protected:
   QString spice_netlist(bool isXyce = false);
 };
 
-#endif // DE_V_amp
+#endif // DE_V_limit

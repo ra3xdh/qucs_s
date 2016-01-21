@@ -1,12 +1,12 @@
 /***************************************************************************
-                         DE_V_amp.h  -  description
+                         SE_V_limit.h  -  description
                    --------------------------------------
-    begin                     : Fri Mar 9 2007
-    copyright                 : (C) 2007 by Gunther Kraut
+    begin                    : Fri Mar 9 2007
+    copyright              : (C) 2007 by Gunther Kraut
     email                     : gn.kraut@t-online.de
-    spice4qucs code added     :  Thur Jan 21 2016
-    copyright                 : (C) 2015 by Mike Brinson
-    email                     : mbrin72043@yahoo.co.uk
+    spice4qucs code added  Wed. 20 Jan 2016
+    copyright              : (C) 2016 by Mike Brinson
+    email                    : mbrin72043@yahoo.co.uk
 
  ***************************************************************************/
 
@@ -18,15 +18,15 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- #ifndef DE_V_amp_H
-#define DE_V_amp_H
+ #ifndef SE_V_limit_H
+#define SE_V_limit_H
 
 #include "components/component.h"
 
-class DE_V_amp: public Component {
+class SE_V_limit: public Component {
 public:
-  DE_V_amp();
-  ~DE_V_amp();
+  SE_V_limit();
+  ~SE_V_limit();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
 protected:
@@ -34,4 +34,4 @@ protected:
   QString spice_netlist(bool isXyce = false);
 };
 
-#endif // DE_V_amp
+#endif // SE_V_limit

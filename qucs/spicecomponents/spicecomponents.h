@@ -57,6 +57,8 @@
 #include "Cmeter_SPICE.h"
 #include "SE_V_amp.h"
 #include "DE_V_amp.h"
+#include "SE_V_limit.h"
+#include "DE_V_limit.h"
 #include "SE_V_int.h"
 #include "DE_V_int.h"
 #include "SE_V_diff.h"
