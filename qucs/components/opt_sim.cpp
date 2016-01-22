@@ -183,7 +183,7 @@ bool Optimize_Sim::createASCOFiles()
 	stream << "#\n\n";
 	stream << "# Post Processing #\n";
 	stream << "MEASURE_VAR:#SYMBOL#:SEARCH_FOR:'<indep " << VarName
-	       << "':S_COL:01:P_LINE:01:P_COL:01:31" << "\n";
+	       << " ':S_COL:01:P_LINE:01:P_COL:01:31" << "\n";
 	stream << "#\n\n";
 	efile.close();
       }
