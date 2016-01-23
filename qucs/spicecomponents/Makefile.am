@@ -93,7 +93,8 @@ libspicecomponents_a_SOURCES = src_eqndef.cpp \
 	Icouple.cpp \
 	APBV.cpp \
 	SDTF.cpp \
-	xspicegeneric.cpp
+	xspicegeneric.cpp \
+	xsp_cmlib.cpp
 
 
 
@@ -164,7 +165,8 @@ noinst_HEADERS = src_eqndef.h \
 	Icouple.h \
 	APBV.h \
 	SDTF.h \
-	xspicegeneric.h
+	xspicegeneric.h \
+	xsp_cmlib.h
 
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
