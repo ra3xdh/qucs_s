@@ -553,6 +553,7 @@ void Module::registerModules (void) {
 
       // XSPICE file devices
       REGISTER_XSPICEFILE_1 (XspiceGeneric);
+      REGISTER_XSPICEFILE_1 (XSP_CMlib);
 
       // specific sections of spice netlists
       REGISTER_SPICE_SEC_1 (SpiceParam);

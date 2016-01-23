@@ -89,5 +89,6 @@
 #include "sp_noise.h"
 #include "sp_pz.h"
 
-// Spice file compoents
+// XSpice file components
 #include "xspicegeneric.h"
+#include "xsp_cmlib.h"

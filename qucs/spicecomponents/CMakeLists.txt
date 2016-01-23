@@ -89,6 +89,7 @@ SDTF.cpp
 
 #XSPICE CodeModel
 xspicegeneric.cpp
+xsp_cmlib.cpp
 
 )
 
@@ -178,6 +179,7 @@ SDTF.h
 #XSPICE codemodel
 
 xspicegeneric.h
+xsp_cmlib.h
 
 )
 
