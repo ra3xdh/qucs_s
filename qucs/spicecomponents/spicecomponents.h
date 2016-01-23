@@ -14,6 +14,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#ifndef SPICECOMPONENTS_H
+#define SPICECOMPONENTS_H
 //
 // Qucs-S ngspice and Xyce components
 #include "S4Q_V.h"
@@ -92,3 +95,5 @@
 // XSpice file components
 #include "xspicegeneric.h"
 #include "xsp_cmlib.h"
+
+#endif
