@@ -32,7 +32,8 @@ for bom in "${packages[@]}"; do
     | while read i; do
       # Remove each file listed in the bom.
       cd /
-      file="${i}"
+      # for some reason paths are recorded with a leading . (sed removes that)
+      file="$(sed 's/^.//g' <<< ${i})"
       if [ -e $file ]; then
         echo "removing: ${file}"
         rm $file
@@ -63,14 +64,22 @@ PROGS="
 for app in $PROGS
 do
 
+  # shortcuts
   link=/Applications/$app
   if [ -L $link ]; then
     rm $link
   fi
+
+  # directories
+  rm -rf $PREFIX/$app
 done
 
+# other directories
+rm -rf /usr/local/share/qucs
+rm -rf /usr/local/include/qucs-core
 
-#echo "*** Removing receipts: /var/db/receipts/org.qucs.*"
-#rm -f /var/db/receipts/org.qucs.*
+
+echo "*** Please remove manually the receipts: $(ls /var/db/receipts/*qucs*.bom)"
+echo "*** You can use: rm -f /var/db/receipts/*qucs*.bom"
 
 

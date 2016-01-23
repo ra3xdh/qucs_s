@@ -42,12 +42,17 @@ QDir UserLibDir;
 bool loadSettings()
 {
     QSettings settings("qucs","qucs");
+    // Qucs Library Tool specific settings
     settings.beginGroup("QucsLib");
     if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
     if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
     if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
     if(settings.contains("dy"))QucsSettings.dy=settings.value("dy").toInt();
     settings.endGroup();
+    // Qucs general settings
+    if(settings.contains("QucsHomeDir"))
+      if(settings.value("QucsHomeDir").toString() != "")
+         QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
     if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
     if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
 
@@ -85,22 +90,23 @@ int main(int argc, char *argv[])
   QucsSettings.dx = 600;
   QucsSettings.dy = 350;
   QucsSettings.font = QFont("Helvetica", 12);
+  QucsSettings.QucsHomeDir.setPath(QDir::homePath() + "/.qucs");
 
   // is application relocated?
   char * var = getenv ("QUCSDIR");
+  QDir QucsDir;
   if (var != NULL) {
-    QDir QucsDir = QDir (var);
-    QString QucsDirStr = QucsDir.canonicalPath ();
-    QucsSettings.LangDir =
-      QDir::convertSeparators (QucsDirStr + "/share/qucs/lang/");
-    QucsSettings.LibDir =
-      QDir::convertSeparators (QucsDirStr + "/share/qucs/library/");
+    QucsDir = QDir(QString(var));
+    QucsSettings.LangDir =     QucsDir.canonicalPath() + "/share/qucs/lang/";
+    QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/qucs/library/";
   } else {
     QucsSettings.LangDir = LANGUAGEDIR;
     QucsSettings.LibDir = LIBRARYDIR;
   }
-  UserLibDir.setPath (QDir::homePath()+QDir::convertSeparators ("/.qucs/user_lib"));
+
   loadSettings();
+
+  UserLibDir.setPath(QucsSettings.QucsHomeDir.canonicalPath() + "/user_lib/");
 
   QApplication a(argc, argv);
   a.setFont(QucsSettings.font);
