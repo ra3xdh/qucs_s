@@ -36,6 +36,8 @@ class Ngspice : public AbstractSpiceKernel
     Q_OBJECT
 private:
     QString getParentSWPscript(Component *pc_swp, QString sim, bool before, bool &hasDblSWP);
+    void createSpiceinit();
+
 public:
     explicit Ngspice(Schematic *sch_, QObject *parent = 0);
     void SaveNetlist(QString filename);

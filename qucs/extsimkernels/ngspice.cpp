@@ -405,3 +405,19 @@ void Ngspice::setSimulatorCmd(QString cmd)
 
     simulator_cmd = cmd;
 }
+
+void Ngspice::createSpiceinit()
+{
+    QString spinit_name=QDir::convertSeparators(workdir+"/.spiceinit");
+    QFileInfo inf(spinit_name);
+    if (inf.exists()) QFile::remove(spinit_name);
+
+    QFile spinit(spinit_name);
+    if (!spinit.open(QIODevice::WriteOnly)) {
+        QTextStream stream(&spinit);
+        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+
+        }
+        spinit.close();
+    }
+}
