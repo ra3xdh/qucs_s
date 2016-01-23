@@ -29,6 +29,8 @@ public:
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
 
+  QString getSpiceInit();
+
 protected:
   QString spice_netlist();
 

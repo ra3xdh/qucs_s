@@ -72,6 +72,16 @@ Element* XSP_CMlib::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
+QString XSP_CMlib::getSpiceInit()
+{
+    QString s;
+    s.clear();
+    foreach (Property *pp,Props) {
+        s += "codemodel " + pp->Value + "\n";
+    }
+    return s;
+}
+
 QString XSP_CMlib::spice_netlist()
 {
     return QString("");
