@@ -21,6 +21,7 @@
 #include "components/vprobe.h"
 #include "components/equation.h"
 #include "components/param_sweep.h"
+#include "spicecomponents/xsp_cmlib.h"
 #include "main.h"
 
 /*!
@@ -348,6 +349,7 @@ void Ngspice::slotSimulate()
 
     QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs.cir");
     SaveNetlist(tmp_path);
+    createSpiceinit();
 
     //startNgSpice(tmp_path);
     SimProcess->setWorkingDirectory(workdir);
@@ -413,10 +415,12 @@ void Ngspice::createSpiceinit()
     if (inf.exists()) QFile::remove(spinit_name);
 
     QFile spinit(spinit_name);
-    if (!spinit.open(QIODevice::WriteOnly)) {
+    if (spinit.open(QIODevice::WriteOnly)) {
         QTextStream stream(&spinit);
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-
+            if (pc->Model=="XSP_CMlib") {
+                stream<<((XSP_CMlib *)pc)->getSpiceInit();
+            }
         }
         spinit.close();
     }

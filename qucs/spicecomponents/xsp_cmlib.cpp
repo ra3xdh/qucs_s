@@ -77,7 +77,8 @@ QString XSP_CMlib::getSpiceInit()
     QString s;
     s.clear();
     foreach (Property *pp,Props) {
-        s += "codemodel " + pp->Value + "\n";
+        if (!pp->Value.isEmpty())
+            s += "codemodel " + pp->Value + "\n";
     }
     return s;
 }
