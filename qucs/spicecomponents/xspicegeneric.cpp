@@ -27,10 +27,10 @@
 
 XspiceGeneric::XspiceGeneric()
 {
-  Description = QObject::tr("SPICE netlist file");
+  Description = QObject::tr("XSPICE generic device");
   // Property descriptions not needed, but must not be empty !
-  Props.append(new Property("Npins", "2", true, tr("Number of pins")));
-  Props.append(new Property("Model", "generic_model", false, tr(".MODEL definition reference")));
+  Props.append(new Property("Npins", "2", true, QObject::tr("Number of pins")));
+  Props.append(new Property("Model", "generic_model", false, QObject::tr(".MODEL definition reference")));
 
   Model = "XSPICE_A";
   SpiceModel = "A";
@@ -92,7 +92,7 @@ void XspiceGeneric::createSymbol()
 
   i = 1;
   int y = 15-h;
-  while(i<No) { // add ports lines and numbers
+  while(i<=No) { // add ports lines and numbers
     Lines.append(new Line(-40,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-40,  y));
     // tmp = PortNames.section(',', i, i).mid(4);
@@ -101,7 +101,7 @@ void XspiceGeneric::createSymbol()
     Texts.append(new Text(-40-w, y-fHeight-2, tmp)); // text right-aligned
     i++;
 
-    // if(i == No) break; // if odd number of ports there will be one port less on the right side
+    if(i == No+1) break; // if odd number of ports there will be one port less on the right side
     Lines.append(new Line(HALFWIDTH,  y, 40,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 40,  y));
     tmp = QString::number(i);
@@ -131,7 +131,7 @@ QString XspiceGeneric::netlist()
 
 QString XspiceGeneric::spice_netlist(bool)
 {
-    QString s = SpiceModel;
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
 
     foreach(Port *pp,Ports) {
         s += " " + spicecompat::normalize_node_name(pp->Connection->Name);

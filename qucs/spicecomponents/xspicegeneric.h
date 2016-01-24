@@ -15,18 +15,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef XspiceGeneric_H
-#define XspiceGeneric_H
+#ifndef XSPICEGENERIC_H
+#define XSPICEGENERIC_H
 #include "components/component.h"
 
-#include <QObject>
-#include <QDateTime>
 
 class QProcess;
 class QTextStream;
 class QString;
 
-class XspiceGeneric : public QObject, public MultiViewComponent  {
+class XspiceGeneric : public MultiViewComponent  {
 public:
   XspiceGeneric();
  ~XspiceGeneric() {};
