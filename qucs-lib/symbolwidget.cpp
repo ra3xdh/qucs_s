@@ -44,6 +44,12 @@ SymbolWidget::SymbolWidget(QWidget *parent) : QWidget(parent)
 {
 
   Text_x = Text_y = 0;
+  cx = 0;
+  cy = 0;
+  x1 = 0;
+  x2 = 0;
+  y1 = 0;
+  y2 = 0;
   PaintText = tr("Symbol:");
   QFontMetrics  metrics(QucsSettings.font, 0); // use the the screen-compatible metric
   TextWidth = metrics.width(PaintText) + 4;    // get size of text
@@ -98,6 +104,9 @@ void SymbolWidget::paintEvent(QPaintEvent*)
 {
   QPainter Painter(this);
   Painter.drawText(2, 2, 0, 0, Qt::AlignLeft | Qt::TextDontClip, PaintText);
+
+  QFontMetrics metrics(QucsSettings.font, 0);
+  Painter.drawText(2, metrics.height(), 0, 0, Qt::AlignLeft | Qt::TextDontClip, Warning);
 
   int dx = (x2-x1)/2 + TextWidth - DragNDropWidth/2;
   if(dx < 2)  dx = 2;
@@ -161,6 +170,8 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
   Texts.clear();
   LibraryName = Lib_;
   ComponentName = Comp_;
+
+  Warning.clear();
 
   int PortNo = 0;
   QString Comp = ModelString.section(' ', 0,0);
@@ -285,6 +296,7 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
   else if(Comp == "hicumL2V2p1" || Comp == "hic2_full" ||
 	  Comp == "hic0_full" || Comp == "hicumL0V1p2" ||
 	  Comp == "hicumL2V2p23" || Comp == "hicumL2V2p24" ||
+      Comp == "hicumL2V2p31n" ||
 	  Comp == "hicumL0V1p2g" || Comp == "hicumL0V1p3") {
     // normal bipolar
     Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkBlue,3)));
@@ -377,6 +389,13 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
     PortNo = 0;
     x1 = -34; y1 =-44;
     x2 =  84; y2 = 20;
+  }
+  else {
+    // Warn in case a default component symbol is not
+    // mapped or implemented.
+    Warning = tr("Warning: Symbol '%1' missing in Qucs Library.\n"
+                 "Drag and Drop may still work.\n"
+                 "Please contact the developers.").arg(Comp);
   }
 
   x1 -= 4;   // enlarge component boundings a little
