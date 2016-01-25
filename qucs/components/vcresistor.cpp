@@ -20,7 +20,7 @@
 
 vcresistor::vcresistor()
 {
-  Description = QObject::tr("voltage controlled voltage source");
+  Description = QObject::tr("voltage controlled resistor");
 
   // The resistor shape
   Lines.append(new Line(5, 18, 5, -18, QPen(Qt::darkBlue,2)));
