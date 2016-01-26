@@ -29,7 +29,7 @@ XspiceGeneric::XspiceGeneric()
 {
   Description = QObject::tr("XSPICE generic device");
   // Property descriptions not needed, but must not be empty !
-  Props.append(new Property("Npins", "2", true, QObject::tr("Number of pins")));
+  Props.append(new Property("PortList", "v,v", true, QObject::tr("PortsList")));
   Props.append(new Property("Model", "generic_model", false, QObject::tr(".MODEL definition reference")));
 
   Model = "XSPICE_A";
@@ -73,7 +73,19 @@ void XspiceGeneric::createSymbol()
   QFontMetrics  smallmetrics(f, 0);   // get size of text
   int fHeight = smallmetrics.lineSpacing();
 
-  int No = Props.at(0)->Value.toInt();
+  QStringList t_ports = Props.at(0)->Value.split(',');
+  QStringList n_ports;
+  int k=0;
+  foreach (QString t_port, t_ports) {
+      if (t_port.remove(' ').endsWith('d')) {
+          n_ports.append(t_port+QString::number(k)+"+");
+          n_ports.append(t_port+QString::number(k)+"-");
+      } else n_ports.append(t_port+QString::number(k));
+      k++;
+  }
+
+
+  int No = n_ports.count();
   QString tmp;
   
   // draw symbol outline
@@ -90,21 +102,21 @@ void XspiceGeneric::createSymbol()
   w = smallmetrics.boundingRect(tmp).width();
   Texts.append(new Text(w/-2, -i, tmp));
 
-  i = 1;
+  i = 0;
   int y = 15-h;
-  while(i<=No) { // add ports lines and numbers
+  while(i<No) { // add ports lines and numbers
     Lines.append(new Line(-40,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-40,  y));
     // tmp = PortNames.section(',', i, i).mid(4);
-    tmp = QString::number(i);
+    tmp = n_ports.at(i);
     w = smallmetrics.width(tmp);
     Texts.append(new Text(-40-w, y-fHeight-2, tmp)); // text right-aligned
     i++;
 
-    if(i == No+1) break; // if odd number of ports there will be one port less on the right side
+    if(i == No) break; // if odd number of ports there will be one port less on the right side
     Lines.append(new Line(HALFWIDTH,  y, 40,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 40,  y));
-    tmp = QString::number(i);
+    tmp = n_ports.at(i);
     Texts.append(new Text( 40, y-fHeight-2, tmp)); // text left-aligned
     y += 60;
     i++;
@@ -133,8 +145,19 @@ QString XspiceGeneric::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
-    foreach(Port *pp,Ports) {
-        s += " " + spicecompat::normalize_node_name(pp->Connection->Name);
+    QStringList t_ports = Props.at(0)->Value.split(',');
+
+    int i=0;
+    foreach(QString t_port,t_ports) {
+        QString nod =  spicecompat::normalize_node_name(Ports.at(i)->Connection->Name);
+        if (t_port.remove(' ').endsWith('d')) {
+            i++;
+            QString nod1 =  spicecompat::normalize_node_name(Ports.at(i)->Connection->Name);
+            s += QString(" %%1(%2 %3) ").arg(t_port).arg(nod).arg(nod1);
+        } else {
+            s += QString(" %%1(%2) ").arg(t_port).arg(nod);
+        }
+        i++;
     }
     s += " " + Props.at(1)->Value + "\n";
 
