@@ -18,10 +18,6 @@
         <file>bitmaps/binarytogrey4bit.png</file>
         <file>bitmaps/bondwire.png</file>
         <file>bitmaps/bottom.png</file>
-        <file>bitmaps/bsim3v34nMOS.png</file>
-        <file>bitmaps/bsim3v34pMOS.png</file>
-        <file>bitmaps/bsim4v30nMOS.png</file>
-        <file>bitmaps/bsim4v30pMOS.png</file>
         <file>bitmaps/buffer.png</file>
         <file>bitmaps/capacitor.png</file>
         <file>bitmaps/cccs.png</file>
@@ -87,7 +83,6 @@
         <file>bitmaps/gyrator.png</file>
         <file>bitmaps/ha1b.png</file>
         <file>bitmaps/hb.png</file>
-        <file>bitmaps/hicumL2V2p31n.png</file>
         <file>bitmaps/home.png</file>
         <file>bitmaps/hpribin4bit.png</file>
         <file>bitmaps/hybrid.png</file>

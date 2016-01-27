@@ -9,7 +9,7 @@ SET(COMPONENTS_SRCS
 DLS_1ton.cpp		dff_SR.cpp		logical_buf.cpp		potentiometer.cpp
 DLS_nto1.cpp		diac.cpp		logical_inv.cpp		rectline.cpp
 EKV26MOS.cpp		digi_sim.cpp		logical_nand.cpp	relais.cpp
-HBT_X.cpp		digi_source.cpp		logical_nor.cpp		resistor.cpp
+digi_source.cpp		logical_nor.cpp		resistor.cpp
 MESFET.cpp		diode.cpp		logical_or.cpp		rfedd.cpp
 ac_sim.cpp		dmux2to4.cpp		logical_xnor.cpp	rfedd2p.cpp
 am_modulator.cpp	dmux3to8.cpp		logical_xor.cpp		rlcg.cpp
@@ -27,15 +27,15 @@ attenuator.cpp		ground.cpp		msgap.cpp
 biast.cpp		gyrator.cpp		mslange.cpp		subcircuit.cpp
 binarytogrey4bit.cpp	ha1b.cpp		msline.cpp		subcirport.cpp
 bjt.cpp			hb_sim.cpp		msmbend.cpp		substrate.cpp
-bjtsub.cpp		hic0_full.cpp		msopen.cpp		switch.cpp
-bondwire.cpp		hic2_full.cpp		msrstub.cpp		symtrafo.cpp
-bsim3v34nMOS.cpp	hicumL0V1p2.cpp		msstep.cpp		tff_SR.cpp
-bsim3v34pMOS.cpp	hicumL0V1p2g.cpp	mstee.cpp		thyristor.cpp
-capacitor.cpp		hicumL0V1p3.cpp		msvia.cpp		tline.cpp
-cccs.cpp		hicumL2V2p1.cpp		mutual.cpp		tline_4port.cpp
-ccvs.cpp		hicumL2V2p23.cpp	mutual2.cpp		tr_sim.cpp
-circulator.cpp		hicumL2V2p24.cpp	mux2to1.cpp		transformer.cpp
-coaxialline.cpp		hicumL2V2p31n.cpp	mux4to1.cpp		triac.cpp
+bjtsub.cpp			msopen.cpp		switch.cpp
+bondwire.cpp				msrstub.cpp		symtrafo.cpp
+msstep.cpp		tff_SR.cpp
+mstee.cpp		thyristor.cpp
+capacitor.cpp		msvia.cpp		tline.cpp
+cccs.cpp		mutual.cpp		tline_4port.cpp
+ccvs.cpp		mutual2.cpp		tr_sim.cpp
+circulator.cpp		mux2to1.cpp		transformer.cpp
+coaxialline.cpp		mux4to1.cpp		triac.cpp
 comp_1bit.cpp		hpribin4bit.cpp		mux8to1.cpp		tunneldiode.cpp
 comp_2bit.cpp		hybrid.cpp		nigbt.cpp		twistedpair.cpp
 comp_4bit.cpp		iexp.cpp		noise_ii.cpp		vafile.cpp
@@ -53,8 +53,6 @@ d_flipflop.cpp		log_amp.cpp		phaseshifter.cpp	vpulse.cpp
 dc_sim.cpp		logic_0.cpp		photodiode.cpp		vrect.cpp
 dcblock.cpp		logic_1.cpp		phototransistor.cpp
 dcfeed.cpp		logical_and.cpp		pm_modulator.cpp
-bsim4v30nMOS.cpp
-bsim4v30pMOS.cpp
 vcresistor.cpp
 vacomponent.cpp
 mutualx.cpp
@@ -76,10 +74,6 @@ binarytogrey4bit.h
 bjt.h
 bjtsub.h
 bondwire.h
-bsim3v34nMOS.h
-bsim3v34pMOS.h
-bsim4v30nMOS.h
-bsim4v30pMOS.h
 capacitor.h
 cccs.h
 ccvs.h
@@ -125,16 +119,6 @@ ground.h
 gyrator.h
 ha1b.h
 hb_sim.h
-HBT_X.h
-hic0_full.h
-hic2_full.h
-hicumL0V1p2.h
-hicumL0V1p2g.h
-hicumL0V1p3.h
-hicumL2V2p1.h
-hicumL2V2p23.h
-hicumL2V2p24.h
-hicumL2V2p31n.h
 hpribin4bit.h
 hybrid.h
 iexp.h
