@@ -686,7 +686,7 @@ int main(int argc, char *argv[])
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
 
   /// \todo Make the setting up of all executables below more consistent
-  getenv("QUCSATOR");
+  var = getenv("QUCSATOR");
   if(var != NULL) {
       QucsSettings.Qucsator = QString(var);
   }
