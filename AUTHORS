@@ -17,12 +17,29 @@
 -- Boston, MA 02110-1301, USA.  
 --
 
-Maintainer:
-	Michael Margraf <michael.margraf@alumni.tu-berlin.de>
+Original developers:
+	Michael Margraf
+	Stefan Jahn
 
-Authors: (see THANKS file for details)
-	Michael Margraf <michael.margraf@alumni.tu-berlin.de>
-	Stefan Jahn <stefan@lkcc.org>
-	Jens Flucke <jens.flucke@gmx.de>
-	Gopala Krishna A <krishna.ggk@gmail.com>
-	Gunther Kraut <gn.kraut@online.de>
+Current developers:
+	Guilherme Brondani Torri
+	Mike Brinson
+	Richard Crozier
+	Bastien Roucaries
+	Frans Schreuder
+	Vadim Kuznetsov
+	Claudio Girardi
+	Felix Salfelder
+	Andres Martinez Mera
+  
+Former developers:
+	Jens Flucke
+	Raimund Jacob
+	Vincent Habchi
+	Toyoyuki Ishikawa
+	Gopala Krishna A
+	Helene Parruitte
+	Gunther Kraut
+	Andrea Zonca
+	Clemens Novak
+	You-Tang Lee (YodaLee)
