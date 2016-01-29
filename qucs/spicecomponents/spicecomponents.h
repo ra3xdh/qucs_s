@@ -95,5 +95,6 @@
 // XSpice file components
 #include "xspicegeneric.h"
 #include "xsp_cmlib.h"
+#include "xsp_codemodel.h"
 
 #endif

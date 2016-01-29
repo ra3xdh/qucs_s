@@ -14,28 +14,28 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "xsp_cmlib.h"
+#include "xsp_codemodel.h"
 #include "main.h"
 
 #include <QFontMetrics>
 
-XSP_CMlib::XSP_CMlib()
+XSP_CodeModel::XSP_CodeModel()
 {
   isEquation = false;
   Type = isComponent; // Analogue and digital component.
-  Description = QObject::tr("XSPICE precompiled CodeModel library\n");
+  Description = QObject::tr("XSPICE CodeModel: cfunc.mod and ifspec.ifs files pair\n");
 
   QFont f = QucsSettings.font;
   f.setWeight(QFont::Light);
   f.setPointSizeF(12.0);
   QFontMetrics  metrics(f, 0);  // use the the screen-compatible metric
-  QSize r = metrics.size(0, QObject::tr("Precompiled CM-library"));
+  QSize r = metrics.size(0, QObject::tr("XSPICE CodeModel"));
   int xb = r.width()  >> 1;
   int yb = r.height() >> 1;
 
   Lines.append(new Line(-xb, -yb, -xb,  yb,QPen(Qt::darkBlue,2)));
   Lines.append(new Line(-xb,  yb,  xb+3,yb,QPen(Qt::darkBlue,2)));
-  Texts.append(new Text(-xb+4,  -yb-3, QObject::tr("Precompiled CM-library"),
+  Texts.append(new Text(-xb+4,  -yb-3, QObject::tr("XSPICE CodeModel"),
 			QColor(0,0,0), 12.0));
 
   x1 = -xb-3;  y1 = -yb-5;
@@ -43,47 +43,33 @@ XSP_CMlib::XSP_CMlib()
 
   tx = x1+4;
   ty = y2+4;
-  Model = "XSP_CMlib";
-  Name  = "XSP_CMlib";
-  SpiceModel = "CMlib";
+  Model = "XSP_CMod";
+  Name  = "XSP_CMod";
+  SpiceModel = "CMod";
 
-  Props.append(new Property("File", "/home/user/library.cm", true,"Precompiled *.cm file"));
-  Props.append(new Property("File", "", false,"Precompiled *.cm file"));
-  Props.append(new Property("File", "", false,"Precompiled *.cm file"));
-  Props.append(new Property("File", "", false,"Precompiled *.cm file"));
-  Props.append(new Property("File", "", false,"Precompiled *.cm file"));
+  Props.append(new Property("File", "cfunc.mod", true,"Model file *.mod"));
+  Props.append(new Property("File", "ifspec.ifs", true,"Interface file *.ifs"));
 }
 
-XSP_CMlib::~XSP_CMlib()
+XSP_CodeModel::~XSP_CodeModel()
 {
 }
 
-Component* XSP_CMlib::newOne()
+Component* XSP_CodeModel::newOne()
 {
-  return new XSP_CMlib();
+  return new XSP_CodeModel();
 }
 
-Element* XSP_CMlib::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* XSP_CodeModel::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("XSPICE precompiled CM-library");
-  BitmapFile = (char *) "xsp_cmlib";
+  Name = QObject::tr("XSPICE CodeModel");
+  BitmapFile = (char *) "xsp_cmod";
 
-  if(getNewOne)  return new XSP_CMlib();
+  if(getNewOne)  return new XSP_CodeModel();
   return 0;
 }
 
-QString XSP_CMlib::getSpiceInit()
-{
-    QString s;
-    s.clear();
-    foreach (Property *pp,Props) {
-        if (!pp->Value.isEmpty())
-            s += "codemodel " + pp->Value + "\n";
-    }
-    return s;
-}
-
-QString XSP_CMlib::spice_netlist()
+QString XSP_CodeModel::spice_netlist()
 {
     return QString("");
 }
