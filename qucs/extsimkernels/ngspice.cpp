@@ -425,3 +425,20 @@ void Ngspice::createSpiceinit()
         spinit.close();
     }
 }
+
+/*!
+ * \brief Ngspice::createCModelTree Obtain all cfunc.mod and ifspec.ifs files paths and
+ *        copy it into woriking directory of dynamic XSPICE CodeModels builder
+ */
+void Ngspice::createCModelTree()
+{
+
+}
+
+/*!
+ * \brief Ngspice::compileCMlib Compile all models and obtain qucs_xspice.cm
+ */
+void Ngspice::compileCMlib()
+{
+
+}

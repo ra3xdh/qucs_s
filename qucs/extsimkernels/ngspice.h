@@ -46,6 +46,10 @@ public:
 protected:
     void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
                   QStringList &vars, QStringList &outputs);
+
+    void createCModelTree();
+    void compileCMlib();
+
 public slots:
     void slotSimulate();
 
