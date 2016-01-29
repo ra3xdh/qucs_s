@@ -35,8 +35,13 @@ class Ngspice : public AbstractSpiceKernel
 {
     Q_OBJECT
 private:
+    QString cmdir,cmsubdir;
+
     QString getParentSWPscript(Component *pc_swp, QString sim, bool before, bool &hasDblSWP);
     void createSpiceinit();
+    bool needCompile();
+    QString normalizeModelName(QString &file,QString &destdir);
+    bool removeDir(const QString &dirName);
 
 public:
     explicit Ngspice(Schematic *sch_, QObject *parent = 0);

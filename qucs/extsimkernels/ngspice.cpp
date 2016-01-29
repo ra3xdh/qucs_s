@@ -39,6 +39,8 @@ Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
 {
     simulator_cmd = QucsSettings.NgspiceExecutable;
     simulator_parameters = "";
+    cmsubdir = "qucs_cmlib/";
+    cmdir = QDir::convertSeparators(workdir+cmsubdir);
 }
 
 /*!
@@ -350,6 +352,8 @@ void Ngspice::slotSimulate()
     QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs.cir");
     SaveNetlist(tmp_path);
     createSpiceinit();
+    if (needCompile())
+        createCModelTree();
 
     //startNgSpice(tmp_path);
     SimProcess->setWorkingDirectory(workdir);
@@ -422,8 +426,17 @@ void Ngspice::createSpiceinit()
                 stream<<((XSP_CMlib *)pc)->getSpiceInit();
             }
         }
+        if (needCompile()) stream<<"codemodel "+cmdir+"qucs_xspice.cm";
         spinit.close();
     }
+}
+
+bool Ngspice::needCompile()
+{
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->Model=="XSP_CMod") return true;
+    }
+    return false;
 }
 
 /*!
@@ -432,7 +445,47 @@ void Ngspice::createSpiceinit()
  */
 void Ngspice::createCModelTree()
 {
+    removeDir(cmdir);
+    QDir wd(workdir);
+    wd.mkdir(cmsubdir);
+    QDir dir_cm(cmdir);
+    QString lst_entries; // For modpath.lst
 
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->Model=="XSP_CMod") {
+            QString destdir = QDir::convertSeparators(pc->Name);
+            dir_cm.mkdir(destdir);
+            lst_entries += destdir + "\n";
+            QString file = pc->Props.at(0)->Value;
+            QString destfile = normalizeModelName(file,destdir);
+            QFile::copy(file,destfile);
+            file = pc->Props.at(1)->Value;
+            destfile = normalizeModelName(file,destdir);
+            QFile::copy(file,destfile);
+        }
+    }
+
+    QFile modpath_lst(cmdir+"/modpath.lst");
+    if (modpath_lst.open(QIODevice::WriteOnly)) {
+        QTextStream stream(&modpath_lst);
+        stream<<lst_entries;
+        modpath_lst.close();
+    }
+
+    QFile udnpath_lst(cmdir+"/udnpath.lst");
+    if (udnpath_lst.open(QIODevice::WriteOnly))
+        udnpath_lst.close();
+}
+
+QString Ngspice::normalizeModelName(QString &file, QString &destdir)
+{
+    QFileInfo inf(file);
+    QString filenam = inf.fileName();
+    if (filenam.endsWith(".mod"))
+        return QDir::convertSeparators(cmdir+'/'+destdir+"/cfunc.mod");
+    if (filenam.endsWith(".ifs"))
+        return QDir::convertSeparators(cmdir+'/'+destdir+"/ifspec.ifs");
+    return QDir::convertSeparators(cmdir+'/'+destdir+'/'+filenam);
 }
 
 /*!
@@ -441,4 +494,28 @@ void Ngspice::createCModelTree()
 void Ngspice::compileCMlib()
 {
 
+}
+
+bool Ngspice::removeDir(const QString &dirName)
+{
+    bool result = true;
+    QDir dir(dirName);
+
+    if (dir.exists(dirName)) {
+        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+            if (info.isDir()) {
+                result = removeDir(info.absoluteFilePath());
+            }
+            else {
+                result = QFile::remove(info.absoluteFilePath());
+            }
+
+            if (!result) {
+                return result;
+            }
+        }
+        result = dir.rmdir(dirName);
+    }
+
+    return result;
 }
