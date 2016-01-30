@@ -39,6 +39,9 @@ public:
   QLineEdit   *ProjName;
   QCheckBox   *OpenProj;
 
+private slots:
+  void slotTextChanged(const QString &);
+
 private:
   QPushButton *ButtonOk, *ButtonCancel;
   QGridLayout *gbox;

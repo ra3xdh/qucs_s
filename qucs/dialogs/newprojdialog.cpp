@@ -3,6 +3,7 @@
                              -------------------
     begin                : Sun Aug 24 2003
     copyright            : (C) 2003 by Michael Margraf
+                           (C) 2016 Qucs Team
     email                : michael.margraf@alumni.tu-berlin.de
  ***************************************************************************/
 
@@ -35,6 +36,7 @@ NewProjDialog::NewProjDialog(QWidget *parent, const char *name)
 
   ProjName = new QLineEdit(this);
   ProjName->setMinimumWidth(250);
+  connect(ProjName, SIGNAL(textChanged(const QString&)), SLOT(slotTextChanged(const QString&)));
   gbox->addMultiCellWidget(ProjName,0,0,1,2);
   OpenProj = new QCheckBox(tr("open new project"));
   OpenProj->setChecked(true);
@@ -42,6 +44,7 @@ NewProjDialog::NewProjDialog(QWidget *parent, const char *name)
 
   ButtonOk = new QPushButton(tr("Create"));
   gbox->addWidget(ButtonOk,2,1);
+  ButtonOk->setEnabled(false);
   ButtonCancel = new QPushButton(tr("Cancel"));
   gbox->addWidget(ButtonCancel,2,2);
 
@@ -50,6 +53,15 @@ NewProjDialog::NewProjDialog(QWidget *parent, const char *name)
 
   ButtonOk->setDefault(true);
   setFocusProxy(ProjName);
+}
+
+void NewProjDialog::slotTextChanged(const QString &text){
+  /* avoid creating project with empty name */
+  if (text.isEmpty()) {
+    ButtonOk->setEnabled(false);
+  } else {
+    ButtonOk->setEnabled(true);
+  }
 }
 
 NewProjDialog::~NewProjDialog()
