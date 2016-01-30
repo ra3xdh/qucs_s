@@ -352,8 +352,10 @@ void Ngspice::slotSimulate()
     QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs.cir");
     SaveNetlist(tmp_path);
     createSpiceinit();
-    if (needCompile())
+    if (needCompile()) {
         createCModelTree();
+        compileCMlib();
+    }
 
     //startNgSpice(tmp_path);
     SimProcess->setWorkingDirectory(workdir);
@@ -470,7 +472,7 @@ void Ngspice::createCModelTree()
             file = pc->Props.at(1)->Value;
             destfile = normalizeModelName(file,destdir);
             QFile::copy(file,destfile);
-            destfile.chop(4);
+            destfile.chop(4); // Add ifspec.o to objects
             destfile+=".o";
             objects.append(destfile); // Add ifspec.o to objects
         }
@@ -521,7 +523,13 @@ QString Ngspice::normalizeModelName(QString &file, QString &destdir)
  */
 void Ngspice::compileCMlib()
 {
-
+    QProcess *make = new QProcess();
+    make->setReadChannelMode(QProcess::MergedChannels);
+    make->setWorkingDirectory(cmdir);
+    make->start("make"); // For Unix
+    make->waitForFinished();
+    output += make->readAll();
+    delete make;
 }
 
 bool Ngspice::removeDir(const QString &dirName)
