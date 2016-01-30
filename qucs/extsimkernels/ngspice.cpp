@@ -450,21 +450,33 @@ void Ngspice::createCModelTree()
     wd.mkdir(cmsubdir);
     QDir dir_cm(cmdir);
     QString lst_entries; // For modpath.lst
+    QStringList objects; // Object files that need to be compiled
 
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
         if (pc->Model=="XSP_CMod") {
+            // Copy every cfunc.mod and ifspe.ifs pair into
+            // unique subdirectory in qucs_cmlib/
             QString destdir = QDir::convertSeparators(pc->Name);
             dir_cm.mkdir(destdir);
             lst_entries += destdir + "\n";
+            // Add cfunc.mod file
             QString file = pc->Props.at(0)->Value;
             QString destfile = normalizeModelName(file,destdir);
             QFile::copy(file,destfile);
+            destfile.chop(4); // Add cfunc.o to objects
+            destfile+=".o";
+            objects.append(destfile);
+            // Add ifspec.ifs file
             file = pc->Props.at(1)->Value;
             destfile = normalizeModelName(file,destdir);
             QFile::copy(file,destfile);
+            destfile.chop(4);
+            destfile+=".o";
+            objects.append(destfile); // Add ifspec.o to objects
         }
     }
 
+    // Form modpath.lst. List all subdirectories entries in it
     QFile modpath_lst(cmdir+"/modpath.lst");
     if (modpath_lst.open(QIODevice::WriteOnly)) {
         QTextStream stream(&modpath_lst);
@@ -472,9 +484,25 @@ void Ngspice::createCModelTree()
         modpath_lst.close();
     }
 
+    // Create empty udnpath.lst
     QFile udnpath_lst(cmdir+"/udnpath.lst");
     if (udnpath_lst.open(QIODevice::WriteOnly))
         udnpath_lst.close();
+
+    // Form proper Makefile
+    QFile mkfile(cmdir+"/Makefile");
+    if (mkfile.open(QIODevice::WriteOnly)) {
+        QTextStream stream(&mkfile);
+        QString rules_file = QucsSettings.BinDir+"../share/qucs/xspice_cmlib/cmlib.linux.rules.mk";
+        stream<<"TARGET=qucs_xspice.cm\n";
+        stream<<QString("OBJECTS=dlmain.o %1\n\n").arg(objects.join(" "));
+        stream<<"include "+rules_file +"\n";
+        mkfile.close();
+    }
+
+    // Extract dlmain.c from the Ngspice installation
+    QFileInfo inf(QucsSettings.NgspiceExecutable);
+    QFile::copy(inf.path()+"/../share/ngspice/dlmain.c",cmdir+"/dlmain.c");
 }
 
 QString Ngspice::normalizeModelName(QString &file, QString &destdir)
