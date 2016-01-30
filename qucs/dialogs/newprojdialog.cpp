@@ -25,8 +25,8 @@
 #include <QGridLayout>
 
 
-NewProjDialog::NewProjDialog(QWidget *parent, const char *name)
-                             : QDialog(parent, name, true)
+NewProjDialog::NewProjDialog(QWidget *parent)
+  : QDialog(parent)
 {
   setWindowTitle(tr("Create new project"));
 
@@ -37,10 +37,10 @@ NewProjDialog::NewProjDialog(QWidget *parent, const char *name)
   ProjName = new QLineEdit(this);
   ProjName->setMinimumWidth(250);
   connect(ProjName, SIGNAL(textChanged(const QString&)), SLOT(slotTextChanged(const QString&)));
-  gbox->addMultiCellWidget(ProjName,0,0,1,2);
+  gbox->addWidget(ProjName, 0, 1, 1, 2);
   OpenProj = new QCheckBox(tr("open new project"));
   OpenProj->setChecked(true);
-  gbox->addMultiCellWidget(OpenProj,1,1,1,2);
+  gbox->addWidget(OpenProj, 1, 1, 1, 2);
 
   ButtonOk = new QPushButton(tr("Create"));
   gbox->addWidget(ButtonOk,2,1);

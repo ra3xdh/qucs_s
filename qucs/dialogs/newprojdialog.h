@@ -33,7 +33,7 @@ class QGridLayout;
 class NewProjDialog : public QDialog  {
   Q_OBJECT
 public:
-	NewProjDialog(QWidget *parent=0, const char *name=0);
+	NewProjDialog(QWidget *parent=0);
 	~NewProjDialog();
 
   QLineEdit   *ProjName;
