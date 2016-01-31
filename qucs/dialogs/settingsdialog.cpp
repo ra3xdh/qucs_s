@@ -17,6 +17,7 @@
 #include "settingsdialog.h"
 
 #include "node.h"
+#include "main.h"
 #include "qucs.h"
 #include "mnemo.h"
 #include "schematic.h"
@@ -35,7 +36,11 @@
 #include <QTabWidget>
 #include <QValidator>
 #include <QPushButton>
-
+#include <QFileSystemModel>
+#include <QTreeView>
+#include <QHeaderView>
+#include <QModelIndex>
+#include <QDebug>
 
 SettingsDialog::SettingsDialog(Schematic *Doc_)
     : QDialog(Doc_) 
@@ -56,12 +61,17 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
     gp->addWidget(l2,0,0);
     Input_DataSet = new QLineEdit(Tab1);
     gp->addWidget(Input_DataSet,0,1,1,1);
+    QPushButton *DataSetBrowseButt = new QPushButton(tr("Browse"));
+    gp->addWidget(DataSetBrowseButt, 0, 2, 1, 1);
+    connect(DataSetBrowseButt, SIGNAL(clicked()), SLOT(slotDataSetBrowse()));
 
     QLabel *l1 = new QLabel(tr("Data Display:"));
     gp->addWidget(l1,1,0);
     Input_DataDisplay = new QLineEdit(Tab1);
     gp->addWidget(Input_DataDisplay,1,1,1,1);
-
+    QPushButton *DataDisplayBrowseButt = new QPushButton(tr("Browse"));
+    gp->addWidget(DataDisplayBrowseButt, 1, 2, 1, 1);
+    connect(DataDisplayBrowseButt, SIGNAL(clicked()), SLOT(slotDataDisplayBrowse()));
     Check_OpenDpl = new QCheckBox(tr("open data display after simulation"),
                                   Tab1);
     gp->addWidget(Check_OpenDpl,2,0,1,2);
@@ -70,6 +80,9 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
     gp->addWidget(l20,3,0);
     Input_Script = new QLineEdit(Tab1);
     gp->addWidget(Input_Script,3,1,1,1);
+    QPushButton *ScriptBrowseButt = new QPushButton(tr("Browse"));
+    gp->addWidget(ScriptBrowseButt, 3, 2, 1, 1);
+    connect(ScriptBrowseButt, SIGNAL(clicked()), SLOT(slotScriptBrowse()));
 
     Check_RunScript = new QCheckBox(tr("run script after simulation"),
                                     Tab1);
@@ -180,6 +193,27 @@ SettingsDialog::~SettingsDialog()
     delete valExpr;
 }
 
+void SettingsDialog::slotDataSetBrowse() {
+  AuxFilesDialog *d = new AuxFilesDialog(this, "*.dat");
+  if(d->exec() != QDialog::Accepted) return;
+
+  Input_DataSet->setText(d->fileName);
+}
+
+void SettingsDialog::slotDataDisplayBrowse() {
+  AuxFilesDialog *d = new AuxFilesDialog(this, "*.dpl");
+  if(d->exec() != QDialog::Accepted) return;
+
+  Input_DataDisplay->setText(d->fileName);
+}
+
+void SettingsDialog::slotScriptBrowse() {
+  AuxFilesDialog *d = new AuxFilesDialog(this, "*.m");
+  if(d->exec() != QDialog::Accepted) return;
+
+  Input_Script->setText(d->fileName);
+}
+
 // -----------------------------------------------------------
 // Close the dialog, applying any settings
 void SettingsDialog::slotOK()
@@ -282,4 +316,66 @@ void SettingsDialog::slotApply()
         Doc->setChanged(true);
         Doc->viewport()->repaint();
     }
+}
+
+AuxFilesDialog::AuxFilesDialog(QWidget *parent, const QString &filter) :QDialog(parent)
+{
+  fileName = QString();
+  model = new QFileSystemModel();
+  model->setFilter(QDir::Files);
+  model->setRootPath(QucsSettings.QucsWorkDir.absolutePath());
+
+  QStringList filtersList;
+  filtersList << filter;
+  model->setNameFilters(filtersList);
+  // hide items not passing the filter, not just disable them
+  model->setNameFilterDisables(false);
+
+  tree = new QTreeView();
+  tree->setModel(model);
+  tree->sortByColumn(0, Qt::AscendingOrder);
+  tree->setSortingEnabled(true);
+  tree->setRootIndex(model->index(QucsSettings.QucsWorkDir.absolutePath()));
+
+  QVBoxLayout* layout = new QVBoxLayout(this);
+  layout->addWidget(tree);
+  tree->show();
+
+  //tree->header()->setStretchLastSection(false);
+  //tree->resizeColumnToContents(0);
+  tree->header()->setResizeMode(QHeaderView::ResizeToContents);
+  //tree->header()->setResizeMode(0, QHeaderView::Stretch); 
+  connect(tree, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(slotDoubleClick(const QModelIndex &)));
+
+  setWindowTitle("Choose a file");
+
+  // buttons at the bottom of the dialog
+  QHBoxLayout *Btns = new QHBoxLayout();
+  Btns->setSpacing(5);
+  Btns->setMargin(5);
+  layout->addLayout(Btns);
+  
+  Btns->addStretch();
+  QPushButton *OkButt = new QPushButton(tr("Select"));
+  Btns->addWidget(OkButt);
+  connect(OkButt, SIGNAL(clicked()), SLOT(slotSelect()));
+  QPushButton *CancelButt = new QPushButton(tr("Cancel"));
+  Btns->addWidget(CancelButt);
+  connect(CancelButt, SIGNAL(clicked()), SLOT(reject()));
+  
+  OkButt->setDefault(true);
+
+  resize(600, 300);
+}
+
+void AuxFilesDialog::slotDoubleClick(const QModelIndex &index)
+{
+  // get the file name of the item
+  fileName = model->fileInfo(index).fileName();
+  accept();
+}
+
+void AuxFilesDialog::slotSelect(void)
+{
+  slotDoubleClick(tree->currentIndex());
 }
