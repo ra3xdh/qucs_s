@@ -47,6 +47,7 @@ private:
     QString normalizeModelName(QString &file,QString &destdir);
     bool removeDir(const QString &dirName);
     void ExtractSpiceinitdata(QTextStream &stream);
+    void ExtractModIfsFiles(QStringList &objects, QStringList &lst_entries, const QString &prefix);
     bool ModIfsPairProcessed(const QString &mod, const QString &ifs);
 };
 

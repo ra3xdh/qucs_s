@@ -76,12 +76,30 @@ void XSPICE_CMbuilder::ExtractSpiceinitdata(QTextStream &stream)
     }
 }
 
+/*!
+ * \brief XSPICE_CMbuilder::needCompile
+ * \return Returns true if schematic contains CodeModels that need
+ *         to be compiled. False otherwise.
+ */
 bool XSPICE_CMbuilder::needCompile()
 {
+    bool r = false;
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if (pc->Model=="XSP_CMod") return true;
+        if (pc->Model=="XSP_CMod") r = true;
+        if (pc->Model=="Sub") { // Scan subcircuits recursively
+            Schematic *d = new Schematic(0, ((Subcircuit *)pc)->getSubcircuitFile());
+            if(!d->loadDocument())      // load document if possible
+            {
+                delete d;
+                continue;
+            }
+            XSPICE_CMbuilder *bld = new XSPICE_CMbuilder(d);
+            if (bld->needCompile()) r = true;
+            delete bld;
+            delete d;
+        }
     }
-    return false;
+    return r;
 }
 
 /*!
@@ -102,45 +120,17 @@ void XSPICE_CMbuilder::cleanCModelTree()
  */
 void XSPICE_CMbuilder::createCModelTree()
 {
-    QDir dir_cm(cmdir);
-    QString lst_entries; // For modpath.lst
+    QStringList lst_entries; // For modpath.lst
     QStringList objects; // Object files that need to be compiled
 
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if (pc->Model=="XSP_CMod") {
-            // Copy every cfunc.mod and ifspe.ifs pair into
-            // unique subdirectory in qucs_cmlib/
-            QString mod = pc->Props.at(0)->Value;
-            QString ifs = pc->Props.at(1)->Value;
-            QStringList lst1;
-            lst1<<mod<<ifs;
-            // If model is duplicated don't process it (don't copy files)
-            if (!ModIfsPairProcessed(mod,ifs)) {
-                QString destdir = QDir::convertSeparators(pc->Name);
-                dir_cm.mkdir(destdir);
-                lst_entries += destdir + "\n";
-                // Add cfunc.mod file
-                QString destfile = normalizeModelName(mod,destdir);
-                QFile::copy(mod,destfile);
-                destfile.chop(4); // Add cfunc.o to objects
-                destfile+=".o";
-                objects.append(destfile);
-                // Add ifspec.ifs file
-                destfile = normalizeModelName(ifs,destdir);
-                QFile::copy(ifs,destfile);
-                destfile.chop(4); // Add ifspec.o to objects
-                destfile+=".o";
-                objects.append(destfile); // Add ifspec.o to objects
-            }
-            mod_ifs_pairs.append(lst1); // This *.mod and *.ifs pair already processed
-        }
-    }
+    ExtractModIfsFiles(objects,lst_entries,"");
 
     // Form modpath.lst. List all subdirectories entries in it
     QFile modpath_lst(cmdir+"/modpath.lst");
     if (modpath_lst.open(QIODevice::WriteOnly)) {
         QTextStream stream(&modpath_lst);
-        stream<<lst_entries;
+        lst_entries<<"";
+        stream<<lst_entries.join("\n");
         modpath_lst.close();
     }
 
@@ -165,12 +155,74 @@ void XSPICE_CMbuilder::createCModelTree()
     QFile::copy(inf.path()+"/../share/ngspice/dlmain.c",cmdir+"/dlmain.c");
 }
 
+/*!
+ * \brief XSPICE_CMbuilder::ModIfsPairProcessed
+ * \param mod[in] full cfunc.mod file name
+ * \param ifs[in] full ifspec.ifs file name
+ * \return True if this model files already copied into build tree. False otherwise
+ */
 bool XSPICE_CMbuilder::ModIfsPairProcessed(const QString &mod, const QString &ifs)
 {
     foreach (QStringList lst, mod_ifs_pairs) {
         if ((lst.at(0)==mod)&&(lst.at(1)==ifs)) return true;
     }
     return false;
+}
+
+/*!
+ * \brief XSPICE_CMbuilder::ExtractModIfsFiles Scan schematic on "XSPICE CodeModel"
+ *        components, extract cfunc.mod and ifspec.ifs, and copy then into build tree.
+ * \param objects[out] QStringList to add *.o targets
+ * \param lst_entries[out] Subdirectories names for modpath.lst
+ * \param prefix[in] Output subdirectory name prefix. It is need for correct processing
+ *        of subcircuits.
+ */
+void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst_entries, const QString &prefix)
+{
+    QDir dir_cm(cmdir);
+
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->Model=="XSP_CMod") {
+            // Copy every cfunc.mod and ifspe.ifs pair into
+            // unique subdirectory in qucs_cmlib/
+            QString mod = pc->Props.at(0)->Value;
+            QString ifs = pc->Props.at(1)->Value;
+            QStringList lst1;
+            lst1<<mod<<ifs;
+            // If model is duplicated don't process it (don't copy files)
+            if (!ModIfsPairProcessed(mod,ifs)) {
+                QString destdir = QDir::convertSeparators(prefix + pc->Name);
+                dir_cm.mkdir(destdir);
+                lst_entries += destdir;
+                // Add cfunc.mod file
+                QString destfile = normalizeModelName(mod,destdir);
+                QFile::copy(mod,destfile);
+                destfile.chop(4); // Add cfunc.o to objects
+                destfile+=".o";
+                objects.append(destfile);
+                // Add ifspec.ifs file
+                destfile = normalizeModelName(ifs,destdir);
+                QFile::copy(ifs,destfile);
+                destfile.chop(4); // Add ifspec.o to objects
+                destfile+=".o";
+                objects.append(destfile); // Add ifspec.o to objects
+            }
+            mod_ifs_pairs.append(lst1); // This *.mod and *.ifs pair already processed
+        }
+
+        if (pc->Model=="Sub") { // Scan subcircuits recursively
+            Schematic *d = new Schematic(0, ((Subcircuit *)pc)->getSubcircuitFile());
+            if(!d->loadDocument())      // load document if possible
+            {
+                delete d;
+                continue;
+            }
+            XSPICE_CMbuilder *bld = new XSPICE_CMbuilder(d);
+            bld->ExtractModIfsFiles(objects,lst_entries,pc->Name);
+            delete bld;
+            delete d;
+        }
+    }
 }
 
 QString XSPICE_CMbuilder::normalizeModelName(QString &file, QString &destdir)
