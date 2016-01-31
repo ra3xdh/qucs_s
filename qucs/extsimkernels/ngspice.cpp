@@ -352,6 +352,7 @@ void Ngspice::slotSimulate()
     SaveNetlist(tmp_path);
 
     XSPICE_CMbuilder *CMbuilder = new XSPICE_CMbuilder(Sch);
+    CMbuilder->cleanSpiceinit();
     CMbuilder->createSpiceinit();
     if (CMbuilder->needCompile()) {
         CMbuilder->cleanCModelTree();

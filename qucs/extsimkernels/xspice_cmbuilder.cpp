@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include "xspice_cmbuilder.h"
+#include "components/subcircuit.h"
 #include "spicecomponents/xsp_cmlib.h"
 #include "main.h"
 
@@ -33,23 +34,46 @@ XSPICE_CMbuilder::~XSPICE_CMbuilder()
 
 }
 
-
-void XSPICE_CMbuilder::createSpiceinit()
+void XSPICE_CMbuilder::cleanSpiceinit()
 {
-
     QFileInfo inf(spinit_name);
     if (inf.exists()) QFile::remove(spinit_name);
+}
 
+/*!
+ * \brief XSPICE_CMbuilder::createSpiceinit Extract precompiled *.cm libraries names from
+ *        all components and subcircuits recursively.
+ */
+void XSPICE_CMbuilder::createSpiceinit()
+{
     QFile spinit(spinit_name);
     if (spinit.open(QIODevice::WriteOnly)) {
         QTextStream stream(&spinit);
-        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-            if (pc->Model=="XSP_CMlib") {
-                stream<<((XSP_CMlib *)pc)->getSpiceInit();
-            }
-        }
+        ExtractSpiceinitdata(stream);
         if (needCompile()) stream<<"codemodel "+cmdir+"qucs_xspice.cm";
         spinit.close();
+    }
+}
+
+void XSPICE_CMbuilder::ExtractSpiceinitdata(QTextStream &stream)
+{
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->Model=="XSP_CMlib") {
+            stream<<((XSP_CMlib *)pc)->getSpiceInit();
+        }
+        if (pc->Model=="Sub") {
+            //s = pc->Props.first()->Value;
+            Schematic *d = new Schematic(0, ((Subcircuit *)pc)->getSubcircuitFile());
+            if(!d->loadDocument())      // load document if possible
+            {
+                delete d;
+                continue;
+            }
+            XSPICE_CMbuilder *bld = new XSPICE_CMbuilder(d);
+            bld->ExtractSpiceinitdata(stream);
+            delete bld;
+            delete d;
+        }
     }
 }
 

@@ -34,6 +34,7 @@ public:
     XSPICE_CMbuilder(Schematic *sch_);
     ~XSPICE_CMbuilder();
 
+    void cleanSpiceinit();
     void createSpiceinit();
     bool needCompile();
     void cleanCModelTree();
@@ -43,6 +44,7 @@ public:
 private:
     QString normalizeModelName(QString &file,QString &destdir);
     bool removeDir(const QString &dirName);
+    void ExtractSpiceinitdata(QTextStream &stream);
 };
 
 #endif // XSPICE_CMBUILDER_H
