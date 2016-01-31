@@ -34,6 +34,8 @@ MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 qucshelp_SOURCES = main.cpp qucshelp.cpp htmldatafetcher.cpp \
   qrc_qucshelp.cpp
 
+EXTRA_DIST = qucshelp.qrc
+
 qrc_qucshelp.cpp: qucshelp.qrc
 	$(RCC) -o $@ $<
 

@@ -1,7 +1,7 @@
 /*
  * aboutdialog.cpp - customary about dialog showing various info
  *
- * Copyright (C) 2015, Qucs team (see AUTHORS file)
+ * Copyright (C) 2015-2016, Qucs team (see AUTHORS file)
  *
  * This file is part of Qucs
  *
@@ -52,52 +52,53 @@ AboutDialog::AboutDialog(QWidget *parent)
     : QDialog(parent)
 {
   currAuths = {{
-    tr("Guilherme Brondani Torri - GUI programmer, Verilog-A dynamic loader"),
-    tr("Mike Brinson - testing, modelling and documentation, tutorial contributor"),
-    tr("Richard Crozier - testing, modelling, Octave."),
-    tr("Bastien Roucaries - bondwire and rectangular waveguide model implementation"),
-    tr("Frans Schreuder - GUI programmer, release"),
-    tr("Clemens Novak - GUI programmer"),
-    tr("Vadim Kuznetsov - filter synthesis (qucs-activefilter), SPICE integration (NGSPICE, Xyce)"),
-    tr("You-Tang Lee (YodaLee) - GUI programmer, Qt4 porter"),
-    tr("Claudio Girardi - testing, general fixes")
+    "Guilherme Brondani Torri - " + tr("GUI programmer, Verilog-A dynamic loader"),
+    "Mike Brinson - " + tr("testing, modelling and documentation, tutorial contributor"),
+    "Richard Crozier - " + tr("testing, modelling, Octave."),
+    "Bastien Roucaries - " + tr("bondwire and rectangular waveguide model implementation"),
+    "Frans Schreuder - " + tr("GUI programmer, release"),
+    "Vadim Kuznetsov - " + tr("filter synthesis (qucs-activefilter), SPICE integration (NGSPICE, Xyce)"),
+    "Claudio Girardi - " + tr("testing, general fixes"),
+    "Felix Salfelder - " + tr("refactoring, modularity"),
+    "Andr\xe9s Mart\xednez Mera - " + tr("RF design tools")
   }};
   
   prevDevs = {{
-    tr("Michael Margraf - founder of the project, GUI programmer"),
-    tr("Stefan Jahn - Programmer of simulator"),
-    tr("Jens Flucke - webpages and translator"),
-    tr("Raimund Jacob - tester and applyer of Stefan's patches, author of documentation"),
-    tr("Vincent Habchi - coplanar line and filter synthesis code, documentation contributor"),
-    tr("Toyoyuki Ishikawa - some filter synthesis code and attenuator synthesis"),
-    tr("Gopala Krishna A - GUI programmer, Qt4 porter"),
-    tr("Helene Parruitte - programmer of the Verilog-AMS interface"),
-    tr("Gunther Kraut - equation solver contributions, exponential sources, author of documentation"),
-    tr("Andrea Zonca - temperature model for rectangular waveguide")
+      "Michael Margraf - " + tr("founder of the project, GUI programmer"),
+      "Stefan Jahn - " + tr("Programmer of simulator"),
+      "Jens Flucke - " + tr("webpages and translator"),
+      "Raimund Jacob - " + tr("tester and applyer of Stefan's patches, author of documentation"),
+      "Vincent Habchi - " + tr("coplanar line and filter synthesis code, documentation contributor"),
+      "Toyoyuki Ishikawa - " + tr("some filter synthesis code and attenuator synthesis"),
+      "Gopala Krishna A - " + tr("GUI programmer, Qt4 porter"),
+      "Helene Parruitte - " + tr("programmer of the Verilog-AMS interface"),
+      "Gunther Kraut - " + tr("equation solver contributions, exponential sources, author of documentation"),
+      "Andrea Zonca - " + tr("temperature model for rectangular waveguide"),
+      "Clemens Novak - " + tr("GUI programmer"),
+      "You-Tang Lee (YodaLee) - " + tr("GUI programmer, Qt4 porter")
   }};
 
   trAuths = {{
-    tr("German by Stefan Jahn"),
-    tr("Polish by Dariusz Pienkowski"),
-    tr("Romanian by Radu Circa"),
-    tr("French by Vincent Habchi, F5RCS"),
-    tr("Portuguese by Luciano Franca, Helio de Sousa, Guilherme Brondani Torri"),
-    tr("Spanish by Jose L. Redrejo Rodriguez"),
-    tr("Japanese by Toyoyuki Ishikawa"),
-    tr("Italian by Giorgio Luparia and Claudio Girardi"),
-    tr("Hebrew by Dotan Nahum"),
-    tr("Swedish by Markus Gothe and Peter Landgren"),
-    tr("Turkish by Onur and Ozgur Cobanoglu"),
-    tr("Hungarian by Jozsef Bus"),
-    tr("Russian by Igor Gorbounov"),
-    tr("Czech by Marek Straka and Martin Stejskal"),
-    tr("Catalan by Antoni Subirats"),
-    tr("Ukrainian by Dystryk"),
-    tr("Arabic by Chabane Noureddine"),
-    tr("Kazakh by Erbol Keshubaev")
+    tr("German by") + " Stefan Jahn",
+    tr("Polish by") + " Dariusz Pienkowski",
+    tr("Romanian by") + " Radu Circa",
+    tr("French by") + " Vincent Habchi, F5RCS",
+    tr("Portuguese by") + " Luciano Franca, Helio de Sousa, Guilherme Brondani Torri",
+    tr("Spanish by") + " Jose L. Redrejo Rodriguez",
+    tr("Japanese by") + " Toyoyuki Ishikawa",
+    tr("Italian by") + " Giorgio Luparia, Claudio Girardi",
+    tr("Hebrew by") + " Dotan Nahum",
+    tr("Swedish by") + " Markus Gothe, Peter Landgren",
+    tr("Turkish by") + " Onur Cobanoglu, Ozgur Cobanoglu",
+    tr("Hungarian by") + " Jozsef Bus",
+    tr("Russian by") + " Igor Gorbounov",
+    tr("Czech by") + " Marek Straka,Martin Stejskal",
+    tr("Catalan by") + " Antoni Subirats",
+    tr("Ukrainian by") + " Dystryk",
+    tr("Arabic by") + " Chabane Noureddine",
+    tr("Kazakh by") + " Erbol Keshubaev"
   }};
   
-
   std::shuffle(currAuths.begin(), currAuths.end(), rng);
 
   QLabel *lbl;
@@ -134,10 +135,8 @@ AboutDialog::AboutDialog(QWidget *parent)
   lbl = new QLabel(versionText);
   lbl->setAlignment(Qt::AlignHCenter);
   vl->addWidget(lbl);
-  vl->addWidget(new QLabel(tr("Copyright (C)")+" 2003-2009 "+
-			   tr("by Michael Margraf")+"\n"+
-			   tr("Copyright (C)")+" 2011-2015 "+
-			   tr("Qucs Team")));
+  vl->addWidget(new QLabel(tr("Copyright (C)")+" 2011-2016 Qucs Team\n"+
+			   tr("Copyright (C)")+" 2003-2009 Michael Margraf"));
 
   lbl = new QLabel("\nThis is free software; see the source for copying conditions."
 		   "\nThere is NO warranty; not even for MERCHANTABILITY or "

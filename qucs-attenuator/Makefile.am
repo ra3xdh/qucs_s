@@ -34,6 +34,8 @@ MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 qucsattenuator_SOURCES = main.cpp qucsattenuator.cpp \
   attenuatorfunc.cpp qrc_qucsattenuator.cpp
 
+EXTRA_DIST = qucsattenuator.qrc
+
 qrc_qucsattenuator.cpp: qucsattenuator.qrc
 	$(RCC) -o $@ $<
 

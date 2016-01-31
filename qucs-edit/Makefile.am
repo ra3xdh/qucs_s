@@ -31,6 +31,8 @@ MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 
 qucsedit_SOURCES = main.cpp qucsedit.cpp qrc_qucsedit.cpp
 
+EXTRA_DIST = qucsedit.qrc
+
 qrc_qucsedit.cpp: qucsedit.qrc
 	$(RCC) -o $@ $<
 

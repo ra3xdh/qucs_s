@@ -242,16 +242,16 @@ void MouseActions::moveElements(Q3PtrList<Element> *movElements, int x, int y)
     if(pe->Type == isWire) {
       pw = (Wire*)pe;   // connected wires are not moved completely
 
-      if(((unsigned long)pw->Port1) > 3) {
+      if(((uintptr_t)pw->Port1) > 3) {
 	pw->x1 += x;  pw->y1 += y;
 	if(pw->Label) { pw->Label->cx += x;  pw->Label->cy += y; }
       }
-      else {  if(long(pw->Port1) & 1) { pw->x1 += x; }
-              if(long(pw->Port1) & 2) { pw->y1 += y; } }
+      else {  if((uintptr_t)(pw->Port1) & 1) { pw->x1 += x; }
+              if((uintptr_t)(pw->Port1) & 2) { pw->y1 += y; } }
 
-      if(((unsigned long)pw->Port2) > 3) { pw->x2 += x;  pw->y2 += y; }
-      else {  if(long(pw->Port2) & 1) pw->x2 += x;
-              if(long(pw->Port2) & 2) pw->y2 += y; }
+      if(((uintptr_t)pw->Port2) > 3) { pw->x2 += x;  pw->y2 += y; }
+      else {  if((uintptr_t)(pw->Port2) & 1) pw->x2 += x;
+              if((uintptr_t)(pw->Port2) & 2) pw->y2 += y; }
 
       if(pw->Label) {      // root of node label must lie on wire
         if(pw->Label->cx < pw->x1) pw->Label->cx = pw->x1;
@@ -414,13 +414,13 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
     if(pe->Type == isWire) {
       pw = (Wire*)pe;   // connecting wires are not moved completely
 
-      if(((unsigned long)pw->Port1) > 3) { pw->x1 += MAx1;  pw->y1 += MAy1; }
-      else {  if(long(pw->Port1) & 1) { pw->x1 += MAx1; }
-              if(long(pw->Port1) & 2) { pw->y1 += MAy1; } }
+      if(((uintptr_t)pw->Port1) > 3) { pw->x1 += MAx1;  pw->y1 += MAy1; }
+      else {  if((uintptr_t)(pw->Port1) & 1) { pw->x1 += MAx1; }
+              if((uintptr_t)(pw->Port1) & 2) { pw->y1 += MAy1; } }
 
-      if(((unsigned long)pw->Port2) > 3) { pw->x2 += MAx1;  pw->y2 += MAy1; }
-      else {  if(long(pw->Port2) & 1) pw->x2 += MAx1;
-              if(long(pw->Port2) & 2) pw->y2 += MAy1; }
+      if(((uintptr_t)pw->Port2) > 3) { pw->x2 += MAx1;  pw->y2 += MAy1; }
+      else {  if((uintptr_t)(pw->Port2) & 1) pw->x2 += MAx1;
+              if((uintptr_t)(pw->Port2) & 2) pw->y2 += MAy1; }
 
       if(pw->Label) {      // root of node label must lie on wire
         if(pw->Label->cx < pw->x1) pw->Label->cx = pw->x1;

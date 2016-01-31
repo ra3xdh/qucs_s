@@ -9,12 +9,13 @@ m4_define([QUCS_VERSION], m4_esyscmd([tr -d '\n' < VERSION]))
 AC_INIT([qucs], [QUCS_VERSION], [qucs-bugs@lists.sourceforge.net])
 AC_CONFIG_SRCDIR([qucs/qucs.cpp])
 AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_AUX_DIR([.])
 
 AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([no-define])
-AM_MAINTAINER_MODE
+AM_PROG_AR
 AC_PREFIX_DEFAULT([/usr/local])
 
 dnl Checks for programs.
@@ -33,9 +34,6 @@ AC_ARG_ENABLE([debug],
    *)   enable_qucs_gui_debug="no"  ;;
    esac],
   [enable_qucs_gui_debug="no"])
-if test $USE_MAINTAINER_MODE = yes; then
-  enable_qucs_gui_debug="yes"
-fi
 if test "$enable_qucs_gui_debug" = yes; then
   AC_DEFINE(DEBUG, 1, [Define if debug output should be supported.])
   QT_DEF="-DQT_DEBUG"
@@ -62,7 +60,7 @@ AM_CONDITIONAL(COND_LINUX, test x$LINUX = xyes)
 
 dnl Check for Win32.
 case $host_os in
-  *mingw*) WIN32=yes ;;
+  *mingw* | *msys* ) WIN32=yes ;;
   *)       WIN32=no  ;;
 esac
 AM_CONDITIONAL(COND_WIN32, test x$WIN32 = xyes)
@@ -224,7 +222,7 @@ AC_ARG_WITH(macosx-version-max-allowed,
 
 dnl Platform specific, find libraries, setup compiler flags
 case $host_os in
-  *linux* | *cygwin* | *mingw* | *bsd* )
+  *linux* | *cygwin* | *mingw* | *msys* | *bsd* )
 
     dnl Set Clang
     if test "$CXX -dM -E - < /dev/null | grep __clang__" ; then
@@ -243,7 +241,7 @@ case $host_os in
       fi
     fi
 
-    if test $USE_MAINTAINER_MODE = yes; then
+    if test "$enable_qucs_gui_debug" = yes; then
       CFLAGS="$CFLAGS -W -Wall -Wmissing-prototypes"
       CXXFLAGS="$CXXFLAGS -W -Wall"
     fi
@@ -267,7 +265,8 @@ case $host_os in
     QT_INCLUDES=""
     QT_VER=2
     AC_MSG_CHECKING([for Qt headers])
-    paths="$QTDIR/include /usr/local/qt4/include /usr/include/qt4 \
+    paths="$QTDIR/include $QTDIR/include/qt4 \
+      /usr/local/qt4/include /usr/include/qt4 \
       /usr/include /usr/lib/qt/include /usr/X11R6/include/X11/qt4 \
       /usr/X11R6/include/qt4 /usr/X11R6/include /sw/include/qt4 \
       /usr/local/include/qt4"
@@ -303,7 +302,7 @@ case $host_os in
       QT_INC="$QT_DEF -DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS -DQT_THREAD_SUPPORT -D_REENTRANT"
       [case $host_os in
         *freebsd*) QT_LIB="$QT_LIB -pthread" ;;
-        *mingw*) QT_INC="$QT_INC -mthreads"; QT_LDF="$QT_LDF -mthreads" ;;
+        *mingw* | *msys*) QT_INC="$QT_INC -mthreads"; QT_LDF="$QT_LDF -mthreads" ;;
       esac]
       QT_MTS="multi-threaded"
     else
@@ -313,7 +312,7 @@ case $host_os in
       QT_MTS="non-threaded"
     fi
     case $host_os in
-      *mingw*)
+      *mingw* | *msys*)
       QT_LIB="-lQtCore4 -lQtGui4 -lQtXml4 -lQt3Support4 -lQtSvg4 -lQtScript4"
       QT_INC="$QT_INC -DQT_DLL -DUNICODE"
       QT_LDF="$QT_LDF -mwindows"
@@ -416,7 +415,7 @@ case $host_os in
     CPPFLAGS="$CPPFLAGS $QT_DEF"
     QT_LDFLAGS="-headerpad_max_install_names"
 
-    if test $USE_MAINTAINER_MODE = yes; then
+    if test "$enable_qucs_gui_debug" = yes; then
       CPPFLAGS="$CPPFLAGS -W -Wall"
     fi
 
@@ -756,7 +755,7 @@ dnl AC_LANG(C)
 
 dnl Check for path transformation.
 case $build_os in
-mingw* | cygwin*)
+mingw* | *msys* | cygwin*)
   PATHXFORM="cygpath -w"
   ;;
 *)
@@ -876,3 +875,4 @@ Configure Information:
 ])
 AC_MSG_RESULT([])
 
+dnl vim:ts=8:sw=2:noet

@@ -22,37 +22,17 @@
 # Boston, MA 02110-1301, USA.
 #
 
-here=`pwd`
-cd `dirname $0`
-
 echo -n "Creating aclocal.m4... "
 ${ACLOCAL:-aclocal} -I m4
 echo "done."
 echo -n "Creating config.h.in... "
 autoheader
 echo "done."
-echo -n "Creating Makefile.in(s)... "
-${AUTOMAKE:-automake} -a -f -c
-echo "done."
-echo -n "Creating configure... "
-autoconf
+
+echo -n "Running ${AUTOMAKE:-automake}... "
+${AUTOMAKE:-automake} -a -f -c --gnu -Wall
 echo "done."
 
-#
-# run configure, maybe with parameters recorded in config.status
-#
-#if [ -r config.status ]; then
-#  # Autoconf 2.13
-#  CMD=`awk '/^#.*\/?configure .*/ { $1 = ""; print; exit }' < config.status`
-#  if test "x$CMD" = "x" ; then
-#    # Autoconf 2.5x
-#    eval set -- ./configure `grep "with options" < config.status | \
-#         sed 's/^[^"]*["]\(.*\)\\\"$/\1/'` '"$@"'
-#  else
-#    set -- $CMD "$@"
-#  fi
-#else
-#  set -- ./configure --enable-maintainer-mode "$@"
-#fi
-#echo Running `for i; do echo "'$i'"; done` ...
-#"$@"
+echo -n "Running autoconf... "
+autoconf
+echo "done."

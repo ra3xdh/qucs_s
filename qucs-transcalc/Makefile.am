@@ -34,6 +34,8 @@ MOCFILES = $(MOCHEADERS:.h=.moc.cpp)
 qucstrans_SOURCES = main.cpp qucstrans.cpp helpdialog.cpp optionsdialog.cpp \
   qrc_qucstrans.cpp
 
+EXTRA_DIST = qucstrans.qrc
+
 qrc_qucstrans.cpp: qucstrans.qrc
 	$(RCC) -o $@ $<
 
