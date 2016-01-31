@@ -17,6 +17,7 @@ spicecompat.h
 customsimdialog.h
 simsettingsdialog.h
 verilogawriter.h
+xspice_cmbuilder.h
 )
 
 SET(EXTSIMKERNELS_SRCS
@@ -29,6 +30,7 @@ spicecompat.cpp
 customsimdialog.cpp
 simsettingsdialog.cpp
 verilogawriter.cpp
+xspice_cmbuilder.cpp
 )
 
 SET(EXTSIMKERNELS_MOC_HDRS

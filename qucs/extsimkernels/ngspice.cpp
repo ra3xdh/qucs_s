@@ -17,6 +17,7 @@
 
 
 #include "ngspice.h"
+#include "xspice_cmbuilder.h"
 #include "components/iprobe.h"
 #include "components/vprobe.h"
 #include "components/equation.h"
@@ -39,8 +40,6 @@ Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
 {
     simulator_cmd = QucsSettings.NgspiceExecutable;
     simulator_parameters = "";
-    cmsubdir = "qucs_cmlib/";
-    cmdir = QDir::convertSeparators(workdir+cmsubdir);
 }
 
 /*!
@@ -351,12 +350,15 @@ void Ngspice::slotSimulate()
 
     QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs.cir");
     SaveNetlist(tmp_path);
-    createSpiceinit();
-    if (needCompile()) {
-        cleanCModelTree();
-        createCModelTree();
-        compileCMlib();
+
+    XSPICE_CMbuilder *CMbuilder = new XSPICE_CMbuilder(Sch);
+    CMbuilder->createSpiceinit();
+    if (CMbuilder->needCompile()) {
+        CMbuilder->cleanCModelTree();
+        CMbuilder->createCModelTree();
+        CMbuilder->compileCMlib(output);
     }
+    delete CMbuilder;
 
     //startNgSpice(tmp_path);
     SimProcess->setWorkingDirectory(workdir);
@@ -415,152 +417,3 @@ void Ngspice::setSimulatorCmd(QString cmd)
     simulator_cmd = cmd;
 }
 
-void Ngspice::createSpiceinit()
-{
-    QString spinit_name=QDir::convertSeparators(workdir+"/.spiceinit");
-    QFileInfo inf(spinit_name);
-    if (inf.exists()) QFile::remove(spinit_name);
-
-    QFile spinit(spinit_name);
-    if (spinit.open(QIODevice::WriteOnly)) {
-        QTextStream stream(&spinit);
-        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-            if (pc->Model=="XSP_CMlib") {
-                stream<<((XSP_CMlib *)pc)->getSpiceInit();
-            }
-        }
-        if (needCompile()) stream<<"codemodel "+cmdir+"qucs_xspice.cm";
-        spinit.close();
-    }
-}
-
-bool Ngspice::needCompile()
-{
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if (pc->Model=="XSP_CMod") return true;
-    }
-    return false;
-}
-
-/*!
- * \brief Ngspice::cleanCModelTree Removes qucs_cmlib/ and all its contents.
- *        Then creates an empty qucs_cmdir/
- */
-void Ngspice::cleanCModelTree()
-{
-    removeDir(cmdir);
-    QDir wd(workdir);
-    wd.mkdir(cmsubdir);
-}
-
-/*!
- * \brief Ngspice::createCModelTree Obtain all cfunc.mod and ifspec.ifs files paths and
- *        copy it into woriking directory of dynamic XSPICE CodeModels builder
- */
-void Ngspice::createCModelTree()
-{
-    QDir dir_cm(cmdir);
-    QString lst_entries; // For modpath.lst
-    QStringList objects; // Object files that need to be compiled
-
-    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if (pc->Model=="XSP_CMod") {
-            // Copy every cfunc.mod and ifspe.ifs pair into
-            // unique subdirectory in qucs_cmlib/
-            QString destdir = QDir::convertSeparators(pc->Name);
-            dir_cm.mkdir(destdir);
-            lst_entries += destdir + "\n";
-            // Add cfunc.mod file
-            QString file = pc->Props.at(0)->Value;
-            QString destfile = normalizeModelName(file,destdir);
-            QFile::copy(file,destfile);
-            destfile.chop(4); // Add cfunc.o to objects
-            destfile+=".o";
-            objects.append(destfile);
-            // Add ifspec.ifs file
-            file = pc->Props.at(1)->Value;
-            destfile = normalizeModelName(file,destdir);
-            QFile::copy(file,destfile);
-            destfile.chop(4); // Add ifspec.o to objects
-            destfile+=".o";
-            objects.append(destfile); // Add ifspec.o to objects
-        }
-    }
-
-    // Form modpath.lst. List all subdirectories entries in it
-    QFile modpath_lst(cmdir+"/modpath.lst");
-    if (modpath_lst.open(QIODevice::WriteOnly)) {
-        QTextStream stream(&modpath_lst);
-        stream<<lst_entries;
-        modpath_lst.close();
-    }
-
-    // Create empty udnpath.lst
-    QFile udnpath_lst(cmdir+"/udnpath.lst");
-    if (udnpath_lst.open(QIODevice::WriteOnly))
-        udnpath_lst.close();
-
-    // Form proper Makefile
-    QFile mkfile(cmdir+"/Makefile");
-    if (mkfile.open(QIODevice::WriteOnly)) {
-        QTextStream stream(&mkfile);
-        QString rules_file = QucsSettings.BinDir+"../share/qucs/xspice_cmlib/cmlib.linux.rules.mk";
-        stream<<"TARGET=qucs_xspice.cm\n";
-        stream<<QString("OBJECTS=dlmain.o %1\n\n").arg(objects.join(" "));
-        stream<<"include "+rules_file +"\n";
-        mkfile.close();
-    }
-
-    // Extract dlmain.c from the Ngspice installation
-    QFileInfo inf(QucsSettings.NgspiceExecutable);
-    QFile::copy(inf.path()+"/../share/ngspice/dlmain.c",cmdir+"/dlmain.c");
-}
-
-QString Ngspice::normalizeModelName(QString &file, QString &destdir)
-{
-    QFileInfo inf(file);
-    QString filenam = inf.fileName();
-    if (filenam.endsWith(".mod"))
-        return QDir::convertSeparators(cmdir+'/'+destdir+"/cfunc.mod");
-    if (filenam.endsWith(".ifs"))
-        return QDir::convertSeparators(cmdir+'/'+destdir+"/ifspec.ifs");
-    return QDir::convertSeparators(cmdir+'/'+destdir+'/'+filenam);
-}
-
-/*!
- * \brief Ngspice::compileCMlib Compile all models and obtain qucs_xspice.cm
- */
-void Ngspice::compileCMlib()
-{
-    QProcess *make = new QProcess();
-    make->setReadChannelMode(QProcess::MergedChannels);
-    make->setWorkingDirectory(cmdir);
-    make->start("make"); // For Unix
-    make->waitForFinished();
-    output += make->readAll();
-    delete make;
-}
-
-bool Ngspice::removeDir(const QString &dirName)
-{
-    bool result = true;
-    QDir dir(dirName);
-
-    if (dir.exists(dirName)) {
-        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
-            if (info.isDir()) {
-                result = removeDir(info.absoluteFilePath());
-            }
-            else {
-                result = QFile::remove(info.absoluteFilePath());
-            }
-
-            if (!result) {
-                return result;
-            }
-        }
-        result = dir.rmdir(dirName);
-    }
-
-    return result;
-}

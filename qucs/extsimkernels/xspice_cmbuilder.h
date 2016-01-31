@@ -1,7 +1,7 @@
 /***************************************************************************
-                           mgspice.h
+                            xspice_cmbuilder.h
                              ----------------
-    begin                : Sat Jan 10 2015
+    begin                : Sun Jan 31 2015
     copyright            : (C) 2015 by Vadim Kuznetsov
     email                : ra3xdh@gmail.com
  ***************************************************************************/
@@ -16,42 +16,33 @@
  ***************************************************************************/
 
 
-#ifndef NGSPICE_H
-#define NGSPICE_H
+#ifndef XSPICE_CMBUILDER_H
+#define XSPICE_CMBUILDER_H
 
 #include <QtCore>
 #include "schematic.h"
-#include "abstractspicekernel.h"
 
-/*!
-  \file ngspice.h
-  \brief Declaration of the Ngspice class
-*/
-
-/*!
- * \brief The Ngspice class Responsible for Ngspice simulator execution.
- */
-class Ngspice : public AbstractSpiceKernel
+class XSPICE_CMbuilder
 {
-    Q_OBJECT
 private:
+    QString cmdir,cmsubdir;
+    QString workdir,spinit_name;
 
-    QString getParentSWPscript(Component *pc_swp, QString sim, bool before, bool &hasDblSWP);
+    Schematic *Sch;
 
 public:
-    explicit Ngspice(Schematic *sch_, QObject *parent = 0);
-    void SaveNetlist(QString filename);
-    void setSimulatorCmd(QString cmd);
-    
-protected:
-    void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
-                  QStringList &vars, QStringList &outputs);
+    XSPICE_CMbuilder(Schematic *sch_);
+    ~XSPICE_CMbuilder();
 
-public slots:
-    void slotSimulate();
+    void createSpiceinit();
+    bool needCompile();
+    void cleanCModelTree();
+    void createCModelTree();
+    void compileCMlib(QString &ouptut);
 
-protected slots:
-    void slotProcessOutput();
+private:
+    QString normalizeModelName(QString &file,QString &destdir);
+    bool removeDir(const QString &dirName);
 };
 
-#endif // NGSPICE_H
+#endif // XSPICE_CMBUILDER_H
