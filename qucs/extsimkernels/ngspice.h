@@ -52,6 +52,7 @@ protected:
     void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
                   QStringList &vars, QStringList &outputs);
 
+    void cleanCModelTree();
     void createCModelTree();
     void compileCMlib();
 

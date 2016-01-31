@@ -353,6 +353,7 @@ void Ngspice::slotSimulate()
     SaveNetlist(tmp_path);
     createSpiceinit();
     if (needCompile()) {
+        cleanCModelTree();
         createCModelTree();
         compileCMlib();
     }
@@ -442,14 +443,22 @@ bool Ngspice::needCompile()
 }
 
 /*!
+ * \brief Ngspice::cleanCModelTree Removes qucs_cmlib/ and all its contents.
+ *        Then creates an empty qucs_cmdir/
+ */
+void Ngspice::cleanCModelTree()
+{
+    removeDir(cmdir);
+    QDir wd(workdir);
+    wd.mkdir(cmsubdir);
+}
+
+/*!
  * \brief Ngspice::createCModelTree Obtain all cfunc.mod and ifspec.ifs files paths and
  *        copy it into woriking directory of dynamic XSPICE CodeModels builder
  */
 void Ngspice::createCModelTree()
 {
-    removeDir(cmdir);
-    QDir wd(workdir);
-    wd.mkdir(cmsubdir);
     QDir dir_cm(cmdir);
     QString lst_entries; // For modpath.lst
     QStringList objects; // Object files that need to be compiled
