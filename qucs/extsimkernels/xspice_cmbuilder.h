@@ -28,6 +28,8 @@ private:
     QString cmdir,cmsubdir;
     QString workdir,spinit_name;
 
+    QList<QStringList> mod_ifs_pairs;
+
     Schematic *Sch;
 
 public:
@@ -45,6 +47,7 @@ private:
     QString normalizeModelName(QString &file,QString &destdir);
     bool removeDir(const QString &dirName);
     void ExtractSpiceinitdata(QTextStream &stream);
+    bool ModIfsPairProcessed(const QString &mod, const QString &ifs);
 };
 
 #endif // XSPICE_CMBUILDER_H

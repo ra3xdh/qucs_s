@@ -62,7 +62,6 @@ void XSPICE_CMbuilder::ExtractSpiceinitdata(QTextStream &stream)
             stream<<((XSP_CMlib *)pc)->getSpiceInit();
         }
         if (pc->Model=="Sub") {
-            //s = pc->Props.first()->Value;
             Schematic *d = new Schematic(0, ((Subcircuit *)pc)->getSubcircuitFile());
             if(!d->loadDocument())      // load document if possible
             {
@@ -94,6 +93,7 @@ void XSPICE_CMbuilder::cleanCModelTree()
     removeDir(cmdir);
     QDir wd(workdir);
     wd.mkdir(cmsubdir);
+    mod_ifs_pairs.clear();
 }
 
 /*!
@@ -110,23 +110,29 @@ void XSPICE_CMbuilder::createCModelTree()
         if (pc->Model=="XSP_CMod") {
             // Copy every cfunc.mod and ifspe.ifs pair into
             // unique subdirectory in qucs_cmlib/
-            QString destdir = QDir::convertSeparators(pc->Name);
-            dir_cm.mkdir(destdir);
-            lst_entries += destdir + "\n";
-            // Add cfunc.mod file
-            QString file = pc->Props.at(0)->Value;
-            QString destfile = normalizeModelName(file,destdir);
-            QFile::copy(file,destfile);
-            destfile.chop(4); // Add cfunc.o to objects
-            destfile+=".o";
-            objects.append(destfile);
-            // Add ifspec.ifs file
-            file = pc->Props.at(1)->Value;
-            destfile = normalizeModelName(file,destdir);
-            QFile::copy(file,destfile);
-            destfile.chop(4); // Add ifspec.o to objects
-            destfile+=".o";
-            objects.append(destfile); // Add ifspec.o to objects
+            QString mod = pc->Props.at(0)->Value;
+            QString ifs = pc->Props.at(1)->Value;
+            QStringList lst1;
+            lst1<<mod<<ifs;
+            // If model is duplicated don't process it (don't copy files)
+            if (!ModIfsPairProcessed(mod,ifs)) {
+                QString destdir = QDir::convertSeparators(pc->Name);
+                dir_cm.mkdir(destdir);
+                lst_entries += destdir + "\n";
+                // Add cfunc.mod file
+                QString destfile = normalizeModelName(mod,destdir);
+                QFile::copy(mod,destfile);
+                destfile.chop(4); // Add cfunc.o to objects
+                destfile+=".o";
+                objects.append(destfile);
+                // Add ifspec.ifs file
+                destfile = normalizeModelName(ifs,destdir);
+                QFile::copy(ifs,destfile);
+                destfile.chop(4); // Add ifspec.o to objects
+                destfile+=".o";
+                objects.append(destfile); // Add ifspec.o to objects
+            }
+            mod_ifs_pairs.append(lst1); // This *.mod and *.ifs pair already processed
         }
     }
 
@@ -157,6 +163,14 @@ void XSPICE_CMbuilder::createCModelTree()
     // Extract dlmain.c from the Ngspice installation
     QFileInfo inf(QucsSettings.NgspiceExecutable);
     QFile::copy(inf.path()+"/../share/ngspice/dlmain.c",cmdir+"/dlmain.c");
+}
+
+bool XSPICE_CMbuilder::ModIfsPairProcessed(const QString &mod, const QString &ifs)
+{
+    foreach (QStringList lst, mod_ifs_pairs) {
+        if ((lst.at(0)==mod)&&(lst.at(1)==ifs)) return true;
+    }
+    return false;
 }
 
 QString XSPICE_CMbuilder::normalizeModelName(QString &file, QString &destdir)
