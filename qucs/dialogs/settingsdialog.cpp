@@ -3,6 +3,7 @@
                             --------------------
     begin                : Mon Oct 20 2003
     copyright            : (C) 2003, 2004 by Michael Margraf
+                           (C) 2016 Qucs Team
     email                : michael.margraf@alumni.tu-berlin.de
  ***************************************************************************/
 
@@ -116,19 +117,18 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
     QWidget *Tab3 = new QWidget(t);
     QGridLayout *gp3 = new QGridLayout(Tab3);
     Combo_Frame = new QComboBox(Tab3);
-    Combo_Frame->insertItem(tr("no Frame"));
-    Combo_Frame->insertItem(tr("DIN A5 landscape"));
-    Combo_Frame->insertItem(tr("DIN A5 portrait"));
-    Combo_Frame->insertItem(tr("DIN A4 landscape"));
-    Combo_Frame->insertItem(tr("DIN A4 portrait"));
-    Combo_Frame->insertItem(tr("DIN A3 landscape"));
-    Combo_Frame->insertItem(tr("DIN A3 portrait"));
-    Combo_Frame->insertItem(tr("Letter landscape"));
-    Combo_Frame->insertItem(tr("Letter portrait"));
+    Combo_Frame->insertItem(1, tr("no Frame"));
+    Combo_Frame->insertItem(2, tr("DIN A5 landscape"));
+    Combo_Frame->insertItem(3, tr("DIN A5 portrait"));
+    Combo_Frame->insertItem(4, tr("DIN A4 landscape"));
+    Combo_Frame->insertItem(5, tr("DIN A4 portrait"));
+    Combo_Frame->insertItem(6, tr("DIN A3 landscape"));
+    Combo_Frame->insertItem(7, tr("DIN A3 portrait"));
+    Combo_Frame->insertItem(8, tr("Letter landscape"));
+    Combo_Frame->insertItem(9, tr("Letter portrait"));
     gp3->addWidget(Combo_Frame,0,0,1,2);
 
     Input_Frame0 = new QTextEdit(Tab3);
-    Input_Frame0->setTextFormat(Qt::PlainText);
     Input_Frame0->setWordWrapMode(QTextOption::NoWrap);
     gp3->addWidget(Input_Frame0,1,0,2,2);
 
@@ -172,7 +172,7 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
     Check_GridOn->setChecked(Doc->GridOn);
     Input_GridX->setText(QString::number(Doc->GridX));
     Input_GridY->setText(QString::number(Doc->GridY));
-    Combo_Frame->setCurrentItem(Doc->showFrame);
+    Combo_Frame->setCurrentIndex(Doc->showFrame);
 
     QString Text_;
     decode_String(Text_ = Doc->Frame_Text0);
@@ -276,14 +276,14 @@ void SettingsDialog::slotApply()
         changed = true;
     }
 
-    if(Doc->showFrame != Combo_Frame->currentItem())
+    if(Doc->showFrame != Combo_Frame->currentIndex())
     {
-        Doc->showFrame = Combo_Frame->currentItem();
+        Doc->showFrame = Combo_Frame->currentIndex();
         changed = true;
     }
 
     QString t;
-    encode_String(Input_Frame0->text(), t);
+    encode_String(Input_Frame0->toPlainText(), t);
     if(Doc->Frame_Text0 != t)
     {
         Doc->Frame_Text0 = t;
