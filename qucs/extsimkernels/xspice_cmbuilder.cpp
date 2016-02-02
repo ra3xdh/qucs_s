@@ -25,7 +25,7 @@ XSPICE_CMbuilder::XSPICE_CMbuilder(Schematic *sch_)
     workdir = QucsSettings.S4Qworkdir;
     Sch = sch_;
     cmsubdir = "qucs_cmlib/";
-    cmdir = QDir::convertSeparators(workdir+cmsubdir);
+    cmdir = QDir::convertSeparators(workdir+"/"+cmsubdir);
     spinit_name=QDir::convertSeparators(workdir+"/.spiceinit");
 }
 
