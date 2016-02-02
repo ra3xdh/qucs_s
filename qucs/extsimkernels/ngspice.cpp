@@ -356,7 +356,7 @@ void Ngspice::slotSimulate()
     CMbuilder->createSpiceinit();
     if (CMbuilder->needCompile()) {
         CMbuilder->cleanCModelTree();
-        CMbuilder->createCModelTree();
+        CMbuilder->createCModelTree(output);
         CMbuilder->compileCMlib(output);
     }
     delete CMbuilder;

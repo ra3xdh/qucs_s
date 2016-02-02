@@ -118,12 +118,12 @@ void XSPICE_CMbuilder::cleanCModelTree()
  * \brief Ngspice::createCModelTree Obtain all cfunc.mod and ifspec.ifs files paths and
  *        copy it into woriking directory of dynamic XSPICE CodeModels builder
  */
-void XSPICE_CMbuilder::createCModelTree()
+void XSPICE_CMbuilder::createCModelTree(QString &output)
 {
     QStringList lst_entries; // For modpath.lst
     QStringList objects; // Object files that need to be compiled
 
-    ExtractModIfsFiles(objects,lst_entries,"");
+    ExtractModIfsFiles(objects,lst_entries,"",output);
 
     // Form modpath.lst. List all subdirectories entries in it
     QFile modpath_lst(cmdir+"/modpath.lst");
@@ -144,6 +144,9 @@ void XSPICE_CMbuilder::createCModelTree()
     if (mkfile.open(QIODevice::WriteOnly)) {
         QTextStream stream(&mkfile);
         QString rules_file = QucsSettings.BinDir+"../share/qucs/xspice_cmlib/cmlib.linux.rules.mk";
+        QFileInfo inf(rules_file);
+        if (!inf.exists())
+            output += QString("Make rules file %1 doesn't exist\n").arg(rules_file);
         stream<<"TARGET=qucs_xspice.cm\n";
         stream<<QString("OBJECTS=dlmain.o %1\n\n").arg(objects.join(" "));
         stream<<"include "+rules_file +"\n";
@@ -177,7 +180,8 @@ bool XSPICE_CMbuilder::ModIfsPairProcessed(const QString &mod, const QString &if
  * \param prefix[in] Output subdirectory name prefix. It is need for correct processing
  *        of subcircuits.
  */
-void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst_entries, const QString &prefix)
+void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst_entries,
+                                          const QString &prefix, QString &output)
 {
     QDir dir_cm(cmdir);
 
@@ -192,17 +196,20 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
             // If model is duplicated don't process it (don't copy files)
             if (!ModIfsPairProcessed(mod,ifs)) {
                 QString destdir = QDir::convertSeparators(prefix + pc->Name);
-                dir_cm.mkdir(destdir);
+                if (!dir_cm.mkdir(destdir))
+                    output += QString("Cannot create directory %1 \n").arg(destdir);
                 lst_entries += destdir;
                 // Add cfunc.mod file
                 QString destfile = normalizeModelName(mod,destdir);
-                QFile::copy(mod,destfile);
+                if (!QFile::copy(mod,destfile))
+                    output += QString("Cannot copy file %1 to %2 \n").arg(mod).arg(destfile);
                 destfile.chop(4); // Add cfunc.o to objects
                 destfile+=".o";
                 objects.append(destfile);
                 // Add ifspec.ifs file
                 destfile = normalizeModelName(ifs,destdir);
-                QFile::copy(ifs,destfile);
+                if (!QFile::copy(ifs,destfile))
+                    output += QString("Cannot copy file %1 to %2 \n").arg(ifs).arg(destfile);
                 destfile.chop(4); // Add ifspec.o to objects
                 destfile+=".o";
                 objects.append(destfile); // Add ifspec.o to objects
@@ -218,7 +225,7 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
                 continue;
             }
             XSPICE_CMbuilder *bld = new XSPICE_CMbuilder(d);
-            bld->ExtractModIfsFiles(objects,lst_entries,pc->Name);
+            bld->ExtractModIfsFiles(objects,lst_entries,pc->Name,output);
             delete bld;
             delete d;
         }
@@ -241,6 +248,9 @@ QString XSPICE_CMbuilder::normalizeModelName(QString &file, QString &destdir)
  */
 void XSPICE_CMbuilder::compileCMlib(QString &output)
 {
+    output += "Executing make to build XSPICE CodeModels ...\n";
+    output += QString("Working directory is %1\n").arg(cmdir);
+
     QProcess *make = new QProcess();
     make->setReadChannelMode(QProcess::MergedChannels);
     make->setWorkingDirectory(cmdir);

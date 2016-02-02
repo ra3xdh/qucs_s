@@ -40,14 +40,15 @@ public:
     void createSpiceinit();
     bool needCompile();
     void cleanCModelTree();
-    void createCModelTree();
+    void createCModelTree(QString &output);
     void compileCMlib(QString &ouptut);
 
 private:
     QString normalizeModelName(QString &file,QString &destdir);
     bool removeDir(const QString &dirName);
     void ExtractSpiceinitdata(QTextStream &stream);
-    void ExtractModIfsFiles(QStringList &objects, QStringList &lst_entries, const QString &prefix);
+    void ExtractModIfsFiles(QStringList &objects, QStringList &lst_entries,
+                            const QString &prefix, QString &output);
     bool ModIfsPairProcessed(const QString &mod, const QString &ifs);
 };
 
