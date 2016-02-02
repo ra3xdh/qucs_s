@@ -1,4 +1,4 @@
-PROJECT(qucs-suite CXX C)
+PROJECT(qucs-suite CXX)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 cmake_policy(VERSION 2.8)
 
@@ -37,17 +37,6 @@ SET( QT_DEBUG TRUE)
 INCLUDE( ${QT_USE_FILE} )
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
-
-INCLUDE_DIRECTORIES(
-        ${CMAKE_SOURCE_DIR}
-        ${CMAKE_SOURCE_DIR}/qucs
-        #${CMAKE_SOURCE_DIR}/bitmaps ->no sources here
-        ${CMAKE_SOURCE_DIR}/components
-        ${CMAKE_SOURCE_DIR}/diagrams
-        ${CMAKE_SOURCE_DIR}/dialogs
-        #${CMAKE_SOURCE_DIR}/octave ->no sources here
-        ${CMAKE_SOURCE_DIR}/paintings
-        )
 
 ADD_SUBDIRECTORY( qucs )
 ADD_SUBDIRECTORY( qucs-activefilter )
