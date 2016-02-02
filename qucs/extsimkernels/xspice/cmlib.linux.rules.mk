@@ -4,7 +4,7 @@
 CMPP=cmpp
 CC=gcc
 CFLAGS=-O2 -Wall -Wextra -Wmissing-prototypes -Wstrict-prototypes -Wnested-externs -Wold-style-definition -Wredundant-decls -Wconversion -s -fPIC 
-INCLUDE=-I. -I/usr/share/ngspice/include/
+INCLUDE=-I. -I$(NGSPICEROOT)/share/ngspice/include/
 LD=gcc
 LDFLAGS=-shared
 

@@ -140,22 +140,24 @@ void XSPICE_CMbuilder::createCModelTree(QString &output)
         udnpath_lst.close();
 
     // Form proper Makefile
+    QString ngsp_root = getNgspiceRoot();
     QFile mkfile(cmdir+"/Makefile");
     if (mkfile.open(QIODevice::WriteOnly)) {
         QTextStream stream(&mkfile);
         QString rules_file = QucsSettings.BinDir+"../share/qucs/xspice_cmlib/cmlib.linux.rules.mk";
-        QFileInfo inf(rules_file);
+        QFileInfo inf(rules_file);  
         if (!inf.exists())
             output += QString("Make rules file %1 doesn't exist\n").arg(rules_file);
         stream<<"TARGET=qucs_xspice.cm\n";
+        stream<<QString("NGSPICEROOT=%1\n").arg(ngsp_root);
         stream<<QString("OBJECTS=dlmain.o %1\n\n").arg(objects.join(" "));
         stream<<"include "+rules_file +"\n";
         mkfile.close();
     }
 
     // Extract dlmain.c from the Ngspice installation
-    QFileInfo inf(QucsSettings.NgspiceExecutable);
-    QFile::copy(inf.path()+"/../share/ngspice/dlmain.c",cmdir+"/dlmain.c");
+   // QFileInfo inf(QucsSettings.NgspiceExecutable);
+    QFile::copy(ngsp_root+"/share/ngspice/dlmain.c",cmdir+"/dlmain.c");
 }
 
 /*!
@@ -232,6 +234,14 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
     }
 }
 
+/*!
+ * \brief XSPICE_CMbuilder::normalizeModelName Get normalized model name for Nsgpice.
+ *        Rename *.mod file for cfunc.mod. Rename *.ifs to ifspec.ifs.
+ * \param file[in] Input file
+ * \param destdir[in] Destination directory
+ * \return Normalized file name *.mod -> destdir/cfunc.mod
+ *                              *.ifs -> destdir/ifspec.ifs
+ */
 QString XSPICE_CMbuilder::normalizeModelName(QString &file, QString &destdir)
 {
     QFileInfo inf(file);
@@ -258,6 +268,28 @@ void XSPICE_CMbuilder::compileCMlib(QString &output)
     make->waitForFinished();
     output += make->readAll();
     delete make;
+}
+
+/*!
+ * \brief XSPICE_CMbuilder::getNgspiceRoot Get Ngspice root installation directory.
+ *        For example /usr/ for /usr/bin/ngspice
+ * \return Path to ngspice root
+ */
+QString XSPICE_CMbuilder::getNgspiceRoot()
+{
+    QFileInfo inf(QucsSettings.NgspiceExecutable);
+    QString s;
+    if (!inf.exists()) { // It may be in $PATH
+        char *p = getenv("PATH");
+        QStringList paths;
+        if (p!=NULL) paths = QString(p).split(':');
+        foreach (QString pp,paths) {
+            inf.setFile(pp+QDir::separator()+QucsSettings.NgspiceExecutable);
+            if (inf.exists()) s = inf.canonicalPath();
+        }
+    } else s = inf.canonicalPath();
+    if (s.endsWith("bin")) s.chop(3);
+    return s;
 }
 
 bool XSPICE_CMbuilder::removeDir(const QString &dirName)
