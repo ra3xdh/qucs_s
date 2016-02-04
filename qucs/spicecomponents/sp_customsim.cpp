@@ -73,6 +73,6 @@ QString SpiceCustomSim::spice_netlist(bool isXyce)
 {
     QString s = "";
     if (isXyce) return s;
-    s = Props.at(0)->Value;
+    s = Props.at(0)->Value+"\n";
     return s;
 }
