@@ -70,7 +70,7 @@ private slots:
     void slotAddPath();
     void slotAddPathWithSubFolders();
     void slotRemovePath();
-
+    void slotPathSelectionChanged();
 
 public:
     QucsApp *App;
@@ -87,6 +87,7 @@ public:
     QPushButton *ColorComment, *ColorString, *ColorInteger,
                 *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
                 *ColorDirective, *ColorTask;
+    QPushButton *RemovePathButt;
 
     QVBoxLayout *all;
     QIntValidator *val50;
@@ -96,6 +97,7 @@ public:
 
 private:
     QStringList currentPaths;
+    
 
 private:
     void makePathTable();

@@ -330,10 +330,14 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     pitem1->setText(tr("Subcircuit Search Path List"));
 
     pathsTableWidget->horizontalHeader()->setStretchLastSection(true);
+    // avoid drawing header text in bold when some data is selected
+    pathsTableWidget->horizontalHeader()->setClickable(false);
+
     pathsTableWidget->verticalHeader()->hide();
     // allow multiple items to be selected
     pathsTableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(pathsTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotPathTableClicked(int,int)));
+    connect(pathsTableWidget, SIGNAL(itemSelectionChanged()), SLOT(slotPathSelectionChanged()));
     locationsGrid->addWidget(pathsTableWidget,5,0,3,2);
 
     QPushButton *AddPathButt = new QPushButton("Add Path");
@@ -344,7 +348,9 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     locationsGrid->addWidget(AddPathSubFolButt, 6, 2);
     connect(AddPathSubFolButt, SIGNAL(clicked()), SLOT(slotAddPathWithSubFolders()));
 
-    QPushButton *RemovePathButt = new QPushButton("Remove Path");
+    RemovePathButt = new QPushButton("Remove Path");
+    // disable button if no paths in the table are selected
+    RemovePathButt->setEnabled(false);
     locationsGrid->addWidget(RemovePathButt , 7, 2);
     connect(RemovePathButt, SIGNAL(clicked()), SLOT(slotRemovePath()));
 
@@ -802,6 +808,15 @@ void QucsSettingsDialog::slotPathTableClicked(int row, int col)
     Q_UNUSED(row);
     Q_UNUSED(col);
     //Input_Path->setText(fileTypesTableWidget->item(row,0)->text());
+}
+
+/* \brief enable "Remove Path" button only if something is selected
+ */
+void QucsSettingsDialog::slotPathSelectionChanged()
+{
+  bool selectionIsNotEmpty = !pathsTableWidget->selectedItems().isEmpty();
+
+  RemovePathButt->setEnabled(selectionIsNotEmpty);
 }
 
 void QucsSettingsDialog::slotAddPath()
