@@ -765,7 +765,6 @@ esac
 AC_SUBST(PATHXFORM)
 
 dnl Create path info.
-dnl BitmapDir still used by qucs-edit
 AC_DEFINE_UNQUOTED([BINARYDIR], ["$bindir"],
                    [Where the binary files go.])
 LANG_PATH="$prefix/share/qucs/lang/"

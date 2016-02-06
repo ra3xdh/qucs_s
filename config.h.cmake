@@ -1,5 +1,4 @@
 #cmakedefine BINARYDIR "@BINARYDIR@"
-#cmakedefine BITMAPDIR "@BITMAPDIR@"
 #cmakedefine DOCDIR "@DOCDIR@"
 #cmakedefine LANGUAGEDIR "@LANGUAGEDIR@"
 #cmakedefine LIBRARYDIR "@LIBRARYDIR@"
