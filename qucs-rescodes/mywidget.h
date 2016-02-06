@@ -1,10 +1,14 @@
-#include <QWidget>
+
+#ifndef MYWIDGET_H
+#define MYWIDGET_H
+
+#include <QMainWindow>
 class MyResistanceBox;
 class MyColorBox;
 class QResistor;
 
 //---------------------------class declarations------------------------------------//
-class MyWidget: public QWidget
+class MyWidget: public QMainWindow
 {
 	Q_OBJECT
 	QResistor *res;
@@ -12,7 +16,7 @@ class MyWidget: public QWidget
 	MyColorBox *colorBox;
 
 	public:
-		MyWidget( QWidget *parent=0, const char *name=0 );
+		MyWidget();
 	public slots:
 
 		void setResistanceValue();
@@ -24,5 +28,4 @@ class MyWidget: public QWidget
 	signals:
 };
 
-
-
+#endif /* MYWIDGET_H */

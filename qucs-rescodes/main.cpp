@@ -4,6 +4,8 @@
     begin                : Mar 2012
     copyright            : (C) 2012 by Sudhakar.M.K
     email                : sudhakar.m.kumar@gmail.com
+    copyright            : (C) 2016, Qucs team (see AUTHORS file)
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -25,8 +27,6 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-#ifndef QUCS_RESCODES_MAIN_CPP
-#define QUCS_RESCODES_MAIN_CPP
 #include <QApplication>
 #include <QHBoxLayout>
 #include <QGridLayout>
@@ -44,19 +44,17 @@
 #include <string>
 //------------------------class member declarations for MyWidget---------------------------------//
 
-MyWidget::MyWidget( QWidget *parent, const char *name )
-: QWidget( parent/*, name */)
+/* setup the GUI */
+MyWidget::MyWidget()
 {
-  Q_UNUSED(name);
-
-	setWindowTitle("Color Codes");
+  setWindowTitle("Qucs Resistor Color Code " PACKAGE_VERSION);
 
   // icons are handled differently on OSX
 #ifndef __APPLE__
   setWindowIcon(QPixmap(":/bitmaps/big.qucs.xpm"));
 #endif
 
-	 // --------  create menubar  -------------------
+  // --------  create menubar  -------------------
   QAction *fileExit = new QAction(tr("E&xit"), this);
   fileExit->setShortcut(Qt::CTRL+Qt::Key_Q);
   connect(fileExit, SIGNAL(activated()), qApp, SLOT(quit()));
@@ -80,10 +78,9 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
   helpMenu->addSeparator();
   helpMenu->addAction(aboutQt);
 
-  QMenuBar *menuBar = new QMenuBar(this);
-	menuBar->addMenu(fileMenu);
-	menuBar->addSeparator();
-	menuBar->addMenu(helpMenu);
+  menuBar()->addMenu(fileMenu);
+  menuBar()->addSeparator();
+  menuBar()->addMenu(helpMenu);
 
 	res= new QResistor();
 	//--------------------resistance displayin ui ---------------------------------//
@@ -119,20 +116,20 @@ MyWidget::MyWidget( QWidget *parent, const char *name )
   buttonBox->addWidget(quit);
 
 	//--------------------packing all of them together---------------------------------------//
-  QGridLayout *grid = new QGridLayout(this);
-  grid->setMargin(10);
 
-#ifndef __APPLE__
-    QWidget *Space = new QWidget(this);   // reserve space for menubar
-    Space->setFixedSize(1, menuBar->height());
-    grid->addWidget(Space, 0,0);
-#endif
+  // main box
+  QWidget *main = new QWidget(this);
+  setCentralWidget(main);
+  QGridLayout *grid = new QGridLayout();
+  main->setLayout(grid);
+  grid->setSpacing (10);
+  grid->setMargin (10);
 
-	grid->addWidget( resBox, 1, 0 );
-	grid->addLayout( buttonBox, 2, 0 );
-	grid->addWidget( colorBox, 3, 0 );
-
+  grid->addWidget( resBox, 1, 0 );
+  grid->addLayout( buttonBox, 2, 0 );
+  grid->addWidget( colorBox, 3, 0 );
 }
+
 void MyWidget :: setResistanceValue()
 {
 	res->QResistorModify(resBox->enteredValue(),resBox->enteredTolerance());
@@ -198,4 +195,3 @@ int main( int argc, char **argv )
 	w.show();
 	return a.exec();
 }
-#endif
