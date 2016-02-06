@@ -55,8 +55,6 @@ endif()
 ADD_DEFINITIONS( -DHAVE_CONFIG_H )
 
 # define variables
-SET(DOCDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/docs/")
-#Add:
 SET(LANGUAGEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/lang/")
 
 

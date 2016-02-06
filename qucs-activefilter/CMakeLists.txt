@@ -26,7 +26,6 @@ IF(NOT WIN32)
 ENDIF()
 
 # define variables
-SET(DOCDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/docs/")
 SET(LANGUAGEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/lang/")
 
 #configure the header config.h
