@@ -293,28 +293,28 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent, const char *name)
     locationsGrid->addWidget(new QLabel(tr("Qucs Home:"), locationsTab) ,1,0);
     homeEdit = new QLineEdit(locationsTab);
     locationsGrid->addWidget(homeEdit,1,1);
-    QPushButton *HomeButt = new QPushButton("...");
+    QPushButton *HomeButt = new QPushButton("Browse");
     locationsGrid->addWidget(HomeButt, 1, 2);
     connect(HomeButt, SIGNAL(clicked()), SLOT(slotHomeDirBrowse()));
 
     locationsGrid->addWidget(new QLabel(tr("AdmsXml Path:"), locationsTab) ,2,0);
     admsXmlEdit = new QLineEdit(locationsTab);
     locationsGrid->addWidget(admsXmlEdit,2,1);
-    QPushButton *AdmsXmlButt = new QPushButton("...");
+    QPushButton *AdmsXmlButt = new QPushButton("Browse");
     locationsGrid->addWidget(AdmsXmlButt, 2, 2);
     connect(AdmsXmlButt, SIGNAL(clicked()), SLOT(slotAdmsXmlDirBrowse()));
 
     locationsGrid->addWidget(new QLabel(tr("ASCO Path:"), locationsTab) ,3,0);
     ascoEdit = new QLineEdit(locationsTab);
     locationsGrid->addWidget(ascoEdit,3,1);
-    QPushButton *ascoButt = new QPushButton("...");
+    QPushButton *ascoButt = new QPushButton("Browse");
     locationsGrid->addWidget(ascoButt, 3, 2);
     connect(ascoButt, SIGNAL(clicked()), SLOT(slotAscoDirBrowse()));
 
     locationsGrid->addWidget(new QLabel(tr("Octave Path:"), locationsTab) ,4,0);
     octaveEdit = new QLineEdit(locationsTab);
     locationsGrid->addWidget(octaveEdit,4,1);
-    QPushButton *OctaveButt = new QPushButton("...");
+    QPushButton *OctaveButt = new QPushButton("Browse");
     locationsGrid->addWidget(OctaveButt, 4, 2);
     connect(OctaveButt, SIGNAL(clicked()), SLOT(slotOctaveDirBrowse()));
 
