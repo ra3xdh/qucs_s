@@ -7,6 +7,14 @@ class MyResistanceBox;
 class MyColorBox;
 class QResistor;
 
+// Application settings.
+struct tQucsSettings {
+  int x, y, dx, dy;    // position and size of main window
+  QFont font;          // font
+  QString LangDir;     // translation directory
+  QString Language;
+};
+
 //---------------------------class declarations------------------------------------//
 class MyWidget: public QMainWindow
 {

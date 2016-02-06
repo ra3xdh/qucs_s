@@ -39,6 +39,10 @@
 #include <QAction>
 #include <QMessageBox>
 #include <QClipboard>
+#include <QTranslator>
+#include <QLocale>
+#include <QSettings>
+#include <QDir>
 
 #include <vector>
 #include <string>
@@ -186,12 +190,72 @@ void MyWidget::slotConfiguration()
 
 }
 
+tQucsSettings QucsSettings;
+
+// Loads the settings file and stores the settings.
+bool loadSettings()
+{
+    QSettings settings("qucs","qucs");
+    // Qucs Resistor Tool specific settings
+    settings.beginGroup("QucsResCodes");
+    if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
+    if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
+    settings.endGroup();
+
+    // Qucs general settings
+    if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
+    if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
+
+  return true;
+}
+
+// Saves the settings in the settings file.
+bool saveApplSettings(MyWidget *w)
+{
+    QSettings settings ("qucs","qucs");
+    settings.beginGroup("QucsResistor");
+    settings.setValue("x", w->x());
+    settings.setValue("y", w->y());
+    settings.endGroup();
+  return true;
+
+}
+
 int main( int argc, char **argv )
 {
-	QApplication a( argc, argv );
+  // apply default settings
+  QucsSettings.x = 100;
+  QucsSettings.y = 50;
+  QucsSettings.font = QFont("Helvetica", 12);
 
-	MyWidget w;
-	//a.setMainWidget( &w );
-	w.show();
-	return a.exec();
+  // is application relocated?
+  char * var = getenv ("QUCSDIR");
+  QDir QucsDir;
+  if (var != NULL) {
+    QucsDir = QDir(QString(var));
+    QucsSettings.LangDir =     QucsDir.canonicalPath() + "/share/qucs/lang/";
+  } else {
+    QucsSettings.LangDir = LANGUAGEDIR;
+  }
+
+  loadSettings();
+
+  QApplication a(argc, argv);
+  a.setFont(QucsSettings.font);
+
+  QTranslator tor(0);
+  QString lang = QucsSettings.Language;
+  if(lang.isEmpty())
+    lang = QString(QLocale::system().name());
+  tor.load( QString("qucs_") + lang, QucsSettings.LangDir);
+  a.installTranslator(&tor);
+
+  MyWidget *w = new MyWidget();
+  w->raise();
+  w->move(QucsSettings.x, QucsSettings.y); // before show()
+  w->show();
+  
+  int result = a.exec();
+  saveApplSettings(w);
+  return result;
 }
