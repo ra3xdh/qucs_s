@@ -4,6 +4,8 @@
     begin                : Sun May 23 2004
     copyright            : (C) 2003 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
+    copyright            : (C) 2016 by Qucs Team (see AUTHORS file)
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -751,38 +753,46 @@ void QucsSettingsDialog::slotTableClicked(int row, int col)
 
 void QucsSettingsDialog::slotHomeDirBrowse()
 {
-    QFileDialog fileDialog( this, tr("Select the home directory"), homeEdit->text() );
-    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
-    fileDialog.exec();
-    homeEdit->setText(fileDialog.selectedFile());
+  QString d = QFileDialog::getExistingDirectory
+    (this, tr("Select the home directory"),
+     homeEdit->text(),
+     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+  if(!d.isEmpty())
+    homeEdit->setText(d);
 }
 
 void QucsSettingsDialog::slotAdmsXmlDirBrowse()
 {
-    QFileDialog fileDialog( this, tr("Select the admsXml bin directory"), admsXmlEdit->text() );
-    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
-    fileDialog.exec();
-    admsXmlEdit->setText(fileDialog.selectedFile());
+  QString d = QFileDialog::getExistingDirectory
+    (this, tr("Select the admsXml bin directory"),
+     admsXmlEdit->text(),
+     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+  if(!d.isEmpty())
+    admsXmlEdit->setText(d);
 }
 
 void QucsSettingsDialog::slotAscoDirBrowse()
 {
-    QFileDialog fileDialog( this, tr("Select the ASCO bin directory"), ascoEdit->text() );
-    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
-    fileDialog.exec();
-    ascoEdit->setText(fileDialog.selectedFile());
+  QString d = QFileDialog::getExistingDirectory
+    (this, tr("Select the ASCO bin directory"),
+     ascoEdit->text(),
+     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+  if(!d.isEmpty())
+    ascoEdit->setText(d);
 }
 
 void QucsSettingsDialog::slotOctaveDirBrowse()
 {
-    QFileDialog fileDialog( this, tr("Select the octave bin directory"), octaveEdit->text() );
-    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
-    fileDialog.exec();
-    octaveEdit->setText(fileDialog.selectedFile());
+  QString d = QFileDialog::getExistingDirectory
+    (this, tr("Select the octave bin directory"),
+     octaveEdit->text(),
+     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+  if(!d.isEmpty())
+    octaveEdit->setText(d);
 }
 
 /*! \brief (seems unused at present)
@@ -796,13 +806,14 @@ void QucsSettingsDialog::slotPathTableClicked(int row, int col)
 
 void QucsSettingsDialog::slotAddPath()
 {
-    QFileDialog fileDialog( this, tr("Select a directory"), QucsSettings.QucsWorkDir.canonicalPath());
-    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
+  QString d = QFileDialog::getExistingDirectory
+    (this, tr("Select a directory"),
+     QucsSettings.QucsWorkDir.canonicalPath(),
+     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-    if (fileDialog.exec())
+  if(!d.isEmpty())
     {
-        currentPaths.append(fileDialog.selectedFile());
+        currentPaths.append(d);
         // reconstruct the table again
         makePathTable();
     }
@@ -815,17 +826,18 @@ void QucsSettingsDialog::slotAddPath()
 void QucsSettingsDialog::slotAddPathWithSubFolders()
 {
     // open a file dialog to select the top level directory
-    QFileDialog fileDialog( this, tr("Select a directory"), QucsSettings.QucsWorkDir.canonicalPath());
-    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
+    QString d = QFileDialog::getExistingDirectory
+      (this, tr("Select a directory"),
+       QucsSettings.QucsWorkDir.canonicalPath(),
+       QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
     QString path;
     QFileInfo pathfinfo;
 
-    if (fileDialog.exec())
+    if(!d.isEmpty())
     {
         // Iterate through the directories
-        QDirIterator pathIter(fileDialog.selectedFile(), QDirIterator::Subdirectories);
+        QDirIterator pathIter(d, QDirIterator::Subdirectories);
         while (pathIter.hasNext())
         {
             path = pathIter.next();
@@ -843,8 +855,6 @@ void QucsSettingsDialog::slotAddPathWithSubFolders()
     {
         // user cancelled
     }
-
-
 }
 
 void QucsSettingsDialog::slotRemovePath()
