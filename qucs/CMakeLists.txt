@@ -56,7 +56,6 @@ ADD_DEFINITIONS( -DHAVE_CONFIG_H )
 
 # define variables
 SET(DOCDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/docs/")
-SET(LIBRARYDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/library/")
 #Add:
 SET(LANGUAGEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/lang/")
 
