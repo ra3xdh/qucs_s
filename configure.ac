@@ -765,8 +765,6 @@ esac
 AC_SUBST(PATHXFORM)
 
 dnl Create path info.
-AC_DEFINE_UNQUOTED([BINARYDIR], ["$bindir"],
-                   [Where the binary files go.])
 LANG_PATH="$prefix/share/qucs/lang/"
 AC_DEFINE_UNQUOTED([LANGUAGEDIR], ["$LANG_PATH"],
   [Where the language files go.])
