@@ -1,7 +1,6 @@
 #cmakedefine DOCDIR "@DOCDIR@"
 #cmakedefine LANGUAGEDIR "@LANGUAGEDIR@"
 #cmakedefine LIBRARYDIR "@LIBRARYDIR@"
-#cmakedefine OCTAVEDIR "@OCTAVEDIR@"
 
 #define PACKAGE_VERSION "@PROJECT_VERSION@"
 #define PACKAGE_STRING "qucs @PROJECT_VERSION@"

@@ -777,10 +777,6 @@ DOC_PATH="$prefix/share/qucs/docs/"
 AC_DEFINE_UNQUOTED([DOCDIR], ["$DOC_PATH"],
   [Where the documentation files go.])
 unset DOC_PATH
-OCTAVE_PATH="$prefix/share/qucs/octave/"
-AC_DEFINE_UNQUOTED([OCTAVEDIR], ["$OCTAVE_PATH"],
-  [Where the octave script files go.])
-unset OCTAVE_PATH
 
 dnl Definitions at top of <config.h>.
 AH_TOP([
