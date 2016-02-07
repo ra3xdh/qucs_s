@@ -526,7 +526,7 @@ void QucsSettingsDialog::slotApply()
 
         while((w=App->DocumentTab->widget(No++)) != 0) {
           QWidget *vp;
-          if(w->inherits("QPlainTextEdit")) {
+          if(QucsApp::isTextDocument(w)) {
             vp = ((TextDoc*)w)->viewport();
           } else {
             vp = ((Schematic*)w)->viewport();
