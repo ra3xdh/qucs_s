@@ -1560,13 +1560,13 @@ bool QucsApp::saveAs()
   Doc->setName(s);
   DocumentTab->setTabText(DocumentTab->indexOf(w), misc::properFileName(s));
   lastDirOpenSave = Info.absolutePath();  // remember last directory and file
-  updateRecentFilesList(s);
 
   n = Doc->save();   // SAVE
   if(n < 0)  return false;
 
   updatePortNumber(Doc, n);
   slotUpdateTreeview();
+  updateRecentFilesList(s);
   return true;
 }
 
