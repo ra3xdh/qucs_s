@@ -488,7 +488,7 @@ void QucsSettingsDialog::slotApply()
         int No=0;
         QWidget *w;
         while((w=App->DocumentTab->page(No++)) != 0)
-            if(w->inherits("QTextEdit"))
+            if(w->inherits("QPlainTextEdit"))
                 ((TextDoc*)w)->viewport()->setPaletteBackgroundColor(
                     QucsSettings.BGColor);
             else
