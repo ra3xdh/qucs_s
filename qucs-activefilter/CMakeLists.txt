@@ -26,12 +26,7 @@ IF(NOT WIN32)
 ENDIF()
 
 # define variables
-SET(BINARYDIR "${CMAKE_INSTALL_PREFIX}/bin/")
-SET(BITMAPDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/bitmaps/")
-SET(DOCDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/docs/")
 SET(LANGUAGEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/lang/")
-SET(LIBRARYDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/library/")
-SET(OCTAVEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/octave/")
 
 #configure the header config.h
 CONFIGURE_FILE (
