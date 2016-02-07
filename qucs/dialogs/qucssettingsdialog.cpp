@@ -950,6 +950,8 @@ void QucsSettingsDialog::slotAddPathWithSubFolders()
 
     if(!d.isEmpty())
     {
+        // add the selected path
+        currentPaths.append(d);
         // Iterate through the directories
         QDirIterator pathIter(d, QDirIterator::Subdirectories);
         while (pathIter.hasNext())
@@ -957,7 +959,8 @@ void QucsSettingsDialog::slotAddPathWithSubFolders()
             path = pathIter.next();
             pathfinfo = pathIter.fileInfo();
 
-            if (pathfinfo.isDir() && !pathfinfo.isSymLink() && !path.endsWith("."))
+            if (pathfinfo.isDir() && !pathfinfo.isSymLink() &&
+                pathIter.fileName() != "." && pathIter.fileName() != "..")
             {
                 QDir thispath(path);
                 currentPaths.append(thispath.canonicalPath());
