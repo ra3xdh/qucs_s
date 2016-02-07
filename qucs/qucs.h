@@ -131,9 +131,11 @@ public slots:
   void slotCMenuInsert();
 
   void slotUpdateTreeview();
+
+  void slotMenuProjClose();
+
 private slots:
   void slotMenuProjOpen();
-  void slotMenuProjClose();
   void slotMenuProjDel();
   void slotListProjOpen(const QModelIndex &);
   void slotSelectSubcircuit(const QModelIndex &);

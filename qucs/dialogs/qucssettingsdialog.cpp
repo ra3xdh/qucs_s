@@ -504,6 +504,18 @@ void QucsSettingsDialog::slotOK()
 void QucsSettingsDialog::slotApply()
 {
     bool changed = false;
+    bool homeDirChanged = false;
+
+    // check QucsHome is changed, will require to close all files and refresh tree
+    if (homeEdit->text() != QucsSettings.QucsHomeDir.path()) {
+      // close all open files, asking the user whether to save the modified ones
+      // if user aborts closing, just return
+      if(!App->closeAllFiles()) return;
+
+      QucsSettings.QucsHomeDir = homeEdit->text();
+      homeDirChanged = true;
+      // later below the file tree will be refreshed
+    }
 
     if(QucsSettings.BGColor != BGColorButton->palette().color(BGColorButton->backgroundRole()))
     {
@@ -603,7 +615,6 @@ void QucsSettingsDialog::slotApply()
     }
 
     /*! Update QucsSettings, tool paths */
-    QucsSettings.QucsHomeDir = homeEdit->text();
     QucsSettings.AdmsXmlBinDir = admsXmlEdit->text();
     QucsSettings.AscoBinDir = ascoEdit->text();
     QucsSettings.OctaveBinDir = octaveEdit->text();
@@ -630,6 +641,15 @@ void QucsSettingsDialog::slotApply()
     }
 
     saveApplSettings();  // also sets the small and large font
+
+    // if QucsHome is changed, refresh projects tree
+    // do this after updating the other paths
+    if (homeDirChanged) {;
+      // files were actuallt closed above, this will refresh the projects tree
+      // and create an empty schematic
+      App->slotMenuProjClose();
+      changed = true;
+    }
 
     if(changed)
     {
