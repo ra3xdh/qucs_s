@@ -4,6 +4,7 @@
     begin                : Sun May 23 2004
     copyright            : (C) 2003 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
+    copyright            : (C) 2016 by Qucs Team (see AUTHORS file)
  ***************************************************************************/
 
 /***************************************************************************
@@ -39,7 +40,7 @@ class QucsSettingsDialog : public QDialog
 {
     Q_OBJECT
 public:
-    QucsSettingsDialog(QucsApp *parent=0, const char *name=0);
+    QucsSettingsDialog(QucsApp *parent=0);
     ~QucsSettingsDialog();
 
 private slots:
@@ -70,7 +71,7 @@ private slots:
     void slotAddPath();
     void slotAddPathWithSubFolders();
     void slotRemovePath();
-
+    void slotPathSelectionChanged();
 
 public:
     QucsApp *App;
@@ -87,6 +88,7 @@ public:
     QPushButton *ColorComment, *ColorString, *ColorInteger,
                 *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
                 *ColorDirective, *ColorTask;
+    QPushButton *RemovePathButt;
 
     QVBoxLayout *all;
     QIntValidator *val50;
@@ -96,6 +98,7 @@ public:
 
 private:
     QStringList currentPaths;
+    
 
 private:
     void makePathTable();

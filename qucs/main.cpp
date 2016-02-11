@@ -90,7 +90,7 @@ bool loadSettings()
     if(settings.contains("Type"))QucsSettings.Type.setNamedColor(settings.value("Type").toString());
     if(settings.contains("Attribute"))QucsSettings.Attribute.setNamedColor(settings.value("Attribute").toString());
     if(settings.contains("Directive"))QucsSettings.Directive.setNamedColor(settings.value("Directive").toString());
-    if(settings.contains("Task"))QucsSettings.Comment.setNamedColor(settings.value("Task").toString());
+    if(settings.contains("Task"))QucsSettings.Task.setNamedColor(settings.value("Task").toString());
 
     if(settings.contains("Qucsator"))QucsSettings.Qucsator = settings.value("Qucsator").toString();
     //if(settings.contains("BinDir"))QucsSettings.BinDir = settings.value("BinDir").toString();
@@ -167,7 +167,7 @@ bool saveApplSettings()
     settings.setValue("Type", QucsSettings.Type.name());
     settings.setValue("Attribute", QucsSettings.Attribute.name());
     settings.setValue("Directive", QucsSettings.Directive.name());
-    settings.setValue("Task", QucsSettings.Comment.name());
+    settings.setValue("Task", QucsSettings.Task.name());
     //settings.setValue("Qucsator", QucsSettings.Qucsator);
     //settings.setValue("BinDir", QucsSettings.BinDir);
     //settings.setValue("LangDir", QucsSettings.LangDir);

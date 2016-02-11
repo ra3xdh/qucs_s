@@ -67,6 +67,7 @@ public:
   QucsDoc *getDoc(int No=-1);
   QucsDoc* findDoc (QString, int * Pos = 0);
   QString fileType (const QString&);
+  static bool isTextDocument(QWidget *);
 
   QString ProjName;   // name of the project, that is open
   QHash<QString,QString> schNameHash; // QHash for the schematic files lookup
@@ -131,9 +132,11 @@ public slots:
   void slotCMenuInsert();
 
   void slotUpdateTreeview();
+
+  void slotMenuProjClose();
+
 private slots:
   void slotMenuProjOpen();
-  void slotMenuProjClose();
   void slotMenuProjDel();
   void slotListProjOpen(const QModelIndex &);
   void slotSelectSubcircuit(const QModelIndex &);
@@ -212,7 +215,6 @@ private:
   void switchEditMode(bool);
   void changeSchematicSymbolMode(Schematic*);
   bool recurRemove(const QString &);
-  bool isTextDocument(QWidget *);
   void closeFile(int);
 
   void updateRecentFilesList(QString s);
