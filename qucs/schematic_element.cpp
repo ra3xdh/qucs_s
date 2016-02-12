@@ -1309,8 +1309,13 @@ void Schematic::highlightWireLabels ()
 
     // Then test every wire's label to see if we need to highlight it
     // and matching labels
-    for(Wire *pwouter = Wires->last(); pwouter != 0; pwouter = Wires->prev())
+    // maybe a bit inefficient, since the elements are checked n*n times;
+    // it could be done in n*(n+1)/2, but could not use Q3PtrListIterator...
+    Q3PtrListIterator<Wire> itouter(*Wires);
+    Wire *pwouter;
+    while ((pwouter = itouter.current()) !=0)
     {
+        ++itouter;
         // get any label associated with the wire
         pltestouter = pwouter->Label;
         if (pltestouter)
@@ -1318,8 +1323,11 @@ void Schematic::highlightWireLabels ()
             if (pltestouter->isSelected)
             {
                 // Search for matching labels
-                for(Wire *pwinner = Wires->last(); pwinner != 0; pwinner = Wires->prev())
+                Q3PtrListIterator<Wire> itinner(*Wires);
+                Wire *pwinner;
+                while ((pwinner = itinner.current()) !=0)
                 {
+                    ++itinner;
                     pltestinner = pwinner->Label; // test any label associated with the wire
                     if (pltestinner)
                     {
