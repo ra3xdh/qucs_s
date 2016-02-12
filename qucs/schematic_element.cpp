@@ -1322,6 +1322,7 @@ void Schematic::highlightWireLabels ()
         {
             if (pltestouter->isSelected)
             {
+                bool hiLightOuter = false;
                 // Search for matching labels
                 Q3PtrListIterator<Wire> itinner(*Wires);
                 Wire *pwinner;
@@ -1332,12 +1333,19 @@ void Schematic::highlightWireLabels ()
                     if (pltestinner)
                     {
                         // Highlight the label if it has the same name as the selected label
-                        if (strcmp(pltestouter->Name, pltestinner->Name) == 0)
+                        // if only one wire has this label, do not highlight it
+                        if (pltestinner != pltestouter)
                         {
-                            pltestinner->setHighlighted (true);
+                            if (strcmp(pltestouter->Name, pltestinner->Name) == 0)
+                            {
+                                pltestinner->setHighlighted (true);
+                                hiLightOuter = true;
+                            }
                         }
                     }
                 }
+                // two different wires with the same label found
+                pltestouter->setHighlighted (hiLightOuter);
             }
         }
     }
