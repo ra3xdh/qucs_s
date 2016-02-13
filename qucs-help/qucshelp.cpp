@@ -34,6 +34,7 @@
 #include <QDebug>
 #include <QToolBar>
 #include <QDir>
+#include <QMessageBox>
 
 
 
@@ -41,7 +42,7 @@ QucsHelp::QucsHelp(const QString& page)
 {
   currentIndex = 0;
   dataFetcher = new HtmlDataFetcher();
-  links = dataFetcher->fetchLinksToFiles(QucsHelpDir.filePath("index.html"));
+
   // set application icon
   // APPLE sets the QApplication icon with Info.plist
 #ifndef __APPLE__
@@ -55,7 +56,21 @@ QucsHelp::QucsHelp(const QString& page)
   setupActions();
   createSidebar();
 
-  textBrowser->setSource(QUrl::fromLocalFile(QucsHelpDir.filePath(links[0])));
+  QString index = "index.html";
+  if (QucsHelpDir.exists(index)) {
+    links = dataFetcher->fetchLinksToFiles(QucsHelpDir.filePath(index));
+    qDebug() << links;
+  }
+  else {
+    QString missing = QString(QDir::cleanPath(QucsHelpDir.absolutePath() + QDir::separator() + index));
+    qWarning() << "Cannot load" << missing;
+    QMessageBox::critical(this, tr("Cannot load Help files."),
+                                tr("Cannot find:\n") + missing + "\n\n" +
+                                tr("Setting QUCSDIR variable might be necessary."));
+  }
+
+  if (!links.empty())
+    textBrowser->setSource(QUrl::fromLocalFile(QucsHelpDir.filePath(links[0])));
 
   // .......................................
   if(!page.isEmpty())
@@ -163,7 +178,10 @@ void QucsHelp::createSidebar()
   dock->setAllowedAreas(Qt::LeftDockWidgetArea);
   this->addDockWidget(Qt::LeftDockWidgetArea, dock);
 
-  QStringList l = dataFetcher->fetchChapterTexts(QucsHelpDir.filePath("index.html"));
+  QString index = "index.html";
+  QStringList l;
+  if (QucsHelpDir.exists(index))
+    l = dataFetcher->fetchChapterTexts(QucsHelpDir.filePath(index));
   for(int i=0; i < (l.count()-1); i++) {
     QListWidgetItem *newItem = new QListWidgetItem;
     newItem->setText(l[i]);
