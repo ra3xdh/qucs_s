@@ -1297,7 +1297,7 @@ void Schematic::highlightWireLabels ()
     WireLabel *pltestinner = 0;
     WireLabel *pltestouter = 0;
 
-    // First set highlighting for all wire labels to false
+    // First set highlighting for all wire and nodes labels to false
     for(Wire *pwouter = Wires->last(); pwouter != 0; pwouter = Wires->prev())
     {
         pltestouter = pwouter->Label; // test any label associated with the wire
@@ -1307,15 +1307,22 @@ void Schematic::highlightWireLabels ()
         }
     }
 
-    // Then test every wire's label to see if we need to highlight it
-    // and matching labels
-    // maybe a bit inefficient, since the elements are checked n*n times;
-    // it could be done in n*(n+1)/2, but could not use Q3PtrListIterator...
-    Q3PtrListIterator<Wire> itouter(*Wires);
-    Wire *pwouter;
-    while ((pwouter = itouter.current()) !=0)
+    for(Node *pnouter = Nodes->last(); pnouter != 0; pnouter = Nodes->prev())
     {
-        ++itouter;
+        pltestouter = pnouter->Label; // test any label associated with the node
+        if (pltestouter)
+        {
+            pltestouter->setHighlighted (false);
+        }
+    }
+	
+    // Then test every wire's label to see if we need to highlight it
+    // and matching labels on wires and nodes
+    Q3PtrListIterator<Wire> itwouter(*Wires);
+    Wire *pwouter;
+    while ((pwouter = itwouter.current()) != 0)
+    {
+        ++itwouter;
         // get any label associated with the wire
         pltestouter = pwouter->Label;
         if (pltestouter)
@@ -1323,12 +1330,12 @@ void Schematic::highlightWireLabels ()
             if (pltestouter->isSelected)
             {
                 bool hiLightOuter = false;
-                // Search for matching labels
-                Q3PtrListIterator<Wire> itinner(*Wires);
+                // Search for matching labels on wires
+                Q3PtrListIterator<Wire> itwinner(*Wires);
                 Wire *pwinner;
-                while ((pwinner = itinner.current()) !=0)
+                while ((pwinner = itwinner.current()) != 0)
                 {
-                    ++itinner;
+                    ++itwinner;
                     pltestinner = pwinner->Label; // test any label associated with the wire
                     if (pltestinner)
                     {
@@ -1344,7 +1351,82 @@ void Schematic::highlightWireLabels ()
                         }
                     }
                 }
-                // two different wires with the same label found
+                // Search for matching labels on nodes
+                Q3PtrListIterator<Node> itninner(*Nodes);
+                Node *pninner;
+                while ((pninner = itninner.current()) != 0)
+                {
+                    ++itninner;
+                    pltestinner = pninner->Label; // test any label associated with the node
+                    if (pltestinner)
+                    {
+                        if (strcmp(pltestouter->Name, pltestinner->Name) == 0)
+                        {
+                            // node label matches wire label
+                            pltestinner->setHighlighted (true);
+                            hiLightOuter = true;
+                        }
+                    }
+                }
+                // highlight if at least two different wires/nodes with the same label found
+                pltestouter->setHighlighted (hiLightOuter);
+            }
+        }
+    }
+    // Same as above but for nodes labels:
+    // test every node label to see if we need to highlight it
+    // and matching labels on wires and nodes
+    Q3PtrListIterator<Node> itnouter(*Nodes);
+    Node *pnouter;
+    while ((pnouter = itnouter.current()) != 0)
+    {
+        ++itnouter;
+        // get any label associated with the node
+        pltestouter = pnouter->Label;
+        if (pltestouter)
+        {
+            if (pltestouter->isSelected)
+            {
+                bool hiLightOuter = false;
+                // Search for matching labels on wires
+                Q3PtrListIterator<Wire> itwinner(*Wires);
+                Wire *pwinner;
+                while ((pwinner = itwinner.current()) != 0)
+                {
+                    ++itwinner;
+                    pltestinner = pwinner->Label; // test any label associated with the wire
+                    if (pltestinner)
+                    {
+                        if (strcmp(pltestouter->Name, pltestinner->Name) == 0)
+                        {
+                            // wire label matches node label
+                            pltestinner->setHighlighted (true);
+                            hiLightOuter = true;
+                        }
+                    }
+                }
+                // Search for matching labels on nodes
+                Q3PtrListIterator<Node> itninner(*Nodes);
+                Node *pninner;
+                while ((pninner = itninner.current()) != 0)
+                {
+                    ++itninner;
+                    pltestinner = pninner->Label; // test any label associated with the node
+                    if (pltestinner)
+                    {
+                        // Highlight the label if it has the same name as the selected label
+                        // if only one node has this label, do not highlight it
+                        if (pltestinner != pltestouter)
+                        {
+                            if (strcmp(pltestouter->Name, pltestinner->Name) == 0)
+                            {
+                                pltestinner->setHighlighted (true);
+                                hiLightOuter = true;
+                            }
+                        }
+                    }
+                }
+                // highlight if at least two different wires/nodes with the same label found
                 pltestouter->setHighlighted (hiLightOuter);
             }
         }
