@@ -773,10 +773,6 @@ LIBRARY_PATH="$prefix/share/qucs/library/"
 AC_DEFINE_UNQUOTED([LIBRARYDIR], ["$LIBRARY_PATH"],
   [Where the component library files go.])
 unset LIBRARY_PATH
-DOC_PATH="$prefix/share/qucs/docs/"
-AC_DEFINE_UNQUOTED([DOCDIR], ["$DOC_PATH"],
-  [Where the documentation files go.])
-unset DOC_PATH
 
 dnl Definitions at top of <config.h>.
 AH_TOP([
