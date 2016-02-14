@@ -1343,7 +1343,7 @@ void Schematic::highlightWireLabels ()
                         // if only one wire has this label, do not highlight it
                         if (pltestinner != pltestouter)
                         {
-                            if (strcmp(pltestouter->Name, pltestinner->Name) == 0)
+                            if (pltestouter->Name == pltestinner->Name)
                             {
                                 pltestinner->setHighlighted (true);
                                 hiLightOuter = true;
@@ -1360,7 +1360,7 @@ void Schematic::highlightWireLabels ()
                     pltestinner = pninner->Label; // test any label associated with the node
                     if (pltestinner)
                     {
-                        if (strcmp(pltestouter->Name, pltestinner->Name) == 0)
+                        if (pltestouter->Name == pltestinner->Name)
                         {
                             // node label matches wire label
                             pltestinner->setHighlighted (true);
@@ -1397,7 +1397,7 @@ void Schematic::highlightWireLabels ()
                     pltestinner = pwinner->Label; // test any label associated with the wire
                     if (pltestinner)
                     {
-                        if (strcmp(pltestouter->Name, pltestinner->Name) == 0)
+                        if (pltestouter->Name == pltestinner->Name)
                         {
                             // wire label matches node label
                             pltestinner->setHighlighted (true);
@@ -1418,7 +1418,7 @@ void Schematic::highlightWireLabels ()
                         // if only one node has this label, do not highlight it
                         if (pltestinner != pltestouter)
                         {
-                            if (strcmp(pltestouter->Name, pltestinner->Name) == 0)
+                            if (pltestouter->Name == pltestinner->Name)
                             {
                                 pltestinner->setHighlighted (true);
                                 hiLightOuter = true;
@@ -1677,16 +1677,16 @@ void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
         if(pw->Port1 != pn)
         {
             pw->Port1->State |= mask;
-            pw->Port1 = (Node*)mask;
+            pw->Port1 = (Node*)(uintptr_t)mask;
             pw->Port2->State |= invMask;
-            pw->Port2 = (Node*)invMask;  // move port 2 completely
+            pw->Port2 = (Node*)(uintptr_t)invMask;  // move port 2 completely
         }
         else
         {
             pw->Port1->State |= invMask;
-            pw->Port1 = (Node*)invMask;
+            pw->Port1 = (Node*)(uintptr_t)invMask;
             pw->Port2->State |= mask;
-            pw->Port2 = (Node*)mask;
+            pw->Port2 = (Node*)(uintptr_t)mask;
         }
 
         invMask ^= 3;
@@ -1694,12 +1694,12 @@ void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
         // create new wire ?
         if(pw2 == 0)
         {
-            if(pw->Port1 != (Node*)mask)
+            if(pw->Port1 != (Node*)(uintptr_t)mask)
                 p->insert(pos,
-                          new Wire(pw->x2, pw->y2, pw->x2, pw->y2, (Node*)mask, (Node*)invMask));
+                          new Wire(pw->x2, pw->y2, pw->x2, pw->y2, (Node*)(uintptr_t)mask, (Node*)(uintptr_t)invMask));
             else
                 p->insert(pos,
-                          new Wire(pw->x1, pw->y1, pw->x1, pw->y1, (Node*)mask, (Node*)invMask));
+                          new Wire(pw->x1, pw->y1, pw->x1, pw->y1, (Node*)(uintptr_t)mask, (Node*)(uintptr_t)invMask));
             return;
         }
 
@@ -1717,12 +1717,12 @@ void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
         {
             pw2->Port1 = (Node*)0;
             pw2->Port2->State |= mask;
-            pw2->Port2 = (Node*)mask;
+            pw2->Port2 = (Node*)(uintptr_t)mask;
         }
         else
         {
             pw2->Port1->State |= mask;
-            pw2->Port1 = (Node*)mask;
+            pw2->Port1 = (Node*)(uintptr_t)mask;
             pw2->Port2 = (Node*)0;
         }
         return;
