@@ -159,6 +159,9 @@ void qucsMessageOutput(QtMsgType type, const char *msg)
 
 int main(int argc, char *argv[])
 {
+
+  QApplication a(argc, argv);
+
   // apply default settings
   QucsSettings.x = 60;
   QucsSettings.y = 30;
@@ -190,7 +193,6 @@ int main(int argc, char *argv[])
 
   loadSettings();
 
-  QApplication a(argc, argv);
   a.setFont(QucsSettings.font);
 
   QTranslator tor( 0 );
