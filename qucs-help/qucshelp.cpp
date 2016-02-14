@@ -86,8 +86,6 @@ void QucsHelp::setupActions()
 
   this->addToolBar(toolbar);
 
-  QMenuBar *bar = menuBar();
-
   const QKeySequence ks = QKeySequence();
 
   QAction *quitAction = new QAction(QIcon((":/bitmaps/quit.png")),
@@ -147,10 +145,11 @@ void QucsHelp::setupActions()
   toolbar->addSeparator();
   toolbar->addAction(quitAction);
 
-  QMenu *fileMenu = new QMenu(this);
+  QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
+  fileMenu->addAction(quitAction);
   fileMenu->addAction(quitAction);
 
-  QMenu *viewMenu = new QMenu(this);
+  QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
   viewMenu->addAction(backAction);
   viewMenu->addAction(forwardAction);
   viewMenu->addAction(homeAction);
@@ -159,13 +158,8 @@ void QucsHelp::setupActions()
   viewMenu->addSeparator();
   viewMenu->addAction(viewBrowseDock);
 
-  QMenu *helpMenu = new QMenu(this);
+  QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
   helpMenu->addAction(tr("&About Qt"),qApp,SLOT(aboutQt()));
-
-  bar->addMenu(new QMenu(tr("&File"), fileMenu));
-  bar->addMenu(new QMenu(tr("&View"),viewMenu));
-  bar->addSeparator();
-  bar->addMenu(new QMenu(tr("&Help"),helpMenu));
 }
 
 void QucsHelp::createSidebar()
