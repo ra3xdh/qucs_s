@@ -17,6 +17,7 @@
 
 
 #include "ngspice.h"
+#include "xspice_cmbuilder.h"
 #include "components/iprobe.h"
 #include "components/vprobe.h"
 #include "components/equation.h"
@@ -349,7 +350,16 @@ void Ngspice::slotSimulate()
 
     QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs.cir");
     SaveNetlist(tmp_path);
-    createSpiceinit();
+
+    XSPICE_CMbuilder *CMbuilder = new XSPICE_CMbuilder(Sch);
+    CMbuilder->cleanSpiceinit();
+    CMbuilder->createSpiceinit();
+    if (CMbuilder->needCompile()) {
+        CMbuilder->cleanCModelTree();
+        CMbuilder->createCModelTree(output);
+        CMbuilder->compileCMlib(output);
+    }
+    delete CMbuilder;
 
     //startNgSpice(tmp_path);
     SimProcess->setWorkingDirectory(workdir);
@@ -408,20 +418,3 @@ void Ngspice::setSimulatorCmd(QString cmd)
     simulator_cmd = cmd;
 }
 
-void Ngspice::createSpiceinit()
-{
-    QString spinit_name=QDir::convertSeparators(workdir+"/.spiceinit");
-    QFileInfo inf(spinit_name);
-    if (inf.exists()) QFile::remove(spinit_name);
-
-    QFile spinit(spinit_name);
-    if (spinit.open(QIODevice::WriteOnly)) {
-        QTextStream stream(&spinit);
-        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-            if (pc->Model=="XSP_CMlib") {
-                stream<<((XSP_CMlib *)pc)->getSpiceInit();
-            }
-        }
-        spinit.close();
-    }
-}

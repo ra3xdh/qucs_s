@@ -834,6 +834,7 @@ AC_CONFIG_FILES([Makefile
     qucs/spicecomponents/Makefile
     qucs/diagrams/Makefile
     qucs/extsimkernels/Makefile
+    qucs/extsimkernels/xspice/Makefile
     qucs/paintings/Makefile
     qucs/dialogs/Makefile
     translations/Makefile])
