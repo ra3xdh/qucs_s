@@ -1935,6 +1935,8 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
     case isHWireLabel:
     case isVWireLabel:
          editLabel(Doc, (WireLabel*)focusElement);
+         // update highlighting, labels may have changed
+         Doc->highlightWireLabels ();
          break;
 
     case isPainting:
