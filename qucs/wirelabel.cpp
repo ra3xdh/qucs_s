@@ -115,7 +115,7 @@ void WireLabel::paint(ViewPainter *p)
 //    highlightfill.setAlpha(50);
 //    p->fillRect(x1-1, y1-1, x2, y2, highlightfill);
     p->Painter->setPen(QPen(Qt::darkBlue,3));
-    newFont.setWeight (QFont::DemiBold);
+    newFont.setWeight (QFont::Bold);
   }
   else
   {
