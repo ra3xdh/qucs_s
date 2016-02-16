@@ -1297,7 +1297,7 @@ void Schematic::highlightWireLabels ()
     WireLabel *pltestinner = 0;
     WireLabel *pltestouter = 0;
 
-    // First set highlighting for all wire labels to false
+    // First set highlighting for all wire and nodes labels to false
     for(Wire *pwouter = Wires->last(); pwouter != 0; pwouter = Wires->prev())
     {
         pltestouter = pwouter->Label; // test any label associated with the wire
@@ -1307,29 +1307,127 @@ void Schematic::highlightWireLabels ()
         }
     }
 
-    // Then test every wire's label to see if we need to highlight it
-    // and matching labels
-    for(Wire *pwouter = Wires->last(); pwouter != 0; pwouter = Wires->prev())
+    for(Node *pnouter = Nodes->last(); pnouter != 0; pnouter = Nodes->prev())
     {
+        pltestouter = pnouter->Label; // test any label associated with the node
+        if (pltestouter)
+        {
+            pltestouter->setHighlighted (false);
+        }
+    }
+	
+    // Then test every wire's label to see if we need to highlight it
+    // and matching labels on wires and nodes
+    Q3PtrListIterator<Wire> itwouter(*Wires);
+    Wire *pwouter;
+    while ((pwouter = itwouter.current()) != 0)
+    {
+        ++itwouter;
         // get any label associated with the wire
         pltestouter = pwouter->Label;
         if (pltestouter)
         {
             if (pltestouter->isSelected)
             {
-                // Search for matching labels
-                for(Wire *pwinner = Wires->last(); pwinner != 0; pwinner = Wires->prev())
+                bool hiLightOuter = false;
+                // Search for matching labels on wires
+                Q3PtrListIterator<Wire> itwinner(*Wires);
+                Wire *pwinner;
+                while ((pwinner = itwinner.current()) != 0)
                 {
+                    ++itwinner;
                     pltestinner = pwinner->Label; // test any label associated with the wire
                     if (pltestinner)
                     {
                         // Highlight the label if it has the same name as the selected label
-                        if (strcmp(pltestouter->Name, pltestinner->Name) == 0)
+                        // if only one wire has this label, do not highlight it
+                        if (pltestinner != pltestouter)
                         {
-                            pltestinner->setHighlighted (true);
+                            if (pltestouter->Name == pltestinner->Name)
+                            {
+                                pltestinner->setHighlighted (true);
+                                hiLightOuter = true;
+                            }
                         }
                     }
                 }
+                // Search for matching labels on nodes
+                Q3PtrListIterator<Node> itninner(*Nodes);
+                Node *pninner;
+                while ((pninner = itninner.current()) != 0)
+                {
+                    ++itninner;
+                    pltestinner = pninner->Label; // test any label associated with the node
+                    if (pltestinner)
+                    {
+                        if (pltestouter->Name == pltestinner->Name)
+                        {
+                            // node label matches wire label
+                            pltestinner->setHighlighted (true);
+                            hiLightOuter = true;
+                        }
+                    }
+                }
+                // highlight if at least two different wires/nodes with the same label found
+                pltestouter->setHighlighted (hiLightOuter);
+            }
+        }
+    }
+    // Same as above but for nodes labels:
+    // test every node label to see if we need to highlight it
+    // and matching labels on wires and nodes
+    Q3PtrListIterator<Node> itnouter(*Nodes);
+    Node *pnouter;
+    while ((pnouter = itnouter.current()) != 0)
+    {
+        ++itnouter;
+        // get any label associated with the node
+        pltestouter = pnouter->Label;
+        if (pltestouter)
+        {
+            if (pltestouter->isSelected)
+            {
+                bool hiLightOuter = false;
+                // Search for matching labels on wires
+                Q3PtrListIterator<Wire> itwinner(*Wires);
+                Wire *pwinner;
+                while ((pwinner = itwinner.current()) != 0)
+                {
+                    ++itwinner;
+                    pltestinner = pwinner->Label; // test any label associated with the wire
+                    if (pltestinner)
+                    {
+                        if (pltestouter->Name == pltestinner->Name)
+                        {
+                            // wire label matches node label
+                            pltestinner->setHighlighted (true);
+                            hiLightOuter = true;
+                        }
+                    }
+                }
+                // Search for matching labels on nodes
+                Q3PtrListIterator<Node> itninner(*Nodes);
+                Node *pninner;
+                while ((pninner = itninner.current()) != 0)
+                {
+                    ++itninner;
+                    pltestinner = pninner->Label; // test any label associated with the node
+                    if (pltestinner)
+                    {
+                        // Highlight the label if it has the same name as the selected label
+                        // if only one node has this label, do not highlight it
+                        if (pltestinner != pltestouter)
+                        {
+                            if (pltestouter->Name == pltestinner->Name)
+                            {
+                                pltestinner->setHighlighted (true);
+                                hiLightOuter = true;
+                            }
+                        }
+                    }
+                }
+                // highlight if at least two different wires/nodes with the same label found
+                pltestouter->setHighlighted (hiLightOuter);
             }
         }
     }
@@ -1579,16 +1677,16 @@ void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
         if(pw->Port1 != pn)
         {
             pw->Port1->State |= mask;
-            pw->Port1 = (Node*)mask;
+            pw->Port1 = (Node*)(uintptr_t)mask;
             pw->Port2->State |= invMask;
-            pw->Port2 = (Node*)invMask;  // move port 2 completely
+            pw->Port2 = (Node*)(uintptr_t)invMask;  // move port 2 completely
         }
         else
         {
             pw->Port1->State |= invMask;
-            pw->Port1 = (Node*)invMask;
+            pw->Port1 = (Node*)(uintptr_t)invMask;
             pw->Port2->State |= mask;
-            pw->Port2 = (Node*)mask;
+            pw->Port2 = (Node*)(uintptr_t)mask;
         }
 
         invMask ^= 3;
@@ -1596,12 +1694,12 @@ void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
         // create new wire ?
         if(pw2 == 0)
         {
-            if(pw->Port1 != (Node*)mask)
+            if(pw->Port1 != (Node*)(uintptr_t)mask)
                 p->insert(pos,
-                          new Wire(pw->x2, pw->y2, pw->x2, pw->y2, (Node*)mask, (Node*)invMask));
+                          new Wire(pw->x2, pw->y2, pw->x2, pw->y2, (Node*)(uintptr_t)mask, (Node*)(uintptr_t)invMask));
             else
                 p->insert(pos,
-                          new Wire(pw->x1, pw->y1, pw->x1, pw->y1, (Node*)mask, (Node*)invMask));
+                          new Wire(pw->x1, pw->y1, pw->x1, pw->y1, (Node*)(uintptr_t)mask, (Node*)(uintptr_t)invMask));
             return;
         }
 
@@ -1619,12 +1717,12 @@ void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
         {
             pw2->Port1 = (Node*)0;
             pw2->Port2->State |= mask;
-            pw2->Port2 = (Node*)mask;
+            pw2->Port2 = (Node*)(uintptr_t)mask;
         }
         else
         {
             pw2->Port1->State |= mask;
-            pw2->Port1 = (Node*)mask;
+            pw2->Port1 = (Node*)(uintptr_t)mask;
             pw2->Port2 = (Node*)0;
         }
         return;
