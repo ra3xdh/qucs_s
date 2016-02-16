@@ -80,6 +80,7 @@ QString Capacitor::va_code()
     QString minus = Ports.at(1)->Connection->Name; 
     QString s = "";
     QString Vpm = vacompat::normalize_voltage(plus,minus);
+    if (Vpm.startsWith("(-")) Vpm.remove(1,1); // Make capacitor unipolar, remove starting minus
     QString Ipm = vacompat::normalize_current(plus,minus,true); 
     s  += QString("%1  <+ ddt( %2 *  %3  );\n").arg(Ipm).arg(Vpm).arg(val);
             
