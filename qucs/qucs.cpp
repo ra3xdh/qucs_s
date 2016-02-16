@@ -2888,6 +2888,7 @@ void QucsApp::slotBuildVAModule()
             }
             delete writer;
             f.close();
+            Content->refresh();
         }
     }
 
