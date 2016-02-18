@@ -27,7 +27,7 @@ RULES_MK = cmlib.linux.rules.mk
 EXTRA_DIST = $(RULES_MK)
 
 # installation of transmission lines
-xspicerulesdir = ${prefix}/share/qucs/tline
+xspicerulesdir = ${prefix}/share/qucs/xspice_cmlib
 xspicerules_DATA = $(EXTRA_DIST)
 
 CLEANFILES = *~
