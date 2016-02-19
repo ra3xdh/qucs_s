@@ -4,6 +4,7 @@
     begin                : Fri Jul 22 2005
     copyright            : (C) 2005 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
+    copyright            : (C) 2012, 2013, 2016 by Qucs Team (see AUTHORS file)
  ***************************************************************************/
 
 /***************************************************************************
@@ -292,8 +293,12 @@ void MatchDialog::slotChangeMode(int Index)
     double Real = S11magEdit->text().toDouble();
     double Imag = S11degEdit->text().toDouble();
     c2p(Real, Imag);
+    S11magEdit->blockSignals(true); // do not call slot for "textChanged"
     S11magEdit->setText(QString::number(Real));
+    S11magEdit->blockSignals(false);
+    S11degEdit->blockSignals(true); // do not call slot for "textChanged"
     S11degEdit->setText(QString::number(Imag));
+    S11degEdit->blockSignals(false);
 
     Real = S12magEdit->text().toDouble();
     Imag = S12degEdit->text().toDouble();
@@ -304,8 +309,12 @@ void MatchDialog::slotChangeMode(int Index)
     Real = S21magEdit->text().toDouble();
     Imag = S21degEdit->text().toDouble();
     c2p(Real, Imag);
+    S21magEdit->blockSignals(true); // do not call slot for "textChanged"
     S21magEdit->setText(QString::number(Real));
+    S21magEdit->blockSignals(false);
+    S21degEdit->blockSignals(true); // do not call slot for "textChanged"
     S21degEdit->setText(QString::number(Imag));
+    S21degEdit->blockSignals(false);
 
     Real = S22magEdit->text().toDouble();
     Imag = S22degEdit->text().toDouble();
@@ -326,8 +335,12 @@ void MatchDialog::slotChangeMode(int Index)
     double Mag   = S11magEdit->text().toDouble();
     double Phase = S11degEdit->text().toDouble();
     p2c(Mag, Phase);
+    S11magEdit->blockSignals(true); // do not call slot for "textChanged"
     S11magEdit->setText(QString::number(Mag));
+    S11magEdit->blockSignals(false);
+    S11degEdit->blockSignals(true); // do not call slot for "textChanged"
     S11degEdit->setText(QString::number(Phase));
+    S11degEdit->blockSignals(false);
 
     Mag   = S12magEdit->text().toDouble();
     Phase = S12degEdit->text().toDouble();
@@ -338,8 +351,12 @@ void MatchDialog::slotChangeMode(int Index)
     Mag   = S21magEdit->text().toDouble();
     Phase = S21degEdit->text().toDouble();
     p2c(Mag, Phase);
+    S21magEdit->blockSignals(true); // do not call slot for "textChanged"
     S21magEdit->setText(QString::number(Mag));
+    S21magEdit->blockSignals(false);
+    S21degEdit->blockSignals(true); // do not call slot for "textChanged"
     S21degEdit->setText(QString::number(Phase));
+    S21degEdit->blockSignals(false);
 
     Mag   = S22magEdit->text().toDouble();
     Phase = S22degEdit->text().toDouble();
