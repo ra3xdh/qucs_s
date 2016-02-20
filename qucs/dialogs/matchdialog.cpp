@@ -97,8 +97,8 @@ MatchDialog::MatchDialog(QWidget *parent)
   h1->addWidget(FormatLabel);
   FormatCombo = new QComboBox();
   h1->addWidget(FormatCombo);
-  FormatCombo->insertItem(tr("real/imag"));
-  FormatCombo->insertItem(tr("mag/deg"));
+  FormatCombo->insertItem(0, tr("real/imag"));
+  FormatCombo->insertItem(1, tr("mag/deg"));
   connect(FormatCombo, SIGNAL(activated(int)), SLOT(slotChangeMode(int)));
   h1->addStretch(5);
   SParLayout->addLayout(h1);
@@ -203,10 +203,10 @@ MatchDialog::MatchDialog(QWidget *parent)
   h2->addWidget(FrequencyLabel);
   h2->addWidget(FrequencyEdit);
   UnitCombo = new QComboBox();
-  UnitCombo->insertItem("Hz");
-  UnitCombo->insertItem("kHz");
-  UnitCombo->insertItem("MHz");
-  UnitCombo->insertItem("GHz");
+  UnitCombo->insertItem(0, "Hz");
+  UnitCombo->insertItem(1, "kHz");
+  UnitCombo->insertItem(2, "MHz");
+  UnitCombo->insertItem(3, "GHz");
   h2->addWidget(UnitCombo);
   h2->addStretch(5);
   SParLayout->addLayout(h2);
@@ -240,7 +240,7 @@ void MatchDialog::setFrequency(double Freq_)
   int Expo = int(log10(Freq_) / 3.0);
   if(Expo < 0) Expo = 0;
   else if(Expo > 3) Expo = 3;
-  UnitCombo->setCurrentItem(Expo);
+  UnitCombo->setCurrentIndex(Expo);
   Freq_ /= pow(10.0, double(3*Expo));
   FrequencyEdit->setText(QString::number(Freq_));
 }
@@ -405,7 +405,7 @@ void MatchDialog::slotImpedanceChanged(const QString&)
   double Real = S21magEdit->text().toDouble();
   double Imag = S21degEdit->text().toDouble();
 
-  if(FormatCombo->currentItem()) {  // entries in polar format
+  if(FormatCombo->currentIndex()) {  // entries in polar format
     p2c(Real, Imag);
     z2r(Real, Imag, Z0);
     c2p(Real, Imag);
@@ -432,7 +432,7 @@ void MatchDialog::slotReflexionChanged(const QString&)
   double Real = S11magEdit->text().toDouble();
   double Imag = S11degEdit->text().toDouble();
 
-  if(FormatCombo->currentItem()) {  // entries in polar format
+  if(FormatCombo->currentIndex()) {  // entries in polar format
     p2c(Real, Imag);
     r2z(Real, Imag, Z0);
     c2p(Real, Imag);
@@ -455,7 +455,7 @@ void MatchDialog::slotButtCreate()
   double Z1   = Ref1Edit->text().toDouble();
   double Z2   = Ref2Edit->text().toDouble();
   double Freq = FrequencyEdit->text().toDouble() *
-                pow(10.0, 3.0*double(UnitCombo->currentItem()));
+                pow(10.0, 3.0*double(UnitCombo->currentIndex()));
 
   double S11real = S11magEdit->text().toDouble();
   double S11imag = S11degEdit->text().toDouble();
@@ -465,7 +465,7 @@ void MatchDialog::slotButtCreate()
   double S21imag = S21degEdit->text().toDouble();
   double S22real = S22magEdit->text().toDouble();
   double S22imag = S22degEdit->text().toDouble();
-  if(FormatCombo->currentItem()) {  // are they polar ?
+  if(FormatCombo->currentIndex()) {  // are they polar ?
     p2c(S11real, S11imag);
     p2c(S12real, S12imag);
     p2c(S21real, S21imag);
