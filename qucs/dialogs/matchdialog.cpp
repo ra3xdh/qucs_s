@@ -391,7 +391,15 @@ void MatchDialog::slotImpedanceChanged(const QString&)
   double Z0   = Ref1Edit->text().toDouble();
   double Real = S21magEdit->text().toDouble();
   double Imag = S21degEdit->text().toDouble();
-  z2r(Real, Imag, Z0);
+
+  if(FormatCombo->currentItem()) {  // entries in polar format
+    p2c(Real, Imag);
+    z2r(Real, Imag, Z0);
+    c2p(Real, Imag);
+  } else {
+    z2r(Real, Imag, Z0);
+  }
+
   S11magEdit->blockSignals(true); // do not call "changed-slot"
   S11magEdit->setText(QString::number(Real));
   S11magEdit->blockSignals(false);
@@ -410,7 +418,15 @@ void MatchDialog::slotReflexionChanged(const QString&)
   double Z0   = Ref1Edit->text().toDouble();
   double Real = S11magEdit->text().toDouble();
   double Imag = S11degEdit->text().toDouble();
-  r2z(Real, Imag, Z0);
+
+  if(FormatCombo->currentItem()) {  // entries in polar format
+    p2c(Real, Imag);
+    r2z(Real, Imag, Z0);
+    c2p(Real, Imag);
+  } else {
+    r2z(Real, Imag, Z0);
+  }
+
   S21magEdit->blockSignals(true); // do not call "changed-slot"
   S21magEdit->setText(QString::number(Real));
   S21magEdit->blockSignals(false);
