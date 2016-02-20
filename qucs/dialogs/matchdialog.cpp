@@ -254,6 +254,13 @@ void MatchDialog::slotSetTwoPort(bool on)
     Port2Label->setEnabled(true);
     Ref2Edit->setEnabled(true);
     Ohm2Label->setEnabled(true);
+    // restore the previous S21 values
+    S21magEdit->blockSignals(true); // do not call slot for "textChanged"
+    S21magEdit->setText(QString::number(tmpS21mag));
+    S21magEdit->blockSignals(false);
+    S21degEdit->blockSignals(true); // do not call slot for "textChanged"
+    S21degEdit->setText(QString::number(tmpS21deg));
+    S21degEdit->blockSignals(false);
   }
   else {
     S11Label->setText(tr("Reflexion Coefficient"));
@@ -273,6 +280,10 @@ void MatchDialog::slotSetTwoPort(bool on)
     Port2Label->setEnabled(false);
     Ref2Edit->setEnabled(false);
     Ohm2Label->setEnabled(false);
+    // save S21 values, as these will be overwritten with the impedance value
+    tmpS21mag = S21magEdit->text().toDouble();
+    tmpS21deg = S21degEdit->text().toDouble();
+    slotReflexionChanged(""); // calculate impedance
   }
 }
 
@@ -315,6 +326,8 @@ void MatchDialog::slotChangeMode(int Index)
     S21degEdit->blockSignals(true); // do not call slot for "textChanged"
     S21degEdit->setText(QString::number(Imag));
     S21degEdit->blockSignals(false);
+    // convert also temp entries for future use
+    c2p(tmpS21mag, tmpS21deg);
 
     Real = S22magEdit->text().toDouble();
     Imag = S22degEdit->text().toDouble();
@@ -357,6 +370,8 @@ void MatchDialog::slotChangeMode(int Index)
     S21degEdit->blockSignals(true); // do not call slot for "textChanged"
     S21degEdit->setText(QString::number(Phase));
     S21degEdit->blockSignals(false);
+    // convert also temp entries for future use
+    p2c(tmpS21mag, tmpS21deg);
 
     Mag   = S22magEdit->text().toDouble();
     Phase = S22degEdit->text().toDouble();

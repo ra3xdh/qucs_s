@@ -71,6 +71,8 @@ private:
               *S12Label, *S12sLabel, *S12uLabel,
               *S22Label, *S22sLabel, *S22uLabel;
   QComboBox   *FormatCombo, *UnitCombo;
+
+  double tmpS21mag, tmpS21deg;
 };
 
 #endif
