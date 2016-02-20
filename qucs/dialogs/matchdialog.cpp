@@ -64,18 +64,21 @@ MatchDialog::MatchDialog(QWidget *parent)
   QHBoxLayout *ImpLayout = new QHBoxLayout();
   Port1Label = new QLabel(tr("Port 1"));
   Ref1Edit = new QLineEdit("50");
+  Ref1Edit->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   Ref1Edit->setValidator(DoubleVal);
   Ohm1Label = new QLabel(tr("ohms"));
   connect(Ref1Edit, SIGNAL(textChanged(const QString&)),
 	  SLOT(slotImpedanceChanged(const QString&)));
   Port2Label = new QLabel(tr("Port 2"));
   Ref2Edit = new QLineEdit("50");
+  Ref2Edit->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   Ref2Edit->setValidator(DoubleVal);
   Ohm2Label = new QLabel(tr("ohms"));
   ImpLayout->addWidget(Port1Label);
   ImpLayout->addWidget(Ref1Edit);
   ImpLayout->addWidget(Ohm1Label);
   ImpLayout->addSpacing(50);
+  ImpLayout->addStretch();
   ImpLayout->addWidget(Port2Label);
   ImpLayout->addWidget(Ref2Edit);
   ImpLayout->addWidget(Ohm2Label);
@@ -85,6 +88,7 @@ MatchDialog::MatchDialog(QWidget *parent)
   QGroupBox *SParBox = new QGroupBox(tr("S Parameter"));
   all->addWidget(SParBox);
   QVBoxLayout *SParLayout = new QVBoxLayout();
+  SParLayout->setSpacing(10);
   SParBox->setLayout(SParLayout);
 
   QHBoxLayout *h1 = new QHBoxLayout();
