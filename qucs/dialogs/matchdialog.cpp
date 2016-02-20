@@ -176,6 +176,15 @@ MatchDialog::MatchDialog(QWidget *parent)
     VBox0->addWidget(S22uLabel);
   SParLayout->addLayout(h3);
 
+  // set tab order to a more natural mode
+  setTabOrder(S11magEdit, S11degEdit);
+  setTabOrder(S11degEdit, S12magEdit);
+  setTabOrder(S12magEdit, S12degEdit);
+  setTabOrder(S12degEdit, S21magEdit);
+  setTabOrder(S21magEdit, S21degEdit);
+  setTabOrder(S21degEdit, S22magEdit);
+  setTabOrder(S22magEdit, S22degEdit);
+
   connect(S21magEdit, SIGNAL(textChanged(const QString&)),
 	  SLOT(slotImpedanceChanged(const QString&)));
   connect(S21degEdit, SIGNAL(textChanged(const QString&)),
