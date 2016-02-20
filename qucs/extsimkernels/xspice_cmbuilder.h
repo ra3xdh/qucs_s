@@ -43,6 +43,10 @@ public:
     void createCModelTree(QString &output);
     void compileCMlib(QString &ouptut);
 
+protected:
+    void setProcessedFiles(QList<QStringList> processed_pairs);
+    void getProcessedFiles(QList<QStringList> &processed_pairs);
+
 private:
     QString normalizeModelName(QString &file,QString &destdir);
     bool removeDir(const QString &dirName);

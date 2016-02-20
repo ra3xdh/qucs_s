@@ -227,7 +227,9 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
                 continue;
             }
             XSPICE_CMbuilder *bld = new XSPICE_CMbuilder(d);
+            bld->setProcessedFiles(mod_ifs_pairs);
             bld->ExtractModIfsFiles(objects,lst_entries,pc->Name,output);
+            bld->getProcessedFiles(mod_ifs_pairs);
             delete bld;
             delete d;
         }
@@ -268,6 +270,27 @@ void XSPICE_CMbuilder::compileCMlib(QString &output)
     make->waitForFinished();
     output += make->readAll();
     delete make;
+}
+
+/*!
+ * \brief XSPICE_CMbuilder::appendProcessedModIfsPairs This method is needed to avoid
+ *        duplicated compilation of models in nested subcircuits.
+ * \param processed_pair[in] The list of Ifs and Mod files that are already processed.
+ */
+void XSPICE_CMbuilder::setProcessedFiles(QList<QStringList> processed_pairs)
+{
+    mod_ifs_pairs.append(processed_pairs);
+}
+
+/*!
+ * \brief XSPICE_CMbuilder::GetProcessedFiles Obtain information about Mod and Ifs files
+ *        that are already processed. This method is needed to avoid duplicated compilation
+ *        of models in nested subcircuits.
+ * \param processed_pair[out]
+ */
+void XSPICE_CMbuilder::getProcessedFiles(QList<QStringList> &processed_pairs)
+{
+    processed_pairs.append(mod_ifs_pairs);
 }
 
 /*!
