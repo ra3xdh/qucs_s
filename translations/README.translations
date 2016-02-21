@@ -36,7 +36,7 @@ of Qucs changes as well.
 
 The TS files can be updated by running:
   $ cd ~/git/qucs/qucs/
-  $ ./autogen.sh && ./configure
+  $ ./bootstrap.sh && ./configure
   $ cd ~/git/qucs/qucs/translations
   $ make qucs_.ts
 
