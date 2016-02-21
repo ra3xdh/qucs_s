@@ -4,192 +4,51 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../qucs/dialogs/aboutdialog.cpp" line="+55"/>
-        <source>Guilherme Brondani Torri - GUI programmer, Verilog-A dynamic loader</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Mike Brinson - testing, modelling and documentation, tutorial contributor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Richard Crozier - testing, modelling, Octave.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Bastien Roucaries - bondwire and rectangular waveguide model implementation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Frans Schreuder - GUI programmer, release</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Clemens Novak - GUI programmer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Vadim Kuznetsov - filter synthesis (qucs-activefilter), SPICE integration (NGSPICE, Xyce)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>You-Tang Lee (YodaLee) - GUI programmer, Qt4 porter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Claudio Girardi - testing, general fixes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Michael Margraf - founder of the project, GUI programmer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Stefan Jahn - Programmer of simulator</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Jens Flucke - webpages and translator</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Raimund Jacob - tester and applyer of Stefan&apos;s patches, author of documentation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Vincent Habchi - coplanar line and filter synthesis code, documentation contributor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Toyoyuki Ishikawa - some filter synthesis code and attenuator synthesis</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Gopala Krishna A - GUI programmer, Qt4 porter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Helene Parruitte - programmer of the Verilog-AMS interface</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Gunther Kraut - equation solver contributions, exponential sources, author of documentation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Andrea Zonca - temperature model for rectangular waveguide</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
         <source>German by Stefan Jahn</source>
-        <translation type="unfinished">Alemán por Stefan Jahn</translation>
+        <translation type="obsolete">Alemán por Stefan Jahn</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Polish by Dariusz Pienkowski</source>
-        <translation type="unfinished">Polaco por Dariusz Pienkowski</translation>
+        <translation type="obsolete">Polaco por Dariusz Pienkowski</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Romanian by Radu Circa</source>
-        <translation type="unfinished">Rumano por Radu Circa</translation>
+        <translation type="obsolete">Rumano por Radu Circa</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>French by Vincent Habchi, F5RCS</source>
-        <translation type="unfinished">Francés por Vincent Habchi, F5RC</translation>
+        <translation type="obsolete">Francés por Vincent Habchi, F5RC</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Portuguese by Luciano Franca, Helio de Sousa, Guilherme Brondani Torri</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Spanish by Jose L. Redrejo Rodriguez</source>
-        <translation type="unfinished">Español por José L. Redrejo Rodríguez</translation>
+        <translation type="obsolete">Español por José L. Redrejo Rodríguez</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Japanese by Toyoyuki Ishikawa</source>
-        <translation type="unfinished">Japonés por Toyoyuki Ishikawa</translation>
+        <translation type="obsolete">Japonés por Toyoyuki Ishikawa</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Italian by Giorgio Luparia and Claudio Girardi</source>
-        <translation type="unfinished">Italiano por Giorgio Luparia y Claudio Girardi</translation>
+        <translation type="obsolete">Italiano por Giorgio Luparia y Claudio Girardi</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Hebrew by Dotan Nahum</source>
-        <translation type="unfinished">Hebreo por Dotan Nahum</translation>
+        <translation type="obsolete">Hebreo por Dotan Nahum</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Swedish by Markus Gothe and Peter Landgren</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Turkish by Onur and Ozgur Cobanoglu</source>
-        <translation type="unfinished">Turco por Onur y Ozgur Cobanoglu</translation>
+        <translation type="obsolete">Turco por Onur y Ozgur Cobanoglu</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Hungarian by Jozsef Bus</source>
-        <translation type="unfinished">Húngaro por Jozsef Bus</translation>
+        <translation type="obsolete">Húngaro por Jozsef Bus</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Russian by Igor Gorbounov</source>
-        <translation type="unfinished">Ruso por Igor Gorbounov</translation>
+        <translation type="obsolete">Ruso por Igor Gorbounov</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Czech by Marek Straka and Martin Stejskal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Catalan by Antoni Subirats</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Ukrainian by Dystryk</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Arabic by Chabane Noureddine</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Kazakh by Erbol Keshubaev</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location filename="../qucs/dialogs/aboutdialog.cpp" line="+106"/>
         <source>About Qucs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -200,22 +59,207 @@
     </message>
     <message>
         <location line="+10"/>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Copyright (C)</source>
         <translation type="unfinished">Copyright (C)</translation>
     </message>
     <message>
-        <location line="-1"/>
         <source>by Michael Margraf</source>
-        <translation type="unfinished">por Michael Margraf</translation>
+        <translation type="obsolete">por Michael Margraf</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Qucs Team</source>
+        <location line="-84"/>
+        <source>GUI programmer, Verilog-A dynamic loader</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+1"/>
+        <source>testing, modelling and documentation, tutorial contributor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>testing, modelling, Octave.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>bondwire and rectangular waveguide model implementation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>GUI programmer, release</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>filter synthesis (qucs-activefilter), SPICE integration (NGSPICE, Xyce)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>testing, general fixes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>refactoring, modularity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>RF design tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>founder of the project, GUI programmer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Programmer of simulator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>webpages and translator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>tester and applyer of Stefan&apos;s patches, author of documentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>coplanar line and filter synthesis code, documentation contributor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>some filter synthesis code and attenuator synthesis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+5"/>
+        <source>GUI programmer, Qt4 porter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>programmer of the Verilog-AMS interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>equation solver contributions, exponential sources, author of documentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>temperature model for rectangular waveguide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>GUI programmer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>German by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Polish by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Romanian by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>French by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Portuguese by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Spanish by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Japanese by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Italian by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Hebrew by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Swedish by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Turkish by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Hungarian by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Russian by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Czech by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Catalan by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ukrainian by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Arabic by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Kazakh by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+60"/>
         <source>Home Page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2572,7 +2616,7 @@ pero es %1!</translation>
 <context>
     <name>MyWidget</name>
     <message>
-        <location filename="../qucs-rescodes/main.cpp" line="+60"/>
+        <location filename="../qucs-rescodes/main.cpp" line="+62"/>
         <source>E&amp;xit</source>
         <translation>&amp;Salir</translation>
     </message>
@@ -2602,7 +2646,7 @@ pero es %1!</translation>
         <translation>&amp;Ajuda</translation>
     </message>
     <message>
-        <location line="+70"/>
+        <location line="+69"/>
         <source>About...</source>
         <translation>Acerca de...</translation>
     </message>
@@ -2627,7 +2671,7 @@ Resistor color code computation program
 <context>
     <name>NewProjDialog</name>
     <message>
-        <location filename="../qucs/dialogs/newprojdialog.cpp" line="+30"/>
+        <location filename="../qucs/dialogs/newprojdialog.cpp" line="+31"/>
         <source>Create new project</source>
         <translation>Crear proyecto nuevo</translation>
     </message>
@@ -2637,7 +2681,7 @@ Resistor color code computation program
         <translation>Nom del Proyecto:</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>open new project</source>
         <translation>abrir proyecto nuevo</translation>
     </message>
@@ -2647,7 +2691,7 @@ Resistor color code computation program
         <translation>Crear</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Cancel</source>
         <translation>Cancel·lar</translation>
     </message>
@@ -3215,7 +3259,7 @@ Resistor color code computation program
 <context>
     <name>ProjectView</name>
     <message>
-        <location filename="../qucs/projectView.cpp" line="+81"/>
+        <location filename="../qucs/projectView.cpp" line="+72"/>
         <source>Content of %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8731,7 +8775,7 @@ Set the Octave location on the application settings.</source>
         <translation>Editar les propietats del Rectángulo</translation>
     </message>
     <message>
-        <location filename="../qucs/printerwriter.cpp" line="+96"/>
+        <location filename="../qucs/printerwriter.cpp" line="+97"/>
         <source>Print Document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12447,12 +12491,28 @@ Programa de síntexis de filtros</translation>
 <context>
     <name>QucsHelp</name>
     <message>
-        <location filename="../qucs-help/qucshelp.cpp" line="+50"/>
+        <location filename="../qucs-help/qucshelp.cpp" line="+51"/>
         <source>Qucs Help System</source>
         <translation>Sistema de Ajuda de Qucs</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+16"/>
+        <source>Cannot load Help files.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cannot find:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Setting QUCSDIR variable might be necessary.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
         <source>&amp;Quit</source>
         <translation>&amp;Salir</translation>
     </message>
@@ -12499,32 +12559,32 @@ Enables/disables the table of contents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+41"/>
         <source>&amp;About Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-14"/>
         <source>&amp;File</source>
         <translation>&amp;Fitxer</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+4"/>
         <source>&amp;View</source>
         <translation>&amp;Ver</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+9"/>
         <source>&amp;Help</source>
         <translation>&amp;Ajuda</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Contents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+18"/>
         <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12670,7 +12730,7 @@ Enables/disables the table of contents</source>
 <context>
     <name>QucsSettingsDialog</name>
     <message>
-        <location filename="../qucs/dialogs/qucssettingsdialog.cpp" line="+61"/>
+        <location filename="../qucs/dialogs/qucssettingsdialog.cpp" line="+63"/>
         <source>Edit Qucs Properties</source>
         <translation>Editar les propietats de Qucs</translation>
     </message>
@@ -12695,117 +12755,117 @@ Enables/disables the table of contents</source>
         <translation>Idioma (usado después de recargar):</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+23"/>
         <source>system language</source>
         <translation>Idioma del sistema</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>English</source>
         <translation>Inglés</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="-6"/>
         <source>German</source>
         <translation>Alemán</translation>
     </message>
     <message>
-        <location line="-1"/>
+        <location line="+1"/>
         <source>French</source>
         <translation>Francés</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="-12"/>
         <source>Spanish</source>
         <translation>Español</translation>
     </message>
     <message>
-        <location line="-8"/>
+        <location line="+8"/>
         <source>Italian</source>
         <translation>Italiano</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-3"/>
         <source>Polish</source>
         <translation>Polaco</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-3"/>
         <source>Romanian</source>
         <translation>Rumano</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="+5"/>
         <source>Japanese</source>
         <translation>Japonés</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-8"/>
         <source>Swedish</source>
         <translation>Sueco</translation>
     </message>
     <message>
-        <location line="-10"/>
+        <location line="+10"/>
         <source>Hungarian</source>
         <translation>Húngaro</translation>
     </message>
     <message>
-        <location line="-1"/>
+        <location line="+1"/>
         <source>Hebrew</source>
         <translation>Hebreo</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="-6"/>
         <source>Portuguese-BR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>Portuguese-PT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-5"/>
         <source>Turkish</source>
         <translation>Turco</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1"/>
         <source>Ukrainian</source>
         <translation>Ucraniano</translation>
     </message>
     <message>
-        <location line="-4"/>
+        <location line="+4"/>
         <source>Russian</source>
         <translation>Ruso</translation>
     </message>
     <message>
-        <location line="-13"/>
+        <location line="+13"/>
         <source>Czech</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1"/>
+        <location line="+1"/>
         <source>Catalan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1"/>
+        <location line="+1"/>
         <source>Arabic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-3"/>
         <source>Chinese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="-7"/>
         <source>Kazakh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+16"/>
         <source>Maximum undo operations:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12865,52 +12925,52 @@ Enables/disables the table of contents</source>
         <translation>Colores para el resaltado de sintáxis:</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Comment</source>
         <translation>Comentario</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>String</source>
         <translation>Texto</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Integer Number</source>
         <translation>Número Entero</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Real Number</source>
         <translation>Número Real</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Character</source>
         <translation>Carácter</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Data Type</source>
         <translation>Tipus de dades</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Attribute</source>
         <translation>Atributo</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Directive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+9"/>
         <source>Source Code Editor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12987,7 +13047,7 @@ abrir els fitxers amb el programa apropiado.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+31"/>
         <source>Locations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13012,7 +13072,7 @@ abrir els fitxers amb el programa apropiado.</translation>
         <translation>Valors predeterminados</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+59"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
@@ -13022,28 +13082,28 @@ abrir els fitxers amb el programa apropiado.</translation>
         <translation>¡Ya está registrado este sufijo!</translation>
     </message>
     <message>
-        <location line="+326"/>
+        <location line="+422"/>
         <source>Select the home directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+11"/>
         <source>Select the admsXml bin directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+11"/>
         <source>Select the ASCO bin directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+11"/>
         <source>Select the octave bin directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <location line="+19"/>
+        <location line="+29"/>
+        <location line="+20"/>
         <source>Select a directory</source>
         <translation type="unfinished"></translation>
     </message>
