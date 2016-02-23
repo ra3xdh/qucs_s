@@ -1294,18 +1294,19 @@ bool QucsApp::deleteProject(const QString& Path)
 {
   slotHideEdit();
 
-  QString Name = Path;
+  if(Path.isEmpty()) return false;
 
-  if(Name.isEmpty()) return false;
+  QString delProjName = QDir(Path).dirName(); // only project directory name
 
-  if (Name.endsWith(QDir::separator())) {
-    Name = Name.left(Name.length()-1);  // cut off trailing '/'
+  if (!delProjName.endsWith("_prj")) { // should not happen
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Project directory name does not end in '_prj' (%1)").arg(delProjName));
+    return false;
   }
-  int i = Name.lastIndexOf(QDir::separator());
-  if(i > 0) Name = Name.mid(i+1);  // cut out the last subdirectory
-  Name.chop(4); // remove "_prj" from name
 
-  if(Name == ProjName) {
+  delProjName.chop(4); // remove "_prj" from name
+
+  if(delProjName == ProjName) {
     QMessageBox::information(this, tr("Info"),
         tr("Cannot delete an open project !"));
     return false;
