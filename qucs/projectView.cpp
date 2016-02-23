@@ -28,6 +28,7 @@
 #include <QStringList>
 #include <QDir>
 #include <QStandardItemModel>
+#include <QDebug>
 
 ProjectView::ProjectView(QWidget *parent)
   : QTreeView(parent)
@@ -57,7 +58,11 @@ ProjectView::setProjPath(const QString &path)
   if (m_valid) {
     m_projPath = path; // full path
     m_projName = QDir(m_projPath).dirName(); // only project directory name
-    m_projName.remove("_prj");
+    if (m_projName.endsWith("_prj")) {
+      m_projName.chop(4);// remove "_prj" from name
+    } else { // should not happen
+      qWarning() << "ProjectView::setProjPath() : path does not end in '_prj' (" << m_projName << ")";
+    }
   }
   refresh();
 }
