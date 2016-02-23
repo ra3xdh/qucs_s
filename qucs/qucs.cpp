@@ -1159,39 +1159,42 @@ void QucsApp::openProject(const QString& Path)
 {
   slotHideEdit(); // disable text edit of component property
 
-  QString Name = Path;
-  if (Name.endsWith(QDir::separator())) {
-    Name = Name.left(Name.length()-1);  // cut off trailing '/'
+  QDir ProjDir(QDir::cleanPath(Path)); // the full path
+  QString openProjName = ProjDir.dirName(); // only the project directory name
+
+  if(!ProjDir.exists() || !ProjDir.isReadable()) { // check project directory
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Cannot access project directory: %1").arg(Path));
+    return;
   }
-  int i = Name.lastIndexOf(QDir::separator());
-  if(i > 0) Name = Name.mid(i+1);   // cut out the last subdirectory
-  Name.remove("_prj");
+
+  if (!openProjName.endsWith("_prj")) { // should not happen
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Project directory name does not end in '_prj'(%1)").arg(openProjName));
+    return;
+  }
 
   if(!closeAllFiles()) return;   // close files and ask for saving them
   Schematic *d = new Schematic(this, "");
-  i = DocumentTab->addTab(d, QPixmap(empty_xpm), QObject::tr("untitled"));
+  int i = DocumentTab->addTab(d, QPixmap(empty_xpm), QObject::tr("untitled"));
   DocumentTab->setCurrentIndex(i);
 
   view->drawn = false;
 
   slotResetWarnings();
 
-  QDir ProjDir(QDir::cleanPath(Path));
-  if(!ProjDir.exists() || !ProjDir.isReadable()) { // check project directory
-    QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot access project directory: ")+Path);
-    return;
-  }
   QucsSettings.QucsWorkDir.setPath(ProjDir.path());
   octave->adjustDirectory();
 
   Content->setProjPath(QucsSettings.QucsWorkDir.absolutePath());
 
   TabView->setCurrentIndex(1);   // switch to "Content"-Tab
-  ProjName = Name;   // remember the name of project
+
+  openProjName.chop(4); // remove "_prj" from name
+  ProjName = openProjName;   // remember the name of project
 
   // show name in title of main window
-  setWindowTitle("Qucs " PACKAGE_VERSION + tr(" - Project: ")+Name);
+  setWindowTitle("Qucs " PACKAGE_VERSION + tr(" - Project: ")+ProjName);
 }
 
 // ----------------------------------------------------------
