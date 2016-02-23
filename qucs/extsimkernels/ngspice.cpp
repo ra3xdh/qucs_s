@@ -56,6 +56,19 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     QString s;
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
     startNetlist(stream); // output .PARAM and components
+
+    if (DC_OP_only) {
+        stream<<".control\n"  // Execute only DC OP analysis
+              <<"set filetype=ascii\n" // Ingnore all other simulations
+              <<"op\n"
+              <<"print all > spice4qucs.cir.dc_op\n"
+              <<"quit\n"
+              <<".endc\n";
+        outputs.clear();
+        outputs.append("spice4qucs.cir.dc_op");
+        return;
+    }
+
     // determine which simulations are in use
     simulations.clear();
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {

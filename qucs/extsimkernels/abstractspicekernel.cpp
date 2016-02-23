@@ -45,6 +45,9 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *sch_, QObject *parent) :
 {
     Sch = sch_;
 
+    if (Sch->showBias == 0) DC_OP_only = true;
+    else DC_OP_only = false;
+
     workdir = QucsSettings.S4Qworkdir;
     QFileInfo inf(workdir);
     if (!inf.exists()) {
@@ -490,6 +493,15 @@ void AbstractSpiceKernel::parsePZOutput(QString ngspice_file, QList<QList<double
     }
 }
 
+/*!
+ * \brief AbstractSpiceKernel::parseDC_OPoutput Parse DC OP simulation result and setup
+ *        schematic node names to show DC bias
+ * \param ngspice_file[in] DC OP results test file
+ */
+void AbstractSpiceKernel::parseDC_OPoutput(QString ngspice_file)
+{
+    Sch->showBias = 1;
+}
 
 /*!
  * \brief AbstractSpiceKernel::parseSTEPOutput This method parses text raw spice
@@ -704,6 +716,8 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
                                                             + "spice4qucs.pz.cir.res");
                     parseResFile(res_file,swp_var,swp_var_val);
                 }
+            } else if (ngspice_output_filename.endsWith(".dc_op")) {
+                parseDC_OPoutput(ngspice_output_filename);
             } else if (ngspice_output_filename.endsWith("_swp.txt")) {
                 hasParSweep = true;
                 QString simstr = full_outfile;

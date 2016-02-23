@@ -48,7 +48,7 @@ protected:
 
     QStringList sims,vars,output_files;
 
-
+    bool DC_OP_only; // only calculate operating point to show DC bias
     Schematic *Sch;
 
     bool prepareSpiceNetlist(QTextStream &stream);
@@ -76,6 +76,7 @@ public:
                           QStringList &var_list, bool &ParSwp);
     void parsePZOutput(QString ngspice_file, QList< QList<double> > &sim_points,
                        QStringList &var_list, bool &ParSwp);
+    void parseDC_OPoutput(QString ngspice_file);
     void parseSTEPOutput(QString ngspice_file,
                          QList< QList<double> > &sim_points,
                          QStringList &var_list, bool &isComplex);
