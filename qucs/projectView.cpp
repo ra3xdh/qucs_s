@@ -94,7 +94,7 @@ ProjectView::refresh()
 
   // put all files into "Content"-ListView
   QDir workPath(m_projPath);
-  QStringList files = workPath.entryList("*", QDir::Files, QDir::Name);
+  QStringList files = workPath.entryList(QStringList() << "*", QDir::Files, QDir::Name);
   QStringList::iterator it;
   QString extName, fileName;
   QList<QStandardItem *> columnData;
