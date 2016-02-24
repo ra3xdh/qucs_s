@@ -26,6 +26,7 @@
 #include "misc.h"
 #include "main.h"
 #include "../paintings/id_text.h"
+#include "dialogs/sweepdialog.h"
 #include <QPlainTextEdit>
 
 /*!
@@ -500,6 +501,25 @@ void AbstractSpiceKernel::parsePZOutput(QString ngspice_file, QList<QList<double
  */
 void AbstractSpiceKernel::parseDC_OPoutput(QString ngspice_file)
 {
+    QHash<QString,double> NodeVals;
+    QFile ofile(ngspice_file);
+    if (ofile.open(QFile::ReadOnly)) {
+        QTextStream ngsp_data(&ofile);
+        QStringList lines = ngsp_data.readAll().split("\n");
+        foreach (QString lin,lines) {
+            if (lin.contains('=')) {
+                QString nod = lin.section('=',0,0).remove(' ');
+                double val = lin.section('=',1,1).toDouble();
+                NodeVals.insert(nod,val);
+            }
+        }
+        ofile.close();
+    }
+
+    // Update Node labels on schematic
+    SweepDialog *swpdlg = new SweepDialog(Sch,&NodeVals);
+    delete swpdlg;
+
     Sch->showBias = 1;
 }
 
@@ -717,7 +737,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
                     parseResFile(res_file,swp_var,swp_var_val);
                 }
             } else if (ngspice_output_filename.endsWith(".dc_op")) {
-                parseDC_OPoutput(ngspice_output_filename);
+                parseDC_OPoutput(full_outfile);
             } else if (ngspice_output_filename.endsWith("_swp.txt")) {
                 hasParSweep = true;
                 QString simstr = full_outfile;

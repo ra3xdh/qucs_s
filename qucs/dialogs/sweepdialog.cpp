@@ -62,12 +62,19 @@ QValidator::State mySpinBox::validate ( QString & text, int & pos ) const
 }
 
 
-SweepDialog::SweepDialog(Schematic *Doc_)
+SweepDialog::SweepDialog(Schematic *Doc_,QHash<QString,double> *NodeVals)
 			: QDialog(Doc_)
 {
   qDebug() << "SweepDialog::SweepDialog()";
 
   Doc = Doc_;
+
+  isSpice = false;
+  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+      isSpice = true;
+      if (NodeVals) pGraph = setBiasPoints(NodeVals);
+      return;
+  }
 
   pGraph = setBiasPoints();
   // if simulation has no sweeps, terminate dialog before showing it
@@ -153,7 +160,7 @@ void SweepDialog::slotNewValue(int)
 }
 
 // ---------------------------------------------------
-Graph* SweepDialog::setBiasPoints()
+Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
 {
   // When this function is entered, a simulation was performed.
   // Thus, the node names are still in "node->Name".
@@ -206,16 +213,23 @@ Graph* SweepDialog::setBiasPoints()
       }
     }
 
-    pg->Var = pn->Name + ".V";
-    pg->lastLoaded = QDateTime(); // Note 1 at the start of this function
-    if(pg->loadDatFile(DataSet) == 2) {
-      pn->Name = misc::num2str(*(pg->cPointsY)) + "V";
-      NodeList.append(pn);             // remember node ...
-      ValueList.append(pg->cPointsY);  // ... and all of its values
-      pg->cPointsY = 0;   // do not delete it next time !
+    if (isSpice) {
+        pg->Var = pn->Name + ".V";
+        pg->lastLoaded = QDateTime(); // Note 1 at the start of this function
+        if(pg->loadDatFile(DataSet) == 2) {
+          pn->Name = misc::num2str(*(pg->cPointsY)) + "V";
+          NodeList.append(pn);             // remember node ...
+          ValueList.append(pg->cPointsY);  // ... and all of its values
+          pg->cPointsY = 0;   // do not delete it next time !
+        }
+        else
+          pn->Name = "0V";
+    } else {
+        if (NodeVals->contains(pn->Name.toLower())) {
+                  double volts = NodeVals->value(pn->Name.toLower());
+                  pn->Name = misc::num2str(volts) + "V";
+              } else pn->Name = "0V";
     }
-    else
-      pn->Name = "0V";
 
 
     for(pe = pn->Connections.first(); pe!=0; pe = pn->Connections.next())
@@ -236,16 +250,24 @@ Graph* SweepDialog::setBiasPoints()
         pn = pc->Ports.at(1)->Connection;
 
       pn->x1 = 0x10;   // mark current
-      pg->Var = pc->Name + ".I";
-      pg->lastLoaded = QDateTime(); // Note 1 at the start of this function
-      if(pg->loadDatFile(DataSet) == 2) {
-        pn->Name = misc::num2str(*(pg->cPointsY)) + "A";
-        NodeList.append(pn);             // remember node ...
-        ValueList.append(pg->cPointsY);  // ... and all of its values
-        pg->cPointsY = 0;   // do not delete it next time !
+      if (isSpice) {
+          pg->Var = pc->Name + ".I";
+          pg->lastLoaded = QDateTime(); // Note 1 at the start of this function
+          if(pg->loadDatFile(DataSet) == 2) {
+            pn->Name = misc::num2str(*(pg->cPointsY)) + "A";
+            NodeList.append(pn);             // remember node ...
+            ValueList.append(pg->cPointsY);  // ... and all of its values
+            pg->cPointsY = 0;   // do not delete it next time !
+          }
+          else
+            pn->Name = "0A";
+      } else {
+          QString src_nam = QString("V"+pc->Name+"#branch").toLower();
+          if (NodeVals->contains(src_nam)) {
+              pn->Name = misc::num2str(NodeVals->value(src_nam))+"A";
+          } else pn->Name = "0A";
       }
-      else
-        pn->Name = "0A";
+
 
       for(pe = pn->Connections.first(); pe!=0; pe = pn->Connections.next())
         if(pe->Type == isWire) {
