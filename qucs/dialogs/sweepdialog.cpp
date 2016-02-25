@@ -213,7 +213,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
       }
     }
 
-    if (isSpice) {
+    if (!isSpice) {
         pg->Var = pn->Name + ".V";
         pg->lastLoaded = QDateTime(); // Note 1 at the start of this function
         if(pg->loadDatFile(DataSet) == 2) {
@@ -250,7 +250,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
         pn = pc->Ports.at(1)->Connection;
 
       pn->x1 = 0x10;   // mark current
-      if (isSpice) {
+      if (!isSpice) {
           pg->Var = pc->Name + ".I";
           pg->lastLoaded = QDateTime(); // Note 1 at the start of this function
           if(pg->loadDatFile(DataSet) == 2) {
