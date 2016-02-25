@@ -213,6 +213,7 @@ void ExternSimDialog::slotProcessOutput()
     }
     emit simulated();
     wasSimulated = true;
+    if (Sch->showBias>0) this->close();
 }
 
 

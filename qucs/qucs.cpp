@@ -2871,7 +2871,7 @@ void QucsApp::slotSimulateWithSpice()
         disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
         disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
         if (SimDlg->wasSimulated && sch->SimOpenDpl)
-            slotChangePage(sch->DocName,sch->DataDisplay);
+            if (sch->showBias < 1) slotChangePage(sch->DocName,sch->DataDisplay);
         delete SimDlg;
     }
 }

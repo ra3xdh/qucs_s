@@ -689,6 +689,16 @@ bool AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &valu
  */
 void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xyce)
 {
+    if (DC_OP_only) { // Don't touch existing datasets when only DC was simulated
+        // It's need to show DC bias on schematic only
+        foreach(QString output,output_files) {
+            QString full_outfile = workdir+QDir::separator()+output;
+            if (output.endsWith(".dc_op")) parseDC_OPoutput(full_outfile);
+        }
+        return;
+    }
+
+    // Merge all outputs in a single Qucs dataset otherwise
     QFile dataset(qucs_dataset);
     if (dataset.open(QFile::WriteOnly)) {
         QTextStream ds_stream(&dataset);
@@ -736,8 +746,6 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
                                                             + "spice4qucs.pz.cir.res");
                     parseResFile(res_file,swp_var,swp_var_val);
                 }
-            } else if (ngspice_output_filename.endsWith(".dc_op")) {
-                parseDC_OPoutput(full_outfile);
             } else if (ngspice_output_filename.endsWith("_swp.txt")) {
                 hasParSweep = true;
                 QString simstr = full_outfile;
@@ -985,3 +993,4 @@ bool AbstractSpiceKernel::waitEndOfSimulation()
 {
     return SimProcess->waitForFinished(10000);
 }
+
