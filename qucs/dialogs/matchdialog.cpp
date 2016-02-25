@@ -245,6 +245,25 @@ void MatchDialog::setFrequency(double Freq_)
   FrequencyEdit->setText(QString::number(Freq_));
 }
 
+// Set visibility of LineEdits and Labels associated with two-port matching
+void MatchDialog::set2PortWidgetsVisible(bool visible)
+{
+    S12magEdit->setVisible(visible);
+    S22magEdit->setVisible(visible);
+    S12degEdit->setVisible(visible);
+    S22degEdit->setVisible(visible);
+    S12Label->setVisible(visible);
+    S22Label->setVisible(visible);
+    S12sLabel->setVisible(visible);
+    S22sLabel->setVisible(visible);
+    S12degEdit->setVisible(visible);
+    S22degEdit->setVisible(visible);
+    S12uLabel->setVisible(visible);
+    S22uLabel->setVisible(visible);
+    Port2Label->setVisible(visible);
+    Ref2Edit->setVisible(visible);
+    Ohm2Label->setVisible(visible);
+}
 // -----------------------------------------------------------------------
 // Is called when the checkbox for two-port matching changes.
 void MatchDialog::slotSetTwoPort(bool on)
@@ -252,21 +271,6 @@ void MatchDialog::slotSetTwoPort(bool on)
   if(on) { // two-port matching ?
     S11Label->setText(tr("S11"));
     S21Label->setText(tr("S21"));
-    S12magEdit->setVisible(true);
-    S22magEdit->setVisible(true);
-    S12degEdit->setVisible(true);
-    S22degEdit->setVisible(true);
-    S12Label->setVisible(true);
-    S22Label->setVisible(true);
-    S12sLabel->setVisible(true);
-    S22sLabel->setVisible(true);
-    S12degEdit->setVisible(true);
-    S22degEdit->setVisible(true);
-    S12uLabel->setVisible(true);
-    S22uLabel->setVisible(true);
-    Port2Label->setVisible(true);
-    Ref2Edit->setVisible(true);
-    Ohm2Label->setVisible(true);
     // restore the previous S21 values
     S21magEdit->blockSignals(true); // do not call slot for "textChanged"
     S21magEdit->setText(QString::number(tmpS21mag));
@@ -274,25 +278,12 @@ void MatchDialog::slotSetTwoPort(bool on)
     S21degEdit->blockSignals(true); // do not call slot for "textChanged"
     S21degEdit->setText(QString::number(tmpS21deg));
     S21degEdit->blockSignals(false);
+    set2PortWidgetsVisible(true);
   }
   else {
     S11Label->setText(tr("Reflexion Coefficient"));
     S21Label->setText(tr("Impedance (ohms)"));
-    S12magEdit->setVisible(false);
-    S22magEdit->setVisible(false);
-    S12degEdit->setVisible(false);
-    S22degEdit->setVisible(false);
-    S12Label->setVisible(false);
-    S22Label->setVisible(false);
-    S12sLabel->setVisible(false);
-    S22sLabel->setVisible(false);
-    S12degEdit->setVisible(false);
-    S22degEdit->setVisible(false);
-    S12uLabel->setVisible(false);
-    S22uLabel->setVisible(false);
-    Port2Label->setVisible(false);
-    Ref2Edit->setVisible(false);
-    Ohm2Label->setVisible(false);
+    set2PortWidgetsVisible(false);
     // save S21 values, as these will be overwritten with the impedance value
     tmpS21mag = S21magEdit->text().toDouble();
     tmpS21deg = S21degEdit->text().toDouble();
