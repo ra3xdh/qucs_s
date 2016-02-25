@@ -364,6 +364,8 @@ void Ngspice::slotSimulate()
     QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs.cir");
     SaveNetlist(tmp_path);
 
+    removeAllSimulatorOutputs();
+
     XSPICE_CMbuilder *CMbuilder = new XSPICE_CMbuilder(Sch);
     CMbuilder->cleanSpiceinit();
     CMbuilder->createSpiceinit();
