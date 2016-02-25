@@ -73,6 +73,8 @@ private:
   QComboBox   *FormatCombo, *UnitCombo;
 
   double tmpS21mag, tmpS21deg;
+
+  void set2PortWidgetsVisible(bool);
 };
 
 #endif
