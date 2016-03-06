@@ -191,8 +191,8 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
         if (pc->Model=="XSP_CMod") {
             // Copy every cfunc.mod and ifspe.ifs pair into
             // unique subdirectory in qucs_cmlib/
-            QString mod = pc->Props.at(0)->Value;
-            QString ifs = pc->Props.at(1)->Value;
+            QString mod = spicecompat::convert_relative_filename(pc->Props.at(0)->Value);
+            QString ifs = spicecompat::convert_relative_filename(pc->Props.at(1)->Value);
             QStringList lst1;
             lst1<<mod<<ifs;
             // If model is duplicated don't process it (don't copy files)
