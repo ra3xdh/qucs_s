@@ -80,7 +80,10 @@ QString S4Q_Include::getSpiceModel()
 
     foreach (Property *pp, Props) {
         QString val = pp->Value;
-        if (!val.isEmpty()) s += QString("%1 \"%2\"\n").arg(SpiceModel).arg(pp->Value);
+        if (!val.isEmpty()) {
+            val = spicecompat::convert_relative_filename(val);
+            s += QString("%1 \"%2\"\n").arg(SpiceModel).arg(val);
+        }
     }
 
     return s;
