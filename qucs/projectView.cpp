@@ -88,6 +88,7 @@ ProjectView::refresh()
   APPEND_ROW(m_model, tr("VHDL")         );
   APPEND_ROW(m_model, tr("Octave")       );
   APPEND_ROW(m_model, tr("Schematics")   );
+  APPEND_ROW(m_model, tr("XSPICE")       );
   APPEND_ROW(m_model, tr("Others")       );
 
   setExpanded(m_model->index(6, 0), true);
@@ -140,8 +141,11 @@ ProjectView::refresh()
       }
       APPEND_CHILD(6, columnData);
     }
+    else if ((extName == "mod")||(extName=="ifs")) {
+        APPEND_CHILD(7,columnData);
+    }
     else {
-      APPEND_CHILD(7, columnData);
+      APPEND_CHILD(8, columnData);
     }
   }
 
