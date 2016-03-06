@@ -1,4 +1,5 @@
 #include "spicecompat.h"
+#include "main.h"
 
 /*!
  * \brief spicecompat::check_refdes If starting letters of the component name
@@ -213,4 +214,15 @@ QString spicecompat::normalize_node_name(QString nod)
 {
     if (nod=="gnd") return QString("0");
     else return nod;
+}
+
+QString spicecompat::convert_relative_filename(QString filename)
+{
+    QFileInfo inf(filename);
+    if (inf.exists()) return filename;
+
+    QString s = QucsSettings.QucsWorkDir.absolutePath() + QDir::separator() + filename;
+    inf.setFile(s);
+    if (inf.exists()) return s;
+    else return filename;
 }

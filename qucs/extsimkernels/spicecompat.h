@@ -18,6 +18,7 @@ namespace spicecompat {
      bool containNodes(QStringList &tokens, QStringList &vars);
      void convertNodeNames(QStringList &tokens, QString &sim);
      QString normalize_node_name(QString nod);
+     QString convert_relative_filename(QString filename);
 
      enum Simulator {simNgspice = 0, simXyceSer = 1, simXycePar = 2, simSpiceOpus = 3, simQucsator = 4, simNotSpecified=10};
 }
