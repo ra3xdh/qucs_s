@@ -495,6 +495,9 @@ void Module::registerModules (void) {
       REGISTER_FILE_3 (SParamFile, info1, info2, info);
   }
   REGISTER_FILE_1 (Subcircuit);
+  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+      REGISTER_FILE_1 (SpiceGeneric);
+  }
 
   // simulations
   REGISTER_SIMULATION_1 (DC_Sim);

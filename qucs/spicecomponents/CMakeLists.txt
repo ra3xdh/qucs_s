@@ -92,6 +92,8 @@ xspicegeneric.cpp
 xsp_cmlib.cpp
 xsp_codemodel.cpp
 
+#SPICE file devices
+spicegeneric.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -183,6 +185,8 @@ xspicegeneric.h
 xsp_cmlib.h
 xsp_codemodel.h
 
+#SPICE file devices
+spicegeneric.h
 )
 
 
