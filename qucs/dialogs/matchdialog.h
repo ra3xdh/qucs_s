@@ -21,12 +21,12 @@
 #include <QDialog>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QCheckBox>
 
 class Element;
 class QLabel;
 class QLineEdit;
 class QComboBox;
-class QCheckBox;
 class QVBoxLayout;
 class QDoubleValidator;
 
@@ -48,11 +48,7 @@ public:
   static bool calc2PortMatch(double, double, double, double, double, double,
                              double, double, double);
   void setFrequency(double);
-
-  QLineEdit *Ref1Edit, *Ref2Edit, *FrequencyEdit,
-            *S11magEdit,*S11degEdit, *S21magEdit,*S21degEdit,
-            *S12magEdit,*S12degEdit, *S22magEdit,*S22degEdit;
-  QCheckBox *TwoCheck;
+  void setTwoPortMatch(bool on) { TwoCheck->setChecked(on); TwoCheck->setEnabled(false); }
 
 public slots:
   void slotButtCreate();
@@ -60,6 +56,10 @@ public slots:
   void slotReflexionChanged(const QString&);
   void slotSetTwoPort(bool);
   void slotChangeMode(int);
+  void setS11LineEdits(double, double);
+  void setS12LineEdits(double, double);
+  void setS21LineEdits(double, double);
+  void setS22LineEdits(double, double);
 
 private:
   QVBoxLayout *all;   // the mother of all widgets
@@ -71,6 +71,12 @@ private:
               *S12Label, *S12sLabel, *S12uLabel,
               *S22Label, *S22sLabel, *S22uLabel;
   QComboBox   *FormatCombo, *UnitCombo;
+
+  QLineEdit *Ref1Edit, *Ref2Edit, *FrequencyEdit,
+            *S11magEdit,*S11degEdit, *S21magEdit,*S21degEdit,
+            *S12magEdit,*S12degEdit, *S22magEdit,*S22degEdit;
+
+  QCheckBox *TwoCheck;
 
   double tmpS21mag, tmpS21deg;
 
