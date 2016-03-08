@@ -1,9 +1,9 @@
 /***************************************************************************
-                                 XspiceGeneric.h
-                                -------------
-    begin                : Tue Dec 28 2004
-    copyright            : (C) 2004 by Michael Margraf
-    email                : michael.margraf@alumni.tu-berlin.de
+                             spicegeneric.h
+                             ---------------
+    begin                : Mon Mar 07 2016
+    copyright            : (C) 2016 by Vadim Kuznetsov
+    email                : ra3xdh@gmail.com
  ***************************************************************************/
 
 /***************************************************************************

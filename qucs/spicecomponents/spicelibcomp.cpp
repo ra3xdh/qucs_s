@@ -33,10 +33,10 @@
 SpiceLibComp::SpiceLibComp()
 {
   Type = isComponent;   // both analog and digital
-  Description = QObject::tr("SpiceLibComp");
+  Description = QObject::tr("SPICE library device. You can attach symbol patterns to it.");
 
   Props.append(new Property("File", "", false, QObject::tr("SpiceLibrary file")));
-  Props.append(new Property("Device", "", false, QObject::tr("Subcircuit name")));
+  Props.append(new Property("Device", "", false, QObject::tr("Subcircuit entry (.SUBCKT) name")));
   Props.append(new Property("SymPattern", "auto", false, QObject::tr("[auto,opamp3t,opamp5t]")));
 
   Model = "SpLib";

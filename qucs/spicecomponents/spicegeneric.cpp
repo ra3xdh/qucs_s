@@ -1,9 +1,9 @@
 /***************************************************************************
-                              SpiceGeneric.cpp
+                             spicegeneric.cpp
                              ---------------
-    begin                : Tue Dez 28 2004
-    copyright            : (C) 2004 by Michael Margraf
-    email                : michael.margraf@alumni.tu-berlin.de
+    begin                : Mon Mar 07 2016
+    copyright            : (C) 2016 by Vadim Kuznetsov
+    email                : ra3xdh@gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -27,7 +27,7 @@
 
 SpiceGeneric::SpiceGeneric()
 {
-  Description = QObject::tr("XSPICE generic device");
+  Description = QObject::tr("SPICE generic device");
   // Property descriptions not needed, but must not be empty !
   Props.append(new Property("NPins", "3", true, QObject::tr("Number of pins")));
   Props.append(new Property("Letter", "Z", true, QObject::tr("SPICE device letter")));
