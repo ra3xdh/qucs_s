@@ -272,12 +272,7 @@ void MatchDialog::slotSetTwoPort(bool on)
     S11Label->setText(tr("S11"));
     S21Label->setText(tr("S21"));
     // restore the previous S21 values
-    S21magEdit->blockSignals(true); // do not call slot for "textChanged"
-    S21magEdit->setText(QString::number(tmpS21mag));
-    S21magEdit->blockSignals(false);
-    S21degEdit->blockSignals(true); // do not call slot for "textChanged"
-    S21degEdit->setText(QString::number(tmpS21deg));
-    S21degEdit->blockSignals(false);
+    setS21LineEdits(tmpS21mag, tmpS21deg);
     set2PortWidgetsVisible(true);
   }
   else {
@@ -308,36 +303,24 @@ void MatchDialog::slotChangeMode(int Index)
     double Real = S11magEdit->text().toDouble();
     double Imag = S11degEdit->text().toDouble();
     c2p(Real, Imag);
-    S11magEdit->blockSignals(true); // do not call slot for "textChanged"
-    S11magEdit->setText(QString::number(Real));
-    S11magEdit->blockSignals(false);
-    S11degEdit->blockSignals(true); // do not call slot for "textChanged"
-    S11degEdit->setText(QString::number(Imag));
-    S11degEdit->blockSignals(false);
+    setS11LineEdits(Real, Imag);
 
     Real = S12magEdit->text().toDouble();
     Imag = S12degEdit->text().toDouble();
     c2p(Real, Imag);
-    S12magEdit->setText(QString::number(Real));
-    S12degEdit->setText(QString::number(Imag));
+    setS12LineEdits(Real, Imag);
 
     Real = S21magEdit->text().toDouble();
     Imag = S21degEdit->text().toDouble();
     c2p(Real, Imag);
-    S21magEdit->blockSignals(true); // do not call slot for "textChanged"
-    S21magEdit->setText(QString::number(Real));
-    S21magEdit->blockSignals(false);
-    S21degEdit->blockSignals(true); // do not call slot for "textChanged"
-    S21degEdit->setText(QString::number(Imag));
-    S21degEdit->blockSignals(false);
+    setS21LineEdits(Real, Imag);
     // convert also temp entries for future use
     c2p(tmpS21mag, tmpS21deg);
 
     Real = S22magEdit->text().toDouble();
     Imag = S22degEdit->text().toDouble();
     c2p(Real, Imag);
-    S22magEdit->setText(QString::number(Real));
-    S22degEdit->setText(QString::number(Imag));
+    setS22LineEdits(Real, Imag);
   }
   else {  // cartesian
     S11sLabel->setText("+j");
@@ -352,36 +335,24 @@ void MatchDialog::slotChangeMode(int Index)
     double Mag   = S11magEdit->text().toDouble();
     double Phase = S11degEdit->text().toDouble();
     p2c(Mag, Phase);
-    S11magEdit->blockSignals(true); // do not call slot for "textChanged"
-    S11magEdit->setText(QString::number(Mag));
-    S11magEdit->blockSignals(false);
-    S11degEdit->blockSignals(true); // do not call slot for "textChanged"
-    S11degEdit->setText(QString::number(Phase));
-    S11degEdit->blockSignals(false);
+    setS11LineEdits(Mag, Phase);
 
     Mag   = S12magEdit->text().toDouble();
     Phase = S12degEdit->text().toDouble();
     p2c(Mag, Phase);
-    S12magEdit->setText(QString::number(Mag));
-    S12degEdit->setText(QString::number(Phase));
+    setS12LineEdits(Mag, Phase);
 
     Mag   = S21magEdit->text().toDouble();
     Phase = S21degEdit->text().toDouble();
     p2c(Mag, Phase);
-    S21magEdit->blockSignals(true); // do not call slot for "textChanged"
-    S21magEdit->setText(QString::number(Mag));
-    S21magEdit->blockSignals(false);
-    S21degEdit->blockSignals(true); // do not call slot for "textChanged"
-    S21degEdit->setText(QString::number(Phase));
-    S21degEdit->blockSignals(false);
+    setS21LineEdits(Mag, Phase);
     // convert also temp entries for future use
     p2c(tmpS21mag, tmpS21deg);
 
     Mag   = S22magEdit->text().toDouble();
     Phase = S22degEdit->text().toDouble();
     p2c(Mag, Phase);
-    S22magEdit->setText(QString::number(Mag));
-    S22degEdit->setText(QString::number(Phase));
+    setS22LineEdits(Mag, Phase);
   }
 }
 
@@ -404,12 +375,7 @@ void MatchDialog::slotImpedanceChanged(const QString&)
     z2r(Real, Imag, Z0);
   }
 
-  S11magEdit->blockSignals(true); // do not call "changed-slot"
-  S11magEdit->setText(QString::number(Real));
-  S11magEdit->blockSignals(false);
-  S11degEdit->blockSignals(true); // do not call "changed-slot"
-  S11degEdit->setText(QString::number(Imag));
-  S11degEdit->blockSignals(false);
+  setS11LineEdits(Real, Imag);
 }
 
 // -----------------------------------------------------------------------
@@ -430,13 +396,39 @@ void MatchDialog::slotReflexionChanged(const QString&)
   } else {
     r2z(Real, Imag, Z0);
   }
+  setS21LineEdits(Real, Imag);
+}
 
-  S21magEdit->blockSignals(true); // do not call "changed-slot"
+void MatchDialog::setS11LineEdits(double Real, double Imag)
+{
+  S11magEdit->blockSignals(true); // do not call slot for "textChanged"
+  S11magEdit->setText(QString::number(Real));
+  S11magEdit->blockSignals(false);
+  S11degEdit->blockSignals(true); // do not call slot for "textChanged"
+  S11degEdit->setText(QString::number(Imag));
+  S11degEdit->blockSignals(false);
+}
+
+void MatchDialog::setS12LineEdits(double Real, double Imag)
+{
+  S12magEdit->setText(QString::number(Real));
+  S12degEdit->setText(QString::number(Imag));
+}
+
+void MatchDialog::setS21LineEdits(double Real, double Imag)
+{
+  S21magEdit->blockSignals(true); // do not call slot for "textChanged"
   S21magEdit->setText(QString::number(Real));
   S21magEdit->blockSignals(false);
-  S21degEdit->blockSignals(true); // do not call "changed-slot"
+  S21degEdit->blockSignals(true); // do not call slot for "textChanged"
   S21degEdit->setText(QString::number(Imag));
   S21degEdit->blockSignals(false);
+}
+
+void MatchDialog::setS22LineEdits(double Real, double Imag)
+{
+  S22magEdit->setText(QString::number(Real));
+  S22degEdit->setText(QString::number(Imag));
 }
 
 // -----------------------------------------------------------------------
