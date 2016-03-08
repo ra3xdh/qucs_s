@@ -203,7 +203,7 @@ QString SpiceLibComp::spice_netlist(bool)
 QString SpiceLibComp::getSpiceModel()
 {
     QString f = spicecompat::convert_relative_filename(Props.at(0)->Value);
-    QString s = QString(".INCLUDE %1\n").arg(f);
+    QString s = QString(".INCLUDE \"%1\"\n").arg(f);
     return s;
 }
 
