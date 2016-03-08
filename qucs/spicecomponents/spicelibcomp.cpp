@@ -35,9 +35,14 @@ SpiceLibComp::SpiceLibComp()
   Type = isComponent;   // both analog and digital
   Description = QObject::tr("SPICE library device. You can attach symbol patterns to it.");
 
+  QStringList patterns;
+  getSymbolPatternsList(patterns);
+  QString p_str = "[auto";
+  if (!patterns.isEmpty()) p_str += "," + patterns.join(",");
+  p_str += "]";
   Props.append(new Property("File", "", false, QObject::tr("SpiceLibrary file")));
   Props.append(new Property("Device", "", false, QObject::tr("Subcircuit entry (.SUBCKT) name")));
-  Props.append(new Property("SymPattern", "auto", false, QObject::tr("[auto,opamp3t,opamp5t]")));
+  Props.append(new Property("SymPattern", "auto", false, p_str));
 
   Model = "SpLib";
   Name  = "X";
@@ -240,4 +245,15 @@ int SpiceLibComp::getPins(QStringList &pin_names)
     }
 
     return r;
+}
+
+void SpiceLibComp::getSymbolPatternsList(QStringList &symbols)
+{
+    QString dir_name = QucsSettings.BinDir + "/../share/qucs/symbols/";
+    QDir sym_dir(dir_name);
+    QStringList sym_files = sym_dir.entryList(QDir::Files);
+    foreach (QString file,sym_files) {
+        QFileInfo inf(file);
+        symbols.append(inf.baseName());
+    }
 }

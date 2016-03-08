@@ -36,6 +36,7 @@ protected:
   int  loadSymbol(const QString&);
 private:
   int getPins(QStringList &pin_names);
+  void getSymbolPatternsList(QStringList &symbols);
 };
 
 #endif
