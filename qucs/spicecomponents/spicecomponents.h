@@ -99,5 +99,6 @@
 
 // SPICE file devices
 #include "spicegeneric.h"
+#include "spicelibcomp.h"
 
 #endif

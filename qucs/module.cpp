@@ -497,6 +497,7 @@ void Module::registerModules (void) {
   REGISTER_FILE_1 (Subcircuit);
   if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       REGISTER_FILE_1 (SpiceGeneric);
+      REGISTER_FILE_1 (SpiceLibComp);
   }
 
   // simulations

@@ -94,6 +94,7 @@ xsp_codemodel.cpp
 
 #SPICE file devices
 spicegeneric.cpp
+spicelibcomp.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -187,6 +188,7 @@ xsp_codemodel.h
 
 #SPICE file devices
 spicegeneric.h
+spicelibcomp.h
 )
 
 
@@ -195,6 +197,7 @@ spicegeneric.h
 
 ADD_LIBRARY(spicecomponents ${COMPONENTS_HDRS} ${COMPONENTS_SRCS} ${COMPONENTS_MOC_SRCS} )
 
+ADD_SUBDIRECTORY( symbols )
 
 
 
