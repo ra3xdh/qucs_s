@@ -102,7 +102,7 @@ void SpiceLibComp::createSymbol()
   }
   else {
     QStringList pins;
-    No = getPins(pins);
+    No = spicecompat::getPins(Props.at(0)->Value,Props.at(1)->Value,pins);
     Ports.clear();
     remakeSymbol(No,pins);  // no symbol was found -> create standard symbol
   }
@@ -212,40 +212,7 @@ QString SpiceLibComp::getSpiceModel()
     return s;
 }
 
-int SpiceLibComp::getPins(QStringList &pin_names)
-{
-    int r = 0;
-    QString content;
-    QString LibName = spicecompat::convert_relative_filename(Props.at(0)->Value);
-    QFile f(LibName);
-    if (f.open(QIODevice::ReadOnly)) {
-        QTextStream ts(&f);
-        content = ts.readAll();
-        f.close();
-    } else return 0;
 
-    QTextStream stream(&content,QIODevice::ReadOnly);
-    while (!stream.atEnd()) {
-        QString lin = stream.readLine();
-        QRegExp subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
-        if (subckt_header.exactMatch(lin)) {
-            QRegExp sep("\\s");
-            QStringList lst2 = lin.split(sep,QString::SkipEmptyParts);
-            QString name = lin.section(sep,1,1,QString::SectionSkipEmpty).toLower();
-            QString refname = Props.at(1)->Value.toLower();
-            if (name != refname) continue;
-            lst2.removeFirst();
-            lst2.removeFirst();
-            foreach (QString s1, lst2) {
-                if (!s1.contains('=')) pin_names.append(s1);
-            }
-            r = pin_names.count();
-            break;
-        }
-    }
-
-    return r;
-}
 
 void SpiceLibComp::getSymbolPatternsList(QStringList &symbols)
 {

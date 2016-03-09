@@ -35,7 +35,6 @@ protected:
   void remakeSymbol(int No, QStringList &pin_names);
   int  loadSymbol(const QString&);
 private:
-  int getPins(QStringList &pin_names);
   void getSymbolPatternsList(QStringList &symbols);
 };
 
