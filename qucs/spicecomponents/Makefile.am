@@ -23,6 +23,8 @@
 # Boston, MA 02110-1301, USA.
 #
 
+SUBDIRS=symbols
+
 noinst_LIBRARIES = libspicecomponents.a
 
 #MOCHEADERS = componentdialog.h spicedialog.h optimizedialog.h spicefile.h
@@ -95,8 +97,9 @@ libspicecomponents_a_SOURCES = src_eqndef.cpp \
 	SDTF.cpp \
 	xspicegeneric.cpp \
 	xsp_cmlib.cpp \
-	xsp_codemodel.cpp
-
+	xsp_codemodel.cpp \
+	spicegeneric.cpp \
+	spicelibcomp.cpp
 
 
 #nodist_libcomponents_a_SOURCES = $(MOCFILES)
@@ -168,7 +171,9 @@ noinst_HEADERS = src_eqndef.h \
 	SDTF.h \
 	xspicegeneric.h \
 	xsp_cmlib.h \
-	xsp_codemodel.h
+	xsp_codemodel.h \
+	spicegeneric.h \
+	spicelibcomp.cpp
 
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
