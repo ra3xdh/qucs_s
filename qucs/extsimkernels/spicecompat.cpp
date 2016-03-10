@@ -261,3 +261,23 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
 
     return r;
 }
+
+QString spicecompat::getSubcktName(QString subfilename)
+{
+    QString s = "";
+
+    QFile sub_file(subfilename);
+    if (sub_file.open(QIODevice::ReadOnly)) {
+        QStringList lst = QString(sub_file.readAll()).split("\n");
+        foreach (QString str, lst) {
+            QRegExp subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
+            if (subckt_header.exactMatch(str)) {
+                QRegExp sep("\\s");
+                s = str.section(sep,1,1,QString::SectionSkipEmpty);
+                break;
+            }
+        }
+        sub_file.close();
+    }
+    return s;
+}

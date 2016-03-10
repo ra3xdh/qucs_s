@@ -568,26 +568,6 @@ void SpiceFile::slotExited()
   }
 }
 
-QString SpiceFile::getSubcktName()
-{
-    QString s = "";
-
-    QFile sub_file(getSubcircuitFile());
-    if (sub_file.open(QIODevice::ReadOnly)) {
-        QStringList lst = QString(sub_file.readAll()).split("\n");
-        foreach (QString str, lst) {
-            QRegExp subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
-            if (subckt_header.exactMatch(str)) {
-                QRegExp sep("\\s");
-                s = str.section(sep,1,1,QString::SectionSkipEmpty);
-                break;
-            }
-        }
-        sub_file.close();
-    }
-    return s;
-}
-
 QString SpiceFile::spice_netlist(bool)
 {
     QStringList ports_lst = Props.at(1)->Value.split(",");
@@ -595,7 +575,8 @@ QString SpiceFile::spice_netlist(bool)
         if (it->startsWith("_net")) (*it).remove(0,4);
     }
     QStringList nod_lst;
-    spicecompat::getPins(getSubcircuitFile(),getSubcktName(),nod_lst);
+    QString compname = spicecompat::getSubcktName(getSubcircuitFile());
+    spicecompat::getPins(getSubcircuitFile(),compname,nod_lst);
 
     QList<int> seq;
     seq.clear();
@@ -609,6 +590,6 @@ QString SpiceFile::spice_netlist(bool)
         s += " "+Ports.at(i)->Connection->Name;   // node names
     }
 
-    s += " " + getSubcktName() + "\n";
+    s += " " + spicecompat::getSubcktName(getSubcircuitFile()) + "\n";
     return s;
 }

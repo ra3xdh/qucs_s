@@ -459,26 +459,9 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
       MBox->exec();
   } else { // Parse SUBCIRCUIT header directly
       QStringList lst;
-      lst.clear();
-
-      QFile sub_file(FileInfo.filePath());
-      if (sub_file.open(QIODevice::ReadOnly)) {
-          QStringList lst1 = QString(sub_file.readAll()).split("\n");
-          foreach (QString str, lst1) {
-              QRegExp subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
-              if (subckt_header.exactMatch(str)) {
-                  QRegExp sep("\\s");
-                  QStringList lst2 = str.split(sep,QString::SkipEmptyParts);
-                  lst2.removeFirst();
-                  lst2.removeFirst();
-                  foreach (QString s1, lst2) {
-                      if (!s1.contains('=')) NodesList->addItem(s1);
-                  }
-                  break;
-              }
-          }
-          sub_file.close();
-      }
+      QString compname = spicecompat::getSubcktName(FileInfo.filePath());
+      spicecompat::getPins(FileInfo.filePath(),compname,lst);
+      NodesList->addItems(lst);
   }
 
   if (!Error.isEmpty()) {

@@ -53,7 +53,6 @@ private:
 protected:
   QString netlist();
   void createSymbol();
-  QString getSubcktName();
   QString spice_netlist(bool isXyce);
 
 private slots:
