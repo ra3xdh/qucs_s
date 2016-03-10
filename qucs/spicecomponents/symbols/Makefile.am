@@ -22,13 +22,13 @@
 # Boston, MA 02110-1301, USA.  
 #
 
-SP_SYMBOLS = cmlib.linux.rules.mk
+SP_SYMBOLS = opamp3t.sym opamp5t.sym
 
 EXTRA_DIST = $(SP_SYMBOLS)
 
 # installation of transmission lines
 symbolsdir = ${prefix}/share/qucs/symbols
-symblos_DATA = $(EXTRA_DIST)
+symbols_DATA = $(EXTRA_DIST)
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = Makefile.in
