@@ -2555,12 +2555,10 @@ void QucsApp::slotPowerMatching()
     Imag *= -1.0;
 
   MatchDialog *Dia = new MatchDialog(this);
-  Dia->TwoCheck->setChecked(false);
-  Dia->TwoCheck->setEnabled(false);
 //  Dia->Ref1Edit->setText(QString::number(Z0));
-  Dia->S11magEdit->setText(QString::number(pm->powReal()));
-  Dia->S11degEdit->setText(QString::number(Imag));
+  Dia->setS11LineEdits(pm->powReal(), Imag);
   Dia->setFrequency(pm->powFreq());
+  Dia->setTwoPortMatch(false); // will also cause the corresponding impedance LineEdit to be updated
 
   slotToPage();
   if(Dia->exec() != QDialog::Accepted)
@@ -2638,16 +2636,12 @@ void QucsApp::slot2PortMatching()
   delete Diag;
 
   MatchDialog *Dia = new MatchDialog(this);
-  Dia->TwoCheck->setEnabled(false);
+  Dia->setTwoPortMatch(true);
   Dia->setFrequency(Freq);
-  Dia->S11magEdit->setText(QString::number(S11real));
-  Dia->S11degEdit->setText(QString::number(S11imag));
-  Dia->S12magEdit->setText(QString::number(S12real));
-  Dia->S12degEdit->setText(QString::number(S12imag));
-  Dia->S21magEdit->setText(QString::number(S21real));
-  Dia->S21degEdit->setText(QString::number(S21imag));
-  Dia->S22magEdit->setText(QString::number(S22real));
-  Dia->S22degEdit->setText(QString::number(S22imag));
+  Dia->setS11LineEdits(S11real, S11imag);
+  Dia->setS12LineEdits(S12real, S12imag);
+  Dia->setS21LineEdits(S21real, S21imag);
+  Dia->setS22LineEdits(S22real, S22imag);
 
   slotToPage();
   if(Dia->exec() != QDialog::Accepted)
