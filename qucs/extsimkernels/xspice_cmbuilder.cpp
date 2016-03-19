@@ -17,6 +17,7 @@
 
 #include "xspice_cmbuilder.h"
 #include "components/subcircuit.h"
+#include "components/libcomp.h"
 #include "spicecomponents/xsp_cmlib.h"
 #include "main.h"
 
@@ -86,6 +87,11 @@ bool XSPICE_CMbuilder::needCompile()
     bool r = false;
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
         if (pc->Model=="XSP_CMod") r = true;
+        if (pc->Model=="Lib") {
+            LibComp *libpc = (LibComp *)pc;
+            if ((!libpc->getAttachedIFS().isEmpty())&&
+                (!libpc->getAttachedMOD().isEmpty())) r = true;
+        }
         if (pc->Model=="Sub") { // Scan subcircuits recursively
             Schematic *d = new Schematic(0, ((Subcircuit *)pc)->getSubcircuitFile());
             if(!d->loadDocument())      // load document if possible
@@ -188,11 +194,18 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
     QDir dir_cm(cmdir);
 
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-        if (pc->Model=="XSP_CMod") {
+        if ((pc->Model=="XSP_CMod")||(pc->Model=="Lib")) {
             // Copy every cfunc.mod and ifspe.ifs pair into
             // unique subdirectory in qucs_cmlib/
-            QString mod = spicecompat::convert_relative_filename(pc->Props.at(0)->Value);
-            QString ifs = spicecompat::convert_relative_filename(pc->Props.at(1)->Value);
+            QString mod,ifs;
+            if (pc->Model=="Lib") {
+                LibComp *libpc = (LibComp *)pc;
+                mod = libpc->getAttachedMOD();
+                ifs = libpc->getAttachedIFS();
+            } else {
+                mod = spicecompat::convert_relative_filename(pc->Props.at(0)->Value);
+                ifs = spicecompat::convert_relative_filename(pc->Props.at(1)->Value);
+            }
             QStringList lst1;
             lst1<<mod<<ifs;
             // If model is duplicated don't process it (don't copy files)

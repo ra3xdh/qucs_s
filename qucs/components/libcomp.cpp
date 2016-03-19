@@ -378,7 +378,7 @@ QString LibComp::getAttachedIFS()
     int r = loadSection("Spice",content,&includes,&attach);
     if (r<0) return QString("");
     foreach(QString file,attach) {
-        if (file.endsWith(".ifs")) return file;
+        if (file.endsWith(".ifs")) return getSubcircuitFile()+'/'+file;
     }
     return QString("");
 }
@@ -391,7 +391,7 @@ QString LibComp::getAttachedMOD()
     int r = loadSection("Spice",content,&includes,&attach);
     if (r<0) return QString("");
     foreach(QString file,attach) {
-        if (file.endsWith(".mod")) return file;
+        if (file.endsWith(".mod")) return getSubcircuitFile()+'/'+file;
     }
     return QString("");
 }
