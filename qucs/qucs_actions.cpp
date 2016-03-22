@@ -37,6 +37,8 @@
 #include <QComboBox>
 #include <QDockWidget>
 #include <QTreeWidgetItem>
+#include <QMutableHashIterator>
+#include <QListWidget>
 
 #include "projectView.h"
 #include "main.h"
@@ -1390,20 +1392,13 @@ void QucsApp::slotLoadModule()
       // dialog should populate acording to checkboxes
       // build vaComponents QMap
 
-      // remove all modules before registering/loaded again
-      // look for modules in the category,
-      // \todo investigate if it is leaking objects somewhere
-      QStringList removeList;
-      QHashIterator<QString, Module *> it( Module::Modules );
+      // remove all previously registered modules
+      QMutableHashIterator<QString, Module *> it( Module::Modules );
       while(it.hasNext()) {
         it.next();
         if (it.value()->category == QObject::tr("verilog-a user devices")) {
-          removeList << it.key();
-          delete it.value();
+          it.remove();
         }
-      }
-      for (int i = 0; i < removeList.size(); ++i){
-        Module::Modules.remove(removeList.at(i));
       }
 
       if (! Module::vaComponents.isEmpty()) {
@@ -1418,6 +1413,14 @@ void QucsApp::slotLoadModule()
         slotSetCompView(CompChoose->count()-1);
 
         // icons of dynamically registered components ready to be dragged
+      }
+      else {
+        // remove any previously registerd icons from the listview
+        int foundCat = CompChoose->findText(QObject::tr("verilog-a user devices"));
+        if (foundCat != -1) {
+          CompChoose->setCurrentItem(foundCat);
+          CompComps->clear();
+        }
       }
     }
 

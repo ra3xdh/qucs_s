@@ -1163,39 +1163,42 @@ void QucsApp::openProject(const QString& Path)
 {
   slotHideEdit(); // disable text edit of component property
 
-  QString Name = Path;
-  if (Name.endsWith(QDir::separator())) {
-    Name = Name.left(Name.length()-1);  // cut off trailing '/'
+  QDir ProjDir(QDir::cleanPath(Path)); // the full path
+  QString openProjName = ProjDir.dirName(); // only the project directory name
+
+  if(!ProjDir.exists() || !ProjDir.isReadable()) { // check project directory
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Cannot access project directory: %1").arg(Path));
+    return;
   }
-  int i = Name.lastIndexOf(QDir::separator());
-  if(i > 0) Name = Name.mid(i+1);   // cut out the last subdirectory
-  Name.remove("_prj");
+
+  if (!openProjName.endsWith("_prj")) { // should not happen
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Project directory name does not end in '_prj'(%1)").arg(openProjName));
+    return;
+  }
 
   if(!closeAllFiles()) return;   // close files and ask for saving them
   Schematic *d = new Schematic(this, "");
-  i = DocumentTab->addTab(d, QPixmap(empty_xpm), QObject::tr("untitled"));
+  int i = DocumentTab->addTab(d, QPixmap(empty_xpm), QObject::tr("untitled"));
   DocumentTab->setCurrentIndex(i);
 
   view->drawn = false;
 
   slotResetWarnings();
 
-  QDir ProjDir(QDir::cleanPath(Path));
-  if(!ProjDir.exists() || !ProjDir.isReadable()) { // check project directory
-    QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot access project directory: ")+Path);
-    return;
-  }
   QucsSettings.QucsWorkDir.setPath(ProjDir.path());
   octave->adjustDirectory();
 
   Content->setProjPath(QucsSettings.QucsWorkDir.absolutePath());
 
   TabView->setCurrentIndex(1);   // switch to "Content"-Tab
-  ProjName = Name;   // remember the name of project
+
+  openProjName.chop(4); // remove "_prj" from name
+  ProjName = openProjName;   // remember the name of project
 
   // show name in title of main window
-  setWindowTitle("Qucs " PACKAGE_VERSION + tr(" - Project: ")+Name);
+  setWindowTitle("Qucs " PACKAGE_VERSION + tr(" - Project: ")+ProjName);
 }
 
 // ----------------------------------------------------------
@@ -1295,18 +1298,19 @@ bool QucsApp::deleteProject(const QString& Path)
 {
   slotHideEdit();
 
-  QString Name = Path;
+  if(Path.isEmpty()) return false;
 
-  if(Name.isEmpty()) return false;
+  QString delProjName = QDir(Path).dirName(); // only project directory name
 
-  if (Name.endsWith(QDir::separator())) {
-    Name = Name.left(Name.length()-1);  // cut off trailing '/'
+  if (!delProjName.endsWith("_prj")) { // should not happen
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Project directory name does not end in '_prj' (%1)").arg(delProjName));
+    return false;
   }
-  int i = Name.lastIndexOf(QDir::separator());
-  if(i > 0) Name = Name.mid(i+1);  // cut out the last subdirectory
-  Name.chop(4); // remove "_prj" from name
 
-  if(Name == ProjName) {
+  delProjName.chop(4); // remove "_prj" from name
+
+  if(delProjName == ProjName) {
     QMessageBox::information(this, tr("Info"),
         tr("Cannot delete an open project !"));
     return false;
@@ -1564,13 +1568,13 @@ bool QucsApp::saveAs()
   Doc->setName(s);
   DocumentTab->setTabText(DocumentTab->indexOf(w), misc::properFileName(s));
   lastDirOpenSave = Info.absolutePath();  // remember last directory and file
-  updateRecentFilesList(s);
 
   n = Doc->save();   // SAVE
   if(n < 0)  return false;
 
   updatePortNumber(Doc, n);
   slotUpdateTreeview();
+  updateRecentFilesList(s);
   return true;
 }
 
@@ -2555,12 +2559,10 @@ void QucsApp::slotPowerMatching()
     Imag *= -1.0;
 
   MatchDialog *Dia = new MatchDialog(this);
-  Dia->TwoCheck->setChecked(false);
-  Dia->TwoCheck->setEnabled(false);
 //  Dia->Ref1Edit->setText(QString::number(Z0));
-  Dia->S11magEdit->setText(QString::number(pm->powReal()));
-  Dia->S11degEdit->setText(QString::number(Imag));
+  Dia->setS11LineEdits(pm->powReal(), Imag);
   Dia->setFrequency(pm->powFreq());
+  Dia->setTwoPortMatch(false); // will also cause the corresponding impedance LineEdit to be updated
 
   slotToPage();
   if(Dia->exec() != QDialog::Accepted)
@@ -2638,16 +2640,12 @@ void QucsApp::slot2PortMatching()
   delete Diag;
 
   MatchDialog *Dia = new MatchDialog(this);
-  Dia->TwoCheck->setEnabled(false);
+  Dia->setTwoPortMatch(true);
   Dia->setFrequency(Freq);
-  Dia->S11magEdit->setText(QString::number(S11real));
-  Dia->S11degEdit->setText(QString::number(S11imag));
-  Dia->S12magEdit->setText(QString::number(S12real));
-  Dia->S12degEdit->setText(QString::number(S12imag));
-  Dia->S21magEdit->setText(QString::number(S21real));
-  Dia->S21degEdit->setText(QString::number(S21imag));
-  Dia->S22magEdit->setText(QString::number(S22real));
-  Dia->S22degEdit->setText(QString::number(S22imag));
+  Dia->setS11LineEdits(S11real, S11imag);
+  Dia->setS12LineEdits(S12real, S12imag);
+  Dia->setS21LineEdits(S21real, S21imag);
+  Dia->setS22LineEdits(S22real, S22imag);
 
   slotToPage();
   if(Dia->exec() != QDialog::Accepted)

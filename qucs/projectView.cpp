@@ -28,6 +28,7 @@
 #include <QStringList>
 #include <QDir>
 #include <QStandardItemModel>
+#include <QDebug>
 
 ProjectView::ProjectView(QWidget *parent)
   : QTreeView(parent)
@@ -51,22 +52,17 @@ ProjectView::~ProjectView()
 void
 ProjectView::setProjPath(const QString &path)
 {
+  // check if path exist
   m_valid = !path.isEmpty() && QDir(path).exists();
 
   if (m_valid) {
-    //test path exist
-    m_projPath = path;
-    m_projName = path;
-
-    // cut off trailing '/'
-    if (m_projName.endsWith(QDir::separator())) {
-      m_projName.chop(1);
+    m_projPath = path; // full path
+    m_projName = QDir(m_projPath).dirName(); // only project directory name
+    if (m_projName.endsWith("_prj")) {
+      m_projName.chop(4);// remove "_prj" from name
+    } else { // should not happen
+      qWarning() << "ProjectView::setProjPath() : path does not end in '_prj' (" << m_projName << ")";
     }
-    int i = m_projName.lastIndexOf(QDir::separator());
-    if(i > 0) {
-      m_projName = m_projName.mid(i+1);   // cut out the last subdirectory
-    }
-    m_projName.remove("_prj");
   }
   refresh();
 }
@@ -98,7 +94,7 @@ ProjectView::refresh()
 
   // put all files into "Content"-ListView
   QDir workPath(m_projPath);
-  QStringList files = workPath.entryList("*", QDir::Files, QDir::Name);
+  QStringList files = workPath.entryList(QStringList() << "*", QDir::Files, QDir::Name);
   QStringList::iterator it;
   QString extName, fileName;
   QList<QStandardItem *> columnData;

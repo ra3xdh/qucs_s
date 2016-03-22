@@ -4,6 +4,7 @@
     begin                : Fri Jul 22 2005
     copyright            : (C) 2005 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
+    copyright            : (C) 2012, 2013, 2016 by Qucs Team (see AUTHORS file)
  ***************************************************************************/
 
 /***************************************************************************
@@ -63,18 +64,21 @@ MatchDialog::MatchDialog(QWidget *parent)
   QHBoxLayout *ImpLayout = new QHBoxLayout();
   Port1Label = new QLabel(tr("Port 1"));
   Ref1Edit = new QLineEdit("50");
+  Ref1Edit->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   Ref1Edit->setValidator(DoubleVal);
   Ohm1Label = new QLabel(tr("ohms"));
   connect(Ref1Edit, SIGNAL(textChanged(const QString&)),
 	  SLOT(slotImpedanceChanged(const QString&)));
   Port2Label = new QLabel(tr("Port 2"));
   Ref2Edit = new QLineEdit("50");
+  Ref2Edit->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   Ref2Edit->setValidator(DoubleVal);
   Ohm2Label = new QLabel(tr("ohms"));
   ImpLayout->addWidget(Port1Label);
   ImpLayout->addWidget(Ref1Edit);
   ImpLayout->addWidget(Ohm1Label);
   ImpLayout->addSpacing(50);
+  ImpLayout->addStretch();
   ImpLayout->addWidget(Port2Label);
   ImpLayout->addWidget(Ref2Edit);
   ImpLayout->addWidget(Ohm2Label);
@@ -84,6 +88,7 @@ MatchDialog::MatchDialog(QWidget *parent)
   QGroupBox *SParBox = new QGroupBox(tr("S Parameter"));
   all->addWidget(SParBox);
   QVBoxLayout *SParLayout = new QVBoxLayout();
+  SParLayout->setSpacing(10);
   SParBox->setLayout(SParLayout);
 
   QHBoxLayout *h1 = new QHBoxLayout();
@@ -92,8 +97,8 @@ MatchDialog::MatchDialog(QWidget *parent)
   h1->addWidget(FormatLabel);
   FormatCombo = new QComboBox();
   h1->addWidget(FormatCombo);
-  FormatCombo->insertItem(tr("real/imag"));
-  FormatCombo->insertItem(tr("mag/deg"));
+  FormatCombo->insertItem(0, tr("real/imag"));
+  FormatCombo->insertItem(1, tr("mag/deg"));
   connect(FormatCombo, SIGNAL(activated(int)), SLOT(slotChangeMode(int)));
   h1->addStretch(5);
   SParLayout->addLayout(h1);
@@ -171,6 +176,15 @@ MatchDialog::MatchDialog(QWidget *parent)
     VBox0->addWidget(S22uLabel);
   SParLayout->addLayout(h3);
 
+  // set tab order to a more natural mode
+  setTabOrder(S11magEdit, S11degEdit);
+  setTabOrder(S11degEdit, S12magEdit);
+  setTabOrder(S12magEdit, S12degEdit);
+  setTabOrder(S12degEdit, S21magEdit);
+  setTabOrder(S21magEdit, S21degEdit);
+  setTabOrder(S21degEdit, S22magEdit);
+  setTabOrder(S22magEdit, S22degEdit);
+
   connect(S21magEdit, SIGNAL(textChanged(const QString&)),
 	  SLOT(slotImpedanceChanged(const QString&)));
   connect(S21degEdit, SIGNAL(textChanged(const QString&)),
@@ -189,10 +203,10 @@ MatchDialog::MatchDialog(QWidget *parent)
   h2->addWidget(FrequencyLabel);
   h2->addWidget(FrequencyEdit);
   UnitCombo = new QComboBox();
-  UnitCombo->insertItem("Hz");
-  UnitCombo->insertItem("kHz");
-  UnitCombo->insertItem("MHz");
-  UnitCombo->insertItem("GHz");
+  UnitCombo->insertItem(0, "Hz");
+  UnitCombo->insertItem(1, "kHz");
+  UnitCombo->insertItem(2, "MHz");
+  UnitCombo->insertItem(3, "GHz");
   h2->addWidget(UnitCombo);
   h2->addStretch(5);
   SParLayout->addLayout(h2);
@@ -226,11 +240,30 @@ void MatchDialog::setFrequency(double Freq_)
   int Expo = int(log10(Freq_) / 3.0);
   if(Expo < 0) Expo = 0;
   else if(Expo > 3) Expo = 3;
-  UnitCombo->setCurrentItem(Expo);
+  UnitCombo->setCurrentIndex(Expo);
   Freq_ /= pow(10.0, double(3*Expo));
   FrequencyEdit->setText(QString::number(Freq_));
 }
 
+// Set visibility of LineEdits and Labels associated with two-port matching
+void MatchDialog::set2PortWidgetsVisible(bool visible)
+{
+    S12magEdit->setVisible(visible);
+    S22magEdit->setVisible(visible);
+    S12degEdit->setVisible(visible);
+    S22degEdit->setVisible(visible);
+    S12Label->setVisible(visible);
+    S22Label->setVisible(visible);
+    S12sLabel->setVisible(visible);
+    S22sLabel->setVisible(visible);
+    S12degEdit->setVisible(visible);
+    S22degEdit->setVisible(visible);
+    S12uLabel->setVisible(visible);
+    S22uLabel->setVisible(visible);
+    Port2Label->setVisible(visible);
+    Ref2Edit->setVisible(visible);
+    Ohm2Label->setVisible(visible);
+}
 // -----------------------------------------------------------------------
 // Is called when the checkbox for two-port matching changes.
 void MatchDialog::slotSetTwoPort(bool on)
@@ -238,40 +271,18 @@ void MatchDialog::slotSetTwoPort(bool on)
   if(on) { // two-port matching ?
     S11Label->setText(tr("S11"));
     S21Label->setText(tr("S21"));
-    S12magEdit->setEnabled(true);
-    S22magEdit->setEnabled(true);
-    S12degEdit->setEnabled(true);
-    S22degEdit->setEnabled(true);
-    S12Label->setEnabled(true);
-    S22Label->setEnabled(true);
-    S12sLabel->setEnabled(true);
-    S22sLabel->setEnabled(true);
-    S12degEdit->setEnabled(true);
-    S22degEdit->setEnabled(true);
-    S12uLabel->setEnabled(true);
-    S22uLabel->setEnabled(true);
-    Port2Label->setEnabled(true);
-    Ref2Edit->setEnabled(true);
-    Ohm2Label->setEnabled(true);
+    // restore the previous S21 values
+    setS21LineEdits(tmpS21mag, tmpS21deg);
+    set2PortWidgetsVisible(true);
   }
   else {
     S11Label->setText(tr("Reflexion Coefficient"));
     S21Label->setText(tr("Impedance (ohms)"));
-    S12magEdit->setEnabled(false);
-    S22magEdit->setEnabled(false);
-    S12degEdit->setEnabled(false);
-    S22degEdit->setEnabled(false);
-    S12Label->setEnabled(false);
-    S22Label->setEnabled(false);
-    S12sLabel->setEnabled(false);
-    S22sLabel->setEnabled(false);
-    S12degEdit->setEnabled(false);
-    S22degEdit->setEnabled(false);
-    S12uLabel->setEnabled(false);
-    S22uLabel->setEnabled(false);
-    Port2Label->setEnabled(false);
-    Ref2Edit->setEnabled(false);
-    Ohm2Label->setEnabled(false);
+    set2PortWidgetsVisible(false);
+    // save S21 values, as these will be overwritten with the impedance value
+    tmpS21mag = S21magEdit->text().toDouble();
+    tmpS21deg = S21degEdit->text().toDouble();
+    slotReflexionChanged(""); // calculate impedance
   }
 }
 
@@ -292,26 +303,24 @@ void MatchDialog::slotChangeMode(int Index)
     double Real = S11magEdit->text().toDouble();
     double Imag = S11degEdit->text().toDouble();
     c2p(Real, Imag);
-    S11magEdit->setText(QString::number(Real));
-    S11degEdit->setText(QString::number(Imag));
+    setS11LineEdits(Real, Imag);
 
     Real = S12magEdit->text().toDouble();
     Imag = S12degEdit->text().toDouble();
     c2p(Real, Imag);
-    S12magEdit->setText(QString::number(Real));
-    S12degEdit->setText(QString::number(Imag));
+    setS12LineEdits(Real, Imag);
 
     Real = S21magEdit->text().toDouble();
     Imag = S21degEdit->text().toDouble();
     c2p(Real, Imag);
-    S21magEdit->setText(QString::number(Real));
-    S21degEdit->setText(QString::number(Imag));
+    setS21LineEdits(Real, Imag);
+    // convert also temp entries for future use
+    c2p(tmpS21mag, tmpS21deg);
 
     Real = S22magEdit->text().toDouble();
     Imag = S22degEdit->text().toDouble();
     c2p(Real, Imag);
-    S22magEdit->setText(QString::number(Real));
-    S22degEdit->setText(QString::number(Imag));
+    setS22LineEdits(Real, Imag);
   }
   else {  // cartesian
     S11sLabel->setText("+j");
@@ -326,26 +335,24 @@ void MatchDialog::slotChangeMode(int Index)
     double Mag   = S11magEdit->text().toDouble();
     double Phase = S11degEdit->text().toDouble();
     p2c(Mag, Phase);
-    S11magEdit->setText(QString::number(Mag));
-    S11degEdit->setText(QString::number(Phase));
+    setS11LineEdits(Mag, Phase);
 
     Mag   = S12magEdit->text().toDouble();
     Phase = S12degEdit->text().toDouble();
     p2c(Mag, Phase);
-    S12magEdit->setText(QString::number(Mag));
-    S12degEdit->setText(QString::number(Phase));
+    setS12LineEdits(Mag, Phase);
 
     Mag   = S21magEdit->text().toDouble();
     Phase = S21degEdit->text().toDouble();
     p2c(Mag, Phase);
-    S21magEdit->setText(QString::number(Mag));
-    S21degEdit->setText(QString::number(Phase));
+    setS21LineEdits(Mag, Phase);
+    // convert also temp entries for future use
+    p2c(tmpS21mag, tmpS21deg);
 
     Mag   = S22magEdit->text().toDouble();
     Phase = S22degEdit->text().toDouble();
     p2c(Mag, Phase);
-    S22magEdit->setText(QString::number(Mag));
-    S22degEdit->setText(QString::number(Phase));
+    setS22LineEdits(Mag, Phase);
   }
 }
 
@@ -359,13 +366,16 @@ void MatchDialog::slotImpedanceChanged(const QString&)
   double Z0   = Ref1Edit->text().toDouble();
   double Real = S21magEdit->text().toDouble();
   double Imag = S21degEdit->text().toDouble();
-  z2r(Real, Imag, Z0);
-  S11magEdit->blockSignals(true); // do not call "changed-slot"
-  S11magEdit->setText(QString::number(Real));
-  S11magEdit->blockSignals(false);
-  S11degEdit->blockSignals(true); // do not call "changed-slot"
-  S11degEdit->setText(QString::number(Imag));
-  S11degEdit->blockSignals(false);
+
+  if(FormatCombo->currentIndex()) {  // entries in polar format
+    p2c(Real, Imag);
+    z2r(Real, Imag, Z0);
+    c2p(Real, Imag);
+  } else {
+    z2r(Real, Imag, Z0);
+  }
+
+  setS11LineEdits(Real, Imag);
 }
 
 // -----------------------------------------------------------------------
@@ -378,13 +388,47 @@ void MatchDialog::slotReflexionChanged(const QString&)
   double Z0   = Ref1Edit->text().toDouble();
   double Real = S11magEdit->text().toDouble();
   double Imag = S11degEdit->text().toDouble();
-  r2z(Real, Imag, Z0);
-  S21magEdit->blockSignals(true); // do not call "changed-slot"
+
+  if(FormatCombo->currentIndex()) {  // entries in polar format
+    p2c(Real, Imag);
+    r2z(Real, Imag, Z0);
+    c2p(Real, Imag);
+  } else {
+    r2z(Real, Imag, Z0);
+  }
+  setS21LineEdits(Real, Imag);
+}
+
+void MatchDialog::setS11LineEdits(double Real, double Imag)
+{
+  S11magEdit->blockSignals(true); // do not call slot for "textChanged"
+  S11magEdit->setText(QString::number(Real));
+  S11magEdit->blockSignals(false);
+  S11degEdit->blockSignals(true); // do not call slot for "textChanged"
+  S11degEdit->setText(QString::number(Imag));
+  S11degEdit->blockSignals(false);
+}
+
+void MatchDialog::setS12LineEdits(double Real, double Imag)
+{
+  S12magEdit->setText(QString::number(Real));
+  S12degEdit->setText(QString::number(Imag));
+}
+
+void MatchDialog::setS21LineEdits(double Real, double Imag)
+{
+  S21magEdit->blockSignals(true); // do not call slot for "textChanged"
   S21magEdit->setText(QString::number(Real));
   S21magEdit->blockSignals(false);
-  S21degEdit->blockSignals(true); // do not call "changed-slot"
+  S21degEdit->blockSignals(true); // do not call slot for "textChanged"
   S21degEdit->setText(QString::number(Imag));
   S21degEdit->blockSignals(false);
+}
+
+void MatchDialog::setS22LineEdits(double Real, double Imag)
+{
+  S22magEdit->setText(QString::number(Real));
+  S22degEdit->setText(QString::number(Imag));
 }
 
 // -----------------------------------------------------------------------
@@ -394,7 +438,7 @@ void MatchDialog::slotButtCreate()
   double Z1   = Ref1Edit->text().toDouble();
   double Z2   = Ref2Edit->text().toDouble();
   double Freq = FrequencyEdit->text().toDouble() *
-                pow(10.0, 3.0*double(UnitCombo->currentItem()));
+                pow(10.0, 3.0*double(UnitCombo->currentIndex()));
 
   double S11real = S11magEdit->text().toDouble();
   double S11imag = S11degEdit->text().toDouble();
@@ -404,7 +448,7 @@ void MatchDialog::slotButtCreate()
   double S21imag = S21degEdit->text().toDouble();
   double S22real = S22magEdit->text().toDouble();
   double S22imag = S22degEdit->text().toDouble();
-  if(FormatCombo->currentItem()) {  // are they polar ?
+  if(FormatCombo->currentIndex()) {  // are they polar ?
     p2c(S11real, S11imag);
     p2c(S12real, S12imag);
     p2c(S21real, S21imag);

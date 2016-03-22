@@ -1,3 +1,0 @@
-?package(qucs):needs="X11" section="Applications/Education" hints="electronic"\
-  title="Qucs" command="/usr/bin/qucs"\
-  icon="/usr/share/pixmaps/big.qucs.xpm"

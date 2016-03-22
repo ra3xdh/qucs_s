@@ -4,6 +4,8 @@
     begin                : Sun Jul 30 2006
     copyright            : (C) 2006 by Michael Margraf
     email                : michael.margraf@alumni.tu-berlin.de
+
+    copyright            : (C) 2016 Qucs Team
  ***************************************************************************/
 
 /***************************************************************************
@@ -228,6 +230,13 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   VarTypeCombo->insertItem(1, tr("logarithmic double"));
   VarTypeCombo->insertItem(2, tr("linear integer"));
   VarTypeCombo->insertItem(3, tr("logarithmic integer"));
+  VarTypeCombo->insertItem(4, tr("E3 series"));
+  VarTypeCombo->insertItem(5, tr("E6 series"));
+  VarTypeCombo->insertItem(6, tr("E12 series"));
+  VarTypeCombo->insertItem(7, tr("E24 series"));
+  VarTypeCombo->insertItem(8, tr("E48 series"));
+  VarTypeCombo->insertItem(9, tr("E96 series"));
+  VarTypeCombo->insertItem(10, tr("E192 series"));
   connect(VarTypeCombo, SIGNAL(activated(const QString&)),
           SLOT(slotChangeVarType(const QString&)));
 
@@ -404,6 +413,20 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
         typeStr = tr("logarithmic double");
       } else if (ValueSplit.at(5) == "LIN_INT") {
         typeStr = tr("linear integer");
+      } else if (ValueSplit.at(5) == "E3") {
+        typeStr = tr("E3 series");
+      } else if (ValueSplit.at(5) == "E6") {
+        typeStr = tr("E6 series");
+      } else if (ValueSplit.at(5) == "E12") {
+        typeStr = tr("E12 series");
+      } else if (ValueSplit.at(5) == "E24") {
+        typeStr = tr("E24 series");
+      } else if (ValueSplit.at(5) == "E48") {
+        typeStr = tr("E48 series");
+      } else if (ValueSplit.at(5) == "E96") {
+        typeStr = tr("E96 series");
+      } else if (ValueSplit.at(5) == "E192") {
+        typeStr = tr("E192 series");
       } else {
         typeStr = tr("logarithmic integer");
       }
@@ -749,6 +772,20 @@ void OptimizeDialog::slotApply()
       propList << "LOG_DOUBLE";
     } else if (typeStr == tr("linear integer")) {
       propList << "LIN_INT";
+    } else if (typeStr == tr("E3 series")) {
+      propList << "E3";
+    } else if (typeStr == tr("E6 series")) {
+      propList << "E6";
+    } else if (typeStr == tr("E12 series")) {
+      propList << "E12";
+    } else if (typeStr == tr("E24 series")) {
+      propList << "E24";
+    } else if (typeStr == tr("E48 series")) {
+      propList << "E48";
+    } else if (typeStr == tr("E96 series")) {
+      propList << "E96";
+    } else if (typeStr == tr("E192 series")) {      
+      propList << "E192";
     } else {
       propList << "LOG_INT";
     }

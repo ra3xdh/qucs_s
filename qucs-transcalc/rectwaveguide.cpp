@@ -223,7 +223,7 @@ void rectwaveguide::analyze ()
     beta = sqrt (pow (k, 2.0) - pow (kc (1,0), 2.0));
     lambda_g = 2.0 * pi / beta;
     /* Z0 = (k * ZF0) / beta; */
-    Z0 = k * ZF0 / beta;
+    Z0 = k * ZF0 * sqrt(mur/er) / beta;
 
     /* calculate electrical angle */
     lambda_g = 2.0 * pi / beta;

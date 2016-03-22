@@ -23,6 +23,7 @@
 #include "printerwriter.h"
 #include "schematic.h"
 #include "textdoc.h"
+#include "qucs.h"
 
 #include <QPrinter>
 #include <QPainter>
@@ -96,7 +97,7 @@ PrinterWriter::print(QWidget *doc)
   dialog->setWindowTitle(QObject::tr("Print Document"));
   dialog->addEnabledOption(QAbstractPrintDialog::PrintSelection);
 
-  if (doc->inherits("QPlainTextEdit"))
+  if (QucsApp::isTextDocument(doc))
   {
     if (dialog->exec() == QDialog::Accepted) {
        static_cast<QPlainTextEdit *>(doc)->print(Printer);

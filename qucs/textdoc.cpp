@@ -60,7 +60,7 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDo
   viewport()->setFocus();
 
   setWordWrapMode(QTextOption::NoWrap);
-  setPaletteBackgroundColor(QucsSettings.BGColor);
+  viewport()->setPaletteBackgroundColor(QucsSettings.BGColor);
   connect(this, SIGNAL(textChanged()), SLOT(slotSetChanged()));
   connect(this, SIGNAL(cursorPositionChanged()),
           SLOT(slotCursorPosChanged()));

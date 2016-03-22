@@ -47,20 +47,19 @@ libcomponents_a_SOURCES = phaseshifter.cpp gyrator.cpp componentdialog.cpp    \
   rs_flipflop.cpp d_flipflop.cpp jk_flipflop.cpp coaxialline.cpp vprobe.cpp   \
   switch.cpp relais.cpp am_modulator.cpp pm_modulator.cpp opt_sim.cpp         \
   optimizedialog.cpp tline_4port.cpp twistedpair.cpp bondwire.cpp rlcg.cpp    \
-  hicumL2V2p1.cpp HBT_X.cpp verilogfile.cpp vexp.cpp iexp.cpp eqndefined.cpp  \
-  vfile.cpp ifile.cpp mod_amp.cpp hic2_full.cpp thyristor.cpp triac.cpp       \
-  diac.cpp log_amp.cpp hic0_full.cpp potentiometer.cpp rfedd.cpp rfedd2p.cpp  \
-  MESFET.cpp rectline.cpp hicumL0V1p2.cpp hicumL2V2p23.cpp photodiode.cpp     \
+  verilogfile.cpp vexp.cpp iexp.cpp eqndefined.cpp  \
+  vfile.cpp ifile.cpp mod_amp.cpp thyristor.cpp triac.cpp       \
+  diac.cpp log_amp.cpp potentiometer.cpp rfedd.cpp rfedd2p.cpp  \
+  MESFET.cpp rectline.cpp photodiode.cpp     \
   EKV26MOS.cpp logical_buf.cpp dff_SR.cpp jkff_SR.cpp tff_SR.cpp              \
   gatedDlatch.cpp logic_0.cpp logic_1.cpp mux2to1.cpp mux4to1.cpp mux8to1.cpp \
   DLS_nto1.cpp DLS_1ton.cpp andor4x2.cpp andor4x3.cpp andor4x4.cpp            \
   dmux2to4.cpp dmux3to8.cpp dmux4to16.cpp ha1b.cpp fa1b.cpp fa2b.cpp          \
   pad2bit.cpp pad3bit.cpp pad4bit.cpp binarytogrey4bit.cpp vafile.cpp         \
   greytobinary4bit.cpp comp_1bit.cpp comp_2bit.cpp comp_4bit.cpp              \
-  hpribin4bit.cpp msrstub.cpp phototransistor.cpp nigbt.cpp hicumL2V2p24.cpp  \
-  hicumL0V1p2g.cpp hybrid.cpp ctline.cpp tunneldiode.cpp hicumL0V1p3.cpp      \
-  hicumL2V2p31n.cpp  bsim3v34nMOS.cpp bsim3v34pMOS.cpp bsim4v30nMOS.cpp       \
-  bsim4v30pMOS.cpp etr_sim.cpp ecvs.cpp vcresistor.cpp vacomponent.cpp        \
+  hpribin4bit.cpp msrstub.cpp phototransistor.cpp nigbt.cpp \
+  hybrid.cpp ctline.cpp tunneldiode.cpp \
+  etr_sim.cpp ecvs.cpp vcresistor.cpp vacomponent.cpp        \
   mutualx.cpp \
   src_eqndef.cpp \
 	sp_parameter.cpp \
@@ -127,7 +126,6 @@ libcomponents_a_SOURCES = phaseshifter.cpp gyrator.cpp componentdialog.cpp    \
 	SDTF.cpp
 
 
-
 nodist_libcomponents_a_SOURCES = $(MOCFILES)
 
 noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
@@ -145,15 +143,16 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
   logical_xor.h logical_xnor.h logical_inv.h digi_sim.h digi_source.h         \
   coupler.h rs_flipflop.h d_flipflop.h jk_flipflop.h coaxialline.h vprobe.h   \
   switch.h relais.h am_modulator.h pm_modulator.h opt_sim.h tline_4port.h     \
-  twistedpair.h bondwire.h hicumL2V2p1.h HBT_X.h verilogfile.h vexp.h iexp.h  \
-  eqndefined.h vfile.h ifile.h mod_amp.h hic2_full.h thyristor.h triac.h      \
-  diac.h log_amp.h hic0_full.h potentiometer.h rfedd.h rfedd2p.h MESFET.h     \
-  rectline.h hicumL0V1p2.h hicumL2V2p23.h photodiode.h EKV26MOS.h rlcg.h      \
+  twistedpair.h bondwire.h verilogfile.h vexp.h iexp.h  \
+  eqndefined.h vfile.h ifile.h mod_amp.h thyristor.h triac.h      \
+  diac.h log_amp.h potentiometer.h rfedd.h rfedd2p.h MESFET.h     \
+  rectline.h photodiode.h EKV26MOS.h rlcg.h      \
   logical_buf.h dff_SR.h jkff_SR.h tff_SR.h gatedDlatch.h logic_0.h logic_1.h \
   mux2to1.h mux4to1.h mux8to1.h DLS_nto1.h DLS_1ton.h andor4x2.h andor4x3.h   \
   andor4x4.h dmux2to4.h dmux3to8.h dmux4to16.h ha1b.h fa1b.h fa2b.h pad2bit.h \
   pad3bit.h pad4bit.h binarytogrey4bit.h greytobinary4bit.h comp_1bit.h       \
   comp_2bit.h comp_4bit.h hpribin4bit.h msrstub.h phototransistor.h nigbt.h   \
+<<<<<<< HEAD
   vafile.h hicumL2V2p24.h hicumL0V1p2g.h hybrid.h ctline.h tunneldiode.h      \
   hicumL0V1p3.h hicumL2V2p31n.h  bsim3v34nMOS.h bsim3v34pMOS.h bsim4v30nMOS.h \
   bsim4v30pMOS.h etr_sim.h ecvs.h vcresistor.h vacomponent.h                  \
@@ -222,6 +221,11 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
 	APBV.h \
 	SDTF.h 
 
+=======
+  vafile.h hybrid.h ctline.h tunneldiode.h      \
+  etr_sim.h ecvs.h vcresistor.h vacomponent.h                  \
+  mutualx.h
+>>>>>>> release-0.0.19
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 

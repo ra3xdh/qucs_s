@@ -7,7 +7,7 @@ SET(HTML index.html short.html start.html mathfunc.html subcircuit.html
 SET(PNGS qucsmain.png paste.png wire.png select.png contab.png subcircuit.png
   qucsdigi.png optimization1.png optimization2.png optimization3.png
   optimization4.png optimization5.png optimization6.png optimization7.png
-  optimization8.png )
+  optimization8.png optimization9.png optimization10.png )
 
 
 # installation of documentation

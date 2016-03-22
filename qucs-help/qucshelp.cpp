@@ -34,6 +34,7 @@
 #include <QDebug>
 #include <QToolBar>
 #include <QDir>
+#include <QMessageBox>
 
 
 
@@ -41,7 +42,7 @@ QucsHelp::QucsHelp(const QString& page)
 {
   currentIndex = 0;
   dataFetcher = new HtmlDataFetcher();
-  links = dataFetcher->fetchLinksToFiles(QucsHelpDir.filePath("index.html"));
+
   // set application icon
   // APPLE sets the QApplication icon with Info.plist
 #ifndef __APPLE__
@@ -55,7 +56,21 @@ QucsHelp::QucsHelp(const QString& page)
   setupActions();
   createSidebar();
 
-  textBrowser->setSource(QUrl::fromLocalFile(QucsHelpDir.filePath(links[0])));
+  QString index = "index.html";
+  if (QucsHelpDir.exists(index)) {
+    links = dataFetcher->fetchLinksToFiles(QucsHelpDir.filePath(index));
+    qDebug() << links;
+  }
+  else {
+    QString missing = QString(QDir::cleanPath(QucsHelpDir.absolutePath() + QDir::separator() + index));
+    qWarning() << "Cannot load" << missing;
+    QMessageBox::critical(this, tr("Cannot load Help files."),
+                                tr("Cannot find:\n") + missing + "\n\n" +
+                                tr("Setting QUCSDIR variable might be necessary."));
+  }
+
+  if (!links.empty())
+    textBrowser->setSource(QUrl::fromLocalFile(QucsHelpDir.filePath(links[0])));
 
   // .......................................
   if(!page.isEmpty())
@@ -70,8 +85,6 @@ void QucsHelp::setupActions()
   QToolBar *toolbar = new QToolBar("main_toolbar",this);
 
   this->addToolBar(toolbar);
-
-  QMenuBar *bar = menuBar();
 
   const QKeySequence ks = QKeySequence();
 
@@ -132,10 +145,11 @@ void QucsHelp::setupActions()
   toolbar->addSeparator();
   toolbar->addAction(quitAction);
 
-  QMenu *fileMenu = new QMenu(this);
+  QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
+  fileMenu->addAction(quitAction);
   fileMenu->addAction(quitAction);
 
-  QMenu *viewMenu = new QMenu(this);
+  QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
   viewMenu->addAction(backAction);
   viewMenu->addAction(forwardAction);
   viewMenu->addAction(homeAction);
@@ -144,13 +158,8 @@ void QucsHelp::setupActions()
   viewMenu->addSeparator();
   viewMenu->addAction(viewBrowseDock);
 
-  QMenu *helpMenu = new QMenu(this);
+  QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
   helpMenu->addAction(tr("&About Qt"),qApp,SLOT(aboutQt()));
-
-  bar->addMenu(new QMenu(tr("&File"), fileMenu));
-  bar->addMenu(new QMenu(tr("&View"),viewMenu));
-  bar->addSeparator();
-  bar->addMenu(new QMenu(tr("&Help"),helpMenu));
 }
 
 void QucsHelp::createSidebar()
@@ -163,7 +172,10 @@ void QucsHelp::createSidebar()
   dock->setAllowedAreas(Qt::LeftDockWidgetArea);
   this->addDockWidget(Qt::LeftDockWidgetArea, dock);
 
-  QStringList l = dataFetcher->fetchChapterTexts(QucsHelpDir.filePath("index.html"));
+  QString index = "index.html";
+  QStringList l;
+  if (QucsHelpDir.exists(index))
+    l = dataFetcher->fetchChapterTexts(QucsHelpDir.filePath(index));
   for(int i=0; i < (l.count()-1); i++) {
     QListWidgetItem *newItem = new QListWidgetItem;
     newItem->setText(l[i]);

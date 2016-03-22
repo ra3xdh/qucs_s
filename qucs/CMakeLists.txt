@@ -9,7 +9,7 @@
 #
 # By default, the prefix is "/usr/local"
 
-PROJECT(qucs CXX C)
+PROJECT(qucs CXX)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 cmake_policy(VERSION 2.6)
 
@@ -55,12 +55,6 @@ endif()
 ADD_DEFINITIONS( -DHAVE_CONFIG_H )
 
 # define variables
-SET(BINARYDIR "${CMAKE_INSTALL_PREFIX}/bin/")
-#SET(BITMAPDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/bitmaps/")
-SET(DOCDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/docs/")
-SET(LIBRARYDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/library/")
-SET(OCTAVEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/octave/")
-#Add:
 SET(LANGUAGEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/lang/")
 
 
@@ -114,6 +108,16 @@ IF(WIN32)
 ENDIF(WIN32)
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
+
+INCLUDE_DIRECTORIES(
+  ${qucs_SOURCE_DIR}
+  #${qucs_SOURCE_DIR}/bitmaps ->no sources here
+  ${qucs_SOURCE_DIR}/components
+  ${qucs_SOURCE_DIR}/diagrams
+  ${qucs_SOURCE_DIR}/dialogs
+  #${qucs_SOURCE_DIR}/octave ->no sources here
+  ${qucs_SOURCE_DIR}/paintings
+  )
 
 #ADD_SUBDIRECTORY( bitmaps ) -> added as resources
 ADD_SUBDIRECTORY( components )
