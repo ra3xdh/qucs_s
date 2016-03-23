@@ -152,10 +152,8 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
   andor4x4.h dmux2to4.h dmux3to8.h dmux4to16.h ha1b.h fa1b.h fa2b.h pad2bit.h \
   pad3bit.h pad4bit.h binarytogrey4bit.h greytobinary4bit.h comp_1bit.h       \
   comp_2bit.h comp_4bit.h hpribin4bit.h msrstub.h phototransistor.h nigbt.h   \
-<<<<<<< HEAD
-  vafile.h hicumL2V2p24.h hicumL0V1p2g.h hybrid.h ctline.h tunneldiode.h      \
-  hicumL0V1p3.h hicumL2V2p31n.h  bsim3v34nMOS.h bsim3v34pMOS.h bsim4v30nMOS.h \
-  bsim4v30pMOS.h etr_sim.h ecvs.h vcresistor.h vacomponent.h                  \
+  vafile.h hybrid.h ctline.h tunneldiode.h      \
+  etr_sim.h ecvs.h vcresistor.h vacomponent.h                  \
   mutualx.h \
 	src_eqndef.h \
 	sp_parameter.h \
@@ -221,11 +219,7 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
 	APBV.h \
 	SDTF.h 
 
-=======
-  vafile.h hybrid.h ctline.h tunneldiode.h      \
-  etr_sim.h ecvs.h vcresistor.h vacomponent.h                  \
-  mutualx.h
->>>>>>> release-0.0.19
+
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
