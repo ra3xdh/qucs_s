@@ -15,6 +15,7 @@ Transistors.lib
 Varistors.lib
 Z-Diodes.lib
 SpiceOpamp.lib
+Transformers.lib
 )
 
 INSTALL( FILES ${COMPLIBS} DESTINATION share/qucs/library )
