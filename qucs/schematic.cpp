@@ -1878,7 +1878,8 @@ void Schematic::switchPaintMode()
 void Schematic::contentsWheelEvent(QWheelEvent *Event)
 {
   App->editText->setHidden(true);  // disable edit of component property
-  int delta = Event->delta() >> 1;     // use smaller steps
+  // use smaller steps; typically the returned delta() is a multiple of 120
+  int delta = Event->delta() >> 1;
 
   // ...................................................................
   if((Event->modifiers() & Qt::ShiftModifier) ||
@@ -1890,9 +1891,9 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
   }
   // ...................................................................
   else if(Event->modifiers() & Qt::ControlModifier) {  // use mouse wheel to zoom ?
-      float Scaling;
-      if(delta < 0) Scaling = float(delta)/-60.0/1.1;
-      else Scaling = 1.1*60.0/float(delta);
+      // zoom factor scaled according to the wheel delta, to accomodate
+      //  values different from 60 (slower or faster zoom)
+      float Scaling = pow(1.1, delta/60.0);
       zoom(Scaling);
       Scaling -= 1.0;
       scrollBy( int(Scaling * float(Event->pos().x())),
