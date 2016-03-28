@@ -63,7 +63,7 @@ bool saveApplSettings(QucsActiveFilter *qucs)
 
 int main(int argc, char *argv[])
 {
-  QString LangDir;
+    QString LangDir;
     // apply default settings
     QucsSettings.x = 200;
     QucsSettings.y = 100;
@@ -72,13 +72,21 @@ int main(int argc, char *argv[])
 
     // is application relocated?
     char * var = getenv ("QUCSDIR");
+    QDir QucsDir;
     if (var != NULL) {
-      QDir QucsDir = QDir (var);
+      QucsDir = QDir (var);
       QString QucsDirStr = QucsDir.canonicalPath ();
       LangDir =
         QDir::convertSeparators (QucsDirStr + "/share/qucs/lang/");
     } else {
-      LangDir = LANGUAGEDIR;
+      QString QucsApplicationPath = QCoreApplication::applicationDirPath();
+#ifdef __APPLE__
+      QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
+#else
+      QucsDir = QDir(QucsApplicationPath);
+      QucsDir.cdUp();
+#endif
+      LangDir = QucsDir.canonicalPath() + "/share/qucs/lang/";
     }
 
     loadSettings();
