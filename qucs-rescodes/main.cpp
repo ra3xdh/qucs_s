@@ -235,7 +235,14 @@ int main( int argc, char **argv )
     QucsDir = QDir(QString(var));
     QucsSettings.LangDir =     QucsDir.canonicalPath() + "/share/qucs/lang/";
   } else {
-    QucsSettings.LangDir = LANGUAGEDIR;
+    QString QucsApplicationPath = QCoreApplication::applicationDirPath();
+#ifdef __APPLE__
+    QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
+#else
+    QucsDir = QDir(QucsApplicationPath);
+    QucsDir.cdUp();
+#endif
+    QucsSettings.LangDir = QucsDir.canonicalPath() + "/share/qucs/lang/";
   }
 
   loadSettings();
