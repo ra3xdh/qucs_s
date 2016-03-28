@@ -764,12 +764,6 @@ mingw* | *msys* | cygwin*)
 esac
 AC_SUBST(PATHXFORM)
 
-dnl Create path info.
-LANG_PATH="$prefix/share/qucs/lang/"
-AC_DEFINE_UNQUOTED([LANGUAGEDIR], ["$LANG_PATH"],
-  [Where the language files go.])
-unset LANG_PATH
-
 dnl Definitions at top of <config.h>.
 AH_TOP([
 /* __BEGIN_DECLS should be used at the beginning of your declarations,
