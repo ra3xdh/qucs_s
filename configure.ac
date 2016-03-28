@@ -769,10 +769,6 @@ LANG_PATH="$prefix/share/qucs/lang/"
 AC_DEFINE_UNQUOTED([LANGUAGEDIR], ["$LANG_PATH"],
   [Where the language files go.])
 unset LANG_PATH
-LIBRARY_PATH="$prefix/share/qucs/library/"
-AC_DEFINE_UNQUOTED([LIBRARYDIR], ["$LIBRARY_PATH"],
-  [Where the component library files go.])
-unset LIBRARY_PATH
 
 dnl Definitions at top of <config.h>.
 AH_TOP([
