@@ -370,28 +370,30 @@ QString LibComp::spice_netlist(bool)
     return s;
 }
 
-QString LibComp::getAttachedIFS()
+QStringList LibComp::getAttachedIFS()
 {
     QString content;
-    QStringList includes,attach;
+    QStringList includes,attach,ifs_lst;
+    ifs_lst.clear();
 
     int r = loadSection("Spice",content,&includes,&attach);
-    if (r<0) return QString("");
+    if (r<0) return ifs_lst;
     foreach(QString file,attach) {
-        if (file.endsWith(".ifs")) return getSubcircuitFile()+'/'+file;
+        if (file.endsWith(".ifs")) ifs_lst.append(getSubcircuitFile()+'/'+file);
     }
-    return QString("");
+    return ifs_lst;
 }
 
-QString LibComp::getAttachedMOD()
+QStringList LibComp::getAttachedMOD()
 {
     QString content;
-    QStringList includes,attach;
+    QStringList includes,attach,mod_lst;
+    mod_lst.clear();
 
     int r = loadSection("Spice",content,&includes,&attach);
-    if (r<0) return QString("");
+    if (r<0) return mod_lst;
     foreach(QString file,attach) {
-        if (file.endsWith(".mod")) return getSubcircuitFile()+'/'+file;
+        if (file.endsWith(".mod")) mod_lst.append(getSubcircuitFile()+'/'+file);
     }
-    return QString("");
+    return mod_lst;
 }

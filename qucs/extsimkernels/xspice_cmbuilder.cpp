@@ -197,39 +197,46 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
         if ((pc->Model=="XSP_CMod")||(pc->Model=="Lib")) {
             // Copy every cfunc.mod and ifspe.ifs pair into
             // unique subdirectory in qucs_cmlib/
-            QString mod,ifs;
+            QStringList mod_lst,ifs_lst;
             if (pc->Model=="Lib") {
                 LibComp *libpc = (LibComp *)pc;
-                mod = libpc->getAttachedMOD();
-                ifs = libpc->getAttachedIFS();
+                mod_lst.append(libpc->getAttachedMOD());
+                ifs_lst.append(libpc->getAttachedIFS());
             } else {
-                mod = spicecompat::convert_relative_filename(pc->Props.at(0)->Value);
-                ifs = spicecompat::convert_relative_filename(pc->Props.at(1)->Value);
+                mod_lst.append(spicecompat::convert_relative_filename(pc->Props.at(0)->Value));
+                ifs_lst.append(spicecompat::convert_relative_filename(pc->Props.at(1)->Value));
             }
-            QStringList lst1;
-            lst1<<mod<<ifs;
-            // If model is duplicated don't process it (don't copy files)
-            if (!ModIfsPairProcessed(mod,ifs)) {
-                QString destdir = QDir::convertSeparators(prefix + pc->Name);
-                if (!dir_cm.mkdir(destdir))
-                    output += QString("Cannot create directory %1 \n").arg(destdir);
-                lst_entries += destdir;
-                // Add cfunc.mod file
-                QString destfile = normalizeModelName(mod,destdir);
-                if (!QFile::copy(mod,destfile))
-                    output += QString("Cannot copy file %1 to %2 \n").arg(mod).arg(destfile);
-                destfile.chop(4); // Add cfunc.o to objects
-                destfile+=".o";
-                objects.append(destfile);
-                // Add ifspec.ifs file
-                destfile = normalizeModelName(ifs,destdir);
-                if (!QFile::copy(ifs,destfile))
-                    output += QString("Cannot copy file %1 to %2 \n").arg(ifs).arg(destfile);
-                destfile.chop(4); // Add ifspec.o to objects
-                destfile+=".o";
-                objects.append(destfile); // Add ifspec.o to objects
+            QStringList::iterator mod = mod_lst.begin();
+            QStringList::iterator ifs = ifs_lst.begin();
+
+            if (mod_lst.count()!=ifs_lst.count()) continue; // Something is missing. Skip such component.
+
+            for (int i=0;mod!=mod_lst.end();mod++,ifs++,i++) {
+                QStringList lst1;
+                lst1<<(*mod)<<(*ifs);
+                // If model is duplicated don't process it (don't copy files)
+                if (!ModIfsPairProcessed((*mod),(*ifs))) {
+                    QString destdir = QDir::convertSeparators(prefix + pc->Name + QString::number(i));
+                    if (!dir_cm.mkdir(destdir))
+                        output += QString("Cannot create directory %1 \n").arg(destdir);
+                    lst_entries += destdir;
+                    // Add cfunc.mod file
+                    QString destfile = normalizeModelName((*mod),destdir);
+                    if (!QFile::copy((*mod),destfile))
+                        output += QString("Cannot copy file %1 to %2 \n").arg(*mod).arg(destfile);
+                    destfile.chop(4); // Add cfunc.o to objects
+                    destfile+=".o";
+                    objects.append(destfile);
+                    // Add ifspec.ifs file
+                    destfile = normalizeModelName(*ifs,destdir);
+                    if (!QFile::copy(*ifs,destfile))
+                        output += QString("Cannot copy file %1 to %2 \n").arg(*ifs).arg(destfile);
+                    destfile.chop(4); // Add ifspec.o to objects
+                    destfile+=".o";
+                    objects.append(destfile); // Add ifspec.o to objects
+                }
+                mod_ifs_pairs.append(lst1); // This *.mod and *.ifs pair already processed
             }
-            mod_ifs_pairs.append(lst1); // This *.mod and *.ifs pair already processed
         }
 
         if (pc->Model=="Sub") { // Scan subcircuits recursively
