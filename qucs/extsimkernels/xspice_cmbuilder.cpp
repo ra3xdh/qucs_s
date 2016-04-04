@@ -209,7 +209,14 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
             QStringList::iterator mod = mod_lst.begin();
             QStringList::iterator ifs = ifs_lst.begin();
 
-            if (mod_lst.count()!=ifs_lst.count()) continue; // Something is missing. Skip such component.
+            if (mod_lst.count()!=ifs_lst.count()) { // Something is missing. Skip such component.
+                output += QString("Some MOD or IFS files are missing for component %1\n"
+                                  "Skipping component \n"
+                                  "MOD files are: %2\n"
+                                  "IFS files are: %2\n").arg(pc->Name)
+                                               .arg(mod_lst.join(" ").arg(ifs_lst.join(" ")));
+                continue;
+            }
 
             for (int i=0;mod!=mod_lst.end();mod++,ifs++,i++) {
                 QStringList lst1;
