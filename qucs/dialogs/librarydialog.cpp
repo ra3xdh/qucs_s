@@ -507,7 +507,7 @@ void LibraryDialog::slotSave()
                                 "Check these components: %2 \n")
                     .arg(Doc->DocName).arg(err_lst.join("; ")));
         }
-        kern->createSubNetlsit(ts);
+        kern->createSubNetlsit(ts,true);
         intoStream(Stream, tmp, "Spice");
         delete kern;
     }

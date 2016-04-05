@@ -185,7 +185,7 @@ void AbstractSpiceKernel::createNetlist(QTextStream&, int ,QStringList&,
  * \param xyce Default is false. Should be set in true if netlist is
  *        prepared for Xyce simulator. For Ngspice should be false.
  */
-void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream)
+void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
 {
     QString header;
     QString f = misc::properFileName(Sch->DocName);
@@ -205,6 +205,7 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream)
     }
     qSort(ports);
     QPair<int,QString> pp;
+    if (lib) header += " gnd "; // Ground node forwarding for Library
     foreach(pp,ports) {
         header += pp.second + " ";
     }
@@ -222,6 +223,7 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream)
       }
 
     header += "\n";
+    if (lib) stream<<"\n";
     stream<<header;
     bool xyce = false;
     if ((QucsSettings.DefaultSimulator == spicecompat::simXyceSer)||
