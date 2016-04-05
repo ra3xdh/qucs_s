@@ -507,10 +507,7 @@ void LibraryDialog::slotSave()
                                 "Check these components: %2 \n")
                     .arg(Doc->DocName).arg(err_lst.join("; ")));
         }
-        if ((QucsSettings.DefaultSimulator == spicecompat::simXyceSer)||
-                (QucsSettings.DefaultSimulator == spicecompat::simXycePar))
-        kern->createSubNetlsit(ts,true);
-        else kern->createSubNetlsit(ts,false);
+        kern->createSubNetlsit(ts);
         intoStream(Stream, tmp, "Spice");
         delete kern;
     }

@@ -1796,10 +1796,7 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
           ErrText->insertPlainText(s);
           return false;
       }
-      if ((QucsSettings.DefaultSimulator == spicecompat::simXyceSer)||
-              (QucsSettings.DefaultSimulator == spicecompat::simXycePar))
-      kern->createSubNetlsit(*stream,true);
-      else kern->createSubNetlsit(*stream,false);
+      kern->createSubNetlsit(*stream);
 
       delete kern;
   }

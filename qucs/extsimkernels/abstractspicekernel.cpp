@@ -185,7 +185,7 @@ void AbstractSpiceKernel::createNetlist(QTextStream&, int ,QStringList&,
  * \param xyce Default is false. Should be set in true if netlist is
  *        prepared for Xyce simulator. For Ngspice should be false.
  */
-void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool xyce)
+void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream)
 {
     QString header;
     QString f = misc::properFileName(Sch->DocName);
@@ -223,6 +223,9 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool xyce)
 
     header += "\n";
     stream<<header;
+    bool xyce = false;
+    if ((QucsSettings.DefaultSimulator == spicecompat::simXyceSer)||
+        (QucsSettings.DefaultSimulator == spicecompat::simXycePar)) xyce = true;
     startNetlist(stream,xyce);
     stream<<".ENDS\n";
 }
