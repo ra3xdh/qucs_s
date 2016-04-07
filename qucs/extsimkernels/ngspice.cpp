@@ -361,7 +361,8 @@ void Ngspice::slotSimulate()
         return;
     }
 
-    QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs.cir");
+    QString netfile = "spice4qucs.cir";
+    QString tmp_path = QDir::convertSeparators(workdir+netfile);
     SaveNetlist(tmp_path);
 
     removeAllSimulatorOutputs();
@@ -378,7 +379,7 @@ void Ngspice::slotSimulate()
 
     //startNgSpice(tmp_path);
     SimProcess->setWorkingDirectory(workdir);
-    QString cmd = QString("\"%1\" %2 \"%3\"").arg(simulator_cmd,simulator_parameters,tmp_path);
+    QString cmd = QString("\"%1\" %2 %3").arg(simulator_cmd,simulator_parameters,netfile);
     SimProcess->start(cmd);
     emit started();
 }
