@@ -1,5 +1,6 @@
 
 SET(COMPLIBS
+AnalogueCM.lib
 Bridges.lib
 Diodes.lib
 Ideal.lib
@@ -19,3 +20,4 @@ SpiceOpamp.lib
 
 INSTALL( FILES ${COMPLIBS} DESTINATION share/qucs/library )
 
+ADD_SUBDIRECTORY( AnalogueCM )
