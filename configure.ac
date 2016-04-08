@@ -826,6 +826,7 @@ AC_CONFIG_FILES([Makefile
     qucs-transcalc/examples/Makefile
     qucs-lib/Makefile
     qucs-lib/library/Makefile
+    qucs-lib/library/AnalogueCM/Makefile
     qucs-attenuator/Makefile
     qucs-rescodes/Makefile
     qucs/Makefile
