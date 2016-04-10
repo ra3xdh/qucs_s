@@ -173,7 +173,7 @@ noinst_HEADERS = src_eqndef.h \
 	xsp_cmlib.h \
 	xsp_codemodel.h \
 	spicegeneric.h \
-	spicelibcomp.cpp
+	spicelibcomp.h
 
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
