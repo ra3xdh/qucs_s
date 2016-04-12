@@ -1571,11 +1571,16 @@ Component* getComponentFromName(QString& Line, Schematic* p)
 
   if(!c) {
     /// \todo enable user to load partial schematic, skip unknown components
-    QMessageBox::critical(0, QObject::tr("Error"),
-	QObject::tr("Format Error:\nUnknown component!\n"
-                "%1\n\n"
-                "Do you make use of loadable components?").arg(cstr));
-    return 0;
+      QMessageBox* msg = new QMessageBox(QMessageBox::Warning,QObject::tr("Warning"),
+                                         QObject::tr("Format Error:\nUnknown component!\n"
+                                                     "%1\n\n"
+                                                     "Do you want to load schematic anyway?\n"
+                                                     "Unknown components will be replaced \n"
+                                                     "by dummy subcircuit placeholders.").arg(cstr),
+                                         QMessageBox::Yes|QMessageBox::No);
+      int r = msg->exec();
+      if (r == QMessageBox::Yes) c = new Subcircuit();
+      else return 0;
   }
 
   if(!c->load(Line)) {
