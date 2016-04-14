@@ -77,6 +77,7 @@ void XspiceGeneric::createSymbol()
   QStringList n_ports;
   int k=0;
   foreach (QString t_port, t_ports) {
+      t_port.remove(']').remove('[');
       if (t_port.remove(' ').endsWith('d')) {
           n_ports.append(t_port+QString::number(k)+"+");
           n_ports.append(t_port+QString::number(k)+"-");
@@ -150,6 +151,14 @@ QString XspiceGeneric::spice_netlist(bool)
     int i=0;
     foreach(QString t_port,t_ports) {
         QString nod =  spicecompat::normalize_node_name(Ports.at(i)->Connection->Name);
+
+        if (t_port.contains('[')) { // Process array ports
+            t_port.remove('[');  // Defined by brackets
+            s += '[';
+        }
+        bool closing_bracket = t_port.contains(']');
+        if (closing_bracket) t_port.remove(']');
+
         if (t_port.remove(' ').endsWith('d')) {
             i++;
             QString nod1 =  spicecompat::normalize_node_name(Ports.at(i)->Connection->Name);
@@ -157,6 +166,7 @@ QString XspiceGeneric::spice_netlist(bool)
         } else {
             s += QString(" %%1(%2) ").arg(t_port).arg(nod);
         }
+        if (closing_bracket) s += ']';
         i++;
     }
     s += " " + Props.at(1)->Value + "\n";
