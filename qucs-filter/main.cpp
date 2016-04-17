@@ -77,6 +77,8 @@ bool saveApplSettings(QucsFilter *qucs)
 
 int main(int argc, char *argv[])
 {
+  QApplication a(argc, argv);
+
   // apply default settings
   QucsSettings.x = 200;
   QucsSettings.y = 100;
@@ -103,7 +105,6 @@ int main(int argc, char *argv[])
 
   loadSettings();
 
-  QApplication a(argc, argv);
   a.setFont(QucsSettings.font);
 
   QTranslator tor( 0 );

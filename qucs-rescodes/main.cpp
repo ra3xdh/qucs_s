@@ -223,6 +223,8 @@ bool saveApplSettings(MyWidget *w)
 
 int main( int argc, char **argv )
 {
+  QApplication a(argc, argv);
+
   // apply default settings
   QucsSettings.x = 100;
   QucsSettings.y = 50;
@@ -247,7 +249,6 @@ int main( int argc, char **argv )
 
   loadSettings();
 
-  QApplication a(argc, argv);
   a.setFont(QucsSettings.font);
 
   QTranslator tor(0);

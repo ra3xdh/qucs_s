@@ -34,6 +34,8 @@ void compute_lumped (qf_spec* spec_p, Q3TextStream& out) {
 
 int main (int argc, char * argv []) {
 
+  QApplication app (argc, argv);
+
   // apply default settings
   QucsSettings.x = 200;
   QucsSettings.y = 100;
@@ -60,7 +62,6 @@ int main (int argc, char * argv []) {
 
   loadSettings();
 
-  QApplication	    app (argc, argv);
   qf_spec*	    spec_p;
 
   int               result = 0;
