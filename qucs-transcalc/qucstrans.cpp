@@ -1079,14 +1079,28 @@ void QucsTranscalc::saveMode(QTextStream& stream) {
   stream << "</" << t->description << ">\n";
 }
 
-// Writes the transmission line values for all modes into the given stream.
-void QucsTranscalc::saveModes(QTextStream& stream) {
+// Writes the transmission line values for all modes into the given file.
+bool QucsTranscalc::saveModes(QString fname) {
   int oldmode = mode;
+
+  QFile file(fname);
+  if(!file.open(QIODevice::WriteOnly)) {
+    QMessageBox::warning(this, QObject::tr("Warning"),
+			 QObject::tr("Cannot save GUI settings in\n") + fname);
+    return false;
+  }
+  
+  QTextStream stream(&file);
+  stream << "QucsTranscalc " PACKAGE_VERSION " GUI Settings File\n";
   for (int i = 0; i < MAX_TRANS_TYPES; i++) {
     mode = TransLineTypes[i].type;
     saveMode (stream);
   }
+  file.close();
+
   mode = oldmode;
+
+  return true;
 }
 
 // Saves the GUI values into internal data structures.
