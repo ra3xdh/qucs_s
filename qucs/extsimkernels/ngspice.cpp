@@ -392,12 +392,16 @@ void Ngspice::slotSimulate()
 void Ngspice::slotProcessOutput()
 {
     QString s = SimProcess->readAllStandardOutput();
-    QRegExp percentage_pattern("^%\\d\\d.\\d\\d.*$");
+    QRegExp percentage_pattern("^%\\d\\d*\\.\\d\\d.*$");
     if (percentage_pattern.exactMatch(s)) {
         int percent = round(s.mid(1,5).toFloat());
         emit progress(percent);
+    } else {
+        s.remove(QRegExp("%\\d\\d*\\.\\d\\d")); // Remove percentage from logs
+        s.remove(QRegExp("\010+")); // Large amount of datar from percentage reports
+                                    // can freeze QTextEdit for over 100k simulation points
+        output += s;
     }
-    output += s;
 }
 
 /*!
