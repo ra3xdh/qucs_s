@@ -255,62 +255,67 @@ void AbstractSpiceKernel::slotSimulate()
 void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QList<double> > &sim_points,QStringList &var_list, bool &isComplex)
 {
     isComplex = false;
+    QString content;
+
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {
-        QTextStream ngsp_data(&ofile);
-        sim_points.clear();
-        bool start_values_sec = false;
-        int NumVars=0; // Number of dep. and indep.variables
-        while (!ngsp_data.atEnd()) {
-            QRegExp sep("[ \t,]");
-            QString lin = ngsp_data.readLine();
-            if (lin.isEmpty()) continue;
-            if (lin.contains("Flags")&&lin.contains("complex")) { // output consists of
-                isComplex = true; // complex numbers
-                continue;         // maybe ac_analysis
-            }
-            if (lin.contains("No. Variables")) {  // get number of variables
-                NumVars=lin.section(sep,2,2,QString::SectionSkipEmpty).toInt();
-                continue;
-            }
-            if (lin=="Variables:") {
-                var_list.clear();
-                QString indep_var = ngsp_data.readLine().section(sep,1,1,QString::SectionSkipEmpty);
-                var_list.append(indep_var);
-
-                for (int i=1;i<NumVars;i++) {
-                    lin = ngsp_data.readLine();
-                    QString dep_var = lin.section(sep,1,1,QString::SectionSkipEmpty);
-                    var_list.append(dep_var);
-                }
-                continue;
-            }
-            if (lin=="Values:") {
-                start_values_sec = true;
-                continue;
-            }
-            if (start_values_sec) {
-                QList<double> sim_point;
-                double indep_val = lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble();
-                sim_point.append(indep_val);
-                for (int i=0;i<NumVars;i++) {
-                    if (isComplex) {
-                        QStringList lst = ngsp_data.readLine().split(sep,QString::SkipEmptyParts);
-                        if (lst.count()==2) {
-                            double re_dep_val = lst.at(0).toDouble();  // for complex sim results
-                            double im_dep_val = lst.at(1).toDouble();  // imaginary part follows
-                            sim_point.append(re_dep_val);              // real part
-                            sim_point.append(im_dep_val);
-                        }
-                    } else {
-                        double dep_val = ngsp_data.readLine().remove(sep).toDouble();
-                        sim_point.append(dep_val);
-                    }
-                }
-                sim_points.append(sim_point);
-            }
-        }
+        QTextStream ts(&ofile);
+        content = ts.readAll();
         ofile.close();
+    }
+
+    QTextStream ngsp_data(&content);
+    sim_points.clear();
+    bool start_values_sec = false;
+    int NumVars=0; // Number of dep. and indep.variables
+    while (!ngsp_data.atEnd()) {
+        QRegExp sep("[ \t,]");
+        QString lin = ngsp_data.readLine();
+        if (lin.isEmpty()) continue;
+        if (lin.contains("Flags")&&lin.contains("complex")) { // output consists of
+            isComplex = true; // complex numbers
+            continue;         // maybe ac_analysis
+        }
+        if (lin.contains("No. Variables")) {  // get number of variables
+            NumVars=lin.section(sep,2,2,QString::SectionSkipEmpty).toInt();
+            continue;
+        }
+        if (lin=="Variables:") {
+            var_list.clear();
+            QString indep_var = ngsp_data.readLine().section(sep,1,1,QString::SectionSkipEmpty);
+            var_list.append(indep_var);
+
+            for (int i=1;i<NumVars;i++) {
+                lin = ngsp_data.readLine();
+                QString dep_var = lin.section(sep,1,1,QString::SectionSkipEmpty);
+                var_list.append(dep_var);
+            }
+            continue;
+        }
+        if (lin=="Values:") {
+            start_values_sec = true;
+            continue;
+        }
+        if (start_values_sec) {
+            QList<double> sim_point;
+            double indep_val = lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble();
+            sim_point.append(indep_val);
+            for (int i=0;i<NumVars;i++) {
+                if (isComplex) {
+                    QStringList lst = ngsp_data.readLine().split(sep,QString::SkipEmptyParts);
+                    if (lst.count()==2) {
+                        double re_dep_val = lst.at(0).toDouble();  // for complex sim results
+                        double im_dep_val = lst.at(1).toDouble();  // imaginary part follows
+                        sim_point.append(re_dep_val);              // real part
+                        sim_point.append(im_dep_val);
+                    }
+                } else {
+                    double dep_val = ngsp_data.readLine().remove(sep).toDouble();
+                    sim_point.append(dep_val);
+                }
+            }
+            sim_points.append(sim_point);
+        }
     }
 }
 
@@ -705,153 +710,156 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
     }
 
     // Merge all outputs in a single Qucs dataset otherwise
-    QFile dataset(qucs_dataset);
-    if (dataset.open(QFile::WriteOnly)) {
-        QTextStream ds_stream(&dataset);
+    QString ds_str;
+    QTextStream ds_stream(&ds_str);
 
-        ds_stream<<"<Qucs Dataset " PACKAGE_VERSION ">\n";
+    ds_stream<<"<Qucs Dataset " PACKAGE_VERSION ">\n";
 
-        QString sim,indep;
-        QStringList indep_vars;
+    QString sim,indep;
+    QStringList indep_vars;
 
-        QString swp_var,swp_var2;
-        QStringList swp_var_val,swp_var2_val;
-        swp_var.clear();
-        swp_var2.clear();
-        swp_var_val.clear();
-        swp_var2_val.clear();
+    QString swp_var,swp_var2;
+    QStringList swp_var_val,swp_var2_val;
+    swp_var.clear();
+    swp_var2.clear();
+    swp_var_val.clear();
+    swp_var2_val.clear();
 
-        QList< QList<double> > sim_points;
-        QStringList var_list;
-        bool isComplex = false;
-        bool hasParSweep = false;
-        bool hasDblParSweep = false;
+    QList< QList<double> > sim_points;
+    QStringList var_list;
+    bool isComplex = false;
+    bool hasParSweep = false;
+    bool hasDblParSweep = false;
 
-        QString ngspice_output_filename;
-        foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
-            QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
-            if (ngspice_output_filename.endsWith("HB.FD.prn")) {
-                parseHBOutput(full_outfile,sim_points,var_list);
-                isComplex = true;
-            } else if (ngspice_output_filename.endsWith(".four")) {
-                isComplex=false;
-                parseFourierOutput(full_outfile,sim_points,var_list,xyce);
-            } else if (ngspice_output_filename.endsWith(".noise")) {
-                isComplex = false;
-                parseNoiseOutput(full_outfile,sim_points,var_list,hasParSweep);
-                if (hasParSweep) {
-                    QString res_file = QDir::convertSeparators(workdir + QDir::separator()
-                                                            + "spice4qucs.noise.cir.res");
-                    parseResFile(res_file,swp_var,swp_var_val);
-                }
-            } else if (ngspice_output_filename.endsWith(".pz")) {
-                isComplex = true;
-                parsePZOutput(full_outfile,sim_points,var_list,hasParSweep);
-                if (hasParSweep) {
-                    QString res_file = QDir::convertSeparators(workdir + QDir::separator()
-                                                            + "spice4qucs.pz.cir.res");
-                    parseResFile(res_file,swp_var,swp_var_val);
-                }
-            } else if (ngspice_output_filename.endsWith("_swp.txt")) {
-                hasParSweep = true;
-                QString simstr = full_outfile;
-                simstr.remove("_swp.txt");
-                if (ngspice_output_filename.endsWith("_swp_swp.txt")) { // 2-var parameter sweep
-                    hasDblParSweep = true;
-                    simstr.chop(4);
-                    simstr = simstr.split('_').last();
-                    QString res2_file = QDir::convertSeparators(workdir + QDir::separator()
-                                                                + "spice4qucs." + simstr + ".cir.res1");
-                    parseResFile(res2_file,swp_var2,swp_var2_val);
-                } else {
-                    simstr = simstr.split('_').last();
-                }
-
-                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
-                                                        + "spice4qucs." + simstr + ".cir.res");
-                parseResFile(res_file,swp_var,swp_var_val);
-
-                if (ngspice_output_filename.endsWith("_hb_swp.txt")) {
-                    parseHBSTEPOutput(full_outfile,sim_points,var_list,isComplex);
-                } else {
-                    parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
-                }
-
-
-            } else {
-                hasParSweep = checkRawOutupt(full_outfile,swp_var_val);
-                if (hasParSweep) {
-                    swp_var = "Number";
-                    parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
-                } else {
-                    parseNgSpiceSimOutput(full_outfile,sim_points,var_list,isComplex);
-                }
-            }
-            if (var_list.isEmpty()) continue; // notning to convert
-            normalizeVarsNames(var_list);
-
-            QString indep = var_list.first();
-            QList<double> sim_point;
-
-
+    QString ngspice_output_filename;
+    foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
+        QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
+        if (ngspice_output_filename.endsWith("HB.FD.prn")) {
+            parseHBOutput(full_outfile,sim_points,var_list);
+            isComplex = true;
+        } else if (ngspice_output_filename.endsWith(".four")) {
+            isComplex=false;
+            parseFourierOutput(full_outfile,sim_points,var_list,xyce);
+        } else if (ngspice_output_filename.endsWith(".noise")) {
+            isComplex = false;
+            parseNoiseOutput(full_outfile,sim_points,var_list,hasParSweep);
             if (hasParSweep) {
-                int indep_cnt;
-                if (hasDblParSweep) indep_cnt =  sim_points.count()/(swp_var_val.count()*swp_var2_val.count());
-                else indep_cnt = sim_points.count()/swp_var_val.count();
-                if (!indep.isEmpty()) {
-                    ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(indep_cnt); // output indep var: TODO: parameter sweep
-                    for (int i=0;i<indep_cnt;i++) {
-                        ds_stream<<QString::number(sim_points.at(i).at(0),'e',12)<<endl;
-                    }
-                    ds_stream<<"</indep>\n";
-                }
+                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                                                        + "spice4qucs.noise.cir.res");
+                parseResFile(res_file,swp_var,swp_var_val);
+            }
+        } else if (ngspice_output_filename.endsWith(".pz")) {
+            isComplex = true;
+            parsePZOutput(full_outfile,sim_points,var_list,hasParSweep);
+            if (hasParSweep) {
+                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                                                        + "spice4qucs.pz.cir.res");
+                parseResFile(res_file,swp_var,swp_var_val);
+            }
+        } else if (ngspice_output_filename.endsWith("_swp.txt")) {
+            hasParSweep = true;
+            QString simstr = full_outfile;
+            simstr.remove("_swp.txt");
+            if (ngspice_output_filename.endsWith("_swp_swp.txt")) { // 2-var parameter sweep
+                hasDblParSweep = true;
+                simstr.chop(4);
+                simstr = simstr.split('_').last();
+                QString res2_file = QDir::convertSeparators(workdir + QDir::separator()
+                                                            + "spice4qucs." + simstr + ".cir.res1");
+                parseResFile(res2_file,swp_var2,swp_var2_val);
+            } else {
+                simstr = simstr.split('_').last();
+            }
 
-                ds_stream<<QString("<indep %1 %2>\n").arg(swp_var).arg(swp_var_val.count());
-                foreach (QString val,swp_var_val) {
+            QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                                                    + "spice4qucs." + simstr + ".cir.res");
+            parseResFile(res_file,swp_var,swp_var_val);
+
+            if (ngspice_output_filename.endsWith("_hb_swp.txt")) {
+                parseHBSTEPOutput(full_outfile,sim_points,var_list,isComplex);
+            } else {
+                parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
+            }
+
+
+        } else {
+            hasParSweep = checkRawOutupt(full_outfile,swp_var_val);
+            if (hasParSweep) {
+                swp_var = "Number";
+                parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
+            } else {
+                parseNgSpiceSimOutput(full_outfile,sim_points,var_list,isComplex);
+            }
+        }
+        if (var_list.isEmpty()) continue; // notning to convert
+        normalizeVarsNames(var_list);
+
+        QString indep = var_list.first();
+        QList<double> sim_point;
+
+
+        if (hasParSweep) {
+            int indep_cnt;
+            if (hasDblParSweep) indep_cnt =  sim_points.count()/(swp_var_val.count()*swp_var2_val.count());
+            else indep_cnt = sim_points.count()/swp_var_val.count();
+            if (!indep.isEmpty()) {
+                ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(indep_cnt); // output indep var: TODO: parameter sweep
+                for (int i=0;i<indep_cnt;i++) {
+                    ds_stream<<QString::number(sim_points.at(i).at(0),'e',12)<<endl;
+                }
+                ds_stream<<"</indep>\n";
+            }
+
+            ds_stream<<QString("<indep %1 %2>\n").arg(swp_var).arg(swp_var_val.count());
+            foreach (QString val,swp_var_val) {
+                ds_stream<<val<<endl;
+            }
+            ds_stream<<"</indep>\n";
+            if (indep.isEmpty()) indep = swp_var;
+            else indep += " " + swp_var;
+            if (hasDblParSweep) {
+                ds_stream<<QString("<indep %1 %2>\n").arg(swp_var2).arg(swp_var2_val.count());
+                foreach (QString val,swp_var2_val) {
                     ds_stream<<val<<endl;
                 }
                 ds_stream<<"</indep>\n";
-                if (indep.isEmpty()) indep = swp_var;
-                else indep += " " + swp_var;
-                if (hasDblParSweep) {
-                    ds_stream<<QString("<indep %1 %2>\n").arg(swp_var2).arg(swp_var2_val.count());
-                    foreach (QString val,swp_var2_val) {
-                        ds_stream<<val<<endl;
-                    }
-                    ds_stream<<"</indep>\n";
-                    indep += " " + swp_var2;
-                }
-            } else if (!indep.isEmpty()) {
-                ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(sim_points.count()); // output indep var: TODO: parameter sweep
-                foreach (sim_point,sim_points) {
-                    ds_stream<<QString::number(sim_point.at(0),'e',12)<<endl;
-                }
-                ds_stream<<"</indep>\n";
+                indep += " " + swp_var2;
             }
-
-            for(int i=1;i<var_list.count();i++) { // output dep var
-                if (indep.isEmpty()) ds_stream<<QString("<indep %1 %2>\n").arg(var_list.at(i)).arg(sim_points.count());
-                else ds_stream<<QString("<dep %1 %2>\n").arg(var_list.at(i)).arg(indep);
-                foreach (sim_point,sim_points) {
-                    if (isComplex) {
-                        double re=sim_point.at(2*(i-1)+1);
-                        double im = sim_point.at(2*i);
-                        QString s;
-                        s += QString::number(re,'e',12);
-                        if (im<0) s += "-j";
-                        else s += "+j";
-                        s += QString::number(fabs(im),'e',12) + "\n";
-                        ds_stream<<s;
-                    } else {
-                        ds_stream<<QString::number(sim_point.at(i),'e',12)<<endl;
-                    }
-                }
-                if (indep.isEmpty()) ds_stream<<"</indep>\n";
-                else ds_stream<<"</dep>\n";
+        } else if (!indep.isEmpty()) {
+            ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(sim_points.count()); // output indep var: TODO: parameter sweep
+            foreach (sim_point,sim_points) {
+                ds_stream<<QString::number(sim_point.at(0),'e',12)<<endl;
             }
-            hasParSweep = false;
+            ds_stream<<"</indep>\n";
         }
 
+        for(int i=1;i<var_list.count();i++) { // output dep var
+            if (indep.isEmpty()) ds_stream<<QString("<indep %1 %2>\n").arg(var_list.at(i)).arg(sim_points.count());
+            else ds_stream<<QString("<dep %1 %2>\n").arg(var_list.at(i)).arg(indep);
+            foreach (sim_point,sim_points) {
+                if (isComplex) {
+                    double re=sim_point.at(2*(i-1)+1);
+                    double im = sim_point.at(2*i);
+                    QString s;
+                    s += QString::number(re,'e',12);
+                    if (im<0) s += "-j";
+                    else s += "+j";
+                    s += QString::number(fabs(im),'e',12) + "\n";
+                    ds_stream<<s;
+                } else {
+                    ds_stream<<QString::number(sim_point.at(i),'e',12)<<endl;
+                }
+            }
+            if (indep.isEmpty()) ds_stream<<"</indep>\n";
+            else ds_stream<<"</dep>\n";
+        }
+        hasParSweep = false;
+    }
+
+    QFile dataset(qucs_dataset);
+    if (dataset.open(QFile::WriteOnly)) {
+        QTextStream ts(&dataset);
+        ts<<ds_str;
         dataset.close();
     }
 #ifdef NDEBUG
