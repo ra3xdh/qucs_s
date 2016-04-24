@@ -50,12 +50,12 @@ SDTF::SDTF()
   SpiceModel = "A";
   Name  = "SDTF";
   
-  Props.append(new Property("A", "", true,"Parameter list and\n .model spec."));
-  Props.append(new Property("A_Line 2", "", false,".model line"));
-  Props.append(new Property("A_Line 3", "", false,".model line"));
-  Props.append(new Property("A_Line 4", "", false,".model line"));
-  Props.append(new Property("A_Line 5", "", false,".model line"));
-  Props.append(new Property("A_Line 6", "", false,".model line")); 
+  Props.append(new Property("A", " A_XSDFTmod", true,"Parameter list and\n .model spec."));
+  Props.append(new Property("A_Line 2", ".MODEL A_XSDFTmod s_xfer ( gain=1.0", false,".model line"));
+  Props.append(new Property("A_Line 3", "+ num_coeff=[1.0]", false,".model line"));
+  Props.append(new Property("A_Line 4", "+ den_coeff=[1.0 1.09775 1.0]", false,".model line"));
+  Props.append(new Property("A_Line 5", "+ int_ic=[0 0 0]", false,".model line"));
+  Props.append(new Property("A_Line 6", "+ denormalized_freq=1500.0 )", false,".model line")); 
   Props.append(new Property("A_Line 7", "", false,".model line"));   
 
 }
