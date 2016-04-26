@@ -255,12 +255,15 @@ void AbstractSpiceKernel::slotSimulate()
 void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QList<double> > &sim_points,QStringList &var_list, bool &isComplex)
 {
     isComplex = false;
-    QString content;
+    bool isBinary = false;
+    int NumPoints = 0;
+    int bin_offset = 0;
+    QByteArray content;
 
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {
-        QTextStream ts(&ofile);
-        content = ts.readAll();
+        //QTextStream ts(&ofile);
+        content = ofile.readAll();
         ofile.close();
     }
 
@@ -268,7 +271,7 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
     sim_points.clear();
     bool start_values_sec = false;
     int NumVars=0; // Number of dep. and indep.variables
-    while (!ngsp_data.atEnd()) {
+    while (!ngsp_data.atEnd()) { // Parse header;
         QRegExp sep("[ \t,]");
         QString lin = ngsp_data.readLine();
         if (lin.isEmpty()) continue;
@@ -278,6 +281,10 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
         }
         if (lin.contains("No. Variables")) {  // get number of variables
             NumVars=lin.section(sep,2,2,QString::SectionSkipEmpty).toInt();
+            continue;
+        }
+        if (lin.contains("No. Points:")) {  // get number of variables
+            NumPoints=lin.section(sep,2,2,QString::SectionSkipEmpty).toInt();
             continue;
         }
         if (lin=="Variables:") {
@@ -296,6 +303,38 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
             start_values_sec = true;
             continue;
         }
+        if (lin=="Binary:") {
+            isBinary = true;
+            bin_offset = ngsp_data.pos();
+        }
+
+        if (isBinary) {
+            QDataStream dbl(content);
+            dbl.setByteOrder(QDataStream::LittleEndian);
+            dbl.device()->seek(bin_offset);
+            while (NumPoints>0) {
+                QList<double> sim_point;
+                double vv;
+                for (int i=1;i<NumVars;i++) { // first variable is independent
+                    if (isComplex) {
+                        dbl>>vv; // Re
+                        sim_point.append(vv);
+                        dbl>>vv; // Im
+                        sim_point.append(vv);
+                    } else {
+                        dbl>>vv;
+                        sim_point.append(vv); // Re
+                    }
+                }
+                dbl>>vv; // Indep. variable
+                sim_point.append(vv);
+                if (isComplex) dbl>>vv; // drop Im part of indep.var
+                sim_points.append(sim_point);
+                NumPoints--;
+            }
+            break;
+        }
+
         if (start_values_sec) {
             QList<double> sim_point;
             double indep_val = lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble();
