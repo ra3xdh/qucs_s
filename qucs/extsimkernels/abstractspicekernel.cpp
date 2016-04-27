@@ -590,78 +590,125 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
                      QStringList &var_list, bool &isComplex)
 {
     isComplex = false;
+    bool isBinary = false;
+    int bin_offset = 0;
+    QByteArray content;
 
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {
-        QTextStream ngsp_data(&ofile);
-        sim_points.clear();
-        bool start_values_sec = false;
-        bool header_parsed = false;
-        int NumVars=0; // Number of dep. and indep.variables
-        while (!ngsp_data.atEnd()) {
-            QRegExp sep("[ \t,]");
-            QString lin = ngsp_data.readLine();
-            if (lin.isEmpty()) continue;
-            if (lin.contains("Plotname:")&&  // skip operating point
-                (lin.contains("DC operating point"))) {
-                for(bool t = false; !t; t = (ngsp_data.readLine().startsWith("Plotname:")));
-            }
-            if (!header_parsed) {
-                if (lin.contains("Flags")&&lin.contains("complex")) { // output consists of
-                    isComplex = true; // complex numbers
-                    continue;         // maybe ac_analysis
-                }
-                if (lin.contains("No. Variables")) {  // get number of variables
-                    NumVars=lin.section(sep,2,2,QString::SectionSkipEmpty).toInt();
-                    continue;
-                }
-                if (lin=="Variables:") {
-                    var_list.clear();
-                    QString indep_var = ngsp_data.readLine().section(sep,1,1,QString::SectionSkipEmpty);
-                    var_list.append(indep_var);
+        content = ofile.readAll();
+        ofile.close();
+    }
 
-                    for (int i=1;i<NumVars;i++) {
-                        lin = ngsp_data.readLine();
-                        QString dep_var = lin.section(sep,1,1,QString::SectionSkipEmpty);
-                        var_list.append(dep_var);
-                    }
-                    header_parsed = true;
-                    continue;
-                }
+    QTextStream ngsp_data(&content);
+    sim_points.clear();
+    bool start_values_sec = false;
+    bool header_parsed = false;
+    int NumVars=0; // Number of dep. and indep.variables
+    int NumPoints=0; // Number of simulation points
+    while (!ngsp_data.atEnd()) {
+        QRegExp sep("[ \t,]");
+        QString lin = ngsp_data.readLine();
+        if (lin.isEmpty()) continue;
+        if (lin.contains("Plotname:")&&  // skip operating point
+            (lin.contains("DC operating point"))) {
+            for(bool t = false; !t; t = (ngsp_data.readLine().startsWith("Plotname:")));
+        }
+        if (!header_parsed) {
+            if (lin.contains("Flags")&&lin.contains("complex")) { // output consists of
+                isComplex = true; // complex numbers
+                continue;         // maybe ac_analysis
             }
-
-            if (lin=="Values:") {
-                start_values_sec = true;
+            if (lin.contains("No. Variables")) {  // get number of variables
+                NumVars=lin.section(sep,2,2,QString::SectionSkipEmpty).toInt();
                 continue;
             }
-            if (start_values_sec) {
+            if (lin.contains("No. Points:")) {  // get number of variables
+                NumPoints=lin.section(sep,2,2,QString::SectionSkipEmpty).toInt();
+                continue;
+            }
+            if (lin=="Variables:") {
+                var_list.clear();
+                QString indep_var = ngsp_data.readLine().section(sep,1,1,QString::SectionSkipEmpty);
+                var_list.append(indep_var);
+
+                for (int i=1;i<NumVars;i++) {
+                    lin = ngsp_data.readLine();
+                    QString dep_var = lin.section(sep,1,1,QString::SectionSkipEmpty);
+                    var_list.append(dep_var);
+                }
+                header_parsed = true;
+                continue;
+            }
+        }
+
+        if (lin=="Values:") {
+            start_values_sec = true;
+            continue;
+        }
+        if (lin=="Binary:") {
+            isBinary = true;
+            bin_offset = ngsp_data.pos();
+        }
+
+        if (isBinary) {
+            QDataStream dbl(content);
+            dbl.setByteOrder(QDataStream::LittleEndian);
+            dbl.device()->seek(bin_offset);
+            int cnt = NumPoints;
+            while (cnt>0) {
                 QList<double> sim_point;
-                bool ok = false;
-                QRegExp dataline_patter("^ *[0-9]+[ \t]+.*");
-                if (!dataline_patter.exactMatch(lin)) continue;
-                double indep_val = lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble(&ok);
-                //double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble(&ok); // only real indep vars
-                if (!ok) continue;
-                sim_point.append(indep_val);
-                for (int i=0;i<NumVars;i++) {
+                double vv;
+                for (int i=1;i<NumVars;i++) { // first variable is independent
                     if (isComplex) {
-                        QStringList lst = ngsp_data.readLine().split(sep,QString::SkipEmptyParts);
-                        if (lst.count()==2) {
-                            double re_dep_val = lst.at(0).toDouble();  // for complex sim results
-                            double im_dep_val = lst.at(1).toDouble();  // imaginary part follows
-                            sim_point.append(re_dep_val);              // real part
-                            sim_point.append(im_dep_val);
-                        }
+                        dbl>>vv; // Re
+                        sim_point.append(vv);
+                        dbl>>vv; // Im
+                        sim_point.append(vv);
                     } else {
-                        double dep_val = ngsp_data.readLine().remove(sep).toDouble();
-                        sim_point.append(dep_val);
+                        dbl>>vv;
+                        sim_point.append(vv); // Re
                     }
                 }
+                dbl>>vv; // Indep. variable
+                sim_point.append(vv);
+                if (isComplex) dbl>>vv; // drop Im part of indep.var
                 sim_points.append(sim_point);
+                cnt--;
             }
-
+            int pos = dbl.device()->pos();
+            ngsp_data.seek(pos);
+            isBinary = false;
+            continue;
         }
-        ofile.close();
+
+
+        if (start_values_sec) {
+            QList<double> sim_point;
+            bool ok = false;
+            QRegExp dataline_patter("^ *[0-9]+[ \t]+.*");
+            if (!dataline_patter.exactMatch(lin)) continue;
+            double indep_val = lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble(&ok);
+            //double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble(&ok); // only real indep vars
+            if (!ok) continue;
+            sim_point.append(indep_val);
+            for (int i=0;i<NumVars;i++) {
+                if (isComplex) {
+                    QStringList lst = ngsp_data.readLine().split(sep,QString::SkipEmptyParts);
+                    if (lst.count()==2) {
+                        double re_dep_val = lst.at(0).toDouble();  // for complex sim results
+                        double im_dep_val = lst.at(1).toDouble();  // imaginary part follows
+                        sim_point.append(re_dep_val);              // real part
+                        sim_point.append(im_dep_val);
+                    }
+                } else {
+                    double dep_val = ngsp_data.readLine().remove(sep).toDouble();
+                    sim_point.append(dep_val);
+                }
+            }
+            sim_points.append(sim_point);
+        }
+
     }
 }
 
