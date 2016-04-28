@@ -314,21 +314,22 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
             dbl.device()->seek(bin_offset);
             while (NumPoints>0) {
                 QList<double> sim_point;
-                double vv;
+                double re,im;
+                dbl>>re; // Indep. variable
+                sim_point.append(re);
+                if (isComplex) dbl>>im; // drop Im part of indep.var
                 for (int i=1;i<NumVars;i++) { // first variable is independent
                     if (isComplex) {
-                        dbl>>vv; // Re
-                        sim_point.append(vv);
-                        dbl>>vv; // Im
-                        sim_point.append(vv);
+
+                        dbl>>re; // Re
+                        dbl>>im; // Im
+                        sim_point.append(re);
+                        sim_point.append(im);
                     } else {
-                        dbl>>vv;
-                        sim_point.append(vv); // Re
+                        dbl>>re;
+                        sim_point.append(re); // Re
                     }
                 }
-                dbl>>vv; // Indep. variable
-                sim_point.append(vv);
-                if (isComplex) dbl>>vv; // drop Im part of indep.var
                 sim_points.append(sim_point);
                 NumPoints--;
             }
@@ -658,21 +659,22 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
             int cnt = NumPoints;
             while (cnt>0) {
                 QList<double> sim_point;
-                double vv;
+                double re,im;
+                dbl>>re; // Indep. variable
+                sim_point.append(re);
+                if (isComplex) dbl>>im; // drop Im part of indep.var
                 for (int i=1;i<NumVars;i++) { // first variable is independent
                     if (isComplex) {
-                        dbl>>vv; // Re
-                        sim_point.append(vv);
-                        dbl>>vv; // Im
-                        sim_point.append(vv);
+
+                        dbl>>re; // Re
+                        dbl>>im; // Im
+                        sim_point.append(re);
+                        sim_point.append(im);
                     } else {
-                        dbl>>vv;
-                        sim_point.append(vv); // Re
+                        dbl>>re;
+                        sim_point.append(re); // Re
                     }
                 }
-                dbl>>vv; // Indep. variable
-                sim_point.append(vv);
-                if (isComplex) dbl>>vv; // drop Im part of indep.var
                 sim_points.append(sim_point);
                 cnt--;
             }
