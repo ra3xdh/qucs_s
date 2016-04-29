@@ -312,49 +312,12 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
             QDataStream dbl(content);
             dbl.setByteOrder(QDataStream::LittleEndian);
             dbl.device()->seek(bin_offset);
-            while (NumPoints>0) {
-                QList<double> sim_point;
-                double re,im;
-                dbl>>re; // Indep. variable
-                sim_point.append(re);
-                if (isComplex) dbl>>im; // drop Im part of indep.var
-                for (int i=1;i<NumVars;i++) { // first variable is independent
-                    if (isComplex) {
-
-                        dbl>>re; // Re
-                        dbl>>im; // Im
-                        sim_point.append(re);
-                        sim_point.append(im);
-                    } else {
-                        dbl>>re;
-                        sim_point.append(re); // Re
-                    }
-                }
-                sim_points.append(sim_point);
-                NumPoints--;
-            }
+            extractBinSamples(dbl, sim_points, NumPoints, NumVars, isComplex);
             break;
         }
 
         if (start_values_sec) {
-            QList<double> sim_point;
-            double indep_val = lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble();
-            sim_point.append(indep_val);
-            for (int i=0;i<NumVars;i++) {
-                if (isComplex) {
-                    QStringList lst = ngsp_data.readLine().split(sep,QString::SkipEmptyParts);
-                    if (lst.count()==2) {
-                        double re_dep_val = lst.at(0).toDouble();  // for complex sim results
-                        double im_dep_val = lst.at(1).toDouble();  // imaginary part follows
-                        sim_point.append(re_dep_val);              // real part
-                        sim_point.append(im_dep_val);
-                    }
-                } else {
-                    double dep_val = ngsp_data.readLine().remove(sep).toDouble();
-                    sim_point.append(dep_val);
-                }
-            }
-            sim_points.append(sim_point);
+            extractASCIISamples(lin,ngsp_data,sim_points,NumVars,isComplex);
         }
     }
 }
@@ -656,28 +619,7 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
             QDataStream dbl(content);
             dbl.setByteOrder(QDataStream::LittleEndian);
             dbl.device()->seek(bin_offset);
-            int cnt = NumPoints;
-            while (cnt>0) {
-                QList<double> sim_point;
-                double re,im;
-                dbl>>re; // Indep. variable
-                sim_point.append(re);
-                if (isComplex) dbl>>im; // drop Im part of indep.var
-                for (int i=1;i<NumVars;i++) { // first variable is independent
-                    if (isComplex) {
-
-                        dbl>>re; // Re
-                        dbl>>im; // Im
-                        sim_point.append(re);
-                        sim_point.append(im);
-                    } else {
-                        dbl>>re;
-                        sim_point.append(re); // Re
-                    }
-                }
-                sim_points.append(sim_point);
-                cnt--;
-            }
+            extractBinSamples(dbl,sim_points,NumPoints,NumVars,isComplex);
             int pos = dbl.device()->pos();
             ngsp_data.seek(pos);
             isBinary = false;
@@ -686,32 +628,67 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
 
 
         if (start_values_sec) {
-            QList<double> sim_point;
-            bool ok = false;
-            QRegExp dataline_patter("^ *[0-9]+[ \t]+.*");
-            if (!dataline_patter.exactMatch(lin)) continue;
-            double indep_val = lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble(&ok);
-            //double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble(&ok); // only real indep vars
-            if (!ok) continue;
-            sim_point.append(indep_val);
-            for (int i=0;i<NumVars;i++) {
-                if (isComplex) {
-                    QStringList lst = ngsp_data.readLine().split(sep,QString::SkipEmptyParts);
-                    if (lst.count()==2) {
-                        double re_dep_val = lst.at(0).toDouble();  // for complex sim results
-                        double im_dep_val = lst.at(1).toDouble();  // imaginary part follows
-                        sim_point.append(re_dep_val);              // real part
-                        sim_point.append(im_dep_val);
-                    }
-                } else {
-                    double dep_val = ngsp_data.readLine().remove(sep).toDouble();
-                    sim_point.append(dep_val);
-                }
-            }
-            sim_points.append(sim_point);
+            if (!extractASCIISamples(lin,ngsp_data,sim_points,NumVars,isComplex)) continue;
         }
 
     }
+}
+
+
+void AbstractSpiceKernel::extractBinSamples(QDataStream &dbl, QList<QList<double> > &sim_points,
+                                            int NumPoints, int NumVars, bool isComplex)
+{
+    int cnt = NumPoints;
+    while (cnt>0) {
+        QList<double> sim_point;
+        double re,im;
+        dbl>>re; // Indep. variable
+        sim_point.append(re);
+        if (isComplex) dbl>>im; // drop Im part of indep.var
+        for (int i=1;i<NumVars;i++) { // first variable is independent
+            if (isComplex) {
+                dbl>>re; // Re
+                dbl>>im; // Im
+                sim_point.append(re);
+                sim_point.append(im);
+            } else {
+                dbl>>re;
+                sim_point.append(re); // Re
+            }
+        }
+        sim_points.append(sim_point);
+        cnt--;
+    }
+}
+
+bool AbstractSpiceKernel::extractASCIISamples(QString &lin, QTextStream &ngsp_data,
+                                              QList<QList<double> > &sim_points, int NumVars, bool isComplex)
+{
+    QRegExp sep("[ \t,]");
+    QList<double> sim_point;
+    bool ok = false;
+    QRegExp dataline_patter("^ *[0-9]+[ \t]+.*");
+    if (!dataline_patter.exactMatch(lin)) return false;
+    double indep_val = lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble(&ok);
+    //double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble(&ok); // only real indep vars
+    if (!ok) return false;
+    sim_point.append(indep_val);
+    for (int i=0;i<NumVars;i++) {
+        if (isComplex) {
+            QStringList lst = ngsp_data.readLine().split(sep,QString::SkipEmptyParts);
+            if (lst.count()==2) {
+                double re_dep_val = lst.at(0).toDouble();  // for complex sim results
+                double im_dep_val = lst.at(1).toDouble();  // imaginary part follows
+                sim_point.append(re_dep_val);              // real part
+                sim_point.append(im_dep_val);
+            }
+        } else {
+            double dep_val = ngsp_data.readLine().remove(sep).toDouble();
+            sim_point.append(dep_val);
+        }
+    }
+    sim_points.append(sim_point);
+    return true;
 }
 
 void AbstractSpiceKernel::parseHBSTEPOutput(QString , QList<QList<double> >&,

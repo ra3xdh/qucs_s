@@ -40,6 +40,10 @@ class AbstractSpiceKernel : public QObject
 private:
     void normalizeVarsNames(QStringList &var_list);
     bool checkRawOutupt(QString ngspice_file, QStringList &values);
+    void extractBinSamples(QDataStream &dbl, QList< QList<double> > &sim_points,
+                           int NumPoints, int NumVars, bool isComplex);
+    bool extractASCIISamples(QString &lin, QTextStream &ngsp_data, QList< QList<double> > &sim_points,
+                             int NumVars, bool isComplex);
 
 protected:
     QString netlist,workdir, simulator_cmd,
