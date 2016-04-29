@@ -34,7 +34,6 @@ Xyce::Xyce(Schematic *sch_, QObject *parent) :
     AbstractSpiceKernel(sch_, parent)
 {
     simulator_cmd = QucsSettings.XyceExecutable;
-    simulator_parameters = "-a";
     Nprocs = QucsSettings.NProcs;
 }
 

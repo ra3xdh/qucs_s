@@ -114,7 +114,6 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     vars.sort();
 
     stream<<".control\n"          //execute simulations
-         // <<"set filetype=ascii\n"
           <<"echo \"\" > spice4qucs.cir.noise\n"
           <<"echo \"\" > spice4qucs.cir.pz\n";
 
