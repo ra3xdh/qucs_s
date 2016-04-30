@@ -554,6 +554,7 @@ void Module::registerModules (void) {
       REGISTER_XSPICE_ANALOGUE_1 (Icouple);
       REGISTER_XSPICE_ANALOGUE_1 (core);
       REGISTER_XSPICE_ANALOGUE_1 (SDTF);
+      REGISTER_XSPICE_ANALOGUE_1 (XAPWL);      
 
       // XSPICE file devices
       REGISTER_XSPICEFILE_1 (XspiceGeneric);

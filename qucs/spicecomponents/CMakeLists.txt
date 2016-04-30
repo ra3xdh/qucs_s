@@ -86,6 +86,7 @@ DivV.cpp
 Icouple.cpp
 core.cpp
 SDTF.cpp
+XAPWL.cpp
 
 #XSPICE CodeModel
 xspicegeneric.cpp
@@ -179,6 +180,7 @@ DivV.h
 Icouple.h
 core.h
 SDTF.h
+XAPWL.h
 
 #XSPICE codemodel
 

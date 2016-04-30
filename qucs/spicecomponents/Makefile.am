@@ -87,7 +87,7 @@ libspicecomponents_a_SOURCES = src_eqndef.cpp \
 	sp_model.cpp \
 	sp_include.cpp \
 	sp_pz.cpp \
-        ABCV.cpp \
+    ABCV.cpp \
 	ABV.cpp \
 	APBPCV.cpp \
 	DivV.cpp \
@@ -95,6 +95,7 @@ libspicecomponents_a_SOURCES = src_eqndef.cpp \
 	Icouple.cpp \
 	APBV.cpp \
 	SDTF.cpp \
+	XAPWL.cpp \
 	xspicegeneric.cpp \
 	xsp_cmlib.cpp \
 	xsp_codemodel.cpp \
@@ -169,6 +170,7 @@ noinst_HEADERS = src_eqndef.h \
 	Icouple.h \
 	APBV.h \
 	SDTF.h \
+	XAPWL.h \
 	xspicegeneric.h \
 	xsp_cmlib.h \
 	xsp_codemodel.h \

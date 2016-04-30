@@ -74,6 +74,7 @@
 #include "Icouple.h"
 #include "core.h"
 #include "SDTF.h"
+#include "XAPWL.h"
 
 // Spice netlist sections
 #include "sp_parameter.h"
