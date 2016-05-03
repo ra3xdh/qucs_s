@@ -69,20 +69,6 @@ S4Q_W.cpp
 # XSPICE cpp list
 #
 
-Cmeter_SPICE.cpp
-SE_V_amp.cpp 
-DE_V_amp.cpp
-SE_V_limit.cpp
-DE_V_limit.cpp
-SE_V_int.cpp
-DE_V_int.cpp
-SE_V_diff.cpp
-DE_V_diff.cpp
-ABV.cpp
-ABCV.cpp
-APBV.cpp
-APBPCV.cpp
-DivV.cpp
 Icouple.cpp
 core.cpp
 SDTF.cpp
@@ -162,21 +148,6 @@ S4Q_W.h
 # XSPICE component headers
 #
 
-Cmeter_SPICE.h
-SE_V_amp.h
-DE_V_amp.h
-SE_V_limit.h
-SE_V_limit.h
-DE_V_limit.h
-SE_V_int.h
-DE_V_int.h
-SE_V_diff.h
-DE_V_diff.h
-ABV.h
-ABCV.h
-APBV.h
-APBPCV.h
-DivV.h
 Icouple.h
 core.h
 SDTF.h

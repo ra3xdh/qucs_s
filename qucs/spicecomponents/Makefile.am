@@ -54,7 +54,6 @@ libspicecomponents_a_SOURCES = src_eqndef.cpp \
 	K_SPICE.cpp \
 	MESFET_SPICE.cpp \
 	PMF_MESFET_SPICE.cpp \
-	Cmeter_SPICE.cpp \
 	LTL_SPICE.cpp \
         UDRCTL_SPICE.cpp \
         LTRA_SPICE.cpp \
@@ -75,25 +74,11 @@ libspicecomponents_a_SOURCES = src_eqndef.cpp \
         S4Q_I.cpp \
         S4Q_S.cpp \
         S4Q_W.cpp \
-        Cmeter_SPICE.cpp \
-        SE_V_amp.cpp \
-        DE_V_amp.cpp \
-        SE_V_limit.cpp\
-        DE_V_limit.cpp\
-	SE_V_int.cpp \
-	DE_V_int.cpp \
-	SE_V_diff.cpp \
-	DE_V_diff.cpp \
 	sp_model.cpp \
 	sp_include.cpp \
 	sp_pz.cpp \
-    ABCV.cpp \
-	ABV.cpp \
-	APBPCV.cpp \
-	DivV.cpp \
 	core.cpp \
 	Icouple.cpp \
-	APBV.cpp \
 	SDTF.cpp \
 	XAPWL.cpp \
 	xspicegeneric.cpp \
@@ -129,7 +114,6 @@ noinst_HEADERS = src_eqndef.h \
 	K_SPICE.h \
 	MESFET_SPICE.h \
 	PMF_MESFET_SPICE.h \
-	Cmeter_SPICE.h \
 	LTL_SPICE.h \
 	UDRCTL_SPICE.h \
 	LTRA_SPICE.h \
@@ -150,25 +134,11 @@ noinst_HEADERS = src_eqndef.h \
         S4Q_I.h \
         S4Q_S.h \
         S4Q_W.h \
-        Cmeter_SPICE.h \
-        SE_V_amp.h \
-        DE_V_amp.h \
-        SE_V_limit.h\
-        DE_V_limit.h\
-	SE_V_int.h \
-	DE_V_int.h \
-	SE_V_diff.h \
-	DE_V_diff.h \
 	sp_model.h \
 	sp_include.h \
 	sp_pz.h \
-        ABCV.h \
-	ABV.h \
-	APBPCV.h \
-	DivV.h \
 	core.h \
 	Icouple.h \
-	APBV.h \
 	SDTF.h \
 	XAPWL.h \
 	xspicegeneric.h \

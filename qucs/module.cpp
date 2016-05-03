@@ -537,20 +537,6 @@ void Module::registerModules (void) {
 
   if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       // XSPICE analogue component blocks
-      REGISTER_XSPICE_ANALOGUE_1 (Cmeter_SPICE);
-      REGISTER_XSPICE_ANALOGUE_1 (SE_V_amp);
-      REGISTER_XSPICE_ANALOGUE_1 (DE_V_amp);
-      REGISTER_XSPICE_ANALOGUE_1 (SE_V_limit);
-      REGISTER_XSPICE_ANALOGUE_1 (DE_V_limit);
-      REGISTER_XSPICE_ANALOGUE_1 (SE_V_int);
-      REGISTER_XSPICE_ANALOGUE_1 (DE_V_int);
-      REGISTER_XSPICE_ANALOGUE_1 (SE_V_diff);
-      REGISTER_XSPICE_ANALOGUE_1 (DE_V_diff);
-      REGISTER_XSPICE_ANALOGUE_1 (ABV);
-      REGISTER_XSPICE_ANALOGUE_1 (ABCV);
-      REGISTER_XSPICE_ANALOGUE_1 (APBV);
-      REGISTER_XSPICE_ANALOGUE_1 (APBPCV);
-      REGISTER_XSPICE_ANALOGUE_1 (DivV);
       REGISTER_XSPICE_ANALOGUE_1 (Icouple);
       REGISTER_XSPICE_ANALOGUE_1 (core);
       REGISTER_XSPICE_ANALOGUE_1 (SDTF);
