@@ -225,16 +225,14 @@ void Module::intoCategory (Module * m) {
   REGISTER_COMP_1 (QObject::tr("SPICE specific sections"),val)
 #define REGISTER_SPICE_SIM_1(val) \
   REGISTER_COMP_1 (QObject::tr("SPICE simulations"),val)
-#define REGISTER_XSPICE_ANALOGUE_1(val) \
-  REGISTER_COMP_1 (QObject::tr("XSPICE analogue blocks"),val)  
+#define REGISTER_XSPICE_1(val) \
+  REGISTER_COMP_1 (QObject::tr("XSPICE devices"),val)
 #define REGISTER_QUCS_1(val) \
   REGISTER_COMP_1 (QObject::tr("Qucs legacy devices"),val)
 #define REGISTER_QUCS_2(val,inf1,inf2) \
   REGISTER_COMP_2 (QObject::tr("Qucs legacy devices"),val,inf1,inf2)
 #define REGISTER_QUCS_3(val,inf1,inf2,inf3) \
   REGISTER_COMP_3 (QObject::tr("Qucs legacy devices"),val,inf1,inf2,inf3)
-#define REGISTER_XSPICEFILE_1(val) \
-  REGISTER_COMP_1 (QObject::tr("XSPICE file devices"),val)
 
 // This function has to be called once at application startup.  It
 // registers every component available in the application.  Put here
@@ -537,15 +535,15 @@ void Module::registerModules (void) {
 
   if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       // XSPICE analogue component blocks
-      REGISTER_XSPICE_ANALOGUE_1 (Icouple);
-      REGISTER_XSPICE_ANALOGUE_1 (core);
-      REGISTER_XSPICE_ANALOGUE_1 (SDTF);
-      REGISTER_XSPICE_ANALOGUE_1 (XAPWL);      
+      REGISTER_XSPICE_1 (Icouple);
+      REGISTER_XSPICE_1 (core);
+      REGISTER_XSPICE_1 (SDTF);
+      REGISTER_XSPICE_1 (XAPWL);
 
       // XSPICE file devices
-      REGISTER_XSPICEFILE_1 (XspiceGeneric);
-      REGISTER_XSPICEFILE_1 (XSP_CMlib);
-      REGISTER_XSPICEFILE_1 (XSP_CodeModel);
+      REGISTER_XSPICE_1 (XspiceGeneric);
+      REGISTER_XSPICE_1 (XSP_CMlib);
+      REGISTER_XSPICE_1 (XSP_CodeModel);
 
       // specific sections of spice netlists
       REGISTER_SPICE_SEC_1 (SpiceParam);
