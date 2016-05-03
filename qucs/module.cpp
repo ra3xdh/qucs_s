@@ -239,12 +239,11 @@ void Module::intoCategory (Module * m) {
 // any new component.
 void Module::registerModules (void) {
 
+  REGISTER_LUMPED_2 (Resistor, info, info_us);
+  REGISTER_LUMPED_1 (Capacitor);
+  REGISTER_LUMPED_1 (Inductor);
   // lumped components
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-      REGISTER_LUMPED_2 (Resistor, info, info_us);
-      REGISTER_LUMPED_1 (Capacitor);
-      REGISTER_LUMPED_1 (Inductor);
-  } else {
+  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       REGISTER_LUMPED_1 (R_SPICE);
       REGISTER_LUMPED_1 (C_SPICE);
       REGISTER_LUMPED_1 (L_SPICE);
