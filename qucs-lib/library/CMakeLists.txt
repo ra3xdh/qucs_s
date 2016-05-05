@@ -19,6 +19,11 @@ SpiceOpamp.lib
 Xanalogue.lib
 )
 
-INSTALL( FILES ${COMPLIBS} DESTINATION share/qucs/library )
+SET(BLACKLIST
+qucs.blacklist
+spice.blacklist
+)
+
+INSTALL( FILES ${COMPLIBS} ${BLACKLIST} DESTINATION share/qucs/library )
 
 ADD_SUBDIRECTORY( AnalogueCM )

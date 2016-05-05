@@ -48,6 +48,8 @@
 #include "displaydialog.h"
 #include "symbolwidget.h"
 
+#include "../qucs/extsimkernels/spicecompat.h"
+
 
 /* Constructor setups the GUI. */
 QucsLib::QucsLib()
@@ -189,6 +191,10 @@ void QucsLib::putLibrariesIntoCombobox()
     {
         //LibFiles = UserLibDir.entryList("*.lib", QDir::Files, QDir::Name);
         LibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+        QStringList blacklist = getBlacklistedLibraries(UserLibDir.absolutePath());
+        foreach(QString ss, blacklist) { // exclude blacklisted files
+            LibFiles.removeAll(ss);
+        }
 
         UserLibCount = LibFiles.count();
 
@@ -205,6 +211,10 @@ void QucsLib::putLibrariesIntoCombobox()
 
     QDir LibDir(QucsSettings.LibDir);
     LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+    QStringList blacklist = getBlacklistedLibraries(QucsSettings.LibDir);
+    foreach(QString ss, blacklist) { // exclude blacklisted files
+        LibFiles.removeAll(ss);
+    }
 
     for(it = LibFiles.begin(); it != LibFiles.end(); it++)
         Library->addItem(QPixmap(":/bitmaps/big.qucs.xpm"), (*it).left((*it).length()-4));
@@ -524,3 +534,22 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
 }
 
 
+QStringList QucsLib::getBlacklistedLibraries(QString dir)
+{
+    QString filename;
+    QStringList blacklisted_libs;
+    blacklisted_libs.clear();
+    if (QucsSettings.DefaultSimulator==spicecompat::simQucsator)
+        filename = dir + QDir::separator()+ "qucs.blacklist";
+    else filename = dir + QDir::separator() + "spice.blacklist";
+    QFile f_blist(filename);
+    if (!f_blist.open(QIODevice::ReadOnly)) return blacklisted_libs;
+
+    QTextStream ts(&f_blist);
+    while (!ts.atEnd()) {
+        QString lib = ts.readLine();
+        if (!lib.isEmpty()) blacklisted_libs.append(lib);
+    }
+    f_blist.close();
+    return blacklisted_libs;
+}

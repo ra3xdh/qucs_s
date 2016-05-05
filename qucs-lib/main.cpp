@@ -56,6 +56,9 @@ bool loadSettings()
     if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
     if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
 
+    if(settings.contains("DefaultSimulator"))
+        QucsSettings.DefaultSimulator = settings.value("DefaultSimulator").toInt();
+    else QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
   return true;
 }
 

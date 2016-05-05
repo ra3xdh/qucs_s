@@ -31,9 +31,12 @@
 
 #include "symbolwidget.h"
 
+#include "../qucs/extsimkernels/spicecompat.h"
+
 
 // Application settings.
 struct tQucsSettings {
+  int DefaultSimulator;
   int x, y, dx, dy;    // position and size of main window
   QFont font;          // font
   QString LangDir;     // translation directory
@@ -82,6 +85,8 @@ private:
   QTextEdit    *CompDescr;
   QVBoxLayout  *all;
   QLineEdit *CompSearch;
+
+  QStringList getBlacklistedLibraries(QString dir);
 };
 
 #endif /* QUCSLIB_H */
