@@ -85,8 +85,6 @@ private:
   QTextEdit    *CompDescr;
   QVBoxLayout  *all;
   QLineEdit *CompSearch;
-
-  QStringList getBlacklistedLibraries(QString dir);
 };
 
 #endif /* QUCSLIB_H */

@@ -21,7 +21,8 @@ Xanalogue.lib
 
 SET(BLACKLIST
 qucs.blacklist
-spice.blacklist
+ngspice.blacklist
+xyce.blacklist
 )
 
 INSTALL( FILES ${COMPLIBS} ${BLACKLIST} DESTINATION share/qucs/library )

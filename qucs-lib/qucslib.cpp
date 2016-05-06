@@ -48,8 +48,6 @@
 #include "displaydialog.h"
 #include "symbolwidget.h"
 
-#include "../qucs/extsimkernels/spicecompat.h"
-
 
 /* Constructor setups the GUI. */
 QucsLib::QucsLib()
@@ -531,25 +529,4 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
     libCurIdx = i-1; // remember the category to select when exiting search
     //!! comment out the above two lines if you would like that the search
     //!!   returns back to the last selected category instead
-}
-
-
-QStringList QucsLib::getBlacklistedLibraries(QString dir)
-{
-    QString filename;
-    QStringList blacklisted_libs;
-    blacklisted_libs.clear();
-    if (QucsSettings.DefaultSimulator==spicecompat::simQucsator)
-        filename = dir + QDir::separator()+ "qucs.blacklist";
-    else filename = dir + QDir::separator() + "spice.blacklist";
-    QFile f_blist(filename);
-    if (!f_blist.open(QIODevice::ReadOnly)) return blacklisted_libs;
-
-    QTextStream ts(&f_blist);
-    while (!ts.atEnd()) {
-        QString lib = ts.readLine();
-        if (!lib.isEmpty()) blacklisted_libs.append(lib);
-    }
-    f_blist.close();
-    return blacklisted_libs;
 }

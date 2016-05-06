@@ -23,6 +23,8 @@
 #include <QTextStream>
 #include <QDebug>
 
+#include "../qucs/extsimkernels/spicecompat.h"
+
 // global functions and data structures for the processing of
 // qucs library files
 
@@ -305,6 +307,35 @@ inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
 
     return QUCS_COMP_LIB_OK;
 
+}
+
+inline QStringList getBlacklistedLibraries(QString dir)
+{
+    QString filename;
+    QStringList blacklisted_libs;
+    blacklisted_libs.clear();
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simQucsator : filename = dir + QDir::separator()+ "qucs.blacklist";
+        break;
+    case spicecompat::simXycePar:
+    case spicecompat::simXyceSer: filename = dir + QDir::separator()+ "xyce.blacklist";
+        break;
+    case spicecompat::simNgspice:
+    case spicecompat::simSpiceOpus: filename = dir + QDir::separator() + "ngspice.blacklist";
+        break;
+    default:break;
+    }
+
+    QFile f_blist(filename);
+    if (!f_blist.open(QIODevice::ReadOnly)) return blacklisted_libs;
+
+    QTextStream ts(&f_blist);
+    while (!ts.atEnd()) {
+        QString lib = ts.readLine();
+        if (!lib.isEmpty()) blacklisted_libs.append(lib);
+    }
+    f_blist.close();
+    return blacklisted_libs;
 }
 
 #endif // _QUCSLIB_COMMON_H_
