@@ -62,8 +62,10 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
               <<"set filetype=ascii\n" // Ingnore all other simulations
               <<"op\n"
               <<"print all > spice4qucs.cir.dc_op\n"
+              <<"destroy all\n"
               <<"quit\n"
-              <<".endc\n";
+              <<".endc\n"
+              <<".end\n";
         outputs.clear();
         outputs.append("spice4qucs.cir.dc_op");
         return;
