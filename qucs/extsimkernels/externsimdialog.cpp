@@ -282,7 +282,8 @@ void ExternSimDialog::slotSaveNetlist()
     if (filename.isEmpty()) return;
 
     switch (QucsSettings.DefaultSimulator) {
-    case spicecompat::simNgspice: {
+    case spicecompat::simNgspice:
+    case spicecompat::simSpiceOpus: {
         ngspice->SaveNetlist(filename);
         }
         break;
