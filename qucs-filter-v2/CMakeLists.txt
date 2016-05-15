@@ -2,8 +2,6 @@ PROJECT(qucsfilter-v2 CXX C)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 cmake_policy(VERSION 2.6)
 
-SET(LANGUAGEDIR TRUE)
-
 SET(CMAKE_BUILD_TYPE Debug)
 
 # The incomplete filter-v2 only builds withs -stdlib=libstc++

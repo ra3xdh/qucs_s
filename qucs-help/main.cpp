@@ -31,6 +31,7 @@
 #include <QDir>
 #include <QFont>
 #include <QTextCodec>
+#include <QSettings>
 #include <QDebug>
 
 #include "qucshelp.h"
@@ -43,77 +44,38 @@ QDir QucsHelpDir; // directory to find helps files
 tQucsSettings QucsSettings; // application settings
 
 // #########################################################################
-// Loads the settings file and stores the settings.
+// Loads the application settings and stores them into QucsSettings.
+// TODO: should not return a bool. it has no meaning
+// FIXME: error handling is broken, due to Qt and/or -fno-exceptions
+//        (errors loading settings are not checked/reported)
 bool loadSettings()
 {
-  bool result = true;
-
-  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/helprc"));
-  if(!file.open(QIODevice::ReadOnly))
-    result = false; // settings file doesn't exist
-  else {
-    QTextStream stream(&file);
-    QString Line, Setting;
-    while(!stream.atEnd()) {
-      Line = stream.readLine();
-      Setting = Line.section('=',0,0);
-      Line = Line.section('=',1,1);
-      if(Setting == "HelpWindow") {
-	QucsSettings.x  = Line.section(",",0,0).toInt();
-	QucsSettings.y  = Line.section(",",1,1).toInt();
-	QucsSettings.dx = Line.section(",",2,2).toInt();
-	QucsSettings.dy = Line.section(",",3,3).toInt();
-	break; }
-    }
-    file.close();
-  }
-
-  file.setFileName(QDir::homePath()+QDir::convertSeparators ("/.qucs/qucsrc"));
-  if(!file.open(QIODevice::ReadOnly))
-    result = true; // qucs settings not necessary
-  else {
-    QTextStream stream(&file);
-    QString Line, Setting;
-    while(!stream.atEnd()) {
-      Line = stream.readLine();
-      Setting = Line.section('=',0,0);
-      Line = Line.section('=',1,1).trimmed();
-      if(Setting == "Font")
-	QucsSettings.font.fromString(Line);
-      else if(Setting == "Language")
-	QucsSettings.Language = Line;
-    }
-    file.close();
-  }
-  return result;
+  QSettings settings("qucs","qucs");
+  settings.beginGroup("QucsHelp");
+  if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
+  if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
+  if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
+  if(settings.contains("dy"))QucsSettings.dy=settings.value("dy").toInt();
+  settings.endGroup();
+  if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
+  if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
+  return true;
 }
 
 // #########################################################################
-// Saves the settings in the settings file.
+// Saves the application settings.
+// TODO: should not return a bool. it has no meaning
+// FIXME: error handling is broken, due to Qt and/or -fno-exceptions
+//        (errors saving settings are not checked/reported)
 bool saveApplSettings(QucsHelp *qucs)
 {
-  if(qucs->x() == QucsSettings.x)
-    if(qucs->y() == QucsSettings.y)
-      if(qucs->width() == QucsSettings.dx)
-	if(qucs->height() == QucsSettings.dy)
-	  return true;   // nothing has changed
-
-
-  QFile file(QDir::homePath()+QDir::convertSeparators ("/.qucs/helprc"));
-  if(!file.open(QIODevice::WriteOnly)) {
-    QMessageBox::warning(0, QObject::tr("Warning"),
-			QObject::tr("Cannot save settings !"));
-    return false;
-  }
-
-  QString Line;
-  QTextStream stream(&file);
-
-  stream << "Settings file, Qucs Help System " PACKAGE_VERSION "\n"
-	 << "HelpWindow=" << qucs->x() << ',' << qucs->y() << ','
-	 << qucs->width() << ',' << qucs->height() << '\n';
-
-  file.close();
+  QSettings settings ("qucs","qucs");
+  settings.beginGroup("QucsHelp");
+  settings.setValue("x", qucs->x());
+  settings.setValue("y", qucs->y());
+  settings.setValue("dx", qucs->width());
+  settings.setValue("dy", qucs->height());
+  settings.endGroup();
   return true;
 }
 

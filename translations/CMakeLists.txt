@@ -32,12 +32,8 @@ ENDIF (UPDATE_TRANSLATIONS)
 #FILE(GLOB QtTRANSLATIONS qtgeneric_*.ts)
 
 #
-# location for translations
-SET(LANGUAGEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/lang/")
-
-#
 # install tranlations
-INSTALL( FILES ${QM_FILES} DESTINATION ${LANGUAGEDIR})
+INSTALL( FILES ${QM_FILES} DESTINATION share/qucs/lang)
 
 # prevent the generated files from being deleted during make clean
 #set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM true)

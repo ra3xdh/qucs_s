@@ -25,9 +25,6 @@ IF(NOT WIN32)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-register ")
 ENDIF()
 
-# define variables
-SET(LANGUAGEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/lang/")
-
 #configure the header config.h
 CONFIGURE_FILE (
     "${PROJECT_SOURCE_DIR}/../config.h.cmake"

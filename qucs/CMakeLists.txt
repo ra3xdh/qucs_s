@@ -54,10 +54,6 @@ endif()
 #
 ADD_DEFINITIONS( -DHAVE_CONFIG_H )
 
-# define variables
-SET(LANGUAGEDIR "${CMAKE_INSTALL_PREFIX}/share/qucs/lang/")
-
-
 FIND_PACKAGE( Qt4 4.6.3 REQUIRED QtCore QtGui Qt3Support QtSvg QtXml QtScript)
 INCLUDE( ${QT_USE_FILE} )
 

@@ -58,6 +58,11 @@ bool loadSettings()
     settings.endGroup();
     if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
     if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
+    if(settings.contains("QucsHomeDir"))
+      if(settings.value("QucsHomeDir").toString() != "")
+	QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
+
+    QucsSettings.QucsWorkDir = QucsSettings.QucsHomeDir;
 
   return true;
 }
@@ -79,8 +84,8 @@ bool saveApplSettings(QucsTranscalc *qucs)
     settings.setValue("ResUnit", TransUnits[2].units[QucsSettings.res_unit]);
     settings.setValue("AngUnit", TransUnits[3].units[QucsSettings.ang_unit]);
     settings.endGroup();
-  return true;
 
+    return true;
 }
 
 
@@ -102,18 +107,26 @@ int main(int argc, char *argv[])
   QucsSettings.res_unit = 0;
   QucsSettings.ang_unit = 0;
   QucsSettings.freq_unit = 0;
+  QucsSettings.QucsHomeDir.setPath(QDir::homePath() + "/.qucs");
 
   // is application relocated?
   char * var = getenv ("QUCSDIR");
+  QDir QucsDir;
   if (var != NULL) {
-    QDir QucsDir = QDir (var);
+    QucsDir = QDir (var);
     QString QucsDirStr = QucsDir.canonicalPath ();
     QucsSettings.LangDir =
       QDir::convertSeparators (QucsDirStr + "/share/qucs/lang/");
   } else {
-    QucsSettings.LangDir = LANGUAGEDIR;
+    QString QucsApplicationPath = QCoreApplication::applicationDirPath();
+#ifdef __APPLE__
+    QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
+#else
+    QucsDir = QDir(QucsApplicationPath);
+    QucsDir.cdUp();
+#endif
+    QucsSettings.LangDir = QucsDir.canonicalPath() + "/share/qucs/lang/";
   }
-  QucsSettings.QucsWorkDir.setPath (QDir::homePath()+QDir::convertSeparators ("/.qucs"));
   loadSettings();
 
   QApplication a(argc, argv);
@@ -132,7 +145,8 @@ int main(int argc, char *argv[])
   qucs->move(QucsSettings.x, QucsSettings.y);     // ... before "show" !!!
   qucs->show();
 
-  qucs->loadFile(QDir::homePath()+"/.qucs/transrc");
+  // load file with all the GUI input values from the Qucs Home
+  qucs->loadFile(QucsSettings.QucsHomeDir.filePath("transrc"));
   qucs->setMode(QucsSettings.Mode);
 
   // optional file argument
@@ -144,6 +158,8 @@ int main(int argc, char *argv[])
 
   int result = a.exec();
   saveApplSettings(qucs);
+  // save file with all the GUI input values in the Qucs Home
+  qucs->saveModes(QucsSettings.QucsHomeDir.filePath("transrc"));
   delete qucs;
   return result;
 }
