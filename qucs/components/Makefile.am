@@ -57,82 +57,10 @@ libcomponents_a_SOURCES = phaseshifter.cpp gyrator.cpp componentdialog.cpp    \
   dmux2to4.cpp dmux3to8.cpp dmux4to16.cpp ha1b.cpp fa1b.cpp fa2b.cpp          \
   pad2bit.cpp pad3bit.cpp pad4bit.cpp binarytogrey4bit.cpp vafile.cpp         \
   greytobinary4bit.cpp comp_1bit.cpp comp_2bit.cpp comp_4bit.cpp              \
-<<<<<<< HEAD
   hpribin4bit.cpp msrstub.cpp phototransistor.cpp nigbt.cpp \
   hybrid.cpp ctline.cpp tunneldiode.cpp \
   etr_sim.cpp ecvs.cpp vcresistor.cpp vacomponent.cpp        \
-  mutualx.cpp \
-  src_eqndef.cpp \
-	sp_parameter.cpp \
-	sp_globalpar.cpp \
-	sp_options.cpp \
-	sp_nutmeg.cpp \
-	sp_ic.cpp \
-	sp_nodeset.cpp \
-	vsffm.cpp \
-	isffm.cpp \
-	vAmpMod.cpp \
-	iAmpMod.cpp \
-	vPWL.cpp \
-	iPWL.cpp \
-	eNL.cpp \
-	gNL.cpp \
-	vTRNOISE.cpp \
-	iTRNOISE.cpp \
-	vTRRANDOM.cpp \
-	C_SPICE.cpp \
-	L_SPICE.cpp \
-	R_SPICE.cpp \
-	K_SPICE.cpp \
-	MESFET_SPICE.cpp \
-	PMF_MESFET_SPICE.cpp \
-	Cmeter_SPICE.cpp \
-	LTL_SPICE.cpp \
-        UDRCTL_SPICE.cpp \
-        LTRA_SPICE.cpp \
-        DIODE_SPICE.cpp \
-        NPN_SPICE.cpp \
-        PNP_SPICE.cpp \
-        NJF_SPICE.cpp \
-        PJF_SPICE.cpp \
-        NMOS_SPICE.cpp \
-        PMOS_SPICE.cpp \
-        volt_ac_SPICE.cpp \
-	sp_customsim.cpp \
-	sp_fourier.cpp \
-	sp_disto.cpp \
-	sp_noise.cpp \
-        S4Q_V.cpp \
-        S4Q_Ieqndef.cpp \
-        S4Q_I.cpp \
-        S4Q_S.cpp \
-        S4Q_W.cpp \
-        Cmeter_SPICE.cpp \
-        SE_V_amp.cpp \
-        DE_V_amp.cpp \
-	SE_V_int.cpp \
-	DE_V_int.cpp \
-	SE_V_diff.cpp \
-	DE_V_diff.cpp \
-	sp_model.cpp \
-	sp_include.cpp \
-	sp_pz.cpp \
-        ABCV.cpp \
-	ABV.cpp \
-	APBPCV.cpp \
-	DivV.cpp \
-	core.cpp \
-	Icouple.cpp \
-	APBV.cpp \
-	SDTF.cpp
-
-=======
-  hpribin4bit.cpp msrstub.cpp phototransistor.cpp nigbt.cpp hicumL2V2p24.cpp  \
-  hicumL0V1p2g.cpp hybrid.cpp ctline.cpp tunneldiode.cpp hicumL0V1p3.cpp      \
-  hicumL2V2p31n.cpp  bsim3v34nMOS.cpp bsim3v34pMOS.cpp bsim4v30nMOS.cpp       \
-  bsim4v30pMOS.cpp etr_sim.cpp ecvs.cpp vcresistor.cpp vacomponent.cpp        \
-  mutualx.cpp 
->>>>>>> spice4qucs_current
+  mutualx.cpp
 
 nodist_libcomponents_a_SOURCES = $(MOCFILES)
 
@@ -160,81 +88,9 @@ noinst_HEADERS = $(MOCHEADERS) resistor.h components.h capacitor.h vccs.h     \
   andor4x4.h dmux2to4.h dmux3to8.h dmux4to16.h ha1b.h fa1b.h fa2b.h pad2bit.h \
   pad3bit.h pad4bit.h binarytogrey4bit.h greytobinary4bit.h comp_1bit.h       \
   comp_2bit.h comp_4bit.h hpribin4bit.h msrstub.h phototransistor.h nigbt.h   \
-<<<<<<< HEAD
   vafile.h hybrid.h ctline.h tunneldiode.h      \
   etr_sim.h ecvs.h vcresistor.h vacomponent.h                  \
-  mutualx.h \
-	src_eqndef.h \
-	sp_parameter.h \
-	sp_globalpar.h \
-	sp_options.h \
-	sp_nodeset.h \
-	sp_nutmeg.h \
-	sp_ic.h \
-	vsffm.h \
-	isffm.h \
-	vAmpMod.h \
-	iAmpMod.h \
-	vPWL.h \
-	iPWL.h \
-	eNL.h \
-	gNL.h \
-	vTRNOISE.h \
-	iTRNOISE.h \
-	vTRRANDOM.h \
-	C_SPICE.h \
-	L_SPICE.h \
-	R_SPICE.h \
-	K_SPICE.h \
-	MESFET_SPICE.h \
-	PMF_MESFET_SPICE.h \
-	Cmeter_SPICE.h \
-	LTL_SPICE.h \
-	UDRCTL_SPICE.h \
-	LTRA_SPICE.h \
-	DIODE_SPICE.h \
-	NPN_SPICE.h \
-	PNP_SPICE.h \
-	NJF_SPICE.h \
-	PJF_SPICE.h \
-	NMOS_SPICE.h \
-	PMOS_SPICE.h \
-	volt_ac_SPICE.h \
-	sp_customsim.h \
-	sp_fourier.h \
-        sp_disto.h \
-	sp_noise.h \
-        S4Q_V.h \
-        S4Q_Ieqndef.h \
-        S4Q_I.h \
-        S4Q_S.h \
-        S4Q_W.h \
-        Cmeter_SPICE.h \
-        SE_V_amp.h \
-        DE_V_amp.h \
-	SE_V_int.h \
-	DE_V_int.h \
-	SE_V_diff.h \
-	DE_V_diff.h \
-	sp_model.h \
-	sp_include.h \
-	sp_pz.h \
-        ABCV.h \
-	ABV.h \
-	APBPCV.h \
-	DivV.h \
-	core.h \
-	Icouple.h \
-	APBV.h \
-	SDTF.h 
-
-=======
-  vafile.h hicumL2V2p24.h hicumL0V1p2g.h hybrid.h ctline.h tunneldiode.h      \
-  hicumL0V1p3.h hicumL2V2p31n.h  bsim3v34nMOS.h bsim3v34pMOS.h bsim4v30nMOS.h \
-  bsim4v30pMOS.h etr_sim.h ecvs.h vcresistor.h vacomponent.h                  \
   mutualx.h
->>>>>>> spice4qucs_current
-
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
