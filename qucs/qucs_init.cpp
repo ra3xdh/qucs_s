@@ -610,8 +610,8 @@ void QucsApp::initActions()
 	tr("Show Last Netlist\n\nShows the netlist of the last simulation"));
   connect(showNet, SIGNAL(triggered()), SLOT(slotShowLastNetlist()));
 
-  simSpice = new QAction(tr("Simulate with spice"),this);
-  connect(simSpice,SIGNAL(activated()),SLOT(slotSimulateWithSpice()));
+  simSettings = new QAction(tr("Select default simulator"),this);
+  connect(simSettings,SIGNAL(activated()),SLOT(slotSimSettings()));
   buildVAModule = new QAction(tr("Build Verilog-A module from subcircuit"),this);
   connect(buildVAModule,SIGNAL(activated()),SLOT(slotBuildVAModule()));
 
@@ -767,10 +767,13 @@ void QucsApp::initMenuBar()
   projMenu->insertSeparator();
   projMenu->addAction(importData);
   projMenu->addAction(graph2csv);
-  projMenu->insertSeparator();
   // TODO only enable if document is VA file
-  projMenu->addAction(buildModule);
-  projMenu->addAction(loadModule);
+  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+      // There is no VA-modules builder available for Ngspice etc.
+      projMenu->insertSeparator();
+      projMenu->addAction(buildModule);
+      projMenu->addAction(loadModule);
+  }
 
   toolMenu = new QMenu(tr("&Tools"));  // menuBar entry toolMenu
   toolMenu->addAction(callEditor);
@@ -778,7 +781,8 @@ void QucsApp::initMenuBar()
   toolMenu->addAction(callActiveFilter);
   toolMenu->addAction(callLine);
   toolMenu->addAction(callLib);
-  toolMenu->addAction(callMatch);
+  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
+      toolMenu->addAction(callMatch);
   toolMenu->addAction(callAtt);
   toolMenu->addAction(callRes);
 
@@ -790,7 +794,7 @@ void QucsApp::initMenuBar()
   simMenu->addAction(dcbias);
   simMenu->addAction(showMsg);
   simMenu->addAction(showNet);
-  simMenu->addAction(simSpice);
+  simMenu->addAction(simSettings);
 
 
   viewMenu = new QMenu(tr("&View"));  // menuBar entry viewMenu

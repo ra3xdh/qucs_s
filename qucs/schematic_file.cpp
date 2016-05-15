@@ -1205,7 +1205,7 @@ void Schematic::propagateNode(QStringList& Collect,
  * \return true in case of success (false otherwise)
  */
 bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
-                   QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts, bool spice, bool xyce)
+                   QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts)
 {
   bool r;
   QString s;
@@ -1283,7 +1283,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
       d->isVerilog = isVerilog;
       d->isAnalog = isAnalog;
       d->creatingLib = creatingLib;
-      r = d->createSubNetlist(stream, countInit, Collect, ErrText, NumPorts,spice,xyce);
+      r = d->createSubNetlist(stream, countInit, Collect, ErrText, NumPorts);
       if (r)
       {
         i = 0;
@@ -1320,15 +1320,17 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
         continue;   // insert each library subcircuit just one time
       FileList.insert(s, SubFile("LIB", s));
 
-      //FIXME: use different netlister for different purposes
-      unsigned whatisit = isAnalog?1:(isVerilog?4:2);
-      if(isAnalog) {
-          if (spice) {
-              if (xyce) whatisit = 16;
-              else whatisit = 8;
-          }
-      }
-      r = lib->createSubNetlist(stream, Collect, whatisit);
+
+    unsigned whatisit = isAnalog?1:(isVerilog?4:2);
+    if(isAnalog) {
+        if (QucsSettings.DefaultSimulator!=spicecompat::simQucsator) {
+            if ((QucsSettings.DefaultSimulator==spicecompat::simXyceSer)||
+                (QucsSettings.DefaultSimulator==spicecompat::simXycePar))
+                whatisit = 16;
+            else whatisit = 8;
+        } else whatisit = 1;
+    }
+    r = lib->createSubNetlist(stream, Collect, whatisit);
 
       if(!r) {
 	ErrText->appendPlainText(
@@ -1356,7 +1358,8 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
       FileList.insert(f, SubFile("CIR", f));
 
       SpiceFile *sf = (SpiceFile*)pc;
-      if (spice) r = sf->createSpiceSubckt(stream);
+      if (QucsSettings.DefaultSimulator != spicecompat::simQucsator)
+          r = sf->createSpiceSubckt(stream);
       else r = sf->createSubNetlist(stream);
       ErrText->appendPlainText(sf->getErrorText());
       if(!r){
@@ -1412,7 +1415,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
 // each component. Output into "stream", NodeSets are collected in
 // "Collect" and counted with "countInit".
 bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
-                   QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts, bool spice, bool xyce)
+                   QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts)
 {
   // delete the node names
   for(Node *pn = DocNodes.first(); pn != 0; pn = DocNodes.next()) {
@@ -1436,7 +1439,7 @@ bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
     }
 
   // go through components
-  if(!throughAllComps(stream, countInit, Collect, ErrText, NumPorts,spice,xyce)){
+  if(!throughAllComps(stream, countInit, Collect, ErrText, NumPorts)){
     fprintf(stderr, "Error: Could not go throughAllComps\n");
     return false;
   }
@@ -1495,7 +1498,7 @@ bool Schematic::createLibNetlist(QTextStream *stream, QPlainTextEdit *ErrText,
 
 // ---------------------------------------------------
 void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrText,
-int NumPorts, bool spice)
+                                      int NumPorts)
 {
   int i, z;
   QString s;
@@ -1606,7 +1609,7 @@ int NumPorts, bool spice)
 
 
 
-  if (!spice) {
+  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
 
         if(isAnalog) {
             // ..... analog subcircuit ...................................
@@ -1771,13 +1774,12 @@ int NumPorts, bool spice)
 // ---------------------------------------------------
 // Write the netlist as subcircuit to the text stream 'stream'.
 bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
-                     QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts,
-                                  bool spice, bool xyce)
+                     QStringList& Collect, QPlainTextEdit *ErrText, int NumPorts)
 {
 //  int Collect_count = Collect.count();   // position for this subcircuit
 
   // TODO: NodeSets have to be put into the subcircuit block.
-  if(!giveNodeNames(stream, countInit, Collect, ErrText, NumPorts,spice,xyce)){
+  if(!giveNodeNames(stream, countInit, Collect, ErrText, NumPorts)){
     fprintf(stderr, "Error giving NodeNames in createSubNetlist\n");
     return false;
   }
@@ -1791,8 +1793,8 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
       else it++;*/
 
   // Emit subcircuit components
-   createSubNetlistPlain(stream, ErrText, NumPorts,spice);
-   if (spice) {
+   createSubNetlistPlain(stream, ErrText, NumPorts);
+   if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       AbstractSpiceKernel *kern = new AbstractSpiceKernel(this);
       QStringList err_lst;
       if (!kern->checkSchematic(err_lst)) {
@@ -1802,7 +1804,8 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
           ErrText->insertPlainText(s);
           return false;
       }
-      kern->createSubNetlsit(*stream,xyce);
+      kern->createSubNetlsit(*stream);
+
       delete kern;
   }
 
@@ -1814,7 +1817,7 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
 // ---------------------------------------------------
 // Determines the node names and writes subcircuits into netlist file.
 int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
-                              QPlainTextEdit *ErrText,bool spice,bool xyce)
+                              QPlainTextEdit *ErrText)
 {
   if(showBias > 0) showBias = -1;  // do not show DC bias anymore
 
@@ -1875,7 +1878,8 @@ int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
 
   // first line is documentation
   if(allTypes & isAnalogComponent) {
-    if (spice) stream << "*";
+    if (QucsSettings.DefaultSimulator != spicecompat::simQucsator)
+        stream << "*";
     else stream << '#';
   } else if (isVerilog)
     stream << "//";
@@ -1890,7 +1894,7 @@ int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
 
   int countInit = 0;  // counts the nodesets to give them unique names
 
-  if(!giveNodeNames(&stream, countInit, Collect, ErrText, NumPorts,spice,xyce)){
+  if(!giveNodeNames(&stream, countInit, Collect, ErrText, NumPorts)){
     fprintf(stderr, "Error giving NodeNames\n");
     return -10;
   }

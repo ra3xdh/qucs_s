@@ -73,6 +73,10 @@ bool loadSettings()
 {
     QSettings settings("qucs","qucs");
 
+    if(settings.contains("DefaultSimulator"))
+        QucsSettings.DefaultSimulator = settings.value("DefaultSimulator").toInt();
+    else QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
+
     if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
     if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
     if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
@@ -160,6 +164,8 @@ bool loadSettings()
 bool saveApplSettings()
 {
     QSettings settings ("qucs","qucs");
+
+    settings.setValue("DefaultSimulator", QucsSettings.DefaultSimulator);
 
     settings.setValue("x", QucsSettings.x);
     settings.setValue("y", QucsSettings.y);
@@ -284,6 +290,7 @@ Schematic *openSchematic(QString schematic)
 
 int doNetlist(QString schematic, QString netlist)
 {
+  QucsSettings.DefaultSimulator = spicecompat::simQucsator;
   Schematic *sch = openSchematic(schematic);
   if (sch == NULL) {
     return 1;
@@ -341,6 +348,7 @@ int doNetlist(QString schematic, QString netlist)
 
 int runNgspice(QString schematic, QString dataset)
 {
+    QucsSettings.DefaultSimulator = spicecompat::simNgspice;
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;
@@ -363,6 +371,7 @@ int runNgspice(QString schematic, QString dataset)
 
 int runXyce(QString schematic, QString dataset)
 {
+    QucsSettings.DefaultSimulator = spicecompat::simXyceSer;
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;
@@ -385,7 +394,7 @@ int runXyce(QString schematic, QString dataset)
 
 int doNgspiceNetlist(QString schematic, QString netlist)
 {
-
+    QucsSettings.DefaultSimulator = spicecompat::simNgspice;
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;
@@ -400,7 +409,7 @@ int doNgspiceNetlist(QString schematic, QString netlist)
 
 int doXyceNetlist(QString schematic, QString netlist)
 {
-
+    QucsSettings.DefaultSimulator = spicecompat::simXyceSer;
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;
@@ -416,6 +425,7 @@ int doXyceNetlist(QString schematic, QString netlist)
 int doPrint(QString schematic, QString printFile,
     QString page, int dpi, QString color, QString orientation)
 {
+  QucsSettings.DefaultSimulator = spicecompat::simQucsator;
   Schematic *sch = openSchematic(schematic);
   if (sch == NULL) {
     return 1;

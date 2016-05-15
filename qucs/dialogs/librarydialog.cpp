@@ -47,6 +47,7 @@
 #include "librarydialog.h"
 #include "main.h"
 #include "schematic.h"
+#include "extsimkernels/abstractspicekernel.h"
 
 extern SubMap FileList;
 
@@ -460,7 +461,10 @@ void LibraryDialog::slotSave()
 
     ErrText->insertPlainText("\n");
     ErrText->insertPlainText(tr("Creating Qucs netlist.\n"));
+    int sim = QucsSettings.DefaultSimulator;
+    QucsSettings.DefaultSimulator = spicecompat::simQucsator;
     ret = Doc->createLibNetlist(&ts, ErrText, -1);
+    QucsSettings.DefaultSimulator = sim;
     if(ret) {
       intoStream(Stream, tmp, "Model");
       int error = 0;
@@ -489,6 +493,23 @@ void LibraryDialog::slotSave()
     else {
         ErrText->insertPlainText("\n");
         ErrText->insertPlainText(tr("Error: Cannot create netlist for \"%1\".\n").arg(SelectedNames[i]));
+    }
+
+    if (QucsSettings.DefaultSimulator != spicecompat::simQucsator ) { // SPICE
+        tmp.truncate(0);
+        QTextStream ts(&tmp,QIODevice::WriteOnly);
+        ErrText->insertPlainText("\n");
+        ErrText->insertPlainText(tr("Creating SPICE netlist.\n"));
+        AbstractSpiceKernel *kern = new AbstractSpiceKernel(Doc);
+        QStringList err_lst;
+        if (!kern->checkSchematic(err_lst)) {
+             ErrText->insertPlainText(QString("Component %1 contains SPICE-incompatible components.\n"
+                                "Check these components: %2 \n")
+                    .arg(Doc->DocName).arg(err_lst.join("; ")));
+        }
+        kern->createSubNetlsit(ts,true);
+        intoStream(Stream, tmp, "Spice");
+        delete kern;
     }
 
     // save verilog model

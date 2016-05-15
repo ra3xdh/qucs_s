@@ -189,6 +189,10 @@ void QucsLib::putLibrariesIntoCombobox()
     {
         //LibFiles = UserLibDir.entryList("*.lib", QDir::Files, QDir::Name);
         LibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+        QStringList blacklist = getBlacklistedLibraries(UserLibDir.absolutePath());
+        foreach(QString ss, blacklist) { // exclude blacklisted files
+            LibFiles.removeAll(ss);
+        }
 
         UserLibCount = LibFiles.count();
 
@@ -205,6 +209,10 @@ void QucsLib::putLibrariesIntoCombobox()
 
     QDir LibDir(QucsSettings.LibDir);
     LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+    QStringList blacklist = getBlacklistedLibraries(QucsSettings.LibDir);
+    foreach(QString ss, blacklist) { // exclude blacklisted files
+        LibFiles.removeAll(ss);
+    }
 
     for(it = LibFiles.begin(); it != LibFiles.end(); it++)
         Library->addItem(QPixmap(":/bitmaps/big.qucs.xpm"), (*it).left((*it).length()-4));
@@ -524,5 +532,3 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
     //!! comment out the above two lines if you would like that the search
     //!!   returns back to the last selected category instead
 }
-
-

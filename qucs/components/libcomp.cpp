@@ -86,7 +86,7 @@ void LibComp::createSymbol()
 // ---------------------------------------------------------------------
 // Loads the section with name "Name" from library file into "Section".
 int LibComp::loadSection(const QString& Name, QString& Section,
-			 QStringList *Includes)
+             QStringList *Includes, QStringList *Attach)
 {
   QDir Directory(QucsSettings.LibDir);
   QFile file(Directory.absFilePath(Props.first()->Value + ".lib"));
@@ -144,6 +144,24 @@ int LibComp::loadSection(const QString& Name, QString& Section,
       QStringList f = QStringList::split(QRegExp("\"\\s+\""), inc);
       for(QStringList::Iterator it = f.begin(); it != f.end(); ++it ) {
 	Includes->append(*it);
+      }
+    }
+  }
+
+  // search attached files
+  if(Attach) {
+    int StartI, EndI;
+    StartI = Section.indexOf("<"+Name+"Attach");
+    if(StartI >= 0) {  // includes found
+      StartI = Section.indexOf('"', StartI);
+      if(StartI < 0)  return -10;  // file corrupt
+      EndI = Section.indexOf('>', StartI);
+      if(EndI < 0)  return -11;  // file corrupt
+      StartI++; EndI--;
+      QString inc = Section.mid(StartI, EndI-StartI);
+      QStringList f = QStringList::split(QRegExp("\"\\s+\""), inc);
+      for(QStringList::Iterator it = f.begin(); it != f.end(); ++it ) {
+    Attach->append(*it);
       }
     }
   }
@@ -350,4 +368,32 @@ QString LibComp::spice_netlist(bool)
     s +="\n";
 
     return s;
+}
+
+QStringList LibComp::getAttachedIFS()
+{
+    QString content;
+    QStringList includes,attach,ifs_lst;
+    ifs_lst.clear();
+
+    int r = loadSection("Spice",content,&includes,&attach);
+    if (r<0) return ifs_lst;
+    foreach(QString file,attach) {
+        if (file.endsWith(".ifs")) ifs_lst.append(getSubcircuitFile()+'/'+file);
+    }
+    return ifs_lst;
+}
+
+QStringList LibComp::getAttachedMOD()
+{
+    QString content;
+    QStringList includes,attach,mod_lst;
+    mod_lst.clear();
+
+    int r = loadSection("Spice",content,&includes,&attach);
+    if (r<0) return mod_lst;
+    foreach(QString file,attach) {
+        if (file.endsWith(".mod")) mod_lst.append(getSubcircuitFile()+'/'+file);
+    }
+    return mod_lst;
 }

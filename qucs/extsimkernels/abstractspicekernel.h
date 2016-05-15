@@ -40,6 +40,10 @@ class AbstractSpiceKernel : public QObject
 private:
     void normalizeVarsNames(QStringList &var_list);
     bool checkRawOutupt(QString ngspice_file, QStringList &values);
+    void extractBinSamples(QDataStream &dbl, QList< QList<double> > &sim_points,
+                           int NumPoints, int NumVars, bool isComplex);
+    bool extractASCIISamples(QString &lin, QTextStream &ngsp_data, QList< QList<double> > &sim_points,
+                             int NumVars, bool isComplex);
 
 protected:
     QString netlist,workdir, simulator_cmd,
@@ -48,10 +52,10 @@ protected:
 
     QStringList sims,vars,output_files;
 
-
+    bool DC_OP_only; // only calculate operating point to show DC bias
     Schematic *Sch;
 
-    bool prepareSpiceNetlist(QTextStream &stream, bool xyce = false);
+    bool prepareSpiceNetlist(QTextStream &stream);
     virtual void startNetlist(QTextStream& stream, bool xyce = false);
     virtual void createNetlist(QTextStream& stream, int NumPorts,QStringList& simulations,
                                QStringList& vars, QStringList &outputs);
@@ -63,7 +67,7 @@ public:
     ~AbstractSpiceKernel();
 
     bool checkSchematic(QStringList &incompat);
-    virtual void createSubNetlsit(QTextStream& stream, bool xyce = false);
+    virtual void createSubNetlsit(QTextStream& stream, bool lib = false);
 
     void parseNgSpiceSimOutput(QString ngspice_file,
                           QList< QList<double> > &sim_points,
@@ -76,6 +80,7 @@ public:
                           QStringList &var_list, bool &ParSwp);
     void parsePZOutput(QString ngspice_file, QList< QList<double> > &sim_points,
                        QStringList &var_list, bool &ParSwp);
+    void parseDC_OPoutput(QString ngspice_file);
     void parseSTEPOutput(QString ngspice_file,
                          QList< QList<double> > &sim_points,
                          QStringList &var_list, bool &isComplex);

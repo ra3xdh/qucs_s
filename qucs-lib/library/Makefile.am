@@ -22,12 +22,19 @@
 # Boston, MA 02110-1301, USA.  
 #
 
+SUBDIRS =  AnalogueCM
+
+
 COMPLIBS = Transistors.lib Substrates.lib Diodes.lib MOSFETs.lib OpAmps.lib \
            Bridges.lib LEDs.lib JFETs.lib Z-Diodes.lib NMOSFETs.lib \
 	   PMOSFETs.lib Ideal.lib Regulators.lib Varistors.lib Cores.lib Transformers.lib \
-	   SpiceOpamp.lib
+	   SpiceOpamp.lib \
+	   AnalogueCM.lib Xanalogue.lib qucs.blacklist ngspice.blacklist xyce.blacklist
+	       
+	       
 
-EXTRA_DIST = $(COMPLIBS)
+EXTRA_DIST = $(COMPLIBS) 
+
 
 # installation of component libraries
 librarydir = ${prefix}/share/qucs/library

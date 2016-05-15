@@ -17,6 +17,7 @@ spicecompat.h
 customsimdialog.h
 simsettingsdialog.h
 verilogawriter.h
+xspice_cmbuilder.h
 )
 
 SET(EXTSIMKERNELS_SRCS
@@ -29,6 +30,7 @@ spicecompat.cpp
 customsimdialog.cpp
 simsettingsdialog.cpp
 verilogawriter.cpp
+xspice_cmbuilder.cpp
 )
 
 SET(EXTSIMKERNELS_MOC_HDRS
@@ -43,4 +45,6 @@ simsettingsdialog.h
 QT4_WRAP_CPP( EXTSIMKERNELS_MOC_SRCS ${EXTSIMKERNELS_MOC_HDRS} )
 
 ADD_LIBRARY(extsimkernels ${EXTSIMKERNELS_HDRS} ${EXTSIMKERNELS_SRCS} ${EXTSIMKERNELS_MOC_SRCS})
+
+ADD_SUBDIRECTORY( xspice )
 

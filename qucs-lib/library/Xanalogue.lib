@@ -1,0 +1,1106 @@
+<Qucs Library 0.0.19 "Xanalogue">
+
+<Component XA_CSQWO>
+  <Description>
+XSPICE controlled square wave oscillator with five cntl_array and freq_array points.
+
+XSPICE component "square".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_CSQWO Pcntl_in Pout c1="-1" c2="-0.5" c3="0" c4="0.5" c5="1" f1="10" f2="10" f3="10" f4="1000" f5="1000" out_low="-1" out_high="1" duty_cycle="0.5" rise_time="1.0e-9" fall_time="1.0e-9"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_CSQWO.sch
+
+.SUBCKT Xanalogue_XA_CSQWO  gnd Pcntl_in Pout c1=-1 c2=-0.5 c3=0 c4=0.5 c5=1 f1=10 f2=10 f3=10 f4=1000 f5=1000 out_low=-1 out_high=1 duty_cycle=0.5 rise_time=1.0e-9 fall_time=1.0e-9 
+A1  %v(Pcntl_in)  %v(Pout)  XA_CSQWO_mod
+
+.MODEL XA_CSQWO_mod square ( cntl_array=[  c1 c2 c3 c4 c5] 
++  freq_array=[ f1 f2 f3 f4 f5 ]  out_low=out_low out_high=out_high 
++ duty_cycle=duty_cycle rise_time=rise_time fall_time=fall_time )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line 40 0 40 0 #000080 2 1>
+    <.PortSym 80 0 2 180>
+    <Line 10 70 0 -30 #000080 2 1>
+    <.PortSym 10 70 1 180>
+    <.ID -115 -165 XA_CSQWO "1=c1=-1==" "1=c2=-0.5==" "1=c3=0==" "1=c4=0.5==" "1=c5=1==" "1=f1=10==" "1=f2=10==" "1=f3=10==" "1=f4=1000==" "1=f5=1000==" "1=out_low=-1==" "1=out_high=1==" "1=duty_cycle=0.5==" "1=rise_time=1.0e-9==" "1=fall_time=1.0e-9==">
+    <Text 17 40 12 #ff0000 0 "CNTL">
+    <Text 45 -30 12 #ff0000 0 "OUT">
+    <Text -13 -70 10 #ff00ff 0 "XSPICE">
+    <Line 20 -20 0 30 #0000ff 3 1>
+    <Line 0 -20 0 30 #0000ff 3 1>
+    <Line 0 -20 20 0 #0000ff 3 1>
+    <Line 20 10 10 0 #0000ff 3 1>
+    <Line 0 10 -10 0 #0000ff 3 1>
+  </Symbol>
+</Component>
+
+<Component XA_CSWO>
+  <Description>
+XSPICE controlled sine wave oscillator with five cntl_array and freq_array points.
+
+XSPICE component "sine".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_CSWO Pcntl_in Pout c1="-1" c2="-0.5" c3="0" c4="0.5" c5="1" f1="10" f2="10" f3="10" f4="1000" f5="1000" out_low="-1" out_high="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_CSWO.sch
+
+.SUBCKT Xanalogue_XA_CSWO  gnd Pcntl_in Pout c1=-1 c2=-0.5 c3=0 c4=0.5 c5=1 f1=10 f2=10 f3=10 f4=1000 f5=1000 out_low=-1 out_high=1 
+A1  %v(Pcntl_in)  %v(Pout)  XA_CSWO_mod
+
+.MODEL XA_CSWO_mod sine ( cntl_array=[  c1 c2 c3 c4 c5] 
++  freq_array=[ f1 f2 f3 f4 f5 ]  out_low=out_low out_high=out_high )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line 40 0 40 0 #000080 2 1>
+    <.PortSym 80 0 2 180>
+    <Line 10 70 0 -30 #000080 2 1>
+    <Text -17 -55 50 #0000ff 0 "∼ ">
+    <.PortSym 10 70 1 180>
+    <.ID -115 -165 XA_CSWO "1=c1=-1==" "1=c2=-0.5==" "1=c3=0==" "1=c4=0.5==" "1=c5=1==" "1=f1=10==" "1=f2=10==" "1=f3=10==" "1=f4=1000==" "1=f5=1000==" "1=out_low=-1==" "1=out_high=1==">
+    <Text 17 40 12 #ff0000 0 "CNTL">
+    <Text 45 -30 12 #ff0000 0 "OUT">
+    <Text -13 -70 10 #ff00ff 0 "XSPICE">
+  </Symbol>
+</Component>
+
+<Component XA_CTWO>
+  <Description>
+XSPICE controlled triangle wave oscillator with five cntl_array and freq_array points.
+
+XSPICE component "triangle".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_CTWO Pcntl_in Pout c1="-1" c2="-0.5" c3="0" c4="0.5" c5="1" f1="10" f2="10" f3="10" f4="1000" f5="1000" out_low="-1" out_high="1" duty_cycle="0.5"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_CTWO.sch
+
+.SUBCKT Xanalogue_XA_CTWO  gnd Pcntl_in Pout c1=-1 c2=-0.5 c3=0 c4=0.5 c5=1 f1=10 f2=10 f3=10 f4=1000 f5=1000 out_low=-1 out_high=1 duty_cycle=0.5 
+A1  %v(Pcntl_in)  %v(Pout)  XA_CTWO_mod
+
+.MODEL XA_CTWO_mod triangle ( cntl_array=[  c1 c2 c3 c4 c5] 
++  freq_array=[ f1 f2 f3 f4 f5 ]  out_low=out_low out_high=out_high 
++ duty_cycle=duty_cycle )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line 40 0 40 0 #000080 2 1>
+    <.PortSym 80 0 2 180>
+    <Line 10 70 0 -30 #000080 2 1>
+    <.PortSym 10 70 1 180>
+    <.ID -115 -165 XA_CTWO "1=c1=-1==" "1=c2=-0.5==" "1=c3=0==" "1=c4=0.5==" "1=c5=1==" "1=f1=10==" "1=f2=10==" "1=f3=10==" "1=f4=1000==" "1=f5=1000==" "1=out_low=-1==" "1=out_high=1==" "1=duty_cycle=0.5==">
+    <Text 17 40 12 #ff0000 0 "CNTL">
+    <Text 45 -30 12 #ff0000 0 "OUT">
+    <Text -13 -70 10 #ff00ff 0 "XSPICE">
+    <Line 10 -20 -20 30 #0000ff 3 1>
+    <Line 10 -20 20 30 #0000ff 3 1>
+  </Symbol>
+</Component>
+
+<Component XA_aswitch_LOG>
+  <Description>
+XSPICE analogue switch with LOG characteristic.
+
+XSPICE component "aswitch".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_aswitch_LOG Pc Pin Pout cntl_off="0.0" cntl_on="1.0" r_off="1e12" r_on="1.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_aswitch_LOG.sch
+
+.SUBCKT Xanalogue_XA_aswitch_LOG  gnd Pc Pin Pout cntl_off=0.0 cntl_on=1.0 r_off=1e12 r_on=1.0 
+A1  %v(Pc)  %gd(Pin Pout)  XA_aswitch_log
+
+.MODEL XA_aswitch_log aswitch ( cntl_off=cntl_off
++  cntl_on=cntl_on r_off=r_off r_on=r_on
++ log=TRUE )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Text -15 -73 10 #ff00ff 0 "XSPICE">
+    <Line 27 0 33 0 #000080 2 1>
+    <.PortSym 60 0 3 180>
+    <.PortSym -40 0 2 0>
+    <Line 20 60 0 -23 #00007f 2 1>
+    <Ellipse -10 -5 10 10 #0000ff 2 1 #0000ff 1 1>
+    <Ellipse 20 -5 10 10 #0000ff 2 1 #0000ff 1 1>
+    <Line -4 0 26 -18 #0000ff 3 1>
+    <Line -41 0 35 0 #000080 2 1>
+    <.ID 70 34 XA_aswitch_LOG "1=cntl_off=0.0==" "1=cntl_on=1.0==" "1=r_off=1e12==" "1=r_on=1.0==">
+    <Text -7 45 14 #ff0000 0 "C">
+    <.PortSym 20 60 1 180>
+  </Symbol>
+</Component>
+
+<Component XA_climiter>
+  <Description>
+XSPICE controlled voltage limiter.
+
+XSPICE component "climit".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_climiter Pin Pucon Plcon Pout gain="1.0" in_offset="0.0" limit_range="1e-6" upper_delta="0.0" lower_delta="0.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_climiter.sch
+
+.SUBCKT Xanalogue_XA_climiter  gnd Pin Pucon Plcon Pout gain=1.0 in_offset=0.0 limit_range=1e-6 upper_delta=0.0 lower_delta=0.0 
+A1  %v(Pin)  %v(Pucon)  %v(Plcon)  %v(Pout)  XA_climit_mod
+
+.MODEL XA_climit_mod  climit ( gain=gain  
++  in_offset=in_offset limit_range=limit_range 
++  upper_delta=upper_delta lower_delta=lower_delta )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Text -15 -73 10 #ff00ff 0 "XSPICE">
+    <Line 40 0 20 0 #000080 2 1>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 1 0>
+    <.PortSym 60 0 4 180>
+    <.ID -30 74 XA_climit "1=gain=1.0==" "1=in_offset=0.0==" "1=limit_range=1e-6==" "1=upper_delta=0.0==" "1=lower_delta=0.0==">
+    <Line -40 -20 20 0 #000080 2 1>
+    <.PortSym -40 -20 2 0>
+    <Line -40 20 20 0 #000080 2 1>
+    <.PortSym -40 20 3 0>
+    <Text -33 21 14 #ff0000 0 "L">
+    <Text -35 -49 14 #ff0000 0 "U">
+    <Line 7 20 -20 0 #0000ff 3 1>
+    <Line 7 -20 0 40 #0000ff 3 1>
+    <Line 8 -20 20 0 #0000ff 3 1>
+    <Text 16 -4 16 #0000ff 0 "V">
+  </Symbol>
+</Component>
+
+<Component XA_cmeter>
+  <Description>
+XSPICE capacitance meter.
+
+XSPICE component "cmeter".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_cmeter Pin Pout gain="1.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_cmeter.sch
+
+.SUBCKT Xanalogue_XA_cmeter  gnd Pin Pout gain=1.0 
+A1  %v(Pin)  %v(Pout)  XA_cmetermod
+
+.MODEL XA_cmetermod cmeter ( gain=gain ) 
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -40 64 XA_cmeter "1=gain=1.0==">
+    <Line 40 -15 0 70 #0000ff 3 1>
+    <Line -60 40 55 0 #000080 2 1>
+    <Line 5 40 55 0 #000080 2 1>
+    <.PortSym -60 40 1 0>
+    <.PortSym 60 40 2 180>
+    <Line -40 20 80 0 #0000ff 3 1>
+    <Line -20 0 40 0 #0000ff 3 1>
+    <Line 20 0 10 10 #00007f 3 1>
+    <Line -20 0 -10 10 #00007f 3 1>
+    <Line 0 20 -10 -30 #ff0000 3 1>
+    <Text -25 -43 10 #ff00ff 0 "XSPICE">
+    <Line -5 50 0 -20 #0000ff 4 1>
+    <Line 5 50 0 -20 #0000ff 4 1>
+    <Line -40 55 80 0 #0000ff 3 1>
+    <Line -40 -15 80 0 #0000ff 3 1>
+    <Line -40 -15 0 70 #0000ff 3 1>
+  </Symbol>
+</Component>
+
+<Component XA_d_dt_DE>
+  <Description>
+XSPICE double input differential block (with  respect to time).
+
+XSPICE component "d_dt".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_d_dt_DE Pinp Pinn Poutp Poutn gain="1.0" out_offset="0.0" out_lower_limit="-10.0" out_upper_limit="10.0" limit_range="1e-6"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_d_dt_DE.sch
+
+.SUBCKT Xanalogue_XA_d_dt_DE  gnd Pinp Pinn Poutp Poutn gain=1.0 out_offset=0.0 out_lower_limit=-10.0 out_upper_limit=10.0 limit_range=1e-6 
+A1  %vd(Pinp Pinn)  %vd(Poutp Poutn)  XA_d_dt_DEmod
+
+.MODEL XA_d_dt_DEmod d_dt ( gain=gain out_offset=out_offset 
++ out_lower_limit= out_lower_limit out_upper_limit=out_upper_limit
++ limit_range=limit_range )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line -40 -20 20 0 #000080 2 1>
+    <Line -40 20 20 0 #000080 2 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Line 40 20 20 0 #000080 2 1>
+    <Line 40 -20 20 0 #000080 2 1>
+    <Text -15 -73 10 #ff00ff 0 "XSPICE">
+    <.PortSym -40 20 2 0>
+    <.PortSym -40 -20 1 0>
+    <.PortSym 60 -20 3 180>
+    <.PortSym 60 20 4 180>
+    <Text -13 -21 20 #0000ff 0 "d/dt">
+    <.ID -60 74 XA_id_dt_DE "1=gain=1.0==" "1=out_offset=0.0==" "1=out_lower_limit=-10.0==" "1=out_upper_limit=10.0==" "1=limit_range=1e-6==">
+    <Text -38 -60 20 #ff0000 0 "+">
+    <Text -35 -21 20 #ff0000 0 "-">
+    <Text 42 -60 20 #ff0000 0 "+">
+    <Text 45 -20 20 #ff0000 0 "-">
+  </Symbol>
+</Component>
+
+<Component XA_d_dt_SE>
+  <Description>
+XSPICE single input differential block (with  respect to time).
+
+XSPICE component "d_dt".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_d_dt_SE Pin Pout gain="1.0" out_offset="0.0" out_lower_limit="-10" out_upper_limit="10" limit_range="1e-6"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_d_dt_SE.sch
+
+.SUBCKT Xanalogue_XA_d_dt_SE  gnd Pin Pout gain=1.0 out_offset=0.0 out_lower_limit=-10 out_upper_limit=10 limit_range=1e-6 
+A1  %v(Pin)  %v(Pout)  XA_d_dt_SEmod
+
+.MODEL XA_d_dt_SEmod d_dt ( gain=gain out_offset=out_offset 
++ out_lower_limit= out_lower_limit out_upper_limit=out_upper_limit
++ limit_range=limit_range )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -40 0 20 0 #000080 2 1>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line 40 0 20 0 #000080 2 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Text -12 -22 20 #0000ff 0 "d/dt">
+    <.PortSym 60 0 2 180>
+    <.PortSym -40 0 1 0>
+    <Text -15 -83 10 #ff00ff 0 "XSPICE">
+    <.ID -40 54 XA_id_dt_SE "1=gain=1.0==" "1=out_offset=0.0==" "1=out_lower_limit=-10==" "1=out_upper_limit=10==" "1=limit_range=1e-6==">
+  </Symbol>
+</Component>
+
+<Component XA_divide_SE>
+  <Description>
+XSPICE divide block (A/B).
+
+XSPICE component "divide".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_divide_SE PinA PinB Pout num_gain="1.0" num_offset="0.0" den_lower_limit="1e-10" den_domain="1e-10" out_gain="1.0" out_offset="0.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_divide_SE.sch
+
+.SUBCKT Xanalogue_XA_divide_SE  gnd PinA PinB Pout num_gain=1.0 num_offset=0.0 den_lower_limit=1e-10 den_domain=1e-10 out_gain=1.0 out_offset=0.0 
+A1  %v(PinA)  %v(PinB)  %v(Pout)  XA_divide_DEmod
+
+.MODEL XA_divide_DEmod divide ( num_gain=num_gain num_offset=num_offset 
++ den_lower_limit=den_lower_limit den_domain=den_domain
++  out_offset=out_offset out_gain=out_gain )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line -40 -20 20 0 #000080 2 1>
+    <Line -40 20 20 0 #000080 2 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Text -15 -73 10 #ff00ff 0 "XSPICE">
+    <.PortSym -40 20 2 0>
+    <.PortSym -40 -20 1 0>
+    <.ID -40 64 XA_divide_DE "1=num_gain=1.0==" "1=num_offset=0.0==" "1=den_lower_limit=1e-10==" "1=den_domain=1e-10==" "1=out_gain=1.0==" "1=out_offset=0.0==">
+    <Text -13 -31 16 #0000ff 0 "A\n     B">
+    <Line 24 -21 -27 42 #0000ff 3 1>
+    <Line 40 0 20 0 #000080 2 1>
+    <.PortSym 60 0 3 180>
+    <Text -37 -55 16 #ff0000 0 "A">
+    <Text -37 -13 16 #ff0000 0 "B">
+  </Symbol>
+</Component>
+
+<Component XA_gain_DE>
+  <Description>
+XSPICE differential input gain block.
+
+XSPICE component "gain".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_gain_DE Pinp Pinn Poutp Poutn gain="1.0" in_offset="0.0" out_offset="0.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_gain_DE.sch
+
+.SUBCKT Xanalogue_XA_gain_DE  gnd Pinp Pinn Poutp Poutn gain=1.0 in_offset=0.0 out_offset=0.0 
+A1  %vd(Pinp Pinn)  %vd(Poutp Poutn)  XA_gain_DEmod
+
+.MODEL XA_gain_DEmod gain ( gain=gain in_offset=in_offset out_offset=out_offset )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line -40 -20 20 0 #000080 2 1>
+    <Line -40 20 20 0 #000080 2 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Line 40 20 20 0 #000080 2 1>
+    <Line 40 -20 20 0 #000080 2 1>
+    <.PortSym -40 20 2 0>
+    <.PortSym -40 -20 1 0>
+    <.PortSym 60 -20 3 180>
+    <.PortSym 60 20 4 180>
+    <.ID -40 64 XA_gain_DE "1=gain=1.0==" "1=in_offset=0.0==" "1=out_offset=0.0==">
+    <Text -15 -83 10 #ff00ff 0 "XSPICE">
+    <Text -6 -35 30 #0000ff 0 "A">
+    <Text -36 -56 18 #ff0000 0 "+">
+    <Text 42 -57 18 #ff0000 0 "+">
+    <Text -33 -16 18 #ff0000 0 "-">
+    <Text 45 -17 18 #ff0000 0 "-">
+  </Symbol>
+</Component>
+
+<Component XA_gain_SE>
+  <Description>
+XSPICE single input gain block.
+
+XSPICE component "gain".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_gain_SE Pin Pout gain="1.0" in_offset="0.0" out_offset="0.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_gain_SE.sch
+
+.SUBCKT Xanalogue_XA_gain_SE  gnd Pin Pout gain=1.0 in_offset=0.0 out_offset=0.0 
+A1  %v(Pin)  %v(Pout)  XA_gain_SEmod
+
+.MODEL XA_gain_SEmod gain ( gain=gain in_offset=in_offset out_offset=out_offset )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -40 0 20 0 #000080 2 1>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line 40 0 20 0 #000080 2 1>
+    <.PortSym 60 0 2 180>
+    <.PortSym -40 0 1 0>
+    <Text -15 -83 10 #ff00ff 0 "XSPICE">
+    <.ID -30 64 XA_gain_SE "1=gain=1.0==" "1=in_offset=0.0==" "1=out_offset=0.0==">
+    <Text -4 -35 30 #0000ff 0 "A">
+  </Symbol>
+</Component>
+
+<Component XA_hyst>
+  <Description>
+XSPICE hysteresis block.
+
+XSPICE component "hyst".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_hyst Pin Pout in_low="0.7" in_high="2.4" hyst="0.5" out_lower_limit="0.5" out_upper_limit="3.0" input_domain="0.01"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_hyst.sch
+
+.SUBCKT Xanalogue_XA_hyst  gnd Pin Pout in_low=0.7 in_high=2.4 hyst=0.5 out_lower_limit=0.5 out_upper_limit=3.0 input_domain=0.01 
+A1  %v(Pin)  %v(Pout)  XA_hyst_mod
+
+.MODEL XA_hyst_mod hyst ( in_low=in_low in_high=in_high
++ out_lower_limit= out_lower_limit out_upper_limit=out_upper_limit
++ hyst=hyst input_domain=input_domain )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -40 0 20 0 #000080 2 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line 40 30 -60 20 #0000ff 3 1>
+    <Line 40 0 20 0 #000080 2 1>
+    <.PortSym 60 0 2 180>
+    <.PortSym -40 0 1 0>
+    <Text -15 -83 10 #ff00ff 0 "XSPICE">
+    <.ID -50 64 XA_hyst "1=in_low=0.7==" "1=in_high=2.4==" "1=hyst=0.5==" "1=out_lower_limit=0.5==" "1=out_upper_limit=3.0==" "1=input_domain=0.01==">
+    <Line 9 -31 0 62 #000000 2 1>
+    <Line -15 -1 46 0 #000000 2 1>
+    <Line 22 -21 -35 39 #ff0000 2 1>
+    <Line -13 18 9 0 #ff0000 2 1>
+    <Line 40 -31 0 60 #0000ff 3 1>
+    <Line 22 -21 9 0 #ff0000 2 1>
+    <Line 32 -21 -36 39 #ff0000 2 1>
+  </Symbol>
+</Component>
+
+<Component XA_ilimit_SE>
+  <Description>
+XSPICE single input current limiter.
+
+XSPICE component "ilimit".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_ilimit_SE Pin Pdcp Pdcn Pout gain="20.0" in_offset="0.0" r_out_source="1.0" r_out_sink="1.0" i_limit_source="1.0e-3" i_limit_sink="1.0e-2" i_sink_range="1.0e-6" i_source_range="1.0e-6" v_pwr_range="0.2" r_out_domain="1.0e-6"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_ilimit_SE.sch
+
+.SUBCKT Xanalogue_XA_ilimit_SE  gnd Pin Pdcp Pdcn Pout gain=20.0 in_offset=0.0 r_out_source=1.0 r_out_sink=1.0 i_limit_source=1.0e-3 i_limit_sink=1.0e-2 i_sink_range=1.0e-6 i_source_range=1.0e-6 v_pwr_range=0.2 r_out_domain=1.0e-6 
+
+A1  %v(Pin)  %g(Pdcp)  %g(Pdcn)  %g(Pout)  XA_ilimit_mod
+.MODEL XA_ilimit_mod ilimit ( gain=gain  in_offset=in_offset
++  r_out_source=r_out_source r_out_sink=r_out_sink 
++  i_limit_source=i_limit_source i_limit_sink=i_limit_sink
++ i_sink_range=i_sink_range i_source_range=i_source_range
++ v_pwr_range=v_pwr_range r_out_domain=r_out_domain  )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Line 40 0 20 0 #000080 2 1>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 1 0>
+    <Line 5 20 -20 0 #0000ff 3 1>
+    <Line 6 -20 0 40 #0000ff 3 1>
+    <Line 6 -20 20 0 #0000ff 3 1>
+    <Text 20 -4 16 #0000ff 0 "I">
+    <.PortSym 60 0 4 180>
+    <.PortSym 20 60 3 0>
+    <Line 20 -60 0 24 #00007f 2 1>
+    <Line 20 60 0 -23 #00007f 2 1>
+    <Text 28 35 14 #0000ff 0 "Vdc-">
+    <.PortSym 20 -60 2 0>
+    <Text 27 -64 14 #0000ff 0 "Vdc+">
+    <Text -78 -50 10 #ff00ff 0 "XSPICE">
+    <.ID -69 82 XA_ilimit "1=gain=20.0==" "1=in_offset=0.0==" "1=r_out_source=1.0==" "1=r_out_sink=1.0==" "1=i_limit_source=1.0e-3==" "1=i_limit_sink=1.0e-2==" "1=i_sink_range=1.0e-6==" "1=i_source_range=1.0e-6==" "1=v_pwr_range=0.2==" "1=r_out_domain=1.0e-6==">
+  </Symbol>
+</Component>
+
+<Component XA_int_DE>
+  <Description>
+XSPICE differential input integrator block.
+
+XSPICE component "int".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_int_DE Pinp Pinn Poutp Poutn gain="1.0" in_offset="0.0" out_lower_limit="-10.0" out_upper_limit="10.0" limit_range="1e-6" out_ic="0.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_int_DE.sch
+
+.SUBCKT Xanalogue_XA_int_DE  gnd Pinp Pinn Poutp Poutn gain=1.0 in_offset=0.0 out_lower_limit=-10.0 out_upper_limit=10.0 limit_range=1e-6 out_ic=0.0 
+A1  %vd(Pinp Pinn)  %vd(Poutp Poutn)  XA_int_DEmod
+
+.MODEL XA_int_DEmod int ( gain=gain in_offset=in_offset 
++ out_lower_limit= out_lower_limit out_upper_limit=out_upper_limit
++ limit_range=limit_range out_ic=out_ic )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line -40 -20 20 0 #000080 2 1>
+    <Line -40 20 20 0 #000080 2 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Line 40 20 20 0 #000080 2 1>
+    <Line 40 -20 20 0 #000080 2 1>
+    <Text -15 -73 10 #ff00ff 0 "XSPICE">
+    <.PortSym -40 20 2 0>
+    <.PortSym -40 -20 1 0>
+    <.PortSym 60 -20 3 180>
+    <.PortSym 60 20 4 180>
+    <.ID -40 64 XA_int_DE "1=gain=1.0==" "1=in_offset=0.0==" "1=out_lower_limit=-10.0==" "1=out_upper_limit=10.0==" "1=limit_range=1e-6==" "1=out_ic=0.0==">
+    <Text 0 -40 40 #0000ff 0 "∫">
+    <Text -38 -61 20 #ff0000 0 "+">
+    <Text -35 -20 20 #ff0000 0 "-">
+    <Text 42 -60 20 #ff0000 0 "+">
+    <Text 46 -20 20 #ff0000 0 "-">
+  </Symbol>
+</Component>
+
+<Component XA_int_SE>
+  <Description>
+XSPICE single integrator block.
+
+XSPICE component "int".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_int_SE Pin Pout gain="1.0" in_offset="0.0" out_lower_limit="-10" out_upper_limit="10" limit_range="1e-6" out_ic="0.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_int_SE.sch
+
+.SUBCKT Xanalogue_XA_int_SE  gnd Pin Pout gain=1.0 in_offset=0.0 out_lower_limit=-10 out_upper_limit=10 limit_range=1e-6 out_ic=0.0 
+A1  %v(Pin)  %v(Pout)  XA_int_SEmod
+
+.MODEL XA_int_SEmod int ( gain=gain in_offset=in_offset 
++ out_lower_limit= out_lower_limit out_upper_limit=out_upper_limit
++ limit_range=limit_range out_ic=out_ic )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -40 0 20 0 #000080 2 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line 40 30 -60 20 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Line 40 0 20 0 #000080 2 1>
+    <.PortSym 60 0 2 180>
+    <.PortSym -40 0 1 0>
+    <Text -15 -83 10 #ff00ff 0 "XSPICE">
+    <Text -3 -36 40 #0000ff 0 "∫">
+    <.ID -50 64 XA_int_SE "1=gain=1.0==" "1=in_offset=0.0==" "1=out_lower_limit=-10==" "1=out_upper_limit=10==" "1=limit_range=1e-6==" "1=out_ic=0.0==">
+  </Symbol>
+</Component>
+
+<Component XA_limiter_DE>
+  <Description>
+XSPICE differential voltage input limiter.
+
+XSPICE component "limit".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_limiter_DE Pinp Pinn Pout gain="1.0" in_offset="0.0" limit_range="1e-6" out_lower_limit="-10.0" out_upper_limit="10.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_limiter_DE.sch
+
+.SUBCKT Xanalogue_XA_limiter_DE  gnd Pinp Pinn Pout gain=1.0 in_offset=0.0 limit_range=1e-6 out_lower_limit=-10.0 out_upper_limit=10.0 
+A1  %vd(Pinp Pinn)  %v(Pout)  XA_limiter_DEmod
+
+.MODEL XA_limiter_DEmod limit ( gain=gain  
++  in_offset=in_offset limit_range=limit_range 
++  out_lower_limit=out_lower_limit out_upper_limit=out_upper_limit )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Text -15 -73 10 #ff00ff 0 "XSPICE">
+    <.ID -40 64 XA_limiter_DE "1=gain=1.0==" "1=in_offset=0.0==" "1=limit_range=1e-6==" "1=out_lower_limit=-10.0==" "1=out_upper_limit=10.0==">
+    <Line 40 0 20 0 #000080 2 1>
+    <.PortSym 60 0 3 180>
+    <Line -40 -20 20 0 #000080 2 1>
+    <Line -40 20 20 0 #000080 2 1>
+    <.PortSym -40 -20 1 0>
+    <.PortSym -40 20 2 0>
+    <Text -37 -60 20 #ff0000 0 "+">
+    <Text -33 -21 20 #ff0000 0 "-">
+    <Line 5 20 -20 0 #0000ff 3 1>
+    <Line 5 -20 0 40 #0000ff 3 1>
+    <Line 5 -20 20 0 #0000ff 3 1>
+    <Text 16 -4 16 #0000ff 0 "V">
+  </Symbol>
+</Component>
+
+<Component XA_limiter_SE>
+  <Description>
+XSPICE single input voltage limiter.
+
+XSPICE component "limit".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_limiter_SE Pin Pout gain="1.0" in_offset="0.0" limit_range="1e-6" out_lower_limit="-10.0" out_upper_limit="10.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_limiter_SE.sch
+
+.SUBCKT Xanalogue_XA_limiter_SE  gnd Pin Pout gain=1.0 in_offset=0.0 limit_range=1e-6 out_lower_limit=-10.0 out_upper_limit=10.0 
+A1  %v(Pin)  %v(Pout)  XA_limiter_SEmod
+
+.MODEL XA_limiter_SEmod limit ( gain=gain  
++  in_offset=in_offset limit_range=limit_range 
++  out_lower_limit=out_lower_limit out_upper_limit=out_upper_limit )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Text -15 -73 10 #ff00ff 0 "XSPICE">
+    <.ID -40 64 XA_limiter_SE "1=gain=1.0==" "1=in_offset=0.0==" "1=limit_range=1e-6==" "1=out_lower_limit=-10.0==" "1=out_upper_limit=10.0==">
+    <Line 40 0 20 0 #000080 2 1>
+    <.PortSym 60 0 2 180>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 1 0>
+    <Line 5 20 -20 0 #0000ff 3 1>
+    <Line 6 -20 0 40 #0000ff 3 1>
+    <Line 6 -20 20 0 #0000ff 3 1>
+    <Text 20 -4 16 #0000ff 0 "V">
+  </Symbol>
+</Component>
+
+<Component XA_lmeter>
+  <Description>
+XSPICE inductance meter.
+
+XSPICE component "lmeter".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_lmeter Pin Pout gain="1.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_lmeter.sch
+
+.SUBCKT Xanalogue_XA_lmeter  gnd Pin Pout gain=1.0 
+
+A1  %v(Pin)  %v(Pout)  XA_lmetermod
+.MODEL XA_lmetermod lmeter ( gain=gain ) 
+.ENDS
+  </Spice>
+  <Symbol>
+    <.ID -40 64 XA_lmeter "1=gain=1.0==">
+    <Line 40 -15 0 70 #0000ff 3 1>
+    <Line -50 20 90 0 #0000ff 3 1>
+    <Line 20 0 10 10 #00007f 3 1>
+    <Line 0 20 -10 -30 #ff0000 3 1>
+    <Text -25 -43 10 #ff00ff 0 "XSPICE">
+    <Line -50 55 90 0 #0000ff 3 1>
+    <Line -50 -15 90 0 #0000ff 3 1>
+    <Line -30 40 0 -10 #0000ff 2 1>
+    <Line -30 30 10 0 #0000ff 2 1>
+    <Line -20 30 0 10 #0000ff 2 1>
+    <Line -20 40 10 0 #0000ff 2 1>
+    <Line -10 40 0 -10 #0000ff 2 1>
+    <Line -10 30 10 0 #0000ff 2 1>
+    <Line 0 30 0 10 #0000ff 2 1>
+    <Line 0 40 10 0 #0000ff 2 1>
+    <Line 10 40 0 -10 #000000 2 1>
+    <Line 10 30 10 0 #0000ff 2 1>
+    <Line 20 30 0 10 #0000ff 2 1>
+    <.PortSym -80 40 1 0>
+    <Line -50 -15 0 70 #0000ff 3 1>
+    <Line -30 0 -10 10 #00007f 3 1>
+    <Line -30 0 50 0 #0000ff 3 1>
+    <Line -80 40 30 0 #00007f 2 1>
+    <Line -30 40 -20 0 #0000ff 2 1>
+    <Line 80 40 -40 0 #00007f 2 1>
+    <Line 40 40 -20 0 #0000ff 2 1>
+    <.PortSym 80 40 2 180>
+  </Symbol>
+</Component>
+
+<Component XA_mult_x2>
+  <Description>
+XSPICE two input voltage multipliier block.
+
+XSPICE component "mult".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_mult_x2 Pin1 Pin2 Pout ig1="1.0" ig2="1.0" io1="0.0" io2="0.0" out_gain="1.0" out_offset="0.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_mult_x2.sch
+
+.SUBCKT Xanalogue_XA_mult_x2  gnd Pin1 Pin2 Pout ig1=1.0 ig2=1.0 io1=0.0 io2=0.0 out_gain=1.0 out_offset=0.0 
+A1 [ %v(Pin1)  %v(Pin2) ] %v(Pout)  XA_mult_x2mod
+
+.MODEL XA_mult_x2mod mult ( in_gain=[ ig1 ig2  ]  
++  in_offset=[ io1 io2 ] 
++  out_gain=out_gain out_offset=out_offset )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Text -15 -73 10 #ff00ff 0 "XSPICE">
+    <.ID -40 64 XA_mult_x2 "1=ig1=1.0==" "1=ig2=1.0==" "1=io1=0.0==" "1=io2=0.0==" "1=out_gain=1.0==" "1=out_offset=0.0==">
+    <Line 40 0 20 0 #000080 2 1>
+    <Line -40 20 20 0 #000080 2 1>
+    <Line -40 -20 20 0 #000080 2 1>
+    <.PortSym -40 -20 1 0>
+    <.PortSym -40 20 2 0>
+    <.PortSym 60 0 3 180>
+    <Text -4 -30 30 #0000ff 0 "X">
+    <Text -32 -49 14 #ff0000 0 "1">
+    <Text -32 -8 14 #ff0000 0 "2">
+  </Symbol>
+</Component>
+
+<Component XA_mult_x3>
+  <Description>
+XSPICE three input multiplier block.
+
+XSPICE component "mult".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_mult_x3 Pin1 Pin2 Pin3 Pout ig1="1.0" ig2="1.0" ig3="1.0" io1="0.0" io2="0.0" io3="0.0" out_gain="1.0" out_offset="0.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_mult_x3.sch
+
+.SUBCKT Xanalogue_XA_mult_x3  gnd Pin1 Pin2 Pin3 Pout ig1=1.0 ig2=1.0 ig3=1.0 io1=0.0 io2=0.0 io3=0.0 out_gain=1.0 out_offset=0.0 
+A1 [ %v(Pin1)  %v(Pin2)  %v(Pin3) ] %v(Pout)  XA_mult_x3mod
+
+.MODEL XA_mult_x3mod mult ( in_gain=[ ig1 ig2 ig3 ]  
++  in_offset=[ io1 io2 io3 ] 
++  out_gain=out_gain out_offset=out_offset )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Text -15 -73 10 #ff00ff 0 "XSPICE">
+    <.ID -40 64 XA_mult_x3 "1=ig1=1.0==" "1=ig2=1.0==" "1=ig3=1.0==" "1=io1=0.0==" "1=io2=0.0==" "1=io3=0.0==" "1=out_gain=1.0==" "1=out_offset=0.0==">
+    <Line 40 0 20 0 #000080 2 1>
+    <Line -40 -40 20 0 #000080 2 1>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 2 0>
+    <.PortSym -40 -40 1 0>
+    <Line -40 40 20 0 #000000 2 1>
+    <.PortSym -40 40 3 0>
+    <.PortSym 60 0 4 180>
+    <Text -3 -29 30 #0000ff 0 "X">
+    <Text -32 11 14 #ff0000 0 "3">
+    <Text -33 -29 14 #ff0000 0 "2">
+    <Text -32 -69 14 #ff0000 0 "1">
+  </Symbol>
+</Component>
+
+<Component XA_slew>
+  <Description>
+XSPICE slew rate block.
+
+XSPICE component "slew".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_slew Pin Pout rise_slope="0.5e6" fall_slope="0.5e6"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_slew.sch
+
+.SUBCKT Xanalogue_XA_slew  gnd Pin Pout rise_slope=0.5e6 fall_slope=0.5e6 
+A1  %v(Pin)  %v(Pout)  XA_slew_mod
+
+.MODEL XA_slew_mod slew ( rise_slope=rise_slope
++ fall_slope=fall_slope )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -40 0 20 0 #000080 2 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line 40 30 -60 20 #0000ff 3 1>
+    <Line 40 0 20 0 #000080 2 1>
+    <.PortSym 60 0 2 180>
+    <.PortSym -40 0 1 0>
+    <Text -15 -83 10 #ff00ff 0 "XSPICE">
+    <.ID -50 64 XA_slew "1=rise_slope=0.5e6==" "1=fall_slope=0.5e6==">
+    <Line 40 -31 0 60 #0000ff 3 1>
+    <Line -2 -1 0 -14 #0000ff 2 1>
+    <Line -2 -15 27 0 #0000ff 2 1>
+    <Line -14 -1 12 0 #0000ff 2 1>
+    <Line -18 26 15 0 #ff0000 2 1>
+    <Line -9 -26 0 62 #000000 2 1>
+    <Line -17 8 46 0 #000000 2 1>
+    <Line 6 16 16 0 #ff0000 2 1>
+    <Line -3 26 9 -10 #ff0000 2 1>
+  </Symbol>
+</Component>
+
+<Component XA_summer_x2>
+  <Description>
+XSPICE two input summer block.
+
+XSPICE component "summer".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_summer_x2 Pin1 Pin2 Pout ig1="1.0" ig2="1.0" io1="0.0" io2="0.0" out_gain="1.0" out_offset="1.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_summer_x2.sch
+
+.SUBCKT Xanalogue_XA_summer_x2  gnd Pin1 Pin2 Pout ig1=1.0 ig2=1.0 io1=0.0 io2=0.0 out_gain=1.0 out_offset=1.0 
+A1 [ %v(Pin1)  %v(Pin2) ] %v(Pout)  XA_summer_x2mod
+
+.MODEL XA_summer_x2mod summer ( in_gain=[ ig1 ig2  ]  
++  in_offset=[ io1 io2 ] 
++  out_gain=out_gain out_offset=out_offset )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Text -15 -73 10 #ff00ff 0 "XSPICE">
+    <.ID -40 64 XA_summer_x2 "1=ig1=1.0==" "1=ig2=1.0==" "1=io1=0.0==" "1=io2=0.0==" "1=out_gain=1.0==" "1=out_offset=1.0==">
+    <Line 40 0 20 0 #000080 2 1>
+    <Text -9 -48 40 #0000ff 0 "+">
+    <Line -40 20 20 0 #000080 2 1>
+    <Line -40 -20 20 0 #000080 2 1>
+    <.PortSym -40 -20 1 0>
+    <.PortSym -40 20 2 0>
+    <.PortSym 60 0 3 180>
+    <Text -32 -9 14 #ff0000 0 "2">
+    <Text -32 -49 14 #ff0000 0 "1">
+  </Symbol>
+</Component>
+
+<Component XA_summer_x3>
+  <Description>
+XSPICE three input summer block.
+
+XSPICE component "gain".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_summer_x3 Pin1 Pin2 Pin3 Pout ig1="1.0" ig2="1.0" ig3="1.0" io1="0.0" io2="0.0" io3="0.0" out_gain="1.0" out_offset="1.0"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_summer_x3.sch
+
+.SUBCKT Xanalogue_XA_summer_x3  gnd Pin1 Pin2 Pin3 Pout ig1=1.0 ig2=1.0 ig3=1.0 io1=0.0 io2=0.0 io3=0.0 out_gain=1.0 out_offset=1.0 
+A1 [ %v(Pin1)  %v(Pin2)  %v(Pin3) ] %v(Pout)  XA_summer_x3mod
+
+.MODEL XA_summer_x3mod summer ( in_gain=[ ig1 ig2 ig3 ]  
++  in_offset=[ io1 io2 io3 ] 
++  out_gain=out_gain out_offset=out_offset )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 -50 0 100 #0000ff 3 1>
+    <Line -20 -50 60 20 #0000ff 3 1>
+    <Line -20 50 60 -20 #0000ff 3 1>
+    <Line 40 -30 0 60 #0000ff 3 1>
+    <Text -15 -73 10 #ff00ff 0 "XSPICE">
+    <.ID -40 64 XA_summer_x3 "1=ig1=1.0==" "1=ig2=1.0==" "1=ig3=1.0==" "1=io1=0.0==" "1=io2=0.0==" "1=io3=0.0==" "1=out_gain=1.0==" "1=out_offset=1.0==">
+    <Line 40 0 20 0 #000080 2 1>
+    <Line -40 -40 20 0 #000080 2 1>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 2 0>
+    <.PortSym -40 -40 1 0>
+    <Line -40 40 20 0 #000000 2 1>
+    <.PortSym -40 40 3 0>
+    <.PortSym 60 0 4 180>
+    <Text -8 -48 40 #0000ff 0 "+">
+    <Text -33 -70 14 #ff0000 0 "1">
+    <Text -33 -30 14 #ff0000 0 "2">
+    <Text -32 10 14 #ff0000 0 "3">
+  </Symbol>
+</Component>
+
+<Component XA_zener>
+  <Description>
+XSPICE zener diode.
+
+XSPICE component "zener".
+
+Mike Brinson  April 2016, mbrin2043@yahoo.co.uk
+
+Reference: Paolo Nenzi and Holger Vogt, Ngspice User Manual, Version 26, 11 January, 2014,
+http://ngspice.sourceforge.net/docs/ngspice26-manual.pdf.
+
+  </Description>
+  <Model>
+.Def:Xanalogue_XA_zener PA PC v_breakdown="4.7" i_breakdown="0.02" r_breakdown="1" i_rev="1e-6" i_sat="1e-12" n_forward="1"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  Xanalogue_XA_zener.sch
+
+.SUBCKT Xanalogue_XA_zener  gnd PA PC v_breakdown=4.7 i_breakdown=0.02 r_breakdown=1 i_rev=1e-6 i_sat=1e-12 n_forward=1 
+A1  %gd(PA PC)  XA_zenerMod
+
+.MODEL XA_zenerMod zener ( v_breakdown=v_breakdown i_breakdown=i_breakdown 
++ r_breakdown=r_breakdown i_rev=i_rev i_sat=i_sat
++ n_forward=n_forward )
+.ENDS
+  </Spice>
+  <Symbol>
+    <Line -20 10 20 -10 #000080 2 1>
+    <Line -20 -10 0 20 #000080 2 1>
+    <Line -60 0 40 0 #000080 2 1>
+    <Line -20 -10 20 10 #000080 2 1>
+    <Line 0 0 40 0 #000080 2 1>
+    <Line 0 -10 0 20 #000080 2 1>
+    <Line 0 10 5 0 #0000ff 3 1>
+    <Line -5 -10 5 0 #0000ff 3 1>
+    <.ID -40 24 XA_zener "1=v_breakdown=4.7==" "1=i_breakdown=0.02==" "1=r_breakdown=1==" "1=i_rev=1e-6==" "1=i_sat=1e-12==" "1=n_forward=1==">
+    <Ellipse -27 -20 40 40 #0000ff 3 1 #c0c0c0 1 0>
+    <Text -30 -50 10 #ff00ff 0 "XSPICE">
+    <.PortSym 40 0 2 180>
+    <.PortSym -60 0 1 0>
+  </Symbol>
+</Component>
+

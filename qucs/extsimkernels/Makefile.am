@@ -22,6 +22,8 @@
 # Boston, MA 02110-1301, USA.
 #
 
+SUBDIRS=xspice
+
 noinst_LIBRARIES = libextsimkernels.a
 
 MOCHEADERS = \
@@ -43,7 +45,8 @@ libextsimkernels_a_SOURCES = \
 		spicecompat.cpp \
 		xyce.cpp  \
 		simsettingsdialog.cpp \
-		verilogawriter.cpp
+		verilogawriter.cpp \
+		xspice_cmbuilder.cpp
 
 nodist_libextsimkernels_a_SOURCES = $(MOCFILES)
 
@@ -56,7 +59,8 @@ noinst_HEADERS = $(MOCHEADERS) \
 		spicecompat.h \
 		xyce.h \
 		simsettingsdialog.h \
-		verilogawriter.h
+		verilogawriter.h \
+		xspice_cmbuilder.h
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 

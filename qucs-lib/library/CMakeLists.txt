@@ -1,5 +1,6 @@
 
 SET(COMPLIBS
+AnalogueCM.lib
 Bridges.lib
 Diodes.lib
 Ideal.lib
@@ -16,7 +17,15 @@ Varistors.lib
 Z-Diodes.lib
 SpiceOpamp.lib
 Transformers.lib
+Xanalogue.lib
 )
 
-INSTALL( FILES ${COMPLIBS} DESTINATION share/qucs/library )
+SET(BLACKLIST
+qucs.blacklist
+ngspice.blacklist
+xyce.blacklist
+)
 
+INSTALL( FILES ${COMPLIBS} ${BLACKLIST} DESTINATION share/qucs/library )
+
+ADD_SUBDIRECTORY( AnalogueCM )

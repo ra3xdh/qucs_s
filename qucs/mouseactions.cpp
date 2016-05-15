@@ -28,7 +28,7 @@
 #include "components/optimizedialog.h"
 #include "components/componentdialog.h"
 #include "components/vacomponent.h"
-#include "components/sp_customsim.h"
+#include "spicecomponents/sp_customsim.h"
 #include "diagrams/diagramdialog.h"
 #include "diagrams/markerdialog.h"
 #include "diagrams/tabdiagram.h"

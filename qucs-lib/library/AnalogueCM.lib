@@ -1,0 +1,66 @@
+<Qucs Library 0.0.19 "AnalogueCM">
+
+<Component Esakitd>
+<Description>
+Esaki tunnel diode model:
+
+4 April 2016    Mike Brinson mbrin72043@yahoo.co.uk
+
+Parameters; Description; Default value
+is; Saturation current (A); 1e-12
+ip; Peak current (A); 5e-3
+iv; Valley current (A); 370e-6
+vp; Peak voltage (V); 50e-3
+vv; Valley current (V); 0.37
+a2; Excess current exponential factor (1/V); 5
+ctd; Diode capacitance at zero volts bias (F); 0.5e-12
+temp; Diode temperature  (Celsius); 26.58
+
+Test examples: (1) Test_EsakiTD_DC.sch, (2) TD_oscillator.sch
+
+References
+[1] S.M. Sze and Kwok K. Ng,"Physics of semiconductor devices, 
+Third Edition, 2007, John Wiley & Sons, New York, ISBN-13: 978-0-471,
+ISBN-10: 0-471-1423-5.
+[2] Messaadi Lotfi and Dibi Zohir, "A SPICE behavioural model of 
+tunnel diode: simulation and application" International Conference 
+on Automation, Control Engineering and Computer Science (ACECS'14), 
+Proceedings - IPCO-2014, pp 186-191, ISSN 2356-5608.
+[3] M. Nikhil, S. Bowyer, J. Huckaby and M.B Steer, "Modelling of an 
+Esaki tunnel diode in a circuit simulator", Active and Passive 
+Electronic Components, Vol. 2011, Article ID 830182, 8 pages, 
+doi:10.1155/2011/830182.   
+</Description>
+
+<Spice>
+.SUBCKT AnalogueCM_Esakitd gnd A C is=1e-12 ip=5e-3 
++       iv=370e-6 vp=0.05 vv=0.37 a2=5 ctd=0.5e-12 temp=26.85 
+C1 A  C {ctd}
+A1 %gd(A C)  modtd
+Rp C  A 1e9
+.MODEL modtd  etd ( is ={is} ip = {ip}
++  iv = {iv} vp = {vp} vv = {vv} a2 = {a2}  temp= {temp} )
+.ENDS
+</Spice>
+<SpiceAttach "etd.mod" "etd.ifs"> 
+<Model>  
+.Def: AnalogueCM_Esakitd _net0 _net1 
+.DefEnd
+</Model>
+  <Symbol>
+    <Line -20 -20 0 40 #000080 2 1>
+    <Line -60 0 40 0 #000080 2 1>
+    <Line -20 20 30 -20 #000080 2 1>
+    <Line -20 -20 30 20 #000080 2 1>
+    <Line 10 0 30 0 #000080 2 1>
+    <Line 10 -20 0 40 #00007f 4 1>
+    <Line 0 -20 10 0 #00007f 4 1>
+    <Line 0 20 10 0 #00007f 4 1>
+    <.ID -40 54 Esakitd "1=is=1e-12==" "1=ip=5e-3==" "1=iv=370e-6==" "1=vp=0.05==" "1=vv=0.37==" "1=a2=5==" "1=ctd=0.5e-12==" "1=temp=26.85==">
+    <Ellipse -35 -30 60 60 #ff00ff 3 1 #c0c0c0 1 0>
+    <.PortSym 40 0 2 180>
+    <.PortSym -60 0 1 0>
+    <Text -30 -60 12 #ff00ff 0 "XSPICE">
+</Symbol>
+</Component>
+

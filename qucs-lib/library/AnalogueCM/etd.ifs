@@ -1,0 +1,97 @@
+/*
+      etd cm model.                    
+
+    2 April 2016    Mike Brinson
+
+    This is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2, or (at your option)
+    any later version.
+*/
+
+NAME_TABLE:
+C_Function_Name:       cm_etd
+Spice_Model_Name:      etd
+Description:           "A non-linear tunnel diode model."
+
+
+PORT_TABLE:
+Port_Name:              ntd    
+Description:           "Tunnel diode terminals" 
+Direction:              inout     
+Default_Type:           gd     
+Allowed_Types:         [gd] 
+Vector:                 no     
+Vector_Bounds:          -      
+Null_Allowed:           no  
+
+PARAMETER_TABLE:
+Parameter_Name:     vp           
+Description:        "Peak voltage in volts." 
+Data_Type:          real            
+Default_Value:      0.1         
+Limits:             -               
+Vector:              no             
+Vector_Bounds:       -              
+Null_Allowed:        no         
+
+
+PARAMETER_TABLE:
+Parameter_Name:      ip
+Description:        "Peak current in amps." 
+Data_Type:          real 
+Default_Value:       1e-5 
+Limits:             - 
+Vector:              no 
+Vector_Bounds:       - 
+Null_Allowed:       no 
+
+PARAMETER_TABLE:
+Parameter_Name:     vv
+Description:        "Valley voltage in volts." 
+Data_Type:          real
+Default_Value:      0.4
+Limits:             - 
+Vector:              no 
+Vector_Bounds:       - 
+Null_Allowed:       no 
+
+PARAMETER_TABLE:
+Parameter_Name:     iv
+Description:        "Valley current in amps." 
+Data_Type:          real 
+Default_Value:      1e-6 
+Limits:             - 
+Vector:              no 
+Vector_Bounds:       -  
+Null_Allowed:        no 
+
+PARAMETER_TABLE:
+Parameter_Name:     a2
+Description:        "Excess current exponential factor in 1/volts." 
+Data_Type:          real 
+Default_Value:      5 
+Limits:             - 
+Vector:              no 
+Vector_Bounds:       -  
+Null_Allowed:        no 
+PARAMETER_TABLE:
+Parameter_Name:     temp
+Description:        "Device temperature in Celsius." 
+Data_Type:          real 
+Default_Value:      26.85 
+Limits:             - 
+Vector:              no 
+Vector_Bounds:       -  
+Null_Allowed:        no  
+
+
+PARAMETER_TABLE:
+Parameter_Name:     is
+Description:        "Diode saturation current in amps." 
+Data_Type:          real 
+Default_Value:      1e-12 
+Limits:             - 
+Vector:              no 
+Vector_Bounds:       -  
+Null_Allowed:        no 

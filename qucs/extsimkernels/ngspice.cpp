@@ -17,10 +17,12 @@
 
 
 #include "ngspice.h"
+#include "xspice_cmbuilder.h"
 #include "components/iprobe.h"
 #include "components/vprobe.h"
 #include "components/equation.h"
 #include "components/param_sweep.h"
+#include "spicecomponents/xsp_cmlib.h"
 #include "main.h"
 
 /*!
@@ -54,6 +56,21 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     QString s;
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
     startNetlist(stream); // output .PARAM and components
+
+    if (DC_OP_only) {
+        stream<<".control\n"  // Execute only DC OP analysis
+              <<"set filetype=ascii\n" // Ingnore all other simulations
+              <<"op\n"
+              <<"print all > spice4qucs.cir.dc_op\n"
+              <<"destroy all\n"
+              <<"quit\n"
+              <<".endc\n"
+              <<".end\n";
+        outputs.clear();
+        outputs.append("spice4qucs.cir.dc_op");
+        return;
+    }
+
     // determine which simulations are in use
     simulations.clear();
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
@@ -99,7 +116,6 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     vars.sort();
 
     stream<<".control\n"          //execute simulations
-          <<"set filetype=ascii\n"
           <<"echo \"\" > spice4qucs.cir.noise\n"
           <<"echo \"\" > spice4qucs.cir.pz\n";
 
@@ -347,8 +363,20 @@ void Ngspice::slotSimulate()
     }
 
     QString netfile = "spice4qucs.cir";
-    QString tmp_path = QDir::convertSeparators(workdir+netfile);
+    QString tmp_path = QDir::convertSeparators(workdir+QDir::separator()+netfile);
     SaveNetlist(tmp_path);
+
+    removeAllSimulatorOutputs();
+
+    XSPICE_CMbuilder *CMbuilder = new XSPICE_CMbuilder(Sch);
+    CMbuilder->cleanSpiceinit();
+    CMbuilder->createSpiceinit();
+    if (CMbuilder->needCompile()) {
+        CMbuilder->cleanCModelTree();
+        CMbuilder->createCModelTree(output);
+        CMbuilder->compileCMlib(output);
+    }
+    delete CMbuilder;
 
     //startNgSpice(tmp_path);
     SimProcess->setWorkingDirectory(workdir);
@@ -364,12 +392,16 @@ void Ngspice::slotSimulate()
 void Ngspice::slotProcessOutput()
 {
     QString s = SimProcess->readAllStandardOutput();
-    QRegExp percentage_pattern("^%\\d\\d.\\d\\d.*$");
+    QRegExp percentage_pattern("^%\\d\\d*\\.\\d\\d.*$");
     if (percentage_pattern.exactMatch(s)) {
         int percent = round(s.mid(1,5).toFloat());
         emit progress(percent);
+    } else {
+        s.remove(QRegExp("%\\d\\d*\\.\\d\\d")); // Remove percentage from logs
+        s.remove(QRegExp("\010+")); // Large amount of datar from percentage reports
+                                    // can freeze QTextEdit for over 100k simulation points
+        output += s;
     }
-    output += s;
 }
 
 /*!
@@ -406,3 +438,4 @@ void Ngspice::setSimulatorCmd(QString cmd)
 
     simulator_cmd = cmd;
 }
+

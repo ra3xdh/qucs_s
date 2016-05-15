@@ -1,4 +1,5 @@
 #include "spicecompat.h"
+#include "main.h"
 
 /*!
  * \brief spicecompat::check_refdes If starting letters of the component name
@@ -207,4 +208,76 @@ void spicecompat::convertNodeNames(QStringList &tokens, QString &sim)
             sim = "tran";
         }
     }
+}
+
+QString spicecompat::normalize_node_name(QString nod)
+{
+    if (nod=="gnd") return QString("0");
+    else return nod;
+}
+
+QString spicecompat::convert_relative_filename(QString filename)
+{
+    QFileInfo inf(filename);
+    if (inf.exists()) return filename;
+
+    QString s = QucsSettings.QucsWorkDir.absolutePath() + QDir::separator() + filename;
+    inf.setFile(s);
+    if (inf.exists()) return s;
+    else return filename;
+}
+
+int spicecompat::getPins(const QString &file, const QString &compname, QStringList &pin_names)
+{
+    int r = 0;
+    QString content;
+    QString LibName = spicecompat::convert_relative_filename(file);
+    QFile f(LibName);
+    if (f.open(QIODevice::ReadOnly)) {
+        QTextStream ts(&f);
+        content = ts.readAll();
+        f.close();
+    } else return 0;
+
+    QTextStream stream(&content,QIODevice::ReadOnly);
+    while (!stream.atEnd()) {
+        QString lin = stream.readLine();
+        QRegExp subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
+        if (subckt_header.exactMatch(lin)) {
+            QRegExp sep("\\s");
+            QStringList lst2 = lin.split(sep,QString::SkipEmptyParts);
+            QString name = lin.section(sep,1,1,QString::SectionSkipEmpty).toLower();
+            QString refname = compname.toLower();
+            if (name != refname) continue;
+            lst2.removeFirst();
+            lst2.removeFirst();
+            foreach (QString s1, lst2) {
+                if (!s1.contains('=')) pin_names.append(s1);
+            }
+            r = pin_names.count();
+            break;
+        }
+    }
+
+    return r;
+}
+
+QString spicecompat::getSubcktName(QString subfilename)
+{
+    QString s = "";
+
+    QFile sub_file(subfilename);
+    if (sub_file.open(QIODevice::ReadOnly)) {
+        QStringList lst = QString(sub_file.readAll()).split("\n");
+        foreach (QString str, lst) {
+            QRegExp subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
+            if (subckt_header.exactMatch(str)) {
+                QRegExp sep("\\s");
+                s = str.section(sep,1,1,QString::SectionSkipEmpty);
+                break;
+            }
+        }
+        sub_file.close();
+    }
+    return s;
 }

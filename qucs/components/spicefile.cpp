@@ -568,57 +568,15 @@ void SpiceFile::slotExited()
   }
 }
 
-QString SpiceFile::getSubcktName()
-{
-    QString s = "";
-
-    QFile sub_file(getSubcircuitFile());
-    if (sub_file.open(QIODevice::ReadOnly)) {
-        QStringList lst = QString(sub_file.readAll()).split("\n");
-        foreach (QString str, lst) {
-            QRegExp subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
-            if (subckt_header.exactMatch(str)) {
-                QRegExp sep("\\s");
-                s = str.section(sep,1,1,QString::SectionSkipEmpty);
-            }
-        }
-        sub_file.close();
-    }
-    return s;
-}
-
-QStringList SpiceFile::getSubcktPorts()
-{
-    QStringList lst;
-    lst.clear();
-
-    QFile sub_file(getSubcircuitFile());
-    if (sub_file.open(QIODevice::ReadOnly)) {
-        QStringList lst1 = QString(sub_file.readAll()).split("\n");
-        foreach (QString str, lst1) {
-            QRegExp subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
-            if (subckt_header.exactMatch(str)) {
-                QRegExp sep("\\s");
-                QStringList lst2 = str.split(sep,QString::SkipEmptyParts);
-                lst2.removeFirst();
-                lst2.removeFirst();
-                foreach (QString s1, lst2) {
-                    if (!s1.contains('=')) lst.append(s1);
-                }
-            }
-        }
-        sub_file.close();
-    }
-    return lst;
-}
-
 QString SpiceFile::spice_netlist(bool)
 {
     QStringList ports_lst = Props.at(1)->Value.split(",");
     for (QStringList::iterator it = ports_lst.begin();it != ports_lst.end();it++) {
         if (it->startsWith("_net")) (*it).remove(0,4);
     }
-    QStringList nod_lst = getSubcktPorts();
+    QStringList nod_lst;
+    QString compname = spicecompat::getSubcktName(getSubcircuitFile());
+    spicecompat::getPins(getSubcircuitFile(),compname,nod_lst);
 
     QList<int> seq;
     seq.clear();
@@ -632,6 +590,6 @@ QString SpiceFile::spice_netlist(bool)
         s += " "+Ports.at(i)->Connection->Name;   // node names
     }
 
-    s += " " + getSubcktName() + "\n";
+    s += " " + spicecompat::getSubcktName(getSubcircuitFile()) + "\n";
     return s;
 }

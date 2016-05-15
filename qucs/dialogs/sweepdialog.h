@@ -48,14 +48,14 @@ private:
 class SweepDialog : public QDialog {
    Q_OBJECT
 public:
-  SweepDialog(Schematic*);
+  SweepDialog(Schematic*, QHash<QString,double> *NodeVals = 0);
  ~SweepDialog();
 
 private slots:
   void slotNewValue(int);
 
 private:
-  Graph* setBiasPoints();
+  Graph* setBiasPoints(QHash<QString,double> *NodeVals = 0);
 
   QGridLayout *all;   // the mother of all widgets
   QList<mySpinBox *> BoxList;
@@ -64,6 +64,7 @@ private:
   Schematic *Doc;
   QList<Node *> NodeList;
   QList<double *> ValueList;
+  bool isSpice;
 };
 
 #endif

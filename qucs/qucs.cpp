@@ -76,6 +76,7 @@
 #include "../qucs-lib/qucslib_common.h"
 #include "misc.h"
 #include "extsimkernels/verilogawriter.h"
+#include "extsimkernels/simsettingsdialog.h"
 
 // icon for unsaved files (diskette)
 const char *smallsave_xpm[] = {
@@ -181,6 +182,15 @@ QucsApp::QucsApp()
       arg = QucsSettings.QucsWorkDir.filePath(Info.fileName());
       gotoPage(arg);
     }
+  }
+
+  if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) {
+      QMessageBox::information(this,tr("Qucs"),tr("Default simulator is not specified yet.\n"
+                                         "Please setup it in the next dialog window.\n"
+                                         "If you have no simulators except Qucs installed\n"
+                                         "in your system leave default Qucsator setting\n"
+                                         "and simple press Apply button"));
+      slotSimSettings();
   }
 }
 
@@ -410,6 +420,10 @@ void QucsApp::fillLibrariesTreeView ()
 
     QDir LibDir(QucsSettings.LibDir);
     LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+    QStringList blacklist = getBlacklistedLibraries(QucsSettings.LibDir);
+    foreach(QString ss, blacklist) { // exclude blacklisted files
+        LibFiles.removeAll(ss);
+    }
 
     // create top level library itmes, base on the library names
     for(it = LibFiles.begin(); it != LibFiles.end(); it++)
@@ -473,6 +487,13 @@ void QucsApp::fillLibrariesTreeView ()
     {
         //LibFiles = UserLibDir.entryList("*.lib", QDir::Files, QDir::Name);
         LibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+        QDir LibDir(UserLibDir);
+        LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+        QStringList blacklist = getBlacklistedLibraries(QucsSettings.LibDir);
+        foreach(QString ss, blacklist) { // exclude blacklisted files
+            LibFiles.removeAll(ss);
+        }
+
         int UserLibCount = LibFiles.count();
 
         if (UserLibCount > 0)
@@ -2018,6 +2039,12 @@ void QucsApp::slotZoomOut()
  */
 void QucsApp::slotSimulate()
 {
+
+  if (QucsSettings.DefaultSimulator!=spicecompat::simQucsator) {
+      slotSimulateWithSpice();
+      return;
+  }
+
   slotHideEdit(); // disable text edit of component property
 
   QucsDoc *Doc;
@@ -2832,6 +2859,13 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
 }
 
 
+void QucsApp::slotSimSettings()
+{
+    SimSettingsDialog *SetDlg = new SimSettingsDialog(this);
+    SetDlg->exec();
+    delete SetDlg;
+}
+
 void QucsApp::slotSimulateWithSpice()
 {
     if (!isTextDocument(DocumentTab->currentPage())) {
@@ -2846,7 +2880,7 @@ void QucsApp::slotSimulateWithSpice()
         disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
         disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
         if (SimDlg->wasSimulated && sch->SimOpenDpl)
-            slotChangePage(sch->DocName,sch->DataDisplay);
+            if (sch->showBias < 1) slotChangePage(sch->DocName,sch->DataDisplay);
         delete SimDlg;
     }
 }

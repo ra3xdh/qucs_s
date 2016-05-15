@@ -277,6 +277,8 @@
         <file>bitmaps/Cmeter_SPICE.png</file>
         <file>bitmaps/SE_V_amp.png</file>
         <file>bitmaps/DE_V_amp.png</file>
+        <file>bitmaps/SE_V_limit.png</file>
+        <file>bitmaps/DE_V_limit.png</file>
         <file>bitmaps/SE_V_int.png</file>
         <file>bitmaps/DE_V_int.png</file>
         <file>bitmaps/SE_V_diff.png</file>
@@ -291,7 +293,13 @@
         <file>bitmaps/Icouple.png</file> 
         <file>bitmaps/core.png</file> 
         <file>bitmaps/SDTF.png</file> 
+        <file>bitmaps/XAPWL.png</file>         
         <file>bitmaps/sp_include.png</file>
+        <file>bitmaps/xspicegeneric.png</file>
+        <file>bitmaps/xsp_cmlib.png</file>
+        <file>bitmaps/xsp_cmod.png</file>
+        <file>bitmaps/spicegeneric.png</file>
+        <file>bitmaps/spicelibcomp.png</file>
  
     </qresource>
 </RCC>

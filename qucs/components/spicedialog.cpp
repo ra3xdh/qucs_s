@@ -422,40 +422,47 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
     FileInfo = QFileInfo(QucsSettings.QucsWorkDir, s + ".pre");
   }
 
-  // Now do the spice->qucs netlist conversion using the qucsconv program ...
-  QucsConv = new QProcess(this);
+  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+      // Now do the spice->qucs netlist conversion using the qucsconv program ...
+      QucsConv = new QProcess(this);
 
-  QString Program;
-  QStringList Arguments;
-  Program = QucsSettings.Qucsconv;
-  Arguments << "-if" << "spice"
-            << "-of" <<  "qucs"
-            << "-i" << FileInfo.filePath();
+      QString Program;
+      QStringList Arguments;
+      Program = QucsSettings.Qucsconv;
+      Arguments << "-if" << "spice"
+                << "-of" <<  "qucs"
+                << "-i" << FileInfo.filePath();
 
-  qDebug() << "Command :" << Program << Arguments.join(" ");
+      qDebug() << "Command :" << Program << Arguments.join(" ");
 
-  connect(QucsConv, SIGNAL(readyReadStandardOutput()), SLOT(slotGetNetlist()));
-  connect(QucsConv, SIGNAL(readyReadStandardError()), SLOT(slotGetError()));
+      connect(QucsConv, SIGNAL(readyReadStandardOutput()), SLOT(slotGetNetlist()));
+      connect(QucsConv, SIGNAL(readyReadStandardError()), SLOT(slotGetError()));
 
 
-  QMessageBox *MBox = new QMessageBox(tr("Info"),
-                                      tr("Converting SPICE file \"%1\".").arg(FileInfo.filePath()),
-                                      QMessageBox::NoIcon, QMessageBox::Abort,
-                                      QMessageBox::NoButton, QMessageBox::NoButton, this, 0, true,
-                                      Qt::WStyle_DialogBorder |  Qt::WDestructiveClose);
+      QMessageBox *MBox = new QMessageBox(tr("Info"),
+                                          tr("Converting SPICE file \"%1\".").arg(FileInfo.filePath()),
+                                          QMessageBox::NoIcon, QMessageBox::Abort,
+                                          QMessageBox::NoButton, QMessageBox::NoButton, this, 0, true,
+                                          Qt::WStyle_DialogBorder |  Qt::WDestructiveClose);
 
-  connect(QucsConv, SIGNAL(finished(int, QProcess::ExitStatus)), MBox, SLOT(close()));
+      connect(QucsConv, SIGNAL(finished(int, QProcess::ExitStatus)), MBox, SLOT(close()));
 
-  QucsConv->start(Program, Arguments);
+      QucsConv->start(Program, Arguments);
 
-  if(!QucsConv->Running)
-  {
-    QMessageBox::critical(this, tr("Error"),
-                          tr("Cannot execute \"%1\".").arg(QucsSettings.Qucsconv));
-    return false;
+      if(!QucsConv->Running)
+      {
+        QMessageBox::critical(this, tr("Error"),
+                              tr("Cannot execute \"%1\".").arg(QucsSettings.Qucsconv));
+        return false;
+      }
+
+      MBox->exec();
+  } else { // Parse SUBCIRCUIT header directly
+      QStringList lst;
+      QString compname = spicecompat::getSubcktName(FileInfo.filePath());
+      spicecompat::getPins(FileInfo.filePath(),compname,lst);
+      NodesList->addItems(lst);
   }
-
-  MBox->exec();
 
   if (!Error.isEmpty()) {
       QMessageBox::critical(this, tr("QucsConv Error"), Error);
