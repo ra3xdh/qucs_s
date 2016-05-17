@@ -1,6 +1,7 @@
 
 SET(RULES_MK
 cmlib.linux.rules.mk
+cmlib.mingw32.rules.mk
 )
 
 # installation of transmission lines

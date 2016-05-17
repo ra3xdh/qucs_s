@@ -150,7 +150,11 @@ void XSPICE_CMbuilder::createCModelTree(QString &output)
     QFile mkfile(cmdir+"/Makefile");
     if (mkfile.open(QIODevice::WriteOnly)) {
         QTextStream stream(&mkfile);
+#ifdef __MINGW32__
+        QString rules_file = QucsSettings.BinDir+"../share/qucs/xspice_cmlib/cmlib.mingw32.rules.mk";
+#else
         QString rules_file = QucsSettings.BinDir+"../share/qucs/xspice_cmlib/cmlib.linux.rules.mk";
+#endif
         QFileInfo inf(rules_file);  
         if (!inf.exists())
             output += QString("Make rules file %1 doesn't exist\n").arg(rules_file);
@@ -276,10 +280,10 @@ QString XSPICE_CMbuilder::normalizeModelName(QString &file, QString &destdir)
     QFileInfo inf(file);
     QString filenam = inf.fileName();
     if (filenam.endsWith(".mod"))
-        return QDir::convertSeparators(cmdir+'/'+destdir+"/cfunc.mod");
+        return (cmdir+'/'+destdir+"/cfunc.mod");
     if (filenam.endsWith(".ifs"))
-        return QDir::convertSeparators(cmdir+'/'+destdir+"/ifspec.ifs");
-    return QDir::convertSeparators(cmdir+'/'+destdir+'/'+filenam);
+        return (cmdir+'/'+destdir+"/ifspec.ifs");
+    return (cmdir+'/'+destdir+'/'+filenam);
 }
 
 /*!
@@ -293,7 +297,11 @@ void XSPICE_CMbuilder::compileCMlib(QString &output)
     QProcess *make = new QProcess();
     make->setReadChannelMode(QProcess::MergedChannels);
     make->setWorkingDirectory(cmdir);
+#ifdef __MINGW32__
+    make->start("mingw32-make.exe"); // For Unix
+#else
     make->start("make"); // For Unix
+#endif
     make->waitForFinished();
     output += make->readAll();
     delete make;
