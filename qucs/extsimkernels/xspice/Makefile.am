@@ -22,7 +22,7 @@
 # Boston, MA 02110-1301, USA.  
 #
 
-RULES_MK = cmlib.linux.rules.mk
+RULES_MK = cmlib.linux.rules.mk cmlib.mingw32.rules.mk
 
 EXTRA_DIST = $(RULES_MK)
 
