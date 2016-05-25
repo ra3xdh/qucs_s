@@ -692,15 +692,17 @@ void ComponentDialog::slotApplyChange(const QString& Text)
 void ComponentDialog::slotApplyProperty()
 {
   // pick selected row
-  QTableWidgetItem *item = prop->selectedItems()[0];
-
+  QTableWidgetItem *item = prop->currentItem();
+  
+  if(!item)
+    return;
+  
   int row = item->row();
 
   QString name  = prop->item(row, 0)->text();
   QString value = prop->item(row, 1)->text();
 
-  if(!item)
-    return;
+ 
 
   if (!ComboEdit->isHidden())   // take text from ComboBox ?
     edit->setText(ComboEdit->currentText());
@@ -720,7 +722,7 @@ void ComponentDialog::slotApplyProperty()
     }
 
   // step to next item
-  if ( row < prop->rowCount()) {
+  if ( row < prop->rowCount()-1) {
     prop->setCurrentItem(prop->item(row+1,0));
     slotSelectProperty(prop->item(row+1,0));
   }
