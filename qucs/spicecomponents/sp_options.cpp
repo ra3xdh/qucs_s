@@ -47,8 +47,7 @@ SpiceOptions::SpiceOptions()
   Name  = "SpiceOptions";
 
   Props.append(new Property("XyceOptionPackage", "DEVICE", false,
-        QObject::tr("Xyce package")+" [DEVICE, TIMEINT, NONLIN, NONLIN-TRAN, NONLIN-HB,"
-                            " LOCA, LINSOL, LINSOL-HB, OUTPUT, RESTART, SENSITVITY, HBINT]"));
+        QObject::tr("Xyce option package name")));
   Props.append(new Property("GMIN", "1e-12", true));
 }
 
