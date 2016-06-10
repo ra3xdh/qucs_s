@@ -225,6 +225,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                 outputs.append(filename);
                 QString write_str = QString("write %1 %2\n").arg(filename).arg(custom_vars);
                 stream<<write_str;
+                stream<<"destroy all\n";
+                stream<<"reset\n";
             }
             continue;
         }
