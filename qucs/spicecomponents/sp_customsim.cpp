@@ -22,15 +22,9 @@
 SpiceCustomSim::SpiceCustomSim()
 {
   isSimulation = true;
-  Description = QObject::tr("Ngspice custom simulation");
+  Description = QObject::tr("Nutmeg script");
 
-  QString  s = Description;
-  int a = s.indexOf(" ");
-  if (a != -1) s[a] = '\n';
-
-  Texts.append(new Text(0, 0, s.left(a), Qt::darkRed, QucsSettings.largeFontSize));
-  if (a != -1)
-    Texts.append(new Text(0, 0, s.mid(a+1), Qt::darkRed, QucsSettings.largeFontSize));
+  Texts.append(new Text(0, 0, Description, Qt::darkRed, QucsSettings.largeFontSize));
 
   x1 = -10; y1 = -9;
   x2 = x1+104; y2 = y1+59;
@@ -62,7 +56,7 @@ Component* SpiceCustomSim::newOne()
 
 Element* SpiceCustomSim::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Ngspice custom simulation");
+  Name = QObject::tr("Nutmeg script");
   BitmapFile = (char *) "sp_customsim";
 
   if(getNewOne)  return new SpiceCustomSim();
