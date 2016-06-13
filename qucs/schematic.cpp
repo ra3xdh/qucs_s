@@ -2212,6 +2212,15 @@ void Schematic::getSelAreaWidthAndHeight(int &wsel, int &hsel, int& xmin_sel_, i
             if (xc>xmax) xmax = xc;
             if (yc<ymin) ymin = yc;
             if (yc>ymax) ymax = yc;
+            if (pw->Label) {
+                WireLabel *pl = pw->Label;
+                if (pl->isSelected) {
+                    if(pl->x1 < xmin)  xmin = pl->x1;
+                    if((pl->x1+pl->x2) > xmax)  xmax = pl->x1 + pl->x2;
+                    if(pl->y1 > ymax)  ymax = pl->y1;
+                    if((pl->y1-pl->y2) < ymin)  ymin = pl->y1 - pl->y2;
+                }
+            }
         }
     }
 
