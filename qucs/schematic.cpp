@@ -2222,7 +2222,6 @@ void Schematic::getSelAreaWidthAndHeight(int &wsel, int &hsel, int& xmin_sel_, i
         if (pd->isSelected) {
             int x1,y1,x2,y2,d1,d2,d3,d4;
             pd->Bounding(x1,y1,x2,y2);
-
             d1 = std::min(x1,x2);
             if (d1<xmin) xmin = d1;
             d2 = std::max(x2,x1);
@@ -2231,6 +2230,23 @@ void Schematic::getSelAreaWidthAndHeight(int &wsel, int &hsel, int& xmin_sel_, i
             if (d3<ymin) ymin = d3;
             d4 = std::max(y2,y1);
             if (d4>ymax) ymax = d4;
+
+            foreach (Graph *pg, pd->Graphs) {
+                foreach (Marker *pm, pg->Markers) {
+                    if (pm->isSelected) {
+                        int x1,y1,x2,y2,d1,d2,d3,d4;
+                        pm->Bounding(x1,y1,x2,y2);
+                        d1 = std::min(x1,x2);
+                        if (d1<xmin) xmin = d1;
+                        d2 = std::max(x2,x1);
+                        if (d2>xmax) xmax = d2;
+                        d3 = std::min(y1,y2);
+                        if (d3<ymin) ymin = d3;
+                        d4 = std::max(y2,y1);
+                        if (d4>ymax) ymax = d4;
+                    }
+                }
+            }
         }
     }
 
