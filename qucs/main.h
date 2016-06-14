@@ -63,7 +63,9 @@ struct tQucsSettings {
   QDir QucsHomeDir;
   QDir AdmsXmlBinDir;  // dir of admsXml executable
   QDir AscoBinDir;     // dir of asco executable
-  QDir OctaveBinDir;   // dir of octave executable
+  // QDir OctaveBinDir;   // dir of octave executable
+  QString OctaveExecutable; // OctaveExecutable location
+  QString QucsOctave; // OUCS_OCTAVE variable
 
   // registered filename extensions with program to open the file
   QStringList FileTypes;
