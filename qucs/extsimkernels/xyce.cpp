@@ -118,6 +118,14 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
             nods += nod + " ";
         }
     }
+
+    if (DC_OP_only) {
+        stream<<".OP\n";
+        stream<<QString(".PRINT dc format=noindex file=spice4qucs.cir.dc_op_xyce %1\n").arg(nods);
+        outputs.append("spice4qucs.cir.dc_op_xyce");
+        return;
+    }
+
     QString sim = simulations.first();
 
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) { // Xyce can run
@@ -204,7 +212,9 @@ void Xyce::slotSimulate()
     netlistQueue.clear();
     output_files.clear();
 
-    determineUsedSimulations();
+    if (DC_OP_only) {
+        simulationsQueue.append("dc");
+    } else  determineUsedSimulations();
 
     foreach(QString sim,simulationsQueue) {
         QStringList sim_lst;
