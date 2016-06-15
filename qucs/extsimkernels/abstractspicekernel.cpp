@@ -538,6 +538,40 @@ void AbstractSpiceKernel::parseDC_OPoutput(QString ngspice_file)
 }
 
 /*!
+ * \brief AbstractSpiceKernel::parseDC_OPoutputXY Parse DC OP simulation result for XYCE
+ *        and setup schematic node names to show DC bias
+ * \param ngspice_file[in] DC OP results test file
+ */
+void AbstractSpiceKernel::parseDC_OPoutputXY(QString xyce_file)
+{
+    QHash<QString,double> NodeVals;
+    QFile ofile(xyce_file);
+    if (ofile.open(QFile::ReadOnly)) {
+        QTextStream ngsp_data(&ofile);
+        QStringList lines = ngsp_data.readAll().split("\n");
+        if (lines.count()>=2) {
+            QStringList nods = lines.at(0).split(QRegExp("\\s"),QString::SkipEmptyParts);
+            QStringList vals = lines.at(1).split(QRegExp("\\s"),QString::SkipEmptyParts);
+            QStringList::iterator n,v;
+            for(n = nods.begin(),v = vals.begin();n!=nods.end()||v!=vals.end();n++,v++) {
+                if ((*n).startsWith("I(")) {
+                    (*n).remove(0,2).chop(1);
+                    (*n) += "#branch";  // Ngspice compatible
+                } else (*n).remove(0,2).chop(1); // Remove (I|V), starting ( and closing )
+                NodeVals.insert((*n).toLower(),(*v).toDouble());
+            }
+        }
+        ofile.close();
+    }
+
+    // Update Node labels on schematic
+    SweepDialog *swpdlg = new SweepDialog(Sch,&NodeVals);
+    delete swpdlg;
+
+    Sch->showBias = 1;
+}
+
+/*!
  * \brief AbstractSpiceKernel::parseSTEPOutput This method parses text raw spice
  *        output from Parameter sweep analysis. Can parse data that uses appedwrite.
  *        Extracts a simulation points array and variables names and types (Real
@@ -770,6 +804,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
         foreach(QString output,output_files) {
             QString full_outfile = workdir+QDir::separator()+output;
             if (output.endsWith(".dc_op")) parseDC_OPoutput(full_outfile);
+            else if (output.endsWith(".dc_op_xyce")) parseDC_OPoutputXY(full_outfile);
         }
         return;
     }
