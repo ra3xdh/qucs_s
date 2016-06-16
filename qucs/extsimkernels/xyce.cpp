@@ -102,6 +102,16 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
             vars.append(vars_eq);
         }*/
     }
+
+    if (DC_OP_only) {
+        // Add all remaining nodes, because XYCE has no equivalent for PRINT ALL
+        for(Node* pn = Sch->Nodes->first(); pn != 0; pn = Sch->Nodes->next()) {
+            if ((!vars.contains(pn->Name))&&(pn->Name!="gnd")) {
+                vars.append(pn->Name);
+            }
+        }
+    }
+
     vars.sort();
 
     //execute simulations
