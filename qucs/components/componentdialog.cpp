@@ -718,7 +718,7 @@ void ComponentDialog::slotApplyProperty()
 //        item->setText(0, "Export_");   // name must not be "Export" !!!
 //      else
 //      item->setText(0, NameEdit->text());  // apply property name
-      prop->item(row, 0)->setText(edit->text());
+      prop->item(row, 0)->setText(NameEdit->text());
     }
 
   // step to next item
