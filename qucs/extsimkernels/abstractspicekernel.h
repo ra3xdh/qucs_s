@@ -88,6 +88,9 @@ public:
     void parseHBSTEPOutput(QString ngspice_file,
                            QList< QList<double> > &sim_points,
                            QStringList &var_list, bool &isComplex);
+    void parseXYCESTDOutput(QString std_file,
+                            QList< QList<double> > &sim_points,
+                            QStringList &var_list, bool &isComplex);
     void parseResFile(QString resfile, QString &var, QStringList &values);
     void convertToQucsData(const QString &qucs_dataset, bool xyce = false);
     QString getOutput();

@@ -194,8 +194,9 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
         write_str = QString(".PRINT  %1 %2\n").arg(sim).arg(nods);
         outputs.append("spice4qucs.hb.cir.HB.FD.prn");
     } else if (sim=="noise") {
-        write_str = QString(".PRINT noise file=%1_xyce inoise onoise\n").arg(filename);
-        outputs.append("spice4qucs.cir.noise");
+        filename += "_std";
+        write_str = QString(".PRINT noise file=%1 inoise onoise\n").arg(filename);
+        outputs.append(filename);
     } else {
         write_str = QString(".PRINT  %1 format=raw file=%2 %3\n").arg(sim).arg(filename).arg(nods);
         outputs.append(filename);
