@@ -732,6 +732,50 @@ void AbstractSpiceKernel::parseHBSTEPOutput(QString , QList<QList<double> >&,
 }
 
 /*!
+ * \brief AbstractSpiceKernel::parseXYCESTDOutput
+ * \param std_file[in] XYCE STD output file name
+ * \param sim_points[out] 2D array in which simulation points should be extracted
+ * \param var_list[out] This list is filled by simualtion variables. There is a list of dependent
+ *        and independent varibales. An independent variable is the first in list.
+ * \param isComplex[out] Type of variables. True if complex. False if real.
+ */
+void AbstractSpiceKernel::parseXYCESTDOutput(QString std_file, QList<QList<double> > &sim_points,
+                                             QStringList &var_list, bool &isComplex)
+{
+    isComplex = false;
+    QString content;
+
+    QFile ofile(std_file);
+    if (ofile.open(QFile::ReadOnly)) {
+        QTextStream ts(&ofile);
+        content = ts.readAll();
+        ofile.close();
+    }
+
+    QTextStream ngsp_data(&content);
+    sim_points.clear();
+    var_list.clear();
+    while (!ngsp_data.atEnd()) { // Parse header;
+        QString lin = ngsp_data.readLine();
+        if (lin.isEmpty()) continue;
+        if (lin.startsWith("End of ")) continue;
+        if (lin.startsWith("Index ",Qt::CaseInsensitive)) {
+            var_list = lin.split(" ",QString::SkipEmptyParts);
+            var_list.removeFirst(); // Drop Index
+            continue;
+        } else {
+            QStringList val_lst = lin.split(" ",QString::SkipEmptyParts);
+            QList<double> sim_point;
+            foreach (QString val, val_lst) {
+                sim_point.append(val.toDouble());
+            }
+            sim_point.removeFirst(); // Index
+            sim_points.append(sim_point);
+        }
+    }
+}
+
+/*!
  * \brief AbstractSpiceKernel::parseResFile Extract sweep variable name and
  *        values from Ngspice or Xyce *.res output
  * \param resfile A name of a *.res file
@@ -840,6 +884,8 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
         } else if (ngspice_output_filename.endsWith(".four")) {
             isComplex=false;
             parseFourierOutput(full_outfile,sim_points,var_list,xyce);
+        } else if (ngspice_output_filename.endsWith(".txt_std")) {
+            parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
         } else if (ngspice_output_filename.endsWith(".noise")) {
             isComplex = false;
             parseNoiseOutput(full_outfile,sim_points,var_list,hasParSweep);
