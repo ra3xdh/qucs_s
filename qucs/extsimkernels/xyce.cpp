@@ -48,6 +48,7 @@ void Xyce::determineUsedSimulations()
        if(pc->isSimulation) {
            QString sim_typ = pc->Model;
            if (sim_typ==".AC") simulationsQueue.append("ac");
+           if (sim_typ==".NOISE") simulationsQueue.append("noise");
            if (sim_typ==".TR") simulationsQueue.append("tran");
            if (sim_typ==".HB") simulationsQueue.append("hb");
            if ((sim_typ==".SW")&&
@@ -143,6 +144,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
            QString sim_typ = pc->Model;              // Multiple simulations are forbidden.
            QString s = pc->getSpiceNetlist(true);
            if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
+           if ((sim_typ==".NOISE")&&(sim=="noise")) stream<<s;
            if ((sim_typ==".TR")&&(sim=="tran")){
                stream<<s;
                Q3PtrList<Component> comps(Sch->DocComps); // find Fourier tran
@@ -169,7 +171,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
                } if (SwpSim.startsWith("HB")&&(sim=="hb")) {
                    stream<<s;
                    hasParSweep = true;
-               } else if (SwpSim.startsWith("SW")&&(sim=="dc")) {
+               }else if (SwpSim.startsWith("SW")&&(sim=="dc")) {
                    for(Component *pc1 = Sch->DocComps.first(); pc1 != 0; pc1 = Sch->DocComps.next()) {
                        if ((pc1->Name==SwpSim)&&(pc1->Props.at(0)->Value.startsWith("DC"))) {
                            stream<<s;
@@ -191,6 +193,9 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
         // write_str = QString(".PRINT  %1 file=%2 %3\n").arg(sim).arg(filename).arg(nods);
         write_str = QString(".PRINT  %1 %2\n").arg(sim).arg(nods);
         outputs.append("spice4qucs.hb.cir.HB.FD.prn");
+    } else if (sim=="noise") {
+        write_str = QString(".PRINT noise file=%1_xyce inoise onoise\n").arg(filename);
+        outputs.append("spice4qucs.cir.noise");
     } else {
         write_str = QString(".PRINT  %1 format=raw file=%2 %3\n").arg(sim).arg(filename).arg(nods);
         outputs.append(filename);

@@ -78,15 +78,15 @@ Element* SpiceNoise::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString SpiceNoise::spice_netlist(bool isXyce)
 {
     QString s;
+    QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
+    QString fstop = spicecompat::normalize_value(Props.at(2)->Value); // Stop freq.
+    s = QString("NOISE %1 %2 %3 %4 %5 %6\n").arg(Props.at(4)->Value).arg(Props.at(5)->Value)
+            .arg(Props.at(0)->Value).arg(Props.at(3)->Value)
+            .arg(fstart).arg(fstop);
     if (!isXyce) {
-        QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
-        QString fstop = spicecompat::normalize_value(Props.at(2)->Value); // Stop freq.
-        s = QString("NOISE %1 %2 %3 %4 %5 %6\n").arg(Props.at(4)->Value).arg(Props.at(5)->Value)
-                .arg(Props.at(0)->Value).arg(Props.at(3)->Value)
-                .arg(fstart).arg(fstop);
         s += QString("PRINT inoise_total onoise_total >> spice4qucs.cir.noise\n");
     } else {
-        s.clear();
+        s.insert(0,'.');
     }
 
     return s;
