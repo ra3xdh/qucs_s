@@ -1467,10 +1467,13 @@ void ComponentDialog::slotHHeaderClicked(int headerIdx)
   QString s;
   QTableWidgetItem *cell;
 
-  if (setAllVisible)
+  if (setAllVisible) {
     s = tr("yes");
-  else
+    disp->setChecked(true);
+  } else {
     s = tr("no");
+    disp->setChecked(false);
+  }
 
   // go through all the properties table and set the visibility cell
   for (int row = 0; row < prop->rowCount(); row++) {
