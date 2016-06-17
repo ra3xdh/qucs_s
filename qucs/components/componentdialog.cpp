@@ -379,25 +379,21 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   // keep group above together
   v1->addStretch(5);
 
-  QHBoxLayout *h4 = new QHBoxLayout;
-  v1->addLayout(h4);
-  h4->setSpacing(5);
+  QGridLayout *bg = new QGridLayout;
+  v1->addLayout(bg);
   ButtAdd = new QPushButton(tr("Add"));
-  h4->addWidget(ButtAdd);
+  bg->addWidget(ButtAdd, 0, 0);
   ButtAdd->setEnabled(false);
   ButtRem = new QPushButton(tr("Remove"));
-  h4->addWidget(ButtRem);
+  bg->addWidget(ButtRem, 0, 1);
   ButtRem->setEnabled(false);
   connect(ButtAdd, SIGNAL(clicked()), SLOT(slotButtAdd()));
   connect(ButtRem, SIGNAL(clicked()), SLOT(slotButtRem()));
-
   // Buttons to move equations up/down on the list
-  QHBoxLayout *hUpDown = new QHBoxLayout;
-  v1->addLayout(hUpDown);
   ButtUp = new QPushButton(tr("Move Up"));
-  hUpDown->addWidget(ButtUp);
+  bg->addWidget(ButtUp, 1, 0);
   ButtDown = new QPushButton(tr("Move Down"));
-  hUpDown->addWidget(ButtDown);
+  bg->addWidget(ButtDown, 1, 1);
   connect(ButtUp,   SIGNAL(clicked()), SLOT(slotButtUp()));
   connect(ButtDown, SIGNAL(clicked()), SLOT(slotButtDown()));
 
