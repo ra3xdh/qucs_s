@@ -34,6 +34,8 @@
 #include <QComboBox>
 #include <QGroupBox>
 #include <QPushButton>
+#include <QEvent>
+#include <QKeyEvent>
 #include <QDebug>
 
 ComponentDialog::ComponentDialog(Component *c, Schematic *d)
@@ -351,6 +353,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   ComboEdit = new QComboBox;
   v1->addWidget(ComboEdit);
   ComboEdit->setVisible(false);
+  ComboEdit->installEventFilter(this); // to catch Enter keypress
   connect(ComboEdit, SIGNAL(activated(const QString&)),
 	  SLOT(slotApplyChange(const QString&)));
 
@@ -480,6 +483,24 @@ ComponentDialog::~ComponentDialog()
   delete Validator2;
   delete ValRestrict;
   delete ValInteger;
+}
+
+// check if Enter is pressed while the ComboEdit has focus
+// in case, behave as for the LineEdits
+// (QComboBox by default does not handle the Enter/Return key)
+bool ComponentDialog::eventFilter(QObject *obj, QEvent *event)
+{
+  if (obj == ComboEdit) {
+    if (event->type() == QEvent::KeyPress) {
+      QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+      if ((keyEvent->key() == Qt::Key_Return) ||
+          (keyEvent->key() == Qt::Key_Enter)) {
+        slotApplyProperty();
+        return true;
+      }
+    }
+  }
+  return QDialog::eventFilter(obj, event); // standard event processing
 }
 
 // Updates component property list. Useful for MultiViewComponents
@@ -651,12 +672,13 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
        }
       edit->setVisible(false);
       ComboEdit->setVisible(true);
+      ComboEdit->setFocus();
     }
     else {
       edit->setVisible(true);
       ComboEdit->setVisible(false);
+      edit->setFocus();   // edit QLineEdit
     }
-    edit->setFocus();   // edit QLineEdit
   }
 }
 
