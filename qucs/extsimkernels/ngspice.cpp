@@ -260,7 +260,12 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             nods += " " + *it;
         }
 
-        if ((sim!="noise")&&(sim!="pz")) {
+        if (sim=="noise") {
+            stream<<"setplot noise1\n";
+            nods = " inoise_spectrum onoise_spectrum";
+        }
+
+        if (sim!="pz") {
             QString filename;
             if (hasParSWP&&hasDblSWP) filename = QString("%1_%2_swp_swp.txt").arg(basenam).arg(sim);
             else if (hasParSWP) filename = QString("%1_%2_swp.txt").arg(basenam).arg(sim);
