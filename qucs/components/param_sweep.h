@@ -31,6 +31,7 @@ public:
 
   QString getNgspiceBeforeSim(QString sim, int lvl=0);
   QString getNgspiceAfterSim(QString sim, int lvl=0);
+  QString getCounterVar();
 
 protected:
   QString spice_netlist(bool isXyce);
