@@ -262,6 +262,11 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
     return r;
 }
 
+/*!
+ * \brief spicecompat::getSubcktName
+ * \param subfilename file containing subcircuit definition
+ * \return .SUBCKT entry name
+ */
 QString spicecompat::getSubcktName(QString subfilename)
 {
     QString s = "";
@@ -280,4 +285,17 @@ QString spicecompat::getSubcktName(QString subfilename)
         sub_file.close();
     }
     return s;
+}
+
+/*!
+ * \brief spicecompat::convert_sweep_type Convert sweep mode (i.e. linear, logarithmic, etc.)
+ *        from Qucs notation to SPICE notation
+ * \param sweep Sweep designation in Qucs notation
+ * \return Sweep designation in SPICE notation
+ */
+QString spicecompat::convert_sweep_type(QString sweep)
+{
+    if (sweep=="lin") return QString("lin");
+    if (sweep=="log") return QString("dec");
+    return QString("");
 }
