@@ -163,6 +163,12 @@ QString Param_Sweep::getNgspiceAfterSim(QString sim, int lvl)
     return s;
 }
 
+QString Param_Sweep::getCounterVar()
+{
+    QString s = QString("number_%1").arg(getProperty("Param")->Value);
+    return s;
+}
+
 QString Param_Sweep::spice_netlist(bool isXyce)
 {
     double start,stop,step,fac,points;

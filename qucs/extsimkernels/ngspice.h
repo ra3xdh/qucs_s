@@ -37,6 +37,7 @@ class Ngspice : public AbstractSpiceKernel
 private:
 
     QString getParentSWPscript(Component *pc_swp, QString sim, bool before, bool &hasDblSWP);
+    QString getParentSWPCntVar(Component *pc_swp, QString sim);
 
 public:
     explicit Ngspice(Schematic *sch_, QObject *parent = 0);

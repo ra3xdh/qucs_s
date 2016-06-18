@@ -126,6 +126,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
         bool hasParSWP = false;
         bool hasDblSWP = false;
+        QString cnt_var;
 
         // Duplicate .PARAM in .control section. They may be used in euqations
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
@@ -140,6 +141,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             if (sim_typ==".SW") {
                 QString SwpSim = pc->Props.at(0)->Value;
                 QString s = pc->getNgspiceBeforeSim(sim);
+                cnt_var = ((Param_Sweep *)pc)->getCounterVar();
                 if (SwpSim.startsWith("AC")&&(sim=="ac")) {
                     QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
                     stream<<(s2+s);
@@ -261,7 +263,13 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         }
 
         if (sim=="noise") {
-            stream<<"setplot noise1\n";
+            if (hasParSWP) {  // Set necessary plot number to output Noise spectrum
+                // each step of parameter sweep creates new couple of noise plots
+                stream<<QString("let noise_%1 = 2*%1+1\n").arg(cnt_var);
+                stream<<QString("setplot noise$&noise_%1\n").arg(cnt_var);
+            } else {  // Set Noise1 plot to output noise spectrum
+                stream<<"setplot noise1\n";
+            }
             nods = " inoise_spectrum onoise_spectrum";
         }
 
