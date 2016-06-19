@@ -190,7 +190,8 @@ bool OctaveWindow::eventFilter(QObject *obj, QEvent *event) {
             }
             else if(keyEvent->key() == Qt::Key_PageDown) {
                 //if(histIterator == cmdHistory.end())
-                if(histPosition == cmdHistory.length()-1)
+                if ((histPosition == cmdHistory.length()-1) ||
+                    cmdHistory.isEmpty())
                     return false;
                 //histIterator++;
                 histPosition++;
