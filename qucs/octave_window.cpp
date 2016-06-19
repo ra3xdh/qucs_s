@@ -117,7 +117,7 @@ bool OctaveWindow::startOctave()
   octProcess.waitForStarted();
 
   if(octProcess.state()!=QProcess::Running) {
-    output->setText(tr("ERROR: Failed to execute " + Program));
+    output->setText(tr("ERROR: Failed to execute ") + Program);
     return false;
   }
 
