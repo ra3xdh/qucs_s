@@ -1581,8 +1581,13 @@ Component* getComponentFromName(QString& Line, Schematic* p)
                                              QMessageBox::Yes|QMessageBox::No);
           int r = msg->exec();
           delete msg;
-          if (r == QMessageBox::Yes) c = new Subcircuit();
-          else return 0;
+          if (r == QMessageBox::Yes) {
+              c = new Subcircuit();
+              // Hack: insert dummy File property before the first property
+              int pos1 = Line.indexOf('"');
+              QString filestr = QString("\"%1.sch\" 1 ").arg(cstr);
+              Line.insert(pos1,filestr);
+          } else return 0;
       } else {
           QString err_msg = QString("Schematic loading error! Unknown device %1").arg(cstr);
           qCritical()<<err_msg;
