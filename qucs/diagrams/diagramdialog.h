@@ -20,9 +20,9 @@
 #include "diagram.h"
 #include "node.h"
 
-#ifndef pi
+/*#ifndef pi
 #define pi 3.1415926535897932384626433832795029
-#endif
+#endif*/
 
 #include <QDialog>
 #include <QRegExp>
