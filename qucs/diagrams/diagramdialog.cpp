@@ -23,6 +23,7 @@
 #include "qucs.h"
 #include "schematic.h"
 #include "rect3ddiagram.h"
+#include "main.h"
 
 #include <cmath>
 #include <assert.h>
@@ -45,7 +46,6 @@
 #include <QHeaderView>
 #include <QDir>
 #include <QDebug>
-
 
 #define CROSS3D_SIZE   30
 #define WIDGET3D_SIZE  2*CROSS3D_SIZE
@@ -774,7 +774,19 @@ void DiagramDialog::slotReadVars(int)
   QFileInfo Info(defaultDataSet);
   QString DocName = ChooseData->currentText()+".dat";
 
-  QString curr_sim = ChooseSimulator->currentText();
+  QString curr_sim;
+  switch (QucsSettings.DefaultSimulator) {
+  case spicecompat::simQucsator: curr_sim = "Qucsator (built-in)";
+      break;
+  case spicecompat::simNgspice: curr_sim = "Ngspice";
+      break;
+  case spicecompat::simXyceSer:
+  case spicecompat::simXycePar: curr_sim = "Xyce";
+      break;
+  case spicecompat::simSpiceOpus: curr_sim = "SpiceOpus";
+      break;
+  default: curr_sim = ChooseSimulator->currentText();
+  }
 
   // Recreate items of ChooseSimulator. Only existing datasets
   // should be shown
@@ -789,7 +801,7 @@ void DiagramDialog::slotReadVars(int)
   Info.setFile(Info.dirPath() + QDir::separator() + DocName + ".spopus");
   if (Info.exists()) ChooseSimulator->addItem("SpiceOpus");
   Info.setFile(defaultDataSet);
-  int sim_pos = ChooseSimulator->findText(curr_sim); // revert recent simulator if possible
+  int sim_pos = ChooseSimulator->findText(curr_sim); // set default simulator if possible
   if (sim_pos>=0) ChooseSimulator->setCurrentIndex(sim_pos);
   ChooseSimulator->blockSignals(false); // Unlock signals
 
