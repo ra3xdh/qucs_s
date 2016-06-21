@@ -35,6 +35,7 @@ Xyce::Xyce(Schematic *sch_, QObject *parent) :
 {
     simulator_cmd = QucsSettings.XyceExecutable;
     Nprocs = QucsSettings.NProcs;
+    Noisesim = false;
 }
 
 /*!
@@ -274,8 +275,20 @@ void Xyce::SaveNetlist(QString filename)
  *        execute the next simulation from queue.
  */
 void Xyce::slotFinished()
-{
-    output += SimProcess->readAllStandardOutput();
+{ 
+    output += SimProcess->readAllStandardOutput();;
+
+    if (Noisesim) {
+        QFile logfile(workdir + QDir::separator() + "spice4qucs.noise_log");
+        if (logfile.open(QIODevice::WriteOnly)) {
+            QTextStream ts(&logfile);
+            ts<<output;
+            logfile.close();
+        }
+        Noisesim = false;
+        output_files.append("spice4qucs.noise_log");
+    }
+
     if (netlistQueue.isEmpty()) {
         emit finished();
         emit progress(100);
@@ -317,6 +330,7 @@ void Xyce::nextSimulation()
 {
     if (!netlistQueue.isEmpty()) {
         QString file = netlistQueue.takeFirst();
+        if (file.endsWith(".noise.cir")) Noisesim = true;
         SimProcess->setWorkingDirectory(workdir);
         QString cmd = QString("%1 %2 \"%3\"").arg(simulator_cmd,simulator_parameters,file);
         SimProcess->start(cmd);
