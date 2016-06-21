@@ -33,6 +33,8 @@ class Xyce : public AbstractSpiceKernel
 {
     Q_OBJECT
 private:
+    bool Noisesim;
+
     unsigned int Nprocs;
     QStringList simulationsQueue;
     QStringList netlistQueue;

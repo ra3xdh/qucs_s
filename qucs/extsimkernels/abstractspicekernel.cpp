@@ -775,6 +775,47 @@ void AbstractSpiceKernel::parseXYCESTDOutput(QString std_file, QList<QList<doubl
     }
 }
 
+
+/*!
+ * \brief AbstractSpiceKernel::parseXYCENoiseLog
+ * \param logfile
+ * \param sim_points
+ * \param var_list
+ */
+void AbstractSpiceKernel::parseXYCENoiseLog(QString logfile, QList<QList<double> > &sim_points,
+                                            QStringList &var_list)
+{
+    var_list.clear();
+    var_list.append(""); // dummy indep var
+    var_list.append("ONOISE_TOTAL");
+    var_list.append("INOISE_TOTAL");
+    QString content;
+    QList <double> sim_point;
+    sim_point.append(0.0);
+
+    QFile ofile(logfile);
+    if (ofile.open(QFile::ReadOnly)) {
+        QTextStream ts(&ofile);
+        content = ts.readAll();
+        ofile.close();
+    }
+
+    QTextStream data(&content);
+    sim_points.clear();
+    while (!data.atEnd()) { // Parse header;
+        QString lin = data.readLine();
+        if (lin.startsWith("Total Output Noise")) {
+            double val = lin.section('=',1,1).toDouble();
+            sim_point.append(val);
+        }
+        if (lin.startsWith("Total Input Noise")) {
+            double val = lin.section('=',1,1).toDouble();
+            sim_point.append(val);
+        }
+    }
+    sim_points.append(sim_point);
+}
+
 /*!
  * \brief AbstractSpiceKernel::parseResFile Extract sweep variable name and
  *        values from Ngspice or Xyce *.res output
@@ -886,6 +927,9 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
             parseFourierOutput(full_outfile,sim_points,var_list,xyce);
         } else if (ngspice_output_filename.endsWith(".txt_std")) {
             parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
+        } else if (ngspice_output_filename.endsWith(".noise_log")) {
+            isComplex = false;
+            parseXYCENoiseLog(full_outfile,sim_points,var_list);
         } else if (ngspice_output_filename.endsWith(".noise")) {
             isComplex = false;
             parseNoiseOutput(full_outfile,sim_points,var_list,hasParSweep);
