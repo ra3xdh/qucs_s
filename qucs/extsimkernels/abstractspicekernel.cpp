@@ -849,12 +849,12 @@ void AbstractSpiceKernel::parseResFile(QString resfile, QString &var, QStringLis
 
 /*!
  * \brief AbstractSpiceKernel::checkRawOutupt Determine Ngspice Raw output contains
- *        parameter sweep.
+ *        parameter sweep or is XYCE STD output.
  * \param ngspice_file[in] Raw output file name
  * \param values[out] Numbers of parameter sweep steps
  * \return true if parameter sweep presents, false otherwise
  */
-bool AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &values)
+int AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &values)
 {
     values.clear();
 
@@ -871,8 +871,9 @@ bool AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &valu
         }
         ofile.close();
     }
-    if (plots_cnt>1) return true;
-    else return false;
+    if (plots_cnt>1) return spiceRawSwp;
+    else if (plots_cnt == 0)return xyceSTD;
+    else return spiceRaw;
 }
 
 /*!
@@ -973,12 +974,20 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
 
 
         } else {
-            hasParSweep = checkRawOutupt(full_outfile,swp_var_val);
-            if (hasParSweep) {
+            int OutType = checkRawOutupt(full_outfile,swp_var_val);
+            switch (OutType) {
+            case spiceRawSwp:
+                hasParSweep = true;
                 swp_var = "Number";
                 parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
-            } else {
+                break;
+            case spiceRaw:
                 parseNgSpiceSimOutput(full_outfile,sim_points,var_list,isComplex);
+                break;
+            case xyceSTD:
+                parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
+                break;
+            default: break;
             }
         }
         if (var_list.isEmpty()) continue; // notning to convert
