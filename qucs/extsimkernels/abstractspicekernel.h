@@ -38,8 +38,10 @@ class AbstractSpiceKernel : public QObject
 {
     Q_OBJECT
 private:
+    enum outType {xyceSTD, spiceRaw, spiceRawSwp};
+
     void normalizeVarsNames(QStringList &var_list);
-    bool checkRawOutupt(QString ngspice_file, QStringList &values);
+    int checkRawOutupt(QString ngspice_file, QStringList &values);
     void extractBinSamples(QDataStream &dbl, QList< QList<double> > &sim_points,
                            int NumPoints, int NumVars, bool isComplex);
     bool extractASCIISamples(QString &lin, QTextStream &ngsp_data, QList< QList<double> > &sim_points,
