@@ -52,6 +52,7 @@ void Xyce::determineUsedSimulations()
            if (sim_typ==".NOISE") simulationsQueue.append("noise");
            if (sim_typ==".TR") simulationsQueue.append("tran");
            if (sim_typ==".HB") simulationsQueue.append("hb");
+           if (sim_typ==".XYCESCR") simulationsQueue.append("xycescr");
            if ((sim_typ==".SW")&&
                (pc->Props.at(0)->Value.startsWith("DC"))) simulationsQueue.append("dc");
        }
@@ -146,6 +147,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
            QString s = pc->getSpiceNetlist(true);
            if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
            if ((sim_typ==".NOISE")&&(sim=="noise")) stream<<s;
+           if ((sim_typ==".XYCESCR")&&(sim=="xycescr")) stream<<s;
            if ((sim_typ==".TR")&&(sim=="tran")){
                stream<<s;
                Q3PtrList<Component> comps(Sch->DocComps); // find Fourier tran
@@ -185,6 +187,15 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
        }
     }
 
+    if (sim=="xycescr") {
+        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+            if (pc->isSimulation)
+                if (pc->Model==".XYCESCR")
+                    outputs.append(pc->Props.at(2)->Value.split(';'));
+        }
+        stream<<".END\n";
+        return;
+    }
 
     QString filename;
     if (hasParSweep) filename = QString("%1_%2_swp.txt").arg(basenam).arg(sim);
@@ -203,7 +214,6 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
         outputs.append(filename);
     }
     stream<<write_str;
-
 
     stream<<".END\n";
 }
