@@ -1865,7 +1865,8 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
 //         qDebug() << "cast focusElement into" << c->Name;
          if(c->Model == "GND") return;
 
-         if (c->Model == ".CUSTOMSIM") {
+         if ((c->Model == ".CUSTOMSIM")||
+             (c->Model == ".XYCESCR")) {
              CustomSimDialog *sd = new CustomSimDialog((SpiceCustomSim*)c, Doc);
              if(sd->exec() != 1) break;   // dialog is WDestructiveClose
          } else if(c->Model == "SPICE") {
