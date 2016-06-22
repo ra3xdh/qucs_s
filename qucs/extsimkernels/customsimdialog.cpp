@@ -73,6 +73,12 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     vl1->addLayout(hl1);
 
     this->setLayout(vl1);
+
+    if (comp->Model == ".XYCESCR") {
+        lblVars->setEnabled(false);
+        edtVars->setEnabled(false);
+        btnPlotAll->setEnabled(false);
+    }
 }
 
 /*!

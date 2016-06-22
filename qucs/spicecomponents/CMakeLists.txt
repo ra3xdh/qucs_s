@@ -49,11 +49,15 @@ PJF_SPICE.cpp
 NMOS_SPICE.cpp
 PMOS_SPICE.cpp
 volt_ac_SPICE.cpp
+
+# SPICE simulations list
+
 sp_customsim.cpp
 sp_fourier.cpp
 sp_disto.cpp
 sp_noise.cpp
 sp_pz.cpp
+xyce_script.cpp
 
 # 
 # Qucs-S new components cpp list
@@ -134,6 +138,7 @@ sp_fourier.h
 sp_disto.h
 sp_noise.h
 sp_pz.h
+xyce_script.cpp
 
 # 
 # Qucs-S new components h list

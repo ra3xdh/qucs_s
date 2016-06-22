@@ -515,6 +515,11 @@ void Module::registerModules (void) {
       REGISTER_SIMULATION_1 (SpicePZ);
   }
 
+  if ((QucsSettings.DefaultSimulator == spicecompat::simXycePar)||
+      (QucsSettings.DefaultSimulator == spicecompat::simXyceSer)) {
+      REGISTER_SIMULATION_1 (XyceScript);
+  }
+
   // diagrams
   REGISTER_DIAGRAM_1 (RectDiagram);
   REGISTER_DIAGRAM_1 (PolarDiagram);

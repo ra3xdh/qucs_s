@@ -305,6 +305,7 @@
         <file>bitmaps/xsp_cmod.png</file>
         <file>bitmaps/spicegeneric.png</file>
         <file>bitmaps/spicelibcomp.png</file>
+        <file>bitmaps/xyce_script.png</file>
  
     </qresource>
 </RCC>
