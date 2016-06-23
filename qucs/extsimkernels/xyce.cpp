@@ -52,7 +52,7 @@ void Xyce::determineUsedSimulations()
            if (sim_typ==".NOISE") simulationsQueue.append("noise");
            if (sim_typ==".TR") simulationsQueue.append("tran");
            if (sim_typ==".HB") simulationsQueue.append("hb");
-           if (sim_typ==".XYCESCR") simulationsQueue.append("xycescr");
+           if (sim_typ==".XYCESCR") simulationsQueue.append(pc->Name); // May be >= XYCE scripts
            if ((sim_typ==".SW")&&
                (pc->Props.at(0)->Value.startsWith("DC"))) simulationsQueue.append("dc");
        }
@@ -147,7 +147,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
            QString s = pc->getSpiceNetlist(true);
            if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
            if ((sim_typ==".NOISE")&&(sim=="noise")) stream<<s;
-           if ((sim_typ==".XYCESCR")&&(sim=="xycescr")) stream<<s;
+           if (sim==pc->Name) stream<<s; // Xyce scripts
            if ((sim_typ==".TR")&&(sim=="tran")){
                stream<<s;
                Q3PtrList<Component> comps(Sch->DocComps); // find Fourier tran
@@ -187,10 +187,10 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
        }
     }
 
-    if (sim=="xycescr") {
+    if (sim.startsWith("XYCESCR")) {
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             if (pc->isSimulation)
-                if (pc->Model==".XYCESCR")
+                if (sim == pc->Name)
                     outputs.append(pc->Props.at(2)->Value.split(';'));
         }
         stream<<".END\n";
