@@ -31,6 +31,7 @@ private:
     QLabel *lblSpiceOpus;
     QLabel *lblXycePar;
     QLabel *lblNprocs;
+    QLabel *lblQucsator;
     QLabel *lblWorkdir;
     QLabel *lblSimulator;
 
@@ -40,6 +41,7 @@ private:
     QLineEdit *edtSpiceOpus;
     QLineEdit *edtXyce;
     QLineEdit *edtXycePar;
+    QLineEdit *edtQucsator;
     QSpinBox  *spbNprocs;
     QLineEdit *edtWorkdir;
 
@@ -50,6 +52,7 @@ private:
     QPushButton *btnSetSpOpus;
     QPushButton *btnSetXyce;
     QPushButton *btnSetXycePar;
+    QPushButton *btnSetQucsator;
     QPushButton *btnSetWorkdir;
 
 public:
@@ -63,6 +66,7 @@ private slots:
     void slotSetXyce();
     void slotSetXycePar();
     void slotSetSpiceOpus();
+    void slotSetQucsator();
     void slotSetWorkdir();
     
 };

@@ -100,6 +100,7 @@ bool loadSettings()
     if(settings.contains("Task"))QucsSettings.Task.setNamedColor(settings.value("Task").toString());
 
     if(settings.contains("Qucsator"))QucsSettings.Qucsator = settings.value("Qucsator").toString();
+    else QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator" + executableSuffix;
     //if(settings.contains("BinDir"))QucsSettings.BinDir = settings.value("BinDir").toString();
     //if(settings.contains("LangDir"))QucsSettings.LangDir = settings.value("LangDir").toString();
     //if(settings.contains("LibDir"))QucsSettings.LibDir = settings.value("LibDir").toString();
@@ -203,6 +204,7 @@ bool saveApplSettings()
     settings.setValue("XyceExecutable",QucsSettings.XyceExecutable);
     settings.setValue("XyceParExecutable",QucsSettings.XyceParExecutable);
     settings.setValue("SpiceOpusExecutable",QucsSettings.SpiceOpusExecutable);
+    settings.setValue("Qucsator",QucsSettings.Qucsator);
     settings.setValue("Nprocs",QucsSettings.NProcs);
     settings.setValue("S4Q_workdir",QucsSettings.S4Qworkdir);
     settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
@@ -793,10 +795,10 @@ int main(int argc, char *argv[])
   /// \todo Make the setting up of all executables below more consistent
   var = getenv("QUCSATOR");
   if(var != NULL) {
-      QucsSettings.Qucsator = QString(var);
+      QucsSettings.QucsatorVar = QString(var);
   }
   else {
-      QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator" + executableSuffix;
+      QucsSettings.QucsatorVar = "";
   }
 
   var = getenv("QUCSCONV");

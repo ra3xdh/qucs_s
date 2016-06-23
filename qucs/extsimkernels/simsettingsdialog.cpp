@@ -31,6 +31,7 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     lblXyce = new QLabel(tr("Xyce executable location"));
     lblXycePar = new QLabel(tr("Xyce Parallel executable location (openMPI installed required)"));
     lblSpiceOpus = new QLabel(tr("SpiceOpus executable location"));
+    lblQucsator = new QLabel(tr("Qucsator executable location"));
     lblNprocs = new QLabel(tr("Number of processors in a system:"));
     lblWorkdir = new QLabel(tr("Directory to store netlist and simulator output"));
 
@@ -47,6 +48,7 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     edtXyce = new QLineEdit(QucsSettings.XyceExecutable);
     edtXycePar = new QLineEdit(QucsSettings.XyceParExecutable);
     edtSpiceOpus = new QLineEdit(QucsSettings.SpiceOpusExecutable);
+    edtQucsator = new QLineEdit(QucsSettings.Qucsator);
     spbNprocs = new QSpinBox(1,256,1,this);
     spbNprocs->setValue(QucsSettings.NProcs);
     edtWorkdir = new QLineEdit(QucsSettings.S4Qworkdir);
@@ -64,6 +66,8 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     connect(btnSetXycePar,SIGNAL(clicked()),this,SLOT(slotSetXycePar()));
     btnSetSpOpus = new QPushButton(tr("Select ..."));
     connect(btnSetSpOpus,SIGNAL(clicked()),this,SLOT(slotSetSpiceOpus()));
+    btnSetQucsator = new QPushButton(tr("Select ..."));
+    connect(btnSetQucsator,SIGNAL(clicked()),this,SLOT(slotSetQucsator()));
     btnSetWorkdir = new QPushButton(tr("Select ..."));
     connect(btnSetWorkdir,SIGNAL(clicked()),this,SLOT(slotSetWorkdir()));
 
@@ -74,41 +78,59 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     h8->addWidget(cbxSimulator,3);
     top->addLayout(h8);
 
-    top->addWidget(lblNgspice);
+    QGroupBox *gbp1 = new QGroupBox(this);
+    gbp1->setTitle(tr("SPICE settings"));
+    QVBoxLayout *top2 = new QVBoxLayout;
+    top2->addWidget(lblNgspice);
     QHBoxLayout *h1 = new QHBoxLayout;
     h1->addWidget(edtNgspice,3);
     h1->addWidget(btnSetNgspice,1);
-    top->addLayout(h1);
+    top2->addLayout(h1);
 
-    top->addWidget(lblXyce);
+    top2->addWidget(lblXyce);
     QHBoxLayout *h2 = new QHBoxLayout;
     h2->addWidget(edtXyce,3);
     h2->addWidget(btnSetXyce,1);
-    top->addLayout(h2);
+    top2->addLayout(h2);
 
-    top->addWidget(lblXycePar);
+    top2->addWidget(lblXycePar);
     QHBoxLayout *h4 = new QHBoxLayout;
     h4->addWidget(edtXycePar,3);
     h4->addWidget(btnSetXycePar,1);
-    top->addLayout(h4);
+    top2->addLayout(h4);
 
     QHBoxLayout *h5 = new QHBoxLayout;
     h5->addWidget(lblNprocs);
     h5->addWidget(spbNprocs);
-    top->addLayout(h5);
+    top2->addLayout(h5);
 
-    top->addWidget(lblSpiceOpus);
+    top2->addWidget(lblSpiceOpus);
     QHBoxLayout *h7 = new QHBoxLayout;
     h7->addWidget(edtSpiceOpus,3);
     h7->addWidget(btnSetSpOpus,1);
-    top->addLayout(h7);
+    top2->addLayout(h7);
 
 
-    top->addWidget(lblWorkdir);
+    top2->addWidget(lblWorkdir);
     QHBoxLayout *h6 = new QHBoxLayout;
     h6->addWidget(edtWorkdir,3);
     h6->addWidget(btnSetWorkdir,1);
-    top->addLayout(h6);
+    top2->addLayout(h6);
+
+    gbp1->setLayout(top2);
+    top->addWidget(gbp1);
+
+    QGroupBox *gbp2 = new QGroupBox;
+    gbp2->setTitle(tr("Qucsator settings"));
+    QVBoxLayout *top3 = new QVBoxLayout;
+    top3->addWidget(lblQucsator);
+    QHBoxLayout *h9 = new QHBoxLayout;
+    h9->addWidget(edtQucsator,3);
+    h9->addWidget(btnSetQucsator,1);
+    top3->addLayout(h9);
+    gbp2->setLayout(top3);
+
+    top->addWidget(gbp2);
 
     QHBoxLayout *h3 = new QHBoxLayout;
     h3->addWidget(btnOK);
@@ -137,6 +159,7 @@ void SimSettingsDialog::slotApply()
     QucsSettings.XyceExecutable = edtXyce->text();
     QucsSettings.XyceParExecutable = edtXycePar->text();
     QucsSettings.SpiceOpusExecutable = edtSpiceOpus->text();
+    QucsSettings.Qucsator = edtQucsator->text();
     QucsSettings.NProcs = spbNprocs->value();
     QucsSettings.S4Qworkdir = edtWorkdir->text();
     if ((QucsSettings.DefaultSimulator != cbxSimulator->currentIndex())&&
@@ -183,6 +206,14 @@ void SimSettingsDialog::slotSetXycePar()
 void SimSettingsDialog::slotSetSpiceOpus()
 {
     QString s = QFileDialog::getOpenFileName(this,tr("Select SpiceOpus executable location"),edtSpiceOpus->text(),"All files (*)");
+    if (!s.isEmpty()) {
+        edtSpiceOpus->setText(s);
+    }
+}
+
+void SimSettingsDialog::slotSetQucsator()
+{
+    QString s = QFileDialog::getOpenFileName(this,tr("Select Qucsator executable location"),edtQucsator->text(),"All files (*)");
     if (!s.isEmpty()) {
         edtSpiceOpus->setText(s);
     }
