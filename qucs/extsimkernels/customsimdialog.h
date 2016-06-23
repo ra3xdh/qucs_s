@@ -42,6 +42,8 @@ class CustomSimDialog : public QDialog
 
 private:
 
+    bool isXyceScr;
+
     SpiceCustomSim* comp;
     Schematic *Sch;
 
@@ -50,6 +52,7 @@ private:
     QPushButton *btnApply;
     QPushButton *btnCancel;
     QPushButton *btnPlotAll;
+    QPushButton *btnFindOutputs;
 
     QLineEdit *edtVars;
     QLineEdit *edtOutputs;
@@ -64,6 +67,7 @@ private slots:
     void slotOK();
     void slotCancel();
     void slotFindVars();
+    void slotFindOutputs();
     
 public slots:
     

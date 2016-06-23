@@ -44,7 +44,7 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     QLabel* lblVars = new QLabel(tr("Variables to plot (semicolon separated)"));
     edtVars = new QLineEdit(comp->Props.at(1)->Value);
 
-    QLabel* lblOut = new QLabel(tr("Extra outputs (semicolon separated; raw ASCII spice output)"));
+    QLabel* lblOut = new QLabel(tr("Extra outputs (semicolon separated; raw-SPICE or XYCE-STD format)"));
     edtOutputs = new QLineEdit(comp->Props.at(2)->Value);
 
     btnApply = new QPushButton(tr("Apply"));
@@ -55,6 +55,8 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     connect(btnOK,SIGNAL(clicked()),this,SLOT(slotOK()));
     btnPlotAll = new QPushButton(tr("Find all variables"));
     connect(btnPlotAll,SIGNAL(clicked()),this,SLOT(slotFindVars()));
+    btnFindOutputs = new QPushButton(tr("Find all outputs"));
+    connect(btnFindOutputs,SIGNAL(clicked()),this,SLOT(slotFindOutputs()));
 
     QVBoxLayout *vl1 = new QVBoxLayout;
     QHBoxLayout *hl1 = new QHBoxLayout;
@@ -66,6 +68,7 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     vl1->addWidget(btnPlotAll);
     vl1->addWidget(lblOut);
     vl1->addWidget(edtOutputs);
+    vl1->addWidget(btnFindOutputs);
 
     hl1->addWidget(btnOK);
     hl1->addWidget(btnApply);
@@ -78,7 +81,8 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
         lblVars->setEnabled(false);
         edtVars->setEnabled(false);
         btnPlotAll->setEnabled(false);
-    }
+        isXyceScr = true;
+    } else isXyceScr = false;
 }
 
 /*!
@@ -156,4 +160,35 @@ void CustomSimDialog::slotFindVars()
     }
 
     edtVars->setText(vars.join(";"));
+}
+
+void CustomSimDialog::slotFindOutputs()
+{
+    QStringList outps;
+    QStringList strings = edtCode->toPlainText().split('\n');
+    if (isXyceScr) {
+        QRegExp print_ex("^\\s*\\.print\\s.*");
+        print_ex.setCaseSensitive(false);
+        foreach(QString line,strings) {
+            if (print_ex.exactMatch(line)) {
+                QRegExp file_ex("\\s*file\\s*=\\s*");
+                file_ex.setCaseSensitive(false);
+                int p = line.indexOf(file_ex);
+                p = line.indexOf('=',p);
+                int l = line.size()-(p+1);
+                QString sub = line.right(l);
+                outps.append(sub.section(" ",0,0,QString::SectionSkipEmpty));
+            }
+        }
+    } else {
+        QRegExp write_ex("^\\s*write\\s.*");
+        write_ex.setCaseSensitive(false);
+        foreach(QString line,strings) {
+            if (write_ex.exactMatch(line)) {
+                outps.append(line.section(QRegExp("\\s"),1,1,QString::SectionSkipEmpty));
+            }
+        }
+    }
+
+    edtOutputs->setText(outps.join(";"));
 }
