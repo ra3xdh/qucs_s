@@ -286,7 +286,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   ChooseData = new QComboBox();
   DataGroupLayout->addWidget(ChooseData);
   ChooseData->setMinimumWidth(300); // will force also min width of table below
-  connect(ChooseData, SIGNAL(activated(int)), SLOT(slotReadVars(int)));
+  connect(ChooseData, SIGNAL(activated(int)), SLOT(slotReadVarsAndSetSimulator(int)));
   // connect(ChooseData, SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetSimulator()));
   // todo: replace by QTableWidget
   // see https://gist.github.com/ClemensFMN/8955411
@@ -735,7 +735,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       // default dataset should be the current
       ChooseData->setCurrentItem(ChooseData->count()-1);
   }
-  slotReadVars(0);  // put variables into the ListView
+  slotReadVarsAndSetSimulator(0);  // put variables into the ListView
 
   // ...........................................................
   // put all graphs into the ListBox
@@ -768,42 +768,50 @@ DiagramDialog::~DiagramDialog()
   delete Validator;
 }
 
+
+void DiagramDialog::slotReadVarsAndSetSimulator(int)
+{
+    QFileInfo Info(defaultDataSet);
+    QString DocName = ChooseData->currentText()+".dat";
+
+    QString curr_sim;
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simQucsator: curr_sim = "Qucsator (built-in)";
+        break;
+    case spicecompat::simNgspice: curr_sim = "Ngspice";
+        break;
+    case spicecompat::simXyceSer:
+    case spicecompat::simXycePar: curr_sim = "Xyce";
+        break;
+    case spicecompat::simSpiceOpus: curr_sim = "SpiceOpus";
+        break;
+    default: curr_sim = ChooseSimulator->currentText();
+    }
+
+    // Recreate items of ChooseSimulator. Only existing datasets
+    // should be shown
+    ChooseSimulator->blockSignals(true); // Lock signals firing
+    ChooseSimulator->clear();
+    Info.setFile(Info.dirPath() + QDir::separator() + DocName);
+    if (Info.exists()) ChooseSimulator->addItem("Qucsator (built-in)");
+    Info.setFile(Info.dirPath() + QDir::separator() + DocName + ".ngspice");
+    if (Info.exists()) ChooseSimulator->addItem("Ngspice");
+    Info.setFile(Info.dirPath() + QDir::separator() + DocName + ".xyce");
+    if (Info.exists()) ChooseSimulator->addItem("Xyce");
+    Info.setFile(Info.dirPath() + QDir::separator() + DocName + ".spopus");
+    if (Info.exists()) ChooseSimulator->addItem("SpiceOpus");
+    int sim_pos = ChooseSimulator->findText(curr_sim); // set default simulator if possible
+    if (sim_pos>=0) ChooseSimulator->setCurrentIndex(sim_pos);
+    ChooseSimulator->blockSignals(false); // Unlock signals
+
+    slotReadVars(0);
+}
+
 // --------------------------------------------------------------------------
 void DiagramDialog::slotReadVars(int)
 {
   QFileInfo Info(defaultDataSet);
   QString DocName = ChooseData->currentText()+".dat";
-
-  QString curr_sim;
-  switch (QucsSettings.DefaultSimulator) {
-  case spicecompat::simQucsator: curr_sim = "Qucsator (built-in)";
-      break;
-  case spicecompat::simNgspice: curr_sim = "Ngspice";
-      break;
-  case spicecompat::simXyceSer:
-  case spicecompat::simXycePar: curr_sim = "Xyce";
-      break;
-  case spicecompat::simSpiceOpus: curr_sim = "SpiceOpus";
-      break;
-  default: curr_sim = ChooseSimulator->currentText();
-  }
-
-  // Recreate items of ChooseSimulator. Only existing datasets
-  // should be shown
-  ChooseSimulator->blockSignals(true); // Lock signals firing
-  ChooseSimulator->clear();
-  Info.setFile(Info.dirPath() + QDir::separator() + DocName);
-  if (Info.exists()) ChooseSimulator->addItem("Qucsator (built-in)");
-  Info.setFile(Info.dirPath() + QDir::separator() + DocName + ".ngspice");
-  if (Info.exists()) ChooseSimulator->addItem("Ngspice");
-  Info.setFile(Info.dirPath() + QDir::separator() + DocName + ".xyce");
-  if (Info.exists()) ChooseSimulator->addItem("Xyce");
-  Info.setFile(Info.dirPath() + QDir::separator() + DocName + ".spopus");
-  if (Info.exists()) ChooseSimulator->addItem("SpiceOpus");
-  Info.setFile(defaultDataSet);
-  int sim_pos = ChooseSimulator->findText(curr_sim); // set default simulator if possible
-  if (sim_pos>=0) ChooseSimulator->setCurrentIndex(sim_pos);
-  ChooseSimulator->blockSignals(false); // Unlock signals
 
   if (ChooseSimulator->currentText()=="Ngspice") {
       DocName += ".ngspice";

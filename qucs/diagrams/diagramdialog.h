@@ -56,6 +56,7 @@ public:
 
 private slots:
   void slotReadVars(int);
+  void slotReadVarsAndSetSimulator(int);
   void slotTakeVar(QTableWidgetItem *item);
 //  void slotSelectGraph(int index);
   void slotSelectGraph(QListWidgetItem*);
