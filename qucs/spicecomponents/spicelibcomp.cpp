@@ -28,6 +28,9 @@
 
 #include <limits.h>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 
 SpiceLibComp::SpiceLibComp()
@@ -82,7 +85,7 @@ void SpiceLibComp::createSymbol()
 {
   int No;
   QString FileName = QucsSettings.BinDir;
-  FileName += QString("/../share/qucs/symbols/%1.sym").arg(Props.at(2)->Value);
+  FileName += QString("/../share/" QUCS_NAME "/symbols/%1.sym").arg(Props.at(2)->Value);
 
   tx = INT_MIN;
   ty = INT_MIN;
@@ -216,7 +219,7 @@ QString SpiceLibComp::getSpiceModel()
 
 void SpiceLibComp::getSymbolPatternsList(QStringList &symbols)
 {
-    QString dir_name = QucsSettings.BinDir + "/../share/qucs/symbols/";
+    QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
     QDir sym_dir(dir_name);
     QStringList sym_files = sym_dir.entryList(QDir::Files);
     foreach (QString file,sym_files) {

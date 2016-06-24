@@ -100,8 +100,8 @@ int main(int argc, char *argv[])
   QDir QucsDir;
   if (var != NULL) {
     QucsDir = QDir(QString(var));
-    QucsSettings.LangDir =     QucsDir.canonicalPath() + "/share/qucs/lang/";
-    QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/qucs/library/";
+    QucsSettings.LangDir =     QucsDir.canonicalPath() + "/share/" QUCS_NAME "/lang/";
+    QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/" QUCS_NAME "/library/";
   } else {
     QString QucsApplicationPath = QCoreApplication::applicationDirPath();
 #ifdef __APPLE__

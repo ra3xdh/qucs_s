@@ -777,17 +777,16 @@ int main(int argc, char *argv[])
   }
 
   QucsSettings.BinDir =      QucsDir.absolutePath() + "/bin/";
-  QucsSettings.LangDir =     QucsDir.canonicalPath() + "/share/qucs/lang/";
+  QucsSettings.LangDir =     QucsDir.canonicalPath() + "/share/" QUCS_NAME "/lang/";
   var = getenv("QUCS_LIBDIR");
   if(var != NULL) {
 	  QucsSettings.LibDir = QString(var);
   }else{
-	  QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/qucs/library/";
+	  QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/" QUCS_NAME "/library/";
   }
-  QucsSettings.OctaveDir =   QucsDir.canonicalPath() + "/share/qucs/octave/";
-  QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/qucs/docs/examples/";
-  QucsSettings.DocDir =      QucsDir.canonicalPath() + "/share/qucs/docs/";
-
+  QucsSettings.OctaveDir =   QucsDir.canonicalPath() + "/share/" QUCS_NAME "/octave/";
+  QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/docs/examples/";
+  QucsSettings.DocDir =      QucsDir.canonicalPath() + "/share/" QUCS_NAME "/docs/";
   QucsSettings.Editor = "qucs";
   QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());

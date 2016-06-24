@@ -60,6 +60,10 @@
 #include "dialogs/aboutdialog.h"
 #include "module.h"
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 // for editing component name on schematic
 QRegExp  Expr_CompProp;
 QRegExpValidator Val_CompProp(Expr_CompProp, 0);
@@ -687,11 +691,11 @@ void QucsApp::editFile(const QString& File)
       if (QucsSettings.Editor.toLower().contains("qucsedit")) {
 
 #ifdef __MINGW32__
-  prog = "qucsedit.exe";
+  prog = QUCS_NAME"edit.exe";
 #elif __APPLE__
   prog = "qucsedit.app/Contents/MacOS/qucsedit";
 #else
-  prog = "qucsedit";
+  prog = QUCS_NAME "edit";
 #endif
 
         QFileInfo editor(QucsSettings.BinDir + prog);
@@ -752,26 +756,26 @@ void QucsApp::slotCallEditor()
 // Is called to start the filter synthesis program.
 void QucsApp::slotCallFilter()
 {
-  launchTool("qucsfilter", "filter synthesis");
+  launchTool(QUCS_NAME "filter", "filter synthesis");
 }
 
 void QucsApp::slotCallActiveFilter()
 {
-  launchTool("qucsactivefilter", "active filter synthesis");
+  launchTool(QUCS_NAME "activefilter", "active filter synthesis");
 }
 
 // ------------------------------------------------------------------------
 // Is called to start the transmission line calculation program.
 void QucsApp::slotCallLine()
 {
-  launchTool("qucstrans", "line calculation");
+  launchTool(QUCS_NAME "trans", "line calculation");
 }
 
 // ------------------------------------------------------------------------
 // Is called to start the component library program.
 void QucsApp::slotCallLibrary()
 {
-  launchTool("qucslib", "library");
+  launchTool(QUCS_NAME "lib", "library");
 }
 
 // --------------------------------------------------------------
@@ -786,14 +790,14 @@ void QucsApp::slotCallMatch()
 // Is called to start the attenuator calculation program.
 void QucsApp::slotCallAtt()
 {
-  launchTool("qucsattenuator", "attenuator calculation");
+  launchTool(QUCS_NAME "attenuator", "attenuator calculation");
 }
 
 // ------------------------------------------------------------------------
 // Is called to start the resistor color code calculation program.
 void QucsApp::slotCallRes()
 {
-  launchTool("qucsrescodes", "resistor color code calculation");
+  launchTool(QUCS_NAME "rescodes", "resistor color code calculation");
 }
 
 /*!
@@ -845,7 +849,7 @@ void QucsApp::slotGettingStarted()
 // --------------------------------------------------------------
 void QucsApp::showHTML(const QString& Page)
 {
-  launchTool("qucshelp", "help", Page);
+  launchTool(QUCS_NAME "help", "help", Page);
 }
 
 // ---------------------------------------------------------------------

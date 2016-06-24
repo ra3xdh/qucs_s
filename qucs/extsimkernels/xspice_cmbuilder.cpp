@@ -21,6 +21,10 @@
 #include "spicecomponents/xsp_cmlib.h"
 #include "main.h"
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 XSPICE_CMbuilder::XSPICE_CMbuilder(Schematic *sch_)
 {
     workdir = QucsSettings.S4Qworkdir;
@@ -151,9 +155,9 @@ void XSPICE_CMbuilder::createCModelTree(QString &output)
     if (mkfile.open(QIODevice::WriteOnly)) {
         QTextStream stream(&mkfile);
 #ifdef __MINGW32__
-        QString rules_file = QucsSettings.BinDir+"../share/qucs/xspice_cmlib/cmlib.mingw32.rules.mk";
+        QString rules_file = QucsSettings.BinDir+"../share/" QUCS_NAME "/xspice_cmlib/cmlib.mingw32.rules.mk";
 #else
-        QString rules_file = QucsSettings.BinDir+"../share/qucs/xspice_cmlib/cmlib.linux.rules.mk";
+        QString rules_file = QucsSettings.BinDir+"../share/" QUCS_NAME "/xspice_cmlib/cmlib.linux.rules.mk";
 #endif
         QFileInfo inf(rules_file);  
         if (!inf.exists())
