@@ -26,6 +26,6 @@ ngspice.blacklist
 xyce.blacklist
 )
 
-INSTALL( FILES ${COMPLIBS} ${BLACKLIST} DESTINATION share/qucs/library )
+INSTALL( FILES ${COMPLIBS} ${BLACKLIST} DESTINATION share/${QUCS_NAME}/library )
 
 ADD_SUBDIRECTORY( AnalogueCM )

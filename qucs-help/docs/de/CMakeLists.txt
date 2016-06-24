@@ -9,5 +9,5 @@ optimization2.png	optimization5.png	optimization8.png	qucshaupt.png		wire.png
 index.html	matching.html	programs.html	start.html	start_opt.html)
 
 # installation of documentation
-INSTALL(FILES ${HTML} ${PNGS} DESTINATION share/qucs/docs/de)
+INSTALL(FILES ${HTML} ${PNGS} DESTINATION share/${QUCS_NAME}/docs/de)
 

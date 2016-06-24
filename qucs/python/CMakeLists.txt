@@ -7,5 +7,5 @@ SET(BASICS
   rc_ac_sweep.net
 )
 
-INSTALL(FILES ${BASICS} DESTINATION share/qucs/python/)
+INSTALL(FILES ${BASICS} DESTINATION share/${QUCS_NAME}/python/)
 

@@ -2,6 +2,15 @@ PROJECT(qucshelp CXX C)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 cmake_policy(VERSION 2.6)
 
+IF(WITH_SPICE)
+MESSAGE("SPICE support enabled")
+SET(QUCS_NAME "qucs-s")
+ELSE()
+SET(QUCS_NAME "qucs")
+ENDIF()
+
+IF(NOT WITH_SPICE)
+
 # use top VERSION file
 file (STRINGS ${PROJECT_SOURCE_DIR}/../VERSION QUCS_VERSION)
 message(STATUS "Configuring ${PROJECT_NAME} (GUI): VERSION ${QUCS_VERSION}")
@@ -93,3 +102,9 @@ INSTALL( FILES ./docs/qucsdigi.1    DESTINATION share/man/man1 )
 INSTALL( FILES ./docs/qucsdigilib.1 DESTINATION share/man/man1 )
 INSTALL( FILES ./docs/qucsveri.1    DESTINATION share/man/man1 )
 
+ELSE()
+
+ADD_SUBDIRECTORY( docs )
+INSTALL( FILES ./docs/${QUCS_NAME}.1        DESTINATION share/man/man1 )
+
+ENDIF()

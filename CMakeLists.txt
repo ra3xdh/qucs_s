@@ -2,6 +2,12 @@ PROJECT(qucs-suite CXX)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 cmake_policy(VERSION 2.8)
 
+IF(WITH_SPICE)
+MESSAGE("SPICE support enabled")
+SET(QUCS_NAME "qucs-s")
+ELSE()
+SET(QUCS_NAME "qucs")
+ENDIF()
 
 file (STRINGS "${qucs-suite_SOURCE_DIR}/VERSION" QUCS_VERSION)
 message(STATUS "Configuring Qucs: VERSION ${QUCS_VERSION}")
@@ -38,19 +44,24 @@ INCLUDE( ${QT_USE_FILE} )
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
+
+IF(NOT WITH_SPICE)
+ADD_SUBDIRECTORY( qucs-attenuator )
+ADD_SUBDIRECTORY( qucs-edit )
+ADD_SUBDIRECTORY( qucs-transcalc )
+ADD_SUBDIRECTORY( qucs-rescodes )
+ADD_SUBDIRECTORY( contrib )
+ENDIF()
+
 ADD_SUBDIRECTORY( qucs )
 ADD_SUBDIRECTORY( qucs-activefilter )
-ADD_SUBDIRECTORY( qucs-attenuator )
 #ADD_SUBDIRECTORY( qucs-doc )
-ADD_SUBDIRECTORY( qucs-edit )
 ADD_SUBDIRECTORY( qucs-filter )
 ADD_SUBDIRECTORY( qucs-help )
 ADD_SUBDIRECTORY( qucs-lib )
-ADD_SUBDIRECTORY( qucs-transcalc )
-ADD_SUBDIRECTORY( qucs-rescodes )
 #ADD_SUBDIRECTORY( examples )
 ADD_SUBDIRECTORY( translations )
-ADD_SUBDIRECTORY( contrib )
+
 
 
 #

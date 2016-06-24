@@ -5,5 +5,5 @@ opamp3t.sym
 )
 
 # installation of transmission lines
-INSTALL( FILES ${SYMBOLS} DESTINATION share/qucs/symbols )
+INSTALL( FILES ${SYMBOLS} DESTINATION share/${QUCS_NAME}/symbols )
 

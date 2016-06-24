@@ -13,6 +13,13 @@ PROJECT(qucs CXX)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 cmake_policy(VERSION 2.6)
 
+IF(WITH_SPICE)
+MESSAGE("SPICE support enabled")
+SET(QUCS_NAME "${PROJECT_NAME}-s")
+ELSE()
+SET(QUCS_NAME "${PROJECT_NAME}")
+ENDIF()
+
 # use top VERSION file
 file (STRINGS ${PROJECT_SOURCE_DIR}/../VERSION QUCS_VERSION)
 message(STATUS "Configuring ${PROJECT_NAME} (GUI): VERSION ${QUCS_VERSION}")
@@ -25,7 +32,7 @@ set(PROJECT_DOMAIN_FIRST "qucs")
 set(PROJECT_DOMAIN_SECOND "org")
 
 #
-SET(CMAKE_BUILD_TYPE Debug)
+#SET(CMAKE_BUILD_TYPE Debug)
 
 # If Git hash not defined, try to define it
 IF(NOT GIT)
@@ -237,7 +244,7 @@ ENDIF(APPLE)
 #
 #  CMake's way of creating an executable
 #
-ADD_EXECUTABLE( qucs MACOSX_BUNDLE WIN32
+ADD_EXECUTABLE( ${QUCS_NAME} MACOSX_BUNDLE WIN32
   ${QUCS_HDRS}
   ${QUCS_SRCS}
   ${QUCS_MOC_SRCS}
@@ -246,7 +253,7 @@ ADD_EXECUTABLE( qucs MACOSX_BUNDLE WIN32
 #
 # Tell CMake which libraries we need to link our executable against.
 #
-TARGET_LINK_LIBRARIES( qucs  components diagrams dialogs paintings extsimkernels spicecomponents ${QT_LIBRARIES} )
+TARGET_LINK_LIBRARIES( ${QUCS_NAME}  components diagrams dialogs paintings extsimkernels spicecomponents ${QT_LIBRARIES} )
 
 #
 # Prepare the installation
@@ -268,7 +275,7 @@ ENDIF(WIN32)
 # Install the Qucs application, on Apple, the bundle is
 # installed as on other platforms it'll go into the bin directory.
 #
-INSTALL(TARGETS qucs
+INSTALL(TARGETS ${QUCS_NAME}
     BUNDLE DESTINATION bin COMPONENT Runtime
     RUNTIME DESTINATION bin COMPONENT Runtime
     )
@@ -314,14 +321,15 @@ INSTALL(CODE "
     " COMPONENT Runtime)
 ENDIF()
 
+IF(NOT WITH_SPICE)
 # Install wrapper scripts
 IF(WIN32)
-  SET(SCRIPTS qucsdigi.bat qucsveri.bat qucsdigilib.bat)
+#  SET(SCRIPTS qucsdigi.bat qucsveri.bat qucsdigilib.bat)
 ELSE()
-  SET(SCRIPTS qucsdigi qucsveri qucsdigilib)
+#  SET(SCRIPTS qucsdigi qucsveri qucsdigilib)
 ENDIF()
 INSTALL( FILES ${SCRIPTS} DESTINATION bin/ )
-
+ENDIF()
 
 # To Create a package, one can run "cpack -G DragNDrop CPackConfig.cmake" on Mac OS X
 # where CPackConfig.cmake is created by including CPack

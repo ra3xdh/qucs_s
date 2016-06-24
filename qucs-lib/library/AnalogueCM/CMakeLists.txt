@@ -4,5 +4,5 @@ etd.mod
 etd.ifs
 )
 
-INSTALL( FILES ${AN_CM_resources} DESTINATION share/qucs/library/AnalogueCM )
+INSTALL( FILES ${AN_CM_resources} DESTINATION share/${QUCS_NAME}/library/AnalogueCM )
 
