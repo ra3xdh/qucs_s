@@ -1462,10 +1462,12 @@ void QucsApp::slotBuildModule()
 #else
     make = "make";                // must be on the path!
 #endif
+    QFileInfo inf(QucsSettings.Qucsator);
+    QString QucsatorPath = inf.path()+QDir::separator();
 
-    QDir prefix = QDir(QucsSettings.BinDir+"../");
+    QDir prefix = QDir(QucsatorPath+"../");
 
-    QDir include = QDir(QucsSettings.BinDir+"../include/qucs-core");
+    QDir include = QDir(QucsatorPath+"../include/qucs-core");
 
     QString workDir = QucsSettings.QucsWorkDir.absolutePath();
 
