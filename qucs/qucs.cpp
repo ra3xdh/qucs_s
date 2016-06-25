@@ -123,7 +123,7 @@ const char *empty_xpm[] = {  // provides same height than "smallsave_xpm"
 
 QucsApp::QucsApp()
 {
-  setWindowTitle("Qucs " PACKAGE_VERSION);
+  setWindowTitle(QUCS_NAME " " PACKAGE_VERSION);
 
   QucsFileFilter =
     tr("Schematic") + " (*.sch);;" +

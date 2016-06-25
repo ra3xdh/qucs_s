@@ -124,5 +124,6 @@ INSTALL(TARGETS ${QUCS_NAME}filter
     )
 
 # man pages
+IF(NOT WITH_SPICE)
 INSTALL( FILES qucsfilter.1 DESTINATION share/man/man1 )
-
+ENDIF()

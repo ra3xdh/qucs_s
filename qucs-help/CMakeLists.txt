@@ -96,6 +96,9 @@ INSTALL(TARGETS qucshelp
     )
 
 # man pages
+IF(WITH_SPICE)
+INSTALL( FILES ./docs/${QUCS_NAME}.1 DESTINATION share/man/man1 )
+ELSE()
 INSTALL( FILES qucshelp.1           DESTINATION share/man/man1 )
 INSTALL( FILES ./docs/qucs.1        DESTINATION share/man/man1 )
 INSTALL( FILES ./docs/qucsdigi.1    DESTINATION share/man/man1 )

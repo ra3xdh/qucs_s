@@ -112,7 +112,9 @@ TARGET_LINK_LIBRARIES( qucstrans ${QT_LIBRARIES} transcalc )
 #ADD_SUBDIRECTORY( bitmaps ) -> added as resources
 ADD_SUBDIRECTORY( examples )
 
+IF(NOT WITH_SPICE)
 INSTALL( FILES qucstrans.1 DESTINATION share/man/man1 )
+ENDIF()
 
 #
 # Prepare the installation

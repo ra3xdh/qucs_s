@@ -104,7 +104,9 @@ INSTALL(TARGETS ${PROJECT_NAME}
     )
 
 # man pages
+IF(NOT WITH_SPICE)
 INSTALL( FILES qucsattenuator.1 DESTINATION share/man/man1 )
+ENDIF()
 
 
 #

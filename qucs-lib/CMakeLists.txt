@@ -93,5 +93,7 @@ INSTALL(TARGETS ${QUCS_NAME}lib
 ADD_SUBDIRECTORY( library )
 
 # man pages
+IF(NOT WITH_SPICE)
 INSTALL( FILES qucslib.1 DESTINATION share/man/man1 )
+ENDIF()
 
