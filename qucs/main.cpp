@@ -99,8 +99,18 @@ bool loadSettings()
     if(settings.contains("Directive"))QucsSettings.Directive.setNamedColor(settings.value("Directive").toString());
     if(settings.contains("Task"))QucsSettings.Task.setNamedColor(settings.value("Task").toString());
 
-    if(settings.contains("Qucsator"))QucsSettings.Qucsator = settings.value("Qucsator").toString();
-    else QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator" + executableSuffix;
+    if(settings.contains("Qucsator")) {
+        QucsSettings.Qucsator = settings.value("Qucsator").toString();
+        QFileInfo inf(QucsSettings.Qucsator);
+        QucsSettings.QucsatorDir = inf.canonicalPath();
+        if (QucsSettings.Qucsconv.isEmpty())
+            QucsSettings.Qucsconv = QucsSettings.QucsatorDir + QDir::separator() + "qucsconv" + executableSuffix;
+    } else {
+        QucsSettings.Qucsator = QucsSettings.BinDir + "qucsator" + executableSuffix;
+        QucsSettings.QucsatorDir = QucsSettings.BinDir;
+        if (QucsSettings.Qucsconv.isEmpty())
+            QucsSettings.Qucsconv = QucsSettings.BinDir + "qucsconv" + executableSuffix;
+    }
     //if(settings.contains("BinDir"))QucsSettings.BinDir = settings.value("BinDir").toString();
     //if(settings.contains("LangDir"))QucsSettings.LangDir = settings.value("LangDir").toString();
     //if(settings.contains("LibDir"))QucsSettings.LibDir = settings.value("LibDir").toString();
@@ -804,12 +814,6 @@ int main(int argc, char *argv[])
   if(var != NULL) {
       QucsSettings.Qucsconv = QString(var);
   }
-  else {
-      QucsSettings.Qucsconv = QucsSettings.BinDir + "qucsconv" + executableSuffix;
-  }
-  QFile file(QucsSettings.Qucsconv);
-  if(!file.exists())
-      qWarning() << "QucsConv not found: " << QucsSettings.Qucsconv;
 
 
   var = getenv("ADMSXMLBINDIR");
