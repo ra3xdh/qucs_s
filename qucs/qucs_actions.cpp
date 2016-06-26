@@ -695,10 +695,10 @@ void QucsApp::editFile(const QString& File)
 #elif __APPLE__
   prog = "qucsedit.app/Contents/MacOS/qucsedit";
 #else
-  prog = QUCS_NAME "edit";
+  prog = "qucsedit";
 #endif
 
-        QFileInfo editor(QucsSettings.BinDir + prog);
+        QFileInfo editor(QucsSettings.QucsatorDir + prog);
         prog = QDir::toNativeSeparators(editor.canonicalFilePath());
       }
       else { // user defined editor
@@ -768,7 +768,7 @@ void QucsApp::slotCallActiveFilter()
 // Is called to start the transmission line calculation program.
 void QucsApp::slotCallLine()
 {
-  launchTool(QUCS_NAME "trans", "line calculation");
+  launchTool("qucstrans", "line calculation","",true);
 }
 
 // ------------------------------------------------------------------------
@@ -790,14 +790,14 @@ void QucsApp::slotCallMatch()
 // Is called to start the attenuator calculation program.
 void QucsApp::slotCallAtt()
 {
-  launchTool(QUCS_NAME "attenuator", "attenuator calculation");
+  launchTool("qucsattenuator", "attenuator calculation","",true);
 }
 
 // ------------------------------------------------------------------------
 // Is called to start the resistor color code calculation program.
 void QucsApp::slotCallRes()
 {
-  launchTool(QUCS_NAME "rescodes", "resistor color code calculation");
+  launchTool("qucsrescodes", "resistor color code calculation","",true);
 }
 
 /*!
@@ -807,18 +807,23 @@ void QucsApp::slotCallRes()
  * \param progDesc  program description string (used for error messages)
  * \param args  arguments to pass to the executable
  */
-void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QString& args) {
+void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QString& args,
+                         bool qucs_tool)
+{
   QProcess *tool = new QProcess();
 
+  QString tooldir;
+  if (qucs_tool) tooldir = QucsSettings.QucsatorDir;
+  else tooldir = QucsSettings.BinDir;
 #ifdef __MINGW32__
-  QString cmd = QDir::toNativeSeparators("\""+QucsSettings.BinDir + prog + ".exe\"") + " " + args;
+  QString cmd = QDir::toNativeSeparators("\""+tooldir + prog + ".exe\"") + " " + args;
 #elif __APPLE__
-  QString cmd = QDir::toNativeSeparators(QucsSettings.BinDir + prog + ".app/Contents/MacOS/" + prog) + " " + args;
+  QString cmd = QDir::toNativeSeparators(tooldir + prog + ".app/Contents/MacOS/" + prog) + " " + args;
 #else
-  QString cmd = QDir::toNativeSeparators(QucsSettings.BinDir + prog) + " " + args;
+  QString cmd = QDir::toNativeSeparators(tooldir + prog) + " " + args;
 #endif
 
-  tool->setWorkingDirectory(QucsSettings.BinDir);
+  tool->setWorkingDirectory(tooldir);
   qDebug() << "Command :" << cmd;
   tool->start(cmd);
   

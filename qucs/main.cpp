@@ -102,7 +102,7 @@ bool loadSettings()
     if(settings.contains("Qucsator")) {
         QucsSettings.Qucsator = settings.value("Qucsator").toString();
         QFileInfo inf(QucsSettings.Qucsator);
-        QucsSettings.QucsatorDir = inf.canonicalPath();
+        QucsSettings.QucsatorDir = inf.canonicalPath() + QDir::separator();
         if (QucsSettings.Qucsconv.isEmpty())
             QucsSettings.Qucsconv = QucsSettings.QucsatorDir + QDir::separator() + "qucsconv" + executableSuffix;
     } else {
