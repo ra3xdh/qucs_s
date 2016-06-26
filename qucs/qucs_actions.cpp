@@ -39,6 +39,7 @@
 #include <QTreeWidgetItem>
 #include <QMutableHashIterator>
 #include <QListWidget>
+#include <QDesktopServices>
 
 #include "projectView.h"
 #include "main.h"
@@ -854,7 +855,24 @@ void QucsApp::slotGettingStarted()
 // --------------------------------------------------------------
 void QucsApp::showHTML(const QString& Page)
 {
-  launchTool(QUCS_NAME "help", "help", Page);
+  // launchTool(QUCS_NAME "help", "help", Page);
+    QString locale = QucsSettings.Language;
+    if(locale.isEmpty())
+        locale = QString(QLocale::system().name());
+
+    QDir QucsHelpDir = QDir(QucsSettings.DocDir + locale);
+    if (!QucsHelpDir.exists () || !QucsHelpDir.isReadable ()) {
+      int p = locale.indexOf ('_');
+      if (p != -1) {
+         QucsHelpDir.setPath(QucsSettings.DocDir + locale.left (p));
+        if (!QucsHelpDir.exists () || !QucsHelpDir.isReadable ()) {
+           QucsHelpDir.setPath(QucsSettings.DocDir + "en");
+        }
+      }
+      else QucsHelpDir.setPath(QucsSettings.DocDir + "en");
+    }
+    QString url = QDir::convertSeparators(QucsHelpDir.canonicalPath() + QDir::separator() + Page);
+    QDesktopServices::openUrl(QUrl(url));
 }
 
 // ---------------------------------------------------------------------
