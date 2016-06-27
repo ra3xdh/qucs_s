@@ -62,7 +62,7 @@ ADD_SUBDIRECTORY( qucs-lib )
 #ADD_SUBDIRECTORY( examples )
 ADD_SUBDIRECTORY( translations )
 
-
+INSTALL(DIRECTORY "../examples" DESTINATION "share/${QUCS_NAME}")
 
 #
 # Custom uninstall target
