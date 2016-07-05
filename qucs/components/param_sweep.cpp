@@ -56,6 +56,8 @@ Param_Sweep::Param_Sweep()
 		QObject::tr("stop value for sweep")));
   Props.append(new Property("Points", "20", true,
 		QObject::tr("number of simulation steps")));
+  Props.append(new Property("SweepModel","false",false,
+                            "[true,false]"));
 }
 
 Param_Sweep::~Param_Sweep()
@@ -143,7 +145,10 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
     if (modelsweep) { // Model parameter sweep
         s += QString("altermod %1 %2 = %3_act\n").arg(mod).arg(mod_par).arg(step_var);
     } else {
-        s += QString("alter %1 = %2_act\n").arg(par).arg(step_var);
+        QString mswp = getProperty("SweepModel")->Value;
+        if (mswp == "true")
+            s += QString("altermod %1 = %2_act\n").arg(par).arg(step_var);
+        else s += QString("alter %1 = %2_act\n").arg(par).arg(step_var);
     }
     return s;
 }
