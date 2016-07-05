@@ -1106,11 +1106,16 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
     for (it++;it!=var_list.end();it++) {
         if ((!(it->startsWith(prefix)||it->startsWith(iprefix)))||(HB)) {
             if (HB) {
-                int idx = it->indexOf('(');  // Add .Vb suffix for correct display
+                QString suffix;
+                if ((*it).startsWith('I')) suffix = ".Ib";
+                else suffix = ".Vb";
+                int idx = it->indexOf('(');
                 int cnt = it->count();
-                *it = it->right(cnt-idx-1); // Only node.Vb is displayed correctly
+                *it = it->right(cnt-idx-1);
                 it->remove(')');
-                *it += ".Vb";
+                *it += suffix;
+                QRegExp iprobe_pattern("^[Vv][Pp][Rr][0-9]+.*");
+                if (iprobe_pattern.exactMatch(*it)) (*it).remove(0,1);
             } else {
                 *it = prefix + *it;
             }
