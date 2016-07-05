@@ -57,7 +57,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   Validator = new QRegExpValidator(Expr, this);
   Expr.setPattern("[^\"]*");   // valid expression for property 'edit'
   Validator2 = new QRegExpValidator(Expr, this);
-  Expr.setPattern("[\\w_\\.\\(\\)]+");  // valid expression for property 'NameEdit'. Space to enable Spice-style par sweep
+  Expr.setPattern("[\\w_\\.\\(\\) @:\\[\\]]+");  // valid expression for property 'NameEdit'. Space to enable Spice-style par sweep
   ValRestrict = new QRegExpValidator(Expr, this);
 
   checkSim  = 0;  comboSim  = 0;  comboType  = 0;  checkParam = 0;

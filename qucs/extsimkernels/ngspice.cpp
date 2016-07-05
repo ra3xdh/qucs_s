@@ -136,7 +136,10 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             }
         }
 
-        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        // Hack: Such indexation method is needed to avoid entering infinite loop
+        // in some cases of recursive access to Sch->DocComps list
+        for(unsigned int i=0;i<Sch->DocComps.count();i++) {
+            Component *pc = Sch->DocComps.at(i);
             QString sim_typ = pc->Model;
             if (sim_typ==".SW") {
                 QString SwpSim = pc->Props.at(0)->Value;
@@ -176,7 +179,10 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
 
         QString custom_vars;
-        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        // Hack: Such indexation method is needed to avoid entering infinite loop
+        // in some cases of recursive access to Sch->DocComps list
+        for(unsigned int i=0;i<Sch->DocComps.count();i++) {
+           Component *pc = Sch->DocComps.at(i);
            if(pc->isSimulation) {
                QString sim_typ = pc->Model;
                QString s = pc->getSpiceNetlist();
