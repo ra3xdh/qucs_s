@@ -909,21 +909,16 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
     QString sim,indep;
     QStringList indep_vars;
 
-    QString swp_var,swp_var2;
-    QStringList swp_var_val,swp_var2_val;
-    swp_var.clear();
-    swp_var2.clear();
-    swp_var_val.clear();
-    swp_var2_val.clear();
-
-    QList< QList<double> > sim_points;
-    QStringList var_list;
-    bool isComplex = false;
-    bool hasParSweep = false;
-    bool hasDblParSweep = false;
-
     QString ngspice_output_filename;
     foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
+        QList< QList<double> > sim_points;
+        QStringList var_list;
+        QString swp_var,swp_var2;
+        QStringList swp_var_val,swp_var2_val;
+        bool isComplex = false;
+        bool hasParSweep = false;
+        bool hasDblParSweep = false;
+
         QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
         if (ngspice_output_filename.endsWith("HB.FD.prn")) {
             parseHBOutput(full_outfile,sim_points,var_list);
@@ -1004,6 +999,8 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
 
         if (hasParSweep) {
             int indep_cnt;
+            if (swp_var_val.isEmpty()) continue;
+            if (hasDblParSweep&&swp_var2_val.isEmpty()) continue;
             if (hasDblParSweep) indep_cnt =  sim_points.count()/(swp_var_val.count()*swp_var2_val.count());
             else indep_cnt = sim_points.count()/swp_var_val.count();
             if (!indep.isEmpty()) {
@@ -1057,7 +1054,6 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
             if (indep.isEmpty()) ds_stream<<"</indep>\n";
             else ds_stream<<"</dep>\n";
         }
-        hasParSweep = false;
     }
 
     QFile dataset(qucs_dataset);
