@@ -80,7 +80,7 @@ QString SpiceDisto::spice_netlist(bool isXyce)
     if (!isXyce) {
         QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
         QString fstop = spicecompat::normalize_value(Props.at(2)->Value); // Stop freq.
-        s = QString("DISTO %1 %2 %3 %4").arg(Props.at(0)->Value).arg(Props.at(3)->Value)
+        s = QString("disto %1 %2 %3 %4").arg(Props.at(0)->Value).arg(Props.at(3)->Value)
                 .arg(fstart).arg(fstop);
         if (Props.at(4)->Value.remove(' ').isEmpty()) s += "\n";
         else s += Props.at(4)->Value + "\n";

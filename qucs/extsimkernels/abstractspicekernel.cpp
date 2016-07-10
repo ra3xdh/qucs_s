@@ -392,7 +392,12 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
             QString lin = ngsp_data.readLine();
             if (lin.isEmpty()) continue;
             if (lin.contains("Fourier analysis for")) {
-                QString var = lin.split(sep,QString::SkipEmptyParts).last();
+                QStringList tokens = lin.split(sep,QString::SkipEmptyParts);
+                QString var;
+                foreach(var,tokens) {
+                    if (var.contains('(')&&var.contains(')')) break;
+                }
+
                 if (var.endsWith(':')) var.chop(1);
                 var_list.append("magnitude("+var+")");
                 var_list.append("phase("+var+")");
