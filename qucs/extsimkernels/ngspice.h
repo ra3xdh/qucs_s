@@ -36,6 +36,7 @@ class Ngspice : public AbstractSpiceKernel
     Q_OBJECT
 private:
 
+    bool checkNodeNames(QStringList &incompat);
     QString getParentSWPscript(Component *pc_swp, QString sim, bool before, bool &hasDblSWP);
     QString getParentSWPCntVar(Component *pc_swp, QString sim);
 

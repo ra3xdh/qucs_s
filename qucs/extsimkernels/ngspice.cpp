@@ -383,6 +383,15 @@ void Ngspice::slotSimulate()
         return;
     }
 
+    if (!checkNodeNames(incompat)) {
+        QString s = incompat.join("; ");
+        output.append("There were Nutmeg-incompatible node names. Simulator cannot proceed.\n");
+        output.append("Incompatible node names are: " + s + "\n");
+        emit finished();
+        emit errors(QProcess::FailedToStart);
+        return;
+    }
+
     QString netfile = "spice4qucs.cir";
     QString tmp_path = QDir::convertSeparators(workdir+QDir::separator()+netfile);
     SaveNetlist(tmp_path);
@@ -405,6 +414,33 @@ void Ngspice::slotSimulate()
     QString cmd = QString("\"%1\" %2 %3").arg(simulator_cmd,simulator_parameters,netfile);
     SimProcess->start(cmd);
     emit started();
+}
+
+/*!
+ * \brief Ngspice::checkNodeNames Check schematic node names on reserved Nutmeg keywords.
+ * \param incompat
+ * \return
+ */
+bool Ngspice::checkNodeNames(QStringList &incompat)
+{
+    bool result = true;
+    for(Node *pn = Sch->DocNodes.first(); pn != 0; pn = Sch->DocNodes.next()) {
+      if(pn->Label != 0) {
+          if (!spicecompat::check_nodename(pn->Label->Name)) {
+              incompat.append(pn->Label->Name);
+              result = false;
+          }
+      }
+    }
+    for(Wire *pw = Sch->DocWires.first(); pw != 0; pw = Sch->DocWires.next()) {
+      if(pw->Label != 0) {
+          if (!spicecompat::check_nodename(pw->Label->Name)) {
+              incompat.append(pw->Label->Name);
+              result = false;
+          }
+      }
+    }
+    return result;
 }
 
 /*!

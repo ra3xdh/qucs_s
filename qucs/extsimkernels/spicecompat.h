@@ -22,6 +22,7 @@ namespace spicecompat {
      int getPins(const QString &file, const QString &compname, QStringList &pin_names);
      QString getSubcktName(QString subfilename);
      QString convert_sweep_type(QString sweep);
+     bool check_nodename(QString &node);
 
      enum Simulator {simNgspice = 0, simXyceSer = 1, simXycePar = 2, simSpiceOpus = 3, simQucsator = 4, simNotSpecified=10};
 }
