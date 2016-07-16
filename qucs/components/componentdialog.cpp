@@ -602,7 +602,8 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
     ButtAdd->setEnabled(true);
     ButtRem->setEnabled(true);
 
-    if (Comp->Description == "equation") {
+    // enable Up/Down buttons only for the Equation component
+    if (Comp->Model == "Eqn") {
       ButtUp->setEnabled(true);
       ButtDown->setEnabled(true);
     }
