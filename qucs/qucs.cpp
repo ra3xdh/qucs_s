@@ -40,6 +40,7 @@
 #include <QFileSystemModel>
 #include <QUrl>
 #include <QSettings>
+#include <QVariant>
 #include <QDebug>
 
 #include "main.h"
@@ -115,6 +116,13 @@ const char *empty_xpm[] = {  // provides same height than "smallsave_xpm"
 "1 17 1 1", "  c None", " ", " ", " ", " ", " ",
 " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "};
 
+struct iconCompInfoStruct
+{
+  int catIdx; // index of the component Category
+  int compIdx; // index of the component itself in the Category
+};
+
+Q_DECLARE_METATYPE(iconCompInfoStruct)
 
 QucsApp::QucsApp()
 {
@@ -716,11 +724,17 @@ void QucsApp::slotSearchComponent(const QString &searchText)
     QString Name;
     char * File;
     QList<Module *> Comps;
+    iconCompInfoStruct iconCompInfo;
+    QVariant v;
 
     QStringList cats = Category::getCategories ();
+    int catIdx = 0;
     foreach(QString it, cats) {
+      // this will go also over the "verilog-a user devices" category, if present
+      //   but since modules there have no 'info' function it won't handle them
       Comps = Category::getModules(it);
       QList<Module *>::const_iterator modit;
+      int compIdx = 0;
       for (modit = Comps.constBegin(); modit != Comps.constEnd(); modit++) {
         if ((*modit)->info) {
           /// \todo warning: expression result unused, can we rewrite this?
@@ -730,15 +744,22 @@ void QucsApp::slotSearchComponent(const QString &searchText)
             //match
             QListWidgetItem *icon = new QListWidgetItem(QPixmap(":/bitmaps/" + QString (File) + ".png"), Name);
             icon->setToolTip(it + ": " + Name);
+            // add component category and module indexes to the icon
+            iconCompInfo = iconCompInfoStruct{catIdx, compIdx};
+            v.setValue(iconCompInfo);
+            icon->setData(Qt::UserRole, v);
             CompComps->addItem(icon);
           }
         }
+        compIdx++;
       }
+      catIdx++;
     }
+    // the "verilog-a user devices" is the last category, if present
     QMapIterator<QString, QString> i(Module::vaComponents);
+    int compIdx = 0;
     while (i.hasNext()) {
       i.next();
-
       // Just need path to bitmap, do not create an object
       QString Name, vaBitmap;
       vacomponent::info (Name, vaBitmap, false, i.value());
@@ -766,8 +787,13 @@ void QucsApp::slotSearchComponent(const QString &searchText)
         // Add icon an name tag to dock
         QListWidgetItem *icon = new QListWidgetItem(vaIcon, Name);
         icon->setToolTip(tr("verilog-a user devices") + ": " + Name);
+        // Verilog-A is the last category
+        iconCompInfo = iconCompInfoStruct{catIdx-1, compIdx};
+        v.setValue(iconCompInfo);
+        icon->setData(Qt::UserRole, v);
         CompComps->addItem(icon);
       }
+      compIdx++;
     }
   }
 }
@@ -834,44 +860,37 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
   char *CompFile_cptr;
 
   if (!CompSearch->text().isEmpty()) {
-    //comp search is not empty, search all category to get a component in same name
-    QStringList cats = Category::getCategories();
-    int i = 0;
-    //search normal component
-    foreach (QString it, cats) {
-      Comps = Category::getModules (it);
-      foreach(Module *mod, Comps) {
-        if (mod->info) {
-          (*mod->info)(CompName, CompFile_cptr, false);
-          if (CompName == name) {
-	    // change currently selected category, so the user will 
-	    //   learn where the component comes from
-            CompChoose->setCurrentIndex(i+1); // +1 due to the added "Search Results" item
-	    ccCurIdx = i; // remember the category to select when exiting search
-	    //!! comment out the above two lines if you would like that the search
-	    //!!   returns back to the last selected category instead
-            view->selElem = (*mod->info) (CompName, CompFile_cptr, true);
-	    // TODO: component found, exit the loops now...
-          }
-        }
-      }
-      i++;
-    }
-    //search verilog-a component
-    i = CompChoose->findText(QObject::tr("verilog-a user devices"));
-    QMapIterator<QString, QString> it(Module::vaComponents);
-    while (it.hasNext()) {
-      it.next();
+    // in "search mode"
+    QVariant v = CompComps->item(i)->data(Qt::UserRole);
+    iconCompInfoStruct iconCompInfo = v.value<iconCompInfoStruct>();
+    qDebug() << "variant :" << v << iconCompInfo.catIdx << iconCompInfo.compIdx;
 
-      // Just need vacomponent name, do not create an object
-      QString Name, vaBitmap;
-      vacomponent::info (Name, vaBitmap, false, it.value());
-
-      if (Name == name) {
-        view->selElem = vacomponent::info(CompName, CompFile_qstr, true, it.value());
+    Category* cat = Category::Categories.at(iconCompInfo.catIdx);
+    Module *mod = cat->Content.at(iconCompInfo.compIdx);
+    qDebug() << "mod->info" << mod->info;
+    qDebug() << "mod->infoVA" << mod->infoVA;
+    Infos = mod->info;
+    if (Infos) {
+      // static component
+      view->selElem = (*mod->info) (CompName, CompFile_cptr, true);
+    } else {
+      // Verilog-A component
+      InfosVA = mod->infoVA;
+      // get JSON file out of item name on widgetitem
+      QString filename = Module::vaComponents[name];
+      if (InfosVA) {
+        view->selElem = (*InfosVA) (CompName, CompFile_qstr, true, filename);
       }
     }
-  } else {
+    if (Infos || InfosVA) {
+      // change currently selected category, so the user will
+      //   see where the component comes from
+      CompChoose->setCurrentIndex(iconCompInfo.catIdx+1); // +1 due to the added "Search Results" item
+      ccCurIdx = iconCompInfo.catIdx; // remember the category to select when exiting search
+      //!! comment out the above two lines if you would like that the search
+      //!!   returns back to the last selected category instead
+    }
+  } else { // not in "search mode"
     // handle static and dynamic components
     if (CompChoose->currentText() == QObject::tr("verilog-a user devices")){
       InfosVA = Comps.at(i)->infoVA;
@@ -883,8 +902,7 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
         qDebug() <<  " slotSelectComponent, view->selElem" ;
         view->selElem = (*InfosVA) (CompName, CompFile_qstr, true, filename);
       }
-    }
-    else {
+    } else {
       Infos = Comps.at(i)->info;
 
       if (Infos)

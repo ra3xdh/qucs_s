@@ -47,8 +47,8 @@ class Module
   static void unregisterModules (void);
 
  public:
-  pInfoFunc info;
-  pInfoVAFunc infoVA;
+  pInfoFunc info = 0;
+  pInfoVAFunc infoVA = 0;
   QString category;
 };
 
