@@ -636,15 +636,20 @@ void QucsApp::slotSetCompView (int index)
   // make sure the right index is selected
   //  (might have been called by a cleared search and not by user action)
   CompChoose->setCurrentIndex(index);
+  int catIdx = index;
+  int compIdx;
+  iconCompInfoStruct iconCompInfo;
+  QVariant v;
   QString item = CompChoose->itemText (index);
 
   Comps = Category::getModules(item);
   QString Name;
+  pInfoFunc Infos = 0;
 
   // if something was registered dynamicaly, get and draw icons into dock
   if (item == QObject::tr("verilog-a user devices")) {
 
-    QListWidgetItem *icon;
+    compIdx = 0;
     QMapIterator<QString, QString> i(Module::vaComponents);
     while (i.hasNext()) {
       i.next();
@@ -676,25 +681,33 @@ void QucsApp::slotSetCompView (int index)
         // default icon
         vaIcon = QPixmap(":/bitmaps/editdelete.png");
       }
-
-      // Add icon an name tag to dock
-      icon = new QListWidgetItem(vaIcon, Name);
+      QListWidgetItem *icon = new QListWidgetItem(vaIcon, Name);
       icon->setToolTip(Name);
+      iconCompInfo = iconCompInfoStruct{catIdx, compIdx};
+      v.setValue(iconCompInfo);
+      icon->setData(Qt::UserRole, v);
       CompComps->addItem(icon);
+      compIdx++;
     }
-  }
-  else {
+  } else {
+    // static components
     char * File;
     // Populate list of component bitmaps
+    compIdx = 0;
     QList<Module *>::const_iterator it;
     for (it = Comps.constBegin(); it != Comps.constEnd(); it++) {
-      if ((*it)->info) {
+      Infos = (*it)->info;
+      if (Infos) {
         /// \todo warning: expression result unused, can we rewrite this?
         (void) *((*it)->info) (Name, File, false);
         QListWidgetItem *icon = new QListWidgetItem(QPixmap(":/bitmaps/" + QString (File) + ".png"), Name);
         icon->setToolTip(Name);
+        iconCompInfo = iconCompInfoStruct{catIdx, compIdx};
+        v.setValue(iconCompInfo);
+        icon->setData(Qt::UserRole, v);
         CompComps->addItem(icon);
       }
+      compIdx++;
     }
   }
 }
@@ -851,63 +864,41 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
 
   // if symbol mode, only paintings are enabled.
   Comps = Category::getModules(CompChoose->currentText());
-  qDebug() << "pressed CompComps id" << i;
-  qDebug() << CompComps->item(i)->text(); //Name;
 
   QString name = CompComps->item(i)->text();
   QString CompName;
   QString CompFile_qstr;
   char *CompFile_cptr;
 
-  if (!CompSearch->text().isEmpty()) {
-    // in "search mode"
-    QVariant v = CompComps->item(i)->data(Qt::UserRole);
-    iconCompInfoStruct iconCompInfo = v.value<iconCompInfoStruct>();
-    qDebug() << "variant :" << v << iconCompInfo.catIdx << iconCompInfo.compIdx;
+  qDebug() << "pressed CompComps id" << i << name;
+  QVariant v = CompComps->item(i)->data(Qt::UserRole);
+  iconCompInfoStruct iconCompInfo = v.value<iconCompInfoStruct>();
+  qDebug() << "slotSelectComponent()" << iconCompInfo.catIdx << iconCompInfo.compIdx;
 
-    Category* cat = Category::Categories.at(iconCompInfo.catIdx);
-    Module *mod = cat->Content.at(iconCompInfo.compIdx);
-    qDebug() << "mod->info" << mod->info;
-    qDebug() << "mod->infoVA" << mod->infoVA;
-    Infos = mod->info;
-    if (Infos) {
-      // static component
-      view->selElem = (*mod->info) (CompName, CompFile_cptr, true);
-    } else {
-      // Verilog-A component
-      InfosVA = mod->infoVA;
-      // get JSON file out of item name on widgetitem
-      QString filename = Module::vaComponents[name];
-      if (InfosVA) {
-        view->selElem = (*InfosVA) (CompName, CompFile_qstr, true, filename);
-      }
+  Category* cat = Category::Categories.at(iconCompInfo.catIdx);
+  Module *mod = cat->Content.at(iconCompInfo.compIdx);
+  qDebug() << "mod->info" << mod->info;
+  qDebug() << "mod->infoVA" << mod->infoVA;
+  Infos = mod->info;
+  if (Infos) {
+    // static component
+    view->selElem = (*mod->info) (CompName, CompFile_cptr, true);
+  } else {
+    // Verilog-A component
+    InfosVA = mod->infoVA;
+    // get JSON file out of item name on widgetitem
+    QString filename = Module::vaComponents[name];
+    if (InfosVA) {
+      view->selElem = (*InfosVA) (CompName, CompFile_qstr, true, filename);
     }
-    if (Infos || InfosVA) {
-      // change currently selected category, so the user will
-      //   see where the component comes from
-      CompChoose->setCurrentIndex(iconCompInfo.catIdx+1); // +1 due to the added "Search Results" item
-      ccCurIdx = iconCompInfo.catIdx; // remember the category to select when exiting search
-      //!! comment out the above two lines if you would like that the search
-      //!!   returns back to the last selected category instead
-    }
-  } else { // not in "search mode"
-    // handle static and dynamic components
-    if (CompChoose->currentText() == QObject::tr("verilog-a user devices")){
-      InfosVA = Comps.at(i)->infoVA;
-
-      // get JSON file out of item name on widgetitem
-      QString filename = Module::vaComponents[name];
-
-      if (InfosVA) {
-        qDebug() <<  " slotSelectComponent, view->selElem" ;
-        view->selElem = (*InfosVA) (CompName, CompFile_qstr, true, filename);
-      }
-    } else {
-      Infos = Comps.at(i)->info;
-
-      if (Infos)
-        view->selElem = (*Infos) (CompName, CompFile_cptr, true);
-    }
+  }
+  if (Infos || InfosVA) {
+    // change currently selected category, so the user will
+    //   see where the component comes from
+    CompChoose->setCurrentIndex(iconCompInfo.catIdx+1); // +1 due to the added "Search Results" item
+    ccCurIdx = iconCompInfo.catIdx; // remember the category to select when exiting search
+    //!! comment out the above two lines if you would like that the search
+    //!!   returns back to the last selected category instead
   }
 }
 
