@@ -332,7 +332,17 @@ inline int parseSPICEComponentLibrary (QString filename, ComponentLibrary &libra
 
     QFileInfo inf(filename);
     library.name = inf.baseName();
+
+    // Attach default symbol (library_name.sym) if exists
     library.defaultSymbol = "";
+    QString defsym_filename = inf.canonicalPath() + QDir::separator()
+            + inf.baseName() + QDir::separator() + library.name + ".sym";
+    QFile defsym_file(defsym_filename);
+    if (defsym_file.open(QIODevice::ReadOnly)) {
+        QTextStream ts(&defsym_file);
+        library.defaultSymbol = ts.readAll();
+        defsym_file.close();
+    }
 
     QTextStream content(&LibraryString);
     while(!content.atEnd()) {
