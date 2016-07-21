@@ -621,7 +621,6 @@ void QucsApp::slotSetCompView (int index)
   editText->setHidden (true); // disable text edit of component property
 
   QList<Module *> Comps;
-  CompComps->clear ();   // clear the IconView
   if (CompChoose->count () <= 0) return;
 
   // was in "search mode" ?
@@ -629,9 +628,10 @@ void QucsApp::slotSetCompView (int index)
     if (index == 0) // user selected "Search results" item
       return;
     CompChoose->removeItem(0);
-    CompSearch->clear();
+    CompSearch->clear(); // clear the search box
     --index; // adjust requested index since item 0 was removed
   }
+  CompComps->clear ();   // clear the IconView
 
   // make sure the right index is selected
   //  (might have been called by a cleared search and not by user action)
