@@ -341,8 +341,33 @@ inline int parseSPICEComponentLibrary (QString filename, ComponentLibrary &libra
         if (lin.toLower().startsWith(".subckt ")) {
             ComponentLibraryItem comp;
             comp.name = lin.section(" ",1,1,QString::SectionSkipEmpty);
-            comp.definition = QString("%1 device from %2 library").arg(comp.name).arg(library.name);
-            comp.modelString = QString("<SpLib X1 1 280 260 -29 -164 0 0 \"%1\" 0 \"%2\" 1 \"auto\" 1>").arg(filename).arg(comp.name);
+            // Form fake component definition
+            comp.modelString = QString("<SpLib X1 1 280 260 -29 -164 0 0 \"%1\" 0 \"%2\" 1 \"auto\" 1>")
+                    .arg(filename).arg(comp.name);
+            comp.definition += QString("<Component %1>\n").arg(comp.name);
+            comp.definition += "<Description>\n";
+            comp.definition += QString("%1 device from %2 library").arg(comp.name).arg(library.name);
+            comp.definition += "</Description>\n";
+            comp.definition += "<Spice>\n";
+            comp.definition += lin + "\n.ends\n";
+            comp.definition += "</Spice>\n";
+            comp.definition += "<Model>"; // Hack! It's needed to make Qucs to use SpiceLibComp
+            comp.definition += "<"+comp.modelString;
+            comp.definition += "\n";
+            comp.definition += "</Model>\n";
+            // Symbol section
+            // Try to load symbol from resources
+            QString sym_filename = inf.canonicalPath() + QDir::separator()
+                    + inf.baseName() + QDir::separator() + comp.name + ".sym";
+            QFile sym_file(sym_filename);
+            if (sym_file.open(QIODevice::ReadOnly)) {
+                QTextStream ts(&sym_file);
+                QString sym_content =ts.readAll();
+                comp.definition += sym_content;
+                comp.symbol += sym_content;
+                sym_file.close();
+            }
+            comp.definition += "</Component>\n";
             library.components.append(comp);
         }
     }
