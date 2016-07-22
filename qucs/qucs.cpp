@@ -600,6 +600,7 @@ void QucsApp::fillComboBox (bool setAll)
 {
   //CompChoose->setMaxVisibleItems (13); // Increase this if you add items below.
   CompChoose->clear ();
+  CompSearch->clear(); // clear the search box, in case search was active...
 
   if (!setAll) {
     CompChoose->insertItem(CompChoose->count(), QObject::tr("paintings"));
