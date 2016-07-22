@@ -732,6 +732,7 @@ void QucsApp::slotSearchComponent(const QString &searchText)
   if (searchText.isEmpty()) {
     slotSetCompView(CompChoose->currentIndex());
   } else {
+    CompChoose->setCurrentIndex(0); // make sure the "Search results" category is selected
     editText->setHidden (true); // disable text edit of component property
 
     //traverse all component and match searchText with name
