@@ -110,8 +110,8 @@ int main(int argc, char *argv[])
     QucsDir = QDir(QucsApplicationPath);
     QucsDir.cdUp();
 #endif
-    QucsSettings.LangDir = QucsDir.canonicalPath() + "/share/qucs/lang/";
-    QucsSettings.LibDir  = QucsDir.canonicalPath() + "/share/qucs/library/";
+    QucsSettings.LangDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/lang/";
+    QucsSettings.LibDir  = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/library/";
   }
 
   loadSettings();

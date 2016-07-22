@@ -33,7 +33,7 @@ ENDIF (UPDATE_TRANSLATIONS)
 
 #
 # install tranlations
-INSTALL( FILES ${QM_FILES} DESTINATION share/qucs/lang)
+INSTALL( FILES ${QM_FILES} DESTINATION share/${QUCS_NAME}/lang)
 
 # prevent the generated files from being deleted during make clean
 #set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM true)
