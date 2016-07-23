@@ -342,6 +342,27 @@ inline int parseSPICEComponentLibrary (QString filename, ComponentLibrary &libra
         QTextStream ts(&defsym_file);
         library.defaultSymbol = ts.readAll();
         defsym_file.close();
+    } else { // Attach dummy symbol
+        library.defaultSymbol = "<Symbol>\n"
+                "<Line -40 20 80 0 #000080 2 1>\n"
+                "<Line -40 -20 80 0 #000080 2 1>\n"
+                "<Line -40 20 0 -40 #000080 2 1>\n"
+                "<Line 40 20 0 -40 #000080 2 1>\n"
+                "<Text -30 -10 14 #ff0000 0 \"SPICE\">\n"
+                "<Line -50 -10 10 0 #000000 2 1>\n"
+                "<Line -50 10 10 0 #000000 2 1>\n"
+                "<Line -30 -20 0 -10 #000000 2 1>\n"
+                "<Line -10 -20 0 -10 #000000 2 1>\n"
+                "<Line 10 -20 0 -10 #000000 2 1>\n"
+                "<Line 30 -20 0 -10 #000000 2 1>\n"
+                "<Line 50 -10 -10 0 #000000 2 1>\n"
+                "<Line 50 10 -10 0 #000000 2 1>\n"
+                "<Line 30 20 0 10 #000000 2 1>\n"
+                "<.ID -40 39 SUB>\n"
+                "<Line -30 20 0 10 #000000 2 1>\n"
+                "<Line -10 20 0 10 #000000 2 1>\n"
+                "<Line 10 20 0 10 #000000 2 1>\n"
+              "</Symbol>\n";
     }
 
     QTextStream content(&LibraryString);
