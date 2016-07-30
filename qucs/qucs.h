@@ -23,6 +23,10 @@
 #include <QHash>
 #include <QStack>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 class QucsDoc;
 class Schematic;
 class SimMessage;
@@ -301,6 +305,10 @@ public:
           *addToProj, *editFind, *insEntity, *selectMarker,
           *createLib, *importData, *graph2csv, *createPkg, *extractPkg,
           *callAtt, *callRes, *centerHor, *centerVert, *loadModule, *buildModule;
+
+#ifdef WITH_SPICE
+  QAction *helpQucsIndex;
+#endif
   QAction *simSettings;
   QAction *buildVAModule;
 
@@ -349,6 +357,9 @@ public slots:
   void slotCallAtt();
   void slotCallRes();
   void slotHelpIndex();       // shows a HTML docu: Help Index
+#ifdef WITH_SPICE
+  void slotHelpQucsIndex();
+#endif
   void slotGettingStarted();  // shows a HTML docu: Getting started
   void slotChangeProps();
   void slotAddToProject();

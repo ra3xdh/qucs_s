@@ -331,6 +331,10 @@ ENDIF()
 INSTALL( FILES ${SCRIPTS} DESTINATION bin/ )
 ENDIF()
 
+IF(WITH_SPICE)
+INSTALL( FILES ${QUCS_NAME}.1 DESTINATION share/man/man1 )
+ENDIF()
+
 # To Create a package, one can run "cpack -G DragNDrop CPackConfig.cmake" on Mac OS X
 # where CPackConfig.cmake is created by including CPack
 # And then there's ways to customize this as well

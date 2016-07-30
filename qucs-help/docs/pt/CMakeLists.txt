@@ -8,5 +8,5 @@ optimization1.png	optimization4.png	optimization7.png	qucsdigi.png		subcircuit.p
 optimization2.png	optimization5.png	optimization8.png	qucsmain.png		wire.png)
 
 # installation of documentation
-INSTALL(FILES ${HTML} ${PNGS} DESTINATION share/${QUCS_NAME}/docs/pt)
+INSTALL(FILES ${HTML} ${PNGS} DESTINATION share/qucs/docs/pt)
 

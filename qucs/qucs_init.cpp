@@ -649,6 +649,13 @@ void QucsApp::initActions()
   helpIndex->setWhatsThis(tr("Help Index\n\nIndex of intern Qucs help"));
   connect(helpIndex, SIGNAL(triggered()), SLOT(slotHelpIndex()));
 
+#ifdef WITH_SPICE
+  helpQucsIndex = new QAction(tr("Help Index (basic Qucs version)"), this);
+  helpQucsIndex->setStatusTip(tr("Index of basic Qucs Help"));
+  helpQucsIndex->setWhatsThis(tr("Help Index\n\nIndex of basic Qucs help"));
+  connect(helpQucsIndex, SIGNAL(triggered()), SLOT(slotHelpQucsIndex()));
+#endif
+
   helpGetStart = new QAction(tr("Getting Started..."), this);
   helpGetStart->setStatusTip(tr("Getting Started with Qucs"));
   helpGetStart->setWhatsThis(
@@ -812,6 +819,9 @@ void QucsApp::initMenuBar()
 
   helpMenu = new QMenu(tr("&Help"));  // menuBar entry helpMenu
   helpMenu->addAction(helpIndex);
+#ifdef WITH_SPICE
+  helpMenu->addAction(helpQucsIndex);
+#endif
   helpMenu->addAction(helpGetStart);
   helpMenu->insertSeparator();
 

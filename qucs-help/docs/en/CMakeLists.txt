@@ -11,5 +11,5 @@ SET(PNGS qucsmain.png paste.png wire.png select.png contab.png subcircuit.png
 
 
 # installation of documentation
-INSTALL(FILES ${HTML} ${PNGS} DESTINATION share/${QUCS_NAME}/docs/en)
+INSTALL(FILES ${HTML} ${PNGS} DESTINATION share/qucs/docs/en)
 
