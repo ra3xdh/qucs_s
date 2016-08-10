@@ -84,9 +84,33 @@ void SpiceLibComp::createSymbol()
   QString FileName = QucsSettings.BinDir;
   FileName += QString("/../share/qucs/symbols/%1.sym").arg(Props.at(2)->Value);
 
+  // Default symbol: LM358 in opamps.lib ---> opamps/LM358.sym
+  QString LibName = spicecompat::convert_relative_filename(Props.at(0)->Value);
+  QString DefSym = LibName;
+  QFileInfo inf(LibName); // Remove extension
+  int l = inf.suffix().size();
+  DefSym.chop(l+1);
+  DefSym += "/" + Props.at(1)->Value + ".sym";
+  QString CommonSym = inf.canonicalPath() + "/" + inf.baseName() + "/" + inf.baseName() + ".sym";
+
   tx = INT_MIN;
   ty = INT_MIN;
   if(loadSymbol(FileName) > 0) {  // try to load SpiceLibComp symbol
+      removeUnusedPorts();
+  } else if(loadSymbol(DefSym) > 0) {
+      removeUnusedPorts();
+  } else if(loadSymbol(CommonSym) > 0) { // CommonSymbol for all library
+      removeUnusedPorts();
+  } else {
+    QStringList pins;
+    No = spicecompat::getPins(Props.at(0)->Value,Props.at(1)->Value,pins);
+    Ports.clear();
+    remakeSymbol(No,pins);  // no symbol was found -> create standard symbol
+  }
+}
+
+void SpiceLibComp::removeUnusedPorts()
+{
     if(tx == INT_MIN)  tx = x1+4;
     if(ty == INT_MIN)  ty = y2+4;
     // remove unused ports
@@ -99,13 +123,6 @@ void SpiceLibComp::createSymbol()
           ip.remove();
       }
     }
-  }
-  else {
-    QStringList pins;
-    No = spicecompat::getPins(Props.at(0)->Value,Props.at(1)->Value,pins);
-    Ports.clear();
-    remakeSymbol(No,pins);  // no symbol was found -> create standard symbol
-  }
 }
 
 // ---------------------------------------------------------------------

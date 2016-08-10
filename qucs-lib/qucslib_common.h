@@ -206,7 +206,7 @@ inline int makeModelString (QString libname, QString compname, QString compstrin
 
 }
 
-inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
+inline int parseQucsComponentLibrary (QString filename, ComponentLibrary &library)
 {
 
     int Start, End, NameStart, NameEnd;
@@ -307,6 +307,112 @@ inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
 
     return QUCS_COMP_LIB_OK;
 
+}
+
+/*!
+ * \brief parseSPICEComponentLibrary Parse SPICE component library as set of subcircuits.
+ * \param filename[in]
+ * \param library[out]
+ * \return
+ */
+inline int parseSPICEComponentLibrary (QString filename, ComponentLibrary &library)
+{
+
+    QFile file (filename);
+
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        return QUCS_COMP_LIB_IO_ERROR;
+    }
+
+    // Read the whole library file into a string then close it
+    QTextStream ReadWhole(&file);
+    QString LibraryString = ReadWhole.readAll();
+    file.close();
+
+    QFileInfo inf(filename);
+    library.name = inf.baseName();
+
+    // Attach default symbol (library_name.sym) if exists
+    library.defaultSymbol = "";
+    QString defsym_filename = inf.canonicalPath() + QDir::separator()
+            + inf.baseName() + QDir::separator() + library.name + ".sym";
+    QFile defsym_file(defsym_filename);
+    if (defsym_file.open(QIODevice::ReadOnly)) {
+        QTextStream ts(&defsym_file);
+        library.defaultSymbol = ts.readAll();
+        defsym_file.close();
+    } else { // Attach dummy symbol
+        library.defaultSymbol = "<Symbol>\n"
+                "<Line -40 20 80 0 #000080 2 1>\n"
+                "<Line -40 -20 80 0 #000080 2 1>\n"
+                "<Line -40 20 0 -40 #000080 2 1>\n"
+                "<Line 40 20 0 -40 #000080 2 1>\n"
+                "<Text -30 -10 14 #ff0000 0 \"SPICE\">\n"
+                "<Line -50 -10 10 0 #000000 2 1>\n"
+                "<Line -50 10 10 0 #000000 2 1>\n"
+                "<Line -30 -20 0 -10 #000000 2 1>\n"
+                "<Line -10 -20 0 -10 #000000 2 1>\n"
+                "<Line 10 -20 0 -10 #000000 2 1>\n"
+                "<Line 30 -20 0 -10 #000000 2 1>\n"
+                "<Line 50 -10 -10 0 #000000 2 1>\n"
+                "<Line 50 10 -10 0 #000000 2 1>\n"
+                "<Line 30 20 0 10 #000000 2 1>\n"
+                "<.ID -40 39 SUB>\n"
+                "<Line -30 20 0 10 #000000 2 1>\n"
+                "<Line -10 20 0 10 #000000 2 1>\n"
+                "<Line 10 20 0 10 #000000 2 1>\n"
+              "</Symbol>\n";
+    }
+
+    QTextStream content(&LibraryString);
+    while(!content.atEnd()) {
+        QString lin = content.readLine();
+        lin = lin.trimmed();
+        if (lin.toLower().startsWith(".subckt ")) {
+            ComponentLibraryItem comp;
+            comp.name = lin.section(" ",1,1,QString::SectionSkipEmpty);
+            // Form fake component definition
+            comp.modelString = QString("<SpLib X1 1 280 260 -29 -164 0 0 \"%1\" 0 \"%2\" 1 \"auto\" 1>")
+                    .arg(filename).arg(comp.name);
+            comp.definition += QString("<Component %1>\n").arg(comp.name);
+            comp.definition += "<Description>\n";
+            comp.definition += QString("%1 device from %2 library").arg(comp.name).arg(library.name);
+            comp.definition += "</Description>\n";
+            comp.definition += "<Spice>\n";
+            comp.definition += lin + "\n.ends\n";
+            comp.definition += "</Spice>\n";
+            comp.definition += "<Model>"; // Hack! It's needed to make Qucs to use SpiceLibComp
+            comp.definition += "<"+comp.modelString;
+            comp.definition += "\n";
+            comp.definition += "</Model>\n";
+            // Symbol section
+            // Try to load symbol from resources
+            QString sym_filename = inf.canonicalPath() + QDir::separator()
+                    + inf.baseName() + QDir::separator() + comp.name + ".sym";
+            QFile sym_file(sym_filename);
+            if (sym_file.open(QIODevice::ReadOnly)) {
+                QTextStream ts(&sym_file);
+                QString sym_content =ts.readAll();
+                comp.definition += sym_content;
+                comp.symbol += sym_content;
+                sym_file.close();
+            }
+            comp.definition += "</Component>\n";
+            library.components.append(comp);
+        }
+    }
+
+    return QUCS_COMP_LIB_OK;
+}
+
+inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
+{
+    int r = parseQucsComponentLibrary(filename,library);
+    if (r!=QUCS_COMP_LIB_OK) {
+        r = parseSPICEComponentLibrary(filename,library);
+    }
+    return r;
 }
 
 inline QStringList getBlacklistedLibraries(QString dir)

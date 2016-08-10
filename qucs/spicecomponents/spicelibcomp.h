@@ -36,6 +36,7 @@ protected:
   int  loadSymbol(const QString&);
 private:
   void getSymbolPatternsList(QStringList &symbols);
+  void removeUnusedPorts();
 };
 
 #endif
