@@ -27,6 +27,7 @@
 #include <QList>
 #include <QMouseEvent>
 #include <QPaintEvent>
+#include <QMessageBox>
 
 #include "element.h"
 
