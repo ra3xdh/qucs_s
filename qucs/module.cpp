@@ -501,17 +501,24 @@ void Module::registerModules (void) {
   REGISTER_SIMULATION_1 (DC_Sim);
   REGISTER_SIMULATION_1 (TR_Sim);
   REGISTER_SIMULATION_1 (AC_Sim);
-  REGISTER_SIMULATION_1 (SP_Sim);
-  REGISTER_SIMULATION_1 (HB_Sim);
+  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
+      REGISTER_SIMULATION_1 (SP_Sim);
+  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator||
+      QucsSettings.DefaultSimulator == spicecompat::simXyceSer||
+      QucsSettings.DefaultSimulator == spicecompat::simXycePar)
+      REGISTER_SIMULATION_1 (HB_Sim);
   REGISTER_SIMULATION_1 (Param_Sweep);
   REGISTER_SIMULATION_1 (Digi_Sim);
   if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
       REGISTER_SIMULATION_1 (Optimize_Sim);
   if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       REGISTER_SIMULATION_1 (SpiceFourier);
+      REGISTER_SIMULATION_1 (SpiceNoise);
+  }
+  if (QucsSettings.DefaultSimulator == spicecompat::simNgspice ||
+      QucsSettings.DefaultSimulator == spicecompat::simSpiceOpus) {
       REGISTER_SIMULATION_1 (SpiceDisto);
       REGISTER_SIMULATION_1 (SpiceCustomSim);
-      REGISTER_SIMULATION_1 (SpiceNoise);
       REGISTER_SIMULATION_1 (SpicePZ);
   }
 
