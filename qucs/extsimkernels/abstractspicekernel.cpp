@@ -133,11 +133,16 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
         QString s;
 
         // Include Directives
+        QStringList incls;
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             if ((pc->SpiceModel==".INCLUDE")||
                 (pc->Model=="SpLib")) {
                 s = pc->getSpiceModel();
-                stream<<s;
+                if (!incls.contains(s)) {
+                    // prevent multiple libraries inclusion
+                    incls.append(s);
+                    stream<<s;
+                }
             }
         }
 
