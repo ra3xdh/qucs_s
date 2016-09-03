@@ -34,6 +34,8 @@
 #include <QComboBox>
 #include <QGroupBox>
 #include <QPushButton>
+#include <QEvent>
+#include <QKeyEvent>
 #include <QDebug>
 
 ComponentDialog::ComponentDialog(Component *c, Schematic *d)
@@ -353,6 +355,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   ComboEdit = new QComboBox;
   v1->addWidget(ComboEdit);
   ComboEdit->setVisible(false);
+  ComboEdit->installEventFilter(this); // to catch Enter keypress
   connect(ComboEdit, SIGNAL(activated(const QString&)),
 	  SLOT(slotApplyChange(const QString&)));
 
@@ -378,25 +381,21 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   // keep group above together
   v1->addStretch(5);
 
-  QHBoxLayout *h4 = new QHBoxLayout;
-  v1->addLayout(h4);
-  h4->setSpacing(5);
+  QGridLayout *bg = new QGridLayout;
+  v1->addLayout(bg);
   ButtAdd = new QPushButton(tr("Add"));
-  h4->addWidget(ButtAdd);
+  bg->addWidget(ButtAdd, 0, 0);
   ButtAdd->setEnabled(false);
   ButtRem = new QPushButton(tr("Remove"));
-  h4->addWidget(ButtRem);
+  bg->addWidget(ButtRem, 0, 1);
   ButtRem->setEnabled(false);
   connect(ButtAdd, SIGNAL(clicked()), SLOT(slotButtAdd()));
   connect(ButtRem, SIGNAL(clicked()), SLOT(slotButtRem()));
-
   // Buttons to move equations up/down on the list
-  QHBoxLayout *hUpDown = new QHBoxLayout;
-  v1->addLayout(hUpDown);
   ButtUp = new QPushButton(tr("Move Up"));
-  hUpDown->addWidget(ButtUp);
+  bg->addWidget(ButtUp, 1, 0);
   ButtDown = new QPushButton(tr("Move Down"));
-  hUpDown->addWidget(ButtDown);
+  bg->addWidget(ButtDown, 1, 1);
   connect(ButtUp,   SIGNAL(clicked()), SLOT(slotButtUp()));
   connect(ButtDown, SIGNAL(clicked()), SLOT(slotButtDown()));
 
@@ -482,6 +481,24 @@ ComponentDialog::~ComponentDialog()
   delete Validator2;
   delete ValRestrict;
   delete ValInteger;
+}
+
+// check if Enter is pressed while the ComboEdit has focus
+// in case, behave as for the LineEdits
+// (QComboBox by default does not handle the Enter/Return key)
+bool ComponentDialog::eventFilter(QObject *obj, QEvent *event)
+{
+  if (obj == ComboEdit) {
+    if (event->type() == QEvent::KeyPress) {
+      QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+      if ((keyEvent->key() == Qt::Key_Return) ||
+          (keyEvent->key() == Qt::Key_Enter)) {
+        slotApplyProperty();
+        return true;
+      }
+    }
+  }
+  return QDialog::eventFilter(obj, event); // standard event processing
 }
 
 // Updates component property list. Useful for MultiViewComponents
@@ -671,12 +688,13 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
        }
       edit->setVisible(false);
       ComboEdit->setVisible(true);
+      ComboEdit->setFocus();
     }
     else {
       edit->setVisible(true);
       ComboEdit->setVisible(false);
+      edit->setFocus();   // edit QLineEdit
     }
-    edit->setFocus();   // edit QLineEdit
   }
 }
 
@@ -712,15 +730,17 @@ void ComponentDialog::slotApplyChange(const QString& Text)
 void ComponentDialog::slotApplyProperty()
 {
   // pick selected row
-  QTableWidgetItem *item = prop->selectedItems()[0];
-
+  QTableWidgetItem *item = prop->currentItem();
+  
+  if(!item)
+    return;
+  
   int row = item->row();
 
   QString name  = prop->item(row, 0)->text();
   QString value = prop->item(row, 1)->text();
 
-  if(!item)
-    return;
+ 
 
   if (!ComboEdit->isHidden())   // take text from ComboBox ?
     edit->setText(ComboEdit->currentText());
@@ -736,11 +756,11 @@ void ComponentDialog::slotApplyProperty()
 //        item->setText(0, "Export_");   // name must not be "Export" !!!
 //      else
 //      item->setText(0, NameEdit->text());  // apply property name
-      prop->item(row, 0)->setText(edit->text());
+      prop->item(row, 0)->setText(NameEdit->text());
     }
 
   // step to next item
-  if ( row < prop->rowCount()) {
+  if ( row < prop->rowCount()-1) {
     prop->setCurrentItem(prop->item(row+1,0));
     slotSelectProperty(prop->item(row+1,0));
   }
@@ -1483,10 +1503,13 @@ void ComponentDialog::slotHHeaderClicked(int headerIdx)
   QString s;
   QTableWidgetItem *cell;
 
-  if (setAllVisible)
+  if (setAllVisible) {
     s = tr("yes");
-  else
+    disp->setChecked(true);
+  } else {
     s = tr("no");
+    disp->setChecked(false);
+  }
 
   // go through all the properties table and set the visibility cell
   for (int row = 0; row < prop->rowCount(); row++) {

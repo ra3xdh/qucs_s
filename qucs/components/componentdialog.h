@@ -77,6 +77,7 @@ private slots:
 
 protected slots:
     void reject();
+    bool eventFilter(QObject *obj, QEvent *event);
 
 private:
   QVBoxLayout *all;   // the mother of all widgets
