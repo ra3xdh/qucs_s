@@ -497,6 +497,13 @@ void Module::registerModules (void) {
       REGISTER_FILE_1 (SpiceLibComp);
   }
 
+  if ((QucsSettings.DefaultSimulator == spicecompat::simNgspice)||
+      (QucsSettings.DefaultSimulator == spicecompat::simSpiceOpus)) {
+      REGISTER_FILE_1 (XspiceGeneric);
+      REGISTER_FILE_1 (XSP_CMlib);
+      REGISTER_FILE_1 (XSP_CodeModel);
+  }
+
   // simulations
   REGISTER_SIMULATION_1 (DC_Sim);
   REGISTER_SIMULATION_1 (TR_Sim);
