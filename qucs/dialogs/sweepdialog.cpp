@@ -276,6 +276,26 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
         else {
           if(pn->cx < pe->cx)  pn->x1 |= 1;  // to the right is no room
         }
+    } else if (isSpice) {
+        if ((pc->Model == "S4Q_V")||(pc->Model == "Vdc")) {
+            pn = pc->Ports.first()->Connection;
+            if(!pn->Name.isEmpty())   // preserve node voltage ?
+              pn = pc->Ports.at(1)->Connection;
+
+            pn->x1 = 0x10;   // mark current
+            QString src_nam = QString(pc->Name+"#branch").toLower();
+            if (NodeVals->contains(src_nam)) {
+                pn->Name = misc::num2str(NodeVals->value(src_nam))+"A";
+            } else pn->Name = "0A";
+
+            for(pe = pn->Connections.first(); pe!=0; pe = pn->Connections.next())
+              if(pe->Type == isWire) {
+                if( ((Wire*)pe)->isHorizontal() )  pn->x1 |= 2;
+            }
+              else {
+                if(pn->cx < pe->cx)  pn->x1 |= 1;  // to the right is no room
+            }
+        }
     }
 
 

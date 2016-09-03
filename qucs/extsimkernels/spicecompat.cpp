@@ -299,3 +299,17 @@ QString spicecompat::convert_sweep_type(QString sweep)
     if (sweep=="log") return QString("dec");
     return QString("");
 }
+
+/*!
+ * \brief spicecompat::check_nodename Check if node name is Nutmeg keyword.
+ * \param node[in] Node name
+ * \return true if node name is allowed, false otherwise.
+ */
+bool spicecompat::check_nodename(QString &node)
+{
+    QStringList nutmeg_keywords;
+    // logical operations (case sensitive)
+    nutmeg_keywords<<"gt"<<"lt"<<"ge"<<"ne"<<"le"<<"and"<<"not"<<"or"<<"eq";
+    if (nutmeg_keywords.contains(node)) return false;
+    else return true;
+}

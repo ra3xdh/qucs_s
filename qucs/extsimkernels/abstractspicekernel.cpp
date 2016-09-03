@@ -133,11 +133,16 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
         QString s;
 
         // Include Directives
+        QStringList incls;
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             if ((pc->SpiceModel==".INCLUDE")||
                 (pc->Model=="SpLib")) {
                 s = pc->getSpiceModel();
-                stream<<s;
+                if (!incls.contains(s)) {
+                    // prevent multiple libraries inclusion
+                    incls.append(s);
+                    stream<<s;
+                }
             }
         }
 
@@ -377,7 +382,7 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file,
  *        and independent varibales. An independent variable is the first in list.
  */
 void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<double> > &sim_points,
-                                             QStringList &var_list, bool xyce)
+                                             QStringList &var_list)
 {
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {
@@ -392,7 +397,12 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
             QString lin = ngsp_data.readLine();
             if (lin.isEmpty()) continue;
             if (lin.contains("Fourier analysis for")) {
-                QString var = lin.split(sep,QString::SkipEmptyParts).last();
+                QStringList tokens = lin.split(sep,QString::SkipEmptyParts);
+                QString var;
+                foreach(var,tokens) {
+                    if (var.contains('(')&&var.contains(')')) break;
+                }
+
                 if (var.endsWith(':')) var.chop(1);
                 var_list.append("magnitude("+var+")");
                 var_list.append("phase("+var+")");
@@ -405,7 +415,8 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
                 if (ss.endsWith(',')) ss.chop(1);
                 Nharm = ss.toInt();
                 while (!ngsp_data.readLine().contains(QRegExp("Harmonic\\s+Frequency")));
-                if (!xyce) lin = ngsp_data.readLine(); // dummy line
+                if (!(QucsSettings.DefaultSimulator == spicecompat::simXyceSer||
+                      QucsSettings.DefaultSimulator == spicecompat::simXycePar)) lin = ngsp_data.readLine(); // dummy line
                 for (int i=0;i<Nharm;i++) {
                     lin = ngsp_data.readLine();
                     if (!firstgroup) {
@@ -883,7 +894,7 @@ int AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &value
  * \param qucs_dataset A file name of Qucs Dataset to create
  * \param xyce True if Xyce simulator was used.
  */
-void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xyce)
+void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
 {
     if (DC_OP_only) { // Don't touch existing datasets when only DC was simulated
         // It's need to show DC bias on schematic only
@@ -904,28 +915,23 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
     QString sim,indep;
     QStringList indep_vars;
 
-    QString swp_var,swp_var2;
-    QStringList swp_var_val,swp_var2_val;
-    swp_var.clear();
-    swp_var2.clear();
-    swp_var_val.clear();
-    swp_var2_val.clear();
-
-    QList< QList<double> > sim_points;
-    QStringList var_list;
-    bool isComplex = false;
-    bool hasParSweep = false;
-    bool hasDblParSweep = false;
-
     QString ngspice_output_filename;
     foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
+        QList< QList<double> > sim_points;
+        QStringList var_list;
+        QString swp_var,swp_var2;
+        QStringList swp_var_val,swp_var2_val;
+        bool isComplex = false;
+        bool hasParSweep = false;
+        bool hasDblParSweep = false;
+
         QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
         if (ngspice_output_filename.endsWith("HB.FD.prn")) {
             parseHBOutput(full_outfile,sim_points,var_list);
             isComplex = true;
         } else if (ngspice_output_filename.endsWith(".four")) {
             isComplex=false;
-            parseFourierOutput(full_outfile,sim_points,var_list,xyce);
+            parseFourierOutput(full_outfile,sim_points,var_list);
         } else if (ngspice_output_filename.endsWith(".txt_std")) {
             parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
         } else if (ngspice_output_filename.endsWith(".noise_log")) {
@@ -999,6 +1005,8 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
 
         if (hasParSweep) {
             int indep_cnt;
+            if (swp_var_val.isEmpty()) continue;
+            if (hasDblParSweep&&swp_var2_val.isEmpty()) continue;
             if (hasDblParSweep) indep_cnt =  sim_points.count()/(swp_var_val.count()*swp_var2_val.count());
             else indep_cnt = sim_points.count()/swp_var_val.count();
             if (!indep.isEmpty()) {
@@ -1052,7 +1060,6 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset, bool xy
             if (indep.isEmpty()) ds_stream<<"</indep>\n";
             else ds_stream<<"</dep>\n";
         }
-        hasParSweep = false;
     }
 
     QFile dataset(qucs_dataset);
@@ -1106,11 +1113,16 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
     for (it++;it!=var_list.end();it++) {
         if ((!(it->startsWith(prefix)||it->startsWith(iprefix)))||(HB)) {
             if (HB) {
-                int idx = it->indexOf('(');  // Add .Vb suffix for correct display
+                QString suffix;
+                if ((*it).startsWith('I')) suffix = ".Ib";
+                else suffix = ".Vb";
+                int idx = it->indexOf('(');
                 int cnt = it->count();
-                *it = it->right(cnt-idx-1); // Only node.Vb is displayed correctly
+                *it = it->right(cnt-idx-1);
                 it->remove(')');
-                *it += ".Vb";
+                *it += suffix;
+                QRegExp iprobe_pattern("^[Vv][Pp][Rr][0-9]+.*");
+                if (iprobe_pattern.exactMatch(*it)) (*it).remove(0,1);
             } else {
                 *it = prefix + *it;
             }

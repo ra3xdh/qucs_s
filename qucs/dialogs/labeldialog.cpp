@@ -16,12 +16,15 @@
  ***************************************************************************/
 #include "labeldialog.h"
 #include "../wirelabel.h"
+#include "extsimkernels/spicecompat.h"
+#include "main.h"
 
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QValidator>
 #include <QGridLayout>
+#include <QMessageBox>
 
 
 LabelDialog::LabelDialog(WireLabel *pl, QWidget *parent)
@@ -107,6 +110,20 @@ void LabelDialog::slotCancel()
 
 void LabelDialog::slotOk()
 {
+  if ((QucsSettings.DefaultSimulator == spicecompat::simNgspice)||
+      (QucsSettings.DefaultSimulator == spicecompat::simSpiceOpus)) {
+      QString nod = NodeName->text().trimmed();
+      if (!spicecompat::check_nodename(nod)) {
+          QMessageBox::warning(this,tr("SPICE checker"),
+                               QString(tr("Node name \"%1\" is Nutmeg reserved keyword!\n"
+                                          "Please select another node name!\n"
+                                          "Node name will not be chenged.")).arg(nod),
+                               QMessageBox::Ok);
+          slotCancel();
+          return;
+      }
+  }
+
   NodeName->setText(NodeName->text().trimmed());
   InitValue->setText(InitValue->text().trimmed());
 

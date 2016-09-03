@@ -709,7 +709,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   QFileInfo Info(defaultDataSet);
   QDir ProjDir(Info.dirPath());
   QStringList entries;
-  entries<<"*.dat"<<"*.dat.ngspice"<<"*.dat.xyce";
+  entries<<"*.dat"<<"*.dat.ngspice"<<"*.dat.xyce"<<"*.dat.spopus";
   QStringList Elements = ProjDir.entryList(entries, QDir::Files, QDir::Name);
   QStringList::iterator it;
   for(it = Elements.begin(); it != Elements.end(); ++it) {
@@ -717,17 +717,14 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
           QString dat = (*it).left((*it).length()-4);
           if (ChooseData->findText(dat)<0)
               ChooseData->insertItem((*it).left((*it).length()-4));
-      } else if (it->endsWith(".dat.ngspice")) {
-          QString dat = (*it).left((*it).length()-12);
+      } else {
+          QString ext = (*it).section('.',-2,-1); // double extension
+          int extl = ext.length() + 1; // full extension length
+          int shextl = extl - 4; // extension length without ".dat"
+          QString dat = (*it).left((*it).length()-extl);
           if (ChooseData->findText(dat)<0)
-              ChooseData->insertItem((*it).left((*it).length()-12));
-          if((*it).left((*it).length()-8) == Info.fileName()) // default dataset should be the current
-            ChooseData->setCurrentItem(ChooseData->count()-1);
-      } else if (it->endsWith(".dat.xyce")) {
-          QString dat = (*it).left((*it).length()-9);
-          if (ChooseData->findText(dat)<0)
-              ChooseData->insertItem((*it).left((*it).length()-9));
-          if((*it).left((*it).length()-5) == Info.fileName()) // default dataset should be the current
+              ChooseData->insertItem((*it).left((*it).length()-extl));
+          if((*it).left((*it).length()-shextl) == Info.fileName()) // default dataset should be the current
             ChooseData->setCurrentItem(ChooseData->count()-1);
       }
 

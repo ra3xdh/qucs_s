@@ -100,10 +100,10 @@ QString SpiceNoise::spice_netlist(bool isXyce)
         points = Props.at(3)->Value;
     }
 
-    s = QString("NOISE %1 %2 %3 %4 %5 %6\n").arg(Props.at(4)->Value).arg(Props.at(5)->Value)
+    s = QString("noise %1 %2 %3 %4 %5 %6\n").arg(Props.at(4)->Value).arg(Props.at(5)->Value)
             .arg(swp).arg(points).arg(fstart).arg(fstop);
     if (!isXyce) {
-        s += QString("PRINT inoise_total onoise_total >> spice4qucs.cir.noise\n");
+        s += QString("print inoise_total onoise_total >> spice4qucs.cir.noise\n");
     } else {
         s.insert(0,'.');
     }

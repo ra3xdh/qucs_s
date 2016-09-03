@@ -113,6 +113,12 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
                 vars.append(pn->Name);
             }
         }
+        // Add DC sources
+        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+             if ((pc->Model == "S4Q_V")||(pc->Model == "Vdc")) {
+                 vars.append("I("+pc->Name+")");
+             }
+        }
     }
 
     vars.sort();

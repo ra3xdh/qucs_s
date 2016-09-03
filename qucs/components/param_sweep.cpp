@@ -56,6 +56,8 @@ Param_Sweep::Param_Sweep()
 		QObject::tr("stop value for sweep")));
   Props.append(new Property("Points", "20", true,
 		QObject::tr("number of simulation steps")));
+  Props.append(new Property("SweepModel","false",false,
+                            "[true,false]"));
 }
 
 Param_Sweep::~Param_Sweep()
@@ -104,7 +106,7 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
     QString s,unit;
     QString par = getProperty("Param")->Value;
     QString step_var = par;
-    step_var.remove('.');
+    step_var.remove(QRegExp("[\\.\\[\\]@:]"));
 
     double start,stop,step,fac,points;
     misc::str2num(getProperty("Start")->Value,start,unit,fac);
@@ -123,25 +125,30 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
     else s += QString("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res%4\n").arg(sim).arg(step_var).arg(sim).arg(lvl);
     s += QString("while %1_act le stop_%1\n").arg(step_var);
 
-    bool modelsweep = false; // Find component and its modelstring
-    QStringList par_lst = par.split('.',QString::SkipEmptyParts);
+    bool modelsweep = false; // Find component and its modelstring 
     QString mod,mod_par;
-    if (par_lst.count()>1) {
-        mod_par = par_lst.at(1);
-        Schematic *sch = (Schematic *) QucsMain->DocumentTab->currentPage();
-        Component *pc = sch->getComponentByName(par_lst.at(0));
-        if (pc != NULL) {
-            mod = pc->getSpiceNetlist().section('\n',1,1,QString::SectionSkipEmpty)
-                                       .section(' ',1,1,QString::SectionSkipEmpty);
-            modelsweep = true;
+
+    if (!par.contains('@')) {
+        QStringList par_lst = par.split('.',QString::SkipEmptyParts);
+        if (par_lst.count()>1) {
+            mod_par = par_lst.at(1);
+            Schematic *sch = (Schematic *) QucsMain->DocumentTab->currentPage();
+            Component *pc = sch->getComponentByName(par_lst.at(0));
+            if (pc != NULL) {
+                mod = pc->getSpiceNetlist().section('\n',1,1,QString::SectionSkipEmpty)
+                                           .section(' ',1,1,QString::SectionSkipEmpty);
+                if (!mod.isEmpty()) modelsweep = true;
+            }
         }
     }
-
 
     if (modelsweep) { // Model parameter sweep
         s += QString("altermod %1 %2 = %3_act\n").arg(mod).arg(mod_par).arg(step_var);
     } else {
-        s += QString("alter %1 = %2_act\n").arg(par).arg(step_var);
+        QString mswp = getProperty("SweepModel")->Value;
+        if (mswp == "true")
+            s += QString("altermod %1 = %2_act\n").arg(par).arg(step_var);
+        else s += QString("alter %1 = %2_act\n").arg(par).arg(step_var);
     }
     return s;
 }
@@ -152,7 +159,8 @@ QString Param_Sweep::getNgspiceAfterSim(QString sim, int lvl)
 
     QString s;
     QString par = getProperty("Param")->Value;
-    par.remove('.');
+    par.remove(QRegExp("[\\.\\[\\]@:]"));
+
     s = "set appendwrite\n";
     if (lvl==0) s += QString("echo \"$&number_%1\" \"$&%1_act\" >> spice4qucs.%2.cir.res\n").arg(par).arg(sim);
     else s += QString("echo \"$&number_%1\" \"$&%1_act\" >> spice4qucs.%2.cir.res%3\n").arg(par).arg(sim).arg(lvl);
@@ -165,7 +173,9 @@ QString Param_Sweep::getNgspiceAfterSim(QString sim, int lvl)
 
 QString Param_Sweep::getCounterVar()
 {
-    QString s = QString("number_%1").arg(getProperty("Param")->Value);
+    QString par = getProperty("Param")->Value;
+    par.remove(QRegExp("[\\.\\[\\]@:]"));
+    QString s = QString("number_%1").arg(par);
     return s;
 }
 

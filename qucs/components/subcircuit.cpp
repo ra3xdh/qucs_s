@@ -222,7 +222,7 @@ QString Subcircuit::spice_netlist(bool)
 {
     QString s;
     QString f = misc::properFileName(Props.first()->Value);
-    s += QString("X%1 ").arg(Name);
+    s += spicecompat::check_refdes(Name,SpiceModel);
     foreach(Port *p1, Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";

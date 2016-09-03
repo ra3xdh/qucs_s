@@ -77,7 +77,7 @@ public:
     void parseHBOutput(QString ngspice_file, QList< QList<double> > &sim_points,
                        QStringList &var_list);
     void parseFourierOutput(QString ngspice_file, QList< QList<double> > &sim_points,
-                            QStringList &var_list, bool xyce);
+                            QStringList &var_list);
     void parseNoiseOutput(QString ngspice_file, QList< QList<double> > &sim_points,
                           QStringList &var_list, bool &ParSwp);
     void parsePZOutput(QString ngspice_file, QList< QList<double> > &sim_points,
@@ -96,7 +96,7 @@ public:
     void parseXYCENoiseLog(QString logfile, QList< QList<double> > &sim_points,
                            QStringList &var_list);
     void parseResFile(QString resfile, QString &var, QStringList &values);
-    void convertToQucsData(const QString &qucs_dataset, bool xyce = false);
+    void convertToQucsData(const QString &qucs_dataset);
     QString getOutput();
 
     virtual void setSimulatorCmd(QString cmd);
