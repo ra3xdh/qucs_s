@@ -43,6 +43,7 @@ SpiceLibComp::SpiceLibComp()
   Props.append(new Property("File", "", false, QObject::tr("SpiceLibrary file")));
   Props.append(new Property("Device", "", false, QObject::tr("Subcircuit entry (.SUBCKT) name")));
   Props.append(new Property("SymPattern", "auto", false, p_str));
+  Props.append(new Property("Params", "", false, QObject::tr("Extra parameters list")));
 
   Model = "SpLib";
   Name  = "X";
@@ -200,7 +201,7 @@ int SpiceLibComp::loadSymbol(const QString& DocName)
     if(Line.at(0) != '<') return -5;
     if(Line.at(Line.length()-1) != '>') return -6;
     Line = Line.mid(1, Line.length()-2); // cut off start and end character
-    Result = analyseLine(Line, 3);
+    Result = analyseLine(Line, 4);
     if(Result < 0) return -7;   // line format error
     z += Result;
   }
@@ -214,11 +215,7 @@ QString SpiceLibComp::spice_netlist(bool)
     foreach(Port *p1, Ports) {
         s += " " + spicecompat::normalize_node_name(p1->Connection->Name);
     }
-    s += " " + Props.at(1)->Value;
-    for(Property *pp = Props.at(3); pp != 0; pp = Props.next()) {
-        s += QString(" %1=%2").arg(pp->Name).arg(spicecompat::normalize_value(pp->Value));
-    }
-    s += "\n";
+    s += QString(" %1 %2\n").arg(Props.at(1)->Value).arg(Props.at(3)->Value);
     return s;
 }
 

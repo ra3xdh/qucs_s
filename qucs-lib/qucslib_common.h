@@ -370,11 +370,23 @@ inline int parseSPICEComponentLibrary (QString filename, ComponentLibrary &libra
         QString lin = content.readLine();
         lin = lin.trimmed();
         if (lin.toLower().startsWith(".subckt ")) {
+
+            QString pars; // Has subckt parameters?
+            int idx = lin.indexOf('=');
+            if (idx>0) {
+                if (lin.at(idx-1).isSpace()) {
+                    idx--;
+                    while (lin.at(idx).isSpace()) idx--;
+                    while (lin.at(idx).isLetterOrNumber()) idx--;
+                } else idx = lin.lastIndexOf(QRegExp("[ \t]"),idx);
+                pars = lin.mid(idx);
+            } else pars = "";
+
             ComponentLibraryItem comp;
             comp.name = lin.section(" ",1,1,QString::SectionSkipEmpty);
             // Form fake component definition
-            comp.modelString = QString("<SpLib X1 1 280 260 -29 -164 0 0 \"%1\" 0 \"%2\" 1 \"auto\" 1>")
-                    .arg(filename).arg(comp.name);
+            comp.modelString = QString("<SpLib X1 1 280 260 -29 -164 0 0 \"%1\" 0 \"%2\" 1 \"auto\" 1 \"%3\" 1>")
+                    .arg(filename).arg(comp.name).arg(pars);
             comp.definition += QString("<Component %1>\n").arg(comp.name);
             comp.definition += "<Description>\n";
             comp.definition += QString("%1 device from %2 library").arg(comp.name).arg(library.name);
