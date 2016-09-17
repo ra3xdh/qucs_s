@@ -412,6 +412,44 @@ inline int parseSPICEComponentLibrary (QString filename, ComponentLibrary &libra
             }
             comp.definition += "</Component>\n";
             library.components.append(comp);
+        } else if (lin.toLower().startsWith(".model")) {
+            QStringList mod_lines;
+            mod_lines.append(lin);
+            QString clin = content.readLine();
+            int pos = content.pos();
+            while (clin.startsWith('+')) { // get the rest of .MODEL
+                pos = content.pos();
+                mod_lines.append(clin);
+                clin = content.readLine();
+            }
+            content.seek(pos); // revert one line back
+
+            ComponentLibraryItem comp;
+            comp.name = lin.section(" ",1,1,QString::SectionSkipEmpty);
+            // Form fake component definition
+            comp.modelString = "<SpiceModel SpiceModel1 1 250 290 -29 17 0 0"; // .MODEL start
+            int lin_cnt = 0;
+            foreach (QString p, mod_lines) {
+                comp.modelString += QString(" \"%1\" 1").arg(p);
+                lin_cnt++;
+            }
+            // Empty lines
+            for (int i=lin_cnt;i<5;i++) comp.modelString += " \"\" 1";
+            comp.modelString += ">";
+
+            comp.definition += QString("<Component %1>\n").arg(comp.name);
+            comp.definition += "<Description>\n";
+            comp.definition += QString("%1 model from %2 library").arg(comp.name).arg(library.name);
+            comp.definition += "</Description>\n";
+            comp.definition += "<Spice>\n";
+            comp.definition += mod_lines.join("\n");
+            comp.definition += "</Spice>\n";
+            comp.definition += "<Model>"; // Hack! It's needed to make Qucs to use SpiceLibComp
+            comp.definition += "<"+comp.modelString;
+            comp.definition += "\n";
+            comp.definition += "</Model>\n";
+            comp.definition += "</Component>\n";
+            library.components.append(comp);
         }
     }
 
