@@ -430,11 +430,10 @@ inline int parseSPICEComponentLibrary (QString filename, ComponentLibrary &libra
             comp.modelString = "<SpiceModel SpiceModel1 1 250 290 -29 17 0 0"; // .MODEL start
             int lin_cnt = 0;
             foreach (QString p, mod_lines) {
-                comp.modelString += QString(" \"%1\" 1").arg(p);
+                if (lin_cnt>3) comp.modelString += QString(" \"Line_%1=%2\" 1").arg(lin_cnt+1).arg(p);
+                else comp.modelString += QString(" \"%1\" 1").arg(p);
                 lin_cnt++;
             }
-            // Empty lines
-            for (int i=lin_cnt;i<5;i++) comp.modelString += " \"\" 1";
             comp.modelString += ">";
 
             comp.definition += QString("<Component %1>\n").arg(comp.name);
