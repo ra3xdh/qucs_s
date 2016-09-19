@@ -438,7 +438,10 @@ inline int parseSPICEComponentLibrary (QString filename, ComponentLibrary &libra
 
             comp.definition += QString("<Component %1>\n").arg(comp.name);
             comp.definition += "<Description>\n";
-            comp.definition += QString("%1 model from %2 library").arg(comp.name).arg(library.name);
+            comp.definition += QString("%1 model from %2 library\n"
+                                       "This component is model-only (.MODEL).\n"
+                                       "No subcircuit definition!\n"
+                                       "Use appropriate device to attach this model.").arg(comp.name).arg(library.name);
             comp.definition += "</Description>\n";
             comp.definition += "<Spice>\n";
             comp.definition += mod_lines.join("\n");
@@ -447,6 +450,16 @@ inline int parseSPICEComponentLibrary (QString filename, ComponentLibrary &libra
             comp.definition += "<"+comp.modelString;
             comp.definition += "\n";
             comp.definition += "</Model>\n";
+            QString symstr = "<Symbol>\n"
+                    "<Line -40 20 80 0 #000080 2 1>\n"
+                    "<Line -40 -20 80 0 #000080 2 1>\n"
+                    "<Line -40 20 0 -40 #000080 2 1>\n"
+                    "<Line 40 20 0 -40 #000080 2 1>\n"
+                    "<Text -35 -10 14 #ff0000 0 \".MODEL\">\n"
+                    "<.ID -40 39 SUB>\n"
+                  "</Symbol>\n";
+            comp.definition +=symstr;
+            comp.symbol += symstr;
             comp.definition += "</Component>\n";
             library.components.append(comp);
         }
