@@ -268,6 +268,38 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
 }
 
 /*!
+ * \brief XSPICE_CMbuilder::getModIfsFileList Get the list of CodeModel source files
+ *        without relocating them into build tree.
+ * \param files[out] The list of source filenames
+ */
+void XSPICE_CMbuilder::getModIfsFileList(QStringList &files)
+{
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->Model=="XSP_CMod") {
+            files.append(spicecompat::convert_relative_filename(pc->Props.at(0)->Value));
+            files.append(spicecompat::convert_relative_filename(pc->Props.at(1)->Value));
+        }
+        if (pc->Model=="Lib") {
+            LibComp *libpc = (LibComp *)pc;
+            files.append(libpc->getAttachedIFS());
+            files.append(libpc->getAttachedMOD());
+        }
+        if (pc->Model=="Sub") { // Scan subcircuits recursively
+            Schematic *d = new Schematic(0, ((Subcircuit *)pc)->getSubcircuitFile());
+            if(!d->loadDocument())      // load document if possible
+            {
+                delete d;
+                continue;
+            }
+            XSPICE_CMbuilder *bld = new XSPICE_CMbuilder(d);
+            bld->getModIfsFileList(files);
+            delete bld;
+            delete d;
+        }
+    }
+}
+
+/*!
  * \brief XSPICE_CMbuilder::normalizeModelName Get normalized model name for Nsgpice.
  *        Rename *.mod file for cfunc.mod. Rename *.ifs to ifspec.ifs.
  * \param file[in] Input file

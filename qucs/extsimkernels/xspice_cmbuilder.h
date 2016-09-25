@@ -42,6 +42,7 @@ public:
     void cleanCModelTree();
     void createCModelTree(QString &output);
     void compileCMlib(QString &ouptut);
+    void getModIfsFileList(QStringList &files);
 
 protected:
     void setProcessedFiles(QList<QStringList> processed_pairs);

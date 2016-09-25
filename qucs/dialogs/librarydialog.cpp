@@ -48,6 +48,7 @@
 #include "main.h"
 #include "schematic.h"
 #include "extsimkernels/abstractspicekernel.h"
+#include "extsimkernels/xspice_cmbuilder.h"
 
 extern SubMap FileList;
 
@@ -510,6 +511,21 @@ void LibraryDialog::slotSave()
         kern->createSubNetlsit(ts,true);
         intoStream(Stream, tmp, "Spice");
         delete kern;
+        XSPICE_CMbuilder *bld = new XSPICE_CMbuilder(Doc);
+        QStringList srcs,dsts;
+        bld->getModIfsFileList(srcs);
+        foreach(QString ifl,srcs) {
+            QString ofl=ifl;
+            intoFile(ifl,ofl,dsts);
+        }
+        QString s = "<SpiceAttach ";
+        foreach (QString f,dsts) {
+            s += " \"" + f + "\"";
+        }
+        s += ">\n";
+        Stream<<s;
+
+        delete bld;
     }
 
     // save verilog model
