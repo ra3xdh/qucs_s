@@ -77,6 +77,7 @@
 #include "misc.h"
 #include "extsimkernels/verilogawriter.h"
 #include "extsimkernels/simsettingsdialog.h"
+#include "extsimkernels/codemodelgen.h"
 
 // icon for unsaved files (diskette)
 const char *smallsave_xpm[] = {
@@ -2926,4 +2927,30 @@ void QucsApp::slotBuildVAModule()
         }
     }
 
+}
+
+void QucsApp::slotBuildXSPICEIfs()
+{
+    if (!isTextDocument(DocumentTab->currentPage())) {
+        Schematic *Sch = (Schematic*)DocumentTab->currentPage();
+
+        QFileInfo inf(Sch->DocName);
+        QString filename = QFileDialog::getSaveFileName(this,tr("Save Verilog-A module"),
+                                                        inf.path()+QDir::separator()+inf.baseName()+".ifs",
+                                                        "XSPICE IFS (*.ifs)");
+        if (filename.isEmpty()) return;
+
+        QFile f(filename);
+        if (f.open(QIODevice::WriteOnly)) {
+            QTextStream stream(&f);
+            CodeModelGen *cmgen = new CodeModelGen;
+            bool r = cmgen->createIFS(stream,Sch);
+            if (!r) QMessageBox::critical(this,tr("Create XSPICE IFS"),
+                                          tr("Create IFS file failed!"
+                                             "Schematic is not subciruit!"),
+                                          QMessageBox::Ok);
+            delete cmgen;
+            f.close();
+        }
+    }
 }

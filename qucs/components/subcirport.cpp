@@ -31,6 +31,9 @@ SubCirPort::SubCirPort()
   Props.append(new Property("Type", "analog", false,
 		QObject::tr("type of the port (for digital simulation only)")
 		+" [analog, in, out, inout]"));
+  Props.append(new Property("XSPICE_Type","v",false,"Allowed XSPICE types: [v,i,vd,id,h,g,hd,gd]"));
+  Props.append(new Property("Conj","",false,
+        QObject::tr("Conjugated port for XSPICE differential ports")));
 
   createSymbol();
   tx = x1+4;

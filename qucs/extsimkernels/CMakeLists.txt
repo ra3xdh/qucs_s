@@ -18,6 +18,7 @@ customsimdialog.h
 simsettingsdialog.h
 verilogawriter.h
 xspice_cmbuilder.h
+codemodelgen.h
 )
 
 SET(EXTSIMKERNELS_SRCS
@@ -31,6 +32,7 @@ customsimdialog.cpp
 simsettingsdialog.cpp
 verilogawriter.cpp
 xspice_cmbuilder.cpp
+codemodelgen.cpp
 )
 
 SET(EXTSIMKERNELS_MOC_HDRS
