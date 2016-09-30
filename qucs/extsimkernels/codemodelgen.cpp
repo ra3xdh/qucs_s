@@ -95,7 +95,7 @@ bool CodeModelGen::createIFS(QTextStream &stream, Schematic *sch)
     QString base = inf.completeBaseName();
     base.remove('-').remove(' ');
 
-    stream<<"NAME TABLE:\n";
+    stream<<"NAME_TABLE:\n";
     stream<<QString("C_Function_Name: cm_%1\n").arg(base);
     stream<<QString("Spice_Model_Name: %1\n").arg(base);
 
@@ -106,7 +106,7 @@ bool CodeModelGen::createIFS(QTextStream &stream, Schematic *sch)
     for(;it!=ports.end();it++) {
         QString pname = it.key();
         QString ptype = it.value();
-        stream<<"\nPORT TABLE:\n";
+        stream<<"\nPORT_TABLE:\n";
         stream<<QString("Port_Name: %1\n").arg(pname);
         stream<<"Description: \" \"\n";
         stream<<"Direction: inout\n";
@@ -135,6 +135,38 @@ bool CodeModelGen::createIFS(QTextStream &stream, Schematic *sch)
         }
         break;
       }
+    return true;
+}
+
+bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Component *pc)
+{
+    prepare(sch);
+    if (pc->Model!="EDD") return false;
+    int Nbranch = pc->Props.at(1)->Value.toInt();
+    QStringList ports;
+    for(int i=0;i<Nbranch;i++) {
+        QString net1 = pc->Ports.at(2*i)->Connection->Name;
+        QString net2 = pc->Ports.at(2*i+1)->Connection->Name;
+        ports.append(net1+"_"+net2);
+    }
+
+    stream<<"NAME_TABLE:\n";
+    stream<<QString("C_Function_Name: cm_%1\n").arg(pc->Name);
+    stream<<QString("Spice_Model_Name: %1\n").arg(pc->Name);
+
+    foreach(QString pp,ports) {
+        stream<<"\nPORT_TABLE:\n";
+        stream<<QString("Port_Name: %1\n").arg(pp);
+        stream<<"Description: \" \"\n";
+        stream<<"Direction: inout\n";
+        stream<<"Default_Type: gd\n";
+        stream<<"Allowed_Types: [gd]\n";
+        stream<<"Vector: no\n";
+        stream<<"Vector_Bounds: - \n";
+        stream<<"Null_Allowed: no\n\n";
+    }
+
+
     return true;
 }
 

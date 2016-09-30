@@ -2929,7 +2929,8 @@ void QucsApp::slotBuildVAModule()
 
 }
 
-void QucsApp::slotBuildXSPICEIfs()
+
+void QucsApp::slotBuildXSPICEIfs(bool EDD)
 {
     if (!isTextDocument(DocumentTab->currentPage())) {
         Schematic *Sch = (Schematic*)DocumentTab->currentPage();
@@ -2944,7 +2945,17 @@ void QucsApp::slotBuildXSPICEIfs()
         if (f.open(QIODevice::WriteOnly)) {
             QTextStream stream(&f);
             CodeModelGen *cmgen = new CodeModelGen;
-            bool r = cmgen->createIFS(stream,Sch);
+            bool r = false;
+            if (!EDD) {
+                r = cmgen->createIFS(stream,Sch);
+            } else {
+                for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+                    if (pc->isSelected) {
+                        r = cmgen->createIFSfromEDD(stream,Sch,pc);
+                        break;
+                    }
+                }
+            }
             if (!r) QMessageBox::critical(this,tr("Create XSPICE IFS"),
                                           tr("Create IFS file failed!"
                                              "Schematic is not subciruit!"),
@@ -2953,4 +2964,10 @@ void QucsApp::slotBuildXSPICEIfs()
             f.close();
         }
     }
+}
+
+
+void QucsApp::slotEDDtoIFS()
+{
+    slotBuildXSPICEIfs(true);
 }

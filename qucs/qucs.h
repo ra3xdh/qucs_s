@@ -154,7 +154,8 @@ private slots:
   void slotSimulateWithSpice();
   void slotAfterSpiceSimulation();
   void slotBuildVAModule();
-  void slotBuildXSPICEIfs();
+  void slotBuildXSPICEIfs(bool EDD = false);
+  void slotEDDtoIFS();
 
 signals:
   void signalKillEmAll();

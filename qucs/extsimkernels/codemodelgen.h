@@ -41,6 +41,7 @@ protected:
     bool prepare(Schematic *sch);
 public:
     bool createIFS(QTextStream &stream, Schematic *sch);
+    bool createIFSfromEDD(QTextStream &stream, Schematic *sch, Component *pc);
     bool createMOD(QTextStream &stream, Schematic *sch);
     
 };

@@ -773,6 +773,11 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
         ComponentMenu->insertItem(QObject::tr("Export as image"), QucsMain,
             SLOT(slotSaveDiagramToGraphicsFile()));
       }
+      if (focusElement->Type & isComponent) {
+          Component *pc = (Component *)focusElement;
+          if (pc->Model == "EDD") ComponentMenu->insertItem(QObject::tr("Create XSPICE IFS"), QucsMain,
+                                                            SLOT(slotEDDtoIFS()));
+      }
     }
     break;
   }
