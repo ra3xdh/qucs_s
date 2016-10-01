@@ -1,11 +1,10 @@
 ## Process this file with automake to produce Makefile.in
 # 
-# qucs-lib/library/Makefile.am
+# qucs-lib/library/XyceDigital/Makefile.am
 #
 # Automake input file.
 #
-# Copyright (C) 2004, 2005, 2008 Stefan Jahn <stefan@lkcc.org>
-# Copyright (C) 2016 Mike Brinson <mbrin72043@yahoo.co.uk>
+# Copyright (C) 2016 Mike Brinson mbrin72043@yahoo.co.uk
 #
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,23 +22,21 @@
 # Boston, MA 02110-1301, USA.  
 #
 
-SUBDIRS =  AnalogueCM MESFETs XyceDigital
+
+CMLIBS = AND2.sym AND4.sym NAND2.sym NAND4.sym BUF.sym INV.sym \
+         LOGIC0.sym LOGIC1.sym OR2.sym OR4.sym NOR2.sym NOR4.sym \
+         XOR.sym NXOR.sym MUX2TO1.sym MUX4TO1.sym MUX8TO1.sym \
+         GEN0OR1X4.sym GEN0OR1X8.sym FADDER.sym  ANDOR4X2.sym \
+         A2DBRIDGE.sym A2DBRIDGEX2.sym A2DBRIDGEX4.sym A2DBRIDGEX8.sym \
+         D2ABRIDGE.sym D2ABRIDGEX2.sym D2ABRIDGEX4.sym D2ABRIDGEX8.sym \
+         PATGENX1.sym PATGENX2.sym PATGENX4.sym PATGENX8.sym PATGENX32.sym PATGENX128.sym
 
 
-COMPLIBS = Transistors.lib Substrates.lib Diodes.lib MOSFETs.lib OpAmps.lib \
-           Bridges.lib LEDs.lib JFETs.lib Z-Diodes.lib NMOSFETs.lib \
-	   PMOSFETs.lib Ideal.lib Regulators.lib Varistors.lib Cores.lib Transformers.lib \
-	   AnalogueCM.lib Xanalogue.lib MESFETs.lib qucs.blacklist ngspice.blacklist xyce.blacklist \
-           XyceDigital.lib Xyce_Digital_TTL_Technology.lib
-	       
-	       
-
-EXTRA_DIST = $(COMPLIBS) 
-
+EXTRA_DIST = $(CMLIBS)
 
 # installation of component libraries
-librarydir = ${prefix}/share/qucs/library
-library_DATA = $(EXTRA_DIST)
+librarydir = ${prefix}/share/qucs/library/XyceDigital
+library_DATA = $(CMLIBS)
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = Makefile.in

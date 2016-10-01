@@ -828,6 +828,7 @@ AC_CONFIG_FILES([Makefile
     qucs-lib/library/Makefile
     qucs-lib/library/AnalogueCM/Makefile
     qucs-lib/library/MESFET/Makefile
+    qucs-lib/library/XyceDigital/Makefile
     qucs-attenuator/Makefile
     qucs-rescodes/Makefile
     qucs/Makefile

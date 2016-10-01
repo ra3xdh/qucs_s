@@ -1,0 +1,497 @@
+* Xyce logic gate models: experimental behavioural models.
+* Developed for Xyce/Qucs-S.
+*
+* Inputs expect analogue signals in the range 0 to 1 volts.
+* These represent logic 0 at 0 volts and logic 1 at 1 volt.
+* Prior to processing by the AND2 gate function the input signals
+* are level shifted to -1 to 1 volt range. This ensures that
+* the gate output signals are in the range 0 to 1 volt, yielding
+* logic 0 at 0 volt and logic 1 at 1 volt. The analogue to digital signal
+* level shifting is hidden from users.
+*
+* This is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2, or (at your option)
+* any later version.
+*
+* Copyright Mike Brinson Aug./Sep. 2016
+*
+* ***********************************************************************************
+.subckt AND2 nin1 nin2 nout 
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnin1 nin1shifted 0 v=2*V(nin1)-1
+bnin2 nin2shifted 0 v=2*V(nin2)-1
+UAND2 AND(2) ndpwr ndgnd  nin1shifted nin2shifted nout DMOD 
+.ends AND2
+*************************************************************************************
+.subckt AND4 nin1 nin2 nin3 nin4 nout 
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnin1 nin1shifted 0 v=2*V(nin1)-1
+bnin2 nin2shifted 0 v=2*V(nin2)-1
+bnin3 nin3shifted 0 v=2*V(nin3)-1
+bnin4 nin4shifted 0 v=2*V(nin4)-1
+UAND4 AND(4) ndpwr ndgnd  nin1shifted nin2shifted nin3shifted nin4shifted nout DMOD 
+.ends AND4
+****************************************************************************************
+.subckt NAND2 nin1 nin2 nout 
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnin1 nin1shifted 0 v=2*V(nin1)-1
+bnin2 nin2shifted 0 v=2*V(nin2)-1
+UNAND2 NAND(2) ndpwr ndgnd  nin1shifted nin2shifted nout DMOD 
+.ends NAND2
+******************************************************************************************
+.subckt NAND4 nin1 nin2 nin3 nin4 nout 
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnin1 nin1shifted 0 v=2*V(nin1)-1
+bnin2 nin2shifted 0 v=2*V(nin2)-1
+bnin3 nin3shifted 0 v=2*V(nin3)-1
+bnin4 nin4shifted 0 v=2*V(nin4)-1
+UNAND4 NAND(4) ndpwr ndgnd  nin1shifted nin2shifted nin3shifted nin4shifted nout DMOD 
+.ends NAND4
+*********************************************************************************************
+.subckt BUF nin1 nout 
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnin1 nin1shifted 0 v=2*V(nin1)-1
+vnin1 nin1shifted n1 {-VCC}
+UBUF BUF ndpwr ndgnd  nin1shifted nout DMODBUF 
+.ends BUF
+**********************************************************************************************
+.subckt INV nin1 nout 
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnin1 nin1shifted 0 v=2*V(nin1)-1
+UINV INV ndpwr ndgnd  nin1shifted nout DMOD 
+.ends INV
+*****************************************************************
+.subckt LOGIC1 nout
+Ilogic1 0 nout dc {ScaleFactor}
+Rlogic1 nout 0 1
+.ends LOGIC1
+*****************************************************************
+.subckt LOGIC0 nout
+Ilogic0 0 nout dc 0
+Rlogic0 nout 0 1
+.ends LOGIC0
+***************************************************************** 
+.subckt OR2 nin1 nin2 nout 
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnin1 nin1shifted 0 v=2*V(nin1)-1
+bnin2 nin2shifted 0 v=2*V(nin2)-1
+UOR2 OR(2) ndpwr ndgnd  nin1shifted nin2shifted nout DMOD
+.ends OR2
+*****************************************************************
+.subckt OR4 nin1 nin2 nin3 nin4 nout
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnin1 nin1shifted 0 v=2*V(nin1)-1
+bnin2 nin2shifted 0 v=2*V(nin2)-1
+bnin3 nin3shifted 0 v=2*V(nin3)-1
+bnin4 nin4shifted 0 v=2*V(nin4)-1
+UOR4 OR(4) ndpwr ndgnd  nin1shifted nin2shifted nin3shifted nin4shifted nout DMOD 
+.ends OR4
+**********************************************************************************
+.subckt NOR2 nin1 nin2 nout
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnin1 nin1shifted 0 v=2*V(nin1)-1
+bnin2 nin2shifted 0 v=2*V(nin2)-1
+UNOR2 NOR(2) ndpwr ndgnd  nin1shifted nin2shifted nout DMOD 
+.ends NOR2
+*************************************************************************************
+.subckt NOR4 nin1 nin2 nin3 nin4 nout
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnin1 nin1shifted 0 v=2*V(nin1)-1
+bnin2 nin2shifted 0 v=2*V(nin2)-1
+bnin3 nin3shifted 0 v=2*V(nin3)-1
+bnin4 nin4shifted 0 v=2*V(nin4)-1
+UNOR4 NOR(4) ndpwr ndgnd  nin1shifted nin2shifted nin3shifted nin4shifted nout DMOD
+.ends NOR4
+************************************************************************************
+.subckt XOR nin1 nin2 nout 
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnin1 nin1shifted 0 v=2*V(nin1)-1
+bnin2 nin2shifted 0 v=2*V(nin2)-1
+UXOR XOR ndpwr ndgnd  nin1shifted nin2shifted nout DMOD
+.ends XOR
+*************************************************************************************
+.subckt NXOR nin1 nin2 nout 
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnin1 nin1shifted 0 v=2*V(nin1)-1
+bnin2 nin2shifted 0 v=2*V(nin2)-1
+UNXOR NXOR ndpwr ndgnd  nin1shifted nin2shifted nout DMOD
+.ends NXOR
+*************************************************************************************
+.subckt MUX2TO1 nen ng nd0 nd1 nz
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnen nenshifted   0 v=2*V(nen)-1
+bng  ngshifted    0 v=2*V(ng)-1
+bnd0 nd0shifted   0 v=2*V(nd0)-1
+bnd1 nd1shifted   0 v=2*V(nd01)-1 
+UNINV1 INV ndpwr ndgnd nenshifted n5 DMOD
+UNINV2 INV ndowr ndgnd ngshifted  n6 DMOD
+bn5   n5shifted 0 v=2*V(n5)-1
+bn6   n6shifted 0 v=2*V(n6)-1
+UAND3A AND(3) ndpwr ndgnd n5shifted n6shifted nd0shifted n7 DMOD
+UAND3B AND(3) ndpwr ndgnd n5shifted ngshifted nd1shifted n8 DMOD
+bn7   n5shifted 0 v=2*V(n7)-1
+bn8   n8shifted 0 v=2*V(n8)-1
+UORA OR(2) ndpwr ndgnd n7shifted n8shifted nz DMOD
+.ends MUX2TO1
+**************************************************************************************
+.subckt MUX4TO1 nen ng0 ng1 nd0 nd1 nd2 nd3 nz
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnen nenshifted   0 v=2*V(nen)-1
+bng0 ng0shifted   0 v=2*V(ng0)-1
+bng1 ng1shifted   0 v=2*V(ng1)-1 
+bnd0 nd0shifted   0 v=2*V(nd0)-1
+bnd1 nd1shifted   0 v=2*V(nd1)-1 
+bnd2 nd2shifted   0 v=2*V(nd2)-1
+bnd3 nd3shifted   0 v=2*V(nd3)-1 
+Unen INV  ndpwr ndgnd nenshifted n12 DMOD
+Ung0 INV  ndpwr ndgnd ng0shifted n8  DMOD
+Ung1 INV  ndpwr ndgnd ng1shifted n9  DMOD
+bn12 n12shifted   0 v=2*V(n12)-1
+bn8  n8shifted    0 v=2*V(n8)-1
+bn9  n9shifted    0 v=2*V(n9)-1 
+UANDA AND(4) ndpwr ndgnd n12shifted n8shifted   n9shifted  nd0shifted  n13 DMOD
+UANDB AND(4) ndpwr ndgnd n12shifted ng0shifted  n9shifted  nd1shifted  n14 DMOD
+UANDC AND(4) ndpwr ndgnd n12shifted n8shifted   ng1shifted nd2shifted  n15 DMOD
+UANDD AND(4) ndpwr ndgnd n12shifted ng0shifted  ng1shifted nd3shifted  n16 DMOD
+bn13  n13shifted   0 v=2*V(n13)-1
+bn14  n14shifted   0 v=2*V(n14)-1
+bn15  n15shifted   0 v=2*V(n15)-1 
+bn16  n16shifted   0 v=2*V(n16)-1
+UOR OR (4) ndpwr ndgnd n13shifted n14shifted n15shifted n16shifted nz DMOD
+.ends MUX4TO1
+********************************************************************************
+.subckt MUX8TO1 nen ng0 ng1 ng2 nd0 nd1 nd2 nd3 nd4 nd5 nd6 nd7 nz
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnen nenshifted   0 v=2*V(nen)-1
+bng0 ng0shifted   0 v=2*V(ng0)-1
+bng1 ng1shifted   0 v=2*V(ng1)-1 
+bng2 ng2shifted   0 v=2*V(ng2)-1 
+bnd0 nd0shifted   0 v=2*V(nd0)-1
+bnd1 nd1shifted   0 v=2*V(nd1)-1 
+bnd2 nd2shifted   0 v=2*V(nd2)-1
+bnd3 nd3shifted   0 v=2*V(nd3)-1 
+bnd4 nd4shifted   0 v=2*V(nd4)-1
+bnd5 nd5shifted   0 v=2*V(nd5)-1
+bnd6 nd6shifted   0 v=2*V(nd6)-1
+bnd7 nd7shifted   0 v=2*V(nd7)-1 
+Unen INV  ndpwr ndgnd nenshifted n12 DMOD
+Ung0 INV  ndpwr ndgnd ng0shifted n8  DMOD
+Ung1 INV  ndpwr ndgnd ng1shifted n9  DMOD
+Ung2 INV  ndpwr ndgnd ng2shifted n17 DMOD
+bn12 n12shifted   0 v=2*V(n12)-1
+bn8  n8shifted    0 v=2*V(n8)-1
+bn9  n9shifted    0 v=2*V(n9)-1 
+bn17 n17shifted   0 v=2*V(n17)-1 
+UANDA AND(5) ndpwr ndgnd n12shifted n8shifted   n9shifted  n17shifted nd0shifted  n13 DMOD
+UANDB AND(5) ndpwr ndgnd n12shifted ng0shifted  n9shifted  n17shifted nd1shifted  n14 DMOD
+UANDC AND(5) ndpwr ndgnd n12shifted n8shifted   ng1shifted n17shifted nd2shifted  n15 DMOD
+UANDD AND(5) ndpwr ndgnd n12shifted ng0shifted  ng1shifted n17shifted nd3shifted  n16 DMOD
+UANDE AND(5) ndpwr ndgnd n12shifted n8shifted   n9shifted  ng2shifted nd4shifted  n18 DMOD
+UANDF AND(5) ndpwr ndgnd n12shifted ng0shifted  n9shifted  ng2shifted nd5shifted  n19 DMOD
+UANDG AND(5) ndpwr ndgnd n12shifted n8shifted   ng1shifted ng2shifted nd6shifted  n20 DMOD
+UANDH AND(5) ndpwr ndgnd n12shifted ng0shifted  ng1shifted ng2shifted nd7shifted  n21 DMOD
+
+bn13  n13shifted   0 v=2*V(n13)-1
+bn14  n14shifted   0 v=2*V(n14)-1
+bn15  n15shifted   0 v=2*V(n15)-1 
+bn16  n16shifted   0 v=2*V(n16)-1
+bn18  n18shifted   0 v=2*V(n18)-1
+bn19  n19shifted   0 v=2*V(n19)-1
+bn20  n20shifted   0 v=2*V(n20)-1 
+bn21  n21shifted   0 v=2*V(n21)-1
+
+UOR OR (8) ndpwr ndgnd n13shifted n14shifted n15shifted n16shifted 
++                      n18shifted n19shifted n20shifted n21shifted  
++                      nz DMOD
+.ends MUX8TO1
+**********************************************************************************************
+.subckt FADDER nin1 nin2 ncarryin nsumOut ncarryOut
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnin1 nin1shifted 0 v=2*V(nin1)-1
+bnin2 nin2shifted 0 v=2*V(nin2)-1
+bncarryin ncarryinshifted 0 v=2*V(ncarryin)-1
+UFADDER ADD ndpwr ndgnd nin1shifted nin2shifted ncarryinshifted nsumOut ncarryOut DMOD
+.ends FADDER
+************************************************************************************
+.subckt ANDOR4X2 nA1 nA2 nB1 nB2 nC1 nC2 nD1 nD2 nz 
+vdpwr ndpwr 0 1
+vdgnd ndgnd 0 -1
+bnA1 nA1shifted 0 v=2*V(nA1)-1
+bnA2 nA2shifted 0 v=2*V(nA2)-1
+bnB1 nB1shifted 0 v=2*V(nB1)-1
+bnB2 nB2shifted 0 v=2*V(nB2)-1
+bnC1 nC1shifted 0 v=2*V(nC1)-1
+bnC2 nC2shifted 0 v=2*V(nC2)-1
+bnD1 nD1shifted 0 v=2*V(nD1)-1
+bnD2 nD2shifted 0 v=2*V(nD2)-1
+UANDA AND (2) ndpwr ndgnd nA1shifted nA2shifted n9 DMOD
+UANDB AND (2) ndpwr ndgnd nB1shifted nB2shifted n10 DMOD
+UANDC AND (2) ndpwr ndgnd nC1shifted nC2shifted n11 DMOD
+UANDD AND (2) ndpwr ndgnd nD1shifted nD2shifted n12 DMOD
+bn9   n9shifted    0 v=2*V(n9)-1
+bn10  n10shifted   0 v=2*V(n10)-1
+bn11  n11shifted   0 v=2*V(n11)-1 
+bn12  n12shifted   0 v=2*V(n12)-1
+UANDOE4X2 OR (4) ndpwr ndgnd n9shifted n10shifted n11inshifted n12shifted nz DMOD
+.ends ANDOR4X2
+************************************************************************************
+.subckt A2DBRIDGE nAin nDout
+R1 nAin 0 1e8
+R2 nDout 0 1
+BA2D 0 nDout I={V(nAin)/(ScaleFactor+1e-20)}
+.ends A2DBRIDGE
+************************************************************************************
+.subckt A2DBRIDGEX2 nAin1  nDout1 nAin2 nDout2
+R1 nAin1 0 1e8
+R2 nDout1 0 1
+BA2D1 0 nDout1 I={V(nAin1)/(ScaleFactor+1e-20)}
+R3 nAin2 0 1e8
+R4 nDout2 0 1
+BA2D2 0 nDout2 I={V(nAin2)/(ScaleFactor+1e-20)}
+.ends A2DBRIDGEx2
+************************************************************************************
+.subckt A2DBRIDGEX4 nAin1 nDout1 nAin2 nDout2 nAin3 nDout3 nAin4 nDout4
+R1 nAin1 0 1e8
+R2 nDout1 0 1
+BA2D1 0 nDout1 I={V(nAin1)/(ScaleFactor+1e-20)}
+R3 nAin2 0 1e8
+R4 nDout2 0 1
+BA2D2 0 nDout2 I={V(nAin2)/(ScaleFactor+1e-20)}
+R5 nAin3 0 1e8
+R6 nDout3 0 1
+BA2D3 0 nDout3 I={V(nAin3)/(ScaleFactor+1e-20)}
+R7 nAin4 0 1e8
+R8 nDout4 0 1
+BA2D4 0 nDout4 I={V(nAin4)/(ScaleFactor+1e-20)}
+.ends A2DBRIDGEx4
+************************************************************************************
+.subckt A2DBRIDGEX8 nAin1 nDout1 nAin2 nDout2 nAin3 nDout3 nAin4 nDout4    
++                   nAin5 nDout5 nAin6 nDout6 nAin7 nDout7 nAin8 nDout8
+R1 nAin1 0 1e8
+R2 nDout1 0 1
+BA2D1 0 nDout1 I={V(nAin1)/(ScaleFactor+1e-20)}
+R3 nAin2 0 1e8
+R4 nDout2 0 1
+BA2D2 0 nDout2 I={V(nAin2)/(ScaleFactor+1e-20)}
+R5 nAin3 0 1e8
+R6 nDout3 0 1
+BA2D3 0 nDout3 I={V(nAin3)/(ScaleFactor+1e-20)}
+R7 nAin4 0 1e8
+R8 nDout4 0 1
+BA2D4 0 nDout4 I={V(nAin4)/(ScaleFactor+1e-20)}
+R9 nAin5 0 1e8
+R10 nDout5 0 1
+BA2D5 0 nDout5 I={V(nAin5)/(ScaleFactor+1e-20)}
+R11 nAin6 0 1e8
+R12 nDout6 0 1
+BA2D6 0 nDout6 I={V(nAin6)/(ScaleFactor+1e-20)}
+R13 nAin7 0 1e8
+R14 nDout7 0 1
+BA2D7 0 nDout7 I={V(nAin7)/(ScaleFactor+1e-20)}
+R15 nAin8 0 1e8
+R16 nDout8 0 1
+BA2D8 0 nDout8 I={V(nAin8)/(ScaleFactor+1e-20)}
+.ends A2DBRIDGEx8
+************************************************************************************
+.subckt D2ABRIDGE nDin nAout
++ PARAMS: ScaleFactor=1
+R1 nDin 0 1e8
+R2 nAout 0 1
+BD2A 0 nAout I={V(nDin)*ScaleFactor}
+.ends D2ABRIDGE
+************************************************************************************
+.subckt D2ABRIDGEX2 nDin1 nAout1 nDin2 nAout2
+R1 nDin1 0 1e8
+R2 nAout1 0 1
+BD2A1 0 nAout1 I={V(nDin1)*ScaleFactor}
+R3 nDin2 0 1e8
+R4 nAout2 0 1
+BD2A2 0 nAout2 I={V(nDin2)*ScaleFactor}
+.ends D2ABRIDGEx2
+************************************************************************************
+.subckt D2ABRIDGEX4 nDin1 nAout1 nDin2 nAout2 nDin3 nAout3 nDin4  nAout4
+R1 nDin1 0 1e8
+R2 nAout1 0 1
+BD2A1 0 nAout1 I={V(nDin1)*ScaleFactor}
+R3 nDin2 0 1e8
+R4 nAout2 0 1
+BD2A2 0 nAout2 I={V(nDin2)*ScaleFactor}
+R5 nDin3 0 1e8
+R6 nAout3 0 1
+BD2A3 0 nAout3 I={V(nDin3)*ScaleFactor}
+R7 nDin4 0 1e8
+R8 nAout4 0 1
+BD2A4 0 nAout4 I={V(nDin4)*ScaleFactor}
+.ends D2ABRIDGEX4
+************************************************************************************
+.subckt D2ABRIDGEX8 nDin1 nAout1 nDin2 nAout2 nDin3 nAout3 nDin4 nAout4    
++                   nDin5 nAout5 nDin6 nAout6 nDin7 nAout7 nDin8 nAout8
+R1 nDin1 0 1e8
+R2 nAout1 0 1
+BD2A1 0 nAout1 I={V(nDin1)*ScaleFactor}
+R3 nDin2 0 1e8
+R4 nAout2 0 1
+BD2A2 0 nAout2 I={V(nDin2)*ScaleFactor}
+R5 nDin3 0 1e8
+R6 nAout3 0 1
+BD2A3 0 nAout3 I={V(nDin3)*ScaleFactor}
+R7 nDin4 0 1e8
+R8 nAout4 0 1
+BD2A4 0 nAout4 I={V(nDin4)*ScaleFactor}
+R9 nDin5 0 1e8
+R10 nAout5 0 1
+BD2A5 0 nAout5 I={V(nDin5)*ScaleFactor}
+R11 nDin6 0 1e8
+R12 nAout6 0 1
+BD2A6 0 nAout6 I={V(nDin6)*ScaleFactor}
+R13 nDin7 0 1e8
+R14 nAout7 0 1
+BD2A7 0 nAout7 I={V(nDin7)*ScaleFactor}
+R15 nDin8 0 1e8
+R17 nAout8 0 1
+BD2A8 0 nAout8 I={V(nDin8)*ScaleFactor}
+.ends D2ABRIDGEX8
+************************************************************************************
+.subckt PATGENX1 nout
+.PARAM period={1/(PulseFreq+1e-20)}
+.PARAM p1={0.5*period}
+.PARAM p2={period}
+Inout 0 nout dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p1} {p2})
+Rout nout 0 1
+.ends PATGENX1
+************************************************************************************
+.subckt PATGENX2 nout1 nout2
+.PARAM period={1/(PulseFreq+1e-20)}
+.PARAM p1={0.5*period}
+.PARAM p2={period}
+.PARAM p3={0.5*p1}
+.PARAM p4={0.5*p2}
+Inout1 0 nout1 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p1} {p2})
+Rout1 nout1 0 1
+Inout2 0 nout2 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p3} {p4})
+Rout2 nout2 0 1
+.ends PATGENX2
+************************************************************************************
+.subckt PATGENX4 nout1 nout2 nout3
+.PARAM period={1/(PulseFreq+1e-20)}
+.PARAM p1={0.5*period}
+.PARAM p2={period}
+.PARAM p3={0.5*p1}
+.PARAM p4={0.5*p2}
+.PARAM p5={0.5*p3}
+.PARAM p6={0.5*p4}
+Inout1 0 nout1  dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p1} {p2})
+Rout1 nout1 0 1
+Inout2 0 nout2  dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p3} {p4})
+Rout2 nout2 0 1
+Inout3 0 nout3  dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p5} {p6})
+Rout3 nout3 0 1
+.ends PATGENX4
+************************************************************************************
+.subckt PATGENX8 nout1 nout2 nout3 nout4
+.PARAM period={1/(PulseFreq+1e-20)}
+.PARAM p1={0.5*period}
+.PARAM p2={period}
+.PARAM p3={0.5*p1}
+.PARAM p4={0.5*p2}
+.PARAM p5={0.5*p3}
+.PARAM p6={0.5*p4}
+.PARAM p7={0.5*p5}
+.PARAM p8={0.5*p6}
+Inout1 0 nout1 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p1} {p2})
+Rout1 nout1 0 1
+Inout2 0 nout2 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p3} {p4})
+Rout2 nout2 0 1
+Inout3 0 nout3 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p5} {p6})
+Rout3 nout3 0 1
+Inout4 0 nout4 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p7} {p8})
+Rout4 nout4 0 1
+.ends PATGENX8
+************************************************************************************
+.subckt PATGENX32 nout1 nout2 nout3 nout4 nout5 nout6
+.PARAM period={1/(PulseFreq+1e-20)}
+.PARAM p1={0.5*period}
+.PARAM p2={period}
+.PARAM p3={0.5*p1}
+.PARAM p4={0.5*p2}
+.PARAM p5={0.5*p3}
+.PARAM p6={0.5*p4}
+.PARAM p7={0.5*p5}
+.PARAM p8={0.5*p6}
+.PARAM p9={0.5*p7}
+.PARAM p10={0.5*p8}
+.PARAM p11={0.5*p9}
+.PARAM p12={0.5*p10}
+Inout1 0 nout1 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p1} {p2})
+Rout1 nout1 0 1
+Inout2 0 nout2 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p3} {p4})
+Rout2 nout2 0 1
+Inout3 0 nout3 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p5} {p6})
+Rout3 nout3 0 1
+Inout4 0 nout4 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p7} {p8})
+Rout4 nout4 0 1
+Inout5 0 nout5 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p9} {p10})
+Rout5 nout5 0 1
+Inout6 0 nout6 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p11} {p12})
+Rout6 nout6 0 1
+.ends PATGENX32
+************************************************************************************
+.subckt PATGENX128 nout1 nout2 nout3 nout4 nout5 nout6 nout7 nout8
+.PARAM period={1/(PulseFreq+1e-20)}
+.PARAM p1={0.5*period}
+.PARAM p2={period}
+.PARAM p3={0.5*p1}
+.PARAM p4={0.5*p2}
+.PARAM p5={0.5*p3}
+.PARAM p6={0.5*p4}
+.PARAM p7={0.5*p5}
+.PARAM p8={0.5*p6}
+.PARAM p9={0.5*p7}
+.PARAM p10={0.5*p8}
+.PARAM p11={0.5*p9}
+.PARAM p12={0.5*p10}
+.PARAM p13={0.5*p11}
+.PARAM p14={0.5*p12}
+.PARAM p15={0.5*p13}
+.PARAM p16={0.5*p14}
+Inout1 0 nout1 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p1} {p2})
+Rout1 nout1 0 1
+Inout2 0 nout2 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p3} {p4})
+Rout2 nout2 0 1
+Inout3 0 nout3 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p5} {p6})
+Rout3 nout3 0 1
+Inout4 0 nout4 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p7} {p8})
+Rout4 nout4 0 1
+Inout5 0 nout5 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p9} {p10})
+Rout5 nout5 0 1
+Inout6 0 nout6 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p11} {p12})
+Rout6 nout6 0 1
+Inout7 0 nout7 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p13} {p14})
+Rout7 nout7 0 1
+Inout8 0 nout8 dc 0 ac 0 pulse( 0 {ScaleFactor} 0 1n 1n {p15} {p16})
+Rout8 nout8 0 1
+.ends PATGENX128
+
+
+
+
+
+
+
