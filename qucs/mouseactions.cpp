@@ -775,8 +775,12 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
       }
       if (focusElement->Type & isComponent) {
           Component *pc = (Component *)focusElement;
-          if (pc->Model == "EDD") ComponentMenu->insertItem(QObject::tr("Create XSPICE IFS"), QucsMain,
+          if (pc->Model == "EDD") {
+              ComponentMenu->insertItem(QObject::tr("Create XSPICE IFS"), QucsMain,
                                                             SLOT(slotEDDtoIFS()));
+              ComponentMenu->insertItem(QObject::tr("Create XSPICE MOD"), QucsMain,
+                                                            SLOT(slotEDDtoMOD()));
+          }
       }
     }
     break;

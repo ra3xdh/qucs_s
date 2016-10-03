@@ -22,6 +22,7 @@
 
 
 #include "codemodelgen.h"
+#include "extsimkernels/spicecompat.h"
 #include <QPlainTextEdit>
 
 #include "paintings/id_text.h"
@@ -180,4 +181,84 @@ bool CodeModelGen::createMOD(QTextStream &stream, Schematic *sch)
     stream<<QString("void cm_%1(ARGS)\n").arg(base);
     stream<<"{\n\n}\n";
     return true;
+}
+
+bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Component *pc)
+{
+    QFileInfo inf(sch->DocName);
+    QString base = inf.completeBaseName();
+    base.remove('-').remove(' ');
+
+    prepare(sch);
+    if (pc->Model!="EDD") return false;
+    int Nbranch = pc->Props.at(1)->Value.toInt();
+    QStringList ports;
+    for(int i=0;i<Nbranch;i++) {
+        QString net1 = pc->Ports.at(2*i)->Connection->Name;
+        QString net2 = pc->Ports.at(2*i+1)->Connection->Name;
+        ports.append(net1+"_"+net2);
+    }
+
+    stream<<QString("/* XSPICE codemodel %1 auto-generated template */\n\n").arg(base);
+    stream<<QString("void cm_%1(ARGS)\n").arg(base);
+    stream<<"{\n";
+
+    QStringList pars,Ieqns,inputs;
+    //QStringList inputs;
+    for(int i=0;i<Nbranch;i++) {
+        QString Ieqn = pc->Props.at(2*(i+1))->Value;
+        Ieqns.append(Ieqn);
+        QStringList tokens;
+        spicecompat::splitEqn(Ieqn,tokens);
+        foreach(QString tok,tokens){
+            bool isNum = true;
+            tok.toFloat(&isNum);
+            QRegExp inp_pattern("[IV][0-9]+");
+            bool isInput = inp_pattern.exactMatch(tok);
+            if ((isInput)&&(!inputs.contains(tok))) inputs.append(tok);
+            if ((!isGinacFunc(tok))&&(!isNum)&&(!isInput))
+                if(!pars.contains(tok)) pars.append(tok);
+        }
+    }
+
+    // Declare parameter variables
+    stream<<"\tComplex_t ac_gain;\n";
+    stream<<"\tstatic double "+pars.join(",")+";\n";
+    stream<<"\tdouble "+inputs.join(",")+";\n";
+    stream<<"\tif(INIT) {\n";
+    foreach (QString par, pars) {
+        stream<<"\t\t"+ par + " = PARAM(" + par + ");\n";
+    }
+    stream<<"\t}\n";
+
+
+    stream<<"\tif (ANALYSIS != AC) {\n";
+    // Get input voltages
+    QStringList::iterator it = inputs.begin();
+    for(int i=0;it!=inputs.end();it++,i++) {
+        stream<<QString("\t\t%1 = INPUT(%2);\n").arg(*it).arg(ports.at(i));
+    }
+    // Write output
+    for(int i=0;i<Nbranch;i++) {
+        stream<<QString("\t\tOUTPUT(%1) = %2;\n").arg(ports.at(i)).arg(Ieqns.at(i));
+    }
+    stream<<"\t} else {\n";
+    stream<<"\t}\n";
+    stream<<"}\n";
+    return true;
+}
+
+bool CodeModelGen::isGinacFunc(QString &funcname)
+{
+    QStringList f_list;
+    f_list<<"abs"<<"step"
+          <<"sqrt"<<"pow"
+          <<"sin"<<"cos"<<"tan"
+          <<"asin"<<"acos"<<"atan"<<"atan2"
+          <<"sinh"<<"cosh"<<"tanh"
+          <<"asinh"<<"acosh"<<"atanh"
+          <<"exp"<<"log"
+          <<"="<<"("<<")"<<"*"<<"/"<<"+"<<"-"<<"^"<<"<"<<">"<<":";
+    return f_list.contains(funcname);
+
 }

@@ -25,6 +25,7 @@ namespace spicecompat {
      bool check_nodename(QString &node);
 
      enum Simulator {simNgspice = 0, simXyceSer = 1, simXycePar = 2, simSpiceOpus = 3, simQucsator = 4, simNotSpecified=10};
+     enum CMgen_mode {cmgenSUBifs = 0, cmgenEDDifs = 1, cmgenSUBmod = 2, cmgenEDDmod = 3};
 }
 
 #endif // SPICECOMPAT_H

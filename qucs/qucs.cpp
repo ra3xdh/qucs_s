@@ -2930,15 +2930,27 @@ void QucsApp::slotBuildVAModule()
 }
 
 
-void QucsApp::slotBuildXSPICEIfs(bool EDD)
+void QucsApp::slotBuildXSPICEIfs(int mode)
 {
     if (!isTextDocument(DocumentTab->currentPage())) {
         Schematic *Sch = (Schematic*)DocumentTab->currentPage();
 
         QFileInfo inf(Sch->DocName);
-        QString filename = QFileDialog::getSaveFileName(this,tr("Save Verilog-A module"),
-                                                        inf.path()+QDir::separator()+inf.baseName()+".ifs",
-                                                        "XSPICE IFS (*.ifs)");
+
+        QString msg,ext;
+        switch(mode) {
+        case spicecompat::cmgenSUBifs:
+        case spicecompat::cmgenEDDifs: msg = inf.path()+QDir::separator()+inf.baseName()+".ifs";
+            ext = "XSPICE IFS (*.ifs)";
+            break;
+        case spicecompat::cmgenSUBmod:
+        case spicecompat::cmgenEDDmod: msg = inf.path()+QDir::separator()+inf.baseName()+".mod";
+            ext = "XSPICE MOD (*.mod)";
+            break;
+        default: break;
+        }
+
+        QString filename = QFileDialog::getSaveFileName(this,tr("Save Verilog-A module"),msg,ext);
         if (filename.isEmpty()) return;
 
         QFile f(filename);
@@ -2946,9 +2958,9 @@ void QucsApp::slotBuildXSPICEIfs(bool EDD)
             QTextStream stream(&f);
             CodeModelGen *cmgen = new CodeModelGen;
             bool r = false;
-            if (!EDD) {
-                r = cmgen->createIFS(stream,Sch);
-            } else {
+            switch(mode) {
+            case spicecompat::cmgenSUBifs: r = cmgen->createIFS(stream,Sch);
+            case spicecompat::cmgenEDDifs: {
                 for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
                     if (pc->isSelected) {
                         r = cmgen->createIFSfromEDD(stream,Sch,pc);
@@ -2956,8 +2968,21 @@ void QucsApp::slotBuildXSPICEIfs(bool EDD)
                     }
                 }
             }
-            if (!r) QMessageBox::critical(this,tr("Create XSPICE IFS"),
-                                          tr("Create IFS file failed!"
+                break;
+            case spicecompat::cmgenEDDmod : {
+                for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+                    if (pc->isSelected) {
+                        r = cmgen->createMODfromEDD(stream,Sch,pc);
+                        break;
+                    }
+                }
+            }
+                break;
+            default: r = false;
+                break;
+            }
+            if (!r) QMessageBox::critical(this,tr("Create XSPICE CodeModel"),
+                                          tr("Create CodeModel source file failed!"
                                              "Schematic is not subciruit!"),
                                           QMessageBox::Ok);
             delete cmgen;
@@ -2969,5 +2994,10 @@ void QucsApp::slotBuildXSPICEIfs(bool EDD)
 
 void QucsApp::slotEDDtoIFS()
 {
-    slotBuildXSPICEIfs(true);
+    slotBuildXSPICEIfs(spicecompat::cmgenEDDifs);
+}
+
+void QucsApp::slotEDDtoMOD()
+{
+    slotBuildXSPICEIfs(spicecompat::cmgenEDDmod);
 }

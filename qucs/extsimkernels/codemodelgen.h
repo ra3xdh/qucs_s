@@ -37,12 +37,16 @@ class CodeModelGen
 public:
     CodeModelGen();
     ~CodeModelGen();
+
+private:
+    bool isGinacFunc(QString &funcname);
 protected:
     bool prepare(Schematic *sch);
 public:
     bool createIFS(QTextStream &stream, Schematic *sch);
     bool createIFSfromEDD(QTextStream &stream, Schematic *sch, Component *pc);
     bool createMOD(QTextStream &stream, Schematic *sch);
+    bool createMODfromEDD(QTextStream &stream, Schematic *sch, Component *pc);
     
 };
 
