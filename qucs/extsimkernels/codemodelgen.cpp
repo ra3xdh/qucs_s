@@ -24,6 +24,7 @@
 #include "codemodelgen.h"
 #include "extsimkernels/spicecompat.h"
 #include <QPlainTextEdit>
+#include <QProcess>
 
 #include "paintings/id_text.h"
 
@@ -221,6 +222,15 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
         }
     }
 
+
+    QStringList Geqns; // Partial derivatives
+    for(int i=0;i<Nbranch;i++) {
+        QString gi;
+        QString xvar = QString("V%1").arg(i+1);
+        GinacDiff(Ieqns[i],xvar,gi);
+        Geqns.append(gi);
+    }
+
     // Declare parameter variables
     stream<<"\tComplex_t ac_gain;\n";
     stream<<"\tstatic double "+pars.join(",")+";\n";
@@ -241,6 +251,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     // Write output
     for(int i=0;i<Nbranch;i++) {
         stream<<QString("\t\tOUTPUT(%1) = %2;\n").arg(ports.at(i)).arg(Ieqns.at(i));
+        stream<<QString("\t\tPARTIAL(%1,%1) = %2;\n").arg(ports.at(i)).arg(Geqns.at(i));
     }
     stream<<"\t} else {\n";
     stream<<"\t}\n";
@@ -261,4 +272,23 @@ bool CodeModelGen::isGinacFunc(QString &funcname)
           <<"="<<"("<<")"<<"*"<<"/"<<"+"<<"-"<<"^"<<"<"<<">"<<":";
     return f_list.contains(funcname);
 
+}
+
+bool CodeModelGen::GinacDiff(QString &eq, QString &var, QString &res)
+{
+    QProcess ginac;
+    QTemporaryFile ginac_task;
+    if(ginac_task.open()) {
+        QTextStream ts(&ginac_task);
+        ts<<QString("print_csrc(diff(%1,%2));\nexit;").arg(eq).arg(var);
+        ginac_task.close();
+    } else return false;
+
+    ginac.setStandardInputFile(ginac_task.fileName());
+    ginac.start("ginsh");
+    ginac.waitForFinished();
+    res = ginac.readAllStandardOutput();
+    res.chop(1); // remove newline char
+
+    return true;
 }
