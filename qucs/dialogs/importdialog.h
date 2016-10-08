@@ -23,7 +23,7 @@
 #include <QGridLayout>
 #include <QLabel>
 
-class QTextEdit;
+class QPlainTextEdit;
 class QLineEdit;
 class QGridLayout;
 class QPushButton;
@@ -54,7 +54,7 @@ public:
 
   QLabel *OutputLabel;
   QProcess Process;
-  QTextEdit *MsgText;
+  QPlainTextEdit *MsgText;
   QLineEdit *ImportEdit, *OutputEdit, *OutputData;
   QPushButton *ImportButt, *CancelButt, *AbortButt;
   QComboBox *OutType;
