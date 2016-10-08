@@ -130,25 +130,25 @@ void ImportDialog::slotBrowse()
     if(OutputEdit->text().isEmpty()) {
       switch(OutType->currentItem()) {
       case 0:
-	OutputEdit->setText(Info.baseName()+".dat");
+	OutputEdit->setText(Info.completeBaseName()+".dat");
 	break;
       case 1:
-	OutputEdit->setText(Info.baseName()+".snp");
+	OutputEdit->setText(Info.completeBaseName()+".snp");
 	break;
       case 2:
-	OutputEdit->setText(Info.baseName()+".csv");
+	OutputEdit->setText(Info.completeBaseName()+".csv");
 	break;
       case 3:
-	OutputEdit->setText(Info.baseName()+".lib");
+	OutputEdit->setText(Info.completeBaseName()+".lib");
 	break;
       case 4:
-	OutputEdit->setText(Info.baseName()+".txt");
+	OutputEdit->setText(Info.completeBaseName()+".txt");
 	break;
       case 5:
-	OutputEdit->setText(Info.baseName()+".mat");
+	OutputEdit->setText(Info.completeBaseName()+".mat");
 	break;
       default:
-	OutputEdit->setText(Info.baseName()+".dat");
+	OutputEdit->setText(Info.completeBaseName()+".dat");
 	break;
       }
     }
@@ -177,7 +177,7 @@ void ImportDialog::slotImport()
       }
 
   QFileInfo Info(ImportEdit->text());
-  QString Suffix = Info.extension();
+  QString Suffix = Info.suffix();
   QString Program;
   QStringList CommandLine;
 
