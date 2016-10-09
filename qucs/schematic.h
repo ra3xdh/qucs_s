@@ -283,6 +283,7 @@ public:
   bool loadDocument();
   void highlightWireLabels (void);
   void clearSignalsAndFileList();
+  void clearSignals();
 
 private:
   int  saveDocument();
