@@ -204,3 +204,20 @@ QString Param_Sweep::spice_netlist(bool isXyce)
     }
     return s.toLower();
 }
+
+// -------------------------------------------------------
+QString Param_Sweep::netlist()
+{
+  QString s = Model+":"+Name;
+
+  // output all node names
+  foreach(Port *p1, Ports)
+    s += " "+p1->Connection->Name;   // node names
+
+  // output all properties
+  for(unsigned int i=0; i <= Props.count()-2; i++)
+    if(Props.at(i)->Name != "Symbol")
+      s += " "+Props.at(i)->Name+"=\""+Props.at(i)->Value+"\"";
+
+  return s + '\n';
+}
