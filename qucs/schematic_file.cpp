@@ -1999,3 +1999,8 @@ void Schematic::clearSignalsAndFileList()
     Signals.clear();  // was filled in "giveNodeNames()"
     FileList.clear();
 }
+
+void Schematic::clearSignals()
+{
+    Signals.clear();
+}
