@@ -160,9 +160,12 @@ bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Compone
         if (!ports.contains(pname)) ports.append(pname);
     }
 
+    QFileInfo inf(sch->DocName);
+    QString base = inf.completeBaseName();
+    base.remove('-').remove(' ');
     stream<<"NAME_TABLE:\n";
-    stream<<QString("C_Function_Name: cm_%1\n").arg(pc->Name);
-    stream<<QString("Spice_Model_Name: %1\n").arg(pc->Name);
+    stream<<QString("C_Function_Name: cm_%1\n").arg(base);
+    stream<<QString("Spice_Model_Name: %1\n").arg(base);
 
     foreach(QString pp,ports) {
         stream<<"\nPORT_TABLE:\n";
@@ -176,6 +179,37 @@ bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Compone
         stream<<"Null_Allowed: no\n\n";
     }
 
+
+    // Find parameters. Parameters are symbols
+    // that are not Ginac function or input
+    QStringList pars;
+    for(int i=0;i<Nbranch;i++) {
+        QString Ieqn;
+        Ieqn = pc->Props.at(2*(i+1))->Value;
+        QStringList tokens;
+        spicecompat::splitEqn(Ieqn,tokens);
+        foreach(QString tok,tokens){
+            bool isNum = true;
+            tok.toFloat(&isNum);
+            QRegExp inp_pattern("[IV][0-9]+");
+            bool isInput = inp_pattern.exactMatch(tok);
+            if ((!isGinacFunc(tok))&&(!isNum)&&(!isInput))
+                if(!pars.contains(tok)) pars.append(tok);
+        }
+    }
+
+    // Form parameter table
+    foreach(QString par,pars) {
+        stream<<"PARAMETER_TABLE:\n";
+        stream<<QString("Parameter_Name: %1\n").arg(par.toLower());
+        stream<<"Description: \"  \"\n"
+                "Data_Type: real\n"
+                "Default_Value: 0.0\n"
+                "Limits: -\n"
+                "Vector: no\n"
+                "Vector_Bounds: -\n"
+                "Null_Allowed: no\n\n";
+    }
 
     return true;
 }
@@ -215,23 +249,6 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     stream<<"{\n";
 
     QStringList pars,Ieqns,inputs;
-    //QStringList inputs;
-    /*for(int i=0;i<Nbranch;i++) {
-        QString Ieqn = pc->Props.at(2*(i+1))->Value;
-        Ieqns.append(Ieqn);
-        QStringList tokens;
-        spicecompat::splitEqn(Ieqn,tokens);
-        foreach(QString tok,tokens){
-            bool isNum = true;
-            tok.toFloat(&isNum);
-            QRegExp inp_pattern("[IV][0-9]+");
-            bool isInput = inp_pattern.exactMatch(tok);
-            if ((isInput)&&(!inputs.contains(tok))) inputs.append(tok);
-            if ((!isGinacFunc(tok))&&(!isNum)&&(!isInput))
-                if(!pars.contains(tok)) pars.append(tok);
-        }
-    }*/
-
     foreach(QString port,ports) {
         QString Ieqn;
         for(int i=0;i<Nbranch;i++) {
