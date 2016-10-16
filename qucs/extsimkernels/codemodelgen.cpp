@@ -245,6 +245,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     }
 
     stream<<QString("/* XSPICE codemodel %1 auto-generated template */\n\n").arg(base);
+    stream<<"#include <math.h>\n\n";
     stream<<QString("void cm_%1(ARGS)\n").arg(base);
     stream<<"{\n";
 
@@ -285,9 +286,13 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     }
 
     // Declare parameter variables
-    stream<<"\tComplex_t ac_gain;\n";
+    QString acg = "ac_gain0";
+    for (int i=1;i<ports.count();i++) {
+        acg += ", ac_gain" + QString::number(i);
+    }
+    stream<<"\tComplex_t " + acg + ";\n";
     stream<<"\tstatic double "+pars.join(",")+";\n";
-    stream<<"\tdouble "+inputs.join(",")+";\n";
+    stream<<"\tstatic double "+inputs.join(",")+";\n";
     stream<<"\tif(INIT) {\n";
     foreach (QString par, pars) {
         stream<<"\t\t"+ par + " = PARAM(" + par.toLower() + ");\n";
@@ -307,6 +312,11 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
         stream<<QString("\t\tPARTIAL(%1,%1) = %2;\n").arg(ports.at(i)).arg(Geqns.at(i));
     }
     stream<<"\t} else {\n";
+    for (int i=0;i<ports.count();i++) {
+        stream<<QString("\t\tac_gain%1.real = %2;\n").arg(i).arg(Geqns.at(i));
+        stream<<QString("\t\tac_gain%1.imag = 0.0;\n").arg(i);
+        stream<<QString("\t\tAC_GAIN(%1,%1) = ac_gain%2;\n").arg(ports.at(i)).arg(i);
+    }
     stream<<"\t}\n";
     stream<<"}\n";
     return true;
