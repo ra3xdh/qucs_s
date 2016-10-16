@@ -149,7 +149,8 @@ bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Compone
     for(int i=0;i<Nbranch;i++) {
         QString net1 = pc->Ports.at(2*i)->Connection->Name;
         QString net2 = pc->Ports.at(2*i+1)->Connection->Name;
-        ports.append(net1+"_"+net2);
+        QString pname = net1+"_"+net2;
+        if (!ports.contains(pname)) ports.append(pname);
     }
 
     stream<<"NAME_TABLE:\n";
@@ -192,12 +193,14 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
 
     prepare(sch);
     if (pc->Model!="EDD") return false;
+
     int Nbranch = pc->Props.at(1)->Value.toInt();
     QStringList ports;
     for(int i=0;i<Nbranch;i++) {
         QString net1 = pc->Ports.at(2*i)->Connection->Name;
         QString net2 = pc->Ports.at(2*i+1)->Connection->Name;
-        ports.append(net1+"_"+net2);
+        QString pname = net1+"_"+net2;
+        if (!ports.contains(pname)) ports.append(pname);
     }
 
     stream<<QString("/* XSPICE codemodel %1 auto-generated template */\n\n").arg(base);
@@ -206,8 +209,33 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
 
     QStringList pars,Ieqns,inputs;
     //QStringList inputs;
-    for(int i=0;i<Nbranch;i++) {
+    /*for(int i=0;i<Nbranch;i++) {
         QString Ieqn = pc->Props.at(2*(i+1))->Value;
+        Ieqns.append(Ieqn);
+        QStringList tokens;
+        spicecompat::splitEqn(Ieqn,tokens);
+        foreach(QString tok,tokens){
+            bool isNum = true;
+            tok.toFloat(&isNum);
+            QRegExp inp_pattern("[IV][0-9]+");
+            bool isInput = inp_pattern.exactMatch(tok);
+            if ((isInput)&&(!inputs.contains(tok))) inputs.append(tok);
+            if ((!isGinacFunc(tok))&&(!isNum)&&(!isInput))
+                if(!pars.contains(tok)) pars.append(tok);
+        }
+    }*/
+
+    foreach(QString port,ports) {
+        QString Ieqn;
+        for(int i=0;i<Nbranch;i++) {
+            QString net1 = pc->Ports.at(2*i)->Connection->Name;
+            QString net2 = pc->Ports.at(2*i+1)->Connection->Name;
+            QString pname = net1 + "_" + net2;
+            if (pname == port) {
+                if (Ieqn.isEmpty()) Ieqn = pc->Props.at(2*(i+1))->Value;
+                else Ieqn = Ieqn + " + " + pc->Props.at(2*(i+1))->Value;
+            }
+        }
         Ieqns.append(Ieqn);
         QStringList tokens;
         spicecompat::splitEqn(Ieqn,tokens);
@@ -223,8 +251,9 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     }
 
 
+
     QStringList Geqns; // Partial derivatives
-    for(int i=0;i<Nbranch;i++) {
+    for(int i=0;i<ports.count();i++) {
         QString gi;
         QString xvar = QString("V%1").arg(i+1);
         GinacDiff(Ieqns[i],xvar,gi);
@@ -237,7 +266,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     stream<<"\tdouble "+inputs.join(",")+";\n";
     stream<<"\tif(INIT) {\n";
     foreach (QString par, pars) {
-        stream<<"\t\t"+ par + " = PARAM(" + par + ");\n";
+        stream<<"\t\t"+ par + " = PARAM(" + par.toLower() + ");\n";
     }
     stream<<"\t}\n";
 
@@ -249,7 +278,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
         stream<<QString("\t\t%1 = INPUT(%2);\n").arg(*it).arg(ports.at(i));
     }
     // Write output
-    for(int i=0;i<Nbranch;i++) {
+    for(int i=0;i<ports.count();i++) {
         stream<<QString("\t\tOUTPUT(%1) = %2;\n").arg(ports.at(i)).arg(Ieqns.at(i));
         stream<<QString("\t\tPARTIAL(%1,%1) = %2;\n").arg(ports.at(i)).arg(Geqns.at(i));
     }
