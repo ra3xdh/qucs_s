@@ -25,6 +25,7 @@
 #include "extsimkernels/spicecompat.h"
 #include <QPlainTextEdit>
 #include <QProcess>
+#include "misc.h"
 
 #include "paintings/id_text.h"
 
@@ -125,11 +126,17 @@ bool CodeModelGen::createIFS(QTextStream &stream, Schematic *sch)
         ID_Text *pid = (ID_Text*)pi;
         QList<SubParameter *>::const_iterator it;
         for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
+            QString pp = (*it)->Name.toLower();
+            QString pnam = pp.section('=',0,0).trimmed().toLower();
+            QString pval = pp.section('=',1,1).trimmed();
+            double val,fac;
+            QString unit;
+            misc::str2num(pval,val,unit,fac);
             stream<<"PARAMETER_TABLE:\n";
-            stream<<QString("Parameter_Name: %1\n").arg((*it)->Name.toLower());
-            stream<<QString("Description: %1\n").arg((*it)->Description);
+            stream<<QString("Parameter_Name: %1\n").arg(pnam);
+            stream<<QString("Description: \" %1\"\n").arg((*it)->Description);
             stream<<"Data_Type: real\n";
-            stream<<QString("Default_Value: %1\n").arg((*it)->Type);
+            stream<<QString("Default_Value: %1\n").arg(val*fac);
             stream<<"Limits: -\n"
                     "Vector: no\n"
                     "Vector_Bounds: -\n"
