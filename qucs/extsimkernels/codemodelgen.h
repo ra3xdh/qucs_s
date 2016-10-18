@@ -41,6 +41,7 @@ public:
 private:
     bool isGinacFunc(QString &funcname);
     bool GinacDiff(QString &eq,QString &var,QString &res);
+    bool GinacConvToC(QString &eq,QString &res);
 protected:
     bool prepare(Schematic *sch);
 public:

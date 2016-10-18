@@ -308,7 +308,9 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     }
     // Write output
     for(int i=0;i<ports.count();i++) {
-        stream<<QString("\t\tOUTPUT(%1) = %2;\n").arg(ports.at(i)).arg(Ieqns.at(i));
+        QString Ieq;
+        GinacConvToC(Ieqns[i],Ieq);
+        stream<<QString("\t\tOUTPUT(%1) = %2;\n").arg(ports.at(i)).arg(Ieq);
         stream<<QString("\t\tPARTIAL(%1,%1) = %2;\n").arg(ports.at(i)).arg(Geqns.at(i));
     }
     stream<<"\t} else {\n";
@@ -344,6 +346,25 @@ bool CodeModelGen::GinacDiff(QString &eq, QString &var, QString &res)
     if(ginac_task.open()) {
         QTextStream ts(&ginac_task);
         ts<<QString("print_csrc(diff(%1,%2));\nexit;").arg(eq).arg(var);
+        ginac_task.close();
+    } else return false;
+
+    ginac.setStandardInputFile(ginac_task.fileName());
+    ginac.start("ginsh");
+    ginac.waitForFinished();
+    res = ginac.readAllStandardOutput();
+    res.chop(1); // remove newline char
+
+    return true;
+}
+
+bool CodeModelGen::GinacConvToC(QString &eq, QString &res)
+{
+    QProcess ginac;
+    QTemporaryFile ginac_task;
+    if(ginac_task.open()) {
+        QTextStream ts(&ginac_task);
+        ts<<QString("print_csrc(%1);\nexit;").arg(eq);
         ginac_task.close();
     } else return false;
 
