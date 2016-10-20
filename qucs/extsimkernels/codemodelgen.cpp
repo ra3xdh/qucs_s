@@ -277,18 +277,26 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
 
 
 
-    QStringList Geqns; // Partial derivatives
+    QList<QStringList> Geqns; // Partial derivatives
     for(int i=0;i<ports.count();i++) {
-        QString gi;
-        QString xvar = QString("V%1").arg(i+1);
-        GinacDiff(Ieqns[i],xvar,gi);
-        Geqns.append(gi);
+        QStringList Geqp;
+        Geqp.clear();
+        for(int j=0;j<ports.count();j++) {
+
+            QString gi;
+            QString xvar = QString("V%1").arg(j+1);
+            GinacDiff(Ieqns[i],xvar,gi);
+            Geqp.append(gi);
+        }
+        Geqns.append(Geqp);
     }
 
     // Declare parameter variables
-    QString acg = "ac_gain0";
+    QString acg = "ac_gain00";
     for (int i=1;i<ports.count();i++) {
-        acg += ", ac_gain" + QString::number(i);
+        for (int j=1;j<ports.count();j++) {
+            acg += QString(", ac_gain%1%2").arg(i).arg(j);
+        }
     }
     stream<<"\tComplex_t " + acg + ";\n";
     stream<<"\tstatic double "+pars.join(",")+";\n";
@@ -311,13 +319,17 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
         QString Ieq;
         GinacConvToC(Ieqns[i],Ieq);
         stream<<QString("\t\tOUTPUT(%1) = %2;\n").arg(ports.at(i)).arg(Ieq);
-        stream<<QString("\t\tPARTIAL(%1,%1) = %2;\n").arg(ports.at(i)).arg(Geqns.at(i));
+        stream<<QString("\t\tPARTIAL(%1,%1) = %2;\n").arg(ports.at(i)).arg(Geqns[i][0]);
     }
     stream<<"\t} else {\n";
     for (int i=0;i<ports.count();i++) {
-        stream<<QString("\t\tac_gain%1.real = %2;\n").arg(i).arg(Geqns.at(i));
-        stream<<QString("\t\tac_gain%1.imag = 0.0;\n").arg(i);
-        stream<<QString("\t\tAC_GAIN(%1,%1) = ac_gain%2;\n").arg(ports.at(i)).arg(i);
+        for (int j=0;j<ports.count();j++) {
+            stream<<QString("\t\tac_gain%1%2.real = %3;\n")
+                    .arg(i).arg(j).arg(Geqns[i][j]);
+            stream<<QString("\t\tac_gain%1%2.imag = 0.0;\n").arg(i).arg(j);
+            stream<<QString("\t\tAC_GAIN(%1,%2) = ac_gain%3%4;\n")
+                    .arg(ports.at(i)).arg(ports.at(j)).arg(i).arg(j);
+        }
     }
     stream<<"\t}\n";
     stream<<"}\n";
