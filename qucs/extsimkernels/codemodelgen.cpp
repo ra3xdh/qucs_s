@@ -246,6 +246,11 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
 
     stream<<QString("/* XSPICE codemodel %1 auto-generated template */\n\n").arg(base);
     stream<<"#include <math.h>\n\n";
+
+    // definitions for Dirac and step()
+    stream<<"#define D_0_step(x) (0)\n"
+          <<"#define step(x) ((x)>0.0?1.0:(((x)==0)?0.5:0.0))\n\n";
+
     stream<<QString("void cm_%1(ARGS)\n").arg(base);
     stream<<"{\n";
 
