@@ -261,6 +261,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
                 else Ieqn = Ieqn + " + " + pc->Props.at(2*(i+1))->Value;
             }
         }
+        normalize_functions(Ieqn);
         Ieqns.append(Ieqn);
         QStringList tokens;
         spicecompat::splitEqn(Ieqn,tokens);
@@ -387,4 +388,22 @@ bool CodeModelGen::GinacConvToC(QString &eq, QString &res)
     res.chop(1); // remove newline char
 
     return true;
+}
+
+
+void CodeModelGen::normalize_functions(QString &Eqn)
+{
+    QStringList conv_list; // Put here functions need to be converted
+    conv_list<<"q"<<"1.6021765e-19"
+             <<"kB"<<"1.38065e-23"
+             <<"u"<<"step";
+
+    QStringList tokens;
+    spicecompat::splitEqn(Eqn,tokens);
+    for(QStringList::iterator it = tokens.begin();it != tokens.end(); it++) {
+        for(int i=0;i<conv_list.count();i+=2) {
+            if (conv_list.at(i) == *it) *it = conv_list.at(i+1);
+        }
+    }
+    Eqn = tokens.join("");
 }
