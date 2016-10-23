@@ -184,10 +184,12 @@ bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Compone
     // that are not Ginac function or input
     QStringList pars;
     for(int i=0;i<Nbranch;i++) {
-        QString Ieqn;
-        Ieqn = pc->Props.at(2*(i+1))->Value;
-        QStringList tokens;
+        QString Ieqn = pc->Props.at(2*(i+1))->Value;
+        QString Qeqn = pc->Props.at(2*(i+1)+1)->Value;
+        QStringList tokens,tokens1;
         spicecompat::splitEqn(Ieqn,tokens);
+        spicecompat::splitEqn(Qeqn,tokens1);
+        tokens.append(tokens1);
         foreach(QString tok,tokens){
             bool isNum = true;
             tok.toFloat(&isNum);
@@ -254,9 +256,9 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     stream<<QString("void cm_%1(ARGS)\n").arg(base);
     stream<<"{\n";
 
-    QStringList pars,Ieqns,inputs;
+    QStringList pars,Ieqns,Qeqns,inputs;
     foreach(QString port,ports) {
-        QString Ieqn;
+        QString Ieqn,Qeqn;
         for(int i=0;i<Nbranch;i++) {
             QString net1 = pc->Ports.at(2*i)->Connection->Name;
             QString net2 = pc->Ports.at(2*i+1)->Connection->Name;
@@ -264,12 +266,18 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
             if (pname == port) {
                 if (Ieqn.isEmpty()) Ieqn = pc->Props.at(2*(i+1))->Value;
                 else Ieqn = Ieqn + " + " + pc->Props.at(2*(i+1))->Value;
+                if (Qeqn.isEmpty()) Qeqn = pc->Props.at(2*(i+1)+1)->Value;
+                else Qeqn = Qeqn + " + " + pc->Props.at(2*(i+1)+1)->Value;
             }
         }
         normalize_functions(Ieqn);
+        normalize_functions(Qeqn);
         Ieqns.append(Ieqn);
-        QStringList tokens;
+        Qeqns.append(Qeqn);
+        QStringList tokens,tokens1;
         spicecompat::splitEqn(Ieqn,tokens);
+        spicecompat::splitEqn(Qeqn,tokens1);
+        tokens.append(tokens1);
         foreach(QString tok,tokens){
             bool isNum = true;
             tok.toFloat(&isNum);
@@ -298,12 +306,13 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     }
 
     // Declare parameter variables
-    QString acg = "ac_gain00";
-    for (int i=1;i<ports.count();i++) {
-        for (int j=1;j<ports.count();j++) {
+    QString acg;
+    for (int i=0;i<ports.count();i++) {
+        for (int j=0;j<ports.count();j++) {
             acg += QString(", ac_gain%1%2").arg(i).arg(j);
         }
     }
+    acg.remove(0,2); // remove leading comma
     stream<<"\tComplex_t " + acg + ";\n";
     stream<<"\tstatic double "+pars.join(",")+";\n";
     stream<<"\tstatic double "+inputs.join(",")+";\n";
@@ -332,7 +341,15 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
         for (int j=0;j<ports.count();j++) {
             stream<<QString("\t\tac_gain%1%2.real = %3;\n")
                     .arg(i).arg(j).arg(Geqns[i][j]);
-            stream<<QString("\t\tac_gain%1%2.imag = 0.0;\n").arg(i).arg(j);
+            if (i == j) {
+                QString Ceq,rCeq;
+                Ceq = QString("expand((%1)/V%2)").arg(Qeqns.at(i)).arg(i+1);
+                GinacConvToC(Ceq,rCeq);
+                stream<<QString("\t\tac_gain%1%2.imag = (%3)*RAD_FREQ;\n")
+                        .arg(i).arg(j).arg(rCeq);
+            } else {
+                stream<<QString("\t\tac_gain%1%2.imag = 0.0;\n").arg(i).arg(j);
+            }
             stream<<QString("\t\tAC_GAIN(%1,%2) = ac_gain%3%4;\n")
                     .arg(ports.at(i)).arg(ports.at(j)).arg(i).arg(j);
         }
@@ -351,7 +368,7 @@ bool CodeModelGen::isGinacFunc(QString &funcname)
           <<"asin"<<"acos"<<"atan"<<"atan2"
           <<"sinh"<<"cosh"<<"tanh"
           <<"asinh"<<"acosh"<<"atanh"
-          <<"exp"<<"log"
+          <<"exp"<<"log"<<"u"
           <<"="<<"("<<")"<<"*"<<"/"<<"+"<<"-"<<"^"<<"<"<<">"<<":";
     return f_list.contains(funcname);
 
