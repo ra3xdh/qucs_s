@@ -43,6 +43,7 @@ private:
     bool GinacDiff(QString &eq,QString &var,QString &res);
     bool GinacConvToC(QString &eq,QString &res);
     void normalize_functions(QString &Eqn);
+    void conv_to_safe_functions(QString &Eqn);
 protected:
     bool prepare(Schematic *sch);
 public:

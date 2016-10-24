@@ -251,7 +251,8 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
 
     // definitions for Dirac and step()
     stream<<"#define D_0_step(x) (0)\n"
-          <<"#define step(x) ((x)>0.0?1.0:(((x)==0)?0.5:0.0))\n\n";
+          <<"#define step(x) ((x)>0.0?1.0:(((x)==0)?0.5:0.0))\n\n"
+          <<"#define Xpow(x,p) pow(fabs((x)),(p))\n\n";
 
     stream<<QString("void cm_%1(ARGS)\n").arg(base);
     stream<<"{\n";
@@ -300,6 +301,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
             QString gi;
             QString xvar = QString("V%1").arg(j+1);
             GinacDiff(Ieqns[i],xvar,gi);
+            conv_to_safe_functions(gi);
             Geqp.append(gi);
         }
         Geqns.append(Geqp);
@@ -408,6 +410,7 @@ bool CodeModelGen::GinacConvToC(QString &eq, QString &res)
     ginac.waitForFinished();
     res = ginac.readAllStandardOutput();
     res.chop(1); // remove newline char
+    conv_to_safe_functions(res);
 
     return true;
 }
@@ -419,6 +422,28 @@ void CodeModelGen::normalize_functions(QString &Eqn)
     conv_list<<"q"<<"1.6021765e-19"
              <<"kB"<<"1.38065e-23"
              <<"u"<<"step";
+
+    QStringList tokens;
+    spicecompat::splitEqn(Eqn,tokens);
+    for(QStringList::iterator it = tokens.begin();it != tokens.end(); it++) {
+        for(int i=0;i<conv_list.count();i+=2) {
+            if (conv_list.at(i) == *it) *it = conv_list.at(i+1);
+        }
+    }
+    Eqn = tokens.join("");
+}
+
+/*!
+ * \brief CodeModelGen::conv_to_safe_functions
+ *        Replace C-functions by safe macros that never gives NaN
+ *        Such functions have the same behavior as for Ngspice
+ * \param Eqn
+ */
+void CodeModelGen::conv_to_safe_functions(QString &Eqn)
+{
+    Eqn.remove(' ');
+    QStringList conv_list; // Put here functions need to be converted
+    conv_list<<"pow"<<"Xpow";
 
     QStringList tokens;
     spicecompat::splitEqn(Eqn,tokens);
