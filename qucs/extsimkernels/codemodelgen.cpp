@@ -290,6 +290,10 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
         }
     }
 
+    QStringList inputs_old; // Variables for charge eqns.
+    foreach(QString inp,inputs) {
+        inputs_old.append(inp+"_old");
+    }
 
 
     QList<QStringList> Geqns; // Partial derivatives
@@ -317,7 +321,15 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     acg.remove(0,2); // remove leading comma
     stream<<"\tComplex_t " + acg + ";\n";
     stream<<"\tstatic double "+pars.join(",")+";\n";
-    stream<<"\tstatic double "+inputs.join(",")+";\n";
+    stream<<"\tstatic double "+inputs.join(",")+","+inputs_old.join(",")+";\n";
+    QString Qvars;
+    for (int i=0;i<ports.count();i++) {
+        Qvars += QString(", Q%1, cQ%1").arg(i);
+    }
+    Qvars.remove(0,2); // remove leading comma
+    stream<<"\tdouble " + Qvars + ";\n";
+    stream<<"\tdouble delta_t;\n\n";
+
     stream<<"\tif(INIT) {\n";
     foreach (QString par, pars) {
         stream<<"\t\t"+ par + " = PARAM(" + par.toLower() + ");\n";
@@ -326,17 +338,46 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
 
 
     stream<<"\tif (ANALYSIS != AC) {\n";
+    stream<<"\tif (TIME == 0) {\n";
+    QStringList::iterator it1 = inputs.begin();
+    for(int i=0;it1!=inputs.end();it1++,i++) {
+        stream<<QString("\t\t%1_old = %1 = INPUT(%2);\n").arg(*it1).arg(ports.at(i));
+        for (int i=0;i<ports.count();i++) {
+            stream<<QString("\t\tQ%1=0.0;\n").arg(i);
+            stream<<QString("\t\tcQ%1=0.0;\n").arg(i);
+        }
+    }
+    stream<<"\t} else {\n";
     // Get input voltages
     QStringList::iterator it = inputs.begin();
     for(int i=0;it!=inputs.end();it++,i++) {
         stream<<QString("\t\t%1 = INPUT(%2);\n").arg(*it).arg(ports.at(i));
     }
-    // Write output
+    // Time variable for charge eqns.
+    stream<<"\t\tdelta_t=TIME-T(1);\n";
+    // Calculate charge parts
+    for(int i=0;i<ports.count();i++) {
+        QString Ceq,rCeq;
+        Ceq = QString("expand((%1)/V%2)").arg(Qeqns.at(i)).arg(i+1);
+        GinacConvToC(Ceq,rCeq);
+        bool ok = false;
+        float cc = rCeq.toFloat(&ok);
+        if ((cc!=0)||(!ok)) {
+            stream<<QString("\t\tQ%1 = (%2)*(V%3-V%3_old)/(delta_t+1e-20);\n").arg(i).arg(rCeq).arg(i+1);
+            stream<<QString("\t\tcQ%1 = (%2)/(delta_t+1e-20);\n").arg(i).arg(rCeq);
+        }
+    }
+    foreach(QString inp,inputs) {
+        stream<<QString("\t\t%1_old = %1;\n").arg(inp);
+    }
+    stream<<"\t}\n";
+    // Write current output
     for(int i=0;i<ports.count();i++) {
         QString Ieq;
         GinacConvToC(Ieqns[i],Ieq);
-        stream<<QString("\t\tOUTPUT(%1) = %2;\n").arg(ports.at(i)).arg(Ieq);
-        stream<<QString("\t\tPARTIAL(%1,%1) = %2;\n").arg(ports.at(i)).arg(Geqns[i][0]);
+        QString Geq = Geqns[i][0];
+        stream<<QString("\t\tOUTPUT(%1) = %2 + Q%3;\n").arg(ports.at(i)).arg(Ieq).arg(i);
+        stream<<QString("\t\tPARTIAL(%1,%1) = %2 + cQ%3;\n").arg(ports.at(i)).arg(Geq).arg(i);
     }
     stream<<"\t} else {\n";
     for (int i=0;i<ports.count();i++) {
