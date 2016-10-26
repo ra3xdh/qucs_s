@@ -100,7 +100,7 @@ bool CodeModelGen::createIFS(QTextStream &stream, Schematic *sch)
 
     stream<<"NAME_TABLE:\n";
     stream<<QString("C_Function_Name: cm_%1\n").arg(base);
-    stream<<QString("Spice_Model_Name: %1\n").arg(base);
+    stream<<QString("Spice_Model_Name: %1\n").arg(base.toLower());
 
 
     if (ports.isEmpty()) return false; // Not a subcircuit
@@ -165,7 +165,7 @@ bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Compone
     base.remove('-').remove(' ');
     stream<<"NAME_TABLE:\n";
     stream<<QString("C_Function_Name: cm_%1\n").arg(base);
-    stream<<QString("Spice_Model_Name: %1\n").arg(base);
+    stream<<QString("Spice_Model_Name: %1\n").arg(base.toLower());
 
     foreach(QString pp,ports) {
         stream<<"\nPORT_TABLE:\n";
@@ -301,7 +301,6 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
         QStringList Geqp;
         Geqp.clear();
         for(int j=0;j<ports.count();j++) {
-
             QString gi;
             QString xvar = QString("V%1").arg(j+1);
             GinacDiff(Ieqns[i],xvar,gi);
@@ -375,7 +374,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     for(int i=0;i<ports.count();i++) {
         QString Ieq;
         GinacConvToC(Ieqns[i],Ieq);
-        QString Geq = Geqns[i][0];
+        QString Geq = Geqns[i][i];
         stream<<QString("\t\tOUTPUT(%1) = %2 + Q%3;\n").arg(ports.at(i)).arg(Ieq).arg(i);
         stream<<QString("\t\tPARTIAL(%1,%1) = %2 + cQ%3;\n").arg(ports.at(i)).arg(Geq).arg(i);
     }
