@@ -303,7 +303,8 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
         for(int j=0;j<ports.count();j++) {
             QString gi;
             QString xvar = QString("V%1").arg(j+1);
-            GinacDiff(Ieqns[i],xvar,gi);
+            if (Ieqns[i].contains("?")) GinacDiffTernaryOp(Ieqns[i],xvar,gi);
+            else GinacDiff(Ieqns[i],xvar,gi);
             conv_to_safe_functions(gi);
             Geqp.append(gi);
         }
@@ -373,7 +374,8 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     // Write current output
     for(int i=0;i<ports.count();i++) {
         QString Ieq;
-        GinacConvToC(Ieqns[i],Ieq);
+        if (Ieqns[i].contains("?")) GinacConvToCTernaryOp(Ieqns[i],Ieq);
+        else GinacConvToC(Ieqns[i],Ieq);
         QString Geq = Geqns[i][i];
         stream<<QString("\t\tOUTPUT(%1) = %2 + Q%3;\n").arg(ports.at(i)).arg(Ieq).arg(i);
         stream<<QString("\t\tPARTIAL(%1,%1) = %2 + cQ%3;\n").arg(ports.at(i)).arg(Geq).arg(i);
@@ -411,7 +413,7 @@ bool CodeModelGen::isGinacFunc(QString &funcname)
           <<"sinh"<<"cosh"<<"tanh"
           <<"asinh"<<"acosh"<<"atanh"
           <<"exp"<<"log"<<"u"
-          <<"="<<"("<<")"<<"*"<<"/"<<"+"<<"-"<<"^"<<"<"<<">"<<":";
+          <<"="<<"("<<")"<<"*"<<"/"<<"+"<<"-"<<"^"<<"<"<<">"<<":"<<"?";
     return f_list.contains(funcname);
 
 }
@@ -435,6 +437,25 @@ bool CodeModelGen::GinacDiff(QString &eq, QString &var, QString &res)
     return true;
 }
 
+bool CodeModelGen::GinacDiffTernaryOp(QString &eq, QString &var, QString &res)
+{
+    QStringList tokens;
+    splitTernary(eq,tokens);
+
+    bool r = false;
+    QStringList::iterator subeq = tokens.begin();
+    for(;subeq!=tokens.end();subeq++) {
+        if (!(*subeq).contains(QRegExp("[?:<>=]"))) {
+            QString subres;
+            r = GinacDiff(*subeq,var,subres);
+            if (!r) return false;
+            else *subeq = subres;
+        }
+    }
+    res = tokens.join("");
+    return r;
+}
+
 bool CodeModelGen::GinacConvToC(QString &eq, QString &res)
 {
     QProcess ginac;
@@ -455,6 +476,41 @@ bool CodeModelGen::GinacConvToC(QString &eq, QString &res)
     return true;
 }
 
+bool CodeModelGen::GinacConvToCTernaryOp(QString &eq, QString &res)
+{
+    QStringList tokens;
+    splitTernary(eq,tokens);
+
+    bool r = false;
+    QStringList::iterator subeq = tokens.begin();
+    for(;subeq!=tokens.end();subeq++) {
+        if (!(*subeq).contains(QRegExp("[?:<>=]"))) {
+            QString subres;
+            r = GinacConvToC(*subeq,subres);
+            if (!r) return false;
+            else *subeq = subres;
+        }
+    }
+    res = tokens.join("");
+    return r;
+}
+
+void CodeModelGen::splitTernary(QString &eq, QStringList &tokens)
+{
+    QString tok = "";
+    for (QString::iterator it=eq.begin();it!=eq.end();it++) {
+        QString delim = "?:";
+        if (it->isSpace()) continue;
+        if (delim.contains(*it)) {
+            if (!tok.isEmpty()) tokens.append(tok);
+            tokens.append(*it);
+            tok.clear();
+            continue;
+        }
+        tok += *it;
+    }
+    if (!tok.isEmpty()) tokens.append(tok);
+}
 
 void CodeModelGen::normalize_functions(QString &Eqn)
 {

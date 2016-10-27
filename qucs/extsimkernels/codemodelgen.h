@@ -41,7 +41,10 @@ public:
 private:
     bool isGinacFunc(QString &funcname);
     bool GinacDiff(QString &eq,QString &var,QString &res);
+    bool GinacDiffTernaryOp(QString &eq,QString &var,QString &res);
     bool GinacConvToC(QString &eq,QString &res);
+    bool GinacConvToCTernaryOp(QString &eq,QString &res);
+    void splitTernary(QString &eq, QStringList &tokens);
     void normalize_functions(QString &Eqn);
     void conv_to_safe_functions(QString &Eqn);
 protected:
