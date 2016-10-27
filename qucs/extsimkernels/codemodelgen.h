@@ -40,6 +40,7 @@ public:
 
 private:
     bool isGinacFunc(QString &funcname);
+    bool executeGinacCmd(QString &cmd, QString &result);
     bool GinacDiff(QString &eq,QString &var,QString &res);
     bool GinacDiffTernaryOp(QString &eq,QString &var,QString &res);
     bool GinacConvToC(QString &eq,QString &res);

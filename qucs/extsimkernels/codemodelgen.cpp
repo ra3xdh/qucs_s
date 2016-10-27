@@ -418,23 +418,30 @@ bool CodeModelGen::isGinacFunc(QString &funcname)
 
 }
 
-bool CodeModelGen::GinacDiff(QString &eq, QString &var, QString &res)
+
+bool CodeModelGen::executeGinacCmd(QString &cmd, QString &result)
 {
     QProcess ginac;
     QTemporaryFile ginac_task;
     if(ginac_task.open()) {
         QTextStream ts(&ginac_task);
-        ts<<QString("print_csrc(diff(%1,%2));\nexit;").arg(eq).arg(var);
+        ts<<cmd;
         ginac_task.close();
     } else return false;
 
     ginac.setStandardInputFile(ginac_task.fileName());
     ginac.start("ginsh");
     ginac.waitForFinished();
-    res = ginac.readAllStandardOutput();
-    res.chop(1); // remove newline char
+    result = ginac.readAllStandardOutput();
+    result.chop(1); // remove newline char
 
     return true;
+}
+
+bool CodeModelGen::GinacDiff(QString &eq, QString &var, QString &res)
+{
+    QString cmd = QString("print_csrc(diff(%1,%2));\nexit;").arg(eq).arg(var);
+    return executeGinacCmd(cmd,res);
 }
 
 bool CodeModelGen::GinacDiffTernaryOp(QString &eq, QString &var, QString &res)
@@ -458,22 +465,8 @@ bool CodeModelGen::GinacDiffTernaryOp(QString &eq, QString &var, QString &res)
 
 bool CodeModelGen::GinacConvToC(QString &eq, QString &res)
 {
-    QProcess ginac;
-    QTemporaryFile ginac_task;
-    if(ginac_task.open()) {
-        QTextStream ts(&ginac_task);
-        ts<<QString("print_csrc(%1);\nexit;").arg(eq);
-        ginac_task.close();
-    } else return false;
-
-    ginac.setStandardInputFile(ginac_task.fileName());
-    ginac.start("ginsh");
-    ginac.waitForFinished();
-    res = ginac.readAllStandardOutput();
-    res.chop(1); // remove newline char
-    conv_to_safe_functions(res);
-
-    return true;
+    QString cmd = QString("print_csrc(%1);\nexit;").arg(eq);
+    return executeGinacCmd(cmd,res);
 }
 
 bool CodeModelGen::GinacConvToCTernaryOp(QString &eq, QString &res)
