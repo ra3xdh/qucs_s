@@ -46,7 +46,8 @@ libextsimkernels_a_SOURCES = \
 		xyce.cpp  \
 		simsettingsdialog.cpp \
 		verilogawriter.cpp \
-		xspice_cmbuilder.cpp
+		xspice_cmbuilder.cpp \
+		codemodelgen.cpp
 
 nodist_libextsimkernels_a_SOURCES = $(MOCFILES)
 
@@ -60,7 +61,8 @@ noinst_HEADERS = $(MOCHEADERS) \
 		xyce.h \
 		simsettingsdialog.h \
 		verilogawriter.h \
-		xspice_cmbuilder.h
+		xspice_cmbuilder.h \
+		codemodelgen.h
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs
 
