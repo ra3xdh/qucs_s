@@ -1,0 +1,132 @@
+/*
+      RFind inductance cm model.                    
+
+     12 Oct 2016    Mike Brinson
+     
+    This is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2, or (at your option)
+    any later version.
+*/
+NAME_TABLE:
+C_Function_Name:       cm_RFind
+Spice_Model_Name:      RFind
+Description:           "A SPICE RF inductance."
+
+PORT_TABLE:
+Port_Name:              nind    
+Description:           "inductance terminals" 
+Direction:              inout      
+Default_Type:           gd     
+Allowed_Types:         [gd] 
+Vector:                 no     
+Vector_Bounds:          -      
+Null_Allowed:           no     
+
+
+       
+
+PARAMETER_TABLE:
+Parameter_Name:     l
+Description:        "Nominal inductance value at tnom."    
+Data_Type:          real 
+Default_Value:      1e-3
+Limits:             -                   
+Vector:             no              
+Vector_Bounds:       -      
+Null_Allowed:       no
+
+
+PARAMETER_TABLE:
+Parameter_Name:     il1  
+Description:        "Linear current coefficient."    
+Data_Type:          real  
+Default_Value:      0.0  
+Limits:             -   
+Vector:             no 
+Vector_Bounds:       - 
+Null_Allowed:       no 
+
+
+PARAMETER_TABLE:
+Parameter_Name:     il2   
+Description:        "Quadratic current coefficient."    
+Data_Type:          real  
+Default_Value:      0.0  
+Limits:             -   
+Vector:              no 
+Vector_Bounds:       - 
+Null_Allowed:       no 
+
+PARAMETER_TABLE:
+Parameter_Name:     tc1
+Description:        "Linear temperature coefficient."    
+Data_Type:          real 
+Default_Value:      0.0
+Limits:             -                   
+Vector:             no              
+Vector_Bounds:       -      
+Null_Allowed:       no
+
+
+PARAMETER_TABLE:
+Parameter_Name:     tc2
+Description:        "Quadratic current coefficient."    
+Data_Type:          real
+Default_Value:      0.0
+Limits:             -                   
+Vector:             no              
+Vector_Bounds:       -      
+Null_Allowed:       no
+
+PARAMETER_TABLE:
+Parameter_Name:     lic           
+Description:        "Inductance current initial condition value." 
+Data_Type:          real            
+Default_Value:      0.0         
+Limits:             -               
+Vector:              no             
+Vector_Bounds:       -              
+Null_Allowed:        no 
+
+PARAMETER_TABLE:
+Parameter_Name:     rs           
+Description:        "Equivalent series resistance." 
+Data_Type:          real            
+Default_Value:      1e-3         
+Limits:             -               
+Vector:              no             
+Vector_Bounds:       -              
+Null_Allowed:        no  
+
+PARAMETER_TABLE:
+Parameter_Name:     cp           
+Description:        "Equivalent parallel capacitance." 
+Data_Type:          real            
+Default_Value:      10e-12         
+Limits:             -               
+Vector:              no             
+Vector_Bounds:       -              
+Null_Allowed:        no             
+           
+PARAMETER_TABLE:
+Parameter_Name:     rp           
+Description:        "Equivalent parallel resistance." 
+Data_Type:          real            
+Default_Value:      10e-12         
+Limits:             -               
+Vector:              no             
+Vector_Bounds:       -              
+Null_Allowed:        no 
+
+
+PARAMETER_TABLE:
+Parameter_Name:     tnom           
+Description:        "Inductance parameter measurement temperature n Celcius." 
+Data_Type:          real            
+Default_Value:      26.58          
+Vector:              no             
+Vector_Bounds:       -              
+Null_Allowed:        no              
+
+
