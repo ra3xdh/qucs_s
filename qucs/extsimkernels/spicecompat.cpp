@@ -313,3 +313,23 @@ bool spicecompat::check_nodename(QString &node)
     if (nutmeg_keywords.contains(node)) return false;
     else return true;
 }
+
+QString spicecompat::getDefaultSimulatorName()
+{
+    QString sim_lbl;
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simQucsator: sim_lbl = QObject::tr("Qucsator");
+        break;
+    case spicecompat::simNgspice: sim_lbl = QObject::tr("Ngspice");
+        break;
+    case spicecompat::simSpiceOpus: sim_lbl = QObject::tr("SpiceOpus");
+        break;
+    case spicecompat::simXycePar: sim_lbl = QObject::tr("XYCE (Serial)");
+        break;
+    case spicecompat::simXyceSer: sim_lbl = QObject::tr("XYCE (Parallel)");
+        break;
+    default: sim_lbl = QObject::tr("Qucsator");
+        break;
+    }
+    return sim_lbl;
+}

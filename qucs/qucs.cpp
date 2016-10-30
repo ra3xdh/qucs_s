@@ -2866,6 +2866,7 @@ void QucsApp::slotSimSettings()
     SimSettingsDialog *SetDlg = new SimSettingsDialog(this);
     SetDlg->exec();
     delete SetDlg;
+    SimulatorLabel->setText(spicecompat::getDefaultSimulatorName());
 }
 
 void QucsApp::slotSimulateWithSpice()
