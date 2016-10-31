@@ -219,3 +219,13 @@ QString WireLabel::save()
 	  +  initValue+"\">";
   return s;
 }
+
+
+void WireLabel::getLabelBounding(int& _xmin, int& _ymin, int& _xmax, int& _ymax)
+{
+    _xmin = std::min(x1,x1+(x2+6));
+    _xmax = std::max(x1,x1+(x2+6));
+    _ymin = std::min(y1,y1+(y2+6));
+    _ymax = std::max(y1,y1+(y2+5));
+    _ymax = std::max(cy,_ymax);
+}

@@ -975,10 +975,11 @@ void Schematic::sizeOfAll(int& xmin, int& ymin, int& xmax, int& ymax)
 
     pl = pw->Label;
     if(pl) {     // check position of wire label
-      if(pl->x1 < xmin)  xmin = pl->x1;
-      if((pl->x1+pl->x2) > xmax)  xmax = pl->x1 + pl->x2;
-      if(pl->y1 > ymax)  ymax = pl->y1;
-      if((pl->y1-pl->y2) < ymin)  ymin = pl->y1 - pl->y2;
+        pl->getLabelBounding(x1,y1,x2,y2);
+        if(x1 < xmin) xmin = x1;
+        if(x2 > xmax) xmax = x2;
+        if(y1 < ymin) ymin = y1;
+        if(y2 > ymax) ymax = y2;
     }
   }
 
@@ -986,10 +987,11 @@ void Schematic::sizeOfAll(int& xmin, int& ymin, int& xmax, int& ymax)
   for(Node *pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
     pl = pn->Label;
     if(pl) {     // check position of node label
-      if(pl->x1 < xmin)  xmin = pl->x1;
-      if((pl->x1+pl->x2) > xmax)  xmax = pl->x1 + pl->x2;
-      if(pl->y1 > ymax)  ymax = pl->y1;
-      if((pl->y1-pl->y2) < ymin)  ymin = pl->y1 - pl->y2;
+        pl->getLabelBounding(x1,y1,x2,y2);
+        if(x1 < xmin) xmin = x1;
+        if(x2 > xmax) xmax = x2;
+        if(y1 < ymin) ymin = y1;
+        if(y2 > ymax) ymax = y2;
     }
   }
 

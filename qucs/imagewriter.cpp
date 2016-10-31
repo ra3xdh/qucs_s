@@ -311,21 +311,32 @@ void ImageWriter::getSelAreaWidthAndHeight(Schematic *sch, int &wsel, int &hsel,
     for(Wire *pw = sch->Wires->first(); pw != 0; pw = sch->Wires->next()) {
 
         if (pw->isSelected) {
-            int xc,yc;
-            pw->getCenter(xc,yc);
-
-            if (xc<xmin) xmin = xc;
-            if (xc>xmax) xmax = xc;
-            if (yc<ymin) ymin = yc;
-            if (yc>ymax) ymax = yc;
+            if(pw->x1 < xmin) xmin = pw->x1;
+            if(pw->x2 > xmax) xmax = pw->x2;
+            if(pw->y1 < ymin) ymin = pw->y1;
+            if(pw->y2 > ymax) ymax = pw->y2;
             if (pw->Label) {
                 WireLabel *pl = pw->Label;
                 if (pl->isSelected) {
-                    if(pl->x1 < xmin)  xmin = pl->x1;
-                    if((pl->x1+pl->x2) > xmax)  xmax = pl->x1 + pl->x2;
-                    if(pl->y1 > ymax)  ymax = pl->y1;
-                    if((pl->y1-pl->y2) < ymin)  ymin = pl->y1 - pl->y2;
+                    int x1,y1,x2,y2;
+                    pl->getLabelBounding(x1,y1,x2,y2);
+                    qDebug()<<x1<<y1<<x2<<y2;
+                    updateMinMax(xmin,xmax,ymin,ymax,x1,x2,y1,y2);
                 }
+            }
+        }
+    }
+
+    for(Node *pn = sch->Nodes->first(); pn != 0; pn = sch->Nodes->next()) {
+        WireLabel *pl = pn->Label;
+        if(pl) {     // check position of node label
+            if (pl->isSelected) {
+                int x1,x2,y1,y2;
+                pl->getLabelBounding(x1,y1,x2,y2);
+                if(x1 < xmin) xmin = x1;
+                if(x2 > xmax) xmax = x2;
+                if(y1 < ymin) ymin = y1;
+                if(y2 > ymax) ymax = y2;
             }
         }
     }
