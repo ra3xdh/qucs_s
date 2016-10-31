@@ -17,6 +17,9 @@ Varistors.lib
 Z-Diodes.lib
 SpiceOpamp.lib
 Xanalogue.lib
+MESFETs.lib
+XyceDigital.lib
+Xyce_Digital_TTL_Technology.lib
 )
 
 SET(BLACKLIST
@@ -28,3 +31,5 @@ xyce.blacklist
 INSTALL( FILES ${COMPLIBS} ${BLACKLIST} DESTINATION share/qucs/library )
 
 ADD_SUBDIRECTORY( AnalogueCM )
+ADD_SUBDIRECTORY( MESFETs )
+ADD_SUBDIRECTORY( XyceDigital)
