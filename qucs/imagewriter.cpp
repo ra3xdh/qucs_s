@@ -315,6 +315,7 @@ void ImageWriter::getSelAreaWidthAndHeight(Schematic *sch, int &wsel, int &hsel,
             if(pw->x2 > xmax) xmax = pw->x2;
             if(pw->y1 < ymin) ymin = pw->y1;
             if(pw->y2 > ymax) ymax = pw->y2;
+            qDebug() << pw->x1 << pw->x2 << pw->y1 << pw->y2;
         }
         if (pw->Label) {
           WireLabel *pl = pw->Label;
