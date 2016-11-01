@@ -4,344 +4,296 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <source>German by Stefan Jahn</source>
-        <translation type="obsolete">Alemán por Stefan Jahn</translation>
-    </message>
-    <message>
-        <source>Polish by Dariusz Pienkowski</source>
-        <translation type="obsolete">Polaco por Dariusz Pienkowski</translation>
-    </message>
-    <message>
-        <source>Romanian by Radu Circa</source>
-        <translation type="obsolete">Rumano por Radu Circa</translation>
-    </message>
-    <message>
-        <source>French by Vincent Habchi, F5RCS</source>
-        <translation type="obsolete">Francés por Vincent Habchi, F5RC</translation>
-    </message>
-    <message>
-        <source>Spanish by Jose L. Redrejo Rodriguez</source>
-        <translation type="obsolete">Español por José L. Redrejo Rodríguez</translation>
-    </message>
-    <message>
-        <source>Japanese by Toyoyuki Ishikawa</source>
-        <translation type="obsolete">Japonés por Toyoyuki Ishikawa</translation>
-    </message>
-    <message>
-        <source>Italian by Giorgio Luparia and Claudio Girardi</source>
-        <translation type="obsolete">Italiano por Giorgio Luparia y Claudio Girardi</translation>
-    </message>
-    <message>
-        <source>Hebrew by Dotan Nahum</source>
-        <translation type="obsolete">Hebreo por Dotan Nahum</translation>
-    </message>
-    <message>
-        <source>Turkish by Onur and Ozgur Cobanoglu</source>
-        <translation type="obsolete">Turco por Onur y Ozgur Cobanoglu</translation>
-    </message>
-    <message>
-        <source>Hungarian by Jozsef Bus</source>
-        <translation type="obsolete">Húngaro por Jozsef Bus</translation>
-    </message>
-    <message>
-        <source>Russian by Igor Gorbounov</source>
-        <translation type="obsolete">Ruso por Igor Gorbounov</translation>
-    </message>
-    <message>
         <location filename="../qucs/dialogs/aboutdialog.cpp" line="+106"/>
         <source>About Qucs</source>
-        <translation type="unfinished"></translation>
+        <translation>Pel que fa a Qucs</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versió</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+1"/>
         <source>Copyright (C)</source>
-        <translation type="unfinished">Copyright (C)</translation>
-    </message>
-    <message>
-        <source>by Michael Margraf</source>
-        <translation type="obsolete">por Michael Margraf</translation>
+        <translation>Copyright (C)</translation>
     </message>
     <message>
         <location line="-84"/>
         <source>GUI programmer, Verilog-A dynamic loader</source>
-        <translation type="unfinished"></translation>
+        <translation>Programador GUI, Verilog - Un carregador dinàmic</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>testing, modelling and documentation, tutorial contributor</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentació, modelatge i testeig, tutorial de col·laborador</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>testing, modelling, Octave.</source>
-        <translation type="unfinished"></translation>
+        <translation>modelatge, testeig, Octave.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>bondwire and rectangular waveguide model implementation</source>
-        <translation type="unfinished"></translation>
+        <translation>implementació del model de guia d&apos;ones rectangular i bondwire</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>GUI programmer, release</source>
-        <translation type="unfinished"></translation>
+        <translation>Programador GUI, entrega</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>filter synthesis (qucs-activefilter), SPICE integration (NGSPICE, Xyce)</source>
-        <translation type="unfinished"></translation>
+        <translation>Síntesi de filtres (qucs-activefilter), Integració amb SPICE (NGSPICE, Xyce)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>testing, general fixes</source>
-        <translation type="unfinished"></translation>
+        <translation>testeig, correccions generals</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>refactoring, modularity</source>
-        <translation type="unfinished"></translation>
+        <translation>refactorització, modularitat</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>RF design tools</source>
-        <translation type="unfinished"></translation>
+        <translation>eines de disseny de RF</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>founder of the project, GUI programmer</source>
-        <translation type="unfinished"></translation>
+        <translation>fundador del projecte, programador del GUI</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Programmer of simulator</source>
-        <translation type="unfinished"></translation>
+        <translation>Programador del simulador</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>webpages and translator</source>
-        <translation type="unfinished"></translation>
+        <translation>Pàgines web i traductor</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>tester and applyer of Stefan&apos;s patches, author of documentation</source>
-        <translation type="unfinished"></translation>
+        <translation>testejador i aplicador dels parches de Stefan, autor de documentació</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>coplanar line and filter synthesis code, documentation contributor</source>
-        <translation type="unfinished"></translation>
+        <translation>codi de síntesi de filtres i línies coplanars, documentació de col·laborador</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>some filter synthesis code and attenuator synthesis</source>
-        <translation type="unfinished"></translation>
+        <translation>codi de síntesi d&apos;alguns filtres i atenuadors</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+5"/>
         <source>GUI programmer, Qt4 porter</source>
-        <translation type="unfinished"></translation>
+        <translation>programador del GUI, portador a QT4</translation>
     </message>
     <message>
         <location line="-4"/>
         <source>programmer of the Verilog-AMS interface</source>
-        <translation type="unfinished"></translation>
+        <translation>programador de la interfície Verilog-AMS</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>equation solver contributions, exponential sources, author of documentation</source>
-        <translation type="unfinished"></translation>
+        <translation>contribuïdor de la resolució d&apos;equacions, fonts exponencials, autor de documentació</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>temperature model for rectangular waveguide</source>
-        <translation type="unfinished"></translation>
+        <translation>model de temperatura per la guia d&apos;ones rectangular</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>GUI programmer</source>
-        <translation type="unfinished"></translation>
+        <translation>Programador del GUI</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>German by</source>
-        <translation type="unfinished"></translation>
+        <translation>Alemany per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Polish by</source>
-        <translation type="unfinished"></translation>
+        <translation>Polonès per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Romanian by</source>
-        <translation type="unfinished"></translation>
+        <translation>Romanes per </translation>
     </message>
     <message>
         <location line="+1"/>
         <source>French by</source>
-        <translation type="unfinished"></translation>
+        <translation>Francès per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Portuguese by</source>
-        <translation type="unfinished"></translation>
+        <translation>Portuguès per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Spanish by</source>
-        <translation type="unfinished"></translation>
+        <translation>Espanyol per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Japanese by</source>
-        <translation type="unfinished"></translation>
+        <translation>Japonès per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Italian by</source>
-        <translation type="unfinished"></translation>
+        <translation>Italià per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hebrew by</source>
-        <translation type="unfinished"></translation>
+        <translation>Hebreu per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Swedish by</source>
-        <translation type="unfinished"></translation>
+        <translation>Suec per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Turkish by</source>
-        <translation type="unfinished"></translation>
+        <translation>Turc per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hungarian by</source>
-        <translation type="unfinished"></translation>
+        <translation>Hongarès per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Russian by</source>
-        <translation type="unfinished"></translation>
+        <translation>Rus per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Czech by</source>
-        <translation type="unfinished"></translation>
+        <translation>Txec per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Catalan by</source>
-        <translation type="unfinished"></translation>
+        <translation>Català per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ukrainian by</source>
-        <translation type="unfinished"></translation>
+        <translation>Ucraïnès per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Arabic by</source>
-        <translation type="unfinished"></translation>
+        <translation>Àrab per</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Kazakh by</source>
-        <translation type="unfinished"></translation>
+        <translation>Kazakh per </translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Home Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Pàgina Principal</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Documentation start page</source>
-        <translation type="unfinished"></translation>
+        <translation>Pàgina d&apos;inici de la documentació</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Components reference manual</source>
-        <translation type="unfinished"></translation>
+        <translation>Manual de referència de components</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>If you need help on using Qucs, please join the</source>
-        <translation type="unfinished"></translation>
+        <translation>Si necessiteu ajuda per fer servir Qucs, si us plau uniu-vos a la</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>help mailing list</source>
-        <translation type="unfinished"></translation>
+        <translation>llista de correu d&apos;ajuda</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>qucs-help on SourceForge</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajuda de Qucs a SourceForge</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>please attach the schematic you are having problems with</source>
-        <translation type="unfinished"></translation>
+        <translation>Si us plau, adjunteu l&apos;esquemàtic amb el que experimenteu problemes </translation>
     </message>
     <message>
         <location line="+2"/>
         <source>IRC general discussion channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Canal IRC de discussió general</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Additional resources</source>
-        <translation type="unfinished"></translation>
+        <translation>Recursos addicionals</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Authors</source>
-        <translation type="unfinished"></translation>
+        <translation>Autors</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Translations</source>
-        <translation type="unfinished"></translation>
+        <translation>Traduccions</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Support</source>
-        <translation type="unfinished"></translation>
+        <translation>Suport</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>License</source>
-        <translation type="unfinished"></translation>
+        <translation>Llicència</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Current Qucs Team:</source>
-        <translation type="unfinished"></translation>
+        <translation>Equip actual de Qucs:</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Previous Developers</source>
-        <translation type="unfinished"></translation>
+        <translation>Desenvolupadors anteriors</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>GUI translations :</source>
-        <translation type="unfinished"></translation>
+        <translation>Traductors del GUI:</translation>
     </message>
 </context>
 <context>
@@ -425,6 +377,19 @@
         <location line="+3"/>
         <source>Cancel</source>
         <translation>Cancel·lar</translation>
+    </message>
+</context>
+<context>
+    <name>AuxFilesDialog</name>
+    <message>
+        <location filename="../qucs/dialogs/settingsdialog.cpp" line="+359"/>
+        <source>Select</source>
+        <translation type="unfinished">Seleccionar</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel·lar</translation>
     </message>
 </context>
 <context>
@@ -525,7 +490,7 @@
 <context>
     <name>ComponentDialog</name>
     <message>
-        <location filename="../qucs/components/componentdialog.cpp" line="+43"/>
+        <location filename="../qucs/components/componentdialog.cpp" line="+45"/>
         <source>Edit Component Properties</source>
         <translation>Editar les propietats del component</translation>
     </message>
@@ -543,12 +508,12 @@
         <location line="+9"/>
         <location line="+16"/>
         <location line="+106"/>
-        <location line="+94"/>
+        <location line="+95"/>
         <source>display in schematic</source>
         <translation>mostrar a l&apos;esquema</translation>
     </message>
     <message>
-        <location line="-283"/>
+        <location line="-284"/>
         <source>Simulation:</source>
         <translation>Simulació:</translation>
     </message>
@@ -599,13 +564,13 @@
     </message>
     <message>
         <location line="+9"/>
-        <location line="+1132"/>
+        <location line="+1151"/>
         <location line="+22"/>
         <source>Step:</source>
         <translation>Pas:</translation>
     </message>
     <message>
-        <location line="-1147"/>
+        <location line="-1166"/>
         <source>Number:</source>
         <translation>Número:</translation>
     </message>
@@ -641,7 +606,7 @@
         <translation>Descripció</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+43"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
@@ -651,7 +616,7 @@
         <translation>Examinar</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+15"/>
         <source>Add</source>
         <translation>Afegir</translation>
     </message>
@@ -661,7 +626,7 @@
         <translation>Borrar</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+6"/>
         <source>Move Up</source>
         <translation>Mou amunt</translation>
     </message>
@@ -687,9 +652,9 @@
     </message>
     <message>
         <location line="+29"/>
-        <location line="+74"/>
+        <location line="+92"/>
         <location line="+54"/>
-        <location line="+201"/>
+        <location line="+205"/>
         <location line="+215"/>
         <location line="+167"/>
         <location line="+301"/>
@@ -697,16 +662,16 @@
         <translation>Si</translation>
     </message>
     <message>
-        <location line="-1010"/>
-        <location line="+74"/>
-        <location line="+255"/>
+        <location line="-1032"/>
+        <location line="+92"/>
+        <location line="+259"/>
         <location line="+378"/>
-        <location line="+305"/>
+        <location line="+306"/>
         <source>no</source>
         <translation>no</translation>
     </message>
     <message>
-        <location line="-365"/>
+        <location line="-366"/>
         <source>Select a file</source>
         <translation>Seleccionar un fitxer</translation>
     </message>
@@ -1180,12 +1145,12 @@
     <message>
         <location line="-7"/>
         <source>Width in pixels</source>
-        <translation type="unfinished"></translation>
+        <translation>Amplada en pixels</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Browse</source>
-        <translation type="unfinished">Examinar</translation>
+        <translation>Examinar</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -1220,7 +1185,7 @@
     <message>
         <location line="+31"/>
         <source>Export Schematic to Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar esquemàtic a imatge</translation>
     </message>
     <message>
         <location line="+168"/>
@@ -2347,7 +2312,7 @@ Programa de síntexis de filtros</translation>
     <message>
         <location line="+13"/>
         <source>No permission to delete library subdirectory &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>No teniu permís per esborrar el subdirectori de llibreria &quot;%1&quot;.</translation>
     </message>
 </context>
 <context>
@@ -2355,12 +2320,12 @@ Programa de síntexis de filtros</translation>
     <message>
         <location filename="../qucs/dialogs/loaddialog.cpp" line="+49"/>
         <source>Load Verilog-A symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Carregar símbols Verilog-A</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Choose Verilog-A symbol files:</source>
-        <translation type="unfinished"></translation>
+        <translation>Escollir arxiu de símbols Verilog-A:</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2385,17 +2350,17 @@ Programa de síntexis de filtros</translation>
     <message>
         <location line="+21"/>
         <source>Change Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Canviar icona</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>auto-load selected</source>
-        <translation type="unfinished"></translation>
+        <translation>seleccionada auto-carrega</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Load the selected symbols when opening the project.</source>
-        <translation type="unfinished"></translation>
+        <translation>Carregar els símbols seleccionats en obrir el projecte</translation>
     </message>
     <message>
         <location line="+83"/>
@@ -2406,17 +2371,18 @@ Programa de síntexis de filtros</translation>
         <location line="+1"/>
         <source>Icon not found:
  %1.png</source>
-        <translation type="unfinished"></translation>
+        <translation>Icona no trobada:
+%1.png</translation>
     </message>
     <message>
         <location line="+47"/>
         <source>Open File</source>
-        <translation type="unfinished"></translation>
+        <translation>Obrir arxiu</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Icon image (*.png)</source>
-        <translation type="unfinished"></translation>
+        <translation>imatge de la icona (*.png)</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -2485,7 +2451,7 @@ Programa de síntexis de filtros</translation>
 <context>
     <name>MatchDialog</name>
     <message>
-        <location filename="../qucs/dialogs/matchdialog.cpp" line="+50"/>
+        <location filename="../qucs/dialogs/matchdialog.cpp" line="+51"/>
         <source>Create Matching Circuit</source>
         <translation>Crear Circuito Equivalente</translation>
     </message>
@@ -2505,23 +2471,23 @@ Programa de síntexis de filtros</translation>
         <translation>Puerto 1</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location line="+6"/>
+        <location line="+4"/>
+        <location line="+7"/>
         <source>ohms</source>
         <translation>ohms</translation>
     </message>
     <message>
-        <location line="-3"/>
+        <location line="-4"/>
         <source>Port 2</source>
         <translation>Puerto 2</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+16"/>
         <source>S Parameter</source>
         <translation>Paràmetre S</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Input format</source>
         <translation>Formato de Entrada</translation>
     </message>
@@ -2537,18 +2503,18 @@ Programa de síntexis de filtros</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location line="+134"/>
+        <location line="+162"/>
         <source>S11</source>
         <translation>S11</translation>
     </message>
     <message>
-        <location line="-133"/>
-        <location line="+134"/>
+        <location line="-161"/>
+        <location line="+162"/>
         <source>S21</source>
         <translation>S21</translation>
     </message>
     <message>
-        <location line="-100"/>
+        <location line="-128"/>
         <source>S12</source>
         <translation>S12</translation>
     </message>
@@ -2558,7 +2524,7 @@ Programa de síntexis de filtros</translation>
         <translation>S22</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+54"/>
         <source>Frequency:</source>
         <translation>Frecuencia:</translation>
     </message>
@@ -2573,7 +2539,7 @@ Programa de síntexis de filtros</translation>
         <translation>Cancel·lar</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+59"/>
         <source>Reflexion Coefficient</source>
         <translation>Coeficiente de Reflexión</translation>
     </message>
@@ -2583,7 +2549,7 @@ Programa de síntexis de filtros</translation>
         <translation>Impedancia (ohms)</translation>
     </message>
     <message>
-        <location line="+221"/>
+        <location line="+244"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
@@ -2600,12 +2566,12 @@ pero es %1!</translation>
     <message>
         <location filename="../qucs/messagedock.cpp" line="+50"/>
         <source>admsXml</source>
-        <translation type="unfinished"></translation>
+        <translation>admsXml</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Compiler</source>
-        <translation type="unfinished"></translation>
+        <translation>Compilador</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2633,12 +2599,12 @@ pero es %1!</translation>
     <message>
         <location line="+4"/>
         <source>&amp;About ResistorCodes...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;pel que fa a ResistorCodes...</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&amp;About Qt...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pel que fa a Qt...</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2655,12 +2621,14 @@ pero es %1!</translation>
         <source>
 Resistor color code computation program
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+Programa de càlcul del codi de colors de resistències
+</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copyright (c) 2012 by</source>
-        <translation type="unfinished"></translation>
+        <translation>Copyright (c) 2012 per</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2699,69 +2667,73 @@ Resistor color code computation program
 <context>
     <name>OctaveWindow</name>
     <message>
-        <location filename="../qucs/octave_window.cpp" line="+130"/>
         <source>ERROR: Cannot start Octave!</source>
+        <translation type="obsolete">ERROR: No puc engegar Octave!</translation>
+    </message>
+    <message>
+        <location filename="../qucs/octave_window.cpp" line="+120"/>
+        <source>ERROR: Failed to execute &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>OptimizeDialog</name>
     <message>
-        <location filename="../qucs/components/optimizedialog.cpp" line="+55"/>
+        <location filename="../qucs/components/optimizedialog.cpp" line="+57"/>
         <source>Edit Optimization Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar Propietats d&apos;Optimització</translation>
     </message>
     <message>
         <location line="+22"/>
         <location line="+120"/>
-        <location line="+84"/>
+        <location line="+91"/>
         <source>Name:</source>
         <translation>Nom:</translation>
     </message>
     <message>
-        <location line="-202"/>
+        <location line="-209"/>
         <source>Simulation:</source>
         <translation>Simulació:</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>General</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Method:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mètode:</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Maximum number of iterations:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre màxim d&apos;iteracions:</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Output refresh cycle:</source>
-        <translation type="unfinished"></translation>
+        <translation>Cicle de refresc de sortida:</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of parents:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de antecessors:</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Constant F:</source>
-        <translation type="unfinished"></translation>
+        <translation>Constant F:</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Crossing over factor:</source>
-        <translation type="unfinished"></translation>
+        <translation>Factor de Crossing over:</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Pseudo random number seed:</source>
-        <translation type="unfinished"></translation>
+        <translation>Llavor (seed) de número pseudo aleatori:</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2781,85 +2753,134 @@ Resistor color code computation program
     <message>
         <location line="+3"/>
         <source>Algorithm</source>
-        <translation type="unfinished"></translation>
+        <translation>Algorisme</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+97"/>
+        <location line="+104"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location line="-97"/>
+        <location line="-104"/>
         <location line="+18"/>
         <source>active</source>
-        <translation type="unfinished"></translation>
+        <translation>actiu</translation>
     </message>
     <message>
         <location line="-18"/>
         <source>initial</source>
-        <translation type="unfinished"></translation>
+        <translation>inicial</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>min</source>
-        <translation type="unfinished"></translation>
+        <translation>min</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>max</source>
-        <translation type="unfinished"></translation>
+        <translation>max</translation>
     </message>
     <message>
         <location line="+0"/>
-        <location line="+97"/>
+        <location line="+104"/>
         <source>Type</source>
         <translation>Tipus</translation>
     </message>
     <message>
-        <location line="-54"/>
+        <location line="-61"/>
         <source>initial:</source>
-        <translation type="unfinished"></translation>
+        <translation>inicial:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>min:</source>
-        <translation type="unfinished"></translation>
+        <translation>min:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>max:</source>
-        <translation type="unfinished"></translation>
+        <translation>max:</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+175"/>
-        <location line="+344"/>
+        <location line="+182"/>
+        <location line="+358"/>
         <source>linear double</source>
-        <translation type="unfinished"></translation>
+        <translation>lineal doble</translation>
     </message>
     <message>
-        <location line="-518"/>
-        <location line="+176"/>
-        <location line="+344"/>
+        <location line="-539"/>
+        <location line="+183"/>
+        <location line="+358"/>
         <source>logarithmic double</source>
-        <translation type="unfinished"></translation>
+        <translation>logarítmic doble</translation>
     </message>
     <message>
-        <location line="-519"/>
-        <location line="+177"/>
-        <location line="+344"/>
+        <location line="-540"/>
+        <location line="+184"/>
+        <location line="+358"/>
         <source>linear integer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-520"/>
-        <location line="+178"/>
+        <location line="-541"/>
+        <location line="+199"/>
         <source>logarithmic integer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-174"/>
+        <location line="-198"/>
+        <location line="+184"/>
+        <location line="+358"/>
+        <source>E3 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-541"/>
+        <location line="+185"/>
+        <location line="+358"/>
+        <source>E6 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-542"/>
+        <location line="+186"/>
+        <location line="+358"/>
+        <source>E12 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-543"/>
+        <location line="+187"/>
+        <location line="+358"/>
+        <source>E24 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-544"/>
+        <location line="+188"/>
+        <location line="+358"/>
+        <source>E48 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-545"/>
+        <location line="+189"/>
+        <location line="+358"/>
+        <source>E96 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-546"/>
+        <location line="+190"/>
+        <location line="+358"/>
+        <source>E192 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-544"/>
         <location line="+69"/>
         <source>Add</source>
         <translation>Afegir</translation>
@@ -2878,12 +2899,12 @@ Resistor color code computation program
     <message>
         <location line="+12"/>
         <source>Copy current values to equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiar els valors actuals a l&apos;equació</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Variables</source>
-        <translation type="unfinished"></translation>
+        <translation>Variables</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2893,53 +2914,53 @@ Resistor color code computation program
     <message>
         <location line="+20"/>
         <source>Value:</source>
-        <translation type="unfinished"></translation>
+        <translation>Valor:</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+131"/>
-        <location line="+354"/>
+        <location line="+145"/>
+        <location line="+368"/>
         <source>minimize</source>
-        <translation type="unfinished"></translation>
+        <translation>minimitzar</translation>
     </message>
     <message>
-        <location line="-484"/>
-        <location line="+132"/>
-        <location line="+354"/>
+        <location line="-512"/>
+        <location line="+146"/>
+        <location line="+368"/>
         <source>maximize</source>
-        <translation type="unfinished"></translation>
+        <translation>maximitzar</translation>
     </message>
     <message>
-        <location line="-485"/>
-        <location line="+133"/>
-        <location line="+354"/>
+        <location line="-513"/>
+        <location line="+147"/>
+        <location line="+368"/>
         <source>less</source>
-        <translation type="unfinished"></translation>
+        <translation>menor</translation>
     </message>
     <message>
-        <location line="-486"/>
-        <location line="+134"/>
-        <location line="+354"/>
+        <location line="-514"/>
+        <location line="+148"/>
+        <location line="+368"/>
         <source>greater</source>
-        <translation type="unfinished"></translation>
+        <translation>major</translation>
     </message>
     <message>
-        <location line="-487"/>
-        <location line="+135"/>
-        <location line="+354"/>
+        <location line="-515"/>
+        <location line="+149"/>
+        <location line="+368"/>
         <source>equal</source>
-        <translation type="unfinished"></translation>
+        <translation>igual</translation>
     </message>
     <message>
-        <location line="-488"/>
-        <location line="+136"/>
+        <location line="-516"/>
+        <location line="+150"/>
         <source>monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>monitor</translation>
     </message>
     <message>
-        <location line="-119"/>
+        <location line="-133"/>
         <source>Goals</source>
-        <translation type="unfinished"></translation>
+        <translation>Objectius</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2958,7 +2979,7 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+57"/>
-        <location line="+91"/>
+        <location line="+105"/>
         <location line="+34"/>
         <location line="+37"/>
         <location line="+195"/>
@@ -2966,8 +2987,8 @@ Resistor color code computation program
         <translation>sim</translation>
     </message>
     <message>
-        <location line="-357"/>
-        <location line="+125"/>
+        <location line="-371"/>
+        <location line="+139"/>
         <location line="+37"/>
         <source>no</source>
         <translation>no</translation>
@@ -2984,20 +3005,20 @@ Resistor color code computation program
         <location line="-139"/>
         <location line="+132"/>
         <source>Every text field must be non-empty!</source>
-        <translation type="unfinished"></translation>
+        <translation>Cada camp de text no pot estar buid</translation>
     </message>
     <message>
         <location line="-124"/>
         <source>Variable &quot;%1&quot; aleardy in list!</source>
-        <translation type="unfinished"></translation>
+        <translation>La variable &quot;%1&quot; ja hi és a la llista! </translation>
     </message>
     <message>
         <location line="+132"/>
         <source>Goal &quot;%1&quot; already in list!</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;objectiu &quot;%1&quot; ja hi és a la llista!</translation>
     </message>
     <message>
-        <location line="+248"/>
+        <location line="+262"/>
         <source>Set precision</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3259,9 +3280,9 @@ Resistor color code computation program
 <context>
     <name>ProjectView</name>
     <message>
-        <location filename="../qucs/projectView.cpp" line="+72"/>
+        <location filename="../qucs/projectView.cpp" line="+77"/>
         <source>Content of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Contingut de %1</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -3286,7 +3307,7 @@ Resistor color code computation program
     <message>
         <location line="+1"/>
         <source>Verilog-A</source>
-        <translation type="unfinished"></translation>
+        <translation>Verilog-A</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3296,7 +3317,7 @@ Resistor color code computation program
     <message>
         <location line="+1"/>
         <source>Octave</source>
-        <translation type="unfinished"></translation>
+        <translation>Octave</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3504,7 +3525,7 @@ Resistor color code computation program
     <message>
         <location line="+2"/>
         <source>noise figure</source>
-        <translation type="unfinished"></translation>
+        <translation>figura de soroll</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -3514,7 +3535,7 @@ Resistor color code computation program
     <message>
         <location filename="../qucs/components/andor4x2.cpp" line="+25"/>
         <source>4x2 andor verilog device</source>
-        <translation type="unfinished"></translation>
+        <translation>dispositiu verilog andor 4x2</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3555,7 +3576,7 @@ Resistor color code computation program
         <location filename="../qucs/components/mux4to1.cpp" line="+2"/>
         <location filename="../qucs/components/mux8to1.cpp" line="+2"/>
         <source>output delay</source>
-        <translation type="unfinished"></translation>
+        <translation>retràs de sortida</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3589,32 +3610,32 @@ Resistor color code computation program
         <location line="+3"/>
         <location filename="../qucs/components/tff_SR.cpp" line="+33"/>
         <source>s</source>
-        <translation type="unfinished"></translation>
+        <translation>s</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>4x2 AndOr</source>
-        <translation type="unfinished"></translation>
+        <translation>4x2 AndOr</translation>
     </message>
     <message>
         <location filename="../qucs/components/andor4x3.cpp" line="-6"/>
         <source>4x3 andor verilog device</source>
-        <translation type="unfinished"></translation>
+        <translation>dispositiu verilog andor 4x3</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>4x3 AndOr</source>
-        <translation type="unfinished"></translation>
+        <translation>4x3 AndOr</translation>
     </message>
     <message>
         <location filename="../qucs/components/andor4x4.cpp" line="-6"/>
         <source>4x4 andor verilog device</source>
-        <translation type="unfinished"></translation>
+        <translation>dispositiu verilog andor 4x4</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>4x4 AndOr</source>
-        <translation type="unfinished"></translation>
+        <translation>4x4 AndOr</translation>
     </message>
     <message>
         <location filename="../qucs/components/attenuator.cpp" line="+23"/>
@@ -3705,12 +3726,12 @@ Resistor color code computation program
         <location filename="../qucs/components/logical_buf.cpp" line="+34"/>
         <location filename="../qucs/components/logical_inv.cpp" line="+34"/>
         <source>transfer function scaling factor</source>
-        <translation type="unfinished"></translation>
+        <translation>factor d&apos;escala de la funció de transferència</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>4Bit Bin2Gray</source>
-        <translation type="unfinished"></translation>
+        <translation>4Bit Bin2Gray</translation>
     </message>
     <message>
         <location filename="../qucs/components/bjt.cpp" line="+25"/>
@@ -4032,12 +4053,12 @@ Resistor color code computation program
     <message>
         <location line="+21"/>
         <source>length of the wire</source>
-        <translation type="unfinished"></translation>
+        <translation>longitud del cable</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>diameter of the wire</source>
-        <translation type="unfinished"></translation>
+        <translation>diàmetre del cable</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4047,12 +4068,12 @@ Resistor color code computation program
     <message>
         <location line="+2"/>
         <source>specific resistance of the metal</source>
-        <translation type="unfinished"></translation>
+        <translation>resistència especifica del metall</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>relative permeability of the metal</source>
-        <translation type="unfinished"></translation>
+        <translation>permeabilitat relativa del metall</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4087,7 +4108,7 @@ Resistor color code computation program
         <location filename="../qucs/components/thyristor.cpp" line="+8"/>
         <location filename="../qucs/components/triac.cpp" line="+8"/>
         <source>simulation temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>temperatura de simulació</translation>
     </message>
     <message>
         <location filename="../qucs/components/capacitor.cpp" line="+23"/>
@@ -4244,32 +4265,32 @@ Resistor color code computation program
     <message>
         <location filename="../qucs/components/comp_1bit.cpp" line="-6"/>
         <source>1bit comparator verilog device</source>
-        <translation type="unfinished"></translation>
+        <translation>dispositiu verilog comparador de 1bit</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>1Bit Comparator</source>
-        <translation type="unfinished"></translation>
+        <translation>comparador de 1bit </translation>
     </message>
     <message>
         <location filename="../qucs/components/comp_2bit.cpp" line="-6"/>
         <source>2bit comparator verilog device</source>
-        <translation type="unfinished"></translation>
+        <translation>dispositiu verilog comparador 2bit</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>2Bit Comparator</source>
-        <translation type="unfinished"></translation>
+        <translation>Comparador de 2Bit </translation>
     </message>
     <message>
         <location filename="../qucs/components/comp_4bit.cpp" line="-6"/>
         <source>4bit comparator verilog device</source>
-        <translation type="unfinished"></translation>
+        <translation>dispositiu verilog comparador 4bit</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>4Bit Comparator</source>
-        <translation type="unfinished"></translation>
+        <translation>Comparador de 4Bit </translation>
     </message>
     <message>
         <location filename="../qucs/components/component.cpp" line="-4"/>
@@ -4286,11 +4307,9 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+248"/>
-        <location line="+20"/>
-        <location line="+8"/>
+        <location line="+46"/>
         <location filename="../qucs/components/vacomponent.cpp" line="+306"/>
-        <location filename="../qucs/octave_window.cpp" line="-31"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+1251"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+1253"/>
         <location filename="../qucs/schematic_file.cpp" line="+114"/>
         <location line="+18"/>
         <location line="+21"/>
@@ -4321,23 +4340,25 @@ Resistor color code computation program
         <translation>Error</translation>
     </message>
     <message>
-        <location line="-27"/>
+        <location line="-45"/>
         <source>Format Error:
 Wrong line start!</source>
         <translation>Error de Formato:
 ¡Comienzo de línea equivocado!</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>Format Error:
 Unknown component!
 %1
 
-Do you make use of loadable components?</source>
+Do you want to load schematic anyway?
+Unknown components will be replaced 
+by dummy subcircuit placeholders.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+25"/>
         <source>Format Error:
 Wrong &apos;component&apos; line format!</source>
         <translation>Error de Formato:
@@ -4501,17 +4522,17 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/components/ctline.cpp" line="-50"/>
         <source>coupled transmission lines</source>
-        <translation type="unfinished"></translation>
+        <translation>línies de transmissió acoblades</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>characteristic impedance of even mode</source>
-        <translation type="unfinished"></translation>
+        <translation>impedància característica del mode parell </translation>
     </message>
     <message>
         <location line="+2"/>
         <source>characteristic impedance of odd mode</source>
-        <translation type="unfinished"></translation>
+        <translation>impedància característica del mode senar</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4544,7 +4565,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+14"/>
         <source>Coupled Transmission Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Línia de Transmissió Acoblada</translation>
     </message>
     <message>
         <location filename="../qucs/components/d_flipflop.cpp" line="-2"/>
@@ -4668,7 +4689,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+20"/>
         <source>D-FlipFlop w/ SR</source>
-        <translation type="unfinished"></translation>
+        <translation>D-FlipFlop w/ SR</translation>
     </message>
     <message>
         <location filename="../qucs/components/diac.cpp" line="-36"/>
@@ -4712,7 +4733,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+12"/>
         <source>Diac</source>
-        <translation type="unfinished"></translation>
+        <translation>Diac</translation>
     </message>
     <message>
         <location filename="../qucs/components/digi_sim.cpp" line="+24"/>
@@ -4733,7 +4754,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>netlist format</source>
-        <translation type="unfinished"></translation>
+        <translation>format del netlist</translation>
     </message>
     <message>
         <location filename="../qucs/components/digi_source.cpp" line="-33"/>
@@ -4882,13 +4903,13 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+3"/>
         <location filename="../qucs/components/DLS_nto1.cpp" line="-4"/>
         <source>voltage level</source>
-        <translation type="unfinished"></translation>
+        <translation>nivell de voltatge</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/DLS_nto1.cpp" line="+3"/>
         <source>time delay</source>
-        <translation type="unfinished"></translation>
+        <translation>retard de temps</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -4924,12 +4945,12 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+5"/>
         <location line="+8"/>
         <source>V</source>
-        <translation type="unfinished"></translation>
+        <translation>V</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>A2D Level Shifter</source>
-        <translation type="unfinished"></translation>
+        <translation>A2D Level Shifter</translation>
     </message>
     <message>
         <location filename="../qucs/components/dmux2to4.cpp" line="-6"/>
@@ -4939,7 +4960,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+25"/>
         <source>2to4 Demux</source>
-        <translation type="unfinished"></translation>
+        <translation>2to4 Demux</translation>
     </message>
     <message>
         <location filename="../qucs/components/dmux3to8.cpp" line="-6"/>
@@ -4949,7 +4970,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+25"/>
         <source>3to8 Demux</source>
-        <translation type="unfinished"></translation>
+        <translation>3to8 Demux</translation>
     </message>
     <message>
         <location filename="../qucs/components/dmux4to16.cpp" line="-6"/>
@@ -4959,7 +4980,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+25"/>
         <source>4to16 Demux</source>
-        <translation type="unfinished"></translation>
+        <translation>4to16 Demux</translation>
     </message>
     <message>
         <location filename="../qucs/components/ecvs.cpp" line="+21"/>
@@ -4985,12 +5006,12 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+5"/>
         <source>long = 1, short = 2</source>
-        <translation type="unfinished"></translation>
+        <translation>long = 1, short = 2</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>length parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>paràmetre de longitud</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5003,12 +5024,12 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+36"/>
         <location filename="../qucs/components/nigbt.cpp" line="-33"/>
         <source>m</source>
-        <translation type="unfinished"></translation>
+        <translation>m</translation>
     </message>
     <message>
         <location line="-99"/>
         <source>Width parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>paràmetre d&apos;amplada</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -5095,14 +5116,14 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>mobility coefficient</source>
-        <translation type="unfinished"></translation>
+        <translation>coeficient de mobilitat</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+3"/>
         <location line="+49"/>
         <source>V/m</source>
-        <translation type="unfinished"></translation>
+        <translation>V/m</translation>
     </message>
     <message>
         <location line="-50"/>
@@ -5128,7 +5149,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <source>A*s/m**2</source>
-        <translation type="unfinished"></translation>
+        <translation>A*s/m**2</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5143,7 +5164,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <source>V/K</source>
-        <translation type="unfinished"></translation>
+        <translation>V/K</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5163,7 +5184,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <source>1/K</source>
-        <translation type="unfinished"></translation>
+        <translation>1/K</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5217,7 +5238,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+3"/>
         <location filename="../qucs/components/rlcg.cpp" line="-4"/>
         <source>F/m</source>
-        <translation type="unfinished"></translation>
+        <translation>F/m</translation>
     </message>
     <message>
         <location line="-4"/>
@@ -5237,7 +5258,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <source>1/m</source>
-        <translation type="unfinished"></translation>
+        <translation>1/m</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5257,7 +5278,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <source>V*m</source>
-        <translation type="unfinished"></translation>
+        <translation>V*m</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5272,7 +5293,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <source>sqrt(V)*m</source>
-        <translation type="unfinished"></translation>
+        <translation>sqrt(V)*m</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -5286,7 +5307,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+35"/>
         <location line="+3"/>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -5297,7 +5318,7 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/phototransistor.cpp" line="-20"/>
         <location line="+8"/>
         <source>F</source>
-        <translation type="unfinished"></translation>
+        <translation>F</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5330,17 +5351,17 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/photodiode.cpp" line="+1"/>
         <location filename="../qucs/components/potentiometer.cpp" line="+1"/>
         <source>Celsius</source>
-        <translation type="unfinished"></translation>
+        <translation>Celsius</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>EPFL-EKV NMOS 2.6</source>
-        <translation type="unfinished"></translation>
+        <translation>EPFL-EKV NMOS 2.6</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>EPFL-EKV PMOS 2.6</source>
-        <translation type="unfinished"></translation>
+        <translation>EPFL-EKV PMOS 2.6</translation>
     </message>
     <message>
         <location filename="../qucs/components/eqndefined.cpp" line="+25"/>
@@ -5888,7 +5909,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+27"/>
         <source>JK-FlipFlop w/ SR</source>
-        <translation type="unfinished"></translation>
+        <translation>JK-FlipFlop w/ SR</translation>
     </message>
     <message>
         <location filename="../qucs/components/libcomp.cpp" line="+34"/>
@@ -5927,7 +5948,7 @@ Wrong &apos;component&apos; line format!</source>
         <location filename="../qucs/components/potentiometer.cpp" line="-12"/>
         <location line="+3"/>
         <source>%</source>
-        <translation type="unfinished"></translation>
+        <translation>%</translation>
     </message>
     <message>
         <location line="-9"/>
@@ -5987,7 +6008,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+3"/>
         <location line="+3"/>
         <source>%/Celsius</source>
-        <translation type="unfinished"></translation>
+        <translation>%/Celsius</translation>
     </message>
     <message>
         <location line="-4"/>
@@ -5997,7 +6018,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <source>V/Celsius</source>
-        <translation type="unfinished"></translation>
+        <translation>V/Celsius</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -6013,7 +6034,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+1"/>
         <location line="+3"/>
         <source>A/Celsius</source>
-        <translation type="unfinished"></translation>
+        <translation>A/Celsius</translation>
     </message>
     <message>
         <location line="-1"/>
@@ -6034,7 +6055,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <source>R</source>
-        <translation type="unfinished"></translation>
+        <translation>R</translation>
     </message>
     <message>
         <location filename="../qucs/components/logic_0.cpp" line="-4"/>
@@ -6049,7 +6070,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+20"/>
         <source>Logic 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Logic 0</translation>
     </message>
     <message>
         <location filename="../qucs/components/logic_1.cpp" line="-4"/>
@@ -6064,7 +6085,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+20"/>
         <source>Logic 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Logic 1</translation>
     </message>
     <message>
         <location filename="../qucs/components/logical_and.cpp" line="+22"/>
@@ -6084,7 +6105,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+104"/>
         <source>Buffer</source>
-        <translation type="unfinished"></translation>
+        <translation>Buffer</translation>
     </message>
     <message>
         <location filename="../qucs/components/logical_inv.cpp" line="-4"/>
@@ -6164,7 +6185,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+4"/>
         <source>A/(V*V)</source>
-        <translation type="unfinished"></translation>
+        <translation>A/(V*V)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -6194,7 +6215,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <source>1/W</source>
-        <translation type="unfinished"></translation>
+        <translation>1/W</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -6271,7 +6292,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+1"/>
         <location filename="../qucs/components/photodiode.cpp" line="+1"/>
         <source>eV</source>
-        <translation type="unfinished"></translation>
+        <translation>eV</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -6357,7 +6378,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+15"/>
         <location line="+3"/>
         <source>Ohms</source>
-        <translation type="unfinished"></translation>
+        <translation>Ohms</translation>
     </message>
     <message>
         <location line="-22"/>
@@ -6379,7 +6400,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+3"/>
         <location line="+3"/>
         <source>1/Celsius</source>
-        <translation type="unfinished"></translation>
+        <translation>1/Celsius</translation>
     </message>
     <message>
         <location line="-4"/>
@@ -6414,7 +6435,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+24"/>
         <source>MESFET</source>
-        <translation type="unfinished"></translation>
+        <translation>MESFET</translation>
     </message>
     <message>
         <location filename="../qucs/components/mod_amp.cpp" line="+15"/>
@@ -7057,7 +7078,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+25"/>
         <source>2to1 Mux</source>
-        <translation type="unfinished"></translation>
+        <translation>2to1 Mux</translation>
     </message>
     <message>
         <location filename="../qucs/components/mux4to1.cpp" line="-6"/>
@@ -7067,7 +7088,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+25"/>
         <source>4to1 Mux</source>
-        <translation type="unfinished"></translation>
+        <translation>4to1 Mux</translation>
     </message>
     <message>
         <location filename="../qucs/components/mux8to1.cpp" line="-6"/>
@@ -7077,7 +7098,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+25"/>
         <source>8to1 Mux</source>
-        <translation type="unfinished"></translation>
+        <translation>8to1 Mux</translation>
     </message>
     <message>
         <location filename="../qucs/components/nigbt.cpp" line="-45"/>
@@ -7093,7 +7114,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+1"/>
         <location line="+3"/>
         <source>m**2</source>
-        <translation type="unfinished"></translation>
+        <translation>m**2</translation>
     </message>
     <message>
         <location line="-1"/>
@@ -7134,7 +7155,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+1"/>
         <location line="+3"/>
         <source>F/cm**2</source>
-        <translation type="unfinished"></translation>
+        <translation>F/cm**2</translation>
     </message>
     <message>
         <location line="-1"/>
@@ -7149,7 +7170,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <source>A/cm**2</source>
-        <translation type="unfinished"></translation>
+        <translation>A/cm**2</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7165,7 +7186,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+1"/>
         <location line="+3"/>
         <source>cm**2/Vs</source>
-        <translation type="unfinished"></translation>
+        <translation>cm**2/Vs</translation>
     </message>
     <message>
         <location line="-1"/>
@@ -7180,7 +7201,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <source>1/cm**3</source>
-        <translation type="unfinished"></translation>
+        <translation>1/cm**3</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7195,7 +7216,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+26"/>
         <source>NIGBT</source>
-        <translation type="unfinished"></translation>
+        <translation>NIGBT</translation>
     </message>
     <message>
         <location filename="../qucs/components/noise_ii.cpp" line="-58"/>
@@ -7367,7 +7388,7 @@ Wrong &apos;component&apos; line format!</source>
         <location line="+1"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+30"/>
         <source>A/W</source>
-        <translation type="unfinished"></translation>
+        <translation>A/W</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7387,7 +7408,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+1"/>
         <source>nm</source>
-        <translation type="unfinished"></translation>
+        <translation>nm</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7521,12 +7542,12 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+34"/>
         <source>B</source>
-        <translation type="unfinished"></translation>
+        <translation>B</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>T</source>
-        <translation type="unfinished"></translation>
+        <translation>T</translation>
     </message>
     <message>
         <location filename="../qucs/components/rectline.cpp" line="-38"/>
@@ -7656,7 +7677,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+94"/>
         <source>RF</source>
-        <translation type="unfinished"></translation>
+        <translation>RF</translation>
     </message>
     <message>
         <location filename="../qucs/components/rfedd2p.cpp" line="-20"/>
@@ -7676,7 +7697,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+20"/>
         <source>RLCG</source>
-        <translation type="unfinished"></translation>
+        <translation>RLCG</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -7696,7 +7717,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+0"/>
         <source>H/m</source>
-        <translation type="unfinished"></translation>
+        <translation>H/m</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -7711,7 +7732,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+0"/>
         <source>S/m</source>
-        <translation type="unfinished"></translation>
+        <translation>S/m</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -7888,7 +7909,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+11"/>
         <source>Converting SPICE file &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Convertint l&apos;arxiu de SPICE &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../qucs/components/subcircuit.cpp" line="+35"/>
@@ -8028,7 +8049,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+27"/>
         <source>T-FlipFlop w/ SR</source>
-        <translation type="unfinished"></translation>
+        <translation>T-FlipFlop w/ SR</translation>
     </message>
     <message>
         <location filename="../qucs/components/thyristor.cpp" line="-36"/>
@@ -8135,7 +8156,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+22"/>
         <source>Triac</source>
-        <translation type="unfinished"></translation>
+        <translation>Triac</translation>
     </message>
     <message>
         <location filename="../qucs/components/tunneldiode.cpp" line="-35"/>
@@ -8301,7 +8322,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+98"/>
         <source>verilog</source>
-        <translation type="unfinished"></translation>
+        <translation>verilog</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -8466,7 +8487,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location filename="../qucs/diagrams/diagram.h" line="+32"/>
         <source> &lt;invalid&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation> &lt;invalid&gt;</translation>
     </message>
     <message>
         <location filename="../qucs/diagrams/marker.cpp" line="+252"/>
@@ -8578,7 +8599,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+2827"/>
+        <location filename="../qucs/qucs.cpp" line="+2836"/>
         <source>Successfully exported</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8601,10 +8622,9 @@ Use PNG, JPEG or SVG graphics!</source>
     </message>
     <message>
         <location filename="../qucs/module.cpp" line="+116"/>
-        <location filename="../qucs/qucs.cpp" line="-2190"/>
-        <location line="+224"/>
-        <location line="+15"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+149"/>
+        <location filename="../qucs/qucs.cpp" line="-2185"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+146"/>
+        <location line="+20"/>
         <source>verilog-a user devices</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8661,14 +8681,14 @@ Use PNG, JPEG or SVG graphics!</source>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="+1315"/>
+        <location filename="../qucs/qucs.cpp" line="+1555"/>
         <source>diagrams</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="-1594"/>
+        <location filename="../qucs/qucs.cpp" line="-1600"/>
         <source>paintings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8706,13 +8726,6 @@ Use PNG, JPEG or SVG graphics!</source>
         <location line="+61"/>
         <source>The ground potential cannot be labeled!</source>
         <translation>¡El potencial de tierra no se puede etiquetar!</translation>
-    </message>
-    <message>
-        <location filename="../qucs/octave_window.cpp" line="+1"/>
-        <source>Octave not found in: %1
-
-Set the Octave location on the application settings.</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/paintings/arrow.cpp" line="+141"/>
@@ -8780,15 +8793,15 @@ Set the Octave location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-148"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-165"/>
         <source>Cannot create output file!</source>
         <translation>¡No se pudo crear el fitxer de salida!</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-434"/>
-        <location line="+1009"/>
-        <location line="+69"/>
-        <location line="+122"/>
+        <location filename="../qucs/qucs.cpp" line="-435"/>
+        <location line="+1019"/>
+        <location line="+65"/>
+        <location line="+123"/>
         <location line="+12"/>
         <location line="+299"/>
         <source>untitled</source>
@@ -8934,16 +8947,17 @@ Wrong &apos;painting&apos; line format!</source>
         <translation>Tipus de document equivocado:</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location filename="../qucs/components/component.cpp" line="-26"/>
+        <location filename="../qucs/schematic_file.cpp" line="+9"/>
         <location filename="../qucs-filter/stepz_filter.cpp" line="+45"/>
         <location filename="../qucs-filter-v2/qf_settings.cpp" line="+90"/>
         <location line="+72"/>
-        <location filename="../qucs-help/main.cpp" line="+104"/>
+        <location filename="../qucs-transcalc/qucstrans.cpp" line="+1088"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../qucs/schematic_file.cpp" line="+1"/>
         <source>Wrong document version 
 </source>
         <translation type="unfinished"></translation>
@@ -9073,7 +9087,7 @@ Use:  qucsedit [-r] fitxer
         <translation>    -r  abrir fitxer para sólo lectura</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+57"/>
         <source>Too long command line argument!
 
 </source>
@@ -9109,7 +9123,6 @@ a substrate with lower permittivity and larger height.
     </message>
     <message>
         <location filename="../qucs-filter-v2/qf_settings.cpp" line="-71"/>
-        <location filename="../qucs-help/main.cpp" line="+1"/>
         <source>Cannot save settings !</source>
         <translation>¡No puedo guardar la configuración!</translation>
     </message>
@@ -9121,6 +9134,12 @@ a substrate with lower permittivity and larger height.
     <message>
         <location filename="../qucs-filter/quarterwave_filter.cpp" line="+1"/>
         <source>Quarter wave filters do not allow low-pass nor high-pass masks
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs-transcalc/qucstrans.cpp" line="+1"/>
+        <source>Cannot save GUI settings in
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -9140,7 +9159,7 @@ a substrate with lower permittivity and larger height.
     <message>
         <location line="+7"/>
         <source>&amp;View</source>
-        <translation type="unfinished">&amp;Ver</translation>
+        <translation>&amp;Ver</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -9304,7 +9323,7 @@ Change parameters and/or topology and try again!</source>
     <message>
         <location line="+55"/>
         <source>Copyright (C) 2014, 2015 by</source>
-        <translation type="unfinished">Copyright (C) 2005, 2006 por {2014, 2015 ?}</translation>
+        <translation>Copyright (C) 2014, 2015 per</translation>
     </message>
     <message>
         <location line="-463"/>
@@ -9371,7 +9390,7 @@ Change parameters and/or topology and try again!</source>
         <location line="+10"/>
         <location line="+319"/>
         <source>Ready.</source>
-        <translation type="unfinished">Listo.</translation>
+        <translation>Listo.</translation>
     </message>
     <message>
         <location line="-290"/>
@@ -9410,7 +9429,7 @@ frequency response. Try to use another topology.</source>
     <message>
         <location line="+24"/>
         <source>Error!</source>
-        <translation type="unfinished"></translation>
+        <translation>Error!</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -9438,7 +9457,7 @@ Active Filter synthesis program
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-1550"/>
+        <location filename="../qucs/qucs.cpp" line="-1557"/>
         <source>Schematic</source>
         <translation>Esquema</translation>
     </message>
@@ -9454,36 +9473,36 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+1"/>
-        <location line="+1386"/>
+        <location line="+1393"/>
         <source>VHDL Sources</source>
         <translation>Fuentes VHDL</translation>
     </message>
     <message>
-        <location line="-1385"/>
-        <location line="+1386"/>
+        <location line="-1392"/>
+        <location line="+1393"/>
         <source>Verilog Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1385"/>
-        <location line="+1386"/>
+        <location line="-1392"/>
+        <location line="+1393"/>
         <source>Verilog-A Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1385"/>
-        <location line="+1386"/>
+        <location line="-1392"/>
+        <location line="+1393"/>
         <source>Octave Scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1385"/>
+        <location line="-1392"/>
         <source>Spice Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+1387"/>
+        <location line="+1394"/>
         <location filename="../qucs/qucs_actions.cpp" line="-19"/>
         <source>Any File</source>
         <translation>Qualsevol Fitxer</translation>
@@ -9509,7 +9528,7 @@ Active Filter synthesis program
         <translation>Esquemas</translation>
     </message>
     <message>
-        <location line="-2057"/>
+        <location line="-2064"/>
         <source>New</source>
         <translation>Nou</translation>
     </message>
@@ -9594,16 +9613,18 @@ Active Filter synthesis program
         <location line="+3"/>
         <location line="+64"/>
         <location line="+3"/>
-        <location line="+524"/>
+        <location line="+527"/>
         <location line="+25"/>
         <location line="+20"/>
         <location line="+19"/>
         <location line="+10"/>
-        <location line="+88"/>
-        <location line="+994"/>
+        <location line="+73"/>
+        <location line="+6"/>
+        <location line="+130"/>
+        <location line="+877"/>
         <location line="+28"/>
         <location line="+72"/>
-        <location line="+314"/>
+        <location line="+312"/>
         <location line="+7"/>
         <location line="+7"/>
         <location line="+7"/>
@@ -9623,7 +9644,7 @@ Active Filter synthesis program
         <translation>Error</translation>
     </message>
     <message>
-        <location line="-2191"/>
+        <location line="-2196"/>
         <location line="+67"/>
         <source>Cannot open &quot;%1&quot;.</source>
         <translation>No puedo abrir &quot;%1&quot;.</translation>
@@ -9635,20 +9656,12 @@ Active Filter synthesis program
         <translation>La librería está corrupta.</translation>
     </message>
     <message>
-        <location line="+125"/>
-        <location line="+83"/>
-        <location line="+3"/>
+        <location line="+177"/>
+        <location line="+479"/>
         <location line="+73"/>
-        <source>Search results</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-113"/>
-        <location line="+482"/>
-        <location line="+70"/>
         <location line="+52"/>
         <location line="+8"/>
-        <location line="+28"/>
+        <location line="+29"/>
         <location line="+11"/>
         <location line="+26"/>
         <location line="+210"/>
@@ -9663,18 +9676,13 @@ Active Filter synthesis program
         <translation>Información</translation>
     </message>
     <message>
-        <location line="-886"/>
+        <location line="-887"/>
         <source>Default icon not found:
  %1.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+101"/>
-        <source>verilog-a user devices</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+160"/>
+        <location line="+258"/>
         <source>-port</source>
         <translation>-conexiones</translation>
     </message>
@@ -9685,7 +9693,7 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+1"/>
-        <location line="+678"/>
+        <location line="+682"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>¡El document contiene cambios  no guardados!
@@ -9693,7 +9701,7 @@ Active Filter synthesis program
 </translation>
     </message>
     <message>
-        <location line="-677"/>
+        <location line="-681"/>
         <source>Do you want to save the changes before copying?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9704,13 +9712,13 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+0"/>
-        <location line="+678"/>
+        <location line="+682"/>
         <location filename="../qucs/qucs_init.cpp" line="+66"/>
         <source>&amp;Save</source>
         <translation>&amp;Guardar</translation>
     </message>
     <message>
-        <location line="-656"/>
+        <location line="-660"/>
         <source>Copy file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9742,33 +9750,33 @@ Active Filter synthesis program
     <message>
         <location line="+5"/>
         <location line="+32"/>
-        <location line="+192"/>
+        <location line="+196"/>
         <location line="+230"/>
         <location line="+493"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location line="-946"/>
+        <location line="-950"/>
         <source>This will delete the file permanently! Continue ?</source>
         <translation>¡Esto eliminará el fitxer para siempre! ¿Continuo?</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+455"/>
+        <location line="+459"/>
         <location line="+370"/>
         <source>No</source>
         <translation>No</translation>
     </message>
     <message>
-        <location line="-825"/>
-        <location line="+455"/>
+        <location line="-829"/>
+        <location line="+459"/>
         <location line="+370"/>
         <source>Yes</source>
         <translation>Si</translation>
     </message>
     <message>
-        <location line="-978"/>
+        <location line="-982"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9828,12 +9836,11 @@ Active Filter synthesis program
         <translation>¡No puedo crear el directorio del proyecto!</translation>
     </message>
     <message>
-        <location line="+33"/>
         <source>Cannot access project directory: </source>
-        <translation>No puedo acceder al directorio del proyecto:</translation>
+        <translation type="obsolete">No puedo acceder al directorio del proyecto:</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+48"/>
         <location line="+53"/>
         <source> - Project: </source>
         <translation> - Proyecto: </translation>
@@ -9854,13 +9861,26 @@ Active Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-177"/>
-        <location line="+185"/>
+        <location line="-180"/>
+        <location line="+188"/>
         <source>Cannot delete file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-265"/>
+        <location line="-665"/>
+        <location line="+97"/>
+        <location line="+3"/>
+        <location line="+92"/>
+        <source>Search results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-16"/>
+        <source>verilog-a user devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+221"/>
         <source>Cannot copy file to identical name: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9880,7 +9900,22 @@ Active Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+243"/>
+        <location line="+103"/>
+        <source>Cannot access project directory: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Project directory name does not end in &apos;_prj&apos;(%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+130"/>
+        <source>Project directory name does not end in &apos;_prj&apos; (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Cannot delete an open project !</source>
         <translation>¡No puedo eliminar un proyecto abierto!</translation>
     </message>
@@ -10108,7 +10143,7 @@ Active Filter synthesis program
         <translation>¡No puedo arrancar &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location line="+313"/>
+        <location line="+311"/>
         <source>Could not load S[1,1].</source>
         <translation>No pude cargar S[1,1].</translation>
     </message>
@@ -12663,7 +12698,9 @@ Enables/disables the table of contents</source>
         <location line="+1"/>
         <source>Copyright (C) 2011-2015 Qucs Team
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Copyright (C) 2011-2015 Equip de Qucs
+
+</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -13097,12 +13134,12 @@ abrir els fitxers amb el programa apropiado.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Select the octave bin directory</source>
+        <location line="+10"/>
+        <source>Select the octave executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+28"/>
         <location line="+20"/>
         <source>Select a directory</source>
         <translation type="unfinished"></translation>
@@ -13111,7 +13148,7 @@ abrir els fitxers amb el programa apropiado.</translation>
 <context>
     <name>QucsTranscalc</name>
     <message>
-        <location filename="../qucs-transcalc/qucstrans.cpp" line="+262"/>
+        <location filename="../qucs-transcalc/qucstrans.cpp" line="-827"/>
         <source>&amp;File</source>
         <translation>&amp;Fitxer</translation>
     </message>
@@ -13249,13 +13286,13 @@ abrir els fitxers amb el programa apropiado.</translation>
     <message>
         <location line="+6"/>
         <location line="+571"/>
-        <location line="+157"/>
+        <location line="+171"/>
         <location line="+19"/>
         <source>Ready.</source>
         <translation>Listo.</translation>
     </message>
     <message>
-        <location line="-698"/>
+        <location line="-712"/>
         <location line="+6"/>
         <location line="+6"/>
         <location line="+6"/>
@@ -13544,8 +13581,8 @@ abrir els fitxers amb el programa apropiado.</translation>
         <location line="+1"/>
         <source>Copyright (C) 2008 by Michael Margraf
 </source>
-        <translation type="unfinished">Copyright (C) 2005 por Michael Margraf
- {2008 ?}</translation>
+        <translation>Copyright (C) 2008 per Michael Margraf
+</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -13564,7 +13601,7 @@ abrir els fitxers amb el programa apropiado.</translation>
         <translation>Los valores no son consistentes.</translation>
     </message>
     <message>
-        <location line="+118"/>
+        <location line="+132"/>
         <source>Loading file...</source>
         <translation>Cargando fitxer...</translation>
     </message>
@@ -13825,7 +13862,7 @@ Set the admsXml location on the application settings.</source>
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../qucs/dialogs/settingsdialog.cpp" line="+44"/>
+        <location filename="../qucs/dialogs/settingsdialog.cpp" line="-312"/>
         <source>Edit File Properties</source>
         <translation>Editar les propietats del fitxer</translation>
     </message>
@@ -13835,12 +13872,19 @@ Set the admsXml location on the application settings.</source>
         <translation>Conjunt de Dades:</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+4"/>
+        <location line="+8"/>
+        <location line="+11"/>
+        <source>Browse</source>
+        <translation type="unfinished">Examinar</translation>
+    </message>
+    <message>
+        <location line="-15"/>
         <source>Data Display:</source>
         <translation>Pantalla de Dades:</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>open data display after simulation</source>
         <translation>abrir la pantalla de dades después de la simulación</translation>
     </message>
@@ -13850,7 +13894,7 @@ Set the admsXml location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>run script after simulation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13925,7 +13969,7 @@ Set the admsXml location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+15"/>
         <source>Frame</source>
         <translation>Cuadro</translation>
     </message>
@@ -14088,18 +14132,20 @@ Set the admsXml location on the application settings.</source>
         <location line="+6"/>
         <source>Output:
 -------</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortida:
+-------</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Errors and Warnings:
 --------------------</source>
-        <translation type="unfinished"></translation>
+        <translation>Errors i Avisos:
+--------------------</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Simulation aborted by the user!</source>
-        <translation type="unfinished"></translation>
+        <translation>Simulació avortada per l&apos;usuari!</translation>
     </message>
 </context>
 <context>
@@ -14142,7 +14188,7 @@ Set the admsXml location on the application settings.</source>
     <message>
         <location line="+9"/>
         <source>preprocessor</source>
-        <translation type="unfinished"></translation>
+        <translation>preprocessador</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -14221,17 +14267,17 @@ Set the admsXml location on the application settings.</source>
         <location line="+11"/>
         <location line="+55"/>
         <source>Cannot execute &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>No puc executar &quot;%1&quot;.</translation>
     </message>
     <message>
         <location line="-35"/>
         <source>SPICE Preprocessor Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Error del preprocessador d&apos; SPICE</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Converting SPICE file &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Convertint l&apos;arxiu de SPICE &quot;%1&quot;.</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -14244,7 +14290,7 @@ Set the admsXml location on the application settings.</source>
     <message>
         <location filename="../qucs/components/spicefile.cpp" line="-3"/>
         <source>Converting SPICE file &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Convertint l&apos;arxiu de SPICE &quot;%1&quot;.</translation>
     </message>
 </context>
 <context>
@@ -14321,7 +14367,7 @@ Inserta esqueleto de la entidad VHDL</translation>
     <message>
         <location line="+3"/>
         <source>Verilog module</source>
-        <translation type="unfinished"></translation>
+        <translation>Mòdul Verilog</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -14338,19 +14384,21 @@ Inserts the skeleton of a Verilog module</source>
     <message>
         <location line="+4"/>
         <source>Octave function</source>
-        <translation type="unfinished"></translation>
+        <translation>Funció d&apos;Octave</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Inserts skeleton of Octave function</source>
-        <translation type="unfinished"></translation>
+        <translation>Insereix l&apos;esquelet d&apos;una funció d&apos;Octave</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Octave function
 
 Inserts the skeleton of a Octave function</source>
-        <translation type="unfinished"></translation>
+        <translation>Funció d&apos;Octave
+
+Insereix l&apos;esquelet d&apos;una funció dOctave</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -14383,27 +14431,27 @@ Inserts the skeleton of a Octave function</source>
     <message>
         <location line="+8"/>
         <source>Numerator b[i]=</source>
-        <translation type="unfinished"></translation>
+        <translation>Numerador b[i]=</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Denominator a[i]=</source>
-        <translation type="unfinished"></translation>
+        <translation>Denominador a[i]=</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>a[i]</source>
-        <translation type="unfinished"></translation>
+        <translation>a[i]</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>b[i]</source>
-        <translation type="unfinished"></translation>
+        <translation>b[i]</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Acceptar</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -14431,7 +14479,7 @@ Inserts the skeleton of a Octave function</source>
     <message>
         <location line="+4"/>
         <source>Output file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Arxiu de sortida:</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -14451,32 +14499,32 @@ Inserts the skeleton of a Octave function</source>
     <message>
         <location line="+9"/>
         <source>unspecified device</source>
-        <translation type="unfinished"></translation>
+        <translation>dispositiu no especificat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>NPN/PNP polarity</source>
-        <translation type="unfinished"></translation>
+        <translation>polaritat NPN/PNP </translation>
     </message>
     <message>
         <location line="+2"/>
         <source>NMOS/PMOS polarity</source>
-        <translation type="unfinished"></translation>
+        <translation>polaritat NMOS/PMOS </translation>
     </message>
     <message>
         <location line="+16"/>
         <source>analog only</source>
-        <translation type="unfinished"></translation>
+        <translation>nomes analògic </translation>
     </message>
     <message>
         <location line="+2"/>
         <source>digital only</source>
-        <translation type="unfinished"></translation>
+        <translation>només digital</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>both</source>
-        <translation type="unfinished"></translation>
+        <translation>ambdós </translation>
     </message>
     <message>
         <location line="+16"/>
@@ -14491,7 +14539,7 @@ Inserts the skeleton of a Octave function</source>
     <message>
         <location line="+59"/>
         <source>PNG files</source>
-        <translation type="unfinished"></translation>
+        <translation>Arxius PNG</translation>
     </message>
     <message>
         <location line="+1"/>
