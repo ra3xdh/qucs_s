@@ -315,15 +315,15 @@ void ImageWriter::getSelAreaWidthAndHeight(Schematic *sch, int &wsel, int &hsel,
             if(pw->x2 > xmax) xmax = pw->x2;
             if(pw->y1 < ymin) ymin = pw->y1;
             if(pw->y2 > ymax) ymax = pw->y2;
-            if (pw->Label) {
-                WireLabel *pl = pw->Label;
-                if (pl->isSelected) {
-                    int x1,y1,x2,y2;
-                    pl->getLabelBounding(x1,y1,x2,y2);
-                    qDebug()<<x1<<y1<<x2<<y2;
-                    updateMinMax(xmin,xmax,ymin,ymax,x1,x2,y1,y2);
-                }
-            }
+        }
+        if (pw->Label) {
+          WireLabel *pl = pw->Label;
+          if (pl->isSelected) {
+            int x1,y1,x2,y2;
+            pl->getLabelBounding(x1,y1,x2,y2);
+            qDebug()<<x1<<y1<<x2<<y2;
+            updateMinMax(xmin,xmax,ymin,ymax,x1,x2,y1,y2);
+          }
         }
     }
 
