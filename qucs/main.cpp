@@ -101,7 +101,14 @@ bool loadSettings()
     //if(settings.contains("OctaveDir"))QucsSettings.OctaveDir = settings.value("OctaveDir").toString();
     //if(settings.contains("ExamplesDir"))QucsSettings.ExamplesDir = settings.value("ExamplesDir").toString();
     //if(settings.contains("DocDir"))QucsSettings.DocDir = settings.value("DocDir").toString();
-    if(settings.contains("OctaveBinDir"))QucsSettings.OctaveBinDir.setPath(settings.value("OctaveBinDir").toString());
+    if(settings.contains("OctaveExecutable")) {
+        QucsSettings.OctaveExecutable = settings.value("OctaveExecutable").toString();
+    } else {
+        if(settings.contains("OctaveBinDir")) {
+            QucsSettings.OctaveExecutable = settings.value("OctaveBinDir").toString() +
+                    QDir::separator() + "octave" + QString(executableSuffix);
+        } else QucsSettings.OctaveExecutable = "octave" + QString(executableSuffix);
+    }
     if(settings.contains("QucsHomeDir"))
       if(settings.value("QucsHomeDir").toString() != "")
          QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
@@ -177,7 +184,8 @@ bool saveApplSettings()
     //settings.setValue("OctaveDir", QucsSettings.OctaveDir);
     //settings.setValue("ExamplesDir", QucsSettings.ExamplesDir);
     //settings.setValue("DocDir", QucsSettings.DocDir);
-    settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
+    // settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
+    settings.setValue("OctaveExecutable",QucsSettings.OctaveExecutable);
     settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
     settings.setValue("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
     settings.setValue("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
@@ -740,20 +748,14 @@ int main(int argc, char *argv[])
         QucsSettings.AscoBinDir.setPath(QucsSettings.BinDir);
   }
 
-  var = getenv("OCTAVEBINDIR");
-  if(var != NULL)  {
-      QucsSettings.OctaveBinDir.setPath(QString(var));
+
+  var = getenv("QUCS_OCTAVE");
+  if (var != NULL) {
+      QucsSettings.QucsOctave = QString(var);
+  } else {
+      QucsSettings.QucsOctave.clear();
   }
-  else  {
-#ifdef __MINGW32__
-      QucsSettings.OctaveBinDir.setPath(QString("C:/Software/Octave-3.6.4/bin/"));
-#else
-      QFile octaveExec("/usr/bin/octave");
-      if(octaveExec.exists())QucsSettings.OctaveBinDir.setPath(QString("/usr/bin/"));
-      QFile octaveExec1("/usr/local/bin/octave");
-      if(octaveExec1.exists()) QucsSettings.OctaveBinDir.setPath(QString("/usr/local/bin/"));
-#endif
-  }
+
   loadSettings();
 
   if(!QucsSettings.BGColor.isValid())
