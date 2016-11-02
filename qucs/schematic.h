@@ -255,7 +255,6 @@ public:
   Painting* selectedPainting(float, float);
   void      copyPaintings(int&, int&, int&, int&, QList<Element *> *);
 
-  void      getSelAreaWidthAndHeight(int &wsel, int& hsel, int& xmin_sel_, int& ymin_sel_); // and selected area width and height in pixels
 
 private:
   void insertComponentNodes(Component*, bool);

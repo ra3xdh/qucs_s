@@ -84,7 +84,6 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     connect(cbResolution,SIGNAL(toggled(bool)),cbRatio,SLOT(setDisabled(bool)));
     connect(cbResolution,SIGNAL(toggled(bool)),editScale,SLOT(setDisabled(bool)));
     connect(cbResolution,SIGNAL(toggled(bool)),this,SLOT(restoreOriginalWtoH()));
-    cbResolution->setChecked(true);
 
     connect(editResolutionX,SIGNAL(textEdited(QString)),this,SLOT(calcHeight()));
     connect(editResolutionY,SIGNAL(textEdited(QString)),this,SLOT(calcWidth()));
@@ -94,10 +93,10 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     connect(cbSelected,SIGNAL(toggled(bool)),this,SLOT(setSelectedWH()));
     cbSelected->setChecked(false);
     if (noselected) cbSelected->setDisabled(true);
-
+    
+    cbResolution->setChecked(true);
     //cbResolution->setEnabled(false);
     cbRatio->setEnabled(false);
-
 
     top = new QVBoxLayout;
     lower1 = new QHBoxLayout;
@@ -227,9 +226,14 @@ void ExportDialog::recalcRatio()
 void ExportDialog::restoreOriginalWtoH()
 {
     if (cbResolution->isChecked()) {
-        editScale->setText(QString::number(1.0));
-        editResolutionX->setText(QString::number(dwidth));
-        editResolutionY->setText(QString::number(dheight));
+      if (cbSelected->isChecked()) { // Export selected only
+            editResolutionX->setText(QString::number(dwidthsel));
+            editResolutionY->setText(QString::number(dheightsel));
+        } else {
+            editScale->setText(QString::number(1.0));
+            editResolutionX->setText(QString::number(dwidth));
+            editResolutionY->setText(QString::number(dheight));
+        }
     }
 }
 

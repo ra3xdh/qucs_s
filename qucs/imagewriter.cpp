@@ -45,7 +45,7 @@ ImageWriter::noGuiPrint(QWidget *doc, QString printFile, QString color)
   int w,h,wsel,hsel,
       xmin, ymin, xmin_sel, ymin_sel;
   getSchWidthAndHeight(sch, w,h,xmin,ymin);
-  sch->getSelAreaWidthAndHeight(wsel, hsel, xmin_sel, ymin_sel);
+  getSelAreaWidthAndHeight(sch, wsel, hsel, xmin_sel, ymin_sel);
   w += bourder;
   h += bourder;
   wsel += bourder;
@@ -135,7 +135,7 @@ int ImageWriter::print(QWidget *doc)
   int status = -1;
 
   getSchWidthAndHeight(sch, w, h, xmin, ymin);
-  sch->getSelAreaWidthAndHeight(wsel, hsel, xmin_sel, ymin_sel);
+  getSelAreaWidthAndHeight(sch, wsel, hsel, xmin_sel, ymin_sel);
   w += border;
   h += border;
   wsel += border;
@@ -279,10 +279,10 @@ int ImageWriter::print(QWidget *doc)
 
 void ImageWriter::getSchWidthAndHeight(Schematic *sch, int &w, int &h, int &xmin, int &ymin)
 {
-    xmin = sch->UsedX1;
-    ymin = sch->UsedY1;
-    w = abs(sch->UsedX2 - xmin);
-    h = abs(sch->UsedY2 - ymin);
+    int xmax,ymax;
+    sch->sizeOfAll(xmin,ymin,xmax,ymax);
+    w = abs(xmax - xmin);
+    h = abs(ymax - ymin);
 
     int f_w, f_h;
     if (sch->sizeOfFrame(f_w,f_h)) {
@@ -290,7 +290,105 @@ void ImageWriter::getSchWidthAndHeight(Schematic *sch, int &w, int &h, int &xmin
         ymin = std::min(0,ymin); // that fall out of frame
         w = abs(std::max(f_w,sch->UsedX2) - xmin);
         h = abs(std::max(f_h,sch->UsedY2) - ymin);
-        //w = std::max(w,f_w);
-        //h = std::max(h,f_h);
     }
+}
+
+void ImageWriter::getSelAreaWidthAndHeight(Schematic *sch, int &wsel, int &hsel, int& xmin_sel_, int& ymin_sel_)
+{
+    int xmin= INT_MAX,
+        ymin= INT_MAX,
+        xmax= INT_MIN,
+        ymax= INT_MIN;
+
+     for(Component *pc = sch->Components->first(); pc != 0; pc = sch->Components->next()) {
+         if (pc->isSelected) {
+           int x1,y1,x2,y2;
+           pc->entireBounds(x1,y1,x2,y2,sch->textCorr());
+           updateMinMax(xmin,xmax,ymin,ymax,x1,x2,y1,y2);
+         }
+    }
+
+    for(Wire *pw = sch->Wires->first(); pw != 0; pw = sch->Wires->next()) {
+
+        if (pw->isSelected) {
+            if(pw->x1 < xmin) xmin = pw->x1;
+            if(pw->x2 > xmax) xmax = pw->x2;
+            if(pw->y1 < ymin) ymin = pw->y1;
+            if(pw->y2 > ymax) ymax = pw->y2;
+            qDebug() << pw->x1 << pw->x2 << pw->y1 << pw->y2;
+        }
+        if (pw->Label) {
+          WireLabel *pl = pw->Label;
+          if (pl->isSelected) {
+            int x1,y1,x2,y2;
+            pl->getLabelBounding(x1,y1,x2,y2);
+            qDebug()<<x1<<y1<<x2<<y2;
+            updateMinMax(xmin,xmax,ymin,ymax,x1,x2,y1,y2);
+          }
+        }
+    }
+
+    for(Node *pn = sch->Nodes->first(); pn != 0; pn = sch->Nodes->next()) {
+        WireLabel *pl = pn->Label;
+        if(pl) {     // check position of node label
+            if (pl->isSelected) {
+                int x1,x2,y1,y2;
+                pl->getLabelBounding(x1,y1,x2,y2);
+                if(x1 < xmin) xmin = x1;
+                if(x2 > xmax) xmax = x2;
+                if(y1 < ymin) ymin = y1;
+                if(y2 > ymax) ymax = y2;
+            }
+        }
+    }
+
+    for(Diagram *pd = sch->Diagrams->first(); pd != 0; pd =sch-> Diagrams->next()) {
+
+
+
+        if (pd->isSelected) {
+            int x1,y1,x2,y2;
+            pd->Bounding(x1,y1,x2,y2);
+            updateMinMax(xmin,xmax,ymin,ymax,x1,x2,y1,y2);
+
+            foreach (Graph *pg, pd->Graphs) {
+                foreach (Marker *pm, pg->Markers) {
+                    if (pm->isSelected) {
+                        int x1,y1,x2,y2;
+                        pm->Bounding(x1,y1,x2,y2);
+                        updateMinMax(xmin,xmax,ymin,ymax,x1,x2,y1,y2);
+                    }
+                }
+            }
+        }
+    }
+
+    for(Painting *pp = sch->Paintings->first(); pp != 0; pp = sch->Paintings->next()) {
+
+       if (pp->isSelected) {
+           int x1,y1,x2,y2;
+           pp->Bounding(x1,y1,x2,y2);
+           updateMinMax(xmin,xmax,ymin,ymax,x1,x2,y1,y2);
+       }
+    }
+
+    wsel = abs(xmax - xmin);
+    hsel = abs(ymax - ymin);
+    xmin_sel_ = xmin;
+    ymin_sel_ = ymin;
+}
+
+// Compare object (component, diagram, etc) coordinates and
+// current corner coordinates and update it
+void ImageWriter::updateMinMax(int &xmin, int &xmax, int &ymin, int &ymax,
+                               int x1, int x2, int y1, int y2)
+{
+    int d1 = std::min(x1,x2);
+    if (d1<xmin) xmin = d1;
+    int d2 = std::max(x2,x1);
+    if (d2>xmax) xmax = d2;
+    int d3 = std::min(y1,y2);
+    if (d3<ymin) ymin = d3;
+    int d4 = std::max(y2,y1);
+    if (d4>ymax) ymax = d4;
 }
