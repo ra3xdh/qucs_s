@@ -101,6 +101,7 @@ bool CodeModelGen::createIFS(QTextStream &stream, Schematic *sch)
     stream<<"NAME_TABLE:\n";
     stream<<QString("C_Function_Name: cm_%1\n").arg(base);
     stream<<QString("Spice_Model_Name: %1\n").arg(base.toLower());
+    stream<<"Description: \" \"\n\n";
 
 
     if (ports.isEmpty()) return false; // Not a subcircuit
@@ -166,6 +167,7 @@ bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Compone
     stream<<"NAME_TABLE:\n";
     stream<<QString("C_Function_Name: cm_%1\n").arg(base);
     stream<<QString("Spice_Model_Name: %1\n").arg(base.toLower());
+    stream<<"Description: \" \"\n\n";
 
     foreach(QString pp,ports) {
         stream<<"\nPORT_TABLE:\n";
@@ -339,19 +341,23 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
 
     stream<<"\tif (ANALYSIS != AC) {\n";
     stream<<"\tif (TIME == 0) {\n";
-    QStringList::iterator it1 = inputs.begin();
-    for(int i=0;it1!=inputs.end();it1++,i++) {
-        stream<<QString("\t\t%1_old = %1 = INPUT(%2);\n").arg(*it1).arg(ports.at(i));
-        for (int i=0;i<ports.count();i++) {
-            stream<<QString("\t\tQ%1=0.0;\n").arg(i);
-            stream<<QString("\t\tcQ%1=0.0;\n").arg(i);
-        }
+    //QStringList::iterator it1 = inputs.begin();
+    for(auto it1 = inputs.begin();it1!=inputs.end();it1++) {
+        QString vv = *it1; // Get input voltage number
+        int vn = vv.remove(0,1).toInt()-1;
+        stream<<QString("\t\t%1_old = %1 = INPUT(%2);\n").arg(*it1).arg(ports.at(vn));
+    }
+    for (int i=0;i<ports.count();i++) {
+        stream<<QString("\t\tQ%1=0.0;\n").arg(i);
+        stream<<QString("\t\tcQ%1=0.0;\n").arg(i);
     }
     stream<<"\t} else {\n";
     // Get input voltages
-    QStringList::iterator it = inputs.begin();
-    for(int i=0;it!=inputs.end();it++,i++) {
-        stream<<QString("\t\t%1 = INPUT(%2);\n").arg(*it).arg(ports.at(i));
+    //QStringList::iterator it = inputs.begin();
+    for(auto it = inputs.begin();it!=inputs.end();it++) {
+        QString vv = *it; // Get input voltage number
+        int vn = vv.remove(0,1).toInt()-1;
+        stream<<QString("\t\t%1 = INPUT(%2);\n").arg(*it).arg(ports.at(vn));
     }
     // Time variable for charge eqns.
     stream<<"\t\tdelta_t=TIME-T(1);\n";
