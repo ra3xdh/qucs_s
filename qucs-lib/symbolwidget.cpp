@@ -360,6 +360,29 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
 int SymbolWidget::setSymbol( QString& SymbolString,
                             const QString& Lib_, const QString& Comp_)
 {
+  if (SymbolString.isEmpty())//Whenever SymbolString is empty, it tries to load the default symbol
+  {
+      //Load the default symbol for the current Qucs library
+      ComponentLibrary parsedlib;
+      QString libpath = QucsSettings.LibDir + Lib_ + ".lib";
+      int result = parseComponentLibrary (libpath, parsedlib);
+
+      switch (result)//Check if the library was properly loaded
+      {
+        case QUCS_COMP_LIB_IO_ERROR:
+            QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (libpath));
+            return -1;
+        case QUCS_COMP_LIB_CORRUPT:
+            QMessageBox::critical(0, tr("Error"), tr("Library is corrupt."));
+            return -1;
+        default:
+            break;
+      }
+
+    // copy the contents of default symbol section to a string
+    SymbolString = parsedlib.defaultSymbol;
+  }
+
   Arcs.clear();
   Lines.clear();
   Rects.clear();
