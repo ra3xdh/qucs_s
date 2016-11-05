@@ -370,11 +370,23 @@ inline int parseSPICEComponentLibrary (QString filename, ComponentLibrary &libra
         QString lin = content.readLine();
         lin = lin.trimmed();
         if (lin.toLower().startsWith(".subckt ")) {
+
+            QString pars; // Has subckt parameters?
+            int idx = lin.indexOf('=');
+            if (idx>0) {
+                if (lin.at(idx-1).isSpace()) {
+                    idx--;
+                    while (lin.at(idx).isSpace()) idx--;
+                    while (lin.at(idx).isLetterOrNumber()) idx--;
+                } else idx = lin.lastIndexOf(QRegExp("[ \t]"),idx);
+                pars = lin.mid(idx);
+            } else pars = "";
+
             ComponentLibraryItem comp;
             comp.name = lin.section(" ",1,1,QString::SectionSkipEmpty);
             // Form fake component definition
-            comp.modelString = QString("<SpLib X1 1 280 260 -29 -164 0 0 \"%1\" 0 \"%2\" 1 \"auto\" 1>")
-                    .arg(filename).arg(comp.name);
+            comp.modelString = QString("<SpLib X1 1 280 260 -29 -164 0 0 \"%1\" 0 \"%2\" 1 \"auto\" 1 \"%3\" 1>")
+                    .arg(filename).arg(comp.name).arg(pars);
             comp.definition += QString("<Component %1>\n").arg(comp.name);
             comp.definition += "<Description>\n";
             comp.definition += QString("%1 device from %2 library").arg(comp.name).arg(library.name);
@@ -398,6 +410,56 @@ inline int parseSPICEComponentLibrary (QString filename, ComponentLibrary &libra
                 comp.symbol += sym_content;
                 sym_file.close();
             }
+            comp.definition += "</Component>\n";
+            library.components.append(comp);
+        } else if (lin.toLower().startsWith(".model")) {
+            QStringList mod_lines;
+            mod_lines.append(lin);
+            QString clin = content.readLine();
+            int pos = content.pos();
+            while (clin.startsWith('+')) { // get the rest of .MODEL
+                pos = content.pos();
+                mod_lines.append(clin);
+                clin = content.readLine();
+            }
+            content.seek(pos); // revert one line back
+
+            ComponentLibraryItem comp;
+            comp.name = lin.section(" ",1,1,QString::SectionSkipEmpty);
+            // Form fake component definition
+            comp.modelString = "<SpiceModel SpiceModel1 1 250 290 -29 17 0 0"; // .MODEL start
+            int lin_cnt = 0;
+            foreach (QString p, mod_lines) {
+                if (lin_cnt>3) comp.modelString += QString(" \"Line_%1=%2\" 1").arg(lin_cnt+1).arg(p);
+                else comp.modelString += QString(" \"%1\" 1").arg(p);
+                lin_cnt++;
+            }
+            comp.modelString += ">";
+
+            comp.definition += QString("<Component %1>\n").arg(comp.name);
+            comp.definition += "<Description>\n";
+            comp.definition += QString("%1 model from %2 library\n"
+                                       "This component is model-only (.MODEL).\n"
+                                       "No subcircuit definition!\n"
+                                       "Use appropriate device to attach this model.").arg(comp.name).arg(library.name);
+            comp.definition += "</Description>\n";
+            comp.definition += "<Spice>\n";
+            comp.definition += mod_lines.join("\n");
+            comp.definition += "</Spice>\n";
+            comp.definition += "<Model>"; // Hack! It's needed to make Qucs to use SpiceLibComp
+            comp.definition += "<"+comp.modelString;
+            comp.definition += "\n";
+            comp.definition += "</Model>\n";
+            QString symstr = "<Symbol>\n"
+                    "<Line -40 20 80 0 #000080 2 1>\n"
+                    "<Line -40 -20 80 0 #000080 2 1>\n"
+                    "<Line -40 20 0 -40 #000080 2 1>\n"
+                    "<Line 40 20 0 -40 #000080 2 1>\n"
+                    "<Text -35 -10 14 #ff0000 0 \".MODEL\">\n"
+                    "<.ID -40 39 SUB>\n"
+                  "</Symbol>\n";
+            comp.definition +=symstr;
+            comp.symbol += symstr;
             comp.definition += "</Component>\n";
             library.components.append(comp);
         }

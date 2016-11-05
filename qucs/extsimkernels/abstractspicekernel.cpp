@@ -86,7 +86,7 @@ void AbstractSpiceKernel::killThemAll()
  *        prepared for Xyce simulator. For Ngspice should be false.
  * \return Returns true if success, false if netlist preparation fails
  */
-bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream)
+bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream, bool isSubckt)
 {
     QStringList collect;
     QPlainTextEdit *err = new QPlainTextEdit;
@@ -96,7 +96,8 @@ bool AbstractSpiceKernel::prepareSpiceNetlist(QTextStream &stream)
         return false;
     }
     delete err;
-    Sch->clearSignalsAndFileList(); // for proper build of subckts
+    if (isSubckt) Sch->clearSignals();
+    else Sch->clearSignalsAndFileList(); // for proper build of subckts
     return true; // TODO: Add feature to determine ability of spice simulation
 }
 
@@ -197,7 +198,7 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
     header = QString(".SUBCKT %1 ").arg(misc::properName(f));
 
     QList< QPair<int,QString> > ports;
-    if(!prepareSpiceNetlist(stream)) {
+    if(!prepareSpiceNetlist(stream,true)) {
         emit finished();
         emit errors(QProcess::FailedToStart);
         return;

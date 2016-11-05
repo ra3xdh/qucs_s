@@ -1,0 +1,122 @@
+/*
+       cutice1 cm model.                    
+
+     21 September 2016    Mike Brinson
+
+    This file contains the XSPICE ifs specification for an experimental Curtice 
+    basic level MESFET model. This model is  used as a test bench for constructing 
+    compact device models with the Qucs-0.0.19-S automatic XSPICE CodeModel compiler 
+    system.
+     
+    This is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2, or (at your option)
+    any later version.
+*/
+NAME_TABLE:
+C_Function_Name:       cm_curtice1
+Spice_Model_Name:      curtice1
+Description:           "An MESFET Curtice Level 1 test model."
+
+
+PORT_TABLE:
+Port_Name:              ndisi    
+Description:           "Intrinsic internal drain to source terminals" 
+Direction:              inout      
+Default_Type:           gd     
+Allowed_Types:         [gd] 
+Vector:                 no     
+Vector_Bounds:          -      
+Null_Allowed:           no  
+
+PORT_TABLE:
+Port_Name:              ngisi       
+Description:           "Intrinsic internal gate to source terminals"  
+Direction:              inout     
+Default_Type:            gd    
+Allowed_Types:          [gd]  
+Vector:                 no  
+Vector_Bounds:          -   
+Null_Allowed:           no  
+
+PARAMETER_TABLE:
+Parameter_Name:     area          
+Description:        "Device area factor" 
+Data_Type:          int            
+Default_Value:      1         
+Limits:             -               
+Vector:              no             
+Vector_Bounds:       -              
+Null_Allowed:        no    
+
+PARAMETER_TABLE:
+Parameter_Name:     beta           
+Description:        "Transconductance." 
+Data_Type:          real            
+Default_Value:      3e-3         
+Limits:             -               
+Vector:              no             
+Vector_Bounds:       -              
+Null_Allowed:        no              
+
+PARAMETER_TABLE:
+Parameter_Name:     lambda
+Description:        "Channel length modulation factor."    
+Data_Type:          real 
+Default_Value:      40e-3
+Limits:             -                   
+Vector:             no              
+Vector_Bounds:       -      
+Null_Allowed:       no
+
+PARAMETER_TABLE:
+Parameter_Name:     alpha
+Description:        "Hyperbolic tangent function."    
+Data_Type:          real 
+Default_Value:      0.8
+Limits:             -                   
+Vector:             no              
+Vector_Bounds:       -      
+Null_Allowed:       no
+
+PARAMETER_TABLE:
+Parameter_Name:     vto   
+Description:        "Threshold voltage."    
+Data_Type:          real  
+Default_Value:      -6.0  
+Limits:             -   
+Vector:              no 
+Vector_Bounds:       - 
+Null_Allowed:       no 
+
+PARAMETER_TABLE:
+Parameter_Name:     rf  
+Description:        "Forwad bias slope resistance."    
+Data_Type:          real  
+Default_Value:      10.0
+Limits:             -   
+Vector:              no 
+Vector_Bounds:       - 
+Null_Allowed:       no 
+
+PARAMETER_TABLE:
+Parameter_Name:     vbi  
+Description:        "Built-in gate potential."    
+Data_Type:          real  
+Default_Value:      1.0
+Limits:             -   
+Vector:              no 
+Vector_Bounds:       - 
+Null_Allowed:       no 
+
+PARAMETER_TABLE:
+Parameter_Name:     is  
+Description:        "Diode saturation current."    
+Data_Type:          real  
+Default_Value:      1e-15
+Limits:             -   
+Vector:              no 
+Vector_Bounds:       - 
+Null_Allowed:       no
+
+

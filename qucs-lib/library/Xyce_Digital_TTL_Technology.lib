@@ -1,0 +1,32 @@
+*  
+*
+* This is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2, or (at your option)
+* any later version.
+*
+* Copyright Mike Brinson Aug. 2016
+*
+*  Xyce TTL digital technology .MODEL. 
+*
+*  Basic TTL 5V positive supply.
+*
+*  A copy of this model must be placed on 
+*  (a) a Xyce top level circuit schematic whith linear and standard TTL digital components only, 
+*  or on 
+*  (b) a Xyce user defined subckt which contains linear and standard TTL digital components only.
+* 
+*  See the the Qucs-S Help documentation formore information on how to construct and simulate Xyce schematics with
+*  linear components and logic components built with different technologies.
+*
+*  Note the Xyce "DIG" technology model name is DMOD. This is the same for all types of Qucs-S Xyce digital technologies
+*  and must NOT be changed.
+*
+*****************************************************************************************************************************
+.model DMOD DIG ( RLOAD=1000 CLOAD=1e-12 DELAY=20e-9 CLO=1e-12 CHI=1e-12
++  S0RLO=5 S0RHI=5 S0TSW=5e-9 S0VLO=-1 S0VHI=0.16 S1RLO=200 S1RHI=5 S1TSW=5e-9 
++  S1VLO=0.52 S1VHI=1 )
+*
+*****************************************************************************************************************************
+
+

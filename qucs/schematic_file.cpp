@@ -2013,4 +2013,8 @@ void Schematic::clearSignalsAndFileList()
     FileList.clear();
 }
 
+void Schematic::clearSignals()
+{
+    Signals.clear();
+}
 // vim:ts=8:sw=2:noet

@@ -1,0 +1,97 @@
+<Qucs Library 0.0.19 "MESFETs">
+
+<Component MESFETCL1>
+  <Description>
+Simple level 1 Curtice MESFET model.
+1. XSPICE I-V CodeModel core: DC, transient and AC functionality,
+2. Fixed capacitors: cgs, cgd and cds,
+3. Parasitic R and L components: rd, ld, rg, lg, rs and ls.
+
+Parameters:
+
+NAME	DESCRIPTION				DEFAULT VALUE
+rg	External gate resistance			1m	Ohm
+rd	External drain resistance			1m	Ohm
+rs	External source resistance			1m	Ohm
+cgs	Zero-bias gate-source 
+	capacitance				1f	F
+cgd	Zero-bias gate-drain
+	capacitance				1f	F
+cds	Zero-bias drain-source
+	capacitance				1f	F
+lg	External gate lead inductance		0.1n	H
+ld	External drain lead inductance		0.1n	H
+ls	External source lead inductance		0.1n	H
+beta	Transconductance parameter		3m	A/V^2
+lambda	Channel length modulation
+	parameter for quadratic model		40m	1/V
+alpha	Coefficient of Vds in tanh 
+	function for quadratic model		0.8	1/V
+vto	Quadratic model gate threshold 
+	voltage					-1.8	V
+area	Area factor				1
+is	Diode saturation coefficient		1f	A
+n	Diode emission coefficient			1
+rf	Diode forward bias slope
+	resistance				10	Ohm
+Vbi	Built-in gate potential			1	V
+rin	Series resistance to cgs			1m	Ohm
+
+
+
+References:
+1. W.R. Curtice, A MESFET model for use in the design of GaAs integrated circuits, IEEE 
+Transactions on Microwave Theory and Techneques, MTT-28, pp. 448-456, 1980.
+2. Mike Brinson and Stefan John, Qucs: Compact device - circuit macromodel specification; A
+Curtice level 1 MESFET model, pp 1-8, 2007, 
+[Available from http://qucs.sourceforge.net/docs/report/curtice.pdf].
+3. Mike Brinson, Qucs: A report - Verilog-A compact device models for GaAs MESFETS, pp 1-38, 2008,
+[Available from http://qucs.sourceforge.net/docs/report/MESFET.pdf].
+
+
+  </Description>
+  <Model>
+.Def:MESFETs_MESFETCL1 nd ns ng beta="3e-3" lambda="0.05" alpha="2.25" vto="-1.8" area="1" rg="5.1" rd="1.3" rs="1.3" is="1e-15" rf="10.0" vbi="1.0" ld="0.1e-9" lg="0.1e-9" ls="0.1e-9" cgs="1e-12" cgd="1e-12" cds="1e-12" rin="1e-3"
+XSP_CMod:XSP_CMod1 File="curtice1.mod" File="curtice1.ifs"
+R:R1 ns1 ns2 R="{rs}" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  MESFETs_MESFETCL1.sch
+
+.SUBCKT MESFETs_MESFETCL1  gnd nd ns ng beta=3e-3 lambda=0.05 alpha=2.25 vto=-1.8 area=1 rg=5.1 rd=1.3 rs=1.3 is=1e-15 rf=10.0 vbi=1.0 ld=0.1e-9 lg=0.1e-9 ls=0.1e-9 cgs=1e-12 cgd=1e-12 cds=1e-12 rin=1e-3 
+A1 %gd(nd1 ns1)  %gd(ng1 ns1)  mod
+
+R2 ng1  ng2 {rg}
+R4 ns1  _net0 {rin}
+C2 ng1  _net0 {cgs}
+C1 nd1  ng1 {cgd}
+
+R1 ns1 ns2  {RS}
+L3 ns2  ns {ls}
+R3 nd1  nd2 {rd}
+C3 nd1  ns1 {cds}
+L2 nd  nd2 {ld}
+L1 ng  ng2 {lg}
+.MODEL mod curtice1 (beta={beta}  lambda={lambda} alpha={alpha}
++  vto={vto}  rf={rf} is={is} vbi={vbi} )
+.ENDS
+  </Spice>
+<SpiceAttach  "curtice1.mod" "curtice1.ifs">
+  <Symbol>
+    <Line -20 -20 0 40 #aa0000 3 1>
+    <Line -40 0 20 0 #000080 2 1>
+    <.PortSym -40 0 3 0>
+    <Line -20 -10 20 0 #aa0000 3 1>
+    <Line -20 10 20 0 #aa0000 3 1>
+    <Line 0 -10 0 -30 #aa0000 3 1>
+    <Line 0 40 0 -30 #aa0000 3 1>
+    <.PortSym 0 40 2 0>
+    <.PortSym 0 -40 1 0>
+    <Text -12 -24 8 #aa0000 0 "d">
+    <Text -10 11 8 #aa0000 0 "s">
+    <Text -33 -15 8 #aa0000 0 "g">
+    <Text 28 -33 8 #aa0000 270 "CURTICE L1">
+    <.ID 50 -116 MESFETCL1 "1=beta=3e-3==" "1=lambda=0.05==" "1=alpha=2.25==" "1=vto=-1.8==" "1=area=1==" "1=rg=5.1==" "1=rd=1.3==" "1=rs=1.3==" "1=is=1e-15==" "1=rf=10.0==" "1=vbi=1.0==" "1=ld=0.1e-9==" "1=lg=0.1e-9==" "1=ls=0.1e-9==" "1=cgs=1e-12==" "1=cgd=1e-12==" "1=cds=1e-12==" "1=rin=1e-3==">
+  </Symbol>
+</Component>
+

@@ -49,11 +49,11 @@ S4Q_Model::S4Q_Model()
   Name  = "SpiceModel";
   SpiceModel = ".MODEL";
 
-  Props.append(new Property("Line_1 ", ".MODEL DIODE1 D(BF=50 Is=1e-13 Vbf = 50)", true,"Model statement"));
+  Props.append(new Property("Line_1", ".MODEL DIODE1 D(BF=50 Is=1e-13 Vbf = 50)", true,"Model statement"));
   Props.append(new Property("Line_2", "", false,"+ continuation line 1"));
   Props.append(new Property("Line_3", "", false,"+ continuation line 2"));
   Props.append(new Property("Line_4", "", false,"+ continuation line 3"));
-  Props.append(new Property("Line_5", "", false,"+ continuation line 4"));
+  Props.append(new Property("Line_5", "", false,"")); // empty description to allow extendeable .MODEL
 }
 
 S4Q_Model::~S4Q_Model()
