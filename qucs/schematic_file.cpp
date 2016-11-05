@@ -429,7 +429,9 @@ int Schematic::saveDocument()
 
 //      QDir prefix = QDir(QucsSettings.BinDir);
 
-      QDir include = QDir(QucsSettings.BinDir+"../include/qucs-core");
+      QFileInfo inf(QucsSettings.Qucsator);
+      QString QucsatorPath = inf.path()+QDir::separator();
+      QDir include = QDir(QucsatorPath+"../include/qucs-core");
 
       //pick admsXml from settings
       QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
