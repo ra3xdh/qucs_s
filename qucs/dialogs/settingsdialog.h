@@ -28,7 +28,9 @@ class QCheckBox;
 class QComboBox;
 class QVBoxLayout;
 class QRegExpValidator;
-
+class QTreeView;
+class QFileSystemModel;
+class QModelIndex;
 
 class SettingsDialog : public QDialog  {
    Q_OBJECT
@@ -37,6 +39,9 @@ public:
  ~SettingsDialog();
 
 private slots:
+  void slotDataSetBrowse();
+  void slotDataDisplayBrowse();
+  void slotScriptBrowse();
   void slotOK();
   void slotApply();
 
@@ -52,6 +57,22 @@ public:
 
   QVBoxLayout *all;
   QRegExpValidator *valExpr;
+};
+
+class AuxFilesDialog : public QDialog {
+   Q_OBJECT
+public:
+  AuxFilesDialog(QWidget *, const QString &);
+
+  QString fileName;
+
+private slots:
+  void slotSelect();
+  void slotDoubleClick(const QModelIndex &);
+
+private:
+  QFileSystemModel *model;
+  QTreeView *tree;
 };
 
 #endif

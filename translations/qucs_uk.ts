@@ -4,54 +4,6 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <source>German by Stefan Jahn</source>
-        <translation type="obsolete">Німецький - Stefan Jahn</translation>
-    </message>
-    <message>
-        <source>Polish by Dariusz Pienkowski</source>
-        <translation type="obsolete">Польський - Dariusz Pienkowski</translation>
-    </message>
-    <message>
-        <source>Romanian by Radu Circa</source>
-        <translation type="obsolete">Румунський - Radu Circa</translation>
-    </message>
-    <message>
-        <source>French by Vincent Habchi, F5RCS</source>
-        <translation type="obsolete">Французький - Vincent Habchi, F5RCS</translation>
-    </message>
-    <message>
-        <source>Spanish by Jose L. Redrejo Rodriguez</source>
-        <translation type="obsolete">Іспанський - Jose L. Redrejo Rodriguez</translation>
-    </message>
-    <message>
-        <source>Japanese by Toyoyuki Ishikawa</source>
-        <translation type="obsolete">Японський - Toyoyuki Ishikawa</translation>
-    </message>
-    <message>
-        <source>Italian by Giorgio Luparia and Claudio Girardi</source>
-        <translation type="obsolete">Італійський - Giorgio Luparia і Claudio Girardi</translation>
-    </message>
-    <message>
-        <source>Hebrew by Dotan Nahum</source>
-        <translation type="obsolete">Єврейський - Dotan Nahum</translation>
-    </message>
-    <message>
-        <source>Turkish by Onur and Ozgur Cobanoglu</source>
-        <translation type="obsolete">Турецький - Onur і Ozgur Cobanoglu</translation>
-    </message>
-    <message>
-        <source>Hungarian by Jozsef Bus</source>
-        <translation type="obsolete">Угорський - Jozsef Bus</translation>
-    </message>
-    <message>
-        <source>Russian by Igor Gorbounov</source>
-        <translation type="obsolete">Російський - Ігор Горбунов</translation>
-    </message>
-    <message>
-        <source>Catalan by Antoni Subirats</source>
-        <translation type="obsolete">Каталанский - Antoni Subirats</translation>
-    </message>
-    <message>
         <location filename="../qucs/dialogs/aboutdialog.cpp" line="+106"/>
         <source>About Qucs</source>
         <translation type="unfinished"></translation>
@@ -65,11 +17,7 @@
         <location line="+10"/>
         <location line="+1"/>
         <source>Copyright (C)</source>
-        <translation type="unfinished">Copyright (С)</translation>
-    </message>
-    <message>
-        <source>by Michael Margraf</source>
-        <translation type="obsolete">Michael Margraf</translation>
+        <translation>Copyright (С)</translation>
     </message>
     <message>
         <location line="-84"/>
@@ -432,6 +380,19 @@
     </message>
 </context>
 <context>
+    <name>AuxFilesDialog</name>
+    <message>
+        <location filename="../qucs/dialogs/settingsdialog.cpp" line="+359"/>
+        <source>Select</source>
+        <translation type="unfinished">Виділити</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Скасувати</translation>
+    </message>
+</context>
+<context>
     <name>ChangeDialog</name>
     <message>
         <location filename="../qucs/dialogs/changedialog.cpp" line="+41"/>
@@ -530,7 +491,7 @@
 <context>
     <name>ComponentDialog</name>
     <message>
-        <location filename="../qucs/components/componentdialog.cpp" line="+43"/>
+        <location filename="../qucs/components/componentdialog.cpp" line="+45"/>
         <source>Edit Component Properties</source>
         <translation>Зміна властивостей компоненту</translation>
     </message>
@@ -548,12 +509,12 @@
         <location line="+9"/>
         <location line="+16"/>
         <location line="+106"/>
-        <location line="+94"/>
+        <location line="+95"/>
         <source>display in schematic</source>
         <translation>показувати на схемі</translation>
     </message>
     <message>
-        <location line="-283"/>
+        <location line="-284"/>
         <source>Simulation:</source>
         <translation>Моделювання:</translation>
     </message>
@@ -604,13 +565,13 @@
     </message>
     <message>
         <location line="+9"/>
-        <location line="+1132"/>
+        <location line="+1151"/>
         <location line="+22"/>
         <source>Step:</source>
         <translation>Крок:</translation>
     </message>
     <message>
-        <location line="-1147"/>
+        <location line="-1166"/>
         <source>Number:</source>
         <translation>Кількість:</translation>
     </message>
@@ -646,7 +607,7 @@
         <translation>Опис</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+43"/>
         <source>Edit</source>
         <translation>Редагувати</translation>
     </message>
@@ -656,7 +617,7 @@
         <translation>Перегляд</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+15"/>
         <source>Add</source>
         <translation>Додати</translation>
     </message>
@@ -666,7 +627,7 @@
         <translation>Видалити</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+6"/>
         <source>Move Up</source>
         <translation type="unfinished"></translation>
     </message>
@@ -692,9 +653,9 @@
     </message>
     <message>
         <location line="+29"/>
-        <location line="+74"/>
+        <location line="+92"/>
         <location line="+54"/>
-        <location line="+201"/>
+        <location line="+205"/>
         <location line="+215"/>
         <location line="+167"/>
         <location line="+301"/>
@@ -702,16 +663,16 @@
         <translation>так</translation>
     </message>
     <message>
-        <location line="-1010"/>
-        <location line="+74"/>
-        <location line="+255"/>
+        <location line="-1032"/>
+        <location line="+92"/>
+        <location line="+259"/>
         <location line="+378"/>
-        <location line="+305"/>
+        <location line="+306"/>
         <source>no</source>
         <translation>ні</translation>
     </message>
     <message>
-        <location line="-365"/>
+        <location line="-366"/>
         <source>Select a file</source>
         <translation>Вибрати файл</translation>
     </message>
@@ -1190,7 +1151,7 @@
     <message>
         <location line="+9"/>
         <source>Browse</source>
-        <translation type="unfinished">Перегляд</translation>
+        <translation>Перегляд</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2486,7 +2447,7 @@ Filter synthesis program
 <context>
     <name>MatchDialog</name>
     <message>
-        <location filename="../qucs/dialogs/matchdialog.cpp" line="+50"/>
+        <location filename="../qucs/dialogs/matchdialog.cpp" line="+51"/>
         <source>Create Matching Circuit</source>
         <translation>Створення відповідного електричного кола</translation>
     </message>
@@ -2506,23 +2467,23 @@ Filter synthesis program
         <translation>Вивід 1</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location line="+6"/>
+        <location line="+4"/>
+        <location line="+7"/>
         <source>ohms</source>
         <translation>Ом</translation>
     </message>
     <message>
-        <location line="-3"/>
+        <location line="-4"/>
         <source>Port 2</source>
         <translation>Вивід 2</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+16"/>
         <source>S Parameter</source>
         <translation>S-параметр</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Input format</source>
         <translation>Формат вводу</translation>
     </message>
@@ -2538,18 +2499,18 @@ Filter synthesis program
     </message>
     <message>
         <location line="+9"/>
-        <location line="+134"/>
+        <location line="+162"/>
         <source>S11</source>
         <translation>S11</translation>
     </message>
     <message>
-        <location line="-133"/>
-        <location line="+134"/>
+        <location line="-161"/>
+        <location line="+162"/>
         <source>S21</source>
         <translation>S21</translation>
     </message>
     <message>
-        <location line="-100"/>
+        <location line="-128"/>
         <source>S12</source>
         <translation>S12</translation>
     </message>
@@ -2559,7 +2520,7 @@ Filter synthesis program
         <translation>S22</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+54"/>
         <source>Frequency:</source>
         <translation>Частота:</translation>
     </message>
@@ -2574,7 +2535,7 @@ Filter synthesis program
         <translation>Скасувати</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+59"/>
         <source>Reflexion Coefficient</source>
         <translation>Коефіцієнт відображення</translation>
     </message>
@@ -2584,7 +2545,7 @@ Filter synthesis program
         <translation>Повний опір (Ом)</translation>
     </message>
     <message>
-        <location line="+221"/>
+        <location line="+244"/>
         <source>Error</source>
         <translation>Помилка</translation>
     </message>
@@ -2700,27 +2661,27 @@ Resistor color code computation program
 <context>
     <name>OctaveWindow</name>
     <message>
-        <location filename="../qucs/octave_window.cpp" line="+130"/>
-        <source>ERROR: Cannot start Octave!</source>
+        <location filename="../qucs/octave_window.cpp" line="+120"/>
+        <source>ERROR: Failed to execute &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>OptimizeDialog</name>
     <message>
-        <location filename="../qucs/components/optimizedialog.cpp" line="+55"/>
+        <location filename="../qucs/components/optimizedialog.cpp" line="+57"/>
         <source>Edit Optimization Properties</source>
         <translation>Редагувати властивості оптимізації</translation>
     </message>
     <message>
         <location line="+22"/>
         <location line="+120"/>
-        <location line="+84"/>
+        <location line="+91"/>
         <source>Name:</source>
         <translation>Ім&apos;я:</translation>
     </message>
     <message>
-        <location line="-202"/>
+        <location line="-209"/>
         <source>Simulation:</source>
         <translation>Моделювання:</translation>
     </message>
@@ -2786,12 +2747,12 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+12"/>
-        <location line="+97"/>
+        <location line="+104"/>
         <source>Name</source>
         <translation>Ім&apos;я</translation>
     </message>
     <message>
-        <location line="-97"/>
+        <location line="-104"/>
         <location line="+18"/>
         <source>active</source>
         <translation>активний</translation>
@@ -2813,12 +2774,12 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+0"/>
-        <location line="+97"/>
+        <location line="+104"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location line="-54"/>
+        <location line="-61"/>
         <source>initial:</source>
         <translation>початковий:</translation>
     </message>
@@ -2834,33 +2795,82 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+10"/>
-        <location line="+175"/>
-        <location line="+344"/>
+        <location line="+182"/>
+        <location line="+358"/>
         <source>linear double</source>
         <translation>лінійне дійсне</translation>
     </message>
     <message>
-        <location line="-518"/>
-        <location line="+176"/>
-        <location line="+344"/>
+        <location line="-539"/>
+        <location line="+183"/>
+        <location line="+358"/>
         <source>logarithmic double</source>
         <translation>логарифмічне дійсне</translation>
     </message>
     <message>
-        <location line="-519"/>
-        <location line="+177"/>
-        <location line="+344"/>
+        <location line="-540"/>
+        <location line="+184"/>
+        <location line="+358"/>
         <source>linear integer</source>
         <translation>лінійне ціле</translation>
     </message>
     <message>
-        <location line="-520"/>
-        <location line="+178"/>
+        <location line="-541"/>
+        <location line="+199"/>
         <source>logarithmic integer</source>
         <translation>логарифмічне ціле</translation>
     </message>
     <message>
-        <location line="-174"/>
+        <location line="-198"/>
+        <location line="+184"/>
+        <location line="+358"/>
+        <source>E3 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-541"/>
+        <location line="+185"/>
+        <location line="+358"/>
+        <source>E6 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-542"/>
+        <location line="+186"/>
+        <location line="+358"/>
+        <source>E12 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-543"/>
+        <location line="+187"/>
+        <location line="+358"/>
+        <source>E24 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-544"/>
+        <location line="+188"/>
+        <location line="+358"/>
+        <source>E48 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-545"/>
+        <location line="+189"/>
+        <location line="+358"/>
+        <source>E96 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-546"/>
+        <location line="+190"/>
+        <location line="+358"/>
+        <source>E192 series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-544"/>
         <location line="+69"/>
         <source>Add</source>
         <translation>Додати</translation>
@@ -2898,47 +2908,47 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+4"/>
-        <location line="+131"/>
-        <location line="+354"/>
+        <location line="+145"/>
+        <location line="+368"/>
         <source>minimize</source>
         <translation>мінімізувати</translation>
     </message>
     <message>
-        <location line="-484"/>
-        <location line="+132"/>
-        <location line="+354"/>
+        <location line="-512"/>
+        <location line="+146"/>
+        <location line="+368"/>
         <source>maximize</source>
         <translation>максимізувати</translation>
     </message>
     <message>
-        <location line="-485"/>
-        <location line="+133"/>
-        <location line="+354"/>
+        <location line="-513"/>
+        <location line="+147"/>
+        <location line="+368"/>
         <source>less</source>
         <translation>менше</translation>
     </message>
     <message>
-        <location line="-486"/>
-        <location line="+134"/>
-        <location line="+354"/>
+        <location line="-514"/>
+        <location line="+148"/>
+        <location line="+368"/>
         <source>greater</source>
         <translation>більше</translation>
     </message>
     <message>
-        <location line="-487"/>
-        <location line="+135"/>
-        <location line="+354"/>
+        <location line="-515"/>
+        <location line="+149"/>
+        <location line="+368"/>
         <source>equal</source>
         <translation>дорівнює</translation>
     </message>
     <message>
-        <location line="-488"/>
-        <location line="+136"/>
+        <location line="-516"/>
+        <location line="+150"/>
         <source>monitor</source>
         <translation>стежити</translation>
     </message>
     <message>
-        <location line="-119"/>
+        <location line="-133"/>
         <source>Goals</source>
         <translation>Цілі</translation>
     </message>
@@ -2959,7 +2969,7 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+57"/>
-        <location line="+91"/>
+        <location line="+105"/>
         <location line="+34"/>
         <location line="+37"/>
         <location line="+195"/>
@@ -2967,8 +2977,8 @@ Resistor color code computation program
         <translation>так</translation>
     </message>
     <message>
-        <location line="-357"/>
-        <location line="+125"/>
+        <location line="-371"/>
+        <location line="+139"/>
         <location line="+37"/>
         <source>no</source>
         <translation>ні</translation>
@@ -2998,7 +3008,7 @@ Resistor color code computation program
         <translation>Ціль &quot;%1&quot; вже є у списку!</translation>
     </message>
     <message>
-        <location line="+248"/>
+        <location line="+262"/>
         <source>Set precision</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3259,7 +3269,7 @@ Resistor color code computation program
 <context>
     <name>ProjectView</name>
     <message>
-        <location filename="../qucs/projectView.cpp" line="+72"/>
+        <location filename="../qucs/projectView.cpp" line="+77"/>
         <source>Content of %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4286,11 +4296,9 @@ Resistor color code computation program
     </message>
     <message>
         <location line="+248"/>
-        <location line="+20"/>
-        <location line="+8"/>
+        <location line="+46"/>
         <location filename="../qucs/components/vacomponent.cpp" line="+306"/>
-        <location filename="../qucs/octave_window.cpp" line="-31"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+1251"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+1253"/>
         <location filename="../qucs/schematic_file.cpp" line="+114"/>
         <location line="+18"/>
         <location line="+21"/>
@@ -4321,23 +4329,25 @@ Resistor color code computation program
         <translation>Помилка</translation>
     </message>
     <message>
-        <location line="-27"/>
+        <location line="-45"/>
         <source>Format Error:
 Wrong line start!</source>
         <translation>Помилка формату:
 Невірний початок рядку!</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>Format Error:
 Unknown component!
 %1
 
-Do you make use of loadable components?</source>
+Do you want to load schematic anyway?
+Unknown components will be replaced 
+by dummy subcircuit placeholders.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+25"/>
         <source>Format Error:
 Wrong &apos;component&apos; line format!</source>
         <translation>Помилка формату:
@@ -8581,7 +8591,7 @@ Wrong &apos;component&apos; line format!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+2827"/>
+        <location filename="../qucs/qucs.cpp" line="+2836"/>
         <source>Successfully exported</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8604,10 +8614,9 @@ Use PNG, JPEG or SVG graphics!</source>
     </message>
     <message>
         <location filename="../qucs/module.cpp" line="+116"/>
-        <location filename="../qucs/qucs.cpp" line="-2190"/>
-        <location line="+224"/>
-        <location line="+15"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+149"/>
+        <location filename="../qucs/qucs.cpp" line="-2185"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+146"/>
+        <location line="+20"/>
         <source>verilog-a user devices</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8664,14 +8673,14 @@ Use PNG, JPEG or SVG graphics!</source>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="+1315"/>
+        <location filename="../qucs/qucs.cpp" line="+1555"/>
         <source>diagrams</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="../qucs/qucs.cpp" line="-1594"/>
+        <location filename="../qucs/qucs.cpp" line="-1600"/>
         <source>paintings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8709,13 +8718,6 @@ Use PNG, JPEG or SVG graphics!</source>
         <location line="+61"/>
         <source>The ground potential cannot be labeled!</source>
         <translation>Потенціал заземлення може мати мітку!</translation>
-    </message>
-    <message>
-        <location filename="../qucs/octave_window.cpp" line="+1"/>
-        <source>Octave not found in: %1
-
-Set the Octave location on the application settings.</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qucs/paintings/arrow.cpp" line="+141"/>
@@ -8783,15 +8785,15 @@ Set the Octave location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-148"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-165"/>
         <source>Cannot create output file!</source>
         <translation>Неможливо створити вивідний файл!</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-434"/>
-        <location line="+1009"/>
-        <location line="+69"/>
-        <location line="+122"/>
+        <location filename="../qucs/qucs.cpp" line="-435"/>
+        <location line="+1019"/>
+        <location line="+65"/>
+        <location line="+123"/>
         <location line="+12"/>
         <location line="+299"/>
         <source>untitled</source>
@@ -8937,16 +8939,17 @@ Wrong &apos;painting&apos; line format!</source>
         <translation>Невірний тип документа: </translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location filename="../qucs/components/component.cpp" line="-26"/>
+        <location filename="../qucs/schematic_file.cpp" line="+9"/>
         <location filename="../qucs-filter/stepz_filter.cpp" line="+45"/>
         <location filename="../qucs-filter-v2/qf_settings.cpp" line="+90"/>
         <location line="+72"/>
-        <location filename="../qucs-help/main.cpp" line="+104"/>
+        <location filename="../qucs-transcalc/qucstrans.cpp" line="+1088"/>
         <source>Warning</source>
         <translation>Попередження</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../qucs/schematic_file.cpp" line="+1"/>
         <source>Wrong document version 
 </source>
         <translation type="unfinished"></translation>
@@ -9078,7 +9081,7 @@ Usage:  qucsedit [-r] file
 </translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+57"/>
         <source>Too long command line argument!
 
 </source>
@@ -9114,7 +9117,6 @@ a substrate with lower permittivity and larger height.
     </message>
     <message>
         <location filename="../qucs-filter-v2/qf_settings.cpp" line="-71"/>
-        <location filename="../qucs-help/main.cpp" line="+1"/>
         <source>Cannot save settings !</source>
         <translation>Неможливо зберегти налаштування !</translation>
     </message>
@@ -9126,6 +9128,12 @@ a substrate with lower permittivity and larger height.
     <message>
         <location filename="../qucs-filter/quarterwave_filter.cpp" line="+1"/>
         <source>Quarter wave filters do not allow low-pass nor high-pass masks
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qucs-transcalc/qucstrans.cpp" line="+1"/>
+        <source>Cannot save GUI settings in
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -9145,7 +9153,7 @@ a substrate with lower permittivity and larger height.
     <message>
         <location line="+7"/>
         <source>&amp;View</source>
-        <translation type="unfinished">&amp;Вид</translation>
+        <translation>&amp;Вид</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -9376,7 +9384,7 @@ Change parameters and/or topology and try again!</source>
         <location line="+10"/>
         <location line="+319"/>
         <source>Ready.</source>
-        <translation type="unfinished">Готово.</translation>
+        <translation>Готово.</translation>
     </message>
     <message>
         <location line="-290"/>
@@ -9443,7 +9451,7 @@ Active Filter synthesis program
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-1550"/>
+        <location filename="../qucs/qucs.cpp" line="-1557"/>
         <source>Schematic</source>
         <translation>Схема</translation>
     </message>
@@ -9459,36 +9467,36 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+1"/>
-        <location line="+1386"/>
+        <location line="+1393"/>
         <source>VHDL Sources</source>
         <translation>Вихідні тексти VHDL</translation>
     </message>
     <message>
-        <location line="-1385"/>
-        <location line="+1386"/>
+        <location line="-1392"/>
+        <location line="+1393"/>
         <source>Verilog Sources</source>
         <translation>Вихідний код Verilog</translation>
     </message>
     <message>
-        <location line="-1385"/>
-        <location line="+1386"/>
+        <location line="-1392"/>
+        <location line="+1393"/>
         <source>Verilog-A Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1385"/>
-        <location line="+1386"/>
+        <location line="-1392"/>
+        <location line="+1393"/>
         <source>Octave Scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1385"/>
+        <location line="-1392"/>
         <source>Spice Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+1387"/>
+        <location line="+1394"/>
         <location filename="../qucs/qucs_actions.cpp" line="-19"/>
         <source>Any File</source>
         <translation>Будь-який файл</translation>
@@ -9514,7 +9522,7 @@ Active Filter synthesis program
         <translation>Схеми</translation>
     </message>
     <message>
-        <location line="-2057"/>
+        <location line="-2064"/>
         <source>New</source>
         <translation>Створити</translation>
     </message>
@@ -9599,16 +9607,18 @@ Active Filter synthesis program
         <location line="+3"/>
         <location line="+64"/>
         <location line="+3"/>
-        <location line="+524"/>
+        <location line="+527"/>
         <location line="+25"/>
         <location line="+20"/>
         <location line="+19"/>
         <location line="+10"/>
-        <location line="+88"/>
-        <location line="+994"/>
+        <location line="+73"/>
+        <location line="+6"/>
+        <location line="+130"/>
+        <location line="+877"/>
         <location line="+28"/>
         <location line="+72"/>
-        <location line="+314"/>
+        <location line="+312"/>
         <location line="+7"/>
         <location line="+7"/>
         <location line="+7"/>
@@ -9628,7 +9638,7 @@ Active Filter synthesis program
         <translation>Помилка</translation>
     </message>
     <message>
-        <location line="-2191"/>
+        <location line="-2196"/>
         <location line="+67"/>
         <source>Cannot open &quot;%1&quot;.</source>
         <translation>Неможливо відкрити файл &quot;%1&quot;.</translation>
@@ -9640,20 +9650,12 @@ Active Filter synthesis program
         <translation>Бібліотечний файл пошкоджений.</translation>
     </message>
     <message>
-        <location line="+125"/>
-        <location line="+83"/>
-        <location line="+3"/>
+        <location line="+177"/>
+        <location line="+479"/>
         <location line="+73"/>
-        <source>Search results</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-113"/>
-        <location line="+482"/>
-        <location line="+70"/>
         <location line="+52"/>
         <location line="+8"/>
-        <location line="+28"/>
+        <location line="+29"/>
         <location line="+11"/>
         <location line="+26"/>
         <location line="+210"/>
@@ -9668,18 +9670,13 @@ Active Filter synthesis program
         <translation>Інформація</translation>
     </message>
     <message>
-        <location line="-886"/>
+        <location line="-887"/>
         <source>Default icon not found:
  %1.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+101"/>
-        <source>verilog-a user devices</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+160"/>
+        <location line="+258"/>
         <source>-port</source>
         <translation>-виводи</translation>
     </message>
@@ -9690,14 +9687,14 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+1"/>
-        <location line="+678"/>
+        <location line="+682"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>У документі є незбережені зміни! 
 </translation>
     </message>
     <message>
-        <location line="-677"/>
+        <location line="-681"/>
         <source>Do you want to save the changes before copying?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9708,13 +9705,13 @@ Active Filter synthesis program
     </message>
     <message>
         <location line="+0"/>
-        <location line="+678"/>
+        <location line="+682"/>
         <location filename="../qucs/qucs_init.cpp" line="+66"/>
         <source>&amp;Save</source>
         <translation>&amp;Зберегти</translation>
     </message>
     <message>
-        <location line="-656"/>
+        <location line="-660"/>
         <source>Copy file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9746,33 +9743,33 @@ Active Filter synthesis program
     <message>
         <location line="+5"/>
         <location line="+32"/>
-        <location line="+192"/>
+        <location line="+196"/>
         <location line="+230"/>
         <location line="+493"/>
         <source>Warning</source>
         <translation>Попередження</translation>
     </message>
     <message>
-        <location line="-946"/>
+        <location line="-950"/>
         <source>This will delete the file permanently! Continue ?</source>
         <translation>Це безповоротно видалить файл! Продовжити ?</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+455"/>
+        <location line="+459"/>
         <location line="+370"/>
         <source>No</source>
         <translation>Ні</translation>
     </message>
     <message>
-        <location line="-825"/>
-        <location line="+455"/>
+        <location line="-829"/>
+        <location line="+459"/>
         <location line="+370"/>
         <source>Yes</source>
         <translation>Так</translation>
     </message>
     <message>
-        <location line="-978"/>
+        <location line="-982"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9832,12 +9829,11 @@ Active Filter synthesis program
         <translation>Неможливо створити теку проекту !</translation>
     </message>
     <message>
-        <location line="+33"/>
         <source>Cannot access project directory: </source>
-        <translation>Неможливо одержати доступ до папки проекту: </translation>
+        <translation type="obsolete">Неможливо одержати доступ до папки проекту: </translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+48"/>
         <location line="+53"/>
         <source> - Project: </source>
         <translation> - Проект: </translation>
@@ -9858,13 +9854,26 @@ Active Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-177"/>
-        <location line="+185"/>
+        <location line="-180"/>
+        <location line="+188"/>
         <source>Cannot delete file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-265"/>
+        <location line="-665"/>
+        <location line="+97"/>
+        <location line="+3"/>
+        <location line="+92"/>
+        <source>Search results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-16"/>
+        <source>verilog-a user devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+221"/>
         <source>Cannot copy file to identical name: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9884,7 +9893,22 @@ Active Filter synthesis program
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+243"/>
+        <location line="+103"/>
+        <source>Cannot access project directory: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Project directory name does not end in &apos;_prj&apos;(%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+130"/>
+        <source>Project directory name does not end in &apos;_prj&apos; (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Cannot delete an open project !</source>
         <translation>Неможливо видалити відкритий проект !</translation>
     </message>
@@ -10112,7 +10136,7 @@ Active Filter synthesis program
         <translation>Неможливо запустити програму &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location line="+313"/>
+        <location line="+311"/>
         <source>Could not load S[1,1].</source>
         <translation>Неможливо завантажити S[1,1].</translation>
     </message>
@@ -13108,12 +13132,12 @@ open files with an appropriate program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Select the octave bin directory</source>
+        <location line="+10"/>
+        <source>Select the octave executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+28"/>
         <location line="+20"/>
         <source>Select a directory</source>
         <translation type="unfinished"></translation>
@@ -13122,7 +13146,7 @@ open files with an appropriate program.</source>
 <context>
     <name>QucsTranscalc</name>
     <message>
-        <location filename="../qucs-transcalc/qucstrans.cpp" line="+262"/>
+        <location filename="../qucs-transcalc/qucstrans.cpp" line="-827"/>
         <source>&amp;File</source>
         <translation>&amp;Файл</translation>
     </message>
@@ -13260,13 +13284,13 @@ open files with an appropriate program.</source>
     <message>
         <location line="+6"/>
         <location line="+571"/>
-        <location line="+157"/>
+        <location line="+171"/>
         <location line="+19"/>
         <source>Ready.</source>
         <translation>Готово.</translation>
     </message>
     <message>
-        <location line="-698"/>
+        <location line="-712"/>
         <location line="+6"/>
         <location line="+6"/>
         <location line="+6"/>
@@ -13575,7 +13599,7 @@ open files with an appropriate program.</source>
         <translation>Значення не узгоджуються.</translation>
     </message>
     <message>
-        <location line="+118"/>
+        <location line="+132"/>
         <source>Loading file...</source>
         <translation>Завантаження файлу...</translation>
     </message>
@@ -13836,7 +13860,7 @@ Set the admsXml location on the application settings.</source>
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../qucs/dialogs/settingsdialog.cpp" line="+44"/>
+        <location filename="../qucs/dialogs/settingsdialog.cpp" line="-312"/>
         <source>Edit File Properties</source>
         <translation>Редагувати властивості файла</translation>
     </message>
@@ -13846,12 +13870,19 @@ Set the admsXml location on the application settings.</source>
         <translation>Набір даних:</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+4"/>
+        <location line="+8"/>
+        <location line="+11"/>
+        <source>Browse</source>
+        <translation type="unfinished">Перегляд</translation>
+    </message>
+    <message>
+        <location line="-15"/>
         <source>Data Display:</source>
         <translation>Перегляд даних:</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>open data display after simulation</source>
         <translation>відкрити перегляд даних після моделювання</translation>
     </message>
@@ -13861,7 +13892,7 @@ Set the admsXml location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>run script after simulation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13936,7 +13967,7 @@ Set the admsXml location on the application settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+15"/>
         <source>Frame</source>
         <translation>Рамка</translation>
     </message>
@@ -14256,7 +14287,7 @@ Set the admsXml location on the application settings.</source>
     <message>
         <location filename="../qucs/components/spicefile.cpp" line="-3"/>
         <source>Converting SPICE file &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Конвертація SPICE файлу &quot;%1&quot;.</translation>
     </message>
 </context>
 <context>

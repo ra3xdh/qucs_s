@@ -1715,11 +1715,29 @@ Component* getComponentFromName(QString& Line, Schematic* p)
 
   if(!c) {
     /// \todo enable user to load partial schematic, skip unknown components
-    QMessageBox::critical(0, QObject::tr("Error"),
-	QObject::tr("Format Error:\nUnknown component!\n"
-                "%1\n\n"
-                "Do you make use of loadable components?").arg(cstr));
-    return 0;
+      if (QucsMain!=0) {
+          QMessageBox* msg = new QMessageBox(QMessageBox::Warning,QObject::tr("Warning"),
+                                             QObject::tr("Format Error:\nUnknown component!\n"
+                                                         "%1\n\n"
+                                                         "Do you want to load schematic anyway?\n"
+                                                         "Unknown components will be replaced \n"
+                                                         "by dummy subcircuit placeholders.").arg(cstr),
+                                             QMessageBox::Yes|QMessageBox::No);
+          int r = msg->exec();
+          delete msg;
+          if (r == QMessageBox::Yes) {
+              c = new Subcircuit();
+              // Hack: insert dummy File property before the first property
+              int pos1 = Line.indexOf('"');
+              QString filestr = QString("\"%1.sch\" 1 ").arg(cstr);
+              Line.insert(pos1,filestr);
+          } else return 0;
+      } else {
+          QString err_msg = QString("Schematic loading error! Unknown device %1").arg(cstr);
+          qCritical()<<err_msg;
+          return 0;
+      }
+
   }
 
   if(!c->load(Line)) {

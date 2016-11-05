@@ -91,63 +91,72 @@ Diagram::~Diagram()
 */
 void Diagram::paint(ViewPainter *p)
 {
-  // paint all lines
-  foreach(Line *pl, Lines) {
-    p->Painter->setPen(pl->style);
-    p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
-  }
+    paintDiagram(p);
+    paintMarkers(p);
+}
 
-  // paint all arcs (1 pixel larger to compensate for strange circle method)
-  foreach(Arc *pa, Arcs) {
-    p->Painter->setPen(pa->style);
-    p->drawArc(cx+pa->x, cy-pa->y, pa->w, pa->h, pa->angle, pa->arclen);
-  }
+void Diagram::paintDiagram(ViewPainter *p)
+{
+    // paint all lines
+    foreach(Line *pl, Lines) {
+      p->Painter->setPen(pl->style);
+      p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
+    }
 
-  // draw all graphs
-  foreach(Graph *pg, Graphs)
-    pg->paint(p, cx, cy);
+    // paint all arcs (1 pixel larger to compensate for strange circle method)
+    foreach(Arc *pa, Arcs) {
+      p->Painter->setPen(pa->style);
+      p->drawArc(cx+pa->x, cy-pa->y, pa->w, pa->h, pa->angle, pa->arclen);
+    }
 
-  // keep track of painter state
-  p->Painter->save();
+    // draw all graphs
+    foreach(Graph *pg, Graphs)
+      pg->paint(p, cx, cy);
 
-  // write whole text (axis label inclusively)
-  QMatrix wm = p->Painter->worldMatrix();
-  foreach(Text *pt, Texts) {
-    p->Painter->setWorldMatrix(
-        QMatrix(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
-                 p->DX + float(cx+pt->x) * p->Scale,
-                 p->DY + float(cy-pt->y) * p->Scale));
+    // keep track of painter state
+    p->Painter->save();
 
-    p->Painter->setPen(pt->Color);
-    p->Painter->drawText(0, 0, pt->s);
-  }
-  p->Painter->setWorldMatrix(wm);
-  p->Painter->setWorldMatrixEnabled(false);
+    // write whole text (axis label inclusively)
+    QMatrix wm = p->Painter->worldMatrix();
+    foreach(Text *pt, Texts) {
+      p->Painter->setWorldMatrix(
+          QMatrix(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
+                   p->DX + float(cx+pt->x) * p->Scale,
+                   p->DY + float(cy-pt->y) * p->Scale));
 
-  // restore painter state
-  p->Painter->restore();
+      p->Painter->setPen(pt->Color);
+      p->Painter->drawText(0, 0, pt->s);
+    }
+    p->Painter->setWorldMatrix(wm);
+    p->Painter->setWorldMatrixEnabled(false);
 
-  // draw markers last, so they are at the top of painting layers
-  foreach(Graph *pg, Graphs)
-    foreach(Marker *pm, pg->Markers)
-      pm->paint(p, cx, cy);
+    // restore painter state
+    p->Painter->restore();
 
 
-  if(isSelected) {
-    int x_, y_;
-    float fx_, fy_;
-    p->map(cx, cy-y2, x_, y_);
-    fx_ = float(x2)*p->Scale + 10;
-    fy_ = float(y2)*p->Scale + 10;
+    if(isSelected) {
+      int x_, y_;
+      float fx_, fy_;
+      p->map(cx, cy-y2, x_, y_);
+      fx_ = float(x2)*p->Scale + 10;
+      fy_ = float(y2)*p->Scale + 10;
 
-    p->Painter->setPen(QPen(Qt::darkGray,3));
-    p->Painter->drawRect(x_-5, y_-5, TO_INT(fx_), TO_INT(fy_));
-    p->Painter->setPen(QPen(Qt::darkRed,2));
-    p->drawResizeRect(cx, cy-y2);  // markers for changing the size
-    p->drawResizeRect(cx, cy);
-    p->drawResizeRect(cx+x2, cy-y2);
-    p->drawResizeRect(cx+x2, cy);
-  }
+      p->Painter->setPen(QPen(Qt::darkGray,3));
+      p->Painter->drawRect(x_-5, y_-5, TO_INT(fx_), TO_INT(fy_));
+      p->Painter->setPen(QPen(Qt::darkRed,2));
+      p->drawResizeRect(cx, cy-y2);  // markers for changing the size
+      p->drawResizeRect(cx, cy);
+      p->drawResizeRect(cx+x2, cy-y2);
+      p->drawResizeRect(cx+x2, cy);
+    }
+}
+
+void Diagram::paintMarkers(ViewPainter *p, bool paintAll)
+{
+    // draw markers last, so they are at the top of painting layers
+    foreach(Graph *pg, Graphs)
+      foreach(Marker *pm, pg->Markers)
+          if ((pm->Type & 1)||paintAll) pm->paint(p, cx, cy);
 }
 
 // ------------------------------------------------------------

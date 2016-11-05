@@ -49,6 +49,7 @@ public:
   QString save();
   bool    load(const QString& s);
   bool    isHorizontal();
+  void    getLabelBounding(int& _xmin, int& _ymin, int& _xmax, int& _ymax);
 
 private:
   bool isHighlighted;

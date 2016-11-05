@@ -313,6 +313,43 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
   Doc->viewport()->update();
 }
 
+/**
+ * @brief draws wire aiming cross on Document view
+ * @param Doc - pointer to Schematics object
+ * @param fx  - document x-coordinate of center
+ * @param fy  - document x-coordinate of center
+ */
+static void paintAim(Schematic *Doc, int fx,int fy){
+	//let we reserve couple of points at the edges of lines for some aesthetics,
+	//and visual check that our calculations has fit the widget window.
+	const int ldelta = 2;
+
+	//left and upper edges of our lines
+	int lx0 = DOC_X_POS(Doc->contentsX()+ldelta);
+	int ly0 = DOC_Y_POS(Doc->contentsY()+ldelta);
+
+	//right and bottom edges
+	int lx1 = DOC_X_POS(Doc->contentsX()+Doc->viewport()->width()-1-ldelta);
+	int ly1 = DOC_Y_POS(Doc->contentsY()+Doc->viewport()->height()-1-ldelta);
+
+	//post line paint events
+	Doc->PostPaintEvent (_Line, lx0, fy, lx1, fy);
+	Doc->PostPaintEvent (_Line, fx, ly0, fx, ly1);
+}
+
+//paint ghost line - horizontal
+static void paintGhostLineH(Schematic *Doc, int fx,int fy, int fxx){
+	Doc->PostPaintEvent (_Line, fx, fy-1, fxx, fy-1);
+	Doc->PostPaintEvent (_Line, fx, fy+1, fxx, fy+1);
+}
+
+//paint ghost line - vertical
+static void paintGhostLineV(Schematic *Doc, int fx, int fy, int fyy){
+	Doc->PostPaintEvent (_Line, fx-1, fy, fx-1, fyy);
+	Doc->PostPaintEvent (_Line, fx+1, fy, fx+1, fyy);
+}
+
+
 // -----------------------------------------------------------
 /**
  * @brief MouseActions::MMoveWire2 Paint wire as it is being drawn with mouse.
@@ -324,14 +361,18 @@ void MouseActions::MMoveWire2(Schematic *Doc, QMouseEvent *Event)
   MAx2  = DOC_X_POS(Event->pos().x());
   MAy2  = DOC_Y_POS(Event->pos().y());
   Doc->setOnGrid(MAx2, MAy2);
+  paintAim(Doc,MAx2,MAy2); //let we paint aim cross
 
+  //because cross slightly masks a wire, let we make wire thicker
+  //better to make it by increasing of pen, but here we cannot access
+  //pen
   if(MAx1 == 0) {
-    Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3, MAy2); // paint
-    Doc->PostPaintEvent (_Line, MAx3, MAy2, MAx2, MAy2); // paint
+	paintGhostLineV(Doc,MAx3,MAy3,MAy2);
+	paintGhostLineH(Doc,MAx3,MAy2,MAx2);
   }
   else {
-    Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx2, MAy3); // paint
-    Doc->PostPaintEvent (_Line, MAx2, MAy3, MAx2, MAy2); // paint
+	paintGhostLineH(Doc,MAx3,MAy3,MAx2);
+	paintGhostLineV(Doc,MAx2,MAy3,MAy2);
   }
 
   QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickWire2;
@@ -349,12 +390,9 @@ void MouseActions::MMoveWire1(Schematic *Doc, QMouseEvent *Event)
   MAx3 = DOC_X_POS(Event->pos().x());
   MAy3 = DOC_Y_POS(Event->pos().y());
   Doc->setOnGrid(MAx3, MAy3);
-
-  MAx2  = DOC_X_POS(Doc->viewport()->width());
-  MAy2  = DOC_Y_POS(Doc->viewport()->height());
-
-  Doc->PostPaintEvent (_Line, Doc->ViewX1, MAy3, MAx2, MAy3);
-  Doc->PostPaintEvent (_Line, MAx3, Doc->ViewY1, MAx3, MAy2);
+  paintAim(Doc,MAx3,MAy3);
+  MAx2 = DOC_X_POS(Doc->contentsX()+Doc->viewport()->width()-1-2);
+  MAx2 = DOC_Y_POS(Doc->contentsY()+Doc->viewport()->height()-1-2);
   Doc->viewport()->update();
 }
 
@@ -1305,8 +1343,10 @@ void MouseActions::MPressWire1(Schematic *Doc, QMouseEvent*, float fX, float fY)
   //Doc->PostPaintEvent (_DotLine);
   //Doc->PostPaintEvent (_NotRop);
   //if(drawn) {
-    Doc->PostPaintEvent (_Line, 0, MAy3, MAx2, MAy3); // erase old mouse cross
+#if 0  //ALYS - it draws some garbage, not deleted because of possible questions
+	Doc->PostPaintEvent (_Line, 0, MAy3, MAx2, MAy3); // erase old mouse cross
     Doc->PostPaintEvent (_Line, MAx3, 0, MAx3, MAy2);
+#endif
   //}
   //drawn = false;
 
@@ -1314,6 +1354,10 @@ void MouseActions::MPressWire1(Schematic *Doc, QMouseEvent*, float fX, float fY)
   MAx3 = int(fX);
   MAy3 = int(fY);
   Doc->setOnGrid(MAx3, MAy3);
+
+//ALYS - draw aiming cross
+  paintAim(Doc,MAx3, MAy3);
+//#######################
 
   formerAction = 0; // keep wire action active after first wire finished
   QucsMain->MouseMoveAction = &MouseActions::MMoveWire2;
@@ -1368,8 +1412,10 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
       }
     }
 
-    Doc->viewport()->update();
-    drawn = false;
+    //ALYS: excessive update. end of function does it.
+	//Doc->viewport()->update();
+
+	drawn = false;
     if(set1 | set2) Doc->setChanged(true, true);
     MAx3 = MAx2;
     MAy3 = MAy2;
@@ -1377,7 +1423,12 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
 
    /// \todo document right mouse button changes the wire corner
   case Qt::RightButton :
-    if(MAx1 == 0) {
+
+#if 0
+	//ALYS - old code preserved because isn't clear - what it was???
+	//looks like deletion via painting.
+	//i'll delete it after possible clarification from team
+	if(MAx1 == 0) {
       Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3, MAy2); // erase old
       Doc->PostPaintEvent (_Line, MAx3, MAy2, MAx2, MAy2); // erase old
     }
@@ -1385,24 +1436,27 @@ void MouseActions::MPressWire2(Schematic *Doc, QMouseEvent *Event, float fX, flo
       Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx2, MAy3); // erase old
       Doc->PostPaintEvent (_Line, MAx2, MAy3, MAx2, MAy2); // erase old
     }
+#endif
 
     MAx2  = int(fX);
     MAy2  = int(fY);
     Doc->setOnGrid(MAx2, MAy2);
 
     MAx1 ^= 1;    // change the painting direction of wire corner
-    if(MAx1 == 0) {
-      Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3, MAy2); // paint
-      Doc->PostPaintEvent (_Line, MAx3, MAy2, MAx2, MAy2); // paint
+	if(MAx1 == 0) {
+		paintGhostLineV(Doc,MAx3,MAy3,MAy2);
+		paintGhostLineH(Doc,MAx3,MAy2,MAx2);
     }
     else {
-      Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx2, MAy3); // paint
-      Doc->PostPaintEvent (_Line, MAx2, MAy3, MAx2, MAy2); // paint
+		paintGhostLineH(Doc,MAx3,MAy3,MAx2);
+		paintGhostLineV(Doc,MAx2,MAy3,MAy2);
     }
     break;
 
   default: ;    // avoids compiler warnings
   }
+
+  paintAim(Doc,MAx2,MAy2); //ALYS - added missed aiming cross
   Doc->viewport()->update();
 }
 

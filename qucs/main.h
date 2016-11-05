@@ -68,13 +68,14 @@ struct tQucsSettings {
   QDir QucsHomeDir;
   QDir AdmsXmlBinDir;  // dir of admsXml executable
   QDir AscoBinDir;     // dir of asco executable
-  QDir OctaveBinDir;   // dir of octave executable
   QString NgspiceExecutable;  // Executables of external simulators
   QString XyceExecutable;
   QString XyceParExecutable;
   QString SpiceOpusExecutable;
   QString S4Qworkdir;
   unsigned int NProcs; // Number of processors for Xyce
+  QString OctaveExecutable; // OctaveExecutable location
+  QString QucsOctave; // OUCS_OCTAVE variable
 
   // registered filename extensions with program to open the file
   QStringList FileTypes;

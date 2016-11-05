@@ -710,7 +710,7 @@ AC_PATH_PROGS(UIC, uic-qt4 uic, :, [$QT_DIR/bin:$PATH])
 AC_PATH_PROGS(RCC, rcc, :, [$QT_DIR/bin:$PATH])
 
 if test "$MOC" = ":"; then
-  AC_MSG_WARN([
+  AC_MSG_ERROR([
   The $PACKAGE package needs the 'Qt Meta Object Compiler' to compile properly.
   Though Qt itself may be properly installed including headers and libraries
   the 'moc' program is missing.  Possibly you need to install the full
@@ -718,7 +718,7 @@ if test "$MOC" = ":"; then
 fi
 
 if test "$UIC" = ":"; then
-  AC_MSG_WARN([
+  AC_MSG_ERROR([
   The $PACKAGE package needs the 'Qt User Interface Compiler' to compile properly.
   Though Qt itself may be properly installed including headers and libraries
   the 'uic' program is missing.  Possibly you need to install the full

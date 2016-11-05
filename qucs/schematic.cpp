@@ -707,7 +707,8 @@ void Schematic::paintSchToViewpainter(ViewPainter *p, bool printAll, bool toImag
 
         selected = pd->isSelected;
         pd->isSelected = false;
-        pd->paint(p);  // paint all selected diagrams with graphs and markers
+        pd->paintDiagram(p);  // paint all selected diagrams with graphs and markers
+        pd->paintMarkers(p,printAll);
         pd->isSelected = selected;
 
         // revert selection of graphs and markers
@@ -974,10 +975,11 @@ void Schematic::sizeOfAll(int& xmin, int& ymin, int& xmax, int& ymax)
 
     pl = pw->Label;
     if(pl) {     // check position of wire label
-      if(pl->x1 < xmin)  xmin = pl->x1;
-      if((pl->x1+pl->x2) > xmax)  xmax = pl->x1 + pl->x2;
-      if(pl->y1 > ymax)  ymax = pl->y1;
-      if((pl->y1-pl->y2) < ymin)  ymin = pl->y1 - pl->y2;
+        pl->getLabelBounding(x1,y1,x2,y2);
+        if(x1 < xmin) xmin = x1;
+        if(x2 > xmax) xmax = x2;
+        if(y1 < ymin) ymin = y1;
+        if(y2 > ymax) ymax = y2;
     }
   }
 
@@ -985,10 +987,11 @@ void Schematic::sizeOfAll(int& xmin, int& ymin, int& xmax, int& ymax)
   for(Node *pn = Nodes->first(); pn != 0; pn = Nodes->next()) {
     pl = pn->Label;
     if(pl) {     // check position of node label
-      if(pl->x1 < xmin)  xmin = pl->x1;
-      if((pl->x1+pl->x2) > xmax)  xmax = pl->x1 + pl->x2;
-      if(pl->y1 > ymax)  ymax = pl->y1;
-      if((pl->y1-pl->y2) < ymin)  ymin = pl->y1 - pl->y2;
+        pl->getLabelBounding(x1,y1,x2,y2);
+        if(x1 < xmin) xmin = x1;
+        if(x2 > xmax) xmax = x2;
+        if(y1 < ymin) ymin = y1;
+        if(y2 > ymax) ymax = y2;
     }
   }
 
@@ -1878,7 +1881,8 @@ void Schematic::switchPaintMode()
 void Schematic::contentsWheelEvent(QWheelEvent *Event)
 {
   App->editText->setHidden(true);  // disable edit of component property
-  int delta = Event->delta() >> 1;     // use smaller steps
+  // use smaller steps; typically the returned delta() is a multiple of 120
+  int delta = Event->delta() >> 1;
 
   // ...................................................................
   if((Event->modifiers() & Qt::ShiftModifier) ||
@@ -1890,9 +1894,9 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
   }
   // ...................................................................
   else if(Event->modifiers() & Qt::ControlModifier) {  // use mouse wheel to zoom ?
-      float Scaling;
-      if(delta < 0) Scaling = float(delta)/-60.0/1.1;
-      else Scaling = 1.1*60.0/float(delta);
+      // zoom factor scaled according to the wheel delta, to accomodate
+      //  values different from 60 (slower or faster zoom)
+      float Scaling = pow(1.1, delta/60.0);
       zoom(Scaling);
       Scaling -= 1.0;
       scrollBy( int(Scaling * float(Event->pos().x())),
@@ -2180,78 +2184,3 @@ void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
   Event->accept();
 }
 
-void Schematic::getSelAreaWidthAndHeight(int &wsel, int &hsel, int& xmin_sel_, int& ymin_sel_)
-{
-    int xmin= INT_MAX,
-        ymin= INT_MAX,
-        xmax= INT_MIN,
-        ymax= INT_MIN;
-
-     for(Component *pc = Components->first(); pc != 0; pc = Components->next()) {
-         if (pc->isSelected) {
-           int x1,y1,x2,y2,d1,d2,d3,d4;
-           pc->entireBounds(x1,y1,x2,y2,this->textCorr());
-           d1 = std::min(x1,x2);
-           if (d1<xmin) xmin = d1;
-           d2 = std::max(x2,x1);
-           if (d2>xmax) xmax = d2;
-           d3 = std::min(y1,y2);
-           if (d3<ymin) ymin = d3;
-           d4 = std::max(y2,y1);
-           if (d4>ymax) ymax = d4;
-         }
-    }
-
-    for(Wire *pw = Wires->first(); pw != 0; pw = Wires->next()) {
-
-        if (pw->isSelected) {
-            int xc,yc;
-            pw->getCenter(xc,yc);
-
-            if (xc<xmin) xmin = xc;
-            if (xc>xmax) xmax = xc;
-            if (yc<ymin) ymin = yc;
-            if (yc>ymax) ymax = yc;
-        }
-    }
-
-    for(Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next()) {
-
-
-
-        if (pd->isSelected) {
-            int x1,y1,x2,y2,d1,d2,d3,d4;
-            pd->Bounding(x1,y1,x2,y2);
-
-            d1 = std::min(x1,x2);
-            if (d1<xmin) xmin = d1;
-            d2 = std::max(x2,x1);
-            if (d2>xmax) xmax = d2;
-            d3 = std::min(y1,y2);
-            if (d3<ymin) ymin = d3;
-            d4 = std::max(y2,y1);
-            if (d4>ymax) ymax = d4;
-        }
-    }
-
-    for(Painting *pp = Paintings->first(); pp != 0; pp = Paintings->next()) {
-
-       if (pp->isSelected) {
-           int x1,y1,x2,y2,d1,d2,d3,d4;
-           pp->Bounding(x1,y1,x2,y2);
-           d1 = std::min(x1,x2);
-           if (d1<xmin) xmin = d1;
-           d2 = std::max(x2,x1);
-           if (d2>xmax) xmax = d2;
-           d3 = std::min(y1,y2);
-           if (d3<ymin) ymin = d3;
-           d4 = std::max(y2,y1);
-           if (d4>ymax) ymax = d4;
-       }
-    }
-
-    wsel = abs(xmax - xmin);
-    hsel = abs(ymax - ymin);
-    xmin_sel_ = xmin;
-    ymin_sel_ = ymin;
-}

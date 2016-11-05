@@ -604,12 +604,11 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
     ButtAdd->setEnabled(true);
     ButtRem->setEnabled(true);
 
-    QStringList eqns_desc;
-    eqns_desc<<"equation"<<".PARAM section"
-             <<".GLOBAL_PARAM section"
-             <<".IC section"<<".NODESET section"
-            <<"Nutmeg equation";
-    if (eqns_desc.contains(Comp->Description)) {
+    QStringList eqns_mods;
+    eqns_mods<<"Eqn"<<"SpicePar"<<"SpGlobPar"
+             <<"SpiceIC"<<"SpiceNodeset"<<"NutmegEq";
+    // enable Up/Down buttons only for the Equation component
+    if (eqns_mods.contains(Comp->Model)) {
       ButtUp->setEnabled(true);
       ButtDown->setEnabled(true);
     }
