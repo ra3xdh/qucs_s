@@ -7,5 +7,5 @@ A2DBRIDGEX8.sym  D2ABRIDGE.sym    GEN0OR1X4.sym    MUX2TO1.sym  NAND4.sym    OR4
 AND2.sym         D2ABRIDGEX2.sym  GEN0OR1X8.sym    MUX4TO1.sym  NOR2.sym     PATGENX1.sym  PATGENX8.sym
 )
 
-INSTALL( FILES ${XYCEDIG_resources} DESTINATION share/qucs/library/XyceDigital )
+INSTALL( FILES ${XYCEDIG_resources} DESTINATION share/${QUCS_NAME}/library/XyceDigital )
 
