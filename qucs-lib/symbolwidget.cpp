@@ -364,7 +364,10 @@ int SymbolWidget::setSymbol( QString& SymbolString,
   {
       //Load the default symbol for the current Qucs library
       ComponentLibrary parsedlib;
-      QString libpath = QucsSettings.LibDir + Lib_ + ".lib";
+      QString libpath;
+      QString libfile = Lib_ + ".lib";
+      if (QFile::exists(libfile)) libpath = libfile; // User libraries, absolute path
+      else libpath = QucsSettings.LibDir + libfile; // System libraries, relative path
       int result = parseComponentLibrary (libpath, parsedlib);
 
       switch (result)//Check if the library was properly loaded
