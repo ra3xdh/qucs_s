@@ -894,13 +894,17 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
       view->selElem = (*InfosVA) (CompName, CompFile_qstr, true, filename);
     }
   }
-  if (Infos || InfosVA) {
-    // change currently selected category, so the user will
-    //   see where the component comes from
-    CompChoose->setCurrentIndex(iconCompInfo.catIdx+1); // +1 due to the added "Search Results" item
-    ccCurIdx = iconCompInfo.catIdx; // remember the category to select when exiting search
-    //!! comment out the above two lines if you would like that the search
-    //!!   returns back to the last selected category instead
+
+  // in "search mode" ?
+  if (CompChoose->itemText(0) == tr("Search results")) {
+    if (Infos || InfosVA) {
+      // change currently selected category, so the user will
+      //   see where the component comes from
+      CompChoose->setCurrentIndex(iconCompInfo.catIdx+1); // +1 due to the added "Search Results" item
+      ccCurIdx = iconCompInfo.catIdx; // remember the category to select when exiting search
+      //!! comment out the above two lines if you would like that the search
+      //!!   returns back to the last selected category instead
+    }
   }
 }
 
