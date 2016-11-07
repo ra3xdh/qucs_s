@@ -1689,15 +1689,15 @@ int NumPorts)
           ID_Text *pid = (ID_Text*)pi;
           QList<SubParameter *>::const_iterator it;
 
-          (*tstream) << " generic (";
-
-          for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
-            s = (*it)->Name;
-            QString t = (*it)->Type.isEmpty() ? "real" : (*it)->Type;
-            (*tstream) << s.replace("=", " : "+t+" := ") << ";\n ";
+          if (pid->Parameter.size()) {
+            (*tstream) << " generic (";
+            for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
+              s = (*it)->Name;
+              QString t = (*it)->Type.isEmpty() ? "real" : (*it)->Type;
+              (*tstream) << s.replace("=", " : "+t+" := ") << ";\n ";
+            }
+            (*tstream) << ");\n";
           }
-
-          (*tstream) << ");\n";
           break;
         }
 
