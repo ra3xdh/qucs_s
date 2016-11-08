@@ -326,7 +326,8 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
   else {
     // Warn in case a default component symbol is not
     // mapped or implemented.
-    Warning = tr("Warning: Symbol '%1' missing in Qucs Library.\n"
+    if (!((Comp=="SpLib")||(Comp=="SpiceMode")))
+        Warning = tr("Warning: Symbol '%1' missing in Qucs Library.\n"
                  "Drag and Drop may still work.\n"
                  "Please contact the developers.").arg(Comp);
   }
