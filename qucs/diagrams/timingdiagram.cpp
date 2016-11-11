@@ -45,8 +45,13 @@ TimingDiagram::~TimingDiagram()
 {
 }
 
-// ------------------------------------------------------------
 void TimingDiagram::paint(ViewPainter *p)
+{
+    paintDiagram(p);
+}
+
+// ------------------------------------------------------------
+void TimingDiagram::paintDiagram(ViewPainter *p)
 {
   // paint all lines
   foreach(Line *pl, Lines) {

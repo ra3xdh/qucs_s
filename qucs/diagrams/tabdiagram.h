@@ -29,6 +29,7 @@ public:
   virtual Diagram* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
   virtual void paint(ViewPainter*);
+  virtual void paintDiagram(ViewPainter *p);
   virtual int calcDiagram();
   virtual int scroll(int);
   virtual bool scrollTo(int, int, int);
