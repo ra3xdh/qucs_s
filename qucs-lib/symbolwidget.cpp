@@ -384,6 +384,8 @@ int SymbolWidget::setSymbol( QString& SymbolString,
     SymbolString = parsedlib.defaultSymbol;
   }
 
+  if (SymbolString.isEmpty()) return 0;
+
   Arcs.clear();
   Lines.clear();
   Rects.clear();
