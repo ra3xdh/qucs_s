@@ -114,13 +114,14 @@ inline bool getCompLineIntegers(const QString& s,
 // into a schematic
 //
 // returns an empty string if it couldn't be constructed
-inline int makeModelString (QString libname, QString compname, QString compstring, QString &modelstring, bool default_sym = false)
+inline int makeModelString (QString libname, QString compname, QString compstring, QString &modelstring, QString default_sym)
 {
 
     if (!getSection("Model", compstring, modelstring))
     {
         return QUCS_COMP_LIB_CORRUPT;
     }
+
     // check for a single component line
     if(!modelstring.isEmpty())
     {
@@ -134,13 +135,17 @@ inline int makeModelString (QString libname, QString compname, QString compstrin
     // The model wasn't a single line so we have to pick through the
     // symbol definition to get the ID for the model string
     QString symbolSection;
-    if (default_sym) {    // Default Symbol presents
-        symbolSection = compstring;
-    } else {  // We need to find and process <Symbol> section
-        if (!getSection("Symbol", compstring, symbolSection))
-        {
-            return QUCS_COMP_LIB_CORRUPT;
+    if (!getSection("Symbol", compstring, symbolSection))
+    {
+        return QUCS_COMP_LIB_CORRUPT;
+    }
+    if(symbolSection.isEmpty())
+    {   // component definition contains no symbol, use library default
+        if (default_sym.isEmpty())
+        {   // library does not define a default symbol
+           return QUCS_COMP_LIB_CORRUPT;
         }
+        symbolSection = default_sym; // use library default symbol
     }
 
     QStringList symbolstringLines = symbolSection.split ("\n");
@@ -287,16 +292,8 @@ inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
         component.definition = LibraryString.mid(Start, End-Start);
 
         // construct model string
-        if (library.defaultSymbol.isEmpty ())
-        {
-            int result = makeModelString (library.name, component.name, component.definition, component.modelString);
-            if (result != QUCS_COMP_LIB_OK) return result;
-        }
-        else
-        {
-            int result = makeModelString (library.name, component.name, library.defaultSymbol, component.modelString, true);
-            if (result != QUCS_COMP_LIB_OK) return result;
-        }
+        int result = makeModelString (library.name, component.name, component.definition, component.modelString, library.defaultSymbol);
+        if (result != QUCS_COMP_LIB_OK) return result;
 
         library.components.append (component);
 
