@@ -47,7 +47,6 @@ public:
 
   QString theModel();
   int setSymbol( QString&, const QString&, const QString&);
-  int createSymbol(const QString&, const QString&);
 
   // component properties
   int Text_x, Text_y;
@@ -58,6 +57,8 @@ protected:
   void mouseMoveEvent(QMouseEvent*);
 
 private:
+  int createStandardSymbol(const QString&, const QString&);
+
   void  paintEvent(QPaintEvent*);
 
   int  analyseLine(const QString&);

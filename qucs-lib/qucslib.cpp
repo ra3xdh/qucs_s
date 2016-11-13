@@ -318,7 +318,6 @@ void QucsLib::slotSelectLibrary(int Index)
 
     CompList->clear ();
     LibraryComps.clear ();
-    DefaultSymbol = "";
 
     QString filename;
 
@@ -346,9 +345,6 @@ void QucsLib::slotSelectLibrary(int Index)
         default:
             break;
     }
-
-    // copy the contents of default symbol section to a string
-    DefaultSymbol = parsedlib.defaultSymbol;
 
     // Now go through the rest of the component library, extracting each
     // component name
@@ -429,7 +425,6 @@ void QucsLib::slotSearchComponent(const QString &searchText)
       // does search criterion match ?
       if(CompName.indexOf(searchText, 0, Qt::CaseInsensitive) >= 0) {
         if(!findComponent) {
-	  DefaultSymbol = "";
 	  CompList->clear();
 	  LibraryComps.clear();
         }
@@ -488,8 +483,6 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
         return;
     }
     Symbol->ModelString = content;
-    if(Symbol->ModelString.count('\n') < 2)
-        Symbol->createSymbol(LibName, Item->text());
 
     if(!getSection("VHDLModel", CompString, content))
     {
@@ -510,8 +503,6 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
         QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
         return;
     }
-
-
     Symbol->setSymbol(content, LibName, Item->text());
 
       

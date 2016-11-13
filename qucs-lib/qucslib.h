@@ -55,7 +55,6 @@ public:
   QListWidget *CompList;
   QStringList   LibraryComps;
   QComboBox    *Library;
-  QString DefaultSymbol;
 
 private slots:
   void slotAbout();
