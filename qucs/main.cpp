@@ -657,6 +657,11 @@ int main(int argc, char *argv[])
   QucsSettings.dx = w*3/4;
   QucsSettings.dy = h*3/4;
 
+  // load existing settings (if any)
+  loadSettings();
+
+  // continue to set up overrides or default settings (some are saved on exit)
+
   // check for relocation env variable
   char* var = getenv("QUCSDIR");
   QDir QucsDir;
@@ -755,8 +760,6 @@ int main(int argc, char *argv[])
   } else {
       QucsSettings.QucsOctave.clear();
   }
-
-  loadSettings();
 
   if(!QucsSettings.BGColor.isValid())
     QucsSettings.BGColor.setRgb(255, 250, 225);
