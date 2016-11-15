@@ -31,6 +31,9 @@ enum LIB_PARSE_RESULT { QUCS_COMP_LIB_OK,
                         QUCS_COMP_LIB_CORRUPT,
                         QUCS_COMP_LIB_EMPTY };
 
+enum LIB_PARSE_WHAT { QUCS_COMP_LIB_HEADER_ONLY,
+                      QUCS_COMP_LIB_FULL };
+
 struct ComponentLibraryItem
 {
     QString name;
@@ -47,7 +50,7 @@ struct ComponentLibrary
 } ;
 
 
-// gets the contents of a section from a coponent description
+// gets the contents of a section from a component description
 //
 // sections are between <secname> </secname> pairs
 inline bool getSection(QString section, QString &list, QString &content)
@@ -209,7 +212,7 @@ inline int makeModelString (QString libname, QString compname, QString compstrin
 
 }
 
-inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
+inline int parseComponentLibrary (QString filename, ComponentLibrary &library, LIB_PARSE_WHAT what = QUCS_COMP_LIB_FULL)
 {
 
     int Start, End, NameStart, NameEnd;
@@ -226,8 +229,8 @@ inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
     QString LibraryString = ReadWhole.readAll();
     file.close();
 
-	LibraryString.replace(QRegExp("\\r\\n"), "\n");
-	
+    LibraryString.replace(QRegExp("\\r\\n"), "\n");
+
     // The libraries have a header statement like the following:
     //
     // <Qucs Library 0.0.18 "libname">
@@ -271,6 +274,12 @@ inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
         // copy the contents of default symbol section to a string
         library.defaultSymbol = LibraryString.mid(Start+16, End-Start-16);
         Start = End + 3;
+    }
+
+    if (what == QUCS_COMP_LIB_HEADER_ONLY)
+    {
+        // only the header was requested, stop here
+        return QUCS_COMP_LIB_OK;
     }
 
     // Now go through the rest of the component library, extracting each
