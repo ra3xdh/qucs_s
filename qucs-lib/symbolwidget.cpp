@@ -81,7 +81,7 @@ QString SymbolWidget::theModel()
   return "<Lib " + Prefix + " 1 0 0 " +
          QString::number(Text_x) + " " +
          QString::number(Text_y) + " 0 0 \"" +
-         LibraryName + "\" 0 \"" + ComponentName + "\" 0>";
+         LibraryPath + "\" 0 \"" + ComponentName + "\" 0>";
 }
 
 // ************************************************************
@@ -168,7 +168,7 @@ int SymbolWidget::createStandardSymbol(const QString& Lib_, const QString& Comp_
   Rects.clear();
   Ellips.clear();
   Texts.clear();
-  LibraryName = Lib_;
+  LibraryPath = Lib_;
   ComponentName = Comp_;
 
   Warning.clear();
@@ -398,7 +398,7 @@ int SymbolWidget::setSymbol( QString& SymbolString,
   Rects.clear();
   Ellips.clear();
   Texts.clear();
-  LibraryName = Lib_;
+  LibraryPath = Lib_;
   ComponentName = Comp_;
 
   QString Line;

@@ -53,7 +53,6 @@ public:
   ~QucsLib();
 
   QListWidget *CompList;
-  QStringList   LibraryComps;
   QComboBox    *Library;
 
 private slots:
