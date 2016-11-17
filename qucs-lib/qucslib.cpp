@@ -41,6 +41,7 @@
 #include <QWidget>
 #include <QBrush>
 #include <QLineEdit>
+#include <QPair>
 
 #include "qucslib.h"
 #include "qucslib_common.h"
@@ -55,7 +56,13 @@ struct compInfoStruct
   QString compDef; // the component definition string
 };
 
+struct libInfoStruct // a struct is not really needed but useful if we need to add further data...
+{
+  QString libPath; // the library path (absolute for  user libs, relative for system libs)
+};
+
 Q_DECLARE_METATYPE(compInfoStruct)
+Q_DECLARE_METATYPE(libInfoStruct)
 
 /* Constructor setups the GUI. */
 QucsLib::QucsLib()
@@ -187,37 +194,59 @@ QucsLib::~QucsLib()
 // Put all available libraries into ComboBox.
 void QucsLib::putLibrariesIntoCombobox()
 {
+    QList<QPair<QString, bool> > LibFiles;
+    ComponentLibrary parsedlib;
+    QString libPath;
+    libInfoStruct lineLibInfo;
+    QVariant v;
+
+    QPixmap userLibPixmap = QPixmap(":/bitmaps/home.png");
+    QPixmap sysLibPixmap = QPixmap(":/bitmaps/big.qucs.xpm");
 
     Library->clear();
-
     UserLibCount = 0;
-    QStringList LibFiles;
-    QStringList::iterator it;
 
-    if(UserLibDir.cd("."))   // user library directory exists ?
-    {
-        //LibFiles = UserLibDir.entryList("*.lib", QDir::Files, QDir::Name);
-        LibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+    // user libraries
+    QStringList UserLibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+    UserLibCount = UserLibFiles.count();
+    foreach(QString s, UserLibFiles) // build list with full path
+      LibFiles.append(qMakePair(UserLibDir.absoluteFilePath(s), false));
 
-        UserLibCount = LibFiles.count();
+    // system libraries
+    QStringList SysLibFiles = SysLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+    foreach(QString s, SysLibFiles) // build list with relative path
+      LibFiles.append(qMakePair(s, true));
 
-        for(it = LibFiles.begin(); it != LibFiles.end(); it++)
-        {
-            Library->addItem(QPixmap(":/bitmaps/home.png"), (*it).left((*it).length()-4));
-        }
+    for (int i = 0; i < LibFiles.count(); ++i ) {
+      libPath = LibFiles[i].first;
+      libPath.chop(4); // remove extension
+      int result = parseComponentLibrary(libPath, parsedlib, QUCS_COMP_LIB_HEADER_ONLY); // need just the library name
+      switch (result) {
+      case QUCS_COMP_LIB_IO_ERROR:
+      {
+        QString filename = getLibAbsPath(LibFiles[i].first);
+        QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (filename));
+        return;
+      }
+      case QUCS_COMP_LIB_CORRUPT:
+        QMessageBox::critical(0, tr("Error"), tr("Library is corrupt."));
+        return;
+      default:
+        break;
+      }
 
-	if (UserLibCount > 0) {
-	// add a separator to distinguish between user libraries and system libs
-	Library->insertSeparator(LibFiles.size());
-	}
+      lineLibInfo = libInfoStruct{libPath};
+      v.setValue(lineLibInfo);
+      if (LibFiles[i].second) { // it's a system library ?
+        Library->addItem(sysLibPixmap, parsedlib.name, v);
+      } else {
+        Library->addItem(userLibPixmap, parsedlib.name, v);
+      }
     }
-
-    QDir LibDir(QucsSettings.LibDir);
-    LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
-
-    for(it = LibFiles.begin(); it != LibFiles.end(); it++)
-        Library->addItem(QPixmap(":/bitmaps/big.qucs.xpm"), (*it).left((*it).length()-4));
-
+    if (UserLibCount > 0) {
+      // add a separator to distinguish between user libraries and system libs
+      Library->insertSeparator(UserLibCount);
+    }
     slotSelectLibrary(0);
 }
 
@@ -227,7 +256,7 @@ void QucsLib::slotAbout()
     QMessageBox::about(this, tr("About..."),
                        "QucsLib Version " PACKAGE_VERSION "\n"+
                        tr("Library Manager for Qucs\n")+
-                       tr("Copyright (C) 2011-2015 Qucs Team\n")+
+                       tr("Copyright (C) 2011-2016 Qucs Team\n")+
                        tr("Copyright (C) 2005 by Michael Margraf\n")+
                        "\nThis is free software; see the source for copying conditions."
                        "\nThere is NO warranty; not even for MERCHANTABILITY or "
@@ -330,28 +359,21 @@ void QucsLib::slotSelectLibrary(int Index)
 
     CompList->clear ();
 
-    QString filename, libPath;
-
-    if(Index < UserLibCount)  // Is it user library ?
-    {
-        libPath = Library->itemText(Index); // relative path (without suffix) for system libraries
-        filename = UserLibDir.absolutePath() + QDir::separator() + libPath + ".lib";
-    }
-    else
-    {
-        libPath = QucsSettings.LibDir + Library->itemText(Index);
-        filename =  libPath + ".lib"; // absolute path (without suffix) for user libraries
-    }
+    libInfoStruct lineLibInfo;
+    v = Library->itemData(Index, Qt::UserRole);
+    lineLibInfo = v.value<libInfoStruct>();
 
     ComponentLibrary parsedlib;
-
-    int result = parseComponentLibrary (filename, parsedlib);
+    int result = parseComponentLibrary (lineLibInfo.libPath, parsedlib);
 
     switch (result)
     {
         case QUCS_COMP_LIB_IO_ERROR:
+        {
+            QString filename = getLibAbsPath(lineLibInfo.libPath);
             QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (filename));
             return;
+        }
         case QUCS_COMP_LIB_CORRUPT:
             QMessageBox::critical(0, tr("Error"), tr("Library is corrupt."));
             return;
@@ -364,7 +386,7 @@ void QucsLib::slotSelectLibrary(int Index)
     for (int i = 0; i < parsedlib.components.count (); i++)
     {
         QListWidgetItem *CompItem = new QListWidgetItem(parsedlib.components[i].name);
-        lineCompInfo = compInfoStruct{parsedlib.name, libPath, parsedlib.components[i].definition};
+        lineCompInfo = compInfoStruct{parsedlib.name, lineLibInfo.libPath, parsedlib.components[i].definition};
         v.setValue(lineCompInfo);
         CompItem->setData(Qt::UserRole, v);
         CompList->addItem(CompItem);
@@ -377,7 +399,8 @@ void QucsLib::slotSelectLibrary(int Index)
 // ----------------------------------------------------
 void QucsLib::slotSearchComponent(const QString &searchText)
 {
-  QStringList LibFiles;
+  QList<QPair<QString, bool> > LibFiles;
+  QString libPath;
   compInfoStruct lineCompInfo;
   QVariant v;
 
@@ -402,21 +425,21 @@ void QucsLib::slotSearchComponent(const QString &searchText)
   // user libraries
   QStringList UserLibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
   foreach(QString s, UserLibFiles) // build list with full path
-    LibFiles += (UserLibDir.absoluteFilePath(s));
+    LibFiles.append(qMakePair(UserLibDir.absoluteFilePath(s), false));
 
   // system libraries
-  QDir LibDir(QucsSettings.LibDir);
-  QStringList SysLibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
-  foreach(QString s, SysLibFiles) // build list with full path
-    LibFiles += (LibDir.absoluteFilePath(s));
+  QStringList SysLibFiles = SysLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+  foreach(QString s, SysLibFiles) // build list with relative path
+    LibFiles.append(qMakePair(s, true));
 
   QFile File;
   QTextStream ReadWhole;
   QString LibraryString, LibName, CompName;
-  QStringList::iterator it;
   int Start, End, NameStart, NameEnd;
-  for(it = LibFiles.begin(); it != LibFiles.end(); it++) { // all library files
-    File.setFileName((*it));
+  for(auto it = LibFiles.begin(); it != LibFiles.end(); it++) { // all library files
+    QString libPath = (*it).first;
+    libPath.chop(4); // remove extension
+    File.setFileName(getLibAbsPath(libPath));
     if(!File.open(QIODevice::ReadOnly))  continue;
 
     ReadWhole.setDevice(&File);
@@ -448,7 +471,8 @@ void QucsLib::slotSearchComponent(const QString &searchText)
         }
         findComponent = true;
         QListWidgetItem *CompItem = new QListWidgetItem(CompName);
-        lineCompInfo = compInfoStruct{LibName, *it, LibraryString.mid(Start, End-Start)};
+
+        lineCompInfo = compInfoStruct{LibName, libPath, LibraryString.mid(Start, End-Start)};
         v.setValue(lineCompInfo);
         CompItem->setData(Qt::UserRole, v);
         CompList->addItem(CompItem);
@@ -476,20 +500,35 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
 {
     compInfoStruct lineCompInfo;
     QVariant v;
+    libInfoStruct lineLibInfo;
+    QVariant vLib;
+    int i;
 
     if(!Item) return;
 
+    // get component info
     v = Item->data(Qt::UserRole);
     lineCompInfo = v.value<compInfoStruct>();
 
-    QString LibName = lineCompInfo.libName;
-
     CompDescr->setText("Name: " + Item->text());
-    CompDescr->append("Library: " + LibName);
+    CompDescr->append("Library: " + lineCompInfo.libName);
     CompDescr->append("----------------------------");
 
-    // FIXME: here we assume that LibName is the same as the actual filename...
-    int i = Library->findText(LibName);
+    // find corresponding library index in the libraries combobox
+
+    // findData() below does not work: in Qt4 comparison operators for MetaTypes are not available (but are in Qt5)
+    //lineLibInfo = libInfoStruct{lineCompInfo.libPath};
+    //vLib.setValue(lineLibInfo);
+    //int i = Library->findData(lineLibInfo, Qt::UserRole);
+
+    // compare component library path and combobox selected library path
+    for (i = 0; i < Library->count(); i++ )
+    {
+        vLib = Library->itemData(i);
+        lineLibInfo = vLib.value<libInfoStruct>();
+        if (lineLibInfo.libPath == lineCompInfo.libPath)
+          break;
+    }
 
     QString content;
     if(!getSection("Description", lineCompInfo.compDef, content))

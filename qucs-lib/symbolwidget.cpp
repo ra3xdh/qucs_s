@@ -371,15 +371,16 @@ int SymbolWidget::setSymbol( QString& SymbolString,
   {
       //Load the default symbol for the current Qucs library
       ComponentLibrary parsedlib;
-      QDir libdir(QucsSettings.LibDir); // resolve system library paths
-      QString libpath = libdir.absoluteFilePath(Lib_ + ".lib");
-      int result = parseComponentLibrary (libpath, parsedlib);
+      int result = parseComponentLibrary (Lib_, parsedlib, QUCS_COMP_LIB_HEADER_ONLY); // need just the default symbol
 
       switch (result)//Check if the library was properly loaded
       {
         case QUCS_COMP_LIB_IO_ERROR:
-            QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (libpath));
+        {
+            QString filename = getLibAbsPath(Lib_);
+            QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (filename));
             return -1;
+        }
         case QUCS_COMP_LIB_CORRUPT:
             QMessageBox::critical(0, tr("Error"), tr("Library is corrupt."));
             return -1;

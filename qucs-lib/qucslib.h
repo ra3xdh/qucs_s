@@ -45,6 +45,7 @@ struct tQucsSettings {
 
 extern tQucsSettings QucsSettings;
 extern QDir UserLibDir;
+extern QDir SysLibDir;
 
 class QucsLib : public QMainWindow  {
    Q_OBJECT
