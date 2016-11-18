@@ -49,6 +49,14 @@ struct ComponentLibrary
     QList<ComponentLibraryItem> components;
 } ;
 
+// convert relative path to system library path
+// absolute paths (user libs) remain unchanged
+inline QString getLibAbsPath(QString libPath)
+{
+    QDir libdir(QucsSettings.LibDir); // system libraries paths
+    QString libAbsPath = libdir.absoluteFilePath(libPath + ".lib");
+    return libAbsPath;
+}
 
 // gets the contents of a section from a component description
 //
@@ -117,7 +125,7 @@ inline bool getCompLineIntegers(const QString& s,
 // into a schematic
 //
 // returns an empty string if it couldn't be constructed
-inline int makeModelString (QString libname, QString compname, QString compstring, QString &modelstring, QString default_sym)
+inline int makeModelString (QString libPath, QString compname, QString compstring, QString &modelstring, QString default_sym)
 {
 
     if (!getSection("Model", compstring, modelstring))
@@ -199,23 +207,20 @@ inline int makeModelString (QString libname, QString compname, QString compstrin
     }
 
     // construct the library model string
-    QString full_userlib = QucsSettings.QucsHomeDir.canonicalPath() // check is it user library or not ?
-            +QDir::convertSeparators ("/user_lib/")+libname;
-    QFileInfo inf(full_userlib+".lib");
-    if (inf.exists()) libname = full_userlib;
     modelstring =  "<Lib " + Prefix + " 1 0 0 " +
                    QString::number(Text_x) + " " +
                    QString::number(Text_y) + " 0 0 \"" +
-                   libname + "\" 0 \"" + compname + "\" 0>";
+                   libPath + "\" 0 \"" + compname + "\" 0>";
 
     return QUCS_COMP_LIB_OK;
 
 }
 
-inline int parseComponentLibrary (QString filename, ComponentLibrary &library, LIB_PARSE_WHAT what = QUCS_COMP_LIB_FULL)
+inline int parseComponentLibrary (QString libPath, ComponentLibrary &library, LIB_PARSE_WHAT what = QUCS_COMP_LIB_FULL)
 {
-
     int Start, End, NameStart, NameEnd;
+
+    QString filename = getLibAbsPath(libPath);
 
     QFile file (filename);
 
@@ -301,7 +306,7 @@ inline int parseComponentLibrary (QString filename, ComponentLibrary &library, L
         component.definition = LibraryString.mid(Start, End-Start);
 
         // construct model string
-        int result = makeModelString (library.name, component.name, component.definition, component.modelString, library.defaultSymbol);
+        int result = makeModelString (libPath, component.name, component.definition, component.modelString, library.defaultSymbol);
         if (result != QUCS_COMP_LIB_OK) return result;
 
         library.components.append (component);
