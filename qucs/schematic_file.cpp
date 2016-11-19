@@ -256,7 +256,7 @@ int Schematic::saveSymbolJSON()
 {
   QFileInfo info (DocName);
   QString jsonfile = info.dirPath () + QDir::separator()
-                   + info.baseName() + "_sym.json";
+                   + info.completeBaseName() + "_sym.json";
 
   qDebug() << "saveSymbolJson for " << jsonfile;
 

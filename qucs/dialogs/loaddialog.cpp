@@ -270,7 +270,7 @@ void LoadDialog::slotChangeIcon()
                                         QString(projDir.absolutePath()),
                                         tr("Icon image (*.png)"));
 
-  QString newIcon =  QFileInfo(iconFileName).baseName();
+  QString newIcon =  QFileInfo(iconFileName).completeBaseName();
 //  qDebug() << "icon "<< newIcon;
 
   QString filename = fileView->currentItem()->text();
