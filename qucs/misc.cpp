@@ -141,7 +141,7 @@ QString misc::StringNiceNum(double num)
 // #########################################################################
 void misc::str2num(const QString& s_, double& Number, QString& Unit, double& Factor)
 {
-  QString str = s_.stripWhiteSpace();
+  QString str = s_.trimmed();
 
 /*  int i=0;
   bool neg = false;
@@ -159,19 +159,19 @@ void misc::str2num(const QString& s_, double& Number, QString& Unit, double& Fac
   }*/
 
   QRegExp Expr( QRegExp("[^0-9\\x2E\\x2D\\x2B]") );
-  int i = str.find( Expr );
+  int i = str.indexOf( Expr );
   if(i >= 0)
-    if((str.at(i).latin1() | 0x20) == 'e') {
-      int j = str.find( Expr , ++i);
+    if((str.at(i).toLatin1() | 0x20) == 'e') {
+      int j = str.indexOf( Expr , ++i);
       if(j == i)  j--;
       i = j;
     }
 
   Number = str.left(i).toDouble();
-  Unit   = str.mid(i).stripWhiteSpace();
+  Unit   = str.mid(i).trimmed();
   if(Unit.length()>0)
   {
-    switch(Unit.at(0).latin1()) {
+    switch(Unit.at(0).toLatin1()) {
       case 'T': Factor = 1e12;  break;
       case 'G': Factor = 1e9;   break;
       case 'M': Factor = 1e6;   break;
@@ -233,7 +233,7 @@ void misc::convert2Unicode(QString& Text)
   int i = 0;
   QString n;
   unsigned short ch;
-  while((i=Text.find("\\x", i)) >= 0) {
+  while((i=Text.indexOf("\\x", i)) >= 0) {
     n = Text.mid(i, 6);
     ch = n.mid(2).toUShort(&ok, 16);
     if(ok)  Text.replace(n, QChar(ch));
@@ -306,13 +306,13 @@ QString misc::properName(const QString& Name)
 // Creates and returns delay time for VHDL entities.
 bool misc::VHDL_Delay(QString& td, const QString& Name)
 {
-  if(strtod(td.latin1(), 0) != 0.0) {  // delay time property
+  if(strtod(td.toLatin1(), 0) != 0.0) {  // delay time property
     if(!misc::VHDL_Time(td, Name))
       return false;    // time has not VHDL format
     td = " after " + td;
     return true;
   }
-  else if(isalpha(td.latin1()[0])) {
+  else if(isalpha(td.toLatin1()[0])) {
     td = " after " + td;
     return true;
   }
@@ -327,7 +327,7 @@ bool misc::VHDL_Delay(QString& td, const QString& Name)
 bool misc::VHDL_Time(QString& t, const QString& Name)
 {
   char *p;
-  double Time = strtod(t.latin1(), &p);
+  double Time = strtod(t.toLatin1(), &p);
   while(*p == ' ') p++;
   for(;;) {
     if(Time >= 0.0) {
@@ -353,7 +353,7 @@ bool misc::VHDL_Time(QString& t, const QString& Name)
 // Returns parameters for Verilog modules.
 QString misc::Verilog_Param(const QString Value)
 {
-  if(strtod(Value.latin1(), 0) != 0.0) {
+  if(strtod(Value.toLatin1(), 0) != 0.0) {
     QString td = Value;
     if(!misc::Verilog_Time(td, "parameter"))
       return Value;
@@ -368,13 +368,13 @@ QString misc::Verilog_Param(const QString Value)
 // Creates and returns delay time for Verilog modules.
 bool misc::Verilog_Delay(QString& td, const QString& Name)
 {
-  if(strtod(td.latin1(), 0) != 0.0) {  // delay time property
+  if(strtod(td.toLatin1(), 0) != 0.0) {  // delay time property
     if(!misc::Verilog_Time(td, Name))
       return false;    // time has not Verilog format
     td = " #" + td;
     return true;
   }
-  else if(isalpha(td.latin1()[0])) {
+  else if(isalpha(td.toLatin1()[0])) {
     td = " #" + td;
     return true;
   }
@@ -389,7 +389,7 @@ bool misc::Verilog_Delay(QString& td, const QString& Name)
 bool misc::Verilog_Time(QString& t, const QString& Name)
 {
   char *p;
-  double Time = strtod(t.latin1(), &p);
+  double Time = strtod(t.toLatin1(), &p);
   double factor = 1.0;
   while(*p == ' ') p++;
   for(;;) {
@@ -415,8 +415,8 @@ bool misc::Verilog_Time(QString& t, const QString& Name)
 // #########################################################################
 bool misc::checkVersion(QString& Line)
 {
-  QStringList sl = QStringList::split('.',PACKAGE_VERSION);
-  QStringList ll = QStringList::split('.',Line);
+  QStringList sl = QString(PACKAGE_VERSION).split('.');
+  QStringList ll = Line.split('.');
   if (ll.count() != 3 || sl.count() != 3)
     return false;
   int sv = (int)sl.at(1).toLongLong()*10000+sl.at(2).toLongLong()*100;
