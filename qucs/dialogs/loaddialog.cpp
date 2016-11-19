@@ -42,11 +42,10 @@
 #include "qucsdoc.h"
 #include "components/components.h"
 
-LoadDialog::LoadDialog( QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
-   : QDialog( parent, name, modal, fl )
+LoadDialog::LoadDialog( QWidget* parent )
+   : QDialog( parent )
 {
-   if ( !name )
-      setWindowTitle( tr( "Load Verilog-A symbols" ) );
+   setWindowTitle( tr( "Load Verilog-A symbols" ) );
    app = 0l;
 //   initDialog();
 }
@@ -208,7 +207,7 @@ void LoadDialog::slotSymbolFileClicked(QListWidgetItem* item)
 //  qDebug() << "slotSymbolFileClicked" << Name << vaBitmap;
 
   // check if icon exists, fall back to default
-  QString iconPath = QString(projDir.absFilePath(vaBitmap+".png"));
+  QString iconPath = QString(projDir.absoluteFilePath(vaBitmap+".png"));
   QFile iconFile(iconPath);
 
   if(iconFile.exists())

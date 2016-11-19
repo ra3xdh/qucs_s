@@ -54,7 +54,7 @@ public:
         Accept
     };
 
-    LoadDialog(QWidget* p = 0, const char* n = 0, bool modal = true, Qt::WFlags fl = 0 );
+    LoadDialog(QWidget* p = 0 );
     ~LoadDialog();
     void setApp(QucsApp *a);
     void initDialog();
