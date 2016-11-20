@@ -657,6 +657,10 @@ int main(int argc, char *argv[])
   QucsSettings.dx = w*3/4;
   QucsSettings.dy = h*3/4;
 
+  // default
+  QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
+  QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
+
   // load existing settings (if any)
   loadSettings();
 
@@ -695,8 +699,6 @@ int main(int argc, char *argv[])
   QucsSettings.DocDir =      QucsDir.canonicalPath() + "/share/qucs/docs/";
 
   QucsSettings.Editor = "qucs";
-  QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
-  QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
 
   /// \todo Make the setting up of all executables below more consistent
   var = getenv("QUCSATOR");
