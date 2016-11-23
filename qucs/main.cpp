@@ -700,7 +700,7 @@ int main(int argc, char *argv[])
 	  QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/qucs/library/";
   }
   QucsSettings.OctaveDir =   QucsDir.canonicalPath() + "/share/qucs/octave/";
-  QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/qucs/docs/examples/";
+  QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/qucs/examples/";
   QucsSettings.DocDir =      QucsDir.canonicalPath() + "/share/qucs/docs/";
 
   QucsSettings.Editor = "qucs";
