@@ -126,13 +126,12 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, Q3PtrList<Element> *pe)
   if(Line.left(16) != "<Qucs Schematic ")   // wrong file type ?
     return false;
 
-  QString s = PACKAGE_VERSION;
   Line = Line.mid(16, Line.length()-17);
   VersionTriplet DocVersion = VersionTriplet(Line);
   if (DocVersion > QucsVersion) { // wrong version number ?
     if (!QucsSettings.IgnoreFutureVersion) {
       QMessageBox::critical(0, QObject::tr("Error"),
-                            QObject::tr("Wrong document version: ")+Line);
+                            QObject::tr("Wrong document version: %1").arg(DocVersion.toString()));
       return false;
     }
   }
