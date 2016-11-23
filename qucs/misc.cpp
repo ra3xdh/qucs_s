@@ -327,7 +327,8 @@ bool misc::VHDL_Delay(QString& td, const QString& Name)
 bool misc::VHDL_Time(QString& t, const QString& Name)
 {
   char *p;
-  double Time = strtod(t.toLatin1(), &p);
+  QByteArray ba = t.toLatin1();
+  double Time = strtod(ba.data(), &p);
   while(*p == ' ') p++;
   for(;;) {
     if(Time >= 0.0) {
@@ -389,7 +390,8 @@ bool misc::Verilog_Delay(QString& td, const QString& Name)
 bool misc::Verilog_Time(QString& t, const QString& Name)
 {
   char *p;
-  double Time = strtod(t.toLatin1(), &p);
+  QByteArray ba = t.toLatin1();
+  double Time = strtod(ba.data(), &p);
   double factor = 1.0;
   while(*p == ' ') p++;
   for(;;) {
