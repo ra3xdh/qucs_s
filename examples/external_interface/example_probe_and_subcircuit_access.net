@@ -1,0 +1,28 @@
+# Qucs 0.0.18  /home/s0237326/Postgrad_Research/circuits/node_label_test.sch
+
+.Def:test_subckt _net0 _net2
+R:R1 _net0 _net1 R="10 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+VProbe:VProbeS1 _net0 _net1
+IProbe:IProbeS1 _net1 _net2
+.Def:End
+
+.Def:test_subsubckt _net0 _net2
+Sub:SUB1 _net0 _net1 Type="test_subckt"
+Sub:SUB2 _net2 _net3 Type="test_subckt"
+R:R1 _net3 _net1 R="50 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.Def:End
+
+Vdc:V1 test_label gnd U="1 V"
+R:R4 gnd _net0 R="50 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R1 test_label test_label_2 R="50 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R3 _net1 _net2 R="50 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+VProbe:VProbe1 _net2 _net1
+R:R5 _net1 test_label_2 R="50 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+IProbe:IProbe2 _net1 _net0
+IProbe:IProbe1 _net3 _net4
+R:R2 _net5 _net3 R="50 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+L:L1 test_label_2 _net5 L="1 nH" I=""
+C:C1 _net2 test_label_2 C="1 pF" V=""
+.TR:TR1 Type="lin" Start="0" Stop="1 ms" Points="11" IntegrationMethod="Trapezoidal" Order="2" InitialStep="1 ns" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1 pA" vntol="1 uV" Temp="26.85" LTEreltol="1e-3" LTEabstol="1e-6" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"
+.ETR:ETR1 IntegrationMethod="Trapezoidal" Order="2" InitialStep="1 ns" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1 pA" vntol="1 uV" Temp="26.85" LTEreltol="1e-3" LTEabstol="1e-6" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"
+Sub:SUB1 _net2 _net4 Type="test_subsubckt"
