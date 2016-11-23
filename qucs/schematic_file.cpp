@@ -126,12 +126,14 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, Q3PtrList<Element> *pe)
   if(Line.left(16) != "<Qucs Schematic ")   // wrong file type ?
     return false;
 
-  QString s = PACKAGE_VERSION;
   Line = Line.mid(16, Line.length()-17);
-  if(Line != s) {  // wrong version number ?
-    QMessageBox::critical(0, QObject::tr("Error"),
-                 QObject::tr("Wrong document version: ")+Line);
-    return false;
+  VersionTriplet DocVersion = VersionTriplet(Line);
+  if (DocVersion > QucsVersion) { // wrong version number ?
+    if (!QucsSettings.IgnoreFutureVersion) {
+      QMessageBox::critical(0, QObject::tr("Error"),
+                            QObject::tr("Wrong document version: %1").arg(DocVersion.toString()));
+      return false;
+    }
   }
 
   // read content in symbol edit mode *************************
@@ -865,23 +867,12 @@ bool Schematic::loadDocument()
   }
 
   Line = Line.mid(16, Line.length()-17);
-  if(!misc::checkVersion(Line)) { // wrong version number ?
-
-    QMessageBox::StandardButton result;
-    result = QMessageBox::warning(0,
-                                  QObject::tr("Warning"),
-                                  QObject::tr("Wrong document version \n"
-                                              "%1\n"
-                                              "Try to open it anyway?").arg(DocName),
-                                  QMessageBox::Yes|QMessageBox::No);
-
-    if (result==QMessageBox::No) {
-        file.close();
-        return false;
+  VersionTriplet DocVersion = VersionTriplet(Line);
+  if (DocVersion > QucsVersion) { // wrong version number ?
+    if (!QucsSettings.IgnoreFutureVersion) {
+      QMessageBox::critical(0, QObject::tr("Error"),
+                            QObject::tr("Wrong document version: %1").arg(DocVersion.toString()));
     }
-
-    //QMessageBox::critical(0, QObject::tr("Error"),
-        // QObject::tr("Wrong document version: ")+Line);
   }
 
   // read content *************************
@@ -1103,7 +1094,8 @@ int Schematic::testFile(const QString& DocName)
   }
 
   Line = Line.mid(16, Line.length()-17);
-  if(!misc::checkVersion(Line)) { // wrong version number ?
+  VersionTriplet DocVersion = VersionTriplet(Line);
+  if (DocVersion > QucsVersion) { // wrong version number ?
       if (!QucsSettings.IgnoreFutureVersion) {
           file.close();
           return -4;

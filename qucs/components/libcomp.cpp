@@ -102,8 +102,9 @@ int LibComp::loadSection(const QString& Name, QString& Section,
 
   int Start, End = Section.indexOf(' ', 14);
   if(End < 15) return -3;
-  QString Line = Section.mid(14, End-14);
-  if(!misc::checkVersion(Line)) // wrong version number ?
+  QString Line = Section.mid(14, End-14); // extract version string
+  VersionTriplet LibVersion = VersionTriplet(Line);
+  if (LibVersion > QucsVersion) // wrong version number ?
     return -3;
 
   if(Name == "Symbol") {

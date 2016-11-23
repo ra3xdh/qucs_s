@@ -128,13 +128,14 @@ ProjectView::refresh()
       APPEND_CHILD(5, columnData);
     }
     else if(extName == "sch") {
+      // test if it's a valid schematic file
       int n = Schematic::testFile(workPath.filePath(fileName));
       if(n >= 0) {
-        if(n > 0) {
+        if(n > 0) { // is a subcircuit
           columnData.append(new QStandardItem(QString::number(n)+tr("-port")));
         }
+        APPEND_CHILD(6, columnData);
       }
-      APPEND_CHILD(6, columnData);
     }
     else {
       APPEND_CHILD(7, columnData);

@@ -501,6 +501,8 @@ void QucsSettingsDialog::slotOK()
 
 // -----------------------------------------------------------
 // Applies any changed settings
+/// \todo simplify the conditionals involving `changed = true`
+///  if user hit apply, save settings and refresh everything
 void QucsSettingsDialog::slotApply()
 {
     bool changed = false;
@@ -619,7 +621,11 @@ void QucsSettingsDialog::slotApply()
     QucsSettings.AscoBinDir = ascoEdit->text();
     QucsSettings.OctaveExecutable = octaveEdit->text();
 
-    QucsSettings.IgnoreFutureVersion = checkLoadFromFutureVersions->isChecked();
+    if (QucsSettings.IgnoreFutureVersion != checkLoadFromFutureVersions->isChecked())
+    {
+      QucsSettings.IgnoreFutureVersion = checkLoadFromFutureVersions->isChecked();
+      changed = true;
+    }
 
     if (QucsSettings.GraphAntiAliasing != checkAntiAliasing->isChecked())
     {

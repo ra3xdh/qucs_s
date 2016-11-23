@@ -33,6 +33,7 @@
 
 class QucsApp;
 class Component;
+class VersionTriplet;
 
 static const double pi = 3.1415926535897932384626433832795029;  /* pi   */
 
@@ -85,6 +86,7 @@ extern tQucsSettings QucsSettings;  // extern because nearly everywhere used
 extern QucsApp *QucsMain;  // the Qucs application itself
 extern QString lastDir;    // to remember last directory for several dialogs
 extern QStringList qucsPathList;
+extern VersionTriplet QucsVersion;
 
 bool loadSettings();
 bool saveApplSettings();
