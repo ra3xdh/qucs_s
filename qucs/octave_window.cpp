@@ -158,7 +158,7 @@ void OctaveWindow::slotSendCommand()
   if(!input->text().trimmed().isEmpty())
     cmdHistory.append(input->text());
   //histIterator = cmdHistory.end();
-  histPosition++;
+  histPosition = cmdHistory.length();
   input->clear();
   qDebug() << cmdHistory << histPosition;
 }
@@ -180,8 +180,7 @@ bool OctaveWindow::eventFilter(QObject *obj, QEvent *event) {
             }
             else if(keyEvent->key() == Qt::Key_PageDown) {
                 //if(histIterator == cmdHistory.end())
-                if ((histPosition == cmdHistory.length()-1) ||
-                    cmdHistory.isEmpty())
+                if (histPosition >= cmdHistory.length()-1)
                     return false;
                 //histIterator++;
                 histPosition++;
