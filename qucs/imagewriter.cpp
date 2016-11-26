@@ -155,6 +155,16 @@ int ImageWriter::print(QWidget *doc)
 
   if (dlg->exec()) {
     QString filename = dlg->FileToSave();
+    if (QFile::exists(filename)) {
+        int r = QMessageBox::question(0, QObject::tr("Overwrite"),
+                                         QObject::tr("File \"%1\" already exists.\nOverwrite ?")
+                                         .arg(filename),
+                                         QMessageBox::Yes|QMessageBox::No);
+        if (r == QMessageBox::No) {
+            delete dlg;
+            return -1;
+        }
+    }
     lastExportFilename = filename;
 
     bool exportAll;
