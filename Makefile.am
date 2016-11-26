@@ -34,6 +34,7 @@ SUBDIRS = \
 	qucs-transcalc \
 	translations \
 	contrib \
+	examples \
 	$(RELEASEDIRS)
 
 EXTRA_DIST = ar-lib bootstrap depcomp PLATFORMS RELEASE Info.plist
