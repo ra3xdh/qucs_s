@@ -1,0 +1,175 @@
+/*
+      diodecap cm model.                    
+
+     7 March 2016    Mike Brinson
+
+    This file contains the XSPICE ifs specification for an experimental semiconductor 
+    diode model (based on the standard SPICE 2g6 and 3f5 implementation). 
+    This model is  used as a test bench for constructing compact 
+    device models with the Qucs-0.0.19-S automatic XSPICE CodeModel compiler 
+    system.
+     
+    This is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2, or (at your option)
+    any later version.
+*/
+NAME_TABLE:
+C_Function_Name:       cm_diodecap
+Spice_Model_Name:      diodecap
+Description:           "An experimental diode test model."
+
+PORT_TABLE:
+Port_Name:              diode    
+Description:           "Diode terminals" 
+Direction:              inout      
+Default_Type:           gd     
+Allowed_Types:         [gd] 
+Vector:                 no     
+Vector_Bounds:          -      
+Null_Allowed:           no     
+
+PARAMETER_TABLE:
+Parameter_Name:     is           
+Description:        "Saturation current." 
+Data_Type:          real            
+Default_Value:      1.0e-15         
+Limits:             -               
+Vector:              no             
+Vector_Bounds:       -              
+Null_Allowed:        no              
+
+PARAMETER_TABLE:
+Parameter_Name:     tnom
+Description:        "Diode parameter measurement temperature in Celsius."    
+Data_Type:          real 
+Default_Value:      26.85
+Limits:             -                   
+Vector:             no              
+Vector_Bounds:       -      
+Null_Allowed:       no
+
+PARAMETER_TABLE:
+Parameter_Name:     temp
+Description:        "Diode circuit temperature in Celsius."    
+Data_Type:          real 
+Default_Value:      26.85
+Limits:             -                   
+Vector:             no              
+Vector_Bounds:       -      
+Null_Allowed:       no
+
+PARAMETER_TABLE:
+Parameter_Name:     n   
+Description:        "Emmission coefficient."    
+Data_Type:          real  
+Default_Value:      1.0  
+Limits:             -   
+Vector:              no 
+Vector_Bounds:       - 
+Null_Allowed:       no 
+
+
+PARAMETER_TABLE:
+Parameter_Name:     eg   
+Description:        "Band gap at 300 Kelvin (Si)."    
+Data_Type:          real  
+Default_Value:      1.11  
+Limits:             -   
+Vector:              no 
+Vector_Bounds:       - 
+Null_Allowed:       no 
+
+
+PARAMETER_TABLE:
+Parameter_Name:     area
+Description:        "Diode  area coefficient."    
+Data_Type:          int
+Default_Value:      1
+Limits:             -                   
+Vector:             no              
+Vector_Bounds:       -      
+Null_Allowed:       no
+
+PARAMETER_TABLE:
+Parameter_Name:     xti
+Description:        "Saturation current temperature exponent."    
+Data_Type:          real
+Default_Value:      3.0
+Limits:             -                   
+Vector:             no              
+Vector_Bounds:       -      
+Null_Allowed:       no
+
+PARAMETER_TABLE:
+Parameter_Name:     cj0           
+Description:        "Zero bias capacitance." 
+Data_Type:          real            
+Default_Value:      1e-12         
+Limits:             -               
+Vector:              no             
+Vector_Bounds:       -              
+Null_Allowed:        no         
+
+
+PARAMETER_TABLE:
+Parameter_Name:      vj
+Description:        "Junction potential." 
+Data_Type:          real 
+Default_Value:      1.0 
+Limits:             - 
+Vector:              no 
+Vector_Bounds:       - 
+Null_Allowed:       no 
+
+PARAMETER_TABLE:
+Parameter_Name:     m
+Description:        "Grading coefficient." 
+Data_Type:          real
+Default_Value:      0.5
+Limits:             - 
+Vector:              no 
+Vector_Bounds:       - 
+Null_Allowed:       no 
+
+PARAMETER_TABLE:
+Parameter_Name:     fc 
+Description:        "Coefficient for forward-bias depletion capacitance formula." 
+Data_Type:          real 
+Default_Value:      0.5 
+Limits:             - 
+Vector:              no 
+Vector_Bounds:       -  
+Null_Allowed:        no 
+
+PARAMETER_TABLE:
+Parameter_Name:     tt 
+Description:        "Transit time." 
+Data_Type:          real 
+Default_Value:       1e-10 
+Limits:             - 
+Vector:              no 
+Vector_Bounds:       -  
+Null_Allowed:        no 
+
+PARAMETER_TABLE:
+Parameter_Name:     bv 
+Description:        "Breakdown voltage." 
+Data_Type:          real 
+Default_Value:       100.0 
+Limits:             - 
+Vector:              no 
+Vector_Bounds:       -  
+Null_Allowed:        no 
+
+PARAMETER_TABLE:
+Parameter_Name:     ibv 
+Description:        "Current at breakdown voltage." 
+Data_Type:          real 
+Default_Value:       1.0e-3
+Limits:             - 
+Vector:              no 
+Vector_Bounds:       -  
+Null_Allowed:        no 
+
+
