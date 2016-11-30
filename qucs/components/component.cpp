@@ -712,11 +712,14 @@ QString Component::getSpiceNetlist(bool isXyce)
 
     // Component is shortened.
     int z=0;
-
-    QString Node1 = Ports.first()->Connection->Name;
-    foreach(Port *pp, Ports)
+    QListIterator<Port *> iport(Ports);
+    Port *pp = iport.next();
+    QString Node1 = pp->Connection->Name;
+    s = "";
+    while (iport.hasNext())
       s += "R"+Name  + QString::number(z++) + " " +
-           Node1 + " " + pp->Connection->Name + " 0";
+              Node1 + " " + iport.next()->Connection->Name + " 0\n";
+
     s.replace(" gnd "," 0 ");
     return s;
 }
