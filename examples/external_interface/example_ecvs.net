@@ -1,0 +1,6 @@
+# Qucs 0.0.18  /home/s0237326/Postgrad_Research/circuits/test_ecvs.sch
+
+IProbe:Pr1 _net0 gnd
+ECVS:ECVS1 _net1 gnd U="1 V"
+.ETR:ETR1 IntegrationMethod="Trapezoidal" Order="2" InitialStep="1 ns" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1 pA" vntol="1 uV" Temp="26.85" LTEreltol="1e-3" LTEabstol="1e-6" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"
+R:R1 _net1 _net0 R="1 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"

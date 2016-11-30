@@ -48,6 +48,7 @@ struct tQucsSettings {
 
 extern tQucsSettings QucsSettings;
 extern QDir UserLibDir;
+extern QDir SysLibDir;
 
 class QucsLib : public QMainWindow  {
    Q_OBJECT
@@ -56,9 +57,7 @@ public:
   ~QucsLib();
 
   QListWidget *CompList;
-  QStringList   LibraryComps;
   QComboBox    *Library;
-  QString DefaultSymbol;
 
 private slots:
   void slotAbout();

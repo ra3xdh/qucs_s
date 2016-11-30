@@ -164,7 +164,8 @@ int Subcircuit::loadSymbol(const QString& DocName)
     return -3;
 
   Line = Line.mid(16, Line.length()-17);
-  if(!misc::checkVersion(Line)) // wrong version number ?
+  VersionTriplet SymbolVersion = VersionTriplet(Line);
+  if (SymbolVersion > QucsVersion) // wrong version number ?
     return -4;
 
   // read content *************************

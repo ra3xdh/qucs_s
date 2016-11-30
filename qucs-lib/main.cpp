@@ -35,6 +35,7 @@
 
 tQucsSettings QucsSettings;
 QDir UserLibDir;
+QDir SysLibDir;
 
 
 // #########################################################################
@@ -118,6 +119,7 @@ int main(int argc, char *argv[])
 
   loadSettings();
 
+  SysLibDir.setPath(QucsSettings.LibDir);
   UserLibDir.setPath(QucsSettings.QucsHomeDir.canonicalPath() + "/user_lib/");
 
   a.setFont(QucsSettings.font);

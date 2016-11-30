@@ -433,12 +433,15 @@ void QucsApp::fillLibrariesTreeView ()
         LibFiles.removeAll(ss);
     }
 
-    // create top level library itmes, base on the library names
+    // create top level library items, base on the library names
     for(it = LibFiles.begin(); it != LibFiles.end(); it++)
     {
+        QString libPath(*it);
+        libPath.chop(4); // remove extension
+
         ComponentLibrary parsedlibrary;
 
-        int result = parseComponentLibrary (QucsSettings.LibDir + *it , parsedlibrary);
+        int result = parseComponentLibrary (libPath , parsedlibrary);
         QStringList nameAndFileName;
         nameAndFileName.append (parsedlibrary.name);
         nameAndFileName.append (QucsSettings.LibDir + *it);
@@ -448,8 +451,11 @@ void QucsApp::fillLibrariesTreeView ()
         switch (result)
         {
             case QUCS_COMP_LIB_IO_ERROR:
-                QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (*it));
+            {
+                QString filename = getLibAbsPath(libPath);
+                QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (filename));
                 return;
+            }
             case QUCS_COMP_LIB_CORRUPT:
                 QMessageBox::critical(0, tr("Error"), tr("Library is corrupt."));
                 return;
@@ -490,81 +496,73 @@ void QucsApp::fillLibrariesTreeView ()
 
     QDir UserLibDir = QDir (QucsSettings.QucsHomeDir.canonicalPath () + "/user_lib/");
 
-    // if there are user libraries, add them too
-    if(UserLibDir.exists ())
+    LibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+    QDir UsrLibDir(UserLibDir);
+    LibFiles = UsrLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
+    blacklist = getBlacklistedLibraries(QucsSettings.LibDir);
+    foreach(QString ss, blacklist) { // exclude blacklisted files
+        LibFiles.removeAll(ss);
+    }
+    int UserLibCount = LibFiles.count();
+
+    if (UserLibCount > 0) // there are user libraries
     {
-        //LibFiles = UserLibDir.entryList("*.lib", QDir::Files, QDir::Name);
-        LibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
-        QDir LibDir(UserLibDir);
-        LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
-        QStringList blacklist = getBlacklistedLibraries(QucsSettings.LibDir);
-        foreach(QString ss, blacklist) { // exclude blacklisted files
-            LibFiles.removeAll(ss);
-        }
 
-        int UserLibCount = LibFiles.count();
-
-        if (UserLibCount > 0)
+        // create top level library itmes, base on the library names
+        for(it = LibFiles.begin(); it != LibFiles.end(); it++)
         {
+            QString libPath(UserLibDir.absoluteFilePath(*it));
+            libPath.chop(4); // remove extension
 
-            // create top level library itmes, base on the library names
-            for(it = LibFiles.begin(); it != LibFiles.end(); it++)
+            ComponentLibrary parsedlibrary;
+
+            int result = parseComponentLibrary (libPath, parsedlibrary);
+            QStringList nameAndFileName;
+            nameAndFileName.append (parsedlibrary.name);
+            nameAndFileName.append (UserLibDir.absolutePath() +"/"+ *it);
+
+            QTreeWidgetItem* newlibitem = new QTreeWidgetItem((QTreeWidget*)0, nameAndFileName);
+
+            switch (result)
             {
-                ComponentLibrary parsedlibrary;
-
-                int result = parseComponentLibrary (UserLibDir.absolutePath() +"/"+ *it , parsedlibrary);
-                QStringList nameAndFileName;
-                nameAndFileName.append (parsedlibrary.name);
-                nameAndFileName.append (UserLibDir.absolutePath() +"/"+ *it);
-
-                QTreeWidgetItem* newlibitem = new QTreeWidgetItem((QTreeWidget*)0, nameAndFileName);
-
-                switch (result)
+                case QUCS_COMP_LIB_IO_ERROR:
                 {
-                    case QUCS_COMP_LIB_IO_ERROR:
-                        QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (UserLibDir.absolutePath()+"/" +*it));
-                        return;
-                    case QUCS_COMP_LIB_CORRUPT:
-                        QMessageBox::critical(0, tr("Error"), tr("Library is corrupt."));
-                        return;
-                    default:
-                        break;
+                    QString filename = getLibAbsPath(libPath);
+                    QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (filename));
+                    return;
                 }
-
-                for (int i = 0; i < parsedlibrary.components.count (); i++)
-                {
-                    QStringList compNameAndDefinition;
-
-                    compNameAndDefinition.append (parsedlibrary.components[i].name);
-
-                    QString s = "<Qucs Schematic " PACKAGE_VERSION ">\n";
-
-                    s +=  "<Components>\n  " +
-                          parsedlibrary.components[i].modelString + "\n" +
-                          "</Components>\n";
-
-                    compNameAndDefinition.append (s);
-
-
-                    QTreeWidgetItem* newcompitem = new QTreeWidgetItem(newlibitem, compNameAndDefinition);
-
-                    // Silence warning from the compiler about unused variable newcompitem
-                    // we pass the pointer to the parent item in the constructor
-                    Q_UNUSED( newcompitem )
-                }
-
-                topitems.append (newlibitem);
+                case QUCS_COMP_LIB_CORRUPT:
+                    QMessageBox::critical(0, tr("Error"), tr("Library is corrupt."));
+                    return;
+                default:
+                    break;
             }
-            libTreeWidget->insertTopLevelItems(0, topitems);
+
+            for (int i = 0; i < parsedlibrary.components.count (); i++)
+            {
+                QStringList compNameAndDefinition;
+
+                compNameAndDefinition.append (parsedlibrary.components[i].name);
+
+                QString s = "<Qucs Schematic " PACKAGE_VERSION ">\n";
+
+                s +=  "<Components>\n  " +
+                      parsedlibrary.components[i].modelString + "\n" +
+                      "</Components>\n";
+
+                compNameAndDefinition.append (s);
+
+
+                QTreeWidgetItem* newcompitem = new QTreeWidgetItem(newlibitem, compNameAndDefinition);
+
+                // Silence warning from the compiler about unused variable newcompitem
+                // we pass the pointer to the parent item in the constructor
+                Q_UNUSED( newcompitem )
+            }
+
+            topitems.append (newlibitem);
         }
-        else
-        {
-            // make the user libraries section header
-            newitem = new QTreeWidgetItem((QTreeWidget*)0, QStringList("No User Libraries"));
-            sectionFont.setBold (false);
-            newitem->setFont (0, sectionFont);
-            topitems.append (newitem);
-        }
+        libTreeWidget->insertTopLevelItems(0, topitems);
     }
     else
     {
@@ -919,13 +917,17 @@ void QucsApp::slotSelectComponent(QListWidgetItem *item)
       view->selElem = (*InfosVA) (CompName, CompFile_qstr, true, filename);
     }
   }
-  if (Infos || InfosVA) {
-    // change currently selected category, so the user will
-    //   see where the component comes from
-    CompChoose->setCurrentIndex(iconCompInfo.catIdx+1); // +1 due to the added "Search Results" item
-    ccCurIdx = iconCompInfo.catIdx; // remember the category to select when exiting search
-    //!! comment out the above two lines if you would like that the search
-    //!!   returns back to the last selected category instead
+
+  // in "search mode" ?
+  if (CompChoose->itemText(0) == tr("Search results")) {
+    if (Infos || InfosVA) {
+      // change currently selected category, so the user will
+      //   see where the component comes from
+      CompChoose->setCurrentIndex(iconCompInfo.catIdx+1); // +1 due to the added "Search Results" item
+      ccCurIdx = iconCompInfo.catIdx; // remember the category to select when exiting search
+      //!! comment out the above two lines if you would like that the search
+      //!!   returns back to the last selected category instead
+    }
   }
 }
 
@@ -1748,29 +1750,29 @@ bool QucsApp::closeAllFiles()
 void QucsApp::slotFileExamples()
 {
   statusBar()->showMessage(tr("Open examples directory..."));
-  QString path = QDir::toNativeSeparators(QucsSettings.ExamplesDir);
-  QDesktopServices::openUrl(QUrl("file:///" + path.replace("\\","/")));
+  // pass the QUrl representation of a local file
+  QDesktopServices::openUrl(QUrl::fromLocalFile(QucsSettings.ExamplesDir));
   statusBar()->showMessage(tr("Ready."));
 }
 
 void QucsApp::slotHelpTutorial()
 {
-  QString path = QDir::toNativeSeparators(QucsSettings.DocDir);
-  QUrl url = QUrl("file:///" + path.replace("\\","/") + "tutorial/" + QObject::sender()->objectName());
+  // pass the QUrl representation of a local file
+  QUrl url = QUrl::fromLocalFile(QDir::cleanPath(QucsSettings.DocDir + "/tutorial/" + QObject::sender()->objectName()));
   QDesktopServices::openUrl(url);
 }
 
 void QucsApp::slotHelpTechnical()
 {
-  QString path = QDir::toNativeSeparators(QucsSettings.DocDir);
-  QUrl url = QUrl("file:///" + path.replace("\\","/") + "technical/" + QObject::sender()->objectName());
+  // pass the QUrl representation of a local file
+  QUrl url = QUrl::fromLocalFile(QDir::cleanPath(QucsSettings.DocDir + "/technical/" + QObject::sender()->objectName()));
   QDesktopServices::openUrl(url);
 }
 
 void QucsApp::slotHelpReport()
 {
-  QString path = QDir::toNativeSeparators(QucsSettings.DocDir);
-  QUrl url = QUrl("file:///" + path.replace("\\","/") + "report/" + QObject::sender()->objectName());
+  // pass the QUrl representation of a local file
+  QUrl url = QUrl::fromLocalFile(QDir::cleanPath(QucsSettings.DocDir + "/report/" + QObject::sender()->objectName()));
   QDesktopServices::openUrl(url);
 }
 

@@ -74,14 +74,16 @@ QString SymbolWidget::theModel()
 {
   // single component line
   if(!ModelString.isEmpty())
-    if(ModelString.count('\n') < 2)
+    if((ModelString.count('\n') < 2)||
+       (ModelString.startsWith("<SpiceModel "))||
+       (ModelString.startsWith("<SpLib ")))
       return ModelString.remove('\n');
 
   // real library component
   return "<Lib " + Prefix + " 1 0 0 " +
          QString::number(Text_x) + " " +
          QString::number(Text_y) + " 0 0 \"" +
-         LibraryName + "\" 0 \"" + ComponentName + "\" 0>";
+         LibraryPath + "\" 0 \"" + ComponentName + "\" 0>";
 }
 
 // ************************************************************
@@ -156,19 +158,19 @@ void SymbolWidget::paintEvent(QPaintEvent*)
 }
 
 /*!
- * \brief Creates a symbol from the model name of a component.
+ * \brief Creates a symbol from the model name of a standard component.
  * \param Lib_
  * \param Comp_
  * \return number of symbol ports
  */
-int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
+int SymbolWidget::createStandardSymbol(const QString& Lib_, const QString& Comp_)
 {
   Arcs.clear();
   Lines.clear();
   Rects.clear();
   Ellips.clear();
   Texts.clear();
-  LibraryName = Lib_;
+  LibraryPath = Lib_;
   ComponentName = Comp_;
 
   Warning.clear();
@@ -353,6 +355,8 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
 
 /*!
  * \brief Loads the symbol for the component from the symbol field
+ *        or create a default symbol for a standard component
+ *        or use the library default symbol if the component does not define one
  * \param SymbolString
  * \param Lib_
  * \param Comp_
@@ -361,21 +365,25 @@ int SymbolWidget::createSymbol(const QString& Lib_, const QString& Comp_)
 int SymbolWidget::setSymbol( QString& SymbolString,
                             const QString& Lib_, const QString& Comp_)
 {
+  Warning.clear(); // clear any message possibly previously set by createStandardSymbol()
+
+  if(ModelString.count('\n') < 2) // single-line model: is a standard component
+      return createStandardSymbol(Lib_, Comp_);  // build symbol from component type
+
   if (SymbolString.isEmpty())//Whenever SymbolString is empty, it tries to load the default symbol
   {
       //Load the default symbol for the current Qucs library
       ComponentLibrary parsedlib;
-      QString libpath;
-      QString libfile = Lib_ + ".lib";
-      if (QFile::exists(libfile)) libpath = libfile; // User libraries, absolute path
-      else libpath = QucsSettings.LibDir + libfile; // System libraries, relative path
-      int result = parseComponentLibrary (libpath, parsedlib);
+      int result = parseComponentLibrary (Lib_, parsedlib, QUCS_COMP_LIB_HEADER_ONLY); // need just the default symbol
 
       switch (result)//Check if the library was properly loaded
       {
         case QUCS_COMP_LIB_IO_ERROR:
-            QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (libpath));
+        {
+            QString filename = getLibAbsPath(Lib_);
+            QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (filename));
             return -1;
+        }
         case QUCS_COMP_LIB_CORRUPT:
             QMessageBox::critical(0, tr("Error"), tr("Library is corrupt."));
             return -1;
@@ -387,12 +395,14 @@ int SymbolWidget::setSymbol( QString& SymbolString,
     SymbolString = parsedlib.defaultSymbol;
   }
 
+  if (SymbolString.isEmpty()) return -1; // should not happen...
+
   Arcs.clear();
   Lines.clear();
   Rects.clear();
   Ellips.clear();
   Texts.clear();
-  LibraryName = Lib_;
+  LibraryPath = Lib_;
   ComponentName = Comp_;
 
   QString Line;

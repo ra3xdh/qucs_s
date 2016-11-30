@@ -16,7 +16,7 @@
  ***************************************************************************/
 #include <QLabel>
 #include <QLineEdit>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 #include <QGroupBox>
 #include <QComboBox>
 #include <QFileDialog>
@@ -71,9 +71,8 @@ ImportDialog::ImportDialog(QWidget *parent)
   QGroupBox *Group1 = new QGroupBox(tr("Messages"));
   
   QVBoxLayout *vMess = new QVBoxLayout();
-  MsgText = new QTextEdit();
+  MsgText = new QPlainTextEdit();
   vMess->addWidget(MsgText);
-  MsgText->setTextFormat(Qt::PlainText);
   MsgText->setReadOnly(true);
   MsgText->setWordWrapMode(QTextOption::NoWrap);
   MsgText->setMinimumSize(250, 60);
@@ -108,6 +107,7 @@ ImportDialog::~ImportDialog()
 void ImportDialog::slotBrowse()
 {
   QString s = QFileDialog::getOpenFileName(
+     this, tr("Enter a Data File Name"),
      lastDir.isEmpty() ? QString(".") : lastDir,
      tr("All known")+
      " (*.s?p *.csv *.citi *.cit *.asc *.mdl *.vcd *.dat *.cir);;"+
@@ -119,36 +119,35 @@ void ImportDialog::slotBrowse()
      tr("VCD files")+" (*.vcd);;"+
      tr("Qucs dataset files")+" (*.dat);;"+
      tr("SPICE files")+" (*.cir);;"+
-     tr("Any file")+" (*)",
-     this, 0, tr("Enter a Data File Name"));
+     tr("Any file")+" (*)");
 
   if(!s.isEmpty()) {
     QFileInfo Info(s);
-    lastDir = Info.dirPath(true);  // remember last directory
+    lastDir = Info.absolutePath();  // remember last directory
     ImportEdit->setText(s);
 
     if(OutputEdit->text().isEmpty()) {
-      switch(OutType->currentItem()) {
+      switch(OutType->currentIndex()) {
       case 0:
-	OutputEdit->setText(Info.baseName()+".dat");
+	OutputEdit->setText(Info.completeBaseName()+".dat");
 	break;
       case 1:
-	OutputEdit->setText(Info.baseName()+".snp");
+	OutputEdit->setText(Info.completeBaseName()+".snp");
 	break;
       case 2:
-	OutputEdit->setText(Info.baseName()+".csv");
+	OutputEdit->setText(Info.completeBaseName()+".csv");
 	break;
       case 3:
-	OutputEdit->setText(Info.baseName()+".lib");
+	OutputEdit->setText(Info.completeBaseName()+".lib");
 	break;
       case 4:
-	OutputEdit->setText(Info.baseName()+".txt");
+	OutputEdit->setText(Info.completeBaseName()+".txt");
 	break;
       case 5:
-	OutputEdit->setText(Info.baseName()+".mat");
+	OutputEdit->setText(Info.completeBaseName()+".mat");
 	break;
       default:
-	OutputEdit->setText(Info.baseName()+".dat");
+	OutputEdit->setText(Info.completeBaseName()+".dat");
 	break;
       }
     }
@@ -177,7 +176,7 @@ void ImportDialog::slotImport()
       }
 
   QFileInfo Info(ImportEdit->text());
-  QString Suffix = Info.extension();
+  QString Suffix = Info.suffix();
   QString Program;
   QStringList CommandLine;
 
@@ -207,12 +206,12 @@ void ImportDialog::slotImport()
             break;
           }
 
-    MsgText->append(tr("ERROR: Unknown file format! Please check file name extension!"));
+    MsgText->appendPlainText(tr("ERROR: Unknown file format! Please check file name extension!"));
     return;
   }
 
   CommandLine << "-of";
-  switch(OutType->currentItem()) {
+  switch(OutType->currentIndex()) {
   case 0:
     CommandLine << "qucsdata";
     break;
@@ -250,15 +249,15 @@ void ImportDialog::slotImport()
   connect(&Process, SIGNAL(readyReadStandardOutput()), SLOT(slotDisplayMsg()));
   connect(&Process, SIGNAL(finished(int)), SLOT(slotProcessEnded(int)));
 
-  MsgText->append(tr("Running command line:")+"\n");
-  MsgText->append(Program + CommandLine.join(" "));
-  MsgText->append("\n");
+  MsgText->appendPlainText(tr("Running command line:")+"\n");
+  MsgText->appendPlainText(Program + CommandLine.join(" "));
+  MsgText->appendPlainText("\n");
 
   qDebug() << "Command:" << Program << CommandLine.join(" ");
   Process.start(Program, CommandLine);
   
   if(!Process.Running)
-    MsgText->append(tr("ERROR: Cannot start converter!"));
+    MsgText->appendPlainText(tr("ERROR: Cannot start converter!"));
 }
 
 // ------------------------------------------------------------------------
@@ -296,14 +295,14 @@ void ImportDialog::slotAbort()
 // Is called when the process sends an output to stdout.
 void ImportDialog::slotDisplayMsg()
 {
-  MsgText->append(QString(Process.readAllStandardOutput()));
+  MsgText->appendPlainText(QString(Process.readAllStandardOutput()));
 }
 
 // ------------------------------------------------------------------------
 // Is called when the process sends an output to stderr.
 void ImportDialog::slotDisplayErr()
 {
-  MsgText->append(QString(Process.readAllStandardError()));
+  MsgText->appendPlainText(QString(Process.readAllStandardError()));
 }
 
 // ------------------------------------------------------------------------
@@ -314,11 +313,11 @@ void ImportDialog::slotProcessEnded(int status)
   AbortButt->setDisabled(true);
 
   if(status == 0) {    
-    MsgText->append(tr("Successfully converted file!"));
+    MsgText->appendPlainText(tr("Successfully converted file!"));
 
     disconnect(CancelButt, SIGNAL(clicked()), 0, 0);
     connect(CancelButt, SIGNAL(clicked()), SLOT(accept()));
   }
   else
-    MsgText->append(tr("Converter ended with errors!"));
+    MsgText->appendPlainText(tr("Converter ended with errors!"));
 }

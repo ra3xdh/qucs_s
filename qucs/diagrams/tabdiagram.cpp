@@ -46,8 +46,13 @@ TabDiagram::~TabDiagram()
 {
 }
 
-// ------------------------------------------------------------
 void TabDiagram::paint(ViewPainter *p)
+{
+    paintDiagram(p);
+}
+
+// ------------------------------------------------------------
+void TabDiagram::paintDiagram(ViewPainter *p)
 {
   // paint all lines
   foreach(Line *pl, Lines) {

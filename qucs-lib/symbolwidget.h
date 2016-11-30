@@ -47,17 +47,18 @@ public:
 
   QString theModel();
   int setSymbol( QString&, const QString&, const QString&);
-  int createSymbol(const QString&, const QString&);
 
   // component properties
   int Text_x, Text_y;
-  QString Prefix, LibraryName, ComponentName;
+  QString Prefix, LibraryPath, ComponentName;
   QString ModelString, VerilogModelString, VHDLModelString;
 
 protected:
   void mouseMoveEvent(QMouseEvent*);
 
 private:
+  int createStandardSymbol(const QString&, const QString&);
+
   void  paintEvent(QPaintEvent*);
 
   int  analyseLine(const QString&);
