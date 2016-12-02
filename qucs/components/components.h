@@ -18,6 +18,8 @@
 #ifndef COMPONENTS_H
 #define COMPONENTS_H
 
+#include "config.h"
+
 // This header file includes the header files of all components.
 
 #include "component.h"
@@ -187,5 +189,21 @@
 // Verilog-A dynamicaly loaded component
 #include "vacomponent.h"
 
+#ifdef WITH_SPICE
+#include "bsim3v34nMOS.h"
+#include "bsim3v34pMOS.h"
+#include "bsim4v30nMOS.h"
+#include "bsim4v30pMOS.h"
+#include "hic0_full.h"
+#include "hic2_full.h"
+#include "hicumL0V1p2.h"
+#include "hicumL0V1p2g.h"
+#include "hicumL0V1p3.h"
+#include "hicumL2V2p1.h"
+#include "hicumL2V2p23.h"
+#include "hicumL2V2p24.h"
+#include "hicumL2V2p31n.h"
+#include "HBT_X.h"
+#endif
 
 #endif

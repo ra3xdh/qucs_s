@@ -58,6 +58,25 @@ vacomponent.cpp
 mutualx.cpp
 )
 
+IF(WITH_SPICE)
+SET(COMPONENTS_SRCS ${COMPONENTS_SRCS}
+bsim3v34nMOS.cpp
+bsim3v34pMOS.cpp
+bsim4v30nMOS.cpp
+bsim4v30pMOS.cpp
+hic0_full.cpp
+hic2_full.cpp
+hicumL0V1p2.cpp
+hicumL0V1p2g.cpp
+hicumL0V1p3.cpp
+hicumL2V2p1.cpp
+hicumL2V2p23.cpp
+hicumL2V2p24.cpp
+hicumL2V2p31n.cpp
+HBT_X.cpp
+)
+ENDIF()
+
 SET(COMPONENTS_HDRS
 ac_sim.h
 am_modulator.h
@@ -222,6 +241,25 @@ vprobe.h
 vpulse.h
 vrect.h
 )
+
+IF(WITH_SPICE)
+SET(COMPONENTS_HDRS ${COMPONENTS_HDRS}
+bsim3v34nMOS.h
+bsim3v34pMOS.h
+bsim4v30nMOS.h
+bsim4v30pMOS.h
+hic0_full.h
+hic2_full.h
+hicumL0V1p2.h
+hicumL0V1p2g.h
+hicumL0V1p3.h
+hicumL2V2p1.h
+hicumL2V2p23.h
+hicumL2V2p24.h
+hicumL2V2p31n.h
+HBT_X.h
+)
+ENDIF()
 
 
 SET(COMPONENTS_MOC_HDRS
