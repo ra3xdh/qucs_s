@@ -45,7 +45,7 @@ set CXXFLAGS=-O2 -I"%FREEHDL%/include"
 set LDFLAGS=-L"%FREEHDL%/lib" -L"%FREEHDL%/lib/freehdl" -Wl,--enable-auto-import -s
 set LIBS=-lfreehdl-kernel -lfreehdl-std -lieee -lregex
 
-set PATH=%PATH%;%FREEHDL%/bin;%MINGWDIR%/bin;%QUCSDIR%/bin
+set PATH=%PATH%;%FREEHDL%/bin
 
 echo running C++ conversion...
 freehdl-v2cc -m %NAME%._main_.cc -L"%FREEHDL%/share/freehdl/lib" -Lvhdl -o %NAME%.cc %NAME%.vhdl
