@@ -39,8 +39,6 @@ if not exist %NAME% goto nofile
 copy %NAME% digi.v > NUL
 set NAME=digi
 
-set PATH=%PATH%;%QUCSDIR%/bin
-
 echo running VerilogHDL conversion...
 iverilog -o%NAME%.bin -sTestBench %NAME%.v
 
