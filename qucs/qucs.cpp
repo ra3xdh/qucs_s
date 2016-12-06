@@ -660,11 +660,11 @@ void QucsApp::slotSetCompView (int index)
   // make sure the right index is selected
   //  (might have been called by a cleared search and not by user action)
   CompChoose->setCurrentIndex(index);
-  int catIdx = index;
   int compIdx;
   iconCompInfoStruct iconCompInfo;
   QVariant v;
   QString item = CompChoose->itemText (index);
+  int catIdx = Category::getModulesNr(item);
 
   Comps = Category::getModules(item);
   QString Name;
@@ -2509,6 +2509,9 @@ void QucsApp::switchEditMode(bool SchematicMode)
   setMarker->setEnabled(SchematicMode);
   selectMarker->setEnabled(SchematicMode);
   simulate->setEnabled(SchematicMode);
+  // no search in "symbol painting mode" as only paintings should be used
+  CompSearch->setEnabled(SchematicMode);
+  CompSearchClear->setEnabled(SchematicMode);
 }
 
 // ---------------------------------------------------------
