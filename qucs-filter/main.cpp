@@ -85,7 +85,11 @@ int main(int argc, char *argv[])
   QucsSettings.font = QFont("Helvetica", 12);
 
   // is application relocated?
-  char * var = getenv ("QUCSDIR");
+#ifdef WITH_SPICE
+  char *var = NULL; // Don't use QUCSDIR with Qucs-S
+#else
+  char* var = getenv("QUCSDIR");
+#endif
   QDir QucsDir;
   if (var != NULL) {
     QucsDir = QDir (var);
