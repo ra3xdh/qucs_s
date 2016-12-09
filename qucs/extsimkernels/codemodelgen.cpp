@@ -202,6 +202,28 @@ bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Compone
         }
     }
 
+    for(Component *pc=sch->DocComps.first();pc!=0;pc=sch->DocComps.next()) {
+        if(pc->Model=="Eqn") {
+            int Np = pc->Props.count();
+            for(int i=0;i<Np-1;i++) {
+                Property *pp = pc->Props.at(i);
+                QString nam = pp->Name;
+                if(pars.contains(nam)) {
+                    pars.remove(nam);
+                    QStringList tokens;
+                    spicecompat::splitEqn(pp->Value,tokens);
+                    foreach(QString tok,tokens) {
+                        bool isNum = true;
+                        tok.toFloat(&isNum);
+                        if ((!isGinacFunc(tok))&&(!isNum))
+                            if(!pars.contains(tok)) pars.append(tok);
+                    }
+                    pp = pc->Props.prev();
+                }
+            }
+        }
+    }
+
     // Form parameter table
     foreach(QString par,pars) {
         stream<<"PARAMETER_TABLE:\n";
@@ -419,7 +441,8 @@ bool CodeModelGen::isGinacFunc(QString &funcname)
           <<"sinh"<<"cosh"<<"tanh"
           <<"asinh"<<"acosh"<<"atanh"
           <<"exp"<<"log"<<"u"
-          <<"="<<"("<<")"<<"*"<<"/"<<"+"<<"-"<<"^"<<"<"<<">"<<":"<<"?";
+          <<"="<<"("<<")"<<"*"<<"/"<<"+"<<"-"<<"^"<<"<"<<">"<<":"<<"?"
+          <<"kB"<<"q";
     return f_list.contains(funcname);
 
 }
