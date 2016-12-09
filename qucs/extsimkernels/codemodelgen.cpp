@@ -281,7 +281,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     stream<<QString("void cm_%1(ARGS)\n").arg(base);
     stream<<"{\n";
 
-    QStringList pars,Ieqns,Qeqns,inputs;
+    QStringList pars,init_pars,Ieqns,Qeqns,InitEqns,inputs;
     foreach(QString port,ports) {
         QString Ieqn,Qeqn;
         for(int i=0;i<Nbranch;i++) {
@@ -311,6 +311,35 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
             if ((isInput)&&(!inputs.contains(tok))) inputs.append(tok);
             if ((!isGinacFunc(tok))&&(!isNum)&&(!isInput))
                 if(!pars.contains(tok)) pars.append(tok);
+        }
+    }
+
+    for(Component *pc=sch->DocComps.first();pc!=0;pc=sch->DocComps.next()) {
+        if(pc->Model=="Eqn") {
+            int Np = pc->Props.count();
+            for(int i=0;i<Np-1;i++) {
+                Property *pp = pc->Props.at(i);
+                QString nam = pp->Name;
+                if(pars.contains(nam)) {
+                    pars.remove(nam);
+                    if(!init_pars.contains(nam))
+                        init_pars.append(nam);
+                    QStringList tokens;
+                    QString InitEqn = pp->Value;
+                    normalize_functions(InitEqn);
+                    QString res;
+                    GinacConvToC(InitEqn,res);
+                    InitEqn = res;
+                    InitEqns.append(InitEqn);
+                    spicecompat::splitEqn(InitEqn,tokens);
+                    foreach(QString tok,tokens) {
+                        bool isNum = true;
+                        tok.toFloat(&isNum);
+                        if ((!isGinacFunc(tok))&&(!isNum))
+                            if(!pars.contains(tok)) pars.append(tok);
+                    }
+                }
+            }
         }
     }
 
@@ -345,6 +374,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     acg.remove(0,2); // remove leading comma
     stream<<"\tComplex_t " + acg + ";\n";
     stream<<"\tstatic double "+pars.join(",")+";\n";
+    stream<<"\tstatic double "+init_pars.join(",")+";\n";
     stream<<"\tstatic double "+inputs.join(",")+","+inputs_old.join(",")+";\n";
     QString Qvars;
     for (int i=0;i<ports.count();i++) {
@@ -357,6 +387,13 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     stream<<"\tif(INIT) {\n";
     foreach (QString par, pars) {
         stream<<"\t\t"+ par + " = PARAM(" + par.toLower() + ");\n";
+    }
+    auto it_ip=init_pars.begin();
+    auto it_ie=InitEqns.begin();
+    while(it_ip!=init_pars.end()) {
+        stream<<QString("\t\t%1=%2;\n").arg(*it_ip).arg(*it_ie);
+        it_ip++;
+        it_ie++;
     }
     stream<<"\t}\n";
 
