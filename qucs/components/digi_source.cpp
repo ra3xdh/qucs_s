@@ -110,7 +110,7 @@ QString Digi_Source::vhdlCode(int NumPorts)
   int z = 0;
   char State;
   if(NumPorts <= 0) {  // time table simulation ?
-    if(Props.at(0)->Value == "low")
+    if(Props.at(1)->Value == "low")
       State = '0';
     else
       State = '1';
