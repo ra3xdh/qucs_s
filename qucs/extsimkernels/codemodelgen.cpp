@@ -441,9 +441,16 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
         QString Ieq;
         if (Ieqns[i].contains("?")) GinacConvToCTernaryOp(Ieqns[i],Ieq);
         else GinacConvToC(Ieqns[i],Ieq);
-        QString Geq = Geqns[i][i];
         stream<<QString("\t\tOUTPUT(%1) = %2 + Q%3;\n").arg(ports.at(i)).arg(Ieq).arg(i);
-        stream<<QString("\t\tPARTIAL(%1,%1) = %2 + cQ%3;\n").arg(ports.at(i)).arg(Geq).arg(i);
+    }
+    for (int i=0;i<ports.count();i++) {
+        for (int j=0;j<ports.count();j++) {
+            QString Geq = Geqns[i][j];
+            if (i==j) stream<<QString("\t\tPARTIAL(%1,%2) = %3 + cQ%4;\n").arg(ports.at(i))
+                              .arg(ports.at(j)).arg(Geq).arg(i);
+            else stream<<QString("\t\tPARTIAL(%1,%2) = %3;\n").arg(ports.at(i))
+                              .arg(ports.at(j)).arg(Geq);
+        }
     }
     stream<<"\t} else {\n";
     for (int i=0;i<ports.count();i++) {
