@@ -374,7 +374,8 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     acg.remove(0,2); // remove leading comma
     stream<<"\tComplex_t " + acg + ";\n";
     stream<<"\tstatic double "+pars.join(",")+";\n";
-    stream<<"\tstatic double "+init_pars.join(",")+";\n";
+    if (!init_pars.isEmpty())
+        stream<<"\tstatic double "+init_pars.join(",")+";\n";
     stream<<"\tstatic double "+inputs.join(",")+","+inputs_old.join(",")+";\n";
     QString Qvars;
     for (int i=0;i<ports.count();i++) {
