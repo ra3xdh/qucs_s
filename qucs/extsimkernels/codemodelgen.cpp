@@ -202,7 +202,7 @@ bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Compone
         }
     }
 
-    while(scanEquations(sch,pars)); // Recursively extract all parameter from Eqns.
+    scanEquations(sch,pars); // Recursively extract all parameter from Eqns.
 
     // Form parameter table
     foreach(QString par,pars) {
@@ -598,7 +598,7 @@ void CodeModelGen::conv_to_safe_functions(QString &Eqn)
     Eqn = tokens.join("");
 }
 
-bool CodeModelGen::scanEquations(Schematic *sch,QStringList &pars)
+void CodeModelGen::scanEquations(Schematic *sch,QStringList &pars)
 {
     bool found = false;
     for(Component *pc=sch->DocComps.first();pc!=0;pc=sch->DocComps.next()) {
@@ -623,5 +623,6 @@ bool CodeModelGen::scanEquations(Schematic *sch,QStringList &pars)
             }
         }
     }
-    return found;
+    if (found) scanEquations(sch,pars); // Remain parameters --- scan again
+    else return;
 }

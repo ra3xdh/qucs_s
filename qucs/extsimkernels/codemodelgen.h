@@ -48,7 +48,7 @@ private:
     void splitTernary(QString &eq, QStringList &tokens);
     void normalize_functions(QString &Eqn);
     void conv_to_safe_functions(QString &Eqn);
-    bool scanEquations(Schematic *sch,QStringList &pars);
+    void scanEquations(Schematic *sch,QStringList &pars);
 protected:
     bool prepare(Schematic *sch);
 public:
