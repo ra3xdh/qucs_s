@@ -202,7 +202,8 @@ bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Compone
         }
     }
 
-    scanEquations(sch,pars); // Recursively extract all parameter from Eqns.
+    QStringList dummy1,dummy2; // output drain
+    scanEquations(sch,pars,dummy1,dummy2); // Recursively extract all parameter from Eqns.
 
     // Form parameter table
     foreach(QString par,pars) {
@@ -294,34 +295,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
         }
     }
 
-    for(Component *pc=sch->DocComps.first();pc!=0;pc=sch->DocComps.next()) {
-        if(pc->Model=="Eqn") {
-            int Np = pc->Props.count();
-            for(int i=0;i<Np-1;i++) {
-                Property *pp = pc->Props.at(i);
-                QString nam = pp->Name;
-                if(pars.contains(nam)) {
-                    pars.remove(nam);
-                    if(!init_pars.contains(nam))
-                        init_pars.append(nam);
-                    QStringList tokens;
-                    QString InitEqn = pp->Value;
-                    normalize_functions(InitEqn);
-                    QString res;
-                    GinacConvToC(InitEqn,res);
-                    InitEqn = res;
-                    InitEqns.append(InitEqn);
-                    spicecompat::splitEqn(InitEqn,tokens);
-                    foreach(QString tok,tokens) {
-                        bool isNum = true;
-                        tok.toFloat(&isNum);
-                        if ((!isGinacFunc(tok))&&(!isNum))
-                            if(!pars.contains(tok)) pars.append(tok);
-                    }
-                }
-            }
-        }
-    }
+    scanEquations(sch,pars,init_pars,InitEqns);
 
     QStringList inputs_old; // Variables for charge eqns.
     foreach(QString inp,inputs) {
@@ -598,7 +572,8 @@ void CodeModelGen::conv_to_safe_functions(QString &Eqn)
     Eqn = tokens.join("");
 }
 
-void CodeModelGen::scanEquations(Schematic *sch,QStringList &pars)
+void CodeModelGen::scanEquations(Schematic *sch,QStringList &pars,
+                                 QStringList &init_pars, QStringList &InitEqns)
 {
     bool found = false;
     for(Component *pc=sch->DocComps.first();pc!=0;pc=sch->DocComps.next()) {
@@ -610,8 +585,16 @@ void CodeModelGen::scanEquations(Schematic *sch,QStringList &pars)
                 if(pars.contains(nam)) {
                     found =  true;
                     pars.remove(nam);
+                    if(!init_pars.contains(nam))
+                        init_pars.append(nam);
                     QStringList tokens;
-                    spicecompat::splitEqn(pp->Value,tokens);
+                    QString InitEqn = pp->Value;
+                    normalize_functions(InitEqn);
+                    QString res;
+                    GinacConvToC(InitEqn,res);
+                    InitEqn = res;
+                    InitEqns.append(InitEqn);
+                    spicecompat::splitEqn(InitEqn,tokens);
                     foreach(QString tok,tokens) {
                         bool isNum = true;
                         tok.toFloat(&isNum);
@@ -623,6 +606,14 @@ void CodeModelGen::scanEquations(Schematic *sch,QStringList &pars)
             }
         }
     }
-    if (found) scanEquations(sch,pars); // Remain parameters --- scan again
-    else return;
+    if (found) {
+        scanEquations(sch,pars,init_pars,InitEqns); // Remain parameters --- scan again
+    } else {
+        int Nv = init_pars.count(); // Reverse init parameters list before exit
+        for(int i = 0; i < (Nv/2); i++) {
+            init_pars.swap(i,Nv-(1+i));
+            InitEqns.swap(i,Nv-(1+i));
+        }
+        return;
+    }
 }
