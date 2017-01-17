@@ -591,10 +591,10 @@ void CodeModelGen::scanEquations(Schematic *sch,QStringList &pars,
                     QString InitEqn = pp->Value;
                     normalize_functions(InitEqn);
                     QString res;
+                    spicecompat::splitEqn(InitEqn,tokens);
                     GinacConvToC(InitEqn,res);
                     InitEqn = res;
                     InitEqns.append(InitEqn);
-                    spicecompat::splitEqn(InitEqn,tokens);
                     foreach(QString tok,tokens) {
                         bool isNum = true;
                         tok.toFloat(&isNum);
