@@ -585,23 +585,24 @@ void CodeModelGen::scanEquations(Schematic *sch,QStringList &pars,
                 if(pars.contains(nam)) {
                     found =  true;
                     pars.remove(nam);
-                    if(!init_pars.contains(nam))
+                    if(!init_pars.contains(nam)) {
                         init_pars.append(nam);
-                    QStringList tokens;
-                    QString InitEqn = pp->Value;
-                    normalize_functions(InitEqn);
-                    QString res;
-                    spicecompat::splitEqn(InitEqn,tokens);
-                    GinacConvToC(InitEqn,res);
-                    InitEqn = res;
-                    InitEqns.append(InitEqn);
-                    foreach(QString tok,tokens) {
-                        bool isNum = true;
-                        tok.toFloat(&isNum);
-                        if ((!isGinacFunc(tok))&&(!isNum))
-                            if(!pars.contains(tok)) pars.append(tok);
+                        QStringList tokens;
+                        QString InitEqn = pp->Value;
+                        normalize_functions(InitEqn);
+                        QString res;
+                        spicecompat::splitEqn(InitEqn,tokens);
+                        GinacConvToC(InitEqn,res);
+                        InitEqn = res;
+                        InitEqns.append(InitEqn);
+                        foreach(QString tok,tokens) {
+                            bool isNum = true;
+                            tok.toFloat(&isNum);
+                            if ((!isGinacFunc(tok))&&(!isNum))
+                                if(!pars.contains(tok)) pars.append(tok);
+                        }
                     }
-                    pp = pc->Props.prev();
+                    //pp = pc->Props.prev();
                 }
             }
         }
