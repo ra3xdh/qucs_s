@@ -42,7 +42,7 @@ set CXXFLAGS=-O2 -I"%FREEHDL%/include"
 set AR=ar
 set RANLIB=ranlib
 
-set PATH=%PATH%;%FREEHDL%/bin;%MINGWDIR%/bin;%QUCSDIR%/bin
+set PATH=%PATH%;%FREEHDL%/bin
 
 echo running C++ conversion...
 freehdl-v2cc -l%LIBRARY% -Lvhdl -L"%FREEHDL%/share/freehdl/lib" -o %NAME%.cc %NAME%.vhdl
