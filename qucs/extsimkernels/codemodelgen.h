@@ -39,6 +39,8 @@ public:
     ~CodeModelGen();
 
 private:
+    QString log;
+
     bool isGinacFunc(QString &funcname);
     bool executeGinacCmd(QString &cmd, QString &result);
     bool GinacDiff(QString &eq,QString &var,QString &res);
@@ -57,6 +59,7 @@ public:
     bool createIFSfromEDD(QTextStream &stream, Schematic *sch, Component *pc);
     bool createMOD(QTextStream &stream, Schematic *sch);
     bool createMODfromEDD(QTextStream &stream, Schematic *sch, Component *pc);
+    QString getLog();
     
 };
 

@@ -2950,7 +2950,7 @@ void QucsApp::slotBuildXSPICEIfs(int mode)
         default: break;
         }
 
-        QString filename = QFileDialog::getSaveFileName(this,tr("Save Verilog-A module"),msg,ext);
+        QString filename = QFileDialog::getSaveFileName(this,tr("Save XSPICE source"),msg,ext);
         if (filename.isEmpty()) return;
 
         QFile f(filename);
@@ -2981,10 +2981,25 @@ void QucsApp::slotBuildXSPICEIfs(int mode)
             default: r = false;
                 break;
             }
-            if (!r) QMessageBox::critical(this,tr("Create XSPICE CodeModel"),
-                                          tr("Create CodeModel source file failed!"
-                                             "Schematic is not subciruit!"),
-                                          QMessageBox::Ok);
+            QString errs;
+            if (!r) errs = tr("Create XSPICE CodeModel"
+                              "Create CodeModel source file failed!"
+                              "Schematic is not subciruit!");
+
+            messageDock->reset();
+            messageDock->msgDock->setWindowTitle(tr("Debug messages dock"));
+            messageDock->builderTabs->setTabIcon(0,QPixmap());
+            messageDock->builderTabs->setTabText(0,tr("XSPICE"));
+            messageDock->builderTabs->setTabIcon(1,QPixmap());
+            messageDock->admsOutput->
+                    insertPlainText(QString("Creating XSPICE source file: %1\n").arg(filename));
+            errs += cmgen->getLog();
+            if (errs.isEmpty()) {
+                messageDock->admsOutput->insertPlainText(tr("Success!\n"));
+            } else {
+                messageDock->admsOutput->insertPlainText(errs);
+            }
+            messageDock->msgDock->show();
             delete cmgen;
             f.close();
         }

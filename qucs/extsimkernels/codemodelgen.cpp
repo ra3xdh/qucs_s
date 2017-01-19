@@ -463,6 +463,12 @@ bool CodeModelGen::executeGinacCmd(QString &cmd, QString &result)
     result = ginac.readAllStandardOutput();
     result.chop(1); // remove newline char
 
+    QString err = ginac.readAllStandardError();
+    if (!err.isEmpty()) {
+        log += QString("Executing Ginac: %1").arg(cmd);
+        log += QString("\n[fatal..]: %1").arg(err);
+    }
+
     return true;
 }
 
@@ -617,4 +623,9 @@ void CodeModelGen::scanEquations(Schematic *sch,QStringList &pars,
         }
         return;
     }
+}
+
+QString CodeModelGen::getLog()
+{
+    return log;
 }
