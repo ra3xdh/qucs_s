@@ -323,7 +323,13 @@ void Rect3DDiagram::calcLine(tPoint3D* &p, tPoint3D* &MemEnd,
       x1_ += ay_;
       y1_ += iy_;
     }
-    
+
+    // This section has significant impact to the hiding algorithm
+    //   be aware isHidden() modifies (Bounds+x)->min/max
+    // if isHidden() is replaced by  false  nearly all segments are drawn,
+    //   nothing set hidden by this section ... though few segments are hidden
+    // if isHidden() is replaced by true  most segments are not drawn
+    //   and many line-ends are outside the diagram-are (mem/malloc-issue?)
     if( isHidden(x1_, y1_, Bounds, zBuffer) != wasHidden )
       if((p->done & 1) == 0) {
         wasHidden = !wasHidden;
@@ -342,10 +348,22 @@ void Rect3DDiagram::calcLine(tPoint3D* &p, tPoint3D* &MemEnd,
   }
 
   // extra treatment for last point (create no further point)
-  if(isHidden((p+1)->x, (p+1)->y, Bounds, zBuffer))
-    if(((p+1)->done & 1) == 0)
-      (p+1)->done |= 4;   // mark as hidden
+  // OLD: implementation hides most of the segmets
+  // NEW: unhide missing segments
+  if(!isHidden((p+1)->x, (p+1)->y, Bounds, zBuffer))
+  {
+    if(!isHidden((p)->x, (p)->y, Bounds, zBuffer))
+    {
+      (p+1)->done &= ~4;
+    }
+    else
+    {
+      (p)->done &= ~4;
+    }
+  }
 
+  // If this assignment is commented-out all inner segments are not drawn.
+  // Just the surrounding boundary (all segments) of the mesh is drawn
   p->done |= 1;   // mark as already worked on
 }
 
@@ -377,8 +395,16 @@ void Rect3DDiagram::removeHiddenLines(char *zBuffer, tBound *Bounds)
       Size += g->axis(0)->count * g->countY;
 
   // "Mem" should be the last malloc to simplify realloc
-  tPointZ *zMem = (tPointZ*)malloc( (Size+2)*sizeof(tPointZ) );
-  Mem  = (tPoint3D*)malloc( 2*(Size+2)*sizeof(tPoint3D) );
+  // multiplicator 'malloc_8xsize' added
+  // 'malloc_8xsize' increases the requested size in the 2 malloc lines below
+  // this comment section.
+  // And it is added to the calculation of 'MemEnd'.
+  // Main reason are the segments drawn to points outside the diagram.
+  // It is assumed to be a memory issue.
+  // Note: As of today the memory calculation is still not 100% clean.
+  int malloc_8xsize=8;
+  tPointZ *zMem = (tPointZ*)malloc( malloc_8xsize*(Size+2)*sizeof(tPointZ) );
+  Mem  = (tPoint3D*)malloc( malloc_8xsize*2*(Size+2)*sizeof(tPoint3D) );
 
   pMem = Mem;
   tPointZ *zp = zMem, *zp_tmp;
@@ -503,7 +529,8 @@ void Rect3DDiagram::removeHiddenLines(char *zBuffer, tBound *Bounds)
 
   // ..........................................
   char *pc;
-  tPoint3D *MemEnd = Mem + 2*Size - 5;   // limit of buffer
+  // malloc_8xsize added (see comment before malloc_8xsize declaration)
+  tPoint3D *MemEnd = Mem + malloc_8xsize*2*Size - 5;   // limit of buffer
 
   zp = zMem;
   foreach(Graph *g, Graphs) {
