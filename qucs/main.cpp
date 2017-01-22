@@ -822,7 +822,7 @@ int main(int argc, char *argv[])
 	  QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/" QUCS_NAME "/library/";
   }
   QucsSettings.OctaveDir =   QucsDir.canonicalPath() + "/share/" QUCS_NAME "/octave/";
-  QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/docs/examples/";
+  QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/examples/";
   QucsSettings.DocDir =      QucsDir.canonicalPath() + "/share/" QUCS_NAME "/docs/";
   QucsSettings.Editor = "qucs";
 
