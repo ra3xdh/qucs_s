@@ -6,4 +6,5 @@ cmlib.mingw32.rules.mk
 
 # installation of transmission lines
 INSTALL( FILES ${RULES_MK} DESTINATION share/qucs/xspice_cmlib )
+INSTALL(DIRECTORY include DESTINATION share/qucs/xspice_cmlib )
 
