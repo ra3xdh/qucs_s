@@ -541,7 +541,8 @@ void CodeModelGen::normalize_functions(QString &Eqn)
     QStringList conv_list; // Put here functions need to be converted
     conv_list<<"q"<<"1.6021765e-19"
              <<"kB"<<"1.38065e-23"
-             <<"u"<<"step";
+             <<"u"<<"step"
+             <<"limexp"<<"exp";
 
     QStringList tokens;
     spicecompat::splitEqn(Eqn,tokens);
