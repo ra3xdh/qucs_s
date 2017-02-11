@@ -374,9 +374,10 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     stream<<"\t\tdelta_t=TIME-T(1);\n";
     // Calculate charge parts
     for(int i=0;i<ports.count();i++) {
-        QString Ceq,rCeq;
-        Ceq = QString("expand((%1)/V%2)").arg(Qeqns.at(i)).arg(i+1);
-        GinacConvToC(Ceq,rCeq);
+        QString rCeq;
+        QString Ceq = Qeqns.at(i);
+        QString v = QString("V%2").arg(i+1);
+        GinacDiff(Ceq,v,rCeq);
         bool ok = false;
         float cc = rCeq.toFloat(&ok);
         if ((cc!=0)||(!ok)) {
@@ -410,9 +411,10 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
             stream<<QString("\t\tac_gain%1%2.real = %3;\n")
                     .arg(i).arg(j).arg(Geqns[i][j]);
             if (i == j) {
-                QString Ceq,rCeq;
-                Ceq = QString("expand((%1)/V%2)").arg(Qeqns.at(i)).arg(i+1);
-                GinacConvToC(Ceq,rCeq);
+                QString rCeq;
+                QString Ceq = Qeqns.at(i);
+                QString v = QString("V%2").arg(i+1);
+                GinacDiff(Ceq,v,rCeq);
                 stream<<QString("\t\tac_gain%1%2.imag = (%3)*RAD_FREQ;\n")
                         .arg(i).arg(j).arg(rCeq);
             } else {
