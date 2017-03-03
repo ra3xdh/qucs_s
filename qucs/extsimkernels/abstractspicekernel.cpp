@@ -133,8 +133,16 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
 {
         QString s;
 
-        // Include Directives
+        // User-defined functions
+        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+            if ((pc->SpiceModel==".FUNC")) {
+                s = pc->getExpression();
+                stream<<s;
+            }
+        }
+
         QStringList incls;
+        // Include Directives
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             if ((pc->SpiceModel==".INCLUDE")||
                 (pc->Model=="SpLib")) {

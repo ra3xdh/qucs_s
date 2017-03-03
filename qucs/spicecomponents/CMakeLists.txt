@@ -18,6 +18,7 @@ sp_ic.cpp
 sp_nodeset.cpp
 sp_model.cpp
 sp_include.cpp
+sp_func.cpp
 
 #end of SPICE section
 
@@ -102,6 +103,7 @@ sp_ic.h
 sp_nodeset.h
 sp_model.h
 sp_include.h
+sp_func.h
 
 #end SPICE sections
 
