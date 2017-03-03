@@ -135,7 +135,8 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
 
         // User-defined functions
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
-            if ((pc->SpiceModel==".FUNC")) {
+            if ((pc->SpiceModel==".FUNC")||
+                (pc->SpiceModel=="INCLSCR")) {
                 s = pc->getExpression();
                 stream<<s;
             }

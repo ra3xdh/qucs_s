@@ -82,6 +82,11 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
         edtVars->setEnabled(false);
         btnPlotAll->setEnabled(false);
         isXyceScr = true;
+    } else if (comp->Model == "INCLSCR") {
+        lblVars->setEnabled(false);
+        edtVars->setEnabled(false);
+        btnPlotAll->setEnabled(false);
+        btnFindOutputs->setEnabled(false);
     } else isXyceScr = false;
 }
 
