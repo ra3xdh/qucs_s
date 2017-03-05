@@ -39,7 +39,6 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
 
     setWindowTitle(tr("Edit SPICE code"));
     QLabel* lblName = new QLabel(tr("Component: ")+comp->Description);
-    QLabel* lblEdt = new QLabel(tr("Spice code editor"));
     edtCode = new QTextEdit(this);
     edtCode->insertPlainText(comp->Props.at(0)->Value);
 
