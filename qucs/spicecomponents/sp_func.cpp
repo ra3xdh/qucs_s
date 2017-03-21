@@ -75,7 +75,10 @@ QString SpiceFunc::getExpression(bool)
     QString s;
     s.clear();
     foreach (Property *pp, Props) {
-        s += QString(".FUNC %1 = %2\n").arg(pp->Name).arg(pp->Value);
+        if ((QucsSettings.DefaultSimulator==spicecompat::simXyceSer)||
+            (QucsSettings.DefaultSimulator==spicecompat::simXycePar))
+            s += QString(".FUNC %1 %2\n").arg(pp->Name).arg(pp->Value);
+        else s += QString(".FUNC %1 = %2\n").arg(pp->Name).arg(pp->Value);
     }
     return s;
 }
