@@ -324,9 +324,9 @@ QString spicecompat::getDefaultSimulatorName()
         break;
     case spicecompat::simSpiceOpus: sim_lbl = QObject::tr("SpiceOpus");
         break;
-    case spicecompat::simXycePar: sim_lbl = QObject::tr("XYCE (Serial)");
+    case spicecompat::simXyceSer: sim_lbl = QObject::tr("Xyce (Serial)");
         break;
-    case spicecompat::simXyceSer: sim_lbl = QObject::tr("XYCE (Parallel)");
+    case spicecompat::simXycePar: sim_lbl = QObject::tr("Xyce (Parallel)");
         break;
     default: sim_lbl = QObject::tr("Qucsator");
         break;
