@@ -1118,6 +1118,10 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
         HB = true;
     }
 
+    for(auto it = var_list.begin();it!=var_list.end();it++) { // For subcircuit nodes output i.e. v(X1:n1)
+        (*it).replace(":","_");         // colon symbol is reserved in Qucs as dataset specifier
+    }
+
     QStringList::iterator it=var_list.begin();
 
     for (it++;it!=var_list.end();it++) {
