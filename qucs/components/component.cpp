@@ -398,7 +398,8 @@ void Component::print(ViewPainter *p, float FontScale)
 void Component::rotate()
 {
   // Port count only available after recreate, createSymbol
-  if ((Model != "Sub") && (Model !="VHDL") && (Model != "Verilog")) // skip port count
+  if ((Model != "Sub") && (Model !="VHDL") && (Model != "Verilog")
+       && (Model != "SpLib")) // skip port count
     if(Ports.count() < 1) return;  // do not rotate components without ports
   int tmp, dx, dy;
 
@@ -498,7 +499,8 @@ void Component::rotate()
 void Component::mirrorX()
 {
   // Port count only available after recreate, createSymbol
-  if ((Model != "Sub") && (Model !="VHDL") && (Model != "Verilog")) // skip port count
+  if ((Model != "Sub") && (Model !="VHDL") && (Model != "Verilog")
+       && (Model != "SpLib")) // skip port count
     if(Ports.count() < 1) return;  // do not rotate components without ports
 
   // mirror all lines
@@ -560,7 +562,8 @@ void Component::mirrorX()
 void Component::mirrorY()
 {
   // Port count only available after recreate, createSymbol
-  if ((Model != "Sub") && (Model !="VHDL") && (Model != "Verilog")) // skip port count
+  if ((Model != "Sub") && (Model !="VHDL") && (Model != "Verilog")
+       && (Model != "SpLib")) // skip port count
     if(Ports.count() < 1) return;  // do not rotate components without ports
 
   // mirror all lines
