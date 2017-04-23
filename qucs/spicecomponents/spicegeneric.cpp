@@ -54,7 +54,7 @@ Component* SpiceGeneric::newOne()
 // -------------------------------------------------------
 Element* SpiceGeneric::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("XSPICE generic device");
+  Name = QObject::tr("SPICE generic device");
   BitmapFile = (char *) "spicegeneric";
 
   if(getNewOne) {
