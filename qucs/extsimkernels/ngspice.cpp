@@ -383,6 +383,13 @@ void Ngspice::slotSimulate()
         return;
     }
 
+    if (!checkGround()) {
+        output.append("No Ground found. Please add at least one ground!\n");
+        emit finished();
+        emit errors(QProcess::FailedToStart);
+        return;
+    }
+
     if (!checkNodeNames(incompat)) {
         QString s = incompat.join("; ");
         output.append("There were Nutmeg-incompatible node names. Simulator cannot proceed.\n");

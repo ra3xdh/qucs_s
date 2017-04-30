@@ -121,6 +121,22 @@ bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
 }
 
 /*!
+ * \brief AbstractSpiceKernel::checkGround Check if schematic contain at least one ground.
+ * \return True if ground found, false otherwise
+ */
+bool AbstractSpiceKernel::checkGround()
+{
+    bool r = false;
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->Model=="GND") {
+            r = true;
+            break;
+        }
+    }
+    return r;
+}
+
+/*!
  * \brief AbstractSpiceKernel::startNetlist Outputs .PARAM , .GLOABAL_PARAM,
  *        and .OPTIONS sections to netlist. These sections are placed on schematic
  *        directly or converted form Equation components. Then outputs common

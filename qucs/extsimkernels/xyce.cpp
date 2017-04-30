@@ -242,6 +242,13 @@ void Xyce::slotSimulate()
         return;
     }
 
+    if (!checkGround()) {
+        output.append("No Ground found. Please add at least one ground!\n");
+        emit finished();
+        emit errors(QProcess::FailedToStart);
+        return;
+    }
+
     int num=0;
     netlistQueue.clear();
     output_files.clear();

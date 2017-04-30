@@ -62,6 +62,7 @@ protected:
     virtual void createNetlist(QTextStream& stream, int NumPorts,QStringList& simulations,
                                QStringList& vars, QStringList &outputs);
     void removeAllSimulatorOutputs();
+    bool checkGround();
 
 public:
 
