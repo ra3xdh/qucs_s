@@ -693,9 +693,6 @@ void QucsApp::initMenuBar()
   fileMenu->addAction(filePrint);
   fileMenu->addAction(filePrintFit);
   fileMenu->insertSeparator();
-  fileMenu->addAction(buildVAModule);
-  fileMenu->addAction(buildIFS);
-  fileMenu->insertSeparator();
   fileMenu->addAction(fileExamples);
   fileMenu->insertSeparator();
   fileMenu->addAction(fileSettings);
@@ -788,6 +785,12 @@ void QucsApp::initMenuBar()
       toolMenu->addAction(callMatch);
   toolMenu->addAction(callAtt);
   toolMenu->addAction(callRes);
+  toolMenu->insertSeparator();
+
+  cmMenu = new QMenu(tr("Compact modelling"));
+  cmMenu->addAction(buildVAModule);
+  cmMenu->addAction(buildIFS);
+  toolMenu->addMenu(cmMenu);
 
 
 
