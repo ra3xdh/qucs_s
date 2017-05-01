@@ -266,7 +266,7 @@ void EqnDefined::createSymbol()
   if(Num < 1) Num = 1;
   else if(Num > 4) {
     PortDistance = 40;
-    if(Num > 8) Num = 8;
+    if(Num > 20) Num = 20;
   }
   Props.at(1)->Value = QString::number(Num);
 

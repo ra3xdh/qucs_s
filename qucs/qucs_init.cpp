@@ -614,6 +614,8 @@ void QucsApp::initActions()
   connect(simSettings,SIGNAL(activated()),SLOT(slotSimSettings()));
   buildVAModule = new QAction(tr("Build Verilog-A module from subcircuit"),this);
   connect(buildVAModule,SIGNAL(activated()),SLOT(slotBuildVAModule()));
+  buildIFS = new QAction(tr("Build XSPICE IFS file form subcircuit"),this);
+  connect(buildIFS,SIGNAL(activated()),SLOT(slotBuildXSPICEIfs()));
 
 
   viewToolBar = new QAction(tr("Tool&bar"), this);
@@ -692,6 +694,7 @@ void QucsApp::initMenuBar()
   fileMenu->addAction(filePrintFit);
   fileMenu->insertSeparator();
   fileMenu->addAction(buildVAModule);
+  fileMenu->addAction(buildIFS);
   fileMenu->insertSeparator();
   fileMenu->addAction(fileExamples);
   fileMenu->insertSeparator();

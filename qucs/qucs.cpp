@@ -77,6 +77,7 @@
 #include "misc.h"
 #include "extsimkernels/verilogawriter.h"
 #include "extsimkernels/simsettingsdialog.h"
+#include "extsimkernels/codemodelgen.h"
 
 // icon for unsaved files (diskette)
 const char *smallsave_xpm[] = {
@@ -2927,4 +2928,92 @@ void QucsApp::slotBuildVAModule()
         }
     }
 
+}
+
+
+void QucsApp::slotBuildXSPICEIfs(int mode)
+{
+    if (!isTextDocument(DocumentTab->currentPage())) {
+        Schematic *Sch = (Schematic*)DocumentTab->currentPage();
+
+        QFileInfo inf(Sch->DocName);
+
+        QString msg,ext;
+        switch(mode) {
+        case spicecompat::cmgenSUBifs:
+        case spicecompat::cmgenEDDifs: msg = inf.path()+QDir::separator()+inf.baseName()+".ifs";
+            ext = "XSPICE IFS (*.ifs)";
+            break;
+        case spicecompat::cmgenSUBmod:
+        case spicecompat::cmgenEDDmod: msg = inf.path()+QDir::separator()+inf.baseName()+".mod";
+            ext = "XSPICE MOD (*.mod)";
+            break;
+        default: break;
+        }
+
+        QString filename = QFileDialog::getSaveFileName(this,tr("Save XSPICE source"),msg,ext);
+        if (filename.isEmpty()) return;
+
+        QFile f(filename);
+        if (f.open(QIODevice::WriteOnly)) {
+            QTextStream stream(&f);
+            CodeModelGen *cmgen = new CodeModelGen;
+            bool r = false;
+            switch(mode) {
+            case spicecompat::cmgenSUBifs: r = cmgen->createIFS(stream,Sch);
+            case spicecompat::cmgenEDDifs: {
+                for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+                    if (pc->isSelected) {
+                        r = cmgen->createIFSfromEDD(stream,Sch,pc);
+                        break;
+                    }
+                }
+            }
+                break;
+            case spicecompat::cmgenEDDmod : {
+                for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+                    if (pc->isSelected) {
+                        r = cmgen->createMODfromEDD(stream,Sch,pc);
+                        break;
+                    }
+                }
+            }
+                break;
+            default: r = false;
+                break;
+            }
+            QString errs;
+            if (!r) errs = tr("Create XSPICE CodeModel"
+                              "Create CodeModel source file failed!"
+                              "Schematic is not subciruit!");
+
+            messageDock->reset();
+            messageDock->msgDock->setWindowTitle(tr("Debug messages dock"));
+            messageDock->builderTabs->setTabIcon(0,QPixmap());
+            messageDock->builderTabs->setTabText(0,tr("XSPICE"));
+            messageDock->builderTabs->setTabIcon(1,QPixmap());
+            messageDock->admsOutput->
+                    insertPlainText(QString("Creating XSPICE source file: %1\n").arg(filename));
+            errs += cmgen->getLog();
+            if (errs.isEmpty()) {
+                messageDock->admsOutput->insertPlainText(tr("Success!\n"));
+            } else {
+                messageDock->admsOutput->insertPlainText(errs);
+            }
+            messageDock->msgDock->show();
+            delete cmgen;
+            f.close();
+        }
+    }
+}
+
+
+void QucsApp::slotEDDtoIFS()
+{
+    slotBuildXSPICEIfs(spicecompat::cmgenEDDifs);
+}
+
+void QucsApp::slotEDDtoMOD()
+{
+    slotBuildXSPICEIfs(spicecompat::cmgenEDDmod);
 }
