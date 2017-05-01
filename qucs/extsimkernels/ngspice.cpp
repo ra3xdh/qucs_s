@@ -57,12 +57,11 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                        QStringList &simulations, QStringList &vars, QStringList &outputs)
 {
     // include math. functions for inter-simulator compat.
-    QDir qucs_root(QucsSettings.BinDir);
-    qucs_root.cdUp();
-
+    QString mathf_inc;
+    bool found = findMathFuncInc(mathf_inc);
     stream<<QString("* Qucs %1 %2\n").arg(PACKAGE_VERSION).arg(Sch->DocName);
-    stream<<QString(".INCLUDE \"%1/share/qucs/xspice_cmlib/include/ngspice_mathfunc.inc\"\n")
-            .arg(qucs_root.absolutePath());
+    // Let to simulate schematic without mathfunc.inc file
+    if (found) stream<<QString(".INCLUDE \"%1\"\n").arg(mathf_inc);
 
     QString s;
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
@@ -384,6 +383,12 @@ QString Ngspice::getParentSWPscript(Component *pc_swp, QString sim, bool before,
 void Ngspice::slotSimulate()
 {
     output.clear();
+
+    QString mathf_inc; // drain
+    if (!findMathFuncInc(mathf_inc)) {
+        output.append("[Warning!] " + mathf_inc + " file not found!\n");
+    }
+
     QStringList incompat;
     if (!checkSchematic(incompat)) {
         QString s = incompat.join("; ");
@@ -452,6 +457,22 @@ bool Ngspice::checkNodeNames(QStringList &incompat)
       }
     }
     return result;
+}
+
+/*!
+ * \brief Ngspice::findMathFuncInc Find the ngspice_mathfunc.inc file. This file
+ *        contains math.functions definitions for Ngspice. It's need to let to simulate
+ *        circuit if it is not found.
+ * \param mathf_inc[out] The filename of include file
+ * \return True if found. False otherwise
+ */
+bool Ngspice::findMathFuncInc(QString &mathf_inc)
+{
+    QDir qucs_root(QucsSettings.BinDir);
+    qucs_root.cdUp();
+    mathf_inc = QString("%1/share/qucs/xspice_cmlib/include/ngspice_mathfunc.inc")
+            .arg(qucs_root.absolutePath());
+    return QFile::exists(mathf_inc);
 }
 
 /*!
