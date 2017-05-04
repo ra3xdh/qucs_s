@@ -614,7 +614,7 @@ void QucsApp::initActions()
   connect(simSettings,SIGNAL(activated()),SLOT(slotSimSettings()));
   buildVAModule = new QAction(tr("Build Verilog-A module from subcircuit"),this);
   connect(buildVAModule,SIGNAL(activated()),SLOT(slotBuildVAModule()));
-  buildIFS = new QAction(tr("Build XSPICE IFS file form subcircuit"),this);
+  buildIFS = new QAction(tr("Build XSPICE IFS file from subcircuit"),this);
   connect(buildIFS,SIGNAL(activated()),SLOT(slotBuildXSPICEIfs()));
 
 
