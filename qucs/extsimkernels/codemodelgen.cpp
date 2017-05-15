@@ -377,7 +377,8 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
         QString rCeq;
         QString Ceq = Qeqns.at(i);
         QString v = QString("V%2").arg(i+1);
-        GinacDiff(Ceq,v,rCeq);
+        if(Ceq.contains('?')) GinacDiffTernaryOp(Ceq,v,rCeq);
+        else GinacDiff(Ceq,v,rCeq);
         bool ok = false;
         float cc = rCeq.toFloat(&ok);
         if ((cc!=0)||(!ok)) {
@@ -414,7 +415,8 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
                 QString rCeq;
                 QString Ceq = Qeqns.at(i);
                 QString v = QString("V%2").arg(i+1);
-                GinacDiff(Ceq,v,rCeq);
+                if (Ceq.contains('?')) GinacDiffTernaryOp(Ceq,v,rCeq);
+                else GinacDiff(Ceq,v,rCeq);
                 stream<<QString("\t\tac_gain%1%2.imag = (%3)*RAD_FREQ;\n")
                         .arg(i).arg(j).arg(rCeq);
             } else {
