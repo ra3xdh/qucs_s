@@ -614,6 +614,8 @@ void QucsApp::initActions()
   connect(simSettings,SIGNAL(activated()),SLOT(slotSimSettings()));
   buildVAModule = new QAction(tr("Build Verilog-A module from subcircuit"),this);
   connect(buildVAModule,SIGNAL(activated()),SLOT(slotBuildVAModule()));
+  buildIFS = new QAction(tr("Build XSPICE IFS file from subcircuit"),this);
+  connect(buildIFS,SIGNAL(activated()),SLOT(slotBuildXSPICEIfs()));
 
 
   viewToolBar = new QAction(tr("Tool&bar"), this);
@@ -697,8 +699,6 @@ void QucsApp::initMenuBar()
   fileMenu->addAction(exportAsImage);
   fileMenu->addAction(filePrint);
   fileMenu->addAction(filePrintFit);
-  fileMenu->insertSeparator();
-  fileMenu->addAction(buildVAModule);
   fileMenu->insertSeparator();
   fileMenu->addAction(fileExamples);
   fileMenu->insertSeparator();
@@ -792,6 +792,12 @@ void QucsApp::initMenuBar()
       toolMenu->addAction(callMatch);
   toolMenu->addAction(callAtt);
   toolMenu->addAction(callRes);
+  toolMenu->insertSeparator();
+
+  cmMenu = new QMenu(tr("Compact modelling"));
+  cmMenu->addAction(buildVAModule);
+  cmMenu->addAction(buildIFS);
+  toolMenu->addMenu(cmMenu);
 
 
 

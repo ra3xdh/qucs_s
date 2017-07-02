@@ -121,6 +121,22 @@ bool AbstractSpiceKernel::checkSchematic(QStringList &incompat)
 }
 
 /*!
+ * \brief AbstractSpiceKernel::checkGround Check if schematic contain at least one ground.
+ * \return True if ground found, false otherwise
+ */
+bool AbstractSpiceKernel::checkGround()
+{
+    bool r = false;
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->Model=="GND") {
+            r = true;
+            break;
+        }
+    }
+    return r;
+}
+
+/*!
  * \brief AbstractSpiceKernel::startNetlist Outputs .PARAM , .GLOABAL_PARAM,
  *        and .OPTIONS sections to netlist. These sections are placed on schematic
  *        directly or converted form Equation components. Then outputs common
@@ -133,8 +149,17 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, bool xyce)
 {
         QString s;
 
-        // Include Directives
+        // User-defined functions
+        for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+            if ((pc->SpiceModel==".FUNC")||
+                (pc->SpiceModel=="INCLSCR")) {
+                s = pc->getExpression();
+                stream<<s;
+            }
+        }
+
         QStringList incls;
+        // Include Directives
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             if ((pc->SpiceModel==".INCLUDE")||
                 (pc->Model=="SpLib")) {
@@ -1107,6 +1132,10 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
         iprefix = "i(ac.";
     } else if (indep=="hbfrequency") {
         HB = true;
+    }
+
+    for(auto it = var_list.begin();it!=var_list.end();it++) { // For subcircuit nodes output i.e. v(X1:n1)
+        (*it).replace(":","_");         // colon symbol is reserved in Qucs as dataset specifier
     }
 
     QStringList::iterator it=var_list.begin();

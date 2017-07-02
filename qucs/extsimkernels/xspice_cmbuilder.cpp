@@ -164,6 +164,9 @@ void XSPICE_CMbuilder::createCModelTree(QString &output)
             output += QString("Make rules file %1 doesn't exist\n").arg(rules_file);
         stream<<"TARGET=qucs_xspice.cm\n";
         stream<<QString("NGSPICEROOT=%1\n").arg(ngsp_root);
+        QDir qucs_root = inf.absoluteDir();
+        qucs_root.cdUp();
+        stream<<QString("QUCSSHARE=%1\n").arg(qucs_root.absolutePath());
         stream<<QString("OBJECTS=dlmain.o %1\n\n").arg(objects.join(" "));
         stream<<"include "+rules_file +"\n";
         mkfile.close();

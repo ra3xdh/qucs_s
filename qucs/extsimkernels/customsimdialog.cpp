@@ -37,7 +37,8 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     comp = pc;
     Sch = sch;
 
-    QLabel* lblEdt = new QLabel(tr("Spice code editor"));
+    setWindowTitle(tr("Edit SPICE code"));
+    QLabel* lblName = new QLabel(tr("Component: ")+comp->Description);
     edtCode = new QTextEdit(this);
     edtCode->insertPlainText(comp->Props.at(0)->Value);
 
@@ -59,10 +60,14 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     connect(btnFindOutputs,SIGNAL(clicked()),this,SLOT(slotFindOutputs()));
 
     QVBoxLayout *vl1 = new QVBoxLayout;
+    QVBoxLayout *vl2 = new QVBoxLayout;
     QHBoxLayout *hl1 = new QHBoxLayout;
 
-    vl1->addWidget(lblEdt);
-    vl1->addWidget(edtCode);
+    vl1->addWidget(lblName);
+    QGroupBox *gpb1 = new QGroupBox(tr("SPICE code editor"));
+    vl2->addWidget(edtCode);
+    gpb1->setLayout(vl2);
+    vl1->addWidget(gpb1);
     vl1->addWidget(lblVars);
     vl1->addWidget(edtVars);
     vl1->addWidget(btnPlotAll);
@@ -76,12 +81,19 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
     vl1->addLayout(hl1);
 
     this->setLayout(vl1);
+    this->setWindowTitle(tr("Edit SPICE code"));
 
     if (comp->Model == ".XYCESCR") {
         lblVars->setEnabled(false);
         edtVars->setEnabled(false);
         btnPlotAll->setEnabled(false);
         isXyceScr = true;
+    } else if (comp->Model == "INCLSCR") {
+        lblVars->setEnabled(false);
+        edtVars->setEnabled(false);
+        btnPlotAll->setEnabled(false);
+        btnFindOutputs->setEnabled(false);
+        lblOut->setEnabled(false);
     } else isXyceScr = false;
 }
 

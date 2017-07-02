@@ -86,7 +86,9 @@ libspicecomponents_a_SOURCES = src_eqndef.cpp \
 	xsp_cmlib.cpp \
 	xsp_codemodel.cpp \
 	spicegeneric.cpp \
-	spicelibcomp.cpp
+	spicelibcomp.cpp \
+	sp_func.cpp \
+	incl_script.cpp
 
 
 #nodist_libcomponents_a_SOURCES = $(MOCFILES)
@@ -147,7 +149,9 @@ noinst_HEADERS = src_eqndef.h \
 	xsp_cmlib.h \
 	xsp_codemodel.h \
 	spicegeneric.h \
-	spicelibcomp.h
+	spicelibcomp.h \
+	sp_func.cpp \
+	incl_script.cpp
 
 
 AM_CPPFLAGS = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs

@@ -1490,7 +1490,10 @@ void QucsApp::slotBuildModule()
     messageDock->reset();
 
     messageDock->builderTabs->setTabIcon(0,QPixmap());
+    messageDock->builderTabs->setTabText(0,tr("admsXml"));
     messageDock->builderTabs->setTabIcon(1,QPixmap());
+    messageDock->builderTabs->setTabText(1,tr("Compiler"));
+    messageDock->msgDock->setWindowTitle(tr("admsXml Dock"));
 
 
     QString make;

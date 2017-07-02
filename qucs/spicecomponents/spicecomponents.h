@@ -71,6 +71,8 @@
 #include "sp_ic.h"
 #include "sp_model.h"
 #include "sp_include.h"
+#include "sp_func.h"
+#include "incl_script.h"
 
 // Spice simulations
 #include "sp_fourier.h"

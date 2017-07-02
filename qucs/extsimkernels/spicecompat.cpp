@@ -122,7 +122,7 @@ void spicecompat::splitEqn(QString &eqn, QStringList &tokens)
     tokens.clear();
     QString tok = "";
     for (QString::iterator it=eqn.begin();it!=eqn.end();it++) {
-        QString delim = "=()*/+-^<>:";
+        QString delim = "=()*/+-^<>:?";
         if (it->isSpace()) continue;
         if (delim.contains(*it)) {
             if (!tok.isEmpty()) tokens.append(tok);
@@ -133,6 +133,32 @@ void spicecompat::splitEqn(QString &eqn, QStringList &tokens)
         tok += *it;
     }
     if (!tok.isEmpty()) tokens.append(tok);
+
+    // Reassemble floating point numbers such as [+-]1.2e[+-]02 , etc.
+    for(auto t = tokens.begin();t != tokens.end();t++) {
+        QRegExp fpn("[0-9]+\\.[0-9]+[eE]"); // first part of float number
+        QRegExp dn("[0-9]+[eE]");
+        qDebug()<<*t;
+        if (dn.exactMatch(*t)||fpn.exactMatch(*t)) {
+            auto t1 = t;
+            t1++;
+            if (t1!=tokens.end()) {
+                if ((*t1=="+")||(*t1=="-")) {
+                    (*t) += (*t1);
+                    *t1 = "";
+                }
+            } else break;
+            t1++;
+            if (t1!=tokens.end()) {
+                QRegExp intn("[0-9]+");
+                if (intn.exactMatch(*t1)) {
+                    (*t) += (*t1);
+                    *t1 = "";
+                }
+            } else break;
+        }
+    }
+    tokens.removeAll("");
 }
 
 
@@ -324,9 +350,9 @@ QString spicecompat::getDefaultSimulatorName()
         break;
     case spicecompat::simSpiceOpus: sim_lbl = QObject::tr("SpiceOpus");
         break;
-    case spicecompat::simXycePar: sim_lbl = QObject::tr("XYCE (Serial)");
+    case spicecompat::simXyceSer: sim_lbl = QObject::tr("Xyce (Serial)");
         break;
-    case spicecompat::simXyceSer: sim_lbl = QObject::tr("XYCE (Parallel)");
+    case spicecompat::simXycePar: sim_lbl = QObject::tr("Xyce (Parallel)");
         break;
     default: sim_lbl = QObject::tr("Qucsator");
         break;

@@ -169,7 +169,8 @@ void SimSettingsDialog::slotApply()
     }
     QucsSettings.DefaultSimulator = cbxSimulator->currentIndex();
     accept();
-}
+    saveApplSettings();
+  }
 
 void SimSettingsDialog::slotCancel()
 {

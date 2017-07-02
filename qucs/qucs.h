@@ -161,6 +161,9 @@ private slots:
   void slotSimulateWithSpice();
   void slotAfterSpiceSimulation();
   void slotBuildVAModule();
+  void slotBuildXSPICEIfs(int mode = 0);
+  void slotEDDtoIFS();
+  void slotEDDtoMOD();
 
 signals:
   void signalKillEmAll();
@@ -271,7 +274,7 @@ private:
   // menus contain the items of their menubar
   enum { MaxRecentFiles = 8 };
   QMenu *fileMenu, *editMenu, *insMenu, *projMenu, *simMenu, *viewMenu,
-             *helpMenu, *alignMenu, *toolMenu, *recentFilesMenu;
+             *helpMenu, *alignMenu, *toolMenu, *recentFilesMenu, *cmMenu;
   QAction *fileRecentAction[MaxRecentFiles];
   QAction *fileClearRecent;
 
@@ -311,7 +314,7 @@ public:
   QAction *helpQucsIndex;
 #endif
   QAction *simSettings;
-  QAction *buildVAModule;
+  QAction *buildVAModule, *buildIFS;
 
 public slots:
   void slotEditRotate(bool);  // rotate the selected items
