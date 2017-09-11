@@ -527,6 +527,7 @@ void Module::registerModules (void) {
       REGISTER_SIMULATION_1 (SpiceDisto);
       REGISTER_SIMULATION_1 (SpiceCustomSim);
       REGISTER_SIMULATION_1 (SpicePZ);
+      REGISTER_SIMULATION_1 (SpiceSENS);
   }
 
   if ((QucsSettings.DefaultSimulator == spicecompat::simXycePar)||

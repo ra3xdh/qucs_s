@@ -60,6 +60,7 @@ sp_disto.cpp
 sp_noise.cpp
 sp_pz.cpp
 xyce_script.cpp
+sp_sens.cpp
 
 # 
 # Qucs-S new components cpp list
@@ -142,6 +143,7 @@ sp_fourier.h
 sp_disto.h
 sp_noise.h
 sp_pz.h
+sp_sens.h
 xyce_script.cpp
 
 # 
