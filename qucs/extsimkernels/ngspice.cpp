@@ -93,6 +93,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
            if (sim_typ==".DISTO") simulations.append("disto");
            if (sim_typ==".NOISE") simulations.append("noise");
            if (sim_typ==".PZ") simulations.append("pz");
+           if (sim_typ==".SENS") simulations.append("sens");
            if ((sim_typ==".SW")&&
                (pc->Props.at(0)->Value.startsWith("DC"))) simulations.append("dc");
            // stream<<s;
@@ -205,6 +206,9 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                    outputs.append("spice4qucs.cir.pz"); // Add it twice for poles and zeros
                    outputs.append("spice4qucs.cir.pz");
                    stream<<s;
+               } else if((sim_typ==".SENS")&&(sim=="sens")) {
+                   outputs.append("spice4qucs.sens.prn");
+                   stream<<s;
                } if ((sim_typ==".TR")&&(sim=="tran")) {
                    stream<<s;
                    Q3PtrList<Component> comps(Sch->DocComps); // find Fourier tran
@@ -289,7 +293,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             nods = " inoise_spectrum onoise_spectrum";
         }
 
-        if (sim!="pz") {
+        if ((sim!="pz")&&(sim!="sens")) {
             QString filename;
             if (hasParSWP&&hasDblSWP) filename = QString("%1_%2_swp_swp.txt").arg(basenam).arg(sim);
             else if (hasParSWP) filename = QString("%1_%2_swp.txt").arg(basenam).arg(sim);
