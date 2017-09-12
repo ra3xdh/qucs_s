@@ -208,6 +208,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                    stream<<s;
                } else if((sim_typ==".SENS")&&(sim=="sens")) {
                    outputs.append("spice4qucs.sens.prn");
+                   outputs.append("spice4qucs.ngspice.sens.dc.prn");
                    stream<<s;
                } if ((sim_typ==".TR")&&(sim=="tran")) {
                    stream<<s;

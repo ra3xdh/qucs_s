@@ -81,14 +81,15 @@ QString SpiceSENS::spice_netlist(bool isXyce)
     if (!isXyce) {
         if (Props.at(1)->Value=="dc") {
             s = QString("sens %1\n").arg(Props.at(0)->Value);
+            s += "print all > spice4qucs.ngspice.sens.dc.prn\n";
         } else {
             QString fstart = spicecompat::normalize_value(Props.at(3)->Value); // Start freq.
             QString fstop = spicecompat::normalize_value(Props.at(4)->Value); // Stop freq.
             s = QString("sens %1 ac %2 %3 %4 %5\n")
                     .arg(Props.at(0)->Value).arg(Props.at(2)->Value).arg(Props.at(5)->Value)
                     .arg(fstart).arg(fstop);
+            s += "write spice4qucs.sens.prn all\n";
         }
-        s += "write spice4qucs.sens.prn all\n";
     }
 
     return s;

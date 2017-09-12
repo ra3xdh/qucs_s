@@ -83,6 +83,8 @@ public:
                           QStringList &var_list, bool &ParSwp);
     void parsePZOutput(QString ngspice_file, QList< QList<double> > &sim_points,
                        QStringList &var_list, bool &ParSwp);
+    void parseSENSOutput(QString ngspice_file, QList< QList<double> > &sim_points,
+                         QStringList &var_list);
     void parseDC_OPoutput(QString ngspice_file);
     void parseDC_OPoutputXY(QString xyce_file);
     void parseSTEPOutput(QString ngspice_file,

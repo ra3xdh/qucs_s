@@ -546,6 +546,37 @@ void AbstractSpiceKernel::parsePZOutput(QString ngspice_file, QList<QList<double
 }
 
 /*!
+ * \brief AbstractSpiceKernel::parseSENSOutput Parse output after DC sensitivity anlysis.
+ * \param[in] ngspice_file Spice output file name
+ * \param[out] sim_points 2D array in which simulation points should be extracted. All simulation
+ *        points from all sweep variable steps are extracted in a single array
+ * \param[out] var_list This list is filled by simualtion variables. There is a list of dependent
+ *        and independent varibales. An independent variable is the first in list.
+ */
+void AbstractSpiceKernel::parseSENSOutput(QString ngspice_file, QList<QList<double> > &sim_points,
+                                          QStringList &var_list)
+{
+    QList <double> sim_point;
+    QFile ofile(ngspice_file);
+    if (ofile.open(QFile::ReadOnly)) {
+        QTextStream ngsp_data(&ofile);
+        QStringList lines = ngsp_data.readAll().split("\n");
+        var_list.append("");
+        sim_point.append(0.0);
+        foreach (QString lin, lines) {
+            if (lin.contains('=')) {
+                QString var = lin.section("=",0,0).trimmed();
+                double val = lin.section("=",1,1).trimmed().toDouble();
+                var_list.append(var);
+                sim_point.append(val);
+            }
+        }
+        sim_points.append(sim_point);
+        ofile.close();
+    }
+}
+
+/*!
  * \brief AbstractSpiceKernel::parseDC_OPoutput Parse DC OP simulation result and setup
  *        schematic node names to show DC bias
  * \param ngspice_file[in] DC OP results test file
@@ -958,6 +989,9 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         } else if (ngspice_output_filename.endsWith(".four")) {
             isComplex=false;
             parseFourierOutput(full_outfile,sim_points,var_list);
+        } else if (ngspice_output_filename.endsWith(".ngspice.sens.dc.prn")) {
+            isComplex = false;
+            parseSENSOutput(full_outfile,sim_points,var_list);
         } else if (ngspice_output_filename.endsWith(".txt_std")) {
             parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
         } else if (ngspice_output_filename.endsWith(".noise_log")) {
