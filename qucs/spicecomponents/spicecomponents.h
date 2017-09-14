@@ -82,6 +82,7 @@
 #include "sp_pz.h"
 #include "xyce_script.h"
 #include "sp_sens.h"
+#include "sp_sens_ac.h"
 
 // XSpice file components
 #include "xspicegeneric.h"

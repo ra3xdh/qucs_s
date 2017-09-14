@@ -14,15 +14,15 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "sp_sens.h"
+#include "sp_sens_ac.h"
 #include "main.h"
 #include "extsimkernels/spicecompat.h"
 
 
-SpiceSENS::SpiceSENS()
+SpiceSENS_AC::SpiceSENS_AC()
 {
   isSimulation = true;
-  Description = QObject::tr("DC sensitivity simulation");
+  Description = QObject::tr("AC sensitivity simulation");
 
   QString  s = Description;
   int a = s.indexOf(" ");
@@ -37,59 +37,52 @@ SpiceSENS::SpiceSENS()
 
   tx = 0;
   ty = y2+1;
-  Model = ".SENS";
+  Model = ".SENS_AC";
   Name  = "SENS";
   SpiceModel = ".SENS";
 
   // The index of the first 4 properties must not changed. Used in recreate().
   Props.append(new Property("Output", "v(out)", true,
             QObject::tr("Output variable")));
-  Props.append(new Property("Mode","dc",true,
-            QObject::tr("Sensitivity analysis mode (DC/AC)")+" [dc, ac]"));
   Props.append(new Property("Type", "lin", true,
-            QObject::tr("sweep type (for AC mode only)")+" [lin, dec, oct]"));
+            QObject::tr("sweep type")+" [lin, dec, oct]"));
   Props.append(new Property("Start", "1 Hz", true,
-            QObject::tr("start frequency in Hertz (for AC mode only)")));
+            QObject::tr("start frequency in Hertz")));
   Props.append(new Property("Stop", "1000 Hz", true,
-            QObject::tr("stop frequency in Hertz (for AC mode only)")));
+            QObject::tr("stop frequency in Hertz")));
   Props.append(new Property("Points", "10", true,
-            QObject::tr("number of simulation steps (for AC mode only)")));
+            QObject::tr("number of simulation steps")));
 }
 
-SpiceSENS::~SpiceSENS()
+SpiceSENS_AC::~SpiceSENS_AC()
 {
 }
 
-Component* SpiceSENS::newOne()
+Component* SpiceSENS_AC::newOne()
 {
-  return new SpiceSENS();
+  return new SpiceSENS_AC();
 }
 
-Element* SpiceSENS::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* SpiceSENS_AC::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("DC sensitivity simulation");
-  BitmapFile = (char *) "sp_sens";
+  Name = QObject::tr("AC sensitivity simulation");
+  BitmapFile = (char *) "sp_sens_ac";
 
-  if(getNewOne)  return new SpiceSENS();
+  if(getNewOne)  return new SpiceSENS_AC();
   return 0;
 }
 
-QString SpiceSENS::spice_netlist(bool isXyce)
+QString SpiceSENS_AC::spice_netlist(bool isXyce)
 {
     QString s;
     s.clear();
     if (!isXyce) {
-        if (Props.at(1)->Value=="dc") {
-            s = QString("sens %1\n").arg(Props.at(0)->Value);
-            s += "print all > spice4qucs.ngspice.sens.dc.prn\n";
-        } else {
-            QString fstart = spicecompat::normalize_value(Props.at(3)->Value); // Start freq.
-            QString fstop = spicecompat::normalize_value(Props.at(4)->Value); // Stop freq.
-            s = QString("sens %1 ac %2 %3 %4 %5\n")
-                    .arg(Props.at(0)->Value).arg(Props.at(2)->Value).arg(Props.at(5)->Value)
-                    .arg(fstart).arg(fstop);
-            s += "write spice4qucs.sens.prn all\n";
-        }
+        QString fstart = spicecompat::normalize_value(Props.at(2)->Value); // Start freq.
+        QString fstop = spicecompat::normalize_value(Props.at(3)->Value); // Stop freq.
+        s = QString("sens %1 ac %2 %3 %4 %5\n")
+                .arg(Props.at(0)->Value).arg(Props.at(1)->Value).arg(Props.at(4)->Value)
+                .arg(fstart).arg(fstop);
+        s += "write spice4qucs.sens.prn all\n";
     }
 
     return s;
