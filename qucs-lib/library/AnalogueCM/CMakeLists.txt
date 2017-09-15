@@ -2,6 +2,8 @@
 SET(AN_CM_resources
 etd.mod
 etd.ifs
+FNXSPICECM.mod
+FNXSPICECM.ifs
 RFind.mod
 RFind.ifs
 )

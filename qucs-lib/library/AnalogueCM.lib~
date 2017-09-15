@@ -71,7 +71,7 @@ Fowler-Nordheim diode model:
 
 Parameters; Description; Default value
 M;      Number of diodes multiplying factor; 1
-L;      Length pf diode for calculating Fowler-Nordheim current (m); 50e-6 
+L;      Length pf diode for calculating Fowler-Nordheim current (m); 50e-6
 W;      Width of diode for calculating Fowler-Nordheim current (m); 50e-6
 Ef;     Forward critical electric field (V/m); 1e10
 Er;     Reverse critical electric field (V/m); 1e10

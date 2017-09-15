@@ -1,0 +1,146 @@
+NAME_TABLE:
+C_Function_Name: cm_FNXSPICECM
+Spice_Model_Name: fnxspicecm
+Description: " "
+
+
+PORT_TABLE:
+Port_Name: nPAnode_nPCathode
+Description: " "
+Direction: inout
+Default_Type: gd
+Allowed_Types: [gd]
+Vector: no
+Vector_Bounds: - 
+Null_Allowed: no
+
+PARAMETER_TABLE:
+Parameter_Name: jf
+Description: "  "
+Data_Type: real
+Default_Value: 0.0
+Limits: -
+Vector: no
+Vector_Bounds: -
+Null_Allowed: no
+
+PARAMETER_TABLE:
+Parameter_Name: tox
+Description: "  "
+Data_Type: real
+Default_Value: 0.0
+Limits: -
+Vector: no
+Vector_Bounds: -
+Null_Allowed: no
+
+PARAMETER_TABLE:
+Parameter_Name: ef
+Description: "  "
+Data_Type: real
+Default_Value: 0.0
+Limits: -
+Vector: no
+Vector_Bounds: -
+Null_Allowed: no
+
+PARAMETER_TABLE:
+Parameter_Name: jr
+Description: "  "
+Data_Type: real
+Default_Value: 0.0
+Limits: -
+Vector: no
+Vector_Bounds: -
+Null_Allowed: no
+
+PARAMETER_TABLE:
+Parameter_Name: er
+Description: "  "
+Data_Type: real
+Default_Value: 0.0
+Limits: -
+Vector: no
+Vector_Bounds: -
+Null_Allowed: no
+
+PARAMETER_TABLE:
+Parameter_Name: m
+Description: "  "
+Data_Type: real
+Default_Value: 0.0
+Limits: -
+Vector: no
+Vector_Bounds: -
+Null_Allowed: no
+
+PARAMETER_TABLE:
+Parameter_Name: l
+Description: "  "
+Data_Type: real
+Default_Value: 0.0
+Limits: -
+Vector: no
+Vector_Bounds: -
+Null_Allowed: no
+
+PARAMETER_TABLE:
+Parameter_Name: scale
+Description: "  "
+Data_Type: real
+Default_Value: 0.0
+Limits: -
+Vector: no
+Vector_Bounds: -
+Null_Allowed: no
+
+PARAMETER_TABLE:
+Parameter_Name: shrink
+Description: "  "
+Data_Type: real
+Default_Value: 0.0
+Limits: -
+Vector: no
+Vector_Bounds: -
+Null_Allowed: no
+
+PARAMETER_TABLE:
+Parameter_Name: w
+Description: "  "
+Data_Type: real
+Default_Value: 0.0
+Limits: -
+Vector: no
+Vector_Bounds: -
+Null_Allowed: no
+
+PARAMETER_TABLE:
+Parameter_Name: xl
+Description: "  "
+Data_Type: real
+Default_Value: 0.0
+Limits: -
+Vector: no
+Vector_Bounds: -
+Null_Allowed: no
+
+PARAMETER_TABLE:
+Parameter_Name: scalem
+Description: "  "
+Data_Type: real
+Default_Value: 0.0
+Limits: -
+Vector: no
+Vector_Bounds: -
+Null_Allowed: no
+
+PARAMETER_TABLE:
+Parameter_Name: xw
+Description: "  "
+Data_Type: real
+Default_Value: 0.0
+Limits: -
+Vector: no
+Vector_Bounds: -
+Null_Allowed: no
+
