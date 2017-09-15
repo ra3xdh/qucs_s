@@ -556,22 +556,36 @@ void AbstractSpiceKernel::parsePZOutput(QString ngspice_file, QList<QList<double
 void AbstractSpiceKernel::parseSENSOutput(QString ngspice_file, QList<QList<double> > &sim_points,
                                           QStringList &var_list)
 {
-    QList <double> sim_point;
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream ngsp_data(&ofile);
         QStringList lines = ngsp_data.readAll().split("\n");
-        var_list.append("");
-        sim_point.append(0.0);
-        foreach (QString lin, lines) {
-            if (lin.contains('=')) {
-                QString var = lin.section("=",0,0).trimmed();
-                double val = lin.section("=",1,1).trimmed().toDouble();
+        // Extract variables
+        int cnt = 0;
+        for (auto lin=lines.begin(); lin != lines.end(); lin++) {
+            if (lin->contains("Sens analysis")) cnt++;
+            if ( lin->contains('=')) {
+                QString var = (*lin).section("=",0,0).trimmed();
                 var_list.append(var);
+            }
+            if (cnt>=2) break;
+        }
+
+        // Extract values
+        QList <double> sim_point;
+        cnt = 0;
+        for (auto lin=lines.begin(); lin != lines.end(); lin++) {
+            if (lin->contains('=')) {
+                double val = (*lin).section("=",1,1).trimmed().toDouble();
                 sim_point.append(val);
+                cnt++;
+            }
+            if (cnt >= var_list.count()) {
+                sim_points.append(sim_point);
+                sim_point.clear();
+                cnt = 0;
             }
         }
-        sim_points.append(sim_point);
         ofile.close();
     }
 }

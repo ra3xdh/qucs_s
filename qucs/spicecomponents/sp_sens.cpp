@@ -44,16 +44,14 @@ SpiceSENS::SpiceSENS()
   // The index of the first 4 properties must not changed. Used in recreate().
   Props.append(new Property("Output", "v(out)", true,
             QObject::tr("Output variable")));
-  Props.append(new Property("Mode","dc",true,
-            QObject::tr("Sensitivity analysis mode (DC/AC)")+" [dc, ac]"));
-  Props.append(new Property("Type", "lin", true,
-            QObject::tr("sweep type (for AC mode only)")+" [lin, dec, oct]"));
-  Props.append(new Property("Start", "1 Hz", true,
-            QObject::tr("start frequency in Hertz (for AC mode only)")));
-  Props.append(new Property("Stop", "1000 Hz", true,
-            QObject::tr("stop frequency in Hertz (for AC mode only)")));
-  Props.append(new Property("Points", "10", true,
-            QObject::tr("number of simulation steps (for AC mode only)")));
+  Props.append(new Property("Param", "R1", true,
+        QObject::tr("parameter to sweep")));
+  Props.append(new Property("Start", "5", true,
+        QObject::tr("start value for sweep")));
+  Props.append(new Property("Stop", "50", true,
+        QObject::tr("stop value for sweep")));
+  Props.append(new Property("Step", "1", true,
+        QObject::tr("Simulation step")));
 }
 
 SpiceSENS::~SpiceSENS()
@@ -79,17 +77,22 @@ QString SpiceSENS::spice_netlist(bool isXyce)
     QString s;
     s.clear();
     if (!isXyce) {
-        if (Props.at(1)->Value=="dc") {
-            s = QString("sens %1\n").arg(Props.at(0)->Value);
-            s += "print all > spice4qucs.ngspice.sens.dc.prn\n";
-        } else {
-            QString fstart = spicecompat::normalize_value(Props.at(3)->Value); // Start freq.
-            QString fstop = spicecompat::normalize_value(Props.at(4)->Value); // Stop freq.
-            s = QString("sens %1 ac %2 %3 %4 %5\n")
-                    .arg(Props.at(0)->Value).arg(Props.at(2)->Value).arg(Props.at(5)->Value)
-                    .arg(fstart).arg(fstop);
-            s += "write spice4qucs.sens.prn all\n";
-        }
+        QString sweepvar = Props.at(1)->Value;
+        QString par = sweepvar;
+        sweepvar.remove(' ');
+        QString output = "spice4qucs.ngspice.sens.dc.prn";
+        s += QString("echo \"Start\">%1\n").arg(output);
+        s += QString("let %1_start=%2\n").arg(sweepvar).arg(Props.at(2)->Value);
+        s += QString("let %1_act=%1_start\n").arg(sweepvar);
+        s += QString("let %1_step=%2\n").arg(sweepvar).arg(Props.at(4)->Value);
+        s += QString("let %1_stop=%2\n").arg(sweepvar).arg(Props.at(3)->Value);
+        s += QString("while %1_act le %1_stop\n").arg(sweepvar);
+        s += QString("alter %1 = %2_act\n").arg(par).arg(sweepvar);
+        s += QString("sens %1\n").arg(Props.at(0)->Value);
+        s += QString("echo \"Sens analysis\">>%1\n").arg(output);
+        s += QString("print %1_act>>%2\nprint all>>%2\n").arg(sweepvar).arg(output);
+        s += QString("let %1_act = %1_act + %1_step\nend\n").arg(sweepvar);
+
     }
 
     return s;
