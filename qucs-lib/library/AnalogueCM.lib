@@ -100,8 +100,7 @@ Fowler-Nordheim tunneling theory for a Schottky-Nordheim barrier, Applied Physic
 </Description>
 
 <Spice>
-.SUBCKT AnalogueCM_FowlerNDiodeXSPICE gnd nPAnode nPCathode M=1 L=50e-6 W=50e-6 Ef=1e10 Er=1e10 Jf=1e-10 
-+       Jr=1e-10 Scale=1.0 Scalem=1.0 Shrink=1.0 Xl=1.0 Xw=1.0 Rd=0.1 Ld=1e-10 Tox=1.0e-8 
+.SUBCKT AnalogueCM_FowlerNDiodeXSPICE gnd nPAnode nPCathode M=1 L=50e-6 W=50e-6 Ef=1e10 Er=1e10 Jf=1e-10 Jr=1e-10 Tox=1.0e-8 Scale=1.0 Scalem=1.0 Shrink=1.0 Xl=1.0 Xw=1.0 Rd=0.1 Ld=1e-10 
 L1 ni1  nPAnode {Ld}
 R1 ni2  ni1 {Rd}
 A1 %gd(ni2 nPCathode)  FNMOD
@@ -109,11 +108,6 @@ A1 %gd(ni2 nPCathode)  FNMOD
 +       Jf = {Jf} Jr = {Jr} Tox = {Tox}  Scale = {Scale} Scalem = {Scalem} Shrink = {Shrink}
 +       Xl = {Xl} Xw = {Xw}   )
 .ENDS
-VPrId n1 n2 DC 0
-V1 n1  0 dc 0 ac 0
-R1 nd  n2 0.1
-XSUB1 nd 0 AnalogueCM_FowlerNDiodeXSPICE M=1 L=50E-6 W=50E-6 Ef=1E10 Er=1E10 Jf=1E-10 
-+          Jr=1E-10 Scale=1.0 Scalem=1.0 Shrink=1.0 Xl=1.0 Xw=1.0 Rd=0.1 Ld=1E-10 Tox=1.0E-8
 </Spice>
 <SpiceAttach "FNXSPICECM.mod" "FNXSPICECM.ifs"> 
 <Model>  
