@@ -83,15 +83,15 @@ QString SpiceSENS::spice_netlist(bool isXyce)
         QString output = "spice4qucs.ngspice.sens.dc.prn";
         s += QString("echo \"Start\">%1\n").arg(output);
         s += QString("let %1_start=%2\n").arg(sweepvar).arg(Props.at(2)->Value);
-        s += QString("let %1_act=%1_start\n").arg(sweepvar);
+        s += QString("let %1_sweep=%1_start\n").arg(sweepvar);
         s += QString("let %1_step=%2\n").arg(sweepvar).arg(Props.at(4)->Value);
         s += QString("let %1_stop=%2\n").arg(sweepvar).arg(Props.at(3)->Value);
-        s += QString("while %1_act le %1_stop\n").arg(sweepvar);
-        s += QString("alter %1 = %2_act\n").arg(par).arg(sweepvar);
+        s += QString("while %1_sweep le %1_stop\n").arg(sweepvar);
+        s += QString("alter %1 = %2_sweep\n").arg(par).arg(sweepvar);
         s += QString("sens %1\n").arg(Props.at(0)->Value);
         s += QString("echo \"Sens analysis\">>%1\n").arg(output);
-        s += QString("print %1_act>>%2\nprint all>>%2\n").arg(sweepvar).arg(output);
-        s += QString("let %1_act = %1_act + %1_step\nend\n").arg(sweepvar);
+        s += QString("print %1_sweep>>%2\nprint all>>%2\n").arg(sweepvar).arg(output);
+        s += QString("let %1_sweep = %1_sweep + %1_step\nend\n").arg(sweepvar);
 
     }
 
