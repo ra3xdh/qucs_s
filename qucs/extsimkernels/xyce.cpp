@@ -52,6 +52,7 @@ void Xyce::determineUsedSimulations()
            if (sim_typ==".NOISE") simulationsQueue.append("noise");
            if (sim_typ==".TR") simulationsQueue.append("tran");
            if (sim_typ==".HB") simulationsQueue.append("hb");
+           if (sim_typ==".SENS_XYCE") simulationsQueue.append("sens");
            if (sim_typ==".XYCESCR") simulationsQueue.append(pc->Name); // May be >= XYCE scripts
            if ((sim_typ==".SW")&&
                (pc->Props.at(0)->Value.startsWith("DC"))) simulationsQueue.append("dc");
@@ -153,6 +154,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
            QString s = pc->getSpiceNetlist(true);
            if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
            if ((sim_typ==".NOISE")&&(sim=="noise")) stream<<s;
+           if ((sim_typ==".SENS_XYCE")&&(sim=="sens")) stream<<s;
            if (sim==pc->Name) stream<<s; // Xyce scripts
            if ((sim_typ==".TR")&&(sim=="tran")){
                stream<<s;
@@ -216,6 +218,9 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
         filename += "_std";
         write_str = QString(".PRINT noise file=%1 inoise onoise\n").arg(filename);
         outputs.append(filename);
+    } else if (sim=="sens") {
+        write_str.clear();
+        outputs.append("spice4qucs.sens.cir.SENS.prn");
     } else {
         write_str = QString(".PRINT  %1 format=raw file=%2 %3\n").arg(sim).arg(filename).arg(nods);
         outputs.append(filename);
