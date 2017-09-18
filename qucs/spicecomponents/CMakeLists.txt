@@ -62,6 +62,7 @@ sp_pz.cpp
 xyce_script.cpp
 sp_sens.cpp
 sp_sens_ac.cpp
+sp_sens_xyce.cpp
 
 # 
 # Qucs-S new components cpp list
@@ -146,7 +147,8 @@ sp_noise.h
 sp_pz.h
 sp_sens.h
 sp_sens_ac.h
-xyce_script.cpp
+sp_sens_xyce.h
+xyce_script.h
 
 # 
 # Qucs-S new components h list

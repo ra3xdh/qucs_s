@@ -534,6 +534,7 @@ void Module::registerModules (void) {
   if ((QucsSettings.DefaultSimulator == spicecompat::simXycePar)||
       (QucsSettings.DefaultSimulator == spicecompat::simXyceSer)) {
       REGISTER_SIMULATION_1 (XyceScript);
+      REGISTER_SIMULATION_1 (SpiceSENS_Xyce);
   }
 
   // diagrams

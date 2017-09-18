@@ -202,7 +202,7 @@ void Component::paint(ViewPainter *p)
             ||(Model==".NOISE")||(Model==".PZ")||
             (Model==".SENS")||(Model==".SENS_AC"))
         p->Painter->setPen(QPen(Qt::blue,2));
-    else if (Model==".XYCESCR") p->Painter->setPen(QPen(Qt::darkGreen,2));
+    else if ((Model==".XYCESCR")||(Model==".SENS_XYCE")) p->Painter->setPen(QPen(Qt::darkGreen,2));
     else if (Model==".FOURIER") p->Painter->setPen(QPen(Qt::darkRed,2));
     else p->Painter->setPen(QPen(Qt::darkBlue,2));
 
