@@ -1,8 +1,8 @@
 /***************************************************************************
-                               sp_noise.cpp
+                               sp_sens_ac.cpp
                                ------------
-    begin                : Tue May 26 2015
-    copyright            : (C) 2015 by Vadim Kuznetsov
+    begin                : Mon Sep 18 2017
+    copyright            : (C) 2017 by Vadim Kuznetsov
     email                : ra3xdh@gmail.com
  ***************************************************************************/
 

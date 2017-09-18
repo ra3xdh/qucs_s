@@ -1,8 +1,8 @@
 /***************************************************************************
-                               sp_pz.h
+                               sp_sens_ac.h
                                 ----------
-    begin                : Thu Nov 05 2015
-    copyright            : (C) 2015 by Vadim Kuznetsov
+    begin                : Mon Sep 18 2017
+    copyright            : (C) 2017 by Vadim Kuznetsov
     email                : ra3xdh@gmail.com
  ***************************************************************************/
 
