@@ -87,7 +87,11 @@ QString SpiceSENS::spice_netlist(bool isXyce)
         s += QString("let %1_step=%2\n").arg(sweepvar).arg(Props.at(4)->Value);
         s += QString("let %1_stop=%2\n").arg(sweepvar).arg(Props.at(3)->Value);
         s += QString("while %1_sweep le %1_stop\n").arg(sweepvar);
-        s += QString("alter %1 = %2_sweep\n").arg(par).arg(sweepvar);
+        if (sweepvar.compare("temp",Qt::CaseInsensitive)) {
+            s += QString("alter %1 = %2_sweep\n").arg(par).arg(sweepvar);
+        } else {
+            s += QString("set %1 = $&%2_sweep\n").arg(par).arg(sweepvar);
+        }
         s += QString("sens %1\n").arg(Props.at(0)->Value);
         s += QString("echo \"Sens analysis\">>%1\n").arg(output);
         s += QString("print %1_sweep>>%2\nprint all>>%2\n").arg(sweepvar).arg(output);
