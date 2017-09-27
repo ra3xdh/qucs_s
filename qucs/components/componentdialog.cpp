@@ -73,7 +73,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
      (Comp->Model != ".Digi") && (Comp->Model != ".ETR") &&
      (Comp->Model != ".FOURIER") &&
      (Comp->Model != ".PZ") && (Comp->Model != ".SENS") &&
-     (Comp->Model != ".SENS_AC") && (Comp->Model != ".SENS_XYCE")) {
+     (Comp->Model != ".SENS_AC") && (Comp->Model != ".SENS_XYCE") &&
+     (Comp->Model != ".SENS_TR_XYCE")) {
     QTabWidget *t = new QTabWidget(this);
     all->addWidget(t);
 

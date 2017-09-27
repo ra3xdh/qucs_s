@@ -63,6 +63,7 @@ xyce_script.cpp
 sp_sens.cpp
 sp_sens_ac.cpp
 sp_sens_xyce.cpp
+sp_sens_tr_xyce.cpp
 
 # 
 # Qucs-S new components cpp list
@@ -148,6 +149,7 @@ sp_pz.h
 sp_sens.h
 sp_sens_ac.h
 sp_sens_xyce.h
+sp_sens_tr_xyce.h
 xyce_script.h
 
 # 
