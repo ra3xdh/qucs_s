@@ -80,8 +80,10 @@ QString SpiceSENS_TR_Xyce::spice_netlist(bool isXyce)
     QString s;
     s.clear();
     if (isXyce) {
-        s = QString(".tran %1 %2 %3").arg(Props.at(3)->Value)
-                .arg(Props.at(4)->Value).arg(Props.at(5)->Value);
+        QString start = spicecompat::normalize_value(Props.at(3)->Value);
+        QString stop = spicecompat::normalize_value(Props.at(4)->Value);
+        QString step = spicecompat::normalize_value(Props.at(5)->Value);
+        s = QString(".tran %1 %2 %3").arg(start).arg(stop).arg(step);
         if (Props.at(5)->Value=="yes") s +="\n";
         else s += " uic\n";
         if (Props.at(2)->Value=="direct") s += ".options sensitivity direct=1 adjoint=0\n";

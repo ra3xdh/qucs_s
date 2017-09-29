@@ -78,11 +78,13 @@ QString SpiceSENS_Xyce::spice_netlist(bool isXyce)
     QString s;
     s.clear();
     if (isXyce) {
+        QString start = spicecompat::normalize_value(Props.at(3)->Value);
+        QString stop = spicecompat::normalize_value(Props.at(4)->Value);
+        QString step = spicecompat::normalize_value(Props.at(5)->Value);
         s = QString(".dc %3 %4 %5 %6\n"
                     ".sens objfunc={%1} param=%2\n"
                     ".print sens\n").arg(Props.at(0)->Value).arg(Props.at(1)->Value)
-                .arg(Props.at(2)->Value).arg(Props.at(3)->Value).arg(Props.at(4)->Value)
-                .arg(Props.at(5)->Value);
+                .arg(Props.at(2)->Value).arg(start).arg(stop).arg(step);
     }
 
     return s;

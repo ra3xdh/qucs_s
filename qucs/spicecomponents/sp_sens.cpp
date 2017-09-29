@@ -80,12 +80,15 @@ QString SpiceSENS::spice_netlist(bool isXyce)
         QString sweepvar = Props.at(1)->Value;
         QString par = sweepvar;
         sweepvar.remove(' ');
+        QString start = spicecompat::normalize_value(Props.at(2)->Value);
+        QString stop = spicecompat::normalize_value(Props.at(3)->Value);
+        QString step = spicecompat::normalize_value(Props.at(4)->Value);
         QString output = "spice4qucs.ngspice.sens.dc.prn";
         s += QString("echo \"Start\">%1\n").arg(output);
-        s += QString("let %1_start=%2\n").arg(sweepvar).arg(Props.at(2)->Value);
+        s += QString("let %1_start=%2\n").arg(sweepvar).arg(start);
         s += QString("let %1_sweep=%1_start\n").arg(sweepvar);
-        s += QString("let %1_step=%2\n").arg(sweepvar).arg(Props.at(4)->Value);
-        s += QString("let %1_stop=%2\n").arg(sweepvar).arg(Props.at(3)->Value);
+        s += QString("let %1_step=%2\n").arg(sweepvar).arg(step);
+        s += QString("let %1_stop=%2\n").arg(sweepvar).arg(stop);
         s += QString("while %1_sweep le %1_stop\n").arg(sweepvar);
         if (sweepvar.compare("temp",Qt::CaseInsensitive)) {
             s += QString("alter %1 = %2_sweep\n").arg(par).arg(sweepvar);
