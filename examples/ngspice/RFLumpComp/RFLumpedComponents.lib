@@ -1,0 +1,203 @@
+<Qucs Library 0.0.19 "RFLumpedComponents">
+
+<Component RFAxialRes>
+  <Description>
+RF axial resister model:
+5 October 2017    Mike Brinson mbrin72043@yahoo.co.uk
+
+Parameters; Description; Default value
+R0; Nominal resistance at Tnom; 50
+tc1; First order temperature coefficient (1/K); 0.0
+tc2; Second order temperature coefficient (1/(K*K)); 0.0
+tnom; Parameter measurement temoerature (C); 26.58
+temp; Circuit temperature (C); 26.58
+l1; Lead parasitic inductance (H); 1.5n
+ls; Resistance serial inductance;  5n
+l2;  Lead parasitic inductance (H); 1.5n
+Cp;  Resistor serial parasitic capacitance; 0.35p
+Cpad; Resistor parallel parastic; 5p
+
+Test examples: (1) Test_RATF_EquivalentCircuitD.sch
+
+References
+[1] See Qucs-S_help, Chapter 13, for model specification and description.
+[2] "Inder Bahl, Lumped elements for RF and microwave circuits", Arktech House,
+Boston, London, 2003. ISBN 1-58053309-4
+  </Description>
+  <Model>
+.Def:RFLumpedComponents1_RFAxialRes nP1 nP2 
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  RFLumpedComponents1_RFAxialRes.sch
+
+.SUBCKT RFLumpedComponents_RFAxialRes  gnd nP1 nP2 R0=1k Tc1=0.0 Tc2=0.0 tnom=26.58 temp=26.58 L1=1.5n Ls=5n L2=1.5n Cp=0.35p Cpad=1e-15 
+R2 n3  n2 {R0} rmod (tc1={tc1} tc2={tc2} temp={temp})
+ 
+L3 n1  n2 {Ls}
+L4 n3  nP2 {L2}
+
+C2 n1  n3 {Cp}
+C3 nP1  0 {Cpad/2}
+C4 nP2  0 { Cpad/2 }
+L1 nP1  n1 {L1}
+.MODEL rmod r (tnom = {tnom})
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Rectangle -40 -10 60 20 #5555ff 2 1 #55aaff 1 1>
+    <Line 20 0 20 0 #000000 2 1>
+    <Line -40 0 -20 0 #000000 2 1>
+    <.ID -50 24 RFALC "1=R0=1k=Nominal resistance at Tnom.=" "1=Tc1=0.0=Parts per million.=" "1=Tc2=0.0=Parts per million.=" "1=tnom=26.58=Parameter measurement temperature in Celsius.=" "1=temp=26.58=PaCircuit temperature in Celsius.=" "1=L1=1.5n=Lead inductance in Henries..=" "1=Ls=5n=Resistor inductance in Henries. .=" "1=L2=1.5n=Lead inductance in Henries..=" "1=Cp=0.35p=Parasitic capacitance in F.=" "1=Cpad=1e-15=Parasitic capacitance in F.=">
+    <Rectangle 10 -10 5 20 #aa5500 0 1 #00ff00 1 1>
+    <Rectangle 0 -10 5 20 #000000 0 1 #ffaa00 1 1>
+    <Rectangle -10 -10 5 20 #ff00ff 0 1 #ff00ff 1 1>
+    <Rectangle -20 -10 5 20 #00007f 0 1 #00007f 1 1>
+    <.PortSym -60 0 1 0>
+    <.PortSym 40 0 2 180>
+  </Symbol>
+</Component>
+
+<Component RFAxialResPgen>
+  <Description>
+RF axial resister parameter extraction model:
+5 October 2017    Mike Brinson mbrin72043@yahoo.co.uk
+
+Parameters; Description; Default value
+R0; Nominal resistance at Tnom; 50
+tc1; First order temperature coefficient (1/K); 0.0
+tc2; Second order temperature coefficient (1/(K*K)); 0.0
+tnom; Parameter measurement temoerature (C); 26.58
+temp; Circuit temperature (C); 26.58
+Wlength1; Wire 1 lead length (m); 8e-3
+Wradius;  Wire lead radius (m);  0.3e-3
+Wlength2; Wire 2 lead length (m); 8e-3
+Blength;  Resistor external body length (m); 6.3e-3
+Bradius;  Resistor external body radius (m); 1.2e-3
+H; Distance from resistor to ground plane (m); 1.6e-3
+Erb; Resistor tube relative permiability; 9.9
+Erp; Printed circuit board relative permiability; 3.2
+
+Test examples: (1) Test_RATF_EquivalentCircuitD.sch
+
+References
+[1] See Qucs-S_help, Chapter 13, for model specification and description.
+[2] "Inder Bahl, Lumped elements for RF and microwave circuits", Arktech House,
+Boston, London, 2003. ISBN 1-58053309-4
+
+  </Description>
+  <Model>
+.Def:RFLumpedComponents1_RFAxialResPgen nP1 nP2 nCp nLs nL1 nL2 nCap  
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  RFLumpedComponents1_RFAxialResPgen.sch
+
+.SUBCKT RFLumpedComponents_RFAxialResPgen  gnd nP1 nP2 nCp nLs nL1 nL2 nCap R0=1k Tc1=0.0 Tc2=0.0 tnom=26.58 temp=26.58 Wlength1=8e-3 Wradius=0.3e-3 Wlength2=8e-3 Blength=6.3e-3 Bradius=1.2e-3 H=1.6e-3 Erb=9.9 Erp=3.1 
+.PARAM L1={2e-7*Wlength1*(0.5*log(2.0*Wlength1/Wradius)-0.75)}
+.PARAM L2={2e-7*Wlength2*(0.5*log(2.0*Wlength2/Wradius)-0.75)}
+.PARAM Ns=3
+.PARAM Wstrip={0.75*Blength/Ns}
+.PARAM Lstrip={2.0*3.1415926539*Bradius*Ns}
+.PARAM Ls={2.0e-7*Lstrip*(0.5*log(2.0*Lstrip/Wstrip)+(Wstrip/(3.0*Lstrip)))}
+.PARAM Cp={8.85e-12*Erb*3.1415926539*Bradius*Bradius/(0.75*Blength)}
+.PARAM Cpad={8.85e-12*Erp*1.5*Blength*Bradius/H}}
+R1 n3  n2 {R0} rmod (tc1={tc1} tc2={tc2} temp={temp})
+ 
+L n1  n2 {Ls}
+L2 n3  nP2 {L2}
+
+R2 0  nCp 1
+I1 0  nCp dc 0.0 ac {Cp}
+R3 0  nLs 1
+I2 0  nLs dc 0.0 ac {Ls}
+R4 0  nL1 1
+R5 0  nL2 1
+I3 0  nL1 dc 0.0 ac {L1}
+I4 0  nL2 dc 0.0 ac {L2}
+Lead nP1  n1 {L1}
+C1 n1  n3 {Cp}
+R6 0  nCap 1
+I5 0  nCap dc 0.0 ac {Cpad}
+C2 nP1  0 {Cpad/2}
+C3 nP2  0 { Cpad/2 }
+.MODEL rmod r (tnom = {tnom})
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line -30 -20 0 -10 #000000 4 1>
+    <Line -30 -30 10 0 #00007f 4 1>
+    <Line -20 -30 0 10 #00007f 4 1>
+    <Line -20 -20 10 0 #000000 4 1>
+    <Line -10 -20 0 -10 #00007f 4 1>
+    <Line -10 -30 10 0 #00007f 4 1>
+    <Line 0 -30 0 10 #00007f 4 1>
+    <Line 0 -20 20 0 #00007f 2 1>
+    <Line 60 -20 30 0 #00007f 2 1>
+    <Rectangle 20 -30 0 20 #00007f 4 1 #c0c0c0 1 0>
+    <Rectangle 60 -30 0 20 #00007f 4 1 #c0c0c0 1 0>
+    <Rectangle 20 -30 40 0 #00007f 4 1 #c0c0c0 1 0>
+    <Rectangle 20 -10 40 0 #00007f 4 1 #c0c0c0 1 0>
+    <Line -40 5 0 -25 #00007f 2 1>
+    <Line -60 -20 30 0 #000000 2 1>
+    <Line 80 5 0 -25 #000000 2 1>
+    <Line 90 -20 0 -10 #000000 4 1>
+    <Line 90 -30 10 0 #00007f 4 1>
+    <Line 100 -30 0 10 #00007f 4 1>
+    <Line 100 -20 10 0 #000000 4 1>
+    <Line 110 -20 0 -10 #00007f 4 1>
+    <Line 110 -30 10 0 #00007f 4 1>
+    <Line 120 -30 0 10 #00007f 4 1>
+    <Line 15 5 -55 0 #00007f 2 1>
+    <Line -90 -30 10 0 #00007f 4 1>
+    <Line -80 -30 0 10 #00007f 4 1>
+    <Line -80 -20 10 0 #000000 4 1>
+    <Line -70 -20 0 -10 #00007f 4 1>
+    <Line -70 -30 10 0 #00007f 4 1>
+    <Line -60 -30 0 10 #00007f 4 1>
+    <Line -180 -20 90 0 #000000 2 1>
+    <Line 120 -20 80 0 #000000 2 1>
+    <Line -90 -20 0 -10 #000000 4 1>
+    <Line 15 -5 0 20 #000000 4 1>
+    <Line 25 -5 0 20 #000000 4 1>
+    <Line 25 5 55 0 #000000 2 1>
+    <Text 95 -60 12 #000000 0 "L2">
+    <Text 35 -60 12 #000000 0 "R">
+    <Text -20 -60 12 #000000 0 "Ls">
+    <Text -85 -60 12 #000000 0 "L1">
+    <Line 20 30 0 30 #000000 2 1>
+    <Line -60 30 0 30 #000000 2 1>
+    <Line -20 30 0 30 #000000 2 1>
+    <.PortSym -60 60 5 90>
+    <.PortSym -20 60 4 90>
+    <.PortSym 20 60 3 90>
+    <Text -81 33 12 #000000 0 "L1">
+    <Text -40 32 12 #000000 0 "Ls">
+    <Text -3 33 12 #000000 0 "Cp">
+    <Text 48 35 12 #000000 0 "L2">
+    <Line 110 30 0 30 #000000 2 1>
+    <.PortSym 110 60 7 90>
+    <Text 120 30 12 #000000 0 "Cpad">
+    <.PortSym 200 -20 2 180>
+    <.PortSym -180 -20 1 0>
+    <Line -140 -20 0 20 #00007f 2 1>
+    <Line -150 0 20 0 #000000 4 1>
+    <Line -150 10 20 0 #00007f 4 1>
+    <Line -140 10 0 10 #00007f 2 1>
+    <Text -10 -20 12 #000000 0 "Cp">
+    <Line 160 -20 0 20 #00007f 2 1>
+    <Line 150 0 20 0 #000000 4 1>
+    <Line 150 10 20 0 #00007f 4 1>
+    <Line 160 10 0 10 #00007f 2 1>
+    <Rectangle -150 20 325 5 #000000 0 1 #aa5500 1 1>
+    <Text 90 -10 12 #000000 0 "Cpad/2">
+    <Text -125 -10 12 #000000 0 "Cpad/2">
+    <Text -30 0 12 #000000 0 "gnd">
+    <Line 75 30 0 30 #000000 2 1>
+    <.PortSym 75 60 6 90>
+    <Rectangle -160 -60 345 90 #aa0000 3 1 #c0c0c0 1 0>
+    <.ID -55 114 R_ATF_EC "1=R0=1k=Nominal resistance at Tnom.=" "1=Tc1=0.0=Resistance linear temperature coefficient in parts per million.=" "1=Tc2=0.0=Resistance quadratic temperature coefficient in parts per million.=" "1=tnom=26.58=Parameter measurement temperature in Celsius.=" "1=temp=26.58=Circuit temperature in Celsius.=" "1=Wlength1=8e-3=Lead 1 length in m.=" "1=Wradius=0.3e-3=Lead radius in m.=" "1=Wlength2=8e-3=Lead 2 length in m.=" "1=Blength=6.3e-3=Resistor body length in m.=" "1=Bradius=1.2e-3=Resistor body radius in m.=" "1=H=1.6e-3=Distance to ground plane in metres.=" "1=Erb=9.9=Relative dielectric constant. =" "1=Erp=3.1==">
+  </Symbol>
+</Component>
+
+
