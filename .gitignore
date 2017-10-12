@@ -44,3 +44,10 @@ qrc_*.cpp
 *.swp
 *.dsp
 *.dsw
+*.user
+*~
+*.dpl
+*.dat
+*.dat.ngspice
+*.dat.xyce
+*.dat.spopus
