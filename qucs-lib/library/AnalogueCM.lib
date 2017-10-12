@@ -57,17 +57,83 @@ Rp C  A 1e9
     <Line 0 -20 10 0 #00007f 4 1>
     <Line 0 20 10 0 #00007f 4 1>
     <.ID -40 54 Esakitd "1=is=1e-12==" "1=ip=5e-3==" "1=iv=370e-6==" "1=vp=0.05==" "1=vv=0.37==" "1=a2=5==" "1=ctd=0.5e-12==" "1=temp=26.85==">
-    <Ellipse -35 -30 60 60 #ff00ff 3 1 #c0c0c0 1 0>
+    <Ellipse -35 -30 60 60 #aa0000 3 1 #c0c0c0 1 0>
     <.PortSym 40 0 2 180>
     <.PortSym -60 0 1 0>
-    <Text -30 -60 12 #ff00ff 0 "XSPICE">
 </Symbol>
 </Component>
+/*-------------------------------------------------------------------------------------------------------------------------------------------------------*/
+<Component FowlerNDiodeXSPICE>
+<Description>
+Fowler-Nordheim diode model:
 
+14 September 2017    Mike Brinson mbrin72043@yahoo.co.uk
 
+Parameters; Description; Default value
+M;      Number of diodes multiplying factor; 1
+L;      Length pf diode for calculating Fowler-Nordheim current (m); 50e-6 
+W;      Width of diode for calculating Fowler-Nordheim current (m); 50e-6
+Ef;     Forward critical electric field (V/m); 1e10
+Er;     Reverse critical electric field (V/m); 1e10
+Jf;     Forward Fowler Nordheim current coefficient; 1e-10
+Jr;     Reverse Fowler Nordheim current coefficient; 1e-10
+Scale;  Scale factor for circuit parameters; 1
+Scalem; Scale factor for model parameters; 1
+Shrink; Shrink factor; 1
+Xl;     Masking and etching effect for length; 1
+Xw;     Masking and etching effect for width; 1
+Rd;     Series parasitic resistance (Ohm); 0.1
+Ld;     Series parasitic inductance (H); 1e-10
+Tox;    Thickness of oxide layor (m); 1.0e-8
+
+Test example: (1) TestFNXSPICEDC.sch
+
+References
+[1] R. H. Fowler and L. W. Nordheim, Electron emission in Intense Electric Fields,Proc. R. Soc. London,
+Vol. 119, No. 781, 1 May 1928, 173-181..
+[2] Gong-Ru Lin, Chun-Jung Lin, and Chi-Kuan Lin, Enhanced Fowler-Nordheim tunneling 
+effect in nanocrystallite Si based LED with interfacial Si nano-pyramids, Optics Express
+Vol. 15, Issue 5, pp. 2555-2563, 2007, https://doi.org/10.1364/OE.15.002555. 
+[3] R G. Forbes, Simple good approximations for the special elliptic functions in standard
+Fowler-Nordheim tunneling theory for a Schottky-Nordheim barrier, Applied Physics Letters,
+89, 113122, 2006.
+</Description>
+
+<Spice>
+.SUBCKT AnalogueCM_FowlerNDiodeXSPICE gnd nPAnode nPCathode M=1 L=50e-6 W=50e-6 Ef=1e10 Er=1e10 Jf=1e-10 Jr=1e-10 Tox=1.0e-8 Scale=1.0 Scalem=1.0 Shrink=1.0 Xl=1.0 Xw=1.0 Rd=0.1 Ld=1e-10 
+L1 ni1  nPAnode {Ld}
+R1 ni2  ni1 {Rd}
+A1 %gd(ni2 nPCathode)  FNMOD
+.MODEL FNMOD FNXSPICECM(M =  {M} L = {L} W = {W} Ef = {Ef} Er = {Er}
++       Jf = {Jf} Jr = {Jr} Tox = {Tox}  Scale = {Scale} Scalem = {Scalem} Shrink = {Shrink}
++       Xl = {Xl} Xw = {Xw}   )
+.ENDS
+</Spice>
+<SpiceAttach "FNXSPICECM.mod" "FNXSPICECM.ifs"> 
+<Model>  
+.Def: AnalogueCM_FowlerNDiodeXSPICE _net0 _net1 
+.DefEnd
+</Model>
+<Symbol>
+  <Line 0 0 -40 0 #000080 2 1>
+  <Ellipse -20 -30 60 60 #aa0000 3 1 #c0c0c0 1 0>
+  <.PortSym -40 0 1 0>
+  <.ID -20 44 FN_Diode "1=M=1==" "1=L=50e-6==" "1=W=50e-6==" "1=Ef=1e10==" "1=Er=1e10==" "1=Jf=1e-10==" "1=Jr=1e-10==" "1=Scale=1.0==" "1=Scalem=1.0==" "1=Shrink=1.0==" "1=Xl=1.0==" "1=Xw=1.0==" "1=Rd=0.1==" "1=Ld=1e-10==" "1=Tox=1.0e-8==">
+  <Line 0 -20 0 40 #000080 2 1>
+  <Line 0 -20 20 20 #000080 2 1>
+  <Line 0 20 20 -20 #000080 2 1>
+  <Line 20 -20 0 40 #000080 2 1>
+  <Line 20 0 40 0 #000080 2 1>
+  <.PortSym 60 0 2 180>
+</Symbol>
+</Component>
+/*-------------------------------------------------------------------------------------------------------------------------------------------------------*/
 <Component RFind>
   <Description>
 Simple RF inductor model.
+
+1 January 2017    Mike Brinson mbrin72043@yahoo.co.uk
+
 1. XSPICE I-V CodeModel: DC, transient and AC functionality,
 2. L, il1 and il2 determine inductance value as a function of DC current,
 3. L, tc1 and tc2 determine inductance value as a function of device temperature "temp".
@@ -97,14 +163,13 @@ Milton Keynes, http://www.intusoft.com/articles/inductor.pdf, 1993.
 3. M.E. Brinson and S. Jahn, Modelling of high-frequency inductance with Qucs non-linear radio 
 frequency equation defined devices, International Journal of Electronics, V.93, pp. 307-321, 2009,
 http://dx.doi.org/10.1080/00207210802640603.
+</Description>
 
-
-  </Description>
-  <Model>
+<Model>
 .Def:AnalogueCM_RFind _net0 _net1 
 .Def:End
-  </Model>
-  <Spice>* Qucs 0.0.19  XSPICEind_RFind.sch
+</Model>
+<Spice>* Qucs 0.0.19  XSPICEind_RFind.sch
 
 .SUBCKT AnalogueCM_RFind  gnd _net0 _net1 l=370u il1=0.0 il2=-6.19e-5 tc1=0.0 tc2=0.0 lic=0.0 tnom=26.85 rs=0.315 cp=10e-12 rp=363k 
 A1 %gd(_net0 _net1)  lmod
@@ -150,7 +215,7 @@ A1 %gd(_net0 _net1)  lmod
     <Text 17 -29 10 #aa0000 0 "Cp">
     <Text 38 -21 10 #aa0000 0 "Rs">
     <Rectangle -50 -60 130 70 #aa0000 3 3 #c0c0c0 1 0>
-    <.ID -25 19 SUB "1=l=370u==" "1=il1=0.0==" "1=il2=-6.19e-5==" "1=tc1=0.0==" "1=tc2=0.0==" "1=lic=0.0==" "1=tnom=26.85==" "1=rs=0.315==" "1=cp=6.02e-12==" "1=rp=363k==">
+    <.ID -25 19 RF_Ind "1=l=370u==" "1=il1=0.0==" "1=il2=-6.19e-5==" "1=tc1=0.0==" "1=tc2=0.0==" "1=lic=0.0==" "1=tnom=26.85==" "1=rs=0.315==" "1=cp=6.02e-12==" "1=rp=363k==">
   </Symbol>
 </Component>
 

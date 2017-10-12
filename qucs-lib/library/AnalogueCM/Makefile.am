@@ -23,7 +23,7 @@
 #
 
 
-CMLIBS = etd.mod etd.ifs RFind.mod RFind.ifs
+CMLIBS = etd.mod etd.ifs FNXSPICECM.mod FNXSPICECM.ifs RFind.mod RFind.ifs
 
 EXTRA_DIST = $(CMLIBS)
 
