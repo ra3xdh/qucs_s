@@ -183,6 +183,18 @@ QString Param_Sweep::spice_netlist(bool isXyce)
 {
     double start,stop,step,fac,points;
     QString unit;
+    QString s;
+
+    if(getProperty("Type")->Value=="list") { // List STEP variance Xyce-only
+        if(isXyce) {
+            QString var = getProperty("Param")->Value;
+            QString list = getProperty("Values")->Value;
+            list.remove('[').remove(']');
+            list = list.split(';').join(" ");
+            s = QString(".STEP %1 LIST %2\n").arg(var).arg(list);
+            return s.toLower();
+        }
+    }
     misc::str2num(getProperty("Start")->Value,start,unit,fac);
     start *= fac;
     misc::str2num(getProperty("Stop")->Value,stop,unit,fac);
@@ -191,7 +203,6 @@ QString Param_Sweep::spice_netlist(bool isXyce)
     points *= fac;
     step = (stop-start)/points;
 
-    QString s;
     if (Props.at(0)->Value.startsWith("DC")) {
         QString src = getProperty("Param")->Value;
         s = QString("DC %1 %2 %3 %4\n").arg(src).arg(start).arg(stop).arg(step);
