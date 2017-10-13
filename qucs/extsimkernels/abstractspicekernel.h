@@ -76,7 +76,7 @@ public:
                           QList< QList<double> > &sim_points,
                           QStringList &var_list, bool &isComplex);
     void parseHBOutput(QString ngspice_file, QList< QList<double> > &sim_points,
-                       QStringList &var_list);
+                       QStringList &var_list, bool &hasParSweep);
     void parseFourierOutput(QString ngspice_file, QList< QList<double> > &sim_points,
                             QStringList &var_list);
     void parseNoiseOutput(QString ngspice_file, QList< QList<double> > &sim_points,
@@ -90,9 +90,6 @@ public:
     void parseSTEPOutput(QString ngspice_file,
                          QList< QList<double> > &sim_points,
                          QStringList &var_list, bool &isComplex);
-    void parseHBSTEPOutput(QString ngspice_file,
-                           QList< QList<double> > &sim_points,
-                           QStringList &var_list, bool &isComplex);
     void parseXYCESTDOutput(QString std_file,
                             QList< QList<double> > &sim_points,
                             QStringList &var_list, bool &isComplex);

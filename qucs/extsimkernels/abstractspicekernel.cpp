@@ -360,12 +360,14 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
  * \param sim_points 2D array in which simulation points should be extracted
  * \param var_list This list is filled by simualtion variables. There is a list of dependent
  *        varibales. Independent hbfrequency variable is always the first in this list.
+ * \param hasParSweep[out] Set to true if dataset contains parameter sweep output.
  */
-void AbstractSpiceKernel::parseHBOutput(QString ngspice_file,
-                                        QList<QList<double> > &sim_points, QStringList &var_list)
+void AbstractSpiceKernel::parseHBOutput(QString ngspice_file, QList<QList<double> > &sim_points,
+                                        QStringList &var_list, bool &hasParSweep)
 {
     var_list.clear();
     sim_points.clear();
+    hasParSweep = false;
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream hb_data(&ofile);
@@ -373,6 +375,10 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file,
         while (!hb_data.atEnd()) {
             QString lin = hb_data.readLine();
             if (lin.isEmpty()) continue;
+            if (lin.contains("Parameter Sweep")) {
+                hasParSweep = true;
+                continue;
+            }
             if (lin.startsWith("Index")) { // CSV heading
                     QStringList vars1 = lin.split(" ",QString::SkipEmptyParts);
                     vars1.removeFirst();
@@ -807,12 +813,6 @@ bool AbstractSpiceKernel::extractASCIISamples(QString &lin, QTextStream &ngsp_da
     return true;
 }
 
-void AbstractSpiceKernel::parseHBSTEPOutput(QString , QList<QList<double> >&,
-                                            QStringList&, bool&)
-{
-
-}
-
 /*!
  * \brief AbstractSpiceKernel::parseXYCESTDOutput
  * \param std_file[in] XYCE STD output file name
@@ -998,8 +998,13 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
 
         QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
         if (ngspice_output_filename.endsWith("HB.FD.prn")) {
-            parseHBOutput(full_outfile,sim_points,var_list);
+            parseHBOutput(full_outfile,sim_points,var_list,hasParSweep);
             isComplex = true;
+            if (hasParSweep) {
+                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                                                        + "spice4qucs.hb.cir.res");
+                parseResFile(res_file,swp_var,swp_var_val);
+            }
         } else if (ngspice_output_filename.endsWith(".four")) {
             isComplex=false;
             parseFourierOutput(full_outfile,sim_points,var_list);
@@ -1046,13 +1051,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                                                     + "spice4qucs." + simstr + ".cir.res");
             parseResFile(res_file,swp_var,swp_var_val);
 
-            if (ngspice_output_filename.endsWith("_hb_swp.txt")) {
-                parseHBSTEPOutput(full_outfile,sim_points,var_list,isComplex);
-            } else {
-                parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
-            }
-
-
+            parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
         } else {
             int OutType = checkRawOutupt(full_outfile,swp_var_val);
             switch (OutType) {
