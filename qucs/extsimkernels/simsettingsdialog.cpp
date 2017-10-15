@@ -216,7 +216,7 @@ void SimSettingsDialog::slotSetQucsator()
 {
     QString s = QFileDialog::getOpenFileName(this,tr("Select Qucsator executable location"),edtQucsator->text(),"All files (*)");
     if (!s.isEmpty()) {
-        edtSpiceOpus->setText(s);
+        edtQucsator->setText(s);
     }
 }
 
