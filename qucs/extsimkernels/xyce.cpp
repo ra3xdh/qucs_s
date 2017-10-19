@@ -181,10 +181,13 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
                } else if (SwpSim.startsWith("TR")&&(sim=="tran")) {
                    stream<<s;
                    hasParSweep = true;
-               } if (SwpSim.startsWith("HB")&&(sim=="hb")) {
+               } else if (SwpSim.startsWith("HB")&&(sim=="hb")) {
                    stream<<s;
                    hasParSweep = true;
-               }else if (SwpSim.startsWith("SW")&&(sim=="dc")) {
+               } else if (SwpSim.startsWith("SENS")&&(sim=="sens")) {
+                   stream<<s;
+                   hasParSweep = true;
+               } else if (SwpSim.startsWith("SW")&&(sim=="dc")) {
                    for(Component *pc1 = Sch->DocComps.first(); pc1 != 0; pc1 = Sch->DocComps.next()) {
                        if ((pc1->Name==SwpSim)&&(pc1->Props.at(0)->Value.startsWith("DC"))) {
                            stream<<s;
