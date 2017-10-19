@@ -1044,6 +1044,16 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                                                         + "spice4qucs.pz.cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
+        } else if (ngspice_output_filename.endsWith(".SENS.prn")) {
+            QStringList vals;
+            int type = checkRawOutupt(full_outfile,vals);
+            parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
+            if (type == xyceSTDswp) {
+                hasParSweep = true;
+                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                                                        + "spice4qucs.sens.cir.res");
+                parseResFile(res_file,swp_var,swp_var_val);
+            }
         } else if (ngspice_output_filename.endsWith("_swp.txt")) {
             hasParSweep = true;
             QString simstr = full_outfile;
