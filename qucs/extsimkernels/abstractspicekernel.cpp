@@ -942,6 +942,8 @@ int AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &value
 
     QFile ofile(ngspice_file);
     int plots_cnt = 0;
+    int zeroindex_cnt = 0;
+    bool isXyce = false;
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream ngsp_data(&ofile);
         while (!ngsp_data.atEnd()) {
@@ -950,12 +952,22 @@ int AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &value
                 plots_cnt++;
                 values.append(QString::number(plots_cnt));
             }
+            if (lin.startsWith("End of Xyce(TM)")) isXyce = true;
+            QRegExp rx("^0\\s+[0-9].*"); // Zero index pattern
+            if (rx.exactMatch(lin)) {
+                zeroindex_cnt++;
+                values.append(QString::number(zeroindex_cnt));
+            }
         }
         ofile.close();
     }
-    if (plots_cnt>1) return spiceRawSwp;
-    else if (plots_cnt == 0)return xyceSTD;
-    else return spiceRaw;
+    int filetype = Unknown;
+    if (plots_cnt>1) filetype = spiceRawSwp;
+    else if ((plots_cnt == 0)&&(isXyce)){
+        if (zeroindex_cnt>1) filetype = xyceSTDswp;
+        else filetype = xyceSTD;
+    } else filetype = spiceRaw;
+    return filetype;
 }
 
 /*!
@@ -1066,6 +1078,10 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             case xyceSTD:
                 parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
                 break;
+            case xyceSTDswp:
+                hasParSweep = true;
+                swp_var = "Number";
+                parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
             default: break;
             }
         }

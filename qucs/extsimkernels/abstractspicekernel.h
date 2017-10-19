@@ -38,7 +38,7 @@ class AbstractSpiceKernel : public QObject
 {
     Q_OBJECT
 private:
-    enum outType {xyceSTD, spiceRaw, spiceRawSwp};
+    enum outType {xyceSTD, spiceRaw, spiceRawSwp, xyceSTDswp, Unknown};
 
     void normalizeVarsNames(QStringList &var_list);
     int checkRawOutupt(QString ngspice_file, QStringList &values);
