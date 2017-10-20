@@ -385,7 +385,6 @@ private slots:
   void slotBuildModule();
 
 private:
-  void showHTML(const QString&);
   bool performToggleAction(bool, QAction*, pToggleFunc, pMouseFunc, pMouseFunc2);
   void launchTool(const QString&, const QString&, const QString& = "",bool qucs_tool = false); // tool, description and args
   friend class SaveDialog;
