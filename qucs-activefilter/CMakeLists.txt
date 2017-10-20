@@ -97,8 +97,3 @@ INSTALL(TARGETS ${QUCS_NAME}activefilter
     RUNTIME DESTINATION bin COMPONENT Runtime
     )
 
-# man pages
-IF(NOT WITH_SPICE)
-INSTALL( FILES qucsactivefilter.1 DESTINATION share/man/man1 )
-ENDIF()
-

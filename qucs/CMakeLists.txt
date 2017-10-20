@@ -316,19 +316,9 @@ INSTALL(CODE "
     " COMPONENT Runtime)
 ENDIF()
 
-IF(NOT WITH_SPICE)
-# Install wrapper scripts
-IF(WIN32)
-#  SET(SCRIPTS qucsdigi.bat qucsveri.bat qucsdigilib.bat)
-ELSE()
-#  SET(SCRIPTS qucsdigi qucsveri qucsdigilib)
-ENDIF()
 INSTALL( FILES ${SCRIPTS} DESTINATION bin/ )
-ENDIF()
 
-IF(WITH_SPICE)
 INSTALL( FILES ${QUCS_NAME}.1 DESTINATION share/man/man1 )
-ENDIF()
 
 # To Create a package, one can run "cpack -G DragNDrop CPackConfig.cmake" on Mac OS X
 # where CPackConfig.cmake is created by including CPack
