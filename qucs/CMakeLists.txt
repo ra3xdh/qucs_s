@@ -9,16 +9,11 @@
 #
 # By default, the prefix is "/usr/local"
 
-PROJECT(qucs CXX)
+PROJECT(qucs-s CXX)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 cmake_policy(VERSION 2.6)
 
-IF(WITH_SPICE)
-MESSAGE("SPICE support enabled")
-SET(QUCS_NAME "${PROJECT_NAME}-s")
-ELSE()
 SET(QUCS_NAME "${PROJECT_NAME}")
-ENDIF()
 
 # use top VERSION file
 file (STRINGS ${PROJECT_SOURCE_DIR}/../VERSION QUCS_VERSION)

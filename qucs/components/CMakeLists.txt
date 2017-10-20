@@ -56,10 +56,9 @@ dcfeed.cpp		logical_and.cpp		pm_modulator.cpp
 vcresistor.cpp
 vacomponent.cpp
 mutualx.cpp
-)
 
-IF(WITH_SPICE)
-SET(COMPONENTS_SRCS ${COMPONENTS_SRCS}
+# SPICE devices
+
 bsim3v34nMOS.cpp
 bsim3v34pMOS.cpp
 bsim4v30nMOS.cpp
@@ -75,7 +74,6 @@ hicumL2V2p24.cpp
 hicumL2V2p31n.cpp
 HBT_X.cpp
 )
-ENDIF()
 
 SET(COMPONENTS_HDRS
 ac_sim.h
@@ -240,10 +238,9 @@ volt_noise.h
 vprobe.h
 vpulse.h
 vrect.h
-)
 
-IF(WITH_SPICE)
-SET(COMPONENTS_HDRS ${COMPONENTS_HDRS}
+# SPICE devices
+
 bsim3v34nMOS.h
 bsim3v34pMOS.h
 bsim4v30nMOS.h
@@ -259,7 +256,7 @@ hicumL2V2p24.h
 hicumL2V2p31n.h
 HBT_X.h
 )
-ENDIF()
+
 
 
 SET(COMPONENTS_MOC_HDRS

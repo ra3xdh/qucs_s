@@ -843,28 +843,18 @@ void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QSt
 // --------------------------------------------------------------
 void QucsApp::slotHelpIndex()
 {
-#ifndef WITH_SPICE
-  showHTML("index.html");
-#else
   QDesktopServices::openUrl(QUrl("https://qucs-help.readthedocs.org/en/spice4qucs/"));
-#endif
 }
 
-#ifdef WITH_SPICE
 void QucsApp::slotHelpQucsIndex()
 {
     QDesktopServices::openUrl(QUrl("https://qucs-help.readthedocs.io/"));
 }
-#endif
 
 // --------------------------------------------------------------
 void QucsApp::slotGettingStarted()
 {
-#ifndef WITH_SPICE
-  showHTML("start.html");
-#else
   QDesktopServices::openUrl(QUrl("https://qucs-help.readthedocs.io/en/0.0.18/start.html"));
-#endif
 }
 
 // --------------------------------------------------------------
