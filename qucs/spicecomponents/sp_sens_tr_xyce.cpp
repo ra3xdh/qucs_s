@@ -38,7 +38,7 @@ SpiceSENS_TR_Xyce::SpiceSENS_TR_Xyce()
   tx = 0;
   ty = y2+1;
   Model = ".SENS_TR_XYCE";
-  Name  = "SENS";
+  Name  = "TSENS";
   SpiceModel = ".SENS";
 
   // The index of the first 4 properties must not changed. Used in recreate().
