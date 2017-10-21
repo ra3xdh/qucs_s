@@ -73,7 +73,6 @@ int main(int argc, char *argv[])
     QucsSettings.showConsole = true;
 
     // is application relocated?
-    char *var = NULL; // Don't use QUCSDIR with Qucs-S
     QDir QucsDir;
     QString QucsApplicationPath = QCoreApplication::applicationDirPath();
 #ifdef __APPLE__
