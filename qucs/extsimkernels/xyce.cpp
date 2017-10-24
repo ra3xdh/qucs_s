@@ -232,6 +232,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     } else if (sim=="sens_tr") {
         write_str.clear();
         outputs.append("spice4qucs.sens_tr.cir.SENS.prn");
+        outputs.append("spice4qucs.sens_tr.cir.TRADJ.prn");
     } else {
         write_str = QString(".PRINT  %1 format=raw file=%2 %3\n").arg(sim).arg(filename).arg(nods);
         outputs.append(filename);
@@ -272,6 +273,9 @@ void Xyce::slotSimulate()
     if (DC_OP_only) {
         simulationsQueue.append("dc");
     } else  determineUsedSimulations();
+
+    QFile::remove(workdir+"spice4qucs.sens_tr.cir.SENS.prn");
+    QFile::remove(workdir+"spice4qucs.sens_tr.cir.TRADJ.prn");
 
     foreach(QString sim,simulationsQueue) {
         QStringList sim_lst;
