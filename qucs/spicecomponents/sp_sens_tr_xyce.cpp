@@ -53,7 +53,7 @@ SpiceSENS_TR_Xyce::SpiceSENS_TR_Xyce()
   Props.append(new Property("Stop", "1 ms", true,
     QObject::tr("stop time in seconds")));
   Props.append(new Property("Step", "5u", true,
-    QObject::tr("simulation tim step")));
+    QObject::tr("simulation time step")));
   Props.append(new Property("initialDC", "yes", true,
     QObject::tr("perform an initial DC analysis")+" [yes, no]"));
 }
