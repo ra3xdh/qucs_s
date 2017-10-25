@@ -124,9 +124,15 @@ bool loadSettings()
     if(settings.contains("NgspiceExecutable")) QucsSettings.NgspiceExecutable = settings.value("NgspiceExecutable").toString();
     else QucsSettings.NgspiceExecutable = "ngspice";
     if(settings.contains("XyceExecutable")) QucsSettings.XyceExecutable = settings.value("XyceExecutable").toString();
-    else QucsSettings.XyceExecutable = "/usr/local/Xyce-Release-6.2.0-OPENSOURCE/bin/runxyce";
+    else {
+#ifdef Q_OS_WIN
+        QucsSettings.XyceExecutable = "Xyce.exe";
+#else
+        QucsSettings.XyceExecutable = "/usr/local/Xyce-Release-6.8.0-OPENSOURCE/bin/Xyce";
+#endif
+    }
     if(settings.contains("XyceParExecutable")) QucsSettings.XyceParExecutable = settings.value("XyceParExecutable").toString();
-    else QucsSettings.XyceParExecutable = "/usr/local/Xyce-Release-6.2.0-OPENMPI-OPENSOURCE/bin/xmpirun -np %p";
+    else QucsSettings.XyceParExecutable = "mpirun -np %p /usr/local/Xyce-Release-6.8.0-OPENMPI-OPENSOURCE/bin/Xyce";
     if(settings.contains("SpiceOpusExecutable")) QucsSettings.SpiceOpusExecutable = settings.value("SpiceOpusExecutable").toString();
     else QucsSettings.SpiceOpusExecutable = "spiceopus";
     if(settings.contains("Nprocs")) QucsSettings.NProcs = settings.value("Nprocs").toInt();
