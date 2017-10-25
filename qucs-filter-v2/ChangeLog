@@ -1,8 +1,0 @@
-2009-05-03  Stefan Jahn  <stefan@lkcc.org>
-
-	* qf_settings.cpp (saveXmlSettings): Added XML saving / loading
-	capabilities.
-
-2009-05-01  Stefan Jahn  <stefan@lkcc.org>
-
-	* ChangeLog: Created this file.

@@ -9,16 +9,11 @@
 #
 # By default, the prefix is "/usr/local"
 
-PROJECT(qucs CXX)
+PROJECT(qucs-s CXX)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 cmake_policy(VERSION 2.6)
 
-IF(WITH_SPICE)
-MESSAGE("SPICE support enabled")
-SET(QUCS_NAME "${PROJECT_NAME}-s")
-ELSE()
 SET(QUCS_NAME "${PROJECT_NAME}")
-ENDIF()
 
 # use top VERSION file
 file (STRINGS ${PROJECT_SOURCE_DIR}/../VERSION QUCS_VERSION)
@@ -321,19 +316,9 @@ INSTALL(CODE "
     " COMPONENT Runtime)
 ENDIF()
 
-IF(NOT WITH_SPICE)
-# Install wrapper scripts
-IF(WIN32)
-#  SET(SCRIPTS qucsdigi.bat qucsveri.bat qucsdigilib.bat)
-ELSE()
-#  SET(SCRIPTS qucsdigi qucsveri qucsdigilib)
-ENDIF()
 INSTALL( FILES ${SCRIPTS} DESTINATION bin/ )
-ENDIF()
 
-IF(WITH_SPICE)
 INSTALL( FILES ${QUCS_NAME}.1 DESTINATION share/man/man1 )
-ENDIF()
 
 # To Create a package, one can run "cpack -G DragNDrop CPackConfig.cmake" on Mac OS X
 # where CPackConfig.cmake is created by including CPack

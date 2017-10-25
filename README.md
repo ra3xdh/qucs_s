@@ -12,7 +12,7 @@ Use CMake to build Qucs-S. Install all necessary dependecies: GCC, Qt, and SPICE
 ~~~
 mkdir builddir
 cd builddir
-cmake .. -DWITH_SPICE=ON -DCMAKE_INSTALL_PREFIX=/your_install_prefix/
+cmake ..  -DCMAKE_INSTALL_PREFIX=/your_install_prefix/
 make
 make install
 ~~~

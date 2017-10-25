@@ -73,27 +73,15 @@ int main(int argc, char *argv[])
     QucsSettings.showConsole = true;
 
     // is application relocated?
-#ifdef WITH_SPICE
-    char *var = NULL; // Don't use QUCSDIR with Qucs-S
-#else
-    char* var = getenv("QUCSDIR");
-#endif
     QDir QucsDir;
-    if (var != NULL) {
-      QucsDir = QDir (var);
-      QString QucsDirStr = QucsDir.canonicalPath ();
-      LangDir =
-        QDir::convertSeparators (QucsDirStr + "/share/" QUCS_NAME "/lang/");
-    } else {
-      QString QucsApplicationPath = QCoreApplication::applicationDirPath();
+    QString QucsApplicationPath = QCoreApplication::applicationDirPath();
 #ifdef __APPLE__
-      QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
+    QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
 #else
-      QucsDir = QDir(QucsApplicationPath);
-      QucsDir.cdUp();
+    QucsDir = QDir(QucsApplicationPath);
+    QucsDir.cdUp();
 #endif
-      LangDir = QucsDir.canonicalPath() + "/share/qucs/lang/";
-    }
+    LangDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/lang/";
 
     loadSettings();
 

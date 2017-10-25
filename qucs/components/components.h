@@ -189,7 +189,6 @@
 // Verilog-A dynamicaly loaded component
 #include "vacomponent.h"
 
-#ifdef WITH_SPICE
 #include "bsim3v34nMOS.h"
 #include "bsim3v34pMOS.h"
 #include "bsim4v30nMOS.h"
@@ -204,6 +203,5 @@
 #include "hicumL2V2p24.h"
 #include "hicumL2V2p31n.h"
 #include "HBT_X.h"
-#endif
 
 #endif

@@ -790,43 +790,26 @@ int main(int argc, char *argv[])
   // continue to set up overrides or default settings (some are saved on exit)
 
   // check for relocation env variable
-#ifdef WITH_SPICE
-  char *var = NULL; // Don't use QUCSDIR with Qucs-S
-#else
-  char* var = getenv("QUCSDIR");
-#endif
   QDir QucsDir;
-  if (var!= NULL)
-  {
-      QucsDir = QDir(QString(var));
-      qDebug() << "QUCSDIR set: " << QucsDir.absolutePath();
-  }
-  else
-  {
-     QString QucsApplicationPath = QCoreApplication::applicationDirPath();
-     #ifdef __APPLE__
-     QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
-     #else
-     QucsDir = QDir(QucsApplicationPath);
-     QucsDir.cdUp();
-     #endif
-
-  }
+  QString QucsApplicationPath = QCoreApplication::applicationDirPath();
+#ifdef __APPLE__
+  QucsDir = QDir(QucsApplicationPath.section("/bin",0,0));
+#else
+  QucsDir = QDir(QucsApplicationPath);
+  QucsDir.cdUp();
+#endif
 
   QucsSettings.BinDir =      QucsDir.absolutePath() + "/bin/";
   QucsSettings.LangDir =     QucsDir.canonicalPath() + "/share/" QUCS_NAME "/lang/";
-  var = getenv("QUCS_LIBDIR");
-  if(var != NULL) {
-	  QucsSettings.LibDir = QString(var);
-  }else{
-	  QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/" QUCS_NAME "/library/";
-  }
+
+  QucsSettings.LibDir =      QucsDir.canonicalPath() + "/share/" QUCS_NAME "/library/";
   QucsSettings.OctaveDir =   QucsDir.canonicalPath() + "/share/" QUCS_NAME "/octave/";
   QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/examples/";
   QucsSettings.DocDir =      QucsDir.canonicalPath() + "/share/" QUCS_NAME "/docs/";
   QucsSettings.Editor = "qucs";
 
   /// \todo Make the setting up of all executables below more consistent
+  char *var = NULL; // Don't use QUCSDIR with Qucs-S
   var = getenv("QUCSATOR");
   if(var != NULL) {
       QucsSettings.QucsatorVar = QString(var);

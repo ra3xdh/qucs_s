@@ -310,9 +310,7 @@ public:
           *createLib, *importData, *graph2csv, *createPkg, *extractPkg,
           *callAtt, *callRes, *centerHor, *centerVert, *loadModule, *buildModule;
 
-#ifdef WITH_SPICE
   QAction *helpQucsIndex;
-#endif
   QAction *simSettings;
   QAction *buildVAModule, *buildIFS;
 
@@ -361,9 +359,7 @@ public slots:
   void slotCallAtt();
   void slotCallRes();
   void slotHelpIndex();       // shows a HTML docu: Help Index
-#ifdef WITH_SPICE
   void slotHelpQucsIndex();
-#endif
   void slotGettingStarted();  // shows a HTML docu: Getting started
   void slotChangeProps();
   void slotAddToProject();
@@ -389,7 +385,6 @@ private slots:
   void slotBuildModule();
 
 private:
-  void showHTML(const QString&);
   bool performToggleAction(bool, QAction*, pToggleFunc, pMouseFunc, pMouseFunc2);
   void launchTool(const QString&, const QString&, const QString& = "",bool qucs_tool = false); // tool, description and args
   friend class SaveDialog;

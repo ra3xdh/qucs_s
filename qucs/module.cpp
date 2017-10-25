@@ -424,7 +424,6 @@ void Module::registerModules (void) {
       REGISTER_VERILOGA_1 (phototransistor);
       REGISTER_VERILOGA_1 (nigbt);
       REGISTER_VERILOGA_1 (vcresistor);
-#ifdef WITH_SPICE
       REGISTER_VERILOGA_1 (bsim3v34nMOS);
       REGISTER_VERILOGA_1 (bsim3v34pMOS);
       REGISTER_VERILOGA_1 (bsim4v30nMOS);
@@ -436,7 +435,6 @@ void Module::registerModules (void) {
       REGISTER_VERILOGA_1 (hicumL2V2p24);
       REGISTER_VERILOGA_1 (hicumL2V2p31n);
       REGISTER_VERILOGA_1 (HBT_X);
-#endif
 
       // digital components
       REGISTER_DIGITAL_1 (Digi_Source);

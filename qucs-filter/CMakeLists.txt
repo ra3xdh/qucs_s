@@ -2,12 +2,7 @@ PROJECT(qucsfilter CXX C)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 cmake_policy(VERSION 2.6)
 
-IF(WITH_SPICE)
-MESSAGE("SPICE support enabled")
 SET(QUCS_NAME "qucs-s")
-ELSE()
-SET(QUCS_NAME "qucs")
-ENDIF()
 
 # use top VERSION file
 file (STRINGS ${PROJECT_SOURCE_DIR}/../VERSION QUCS_VERSION)
@@ -123,7 +118,3 @@ INSTALL(TARGETS ${QUCS_NAME}filter
     RUNTIME DESTINATION bin COMPONENT Runtime
     )
 
-# man pages
-IF(NOT WITH_SPICE)
-INSTALL( FILES qucsfilter.1 DESTINATION share/man/man1 )
-ENDIF()
