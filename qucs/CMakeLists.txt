@@ -108,13 +108,13 @@ ENDIF(WIN32)
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 INCLUDE_DIRECTORIES(
-  ${qucs_SOURCE_DIR}
+  ${PROJECT_SOURCE_DIR}
   #${qucs_SOURCE_DIR}/bitmaps ->no sources here
-  ${qucs_SOURCE_DIR}/components
-  ${qucs_SOURCE_DIR}/diagrams
-  ${qucs_SOURCE_DIR}/dialogs
+  ${PROJECT_SOURCE_DIR}/components
+  ${PROJECT_SOURCE_DIR}/diagrams
+  ${PROJECT_SOURCE_DIR}/dialogs
   #${qucs_SOURCE_DIR}/octave ->no sources here
-  ${qucs_SOURCE_DIR}/paintings
+  ${PROJECT_SOURCE_DIR}/paintings
   )
 
 #ADD_SUBDIRECTORY( bitmaps ) -> added as resources
