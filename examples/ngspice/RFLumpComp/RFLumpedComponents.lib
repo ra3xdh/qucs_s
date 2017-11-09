@@ -75,8 +75,8 @@ Wlength2; Wire 2 lead length (m); 8e-3
 Blength;  Resistor external body length (m); 6.3e-3
 Bradius;  Resistor external body radius (m); 1.2e-3
 H; Distance from resistor to ground plane (m); 1.6e-3
-Erb; Resistor tube relative permiability; 9.9
-Erp; Printed circuit board relative permiability; 3.2
+Erb; Resistor tube relative permitivity; 9.9
+Erp; Printed circuit board relative permitivity; 3.2
 
 Test examples: (1) Test_RATF_EquivalentCircuitD.sch
 
@@ -197,6 +197,143 @@ C3 nP2  0 { Cpad/2 }
     <.PortSym 75 60 6 90>
     <Rectangle -160 -60 345 90 #aa0000 3 1 #c0c0c0 1 0>
     <.ID -55 114 R_ATF_EC "1=R0=1k=Nominal resistance at Tnom.=" "1=Tc1=0.0=Resistance linear temperature coefficient in parts per million.=" "1=Tc2=0.0=Resistance quadratic temperature coefficient in parts per million.=" "1=tnom=26.58=Parameter measurement temperature in Celsius.=" "1=temp=26.58=Circuit temperature in Celsius.=" "1=Wlength1=8e-3=Lead 1 length in m.=" "1=Wradius=0.3e-3=Lead radius in m.=" "1=Wlength2=8e-3=Lead 2 length in m.=" "1=Blength=6.3e-3=Resistor body length in m.=" "1=Bradius=1.2e-3=Resistor body radius in m.=" "1=H=1.6e-3=Distance to ground plane in metres.=" "1=Erb=9.9=Relative dielectric constant. =" "1=Erp=3.1==">
+  </Symbol>
+</Component>
+
+<Component RFChipRes>
+  <Description>
+Surface-mount chip resistor model.
+9 November 2017    Mike Brinson mbrin72043@yahoo.co.uk
+
+Parameters; Description; Default values for package 0805.
+R0; Nominal resistance at Tnom; 50
+tc1; First order temperature coefficient (1/K); 0.0
+tc2; Second order temperature coefficient (1/(K*K)); 0.0
+tnom; Parameter measurement temoerature (C); 26.58
+temp; Circuit temperature (C); 26.58
+Ls; Resistance serial inductance; 0.316n
+Cp;  Resistor parallel parasitic capacitance; 50.3f
+
+Test examples: (1) Test_chip_res_basic.sch
+
+References
+[1] See Qucs-S_help, Chapter 13, for model specification and description.
+[2] "Inder Bahl, Lumped elements for RF and microwave circuits", Arktech House,
+Boston, London, 2003. ISBN 1-58053309-4
+  </Description>
+  <Model>
+.Def:RFLumpedComponents_RFChipRes nP1 nP2 R0="50" Tc1="0.0" Tc2="0.0" tnom="26.58" temp="26.58" Ls="0.316n" Cp="50.3f"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  RFLumpedComponents_RFChipRes.sch
+
+.SUBCKT RFLumpedComponents_RFChipRes  gnd nP1 nP2 R0=50 Tc1=0.0 Tc2=0.0 tnom=26.58 temp=26.58 Ls=0.316n Cp=50.3f 
+R1 nP2  n1 {R0} rmod (tc1={tc1} tc2={tc2} temp={temp})
+ 
+L nP1  n1 {Ls}
+C1 nP1  nP2 {Cp}
+
+.MODEL rmod r (tnom = {tnom})
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line -60 -40 20 0 #000000 2 1>
+    <Rectangle -40 -50 100 20 #aa0000 3 1 #aa5500 1 1>
+    <Line 60 -40 20 0 #000000 2 1>
+    <.PortSym -60 -40 1 0>
+    <.PortSym 80 -40 2 180>
+    <.ID -35 -26 R_CHIP "1=R0=50=Nominal resistance at Tnom.=" "1=Tc1=0.0=Resistance linear temperature coefficient in parts per million.=" "1=Tc2=0.0=Resistance quadratic temperature coefficient in parts per million.=" "1=tnom=26.58=Parameter measurement temperature in Celsius.=" "1=temp=26.58=Circuit temperature in Celsius.=" "1=Ls=0.316n=Series inductance in H.=" "1=Cp=50.3f=Chip parallel capacitance in F=">
+  </Symbol>
+</Component>
+
+<Component RFChipResPgen>
+  <Description>
+Surface-mount chip resistor model.
+9 November 2017    Mike Brinson mbrin72043@yahoo.co.uk
+
+Parameters; Description; Default values for package 0805.
+R0; Nominal resistance at Tnom; 50
+tc1; First order temperature coefficient (1/K); 0.0
+tc2; Second order temperature coefficient (1/(K*K)); 0.0
+tnom; Parameter measurement temoerature (C); 26.58
+temp; Circuit temperature (C); 26.58
+Wstrip; Width of resistor (m); 1.25e-3
+Lstrip; Length of resistor (m); 2.0e-3
+Hstrip; Height of resistor (m); 0.5e-3
+
+Test examples: (1) Test_chip_res_basic.sch
+
+References
+[1] See Qucs-S_help, Chapter 13, for model specification and description.
+[2] "Inder Bahl, Lumped elements for RF and microwave circuits", Arktech House,
+Boston, London, 2003. ISBN 1-58053309-4
+
+  </Description>
+  <Model>
+.Def:RFLumpedComponents_RFChipResPgen nP1 nP2 nCp nLs R0="50" Tc1="0.0" Tc2="0.0" tnom="26.58" temp="26.58" Wstrip="1.25e-3" Lstrip="2.0e-3" Hstrip="0.5e-3"
+S4Q_I:I1 gnd nCp I="dc 0.0 ac {Cp}" I_Line 2="" I_Line 3="" I_Line 4="" I_Line 5=""
+S4Q_I:I2 gnd nLs I="dc 0.0 ac {Ls}" I_Line 2="" I_Line 3="" I_Line 4="" I_Line 5=""
+Eqn:Eqn1 Rstrip="Wstrip/2" Ls="{ 2.0e-7*Lstrip*(0.5*log(2.0*Lstrip/Wstrip) +(Wstrip/(3.0*Lstrip)))}" Cp="{ 5.56e-11/( log(2.0*Lstrip/Rstrip)-0.75)*1e-3 }" Export="yes"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.19  RFLumpedComponents_RFChipResPgen.sch
+
+.SUBCKT RFLumpedComponents_RFChipResPgen  gnd nP1 nP2 nCp nLs R0=50 Tc1=0.0 Tc2=0.0 tnom=26.58 temp=26.58 Wstrip=1.25e-3 Lstrip=2.0e-3  Hstrip=0.5e-3 
+.PARAM Rstrip=Wstrip/2
+.PARAM Ls={2.0e-7*Lstrip*(0.5*log(2.0*Lstrip/Wstrip)+(Wstrip/(3.0*Lstrip)))}
+.PARAM Cp={5.56e-11/(log(2.0*Lstrip/Rstrip)-0.75)*1e-3}
+R1 nP2  n1 {R0} rmod (tc1={tc1} tc2={tc2} temp={temp})
+ 
+L nP1  n1 {Ls}
+C1 nP1  nP2 {Cp}
+R2 0  nCp 1
+I1 0  nCp dc 0.0 ac {Cp}
+R3 0  nLs 1
+I2 0  nLs dc 0.0 ac {Ls}
+
+.MODEL rmod r (tnom = {tnom})
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line -30 -20 0 -10 #000000 4 1>
+    <Line -30 -30 10 0 #00007f 4 1>
+    <Line -20 -30 0 10 #00007f 4 1>
+    <Line -20 -20 10 0 #000000 4 1>
+    <Line -10 -20 0 -10 #00007f 4 1>
+    <Line -10 -30 10 0 #00007f 4 1>
+    <Line 0 -30 0 10 #00007f 4 1>
+    <Line 0 -20 20 0 #00007f 2 1>
+    <Line 60 -20 30 0 #00007f 2 1>
+    <Rectangle 20 -30 0 20 #00007f 4 1 #c0c0c0 1 0>
+    <Rectangle 60 -30 0 20 #00007f 4 1 #c0c0c0 1 0>
+    <Rectangle 20 -30 40 0 #00007f 4 1 #c0c0c0 1 0>
+    <Rectangle 20 -10 40 0 #00007f 4 1 #c0c0c0 1 0>
+    <Line -40 5 0 -25 #00007f 2 1>
+    <Line -60 -20 30 0 #000000 2 1>
+    <Line 80 5 0 -25 #000000 2 1>
+    <Line 15 5 -55 0 #00007f 2 1>
+    <Line 15 -5 0 20 #000000 4 1>
+    <Line 25 -5 0 20 #000000 4 1>
+    <Line 25 5 55 0 #000000 2 1>
+    <Text -10 -20 12 #000000 0 "Cp">
+    <Line -80 -20 25 0 #000000 2 1>
+    <Line 90 -20 50 0 #000000 2 1>
+    <Rectangle -55 20 155 5 #000000 0 1 #aa5500 1 1>
+    <Text 90 -5 12 #000000 0 "gnd">
+    <Rectangle -65 -50 185 80 #aa0000 3 1 #c0c0c0 1 0>
+    <Text 65 -50 12 #000000 0 "R">
+    <Text -55 -45 12 #000000 0 "Ls">
+    <Line -20 30 0 30 #000000 2 1>
+    <Line 60 30 0 30 #000000 2 1>
+    <Text 72 33 12 #000000 0 "Cp">
+    <Text -50 32 12 #000000 0 "Ls">
+    <.PortSym 60 60 3 90>
+    <.PortSym -20 60 4 90>
+    <.PortSym 140 -20 2 180>
+    <.PortSym -80 -20 1 0>
+    <.ID 135 14 R_chip_EC "1=R0=50=Nominal resistance at Tnom.=" "1=Tc1=0.0=Resistance linear temperature coefficient in parts per million.=" "1=Tc2=0.0=Resistance quadratic temperature coefficient in parts per million.=" "1=tnom=26.58=Parameter measurement temperature in Celsius.=" "1=temp=26.58=Circuit temperature in Celsius.=" "1=Wstrip=1.25e-3=Chip width (default 805 package) in m.=" "1=Lstrip=2.0e-3=Chip length (default 805 package) in m.=" "1=Hstrip=0.5e-3=Chip height (default 805 package) in m.=">
   </Symbol>
 </Component>
 
