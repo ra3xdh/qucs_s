@@ -485,7 +485,7 @@ bool Ngspice::findMathFuncInc(QString &mathf_inc)
 {
     QDir qucs_root(QucsSettings.BinDir);
     qucs_root.cdUp();
-    mathf_inc = QString("%1/share/qucs/xspice_cmlib/include/ngspice_mathfunc.inc")
+    mathf_inc = QString("%1/share/" QUCS_NAME "/xspice_cmlib/include/ngspice_mathfunc.inc")
             .arg(qucs_root.absolutePath());
     return QFile::exists(mathf_inc);
 }

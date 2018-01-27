@@ -843,7 +843,7 @@ void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QSt
 // --------------------------------------------------------------
 void QucsApp::slotHelpIndex()
 {
-  QDesktopServices::openUrl(QUrl("https://qucs-help.readthedocs.org/en/spice4qucs/"));
+  QDesktopServices::openUrl(QUrl("https://qucs-s-help.readthedocs.io/"));
 }
 
 void QucsApp::slotHelpQucsIndex()
