@@ -61,7 +61,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
     bool found = findMathFuncInc(mathf_inc);
     stream<<QString("* Qucs %1 %2\n").arg(PACKAGE_VERSION).arg(Sch->DocName);
     // Let to simulate schematic without mathfunc.inc file
-    if (found) stream<<QString(".INCLUDE \"%1\"\n").arg(mathf_inc);
+    if (found && QucsSettings.DefaultSimulator != spicecompat::simSpiceOpus)
+        stream<<QString(".INCLUDE \"%1\"\n").arg(mathf_inc);
 
     QString s;
     if(!prepareSpiceNetlist(stream)) return; // Unable to perform spice simulation
