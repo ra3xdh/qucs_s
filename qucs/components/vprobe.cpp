@@ -80,7 +80,7 @@ QString vProbe::getProbeVariable(bool)
 
 QString vProbe::spice_netlist(bool)
 {
-    QString s = QString("E%1 %2 0 %3 %4 1.0\n").arg(Name).arg(Name)
+    QString s = QString("E%1 %2 0 %3 %4 1.0\nR%1%2 %2 0 1E8\nR%1%3 %3 %4 1E8\n").arg(Name).arg(Name)
             .arg(Ports.at(0)->Connection->Name).arg(Ports.at(1)->Connection->Name);
     return s;
 }
