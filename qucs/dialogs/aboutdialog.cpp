@@ -51,6 +51,12 @@
 AboutDialog::AboutDialog(QWidget *parent)
     : QDialog(parent)
 {
+  qucs_sDevs = {{
+     "Vadim Kuznetsov - " + tr("project maintainer, simuator interface and GUI design"),
+     "Mike Brinson - " + tr("component models, documentation"),
+     "Tom Russo - " + tr("Xyce integration"),
+     "Maria Dubinina - " + tr("testing, general bugfixes")
+  }};
   currAuths = {{
     "Guilherme Brondani Torri - " + tr("GUI programmer, Verilog-A dynamic loader"),
     "Mike Brinson - " + tr("testing, modelling and documentation, tutorial contributor"),
@@ -217,7 +223,14 @@ void AboutDialog::currentChangedSlot(int index) {
 void AboutDialog::setAuthorsText() {
  
   QString authorsText;
-  authorsText = tr("Current Qucs Team:") + "<ul>";
+  authorsText = tr("Qucs-S subproject team:");
+  authorsText += "<ul>";
+  for(QString& tStr : qucs_sDevs) {
+    authorsText += ("<li>" + tStr + "</li>");
+  }
+  authorsText += "</ul>";
+
+  authorsText += tr("Based on Qucs project developed by:") + "<ul>";
   
   for(QString& tStr : currAuths) {
     authorsText += ("<li>" + tStr + "</li>");
