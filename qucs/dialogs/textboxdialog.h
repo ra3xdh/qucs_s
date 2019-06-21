@@ -1,6 +1,6 @@
 /***************************************************************************
-                                 sp_spinit.h
-                                -------------
+                             textboxdialog.h
+                            -----------------
  ***************************************************************************/
 
 /***************************************************************************
@@ -12,21 +12,48 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SP_SPINIT_H
-#define SP_SPINIT_H
+
+
+#ifndef TEXTBOXDIALOG_H
+#define TEXTBOXDIALOG_H
 
 #include "components/component.h"
+#include <QtGui>
 
 
-class SpiceSpinit : public Component  {
+/*!
+  \file textboxdialog.h
+  \brief Implementation of the TextBoxDialog class
+*/
+
+/*!
+ * \brief The TextBoxDialog class is responsible for editing a single
+ *        text entry of a generic component.
+ */
+class TextBoxDialog : public QDialog
+{
+    Q_OBJECT
+
+private:
+
+    Component* comp;
+    QTextEdit* edtCode;
+    QPushButton *btnOK;
+    QPushButton *btnApply;
+    QPushButton *btnCancel;
+
 public:
-  SpiceSpinit();
-  ~SpiceSpinit();
-  Component* newOne();
-  static Element* info(QString&, char* &, bool getNewOne=false);
+    explicit TextBoxDialog(const char* window_title, Component *pc, QWidget *parent = 0);
 
-protected:
-  QString spice_netlist(bool isXyce = false);
+signals:
+
+private slots:
+    void slotApply();
+    void slotOK();
+    void slotCancel();
+
+public slots:
+
 };
 
-#endif
+#endif // CUSTOMSIMDIALOG_H
