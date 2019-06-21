@@ -47,13 +47,17 @@ void XSPICE_CMbuilder::cleanSpiceinit()
 
 /*!
  * \brief XSPICE_CMbuilder::createSpiceinit Extract precompiled *.cm libraries names from
- *        all components and subcircuits recursively.
+ *        all components and subcircuits recursively. The intial_spiceinit argument will
+ *        be preprended to the extracted *.cm libraries.
  */
-void XSPICE_CMbuilder::createSpiceinit()
+void XSPICE_CMbuilder::createSpiceinit(const QString &initial_spiceinit)
 {
     QFile spinit(spinit_name);
     if (spinit.open(QIODevice::WriteOnly)) {
         QTextStream stream(&spinit);
+        if (!initial_spiceinit.isEmpty()) {
+          stream << initial_spiceinit << '\n';
+        }
         ExtractSpiceinitdata(stream);
         if (needCompile()) stream<<"codemodel "+cmdir+"qucs_xspice.cm";
         spinit.close();

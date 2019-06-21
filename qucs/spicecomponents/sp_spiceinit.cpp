@@ -65,10 +65,7 @@ Element* SpiceSpiceinit::info(QString& Name, char* &BitmapFile, bool getNewOne)
   return 0;
 }
 
-QString SpiceSpiceinit::spice_netlist(bool isXyce)
+QString SpiceSpiceinit::getSpiceinit()
 {
-    QString s = "";
-    if (isXyce) return s;
-    s = Props.at(0)->Value+"\n";
-    return s;
+    return Props.at(0)->Value+"\n";
 }

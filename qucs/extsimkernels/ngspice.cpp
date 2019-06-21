@@ -22,6 +22,7 @@
 #include "components/vprobe.h"
 #include "components/equation.h"
 #include "components/param_sweep.h"
+#include "spicecomponents/sp_spiceinit.h"
 #include "spicecomponents/xsp_cmlib.h"
 #include "main.h"
 #ifdef HAVE_CONFIG_H
@@ -432,7 +433,7 @@ void Ngspice::slotSimulate()
 
     XSPICE_CMbuilder *CMbuilder = new XSPICE_CMbuilder(Sch);
     CMbuilder->cleanSpiceinit();
-    CMbuilder->createSpiceinit();
+    CMbuilder->createSpiceinit(/*initial_spiceinit=*/collectSpiceinit());
     if (CMbuilder->needCompile()) {
         CMbuilder->cleanCModelTree();
         CMbuilder->createCModelTree(output);
@@ -473,6 +474,22 @@ bool Ngspice::checkNodeNames(QStringList &incompat)
       }
     }
     return result;
+}
+
+/*!
+ * \brief Ngspice::collectSpiceinit Collects user-specified .spiceinit data.
+ * \param incompat
+ * \return
+ */
+QString Ngspice::collectSpiceinit()
+{
+    QStringList collected_spiceinit;
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->Model == "SPICEINIT") {
+            collected_spiceinit += ((SpiceSpiceinit*)pc)->getSpiceinit();
+        }
+    }
+    return collected_spiceinit.join("");
 }
 
 /*!
@@ -546,4 +563,3 @@ void Ngspice::setSimulatorCmd(QString cmd)
 
     simulator_cmd = cmd;
 }
-
