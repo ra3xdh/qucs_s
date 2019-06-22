@@ -37,7 +37,7 @@ class Ngspice : public AbstractSpiceKernel
 private:
 
     bool checkNodeNames(QStringList &incompat);
-    QString collectSpiceinit();
+    static QString collectSpiceinit(Schematic *sch);
     bool findMathFuncInc(QString &mathf_inc);
     QString getParentSWPscript(Component *pc_swp, QString sim, bool before, bool &hasDblSWP);
     QString getParentSWPCntVar(Component *pc_swp, QString sim);

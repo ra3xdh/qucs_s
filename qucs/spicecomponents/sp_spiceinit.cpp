@@ -67,5 +67,7 @@ Element* SpiceSpiceinit::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString SpiceSpiceinit::getSpiceinit()
 {
-    return Props.at(0)->Value+"\n";
+    QString spiceinit;
+    if (isActive) spiceinit = Props.at(0)->Value+"\n";
+    return spiceinit;
 }
