@@ -59,7 +59,7 @@ Component* SpiceSpiceinit::newOne()
 Element* SpiceSpiceinit::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr(".spiceinit contents");
-  BitmapFile = (char *) "sp_options";
+  BitmapFile = (char *) "sp_spiceinit";
 
   if(getNewOne)  return new SpiceSpiceinit();
   return 0;
