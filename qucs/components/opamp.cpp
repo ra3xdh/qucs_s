@@ -76,10 +76,10 @@ Element* OpAmp::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString OpAmp::spice_netlist(bool isXyce)
 {
-    QString in_p = Ports.at(0)->Connection->Name;
-    if (in_p=="gnd") in_p="0";
-    QString in_m = Ports.at(1)->Connection->Name;
+    QString in_m = Ports.at(0)->Connection->Name;
     if (in_m=="gnd") in_m="0";
+    QString in_p = Ports.at(1)->Connection->Name;
+    if (in_p=="gnd") in_p="0";
     QString out = Ports.at(2)->Connection->Name;
     if (out=="gnd") out="0";
 
