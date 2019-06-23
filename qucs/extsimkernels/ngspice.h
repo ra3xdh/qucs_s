@@ -37,6 +37,7 @@ class Ngspice : public AbstractSpiceKernel
 private:
 
     bool checkNodeNames(QStringList &incompat);
+    static QString collectSpiceinit(Schematic *sch);
     bool findMathFuncInc(QString &mathf_inc);
     QString getParentSWPscript(Component *pc_swp, QString sim, bool before, bool &hasDblSWP);
     QString getParentSWPCntVar(Component *pc_swp, QString sim);
@@ -48,7 +49,7 @@ public:
     
 protected:
     void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
-                  QStringList &vars, QStringList &outputs);
+                       QStringList &vars, QStringList &outputs);
 
 public slots:
     void slotSimulate();

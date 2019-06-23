@@ -25,12 +25,13 @@ settingsdialog.h
 simmessage.h
 sweepdialog.h
 vasettingsdialog.h
+textboxdialog.h
 )
 
 
 
 SET(DIALOGS_SRCS
-changedialog.cpp		packagedialog.cpp vasettingsdialog.cpp
+changedialog.cpp		packagedialog.cpp vasettingsdialog.cpp textboxdialog.cpp
 digisettingsdialog.cpp		qucssettingsdialog.cpp
 importdialog.cpp		savedialog.cpp labeldialog.cpp
 searchdialog.cpp     librarydialog.cpp settingsdialog.cpp
@@ -59,6 +60,7 @@ simmessage.h
 sweepdialog.h
 sweepdialog.h
 vasettingsdialog.h
+textboxdialog.h
 )
 
 SET(DIALOGS_UIC_HDRS

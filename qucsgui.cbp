@@ -547,6 +547,8 @@
 		<Unit filename="qucs/dialogs/vtabglobal.h" />
 		<Unit filename="qucs/dialogs/vtabwidget.cpp" />
 		<Unit filename="qucs/dialogs/vtabwidget.h" />
+		<Unit filename="qucs/dialogs/textboxdialog.cpp" />
+		<Unit filename="qucs/dialogs/textboxdialog.h" />
 		<Unit filename="qucs/element.cpp" />
 		<Unit filename="qucs/element.h" />
 		<Unit filename="qucs/main.cpp" />
