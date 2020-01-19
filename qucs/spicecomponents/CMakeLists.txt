@@ -19,6 +19,7 @@ sp_nodeset.cpp
 sp_model.cpp
 sp_include.cpp
 sp_func.cpp
+sp_spiceinit.cpp
 incl_script.cpp
 
 #end of SPICE section
@@ -109,6 +110,7 @@ sp_nodeset.h
 sp_model.h
 sp_include.h
 sp_func.h
+sp_spiceinit.h
 incl_script.h
 
 #end SPICE sections

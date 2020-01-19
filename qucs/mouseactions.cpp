@@ -34,6 +34,7 @@
 #include "diagrams/tabdiagram.h"
 #include "diagrams/timingdiagram.h"
 #include "dialogs/labeldialog.h"
+#include "dialogs/textboxdialog.h"
 #include "extsimkernels/customsimdialog.h"
 
 #include <QTextStream>
@@ -1940,6 +1941,10 @@ void MouseActions::editElement(Schematic *Doc, QMouseEvent *Event)
          else if(c->Model == ".Opt") {
            OptimizeDialog *od = new OptimizeDialog((Optimize_Sim*)c, Doc);
            if(od->exec() != 1) break;   // dialog is WDestructiveClose
+         }
+         else if (c->Model == "SPICEINIT") {
+           TextBoxDialog *od = new TextBoxDialog("Edit .spiceinit configuration", c, Doc);
+           if (od->exec() != 1) break;   // dialog is WDestructiveClose
          }
          else {
            ComponentDialog * cd = new ComponentDialog(c, Doc);
