@@ -564,12 +564,16 @@ void Ngspice::setSimulatorCmd(QString cmd)
         env.remove("LANG");
         env.insert("LANG","en_US");
         SimProcess->setProcessEnvironment(env);
-        simulator_parameters="-c";
+        simulator_parameters = simulator_parameters + "-c";
     } else { // restore system environment
         QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
         SimProcess->setProcessEnvironment(env);
-        simulator_parameters="";
     }
 
     simulator_cmd = cmd;
+}
+
+void Ngspice::setSimulatorParameters(QString parameters)
+{
+    simulator_parameters = parameters;
 }

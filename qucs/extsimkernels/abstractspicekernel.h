@@ -100,6 +100,7 @@ public:
     QString getOutput();
 
     virtual void setSimulatorCmd(QString cmd);
+    virtual void setSimulatorParameters(QString parameters);
     void setWorkdir(QString path);
     virtual void SaveNetlist(QString filename);
     virtual bool waitEndOfSimulation();

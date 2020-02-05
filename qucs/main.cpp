@@ -139,6 +139,8 @@ bool loadSettings()
     else QucsSettings.NProcs = 4;
     if(settings.contains("S4Q_workdir")) QucsSettings.S4Qworkdir = settings.value("S4Q_workdir").toString();
     else QucsSettings.S4Qworkdir = QDir::convertSeparators(QDir::homePath()+"/.qucs/spice4qucs");
+    if(settings.contains("SimParameters")) QucsSettings.SimParameters = settings.value("SimParameters").toString();
+    else QucsSettings.SimParameters = "";
     if(settings.contains("OctaveExecutable")) {
         QucsSettings.OctaveExecutable = settings.value("OctaveExecutable").toString();
     } else {
@@ -232,6 +234,7 @@ bool saveApplSettings()
     settings.setValue("Qucsator",QucsSettings.Qucsator);
     settings.setValue("Nprocs",QucsSettings.NProcs);
     settings.setValue("S4Q_workdir",QucsSettings.S4Qworkdir);
+    settings.setValue("SimParameters",QucsSettings.SimParameters);
     // settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
     settings.setValue("OctaveExecutable",QucsSettings.OctaveExecutable);
     settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());

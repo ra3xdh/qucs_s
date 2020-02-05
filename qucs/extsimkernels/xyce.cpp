@@ -20,6 +20,7 @@
 #include "components/equation.h"
 #include "main.h"
 
+
 /*!
   \file xyce.cpp
   \brief Implementation of the Xyce class
@@ -392,9 +393,9 @@ void Xyce::setParallel(bool par)
         QString xyce_par = QucsSettings.XyceParExecutable;
         xyce_par.replace("%p",QString::number(QucsSettings.NProcs));
         simulator_cmd = xyce_par;
-        simulator_parameters = QString(" -a ");
+        simulator_parameters = simulator_parameters + QString(" -a ");
     } else {
         simulator_cmd = "\"" + QucsSettings.XyceExecutable + "\"";
-        simulator_parameters = "-a";
+        simulator_parameters = simulator_parameters + " -a ";
     }
 }
