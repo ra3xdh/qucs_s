@@ -1285,12 +1285,22 @@ QString AbstractSpiceKernel::getOutput()
 }
 
 /*!
- * \brief AbstractSpiceKernel::setSimulatorCmd Set simualtor executable location
+ * \brief AbstractSpiceKernel::setSimulatorCmd Set simulator executable location
  * \param cmd Simulator executable absolute path. For example /usr/bin/ngspice
  */
 void AbstractSpiceKernel::setSimulatorCmd(QString cmd)
 {
     simulator_cmd = cmd;
+}
+
+
+/*!
+ * \brief AbstractSpiceKernel::setSimulatorParameters Set simulator parameters
+ * \param cmd Simulator executable absolute path. For example -plugin lib/Xyce_ADMS_Plugin.so
+ */
+void AbstractSpiceKernel::setSimulatorParameters(QString parameters)
+{
+    simulator_parameters = parameters;
 }
 
 /*!

@@ -123,6 +123,7 @@ void ExternSimDialog::slotSetSimulator()
         connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
         ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable);
+        ngspice->setSimulatorParameters(QucsSettings.SimParameters);
     }
         break;
     case spicecompat::simXyceSer: {
@@ -131,6 +132,7 @@ void ExternSimDialog::slotSetSimulator()
         connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
+        xyce->setSimulatorParameters(QucsSettings.SimParameters);
     }
         break;
     case spicecompat::simXycePar: {
@@ -143,6 +145,7 @@ void ExternSimDialog::slotSetSimulator()
         connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
+        xyce->setSimulatorParameters(QucsSettings.SimParameters);
     }
         break;
     case spicecompat::simSpiceOpus: {
@@ -152,6 +155,7 @@ void ExternSimDialog::slotSetSimulator()
         connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)),Qt::UniqueConnection);
         connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()),Qt::UniqueConnection);
         ngspice->setSimulatorCmd(QucsSettings.SpiceOpusExecutable);
+        ngspice->setSimulatorParameters(QucsSettings.SimParameters);
     }
         break;
     default: break;

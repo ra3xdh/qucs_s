@@ -46,6 +46,7 @@ public:
     explicit Ngspice(Schematic *sch_, QObject *parent = 0);
     void SaveNetlist(QString filename);
     void setSimulatorCmd(QString cmd);
+    void setSimulatorParameters(QString parameters);
     
 protected:
     void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
