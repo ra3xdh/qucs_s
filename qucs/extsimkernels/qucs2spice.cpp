@@ -114,7 +114,7 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
         else if (edd_pattern.exactMatch(line)) s += convert_edd(line,EqnsAndVars);
         else if (subckt_pattern.exactMatch(line)) s+= convert_subckt(line);
         else if (gyrator_pattern.exactMatch(line)) s+= convert_gyrator(line);
-        else s += "\n";
+        else s += "*[raw qucs] " + line + "\n";
     }
 
     //s.replace(" gnd "," 0 ");
