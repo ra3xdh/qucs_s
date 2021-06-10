@@ -101,12 +101,14 @@ QString XAPWL::spice_netlist(bool)
     QString A_Line_6 = Props.at(5)->Value;
     QString A_Line_7 = Props.at(6)->Value;   
      
-    if(  A.length()        > 0)    s += QString("%1\n").arg(A);
-    if(  A_Line_2.length() > 0 )   s += QString("%1\n").arg(A_Line_2);
-    if(  A_Line_3.length() > 0 )   s += QString("%1\n").arg(A_Line_3);   
-    if(  A_Line_4.length() > 0 )   s += QString("%1\n").arg(A_Line_4); 
-    if(  A_Line_5.length() > 0 )   s += QString("%1\n").arg(A_Line_5);
-    if(  A_Line_6.length() > 0 )   s += QString("%1\n").arg(A_Line_6);
-    if(  A_Line_7.length() > 0 )   s += QString("%1\n").arg(A_Line_7);   
+    if(  A.length()        > 0)    s += QString("%1").arg(A);
+    if(  A_Line_2.length() > 0 )   s += QString("\n%1").arg(A_Line_2);
+    if(  A_Line_3.length() > 0 )   s += QString("\n%1").arg(A_Line_3);
+    if(  A_Line_4.length() > 0 )   s += QString("\n%1").arg(A_Line_4);
+    if(  A_Line_5.length() > 0 )   s += QString("\n%1").arg(A_Line_5);
+    if(  A_Line_6.length() > 0 )   s += QString("\n%1").arg(A_Line_6);
+    if(  A_Line_7.length() > 0 )   s += QString("\n%1").arg(A_Line_7);
+    s += "\n";
+
     return s;
 }

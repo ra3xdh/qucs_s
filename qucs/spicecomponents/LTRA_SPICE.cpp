@@ -109,11 +109,12 @@ QString LTRA_SPICE::spice_netlist(bool)
     QString O_Line_4= Props.at(3)->Value;
     QString O_Line_5= Props.at(4)->Value;
 
-    if(  O.length()  > 0)          s += QString("%1\n").arg(O);
-    if(  O_Line_2.length() > 0 )   s += QString("%1\n").arg(O_Line_2);
-    if(  O_Line_3.length() > 0 )   s += QString("%1\n").arg(O_Line_3);
-    if(  O_Line_4.length() > 0 )   s += QString("%1\n").arg(O_Line_4);
-    if(  O_Line_5.length() >  0 )  s += QString("%1\n").arg(O_Line_5);
- 
+    if(  O.length()  > 0)          s += QString("%1").arg(O);
+    if(  O_Line_2.length() > 0 )   s += QString("\n%1").arg(O_Line_2);
+    if(  O_Line_3.length() > 0 )   s += QString("\n%1").arg(O_Line_3);
+    if(  O_Line_4.length() > 0 )   s += QString("\n%1").arg(O_Line_4);
+    if(  O_Line_5.length() >  0 )  s += QString("\n%1").arg(O_Line_5);
+    s += "\n";
+
     return s;
 }

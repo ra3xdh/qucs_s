@@ -105,11 +105,12 @@ QString NJF_SPICE::spice_netlist(bool)
     QString J_Line_4= Props.at(3)->Value;
     QString J_Line_5= Props.at(4)->Value;
 
-    if(  J.length()  > 0)          s += QString("%1\n").arg(J);
-    if(  J_Line_2.length() > 0 )   s += QString("%1\n").arg(J_Line_2);
-    if(  J_Line_3.length() > 0 )   s += QString("%1\n").arg(J_Line_3);
-    if(  J_Line_4.length() > 0 )   s += QString("%1\n").arg(J_Line_4);
-    if(  J_Line_5.length() > 0 )   s += QString("%1\n").arg(J_Line_5);
- 
+    if(  J.length()  > 0)          s += QString("%1").arg(J);
+    if(  J_Line_2.length() > 0 )   s += QString("\n%1").arg(J_Line_2);
+    if(  J_Line_3.length() > 0 )   s += QString("\n%1").arg(J_Line_3);
+    if(  J_Line_4.length() > 0 )   s += QString("\n%1").arg(J_Line_4);
+    if(  J_Line_5.length() > 0 )   s += QString("\n%1").arg(J_Line_5);
+    s += "\n";
+
     return s;
 }

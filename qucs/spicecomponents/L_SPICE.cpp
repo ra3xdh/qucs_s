@@ -98,11 +98,12 @@ QString L_SPICE::spice_netlist(bool)
     QString L_Line_4= Props.at(3)->Value;
     QString L_Line_5= Props.at(4)->Value;
 
-    if(  L.length()  > 0)          s += QString("%1\n").arg(L);
-    if(  L_Line_2.length() > 0 )   s += QString("%1\n").arg(L_Line_2);
-    if(  L_Line_3.length() > 0 )   s += QString("%1\n").arg(L_Line_3);
-    if(  L_Line_4.length() > 0 )   s += QString("%1\n").arg(L_Line_4);
-    if( L_Line_5.length() >  0 )   s += QString("%1\n").arg(L_Line_5);
- 
+    if(  L.length()  > 0)          s += QString("%1").arg(L);
+    if(  L_Line_2.length() > 0 )   s += QString("\n%1").arg(L_Line_2);
+    if(  L_Line_3.length() > 0 )   s += QString("\n%1").arg(L_Line_3);
+    if(  L_Line_4.length() > 0 )   s += QString("\n%1").arg(L_Line_4);
+    if( L_Line_5.length() >  0 )   s += QString("\n%1").arg(L_Line_5);
+    s += "\n";
+
     return s;
 }
