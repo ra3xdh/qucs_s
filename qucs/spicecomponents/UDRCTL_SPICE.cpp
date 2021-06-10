@@ -107,11 +107,12 @@ QString UDRCTL_SPICE::spice_netlist(bool)
     QString U_Line_4= Props.at(3)->Value;
     QString U_Line_5= Props.at(4)->Value;
 
-    if(  U.length()  > 0)          s += QString("%1\n").arg(U);
-    if(  U_Line_2.length() > 0 )   s += QString("%1\n").arg(U_Line_2);
-    if(  U_Line_3.length() > 0 )   s += QString("%1\n").arg(U_Line_3);
-    if(  U_Line_4.length() > 0 )   s += QString("%1\n").arg(U_Line_4);
-    if(  U_Line_5.length() > 0 )   s += QString("%1\n").arg(U_Line_5);
- 
+    if(  U.length()  > 0)          s += QString("%1").arg(U);
+    if(  U_Line_2.length() > 0 )   s += QString("\n%1").arg(U_Line_2);
+    if(  U_Line_3.length() > 0 )   s += QString("\n%1").arg(U_Line_3);
+    if(  U_Line_4.length() > 0 )   s += QString("\n%1").arg(U_Line_4);
+    if(  U_Line_5.length() > 0 )   s += QString("\n%1").arg(U_Line_5);
+    s += "\n";
+
     return s;
 }
