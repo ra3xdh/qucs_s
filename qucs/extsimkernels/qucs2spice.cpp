@@ -99,21 +99,22 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
             if (ends_pattern.exactMatch(line)) s += ".ENDS\n";
             else s += convert_header(line);
         }
-        if (res_pattern.exactMatch(line)) s += convert_rcl(line);
-        if (cap_pattern.exactMatch(line)) s += convert_rcl(line);
-        if (ind_pattern.exactMatch(line)) s += convert_rcl(line);
-        if (diode_pattern.exactMatch(line)) s += convert_diode(line,xyce);
-        if (mosfet_pattern.exactMatch(line)) s += convert_mosfet(line,xyce);
-        if (jfet_pattern.exactMatch(line)) s += convert_jfet(line,xyce);
-        if (bjt_pattern.exactMatch(line)) s += convert_bjt(line);
-        if (vccs_pattern.exactMatch(line)) s += convert_vccs(line);
-        if (vcvs_pattern.exactMatch(line)) s += convert_vcvs(line);
-        if (cccs_pattern.exactMatch(line)) s+= convert_cccs(line);
-        if (ccvs_pattern.exactMatch(line)) s+= convert_ccvs(line);
-        if (dc_pattern.exactMatch(line)) s += convert_dc_src(line);
-        if (edd_pattern.exactMatch(line)) s += convert_edd(line,EqnsAndVars);
-        if (subckt_pattern.exactMatch(line)) s+= convert_subckt(line);
-        if (gyrator_pattern.exactMatch(line)) s+= convert_gyrator(line);
+        else if (res_pattern.exactMatch(line)) s += convert_rcl(line);
+        else if (cap_pattern.exactMatch(line)) s += convert_rcl(line);
+        else if (ind_pattern.exactMatch(line)) s += convert_rcl(line);
+        else if (diode_pattern.exactMatch(line)) s += convert_diode(line,xyce);
+        else if (mosfet_pattern.exactMatch(line)) s += convert_mosfet(line,xyce);
+        else if (jfet_pattern.exactMatch(line)) s += convert_jfet(line,xyce);
+        else if (bjt_pattern.exactMatch(line)) s += convert_bjt(line);
+        else if (vccs_pattern.exactMatch(line)) s += convert_vccs(line);
+        else if (vcvs_pattern.exactMatch(line)) s += convert_vcvs(line);
+        else if (cccs_pattern.exactMatch(line)) s+= convert_cccs(line);
+        else if (ccvs_pattern.exactMatch(line)) s+= convert_ccvs(line);
+        else if (dc_pattern.exactMatch(line)) s += convert_dc_src(line);
+        else if (edd_pattern.exactMatch(line)) s += convert_edd(line,EqnsAndVars);
+        else if (subckt_pattern.exactMatch(line)) s+= convert_subckt(line);
+        else if (gyrator_pattern.exactMatch(line)) s+= convert_gyrator(line);
+        else s += "\n";
     }
 
     //s.replace(" gnd "," 0 ");
