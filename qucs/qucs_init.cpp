@@ -71,13 +71,13 @@ void QucsApp::initActions()
   connect(fileSave, SIGNAL(triggered()), SLOT(slotFileSave()));
 
   fileSaveAs = new QAction(tr("Save as..."), this);
-  //fileSaveAs->setShortcut(QKeySequence::SaveAs);
+  fileSaveAs->setShortcut(QKeySequence::SaveAs);
   fileSaveAs->setStatusTip(	tr("Saves the current document under a new filename"));
   fileSaveAs->setWhatsThis(	tr("Save As\n\nSaves the current document under a new filename"));
   connect(fileSaveAs, SIGNAL(triggered()), SLOT(slotFileSaveAs()));
 
   fileSaveAll = new QAction(QIcon((":/bitmaps/filesaveall.png")),	tr("Save &All"), this);
-  fileSaveAll->setShortcut(tr("Ctrl+Shift+S"));
+  fileSaveAll->setShortcut(tr("Ctrl+Alt+S"));
   fileSaveAll->setStatusTip(tr("Saves all open documents"));
   fileSaveAll->setWhatsThis(tr("Save All Files\n\nSaves all open documents"));
   connect(fileSaveAll, SIGNAL(triggered()), SLOT(slotFileSaveAll()));
@@ -105,7 +105,7 @@ void QucsApp::initActions()
 
 
   symEdit = new QAction(tr("&Edit Circuit Symbol"), this);
-  symEdit->setShortcut(Qt::Key_F9);
+  symEdit->setShortcut(tr("Ctrl+E"));
   symEdit->setStatusTip(tr("Edits the symbol for this schematic"));
   symEdit->setWhatsThis(
 	tr("Edit Circuit Symbol\n\nEdits the symbol for this schematic"));
@@ -199,7 +199,7 @@ void QucsApp::initActions()
   connect(centerVert, SIGNAL(triggered()), SLOT(slotCenterVertical()));
 
   onGrid = new QAction(tr("Set on Grid"), this);
-  onGrid->setShortcut(tr("Ctrl+U"));
+  onGrid->setShortcut(Qt::Key_F);
   onGrid->setStatusTip(tr("Sets selected elements on grid"));
   onGrid->setWhatsThis(tr("Set on Grid\n\nSets selected elements on grid"));
   onGrid->setCheckable(true);
@@ -214,7 +214,11 @@ void QucsApp::initActions()
   connect(moveText, SIGNAL(toggled(bool)), SLOT(slotMoveText(bool)));
 
   changeProps = new QAction(tr("Replace..."), this);
+#ifdef __APPLE__
+  changeProps->setShortcut(tr("Ctrl+G"));
+#else
   changeProps->setShortcut(Qt::Key_F7);
+#endif
   changeProps->setStatusTip(tr("Replace component properties or VHDL code"));
   changeProps->setWhatsThis(
 	tr("Replace\n\nChange component properties\nor\ntext in VHDL code"));
@@ -389,6 +393,7 @@ void QucsApp::initActions()
   this->addAction(escape);
 
   select = new QAction(QIcon((":/bitmaps/pointer.png")), tr("Select"), this);
+  select->setShortcut(Qt::Key_Space);
   select->setStatusTip(tr("Activate select mode"));
   select->setWhatsThis(tr("Select\n\nActivates select mode"));
   select->setCheckable(true);
@@ -407,83 +412,84 @@ void QucsApp::initActions()
   connect(selectMarker, SIGNAL(triggered()), SLOT(slotSelectMarker()));
 
   editRotate = new QAction(QIcon(misc::getIconPath("rotate_ccw.png", qucs::panelIcons)), tr("Rotate"), this);
-  editRotate->setShortcut(tr("Ctrl+R"));
+  editRotate->setShortcut(Qt::Key_R);
   editRotate->setStatusTip(tr("Rotates the selected component by 90\x00B0"));
   editRotate->setWhatsThis(tr("Rotate\n\nRotates the selected component by 90\x00B0 counter-clockwise"));
   editRotate->setCheckable(true);
   connect(editRotate, SIGNAL(toggled(bool)), SLOT(slotEditRotate(bool)));
 
   editMirror = new QAction(QIcon(misc::getIconPath("mirror.png", qucs::panelIcons)), tr("Mirror about X Axis"), this);
-  editMirror->setShortcut(tr("Ctrl+J"));
+  editMirror->setShortcut(Qt::Key_X);
   editMirror->setStatusTip(tr("Mirrors the selected item about X Axis"));
   editMirror->setWhatsThis(tr("Mirror about X Axis\n\nMirrors the selected item about X Axis"));
   editMirror->setCheckable(true);
   connect(editMirror, SIGNAL(toggled(bool)), SLOT(slotEditMirrorX(bool)));
 
   editMirrorY = new QAction(QIcon(misc::getIconPath("mirrory.png", qucs::panelIcons)), tr("Mirror about Y Axis"), this);
-  editMirrorY->setShortcut(tr("Ctrl+M"));
+  editMirrorY->setShortcut(Qt::Key_C);
   editMirrorY->setStatusTip(tr("Mirrors the selected item about Y Axis"));
   editMirrorY->setWhatsThis(tr("Mirror about Y Axis\n\nMirrors the selected item about Y Axis"));
   editMirrorY->setCheckable(true);
   connect(editMirrorY, SIGNAL(toggled(bool)), SLOT(slotEditMirrorY(bool)));
 
   intoH = new QAction(QIcon((":/bitmaps/bottom.png")), tr("Go into Subcircuit"), this);
-  intoH->setShortcut(tr("Ctrl+I"));
+  intoH->setShortcut(Qt::Key_Enter);
   intoH->setStatusTip(tr("Goes inside the selected subcircuit"));
   intoH->setWhatsThis(
 	tr("Go into Subcircuit\n\nGoes inside the selected subcircuit"));
   connect(intoH, SIGNAL(triggered()), SLOT(slotIntoHierarchy()));
 
   popH = new QAction(QIcon((":/bitmaps/top.png")), tr("Pop out"), this);
-  popH->setShortcut(tr("Ctrl+H"));
+  popH->setShortcut(Qt::Key_Backslash);
   popH->setStatusTip(tr("Pop outside subcircuit"));
   popH->setWhatsThis(tr("Pop out\n\nGoes up one hierarchy level, i.e. leaves subcircuit"));
   connect(popH, SIGNAL(triggered()), SLOT(slotPopHierarchy()));
   popH->setEnabled(false);  // only enabled if useful !!!!
 
   editActivate = new QAction(QIcon(misc::getIconPath("deactiv.png", qucs::panelIcons)),	tr("Deactivate/Activate"), this);
-  editActivate->setShortcut(tr("Ctrl+D"));
+  editActivate->setShortcut(Qt::Key_D);
   editActivate->setStatusTip(tr("Deactivate/Activate selected components"));
   editActivate->setWhatsThis(tr("Deactivate/Activate\n\nDeactivate/Activate the selected components"));
   editActivate->setCheckable(true);
   connect(editActivate, SIGNAL(toggled(bool)), SLOT(slotEditActivate(bool)));
 
   insEquation = new QAction(QIcon(misc::getIconPath("equation.png", qucs::panelIcons)),	tr("Insert Equation"), this);
-  insEquation->setShortcut(tr("Ctrl+<"));
+  insEquation->setShortcut(Qt::Key_E);
   insEquation->setStatusTip(tr("Inserts an equation"));
   insEquation->setWhatsThis(tr("Insert Equation\n\nInserts a user defined equation"));
   insEquation->setCheckable(true);
   connect(insEquation, SIGNAL(toggled(bool)), SLOT(slotInsertEquation(bool)));
 
   insGround = new QAction(QIcon(misc::getIconPath("ground.png", qucs::panelIcons)), tr("Insert Ground"), this);
-  insGround->setShortcut(tr("Ctrl+G"));
+  insGround->setShortcut(Qt::Key_G);
   insGround->setStatusTip(tr("Inserts a ground symbol"));
   insGround->setWhatsThis(tr("Insert Ground\n\nInserts a ground symbol"));
   insGround->setCheckable(true);
   connect(insGround, SIGNAL(toggled(bool)), SLOT(slotInsertGround(bool)));
 
   insPort = new QAction(QIcon(misc::getIconPath("port.png", qucs::panelIcons)),	tr("Insert Port"), this);
+  insPort->setShortcut(Qt::Key_P);
   insPort->setStatusTip(tr("Inserts a port symbol"));
   insPort->setWhatsThis(tr("Insert Port\n\nInserts a port symbol"));
   insPort->setCheckable(true);
   connect(insPort, SIGNAL(toggled(bool)), SLOT(slotInsertPort(bool)));
 
   insWire = new QAction(QIcon(misc::getIconPath("wire.png", qucs::panelIcons)),	tr("Wire"), this);
-  insWire->setShortcut(tr("Ctrl+E"));
+  insWire->setShortcut(Qt::Key_W);
   insWire->setStatusTip(tr("Inserts a wire"));
   insWire->setWhatsThis(tr("Wire\n\nInserts a wire"));
   insWire->setCheckable(true);
   connect(insWire, SIGNAL(toggled(bool)), SLOT(slotSetWire(bool)));
 
   insLabel = new QAction(QIcon(misc::getIconPath("nodename.png", qucs::panelIcons)), tr("Wire Label"), this);
-  insLabel->setShortcut(tr("Ctrl+L"));
+  insLabel->setShortcut(Qt::Key_Q);
   insLabel->setStatusTip(tr("Inserts a wire or pin label"));
   insLabel->setWhatsThis(tr("Wire Label\n\nInserts a wire or pin label"));
   insLabel->setCheckable(true);
   connect(insLabel, SIGNAL(toggled(bool)), SLOT(slotInsertLabel(bool)));
 
   insEntity = new QAction(tr("VHDL entity"), this);
-  insEntity->setShortcut(tr("Ctrl+Space"));
+  insEntity->setShortcut(Qt::Key_V);
   insEntity->setStatusTip(tr("Inserts skeleton of VHDL entity"));
   insEntity->setWhatsThis(
 	tr("VHDL entity\n\nInserts the skeleton of a VHDL entity"));
@@ -532,38 +538,38 @@ void QucsApp::initActions()
   connect(callPwrComb, SIGNAL(triggered()), SLOT(slotCallPwrComb()));
 
   simulate = new QAction(QIcon((":/bitmaps/gear.png")), tr("Simulate"), this);
-  simulate->setShortcut(Qt::Key_F2);
+  simulate->setShortcut(tr("Ctrl+R"));
   simulate->setStatusTip(tr("Simulates the current schematic"));
   simulate->setWhatsThis(tr("Simulate\n\nSimulates the current schematic"));
   connect(simulate, SIGNAL(triggered()), SLOT(slotSimulate()));
 
   dpl_sch = new QAction(QIcon((":/bitmaps/rebuild.png")), tr("View Data Display/Schematic"), this);
-  dpl_sch->setShortcut(Qt::Key_F4);
+  dpl_sch->setShortcut(Qt::Key_Tab);
   dpl_sch->setStatusTip(tr("Changes to data display or schematic page"));
   dpl_sch->setWhatsThis(tr("View Data Display/Schematic\n\nChanges to data display or schematic page"));
   connect(dpl_sch, SIGNAL(triggered()), SLOT(slotToPage()));
 
   dcbias = new QAction(tr("Calculate DC bias"), this);
-  dcbias->setShortcut(Qt::Key_F8);
+  dcbias->setShortcut(tr("Ctrl+D"));
   dcbias->setStatusTip(tr("Calculates DC bias and shows it"));
   dcbias->setWhatsThis(tr("Calculate DC bias\n\nCalculates DC bias and shows it"));
   connect(dcbias, SIGNAL(triggered()), SLOT(slotDCbias()));
 
   setMarker = new QAction(QIcon((":/bitmaps/marker.png")),	tr("Set Marker on Graph"), this);
-  setMarker->setShortcut(Qt::CTRL+Qt::Key_B);
+  setMarker->setShortcut(Qt::Key_M);
   setMarker->setStatusTip(tr("Sets a marker on a diagram's graph"));
   setMarker->setWhatsThis(tr("Set Marker\n\nSets a marker on a diagram's graph"));
   setMarker->setCheckable(true);
   connect(setMarker, SIGNAL(toggled(bool)), SLOT(slotSetMarker(bool)));
 
   showMsg = new QAction(tr("Show Last Messages"), this);
-  showMsg->setShortcut(Qt::Key_F5);
+  showMsg->setShortcut(Qt::Key_L);
   showMsg->setStatusTip(tr("Shows last simulation messages"));
   showMsg->setWhatsThis(tr("Show Last Messages\n\nShows the messages of the last simulation"));
   connect(showMsg, SIGNAL(triggered()), SLOT(slotShowLastMsg()));
 
   showNet = new QAction(tr("Show Last Netlist"), this);
-  showNet->setShortcut(Qt::Key_F6);
+  showNet->setShortcut(Qt::Key_K);
   showNet->setStatusTip(tr("Shows last simulation netlist"));
   showNet->setWhatsThis(tr("Show Last Netlist\n\nShows the netlist of the last simulation"));
   connect(showNet, SIGNAL(triggered()), SLOT(slotShowLastNetlist()));
