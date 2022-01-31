@@ -103,7 +103,13 @@ void ExternSimDialog::slotSetSimulator()
         connect(ngspice,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
-        ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable);
+        QString cmd;
+        if (QFileInfo(QucsSettings.NgspiceExecutable).isRelative()) {
+            cmd = QFileInfo(QucsSettings.BinDir + QucsSettings.NgspiceExecutable).absoluteFilePath();
+        } else {
+            cmd = QFileInfo(QucsSettings.NgspiceExecutable).absoluteFilePath();
+        }
+        ngspice->setSimulatorCmd(cmd);
         ngspice->setSimulatorParameters(QucsSettings.SimParameters);
     }
         break;
