@@ -58,6 +58,7 @@ class QListView;
 class QModelIndex;
 class QPushButton;
 class QTextEdit;
+class QFrame;
 
 class SymbolWidget;
 
@@ -244,6 +245,8 @@ private:
   void initView();
   void initCursorMenu();
 
+  int addDocumentTab(QFrame* widget, const QString& title = QString());
+  void setDocumentTabChanged(int index, bool changed);
   void printCurrentDocument(bool);
   bool saveFile(QucsDoc *Doc=0);
   bool saveAs();

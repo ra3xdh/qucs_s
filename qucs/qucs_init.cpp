@@ -927,7 +927,9 @@ void QucsApp::initStatusBar()
   statusBar()->addPermanentWidget(WarningLabel, 0);
 
   PositionLabel = new QLabel("0 : 0", statusBar());
+#ifndef __APPLE__
   PositionLabel->setAlignment(Qt::AlignRight);
+#endif
   statusBar()->addPermanentWidget(PositionLabel, 0);
 
   statusBar()->showMessage(tr("Ready."), 2000);
