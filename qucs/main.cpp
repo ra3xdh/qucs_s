@@ -189,6 +189,11 @@ bool loadSettings()
     if (settings.contains("fullTraceName")) QucsSettings.fullTraceName = settings.value("fullTraceName").toBool();
     else QucsSettings.fullTraceName = false;
 
+    QucsSettings.FileToolbar = settings.contains("FileToolbar") ? settings.value("FileToolbar").toBool() : true;
+    QucsSettings.EditToolbar = settings.contains("EditToolbar") ? settings.value("EditToolbar").toBool() : true;
+    QucsSettings.ViewToolbar = settings.contains("ViewToolbar") ? settings.value("ViewToolbar").toBool() : true;
+    QucsSettings.WorkToolbar = settings.contains("WorkToolbar") ? settings.value("WorkToolbar").toBool() : true;
+
     QucsSettings.RecentDocs = settings.value("RecentDocs").toString().split("*",qucs::SkipEmptyParts);
     QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
 
@@ -270,6 +275,10 @@ bool saveApplSettings()
     settings.setValue("fullTraceName",QucsSettings.fullTraceName);
     settings.setValue("panelIconsTheme",QucsSettings.panelIconsTheme);
     settings.setValue("compIconsTheme",QucsSettings.compIconsTheme);
+    settings.setValue("FileToolbar", QucsSettings.FileToolbar);
+    settings.setValue("EditToolbar", QucsSettings.EditToolbar);
+    settings.setValue("ViewToolbar", QucsSettings.ViewToolbar);
+    settings.setValue("WorkToolbar", QucsSettings.WorkToolbar);
 
     // Copy the list of directory paths in which Qucs should
     // search for subcircuit schematics from qucsPathList

@@ -174,6 +174,11 @@ QucsApp::QucsApp()
   initCursorMenu();
   Module::registerModules ();
 
+  fileToolbar->setVisible(QucsSettings.FileToolbar);
+  editToolbar->setVisible(QucsSettings.EditToolbar);
+  viewToolbar->setVisible(QucsSettings.ViewToolbar);
+  workToolbar->setVisible(QucsSettings.WorkToolbar);
+
   // instance of small text search dialog
   SearchDia = new SearchDialog(this);
 
@@ -1990,15 +1995,11 @@ void QucsApp::slotFileQuit()
   statusBar()->showMessage(tr("Exiting application..."));
   slotHideEdit(); // disable text edit of component property
 
-  int exit = QMessageBox::information(this,
-      tr("Quit..."), tr("Do you really want to quit?"),
-      tr("Yes"), tr("No"));
-
-  if(exit == 0)
-    if(closeAllFiles()) {
-      emit signalKillEmAll();   // kill all subprocesses
-      qApp->quit();
-    }
+  saveSettings();
+  if(closeAllFiles()) {
+    emit signalKillEmAll();   // kill all subprocesses
+    qApp->quit();
+  }
 
   statusBar()->showMessage(tr("Ready."));
 }
@@ -2007,14 +2008,7 @@ void QucsApp::slotFileQuit()
 // To get all close events.
 void QucsApp::closeEvent(QCloseEvent* Event)
 {
-    qDebug()<<"x"<<pos().x()<<" ,y"<<pos().y();
-    qDebug()<<"dx"<<size().width()<<" ,dy"<<size().height();
-    QucsSettings.x=pos().x();
-    QucsSettings.y=pos().y();
-    QucsSettings.dx=size().width();
-    QucsSettings.dy=size().height();
-    saveApplSettings();
-
+   saveSettings();
    if(closeAllFiles()) {
       emit signalKillEmAll();   // kill all subprocesses
       Event->accept();
@@ -2022,6 +2016,23 @@ void QucsApp::closeEvent(QCloseEvent* Event)
    }
    else
       Event->ignore();
+}
+
+//-----------------------------------------------------------------
+// Saves settings
+void QucsApp::saveSettings()
+{
+  qDebug()<<"x"<<pos().x()<<" ,y"<<pos().y();
+  qDebug()<<"dx"<<size().width()<<" ,dy"<<size().height();
+  QucsSettings.x=pos().x();
+  QucsSettings.y=pos().y();
+  QucsSettings.dx=size().width();
+  QucsSettings.dy=size().height();
+  QucsSettings.FileToolbar = fileToolbar->isVisible();
+  QucsSettings.EditToolbar = editToolbar->isVisible();
+  QucsSettings.ViewToolbar = viewToolbar->isVisible();
+  QucsSettings.WorkToolbar = workToolbar->isVisible();
+  saveApplSettings();
 }
 
 // --------------------------------------------------------------------

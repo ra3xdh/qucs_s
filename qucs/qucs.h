@@ -260,6 +260,7 @@ private:
   void updateRecentFilesList(QString s);
   void successExportMessages(bool ok);
   void fillLibrariesTreeView (void);
+  void saveSettings();
 
 public:
 
