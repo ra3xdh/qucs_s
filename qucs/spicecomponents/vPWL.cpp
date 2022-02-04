@@ -109,15 +109,17 @@ QString Line_10= Props.at(9)->Value;
 
     s += QString("");
   
-    if(  PWL.length()  > 0)        s += QString("%1\n").arg(PWL);
-    if(  Line_2.length() > 0 )     s += QString("%1\n").arg(Line_2);
-    if(  Line_3.length() > 0 )     s += QString("%1\n").arg(Line_3);
-    if(  Line_4.length() > 0 )     s += QString("%1\n").arg(Line_4);
-    if(  Line_5.length() > 0 )     s += QString("%1\n").arg(Line_5);
-    if(  Line_6.length() > 0 )     s += QString("%1\n").arg(Line_6);
-    if(  Line_7.length() > 0 )     s += QString("%1\n").arg(Line_7);
-    if(  Line_8.length() > 0)      s += QString("%1\n").arg(Line_8);
-    if(  Line_9.length() > 0 )     s += QString("%1\n").arg(Line_9);
-    if(  Line_10.length() > 0 )    s += QString("%1\n").arg(Line_10);
+    if(  PWL.length()  > 0)        s += QString("%1").arg(PWL);
+    if(  Line_2.length() > 0 )     s += QString("\n%1").arg(Line_2);
+    if(  Line_3.length() > 0 )     s += QString("\n%1").arg(Line_3);
+    if(  Line_4.length() > 0 )     s += QString("\n%1").arg(Line_4);
+    if(  Line_5.length() > 0 )     s += QString("\n%1").arg(Line_5);
+    if(  Line_6.length() > 0 )     s += QString("\n%1").arg(Line_6);
+    if(  Line_7.length() > 0 )     s += QString("\n%1").arg(Line_7);
+    if(  Line_8.length() > 0)      s += QString("\n%1").arg(Line_8);
+    if(  Line_9.length() > 0 )     s += QString("\n%1").arg(Line_9);
+    if(  Line_10.length() > 0 )    s += QString("\n%1").arg(Line_10);
+    s += "\n";
+
     return s;
 }

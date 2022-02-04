@@ -80,12 +80,13 @@ QString Src_eqndef::spice_netlist(bool)
     QString Line_4 = Props.at(3)->Value;
     QString Line_5 = Props.at(4)->Value;
 
-    s += QString(" %1 = %2 \n").arg(VI).arg(VI2);
-    if(  Line_2.length() > 0 )   s += QString("%1\n").arg(Line_2);
-    if(  Line_3.length() > 0 )   s += QString("%1\n").arg(Line_3);
-    if(  Line_4.length() > 0 )   s += QString("%1\n").arg(Line_4);
-    if(  Line_5.length() > 0 )   s += QString("%1\n").arg(Line_5);
- 
+    s += QString(" %1 = %2 ").arg(VI).arg(VI2);
+    if(  Line_2.length() > 0 )   s += QString("\n%1").arg(Line_2);
+    if(  Line_3.length() > 0 )   s += QString("\n%1").arg(Line_3);
+    if(  Line_4.length() > 0 )   s += QString("\n%1").arg(Line_4);
+    if(  Line_5.length() > 0 )   s += QString("\n%1").arg(Line_5);
+    s += "\n";
+
     return s;
 }
 

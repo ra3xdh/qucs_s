@@ -91,10 +91,12 @@ QString S4Q_I::spice_netlist(bool)
     QString l3= Props.at(3)->Value;
     QString l4= Props.at(4)->Value;
 
-    if(l0.length()> 0)   s += QString("%1\n").arg(l0);
-    if(l1.length()> 0)   s += QString("%1\n").arg(l1);
-    if(l2.length()> 0)   s += QString("%1\n").arg(l2);
-    if(l3.length()> 0)   s += QString("%1\n").arg(l3);
-    if(l4.length()> 0)   s += QString("%1\n").arg(l4);
+    if(l0.length()> 0)   s += QString("%1").arg(l0);
+    if(l1.length()> 0)   s += QString("\n%1").arg(l1);
+    if(l2.length()> 0)   s += QString("\n%1").arg(l2);
+    if(l3.length()> 0)   s += QString("\n%1").arg(l3);
+    if(l4.length()> 0)   s += QString("\n%1").arg(l4);
+    s += "\n";
+
     return s;
 }
