@@ -282,7 +282,7 @@ void Xyce::slotSimulate()
         QStringList sim_lst;
         sim_lst.clear();
         sim_lst.append(sim);
-        QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs."+sim+".cir");
+        QString tmp_path = QDir::toNativeSeparators(workdir+"/spice4qucs."+sim+".cir");
         netlistQueue.append(tmp_path);
         QFile spice_file(tmp_path);
         if (spice_file.open(QFile::WriteOnly)) {

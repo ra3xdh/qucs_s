@@ -30,8 +30,8 @@ XSPICE_CMbuilder::XSPICE_CMbuilder(Schematic *sch_)
     workdir = QucsSettings.S4Qworkdir;
     Sch = sch_;
     cmsubdir = "qucs_cmlib/";
-    cmdir = QDir::convertSeparators(workdir+"/"+cmsubdir);
-    spinit_name=QDir::convertSeparators(workdir+"/.spiceinit");
+    cmdir = QDir::toNativeSeparators(workdir+"/"+cmsubdir);
+    spinit_name=QDir::toNativeSeparators(workdir+"/.spiceinit");
 }
 
 XSPICE_CMbuilder::~XSPICE_CMbuilder()
@@ -238,7 +238,7 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
                 lst1<<(*mod)<<(*ifs);
                 // If model is duplicated don't process it (don't copy files)
                 if (!ModIfsPairProcessed((*mod),(*ifs))) {
-                    QString destdir = QDir::convertSeparators(prefix + pc->Name + QString::number(i));
+                    QString destdir = QDir::toNativeSeparators(prefix + pc->Name + QString::number(i));
                     if (!dir_cm.mkdir(destdir))
                         output += QString("Cannot create directory %1 \n").arg(destdir);
                     lst_entries += destdir;

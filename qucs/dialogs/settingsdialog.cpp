@@ -343,7 +343,7 @@ AuxFilesDialog::AuxFilesDialog(QWidget *parent, const QString &filter) :QDialog(
 
   //tree->header()->setStretchLastSection(false);
   //tree->resizeColumnToContents(0);
-  tree->header()->setResizeMode(QHeaderView::ResizeToContents);
+  tree->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
   //tree->header()->setResizeMode(0, QHeaderView::Stretch); 
   connect(tree, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(slotDoubleClick(const QModelIndex &)));
 

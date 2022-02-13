@@ -427,7 +427,7 @@ void Ngspice::slotSimulate()
     }
 
     QString netfile = "spice4qucs.cir";
-    QString tmp_path = QDir::convertSeparators(workdir+QDir::separator()+netfile);
+    QString tmp_path = QDir::toNativeSeparators(workdir+QDir::separator()+netfile);
     SaveNetlist(tmp_path);
 
     removeAllSimulatorOutputs();

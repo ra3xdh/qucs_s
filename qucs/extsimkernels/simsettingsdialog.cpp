@@ -50,7 +50,10 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     edtXycePar = new QLineEdit(QucsSettings.XyceParExecutable);
     edtSpiceOpus = new QLineEdit(QucsSettings.SpiceOpusExecutable);
     edtQucsator = new QLineEdit(QucsSettings.Qucsator);
-    spbNprocs = new QSpinBox(1,256,1,this);
+    spbNprocs = new QSpinBox(this);
+    spbNprocs->setMinimum(1);
+    spbNprocs->setMaximum(256);
+    spbNprocs->setValue(1);
     spbNprocs->setValue(QucsSettings.NProcs);
     edtWorkdir = new QLineEdit(QucsSettings.S4Qworkdir);
     edtSimParam = new QLineEdit(QucsSettings.SimParameters);
@@ -234,7 +237,7 @@ void SimSettingsDialog::slotSetWorkdir()
     dlg.setAcceptMode(QFileDialog::AcceptOpen);
     dlg.setFileMode(QFileDialog::DirectoryOnly);
     if (dlg.exec()) {
-        QString s = dlg.selectedFile();
+        QString s = dlg.selectedFiles().first();
         if (!s.isEmpty()) edtWorkdir->setText(s);
     }
 }

@@ -24,6 +24,8 @@
 #include <QLineEdit>
 #include <QComboBox>
 
+#include "misc.h"
+
 #include <cmath>
 
 EllipseArc::EllipseArc()
@@ -385,25 +387,25 @@ bool EllipseArc::Dialog()
   bool changed = false;
 
   FillDialog *d = new FillDialog(QObject::tr("Edit Arc Properties"), false);
-  d->ColorButt->setPaletteBackgroundColor(Pen.color());
+  misc::setPickerColor(d->ColorButt,Pen.color());
   d->LineWidth->setText(QString::number(Pen.width()));
-  d->StyleBox->setCurrentItem(Pen.style()-1);
+  d->StyleBox->setCurrentIndex(Pen.style()-1);
 
   if(d->exec() == QDialog::Rejected) {
     delete d;
     return false;
   }
 
-  if(Pen.color() != d->ColorButt->paletteBackgroundColor()) {
-    Pen.setColor(d->ColorButt->paletteBackgroundColor());
+  if(Pen.color() != misc::getWidgetBackgroundColor(d->ColorButt)) {
+    Pen.setColor(misc::getWidgetBackgroundColor(d->ColorButt));
     changed = true;
   }
   if(Pen.width()  != d->LineWidth->text().toInt()) {
     Pen.setWidth(d->LineWidth->text().toInt());
     changed = true;
   }
-  if(Pen.style()  != (Qt::PenStyle)(d->StyleBox->currentItem()+1)) {
-    Pen.setStyle((Qt::PenStyle)(d->StyleBox->currentItem()+1));
+  if(Pen.style()  != (Qt::PenStyle)(d->StyleBox->currentIndex()+1)) {
+    Pen.setStyle((Qt::PenStyle)(d->StyleBox->currentIndex()+1));
     changed = true;
   }
 

@@ -19,6 +19,7 @@
 
 #include "components/component.h"
 #include <QtGui>
+#include <QtWidgets>
 
 
 /*!

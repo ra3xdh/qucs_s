@@ -1013,7 +1013,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             parseHBOutput(full_outfile,sim_points,var_list,hasParSweep);
             isComplex = true;
             if (hasParSweep) {
-                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
                                                         + "spice4qucs.hb.cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
@@ -1032,7 +1032,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             isComplex = false;
             parseNoiseOutput(full_outfile,sim_points,var_list,hasParSweep);
             if (hasParSweep) {
-                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
                                                         + "spice4qucs.noise.cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
@@ -1040,7 +1040,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             isComplex = true;
             parsePZOutput(full_outfile,sim_points,var_list,hasParSweep);
             if (hasParSweep) {
-                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
                                                         + "spice4qucs.pz.cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
@@ -1050,7 +1050,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
             if (type == xyceSTDswp) {
                 hasParSweep = true;
-                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
                                                         + "spice4qucs.sens.cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
@@ -1062,14 +1062,14 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 hasDblParSweep = true;
                 simstr.chop(4);
                 simstr = simstr.split('_').last();
-                QString res2_file = QDir::convertSeparators(workdir + QDir::separator()
+                QString res2_file = QDir::toNativeSeparators(workdir + QDir::separator()
                                                             + "spice4qucs." + simstr + ".cir.res1");
                 parseResFile(res2_file,swp_var2,swp_var2_val);
             } else {
                 simstr = simstr.split('_').last();
             }
 
-            QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+            QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
                                                     + "spice4qucs." + simstr + ".cir.res");
             parseResFile(res_file,swp_var,swp_var_val);
 

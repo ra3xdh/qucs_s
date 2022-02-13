@@ -101,7 +101,7 @@ PackageDialog::PackageDialog(QWidget *parent_, bool create_)
 
     // ...........................................................
     // insert all projects
-    QStringList PrDirs = QucsSettings.QucsHomeDir.entryList("*", QDir::Dirs, QDir::Name);
+    QStringList PrDirs = QucsSettings.QucsHomeDir.entryList(QStringList("*"), QDir::Dirs, QDir::Name);
     QStringList::iterator it;
     for(it = PrDirs.begin(); it != PrDirs.end(); it++)
        if((*it).right(4) == "_prj"){   // project directories end with "_prj"
@@ -127,7 +127,7 @@ PackageDialog::PackageDialog(QWidget *parent_, bool create_)
     setWindowTitle(tr("Extract Project Package"));
 
     MsgText = new QTextEdit(this);
-    MsgText->setTextFormat(Qt::PlainText);
+    MsgText->toPlainText();
     MsgText->setWordWrapMode(QTextOption::NoWrap);
     MsgText->setReadOnly(true);
     all->addWidget(MsgText);
@@ -152,16 +152,17 @@ PackageDialog::~PackageDialog()
 void PackageDialog::slotBrowse()
 {
   QString s = QFileDialog::getSaveFileName(
+     this, tr("Enter a Package File Name"),
      lastDir.isEmpty() ? QString(".") : lastDir,
      tr("Qucs Packages")+" (*.qucs);;"+
-     tr("Any File")+" (*)",
-     this, 0, tr("Enter a Package File Name"));
+     tr("Any File")+" (*)"
+     );
   if(s.isEmpty()) return;
 
   QFileInfo Info(s);
-  lastDir = Info.dirPath(true);  // remember last directory
+  lastDir = Info.absolutePath();  // remember last directory
 
-  if(Info.extension().isEmpty())
+  if(Info.suffix().isEmpty())
     s += ".qucs";
   NameEdit->setText(s);
 }
@@ -181,10 +182,10 @@ int PackageDialog::insertFile(const QString& FileName, QFile& File,
     return -1;
   }
 
-  Q_ULONG Count = File.size();
+  qulonglong Count = File.size();
   char *p = (char*)malloc(Count+FileName.length()+2);
   strcpy(p, FileName.toLatin1());
-  File.readBlock(p+FileName.length()+1, Count);
+  File.read(p+FileName.length()+1, Count);
   File.close();
 
   Count += FileName.length()+1;
@@ -203,22 +204,22 @@ int PackageDialog::insertDirectory(const QString& DirName,
   QDir myDir(DirName);
 
   // Put all files of this directory into the package.
-  QStringList Entries = myDir.entryList("*", QDir::Files, QDir::Name);
+  QStringList Entries = myDir.entryList(QStringList("*"), QDir::Files, QDir::Name);
   QStringList::iterator it;
   for(it = Entries.begin(); it != Entries.end(); ++it) {
-    File.setFileName(myDir.absFilePath(*it));
+    File.setFileName(myDir.absoluteFilePath(*it));
     Stream << Q_UINT32(CODE_FILE);
     if(insertFile(*it, File, Stream) < 0)
       return -1;
   }
 
   // Put all subdirectories into the package.
-  Entries = myDir.entryList("*", QDir::Dirs, QDir::Name);
+  Entries = myDir.entryList(QStringList("*"), QDir::Dirs, QDir::Name);
   Entries.pop_front();  // delete "." from list
   Entries.pop_front();  // delete ".." from list
   for(it = Entries.begin(); it != Entries.end(); ++it) {
     Stream << Q_UINT32(CODE_DIR) << (*it).toLatin1();
-    if(insertDirectory(myDir.absPath()+QDir::separator()+(*it), Stream) < 0)
+    if(insertDirectory(myDir.absolutePath()+QDir::separator()+(*it), Stream) < 0)
       return -1;
     Stream << Q_UINT32(CODE_DIR_END) << Q_UINT32(0);
   }
@@ -229,11 +230,11 @@ int PackageDialog::insertDirectory(const QString& DirName,
 int PackageDialog::insertLibraries(QDataStream& Stream)
 {
   QFile File;
-  QDir myDir(QucsSettings.QucsHomeDir.absPath() + QDir::separator() + "user_lib");
-  QStringList Entries = myDir.entryList("*", QDir::Files, QDir::Name);
+  QDir myDir(QucsSettings.QucsHomeDir.absolutePath() + QDir::separator() + "user_lib");
+  QStringList Entries = myDir.entryList(QStringList("*"), QDir::Files, QDir::Name);
   QStringList::iterator it;
   for(it = Entries.begin(); it != Entries.end(); ++it) {
-    File.setFileName(myDir.absFilePath(*it));
+    File.setFileName(myDir.absoluteFilePath(*it));
     Stream << Q_UINT32(CODE_LIBRARY);
     if(insertFile(*it, File, Stream) < 0)
       return -1;
@@ -267,7 +268,7 @@ void PackageDialog::slotCreate()
 
   QString s(NameEdit->text());
   QFileInfo Info(s);
-  if(Info.extension().isEmpty())
+  if(Info.suffix().isEmpty())
     s += ".qucs";
   NameEdit->setText(s);
 
@@ -288,7 +289,7 @@ void PackageDialog::slotCreate()
   char Header[HEADER_LENGTH];
   memset(Header, 0, HEADER_LENGTH);
   strcpy(Header, "Qucs package " PACKAGE_VERSION);
-  PkgFile.writeBlock(Header, HEADER_LENGTH);
+  PkgFile.write(Header, HEADER_LENGTH);
 
 
   // Write project files to package.
@@ -298,7 +299,7 @@ void PackageDialog::slotCreate()
     if(p->isChecked()) {
       s = p->text() + "_prj";
       Stream << Q_UINT32(CODE_DIR) << s.toLatin1();
-      s = QucsSettings.QucsHomeDir.absPath() + QDir::separator() + s;
+      s = QucsSettings.QucsHomeDir.absolutePath() + QDir::separator() + s;
       if(insertDirectory(s, Stream) < 0) {
         PkgFile.close();
         PkgFile.remove();
@@ -317,10 +318,10 @@ void PackageDialog::slotCreate()
     }
 
   // Calculate checksum and write it to package file.
-  PkgFile.at(0);
+  PkgFile.seek(0);
   QByteArray Content = PkgFile.readAll();
-  Q_UINT16 Checksum = qChecksum(Content.data(), Content.size());
-  PkgFile.at(HEADER_LENGTH-sizeof(Q_UINT16));
+  quint16 Checksum = qChecksum(Content.data(), Content.size());
+  PkgFile.seek(HEADER_LENGTH-sizeof(quint16));
   Stream << Checksum;
   PkgFile.close();
 
@@ -338,10 +339,11 @@ void PackageDialog::slotCreate()
 void PackageDialog::extractPackage()
 {
   QString s = QFileDialog::getOpenFileName(
+     this, tr("Enter a Package File Name"),
      lastDir.isEmpty() ? QString(".") : lastDir,
      tr("Qucs Packages")+" (*.qucs);;"+
-     tr("Any File")+" (*)",
-     this, 0, tr("Enter a Package File Name"));
+     tr("Any File")+" (*)"
+     );
 
   if(s.isEmpty()) {
     reject();
@@ -349,11 +351,11 @@ void PackageDialog::extractPackage()
   }
 
   QFileInfo Info(s);
-  lastDir = Info.dirPath(true);  // remember last directory
+  lastDir = Info.absolutePath();  // remember last directory
 
   QFile PkgFile(s);
   if(!PkgFile.open(QIODevice::ReadOnly)) {
-    if(Info.extension().isEmpty()) s += ".qucs";
+    if(Info.suffix().isEmpty()) s += ".qucs";
     PkgFile.setFileName(s);
     if(!PkgFile.open(QIODevice::ReadOnly)) {
       MsgText->append(tr("ERROR: Cannot open package!"));
@@ -366,8 +368,8 @@ void PackageDialog::extractPackage()
   QDir currDir = QucsSettings.QucsHomeDir;
   QString Version;
   VersionTriplet PackageVersion;
-  Q_UINT16 Checksum;
-  Q_UINT32 Code, Length;
+  quint16 Checksum;
+  quint32 Code, Length;
 
   // First read and check header.
   QByteArray Content = PkgFile.readAll();
@@ -384,9 +386,9 @@ void PackageDialog::extractPackage()
   }
 
   // checksum correct ?
-  PkgFile.at(HEADER_LENGTH-2);
+  PkgFile.seek(HEADER_LENGTH-2);
   Stream >> Checksum;
-  *((Q_UINT16*)(Content.data()+HEADER_LENGTH-2)) = 0;
+  *((quint16*)(Content.data()+HEADER_LENGTH-2)) = 0;
   if(Checksum != qChecksum(Content.data(), Content.size())) {
     MsgText->append(tr("ERROR: Checksum mismatch!"));
     goto ErrorEnd;
@@ -405,7 +407,7 @@ void PackageDialog::extractPackage()
           break;
         goto ErrorEnd;
       case CODE_DIR_END:
-        MsgText->append(tr("Leave directory \"%1\"").arg(currDir.absPath()));
+        MsgText->append(tr("Leave directory \"%1\"").arg(currDir.absolutePath()));
         currDir.cdUp();
         break;
       case CODE_FILE:
@@ -435,7 +437,7 @@ ErrorEnd:
 int PackageDialog::extractDirectory(QFile& PkgFile, Q_UINT32 Count, QDir& currDir)
 {
   char *p = (char*)malloc(Count);
-  PkgFile.readBlock(p, Count);
+  PkgFile.read(p, Count);
 
   if(currDir.cd(QString(p))) { // directory exists ?
     MsgText->append(tr("ERROR: Project directory \"%1\" already exists!").arg(QString(p)));
@@ -447,7 +449,7 @@ int PackageDialog::extractDirectory(QFile& PkgFile, Q_UINT32 Count, QDir& currDi
     return -2;
   }
   currDir.cd(QString(p));
-  MsgText->append(tr("Create and enter directory \"%1\"").arg(currDir.absPath()));
+  MsgText->append(tr("Create and enter directory \"%1\"").arg(currDir.absolutePath()));
 
   free(p);
   return 1;
@@ -457,18 +459,18 @@ int PackageDialog::extractDirectory(QFile& PkgFile, Q_UINT32 Count, QDir& currDi
 int PackageDialog::extractFile(QFile& PkgFile, Q_UINT32 Count, QDir& currDir)
 {
   char *p = (char*)malloc(Count);
-  PkgFile.readBlock(p, Count);
+  PkgFile.read(p, Count);
   QByteArray Content = qUncompress((unsigned char*)p, Count);
   free(p);
 
   p = Content.data();
-  QFile File(currDir.absFilePath(QString(p)));
+  QFile File(currDir.absoluteFilePath(QString(p)));
   if(!File.open(QIODevice::WriteOnly)) {
     MsgText->append(tr("ERROR: Cannot create file \"%1\"!").arg(QString(p)));
     return -1;
   }
 
-  File.writeBlock(p+strlen(p)+1, Content.size()-strlen(p)-1);
+  File.write(p+strlen(p)+1, Content.size()-strlen(p)-1);
   File.close();
   MsgText->append(tr("Create file \"%1\"").arg(QString(p)));
   return 1;
@@ -478,13 +480,13 @@ int PackageDialog::extractFile(QFile& PkgFile, Q_UINT32 Count, QDir& currDir)
 int PackageDialog::extractLibrary(QFile& PkgFile, Q_UINT32 Count)
 {
   char *p = (char*)malloc(Count);
-  PkgFile.readBlock(p, Count);
+  PkgFile.read(p, Count);
   QByteArray Content = qUncompress((unsigned char*)p, Count);
   free(p);
 
   p = Content.data();
-  QFile File(QucsSettings.QucsHomeDir.absPath() +
-             QDir::convertSeparators("/user_lib/") + QString(p));
+  QFile File(QucsSettings.QucsHomeDir.absolutePath() +
+             QDir::toNativeSeparators("/user_lib/") + QString(p));
   if(File.exists()) {
     MsgText->append(tr("ERROR: User library \"%1\" already exists!").arg(QString(p)));
     return -1;
@@ -495,7 +497,7 @@ int PackageDialog::extractLibrary(QFile& PkgFile, Q_UINT32 Count)
     return -1;
   }
 
-  File.writeBlock(p+strlen(p)+1, Content.size()-strlen(p)-1);
+  File.write(p+strlen(p)+1, Content.size()-strlen(p)-1);
   File.close();
   MsgText->append(tr("Create library \"%1\"").arg(QString(p)));
   return 1;

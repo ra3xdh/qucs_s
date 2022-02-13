@@ -152,7 +152,7 @@ LibraryDialog::LibraryDialog(QWidget *parent)
   QGroupBox *descrBox = new QGroupBox(tr("Description:"));
   subcktDescrLayout->addWidget(descrBox);
   textDescr = new QTextEdit();
-  textDescr->setTextFormat(Qt::PlainText);
+  textDescr->toPlainText();
   textDescr->setWordWrapMode(QTextOption::NoWrap);
   connect(textDescr, SIGNAL(textChanged()), SLOT(slotUpdateDescription()));
   QVBoxLayout *vGroup = new QVBoxLayout;
@@ -278,7 +278,7 @@ void LibraryDialog::slotCreateNext()
     return;
   }
 
-  LibFile.setFileName(LibDir.absFilePath(NameEdit->text()) + ".lib");
+  LibFile.setFileName(LibDir.absoluteFilePath(NameEdit->text()) + ".lib");
   if(LibFile.exists()) {
     QMessageBox::critical(this, tr("Error"), tr("A library with this name already exists!"));
     return;
@@ -330,8 +330,8 @@ int LibraryDialog::intoFile(QString &ifn, QString &ofn, QStringList &IFiles)
   else {
     QByteArray FileContent = ifile.readAll();
     ifile.close();
-    if(ifile.name().right(4) == ".lst")
-      LibDir.remove(ifile.name());
+    if(ifile.fileName().right(4) == ".lst")
+      LibDir.remove(ifile.fileName());
     QDir LibDirSub(LibDir);
     if(!LibDirSub.cd(NameEdit->text())) {
       if(!LibDirSub.mkdir(NameEdit->text())) {
@@ -345,7 +345,7 @@ int LibraryDialog::intoFile(QString &ifn, QString &ofn, QStringList &IFiles)
     ofn = Info.fileName();
     IFiles.append(ofn);
     QFile ofile;
-    ofile.setFileName(LibDirSub.absFilePath(ofn));
+    ofile.setFileName(LibDirSub.absoluteFilePath(ofn));
     if(!ofile.open(QIODevice::WriteOnly)) {
       ErrText->insertPlainText(
         QObject::tr("ERROR: Cannot create file \"%1\".\n").arg(ofn));
@@ -353,7 +353,7 @@ int LibraryDialog::intoFile(QString &ifn, QString &ofn, QStringList &IFiles)
     }
     else {
       QDataStream ds(&ofile);
-      ds.writeRawBytes(FileContent.data(), FileContent.size());
+      ds.writeRawData(FileContent.data(), FileContent.size());
       ofile.close();
     }
   }
@@ -408,7 +408,7 @@ void LibraryDialog::slotNextDescr()
 void LibraryDialog::slotUpdateDescription()
 {
   // store on every change
-  Descriptions[curDescr] = textDescr->text();
+  Descriptions[curDescr] = textDescr->toPlainText();
 }
 
 // ---------------------------------------------------------------
@@ -472,13 +472,13 @@ void LibraryDialog::slotSave()
       QStringList IFiles;
       SubMap::Iterator it = FileList.begin();
       while(it != FileList.end()) {
-          QString f = it.data().File;
+          QString f = it.value().File;
           QString ifn, ofn;
-          if(it.data().Type == "SCH") {
+          if(it.value().Type == "SCH") {
               ifn = f + ".lst";
               ofn = ifn;
           }
-          else if(it.data().Type == "CIR") {
+          else if(it.value().Type == "CIR") {
               ifn = f + ".lst";
               ofn = ifn;
           }
@@ -542,13 +542,13 @@ void LibraryDialog::slotSave()
       QStringList IFiles;
       SubMap::Iterator it = FileList.begin();
       while(it != FileList.end()) {
-          QString f = it.data().File;
+          QString f = it.value().File;
           QString ifn, ofn;
-          if(it.data().Type == "SCH") {
+          if(it.value().Type == "SCH") {
               ifn = f + ".lst";
               ofn = f + ".v";
           }
-          else if(it.data().Type == "VER") {
+          else if(it.value().Type == "VER") {
               ifn = f;
               ofn = ifn;
           }
@@ -579,13 +579,13 @@ void LibraryDialog::slotSave()
       QStringList IFiles;
       SubMap::Iterator it = FileList.begin();
       while(it != FileList.end()) {
-          QString f = it.data().File;
+          QString f = it.value().File;
           QString ifn, ofn;
-          if(it.data().Type == "SCH") {
+          if(it.value().Type == "SCH") {
               ifn = f + ".lst";
               ofn = f + ".vhdl";
           }
-          else if(it.data().Type == "VHD") {
+          else if(it.value().Type == "VHD") {
               ifn = f;
               ofn = ifn;
           }

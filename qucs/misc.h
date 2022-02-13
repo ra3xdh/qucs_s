@@ -14,6 +14,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#ifndef MISC_H
+#define MISC_H
+
 /*!
  * \file misc.h
  * \Declaration of some miscellaneous function
@@ -25,6 +28,10 @@ class QString;
 #include <QPalette>
 #include <QIcon>
 #include <QPushButton>
+
+#include <stdint.h>
+
+#define Q_UINT32 uint32_t
 
 namespace misc {
   QString complexRect(double, double, int Precision=3);
@@ -92,3 +99,5 @@ class VersionTriplet {
  private:
   int major, minor, patch;
 };
+
+#endif

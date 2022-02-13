@@ -29,9 +29,11 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
+#include "misc.h"
+
 
 GraphicTextDialog::GraphicTextDialog(QWidget *parent, const char *name)
-                                  : QDialog(parent, name)
+                                  : QDialog(parent)
 {
   setWindowTitle(tr("Edit Text Properties"));
 
@@ -46,7 +48,7 @@ GraphicTextDialog::GraphicTextDialog(QWidget *parent, const char *name)
 		   this));
 
   text = new QTextEdit(this);
-  text->setTextFormat(Qt::PlainText);
+  text->toPlainText();
   text->setWordWrapMode(QTextOption::NoWrap);
   text->setMinimumSize(350,150);
   vert->addWidget(text);
@@ -75,7 +77,7 @@ GraphicTextDialog::GraphicTextDialog(QWidget *parent, const char *name)
   ColorButt = new QPushButton("        ");
   h1Layout->addWidget(tc);
   h1Layout->addWidget(ColorButt);
-  ColorButt->setPaletteBackgroundColor(QColor(0,0,0));
+  misc::setPickerColor(ColorButt,QColor(0,0,0));
   connect(ColorButt, SIGNAL(clicked()), SLOT(slotSetColor()));
 
   QWidget *place1 = new QWidget(h1); // stretchable placeholder
@@ -112,8 +114,8 @@ GraphicTextDialog::~GraphicTextDialog()
 // --------------------------------------------------------------------------
 void GraphicTextDialog::slotSetColor()
 {
-  QColor c = QColorDialog::getColor(ColorButt->paletteBackgroundColor(),this);
-  if(c.isValid()) ColorButt->setPaletteBackgroundColor(c);
+  QColor c = QColorDialog::getColor(misc::getWidgetBackgroundColor(ColorButt),this);
+  if(c.isValid()) misc::setPickerColor(ColorButt,c);
 }
 
 // --------------------------------------------------------------------------

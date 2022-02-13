@@ -180,11 +180,11 @@ void CustomSimDialog::slotFindOutputs()
     QStringList strings = edtCode->toPlainText().split('\n');
     if (isXyceScr) {
         QRegExp print_ex("^\\s*\\.print\\s.*");
-        print_ex.setCaseSensitive(false);
+        print_ex.setCaseSensitivity(Qt::CaseInsensitive);
         foreach(QString line,strings) {
             if (print_ex.exactMatch(line)) {
                 QRegExp file_ex("\\s*file\\s*=\\s*");
-                file_ex.setCaseSensitive(false);
+                file_ex.setCaseSensitivity(Qt::CaseInsensitive);
                 int p = line.indexOf(file_ex);
                 p = line.indexOf('=',p);
                 int l = line.size()-(p+1);
@@ -194,7 +194,7 @@ void CustomSimDialog::slotFindOutputs()
         }
     } else {
         QRegExp write_ex("^\\s*write\\s.*");
-        write_ex.setCaseSensitive(false);
+        write_ex.setCaseSensitivity(Qt::CaseInsensitive);
         foreach(QString line,strings) {
             if (write_ex.exactMatch(line)) {
                 outps.append(line.section(QRegExp("\\s"),1,1,QString::SectionSkipEmpty));
