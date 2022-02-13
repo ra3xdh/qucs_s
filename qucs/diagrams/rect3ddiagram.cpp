@@ -663,9 +663,8 @@ void Rect3DDiagram::calcLimits()
 
 // --------------------------------------------------------------
 int Rect3DDiagram::calcAxis(Axis *Axis, int x, int y,
-                            double xD, double phi, bool Right)
+                            double xD, double phi)
 {
-  Q_UNUSED(Right);
 
   double GridStep, corr, yD, stepD, GridNum, Expo;
   double xstepD, ystepD;
@@ -705,10 +704,10 @@ int Rect3DDiagram::calcAxis(Axis *Axis, int x, int y,
       
       xLen = int(ystepD * cos(phi) + 0.5) + x;
       yLen = int(ystepD * sin(phi) + 0.5) + y;
-      if(Qt::DockRight)
+//      if(Qt::DockRight)
 	Texts.append(new Text(xLen+3+gx, yLen-6+gy, tmp));
-      else
-	Texts.append(new Text(xLen-w-2-gx, yLen-6-gy, tmp));
+//      else
+//	Texts.append(new Text(xLen-w-2-gx, yLen-6-gy, tmp));
       
       // short grid marks
       Lines.append(new Line(xLen-gx, yLen-gy, xLen+gx, yLen+gy,
@@ -738,10 +737,10 @@ int Rect3DDiagram::calcAxis(Axis *Axis, int x, int y,
       
       w = metrics.width(tmp);  // width of text
       if(maxWidth < w) maxWidth = w;
-      if(Qt::DockRight)
+//      if(Qt::DockRight)
 	Texts.append(new Text(x+3+gx, y-6+gy, tmp)); // place text right
-      else
-	Texts.append(new Text(x-w-2-gx, y-6-gy, tmp)); // place left
+//      else
+//	Texts.append(new Text(x-w-2-gx, y-6-gy, tmp)); // place left
       GridNum += GridStep;
       
       // short grid marks
@@ -774,7 +773,7 @@ void Rect3DDiagram::createAxis(Axis *Axis, bool Right,
   cos_phi = sqrt(double(x*x) + double(y*y));
   phi = atan2(double(y), double(x));
   
-  valid = calcAxis(Axis, x1_, y1_, cos_phi, phi, Qt::DockRight); // axis numbering
+  valid = calcAxis(Axis, x1_, y1_, cos_phi, phi); // axis numbering
   z = (int)cos_phi;
   cos_phi = cos(phi);
   sin_phi = sin(phi);

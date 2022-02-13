@@ -60,7 +60,7 @@ protected:
   void calcData(Graph*);
 
 private:
-  int  calcAxis(Axis*, int, int, double, double, bool);
+  int  calcAxis(Axis*, int, int, double, double);
   void createAxis(Axis*, bool, int, int, int, int);
 
   void   calcCoefficients();
