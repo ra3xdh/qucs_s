@@ -174,8 +174,8 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
       QStringList() << tr("Name") << tr("active") << tr("initial") << tr("min") << tr("max") << tr("Type"));
   VarTable->setSortingEnabled(false);
   VarTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-  VarTable->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-  VarTable->horizontalHeader()->setClickable(false); // no action when clicking on the header 
+  VarTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+  VarTable->horizontalHeader()->setSectionsClickable(false); // no action when clicking on the header
 
   // right-click on the table header to open the context menu
   VarTable->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);

@@ -39,8 +39,9 @@
 
 
 SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
-    : QDialog(d, 0, TRUE, Qt::WDestructiveClose)
+    : QDialog(d)
 {
+  setAttribute(Qt::WA_DeleteOnClose);
   App = App_; // pointer to main application
 
   resize(400, 250);
@@ -161,9 +162,9 @@ SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
   SimCheck->setChecked(Comp->Props.at(2)->Value == "yes");
   for(int i=0; i<PrepCombo->count(); i++)
   {
-    if(PrepCombo->text(i) == Comp->Props.at(3)->Value)
+    if(PrepCombo->itemText(i) == Comp->Props.at(3)->Value)
     {
-      PrepCombo->setCurrentItem(i);
+      PrepCombo->setCurrentIndex(i);
       currentPrep = i;
       break;
     }
@@ -288,11 +289,11 @@ void SpiceDialog::slotButtBrowse()
   }
 
   QFileInfo Info(s);
-  lastDir = Info.dirPath(true);  // remember last directory
+  lastDir = Info.absolutePath();  // remember last directory
 
   // snip path if file in current directory
   if(QucsSettings.QucsWorkDir.exists(Info.fileName()) &&
-          QucsSettings.QucsWorkDir.absPath() == Info.dirPath(true)) {
+          QucsSettings.QucsWorkDir.absolutePath() == Info.absolutePath()) {
     s = Info.fileName();
   }
   FileEdit->setText(s);
@@ -307,7 +308,7 @@ void SpiceDialog::slotPrepChanged(int i)
   if(currentPrep != i)
   {
     currentPrep = i;
-    PrepCombo->setCurrentItem(i);
+    PrepCombo->setCurrentIndex(i);
     loadSpiceNetList(FileEdit->text());  // reload netlist nodes
   }
 }
@@ -374,8 +375,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
     QMessageBox *MBox = new QMessageBox(tr("Info"),
                                         tr("Preprocessing SPICE file \"%1\".").arg(FileInfo.filePath()),
                                         QMessageBox::NoIcon, QMessageBox::Abort,
-                                        QMessageBox::NoButton, QMessageBox::NoButton, this, 0, true,
-                                        Qt::WStyle_DialogBorder |  Qt::WDestructiveClose);
+                                        QMessageBox::NoButton, QMessageBox::NoButton, this);
 
     connect(SpicePrep, SIGNAL(finished(int, QProcess::ExitStatus)), MBox, SLOT(close()));
 
@@ -442,14 +442,13 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
       QMessageBox *MBox = new QMessageBox(tr("Info"),
                                           tr("Converting SPICE file \"%1\".").arg(FileInfo.filePath()),
                                           QMessageBox::NoIcon, QMessageBox::Abort,
-                                          QMessageBox::NoButton, QMessageBox::NoButton, this, 0, true,
-                                          Qt::WStyle_DialogBorder |  Qt::WDestructiveClose);
+                                          QMessageBox::NoButton, QMessageBox::NoButton, this);
 
       connect(QucsConv, SIGNAL(finished(int, QProcess::ExitStatus)), MBox, SLOT(close()));
 
       QucsConv->start(Program, Arguments);
 
-      if(!QucsConv->Running)
+      if(QucsConv->state() != QProcess::Running)
       {
         QMessageBox::critical(this, tr("Error"),
                               tr("Cannot execute \"%1\".").arg(QucsSettings.Qucsconv));
@@ -472,7 +471,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
   if(!pp->Value.isEmpty())
   {
     PortsList->clear();
-    QStringList ports = QStringList::split(',', pp->Value);
+    QStringList ports = pp->Value.split(',');
     foreach(QString port, ports) {
       PortsList->addItem(port);
     }

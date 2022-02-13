@@ -29,7 +29,7 @@ AC_Sim::AC_Sim()
 
   QString s = Description;
   int a = s.indexOf(" ");
-  int b = s.findRev(" ");
+  int b = s.lastIndexOf(" ");
   if (a != -1 && b != -1) {
     if (a > (int) s.length() - b)  b = a;
   }
