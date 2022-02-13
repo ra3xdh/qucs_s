@@ -56,8 +56,22 @@ endif()
 #
 ADD_DEFINITIONS( -DHAVE_CONFIG_H )
 
-FIND_PACKAGE( Qt4 4.6.3 REQUIRED QtCore QtGui Qt3Support QtSvg QtXml QtScript)
-INCLUDE( ${QT_USE_FILE} )
+FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets Svg Xml Script PrintSupport REQUIRED)
+#INCLUDE( ${QT_USE_FILE} )
+
+INCLUDE_DIRECTORIES(
+      ${Qt5Core_INCLUDE_DIRS}
+      ${Qt5Widgets_INCLUDE_DIRS}
+      ${Qt5Svg_INCLUDE_DIRS}
+      ${Qt5Xml_INCLUDE_DIRS}
+      ${Qt5Script_INCLUDE_DIRS}
+      ${Qt5PrintSupport_INCLUDE_DIRS}
+      ${Qt5Test_INCLUDE_DIRS} )
+
+# bug, the find package does not seem to set the QT_LIBRARIES, do it manually
+SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5Script_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Test_LIBRARIES} )
+
+
 
 #MESSAGE("QT_INCLUDES=[${QT_INCLUDES}]")
 #MESSAGE("QT_LIBRARIES=[${QT_LIBRARIES}]")
@@ -65,15 +79,15 @@ INCLUDE( ${QT_USE_FILE} )
 # Check whether the Qt QTabWidget::setMovable() function exists.
 # This function was added in Qt 4.5.
 # * Maybe use CMake CheckCXXSourceCompiles in the future?
-TRY_COMPILE( HAVE_QTABWIDGET_SETMOVABLE
-        ${CMAKE_BINARY_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/QTabWidget_setMovable.cpp
-        CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${QT_INCLUDES}"
-        LINK_LIBRARIES ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
-        OUTPUT_VARIABLE TRY_OUT )
-IF(NOT HAVE_QTABWIDGET_SETMOVABLE)
-  MESSAGE("QTabWidget::setMovable() not available, feature disabled.")
-ENDIF()
+#TRY_COMPILE( HAVE_QTABWIDGET_SETMOVABLE
+#        ${CMAKE_BINARY_DIR}
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/QTabWidget_setMovable.cpp
+#        CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${QT_INCLUDES}"
+#        LINK_LIBRARIES ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
+#        OUTPUT_VARIABLE TRY_OUT )
+#IF(NOT HAVE_QTABWIDGET_SETMOVABLE)
+#  MESSAGE("QTabWidget::setMovable() not available, feature disabled.")
+#ENDIF()
 
 # configure the header config.h
 CONFIGURE_FILE (
@@ -86,25 +100,17 @@ INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR} )
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra ") # enable warning level
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ") # enable C++11
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC ") # enable C++11
 
 # flag not available in mingw 4.8.2, MSVC10
 IF(NOT WIN32)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-register ")
 ENDIF()
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 # For some reason, on Windows QT_LIBRARIES point to static(?) .a libs
 # which do not provide the needed symbols. They are found on
 # the .dll libraries.
-IF(WIN32)
-  LINK_DIRECTORIES("${QT_BINARY_DIR}")
-
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(QT_LIBRARIES QtCored4 QtGuid4 Qt3Supportd4 QtSvgd4 QtXmld4 QtScriptd4)
-  else()
-    set(QT_LIBRARIES QtCore4 QtGui4 Qt3Support4 QtSvg4 QtXml4 QtScript4)
-  ENDIF()
-ENDIF(WIN32)
-
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 INCLUDE_DIRECTORIES(
@@ -118,6 +124,7 @@ INCLUDE_DIRECTORIES(
   )
 
 #ADD_SUBDIRECTORY( bitmaps ) -> added as resources
+ADD_SUBDIRECTORY( qt3_compat )
 ADD_SUBDIRECTORY( components )
 ADD_SUBDIRECTORY( diagrams )
 ADD_SUBDIRECTORY( dialogs )
@@ -173,13 +180,13 @@ SET(QUCS_MOC_HDRS
 #
 # headers that need to be moc'ed
 #
-QT4_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
+QT5_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
 
 #
 # generate rules for building source files from bitmap resources
 #
 SET(RESOURCES qucs.qrc)
-QT4_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
+QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
 
 if(UNIX AND NOT APPLE)
 

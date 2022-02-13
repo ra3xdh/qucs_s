@@ -18,7 +18,7 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-#include <Q3PtrList>
+#include "qt3_compat/qt_compat.h"
 
 #include "element.h"
 

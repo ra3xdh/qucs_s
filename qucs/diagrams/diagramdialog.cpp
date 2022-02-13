@@ -391,11 +391,11 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       GridLabel2 = new QLabel(tr("Grid Style: "), Tab2);
       gp->addMultiCellWidget(GridLabel2, Row,Row,0,0);
       GridStyleBox = new QComboBox(Tab2);
-      GridStyleBox->insertItem(tr("solid line"));
-      GridStyleBox->insertItem(tr("dash line"));
-      GridStyleBox->insertItem(tr("dot line"));
-      GridStyleBox->insertItem(tr("dash dot line"));
-      GridStyleBox->insertItem(tr("dash dot dot line"));
+      GridStyleBox->addItem(tr("solid line"));
+      GridStyleBox->addItem(tr("dash line"));
+      GridStyleBox->addItem(tr("dot line"));
+      GridStyleBox->addItem(tr("dash dot line"));
+      GridStyleBox->addItem(tr("dash dot dot line"));
       gp->addMultiCellWidget(GridStyleBox, Row,Row,1,2);
       Row++;
       GridStyleBox->setCurrentItem(Diag->GridPen.style()-1);

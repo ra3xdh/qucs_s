@@ -52,11 +52,11 @@ ChangeDialog::ChangeDialog(Schematic *Doc_)
 
   all->addWidget(new QLabel(tr("Components:"), this), 0,0);
   CompTypeEdit = new QComboBox(this);
-  CompTypeEdit->insertItem(tr("all components"));
-  CompTypeEdit->insertItem(tr("resistors"));
-  CompTypeEdit->insertItem(tr("capacitors"));
-  CompTypeEdit->insertItem(tr("inductors"));
-  CompTypeEdit->insertItem(tr("transistors"));
+  CompTypeEdit->addItem(tr("all components"));
+  CompTypeEdit->addItem(tr("resistors"));
+  CompTypeEdit->addItem(tr("capacitors"));
+  CompTypeEdit->addItem(tr("inductors"));
+  CompTypeEdit->addItem(tr("transistors"));
   all->addWidget(CompTypeEdit, 0,1);
 
   all->addWidget(new QLabel(tr("Component Names:"), this), 1,0);
@@ -127,7 +127,7 @@ bool ChangeDialog::matches(const QString& CompModel)
 // Is called if the "Replace"-button is pressed.
 void ChangeDialog::slotButtReplace()
 {
-  Expr.setWildcard(true);  // switch into wildcard mode
+  Expr.setPatternSyntax(QRegExp::Wildcard);  // switch into wildcard mode
   Expr.setPattern(CompNameEdit->text());
   if(!Expr.isValid()) {
     QMessageBox::critical(this, tr("Error"),
