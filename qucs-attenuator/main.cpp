@@ -78,7 +78,7 @@ int main( int argc, char ** argv )
     QucsDir = QDir (var);
     QString QucsDirStr = QucsDir.canonicalPath ();
     QucsSettings.LangDir =
-      QDir::convertSeparators (QucsDirStr + "/share/" QUCS_NAME "/lang/");
+      QDir::toNativeSeparators (QucsDirStr + "/share/" QUCS_NAME "/lang/");
   } else {
     QString QucsApplicationPath = QCoreApplication::applicationDirPath();
 #ifdef __APPLE__
