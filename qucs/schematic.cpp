@@ -68,11 +68,11 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
 {
   symbolMode = false;
 
-  Components = new Q3PtrList<Component>;
-  Diagrams = new Q3PtrList<Diagram>;
-  Wires = new Q3PtrList<Wire>;
-  Nodes = new Q3PtrList<Node>;
-  Paintings = new Q3PtrList<Painting>;
+  Components = &DocComps;
+  Diagrams = &DocDiags;
+  Wires = &DocWires;
+  Nodes = &DocNodes;
+  Paintings = &DocPaints;
 
   // ...........................................................
   GridX  = GridY  = 10;
