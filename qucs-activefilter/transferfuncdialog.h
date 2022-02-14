@@ -18,8 +18,8 @@
 #ifndef TRANSFERFUNCDIALOG_H
 #define TRANSFERFUNCDIALOG_H
 
-#include <QWidget>
 #include <QtGui>
+#include <QtWidgets>
 
 class TransferFuncDialog : public QDialog
 {
