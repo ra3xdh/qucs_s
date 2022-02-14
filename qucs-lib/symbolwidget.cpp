@@ -18,14 +18,9 @@
 #include <cmath>
 #include <limits.h>
 
-#include <QPainter>
-#include <QPaintEvent>
-#include <QPixmap>
-#include <QMouseEvent>
-#include <QTextIStream>
-#include <QMimeData>
-#include <QDrag>
-#include <QTextStream>
+#include <QtCore>
+#include <QtGui>
+#include <QtWidgets>
 
 #include "symbolwidget.h"
 #include "qucslib.h"

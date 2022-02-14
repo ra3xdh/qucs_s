@@ -35,10 +35,17 @@ IF(NOT WIN32)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-register ")
 ENDIF()
 
-FIND_PACKAGE( Qt4 REQUIRED )
-SET( QT_USE_QTGUI TRUE )
+FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets Svg Xml Script PrintSupport REQUIRED)
+#INCLUDE( ${QT_USE_FILE} )
 
-INCLUDE( ${QT_USE_FILE} )
+INCLUDE_DIRECTORIES(
+      ${Qt5Core_INCLUDE_DIRS}
+      ${Qt5Widgets_INCLUDE_DIRS}
+      )
+
+# bug, the find package does not seem to set the QT_LIBRARIES, do it manually
+SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} )
+
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
@@ -50,10 +57,10 @@ SET(QUCSLIB_MOC_HDRS
 qucslib.h displaydialog.h symbolwidget.h librarydialog.h
 )
 
-QT4_WRAP_CPP( QUCSLIB_MOC_SRCS ${QUCSLIB_MOC_HDRS} )
+QT5_WRAP_CPP( QUCSLIB_MOC_SRCS ${QUCSLIB_MOC_HDRS} )
 
 SET(RESOURCES qucslib.qrc)
-QT4_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
+QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
 
 IF(APPLE)
   # set information on Info.plist file

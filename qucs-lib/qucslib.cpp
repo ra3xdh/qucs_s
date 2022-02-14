@@ -98,6 +98,9 @@ QucsLib::QucsLib()
     QAction * helpAbout = new QAction(tr("About"), this);
     helpMenu->addAction(helpAbout);
     connect(helpAbout, SIGNAL(triggered()), SLOT(slotAbout()));
+    QAction * helpAboutQt = new QAction(tr("About Qt"), this);
+    helpMenu->addAction(helpAboutQt);
+    connect(helpAboutQt, SIGNAL(triggered()), SLOT(slotAboutQt()));
 
     // use Escape key to clear search
     QAction *escape = new QAction(this);
@@ -269,6 +272,11 @@ void QucsLib::slotAbout()
                        "\nThis is free software; see the source for copying conditions."
                        "\nThere is NO warranty; not even for MERCHANTABILITY or "
                        "\nFITNESS FOR A PARTICULAR PURPOSE.");
+}
+
+void QucsLib::slotAboutQt()
+{
+    QMessageBox::aboutQt(this);
 }
 
 // ----------------------------------------------------

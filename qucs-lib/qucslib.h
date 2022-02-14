@@ -61,6 +61,7 @@ public:
 
 private slots:
   void slotAbout();
+  void slotAboutQt();
   void slotQuit();
   void slotHelp();
   void slotCopyToClipBoard();
