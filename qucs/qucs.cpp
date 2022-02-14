@@ -156,6 +156,7 @@ QucsApp::QucsApp()
   MouseReleaseAction = 0;
   MouseDoubleClickAction = 0;
 
+  Module::registerModules ();
   initView();
   initActions();
   initMenuBar();
@@ -167,7 +168,7 @@ QucsApp::QucsApp()
   slotViewOctaveDock(false);
   slotUpdateRecentFiles();
   initCursorMenu();
-  Module::registerModules ();
+  //Module::registerModules ();
 
   // instance of small text search dialog
   SearchDia = new SearchDialog(this);
