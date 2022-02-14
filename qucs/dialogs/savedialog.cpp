@@ -117,8 +117,6 @@ void SaveDialog::saveSelectedClicked()
          QucsDoc *doc = static_cast<QucsDoc*>(it.key());
          if(app->saveFile(doc) == false)
             unsavable.append(doc);
-         else
-            unsavedDocs.erase(it);
       }
    }
    if(unsavable.isEmpty())
