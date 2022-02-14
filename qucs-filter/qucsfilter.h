@@ -18,9 +18,10 @@
 #ifndef QUCSFILTER_H
 #define QUCSFILTER_H
 
-#include <QMainWindow>
-#include <QGroupBox>
-#include <QLabel>
+#include <QtGui>
+#include <QtWidgets>
+#include <QtCore>
+
 
 class QGridLayout;
 class QComboBox;
