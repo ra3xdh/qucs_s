@@ -138,7 +138,7 @@ bool loadSettings()
     if(settings.contains("Nprocs")) QucsSettings.NProcs = settings.value("Nprocs").toInt();
     else QucsSettings.NProcs = 4;
     if(settings.contains("S4Q_workdir")) QucsSettings.S4Qworkdir = settings.value("S4Q_workdir").toString();
-    else QucsSettings.S4Qworkdir = QDir::convertSeparators(QDir::homePath()+"/.qucs/spice4qucs");
+    else QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QDir::homePath()+"/.qucs/spice4qucs");
     if(settings.contains("SimParameters")) QucsSettings.SimParameters = settings.value("SimParameters").toString();
     else QucsSettings.SimParameters = "";
     if(settings.contains("OctaveExecutable")) {
@@ -270,8 +270,9 @@ bool saveApplSettings()
  * <http://qt-project.org/doc/qt-4.8/debug.html#warning-and-debugging-messages>
  * <http://qt-project.org/doc/qt-4.8/qtglobal.html#qInstallMsgHandler>
  */
-void qucsMessageOutput(QtMsgType type, const char *msg)
+void qucsMessageOutput(QtMsgType type, const QMessageLogContext &, const QString &str)
 {
+  const char *msg = str.toUtf8().data();
   switch (type) {
   case QtDebugMsg:
     fprintf(stderr, "Debug: %s\n", msg);
@@ -284,6 +285,8 @@ void qucsMessageOutput(QtMsgType type, const char *msg)
     break;
   case QtFatalMsg:
     fprintf(stderr, "Fatal: %s\n", msg);
+  case QtInfoMsg:
+    fprintf(stderr,"Info %s\n", msg);
     abort();
   }
 
@@ -301,7 +304,7 @@ Schematic *openSchematic(QString schematic)
     file.close();
   }
   else {
-    fprintf(stderr, "Error: Could not load schematic %s\n", schematic.ascii());
+    fprintf(stderr, "Error: Could not load schematic %s\n", schematic.toLatin1().data());
     return NULL;
   }
 
@@ -313,7 +316,7 @@ Schematic *openSchematic(QString schematic)
 
   // load schematic file if possible
   if(!sch->loadDocument()) {
-    fprintf(stderr, "Error: Could not load schematic %s\n", schematic.ascii());
+    fprintf(stderr, "Error: Could not load schematic %s\n", schematic.toLatin1().data());
     delete sch;
     return NULL;
   }
@@ -340,7 +343,7 @@ int doNetlist(QString schematic, QString netlist)
 
   NetlistFile.setFileName(netlist);
   if(!NetlistFile.open(QIODevice::WriteOnly)) {
-    fprintf(stderr, "Error: Could not load netlist %s\n", netlist.ascii());
+    fprintf(stderr, "Error: Could not load netlist %s\n", netlist.toLatin1().data());
     return -1;
   }
 
@@ -591,7 +594,7 @@ void createIcons() {
 
         image.save("./bitmaps_generated/" + QString(File) + ".png");
 
-        fprintf(stdout, "[%s] %s\n", category.toAscii().data(), File);
+        fprintf(stdout, "[%s] %s\n", category.toLatin1().data(), File);
       }
       nComps++;
     } // module
@@ -683,7 +686,7 @@ void createDocData() {
         QTextStream out(&file);
         out << compData.join("\n");
         file.close();
-        fprintf(stdout, "[%s] %s %s \n", category.toAscii().data(), c->Model.toAscii().data(), file.name().toAscii().data());
+        fprintf(stdout, "[%s] %s %s \n", category.toLatin1().data(), c->Model.toLatin1().data(), file.fileName().toLatin1().data());
 
         QStringList compProps;
         compProps << "# Note: auto-generated file (changes will be lost on update)";
@@ -705,7 +708,7 @@ void createDocData() {
         outProps << compProps.join("\n");
         compProps.clear();
         file.close();
-        fprintf(stdout, "[%s] %s %s \n", category.toAscii().data(), c->Model.toAscii().data(), fileProps.name().toAscii().data());
+        fprintf(stdout, "[%s] %s %s \n", category.toLatin1().data(), c->Model.toLatin1().data(), fileProps.fileName().toLatin1().data());
     } // module
   } // category
   fprintf(stdout, "Created data for %i components from %i categories\n", nComps, nCats);
@@ -739,7 +742,7 @@ void createListComponentEntry(){
       Component *c = (Component* ) e;
 
       QString qucsEntry = c->save();
-      fprintf(stdout, "%s; qucs    ; %s\n", c->Model.toAscii().data(), qucsEntry.toAscii().data());
+      fprintf(stdout, "%s; qucs    ; %s\n", c->Model.toLatin1().data(), qucsEntry.toLatin1().data());
 
       // add dummy ports/wires, avoid segfault
       int port = 0;
@@ -752,12 +755,12 @@ void createListComponentEntry(){
 
       // skip Subcircuit, segfault, there is nothing to netlist
       if (c->Model == "Sub" or c->Model == ".Opt") {
-        fprintf(stdout, "WARNING, qucsator netlist not generated for %s\n\n", c->Model.toAscii().data());
+        fprintf(stdout, "WARNING, qucsator netlist not generated for %s\n\n", c->Model.toLatin1().data());
         continue;
       }
 
       QString qucsatorEntry = c->getNetlist();
-      fprintf(stdout, "%s; qucsator; %s\n", c->Model.toAscii().data(), qucsatorEntry.toAscii().data());
+      fprintf(stdout, "%s; qucsator; %s\n", c->Model.toLatin1().data(), qucsatorEntry.toLatin1().data());
       } // module
     } // category
 }
@@ -769,7 +772,7 @@ void createListComponentEntry(){
 // #########################################################################
 int main(int argc, char *argv[])
 {
-  qInstallMsgHandler(qucsMessageOutput);
+  qInstallMessageHandler(qucsMessageOutput);
   // set the Qucs version string
   QucsVersion = VersionTriplet(PACKAGE_VERSION);
 
@@ -790,7 +793,7 @@ int main(int argc, char *argv[])
   QucsSettings.dy = h*3/4;
 
   // default
-  QucsSettings.QucsHomeDir.setPath(QDir::homeDirPath()+QDir::convertSeparators ("/.qucs"));
+  QucsSettings.QucsHomeDir.setPath(QDir::homePath()+QDir::toNativeSeparators ("/.qucs"));
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
 
   // load existing settings (if any)
@@ -903,12 +906,15 @@ int main(int argc, char *argv[])
 
   // set codecs
   QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-  QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+//  QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 
   QTranslator tor( 0 );
   QString lang = QucsSettings.Language;
-  if(lang.isEmpty())
-    lang = QTextCodec::locale();
+  if(lang.isEmpty()) {
+      QLocale loc;
+      lang = loc.name();
+//    lang = QTextCodec::locale();
+  }
   tor.load( QString("qucs_") + lang, QucsSettings.LangDir);
   a.installTranslator( &tor );
 
@@ -1054,7 +1060,7 @@ int main(int argc, char *argv[])
   }
 
   QucsMain = new QucsApp();
-  a.setMainWidget(QucsMain);
+  //1a.setMainWidget(QucsMain);
   
   QucsMain->show();
   int result = a.exec();

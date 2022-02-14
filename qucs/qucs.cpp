@@ -183,9 +183,11 @@ QucsApp::QucsApp()
   lastExportFilename = QDir::homePath() + QDir::separator() + "export.png";
 
   // load documents given as command line arguments
-  for(int z=1; z<qApp->argc(); z++) {
-    QString arg = qApp->argv()[z];
-    if(*(arg) != '-') {
+  for(int z=1; z<qApp->arguments().size(); z++) {
+    QString arg = qApp->arguments()[z];
+    QByteArray ba = arg.toLatin1();
+    const char *c_arg = ba.data();
+    if(*(c_arg) != '-') {
       QFileInfo Info(arg);
       QucsSettings.QucsWorkDir.setPath(Info.absoluteDir().absolutePath());
       arg = QucsSettings.QucsWorkDir.filePath(Info.fileName());
@@ -605,9 +607,9 @@ QucsDoc * QucsApp::findDoc (QString File, int * Pos)
 {
   QucsDoc * d;
   int No = 0;
-  File = QDir::convertSeparators (File);
+  File = QDir::toNativeSeparators (File);
   while ((d = getDoc (No++)) != 0)
-    if (QDir::convertSeparators (d->DocName) == File) {
+    if (QDir::toNativeSeparators (d->DocName) == File) {
       if (Pos) *Pos = No - 1;
       return d;
     }
@@ -1287,7 +1289,7 @@ void QucsApp::slotMenuProjClose()
 
   slotResetWarnings();
   setWindowTitle("Qucs " PACKAGE_VERSION + tr(" - Project: "));
-  QucsSettings.QucsWorkDir.setPath(QDir::homePath()+QDir::convertSeparators ("/.qucs"));
+  QucsSettings.QucsWorkDir.setPath(QDir::homePath()+QDir::toNativeSeparators ("/.qucs"));
   octave->adjustDirectory();
 
   Content->setProjPath("");
@@ -2886,8 +2888,8 @@ void QucsApp::slotSimSettings()
 
 void QucsApp::slotSimulateWithSpice()
 {
-    if (!isTextDocument(DocumentTab->currentPage())) {
-        Schematic *sch = (Schematic*)DocumentTab->currentPage();
+    if (!isTextDocument(DocumentTab->currentWidget())) {
+        Schematic *sch = (Schematic*)DocumentTab->currentWidget();
 
         ExternSimDialog *SimDlg = new ExternSimDialog(sch);
         connect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
@@ -2905,7 +2907,7 @@ void QucsApp::slotSimulateWithSpice()
 
 void QucsApp::slotAfterSpiceSimulation()
 {
-    Schematic *sch = (Schematic*)DocumentTab->currentPage();
+    Schematic *sch = (Schematic*)DocumentTab->currentWidget();
     sch->reloadGraphs();
     sch->viewport()->update();
     if(sch->SimRunScript) {
@@ -2917,8 +2919,8 @@ void QucsApp::slotAfterSpiceSimulation()
 
 void QucsApp::slotBuildVAModule()
 {
-    if (!isTextDocument(DocumentTab->currentPage())) {
-        Schematic *Sch = (Schematic*)DocumentTab->currentPage();
+    if (!isTextDocument(DocumentTab->currentWidget())) {
+        Schematic *Sch = (Schematic*)DocumentTab->currentWidget();
 
         QFileInfo inf(Sch->DocName);
         QString filename = QFileDialog::getSaveFileName(this,tr("Save Verilog-A module"),
@@ -2947,8 +2949,8 @@ void QucsApp::slotBuildVAModule()
 
 void QucsApp::slotBuildXSPICEIfs(int mode)
 {
-    if (!isTextDocument(DocumentTab->currentPage())) {
-        Schematic *Sch = (Schematic*)DocumentTab->currentPage();
+    if (!isTextDocument(DocumentTab->currentWidget())) {
+        Schematic *Sch = (Schematic*)DocumentTab->currentWidget();
 
         QFileInfo inf(Sch->DocName);
 

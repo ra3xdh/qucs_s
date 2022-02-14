@@ -38,7 +38,7 @@
 #include "extsimkernels/customsimdialog.h"
 
 #include <QTextStream>
-#include <Q3PtrList>
+#include <qt3_compat/q3ptrlist.h>
 #include <QMouseEvent>
 #include <QClipboard>
 #include <QApplication>
@@ -75,7 +75,7 @@ MouseActions::MouseActions(QucsApp* App_)
   // initialize menu appearing by right mouse button click on component
   ComponentMenu = new QMenu(QucsMain);
   focusMEvent   = new QMouseEvent(QEvent::MouseButtonPress, QPoint(0,0),
-				  Qt::NoButton, Qt::NoButton);
+                  Qt::NoButton, Qt::NoButton, Qt::NoModifier);
 }
 
 
@@ -500,7 +500,7 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
 //          ((Wire*)pe)->Label->paintScheme(&painter);
 
   drawn = true;
-  if((Event->state() & Qt::ControlModifier) == 0)
+  if((Event->modifiers().testFlag(Qt::ControlModifier)) == 0)
     Doc->setOnGrid(MAx2, MAy2);  // use grid only if CTRL key not pressed
   MAx1 = MAx2 - MAx1;
   MAy1 = MAy2 - MAy1;
@@ -778,8 +778,9 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
   while(true) {
     if(focusElement) {
       focusElement->isSelected = true;
-      ComponentMenu->insertItem(
-         QObject::tr("Edit Properties"), QucsMain, SLOT(slotEditElement()));
+      QAction *editProp = new QAction(QObject::tr("Edit Properties"), QucsMain);
+      QObject::connect(editProp,SIGNAL(triggered(bool)),QucsMain,SLOT(slotEditElement()));
+      ComponentMenu->addAction(editProp);
 
       if((focusElement->Type & isComponent) == 0) break;
     }
@@ -788,85 +789,92 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
       //ComponentMenu->addAction(QucsMain->symEdit);
       //to QucsMain->symEdit->addTo(ComponentMenu);
       // see http://qt-project.org/doc/qt-4.8/qaction-qt3.html#addTo
-      QucsMain->symEdit->addTo(ComponentMenu);
-      QucsMain->fileSettings->addTo(ComponentMenu);
+      ComponentMenu->addAction(QucsMain->symEdit);
+      ComponentMenu->addAction(QucsMain->fileSettings);
     }
-    if(!QucsMain->moveText->isOn())
-      QucsMain->moveText->addTo(ComponentMenu);
+    if(!QucsMain->moveText->isChecked())
+      ComponentMenu->addAction(QucsMain->moveText);
     break;
   }
   while(true) {
     if(focusElement)
       if(focusElement->Type == isGraph) break;
-    if(!QucsMain->onGrid->isOn())
-      QucsMain->onGrid->addTo(ComponentMenu);
-    QucsMain->editCopy->addTo(ComponentMenu);
-    if(!QucsMain->editPaste->isOn())
-      QucsMain->editPaste->addTo(ComponentMenu);
+    if(!QucsMain->onGrid->isChecked())
+      ComponentMenu->addAction(QucsMain->onGrid);
+    ComponentMenu->addAction(QucsMain->editCopy);
+    if(!QucsMain->editPaste->isChecked())
+      ComponentMenu->addAction(QucsMain->editPaste);
     break;
   }
 
   while (true) {
     if (focusElement) {
       if (focusElement->Type == isDiagram) {
-        ComponentMenu->insertItem(QObject::tr("Export as image"), QucsMain,
-            SLOT(slotSaveDiagramToGraphicsFile()));
+        QAction *actExport = new QAction(QObject::tr("Export as image"), QucsMain);
+        QObject::connect(actExport,SIGNAL(triggered(bool)),QucsMain,SLOT(slotSaveDiagramToGraphicsFile()));
+        ComponentMenu->addAction(actExport);
       }
       if (focusElement->Type & isComponent) {
           Component *pc = (Component *)focusElement;
           if (pc->Model == "EDD") {
-              ComponentMenu->insertItem(QObject::tr("Create XSPICE IFS"), QucsMain,
-                                                            SLOT(slotEDDtoIFS()));
-              ComponentMenu->insertItem(QObject::tr("Create XSPICE MOD"), QucsMain,
-                                                            SLOT(slotEDDtoMOD()));
+              QAction *actEDDtoIFS = new QAction(QObject::tr("Create XSPICE IFS"), QucsMain);
+              QObject::connect(actEDDtoIFS,SIGNAL(triggered(bool)),QucsMain,SLOT(slotEDDtoIFS()));
+              ComponentMenu->addAction(actEDDtoIFS);
+              QAction *actEDDtoMOD = new QAction(QObject::tr("Create XSPICE MOD"), QucsMain);
+              QObject::connect(actEDDtoMOD,SIGNAL(triggered(bool)),QucsMain,SLOT(slotEDDtoMOD()));
+              ComponentMenu->addAction(actEDDtoMOD);
           }
       }
     }
     break;
   }
 
-  if(!QucsMain->editDelete->isOn())
-    QucsMain->editDelete->addTo(ComponentMenu);
+  if(!QucsMain->editDelete->isChecked())
+    ComponentMenu->addAction(QucsMain->editDelete);
   if(focusElement) if(focusElement->Type == isMarker) {
-    ComponentMenu->insertSeparator();
+    ComponentMenu->addSeparator();
     QString s = QObject::tr("power matching");
     if( ((Marker*)focusElement)->pGraph->Var == "Sopt" )
       s = QObject::tr("noise matching");
-    ComponentMenu->insertItem(s, QucsMain, SLOT(slotPowerMatching()));
-    if( ((Marker*)focusElement)->pGraph->Var.left(2) == "S[" )
-      ComponentMenu->insertItem(QObject::tr("2-port matching"), QucsMain,
-                                SLOT(slot2PortMatching()));
+    QAction *actPwrMatching = new QAction(s, QucsMain);
+    QObject::connect(actPwrMatching,SIGNAL(triggered(bool)),QucsMain,SLOT(slotPowerMatching()));
+    ComponentMenu->addAction(actPwrMatching);
+    if( ((Marker*)focusElement)->pGraph->Var.left(2) == "S[" ) {
+      QAction *act2PortMatching = new QAction(QObject::tr("2-port matching"), QucsMain);
+      QObject::connect(act2PortMatching,SIGNAL(triggered(bool)),QucsMain,SLOT(slot2PortMatching()));
+      ComponentMenu->addAction(act2PortMatching);
+    }
   }
   do {
     if(focusElement) {
       if(focusElement->Type == isDiagram) break;
       if(focusElement->Type == isGraph) {
-        QucsMain->graph2csv->addTo(ComponentMenu);
+        ComponentMenu->addAction(QucsMain->graph2csv);
         break;
       }
     }
-    ComponentMenu->insertSeparator();
+    ComponentMenu->addSeparator();
     if(focusElement) if(focusElement->Type & isComponent)
-      if(!QucsMain->editActivate->isOn())
-        QucsMain->editActivate->addTo(ComponentMenu);
-    if(!QucsMain->editRotate->isOn())
-      QucsMain->editRotate->addTo(ComponentMenu);
-    if(!QucsMain->editMirror->isOn())
-      QucsMain->editMirror->addTo(ComponentMenu);
-    if(!QucsMain->editMirrorY->isOn())
-      QucsMain->editMirrorY->addTo(ComponentMenu);
+      if(!QucsMain->editActivate->isChecked())
+        ComponentMenu->addAction(QucsMain->editActivate);
+    if(!QucsMain->editRotate->isChecked())
+      ComponentMenu->addAction(QucsMain->editRotate);
+    if(!QucsMain->editMirror->isChecked())
+      ComponentMenu->addAction(QucsMain->editMirror);
+    if(!QucsMain->editMirrorY->isChecked())
+      ComponentMenu->addAction(QucsMain->editMirrorY);
 
     // right-click menu to go into hierarchy
     if(focusElement) {
       if(focusElement->Type & isComponent)
 	if(((Component*)focusElement)->Model == "Sub")
-	  if(!QucsMain->intoH->isOn())
-	    QucsMain->intoH->addTo(ComponentMenu);
+      if(!QucsMain->intoH->isChecked())
+        ComponentMenu->addAction(QucsMain->intoH);
     }
     // right-click menu to pop out of hierarchy
     if(!focusElement)
-      if(!QucsMain->popH->isOn())
-	QucsMain->popH->addTo(ComponentMenu);
+      if(!QucsMain->popH->isChecked())
+    ComponentMenu->addAction(QucsMain->popH);
   } while(false);
 
   *focusMEvent = *Event;  // remember event for "edit component" action
@@ -948,7 +956,7 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent*, float fX, float fY)
 void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, float fY)
 {
   bool Ctrl;
-  if(Event->state() & Qt::ControlModifier) Ctrl = true;
+  if(Event->modifiers().testFlag(Qt::ControlModifier)) Ctrl = true;
   else Ctrl = false;
 
   int No=0;
@@ -1554,7 +1562,7 @@ void MouseActions::MPressZoomIn(Schematic *Doc, QMouseEvent*, float fX, float fY
 void MouseActions::MReleaseSelect(Schematic *Doc, QMouseEvent *Event)
 {
   bool ctrl;
-  if(Event->state() & Qt::ControlModifier) ctrl = true;
+  if(Event->modifiers().testFlag(Qt::ControlModifier)) ctrl = true;
   else ctrl = false;
 
   if(!ctrl) Doc->deselectElements(focusElement);
@@ -1582,7 +1590,7 @@ void MouseActions::MReleaseSelect2(Schematic *Doc, QMouseEvent *Event)
   if(Event->button() != Qt::LeftButton) return;
 
   bool Ctrl;
-  if(Event->state() & Qt::ControlModifier) Ctrl = true;
+  if(Event->modifiers().testFlag(Qt::ControlModifier)) Ctrl = true;
   else Ctrl = false;
 
   // selects all elements within the rectangle
@@ -1783,7 +1791,7 @@ void MouseActions::MReleasePaste(Schematic *Doc, QMouseEvent *Event)
 	  break;
 	case isDiagram:
 	  Doc->Diagrams->append((Diagram*)pe);
-	  ((Diagram*)pe)->loadGraphData(Info.dirPath() + QDir::separator() +
+      ((Diagram*)pe)->loadGraphData(Info.absolutePath() + QDir::separator() +
 					Doc->DataSet);
 	  Doc->enlargeView(pe->cx, pe->cy-pe->y2, pe->cx+pe->x2, pe->cy);
 	  break;

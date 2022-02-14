@@ -29,9 +29,9 @@ QucsDoc::QucsDoc(QucsApp *App_, const QString& Name_)
   DocName = Name_;
   QFileInfo Info(DocName);
   if(!DocName.isEmpty()) {
-    DocName = Info.absFilePath();
-    QString base = Info.baseName(true);
-    QString ext = Info.extension(false);
+    DocName = Info.absoluteFilePath();
+    QString base = Info.baseName();
+    QString ext = Info.suffix();
 
     if(ext == "m" || ext == "oct")
       SimTime = "1";
@@ -55,7 +55,7 @@ QucsDoc::QucsDoc(QucsApp *App_, const QString& Name_)
 
 QString QucsDoc::fileSuffix (const QString& Name) {
   QFileInfo Info (Name);
-  return Info.extension (false);
+  return Info.suffix();
 }
 
 QString QucsDoc::fileSuffix (void) {
@@ -64,7 +64,7 @@ QString QucsDoc::fileSuffix (void) {
 
 QString QucsDoc::fileBase (const QString& Name) {
   QFileInfo Info (Name);
-  return Info.baseName (true);
+  return Info.baseName ();
 }
 
 QString QucsDoc::fileBase (void) {

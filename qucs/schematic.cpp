@@ -24,7 +24,7 @@
 #include <QDir>
 #include <QTextStream>
 #include <QDragLeaveEvent>
-#include <Q3PtrList>
+#include <qt3_compat/qt_compat.h>
 #include <QPixmap>
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
@@ -54,6 +54,8 @@
 #include "components/verilogfile.h"
 #include "components/vafile.h"
 
+#include "misc.h"
+
 // just dummies for empty lists
 Q3PtrList<Wire>      SymbolWires;
 Q3PtrList<Node>      SymbolNodes;
@@ -65,6 +67,12 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
     : QucsDoc(App_, Name_)
 {
   symbolMode = false;
+
+  Components = new Q3PtrList<Component>;
+  Diagrams = new Q3PtrList<Diagram>;
+  Wires = new Q3PtrList<Wire>;
+  Nodes = new Q3PtrList<Node>;
+  Paintings = new Q3PtrList<Painting>;
 
   // ...........................................................
   GridX  = GridY  = 10;
@@ -102,7 +110,7 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
 
   setVScrollBarMode(Q3ScrollView::AlwaysOn);
   setHScrollBarMode(Q3ScrollView::AlwaysOn);
-  viewport()->setPaletteBackgroundColor(QucsSettings.BGColor);
+  misc::setWidgetBackgroundColor(viewport(),QucsSettings.BGColor);
   viewport()->setMouseTracking(true);
   viewport()->setAcceptDrops(true);  // enable drag'n drop
 
@@ -2078,7 +2086,7 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
 
     // URI:  file:/home/linuxuser/Desktop/example.sch
     foreach(QUrl url, urls) {
-      App->gotoPage(QDir::convertSeparators(url.toLocalFile()));
+      App->gotoPage(QDir::toNativeSeparators(url.toLocalFile()));
     }
 
     d->DocChanged = changed;
@@ -2130,10 +2138,11 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
   }
 
 
-  if(Event->format(1) == 0) {  // only one MIME type ?
+//  if(Event->format(1) == 0) {  // only one MIME type ?
 
     // drag component from listview
-    if(Event->provides("application/x-qabstractitemmodeldatalist")) {
+    //if(Event->provides("application/x-qabstractitemmodeldatalist")) {
+    if (Event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
       QListWidgetItem *Item = App->CompComps->currentItem();
       if(Item) {
         formerAction = App->activeAction;
@@ -2145,7 +2154,7 @@ void Schematic::contentsDragEnterEvent(QDragEnterEvent *Event)
         return;
       }
     }
-  }
+//  }
 
   Event->ignore();
 }

@@ -255,7 +255,7 @@ ADD_EXECUTABLE( ${QUCS_NAME} MACOSX_BUNDLE WIN32
 #
 # Tell CMake which libraries we need to link our executable against.
 #
-TARGET_LINK_LIBRARIES( ${QUCS_NAME}  components diagrams dialogs paintings extsimkernels spicecomponents ${QT_LIBRARIES} )
+TARGET_LINK_LIBRARIES( ${QUCS_NAME}  components diagrams dialogs paintings extsimkernels spicecomponents qt3_compat ${QT_LIBRARIES} )
 
 #
 # Prepare the installation

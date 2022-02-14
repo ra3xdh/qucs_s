@@ -104,7 +104,7 @@ ProjectView::refresh()
   m_model->item(category, 0)->appendRow(data);
 
   for(it = files.begin(); it != files.end(); ++it) {
-    fileName = (*it).toAscii();
+    fileName = (*it).toLatin1();
     extName = QFileInfo(workPath.filePath(fileName)).suffix();
 
     columnData.clear();

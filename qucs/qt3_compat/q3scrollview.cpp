@@ -98,29 +98,10 @@ void QSVChildRec::hideOrShow(Q3ScrollView* sv, QWidget* clipped_viewport)
     }
 }
 
-class QAbstractScrollAreaWidget : public QWidget
-{
-    Q_OBJECT
 
-public:
-    QAbstractScrollAreaWidget(Q3ScrollView* parent=0, const char* name=0, Qt::WindowFlags f = 0)
-        : QWidget(parent, f)
-    {
-        setAutoFillBackground(true);
-    }
-};
-
-class QClipperWidget : public QWidget
-{
-    Q_OBJECT
-
-public:
-    QClipperWidget(QWidget * parent=0, const char * name=0, Qt::WindowFlags f=0)
-        : QWidget (parent,f) {}
-};
 
 QT_BEGIN_INCLUDE_NAMESPACE
-#include "q3scrollview.moc"
+//#include "q3scrollview.moc"
 QT_END_INCLUDE_NAMESPACE
 
 class Q3ScrollViewData {
@@ -1111,6 +1092,7 @@ void Q3ScrollView::resizeEvent(QResizeEvent* event)
     d->inresize = true;
     updateScrollBars();
     d->inresize = inresize;
+    d->scrollbar_timer.setSingleShot(true);
     d->scrollbar_timer.start(0);
 
     d->hideOrShowAll(this);
@@ -2166,6 +2148,7 @@ void Q3ScrollView::resizeContents(int w, int h)
     d->vwidth = w;
     d->vheight = h;
 
+    d->scrollbar_timer.setSingleShot(true);
     d->scrollbar_timer.start(0);
 
     if (d->children.isEmpty() && d->policy == Default)

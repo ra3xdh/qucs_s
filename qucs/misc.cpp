@@ -435,7 +435,7 @@ VersionTriplet::VersionTriplet(const QString& version) {
   if (version.isEmpty()) {
     major = minor = patch = 0;
   } else {
-    QStringList vl = QStringList::split('.', version);
+    QStringList vl = version.split('.');
     major = vl.at(0).toUInt();
     minor = vl.at(1).toUInt();
     patch = vl.at(2).toUInt();

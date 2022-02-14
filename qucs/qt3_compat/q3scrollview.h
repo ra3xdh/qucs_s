@@ -228,5 +228,27 @@ public:
 
 };
 
+class QAbstractScrollAreaWidget : public QWidget
+{
+    Q_OBJECT
+
+public:
+    QAbstractScrollAreaWidget(Q3ScrollView* parent=0, const char* name=0, Qt::WindowFlags f = 0)
+        : QWidget(parent, f)
+    {
+        Q_UNUSED(name);
+        setAutoFillBackground(true);
+    }
+};
+
+class QClipperWidget : public QWidget
+{
+    Q_OBJECT
+
+public:
+    QClipperWidget(QWidget * parent=0, const char * name=0, Qt::WindowFlags f=0)
+        : QWidget (parent,f)  { Q_UNUSED(name); }
+};
+
 
 #endif // Q3SCROLLVIEW_H

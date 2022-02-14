@@ -22,6 +22,7 @@
 #include "textdoc.h"
 
 #include <QDockWidget>
+#include <QTextBlock>
 #include <QDebug>
 
 /*!
