@@ -66,10 +66,10 @@ INCLUDE_DIRECTORIES(
       ${Qt5Xml_INCLUDE_DIRS}
       ${Qt5Script_INCLUDE_DIRS}
       ${Qt5PrintSupport_INCLUDE_DIRS}
-      ${Qt5Test_INCLUDE_DIRS} )
+      )
 
 # bug, the find package does not seem to set the QT_LIBRARIES, do it manually
-SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5Script_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Test_LIBRARIES} )
+SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5Script_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} )
 
 
 
