@@ -612,11 +612,11 @@ void QucsApp::initActions()
   connect(showNet, SIGNAL(triggered()), SLOT(slotShowLastNetlist()));
 
   simSettings = new QAction(tr("Select default simulator"),this);
-  connect(simSettings,SIGNAL(activated()),SLOT(slotSimSettings()));
+  connect(simSettings,SIGNAL(triggered()),SLOT(slotSimSettings()));
   buildVAModule = new QAction(tr("Build Verilog-A module from subcircuit"),this);
-  connect(buildVAModule,SIGNAL(activated()),SLOT(slotBuildVAModule()));
+  connect(buildVAModule,SIGNAL(triggered()),SLOT(slotBuildVAModule()));
   buildIFS = new QAction(tr("Build XSPICE IFS file from subcircuit"),this);
-  connect(buildIFS,SIGNAL(activated()),SLOT(slotBuildXSPICEIfs()));
+  connect(buildIFS,SIGNAL(triggered()),SLOT(slotBuildXSPICEIfs()));
 
 
   viewToolBar = new QAction(tr("Tool&bar"), this);
