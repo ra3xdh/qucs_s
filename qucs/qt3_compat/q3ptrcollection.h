@@ -42,8 +42,8 @@
 #ifndef Q3PTRCOLLECTION_H
 #define Q3PTRCOLLECTION_H
 
-#include <QtCore>
-
+#include <QDataStream>
+typedef unsigned int uint;
 
 class Q3GVector;
 class Q3GList;
