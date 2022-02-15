@@ -32,6 +32,7 @@
 ArrowDialog::ArrowDialog(QWidget *parent, const char *name)
                                   : QDialog(parent)
 {
+  Q_UNUSED(name);
   setWindowTitle(tr("Edit Arrow Properties"));
   val100 = new QIntValidator(0, 100, this);
 

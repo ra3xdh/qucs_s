@@ -256,7 +256,7 @@ void ImportDialog::slotImport()
   qDebug() << "Command:" << Program << CommandLine.join(" ");
   Process.start(Program, CommandLine);
   
-  if(!Process.state() != QProcess::Running)
+  if(Process.state() != QProcess::Running)
     MsgText->appendPlainText(tr("ERROR: Cannot start converter!"));
 }
 

@@ -35,6 +35,7 @@
 GraphicTextDialog::GraphicTextDialog(QWidget *parent, const char *name)
                                   : QDialog(parent)
 {
+  Q_UNUSED(name);
   setWindowTitle(tr("Edit Text Properties"));
 
   vert = new QVBoxLayout(this);
