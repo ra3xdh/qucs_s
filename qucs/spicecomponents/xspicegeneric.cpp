@@ -14,7 +14,8 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtCore>
+#include <QString>
+#include <QStringList>
 #include <QFontMetrics>
 
 #include "xspicegeneric.h"

@@ -19,7 +19,9 @@
 #ifndef NGSPICE_H
 #define NGSPICE_H
 
-#include <QtCore>
+#include <QString>
+#include <QStringList>
+#include <QDataStream>
 #include "schematic.h"
 #include "abstractspicekernel.h"
 

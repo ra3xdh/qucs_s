@@ -18,7 +18,10 @@
 #ifndef XYCE_H
 #define XYCE_H
 
-#include <QtCore>
+#include <QObject>
+#include <QString>
+#include <QStringList>
+#include <QTextStream>
 #include "abstractspicekernel.h"
 
 /*!

@@ -42,21 +42,15 @@
 #ifndef Q3VALUELIST_H
 #define Q3VALUELIST_H
 
-#include <QtCore/qalgorithms.h>
-#include <QtCore/qdatastream.h>
-#include <QtCore/qlinkedlist.h>
-#include <QtCore/qlist.h>
+#include <QtAlgorithms>
+#include <QDataStream>
+#include <QLinkedList>
+#include <QList>
 
 #ifndef QT_NO_STL
 #include <iterator>
 #include <list>
 #endif
-
-QT_BEGIN_HEADER
-
-QT_BEGIN_NAMESPACE
-
-QT_MODULE(Qt3SupportLight)
 
 template <typename T>
 class Q3ValueListIterator : public QLinkedList<T>::iterator
@@ -210,7 +204,7 @@ public:
 };
 
 template <typename T>
-Q_OUTOFLINE_TEMPLATE void Q3ValueList<T>::insert(typename Q3ValueList<T>::Iterator pos,
+void Q3ValueList<T>::insert(typename Q3ValueList<T>::Iterator pos,
                            typename Q3ValueList<T>::size_type n, const T& x)
 {
     for (; n > 0; --n)
@@ -219,20 +213,17 @@ Q_OUTOFLINE_TEMPLATE void Q3ValueList<T>::insert(typename Q3ValueList<T>::Iterat
 
 #ifndef QT_NO_DATASTREAM
 template <typename T>
-Q_OUTOFLINE_TEMPLATE QDataStream& operator>>(QDataStream& s, Q3ValueList<T>& l)
+QDataStream& operator>>(QDataStream& s, Q3ValueList<T>& l)
 {
     return operator>>(s, static_cast<QLinkedList<T> &>(l));
 }
 
 template <typename T>
-Q_OUTOFLINE_TEMPLATE QDataStream& operator<<(QDataStream& s, const Q3ValueList<T>& l)
+QDataStream& operator<<(QDataStream& s, const Q3ValueList<T>& l)
 {
     return operator<<(s, static_cast<const QLinkedList<T> &>(l));
 }
 #endif
 
-QT_END_NAMESPACE
-
-QT_END_HEADER
 
 #endif // Q3VALUELIST_H

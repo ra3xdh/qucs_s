@@ -41,7 +41,8 @@
 
 #include "q3gdict.h"
 #include "qt_compat.h"
-#include <QtCore>
+#include <QString>
+#include <QDataStream>
 #include <ctype.h>
 
 #include <stdint.h>

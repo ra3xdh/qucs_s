@@ -19,7 +19,9 @@
 #ifndef XSPICE_CMBUILDER_H
 #define XSPICE_CMBUILDER_H
 
-#include <QtCore>
+#include <QString>
+#include <QStringList>
+#include <QTextStream>
 #include "schematic.h"
 
 class XSPICE_CMbuilder

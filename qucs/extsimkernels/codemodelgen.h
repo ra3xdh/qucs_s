@@ -23,7 +23,10 @@
 #ifndef CODEMODELGEN_H
 #define CODEMODELGEN_H
 
-#include <QtCore>
+#include <QString>
+#include <QStringList>
+#include <QTextStream>
+
 #include <schematic.h>
 
 /*!

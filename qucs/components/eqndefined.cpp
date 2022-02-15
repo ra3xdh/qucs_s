@@ -19,7 +19,12 @@
 #include "schematic.h"
 #include "extsimkernels/spicecompat.h"
 #include "extsimkernels/verilogawriter.h"
-#include <QtCore>
+
+#include <QString>
+#include <QStringList>
+#include <QList>
+#include <QRegExp>
+#include <QFontMetrics>
 
 #include <QFileInfo>
 
