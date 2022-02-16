@@ -138,7 +138,7 @@ bool loadSettings()
     if(settings.contains("Nprocs")) QucsSettings.NProcs = settings.value("Nprocs").toInt();
     else QucsSettings.NProcs = 4;
     if(settings.contains("S4Q_workdir")) QucsSettings.S4Qworkdir = settings.value("S4Q_workdir").toString();
-    else QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QDir::homePath()+"/.qucs/spice4qucs");
+    else QucsSettings.S4Qworkdir = QDir::toNativeSeparators(QucsSettings.QucsWorkDir.absolutePath()+"/spice4qucs");
     if(settings.contains("SimParameters")) QucsSettings.SimParameters = settings.value("SimParameters").toString();
     else QucsSettings.SimParameters = "";
     if(settings.contains("OctaveExecutable")) {
