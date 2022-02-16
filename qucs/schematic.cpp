@@ -68,12 +68,6 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
 {
   symbolMode = false;
 
-  Components = &DocComps;
-  Diagrams = &DocDiags;
-  Wires = &DocWires;
-  Nodes = &DocNodes;
-  Paintings = &DocPaints;
-
   // ...........................................................
   GridX  = GridY  = 10;
   ViewX1=ViewY1=0;
