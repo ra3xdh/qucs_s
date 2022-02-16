@@ -43,7 +43,7 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     qDebug()<<QucsSettings.DefaultSimulator;
     cbxSimulator->setCurrentIndex(QucsSettings.DefaultSimulator);
     if (QucsSettings.DefaultSimulator==spicecompat::simNotSpecified)
-        cbxSimulator->setCurrentIndex(spicecompat::simQucsator);
+        cbxSimulator->setCurrentIndex(spicecompat::simNgspice);
 
     edtNgspice = new QLineEdit(QucsSettings.NgspiceExecutable);
     edtXyce = new QLineEdit(QucsSettings.XyceExecutable);
