@@ -120,7 +120,7 @@ SweepDialog::SweepDialog(Schematic *Doc_,QHash<QString,double> *NodeVals)
   // ...........................................................
   all->setRowStretch(i,5);
   QPushButton *ButtClose = new QPushButton(tr("Close"), this);
-  all->addWidget(ButtClose, i+1,i+1, 0,1);
+  all->addWidget(ButtClose, i+1,0);
   connect(ButtClose, SIGNAL(clicked()), SLOT(accept()));
   show();
 }

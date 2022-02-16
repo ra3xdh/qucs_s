@@ -156,7 +156,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     QWidget *editorTab = new QWidget(t);
     QGridLayout *editorGrid = new QGridLayout(editorTab);
 
-    editorGrid->addWidget(new QLabel(tr("Colors for Syntax Highlighting:"), editorTab), 0, 0, 1, 2);
+    editorGrid->addWidget(new QLabel(tr("Colors for Syntax Highlighting:"), editorTab), 0, 1, 0, 2);
 
     QPalette p;
 

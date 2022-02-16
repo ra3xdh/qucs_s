@@ -351,55 +351,55 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     //QGridLayout *gp = new QGridLayout(Tab2,13,3,5,5);
     QGridLayout *gp = new QGridLayout(Tab2);
 
-    gp->addWidget(new QLabel(tr("x-Axis Label:"), Tab2), Row,Row);
+    gp->addWidget(new QLabel(tr("x-Axis Label:"), Tab2), Row,0);
     xLabel = new QLineEdit(Tab2);
     xLabel->setValidator(Validator);
-    gp->addWidget(xLabel, Row,Row,1,2);
+    gp->addWidget(xLabel, Row,1);
     Row++;
 
     gp->addWidget(
-        new QLabel(NameY+" "+tr("Label:"), Tab2), Row,Row);
+        new QLabel(NameY+" "+tr("Label:"), Tab2), Row,0);
     ylLabel = new QLineEdit(Tab2);
     ylLabel->setValidator(Validator);
-    gp->addWidget(ylLabel, Row,Row,1,2);
+    gp->addWidget(ylLabel, Row,1);
     Row++;
 
     if((Diag->Name != "Smith") && (Diag->Name != "Polar")) {
       gp->addWidget(
-        new QLabel(NameZ +" "+tr("Label:"), Tab2), Row,Row);
+        new QLabel(NameZ +" "+tr("Label:"), Tab2), Row,0);
       yrLabel = new QLineEdit(Tab2);
       yrLabel->setValidator(Validator);
-      gp->addWidget(yrLabel, Row,Row,1,2);
+      gp->addWidget(yrLabel, Row,1);
       Row++;
     }
 
     gp->addWidget(new QLabel(
         tr("<b>Label text</b>: Use LaTeX style for special characters, e.g. \\tau"),
-        Tab2),  Row,Row,0,2);
+        Tab2),  Row,0,1,2);
     Row++;
 
     if(Diag->Name != "Rect3D") {
       GridOn = new QCheckBox(tr("show Grid"), Tab2);
-      gp->addWidget(GridOn, Row,Row,0,2);
+      gp->addWidget(GridOn, Row,0);
       Row++;
 
       GridLabel1 = new QLabel(tr("Grid Color:"),Tab2);
-      gp->addWidget(GridLabel1, Row,Row,0,0);
+      gp->addWidget(GridLabel1, Row,0);
       GridColorButt = new QPushButton("        ",Tab2);
       connect(GridColorButt, SIGNAL(clicked()), SLOT(slotSetGridColor()));
-      gp->addWidget(GridColorButt, Row,Row,1,2);
+      gp->addWidget(GridColorButt, Row,1);
       Row++;    
       misc::setPickerColor(GridColorButt, Diag->GridPen.color());
 
       GridLabel2 = new QLabel(tr("Grid Style: "), Tab2);
-      gp->addWidget(GridLabel2, Row,Row,0,0);
+      gp->addWidget(GridLabel2, Row,0);
       GridStyleBox = new QComboBox(Tab2);
       GridStyleBox->addItem(tr("solid line"));
       GridStyleBox->addItem(tr("dash line"));
       GridStyleBox->addItem(tr("dot line"));
       GridStyleBox->addItem(tr("dash dot line"));
       GridStyleBox->addItem(tr("dash dot dot line"));
-      gp->addWidget(GridStyleBox, Row,Row,1,2);
+      gp->addWidget(GridStyleBox, Row,1);
       Row++;
       GridStyleBox->setCurrentIndex(Diag->GridPen.style()-1);
     
@@ -420,15 +420,15 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
 
     if((Diag->Name.left(4) == "Rect") || (Diag->Name == "Curve")) {
       GridLogX = new QCheckBox(tr("logarithmical X Axis Grid"), Tab2);
-      gp->addWidget(GridLogX, Row,Row,0,2);
+      gp->addWidget(GridLogX, Row,0);
       Row++;
 
       GridLogY = new QCheckBox(tr("logarithmical")+" "+NameY+" "+tr("Grid"), Tab2);
-      gp->addWidget(GridLogY, Row,Row,0,2);
+      gp->addWidget(GridLogY, Row,0);
       Row++;
 
       GridLogZ = new QCheckBox(tr("logarithmical")+" "+NameZ+" "+tr("Grid"), Tab2);
-      gp->addWidget(GridLogZ, Row,Row,0,2);
+      gp->addWidget(GridLogZ, Row,0);
       Row++;
 
       // ...........................................................
@@ -440,7 +440,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
 
       if(Diag->Name == "Rect3D") {
         hideInvisible = new QCheckBox(tr("hide invisible lines"), Tab2);
-        gp->addWidget(hideInvisible, Row,Row,0,2);
+        gp->addWidget(hideInvisible, Row,0);
         Row++;
 
         QLabel *LabelRotX = new QLabel(tr("Rotation around x-Axis:"), Tab2);

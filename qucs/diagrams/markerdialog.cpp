@@ -64,7 +64,7 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   
   TransBox = new QCheckBox(tr("transparent"));
   TransBox->setChecked(pMarker->transparent);
-  g->addWidget(TransBox,3,3,0,1);
+  g->addWidget(TransBox,3,0);
 
   // first => activated by pressing RETURN
   QPushButton *ButtOK = new QPushButton(tr("OK"));
@@ -77,7 +77,7 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   b->setSpacing(5);
   b->addWidget(ButtOK);
   b->addWidget(ButtCancel);
-  g->addLayout(b,4,4,0,1);
+  g->addLayout(b,4,0,1,2);
 
   this->setLayout(g);
 }
