@@ -2851,7 +2851,7 @@ void QucsApp::updatePathList(QStringList newPathList)
 
 void QucsApp::updateRecentFilesList(QString s)
 {
-  QSettings* settings = new QSettings("qucs","qucs");
+  QSettings* settings = new QSettings("qucs","qucs_s");
   QucsSettings.RecentDocs.removeAll(s);
   QucsSettings.RecentDocs.prepend(s);
   if (QucsSettings.RecentDocs.size() > MaxRecentFiles) {

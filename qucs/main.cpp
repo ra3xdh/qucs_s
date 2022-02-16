@@ -73,7 +73,7 @@ VersionTriplet QucsVersion; // Qucs version string
 // Loads the settings file and stores the settings.
 bool loadSettings()
 {
-    QSettings settings("qucs","qucs");
+    QSettings settings("qucs","qucs_s");
 
     if(settings.contains("DefaultSimulator"))
         QucsSettings.DefaultSimulator = settings.value("DefaultSimulator").toInt();
@@ -191,7 +191,7 @@ bool loadSettings()
 // Saves the settings in the settings file.
 bool saveApplSettings()
 {
-    QSettings settings ("qucs","qucs");
+    QSettings settings ("qucs","qucs_s");
 
     settings.setValue("DefaultSimulator", QucsSettings.DefaultSimulator);
 
