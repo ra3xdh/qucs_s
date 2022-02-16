@@ -43,7 +43,7 @@
 #define Q3PTRCOLLECTION_H
 
 #include <QDataStream>
-typedef unsigned int uint;
+#include <QtGlobal>
 
 class Q3GVector;
 class Q3GList;

@@ -649,6 +649,7 @@ bool Q3ScrollView::isVerticalSliderPressed()
 */
 void Q3ScrollView::styleChange(QStyle& old)
 {
+    Q_UNUSED(old);
     //QWidget::styleChange(old);
     updateScrollBars();
     d->cachedSizeHint = QSize();
@@ -659,6 +660,7 @@ void Q3ScrollView::styleChange(QStyle& old)
 */
 void Q3ScrollView::fontChange(const QFont &old)
 {
+    Q_UNUSED(old);
     //QWidget::fontChange(old);
     updateScrollBars();
     d->cachedSizeHint = QSize();
@@ -1326,6 +1328,7 @@ void Q3ScrollView::removeChild(QWidget* child)
 void Q3ScrollView::removeChild(QObject* child)
 {
     //Q3Frame::removeChild(child);
+    child->setParent(NULL);
 }
 
 /*!

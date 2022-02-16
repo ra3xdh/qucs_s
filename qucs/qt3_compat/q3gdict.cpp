@@ -832,11 +832,11 @@ void Q3GDict::statistics() const
     QString line;
     line.fill(QLatin1Char('-'), 60);
     double real, ideal;
-    //qDebug("%s", line.ascii());
-    //qDebug("DICTIONARY STATISTICS:");
+    qDebug("%s", line.toLatin1().data());
+    qDebug("DICTIONARY STATISTICS:");
     if (count() == 0) {
-        //qDebug("Empty!");
-        //qDebug("%s", line.ascii());
+        qDebug("Empty!");
+        qDebug("%s", line.toLatin1().data());
         return;
     }
     real = 0.0;
@@ -860,12 +860,12 @@ void Q3GDict::statistics() const
         qDebug("%s", buf);
         i++;
     }
-    /*qDebug("Array size = %d", size());
+    qDebug("Array size = %d", size());
     qDebug("# items    = %d", count());
     qDebug("Real dist  = %g", real);
     qDebug("Rand dist  = %g", ideal);
     qDebug("Real/Rand  = %g", real/ideal);
-    qDebug("%s", line.ascii());*/
+    qDebug("%s", line.toLatin1().data());
 #endif // QT_DEBUG
 }
 

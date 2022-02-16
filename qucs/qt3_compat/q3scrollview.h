@@ -52,7 +52,8 @@ class Q3ScrollView : public Q3Frame
     Q_OBJECT
 
 public:
-    Q3ScrollView(QWidget* parent=0, const char* name=0, Qt::WindowFlags f=0);
+    Q3ScrollView(QWidget* parent=0, const char* name=0,
+                 Qt::WindowFlags f = Qt::WindowFlags());
     ~Q3ScrollView();
 
     enum ResizePolicy { Default, Manual, AutoOne, AutoOneFit };
@@ -233,7 +234,8 @@ class QAbstractScrollAreaWidget : public QWidget
     Q_OBJECT
 
 public:
-    QAbstractScrollAreaWidget(Q3ScrollView* parent=0, const char* name=0, Qt::WindowFlags f = 0)
+    QAbstractScrollAreaWidget(Q3ScrollView* parent=0, const char* name=0,
+                              Qt::WindowFlags f = Qt::WindowFlags())
         : QWidget(parent, f)
     {
         Q_UNUSED(name);
@@ -246,7 +248,8 @@ class QClipperWidget : public QWidget
     Q_OBJECT
 
 public:
-    QClipperWidget(QWidget * parent=0, const char * name=0, Qt::WindowFlags f=0)
+    QClipperWidget(QWidget * parent=0, const char * name=0,
+                   Qt::WindowFlags f = Qt::WindowFlags())
         : QWidget (parent,f)  { Q_UNUSED(name); }
 };
 

@@ -50,7 +50,8 @@ class  Q3Frame : public QFrame
     Q_OBJECT
 
 public:
-    Q3Frame(QWidget* parent, const char* name = 0, Qt::WindowFlags f = 0);
+    Q3Frame(QWidget* parent, const char* name = 0,
+            Qt::WindowFlags f = Qt::WindowFlags());
     ~Q3Frame();
 #ifndef qdoc
     bool        lineShapesOk()  const { return true; }
