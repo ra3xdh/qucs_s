@@ -53,7 +53,7 @@
 #include "extsimkernels/xyce.h"
 
 #ifdef _WIN32
-#include <Windows.h>  //for OutputDebugString
+#include <windows.h>  //for OutputDebugString
 #endif
 
 #ifdef __MINGW32__
@@ -777,7 +777,7 @@ int main(int argc, char *argv[])
   QucsVersion = VersionTriplet(PACKAGE_VERSION);
 
   // apply default settings
-  QucsSettings.font = QFont("Helvetica", 12);
+  //QucsSettings.font = QFont("Helvetica", 12);
   QucsSettings.largeFontSize = 16.0;
   QucsSettings.maxUndo = 20;
   QucsSettings.NodeWiring = 0;
@@ -785,6 +785,8 @@ int main(int argc, char *argv[])
   // initially center the application
   QApplication a(argc, argv);
   QDesktopWidget *d = a.desktop();
+  QucsSettings.font = QApplication::font();
+  QucsSettings.font.setPointSize(12);
   int w = d->width();
   int h = d->height();
   QucsSettings.x = w/8;
@@ -902,7 +904,7 @@ int main(int argc, char *argv[])
     QucsSettings.Task = Qt::darkRed;
 
 
-  a.setFont(QucsSettings.font);
+  //a.setFont(QucsSettings.font);
 
   // set codecs
   QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));

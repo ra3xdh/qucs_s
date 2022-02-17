@@ -68,6 +68,7 @@ Schematic::Schematic(QucsApp *App_, const QString& Name_)
 {
   symbolMode = false;
 
+  setFont(QucsSettings.font);
   // ...........................................................
   GridX  = GridY  = 10;
   ViewX1=ViewY1=0;
