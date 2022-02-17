@@ -92,18 +92,9 @@ LibraryDialog::LibraryDialog(QWidget *parent)
   Group = new QGroupBox(tr("Choose subcircuits:"));
   selectSubcktLayout->addWidget(Group);
 
-  QScrollArea *scrollArea = new QScrollArea(Group);
-  scrollArea->setWidgetResizable(true);
-
-  QWidget *scrollWidget = new QWidget();
-
-  checkBoxLayout = new QVBoxLayout();
-  scrollWidget->setLayout(checkBoxLayout);
-  scrollArea->setWidget(scrollWidget);
-
-  QVBoxLayout *areaLayout = new QVBoxLayout();
-  areaLayout->addWidget(scrollArea);
-  Group->setLayout(areaLayout);
+  subcirFileList = new QListWidget();
+  subcirListLayout = new QVBoxLayout();
+  Group->setLayout(subcirListLayout);
 
   // ...........................................................
   QHBoxLayout *hCheck = new QHBoxLayout();
@@ -227,12 +218,15 @@ LibraryDialog::fillSchematicList(QStringList SchematicList)
   if (SchematicList.size() == 0) {
     ButtCreateNext->setEnabled(false);
     QLabel *noProj = new QLabel(tr("No projects!"));
-    checkBoxLayout->addWidget(noProj);
+    subcirListLayout->addWidget(noProj);
   } else {
-    foreach(const QString &filename, SchematicList) {
-      QCheckBox *subCheck = new QCheckBox(filename);
-      checkBoxLayout->addWidget(subCheck);
-      BoxList.append(subCheck);
+    subcirListLayout->addWidget(subcirFileList);
+    for(const auto &filename: SchematicList) {
+      QListWidgetItem *itm = new QListWidgetItem;
+      itm->setFlags(itm->flags()|Qt::ItemIsUserCheckable);
+      itm->setText(filename);
+      itm->setCheckState(Qt::Checked);
+      subcirFileList->addItem(itm);
     }
   }
 }
@@ -246,15 +240,14 @@ void LibraryDialog::slotCreateNext()
   }
 
   int count=0;
-  QCheckBox *p;
-  QListIterator<QCheckBox *> i(BoxList);
-  while(i.hasNext()){
-    p = i.next();
-    if(p->isChecked()) {
-      SelectedNames.append(p->text());
-      Descriptions.append("");
-      count++;
-    }
+  for(int i = 0; i < subcirFileList->count(); i++) {
+      auto itm = subcirFileList->item(i);
+      if (itm == NULL) continue;
+      if (itm->checkState() == Qt::Checked) {
+          SelectedNames.append(itm->text());
+          Descriptions.append("");
+          count++;
+      }
   }
 
   if(count < 1) {
@@ -631,21 +624,17 @@ void LibraryDialog::slotSave()
 // ---------------------------------------------------------------
 void LibraryDialog::slotSelectAll()
 {
-  QCheckBox *p;
-  QListIterator<QCheckBox *> i(BoxList);
-  while(i.hasNext()){
-    p = i.next();
-    p->setChecked(true);
-  }
+    for (int i = 0; i < subcirFileList->count(); i++) {
+        auto itm = subcirFileList->item(i);
+        itm->setCheckState(Qt::Checked);
+    }
 }
 
 // ---------------------------------------------------------------
 void LibraryDialog::slotSelectNone()
 {
-  QCheckBox *p;
-  QListIterator<QCheckBox *> i(BoxList);
-  while(i.hasNext()){
-    p = i.next();
-    p->setChecked(false);
-  }
+    for (int i = 0; i < subcirFileList->count(); i++) {
+        auto itm = subcirFileList->item(i);
+        itm->setCheckState(Qt::Unchecked);
+    }
 }
