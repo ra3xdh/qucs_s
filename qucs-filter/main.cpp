@@ -42,12 +42,11 @@ struct tQucsSettings QucsSettings;
 // Loads the settings file and stores the settings.
 bool loadSettings()
 {
-    QSettings settings("qucs","qucs");
+    QSettings settings("qucs","qucs_s");
     settings.beginGroup("QucsFilter");
     if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
     if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
     settings.endGroup();
-    if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
     if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
 
   return true;
@@ -58,7 +57,7 @@ bool loadSettings()
 // Saves the settings in the settings file.
 bool saveApplSettings(QucsFilter *qucs)
 {
-    QSettings settings ("qucs","qucs");
+    QSettings settings ("qucs","qucs_s");
     settings.beginGroup("QucsFilter");
     settings.setValue("x", qucs->x());
     settings.setValue("y", qucs->y());
@@ -82,7 +81,6 @@ int main(int argc, char *argv[])
   // apply default settings
   QucsSettings.x = 200;
   QucsSettings.y = 100;
-  QucsSettings.font = QFont("Helvetica", 12);
 
   // is application relocated?
   QDir QucsDir;
@@ -96,8 +94,6 @@ int main(int argc, char *argv[])
   QucsSettings.LangDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/lang/";
 
   loadSettings();
-
-  a.setFont(QucsSettings.font);
 
   QTranslator tor( 0 );
   QString lang = QucsSettings.Language;

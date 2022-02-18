@@ -701,7 +701,8 @@ void QucsSettingsDialog::slotBGColorDialog()
 void QucsSettingsDialog::slotDefaultValues()
 {
     QPalette p;
-    Font = QFont("Helvetica", 12);
+    Font = QApplication::font();
+    Font.setPointSize(12);
     FontButton->setText(Font.toString());
     LargeFontSizeEdit->setText(QString::number(16.0));
 
