@@ -166,7 +166,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
                    if (pc1->Model==".FOURIER") {
                        if (pc1->Props.at(0)->Value==pc->Name) {
                            QString s1 = pc1->getSpiceNetlist(true);
-                           outputs.append("spice4qucs.tran.cir.four");
+                           outputs.append("spice4qucs.tran.cir.four0");
                            stream<<s1;
                        }
                    }

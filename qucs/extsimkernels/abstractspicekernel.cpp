@@ -1008,6 +1008,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         bool hasParSweep = false;
         bool hasDblParSweep = false;
 
+        QRegExp four_rx(".*\\.four[0-9]+$");
         QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
         if (ngspice_output_filename.endsWith("HB.FD.prn")) {
             parseHBOutput(full_outfile,sim_points,var_list,hasParSweep);
@@ -1017,7 +1018,8 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                                                         + "spice4qucs.hb.cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
-        } else if (ngspice_output_filename.endsWith(".four")) {
+        } else if (ngspice_output_filename.endsWith(".four") ||
+                   four_rx.exactMatch(ngspice_output_filename)) {
             isComplex=false;
             parseFourierOutput(full_outfile,sim_points,var_list);
         } else if (ngspice_output_filename.endsWith(".ngspice.sens.dc.prn")) {
