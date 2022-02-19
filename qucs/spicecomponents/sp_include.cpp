@@ -82,7 +82,14 @@ QString S4Q_Include::getSpiceModel()
         QString val = pp->Value;
         if (!val.isEmpty()) {
             val = spicecompat::convert_relative_filename(val);
-            s += QString("%1 \"%2\"\n").arg(SpiceModel).arg(val);
+            switch (QucsSettings.DefaultSimulator) {
+            case spicecompat::simSpiceOpus: // Spice Opus doesn't support quotes
+                s += QString("%1 %2\n").arg(SpiceModel).arg(val);
+                break;
+            default:
+                s += QString("%1 \"%2\"\n").arg(SpiceModel).arg(val);
+                break;
+            }
         }
     }
 

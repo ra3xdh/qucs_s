@@ -181,6 +181,7 @@ void ExternSimDialog::slotProcessOutput()
     editSimConsole->insertPlainText(out);
     editSimConsole->moveCursor(QTextCursor::End);
     saveLog();
+    editSimConsole->insertPlainText("Simulation finished\n");
 
     QFileInfo inf(Sch->DocName);
     //QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";
