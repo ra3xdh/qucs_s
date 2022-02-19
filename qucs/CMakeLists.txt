@@ -26,8 +26,6 @@ set(PROJECT_COPYRIGHT_YEAR "2014")
 set(PROJECT_DOMAIN_FIRST "qucs")
 set(PROJECT_DOMAIN_SECOND "org")
 
-#
-#SET(CMAKE_BUILD_TYPE Debug)
 
 # If Git hash not defined, try to define it
 IF(NOT GIT)
@@ -102,10 +100,6 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra ") # enable warning level
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ") # enable C++11
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC ") # enable C++11
 
-# flag not available in mingw 4.8.2, MSVC10
-IF(NOT WIN32)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-register ")
-ENDIF()
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 # For some reason, on Windows QT_LIBRARIES point to static(?) .a libs

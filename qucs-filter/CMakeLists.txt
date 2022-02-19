@@ -31,10 +31,6 @@ INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ") # enable warning level
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ") # enable C++11
 
-# flag not available in mingw 4.8.2, MSVC10
-IF(NOT WIN32)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-register ")
-ENDIF()
 
 FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 
