@@ -61,6 +61,8 @@
 #include "dialogs/aboutdialog.h"
 #include "module.h"
 
+#include "extsimkernels/xyce.h"
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -743,7 +745,38 @@ void QucsApp::slotShowLastMsg()
 // Is called to show the netlist of the last simulation.
 void QucsApp::slotShowLastNetlist()
 {
-  editFile(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
+    QStringList netlists;
+    QStringList sim_lst;
+    if (QucsSettings.DefaultSimulator == spicecompat::simXycePar ||
+            QucsSettings.DefaultSimulator == spicecompat::simXyceSer) {
+        Schematic *sch = (Schematic *)QucsMain->DocumentTab->currentWidget();
+        Xyce *xyce = new Xyce(sch,this);
+        xyce->determineUsedSimulations(&sim_lst);
+        delete xyce;
+    }
+
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simQucsator :
+        netlists.append(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
+        break;
+    case spicecompat::simNgspice :
+    case spicecompat::simSpiceOpus :
+        netlists.append(QDir::toNativeSeparators(QucsSettings.S4Qworkdir
+                                                 + "/spice4qucs.cir"));
+        break;
+    case spicecompat::simXycePar: // Xyce generates one netlist for
+    case spicecompat::simXyceSer: // every simulation
+        for(const auto &sim : sim_lst) {
+            netlists.append(QDir::toNativeSeparators(QucsSettings.S4Qworkdir
+                                                     + "/spice4qucs."
+                                                     + sim + ".cir"));
+        }
+        break;
+    default: break;
+    }
+    for(const auto &netlist: netlists) {
+        editFile(netlist);
+    }
 }
 
 // ------------------------------------------------------------------------

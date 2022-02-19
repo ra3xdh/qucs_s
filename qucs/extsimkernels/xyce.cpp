@@ -43,7 +43,7 @@ Xyce::Xyce(Schematic *sch_, QObject *parent) :
  * \brief Xyce::determineUsedSimulations Determine simulation used
  *        in schematic and add them into simulationsQueue list
  */
-void Xyce::determineUsedSimulations()
+void Xyce::determineUsedSimulations(QStringList *sim_lst)
 {
 
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
@@ -59,6 +59,10 @@ void Xyce::determineUsedSimulations()
            if ((sim_typ==".SW")&&
                (pc->Props.at(0)->Value.startsWith("DC"))) simulationsQueue.append("dc");
        }
+    }
+
+    if (sim_lst != NULL) {
+        *sim_lst = simulationsQueue;
     }
 }
 
