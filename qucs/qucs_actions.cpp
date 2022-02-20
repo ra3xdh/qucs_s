@@ -749,10 +749,17 @@ void QucsApp::slotShowLastNetlist()
     QStringList sim_lst;
     if (QucsSettings.DefaultSimulator == spicecompat::simXycePar ||
             QucsSettings.DefaultSimulator == spicecompat::simXyceSer) {
-        Schematic *sch = (Schematic *)QucsMain->DocumentTab->currentWidget();
-        Xyce *xyce = new Xyce(sch,this);
-        xyce->determineUsedSimulations(&sim_lst);
-        delete xyce;
+        QWidget *w = DocumentTab->currentWidget();
+        if (isTextDocument(w)) {
+            QMessageBox::information(this, tr("Show netlist"),
+                                     tr("Not a schematic tab!"));
+            return;
+        } else {
+            Schematic *sch = (Schematic *) w;
+            Xyce *xyce = new Xyce(sch,this);
+            xyce->determineUsedSimulations(&sim_lst);
+            delete xyce;
+        }
     }
 
     switch (QucsSettings.DefaultSimulator) {
