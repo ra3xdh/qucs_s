@@ -41,14 +41,14 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     setWindowIcon(QPixmap(":/images/bitmaps/big.qucs.xpm"));
     setWindowTitle("Qucs Active Filter " PACKAGE_VERSION);
 
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+    //QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 
     // --------  create menubar  -------------------
     QMenu *fileMenu = new QMenu(tr("&File"));
 
     QAction * fileQuit = new QAction(tr("E&xit"), this);
     fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
-    connect(fileQuit, SIGNAL(activated()), SLOT(close()));
+    connect(fileQuit, SIGNAL(triggered(bool)), SLOT(close()));
 
     fileMenu->addAction(fileQuit);
 
@@ -66,15 +66,15 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     QMenu *helpMenu = new QMenu(tr("&Help"), this);
     QAction * helpHelp = new QAction(tr("Help..."), this);
     helpHelp->setShortcut(Qt::Key_F1);
-    connect(helpHelp, SIGNAL(activated()), SLOT(slotHelpIntro()));
+    connect(helpHelp, SIGNAL(triggered(bool)), SLOT(slotHelpIntro()));
 
     QAction * helpAbout = new QAction(tr("&About QucsActiveFilter..."), this);
     helpMenu->addAction(helpAbout);
-    connect(helpAbout, SIGNAL(activated()), SLOT(slotHelpAbout()));
+    connect(helpAbout, SIGNAL(triggered(bool)), SLOT(slotHelpAbout()));
 
     QAction * helpAboutQt = new QAction(tr("About Qt..."), this);
     helpMenu->addAction(helpAboutQt);
-    connect(helpAboutQt, SIGNAL(activated()), SLOT(slotHelpAboutQt()));
+    connect(helpAboutQt, SIGNAL(triggered(bool)), SLOT(slotHelpAboutQt()));
 
     helpMenu->addAction(helpHelp);
     helpMenu->addSeparator();
@@ -117,14 +117,14 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
 
     lblTyp = new QLabel(tr("Approximation type:"));
     cbxFilterFunc = new QComboBox;
-    QStringList lst2;
-    lst2<<tr("Butterworth")
+    QStringList lst_2;
+    lst_2<<tr("Butterworth")
         <<tr("Chebyshev")
         <<tr("Inverse Chebyshev")
         <<tr("Cauer (Elliptic)")
         <<tr("Bessel")
         <<tr("User defined");
-    cbxFilterFunc->addItems(lst2);
+    cbxFilterFunc->addItems(lst_2);
     connect(cbxFilterFunc,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSwitchParameters()));
 
     btnDefineTransferFunc = new QPushButton(tr("Manually define transfer function"));
@@ -141,24 +141,24 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     lblSch = new QLabel(tr("Filter topology"));
     lblResp = new QLabel(tr("Filter type:"));
     cbxResponse = new QComboBox;
-    QStringList lst3;
-    lst3<<tr("Low Pass")
+    QStringList lst_3;
+    lst_3<<tr("Low Pass")
         <<tr("High Pass")
         <<tr("Band Pass")
         <<tr("Band Stop");
-    cbxResponse->addItems(lst3);
+    cbxResponse->addItems(lst_3);
     connect(cbxResponse,SIGNAL(currentIndexChanged(int)),this,SLOT(slotUpdateResponse()));
     connect(cbxResponse,SIGNAL(currentIndexChanged(int)),this,SLOT(slotUpdateSchematic()));
     connect(cbxResponse,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetLabels()));
     connect(cbxResponse,SIGNAL(currentIndexChanged(int)),this,SLOT(slotSwitchParameters()));
 
     cbxFilterType = new QComboBox;
-    QStringList lst;
-    lst<<tr("Multifeedback (MFB)")
+    QStringList lst_1;
+    lst_1<<tr("Multifeedback (MFB)")
        <<tr("Sallen-Key (S-K)")
        <<tr("Cauer section");
      //<<tr("Пассивный");
-    cbxFilterType->addItems(lst);
+    cbxFilterType->addItems(lst_1);
     connect(cbxFilterType,SIGNAL(currentIndexChanged(int)),this,SLOT(slotUpdateSchematic()));
     this->slotSwitchParameters();
     cbxFilterType->setMaxCount(3);

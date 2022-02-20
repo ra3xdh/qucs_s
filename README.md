@@ -1,13 +1,34 @@
 ## Description
 
-Qucs-S is a spin-off of Qucs. It allows to use several SPICE and non-SPICE 
-simulation kernels. See https://ra3xdh.github.io/ for more details. It is based
+Qucs-S provides a fancy graphical user interfyce for a number of popular circuit simulation 
+engines. Qucs-S contains schematic capture, visualization and component library. The following
+simulation kernels are supported:
+
+* Ngspice (recommended)
+* Xyce 
+* SpiceOpus
+* Qucsator (non-spice)
+
+
+See the https://ra3xdh.github.io/ for more details. Qucs-S is based
 on original Qucs code: https://github.com/Qucs/qucs
 
 ## Build instructions
 
 Use CMake to build Qucs-S. Install all necessary dependecies: GCC, Qt, and SPICE
-(optional). Clone this git repository and execute in the top directory:
+(optional). For Ubuntu launch the following command to install developement tools:
+
+~~~
+sudo apt-get install build-essential git cmake qtbase5-dev qttools5-dev qtscript5-dev libqt5svg5-dev
+~~~
+
+Install `ngspice` that is not needed for build but serves as the simulation kernel.
+
+~~~
+sudo apt-get install ngspice
+~~~
+
+Then clone this git repository and execute in the top directory:
 
 ~~~
 mkdir builddir
@@ -22,7 +43,7 @@ desire path (for example `$HOME/qucs-s`) here. You may omit this option and
 installation steps. Default installation directory will be `/usr/local` if 
 `CMAKE_INSTALL_PREFIX` is not defined.
 
-Then run `qucs-s` executable to launch application:
+Then run `qucs-s` executable to launch the application:
 ~~~
 cd /your_installation prefix/bin
 ./qucs-s

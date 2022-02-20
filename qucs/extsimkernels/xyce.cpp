@@ -20,6 +20,7 @@
 #include "components/equation.h"
 #include "main.h"
 
+
 /*!
   \file xyce.cpp
   \brief Implementation of the Xyce class
@@ -42,7 +43,7 @@ Xyce::Xyce(Schematic *sch_, QObject *parent) :
  * \brief Xyce::determineUsedSimulations Determine simulation used
  *        in schematic and add them into simulationsQueue list
  */
-void Xyce::determineUsedSimulations()
+void Xyce::determineUsedSimulations(QStringList *sim_lst)
 {
 
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
@@ -58,6 +59,10 @@ void Xyce::determineUsedSimulations()
            if ((sim_typ==".SW")&&
                (pc->Props.at(0)->Value.startsWith("DC"))) simulationsQueue.append("dc");
        }
+    }
+
+    if (sim_lst != NULL) {
+        *sim_lst = simulationsQueue;
     }
 }
 
@@ -165,7 +170,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
                    if (pc1->Model==".FOURIER") {
                        if (pc1->Props.at(0)->Value==pc->Name) {
                            QString s1 = pc1->getSpiceNetlist(true);
-                           outputs.append("spice4qucs.tran.cir.four");
+                           outputs.append("spice4qucs.tran.cir.four0");
                            stream<<s1;
                        }
                    }
@@ -281,7 +286,7 @@ void Xyce::slotSimulate()
         QStringList sim_lst;
         sim_lst.clear();
         sim_lst.append(sim);
-        QString tmp_path = QDir::convertSeparators(workdir+"/spice4qucs."+sim+".cir");
+        QString tmp_path = QDir::toNativeSeparators(workdir+"/spice4qucs."+sim+".cir");
         netlistQueue.append(tmp_path);
         QFile spice_file(tmp_path);
         if (spice_file.open(QFile::WriteOnly)) {
@@ -392,9 +397,9 @@ void Xyce::setParallel(bool par)
         QString xyce_par = QucsSettings.XyceParExecutable;
         xyce_par.replace("%p",QString::number(QucsSettings.NProcs));
         simulator_cmd = xyce_par;
-        simulator_parameters = QString(" -a ");
+        simulator_parameters = simulator_parameters + QString(" -a ");
     } else {
         simulator_cmd = "\"" + QucsSettings.XyceExecutable + "\"";
-        simulator_parameters = "-a";
+        simulator_parameters = simulator_parameters + " -a ";
     }
 }

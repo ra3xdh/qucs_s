@@ -35,8 +35,8 @@
 #include "paintings/painting.h"
 #include "components/component.h"
 
-#include <Q3ScrollView>
-#include <Q3PtrList>
+#include "qt3_compat/qt_compat.h"
+#include "qt3_compat/q3scrollview.h"
 #include <QVector>
 #include <QStringList>
 #include <QFileInfo>

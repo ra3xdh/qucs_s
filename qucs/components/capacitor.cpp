@@ -90,18 +90,18 @@ QString Capacitor::va_code()
 void Capacitor::createSymbol()
 {
   if(Props.getLast()->Value.at(0) == 'n') {
-    Lines.append(new Line( -4,-11, -4, 11,QPen(Qt::darkBlue,4)));
-    Lines.append(new Line(  4,-11,  4, 11,QPen(Qt::darkBlue,4)));
+    Lines.append(new qucs::Line( -4,-11, -4, 11,QPen(Qt::darkBlue,4)));
+    Lines.append(new qucs::Line(  4,-11,  4, 11,QPen(Qt::darkBlue,4)));
   }
   else {
-    Lines.append(new Line(-11, -5,-11,-11,QPen(Qt::red,1)));
-    Lines.append(new Line(-14, -8, -8, -8,QPen(Qt::red,1)));
-    Lines.append(new Line( -4,-11, -4, 11,QPen(Qt::darkBlue,3)));
-    Arcs.append(new Arc(4,-12, 20, 24, 16*122, 16*116,QPen(Qt::darkBlue,3)));
+    Lines.append(new qucs::Line(-11, -5,-11,-11,QPen(Qt::red,1)));
+    Lines.append(new qucs::Line(-14, -8, -8, -8,QPen(Qt::red,1)));
+    Lines.append(new qucs::Line( -4,-11, -4, 11,QPen(Qt::darkBlue,3)));
+    Arcs.append(new qucs::Arc(4,-12, 20, 24, 16*122, 16*116,QPen(Qt::darkBlue,3)));
   }
 
-  Lines.append(new Line(-30,  0, -4,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  4,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  0, -4,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  4,  0, 30,  0,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30,  0));
   Ports.append(new Port( 30,  0));

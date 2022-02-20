@@ -20,7 +20,7 @@
 #ifndef QUCS2SPICE_H
 #define QUCS2SPICE_H
 
-#include <QtCore>
+#include <QString>
 
 /*!
   \file qucs2spice.h

@@ -311,8 +311,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   prop->horizontalHeader()->setStretchLastSection(true);
   // set automatic resize so all content will be visible, 
   //  horizontal scrollbar will appear if table becomes too large
-  prop->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-  prop->horizontalHeader()->setClickable(false); // no action when clicking on the header 
+  prop->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+  prop->horizontalHeader()->setSectionsClickable(false); // no action when clicking on the header
 
   connect(prop->horizontalHeader(),SIGNAL(sectionDoubleClicked(int)),
               this, SLOT(slotHHeaderClicked(int)));

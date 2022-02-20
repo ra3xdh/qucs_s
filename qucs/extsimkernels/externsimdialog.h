@@ -19,7 +19,7 @@
 #define EXTERNSIMDIALOG_H
 
 #include <QtGui>
-#include <QtCore>
+
 #include "schematic.h"
 #include "ngspice.h"
 #include "xyce.h"

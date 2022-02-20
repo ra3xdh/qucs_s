@@ -57,19 +57,19 @@ Element * mux2to1::info(QString& Name, char * &BitmapFile, bool getNewOne)
 void mux2to1::createSymbol()
 {
   // put in here symbol drawing code and terminal definitions
-  Lines.append(new Line(-30, -60, 30,-60,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30, -60, 30, 50,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  50,-30, 50,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-30,  50,-30,-60,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30, -60, 30,-60,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30, -60, 30, 50,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30,  50,-30, 50,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  50,-30,-60,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-50,-20,-40,-20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-50,  0,-30,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-50, 20,-30, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-50, 40,-30, 40,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-50,-20,-40,-20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-50,  0,-30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-50, 20,-30, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-50, 40,-30, 40,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line( 30, 0, 50, 0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30, 0, 50, 0,QPen(Qt::darkBlue,2)));
 
-  Arcs.append(new Arc(-40, -25, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-40, -25, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
  
   Texts.append(new Text(-17,-55, "MUX", Qt::darkBlue, 12.0));
 
@@ -81,7 +81,7 @@ void mux2to1::createSymbol()
   Texts.append(new Text( 12,-22, "0", Qt::darkBlue, 12.0));
   Texts.append(new Text( 12, -2, "1", Qt::darkBlue, 12.0));
 
-  Lines.append(new Line(11, 0, 23, 0, QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(11, 0, 23, 0, QPen(Qt::darkBlue,2)));
 
   Texts.append(new Text(-25,  7, "0", Qt::darkBlue, 12.0));
   Texts.append(new Text(-25, 27, "1", Qt::darkBlue, 12.0));

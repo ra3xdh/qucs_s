@@ -209,13 +209,13 @@ void MutualX::createSymbol()
 
   x -= 6;
   for(int i=0; i<Num; i++) {
-    Arcs.append(new Arc(x,-18,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
-    Arcs.append(new Arc(x, -6,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
-    Arcs.append(new Arc(x,  6,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc(x,-18,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc(x, -6,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc(x,  6,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
 
     x += 6;
-    Lines.append(new Line(x,-18,x,-30,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(x, 18,x, 30,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(x,-18,x,-30,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(x, 18,x, 30,QPen(Qt::darkBlue,2)));
 
     Ports.append(new Port(x,-30));
     Ports.append(new Port(x, 30));

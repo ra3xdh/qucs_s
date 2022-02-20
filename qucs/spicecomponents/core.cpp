@@ -26,23 +26,23 @@ core::core()
 {
   Description = QObject::tr("XSPICE core block:\nseven line XSPICE specification. ");
 
-  Lines.append(new Line(-40,   0,  -30,     0,QPen(Qt::darkBlue,2)));  // L1
-  Lines.append(new Line(-30, -15,  30,    -15,QPen(Qt::blue,3)));      // L2 
-  Lines.append(new Line( 30, -15,  30,     15,QPen(Qt::blue,3)));      // L3 
-  Lines.append(new Line( 30,  15, -30,     15,QPen(Qt::blue,3)));      // L4 
-  Lines.append(new Line(-30,  15, -30,    -15,QPen(Qt::blue,3)));  // L5 
+  Lines.append(new qucs::Line(-40,   0,  -30,     0,QPen(Qt::darkBlue,2)));  // L1
+  Lines.append(new qucs::Line(-30, -15,  30,    -15,QPen(Qt::blue,3)));      // L2 
+  Lines.append(new qucs::Line( 30, -15,  30,     15,QPen(Qt::blue,3)));      // L3 
+  Lines.append(new qucs::Line( 30,  15, -30,     15,QPen(Qt::blue,3)));      // L4 
+  Lines.append(new qucs::Line(-30,  15, -30,    -15,QPen(Qt::blue,3)));  // L5 
   
 
-  Lines.append(new Line(-25,   -5,  25,   -5,QPen(Qt::black,3)));      // L7
-  Lines.append(new Line(-25,    0,  25,    0,QPen(Qt::black,3)));      // L8
-  Lines.append(new Line(-25,    5,  25,    5,QPen(Qt::black,3)));      // L9
+  Lines.append(new qucs::Line(-25,   -5,  25,   -5,QPen(Qt::black,3)));      // L7
+  Lines.append(new qucs::Line(-25,    0,  25,    0,QPen(Qt::black,3)));      // L8
+  Lines.append(new qucs::Line(-25,    5,  25,    5,QPen(Qt::black,3)));      // L9
  
-  Lines.append(new Line(40,     0, 30,     0,QPen(Qt::darkBlue,2)));  // L16  
+  Lines.append(new qucs::Line(40,     0, 30,     0,QPen(Qt::darkBlue,2)));  // L16  
   
  
-  Lines.append(new Line( -40,  -30, -40,  -20,QPen(Qt::red,3)));        // +
-  Lines.append(new Line( -45,  -25, -35,  -25,QPen(Qt::red,3)));
-  Lines.append(new Line(  45,  -25,  35,  -25,QPen(Qt::black,3)));      // -  
+  Lines.append(new qucs::Line( -40,  -30, -40,  -20,QPen(Qt::red,3)));        // +
+  Lines.append(new qucs::Line( -45,  -25, -35,  -25,QPen(Qt::red,3)));
+  Lines.append(new qucs::Line(  45,  -25,  35,  -25,QPen(Qt::black,3)));      // -  
     
   Ports.append(new Port( -40,    0));  // Pin
   Ports.append(new Port(  40,    0));  // Pout

@@ -19,7 +19,9 @@
 #ifndef NGSPICE_H
 #define NGSPICE_H
 
-#include <QtCore>
+#include <QString>
+#include <QStringList>
+#include <QDataStream>
 #include "schematic.h"
 #include "abstractspicekernel.h"
 
@@ -37,6 +39,7 @@ class Ngspice : public AbstractSpiceKernel
 private:
 
     bool checkNodeNames(QStringList &incompat);
+    static QString collectSpiceinit(Schematic *sch);
     bool findMathFuncInc(QString &mathf_inc);
     QString getParentSWPscript(Component *pc_swp, QString sim, bool before, bool &hasDblSWP);
     QString getParentSWPCntVar(Component *pc_swp, QString sim);
@@ -45,10 +48,11 @@ public:
     explicit Ngspice(Schematic *sch_, QObject *parent = 0);
     void SaveNetlist(QString filename);
     void setSimulatorCmd(QString cmd);
+    void setSimulatorParameters(QString parameters);
     
 protected:
     void createNetlist(QTextStream &stream, int NumPorts, QStringList &simulations,
-                  QStringList &vars, QStringList &outputs);
+                       QStringList &vars, QStringList &outputs);
 
 public slots:
     void slotSimulate();

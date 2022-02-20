@@ -29,19 +29,19 @@ iTRNOISE::iTRNOISE()
   Description = QObject::tr("SPICE I(TRNOISE):");
 
   // normal voltage source symbol
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::blue,3)));
+  Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::blue,3)));
    Texts.append(new Text(36, 4,"ITRN",Qt::blue,10.0,0.0,-1.0)); 
-  Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line(-12,  1,  1,-12,QPen(Qt::darkGray,3)));
-  Lines.append(new Line(-10,  6,  6,-10,QPen(Qt::darkGray,3)));
-  Lines.append(new Line( -7, 10, 10, -7,QPen(Qt::darkGray,3)));
-  Lines.append(new Line( -2, 12, 12, -2,QPen(Qt::darkGray,3)));
+  Lines.append(new qucs::Line(-12,  1,  1,-12,QPen(Qt::darkGray,3)));
+  Lines.append(new qucs::Line(-10,  6,  6,-10,QPen(Qt::darkGray,3)));
+  Lines.append(new qucs::Line( -7, 10, 10, -7,QPen(Qt::darkGray,3)));
+  Lines.append(new qucs::Line( -2, 12, 12, -2,QPen(Qt::darkGray,3)));
   
-  Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::blue,3)));
-  Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::blue,3)));
-  Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::blue,3)));
+  Lines.append(new qucs::Line( -7,  0,  7,  0,QPen(Qt::blue,3)));
+  Lines.append(new qucs::Line(  6,  0,  0, -4,QPen(Qt::blue,3)));
+  Lines.append(new qucs::Line(  6,  0,  0,  4,QPen(Qt::blue,3)));
 
   
   Ports.append(new Port( 30,  0));

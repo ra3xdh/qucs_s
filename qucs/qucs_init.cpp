@@ -20,6 +20,7 @@
 #endif
 
 #include "main.h"
+#include "misc.h"
 #include "qucs.h"
 #include "octave_window.h"
 
@@ -611,11 +612,11 @@ void QucsApp::initActions()
   connect(showNet, SIGNAL(triggered()), SLOT(slotShowLastNetlist()));
 
   simSettings = new QAction(tr("Select default simulator"),this);
-  connect(simSettings,SIGNAL(activated()),SLOT(slotSimSettings()));
+  connect(simSettings,SIGNAL(triggered()),SLOT(slotSimSettings()));
   buildVAModule = new QAction(tr("Build Verilog-A module from subcircuit"),this);
-  connect(buildVAModule,SIGNAL(activated()),SLOT(slotBuildVAModule()));
+  connect(buildVAModule,SIGNAL(triggered()),SLOT(slotBuildVAModule()));
   buildIFS = new QAction(tr("Build XSPICE IFS file from subcircuit"),this);
-  connect(buildIFS,SIGNAL(activated()),SLOT(slotBuildXSPICEIfs()));
+  connect(buildIFS,SIGNAL(triggered()),SLOT(slotBuildXSPICEIfs()));
 
 
   viewToolBar = new QAction(tr("Tool&bar"), this);
@@ -687,36 +688,36 @@ void QucsApp::initMenuBar()
   for (int i = 0; i < MaxRecentFiles; ++i) {
     recentFilesMenu->addAction(fileRecentAction[i]);
   }
-  recentFilesMenu->insertSeparator();
+  recentFilesMenu->addSeparator();
   recentFilesMenu->addAction(fileClearRecent);
 
-  fileMenu->insertSeparator();
+  fileMenu->addSeparator();
   fileMenu->addAction(fileSave);
   fileMenu->addAction(fileSaveAll);
   fileMenu->addAction(fileSaveAs);
   fileMenu->addAction(exportAsImage);
   fileMenu->addAction(filePrint);
   fileMenu->addAction(filePrintFit);
-  fileMenu->insertSeparator();
+  fileMenu->addSeparator();
   fileMenu->addAction(fileExamples);
-  fileMenu->insertSeparator();
+  fileMenu->addSeparator();
   fileMenu->addAction(fileSettings);
   fileMenu->addAction(symEdit);
-  fileMenu->insertSeparator();
+  fileMenu->addSeparator();
   fileMenu->addAction(applSettings);
   fileMenu->addAction(refreshSchPath);
-  fileMenu->insertSeparator();
+  fileMenu->addSeparator();
   fileMenu->addAction(fileQuit);
 
   editMenu = new QMenu(tr("&Edit"));  // menuBar entry editMenu
   editMenu->addAction(undo);
   editMenu->addAction(redo);
-  editMenu->insertSeparator();
+  editMenu->addSeparator();
   editMenu->addAction(editCut);
   editMenu->addAction(editCopy);
   editMenu->addAction(editPaste);
   editMenu->addAction(editDelete);
-  editMenu->insertSeparator();
+  editMenu->addSeparator();
   editMenu->addAction(select);
   editMenu->addAction(selectAll);
   editMenu->addAction(selectMarker);
@@ -726,7 +727,7 @@ void QucsApp::initMenuBar()
   editMenu->addAction(editMirror);
   editMenu->addAction(editMirrorY);
   editMenu->addAction(editActivate);
-  editMenu->insertSeparator();
+  editMenu->addSeparator();
   editMenu->addAction(intoH);
   editMenu->addAction(popH);
 
@@ -735,15 +736,15 @@ void QucsApp::initMenuBar()
   alignMenu = new QMenu(tr("P&ositioning"));  // menuBar entry alignMenu
   alignMenu->addAction(moveText);
   alignMenu->addAction(onGrid);
-  alignMenu->insertSeparator();
+  alignMenu->addSeparator();
   alignMenu->addAction(centerHor);
   alignMenu->addAction(centerVert);
-  alignMenu->insertSeparator();
+  alignMenu->addSeparator();
   alignMenu->addAction(alignTop);
   alignMenu->addAction(alignBottom);
   alignMenu->addAction(alignLeft);
   alignMenu->addAction(alignRight);
-  alignMenu->insertSeparator();
+  alignMenu->addSeparator();
   alignMenu->addAction(distrHor);
   alignMenu->addAction(distrVert);
 
@@ -765,17 +766,17 @@ void QucsApp::initMenuBar()
   projMenu->addAction(addToProj);
   projMenu->addAction(projClose);
   projMenu->addAction(projDel);
-  projMenu->insertSeparator();
+  projMenu->addSeparator();
   projMenu->addAction(createLib);
   projMenu->addAction(createPkg);
   projMenu->addAction(extractPkg);
-  projMenu->insertSeparator();
+  projMenu->addSeparator();
   projMenu->addAction(importData);
   projMenu->addAction(graph2csv);
   // TODO only enable if document is VA file
   if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       // There is no VA-modules builder available for Ngspice etc.
-      projMenu->insertSeparator();
+      projMenu->addSeparator();
       projMenu->addAction(buildModule);
       projMenu->addAction(loadModule);
   }
@@ -790,7 +791,7 @@ void QucsApp::initMenuBar()
       toolMenu->addAction(callMatch);
   toolMenu->addAction(callAtt);
   toolMenu->addAction(callRes);
-  toolMenu->insertSeparator();
+  toolMenu->addSeparator();
 
   cmMenu = new QMenu(tr("Compact modelling"));
   cmMenu->addAction(buildVAModule);
@@ -813,8 +814,8 @@ void QucsApp::initMenuBar()
   viewMenu->addAction(magOne);
   viewMenu->addAction(magPlus);
   viewMenu->addAction(magMinus);
-  viewMenu->insertSeparator();
-  viewMenu->setCheckable(true);
+  viewMenu->addSeparator();
+  //viewMenu->setCheckable(true);
   viewMenu->addAction(viewToolBar);
   viewMenu->addAction(viewStatusBar);
   viewMenu->addAction(viewBrowseDock);
@@ -825,7 +826,7 @@ void QucsApp::initMenuBar()
   helpMenu->addAction(helpIndex);
   helpMenu->addAction(helpQucsIndex);
   helpMenu->addAction(helpGetStart);
-  helpMenu->insertSeparator();
+  helpMenu->addSeparator();
 
 
 
@@ -843,7 +844,7 @@ void QucsApp::initMenuBar()
       QAction* helpTechnicalActions = new QAction(entries[i], this);
       helpTechnicalActions->setObjectName ( entries[i] );
       helpTechnicalActions->setStatusTip(tr("Open ")+entries[i]);
-      helpTechnicalActions->setWhatsThis(tr(entries[i]+"\n\nOpen "+entries[i]));
+      helpTechnicalActions->setWhatsThis(entries[i]+tr("\n\nOpen ")+entries[i]);
       connect(helpTechnicalActions, SIGNAL(triggered()), SLOT(slotHelpTechnical()));
       helpTechnical->addAction(helpTechnicalActions);
     }
@@ -863,7 +864,7 @@ void QucsApp::initMenuBar()
       QAction* helpReportActions = new QAction(entries[i], this);
       helpReportActions->setObjectName ( entries[i] );
       helpReportActions->setStatusTip(tr("Open ")+entries[i]);
-      helpReportActions->setWhatsThis(tr(entries[i]+"\n\nOpen "+entries[i]));
+      helpReportActions->setWhatsThis(entries[i]+tr("\n\nOpen ")+entries[i]);
       connect(helpReportActions, SIGNAL(triggered()), SLOT(slotHelpReport()));
       helpReport->addAction(helpReportActions);
     }
@@ -882,14 +883,14 @@ void QucsApp::initMenuBar()
       QAction* helpTutorialActions = new QAction(entries[i], this);
       helpTutorialActions->setObjectName ( entries[i] );
       helpTutorialActions->setStatusTip(tr("Open ")+entries[i]);
-      helpTutorialActions->setWhatsThis(tr(entries[i]+"\n\nOpen "+entries[i]));
+      helpTutorialActions->setWhatsThis(entries[i]+tr("\n\nOpen ")+entries[i]);
       connect(helpTutorialActions, SIGNAL(triggered()), SLOT(slotHelpTutorial()));
       helpTutorial->addAction(helpTutorialActions);
     }
   }
 
 
-  helpMenu->insertSeparator();
+  helpMenu->addSeparator();
   helpMenu->addAction(helpAboutApp);
   helpMenu->addAction(helpAboutQt);
 
@@ -902,7 +903,7 @@ void QucsApp::initMenuBar()
   menuBar()->addMenu(toolMenu);
   menuBar()->addMenu(simMenu);
   menuBar()->addMenu(viewMenu);
-  menuBar()->insertSeparator();
+  menuBar()->addSeparator();
   menuBar()->addMenu(helpMenu);
 
 }
@@ -967,16 +968,16 @@ void QucsApp::initStatusBar()
 {
   // To reserve enough space, insert the longest text and rewrite it afterwards.
   SimulatorLabel = new QLabel(spicecompat::getDefaultSimulatorName());
-  statusBar()->addWidget(SimulatorLabel, 0, true);
+  statusBar()->addPermanentWidget(SimulatorLabel, 0);
 
   WarningLabel = new QLabel(tr("no warnings"), statusBar());
-  statusBar()->addWidget(WarningLabel, 0, true);
+  statusBar()->addPermanentWidget(WarningLabel, 0);
 
   PositionLabel = new QLabel("0 : 0", statusBar());
   PositionLabel->setAlignment(Qt::AlignRight);
-  statusBar()->addWidget(PositionLabel, 0, true);
+  statusBar()->addPermanentWidget(PositionLabel, 0);
 
-  statusBar()->message(tr("Ready."), 2000);
+  statusBar()->showMessage(tr("Ready."), 2000);
 }
 
 // ----------------------------------------------------------
@@ -993,9 +994,9 @@ void QucsApp::slotShowWarnings()
 
   ResultState++;
   if(ResultState & 1)
-    WarningLabel->setPaletteForegroundColor(Qt::red);
+    misc::setWidgetForegroundColor(WarningLabel,Qt::red);
   else
-    WarningLabel->setPaletteForegroundColor(Qt::black);
+    misc::setWidgetForegroundColor(WarningLabel,Qt::black);
 
   if(ResultState < 9)
     QTimer::singleShot(500, this, SLOT(slotShowWarnings()));
@@ -1009,7 +1010,7 @@ void QucsApp::slotResetWarnings()
   QFont f = WarningLabel->font();   // reset warning label
   f.setWeight(QFont::Normal);
   WarningLabel->setFont(f);
-  WarningLabel->setPaletteForegroundColor(Qt::black);
+  misc::setWidgetForegroundColor(WarningLabel,Qt::black);
   WarningLabel->setText(tr("no warnings"));
 }
 

@@ -30,8 +30,8 @@ XSPICE_CMbuilder::XSPICE_CMbuilder(Schematic *sch_)
     workdir = QucsSettings.S4Qworkdir;
     Sch = sch_;
     cmsubdir = "qucs_cmlib/";
-    cmdir = QDir::convertSeparators(workdir+"/"+cmsubdir);
-    spinit_name=QDir::convertSeparators(workdir+"/.spiceinit");
+    cmdir = QDir::toNativeSeparators(workdir+"/"+cmsubdir);
+    spinit_name=QDir::toNativeSeparators(workdir+"/.spiceinit");
 }
 
 XSPICE_CMbuilder::~XSPICE_CMbuilder()
@@ -47,13 +47,17 @@ void XSPICE_CMbuilder::cleanSpiceinit()
 
 /*!
  * \brief XSPICE_CMbuilder::createSpiceinit Extract precompiled *.cm libraries names from
- *        all components and subcircuits recursively.
+ *        all components and subcircuits recursively. The intial_spiceinit argument will
+ *        be preprended to the extracted *.cm libraries.
  */
-void XSPICE_CMbuilder::createSpiceinit()
+void XSPICE_CMbuilder::createSpiceinit(const QString &initial_spiceinit)
 {
     QFile spinit(spinit_name);
     if (spinit.open(QIODevice::WriteOnly)) {
         QTextStream stream(&spinit);
+        if (!initial_spiceinit.isEmpty()) {
+          stream << initial_spiceinit << '\n';
+        }
         ExtractSpiceinitdata(stream);
         if (needCompile()) stream<<"codemodel "+cmdir+"qucs_xspice.cm";
         spinit.close();
@@ -230,11 +234,11 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
             }
 
             for (int i=0;mod!=mod_lst.end();mod++,ifs++,i++) {
-                QStringList lst1;
-                lst1<<(*mod)<<(*ifs);
+                QStringList lst_1;
+                lst_1<<(*mod)<<(*ifs);
                 // If model is duplicated don't process it (don't copy files)
                 if (!ModIfsPairProcessed((*mod),(*ifs))) {
-                    QString destdir = QDir::convertSeparators(prefix + pc->Name + QString::number(i));
+                    QString destdir = QDir::toNativeSeparators(prefix + pc->Name + QString::number(i));
                     if (!dir_cm.mkdir(destdir))
                         output += QString("Cannot create directory %1 \n").arg(destdir);
                     lst_entries += destdir;
@@ -253,7 +257,7 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
                     destfile+=".o";
                     objects.append(destfile); // Add ifspec.o to objects
                 }
-                mod_ifs_pairs.append(lst1); // This *.mod and *.ifs pair already processed
+                mod_ifs_pairs.append(lst_1); // This *.mod and *.ifs pair already processed
             }
         }
 

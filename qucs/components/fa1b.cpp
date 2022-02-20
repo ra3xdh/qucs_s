@@ -56,24 +56,24 @@ Element * fa1b::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void fa1b::createSymbol()
 {
-  Lines.append(new Line(-30, -40, 30,-40,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30, -40, 30, 50,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  50,-30, 50,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-30,  50,-30,-40,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30, -40, 30,-40,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30, -40, 30, 50,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30,  50,-30, 50,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  50,-30,-40,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-50,-10,-30,-10,QPen(Qt::darkBlue,2)));  // A
-  Lines.append(new Line(-50, 10,-30, 10,QPen(Qt::darkBlue,2)));  // B
-  Lines.append(new Line(-50, 30,-30, 30,QPen(Qt::darkBlue,2)));  // CI
-  Lines.append(new Line( 30, 10, 50, 10,QPen(Qt::darkBlue,2)));  // CO
-  Lines.append(new Line( 30,-10, 50,-10,QPen(Qt::darkBlue,2)));  // S
+  Lines.append(new qucs::Line(-50,-10,-30,-10,QPen(Qt::darkBlue,2)));  // A
+  Lines.append(new qucs::Line(-50, 10,-30, 10,QPen(Qt::darkBlue,2)));  // B
+  Lines.append(new qucs::Line(-50, 30,-30, 30,QPen(Qt::darkBlue,2)));  // CI
+  Lines.append(new qucs::Line( 30, 10, 50, 10,QPen(Qt::darkBlue,2)));  // CO
+  Lines.append(new qucs::Line( 30,-10, 50,-10,QPen(Qt::darkBlue,2)));  // S
   
   Texts.append(new Text(-25, 17, "CI", Qt::darkBlue, 12.0));
   Texts.append(new Text( 0,  -3, "CO", Qt::darkBlue, 12.0));
 
-  Lines.append(new Line(-10,-35, 10, -35, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10,-35,  5, -25, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  5,-25,-10, -15, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10,-15, 10, -15, QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,-35, 10, -35, QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,-35,  5, -25, QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  5,-25,-10, -15, QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,-15, 10, -15, QPen(Qt::darkBlue,2)));
  
   Ports.append(new Port(-50,-10));  // A
   Ports.append(new Port(-50, 10));  // B

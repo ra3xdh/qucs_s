@@ -71,9 +71,9 @@ private:
   QString Warning;
   int TextWidth, DragNDropWidth, TextHeight;
   int cx, cy, x1, x2, y1, y2;
-  QList<Line *> Lines;
-  QList<Arc *> Arcs;
-  QList<Area *> Rects, Ellips;
+  QList<qucs::Line *> Lines;
+  QList<qucs::Arc *> Arcs;
+  QList<qucs::Area *> Rects, Ellips;
   QList<Text *>  Texts;
 };
 

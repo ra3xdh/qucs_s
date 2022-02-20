@@ -22,6 +22,7 @@ Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
 #include <QMessageBox>
 
 #include "main.h"
+#include "misc.h"
 #include "qucs.h"
 #include "textdoc.h"
 #include "syntax.h"
@@ -60,7 +61,7 @@ TextDoc::TextDoc(QucsApp *App_, const QString& Name_) : QPlainTextEdit(), QucsDo
   viewport()->setFocus();
 
   setWordWrapMode(QTextOption::NoWrap);
-  viewport()->setPaletteBackgroundColor(QucsSettings.BGColor);
+  misc::setWidgetBackgroundColor(viewport(),QucsSettings.BGColor);
   connect(this, SIGNAL(textChanged()), SLOT(slotSetChanged()));
   connect(this, SIGNAL(cursorPositionChanged()),
           SLOT(slotCursorPosChanged()));
@@ -99,7 +100,7 @@ TextDoc::~TextDoc()
 void TextDoc::setLanguage (const QString& FileName)
 {
   QFileInfo Info (FileName);
-  QString ext = Info.extension (false);
+  QString ext = Info.suffix();
   if (ext == "vhd" || ext == "vhdl")
     setLanguage (LANG_VHDL);
   else if (ext == "v")
@@ -205,9 +206,9 @@ void TextDoc::setName (const QString& Name_)
 
   QFileInfo Info (DocName);
 
-  DataSet = Info.baseName (true) + ".dat";
-  DataDisplay = Info.baseName (true) + ".dpl";
-  if(Info.extension(false) == "m" || Info.extension(false) == "oct")
+  DataSet = Info.baseName () + ".dat";
+  DataDisplay = Info.baseName () + ".dpl";
+  if(Info.suffix() == "m" || Info.suffix() == "oct")
     SimTime = "1";
 }
 
@@ -225,26 +226,26 @@ void TextDoc::becomeCurrent (bool)
   emit signalRedoState(document()->isRedoAvailable());
 
   // update appropriate menu entries
-  App->symEdit->setMenuText (tr("Edit Text Symbol"));
+  App->symEdit->setText (tr("Edit Text Symbol"));
   App->symEdit->setStatusTip (tr("Edits the symbol for this text document"));
   App->symEdit->setWhatsThis (
 	tr("Edit Text Symbol\n\nEdits the symbol for this text document"));
 
   if (language == LANG_VHDL) {
-    App->insEntity->setMenuText (tr("VHDL entity"));
+    App->insEntity->setText (tr("VHDL entity"));
     App->insEntity->setStatusTip (tr("Inserts skeleton of VHDL entity"));
     App->insEntity->setWhatsThis (
 	tr("VHDL entity\n\nInserts the skeleton of a VHDL entity"));
   }
   else if (language == LANG_VERILOG || language == LANG_VERILOGA) {
-    App->insEntity->setMenuText (tr("Verilog module"));
+    App->insEntity->setText (tr("Verilog module"));
     App->insEntity->setStatusTip (tr("Inserts skeleton of Verilog module"));
     App->insEntity->setWhatsThis (
 	tr("Verilog module\n\nInserts the skeleton of a Verilog module"));
     App->buildModule->setEnabled(true);
   }
   else if (language == LANG_OCTAVE) {
-    App->insEntity->setMenuText (tr("Octave function"));
+    App->insEntity->setText (tr("Octave function"));
     App->insEntity->setStatusTip (tr("Inserts skeleton of Octave function"));
     App->insEntity->setWhatsThis (
 	tr("Octave function\n\nInserts the skeleton of a Octave function"));
@@ -255,7 +256,7 @@ void TextDoc::becomeCurrent (bool)
 
 bool TextDoc::baseSearch(const QString &str, bool CaseSensitive, bool wordOnly, bool backward)
 {
-  QFlag flag = 0;
+  QTextDocument::FindFlags flag = 0;
   bool finded;
 
   if (CaseSensitive) {
@@ -356,7 +357,7 @@ QMenu *TextDoc::createStandardContextMenu()
   QMenu *popup = QPlainTextEdit::createStandardContextMenu();
 
    if (language != LANG_OCTAVE) {
-     App->fileSettings->addTo((QWidget *)popup);
+       ((QWidget *) popup)->addAction(App->fileSettings);
    }
    return popup;
 }
@@ -373,7 +374,7 @@ bool TextDoc::load ()
   setLanguage (DocName);
 
   QTextStream stream (&file);
-  insertPlainText(stream.read ());
+  insertPlainText(stream.readAll());
   document()->setModified(false);
   slotSetChanged ();
   file.close ();
@@ -560,7 +561,7 @@ QString TextDoc::getModuleName (void)
   case LANG_OCTAVE:
     {
       QFileInfo Info (DocName);
-      return Info.baseName (true);
+      return Info.baseName ();
     }
   default:
     return "";

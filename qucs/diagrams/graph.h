@@ -24,7 +24,7 @@
 
 #include <cmath>
 #include <QColor>
-#include <Q3PtrList>
+#include "qt3_compat/qt_compat.h"
 #include <QDateTime>
 
 #include <assert.h>

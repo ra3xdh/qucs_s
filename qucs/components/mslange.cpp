@@ -22,15 +22,15 @@ MSlange::MSlange()
 {
   Description = QObject::tr("microstrip lange coupler");
 
-  Lines.append(new Line(-30,-30,-30, 10,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-30, 30,-30, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-30, 20,  0, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-30, 10, 30, 10,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-25,  0, 25,  0,QPen(Qt::darkBlue,2)));      
-  Lines.append(new Line(-30,-10, 30,-10,QPen(Qt::darkBlue,2)));    
-  Lines.append(new Line(  0,-20, 30,-20,QPen(Qt::darkBlue,2)));    
-  Lines.append(new Line( 30,-30, 30,-20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,-10, 30, 30,QPen(Qt::darkBlue,2)));          
+  Lines.append(new qucs::Line(-30,-30,-30, 10,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30, 30,-30, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30, 20,  0, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30, 10, 30, 10,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-25,  0, 25,  0,QPen(Qt::darkBlue,2)));      
+  Lines.append(new qucs::Line(-30,-10, 30,-10,QPen(Qt::darkBlue,2)));    
+  Lines.append(new qucs::Line(  0,-20, 30,-20,QPen(Qt::darkBlue,2)));    
+  Lines.append(new qucs::Line( 30,-30, 30,-20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30,-10, 30, 30,QPen(Qt::darkBlue,2)));          
 
   Ports.append(new Port(-30,-30));
   Ports.append(new Port( 30, 30));

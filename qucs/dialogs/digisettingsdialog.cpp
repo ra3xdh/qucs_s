@@ -68,8 +68,8 @@ DigiSettingsDialog::DigiSettingsDialog(TextDoc *Doc_)
 
   QRadioButton *comRadio = new QRadioButton(tr("Precompile Module"));
   group->addWidget(comRadio);
-  toggleGroup->insert(simRadio);
-  toggleGroup->insert(comRadio);
+  toggleGroup->addButton(simRadio);
+  toggleGroup->addButton(comRadio);
   connect(toggleGroup, SIGNAL(buttonClicked(int)), SLOT(slotChangeMode(int)));
 
   QHBoxLayout *hb3 = new QHBoxLayout();
@@ -141,7 +141,7 @@ void DigiSettingsDialog::slotOk()
     }
   }
   if(Doc->Libraries != LibEdit->text()) {
-    QStringList lst = QStringList::split(' ',LibEdit->text());
+    QStringList lst = LibEdit->text().split(' ');
     Doc->Libraries = lst.join(" ");
     changed = true;
   }

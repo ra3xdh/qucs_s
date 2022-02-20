@@ -200,7 +200,7 @@ void vacomponent::createSymbol(QString filename)
       thick = getDouble(entry, "thick");
       style = getString(entry, "style");
 
-      Lines.append (new Line (x1, y1, x2, y2,
+      Lines.append (new qucs::Line (x1, y1, x2, y2,
                         QPen (QColor (color), thick, penMap.value(style))));
     }
 
@@ -215,7 +215,7 @@ void vacomponent::createSymbol(QString filename)
       colorfill = getString(entry, "colorfill");
       stylefill = getString(entry, "stylefill");
 
-      Rects.append (new Area (x, y, w, h,
+      Rects.append (new qucs::Area (x, y, w, h,
                         QPen (QColor (color), thick, penMap.value(style)),
                         QBrush(QColor (colorfill), brushMap.value(stylefill))
                         ));
@@ -232,7 +232,7 @@ void vacomponent::createSymbol(QString filename)
       colorfill = getString(entry, "colorfill");
       stylefill = getString(entry, "stylefill");
 
-      Ellips.append (new Area (x, y, w, h,
+      Ellips.append (new qucs::Area (x, y, w, h,
                          QPen (QColor (color), thick, penMap.value(style)),
                          QBrush(QColor (colorfill), brushMap.value(stylefill))
                          ));
@@ -249,7 +249,7 @@ void vacomponent::createSymbol(QString filename)
       thick = getDouble(entry, "thick");
       style = getString(entry, "style");
 
-      Arcs.append (new Arc (x, y, w, h, angle, arclen,
+      Arcs.append (new qucs::Arc (x, y, w, h, angle, arclen,
                        QPen (QColor (color), thick, penMap.value(style))));
     }
 
@@ -279,7 +279,7 @@ void vacomponent::createSymbol(QString filename)
       color = getString(entry, "color");
       thick = getDouble(entry, "thick");
       style = getString(entry, "style");
-      Lines.append (new Line (x1, y1, x2, y2,
+      Lines.append (new qucs::Line (x1, y1, x2, y2,
                         QPen (QColor (color), thick, penMap.value(style))));
      }
   }

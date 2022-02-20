@@ -42,7 +42,7 @@ QDir SysLibDir;
 // Loads the settings file and stores the settings.
 bool loadSettings()
 {
-    QSettings settings("qucs","qucs");
+    QSettings settings("qucs","qucs_s");
     // Qucs Library Tool specific settings
     settings.beginGroup("QucsLib");
     if(settings.contains("x"))QucsSettings.x=settings.value("x").toInt();
@@ -68,7 +68,7 @@ bool loadSettings()
 // Saves the settings in the settings file.
 bool saveApplSettings(QucsLib *qucs)
 {
-    QSettings settings ("qucs","qucs");
+    QSettings settings ("qucs","qucs_s");
     settings.beginGroup("QucsLib");
     settings.setValue("x", qucs->x());
     settings.setValue("y", qucs->y());
@@ -114,8 +114,6 @@ int main(int argc, char *argv[])
 
   SysLibDir.setPath(QucsSettings.LibDir);
   UserLibDir.setPath(QucsSettings.QucsHomeDir.canonicalPath() + "/user_lib/");
-
-  a.setFont(QucsSettings.font);
 
   QTranslator tor( 0 );
   QString lang = QucsSettings.Language;

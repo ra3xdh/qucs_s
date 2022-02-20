@@ -55,7 +55,7 @@ void TabDiagram::paint(ViewPainter *p)
 void TabDiagram::paintDiagram(ViewPainter *p)
 {
   // paint all lines
-  foreach(Line *pl, Lines) {
+  foreach(qucs::Line *pl, Lines) {
     p->Painter->setPen(pl->style);
     p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
   }
@@ -148,11 +148,11 @@ int TabDiagram::calcDiagram()
   y = y2 - tHeight - 6;
 
   // outer frame
-  Lines.append(new Line(0, y2, x2, y2, QPen(Qt::black,0)));
-  Lines.append(new Line(0, y2, 0, 0, QPen(Qt::black,0)));
-  Lines.append(new Line(x2, y2, x2, 0, QPen(Qt::black,0)));
-  Lines.append(new Line(0, 0, x2, 0, QPen(Qt::black,0)));
-  Lines.append(new Line(0, y+2, x2, y+2, QPen(Qt::black,2)));
+  Lines.append(new qucs::Line(0, y2, x2, y2, QPen(Qt::black,0)));
+  Lines.append(new qucs::Line(0, y2, 0, 0, QPen(Qt::black,0)));
+  Lines.append(new qucs::Line(x2, y2, x2, 0, QPen(Qt::black,0)));
+  Lines.append(new qucs::Line(0, 0, x2, 0, QPen(Qt::black,0)));
+  Lines.append(new qucs::Line(0, y+2, x2, y+2, QPen(Qt::black,2)));
 
   if(xAxis.limit_min < 0.0)
     xAxis.limit_min = 0.0;
@@ -229,12 +229,12 @@ int TabDiagram::calcDiagram()
 	  }
 	  if(pD == g->axis(0))   // only paint one time
 	    if(y >= tHeight) if(y < y2-tHeight-5)
-	      Lines.append(new Line(0, y+1, x2, y+1, QPen(Qt::black,0)));
+	      Lines.append(new qucs::Line(0, y+1, x2, y+1, QPen(Qt::black,0)));
 	}
 	lastCount *= pD->count;
       }
       x += colWidth+15;
-      Lines.append(new Line(x-8, y2, x-8, 0, QPen(Qt::black,0)));
+      Lines.append(new qucs::Line(x-8, y2, x-8, 0, QPen(Qt::black,0)));
     }
     Lines.last()->style = QPen(Qt::black,2);
   }  // of "if no data in graphs"
@@ -321,7 +321,7 @@ int TabDiagram::calcDiagram()
     }
     x += colWidth+15;
     if(g != Graphs.last())   // do not paint last line
-      Lines.append(new Line(x-8, y2, x-8, 0, QPen(Qt::black,0)));
+      Lines.append(new qucs::Line(x-8, y2, x-8, 0, QPen(Qt::black,0)));
   }
 
 funcEnd:

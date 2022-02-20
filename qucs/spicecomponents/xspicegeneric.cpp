@@ -14,7 +14,8 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtCore>
+#include <QString>
+#include <QStringList>
 #include <QFontMetrics>
 
 #include "xspicegeneric.h"
@@ -93,10 +94,10 @@ void XspiceGeneric::createSymbol()
   // draw symbol outline
   #define HALFWIDTH  27
   int h = 30*((No-1)/2) + 15;
-  Lines.append(new Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( HALFWIDTH, -h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( HALFWIDTH, -h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
 
   int w, i = fHeight/2;
 
@@ -107,7 +108,7 @@ void XspiceGeneric::createSymbol()
   i = 0;
   int y = 15-h;
   while(i<No) { // add ports lines and numbers
-    Lines.append(new Line(-40,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-40,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-40,  y));
     // tmp = PortNames.section(',', i, i).mid(4);
     tmp = n_ports.at(i);
@@ -116,7 +117,7 @@ void XspiceGeneric::createSymbol()
     i++;
 
     if(i == No) break; // if odd number of ports there will be one port less on the right side
-    Lines.append(new Line(HALFWIDTH,  y, 40,  y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(HALFWIDTH,  y, 40,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 40,  y));
     tmp = n_ports.at(i);
     Texts.append(new Text( 40, y-fHeight-2, tmp)); // text left-aligned

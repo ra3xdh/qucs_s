@@ -29,19 +29,19 @@ vTRRANDOM::vTRRANDOM()
   Description = QObject::tr("SPICE V(TRRANDOM):");
 
   // normal voltage source symbol
-  Arcs.append(new Arc(-12,-12, 24, 24, 0, 16*360,QPen(Qt::blue,3)));
+  Arcs.append(new qucs::Arc(-12,-12, 24, 24, 0, 16*360,QPen(Qt::blue,3)));
    Texts.append(new Text(36, 4,"TRR",Qt::blue,10.0,0.0,-1.0)); 
-  Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line(-12,  1,  1,-12,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line(-10,  6,  6,-10,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line( -7, 10, 10, -7,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line( -2, 12, 12, -2,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-12,  1,  1,-12,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-10,  6,  6,-10,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line( -7, 10, 10, -7,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line( -2, 12, 12, -2,QPen(Qt::darkBlue,3)));
   
-  Lines.append(new Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
-  Lines.append(new Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
-  Lines.append(new Line(-18,  -5,-18, -11,QPen(Qt::black,2))); 
+  Lines.append(new qucs::Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
+  Lines.append(new qucs::Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
+  Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,2))); 
 
 
   

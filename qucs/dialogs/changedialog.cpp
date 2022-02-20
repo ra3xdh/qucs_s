@@ -52,11 +52,11 @@ ChangeDialog::ChangeDialog(Schematic *Doc_)
 
   all->addWidget(new QLabel(tr("Components:"), this), 0,0);
   CompTypeEdit = new QComboBox(this);
-  CompTypeEdit->insertItem(tr("all components"));
-  CompTypeEdit->insertItem(tr("resistors"));
-  CompTypeEdit->insertItem(tr("capacitors"));
-  CompTypeEdit->insertItem(tr("inductors"));
-  CompTypeEdit->insertItem(tr("transistors"));
+  CompTypeEdit->addItem(tr("all components"));
+  CompTypeEdit->addItem(tr("resistors"));
+  CompTypeEdit->addItem(tr("capacitors"));
+  CompTypeEdit->addItem(tr("inductors"));
+  CompTypeEdit->addItem(tr("transistors"));
   all->addWidget(CompTypeEdit, 0,1);
 
   all->addWidget(new QLabel(tr("Component Names:"), this), 1,0);
@@ -70,9 +70,9 @@ ChangeDialog::ChangeDialog(Schematic *Doc_)
   PropNameEdit = new QComboBox(this);
   PropNameEdit->setEditable(true);
   PropNameEdit->setValidator(ValRestrict);
-  PropNameEdit->insertItem("Temp");
-  PropNameEdit->insertItem("Subst");
-  PropNameEdit->insertItem("Model");
+  PropNameEdit->addItem("Temp");
+  PropNameEdit->addItem("Subst");
+  PropNameEdit->addItem("Model");
   all->addWidget(PropNameEdit, 2,1);
   connect(PropNameEdit, SIGNAL(activated(int)), SLOT(slotButtReplace()));
 
@@ -104,7 +104,7 @@ ChangeDialog::~ChangeDialog()
 // in "CompTypeEdit".
 bool ChangeDialog::matches(const QString& CompModel)
 {
-  switch(CompTypeEdit->currentItem()) {
+  switch(CompTypeEdit->currentIndex()) {
     case 0: return true;
     case 1: if(CompModel == "R") return true;
             return false;
@@ -127,7 +127,7 @@ bool ChangeDialog::matches(const QString& CompModel)
 // Is called if the "Replace"-button is pressed.
 void ChangeDialog::slotButtReplace()
 {
-  Expr.setWildcard(true);  // switch into wildcard mode
+  Expr.setPatternSyntax(QRegExp::Wildcard);  // switch into wildcard mode
   Expr.setPattern(CompNameEdit->text());
   if(!Expr.isValid()) {
     QMessageBox::critical(this, tr("Error"),
@@ -147,7 +147,7 @@ void ChangeDialog::slotButtReplace()
   Dia_All->addWidget(Dia_Scroll);
   
   QVBoxLayout *Dia_Box = new QVBoxLayout(Dia_Scroll->viewport());
-  Dia_Scroll->insertChild(Dia_Box);
+  Dia_Box->setParent(Dia_Scroll);
   QLabel *Dia_Label = new QLabel(tr("Change properties of\n")
                                + tr("these components ?"), Dia);
   Dia_All->addWidget(Dia_Label);
@@ -172,7 +172,7 @@ void ChangeDialog::slotButtReplace()
   // search through all components
   for(pc = Doc->Components->first(); pc!=0; pc = Doc->Components->next()) {
     if(matches(pc->Model)) {
-      if(Expr.search(pc->Name) >= 0)
+      if(Expr.indexIn(pc->Name) >= 0)
         for(Property *pp = pc->Props.first(); pp!=0; pp = pc->Props.next())
           if(pp->Name == PropNameEdit->currentText()) {
             pb = new QCheckBox(pc->Name);
@@ -182,12 +182,12 @@ void ChangeDialog::slotButtReplace()
             i1 = pp->Description.indexOf('[');
             if(i1 < 0)  break;  // no multiple-choice property
 
-            i2 = pp->Description.findRev(']');
+            i2 = pp->Description.lastIndexOf(']');
             if(i2-i1 < 2)  break;
             str = pp->Description.mid(i1+1, i2-i1-1);
             str.replace( QRegExp("[^a-zA-Z0-9_,]"), "" );
-            List = List.split(',',str);
-            if(List.findIndex(NewValueEdit->text()) >= 0)
+            List = str.split(',');
+            if(List.lastIndexOf(NewValueEdit->text()) >= 0)
               break;    // property value is okay
 
             pb->setChecked(false);

@@ -96,7 +96,7 @@ SweepDialog::SweepDialog(Schematic *Doc_,QHash<QString,double> *NodeVals)
   QGridLayout *all = new QGridLayout(this);//, pGraph->cPointsX.count()+2,2,3,3);
   all->setMargin(5);
   all->setSpacing(5);
-  all->setColStretch(1,5);
+  all->setColumnStretch(1,5);
 
   DataX const *pD;
   mySpinBox *Box;
@@ -120,7 +120,7 @@ SweepDialog::SweepDialog(Schematic *Doc_,QHash<QString,double> *NodeVals)
   // ...........................................................
   all->setRowStretch(i,5);
   QPushButton *ButtClose = new QPushButton(tr("Close"), this);
-  all->addMultiCellWidget(ButtClose, i+1,i+1, 0,1);
+  all->addWidget(ButtClose, i+1,0);
   connect(ButtClose, SIGNAL(clicked()), SLOT(accept()));
   show();
 }
@@ -170,7 +170,7 @@ Graph* SweepDialog::setBiasPoints(QHash<QString,double> *NodeVals)
   bool hasNoComp;
   Graph *pg = new Graph(NULL, ""); // HACK!
   QFileInfo Info(Doc->DocName);
-  QString DataSet = Info.dirPath() + QDir::separator() + Doc->DataSet;
+  QString DataSet = Info.absolutePath() + QDir::separator() + Doc->DataSet;
 
   Node *pn;
   Element *pe;

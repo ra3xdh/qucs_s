@@ -28,15 +28,15 @@ PMF_MESFET_SPICE::PMF_MESFET_SPICE()
 {
     Description = QObject::tr("Z(PMF) MESFET:\nMultiple line ngspice or Xyce Z model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
 
-  Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkRed,3)));
-  Lines.append(new Line(-30,  0,-10,  0,QPen(Qt::darkRed,3)));
-  Lines.append(new Line(-10,-10,  0,-10,QPen(Qt::darkRed,3)));
-  Lines.append(new Line(  0,-10,  0,-20,QPen(Qt::darkRed,3)));
-  Lines.append(new Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-10,-15,-10, 15,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(-30,  0,-10,  0,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(-10,-10,  0,-10,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(  0,-10,  0,-20,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
    
-  Lines.append(new Line(-10, 10,  0, 10,QPen(Qt::darkRed,3)));
-  Lines.append(new Line(  0, 10,  0, 20,QPen(Qt::darkRed,3)));
-  Lines.append(new Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-10, 10,  0, 10,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(  0, 10,  0, 20,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));
 
   Texts.append(new Text(30,12,"PMF",Qt::darkRed,10.0,0.0,-1.0));
   

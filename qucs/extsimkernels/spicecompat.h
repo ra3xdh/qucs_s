@@ -1,7 +1,8 @@
 #ifndef SPICECOMPAT_H
 #define SPICECOMPAT_H
 
-#include <QtCore>
+#include <QString>
+#include <QStringList>
 
 /*!
   \brief spicecompat namespace contains definitions responsible

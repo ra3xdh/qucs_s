@@ -162,7 +162,7 @@ if(xAxis.log) {
   if(back) z = x2;
   while((z <= x2) && (z >= 0)) {    // create all grid lines
     if(xAxis.GridOn)  if(z < x2)  if(z > 0)
-      Lines.prepend(new Line(z, y2, z, 0, GridPen));  // x grid
+      Lines.prepend(new qucs::Line(z, y2, z, 0, GridPen));  // x grid
 
     if((zD < 1.5*zDstep) || (z == 0) || (z == x2)) {
       tmp = misc::StringNiceNum(zD);
@@ -170,7 +170,7 @@ if(xAxis.log) {
       w = metrics.width(tmp);  // width of text
       // center text horizontally under the x tick mark
       Texts.append(new Text(z-(w>>1), -y1, tmp));
-      Lines.append(new Line(z, 5, z, -5, QPen(Qt::black,0)));  // x tick marks
+      Lines.append(new qucs::Line(z, 5, z, -5, QPen(Qt::black,0)));  // x tick marks
     }
 
     zD += zDstep;
@@ -201,15 +201,15 @@ else {  // not logarithmical
     GridNum += GridStep;
 
     if(xAxis.GridOn)  if(z < x2)  if(z > 0)
-      Lines.prepend(new Line(z, y2, z, 0, GridPen)); // x grid
-    Lines.append(new Line(z, 5, z, -5, QPen(Qt::black,0)));   // x tick marks
+      Lines.prepend(new qucs::Line(z, y2, z, 0, GridPen)); // x grid
+    Lines.append(new qucs::Line(z, 5, z, -5, QPen(Qt::black,0)));   // x tick marks
     zD += zDstep;
     z = int(zD);
   }
   
   if(xAxis.up >= 0.0) if(xAxis.low <= 0.0) {  // paint origin cross ?
     z = int(double(x2) * fabs(xAxis.low / (xAxis.up-xAxis.low)) + 0.5);
-    Lines.append(new Line(z, 0, z, y2, QPen(Qt::black,0)));
+    Lines.append(new qucs::Line(z, 0, z, y2, QPen(Qt::black,0)));
   }
 } // of "if(xlog) ... else ..."
 
@@ -220,17 +220,17 @@ else {  // not logarithmical
     valid |= 1;
     if(yAxis.up >= 0.0) if(yAxis.low <= 0.0) {  // paint origin cross ?
       z = int(double(y2) * fabs(yAxis.low / (yAxis.up-yAxis.low)) + 0.5);
-      Lines.append(new Line(0, z, x2, z, QPen(Qt::black,0)));
+      Lines.append(new qucs::Line(0, z, x2, z, QPen(Qt::black,0)));
     }
   }
 
 
 Frame:
   // outer frame
-  Lines.append(new Line(0,  y2, x2, y2, QPen(Qt::black,0)));
-  Lines.append(new Line(x2, y2, x2,  0, QPen(Qt::black,0)));
-  Lines.append(new Line(0,   0, x2,  0, QPen(Qt::black,0)));
-  Lines.append(new Line(0,  y2,  0,  0, QPen(Qt::black,0)));
+  Lines.append(new qucs::Line(0,  y2, x2, y2, QPen(Qt::black,0)));
+  Lines.append(new qucs::Line(x2, y2, x2,  0, QPen(Qt::black,0)));
+  Lines.append(new qucs::Line(0,   0, x2,  0, QPen(Qt::black,0)));
+  Lines.append(new qucs::Line(0,  y2,  0,  0, QPen(Qt::black,0)));
   return valid;
 }
 

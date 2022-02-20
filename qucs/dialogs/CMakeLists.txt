@@ -25,12 +25,13 @@ settingsdialog.h
 simmessage.h
 sweepdialog.h
 vasettingsdialog.h
+textboxdialog.h
 )
 
 
 
 SET(DIALOGS_SRCS
-changedialog.cpp		packagedialog.cpp vasettingsdialog.cpp
+changedialog.cpp		packagedialog.cpp vasettingsdialog.cpp textboxdialog.cpp
 digisettingsdialog.cpp		qucssettingsdialog.cpp
 importdialog.cpp		savedialog.cpp labeldialog.cpp
 searchdialog.cpp     librarydialog.cpp settingsdialog.cpp
@@ -59,14 +60,15 @@ simmessage.h
 sweepdialog.h
 sweepdialog.h
 vasettingsdialog.h
+textboxdialog.h
 )
 
 SET(DIALOGS_UIC_HDRS
 searchdialog.ui
 )
 
-QT4_WRAP_CPP( DIALOGS_MOC_SRCS ${DIALOGS_MOC_HDRS} )
+QT5_WRAP_CPP( DIALOGS_MOC_SRCS ${DIALOGS_MOC_HDRS} )
 
-QT4_WRAP_UI( DIALOGS_UIC_SRCS ${DIALOGS_UIC_HDRS} )
+QT5_WRAP_UI( DIALOGS_UIC_SRCS ${DIALOGS_UIC_HDRS} )
 
-ADD_LIBRARY(dialogs ${DIALOGS_HDRS} ${DIALOGS_SRCS} ${DIALOGS_MOC_SRCS} ${DIALOGS_UIC_SRCS})
+ADD_LIBRARY(dialogs STATIC ${DIALOGS_HDRS} ${DIALOGS_SRCS} ${DIALOGS_MOC_SRCS} ${DIALOGS_UIC_SRCS})

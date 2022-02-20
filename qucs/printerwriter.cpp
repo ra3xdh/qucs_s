@@ -33,9 +33,9 @@ PrinterWriter::PrinterWriter()
 {
   //default setting
   Printer = new QPrinter(QPrinter::HighResolution);
-  Printer->setOptionEnabled(QPrinter::PrintSelection, true);
+  /*Printer->setOptionEnabled(QPrinter::PrintSelection, true);
   Printer->setOptionEnabled(QPrinter::PrintPageRange, false);
-  Printer->setOptionEnabled(QPrinter::PrintToFile, true);
+  Printer->setOptionEnabled(QPrinter::PrintToFile, true);*/
 
   Printer->setPaperSize(QPrinter::A4);
   Printer->setColorMode(QPrinter::Color);
@@ -114,7 +114,7 @@ PrinterWriter::print(QWidget *doc)
         return;
       }
       for (int z = Printer->numCopies(); z > 0; --z) {
-        if (Printer->aborted()) {
+        if (Printer->printerState() == QPrinter::Aborted) {
           break;
         }
 

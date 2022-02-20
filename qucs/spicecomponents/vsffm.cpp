@@ -29,14 +29,14 @@ vSffm::vSffm()
   Description = QObject::tr("SPICE V(SFFM):");
 
   // normal voltage source symbol
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkRed,3)));
+  Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkRed,3)));
   Texts.append(new Text(36, 4," SFFM",Qt::darkRed,10.0,0.0,-1.0)); 
-  Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
-  Lines.append(new Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
-  Lines.append(new Line(-18,  -5,-18, -11,QPen(Qt::black,2)));
+  Lines.append(new qucs::Line( 18,  -5, 18, -11,QPen(Qt::red,2)));
+  Lines.append(new qucs::Line( 21,  -8, 15,  -8,QPen(Qt::red,2)));
+  Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,2)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

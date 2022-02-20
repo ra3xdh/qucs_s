@@ -45,14 +45,14 @@ Element * pad3bit::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void pad3bit::createSymbol()
 {
-  Lines.append(new Line(-60, -50, 30,-50,QPen(Qt::darkGreen,2)));
-  Lines.append(new Line( 30, -50, 30, 30,QPen(Qt::darkGreen,2)));
-  Lines.append(new Line( 30,  30,-60, 30,QPen(Qt::darkGreen,2)));
-  Lines.append(new Line(-60,  30,-60,-50,QPen(Qt::darkGreen,2)));
+  Lines.append(new qucs::Line(-60, -50, 30,-50,QPen(Qt::darkGreen,2)));
+  Lines.append(new qucs::Line( 30, -50, 30, 30,QPen(Qt::darkGreen,2)));
+  Lines.append(new qucs::Line( 30,  30,-60, 30,QPen(Qt::darkGreen,2)));
+  Lines.append(new qucs::Line(-60,  30,-60,-50,QPen(Qt::darkGreen,2)));
 
-  Lines.append(new Line( 40,-30, 30,-30,QPen(Qt::darkGreen,2)));  // A
-  Lines.append(new Line( 40,-10, 30,-10,QPen(Qt::darkGreen,2)));  // B
-  Lines.append(new Line( 40, 10, 30, 10,QPen(Qt::darkGreen,2))); // C
+  Lines.append(new qucs::Line( 40,-30, 30,-30,QPen(Qt::darkGreen,2)));  // A
+  Lines.append(new qucs::Line( 40,-10, 30,-10,QPen(Qt::darkGreen,2)));  // B
+  Lines.append(new qucs::Line( 40, 10, 30, 10,QPen(Qt::darkGreen,2))); // C
 
   Texts.append(new Text(-58,-33, " 0   1   2    3", Qt::darkGreen, 12.0));
   Texts.append(new Text(-58, -8, " 4   5   6    7", Qt::darkGreen, 12.0));

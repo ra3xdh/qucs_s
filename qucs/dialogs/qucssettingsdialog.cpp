@@ -156,7 +156,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     QWidget *editorTab = new QWidget(t);
     QGridLayout *editorGrid = new QGridLayout(editorTab);
 
-    editorGrid->addWidget(new QLabel(tr("Colors for Syntax Highlighting:"), editorTab), 0, 0, 1, 2);
+    editorGrid->addWidget(new QLabel(tr("Colors for Syntax Highlighting:"), editorTab), 0, 1, 0, 2);
 
     QPalette p;
 
@@ -258,8 +258,8 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     item2->setText(tr("Program"));
 
     fileTypesTableWidget->horizontalHeader()->setStretchLastSection(true);
-    fileTypesTableWidget->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-    fileTypesTableWidget->horizontalHeader()->setClickable(false); // no action when clicking on the header
+    fileTypesTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    fileTypesTableWidget->horizontalHeader()->setSectionsClickable(false); // no action when clicking on the header
     fileTypesTableWidget->verticalHeader()->hide();
     connect(fileTypesTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotTableClicked(int,int)));
     fileTypesGrid->addWidget(fileTypesTableWidget,1,0,3,1);
@@ -351,7 +351,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
 
     pathsTableWidget->horizontalHeader()->setStretchLastSection(true);
     // avoid drawing header text in bold when some data is selected
-    pathsTableWidget->horizontalHeader()->setClickable(false);
+    pathsTableWidget->horizontalHeader()->setSectionsClickable(false);
 
     pathsTableWidget->verticalHeader()->hide();
     // allow multiple items to be selected
@@ -701,7 +701,8 @@ void QucsSettingsDialog::slotBGColorDialog()
 void QucsSettingsDialog::slotDefaultValues()
 {
     QPalette p;
-    Font = QFont("Helvetica", 12);
+    Font = QApplication::font();
+    Font.setPointSize(12);
     FontButton->setText(Font.toString());
     LargeFontSizeEdit->setText(QString::number(16.0));
 

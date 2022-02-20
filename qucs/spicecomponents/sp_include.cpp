@@ -33,8 +33,8 @@ S4Q_Include::S4Q_Include()
   int xb = r.width()  >> 1;
   int yb = r.height() >> 1;
 
-  Lines.append(new Line(-xb, -yb, -xb,  yb,QPen(Qt::darkRed,2)));
-  Lines.append(new Line(-xb,  yb,  xb+3,yb,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line(-xb, -yb, -xb,  yb,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line(-xb,  yb,  xb+3,yb,QPen(Qt::darkRed,2)));
   Texts.append(new Text(-xb+4,  -yb-3, QObject::tr(".INCLUDE"),
 			QColor(0,0,0), 12.0));
 
@@ -82,7 +82,14 @@ QString S4Q_Include::getSpiceModel()
         QString val = pp->Value;
         if (!val.isEmpty()) {
             val = spicecompat::convert_relative_filename(val);
-            s += QString("%1 \"%2\"\n").arg(SpiceModel).arg(val);
+            switch (QucsSettings.DefaultSimulator) {
+            case spicecompat::simSpiceOpus: // Spice Opus doesn't support quotes
+                s += QString("%1 %2\n").arg(SpiceModel).arg(val);
+                break;
+            default:
+                s += QString("%1 \"%2\"\n").arg(SpiceModel).arg(val);
+                break;
+            }
         }
     }
 

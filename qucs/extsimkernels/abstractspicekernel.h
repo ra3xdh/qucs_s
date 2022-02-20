@@ -20,7 +20,13 @@
 #ifndef ABSTRACTSPICEKERNEL_H
 #define ABSTRACTSPICEKERNEL_H
 
-#include <QtCore>
+#include <QList>
+#include <QString>
+#include <QStringList>
+#include <QDataStream>
+#include <QTextStream>
+#include <QProcess>
+
 #include "schematic.h"
 
 /*!
@@ -100,6 +106,7 @@ public:
     QString getOutput();
 
     virtual void setSimulatorCmd(QString cmd);
+    virtual void setSimulatorParameters(QString parameters);
     void setWorkdir(QString path);
     virtual void SaveNetlist(QString filename);
     virtual bool waitEndOfSimulation();

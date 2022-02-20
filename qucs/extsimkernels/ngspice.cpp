@@ -22,6 +22,8 @@
 #include "components/vprobe.h"
 #include "components/equation.h"
 #include "components/param_sweep.h"
+#include "components/subcircuit.h"
+#include "spicecomponents/sp_spiceinit.h"
 #include "spicecomponents/xsp_cmlib.h"
 #include "main.h"
 #ifdef HAVE_CONFIG_H
@@ -425,14 +427,14 @@ void Ngspice::slotSimulate()
     }
 
     QString netfile = "spice4qucs.cir";
-    QString tmp_path = QDir::convertSeparators(workdir+QDir::separator()+netfile);
+    QString tmp_path = QDir::toNativeSeparators(workdir+QDir::separator()+netfile);
     SaveNetlist(tmp_path);
 
     removeAllSimulatorOutputs();
 
     XSPICE_CMbuilder *CMbuilder = new XSPICE_CMbuilder(Sch);
     CMbuilder->cleanSpiceinit();
-    CMbuilder->createSpiceinit();
+    CMbuilder->createSpiceinit(/*initial_spiceinit=*/collectSpiceinit(Sch));
     if (CMbuilder->needCompile()) {
         CMbuilder->cleanCModelTree();
         CMbuilder->createCModelTree(output);
@@ -473,6 +475,31 @@ bool Ngspice::checkNodeNames(QStringList &incompat)
       }
     }
     return result;
+}
+
+/*!
+ * \brief Ngspice::collectSpiceinit Collects user-specified .spiceinit data.
+ * \param incompat
+ * \return
+ */
+QString Ngspice::collectSpiceinit(Schematic* sch)
+{
+    QStringList collected_spiceinit;
+    for(Component *pc = sch->DocComps.first(); pc != 0; pc = sch->DocComps.next()) {
+        if (pc->Model == "SPICEINIT") {
+            collected_spiceinit += ((SpiceSpiceinit*)pc)->getSpiceinit();
+        } else if (pc->Model == "Sub") {
+            Schematic *sub = new Schematic(0, ((Subcircuit *)pc)->getSubcircuitFile());
+            if(!sub->loadDocument())      // load document if possible
+            {
+                delete sub;
+                continue;
+            }
+            collected_spiceinit += collectSpiceinit(sub);
+            delete sub;
+	}
+    }
+    return collected_spiceinit.join("");
 }
 
 /*!
@@ -537,13 +564,16 @@ void Ngspice::setSimulatorCmd(QString cmd)
         env.remove("LANG");
         env.insert("LANG","en_US");
         SimProcess->setProcessEnvironment(env);
-        simulator_parameters="-c";
+        simulator_parameters = simulator_parameters + "-c";
     } else { // restore system environment
         QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
         SimProcess->setProcessEnvironment(env);
-        simulator_parameters="";
     }
 
     simulator_cmd = cmd;
 }
 
+void Ngspice::setSimulatorParameters(QString parameters)
+{
+    simulator_parameters = parameters;
+}

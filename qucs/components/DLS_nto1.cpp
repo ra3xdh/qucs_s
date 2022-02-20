@@ -47,18 +47,18 @@ Element * DLS_nto1::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void DLS_nto1::createSymbol()
 {
-  Lines.append(new Line(-30, -30, 30,-30,QPen(Qt::darkRed,2)));
-  Lines.append(new Line( 30, -30, 30, 30,QPen(Qt::darkRed,2)));
-  Lines.append(new Line( 30, 30,-30, 30,QPen(Qt::darkRed,2)));
-  Lines.append(new Line(-30, 30, -30, -30,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line(-30, -30, 30,-30,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line( 30, -30, 30, 30,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line( 30, 30,-30, 30,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line(-30, 30, -30, -30,QPen(Qt::darkRed,2)));
  
-  Lines.append(new Line(-30, 30, 30, -30,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line(-30, 30, 30, -30,QPen(Qt::darkRed,2)));
 
-  Lines.append(new Line(-40,  0,-30,  0,QPen(Qt::darkRed,2)));  // Lin
-  Lines.append(new Line( 30,  0, 40,  0,QPen(Qt::darkRed,2)));  // Lout
+  Lines.append(new qucs::Line(-40,  0,-30,  0,QPen(Qt::darkRed,2)));  // Lin
+  Lines.append(new qucs::Line( 30,  0, 40,  0,QPen(Qt::darkRed,2)));  // Lout
   
-  Lines.append(new Line(-25, -20,-15, -20,QPen(Qt::darkRed,2)));
-  Lines.append(new Line( 25,  20, 15,  20,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line(-25, -20,-15, -20,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line( 25,  20, 15,  20,QPen(Qt::darkRed,2)));
   
   Texts.append(new Text(-10,-32, "n", Qt::darkRed, 12.0));
   Texts.append(new Text(  0,  8, "1", Qt::darkRed, 12.0));

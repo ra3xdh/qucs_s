@@ -134,23 +134,23 @@ void SpiceLibComp::remakeSymbol(int No, QStringList &pin_names)
 {
   QString nam;
   int h = 30*((No-1)/2) + 15;
-  Lines.append(new Line(-15, -h, 15, -h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 15, -h, 15,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-15,  h, 15,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-15, -h,-15,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-15, -h, 15, -h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 15, -h, 15,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-15,  h, 15,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-15, -h,-15,  h,QPen(Qt::darkBlue,2)));
   Texts.append(new Text(-10, -6,"lib"));
 
   int i=0, y = 15-h;
   while(i<No) {
     i++;
-    Lines.append(new Line(-30,  y,-15,  y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-30,  y,-15,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30,  y));
     if (i<=pin_names.count()) nam = pin_names.at(i-1);
     Texts.append(new Text(-25,y-14,nam));
 
     if(i == No) break;
     i++;
-    Lines.append(new Line( 15,  y, 30,  y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 15,  y, 30,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 30,  y));
     if (i<=pin_names.count()) nam = pin_names.at(i-1);
     Texts.append(new Text( 19,y-14,nam));

@@ -28,24 +28,24 @@ PNP_SPICE::PNP_SPICE()
 {
     Description = QObject::tr("Q(PNP) BJT:\nMultiple line ngspice or Xyce Q model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
 
-  Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(-10,-15,-10, 15,QPen(Qt::darkRed,3)));
   
-  Lines.append(new Line(-30,  0,-20,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line(-20,  0,-10,  0,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(-30,  0,-20,  0,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-20,  0,-10,  0,QPen(Qt::darkRed,3)));
   
-  Lines.append(new Line(-10, -5,  0,-15,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(-10, -5,  0,-15,QPen(Qt::darkRed,3)));
   
-  Lines.append(new Line(  0,-15,  0,-20,QPen(Qt::darkRed,3)));
-  Lines.append(new Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(  0,-15,  0,-20,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
     
-  Lines.append(new Line(-10,  5,  0, 15,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(-10,  5,  0, 15,QPen(Qt::darkRed,3)));
   
-  Lines.append(new Line(  0, 15,  0, 20,QPen(Qt::darkRed,3)));
-  Lines.append(new Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(  0, 15,  0, 20,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));
 
   
-  Lines.append(new Line( -5, 10, -5, 16,QPen(Qt::darkRed,3)));
-  Lines.append(new Line( -5, 10,  1, 10,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line( -5, 10, -5, 16,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line( -5, 10,  1, 10,QPen(Qt::darkRed,3)));
   
   Texts.append(new Text(30,12,"PNP",Qt::darkRed,10.0,0.0,-1.0));
 

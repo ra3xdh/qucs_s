@@ -56,18 +56,18 @@ Element * hpribin4bit::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void hpribin4bit::createSymbol()
 {
-  Lines.append(new Line(-40, -50, 40,-50,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 40, -50, 40, 60,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 40,  60,-40, 60,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-40,  60,-40, -50,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-40, -50, 40,-50,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 40, -50, 40, 60,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 40,  60,-40, 60,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-40,  60,-40, -50,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-60,-10,-40,-10,QPen(Qt::darkBlue,2)));  // A
-  Lines.append(new Line(-60, 10,-40, 10,QPen(Qt::darkBlue,2)));  // B
-  Lines.append(new Line(-60, 30,-40, 30,QPen(Qt::darkBlue,2)));  // C
-  Lines.append(new Line(-60, 50,-40, 50,QPen(Qt::darkBlue,2)));  // D
-  Lines.append(new Line( 40, 30, 60, 30,QPen(Qt::darkBlue,2)));  // V
-  Lines.append(new Line( 40, 10, 60, 10,QPen(Qt::darkBlue,2)));  // Y
-  Lines.append(new Line( 40,-10, 60,-10,QPen(Qt::darkBlue,2)));  // X
+  Lines.append(new qucs::Line(-60,-10,-40,-10,QPen(Qt::darkBlue,2)));  // A
+  Lines.append(new qucs::Line(-60, 10,-40, 10,QPen(Qt::darkBlue,2)));  // B
+  Lines.append(new qucs::Line(-60, 30,-40, 30,QPen(Qt::darkBlue,2)));  // C
+  Lines.append(new qucs::Line(-60, 50,-40, 50,QPen(Qt::darkBlue,2)));  // D
+  Lines.append(new qucs::Line( 40, 30, 60, 30,QPen(Qt::darkBlue,2)));  // V
+  Lines.append(new qucs::Line( 40, 10, 60, 10,QPen(Qt::darkBlue,2)));  // Y
+  Lines.append(new qucs::Line( 40,-10, 60,-10,QPen(Qt::darkBlue,2)));  // X
 
   Texts.append(new Text(-35,-45, "HPRI/BIN", Qt::darkBlue, 12.0));
 

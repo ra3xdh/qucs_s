@@ -23,19 +23,8 @@
 #include <stdlib.h>
 #include <string>
 
-#include <QMenu>
-#include <QMenuBar>
-#include <QMessageBox>
-#include <QLabel>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QValidator>
-#include <QTimer>
-#include <QClipboard>
-#include <QApplication>
-#include <QGridLayout>
-#include <QPixmap>
+#include <QtGui>
+#include <QtWidgets>
 
 #include "lc_filter.h"
 #include "tl_filter.h"
@@ -66,22 +55,22 @@ QucsFilter::QucsFilter()
 
   QAction * fileQuit = new QAction(tr("E&xit"), this);
   fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
-  connect(fileQuit, SIGNAL(activated()), SLOT(slotQuit()));
+  connect(fileQuit, SIGNAL(triggered(bool)), SLOT(slotQuit()));
 
   fileMenu->addAction(fileQuit);
 
   QMenu *helpMenu = new QMenu(tr("&Help"), this);
   QAction * helpHelp = new QAction(tr("Help..."), this);
   helpHelp->setShortcut(Qt::Key_F1);
-  connect(helpHelp, SIGNAL(activated()), SLOT(slotHelpIntro()));
+  connect(helpHelp, SIGNAL(triggered(bool)), SLOT(slotHelpIntro()));
 
   QAction * helpAbout = new QAction(tr("&About QucsFilter..."), this);
   helpMenu->addAction(helpAbout);
-  connect(helpAbout, SIGNAL(activated()), SLOT(slotHelpAbout()));
+  connect(helpAbout, SIGNAL(triggered(bool)), SLOT(slotHelpAbout()));
 
   QAction * helpAboutQt = new QAction(tr("About Qt..."), this);
   helpMenu->addAction(helpAboutQt);
-  connect(helpAboutQt, SIGNAL(activated()), SLOT(slotHelpAboutQt()));
+  connect(helpAboutQt, SIGNAL(triggered(bool)), SLOT(slotHelpAboutQt()));
 
   helpMenu->addAction(helpHelp);
   helpMenu->addSeparator();

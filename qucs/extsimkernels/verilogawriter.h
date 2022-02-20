@@ -23,7 +23,9 @@
 #ifndef VERILOGAWRITER_H
 #define VERILOGAWRITER_H
 
-#include <QtCore>
+#include <QString>
+#include <QStringList>
+#include <QTextStream>
 #include <schematic.h>
 
 /*!

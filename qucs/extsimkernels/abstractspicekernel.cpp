@@ -1008,16 +1008,18 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         bool hasParSweep = false;
         bool hasDblParSweep = false;
 
+        QRegExp four_rx(".*\\.four[0-9]+$");
         QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
         if (ngspice_output_filename.endsWith("HB.FD.prn")) {
             parseHBOutput(full_outfile,sim_points,var_list,hasParSweep);
             isComplex = true;
             if (hasParSweep) {
-                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
                                                         + "spice4qucs.hb.cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
-        } else if (ngspice_output_filename.endsWith(".four")) {
+        } else if (ngspice_output_filename.endsWith(".four") ||
+                   four_rx.exactMatch(ngspice_output_filename)) {
             isComplex=false;
             parseFourierOutput(full_outfile,sim_points,var_list);
         } else if (ngspice_output_filename.endsWith(".ngspice.sens.dc.prn")) {
@@ -1032,7 +1034,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             isComplex = false;
             parseNoiseOutput(full_outfile,sim_points,var_list,hasParSweep);
             if (hasParSweep) {
-                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
                                                         + "spice4qucs.noise.cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
@@ -1040,7 +1042,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             isComplex = true;
             parsePZOutput(full_outfile,sim_points,var_list,hasParSweep);
             if (hasParSweep) {
-                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
                                                         + "spice4qucs.pz.cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
@@ -1050,7 +1052,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
             if (type == xyceSTDswp) {
                 hasParSweep = true;
-                QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+                QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
                                                         + "spice4qucs.sens.cir.res");
                 parseResFile(res_file,swp_var,swp_var_val);
             }
@@ -1062,14 +1064,14 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 hasDblParSweep = true;
                 simstr.chop(4);
                 simstr = simstr.split('_').last();
-                QString res2_file = QDir::convertSeparators(workdir + QDir::separator()
+                QString res2_file = QDir::toNativeSeparators(workdir + QDir::separator()
                                                             + "spice4qucs." + simstr + ".cir.res1");
                 parseResFile(res2_file,swp_var2,swp_var2_val);
             } else {
                 simstr = simstr.split('_').last();
             }
 
-            QString res_file = QDir::convertSeparators(workdir + QDir::separator()
+            QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
                                                     + "spice4qucs." + simstr + ".cir.res");
             parseResFile(res_file,swp_var,swp_var_val);
 
@@ -1285,12 +1287,22 @@ QString AbstractSpiceKernel::getOutput()
 }
 
 /*!
- * \brief AbstractSpiceKernel::setSimulatorCmd Set simualtor executable location
+ * \brief AbstractSpiceKernel::setSimulatorCmd Set simulator executable location
  * \param cmd Simulator executable absolute path. For example /usr/bin/ngspice
  */
 void AbstractSpiceKernel::setSimulatorCmd(QString cmd)
 {
     simulator_cmd = cmd;
+}
+
+
+/*!
+ * \brief AbstractSpiceKernel::setSimulatorParameters Set simulator parameters
+ * \param cmd Simulator executable absolute path. For example -plugin lib/Xyce_ADMS_Plugin.so
+ */
+void AbstractSpiceKernel::setSimulatorParameters(QString parameters)
+{
+    simulator_parameters = parameters;
 }
 
 /*!

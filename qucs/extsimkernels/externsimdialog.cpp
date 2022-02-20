@@ -56,7 +56,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     connect(buttonExit,SIGNAL(clicked()),ngspice,SLOT(killThemAll()));
     connect(buttonExit,SIGNAL(clicked()),xyce,SLOT(killThemAll()));
 
-    QGroupBox *grp1 = new QGroupBox(tr("Simulation console"),this);
+    QGroupBox *grp_1 = new QGroupBox(tr("Simulation console"),this);
     QVBoxLayout *vbl1 = new QVBoxLayout;
 
     editSimConsole = new QPlainTextEdit(this);
@@ -66,33 +66,14 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     editSimConsole->setFont(font);
     editSimConsole->setReadOnly(true);
     vbl1->addWidget(editSimConsole);
-    grp1->setLayout(vbl1);
+    grp_1->setLayout(vbl1);
 
     simProgress = new QProgressBar(this);
     connect(ngspice,SIGNAL(progress(int)),simProgress,SLOT(setValue(int)));
     connect(xyce,SIGNAL(progress(int)),simProgress,SLOT(setValue(int)));
 
-    QLabel *lbl_warn = new QLabel(this);
-    lbl_warn->setAutoFillBackground(true);
-    lbl_warn->setOpenExternalLinks(true);
-    lbl_warn->setStyleSheet("background-color: #F0FFFF; border: 3px solid red ;");
-    lbl_warn->setText("<HTML>"
-                      "<CENTER>"
-                      "<FONT color = #FF0000>"
-                      "External simulator support is experimental and could be unstable. <BR>"
-                      "Use it at your own risk! Future release are likely to be more stable. <BR>"
-                      "See spice4qucs-help documentation at <BR>"
-                      "<A href=\"http://qucs-help.readthedocs.org/en/spice4qucs/index.html/\">"
-                      "http://qucs-help.readthedocs.org/en/spice4qucs/index.html/</A> <BR>"
-                      "for more information and the current development status."
-                      "</FONT>"
-                      "</CENTER>"
-                      "</HTML>");
-    //lbl_warn->setBackgroundColor(Qt::white);
-
     QVBoxLayout *vl_top = new QVBoxLayout;
-    vl_top->addWidget(lbl_warn);
-    vl_top->addWidget(grp1);
+    vl_top->addWidget(grp_1);
     vl_top->addWidget(simProgress);
     QHBoxLayout *hl1 = new QHBoxLayout;
     hl1->addWidget(buttonSimulate);
@@ -123,6 +104,7 @@ void ExternSimDialog::slotSetSimulator()
         connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
         ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable);
+        ngspice->setSimulatorParameters(QucsSettings.SimParameters);
     }
         break;
     case spicecompat::simXyceSer: {
@@ -131,6 +113,7 @@ void ExternSimDialog::slotSetSimulator()
         connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
+        xyce->setSimulatorParameters(QucsSettings.SimParameters);
     }
         break;
     case spicecompat::simXycePar: {
@@ -143,6 +126,7 @@ void ExternSimDialog::slotSetSimulator()
         connect(xyce,SIGNAL(finished()),this,SLOT(slotProcessOutput()));
         connect(xyce,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),xyce,SLOT(slotSimulate()));
+        xyce->setSimulatorParameters(QucsSettings.SimParameters);
     }
         break;
     case spicecompat::simSpiceOpus: {
@@ -152,6 +136,7 @@ void ExternSimDialog::slotSetSimulator()
         connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)),Qt::UniqueConnection);
         connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()),Qt::UniqueConnection);
         ngspice->setSimulatorCmd(QucsSettings.SpiceOpusExecutable);
+        ngspice->setSimulatorParameters(QucsSettings.SimParameters);
     }
         break;
     default: break;
@@ -196,6 +181,7 @@ void ExternSimDialog::slotProcessOutput()
     editSimConsole->insertPlainText(out);
     editSimConsole->moveCursor(QTextCursor::End);
     saveLog();
+    editSimConsole->insertPlainText("Simulation finished\n");
 
     QFileInfo inf(Sch->DocName);
     //QString qucs_dataset = inf.canonicalPath()+QDir::separator()+inf.baseName()+"_ngspice.dat";

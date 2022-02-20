@@ -97,10 +97,10 @@ void SpiceFile::createSymbol()
   // draw symbol outline
   #define HALFWIDTH  17
   int h = 30*((No-1)/2) + 15;
-  Lines.append(new Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( HALFWIDTH, -h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( HALFWIDTH, -h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
 
   int w, i = fHeight/2;
   if(withSim) {
@@ -116,7 +116,7 @@ void SpiceFile::createSymbol()
   i = 0;
   int y = 15-h;
   while(i<No) { // add ports lines and numbers
-    Lines.append(new Line(-30,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-30,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30,  y));
     tmp = PortNames.section(',', i, i).mid(4);
     w = smallmetrics.width(tmp);
@@ -124,7 +124,7 @@ void SpiceFile::createSymbol()
     i++;
 
     if(i == No) break; // if odd number of ports there will be one port less on the right side
-    Lines.append(new Line(HALFWIDTH,  y, 30,  y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(HALFWIDTH,  y, 30,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 30,  y));
     tmp = PortNames.section(',', i, i).mid(4);
     Texts.append(new Text( 20, y-fHeight-2, tmp)); // text left-aligned
@@ -133,7 +133,7 @@ void SpiceFile::createSymbol()
   }
 
   if(No > 0) {
-    Lines.append(new Line( 0, h, 0,h+15,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 0, h, 0,h+15,QPen(Qt::darkBlue,2)));
     Texts.append(new Text( 4, h,"Ref"));
     Ports.append(new Port( 0, h+15));    // 'Ref' port
   }
@@ -218,7 +218,7 @@ QString SpiceFile::getSubcircuitFile()
                 else
                 {
                     /// \todo improve GUI/CLI error/warning
-                    qCritical() << "Spice file not found:" << localFileInfo.absFilePath();
+                    qCritical() << "Spice file not found:" << localFileInfo.absoluteFilePath();
                 }
             }
         }

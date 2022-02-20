@@ -29,14 +29,14 @@ vAmpMod::vAmpMod()
   Description = QObject::tr("SPICE V(AM): ngspice only.");
 
   // normal voltage source symbol
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::blue,3)));
+  Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::blue,3)));
    Texts.append(new Text(36, 4,"AM",Qt::blue,10.0,0.0,-1.0)); 
-  Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line( 18,  -5, 18, -11,QPen(Qt::red,1)));
-  Lines.append(new Line( 21,  -8, 15,  -8,QPen(Qt::red,1)));
-  Lines.append(new Line(-18,  -5,-18, -11,QPen(Qt::black,1)));
+  Lines.append(new qucs::Line( 18,  -5, 18, -11,QPen(Qt::red,1)));
+  Lines.append(new qucs::Line( 21,  -8, 15,  -8,QPen(Qt::red,1)));
+  Lines.append(new qucs::Line(-18,  -5,-18, -11,QPen(Qt::black,1)));
 
  
 

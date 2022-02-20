@@ -592,7 +592,7 @@ void CodeModelGen::scanEquations(Schematic *sch,QStringList &pars,
                 QString nam = pp->Name;
                 if(pars.contains(nam)) {
                     found =  true;
-                    pars.remove(nam);
+                    pars.removeAll(nam);
                     if(!init_pars.contains(nam)) {
                         init_pars.append(nam);
                         QStringList tokens;

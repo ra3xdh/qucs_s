@@ -18,7 +18,10 @@
 #ifndef XYCE_H
 #define XYCE_H
 
-#include <QtCore>
+#include <QObject>
+#include <QString>
+#include <QStringList>
+#include <QTextStream>
 #include "abstractspicekernel.h"
 
 /*!
@@ -38,10 +41,10 @@ private:
     unsigned int Nprocs;
     QStringList simulationsQueue;
     QStringList netlistQueue;
-    void determineUsedSimulations();
     void nextSimulation();
 
 public:
+    void determineUsedSimulations(QStringList *sim_lst = NULL);
     explicit Xyce(Schematic *sch_, QObject *parent = 0);
 
     void SaveNetlist(QString filename);

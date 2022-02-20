@@ -34,6 +34,7 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     lblQucsator = new QLabel(tr("Qucsator executable location"));
     lblNprocs = new QLabel(tr("Number of processors in a system:"));
     lblWorkdir = new QLabel(tr("Directory to store netlist and simulator output"));
+    lblSimParam = new QLabel(tr("Extra simulator parameters"));
 
     cbxSimulator = new QComboBox(this);
     QStringList items;
@@ -42,16 +43,20 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     qDebug()<<QucsSettings.DefaultSimulator;
     cbxSimulator->setCurrentIndex(QucsSettings.DefaultSimulator);
     if (QucsSettings.DefaultSimulator==spicecompat::simNotSpecified)
-        cbxSimulator->setCurrentIndex(spicecompat::simQucsator);
+        cbxSimulator->setCurrentIndex(spicecompat::simNgspice);
 
     edtNgspice = new QLineEdit(QucsSettings.NgspiceExecutable);
     edtXyce = new QLineEdit(QucsSettings.XyceExecutable);
     edtXycePar = new QLineEdit(QucsSettings.XyceParExecutable);
     edtSpiceOpus = new QLineEdit(QucsSettings.SpiceOpusExecutable);
     edtQucsator = new QLineEdit(QucsSettings.Qucsator);
-    spbNprocs = new QSpinBox(1,256,1,this);
+    spbNprocs = new QSpinBox(this);
+    spbNprocs->setMinimum(1);
+    spbNprocs->setMaximum(256);
+    spbNprocs->setValue(1);
     spbNprocs->setValue(QucsSettings.NProcs);
     edtWorkdir = new QLineEdit(QucsSettings.S4Qworkdir);
+    edtSimParam = new QLineEdit(QucsSettings.SimParameters);
 
     btnOK = new QPushButton(tr("Apply changes"));
     connect(btnOK,SIGNAL(clicked()),this,SLOT(slotApply()));
@@ -117,6 +122,11 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     h6->addWidget(btnSetWorkdir,1);
     top2->addLayout(h6);
 
+    top2->addWidget(lblSimParam);
+    QHBoxLayout *h10 = new QHBoxLayout;
+    h10->addWidget(edtSimParam,4);
+    top2->addLayout(h10);
+
     gbp1->setLayout(top2);
     top->addWidget(gbp1);
 
@@ -162,6 +172,7 @@ void SimSettingsDialog::slotApply()
     QucsSettings.Qucsator = edtQucsator->text();
     QucsSettings.NProcs = spbNprocs->value();
     QucsSettings.S4Qworkdir = edtWorkdir->text();
+    QucsSettings.SimParameters = edtSimParam->text();
     if ((QucsSettings.DefaultSimulator != cbxSimulator->currentIndex())&&
         (QucsSettings.DefaultSimulator != spicecompat::simNotSpecified)) {
         QMessageBox::warning(this,tr("Simulator settings"),tr("Default simulator engine was changed!\n"
@@ -226,7 +237,7 @@ void SimSettingsDialog::slotSetWorkdir()
     dlg.setAcceptMode(QFileDialog::AcceptOpen);
     dlg.setFileMode(QFileDialog::DirectoryOnly);
     if (dlg.exec()) {
-        QString s = dlg.selectedFile();
+        QString s = dlg.selectedFiles().first();
         if (!s.isEmpty()) edtWorkdir->setText(s);
     }
 }

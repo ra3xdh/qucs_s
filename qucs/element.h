@@ -45,6 +45,9 @@ class QPainter;
 class WireLabel;
 class Schematic;
 
+namespace qucs { // otherwise conflict with <windows.h>
+                 // coming from Qt5 headers
+
 struct Line {
   Line(int _x1, int _y1, int _x2, int _y2, QPen _style)
        : x1(_x1), y1(_y1), x2(_x2), y2(_y2), style(_style) {};
@@ -68,6 +71,8 @@ struct Area {
   QPen   Pen;
   QBrush Brush;    // filling style/color
 };
+
+}
 
 struct Port {
   Port() {};

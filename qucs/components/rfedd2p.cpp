@@ -118,10 +118,10 @@ void RFedd2P::createSymbol()
   // draw symbol
   #define HALFWIDTH  17
   int h = 15;
-  Lines.append(new Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( HALFWIDTH, -h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( HALFWIDTH, -h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
 
   // component text name
   tmp = Props.at(0)->Value;
@@ -131,14 +131,14 @@ void RFedd2P::createSymbol()
   // add port numbers text
   i = 0;
   int y = 15-h;
-  Lines.append(new Line(-30,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
   Ports.append(new Port(-30,  y));
   tmp = QString::number(i+1);
   w = smallmetrics.width(tmp);
   Texts.append(new Text(-25-w, y-fHeight-2, tmp)); // text right-aligned
   i++;
 
-  Lines.append(new Line(HALFWIDTH,  y, 30,  y,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(HALFWIDTH,  y, 30,  y,QPen(Qt::darkBlue,2)));
   Ports.append(new Port( 30,  y));
   tmp = QString::number(i+1);
   Texts.append(new Text(25, y-fHeight-2, tmp)); // text left-aligned

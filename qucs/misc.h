@@ -14,12 +14,24 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#ifndef MISC_H
+#define MISC_H
+
 /*!
  * \file misc.h
  * \Declaration of some miscellaneous function
  */
 
 class QString;
+
+#include <QWidget>
+#include <QPalette>
+#include <QIcon>
+#include <QPushButton>
+
+#include <stdint.h>
+
+#define Q_UINT32 uint32_t
 
 namespace misc {
   QString complexRect(double, double, int Precision=3);
@@ -40,6 +52,31 @@ namespace misc {
   bool    Verilog_Delay(QString&, const QString&);
   QString Verilog_Param(const QString);
   bool    checkVersion(QString&);
+
+  inline const QColor getWidgetForegroundColor(const QWidget *q)
+  { return q->palette().color(q->foregroundRole()); }
+
+  inline const QColor getWidgetBackgroundColor(const QWidget *q)
+  { return q->palette().color(q->backgroundRole()); }
+
+  inline void setWidgetForegroundColor(QWidget *q, const QColor &c)
+  { QPalette p = q->palette(); p.setColor(q->foregroundRole(), c); q->setPalette(p); }
+
+  inline void setWidgetBackgroundColor(QWidget *q, const QColor &c)
+  { QPalette p = q->palette(); p.setColor(q->backgroundRole(), c); q->setPalette(p); }
+
+  inline void setPickerColor(QPushButton *p, const QColor &c)
+    {
+        // set color, to be able to get it later
+        setWidgetBackgroundColor(p, c);
+
+        // draw pixmap, background color is not being rendered on some platforms
+        QPixmap pixmap(35, 10);
+        pixmap.fill(c);
+        QIcon icon(pixmap);
+        p->setIcon(icon);
+        p->setIconSize(pixmap.rect().size());
+    }
 }
 
 /*! handle the application version string
@@ -62,3 +99,5 @@ class VersionTriplet {
  private:
   int major, minor, patch;
 };
+
+#endif

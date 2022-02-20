@@ -24,7 +24,7 @@
 #include <QDir>
 #include <QStringList>
 #include <QPlainTextEdit>
-#include <Q3PtrList>
+#include <qt3_compat/q3ptrlist.h>
 #include <QTextStream>
 #include <QList>
 #include <QProcess>
@@ -188,7 +188,7 @@ bool Schematic::pasteFromClipboard(QTextStream *stream, Q3PtrList<Element> *pe)
 int Schematic::saveSymbolCpp (void)
 {
   QFileInfo info (DocName);
-  QString cppfile = info.dirPath () + QDir::separator() + DataSet;
+  QString cppfile = info.absolutePath () + QDir::separator() + DataSet;
   QFile file (cppfile);
 
   if (!file.open (QIODevice::WriteOnly)) {
@@ -256,7 +256,7 @@ int Schematic::saveSymbolCpp (void)
 int Schematic::saveSymbolJSON()
 {
   QFileInfo info (DocName);
-  QString jsonfile = info.dirPath () + QDir::separator()
+  QString jsonfile = info.absolutePath () + QDir::separator()
                    + info.baseName() + "_sym.json";
 
   qDebug() << "saveSymbolJson for " << jsonfile;
@@ -453,7 +453,7 @@ int Schematic::saveDocument()
       QStringList Arguments;
       Arguments << QDir::toNativeSeparators(vaFile)
                 << "-I" << QDir::toNativeSeparators(include.absolutePath())
-                << "-e" << QDir::toNativeSeparators(include.absFilePath("qucsMODULEguiJSONsymbol.xml"))
+                << "-e" << QDir::toNativeSeparators(include.absoluteFilePath("qucsMODULEguiJSONsymbol.xml"))
                 << "-A" << "dyload";
 
 //      QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
@@ -803,9 +803,9 @@ bool Schematic::loadPaintings(QTextStream *stream, Q3PtrList<Painting> *List)
     else if(cstr == ".PortSym") p = new PortSymbol();
     else if(cstr == ".ID") p = new ID_Text();
     else if(cstr == "Text") p = new GraphicText();
-    else if(cstr == "Rectangle") p = new Rectangle();
+    else if(cstr == "Rectangle") p = new qucs::Rectangle();
     else if(cstr == "Arrow") p = new Arrow();
-    else if(cstr == "Ellipse") p = new Ellipse();
+    else if(cstr == "Ellipse") p = new qucs::Ellipse();
     else {
       QMessageBox::critical(0, QObject::tr("Error"),
 		QObject::tr("Format Error:\nUnknown painting!"));
@@ -873,9 +873,9 @@ bool Schematic::loadDocument()
     QMessageBox::StandardButton result;
     result = QMessageBox::warning(0,
                                   QObject::tr("Warning"),
-                                  QObject::tr("Wrong document version \n" +
-                                              DocName + "\n"
-                                              "Try to open it anyway?"),
+                                  QObject::tr("Wrong document version \n") +
+                                              DocName + "\n" +
+                                  QObject::tr("Try to open it anyway?"),
                                   QMessageBox::Yes|QMessageBox::No);
 
     if (result==QMessageBox::No) {
@@ -1085,7 +1085,7 @@ int Schematic::testFile(const QString& DocName)
   // To strongly speed up the file read operation the whole file is
   // read into the memory in one piece.
   QTextStream ReadWhole(&file);
-  QString FileString = ReadWhole.read();
+  QString FileString = ReadWhole.readAll();
   file.close();
   QTextStream stream(&FileString, QIODevice::ReadOnly);
 
@@ -1147,7 +1147,7 @@ void Schematic::collectDigitalSignals(void)
     if(it == Signals.end()) { // avoid redeclaration of signal
       Signals.insert(pn->Name, DigSignal(pn->Name, pn->DType));
     } else if (!pn->DType.isEmpty()) {
-      it.data().Type = pn->DType;
+      it.value().Type = pn->DType;
     }
   }
 }
@@ -1248,13 +1248,13 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
       SubMap::Iterator it = FileList.find(f);
       if(it != FileList.end())
       {
-        if (!it.data().PortTypes.isEmpty())
+        if (!it.value().PortTypes.isEmpty())
         {
           i = 0;
           // apply in/out signal types of subcircuit
           foreach(Port *pp, pc->Ports)
           {
-            pp->Type = it.data().PortTypes[i];
+            pp->Type = it.value().PortTypes[i];
             pp->Connection->DType = pp->Type;
             i++;
           }
@@ -1298,7 +1298,8 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
             i++;
         }
         sub.PortTypes = d->PortTypes;
-        FileList.replace(f, sub);
+        FileList.insert(f,sub);
+        //FileList.replace(f, sub);
       }
       delete d;
       if(!r)
@@ -1519,7 +1520,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
   if(creatingLib) {
     QString f = misc::properAbsFileName(DocName) + ".lst";
     ofile.setFileName(f);
-    if(!ofile.open(IO_WriteOnly)) {
+    if(!ofile.open(QIODevice::WriteOnly)) {
       ErrText->appendPlainText(tr("ERROR: Cannot create library file \"%s\".").arg(f));
       return;
     }
@@ -1551,13 +1552,13 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
       (*it_name) = pc->Ports.first()->Connection->Name;
       DigMap::Iterator it = Signals.find(*it_name);
       if(it!=Signals.end())
-        (*it_type) = it.data().Type;
+        (*it_type) = it.value().Type;
       // propagate type to port symbol
       pc->Ports.first()->Connection->DType = *it_type;
 
       if(!isAnalog) {
         if (isVerilog) {
-          Signals.erase(*it_name); // remove node name
+          Signals.remove(*it_name); // remove node name
           switch(pc->Props.at(1)->Value.at(0).toLatin1()) {
             case 'a':
               InOutPorts.append(*it_name);
@@ -1571,7 +1572,7 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
         }
         else {
           // remove node name of output port
-          Signals.erase(*it_name);
+          Signals.remove(*it_name);
           switch(pc->Props.at(1)->Value.at(0).toLatin1()) {
             case 'a':
               (*it_name) += " : inout"; // attribute "analog" is "inout"
@@ -1595,8 +1596,8 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
       it_type = SubcircuitPortTypes.begin();
       it_name != SubcircuitPortNames.end(); ) {
     if(*it_name == " ") {
-      it_name = SubcircuitPortNames.remove(it_name);
-      it_type = SubcircuitPortTypes.remove(it_type);
+      it_name = SubcircuitPortNames.erase(it_name);
+      it_type = SubcircuitPortTypes.erase(it_type);
     } else {
       PortTypes.append(*it_type);
       it_name++;

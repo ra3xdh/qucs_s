@@ -23,25 +23,25 @@ vProbe::vProbe()
 {
   Description = QObject::tr("voltage probe");
 
-  Lines.append(new Line(-20,-31, 20,-31,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-20,  9, 20,  9,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-20,-31,-20,  9,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 20,-31, 20,  9,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-20,-31, 20,-31,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-20,  9, 20,  9,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-20,-31,-20,  9,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 20,-31, 20,  9,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-16,-27, 16,-27,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-16, -9, 16, -9,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-16,-27,-16, -9,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 16,-27, 16, -9,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-16,-27, 16,-27,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-16, -9, 16, -9,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-16,-27,-16, -9,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 16,-27, 16, -9,QPen(Qt::darkBlue,2)));
 
-  Arcs.append(new Arc(-20,-23, 39, 39, 16*50, 16*80,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-11,-24, -2, -9,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-20,-23, 39, 39, 16*50, 16*80,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-11,-24, -2, -9,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-10,  0,-10,  6,QPen(Qt::red,2)));
-  Lines.append(new Line(-13,  3, -7,  3,QPen(Qt::red,2)));
-  Lines.append(new Line(  7,  3, 13,  3,QPen(Qt::black,2)));
+  Lines.append(new qucs::Line(-10,  0,-10,  6,QPen(Qt::red,2)));
+  Lines.append(new qucs::Line(-13,  3, -7,  3,QPen(Qt::red,2)));
+  Lines.append(new qucs::Line(  7,  3, 13,  3,QPen(Qt::black,2)));
   
-  Lines.append(new Line(-10,  9,-10, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 10,  9, 10, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,  9,-10, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 10,  9, 10, 20,QPen(Qt::darkBlue,2)));
   Ports.append(new Port(-10, 20));
   Ports.append(new Port( 10, 20));
 

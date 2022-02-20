@@ -70,10 +70,10 @@ void LibComp::createSymbol()
   }
   else {
     // only paint a rectangle
-    Lines.append(new Line(-15, -15, 15, -15, QPen(Qt::darkBlue,2)));
-    Lines.append(new Line( 15, -15, 15,  15, QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(-15,  15, 15,  15, QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(-15, -15,-15,  15, QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15, -15, 15, -15, QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 15, -15, 15,  15, QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15,  15, 15,  15, QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15, -15,-15,  15, QPen(Qt::darkBlue,2)));
 
     x1 = -18; y1 = -18;
     x2 =  18; y2 =  18;
@@ -89,14 +89,14 @@ int LibComp::loadSection(const QString& Name, QString& Section,
              QStringList *Includes, QStringList *Attach)
 {
   QDir Directory(QucsSettings.LibDir);
-  QFile file(Directory.absFilePath(Props.first()->Value + ".lib"));
+  QFile file(Directory.absoluteFilePath(Props.first()->Value + ".lib"));
   if(!file.open(QIODevice::ReadOnly))
     return -1;
 
   QString libDefaultSymbol;
 
   QTextStream ReadWhole(&file);
-  Section = ReadWhole.read();
+  Section = ReadWhole.readAll();
   file.close();
 
 
@@ -143,7 +143,7 @@ int LibComp::loadSection(const QString& Name, QString& Section,
       if(EndI < 0)  return -11;  // file corrupt
       StartI++; EndI--;
       QString inc = Section.mid(StartI, EndI-StartI);
-      QStringList f = QStringList::split(QRegExp("\"\\s+\""), inc);
+      QStringList f = inc.split(QRegExp("\"\\s+\""));
       for(QStringList::Iterator it = f.begin(); it != f.end(); ++it ) {
 	Includes->append(*it);
       }
@@ -161,7 +161,7 @@ int LibComp::loadSection(const QString& Name, QString& Section,
       if(EndI < 0)  return -11;  // file corrupt
       StartI++; EndI--;
       QString inc = Section.mid(StartI, EndI-StartI);
-      QStringList f = QStringList::split(QRegExp("\"\\s+\""), inc);
+      QStringList f = inc.split(QRegExp("\"\\s+\""));
       for(QStringList::Iterator it = f.begin(); it != f.end(); ++it ) {
     Attach->append(*it);
       }
@@ -170,14 +170,15 @@ int LibComp::loadSection(const QString& Name, QString& Section,
 
   // search model
   Start = Section.indexOf("<"+Name+">");
-  if(Start < 0)
-    if((Name == "Symbol") && (~libDefaultSymbol.isEmpty())) {
+  if(Start < 0) {
+    if((Name == "Symbol") && (!libDefaultSymbol.isEmpty())) {
       // component does not define its own symbol but the library defines a default symbol
       Section = libDefaultSymbol;
       return 0;
     } else {
       return -7;  // symbol not found
     }
+  }
   Start = Section.indexOf('\n', Start);
   if(Start < 0)  return -8;  // file corrupt
   while(Section.at(++Start) == ' ') ;
@@ -243,7 +244,7 @@ int LibComp::loadSymbol()
 QString LibComp::getSubcircuitFile()
 {
   QDir Directory(QucsSettings.LibDir);
-  QString FileName = Directory.absFilePath(Props.first()->Value);
+  QString FileName = Directory.absoluteFilePath(Props.first()->Value);
   return misc::properAbsFileName(FileName);
 }
 
@@ -280,7 +281,7 @@ bool LibComp::createSubNetlist(QTextStream *stream, QStringList &FileList,
   for(QStringList::Iterator it = Includes.begin();
       it != Includes.end(); ++it ) {
     QString s = getSubcircuitFile()+"/"+*it;
-    if(FileList.findIndex(s) >= 0) continue;
+    if(FileList.indexOf(s) >= 0) continue;
     FileList.append(s);
 
     // load file and stuff into stream

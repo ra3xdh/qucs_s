@@ -20,6 +20,7 @@
 #define SIMSETTINGSDIALOG_H
 
 #include <QtGui>
+#include <QtWidgets>
 
 class SimSettingsDialog : public QDialog
 {
@@ -34,6 +35,7 @@ private:
     QLabel *lblQucsator;
     QLabel *lblWorkdir;
     QLabel *lblSimulator;
+    QLabel *lblSimParam;
 
     QComboBox *cbxSimulator;
 
@@ -44,6 +46,7 @@ private:
     QLineEdit *edtQucsator;
     QSpinBox  *spbNprocs;
     QLineEdit *edtWorkdir;
+    QLineEdit *edtSimParam;
 
     QPushButton *btnOK;
     QPushButton *btnCancel;

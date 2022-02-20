@@ -29,13 +29,13 @@ S4Q_I::S4Q_I()
 {
    Description = QObject::tr("SPICE I:\nMultiple line ngspice or Xyce I specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
 
-  Arcs.append(new Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::darkRed,3)));
+  Arcs.append(new qucs::Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::darkRed,3)));
  
- Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
- Lines.append(new Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
- Lines.append(new Line( -8,  0, 8, 0,QPen(Qt::darkRed,3)));
- Lines.append(new Line( -8,  0, -4,  -4,QPen(Qt::darkRed,3)));
- Lines.append(new Line( -8,  0, -4,   4,QPen(Qt::darkRed,3)));
+ Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
+ Lines.append(new qucs::Line( 30,  0, 14,  0,QPen(Qt::darkBlue,2)));
+ Lines.append(new qucs::Line( -8,  0, 8, 0,QPen(Qt::darkRed,3)));
+ Lines.append(new qucs::Line( -8,  0, -4,  -4,QPen(Qt::darkRed,3)));
+ Lines.append(new qucs::Line( -8,  0, -4,   4,QPen(Qt::darkRed,3)));
   
    Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

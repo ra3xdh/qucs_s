@@ -25,7 +25,9 @@
 #include <QComboBox>
 #include <QCheckBox>
 
-Ellipse::Ellipse(bool _filled)
+#include "misc.h"
+
+qucs::Ellipse::Ellipse(bool _filled)
 {
   Name = "Ellipse ";
   isSelected = false;
@@ -37,12 +39,12 @@ Ellipse::Ellipse(bool _filled)
   y1 = y2 = 0;
 }
 
-Ellipse::~Ellipse()
+qucs::Ellipse::~Ellipse()
 {
 }
 
 // --------------------------------------------------------------------------
-void Ellipse::paint(ViewPainter *p)
+void qucs::Ellipse::paint(ViewPainter *p)
 {
   if(isSelected) {
     p->Painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
@@ -66,13 +68,13 @@ void Ellipse::paint(ViewPainter *p)
 }
 
 // --------------------------------------------------------------------------
-void Ellipse::paintScheme(Schematic *p)
+void qucs::Ellipse::paintScheme(Schematic *p)
 {
   p->PostPaintEvent(_Ellipse, cx, cy, x2, y2);
 }
 
 // --------------------------------------------------------------------------
-void Ellipse::getCenter(int& x, int &y)
+void qucs::Ellipse::getCenter(int& x, int &y)
 {
   x = cx+(x2>>1);
   y = cy+(y2>>1);
@@ -80,40 +82,40 @@ void Ellipse::getCenter(int& x, int &y)
 
 // --------------------------------------------------------------------------
 // Sets the center of the painting to x/y.
-void Ellipse::setCenter(int x, int y, bool relative)
+void qucs::Ellipse::setCenter(int x, int y, bool relative)
 {
   if(relative) { cx += x;  cy += y; }
   else { cx = x-(x2>>1);  cy = y-(y2>>1); }
 }
 
 // --------------------------------------------------------------------------
-Painting* Ellipse::newOne()
+Painting* qucs::Ellipse::newOne()
 {
-  return new Ellipse();
+  return new qucs::Ellipse();
 }
 
 // --------------------------------------------------------------------------
-Element* Ellipse::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* qucs::Ellipse::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr("Ellipse");
   BitmapFile = (char *) "ellipse";
 
-  if(getNewOne)  return new Ellipse();
+  if(getNewOne)  return new qucs::Ellipse();
   return 0;
 }
 
 // --------------------------------------------------------------------------
-Element* Ellipse::info_filled(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* qucs::Ellipse::info_filled(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr("filled Ellipse");
   BitmapFile = (char *) "filledellipse";
 
-  if(getNewOne)  return new Ellipse(true);
+  if(getNewOne)  return new qucs::Ellipse(true);
   return 0;
 }
 
 // --------------------------------------------------------------------------
-bool Ellipse::load(const QString& s)
+bool qucs::Ellipse::load(const QString& s)
 {
   bool ok;
 
@@ -166,7 +168,7 @@ bool Ellipse::load(const QString& s)
 }
 
 // --------------------------------------------------------------------------
-QString Ellipse::save()
+QString qucs::Ellipse::save()
 {
   QString s = Name +
 	QString::number(cx) + " " + QString::number(cy) + " " +
@@ -180,7 +182,7 @@ QString Ellipse::save()
 }
 
 // --------------------------------------------------------------------------
-QString Ellipse::saveCpp()
+QString qucs::Ellipse::saveCpp()
 {
   QString b = filled ?
     QString (", QBrush (QColor (\"%1\"), %2)").
@@ -195,7 +197,7 @@ QString Ellipse::saveCpp()
   return s;
 }
 
-QString Ellipse::saveJSON()
+QString qucs::Ellipse::saveJSON()
 {
   QString b = filled ?
     QString ("\"colorfill\" : \"%1\", \"stylefill\" : \"%2\"").
@@ -212,7 +214,7 @@ QString Ellipse::saveJSON()
 
 // --------------------------------------------------------------------------
 // Checks if the resize area was clicked.
-bool Ellipse::resizeTouched(float fX, float fY, float len)
+bool qucs::Ellipse::resizeTouched(float fX, float fY, float len)
 {
   float fCX = float(cx), fCY = float(cy);
   float fX2 = float(cx+x2), fY2 = float(cy+y2);
@@ -234,7 +236,7 @@ bool Ellipse::resizeTouched(float fX, float fY, float len)
 
 // --------------------------------------------------------------------------
 // Mouse move action during resize.
-void Ellipse::MouseResizeMoving(int x, int y, Schematic *p)
+void qucs::Ellipse::MouseResizeMoving(int x, int y, Schematic *p)
 {
   paintScheme(p);  // erase old painting
   switch(State) {
@@ -256,7 +258,7 @@ void Ellipse::MouseResizeMoving(int x, int y, Schematic *p)
 // --------------------------------------------------------------------------
 // fx/fy are the precise coordinates, gx/gy are the coordinates set on grid.
 // x/y are coordinates without scaling.
-void Ellipse::MouseMoving(
+void qucs::Ellipse::MouseMoving(
 	Schematic *paintScale, int, int, int gx, int gy,
 	Schematic *p, int x, int y, bool drawn)
 {
@@ -290,7 +292,7 @@ void Ellipse::MouseMoving(
 }
 
 // --------------------------------------------------------------------------
-bool Ellipse::MousePressing()
+bool qucs::Ellipse::MousePressing()
 {
   State++;
   if(State == 1) {
@@ -311,7 +313,7 @@ bool Ellipse::MousePressing()
 
 // --------------------------------------------------------------------------
 // Checks if the coordinates x/y point to the painting.
-bool Ellipse::getSelected(float fX, float fY, float w)
+bool qucs::Ellipse::getSelected(float fX, float fY, float w)
 {
   float fX2 = float(x2);
   float fY2 = float(y2);
@@ -340,7 +342,7 @@ bool Ellipse::getSelected(float fX, float fY, float w)
 
 // --------------------------------------------------------------------------
 // Rotates around the center.
-void Ellipse::rotate()
+void qucs::Ellipse::rotate()
 {
   cy += (y2-x2) >> 1;
   cx += (x2-y2) >> 1;
@@ -351,14 +353,14 @@ void Ellipse::rotate()
 
 // --------------------------------------------------------------------------
 // Mirrors about center line.
-void Ellipse::mirrorX()
+void qucs::Ellipse::mirrorX()
 {
   // nothing to do
 }
 
 // --------------------------------------------------------------------------
 // Mirrors about center line.
-void Ellipse::mirrorY()
+void qucs::Ellipse::mirrorY()
 {
   // nothing to do
 }
@@ -366,16 +368,16 @@ void Ellipse::mirrorY()
 // --------------------------------------------------------------------------
 // Calls the property dialog for the painting and changes them accordingly.
 // If there were changes, it returns 'true'.
-bool Ellipse::Dialog()
+bool qucs::Ellipse::Dialog()
 {
   bool changed = false;
 
   FillDialog *d = new FillDialog(QObject::tr("Edit Ellipse Properties"));
-  d->ColorButt->setPaletteBackgroundColor(Pen.color());
+  misc::setPickerColor(d->ColorButt,Pen.color());
   d->LineWidth->setText(QString::number(Pen.width()));
-  d->StyleBox->setCurrentItem(Pen.style()-1);
-  d->FillColorButt->setPaletteBackgroundColor(Brush.color());
-  d->FillStyleBox->setCurrentItem(Brush.style());
+  d->StyleBox->setCurrentIndex(Pen.style()-1);
+  misc::setPickerColor(d->FillColorButt,Brush.color());
+  d->FillStyleBox->setCurrentIndex(Brush.style());
   d->CheckFilled->setChecked(filled);
   d->slotCheckFilled(filled);
 
@@ -384,28 +386,28 @@ bool Ellipse::Dialog()
     return false;
   }
 
-  if(Pen.color() != d->ColorButt->paletteBackgroundColor()) {
-    Pen.setColor(d->ColorButt->paletteBackgroundColor());
+  if(Pen.color() != misc::getWidgetBackgroundColor(d->ColorButt)) {
+    Pen.setColor(misc::getWidgetBackgroundColor(d->ColorButt));
     changed = true;
   }
   if(Pen.width()  != d->LineWidth->text().toInt()) {
     Pen.setWidth(d->LineWidth->text().toInt());
     changed = true;
   }
-  if(Pen.style()  != (Qt::PenStyle)(d->StyleBox->currentItem()+1)) {
-    Pen.setStyle((Qt::PenStyle)(d->StyleBox->currentItem()+1));
+  if(Pen.style()  != (Qt::PenStyle)(d->StyleBox->currentIndex()+1)) {
+    Pen.setStyle((Qt::PenStyle)(d->StyleBox->currentIndex()+1));
     changed = true;
   }
   if(filled != d->CheckFilled->isChecked()) {
     filled = d->CheckFilled->isChecked();
     changed = true;
   }
-  if(Brush.color() != d->FillColorButt->paletteBackgroundColor()) {
-    Brush.setColor(d->FillColorButt->paletteBackgroundColor());
+  if(Brush.color() != misc::getWidgetBackgroundColor(d->FillColorButt)) {
+    Brush.setColor(misc::getWidgetBackgroundColor(d->FillColorButt));
     changed = true;
   }
-  if(Brush.style()  != d->FillStyleBox->currentItem()) {
-    Brush.setStyle((Qt::BrushStyle)d->FillStyleBox->currentItem());
+  if(Brush.style()  != d->FillStyleBox->currentIndex()) {
+    Brush.setStyle((Qt::BrushStyle)d->FillStyleBox->currentIndex());
     changed = true;
   }
 

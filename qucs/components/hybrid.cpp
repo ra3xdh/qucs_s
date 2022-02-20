@@ -18,26 +18,26 @@ Hybrid::Hybrid()
 {
   Description = QObject::tr("hybrid (unsymmetrical 3dB coupler)");
 
-  Lines.append(new Line(-14,-14, 14,-14,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-14, 14, 14, 14,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-14,-14,-14, 14,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 14,-14, 14, 14,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-14,-14, 14,-14,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-14, 14, 14, 14,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-14,-14,-14, 14,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 14,-14, 14, 14,QPen(Qt::darkBlue,2)));
 
-  Arcs.append(new Arc(-28,-28, 28, 28, 16*270, 16*90,QPen(Qt::darkBlue,1)));
-  Arcs.append(new Arc(  0,-28, 28, 28, 16*180, 16*90,QPen(Qt::darkBlue,1)));
-  Arcs.append(new Arc(-28,  0, 28, 28,      0, 16*90,QPen(Qt::darkBlue,1)));
-  Arcs.append(new Arc(  0,  0, 28, 28,  16*90, 16*90,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(-28,-28, 28, 28, 16*270, 16*90,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(  0,-28, 28, 28, 16*180, 16*90,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(-28,  0, 28, 28,      0, 16*90,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(  0,  0, 28, 28,  16*90, 16*90,QPen(Qt::darkBlue,1)));
 
-  Arcs.append(new Arc(-11,-11, 4, 6, 0, 16*360,QPen(Qt::darkBlue,1)));
-  Arcs.append(new Arc(-11,  5, 4, 6, 0, 16*360,QPen(Qt::darkBlue,1)));
-  Arcs.append(new Arc(  6,-11, 4, 6, 0, 16*360,QPen(Qt::darkBlue,1)));
-  Arcs.append(new Arc(  6,  5, 4, 6, 0, 16*360,QPen(Qt::darkBlue,1)));
-  Lines.append(new Line( 8, -12, 8, -4,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(-11,-11, 4, 6, 0, 16*360,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(-11,  5, 4, 6, 0, 16*360,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(  6,-11, 4, 6, 0, 16*360,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(  6,  5, 4, 6, 0, 16*360,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line( 8, -12, 8, -4,QPen(Qt::darkBlue,1)));
 
-  Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 14,  0, 30,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0,-30,  0,-14,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0, 14,  0, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 14,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0,-30,  0,-14,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0, 14,  0, 30,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30,  0));
   Ports.append(new Port( 30,  0));

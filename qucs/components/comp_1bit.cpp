@@ -56,16 +56,16 @@ Element * comp_1bit::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void comp_1bit::createSymbol()
 {
-  Lines.append(new Line(-30, -60, 30,-60,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30, -60, 30, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  30,-30, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-30,  30,-30, -60,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30, -60, 30,-60,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30, -60, 30, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30,  30,-30, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  30,-30, -60,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-50,-10,-30,-10,QPen(Qt::darkBlue,2)));  // X
-  Lines.append(new Line(-50, 10,-30, 10,QPen(Qt::darkBlue,2)));  // Y
-  Lines.append(new Line( 30, 20, 50, 20,QPen(Qt::darkBlue,2)));  // L
-  Lines.append(new Line( 30,  0, 50,  0,QPen(Qt::darkBlue,2)));  // G
-  Lines.append(new Line( 30,-20, 50,-20,QPen(Qt::darkBlue,2)));  // E
+  Lines.append(new qucs::Line(-50,-10,-30,-10,QPen(Qt::darkBlue,2)));  // X
+  Lines.append(new qucs::Line(-50, 10,-30, 10,QPen(Qt::darkBlue,2)));  // Y
+  Lines.append(new qucs::Line( 30, 20, 50, 20,QPen(Qt::darkBlue,2)));  // L
+  Lines.append(new qucs::Line( 30,  0, 50,  0,QPen(Qt::darkBlue,2)));  // G
+  Lines.append(new qucs::Line( 30,-20, 50,-20,QPen(Qt::darkBlue,2)));  // E
 
   Texts.append(new Text(-25,-55, "COMP", Qt::darkBlue, 12.0));
 

@@ -20,6 +20,7 @@
 #include "diagrams/graph.h"
 
 #include <QPainter>
+#include <QPainterPath>
 #include <QFont>
 #include <QDebug>
 

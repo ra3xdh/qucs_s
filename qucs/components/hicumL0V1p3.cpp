@@ -322,49 +322,49 @@ Element * hicumL0V1p3::info_pnp(QString& Name, char * &BitmapFile, bool getNewOn
 void hicumL0V1p3::createSymbol()
 {
   // normal bipolar
-  Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line(-30,  0,-10,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10, -5,  0,-15,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0,-15,  0,-30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10,  5,  0, 15,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0, 15,  0, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,-15,-10, 15,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-30,  0,-10,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10, -5,  0,-15,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0,-15,  0,-30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,  5,  0, 15,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0, 15,  0, 30,QPen(Qt::darkBlue,2)));
 
   // substrate node
-  Lines.append(new Line(  9,  0, 30,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  9, -7,  9,  7,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(  9,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  9, -7,  9,  7,QPen(Qt::darkBlue,3)));
 
   // thermal node
-  Lines.append(new Line(-30, 20,-20, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-20, 17,-20, 23,QPen(Qt::darkBlue,2)));  
+  Lines.append(new qucs::Line(-30, 20,-20, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-20, 17,-20, 23,QPen(Qt::darkBlue,2)));  
 
   // arrow
   if(Props.getFirst()->Value == "npn") {
-    Lines.append(new Line( -6, 15,  0, 15,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(  0,  9,  0, 15,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( -6, 15,  0, 15,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(  0,  9,  0, 15,QPen(Qt::darkBlue,2)));
   } else {
-    Lines.append(new Line( -5, 10, -5, 16,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line( -5, 10,  1, 10,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( -5, 10, -5, 16,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( -5, 10,  1, 10,QPen(Qt::darkBlue,2)));
   }
 
   // H
-  Lines.append(new Line(-30,-30,-30,-24,QPen(Qt::darkBlue,1)));
-  Lines.append(new Line(-30,-27,-26,-27,QPen(Qt::darkBlue,1)));
-  Lines.append(new Line(-26,-30,-26,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-30,-30,-30,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-30,-27,-26,-27,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-26,-30,-26,-24,QPen(Qt::darkBlue,1)));
   // I
-  Lines.append(new Line(-24,-30,-24,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-24,-30,-24,-24,QPen(Qt::darkBlue,1)));
   // C
-  Lines.append(new Line(-22,-30,-22,-24,QPen(Qt::darkBlue,1)));
-  Lines.append(new Line(-22,-30,-19,-30,QPen(Qt::darkBlue,1)));
-  Lines.append(new Line(-22,-24,-19,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-22,-30,-22,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-22,-30,-19,-30,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-22,-24,-19,-24,QPen(Qt::darkBlue,1)));
   // U
-  Lines.append(new Line(-17,-30,-17,-24,QPen(Qt::darkBlue,1)));
-  Lines.append(new Line(-14,-30,-14,-24,QPen(Qt::darkBlue,1)));
-  Lines.append(new Line(-17,-24,-14,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-17,-30,-17,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-14,-30,-14,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-17,-24,-14,-24,QPen(Qt::darkBlue,1)));
   // M
-  Lines.append(new Line(-12,-30,-12,-24,QPen(Qt::darkBlue,1)));
-  Lines.append(new Line( -8,-30, -8,-24,QPen(Qt::darkBlue,1)));
-  Lines.append(new Line(-12,-30,-10,-28,QPen(Qt::darkBlue,1)));
-  Lines.append(new Line( -8,-30,-10,-28,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-12,-30,-12,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line( -8,-30, -8,-24,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-12,-30,-10,-28,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line( -8,-30,-10,-28,QPen(Qt::darkBlue,1)));
 
   // terminal definitions
   Ports.append(new Port(  0,-30)); // collector

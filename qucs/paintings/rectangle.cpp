@@ -24,7 +24,9 @@
 #include <QComboBox>
 #include <QCheckBox>
 
-Rectangle::Rectangle(bool _filled)
+#include "misc.h"
+
+qucs::Rectangle::Rectangle(bool _filled)
 {
   Name = "Rectangle ";
   isSelected = false;
@@ -36,12 +38,12 @@ Rectangle::Rectangle(bool _filled)
   y1 = y2 = 0;
 }
 
-Rectangle::~Rectangle()
+qucs::Rectangle::~Rectangle()
 {
 }
 
 // --------------------------------------------------------------------------
-void Rectangle::paint(ViewPainter *p)
+void qucs::Rectangle::paint(ViewPainter *p)
 {
   if(isSelected) {
     p->Painter->setPen(QPen(Qt::darkGray,Pen.width()+5));
@@ -65,13 +67,13 @@ void Rectangle::paint(ViewPainter *p)
 }
 
 // --------------------------------------------------------------------------
-void Rectangle::paintScheme(Schematic *p)
+void qucs::Rectangle::paintScheme(Schematic *p)
 {
   p->PostPaintEvent(_Rect, cx, cy, x2, y2);
 }
 
 // --------------------------------------------------------------------------
-void Rectangle::getCenter(int& x, int &y)
+void qucs::Rectangle::getCenter(int& x, int &y)
 {
   x = cx+(x2>>1);
   y = cy+(y2>>1);
@@ -79,40 +81,40 @@ void Rectangle::getCenter(int& x, int &y)
 
 // --------------------------------------------------------------------------
 // Sets the center of the painting to x/y.
-void Rectangle::setCenter(int x, int y, bool relative)
+void qucs::Rectangle::setCenter(int x, int y, bool relative)
 {
   if(relative) { cx += x;  cy += y; }
   else { cx = x-(x2>>1);  cy = y-(y2>>1); }
 }
 
 // --------------------------------------------------------------------------
-Painting* Rectangle::newOne()
+Painting* qucs::Rectangle::newOne()
 {
-  return new Rectangle();
+  return new qucs::Rectangle();
 }
 
 // --------------------------------------------------------------------------
-Element* Rectangle::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* qucs::Rectangle::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr("Rectangle");
   BitmapFile = (char *) "rectangle";
 
-  if(getNewOne)  return new Rectangle();
+  if(getNewOne)  return new qucs::Rectangle();
   return 0;
 }
 
 // --------------------------------------------------------------------------
-Element* Rectangle::info_filled(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* qucs::Rectangle::info_filled(QString& Name, char* &BitmapFile, bool getNewOne)
 {
   Name = QObject::tr("filled Rectangle");
   BitmapFile = (char *) "filledrect";
 
-  if(getNewOne)  return new Rectangle(true);
+  if(getNewOne)  return new qucs::Rectangle(true);
   return 0;
 }
 
 // --------------------------------------------------------------------------
-bool Rectangle::load(const QString& s)
+bool qucs::Rectangle::load(const QString& s)
 {
   bool ok;
 
@@ -165,7 +167,7 @@ bool Rectangle::load(const QString& s)
 }
 
 // --------------------------------------------------------------------------
-QString Rectangle::save()
+QString qucs::Rectangle::save()
 {
   QString s = Name +
 	QString::number(cx) + " " + QString::number(cy) + " " +
@@ -179,7 +181,7 @@ QString Rectangle::save()
 }
 
 // --------------------------------------------------------------------------
-QString Rectangle::saveCpp()
+QString qucs::Rectangle::saveCpp()
 {
   QString b = filled ?
     QString (", QBrush (QColor (\"%1\"), %2)").
@@ -194,7 +196,7 @@ QString Rectangle::saveCpp()
   return s;
 }
 
-QString Rectangle::saveJSON()
+QString qucs::Rectangle::saveJSON()
 {
   QString b = filled ?
     QString ("\"colorfill\" : \"%1\", \"stylefill\" : \"%2\"").
@@ -212,7 +214,7 @@ QString Rectangle::saveJSON()
 
 // --------------------------------------------------------------------------
 // Checks if the resize area was clicked.
-bool Rectangle::resizeTouched(float fX, float fY, float len)
+bool qucs::Rectangle::resizeTouched(float fX, float fY, float len)
 {
   float fCX = float(cx), fCY = float(cy);
   float fX2 = float(cx+x2), fY2 = float(cy+y2);
@@ -234,7 +236,7 @@ bool Rectangle::resizeTouched(float fX, float fY, float len)
 
 // --------------------------------------------------------------------------
 // Mouse move action during resize.
-void Rectangle::MouseResizeMoving(int x, int y, Schematic *p)
+void qucs::Rectangle::MouseResizeMoving(int x, int y, Schematic *p)
 {
   paintScheme(p);  // erase old painting
   switch(State) {
@@ -256,7 +258,7 @@ void Rectangle::MouseResizeMoving(int x, int y, Schematic *p)
 // --------------------------------------------------------------------------
 // fx/fy are the precise coordinates, gx/gy are the coordinates set on grid.
 // x/y are coordinates without scaling.
-void Rectangle::MouseMoving(
+void qucs::Rectangle::MouseMoving(
 	Schematic *paintScale, int, int, int gx, int gy,
 	Schematic *p, int x, int y, bool drawn)
 {
@@ -291,7 +293,7 @@ void Rectangle::MouseMoving(
 }
 
 // --------------------------------------------------------------------------
-bool Rectangle::MousePressing()
+bool qucs::Rectangle::MousePressing()
 {
   State++;
   if(State == 1) {
@@ -312,7 +314,7 @@ bool Rectangle::MousePressing()
 
 // --------------------------------------------------------------------------
 // Checks if the coordinates x/y point to the painting.
-bool Rectangle::getSelected(float fX, float fY, float w)
+bool qucs::Rectangle::getSelected(float fX, float fY, float w)
 {
   if(filled) {
     if(int(fX) > cx+x2) return false;   // coordinates outside the rectangle ?
@@ -341,7 +343,7 @@ bool Rectangle::getSelected(float fX, float fY, float w)
 
 // --------------------------------------------------------------------------
 // Rotates around the center.
-void Rectangle::rotate()
+void qucs::Rectangle::rotate()
 {
   cy += (y2-x2) >> 1;
   cx += (x2-y2) >> 1;
@@ -352,14 +354,14 @@ void Rectangle::rotate()
 
 // --------------------------------------------------------------------------
 // Mirrors about center line.
-void Rectangle::mirrorX()
+void qucs::Rectangle::mirrorX()
 {
   // nothing to do
 }
 
 // --------------------------------------------------------------------------
 // Mirrors about center line.
-void Rectangle::mirrorY()
+void qucs::Rectangle::mirrorY()
 {
   // nothing to do
 }
@@ -367,16 +369,16 @@ void Rectangle::mirrorY()
 // --------------------------------------------------------------------------
 // Calls the property dialog for the painting and changes them accordingly.
 // If there were changes, it returns 'true'.
-bool Rectangle::Dialog()
+bool qucs::Rectangle::Dialog()
 {
   bool changed = false;
 
   FillDialog *d = new FillDialog(QObject::tr("Edit Rectangle Properties"));
-  d->ColorButt->setPaletteBackgroundColor(Pen.color());
+  misc::setPickerColor(d->ColorButt,Pen.color());
   d->LineWidth->setText(QString::number(Pen.width()));
-  d->StyleBox->setCurrentItem(Pen.style()-1);
-  d->FillColorButt->setPaletteBackgroundColor(Brush.color());
-  d->FillStyleBox->setCurrentItem(Brush.style());
+  d->StyleBox->setCurrentIndex(Pen.style()-1);
+  misc::setPickerColor(d->FillColorButt,Brush.color());
+  d->FillStyleBox->setCurrentIndex(Brush.style());
   d->CheckFilled->setChecked(filled);
   d->slotCheckFilled(filled);
 
@@ -385,28 +387,28 @@ bool Rectangle::Dialog()
     return false;
   }
 
-  if(Pen.color() != d->ColorButt->paletteBackgroundColor()) {
-    Pen.setColor(d->ColorButt->paletteBackgroundColor());
+  if(Pen.color() != misc::getWidgetBackgroundColor(d->ColorButt)) {
+    Pen.setColor(misc::getWidgetBackgroundColor(d->ColorButt));
     changed = true;
   }
   if(Pen.width()  != d->LineWidth->text().toInt()) {
     Pen.setWidth(d->LineWidth->text().toInt());
     changed = true;
   }
-  if(Pen.style()  != (Qt::PenStyle)(d->StyleBox->currentItem()+1)) {
-    Pen.setStyle((Qt::PenStyle)(d->StyleBox->currentItem()+1));
+  if(Pen.style()  != (Qt::PenStyle)(d->StyleBox->currentIndex()+1)) {
+    Pen.setStyle((Qt::PenStyle)(d->StyleBox->currentIndex()+1));
     changed = true;
   }
   if(filled != d->CheckFilled->isChecked()) {
     filled = d->CheckFilled->isChecked();
     changed = true;
   }
-  if(Brush.color() != d->FillColorButt->paletteBackgroundColor()) {
-    Brush.setColor(d->FillColorButt->paletteBackgroundColor());
+  if(Brush.color() != misc::getWidgetBackgroundColor(d->FillColorButt)) {
+    Brush.setColor(misc::getWidgetBackgroundColor(d->FillColorButt));
     changed = true;
   }
-  if(Brush.style() != d->FillStyleBox->currentItem()) {
-    Brush.setStyle((Qt::BrushStyle)d->FillStyleBox->currentItem());
+  if(Brush.style() != d->FillStyleBox->currentIndex()) {
+    Brush.setStyle((Qt::BrushStyle)d->FillStyleBox->currentIndex());
     changed = true;
   }
 

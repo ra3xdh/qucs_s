@@ -22,12 +22,12 @@ Amplifier::Amplifier()
 {
   Description = QObject::tr("ideal amplifier");
 
-  Lines.append(new Line(-16,-20,-16, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-16,-20, 16,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-16, 20, 16,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-16,-20,-16, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-16,-20, 16,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-16, 20, 16,  0,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-30,  0,-16,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 16,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  0,-16,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 16,  0, 30,  0,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30,  0));
   Ports.append(new Port( 30,  0));

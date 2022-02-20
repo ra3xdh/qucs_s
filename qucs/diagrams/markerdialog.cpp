@@ -27,8 +27,9 @@
 
 
 MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
-                     : QDialog(parent, 0, FALSE, Qt::WDestructiveClose)
+                     : QDialog(parent)
 {
+    setAttribute(Qt::WA_DeleteOnClose);
   setWindowTitle(tr("Edit Marker Properties"));
   pMarker = pm_;
 
@@ -42,10 +43,10 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   g->addWidget(Precision, 0, 1);
 
   NumberBox = new QComboBox();
-  NumberBox->insertItem(tr("real/imaginary"));
-  NumberBox->insertItem(tr("magnitude/angle (degree)"));
-  NumberBox->insertItem(tr("magnitude/angle (radian)"));
-  NumberBox->setCurrentItem(pMarker->numMode);
+  NumberBox->addItem(tr("real/imaginary"));
+  NumberBox->addItem(tr("magnitude/angle (degree)"));
+  NumberBox->addItem(tr("magnitude/angle (radian)"));
+  NumberBox->setCurrentIndex(pMarker->numMode);
 
   g->addWidget(new QLabel(tr("Number Notation: ")), 1,0);
   g->addWidget(NumberBox, 1, 1);
@@ -63,7 +64,7 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   
   TransBox = new QCheckBox(tr("transparent"));
   TransBox->setChecked(pMarker->transparent);
-  g->addMultiCellWidget(TransBox,3,3,0,1);
+  g->addWidget(TransBox,3,0);
 
   // first => activated by pressing RETURN
   QPushButton *ButtOK = new QPushButton(tr("OK"));
@@ -76,7 +77,7 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   b->setSpacing(5);
   b->addWidget(ButtOK);
   b->addWidget(ButtCancel);
-  g->addMultiCellLayout(b,4,4,0,1);
+  g->addLayout(b,4,0,1,2);
 
   this->setLayout(g);
 }
@@ -104,8 +105,8 @@ void MarkerDialog::slotAcceptValues()
 					changed = true;
 			}
 	}
-  if(NumberBox->currentItem() != pMarker->numMode) {
-    pMarker->numMode = NumberBox->currentItem();
+  if(NumberBox->currentIndex() != pMarker->numMode) {
+    pMarker->numMode = NumberBox->currentIndex();
     changed = true;
   }
   if(TransBox->isChecked() != pMarker->transparent) {

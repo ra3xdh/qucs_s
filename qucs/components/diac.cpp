@@ -22,15 +22,15 @@ Diac::Diac()
 {
   Description = QObject::tr("diac (bidirectional trigger diode)");
 
-  Lines.append(new Line(  0,-30,  0, -6,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0, 30,  0,  6,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0,-30,  0, -6,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0, 30,  0,  6,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-18,  6, 18,  6,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-18, -6, 18, -6,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -9,  6,-18, -6,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -9,  6,  0, -6,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  9, -6,  0,  6,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  9, -6, 18,  6,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-18,  6, 18,  6,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-18, -6, 18, -6,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( -9,  6,-18, -6,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( -9,  6,  0, -6,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  9, -6,  0,  6,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  9, -6, 18,  6,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(  0,-30));
   Ports.append(new Port(  0, 30));

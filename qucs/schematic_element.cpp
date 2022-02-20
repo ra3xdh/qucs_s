@@ -18,7 +18,7 @@
 #include <limits.h>
 
 #include "schematic.h"
-#include <Q3PtrList>
+#include <qt3_compat/qt_compat.h>
 #include <QDebug>
 
 

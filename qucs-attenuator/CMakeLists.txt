@@ -28,15 +28,17 @@ INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ") # enable warning level
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ") # enable C++11
 
-# flag not available in mingw 4.8.2, MSVC10
-IF(NOT WIN32)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-register ")
-ENDIF()
 
-FIND_PACKAGE( Qt4 REQUIRED )
-SET( QT_USE_QTGUI TRUE )
+FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets REQUIRED )
+#SET( QT_USE_QTGUI TRUE )
 
-INCLUDE( ${QT_USE_FILE} )
+INCLUDE_DIRECTORIES(
+      ${Qt5Core_INCLUDE_DIRS}
+      ${Qt5Widgets_INCLUDE_DIRS}
+       )
+
+# bug, the find package does not seem to set the QT_LIBRARIES, do it manually
+SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES}  )
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
@@ -46,11 +48,11 @@ SET( attenuator_sources attenuatorfunc.cpp main.cpp qucsattenuator.cpp )
 
 SET( attenuator_moc_headers qucsattenuator.h )
 
-QT4_WRAP_CPP( attenuator_moc_sources ${attenuator_moc_headers} )
+QT5_WRAP_CPP( attenuator_moc_sources ${attenuator_moc_headers} )
 
 SET(RESOURCES qucsattenuator.qrc)
 
-QT4_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
+QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
 
 IF(APPLE)
   # set information on Info.plist file

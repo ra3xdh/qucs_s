@@ -1,6 +1,8 @@
 #include "spicecompat.h"
 #include "main.h"
 
+#include <QDebug>
+
 /*!
  * \brief spicecompat::check_refdes If starting letters of the component name
  *        match spice model (i.e. R1, C1, L1)returns Name. Otherwise function

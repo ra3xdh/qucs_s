@@ -183,9 +183,11 @@ QucsApp::QucsApp()
   lastExportFilename = QDir::homePath() + QDir::separator() + "export.png";
 
   // load documents given as command line arguments
-  for(int z=1; z<qApp->argc(); z++) {
-    QString arg = qApp->argv()[z];
-    if(*(arg) != '-') {
+  for(int z=1; z<qApp->arguments().size(); z++) {
+    QString arg = qApp->arguments()[z];
+    QByteArray ba = arg.toLatin1();
+    const char *c_arg = ba.data();
+    if(*(c_arg) != '-') {
       QFileInfo Info(arg);
       QucsSettings.QucsWorkDir.setPath(Info.absoluteDir().absolutePath());
       arg = QucsSettings.QucsWorkDir.filePath(Info.fileName());
@@ -231,7 +233,7 @@ void QucsApp::initView()
   setCentralWidget(DocumentTab);
 
   connect(DocumentTab,
-          SIGNAL(currentChanged(QWidget*)), SLOT(slotChangeView(QWidget*)));
+          SIGNAL(currentChanged(int)), SLOT(slotChangeView()));
 
   // Give every tab a close button, and connect the button's signal to
   // slotFileClose
@@ -262,7 +264,7 @@ void QucsApp::initView()
   connect(editText, SIGNAL(returnPressed()), SLOT(slotApplyCompText()));
   connect(editText, SIGNAL(textChanged(const QString&)),
           SLOT(slotResizePropEdit(const QString&)));
-  connect(editText, SIGNAL(lostFocus()), SLOT(slotHideEdit()));
+  connect(editText, SIGNAL(editingFinished()), SLOT(slotHideEdit()));
 
   // ----------------------------------------------------------
   // "Project Tab" of the left QTabWidget
@@ -605,9 +607,9 @@ QucsDoc * QucsApp::findDoc (QString File, int * Pos)
 {
   QucsDoc * d;
   int No = 0;
-  File = QDir::convertSeparators (File);
+  File = QDir::toNativeSeparators (File);
   while ((d = getDoc (No++)) != 0)
-    if (QDir::convertSeparators (d->DocName) == File) {
+    if (QDir::toNativeSeparators (d->DocName) == File) {
       if (Pos) *Pos = No - 1;
       return d;
     }
@@ -1287,7 +1289,7 @@ void QucsApp::slotMenuProjClose()
 
   slotResetWarnings();
   setWindowTitle("Qucs " PACKAGE_VERSION + tr(" - Project: "));
-  QucsSettings.QucsWorkDir.setPath(QDir::homePath()+QDir::convertSeparators ("/.qucs"));
+  QucsSettings.QucsWorkDir.setPath(QDir::homePath()+QDir::toNativeSeparators ("/.qucs"));
   octave->adjustDirectory();
 
   Content->setProjPath("");
@@ -1455,7 +1457,7 @@ bool QucsApp::gotoPage(const QString& Name)
     view->drawn = false;
     return false;
   }
-  slotChangeView(DocumentTab->currentWidget());
+  slotChangeView();
 
   // if only an untitled document was open -> close it
   if(getDoc(0)->DocName.isEmpty())
@@ -1781,9 +1783,10 @@ void QucsApp::slotHelpReport()
 
 // --------------------------------------------------------------
 // Is called when another document is selected via the TabBar.
-void QucsApp::slotChangeView(QWidget *w)
+void QucsApp::slotChangeView()
 {
 
+  QWidget *w = DocumentTab->currentWidget();
   editText->setHidden (true); // disable text edit of component property
   QucsDoc * Doc;
   if(w==NULL)return;
@@ -2848,7 +2851,7 @@ void QucsApp::updatePathList(QStringList newPathList)
 
 void QucsApp::updateRecentFilesList(QString s)
 {
-  QSettings* settings = new QSettings("qucs","qucs");
+  QSettings* settings = new QSettings("qucs","qucs_s");
   QucsSettings.RecentDocs.removeAll(s);
   QucsSettings.RecentDocs.prepend(s);
   if (QucsSettings.RecentDocs.size() > MaxRecentFiles) {
@@ -2886,8 +2889,8 @@ void QucsApp::slotSimSettings()
 
 void QucsApp::slotSimulateWithSpice()
 {
-    if (!isTextDocument(DocumentTab->currentPage())) {
-        Schematic *sch = (Schematic*)DocumentTab->currentPage();
+    if (!isTextDocument(DocumentTab->currentWidget())) {
+        Schematic *sch = (Schematic*)DocumentTab->currentWidget();
 
         ExternSimDialog *SimDlg = new ExternSimDialog(sch);
         connect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
@@ -2905,7 +2908,7 @@ void QucsApp::slotSimulateWithSpice()
 
 void QucsApp::slotAfterSpiceSimulation()
 {
-    Schematic *sch = (Schematic*)DocumentTab->currentPage();
+    Schematic *sch = (Schematic*)DocumentTab->currentWidget();
     sch->reloadGraphs();
     sch->viewport()->update();
     if(sch->SimRunScript) {
@@ -2917,8 +2920,8 @@ void QucsApp::slotAfterSpiceSimulation()
 
 void QucsApp::slotBuildVAModule()
 {
-    if (!isTextDocument(DocumentTab->currentPage())) {
-        Schematic *Sch = (Schematic*)DocumentTab->currentPage();
+    if (!isTextDocument(DocumentTab->currentWidget())) {
+        Schematic *Sch = (Schematic*)DocumentTab->currentWidget();
 
         QFileInfo inf(Sch->DocName);
         QString filename = QFileDialog::getSaveFileName(this,tr("Save Verilog-A module"),
@@ -2947,8 +2950,8 @@ void QucsApp::slotBuildVAModule()
 
 void QucsApp::slotBuildXSPICEIfs(int mode)
 {
-    if (!isTextDocument(DocumentTab->currentPage())) {
-        Schematic *Sch = (Schematic*)DocumentTab->currentPage();
+    if (!isTextDocument(DocumentTab->currentWidget())) {
+        Schematic *Sch = (Schematic*)DocumentTab->currentWidget();
 
         QFileInfo inf(Sch->DocName);
 

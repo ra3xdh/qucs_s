@@ -18,25 +18,25 @@ CoupledTLine::CoupledTLine()
 {
   Description = QObject::tr("coupled transmission lines");
 
-  Arcs.append(new Arc(-28,-40, 18, 38,16*232, 16*33,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-28,  2, 18, 38, 16*95, 16*33,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-28,-40, 18, 38,16*232, 16*33,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-28,  2, 18, 38, 16*95, 16*33,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-20,-2,-16,-2,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-20, 2,-16, 2,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-20,-2,-16,-2,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-20, 2,-16, 2,QPen(Qt::darkBlue,2)));
 
-  Arcs.append(new Arc( 10,-40, 18, 38,16*270, 16*40,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc( 10,  2, 18, 38, 16*50, 16*40,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc( 10,-40, 18, 38,16*270, 16*40,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc( 10,  2, 18, 38, 16*50, 16*40,QPen(Qt::darkBlue,2)));
 
-  Arcs.append(new Arc(-38,-10, 16, 28, 16*45, 16*45,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-38,-18, 16, 28,16*270, 16*45,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc( 22,-10, 16, 28, 16*90, 16*45,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc( 22,-18, 16, 28,16*225, 16*45,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-38,-10, 16, 28, 16*45, 16*45,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-38,-18, 16, 28,16*270, 16*45,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc( 22,-10, 16, 28, 16*90, 16*45,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc( 22,-18, 16, 28,16*225, 16*45,QPen(Qt::darkBlue,2)));
 
   // shield
-  Arcs.append(new Arc(-20, -9, 8, 18,     0, 16*360,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc( 11, -9, 8, 18,16*270, 16*180,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-16, -9, 16, -9,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-16,  9, 16,  9,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-20, -9, 8, 18,     0, 16*360,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc( 11, -9, 8, 18,16*270, 16*180,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-16, -9, 16, -9,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-16,  9, 16,  9,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30,-10));
   Ports.append(new Port( 30,-10));

@@ -28,22 +28,22 @@ LTRA_SPICE::LTRA_SPICE()
 {
   Description = QObject::tr("SPICE O(LTRA):");
 
-  Lines.append(new Line(-60,  -20,-45,  -20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-45,  -20, 45,  -20,QPen(Qt::darkRed,4))); 
-  Lines.append(new Line( 45,  -20, 60,  -20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-60,  -20,-45,  -20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-45,  -20, 45,  -20,QPen(Qt::darkRed,4))); 
+  Lines.append(new qucs::Line( 45,  -20, 60,  -20,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line(-60,   20,-45,   20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-45,   20, 45,   20,QPen(Qt::darkRed,4))); 
-  Lines.append(new Line( 45,   20, 60,   20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-60,   20,-45,   20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-45,   20, 45,   20,QPen(Qt::darkRed,4))); 
+  Lines.append(new qucs::Line( 45,   20, 60,   20,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line(-45,    0,  -37,  0,QPen(Qt::darkRed,4)));
-  Lines.append(new Line(-37,    0,  -30, -10,QPen(Qt::darkRed,4)));
-  Lines.append(new Line(-30,  -10,  -15,  10,QPen(Qt::darkRed,4)));
-  Lines.append(new Line(-15,   10,   0,  -10,QPen(Qt::darkRed,4)));
-  Lines.append(new Line(  0,  -10,   15,  10,QPen(Qt::darkRed,4)));
-  Lines.append(new Line(  15,  10,   30, -10,QPen(Qt::darkRed,4))); 
-  Lines.append(new Line(  30, -10,  37,   0,QPen(Qt::darkRed,4))); 
-  Lines.append(new Line(  37,   0,  45,   0,QPen(Qt::darkRed,4)));   
+  Lines.append(new qucs::Line(-45,    0,  -37,  0,QPen(Qt::darkRed,4)));
+  Lines.append(new qucs::Line(-37,    0,  -30, -10,QPen(Qt::darkRed,4)));
+  Lines.append(new qucs::Line(-30,  -10,  -15,  10,QPen(Qt::darkRed,4)));
+  Lines.append(new qucs::Line(-15,   10,   0,  -10,QPen(Qt::darkRed,4)));
+  Lines.append(new qucs::Line(  0,  -10,   15,  10,QPen(Qt::darkRed,4)));
+  Lines.append(new qucs::Line(  15,  10,   30, -10,QPen(Qt::darkRed,4))); 
+  Lines.append(new qucs::Line(  30, -10,  37,   0,QPen(Qt::darkRed,4))); 
+  Lines.append(new qucs::Line(  37,   0,  45,   0,QPen(Qt::darkRed,4)));   
 
  
     

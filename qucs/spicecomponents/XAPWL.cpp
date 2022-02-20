@@ -27,13 +27,13 @@ XAPWL::XAPWL()
   Description = QObject::tr("PWL controlled voltage source:\nSeven line XSPICE specification. ");
 
 
-  Lines.append(new Line(-80,  0,-70,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 80,  0, 70,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-80,  0,-70,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 80,  0, 70,  0,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line( -70,   35, -70, -35,QPen(Qt::blue,3)));
-  Lines.append(new Line( -70,  -35,  70, -35,QPen(Qt::blue,3)));
-  Lines.append(new Line(  70,  -35,  70,  35,QPen(Qt::blue,3))); 
-  Lines.append(new Line(  70,   35, -70,  35,QPen(Qt::blue,3))); 
+  Lines.append(new qucs::Line( -70,   35, -70, -35,QPen(Qt::blue,3)));
+  Lines.append(new qucs::Line( -70,  -35,  70, -35,QPen(Qt::blue,3)));
+  Lines.append(new qucs::Line(  70,  -35,  70,  35,QPen(Qt::blue,3))); 
+  Lines.append(new qucs::Line(  70,   35, -70,  35,QPen(Qt::blue,3))); 
   
   Texts.append(new Text(  -60, -25," PWL controlled ",Qt::blue,12.0,1.0,0));
   Texts.append(new Text(  -60,   5," voltage source ",Qt::blue,12.0,1.0,0));

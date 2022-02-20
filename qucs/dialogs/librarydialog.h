@@ -48,6 +48,7 @@ class QGroupBox;
 class QRegExpValidator;
 class QStackedWidget;
 class QStringList;
+class QListWidget;
 
 
 class LibraryDialog : public QDialog {
@@ -75,7 +76,7 @@ private:
 private:
   int curDescr;
   QVBoxLayout *all;   // the mother of all widgets
-  QVBoxLayout *checkBoxLayout;
+  QVBoxLayout *subcirListLayout;
   QStackedWidget *stackedWidgets;
   QLabel *theLabel;
   QLabel *checkedCktName;
@@ -87,7 +88,8 @@ private:
   QPushButton *ButtCreateNext, *ButtCancel, *ButtSelectAll, *ButtSelectNone;
   QPushButton *prevButt, *nextButt;
   QPushButton *createButt;
-  QList<QCheckBox *> BoxList;
+  QListWidget *subcirFileList;
+  //QList<QCheckBox *> BoxList;
   QStringList SelectedNames;
   QStringList Descriptions;
   QCheckBox *checkDescr;

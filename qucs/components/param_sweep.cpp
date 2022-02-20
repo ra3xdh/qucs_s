@@ -26,7 +26,7 @@ Param_Sweep::Param_Sweep()
   Description = QObject::tr("Parameter sweep");
 
   QString  s = Description;
-  int a = s.findRev(" ");
+  int a = s.lastIndexOf(" ");
   if (a != -1) s[a] = '\n';    // break line
 
   Texts.append(new Text(0, 0, s.left(a), Qt::darkBlue, QucsSettings.largeFontSize));
@@ -160,7 +160,8 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
         QStringList par_lst = par.split('.',QString::SkipEmptyParts);
         if (par_lst.count()>1) {
             mod_par = par_lst.at(1);
-            Schematic *sch = (Schematic *) QucsMain->DocumentTab->currentPage();
+            // Schematic *sch = (Schematic *) QucsMain->DocumentTab->currentPage();
+            Schematic *sch = getSchematic();
             Component *pc = sch->getComponentByName(par_lst.at(0));
             if (pc != NULL) {
                 mod = pc->getSpiceNetlist().section('\n',1,1,QString::SectionSkipEmpty)

@@ -28,12 +28,12 @@ R_SPICE::R_SPICE()
 {
     Description = QObject::tr("SPICE R:\nMultiple line ngspice or Xyce R specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
 
-    Lines.append(new Line(-18, -9, 18, -9,QPen(Qt::darkRed,3)));
-    Lines.append(new Line( 18, -9, 18,  9,QPen(Qt::darkRed,3)));
-    Lines.append(new Line( 18,  9,-18,  9,QPen(Qt::darkRed,3)));
-    Lines.append(new Line(-18,  9,-18, -9,QPen(Qt::darkRed,3)));
-    Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-18, -9, 18, -9,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line( 18, -9, 18,  9,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line( 18,  9,-18,  9,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-18,  9,-18, -9,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
     
     Ports.append(new Port(-30,  0));
     Ports.append(new Port( 30,  0));
