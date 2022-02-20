@@ -113,8 +113,9 @@ QString Icouple::spice_netlist(bool)
     
     QString A= Props.at(0)->Value;
     QString A_Line_2= Props.at(1)->Value;
-    if(  A.length()        > 0)    s += QString("%1\n").arg(A);
-    if(  A_Line_2.length() > 0 )   s += QString("%1\n").arg(A_Line_2);
-  
+    if(  A.length()        > 0)    s += QString("%1").arg(A);
+    if(  A_Line_2.length() > 0 )   s += QString("\n%1").arg(A_Line_2);
+    s += "\n";
+
     return s;
 }
