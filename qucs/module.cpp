@@ -595,8 +595,8 @@ void Module::registerModules (void) {
   REGISTER_PAINT_1 (GraphicLine);
   REGISTER_PAINT_1 (Arrow);
   REGISTER_PAINT_1 (GraphicText);
-  REGISTER_PAINT_2 (Ellipse, info, info_filled);
-  REGISTER_PAINT_2 (Rectangle, info, info_filled);
+  REGISTER_PAINT_2 (qucs::Ellipse, info, info_filled);
+  REGISTER_PAINT_2 (qucs::Rectangle, info, info_filled);
   REGISTER_PAINT_1 (EllipseArc);
 
 }

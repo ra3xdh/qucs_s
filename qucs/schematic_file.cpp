@@ -803,9 +803,9 @@ bool Schematic::loadPaintings(QTextStream *stream, Q3PtrList<Painting> *List)
     else if(cstr == ".PortSym") p = new PortSymbol();
     else if(cstr == ".ID") p = new ID_Text();
     else if(cstr == "Text") p = new GraphicText();
-    else if(cstr == "Rectangle") p = new Rectangle();
+    else if(cstr == "Rectangle") p = new qucs::Rectangle();
     else if(cstr == "Arrow") p = new Arrow();
-    else if(cstr == "Ellipse") p = new Ellipse();
+    else if(cstr == "Ellipse") p = new qucs::Ellipse();
     else {
       QMessageBox::critical(0, QObject::tr("Error"),
 		QObject::tr("Format Error:\nUnknown painting!"));

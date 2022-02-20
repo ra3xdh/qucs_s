@@ -22,6 +22,7 @@
 
 #include <QPen>
 
+namespace qucs {
 
 class Rectangle : public Painting  {
 public:
@@ -55,5 +56,7 @@ public:
   QBrush Brush;    // filling style/color
   bool  filled;    // filled or not (for "getSelected" etc.)
 };
+
+}
 
 #endif

@@ -56,7 +56,7 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     connect(buttonExit,SIGNAL(clicked()),ngspice,SLOT(killThemAll()));
     connect(buttonExit,SIGNAL(clicked()),xyce,SLOT(killThemAll()));
 
-    QGroupBox *grp1 = new QGroupBox(tr("Simulation console"),this);
+    QGroupBox *grp_1 = new QGroupBox(tr("Simulation console"),this);
     QVBoxLayout *vbl1 = new QVBoxLayout;
 
     editSimConsole = new QPlainTextEdit(this);
@@ -66,14 +66,14 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     editSimConsole->setFont(font);
     editSimConsole->setReadOnly(true);
     vbl1->addWidget(editSimConsole);
-    grp1->setLayout(vbl1);
+    grp_1->setLayout(vbl1);
 
     simProgress = new QProgressBar(this);
     connect(ngspice,SIGNAL(progress(int)),simProgress,SLOT(setValue(int)));
     connect(xyce,SIGNAL(progress(int)),simProgress,SLOT(setValue(int)));
 
     QVBoxLayout *vl_top = new QVBoxLayout;
-    vl_top->addWidget(grp1);
+    vl_top->addWidget(grp_1);
     vl_top->addWidget(simProgress);
     QHBoxLayout *hl1 = new QHBoxLayout;
     hl1->addWidget(buttonSimulate);

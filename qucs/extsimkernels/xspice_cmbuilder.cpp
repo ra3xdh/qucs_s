@@ -234,8 +234,8 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
             }
 
             for (int i=0;mod!=mod_lst.end();mod++,ifs++,i++) {
-                QStringList lst1;
-                lst1<<(*mod)<<(*ifs);
+                QStringList lst_1;
+                lst_1<<(*mod)<<(*ifs);
                 // If model is duplicated don't process it (don't copy files)
                 if (!ModIfsPairProcessed((*mod),(*ifs))) {
                     QString destdir = QDir::toNativeSeparators(prefix + pc->Name + QString::number(i));
@@ -257,7 +257,7 @@ void XSPICE_CMbuilder::ExtractModIfsFiles(QStringList &objects, QStringList &lst
                     destfile+=".o";
                     objects.append(destfile); // Add ifspec.o to objects
                 }
-                mod_ifs_pairs.append(lst1); // This *.mod and *.ifs pair already processed
+                mod_ifs_pairs.append(lst_1); // This *.mod and *.ifs pair already processed
             }
         }
 

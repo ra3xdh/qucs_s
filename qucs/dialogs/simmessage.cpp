@@ -326,7 +326,7 @@ void SimMessage::slotFinishSpiceNetlist(int status )
 #ifdef __MINGW32__
 #include <windows.h>
 static QString pathName(QString longpath) {
-  const char * lpath = QDir::convertSeparators(longpath).ascii();
+  const char * lpath = QDir::toNativeSeparators(longpath).toLatin1().data();
   char spath[2048];
   int len = GetShortPathNameA(lpath,spath,sizeof(spath)-1);
   spath[len] = '\0';
