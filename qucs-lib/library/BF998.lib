@@ -1,0 +1,82 @@
+<Qucs Library 0.0.22 "BF998">
+
+<Component BF998>
+  <Description>
+BF998 and BF998R double gate MOSFET
+  </Description>
+  <Model>
+.Def:BF998_BF998 _net0 _net1 _net2 _net3
+Sub:X1 _net0 _net1 _net2 _net3 gnd Type="BF998_cir"
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.22  BF998_BF998.sch
+
+*   BF998 SPICE MODEL OCTOBER 1993 PHILIPS SEMICONDUCTORS
+*   ENVELOPE    SOT143 (R)
+*   1.: SOURCE;  2.: DRAIN;  3.: GATE 2;  4.: GATE 1;
+.SUBCKT nBF998 1 2 3 4
+        L10          1 10   L=0.12N
+        L20          2 20   L=0.12N
+        L30          3 30   L=0.12N
+        L40          4 40   L=0.12N
+        L11         10 11   L=1.20N
+        L21         20 21   L=1.20N
+        L31         30 31   L=1.20N
+        L41         40 41   L=1.20N
+        C13         10 30   C=0.085P
+        C14         10 40   C=0.085P
+        C23         20 30   C=0.085P
+        C24         20 40   C=0.005P
+        D11         42 11   ZENER
+        D12         42 41   ZENER
+        D21         32 11   ZENER
+        D22         32 31   ZENER
+        RS          10 12   R=100
+        MOS1        61 41 11 12 GATE1 L=1.1E-6 W=1150E-6
+        MOS2        21 31 61 12 GATE2 L=2.0E-6 W=1150E-6
+
+.MODEL  ZENER  D  BV=10 CJO=1.2E-12  RS=10
+
+.MODEL  GATE1
++  NMOS LEVEL=3 UO=600  VTO=-0.250 NFS=300E9 TOX=42E-9
++  NSUB=3E15 VMAX=140E3 RS=2.0 RD=2.0 XJ=200E-9 THETA=0.11
++  ETA=0.06 KAPPA=2 LD=0.1E-6
++  CGSO=0.3E-9 CGDO=0.3E-9 CBD=0.5E-12 CBS=0.5E-12
+
+.MODEL  GATE2 
++  NMOS LEVEL=3 UO=600  VTO=-0.250 NFS=300E9 TOX=42E-9
++  NSUB=3E15  VMAX=100E3 RS=2.0 RD=2.0 XJ=200E-9 THETA=0.11
++  ETA=0.06  KAPPA=2 LD=0.1E-6
++  CGSO=0.3E-9 CGDO=0.3E-9 CBD=0.5E-12 CBS=0.5E-12
+
+.ENDS nBF998
+
+
+.SUBCKT BF998_BF998  gnd _net0 _net1 _net2 _net3 
+X1 _net0 _net1 _net2 _net3 nBF998
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <.ID 8 -26 T>
+    <Line -10 -11 10 0 #000080 2 1>
+    <Line 0 -11 0 -19 #000080 2 1>
+    <Line -10 11 10 0 #000080 2 1>
+    <Line 0 0 0 30 #000080 2 1>
+    <Line -10 0 10 0 #000080 2 1>
+    <Line -10 -4 0 8 #000080 3 1>
+    <Line -10 7 0 9 #000080 3 1>
+    <Line -9 0 5 -5 #000080 2 1>
+    <Line -9 0 5 5 #000080 2 1>
+    <Line -30 10 16 0 #000080 2 1>
+    <Line -30 -10 16 0 #000080 2 1>
+    <Line -10 -16 0 9 #000080 3 1>
+    <Line -14 -15 0 5 #000080 3 1>
+    <Line -14 5 0 5 #000080 3 1>
+    <.PortSym 0 30 1 0>
+    <.PortSym 0 -30 2 0>
+    <.PortSym -30 -10 3 0>
+    <.PortSym -30 10 4 0>
+  </Symbol>
+</Component>
+

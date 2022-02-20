@@ -21,6 +21,8 @@ Xanalogue.lib
 MESFETs.lib
 XyceDigital.lib
 Xyce_Digital_TTL_Technology.lib
+BF998.lib
+Tubes.lib
 )
 
 SET(BLACKLIST

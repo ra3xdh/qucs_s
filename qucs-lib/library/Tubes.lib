@@ -1,0 +1,608 @@
+<Qucs Library 0.0.22 "Tubes">
+
+<Component 12AT7>
+  <Description>
+12AT7 double triode 
+  </Description>
+  <Model>
+.Def:Tubes_12AT7 _net1 _net0 _net2
+Sub:X1 _net2 _net0 _net1 gnd Type="n12AT7_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "12AT7.cir.lst">
+  <Spice>* Qucs 0.0.22  Tubes_12AT7.sch
+
+
+.subckt 12AT7_model 1 6 3
+.param mu=60
+.param ex=1.35
+.param kg1=460
+.param kp=300
+.param kvb=300
+.param  rgi=2000
+.param vct=.02
+.param  ccg=2.3p
+.param  cgp=2.2p
+.param  ccp=1.0p
+e1 7 0 value='v(1,3)/kp*log(1+exp(kp*(1/mu+v(2,3)/sqrt(kvb+v(1,3)*v(1,3)))))'
+re1 7 0 1g
+b1 1 3 I = 'max(pwr(v(7),ex)/kg1, 0)'
+rcp 1 3 1g
+c1 2 3 {ccg}
+c2 1 2 {cgp}
+c3 1 3 {ccp}
+r1 2 5 {rgi}
+v1 5 6 {vct}
+d3 6 3 dx
+.model dx d(is=1n rs=1 cjo=1pf tt=1n)
+.ends
+
+
+.SUBCKT Tubes_12AT7  gnd _net1 _net0 _net2 
+X1 _net2 _net0 _net1 12AT7_model
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line -30 40 0 -10 #000000 2 1>
+    <Line -30 30 60 0 #000000 2 1>
+    <Line 30 30 0 10 #000000 2 1>
+    <Ellipse -50 -50 100 100 #ff0000 2 1 #c0c0c0 1 0>
+    <Line -40 0 20 0 #000000 2 1>
+    <Line -10 0 20 0 #000000 2 1>
+    <Line 20 0 20 0 #000000 2 1>
+    <Line -60 0 20 0 #800000 2 1>
+    <Line 0 -35 0 -45 #800000 2 1>
+    <Line 30 40 0 30 #800000 2 1>
+    <Line -20 -35 40 0 #000000 2 1>
+    <.PortSym 30 70 1 90>
+    <.PortSym -60 0 2 0>
+    <.PortSym 0 -80 3 0>
+    <.ID 30 -76 VL>
+  </Symbol>
+</Component>
+
+<Component 12AU7>
+  <Description>
+12AU7 double triode
+  </Description>
+  <Model>
+.Def:Tubes_12AU7 _net1 _net0 _net2
+Sub:X2 _net2 _net0 _net1 gnd Type="n12AU7_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "12AU7.cir.lst">
+  <Spice>* Qucs 0.0.22  Tubes_12AU7.sch
+
+
+.subckt 12AU7_model 1 6 3
+.param mu=21.5
+.param ex=1.3
+.param kg1=1180
+.param kp=84
+.param kvb=300
+.param  rgi=2000
+.param vct=.02
+.param  ccg=2.3p
+.param  cgp=2.2p
+.param  ccp=1.0p
+e1 7 0 value='v(1,3)/kp*log(1+exp(kp*(1/mu+v(2,3)/sqrt(kvb+v(1,3)*v(1,3)))))'
+re1 7 0 1g
+b1 1 3 I = 'max(pwr(v(7),ex)/kg1, 0)'
+rcp 1 3 1g
+c1 2 3 {ccg}
+c2 1 2 {cgp}
+c3 1 3 {ccp}
+r1 2 5 {rgi}
+v1 5 6 {vct}
+d3 6 3 dx
+.model dx d(is=1n rs=1 cjo=1pf tt=1n)
+.ends
+
+
+.SUBCKT Tubes_12AU7  gnd _net1 _net0 _net2 
+X2 _net2 _net0 _net1 12AU7_model
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line -30 40 0 -10 #000000 2 1>
+    <Line -30 30 60 0 #000000 2 1>
+    <Line 30 30 0 10 #000000 2 1>
+    <Ellipse -50 -50 100 100 #ff0000 2 1 #c0c0c0 1 0>
+    <Line -40 0 20 0 #000000 2 1>
+    <Line -10 0 20 0 #000000 2 1>
+    <Line 20 0 20 0 #000000 2 1>
+    <Line -60 0 20 0 #800000 2 1>
+    <Line 0 -35 0 -45 #800000 2 1>
+    <Line 30 40 0 30 #800000 2 1>
+    <Line -20 -35 40 0 #000000 2 1>
+    <.PortSym 30 70 1 90>
+    <.PortSym -60 0 2 0>
+    <.PortSym 0 -80 3 0>
+    <.ID 30 -76 VL>
+  </Symbol>
+</Component>
+
+<Component 12AX7>
+  <Description>
+12AX7 double triode (Russian 6N2P)
+  </Description>
+  <Model>
+.Def:Tubes_12AX7 _net1 _net0 _net2
+Sub:X2 _net2 _net0 _net1 gnd Type="n12AX7_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "12AX7.cir.lst">
+  <Spice>* Qucs 0.0.22  Tubes_12AX7.sch
+
+
+.subckt 12AX7_model 1 6 3
+.param mu=100
+.param ex=1.4
+.param kg1=1060
+.param kp=600
+.param kvb=300
+.param  rgi=2000
+.param vct=.02
+.param  ccg=2.3p
+.param  cgp=2.4p
+.param  ccp=0.9p
+e1 7 0 value='v(1,3)/kp*log(1+exp(kp*(1/mu+v(2,3)/sqrt(kvb+v(1,3)*v(1,3)))))'
+re1 7 0 1g
+b1 1 3 I = 'max(pwr(v(7),ex)/kg1, 0)'
+rcp 1 3 1g
+c1 2 3 {ccg}
+c2 1 2 {cgp}
+c3 1 3 {ccp}
+r1 2 5 {rgi}
+v1 5 6 {vct}
+d3 6 3 dx
+.model dx d(is=1n rs=1 cjo=1pf tt=1n)
+.ends
+
+
+.SUBCKT Tubes_12AX7  gnd _net1 _net0 _net2 
+X2 _net2 _net0 _net1 12AX7_model
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line -30 40 0 -10 #000000 2 1>
+    <Line -30 30 60 0 #000000 2 1>
+    <Line 30 30 0 10 #000000 2 1>
+    <Ellipse -50 -50 100 100 #ff0000 2 1 #c0c0c0 1 0>
+    <Line -40 0 20 0 #000000 2 1>
+    <Line -10 0 20 0 #000000 2 1>
+    <Line 20 0 20 0 #000000 2 1>
+    <Line -60 0 20 0 #800000 2 1>
+    <Line 0 -35 0 -45 #800000 2 1>
+    <Line 30 40 0 30 #800000 2 1>
+    <Line -20 -35 40 0 #000000 2 1>
+    <.PortSym 30 70 1 90>
+    <.PortSym -60 0 2 0>
+    <.PortSym 0 -80 3 0>
+    <.ID 30 -76 VL>
+  </Symbol>
+</Component>
+
+<Component 6550>
+  <Description>
+6550 power penthode
+  </Description>
+  <Model>
+.Def:Tubes_6550 _net0 _net1 _net2 _net3
+Sub:X2 _net0 _net1 _net2 _net3 gnd Type="n6550_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "6550.cir.lst">
+  <Spice>* Qucs 0.0.22  Tubes_6550.sch
+
+
+.subckt 6550_model 1 2 3 4
+.param mu=7.9
+.param ex=1.35
+.param kg1=890
+.param kg2=4200
+.param kp=60
+.param kvb=24
+.param  rgi=1000
+.param vct=0.0
+.param  ccg=14p
+.param  cpg1=0.85p
+.param  ccp=12p
+re1  7 0  1G
+e1   7 0  value={v(4,3)/kp*log(1+exp((1/mu+v(2,3)/sqrt(kvb+v(4,3)*v(4,3)))*kp))}
+b1   1 3  I='max(pwr(v(7),ex)/kg1*atan(v(1,3)/kvb),0)'
+b2   4 3  I='max(pwr(v(4,3)/mu+v(2,3),ex)/kg2,0)'
+rcp  1 3  1G
+c1   2 3  {ccg}
+c2   1 2  {cpg1}
+c3   1 3  {ccp}
+r1   2 5  {rgi}
+d3   5 3  dx
+.model dx d(is=1n rs=1 cjo=10pf tt=1n)
+.ends
+
+
+.SUBCKT Tubes_6550  gnd _net0 _net1 _net2 _net3 
+X2 _net0 _net2 _net3 _net1 6550_model
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line -30 30 0 -10 #000000 2 1>
+    <Line -30 20 60 0 #000000 2 1>
+    <Line 45 10 -15 10 #000000 2 1>
+    <Line 30 20 0 10 #000000 2 1>
+    <.ID 70 34 Tube>
+    <Ellipse -50 -60 100 100 #ff0000 2 1 #c0c0c0 1 0>
+    <Line -40 10 20 0 #000000 2 1>
+    <Line -10 10 20 0 #000000 2 1>
+    <Line 20 10 20 0 #000000 2 1>
+    <Line -40 10 -20 0 #800000 2 1>
+    <.PortSym -60 10 3 0>
+    <Line -40 -10 20 0 #000000 2 1>
+    <Line -10 -10 20 0 #000000 2 1>
+    <Line 20 -10 20 0 #000000 2 1>
+    <Line -60 -10 20 0 #800000 2 1>
+    <Line -40 -30 20 0 #000000 2 1>
+    <Line -10 -30 20 0 #000000 2 1>
+    <Line 20 -30 20 0 #000000 2 1>
+    <Line 0 -45 0 -45 #800000 2 1>
+    <.PortSym 0 -90 1 0>
+    <Line 40 -30 5 5 #000000 2 1>
+    <Line 45 -25 0 35 #000000 2 1>
+    <Line 30 30 0 30 #800000 2 1>
+    <.PortSym 30 60 4 0>
+    <Line -20 -45 40 0 #000000 2 1>
+    <.PortSym -60 -10 2 0>
+  </Symbol>
+</Component>
+
+<Component 6DJ8>
+  <Description>
+6DJ8 double triode  (Russian 6N23P)
+  </Description>
+  <Model>
+.Def:Tubes_6DJ8 _net1 _net0 _net2
+Sub:X2 _net2 _net0 _net1 gnd Type="n6DJ8_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "6DJ8.cir.lst">
+  <Spice>* Qucs 0.0.22  Tubes_6DJ8.sch
+
+
+.subckt 6DJ8_model 1 6 3
+.param mu=28
+.param ex=1.3
+.param kg1=330
+.param kp=320
+.param kvb=300
+.param  rgi=2000
+.param vct=.02
+.param  ccg=2.3p
+.param  cgp=2.1p
+.param  ccp=0.7p
+e1 7 0 value='v(1,3)/kp*log(1+exp(kp*(1/mu+v(2,3)/sqrt(kvb+v(1,3)*v(1,3)))))'
+re1 7 0 1g
+b1 1 3 I = 'max(pwr(v(7),ex)/kg1, 0)'
+rcp 1 3 1g
+c1 2 3 {ccg}
+c2 1 2 {cgp}
+c3 1 3 {ccp}
+r1 2 5 {rgi}
+v1 5 6 {vct}
+d3 6 3 dx
+.model dx d(is=1n rs=1 cjo=1pf tt=1n)
+.ends
+
+
+.SUBCKT Tubes_6DJ8  gnd _net1 _net0 _net2 
+X2 _net2 _net0 _net1 6DJ8_model
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line -30 40 0 -10 #000000 2 1>
+    <Line -30 30 60 0 #000000 2 1>
+    <Line 30 30 0 10 #000000 2 1>
+    <Ellipse -50 -50 100 100 #ff0000 2 1 #c0c0c0 1 0>
+    <Line -40 0 20 0 #000000 2 1>
+    <Line -10 0 20 0 #000000 2 1>
+    <Line 20 0 20 0 #000000 2 1>
+    <Line -60 0 20 0 #800000 2 1>
+    <Line 0 -35 0 -45 #800000 2 1>
+    <Line 30 40 0 30 #800000 2 1>
+    <Line -20 -35 40 0 #000000 2 1>
+    <.PortSym 30 70 1 90>
+    <.PortSym -60 0 2 0>
+    <.PortSym 0 -80 3 0>
+    <.ID 30 -76 VL>
+  </Symbol>
+</Component>
+
+<Component 6L6GC>
+  <Description>
+6L6 output audio penthode (Russian 6P3S)
+  </Description>
+  <Model>
+.Def:Tubes_6L6GC _net0 _net1 _net2 _net3
+Sub:X2 _net0 _net1 _net2 _net3 gnd Type="n6L6GC_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "6L6GC.cir.lst">
+  <Spice>* Qucs 0.0.22  Tubes_6L6GC.sch
+
+
+.subckt 6L6GC_model 1 2 3 4
+.param mu=8.7
+.param ex=1.35
+.param kg1=1460
+.param kg2=4500
+.param kp=48
+.param kvb=12
+.param  rgi=1000
+.param vct=0.0
+.param  ccg=14P
+.param  cpg1=0.85p
+.param  ccp=12p
+re1  7 0  1G
+e1   7 0  value={v(4,3)/kp*log(1+exp((1/mu+v(2,3)/sqrt(kvb+v(4,3)*v(4,3)))*kp))}
+b1   1 3  I='max(pwr(v(7),ex)/kg1*atan(v(1,3)/kvb),0)'
+b2   4 3  I='max(pwr(v(4,3)/mu+v(2,3),ex)/kg2,0)'
+rcp  1 3  1G
+c1   2 3  {ccg}
+c2   1 2  {cpg1}
+c3   1 3  {ccp}
+r1   2 5  {rgi}
+d3   5 3  dx
+.model dx d(is=1n rs=1 cjo=10pf tt=1n)
+.ends
+
+
+.SUBCKT Tubes_6L6GC  gnd _net0 _net1 _net2 _net3 
+X2 _net0 _net2 _net3 _net1 6L6GC_model
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line -30 30 0 -10 #000000 2 1>
+    <Line -30 20 60 0 #000000 2 1>
+    <Line 45 10 -15 10 #000000 2 1>
+    <Line 30 20 0 10 #000000 2 1>
+    <.ID 70 34 Tube>
+    <Ellipse -50 -60 100 100 #ff0000 2 1 #c0c0c0 1 0>
+    <Line -40 10 20 0 #000000 2 1>
+    <Line -10 10 20 0 #000000 2 1>
+    <Line 20 10 20 0 #000000 2 1>
+    <Line -40 10 -20 0 #800000 2 1>
+    <.PortSym -60 10 3 0>
+    <Line -40 -10 20 0 #000000 2 1>
+    <Line -10 -10 20 0 #000000 2 1>
+    <Line 20 -10 20 0 #000000 2 1>
+    <Line -60 -10 20 0 #800000 2 1>
+    <Line -40 -30 20 0 #000000 2 1>
+    <Line -10 -30 20 0 #000000 2 1>
+    <Line 20 -30 20 0 #000000 2 1>
+    <Line 0 -45 0 -45 #800000 2 1>
+    <.PortSym 0 -90 1 0>
+    <Line 40 -30 5 5 #000000 2 1>
+    <Line 45 -25 0 35 #000000 2 1>
+    <Line 30 30 0 30 #800000 2 1>
+    <.PortSym 30 60 4 0>
+    <Line -20 -45 40 0 #000000 2 1>
+    <.PortSym -60 -10 2 0>
+  </Symbol>
+</Component>
+
+<Component 6N6P>
+  <Description>
+6N6P double triode
+  </Description>
+  <Model>
+.Def:Tubes_6N6P _net2 _net1 _net0
+Sub:X1 _net0 _net1 _net2 gnd Type="n6N6P_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "6N6P.cir.lst">
+  <Spice>* Qucs 0.0.22  Tubes_6N6P.sch
+
+
+.subckt 6N6P_model 1 6 3
+.param mu=18.8
+.param ex=1.666
+.param kg1=810
+.param kp=85.5
+.param kvb=600
+.param  rgi=2000
+.param vct=.02
+.param  ccg=4.4p
+.param  cgp=1.7p
+.param  ccp=1.85p
+e1 7 0 value='v(1,3)/kp*log(1+exp(kp*(1/mu+v(2,3)/sqrt(kvb+v(1,3)*v(1,3)))))'
+re1 7 0 1g
+b1 1 3 I = 'max(pwr(v(7),ex)/kg1, 0)'
+rcp 1 3 1g
+c1 2 3 {ccg}
+c2 1 2 {cgp}
+c3 1 3 {ccp}
+r1 2 5 {rgi}
+v1 5 6 {vct}
+d3 6 3 dx
+.model dx d(is=1n rs=1 cjo=1pf tt=1n)
+.ends
+
+
+.SUBCKT Tubes_6N6P  gnd _net2 _net1 _net0 
+X1 _net0 _net1 _net2 6N6P_model
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line -30 40 0 -10 #000000 2 1>
+    <Line -30 30 60 0 #000000 2 1>
+    <Line 30 30 0 10 #000000 2 1>
+    <Ellipse -50 -50 100 100 #ff0000 2 1 #c0c0c0 1 0>
+    <Line -40 0 20 0 #000000 2 1>
+    <Line -10 0 20 0 #000000 2 1>
+    <Line 20 0 20 0 #000000 2 1>
+    <Line -60 0 20 0 #800000 2 1>
+    <Line 0 -35 0 -45 #800000 2 1>
+    <Line 30 40 0 30 #800000 2 1>
+    <Line -20 -35 40 0 #000000 2 1>
+    <.PortSym 30 70 1 90>
+    <.PortSym -60 0 2 0>
+    <.PortSym 0 -80 3 0>
+    <.ID 30 -76 VL>
+  </Symbol>
+</Component>
+
+<Component 6V6>
+  <Description>
+6V6 output audio penthode (Russian 6P6S)
+  </Description>
+  <Model>
+.Def:Tubes_6V6 _net0 _net1 _net2 _net3
+Sub:X2 _net0 _net1 _net2 _net3 gnd Type="n6V6_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "6V6.cir.lst">
+  <Spice>* Qucs 0.0.22  Tubes_6V6.sch
+
+
+.subckt 6V6_model 1 2 3 4
+.param mu=12.67
+.param ex=1.198
+.param kg1=915
+.param kg2=4500
+.param kp=38.07
+.param kvb=30.2
+.param  rgi=1000
+.param vct=0.0
+.param  ccg=14p
+.param  cpg1=0.85p
+.param  ccp=12p
+re1  7 0  1G
+e1   7 0  value={v(4,3)/kp*log(1+exp((1/mu+v(2,3)/sqrt(kvb+v(4,3)*v(4,3)))*kp))}
+b1   1 3  I='max(pwr(v(7),ex)/kg1*atan(v(1,3)/kvb),0)'
+b2   4 3  I='max(pwr(v(4,3)/mu+v(2,3),ex)/kg2,0)'
+rcp  1 3  1G
+c1   2 3  {ccg}
+c2   1 2  {cpg1}
+c3   1 3  {ccp}
+r1   2 5  {rgi}
+d3   5 3  dx
+.model dx d(is=1n rs=1 cjo=10pf tt=1n)
+.ends
+
+
+.SUBCKT Tubes_6V6  gnd _net0 _net1 _net2 _net3 
+X2 _net0 _net2 _net3 _net1 6V6_model
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line -30 30 0 -10 #000000 2 1>
+    <Line -30 20 60 0 #000000 2 1>
+    <Line 45 10 -15 10 #000000 2 1>
+    <Line 30 20 0 10 #000000 2 1>
+    <.ID 70 34 Tube>
+    <Ellipse -50 -60 100 100 #ff0000 2 1 #c0c0c0 1 0>
+    <Line -40 10 20 0 #000000 2 1>
+    <Line -10 10 20 0 #000000 2 1>
+    <Line 20 10 20 0 #000000 2 1>
+    <Line -40 10 -20 0 #800000 2 1>
+    <.PortSym -60 10 3 0>
+    <Line -40 -10 20 0 #000000 2 1>
+    <Line -10 -10 20 0 #000000 2 1>
+    <Line 20 -10 20 0 #000000 2 1>
+    <Line -60 -10 20 0 #800000 2 1>
+    <Line -40 -30 20 0 #000000 2 1>
+    <Line -10 -30 20 0 #000000 2 1>
+    <Line 20 -30 20 0 #000000 2 1>
+    <Line 0 -45 0 -45 #800000 2 1>
+    <.PortSym 0 -90 1 0>
+    <Line 40 -30 5 5 #000000 2 1>
+    <Line 45 -25 0 35 #000000 2 1>
+    <Line 30 30 0 30 #800000 2 1>
+    <.PortSym 30 60 4 0>
+    <Line -20 -45 40 0 #000000 2 1>
+    <.PortSym -60 -10 2 0>
+  </Symbol>
+</Component>
+
+<Component EL34>
+  <Description>
+EL34 output audio penthode
+  </Description>
+  <Model>
+.Def:Tubes_EL34 _net0 _net1 _net2 _net3
+Sub:X2 _net0 _net1 _net2 _net3 gnd Type="EL34_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "EL34.cir.lst">
+  <Spice>* Qucs 0.0.22  Tubes_EL34.sch
+
+
+.subckt EL34_model 1 2 3 4
+.param mu=11
+.param ex=1.35
+.param kg1=650
+.param kg2=4200
+.param kp=60
+.param kvb=24
+.param  rgi=1000
+.param vct=0.0
+.param  ccg=15p
+.param  cpg1=1p
+.param  ccp=8p
+re1  7 0  1G
+e1   7 0  value={v(4,3)/kp*log(1+exp((1/mu+v(2,3)/sqrt(kvb+v(4,3)*v(4,3)))*kp))}
+b1   1 3  I='max(pwr(v(7),ex)/kg1*atan(v(1,3)/kvb),0)'
+b2   4 3  I='max(pwr(v(4,3)/mu+v(2,3),ex)/kg2,0)'
+rcp  1 3  1G
+c1   2 3  {ccg}
+c2   1 2  {cpg1}
+c3   1 3  {ccp}
+r1   2 5  {rgi}
+d3   5 3  dx
+.model dx d(is=1n rs=1 cjo=10pf tt=1n)
+.ends
+
+
+.SUBCKT Tubes_EL34  gnd _net0 _net1 _net2 _net3 
+X2 _net0 _net2 _net3 _net1 EL34_model
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line -30 30 0 -10 #000000 2 1>
+    <Line -30 20 60 0 #000000 2 1>
+    <Line 45 10 -15 10 #000000 2 1>
+    <Line 30 20 0 10 #000000 2 1>
+    <.ID 70 34 Tube>
+    <Ellipse -50 -60 100 100 #ff0000 2 1 #c0c0c0 1 0>
+    <Line -40 10 20 0 #000000 2 1>
+    <Line -10 10 20 0 #000000 2 1>
+    <Line 20 10 20 0 #000000 2 1>
+    <Line -40 10 -20 0 #800000 2 1>
+    <.PortSym -60 10 3 0>
+    <Line -40 -10 20 0 #000000 2 1>
+    <Line -10 -10 20 0 #000000 2 1>
+    <Line 20 -10 20 0 #000000 2 1>
+    <Line -60 -10 20 0 #800000 2 1>
+    <Line -40 -30 20 0 #000000 2 1>
+    <Line -10 -30 20 0 #000000 2 1>
+    <Line 20 -30 20 0 #000000 2 1>
+    <Line 0 -45 0 -45 #800000 2 1>
+    <.PortSym 0 -90 1 0>
+    <Line 40 -30 5 5 #000000 2 1>
+    <Line 45 -25 0 35 #000000 2 1>
+    <Line 30 30 0 30 #800000 2 1>
+    <.PortSym 30 60 4 0>
+    <Line -20 -45 40 0 #000000 2 1>
+    <.PortSym -60 -10 2 0>
+  </Symbol>
+</Component>
+
