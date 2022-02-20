@@ -41,7 +41,7 @@ PolarDiagram::PolarDiagram(int _cx, int _cy) : Diagram(_cx, _cy)
   x3 = 207;    // with some distance for right axes text
   Name = "Polar";
 
-  Arcs.append(new struct Arc(0, y2, x2, y2, 0, 16*360, QPen(Qt::black,0)));
+  Arcs.append(new struct qucs::Arc(0, y2, x2, y2, 0, 16*360, QPen(Qt::black,0)));
 //  calcDiagram();
 }
 
@@ -82,7 +82,7 @@ int PolarDiagram::calcDiagram()
   Arcs.clear();
 
   // x line
-  Lines.append(new Line(0, y2>>1, x2, y2>>1, GridPen));
+  Lines.append(new qucs::Line(0, y2>>1, x2, y2>>1, GridPen));
 
   x3 = x2 + 7;
   createPolarDiagram(&yAxis);

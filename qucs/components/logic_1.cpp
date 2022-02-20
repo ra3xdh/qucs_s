@@ -54,12 +54,12 @@ Element * logic_1::info(QString& Name, char * &BitmapFile, bool getNewOne)
 void logic_1::createSymbol()
 {
 
-  Lines.append(new Line(-10,  0,  0,  0,QPen(Qt::darkGreen,2)));
-  Lines.append(new Line(-20,-10,-10,  0,QPen(Qt::darkGreen,2)));
-  Lines.append(new Line(-20, 10,-10,  0,QPen(Qt::darkGreen,2)));
-  Lines.append(new Line(-35,-10,-20,-10,QPen(Qt::darkGreen,2)));
-  Lines.append(new Line(-35, 10,-20, 10,QPen(Qt::darkGreen,2)));
-  Lines.append(new Line(-35,-10,-35, 10,QPen(Qt::darkGreen,2)));
+  Lines.append(new qucs::Line(-10,  0,  0,  0,QPen(Qt::darkGreen,2)));
+  Lines.append(new qucs::Line(-20,-10,-10,  0,QPen(Qt::darkGreen,2)));
+  Lines.append(new qucs::Line(-20, 10,-10,  0,QPen(Qt::darkGreen,2)));
+  Lines.append(new qucs::Line(-35,-10,-20,-10,QPen(Qt::darkGreen,2)));
+  Lines.append(new qucs::Line(-35, 10,-20, 10,QPen(Qt::darkGreen,2)));
+  Lines.append(new qucs::Line(-35,-10,-35, 10,QPen(Qt::darkGreen,2)));
 
   Texts.append(new Text(-30,-12, "1", Qt::darkGreen, 12.0));
 

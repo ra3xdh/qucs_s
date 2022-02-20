@@ -158,10 +158,10 @@ void SParamFile::createSymbol()
 
   // draw symbol outline
   int h = (PortDistance/2)*((Num-1)/2) + 15;
-  Lines.append(new Line(-15, -h, 15, -h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 15, -h, 15,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-15,  h, 15,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-15, -h,-15,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-15, -h, 15, -h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 15, -h, 15,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-15,  h, 15,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-15, -h,-15,  h,QPen(Qt::darkBlue,2)));
   stmp = QObject::tr("file"); 
   w = smallmetrics.width(stmp); // compute text size to center it 
   Texts.append(new Text(-w/2, -fHeight/2, stmp));
@@ -169,7 +169,7 @@ void SParamFile::createSymbol()
   int i=0, y = 15-h;
   while(i<Num) { // add ports lines and numbers
     i++;
-    Lines.append(new Line(-30, y,-15, y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-30, y,-15, y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30, y));
     stmp = QString::number(i);
     w = smallmetrics.width(stmp);
@@ -177,14 +177,14 @@ void SParamFile::createSymbol()
 
     if(i == Num) break; // if odd number of ports there will be one port less on the right side
     i++;
-    Lines.append(new Line( 15, y, 30, y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 15, y, 30, y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 30, y));
     stmp = QString::number(i);
     Texts.append(new Text(25, y-fHeight-2, stmp)); // text left-aligned
     y += PortDistance;
   }
 
-  Lines.append(new Line( 0, h, 0,h+15,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 0, h, 0,h+15,QPen(Qt::darkBlue,2)));
   Texts.append(new Text( 4, h,"Ref"));
   Ports.append(new Port( 0,h+15));    // 'Ref' port
 

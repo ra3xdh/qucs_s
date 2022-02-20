@@ -519,20 +519,20 @@ void createIcons() {
 
         Component *c = (Component* ) e;
 
-        QList<Line *> Lines      = c->Lines;
-        QList<struct Arc *> Arcs = c-> Arcs;
-        QList<Area *> Rects      = c-> Rects;
-        QList<Area *> Ellips     = c-> Ellips;
+        QList<qucs::Line *> Lines      = c->Lines;
+        QList<struct qucs::Arc *> Arcs = c-> Arcs;
+        QList<qucs::Area *> Rects      = c-> Rects;
+        QList<qucs::Area *> Ellips     = c-> Ellips;
         QList<Port *> Ports      = c->Ports;
         QList<Text*> Texts       = c->Texts;
 
         QGraphicsScene *scene = new QGraphicsScene();
 
-        foreach (Line *l, Lines) {
+        foreach (qucs::Line *l, Lines) {
           scene->addLine(l->x1, l->y1, l->x2, l->y2, l->style);
         }
 
-        foreach(struct Arc *a, Arcs) {
+        foreach(struct qucs::Arc *a, Arcs) {
           // we need an open item here; QGraphisEllipseItem draws a filled ellipse and doesn't do the job here...
           QPainterPath *path = new QPainterPath();
           // the components do not contain the angles in degrees but in 1/16th degrees -> conversion needed
@@ -541,11 +541,11 @@ void createIcons() {
           scene->addPath(*path);
         }
 
-        foreach(Area *a, Rects) {
+        foreach(qucs::Area *a, Rects) {
           scene->addRect(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
         }
 
-        foreach(Area *a, Ellips) {
+        foreach(qucs::Area *a, Ellips) {
           scene->addEllipse(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
         }
 

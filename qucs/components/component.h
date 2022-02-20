@@ -74,10 +74,10 @@ public:
   virtual void setSchematic (Schematic* p) { containingSchematic = p; }
   virtual Schematic* getSchematic () {return containingSchematic; }
 
-  QList<Line *>     Lines;
-  QList<struct Arc *>      Arcs;
-  QList<Area *>     Rects;
-  QList<Area *>     Ellips;
+  QList<qucs::Line *>     Lines;
+  QList<struct qucs::Arc *>      Arcs;
+  QList<qucs::Area *>     Rects;
+  QList<qucs::Area *>     Ellips;
   QList<Port *>     Ports;
   QList<Text *>     Texts;
   Q3PtrList<Property> Props;

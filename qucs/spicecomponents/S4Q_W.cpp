@@ -28,15 +28,15 @@ S4Q_W::S4Q_W()
 {
     Description = QObject::tr("SPICE W:\nMultiple line ngspice or Xyce W specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
 
-    Lines.append(new Line(-15, -15, -15, 15,QPen(Qt::darkRed,3)));
-    Lines.append(new Line(-15,  15,  15, 15,QPen(Qt::darkRed,3)));
-    Lines.append(new Line( 15,  15,  15,-15,QPen(Qt::darkRed,3)));
-    Lines.append(new Line( 15, -15, -15, -15,QPen(Qt::darkRed,3)));
-    Lines.append(new Line(-30,  0,  -15,  0,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(-15,  0,   -5,  0,QPen(Qt::darkRed,3)));
-    Lines.append(new Line( 30,  0,   15,  0,QPen(Qt::darkBlue,3)));
-    Lines.append(new Line( 15,  0,    5,  0,QPen(Qt::darkRed,3)));
-    Lines.append(new Line(  5,  0,    0,  8,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-15, -15, -15, 15,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-15,  15,  15, 15,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line( 15,  15,  15,-15,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line( 15, -15, -15, -15,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-30,  0,  -15,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15,  0,   -5,  0,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line( 30,  0,   15,  0,QPen(Qt::darkBlue,3)));
+    Lines.append(new qucs::Line( 15,  0,    5,  0,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(  5,  0,    0,  8,QPen(Qt::darkRed,3)));
 
     Ports.append(new Port(-30,  0)); // Ps+
     Ports.append(new Port( 30,  0)); // Ps-

@@ -88,18 +88,18 @@ QString Switch::netlist()
 void Switch::createSymbol()
 {
   if(Props.getFirst()->Value != "on") {
-    Lines.append(new Line(-15,  0, 15,-15,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15,  0, 15,-15,QPen(Qt::darkBlue,2)));
     y1 = -17;
   }
   else {
-    Lines.append(new Line(-15,  0, 16,-5,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15,  0, 16,-5,QPen(Qt::darkBlue,2)));
     y1 = -7;
   }
 
-  Lines.append(new Line(-30,  0,-15,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 17,  0, 30,  0,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc( 12, -3, 5, 5, 0, 16*360,QPen(Qt::darkBlue,2)));
-  Ellips.append(new Area(-18, -3, 6, 6, QPen(Qt::darkBlue,2),
+  Lines.append(new qucs::Line(-30,  0,-15,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 17,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc( 12, -3, 5, 5, 0, 16*360,QPen(Qt::darkBlue,2)));
+  Ellips.append(new qucs::Area(-18, -3, 6, 6, QPen(Qt::darkBlue,2),
                 QBrush(Qt::darkBlue, Qt::SolidPattern)));
 
   Ports.append(new Port(-30,  0));

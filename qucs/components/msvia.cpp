@@ -23,13 +23,13 @@ MSvia::MSvia()
 {
   Description = QObject::tr("microstrip via");
 
-  Arcs.append(new Arc(-5,-4, 10,  7,  0, 16*360,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-20,  0, -5,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -5,  0, -5, 14,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  5,  0,  5, 14,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-11, 14, 11, 14,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line( -7, 20,  7, 20,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line( -3, 26,  3, 26,QPen(Qt::darkBlue,3)));
+  Arcs.append(new qucs::Arc(-5,-4, 10,  7,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-20,  0, -5,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( -5,  0, -5, 14,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  5,  0,  5, 14,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-11, 14, 11, 14,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line( -7, 20,  7, 20,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line( -3, 26,  3, 26,QPen(Qt::darkBlue,3)));
 
   Ports.append(new Port(-20,  0));
 

@@ -302,30 +302,30 @@ void EqnDefined::createSymbol()
 
   // draw symbol
   int h = (PortDistance/2)*((Num-1)) + PortDistance/2; // total component half-height
-  Lines.append(new Line(-15, -h, 15, -h,QPen(Qt::darkBlue,2))); // top side
-  Lines.append(new Line( 15, -h, 15,  h,QPen(Qt::darkBlue,2))); // right side
-  Lines.append(new Line(-15,  h, 15,  h,QPen(Qt::darkBlue,2))); // bottom side
-  Lines.append(new Line(-15, -h,-15,  h,QPen(Qt::darkBlue,2))); // left side
+  Lines.append(new qucs::Line(-15, -h, 15, -h,QPen(Qt::darkBlue,2))); // top side
+  Lines.append(new qucs::Line( 15, -h, 15,  h,QPen(Qt::darkBlue,2))); // right side
+  Lines.append(new qucs::Line(-15,  h, 15,  h,QPen(Qt::darkBlue,2))); // bottom side
+  Lines.append(new qucs::Line(-15, -h,-15,  h,QPen(Qt::darkBlue,2))); // left side
 
   i=0;
   int y = PortDistance/2-h, yh; // y is the actual vertical center
   while(i<Num) { // for every branch
     i++;
     // left connection with port
-    Lines.append(new Line(-30, y,-15, y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-30, y,-15, y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30, y));
     // small black arrow inside the box
-    Lines.append(new Line( 7,y-3, 10, y,QPen(Qt::black,1)));
-    Lines.append(new Line( 7,y+3, 10, y,QPen(Qt::black,1)));
-    Lines.append(new Line(-10, y, 10, y,QPen(Qt::black,1)));
+    Lines.append(new qucs::Line( 7,y-3, 10, y,QPen(Qt::black,1)));
+    Lines.append(new qucs::Line( 7,y+3, 10, y,QPen(Qt::black,1)));
+    Lines.append(new qucs::Line(-10, y, 10, y,QPen(Qt::black,1)));
 
     if (i > 1) {
       yh = y-PortDistance/2; // bottom of the branch box
       // draw horizontal separation between boxes
-      Lines.append(new Line(-15, yh, 15, yh, QPen(Qt::darkBlue,2)));
+      Lines.append(new qucs::Line(-15, yh, 15, yh, QPen(Qt::darkBlue,2)));
     }
     // right connection with port
-    Lines.append(new Line( 15, y, 30, y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 15, y, 30, y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 30, y));
     // add branch number near the right connection port
     Texts.append(new Text(25,y-fHeight-2,QString::number(i))); // left-aligned

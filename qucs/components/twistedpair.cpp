@@ -22,25 +22,25 @@ TwistedPair::TwistedPair()
 {
   Description = QObject::tr("twisted pair transmission line");
 
-  Arcs.append(new Arc(-25,-36, 18, 38,16*230, 16*68,QPen(Qt::darkBlue,1)));
-  Arcs.append(new Arc(-25, -2, 18, 38, 16*62, 16*68,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(-25,-36, 18, 38,16*230, 16*68,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(-25, -2, 18, 38, 16*62, 16*68,QPen(Qt::darkBlue,1)));
 
-  Arcs.append(new Arc(-17,-36, 18, 38,16*242, 16*56,QPen(Qt::darkBlue,1)));
-  Arcs.append(new Arc(-17, -2, 18, 38, 16*62, 16*56,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(-17,-36, 18, 38,16*242, 16*56,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(-17, -2, 18, 38, 16*62, 16*56,QPen(Qt::darkBlue,1)));
 
-  Arcs.append(new Arc( -9,-36, 18, 38,16*242, 16*56,QPen(Qt::darkBlue,1)));
-  Arcs.append(new Arc( -9, -2, 18, 38, 16*62, 16*56,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc( -9,-36, 18, 38,16*242, 16*56,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc( -9, -2, 18, 38, 16*62, 16*56,QPen(Qt::darkBlue,1)));
 
-  Arcs.append(new Arc( -1,-36, 18, 38,16*242, 16*56,QPen(Qt::darkBlue,1)));
-  Arcs.append(new Arc( -1, -2, 18, 38, 16*62, 16*56,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc( -1,-36, 18, 38,16*242, 16*56,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc( -1, -2, 18, 38, 16*62, 16*56,QPen(Qt::darkBlue,1)));
 
-  Arcs.append(new Arc(  7,-36, 18, 38,16*242, 16*68,QPen(Qt::darkBlue,1)));
-  Arcs.append(new Arc(  7, -2, 18, 38, 16*50, 16*68,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(  7,-36, 18, 38,16*242, 16*68,QPen(Qt::darkBlue,1)));
+  Arcs.append(new qucs::Arc(  7, -2, 18, 38, 16*50, 16*68,QPen(Qt::darkBlue,1)));
 
-  Arcs.append(new Arc(-40,-10, 20, 33, 16*32, 16*58,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-40,-23, 20, 33,16*270, 16*58,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc( 20,-10, 20, 33, 16*90, 16*58,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc( 20,-23, 20, 33,16*212, 16*58,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-40,-10, 20, 33, 16*32, 16*58,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-40,-23, 20, 33,16*270, 16*58,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc( 20,-10, 20, 33, 16*90, 16*58,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc( 20,-23, 20, 33,16*212, 16*58,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30,-10));
   Ports.append(new Port( 30,-10));

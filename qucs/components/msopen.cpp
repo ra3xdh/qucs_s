@@ -22,11 +22,11 @@ MSopen::MSopen()
 {
   Description = QObject::tr("microstrip open");
 
-  Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-13, -8, 13, -8,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-23,  8,  3,  8,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-13, -8,-23,  8,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 13, -8,  3,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-13, -8, 13, -8,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-23,  8,  3,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-13, -8,-23,  8,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 13, -8,  3,  8,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30, 0));
 

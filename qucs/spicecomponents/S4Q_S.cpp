@@ -28,21 +28,21 @@ S4Q_S::S4Q_S()
 {
     Description = QObject::tr("SPICE S:\nMultiple line ngspice or Xyce S specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
 
-    Lines.append(new Line(-15, -15, -15, 15,QPen(Qt::darkRed,3)));
-    Lines.append(new Line(-15,  15,  15, 15,QPen(Qt::darkRed,3)));
-    Lines.append(new Line( 15,  15,  15,-15,QPen(Qt::darkRed,3)));
-    Lines.append(new Line( 15, -15, -15, -15,QPen(Qt::darkRed,3)));
-    Lines.append(new Line(-30,  0,  -15,  0,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(-15,  0,   -5,  0,QPen(Qt::darkRed,3)));
-    Lines.append(new Line( 30,  0,   15,  0,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line( 15,  0,    5,  0,QPen(Qt::darkRed,3)));
-    Lines.append(new Line(  5,  0,    0,  8,QPen(Qt::darkRed,3)));
-    Lines.append(new Line(-10, -30, -10,  -15,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line( 10, -30,  10,  -15,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15, -15, -15, 15,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-15,  15,  15, 15,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line( 15,  15,  15,-15,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line( 15, -15, -15, -15,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-30,  0,  -15,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15,  0,   -5,  0,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line( 30,  0,   15,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 15,  0,    5,  0,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(  5,  0,    0,  8,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-10, -30, -10,  -15,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 10, -30,  10,  -15,QPen(Qt::darkBlue,2)));
     
-    Lines.append(new Line(22,  -20, 18, -20,QPen(Qt::red,2)));
-    Lines.append(new Line(20,  -22,  20,-18,QPen(Qt::red,2)));
-    Lines.append(new Line(-20, -22, -20,-18,QPen(Qt::black,2)));
+    Lines.append(new qucs::Line(22,  -20, 18, -20,QPen(Qt::red,2)));
+    Lines.append(new qucs::Line(20,  -22,  20,-18,QPen(Qt::red,2)));
+    Lines.append(new qucs::Line(-20, -22, -20,-18,QPen(Qt::black,2)));
     
     Ports.append(new Port(-30,  0)); // Ps+
     Ports.append(new Port( 30,  0)); // Ps-

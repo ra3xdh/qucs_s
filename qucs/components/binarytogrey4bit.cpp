@@ -56,20 +56,20 @@ Element * binarytogrey4bit::info(QString& Name, char * &BitmapFile, bool getNewO
 
 void binarytogrey4bit::createSymbol()
 {
-  Lines.append(new Line(-30, -60, 30,-60,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30, -60, 30, 40,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  40,-30, 40,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-30,  40,-30, -60,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30, -60, 30,-60,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30, -60, 30, 40,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30,  40,-30, 40,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  40,-30, -60,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-50,-30,-30,-30,QPen(Qt::darkBlue,2)));  // B0
-  Lines.append(new Line(-50,-10,-30,-10,QPen(Qt::darkBlue,2)));  // B1
-  Lines.append(new Line(-50, 10,-30, 10,QPen(Qt::darkBlue,2)));  // B2
-  Lines.append(new Line(-50, 30,-30, 30,QPen(Qt::darkBlue,2)));  // B3
+  Lines.append(new qucs::Line(-50,-30,-30,-30,QPen(Qt::darkBlue,2)));  // B0
+  Lines.append(new qucs::Line(-50,-10,-30,-10,QPen(Qt::darkBlue,2)));  // B1
+  Lines.append(new qucs::Line(-50, 10,-30, 10,QPen(Qt::darkBlue,2)));  // B2
+  Lines.append(new qucs::Line(-50, 30,-30, 30,QPen(Qt::darkBlue,2)));  // B3
 
-  Lines.append(new Line( 30, 30, 50, 30,QPen(Qt::darkBlue,2)));  // G3
-  Lines.append(new Line( 30, 10, 50, 10,QPen(Qt::darkBlue,2)));  // G2
-  Lines.append(new Line( 30,-10, 50,-10,QPen(Qt::darkBlue,2)));  // G1
-  Lines.append(new Line( 30,-30, 50,-30,QPen(Qt::darkBlue,2)));  // G0
+  Lines.append(new qucs::Line( 30, 30, 50, 30,QPen(Qt::darkBlue,2)));  // G3
+  Lines.append(new qucs::Line( 30, 10, 50, 10,QPen(Qt::darkBlue,2)));  // G2
+  Lines.append(new qucs::Line( 30,-10, 50,-10,QPen(Qt::darkBlue,2)));  // G1
+  Lines.append(new qucs::Line( 30,-30, 50,-30,QPen(Qt::darkBlue,2)));  // G0
  
   Texts.append(new Text(-16,-59, "B", Qt::darkBlue, 12.0));
   Texts.append(new Text( -2,-59, "/", Qt::darkBlue, 12.0));

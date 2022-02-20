@@ -23,33 +23,33 @@ vcresistor::vcresistor()
   Description = QObject::tr("voltage controlled resistor");
 
   // The resistor shape
-  Lines.append(new Line(5, 18, 5, -18, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(17, 18, 17, -18, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(5, 18, 17, 18, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(5, -18, 17, -18, QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(5, 18, 5, -18, QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(17, 18, 17, -18, QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(5, 18, 17, 18, QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(5, -18, 17, -18, QPen(Qt::darkBlue,2)));
 
   // horizontal lines on top and bottom of left hand side
-  Lines.append(new Line(-30,-30,-12,-30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-30, 30,-12, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,-30,-12,-30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30, 30,-12, 30,QPen(Qt::darkBlue,2)));
   // horizontal lines on top and bottom of right hand side
-  Lines.append(new Line( 11,-30, 30,-30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 11, 30, 30, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 11,-30, 30,-30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 11, 30, 30, 30,QPen(Qt::darkBlue,2)));
   // vertical lines on top and bottom of left hand side
-  Lines.append(new Line(-12,-30,-12,-23,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-12, 30,-12, 23,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-12,-30,-12,-23,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-12, 30,-12, 23,QPen(Qt::darkBlue,2)));
   // vertical lines on top and bottom of right hand side
-  Lines.append(new Line( 11,-30, 11,-18,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 11, 30, 11, 18,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 11,-30, 11,-18,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 11, 30, 11, 18,QPen(Qt::darkBlue,2)));
 
   // downward pointing arrow
-  Lines.append(new Line(-12,-18,-12, 18,QPen(Qt::darkBlue,1)));
-  Lines.append(new Line(-12, 18,-17,  9,QPen(Qt::darkBlue,1)));
-  Lines.append(new Line(-12, 18, -7,  9,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-12,-18,-12, 18,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-12, 18,-17,  9,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(-12, 18, -7,  9,QPen(Qt::darkBlue,1)));
 
-  Lines.append(new Line(-25,-27, 25,-27,QPen(Qt::darkGray,1)));
-  Lines.append(new Line( 25,-27, 25, 27,QPen(Qt::darkGray,1)));
-  Lines.append(new Line( 25, 27,-25, 27,QPen(Qt::darkGray,1)));
-  Lines.append(new Line(-25, 27,-25,-27,QPen(Qt::darkGray,1)));
+  Lines.append(new qucs::Line(-25,-27, 25,-27,QPen(Qt::darkGray,1)));
+  Lines.append(new qucs::Line( 25,-27, 25, 27,QPen(Qt::darkGray,1)));
+  Lines.append(new qucs::Line( 25, 27,-25, 27,QPen(Qt::darkGray,1)));
+  Lines.append(new qucs::Line(-25, 27,-25,-27,QPen(Qt::darkGray,1)));
 
 
   Ports.append(new Port(-30,-30));

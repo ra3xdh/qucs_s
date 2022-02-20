@@ -28,10 +28,10 @@ C_SPICE::C_SPICE()
 {
     Description = QObject::tr("SPICE C:\nMultiple line ngspice or Xyce C specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
 
-    Lines.append(new Line( -4,-11, -4, 11,QPen(Qt::darkRed,3)));
-    Lines.append(new Line(  4,-11,  4, 11, QPen(Qt::darkRed,3)));
-    Lines.append(new Line(-30,  0, -4,  0,  QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(  4,  0, 30,  0,   QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( -4,-11, -4, 11,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(  4,-11,  4, 11, QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-30,  0, -4,  0,  QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(  4,  0, 30,  0,   QPen(Qt::darkBlue,2)));
     
 
     Ports.append(new Port( 30,  0));

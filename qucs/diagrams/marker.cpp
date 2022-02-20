@@ -474,10 +474,10 @@ QString Marker::save()
 
 // ---------------------------------------------------------------------
 // All graphs must have been loaded before this function !
-bool Marker::load(const QString& _s)
+bool Marker::load(const QString& Line)
 {
   bool ok;
-  QString s = _s;
+  QString s = Line;
 
   if(s.at(0) != '<') return false;
   if(s.at(s.length()-1) != '>') return false;

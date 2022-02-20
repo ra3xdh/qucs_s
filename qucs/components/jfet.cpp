@@ -156,22 +156,22 @@ Element* JFET::info_p(QString& Name, char* &BitmapFile, bool getNewOne)
 // -------------------------------------------------------
 void JFET::createSymbol()
 {
-  Lines.append(new Line(-10,-15,-10, 15,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line(-30,  0,-10,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10,-10,  0,-10,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0,-10,  0,-30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10, 10,  0, 10,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0, 10,  0, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,-15,-10, 15,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-30,  0,-10,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,-10,  0,-10,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0,-10,  0,-30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10, 10,  0, 10,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0, 10,  0, 30,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line( -4, 24,  4, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkBlue,2)));
 
   if(Props.getFirst()->Value == "nfet") {
-    Lines.append(new Line(-16, -5,-11,  0,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(-16,  5,-11,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-16, -5,-11,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-16,  5,-11,  0,QPen(Qt::darkBlue,2)));
   }
   else {
-    Lines.append(new Line(-18,  0,-13, -5,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(-18,  0,-13,  5,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-18,  0,-13, -5,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-18,  0,-13,  5,QPen(Qt::darkBlue,2)));
   }
 
   Ports.append(new Port(-30,  0));

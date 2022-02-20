@@ -107,22 +107,22 @@ void Subcircuit::createSymbol()
 void Subcircuit::remakeSymbol(int No)
 {
   int h = 30*((No-1)/2) + 15;
-  Lines.append(new Line(-15, -h, 15, -h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 15, -h, 15,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-15,  h, 15,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-15, -h,-15,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-15, -h, 15, -h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 15, -h, 15,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-15,  h, 15,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-15, -h,-15,  h,QPen(Qt::darkBlue,2)));
   Texts.append(new Text(-10, -6,"sub"));
 
   int i=0, y = 15-h;
   while(i<No) {
     i++;
-    Lines.append(new Line(-30,  y,-15,  y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-30,  y,-15,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30,  y));
     Texts.append(new Text(-25,y-14,QString::number(i)));
 
     if(i == No) break;
     i++;
-    Lines.append(new Line( 15,  y, 30,  y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 15,  y, 30,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 30,  y));
     Texts.append(new Text( 19,y-14,QString::number(i)));
     y += 60;

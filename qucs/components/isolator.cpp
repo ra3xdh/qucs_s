@@ -22,17 +22,17 @@ Isolator::Isolator()
 {
   Description = QObject::tr("isolator");
 
-  Lines.append(new Line( -8,  0,  8,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line(  8,  0,  0, -5,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line(  8,  0,  0,  5,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line( -8,  0,  8,  0,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(  8,  0,  0, -5,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(  8,  0,  0,  5,QPen(Qt::darkBlue,3)));
 
-  Lines.append(new Line(-14,-14, 14,-14,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-14, 14, 14, 14,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-14,-14,-14, 14,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 14,-14, 14, 14,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-14,-14, 14,-14,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-14, 14, 14, 14,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-14,-14,-14, 14,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 14,-14, 14, 14,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 14,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 14,  0, 30,  0,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30,  0));
   Ports.append(new Port( 30,  0));

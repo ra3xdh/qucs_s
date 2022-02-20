@@ -34,31 +34,31 @@ symTrafo::symTrafo()
   int w;
   QString stmp;
 
-  Arcs.append(new Arc(-16,-58,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-16,-46,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-16,-34,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-16, 46,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-16, 34,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-16, 22,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(  4,-18,12,12,  16*90,16*180, QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(  4, -6,12,12,  16*90,16*180, QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(  4,  6,12,12,  16*90,16*180, QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10,-58,-10,-70,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10,-70,-30,-70,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 10,-18, 10,-30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 10,-30, 30,-30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10, 58,-10, 70,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10, 70,-30, 70,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 10, 18, 10, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 10, 30, 30, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10,-10,-30,-10,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10,-22,-10,-10,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10, 10,-30, 10,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10, 10,-10, 22,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-16,-58,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-16,-46,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-16,-34,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-16, 46,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-16, 34,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-16, 22,12,12, 16*270,16*180, QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(  4,-18,12,12,  16*90,16*180, QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(  4, -6,12,12,  16*90,16*180, QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(  4,  6,12,12,  16*90,16*180, QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,-58,-10,-70,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,-70,-30,-70,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 10,-18, 10,-30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 10,-30, 30,-30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10, 58,-10, 70,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10, 70,-30, 70,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 10, 18, 10, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 10, 30, 30, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,-10,-30,-10,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,-22,-10,-10,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10, 10,-30, 10,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10, 10,-10, 22,QPen(Qt::darkBlue,2)));
 
   // core lines
-  Lines.append(new Line( -1,-57, -1, 57,QPen(Qt::darkBlue,1)));
-  Lines.append(new Line(  1,-57,  1, 57,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line( -1,-57, -1, 57,QPen(Qt::darkBlue,1)));
+  Lines.append(new qucs::Line(  1,-57,  1, 57,QPen(Qt::darkBlue,1)));
 
   stmp = "T1"; w = smallmetrics.width(stmp); // compute width to right-align
   Texts.append(new Text(-13-w,-57,stmp));
@@ -66,9 +66,9 @@ symTrafo::symTrafo()
   Texts.append(new Text(-13-w, 22,stmp));
 
   // mark the turn direction
-  Arcs.append(new Arc(-21,-64,  5,  5,  0, 16*360,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-21, 15,  5,  5,  0, 16*360,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc( 15,-24,  5,  5,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-21,-64,  5,  5,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(-21, 15,  5,  5,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc( 15,-24,  5,  5,  0, 16*360,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30,-70));
   Ports.append(new Port( 30,-30));

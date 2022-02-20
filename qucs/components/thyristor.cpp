@@ -22,14 +22,14 @@ Thyristor::Thyristor()
 {
   Description = QObject::tr("silicon controlled rectifier (SCR)");
 
-  Lines.append(new Line(  0,-30,  0, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -9,  6,  9,  6,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -9, -6,  9, -6,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0,  6, -9, -6,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0,  6,  9, -6,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0,-30,  0, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( -9,  6,  9,  6,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( -9, -6,  9, -6,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0,  6, -9, -6,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0,  6,  9, -6,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line( -9, 10, -5,  6,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-20, 10, -9, 10,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( -9, 10, -5,  6,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-20, 10, -9, 10,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(  0,-30));
   Ports.append(new Port(  0, 30));

@@ -29,16 +29,16 @@ DIODE_SPICE::DIODE_SPICE()
     Description = QObject::tr("SPICE D:\nMultiple line ngspice or Xyce D model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
 
 
-    Lines.append(new Line(-30,  0, -20,  0,QPen(Qt::darkBlue,3)));
-    Lines.append(new Line( -20, 0, -6,   0,QPen(Qt::darkRed,3)));
-    Lines.append(new Line(  6,  0, 20,   0,QPen(Qt::darkRed,3)));
-    Lines.append(new Line( 20,  0, 30,   0,QPen(Qt::darkBlue,3)));
+    Lines.append(new qucs::Line(-30,  0, -20,  0,QPen(Qt::darkBlue,3)));
+    Lines.append(new qucs::Line( -20, 0, -6,   0,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(  6,  0, 20,   0,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line( 20,  0, 30,   0,QPen(Qt::darkBlue,3)));
  
  
-    Lines.append(new Line( -6, -9, -6,  9,QPen(Qt::darkRed,3)));
-    Lines.append(new Line(  6, -9,  6,  9,QPen(Qt::darkRed,3)));
-    Lines.append(new Line( -6, -9,  6,  0,QPen(Qt::darkRed,3)));
-    Lines.append(new Line( -6,  9,  6,  0,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line( -6, -9, -6,  9,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(  6, -9,  6,  9,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line( -6, -9,  6,  0,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line( -6,  9,  6,  0,QPen(Qt::darkRed,3)));
 
   Ports.append(new Port(-30, 0));
   Ports.append(new Port( 30, 0));

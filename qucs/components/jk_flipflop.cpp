@@ -27,18 +27,18 @@ JK_FlipFlop::JK_FlipFlop()
 
   Props.append(new Property("t", "0", false, QObject::tr("delay time")));
 
-  Lines.append(new Line(-20,-30, 20,-30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-20, 30, 20, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-20,-30,-20, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 20,-30, 20, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-20,-30, 20,-30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-20, 30, 20, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-20,-30,-20, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 20,-30, 20, 30,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-30,-20,-20,-20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-30, 20,-20, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,-20, 20,-20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30, 20, 20, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-30,  0,-20,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0,-30,  0,-40,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0, 30,  0, 40,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,-20,-20,-20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30, 20,-20, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30,-20, 20,-20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30, 20, 20, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  0,-20,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0,-30,  0,-40,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0, 30,  0, 40,QPen(Qt::darkBlue,2)));
 
   Texts.append(new Text( -4,-29, "S", Qt::darkBlue,  9.0));
   Texts.append(new Text( -4, 14, "R", Qt::darkBlue,  9.0));
@@ -47,8 +47,8 @@ JK_FlipFlop::JK_FlipFlop()
   Texts.append(new Text(  6,-31, "Q", Qt::darkBlue, 12.0));
   Texts.append(new Text(  6,  8, "Q", Qt::darkBlue, 12.0));
   Texts.last()->over=true;
-  Lines.append(new Line(-20, -4,-12,  0,QPen(Qt::darkBlue,0)));
-  Lines.append(new Line(-20,  4,-12,  0,QPen(Qt::darkBlue,0)));
+  Lines.append(new qucs::Line(-20, -4,-12,  0,QPen(Qt::darkBlue,0)));
+  Lines.append(new qucs::Line(-20,  4,-12,  0,QPen(Qt::darkBlue,0)));
 
   Ports.append(new Port(-30,-20));  // J
   Ports.append(new Port(-30, 20));  // K

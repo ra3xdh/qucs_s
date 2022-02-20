@@ -22,18 +22,18 @@ AM_Modulator::AM_Modulator()
 {
   Description = QObject::tr("ac voltage source with amplitude modulator");
 
-  Arcs.append(new Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc( -7, -4,  7,  7,     0, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(  0, -4,  7,  7,16*180, 16*180,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0, 30,  0, 12,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0,-30,  0,-12,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  5,-18, 11,-18,QPen(Qt::red,1)));
-  Lines.append(new Line(  8,-21,  8,-15,QPen(Qt::red,1)));
-  Lines.append(new Line(  5, 18, 11, 18,QPen(Qt::black,1)));
+  Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc( -7, -4,  7,  7,     0, 16*180,QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc(  0, -4,  7,  7,16*180, 16*180,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0, 30,  0, 12,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0,-30,  0,-12,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  5,-18, 11,-18,QPen(Qt::red,1)));
+  Lines.append(new qucs::Line(  8,-21,  8,-15,QPen(Qt::red,1)));
+  Lines.append(new qucs::Line(  5, 18, 11, 18,QPen(Qt::black,1)));
 
-  Lines.append(new Line(-12,  0,-30,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-12,  0,-17,  5,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-12,  0,-17, -5,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-12,  0,-30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-12,  0,-17,  5,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-12,  0,-17, -5,QPen(Qt::darkBlue,2)));
   Texts.append(new Text(-30,-22, QObject::tr("AM"), Qt::black, 10.0,1.0,0.0));
 
   Ports.append(new Port(  0,-30));

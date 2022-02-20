@@ -82,10 +82,10 @@ void SpiceGeneric::createSymbol()
   // draw symbol outline
   #define HALFWIDTH  27
   int h = 30*((No-1)/2) + 15;
-  Lines.append(new Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( HALFWIDTH, -h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-HALFWIDTH, -h, HALFWIDTH, -h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( HALFWIDTH, -h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-HALFWIDTH,  h, HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
 
   int w, i = fHeight/2;
 
@@ -96,7 +96,7 @@ void SpiceGeneric::createSymbol()
   i = 0;
   int y = 15-h;
   while(i<No) { // add ports lines and numbers
-    Lines.append(new Line(-40,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-40,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-40,  y));
     tmp = QString::number(i+1);
     w = smallmetrics.width(tmp);
@@ -104,7 +104,7 @@ void SpiceGeneric::createSymbol()
     i++;
 
     if(i == No) break; // if odd number of ports there will be one port less on the right side
-    Lines.append(new Line(HALFWIDTH,  y, 40,  y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(HALFWIDTH,  y, 40,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port( 40,  y));
     tmp = QString::number(i+1);
     Texts.append(new Text( 40, y-fHeight-2, tmp)); // text left-aligned

@@ -858,23 +858,23 @@ Element * bsim3v34pMOS::info(QString& Name, char * &BitmapFile, bool getNewOne)
 void bsim3v34pMOS::createSymbol()
 {
 
- Lines.append(new Line(-14,-13,-14, 13,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10,-11,  0,-11,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0,-11,  0,-30,QPen(Qt::darkBlue,2)));
+ Lines.append(new qucs::Line(-14,-13,-14, 13,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,-11,  0,-11,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0,-11,  0,-30,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new Line(-10, 11,  0, 11,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  0, 11,  0, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10,  0, 20,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10,-16,-10, -7,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-10, 11,  0, 11,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(  0, 11,  0, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,  0, 20,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,-16,-10, -7,QPen(Qt::darkBlue,3)));
   
-  Lines.append(new Line(-10,  7,-10, 16,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line( -4, 24,  4, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -5,  5,  0,   0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -5,  -5, 0,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-10, -3,-10,  3,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line(-10, -8,-10, -6,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line(-10,  8,-10,  6,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-10,  7,-10, 16,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( -5,  5,  0,   0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( -5,  -5, 0,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10, -3,-10,  3,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-10, -8,-10, -6,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-10,  8,-10,  6,QPen(Qt::darkBlue,3)));
 
 
   Ports.append(new Port(  0,-30)); // drain

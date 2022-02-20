@@ -33,8 +33,8 @@ NutmegEquation::NutmegEquation()
   int xb = r.width()  >> 1;
   int yb = r.height() >> 1;
 
-  Lines.append(new Line(-xb, -yb, -xb,  yb,QPen(Qt::blue,2)));
-  Lines.append(new Line(-xb,  yb,  xb+3,yb,QPen(Qt::blue,2)));
+  Lines.append(new qucs::Line(-xb, -yb, -xb,  yb,QPen(Qt::blue,2)));
+  Lines.append(new qucs::Line(-xb,  yb,  xb+3,yb,QPen(Qt::blue,2)));
   Texts.append(new Text(-xb+4,  -yb-3, QObject::tr("Nutmeg"),
 			QColor(0,0,0), 12.0));
 

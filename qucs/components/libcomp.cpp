@@ -70,10 +70,10 @@ void LibComp::createSymbol()
   }
   else {
     // only paint a rectangle
-    Lines.append(new Line(-15, -15, 15, -15, QPen(Qt::darkBlue,2)));
-    Lines.append(new Line( 15, -15, 15,  15, QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(-15,  15, 15,  15, QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(-15, -15,-15,  15, QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15, -15, 15, -15, QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 15, -15, 15,  15, QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15,  15, 15,  15, QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15, -15,-15,  15, QPen(Qt::darkBlue,2)));
 
     x1 = -18; y1 = -18;
     x2 =  18; y2 =  18;

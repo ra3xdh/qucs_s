@@ -29,24 +29,24 @@ iExp::iExp()
   Description = QObject::tr("exponential current source");
 
   // normal current source symbol
-  Arcs.append(new Arc(-12,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( -7,  0,  7,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line(  6,  0,  0, -4,QPen(Qt::darkBlue,3)));
-  Lines.append(new Line(  6,  0,  0,  4,QPen(Qt::darkBlue,3)));
+  Arcs.append(new qucs::Arc(-12,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30,  0, 12,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( -7,  0,  7,  0,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(  6,  0,  0, -4,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(  6,  0,  0,  4,QPen(Qt::darkBlue,3)));
 
   // write 'Exp' beside current source symbol
-  Lines.append(new Line( 13,  7, 13, 10,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 13,  7, 21, 7,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 17,  7, 17, 10,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 21,  7, 21, 10,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 13,  13, 17, 17,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 17,  13, 13, 17,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 17,  20, 11, 20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 17,  20, 17, 23,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 13,  20, 13, 23,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 17,  23, 13, 23,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 13,  7, 13, 10,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 13,  7, 21, 7,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 17,  7, 17, 10,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 21,  7, 21, 10,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 13,  13, 17, 17,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 17,  13, 13, 17,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 17,  20, 11, 20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 17,  20, 17, 23,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 13,  20, 13, 23,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 17,  23, 13, 23,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port( 30,  0));
   Ports.append(new Port(-30,  0));

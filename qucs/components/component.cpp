@@ -233,26 +233,26 @@ void Component::paint(ViewPainter *p)
   else {    // normal components go here
 
     // paint all lines
-    foreach(Line *p1, Lines) {
+    foreach(qucs::Line *p1, Lines) {
       p->Painter->setPen(p1->style);
       p->drawLine(cx+p1->x1, cy+p1->y1, cx+p1->x2, cy+p1->y2);
     }
 
     // paint all arcs
-    foreach(Arc *p3, Arcs) {
+    foreach(qucs::Arc *p3, Arcs) {
       p->Painter->setPen(p3->style);
       p->drawArc(cx+p3->x, cy+p3->y, p3->w, p3->h, p3->angle, p3->arclen);
     }
 
     // paint all rectangles
-    foreach(Area *pa, Rects) {
+    foreach(qucs::Area *pa, Rects) {
       p->Painter->setPen(pa->Pen);
       p->Painter->setBrush(pa->Brush);
       p->drawRect(cx+pa->x, cy+pa->y, pa->w, pa->h);
     }
 
     // paint all ellipses
-    foreach(Area *pa, Ellips) {
+    foreach(qucs::Area *pa, Ellips) {
       p->Painter->setPen(pa->Pen);
       p->Painter->setBrush(pa->Brush);
       p->drawEllipse(cx+pa->x, cy+pa->y, pa->w, pa->h);
@@ -364,21 +364,21 @@ void Component::paintScheme(Schematic *p)
   }
 
   // paint all lines
-  foreach(Line *p1, Lines)
+  foreach(qucs::Line *p1, Lines)
     p->PostPaintEvent(_Line,cx+p1->x1, cy+p1->y1, cx+p1->x2, cy+p1->y2);
 
   // paint all ports
   foreach(Port *p2, Ports)
     if(p2->avail) p->PostPaintEvent(_Ellipse,cx+p2->x-4, cy+p2->y-4, 8, 8);
 
-  foreach(Arc *p3, Arcs)   // paint all arcs
+  foreach(qucs::Arc *p3, Arcs)   // paint all arcs
     p->PostPaintEvent(_Arc,cx+p3->x, cy+p3->y, p3->w, p3->h, p3->angle, p3->arclen);
 
 
-  foreach(Area *pa, Rects) // paint all rectangles
+  foreach(qucs::Area *pa, Rects) // paint all rectangles
     p->PostPaintEvent(_Rect,cx+pa->x, cy+pa->y, pa->w, pa->h);
 
-  foreach(Area *pa, Ellips) // paint all ellipses
+  foreach(qucs::Area *pa, Ellips) // paint all ellipses
     p->PostPaintEvent(_Ellipse,cx+pa->x, cy+pa->y, pa->w, pa->h);
 }
 
@@ -406,7 +406,7 @@ void Component::rotate()
   int tmp, dx, dy;
 
   // rotate all lines
-  foreach(Line *p1, Lines) {
+  foreach(qucs::Line *p1, Lines) {
     tmp = -p1->x1;
     p1->x1 = p1->y1;
     p1->y1 = tmp;
@@ -423,7 +423,7 @@ void Component::rotate()
   }
 
   // rotate all arcs
-  foreach(Arc *p3, Arcs) {
+  foreach(qucs::Arc *p3, Arcs) {
     tmp = -p3->x;
     p3->x = p3->y;
     p3->y = tmp - p3->w;
@@ -435,7 +435,7 @@ void Component::rotate()
   }
 
   // rotate all rectangles
-  foreach(Area *pa, Rects) {
+  foreach(qucs::Area *pa, Rects) {
     tmp = -pa->x;
     pa->x = pa->y;
     pa->y = tmp - pa->w;
@@ -445,7 +445,7 @@ void Component::rotate()
   }
 
   // rotate all ellipses
-  foreach(Area *pa, Ellips) {
+  foreach(qucs::Area *pa, Ellips) {
     tmp = -pa->x;
     pa->x = pa->y;
     pa->y = tmp - pa->w;
@@ -506,7 +506,7 @@ void Component::mirrorX()
     if(Ports.count() < 1) return;  // do not rotate components without ports
 
   // mirror all lines
-  foreach(Line *p1, Lines) {
+  foreach(qucs::Line *p1, Lines) {
     p1->y1 = -p1->y1;
     p1->y2 = -p1->y2;
   }
@@ -516,7 +516,7 @@ void Component::mirrorX()
     p2->y = -p2->y;
 
   // mirror all arcs
-  foreach(Arc *p3, Arcs) {
+  foreach(qucs::Arc *p3, Arcs) {
     p3->y = -p3->y - p3->h;
     if(p3->angle > 16*180) p3->angle -= 16*360;
     p3->angle  = -p3->angle;    // mirror
@@ -525,11 +525,11 @@ void Component::mirrorX()
   }
 
   // mirror all rectangles
-  foreach(Area *pa, Rects)
+  foreach(qucs::Area *pa, Rects)
     pa->y = -pa->y - pa->h;
 
   // mirror all ellipses
-  foreach(Area *pa, Ellips)
+  foreach(qucs::Area *pa, Ellips)
     pa->y = -pa->y - pa->h;
 
   QFont f = QucsSettings.font;
@@ -569,7 +569,7 @@ void Component::mirrorY()
     if(Ports.count() < 1) return;  // do not rotate components without ports
 
   // mirror all lines
-  foreach(Line *p1, Lines) {
+  foreach(qucs::Line *p1, Lines) {
     p1->x1 = -p1->x1;
     p1->x2 = -p1->x2;
   }
@@ -579,18 +579,18 @@ void Component::mirrorY()
     p2->x = -p2->x;
 
   // mirror all arcs
-  foreach(Arc *p3, Arcs) {
+  foreach(qucs::Arc *p3, Arcs) {
     p3->x = -p3->x - p3->w;
     p3->angle = 16*180 - p3->angle - p3->arclen;  // mirror
     if(p3->angle < 0) p3->angle += 16*360;   // angle has to be > 0
   }
 
   // mirror all rectangles
-  foreach(Area *pa, Rects)
+  foreach(qucs::Area *pa, Rects)
     pa->x = -pa->x - pa->w;
 
   // mirror all ellipses
-  foreach(Area *pa, Ellips)
+  foreach(qucs::Area *pa, Ellips)
     pa->x = -pa->x - pa->w;
 
   int tmp;
@@ -1082,7 +1082,7 @@ int Component::analyseLine(const QString& Row, int numProps)
     if(!getPen(Row, Pen, 5))  return -1;
     i3 += i1;
     i4 += i2;
-    Lines.append(new Line(i1, i2, i3, i4, Pen));
+    Lines.append(new qucs::Line(i1, i2, i3, i4, Pen));
 
     if(i1 < x1)  x1 = i1;  // keep track of component boundings
     if(i1 > x2)  x2 = i1;
@@ -1098,7 +1098,7 @@ int Component::analyseLine(const QString& Row, int numProps)
     if(!getIntegers(Row, &i1, &i2, &i3, &i4, &i5, &i6))
       return -1;
     if(!getPen(Row, Pen, 7))  return -1;
-    Arcs.append(new struct Arc(i1, i2, i3, i4, i5, i6, Pen));
+    Arcs.append(new struct qucs::Arc(i1, i2, i3, i4, i5, i6, Pen));
 
     if(i1 < x1)  x1 = i1;  // keep track of component boundings
     if(i1+i3 > x2)  x2 = i1+i3;
@@ -1159,12 +1159,12 @@ int Component::analyseLine(const QString& Row, int numProps)
     if(i4 < y1)  y1 = i4;
     if(i4 > y2)  y2 = i4;
 
-    Lines.append(new Line(i1, i2, i3, i4, Pen));   // base line
+    Lines.append(new qucs::Line(i1, i2, i3, i4, Pen));   // base line
 
     double w = beta+phi;
     i5 = i3-int(Length*cos(w));
     i6 = i4-int(Length*sin(w));
-    Lines.append(new Line(i3, i4, i5, i6, Pen)); // arrow head
+    Lines.append(new qucs::Line(i3, i4, i5, i6, Pen)); // arrow head
     if(i5 < x1)  x1 = i5;  // keep track of component boundings
     if(i5 > x2)  x2 = i5;
     if(i6 < y1)  y1 = i6;
@@ -1173,7 +1173,7 @@ int Component::analyseLine(const QString& Row, int numProps)
     w = phi-beta;
     i5 = i3-int(Length*cos(w));
     i6 = i4-int(Length*sin(w));
-    Lines.append(new Line(i3, i4, i5, i6, Pen));
+    Lines.append(new qucs::Line(i3, i4, i5, i6, Pen));
     if(i5 < x1)  x1 = i5;  // keep track of component boundings
     if(i5 > x2)  x2 = i5;
     if(i6 < y1)  y1 = i6;
@@ -1185,7 +1185,7 @@ int Component::analyseLine(const QString& Row, int numProps)
     if(!getIntegers(Row, &i1, &i2, &i3, &i4))  return -1;
     if(!getPen(Row, Pen, 5))  return -1;
     if(!getBrush(Row, Brush, 8))  return -1;
-    Ellips.append(new Area(i1, i2, i3, i4, Pen, Brush));
+    Ellips.append(new qucs::Area(i1, i2, i3, i4, Pen, Brush));
 
     if(i1 < x1)  x1 = i1;  // keep track of component boundings
     if(i1 > x2)  x2 = i1;
@@ -1201,7 +1201,7 @@ int Component::analyseLine(const QString& Row, int numProps)
     if(!getIntegers(Row, &i1, &i2, &i3, &i4))  return -1;
     if(!getPen(Row, Pen, 5))  return -1;
     if(!getBrush(Row, Brush, 8))  return -1;
-    Rects.append(new Area(i1, i2, i3, i4, Pen, Brush));
+    Rects.append(new qucs::Area(i1, i2, i3, i4, Pen, Brush));
 
     if(i1 < x1)  x1 = i1;  // keep track of component boundings
     if(i1 > x2)  x2 = i1;
@@ -1622,24 +1622,24 @@ void GateComponent::createSymbol()
   if(Props.getLast()->Value.at(0) == 'D') {  // DIN symbol
     xl = -15;
     xr =  15;
-    Lines.append(new Line( 15,-y, 15, y,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(-15,-y, 15,-y,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(-15, y, 15, y,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line(-15,-y,-15, y,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line( 15, 0, 30, 0,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 15,-y, 15, y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15,-y, 15,-y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15, y, 15, y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15,-y,-15, y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 15, 0, 30, 0,QPen(Qt::darkBlue,2)));
 
     if(Model.at(z) == 'O') {
-      Lines.append(new Line(-11, 6-y,-6, 9-y,QPen(Qt::darkBlue,0)));
-      Lines.append(new Line(-11,12-y,-6, 9-y,QPen(Qt::darkBlue,0)));
-      Lines.append(new Line(-11,14-y,-6,14-y,QPen(Qt::darkBlue,0)));
-      Lines.append(new Line(-11,16-y,-6,16-y,QPen(Qt::darkBlue,0)));
+      Lines.append(new qucs::Line(-11, 6-y,-6, 9-y,QPen(Qt::darkBlue,0)));
+      Lines.append(new qucs::Line(-11,12-y,-6, 9-y,QPen(Qt::darkBlue,0)));
+      Lines.append(new qucs::Line(-11,14-y,-6,14-y,QPen(Qt::darkBlue,0)));
+      Lines.append(new qucs::Line(-11,16-y,-6,16-y,QPen(Qt::darkBlue,0)));
       Texts.append(new Text( -4, 3-y, "1", Qt::darkBlue, 15.0));
     }
     else if(Model.at(z) == 'A')
       Texts.append(new Text( -10, 3-y, "&", Qt::darkBlue, 15.0));
     else if(Model.at(0) == 'X') {
       if(Model.at(1) == 'N') {
-	Ellips.append(new Area(xr,-4, 8, 8,
+    Ellips.append(new qucs::Area(xr,-4, 8, 8,
                   QPen(Qt::darkBlue,0), QBrush(Qt::darkBlue)));
         Texts.append(new Text( -11, 3-y, "=1", Qt::darkBlue, 15.0));
       }
@@ -1652,27 +1652,27 @@ void GateComponent::createSymbol()
     if(Model.at(z) == 'O')  xl = 10;
     else  xl = -10;
     xr = 10;
-    Lines.append(new Line(-10,-y,-10, y,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line( 10, 0, 30, 0,QPen(Qt::darkBlue,2)));
-    Arcs.append(new Arc(-30,-y, 40, 30, 0, 16*90,QPen(Qt::darkBlue,2)));
-    Arcs.append(new Arc(-30,y-30, 40, 30, 0,-16*90,QPen(Qt::darkBlue,2)));
-    Lines.append(new Line( 10,15-y, 10, y-15,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-10,-y,-10, y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 10, 0, 30, 0,QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc(-30,-y, 40, 30, 0, 16*90,QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc(-30,y-30, 40, 30, 0,-16*90,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line( 10,15-y, 10, y-15,QPen(Qt::darkBlue,2)));
 
     if(Model.at(0) == 'X') {
-      Lines.append(new Line(-5, 0, 5, 0,QPen(Qt::darkBlue,1)));
+      Lines.append(new qucs::Line(-5, 0, 5, 0,QPen(Qt::darkBlue,1)));
       if(Model.at(1) == 'N') {
-        Lines.append(new Line(-5,-3, 5,-3,QPen(Qt::darkBlue,1)));
-        Lines.append(new Line(-5, 3, 5, 3,QPen(Qt::darkBlue,1)));
+        Lines.append(new qucs::Line(-5,-3, 5,-3,QPen(Qt::darkBlue,1)));
+        Lines.append(new qucs::Line(-5, 3, 5, 3,QPen(Qt::darkBlue,1)));
       }
       else {
-        Arcs.append(new Arc(-5,-5, 10, 10, 0, 16*360,QPen(Qt::darkBlue,1)));
-        Lines.append(new Line( 0,-5, 0, 5,QPen(Qt::darkBlue,1)));
+        Arcs.append(new qucs::Arc(-5,-5, 10, 10, 0, 16*360,QPen(Qt::darkBlue,1)));
+        Lines.append(new qucs::Line( 0,-5, 0, 5,QPen(Qt::darkBlue,1)));
       }
     }
   }
 
   if(Model.at(0) == 'N')
-    Ellips.append(new Area(xr,-4, 8, 8,
+    Ellips.append(new qucs::Area(xr,-4, 8, 8,
                   QPen(Qt::darkBlue,0), QBrush(Qt::darkBlue)));
 
   Ports.append(new Port( 30,  0));
@@ -1681,10 +1681,10 @@ void GateComponent::createSymbol()
     y -= 20;
     Ports.append(new Port(-30, y));
     if(xl == 10) if((z == 0) || (z == Num-1)) {
-      Lines.append(new Line(-30, y, 9, y,QPen(Qt::darkBlue,2)));
+      Lines.append(new qucs::Line(-30, y, 9, y,QPen(Qt::darkBlue,2)));
       continue;
     }
-    Lines.append(new Line(-30, y, xl, y,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-30, y, xl, y,QPen(Qt::darkBlue,2)));
   }
 }
 

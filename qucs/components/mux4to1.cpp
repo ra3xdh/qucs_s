@@ -56,22 +56,22 @@ Element * mux4to1::info(QString& Name, char * &BitmapFile, bool getNewOne)
 
 void mux4to1::createSymbol()
 {
-  Lines.append(new Line(-30, -80, 30,-80,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30, -80, 30, 100,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 30,  100,-30, 100,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-30, 100,-30, -80,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30, -80, 30,-80,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30, -80, 30, 100,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30,  100,-30, 100,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-30, 100,-30, -80,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line(-50,-40,-40,-40,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-50,-20,-30, -20,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-50, 0, -30, 0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-50, 30, -30, 30,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-50, 50,-30, 50,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-50, 70, -30, 70,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(-50, 90, -30, 90,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-50,-40,-40,-40,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-50,-20,-30, -20,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-50, 0, -30, 0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-50, 30, -30, 30,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-50, 50,-30, 50,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-50, 70, -30, 70,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-50, 90, -30, 90,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new Line( 30, 10, 50, 10,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line( 30, 10, 50, 10,QPen(Qt::darkBlue,2)));
 
-  Arcs.append(new Arc( -40, -45, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
+  Arcs.append(new qucs::Arc( -40, -45, 10, 10, 0, 16*360, QPen(Qt::darkBlue,2)));
  
   Texts.append(new Text(-17,-75, "MUX", Qt::darkBlue, 12.0));
 
@@ -89,7 +89,7 @@ void mux4to1::createSymbol()
   Texts.append(new Text(-25, 57, "2", Qt::darkBlue, 12.0));
   Texts.append(new Text(-25, 77, "3", Qt::darkBlue, 12.0));
 
-  Lines.append(new Line(11, -8, 23, -8, QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(11, -8, 23, -8, QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-50,-40));  // En
   Ports.append(new Port(-50,-20));  // A

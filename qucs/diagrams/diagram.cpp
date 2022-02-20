@@ -98,13 +98,13 @@ void Diagram::paint(ViewPainter *p)
 void Diagram::paintDiagram(ViewPainter *p)
 {
     // paint all lines
-    foreach(Line *pl, Lines) {
+    foreach(qucs::Line *pl, Lines) {
       p->Painter->setPen(pl->style);
       p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
     }
 
     // paint all arcs (1 pixel larger to compensate for strange circle method)
-    foreach(Arc *pa, Arcs) {
+    foreach(qucs::Arc *pa, Arcs) {
       p->Painter->setPen(pa->style);
       p->drawArc(cx+pa->x, cy-pa->y, pa->w, pa->h, pa->angle, pa->arclen);
     }
@@ -1168,9 +1168,9 @@ int Diagram::checkColumnWidth(const QString& Str,
     colWidth = w;
     if((x+colWidth) >= x2) {    // enough space for text ?
       // mark lack of space with a small arrow
-      Lines.append(new Line(x2-6, y-4, x2+7, y-4, QPen(Qt::red,2)));
-      Lines.append(new Line(x2,   y-7, x2+6, y-4, QPen(Qt::red,2)));
-      Lines.append(new Line(x2,   y-1, x2+6, y-4, QPen(Qt::red,2)));
+      Lines.append(new qucs::Line(x2-6, y-4, x2+7, y-4, QPen(Qt::red,2)));
+      Lines.append(new qucs::Line(x2,   y-7, x2+6, y-4, QPen(Qt::red,2)));
+      Lines.append(new qucs::Line(x2,   y-1, x2+6, y-4, QPen(Qt::red,2)));
       return -1;
     }
   }
@@ -1502,9 +1502,9 @@ void Diagram::createSmithChart(Axis *Axis, int Mode)
     }
 
     if(Above)
-      Arcs.append(new struct Arc(x, dx2+y, y, y, beta, theta, GridPen));
+      Arcs.append(new struct qucs::Arc(x, dx2+y, y, y, beta, theta, GridPen));
     if(Below)
-      Arcs.append(new struct Arc(x, dx2, y, y, 16*360-beta-theta, theta, GridPen));
+      Arcs.append(new struct qucs::Arc(x, dx2, y, y, 16*360-beta-theta, theta, GridPen));
   }
 
   // ....................................................
@@ -1523,7 +1523,7 @@ void Diagram::createSmithChart(Axis *Axis, int Mode)
     else
       x = (x2-R1)>>1;
     if(fabs(fabs(im)-1.0) > 0.2)   // if too near to |r|=1, it looks ugly
-      Arcs.append(new struct Arc(x, (x2+y)>>1, y, y, beta, theta, GridPen));
+      Arcs.append(new struct qucs::Arc(x, (x2+y)>>1, y, y, beta, theta, GridPen));
 
     if(Axis->up > 1.0) {  // draw arcs on the rigth-handed side ?
       im = 1.0-im;
@@ -1531,14 +1531,14 @@ void Diagram::createSmithChart(Axis *Axis, int Mode)
       if(Zplane)  x += y;
       else  x -= y;
       if(im >= 1.0)
-        Arcs.append(new struct Arc(x, (x2+y)>>1, y, y, beta, theta, GridPen));
+        Arcs.append(new struct qucs::Arc(x, (x2+y)>>1, y, y, beta, theta, GridPen));
       else {
         phi = int(16.0*180.0/pi*acos(im));
         len = 16*180-phi;
         if(Above && Below)  len += len;
         else if(Below)  phi = 16*180;
         if(!Zplane)  phi += 16*180;
-        Arcs.append(new struct Arc(x, (x2+y)>>1, y, y, phi, len, GridPen));
+        Arcs.append(new struct qucs::Arc(x, (x2+y)>>1, y, y, phi, len, GridPen));
       }
     }
   }
@@ -1548,7 +1548,7 @@ void Diagram::createSmithChart(Axis *Axis, int Mode)
   if(Axis->up > 1.0) {  // draw circle with |r|=1 ?
     x = (x2-R1) >> 1;
     y = (x2+R1) >> 1;
-    Arcs.append(new struct Arc(x, y, R1, R1, beta, theta, QPen(Qt::black,0)));
+    Arcs.append(new struct qucs::Arc(x, y, R1, R1, beta, theta, QPen(Qt::black,0)));
 
     // vertical line Re(r)=1 (visible only if |r|>1)
     if(Zplane)  x = y;
@@ -1556,7 +1556,7 @@ void Diagram::createSmithChart(Axis *Axis, int Mode)
     if(Above)  m = y;
     else  m = 0;
     if(!Below)  y = 0;
-    Lines.append(new Line(x, dx2+m, x, dx2-y, GridPen));
+    Lines.append(new qucs::Line(x, dx2+m, x, dx2-y, GridPen));
 
     if(Below)  y = 4;
     else  y = y2-4-QucsSettings.font.pointSize();
@@ -1620,7 +1620,7 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
   if(Above)  i = y2;  else  i = y2>>1;
   if(Below)  z = 0;   else  z = y2>>1;
   // y line
-  Lines.append(new Line(x2>>1, i, x2>>1, z, GridPen));
+  Lines.append(new qucs::Line(x2>>1, i, x2>>1, z, GridPen));
 
   int len  = 0;       // arc length
   int beta = 16*180;  // start angle
@@ -1646,7 +1646,7 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
       phi = int(16.0*180.0/pi*atan(double(2*tHeight)/zD));
       if(!Below)  tmp = beta + phi;
       else  tmp = beta;
-      Arcs.append(new struct Arc((x2-z)>>1, (y2+z)>>1, z, z, tmp, len-phi,
+      Arcs.append(new struct qucs::Arc((x2-z)>>1, (y2+z)>>1, z, z, tmp, len-phi,
 			  GridPen));
       zD += zDstep;
     }
@@ -1662,7 +1662,7 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
   phi = int(16.0*180.0/pi*atan(double(2*tHeight)/double(x2)));
   if(!Below)  tmp = phi;
   else  tmp = 0;
-  Arcs.append(new struct Arc(0, y2, x2, y2, tmp, 16*360-phi, QPen(Qt::black,0)));
+  Arcs.append(new struct qucs::Arc(0, y2, x2, y2, tmp, 16*360-phi, QPen(Qt::black,0)));
 
   // get size of text using the screen-compatible metric
   QFontMetrics metrics(QucsSettings.font, 0);
@@ -1917,7 +1917,7 @@ if(Axis->log) {
   if(back) z = y2;
   while((z <= y2) && (z >= 0)) {    // create all grid lines
     if(Axis->GridOn)  if(z < y2)  if(z > 0)
-      Lines.prepend(new Line(0, z, x2, z, GridPen));  // y grid
+      Lines.prepend(new qucs::Line(0, z, x2, z, GridPen));  // y grid
 
     if((zD < 1.5*zDstep) || (z == 0)) {
       tmp = misc::StringNiceNum(zD);
@@ -1931,7 +1931,7 @@ if(Axis->log) {
         Texts.append(new Text(-w-7, z-6, tmp)); // text aligned right
 
       // y marks
-      Lines.append(new Line(x0-5, z, x0+5, z, QPen(Qt::black,0)));
+      Lines.append(new qucs::Line(x0-5, z, x0+5, z, QPen(Qt::black,0)));
     }
 
     zD += zDstep;
@@ -1966,8 +1966,8 @@ else {  // not logarithmical
     GridNum += GridStep;
 
     if(Axis->GridOn)  if(z < y2)  if(z > 0)
-      Lines.prepend(new Line(0, z, x2, z, GridPen));  // y grid
-    Lines.append(new Line(x0-5, z, x0+5, z, QPen(Qt::black,0))); // y marks
+      Lines.prepend(new qucs::Line(0, z, x2, z, GridPen));  // y grid
+    Lines.append(new qucs::Line(x0-5, z, x0+5, z, QPen(Qt::black,0))); // y marks
     zD += zDstep;
     z = int(zD);
   }
