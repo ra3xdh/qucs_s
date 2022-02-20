@@ -99,11 +99,11 @@ QString DIODE_SPICE::spice_netlist(bool)
     QString D_Line_4= Props.at(3)->Value;
     QString D_Line_5= Props.at(4)->Value;
 
-    if(  D.length()  > 0)          s += QString("%1\n").arg(D);
-    if(  D_Line_2.length() > 0 )   s += QString("%1\n").arg(D_Line_2);
-    if(  D_Line_3.length() > 0 )   s += QString("%1\n").arg(D_Line_3);
-    if(  D_Line_4.length() > 0 )   s += QString("%1\n").arg(D_Line_4);
-    if(  D_Line_5.length() > 0 )   s += QString("%1\n").arg(D_Line_5);
- 
+    if(  D.length()  > 0)          s += QString("%1").arg(D);
+    if(  D_Line_2.length() > 0 )   s += QString("\n%1").arg(D_Line_2);
+    if(  D_Line_3.length() > 0 )   s += QString("\n%1").arg(D_Line_3);
+    if(  D_Line_4.length() > 0 )   s += QString("\n%1").arg(D_Line_4);
+    if(  D_Line_5.length() > 0 )   s += QString("\n%1").arg(D_Line_5);
+    s += "\n";
     return s;
 }
