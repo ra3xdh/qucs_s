@@ -297,10 +297,10 @@
         <file>bitmaps/APBV.png</file>
         <file>bitmaps/APBPCV.png</file>
         <file>bitmaps/DivV.png</file>
-        <file>bitmaps/Icouple.png</file> 
-        <file>bitmaps/core.png</file> 
-        <file>bitmaps/SDTF.png</file> 
-        <file>bitmaps/XAPWL.png</file>         
+        <file>bitmaps/Icouple.png</file>
+        <file>bitmaps/core.png</file>
+        <file>bitmaps/SDTF.png</file>
+        <file>bitmaps/XAPWL.png</file>
         <file>bitmaps/sp_include.png</file>
         <file>bitmaps/xspicegeneric.png</file>
         <file>bitmaps/xsp_cmlib.png</file>
@@ -308,6 +308,12 @@
         <file>bitmaps/spicegeneric.png</file>
         <file>bitmaps/spicelibcomp.png</file>
         <file>bitmaps/xyce_script.png</file>
- 
+        <file>bitmaps/dark/ac_current.png</file>
+        <file>bitmaps/dark/ac_voltage.png</file>
+        <file>bitmaps/dark/am_mod.png</file>
+        <file>bitmaps/dark/amplifier.png</file>
+        <file>bitmaps/dark/and.png</file>
+        <file>bitmaps/dark/andor4x3.png</file>
+        <file>bitmaps/dark/andor4x4.png</file>
     </qresource>
 </RCC>

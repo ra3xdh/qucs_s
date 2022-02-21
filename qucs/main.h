@@ -91,6 +91,8 @@ struct tQucsSettings {
   bool IgnoreFutureVersion;
   bool GraphAntiAliasing;
   bool TextAntiAliasing;
+
+  bool hasDarkTheme;
 };
 
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used

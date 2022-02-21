@@ -77,6 +77,7 @@ namespace misc {
         p->setIcon(icon);
         p->setIconSize(pixmap.rect().size());
     }
+  bool isDarkTheme();
 }
 
 /*! handle the application version string

@@ -34,6 +34,18 @@
 #include <QFileInfo>
 #include <QDir>
 
+#include <QtWidgets>
+
+
+bool misc::isDarkTheme()
+{
+    QLabel *lbl = new QLabel("check dark");
+    int text_hsv = lbl->palette().color(QPalette::WindowText).value();
+    int bg_hsv = lbl->palette().color(QPalette::Background).value();
+    bool is_dark_theme = text_hsv > bg_hsv;
+    return is_dark_theme;
+}
+
 // #########################################################################
 QString misc::complexRect(double real, double imag, int Precision)
 {
