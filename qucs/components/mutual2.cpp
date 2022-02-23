@@ -56,9 +56,9 @@ Mutual2::Mutual2()
   Lines.append(new qucs::Line(-10, 10,-30, 10,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-10, 10,-10, 22,QPen(Qt::darkBlue,2)));
 
-  stmp = "1"; w = smallmetrics.width(stmp); // compute width to right-align
+  stmp = "1"; w = smallmetrics.boundingRect(stmp).width(); // compute width to right-align
   Texts.append(new Text(-13-w,-61,stmp));
-  stmp = "2"; w = smallmetrics.width(stmp); // compute width to right-align
+  stmp = "2"; w = smallmetrics.boundingRect(stmp).width(); // compute width to right-align
   Texts.append(new Text(-13-w, 18,stmp));
   Texts.append(new Text( 13,-22,"3")); // left-aligned, no need to compute width
 

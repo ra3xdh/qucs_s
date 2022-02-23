@@ -158,7 +158,7 @@ void RFedd::createSymbol()
 
   // component text name, centered
   tmp = QObject::tr("RF");
-  w = smallmetrics.width(tmp);
+  w = smallmetrics.boundingRect(tmp).width();
   Texts.append(new Text(-w/2, -fHeight/2, tmp)); // text centered in box
 
   i = 0;
@@ -168,7 +168,7 @@ void RFedd::createSymbol()
     Lines.append(new qucs::Line(-30,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30,  y));
     tmp = QString::number(i+1);
-    w = smallmetrics.width(tmp);
+    w = smallmetrics.boundingRect(tmp).width();
     Texts.append(new Text(-25-w, y-fHeight-2, tmp)); // text right-aligned
     i++;
 

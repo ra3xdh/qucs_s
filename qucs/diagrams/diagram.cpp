@@ -117,17 +117,17 @@ void Diagram::paintDiagram(ViewPainter *p)
     p->Painter->save();
 
     // write whole text (axis label inclusively)
-    QMatrix wm = p->Painter->worldMatrix();
+    QTransform wm = p->Painter->worldTransform();
     foreach(Text *pt, Texts) {
-      p->Painter->setWorldMatrix(
-          QMatrix(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
+      p->Painter->setWorldTransform(
+          QTransform(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
                    p->DX + float(cx+pt->x) * p->Scale,
                    p->DY + float(cy-pt->y) * p->Scale));
 
       p->Painter->setPen(pt->Color);
       p->Painter->drawText(0, 0, pt->s);
     }
-    p->Painter->setWorldMatrix(wm);
+    p->Painter->setWorldTransform(wm);
     p->Painter->setWorldMatrixEnabled(false);
 
     // restore painter state
@@ -186,12 +186,12 @@ void Diagram::createAxisLabels()
 	if(!pD) continue;
 	y -= LineSpacing;
 	if(Name[0] != 'C') {   // locus curve ?
-	  w = metrics.width(pD->Var) >> 1;
+      w = metrics.boundingRect(pD->Var).width() >> 1;
 	  if(w > wmax)  wmax = w;
 	  Texts.append(new Text(x-w, y, pD->Var, pg->Color, 12.0));
 	}
 	else {
-          w = metrics.width("real("+pg->Var+")") >> 1;
+          w = metrics.boundingRect("real("+pg->Var+")").width() >> 1;
 	  if(w > wmax)  wmax = w;
           Texts.append(new Text(x-w, y, "real("+pg->Var+")",
                                 pg->Color, 12.0));
@@ -201,7 +201,7 @@ void Diagram::createAxisLabels()
   else {
     y -= LineSpacing;
     encode_String(xAxis.Label, Str);
-    w = metrics.width(Str) >> 1;
+    w = metrics.boundingRect(Str).width() >> 1;
     if(w > wmax)  wmax = w;
     Texts.append(new Text(x-w, y, Str, Qt::black, 12.0));
   }
@@ -221,19 +221,19 @@ void Diagram::createAxisLabels()
       if(pg->yAxisNo != 0)  continue;
       if(pg->cPointsY) {
 	if(Name[0] != 'C') {   // location curve ?
-          w = metrics.width(pg->Var) >> 1;
+          w = metrics.boundingRect(pg->Var).width() >> 1;
           if(w > wmax)  wmax = w;
           Texts.append(new Text(x, y-w, pg->Var, pg->Color, 12.0, 0.0, 1.0));
 	}
 	else {
-          w = metrics.width("imag("+pg->Var+")") >> 1;
+          w = metrics.boundingRect("imag("+pg->Var+")").width() >> 1;
           if(w > wmax)  wmax = w;
           Texts.append(new Text(x, y-w, "imag("+pg->Var+")",
                                 pg->Color, 12.0, 0.0, 1.0));
 	}
       }
       else {     // if no data => <invalid>
-        w = metrics.width(pg->Var+INVALID_STR) >> 1;
+        w = metrics.boundingRect(pg->Var+INVALID_STR).width() >> 1;
         if(w > wmax)  wmax = w;
         Texts.append(new Text(x, y-w, pg->Var+INVALID_STR,
                               pg->Color, 12.0, 0.0, 1.0));
@@ -243,7 +243,7 @@ void Diagram::createAxisLabels()
   }
   else {
     encode_String(yAxis.Label, Str);
-    w = metrics.width(Str) >> 1;
+    w = metrics.boundingRect(Str).width() >> 1;
     if(w > wmax)  wmax = w;
     Texts.append(new Text(x, y-w, Str, Qt::black, 12.0, 0.0, 1.0));
     x -= LineSpacing;
@@ -259,20 +259,20 @@ void Diagram::createAxisLabels()
       if(pg->yAxisNo != 1)  continue;
       if(pg->cPointsY) {
 	if(Name[0] != 'C') {   // location curve ?
-          w = metrics.width(pg->Var) >> 1;
+          w = metrics.boundingRect(pg->Var).width() >> 1;
           if(w > wmax)  wmax = w;
           Texts.append(new Text(x, y+w, pg->Var,
                                 pg->Color, 12.0, 0.0, -1.0));
 	}
 	else {
-          w = metrics.width("imag("+pg->Var+")") >> 1;
+          w = metrics.boundingRect("imag("+pg->Var+")").width() >> 1;
           if(w > wmax)  wmax = w;
           Texts.append(new Text(x, y+w, "imag("+pg->Var+")",
                                 pg->Color, 12.0, 0.0, -1.0));
 	}
       }
       else {     // if no data => <invalid>
-        w = metrics.width(pg->Var+INVALID_STR) >> 1;
+        w = metrics.boundingRect(pg->Var+INVALID_STR).width() >> 1;
         if(w > wmax)  wmax = w;
         Texts.append(new Text(x, y+w, pg->Var+INVALID_STR,
                               pg->Color, 12.0, 0.0, -1.0));
@@ -282,7 +282,7 @@ void Diagram::createAxisLabels()
   }
   else {
     encode_String(zAxis.Label, Str);
-    w = metrics.width(Str) >> 1;
+    w = metrics.boundingRect(Str).width() >> 1;
     if(w > wmax)  wmax = w;
     Texts.append(new Text(x, y+w, Str, Qt::black, 12.0, 0.0, -1.0));
   }
@@ -1923,7 +1923,7 @@ if(Axis->log) {
       tmp = misc::StringNiceNum(zD);
       if(Axis->up < 0.0)  tmp = '-'+tmp;
 
-      w = metrics.width(tmp);  // width of text
+      w = metrics.boundingRect(tmp).width();  // width of text
       if(maxWidth < w) maxWidth = w;
       if(x0 > 0)
         Texts.append(new Text(x0+7, z-6, tmp)); // text aligned left
@@ -1957,7 +1957,7 @@ else {  // not logarithmical
     if(fabs(GridNum) < 0.01*pow(10.0, Expo)) GridNum = 0.0;// make 0 really 0
     tmp = misc::StringNiceNum(GridNum);
 
-    w = metrics.width(tmp);  // width of text
+    w = metrics.boundingRect(tmp).width();  // width of text
     if(maxWidth < w) maxWidth = w;
     if(x0 > 0)
       Texts.append(new Text(x0+8, z-6, tmp));  // text aligned left

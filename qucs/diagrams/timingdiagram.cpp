@@ -200,7 +200,7 @@ int TimingDiagram::calcDiagram()
           colWidth = z;
       }
     }
-  int TimeStepWidth = colWidth * metrics.width("X") + 8;
+  int TimeStepWidth = colWidth * metrics.boundingRect("X").width() + 8;
   if(TimeStepWidth < 40)
     TimeStepWidth = 40;
 
@@ -259,7 +259,7 @@ if(!firstGraph->isEmpty()) {
   z = pD->count - z;
   for( ; z>0; z--) {
     Str = misc::num2str(*(px++));
-    colWidth = metrics.width(Str);  // width of text
+    colWidth = metrics.boundingRect(Str).width();  // width of text
     if(x+colWidth+2 >= x2)  break;
 
     Texts.append(new Text( x, y2-2, Str));

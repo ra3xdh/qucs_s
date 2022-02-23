@@ -459,7 +459,7 @@ bool CodeModelGen::executeGinacCmd(QString &cmd, QString &result)
     } else return false;
 
     ginac.setStandardInputFile(ginac_task.fileName());
-    ginac.start("ginsh");
+    ginac.start("ginsh",QStringList());
     ginac.waitForFinished();
     result = ginac.readAllStandardOutput();
     result.chop(1); // remove newline char
@@ -620,8 +620,8 @@ void CodeModelGen::scanEquations(Schematic *sch,QStringList &pars,
     } else {
         int Nv = init_pars.count(); // Reverse init parameters list before exit
         for(int i = 0; i < (Nv/2); i++) {
-            init_pars.swap(i,Nv-(1+i));
-            InitEqns.swap(i,Nv-(1+i));
+            init_pars.swapItemsAt(i,Nv-(1+i));
+            InitEqns.swapItemsAt(i,Nv-(1+i));
         }
         return;
     }

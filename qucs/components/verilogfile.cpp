@@ -131,7 +131,7 @@ void Verilog_File::createSymbol()
   Lines.append(new qucs::Line(-HALFWIDTH, -h,-HALFWIDTH,  h,QPen(Qt::darkBlue,2)));
 
   tmp = QObject::tr("verilog");
-  int w = metrics.width(tmp);
+  int w = metrics.boundingRect(tmp).width();
   Texts.append(new Text(w/-2, fHeight/-2, tmp));
 
 
@@ -140,7 +140,7 @@ void Verilog_File::createSymbol()
     Lines.append(new qucs::Line(-30,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30,  y));
     tmp = PortNames.section(',', i, i);
-    w = metrics.width(tmp);
+    w = metrics.boundingRect(tmp).width();
     Texts.append(new Text(-26-w, y-fHeight-2, tmp));
     i++;
 
