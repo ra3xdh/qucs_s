@@ -296,10 +296,12 @@ void LoadDialog::slotChangeIcon()
       if (line.contains("BitmapFile")){
           QString change =
                   QString("  \"BitmapFile\" : \"%1\",").arg(newIcon);
-          ba.append(change+"\n");
+          QString stmp = change + "\n";
+          ba.append(stmp.toLatin1());
       }
       else{
-          ba.append(line+"\n");
+          QString stmp = line + "\n";
+          ba.append(stmp.toLatin1());
       }
     }
   }

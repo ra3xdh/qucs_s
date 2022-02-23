@@ -514,7 +514,7 @@ void QucsSettingsDialog::slotApply()
       // if user aborts closing, just return
       if(!App->closeAllFiles()) return;
 
-      QucsSettings.QucsHomeDir = homeEdit->text();
+      QucsSettings.QucsHomeDir.setPath(homeEdit->text());
       homeDirChanged = true;
       // later below the file tree will be refreshed
     }
@@ -617,8 +617,8 @@ void QucsSettingsDialog::slotApply()
     }
 
     /*! Update QucsSettings, tool paths */
-    QucsSettings.AdmsXmlBinDir = admsXmlEdit->text();
-    QucsSettings.AscoBinDir = ascoEdit->text();
+    QucsSettings.AdmsXmlBinDir.setPath(admsXmlEdit->text());
+    QucsSettings.AscoBinDir.setPath(ascoEdit->text());
     QucsSettings.OctaveExecutable = octaveEdit->text();
 
     if (QucsSettings.IgnoreFutureVersion != checkLoadFromFutureVersions->isChecked())

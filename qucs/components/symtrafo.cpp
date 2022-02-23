@@ -60,9 +60,9 @@ symTrafo::symTrafo()
   Lines.append(new qucs::Line( -1,-57, -1, 57,QPen(Qt::darkBlue,1)));
   Lines.append(new qucs::Line(  1,-57,  1, 57,QPen(Qt::darkBlue,1)));
 
-  stmp = "T1"; w = smallmetrics.width(stmp); // compute width to right-align
+  stmp = "T1"; w = smallmetrics.boundingRect(stmp).width(); // compute width to right-align
   Texts.append(new Text(-13-w,-57,stmp));
-  stmp = "T2"; w = smallmetrics.width(stmp); // compute width to right-align
+  stmp = "T2"; w = smallmetrics.boundingRect(stmp).width(); // compute width to right-align
   Texts.append(new Text(-13-w, 22,stmp));
 
   // mark the turn direction
