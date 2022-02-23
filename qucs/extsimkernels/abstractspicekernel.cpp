@@ -27,7 +27,10 @@
 #include "main.h"
 #include "../paintings/id_text.h"
 #include "dialogs/sweepdialog.h"
+
+
 #include <QPlainTextEdit>
+#include <algorithm>
 
 /*!
   \file abstractspicekernel.cpp
@@ -234,7 +237,7 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
                                    pc->Ports.first()->Connection->Name));
         }
     }
-    qSort(ports);
+    std::sort(ports.begin(), ports.end());
     QPair<int,QString> pp;
     if (lib) header += " gnd "; // Ground node forwarding for Library
     foreach(pp,ports) {

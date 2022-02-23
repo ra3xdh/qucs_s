@@ -51,10 +51,10 @@ void GraphicText::paint(ViewPainter *p)
   // keep track of painter state
   p->Painter->save();
 
-  QMatrix wm = p->Painter->worldMatrix();
-  QMatrix Mat(1.0, 0.0, 0.0, 1.0, p->DX + float(cx) * p->Scale,
-				   p->DY + float(cy) * p->Scale);
-  p->Painter->setWorldMatrix(Mat);
+  QTransform wm = p->Painter->worldTransform();
+  QTransform Mat(1.0, 0.0, 0.0, 1.0, p->DX + qreal(cx) * p->Scale,
+                   p->DY + qreal(cy) * p->Scale);
+  p->Painter->setWorldTransform(Mat);
   p->Painter->rotate(-Angle);   // automatically enables transformation
 
   int Size = Font.pointSize();
@@ -77,7 +77,7 @@ void GraphicText::paint(ViewPainter *p)
   }
 
   Font.setPointSize(Size);   // restore real font size
-  p->Painter->setWorldMatrix(wm);
+  p->Painter->setWorldTransform(wm);
   p->Painter->setWorldMatrixEnabled(false);
 
   // restore painter state

@@ -1372,7 +1372,7 @@ void Q3ScrollView::addChild(QWidget* child, int x, int y)
         setResizePolicy(Manual);
     }
     if (child->parentWidget() != viewport()) {
-        child->setParent(viewport(),0);
+        child->setParent(viewport(), Qt::WindowFlags());
         child->move(QPoint(0,0));
         child->hide();
 //            child->reparent(viewport(), 0, QPoint(0,0), false);
