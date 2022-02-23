@@ -15,7 +15,7 @@ qt_compat.h
 q3ptrlist.h
 q3glist.h
 q3gvector.h
-q3valuelist.h
+#q3valuelist.h
 )
 
 SET(QT3_COMPAT_SRCS
