@@ -2712,7 +2712,7 @@ void QucsApp::slotEditElement()
 // looses the focus.
 void QucsApp::slotHideEdit()
 {
-  editText->setParent(this, 0);
+  editText->setParent(this, Qt::WindowFlags());
   editText->setHidden(true);
 }
 

@@ -439,7 +439,7 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
       x = pn->cx;
       y = pn->cy + 4;
       z = pn->x1;
-      if(z & 1) x -= Painter.Painter->fontMetrics().width(pn->Name);
+      if(z & 1) x -= Painter.Painter->fontMetrics().boundingRect(pn->Name).width();
       if(!(z & 2)) {
         y -= (Painter.LineSpacing>>1) + 4;
         if(z & 1) x -= 4;
@@ -732,7 +732,7 @@ void Schematic::paintSchToViewpainter(ViewPainter *p, bool printAll, bool toImag
         x = pn->cx;
         y = pn->cy + 4;
         z = pn->x1;
-        if(z & 1) x -= p->Painter->fontMetrics().width(pn->Name);
+        if(z & 1) x -= p->Painter->fontMetrics().boundingRect(pn->Name).width();
         if(!(z & 2)) {
           y -= (p->LineSpacing>>1) + 4;
           if(z & 1) x -= 4;

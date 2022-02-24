@@ -155,7 +155,7 @@ int Component::getTextSelected(int x_, int y_, float Corr)
   // use the screen-compatible metric
   QFontMetrics  metrics(QucsSettings.font, 0);
   if(showName) {
-    w  = metrics.width(Name);
+    w  = metrics.boundingRect(Name).width();
     if(dy < 1) {
       if(x_ < w) return 0;
       return -1;
