@@ -1116,14 +1116,14 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             if (!indep.isEmpty()) {
                 ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(indep_cnt); // output indep var: TODO: parameter sweep
                 for (int i=0;i<indep_cnt;i++) {
-                    ds_stream<<QString::number(sim_points.at(i).at(0),'e',12)<<endl;
+                    ds_stream<<QString::number(sim_points.at(i).at(0),'e',12)<<"\n";
                 }
                 ds_stream<<"</indep>\n";
             }
 
             ds_stream<<QString("<indep %1 %2>\n").arg(swp_var).arg(swp_var_val.count());
             foreach (QString val,swp_var_val) {
-                ds_stream<<val<<endl;
+                ds_stream<<val<<"\n";
             }
             ds_stream<<"</indep>\n";
             if (indep.isEmpty()) indep = swp_var;
@@ -1131,7 +1131,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             if (hasDblParSweep) {
                 ds_stream<<QString("<indep %1 %2>\n").arg(swp_var2).arg(swp_var2_val.count());
                 foreach (QString val,swp_var2_val) {
-                    ds_stream<<val<<endl;
+                    ds_stream<<val<<"\n";
                 }
                 ds_stream<<"</indep>\n";
                 indep += " " + swp_var2;
@@ -1139,7 +1139,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         } else if (!indep.isEmpty()) {
             ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(sim_points.count()); // output indep var: TODO: parameter sweep
             foreach (sim_point,sim_points) {
-                ds_stream<<QString::number(sim_point.at(0),'e',12)<<endl;
+                ds_stream<<QString::number(sim_point.at(0),'e',12)<<"\n";
             }
             ds_stream<<"</indep>\n";
         }
@@ -1158,7 +1158,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                     s += QString::number(fabs(im),'e',12) + "\n";
                     ds_stream<<s;
                 } else {
-                    ds_stream<<QString::number(sim_point.at(i),'e',12)<<endl;
+                    ds_stream<<QString::number(sim_point.at(i),'e',12)<<"\n";
                 }
             }
             if (indep.isEmpty()) ds_stream<<"</indep>\n";

@@ -75,14 +75,18 @@ ImageWriter::noGuiPrint(QWidget *doc, QString printFile, QString color)
     delete svg1;
 
     if (!printFile.endsWith(".svg")) {
-        QString cmd = "inkscape -z -D --file=";
-        cmd += tempfile + " ";
+        QString cmd = "inkscape";
+        QStringList args;
+        args<<"-z"<<"-D";
+        QString tmpf = "--file=" + tempfile;
+        args<<tmpf;
 
         if (printFile.endsWith(".eps")) {
-          cmd += "--export-eps=" + printFile;
+          QString pf = "--export-eps=" + printFile;
+          args<<pf;
         }
 
-        int result = QProcess::execute(cmd);
+        int result = QProcess::execute(cmd,args);
 
         if (result!=0) {
             QMessageBox* msg =  new QMessageBox(QMessageBox::Critical,"Export to image", "Inkscape start error!", QMessageBox::Ok);
@@ -239,24 +243,30 @@ int ImageWriter::print(QWidget *doc)
         delete svgwriter;
 
         if (dlg->needsInkscape()) {
-            QString cmd = "inkscape -z -D --file=";
-            cmd += filename+".tmp.svg ";
+            QString cmd = "inkscape";
+            QStringList args;
+            args<<"-z"<<"-D";
+            QString stmp = "--file=" + filename+".tmp.svg";
+            args<<stmp;
 
             if (dlg->isPdf_Tex()) {
                 QString tmp = filename;
                 tmp.chop(4);
-                cmd = cmd + "--export-pdf="+ tmp + " --export-latex";
+                stmp = "--export-pdf="+ tmp + " --export-latex";
+                args<<stmp;
             }
 
             if (dlg->isPdf()) {
-                cmd = cmd + "--export-pdf=" + filename;
+                stmp = "--export-pdf=" + filename;
+                args<<stmp;
             }
 
             if (dlg->isEps()) {
-                cmd = cmd + "--export-eps=" + filename;
+                stmp = "--export-eps=" + filename;
+                args<<stmp;
             }
 
-            int result = QProcess::execute(cmd);
+            int result = QProcess::execute(cmd,args);
 
             if (result!=0) {
                 QMessageBox::critical(0, QObject::tr("Export to image"), 

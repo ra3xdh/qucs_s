@@ -56,7 +56,7 @@ void ViewPainter::init(QPainter *p, float Scale_, int DX_, int DY_,
   f.setPointSizeF( FontScale * float(f.pointSize()) );
   p->setFont(f);
   LineSpacing = p->fontMetrics().lineSpacing();
-  p-> setMatrixEnabled(false);   // we use our own coordinate transformation
+  p-> setWorldMatrixEnabled(false);   // we use our own coordinate transformation
 
   QPainter::RenderHints hints = QPainter::RenderHints();
   // Ask to to antialias drawings if requested
