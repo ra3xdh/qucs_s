@@ -1,5 +1,6 @@
 #include "spicecompat.h"
 #include "main.h"
+#include "misc.h"
 
 #include <QDebug>
 
@@ -273,7 +274,7 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
         QRegExp subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
         if (subckt_header.exactMatch(lin)) {
             QRegExp sep("\\s");
-            QStringList lst2 = lin.split(sep,QString::SkipEmptyParts);
+            QStringList lst2 = lin.split(sep,qucs::SkipEmptyParts);
             QString name = lin.section(sep,1,1,QString::SectionSkipEmpty).toLower();
             QString refname = compname.toLower();
             if (name != refname) continue;

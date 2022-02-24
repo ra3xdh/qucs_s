@@ -1439,7 +1439,7 @@ int Schematic::adjustPortNumbers()
       VInfo = VHDL_File_Info (Name, true);
 
     if (!VInfo.PortNames.isEmpty())
-      Names = VInfo.PortNames.split(",", QString::SkipEmptyParts);
+      Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
 
     for(pp = SymbolPaints.first(); pp!=0; pp = SymbolPaints.next())
       if(pp->Name == ".ID ") {
@@ -1447,11 +1447,11 @@ int Schematic::adjustPortNumbers()
 	id->Prefix = VInfo.EntityName.toUpper();
 	id->Parameter.clear();
 	if (!VInfo.GenNames.isEmpty())
-	  GNames = VInfo.GenNames.split(",", QString::SkipEmptyParts);
+      GNames = VInfo.GenNames.split(",", qucs::SkipEmptyParts);
 	if (!VInfo.GenTypes.isEmpty())
-	  GTypes = VInfo.GenTypes.split(",", QString::SkipEmptyParts);
+      GTypes = VInfo.GenTypes.split(",", qucs::SkipEmptyParts);
 	if (!VInfo.GenDefs.isEmpty())
-	  GDefs = VInfo.GenDefs.split(",", QString::SkipEmptyParts);;
+      GDefs = VInfo.GenDefs.split(",", qucs::SkipEmptyParts);;
 	for(Number = 1, it = GNames.begin(); it != GNames.end(); ++it) {
 	  id->Parameter.append(new SubParameter(
  	    true,
@@ -1499,7 +1499,7 @@ int Schematic::adjustPortNumbers()
     else
       VInfo = Verilog_File_Info (Name, true);
     if (!VInfo.PortNames.isEmpty())
-      Names = VInfo.PortNames.split(",", QString::SkipEmptyParts);
+      Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
 
     for(pp = SymbolPaints.first(); pp!=0; pp = SymbolPaints.next())
       if(pp->Name == ".ID ") {
@@ -1546,7 +1546,7 @@ int Schematic::adjustPortNumbers()
       VInfo = VerilogA_File_Info (Name, true);
 
     if (!VInfo.PortNames.isEmpty())
-      Names = VInfo.PortNames.split(",", QString::SkipEmptyParts);
+      Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
 
     for(pp = SymbolPaints.first(); pp!=0; pp = SymbolPaints.next())
       if(pp->Name == ".ID ") {
