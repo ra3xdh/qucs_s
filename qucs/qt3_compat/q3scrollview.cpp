@@ -1141,13 +1141,22 @@ void  Q3ScrollView::mouseMoveEvent(QMouseEvent *e)
 #ifndef QT_NO_WHEELEVENT
 void Q3ScrollView::wheelEvent(QWheelEvent *e)
 {
+#if QT_VERSION >= 0x050f00
+    QPoint pe(e->globalPosition().x(),e->globalPosition().y());
+    QPoint pg = viewport()->mapFromGlobal(pe);
+    QPointF pgf(pg.x(),pg.y());
+    QWheelEvent ce(pgf,
+                   e->globalPosition(), e->pixelDelta(), e->angleDelta(),
+                   e->buttons(), e->modifiers(), e->phase(), e->inverted());
+#else
     QWheelEvent ce(viewport()->mapFromGlobal(e->globalPos()),
                     e->globalPos(), e->delta(), e->buttons(), e->modifiers());
+#endif
     viewportWheelEvent(&ce);
     if (!ce.isAccepted()) {
-        if (e->orientation() == Horizontal && horizontalScrollBar())
+        if (e->angleDelta().x() != 0 && horizontalScrollBar())
             horizontalScrollBar()->event(e);
-        else  if (e->orientation() == Vertical && verticalScrollBar())
+        else  if (e->angleDelta().y() != 0 && verticalScrollBar())
             verticalScrollBar()->event(e);
     } else {
         e->accept();
@@ -1872,8 +1881,17 @@ void Q3ScrollView::viewportWheelEvent(QWheelEvent* e)
        be sent to the focus widget if the widget-under-mouse doesn't want
        the event itself.
     */
-    QWheelEvent ce(viewportToContents(e->pos()),
-        e->globalPos(), e->delta(), e->buttons(), e->modifiers());
+#if QT_VERSION >= 0x050f00
+    QPoint pe(e->globalPosition().x(),e->globalPosition().y());
+    QPoint pg = viewport()->mapFromGlobal(pe);
+    QPointF pgf(pg.x(),pg.y());
+    QWheelEvent ce(pgf,
+                   e->globalPosition(), e->pixelDelta(), e->angleDelta(),
+                   e->buttons(), e->modifiers(), e->phase(), e->inverted());
+#else
+    QWheelEvent ce(viewport()->mapFromGlobal(e->globalPos()),
+                    e->globalPos(), e->delta(), e->buttons(), e->modifiers());
+#endif
     contentsWheelEvent(&ce);
     if (ce.isAccepted())
         e->accept();
