@@ -26,6 +26,7 @@
 #include "spicecomponents/sp_spiceinit.h"
 #include "spicecomponents/xsp_cmlib.h"
 #include "main.h"
+#include "misc.h"
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -234,7 +235,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                    custom_vars = pc->Props.at(1)->Value;
                    custom_vars.replace(";"," ");
                    QString cust_out = pc->Props.at(2)->Value;
-                   outputs.append(cust_out.split(';',QString::SkipEmptyParts));
+                   outputs.append(cust_out.split(';',qucs::SkipEmptyParts));
                }
                if (sim_typ==".SW") {
                    QString SwpSim = pc->Props.at(0)->Value;

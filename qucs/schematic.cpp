@@ -1885,11 +1885,14 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
 {
   App->editText->setHidden(true);  // disable edit of component property
   // use smaller steps; typically the returned delta() is a multiple of 120
-  int delta = Event->delta() >> 1;
+  //int delta = Event->delta() >> 1;
 
   // ...................................................................
   if((Event->modifiers() & Qt::ShiftModifier) ||
-     (Event->orientation() == Qt::Horizontal)) { // scroll horizontally ?
+     (Event->angleDelta().x() != 0)) { // scroll horizontally ?
+      int delta = Event->angleDelta().y() / 2;
+      if (Event->angleDelta().x() != 0)
+          delta = Event->angleDelta().x() / 2;
       if(delta > 0) { if(scrollLeft(delta)) scrollBy(-delta, 0); }
       else { if(scrollRight(delta)) scrollBy(-delta, 0); }
       viewport()->update(); // because QScrollView thinks nothing has changed
@@ -1899,14 +1902,21 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
   else if(Event->modifiers() & Qt::ControlModifier) {  // use mouse wheel to zoom ?
       // zoom factor scaled according to the wheel delta, to accomodate
       //  values different from 60 (slower or faster zoom)
+      int delta = Event->angleDelta().y();
       float Scaling = pow(1.1, delta/60.0);
       zoom(Scaling);
       Scaling -= 1.0;
+#if QT_VERSION >= 0x050f00
+      scrollBy( int(Scaling * float(Event->position().x())),
+                int(Scaling * float(Event->position().y())) );
+#else
       scrollBy( int(Scaling * float(Event->pos().x())),
                 int(Scaling * float(Event->pos().y())) );
+#endif
   }
   // ...................................................................
   else {     // scroll vertically !
+      int delta = Event->angleDelta().y() / 2;
       if(delta > 0) { if(scrollUp(delta)) scrollBy(0, -delta); }
       else { if(scrollDown(delta)) scrollBy(0, -delta); }
       viewport()->update(); // because QScrollView thinks nothing has changed
