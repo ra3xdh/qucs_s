@@ -287,7 +287,8 @@ void qucsMessageOutput(QtMsgType type, const QMessageLogContext &, const QString
     fprintf(stderr, "Fatal: %s\n", msg);
   case QtInfoMsg:
     fprintf(stderr,"Info %s\n", msg);
-    abort();
+  default:
+    fprintf(stderr,"%s\n", msg);
   }
 
 #ifdef _WIN32
@@ -1063,7 +1064,7 @@ int main(int argc, char *argv[])
 
   QucsMain = new QucsApp();
   //1a.setMainWidget(QucsMain);
-  
+
   QucsMain->show();
   int result = a.exec();
   //saveApplSettings(QucsMain);
