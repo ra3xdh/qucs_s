@@ -1,4 +1,4 @@
-## Description
+## Qucs-S: Quite universal circuit simulator with SPICE
 
 Qucs-S provides a fancy graphical user interfyce for a number of popular circuit simulation 
 engines. Qucs-S contains schematic capture, visualization and component library. The following
