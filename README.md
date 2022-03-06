@@ -1,3 +1,5 @@
+[![LiberaPay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/ra3xdh/donate) ![LiberaPay](https://img.shields.io/liberapay/patrons/ra3xdh.svg?logo=liberapay)
+
 ## Qucs-S: Quite universal circuit simulator with SPICE
 
 Qucs-S provides a fancy graphical user interfyce for a number of popular circuit simulation 
