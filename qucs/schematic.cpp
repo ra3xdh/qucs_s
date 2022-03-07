@@ -439,7 +439,7 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
       x = pn->cx;
       y = pn->cy + 4;
       z = pn->x1;
-      if(z & 1) x -= Painter.Painter->fontMetrics().width(pn->Name);
+      if(z & 1) x -= Painter.Painter->fontMetrics().boundingRect(pn->Name).width();
       if(!(z & 2)) {
         y -= (Painter.LineSpacing>>1) + 4;
         if(z & 1) x -= 4;
@@ -732,7 +732,7 @@ void Schematic::paintSchToViewpainter(ViewPainter *p, bool printAll, bool toImag
         x = pn->cx;
         y = pn->cy + 4;
         z = pn->x1;
-        if(z & 1) x -= p->Painter->fontMetrics().width(pn->Name);
+        if(z & 1) x -= p->Painter->fontMetrics().boundingRect(pn->Name).width();
         if(!(z & 2)) {
           y -= (p->LineSpacing>>1) + 4;
           if(z & 1) x -= 4;
@@ -1439,7 +1439,7 @@ int Schematic::adjustPortNumbers()
       VInfo = VHDL_File_Info (Name, true);
 
     if (!VInfo.PortNames.isEmpty())
-      Names = VInfo.PortNames.split(",", QString::SkipEmptyParts);
+      Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
 
     for(pp = SymbolPaints.first(); pp!=0; pp = SymbolPaints.next())
       if(pp->Name == ".ID ") {
@@ -1447,11 +1447,11 @@ int Schematic::adjustPortNumbers()
 	id->Prefix = VInfo.EntityName.toUpper();
 	id->Parameter.clear();
 	if (!VInfo.GenNames.isEmpty())
-	  GNames = VInfo.GenNames.split(",", QString::SkipEmptyParts);
+      GNames = VInfo.GenNames.split(",", qucs::SkipEmptyParts);
 	if (!VInfo.GenTypes.isEmpty())
-	  GTypes = VInfo.GenTypes.split(",", QString::SkipEmptyParts);
+      GTypes = VInfo.GenTypes.split(",", qucs::SkipEmptyParts);
 	if (!VInfo.GenDefs.isEmpty())
-	  GDefs = VInfo.GenDefs.split(",", QString::SkipEmptyParts);;
+      GDefs = VInfo.GenDefs.split(",", qucs::SkipEmptyParts);;
 	for(Number = 1, it = GNames.begin(); it != GNames.end(); ++it) {
 	  id->Parameter.append(new SubParameter(
  	    true,
@@ -1499,7 +1499,7 @@ int Schematic::adjustPortNumbers()
     else
       VInfo = Verilog_File_Info (Name, true);
     if (!VInfo.PortNames.isEmpty())
-      Names = VInfo.PortNames.split(",", QString::SkipEmptyParts);
+      Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
 
     for(pp = SymbolPaints.first(); pp!=0; pp = SymbolPaints.next())
       if(pp->Name == ".ID ") {
@@ -1546,7 +1546,7 @@ int Schematic::adjustPortNumbers()
       VInfo = VerilogA_File_Info (Name, true);
 
     if (!VInfo.PortNames.isEmpty())
-      Names = VInfo.PortNames.split(",", QString::SkipEmptyParts);
+      Names = VInfo.PortNames.split(",", qucs::SkipEmptyParts);
 
     for(pp = SymbolPaints.first(); pp!=0; pp = SymbolPaints.next())
       if(pp->Name == ".ID ") {
@@ -1885,11 +1885,14 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
 {
   App->editText->setHidden(true);  // disable edit of component property
   // use smaller steps; typically the returned delta() is a multiple of 120
-  int delta = Event->delta() >> 1;
+  //int delta = Event->delta() >> 1;
 
   // ...................................................................
   if((Event->modifiers() & Qt::ShiftModifier) ||
-     (Event->orientation() == Qt::Horizontal)) { // scroll horizontally ?
+     (Event->angleDelta().x() != 0)) { // scroll horizontally ?
+      int delta = Event->angleDelta().y() / 2;
+      if (Event->angleDelta().x() != 0)
+          delta = Event->angleDelta().x() / 2;
       if(delta > 0) { if(scrollLeft(delta)) scrollBy(-delta, 0); }
       else { if(scrollRight(delta)) scrollBy(-delta, 0); }
       viewport()->update(); // because QScrollView thinks nothing has changed
@@ -1899,14 +1902,21 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
   else if(Event->modifiers() & Qt::ControlModifier) {  // use mouse wheel to zoom ?
       // zoom factor scaled according to the wheel delta, to accomodate
       //  values different from 60 (slower or faster zoom)
+      int delta = Event->angleDelta().y();
       float Scaling = pow(1.1, delta/60.0);
       zoom(Scaling);
       Scaling -= 1.0;
+#if QT_VERSION >= 0x050f00
+      scrollBy( int(Scaling * float(Event->position().x())),
+                int(Scaling * float(Event->position().y())) );
+#else
       scrollBy( int(Scaling * float(Event->pos().x())),
                 int(Scaling * float(Event->pos().y())) );
+#endif
   }
   // ...................................................................
   else {     // scroll vertically !
+      int delta = Event->angleDelta().y() / 2;
       if(delta > 0) { if(scrollUp(delta)) scrollBy(0, -delta); }
       else { if(scrollDown(delta)) scrollBy(0, -delta); }
       viewport()->update(); // because QScrollView thinks nothing has changed

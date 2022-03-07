@@ -60,10 +60,10 @@ void PortSymbol::paint(ViewPainter *p)
   x2 = Unit - x1;
   y2 = r.height() + Unit;
 
-  QMatrix wm = p->Painter->worldMatrix();
-  QMatrix Mat(1.0, 0.0, 0.0, 1.0, p->DX + float(cx) * p->Scale,
+  QTransform wm = p->Painter->worldTransform();
+  QTransform Mat(1.0, 0.0, 0.0, 1.0, p->DX + float(cx) * p->Scale,
 				   p->DY + float(cy) * p->Scale);
-  p->Painter->setWorldMatrix(Mat);
+  p->Painter->setWorldTransform(Mat);
 
   int tmp, tx, ty;
   tx = x1 + (Unit >> 1);
@@ -91,7 +91,7 @@ void PortSymbol::paint(ViewPainter *p)
   p->Painter->drawText(tx, ty, 0, 0, Qt::TextDontClip, nameStr);
 
 
-  p->Painter->setWorldMatrix(wm);
+  p->Painter->setWorldTransform(wm);
   p->Painter->setWorldMatrixEnabled(false);
 
   // restore painter state

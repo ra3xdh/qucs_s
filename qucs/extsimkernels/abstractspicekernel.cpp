@@ -27,7 +27,10 @@
 #include "main.h"
 #include "../paintings/id_text.h"
 #include "dialogs/sweepdialog.h"
+
+
 #include <QPlainTextEdit>
+#include <algorithm>
 
 /*!
   \file abstractspicekernel.cpp
@@ -234,7 +237,7 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
                                    pc->Ports.first()->Connection->Name));
         }
     }
-    qSort(ports);
+    std::sort(ports.begin(), ports.end());
     QPair<int,QString> pp;
     if (lib) header += " gnd "; // Ground node forwarding for Library
     foreach(pp,ports) {
@@ -380,7 +383,7 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file, QList<QList<double
                 continue;
             }
             if (lin.startsWith("Index")) { // CSV heading
-                    QStringList vars1 = lin.split(" ",QString::SkipEmptyParts);
+                    QStringList vars1 = lin.split(" ",qucs::SkipEmptyParts);
                     vars1.removeFirst();
                     vars1.removeFirst();
                     QStringList norm_vars;
@@ -393,7 +396,7 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file, QList<QList<double
                     var_list.append(norm_vars);
             }
             if ((lin.contains(QRegExp("\\d*\\.\\d+[+-]*[eE]*[\\d]*")))) { // CSV dataline
-                QStringList vals = lin.split(" ",QString::SkipEmptyParts);
+                QStringList vals = lin.split(" ",qucs::SkipEmptyParts);
                 QList <double> sim_point;
                 sim_point.clear();
                 for (int i=1;i<vals.count();i++) {
@@ -429,7 +432,7 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
             QString lin = ngsp_data.readLine();
             if (lin.isEmpty()) continue;
             if (lin.contains("Fourier analysis for")) {
-                QStringList tokens = lin.split(sep,QString::SkipEmptyParts);
+                QStringList tokens = lin.split(sep,qucs::SkipEmptyParts);
                 QString var;
                 foreach(var,tokens) {
                     if (var.contains('(')&&var.contains(')')) break;
@@ -638,8 +641,8 @@ void AbstractSpiceKernel::parseDC_OPoutputXY(QString xyce_file)
         QTextStream ngsp_data(&ofile);
         QStringList lines = ngsp_data.readAll().split("\n");
         if (lines.count()>=2) {
-            QStringList nods = lines.at(0).split(QRegExp("\\s"),QString::SkipEmptyParts);
-            QStringList vals = lines.at(1).split(QRegExp("\\s"),QString::SkipEmptyParts);
+            QStringList nods = lines.at(0).split(QRegExp("\\s"),qucs::SkipEmptyParts);
+            QStringList vals = lines.at(1).split(QRegExp("\\s"),qucs::SkipEmptyParts);
             QStringList::iterator n,v;
             for(n = nods.begin(),v = vals.begin();n!=nods.end()||v!=vals.end();n++,v++) {
                 if ((*n).startsWith("I(")) {
@@ -797,7 +800,7 @@ bool AbstractSpiceKernel::extractASCIISamples(QString &lin, QTextStream &ngsp_da
     sim_point.append(indep_val);
     for (int i=0;i<NumVars;i++) {
         if (isComplex) {
-            QStringList lst = ngsp_data.readLine().split(sep,QString::SkipEmptyParts);
+            QStringList lst = ngsp_data.readLine().split(sep,qucs::SkipEmptyParts);
             if (lst.count()==2) {
                 double re_dep_val = lst.at(0).toDouble();  // for complex sim results
                 double im_dep_val = lst.at(1).toDouble();  // imaginary part follows
@@ -842,11 +845,11 @@ void AbstractSpiceKernel::parseXYCESTDOutput(QString std_file, QList<QList<doubl
         if (lin.isEmpty()) continue;
         if (lin.startsWith("End of ")) continue;
         if (lin.startsWith("Index ",Qt::CaseInsensitive)) {
-            var_list = lin.split(" ",QString::SkipEmptyParts);
+            var_list = lin.split(" ",qucs::SkipEmptyParts);
             var_list.removeFirst(); // Drop Index
             continue;
         } else {
-            QStringList val_lst = lin.split(" ",QString::SkipEmptyParts);
+            QStringList val_lst = lin.split(" ",qucs::SkipEmptyParts);
             QList<double> sim_point;
             foreach (QString val, val_lst) {
                 sim_point.append(val.toDouble());
@@ -919,10 +922,10 @@ void AbstractSpiceKernel::parseResFile(QString resfile, QString &var, QStringLis
             QRegExp sep("\\s");
             QString lin = swp_data.readLine();
             if (var_pattern.exactMatch(lin)) {
-                var = lin.split(sep,QString::SkipEmptyParts).last();
+                var = lin.split(sep,qucs::SkipEmptyParts).last();
             }
             if (point_pattern.exactMatch(lin)) {
-                values.append(lin.split(sep,QString::SkipEmptyParts).last());
+                values.append(lin.split(sep,qucs::SkipEmptyParts).last());
             }
         }
         ofile.close();
@@ -1113,14 +1116,14 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             if (!indep.isEmpty()) {
                 ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(indep_cnt); // output indep var: TODO: parameter sweep
                 for (int i=0;i<indep_cnt;i++) {
-                    ds_stream<<QString::number(sim_points.at(i).at(0),'e',12)<<endl;
+                    ds_stream<<QString::number(sim_points.at(i).at(0),'e',12)<<"\n";
                 }
                 ds_stream<<"</indep>\n";
             }
 
             ds_stream<<QString("<indep %1 %2>\n").arg(swp_var).arg(swp_var_val.count());
             foreach (QString val,swp_var_val) {
-                ds_stream<<val<<endl;
+                ds_stream<<val<<"\n";
             }
             ds_stream<<"</indep>\n";
             if (indep.isEmpty()) indep = swp_var;
@@ -1128,7 +1131,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             if (hasDblParSweep) {
                 ds_stream<<QString("<indep %1 %2>\n").arg(swp_var2).arg(swp_var2_val.count());
                 foreach (QString val,swp_var2_val) {
-                    ds_stream<<val<<endl;
+                    ds_stream<<val<<"\n";
                 }
                 ds_stream<<"</indep>\n";
                 indep += " " + swp_var2;
@@ -1136,7 +1139,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         } else if (!indep.isEmpty()) {
             ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(sim_points.count()); // output indep var: TODO: parameter sweep
             foreach (sim_point,sim_points) {
-                ds_stream<<QString::number(sim_point.at(0),'e',12)<<endl;
+                ds_stream<<QString::number(sim_point.at(0),'e',12)<<"\n";
             }
             ds_stream<<"</indep>\n";
         }
@@ -1155,7 +1158,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                     s += QString::number(fabs(im),'e',12) + "\n";
                     ds_stream<<s;
                 } else {
-                    ds_stream<<QString::number(sim_point.at(i),'e',12)<<endl;
+                    ds_stream<<QString::number(sim_point.at(i),'e',12)<<"\n";
                 }
             }
             if (indep.isEmpty()) ds_stream<<"</indep>\n";

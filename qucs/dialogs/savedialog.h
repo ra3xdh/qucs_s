@@ -50,7 +50,7 @@ class SaveDialog : public QDialog
          SaveSelected
       };
             
-      SaveDialog(QWidget* p = 0, const char* n = 0, bool modal = true, Qt::WindowFlags fl = 0 );
+      SaveDialog(QWidget* p = 0, const char* n = 0, bool modal = true, Qt::WindowFlags fl = Qt::WindowFlags() );
       ~SaveDialog();
       void addUnsavedDoc(QucsDoc *doc);
       void setApp(QucsApp *a);

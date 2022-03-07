@@ -37,7 +37,7 @@ PrinterWriter::PrinterWriter()
   Printer->setOptionEnabled(QPrinter::PrintPageRange, false);
   Printer->setOptionEnabled(QPrinter::PrintToFile, true);*/
 
-  Printer->setPaperSize(QPrinter::A4);
+  Printer->setPageSize(QPageSize(QPageSize::A4));
   Printer->setColorMode(QPrinter::Color);
   Printer->setFullPage(true);
 
@@ -59,13 +59,13 @@ PrinterWriter::noGuiPrint(QWidget *doc, QString printFile,
 
   //page size
   if (page == "A3") {
-    Printer->setPaperSize(QPrinter::A3);
+    Printer->setPageSize(QPageSize(QPageSize::A3));
   } else if (page == "B4") {
-    Printer->setPaperSize(QPrinter::B4);
+    Printer->setPageSize(QPageSize(QPageSize::B4));
   } else if (page == "B5") {
-    Printer->setPaperSize(QPrinter::B5);
+    Printer->setPageSize(QPageSize(QPageSize::B5));
   } else {
-    Printer->setPaperSize(QPrinter::A4);
+    Printer->setPageSize(QPageSize(QPageSize::A4));
   }
   //dpi
   Printer->setResolution(dpi);
@@ -77,9 +77,9 @@ PrinterWriter::noGuiPrint(QWidget *doc, QString printFile,
   }
   //orientation
   if (orientation == "landscape") {
-    Printer->setOrientation(QPrinter::Landscape);
+    Printer->setPageOrientation(QPageLayout::Landscape);
   } else {
-    Printer->setOrientation(QPrinter::Portrait);
+    Printer->setPageOrientation(QPageLayout::Portrait);
   }
   QPainter Painter(Printer);
   if(!Painter.device()) {      // valid device available ?
@@ -104,7 +104,7 @@ PrinterWriter::print(QWidget *doc)
     }
   }
   else {
-    Printer->setOrientation(QPrinter::Landscape);
+    Printer->setPageOrientation(QPageLayout::Landscape);
 
     if (dialog->exec() == QDialog::Accepted)
     {
@@ -113,7 +113,7 @@ PrinterWriter::print(QWidget *doc)
         delete dialog;
         return;
       }
-      for (int z = Printer->numCopies(); z > 0; --z) {
+      for (int z = Printer->copyCount(); z > 0; --z) {
         if (Printer->printerState() == QPrinter::Aborted) {
           break;
         }

@@ -91,14 +91,14 @@ int Component::textSize(int& _dx, int& _dy)
   int tmp, count=0;
   _dx = _dy = 0;
   if(showName) {
-    _dx = metrics.width(Name);
+    _dx = metrics.boundingRect(Name).width();
     _dy = metrics.height();
     count++;
   }
   for(Property *pp = Props.first(); pp != 0; pp = Props.next())
     if(pp->display) {
       // get width of text
-      tmp = metrics.width(pp->Name+"="+pp->Value);
+      tmp = metrics.boundingRect(pp->Name+"="+pp->Value).width();
       if(tmp > _dx)  _dx = tmp;
       _dy += metrics.height();
       count++;
@@ -155,7 +155,7 @@ int Component::getTextSelected(int x_, int y_, float Corr)
   // use the screen-compatible metric
   QFontMetrics  metrics(QucsSettings.font, 0);
   if(showName) {
-    w  = metrics.width(Name);
+    w  = metrics.boundingRect(Name).width();
     if(dy < 1) {
       if(x_ < w) return 0;
       return -1;
@@ -170,7 +170,7 @@ int Component::getTextSelected(int x_, int y_, float Corr)
   if(!pp) return -1;
 
   // get width of text
-  w = metrics.width(pp->Name+"="+pp->Value);
+  w = metrics.boundingRect(pp->Name+"="+pp->Value).width();
   if(x_ > w) return -1; // clicked past the property text end - selection invalid
   return Props.at()+1;  // number the property
 }
@@ -264,11 +264,11 @@ void Component::paint(ViewPainter *p)
     // keep track of painter state
     p->Painter->save();
 
-    QMatrix wm = p->Painter->worldMatrix();
+    QTransform wm = p->Painter->worldTransform();
     // write all text
     foreach(Text *pt, Texts) {
-      p->Painter->setWorldMatrix(
-          QMatrix(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
+      p->Painter->setWorldTransform(
+          QTransform(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
                    p->DX + float(cx+pt->x) * p->Scale,
                    p->DY + float(cy+pt->y) * p->Scale));
       newFont.setPointSizeF(p->Scale * pt->Size);
@@ -284,7 +284,7 @@ void Component::paint(ViewPainter *p)
     Q_UNUSED(w);
       }
     }
-    p->Painter->setWorldMatrix(wm);
+    p->Painter->setWorldTransform(wm);
     p->Painter->setWorldMatrixEnabled(false);
 
     // restore painter state
@@ -477,13 +477,13 @@ void Component::rotate()
   QFontMetrics  metrics(QucsSettings.font, 0);   // get size of text
   dx = dy = 0;
   if(showName) {
-    dx = metrics.width(Name);
+    dx = metrics.boundingRect(Name).width();
     dy = metrics.lineSpacing();
   }
   for(Property *pp = Props.first(); pp != 0; pp = Props.next())
     if(pp->display) {
       // get width of text
-      tmp = metrics.width(pp->Name+"="+pp->Value);
+      tmp = metrics.boundingRect(pp->Name+"="+pp->Value).width();
       if(tmp > dx) dx = tmp;
       dy += metrics.lineSpacing();
     }
@@ -610,11 +610,11 @@ void Component::mirrorY()
   QFontMetrics  metrics(QucsSettings.font, 0);   // get size of text
   int dx = 0;
   if(showName)
-    dx = metrics.width(Name);
+    dx = metrics.boundingRect(Name).width();
   for(Property *pp = Props.first(); pp != 0; pp = Props.next())
     if(pp->display) {
       // get width of text
-      tmp = metrics.width(pp->Name+"="+pp->Value);
+      tmp = metrics.boundingRect(pp->Name+"="+pp->Value).width();
       if(tmp > dx)  dx = tmp;
     }
   if((ty > y1) && (ty < y2)) tx = -tx-dx;     // mirror text position
