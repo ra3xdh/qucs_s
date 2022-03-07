@@ -87,6 +87,7 @@ namespace misc {
         p->setIcon(icon);
         p->setIconSize(pixmap.rect().size());
     }
+  QStringList parseCmdArgs(const QString &program);
 }
 
 /*! handle the application version string

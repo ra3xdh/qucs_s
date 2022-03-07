@@ -2321,7 +2321,10 @@ void QucsApp::slotOpenContent(const QModelIndex &idx)
       QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
       env.insert("PATH", env.value("PATH") );
       Program->setProcessEnvironment(env);
-      Program->start(com.join(" "));
+      QString cmd = com.at(0);
+      QStringList com_args = com;
+      com_args.removeAt(0);
+      Program->start(cmd, com_args);
       if(Program->state()!=QProcess::Running&&
               Program->state()!=QProcess::Starting) {
         QMessageBox::critical(this, tr("Error"),

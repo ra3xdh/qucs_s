@@ -447,7 +447,10 @@ void Ngspice::slotSimulate()
     SimProcess->setWorkingDirectory(workdir);
     qDebug()<<workdir;
     QString cmd = QString("\"%1\" %2 %3").arg(simulator_cmd,simulator_parameters,netfile);
-    SimProcess->start(cmd);
+    QStringList cmd_args = misc::parseCmdArgs(cmd);
+    QString ngsp_cmd = cmd_args.at(0);
+    cmd_args.removeAt(0);
+    SimProcess->start(ngsp_cmd,cmd_args);
     emit started();
 }
 

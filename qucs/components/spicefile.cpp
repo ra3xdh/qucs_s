@@ -408,7 +408,10 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.insert("PATH", env.value("PATH") );
     SpicePrep->setProcessEnvironment(env);
-    SpicePrep->start(script.join(" "));
+    QString cmd = script.at(0);
+    QStringList script_args = script;
+    script_args.removeAt(0);
+    SpicePrep->start(cmd,script_args);
     //QucsHelp->setCommunication(0);
 
     if(SpicePrep->state()!=QProcess::Running&&
