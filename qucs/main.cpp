@@ -285,8 +285,10 @@ void qucsMessageOutput(QtMsgType type, const QMessageLogContext &, const QString
     break;
   case QtFatalMsg:
     fprintf(stderr, "Fatal: %s\n", msg);
+    break;
   case QtInfoMsg:
     fprintf(stderr,"Info %s\n", msg);
+    break;
   default:
     fprintf(stderr,"%s\n", msg);
   }
