@@ -1811,6 +1811,8 @@ void Q3ScrollView::viewportDragEnterEvent(QDragEnterEvent* e)
                       e->mouseButtons(),e->keyboardModifiers());
     //e->setPoint(viewportToContents(e->pos()));
     contentsDragEnterEvent(&de);
+    if (de.isAccepted()) e->accept();
+    else e->ignore();
     //e->setPoint(contentsToViewport(e->pos()));
 }
 
@@ -1829,6 +1831,8 @@ void Q3ScrollView::viewportDragMoveEvent(QDragMoveEvent* e)
                       e->mouseButtons(),e->keyboardModifiers());
     //e->setPoint(viewportToContents(e->pos()));
     contentsDragMoveEvent(&de);
+    if (de.isAccepted()) e->accept();
+    else e->ignore();
     //e->setPoint(contentsToViewport(e->pos()));
 }
 
@@ -1860,6 +1864,8 @@ void Q3ScrollView::viewportDropEvent(QDropEvent* e)
                       e->mouseButtons(),e->keyboardModifiers());
     //e->setPoint(viewportToContents(e->pos()));
     contentsDropEvent(&de);
+    if (de.isAccepted()) e->accept();
+    else e->ignore();
     //e->setPoint(contentsToViewport(e->pos()));
 }
 
