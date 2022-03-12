@@ -82,6 +82,7 @@ public:
     QCheckBox *checkWiring, *checkLoadFromFutureVersions,
               *checkAntiAliasing, *checkTextAntiAliasing;
     QComboBox *LanguageCombo;
+    QComboBox *PanelIconsCombo, *CompIconsCombo;
     QPushButton *FontButton, *AppFontButton, *BGColorButton;
     QLineEdit *LargeFontSizeEdit, *undoNumEdit, *editorEdit, *Input_Suffix,
               *Input_Program, *homeEdit, *admsXmlEdit, *ascoEdit, *octaveEdit;

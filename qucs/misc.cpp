@@ -46,10 +46,33 @@ bool misc::isDarkTheme()
     return is_dark_theme;
 }
 
-QString misc::getIconPath(const QString &file)
+QString misc::getIconPath(const QString &file, int icon_type)
 {
+    auto icons_theme = QucsSettings.panelIconsTheme;
+    switch (icon_type) {
+    case qucs::panelIcons:
+        icons_theme = QucsSettings.panelIconsTheme;
+        break;
+    case qucs::compIcons:
+        icons_theme = QucsSettings.compIconsTheme;
+        break;
+    }
+
+    bool loadDark = false;
+    switch (icons_theme) {
+    case qucs::autoIcons:
+        loadDark = QucsSettings.hasDarkTheme;
+        break;
+    case qucs::darkIcons:
+        loadDark = true;
+        break;
+    case qucs::lightIcons:
+        loadDark = false;
+        break;
+    }
+
     QString icon_path =":bitmaps/";
-    if (QucsSettings.hasDarkTheme) {
+    if (loadDark) {
         QString icon_path_dark = ":bitmaps/dark/";
         if (QFileInfo::exists(icon_path_dark + file))
             icon_path = icon_path_dark;

@@ -88,14 +88,10 @@ namespace misc {
         p->setIcon(icon);
         p->setIconSize(pixmap.rect().size());
     }
-<<<<<<< HEAD
+
   QStringList parseCmdArgs(const QString &program);
-=======
-
-  QString getIconPath(const QString &file);
-
+  QString getIconPath(const QString &file, int icon_type);
   bool isDarkTheme();
->>>>>>> dark
 }
 
 /*! handle the application version string

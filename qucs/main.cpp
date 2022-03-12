@@ -102,6 +102,11 @@ bool loadSettings()
     if(settings.contains("Directive"))QucsSettings.Directive.setNamedColor(settings.value("Directive").toString());
     if(settings.contains("Task"))QucsSettings.Task.setNamedColor(settings.value("Task").toString());
 
+    if (settings.contains("panelIconsTheme")) QucsSettings.panelIconsTheme = settings.value("panelIconsTheme").toInt();
+    else QucsSettings.panelIconsTheme = qucs::autoIcons;
+    if (settings.contains("compIconsTheme")) QucsSettings.compIconsTheme = settings.value("compIconsTheme").toInt();
+    else QucsSettings.compIconsTheme = qucs::autoIcons;
+
     if(settings.contains("Qucsator")) {
         QucsSettings.Qucsator = settings.value("Qucsator").toString();
         QFileInfo inf(QucsSettings.Qucsator);
@@ -243,6 +248,8 @@ bool saveApplSettings()
     settings.setValue("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
     settings.setValue("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
     settings.setValue("TextAntiAliasing", QucsSettings.TextAntiAliasing);
+    settings.setValue("panelIconsTheme",QucsSettings.panelIconsTheme);
+    settings.setValue("compIconsTheme",QucsSettings.compIconsTheme);
 
     // Copy the list of directory paths in which Qucs should
     // search for subcircuit schematics from qucsPathList
