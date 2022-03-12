@@ -54,6 +54,7 @@ void Xyce::determineUsedSimulations(QStringList *sim_lst)
            if (sim_typ==".NOISE") simulationsQueue.append("noise");
            if (sim_typ==".TR") simulationsQueue.append("tran");
            if (sim_typ==".HB") simulationsQueue.append("hb");
+           if (sim_typ==".SP") simulationsQueue.append("sp");
            if (sim_typ==".SENS_XYCE") simulationsQueue.append("sens");
            if (sim_typ==".SENS_TR_XYCE") simulationsQueue.append("sens_tr");
            if (sim_typ==".XYCESCR") simulationsQueue.append(pc->Name); // May be >= XYCE scripts
@@ -163,6 +164,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
            if ((sim_typ==".NOISE")&&(sim=="noise")) stream<<s;
            if ((sim_typ==".SENS_XYCE")&&(sim=="sens")) stream<<s;
            if ((sim_typ==".SENS_TR_XYCE")&&(sim=="sens_tr")) stream<<s;
+           if ((sim_typ==".SP")&&(sim=="sp")) stream<<s;
            if (sim==pc->Name) stream<<s; // Xyce scripts
            if ((sim_typ==".TR")&&(sim=="tran")){
                stream<<s;
@@ -239,6 +241,9 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
         write_str.clear();
         outputs.append("spice4qucs.sens_tr.cir.SENS.prn");
         outputs.append("spice4qucs.sens_tr.cir.TRADJ.prn");
+    } else if (sim=="sp") {
+        write_str.clear();
+        outputs.append("spice4qucs_sparam.prn");
     } else {
         write_str = QString(".PRINT  %1 format=raw file=%2 %3\n").arg(sim).arg(filename).arg(nods);
         outputs.append(filename);

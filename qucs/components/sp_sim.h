@@ -22,12 +22,17 @@
 
 
 class SP_Sim : public Component  {
+private:
+    QString xyce_netlist();
+    QString ngspice_netlist();
+    int getSPortsNumber();
 public:
   SP_Sim();
   ~SP_Sim();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
   void recreate(Schematic*);
+  QString spice_netlist(bool isXyce);
 };
 
 #endif

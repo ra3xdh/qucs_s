@@ -294,8 +294,8 @@ void Module::registerModules (void) {
   REGISTER_SOURCE_1 (Ampere_dc);
   REGISTER_SOURCE_1 (Volt_ac);
   REGISTER_SOURCE_1 (Ampere_ac);
+  REGISTER_SOURCE_1 (Source_ac);
   if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-      REGISTER_SOURCE_1 (Source_ac);
       REGISTER_SOURCE_1 (Volt_noise);
       REGISTER_SOURCE_1 (Ampere_noise);
   }
@@ -506,12 +506,12 @@ void Module::registerModules (void) {
   REGISTER_SIMULATION_1 (DC_Sim);
   REGISTER_SIMULATION_1 (TR_Sim);
   REGISTER_SIMULATION_1 (AC_Sim);
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
-      REGISTER_SIMULATION_1 (SP_Sim);
   if (QucsSettings.DefaultSimulator == spicecompat::simQucsator||
       QucsSettings.DefaultSimulator == spicecompat::simXyceSer||
-      QucsSettings.DefaultSimulator == spicecompat::simXycePar)
+      QucsSettings.DefaultSimulator == spicecompat::simXycePar) {
+      REGISTER_SIMULATION_1 (SP_Sim);
       REGISTER_SIMULATION_1 (HB_Sim);
+  }
   REGISTER_SIMULATION_1 (Param_Sweep);
   REGISTER_SIMULATION_1 (Digi_Sim);
   if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
