@@ -34,6 +34,30 @@
 #include <QFileInfo>
 #include <QDir>
 
+#include <QtWidgets>
+
+
+bool misc::isDarkTheme()
+{
+    QLabel *lbl = new QLabel("check dark");
+    int text_hsv = lbl->palette().color(QPalette::WindowText).value();
+    int bg_hsv = lbl->palette().color(QPalette::Background).value();
+    bool is_dark_theme = text_hsv > bg_hsv;
+    return is_dark_theme;
+}
+
+QString misc::getIconPath(const QString &file)
+{
+    QString icon_path =":bitmaps/";
+    if (QucsSettings.hasDarkTheme) {
+        QString icon_path_dark = ":bitmaps/dark/";
+        if (QFileInfo::exists(icon_path_dark + file))
+            icon_path = icon_path_dark;
+    }
+    icon_path += file;
+    return icon_path;
+}
+
 // #########################################################################
 QString misc::complexRect(double real, double imag, int Precision)
 {

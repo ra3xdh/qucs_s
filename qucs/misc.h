@@ -26,6 +26,7 @@
 #include <QWidget>
 #include <QPalette>
 #include <QIcon>
+#include <QFileInfo>
 #include <QPushButton>
 
 #include <stdint.h>
@@ -87,7 +88,14 @@ namespace misc {
         p->setIcon(icon);
         p->setIconSize(pixmap.rect().size());
     }
+<<<<<<< HEAD
   QStringList parseCmdArgs(const QString &program);
+=======
+
+  QString getIconPath(const QString &file);
+
+  bool isDarkTheme();
+>>>>>>> dark
 }
 
 /*! handle the application version string

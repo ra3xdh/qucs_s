@@ -134,6 +134,8 @@ QucsApp::QucsApp()
 {
   setWindowTitle(QUCS_NAME " " PACKAGE_VERSION);
 
+  QucsSettings.hasDarkTheme = misc::isDarkTheme();
+
   QucsFileFilter =
     tr("Schematic") + " (*.sch);;" +
     tr("Data Display") + " (*.dpl);;" +
@@ -727,7 +729,8 @@ void QucsApp::slotSetCompView (int index)
       if (Infos) {
         /// \todo warning: expression result unused, can we rewrite this?
         (void) *((*it)->info) (Name, File, false);
-        QListWidgetItem *icon = new QListWidgetItem(QPixmap(":/bitmaps/" + QString (File) + ".png"), Name);
+        QString icon_path = misc::getIconPath(QString (File) + ".png");
+        QListWidgetItem *icon = new QListWidgetItem(QPixmap(icon_path), Name);
         icon->setToolTip(Name);
         iconCompInfo = iconCompInfoStruct{catIdx, compIdx};
         v.setValue(iconCompInfo);
@@ -783,7 +786,8 @@ void QucsApp::slotSearchComponent(const QString &searchText)
 
           if((Name.indexOf(searchText, 0, Qt::CaseInsensitive)) != -1) {
             //match
-            QListWidgetItem *icon = new QListWidgetItem(QPixmap(":/bitmaps/" + QString (File) + ".png"), Name);
+            QString icon_path = misc::getIconPath(QString (File) + ".png");
+            QListWidgetItem *icon = new QListWidgetItem(QPixmap(icon_path), Name);
             icon->setToolTip(it + ": " + Name);
             // add component category and module indexes to the icon
             iconCompInfo = iconCompInfoStruct{catIdx, compIdx};
