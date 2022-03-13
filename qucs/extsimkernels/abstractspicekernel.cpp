@@ -840,6 +840,8 @@ void AbstractSpiceKernel::parseXYCESTDOutput(QString std_file, QList<QList<doubl
     QTextStream ngsp_data(&content);
     sim_points.clear();
     var_list.clear();
+    QStringList complex_var_list;
+    QList<int> complex_var_idx;
     while (!ngsp_data.atEnd()) { // Parse header;
         QString lin = ngsp_data.readLine();
         if (lin.isEmpty()) continue;
@@ -847,16 +849,44 @@ void AbstractSpiceKernel::parseXYCESTDOutput(QString std_file, QList<QList<doubl
         if (lin.startsWith("Index ",Qt::CaseInsensitive)) {
             var_list = lin.split(" ",qucs::SkipEmptyParts);
             var_list.removeFirst(); // Drop Index
+            for(int i = 0; i < var_list.count()-1; i++) {
+                QString var_re = var_list.at(i);
+                QString var_im = var_list.at(i+1);
+                if (var_re.startsWith("Re(") &&
+                    var_im.startsWith("Im(")) {
+                    QString var = var_re;
+                    var.remove(0,3);
+                    var.chop(1);
+                    complex_var_list.append(var);
+                    complex_var_idx.append(i+1);
+                    isComplex = true;
+                }
+            }
             continue;
         } else {
             QStringList val_lst = lin.split(" ",qucs::SkipEmptyParts);
             QList<double> sim_point;
-            foreach (QString val, val_lst) {
-                sim_point.append(val.toDouble());
+            for (int i = 1; i <= var_list.count(); i++ ) {
+                if (isComplex && i != 1) {
+                    sim_point.append(val_lst.at(i).toDouble()); // Re and Im
+                    sim_point.append(0.0);                      // real vars
+                } else {
+                    sim_point.append(val_lst.at(i).toDouble());
+                }
             }
-            sim_point.removeFirst(); // Index
+            if (isComplex) { // reassemble complex variables
+                for (int j = 0; j < complex_var_list.count(); j++) {
+                    int idx = complex_var_idx[j];
+                    sim_point.append(val_lst.at(idx).toDouble());
+                    sim_point.append(val_lst.at(idx+1).toDouble());
+                }
+            }
+            //sim_point.removeFirst(); // Index
             sim_points.append(sim_point);
         }
+    }
+    if (isComplex) {
+        var_list.append(complex_var_list);
     }
 }
 
