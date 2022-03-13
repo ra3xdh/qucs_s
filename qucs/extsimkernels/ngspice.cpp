@@ -418,6 +418,21 @@ void Ngspice::slotSimulate()
         return;
     }
 
+    if (!checkSimulations()) {
+        output.append("No simulation found. Please add at least one simulation!\n");
+        emit finished();
+        emit errors(QProcess::FailedToStart);
+        return;
+    }
+
+    if (!checkDCSimulation()) {
+        output.append("Only DC simulation found in the schematic. It has no effect!"
+                      " Add TRAN, AC, or Sweep simulation to proceed.\n");
+        emit finished();
+        emit errors(QProcess::FailedToStart);
+        return;
+    }
+
     if (!checkNodeNames(incompat)) {
         QString s = incompat.join("; ");
         output.append("There were Nutmeg-incompatible node names. Simulator cannot proceed.\n");

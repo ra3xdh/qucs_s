@@ -69,6 +69,8 @@ protected:
                                QStringList& vars, QStringList &outputs);
     void removeAllSimulatorOutputs();
     bool checkGround();
+    bool checkSimulations();
+    bool checkDCSimulation();
 
 public:
 

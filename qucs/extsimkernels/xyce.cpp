@@ -277,6 +277,14 @@ void Xyce::slotSimulate()
         return;
     }
 
+    if (!checkDCSimulation()) {
+        output.append("Only DC simulation found in the schematic. It has no effect!"
+                      " Add TRAN, AC, or Sweep simulation to proceed.\n");
+        emit finished();
+        emit errors(QProcess::FailedToStart);
+        return;
+    }
+
     int num=0;
     netlistQueue.clear();
     output_files.clear();

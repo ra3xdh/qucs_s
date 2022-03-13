@@ -139,6 +139,32 @@ bool AbstractSpiceKernel::checkGround()
     return r;
 }
 
+bool AbstractSpiceKernel::checkSimulations()
+{
+    if (DC_OP_only) return true;
+    bool r = false;
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->isSimulation) {
+            r = true;
+            break;
+        }
+    }
+    return r;
+}
+
+bool AbstractSpiceKernel::checkDCSimulation()
+{
+    if (DC_OP_only) return true;
+    bool r = false;
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->isSimulation && pc->Model != ".DC") {
+            r = true;
+            break;
+        }
+    }
+    return r;
+}
+
 /*!
  * \brief AbstractSpiceKernel::startNetlist Outputs .PARAM , .GLOABAL_PARAM,
  *        and .OPTIONS sections to netlist. These sections are placed on schematic
