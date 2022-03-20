@@ -851,7 +851,7 @@ bool AbstractSpiceKernel::extractASCIISamples(QString &lin, QTextStream &ngsp_da
  * \param isComplex[out] Type of variables. True if complex. False if real.
  */
 void AbstractSpiceKernel::parseXYCESTDOutput(QString std_file, QList<QList<double> > &sim_points,
-                                             QStringList &var_list, bool &isComplex)
+                                             QStringList &var_list, bool &isComplex, bool &hasParSweep)
 {
     isComplex = false;
     QString content;
@@ -871,6 +871,10 @@ void AbstractSpiceKernel::parseXYCESTDOutput(QString std_file, QList<QList<doubl
     while (!ngsp_data.atEnd()) { // Parse header;
         QString lin = ngsp_data.readLine();
         if (lin.isEmpty()) continue;
+        if (lin.contains("Parameter Sweep")) {
+            hasParSweep = true;
+            continue;
+        }
         if (lin.startsWith("End of ")) continue;
         if (lin.startsWith("Index ",Qt::CaseInsensitive)) {
             var_list = lin.split(" ",qucs::SkipEmptyParts);
@@ -1070,8 +1074,9 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         QRegExp four_rx(".*\\.four[0-9]+$");
         QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
         if (ngspice_output_filename.endsWith("HB.FD.prn")) {
-            parseHBOutput(full_outfile,sim_points,var_list,hasParSweep);
-            isComplex = true;
+            //parseHBOutput(full_outfile,sim_points,var_list,hasParSweep);
+            //isComplex = true;
+            parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex,hasParSweep);
             if (hasParSweep) {
                 QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
                                                         + "spice4qucs.hb.cir.res");
@@ -1085,7 +1090,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             isComplex = false;
             parseSENSOutput(full_outfile,sim_points,var_list);
         } else if (ngspice_output_filename.endsWith(".txt_std")) {
-            parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
+            parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex,hasParSweep);
         } else if (ngspice_output_filename.endsWith(".noise_log")) {
             isComplex = false;
             parseXYCENoiseLog(full_outfile,sim_points,var_list);
@@ -1108,7 +1113,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         } else if (ngspice_output_filename.endsWith(".SENS.prn")) {
             QStringList vals;
             int type = checkRawOutupt(full_outfile,vals);
-            parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
+            parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex,hasParSweep);
             if (type == xyceSTDswp) {
                 hasParSweep = true;
                 QString res_file = QDir::toNativeSeparators(workdir + QDir::separator()
@@ -1137,6 +1142,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             parseSTEPOutput(full_outfile,sim_points,var_list,isComplex);
         } else {
             int OutType = checkRawOutupt(full_outfile,swp_var_val);
+            bool hasSwp = false;
             switch (OutType) {
             case spiceRawSwp:
                 hasParSweep = true;
@@ -1147,12 +1153,12 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 parseNgSpiceSimOutput(full_outfile,sim_points,var_list,isComplex);
                 break;
             case xyceSTD:
-                parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
+                parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex,hasSwp);
                 break;
             case xyceSTDswp:
                 hasParSweep = true;
                 swp_var = "Number";
-                parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex);
+                parseXYCESTDOutput(full_outfile,sim_points,var_list,isComplex,hasSwp);
             default: break;
             }
         }
