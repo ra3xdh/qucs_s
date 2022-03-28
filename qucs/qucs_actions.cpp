@@ -894,7 +894,7 @@ void QucsApp::slotHelpQucsIndex()
 // --------------------------------------------------------------
 void QucsApp::slotGettingStarted()
 {
-  QDesktopServices::openUrl(QUrl("https://qucs-help.readthedocs.io/en/0.0.18/start.html"));
+  QDesktopServices::openUrl(QUrl("https://ra3xdh.github.io/pdf/qucs_s_tutorial.pdf"));
 }
 
 // ---------------------------------------------------------------------
