@@ -48,7 +48,7 @@ NutmegEquation::NutmegEquation()
   Name  = "NutmegEq";
 
   Props.append(new Property("Simulation","ac",true,
-                            "Used simulation [ac, tran, dc, disto, all]"));
+                            "Used simulation [ac, tran, dc, disto, sp, all]"));
   Props.append(new Property("y", "1", true));
 }
 

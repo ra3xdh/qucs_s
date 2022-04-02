@@ -31,6 +31,7 @@ QString spicecompat::check_refdes(QString &Name,QString &SpiceModel)
 QString spicecompat::normalize_value(QString Value)
 {
     QRegExp r_pattern("^[0-9]+.*Ohm$");
+    QRegExp p_pattern("^[+-]*[0-9]+.*dBm$");
     QRegExp c_pattern("^[0-9]+.*F$");
     QRegExp l_pattern("^[0-9]+.*H$");
     QRegExp v_pattern("^[0-9]+.*V$");
@@ -63,6 +64,8 @@ QString spicecompat::normalize_value(QString Value)
     } else if (sec_pattern.exactMatch(s)) {
         s.remove("s");
         s.replace("M","Meg");
+    } else if (p_pattern.exactMatch(s)) {
+        s.remove("dBm");
     } else if (var_pattern.exactMatch(s)) {
         s = "{" + s + "}";
     }

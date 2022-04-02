@@ -26,6 +26,7 @@ private:
     QString xyce_netlist();
     QString ngspice_netlist();
     int getSPortsNumber();
+    QString getSweepString();
 public:
   SP_Sim();
   ~SP_Sim();

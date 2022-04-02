@@ -122,15 +122,9 @@ int SP_Sim::getSPortsNumber()
     }
 }
 
-QString SP_Sim::ngspice_netlist()
+QString SP_Sim::getSweepString()
 {
-    QString s = "*Stub!\n";
-    return s;
-}
-
-QString SP_Sim::xyce_netlist()
-{
-    QString s = ".AC ";
+    QString s;
     QString unit;
     if (Props.at(0)->Value=="log") { // convert points number for spice compatibility
         double Np,Fstart,Fstop,fac = 1.0;
@@ -148,8 +142,23 @@ QString SP_Sim::xyce_netlist()
     }
     QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
     QString fstop = spicecompat::normalize_value(Props.at(2)->Value); // Stop freq.
-    s += QString("%1 %2 \n").arg(fstart).arg(fstop);
-    s += ".LIN format=touchstone sparcalc=1\n"; // enable s-param
+    s += QString("%1 %2").arg(fstart).arg(fstop);
+    return s;
+}
+
+QString SP_Sim::ngspice_netlist()
+{
+    QString s = "SP ";
+    s += getSweepString();
+    s += "\n";
+    return s;
+}
+
+QString SP_Sim::xyce_netlist()
+{
+    QString s = ".AC ";
+    s += getSweepString();
+    s += "\n.LIN format=touchstone sparcalc=1\n"; // enable s-param
     int ports_num = getSPortsNumber();
     s += ".PRINT ac format=std file=spice4qucs_sparam.prn ";
     for (int i = 0; i < ports_num; i++) {

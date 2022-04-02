@@ -94,7 +94,23 @@ Element* Source_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString Source_ac::ngspice_netlist()
 {
-    QString s = "*Stub! Will be added in Ngspice-37\n";
+    QString s = QString("V%1").arg(Name);
+    foreach(Port *p1, Ports) {
+        QString nam = p1->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+
+    double z0 = spicecompat::normalize_value(getProperty("Z")->Value).toDouble();
+    double p = spicecompat::normalize_value(getProperty("P")->Value).toDouble();
+    double vrms = sqrt(z0/1000.0)*pow(10, p/20.0);
+    double vamp = vrms*sqrt(2.0);
+    QString f = spicecompat::normalize_value(getProperty("f")->Value);
+    s += QString(" dc 0 ac %1").arg(vamp);
+    s += QString(" SIN(0 %1 %2)").arg(vamp).arg(f);
+    s += QString(" portnum %1").arg(getProperty("Num")->Value);
+    s += QString(" z0 %1").arg(z0);
+    s += "\n";
     return s;
 }
 
