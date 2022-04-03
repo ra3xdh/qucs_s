@@ -200,6 +200,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
 
         QString custom_vars;
+        QStringList spar_vars;
         // Hack: Such indexation method is needed to avoid entering infinite loop
         // in some cases of recursive access to Sch->DocComps list
         for(unsigned int i=0;i<Sch->DocComps.count();i++) {
@@ -208,7 +209,10 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                QString sim_typ = pc->Model;
                QString s = pc->getSpiceNetlist();
                if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
-               if ((sim_typ==".SP")&&(sim=="sp")) stream<<s;
+               if ((sim_typ==".SP")&&(sim=="sp")) {
+                   stream<<s;
+                   spar_vars = pc->getExtraVariables();
+               }
                if ((sim_typ==".DISTO")&&(sim=="disto")) stream<<s;
                if ((sim_typ==".NOISE")&&(sim=="noise")) {
                    outputs.append("spice4qucs.cir.noise");
@@ -294,18 +298,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         }
         if (sim == "sp") { // S-parameter requires specific variables
             nods.clear();
-            int port_number = 0;
-            auto comps = Sch->DocComps;
-            for(Component *pc = comps.first(); pc != 0; pc = comps.next()) {
-                if (pc->Model == "Pac") port_number++;
-            }
-            for (int i = 0; i < port_number; i++) {
-                for (int j = 0; j < port_number; j++) {
-                    QString tail = QString("_%1_%2").arg(i+1).arg(j+1);
-                    nods.append(QString("S%1 ").arg(tail));
-                    nods.append(QString("Y%1 ").arg(tail));
-                    nods.append(QString("Z%1 ").arg(tail));
-                }
+            for (const auto &var : spar_vars) {
+                nods += " " + var;
             }
         }
         for (QStringList::iterator it = vars_eq.begin();it != vars_eq.end(); it++) {

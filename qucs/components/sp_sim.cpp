@@ -122,6 +122,21 @@ int SP_Sim::getSPortsNumber()
     }
 }
 
+QStringList SP_Sim::getExtraVariables()
+{
+    QStringList vars;
+    int port_number = getSPortsNumber();
+    for (int i = 0; i < port_number; i++) {
+        for (int j = 0; j < port_number; j++) {
+            QString tail = QString("_%1_%2").arg(i+1).arg(j+1);
+            vars.append(QString("S%1").arg(tail));
+            vars.append(QString("Y%1").arg(tail));
+            vars.append(QString("Z%1").arg(tail));
+        }
+    }
+    return vars;
+}
+
 QString SP_Sim::getSweepString()
 {
     QString s;

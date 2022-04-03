@@ -752,6 +752,11 @@ QString Component::getEquations(QString, QStringList &)
     return QString("");
 }
 
+QStringList Component::getExtraVariables()
+{
+    return QStringList();
+}
+
 QString Component::getProbeVariable(bool)
 {
     return QString("");
