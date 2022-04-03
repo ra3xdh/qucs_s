@@ -125,6 +125,8 @@ int SP_Sim::getSPortsNumber()
 QStringList SP_Sim::getExtraVariables()
 {
     QStringList vars;
+    bool donoise = false;
+    if (getProperty("Noise")->Value == "yes") donoise = true;
     int port_number = getSPortsNumber();
     for (int i = 0; i < port_number; i++) {
         for (int j = 0; j < port_number; j++) {
@@ -132,7 +134,16 @@ QStringList SP_Sim::getExtraVariables()
             vars.append(QString("S%1").arg(tail));
             vars.append(QString("Y%1").arg(tail));
             vars.append(QString("Z%1").arg(tail));
+            if (donoise) {
+                vars.append(QString("Cy%1").arg(tail));
+            }
         }
+    }
+    if (port_number == 2 && donoise) {
+        vars.append("Rn");
+        vars.append("NF");
+        vars.append("SOpt");
+        vars.append("NFmin");
     }
     return vars;
 }
@@ -157,7 +168,7 @@ QString SP_Sim::getSweepString()
     }
     QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
     QString fstop = spicecompat::normalize_value(Props.at(2)->Value); // Stop freq.
-    s += QString("%1 %2").arg(fstart).arg(fstop);
+    s += QString("%1 %2").arg(fstart).arg(fstop); 
     return s;
 }
 
@@ -165,6 +176,7 @@ QString SP_Sim::ngspice_netlist()
 {
     QString s = "SP ";
     s += getSweepString();
+    if (getProperty("Noise")->Value == "yes") s += " 1";
     s += "\n";
     return s;
 }
