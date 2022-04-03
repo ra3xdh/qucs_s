@@ -554,6 +554,12 @@ void Ngspice::SaveNetlist(QString filename)
         createNetlist(stream,num,sims,vars,output_files);
         spice_file.close();
     }
+    else
+    {
+        QString msg=QString("Tried to save netlist \nin %1\n(could not open for writing!)").arg(filename);
+        QString final_msg=QString("%1\n This could be an error in the QSettings settings file\n(usually in ~/.config/qucs/qucs_s.conf)\nThe value for S4Q_workdir (default:/spice4qucs) needs to be writeable!\nFor a Simulation Simulation will raise error! (most likely S4Q_workdir does not exists)").arg(msg);
+        QMessageBox::critical(nullptr,tr("Problem with SaveNetlist"),final_msg,QMessageBox::Ok);
+    }
 }
 
 void Ngspice::setSimulatorCmd(QString cmd)
