@@ -796,7 +796,9 @@ int main(int argc, char *argv[])
   QucsSettings.dy = h*3/4;
 
   // default
-  QucsSettings.QucsHomeDir.setPath(QDir::homePath()+QDir::toNativeSeparators ("/.qucs"));
+  QString QucsWorkdirPath = QDir::homePath()+QDir::toNativeSeparators ("/.qucs");
+  QDir().mkpath(QucsWorkdirPath);
+  QucsSettings.QucsHomeDir.setPath(QucsWorkdirPath);
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
 
   // load existing settings (if any)
