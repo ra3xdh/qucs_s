@@ -2,8 +2,8 @@
 
 ## Qucs-S: Quite universal circuit simulator with SPICE
 
-Qucs-S provides a fancy graphical user interfyce for a number of popular circuit simulation 
-engines. Qucs-S contains schematic capture, visualization and component library. The following
+Qucs-S provides a fancy graphical user interface for a number of popular circuit simulation 
+engines. Qucs-S contains libraries for schematic capture, visualization and components. The following
 simulation kernels are supported:
 
 * Ngspice (recommended)
