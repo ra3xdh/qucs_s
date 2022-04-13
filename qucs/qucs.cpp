@@ -1548,7 +1548,7 @@ bool QucsApp::saveAs()
     Info.setFile(s);
     if(s.isEmpty()) {   // which is default directory ?
       if(ProjName.isEmpty()) {
-        if(lastDirOpenSave.isEmpty())  s = QDir::currentPath();
+        if(lastDirOpenSave.isEmpty())  s = QDir::homePath();
         else  s = lastDirOpenSave;
       }
       else s = QucsSettings.QucsWorkDir.path();
@@ -1570,8 +1570,7 @@ bool QucsApp::saveAs()
       Filter = QucsFileFilter;
 
     s = QFileDialog::getSaveFileName(this, tr("Enter a Document Name"),
-                                     QucsSettings.QucsWorkDir.absolutePath(),
-                                     Filter);
+                                     s, Filter);
     if(s.isEmpty())  return false;
     Info.setFile(s);               // try to guess the best extension ...
     ext = Info.suffix();
