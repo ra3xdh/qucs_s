@@ -27,6 +27,9 @@ private:
     QString ngspice_netlist();
     int getSPortsNumber();
     QString getSweepString();
+
+    QStringList getNgspiceExtraVariables();
+    QStringList getXyceExtraVariables();
 public:
   SP_Sim();
   ~SP_Sim();

@@ -124,6 +124,19 @@ int SP_Sim::getSPortsNumber()
 
 QStringList SP_Sim::getExtraVariables()
 {
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simNgspice:
+        return getNgspiceExtraVariables();
+    case spicecompat::simXycePar:
+    case spicecompat::simXyceSer:
+        return getXyceExtraVariables();
+    default:
+        return QStringList();
+    }
+}
+
+QStringList SP_Sim::getNgspiceExtraVariables()
+{
     QStringList vars;
     bool donoise = false;
     if (getProperty("Noise")->Value == "yes") donoise = true;
@@ -144,6 +157,23 @@ QStringList SP_Sim::getExtraVariables()
         vars.append("NF");
         vars.append("SOpt");
         vars.append("NFmin");
+    }
+    return vars;
+}
+
+QStringList SP_Sim::getXyceExtraVariables()
+{
+    QStringList vars;
+    int ports_num = getSPortsNumber();
+    for (int i = 0; i < ports_num; i++) {
+        for (int j = 0; j < ports_num; j++) {
+            QString tail = QString("(%1,%2)").arg(i+1).arg(j+1);
+            vars.append(QString("sdb%1").arg(tail));
+            vars.append(QString("s%1").arg(tail));
+            vars.append(QString("sp%1").arg(tail));
+            vars.append(QString("y%1").arg(tail));
+            vars.append(QString("z%1").arg(tail));
+        }
     }
     return vars;
 }
@@ -186,14 +216,14 @@ QString SP_Sim::xyce_netlist()
     QString s = ".AC ";
     s += getSweepString();
     s += "\n.LIN format=touchstone sparcalc=1\n"; // enable s-param
-    int ports_num = getSPortsNumber();
+    /*int ports_num = getSPortsNumber();
     s += ".PRINT ac format=std file=spice4qucs_sparam.prn ";
     for (int i = 0; i < ports_num; i++) {
         for (int j = 0; j < ports_num; j++) {
             s += QString(" sdb(%1,%2) s(%1,%2) sp(%1,%2) y(%1,%2) z(%1,%2) ").arg(i+1).arg(j+1);
         }
     }
-    s += "\n";
+    s += "\n";*/
     return s;
 }
 

@@ -155,7 +155,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     }
 
     QString sim = simulations.first();
-
+    QStringList spar_vars;
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) { // Xyce can run
        if(pc->isSimulation) {                        // only one simulations per time.
            QString sim_typ = pc->Model;              // Multiple simulations are forbidden.
@@ -164,7 +164,10 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
            if ((sim_typ==".NOISE")&&(sim=="noise")) stream<<s;
            if ((sim_typ==".SENS_XYCE")&&(sim=="sens")) stream<<s;
            if ((sim_typ==".SENS_TR_XYCE")&&(sim=="sens_tr")) stream<<s;
-           if ((sim_typ==".SP")&&(sim=="sp")) stream<<s;
+           if ((sim_typ==".SP")&&(sim=="sp")) {
+               spar_vars = pc->getExtraVariables();
+               stream<<s;
+           }
            if (sim==pc->Name) stream<<s; // Xyce scripts
            if ((sim_typ==".TR")&&(sim=="tran")){
                stream<<s;
@@ -184,6 +187,9 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
                QString SwpSim = pc->Props.at(0)->Value;
                if (SwpSim.startsWith("DC")&&(sim=="dc")) stream<<s;
                else if (SwpSim.startsWith("AC")&&(sim=="ac")) {
+                   stream<<s;
+                   hasParSweep = true;
+               } else if (SwpSim.startsWith("SP")&&(sim=="sp")) {
                    stream<<s;
                    hasParSweep = true;
                } else if (SwpSim.startsWith("TR")&&(sim=="tran")) {
@@ -242,7 +248,16 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
         outputs.append("spice4qucs.sens_tr.cir.SENS.prn");
         outputs.append("spice4qucs.sens_tr.cir.TRADJ.prn");
     } else if (sim=="sp") {
-        write_str.clear();
+        write_str = ".PRINT ac format=std file=spice4qucs_sparam.prn ";
+        if (hasParSweep) {
+            for (const auto &v: spar_vars) { // Bug in Xyce; cannot print Z-par if
+                 // .STEP is activated; otherwise simulation error
+                if ( !v.startsWith("z(")) write_str += QString("%1 ").arg(v);
+            }
+        } else {
+            write_str += spar_vars.join(" ");
+        }
+        write_str += "\n";
         outputs.append("spice4qucs_sparam.prn");
     } else {
         write_str = QString(".PRINT  %1 format=raw file=%2 %3\n").arg(sim).arg(filename).arg(nods);
