@@ -51,6 +51,7 @@
 #include "components/ground.h"
 #include "components/subcirport.h"
 #include "components/equation.h"
+#include "spicecomponents/sp_nutmeg.h"
 #include "dialogs/matchdialog.h"
 #include "dialogs/changedialog.h"
 #include "dialogs/searchdialog.h"
@@ -404,7 +405,11 @@ void QucsApp::slotInsertEquation(bool on)
   if(view->selElem)
     delete view->selElem;  // delete previously selected component
 
-  view->selElem = new Equation();
+  if (QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
+      view->selElem = new NutmegEquation();
+  } else {
+      view->selElem = new Equation();
+  }
 
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   if(view->drawn) Doc->viewport()->update();
