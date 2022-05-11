@@ -200,7 +200,8 @@ void Component::paint(ViewPainter *p)
 
     if ((Model==".CUSTOMSIM")||(Model==".DISTO")
             ||(Model==".NOISE")||(Model==".PZ")||
-            (Model==".SENS")||(Model==".SENS_AC"))
+            (Model==".SENS")||(Model==".SENS_AC")||
+            (Model==".FFT"))
         p->Painter->setPen(QPen(Qt::blue,2));
     else if ((Model==".XYCESCR")||(Model==".SENS_XYCE")
              ||(Model==".SENS_TR_XYCE")) p->Painter->setPen(QPen(Qt::darkGreen,2));

@@ -522,6 +522,7 @@ void Module::registerModules (void) {
   }
   if (QucsSettings.DefaultSimulator == spicecompat::simNgspice ||
       QucsSettings.DefaultSimulator == spicecompat::simSpiceOpus) {
+      REGISTER_SIMULATION_1 (SpiceFFT);
       REGISTER_SIMULATION_1 (SpiceDisto);
       REGISTER_SIMULATION_1 (SpiceCustomSim);
       REGISTER_SIMULATION_1 (SpicePZ);

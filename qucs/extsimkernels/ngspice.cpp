@@ -100,6 +100,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
            if (sim_typ==".SENS") simulations.append("sens");
            if (sim_typ==".SENS_AC") simulations.append("sens_ac");
            if (sim_typ==".SP") simulations.append("sp");
+           if (sim_typ==".FFT") simulations.append("fft");
            if ((sim_typ==".SW")&&
                (pc->Props.at(0)->Value.startsWith("DC"))) simulations.append("dc");
            // stream<<s;
@@ -182,6 +183,10 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                     QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
                     stream<<(s2+s);
                     hasParSWP = true;
+                } else if (SwpSim.startsWith("FFT")&&(sim=="fft")) {
+                    QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
+                    stream<<(s2+s);
+                    hasParSWP = true;
                 } if (SwpSim.startsWith("TR")&&(sim=="tran")) {
                     QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
                     stream<<(s2+s);
@@ -200,7 +205,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
 
         QString custom_vars;
-        QStringList spar_vars;
+        QStringList ext_vars;
         // Hack: Such indexation method is needed to avoid entering infinite loop
         // in some cases of recursive access to Sch->DocComps list
         for(unsigned int i=0;i<Sch->DocComps.count();i++) {
@@ -211,7 +216,11 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
                if ((sim_typ==".SP")&&(sim=="sp")) {
                    stream<<s;
-                   spar_vars = pc->getExtraVariables();
+                   ext_vars = pc->getExtraVariables();
+               }
+               if ((sim_typ==".FFT")&&(sim=="fft")) {
+                   stream<<s;
+                   //ext_vars = pc->getExtraVariables();
                }
                if ((sim_typ==".DISTO")&&(sim=="disto")) stream<<s;
                if ((sim_typ==".NOISE")&&(sim=="noise")) {
@@ -271,6 +280,21 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             continue;
         }
 
+        QString nod;
+        QString nods;
+        nods.clear();
+        foreach (nod,vars) {
+            if (!nod.endsWith("#branch")) {
+                nods += QString("v(%1) ").arg(nod);
+            } else {
+                nods += QString("%1 ").arg(nod);
+            }
+        }
+
+        if (sim == "fft") {
+            stream<<QString("linearize %1\n").arg(nods);
+            stream<<QString("fft %1\n").arg(nods);
+        }
 
         QStringList vars_eq;
         vars_eq.clear();
@@ -286,19 +310,9 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             }
         }
 
-        QString nod;
-        QString nods;
-        nods.clear();
-        foreach (nod,vars) {
-            if (!nod.endsWith("#branch")) {
-                nods += QString("v(%1) ").arg(nod);
-            } else {
-                nods += QString("%1 ").arg(nod);
-            }
-        }
-        if (sim == "sp") { // S-parameter requires specific variables
+        if (sim == "sp") { // S-parameter and FFT requires specific variables
             nods.clear();
-            for (const auto &var : spar_vars) {
+            for (const auto &var : ext_vars) {
                 nods += " " + var;
             }
         }
@@ -349,6 +363,9 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                     s += getParentSWPscript(pc,sim,false,b);
                     stream<<s;
                 } else if (SwpSim.startsWith("PZ")&&(sim=="pz")) {
+                    s += getParentSWPscript(pc,sim,false,b);
+                    stream<<s;
+                } else if (SwpSim.startsWith("FFT")&&(sim=="fft")) {
                     s += getParentSWPscript(pc,sim,false,b);
                     stream<<s;
                 } else if (SwpSim.startsWith("TR")&&(sim=="tran")) {

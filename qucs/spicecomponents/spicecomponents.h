@@ -86,6 +86,7 @@
 #include "sp_sens_ac.h"
 #include "sp_sens_xyce.h"
 #include "sp_sens_tr_xyce.h"
+#include "sp_spectrum.h"
 
 // XSpice file components
 #include "xspicegeneric.h"

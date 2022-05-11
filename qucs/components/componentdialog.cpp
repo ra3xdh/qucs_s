@@ -71,7 +71,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   if((Comp->Model[0] == '.') &&
      (Comp->Model != ".DC") && (Comp->Model != ".HB") &&
      (Comp->Model != ".Digi") && (Comp->Model != ".ETR") &&
-     (Comp->Model != ".FOURIER") &&
+     (Comp->Model != ".FOURIER") && (Comp->Model != ".FFT") &&
      (Comp->Model != ".PZ") && (Comp->Model != ".SENS") &&
      (Comp->Model != ".SENS_AC") && (Comp->Model != ".SENS_XYCE") &&
      (Comp->Model != ".SENS_TR_XYCE")) {
