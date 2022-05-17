@@ -900,3 +900,54 @@ Sub:X1 _net0 _net1 _net2 gnd Type="lm337h_2_mod"
     <Line 4 7 0 2 #000000 1 1>
   </Symbol>
 </Component>
+
+<Component TL431>
+  <Description>
+TL431 2.5V voltage reference
+  </Description>
+  <Model>
+.Def:TL431_TL431 _net0 _net1 _net2
+Sub:X1 _net0 _net1 _net2 gnd Type="TL431_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "TL431.cir.lst">
+  <Spice>* Qucs 0.0.23  TL431_TL431.sch
+
+* TL431 Current Regulator
+.subckt nTL431 CATHODE ANODE REF
+Q1 N004 N003 N001 0 P
+Q2 ANODE N002 N001 0 P
+Q3 CATHODE N005 ANODE 0 N
+R1 N002 ANODE 600k
+R2 REF N002 648k
+I1 CATHODE N001 5u
+V1 N003 ANODE 1.2V
+Q4 CATHODE N004 N005 0 N
+R6 N004 ANODE 640k
+.model N NPN(BF=250 Cje=.5p Cjc=.5p Rb=500)
+.model P PNP(BF=120 Cje=.3p Cjc=1.5p Rb=250)
+.ends TL431
+
+
+
+.SUBCKT Regulators_TL431  gnd _net0 _net1 _net2 
+X1 _net0 _net1 _net2 nTL431
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line 80 0 0 90 #000080 2 1>
+    <Line 40 50 10 0 #000080 2 1>
+    <.PortSym 80 0 1 0>
+    <.PortSym 80 90 2 0>
+    <.PortSym 40 50 3 0>
+    <Line 100 60 -20 -30 #00007f 2 1>
+    <Line 80 30 -20 30 #00007f 2 1>
+    <Line 60 60 40 0 #00007f 2 1>
+    <Line 60 30 40 0 #00007f 2 1>
+    <Rectangle 50 20 60 50 #00007f 2 1 #c0c0c0 1 0>
+    <Line 60 40 0 -10 #00007f 2 1>
+    <.ID 120 24 X>
+  </Symbol>
+</Component>
+
