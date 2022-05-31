@@ -35,18 +35,19 @@ class vacomponent : public Component
   public:
     using Component::newOne;
     vacomponent(QString filename);
+    vacomponent(QJsonObject json);
     ~vacomponent() { };
     virtual Component* newOne(QString filename);
     static Element* info(QString&, QString &,
                          bool getNewOne=false, QString filename="");
   protected:
-    void createSymbol(QString filename);
+    void createSymbol(QJsonObject json);
+    void parseJson(QJsonObject json);
 
 };
 
-//
-QString getData(QString filename);
-double getDouble(QScriptValue data, QString prop);
-QString getString(QScriptValue data, QString prop);
+QJsonObject getJsonObject(QString filename);
+double getDouble(QJsonObject data, QString prop);
+QString getString(QJsonObject data, QString prop);
 
 #endif /* vacomponent_H */
