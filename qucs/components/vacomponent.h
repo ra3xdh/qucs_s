@@ -19,11 +19,9 @@
 #define VACOMPONENT_H
 
 #include "component.h"
-
-#include <QScriptValue>
+#include <QJsonObject>
 
 class QString;
-class QScriptValue;
 
 /*!
  * \file vacomponent.h

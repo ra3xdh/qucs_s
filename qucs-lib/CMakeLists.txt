@@ -31,7 +31,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ") # enable warning level
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ") # enable C++11
 
 
-FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets Svg Xml Script PrintSupport REQUIRED)
+FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets Svg Xml PrintSupport REQUIRED)
 #INCLUDE( ${QT_USE_FILE} )
 
 INCLUDE_DIRECTORIES(

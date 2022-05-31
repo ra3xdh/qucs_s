@@ -27,9 +27,6 @@
 #include <QScrollArea>
 #include <QDebug>
 #include <QFileDialog>
-#include <QScriptEngine>
-#include <QScriptValue>
-#include <QScriptValueIterator>
 #include <QGroupBox>
 #include <QListWidget>
 #include <QListWidgetItem>
