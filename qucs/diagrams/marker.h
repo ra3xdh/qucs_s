@@ -61,6 +61,7 @@ public: // power matching stuff. some sort of VarPos (ab?)use
   double  powFreq() const {return VarPos[0];}
   double  powReal() const {return VarDep[0];}
   double  powImag() const {return VarDep[1];}
+  void setPos(const double xpos) { VarPos[0] = xpos; }
 
 // private: // not yet
   Graph const *pGraph;   // the corresponding graph

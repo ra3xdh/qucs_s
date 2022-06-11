@@ -39,6 +39,16 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   Precision->setText(QString::number(pMarker->Precision));
   Precision->setValidator(new QIntValidator(0, 12, this));
 
+  XPosition = new QLineEdit();
+  if (pMarker->varPos().size() > 0) {
+      XPosition->setText(QString::number(pMarker->varPos().at(0),
+                         'g', pMarker->precision()));
+  } else {
+      XPosition->setText("0");
+      XPosition->setEnabled(false);
+  }
+  XPosition->setValidator(new QDoubleValidator(this));
+
   g->addWidget(new QLabel(tr("Precision: ")), 0, 0);
   g->addWidget(Precision, 0, 1);
 
@@ -51,6 +61,9 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   g->addWidget(new QLabel(tr("Number Notation: ")), 1,0);
   g->addWidget(NumberBox, 1, 1);
 
+  g->addWidget(new QLabel(tr("X-axis position:")), 2, 0);
+  g->addWidget(XPosition, 2, 1);
+
   assert(pMarker->diag());
   if(pMarker->diag()->Name=="Smith") // BUG
   {
@@ -58,13 +71,13 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
 		SourceImpedance = new QLineEdit();
   	SourceImpedance->setText(QString::number(pMarker->Z0));
 
-		g->addWidget(new QLabel(tr("Z0: ")), 2,0);
-		g->addWidget(SourceImpedance,2,1);
+        g->addWidget(new QLabel(tr("Z0: ")), 3,0);
+        g->addWidget(SourceImpedance,3,1);
 	}
   
   TransBox = new QCheckBox(tr("transparent"));
   TransBox->setChecked(pMarker->transparent);
-  g->addWidget(TransBox,3,0);
+  g->addWidget(TransBox,4,0);
 
   // first => activated by pressing RETURN
   QPushButton *ButtOK = new QPushButton(tr("OK"));
@@ -77,7 +90,7 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   b->setSpacing(5);
   b->addWidget(ButtOK);
   b->addWidget(ButtCancel);
-  g->addLayout(b,4,0,1,2);
+  g->addLayout(b,5,0,1,2);
 
   this->setLayout(g);
 }
@@ -112,6 +125,12 @@ void MarkerDialog::slotAcceptValues()
   if(TransBox->isChecked() != pMarker->transparent) {
     pMarker->transparent = TransBox->isChecked();
     changed = true;
+  }
+
+  double xpos = XPosition->text().toDouble();
+  if (xpos != pMarker->powFreq()) {
+      pMarker->setPos(XPosition->text().toDouble());
+      changed = true;
   }
 
   if(changed) {
