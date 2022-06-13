@@ -61,19 +61,21 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
   g->addWidget(new QLabel(tr("Number Notation: ")), 1,0);
   g->addWidget(NumberBox, 1, 1);
 
-  g->addWidget(new QLabel(tr("X-axis position:")), 2, 0);
+  QLabel *lblXpos = new QLabel(tr("X-axis position:"));
+  g->addWidget(lblXpos, 2, 0);
   g->addWidget(XPosition, 2, 1);
 
   assert(pMarker->diag());
   if(pMarker->diag()->Name=="Smith") // BUG
   {
-    //S parameter also displayed as Z, need Z0 here
-		SourceImpedance = new QLineEdit();
-  	SourceImpedance->setText(QString::number(pMarker->Z0));
+      //S parameter also displayed as Z, need Z0 here
+      lblXpos->setText("Frequency:");
+      SourceImpedance = new QLineEdit();
+      SourceImpedance->setText(QString::number(pMarker->Z0));
 
-        g->addWidget(new QLabel(tr("Z0: ")), 3,0);
-        g->addWidget(SourceImpedance,3,1);
-	}
+      g->addWidget(new QLabel(tr("Z0: ")), 3,0);
+      g->addWidget(SourceImpedance,3,1);
+  }
   
   TransBox = new QCheckBox(tr("transparent"));
   TransBox->setChecked(pMarker->transparent);
@@ -128,7 +130,8 @@ void MarkerDialog::slotAcceptValues()
   }
 
   double xpos = XPosition->text().toDouble();
-  if (xpos != pMarker->powFreq()) {
+  if ((xpos != pMarker->powFreq()) &&
+      (pMarker->varPos().size() > 0)) {
       pMarker->setPos(XPosition->text().toDouble());
       changed = true;
   }
