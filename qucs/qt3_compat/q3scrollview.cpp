@@ -1141,13 +1141,22 @@ void  Q3ScrollView::mouseMoveEvent(QMouseEvent *e)
 #ifndef QT_NO_WHEELEVENT
 void Q3ScrollView::wheelEvent(QWheelEvent *e)
 {
+#if QT_VERSION >= 0x050f00
+    QPoint pe(e->globalPosition().x(),e->globalPosition().y());
+    QPoint pg = viewport()->mapFromGlobal(pe);
+    QPointF pgf(pg.x(),pg.y());
+    QWheelEvent ce(pgf,
+                   e->globalPosition(), e->pixelDelta(), e->angleDelta(),
+                   e->buttons(), e->modifiers(), e->phase(), e->inverted());
+#else
     QWheelEvent ce(viewport()->mapFromGlobal(e->globalPos()),
                     e->globalPos(), e->delta(), e->buttons(), e->modifiers());
+#endif
     viewportWheelEvent(&ce);
     if (!ce.isAccepted()) {
-        if (e->orientation() == Horizontal && horizontalScrollBar())
+        if (e->angleDelta().x() != 0 && horizontalScrollBar())
             horizontalScrollBar()->event(e);
-        else  if (e->orientation() == Vertical && verticalScrollBar())
+        else  if (e->angleDelta().y() != 0 && verticalScrollBar())
             verticalScrollBar()->event(e);
     } else {
         e->accept();
@@ -1372,7 +1381,7 @@ void Q3ScrollView::addChild(QWidget* child, int x, int y)
         setResizePolicy(Manual);
     }
     if (child->parentWidget() != viewport()) {
-        child->setParent(viewport(),0);
+        child->setParent(viewport(), Qt::WindowFlags());
         child->move(QPoint(0,0));
         child->hide();
 //            child->reparent(viewport(), 0, QPoint(0,0), false);
@@ -1802,6 +1811,8 @@ void Q3ScrollView::viewportDragEnterEvent(QDragEnterEvent* e)
                       e->mouseButtons(),e->keyboardModifiers());
     //e->setPoint(viewportToContents(e->pos()));
     contentsDragEnterEvent(&de);
+    if (de.isAccepted()) e->accept();
+    else e->ignore();
     //e->setPoint(contentsToViewport(e->pos()));
 }
 
@@ -1820,6 +1831,8 @@ void Q3ScrollView::viewportDragMoveEvent(QDragMoveEvent* e)
                       e->mouseButtons(),e->keyboardModifiers());
     //e->setPoint(viewportToContents(e->pos()));
     contentsDragMoveEvent(&de);
+    if (de.isAccepted()) e->accept();
+    else e->ignore();
     //e->setPoint(contentsToViewport(e->pos()));
 }
 
@@ -1851,6 +1864,8 @@ void Q3ScrollView::viewportDropEvent(QDropEvent* e)
                       e->mouseButtons(),e->keyboardModifiers());
     //e->setPoint(viewportToContents(e->pos()));
     contentsDropEvent(&de);
+    if (de.isAccepted()) e->accept();
+    else e->ignore();
     //e->setPoint(contentsToViewport(e->pos()));
 }
 
@@ -1872,8 +1887,17 @@ void Q3ScrollView::viewportWheelEvent(QWheelEvent* e)
        be sent to the focus widget if the widget-under-mouse doesn't want
        the event itself.
     */
-    QWheelEvent ce(viewportToContents(e->pos()),
-        e->globalPos(), e->delta(), e->buttons(), e->modifiers());
+#if QT_VERSION >= 0x050f00
+    QPoint pe(e->globalPosition().x(),e->globalPosition().y());
+    QPoint pg = viewport()->mapFromGlobal(pe);
+    QPointF pgf(pg.x(),pg.y());
+    QWheelEvent ce(pgf,
+                   e->globalPosition(), e->pixelDelta(), e->angleDelta(),
+                   e->buttons(), e->modifiers(), e->phase(), e->inverted());
+#else
+    QWheelEvent ce(viewport()->mapFromGlobal(e->globalPos()),
+                    e->globalPos(), e->delta(), e->buttons(), e->modifiers());
+#endif
     contentsWheelEvent(&ce);
     if (ce.isAccepted())
         e->accept();

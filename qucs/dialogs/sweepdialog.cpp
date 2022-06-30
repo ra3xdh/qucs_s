@@ -49,7 +49,7 @@ QString mySpinBox::textFromValue(int Val) const
 {
   if (Values == NULL) return "";
 
-  qDebug() << "Values + Val" << *(Values+Val) << endl;
+  //qDebug() << "Values + Val" << *(Values+Val) << endl;
   return QString::number(*(Values+Val));
 }
 

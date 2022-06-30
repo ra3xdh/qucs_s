@@ -26,6 +26,7 @@
 #include "spicecomponents/sp_spiceinit.h"
 #include "spicecomponents/xsp_cmlib.h"
 #include "main.h"
+#include "misc.h"
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -98,6 +99,8 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
            if (sim_typ==".PZ") simulations.append("pz");
            if (sim_typ==".SENS") simulations.append("sens");
            if (sim_typ==".SENS_AC") simulations.append("sens_ac");
+           if (sim_typ==".SP") simulations.append("sp");
+           if (sim_typ==".FFT") simulations.append("fft");
            if ((sim_typ==".SW")&&
                (pc->Props.at(0)->Value.startsWith("DC"))) simulations.append("dc");
            // stream<<s;
@@ -164,6 +167,10 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                     QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
                     stream<<(s2+s);
                     hasParSWP = true;
+                } else if (SwpSim.startsWith("SP")&&(sim=="sp")) {
+                    QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
+                    stream<<(s2+s);
+                    hasParSWP = true;
                 } else if (SwpSim.startsWith("DISTO")&&(sim=="disto")) {
                     QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
                     stream<<(s2+s);
@@ -173,6 +180,10 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                     stream<<(s2+s);
                     hasParSWP = true;
                 } else if (SwpSim.startsWith("PZ")&&(sim=="pz")) {
+                    QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
+                    stream<<(s2+s);
+                    hasParSWP = true;
+                } else if (SwpSim.startsWith("FFT")&&(sim=="fft")) {
                     QString s2 = getParentSWPscript(pc,sim,true,hasDblSWP);
                     stream<<(s2+s);
                     hasParSWP = true;
@@ -194,6 +205,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
 
         QString custom_vars;
+        QStringList ext_vars;
         // Hack: Such indexation method is needed to avoid entering infinite loop
         // in some cases of recursive access to Sch->DocComps list
         for(unsigned int i=0;i<Sch->DocComps.count();i++) {
@@ -202,6 +214,14 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                QString sim_typ = pc->Model;
                QString s = pc->getSpiceNetlist();
                if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
+               if ((sim_typ==".SP")&&(sim=="sp")) {
+                   stream<<s;
+                   ext_vars = pc->getExtraVariables();
+               }
+               if ((sim_typ==".FFT")&&(sim=="fft")) {
+                   stream<<s;
+                   //ext_vars = pc->getExtraVariables();
+               }
                if ((sim_typ==".DISTO")&&(sim=="disto")) stream<<s;
                if ((sim_typ==".NOISE")&&(sim=="noise")) {
                    outputs.append("spice4qucs.cir.noise");
@@ -234,7 +254,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                    custom_vars = pc->Props.at(1)->Value;
                    custom_vars.replace(";"," ");
                    QString cust_out = pc->Props.at(2)->Value;
-                   outputs.append(cust_out.split(';',QString::SkipEmptyParts));
+                   outputs.append(cust_out.split(';',qucs::SkipEmptyParts));
                }
                if (sim_typ==".SW") {
                    QString SwpSim = pc->Props.at(0)->Value;
@@ -260,6 +280,21 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             continue;
         }
 
+        QString nod;
+        QString nods;
+        nods.clear();
+        foreach (nod,vars) {
+            if (!nod.endsWith("#branch")) {
+                nods += QString("v(%1) ").arg(nod);
+            } else {
+                nods += QString("%1 ").arg(nod);
+            }
+        }
+
+        if (sim == "fft") {
+            stream<<QString("linearize %1\n").arg(nods);
+            stream<<QString("fft %1\n").arg(nods);
+        }
 
         QStringList vars_eq;
         vars_eq.clear();
@@ -275,14 +310,10 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             }
         }
 
-        QString nod;
-        QString nods;
-        nods.clear();
-        foreach (nod,vars) {
-            if (!nod.endsWith("#branch")) {
-                nods += QString("v(%1) ").arg(nod);
-            } else {
-                nods += QString("%1 ").arg(nod);
+        if (sim == "sp") { // S-parameter and FFT requires specific variables
+            nods.clear();
+            for (const auto &var : ext_vars) {
+                nods += " " + var;
             }
         }
         for (QStringList::iterator it = vars_eq.begin();it != vars_eq.end(); it++) {
@@ -322,6 +353,9 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                 if (SwpSim.startsWith("AC")&&(sim=="ac")) {
                     s += getParentSWPscript(pc,sim,false,b);
                     stream<<s;
+                } else if (SwpSim.startsWith("SP")&&(sim=="sp")) {
+                    s += getParentSWPscript(pc,sim,false,b);
+                    stream<<s;
                 } else if (SwpSim.startsWith("DISTO")&&(sim=="disto")) {
                     s += getParentSWPscript(pc,sim,false,b);
                     stream<<s;
@@ -329,6 +363,9 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
                     s += getParentSWPscript(pc,sim,false,b);
                     stream<<s;
                 } else if (SwpSim.startsWith("PZ")&&(sim=="pz")) {
+                    s += getParentSWPscript(pc,sim,false,b);
+                    stream<<s;
+                } else if (SwpSim.startsWith("FFT")&&(sim=="fft")) {
                     s += getParentSWPscript(pc,sim,false,b);
                     stream<<s;
                 } else if (SwpSim.startsWith("TR")&&(sim=="tran")) {
@@ -417,6 +454,21 @@ void Ngspice::slotSimulate()
         return;
     }
 
+    if (!checkSimulations()) {
+        output.append("No simulation found. Please add at least one simulation!\n");
+        emit finished();
+        emit errors(QProcess::FailedToStart);
+        return;
+    }
+
+    if (!checkDCSimulation()) {
+        output.append("Only DC simulation found in the schematic. It has no effect!"
+                      " Add TRAN, AC, or Sweep simulation to proceed.\n");
+        emit finished();
+        emit errors(QProcess::FailedToStart);
+        return;
+    }
+
     if (!checkNodeNames(incompat)) {
         QString s = incompat.join("; ");
         output.append("There were Nutmeg-incompatible node names. Simulator cannot proceed.\n");
@@ -446,7 +498,10 @@ void Ngspice::slotSimulate()
     SimProcess->setWorkingDirectory(workdir);
     qDebug()<<workdir;
     QString cmd = QString("\"%1\" %2 %3").arg(simulator_cmd,simulator_parameters,netfile);
-    SimProcess->start(cmd);
+    QStringList cmd_args = misc::parseCmdArgs(cmd);
+    QString ngsp_cmd = cmd_args.at(0);
+    cmd_args.removeAt(0);
+    SimProcess->start(ngsp_cmd,cmd_args);
     emit started();
 }
 

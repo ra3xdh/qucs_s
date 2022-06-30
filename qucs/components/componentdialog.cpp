@@ -71,7 +71,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   if((Comp->Model[0] == '.') &&
      (Comp->Model != ".DC") && (Comp->Model != ".HB") &&
      (Comp->Model != ".Digi") && (Comp->Model != ".ETR") &&
-     (Comp->Model != ".FOURIER") &&
+     (Comp->Model != ".FOURIER") && (Comp->Model != ".FFT") &&
      (Comp->Model != ".PZ") && (Comp->Model != ".SENS") &&
      (Comp->Model != ".SENS_AC") && (Comp->Model != ".SENS_XYCE") &&
      (Comp->Model != ".SENS_TR_XYCE")) {
@@ -668,8 +668,8 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
 
     // use the screen-compatible metric
     QFontMetrics metrics(QucsSettings.font, 0);   // get size of text
-    qDebug() << "desc = " << desc << metrics.width(desc);
-    while(metrics.width(desc) > 270) {  // if description too long, cut it nicely
+    qDebug() << "desc = " << desc << metrics.boundingRect(desc).width();
+    while(metrics.boundingRect(desc).width() > 270) {  // if description too long, cut it nicely
       // so 270 above will be the maximum size of the name label and associated edit line widget 
       if (desc.lastIndexOf(' ') != -1)
         desc = desc.left(desc.lastIndexOf(' ')) + "....";

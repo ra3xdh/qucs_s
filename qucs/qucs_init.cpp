@@ -426,7 +426,7 @@ void QucsApp::initActions()
 	tr("Select Markers\n\nSelects all diagram markers of the document"));
   connect(selectMarker, SIGNAL(triggered()), SLOT(slotSelectMarker()));
 
-  editRotate = new QAction(QIcon((":/bitmaps/rotate_ccw.png")), tr("Rotate"), this);
+  editRotate = new QAction(QIcon(misc::getIconPath("rotate_ccw.png", qucs::panelIcons)), tr("Rotate"), this);
   editRotate->setShortcut(Qt::CTRL+Qt::Key_R);
   editRotate->setStatusTip(tr("Rotates the selected component by 90\x00B0"));
   editRotate->setWhatsThis(
@@ -434,7 +434,7 @@ void QucsApp::initActions()
   editRotate->setCheckable(true);
   connect(editRotate, SIGNAL(toggled(bool)), SLOT(slotEditRotate(bool)));
 
-  editMirror = new QAction(QIcon((":/bitmaps/mirror.png")), tr("Mirror about X Axis"), this);
+  editMirror = new QAction(QIcon(misc::getIconPath("mirror.png", qucs::panelIcons)), tr("Mirror about X Axis"), this);
   editMirror->setShortcut(Qt::CTRL+Qt::Key_J);
   editMirror->setStatusTip(tr("Mirrors the selected item about X Axis"));
   editMirror->setWhatsThis(
@@ -442,7 +442,7 @@ void QucsApp::initActions()
   editMirror->setCheckable(true);
   connect(editMirror, SIGNAL(toggled(bool)), SLOT(slotEditMirrorX(bool)));
 
-  editMirrorY = new QAction(QIcon((":/bitmaps/mirrory.png")), tr("Mirror about Y Axis"), this);
+  editMirrorY = new QAction(QIcon(misc::getIconPath("mirrory.png", qucs::panelIcons)), tr("Mirror about Y Axis"), this);
   editMirrorY->setShortcut(Qt::CTRL+Qt::Key_M);
   editMirrorY->setStatusTip(tr("Mirrors the selected item about Y Axis"));
   editMirrorY->setWhatsThis(
@@ -465,7 +465,7 @@ void QucsApp::initActions()
   connect(popH, SIGNAL(triggered()), SLOT(slotPopHierarchy()));
   popH->setEnabled(false);  // only enabled if useful !!!!
 
-  editActivate = new QAction(QIcon((":/bitmaps/deactiv.png")),	tr("Deactivate/Activate"), this);
+  editActivate = new QAction(QIcon(misc::getIconPath("deactiv.png", qucs::panelIcons)),	tr("Deactivate/Activate"), this);
   editActivate->setShortcut(Qt::CTRL+Qt::Key_D);
   editActivate->setStatusTip(tr("Deactivate/Activate selected components"));
   editActivate->setWhatsThis(
@@ -473,7 +473,7 @@ void QucsApp::initActions()
   editActivate->setCheckable(true);
   connect(editActivate, SIGNAL(toggled(bool)), SLOT(slotEditActivate(bool)));
 
-  insEquation = new QAction(QIcon((":/bitmaps/equation.png")),	tr("Insert Equation"), this);
+  insEquation = new QAction(QIcon(misc::getIconPath("equation.png", qucs::panelIcons)),	tr("Insert Equation"), this);
   insEquation->setShortcut(Qt::CTRL+Qt::Key_Less);
   insEquation->setStatusTip(tr("Inserts an equation"));
   insEquation->setWhatsThis(
@@ -481,27 +481,27 @@ void QucsApp::initActions()
   insEquation->setCheckable(true);
   connect(insEquation, SIGNAL(toggled(bool)), SLOT(slotInsertEquation(bool)));
 
-  insGround = new QAction(QIcon((":/bitmaps/ground.png")), tr("Insert Ground"), this);
+  insGround = new QAction(QIcon(misc::getIconPath("ground.png", qucs::panelIcons)), tr("Insert Ground"), this);
   insGround->setShortcut(Qt::CTRL+Qt::Key_G);
   insGround->setStatusTip(tr("Inserts a ground symbol"));
   insGround->setWhatsThis(tr("Insert Ground\n\nInserts a ground symbol"));
   insGround->setCheckable(true);
   connect(insGround, SIGNAL(toggled(bool)), SLOT(slotInsertGround(bool)));
 
-  insPort = new QAction(QIcon((":/bitmaps/port.png")),	tr("Insert Port"), this);
+  insPort = new QAction(QIcon(misc::getIconPath("port.png", qucs::panelIcons)),	tr("Insert Port"), this);
   insPort->setStatusTip(tr("Inserts a port symbol"));
   insPort->setWhatsThis(tr("Insert Port\n\nInserts a port symbol"));
   insPort->setCheckable(true);
   connect(insPort, SIGNAL(toggled(bool)), SLOT(slotInsertPort(bool)));
 
-  insWire = new QAction(QIcon((":/bitmaps/wire.png")),	tr("Wire"), this);
+  insWire = new QAction(QIcon(misc::getIconPath("wire.png", qucs::panelIcons)),	tr("Wire"), this);
   insWire->setShortcut(Qt::CTRL+Qt::Key_E);
   insWire->setStatusTip(tr("Inserts a wire"));
   insWire->setWhatsThis(tr("Wire\n\nInserts a wire"));
   insWire->setCheckable(true);
   connect(insWire, SIGNAL(toggled(bool)), SLOT(slotSetWire(bool)));
 
-  insLabel = new QAction(QIcon((":/bitmaps/nodename.png")), tr("Wire Label"), this);
+  insLabel = new QAction(QIcon(misc::getIconPath("nodename.png", qucs::panelIcons)), tr("Wire Label"), this);
   insLabel->setShortcut(Qt::CTRL+Qt::Key_L);
   insLabel->setStatusTip(tr("Inserts a wire or pin label"));
   insLabel->setWhatsThis(tr("Wire Label\n\nInserts a wire or pin label"));
@@ -652,10 +652,10 @@ void QucsApp::initActions()
   helpIndex->setWhatsThis(tr("Help Index\n\nIndex of intern Qucs help"));
   connect(helpIndex, SIGNAL(triggered()), SLOT(slotHelpIndex()));
 
-  helpQucsIndex = new QAction(tr("Help Index (basic Qucs version)"), this);
+  /*helpQucsIndex = new QAction(tr("Help Index (basic Qucs version)"), this);
   helpQucsIndex->setStatusTip(tr("Index of basic Qucs Help"));
   helpQucsIndex->setWhatsThis(tr("Help Index\n\nIndex of basic Qucs help"));
-  connect(helpQucsIndex, SIGNAL(triggered()), SLOT(slotHelpQucsIndex()));
+  connect(helpQucsIndex, SIGNAL(triggered()), SLOT(slotHelpQucsIndex()));*/
 
   helpGetStart = new QAction(tr("Getting Started..."), this);
   helpGetStart->setStatusTip(tr("Getting Started with Qucs"));
@@ -663,7 +663,7 @@ void QucsApp::initActions()
 	tr("Getting Started\n\nShort introduction into Qucs"));
   connect(helpGetStart, SIGNAL(triggered()), SLOT(slotGettingStarted()));
 
-  helpAboutApp = new QAction(tr("&About Qucs..."), this);
+  helpAboutApp = new QAction(tr("&About Qucs-S..."), this);
   helpAboutApp->setStatusTip(tr("About the application"));
   helpAboutApp->setWhatsThis(tr("About\n\nAbout the application"));
   connect(helpAboutApp, SIGNAL(triggered()), SLOT(slotHelpAbout()));
@@ -824,7 +824,7 @@ void QucsApp::initMenuBar()
 
   helpMenu = new QMenu(tr("&Help"));  // menuBar entry helpMenu
   helpMenu->addAction(helpIndex);
-  helpMenu->addAction(helpQucsIndex);
+  //helpMenu->addAction(helpQucsIndex);
   helpMenu->addAction(helpGetStart);
   helpMenu->addSeparator();
 

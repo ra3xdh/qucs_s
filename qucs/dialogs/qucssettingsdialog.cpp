@@ -74,23 +74,28 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     QWidget *appSettingsTab = new QWidget(t);
     QGridLayout *appSettingsGrid = new QGridLayout(appSettingsTab);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Font (set after reload):"), appSettingsTab), 0,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Schematic font (set after reload):"), appSettingsTab), 0,0);
     FontButton = new QPushButton(appSettingsTab);
     connect(FontButton, SIGNAL(clicked()), SLOT(slotFontDialog()));
     appSettingsGrid->addWidget(FontButton,0,1);
 
+    appSettingsGrid->addWidget(new QLabel(tr("Application font (set after reload):"), appSettingsTab), 1,0);
+    AppFontButton = new QPushButton(appSettingsTab);
+    connect(AppFontButton, SIGNAL(clicked()), SLOT(slotAppFontDialog()));
+    appSettingsGrid->addWidget(AppFontButton,1,1);
+
     val50 = new QIntValidator(1, 50, this);
-    appSettingsGrid->addWidget(new QLabel(tr("Large font size:"), appSettingsTab), 1,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Large font size:"), appSettingsTab), 2,0);
     LargeFontSizeEdit = new QLineEdit(appSettingsTab);
     LargeFontSizeEdit->setValidator(val50);
-    appSettingsGrid->addWidget(LargeFontSizeEdit,1,1);
+    appSettingsGrid->addWidget(LargeFontSizeEdit,2,1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Document Background Color:"), appSettingsTab) ,2,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Document Background Color:"), appSettingsTab) ,3,0);
     BGColorButton = new QPushButton("      ", appSettingsTab);
     connect(BGColorButton, SIGNAL(clicked()), SLOT(slotBGColorDialog()));
-    appSettingsGrid->addWidget(BGColorButton,2,1);
+    appSettingsGrid->addWidget(BGColorButton,3,1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Language (set after reload):"), appSettingsTab) ,3,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Language (set after reload):"), appSettingsTab) ,4,0);
     LanguageCombo = new QComboBox(appSettingsTab);
     LanguageCombo->insertItem(-1, tr("Ukrainian")+" (uk)");
     LanguageCombo->insertItem(-1, tr("Turkish")+" (tr)");
@@ -114,40 +119,53 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     LanguageCombo->insertItem(-1, tr("Arabic")+" (ar)");
     LanguageCombo->insertItem(-1, tr("English")+" (en)");
     LanguageCombo->insertItem(-1, tr("system language"));
-    appSettingsGrid->addWidget(LanguageCombo,3,1);
+    appSettingsGrid->addWidget(LanguageCombo,4,1);
 
     val200 = new QIntValidator(0, 200, this);
-    appSettingsGrid->addWidget(new QLabel(tr("Maximum undo operations:"), appSettingsTab) ,4,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Maximum undo operations:"), appSettingsTab) ,5,0);
     undoNumEdit = new QLineEdit(appSettingsTab);
     undoNumEdit->setValidator(val200);
-    appSettingsGrid->addWidget(undoNumEdit,4,1);
+    appSettingsGrid->addWidget(undoNumEdit,5,1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Text editor:"), appSettingsTab) ,5,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Text editor:"), appSettingsTab) ,6,0);
     editorEdit = new QLineEdit(appSettingsTab);
     editorEdit->setToolTip(tr("Set to qucs, qucsedit or the path to your favorite text editor."));
-    appSettingsGrid->addWidget(editorEdit,5,1);
+    appSettingsGrid->addWidget(editorEdit,6,1);
 
-    appSettingsGrid->addWidget(new QLabel(tr("Start wiring when clicking open node:"), appSettingsTab) ,6,0);
+    appSettingsGrid->addWidget(new QLabel(tr("Start wiring when clicking open node:"), appSettingsTab) ,7,0);
     checkWiring = new QCheckBox(appSettingsTab);
-    appSettingsGrid->addWidget(checkWiring,6,1);
+    appSettingsGrid->addWidget(checkWiring,7,1);
 
     appSettingsGrid->addWidget(new QLabel(tr("Load documents from future versions:")));
     checkLoadFromFutureVersions = new QCheckBox(appSettingsTab);
     checkLoadFromFutureVersions->setToolTip(tr("Try to load also documents created with newer versions of Qucs."));
-    appSettingsGrid->addWidget(checkLoadFromFutureVersions,7,1);
+    appSettingsGrid->addWidget(checkLoadFromFutureVersions,8,1);
     checkLoadFromFutureVersions->setChecked(QucsSettings.IgnoreFutureVersion);
 
     appSettingsGrid->addWidget(new QLabel(tr("Draw diagrams with anti-aliasing feature:")));
     checkAntiAliasing = new QCheckBox(appSettingsTab);
     checkAntiAliasing->setToolTip(tr("Use anti-aliasing for graphs for a smoother appereance."));
-    appSettingsGrid->addWidget(checkAntiAliasing,8,1);
+    appSettingsGrid->addWidget(checkAntiAliasing,9,1);
     checkAntiAliasing->setChecked(QucsSettings.GraphAntiAliasing);
 
     appSettingsGrid->addWidget(new QLabel(tr("Draw text with anti-aliasing feature:")));
     checkTextAntiAliasing = new QCheckBox(appSettingsTab);
     checkTextAntiAliasing->setToolTip(tr("Use anti-aliasing for text for a smoother appereance."));
-    appSettingsGrid->addWidget(checkTextAntiAliasing,9,1);
+    appSettingsGrid->addWidget(checkTextAntiAliasing,10,1);
     checkTextAntiAliasing->setChecked(QucsSettings.TextAntiAliasing);
+
+    QStringList lst_icons;
+    lst_icons<<"Automatic"<<"Light"<<"Dark";
+    PanelIconsCombo = new QComboBox;
+    PanelIconsCombo->addItems(lst_icons);
+    PanelIconsCombo->setCurrentIndex(QucsSettings.panelIconsTheme);
+    appSettingsGrid->addWidget(new QLabel(tr("Panel icons theme (set after reload):"),appSettingsTab),11,0);
+    appSettingsGrid->addWidget(PanelIconsCombo,11,1);
+    CompIconsCombo = new QComboBox;
+    CompIconsCombo->addItems(lst_icons);
+    CompIconsCombo->setCurrentIndex(QucsSettings.compIconsTheme);
+    appSettingsGrid->addWidget(new QLabel(tr("Components icons theme (set after reload):"),appSettingsTab),12,0);
+    appSettingsGrid->addWidget(CompIconsCombo,12,1);
 
     t->addTab(appSettingsTab, tr("Settings"));
 
@@ -406,7 +424,9 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     // ...........................................................
     // fill the fields with the Qucs-Properties
     Font  = QucsSettings.font;
+    AppFont = QucsSettings.appFont;
     FontButton->setText(Font.toString());
+    AppFontButton->setText(AppFont.toString());
     QString s = QString::number(QucsSettings.largeFontSize, 'f', 1);
     LargeFontSizeEdit->setText(s);
 
@@ -514,7 +534,7 @@ void QucsSettingsDialog::slotApply()
       // if user aborts closing, just return
       if(!App->closeAllFiles()) return;
 
-      QucsSettings.QucsHomeDir = homeEdit->text();
+      QucsSettings.QucsHomeDir.setPath(homeEdit->text());
       homeDirChanged = true;
       // later below the file tree will be refreshed
     }
@@ -541,6 +561,10 @@ void QucsSettingsDialog::slotApply()
     }
 
     QucsSettings.font=Font;
+    QucsSettings.appFont = AppFont;
+
+    QucsSettings.panelIconsTheme = PanelIconsCombo->currentIndex();
+    QucsSettings.compIconsTheme = CompIconsCombo->currentIndex();
 
     QucsSettings.Language =
         LanguageCombo->currentText().section('(',1,1).remove(')');
@@ -617,8 +641,8 @@ void QucsSettingsDialog::slotApply()
     }
 
     /*! Update QucsSettings, tool paths */
-    QucsSettings.AdmsXmlBinDir = admsXmlEdit->text();
-    QucsSettings.AscoBinDir = ascoEdit->text();
+    QucsSettings.AdmsXmlBinDir.setPath(admsXmlEdit->text());
+    QucsSettings.AscoBinDir.setPath(ascoEdit->text());
     QucsSettings.OctaveExecutable = octaveEdit->text();
 
     if (QucsSettings.IgnoreFutureVersion != checkLoadFromFutureVersions->isChecked())
@@ -684,6 +708,17 @@ void QucsSettingsDialog::slotFontDialog()
     }
 }
 
+void QucsSettingsDialog::slotAppFontDialog()
+{
+    bool ok;
+    QFont tmpFont = QFontDialog::getFont(&ok, AppFont, this);
+    if(ok)
+    {
+        AppFont = tmpFont;
+        AppFontButton->setText(AppFont.toString());
+    }
+}
+
 // -----------------------------------------------------------
 void QucsSettingsDialog::slotBGColorDialog()
 {
@@ -702,11 +737,16 @@ void QucsSettingsDialog::slotDefaultValues()
 {
     QPalette p;
     Font = QApplication::font();
+    AppFont = QucsSettings.sysDefaultFont;
     Font.setPointSize(12);
     FontButton->setText(Font.toString());
+    AppFontButton->setText(AppFont.toString());
     LargeFontSizeEdit->setText(QString::number(16.0));
 
     LanguageCombo->setCurrentIndex(0);
+
+    PanelIconsCombo->setCurrentIndex(0);
+    CompIconsCombo->setCurrentIndex(0);
     
     p = BGColorButton->palette();
     p.setColor(BGColorButton->backgroundRole(), QColor(255,250,225));

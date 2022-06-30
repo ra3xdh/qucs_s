@@ -18,6 +18,7 @@
 #include "diode.h"
 #include "node.h"
 #include "main.h"
+#include "misc.h"
 #include "extsimkernels/spicecompat.h"
 
 Diode::Diode()
@@ -119,7 +120,27 @@ QString Diode::spice_netlist(bool isXyce)
         spice_incompat<<"Cp"<<"Isr"<<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol";
     }
 
-    QString par_str = form_spice_param_list(spice_incompat,spice_tr);
+    QString par_str;
+    //= form_spice_param_list(spice_incompat,spice_tr);
+
+    for (unsigned int i=0;i<Props.count();i++) {
+        if (!spice_incompat.contains(Props.at(i)->Name)) {
+            if (Props.at(i)->Name == "Ikf") { // Bug Ngspice37
+                if (Props.at(i)->Value == "0") continue; // convergence error if Ikf=0
+            }
+            QString unit,nam;
+            if (spice_tr.contains(Props.at(i)->Name)) {
+                nam = spice_tr.at(spice_tr.indexOf(Props.at(i)->Name)+1);
+            } else {
+                nam = Props.at(i)->Name;
+            }
+            double val,fac;
+            misc::str2num(Props.at(i)->Value,val,unit,fac);
+            val *= fac;
+            par_str += QString("%1=%2 ").arg(nam).arg(val);
+        }
+
+    }
 
     s += QString(" DMOD_%1 AREA=%2 Temp=%3\n").arg(Name).arg(getProperty("Area")->Value)
             .arg(getProperty("Temp")->Value);

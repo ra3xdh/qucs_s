@@ -10,8 +10,8 @@
 # By default, the prefix is "/usr/local"
 
 PROJECT(qucs-s CXX)
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-cmake_policy(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+cmake_policy(VERSION 3.0)
 
 SET(QUCS_NAME "${PROJECT_NAME}")
 
@@ -54,7 +54,7 @@ endif()
 #
 ADD_DEFINITIONS( -DHAVE_CONFIG_H )
 
-FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets Svg Xml Script PrintSupport REQUIRED)
+FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets Svg Xml PrintSupport REQUIRED)
 #INCLUDE( ${QT_USE_FILE} )
 
 INCLUDE_DIRECTORIES(

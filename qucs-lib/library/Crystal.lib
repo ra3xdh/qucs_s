@@ -1,0 +1,40 @@
+<Qucs Library 0.0.23 "Crystal">
+
+<Component Crystal>
+  <Description>
+Crystal resonator
+  </Description>
+  <Model>
+.Def:Crystal_Crystal _net0 _net1 Fs="8863k" Lq="0.01406" Cp="6.5p" Rs="5"
+R:R1 _net0 _net1 R="50 MOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+L:L1 _net2 _net3 L="Lq" I=""
+C:C2 _net0 _net2 C="Cq" V=""
+R:R2 _net3 _net1 R="Rs" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 Cq="1/(4*pi*pi*Lq*Fs*Fs)" Export="yes"
+C:C1 _net0 _net1 C="Cp" V=""
+.Def:End
+  </Model>
+  <Spice>* Qucs 0.0.23  Crystal_quartz.sch
+
+.SUBCKT Crystal_Crystal  gnd _net0 _net1 Fs=8863k Lq=0.01406 Cp=6.5p Rs=5 
+.PARAM Cq=1/(4*3.1415926539*3.1415926539*Lq*Fs*Fs)
+R1 _net0 _net1  50MEG
+L1 _net2 _net3  {LQ} 
+C2 _net0 _net2  {CQ} 
+R2 _net3 _net1  {RS}
+C1 _net0 _net1  {CP} 
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Line 10 0 30 0 #00007f 2 1>
+    <Line -40 0 30 0 #00007f 2 1>
+    <Line -10 -20 0 40 #00007f 2 1>
+    <Line 10 -20 0 40 #00007f 2 1>
+    <Rectangle -5 -30 10 60 #00007f 2 1 #c0c0c0 1 0>
+    <.PortSym 40 0 2 0>
+    <.PortSym -40 0 1 0>
+    <.ID -20 34 Y "1=Fs=8863k=series resonance frequency=" "1=Lq=0.01406=equivalent inductance=" "1=Cp=6.5p=parallel capacitance=" "1=Rs=5=series resistance=">
+  </Symbol>
+</Component>
+

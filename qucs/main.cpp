@@ -84,6 +84,7 @@ bool loadSettings()
     if(settings.contains("dx"))QucsSettings.dx=settings.value("dx").toInt();
     if(settings.contains("dy"))QucsSettings.dy=settings.value("dy").toInt();
     if(settings.contains("font"))QucsSettings.font.fromString(settings.value("font").toString());
+    if(settings.contains("appFont"))QucsSettings.appFont.fromString(settings.value("appFont").toString());
     if(settings.contains("LargeFontSize"))QucsSettings.largeFontSize=settings.value("LargeFontSize").toDouble(); // use toDouble() as it can interpret the string according to the current locale
     if(settings.contains("maxUndo"))QucsSettings.maxUndo=settings.value("maxUndo").toInt();
     if(settings.contains("NodeWiring"))QucsSettings.NodeWiring=settings.value("NodeWiring").toInt();
@@ -101,6 +102,11 @@ bool loadSettings()
     if(settings.contains("Directive"))QucsSettings.Directive.setNamedColor(settings.value("Directive").toString());
     if(settings.contains("Task"))QucsSettings.Task.setNamedColor(settings.value("Task").toString());
 
+    if (settings.contains("panelIconsTheme")) QucsSettings.panelIconsTheme = settings.value("panelIconsTheme").toInt();
+    else QucsSettings.panelIconsTheme = qucs::autoIcons;
+    if (settings.contains("compIconsTheme")) QucsSettings.compIconsTheme = settings.value("compIconsTheme").toInt();
+    else QucsSettings.compIconsTheme = qucs::autoIcons;
+
     if(settings.contains("Qucsator")) {
         QucsSettings.Qucsator = settings.value("Qucsator").toString();
         QFileInfo inf(QucsSettings.Qucsator);
@@ -116,13 +122,18 @@ bool loadSettings()
     //if(settings.contains("BinDir"))QucsSettings.BinDir = settings.value("BinDir").toString();
     //if(settings.contains("LangDir"))QucsSettings.LangDir = settings.value("LangDir").toString();
     //if(settings.contains("LibDir"))QucsSettings.LibDir = settings.value("LibDir").toString();
-    if(settings.contains("AdmsXmlBinDir"))QucsSettings.AdmsXmlBinDir = settings.value("AdmsXmlBinDir").toString();
-    if(settings.contains("AscoBinDir"))QucsSettings.AscoBinDir = settings.value("AscoBinDir").toString();
+    if(settings.contains("AdmsXmlBinDir"))QucsSettings.AdmsXmlBinDir.setPath(settings.value("AdmsXmlBinDir").toString());
+    if(settings.contains("AscoBinDir"))QucsSettings.AscoBinDir.setPath(settings.value("AscoBinDir").toString());
     //if(settings.contains("OctaveDir"))QucsSettings.OctaveDir = settings.value("OctaveDir").toString();
     //if(settings.contains("ExamplesDir"))QucsSettings.ExamplesDir = settings.value("ExamplesDir").toString();
     //if(settings.contains("DocDir"))QucsSettings.DocDir = settings.value("DocDir").toString();
     if(settings.contains("NgspiceExecutable")) QucsSettings.NgspiceExecutable = settings.value("NgspiceExecutable").toString();
-    else QucsSettings.NgspiceExecutable = "ngspice";
+    else {
+        QString ngsp_exe = QCoreApplication::applicationDirPath() +
+                QDir::separator() + "ngspice" + executableSuffix;
+        if (!QFile::exists(ngsp_exe)) ngsp_exe = QString("ngspice") + executableSuffix;
+        QucsSettings.NgspiceExecutable = ngsp_exe;
+    }
     if(settings.contains("XyceExecutable")) QucsSettings.XyceExecutable = settings.value("XyceExecutable").toString();
     else {
 #ifdef Q_OS_WIN
@@ -165,7 +176,7 @@ bool loadSettings()
     if (settings.contains("TextAntiAliasing")) QucsSettings.TextAntiAliasing = settings.value("TextAntiAliasing").toBool();
     else QucsSettings.TextAntiAliasing = false;
 
-    QucsSettings.RecentDocs = settings.value("RecentDocs").toString().split("*",QString::SkipEmptyParts);
+    QucsSettings.RecentDocs = settings.value("RecentDocs").toString().split("*",qucs::SkipEmptyParts);
     QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
 
 
@@ -200,6 +211,7 @@ bool saveApplSettings()
     settings.setValue("dx", QucsSettings.dx);
     settings.setValue("dy", QucsSettings.dy);
     settings.setValue("font", QucsSettings.font.toString());
+    settings.setValue("appFont", QucsSettings.appFont.toString());
     // store LargeFontSize as a string, so it will be also human-readable in the settings file (will be a @Variant() otherwise)
     settings.setValue("LargeFontSize", QString::number(QucsSettings.largeFontSize));
     settings.setValue("maxUndo", QucsSettings.maxUndo);
@@ -241,6 +253,8 @@ bool saveApplSettings()
     settings.setValue("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
     settings.setValue("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
     settings.setValue("TextAntiAliasing", QucsSettings.TextAntiAliasing);
+    settings.setValue("panelIconsTheme",QucsSettings.panelIconsTheme);
+    settings.setValue("compIconsTheme",QucsSettings.compIconsTheme);
 
     // Copy the list of directory paths in which Qucs should
     // search for subcircuit schematics from qucsPathList
@@ -285,8 +299,10 @@ void qucsMessageOutput(QtMsgType type, const QMessageLogContext &, const QString
     break;
   case QtFatalMsg:
     fprintf(stderr, "Fatal: %s\n", msg);
+    break;
   case QtInfoMsg:
     fprintf(stderr,"Info %s\n", msg);
+    break;
   default:
     fprintf(stderr,"%s\n", msg);
   }
@@ -582,7 +598,7 @@ void createIcons() {
         image.fill(Qt::transparent);
 
         QPainter painter(&image);
-        QPainter::RenderHints hints = 0;
+        QPainter::RenderHints hints = QPainter::RenderHints();
         // Ask to antialias drawings if requested
         if (QucsSettings.GraphAntiAliasing) hints |= QPainter::Antialiasing;
         // Ask to antialias text if requested
@@ -787,6 +803,7 @@ int main(int argc, char *argv[])
   QApplication a(argc, argv);
   QDesktopWidget *d = a.desktop();
   QucsSettings.font = QApplication::font();
+  QucsSettings.appFont = QApplication::font();
   QucsSettings.font.setPointSize(12);
   int w = d->width();
   int h = d->height();
@@ -906,8 +923,8 @@ int main(int argc, char *argv[])
   if(!QucsSettings.Task.isValid())
     QucsSettings.Task = Qt::darkRed;
 
-
-  //a.setFont(QucsSettings.font);
+  QucsSettings.sysDefaultFont = QApplication::font();
+  a.setFont(QucsSettings.appFont);
 
   // set codecs
   QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));

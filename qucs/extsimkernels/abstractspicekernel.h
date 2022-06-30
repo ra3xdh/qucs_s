@@ -69,6 +69,8 @@ protected:
                                QStringList& vars, QStringList &outputs);
     void removeAllSimulatorOutputs();
     bool checkGround();
+    bool checkSimulations();
+    bool checkDCSimulation();
 
 public:
 
@@ -98,7 +100,7 @@ public:
                          QStringList &var_list, bool &isComplex);
     void parseXYCESTDOutput(QString std_file,
                             QList< QList<double> > &sim_points,
-                            QStringList &var_list, bool &isComplex);
+                            QStringList &var_list, bool &isComplex, bool &hasParSweep);
     void parseXYCENoiseLog(QString logfile, QList< QList<double> > &sim_points,
                            QStringList &var_list);
     void parseResFile(QString resfile, QString &var, QStringList &values);

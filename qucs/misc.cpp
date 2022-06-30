@@ -34,6 +34,53 @@
 #include <QFileInfo>
 #include <QDir>
 
+#include <QtWidgets>
+
+
+bool misc::isDarkTheme()
+{
+    QLabel *lbl = new QLabel("check dark");
+    int text_hsv = lbl->palette().color(QPalette::WindowText).value();
+    int bg_hsv = lbl->palette().color(QPalette::Background).value();
+    bool is_dark_theme = text_hsv > bg_hsv;
+    return is_dark_theme;
+}
+
+QString misc::getIconPath(const QString &file, int icon_type)
+{
+    auto icons_theme = QucsSettings.panelIconsTheme;
+    switch (icon_type) {
+    case qucs::panelIcons:
+        icons_theme = QucsSettings.panelIconsTheme;
+        break;
+    case qucs::compIcons:
+        icons_theme = QucsSettings.compIconsTheme;
+        break;
+    }
+
+    bool loadDark = false;
+    switch (icons_theme) {
+    case qucs::autoIcons:
+        loadDark = QucsSettings.hasDarkTheme;
+        break;
+    case qucs::darkIcons:
+        loadDark = true;
+        break;
+    case qucs::lightIcons:
+        loadDark = false;
+        break;
+    }
+
+    QString icon_path =":bitmaps/";
+    if (loadDark) {
+        QString icon_path_dark = ":bitmaps/dark/";
+        if (QFileInfo::exists(icon_path_dark + file))
+            icon_path = icon_path_dark;
+    }
+    icon_path += file;
+    return icon_path;
+}
+
 // #########################################################################
 QString misc::complexRect(double real, double imag, int Precision)
 {
@@ -440,6 +487,44 @@ VersionTriplet::VersionTriplet(const QString& version) {
     minor = vl.at(1).toUInt();
     patch = vl.at(2).toUInt();
   }
+}
+
+QStringList misc::parseCmdArgs(const QString &program)
+{
+    QStringList args;
+    QString tmp;
+    int quoteCount = 0;
+    bool inQuote = false;
+    // handle quoting. tokens can be surrounded by double quotes
+    // "hello world". three consecutive double quotes represent
+    // the quote character itself.
+    for (int i = 0; i < program.size(); ++i) {
+        if (program.at(i) == QLatin1Char('"')) {
+            ++quoteCount;
+            if (quoteCount == 3) {
+                // third consecutive quote
+                quoteCount = 0;
+                tmp += program.at(i);
+            }
+            continue;
+        }
+        if (quoteCount) {
+            if (quoteCount == 1)
+                inQuote = !inQuote;
+            quoteCount = 0;
+        }
+        if (!inQuote && program.at(i).isSpace()) {
+            if (!tmp.isEmpty()) {
+                args += tmp;
+                tmp.clear();
+            }
+        } else {
+            tmp += program.at(i);
+        }
+    }
+    if (!tmp.isEmpty())
+        args += tmp;
+    return args;
 }
 
 VersionTriplet::VersionTriplet(){

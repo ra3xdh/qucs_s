@@ -79,13 +79,13 @@ ArrowDialog::ArrowDialog(QWidget *parent, const char *name)
   StyleBox->addItem(tr("dash dot dot line"));
   connect(StyleBox, SIGNAL(activated(int)), SLOT(slotSetStyle(int)));
   LineStyle = Qt::SolidLine;
-  all->addWidget(StyleBox, 2,2,1,2);
+  all->addWidget(StyleBox, 2,1,1,3);
 
   all->addWidget(new QLabel(tr("Arrow head: "), this), 3,0);
   ArrowStyleBox = new QComboBox(this);
   ArrowStyleBox->addItem(tr("two lines"));
   ArrowStyleBox->addItem(tr("filled"));
-  all->addWidget(ArrowStyleBox, 3,3,1,2);
+  all->addWidget(ArrowStyleBox, 3,1,1,3);
 
 
   QWidget *h1 = new QWidget(this);
@@ -100,7 +100,7 @@ ArrowDialog::ArrowDialog(QWidget *parent, const char *name)
   connect(ButtCancel, SIGNAL(clicked()), SLOT(reject()));
   
   h1->setLayout(h1Layout);
-  all->addWidget(h1, 4,4,0,3);
+  all->addWidget(h1, 4,0);
 
   ButtOK->setFocus();
 }

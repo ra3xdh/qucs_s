@@ -167,7 +167,7 @@ if(xAxis.log) {
     if((zD < 1.5*zDstep) || (z == 0) || (z == x2)) {
       tmp = misc::StringNiceNum(zD);
       if(xAxis.up < 0.0)  tmp = '-'+tmp;
-      w = metrics.width(tmp);  // width of text
+      w = metrics.boundingRect(tmp).width();  // width of text
       // center text horizontally under the x tick mark
       Texts.append(new Text(z-(w>>1), -y1, tmp));
       Lines.append(new qucs::Line(z, 5, z, -5, QPen(Qt::black,0)));  // x tick marks
@@ -195,7 +195,7 @@ else {  // not logarithmical
   while((z <= x2) && (z >= 0)) {    // create all grid lines
     if(fabs(GridNum) < 0.01*pow(10.0, Expo)) GridNum = 0.0;// make 0 really 0
     tmp = misc::StringNiceNum(GridNum);
-    w = metrics.width(tmp);  // width of text
+    w = metrics.boundingRect(tmp).width();  // width of text
     // center text horizontally under the x tick mark
     Texts.append(new Text(z-(w>>1), -y1, tmp)); // Text(x, y, str, ...)
     GridNum += GridStep;

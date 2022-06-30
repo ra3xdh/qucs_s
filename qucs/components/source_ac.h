@@ -20,13 +20,16 @@
 
 #include "component.h"
 
-
 class Source_ac : public Component  {
+private:
+  QString ngspice_netlist();
+  QString xyce_netlist();
 public:
   Source_ac();
   ~Source_ac();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+  QString spice_netlist(bool isXyce);
 };
 
 #endif

@@ -16,7 +16,10 @@
  ***************************************************************************/
 
 #include "source_ac.h"
+#include "node.h"
+#include "extsimkernels/spicecompat.h"
 
+#include <cmath>
 
 Source_ac::Source_ac()
 {
@@ -52,6 +55,7 @@ Source_ac::Source_ac()
   tx = x1+4;
   ty = y2+4;
   Model = "Pac";
+  SpiceModel = "P";
   Name  = "P";
 
   // This property must be the first one !
@@ -85,4 +89,59 @@ Element* Source_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new Source_ac();
   return 0;
+}
+
+
+QString Source_ac::ngspice_netlist()
+{
+    QString s = QString("V%1").arg(Name);
+    foreach(Port *p1, Ports) {
+        QString nam = p1->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+
+    double z0 = spicecompat::normalize_value(getProperty("Z")->Value).toDouble();
+    double p = spicecompat::normalize_value(getProperty("P")->Value).toDouble();
+    double vrms = sqrt(z0/1000.0)*pow(10, p/20.0);
+    double vamp = vrms*sqrt(2.0);
+    QString f = spicecompat::normalize_value(getProperty("f")->Value);
+    s += QString(" dc 0 ac %1").arg(vamp);
+    s += QString(" SIN(0 %1 %2)").arg(vamp).arg(f);
+    s += QString(" portnum %1").arg(getProperty("Num")->Value);
+    s += QString(" z0 %1").arg(z0);
+    s += "\n";
+    return s;
+}
+
+QString Source_ac::xyce_netlist()
+{
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
+    foreach(Port *p1, Ports) {
+        QString nam = p1->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+    s += QString(" port=%1 ").arg(getProperty("Num")->Value);
+    QString s_z0 = spicecompat::normalize_value(getProperty("Z")->Value);
+    double z0 = s_z0.toDouble();
+    QString s_p = spicecompat::normalize_value(getProperty("P")->Value);
+    double p = s_p.toDouble();
+    double vrms = sqrt(z0/1000.0)*pow(10, p/20.0);
+    double vamp = vrms*sqrt(2.0);
+    s += QString(" z0=%1 ").arg(s_z0);
+    QString f = spicecompat::normalize_value(getProperty("f")->Value);
+    s += QString(" AC %1 ").arg(vamp);
+    s += QString(" SIN 0 %1 %2").arg(vamp).arg(f);
+    s += "\n";
+    return s;
+}
+
+QString Source_ac::spice_netlist(bool isXyce)
+{
+    if (isXyce) {
+        return xyce_netlist();
+    } else {
+        return ngspice_netlist();
+    }
 }

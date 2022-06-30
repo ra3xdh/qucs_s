@@ -338,12 +338,12 @@ void XSPICE_CMbuilder::compileCMlib(QString &output)
     output += QString("Working directory is %1\n").arg(cmdir);
 
     QProcess *make = new QProcess();
-    make->setReadChannelMode(QProcess::MergedChannels);
+    make->setProcessChannelMode(QProcess::MergedChannels);
     make->setWorkingDirectory(cmdir);
 #ifdef __MINGW32__
-    make->start("mingw32-make.exe"); // For Unix
+    make->start("mingw32-make.exe",QStringList()); // For Unix
 #else
-    make->start("make"); // For Unix
+    make->start("make",QStringList()); // For Unix
 #endif
     make->waitForFinished();
     output += make->readAll();

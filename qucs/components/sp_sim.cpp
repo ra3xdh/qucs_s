@@ -16,10 +16,13 @@
  ***************************************************************************/
 #include "sp_sim.h"
 #include "main.h"
+#include "misc.h"
+#include "schematic.h"
 
 
 SP_Sim::SP_Sim()
 {
+  isSimulation = true;
   Description = QObject::tr("S parameter simulation");
 
   QString s = Description;
@@ -41,6 +44,7 @@ SP_Sim::SP_Sim()
   ty = y2+1;
   Model = ".SP";
   Name  = "SP";
+  SpiceModel = ".SP";
 
   // The index of the first 4 properties must not changed. Used in recreate().
   Props.append(new Property("Type", "lin", true,
@@ -102,4 +106,132 @@ void SP_Sim::recreate(Schematic*)
     Props.next()->Name = "Stop";
     Props.next()->Name = "Points";
   }
+}
+
+int SP_Sim::getSPortsNumber()
+{
+    int p_num = 0;
+    if (containingSchematic != NULL) {
+        auto comps = containingSchematic->DocComps;
+        for(Component *pc = comps.first(); pc != 0; pc = comps.next()) {
+            if (pc->Model == "Pac") p_num++;
+        }
+        return  p_num;
+    } else {
+        return p_num;
+    }
+}
+
+QStringList SP_Sim::getExtraVariables()
+{
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simNgspice:
+        return getNgspiceExtraVariables();
+    case spicecompat::simXycePar:
+    case spicecompat::simXyceSer:
+        return getXyceExtraVariables();
+    default:
+        return QStringList();
+    }
+}
+
+QStringList SP_Sim::getNgspiceExtraVariables()
+{
+    QStringList vars;
+    bool donoise = false;
+    if (getProperty("Noise")->Value == "yes") donoise = true;
+    int port_number = getSPortsNumber();
+    for (int i = 0; i < port_number; i++) {
+        for (int j = 0; j < port_number; j++) {
+            QString tail = QString("_%1_%2").arg(i+1).arg(j+1);
+            vars.append(QString("S%1").arg(tail));
+            vars.append(QString("Y%1").arg(tail));
+            vars.append(QString("Z%1").arg(tail));
+            if (donoise) {
+                vars.append(QString("Cy%1").arg(tail));
+            }
+        }
+    }
+    if (port_number == 2 && donoise) {
+        vars.append("Rn");
+        vars.append("NF");
+        vars.append("SOpt");
+        vars.append("NFmin");
+    }
+    return vars;
+}
+
+QStringList SP_Sim::getXyceExtraVariables()
+{
+    QStringList vars;
+    int ports_num = getSPortsNumber();
+    for (int i = 0; i < ports_num; i++) {
+        for (int j = 0; j < ports_num; j++) {
+            QString tail = QString("(%1,%2)").arg(i+1).arg(j+1);
+            vars.append(QString("sdb%1").arg(tail));
+            vars.append(QString("s%1").arg(tail));
+            vars.append(QString("sp%1").arg(tail));
+            vars.append(QString("y%1").arg(tail));
+            vars.append(QString("z%1").arg(tail));
+        }
+    }
+    return vars;
+}
+
+QString SP_Sim::getSweepString()
+{
+    QString s;
+    QString unit;
+    if (Props.at(0)->Value=="log") { // convert points number for spice compatibility
+        double Np,Fstart,Fstop,fac = 1.0;
+        misc::str2num(Props.at(3)->Value,Np,unit,fac); // Points number
+        Np *= fac;
+        misc::str2num(Props.at(1)->Value,Fstart,unit,fac);
+        Fstart *= fac;
+        misc::str2num(Props.at(2)->Value,Fstop,unit,fac);
+        Fstop *= fac;
+        double Nd = ceil(log10(Fstop/Fstart)); // number of decades
+        double Npd = ceil(Np/Nd); // points per decade
+        s += QString("DEC %1 ").arg(Npd);
+    } else {  // no need conversion
+        s += QString("LIN %1 ").arg(Props.at(3)->Value);
+    }
+    QString fstart = spicecompat::normalize_value(Props.at(1)->Value); // Start freq.
+    QString fstop = spicecompat::normalize_value(Props.at(2)->Value); // Stop freq.
+    s += QString("%1 %2").arg(fstart).arg(fstop); 
+    return s;
+}
+
+QString SP_Sim::ngspice_netlist()
+{
+    QString s = "SP ";
+    s += getSweepString();
+    if (getProperty("Noise")->Value == "yes") s += " 1";
+    s += "\n";
+    return s;
+}
+
+QString SP_Sim::xyce_netlist()
+{
+    QString s = ".AC ";
+    s += getSweepString();
+    s += "\n.LIN format=touchstone sparcalc=1\n"; // enable s-param
+    /*int ports_num = getSPortsNumber();
+    s += ".PRINT ac format=std file=spice4qucs_sparam.prn ";
+    for (int i = 0; i < ports_num; i++) {
+        for (int j = 0; j < ports_num; j++) {
+            s += QString(" sdb(%1,%2) s(%1,%2) sp(%1,%2) y(%1,%2) z(%1,%2) ").arg(i+1).arg(j+1);
+        }
+    }
+    s += "\n";*/
+    return s;
+}
+
+QString SP_Sim::spice_netlist(bool isXyce)
+{
+    if (isXyce) {
+        return xyce_netlist();
+    } else {
+        return ngspice_netlist();
+    }
 }

@@ -38,6 +38,7 @@ public:
 
   QComboBox  *NumberBox;
   QLineEdit  *Precision;
+  QLineEdit  *XPosition;
   QLineEdit  *SourceImpedance;
   QCheckBox  *TransBox;
 };

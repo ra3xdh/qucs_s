@@ -162,15 +162,9 @@ AboutDialog::AboutDialog(QWidget *parent)
 
   QString supportText;
   // link to home page, help mailing list, IRC ?
-  supportText = tr("Home Page") + " : <a href='http://qucs.sourceforge.net/'>http://qucs.sourceforge.net/</a><br/>"+
-    tr("Documentation start page") + " : <a href='http://qucs.sourceforge.net/docs.html'>http://qucs.sourceforge.net/docs.html</a><br/>" +
-    tr("Components reference manual") + " : <a href='http://qucs.github.io/qucs-manual/'>http://qucs.github.io/qucs-manual/</a><br/><br/>" +
-    tr("If you need help on using Qucs, please join the") + "<br/>" +
-    tr("help mailing list") + " : <a href='https://sourceforge.net/p/qucs/mailman/qucs-help/'>" + tr("qucs-help on SourceForge") + "</a><br/>" +
-    "<small>(" + tr("please attach the schematic you are having problems with") + ")</small><br/><br/>" + 
-    // use http://webchat.freenode.net/?channels=qucs ?
-    tr("IRC general discussion channel") + " : <a href='irc://irc.freenode.net/qucs'>#qucs on freenode.net</a><br/><br/>" +
-    tr("Additional resources") + " : <a href='https://github.com/Qucs/qucs#resources'>https://github.com/Qucs/qucs#resources</a>";
+  supportText = tr("Home Page") + " : <a href='https://ra3xdh.github.io/'>https://ra3xdh.github.io/</a><br/>"+
+    tr("Documentation start page") + " : <a href='https://qucs-s-help.readthedocs.io/'>https://qucs-s-help.readthedocs.io/</a><br/>" +
+    tr("Bugtracker page") + " : <a href='https://github.com/ra3xdh/qucs_s/issues'>https://github.com/ra3xdh/qucs_s/issues</a><br/>";
 
   QTextBrowser *supportBrowser = new QTextBrowser;
   supportBrowser->viewport()->installEventFilter(this);
@@ -178,7 +172,7 @@ AboutDialog::AboutDialog(QWidget *parent)
   supportBrowser->setHtml(supportText);
 
   QString licenseText;
-  licenseText = "Qucs is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2, or (at your option) any later version.<br/><br/>This software is distributed in the hope that it will be useful,but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details..<br/><br/> You should have received a copy of the GNU General Public License along with Qucs, see the file COPYING. If not see <a href='http://www.gnu.org/licenses/'>http://www.gnu.org/licenses/</a> or write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,Boston, MA 02110-1301, USA.";
+  licenseText = "Qucs-S is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2, or (at your option) any later version.<br/><br/>This software is distributed in the hope that it will be useful,but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details..<br/><br/> You should have received a copy of the GNU General Public License along with Qucs, see the file COPYING. If not see <a href='http://www.gnu.org/licenses/'>http://www.gnu.org/licenses/</a> or write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,Boston, MA 02110-1301, USA.";
 
   QTextBrowser *licenseBrowser = new QTextBrowser;
   licenseBrowser->viewport()->installEventFilter(this);
@@ -223,7 +217,7 @@ void AboutDialog::currentChangedSlot(int index) {
 void AboutDialog::setAuthorsText() {
  
   QString authorsText;
-  authorsText = tr("Qucs-S subproject team:");
+  authorsText = tr("Qucs-S project team:");
   authorsText += "<ul>";
   for(QString& tStr : qucs_sDevs) {
     authorsText += ("<li>" + tStr + "</li>");

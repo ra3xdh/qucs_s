@@ -256,7 +256,7 @@ void TextDoc::becomeCurrent (bool)
 
 bool TextDoc::baseSearch(const QString &str, bool CaseSensitive, bool wordOnly, bool backward)
 {
-  QTextDocument::FindFlags flag = 0;
+  QTextDocument::FindFlags flag = QTextDocument::FindFlags();
   bool finded;
 
   if (CaseSensitive) {

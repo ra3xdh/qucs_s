@@ -47,6 +47,7 @@ private slots:
     void slotOK();
     void slotApply();
     void slotFontDialog();
+    void slotAppFontDialog();
     void slotBGColorDialog();
     void slotDefaultValues();
     void slotAddFileType();
@@ -77,10 +78,12 @@ public:
     QucsApp *App;
 
     QFont Font;
+    QFont AppFont;
     QCheckBox *checkWiring, *checkLoadFromFutureVersions,
               *checkAntiAliasing, *checkTextAntiAliasing;
     QComboBox *LanguageCombo;
-    QPushButton *FontButton, *BGColorButton;
+    QComboBox *PanelIconsCombo, *CompIconsCombo;
+    QPushButton *FontButton, *AppFontButton, *BGColorButton;
     QLineEdit *LargeFontSizeEdit, *undoNumEdit, *editorEdit, *Input_Suffix,
               *Input_Program, *homeEdit, *admsXmlEdit, *ascoEdit, *octaveEdit;
     QTableWidget *fileTypesTableWidget, *pathsTableWidget;

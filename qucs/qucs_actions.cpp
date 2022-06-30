@@ -51,6 +51,7 @@
 #include "components/ground.h"
 #include "components/subcirport.h"
 #include "components/equation.h"
+#include "spicecomponents/sp_nutmeg.h"
 #include "dialogs/matchdialog.h"
 #include "dialogs/changedialog.h"
 #include "dialogs/searchdialog.h"
@@ -404,7 +405,11 @@ void QucsApp::slotInsertEquation(bool on)
   if(view->selElem)
     delete view->selElem;  // delete previously selected component
 
-  view->selElem = new Equation();
+  if (QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
+      view->selElem = new NutmegEquation();
+  } else {
+      view->selElem = new Equation();
+  }
 
   Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
   if(view->drawn) Doc->viewport()->update();
@@ -809,7 +814,7 @@ void QucsApp::slotCallActiveFilter()
 // Is called to start the transmission line calculation program.
 void QucsApp::slotCallLine()
 {
-  launchTool("qucstrans", "line calculation","",true);
+  launchTool("qucstrans", "line calculation",QStringList(),true);
 }
 
 // ------------------------------------------------------------------------
@@ -831,14 +836,14 @@ void QucsApp::slotCallMatch()
 // Is called to start the attenuator calculation program.
 void QucsApp::slotCallAtt()
 {
-  launchTool("qucsattenuator", "attenuator calculation","",true);
+  launchTool("qucsattenuator", "attenuator calculation",QStringList(),true);
 }
 
 // ------------------------------------------------------------------------
 // Is called to start the resistor color code calculation program.
 void QucsApp::slotCallRes()
 {
-  launchTool("qucsrescodes", "resistor color code calculation","",true);
+  launchTool("qucsrescodes", "resistor color code calculation",QStringList(),true);
 }
 
 /*!
@@ -848,7 +853,7 @@ void QucsApp::slotCallRes()
  * \param progDesc  program description string (used for error messages)
  * \param args  arguments to pass to the executable
  */
-void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QString& args,
+void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QStringList &args,
                          bool qucs_tool)
 {
   QProcess *tool = new QProcess();
@@ -857,16 +862,16 @@ void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QSt
   if (qucs_tool) tooldir = QucsSettings.QucsatorDir;
   else tooldir = QucsSettings.BinDir;
 #ifdef __MINGW32__
-  QString cmd = QDir::toNativeSeparators("\""+tooldir + prog + ".exe\"") + " " + args;
+  QString cmd = QDir::toNativeSeparators("\""+tooldir + prog + ".exe\"");
 #elif __APPLE__
-  QString cmd = QDir::toNativeSeparators(tooldir + prog + ".app/Contents/MacOS/" + prog) + " " + args;
+  QString cmd = QDir::toNativeSeparators(tooldir + prog + ".app/Contents/MacOS/" + prog);
 #else
-  QString cmd = QDir::toNativeSeparators(tooldir + prog) + " " + args;
+  QString cmd = QDir::toNativeSeparators(tooldir + prog);
 #endif
 
   tool->setWorkingDirectory(tooldir);
   qDebug() << "Command :" << cmd;
-  tool->start(cmd);
+  tool->start(cmd,args);
   
   if(!tool->waitForStarted(1000) ) {
     QMessageBox::critical(this, tr("Error"),
@@ -894,7 +899,7 @@ void QucsApp::slotHelpQucsIndex()
 // --------------------------------------------------------------
 void QucsApp::slotGettingStarted()
 {
-  QDesktopServices::openUrl(QUrl("https://qucs-help.readthedocs.io/en/0.0.18/start.html"));
+  QDesktopServices::openUrl(QUrl("https://ra3xdh.github.io/pdf/qucs_s_tutorial.pdf"));
 }
 
 // ---------------------------------------------------------------------
@@ -1193,7 +1198,7 @@ void QucsApp::slotApplyCompText()
   // avoid seeing the property text behind the line edit
   if(pp)  // Is it first property or component name ?
     s = pp->Value;
-  editText->setMinimumWidth(editText->fontMetrics().width(s)+4);
+  editText->setMinimumWidth(editText->fontMetrics().boundingRect(s).width()+4);
 
 
   Doc->contentsToViewport(int(Doc->Scale * float(view->MAx1 - Doc->ViewX1)),
@@ -1202,7 +1207,7 @@ void QucsApp::slotApplyCompText()
   editText->setReadOnly(false);
   if(pp) {  // is it a property ?
     s = pp->Value;
-    view->MAx2 += editText->fontMetrics().width(pp->Name+"=");
+    view->MAx2 += editText->fontMetrics().boundingRect(pp->Name+"=").width();
     if(pp->Description.indexOf('[') >= 0)  // is selection list ?
       editText->setReadOnly(true);
     Expr_CompProp.setPattern("[^\"]*");
@@ -1230,7 +1235,7 @@ void QucsApp::slotApplyCompText()
 // the width of the edit field.
 void QucsApp::slotResizePropEdit(const QString& t)
 {
-  editText->resize(editText->fontMetrics().width(t)+4,
+  editText->resize(editText->fontMetrics().boundingRect(t).width()+4,
                    editText->fontMetrics().lineSpacing());
 }
 

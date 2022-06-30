@@ -42,7 +42,7 @@ RLCG::RLCG()
   QFontMetrics  smallmetrics(Font, 0); 
   int fHeight = smallmetrics.lineSpacing();
   QString tmp = QObject::tr("RLCG");
-  int w = smallmetrics.width(tmp);
+  int w = smallmetrics.boundingRect(tmp).width();
   Texts.append(new Text(w/-2, -fHeight, tmp));
 
   Ports.append(new Port(-30, 0));

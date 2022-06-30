@@ -99,7 +99,7 @@ void SpiceGeneric::createSymbol()
     Lines.append(new qucs::Line(-40,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-40,  y));
     tmp = QString::number(i+1);
-    w = smallmetrics.width(tmp);
+    w = smallmetrics.boundingRect(tmp).width();
     Texts.append(new Text(-40-w, y-fHeight-2, tmp)); // text right-aligned
     i++;
 

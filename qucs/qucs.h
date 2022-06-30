@@ -386,7 +386,8 @@ private slots:
 
 private:
   bool performToggleAction(bool, QAction*, pToggleFunc, pMouseFunc, pMouseFunc2);
-  void launchTool(const QString&, const QString&, const QString& = "",bool qucs_tool = false); // tool, description and args
+  void launchTool(const QString&, const QString&,
+                  const QStringList& = QStringList(),bool qucs_tool = false); // tool, description and args
   friend class SaveDialog;
   QString lastExportFilename;
 };

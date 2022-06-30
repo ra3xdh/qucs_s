@@ -22,16 +22,27 @@
  * \Declaration of some miscellaneous function
  */
 
-class QString;
-
+#include <QString>
 #include <QWidget>
 #include <QPalette>
 #include <QIcon>
+#include <QFileInfo>
 #include <QPushButton>
 
 #include <stdint.h>
 
+
 #define Q_UINT32 uint32_t
+
+
+namespace qucs {
+#if QT_VERSION >= 0x050e00
+  const auto SkipEmptyParts = Qt::SkipEmptyParts;
+#else
+  const auto SkipEmptyParts = QString::SkipEmptyParts;
+#endif
+}
+
 
 namespace misc {
   QString complexRect(double, double, int Precision=3);
@@ -77,6 +88,10 @@ namespace misc {
         p->setIcon(icon);
         p->setIconSize(pixmap.rect().size());
     }
+
+  QStringList parseCmdArgs(const QString &program);
+  QString getIconPath(const QString &file, int icon_type);
+  bool isDarkTheme();
 }
 
 /*! handle the application version string

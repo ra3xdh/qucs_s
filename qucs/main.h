@@ -38,11 +38,21 @@ class VersionTriplet;
 
 static const double pi = 3.1415926535897932384626433832795029;  /* pi   */
 
+namespace qucs {
+enum iconType { panelIcons = 0, compIcons = 1 };
+enum iconTheme { autoIcons = 0, lightIcons = 1, darkIcons = 2 };
+}
+
 struct tQucsSettings {
   int DefaultSimulator;
 
+  int panelIconsTheme;
+  int compIconsTheme;
+
   int x, y, dx, dy;    // position and size of main window
   QFont font;
+  QFont appFont;
+  QFont sysDefaultFont;
   float largeFontSize;
   QColor BGColor;      // background color of view area
   QString Language;
@@ -91,6 +101,8 @@ struct tQucsSettings {
   bool IgnoreFutureVersion;
   bool GraphAntiAliasing;
   bool TextAntiAliasing;
+
+  bool hasDarkTheme;
 };
 
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used

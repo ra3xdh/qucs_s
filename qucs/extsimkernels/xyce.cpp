@@ -19,6 +19,7 @@
 #include "xyce.h"
 #include "components/equation.h"
 #include "main.h"
+#include "misc.h"
 
 
 /*!
@@ -53,6 +54,7 @@ void Xyce::determineUsedSimulations(QStringList *sim_lst)
            if (sim_typ==".NOISE") simulationsQueue.append("noise");
            if (sim_typ==".TR") simulationsQueue.append("tran");
            if (sim_typ==".HB") simulationsQueue.append("hb");
+           if (sim_typ==".SP") simulationsQueue.append("sp");
            if (sim_typ==".SENS_XYCE") simulationsQueue.append("sens");
            if (sim_typ==".SENS_TR_XYCE") simulationsQueue.append("sens_tr");
            if (sim_typ==".XYCESCR") simulationsQueue.append(pc->Name); // May be >= XYCE scripts
@@ -153,7 +155,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     }
 
     QString sim = simulations.first();
-
+    QStringList spar_vars;
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) { // Xyce can run
        if(pc->isSimulation) {                        // only one simulations per time.
            QString sim_typ = pc->Model;              // Multiple simulations are forbidden.
@@ -162,6 +164,10 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
            if ((sim_typ==".NOISE")&&(sim=="noise")) stream<<s;
            if ((sim_typ==".SENS_XYCE")&&(sim=="sens")) stream<<s;
            if ((sim_typ==".SENS_TR_XYCE")&&(sim=="sens_tr")) stream<<s;
+           if ((sim_typ==".SP")&&(sim=="sp")) {
+               spar_vars = pc->getExtraVariables();
+               stream<<s;
+           }
            if (sim==pc->Name) stream<<s; // Xyce scripts
            if ((sim_typ==".TR")&&(sim=="tran")){
                stream<<s;
@@ -181,6 +187,9 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
                QString SwpSim = pc->Props.at(0)->Value;
                if (SwpSim.startsWith("DC")&&(sim=="dc")) stream<<s;
                else if (SwpSim.startsWith("AC")&&(sim=="ac")) {
+                   stream<<s;
+                   hasParSweep = true;
+               } else if (SwpSim.startsWith("SP")&&(sim=="sp")) {
                    stream<<s;
                    hasParSweep = true;
                } else if (SwpSim.startsWith("TR")&&(sim=="tran")) {
@@ -238,6 +247,18 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
         write_str.clear();
         outputs.append("spice4qucs.sens_tr.cir.SENS.prn");
         outputs.append("spice4qucs.sens_tr.cir.TRADJ.prn");
+    } else if (sim=="sp") {
+        write_str = ".PRINT ac format=std file=spice4qucs_sparam.prn ";
+        if (hasParSweep) {
+            for (const auto &v: spar_vars) { // Bug in Xyce; cannot print Z-par if
+                 // .STEP is activated; otherwise simulation error
+                if ( !v.startsWith("z(")) write_str += QString("%1 ").arg(v);
+            }
+        } else {
+            write_str += spar_vars.join(" ");
+        }
+        write_str += "\n";
+        outputs.append("spice4qucs_sparam.prn");
     } else {
         write_str = QString(".PRINT  %1 format=raw file=%2 %3\n").arg(sim).arg(filename).arg(nods);
         outputs.append(filename);
@@ -266,6 +287,14 @@ void Xyce::slotSimulate()
 
     if (!checkGround()) {
         output.append("No Ground found. Please add at least one ground!\n");
+        emit finished();
+        emit errors(QProcess::FailedToStart);
+        return;
+    }
+
+    if (!checkDCSimulation()) {
+        output.append("Only DC simulation found in the schematic. It has no effect!"
+                      " Add TRAN, AC, or Sweep simulation to proceed.\n");
         emit finished();
         emit errors(QProcess::FailedToStart);
         return;
@@ -382,7 +411,10 @@ void Xyce::nextSimulation()
         if (file.endsWith(".noise.cir")) Noisesim = true;
         SimProcess->setWorkingDirectory(workdir);
         QString cmd = QString("%1 %2 \"%3\"").arg(simulator_cmd,simulator_parameters,file);
-        SimProcess->start(cmd);
+        QStringList cmd_args = misc::parseCmdArgs(cmd);
+        QString xyce_cmd = cmd_args.at(0);
+        cmd_args.removeAt(0);
+        SimProcess->start(xyce_cmd,cmd_args);
     } else {
         output += "No simulations!\n"
                   "Exiting...\n";

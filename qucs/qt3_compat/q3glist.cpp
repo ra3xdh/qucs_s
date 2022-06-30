@@ -41,8 +41,8 @@
 
 #include "q3glist.h"
 #include "q3gvector.h"
-#include "qdatastream.h"
-#include "q3valuelist.h"
+#include <QDataStream>
+//#include "q3valuelist.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -113,7 +113,7 @@ public:
 	} else if ( list ) {
 	    list->push_front( i );
 	} else {
-	    list = new Q3ValueList<Q3GListIterator*>;
+        list = new std::list<Q3GListIterator*>;
 	    list->push_front( i );
 	}
     }
@@ -123,7 +123,7 @@ public:
 	    iterator = 0;
 	} else if ( list ) {
 	    list->remove( i );
-	    if ( list->isEmpty() ) {
+        if ( list->empty() ) {
 		delete list;
 		list = 0;
 	    }
@@ -137,7 +137,7 @@ public:
 	    iterator->curNode = 0;
 	}
 	if ( list ) {
-	    for ( Q3ValueList<Q3GListIterator*>::Iterator i = list->begin(); i != list->end(); ++i ) {
+        for ( auto i = list->begin(); i != list->end(); ++i ) {
 		if ( zeroList )
 		    (*i)->list = 0;
 		(*i)->curNode = 0;
@@ -151,7 +151,7 @@ public:
 		iterator->curNode = curNode;
 	}
 	if ( list ) {
-	    for ( Q3ValueList<Q3GListIterator*>::Iterator i = list->begin(); i != list->end(); ++i ) {
+        for ( auto i = list->begin(); i != list->end(); ++i ) {
 		if ( (*i)->curNode == n )
 		    (*i)->curNode = curNode;
 	    }
@@ -159,7 +159,7 @@ public:
     }
 
 private:
-    Q3ValueList<Q3GListIterator*>* list;
+    std::list<Q3GListIterator*>* list;
     Q3GListIterator* iterator;
 };
 

@@ -27,9 +27,6 @@
 #include <QScrollArea>
 #include <QDebug>
 #include <QFileDialog>
-#include <QScriptEngine>
-#include <QScriptValue>
-#include <QScriptValueIterator>
 #include <QGroupBox>
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -296,10 +293,12 @@ void LoadDialog::slotChangeIcon()
       if (line.contains("BitmapFile")){
           QString change =
                   QString("  \"BitmapFile\" : \"%1\",").arg(newIcon);
-          ba.append(change+"\n");
+          QString stmp = change + "\n";
+          ba.append(stmp.toLatin1());
       }
       else{
-          ba.append(line+"\n");
+          QString stmp = line + "\n";
+          ba.append(stmp.toLatin1());
       }
     }
   }

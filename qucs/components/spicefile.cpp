@@ -106,7 +106,7 @@ void SpiceFile::createSymbol()
   if(withSim) {
     i = fHeight - 2;
     tmp = QObject::tr("sim");
-    w = smallmetrics.width(tmp);
+    w = smallmetrics.boundingRect(tmp).width();
     Texts.append(new Text(w/-2, 0, tmp, Qt::red));
   }
   tmp = QObject::tr("spice");
@@ -119,7 +119,7 @@ void SpiceFile::createSymbol()
     Lines.append(new qucs::Line(-30,  y,-HALFWIDTH,  y,QPen(Qt::darkBlue,2)));
     Ports.append(new Port(-30,  y));
     tmp = PortNames.section(',', i, i).mid(4);
-    w = smallmetrics.width(tmp);
+    w = smallmetrics.boundingRect(tmp).width();
     Texts.append(new Text(-20-w, y-fHeight-2, tmp)); // text right-aligned
     i++;
 
@@ -408,7 +408,10 @@ bool SpiceFile::recreateSubNetlist(QString *SpiceFile, QString *FileName)
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.insert("PATH", env.value("PATH") );
     SpicePrep->setProcessEnvironment(env);
-    SpicePrep->start(script.join(" "));
+    QString cmd = script.at(0);
+    QStringList script_args = script;
+    script_args.removeAt(0);
+    SpicePrep->start(cmd,script_args);
     //QucsHelp->setCommunication(0);
 
     if(SpicePrep->state()!=QProcess::Running&&
