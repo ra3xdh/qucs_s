@@ -1164,13 +1164,16 @@ void DiagramDialog::slotApply()
     }
 
     if (NotationBox) {
+        bool notation = false;
         switch (NotationBox->currentIndex()) {
-        case 0: Diag->engineeringNotation = false;
+        case 0: notation = false;
             break;
-        case 1: Diag->engineeringNotation = true;
+        case 1: notation = true;
             break;
         default: break;
         }
+        if (Diag->engineeringNotation != notation) changed = true;
+        Diag->engineeringNotation = notation;
     }
     
     if(GridOn) if(Diag->xAxis.GridOn != GridOn->isChecked()) {

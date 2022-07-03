@@ -1248,6 +1248,9 @@ QString Diagram::save()
   s += QString::number(rotX)+" "+QString::number(rotY)+" "+
        QString::number(rotZ);
 
+  if (engineeringNotation) s += " 1 ";
+  else s += " 0 ";
+
   // labels can contain spaces -> must be last items in the line
   s += " \""+xAxis.Label+"\" \""+yAxis.Label+"\" \""+zAxis.Label+"\">\n";
 
@@ -1368,6 +1371,12 @@ bool Diagram::load(const QString& Line, QTextStream *stream)
       n = s.section(' ',23,23); // rotZ
       rotZ = n.toInt(&ok);
       if(!ok) return false;
+
+      n = s.section(' ',24,24);
+      if (n.at(0) != '"') {
+          if (n == "1") engineeringNotation = true;
+          else engineeringNotation = false;
+      }
     }
   }
 
