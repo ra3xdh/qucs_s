@@ -77,6 +77,8 @@ Diagram::Diagram(int _cx, int _cy)
   rotZ = 225;
   hideLines = true;  // hide invisible lines
 
+  engineeringNotation = false;
+
   Type = isDiagram;
   isSelected = false;
   GridPen = QPen(Qt::lightGray,0);
@@ -1920,7 +1922,8 @@ if(Axis->log) {
       Lines.prepend(new qucs::Line(0, z, x2, z, GridPen));  // y grid
 
     if((zD < 1.5*zDstep) || (z == 0)) {
-      tmp = misc::StringNiceNum(zD);
+      if (engineeringNotation) tmp = misc::num2str(zD);
+      else tmp = misc::StringNiceNum(zD);
       if(Axis->up < 0.0)  tmp = '-'+tmp;
 
       w = metrics.boundingRect(tmp).width();  // width of text
@@ -1955,7 +1958,8 @@ else {  // not logarithmical
   z = int(zD);   //  "int(...)" implies "floor(...)"
   while((z <= y2) && (z >= 0)) {  // create all grid lines
     if(fabs(GridNum) < 0.01*pow(10.0, Expo)) GridNum = 0.0;// make 0 really 0
-    tmp = misc::StringNiceNum(GridNum);
+    if (engineeringNotation) tmp = misc::num2str(GridNum);
+    else tmp = misc::StringNiceNum(GridNum);
 
     w = metrics.boundingRect(tmp).width();  // width of text
     if(maxWidth < w) maxWidth = w;

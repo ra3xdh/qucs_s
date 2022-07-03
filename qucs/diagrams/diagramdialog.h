@@ -118,8 +118,9 @@ private:
   QLineEdit   *startY, *stepY, *stopY;
   QLineEdit   *startZ, *stepZ, *stopZ;
   QLineEdit   *rotationX, *rotationY, *rotationZ;
-  QLabel      *GridLabel1, *GridLabel2, *Label1, *Label2, *Label3, *Label4;
-  QComboBox   *PropertyBox, *GridStyleBox, *yAxisBox;
+  QLabel      *GridLabel1, *GridLabel2, *Label1, *Label2, *Label3, *Label4,
+              *NotationLabel;
+  QComboBox   *PropertyBox, *GridStyleBox, *yAxisBox, *NotationBox;
   QPushButton *ColorButt, *GridColorButt;
   QSlider     *SliderRotX, *SliderRotY, *SliderRotZ;
   Cross3D     *DiagCross;

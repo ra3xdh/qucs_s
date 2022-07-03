@@ -402,7 +402,17 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       gp->addWidget(GridStyleBox, Row,1);
       Row++;
       GridStyleBox->setCurrentIndex(Diag->GridPen.style()-1);
-    
+
+      NotationLabel = new QLabel(tr("Number notation: "),Tab2);
+      gp->addWidget(NotationLabel,Row,0);
+      NotationBox = new QComboBox(Tab2);
+      NotationBox->addItem(tr("scientific notation"));
+      NotationBox->addItem(tr("engineerign notation"));
+      if (Diag->engineeringNotation) NotationBox->setCurrentIndex(1);
+      else NotationBox->setCurrentIndex(0);
+      gp->addWidget(NotationBox,Row,1);
+      Row++;
+
       GridOn->setChecked(Diag->xAxis.GridOn);
       if(!Diag->xAxis.GridOn) slotSetGridBox(0);
       connect(GridOn, SIGNAL(stateChanged(int)), SLOT(slotSetGridBox(int)));
@@ -411,6 +421,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       GridOn = 0;
       GridColorButt = 0;
       GridStyleBox = 0;
+      NotationBox = 0;
     }
 
     // ...........................................................
@@ -1150,6 +1161,16 @@ void DiagramDialog::slotApply()
     if(Diag->yAxis.Label != ylLabel->text()) {
       Diag->yAxis.Label = ylLabel->text();
       changed = true;
+    }
+
+    if (NotationBox) {
+        switch (NotationBox->currentIndex()) {
+        case 0: Diag->engineeringNotation = false;
+            break;
+        case 1: Diag->engineeringNotation = true;
+            break;
+        default: break;
+        }
     }
     
     if(GridOn) if(Diag->xAxis.GridOn != GridOn->isChecked()) {
