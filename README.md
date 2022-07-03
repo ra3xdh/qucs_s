@@ -1,5 +1,3 @@
-[![LiberaPay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/ra3xdh/donate) ![LiberaPay](https://img.shields.io/liberapay/patrons/ra3xdh.svg?logo=liberapay)
-
 ## Qucs-S: Quite universal circuit simulator with SPICE
 
 Qucs-S provides a fancy graphical user interface for a number of popular circuit simulation 
@@ -14,6 +12,10 @@ simulation kernels are supported:
 
 See the https://ra3xdh.github.io/ for more details. Qucs-S is based
 on original Qucs code: https://github.com/Qucs/qucs
+
+## Donation
+
+Qucs-S accepts donation using Boosty platform: https://boosty.to/qucs_s
 
 ## Build instructions
 
