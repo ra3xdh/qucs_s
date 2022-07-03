@@ -1652,7 +1652,10 @@ void Diagram::createPolarDiagram(Axis *Axis, int Mode)
     for(i=int(numGrids); i>1; i--) {    // create all grid circles
       z = int(zD);
       GridNum += GridStep;
-      Texts.append(new Text(((x2+z)>>1)-10, tPos, misc::StringNiceNum(GridNum)));
+      QString lbl;
+      if (engineeringNotation) lbl = misc::num2str(GridNum);
+      else lbl = misc::StringNiceNum(GridNum);
+      Texts.append(new Text(((x2+z)>>1)-10, tPos, lbl));
 
       phi = int(16.0*180.0/pi*atan(double(2*tHeight)/zD));
       if(!Below)  tmp = beta + phi;
