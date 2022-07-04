@@ -22,6 +22,8 @@
 #include <QString>
 #include <QHash>
 #include <QStack>
+#include <QFileSystemModel>
+#include <QSortFilterProxyModel>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -53,13 +55,28 @@ class QTreeWidgetItem;
 class QListWidget;
 class QShortcut;
 class QListView;
-class QFileSystemModel;
 class QModelIndex;
 class QPushButton;
 
 typedef bool (Schematic::*pToggleFunc) ();
 typedef void (MouseActions::*pMouseFunc) (Schematic*, QMouseEvent*);
 typedef void (MouseActions::*pMouseFunc2) (Schematic*, QMouseEvent*, float, float);
+
+class QucsFileSystemModel : public QFileSystemModel {
+Q_OBJECT
+public:
+    explicit QucsFileSystemModel(QObject* parent = nullptr) : QFileSystemModel(parent) {};
+    QVariant data(const QModelIndex& index, int role) const override;
+};
+
+class QucsSortFilterProxyModel : public QSortFilterProxyModel {
+Q_OBJECT
+
+public:
+    explicit QucsSortFilterProxyModel(QObject *parent = nullptr) : QSortFilterProxyModel(parent) {};
+protected:
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
+};
 
 class QucsApp : public QMainWindow {
   Q_OBJECT
@@ -209,6 +226,7 @@ private:
   QStack<QString> HierarchyHistory; // keeps track of "go into subcircuit"
   QString  QucsFileFilter;
   QFileSystemModel *m_homeDirModel;
+  QucsSortFilterProxyModel *m_proxyModel;
   QFileSystemModel *m_projModel;
   int ccCurIdx; // CompChooser current index (used during search)
 

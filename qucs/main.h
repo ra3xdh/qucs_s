@@ -77,6 +77,7 @@ struct tQucsSettings {
   unsigned int NodeWiring;
   QDir QucsWorkDir;
   QDir QucsHomeDir;
+  QDir projsDir; // current user projects subdirectory
   QDir AdmsXmlBinDir;  // dir of admsXml executable
   QDir AscoBinDir;     // dir of asco executable
   QString NgspiceExecutable;  // Executables of external simulators

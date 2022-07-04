@@ -38,6 +38,7 @@
 #include <QInputDialog>
 #include <QDesktopServices>
 #include <QFileSystemModel>
+#include <QSortFilterProxyModel>
 #include <QUrl>
 #include <QSettings>
 #include <QVariant>
@@ -400,13 +401,27 @@ void QucsApp::initView()
 
   messageDock = new MessageDock(this);
 
-  // initial home directory model
-  m_homeDirModel = new QFileSystemModel(this);
-  QStringList filters;
-  filters << "*_prj";
-  m_homeDirModel->setNameFilters(filters);
-  m_homeDirModel->setNameFilterDisables(false);
-  m_homeDirModel->setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+    // initial projects directory model
+    m_homeDirModel = new QucsFileSystemModel(this);
+    m_proxyModel = new QucsSortFilterProxyModel();
+    //m_proxyModel->setDynamicSortFilter(true);
+    // show all directories (project and non-project)
+    m_homeDirModel->setFilter(QDir::NoDot | QDir::AllDirs);
+
+    // ............................................
+    QString path = QucsSettings.QucsHomeDir.absolutePath();
+    QDir ProjDir(path);
+    // initial projects directory is the Qucs home directory
+    QucsSettings.projsDir.setPath(path);
+
+    // create home dir if not exist
+    if(!ProjDir.exists()) {
+        if(!ProjDir.mkdir(path)) {
+            QMessageBox::warning(this, tr("Warning"),
+                                 tr("Cannot create work directory !"));
+            return;
+        }
+    }
 
   // ............................................
   readProjects(); // reads all projects and inserts them into the ListBox
@@ -502,7 +517,7 @@ void QucsApp::fillLibrariesTreeView ()
     QDir UserLibDir = QDir (QucsSettings.QucsHomeDir.canonicalPath () + "/user_lib/");
 
     LibFiles = UserLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
-    QDir UsrLibDir(UserLibDir);
+    const QDir& UsrLibDir(UserLibDir);
     LibFiles = UsrLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
     blacklist = getBlacklistedLibraries(QucsSettings.LibDir);
     foreach(QString ss, blacklist) { // exclude blacklisted files
@@ -1156,20 +1171,26 @@ void QucsApp::slotCMenuInsert()
 // Checks for qucs directory and reads all existing Qucs projects.
 void QucsApp::readProjects()
 {
-  QString path = QucsSettings.QucsHomeDir.absolutePath();
-  QDir ProjDir(path);
+    QString path = QucsSettings.projsDir.absolutePath();
+    QString homepath = QucsSettings.QucsHomeDir.absolutePath();
 
-  // create home dir if not exist
-  if(!ProjDir.exists()) {
-    if(!ProjDir.mkdir(path)) {
-      QMessageBox::warning(this, tr("Warning"),
-          tr("Cannot create work directory !"));
-      return;
+    if (path == homepath) {
+        // in Qucs Home, disallow further up in the dirs tree
+        m_homeDirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
+    } else {
+        m_homeDirModel->setFilter(QDir::NoDot | QDir::AllDirs);
     }
-  }
-  m_homeDirModel->setRootPath(path);
-  Projects->setModel(m_homeDirModel);
-  Projects->setRootIndex(m_homeDirModel->index(path));
+
+    // set the root path
+    QModelIndex rootModelIndex = m_homeDirModel->setRootPath(path);
+    // assign the model to the proxy and the proxy to the view
+    m_proxyModel->setSourceModel(m_homeDirModel);
+    m_proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+    // sort by first column (file name, only column show in the QListView)
+    m_proxyModel->sort(0);
+    Projects->setModel(m_proxyModel);
+    // fix the listview on the root path of the model
+    Projects->setRootIndex(m_proxyModel->mapFromSource(rootModelIndex));
 }
 
 // ----------------------------------------------------------
@@ -1181,7 +1202,7 @@ void QucsApp::slotButtonProjNew()
   NewProjDialog *d = new NewProjDialog(this);
   if(d->exec() != QDialog::Accepted) return;
 
-  QDir projDir(QucsSettings.QucsHomeDir.path());
+  QDir projDir(QucsSettings.projsDir.path());
   QString name = d->ProjName->text();
   bool open = d->OpenProj->isChecked();
 
@@ -1194,7 +1215,7 @@ void QucsApp::slotButtonProjNew()
         tr("Cannot create project directory !"));
   }
   if(open) {
-    openProject(QucsSettings.QucsHomeDir.filePath(name));
+    openProject(QucsSettings.projsDir.filePath(name));
   }
 }
 
@@ -1237,9 +1258,10 @@ void QucsApp::openProject(const QString& Path)
 
   openProjName.chop(4); // remove "_prj" from name
   ProjName = openProjName;   // remember the name of project
-
-  // show name in title of main window
-  setWindowTitle("Qucs " PACKAGE_VERSION + tr(" - Project: ")+ProjName);
+  QDir parentDir = QucsSettings.QucsWorkDir;
+  parentDir.cdUp();
+    // show name in title of main window
+  setWindowTitle(QUCS_NAME " " PACKAGE_VERSION  " - " + tr("Project: ") + ProjName + " (" +  parentDir.absolutePath() + ")");
 }
 
 // ----------------------------------------------------------
@@ -1274,8 +1296,15 @@ void QucsApp::slotButtonProjOpen()
 // Is called when project is double-clicked to open it.
 void QucsApp::slotListProjOpen(const QModelIndex &idx)
 {
-  openProject(QucsSettings.QucsHomeDir.filePath(
-      idx.data().toString()));
+    QString dName = idx.data().toString();
+    if (dName.endsWith("_prj")) { // it's a Qucs project
+        openProject(QucsSettings.projsDir.filePath(dName));
+    } else { // it's a normal directory
+        // change projects directory to the selected one
+        QucsSettings.projsDir.setPath(QucsSettings.projsDir.filePath(dName));
+        readProjects();
+        //repaint();
+    }
 }
 
 // ----------------------------------------------------------
@@ -1292,7 +1321,7 @@ void QucsApp::slotMenuProjClose()
   view->drawn = false;
 
   slotResetWarnings();
-  setWindowTitle("Qucs " PACKAGE_VERSION + tr(" - Project: "));
+  setWindowTitle(QUCS_NAME " " PACKAGE_VERSION " - " + tr("No project"));
   QucsSettings.QucsWorkDir.setPath(QDir::homePath()+QDir::toNativeSeparators ("/.qucs"));
   octave->adjustDirectory();
 
@@ -1394,7 +1423,7 @@ void QucsApp::slotButtonProjDel()
     return;
   }
 
-  deleteProject(QucsSettings.QucsHomeDir.filePath(idx.data().toString()));
+  deleteProject(QucsSettings.projsDir.filePath(idx.data().toString()));
 }
 
 
@@ -3039,4 +3068,58 @@ void QucsApp::slotEDDtoIFS()
 void QucsApp::slotEDDtoMOD()
 {
     slotBuildXSPICEIfs(spicecompat::cmgenEDDmod);
+}
+
+QVariant QucsFileSystemModel::data( const QModelIndex& index, int role ) const
+{
+    if (role == Qt::DecorationRole) { // it's an icon
+        QString dName = fileName(index);
+        if (dName.endsWith("_prj")) { // it's a Qucs project
+            // for some reason SVG does not always work on Windows, so use PNG
+            return QIcon(":bitmaps/hicolor/128x128/apps/qucs.png");
+        }
+    }
+    // return default system icon
+    return QFileSystemModel::data(index, role);
+}
+
+// function below is adapted from https://stackoverflow.com/questions/10789284/qfilesystemmodel-sorting-dirsfirst
+bool QucsSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    // if sorting by file names column
+    if (sortColumn() == 0) {
+        QucsFileSystemModel *model = qobject_cast<QucsFileSystemModel*>(sourceModel());
+        // get the current sort order (do we need this ?)
+        bool asc = sortOrder() == Qt::AscendingOrder;
+
+        QFileInfo leftFileInfo = model->fileInfo(left);
+        QFileInfo rightFileInfo = model->fileInfo(right);
+        QString leftFileName = model->fileName(left);
+        QString rightFileName = model->fileName(right);
+
+        // If DotAndDot move in the beginning
+        if (sourceModel()->data(left).toString() == "..")
+            return asc;
+        if (sourceModel()->data(right).toString() == "..")
+            return !asc;
+
+        // move dirs upper
+        if (!leftFileInfo.isDir() && rightFileInfo.isDir()) {
+            return !asc;
+        }
+        if (leftFileInfo.isDir() && !rightFileInfo.isDir()) {
+            return asc;
+        }
+        // move dirs ending in '_prj' upper
+        if (leftFileInfo.isDir() && rightFileInfo.isDir()) {
+            if (!leftFileName.endsWith("_prj") && rightFileName.endsWith("_prj")) {
+                return !asc;
+            }
+            if (leftFileName.endsWith("_prj") && !rightFileName.endsWith("_prj")) {
+                return asc;
+            }
+        }
+    }
+
+    return QSortFilterProxyModel::lessThan(left, right);
 }
