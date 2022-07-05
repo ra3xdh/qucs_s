@@ -19,8 +19,8 @@ Qucs-S accepts donation using Boosty platform: https://boosty.to/qucs_s
 
 ## Build instructions
 
-Use CMake to build Qucs-S. Install all necessary dependecies: GCC, Qt, and SPICE
-(optional). For Ubuntu launch the following command to install developement tools:
+Use CMake to build Qucs-S. Install all necessary dependencies: GCC, Qt, and SPICE
+(optional). For Ubuntu launch the following command to install development tools:
 
 ~~~
 sudo apt-get install build-essential git cmake qtbase5-dev qttools5-dev qtscript5-dev libqt5svg5-dev

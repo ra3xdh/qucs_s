@@ -49,7 +49,7 @@ SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
   Comp = c;
   Doc  = d;
 
-  all = new QVBoxLayout(); // to provide neccessary size
+  all = new QVBoxLayout(); // to provide necessary size
   this->setLayout(all);
   QWidget *myParent = this;
 

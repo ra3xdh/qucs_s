@@ -40,7 +40,7 @@
   <Sub S21_Probe1 1 420 960 -60 -66 0 0 "S21_Probe.sch" 0 "50" 1>
   <R_SPICE R5 1 330 1020 28 13 1 1 "50" 1 "" 0 "" 0 "" 0 "" 0>
   <GND * 1 330 1050 0 0 1 2>
-  <.CUSTOMSIM CUSTOM1 1 -70 430 0 77 0 0 "\n* AC small signal simulation.\n* \nac dec 121 1 1e6\n*\nlet Z0 = 50.0\n*\n* Find two port S parameters from test circuit.\n*\nlet S11 = V(nS11)\nlet S12 = V(nS12)\nlet S21 = V(nS21)\nlet S22 = V(nS22)\n*\n* Extract Y paramerters.\n*\nlet StoYDelS =  ( (1+S11)*(1+S22)-S12*S21 )*Z0\nlet Y11 = ( (1+S22)*(1-S11)+S12*S21 )/StoYDelS\nlet Y12 =  -2*S12/StoYDelS\nlet Y21 =  -2*S21/StoYDelS\nlet Y22 = ( (1+S11)*(1-S22)+S12*S21 )/StoYDelS\n*\n* Extract Z parameters\n*\nlet StoZDelS = ( (1-S11)*(1-S22)-S12*S21 )/Z0\nlet Z11 = ( (1+S11)*(1-S22)+S12*S21 )/StoZDelS\nlet Z12 =   2*S12/StoZDelS\nlet Z21 =   2*S21/StoZDelS\nlet Z22 = ( (1-S11)*(1+S22)+S12*S21 )/StoZDelS\n" 1 "S11; S12; S21; S22; Y11; Y12; Y21; Y22; Z11; Z12; Z21; Z22" 0 "" 0>
+  <.CUSTOMSIM CUSTOM1 1 -70 430 0 77 0 0 "\n* AC small signal simulation.\n* \nac dec 121 1 1e6\n*\nlet Z0 = 50.0\n*\n* Find two port S parameters from test circuit.\n*\nlet S11 = V(nS11)\nlet S12 = V(nS12)\nlet S21 = V(nS21)\nlet S22 = V(nS22)\n*\n* Extract Y parameters.\n*\nlet StoYDelS =  ( (1+S11)*(1+S22)-S12*S21 )*Z0\nlet Y11 = ( (1+S22)*(1-S11)+S12*S21 )/StoYDelS\nlet Y12 =  -2*S12/StoYDelS\nlet Y21 =  -2*S21/StoYDelS\nlet Y22 = ( (1+S11)*(1-S22)+S12*S21 )/StoYDelS\n*\n* Extract Z parameters\n*\nlet StoZDelS = ( (1-S11)*(1-S22)-S12*S21 )/Z0\nlet Z11 = ( (1+S11)*(1-S22)+S12*S21 )/StoZDelS\nlet Z12 =   2*S12/StoZDelS\nlet Z21 =   2*S21/StoZDelS\nlet Z22 = ( (1-S11)*(1+S22)+S12*S21 )/StoZDelS\n" 1 "S11; S12; S21; S22; Y11; Y12; Y21; Y22; Z11; Z12; Z21; Z22" 0 "" 0>
 </Components>
 <Wires>
   <870 980 880 980 "" 0 0 0 "">

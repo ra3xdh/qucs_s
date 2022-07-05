@@ -117,7 +117,7 @@ EKV26MOS::EKV26MOS()
   Props.append (new Property ("Af", "1.0", false,
     QObject::tr ("flicker noise exponent")));
   Props.append (new Property ("Avto", "0.0", false,
-    QObject::tr ("area related theshold voltage mismatch parameter")
+    QObject::tr ("area related threshold voltage mismatch parameter")
     +" ("+QObject::tr ("V*m")+")"));
   Props.append (new Property ("Akp", "0.0", false,
     QObject::tr ("area related gain mismatch parameter")

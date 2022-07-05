@@ -283,7 +283,7 @@ private:
 
   QToolBar *fileToolbar, *editToolbar, *viewToolbar, *workToolbar;
 
-  // Shortcuts for scolling schematic / TextEdit
+  // Shortcuts for scrolling schematic / TextEdit
   // This is rather cumbersome -> Make this with a QScrollView instead??
   QShortcut *cursorUp, *cursorLeft, *cursorRight, *cursorDown;
 

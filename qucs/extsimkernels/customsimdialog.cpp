@@ -98,7 +98,7 @@ CustomSimDialog::CustomSimDialog(SpiceCustomSim *pc, Schematic *sch, QWidget *pa
 }
 
 /*!
- * \brief CustomSimDialog::slotApply Aplly changes of component properties.
+ * \brief CustomSimDialog::slotApply Apply changes of component properties.
  */
 void CustomSimDialog::slotApply()
 {
@@ -117,7 +117,7 @@ void CustomSimDialog::slotOK()
 }
 
 /*!
- * \brief CustomSimDialog::slotCancel Close dialog without apply chages.
+ * \brief CustomSimDialog::slotCancel Close dialog without applying changes.
  */
 void CustomSimDialog::slotCancel()
 {

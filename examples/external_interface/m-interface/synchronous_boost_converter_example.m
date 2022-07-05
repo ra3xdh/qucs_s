@@ -6,7 +6,7 @@ tstart = 0;
 n = 2000;
 tend = 5e-4;
 
-%% fixed-step synchonous solver test
+%% fixed-step synchronous solver test
 
 clear qtr_sync1
 

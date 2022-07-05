@@ -1052,7 +1052,7 @@ qf_double_t qf_poly::evalX2 (qf_double_t c) {
 void qf_poly::disp (const char *name) {
 
   if (rep == NONE) {
-    std::cout << name << "(x) is not initalized.\n";
+    std::cout << name << "(x) is not initialized.\n";
     return;
   }
 

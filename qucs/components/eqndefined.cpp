@@ -195,7 +195,7 @@ QString EqnDefined::va_code()
 }
 
 /*!
- * \brief EqnDefined::subsVoltages Substitute volatges in spice Notation in token list
+ * \brief EqnDefined::subsVoltages Substitute voltages in spice Notation in token list
  * \param[in/out] tokens Token list. Should be obtained from spicecompat::splitEqn().
  *                This list is modified.
  * \param[in] Nbranch Number of branched of EDD

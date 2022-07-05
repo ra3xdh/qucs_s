@@ -54,7 +54,7 @@ QString BJT::spice_netlist(bool)
 
     QStringList spice_incompat,spice_tr;
     spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"Kb"<<"Ab"<<"Fb"; // spice-incompatible parameters
-    spice_tr.clear(); // parameters that need convertion of names
+    spice_tr.clear(); // parameters that need conversion of names
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 

@@ -8,7 +8,7 @@ tstart = 0;
 n = 100;
 tend = 5e-4;
 
-%% fixed-step synchonous solver test
+%% fixed-step synchronous solver test
 
 clear qtr_async1
 

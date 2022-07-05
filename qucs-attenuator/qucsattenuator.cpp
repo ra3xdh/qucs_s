@@ -203,7 +203,7 @@ void QucsAttenuator::slotHelpIntro()
     tr("QucsAttenuator is an attenuator synthesis program. "
          "To create a attenuator, simply enter all "
          "the input parameters and press the calculation button. "
-         "Immediatly, the "
+         "Immediately, the "
          "schematic of the attenuator is calculated and "
          "put into the clipboard. Now go to Qucs, "
          "open an schematic and press "

@@ -194,7 +194,7 @@ void MessageDock::slotCursor()
         }
     }
 
-  // \todo set hightlight in QucsDoc Verilog-A file?
+  // \todo set highlight in QucsDoc Verilog-A file?
   // move cursor? addt line number? highliht line number? set in focus
 
     /*
@@ -218,7 +218,7 @@ void MessageDock::slotCursor()
         int pos = d->document()->findBlockByLineNumber(gotoLine-1).position();
         cursor.setPosition(pos);
 
-        // Highligt a give line
+        // Highlight a give line
         QList<QTextEdit::ExtraSelection> extraSelections;
         QTextEdit::ExtraSelection selection;
         QColor lineColor = QColor(Qt::yellow).lighter(160);

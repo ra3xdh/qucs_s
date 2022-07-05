@@ -175,7 +175,7 @@ QString misc::StringNiceNum(double num)
     if(p) {
       if(!pe)  pe = Buffer + strlen(Buffer);
       p = pe-1;
-      while(*p == '0')   // looking for unneccessary zero characters
+      while(*p == '0')   // looking for unnecessary zero characters
         if((--p) <= Buffer)  break;
       if(*p != '.')  p++;  // no digit after decimal point ?
       while( (*(p++) = *(pe++)) != 0 ) ;  // overwrite zero characters

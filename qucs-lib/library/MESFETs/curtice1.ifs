@@ -91,7 +91,7 @@ Null_Allowed:       no
 
 PARAMETER_TABLE:
 Parameter_Name:     rf  
-Description:        "Forwad bias slope resistance."    
+Description:        "Forward bias slope resistance."    
 Data_Type:          real  
 Default_Value:      10.0
 Limits:             -   
