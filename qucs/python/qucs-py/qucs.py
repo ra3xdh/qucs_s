@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # QUCS->Python+pylab converter ver.1.0
-# Public domain code, writter by Wojciech M. Zabolotny
+# Public domain code, written by Wojciech M. Zabolotny
 # ( wzab<at>ise.pw.edu.pl ) 20.01.2009
 import sys
 import pylab
@@ -20,7 +20,7 @@ class qucs_data:
         if l != "<Qucs Dataset 0.0.18>":
            raise("This is not a qucs data file!")
         # Now we should start reading dependent vars, and independent vars
-        # The next line should be either dependend variable or independent variable
+        # The next line should be either dependent variable or independent variable
         while True:
           l=f.readline().strip()
           if l=="":

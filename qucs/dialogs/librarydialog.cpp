@@ -171,7 +171,7 @@ LibraryDialog::LibraryDialog(QWidget *parent)
   createButt->setDisabled(true);
 
 
-  // stacked 2 - show error / sucess message
+  // stacked 2 - show error / success message
   // ...........................................................
   QWidget *msg = new QWidget();
   stackedWidgets->addWidget(msg);
@@ -291,7 +291,7 @@ void LibraryDialog::slotCreateNext()
       }
   }
   else {
-      // save whitout description
+      // save without description
       emit slotSave();
   }
 }

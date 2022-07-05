@@ -32,7 +32,7 @@
 #define INVALID_STR QObject::tr(" <invalid>")
 
 // ------------------------------------------------------------
-// Enlarge memory block if neccessary.
+// Enlarge memory block if necessary.
 #define  FIT_MEMORY_SIZE  \
   if(p >= p_end) {     \
     int pos = p - g->begin(); \

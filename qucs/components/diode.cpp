@@ -112,7 +112,7 @@ QString Diode::spice_netlist(bool isXyce)
 
     QStringList spice_incompat,spice_tr;
     if (isXyce) {
-        spice_tr<<"Tbv"<<"Tbv1"<<"Trs"<<"Trs1"; // parameters that need convertion of names
+        spice_tr<<"Tbv"<<"Tbv1"<<"Trs"<<"Trs1"; // parameters that need conversion of names
         spice_incompat<<"Ttt1"<<"Ttt2"<<"Tm1"<<"Tm2"<<"Cp"<<"Isr"
                      <<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"; // spice-incompatible parameters
     } else {

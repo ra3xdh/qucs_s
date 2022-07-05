@@ -16,7 +16,7 @@
 % Xstop				X axis stop value (real).
 % Linewidth			Thickness of plotted line in pixels (integer).
 % FTime				Transient simulation FTime (real)
-% Freqmin                       FFT plot minimum frequeny (Hz).
+% Freqmin                       FFT plot minimum frequency (Hz).
 % Freqmax         		FFT plot maximum frequency (Hz).
 %
 % Function written with Octave version >= 3.2.4

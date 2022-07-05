@@ -162,7 +162,7 @@ QString MOSFET_sub::spice_netlist(bool isXyce)
                  <<"Rg"<<"N"<<"Tt"<<"Nrd"<<"Nrs"<<"Ffe";
                               // spice-incompatible parameters
     if (isXyce) {
-        spice_tr<<"Vt0"<<"VtO"; // parameters that need convertion of names
+        spice_tr<<"Vt0"<<"VtO"; // parameters that need conversion of names
     } else {
         spice_tr.clear();
     }

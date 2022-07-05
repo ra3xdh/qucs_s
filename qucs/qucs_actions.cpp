@@ -1446,7 +1446,7 @@ void QucsApp::slotLoadModule()
       // inform if symbol changed
       // populate Module::vaComponents
       // vaComponents are selected with the dialog
-      // dialog should populate acording to checkboxes
+      // dialog should populate according to checkboxes
       // build vaComponents QMap
 
       // remove all previously registered modules
@@ -1472,7 +1472,7 @@ void QucsApp::slotLoadModule()
         // icons of dynamically registered components ready to be dragged
       }
       else {
-        // remove any previously registerd icons from the listview
+        // remove any previously registered icons from the listview
         int foundCat = CompChoose->findText(QObject::tr("verilog-a user devices"));
         if (foundCat != -1) {
           CompChoose->setCurrentIndex(foundCat);
@@ -1527,7 +1527,7 @@ void QucsApp::slotBuildModule()
 
     QString workDir = QucsSettings.QucsWorkDir.absolutePath();
 
-    // need to cd into project to make sure output is droped there?
+    // need to cd into project to make sure output is dropped there?
     // need to cd - into previous location?
     QDir::setCurrent(workDir);
 
@@ -1545,7 +1545,7 @@ void QucsApp::slotBuildModule()
     admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml");
 #endif
 
-    // admsXml emmits C++
+    // admsXml emits C++
     QStringList Arguments;
     Arguments << "-f" <<  QDir::toNativeSeparators(include.absoluteFilePath("va2cpp.makefile"))
               << QString("ADMSXML=%1").arg(admsXml)

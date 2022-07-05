@@ -356,7 +356,7 @@ int SymbolWidget::createStandardSymbol(const QString& Lib_, const QString& Comp_
  * \param SymbolString
  * \param Lib_
  * \param Comp_
- * \return the number of painting elements or a negative nuber if error
+ * \return the number of painting elements or a negative number if error
  */
 int SymbolWidget::setSymbol( QString& SymbolString,
                             const QString& Lib_, const QString& Comp_)

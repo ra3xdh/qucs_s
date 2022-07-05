@@ -58,6 +58,6 @@
 <Diagrams>
 </Diagrams>
 <Paintings>
-  <Text 320 350 12 #000000 0 "50Hz notch filter:\nbuilt by use of extremly high Q gyrator,\nOpAmps fake a 10.1Henry+0.5mOhm coil\nthat forms resonance circuit with C2">
+  <Text 320 350 12 #000000 0 "50Hz notch filter:\nbuilt by use of extremely high Q gyrator,\nOpAmps fake a 10.1Henry+0.5mOhm coil\nthat forms resonance circuit with C2">
   <Text 320 420 12 #000000 0 "OpAmp gyrator fakes:\ninductance = C1*R1*R2*R4/R3\nresistance = 0.5*R2*R4/R3/OpAmpGain">
 </Paintings>

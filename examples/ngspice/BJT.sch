@@ -68,5 +68,5 @@
   </Rect>
 </Diagrams>
 <Paintings>
-  <Text 110 580 12 #000000 0 "This example shows the following \nfeatures of Ngspice support:\n1. Semiconductor devices usage\n2. AC and TRAN analysis\n3. Current probes usage\n4. Parametrization usage. Rload is parameter.\n5. Postprocessing usage in frequency domain.\n Volatge gain K calculation.\n6. Postrprocessing usage in time domain.\n\nNOTE: You can run this example with Qucsator and\n Ngspice  and compare results.">
+  <Text 110 580 12 #000000 0 "This example shows the following \nfeatures of Ngspice support:\n1. Semiconductor devices usage\n2. AC and TRAN analysis\n3. Current probes usage\n4. Parametrization usage. Rload is parameter.\n5. Postprocessing usage in frequency domain.\n Voltage gain K calculation.\n6. Postrprocessing usage in time domain.\n\nNOTE: You can run this example with Qucsator and\n Ngspice and compare results.">
 </Paintings>

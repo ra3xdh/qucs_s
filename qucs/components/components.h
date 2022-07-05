@@ -186,7 +186,7 @@
 #include "etr_sim.h"
 #include "ecvs.h"
 
-// Verilog-A dynamicaly loaded component
+// Verilog-A dynamically loaded component
 #include "vacomponent.h"
 
 #include "bsim3v34nMOS.h"

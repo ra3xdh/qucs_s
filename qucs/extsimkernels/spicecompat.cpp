@@ -200,7 +200,7 @@ bool spicecompat::containNodes(QStringList &tokens, QStringList &vars)
 
 /*!
  * \brief spicecompat::convertNodeNames convert node names form Qucs-notation to
- *        Spice-notation (i.e. Node.Vt --> V(Node) ) and determine used simualtion.
+ *        Spice-notation (i.e. Node.Vt --> V(Node) ) and determine used simulation.
  *        This method modifies the input list of tokens.
  * \param[in/out] tokens
  * \param[out] sim Used simulation.

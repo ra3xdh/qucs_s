@@ -228,7 +228,7 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
         break;
     case QProcess::Crashed : msg = tr("Simulator crashed!");
         break;
-    default : msg = tr("Simualtor error!");
+    default : msg = tr("Simulator error!");
     }
 
     QMessageBox::critical(this,tr("Simulate with SPICE"),msg,QMessageBox::Ok);

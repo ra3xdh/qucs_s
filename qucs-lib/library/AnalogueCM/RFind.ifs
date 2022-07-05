@@ -122,7 +122,7 @@ Null_Allowed:        no
 
 PARAMETER_TABLE:
 Parameter_Name:     tnom           
-Description:        "Inductance parameter measurement temperature n Celcius." 
+Description:        "Inductance parameter measurement temperature n Celsius." 
 Data_Type:          real            
 Default_Value:      26.58          
 Vector:              no             

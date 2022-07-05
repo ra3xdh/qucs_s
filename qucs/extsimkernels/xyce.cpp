@@ -29,7 +29,7 @@
 
 /*!
  * \brief Xyce::Xyce Class constructor
- * \param sch_ Schematic that need to be simualted with Ngspice.
+ * \param sch_ Schematic that need to be simulated with Ngspice.
  * \param parent Parent object
  */
 Xyce::Xyce(Schematic *sch_, QObject *parent) :
@@ -269,7 +269,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
 }
 
 /*!
- * \brief Xyce::slotSimulate Execute Xyce simualtor and perform all
+ * \brief Xyce::slotSimulate Execute Xyce simulator and perform all
  *        simulations from the simulationQueue list
  */
 void Xyce::slotSimulate()
@@ -349,7 +349,7 @@ void Xyce::SaveNetlist(QString filename)
 }
 
 /*!
- * \brief Xyce::slotFinished Simualtor finished handler. End simulation or
+ * \brief Xyce::slotFinished Simulator finished handler. End simulation or
  *        execute the next simulation from queue.
  */
 void Xyce::slotFinished()

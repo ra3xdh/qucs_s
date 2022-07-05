@@ -244,7 +244,7 @@ double Filter::ChebyshevValue(int No, int Order, double Ripple)
 
   a = sin(0.5 / double(Order) * pi);
   gk = a / Ripple;
-  for(i=1; i<=No; i++) {  // coefficients are defined recursivly
+  for(i=1; i<=No; i++) {  // coefficients are defined recursively
     ak  = a;
     a   = sin(double(2 * i + 1) / double(2 * Order) * pi);
     b   = sin(double(i) * pi / double(Order));

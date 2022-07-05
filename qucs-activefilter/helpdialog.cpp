@@ -40,7 +40,7 @@ HelpDialog::HelpDialog(QWidget *parent)
            " and User defined transfer function are supported."
 	       "To create a filter, simply enter all "
 	       "parameters and press the big button at the "
-	       "bottom of the main window. Immediatly, the "
+	       "bottom of the main window. Immediately, the "
 	       "schematic of the filter is calculated and "
 	       "put into the clipboard. Now go to Qucs, "
 	       "open an empty schematic and press "
