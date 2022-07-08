@@ -1511,7 +1511,7 @@ void QucsApp::slotFileOpen()
   statusBar()->showMessage(tr("Opening file..."));
 
   QString s = QFileDialog::getOpenFileName(this, tr("Enter a Schematic Name"),
-    lastDirOpenSave.isEmpty() ? QString(".") : lastDirOpenSave, QucsFileFilter);
+    lastDirOpenSave.isEmpty() ? QString(QDir::homePath()) : lastDirOpenSave, QucsFileFilter);
 
   if(s.isEmpty())
     statusBar()->showMessage(tr("Opening aborted"), 2000);
