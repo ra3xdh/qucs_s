@@ -66,7 +66,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     "Vadim Kuznetsov - " + tr("filter synthesis (qucs-activefilter), SPICE integration (NGSPICE, Xyce)"),
     "Claudio Girardi - " + tr("testing, general fixes"),
     "Felix Salfelder - " + tr("refactoring, modularity"),
-    "Andr\xe9s Mart\xednez Mera - " + tr("RF design tools")
+    "Andr&#xe9;s Mart&#xed;nez Mera - " + tr("RF design tools")
   }};
   
   prevDevs = {{
