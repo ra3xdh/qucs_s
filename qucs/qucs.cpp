@@ -206,6 +206,7 @@ QucsApp::QucsApp()
                                          "and simple press Apply button"));
       slotSimSettings();
   }
+  fillLibrariesTreeView();
 }
 
 QucsApp::~QucsApp()
@@ -373,7 +374,7 @@ void QucsApp::initView()
   LibGroupLayout->addWidget (libTreeWidget);
   LibGroup->setLayout (LibGroupLayout);
 
-  fillLibrariesTreeView ();
+  //fillLibrariesTreeView ();
 
   TabView->addTab (LibGroup, tr("Libraries"));
   TabView->setTabToolTip (TabView->indexOf (CompGroup), tr ("system and user component libraries"));
