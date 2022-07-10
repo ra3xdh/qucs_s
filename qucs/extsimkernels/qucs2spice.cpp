@@ -203,7 +203,7 @@ QString qucs2spice::convert_mosfet(QString line, bool xyce)
     QString mod_params = par_lst.join(" ");
     mod_params.remove('\"');
     s += QString(".MODEL MMOD_%1 %2(%3) \n").arg(name).arg(Typ).arg(mod_params);
-    if (xyce) s.replace(" Vt0="," VtO=");
+    if (xyce) s.replace("Vt0=","VtO=");
     return s;
 }
 
