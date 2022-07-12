@@ -51,6 +51,9 @@ struct Axis {
   int     numGraphs;  // counts number of graphs using this axis
   bool    GridOn;
 
+  enum LogUnits { NoUnits = 0, dbUnits = 1, dBuVUnits = 2, dBmUnits = 3 };
+  int Units;
+
   bool   autoScale;    // manual limits or auto-scale ?
   double limit_min, limit_max, step;   // if not auto-scale
 };

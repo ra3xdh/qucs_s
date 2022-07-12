@@ -66,6 +66,9 @@ Diagram::Diagram(int _cx, int _cy)
   xAxis.GridOn = yAxis.GridOn = true;
   zAxis.GridOn = false;
   xAxis.log = yAxis.log = zAxis.log = false;
+  xAxis.Units = Axis::NoUnits;
+  yAxis.Units = Axis::NoUnits;
+  zAxis.Units = Axis::NoUnits;
 
   xAxis.limit_min = yAxis.limit_min = zAxis.limit_min = 0.0;
   xAxis.limit_max = yAxis.limit_max = zAxis.limit_max = 1.0;
@@ -1251,6 +1254,9 @@ QString Diagram::save()
   if (engineeringNotation) s += " 1 ";
   else s += " 0 ";
 
+  s += QString::number(yAxis.Units) + " "
+          + QString::number(zAxis.Units);
+
   // labels can contain spaces -> must be last items in the line
   s += " \""+xAxis.Label+"\" \""+yAxis.Label+"\" \""+zAxis.Label+"\">\n";
 
@@ -1377,6 +1383,17 @@ bool Diagram::load(const QString& Line, QTextStream *stream)
           if (n == "1") engineeringNotation = true;
           else engineeringNotation = false;
       }
+
+      n = s.section(' ',25,25);
+      if (n.at(0) != '"') {
+          yAxis.Units = n.toInt(&ok);
+          if(!ok) return false;
+
+          n = s.section(' ',26,26);
+          zAxis.Units = n.toInt(&ok);
+          if(!ok) return false;
+      }
+
     }
   }
 
@@ -1934,8 +1951,27 @@ if(Axis->log) {
       Lines.prepend(new qucs::Line(0, z, x2, z, GridPen));  // y grid
 
     if((zD < 1.5*zDstep) || (z == 0)) {
-      if (engineeringNotation) tmp = misc::num2str(zD);
-      else tmp = misc::StringNiceNum(zD);
+        double yVal = zD;
+        switch (Axis->Units) {
+        case Axis::NoUnits: yVal = zD;
+            break;
+        case Axis::dbUnits:
+            yVal = 20*log10(zD);
+            if (fabs(yVal) < 1e-3) yVal = 0;
+            break;
+        case Axis::dBuVUnits:
+            yVal = 20*log10(zD/1e-6);
+            if (fabs(yVal) < 1e-3) yVal = 0;
+            break;
+        case Axis::dBmUnits:
+            yVal = 10*log10(zD/1e-3);
+            if (fabs(yVal) < 1e-3) yVal = 0;
+            break;
+        default: yVal = zD;
+        }
+      if (engineeringNotation) tmp = misc::num2str(yVal);
+      else tmp = misc::StringNiceNum(yVal);
+
       if(Axis->up < 0.0)  tmp = '-'+tmp;
 
       w = metrics.boundingRect(tmp).width();  // width of text

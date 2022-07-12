@@ -434,12 +434,27 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       gp->addWidget(GridLogX, Row,0);
       Row++;
 
+      QStringList units_name;
+      units_name<<"No units"<<"dB"<<"dBuV"<<"dBm";
+
       GridLogY = new QCheckBox(tr("logarithmical")+" "+NameY+" "+tr("Grid"), Tab2);
       gp->addWidget(GridLogY, Row,0);
+      LogUnitsY = new QComboBox(Tab2);
+      LogUnitsY->addItems(units_name);
+      LogUnitsY->setCurrentIndex(Diag->yAxis.Units);
+      LogUnitsY->setEnabled(Diag->yAxis.log);
+      connect(GridLogY,SIGNAL(toggled(bool)),LogUnitsY,SLOT(setEnabled(bool)));
+      gp->addWidget(LogUnitsY, Row, 1);
       Row++;
 
       GridLogZ = new QCheckBox(tr("logarithmical")+" "+NameZ+" "+tr("Grid"), Tab2);
       gp->addWidget(GridLogZ, Row,0);
+      LogUnitsZ = new QComboBox(Tab2);
+      LogUnitsZ->addItems(units_name);
+      LogUnitsZ->setCurrentIndex(Diag->zAxis.Units);
+      LogUnitsZ->setEnabled(Diag->zAxis.log);
+      connect(GridLogZ,SIGNAL(toggled(bool)),LogUnitsZ,SLOT(setEnabled(bool)));
+      gp->addWidget(LogUnitsZ, Row, 1);
       Row++;
 
       // ...........................................................
@@ -1174,6 +1189,18 @@ void DiagramDialog::slotApply()
         }
         if (Diag->engineeringNotation != notation) changed = true;
         Diag->engineeringNotation = notation;
+    }
+
+    auto yUnit = Diag->yAxis.Units;
+    if (yUnit != LogUnitsY->currentIndex()) {
+        Diag->yAxis.Units = LogUnitsY->currentIndex();
+        changed = true;
+    }
+
+    auto zUnit = Diag->zAxis.Units;
+    if (zUnit != LogUnitsZ->currentIndex()) {
+        Diag->zAxis.Units = LogUnitsZ->currentIndex();
+        changed = true;
     }
     
     if(GridOn) if(Diag->xAxis.GridOn != GridOn->isChecked()) {

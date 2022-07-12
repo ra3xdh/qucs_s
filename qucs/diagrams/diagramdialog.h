@@ -107,6 +107,8 @@ private:
   QComboBox *ChooseData;
   QComboBox *ChooseSimulator;
   QComboBox *ChooseXVar;
+  QComboBox *LogUnitsY;
+  QComboBox *LogUnitsZ;
   QTableWidget *ChooseVars;
   QListWidget  *GraphList;
 
