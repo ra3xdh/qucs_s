@@ -1474,10 +1474,12 @@ bool QucsApp::gotoPage(const QString& Name)
   }
 
   QFileInfo Info(Name);
+  bool is_sch = false;
   if(Info.suffix() == "sch" || Info.suffix() == "dpl" ||
      Info.suffix() == "sym") {
     d = new Schematic(this, Name);
-    i = DocumentTab->addTab((Schematic *)d, QPixmap(empty_xpm), Info.fileName()); 
+    i = DocumentTab->addTab((Schematic *)d, QPixmap(empty_xpm), Info.fileName());
+    is_sch = true;
   }
   else {
     d = new TextDoc(this, Name);
@@ -1492,6 +1494,10 @@ bool QucsApp::gotoPage(const QString& Name)
     return false;
   }
   slotChangeView();
+  if (is_sch) {
+      Schematic *sch = (Schematic *)d;
+      if (sch->checkDplAndDatNames()) sch->setChanged(true,true);
+  }
 
   // if only an untitled document was open -> close it
   if(getDoc(0)->DocName.isEmpty())

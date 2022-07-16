@@ -2198,3 +2198,36 @@ void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
   Event->accept();
 }
 
+bool Schematic::checkDplAndDatNames()
+{
+    QFileInfo Info(DocName);
+    if(!DocName.isEmpty() &&
+        DataSet.size()>4 &&
+        DataDisplay.size()>4) {
+      QString base = Info.baseName();
+      QString base_dat = DataSet;
+      base_dat.chop(4);
+      QString base_dpl = DataDisplay;
+      base_dpl.chop(4);
+      if (base != base_dat || base != base_dpl) {
+          QString msg = QObject::tr("The schematic name and dataset/display file name is not matching! "
+                                    "This may happen if schematic was copied using the file manager "
+                                    "instead of using File->SaveAs. Correct dataset and display names "
+                                    "automatically?\n\n");
+          msg += QString(QObject::tr("Schematic file: ")) + base + ".sch\n";
+          msg += QString(QObject::tr("Dataset file: ")) + base_dat + ".sch \n";
+          msg += QString(QObject::tr("Display file: ")) + base_dpl + ".sch\n";
+          auto r = QMessageBox::information(this,
+                                           QObject::tr("Open document"),
+                                           msg, QMessageBox::Yes, QMessageBox::No);
+          if (r == QMessageBox::Yes) {
+              DataSet = base + ".dat";
+              DataDisplay = base + ".dpl";
+              return true;
+          }
+      }
+    } else {
+        return false;
+    }
+    return false;
+}

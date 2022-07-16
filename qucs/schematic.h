@@ -125,6 +125,8 @@ public:
   bool scrollLeft(int);
   bool scrollRight(int);
 
+  bool checkDplAndDatNames();
+
   // The pointers points to the current lists, either to the schematic
   // elements "Doc..." or to the symbol elements "SymbolPaints".
   Q3PtrList<Wire>      *Wires, DocWires;
