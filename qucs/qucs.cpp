@@ -387,7 +387,7 @@ void QucsApp::initView()
   dock->setWidget(TabView);
   dock->setAllowedAreas(Qt::LeftDockWidgetArea);
   this->addDockWidget(Qt::LeftDockWidgetArea, dock);
-  TabView->setCurrentIndex(0);
+  TabView->setCurrentIndex(2);
 
   // ----------------------------------------------------------
   // Octave docking window
