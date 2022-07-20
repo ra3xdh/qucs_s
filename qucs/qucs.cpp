@@ -2197,7 +2197,7 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
       }
       else
 	slotChangePage(sim->DocName, sim->DataDisplay);
-      sim->slotClose();   // close and delete simulation window
+      //sim->slotClose();   // close and delete simulation window
     }
     else
       if(w) if(!isTextDocument (sim->DocWidget))
