@@ -1382,18 +1382,16 @@ bool Diagram::load(const QString& Line, QTextStream *stream)
       if (n.at(0) != '"') {
           if (n == "1") engineeringNotation = true;
           else engineeringNotation = false;
+          n = s.section(' ',25,25);
+          if (n.at(0) != '"') {
+              yAxis.Units = n.toInt(&ok);
+              if(!ok) return false;
+
+              n = s.section(' ',26,26);
+              zAxis.Units = n.toInt(&ok);
+              if(!ok) return false;
+          }
       }
-
-      n = s.section(' ',25,25);
-      if (n.at(0) != '"') {
-          yAxis.Units = n.toInt(&ok);
-          if(!ok) return false;
-
-          n = s.section(' ',26,26);
-          zAxis.Units = n.toInt(&ok);
-          if(!ok) return false;
-      }
-
     }
   }
 
