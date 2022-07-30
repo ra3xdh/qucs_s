@@ -129,8 +129,13 @@ bool loadSettings()
     //if(settings.contains("DocDir"))QucsSettings.DocDir = settings.value("DocDir").toString();
     if(settings.contains("NgspiceExecutable")) QucsSettings.NgspiceExecutable = settings.value("NgspiceExecutable").toString();
     else {
+#ifdef Q_OS_WIN
+        QString ngsp_base = "ngspice_con";
+#else
+        QString ngsp_base = "ngspice";
+#endif
         QString ngsp_exe = QCoreApplication::applicationDirPath() +
-                QDir::separator() + "ngspice" + executableSuffix;
+                QDir::separator() + ngsp_base + executableSuffix;
         if (!QFile::exists(ngsp_exe)) ngsp_exe = QString("ngspice") + executableSuffix;
         QucsSettings.NgspiceExecutable = ngsp_exe;
     }
