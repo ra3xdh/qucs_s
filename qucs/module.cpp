@@ -211,6 +211,8 @@ void Module::intoCategory (Module * m) {
   REGISTER_COMP_1 (QObject::tr("simulations"),val)
 #define REGISTER_DIAGRAM_1(val) \
   REGISTER_MOD_1 (QObject::tr("diagrams"),val)
+#define REGISTER_EQUATION_1(val) \
+  REGISTER_MOD_1 (QObject::tr("equations"),val)
 #define REGISTER_DIAGRAM_2(val,inf1,inf2) \
   REGISTER_MOD_2 (QObject::tr("diagrams"),val,inf1,inf2)
 #define REGISTER_PAINT_1(val) \
@@ -547,6 +549,12 @@ void Module::registerModules (void) {
   REGISTER_DIAGRAM_1 (CurveDiagram);
   REGISTER_DIAGRAM_1 (TimingDiagram);
   REGISTER_DIAGRAM_1 (TruthDiagram);
+
+  // equations
+  REGISTER_EQUATION_1 (NutmegEquation);
+  REGISTER_EQUATION_1 (SpiceParam);
+  REGISTER_EQUATION_1 (SpiceGlobalParam);
+  REGISTER_EQUATION_1 (Equation);
 
   // external simulation
   if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
