@@ -48,6 +48,9 @@ bool loadSettings()
     if(settings.contains("y"))QucsSettings.y=settings.value("y").toInt();
     settings.endGroup();
     if(settings.contains("Language"))QucsSettings.Language=settings.value("Language").toString();
+    if(settings.contains("DefaultSimulator"))
+        QucsSettings.DefaultSimulator = settings.value("DefaultSimulator").toInt();
+    else QucsSettings.DefaultSimulator = spicecompat::simNotSpecified;
 
   return true;
 }

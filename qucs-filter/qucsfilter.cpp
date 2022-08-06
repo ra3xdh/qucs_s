@@ -112,6 +112,17 @@ QucsFilter::QucsFilter()
   ComboRealize->addItem("Quarter wave microstrip");
   ComboRealize->addItem("Equation-defined");
 
+  // microstrip filters cannot be implemented with SPICE
+  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+      QStandardItemModel *model =
+            qobject_cast<QStandardItemModel *>(ComboRealize->model());
+      Q_ASSERT(model != nullptr);
+      for (int i = 2; i < 10; i++) {
+          QStandardItem *itm = model->item(i);
+          itm->setFlags(itm->flags() & ~Qt::ItemIsEnabled);
+      }
+  }
+
   gbox1->addWidget(ComboRealize, 0,1);
   connect(ComboRealize, SIGNAL(activated(int)), SLOT(slotRealizationChanged(int)));
 
