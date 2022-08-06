@@ -271,6 +271,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             QString ss = custom_vars;
             if (!ss.remove(' ').isEmpty()) { // if there was no variables
                 QString filename = basenam + "_custom.txt";
+                filename.replace(' ','_');
                 outputs.append(filename);
                 QString write_str = QString("write %1 %2\n").arg(filename).arg(custom_vars);
                 stream<<write_str;
