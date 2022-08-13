@@ -51,6 +51,7 @@ NJF_SPICE.cpp
 PJF_SPICE.cpp
 NMOS_SPICE.cpp
 PMOS_SPICE.cpp
+MOS_SPICE.cpp
 volt_ac_SPICE.cpp
 
 # SPICE simulations list
@@ -143,6 +144,7 @@ NJF_SPICE.h
 PJF_SPICE.h
 NMOS_SPICE.h
 PMOS_SPICE.h
+MOS_SPICE.h
 volt_ac_SPICE.h
 sp_customsim.h
 sp_fourier.h

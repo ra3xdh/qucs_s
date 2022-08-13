@@ -53,6 +53,7 @@
 #include "PJF_SPICE.h"
 #include "NMOS_SPICE.h"
 #include "PMOS_SPICE.h"
+#include "MOS_SPICE.h"
 #include "MESFET_SPICE.h"
 #include "PMF_MESFET_SPICE.h"
 
