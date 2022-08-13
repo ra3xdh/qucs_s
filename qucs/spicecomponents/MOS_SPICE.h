@@ -29,6 +29,12 @@ public:
   ~MOS_SPICE();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+  static Element* info_NM3pin(QString&, char* &, bool getNewOne=false);
+  static Element* info_PM3pin(QString&, char* &, bool getNewOne=false);
+  static Element* info_NX3pin(QString&, char* &, bool getNewOne=false);
+  static Element* info_PX3pin(QString&, char* &, bool getNewOne=false);
+  static Element* info_NX4pin(QString&, char* &, bool getNewOne=false);
+  static Element* info_PX4pin(QString&, char* &, bool getNewOne=false);
 protected:
   void createSymbol();
   QString netlist();
