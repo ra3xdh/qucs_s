@@ -441,12 +441,16 @@ inline int parseSPICEComponentLibrary (QString libPath, ComponentLibrary &librar
             ComponentLibraryItem comp;
             comp.name = lin.section(" ",1,1,QString::SectionSkipEmpty);
             // Form fake component definition
-            comp.modelString = "<SpiceModel SpiceModel1 1 250 290 -29 17 0 0"; // .MODEL start
+            QString m_str = QString("M_%1_1").arg(comp.name);
+            comp.modelString = QString("<SpiceModel %1 1 250 290 -29 17 0 0").arg(m_str); // .MODEL start
             int lin_cnt = 0;
-            foreach (QString p, mod_lines) {
-                if (lin_cnt>3) comp.modelString += QString(" \"Line_%1=%2\" 1").arg(lin_cnt+1).arg(p);
-                else comp.modelString += QString(" \"%1\" 1").arg(p);
+            QString visible = "1";
+            for (const auto &p: mod_lines) {
+                if (lin_cnt>3) comp.modelString += QString(" \"Line_%1=%2\" %3")
+                        .arg(lin_cnt+1).arg(p).arg(visible);
+                else comp.modelString += QString(" \"%1\" %2").arg(p).arg(visible);
                 lin_cnt++;
+                visible = "0";
             }
             comp.modelString += ">";
 
