@@ -52,8 +52,9 @@ NMOS_SPICE::NMOS_SPICE()
   Lines.append(new qucs::Line( -9,  0, -4,  5,QPen(Qt::darkRed,3)));
   
   Lines.append(new qucs::Line(-10, -8,-10,  8,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkRed,2)));
     
-  Texts.append(new Text(30,12,"NMOS",Qt::darkRed,10.0,0.0,-1.0));
+  //Texts.append(new Text(30,12,"NMOS",Qt::darkRed,10.0,0.0,-1.0));
  
   Ports.append(new Port(  0,-30)); //D
   Ports.append(new Port(-30,  0)); //G

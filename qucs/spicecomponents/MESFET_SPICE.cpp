@@ -37,7 +37,7 @@ MESFET_SPICE::MESFET_SPICE()
   Lines.append(new qucs::Line(-10, 10,  0, 10,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(  0, 10,  0, 20,QPen(Qt::darkRed,3)));
   Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));  
-
+  Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkRed,2)));
      
   Ports.append(new Port(  0,-30));
   Ports.append(new Port(-30,  0));
