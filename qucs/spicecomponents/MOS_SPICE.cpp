@@ -73,7 +73,7 @@ Element* MOS_SPICE::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 Element* MOS_SPICE::info_NM3pin(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("NMOSFET (M) (3 pin)");
+  Name = QObject::tr("M(NMOS 3 pin)");
   BitmapFile = (char *) "NMOS_SPICE_3";
 
   if(getNewOne)  {
@@ -89,7 +89,7 @@ Element* MOS_SPICE::info_NM3pin(QString& Name, char* &BitmapFile, bool getNewOne
 
 Element* MOS_SPICE::info_PM3pin(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("PMOSFET (M) (3 pin)");
+  Name = QObject::tr("M(PMOS 3 pin)");
   BitmapFile = (char *) "PMOS_SPICE_3";
 
   if(getNewOne)  {
@@ -105,11 +105,12 @@ Element* MOS_SPICE::info_PM3pin(QString& Name, char* &BitmapFile, bool getNewOne
 
 Element* MOS_SPICE::info_NX3pin(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("NMOSFET (X) (3 pin)");
+  Name = QObject::tr("X(NMOS 3 pin)");
   BitmapFile = (char *) "NMOS_SPICE_3";
 
   if(getNewOne)  {
       MOS_SPICE *p = new MOS_SPICE();
+      p->Name = "X";
       p->Props.at(0)->Value = "X";
       p->Props.at(1)->Value = "3";
       p->Props.at(2)->Value = "nmos";
@@ -121,11 +122,12 @@ Element* MOS_SPICE::info_NX3pin(QString& Name, char* &BitmapFile, bool getNewOne
 
 Element* MOS_SPICE::info_PX3pin(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("PMOSFET (X) (3 pin)");
+  Name = QObject::tr("X(PMOS 3 pin)");
   BitmapFile = (char *) "PMOS_SPICE_3";
 
   if(getNewOne)  {
       MOS_SPICE *p = new MOS_SPICE();
+      p->Name = "X";
       p->Props.at(0)->Value = "X";
       p->Props.at(1)->Value = "3";
       p->Props.at(2)->Value = "pmos";
@@ -137,11 +139,12 @@ Element* MOS_SPICE::info_PX3pin(QString& Name, char* &BitmapFile, bool getNewOne
 
 Element* MOS_SPICE::info_NX4pin(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("NMOSFET (X) (4 pin)");
+  Name = QObject::tr("X(NMOS 4 pin)");
   BitmapFile = (char *) "NMOS_SPICE";
 
   if(getNewOne)  {
       MOS_SPICE *p = new MOS_SPICE();
+      p->Name = "X";
       p->Props.at(0)->Value = "X";
       p->Props.at(1)->Value = "4";
       p->Props.at(2)->Value = "nmos";
@@ -153,11 +156,12 @@ Element* MOS_SPICE::info_NX4pin(QString& Name, char* &BitmapFile, bool getNewOne
 
 Element* MOS_SPICE::info_PX4pin(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("PMOSFET (X) (4 pin)");
+  Name = QObject::tr("X(PMOS 4 pin)");
   BitmapFile = (char *) "PMOS_SPICE";
 
   if(getNewOne)  {
       MOS_SPICE *p = new MOS_SPICE();
+      p->Name = "X";
       p->Props.at(0)->Value = "X";
       p->Props.at(1)->Value = "4";
       p->Props.at(2)->Value = "pmos";
