@@ -7,10 +7,6 @@ RF axial resister model:
 
 Parameters; Description; Default value
 R0; Nominal resistance at Tnom; 50
-tc1; First order temperature coefficient (1/K); 0.0
-tc2; Second order temperature coefficient (1/(K*K)); 0.0
-tnom; Parameter measurement temoerature (C); 26.58
-temp; Circuit temperature (C); 26.58
 l1; Lead parasitic inductance (H); 1.5n
 ls; Resistance serial inductance;  5n
 l2;  Lead parasitic inductance (H); 1.5n
@@ -30,17 +26,14 @@ Boston, London, 2003. ISBN 1-58053309-4
   </Model>
   <Spice>* Qucs 0.0.19  RFLumpedComponents1_RFAxialRes.sch
 
-.SUBCKT RFLumpedComponents_RFAxialRes  gnd nP1 nP2 R0=1k Tc1=0.0 Tc2=0.0 tnom=26.58 temp=26.58 L1=1.5n Ls=5n L2=1.5n Cp=0.35p Cpad=1e-15 
-R2 n3  n2 {R0} rmod (tc1={tc1} tc2={tc2} temp={temp})
- 
+.SUBCKT RFLumpedComponents_RFAxialRes gnd nP1 nP2 R0=1k L1=1.5n Ls=5n L2=1.5n Cp=0.35p Cpad=1e-15 
+R2 n3  n2 {R0}
+L1 nP1  n1 {L1}
 L3 n1  n2 {Ls}
 L4 n3  nP2 {L2}
-
 C2 n1  n3 {Cp}
 C3 nP1  0 {Cpad/2}
-C4 nP2  0 { Cpad/2 }
-L1 nP1  n1 {L1}
-.MODEL rmod r (tnom = {tnom})
+C4 nP2  0 {Cpad/2}
 .ENDS
   </Spice>
 <SpiceAttach >
@@ -48,7 +41,7 @@ L1 nP1  n1 {L1}
     <Rectangle -40 -10 60 20 #5555ff 2 1 #55aaff 1 1>
     <Line 20 0 20 0 #000000 2 1>
     <Line -40 0 -20 0 #000000 2 1>
-    <.ID -50 24 RFALC "1=R0=1k=Nominal resistance at Tnom.=" "1=Tc1=0.0=Parts per million.=" "1=Tc2=0.0=Parts per million.=" "1=tnom=26.58=Parameter measurement temperature in Celsius.=" "1=temp=26.58=PaCircuit temperature in Celsius.=" "1=L1=1.5n=Lead inductance in Henries..=" "1=Ls=5n=Resistor inductance in Henries. .=" "1=L2=1.5n=Lead inductance in Henries..=" "1=Cp=0.35p=Parasitic capacitance in F.=" "1=Cpad=1e-15=Parasitic capacitance in F.=">
+    <.ID -50 24 RFALC "1=R0=1k=Nominal resistance in Ohms=" "1=L1=1.5n=Lead inductance in Henries=" "1=Ls=5n=Resistor inductance in Henries=" "1=L2=1.5n=Lead inductance in Henries=" "1=Cp=0.35p=Parasitic capacitance in Farads=" "1=Cpad=1e-15=Parasitic capacitance in Farads=">
     <Rectangle 10 -10 5 20 #aa5500 0 1 #00ff00 1 1>
     <Rectangle 0 -10 5 20 #000000 0 1 #ffaa00 1 1>
     <Rectangle -10 -10 5 20 #ff00ff 0 1 #ff00ff 1 1>
@@ -65,10 +58,6 @@ RF axial resister parameter extraction model:
 
 Parameters; Description; Default value
 R0; Nominal resistance at Tnom; 50
-tc1; First order temperature coefficient (1/K); 0.0
-tc2; Second order temperature coefficient (1/(K*K)); 0.0
-tnom; Parameter measurement temoerature (C); 26.58
-temp; Circuit temperature (C); 26.58
 Wlength1; Wire 1 lead length (m); 8e-3
 Wradius;  Wire lead radius (m);  0.3e-3
 Wlength2; Wire 2 lead length (m); 8e-3
@@ -92,7 +81,7 @@ Boston, London, 2003. ISBN 1-58053309-4
   </Model>
   <Spice>* Qucs 0.0.19  RFLumpedComponents1_RFAxialResPgen.sch
 
-.SUBCKT RFLumpedComponents_RFAxialResPgen  gnd nP1 nP2 nCp nLs nL1 nL2 nCap R0=1k Tc1=0.0 Tc2=0.0 tnom=26.58 temp=26.58 Wlength1=8e-3 Wradius=0.3e-3 Wlength2=8e-3 Blength=6.3e-3 Bradius=1.2e-3 H=1.6e-3 Erb=9.9 Erp=3.1 
+.SUBCKT RFLumpedComponents_RFAxialResPgen gnd nP1 nP2 nCp nLs nL1 nL2 nCap R0=1k Wlength1=8e-3 Wradius=0.3e-3 Wlength2=8e-3 Blength=6.3e-3 Bradius=1.2e-3 H=1.6e-3 Erb=9.9 Erp=3.1 
 .PARAM L1={2e-7*Wlength1*(0.5*log(2.0*Wlength1/Wradius)-0.75)}
 .PARAM L2={2e-7*Wlength2*(0.5*log(2.0*Wlength2/Wradius)-0.75)}
 .PARAM Ns=3
@@ -101,26 +90,28 @@ Boston, London, 2003. ISBN 1-58053309-4
 .PARAM Ls={2.0e-7*Lstrip*(0.5*log(2.0*Lstrip/Wstrip)+(Wstrip/(3.0*Lstrip)))}
 .PARAM Cp={8.85e-12*Erb*3.1415926539*Bradius*Bradius/(0.75*Blength)}
 .PARAM Cpad={8.85e-12*Erp*1.5*Blength*Bradius/H}}
-R1 n3  n2 {R0} rmod (tc1={tc1} tc2={tc2} temp={temp})
+
+R1 n3  n2 {R0}
+R2 0  nCp 1
+R3 0  nLs 1
+R4 0  nL1 1
+R5 0  nL2 1
+R6 0  nCap 1
+
+C1 n1  n3 {Cp}
+C2 nP1  0 {Cpad/2}
+C3 nP2  0 {Cpad/2}
  
 L n1  n2 {Ls}
 L2 n3  nP2 {L2}
+Lead nP1  n1 {L1}
 
-R2 0  nCp 1
 I1 0  nCp dc 0.0 ac {Cp}
-R3 0  nLs 1
 I2 0  nLs dc 0.0 ac {Ls}
-R4 0  nL1 1
-R5 0  nL2 1
 I3 0  nL1 dc 0.0 ac {L1}
 I4 0  nL2 dc 0.0 ac {L2}
-Lead nP1  n1 {L1}
-C1 n1  n3 {Cp}
-R6 0  nCap 1
 I5 0  nCap dc 0.0 ac {Cpad}
-C2 nP1  0 {Cpad/2}
-C3 nP2  0 { Cpad/2 }
-.MODEL rmod r (tnom = {tnom})
+
 .ENDS
   </Spice>
 <SpiceAttach >
@@ -196,7 +187,7 @@ C3 nP2  0 { Cpad/2 }
     <Line 75 30 0 30 #000000 2 1>
     <.PortSym 75 60 6 90>
     <Rectangle -160 -60 345 90 #aa0000 3 1 #c0c0c0 1 0>
-    <.ID -55 114 R_ATF_EC "1=R0=1k=Nominal resistance at Tnom.=" "1=Tc1=0.0=Resistance linear temperature coefficient in parts per million.=" "1=Tc2=0.0=Resistance quadratic temperature coefficient in parts per million.=" "1=tnom=26.58=Parameter measurement temperature in Celsius.=" "1=temp=26.58=Circuit temperature in Celsius.=" "1=Wlength1=8e-3=Lead 1 length in m.=" "1=Wradius=0.3e-3=Lead radius in m.=" "1=Wlength2=8e-3=Lead 2 length in m.=" "1=Blength=6.3e-3=Resistor body length in m.=" "1=Bradius=1.2e-3=Resistor body radius in m.=" "1=H=1.6e-3=Distance to ground plane in metres.=" "1=Erb=9.9=Relative dielectric constant. =" "1=Erp=3.1==">
+    <.ID -55 114 R_ATF_EC "1=R0=1k=Nominal resistance in Ohms=" "1=Wlength1=8e-3=Lead 1 length in meters=" "1=Wradius=0.3e-3=Lead radius in meters=" "1=Wlength2=8e-3=Lead 2 length in meters=" "1=Blength=6.3e-3=Resistor body length in meters=" "1=Bradius=1.2e-3=Resistor body radius in meters=" "1=H=1.6e-3=Distance to ground plane in meters=" "1=Erb=9.9=Substrate dielectric constant=" "1=Erp=3.1=PCB dielectric constant">
   </Symbol>
 </Component>
 
@@ -207,10 +198,6 @@ Surface-mount chip resistor model.
 
 Parameters; Description; Default values for package 0805.
 R0; Nominal resistance at Tnom; 50
-tc1; First order temperature coefficient (1/K); 0.0
-tc2; Second order temperature coefficient (1/(K*K)); 0.0
-tnom; Parameter measurement temoerature (C); 26.58
-temp; Circuit temperature (C); 26.58
 Ls; Resistance serial inductance; 0.316n
 Cp;  Resistor parallel parasitic capacitance; 50.3f
 
@@ -222,18 +209,17 @@ References
 Boston, London, 2003. ISBN 1-58053309-4
   </Description>
   <Model>
-.Def:RFLumpedComponents_RFChipRes nP1 nP2 R0="50" Tc1="0.0" Tc2="0.0" tnom="26.58" temp="26.58" Ls="0.316n" Cp="50.3f"
+.Def:RFLumpedComponents_RFChipRes nP1 nP2 R0="50" Ls="0.316n" Cp="50.3f"
 .Def:End
   </Model>
   <Spice>* Qucs 0.0.19  RFLumpedComponents_RFChipRes.sch
 
-.SUBCKT RFLumpedComponents_RFChipRes  gnd nP1 nP2 R0=50 Tc1=0.0 Tc2=0.0 tnom=26.58 temp=26.58 Ls=0.316n Cp=50.3f 
-R1 nP2  n1 {R0} rmod (tc1={tc1} tc2={tc2} temp={temp})
- 
+.SUBCKT RFLumpedComponents_RFChipRes gnd nP1 nP2 R0=1k Ls=0.316n Cp=50.3f 
+
+R1 nP2  n1 {R0}
 L nP1  n1 {Ls}
 C1 nP1  nP2 {Cp}
 
-.MODEL rmod r (tnom = {tnom})
 .ENDS
   </Spice>
 <SpiceAttach >
@@ -243,7 +229,7 @@ C1 nP1  nP2 {Cp}
     <Line 60 -40 20 0 #000000 2 1>
     <.PortSym -60 -40 1 0>
     <.PortSym 80 -40 2 180>
-    <.ID -35 -26 R_CHIP "1=R0=50=Nominal resistance at Tnom.=" "1=Tc1=0.0=Resistance linear temperature coefficient in parts per million.=" "1=Tc2=0.0=Resistance quadratic temperature coefficient in parts per million.=" "1=tnom=26.58=Parameter measurement temperature in Celsius.=" "1=temp=26.58=Circuit temperature in Celsius.=" "1=Ls=0.316n=Series inductance in H.=" "1=Cp=50.3f=Chip parallel capacitance in F=">
+    <.ID -35 -26 R_CHIP "1=R0=1k=Nominal resistance in Ohms=" "1=Ls=0.316n=Series inductance in Henries=" "1=Cp=50.3f=Chip parallel capacitance in Farads=">
   </Symbol>
 </Component>
 
@@ -271,7 +257,7 @@ Boston, London, 2003. ISBN 1-58053309-4
 
   </Description>
   <Model>
-.Def:RFLumpedComponents_RFChipResPgen nP1 nP2 nCp nLs R0="50" Tc1="0.0" Tc2="0.0" tnom="26.58" temp="26.58" Wstrip="1.25e-3" Lstrip="2.0e-3" Hstrip="0.5e-3"
+.Def:RFLumpedComponents_RFChipResPgen nP1 nP2 nCp nLs R0="1k" Wstrip="1.25e-3" Lstrip="2.0e-3" Hstrip="0.5e-3"
 S4Q_I:I1 gnd nCp I="dc 0.0 ac {Cp}" I_Line 2="" I_Line 3="" I_Line 4="" I_Line 5=""
 S4Q_I:I2 gnd nLs I="dc 0.0 ac {Ls}" I_Line 2="" I_Line 3="" I_Line 4="" I_Line 5=""
 Eqn:Eqn1 Rstrip="Wstrip/2" Ls="{ 2.0e-7*Lstrip*(0.5*log(2.0*Lstrip/Wstrip) +(Wstrip/(3.0*Lstrip)))}" Cp="{ 5.56e-11/( log(2.0*Lstrip/Rstrip)-0.75)*1e-3 }" Export="yes"
@@ -279,20 +265,20 @@ Eqn:Eqn1 Rstrip="Wstrip/2" Ls="{ 2.0e-7*Lstrip*(0.5*log(2.0*Lstrip/Wstrip) +(Wst
   </Model>
   <Spice>* Qucs 0.0.19  RFLumpedComponents_RFChipResPgen.sch
 
-.SUBCKT RFLumpedComponents_RFChipResPgen  gnd nP1 nP2 nCp nLs R0=50 Tc1=0.0 Tc2=0.0 tnom=26.58 temp=26.58 Wstrip=1.25e-3 Lstrip=2.0e-3  Hstrip=0.5e-3 
+.SUBCKT RFLumpedComponents_RFChipResPgen gnd nP1 nP2 nCp nLs R0=1k Wstrip=1.25e-3 Lstrip=2.0e-3  Hstrip=0.5e-3 
 .PARAM Rstrip=Wstrip/2
 .PARAM Ls={2.0e-7*Lstrip*(0.5*log(2.0*Lstrip/Wstrip)+(Wstrip/(3.0*Lstrip)))}
 .PARAM Cp={5.56e-11/(log(2.0*Lstrip/Rstrip)-0.75)*1e-3}
-R1 nP2  n1 {R0} rmod (tc1={tc1} tc2={tc2} temp={temp})
+
+R1 nP2  n1 {R0}
+R2 0  nCp 1
+R3 0  nLs 1
  
 L nP1  n1 {Ls}
 C1 nP1  nP2 {Cp}
-R2 0  nCp 1
 I1 0  nCp dc 0.0 ac {Cp}
-R3 0  nLs 1
 I2 0  nLs dc 0.0 ac {Ls}
 
-.MODEL rmod r (tnom = {tnom})
 .ENDS
   </Spice>
 <SpiceAttach >
@@ -333,7 +319,7 @@ I2 0  nLs dc 0.0 ac {Ls}
     <.PortSym -20 60 4 90>
     <.PortSym 140 -20 2 180>
     <.PortSym -80 -20 1 0>
-    <.ID 135 14 R_chip_EC "1=R0=50=Nominal resistance at Tnom.=" "1=Tc1=0.0=Resistance linear temperature coefficient in parts per million.=" "1=Tc2=0.0=Resistance quadratic temperature coefficient in parts per million.=" "1=tnom=26.58=Parameter measurement temperature in Celsius.=" "1=temp=26.58=Circuit temperature in Celsius.=" "1=Wstrip=1.25e-3=Chip width (default 805 package) in m.=" "1=Lstrip=2.0e-3=Chip length (default 805 package) in m.=" "1=Hstrip=0.5e-3=Chip height (default 805 package) in m.=">
+    <.ID 135 14 R_chip_EC "1=R0=1k=Nominal resistance in Ohms=" "1=Wstrip=1.25e-3=Chip width (default 0805 package) in meters=" "1=Lstrip=2.0e-3=Chip length (default 0805 package) in meters=" "1=Hstrip=0.5e-3=Chip height (default 805 package) in meters=">
   </Symbol>
 </Component>
 
