@@ -157,7 +157,8 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
     QString mod,mod_par;
 
     if (!par.contains('@')) {
-        QStringList par_lst = par.split('.',qucs::SkipEmptyParts);
+        QStringList par_lst = getProperty("Param")->Value
+                .split('.',qucs::SkipEmptyParts);
         if (par_lst.count()>1) {
             mod_par = par_lst.at(1);
             // Schematic *sch = (Schematic *) QucsMain->DocumentTab->currentPage();
