@@ -372,11 +372,12 @@ void QucsApp::initView()
   headers << tr ("Libraries");
   libTreeWidget->setHeaderLabels (headers);
 
-  LibGroupLayout->addWidget (libTreeWidget);
+  LibGroupLayout->addWidget (libTreeWidget,6);
 
   CompDescr = new QTextEdit;
-  LibGroupLayout->addWidget(CompDescr);
+  LibGroupLayout->addWidget(CompDescr,2);
   Symbol = new SymbolWidget;
+  Symbol->disableDragNDrop();
   LibGroupLayout->addWidget(Symbol);
 
   LibGroup->setLayout (LibGroupLayout);

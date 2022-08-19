@@ -47,7 +47,9 @@ public:
 
   QString theModel();
   int setSymbol( QString&, const QString&, const QString&);
-
+  void enableDragNDrop();
+  void disableDragNDrop();
+  bool dragNDropEnabled() { return dragNDrop; }
   // component properties
   int Text_x, Text_y;
   QString Prefix, LibraryPath, ComponentName;
@@ -66,6 +68,7 @@ private:
   bool getPen  (const QString&, QPen&, int);
   bool getBrush(const QString&, QBrush&, int);
 
+  bool dragNDrop;
   QString PaintText;
   QString DragNDropText;
   QString Warning;

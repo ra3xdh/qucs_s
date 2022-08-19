@@ -45,6 +45,7 @@ SymbolWidget::SymbolWidget(QWidget *parent) : QWidget(parent)
   x2 = 0;
   y1 = 0;
   y2 = 0;
+  dragNDrop = true;
   PaintText = tr("Symbol:");
   setFont(QucsSettings.font);
   QFontMetrics  metrics(QucsSettings.font, 0); // use the the screen-compatible metric
@@ -65,6 +66,19 @@ SymbolWidget::~SymbolWidget()
 {
 }
 
+void SymbolWidget::enableDragNDrop()
+{
+    dragNDrop = true;
+    DragNDropText = tr("! Drag n'Drop me !");
+}
+
+void SymbolWidget::disableDragNDrop()
+{
+    dragNDrop = false;
+    DragNDropText = "";
+}
+
+
 // ************************************************************
 QString SymbolWidget::theModel()
 {
@@ -83,9 +97,13 @@ QString SymbolWidget::theModel()
 }
 
 // ************************************************************
-void SymbolWidget::mouseMoveEvent(QMouseEvent*)
+void SymbolWidget::mouseMoveEvent(QMouseEvent* event)
 {
 
+  if (!dragNDrop) {
+      QWidget::mouseMoveEvent(event);
+      return;
+  }
   QDrag *drag = new QDrag(this);
   QMimeData *mimeData = new QMimeData;
 
