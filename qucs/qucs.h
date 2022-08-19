@@ -57,6 +57,9 @@ class QShortcut;
 class QListView;
 class QModelIndex;
 class QPushButton;
+class QTextEdit;
+
+class SymbolWidget;
 
 typedef bool (Schematic::*pToggleFunc) ();
 typedef void (MouseActions::*pMouseFunc) (Schematic*, QMouseEvent*);
@@ -190,6 +193,8 @@ public:
   QTabWidget *DocumentTab;
   QListWidget *CompComps;
   QTreeWidget *libTreeWidget;
+  QTextEdit *CompDescr;
+  SymbolWidget *Symbol;
 
   // menu appearing by right mouse button click on content listview
   QMenu *ContentMenu;

@@ -80,6 +80,7 @@
 #include "extsimkernels/verilogawriter.h"
 #include "extsimkernels/simsettingsdialog.h"
 #include "extsimkernels/codemodelgen.h"
+#include "symbolwidget.h"
 
 // icon for unsaved files (diskette)
 const char *smallsave_xpm[] = {
@@ -372,6 +373,12 @@ void QucsApp::initView()
   libTreeWidget->setHeaderLabels (headers);
 
   LibGroupLayout->addWidget (libTreeWidget);
+
+  CompDescr = new QTextEdit;
+  LibGroupLayout->addWidget(CompDescr);
+  Symbol = new SymbolWidget;
+  LibGroupLayout->addWidget(Symbol);
+
   LibGroup->setLayout (LibGroupLayout);
 
   //fillLibrariesTreeView ();
@@ -497,6 +504,8 @@ void QucsApp::fillLibrariesTreeView ()
                   "</Components>\n";
 
             compNameAndDefinition.append (s);
+            compNameAndDefinition.append(parsedlibrary.components[i].definition);
+            compNameAndDefinition.append(libPath);
 
             QTreeWidgetItem* newcompitem = new QTreeWidgetItem(newlibitem, compNameAndDefinition);
 
@@ -572,7 +581,8 @@ void QucsApp::fillLibrariesTreeView ()
                       "</Components>\n";
 
                 compNameAndDefinition.append (s);
-
+                compNameAndDefinition.append(parsedlibrary.components[i].definition);
+                compNameAndDefinition.append(libPath);
 
                 QTreeWidgetItem* newcompitem = new QTreeWidgetItem(newlibitem, compNameAndDefinition);
 
@@ -2464,7 +2474,49 @@ void QucsApp::slotSelectLibComponent(QTreeWidgetItem *item)
 
         // copy the subcircuit schematic to the clipboard
         QClipboard *cb = QApplication::clipboard();
+        QString model = item->text(1);
+        QString name = item->text(0);
+        QString list = item->text(2);
+        QString lib = item->text(3);
         cb->setText(item->text(1));
+        qDebug()<<name<<lib;
+
+        QString content;
+        CompDescr->clear();
+
+        CompDescr->setText("Name: " + name);
+        CompDescr->append("Library: " + lib);
+        CompDescr->append("----------------------------");
+        if(!getSection("Description", list, content)) {
+            QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
+            return;
+        }
+        CompDescr->append(content);
+
+        if(!getSection("Model", list, content)) {
+            QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
+            return;
+        }
+        Symbol->ModelString = content;
+
+        if(!getSection("VHDLModel", list, content)) {
+            QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
+            return;
+        }
+        Symbol->VHDLModelString = content;
+
+        if(!getSection("VerilogModel", list, content)) {
+            QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
+            return;
+        }
+        Symbol->VerilogModelString = content;
+
+        if(!getSection("Symbol", list, content)) {
+            QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
+            return;
+        }
+
+        Symbol->setSymbol(content,lib,name);
 
         // activate the paste command
         slotEditPaste (true);
