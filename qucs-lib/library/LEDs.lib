@@ -7,8 +7,8 @@
   </Description>
   <Model>
     .Def:LEDs_infrared _netC _netA
-      Diode:D_IR _netC _netA Is="1e-10 A" N="3.45" Cj0="3 pF" M="0.5" Vj="0.7 V" Fc="0.5" Cp="0.0 fF" Isr="0.0" Nr="2.0" Rs="0.1 Ohm" Tt="4.0 us" Temp="26.85" Kf="0.0" Af="1.0" Ffe="1.0" Bv="5" Ibv="10 uA" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
-      R:Rleak _netA _netC R="50 MOhm" Temp="26.85"
+      Diode:D_IR _netC _netA Is="1e-10" N="3.45" Cj0="3e-12" M="0.5" Vj="0.7" Fc="0.5" Nr="2.0" Rs="0.1" Tt="4e-6" Temp="26.85" Kf="0.0" Af="1.0" Bv="5" Ibv="10e-6" Xti="3.0" Eg="1.11" Tnom="26.85" Area="1.0"
+      R:Rleak _netA _netC R="50e6" Temp="26.85"
     .Def:End
   </Model>
   <Symbol>
@@ -32,8 +32,8 @@
   </Description>
   <Model>
     .Def:LEDs_red _netC _netA
-      Diode:D_red _netC _netA Is="1e-10 A" N="4.09" Cj0="3 pF" M="0.5" Vj="0.7 V" Fc="0.5" Cp="0.0 fF" Isr="0.0" Nr="2.0" Rs="0.1 Ohm" Tt="4.0 us" Temp="26.85" Kf="0.0" Af="1.0" Ffe="1.0" Bv="5" Ibv="10 uA" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
-      R:Rleak _netA _netC R="50 MOhm" Temp="26.85"
+      Diode:D_red _netC _netA Is="1e-10" N="4.09" Cj0="3e-12" M="0.5" Vj="0.7" Fc="0.5" Nr="2.0" Rs="0.1" Tt="4e-6" Temp="26.85" Kf="0.0" Af="1.0" Bv="5" Ibv="10e-6" Xti="3.0" Eg="1.11" Tnom="26.85" Area="1.0"
+      R:Rleak _netA _netC R="50e6" Temp="26.85"
     .Def:End
   </Model>
   <Symbol>
@@ -57,8 +57,8 @@
   </Description>
   <Model>
     .Def:LEDs_yellow _netC _netA
-      Diode:D_yellow _netC _netA Is="1e-10 A" N="4.45" Cj0="3 pF" M="0.5" Vj="0.7 V" Fc="0.5" Cp="0.0 fF" Isr="0.0" Nr="2.0" Rs="0.1 Ohm" Tt="4.0 us" Temp="26.85" Kf="0.0" Af="1.0" Ffe="1.0" Bv="5" Ibv="10 uA" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
-      R:Rleak _netA _netC R="50 MOhm" Temp="26.85"
+      Diode:D_yellow _netC _netA Is="1e-10" N="4.45" Cj0="3e-12" M="0.5" Vj="0.7" Fc="0.5" Nr="2.0" Rs="0.1" Tt="4e-6" Temp="26.85" Kf="0.0" Af="1.0" Bv="5" Ibv="10e-6" Xti="3.0" Eg="1.11" Tnom="26.85" Area="1.0"
+      R:Rleak _netA _netC R="50e6" Temp="26.85"
     .Def:End
   </Model>
   <Symbol>
@@ -82,8 +82,8 @@
   </Description>
   <Model>
     .Def:LEDs_green _netC _netA
-      Diode:D_green _netC _netA Is="1e-10 A" N="5.45" Cj0="3 pF" M="0.5" Vj="0.7 V" Fc="0.5" Cp="0.0 fF" Isr="0.0" Nr="2.0" Rs="0.1 Ohm" Tt="4.0 us" Temp="26.85" Kf="0.0" Af="1.0" Ffe="1.0" Bv="5" Ibv="10 uA" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
-      R:Rleak _netA _netC R="50 MOhm" Temp="26.85"
+      Diode:D_green _netC _netA Is="1e-10" N="5.45" Cj0="3e-12" M="0.5" Vj="0.7" Fc="0.5" Nr="2.0" Rs="0.1" Tt="4e-6" Temp="26.85" Kf="0.0" Af="1.0" Bv="5" Ibv="10e-6" Xti="3.0" Eg="1.11" Tnom="26.85" Area="1.0"
+      R:Rleak _netA _netC R="50e6" Temp="26.85"
     .Def:End
   </Model>
   <Symbol>
@@ -107,8 +107,8 @@
   </Description>
   <Model>
     .Def:LEDs_blue _netC _netA
-      Diode:D_blue _netC _netA Is="1e-10 A" N="6.68" Cj0="3 pF" M="0.5" Vj="0.7 V" Fc="0.5" Cp="0.0 fF" Isr="0.0" Nr="2.0" Rs="0.1 Ohm" Tt="4.0 us" Temp="26.85" Kf="0.0" Af="1.0" Ffe="1.0" Bv="5" Ibv="10 uA" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
-      R:Rleak _netA _netC R="50 MOhm" Temp="26.85"
+      Diode:D_blue _netC _netA Is="1e-10" N="6.68" Cj0="3e-12" M="0.5" Vj="0.7" Fc="0.5" Nr="2.0" Rs="0.1" Tt="4e-6" Temp="26.85" Kf="0.0" Af="1.0" Bv="5" Ibv="10e-6" Xti="3.0" Eg="1.11" Tnom="26.85" Area="1.0"
+      R:Rleak _netA _netC R="50e6" Temp="26.85"
     .Def:End
   </Model>
   <Symbol>
