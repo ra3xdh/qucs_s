@@ -185,6 +185,8 @@ private slots:
   void slotEDDtoIFS();
   void slotEDDtoMOD();
   void slotShowModel();
+  void slotSearchLibComponent(const QString &);
+  void slotSearchLibClear();
 
 signals:
   void signalKillEmAll();
@@ -195,6 +197,7 @@ public:
   QListWidget *CompComps;
   QTreeWidget *libTreeWidget;
   QTextEdit *CompDescr;
+  QLineEdit *LibCompSearch;
   SymbolWidget *Symbol;
   QPushButton *btnShowModel;
 

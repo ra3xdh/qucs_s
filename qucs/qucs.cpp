@@ -352,9 +352,20 @@ void QucsApp::initView()
 
   // ----------------------------------------------------------
   // "Libraries" Tab of the left QTabWidget
-
   QWidget *LibGroup = new QWidget ();
   QVBoxLayout *LibGroupLayout = new QVBoxLayout ();
+
+  LibCompSearch = new QLineEdit(this);
+  LibCompSearch->setPlaceholderText(tr("Search Lib Components"));
+  QPushButton *LibCompSearchClear = new QPushButton(tr("Clear"));
+  connect(LibCompSearch, SIGNAL(textEdited(const QString &)), SLOT(slotSearchLibComponent(const QString &)));
+  connect(LibCompSearchClear, SIGNAL(clicked()), SLOT(slotSearchLibClear()));
+
+  QHBoxLayout *LibCompSearchLayout = new QHBoxLayout;
+  LibCompSearchLayout->addWidget(LibCompSearch);
+  LibCompSearchLayout->addWidget(LibCompSearchClear);
+  LibGroupLayout->addLayout(LibCompSearchLayout);
+
   libTreeWidget = new QTreeWidget (this);
   libTreeWidget->setColumnCount (1);
   QStringList headers;
@@ -3130,6 +3141,57 @@ void QucsApp::slotShowModel()
                                            Symbol->SpiceString);
     dlg->exec();
     delete dlg;
+}
+
+void QucsApp::slotSearchLibComponent(const QString &comp)
+{
+    if (comp.isEmpty()) {
+        QTreeWidgetItemIterator top_itm(libTreeWidget);
+        while (*top_itm) {
+            (*top_itm)->setExpanded(false);
+            (*top_itm)->setHidden(false);
+            for (int i = 0; i < (*top_itm)->childCount(); i++ ) {
+                auto itm = (*top_itm)->child(i);
+                itm->setHidden(false);
+            }
+            top_itm++;
+        }
+        return;
+    }
+
+    QTreeWidgetItemIterator top_itm(libTreeWidget);
+    while (*top_itm) {
+        bool found = false;
+        int cnt = (*top_itm)->childCount();
+        if (cnt < 1) {
+            top_itm++;
+            continue;
+        }
+        for (int i = 0; i < cnt; i++ ) {
+            auto itm = (*top_itm)->child(i);
+            QString name =itm->text(0);
+            if (name.contains(comp,Qt::CaseInsensitive)) {
+                itm->setHidden(false);
+                found=true;
+            } else {
+                itm->setHidden(true);
+            }
+        }
+        if (found) {
+            (*top_itm)->setExpanded(true);
+            (*top_itm)->setHidden(false);
+        } else {
+            (*top_itm)->setExpanded(false);
+            (*top_itm)->setHidden(true);
+        }
+        top_itm++;
+    }
+}
+
+void QucsApp::slotSearchLibClear()
+{
+    LibCompSearch->clear();
+    slotSearchLibComponent("");
 }
 
 QVariant QucsFileSystemModel::data( const QModelIndex& index, int role ) const
