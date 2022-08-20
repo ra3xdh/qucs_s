@@ -355,17 +355,6 @@ void QucsApp::initView()
 
   QWidget *LibGroup = new QWidget ();
   QVBoxLayout *LibGroupLayout = new QVBoxLayout ();
-  QWidget *LibButts = new QWidget ();
-  QPushButton *LibManage = new QPushButton (tr ("Manage Libraries"));
-  connect(LibManage, SIGNAL(clicked()), SLOT(slotCallLibrary()));
-
-  QHBoxLayout *LibButtsLayout = new QHBoxLayout();
-  LibButtsLayout->addWidget (LibManage);
-  LibButts->setLayout(LibButtsLayout);
-
-  LibGroupLayout->addWidget(LibButts);
-
-
   libTreeWidget = new QTreeWidget (this);
   libTreeWidget->setColumnCount (1);
   QStringList headers;
