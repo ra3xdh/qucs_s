@@ -53,7 +53,8 @@ public:
   // component properties
   int Text_x, Text_y;
   QString Prefix, LibraryPath, ComponentName;
-  QString ModelString, VerilogModelString, VHDLModelString;
+  QString ModelString, VerilogModelString, VHDLModelString,
+          SpiceString;
 
 protected:
   void mouseMoveEvent(QMouseEvent*);

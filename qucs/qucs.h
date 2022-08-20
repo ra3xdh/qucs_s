@@ -184,6 +184,7 @@ private slots:
   void slotBuildXSPICEIfs(int mode = 0);
   void slotEDDtoIFS();
   void slotEDDtoMOD();
+  void slotShowModel();
 
 signals:
   void signalKillEmAll();
@@ -195,6 +196,7 @@ public:
   QTreeWidget *libTreeWidget;
   QTextEdit *CompDescr;
   SymbolWidget *Symbol;
+  QPushButton *btnShowModel;
 
   // menu appearing by right mouse button click on content listview
   QMenu *ContentMenu;

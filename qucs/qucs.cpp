@@ -69,6 +69,7 @@
 #include "dialogs/matchdialog.h"
 #include "dialogs/simmessage.h"
 #include "dialogs/exportdialog.h"
+#include "dialogs/displaydialog.h"
 //#include "dialogs/vtabwidget.h"
 //#include "dialogs/vtabbeddockwidget.h"
 #include "extsimkernels/externsimdialog.h"
@@ -374,8 +375,14 @@ void QucsApp::initView()
 
   LibGroupLayout->addWidget (libTreeWidget,6);
 
+  btnShowModel = new QPushButton(tr("Show model"));
+  connect(btnShowModel,SIGNAL(clicked(bool)),this,SLOT(slotShowModel()));
+  LibGroupLayout->addWidget(btnShowModel);
+
   CompDescr = new QTextEdit;
+  CompDescr->setReadOnly(true);
   LibGroupLayout->addWidget(CompDescr,2);
+
   Symbol = new SymbolWidget;
   Symbol->disableDragNDrop();
   LibGroupLayout->addWidget(Symbol);
@@ -2493,30 +2500,28 @@ void QucsApp::slotSelectLibComponent(QTreeWidgetItem *item)
             return;
         }
         CompDescr->append(content);
+        CompDescr->moveCursor(QTextCursor::Start);
 
-        if(!getSection("Model", list, content)) {
-            QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
-            return;
+        if(getSection("Model", list, content)) {
+            Symbol->ModelString = content;
         }
-        Symbol->ModelString = content;
 
-        if(!getSection("VHDLModel", list, content)) {
-            QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
-            return;
+        if(getSection("Spice", list, content)) {
+            Symbol->SpiceString = content;
         }
-        Symbol->VHDLModelString = content;
 
-        if(!getSection("VerilogModel", list, content)) {
-            QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
-            return;
+        if(getSection("VHDLModel", list, content)) {
+            Symbol->VHDLModelString = content;
         }
-        Symbol->VerilogModelString = content;
+
+        if(getSection("VerilogModel", list, content)) {
+            Symbol->VerilogModelString = content;
+        }
 
         if(!getSection("Symbol", list, content)) {
             QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
             return;
         }
-
         Symbol->setSymbol(content,lib,name);
 
         // activate the paste command
@@ -3128,6 +3133,14 @@ void QucsApp::slotEDDtoIFS()
 void QucsApp::slotEDDtoMOD()
 {
     slotBuildXSPICEIfs(spicecompat::cmgenEDDmod);
+}
+
+void QucsApp::slotShowModel()
+{
+    DisplayDialog *dlg = new DisplayDialog(this,Symbol->ModelString,
+                                           Symbol->SpiceString);
+    dlg->exec();
+    delete dlg;
 }
 
 QVariant QucsFileSystemModel::data( const QModelIndex& index, int role ) const

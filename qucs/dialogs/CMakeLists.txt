@@ -26,6 +26,7 @@ simmessage.h
 sweepdialog.h
 vasettingsdialog.h
 textboxdialog.h
+displaydialog.h
 )
 
 
@@ -38,6 +39,7 @@ searchdialog.cpp     librarydialog.cpp settingsdialog.cpp
 matchdialog.cpp			simmessage.cpp newprojdialog.cpp
 sweepdialog.cpp			exportdialog.cpp loaddialog.cpp
 aboutdialog.cpp
+displaydialog.cpp
 )
 
 SET(DIALOGS_MOC_HDRS
@@ -61,6 +63,7 @@ sweepdialog.h
 sweepdialog.h
 vasettingsdialog.h
 textboxdialog.h
+displaydialog.h
 )
 
 SET(DIALOGS_UIC_HDRS
