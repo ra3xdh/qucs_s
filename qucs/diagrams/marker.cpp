@@ -215,13 +215,21 @@ void Marker::createText()
   }
 
   Text += pGraph->Var + ": ";
-  switch(numMode) {
-    case nM_Rect: Text += misc::complexRect(*pz, *(pz+1), Precision);
-      break;
-    case nM_Deg: Text += misc::complexDeg(*pz, *(pz+1), Precision);
-      break;
-    case nM_Rad: Text += misc::complexRad(*pz, *(pz+1), Precision);
-      break;
+  const Axis *ax = &(diag()->yAxis);
+  if (pGraph->yAxisNo > 0) ax = &(diag()->zAxis);
+  int units = ax->Units;
+  if (units == Axis::NoUnits || !ax->log) {
+      switch(numMode) {
+      case nM_Rect: Text += misc::complexRect(*pz, *(pz+1), Precision);
+          break;
+      case nM_Deg: Text += misc::complexDeg(*pz, *(pz+1), Precision);
+          break;
+      case nM_Rad: Text += misc::complexRad(*pz, *(pz+1), Precision);
+          break;
+      }
+  } else {
+      double val = qucs::num2db(fabs(*pz),ax->Units);
+      Text += QString::number(val,'g',Precision);
   }
 
   assert(diag());

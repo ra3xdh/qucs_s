@@ -1949,24 +1949,7 @@ if(Axis->log) {
       Lines.prepend(new qucs::Line(0, z, x2, z, GridPen));  // y grid
 
     if((zD < 1.5*zDstep) || (z == 0)) {
-        double yVal = zD;
-        switch (Axis->Units) {
-        case Axis::NoUnits: yVal = zD;
-            break;
-        case Axis::dbUnits:
-            yVal = 20*log10(zD);
-            if (fabs(yVal) < 1e-3) yVal = 0;
-            break;
-        case Axis::dBuVUnits:
-            yVal = 20*log10(zD/1e-6);
-            if (fabs(yVal) < 1e-3) yVal = 0;
-            break;
-        case Axis::dBmUnits:
-            yVal = 10*log10(zD/1e-3);
-            if (fabs(yVal) < 1e-3) yVal = 0;
-            break;
-        default: yVal = zD;
-        }
+      double yVal = qucs::num2db(zD,Axis->Units);
       if (engineeringNotation) tmp = misc::num2str(yVal);
       else tmp = misc::StringNiceNum(yVal);
 

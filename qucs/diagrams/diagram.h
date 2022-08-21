@@ -58,6 +58,29 @@ struct Axis {
   double limit_min, limit_max, step;   // if not auto-scale
 };
 
+namespace qucs {
+double inline num2db(double zD, int unit) {
+    double yVal = zD;
+    switch (unit) {
+    case Axis::NoUnits: yVal = zD;
+        break;
+    case Axis::dbUnits:
+        yVal = 20*log10(zD);
+        if (fabs(yVal) < 1e-3) yVal = 0;
+        break;
+    case Axis::dBuVUnits:
+        yVal = 20*log10(zD/1e-6);
+        if (fabs(yVal) < 1e-3) yVal = 0;
+        break;
+    case Axis::dBmUnits:
+        yVal = 10*log10(zD/1e-3);
+        if (fabs(yVal) < 1e-3) yVal = 0;
+        break;
+    default: yVal = zD;
+    }
+    return yVal;
+}
+}
 
 class Diagram : public Element {
 public:
