@@ -84,6 +84,8 @@ private slots:
   void slotEditRotX(const QString&);
   void slotEditRotY(const QString&);
   void slotEditRotZ(const QString&);
+  void slotRecalcDbLimitsY();
+  void slotRecalcDbLimitsZ();
 
   void slotPlotVs(int);
 

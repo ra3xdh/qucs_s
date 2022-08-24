@@ -444,6 +444,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       LogUnitsY->setCurrentIndex(Diag->yAxis.Units);
       LogUnitsY->setEnabled(Diag->yAxis.log);
       connect(GridLogY,SIGNAL(toggled(bool)),LogUnitsY,SLOT(setEnabled(bool)));
+      connect(LogUnitsY,SIGNAL(currentIndexChanged(int)),this,SLOT(slotRecalcDbLimitsY()));
       gp->addWidget(LogUnitsY, Row, 1);
       Row++;
 
@@ -454,6 +455,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       LogUnitsZ->setCurrentIndex(Diag->zAxis.Units);
       LogUnitsZ->setEnabled(Diag->zAxis.log);
       connect(GridLogZ,SIGNAL(toggled(bool)),LogUnitsZ,SLOT(setEnabled(bool)));
+      connect(LogUnitsZ,SIGNAL(currentIndexChanged(int)),this,SLOT(slotRecalcDbLimitsZ()));
       gp->addWidget(LogUnitsZ, Row, 1);
       Row++;
 
@@ -706,13 +708,21 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     stepX->setText(QString::number(Diag->xAxis.step));
     stopX->setText(QString::number(Diag->xAxis.limit_max));
 
-    startY->setText(QString::number(Diag->yAxis.limit_min));
-    stepY->setText(QString::number(Diag->yAxis.step));
-    stopY->setText(QString::number(Diag->yAxis.limit_max));
+    double val_startY = qucs::num2db(Diag->yAxis.limit_min,Diag->yAxis.Units);
+    double val_stepY = qucs::num2db(Diag->yAxis.step,Diag->yAxis.Units);
+    double val_stopY = qucs::num2db(Diag->yAxis.limit_max,Diag->yAxis.Units);
 
-    startZ->setText(QString::number(Diag->zAxis.limit_min));
-    stepZ->setText(QString::number(Diag->zAxis.step));
-    stopZ->setText(QString::number(Diag->zAxis.limit_max));
+    double val_startZ = qucs::num2db(Diag->zAxis.limit_min,Diag->zAxis.Units);
+    double val_stepZ = qucs::num2db(Diag->zAxis.step,Diag->zAxis.Units);
+    double val_stopZ = qucs::num2db(Diag->zAxis.limit_max,Diag->zAxis.Units);
+
+    startY->setText(QString::number(val_startY));
+    stepY->setText(QString::number(val_stepY));
+    stopY->setText(QString::number(val_stopY));
+
+    startZ->setText(QString::number(val_startZ));
+    stepZ->setText(QString::number(val_stepZ));
+    stopZ->setText(QString::number(val_stopZ));
 
     if((Diag->Name == "Smith") || (Diag->Name == "ySmith") ||
        (Diag->Name == "Polar")) {
@@ -1276,15 +1286,15 @@ void DiagramDialog::slotApply()
       changed = true;
     }
     if(QString::number(Diag->yAxis.limit_min) != startY->text()) {
-      Diag->yAxis.limit_min = startY->text().toDouble();
+      Diag->yAxis.limit_min = qucs::db2num(startY->text().toDouble(),Diag->yAxis.Units);
       changed = true;
     }
     if(QString::number(Diag->yAxis.step) != stepY->text()) {
-      Diag->yAxis.step = stepY->text().toDouble();
+      Diag->yAxis.step = qucs::db2num(stepY->text().toDouble(),Diag->yAxis.Units);
       changed = true;
     }
     if(QString::number(Diag->yAxis.limit_max) != stopY->text()) {
-      Diag->yAxis.limit_max = stopY->text().toDouble();
+      Diag->yAxis.limit_max = qucs::db2num(stopY->text().toDouble(),Diag->yAxis.Units);
       changed = true;
     }
     if(Diag->zAxis.autoScale == manualZ->isChecked()) {
@@ -1292,15 +1302,15 @@ void DiagramDialog::slotApply()
       changed = true;
     }
     if(QString::number(Diag->zAxis.limit_min) != startZ->text()) {
-      Diag->zAxis.limit_min = startZ->text().toDouble();
+      Diag->zAxis.limit_min = qucs::db2num(startZ->text().toDouble(),Diag->zAxis.Units);
       changed = true;
     }
     if(QString::number(Diag->zAxis.step) != stepZ->text()) {
-      Diag->zAxis.step = stepZ->text().toDouble();
+      Diag->zAxis.step = qucs::db2num(stepZ->text().toDouble(),Diag->zAxis.Units);
       changed = true;
     }
     if(QString::number(Diag->zAxis.limit_max) != stopZ->text()) {
-      Diag->zAxis.limit_max = stopZ->text().toDouble();
+      Diag->zAxis.limit_max = qucs::db2num(stopZ->text().toDouble(),Diag->zAxis.Units);
       changed = true;
     }
 
@@ -1647,4 +1657,21 @@ void DiagramDialog::updateXVar()
         ChooseXVar->setCurrentIndex(0);
     }
     ChooseXVar->blockSignals(false);
+}
+
+void DiagramDialog::slotRecalcDbLimitsY()
+{
+    int Units = LogUnitsY->currentIndex();
+    startY->setText(QString::number(qucs::num2db(Diag->yAxis.limit_min, Units)));
+    stepY->setText(QString::number(qucs::num2db(Diag->yAxis.step, Units)));
+    stopY->setText(QString::number(qucs::num2db(Diag->yAxis.limit_max, Units)));
+}
+
+
+void DiagramDialog::slotRecalcDbLimitsZ()
+{
+    int Units = LogUnitsZ->currentIndex();
+    startZ->setText(QString::number(qucs::num2db(Diag->zAxis.limit_min, Units)));
+    stepZ->setText(QString::number(qucs::num2db(Diag->zAxis.step, Units)));
+    stopZ->setText(QString::number(qucs::num2db(Diag->zAxis.limit_max, Units)));
 }

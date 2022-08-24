@@ -1945,8 +1945,11 @@ if(Axis->log) {
 
   if(back) z = y2;
   while((z <= y2) && (z >= 0)) {    // create all grid lines
-    if(Axis->GridOn)  if(z < y2)  if(z > 0)
-      Lines.prepend(new qucs::Line(0, z, x2, z, GridPen));  // y grid
+    if(Axis->GridOn)  if(z < y2)  if(z > 0) {
+      if (Axis->Units == Axis::NoUnits) {
+        Lines.prepend(new qucs::Line(0, z, x2, z, GridPen));  // y grid
+      }
+    }
 
     if((zD < 1.5*zDstep) || (z == 0)) {
       double yVal = qucs::num2db(zD,Axis->Units);
@@ -1963,6 +1966,9 @@ if(Axis->log) {
         Texts.append(new Text(-w-7, z-6, tmp)); // text aligned right
 
       // y marks
+      if (Axis->Units != Axis::NoUnits) {
+          Lines.prepend(new qucs::Line(0, z, x2, z, GridPen));  // y grid
+      }
       Lines.append(new qucs::Line(x0-5, z, x0+5, z, QPen(Qt::black,0)));
     }
 

@@ -80,6 +80,26 @@ double inline num2db(double zD, int unit) {
     }
     return yVal;
 }
+
+double inline db2num(double zD, int unit) {
+    double yVal = zD;
+    switch (unit) {
+    case Axis::NoUnits: yVal = zD;
+        break;
+    case Axis::dbUnits:
+        yVal = pow(10.0,zD/20.0);
+        break;
+    case Axis::dBuVUnits:
+        yVal = 1e-6*pow(10.0,zD/20.0);
+        break;
+    case Axis::dBmUnits:
+        yVal = 1e-3*pow(10.0,zD/10.0);
+        break;
+    default: yVal = zD;
+    }
+    return yVal;
+}
+
 }
 
 class Diagram : public Element {
