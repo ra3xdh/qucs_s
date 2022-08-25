@@ -2,6 +2,8 @@ PROJECT(qucsattenuator CXX C)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 cmake_policy(VERSION 3.0)
 
+SET(QUCS_NAME "qucs-s")
+
 # use top VERSION file
 file (STRINGS ${PROJECT_SOURCE_DIR}/../VERSION QUCS_VERSION)
 message(STATUS "Configuring ${PROJECT_NAME} (GUI): VERSION ${QUCS_VERSION}")
@@ -72,14 +74,14 @@ IF(APPLE)
 
 ENDIF(APPLE)
 
-ADD_EXECUTABLE( qucsattenuator MACOSX_BUNDLE WIN32
+ADD_EXECUTABLE( ${QUCS_NAME}attenuator MACOSX_BUNDLE WIN32
   ${attenuator_sources}
   ${attenuator_moc_sources}
   ${RESOURCES_SRCS} )
 
-TARGET_LINK_LIBRARIES( qucsattenuator ${QT_LIBRARIES} )
+TARGET_LINK_LIBRARIES( ${QUCS_NAME}attenuator ${QT_LIBRARIES} )
 
-#INSTALL (TARGETS qucsattenuator DESTINATION bin)
+#INSTALL (TARGETS ${QUCS_NAME}attenuator DESTINATION bin)
 #
 # Prepare the installation
 #
@@ -100,15 +102,10 @@ ENDIF(WIN32)
 # Install the Qucs application, on Apple, the bundle is
 # installed as on other platforms it'll go into the bin directory.
 #
-INSTALL(TARGETS ${PROJECT_NAME}
+INSTALL(TARGETS ${QUCS_NAME}attenuator
     BUNDLE DESTINATION bin COMPONENT Runtime
     RUNTIME DESTINATION bin COMPONENT Runtime
     )
-
-# man pages
-IF(NOT WITH_SPICE)
-INSTALL( FILES qucsattenuator.1 DESTINATION share/man/man1 )
-ENDIF()
 
 
 #

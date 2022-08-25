@@ -49,7 +49,7 @@ QucsAttenuator::QucsAttenuator()
 
   QAction *fileQuit = new QAction(tr("&Quit"), this);
   fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
-  connect(fileQuit, SIGNAL(activated()), SLOT(slotQuit()));
+  connect(fileQuit, SIGNAL(triggered(bool)), SLOT(slotQuit()));
 
   fileMenu->addAction(fileQuit);
 
@@ -58,11 +58,11 @@ QucsAttenuator::QucsAttenuator()
   QAction *helpHelp = new QAction(tr("&Help"), this);
   helpHelp->setShortcut(Qt::Key_F1);
   helpMenu->addAction(helpHelp);
-  connect(helpHelp, SIGNAL(activated()), SLOT(slotHelpIntro()));
+  connect(helpHelp, SIGNAL(triggered(bool)), SLOT(slotHelpIntro()));
 
   QAction *helpAbout = new QAction(tr("&About"), this);
   helpMenu->addAction(helpAbout);
-  connect(helpAbout, SIGNAL(activated()), SLOT(slotHelpAbout()));
+  connect(helpAbout, SIGNAL(triggered(bool)), SLOT(slotHelpAbout()));
 
 
   helpMenu->addSeparator();

@@ -836,7 +836,7 @@ void QucsApp::slotCallMatch()
 // Is called to start the attenuator calculation program.
 void QucsApp::slotCallAtt()
 {
-  launchTool("qucsattenuator", "attenuator calculation",QStringList(),true);
+  launchTool(QUCS_NAME "attenuator", "attenuator calculation",QStringList(),true);
 }
 
 // ------------------------------------------------------------------------

@@ -33,6 +33,7 @@ ENDIF()
 
 ADD_SUBDIRECTORY( qucs )
 ADD_SUBDIRECTORY( qucs-activefilter )
+ADD_SUBDIRECTORY( qucs-attenuator )
 #ADD_SUBDIRECTORY( qucs-doc )
 ADD_SUBDIRECTORY( qucs-filter )
 ADD_SUBDIRECTORY( qucs-lib )
