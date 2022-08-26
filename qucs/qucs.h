@@ -336,7 +336,7 @@ public:
           *distrHor, *distrVert, *selectAll, *callLib, *callMatch, *changeProps,
           *addToProj, *editFind, *insEntity, *selectMarker,
           *createLib, *importData, *graph2csv, *createPkg, *extractPkg,
-          *callAtt, *callRes, *centerHor, *centerVert, *loadModule, *buildModule;
+          *callAtt, *centerHor, *centerVert, *loadModule, *buildModule;
 
   QAction *helpQucsIndex;
   QAction *simSettings;
@@ -385,7 +385,6 @@ public slots:
   void slotCallLibrary();
   void slotCallMatch();
   void slotCallAtt();
-  void slotCallRes();
   void slotHelpIndex();       // shows a HTML docu: Help Index
   void slotHelpQucsIndex();
   void slotGettingStarted();  // shows a HTML docu: Getting started

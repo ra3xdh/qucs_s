@@ -839,13 +839,6 @@ void QucsApp::slotCallAtt()
   launchTool(QUCS_NAME "attenuator", "attenuator calculation",QStringList(),true);
 }
 
-// ------------------------------------------------------------------------
-// Is called to start the resistor color code calculation program.
-void QucsApp::slotCallRes()
-{
-  launchTool("qucsrescodes", "resistor color code calculation",QStringList(),true);
-}
-
 /*!
  * \brief launch an external application passing arguments
  *

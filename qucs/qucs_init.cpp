@@ -561,13 +561,6 @@ void QucsApp::initActions()
 	tr("Attenuator synthesis\n\nStarts attenuator calculation program"));
   connect(callAtt, SIGNAL(triggered()), SLOT(slotCallAtt()));
 
-  callRes = new QAction(tr("Resistor color codes"), this);
-  callRes->setShortcut(Qt::CTRL+Qt::Key_8);
-  callRes->setStatusTip(tr("Starts Qucs resistor color codes"));
-  callRes->setWhatsThis(
-  tr("Resistor color codes\n\nStarts standard resistor color code computation program"));
-  connect(callRes, SIGNAL(triggered()), SLOT(slotCallRes()));
-
   simulate = new QAction(QIcon((":/bitmaps/gear.png")), tr("Simulate"), this);
   simulate->setShortcut(Qt::Key_F2);
   simulate->setStatusTip(tr("Simulates the current schematic"));
@@ -790,7 +783,6 @@ void QucsApp::initMenuBar()
   if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
       toolMenu->addAction(callMatch);
   toolMenu->addAction(callAtt);
-  toolMenu->addAction(callRes);
   toolMenu->addSeparator();
 
   cmMenu = new QMenu(tr("Compact modelling"));
