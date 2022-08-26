@@ -322,7 +322,7 @@ void QucsApp::slotEditPaste(bool on)
     editPaste->setChecked(false);  // release toolbar button
     editPaste->blockSignals(false);
     return;
-  } 
+  }
   else {
     // if it's not a text doc, prevent the user from editing
     // while we perform the paste operation
@@ -814,7 +814,7 @@ void QucsApp::slotCallActiveFilter()
 // Is called to start the transmission line calculation program.
 void QucsApp::slotCallLine()
 {
-  launchTool("qucstrans", "line calculation",QStringList(),true);
+  launchTool(QUCS_NAME "trans", "line calculation",QStringList(),true);
 }
 
 // ------------------------------------------------------------------------
@@ -865,7 +865,7 @@ void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QSt
   tool->setWorkingDirectory(tooldir);
   qDebug() << "Command :" << cmd;
   tool->start(cmd,args);
-  
+
   if(!tool->waitForStarted(1000) ) {
     QMessageBox::critical(this, tr("Error"),
                           tr("Cannot start %1 program! \n\n(%2)").arg(progDesc, cmd));

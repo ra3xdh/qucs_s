@@ -1,0 +1,19 @@
+# QucsTranscalc 0.0.8  ustrip_jansen.trc
+#   Generated on Thu Dec 1 2005 at 19:56:38.
+#   It is not suggested to edit the file, use QucsTranscalc instead.
+
+<Microstrip>
+  Er 9.9 NA
+  Mur 1 NA
+  H 0.64 mm
+  H_t 1e+20 mil
+  T 5 um
+  Cond 4.1e+07 NA
+  Tand 0.0005 NA
+  Rough 0.25 um
+  Freq 3 GHz
+  W 0.6 mm
+  L 1 m
+  Z0 50.4142 Ohm
+  Ang_l 9267.81 Deg
+</Microstrip>

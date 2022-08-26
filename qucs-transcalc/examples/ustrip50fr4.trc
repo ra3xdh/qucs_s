@@ -1,0 +1,19 @@
+# QucsTranscalc 0.0.8  ustrip50fr4.trc
+#   Generated on Thu Dec 1 2005 at 19:53:13.
+#   It is not suggested to edit the file, use QucsTranscalc instead.
+
+<Microstrip>
+  Er 4.3 NA
+  Mur 1 NA
+  H 210 um
+  H_t 1e+20 mil
+  T 30 um
+  Cond 4.1e+07 NA
+  Tand 0.025 NA
+  Rough 0 mil
+  Freq 1 GHz
+  W 380 um
+  L 1 mm
+  Z0 50.7326 Ohm
+  Ang_l 2.10486 Deg
+</Microstrip>

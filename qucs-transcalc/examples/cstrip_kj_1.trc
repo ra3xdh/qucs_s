@@ -1,0 +1,21 @@
+# QucsTranscalc 0.0.8  cstrip_kj_1.trc
+#   Generated on Thu Dec 1 2005 at 20:28:35.
+#   It is not suggested to edit the file, use QucsTranscalc instead.
+
+<CoupledMicrostrip>
+  Er 2.35 NA
+  Mur 1 NA
+  H 0.79 mm
+  H_t 1e+20 mil
+  T 0 mil
+  Cond 4.1e+07 NA
+  Tand 0 NA
+  Rough 0 mil
+  Freq 30 GHz
+  W 1.7775 mm
+  S 0.079 mm
+  L 1 m
+  Z0e 79.2774 Ohm
+  Z0o 37.9688 Ohm
+  Ang_l 50847.5 Deg
+</CoupledMicrostrip>

@@ -1,0 +1,91 @@
+2011-04-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* rectwaveguide.cpp (analyze): Fixed calculation of Z0 in
+	rectangular waveguide.
+
+2011-03-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* coax.cpp (alphac_coax): Fixed factor of 2 in conductor loss
+	calculation.
+
+2009-05-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* coax.cpp (show_results): Fixed computation of cut-off
+	frequencies.
+
+2008-06-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucstrans.cpp (slotCopyToClipBoard): Added clipboard copy for
+	rectangular waveguide schematic.
+
+2008-03-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucstrans.cpp (slotCopyToClipBoard): Added clipboard copy for
+	new coplanar line types.
+
+2008-02-09  Michael Margraf   <michael.margraf@alumni.tu-berlin.de>
+
+	* added new lines: coplanar with and without backside metal
+
+2006-10-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* coax.cpp (synthesize): Fixed synthesis equations for coax
+	cable.
+
+2006-08-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* units.h (ZF0): Added definition for wave resistance in vacuum.
+
+	* coax.cpp (alphac_coax): Using 20/log(10) instead of 8.686.
+
+	* rectwaveguide.cpp, microstrip.cpp, coax.cpp, c_microstrip.cpp:
+	Using ZF0 instead of 120*PI wherever possible and necessary.
+
+2006-01-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucstrans.cpp (slotCopyToClipBoard): Added supportexport function
+	for coaxial line into clipboard.
+
+2005-06-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* c_microstrip.cpp (show_results): Added computation of
+	electrical and physical length.
+
+2005-04-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucstrans.cpp (slotCopyToClipBoard): Added schematic creation
+	for coupled microstrip.
+
+2005-04-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucstrans.cpp (slotCopyToClipBoard): Started to implement the
+	clipboard functionality used to created a schematic part for
+	Qucs. Added a regex validator for the editable values.
+
+2005-04-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* optionsdialog.h: Added configuration option dialog.
+
+	* helpdialog.h: Implemented help dialog.
+
+	* qucstrans.cpp: Applied reasonable default values for line
+	properties. Implemented status bar. Improved radio button
+	behaviour.  Implemented config file operations as well as loading
+	and saving of transmission line files.
+
+	* microstrip.cpp (synthesize): Computing length of microstrip
+	line based on electrical angle during synthesis.
+
+	* main.cpp: Saving and storing current property values in resource
+	file on application startup and exit.
+
+	* c_microstrip.cpp (er_eff_freq): Fixed P_9 formula.  Use '0.7913'
+	instead of '0.7193'.
+	(Z0_dispersion): Fixed Q_19 formula.  Use '4.9' instead of '4.19'.
+
+2005-03-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucstrans.cpp: Initial attempt to create a 'transcalc' like
+	GUI for Qt.  Thus the program can be ported for use with Qucs.
+
+
