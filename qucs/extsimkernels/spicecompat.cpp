@@ -283,8 +283,12 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
             if (name != refname) continue;
             lst2.removeFirst();
             lst2.removeFirst();
-            foreach (QString s1, lst2) {
-                if (!s1.contains('=')) pin_names.append(s1);
+            for (const auto &s1: lst2) {
+                QString pp = s1;
+                if (!s1.contains('=') &&
+                   (pp.toLower() != "params:")) {
+                    pin_names.append(s1);
+                }
             }
             r = pin_names.count();
             break;
