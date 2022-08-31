@@ -89,7 +89,7 @@ SET(RESOURCES qucstrans_.qrc)
 
 QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
 
-ADD_LIBRARY(transcalc ${LIB_SRC} )
+ADD_LIBRARY(transcalc STATIC ${LIB_SRC} )
 
 IF(APPLE)
   # set information on Info.plist file
