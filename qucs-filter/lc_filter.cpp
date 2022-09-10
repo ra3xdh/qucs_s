@@ -17,6 +17,8 @@
 
 #include "lc_filter.h"
 
+#include "qucsfilter.h"
+
 #include <QString>
 
 
@@ -162,7 +164,22 @@ QString* LC_Filter::createSchematic(tFilter *Filter, bool piType)
   else
     Value2 = 10.0 * Filter->Frequency;
   *s += QString("<.SP SP1 1 70 %1 0 67 0 0 \"log\" 1 \"%2Hz\" 1 \"%3Hz\" 1 \"201\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg(yc).arg(num2str(Value)).arg(num2str(Value2));
-  *s += QString("<Eqn Eqn1 1 290 %1 -28 15 0 0 \"dBS21=dB(S[2,1])\" 1 \"dBS11=dB(S[1,1])\" 1 \"yes\" 0>\n").arg(yc+10);
+
+  QString eqn_string;
+  switch (QucsSettings.DefaultSimulator) {
+  case spicecompat::simQucsator:
+      eqn_string = QString("<Eqn Eqn1 1 290 %1 -28 15 0 0 \"dBS21=dB(S[2,1])\" 1 \"dBS11=dB(S[1,1])\" 1 \"yes\" 0>\n").arg(yc+10);
+      break;
+  case spicecompat::simNgspice :
+      eqn_string = QString("<NutmegEq NutmegEq1 1 290 %1 -28 15 0 0 \"sp\" 1 \"dBS21=dB(S_2_1)\" 1 \"dBS11=dB(S_1_1)\" 1>\n").arg(yc+10);
+      break;
+  case spicecompat::simSpiceOpus:
+  case spicecompat::simXycePar:
+  case spicecompat::simXyceSer:
+  default: break;
+  }
+
+  *s += eqn_string;
   *s += "</Components>\n";
 
   *s += "<Wires>\n";
