@@ -1,0 +1,18 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/DC_SW_diff1_prj/diff1.sch
+
+BJT:Q2N3904_1 in1 out1 _net0 out1 Type="npn" Is="6.734f" Nf="1" Nr="1" Ikf="66.78m" Ikr="0" Vaf="74.03" Var="0" Ise="6.734f" Ne="1.259" Isc="0" Nc="2" Bf="416.4" Br="0.7371" Rbm="0" Irb="0" Rc="1" Re="0" Rb="10" Cje="4.493p" Vje="0.75" Mje="0.2593" Cjc="3.638p" Vjc="0.75" Mjc="0.3085" Xcjc="1.0" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Tf="301.2p" Xtf="2" Vtf="4" Itf="0.4" Tr="239.5n" Temp="26.85" Kf="0.0" Af="1.0" Ffe="1.0" Kb="0.0" Ab="1.0" Fb="1.0" Ptf="0.0" Xtb="0.0" Xti="3.0" Eg="1.11" Tnom="26.85" Area="1.0"
+BJT:Q2N3904_2 in2 out2 _net1 out2 Type="npn" Is="6.734f" Nf="1" Nr="1" Ikf="66.78m" Ikr="0" Vaf="74.03" Var="0" Ise="6.734f" Ne="1.259" Isc="0" Nc="2" Bf="416.4" Br="0.7371" Rbm="0" Irb="0" Rc="1" Re="0" Rb="10" Cje="4.493p" Vje="0.75" Mje="0.2593" Cjc="3.638p" Vjc="0.75" Mjc="0.3085" Xcjc="1.0" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Tf="301.2p" Xtf="2" Vtf="4" Itf="0.4" Tr="239.5n" Temp="26.85" Kf="0.0" Af="1.0" Ffe="1.0" Kb="0.0" Ab="1.0" Fb="1.0" Ptf="0.0" Xtb="0.0" Xti="3.0" Eg="1.11" Tnom="26.85" Area="1.0"
+R:RC1 out1 _net2 R="2k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:RC2 out2 _net2 R="2k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vdc:VCC _net2 gnd U="+12"
+R:RE1 _net3 _net0 R="Re" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:RE2 _net3 _net1 R="Re" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vdc:VIN in1 gnd U="Vin"
+Vdc:VIN1 gnd in2 U="Vin"
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 pV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+Eqn:Eqn1 Out="out1.V-out2.V" Export="yes"
+.SW:SW1 Sim="SW2" Type="list" Param="Re" Values="[0;10;30;80]"
+.SW:SW2 Sim="DC1" Type="lin" Param="Vin" Start="-100m" Stop="+100m" Points="101"
+Idc:IEE _net3 _net4 I="0"
+R:REE _net4 _net3 R="1.5k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vdc:VEE _net4 gnd U="-12"

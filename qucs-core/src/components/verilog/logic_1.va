@@ -1,0 +1,25 @@
+//   Qucs analogue logic one model.
+//   The structure and theoretical background to the logic-1
+//   Verilog-a model are presented in the Qucs mixed mode 
+//   simulation tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, November 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module logic_1 (L1); 
+ inout L1;
+ electrical L1;
+ `define attr(txt) (*txt*)
+ parameter real LEVEL=1 from [-inf:inf] `attr(info= "logic 1 voltage level" unit="V");
+//
+analog begin
+I(L1) <+ -LEVEL;
+I(L1) <+ V(L1);
+end
+endmodule

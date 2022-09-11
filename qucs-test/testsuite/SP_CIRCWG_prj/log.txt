@@ -1,0 +1,37 @@
+project location: 
+modules to load: 0
+factorycreate.size() is 0
+factorycreate has registered:
+parsing netlist...
+checking netlist...
+checker notice, value of `a' (variable `Radius') could be out of range `]0,0.' in `CIRCLINE:Line1'
+checker notice, value of `er' (variable `Er') could be out of range `[1,100]' in `CIRCLINE:Line1'
+checker notice, value of `rho' (variable `RsCopper') could be out of range `[0,0.' in `CIRCLINE:Line1'
+checker notice, variable `S' in equation `S21_dB' not yet defined
+checker notice, variable `S' in equation `S11_dB' not yet defined
+checker notice, variable `S' in equation `A' not yet defined
+checker notice, variable `S' in equation `S11m' not yet defined
+checker notice, variable `S' in equation `S21m' not yet defined
+checker notice, variable `S' in equation `S11a' not yet defined
+checker notice, variable `S' in equation `S21a' not yet defined
+subcircuit root
+  Pac:P1 _net0 gnd Num="1" Z="50Ohm" P="0.001" f="1e+09Hz" Temp="26.85"
+  Pac:P2 _net1 gnd Num="2" Z="50Ohm" P="0.001" f="1e+09Hz" Temp="26.85"
+  CIRCLINE:Line1 _net0 _net1 a="Radius" L="Length" er="Er" mur="1" tand="0" rho="RsCopper" Temp="26.85" Material="unspecified"
+  SP:SPTC1 Type="lin" Start="9e+09Hz" Stop="1.3e+10Hz" Points="1701" Noise="no" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+netlist content
+      1 CIRCLINE instances
+      2 Pac instances
+      1 SP instances
+creating netlist...
+checker notice, variable `S' in equation `S21_dB' not yet defined
+checker notice, variable `S' in equation `S11_dB' not yet defined
+checker notice, variable `S' in equation `A' not yet defined
+checker notice, variable `S' in equation `S11m' not yet defined
+checker notice, variable `S' in equation `S21m' not yet defined
+checker notice, variable `S' in equation `S11a' not yet defined
+checker notice, variable `S' in equation `S21a' not yet defined
+NOTIFY: SPTC1: preparing circuit for analysis
+NOTIFY: SPTC1: inserted 0 tees, 0 crosses, 0 opens and 2 grounds
+NOTIFY: SPTC1: creating sorted nodelist for SP analysis
+NOTIFY: SPTC1: solving SP netlist

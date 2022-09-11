@@ -1,0 +1,11 @@
+parsing netlist...
+checking netlist...
+netlist content
+      1 C instances
+      1 DC instances
+      1 L instances
+      4 R instances
+      1 OpAmp instances
+      2 Pac instances
+      1 SP instances
+creating netlist...

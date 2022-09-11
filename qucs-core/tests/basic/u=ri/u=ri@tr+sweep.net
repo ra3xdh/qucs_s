@@ -1,0 +1,13 @@
+# Qucs 0.0.15  /tmp/tr.sch
+
+Vac:V1 _net0 gnd U="1 V" f="1 Hz" Phase="0" Theta="0"
+R:R1 _net0 _net1 R="Rsweep" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+VProbe:Pr1 _net0 gnd
+R:R2 _net2 _net3 R="1 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+IProbe:current _net3 _net4
+Eqn:Eqn1 crashif="assert(abs(current.It-sin(2*pi*time))<1e-6)" Export="yes"
+R:R4 _net1 _net2 R="1e12" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+CCVS:SRC1 _net1 _net2 _net4 gnd G="Rsweep" T="0"
+R:R3 gnd _net4 R="1e12" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.TR:TR1 Type="lin" Start="0" Stop="10 s" Points="1000" IntegrationMethod="Trapezoidal" Order="2" InitialStep="1 ns" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1 pA" vntol="1 uV" Temp="26.85" LTEreltol="1e-3" LTEabstol="1e-6" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"
+.SW:SW1 Sim="TR1" Type="lin" Param="Rsweep" Start="1 Ohm" Stop="1000 Ohm" Points="10"

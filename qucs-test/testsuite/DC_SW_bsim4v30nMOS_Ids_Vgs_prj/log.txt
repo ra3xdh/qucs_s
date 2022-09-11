@@ -1,0 +1,9 @@
+parsing netlist...
+checking netlist...
+netlist content
+      1 IProbe instances
+      1 DC instances
+      1 bsim4v30nMOS instances
+      2 SW instances
+      2 Vdc instances
+creating netlist...

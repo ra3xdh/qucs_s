@@ -1,0 +1,7 @@
+# Qucs 0.0.15  /home/bastien/Documents/Personnel/soft/debian/science/qucs/git/qucs-core/tests/basic/u=ri@ac.sch
+
+IProbe:current _net0 gnd
+R:R1 _net1 _net0 R="1 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 crashif="assert(abs(current.i-1) < 1e-6)" Export="yes"
+.AC:AC1 Type="log" Start="1 Hz" Stop="1 GHz" Points="91" Noise="yes"
+Vac:V1 _net1 gnd U="1 V" f="1 GHz" Phase="0" Theta="0"

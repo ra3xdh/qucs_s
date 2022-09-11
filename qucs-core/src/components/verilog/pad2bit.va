@@ -1,0 +1,37 @@
+//   Qucs analogue pad2bit model
+//   The structure and theoretical background to the pad2bit
+//   Verilog-a model are presented in the Qucs digital tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, December 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module pad2bit (B, A); 
+ inout B, A;
+ electrical B, A;
+//
+ `define attr(txt) (*txt*)
+ parameter integer Number = 0 from [0 : 15] `attr(info="pad output value");
+//
+ real IA, IB;
+//
+analog begin
+case (Number)
+ 0  : begin IA = 0; IB = 0; end
+ 1  : begin IA = 1; IB = 0; end
+ 2  : begin IA = 0; IB = 1; end
+ 3  : begin IA = 1; IB = 1; end 
+endcase
+I(A)  <+ -IA;
+I(A) <+ V(A);
+//
+I(B)  <+ -IB;
+I(B) <+ V(B);
+//
+end
+endmodule

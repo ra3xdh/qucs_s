@@ -1,0 +1,16 @@
+
+add_subdirectory(activefilter)
+add_subdirectory(curtice)
+add_subdirectory(EKV26)
+add_subdirectory(log_amp)
+add_subdirectory(mesfet)
+add_subdirectory(mod_amp)
+add_subdirectory(photodiode)
+add_subdirectory(potentiometer)
+add_subdirectory(StoQ_test1)
+add_subdirectory(StoQ_test2)
+add_subdirectory(StoQ_test3)
+add_subdirectory(StoQ_test4)
+add_subdirectory(StoQ_test5)
+add_subdirectory(verilog)
+

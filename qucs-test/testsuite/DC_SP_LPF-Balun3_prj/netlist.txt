@@ -1,0 +1,19 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/DC_SP_LPF-Balun3_prj/LPF-Balun3.sch
+
+Pac:P1 _net0 gnd Num="1" Z="100 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+L:L1 _net1 _net2 L="1.2uH" I=""
+L:L2 _net2 _net3 L="470nH" I=""
+C:C1 _net4 _net1 C="270pF" V=""
+C:C2 _net5 _net2 C="270pF" V=""
+L:L3 _net6 _net1 L="470nH" I=""
+.SP:SP1 Type="log" Start="1MHz" Stop="100MHz" Points="1001" Noise="no" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+Eqn:Eqn1 dBS21="dB(S[2,1])" dBS11="dB(S[1,1])" Export="yes"
+Pac:P2 _net7 gnd Num="2" Z="100 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+L:L4 _net8 _net4 L="470nH" I=""
+L:L5 _net4 _net5 L="1.2uH" I=""
+L:L6 _net5 _net9 L="470nH" I=""
+sTr:Tr5 _net6 _net0 gnd _net8 _net10 _net10 T1="0.5" T2="0.5"
+sTr:Tr6 _net3 _net7 gnd _net9 _net11 _net11 T1="0.5" T2="0.5"
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+Vdc:V1 _net10 gnd U="1V"
+VProbe:Pr1 _net11 gnd

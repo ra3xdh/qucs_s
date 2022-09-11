@@ -62,5 +62,5 @@
 </Diagrams>
 <Paintings>
   <Text 210 80 12 #ff0000 0 "To optimize, DISABLE equation block 2 and ENABLE Optimization block">
-  <Text 170 480 12 #ff0000 0 "1000 MHz microstrip lowpass filter employing radial stubs that reduce physical lengths\n(to increase frequency of the next highers purious passband).  Circuit is symmetrical so\nvariables for only one-half the filter are shown and remaining variables are hidden.">
+  <Text 170 480 12 #ff0000 0 "1000 MHz microstrip lowpass filter employing radial stubs that reduce physical lengths\n(to increase frequency of the next higher spurious passband).  Circuit is symmetrical so\nvariables for only one-half the filter are shown and remaining variables are hidden.">
 </Paintings>

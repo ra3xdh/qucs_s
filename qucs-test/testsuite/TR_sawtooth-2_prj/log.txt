@@ -1,0 +1,12 @@
+parsing netlist...
+checking netlist...
+netlist content
+      1 C instances
+      7 R instances
+      3 OpAmp instances
+      2 Vdc instances
+      2 NodeSet instances
+      1 TR instances
+creating netlist...
+NOTIFY: TR1: average time-step 6.86452e-09, 258 rejections
+NOTIFY: TR1: average NR-iterations 4.85802, 74 non-convergences

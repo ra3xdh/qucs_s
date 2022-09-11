@@ -1,0 +1,32 @@
+Output:
+-------
+
+Starting new simulation on Fri 20. Jul 2018 at 09:58:08:393
+
+creating netlist... done.
+Starting C:/dev/qucs-win64-pr814/qucs-win64/bin/qucsator.exe
+
+project location: 
+modules to load: 0
+factorycreate.size() is 0
+factorycreate has registered:
+parsing netlist...
+checking netlist...
+netlist content
+      1 AC instances
+      1 C instances
+      1 L instances
+      3 R instances
+      1 WProbe instances
+      1 Vac instances
+creating netlist...
+
+Simulation ended on Fri 20. Jul 2018 at 09:58:08:566
+Ready.
+
+
+
+Errors and Warnings:
+--------------------
+
+

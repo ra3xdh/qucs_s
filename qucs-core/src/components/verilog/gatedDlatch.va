@@ -1,0 +1,44 @@
+//   Qucs analogue gated D latch model.
+//   The structure and theoretical background to the gated D
+//   latch Verilog-a model are presented in the Qucs mixed mode 
+//   simulation tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, January 2009.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module gatedDlatch (D, C, QB, QO); 
+ inout D, C, QB, QO ;
+ electrical D, C, QB, QO;
+ electrical QA;
+//
+ `define attr(txt) (*txt*)
+ parameter real TR_H=6 from [1.0:20.0] `attr(info="cross coupled gate transfer function high scaling factor");
+ parameter real TR_L=5  from [1.0:20.0] `attr(info="cross coupled gate transfer function low scaling factor");
+ parameter real Delay = 1e-9 from [0: inf] `attr(info="cross coupled gate delay" unit="s");
+//
+real Rd, Ccc, In1, In2a, In2;
+//
+analog begin
+@(initial_model)
+  begin
+    Rd = 1e3;
+    Ccc= Delay*1.43/Rd;
+  end
+//
+In1  = (1-V(D)*V(C));
+In2a = 1-V(D);
+In2  = (1-V(C)*In2a);
+I(QO)   <+ -0.5*(1-tanh(TR_H*(In1*V(QB)-0.5)));
+I(QO)   <+ V(QO);
+I(QB)  <+ -0.5*(1-tanh(TR_L*(In2*V(QA)-0.5)));
+I(QB)  <+ V(QB);
+I(QO, QA) <+ V(QO, QA)/Rd;
+I(QA)    <+ ddt(Ccc*V(QA));
+end
+endmodule

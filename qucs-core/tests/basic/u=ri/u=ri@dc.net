@@ -1,0 +1,7 @@
+# Qucs 0.0.15  /tmp/ueqri.sch
+
+IProbe:current _net1 gnd
+R:R1 _net0 _net1 R="1 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vdc:V1 _net0 gnd U="1 V"
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+Eqn:Eqn1 crashif="assert(abs(current.I-1) < 1e-6)" Export="yes"

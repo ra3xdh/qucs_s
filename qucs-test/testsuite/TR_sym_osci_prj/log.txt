@@ -1,0 +1,18 @@
+project location: 
+modules to load: 0
+factorycreate.size() is 0
+factorycreate has registered:
+parsing netlist...
+checking netlist...
+netlist content
+      4 MOSFET instances
+      1 Idc instances
+      1 C instances
+      1 L instances
+      2 R instances
+      1 Tr instances
+      1 Vdc instances
+      1 TR instances
+creating netlist...
+NOTIFY: TR1: average time-step 1.02041e-09, 485 rejections
+NOTIFY: TR1: average NR-iterations 3.31701, 0 non-convergences

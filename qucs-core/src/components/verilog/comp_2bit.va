@@ -1,0 +1,59 @@
+//   Qucs analogue comp_2bit model
+//   The structure and theoretical background to the comp_2bit
+//   Verilog-a model are presented in the Qucs mixed-mode tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, December 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module comp_2bit (X0, X1, Y0, Y1, L, G, E); 
+ inout X0, X1, Y0, Y1, L, G, E;
+ electrical X0, X1, Y0, Y1, L, G, E;
+ electrical Ln1, Ln2, Gn1, Gn2, En1, En2;
+//
+ `define attr(txt) (*txt*)
+ parameter real TR=6 from [1.0:20.0] `attr(info="transfer function high scaling factor");
+ parameter real Delay = 1e-9 from [0: inf] `attr(info="output delay" unit="s");
+//
+ real Rd, Cd, xor0b, xor1b, mL, mG, mE;
+//
+analog begin
+@(initial_model)
+  begin
+    Rd = 1e3;
+    Cd= Delay*1.43/Rd;
+  end
+xor0b = 1-(V(X0)*(1-V(Y0))+(1-V(X0))*V(Y0));
+xor1b = 1-(V(X1)*(1-V(Y1))+(1-V(X1))*V(Y1));
+mE = xor0b*xor1b;
+mG = V(X1)*(1-V(Y1))+ xor1b*V(X0)*(1-V(Y0));
+mL = (1 - V(X1))*V(Y1)+xor1b*(1-V(X0))*V(Y0);
+//
+I(En1) <+ -0.5*(1+tanh(TR*(mE-0.5)));
+I(En1) <+ V(En1);
+I(En1, En2) <+ V(En1,En2)/Rd;
+I(En2) <+ ddt(Cd*V(En2));
+I(E)  <+ -V(En2);
+I(E) <+ V(E);
+//
+I(Gn1) <+ -0.5*(1+tanh(TR*(mG-0.5)));
+I(Gn1) <+ V(Gn1);
+I(Gn1, Gn2) <+ V(Gn1,Gn2)/Rd;
+I(Gn2) <+ ddt(Cd*V(Gn2));
+I(G)  <+ -V(Gn2);
+I(G) <+ V(G);
+//
+I(Ln1) <+ -0.5*(1+tanh(TR*(mL-0.5)));
+I(Ln1) <+ V(Ln1);
+I(Ln1, Ln2) <+ V(Ln1,Ln2)/Rd;
+I(Ln2) <+ ddt(Cd*V(Ln2));
+I(L)  <+ -V(Ln2);
+I(L) <+ V(L);
+//
+end
+endmodule

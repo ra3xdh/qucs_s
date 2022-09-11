@@ -1016,8 +1016,9 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
 
     case isDiagramHScroll:  // scroll in tabular ?
       MAy1 = MAx1;
+      [[fallthrough]];
 
-    case isDiagramVScroll:
+    case isDiagramVScroll: // no warning on fallthrough
       focusElement->Type = isDiagram;
 
       No = ((TabDiagram*)focusElement)->scroll(MAy1);

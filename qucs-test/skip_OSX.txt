@@ -1,0 +1,10 @@
+# projects currenlty failing on OSX
+TR_555_Fig9_prj,        NUM_FAIL
+TR_colpitts_base_prj,   NUM_FAIL
+TR_lc_osc_prj,          NUM_FAIL
+TR_multiplier_prj,      NUM_FAIL
+TR_single_balanced_prj, NUM_FAIL
+TR_supply_prj,          NUM_FAIL
+DC_SP_HICUM-fig10_prj,          non-GPL model removed
+DC_SW_bsim4v30nMOS_Ids_Vgs_prj, non-GPL model removed
+DC_SW_bsim4v30pMOS_Ids_Vgs_prj, non-GPL model removed

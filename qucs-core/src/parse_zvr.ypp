@@ -1,0 +1,198 @@
+/* -*-c++-*- */
+
+%{
+/*
+ * parse_zvr.y - parser for a ZVR data file
+ *
+ * Copyright (C) 2006 Stefan Jahn <stefan@lkcc.org>
+ *
+ * This is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this package; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
+ * Boston, MA 02110-1301, USA.
+ *
+ * $Id$
+ *
+ */
+
+#if HAVE_CONFIG_H
+# include <config.h>
+#endif
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define YYERROR_VERBOSE 42
+#define YYDEBUG 1
+#define YYMAXDEPTH 1000000
+
+#define __NOEXTENSIONS__ 1
+
+#include "object.h"
+#include "complex.h"
+#include "vector.h"
+#include "check_zvr.h"
+
+using namespace qucs;
+
+%}
+
+%define api.prefix {zvr_}
+
+%token ZVR
+%token Version
+%token Identifier
+%token Real
+%token Unit
+%token DataFMT DataTYP DataIDN
+%token InvalidCharacter
+
+%union {
+  char * ident;
+  double f;
+  struct zvr_data_t * data;
+  struct zvr_header_t * head;
+  struct zvr_vector_t * vec;
+  struct zvr_line_t * line;
+}
+
+%type <ident> DataFMT DataTYP DataIDN DataIdent
+%type <ident> Identifier Unit Ident
+%type <f> Real
+%type <head> BodyStart
+%type <vec> DataHeader
+%type <data> Body BodyList
+%type <line> DataLine DataList
+
+%%
+
+Input:
+  Header Body BodyList { /* a ZVR file */
+    $2->next = $3;
+    zvr_root = $2;
+  }
+;
+
+Header:
+  ZVR Version { }
+;
+
+BodyList: /* nothing */ { $$ = NULL; }
+  | Body BodyList {
+    if ($1) {
+      $1->next = $2;
+      $$ = $1;
+    } else {
+      $$ = $2;
+    }
+  }
+;
+
+ParaList6:
+  Identifier ';' Identifier ';' Identifier ';'
+  Identifier ';' Identifier ';' Identifier {
+  }
+;
+
+ParaList2:
+  Identifier ';' Identifier {
+  }
+;
+
+Ident:
+  Identifier | Unit
+;
+
+BodyStart:
+  ParaList6
+  Real    ';' Real  ';' Unit    ';' Real    ';' DataTYP ';' Real
+  ParaList6
+  DataTYP ';' Ident ';' DataFMT ';' Ident   ';' Ident   ';' Ident
+  ParaList2
+  Ident   ';' Ident {
+    $$ = (struct zvr_header_t *) calloc (sizeof (struct zvr_header_t), 1);
+    $$->start = $2;
+    $$->stop = $4;
+    $$->funit = $6;
+    $$->points = (int) $8;
+    $$->zref = $12;
+    $$->d_TYP = $10;
+    $$->d_UNT = $20;
+    $$->d_FMT = $18;
+  }
+;
+
+Body:
+  BodyStart DataHeader DataList {
+    $$ = (struct zvr_data_t *) calloc (sizeof (struct zvr_data_t), 1);
+    $$->h = $1;
+    $$->v = $2;
+    $$->d = $3;
+  }
+;
+
+DataList: /* nothing */ { $$ = NULL; }
+  | DataLine DataList {
+    if ($1) {
+      $1->next = $2;
+      $$ = $1;
+    } else {
+      $$ = $2;
+    }
+  }
+;
+
+DataLine:
+  Real ';' Real {
+    $$ = (struct zvr_line_t *) calloc (sizeof (struct zvr_line_t), 1);
+    $$->d = $1;
+    $$->r = $3;
+  }
+  | Real ';' Real ';' Real {
+    $$ = (struct zvr_line_t *) calloc (sizeof (struct zvr_line_t), 1);
+    $$->d = $1;
+    $$->r = $3;
+    $$->i = $5;
+  }
+;
+
+DataIdent:
+  DataTYP | DataIDN
+;
+
+DataHeader:
+  Identifier ';' DataIdent {
+    $$ = (struct zvr_vector_t *) calloc (sizeof (struct zvr_vector_t), 1);
+    $$->nf = $1;
+    $$->n1 = $3;
+    $$->vi = new vector ();
+    $$->vd = new vector ();
+  }
+  | Identifier ';' DataIdent ';' DataIdent {
+    $$ = (struct zvr_vector_t *) calloc (sizeof (struct zvr_vector_t), 1);
+    $$->nf = $1;
+    $$->n1 = $3;
+    $$->n2 = $5;
+    $$->vi = new vector ();
+    $$->vd = new vector ();
+  }
+;
+
+%%
+
+int zvr_error (const char * error) {
+  fprintf (stderr, "line %d: %s\n", zvr_lineno, error);
+  return 0;
+}

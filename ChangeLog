@@ -1,3 +1,8 @@
+2022-09-07  Poly Electronics <polyelectronics@outlook.com>
+
+	* Restore Qucs default tools.
+	* Changes to avoid warnings from the g++ compiler.
+
 2011-03-18  Stefan Jahn  <stefan@lkcc.org>
 
 	* configure.ac: Released version 0.0.16 and bumped up to version

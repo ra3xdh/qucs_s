@@ -1,0 +1,26 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/SP_fet_noise_prj/fet_noise.sch
+
+.Def:fet _net9 _net8 _net10
+C:C3 _net0 _net1 C="234 fF" V=""
+VCCS:SRC1 _net1 _net2 _net3 _net0 G="0.069 S" T="1.69 ps"
+C:C4 _net4 _net5 C="5 fF" V=""
+C:C1 _net1 _net6 C="39 fF" V=""
+C:C2 _net4 _net7 C="31 fF" V=""
+L:L2 _net7 _net8 L="16.7 pH" I=""
+L:L1 _net9 _net5 L="6 pH" I=""
+R:R1 _net5 _net1 R="0.9 Ohm" Temp="16.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R4 _net3 _net0 R="1.9" Temp="16.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net6 _net2 R="3.6 Ohm" Temp="16.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R6 _net2 _net7 R="2.5" Temp="16.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C5 _net3 _net2 C="14 fF" V=""
+R:R5 _net4 _net3 R="2.4 Ohm" Temp="16.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+L:L3 _net10 _net4 L="6.4 pH" I=""
+R:R3 _net3 _net2 R="312" Temp="6000" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.Def:End
+
+Sub:SUB1 _net0 _net1 gnd Type="fet"
+L:L1 _net2 _net0 L="1.1 nH" I=""
+L:L2 gnd _net0 L="4.0 nH" I=""
+Pac:P1 _net2 gnd Num="1" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Pac:P2 _net1 gnd Num="2" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+.SP:SP1 Type="lin" Start="1 GHz" Stop="20 GHz" Points="39" Noise="yes" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"

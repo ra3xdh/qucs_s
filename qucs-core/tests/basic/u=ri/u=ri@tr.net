@@ -1,0 +1,7 @@
+# Qucs 0.0.15  /home/bastien/Documents/Personnel/soft/debian/science/qucs/git/qucs-core/tests/basic/u=ri@tr.sch
+
+IProbe:current _net0 gnd
+R:R1 _net1 _net0 R="1 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 crashif="assert(abs(current.It-sin(2*pi*time)) < 1e-6)" Export="yes"
+Vac:V1 _net1 gnd U="1 V" f="1 Hz" Phase="0" Theta="0"
+.TR:TR1 Type="lin" Start="0" Stop="10 s" Points="1001" IntegrationMethod="Trapezoidal" Order="2" InitialStep="1 ns" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1 pA" vntol="1 uV" Temp="26.85" LTEreltol="1e-3" LTEabstol="1e-6" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"

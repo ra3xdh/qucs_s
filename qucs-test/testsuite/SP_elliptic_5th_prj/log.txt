@@ -1,0 +1,12 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `S' in equation `S11_dB' not yet defined
+checker notice, variable `S' in equation `S21_dB' not yet defined
+netlist content
+      5 C instances
+      2 L instances
+      2 Pac instances
+      1 SP instances
+creating netlist...
+checker notice, variable `S' in equation `S11_dB' not yet defined
+checker notice, variable `S' in equation `S21_dB' not yet defined

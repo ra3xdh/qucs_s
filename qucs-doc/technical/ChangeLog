@@ -1,0 +1,781 @@
+2011-03-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* transline.tex (subsection{Losses}): Fixed documentation of
+	conductor losses in coaxial line.
+
+2009-05-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* maths.tex (section{Frequency-Time Domain Transformation}): Fixed
+	typo in IDFT equation.
+
+2009-05-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* transline.tex (subsection{Cutoff frequencies}): Fixed
+	computation of cut-off frequencies
+
+2008-02-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* lineardevices.tex (subsection{T-parameters}): Added MNA matrix
+	representations for T-parameters.
+
+2008-02-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* lineardevices.tex (section{Extended MNA stamping}): Added MNA
+	matrix representations for A-, H- and G-parameters.
+
+2007-12-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* hbanalysis.tex (section{Autonomous Harmonic Balance}): Added new
+	section.  Thanks to Michael.  Also fixed some description of HB
+	analysis.
+
+2007-10-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* literature.bib: Fixed publication year of R. C. Compton and
+	D. B. Rutledge, "Perspectives in Microwave Circuit Analysis".
+
+2007-06-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* lineardevices.tex (subsection{Mutual inductors with any number
+	of inductors}): Corrected S-parameter section for mutual
+	inductors.
+
+2007-05-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* lineardevices.tex (subsection{Mutual inductors with any number
+	of inductors}): Added Z-parameter representation of mutual
+	inductors.
+
+	* devices.tex (subsection{Models with Implicit Equations}): Fixed
+	sign in S-parameter equations.
+
+2007-03-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* maths.tex (paragraph{Zeros on the diagonal or super-diagonal.}):
+	Finished the paragraphs about the SVD equation system solver.
+	(paragraph{Computation of the Wilkinson shift.}): Fixed typo in
+	the calculation formula for the Wilkinson shift.
+
+2007-03-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* maths.tex (subsubsection{Step 3: Diagonalization -- shifted QR
+	iteration}): Again some more words about diagonalization during
+	SVD.
+
+2007-03-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* maths.tex (subsubsection{Eigenvalues of a 2-by-2 matrix}): 
+	Added short section about eigenvalues of 2-by-2 matrices.
+	(subsubsection{Step 3: Diagonalization -- shifted QR iteration}): 
+	Some more descriptions about the diagonalization during
+	SVD.  Not yet finished.
+
+2007-03-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* transline.tex (subsection{Transmission losses}): Described
+	the transmission line loss model of the twisted-pair line.
+
+	* transient.tex (subsubsection{Ideal 4-terminal transmission
+	line}): Documented transient model of the 4-terminal line.
+
+2007-01-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip.tex (section{Bondwire}): Documented the bondwire
+	model.
+
+2007-01-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* lineardevices.tex: Fixed S-parameters for 4-port transmission
+	line.
+
+2006-09-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices.tex (subsection{Large signal model}): Documented
+	the theory about the excess phase implementation in a BJT.
+
+2006-09-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices.tex (subsubsection{Original SPICE model}): Added
+	some more comments about the original SGP model implementation
+	and also fixed documentation regarding the transcapacitance
+	dQbe/dVbc.
+
+2006-07-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* maths.tex (chapter{Mathematical background}): Moved the
+	chapter about linear equation systems from the DC chapter
+	here.  Started to document the SVD... to be continued.
+
+2006-05-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex: Fixed compatibility code for latex/pdftex.
+
+	* dcanalysis.tex (section{Overall solution algorithm for DC
+	Analysis}): Added section for DC solution flow chart.
+
+2006-04-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* transline.tex (section{Twisted pair}): Fixed formulas for
+	twisted pair line.
+
+2006-04-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* hbanalysis.tex (subsection{Frequency-Time Domain
+	Transformation}): Put listings into a real 'lstlisting'
+	environment.  Also fixed some typos.
+
+2006-03-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* transline.tex (section{Twisted pair}): Documented twisted
+	pair analysis equations.
+
+2006-03-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* literature.bib: Added some books lend from library.
+
+2006-03-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* transient.tex (subsection{AM modulated AC source}):
+	Documented AM and PM modulated sources in the time domain.
+	(section{Components defined in the frequency domain}): Started
+	to document the transient analysis of components defined
+	in the frequency domain with constant delay times.
+
+2006-02-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* synthesis.tex (subsubsection{Chebyshev I}): Documented
+	required order formulas for Butterworth, Chebychev 1+2.
+
+2006-01-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* coaxial.tex: Started new chapter about coaxial components.
+
+2006-01-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* acanalysis.tex (subsection{Coupler}): Fixed DC MNA matrix
+	entries for ideal coupler device.
+
+2006-01-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* sparameter.tex (subsection{Coupler}): Added figure showing
+	the port numbers of the coupler device.
+
+2006-01-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip.tex (section{Microstrip cross}): Added remaining
+	paper references known so far.
+
+2005-12-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices.tex (subsection{Temperature model}): Documented
+	temperature and area dependencies for diode, JFET, MOS and
+	bipolar transistor.
+
+2005-12-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip.tex (section{Microstrip via hole}): Clarified
+	some math symbols in the via description.
+
+	* devices.tex (subsection{Temperature model}): Started to
+	document the temperature dependencies of the diode model.
+
+2005-11-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* Makefile.am: Added rules for final data creation: 'html'
+	and 'technical'.
+
+2005-09-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* transient.tex (subsubsection{Backward Euler}): Fixed
+	forward/backward Euler confusions.
+
+2005-07-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* acanalysis.tex (subsection{Non-ideal transformer}): Fixed
+	conversion formula for non-ideal transformer.
+
+2005-06-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* literature.bib: Added some more books and articles.
+
+2005-05-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* coplanar.tex (section{Coplanar waveguide step}): Added
+	S-, Y- and Z-parameters of coplanar step.
+
+2005-05-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* coplanar.tex (section{Coplanar waveguide step}): Documented
+	coplanar waveguide impedance step.
+
+2005-05-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* coplanar.tex (section{Coplanar waveguide gap}): Documented
+	coplanar series gap.
+
+2005-05-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* coplanar.tex (section{Coplanar waveguide open}): Documented
+	both the open and short circuit for coplanar waveguides.
+
+2005-04-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* transient.tex (subsection{Depletion Capacitance}): Fixed tiny
+	typo in documentation of depletion charge.
+
+	* coplanarzl.m: Fixed wave resistance computation.
+
+	* coplanar.tex (subsection{Evaluation of losses}): Fixed some
+	typo in the documentation of coplanar waveguide.
+
+2005-04-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcanalysis.tex (subsubsection{Motivation}): Documented
+	least square solution using QR decomposition.
+
+2005-04-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip.tex (section{Microstrip via hole}): Fixed typo
+	in microstrip via hole documentation.
+
+	* dcanalysis.tex (subsection{QR decomposition}): Documented
+	QR decomposition.
+
+2005-03-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices.tex (subsection{Small signal model}): Documented
+	SPICE small signal equivalent BJT circuit.
+
+	* microstrip.tex (subsection{Strip thickness correction}): 
+	Documented strip thickness corrections for coupled
+	microstrips.
+
+2005-02-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip.tex (section{Microstrip tee junction}): Added
+	note about displacement interpretations and mentioned
+	negative transformer ratios.
+
+	* hbanalysis.tex (subsection{Creating Transadmittance 
+	Matrix}): Fixed spelling mistake and CVS conflict.
+
+2005-02-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* grammar-data.tex (section{Qucs dataset grammar}): Added
+	a small comment about dataset content.
+
+2005-02-17  Raimund 'Raimi' Jacob  <raimi@lkcc.org>
+
+	* grammar-data.tex: Added grammar for the dataset. Put all
+	grammars into one appendix, share the introduction.
+
+2005-02-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex: Added Raimund Jacob as author.
+
+	* hbanalysis.tex (subsection{Creating Transadmittance Matrix}): 
+	Fixed some typos.
+
+	* grammar-qucs.tex (chapter{Qucs netlist grammar}): Fixed
+	comments on each grammer item as required.  Fixed some typos.
+
+	* acnoise.tex (section{The Algorithm}): Added a note about the
+	transposed LU decomposed matrix during AC noise analysis.
+
+2005-02-13  Stefan Jahn  <stefan@lkcc.org>
+ 
+	* acnoise.tex (subsection{Noise voltage source}): Documented
+	AC noise matrices for noise voltage sources.
+ 
+2005-02-13  Raimund 'Raimi' Jacob  <raimi@lkcc.org>
+
+	* grammar-qucs.tex (chapter{Qucs netlist grammar}): Also finished
+	the lexical structure. Re-ordering of the syntax.
+
+2005-02-12  Raimund 'Raimi' Jacob  <raimi@lkcc.org>
+
+	* grammar-qucs.tex (chapter{Qucs netlist grammar}): Begin of some
+	documentation of the netlist file. Move this and the bibliography
+	into an appendix.
+
+2005-02-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex: Updated copyright dates.
+
+	* Makefile.am (PSFILES): Added missing 'MNAnoise*.eps' files.
+
+2004-12-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* coplanar.tex (chapter{Coplanar components}): New file
+	containing documentation about coplanar components.  Thanks
+	to Vincent.
+
+	* technical.tex: Added copyright for Vincent.
+
+	* transient.tex (subsection{MOS Gate Capacitances}): Added
+	section about integration of the Meyer MOS capacitances.
+
+2004-11-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcanalysis.tex (subsection{Operational amplifier}): Also
+	documented how non-linear DC analysis of the operational
+	amplifier works.
+
+2004-11-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip.tex (section{Microstrip via hole}): Added small
+	figure for microstrip via hole.
+
+	* transient.tex (subsubsection{Minimal derivative Gmin
+	stepping}): Finished section about continuation schemes.
+
+2004-10-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* Makefile.am (EXTRA_DIST): Decided to remove the postscript
+	technical documentation from the release tarball.
+
+	* technical.tex: Added hyperref package for PDF output.
+
+2004-10-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* transient.tex (section{Convergence}): Wrote something about
+	limiting and continuation schemes for convergence improvements.
+
+2004-10-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* transient.tex (section{Convergence}): Started to document
+	convergence issues in transient analysis.
+
+	* microstrip.tex (section{Microstrip via hole}): Documented
+	microstrip via hole equations.
+
+2004-10-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices.tex (section{MOS Field-Effect Transistor}): Fixed
+	unit of transconductance parameter.
+
+2004-10-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* literature.bib: Two new references added.
+
+2004-10-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* transient.tex (subsection{Diffusion Capacitance}): Scribbled
+	down charge and capacitance of the usual depletion and diffusion
+	capacitance.
+
+2004-10-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* *.tex: Added copyright notice in all LaTex files.
+
+2004-10-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcanalysis.tex (subsection{Symmetrical transformer}): Fixed
+	DC equations of the symmetrical transformer in documentation.
+
+	* transient.tex (subsection{Order and local truncation error}): 
+	Scribbled down the error constants for explicit Gear method.
+
+	* stabgearex.m: New file computing order, steps, error constants
+	and stability regions of explicit Gear formulae.
+
+2004-10-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Properties of numerical integration
+	methods}): Added introduction to mathematical terms.
+	(section{Predictor-corrector methods}): Started to document
+	the predictor-corrector methods.
+
+	* stabbashford.m, stabmoulton.m: Additionally displaying the
+	error coefficients of each integration order.
+
+2004-09-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* Makefile.am (dist_man_MANS): Added simple man page.
+
+2004-09-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Controlled sources}): Documented
+	the MNA matrix entries of various AC components.
+
+2004-09-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Depletion Capacitance}):
+	Documented handling of depletion and diffusion capacitances
+	during transient analysis.
+	(subsection{Transmission line}): Fixed Y-parameters of
+	lossless transmission line.
+
+2004-09-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Stability considerations}):
+	Finished section about stability of integration methods.
+
+2004-09-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Stability considerations}): Checked
+	zero-stability and absolute stability ranges for Adams-Moulton,
+	Adams-Bashford and Gear.  Visualized these in three new plots
+	and included them into documentation.
+
+2004-09-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsubsection{Inductor}): Small section
+	about the accompanied inductor model for transient analysis
+	added.
+
+	* technical.tex (subsubsection{Adams-Bashford}): Documented
+	Adams-Bashford and Adams-Moulton integration formulas.
+
+2004-09-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsubsection{Capacitor}): Some more
+	documentation about integration methods added.
+
+2004-09-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (chapter{Transient Analysis}): Started to
+	document transient analysis.
+
+2004-09-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsubsection{Schneider}): Documented
+	dispersion models of single microstrip by M.V. Schneider.
+
+2004-09-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsubsection{Schneider}): Documented
+	all the M.V. Schneider formulae.
+
+	* mszl.m: Plotting Hammerstad instead of Wheeler.
+
+2004-09-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsubsection{Kirschning and Jansen}):
+	Documented dispersion of characteristic impedance of single
+	microstrip line acording to Kirschning.
+	(subsubsection{Kirschning and Jansen}): Filled the missing
+	paper references for coupled microstrips.
+
+2004-09-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (chapter{AC Analysis}): Started to document
+	the AC simulation and components.
+
+	* literature.bib: Completed the 'local' entries for IEEE
+	publications.
+
+2004-09-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Forming the noise current
+	correlation matrix}): Fixed the example figure for the
+	noise correlation matrix.
+
+2004-09-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsubsection{Pramanick and Bhartia}):
+	Documented dispersion model of characteristic impedance by
+	Pramanick.
+
+2004-09-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsubsection{Hammerstad and Jensen}): Fixed
+	descriptions and formulas of parallel coupled microstrip lines.
+
+2004-08-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsubsection{Edwards and Owens}): Documented
+	a few more dispersion formulas for microstrip.
+
+2004-08-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{S-parameter container with 
+	additional reference port}): Documented 'spfile' class
+	implementations.
+	(subsubsection{Hammerstad and Jensen}): Documented Getsinger's
+	dispersion formulas for coupled microstrips.
+
+2004-08-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsubsection{Hammerstad and Jensen}):
+	Documented coupled microstrip model by Hammerstad and Jensen and
+	transmission line losses of coupled lines.
+
+2004-08-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (section{Microstrip open}): Revisited
+	microstrip open, step, corner and gap documentation.
+
+2004-08-16  Stefan Jahn  <jahn@mwt.ee.tu-berlin.de>
+
+	* technical.tex (subsection{Small signal model}): Documented
+	excess phase parameter of BJT model.
+
+2004-08-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Jacobi method}): Documented
+	Schmidt and v.Mises convergence criteria.
+
+2004-08-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Noise model}): Documented
+	small signal and noise model of the MOSFET device.
+
+2004-08-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Gauss-Seidel method}): Documented
+	Gauss-Seidel and Jacobi methods for solving linear equation
+	systems (both iterative methods).
+	(subsection{Convergence}): Made some additional remarks about
+	convergence helpers.
+
+2004-08-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Physical model}): Completed the
+	documentation about the large signal and physical model of
+	the MOSFET level 1.
+
+2004-08-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (section{MOS Field-Effect Transistor}): 
+	Started to document the MOSFET model.
+
+2004-08-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Large signal model}): Fixed bug
+	in Id model of junction FET.  Replaced the O of O. Jensen to
+	the norwegian {\O}.
+
+2004-08-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsubsection{Mixed Two-Port matrix
+	conversions}): Added the formulas for G to S and S to G
+	transformations.
+	(section{PN-Junction Diode}): Documented new model parameters
+	'Fc', 'Cp', 'Isr' and 'Nr'.
+
+2004-07-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Gauss-Jordan method}): Documented
+	Gauss-Jordan method for solving linear equation systems.
+	(subsection{Diode}): Fixed equations for noise.
+
+2004-07-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsubsection{Two-Port parameters
+	of passive devices}): New subsection about standard passive
+	circuit topologies and their matrix representations.
+	(subsection{Noise model}): Documented noise model of diode
+	and SGP model of BJT.
+
+2004-07-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Noise model}): Documented noise
+	model of junction FET.
+	(section{Noise Correlation Matrix Transformations}): How
+	noise correlation matrix conversions work.
+
+2004-07-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex: Changed some latex statements for better
+	readablity.
+
+2004-07-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Strip thickness correction}):
+	Added a section about the strip thickness effects on quasi-
+	static characteristics of a microstrip line.
+
+2004-07-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{S-parameter of the single
+	microstrip line}): Added this section documenting the 
+	calculation of the microstrip line S-parameters.
+
+2004-07-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (section{Dispersion}): Added some comments
+	about the various dispersion models of microstrip.
+
+	* mscomparezl.m: Using Hammerstad and Jensen as reference
+	when comparing quasi-static impedances of microstrip.
+
+2004-07-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Small signal model}): Documented
+	the SGP small signal model.
+
+2004-07-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Large signal model}): Documented
+	the SGP large signal model properly.
+
+2004-07-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (section{Noise Wave Correlation Matrix in 
+	CAE}): Fixed two of the formulas for noise correlation matrix
+	elements.
+
+2004-07-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsubsection{Mixed Two-Port matrix 
+	conversions}): Added S to H and its reverse transformation.
+	(subsubsection{Two-Port matrix conversion based on current 
+	and voltage}): Scribbled down the five different matrix forms.
+
+2004-07-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsubsection{Two-Port matrix 
+	conversion based on current and voltage}): Added some more
+	twoport theory.
+
+2004-07-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Two-Port transformations}): 
+	Documented some twoport matrix transformations.
+
+2004-06-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{S-parameters in CAE programs}): 
+	Documented use of signal flow graphs and the nontouching-loop
+	rule for solving them.
+
+2004-06-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Operational amplifier}): Added
+	a note about OPAMP feedback impedance.
+
+2004-02-07  Michael Margraf <michael.margraf@alumni.tu-berlin.de>
+
+	* added some noise formulas
+	* added description for phase shifter DC model
+
+2004-06-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* radius.m, mszl.m, mscomparezl.m: Using the epstk for 
+	producing eps files.
+
+2004-06-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (section{Junction FET}): Documented modelling
+	the junction capacitances of JFET diodes.
+	(subsection{Convergence}): Documented a convergence problem 
+	solution.
+
+2004-06-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (section{Junction FET}): Scribbled down 
+	S-parameters of junction FET and added the small signal 
+	equivalent circuit.
+
+2004-06-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (section{PN-Junction Diode}): Documented large
+	and small signal parameters of pn-junction diode.
+
+2004-06-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (section{Junction FET}): Started to document
+	Shichman-Hodges equations and derivatives fo JFET model.
+
+2004-06-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (section{Non-linear DC Analysis}): Started to
+	document non-linear DC analysis using Newton-Raphson.
+
+2004-05-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{A comparison}): Added a table 
+	comparing algorithms for solving equation systems.
+
+2004-05-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection{Gaussian elimination}): Documented
+	the Gaussian eliminiation algorithm for solving linear
+	equations systems.
+	(subsection{LU decomposition}): Documented Crout's LU
+	decomposition.
+
+	* literature.bib: Added some more IEEE papers and books.
+
+2004-05-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* Makefile.am (MATHFILES): New files added.  Octave is now
+	needed in order to rebuild the documentation.
+
+2004-05-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (chapter{Microstrip components}): New 
+	chapter.  Started to document microstrip models.
+
+	* msline.fig: New figure.
+
+2004-05-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* literature.bib: Added some microstrip related IEEE sources.
+
+2004-04-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (section{Matrix conversions}): Documented
+	matrix conversion algorithms.
+
+2004-02-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* literature.bib: Added reference for natural constants.
+
+2004-02-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (section*{Solving linear equation systems}): 
+	Started writing a section about solving linear equations
+	systems.
+	(subsection*{Gyrator}): Fixed description of gyrators MNA
+	matrix represention.
+
+2004-02-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex: Fixed descriptions of MNA stamps of operational
+	amplifier, ccvs, cccs, vccs and vcvs.
+
+2004-02-07  Michael Margraf <michael.margraf@alumni.tu-berlin.de>
+
+	* technical.tex: Add noise correlation matrix for
+	noise sources and diode.
+
+2004-02-05  Stefan Jahn  <jahn@mwt.ee.tu-berlin.de>
+
+	* technical.tex: Added a simple example to the MNA 
+	documentation.
+
+2004-02-04  Stefan Jahn  <jahn@mwt.ee.tu-berlin.de>
+
+	* technical.tex (section*{Modified Nodal Analysis}): Wrote
+	documentation about basic idea of MNA.
+
+2004-01-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection*{Symmetrical transformer}): Added
+	figures for symmetrical trafo and normal two winding trafo.  
+	Documented MNA entries for symmetrical transformer.  Switched
+	over to IEEtran bibliography style.
+	
+2004-01-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (subsection*{Transformer}): Documented
+	DC simulation of ideal transformer.
+
+2004-01-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* Makefile.am: Added rules for bibliography creation.
+
+	* technical.tex (subsection*{Current controlled voltage source}): 
+	Added description of CCVS for use in DC analysis.
+	Added figures for VCCS, VCVS, CCVS and CCCS.  Added bibliography.
+
+2004-01-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* technical.tex (section*{Extensions to the MNA}): Documented
+	VCCS, VCVS and CCCS for use in DC analysis.
+
+2003-12-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* Makefile.am (CLEANFILES): Updated clean files.

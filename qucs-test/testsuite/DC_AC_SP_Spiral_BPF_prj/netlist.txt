@@ -1,0 +1,17 @@
+# Qucs 0.0.19  /home/qucs/Spiral_BPF.sch
+
+C:C1 gnd _net0 C="195 fF" V=""
+SPIRALIND:SPIRALIND1 _net0 _net1 Subst="Subst1" Geometry="Circular" W="25 um" Di="91 um" S="25 um" N="2" Temp="26.85"
+C:C2 _net0 _net1 C="155 fF" V=""
+SUBST:Subst1 er="4.5" h="0.8 mm" t="35 um" tand="2e-4" rho="0.022e-6" D="0.15e-6"
+C:C3 gnd _net1 C="320 fF" V=""
+C:C5 gnd out C="82 fF" V=""
+CIRCULARLOOP:CIRCULARLOOP1 _net1 out Subst="Subst1" W="25 um" a="195 um" Temp="26.85"
+C:C4 _net1 out C="600 fF" V=""
+.SP:SP1 Type="log" Start="1 GHz" Stop="100 GHz" Points="403" Noise="yes" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+.AC:AC1 Type="log" Start="1 GHz" Stop="100 GHz" Points="403" Noise="yes"
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+Eqn:Eqn1 S21_dB="dB(S[2,1])" S11_dB="dB(S[1,1])" Export="yes"
+Pac:P2 out gnd Num="2" Z="50 Ohm" P="0 W" f="1 GHz" Temp="-273.15"
+Pac:P1 _net0 _net2 Num="1" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="-273.15"
+Vdc:V1 _net2 gnd U="1.1 V"

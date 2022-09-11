@@ -1287,7 +1287,8 @@ void qf_poly::to_roots (void) {
 //               " + " << rts [i+1] << " i\n" ;
   }
 
-  rep = BOTH;
+  rep = BOTH;  
+  Q_UNUSED(status);
 }
 
 // Private functions used by qf_poly::solve

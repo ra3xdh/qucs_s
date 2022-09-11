@@ -1,0 +1,97 @@
+%
+% Report -- The Report Book
+%
+% Copyright (C) 2007, 2008 Stefan Jahn <stefan@lkcc.org>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+\documentclass[headsepline,a4paper,twoside,12pt]{scrreprt}
+
+% Include basic and title page definitions.
+\include{basics}
+\include{titlepage}
+
+\tuttitle{
+  Report Book}
+\tutsubtitle{
+  Technical reports and descriptions}
+\tutauthor{
+  Mike Brinson\\
+  Stefan Jahn\vspace*{6pt}\\
+  H\'el\`ene Parruitte}
+\tutcopyright{
+  Copyright \copyright{} 2006, 2007, 2008 Mike Brinson
+  \textless mbrin72043@yahoo.co.uk\textgreater\\
+  Copyright \copyright{} 2007 Stefan Jahn
+  \textless stefan@lkcc.org\textgreater\\
+  Copyright \copyright{} 2006 H\'el\`ene Parruitte
+  \textless parruit@enseirb.fr\textgreater}
+\tutbooktrue
+
+\tutstartup{Report Collection}{%
+  Mike Brinson, Helene Parruitte and Stefan Jahn}
+\usepackage{keystroke}
+
+% Here finally starts everything.
+\tutbegin
+
+\tableofcontents
+\newpage
+
+\chapter{Verilog-AMS interface}
+\graphicspath{{verilog/pics/}}
+\input{verilog/content}
+
+\chapter{Verilog-A Modular Macromodel for Operational Amplifiers}
+\graphicspath{{mod_amp/pics/}}
+\input{mod_amp/content}
+
+\chapter{Verilog-A Logarithmic Amplifier Macromodel}
+\graphicspath{{log_amp/pics/}}
+\input{log_amp/content}
+
+\chapter{Verilog-A Macromodel for Resistive Potentiometers}
+\graphicspath{{potentiometer/pics/}}
+\input{potentiometer/content}
+
+\chapter{Verilog-A compact device models for GaAs MESFETs}
+\graphicspath{{mesfet/pics/}}
+\input{mesfet/content}
+
+\chapter{Verilog-A implementation of the EKV v2.6 long and short channel MOSFET models}
+\graphicspath{{EKV26/pics/}}
+\input{EKV26/content}
+
+\chapter{Compact Verilog-A pn junction photodiode model}
+\graphicspath{{photodiode/pics/}}
+\input{photodiode/content}
+
+\chapter{SPICE to Qucs conversion: Test File 1}
+\graphicspath{{StoQ_test1/pics/}}
+\input{StoQ_test1/content}
+
+\chapter{SPICE to Qucs conversion: Test File 2}
+\graphicspath{{StoQ_test2/pics/}}
+\input{StoQ_test2/content}
+
+\chapter{SPICE to Qucs conversion: Test File 3}
+\graphicspath{{StoQ_test3/pics/}}
+\input{StoQ_test3/content}
+
+\chapter{SPICE to Qucs conversion: Test File 4}
+\graphicspath{{StoQ_test4/pics/}}
+\input{StoQ_test4/content}
+
+\chapter{SPICE to Qucs conversion: Test File 5}
+\graphicspath{{StoQ_test5/pics/}}
+\input{StoQ_test5/content}
+
+\chapter{A Curtice level 1 MESFET model}
+\graphicspath{{curtice/pics/}}
+\input{curtice/content}
+
+
+\tutend

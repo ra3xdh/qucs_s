@@ -1,0 +1,48 @@
+2008-12-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* complex.h: Try avoiding compile failure on platforms where
+	log2() is defined as a macro, e.g. cygwin.
+
+2008-10-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* real.cpp: Providing real argument acosh() and asinh() function
+	on platfoms where these do not exist (e.g. MSVC).
+
+2008-01-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* fspecial.cpp (isinf): Fixed some compile issues for native sgi
+	IRIX compiler.
+
+2008-01-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* cbesselj.cpp: Added complex bessel function of first kind.
+	Thanks a lot to Bastien!
+
+2008-01-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* real.cpp: Added fallback function for real valued trunc().
+
+	* complex.cpp: Renamed all complex functions probably having a
+	complex<T> pendant, e.g., arcosh() to acosh().
+
+2008-01-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* complex.h: Using std namespace; now using <complex/tr1> works
+	somehow.
+
+	* real.cpp: Reverted abs() -> fabs() renaming.
+
+2008-01-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* real.cpp: Put real valued functions from complex file here.
+	Also renamed abs() function (of complex, vector, matrix) to
+	fabs() everywhere.
+
+2008-01-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* Makefile.am: Creating math library.  Complex class has been
+	renamed.  Now able to use also <complex> and <tr1/complex>.
+	Thanks a lot to Bastien.  Renamed complex to nr_complex_t
+	everywhere.
+
+	* ChangeLog: Created this file.

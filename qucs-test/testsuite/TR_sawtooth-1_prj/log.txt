@@ -1,0 +1,16 @@
+project location: 
+modules to load: 0
+factorycreate.size() is 0
+factorycreate has registered:
+parsing netlist...
+checking netlist...
+netlist content
+      2 Diode instances
+      1 C instances
+      2 BJT instances
+      2 R instances
+      2 Vdc instances
+      1 TR instances
+creating netlist...
+NOTIFY: TR1: average time-step 7.67754e-10, 281 rejections
+NOTIFY: TR1: average NR-iterations 2.64453, 0 non-convergences

@@ -1,0 +1,39 @@
+//   Qucs analogue data voltage level shifter model (DLS_nto1).
+//   Shifts from NV to 1V.
+//   The structure and theoretical background to the DLS_nto1
+//   Verilog-a model are presented in the Qucs mixed mode 
+//   simulation tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, December 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module DLS_nto1 (Lin, Lout); 
+ inout Lin, Lout;
+ electrical Lin, Lout;
+ electrical n1, n2;
+ `define attr(txt) (*txt*)
+ parameter real LEVEL=5 from [1:inf] `attr(info= "voltage level" unit="V");
+ parameter real Delay = 1e-9 from [0: inf] `attr(info="time delay" unit="s");
+//
+ real Rd, Cd;
+//
+ analog begin
+  @(initial_model)
+    begin
+      Rd = 1e3;
+      Cd= Delay*1.43/Rd;
+    end
+ I(n1)      <+ (V(Lin) >= LEVEL/2) ? -1 : 0;
+ I(n1)      <+ V(n1);
+ I(n1, n2)  <+ V(n1, n2)/Rd;
+ I(n2)      <+ ddt(Cd*V(n2));
+ I(Lout)    <+ -V(n2);
+ I(Lout)    <+  V(Lout);
+ end
+endmodule

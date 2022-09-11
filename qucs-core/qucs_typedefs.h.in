@@ -1,0 +1,22 @@
+// BUG: use config.h
+// this file is not timestamp-safe
+
+#ifndef nr_double_t
+/* The global type of double representation. */
+#define nr_double_t @QUCS_DOUBLE_TYPE@
+#endif
+
+/* The size of the double representation. */
+#ifndef NR_DOUBLE_SIZE
+#define NR_DOUBLE_SIZE @QUCS_DOUBLE_SIZE@
+#endif
+
+#ifndef nr_int16_t
+/* C-type for 16-bit integers. */
+#define nr_int16_t @QUCS_INT16_TYPE@
+#endif
+
+#ifndef nr_int32_t
+/* C-type for 32-bit integers. */
+#define nr_int32_t @QUCS_INT32_TYPE@
+#endif

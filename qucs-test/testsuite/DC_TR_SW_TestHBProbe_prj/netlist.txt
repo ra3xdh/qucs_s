@@ -1,0 +1,10 @@
+# Qucs 0.0.18  /Users/guitorri/git/qucs-test/HB_Test_prj/TestHBProbe.sch
+
+Diode:D1 gnd P2 Is="7e-9 A" N="1" Cj0="0" M="0.5" Vj="0.7 V" Fc="0.5" Cp="0.0 fF" Isr="0.0" Nr="2.0" Rs="0.83" Tt="0.0 ps" Ikf="0" Kf="0.0" Af="1.0" Ffe="1.0" Bv="0" Ibv="1 mA" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+R:R1 P1 P2 R="RProbe" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vac:V2 P1 gnd U="VAC" f="10kHz" Phase="0" Theta="0"
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+.TR:TR1 Type="lin" Start="0" Stop="1 ms" Points="1001" IntegrationMethod="Trapezoidal" Order="2" InitialStep="1 ns" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1 pA" vntol="1 uV" Temp="26.85" LTEreltol="1e-3" LTEabstol="1e-6" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"
+.HB:HB1 f="10kHz" n="16" iabstol="100 pA" vabstol="1 uV" reltol="0.01" MaxIter="150"
+.SW:SW1 Sim="HB1" Type="lin" Param="VAC" Start="0" Stop="1.0" Points="11"
+Eqn:Eqn1 RProbe="1e-7" Id_HB="(P1.Vb-P2.Vb)/RProbe" Id_Tran="(P1.Vt-P2.Vt)/RProbe" Export="yes"

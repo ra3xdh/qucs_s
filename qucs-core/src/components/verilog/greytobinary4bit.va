@@ -1,0 +1,64 @@
+//   Qucs analogue greytobinary4bit model
+//   The structure and theoretical background to the greytobinary4bit
+//   Verilog-a model are presented in the Qucs digital tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, December 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module greytobinary4bit (G0, G1, G2, G3, B3, B2, B1, B0 );
+ inout G0, G1, G2, G3, B3, B2, B1, B0 ;
+ electrical G0, G1, G2, G3, B3, B2, B1, B0 ;
+ electrical B0n1, B0n2, B1n1, B1n2, B2n1, B2n2, B3n1, B3n2;
+//
+ `define attr(txt) (*txt*)
+ parameter real TR=6 from [1.0:20.0] `attr(info="transfer function scaling factor");
+ parameter real Delay = 1e-9 from [0: inf] `attr(info="output delay" unit="s");
+//
+ real Rd, Cd;
+ real m0, m1, m2, m3;
+//
+analog begin
+@(initial_model)
+  begin
+    Rd = 1e3;
+    Cd= Delay*1.43/Rd;
+  end
+m0 = V(G0)*(1-V(B1))+(1-V(G0))*V(B1);
+m1 = V(G1)*(1-V(B2))+(1-V(G1))*V(B2);
+m2 = V(G2)*(1-V(G3))+(1-V(G2))*V(G3);
+m3 = V(G3);
+I(B0n1) <+ -0.5*(1+tanh(TR*(m0-0.5)));
+I(B0n1) <+ V(B0n1);
+I(B0n1, B0n2) <+ V(B0n1,B0n2)/Rd;
+I(B0n2) <+ ddt(Cd*V(B0n2));
+I(B0)  <+ -V(B0n2);
+I(B0) <+ V(B0);
+//
+I(B1n1) <+ -0.5*(1+tanh(TR*(m1-0.5)));
+I(B1n1) <+ V(B1n1);
+I(B1n1, B1n2) <+ V(B1n1,B1n2)/Rd;
+I(B1n2) <+ ddt(Cd*V(B1n2));
+I(B1)  <+ -V(B1n2);
+I(B1) <+ V(B1);
+//
+I(B2n1) <+ -0.5*(1+tanh(TR*(m2-0.5)));
+I(B2n1) <+ V(B2n1);
+I(B2n1, B2n2) <+ V(B2n1,B2n2)/Rd;
+I(B2n2) <+ ddt(Cd*V(B2n2));
+I(B2)  <+ -V(B2n2);
+I(B2) <+ V(B2);
+//
+I(B3n1) <+ -0.5*(1+tanh(TR*(m3-0.5)));
+I(B3n1) <+ V(B3n1);
+I(B3n1, B3n2) <+ V(B3n1,B3n2)/Rd;
+I(B3n2) <+ ddt(Cd*V(B3n2));
+I(B3)  <+ -V(B3n2);
+I(B3) <+ V(B3);
+end
+endmodule

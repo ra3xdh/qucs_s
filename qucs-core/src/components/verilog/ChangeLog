@@ -1,0 +1,249 @@
+2014-08-08 Guilherme Brondani Torri <guitorri@gmail.com>
+
+	* analogfunction.xml: Add missing standard and transcendental functions.
+	* qucsVersion.xml: Add missing standard and transcendental functions.
+	Target LRM 2.3.1.
+	Derivatives of `ceil`, `atan2` not implemented.
+
+2011-03-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* hicumL0V1p3.va: Added new HICUM L0 v1.3 compact model.
+
+2010-10-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* hicumL0V1p2g.va: Added new HICUM L0 v1.2g compact model.
+
+2010-03-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* hicumL2V2p24.va: Added new HICUM L2 v2.24 compact model.
+
+2009-10-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* nigbt.va: Reformulated equations for implicit system variables.
+	Also ensured no more "nan" values in computations.
+
+2009-09-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* nigbt.va: Added new IGBT model based upon Hefner's publications.
+	Still not working...
+
+	* qucsVersion.xml: Added atanh() functionality.
+
+2009-03-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* EKV26MOS.va: Fixed range of 'Vto' property to include both
+	positive and negative values.
+
+2009-03-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* phototransistor.va: Added new phototransistor model.  Thanks to
+	Mike Brinson!
+
+2009-03-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* DLS_1ton.va: Changed output impedance from 1ohm to zero.
+
+2009-03-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* Makefile.am (libverilog_a_SOURCES): Added many new digital
+	primitives.  Thanks a lot to Mike Brinson for the huge effort!
+
+2008-12-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* hicumL0V1p2.va: Updated HICUM/L0 v1.2 according to changes by
+	TUD.
+
+2008-10-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* EKV26nMOS.va, EKV26pMOS.va: Removed these files.
+
+2008-10-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* photodiode.va: Added new photodiode model.  Thanks to Mike
+	Brinson!
+
+2008-10-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* hicumL2V2p23.va: Added new HICUM L2 v2.23 compact model.
+
+	* qucsMODULEgui.xml: Fixed default value generation for string
+	type model parameters.  Thanks to Laurent!
+
+2008-09-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* EKV26pMOS.va: Updated EKV26 PMOS type model.  Thanks to Mike
+	Brinson!
+
+2008-09-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsMODULEcore.xml: Additionally separated code for
+	@(initial_step) and @(final_step).
+
+2008-09-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* EKV26nMOS.va: Updated EKV26 NMOS type model.  Thanks to Mike
+	Brinson.
+
+	* qucsVersion.xml: Fixed some 'bad attribute' errors in XML code.
+
+2008-09-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsMODULEcore.xml: Finally @(initial_model) and
+	@(initial_instance) code separated and evaluated only once at DC
+	startup.
+
+2008-09-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsMODULEcore.xml: Separation for @(initial_model) code and
+	variables implemented.  Also saving global instance variables as
+	operating points.
+
+2008-09-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* hicumL0V1p2.va: Added new preliminary version of HICUM L0 v1.2
+	compact model.
+
+2008-09-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsVersion.xml: Added second derivative for pow(x,y) when y is
+	constant.  Cosmetic changes.
+
+2008-06-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* EKV26nMOS.va, EKV26pMOS.va: Added new EPFL-EKV MOSFET V2.6
+	models.  Thanks to Mike Brinson!
+
+2008-04-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* MESFET.va: Added new MESFET models provided by Mike Brinson.
+
+2008-03-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsMODULEgui.xml, qucsMODULEdefs.xml: Skipping surrounding
+	brackets for unary expressions in property values.
+
+2008-02-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsMODULEgui.xml: Fixed notation of number suffixes for some
+	of the suffixes in the GUI code.
+
+2008-02-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* potentiometer.va: Added new Potentiometer Verilog-A model.
+	Thanks to Mike!
+
+2008-01-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* hicumL0V1p12.va: Added new device: HICUM L0 v1.12 model.
+
+	* qucsMODULEcore.xml: Declaring global model and instance
+	variables.  Also implemented $given() and $param_given()
+	correctly.
+
+2008-01-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* log_amp.va: Added new verilog device: Logarithmic Amplifier.
+	Thanks to Mike Brinson!
+
+2008-01-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsMODULEcore.xml: Fixed memory by using new function
+	setInternalNode().
+
+2008-01-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsVersion.xml: Allowing none-registered/handled devices to be
+	used with the scripts without initially modifying them.
+
+	* qucsMODULEgui.xml: Added example symbol code for amplifiers and
+	diodes.
+
+2007-12-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* analogfunction.xml: Minor code cleanups.
+
+2007-12-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsMODULEgui.xml: Added symbol code for mosfets.  Also
+	evaluating 'unit' descriptions for properties.
+
+2007-12-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsVersion.xml: Implemented 'forloop' translation code.
+
+	* qucsMODULEgui.xml: Added some code for mosfets.  Still something
+	to do (symbol).
+
+2007-12-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* hicumL2V2p22.va, hicumL2V2p11.va: Avoiding singular matrices due
+	to V(br) <+ 0.0 statements.  Converted to I(br) <+ V(br)/1e-6
+	statements which is a tiny resistor instead of a real short.
+
+	* qucsVersion.xml: 'case' now works for both real and integer
+	arguments. Statements like 'case (0) a: b=1; endcase' are now also
+	correctly translated.  TODO: String comparisons.
+
+2007-12-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* hicumL2V2p22.va: Added new device: HICUM L2 v2.22 model.
+
+	* qucsVersion.xml: Loads of changes enabling the code to translate
+	ddx() statements.  Also improved 'case' handling (variable
+	assignment detection inside 'caseitem' code).  ADMS version 2.2.8
+	is now required (currently in SVN only).
+
+2007-12-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* mod_amp.va: Added new verilog device: Modular OpAmp.  Thanks to
+	Mike Brinson!
+
+2007-12-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsVersion.xml: Implemented $strobe() and $finish() correctly
+	now.  Simple (only for numeric case items) but working 'case'
+	implementation added.
+
+2007-09-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* analogfunction.xml: Initializing local variables in analog
+	functions.
+
+2007-04-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* hicumL2V2p11.va: Applied some changes which makes the file
+	minimally differ from the original source file.
+
+	* qucsMODULEcore.xml: Updated all admst-scripts due to changed CR
+	handling of new adms-2.2.5 release.
+
+	* qucsVersion.xml, analogfunction.xml: Fixed definition of
+	limexp() and its derivative.  Also fixed $vt() translation.
+
+2007-04-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* verilog/qucsMODULEdefs.xml: Fixed bug in (-inf:inf) parameter
+	range handling.
+
+	* verilog/qucsMODULEcore.xml: Moved Verilog evaluation into a
+	initVerilog() and calcVerilog() function.
+
+2007-04-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* verilog/qucsVersion.xml: Some more cleanups.  Also fixed
+	a bug for analog function calls.  Thanks to Laurent.
+
+2007-04-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* verilog/qucsVersion.xml: Cleaned up a bit.  Also fixed
+	some minor bugs.
+
+	* verilog/qucsMODULEcore.xml: Added HB simulation callbacks.
+
+	* verilog/qucsMODULEdefs.xml: Added parameter range extraction
+	functionality.
+
+2006-11-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* verilog/qucsMODULEcore.xml: Optimized memory usage during
+	transient analysis.  Also fixed a bug in the transient analysis.

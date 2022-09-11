@@ -1,0 +1,174 @@
+<!--
+
+  Copyright (C) 2006 Helene Parruitte <parruit@enseirb.fr>
+  Copyright (C) 2006 Bertrand Ardouin <ardouin@xmodtech.com>
+  Copyright (C) 2006, 2007, 2008 Stefan Jahn <stefan@lkcc.org>
+  Copyright (C) 2014 Guilherme Brondani Torri <guitorri@gmail.com>
+
+
+  This is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2, or (at your option)
+  any later version.
+
+-->
+
+<!-- This is a modified version of qusMODULEgui.xml, by Guilherme Brondani Torri -->
+<!-- It transforms the Verilog-A parameters into a JSON model properties file loadable by Qucs -->
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE admst PUBLIC "-//adms//DTD admst 2.0//-" "http://mot-adms.sourceforge.net/xml-files/adms/admst.dtd">
+<admst version="2.3.0" xmlns:admst="http://mot-adms.sourceforge.net/xml-files/admst">
+
+<!-- handling of expression -->
+<admst:template match=":expression">
+  <admst:value-of select="tree/adms/datatypename"/>
+  <admst:apply-templates select="tree" match=":%s" required="yes"/>
+</admst:template>
+
+<admst:template match=":number">
+  <admst:value-of select="value"/>
+  <admst:choose>
+    <admst:when test="[scalingunit='1']">%s</admst:when>
+    <admst:when test="[scalingunit='E']">%sE</admst:when>
+    <admst:when test="[scalingunit='P']">%sP</admst:when>
+    <admst:when test="[scalingunit='T']">%sT</admst:when>
+    <admst:when test="[scalingunit='G']">%sG</admst:when>
+    <admst:when test="[scalingunit='M']">%sM</admst:when>
+    <admst:when test="[scalingunit='k']">%sk</admst:when>
+    <admst:when test="[scalingunit='h']">(%s*1.0e+2)</admst:when>
+    <admst:when test="[scalingunit='D']">(%s*1.0e+1)</admst:when>
+    <admst:when test="[scalingunit='d']">(%s*1.0e-1)</admst:when>
+    <admst:when test="[scalingunit='c']">(%s*1.0e-2)</admst:when>
+    <admst:when test="[scalingunit='m']">%sm</admst:when>
+    <admst:when test="[scalingunit='u']">%su</admst:when>
+    <admst:when test="[scalingunit='n']">%sn</admst:when>
+    <admst:when test="[scalingunit='A']">(%s*1.0e-10)</admst:when>
+    <admst:when test="[scalingunit='p']">%sp</admst:when>
+    <admst:when test="[scalingunit='f']">%sf</admst:when>
+    <admst:when test="[scalingunit='a']">%sa</admst:when>
+    <admst:otherwise>
+      <admst:value-of select="scalingunit"/>
+      <admst:fatal format="%s%s: scaling unit not supported\n"/>
+    </admst:otherwise>
+  </admst:choose>
+</admst:template>
+
+<admst:template match=":mapply_unary">
+  <admst:if test="[name='plus']"> <admst:text format="+"/> </admst:if>
+  <admst:if test="[name='minus']"> <admst:text format="-"/> </admst:if>
+  <admst:if test="[name='not']"> <admst:text format="!"/> </admst:if>
+  <admst:if test="[name='bw_not']"> <admst:text format="~"/> </admst:if>
+  <admst:value-of select="arg1/adms/datatypename"/>
+  <admst:apply-templates select="arg1" match=":%s" required="yes"/>
+</admst:template>
+
+<admst:template match=":string">
+  <admst:value-of select="value"/>%s
+</admst:template>
+
+<!-- recurse, return final value -->
+<admst:template match=":variable">
+  <!--admst:value-of select="name"/>%s-->
+  <admst:apply-templates select="default" match=":expression"/>
+</admst:template>
+
+<!-- handling of device: starting point -->
+<admst:for-each select="/module">
+
+<!-- definition of variables -->
+<admst:value-of select="name"/>
+<admst:variable name="module" select="%s"/>
+<admst:count select="node"/>
+<admst:variable name="nbr_nodes" select="%s"/>
+</admst:for-each>
+
+<!-- no comments on JSON files
+/*
+ * $(module).json - device symbol implementations for $(module) dynamic module
+ *
+ * This is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ */
+ -->
+<admst:open file="$(module)_props.json">
+
+<admst:text format="{\n  &quot;description&quot; : &quot;$module verilog device&quot;,\n"/>
+
+<admst:for-each select="/module">
+
+<!-- find temp and tnom parameters -->
+<admst:variable name="tnom" string="none"/>
+<admst:variable name="temp" string="none"/>
+<admst:for-each select="variable">
+  <admst:if test="[input='yes']">
+    <admst:if test="[upper-case(name)='TNOM']">
+      <admst:variable name="tnom" path="."/>
+    </admst:if>
+    <admst:if test="[upper-case(name)='TEMP']">
+      <admst:variable name="temp" path="."/>
+    </admst:if>
+  </admst:if>
+</admst:for-each>
+
+<!-- extract Verilog-A parameter as model properties -->
+<admst:text format="  &quot;property&quot; : [\n"/>
+
+<admst:for-each select="variable">
+  <admst:if test="[input='yes']">
+    <admst:value-of select="name"/>
+    <admst:text format="    { &quot;name&quot; : &quot;%s&quot;, &quot;value&quot; : &quot;"/>
+    <admst:apply-templates select="default" match=":expression"/>
+    <admst:text format="&quot;, &quot;display&quot; : &quot;false&quot;, &quot;desc&quot; : "/>
+    <admst:choose>
+      <admst:when test="attribute[name='info']">
+        <admst:value-of select="attribute[name='info']/value"/>
+	<admst:text format="&quot;(%s)&quot;, "/>
+      </admst:when>
+      <admst:when test="attribute[name='desc']">
+        <admst:value-of select="attribute[name='desc']/value"/>
+	<admst:text format="&quot;(%s),&quot;, "/>
+      </admst:when>
+      <admst:when test="attribute[name='unit']">
+        <admst:value-of select="attribute[name='unit']/value"/>
+	<admst:text format="&quot;(%s)&quot;, "/>
+      </admst:when>
+      <admst:otherwise>&quot;-&quot;</admst:otherwise>
+    </admst:choose>
+
+    <admst:choose>
+      <admst:when test="attribute[name='unit']">
+        <admst:value-of select="attribute[name='unit']/value"/>
+	<admst:text format="&quot;unit&quot; :  &quot;%s&quot;"/>
+      </admst:when>
+    </admst:choose>
+    <admst:text format="},\n"/>
+  </admst:if>
+</admst:for-each>
+</admst:for-each>
+
+<!-- close property array -->
+<admst:text format="  ],\n"/>
+
+<!--admst:text format="\n  &quot;tx&quot; = x2 + 4;\n  &quot;ty&quot; = y1 + 4;\n"/-->
+<admst:text format="\n  &quot;tx&quot; : 4,\n  &quot;ty&quot; : 4,\n"/>
+<admst:text format="  &quot;Model&quot; : &quot;$module&quot;,\n  &quot;NetName &quot; : &quot;T&quot;,\n"/>
+
+<admst:text format="\n\n"/>
+
+<admst:text format="\n  &quot;SymName&quot; : &quot;$module&quot;,\n"/>
+
+<admst:text format="  &quot;BitmapFile&quot; : &quot;$module&quot;,\n"/>
+
+<!-- put in here symbol drawing code and terminal definitions -->
+<admst:text format="\n}"/>
+
+<!-- close -->
+</admst:open>
+
+<admst:message format="$(module)_props.json: file created\n"/>
+</admst>

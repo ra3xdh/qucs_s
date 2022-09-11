@@ -1,0 +1,26 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/DC_AC_gain_prj/gain.sch
+
+.Def:singleOPV _net4 _net0 _net9 _net3 _net7
+MOSFET:T3 _net0 _net1 _net2 _net3 Type="nfet" Vt0="1.0 V" Kp="2e-5" Gamma="0.0" Phi="0.6 V" Lambda="0.0" Rd="0.0 Ohm" Rs="0.0 Ohm" Rg="0.0 Ohm" Is="1e-14 A" N="1.0" W="120 um" L="0.8 um" Ld="0.0" Tox="0.1 um" Cgso="0.0" Cgdo="0.0" Cgbo="0.0" Cbd="0.0 F" Cbs="0.0 F" Pb="0.8 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="0.0" Nss="0.0" Tpg="1" Uo="600.0" Rsh="0.0" Nrd="1" Nrs="1" Cj="0.0" Js="0.0" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+MOSFET:T4 _net4 _net5 _net2 _net3 Type="nfet" Vt0="1.0 V" Kp="2e-5" Gamma="0.0" Phi="0.6 V" Lambda="0.0" Rd="0.0 Ohm" Rs="0.0 Ohm" Rg="0.0 Ohm" Is="1e-14 A" N="1.0" W="120 um" L="0.8 um" Ld="0.0" Tox="0.1 um" Cgso="0.0" Cgdo="0.0" Cgbo="0.0" Cbd="0.0 F" Cbs="0.0 F" Pb="0.8 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="0.0" Nss="0.0" Tpg="1" Uo="600.0" Rsh="0.0" Nrd="1" Nrs="1" Cj="0.0" Js="0.0" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+MOSFET:T6 _net6 _net6 _net3 _net3 Type="nfet" Vt0="1.0 V" Kp="2e-5" Gamma="0.0" Phi="0.6 V" Lambda="0.0" Rd="0.0 Ohm" Rs="0.0 Ohm" Rg="0.0 Ohm" Is="1e-14 A" N="1.0" W="15 um" L="5 um" Ld="0.0" Tox="0.1 um" Cgso="0.0" Cgdo="0.0" Cgbo="0.0" Cbd="0.0 F" Cbs="0.0 F" Pb="0.8 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="0.0" Nss="0.0" Tpg="1" Uo="600.0" Rsh="0.0" Nrd="1" Nrs="1" Cj="0.0" Js="0.0" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+MOSFET:T5 _net6 _net2 _net3 _net3 Type="nfet" Vt0="1.0 V" Kp="2e-5" Gamma="0.0" Phi="0.6 V" Lambda="0.0" Rd="0.0 Ohm" Rs="0.0 Ohm" Rg="0.0 Ohm" Is="1e-14 A" N="1.0" W="15 um" L="5 um" Ld="0.0" Tox="0.1 um" Cgso="0.0" Cgdo="0.0" Cgbo="0.0" Cbd="0.0 F" Cbs="0.0 F" Pb="0.8 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="0.0" Nss="0.0" Tpg="1" Uo="600.0" Rsh="0.0" Nrd="1" Nrs="1" Cj="0.0" Js="0.0" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+MOSFET:T8 _net6 _net7 _net3 _net3 Type="nfet" Vt0="1.0 V" Kp="2e-5" Gamma="0.0" Phi="0.6 V" Lambda="0.0" Rd="0.0 Ohm" Rs="0.0 Ohm" Rg="0.0 Ohm" Is="1e-14 A" N="1.0" W="60 um" L="5 um" Ld="0.0" Tox="0.1 um" Cgso="0.0" Cgdo="0.0" Cgbo="0.0" Cbd="0.0 F" Cbs="0.0 F" Pb="0.8 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="0.0" Nss="0.0" Tpg="1" Uo="600.0" Rsh="0.0" Nrd="1" Nrs="1" Cj="0.0" Js="0.0" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+R:R1 _net1 _net8 R="4k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C1 _net8 _net7 C="4p" V=""
+MOSFET:T1 _net5 _net5 _net9 _net9 Type="pfet" Vt0="-1.0 V" Kp="2e-5" Gamma="0.0" Phi="0.6 V" Lambda="0.0" Rd="0.0 Ohm" Rs="0.0 Ohm" Rg="0.0 Ohm" Is="1e-14 A" N="1.0" W="200 um" L="5 um" Ld="0.0" Tox="0.1 um" Cgso="0.0" Cgdo="0.0" Cgbo="0.0" Cbd="0.0 F" Cbs="0.0 F" Pb="0.8 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="0.0" Nss="0.0" Tpg="1" Uo="600.0" Rsh="0.0" Nrd="1" Nrs="1" Cj="0.0" Js="0.0" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+MOSFET:T2 _net5 _net1 _net9 _net9 Type="pfet" Vt0="-1.0 V" Kp="2e-5" Gamma="0.0" Phi="0.6 V" Lambda="0.0" Rd="0.0 Ohm" Rs="0.0 Ohm" Rg="0.0 Ohm" Is="1e-14 A" N="1.0" W="200 um" L="5 um" Ld="0.0" Tox="0.1 um" Cgso="0.0" Cgdo="0.0" Cgbo="0.0" Cbd="0.0 F" Cbs="0.0 F" Pb="0.8 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="0.0" Nss="0.0" Tpg="1" Uo="600.0" Rsh="0.0" Nrd="1" Nrs="1" Cj="0.0" Js="0.0" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+MOSFET:T7 _net1 _net7 _net9 _net9 Type="pfet" Vt0="-1.0 V" Kp="2e-5" Gamma="0.0" Phi="0.6 V" Lambda="0.0" Rd="0.0 Ohm" Rs="0.0 Ohm" Rg="0.0 Ohm" Is="1e-14 A" N="1.0" W="80 um" L="1.2 um" Ld="0.0" Tox="0.1 um" Cgso="0.0" Cgdo="0.0" Cgbo="0.0" Cbd="0.0 F" Cbs="0.0 F" Pb="0.8 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="0.0" Nss="0.0" Tpg="1" Uo="600.0" Rsh="0.0" Nrd="1" Nrs="1" Cj="0.0" Js="0.0" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+Idc:I1 _net6 _net9 I="5 uA"
+.Def:End
+
+Vac:V4 Input gnd U="1 uV" f="2 kHz" Phase="0" Theta="0"
+R:R2 Output _net0 R="50k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R1 gnd Output R="100k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vdc:V3 _net1 gnd U="2.5 V"
+Vdc:V6 _net2 gnd U="-2.5 V"
+.AC:AC1 Type="log" Start="1" Stop="10 MHz" Points="200" Noise="no"
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+Eqn:Eqn1 Gain="dB(Output.v/Input.v)" Phase="phase(Output.v/Input.v)" Export="yes"
+Sub:OPV1 _net0 Input _net1 _net2 Output Type="singleOPV"
+R:R3 _net0 gnd R="1.7k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"

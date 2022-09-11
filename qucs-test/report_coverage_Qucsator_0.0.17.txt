@@ -1,0 +1,201 @@
+
+----------------------------------------
+Report on Qucs components test coverage
+----------------------------------------
+### Kind: LUMPED
+----------------------------------------
+Component          | Simulations Covered 
+----------------------------------------
+Amplifier          |  ---       
+Attenuator         |  ---       
+BiasT              | SP, DC     
+Capacitor          | AC, SW, SP, TR, DC 
+Circulator         |  ---       
+Coupler            |  ---       
+Ground             |  ---       
+Gyrator            |  ---       
+Hybrid             |  ---       
+Inductor           | AC, TR, SP, SW, DC 
+Isolator           |  ---       
+Mutual             |  ---       
+Mutual2            |  ---       
+MutualX            |  ---       
+Phaseshifter       |  ---       
+RFedd              |  ---       
+RFedd2P            |  ---       
+Relais             | TR         
+Resistor           | AC, HB, SW, SP, TR, DC 
+SubCirPort         |  ---       
+Switch             | TR         
+Transformer        | SW, AC, TR, DC 
+dcBlock            | AC, DC     
+dcFeed             |  ---       
+symTrafo           | SP, TR, DC 
+----------------------------------------
+### Kind: SOURCE
+----------------------------------------
+Component          | Simulations Covered 
+----------------------------------------
+AM_Modulator       |  ---       
+Ampere_ac          | TR, DC     
+Ampere_dc          | AC, TR, SW, DC 
+Ampere_noise       |  ---       
+CCCS               | AC, TR, DC 
+CCVS               | AC, TR, DC 
+Noise_ii           |  ---       
+Noise_iv           |  ---       
+Noise_vv           |  ---       
+PM_Modulator       |  ---       
+Source_ac          | AC, SP, DC 
+VCCS               | AC, SP, TR, DC 
+VCVS               | AC, TR     
+Volt_ac            | AC, HB, SW, SP, TR, DC 
+Volt_dc            | AC, SW, SP, TR, DC 
+Volt_noise         |  ---       
+iExp               |  ---       
+iFile              |  ---       
+iPulse             |  ---       
+iRect              |  ---       
+vExp               |  ---       
+vPulse             | TR         
+vRect              | TR         
+----------------------------------------
+### Kind: PROBE
+----------------------------------------
+Component          | Simulations Covered 
+----------------------------------------
+iProbe             | AC, TR, SP, SW, DC 
+vProbe             | SW, SP, TR, DC 
+----------------------------------------
+### Kind: TRANS
+----------------------------------------
+Component          | Simulations Covered 
+----------------------------------------
+BondWire           |  ---       
+CPWgap             |  ---       
+CPWopen            |  ---       
+CPWshort           |  ---       
+CPWstep            |  ---       
+CoaxialLine        |  ---       
+Coplanar           |  ---       
+CoupledTLine       |  ---       
+MScorner           |  ---       
+MScoupled          | SP         
+MScross            |  ---       
+MSgap              |  ---       
+MSlange            |  ---       
+MSline             | SP         
+MSmbend            |  ---       
+MSopen             | SP         
+MSrstub            |  ---       
+MSstep             | SP         
+MStee              | SP         
+MSvia              |  ---       
+RLCG               |  ---       
+RectLine           |  ---       
+Substrate          | SP         
+TLine              | SP         
+TLine_4Port        |  ---       
+TwistedPair        |  ---       
+----------------------------------------
+### Kind: NONLINEAR
+----------------------------------------
+Component          | Simulations Covered 
+----------------------------------------
+BJT                |  ---       
+Diac               |  ---       
+Diode              | AC, HB, SW, SP, TR, DC 
+EqnDefined         | AC, TR, DC 
+JFET               | TR         
+MOSFET             |  ---       
+OpAmp              | AC, SP, TR, DC 
+Thyristor          |  ---       
+Triac              |  ---       
+TunnelDiode        |  ---       
+----------------------------------------
+### Kind: VERILOGA
+----------------------------------------
+Component          | Simulations Covered 
+----------------------------------------
+EKV26MOS           |  ---       
+HBT_X              |  ---       
+MESFET             |  ---       
+bsim3v34nMOS       |  ---       
+bsim3v34pMOS       |  ---       
+bsim4v30nMOS       | SW, DC     
+bsim4v30pMOS       | SW, DC     
+hic0_full          |  ---       
+hic2_full          |  ---       
+hicumL0V1p2        |  ---       
+hicumL0V1p2g       |  ---       
+hicumL0V1p3        |  ---       
+hicumL2V2p1        | SP, DC     
+hicumL2V2p23       |  ---       
+hicumL2V2p24       |  ---       
+hicumL2V2p31n      |  ---       
+log_amp            |  ---       
+mod_amp            |  ---       
+nigbt              |  ---       
+photodiode         |  ---       
+phototransistor    |  ---       
+potentiometer      |  ---       
+vcresistor         |  ---       
+----------------------------------------
+### Kind: DIGITAL
+----------------------------------------
+Component          | Simulations Covered 
+----------------------------------------
+DLS_1ton           |  ---       
+DLS_nto1           |  ---       
+D_FlipFlop         |  ---       
+Digi_Source        |  ---       
+JK_FlipFlop        |  ---       
+Logical_AND        |  ---       
+Logical_Buf        |  ---       
+Logical_Inv        | TR         
+Logical_NAND       |  ---       
+Logical_NOR        | TR         
+Logical_OR         | TR         
+Logical_XNOR       |  ---       
+Logical_XOR        |  ---       
+RS_FlipFlop        |  ---       
+andor4x2           |  ---       
+andor4x3           |  ---       
+andor4x4           |  ---       
+binarytogrey4bit   |  ---       
+comp_1bit          |  ---       
+comp_2bit          |  ---       
+comp_4bit          |  ---       
+dff_SR             |  ---       
+dmux2to4           |  ---       
+dmux3to8           |  ---       
+dmux4to16          |  ---       
+fa1b               |  ---       
+fa2b               |  ---       
+gatedDlatch        |  ---       
+greytobinary4bit   |  ---       
+ha1b               |  ---       
+hpribin4bit        |  ---       
+jkff_SR            |  ---       
+logic_0            |  ---       
+logic_1            |  ---       
+mux2to1            |  ---       
+mux4to1            |  ---       
+mux8to1            |  ---       
+pad2bit            |  ---       
+pad3bit            |  ---       
+pad4bit            |  ---       
+tff_SR             |  ---       
+----------------------------------------
+### Kind: FILE
+----------------------------------------
+Component          | Simulations Covered 
+----------------------------------------
+SParamFile         |  ---       
+SpiceFile          |  ---       
+Subcircuit         | AC, SW, SP, TR, DC 
+----------------------------------------
+----------------------------------------
+All Available Simulations:
+AC_Sim, DC_Sim, Digi_Sim, HB_Sim, Optimize_Sim, Param_Sweep, SP_Sim, TR_Sim
+----------------------------------------

@@ -69,7 +69,7 @@ QucsAttenuator::QucsAttenuator()
 
   QAction *about = new QAction(tr("About Qt..."), this);
   helpMenu->addAction(about);
-  connect(about, SIGNAL(activated()), SLOT(slotHelpAboutQt()));
+  connect(about, SIGNAL(triggered(bool)), SLOT(slotHelpAboutQt()));
 
   menuBar()->addMenu(fileMenu);
   menuBar()->addSeparator();
@@ -238,7 +238,7 @@ void QucsAttenuator::slotQuit()
   tmp = y();
   tmp = width();
   tmp = height();
-
+  Q_UNUSED(tmp);
   qApp->quit();
 }
 

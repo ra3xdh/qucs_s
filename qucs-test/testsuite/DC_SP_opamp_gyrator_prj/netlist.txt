@@ -1,0 +1,13 @@
+# Qucs 0.0.18  /Users/guitorri/git/qucs-test/testsuite/DC_SP_opamp_gyrator_prj/opamp_gyrator.sch
+
+C:C1 _net0 _net1 C="1 uF" V=""
+Pac:P1 _net0 gnd Num="1" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+OpAmp:OP1 _net1 _net2 _net2 G="1e6" Umax="15 V"
+R:R1 _net0 _net2 R="10 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 gnd _net1 R="500k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Pac:P2 _net3 gnd Num="2" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+R:R4 gnd _net3 R="500k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R3 _net4 _net3 R="10 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+L:L1 gnd _net4 L="5 H" I=""
+.SP:SP1 Type="log" Start="1 Hz" Stop="10 kHz" Points="101" Noise="no" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"

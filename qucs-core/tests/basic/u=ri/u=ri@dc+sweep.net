@@ -1,0 +1,12 @@
+# Qucs 0.0.15  /tmp/ac.sch
+
+R:R1 _net0 _net1 R="Rsweep" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net2 _net3 R="1 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+IProbe:current _net3 _net4
+CCVS:SRC1 _net1 _net2 _net4 gnd G="Rsweep" T="0"
+Eqn:Eqn1 crashif="assert(diff < 1e-6)" diff="(abs(current.I-1.0))" Export="yes"
+Vdc:V1 _net0 gnd U="1 V"
+.SW:SW1 Sim="DC1" Type="lin" Param="Rsweep" Start="1 Ohm" Stop="1000 Ohm" Points="10"
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+R:R4 _net1 _net2 R="1e12" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R3 gnd _net4 R="1e12" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"

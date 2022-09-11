@@ -1,0 +1,16 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `S' in equation `Attenuation2' not yet defined
+checker notice, variable `S' in equation `Reflect' not yet defined
+checker notice, variable `S' in equation `Attenuation3' not yet defined
+checker notice, variable `S' in equation `Decoupling' not yet defined
+netlist content
+      3 TLIN instances
+      1 R instances
+      3 Pac instances
+      1 SP instances
+creating netlist...
+checker notice, variable `S' in equation `Attenuation2' not yet defined
+checker notice, variable `S' in equation `Reflect' not yet defined
+checker notice, variable `S' in equation `Attenuation3' not yet defined
+checker notice, variable `S' in equation `Decoupling' not yet defined

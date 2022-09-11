@@ -1,0 +1,177 @@
+%
+% This document describes the ee know-how used in Qucs.
+%
+% Copyright (C) 2003, 2004, 2005, 2006, 2007 Stefan Jahn <stefan@lkcc.org>
+% Copyright (C) 2004 Michael Margraf <Michael.Margraf@alumni.TU-Berlin.DE>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+\documentclass[10pt,a4paper,oneside]{report}
+\usepackage{geometry}
+\usepackage{epsfig}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{stmaryrd}
+\usepackage[amssymb]{SIunits}
+\usepackage{graphics}
+\usepackage{float}
+\usepackage{psfrag}
+\usepackage{float}
+\usepackage{relsize}
+\usepackage[section]{placeins}
+\usepackage{listings}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage[a4paper,
+	bookmarks,
+	bookmarksopen=true,
+	bookmarksnumbered=true,
+	pdfpagemode=UseOutlines,
+	baseurl=(http://qucs.sourceforge.net),
+	pdfstartview=FitH,
+	colorlinks,
+	linkcolor=black,
+	urlcolor=black,
+	citecolor=black,
+	backref=false,
+	plainpages=false,
+	pagebackref=false]{hyperref}
+
+% Compatibility code for LaTeX and pdfTeX.
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+  \pdffalse
+\else
+  \ifx\pdfoutput\relax
+    \pdffalse
+  \else
+    \ifcase\pdfoutput
+      \pdffalse
+    \else
+      \pdftrue
+    \fi
+  \fi
+\fi
+
+% Only evaluated if run using pdfTeX.
+\ifpdf
+\pdfcompresslevel 9
+\pdfinfo {
+  /Title   (Qucs)
+  /Subject (Technical Papers)
+  /Author  (Stefan Jahn and Michael Margraf and Vincent Habchi
+	and Raimund Jacob)
+}
+\fi
+
+% Title page definitions.
+\makeatletter
+\renewcommand{\maketitle}{\begin{titlepage}%
+    \setlength{\parindent}{0pt}
+    \vspace*{3cm}
+    \begin{flushleft}
+      \textbf{\begin{huge}\@title\end{huge}}
+    \end{flushleft}
+    \hrule height 3pt
+    \begin{flushright}
+      \begin{LARGE}Technical Papers\end{LARGE}
+    \end{flushright}
+    \vfill
+    \begin{flushright}
+      \begin{Large}\@author\end{Large}
+    \end{flushright}
+    \hrule height 3pt
+    \vspace*{24pt}
+
+Copyright \copyright{} 2003, 2004, 2005, 2006, 2007 Stefan Jahn
+\textless stefan@lkcc.org\textgreater
+
+Copyright \copyright{} 2003, 2004, 2005, 2006, 2007 Michael Margraf
+\textless michael.margraf@alumni.tu-berlin.de\textgreater
+
+Copyright \copyright{} 2004, 2005 Vincent Habchi, F5RCS
+\textless 10.50@free.fr\textgreater
+
+Copyright \copyright{} 2005 Raimund Jacob
+\textless raimi@lkcc.org\textgreater
+
+    \vspace*{12pt}
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation.  A copy
+of the license is included in the section entitled "GNU Free
+Documentation License".
+
+    \vspace*{1cm}
+
+    \end{titlepage}%
+    \setcounter{footnote}{0}%
+}
+\makeatother
+
+\author{Stefan Jahn\\Michael Margraf\\Vincent Habchi\vspace*{6pt}\\Raimund Jacob}
+\title{Qucs}
+\date{}
+
+% Here finally starts everything.
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\setlength{\parindent}{0pt}
+\newpage
+
+\newcommand{\safeinclude}[1]{%
+  \IfFileExists{#1.tex}{%
+    \include{#1}%
+  }{%
+ 	\PackageError{technical}{#1: it's not there}{go find it}%
+	\stop%
+  }%
+}
+
+\safeinclude{sparameter}
+\safeinclude{noisewaves}
+\safeinclude{dcanalysis}
+\safeinclude{acanalysis}
+\safeinclude{acnoise}
+\safeinclude{transient}
+\safeinclude{hbanalysis}
+\safeinclude{hbnoise}
+\safeinclude{lineardevices}
+\safeinclude{devices}
+\safeinclude{microstrip}
+\safeinclude{coplanar}
+\safeinclude{transline}
+\safeinclude{synthesis}
+\safeinclude{maths}
+
+\begin{appendix}
+
+% Release specific: Uncomment the grammar for Latex2HTML.
+% Also remove LaTeX commands at the beginning of the 'technical.bbl' file.
+\include{grammar-common}
+\include{grammar-qucs}
+\include{grammar-data}
+
+\chapter{Bibliography}
+\addcontentsline{toc}{chapter}{Bibliography}
+% Release specific: Uncomment the following three lines.
+\def\chapter*{}% to suppress any header
+\def\section*{}% just to be sure
+\renewcommand{\bibname}{}
+\bibliographystyle{IEEEtran}
+\bibliography{literature}
+
+\end{appendix}
+
+\nocite{*}
+
+\end{document}

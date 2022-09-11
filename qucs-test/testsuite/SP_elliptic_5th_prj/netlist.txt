@@ -1,0 +1,13 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/SP_elliptic_5th_prj/elliptic_5th.sch
+
+C:C1 gnd _net0 C="35.69 pF" V=""
+C:C2 _net0 _net1 C="63.31 pF" V=""
+L:L1 _net0 _net1 L="31.77 nH" I=""
+C:C4 gnd _net1 C="57.26 pF" V=""
+C:C3 _net1 _net2 C="18.73 pF" V=""
+L:L2 _net1 _net2 L="61.68 nH" I=""
+C:C5 gnd _net2 C="54.01 pF" V=""
+Pac:P2 _net2 gnd Num="2" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Pac:P1 _net0 gnd Num="1" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Eqn:Eqn1 S11_dB="dB(S[1,1])" S21_dB="dB(S[2,1])" Export="yes"
+.SP:SP1 Type="lin" Start="1 MHz" Stop="150 MHz" Points="300" Noise="no" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"

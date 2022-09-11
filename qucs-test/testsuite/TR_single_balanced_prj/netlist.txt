@@ -1,0 +1,13 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/TR_single_balanced_prj/single_balanced.sch
+
+R:R1 pos _net0 R="10k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 neg _net0 R="10k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vdc:V1 _net0 gnd U="5 V"
+Vac:RF _net1 gnd U="0.2 V" f="1 MHz" Phase="0" Theta="0"
+Vac:LO _net2 _net3 U="3 V" f="10 MHz" Phase="0" Theta="0"
+MOSFET:T3 _net1 _net4 gnd gnd Type="nfet" Vt0="-1.0 V" Kp="2e-5" Gamma="0.0" Phi="0.6 V" Lambda="0.0" Rd="0.0 Ohm" Rs="0.0 Ohm" Rg="0.0 Ohm" Is="1e-14 A" N="1.0" W="1 um" L="1 um" Ld="0.0" Tox="0.1 um" Cgso="0.0" Cgdo="0.0" Cgbo="0.0" Cbd="0.0 F" Cbs="0.0 F" Pb="0.8 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="0.0" Nss="0.0" Tpg="1" Uo="600.0" Rsh="0.0" Nrd="1" Nrs="1" Cj="0.0" Js="0.0" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+MOSFET:T1 _net2 pos _net4 _net4 Type="nfet" Vt0="1.0 V" Kp="2e-5" Gamma="0.0" Phi="0.6 V" Lambda="0.0" Rd="0.0 Ohm" Rs="0.0 Ohm" Rg="0.0 Ohm" Is="1e-14 A" N="1.0" W="1 um" L="1 um" Ld="0.0" Tox="0.1 um" Cgso="0.0" Cgdo="0.0" Cgbo="0.0" Cbd="0.0 F" Cbs="0.0 F" Pb="0.8 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="0.0" Nss="0.0" Tpg="1" Uo="600.0" Rsh="0.0" Nrd="1" Nrs="1" Cj="0.0" Js="0.0" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+MOSFET:T2 _net3 neg _net4 _net4 Type="nfet" Vt0="1.0 V" Kp="2e-5" Gamma="0.0" Phi="0.6 V" Lambda="0.0" Rd="0.0 Ohm" Rs="0.0 Ohm" Rg="0.0 Ohm" Is="1e-14 A" N="1.0" W="1 um" L="1 um" Ld="0.0" Tox="0.1 um" Cgso="0.0" Cgdo="0.0" Cgbo="0.0" Cbd="0.0 F" Cbs="0.0 F" Pb="0.8 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="0.0" Nss="0.0" Tpg="1" Uo="600.0" Rsh="0.0" Nrd="1" Nrs="1" Cj="0.0" Js="0.0" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+Vdc:V4 _net3 gnd U="5 V"
+Eqn:Eqn1 Vout="pos.Vt-neg.Vt" Spectrum="dB(Time2Freq(Vout,time))" Export="yes"
+.TR:TR1 Type="lin" Start="0" Stop="2.0 us" Points="401" IntegrationMethod="Trapezoidal" Order="2" InitialStep="1 ns" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1 pA" vntol="1 uV" Temp="26.85" LTEreltol="1e-3" LTEabstol="1e-6" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"

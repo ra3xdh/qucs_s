@@ -1,0 +1,23 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `V1.i' in equation `a1' not yet defined
+checker notice, variable `P1.v' in equation `a1' not yet defined
+checker notice, variable `V1.i' in equation `b1' not yet defined
+checker notice, variable `P1.v' in equation `b1' not yet defined
+checker notice, variable `V2.i' in equation `b2' not yet defined
+checker notice, variable `P2.v' in equation `b2' not yet defined
+checker notice, variable `acfrequency' in equation `group_delay' not yet defined
+netlist content
+      1 AC instances
+      2 C instances
+      1 L instances
+      2 R instances
+      2 Vac instances
+creating netlist...
+checker notice, variable `V1.i' in equation `a1' not yet defined
+checker notice, variable `P1.v' in equation `a1' not yet defined
+checker notice, variable `V1.i' in equation `b1' not yet defined
+checker notice, variable `P1.v' in equation `b1' not yet defined
+checker notice, variable `V2.i' in equation `b2' not yet defined
+checker notice, variable `P2.v' in equation `b2' not yet defined
+checker notice, variable `acfrequency' in equation `group_delay' not yet defined

@@ -1,0 +1,181 @@
+%
+% This document contains the chapter about harmonic balance noise analysis.
+%
+% Copyright (C) 2005 Stefan Jahn <stefan@lkcc.org>
+% Copyright (C) 2005 Michael Margraf <Michael.Margraf@alumni.TU-Berlin.DE>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+\chapter{Harmonic Balance Noise Analysis}
+\label{sec:hb_noise}
+
+Once a harmonic balance simulation is solved a cyclostationary
+noise analysis can
+be performed. This results in the sideband noise of each harmonic
+(including DC, i.e. base band noise). The method described here
+is based on the principle of small-signal noise. That is, the
+noise power is assumed small enough (compared to the signal power
+and its harmonics) to neglect the higher order mixing products.
+This procedure is the standard concept in CAE and allows for a
+quite simple and time-saving algorithm: Use the Jacobian to
+calculate a conversion matrix and then apply the noise correlation
+matrix to it. Two important publications for HB noise simulation
+exist that were used for the next subsection \cite{Roychowdhury},
+\cite{Rizzoli}.
+
+\addvspace{12pt}
+
+Figure \ref{fig:hbn_concept} shows the equivalent circuit for
+starting the HB noise analysis. At every connection between
+linear and non-linear subcircuit, there are two noise current
+sources: one stemming from the linear subcircuit and one
+stemming from the non-linear subcircuit.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=9cm]{hbn_concept}
+\end{center}
+\caption{principle of harmonic balance noise model}
+\label{fig:hbn_concept}
+\end{figure}
+\FloatBarrier
+
+
+\section{The Linear Subcircuit}
+
+The noise stemming from the linear subcircuit is calculated
+in two steps:
+
+\begin{enumerate}
+\item An AC noise analysis (see section \ref{sec:acnoise_algo}) is
+   performed for the interconnecting nodes of linear and non-linear
+   subcircuit. This results in the noise-voltage correlation matrix
+   $(\boldsymbol{\underline{C}}_{Z,lin})_{N\times N}$.
+\item The matrix $(\boldsymbol{\underline{C}}_{Z,lin})_{N\times N}$
+   is converted into a noise-current correlation matrix (see section
+   \ref{sec:noiseTrans}):
+   \begin{equation}
+     (\boldsymbol{\underline{C}}_{Y,lin})_{N\times N} =
+     \boldsymbol{\hat{Y}} \cdot
+     \boldsymbol{\underline{C}}_{Z,lin} \cdot
+     \boldsymbol{\hat{Y}}^+
+   \end{equation}
+   where $\boldsymbol{\hat{Y}}$ is taken from equation \ref{eqn:HBeqn}.
+\end{enumerate}
+
+Remark: If no explicit noise sources exist in the linear subcircuit,
+$(\boldsymbol{\underline{C}}_{Z,lin})_{N\times N}$ can be computed
+much faster by using Bosma's theorem (equation \ref{eqn:bosma}).
+
+
+\section{The Non-Linear Subcircuit}
+
+The noise in the non-linear part of the circuit is calculated
+by using the quasi-static approach, i.e. for every moment in
+time the voltages and currents are regarded as a time-dependend
+bias point. The noise properties of these bias points are
+used for the noise calculation.
+
+\addvspace{12pt}
+
+Remark: It is not clear whether this approach creates a valid result
+for noise with long-time correlation (e.g. 1/f noise), too. But up
+to now, no other methods were proposed and some publications
+reported to have achieved reasonable results with this approach
+and 1/f noise.
+
+\addvspace{12pt}
+
+Calculating the noise-current correlation matrix $(\underline{C}_{Y,nl})_{N\times N}$
+needs several steps. The DC bias point taken from the result of the
+HB simulation is the beginning. Its values are the bias used to build
+the correlation matrix $(\underline{C}_{Y,DC})$. Each part is a $K\times K$
+diagonal submatrix. The values are the power-spectral densities (PSD)
+for each harmonic frequency:
+\begin{equation}
+C_{Y,DC}(\omega_R) \qquad C_{Y,DC}(\omega_0 + \omega_R) \qquad
+C_{Y,DC}(2\cdot\omega_0 + \omega_R) \qquad \dots
+\end{equation}
+where $\omega_R$ is the desired noise frequency.
+
+\addvspace{12pt}
+
+The second step creates the cyclostationary modulation that is applied
+to the DC correlation matrix. The modulation factor $M(t)$ originates
+from the current power spectral density $S_i$ of each time step
+normalized to its DC bias value:
+\begin{equation}
+M(t) = \dfrac{S_i\left( u(t) \right)}{S_i(u_{DC})}
+     = \dfrac{S_i\left( u(t) \right)}{C_{Y,DC}}
+\end{equation}
+Note that this equation only holds if the frequency dependency of
+$S_i$ is the same for every bias, so that $M(t)$ is frequency
+independent. This demand is fullfilled for all practical models.
+So the above-mentioned equation can be derived for an arbitrary
+noise frequency $\omega_R$.
+
+\addvspace{12pt}
+
+The third step transforms $M(t)$ into frequency domain. This is done
+by the procedure described in equation \ref{eqn:sMatFFT}, resulting
+in a Toeplitz matrix.\\
+The fourth and final step calculates the desired correlation matrix:
+\begin{equation}
+(\underline{C}_{Y,nl}) = M \cdot (\underline{C}_{Y,DC}) \cdot M^+
+\end{equation}
+
+
+\section{Noise Conversion}
+
+As the noise of linear and non-linear components are uncorrelated,
+the noise-voltage correlation matrix at the interconnecting ports
+can now be calculated:
+
+\begin{equation}
+\boldsymbol{C_Z} = \boldsymbol{J}_F^{-1} \cdot (\boldsymbol{C}_{Y,lin} + \boldsymbol{C}_{Y,nl})
+       \cdot (\boldsymbol{J}_F^{-1})^+
+\end{equation}
+
+here $\boldsymbol{J}_F^{-1}$ is the inverse of the Jacobian matrix taken
+from the last HB iteration step (where it already was inverted). Note
+that it needs to be the precise Jacobian matrix. I.e. it must be taken
+from an iteration step very close to the solution, without any convergence
+helpers, and with a precise FFT algorithm (e.g. the multi-dimensional FFT).
+
+\addvspace{12pt}
+
+Finally, the noise voltages from the interconnecting ports have to be used
+to compute all other noise voltages. This is straight forward:
+
+\begin{enumerate}
+\item Convert the noise-voltage correlation matrix into the noise-current
+   correlation matrix.
+\item Expand the matrix to the whole circuit, i.e. fill it up with zeros.
+\item Perform an AC noise analysis for all nodes of interest.
+\end{enumerate}
+
+The whole algorithm has to be performed for every noise frequency
+$\omega_R$ of interest.
+
+
+\section{Phase and Amplitude Noise}
+
+The harmonic balance noise analysis calculates the noise power spectral
+density $S_{uu,k}(\omega_R)$ at the noise frequency $\omega_R$ of the
+$k$-th harmonic. The SSB phase and amplitude noise normalized to the
+carrier can be obtained by using the symmetry between positive and
+negative harmonic numbers:
+\begin{equation}
+\left< \Phi_k \Phi_{-k}^* \right> =
+ \dfrac{S_{uu,k} + S_{uu,-k} - 2\cdot \text{Re}\left( C_{Z,k,-k}\cdot\exp(-j\cdot 2\cdot\phi_k) \right)}
+       {| U_k |^2}
+\end{equation}
+\begin{equation}
+\left< A_k A_{-k}^* \right> =
+ \dfrac{S_{uu,k} + S_{uu,-k} + 2\cdot \text{Re}\left( C_{Z,k,-k}\cdot\exp(-j\cdot 2\cdot\phi_k) \right)}
+       {| U_k |^2}
+\end{equation}
+with $U_k = |U_k| \cdot \exp(j\cdot\phi_k)$ being the $k$-th harmonic.

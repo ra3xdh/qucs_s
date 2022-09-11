@@ -1,0 +1,6 @@
+# Qucs 0.0.18  /Users/guilherme/.qucs/testset_prj/TR_resistor.sch
+
+.TR:TR1 Type="lin" Start="0" Stop="1 ms" Points="101" IntegrationMethod="Trapezoidal" Order="2" InitialStep="1 ns" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1 pA" vntol="1 uV" Temp="26.85" LTEreltol="1e-3" LTEabstol="1e-6" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"
+R:R2 Vout gnd R="50 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R1 Vin Vout R="50 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vac:V1 Vin gnd U="10 V" f="1kHz" Phase="0" Theta="0"

@@ -1,0 +1,5 @@
+## Project dir, Comment: it parses to the left of ','
+TR_555_Fig9_prj, timeout if code in -O0 timed out 60 s
+DC_SP_HICUM-fig10_prj,          non-GPL model removed
+DC_SW_bsim4v30nMOS_Ids_Vgs_prj, non-GPL model removed
+DC_SW_bsim4v30pMOS_Ids_Vgs_prj, non-GPL model removed

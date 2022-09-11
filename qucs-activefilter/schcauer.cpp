@@ -173,7 +173,7 @@ void SchCauer::calcBandPass()
         R4 = (Kv1/mu)*sqrt(C/A)*R5;
         R6 = mu*R2/(mu-1);
         R7 = mu*R2;
-
+        
         current_section.N = cnt;
         current_section.R1 = 1000*R1;
         current_section.R2 = 1000*R2;
@@ -187,6 +187,7 @@ void SchCauer::calcBandPass()
 
         cnt++;
     }
+    Q_UNUSED(R7);
 }
 
 void SchCauer::calcBandStop()

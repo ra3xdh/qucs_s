@@ -1,0 +1,526 @@
+2011-03-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Allow HICUM/L0 V1.2G to be detected.
+
+2011-03-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Fixed PULSE source statement translation
+	(period time) in SPICE converter.
+
+2010-10-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_vcd.cpp: Code cleanup for free()'ing VCD changesets.
+
+2010-04-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_vcd.cpp: Improved speed of VCD data processing a lot.
+	Still need to verify if all working OK.
+
+2010-03-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_producer.cpp, check_spice.cpp: Added translation of
+	HiCUM/L2 2.24 models.
+
+2009-10-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* matlab_producer.cpp: Checking for endianness at runtime.
+	Improves portability for e.g. MacOS universal binaries.
+
+2009-10-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsconv.cpp: Using new matlab producer for file conversions.
+
+	* matlab_producer.cpp (matlab_producer): Added new Matlab v4 file
+	producer for conversion of Qucs datasets to binary Matlab v4
+	files.
+
+2009-04-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_spice.y: Allowing nodes names like 'VPSL' (i.e. could
+	refer to voltage sources) in the node list of F and H controlled
+	sources.
+
+	* scan_spice.l: Explicitly scanning suffixes and unit for (real)
+	values in order to allow e.g. '11x' node names.
+
+	* qucs_producer.cpp: Fixed bug while referencing subcircuits
+	(missing 'X' when it starts with a digit).
+
+2009-04-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Allowing translation of polynomial Ls and Cs as
+	specified by SPICE 2g6 notation.
+
+2009-03-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_spice.l, parse_spice.y, check_spice.cpp: Also added
+	possibility to translate F/H poly sources.
+
+2009-03-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Fixed polynom order algorithm.  It's a messy
+	one, but working as far as known.
+
+2009-03-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Minor code cleanup for poly source translation.
+
+2009-03-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Experimental version of G/E types poly source
+	translation added.
+
+2009-03-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Allow "C12 1 2 C=126f" syntax to be translated
+	correctly.
+
+2008-11-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_vcd.cpp, parse_vcd.y, scan_vcd.l: Using 'double' to store
+	timestamp values necessary for large positive timestamps (when
+	simulating in millisecond and larger ranges).
+
+2008-10-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Applied changes in component definitions and
+	their properties.
+
+2008-09-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_producer.cpp, check_spice.cpp: Updated versions for
+	HICUM/L0 models and parameters.
+
+2008-07-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_producer.cpp, check_spice.cpp: Checking for HICUM
+	transistors.
+
+2008-05-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_spice.l: Allowing 'M' parameter to be appended to MOSFET
+	instances.
+
+2007-08-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* touchstone_producer.cpp: Noise parameters are also exported if
+	available in the Qucs dataset.
+
+2007-08-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* touchstone_producer.cpp (touchstone_producer): Added new
+	Touchstone producer.  Thus Qucs datasets can be exported to
+	Touchstone.  TODO: noise parameters and frequency sort.
+
+2007-08-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsconv.cpp: Added new converter from CSV (comma separated
+	file) to qucs dataset.
+
+2007-05-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_spice.l: Allowing inline comments to start with '$'
+	character (hspice syntax).
+
+2007-05-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Translation of mutual inductors can now be
+	handled for an virtually unlimited number of coupling coefficients
+	using the new MUTX component.
+
+	* qucs_producer.cpp: Adjusted property printer to handle property
+	vectors correctly.
+
+2007-04-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Added translation of exponential part of a
+	voltage or current source.
+
+2007-03-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_vcd.l: Allow identifiers to start with '_'.
+
+2007-03-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_spice.l, parse_spice.y: Accept .TEMP syntax (Spice 2g6)
+	in lexer and parser.
+
+2007-03-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Handling capacitor models correctly.
+	Also fixed wrong DC value of sources when neither the DC
+	directive nor an immediate value was given.
+
+2007-03-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Fixed compilation failure for a NetBSD
+	g++ which has _L and _N as predefined symbols (don't know if
+	in headers or built-in).
+
+2007-03-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_spice.l: Lexer modifications for the Spice 2g6 resistor
+	syntax were necessary.
+
+	* parse_spice.y: Allow Spice 2g6 syntax for resistors, also
+	fixed netlist grammar for Spice 3f5 models.
+
+	* check_spice.cpp: Handle R semiconductor model correctly as
+	well as the Spice 2g6 syntax for the temperature coefficients.
+
+2007-03-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Fixed DC offset of sinuasoidal voltage and
+	current sources.  Also apply default frequency if a transient
+	analysis is given.
+
+2007-03-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_producer.cpp: Fixed detection of a single subcircuit
+	definition (skip analysis actions).
+
+	* check_spice.cpp: Handling periodic pulse sources correctly.
+	Also default Tr/Tf values for these sources to a given .TRAN step
+	value.
+
+2007-03-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_producer.cpp: Updated the parameter order and added
+	Ikf parameter for the qucs library creator.
+
+2007-02-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Added translation of lossless transmission
+	line component.
+
+2007-02-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Fixed value of F and H (linear current
+	controlled sources).  Thanks Mike for pointing this out.
+
+2007-02-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Translating VON and VOFF properties of
+	switches into Vt and Vh.  Also fixing R value for resistors
+	whose value is also given in the resistor model it refers to.
+
+2007-02-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_spice.l: Allowing subcircuit identifiers to begin with
+	a digit.  Also fixing it afterwards.  Introduced component
+	suffix macro.  Identifying VSWITCH model.
+
+	* check_spice.cpp: Allowing the SW model also be referenced as
+	VSWITCH.
+
+2007-01-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_spice.l: Allowing '_' in device identifiers.  Allowing
+	'/' and '-' in other identifiers (e.g. subcircuit) and translate
+	them into '_' for Qucs.
+
+	* parse_spice.y: Allowing resistor model to be referenced.
+
+	* check_spice.cpp: Added translations for resistor models.  Fixed
+	DC voltage source notation 'VDC 1 0 DC 2'.
+
+2007-01-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_producer.cpp: Adding subcircuit instance if the SPICE
+	file just contains a single subcircuit definition.
+
+2007-01-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_spice.y: Accept end of file after .ENDS token.
+
+	* scan_spice.l: Ignore inlined comments.
+
+2007-01-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Fixed F and H source values (current controlled
+	sources).
+
+2007-01-07  Michael Margraf  <michael.margraf@alumni.tu-berlin.de>
+
+	* check_spice.cpp: correct polarity of AC and DC current sources,
+	thanks to Rainer Wirtz
+
+2006-08-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_spice.y: Reverting the patch about the default value
+	for F/E/G/H controlled sources.
+
+2006-08-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_spice.l, parse_spice.y, check_spice.cpp: Parsing but
+	ignoring behavioural sources.  Translation of L's and C's
+	initial conditions.
+
+2006-08-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_spice.y: When value for F/E/G/H controlled sources is
+	missing then using a default transconductance/transresistance/gain
+	of 1.
+
+2006-08-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsconv.cpp (mdl2qucs): Added MDL to Qucs dataset converter
+	using the functionality in the qucsator library.
+
+2006-08-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_vcd.y, check_vcd.cpp: Parsing and ignoring one-
+	dimensional memory arrays stored in VCD files.
+
+2006-07-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsconv.cpp: Fixed Qucs dataset loading in order to be
+	able to handle stdin input.
+
+2006-07-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsconv.cpp (zvr2qucs): Added ZVR to Qucs dataset converter
+	using the functionality in the qucsator library.
+
+2006-07-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_vcd.cpp (VCD_INCLUDE_RANGE): Disabled output of range
+	specifications in bit-vector variable names.  Integer values are
+	now written as signed integers instead of bit-vectors.
+
+2006-06-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_vcd.l: Fixed yet another bug in the VCD lexer.
+
+	* qucs_producer.cpp: Differentiating between binary data (X)
+	and real data (R) saved in VCD files.
+
+	* check_vcd.cpp: Saving value attributes in dataset structure.
+
+2006-06-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_producer.cpp: Adapted the qucs dataset producer.
+
+	* qucsconv.cpp: Added touchstone->qucsdata and citi->qucsdata
+	wrapper functions.
+
+2006-05-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Fixed 'Theta' damping factor of sinusoidal
+	sources.
+
+2006-05-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsconv.cpp: Fixed segfault bug when there is no vcd
+	input file but standard input only.
+
+	* scan_vcd.l: Fixed a bug while scanning bit vectors.
+
+2006-05-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsconv.cpp: Added --correct (or -c) command line option.
+
+	* check_vcd.cpp: Fixing VCD node name when appropriate
+	command line option was given.
+
+2006-04-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_vcd.cpp: Suppressing unnecessary vcd notice about
+	duplicate value changes due to $dumpvars statements.
+
+2006-04-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_spice.l: Allowing '-' in model identifiers.
+
+	* qucsconv.cpp: Fixed a segfault bug when using stdin as
+	input stream for spice parser.
+
+2006-03-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_spice.l: Differentiate between current and voltage
+	controlled switches.  Allow extra EOL before leading '+'
+	line continuation.
+
+	* check_spice.cpp: Implemented translations of voltage
+	controlled switch (relais).
+
+2006-03-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* csv_producer.cpp (csv_producer): When exporting a dependent
+	variable export it in the last column, the dependencies in the
+	first columns.
+
+2006-03-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* csv_producer.cpp (csv_producer): Conversion from Qucs
+	dataset to CSV data files implemented.
+
+2006-02-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Implemented conversion of theta property
+	of sinusoidal sources.
+
+2006-01-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_vcd.cpp: Skipping top-scope in variable identifiers
+	if there are no variables beside the top-scope.
+
+	* scan_spice.l: Allow digits as first character in .MODEL
+	identifiers.
+
+2006-01-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_vcd.y: Fixed yet another bug in scope handling.
+
+2006-01-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_vcd.y, check_vcd.cpp: Improved the scope handling.
+
+	* parse_vcd.y: Documented some VCD semantics.
+
+2006-01-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_vcd.cpp: Finished the VCD to Qucs dataset converter.
+	Works fine for some example VCD files... needs to be tested
+	yet.
+
+2006-01-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_vcd.l, parse_vcd.y: VCD scanner and parser now already
+	passes simple VCD files...
+
+2005-12-26  Raimund 'Raimi' Jacob  <raimi@lkcc.org>
+
+	* qucsconv.cpp: New infrastructure for converter steps.
+
+	* begin of vcd recognition
+
+2005-12-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_producer.cpp: Allow new temperature and area parameters
+	of devices to be converted.
+
+2005-12-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_producer.cpp: Added new temperature and area
+	parameters for QucsLib output of diodes.
+
+	* parse_spice.y: Allowing translation of area parameter.
+
+2005-12-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_producer.cpp: Using new hash template to increase
+	speed during spice node list creation.
+
+2005-11-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Fixed diode node translation.  Implemented
+	translation of three mutual inductors.
+
+2005-10-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_producer.cpp: Redefined 'qucslib' output format to
+	accord to the library manager data format.
+
+2005-06-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_spice.l: Skipping the .control -> .endc interactive
+	section in SPICE files.  Also handling the optional 0x1a
+	character at the end of SPICE netlists.
+
+2005-05-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Fixed a segfault bug occurring if there is
+	an untranslatable device model.
+
+2005-05-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_producer.cpp (qucslib_producer): New producer in the
+	converter tool implemented.  It outputs templates for device
+	models for diode, jfet, mosfet and bjt including a symbol.
+	The functionality can be used in future for device libraries.
+
+	* check_spice.cpp: The spice checker now also collects the
+	available .MODEL statements.
+
+2005-04-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucs_producer.cpp: Fixed reference node implementation in
+	order to pull the ground node outside the circuit definition
+	throughout the subcircuits in the original netlist.
+
+2005-04-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Collecting potential external and overall
+	nodes in the netlist.
+
+	* qucs_producer.cpp: Printing node lists as comments.
+
+	* qucsconv.cpp: Added new command line option '-g' which can
+	be used to rename the 'gnd' node to some other name.  Useful
+	for subcircuit definitions.
+
+2005-03-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* Makefile.am:  Avoid re-generation of flex/bison files
+	when not in maintainer mode.
+
+2004-12-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Translation of device properties only if
+	not already adjusted.
+
+2004-11-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Fixed the transformation of mutual
+	inductors.
+
+2004-11-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_spice.l: Much more restrictive scanner (completely
+	rewritten).  Work a lot with flex's state mechanisms.
+
+	* qucsconv.cpp: New command line option --noaction can be
+	used to inhibit the output of simulations (actions) into
+	the resulting netlist.
+
+	* parse_spice.y: Almost implemented all of the Spice
+	'grammar' in the netlist parser.
+
+	* check_spice.cpp: Implemented evaluation of the .OPTIONS
+	directive, subcircuits and the nodeset (initial conditions)
+	functionality.
+
+2004-11-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_spice.l: Added tokens for yet another number format and
+	start and end of subcircuits.
+
+2004-11-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Added transformations for current
+	controlled sources and mutual inductors.
+	
+	* check_spice.cpp: Implemented translations for voltage
+	controlled sources.  Also create commentary lines for
+	untranslated Spice netlist lines.
+
+2004-11-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Added transformations for DC, AC and
+	transient analysis.
+
+2004-11-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Fixed unit conversion routine and added
+	voltage source transformations.
+
+2004-10-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_spice.cpp: Implemented node, property and unit
+	transformations.
+
+2004-10-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsconv.cpp: Started to implement a netlist conversion
+	program.

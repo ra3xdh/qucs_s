@@ -1,0 +1,14 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/TR_sym_osci_prj/sym_osci.sch
+
+MOSFET:T6 _net0 _net1 _net2 _net2 Type="pfet" Vt0="-0.7 V" Kp="5e-4" Gamma="1.15" Phi="0.65 V" Lambda="0.02" Rd="1.0 Ohm" Rs="1.0 Ohm" Rg="0.0 Ohm" Is="1e-15 A" N="1.0" W="1 um" L="1 um" Ld="0.1e-6" Tox="2e-8" Cgso="4.0e-11" Cgdo="4.0e-11" Cgbo="2.0e-10" Cbd="0.06e-15 F" Cbs="0.06e-15 F" Pb="0.87 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="4.0e15" Nss="1.0e10" Tpg="1" Uo="400.0" Rsh="10.0" Nrd="1" Nrs="1" Cj="2.0e-4" Js="1.0e-8" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+MOSFET:T8 _net1 _net0 _net2 _net2 Type="pfet" Vt0="-0.7 V" Kp="5e-4" Gamma="1.15" Phi="0.65 V" Lambda="0.02" Rd="1.0 Ohm" Rs="1.0 Ohm" Rg="0.0 Ohm" Is="1e-15 A" N="1.0" W="1 um" L="1 um" Ld="0.1e-6" Tox="2e-8" Cgso="4.0e-11" Cgdo="4.0e-11" Cgbo="2.0e-10" Cbd="0.06e-15 F" Cbs="0.06e-15 F" Pb="0.87 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="4.0e15" Nss="1.0e10" Tpg="1" Uo="400.0" Rsh="10.0" Nrd="1" Nrs="1" Cj="2.0e-4" Js="1.0e-8" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+Vdc:V1 _net2 gnd U="5 V"
+MOSFET:T7 _net1 _net0 _net3 _net3 Type="nfet" Vt0="0.7 V" Kp="5e-4" Gamma="0.37" Phi="0.65 V" Lambda="0.02" Rd="1.0 Ohm" Rs="1.0 Ohm" Rg="0.0 Ohm" Is="1e-15 A" N="1.0" W="1 um" L="1 um" Ld="0.1e-6" Tox="2e-8" Cgso="4.0e-11" Cgdo="4.0e-11" Cgbo="2.0e-10" Cbd="0.06e-15 F" Cbs="0.06e-15 F" Pb="0.87 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="4.0e15" Nss="1.0e10" Tpg="1" Uo="400.0" Rsh="10.0" Nrd="1" Nrs="1" Cj="2.0e-4" Js="1.0e-8" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+MOSFET:T5 _net0 _net1 _net3 _net3 Type="nfet" Vt0="0.7 V" Kp="5e-4" Gamma="0.37" Phi="0.65 V" Lambda="0.02" Rd="1.0 Ohm" Rs="1.0 Ohm" Rg="0.0 Ohm" Is="1e-15 A" N="1.0" W="1 um" L="1 um" Ld="0.1e-6" Tox="2e-8" Cgso="4.0e-11" Cgdo="4.0e-11" Cgbo="2.0e-10" Cbd="0.06e-15 F" Cbs="0.06e-15 F" Pb="0.87 V" Mj="0.5" Fc="0.5" Cjsw="0.0" Mjsw="0.33" Tt="0.0 ps" Nsub="4.0e15" Nss="1.0e10" Tpg="1" Uo="400.0" Rsh="10.0" Nrd="1" Nrs="1" Cj="2.0e-4" Js="1.0e-8" Ad="0.0" As="0.0" Pd="0.0 m" Ps="0.0 m" Kf="0.0" Af="1.0" Ffe="1.0" Temp="26.85" Tnom="26.85"
+C:C1 _net0 _net1 C="20 pF" V=""
+R:R1 _net0 _net1 R="500k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+L:L1 _net0 _net1 L="30 uH" I=""
+.TR:TR1 Type="lin" Start="0" Stop="3 us" Points="200" IntegrationMethod="Trapezoidal" Order="2" InitialStep="1 ns" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1 pA" vntol="1 uV" Temp="26.85" LTEreltol="1e-3" LTEabstol="1e-6" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"
+Tr:Tr1 gnd _net0 _net1 Output T="1"
+R:R4 gnd Output R="1 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Idc:I1 gnd _net3 I="8 mA"

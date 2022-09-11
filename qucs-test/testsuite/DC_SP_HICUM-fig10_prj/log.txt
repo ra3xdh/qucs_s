@@ -1,0 +1,17 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `Fmin' in equation `NFmin' not yet defined
+checker notice, variable `F' in equation `NF' not yet defined
+netlist content
+      2 IProbe instances
+      1 hicumL2V2p1 instances
+      1 DC instances
+      2 BiasT instances
+      2 Pac instances
+      2 Vdc instances
+      1 SP instances
+creating netlist...
+checker notice, variable `Fmin' in equation `NFmin' not yet defined
+checker notice, variable `F' in equation `NF' not yet defined
+checker notice, variable `Fmin' in equation `NFmin' not yet defined
+checker notice, variable `F' in equation `NF' not yet defined

@@ -1,0 +1,30 @@
+2007-01-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsator.1: Updated copyright notice.
+
+2006-05-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsconv.1: Documented the --correct (or -c) command line
+	option of the qucsconv tool.
+
+2005-12-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsator.1: Added --gui (or -g) help text.
+
+2005-05-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsator.1: Updated manpages.
+
+2004-11-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsconv.1: Added --noaction (or -a) help text.
+
+	* qucsator.1: Added --check (or -c) help text.
+
+2004-11-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsconv.1: New man page for the netlist converter.
+
+2004-09-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* Makefile.am (dist_man_MANS): Added simple man page.

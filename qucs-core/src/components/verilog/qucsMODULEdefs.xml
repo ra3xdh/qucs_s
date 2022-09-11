@@ -1,0 +1,354 @@
+<!--
+
+  Copyright (C) 2006 Helene Parruitte <parruit@enseirb.fr>
+  Copyright (C) 2006 Bertrand Ardouin <ardouin@xmodtech.com>
+  Copyright (C) 2006, 2007, 2008 Stefan Jahn <stefan@lkcc.org>
+
+  This is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2, or (at your option)
+  any later version.
+
+-->
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE admst SYSTEM "admst.dtd">
+<admst version="2.3.0" xmlns:admst="http://mot-adms.sourceforge.net/xml-files/admst">
+
+<!-- handling of expression -->
+<admst:template match=":expression">
+  <admst:value-of select="tree/adms/datatypename"/>
+  <admst:apply-templates select="tree" match=":%s" required="yes"/>
+</admst:template>
+
+<admst:template match=":number">
+  <admst:value-of select="value"/>
+  <admst:choose>
+    <admst:when test="[scalingunit='1']">%s</admst:when>
+    <admst:when test="[scalingunit='E']">(%s*1.0e+18)</admst:when>
+    <admst:when test="[scalingunit='P']">(%s*1.0e+15)</admst:when>
+    <admst:when test="[scalingunit='T']">(%s*1.0e+12)</admst:when>
+    <admst:when test="[scalingunit='G']">(%s*1.0e+9)</admst:when>
+    <admst:when test="[scalingunit='M']">(%s*1.0e+6)</admst:when>
+    <admst:when test="[scalingunit='k']">(%s*1.0e+3)</admst:when>
+    <admst:when test="[scalingunit='h']">(%s*1.0e+2)</admst:when>
+    <admst:when test="[scalingunit='D']">(%s*1.0e+1)</admst:when>
+    <admst:when test="[scalingunit='d']">(%s*1.0e-1)</admst:when>
+    <admst:when test="[scalingunit='c']">(%s*1.0e-2)</admst:when>
+    <admst:when test="[scalingunit='m']">(%s*1.0e-3)</admst:when>
+    <admst:when test="[scalingunit='u']">(%s*1.0e-6)</admst:when>
+    <admst:when test="[scalingunit='n']">(%s*1.0e-9)</admst:when>
+    <admst:when test="[scalingunit='A']">(%s*1.0e-10)</admst:when>
+    <admst:when test="[scalingunit='p']">(%s*1.0e-12)</admst:when>
+    <admst:when test="[scalingunit='f']">(%s*1.0e-15)</admst:when>
+    <admst:when test="[scalingunit='a']">(%s*1.0e-18)</admst:when>
+    <admst:otherwise>
+      <admst:value-of select="scalingunit"/>
+      <admst:fatal format="%s%s: scaling unit not supported\n"/>
+    </admst:otherwise>
+  </admst:choose>
+</admst:template>
+
+<admst:template match=":mapply_unary">
+  <admst:if test="[name='plus']"> <admst:text format="+"/> </admst:if>
+  <admst:if test="[name='minus']"> <admst:text format="-"/> </admst:if>
+  <admst:if test="[name='not']"> <admst:text format="!"/> </admst:if>
+  <admst:if test="[name='bw_not']"> <admst:text format="~"/> </admst:if>
+  <admst:value-of select="arg1/adms/datatypename"/>
+  <admst:apply-templates select="arg1" match=":%s" required="yes"/>
+</admst:template>
+
+<!-- Handle mapply_ternary on parameter definition, see bsim6 model -->
+<admst:template match="aamapply_ternary">
+     <admst:if test="[name='conditional']">
+             <admst:apply-templates select="arg1" match=":%(datatypename)" required="yes"/>
+             <admst:apply-templates select="arg2" match=":%(datatypename)" required="yes"/>
+             <admst:apply-templates select="arg3" match=":%(datatypename)" required="yes"/>
+     </admst:if>
+</admst:template>
+
+<admst:template match=":mapply_binary">
+  <admst:text format="("/>
+  <admst:apply-templates select="arg1" match=":%(adms/datatypename)" required="yes"/>
+  <admst:if test="[name='bw_or']"> <admst:text format="|"/> </admst:if>
+  <admst:if test="[name='bw_and']"> <admst:text format="&amp;"/> </admst:if>
+  <admst:if test="[name='addp']"> <admst:text format="+"/> </admst:if>
+  <admst:if test="[name='addm']"> <admst:text format="-"/> </admst:if>
+  <admst:if test="[name='multtime']"> <admst:text format="*"/> </admst:if>
+  <admst:if test="[name='multdiv']"> <admst:text format="/"/> </admst:if>
+  <admst:if test="[name='and']"> <admst:text format="&amp;&amp;"/> </admst:if>
+  <admst:if test="[name='equ']"> <admst:text format="=="/> </admst:if>
+  <admst:if test="[name='gt']"> <admst:text format="&gt;"/> </admst:if>
+  <admst:if test="[name='gt_equ']"> <admst:text format="&gt;="/> </admst:if>
+  <admst:if test="[name='lt']"> <admst:text format="&lt;"/> </admst:if>
+  <admst:if test="[name='lt_equ']"> <admst:text format="&lt;="/> </admst:if>
+  <admst:if test="[name='notequ']"> <admst:text format="!="/> </admst:if>
+  <admst:if test="[name='or']"> <admst:text format="||"/> </admst:if>
+  <admst:if test="[name='multmod']"> <admst:text format="%%"/> </admst:if>
+  <admst:apply-templates select="arg2" match=":%(adms/datatypename)" required="yes"/>
+  <admst:text format=")"/>
+</admst:template>
+<admst:template match=":mapply_ternary">
+  <admst:if test="[name='conditional']">
+    <admst:text format="("/>
+    <admst:apply-templates select="arg1" match=":%(adms/datatypename)" required="yes"/>
+    <admst:text format="?"/>
+    <admst:apply-templates select="arg2" match=":%(adms/datatypename)" required="yes"/>
+    <admst:text format=":"/>
+    <admst:apply-templates select="arg3" match=":%(adms/datatypename)" required="yes"/>
+    <admst:text format=")"/>
+  </admst:if>
+</admst:template>
+
+<admst:template match=":function">
+  <admst:text format="%(name)"/>
+  <admst:if test="arguments">
+    <admst:text format="("/>
+    <admst:join select="arguments" separator=",">
+      <admst:apply-templates select="." match=":%(adms/datatypename)" required="yes"/>
+    </admst:join>
+    <admst:text format=")"/>
+  </admst:if>
+</admst:template>
+
+<admst:template match=":function">
+  <admst:text format="%(name)"/>
+  <admst:if test="arguments">
+    <admst:text format="("/>
+    <admst:join select="arguments" separator=",">
+      <admst:apply-templates select="." match=":%(adms/datatypename)" required="yes"/>
+    </admst:join>
+    <admst:text format=")"/>
+  </admst:if>
+</admst:template>
+
+
+<admst:template match=":string">
+  <admst:text format="&quot;%(value)&quot;"/>
+</admst:template>
+
+<!-- recurse, till it returns the value of the independent variable -->
+<admst:template match=":variable">
+  <!-- admst:text format="&quot;%(name)&quot;"/ -->
+  <admst:apply-templates select="default" match=":expression"/>
+</admst:template>
+
+<admst:template match=":range">
+  <admst:choose>
+    <admst:when test="[nilled(range)]">
+      <admst:text format="PROP_NO_RANGE"/>
+    </admst:when>
+    <admst:otherwise>
+    <admst:variable name="linf" select="%(range/infexpr/hasspecialnumber)"/>
+    <admst:variable name="rinf" select="%(range/supexpr/hasspecialnumber)"/>
+    <admst:variable name="linc" select="%(range/infboundtype)"/>
+    <admst:variable name="rinc" select="%(range/supboundtype)"/>
+
+    <admst:choose>
+    <!-- no range -->
+    <admst:when test="[$linf='YES' and $rinf='YES']">
+      <admst:text format="PROP_NO_RANGE"/>
+    </admst:when>
+    <!-- minimal value -->
+    <admst:when test="[$linf='NO' and $rinf='YES']">
+      <admst:text format="PROP_MIN_VAL"/>
+      <admst:if test="[$linc!='range_bound_include']">
+        <admst:text format="X"/>
+      </admst:if>
+      <admst:text format=" ("/>
+      <admst:apply-templates select="range/infexpr" match=":expression"/>
+      <admst:text format=")"/>
+    </admst:when>
+    <!-- maximal value -->
+    <admst:when test="[$linf='YES' and $rinf='NO']">
+      <admst:text format="PROP_MAX_VAL"/>
+      <admst:if test="[$rinc!='range_bound_include']">
+        <admst:text format="X"/>
+      </admst:if>
+      <admst:text format=" ("/>
+      <admst:apply-templates select="range/supexpr" match=":expression"/>
+      <admst:text format=")"/>
+    </admst:when>
+    <!-- ranged value -->
+    <admst:when test="[$linf='NO' and $rinf='NO']">
+      <admst:text format="PROP_RNG"/>
+      <admst:choose>
+      <admst:when test="[$linc='range_bound_include']">
+        <admst:text format="I"/>
+      </admst:when>
+      <admst:otherwise><admst:text format="X"/></admst:otherwise>
+      </admst:choose>
+      <admst:choose>
+      <admst:when test="[$rinc='range_bound_include']">
+        <admst:text format="I"/>
+      </admst:when>
+      <admst:otherwise><admst:text format="X"/></admst:otherwise>
+      </admst:choose>
+      <admst:text format=" ("/>
+      <admst:apply-templates select="range/infexpr" match=":expression"/>
+      <admst:text format=", "/>
+      <admst:apply-templates select="range/supexpr" match=":expression"/>
+      <admst:text format=")"/>
+    </admst:when>
+  </admst:choose>
+  </admst:otherwise>
+  </admst:choose>
+</admst:template>
+
+
+<admst:template match=":property">
+  <!-- name -->
+  <admst:value-of select="name"/>
+  <admst:text format="  { &quot;%s&quot;, "/>
+
+  <!-- type -->
+  <admst:choose>
+  <admst:when test="[type='real']">
+    <admst:text format="PROP_REAL"/>
+  </admst:when>
+  <admst:when test="[type='integer']">
+    <admst:text format="PROP_INT"/>
+  </admst:when>
+  <admst:otherwise>
+    <admst:text format="PROP_STR"/>
+  </admst:otherwise>
+  </admst:choose>
+
+  <!-- default value -->
+  <admst:text format=", { "/>
+
+  <admst:apply-templates select="default" match=":expression"/>
+  <admst:text format=", PROP_NO_STR }, "/>
+
+  <!-- parameter range -->
+  <admst:apply-templates select="." match=":range"/>
+
+  <admst:text format=" },\n"/>
+</admst:template>
+
+<!-- handling of device: starting point -->
+<admst:for-each select="/module">
+<!-- definition of variables -->
+<admst:value-of select="name"/>
+<admst:variable name="module" select="%s"/>
+<admst:count select="node[location='external' and name!='GND']"/>
+<admst:variable name="nbr_nodes" select="%s"/>
+</admst:for-each>
+
+<!-- output filename is 1st argument in -o flag in command line-->
+<admst:variable name="filename" select="%(/module/name)_common"/>
+<admst:variable name="filename_state" select="0"/>
+<admst:for-each select="/argv">
+  <admst:variable name="arg" select="%(.)"/>
+
+  <admst:if test="[position(.)=2]">
+    <admst:variable name="filename" select="$arg"/>
+  </admst:if>
+  <admst:if test="[$(filename_state)='1']">
+    <admst:variable name="filename" select="$arg"/>
+    <admst:variable name="filename_state" select="2"/>
+  </admst:if>
+  <admst:if test="[$(filename_state)='0' and $(arg)='-o']">
+    <admst:variable name="filename_state" select="1"/>
+  </admst:if>
+</admst:for-each>
+
+<admst:open file="$(filename).cpp">/*
+ * $(filename).cpp - device implementations for $(filename) modules
+ *
+ * This is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ */
+
+<admst:for-each select="/module">
+// namespace { // %(.), BUG: not yet, possible name clashes
+#include "$(filename).$(module).core.cpp"
+#include "$(filename).$(module).analogfunction.cpp"
+// }
+</admst:for-each>
+
+</admst:open>
+
+<admst:open file="$(filename).defs.h">
+<admst:for-each select="/module">/*
+ * $(filename).defs.h - device definition header
+ *
+ * This is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ */
+
+#ifndef __$(module)_DEFS_H__
+#define __$(module)_DEFS_H__
+
+
+<!-- find temp and tnom parameters -->
+<admst:variable name="tnom" string="none"/>
+<admst:variable name="temp" string="none"/>
+<admst:for-each select="variable">
+  <admst:if test="[input='yes']">
+    <admst:if test="[upper-case(name)='TNOM']">
+      <admst:variable name="tnom" path="."/>
+    </admst:if>
+    <admst:if test="[upper-case(name)='TEMP']">
+      <admst:variable name="temp" path="."/>
+    </admst:if>
+  </admst:if>
+</admst:for-each>
+// required properties
+PROP_REQ [] = {
+
+<!-- emit required properties -->
+<admst:for-each select="variable">
+  <admst:if test="[input='yes']">
+    <admst:if test="[name!='npn' and name!='pnp' and name!='nmos' and name!='pmos']">
+      <admst:apply-templates select="." match=":property"/>
+    </admst:if>
+  </admst:if>
+</admst:for-each>
+
+<admst:text format="  PROP_NO_PROP };\n"/>
+// optional properties
+PROP_OPT [] = {
+
+<!-- emit optional properties -->
+<admst:for-each select="variable">
+  <admst:if test="[input='yes']">
+    <admst:if test="[name='npn' or name='pnp' or name='nmos' or name='pmos']">
+      <admst:apply-templates select="." match=":property"/>
+    </admst:if>
+  </admst:if>
+</admst:for-each>
+
+<admst:if test="[name!='mod_amp']">
+  <admst:if test="[$temp='none']">
+  <admst:text format="  { &quot;Temp&quot;, PROP_REAL, { "/>
+  <admst:choose>
+    <admst:when test="[$tnom!='none']">
+      <admst:apply-templates select="$tnom/default" match=":expression"/>
+    </admst:when>
+    <admst:otherwise><admst:text format="26.85"/></admst:otherwise>
+  </admst:choose>
+  <admst:text format=", PROP_NO_STR }, PROP_MIN_VAL (qucs::K) },\n"/>
+  </admst:if>
+</admst:if>
+
+<admst:text format="  PROP_NO_PROP };\n"/>
+// device definition
+struct define_t $module::cirdef =
+  { &quot;$module&quot;,
+    $nbr_nodes, PROP_COMPONENT, PROP_NO_SUBSTRATE, PROP_NONLINEAR, PROP_DEF };
+
+#endif /* __$(module)_DEFS_H__ */
+
+</admst:for-each>
+
+</admst:open>
+<admst:message format="$module.defs.h: file created\n"/>
+</admst>

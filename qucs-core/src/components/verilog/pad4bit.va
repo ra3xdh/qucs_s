@@ -1,0 +1,55 @@
+//   Qucs analogue hexpad model
+//   The structure and theoretical background to the hexpad
+//   Verilog-a model are presented in the Qucs digital tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, December 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module pad4bit (D, C, B, A); 
+ inout D, C, B, A;
+ electrical D, C, B, A;
+// electrical An1, An2, Bn1, Bn2, Cn1, Cn2, Dn1, Dn2;
+//
+ `define attr(txt) (*txt*)
+ parameter integer Number = 0 from [0 : 15] `attr(info="pad output value");
+//
+ real IA, IB, IC, ID;
+//
+analog begin
+case (Number)
+ 0  : begin IA = 0; IB = 0; IC = 0; ID = 0; end
+ 1  : begin IA = 1; IB = 0; IC = 0; ID = 0; end
+ 2  : begin IA = 0; IB = 1; IC = 0; ID = 0; end
+ 3  : begin IA = 1; IB = 1; IC = 0; ID = 0; end
+ 4  : begin IA = 0; IB = 0; IC = 1; ID = 0; end
+ 5  : begin IA = 1; IB = 0; IC = 1; ID = 0; end
+ 6  : begin IA = 0; IB = 1; IC = 1; ID = 0; end
+ 7  : begin IA = 1; IB = 1; IC = 1; ID = 0; end
+ 8  : begin IA = 0; IB = 0; IC = 0; ID = 1; end
+ 9  : begin IA = 1; IB = 0; IC = 0; ID = 1; end
+ 10 : begin IA = 0; IB = 1; IC = 0; ID = 1; end
+ 11 : begin IA = 1; IB = 1; IC = 0; ID = 1; end
+ 12 : begin IA = 0; IB = 0; IC = 1; ID = 1; end
+ 13 : begin IA = 1; IB = 0; IC = 1; ID = 1; end
+ 14 : begin IA = 0; IB = 1; IC = 1; ID = 1; end
+ 15 : begin IA = 1; IB = 1; IC = 1; ID = 1; end
+endcase
+I(A)  <+ -IA;
+I(A) <+ V(A);
+//
+I(B)  <+ -IB;
+I(B) <+ V(B);
+//
+I(C)  <+ -IC;
+I(C) <+ V(C);
+//
+I(D)  <+ -ID; 
+I(D) <+ V(D);
+end
+endmodule

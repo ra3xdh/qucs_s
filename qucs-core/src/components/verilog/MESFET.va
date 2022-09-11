@@ -1,0 +1,462 @@
+//   Qucs MESFET models:
+//
+//   The structure and theoretical background to the MESFET
+//   Verilog-a models are presented in the Qucs MESFET report.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, March 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+// 
+ module MESFET (Drain, Gate, Source);
+ inout Drain, Gate, Source;
+//
+electrical Drain, Gate, Source;
+//
+// Internal nodes
+//
+electrical n1, n2, n3, n4;
+//
+ `define attr(txt) (*txt*)
+ `define GMIN 1e-12
+ `define CTOK 273.15
+ `define K1 7.02e-4
+ `define K2 1108.0
+ `define K3 400e-6
+//
+ parameter integer LEVEL = 1 from [1 : 5]
+  `attr(info="model selector" );
+ parameter real Vto = -1.8 from [-inf : inf]
+  `attr(info="pinch-off voltage" unit = "V");
+ parameter real Beta = 3e-3 from [1e-9 : inf]
+  `attr(info="transconductance parameter" unit = "A/(V*V)");
+ parameter real Alpha = 2.25 from [1e-9 : inf]
+  `attr(info="saturation voltage parameter" unit="1/V" );
+ parameter real Lambda = 0.05 from [1e-9 :inf]
+  `attr(info="channel length modulation parameter" unit="1/V");
+ parameter real B = 0.3 from [1e-9 :inf]
+  `attr(info="doping profile parameter" unit="1/V");
+ parameter real Qp = 2.1 from [1e-9 :inf]
+  `attr(info="power law exponent parameter");
+ parameter real Delta = 0.1 from [1e-9 :inf]
+  `attr(info="power feedback parameter" unit="1/W");
+ parameter real Vmax = 0.5 from [1e-9 :inf]
+  `attr(info="maximum junction voltage limit before capacitance limiting" unit="V");
+ parameter real Vdelta1 = 0.3 from [1e-9 :inf]
+  `attr(info="capacitance saturation transition voltage" unit="V");
+ parameter real Vdelta2 = 0.2 from [1e-9 :inf]
+  `attr(info="capacitance threshold transition voltage" unit="V");
+ parameter real Gamma = 0.015 from [1e-9 :inf]
+  `attr(info="dc drain pull coefficient");
+ parameter real Nsc = 1 from [1e-9 : inf]
+  `attr(info="subthreshold conductance parameter" );
+ parameter real Is = 1e-14 from [1e-20 : inf]
+  `attr(info="diode saturation current" unit = "I");
+ parameter real N = 1 from [1e-9 : inf]
+  `attr(info="diode emission coefficient");
+ parameter real Vbi = 1.0 from [1e-9 : inf]
+  `attr(info="built-in gate potential" unit = "V");
+ parameter real Bv = 60 from [-inf : inf]
+  `attr(info="gate-drain junction reverse bias breakdown voltage" unit = "V" );
+ parameter real Xti = 3.0 from [1e-9 : inf]
+  `attr(info="diode saturation current temperature coefficient");
+ parameter real Fc = 0.5 from [1e-6 : inf]
+  `attr(info="forward-bias depletion capacitance coefficient");
+ parameter real Tau = 1e-9 from [1e-20 : inf]
+  `attr(info="transit time under gate" unit = "s");
+ parameter real Rin = 1e-3 from [1e-20 : inf]
+  `attr(info="channel resistance" unit = "Ohm" );
+ parameter real Area = 1 from [1 : inf]
+  `attr(info="area factor" );
+ parameter real Eg = 1.11 from [1e-6 : inf]
+  `attr(info="energy gap" unit = "eV");
+ parameter real M = 0.5 from [1e-9 : inf]
+  `attr(info="grading coefficient");
+ parameter real Cgd = 0.2e-12 from [0 : inf]
+  `attr(info="zero bias gate-drain junction capacitance" unit = "F");
+ parameter real Cgs = 1e-12 from [0 : inf]
+  `attr(info="zero bias gate-source junction capacitance" unit = "F");
+ parameter real Cds = 1e-12 from [0 : inf]
+  `attr(info="zero bias drain-source junction capacitance" unit = "F");
+ parameter real Betatc = 0 from [-inf : inf]
+  `attr(info="Beta temperature coefficient" unit = "%/Celsius");
+ parameter real Alphatc = 0 from [-inf : inf]
+  `attr(info="Alpha temperature coefficient" unit = "%/Celsius");
+ parameter real Gammatc = 0 from [-inf : inf]
+  `attr(info="Gamma temperature coefficient" unit = "%/Celsius");
+ parameter real Ng = 2.65 from [1 : inf]
+  `attr(info="Subthreshold slope gate parameter");
+ parameter real Nd = -0.19 from [-inf : inf]
+  `attr(info="subthreshold drain pull parameter");
+ parameter integer ILEVELS = 3 from [0: 4]
+  `attr(info="gate-source current equation selector");
+ parameter integer ILEVELD = 3 from [0 : 4]
+  `attr(info="gate-drain current equation selector");
+ parameter integer QLEVELS = 2 from [0: 3]
+  `attr(info="gate-source charge equation selector");
+ parameter integer QLEVELD = 2 from [0 : 3]
+  `attr(info="gate-drain charge equation selector");
+ parameter integer QLEVELDS = 2 from [0 : 3]
+  `attr(info="drain-source charge equation selector");
+ parameter real Vtotc = 0 from [-inf : inf]
+  `attr(info="Vto temperature coefficient");
+ parameter real Rg = 5.1 from [1e-9 : inf]
+  `attr(info="gate resistance" unit = "Ohms");
+ parameter real Rd = 1.3 from [1e-9 : inf]
+  `attr(info="drain resistance" unit = "Ohms");
+ parameter real Rs = 1.3 from [1e-9 : inf]
+  `attr(info="source resistance" unit = "Ohms");
+ parameter real Rgtc = 0 from [-inf : inf]
+  `attr(info="gate resistance temperature coefficient" unit = "1/Celsius");
+ parameter real Rdtc = 0 from [-inf : inf]
+  `attr(info="drain resistance temperature coefficient" unit = "1/Celsius");
+ parameter real Rstc = 0 from [-inf : inf]
+  `attr(info="source resistance temperature coefficient" unit = "1/Celsius");
+ parameter real Ibv = 1e-3 from [1e-25 : inf]
+  `attr(info="gate reverse breakdown current" unit = "A");
+ parameter real Rf = 10 from [1e-9 : inf]
+  `attr(info="forward bias slope resistance" unit = "Ohms");
+ parameter real R1 = 10 from [1e-9 : inf]
+  `attr(info="breakdown slope resistance" unit = "Ohms");
+ parameter real Af = 1 from [0 : inf]
+  `attr(info="flicker noise exponent");
+ parameter real Kf = 0 from [0 : inf]
+  `attr(info="flicker noise coefficient");
+ parameter real Gdsnoi = 1 from [0 : inf]
+  `attr(info="shot noise coefficient");
+ parameter real Tnom = 26.85 from [-273 : inf]
+  `attr(info="parameter measurement temperature" unit = "Celsius");
+
+//
+real GMIN, T1, T2, F1, F2, F3, Ah, Vf;
+real Eg_T1, Eg_T2, Vt_T2;
+real Igd1, Igd2, Igd3, Igd4, Igd, Ids1, Ids, Igs1, Igs2, Igs3, Igs4, Igs;
+real Vbi_T2, Is_T2, Beta_T2, Cgs_T2, Cgd_T2, Vto_T2, Gamma_T2, Alpha_T2;
+real Qgs1, Qgs2, Qgs, Qgd1, Qgd2, Qgd, Qds;
+real con1,Tr;
+real Nst, Vst, Vg, Al, Fd;
+real Rg_T2, Rd_T2, Rs_T2;
+real Vnew, Veff1, Veff2;
+real del, del2, del3, Tm, V1;
+real A0_T2, A1_T2, A2_T2, A3_T2;
+real fourkt, gm, thermal_pwr, flicker_pwr, An, H1, gm1;
+//
+// Model branches
+//
+branch (n2, n4) b1;
+branch (n2, n3) b2;
+branch (n3, n4) b3;
+branch (n2, n1) b4;
+branch (n1, n4) b5;
+branch (n2, n3) b6;
+branch (Gate, n2) b7;
+branch (Drain,n3) b8;
+branch (n4, Source) b9;
+//
+analog begin
+//
+Vmax=min(Fc*Vbi, Vmax);
+T1=Tnom+`CTOK;
+T2=$temperature;
+Tr=T2/T1;
+con1=pow(Tr, 1.5);
+Rg_T2=Rg*(1+Rgtc*(T2-T1));
+Rd_T2=Rd*(1+Rdtc*(T2-T1));
+Rs_T2=Rs*(1+Rstc*(T2-T1));
+Beta_T2=Area*Beta*pow(1.01, Betatc*(T2-T1));
+Vt_T2=$vt;
+Eg_T1=Eg-`K1*T1*T1/(`K2+T1);
+Eg_T2=Eg-`K1*T2*T2/(`K2+T2);
+F1=(Vbi/(1-M))*(1-pow((1-Fc), (1-M)));
+F2=pow((1-Fc), (1+M));
+F3=1-Fc*(1+M);
+Vbi_T2=(Tr*Vbi)-(2*Vt_T2*ln(con1)) - ( Tr*Eg_T1-Eg_T2);
+Is_T2=Area*Is*pow( Tr, (Xti/N))*limexp(-(`P_Q*Eg_T1)*(1-Tr)/(`P_K*T2));
+Cgs_T2=Area*Cgs*(1+M*(`K3*(T2-T1)-(Vbi_T2-Vbi)/Vbi));
+Cgd_T2=Area*Cgd*(1+M*(`K3*(T2-T1)-(Vbi_T2-Vbi)/Vbi)); 
+Vto_T2=Vto+Vtotc*(T2-T1);
+Gamma_T2=Gamma*(1+Gammatc*(T2-T1));
+Alpha_T2=Alpha*( pow( 1.01, Alphatc*(T2-T1)));
+//
+case (LEVEL) // Basic Curtice quadratic model
+	1 : begin
+		if ( (V(b1)-Vto_T2) > 0 ) Ids=Beta_T2*pow( (V(b1) - Vto_T2), 2.0 )*(1+Lambda*V(b3))*tanh(Alpha*V(b3));
+		else Ids=0;
+	    end
+	2 : begin // Advanced Curtice quadratic model
+		Ah=1/(2*Vt_T2*Nsc);
+		Vf=ln( 1+exp(Ah*(V(b1)-Vto_T2)))/Ah;
+		Ids=Beta_T2*pow( Vf, 2.0 )*(1+Lambda*V(b3))*tanh(Alpha*V(b3));
+	    end
+	3 : begin // Statz - Raytheon model [same as SPICE 3f5]		
+		if ( (V(b1)-Vto_T2) > 0 )
+			begin
+				if ( (0<V(b3))&&(V(b3)<(3/Alpha)) )  Ids=(Beta_T2*(1+Lambda*V(b3))*pow( (V(b1)-Vto_T2), 2.0) )*(1-pow( (1-Alpha*V(b3)/3), 3.0))/(1+B*(V(b1)-Vto_T2));
+	        		if ( V(b3)>=3/Alpha ) Ids=(Beta_T2*(1+Lambda*V(b3))*pow( (V(b1)-Vto_T2), 2.0))/(1+B*(V(b1)-Vto_T2));
+				if ( V(b3)<0 ) Ids=0;
+			end
+		else Ids=0;
+	    end
+	
+	4 : begin   // TOM 1 model"
+
+		if ( (V(b1)-Vto_T2) > 0 )
+			begin
+				if ( (0<V(b3))&&(V(b3)<(3/Alpha)) )  
+					begin
+					 Ids1=(Beta_T2*pow( (V(b1)-Vto_T2), Qp) )*(1-pow( (1-Alpha*V(b3)/3), 3.0));
+					 Ids=Ids1*(1+Lambda*V(b3))/(1+Delta*V(b3)*Ids1);
+					end
+	        		if ( V(b3)>=3/Alpha ) 
+					begin
+					 Ids1=Beta_T2*pow( (V(b1)-Vto_T2), Qp) ;
+					 Ids=Ids1*(1+Lambda*V(b3))/(1+Delta*V(b3)*Ids1);
+					end
+				if ( V(b3)<0 ) Ids=0;
+			end
+		else Ids=0;
+	    end
+
+	5 : begin   // TOM 2 model
+		if ( (V(b1)-Vto_T2) > 0 )
+			begin
+				Nst=Ng+Nd*V(b3);
+				if ( Nst < 1.0) Nst=1.0;
+				Vst=Nst*Vt_T2;
+				Vg=Qp*Vst*ln( exp( (V(b1)-Vto_T2+Gamma_T2*V(b3)) / (Qp*Vst) ) + 1);
+				Al= Alpha_T2*V(b3);
+				Fd=Al/sqrt( 1.0+(Al*Al) );
+				Ids1=Beta_T2*pow( Vg, Qp)*Fd;
+				Ids=Ids1*(1+Lambda*V(b3))/(1+Delta*V(b3)*Ids1);
+			end
+		else Ids=0;
+	    end
+
+endcase
+//
+case (ILEVELS)
+	0 :	begin 
+		 Igs=0; 
+		end	
+  	1 :	begin 
+   		 if ( V(b1)>Vbi ) Igs=(V(b1)-Vbi)/Rf;
+   		 else Igs=-Area*Is+V(b1)*`GMIN;
+  		end
+  	2 :	begin
+		 if (V(b1)>Vbi) Igs1=(V(b1)-Vbi)/Rf;
+		 else Igs1=-Area*Is+V(b1)*`GMIN;
+		 if (V(b1)<-Bv) Igs2=(V(b1)+Bv)/R1;
+		 Igs=Igs1+Igs2;
+  		end
+	3 :	begin		  
+
+		  if (V(b1)>-5.0*N*Vt_T2) 
+			begin
+			 Igs=Is_T2*( limexp(V(b1)/(N*Vt_T2)) -1.0)+V(b1)*`GMIN;
+			end
+		  else Igs=-Is_T2+V(b1)*`GMIN;
+		end
+	4 :	begin
+		 if (V(b1)>-5.0*N*Vt_T2) Igs1= Area*Is_T2*( limexp(V(b1)/(N*Vt_T2)) -1.0) + V(b1)*`GMIN;
+		 else Igs1=0;
+		 if ((-Bv<V(b1))&&(V(b1) < -5.0*N*Vt_T2)) Igs2=-Area*Is_T2 +V(b1)*`GMIN;
+		 else Igs2=0;
+		 if (V(b1) == -Bv) Igs3=-Ibv;
+		 else Igs3=0;
+		 if (V(b1)<-Bv ) Igs4=-Area*Is_T2*(limexp(-(Bv+V(b1))/Vt_T2)-1.0+Bv/Vt_T2);
+		 else Igs4=0;
+		 Igs=Igs1+Igs2+Igs3+Igs4;
+		end
+endcase
+//
+case (ILEVELD) 
+	0 : begin 
+	     Igd=0;
+	    end
+	1 : begin
+	     if (V(b2)>Vbi) Igd=(V(b2)-Vbi)/Rf;
+	     else Igd=-Area*Is+V(b2)*`GMIN;
+	    end
+	2 : begin 
+	     if (V(b2)>Vbi) Igd1=(V(b2)-Vbi)/Rf;
+	     else Igd1=-Area*Is+V(b2)*`GMIN;
+	     if (V(b2)<-Bv) Igd2=(V(b2)+Bv)/R1;
+	     Igd=Igd1+Igd2;
+	    end
+	3 : begin
+	     if (V(b2)>-5.0*N*Vt_T2) Igd=Area*Is_T2*( limexp(V(b2)/(N*Vt_T2)) -1.0) + V(b2)*`GMIN;
+	     else Igd=-Is_T2+V(b2)*`GMIN;
+	    end
+	4 : begin
+	     if (V(b2)>-5.0*N*Vt_T2) Igd1= Area*Is_T2*( limexp(V(b2)/(N*Vt_T2)) -1.0) + V(b2)*`GMIN;
+	     else Igd1=0;
+	     if ((-Bv<V(b2))&&(V(b2) < -5.0*N*Vt_T2)) Igd2=-Area*Is_T2 +V(b2)*`GMIN;
+	     else Igd2=0;
+	     if (V(b2)==-Bv) Igd3=-Ibv;
+	     else Igd3=0;
+	     if (V(b2)<-Bv ) Igd4=-Area*Is_T2*(limexp(-(Bv+V(b2))/Vt_T2)-1.0+Bv/Vt_T2);
+	     else Igd4=0;
+	     Igd=Igd1+Igd2+Igd3+Igd4;
+	   end
+endcase
+//
+if (QLEVELS==0) Qgs=0;
+if (QLEVELS==1) Qgs=Area*Cgs*V(b4);
+if (QLEVELS==2) begin
+		 if (V(b4)<(Fc*Vbi)) Qgs1=((Cgs_T2*Vbi_T2)/(1-M))*(1-pow( (1-V(b4)/Vbi_T2), (1-M)));
+                 else Qgs1=0;
+                 if (V(b4)>=(Fc*Vbi)) Qgs2=Cgs_T2*(F1+(1/F2)*(F3*(V(b4)-(Fc*Vbi_T2))+(M/(2*Vbi_T2))*(V(b4)*V(b4)-Fc*Vbi_T2*Fc*Vbi_T2)));
+	         else Qgs2=0;
+                 Qgs=Qgs1+Qgs2;
+                end 
+if (QLEVELS==3) begin
+		 Veff1=0.5*( V(b4)+V(b6)+sqrt( pow( V(b4)-V(b6), 2.0)+Vdelta1*Vdelta1 ) );
+		 Vnew =0.5*( Veff1+Vto_T2+sqrt( pow( Veff1-Vto, 2.0 )+Vdelta2*Vdelta2 ) );
+		 if (Vnew>Vmax) Qgs=Cgs_T2*(2*Vbi_T2*(1-sqrt( 1-Vmax/Vbi_T2 ) )+(Vnew-Vmax)/sqrt(1-Vmax/Vbi) );
+		 else Qgs=Cgs_T2*2*Vbi*( 1-sqrt( 1-Vnew/Vbi));
+	        end
+//
+if (QLEVELD==0) Qgd=0;
+if (QLEVELD==1) Qgd=Area*Cgd*V(b6);
+if (QLEVELD==2) begin
+		 if (V(b6)<(Fc*Vbi))  Qgd1=((Cgd_T2*Vbi_T2)/(1-M))*(1-pow( (1-V(b6)/Vbi_T2), (1-M)));
+                 else Qgd1=0;
+                 if (V(b6)>=(Fc*Vbi)) Qgd2=Cgd_T2*(F1+(1/F2)*(F3*(V(b6)-(Fc*Vbi_T2))+(M/(2*Vbi_T2))*(V(b6)*V(b6)-Fc*Vbi_T2*Fc*Vbi_T2)));
+	         else Qgd2=0;
+                 Qgd=Qgd1+Qgd2;
+                end 
+if (QLEVELD==3) begin
+		 Veff2=0.5*( V(b4)+V(b6)-sqrt( pow( V(b4)-V(b6), 2.0)+Vdelta1*Vdelta1 ) );
+		 Qgd=Cgd_T2*Veff2;
+	        end
+//
+case (QLEVELDS) 
+	0 : begin 
+	     Qds=0;
+	    end
+	1 : begin 
+	     Qds=Area*Cds*V(b3);
+	    end
+	2 : begin 
+	      Qds=Area*Cds*V(b3)+Tau*Ids;
+	    end
+endcase
+//
+I(b1) <+ Igs;
+I(b2) <+ Igd;
+I(b3) <+ Ids;
+I(b3) <+ ddt(Qds);
+I(b4) <+ ddt(Qgs);
+I(b5) <+ Area*V(b5)/Rin;
+I(b6) <+ ddt(Qgd);
+I(b7) <+ V(b7)/Rg_T2;
+I(b8) <+ Area*V(b8)/Rd_T2;
+I(b9) <+ Area*V(b9)/Rs_T2;
+//
+// Noise contributions
+//
+fourkt=4.0*`P_K*T2;
+if ((LEVEL==1)||(LEVEL==2))
+	begin
+		gm=2*Beta_T2*(V(b1)-Vto_T2)*(1+Lambda*V(b3))*tanh(Alpha_T2*V(b3));
+		if ( V(b3) < 3/Alpha )
+		   begin
+		      An=1-V(b3)/(V(b1)-Vto_T2);
+ 		      thermal_pwr= (8*`P_K*T2*gm/3)*((1+An+An*An)/(1+An))*Gdsnoi;
+		   end
+		else
+		thermal_pwr=(8*`P_K*T2*gm/3)*Gdsnoi;
+
+		I(b3) <+ white_noise(thermal_pwr, "thermal");
+		flicker_pwr = Kf*pow(Ids,Af);
+		I(b3) <+ flicker_noise(flicker_pwr,1.0, "flicker");
+	end
+//
+if (LEVEL==3)
+	begin
+		
+		if ( V(b3) < 3/Alpha )
+		   begin
+		      H1=(1-(1-(Alpha*V(b3))/3))/(1+B*(V(b1)-Vto_T2));
+		      gm=2*Beta_T2*(V(b1)-Vto_T2)*(1+Lambda*V(b3))*H1+(Beta_T2*(1+Lambda*V(b3))*pow((V(b1)-Vto_T2),2.0))*B*H1/(1+B*(V(b1)-Vto_T2));
+		      An=1-V(b3)/(V(b1)-Vto_T2);
+ 		      thermal_pwr= (8*`P_K*T2*gm/3)*((1+An+An*An)/(1+An))*Gdsnoi;
+		   end
+		else
+		 begin
+		  gm=2*Beta_T2*(V(b1)-Vto_T2)*(1+Lambda*V(b3))/(1+B*(V(b1)-Vto_T2))+(Beta_T2*(1+Lambda*V(b3))*pow((V(b1)-Vto_T2),2.0))*B/pow( (1+B*(V(b1)-Vto_T2)),2.0);
+		  thermal_pwr=(8*`P_K*T2*gm/3)*Gdsnoi;
+		 end
+		I(b3) <+ white_noise(thermal_pwr, "thermal");
+		flicker_pwr = Kf*pow(Ids,Af);
+		I(b3) <+ flicker_noise(flicker_pwr,1.0, "flicker");
+	end
+//
+if (LEVEL==4)
+	begin
+		
+		if ( V(b3) < 3/Alpha )
+		   begin
+		      Ids1=(Beta_T2*pow( (V(b1)-Vto_T2), Qp) )*(1-pow( (1-Alpha*V(b3)/3), 3.0));
+		      gm1=Qp*Beta_T2*pow( V(b1)-Vto_T2, Qp-1)*(1-(1-pow(Alpha*V(b3)/3, 3.0)));
+		      gm=(gm1*(1+Lambda*V(b3))/(1+Delta*V(b1)*Ids1))*(1+(Delta*V(b3)*Ids1)/(1+Delta*V(b3)*Ids1));
+		      An=1-V(b3)/(V(b1)-Vto_T2);
+ 		      thermal_pwr= (8*`P_K*T2*gm/3)*((1+An+An*An)/(1+An))*Gdsnoi;
+		   end
+		else
+		 begin
+		  Ids1=(Beta_T2*pow( (V(b1)-Vto_T2), Qp) );
+		      gm1=Qp*Beta_T2*pow( V(b1)-Vto_T2, Qp-1);
+		      gm=(gm1*(1+Lambda*V(b3))/(1+Delta*V(b1)*Ids1))*(1+(Delta*V(b3)*Ids1)/(1+Delta*V(b3)*Ids1));
+		  thermal_pwr=(8*`P_K*T2*gm/3)*Gdsnoi;
+		 end
+		I(b3) <+ white_noise(thermal_pwr, "thermal");
+		flicker_pwr = Kf*pow(Ids,Af);
+		I(b3) <+ flicker_noise(flicker_pwr,1.0, "flicker");
+	end
+//
+if (LEVEL==5)
+	begin
+		
+		if ( V(b3) < 3/Alpha )
+		   begin
+		      Nst=Ng+Nd*V(b3);
+		      if ( Nst < 1.0) Nst=1.0;
+		      Vst=Nst*Vt_T2;
+		      Vg=Qp*Vst*ln( exp( (V(b1)-Vto_T2+Gamma_T2*V(b3)) / (Qp*Vst) ) + 1);
+		      Al= Alpha_T2*V(b3);
+		      Fd=Al/sqrt( 1.0+(Al*Al) );
+		      Ids1=Beta_T2*pow( Vg, Qp)*Fd;
+		      gm1=(Ids1/Vg)*Qp/(exp(-((V(b1)-Vto_T2+Delta*V(b3))/(Qp*Vst)))+1);
+		      gm=gm1/pow( (1+Delta*V(b3)*Ids1),2.0);
+		      An=1-V(b3)/(V(b1)-Vto_T2);
+ 		      thermal_pwr= (8*`P_K*T2*gm/3)*((1+An+An*An)/(1+An))*Gdsnoi;
+		   end
+		else
+		 begin
+		  Nst=Ng+Nd*V(b3);
+		  if ( Nst < 1.0) Nst=1.0;
+		  Vst=Nst*Vt_T2;
+		  Vg=Qp*Vst*ln( exp( (V(b1)-Vto_T2+Gamma_T2*V(b3)) / (Qp*Vst) ) + 1);
+		  Al= Alpha_T2*V(b3);
+		  Fd=Al/sqrt( 1.0+(Al*Al) );
+		  Ids1=Beta_T2*pow( Vg, Qp)*Fd;
+		  gm1=(Ids1/Vg)*Qp/(exp(-((V(b1)-Vto_T2+Delta*V(b3))/(Qp*Vst)))+1);
+		  gm=gm1/pow( (1+Delta*V(b3)*Ids1),2.0);
+		  thermal_pwr=(8*`P_K*T2*gm/3)*Gdsnoi;
+		 end
+		I(b3) <+ white_noise(thermal_pwr, "thermal");
+		flicker_pwr = Kf*pow(Ids,Af);
+		I(b3) <+ flicker_noise(flicker_pwr,1.0, "flicker");
+	end
+I(b8) <+ white_noise(Area*fourkt/Rd_T2, "thermal");
+I(b7) <+ white_noise(Area*fourkt/Rg_T2, "thermal");
+I(b9) <+ white_noise(Area*fourkt/Rs_T2, "thermal");
+//
+end
+endmodule

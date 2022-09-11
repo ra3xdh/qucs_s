@@ -1,0 +1,64 @@
+//   Qucs analogue comp_4bit model
+//   The structure and theoretical background to the comp_4bit
+//   Verilog-a model are presented in the Qucs mixed-mode tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, January 2009.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module comp_4bit (X0, X1, X2, X3, Y0, Y1, Y2, Y3, L, G, E); 
+ inout X0, X1, X2, X3, Y0, Y1, Y2, Y3, L, G, E;
+ electrical X0, X1, X2, X3, Y0, Y1, Y2, Y3, L, G, E;
+ electrical Ln1, Ln2, Gn1, Gn2, En1, En2;
+//
+ `define attr(txt) (*txt*)
+ parameter real TR=6 from [1.0:20.0] `attr(info="transfer function high scaling factor");
+ parameter real Delay = 1e-9 from [0: inf] `attr(info="output delay" unit="s");
+//
+ real Rd, Cd, xor0b, xor1b, xor2b, xor3b, t1, t2, mL, mG, mE;
+//
+analog begin
+@(initial_model)
+  begin
+    Rd = 1e3;
+    Cd= Delay*1.43/Rd;
+  end
+//
+xor0b = 1-(V(X0)*(1-V(Y0))+(1-V(X0))*V(Y0));
+xor1b = 1-(V(X1)*(1-V(Y1))+(1-V(X1))*V(Y1));
+xor2b = 1-(V(X2)*(1-V(Y2))+(1-V(X2))*V(Y2));
+xor3b = 1-(V(X3)*(1-V(Y3))+(1-V(X3))*V(Y3));
+t1    = xor3b*xor2b;
+t2    = t1*xor1b;
+mE = xor0b*t2;
+mG = V(X3)*(1-V(Y3))+ xor3b*V(X2)*(1-V(Y2))+t1*V(X1)*(1-V(Y1)) + t2*V(X0)*(1-V(Y0));
+mL = (1 - V(X3))*V(Y3)+xor3b*(1-V(X2))*V(Y2) + t1*(1-V(X1))*V(Y1) + t2*(1-V(X0))*V(Y0);
+//
+I(En1) <+ -0.5*(1+tanh(TR*(mE-0.5)));
+I(En1) <+ V(En1);
+I(En1, En2) <+ V(En1,En2)/Rd;
+I(En2) <+ ddt(Cd*V(En2));
+I(E)  <+ -V(En2);
+I(E) <+ V(E);
+//
+I(Gn1) <+ -0.5*(1+tanh(TR*(mG-0.5)));
+I(Gn1) <+ V(Gn1);
+I(Gn1, Gn2) <+ V(Gn1,Gn2)/Rd;
+I(Gn2) <+ ddt(Cd*V(Gn2));
+I(G)  <+ -V(Gn2);
+I(G) <+ V(G);
+//
+I(Ln1) <+ -0.5*(1+tanh(TR*(mL-0.5)));
+I(Ln1) <+ V(Ln1);
+I(Ln1, Ln2) <+ V(Ln1,Ln2)/Rd;
+I(Ln2) <+ ddt(Cd*V(Ln2));
+I(L)  <+ -V(Ln2);
+I(L) <+ V(L);
+//
+end
+endmodule

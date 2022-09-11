@@ -3078,7 +3078,8 @@ void QucsApp::slotBuildXSPICEIfs(int mode)
             bool r = false;
             switch(mode) {
             case spicecompat::cmgenSUBifs: r = cmgen->createIFS(stream,Sch);
-            case spicecompat::cmgenEDDifs: {
+            [[fallthrough]];
+            case spicecompat::cmgenEDDifs: { // no warning on fallthrough
                 for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
                     if (pc->isSelected) {
                         r = cmgen->createIFSfromEDD(stream,Sch,pc);

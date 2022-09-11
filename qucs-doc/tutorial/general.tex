@@ -1,0 +1,57 @@
+%
+% Tutorial -- General Design Flow
+%
+% Copyright (C) 2005 Thierry Scordilis <thierry.scordilis@free.fr>
+% Copyright (C) 2007 Stefan Jahn <stefan@lkcc.org>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+
+Knowing the fact that you are familiar with the regular design flow of
+RF, microwave circuits and or systems, we need to clarify how
+\textit{Qucs} is intended to be used for this type of circuits design.
+ 
+\bigskip
+
+As an RF research engineer, I'm still having some new graduate
+students.  And I'm always having some problems with the new methods
+that are teached.  Usually they arrive with some knowledge on CAD
+programs, but they do not really know how to dimension their design.
+They use only the optimizer to replace their thinking.  What a pity!
+Of course not all of them are like this, but it is a common trend.  By
+since work book I want to show that there are some rules to follow,
+and that a design can be calculated, and that it will not work due to
+a wizard!
+
+\bigskip
+
+For the experts, nothing very new herein, but only some particular use
+of Qucs, since the design rules are the one that you could have on the
+workbench using a paper and a pen.
+
+\bigskip
+
+The author.
+
+\section*{Regular document organisation}
+
+We will try to have always the same kind of organization inside the
+different chapters, that is to say:
+
+\begin{description}
+\item[a main topic: ] in order to say in which field of activity this design is intended to be used
+
+\item[a block specification: ] in order to know what we have to do.  This task will not be explain at a first glance, since it is not the goal of this document (we're not dealing with system specification, it could be if the component present in Qucs are increased \ldots so why not in further version of this document.)
+
+\item[DC explanation: ] if the design includes a DC part, then we should provide the DC study including thermal aspect if needed.
+
+\item[functional design: ] in order to explain how this functionality is designed either in general or by the mean of Qucs.  The second aspect should be always kept in mind.  Everything might not be straightforward on other CAD programs, and therefore not considerated herein.
+
+\end{description}
+
+\bigskip
+
+Hoping that these explanations clarifies the goal of this document.

@@ -1,0 +1,12 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/AC_SW_swr_meter_prj/swr_meter.sch
+
+R:R1 gnd reflected R="50 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 gnd forward R="50 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R4 _net0 _net1 R="50 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vac:V1 _net0 gnd U="2 V" f="1 GHz" Phase="0" Theta="0"
+Tr:Tr2 gnd reflected forward Output T="25"
+R:Load gnd Output R="R_load" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Tr:Tr1 reflected _net1 Output gnd T="25"
+.AC:AC1 Type="lin" Start="1 GHz" Stop="2 GHz" Points="2" Noise="no"
+Eqn:Eqn1 r_calc="(R_load-50)/(R_load+50)" r_measure="reflected.v / forward.v" Export="yes"
+.SW:SW1 Sim="AC1" Type="lin" Param="R_load" Start="2 Ohm" Stop="200 Ohm" Points="100"

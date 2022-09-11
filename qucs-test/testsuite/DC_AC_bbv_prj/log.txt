@@ -1,0 +1,18 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `In.v' in equation `Gain' not yet defined
+checker notice, variable `Out.v' in equation `Gain' not yet defined
+netlist content
+      2 DCBlock instances
+      1 AC instances
+      6 BJT instances
+      1 DC instances
+      2 L instances
+      9 R instances
+      1 Vdc instances
+      1 Vac instances
+creating netlist...
+checker notice, variable `In.v' in equation `Gain' not yet defined
+checker notice, variable `Out.v' in equation `Gain' not yet defined
+checker notice, variable `In.v' in equation `Gain' not yet defined
+checker notice, variable `Out.v' in equation `Gain' not yet defined

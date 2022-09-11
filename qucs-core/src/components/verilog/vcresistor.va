@@ -1,0 +1,53 @@
+//   Qucs voltage controlled resistance model
+//
+//   Provides an ideal voltage controlled resistance. For positive
+//   voltages the resistance is the voltage across the input ports
+//   multiplied by the gain.
+//
+//   For input voltages <= 0 the resistance is 1 uOhm (1e-6 Qhm)
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+//
+//   Copyright (C), Richard Crozier, richard DOT crozier AT yahoo DOT co DOT uk, February 2013.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+//
+module vcresistor (C1, C2, P1, P2);
+inout P1, P2;
+input C1, C2;
+electrical C1, C2, P1, P2;
+
+`define attr(txt) (*txt*)
+//
+parameter real gain = 1 from [1e-6 : inf]
+  `attr(info="Gain" unit = "Ohm/Volt");
+
+real resistance;
+
+analog begin
+
+// Macromodel
+//
+// resistance is the voltage across the input ports
+  resistance = V(C1,C2) * gain;
+
+  if (resistance>0.0)
+    // current is simply I = V/R
+    I(P1, P2) <+ V(P1, P2)/resistance ;
+  else
+    // put a small resistance across the output
+    // ideally we would use:
+    // 
+    //  I(P1, P2) <+ 0.0 ;
+    //
+    // but this statement is not supported by 
+    // adms 2.3
+    I(P1, P2) <+ V(P1,P2)*1e6 ;
+
+  end
+
+endmodule

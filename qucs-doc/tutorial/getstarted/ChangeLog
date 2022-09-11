@@ -1,0 +1,25 @@
+2007-03-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* content.tex: Fixed some typos and also incorporated the
+	changes Lisandro suggested in his review.
+
+2007-03-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* content.tex: Fixed section about bias point selection for
+	AC simulations.  Also added a section about relationship between
+	AC and S-parameter simulation.
+
+2007-03-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* content.tex: Added a section about S-parameter simulation.
+
+2007-03-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* content.tex: Added sections about AC and transient analysis
+	of the bipolar transistor.
+
+2007-03-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* getstarted.tex: New tutorial for very basic steps with Qucs
+	added.  Placed here the small AC tutorial from Juan.
+

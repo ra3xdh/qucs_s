@@ -1,0 +1,106 @@
+project location: 
+modules to load: 0
+factorycreate.size() is 0
+factorycreate has registered:
+parsing netlist...
+checking netlist...
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+netlist content
+      1 Diode instances
+      1 DC instances
+      1 R instances
+      1 HB instances
+      1 SW instances
+      1 Vac instances
+      1 TR instances
+creating netlist...
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+NOTIFY: HB1: solving for 17 frequencies
+NOTIFY: HB1: balancing at 1 nodes
+HB1: convergence reached after 2 iterations
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+NOTIFY: HB1: solving for 17 frequencies
+NOTIFY: HB1: balancing at 1 nodes
+HB1: convergence reached after 3 iterations
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+NOTIFY: HB1: solving for 17 frequencies
+NOTIFY: HB1: balancing at 1 nodes
+HB1: convergence reached after 4 iterations
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+NOTIFY: HB1: solving for 17 frequencies
+NOTIFY: HB1: balancing at 1 nodes
+HB1: convergence reached after 4 iterations
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+NOTIFY: HB1: solving for 17 frequencies
+NOTIFY: HB1: balancing at 1 nodes
+HB1: convergence reached after 5 iterations
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+NOTIFY: HB1: solving for 17 frequencies
+NOTIFY: HB1: balancing at 1 nodes
+HB1: convergence reached after 6 iterations
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+NOTIFY: HB1: solving for 17 frequencies
+NOTIFY: HB1: balancing at 1 nodes
+HB1: convergence reached after 6 iterations
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+NOTIFY: HB1: solving for 17 frequencies
+NOTIFY: HB1: balancing at 1 nodes
+HB1: convergence reached after 5 iterations
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+NOTIFY: HB1: solving for 17 frequencies
+NOTIFY: HB1: balancing at 1 nodes
+HB1: convergence reached after 5 iterations
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+NOTIFY: HB1: solving for 17 frequencies
+NOTIFY: HB1: balancing at 1 nodes
+HB1: convergence reached after 5 iterations
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+NOTIFY: HB1: solving for 17 frequencies
+NOTIFY: HB1: balancing at 1 nodes
+HB1: convergence reached after 4 iterations
+checker notice, variable `P2.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P1.Vb' in equation `Id_HB' not yet defined
+checker notice, variable `P2.Vt' in equation `Id_Tran' not yet defined
+checker notice, variable `P1.Vt' in equation `Id_Tran' not yet defined
+NOTIFY: TR1: average time-step 3.31895e-07, 959 rejections
+NOTIFY: TR1: average NR-iterations 3.07368, 0 non-convergences

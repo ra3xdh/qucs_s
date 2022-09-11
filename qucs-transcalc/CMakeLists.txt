@@ -123,7 +123,8 @@ TARGET_LINK_LIBRARIES( ${QUCS_NAME}trans ${QT_LIBRARIES} transcalc )
 #ADD_SUBDIRECTORY( bitmaps ) -> added as resources
 ADD_SUBDIRECTORY( examples )
 
-#INSTALL( FILES qucstrans.1 DESTINATION share/man/man1 )
+# man pages
+INSTALL( FILES qucstrans.1 DESTINATION share/man/man1 )
 
 #
 # Prepare the installation
@@ -141,16 +142,10 @@ IF(WIN32)
   SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}.exe")
 ENDIF(WIN32)
 
-#
-# Install the Qucs application, on Apple, the bundle is at the root of the
-# install tree, and on other platforms it'll go into the bin directory.
-#
 INSTALL(TARGETS ${QUCS_NAME}trans
     BUNDLE DESTINATION bin COMPONENT Runtime
     RUNTIME DESTINATION bin COMPONENT Runtime
     )
-
-
 
 #
 # Install needed Qt plugins by copying directories from the qt installation

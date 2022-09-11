@@ -1276,7 +1276,7 @@ void qf_poly::to_roots (void) {
   qf_scm (m);
   qf_bcm (m);
   status = qf_qrc (m, rts);
-
+  
   // root solving qr method failed to converge
   for (unsigned i = 0; i < 2 * d; i++) {
     if (fabs (rts[i]) <= ROOT_PREC)
@@ -1287,7 +1287,8 @@ void qf_poly::to_roots (void) {
 //               " + " << rts [i+1] << " i\n" ;
   }
 
-  rep = BOTH;
+  rep = BOTH;  
+  Q_UNUSED(status);
 }
 
 // Private functions used by qf_poly::solve

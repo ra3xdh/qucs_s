@@ -1,0 +1,22 @@
+# Qucs 0.0.17  /Users/guilherme/.qucs/my_bandpass_prj/bandpass.sch
+
+.Def:opa227 _net3 _net4 _net1
+VCVS:SRC2 _net0 _net1 gnd gnd G="1" T="0"
+R:R1 _net2 _net0 R="1 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C1 gnd _net0 C="1.98944 mF" V=""
+VCVS:SRC1 _net3 _net2 gnd _net4 G="1e8" T="0"
+.Def:End
+
+Sub:OPA227_1 _net0 _net1 _net2 Type="opa227"
+Sub:OPA227_2 _net3 _net4 Vout Type="opa227"
+C:C1 Vin _net0 C="0.1 uF" V=""
+R:R2 gnd _net1 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R5 gnd _net4 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.AC:AC1 Type="log" Start="10 Hz" Stop="1 MHz" Points="1000" Noise="no"
+Vac:V1 Vin gnd U="1 V" f="1 kHz" Phase="0" Theta="0"
+Eqn:Eqn1 y1="dB(Vout.v)" y2="phase(Vout.v)" Export="yes"
+R:R1 _net1 _net2 R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R4 _net4 Vout R="10 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C2 gnd _net3 C="0.1 uF" V=""
+R:R3 _net0 gnd R="1591 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R6 _net2 _net3 R="1.59 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"

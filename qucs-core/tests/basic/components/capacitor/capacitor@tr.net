@@ -1,0 +1,9 @@
+# Qucs 0.0.15  /tmp/test.sch
+
+IProbe:I _net0 _net1
+VProbe:V _net2 gnd
+C:C1 _net2 gnd C="100u" V="0"
+R:R1 _net1 _net2 R="1k" Temp="25" Tc1="0.0" Tc2="0.0" Tnom="25"
+.TR:TR1 Type="lin" Start="0" Stop="4s" Points="20001" IntegrationMethod="Trapezoidal" Order="2" InitialStep="0.1 ns" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1 pA" vntol="1 uV" Temp="26.85" LTEreltol="1e-3" LTEabstol="1e-6" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"
+Vrect:V1 _net0 gnd U="1 V" TH="2s" TL="2s" Tr="0.01 ns" Tf="0.01 ns" Td="0 ns"
+Eqn:Eqn1 R="1k" C="100u" TC="25" computed="(time<2)*(1-exp(-time/(R*C)))+(1-exp(-time/(R*C)))*(time>=2)*(exp(-(time-2.0)/(R*C)))" diff="V.Vt-computed" assert="abs(diff)<1e-6" Export="yes"

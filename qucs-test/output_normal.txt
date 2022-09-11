@@ -1,0 +1,94 @@
+Found Qucs in: /Users/guilherme/local/qucs-head/bin/
+
+
+******************************************
+** Test suite - Projects to be run      **
+******************************************
+['DC_SW_diode_prj', 'SP_sparam_prj', 'TR_colpitts_prj', 'TR_resistor_prj']
+
+
+******************************************
+** Test schematic to netlist conversion **
+******************************************
+
+Project :  /Users/guilherme/git/qucs-test/testsuite/DC_SW_diode_prj
+Running :  /Users/guilherme/local/qucs-head/bin/qucs -n -i diode.sch -o test_diode_netlist.txt
+Comparing : diff netlist.txt test_diode_netlist.txt
+Diff     : PASS
+
+Project :  /Users/guilherme/git/qucs-test/testsuite/SP_sparam_prj
+Running :  /Users/guilherme/local/qucs-head/bin/qucs -n -i sparam.sch -o test_sparam_netlist.txt
+Comparing : diff netlist.txt test_sparam_netlist.txt
+Diff     : PASS
+
+Project :  /Users/guilherme/git/qucs-test/testsuite/TR_colpitts_prj
+Running :  /Users/guilherme/local/qucs-head/bin/qucs -n -i colpitts.sch -o test_colpitts_netlist.txt
+Comparing : diff netlist.txt test_colpitts_netlist.txt
+Diff     : PASS
+
+Project :  /Users/guilherme/git/qucs-test/testsuite/TR_resistor_prj
+Running :  /Users/guilherme/local/qucs-head/bin/qucs -n -i resistor.sch -o test_resistor_netlist.txt
+Comparing : diff netlist.txt test_resistor_netlist.txt
+Diff     : PASS
+
+
+############################################
+#  Report schematic to netlist conversion  #
+--> No differences found.
+
+
+********************************
+** Test simulation and output **
+********************************
+
+Project :  /Users/guilherme/git/qucs-test/testsuite/DC_SW_diode_prj
+Running :  /Users/guilherme/local/qucs-head/bin/qucsator -i netlist.txt -o test_diode.dat
+Runtime: 0.285499
+load data diode.dat
+load data test_diode.dat
+Comparing dependent variables
+  Passed vdiode.V
+
+Project :  /Users/guilherme/git/qucs-test/testsuite/SP_sparam_prj
+Running :  /Users/guilherme/local/qucs-head/bin/qucsator -i netlist.txt -o test_sparam.dat
+Runtime: 0.001933
+load data sparam.dat
+load data test_sparam.dat
+Comparing dependent variables
+  Passed S[1,2]
+  Passed S[1,1]
+  Passed S[2,1]
+  Passed dBS11
+  Passed S[2,2]
+  Passed dBS21
+
+Project :  /Users/guilherme/git/qucs-test/testsuite/TR_colpitts_prj
+Running :  /Users/guilherme/local/qucs-head/bin/qucsator -i netlist.txt -o test_colpitts.dat
+Runtime: 0.001974
+load data colpitts.dat
+load data test_colpitts.dat
+Comparing dependent variables
+  Passed _net3.Vt
+  Passed _net2.Vt
+  Passed Output.Vt
+  Passed V1.It
+  Passed _net0.Vt
+  Passed _net1.Vt
+
+Project :  /Users/guilherme/git/qucs-test/testsuite/TR_resistor_prj
+Running :  /Users/guilherme/local/qucs-head/bin/qucsator -i netlist.txt -o test_resistor.dat
+Runtime: 0.001626
+load data resistor.dat
+load data test_resistor.dat
+Comparing dependent variables
+  Passed Vout.Vt
+  Passed Vin.Vt
+  Passed V1.It
+
+
+############################################
+#  Report simulation result comparison     #
+--> No significant numerical differences found.
+
+
+###############  Done ######################

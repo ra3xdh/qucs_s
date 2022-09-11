@@ -1,0 +1,23 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/DC_SP_LPF-Balun2_prj/LPF-Balun2.sch
+
+.Def:IdealBalun _net1 _net4 _net3 _net0 _net2
+sTr:Tr1 _net0 _net1 _net2 _net3 _net4 _net4 T1="0.5" T2="0.5"
+.Def:End
+
+L:L1 _net0 _net1 L="1.2uH" I=""
+L:L2 _net1 _net2 L="470nH" I=""
+C:C1 _net3 _net0 C="270pF" V=""
+C:C2 _net4 _net1 C="270pF" V=""
+L:L3 _net5 _net0 L="470nH" I=""
+L:L4 _net6 _net3 L="470nH" I=""
+L:L5 _net3 _net4 L="1.2uH" I=""
+L:L6 _net4 _net7 L="470nH" I=""
+Pac:P1 _net8 gnd Num="1" Z="100 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Sub:Balun1 _net8 _net9 _net6 _net5 gnd Type="IdealBalun"
+Sub:Balun2 _net10 _net11 _net7 _net2 gnd Type="IdealBalun"
+Vdc:V1 _net9 gnd U="1V"
+VProbe:Pr1 _net11 gnd
+Pac:P2 _net10 gnd Num="2" Z="100 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+.SP:SP1 Type="log" Start="1MHz" Stop="100MHz" Points="1001" Noise="no" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+Eqn:Eqn1 dBS21="dB(S[2,1])" dBS11="dB(S[1,1])" Export="yes"
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"

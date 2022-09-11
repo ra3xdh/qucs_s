@@ -1,0 +1,12 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `S' in equation `dBS21' not yet defined
+checker notice, variable `S' in equation `ZofS22' not yet defined
+netlist content
+      3 C instances
+      3 L instances
+      2 Pac instances
+      1 SP instances
+creating netlist...
+checker notice, variable `S' in equation `dBS21' not yet defined
+checker notice, variable `S' in equation `ZofS22' not yet defined

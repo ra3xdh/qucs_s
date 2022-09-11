@@ -1,0 +1,117 @@
+%
+% Tutorial -- Low Noise Amplifier Design
+%
+% Copyright (C) 2005 Thierry Scordilis <thierry.scordilis@free.fr>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+This section will describe a two stage LNA. The main goal is to see how we can design this LNA using the QUCS software, but also to find innovative designs for low power \footnote{be careful when I usually use the term low power , I mean extremlly low power , below the mA generally} solutions.
+
+\bigskip
+
+The main difference between as you should know, between PA and LNA, is that in the design of a LNA the noise factor is crucial, and therefore a trade off has to be made with the gain design. This design rule is well explained in all RF courses, so I will go straightforward to the solution by explaining the "pie" but not the "recipie" !
+
+\bigskip 
+
+As mentionned earlier, a particular attention will be placed on the DC study, since the overall current consumtion is a crucial point, and the noise factor that we could have.
+
+%-----------------------------
+\tutsubsection{System consideration}
+%-----------------------------
+
+As a system point of view we need first to specify what kind of function we need. this function will be defined as mentionned in table \ref{design:lna:systemSpecification}.
+
+
+\begin{table}[htp]
+\caption{System specification for the design of a LNA}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|} \hline
+parameter & description 					& min   & typ     & max   & unit \\ \hline \hline
+$F_o$     & frequency of operation		& $863$ & $868.6$ & $870$ & MHz \\
+$Icc$ 	   & current consumption        &       &    $0.5$     & $1$    & mA \\ \hline
+$Z_{in}$  & input impedance            &       & $50$    &        & $\Omega$ \\
+$Z_{out}$  & output impedance            &       & $50$    &        & $\Omega$ \\ \hline
+$P_{in}$   & input power                &   $-120$ & $-110$ & $-90$ & dBm \\
+$V_{cc}$   & DC supply voltage                &   $1.4$ & $1.5$ & $1.6$ & V \\ \hline
+\end{tabular}
+\end{center}
+\label{design:lna:systemSpecification}
+\end{table}
+
+\textbf{note :} for the DC supply voltage, we will have to find the correct ripple that is acceptable on this design in order to be able to specify the voltage regulator and its PSRR regarding the other voltage in the design. To proceed, due to the fact that some functionnalities are still missing on QUCS\footnote{normal it is still in development \ldots} we will use some workaround for the DC study.
+
+
+%-----------------------------
+\tutsubsection{Choice of transistor}
+%-----------------------------
+
+In order to design a LNA, a particular attention has to be put in the this choice. Therefore you will need to have a transistor that is well designed for very small current and for LNA application. 
+
+I will    use the $BFG403AW$ from  philips \footnote{I do not have any stock option with philips, but they provide quite easily some prototypes and the models of their transistors, further more their strategy is to continue to provide small wideband RF transistor, so why not ?}. This transistor belongs to the $5^{th}$ generation. 
+
+To classify directly the different transistors that could be used, the different version 
+
+The parameter are the following :
+
+\input{lna/bfg403}
+
+In order to perform some simulation we should input this component in the device library as mentionned in the chapter on the BJT modeling, and create the schematics thst uses this device. The parasitic element are the same since the package used is the same as the $BFG425W$.
+
+%-----------------------------
+\tutsubsection{library creation}
+%-----------------------------
+
+The major problem in this design is the fact that the needed current on the LNA is not mentioned in the already measured S parameters from the manufacturer. This is one of the reasons why, we need specicaly a non linear model to describe the transistor. Of course a preliminary calculus could be done using these regular parameters, but since we need also some other features such as distortion and so on, a non linear model is mandatory.
+
+\bigskip 
+
+In order to conduct these test, we need to create a model of our component. To perform this you should create or edit the file that contain all the libraries, this file is stored under 
+
+\begin{verbatim}
+/usr/local/share/qucs/library/philips_RF_widebande_npn.lib
+\end{verbatim}
+
+You can edit this file with \texttt{vi}. You need to add the following line :
+\begin{verbatim}
+<Qucs Library 0.0.7 "philips RF wideBand">
+...
+...
+...
+<Component BFG403W>
+  <Description>
+    RF wideband NPN 25GHz 
+    2V, 3mA, 20dB , 2000MHz
+    Manufacturer: Philips Inc.
+    NPN complement: BFG403W
+    --------------------------
+    based on spice parameter from philips
+    --------------------------
+    sept 2005  thierry
+  </Description>
+  <Model>
+<_BJT T_BFG403W_ 1 480 280 8 -26 0 0 "npn" bla bla bla bla>
+  </Model>
+</Component>
+...
+...
+...
+\end{verbatim}
+
+%-----------------------------
+\tutsubsection{DC study}
+%-----------------------------
+
+%-----------------------------
+\tutsubsection{SP study}
+%-----------------------------
+
+%-----------------------------
+\tutsubsection{Non linearities study}
+%-----------------------------
+
+%-----------------------------
+\tutsubsection{Possible improvement tips}
+%-----------------------------

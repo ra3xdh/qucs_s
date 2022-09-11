@@ -1,0 +1,12 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/SP_microstrip_prj/microstrip.sch
+
+Pac:P3 _net0 gnd Num="3" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Pac:P2 _net1 gnd Num="2" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Pac:P1 _net2 gnd Num="1" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+C:C1 gnd _net0 C="30 pF" V=""
+.SP:SP1 Type="lin" Start="1 GHz" Stop="5 GHz" Points="39" Noise="no" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+MLIN:MS1 _net2 _net3 Subst="Aluminia" W="1 mm" L="10 mm" Model="Hammerstad" DispModel="Kirschning" Temp="26.85"
+MLIN:MS2 _net4 _net1 Subst="Aluminia" W="1 mm" L="10 mm" Model="Hammerstad" DispModel="Kirschning" Temp="26.85"
+SUBST:Aluminia er="9.8" h="1 mm" t="35 um" tand="1e-3" rho="0.022e-6" D="0.15e-6"
+MTEE:MS4 _net3 _net4 _net5 Subst="Aluminia" W1="1 mm" W2="1 mm" W3="0.5 mm" MSModel="Hammerstad" MSDispModel="Kirschning" Temp="26.85"
+MLIN:Stub _net0 _net5 Subst="Aluminia" W="0.5 mm" L="10 mm" Model="Hammerstad" DispModel="Kirschning" Temp="26.85"

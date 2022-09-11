@@ -1,0 +1,15 @@
+parsing netlist...
+checking netlist...
+netlist content
+      1 Iac instances
+      1 Idc instances
+      1 C instances
+      6 BJT instances
+      8 R instances
+      1 Tr instances
+      2 Vdc instances
+      1 Vac instances
+      1 TR instances
+creating netlist...
+NOTIFY: TR1: average time-step 2.44499e-08, 1 rejections
+NOTIFY: TR1: average NR-iterations 4.11491, 0 non-convergences

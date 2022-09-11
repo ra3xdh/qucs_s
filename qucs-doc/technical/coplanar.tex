@@ -1,0 +1,529 @@
+%
+% This document contains the chapter about coplanar components.
+%
+% Copyright (C) 2004, 2005 Vincent Habchi, F5RCS <10.50@free.fr>
+% Copyright (C) 2004, 2005 Stefan Jahn <stefan@lkcc.org>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+\chapter{Coplanar components}
+%\addcontentsline{toc}{chapter}{Coplanar components}
+
+\section{Coplanar waveguides (CPW)}
+%\addcontentsline{toc}{section}{Coplanar waveguides (CPW)}
+
+\subsection{Definition}
+%\addcontentsline{toc}{subsection}{Definition}
+
+A \emph{coplanar line} is a structure in which all the conductors
+supporting wave propagation are located on the same plane,
+i.e. generally the top of a dielectric substrate.  There exist two
+main types of coplanar lines: the first, called \emph{coplanar
+waveguide (CPW)}, that we will study here, is composed of a median
+metallic strip separated by two narrow slits from a infinite ground
+plane, as may be seen on the figure below.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=0.9\linewidth]{cpline}
+\end{center}
+\caption{coplanar waveguide line}
+\label{fig:CoplanarLine}
+\end{figure}
+\FloatBarrier
+
+The characteristic dimensions of a CPW are the central strip width $W$
+and the width of the slots $s$.  The structure is obviously
+symmetrical along a vertical plane running in the middle of the
+central strip.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=0.5\linewidth]{cpscheme}
+\end{center}
+\label{fig:CoplanarScheme}
+\end{figure}
+\FloatBarrier
+
+The other coplanar line, called a \emph{coplanar slot (CPS)} is the
+complementary of that topology, consisting of two strips running side
+by side.
+
+\subsection{Quasi-static analysis by conformal mappings}
+%\addcontentsline{toc}{subsection}{Quasi-static analysis by conformal mappings}
+
+A CPW can be quasi-statically analysed by the use of
+\emph{conformal mappings}.  Briefly speaking, it consists in
+transforming the geometry of the PCB into another conformation, whose
+properties make the computations straightforward.  The interested
+reader can consult the pp. 886~-~910 of \cite{Collin} which has a
+correct coverage of both the theoretical and applied methods.  The
+French reader interested in the mathematical arcanes involved is
+referred to the second chapter of \cite{Mir} (which may be out of
+print nowadays), for an extensive review of all the theoretical
+framework.  The following analysis is mainly borrowed from
+\cite{Gupta1}, pp.~375 \emph{et seq}. with additions from
+\cite{Collin}.
+
+\addvspace{12pt}
+
+The CPW of negligible thickness located on top of an infinitely deep
+substrate, as shown on the left of the figure below, can be mapped
+into a parallel plate capacitor filled with dielectric $ABCD$ using
+the conformal function:
+\begin{equation}
+w = \int_{z_0}^{z}\dfrac{dz}{\sqrt{(z-W/2)(z-W/2-s)}}.
+\end{equation}
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=0.7\linewidth]{cpconform}
+\end{center}
+\label{fig:CoplanarConformal}
+\end{figure}
+\FloatBarrier
+
+To further simplify the analysis, the original dielectric boundary is
+assumed to constitute a magnetic wall, so that $BC$ and $AD$ become
+magnetic walls too and there is no resulting fringing field in the
+resulting capacitor.  With that assumption, the capacitance per unit
+length is merely the sum of the top (air filled) and bottom
+(dielectric filled) partial capacitances.  The latter is given by:
+\begin{equation}
+C_d = 2\cdot \varepsilon_0\cdot \varepsilon_r\cdot \dfrac{K(k_1)}{K'(k_1)}
+\end{equation}
+
+while the former is:
+\begin{equation}
+C_a = 2\cdot \varepsilon_0\cdot \dfrac{K(k_1)}{K'(k_1)}
+\end{equation}
+
+In both formulae $K(k)$ and $K'(k)$ represent the complete elliptic
+integral of the first kind and its complement, and $k_1=
+\tfrac{W}{W+2s}$.
+
+\addvspace{12pt}
+
+$K(k)$ (and $K'(k)$) can be computed easily by using the \emph{arithmetic-geometric mean} method \cite{Abramowitz}: starting with
+\begin{equation}
+a_0 = 1, \quad b_0 = \sqrt{1 -k^2}
+\end{equation}
+the following recursion formulae are iterated
+\begin{equation}
+a_n = \dfrac{1}{2}(a_{n-1}+b_{n-1}), \quad b_n = \sqrt{a_{n-1}b_{n-1}}, \quad c_n=a_{n-1}-b_{n-1}
+\end{equation}
+until $c_N=0$ within a predetermined accuracy.\\
+$K(k)$ is then found from
+\begin{equation}
+K(k) = \dfrac{\pi}{2 a_N}
+\end{equation}
+
+\addvspace{12pt}
+
+When only the the $K/K'$ ratio is needed it can be approximated
+efficiently through the following formulae:
+\begin{equation}
+\dfrac{K(k)}{K'(k)} =
+\dfrac{\pi}{\ln\left(2\tfrac{1+\sqrt{k'}}{1-\sqrt{k'}}\right)}
+\;\;\;\; \textrm{ for } \;\;\;\;
+0 \le k \le \dfrac{1}{\sqrt{2}}
+\end{equation}
+\begin{equation}
+\dfrac{K(k)}{K'(k)} =
+\dfrac{\ln\left(2\tfrac{1+\sqrt{k}}{1-\sqrt{k}}\right)}{\pi}
+\;\;\;\; \textrm{ for } \;\;\;\;
+\dfrac{1}{\sqrt{2}} \le k \le 1
+\end{equation}
+
+with $k'$ being the complementary modulus: $k'=\sqrt{1-k^2}$.
+This formula was first derived in \cite{Hilberg}. According to
+\cite{Collin} the accuracy of the above formulae is close
+to $10^{-5}$, \cite{Gupta1} claims it to be $3\cdot10^{-6}$ while comparison
+with GNU Octave using the $ellipke()$ function shows a maximum relative error
+of about $2\cdot10^{-6}$ . More accurate approximations can be found in 
+\cite{Hilberg} and \cite{Abbott} but the above formulae can already be 
+considered as exact for any practical purpose.
+
+\addvspace{12pt}
+
+The total line capacitance is thus the sum of $C_d$ and $C_a$.  The
+effective permittivity is therefore:
+\begin{equation}
+\varepsilon_{re} = \dfrac{\varepsilon_r+1}{2}
+\end{equation}
+
+and the impedance:
+\begin{equation}
+Z=\dfrac{30\pi}{\sqrt{\varepsilon_{re}}}\cdot\dfrac{K'(k_1)}{K(k_1)}
+\label{eq:CoplanarZL}
+\end{equation}
+
+\begin{figure}[ht]
+\begin{center}
+\psfrag{impedance ZL in Ohm}{$\mathrm{\text{impedance }Z_{L}\text{ in }[\ohm]}$}
+\psfrag{normalised strip width W/s}{normalised strip width W/s}
+\includegraphics[width=0.95\linewidth]{coplanarzl}
+\end{center}
+\caption{characteristic impedance as approximated by eq. \eqref{eq:CoplanarZL} for $\varepsilon_{r}$ = $1.0$ (air), $3.78$ (quartz) and $9.5$ (alumina)}
+\label{fig:coplanarzl}
+\end{figure}
+\FloatBarrier
+
+In practical cases, the substrate has a finite thickness $h$.  To
+carry out the analysis of this conformation, a preliminary conformal
+mapping transforms the finite thickness dielectric into an infinite
+thickness one.  Only the effective permittivity is altered; it
+becomes:
+\begin{equation}
+\varepsilon_{re}=1+\dfrac{\varepsilon_r-1}{2}\cdot\dfrac{K(k_2)}{K'(k_2)}\cdot\dfrac{K'(k_1)}{K(k_1)}
+\end{equation}
+
+where $k_1$ is given above and
+\begin{equation}
+k_2=\dfrac{\sinh\left(\dfrac{\pi W}{4h}\right)}{\sinh\left(\dfrac{\pi\cdot\left(W+2s\right)}{4h}\right)}.
+\end{equation}
+
+Finally, let us consider a CPW over a finite thickness dielectric
+backed by an infinite ground plane.  In this case, the quasi-TEM wave
+is an hybrid between microstrip and true CPW mode.  The equations then
+become:
+\begin{equation}
+\varepsilon_{re} =1 + q\cdot\left(\varepsilon_r - 1\right)
+\end{equation}
+
+where $q$, called \emph{filling factor} is given by:
+\begin{equation}
+q = \dfrac{\dfrac{K(k_3)}{K'(k_3)}}{\dfrac{K(k_1)}{K'(k_1)}+\dfrac{K(k_3)}{K'(k_3)}}
+\end{equation}
+
+and
+\begin{equation}
+k_3 = \dfrac{\tanh\left(\dfrac{\pi W}{4h}\right)}{\tanh\left(\dfrac{\pi\cdot\left(W+2s\right)}{4h}\right)}
+\end{equation}
+
+The impedance of this line amounts to:
+\begin{equation}
+Z=\dfrac{60\pi}{\sqrt{\varepsilon_{re}}}\cdot\dfrac{1}{\dfrac{K(k_1)}{K'(k_1)}+\dfrac{K(k_3)}{K'(k_3)}}
+\end{equation}
+
+\subsection{Effects of metalization thickness}
+%\addcontentsline{toc}{subsection}{Effects of metalization thickness}
+
+In most practical cases, the strips are very thin, yet their thickness
+cannot be entirely neglected.  A first order correction to take into
+account the non-zero thickness of the conductor is given by
+\cite{Gupta1}:
+\begin{equation}
+s_e = s - \Delta
+\end{equation}
+
+and
+\begin{equation}
+W_e = W + \Delta
+\end{equation}
+
+where
+\begin{equation}
+\Delta = \dfrac{1.25t}{\pi}\cdot\left(1 + \ln\left(\dfrac{4 \pi W}{t}\right)\right)
+\end{equation}
+
+In the computation of the impedance, both the $k_1$ and the effective
+dielectric constant are affected, wherefore $k_1$ must be substituted
+by an ``effective'' modulus $k_e$, with:
+\begin{equation}
+k_e = \dfrac {W_e}{W_e + 2 s_e} \approx k_1 + \left(1 - k_1^2\right)\cdot \dfrac{\Delta}{2s}
+\end{equation}
+
+and
+\begin{equation}
+\varepsilon_{re}^{t} = \varepsilon_{re} - \dfrac{0.7\cdot\left(\varepsilon_{re} - 1\right)\cdot\dfrac{t}{s}}{\dfrac{K(k_1)}{K'(k_1)} + 0.7\cdot \dfrac{t}{s}}
+\end{equation}
+
+\subsection{Effects of dispersion}
+%\addcontentsline{toc}{subsection}{Effects of dispersion}
+
+The effects of dispersion in CPW are similar to those encountered in
+the microstrip lines, though the net effect on impedance is somewhat
+different.  \cite{Gupta1} gives a closed form expression to compute
+$\varepsilon_{re}(f)$ from its quasi-static value:
+\begin{equation}
+\sqrt{\varepsilon_{re}(f)}=\sqrt{\varepsilon_{re}(0)} + \dfrac{\sqrt{\varepsilon_r} - \sqrt{\varepsilon_{re}(0)}}{1+G\cdot\left(\dfrac{f}{f_{TE}}\right)^{-1.8}}
+\end{equation}
+
+where:
+\begin{align}
+G &= e^{u\cdot \ln\left(\tfrac{W}{s}\right)+v}\\
+u &= 0.54 - 0.64p + 0.015p^2\\
+v &= 0.43-0.86p+0.54p^2\\
+p &= \ln\left(\tfrac{W}{h}\right)
+\end{align}
+
+and $f_{TE}$ is the cut-off frequency of the ${TE}_{0}$ mode, defined by:
+\begin{equation}
+f_{TE} = \dfrac{c}{4h\cdot\sqrt{\varepsilon_r - 1}}.
+\end{equation}
+
+This dispersion expression was first reported by \cite{Frankel} and
+has been reused and extended in \cite{Gevorgian}.  The accuracy of
+this expression is claimed to be better than 5\% for $0.1 \le W/h \le
+5$, $0.1 \le W/s \le 5$, $1.5 \le \varepsilon_r \le 50$ and $0 \le
+f/f_{TE} \le 10$.
+
+\subsection{Evaluation of losses}
+%\addcontentsline{toc}{subsection}{Evaluation of losses}
+
+As for microstrip lines, the losses in CPW results of at least two
+factors: a dielectric loss $\alpha_d$ and conductor losses
+$\alpha_c^{CW}$.  The dielectric loss $\alpha_d$ is identical to the
+microstrip case, see eq. \eqref{eq:alpha_d} on page
+\pageref{eq:alpha_d}.
+
+\addvspace{12pt}
+
+The $\alpha_c^{CW}$ part of the losses is more complex to evaluate.  As
+a general rule, it might be written:
+\begin{equation}
+\alpha_c^{CW} = 0.023\cdot \dfrac{R_s}{Z_{0cp}}\left[\dfrac{\partial Z^a_{0cp}}{\partial s} - \dfrac{\partial Z^a_{0cp}}{\partial W} - \dfrac{\partial Z^a_{0cp}}{\partial t}\right]
+\textrm{ in dB/unit length }
+\end{equation}
+
+where $Z^a_{0cp}$ stands for the impedance of the coplanar waveguide
+with air as dielectric and $R_s$ is the surface resistivity of the
+conductors (see eq. \eqref{eq:HandJRs} on page \pageref{eq:HandJRs}).
+
+\addvspace{12pt}
+
+Through a direct approach evaluating the losses by conformal mapping
+of the current density, one obtains \cite{Gupta1}, first reported in
+\cite{Owyang} and finally applied to coplanar lines by \cite{Ghione1}:
+\begin{equation}
+\begin{split}
+\alpha_c^{CW} = &\; \dfrac{R_s\cdot \sqrt{\varepsilon_{re}}}{480 \pi\cdot K(k_1)\cdot K'(k_1)\cdot \left(1 - k_1^2\right)} \cdot\\
+& \left(\dfrac{1}{a}\left[\pi + \ln \dfrac {8 \pi a\cdot \left(1-k_1\right)}{t\cdot\left(1+k_1\right)}\right]+\dfrac{1}{b}\left[\pi + \ln \dfrac {8 \pi b\cdot \left(1-k_1\right)}{t\cdot\left(1+k_1\right)}\right]\right)
+\end{split}
+\end{equation}
+
+In the formula above, $a = W/2, b = s + W/2$ and it is assumed that
+$t~>~3 \delta, t \ll W$ and $t \ll s$.
+
+\subsection{S- and Y-parameters of the single coplanar line}
+%\addcontentsline{toc}{subsection}{S- and Y-parameters of the single coplanar line}
+
+The computation of the coplanar waveguide lines S- and Y-parameters is
+equal to all transmission lines (see section
+section \ref{sec:tl_yparameter} on page \pageref{sec:tl_yparameter}).
+
+\section{Coplanar waveguide open}
+%\addcontentsline{toc}{section}{Coplanar waveguide open}
+
+The behaviour of an open circuit as shown in fig. \ref{fig:CPWopen} is
+very similar to that in a microstrip line; that is, the open circuit
+is capacitive in nature.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=0.6\linewidth]{cpopen}
+\end{center}
+\caption{coplanar waveguide open-circuit}
+\label{fig:CPWopen}
+\end{figure}
+\FloatBarrier
+
+A very simple approximation for the equivalent length extension
+$\Delta l$ associated with the fringing fields has been given by
+K.Beilenhoff \cite{Beilenhoff}.
+\begin{equation}
+\Delta l_{open} = \dfrac{C_{open}}{C'} \approx \dfrac{W + 2s}{4}
+\end{equation}
+
+For the open end, the value of $\Delta l$ is not influenced
+significantly by the metalization thickness and the gap width $g$
+when $g > W + 2s$.  Also, the effect of frequency and aspect ration $W
+/ (W + 2s)$ is relatively weak.  The above approximation is valid for
+$0.2 \le W / (W + 2s) \le 0.8$.
+
+\addvspace{12pt}
+
+The open end capacitance $C_{open}$ can be written in terms of the
+capacitance per unit length and the wave resistance.
+\begin{equation}
+C_{open} = C'\cdot \Delta l_{open} = \dfrac{\sqrt{\varepsilon_{r,eff}}}{c_0\cdot Z_L} \cdot \Delta l_{open}
+\end{equation}
+
+\section{Coplanar waveguide short}
+%\addcontentsline{toc}{section}{Coplanar waveguide short}
+
+There is a similar simple approximation for a coplanar waveguide
+short-circuit, also given in \cite{Beilenhoff}.  The short circuit is
+inductive in nature.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=0.6\linewidth]{cpshort}
+\end{center}
+\caption{coplanar waveguide short-circuit}
+\label{fig:CPWshort}
+\end{figure}
+\FloatBarrier
+
+The equivalent length extension $\Delta l$ associated with the
+fringing fields is
+\begin{equation}
+\label{eq:CPWshort}
+\Delta l_{short} = \dfrac{L_{short}}{L'} \approx \dfrac{W + 2s}{8}
+\end{equation}
+
+Equation \eqref{eq:CPWshort} is valid when the metalization thickness
+$t$ does not become too large ($t < s/3$).
+
+\addvspace{12pt}
+
+The short end inductance $L_{short}$ can be written in terms of the
+inductance per unit length and the wave resistance.
+\begin{equation}
+L_{short} = L'\cdot \Delta l_{short} = \dfrac{\sqrt{\varepsilon_{r,eff}}\cdot Z_L}{c_0} \cdot \Delta l_{short}
+\end{equation}
+
+\addvspace{12pt}
+
+According to W.J.Getsinger \cite{Getsinger6} the CPW short-circuit
+inductance per unit length can also be modeled by
+\begin{equation}
+L_{short} = \dfrac{2}{\pi}\cdot \varepsilon_0 \cdot \varepsilon_{r,eff} \cdot \left(W + s\right)\cdot Z_L^2\cdot \left(1 - \text{sech} \left(\dfrac{\pi\cdot Z_{F0}}{2\cdot Z_L\cdot \sqrt{\varepsilon_{r,eff}}}\right)\right)
+\end{equation}
+
+based on his duality \cite{Getsinger5} theory.
+
+\section{Coplanar waveguide gap}
+%\addcontentsline{toc}{section}{Coplanar waveguide gap}
+
+According to W.J.Getsinger \cite{Getsinger5} a coplanar series gap
+(see fig. \ref{fig:CPWgap}) is supposed to be the dual problem of the
+inductance of a connecting strip between twin strip lines.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=0.45\linewidth]{cpgap}
+\end{center}
+\caption{coplanar waveguide series gap}
+\label{fig:CPWgap}
+\end{figure}
+\FloatBarrier
+
+The inductance of such a thin strip with a width $g$ and the length
+$W$ is given to a good approximation by
+\begin{equation}
+L = \dfrac{\mu_0\cdot W}{2\pi}\cdot\left(p - \sqrt{1 + p^2} + \ln{\left(\dfrac{1 + \sqrt{1 + p^2}}{p}\right)}\right)
+\end{equation}
+
+where $p = g/4W$ and $g,W \ll \lambda$.  Substituting this inductance
+by its equivalent capacitance of the gap in CPW yields
+\begin{equation}
+\begin{split}
+C &= L \cdot \dfrac{4\cdot \varepsilon_{r,eff}}{Z_{F0}^2}\\
+  &= \dfrac{2\cdot\varepsilon_0\cdot\varepsilon_{r,eff}\cdot W}{\pi}\cdot\left(p - \sqrt{1 + p^2} + \ln{\left(\dfrac{1 + \sqrt{1 + p^2}}{p}\right)}\right)
+\end{split}
+\end{equation}
+
+\section{Coplanar waveguide step}
+%\addcontentsline{toc}{section}{Coplanar waveguide step}
+
+The coplanar step discontinuity shown in figure \ref{fig:CPWstep} has
+been analysed by C. Sinclair \cite{Sinclair}.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=0.8\linewidth]{cpstep}
+\end{center}
+\caption{coplanar waveguide impedance step and equivalent circuit}
+\label{fig:CPWstep}
+\end{figure}
+\FloatBarrier
+
+The symmetric step change in width of the centre conductor is
+considered to have a similar equivalent circuit as a step of a
+parallel plate guide - this is a reasonable approximation to the CPW
+step as in the CPW the majority of the field is between the inner and
+outer conductors with some fringing.
+
+\addvspace{12pt}
+
+The actual CPW capacitance can be expressed as
+\begin{equation}
+C = \overline{x}\cdot \dfrac{\varepsilon_0}{\pi}\cdot\left(\dfrac{\alpha^2 + 1}{\alpha}\cdot \ln{\left(\dfrac{1 + \alpha}{1 - \alpha}\right)} - 2\cdot \ln{\left(\dfrac{4\cdot \alpha}{1 - \alpha^2}\right)}\right)
+\end{equation}
+
+where
+\begin{equation}
+\alpha = \dfrac{s_1}{s_2}, \alpha < 1
+\;\;\;\; \textrm{ and } \;\;\;\;
+\overline{x} = \dfrac{x_1 + x_2}{2}
+\end{equation}
+
+The capacitance per unit length equivalence yields
+\begin{equation}
+x_1 = \dfrac{C'\left(W_1, s_1\right)\cdot s_1}{\varepsilon_0}
+\;\;\;\; \textrm{ and } \;\;\;\;
+x_2 = \dfrac{C'\left(W_2, s_2\right)\cdot s_2}{\varepsilon_0}
+\end{equation}
+
+with
+\begin{equation}
+C' = \dfrac{\sqrt{\varepsilon_{r,eff}}}{c_0\cdot Z_L}
+\end{equation}
+
+The average equivalent width $\overline{x}$ of the parallel plate
+guide can be adjusted with an expression that uses weighted average of
+the gaps $s_1$ and $s_2$.  The final expression has not been discussed
+in \cite{Sinclair}.  The given equations are validated over the
+following ranges: $2 < \varepsilon_r < 14$, $h > W + 2s$ and $f <
+40\giga\hertz$.
+
+\addvspace{12pt}
+
+The Z-parameters of the equivalent circuit depicted in
+fig. \ref{fig:CPWstep} are
+\begin{equation}
+Z_{11} = Z_{21} = Z_{12} = Z_{22} = \dfrac{1}{j\omega C}
+\end{equation}
+
+The MNA matrix representation for the AC analysis can be derived from
+the Z-parameters in the following way.
+\begin{equation}
+\begin{bmatrix}
+ . & .  & 1  & 0 \\
+ . & .  &  0 & 1 \\
+-1 &  0 & Z_{11} & Z_{12}\\
+ 0 & -1 & Z_{21} & Z_{22}
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+V_{1}\\
+V_{2}\\
+I_{in}\\
+I_{out}
+\end{bmatrix}
+=
+\begin{bmatrix}
+I_{1}\\
+I_{2}\\
+0\\
+0
+\end{bmatrix}
+\end{equation}
+
+The above expanded representation using the Z-parameters is necessary
+because the Y-parameters are infinite.  During DC analysis the
+equivalent circuit is a voltage source between both terminals with
+zero voltage.
+
+\addvspace{12pt}
+
+The S-parameters of the topology are
+\begin{align}
+S_{11} = S_{22} &= -\dfrac{Z_0}{2 Z + Z_0}\\
+S_{12} = S_{21} &= 1 + S_{11} = \dfrac{2 Z}{2 Z + Z_0}
+\end{align}

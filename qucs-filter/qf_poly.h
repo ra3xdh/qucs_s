@@ -14,6 +14,8 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#include <QtCore>
+#include <complex>
 
 #ifndef _QF_POLY_H
 #define _QF_POLY_H

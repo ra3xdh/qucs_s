@@ -1,0 +1,16 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `In.v' in equation `Gain' not yet defined
+checker notice, variable `Out.v' in equation `Gain' not yet defined
+netlist content
+      1 AC instances
+      2 C instances
+      1 DC instances
+      5 R instances
+      2 OpAmp instances
+      1 Vac instances
+creating netlist...
+checker notice, variable `In.v' in equation `Gain' not yet defined
+checker notice, variable `Out.v' in equation `Gain' not yet defined
+checker notice, variable `In.v' in equation `Gain' not yet defined
+checker notice, variable `Out.v' in equation `Gain' not yet defined

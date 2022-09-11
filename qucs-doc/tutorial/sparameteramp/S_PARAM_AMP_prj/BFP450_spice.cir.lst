@@ -1,0 +1,21 @@
+
+.Def:BFP450_spice_cir _net1 _net2 _net3 _ref
+  .Def:BFP450 _ref _net1 _net2 _net3
+  C:CBEPAR _net22 _net33 C="1.20132e-13"
+  C:CBCPAR _net22 _net11 C="3.02378e-13"
+  C:CCEPAR _net11 _net33 C="3.69684e-17"
+  L:LB _net22 _net20 L="9.04235e-10"
+  L:LE _net33 _net30 L="2.03283e-10"
+  L:LC _net11 _net10 L="2.12462e-10"
+  C:CBEPCK _net20 _net30 C="1.10618e-14"
+  C:CBCPCK _net20 _net10 C="2.51536e-14"
+  C:CCEPCK _net10 _net30 C="2.24704e-13"
+  L:LBX _net20 _net2 L="1.18397e-12"
+  L:LEX _net30 _net3 L="2.31137e-13"
+  L:LCX _net10 _net1 L="7.74176e-10"
+  R:RSUB _net30 _net44 R="260"
+  BJT:Q1 _net22 _net11 _net33 _net44 Type="npn" Is="1.21e-16" Bf="112.3" Nf="1" Vaf="46.19" Ikf="1.005" Ise="2.427e-14" Ne="2" Br="4.66" Nr="1" Var="3.604" Ikr="0.1924" Isc="3.85e-15" Nc="1.5" Rb="3.193" Irb="0" Rbm="2.725" Re="0.09391" Rc="1.578" Xtb="0.04525" Eg="1.12" Xti="4.267" Cje="1.777e-12" Vje="0.7811" Mje="0.39" Tf="4.125e-12" Xtf="8.008" Vtf="4.189" Itf="1.889" Ptf="0.1" Cjc="5.069e-13" Vjc="0.6403" Mjc="0.31" Xcjc="0.7031" Tr="4.163e-09" Cjs="1.66361e-12" Mjs="0.154738" Vjs="0.2526" Fc="0.5" Kf="5.5e-12" Af="1.99"
+  .Def:End
+  Sub:X1 _ref _net1 _net2 _net3 Type="BFP450"
+.Def:End
+

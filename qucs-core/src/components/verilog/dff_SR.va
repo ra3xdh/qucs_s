@@ -1,0 +1,53 @@
+//   Qucs analogue dff model with set (S) and reset (R)
+//   The structure and theoretical background to the dff
+//   Verilog-a model are presented in the Qucs mixed mode 
+//   simulation tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, November 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module dff_SR (S, D, CLK, R, QB, QO); 
+ inout S, D, CLK, R, QB, QO ;
+ electrical S, D, CLK, R, QB, QO;
+ electrical n1, n1A, n2, n3, n3A, n4, QA;
+//
+ `define attr(txt) (*txt*)
+ parameter real TR_H=6 from [1.0:20.0] `attr(info="cross coupled gate transfer function high scaling factor");
+ parameter real TR_L=5  from [1.0:20.0] `attr(info="cross coupled gate transfer function low scaling factor");
+ parameter real Delay = 1e-9 from [0: inf] `attr(info="cross coupled gate delay" unit="s");
+//
+real Rd, Ccc;
+//
+analog begin
+@(initial_model)
+  begin
+    Rd = 1e3;
+    Ccc= Delay*1.43/Rd;
+  end
+I(n1)  <+ -0.5*(1-tanh(TR_H*(V(n4)*V(n2)*V(S)-0.5)));
+I(n1)  <+ V(n1);
+I(n2)  <+ -0.5*(1-tanh(TR_L*(V(n1A)*V(CLK)*V(R)-0.5)));
+I(n2)  <+ V(n2);
+I(n3)  <+ -0.5*(1-tanh(TR_H*(V(n2)*V(CLK)*V(n4)-0.5)));
+I(n3)  <+ V(n3);
+I(n4)  <+ -0.5*(1-tanh(TR_L*(V(n3A)*V(D)*V(R)-0.5)));
+I(n4)  <+ V(n4);
+I(QO)   <+ -0.5*(1-tanh(TR_H*(V(n2)*V(QB)*V(S)-0.5)));
+I(QO)   <+ V(QO);
+I(QB)  <+ -0.5*(1-tanh(TR_L*(V(QA)*V(n3A)*V(R)-0.5)));
+I(QB)  <+ V(QB);
+I(n1, n1A) <+ V(n1, n1A)/Rd;
+I(n1A) <+ ddt(Ccc*V(n1A));
+I(n3, n3A) <+ V(n3, n3A)/Rd;
+I(n3A) <+ ddt(Ccc*V(n3A));
+I(QO, QA) <+ V(QO, QA)/Rd;
+I(QA)    <+ ddt(Ccc*V(QA));
+
+end
+endmodule

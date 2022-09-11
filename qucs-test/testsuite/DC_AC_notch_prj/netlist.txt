@@ -1,0 +1,15 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/DC_AC_notch_prj/notch.sch
+
+C:C1 _net0 _net1 C="1.01u" V=""
+R:R5 In Out R="10k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R3 _net2 _net3 R="1k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R4 _net4 _net3 R="1k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net1 _net2 R="1k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C2 _net4 Out C="1u" V=""
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+OpAmp:OP1 _net4 _net0 _net1 G="1e6" Umax="15 V"
+OpAmp:OP2 _net4 _net2 _net3 G="1e6" Umax="15 V"
+Eqn:Eqn1 Gain="dB(Out.v/In.v)" Export="yes"
+R:R1 gnd _net0 R="10k" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vac:V1 In gnd U="1uV" f="1 GHz" Phase="0" Theta="0"
+.AC:AC1 Type="log" Start="5" Stop="500" Points="100" Noise="no"

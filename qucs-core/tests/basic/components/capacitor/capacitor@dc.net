@@ -1,0 +1,9 @@
+# Qucs 0.0.15  /tmp/test.sch
+
+Vdc:V1 _net0 gnd U="1 V"
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+IProbe:I _net0 _net1
+R:R1 _net1 _net2 R="1 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+VProbe:U _net2 gnd
+C:C1 _net2 gnd C="1 F" V=""
+Eqn:Eqn1 assertI="assert(abs(I.I)<1e-16)" assertV="assert(abs(U.V-1.0)<1e-16)" Export="yes"

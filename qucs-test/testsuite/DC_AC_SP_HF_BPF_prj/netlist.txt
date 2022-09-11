@@ -1,0 +1,16 @@
+# Qucs 0.0.19  /home/qucs/HF_BPF.sch
+
+INDQ:INDQ1 _net0 out L="1.82uH" Q="Ql" f="f0" Mode="SquareRoot" Temp="26.85"
+INDQ:INDQ3 _net1 out L="221.8nH" Q="Ql" f="f0" Mode="SquareRoot" Temp="26.85"
+CAPQ:CAPQ3 _net1 out C="560 pF" Q="Qc" f="f0" Mode="Linear" Temp="26.85"
+Pac:P1 out gnd Num="2" Z="50 Ohm" P="0 W" f="1 GHz" Temp="-273.15"
+INDQ:INDQ2 gnd _net2 L="221.8nH" Q="Ql" f="f0" Mode="SquareRoot" Temp="26.85"
+CAPQ:CAPQ1 _net2 _net0 C="68 pF" Q="Qc" f="f0" Mode="Linear" Temp="26.85"
+CAPQ:CAPQ2 gnd _net2 C="560 pF" Q="Qc" f="f0" Mode="Linear" Temp="26.85"
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+Eqn:Eqn2 S21_dB="dB(S[2,1])" S11_dB="dB(S[1,1])" Export="yes"
+Eqn:Eqn1 Ql="200" Qc="5000" f0="14e6" Export="yes"
+.SP:SP1 Type="log" Start="1.2 MHz" Stop="170 MHz" Points="433" Noise="yes" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+.AC:AC1 Type="log" Start="1.2 MHz" Stop="170 MHz" Points="218" Noise="yes"
+Pac:P2 _net2 gnd Num="1" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="-273.15"
+Vdc:V1 _net1 gnd U="1.1 V"

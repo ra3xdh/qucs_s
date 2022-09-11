@@ -1,0 +1,9 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/SP_groupdelay_sp_prj/groupdelay_sp.sch
+
+C:C1 gnd _net0 C="39.01pF" V=""
+L:L1 _net0 _net1 L="280.9nH" I=""
+C:C2 gnd _net1 C="39.01pF" V=""
+Pac:P1 _net0 gnd Num="1" Z="60 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+.SP:SP1 Type="log" Start="1MHz" Stop="200MHz" Points="458" Noise="no" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+Pac:P2 _net1 gnd Num="2" Z="60 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Eqn:Eqn1 dBS21_3rd="dB(S[2,1])" gain_phase="unwrap(angle(S[2,1]))" group_delay="-diff(gain_phase,2*pi*frequency)" Export="yes"

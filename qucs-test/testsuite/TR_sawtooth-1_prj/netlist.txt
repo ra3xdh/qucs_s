@@ -1,0 +1,17 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/TR_sawtooth-1_prj/sawtooth-1.sch
+
+.Def:Z_Diodes_1N4732A _net1 _net2
+      Diode:D1 _net1 _net2 Is="87.7p" Rs="0.62" N="1.1" Cj0="214p" Vj="0.75" M="0.33" Tt="50.1n"
+      Diode:DZ _net3 _net1 Is="17.5f" Rs="0.333" N="2.28" M="0.5" Cj0="1e-14" Vj="0.7"
+      Vdc:VZ _net3 _net2 U="2.99"
+    .Def:End
+  
+
+Sub:D1 _net0 gnd Type="Z_Diodes_1N4732A"
+BJT:T_2DC4617R1 _net1 _net0 gnd _net0 Type="npn" Is="15.5f" Nf="1" Nr="1" Ikf="54.7m" Ikr="0.135" Vaf="127" Var="28" Ise="3.9p" Ne="2" Isc="0" Nc="2" Bf="524" Br="4" Rbm="0" Irb="0" Rc="0.116" Re="0.29" Rb="1.16" Cje="22.7p" Vje="1.1" Mje="0.5" Cjc="7.34p" Vjc="0.3" Mjc="0.3" Xcjc="1" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Tf="698p" Xtf="0" Vtf="0" Itf="0" Tr="121n" Temp="26.85" Kf="0" Af="1" Ffe="1" Kb="0" Ab="1" Fb="1" Ptf="0" Xtb="0.0" Xti="3.0" Eg="1.11" Tnom="26.85" Area="1.0"
+BJT:T_2DA1774R1 _net0 _net1 Out _net1 Type="pnp" Is="15.2f" Nf="1" Nr="1" Ikf="54.7m" Ikr="0.135" Vaf="127" Var="24" Ise="3.88p" Ne="2" Isc="0" Nc="2" Bf="523" Br="4" Rbm="0" Irb="0" Rc="0.284" Re="0.710" Rb="2.84" Cje="42.6p" Vje="1.1" Mje="0.5" Cjc="13.7p" Vjc="0.3" Mjc="0.3" Xcjc="1" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Tf="453p" Xtf="0" Vtf="0" Itf="0" Tr="96.4n" Temp="26.85" Kf="0" Af="1" Ffe="1" Kb="0" Ab="1" Fb="1" Ptf="0" Xtb="0.0" Xti="3.0" Eg="1.11" Tnom="26.85" Area="1.0"
+C:C1 gnd Out C="1n" V=""
+Vdc:V1 _net2 gnd U="10"
+R:R1 Out _net2 R="400" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net0 _net2 R="12" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.TR:TR1 Type="lin" Start="0" Stop="2u" Points="501" IntegrationMethod="Trapezoidal" Order="2" InitialStep="1 ns" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1 pA" vntol="1 uV" Temp="26.85" LTEreltol="1e-3" LTEabstol="1e-6" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"

@@ -1,0 +1,2017 @@
+\tutsubsection{\label{sec:Unit-Conversion}Unit Conversion}
+
+\subsubsection*{\hypertarget{dB}{}{\Large dB\index{dB}()}}
+
+\paragraph{\label{par:dB}dB value.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=dB(x)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required\tabularnewline
+\hline
+\hline 
+x&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function returns the dB value of a real or complex number or
+vector.
+
+\medskip{}
+$y=20\,\log\left|x\right|$
+\medskip{}
+
+\noindent For \textit{x} being a vector the equation above is applied
+to the components of \textit{x}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{y=db(10)}]returns 20.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{log10}{log10()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{dbm}{}{\Large dbm\index{dbm}()}}
+
+
+\paragraph{\label{par:dbm}Convert voltage to power in dBm.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=dBm(u,Z0)
+
+\noindent y=dBm(u)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+u&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline 
+Z0&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+&
+50\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function returns the corresponding dBm power of a real or complex
+voltage or vector \textit{u}. The impedance \textit{Z0} referred to
+is either specified or 50$\Omega$.
+
+\medskip{}
+$y=10\,\log{\displaystyle \frac{\left|u\right|^{2}}{Z_{0}\,0.001W}}$
+\medskip{}
+
+\noindent For \textit{u} being a vector the equation above is applied
+to the components of u.
+
+\noindent Please note that \textit{u} is considered as a rms value,
+not as an amplitude.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{y=dbm(1)}]returns 13.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{dbm2w}{dbm2w()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{w2dbm}{w2dbm()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{log10}{log10()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{dbm2w}{}{\Large dbm2w\index{dbm2w}()}}
+
+
+\paragraph{\label{par:dbm2w}Convert power in dBm to power in Watts.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=dBm2w(x)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required\tabularnewline
+\hline
+\hline 
+x&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function converts the real or complex power or power vector,
+given in dBm, to the corresponding power in Watts.
+
+\medskip{}
+$y=0.001\,{\displaystyle 10^{\frac{x}{10}}}$
+\medskip{}
+
+\noindent For \textit{x} being a vector the equation above is applied
+to the components of \textit{x}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{y=dbm2w(10)}]returns 0.01.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{dbm}{dbm()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{w2dbm}{w2dbm()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{w2dbm}{}{\Large w2dbm\index{w2dbm}()}}
+
+
+\paragraph{\label{par:w2dbm}Convert power in Watts to power in dBm.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=w2dBm(x)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required\tabularnewline
+\hline
+\hline 
+x&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function converts the real or complex power or power vector,
+given in Watts, to the corresponding power in dBm.
+
+\medskip{}
+$y=10\,\log{\displaystyle \frac{x}{0.001W}}$
+\medskip{}
+
+\noindent For \textit{x} being a vector the equation above is applied
+to the components of \textit{x}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{y=w2dbm(1)}]returns 30.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{dbm}{dbm()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{dbm2w}{dbm2w()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{log10}{log10()}}
+
+
+\newpage
+\tutsubsection{\label{sec:Reflection-Coefficients-and}Reflection Coefficients and
+VSWR}
+
+
+\subsubsection*{\hypertarget{rtoswr}{}{\Large rtoswr\index{rtoswr}()}}
+
+
+\paragraph{\label{par:rtoswr}Converts reflection coefficient to voltage standing
+wave ratio (VSWR).}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+s=rtoswr(r)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required\tabularnewline
+\hline
+\hline 
+r&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left|r\right|\leq1$&
+$\surd$\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+For a real or complex reflection coefficient \textit{r}, this function
+calculates the corresponding voltage standing wave ratio (VSWR) \textit{s}
+according to 
+
+\medskip{}
+$s={\displaystyle \frac{1+\left|r\right|}{1-\left|r\right|}}$
+\medskip{}
+
+\noindent VSWR is a real number and if usually given in the notation
+{}``s : 1''.
+
+\noindent For \textit{r} being a vector the equation above is applied
+to the components of \textit{r}.
+
+\begin{description}
+\item [Examples]~
+\end{description}
+\texttt{s=rtoswr(0)} returns 1.
+
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{s=rtoswr(0.1+0.2{*}i)}]returns 1.58.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{ytor}{ytor()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{ztor}{ztor()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{rtoy}{rtoy()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{rtoz}{rtoz()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{rtoy}{}{\Large rtoy\index{rtoy}()}}
+
+
+\paragraph{\label{par:rtoy}Converts reflection coefficient to admittance.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=rtoy(r)
+
+\noindent y=rtoy(r, Z0)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+r&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left|r\right|\leq1$&
+$\surd$&
+\tabularnewline
+\hline
+Z0&
+$\mathbb{R}$, $\mathbb{C}$&
+$\left]-\infty,+\infty\right[$&
+&
+50\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+For a real or complex reflection coefficient \textit{r}, this function
+calculates the corresponding admittance \textit{y} according to 
+
+\medskip{}
+$y={\displaystyle \frac{1}{Z_{0}}\,\frac{1-r}{1+r}}$
+\medskip{}
+
+\noindent If the reference impedance \textit{Z0} is not provided,
+the function assumes \textit{Z0} = 50$\Omega$.
+
+\noindent For \textit{r} being a vector the equation above is applied
+to the components of \textit{r}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{y=rtoy(0.333)}]returns 0.01.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{ytor}{ytor()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{ztor}{ztor()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{rtoswr}{rtoswr()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{rtoz}{}{\Large rtoz\index{rtoz}()}}
+
+
+\paragraph{\label{par:rtoz}Converts reflection coefficient to impedance.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+z=rtoz(r)
+
+\noindent z=rtoz(r, Z0)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+r&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left|r\right|\leq1$&
+$\surd$&
+\tabularnewline
+\hline
+Z0&
+$\mathbb{R}$, $\mathbb{C}$&
+$\left]-\infty,+\infty\right[$&
+&
+50\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+For a real or complex reflection coefficient \textit{r}, this function
+calculates the corresponding impedance \textit{Z} according to 
+
+\medskip{}
+$Z={\displaystyle Z_{0}\,\frac{1-r}{1+r}}$
+\medskip{}
+
+\noindent If the reference impedance \textit{Z0} is not provided,
+the function assumes \textit{Z0} = 50$\Omega$.
+
+\noindent For \textit{r} being a vector the equation above is applied
+to the components of \textit{r}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{z=rtoz(0.333)}]returns 99.9.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{ztor}{ztor()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{ytor}{ytor()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{rtoswr}{rtoswr()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{ytor}{}{\Large ytor\index{ytor}()}}
+
+
+\paragraph{\label{par:ytor}Converts admittance to reflection coefficient.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+r=ytor(Y)
+
+\noindent r=ytor(Y, Z0)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+Y&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+Z0&
+$\mathbb{R}$, $\mathbb{C}$&
+$\left]-\infty,+\infty\right[$&
+&
+50\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+For a real or complex admittance \textit{y}, this function calculates
+the corresponding reflection coefficient according to 
+
+\medskip{}
+$r={\displaystyle \frac{1-Y\, Z_{0}}{1+Y\, Z_{0}}}$
+\medskip{}
+
+\noindent For \textit{Y} being a vector the equation above is applied
+to the components of \textit{Y}.
+
+\noindent If the reference impedance \textit{Z0} is not provided,
+the function assumes \textit{Z0} = 50$\Omega$.
+
+\noindent Often a dB measure is given for the reflection coefficient,
+the so called {}``return loss'':
+
+$RL=-20\,\log\left|r\right|$ {[}dB{]}
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{r=ytor(0.01)}]returns 0.333.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{rtoy}{rtoy()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{rtoz}{rtoz()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{rtoswr}{rtoswr()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{log10}{log10()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{dB}{dB()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{ztor}{}{\Large ztor\index{ztor}()}}
+
+
+\paragraph{\label{par:ztor}Converts impedance to reflection coefficient.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+r=ztor(Z)
+
+\noindent r=ztor(Z, Z0)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+Z&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+Z0&
+$\mathbb{R}$, $\mathbb{C}$&
+$\left]-\infty,+\infty\right[$&
+&
+50\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+For a real or complex impedance \textit{Z}, this function calculates
+the corresponding reflection coefficient according to 
+
+\medskip{}
+$r={\displaystyle \frac{Z-Z_{0}}{Z+Z_{0}}}$
+\medskip{}
+
+\noindent For \textit{Z} being a vector the equation above is applied
+to the components of \textit{Z}.
+
+\noindent If the reference impedance \textit{Z0} is not provided,
+the function assumes \textit{Z0} = 50$\Omega$.
+
+\noindent Often a dB measure is given for the reflection coefficient,
+the so called {}``return loss'':
+
+\noindent $RL=-20\,\log\left|r\right|$ {[}dB{]}
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{r=ztor(100)}]returns 0.333.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{rtoz}{rtoz()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{rtoy}{rtoy()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{rtoswr}{rtoswr()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{log10}{log10()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{dB}{dB()}}
+
+
+\newpage
+\tutsubsection{\label{sec:N-Port-Matrix-Conversions}N-Port Matrix Conversions}
+
+
+\subsubsection*{\hypertarget{stos}{}{\Large stos\index{stos}()}}
+
+
+\paragraph{\label{par:stos}Converts S-parameter matrix to S-parameter matrix
+with different reference impedance(s).}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=stos(S, Zref)
+
+\noindent y=stos(S, Zref, Z0)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+S&
+$\mathbb{R}^{n\times n}$, $\mathbb{C}^{n\times n}$&
+\begin{tabular}{l}
+$\left|S_{ij}\right|\in\left]-\infty,+\infty\right[,\:1\leq i,j\leq n$\tabularnewline
+$\left|S_{ii}\right|\leq1,\:1\leq i\leq n$\tabularnewline
+\end{tabular}&
+$\surd$&
+\tabularnewline
+\hline
+Zref&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+Z0&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+&
+50\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function converts a real or complex scattering parameter matrix
+\textit{S} into a scattering matrix \textit{Y}. \textit{S} has a reference
+impedance \textit{Zref}, whereas the created scattering matrix \textit{Y}
+has a reference impedance \textit{Z0}.
+
+\noindent If the reference impedance \textit{Z0} is not provided,
+the function assumes \textit{Z0} = 50$\Omega$.
+
+\noindent Both \textit{Zref} and \textit{Z0} can be real or complex
+numbers or vectors; in the latter case the function operates on the
+elements of \textit{Zref} and \textit{Z0}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+Conversion of 50$\Omega$ terminated S-parameters to 100$\Omega$
+terminated S-parameters:
+
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{S2=stos(eye(2){*}0.1,50,100)}]returns \begin{tabular}{|c|c|}
+\hline 
+-0.241&
+0\tabularnewline
+\hline
+0&
+-0.241\tabularnewline
+\hline
+\end{tabular}.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{twoport}{twoport()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{stoy}{stoy()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{stoz}{stoz()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{stoy}{}{\Large stoy\index{stoy}()}}
+
+
+\paragraph{\label{par:stoy}Converts S-parameter matrix to Y-parameter matrix.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+Y=stoy(S)
+
+\noindent Y=stoy(S, Zref)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+S&
+$\mathbb{R}^{n\times n}$, $\mathbb{C}^{n\times n}$&
+\begin{tabular}{l}
+$\left|S_{ij}\right|\in\left]-\infty,+\infty\right[,\:1\leq i,j\leq n$\tabularnewline
+$\left|S_{ii}\right|\leq1,\:1\leq i\leq n$\tabularnewline
+\end{tabular}&
+$\surd$&
+\tabularnewline
+\hline
+Zref&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+&
+50\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function converts a real or complex scattering parameter matrix
+\textit{S} into an admittance matrix \textit{Y}. \textit{S} has a
+reference impedance \textit{Zref}, which is assumed to be \textit{Zref}
+= 50$\Omega$ if not provided by the user.
+
+\noindent \textit{Zref} can be real or complex number or vector; in
+the latter case the function operates on the elements of \textit{Zref}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{Y=stoy(eye(2){*}0.1,100)}]returns \begin{tabular}{|c|c|}
+\hline 
+0.00818&
+0\tabularnewline
+\hline
+0&
+0.00818\tabularnewline
+\hline
+\end{tabular}.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{twoport}{twoport()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{stos}{stos()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{stoz}{stoz()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{ytos}{ytos()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{stoz}{}{\Large stoz\index{stoz}()}}
+
+
+\paragraph{\label{par:stoz}Converts S-parameter matrix to Z-parameter matrix.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+Z=stoz(S)
+
+\noindent Z=stoz(S, Zref)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+S&
+$\mathbb{R}^{n\times n}$, $\mathbb{C}^{n\times n}$&
+\begin{tabular}{l}
+$\left|S_{ij}\right|\in\left]-\infty,+\infty\right[,\:1\leq i,j\leq n$\tabularnewline
+$\left|S_{ii}\right|\leq1,\:1\leq i\leq n$\tabularnewline
+\end{tabular}&
+$\surd$&
+\tabularnewline
+\hline
+Zref&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+&
+50\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function converts a real or complex scattering parameter matrix
+\textit{S} into an impedance matrix \textit{Z}. \textit{S} has a reference
+impedance \textit{Zref}, which is assumed to be \textit{Zref} = 50$\Omega$
+if not provided by the user.
+
+\noindent \textit{Zref} can be real or complex number or vector; in
+the latter case the function operates on the elements of \textit{Zref}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{Z=stoz(eye(2){*}0.1,100)}]returns \begin{tabular}{|c|c|}
+\hline 
+122&
+0\tabularnewline
+\hline
+0&
+122\tabularnewline
+\hline
+\end{tabular}.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{twoport}{twoport()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{stos}{stos()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{stoy}{stoy()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{ztos}{ztos()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{twoport}{}{\Large twoport\index{twoport}()}}
+
+
+\paragraph{\label{par:twoport}Converts a two-port matrix from one representation
+into another.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+U=twoport(X, from, to)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required\tabularnewline
+\hline
+\hline 
+X&
+$\mathbb{R}^{2\times2}$, $\mathbb{C}^{2\times2}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$\tabularnewline
+\hline
+from&
+Character&
+$\left\{ ^{\prime}Y{}^{\prime},\,{}^{\prime}Z{}^{\prime},\,{}^{\prime}H{}^{\prime},\,{}^{\prime}G{}^{\prime},\,{}^{\prime}A{}^{\prime},\,{}^{\prime}S{}^{\prime},\,{}^{\prime}T{}^{\prime}\right\} $&
+$\surd$\tabularnewline
+\hline
+to&
+Character&
+$\left\{ ^{\prime}Y{}^{\prime},\,{}^{\prime}Z{}^{\prime},\,{}^{\prime}H{}^{\prime},\,{}^{\prime}G{}^{\prime},\,{}^{\prime}A{}^{\prime},\,{}^{\prime}S{}^{\prime},\,{}^{\prime}T{}^{\prime}\right\} $&
+$\surd$\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function converts a real or complex two-port matrix \textit{X}
+from one representation into another. 
+
+\begin{description}
+\item [Example]~
+\end{description}
+Transfer a two-port Y matrix Y1 into a Z matrix:
+
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{Y1=eye(2){*}0.1}]~
+\item [\texttt{Z1=twoport(Y1,'Y','Z')}]returns \begin{tabular}{|c|c|}
+\hline 
+10&
+0\tabularnewline
+\hline
+0&
+10\tabularnewline
+\hline
+\end{tabular}.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{stos}{stos()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{ytos}{ytos()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{ztos}{ztos()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{stoz}{stoz()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{stoy}{stoy()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{ytoz}{ytoz()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{ztoy}{ztoy()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{ytos}{}{\Large ytos\index{ytos}()}}
+
+
+\paragraph{\label{par:ytos}Converts Y-parameter matrix to S-parameter matrix.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+S=ytos(Y)
+
+\noindent S=ytos(Y, Z0)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+Y&
+$\mathbb{R}^{n\times n}$, $\mathbb{C}^{n\times n}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+Z0&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+&
+50\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function converts a real or complex admittance matrix \textit{Y}
+into a scattering parameter matrix \textit{S}. \textit{Y} has a reference
+impedance \textit{Z0}, which is assumed to be \textit{Z0} = 50$\Omega$
+if not provided by the user.
+
+\noindent \textit{Z0} can be real or complex number or vector; in
+the latter case the function operates on the elements of \textit{Z0}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{S=ytos(eye(2){*}0.1,100)}]returns \begin{tabular}{|c|c|}
+\hline 
+-0.818&
+0\tabularnewline
+\hline
+0&
+-0.818\tabularnewline
+\hline
+\end{tabular}.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{twoport}{twoport()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{stos}{stos()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{ztos}{ztos()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{stoy}{stoy()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{ytoz}{}{\Large ytoz\index{ytoz}()}}
+
+
+\paragraph{\label{par:ytoz}Converts Y-parameter matrix to Z-parameter matrix.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+Z=ytoz(Y)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required\tabularnewline
+\hline
+\hline 
+Y&
+$\mathbb{R}^{n\times n}$, $\mathbb{C}^{n\times n}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function converts a real or complex admittance matrix \textit{Y}
+into an impedance matrix \textit{Z}. 
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{Z=ytoz(eye(2){*}0.1)}]returns \begin{tabular}{|c|c|}
+\hline 
+10&
+0\tabularnewline
+\hline
+0&
+10\tabularnewline
+\hline
+\end{tabular}.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{twoport}{twoport()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{ztoy}{ztoy()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{ztos}{}{\Large ztos\index{ztos}()}}
+
+
+\paragraph{\label{par:ztos}Converts Z-parameter matrix to S-parameter matrix.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+S=ztos(Z)
+
+\noindent S=ztos(Z, Z0)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+Z&
+$\mathbb{R}^{n\times n}$, $\mathbb{C}^{n\times n}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+Z0&
+$\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+&
+50\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function converts a real or complex impedance matrix \textit{Z}
+into a scattering parameter matrix \textit{S}. \textit{Z} has a reference
+impedance \textit{Z0}, which is assumed to be \textit{Z0} = 50$\Omega$
+if not provided by the user.
+
+\noindent \textit{Z0} can be real or complex number or vector; in
+the latter case the function operates on the elements of \textit{Z0}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{S=ztos(eye(2){*}0.1,100)}]returns \begin{tabular}{|c|c|}
+\hline 
+-0.998&
+0\tabularnewline
+\hline
+0&
+-0.998\tabularnewline
+\hline
+\end{tabular}.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{twoport}{twoport()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{twoport}{twoport()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{stos}{stos()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{ytos}{ytos()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{stoz}{stoz()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{ztoy}{}{\Large ztoy\index{ztoy}()}}
+
+
+\paragraph{\label{par:ztoy}Converts Z-parameter matrix to Y-parameter matrix.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+Y=ztoy(Z)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required\tabularnewline
+\hline
+\hline 
+Z&
+$\mathbb{R}^{n\times n}$, $\mathbb{C}^{n\times n}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function converts a real or complex impedance matrix \textit{Z}
+into an admittance matrix \textit{Y}. 
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{Y=ztoy(eye(2){*}0.1)}]returns \begin{tabular}{|c|c|}
+\hline 
+10&
+0\tabularnewline
+\hline
+0&
+10\tabularnewline
+\hline
+\end{tabular}.
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{twoport}{twoport()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{ytoz}{ytoz()}}
+
+
+\newpage
+\tutsubsection{\label{sec:Amplifiers}Amplifiers}
+
+
+\subsubsection*{\hypertarget{GaCircle}{}{\Large GaCircle\index{GaCircle}()}}
+
+
+\paragraph{\label{par:GaCircle}Circle(s) with constant available power gain
+Ga in the source plane.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=GaCircle(X,Ga,v)
+
+\noindent y=GaCircle(X,Ga,n)
+
+\noindent y=GaCircle(X,Ga)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+X&
+$\mathbb{R}^{2\times2\times p}$, $\mathbb{C}^{2\times2\times p}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+v&
+$\mathbb{R}^{n}$&
+$\left[0,360\right]^{o}$&
+&
+\tabularnewline
+\hline
+Ga&
+$\mathbb{R}$, $\mathbb{R}^{m}$&
+$\left[0,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+n&
+$\mathbb{N}$&
+$\left[2,+\infty\right[$&
+&
+64\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function generates the points of the circle of constant available
+power gain $G_{A}$ in the complex source plane ($r_{S}$) of an amplifier.
+The amplifier is described by a two-port S-parameter matrix \textit{S}.
+Radius \textit{r} and center \textit{c} of this circle are calculated
+as follows:
+
+\medskip{}
+\noindent $r=\frac{{\displaystyle \sqrt{1-2\cdot K\cdot g_{A}\cdot\left|S_{12}S_{21}\right|+g_{A}^{2}\cdot\left|S_{12}S_{21}\right|^{2}}}}{{\displaystyle \left|1+g_{A}\cdot\left(\left|S_{11}\right|^{2}-\left|\Delta\right|^{2}\right)\right|}}$
+and $c={\displaystyle \frac{g_{A}\left(S_{11}^{*}-S_{22}\,\Delta{}^{*}\right)}{1+g_{A}\left(\left|S_{11}\right|^{2}-\left|\Delta\right|^{2}\right)}}$,
+
+\medskip{}
+where $g_{A}={\displaystyle \frac{G_{A}}{\left|S_{21}\right|^{2}}}$
+and $K$ Rollet stability factor. $\Delta$ denotes determinant of
+$S$.
+\medskip{}
+
+\noindent The points of the circle can be specified by the angle vector
+\textit{v}, where the angle must be given in degrees. Another possibility
+is to specify the number \textit{n} of angular equally distributed
+points around the circle. If no additional argument to \textit{X}
+is given, 64 points are taken. The available power gain can also be
+specified in a vector \textit{Ga}, leading to the generation of m
+circles, where m is the size of \textit{Ga}.
+
+\noindent Please also refer to {}``Qucs - Technical Papers'', chapter
+1.5.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{v=GaCircle(S)}]~
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{GpCircle}{GpCircle()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{Rollet}{Rollet()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{GpCircle}{}{\Large GpCircle\index{GpCircle}()}}
+
+
+\paragraph{\label{par:GpCircle}Circle(s) with constant operating power gain
+Gp in the load plane.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=GpCircle(X,Gp,v)
+
+\noindent y=GpCircle(X,Gp,n)
+
+\noindent y=GpCircle(X,Gp)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+X&
+$\mathbb{R}^{2\times2\times p}$, $\mathbb{C}^{2\times2\times p}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+v&
+$\mathbb{R}^{n}$ &
+$\left[0,360\right]^{o}$&
+&
+\tabularnewline
+\hline
+Gp&
+$\mathbb{R}$, $\mathbb{R}^{m}$&
+$\left[0,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+n&
+$\mathbb{N}$&
+$\left[2,+\infty\right[$&
+&
+64\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function generates the points of the circle of constant operating
+power gain $G_{P}$ in the complex load plane ($r_{L}$) of an amplifier.
+The amplifier is described by a two-port S-parameter matrix \textit{S}.
+Radius \textit{r} and center \textit{c} of this circle are calculated
+as follows:
+
+\medskip{}
+\noindent $r={\displaystyle \frac{\sqrt{1-2\cdot K\cdot g_{P}\cdot\left|S_{12}S_{21}\right|+g_{P}^{2}\cdot\left|S_{12}S_{21}\right|^{2}}}{\left|1+g_{P}\cdot\left(\left|S_{22}\right|^{2}-\left|\Delta\right|^{2}\right)\right|}}$
+and $c={\displaystyle \frac{g_{A}\left(S_{22}^{*}-S_{11}\,\Delta^{*}\right)}{1+g_{P}\left(\left|S_{22}\right|^{2}-\left|\Delta\right|^{2}\right)}}$,
+
+\medskip{}
+where $g_{A}={\displaystyle \frac{G_{P}}{\left|S_{21}\right|^{2}}}$
+and $K$ Rollet stability factor. $\Delta$ denotes determinant of
+$S$.
+\medskip{}
+
+\noindent The points of the circle can be specified by the angle vector
+\textit{v}, where the angle must be given in degrees. Another possibility
+is to specify the number \textit{n} of angular equally distributed
+points around the circle. If no additional argument to \textit{X}
+is given, 64 points are taken. The available power gain can also be
+specified in a vector \textit{G}p, leading to the generation of m
+circles, where m is the size of \textit{G}p.
+
+\noindent Please also refer to {}``Qucs - Technical Papers'', chapter
+1.5.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{v=GpCircle(S)}]~
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{GaCircle}{GaCircle()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{Rollet}{Rollet()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{Mu}{}{\Large Mu\index{Mu}()}}
+
+
+\paragraph{\label{par:Mu-stability-factor}Mu stability factor of a two-port
+S-parameter matrix.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=Mu(S)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required\tabularnewline
+\hline
+\hline 
+S&
+$\mathbb{R}^{2\times2\times p}$, $\mathbb{C}^{2\times2\times p},$$\mathbb{R}^{2\times2}$,
+$\mathbb{C}^{2\times2}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function returns the Mu stability factor $\mu$ of an amplifier
+being described by a two-port S-parameter matrix \textit{S}:
+
+\medskip{}
+\noindent $\mu={\displaystyle \frac{1-\left|S_{11}\right|^{2}}{\left|S_{22}-S_{11}^{*}\,\Delta\right|+\left|S_{21\,}S_{12}\right|}}$
+\medskip{}
+
+$\Delta$ denotes determinant of $S$.
+
+\noindent The amplifier is unconditionally stable if $\mu>1$.
+
+\noindent For \textit{S} being a vector of matrices the equation above
+is applied to the sub-matrices of \textit{S}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{m=Mu(S)}]~
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{Mu2}{Mu2()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{Rollet}{Rollet()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{StabCircleS}{StabCircleS()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{StabCircleL}{StabCircleL()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{Mu2}{}{\Large Mu2\index{Mu2}()}}
+
+
+\paragraph{\label{par:Mu2-stability-factor}Mu' stability factor of a two-port
+S-parameter matrix.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=Mu2(S)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required\tabularnewline
+\hline
+\hline 
+S&
+$\mathbb{R}^{2\times2\times p}$, $\mathbb{C}^{2\times2\times p},$$\mathbb{R}^{2\times2}$,
+$\mathbb{C}^{2\times2}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function returns the Mu' stability factor $\mu^{\prime}$ of
+an amplifier being described by a two-port S-parameter matrix \textit{S}:
+
+\medskip{}
+\noindent $\mu^{\prime}={\displaystyle \frac{1-\left|S_{22}\right|^{2}}{\left|S_{11}-S_{22}^{*}\,\Delta\right|+\left|S_{21\,}S_{12}\right|}}$
+\medskip{}
+
+$\Delta$ denotes determinant of $S$.
+
+\noindent The amplifier is unconditionally stable if $\mu^{\prime}>1$.
+
+\noindent For \textit{S} being a vector of matrices the equation above
+is applied to the sub-matrices of \textit{S}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{m=Mu2(S)}]~
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{Mu2}{Mu2()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{Rollet}{Rollet()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{StabCircleS}{StabCircleS()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{StabCircleL}{StabCircleL()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{NoiseCircle}{}{\Large NoiseCircle\index{NoiseCircle}()}}
+
+
+\paragraph{\label{par:NoiseCircle}Generates circle(s) with constant Noise Figure(s).}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=NoiseCircle(Sopt,Fmin,Rn,F,v)
+
+\noindent y=NoiseCircle(Sopt,Fmin,Rn,F,n)
+
+\noindent y=NoiseCircle(Sopt,Fmin,Rn,F)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+Sopt&
+$\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+Fmin&
+$\mathbb{R}^{n}$&
+$\left[1,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+Rn&
+$\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left[0,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+F&
+$\mathbb{R}$, $\mathbb{R}^{n}$&
+$\left[1,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+v&
+$\mathbb{R}^{n}$&
+$\left[0,360\right]^{o}$&
+&
+\tabularnewline
+\hline
+n&
+$\mathbb{N}$&
+$\left[2,+\infty\right[$&
+&
+64\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function generates the points of the circle of constant Noise
+Figure (NF) \textit{F} in the complex source plane ($r_{S}$) of an
+amplifier. Generally, the amplifier has its minimum NF $F_{min}$,
+if the source reflection coefficient $r_{S}=S_{opt}$(noise matching).
+Note that this state with optimum source reflection coefficient $S_{opt}$
+is different from power matching ! Thus power gain under noise matching
+is lower than the maximum obtainable gain. The values of $S_{opt}$,
+$F_{min}$and the normalised equivalent noise resistance $R_{n}/Z_{0}$can
+be usually taken from the data sheet of the amplifier. 
+
+\noindent Radius \textit{r} and center \textit{c} of the circle of
+constant NF are calculated as follows:
+
+\medskip{}
+\noindent $r=\frac{{\displaystyle \sqrt{N^{2}+N\cdot\left(1-\left|S_{opt}\right|^{2}\right)}}}{{\displaystyle 1+N}}$
+and $c={\displaystyle \frac{S_{opt}}{1+N}}$, with $N={\displaystyle \frac{F-F_{min}}{4\, R_{n}}}\cdot Z_{0}\cdot\left|1+S_{opt}\right|^{2}$
+.
+\medskip{}
+
+\noindent The points of the circle can be specified by the angle vector
+\textit{v}, where the angle must be given in degrees. Another possibility
+is to specify the number \textit{n} of angular equally distributed
+points around the circle. If no additional argument to \textit{X}
+is given, 64 points are taken.
+
+\noindent Please also refer to {}``Qucs - Technical Papers'', chapter
+2.2.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{v=NoiseCircle(Sopt,Fmin,Rn,F)}]~
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{GaCircle}{GaCircle()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{GpCircle}{GpCircle()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{PlotVs}{}{\Large PlotVs\index{PlotVs}()}}
+
+
+\paragraph{\label{par:PlotVs}Returns a data item based upon vector or matrix
+vector with dependency on a given vector.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=PlotVs(X, v)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required\tabularnewline
+\hline
+\hline 
+X&
+$\mathbb{R}^{n}$, $\mathbb{C}^{n}$, $\mathbb{R}^{m\times n\times p}$,
+$\mathbb{C}^{m\times n\times p}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$\tabularnewline
+\hline
+v&
+$\mathbb{R}^{n}$, $\mathbb{C}^{n}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function returns a data item based upon a vector or matrix vector
+\textit{X} with dependency on a given vector \textit{v}. 
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{PlotVs(Gain,frequency/1E9)}.]~
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+
+\newpage
+\subsubsection*{\hypertarget{Rollet}{}{\Large Rollet\index{Rollet}()}}
+
+
+\paragraph{\label{par:Rollet-stability-factor}Rollet stability factor of a
+two-port S-parameter matrix.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=Rollet(S)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required\tabularnewline
+\hline
+\hline 
+S&
+$\mathbb{R}^{2\times2\times p}$, $\mathbb{C}^{2\times2\times p},$$\mathbb{R}^{2\times2}$,
+$\mathbb{C}^{2\times2}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function returns the Rollet stability factor \textit{K} of an
+amplifier being described by a two-port S-parameter matrix \textit{S}: 
+
+\medskip{}
+\noindent $K={\displaystyle \frac{1-\left|S_{11}\right|^{2}-\left|S_{22}\right|^{2}+\left|\Delta\right|^{2}}{2\,\left|S_{21}\right|\left|S_{12}\right|}}$
+\medskip{}
+
+$\Delta$ denotes determinant of $S$.
+
+\noindent The amplifier is unconditionally stable if $K>1$ and $\left|\Delta\right|<1$.
+
+\noindent Note that a large \textit{K} may be misleading in case of
+a multi-stage amplifier, pretending extraordinary stability. This
+is in conflict with reality where a large gain amplifier usually suffers
+from instability due to parasitics.
+
+\noindent For \textit{S} being a vector of matrices the equation above
+is applied to the sub-matrices of \textit{S}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{K=Rollet(S)}]~
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{Mu}{Mu()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{Mu2}{Mu2()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{StabCircleS}{StabCircleS()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{StabCircleL}{StabCircleL()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{StabCircleL}{}{\Large StabCircleL\index{StabCircleL}()}}
+
+
+\paragraph{\label{par:StabCircleL}Stability circle in the load plane.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=StabCircleL(X)
+
+\noindent y=StabCircleL(X,v)
+
+\noindent y=StabCircleL(X,n)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+X&
+$\mathbb{R}^{2\times2\times p}$, $\mathbb{C}^{2\times2\times p}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+v&
+$\mathbb{R}^{n}$&
+$\left[0,360\right]^{o}$&
+&
+\tabularnewline
+\hline
+n&
+$\mathbb{N}$&
+$\left[2,+\infty\right[$&
+&
+64\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function generates the stability circle points in the complex
+load reflection coefficient ($r_{L}$) plane of an amplifier. The
+amplifier is described by a two-port S-parameter matrix \textit{S}.
+Radius \textit{r} and center \textit{c} of this circle are calculated
+as follows:
+
+\medskip{}
+\noindent $r={\displaystyle \left|\frac{S_{21}\, S_{12}}{\left|S_{22}\right|^{2}-\left|\Delta\right|^{2}}\right|}$
+and $c={\displaystyle \frac{S_{22}^{*}-S_{11}\cdot\Delta^{*}}{\left|S_{22}\right|^{2}-\left|\Delta\right|^{2}}}$
+\medskip{}
+
+$\Delta$ denotes determinant of $S$.
+
+\noindent The points of the circle can be specified by the angle vector
+\textit{v}, where the angle must be given in degrees. Another possibility
+is to specify the number \textit{n} of angular equally distributed
+points around the circle. If no additional argument to \textit{X}
+is given, 64 points are taken.
+
+\noindent If the center of the $r_{L}$plane lies within this circle
+and $\left|S_{11}\right|\leq1$ then the circuit is stable for all
+reflection coefficients inside the circle. If the center of the $r_{L}$plane
+lies outside the circle and $\left|S_{11}\right|\leq1$ then the circuit
+is stable for all reflection coefficients outside the circle (please
+also refer to {}``Qucs - Technical Papers'', chapter 1.5).
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{v=StabCircleL(S)}]~
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{StabCircleS}{StabCircleS()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{Rollet}{Rollet()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{Mu}{Mu()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{Mu2}{Mu2()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{StabCircleS}{}{\Large StabCircleS\index{StabCircleS}()}}
+
+
+\paragraph{\label{par:StabCircleS}Stability circle in the source plane.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=StabCircleS(X)
+
+\noindent y=StabCircleS(X,v)
+
+\noindent y=StabCircleS(X,n)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+X&
+$\mathbb{R}^{2\times2\times p}$, $\mathbb{C}^{2\times2\times p}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline
+v&
+$\mathbb{R}^{n}$&
+$\left[0,360\right]^{o}$&
+&
+\tabularnewline
+\hline
+n&
+$\mathbb{N}$&
+$\left[2,+\infty\right[$&
+&
+64\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function generates the stability circle points in the complex
+source reflection coefficient ($r_{S}$) plane of an amplifier. The
+amplifier is described by a two-port S-parameter matrix \textit{S}.
+Radius \textit{r} and center \textit{c} of this circle are calculated
+as follows:
+
+\medskip{}
+\noindent $r={\displaystyle \left|\frac{S_{21}\, S_{12}}{\left|S_{11}\right|^{2}-\left|\Delta\right|^{2}}\right|}$
+and $c={\displaystyle \frac{S_{11}^{*}-S_{22}\cdot\Delta^{*}}{\left|S_{11}\right|^{2}-\left|\Delta\right|^{2}}}$
+\medskip{}
+
+$\Delta$ denotes determinant of $S$.
+
+\noindent The points of the circle can be specified by the angle vector
+\textit{v}, where the angle must be given in degrees. Another possibility
+is to specify the number \textit{n} of angular equally distributed
+points around the circle. If no additional argument to \textit{X}
+is given, 64 points are taken.
+
+\noindent If the center of the $r_{S}$plane lies within this circle
+and $\left|S_{22}\right|\leq1$ then the circuit is stable for all
+reflection coefficients inside the circle. If the center of the $r_{S}$plane
+lies outside the circle and $\left|S_{22}\right|\leq1$ then the circuit
+is stable for all reflection coefficients outside the circle (please
+also refer to {}``Qucs - Technical Papers'', chapter 1.5).
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{v=StabCircleS(S)}]~
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{StabCircleL}{StabCircleL()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{Rollet}{Rollet()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{Mu}{Mu()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{Mu2}{Mu2()}}
+
+\newpage
+\subsubsection*{\hypertarget{StabFactor}{}{\Large StabFactor\index{StabFactor}()}}
+
+
+\paragraph{\label{par:StabFactor}Stability factor of a two-port S-parameter matrix. Synonym for Rollet()
+}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=StabFactor(S)
+
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{Rollet}{Rollet()}}
+
+\newpage
+\subsubsection*{\hypertarget{StabMeasure}{}{\Large StabMeasure\index{StabMeasure}()}}
+
+
+\paragraph{\label{par:StabMeasure}Stability measure B1 of a two-port S-parameter matrix.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=StabMeasure(S)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required\tabularnewline
+\hline
+\hline 
+S&
+$\mathbb{R}^{2\times2\times p}$, $\mathbb{C}^{2\times2\times p},$$\mathbb{R}^{2\times2}$,
+$\mathbb{C}^{2\times2}$&
+$\left]-\infty,+\infty\right[$&
+$\surd$\tabularnewline
+\hline
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function returns the stability measure \textit{B1} of a two-port S-parameter matrix \textit{S}: 
+
+\medskip{}
+\noindent $B1={\displaystyle {1+\left|S_{11}\right|^{2}-\left|S_{22}\right|^{2}-\left|\Delta\right|^{2}}}$
+\medskip{}
+
+$\Delta$ denotes determinant of $S$.
+
+\noindent The amplifier is unconditionally stable if $B1>0$ and the Rollet factor $K>1$.
+
+\noindent For \textit{S} being a vector of matrices the equation above
+is applied to the sub-matrices of \textit{S}.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{B1=StabMeasure(S)}]~
+\end{lyxlist}
+\begin{description}
+\item [See~also]~
+\end{description}
+\textcolor{blue}{\hyperlink{Rollet}{Rollet()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{Mu}{Mu()}}\textcolor{black}{,} \textcolor{blue}{\hyperlink{Mu2}{Mu2()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{StabCircleS}{StabCircleS()}}\textcolor{black}{,}
+\textcolor{blue}{\hyperlink{StabCircleL}{StabCircleL()}}
+
+
+\newpage
+\subsubsection*{\hypertarget{vt}{}{\Large vt\index{vt}()}}
+
+
+\paragraph{\label{par:vt}Thermal voltage for a given temperature in Kelvin.}
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+y=vt(t)
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Name&
+Type&
+Def. Range&
+Required&
+Default\tabularnewline
+\hline
+\hline 
+t&
+$\mathbb{R}$&
+$\left[0,+\infty\right[$&
+$\surd$&
+\tabularnewline
+\hline 
+\end{tabular}
+
+\begin{description}
+\item [Description]~
+\end{description}
+This function returns the corresponding thermal voltage ${V_t}$ in Volt of a real absolute temperature
+ (vector) \textit{T} in Kelvin according to
+
+\medskip{}
+${V_t}=\displaystyle \frac{kT}{e}$
+\medskip{}
+
+\noindent where \textit{k} is the Boltzmann constant and \textit{e} denotes the electrical charge on the electron.
+For \textit{t} being a vector the equation above is applied
+to the components of \textit{k}.
+
+\noindent Please note that \textit{t} is always larger than or equal to zero.
+
+\begin{description}
+\item [Example]~
+\end{description}
+\begin{lyxlist}{00.00.0000}
+\item [\texttt{y=vt(300)}]returns 0.0259.
+\end{lyxlist}
+
+
+

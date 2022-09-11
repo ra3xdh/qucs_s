@@ -1,0 +1,169 @@
+//   Qucs analogue dmux4to16 model
+//   The structure and theoretical background to the dmux4to16
+//   Verilog-a model are presented in the Qucs digital tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, December 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module dmux4to16 (EN, A, B, C, D, Y15, Y14, Y13, Y12, Y11, Y10, Y9, Y8, Y7, Y6, Y5, Y4, Y3, Y2, Y1, Y0); 
+ inout EN, A, B, C, D, Y15, Y14, Y13, Y12, Y11, Y10, Y9, Y8, Y7, Y6, Y5, Y4, Y3, Y2, Y1, Y0;
+ electrical EN, A, B, C, D, Y15, Y14, Y13, Y12, Y11, Y10, Y9, Y8, Y7, Y6, Y5, Y4, Y3, Y2, Y1, Y0;
+ electrical Y0n1, Y0n2, Y1n1, Y1n2, Y2n1, Y2n2, Y3n1, Y3n2;
+ electrical Y4n1, Y4n2, Y5n1, Y5n2, Y6n1, Y6n2, Y7n1, Y7n2;
+ electrical Y8n1, Y8n2, Y9n1, Y9n2, Y10n1, Y10n2, Y11n1, Y11n2;
+ electrical Y12n1, Y12n2, Y13n1, Y13n2, Y14n1, Y14n2, Y15n1, Y15n2;
+//
+ `define attr(txt) (*txt*)
+ parameter real TR=6 from [1.0:20.0] `attr(info="transfer function high scaling factor");
+ parameter real Delay = 1n from [0: inf] `attr(info="output delay" unit="s");
+//
+ real Rd, Cd, VENI, VAI, VBI, VCI, VDI, IY0, IY1, IY2, IY3, IY4, IY5, IY6, IY7;
+ real IY8, IY9, IY10, IY11, IY12, IY13, IY14, IY15;
+//
+analog begin
+@(initial_model)
+  begin
+    Rd = 1e3;
+    Cd= Delay*1.43/Rd;
+  end
+VENI = 1-V(EN);
+VAI  = 1-V(A);
+VBI  = 1-V(B);
+VCI  = 1-V(C);
+VDI  = 1-V(D);
+//
+IY0 = VENI*VDI*VCI*VBI*VAI;
+I(Y0n1) <+ -0.5*(1+tanh(TR*(IY0-0.5)));
+I(Y0n1) <+ V(Y0n1);
+I(Y0n1, Y0n2) <+ V(Y0n1,Y0n2)/Rd;
+I(Y0n2) <+ ddt(Cd*V(Y0n2));
+I(Y0)  <+ -V(Y0n2);
+I(Y0) <+ V(Y0);
+//
+IY1 = VENI*VDI*VCI*VBI*V(A);
+I(Y1n1) <+ -0.5*(1+tanh(TR*(IY1-0.5)));
+I(Y1n1) <+ V(Y1n1);
+I(Y1n1, Y1n2) <+ V(Y1n1,Y1n2)/Rd;
+I(Y1n2) <+ ddt(Cd*V(Y1n2));
+I(Y1)  <+ -V(Y1n2);
+I(Y1) <+ V(Y1);
+//
+IY2= VENI*VDI*VCI*V(B)*VAI;
+I(Y2n1) <+ -0.5*(1+tanh(TR*(IY2-0.5)));
+I(Y2n1) <+ V(Y2n1);
+I(Y2n1, Y2n2) <+ V(Y2n1,Y2n2)/Rd;
+I(Y2n2) <+ ddt(Cd*V(Y2n2));
+I(Y2)  <+ -V(Y2n2);
+I(Y2) <+ V(Y2);
+//
+IY3 = VENI*VDI*VCI*V(B)*V(A);
+I(Y3n1) <+ -0.5*(1+tanh(TR*(IY3-0.5)));
+I(Y3n1) <+ V(Y3n1);
+I(Y3n1, Y3n2) <+ V(Y3n1,Y3n2)/Rd;
+I(Y3n2) <+ ddt(Cd*V(Y3n2));
+I(Y3)  <+ -V(Y3n2);
+I(Y3) <+ V(Y3);
+//
+IY4 = VENI*VDI*V(C)*VBI*VAI;
+I(Y4n1) <+ -0.5*(1+tanh(TR*(IY4-0.5)));
+I(Y4n1) <+ V(Y4n1);
+I(Y4n1, Y4n2) <+ V(Y4n1,Y4n2)/Rd;
+I(Y4n2) <+ ddt(Cd*V(Y4n2));
+I(Y4)  <+ -V(Y4n2);
+I(Y4) <+ V(Y4);
+//
+IY5 = VENI*VDI*V(C)*VBI*V(A);
+I(Y5n1) <+ -0.5*(1+tanh(TR*(IY5-0.5)));
+I(Y5n1) <+ V(Y5n1);
+I(Y5n1, Y5n2) <+ V(Y5n1,Y5n2)/Rd;
+I(Y5n2) <+ ddt(Cd*V(Y5n2));
+I(Y5)  <+ -V(Y5n2);
+I(Y5) <+ V(Y5);
+//
+IY6= VENI*VDI*V(C)*V(B)*VAI;
+I(Y6n1) <+ -0.5*(1+tanh(TR*(IY6-0.5)));
+I(Y6n1) <+ V(Y6n1);
+I(Y6n1, Y6n2) <+ V(Y6n1,Y6n2)/Rd;
+I(Y6n2) <+ ddt(Cd*V(Y6n2));
+I(Y6)  <+ -V(Y6n2);
+I(Y6) <+ V(Y6);
+//
+IY7 = VENI*VDI*V(C)*V(B)*V(A);
+I(Y7n1) <+ -0.5*(1+tanh(TR*(IY7-0.5)));
+I(Y7n1) <+ V(Y7n1);
+I(Y7n1, Y7n2) <+ V(Y7n1,Y7n2)/Rd;
+I(Y7n2) <+ ddt(Cd*V(Y7n2));
+I(Y7)  <+ -V(Y7n2);
+I(Y7) <+ V(Y7);
+//
+IY8 = VENI*V(D)*VCI*VBI*VAI;
+I(Y8n1) <+ -0.5*(1+tanh(TR*(IY8-0.5)));
+I(Y8n1) <+ V(Y8n1);
+I(Y8n1, Y8n2) <+ V(Y8n1,Y8n2)/Rd;
+I(Y8n2) <+ ddt(Cd*V(Y8n2));
+I(Y8)  <+ -V(Y8n2);
+I(Y8) <+ V(Y8);
+//
+IY9 = VENI*V(D)*VCI*VBI*V(A);
+I(Y9n1) <+ -0.5*(1+tanh(TR*(IY9-0.5)));
+I(Y9n1) <+ V(Y9n1);
+I(Y9n1, Y9n2) <+ V(Y9n1,Y9n2)/Rd;
+I(Y9n2) <+ ddt(Cd*V(Y9n2));
+I(Y9)  <+ -V(Y9n2);
+I(Y9) <+ V(Y9);
+//
+IY10= VENI*V(D)*VCI*V(B)*VAI;
+I(Y10n1) <+ -0.5*(1+tanh(TR*(IY10-0.5)));
+I(Y10n1) <+ V(Y10n1);
+I(Y10n1, Y10n2) <+ V(Y10n1,Y10n2)/Rd;
+I(Y10n2) <+ ddt(Cd*V(Y10n2));
+I(Y10)  <+ -V(Y10n2);
+I(Y10) <+ V(Y10);
+//
+IY11 = VENI*V(D)*VCI*V(B)*V(A);
+I(Y11n1) <+ -0.5*(1+tanh(TR*(IY11-0.5)));
+I(Y11n1) <+ V(Y11n1);
+I(Y11n1, Y11n2) <+ V(Y11n1,Y11n2)/Rd;
+I(Y11n2) <+ ddt(Cd*V(Y11n2));
+I(Y11)  <+ -V(Y11n2);
+I(Y11) <+ V(Y11);
+//
+IY12 = VENI*V(D)*V(C)*VBI*VAI;
+I(Y12n1) <+ -0.5*(1+tanh(TR*(IY12-0.5)));
+I(Y12n1) <+ V(Y12n1);
+I(Y12n1, Y12n2) <+ V(Y12n1,Y12n2)/Rd;
+I(Y12n2) <+ ddt(Cd*V(Y12n2));
+I(Y12)  <+ -V(Y12n2);
+I(Y12) <+ V(Y12);
+//
+IY13 = VENI*V(D)*V(C)*VBI*V(A);
+I(Y13n1) <+ -0.5*(1+tanh(TR*(IY13-0.5)));
+I(Y13n1) <+ V(Y13n1);
+I(Y13n1, Y13n2) <+ V(Y13n1,Y13n2)/Rd;
+I(Y13n2) <+ ddt(Cd*V(Y13n2));
+I(Y13)  <+ -V(Y13n2);
+I(Y13) <+ V(Y13);
+//
+IY14 = VENI*V(D)*V(C)*V(B)*VAI;
+I(Y14n1) <+ -0.5*(1+tanh(TR*(IY14-0.5)));
+I(Y14n1) <+ V(Y14n1);
+I(Y14n1, Y14n2) <+ V(Y14n1,Y14n2)/Rd;
+I(Y14n2) <+ ddt(Cd*V(Y14n2));
+I(Y14)  <+ -V(Y14n2);
+I(Y14) <+ V(Y14);
+//
+IY15 = VENI*V(D)*V(C)*V(B)*V(A);
+I(Y15n1) <+ -0.5*(1+tanh(TR*(IY15-0.5)));
+I(Y15n1) <+ V(Y15n1);
+I(Y15n1, Y15n2) <+ V(Y15n1,Y15n2)/Rd;
+I(Y15n2) <+ ddt(Cd*V(Y15n2));
+I(Y15)  <+ -V(Y15n2);
+I(Y15) <+ V(Y15);
+end
+endmodule

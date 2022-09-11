@@ -1,0 +1,10 @@
+# Qucs 0.0.19  /Users/guitorri/git/qucs-test/testsuite/AC_wattmeter_prj/wattmeter.sch
+
+Vac:V1 _net0 gnd U="150 V" f="1 GHz" Phase="0" Theta="0"
+R:R1 gnd _net1 R="15 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net2 _net1 R="6 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R3 _net3 _net1 R="8 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C1 gnd _net3 C="177 uF" V=""
+WProbe:PF _net0 _net1 _net0 gnd
+.AC:AC1 Type="lin" Start="100 Hz" Stop="1000 Hz" Points="10" Noise="no"
+L:L1 gnd _net2 L="0.1 H" I=""

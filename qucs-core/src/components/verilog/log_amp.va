@@ -1,0 +1,121 @@
+//   Qucs generic logarithmic amplifier model:
+//   This model can be used to construct working models for
+//   a range of current logarithmic amplifier ICs - for example LOG100
+//   and MAX4206. All required parameters can be extracted directly from
+//   manufacturers data sheets.
+//
+//   The structure and theoretical background to the logarithmic amplifier
+//   Verilog-a model are presented in the Qucs log_amp report.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, January 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+// 
+ module log_amp (P_I1, P_Ir, P_Vout);
+ inout P_I1, P_Ir;
+ inout P_Vout;
+//
+ electrical P_I1, P_Ir, P_Vout;
+//
+// Internal nodes
+//
+ electrical n3, n4;
+//
+//   
+ `define attr(txt) (*txt*)
+//
+ parameter real Kv = 1.0 from [-inf : inf]
+  `attr(info="scale factor");
+ parameter real Dk = 0.3 from [-100 : 100]
+  `attr(info="scale factor error" unit = "%");
+ parameter real Ib1 = 5e-12 from [-inf : inf]
+  `attr(info="input I1 bias current" unit = "A");
+ parameter real Ibr = 5e-12 from [-inf : inf]
+  `attr(info="input reference bias current" unit = "A");
+ parameter real M = 5 from [1 : inf]
+  `attr(info="number of decades");
+ parameter real N = 0.1 from [0 : 100]
+  `attr(info="conformity error" unit = "%");
+ parameter real Vosout = 3e-3 from [-inf : inf]
+  `attr(info="output offset error" unit = "V");
+ parameter real Rinp = 1e6 from [1 : inf]
+  `attr(info="amplifier input resistance" unit = "Ohm");
+ parameter real Fc = 1e3 from [1 : inf]
+  `attr(info="amplifier 3dB frequency" unit = "Hz");
+ parameter real Ro = 1e-3 from [1e-3 : inf]
+  `attr(info="amplifier output resistance" unit = "Ohm");
+parameter real Ntc = 0.002 from [-100 : 100]
+  `attr(info="conformity error temperature coefficient" unit = "%/Celsius");
+parameter real Vosouttc = 80e-6 from [-inf : inf]
+  `attr(info="offset temperature coefficient" unit = "V/Celsius");
+parameter real Dktc = 0.03 from [-100 : 100]
+  `attr(info="scale factor error temperature coefficient" unit = "%/Celsius");
+parameter real Ib1tc = 0.5e-12 from [-inf : inf]
+  `attr(info="input I1 bias current temperature coefficient" unit = "A/Celsius");
+parameter real Ibrtc = 0.5e-12 from [-inf : inf]
+  `attr(info="input reference bias current temperature coefficient" unit = "A/Celsius");
+parameter real Tnom = 26.85 from [-273 : inf]
+  `attr(info="parameter measurement temperature" unit = "Celsius");
+//
+real R, Ix;
+real V1, V2;
+real Cc, PI;
+real TempK, TnomK, Tdiff, NTemp, VosoutTemp, DkTemp, Ib1Temp,IbrTemp;
+//
+analog begin
+//
+// Constants
+//
+PI=3.14159265358979323846;
+//
+// Model equations
+//
+V1=V(P_I1);
+V2=V(P_Ir)+1e-20;
+R=Rinp+1e-6;
+Cc=1/(2*PI*Fc);
+//
+
+//
+TempK=$temperature;
+TnomK=Tnom+273.15;
+Tdiff =TempK-TnomK;
+NTemp=N+Ntc*Tdiff;
+VosoutTemp=Vosout+Vosouttc*Tdiff;
+DkTemp=Dk+Dktc*Tdiff;
+Ib1Temp=Ib1+Ib1tc*Tdiff;
+IbrTemp=Ibr+Ibrtc*Tdiff;
+//
+if (V1 >= V2 ) Ix = Kv*(1+DkTemp/100)*log(((V1/R)-Ib1Temp)/((V2/R)-IbrTemp))+(Kv*2*(NTemp/100)*M)+VosoutTemp ;
+else Ix = 0.0;
+//
+// Circuit stages
+//
+// Input stage
+//
+I(P_I1) <+ V(P_I1)/R;
+I(P_Ir) <+ V(P_Ir)/R;
+//
+// Log function stage
+//
+I(n3) <+ -Ix;
+I(n3) <+ V(n3);
+//
+// Frequency compensation
+//
+I(n4) <+ -V(n3);
+I(n4) <+ V(n4);
+I(n4) <+ ddt(Cc*V(n4));
+//
+// Output stage
+I(P_Vout) <+ -V(n4)/Ro;
+I(P_Vout) <+ V(P_Vout)/Ro;
+//
+end
+endmodule

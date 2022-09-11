@@ -560,6 +560,22 @@ void QucsApp::initActions()
   callAtt->setWhatsThis(
 	tr("Attenuator synthesis\n\nStarts attenuator calculation program"));
   connect(callAtt, SIGNAL(triggered()), SLOT(slotCallAtt()));
+  
+  callRes = new QAction(tr("Resistor color codes"), this);
+  callRes->setShortcut(Qt::CTRL+Qt::Key_8);
+  callRes->setStatusTip(tr("Starts Qucs resistor color codes"));
+  callRes->setWhatsThis(
+  tr("Resistor color codes\n\nStarts standard resistor color code computation program"));
+  connect(callRes, SIGNAL(triggered()), SLOT(slotCallRes()));
+
+
+  callPowerComb = new QAction(tr("Power combining"), this);
+  callPowerComb->setShortcut(Qt::CTRL+Qt::Key_9);
+  callPowerComb->setStatusTip(tr("Starts Qucs power combining tool"));
+  callPowerComb->setWhatsThis(
+  tr("Power combining synthesis\n\nStarts power combining synthesis tool"));
+  connect(callPowerComb, SIGNAL(triggered()), SLOT(slotCallPowerComb()));
+
 
   simulate = new QAction(QIcon((":/bitmaps/gear.png")), tr("Simulate"), this);
   simulate->setShortcut(Qt::Key_F2);
@@ -783,6 +799,8 @@ void QucsApp::initMenuBar()
   if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
       toolMenu->addAction(callMatch);
   toolMenu->addAction(callAtt);
+  toolMenu->addAction(callRes);
+  toolMenu->addAction(callPowerComb);
   toolMenu->addSeparator();
 
   cmMenu = new QMenu(tr("Compact modelling"));

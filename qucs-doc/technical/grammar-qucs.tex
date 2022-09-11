@@ -1,0 +1,197 @@
+%
+% This document contains the qucs netlist grammar.
+%
+% Copyright (C) 2005 Raimund Jacob <raimi@lkcc.org>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+\section{Qucs netlist grammar}
+\label{sec:qucsgrammar}
+
+%
+% Syntax: Beginning
+%
+\begin{grammar}
+\heading{Syntactic Structure}
+
+\produces{Input}{\rep{InputLine}}
+
+\produces{InputLine}{DefinitionLine}
+\orproduces{SubcircuitBody}
+\orproduces{EquationLine}
+\orproduces{ActionLine}
+\orproduces{\opt{\tok{\#} \group{\em Entire line is comment}}
+            \ntok{Eol}}
+\end{grammar}
+
+A netlist is read in a line-based fashion. There are several types of
+lines.
+
+
+%
+% Definition
+\begin{grammar}
+\heading{Definition}
+
+\produces{DefinitionLine}{\ntok{Identifier} \tok{:} \ntok{Identifier}
+         \rep{\ntok{Identifier}} PairList \ntok{Eol}}
+\end{grammar}
+
+Components of the circuit are defined by providing its nodes and
+parameters for a property.
+
+%
+% Subcircuits
+\begin{grammar}
+\heading{Subcircuits}
+
+\produces{SubcircuitBody}{DefBegin \rep{DefBodyLine} DefEnd}
+
+\produces{DefBegin}{\tok{.} \tok{Def} \tok{:} \ntok{Identifier}
+   \rep{\ntok{Identifier}} \ntok{Eol}}
+
+\produces{DefBodyLine}{DefinitionLine}
+\orproduces{SubcircuitBody}
+\orproduces{\ntok{Eol}}
+
+\produces{DefEnd}{\tok{.} \tok{Def} \tok{:} \tok{End} \ntok{Eol}}
+\end{grammar}
+
+Subcircuits are recursively defined by blocks of component
+definitions.
+
+%
+% Action
+\begin{grammar}
+\heading{Action}
+
+\produces{ActionLine}{\tok{.} \ntok{Identifier} \tok{:} \ntok{Identifier}
+   PairList \ntok{Eol}}
+\end{grammar}
+
+Defines what to simulate with the circuit.
+
+%
+% Equation
+\begin{grammar}
+\heading{Equation}
+
+\produces{EquationLine}{\tok{Eqn} \tok{:}
+   \ntok{Identifier} Equation \rep{Equation}  \ntok{Eol}}
+\produces{Equation}{\ntok{Identifier} \tok{=} \tok{``} Expression \tok{``}}
+\end{grammar}
+
+Named equation definitions consist of a list of assignments with
+expressions on their right hand side.
+
+%
+% Parameter declarations
+\begin{grammar}
+\heading{Declarations}
+
+\produces{PairList}{\rep{\ntok{Identifier} \tok{=} Value}}
+
+\produces{Value}{PropertyValue}
+\orproduces{\tok{``} PropertyValue \tok{``}}
+
+\produces{PropertyValue}{\ntok{Identifier}}
+\orproduces{PropertyReal}
+\orproduces{\tok{[} PropertyReal \opt{\rep{\tok{;} PropertyReal}} \tok{]}}
+
+\produces{PropertyReal}{\ntok{Real} \opt{\ntok{Scale} \opt{\ntok{Unit}}}}
+\end{grammar}
+
+The above constructs are used to define properties (parameters) of
+components and actions.
+
+%
+% Mathematical Expressions
+\begin{grammar}
+\heading{Mathematical Expressions}
+
+\produces{Expression}{Constant}
+\orproduces{Reference}
+\orproduces{Application}
+\orproduces{\tok{(} Expression \tok{)}}
+
+\produces{Constant}{\ntok{Real}}
+\orproduces{\ntok{Imag}}
+\orproduces{\ntok{Character}}
+\orproduces{\ntok{String}}
+\orproduces{Range}
+
+\produces{Range}{\opt{\ntok{Real}} \tok{:} \opt{\ntok{Real}}}
+
+\produces{Reference}{\ntok{Identifier}}
+
+\produces{Application}{\ntok{Identifier}
+   \tok{(} \ntok{Expression} \opt{\rep{\tok{,} \ntok{Expression} }} \tok{)}}
+\orproduces{\ntok{Reference}
+   \tok{[} \ntok{Expression} \opt{\rep{\tok{,} \ntok{Expression} }} \tok{]}}
+\orproduces{\group{\tok{+} \alt{} \tok{-}} Expression}
+\orproduces{Expression
+   \group{\tok{+} \alt \tok{-} \alt \tok{*} \alt \tok{/} \alt
+          \tok{\%} \alt \tok{\^{}}}
+   Expression}
+\end{grammar}
+
+Operator precedence works as expected in common mathematical
+expressions.
+
+
+%
+% Lexical structure (scanner)
+%
+\begin{grammar}
+\heading{Lexical structure}
+
+%
+% Identifiers
+\produces{\ntok{Identifier}}{Alpha \rep{AlphaNum}
+         \rep{\tok{.} Alpha \rep{AlphaNum}}}
+\produces{Alpha}{\REalpha \alt \tok{\_}}
+\produces{AlphaNum}{\REalnum}
+%
+% Real
+\produces{\ntok{Real}}{\REplusminus{} \opt{Num} \tok{.}
+         Num \opt{\group{\tok{e} \alt \tok{E}} \REplusminus{} Num}}
+\produces{Num}{Digit \rep{Digit}}
+\produces{Digit}{\tok{0}~\dots~\tok{9}}
+%
+% Imaginary
+\produces{\ntok{Imag}}{\REplusminus{} \group{\tok{i} \alt \tok{j}}
+        \opt{Num} \tok{.}
+         Num \opt{\group{\tok{e} \alt \tok{E}} \REplusminus{} Num}}
+%
+% A single character
+\produces{\ntok{Character}}{\tok{'}
+         \group{\em Any character but newline and \tok{'}}
+         \tok{'}}
+%
+% String constant
+\produces{\ntok{String}}{\tok{'}
+        \rep{\group{\em Any character but newline and \tok{'}}}
+        \tok{'}}
+%
+% Scales
+\produces{\ntok{Scale}}{\group{
+        \tok{dBm}~\alt~\tok{dB}~\alt~\tok{T}~\alt~\tok{G}~\alt~\tok{M} \alt
+        \tok{k}~\alt~\tok{m}~\alt~\tok{u}~\alt~\tok{n}~\alt~\tok{p} \alt
+        \tok{f}~\alt~\tok{a}
+        }}
+%
+% Units
+\produces{\ntok{Unit}}{\group{
+        \tok{Ohm}~\alt~\tok{S}~\alt~\tok{s}~\alt~\tok{K}~\alt~\tok{H}~\alt~
+        \tok{F}~\alt~\tok{Hz}~\alt~\tok{V}~\alt~\tok{A}~\alt~\tok{W}~\alt~
+        \tok{m}
+        }}
+%
+% End of line
+\produces{\ntok{Eol}}{\opt{\bsl{r}} \bsl{n}}
+\end{grammar}
+
+This defines the composed terminal symbols.

@@ -1,0 +1,13 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `Vout.v' in equation `y1' not yet defined
+checker notice, variable `Vout.v' in equation `y2' not yet defined
+netlist content
+      1 AC instances
+      4 C instances
+      4 VCVS instances
+      8 R instances
+      1 Vac instances
+creating netlist...
+checker notice, variable `Vout.v' in equation `y1' not yet defined
+checker notice, variable `Vout.v' in equation `y2' not yet defined

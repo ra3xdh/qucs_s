@@ -1,0 +1,14 @@
+# Qucs 0.0.11  /Users/guitorri/git/qucs-test/testsuite/DC_SP_HICUM-fig10_prj/HICUM-fig10.sch
+
+BiasT:X2 _net0 _net1 _net2 L="1 uH" C="1 uF"
+Vdc:V1 _net3 gnd U="0.9 V"
+BiasT:X1 _net4 _net5 _net3 L="1 uH" C="1 uF"
+hicumL2V2p1:T2 _net6 _net7 gnd gnd _net8 c10="1.516E-31" qp0="5.939E-15" ich="1.0E11" hfe="1.0" hfc="0.03999" hjei="0.435" hjci="0.09477" ibeis="3.47E-20" mbei="1.025" ireis="390E-12" mrei="3" ibeps="4.18321E-21" mbep="1.045" ireps="1.02846E-14" mrep="3" mcf="1.0" ibcis="3.02613E-18" mbci="1.0" ibcxs="4.576E-29" mbcx="1.0" ibets="0.0" abet="36.74" favl="14.97" qavl="7.2407E-14" alfav="0.0" alqav="0.0" rbi0="7.9" rbx="13.15" fgeo="0.724" fdqr0="0" fcrbi="0.0" fqi="1.0" re="9.77" rcx="10" itss="2.81242E-19" msf="1.0" iscs="7.6376E-17" msc="1.0" tsf="1.733E-8" rsu="800" csu="1.778E-14" cjei0="5.24382E-14" vdei="0.9956" zei="0.4" aljei="2.5" cjep0="0" vdep="1" zep="0.01" aljep="2.5" cjci0="4.46887E-15" vdci="0.7" zci="0.38" vptci="100" cjcx0="1.55709E-14" vdcx="0.733" zcx="0.34" vptcx="100" fbc="0.3487" cjs0="17.68E-15" vds="0.621625" zs="0.122136" vpts="1000" t0="1.28E-12" dt0h="260E-15" tbvl="2.0E-13" tef0="0.0" gtfe="1.0" thcs="46E-15" alhc="0.08913" fthc="0.8778" rci0="50.4277" vlim="0.9" vces="0.01" vpt="10" tr="1.0E-11" ceox="1.71992E-15" ccox="4.9E-15" alqf="0.1288" alit="1.0" kf="2.83667E-9" af="2.0" krbi="1.0" latb="10.479" latl="0.300012" vgb="1.112" alt0="0.0017580" kt0="4.07E-6" zetaci="0.7" zetacx="1.0" alvs="0.001" alces="0.000125" zetarbi="0.0" zetarbx="0.2" zetarcx="0.21" zetare="0.7" alb="0.007" rth="100" cth="0" tnom="27.0" dt="0.0" Temp="27"
+IProbe:Ib _net5 _net7
+IProbe:Ic _net1 _net6
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+Pac:P1 _net4 gnd Num="1" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Pac:P2 _net0 gnd Num="2" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Vdc:V2 _net2 gnd U="2 V"
+Eqn:Eqn1 NFmin="10*log10(Fmin)" NF="10*log10(F)" Export="yes"
+.SP:SP1 Type="log" Start="1 Hz" Stop="100 GHz" Points="70" Noise="yes" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"

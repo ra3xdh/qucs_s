@@ -1,0 +1,25 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/DC_AC_SP_stab_prj/stab.sch
+
+Vdc:V1 _net0 gnd U="15 V"
+IProbe:Collector output _net1
+R:R2 output _net0 R="20 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Vac:V2 input output U="1 V" f="1 GHz" Phase="0" Theta="0"
+Diode:D2 _net2 _net0 Is="1e-15 A" N="1" Cj0="10 pF" M="0.5" Vj="0.7 V" Fc="0.5" Cp="0.0 fF" Isr="0.0" Nr="2.0" Rs="0.0 Ohm" Tt="0.0 ps" Ikf="0" Kf="0.0" Af="1.0" Ffe="1.0" Bv="0" Ibv="1 mA" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+Diode:D1 _net3 _net2 Is="1e-15 A" N="1" Cj0="10 pF" M="0.5" Vj="0.7 V" Fc="0.5" Cp="0.0 fF" Isr="0.0" Nr="2.0" Rs="0.0 Ohm" Tt="0.0 ps" Ikf="0" Kf="0.0" Af="1.0" Ffe="1.0" Bv="0" Ibv="1 mA" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+BJT:T2 _net3 _net4 input _net4 Type="pnp" Is="1e-16" Nf="1" Nr="1" Ikf="0" Ikr="0" Vaf="0" Var="0" Ise="0" Ne="1.5" Isc="0" Nc="2" Bf="300" Br="1" Rbm="0" Irb="0" Rc="0" Re="0" Rb="0" Cje="30 pF" Vje="0.75" Mje="0.33" Cjc="0" Vjc="0.75" Mjc="0.33" Xcjc="1.0" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Tf="0.0" Xtf="0.0" Vtf="0.0" Itf="0.0" Tr="0.0" Temp="26.85" Kf="0.0" Af="1.0" Ffe="1.0" Kb="0.0" Ab="1.0" Fb="1.0" Ptf="0.0" Xtb="0.0" Xti="3.0" Eg="1.11" Tnom="26.85" Area="1.0"
+C:C4 _net5 _net6 C="1 nF" V=""
+C:C3 _net7 _net8 C="1 nF" V=""
+L:L1 _net7 _net1 L="100 nH" I=""
+Pac:P1 _net5 gnd Num="1" Z="50 Ohm" P="0" f="1 GHz" Temp="26.85"
+Pac:P2 _net8 gnd Num="2" Z="50 Ohm" P="0" f="1 GHz" Temp="26.85"
+BJT:T1 _net9 _net7 gnd _net7 Type="npn" Is="1e-16" Nf="1" Nr="1" Ikf="0" Ikr="0" Vaf="0" Var="0" Ise="0" Ne="1.5" Isc="0" Nc="2" Bf="150" Br="1" Rbm="0" Irb="0" Rc="0" Re="0" Rb="0" Cje="10 pF" Vje="0.75" Mje="0.33" Cjc="0" Vjc="0.75" Mjc="0.33" Xcjc="1.0" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Tf="0.0" Xtf="0.0" Vtf="0.0" Itf="0.0" Tr="0.0" Temp="26.85" Kf="0.0" Af="1.0" Ffe="1.0" Kb="0.0" Ab="1.0" Fb="1.0" Ptf="0.0" Xtb="0.0" Xti="3.0" Eg="1.11" Tnom="26.85" Area="1.0"
+IProbe:Basis _net6 _net9
+L:L2 _net6 _net10 L="100 nH" I=""
+R:R3 _net10 _net4 R="10 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R1 gnd _net3 R="20 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+Eqn:Eqn1 LoopGain="output.v / input.v" LoopPhase="phase(output.v / input.v)" Export="yes"
+.SP:SP1 Type="lin" Start="180 MHz" Stop="220 MHz" Points="200" Noise="no" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+.AC:AC1 Type="log" Start="1 Hz" Stop="100 kHz" Points="100" Noise="no"
+C:C1 _net1 gnd C="0.1 uF" V=""
+C:C2 _net4 gnd C="5 uF" V=""

@@ -1,0 +1,3134 @@
+2011-03-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Fixed out-of-bounds segfault in [] operator.
+
+2011-03-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* applications.h: Stated more possible combinations for ?:
+	operation.
+
+	* evaluate.cpp: Implemented 'equal' (== and !=) operations for
+	more argument variations.
+
+2009-11-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* interpolator.cpp (cinterpolate): Implemented complex data
+	interpolations.
+
+2009-11-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* receiver.cpp (receiver): Fixed small bug occurring if time
+	vector not starting with zero time is passed.  Using new vector
+	object passer in interpolator class.
+
+	* interpolator.cpp: Allowing vector objects to be passed as
+	original sample vectors.
+	(rinterpolate): Fixed tiny bugs in linear and hold interpolation.
+
+	* check_csv.cpp: Fixed memory leak.
+
+2009-11-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* receiver.cpp: Now having three types of filters for the EMI
+	receiver: ideal, simple bandpass of 2nd order and gaussian.  Also
+	saving time vector to be reconstructed since it is equidistant
+	(thereby can be calculated) anyway.  Always use interpolation.	
+
+2009-10-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* interpolator.cpp: Implemented interpolator class.  It will be
+	useful for "everywhere" use in the simulator, e.g. file based
+	sources, the EMI receiver functionality, etc.  Still have to add
+	complex version of the interpolator.
+
+	* receiver.cpp: Implemented EMI receiver functionality.
+
+	* evaluate.cpp: Put EMI receiver functionality in place for the
+	equation solver.
+
+	* spline.cpp: Added new function passing original vectors as
+	simple pointers to the spline object.
+
+2009-10-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* matvec.cpp: Added two more static helper functions to determine
+	matrix entries in vector list of datasets.
+
+2009-09-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp (FOURIER_HELPER_1): Checking vector lengths given
+	to Time2Freq() and Freq2Time() as well as indices into vectors
+	given in ranges.
+
+2009-04-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* matrix.cpp: Implemented matrix power operation with integral
+	positive and negative powers.  Made it available in the equation
+	solver.
+
+2009-04-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_netlist.l: Accept global node notation.
+
+	* check_netlist.cpp: Made node translations aware of global nodes
+	like "subst!".
+
+2009-03-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* fourier.cpp (fftshift): New function which shifts the values of
+	a FFT vector such that the frequency 0 is in the center of the
+	resulting vector.
+
+2009-03-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Fixed dB() calculation for real arguments to
+	reflect power conversion (10*log10) as in all other computations.
+
+2009-03-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* trsolver.cpp: Allowing time start/stop to be steered by sweep
+	variables correctly.
+
+2009-03-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp (getVector): Helper function for environment
+	access.
+
+	* environment.cpp: Handling vector values appropriately.
+
+	* check_netlist.cpp: Passing vectors in environment.
+
+2008-11-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* acsolver.cpp: Voltage probe now returns noise voltage data
+	properly.
+
+2008-10-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* sweep.cpp: Return 'Values' property content of parent analysis
+	for constant sweeps.
+
+	* check_netlist.cpp: Allowing parameter sweep variables or other
+	variable in the 'Values' property (when it is marked 'const') of
+	simulation boxes.
+
+2008-10-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* compat.h: New file containing system specific #include's and
+	#define's.  Changed all callers.
+
+2008-10-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* module.cpp: Added a function which can emit the list of
+	registered components as compilable C-code (into the file
+	'qucsdefs.h').
+
+	* netdefs.h: Removed limitation of the number of required and
+	optional properties a component can have.
+
+2008-10-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_dataset.l: Fixed data identifier syntax (e.g. Versus.0001).
+
+	* check_netlist.cpp: Finally removed any component specific
+	checks.  Now everything can be checked by the registered module
+	properties.
+
+2008-10-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_netlist.cpp: Removed special string validation in
+	properties.  Identifier ranges are now stored directly in property
+	definitions, thus checking can be done using the component
+	specifications.
+
+	* module.cpp: First steps towards modularization.  Changes in all
+	component files.  New components now only need to register in this
+	file.
+
+2008-10-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* input.cpp: New function registerCircuits().  Global preparations
+	for modularization of circuit components...
+
+2008-09-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* input.cpp: Fixed instantiation of HICUM L0/V1.2 model.
+
+2008-09-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp: Fixed segfault bug and memory leakage.
+
+2008-09-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp: Added ddx() operation.  Could be useful for EDD
+	equations. Works like the ddx() operator in Verilog-A.
+
+	* differentiate.cpp: Implemented kind of reduction function for
+	divisions.  Could be template for more sophisticated reductions.
+
+2008-08-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Fixed range operator in indices in independent
+	vectors.
+
+2008-07-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_netlist.cpp: Allowing property references inside the same
+	instance of a component.
+
+2008-05-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Fixed small memory leak.
+
+	* equation.cpp: Looking for variables also in the equation set
+	(not just in dataset) for functions like, e.g., xvalue() and
+	yvalue().
+
+2008-04-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_touchstone.cpp: Fixed compile issue for some gcc/glibc
+	combination (SuSE linux).
+
+2008-04-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_netlist.cpp: Fixing compile issues for MSVC.
+
+2008-03-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsdefs.h (qucs_definition_available): Allowing negative
+	coupling coefficients for mutual inductors.
+
+	* evaluate.cpp: Added some more allowed function arguments for
+	relational operators.
+
+2008-02-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_netlist.l: Additionally allowing dBu in equations as well
+	as mil, in, ft and yd in component properties.
+
+2008-02-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* Fixed some compile warnings for g++ 4.3 version.
+
+2008-01-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* circuit.cpp: Added new method setInternalNode().
+
+	* evaluate.cpp: Allowing PlotVs() to take 3 and more arguments to
+	construct multiple dependencies for vectors and matrix vectors.
+
+	* equation.cpp: Fixed inheritance of multiple prep dependencies.
+
+2008-01-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_touchstone.l: Fixed bug in touchstone scanner.  Making the
+	'R' in the option line case insensitive.
+
+2007-12-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* parasweep.cpp: Allow parameter sweeps to display their own
+	prgress bar.  Lower order sweeps and other simulations' progress
+	bar get disabled.
+
+2007-12-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* ucs.cpp (main): Evaluating error codes from analyses.  Changed
+	solve() callback for each analysis to be able to return an error
+	code.
+
+	* trsolver.cpp: Avoiding "jacobian singular at t = nan" error
+	message.
+
+2007-12-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* hash.h (class hashentry): Fixed compile error for "gcc version
+	4.1.1 on fedora 7 linux".
+
+2007-11-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* vector.cpp: Added optional third argument to unwrap() specifying
+	the phase/angle step.
+
+2007-11-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* applications.h: Added StabFactor() as alias for Rollet().
+
+	* matrix.cpp (b1), matvec.cpp (b1): Added new function calculating
+	the stability measure B1 of a 2-port S-parameter matrix.
+
+2007-10-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_netlist.y: First preparation to allow vector properties to
+	be a reference to equation variables.
+
+2007-10-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Fixed 'out of bounds' return value in order to
+	avoid segmentation fault.
+
+2007-10-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* environment.cpp: Added 'passing' attribute to variables in the
+	environment.  Thus computed values in an environment don't get
+	passed from the environment variables, but any others will be
+	passed as usual (e.g. subcircuit parameters).
+
+2007-10-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Added the ?: operator for matrices as well as
+	vectors.
+	Implemented dB() function for matrices and matrix vectors.
+
+2007-09-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Fixed if-then-else evaluation for mixed
+	real/complex arguments as well as for pure complex arguments.
+
+2007-09-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp: Fixed toString() function for evaluated matrices.
+	Added printing functionality for immediate vectors and matrices.
+	New function returning a double value for all kinds of result
+	types.
+
+2007-09-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_netlist.l: Added syntax elements for immediate vectors and
+	matrices.
+
+	* parse_netlist.y: Added grammar for immediate vectors and
+	matrices.
+
+	* evaluate.cpp: Implemented evaluators for immediate vectors and
+	matrices.
+
+	* equation.cpp: Allowing applications with undetermined number of
+	arguments.  New function appendNodes() which can be used to
+	concatenate argument lists.
+
+2007-09-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Added random number functions.
+
+2007-09-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* differentiate.cpp: Fixed some memory leaks.
+
+	* equation.cpp: Added new property to an equation node 'skip'
+	indicating that the node (e.g. equation assignment) is skipped from
+	evaluation when the solver is run.
+
+	* environment.cpp: Added new function which just evaluates (no
+	checking and no dataset) the equations in an environment.
+
+2007-09-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_netlist.l: Allowing engineering notation of numbers in
+	equations.
+
+2007-08-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* parasweep.cpp: Implemented new initialize() and cleanup()
+	callbacks.  This fixes a bug occurring for nested sweeps where the
+	sweep variable of an inner-loop sweep is used in an equation.
+
+	* net.cpp: Run new initialize() and cleanup() functionality of
+	analyses.
+
+2007-08-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* dataset.cpp: New function to load CSV files added.
+
+	* check_csv.cpp, scan_csv.l, parse_csv.y: Implemented lexer,
+	parser and checker for CSV files.
+
+	* matrix.cpp: Documented missing 1/2 factor in some matrix
+	conversions.
+
+2007-06-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_netlist.y: Re-allow range specifications as function
+	arguments.  It disappreared while implementing the ?: operator.
+
+2007-06-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* variable.cpp: New type of variables: stored result values.
+
+	* history.cpp: Fixed bug occurring when time value vector is
+	shorter than the value vector.
+
+	* environment.cpp: New function for saving local variable resutls
+	in the environment.  Not yet used...
+
+2007-05-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* input.cpp: Transfer references to equation variables in an
+	analysis property properly into its properties.
+
+	* equation.cpp: References to component properties can now also be
+	found in analysis definitions.
+
+	* check_netlist.cpp: Allow certain analysis properties to be
+	variable references.
+
+2007-05-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp: Added elementary charge "q" to the constants in
+	the equation solver.
+
+	* differentiate.cpp: Added differentiator for the new vt()
+	function.
+
+	* evaluate.cpp: Added function vt() computing the thermal voltage.
+
+	* check_netlist.cpp: Moved subroutine call for checking actions
+	behind the subcircuit checks in order to allow detecting
+	non-linearities in subcircuits.
+
+2007-05-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* hash.cpp: Added count() function to hash.  Also added default
+	hashiterator constructor.
+
+2007-05-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* input.cpp: Allow variables in substrate properties.
+
+2007-05-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: arcosh() and arsech() with real arguments
+	deliver now complex results.
+
+	* complex.cpp: Fixed sqrt() result for Im{z}=+-0.
+
+2007-05-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* differentiate.cpp: Fixed loads of memory leaks.  Added
+	differentiators for the new limexp() and hypot() functions.
+
+	* equation.cpp: Initializing data of a constant in constructors
+	(valgrind complained about it).
+
+	* evaluate.cpp, vector.cpp, complex.cpp: Added xhypot() and
+	limexp() functions.
+
+	* Makefile.am (gperfapphash.gph): Fixed rule considering the
+	$(EXEEXT) suffix.
+
+2007-05-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Using absolute value of complex result in
+	ifthenelse construct.  This yields the same results as if using
+	absolute arguments for e.g. sqrt() and ln() if these are negative.
+	Added '!=' and '==' implementations for boolean arguments.
+
+	* differentiate.cpp: Introduced new reduction when -1 occurs in
+	products yielding unary minus then.
+
+2007-04-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp: Added assignment multiplier and summarizer.  New
+	application constructor taking function name and the number of
+	arguments.  Fixed a fatal bug in setDouble().
+
+	* differentiate.cpp: Fixed a big bug in the unary minus
+	differentiator, or better: the unary minus reducer.  Improved the
+	'?:' differentiator (better reduction).  Added differentiator for
+	the norm() function.
+
+2007-04-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_netlist.l: Avoid conflict between assignment '=' and the
+	new '==' operator.
+
+2007-04-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* differentiate.cpp: Added sinc() differentiator.
+
+	* evaluate.cpp: Fixed calculation of arsech().  Using new
+	functions from complex and vector class.
+
+	* parse_netlist.y: Fixed operator precedences.
+
+	* evaluate.cpp: Allowing additionally complex arguments in ?:
+	operator.  Necessary for e.g. sqrt().
+
+	* equation.cpp: Modified printing functions for logical
+	operations.
+
+2007-04-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* differentiate.cpp: Added differentiation for the new '?:'
+	operation.
+
+	* scan_netlist.l, parse_netlist.y: Allowing '?:' operations as
+	well as <, >, <=, >=, ==, !=, !, && and || in equations.
+
+	* evaluate.cpp: Implemented comparison operators as well as some
+	important boolean operations.
+
+	* equation.cpp: Added the boolean data type with all its
+	implications.
+
+2007-04-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* differentiate.cpp: Added diferentiation formulas for arsech()
+	and arcosech(), also added simplifier for immediate square
+	expressions.
+
+2007-04-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Added arcsec(), arccosec(), arsech(), arcosech()
+	and length() functions to the equation solver.
+
+	* vector.cpp: Fixed calculation of variance().
+
+2007-04-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsdefs.h (qucs_definition_available): Added properties of new
+	equation defined device.
+
+	* input.cpp: Storing appropriate environment pointer in each
+	instantiated component.
+
+	* equation.cpp: Added some more functionality necessary for the
+	new equation defined device.
+
+	* circuit.h (class circuit): Environments can now be stored in
+	components.
+
+2007-04-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsdefs.h (qucs_definition_available): Added parameters
+	for the new exponential current and voltage source.
+
+	* vector.cpp: Fixed implementation of variance().  And thereby
+	the one of stddev().
+
+2007-04-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* differentiate.h (class differentiate): Added many derivatative
+	functions.  This is preparation towards equation defined devices.
+
+	* equation.cpp: Added copy constructors and re-creator functions
+	for each equation node.  Also added basic differentiation
+	functionality.
+
+2007-04-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_zvr.l, check_zvr.cpp: Supporting some more data formats of
+	the ZVR analyser.
+
+2007-04-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsdefs.h (qucs_definition_available): Updated 
+	parameter ranges of verilog-ams devices.
+
+	* check_mdl.cpp: Fixed a variable substitution bug due to
+	e.g. "- 950.0m" (mark the space).
+
+2007-04-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* nasolver.cpp: Improved the source-stepping algorithm.
+
+	* hbsolver.cpp: Fixed order of frequencies in the multi-
+	dimensional case.  Also added functionality for multi-
+	dimensional frequency/time transformations.
+
+2007-03-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* eqnsys.cpp: Some more comments on the SVD diagonalization
+	process added.
+
+2007-03-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp: Fixed a bug in the data dependency tracking.
+	It apparently occurred due o the many changes in the equation
+	solver.
+
+2007-03-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* trsolver.cpp: Modifying U*Prev values of non-linear devices
+	when a time step has been rejected.
+
+2007-03-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* property.cpp: Deleting vector variable, fixing memory leak.
+
+	* check_netlist.cpp: Fixed memory leak for value lists in
+	component properties.
+
+2007-03-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Fixed memory leak.
+
+	* equation.cpp: Fixed memory leak when application is evaluated
+	twice or more times.
+
+	* check_netlist.cpp: Fixed a subcircuit expansion bug occurring
+	when at least 2 subcircuits are expanded at the top of the circuit
+	list.
+
+2007-02-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* ucs.cpp (main): Running the new netlist_destroy_env() function.
+
+	* check_netlist.cpp (netlist_destroy_env): New function which
+	can be used to delete the top-level root environment(s).
+
+	* environment.cpp: Deleting children in destructor.  Deleting
+	results of variable references.  Bugfix: Passing definition list
+	when running the solver.
+
+2007-02-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* input.cpp: Fixed a bug regarding substrates which are now
+	also local to subcircuit environments.
+
+	* equation.cpp: Emit appropriate error message if it was
+	impossible to determine the type of an assignment equation.
+	If undefined dependencies are found in the equation checker
+	process; now trying to resolve that dependencies in the
+	component properties of the netlist.
+	Fixed a segfault bug when trying to detect variable chain of
+	an assignment which is actually not cyclic itself but involves
+	a variable which is cyclic.
+
+	* equation.h (class checker): Add a netlist entries to the
+	equation checker.
+
+	* environment.h (class environment): Add a netlist entries to
+	an environment.
+
+2007-02-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* environment.cpp: Fixed a bug which was due to the fact that
+	different environments based on the same subcircuit share the
+	same equation checker and solver.
+
+2007-02-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* environment.cpp: Copy variable content if necessary.
+
+	* check_netlist.cpp: Don't come across root components twice when
+	expanding subcircuits.
+
+2007-02-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* variable.h (class variable): Allowing variables to references
+	as well.
+
+	* variable.cpp (toString): New function which creates a textual
+	representation of a variable.
+
+	* property.cpp: Also allow properties which are references.
+
+	* net.cpp: Start equation solver once before each top-level
+	analysis.
+
+	* input.cpp: Ensure that component properties (if variables) are
+	referenced from the correct environment.
+
+	* equation.cpp: Some more functionality especially for double
+	values/assignments added.
+
+	* environment.cpp: The equation solver now updates equation
+	results and updates references across subcircuit boundaries.
+
+	* check_netlist.cpp: Putting subcircuit variables into the
+	appropriate environment.
+
+2007-02-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* nasolver.cpp: Fixing probe functionality.
+
+2007-01-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* ucs.cpp (main): Updated copyright notice.
+
+2006-10-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* input.cpp: Removed equation checking here.  It's now done in
+	the netlist checker.
+
+	* equation.cpp: New function checking if a given variable name
+	is an equation.
+
+	* environment.cpp: Added children functionality for environments.
+
+	* check_netlist.cpp: Resolving variables in equations.
+	Creating a real environment tree.  Checking equations in all
+	subcircuits as well.
+
+2006-10-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* trsolver.cpp: Fixed a bug in the transient solver occurring
+	when a components MNA matrix changes during DC and TR (e.g.
+	transmission line).
+
+2006-09-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsdefs.h (qucs_definition_available): Added 'MaxStep' as
+	valid property in transient analysis.
+
+2006-09-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_mdl.cpp: Translating special variable 'PI'.  Defaulting
+	to logarithmic sweep from 1 to 1 if no start/stop can be
+	determined.
+
+2006-09-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* ucs.cpp (main): Using new environment functionality in order
+	to solve the root environment equations.
+
+	* input.cpp: Passing the netlist checker its environment.
+
+	* evaluate.cpp: Replaced references to static functions of
+	the solver.
+
+	* equation.cpp: Removed all global data concerning the
+	equations.  Both checker and solver are now fully self-contained
+	and can be instantiated as many as needed.  This is one more
+	step to local equations in subcircuits.
+
+	* environment.cpp: Added functionality which enables an
+	environment to contains equations which can be checked and
+	solved.
+
+	* check_netlist.cpp: Passing equations, their checker and
+	solver to the root environment.
+
+2006-09-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_netlist.y, check_netlist.cpp: Preparations to have
+	equations inside subcircuits.
+
+2006-09-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_zvr.y, parse_mdl.y (__NOEXTENSIONS__): Added this #define
+	for MacOSX systems to inhibit symbol clash.
+
+	* parse_netlist.y, check_netlist.cpp: Implemented definition of
+	subcircuit properties in the parser and checker.
+
+2006-09-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* transient.cpp, integrator.cpp (conductor): Added functionality
+	calculating the equivalent conductance separately.
+
+	* circuit.cpp: Implemented a one-node variant for the function
+	transientCapacitance().  Also added some variants of this function
+	which consider the possibility that a charge depends on a
+	different voltage than where it is located.  Then the
+	transientCapacitance() is split into transientCapacitanceQ() and
+	transientCapacitanceC().
+
+2006-09-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_mdl.l, parse_mdl.y: Implemented many more of the MDL
+	grammar and syntax which I wasn't aware before.
+
+	* dataset.cpp: Fixed a bug when deleting the last variable or
+	dependency in a dataset.
+
+	* check_mdl.cpp: Emit warnings when variables cannot be
+	resolved (no equation solver implemented).
+	Consider list of root LINK's.
+
+2006-08-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsdefs.h (qucs_definition_available): Added new
+	optional properties 'Td', 'Tr' and 'Tf' for rectangular current
+	and voltage sources.
+
+	* parse_mdl.y: Free'ing unused scanner items in the parser.
+
+	* dataset.cpp: New function delVariable() implemented.
+
+	* check_mdl.cpp: TODO list done: release internal data
+	structures, checking dependency list of XFORM's checking
+	SYNC sweeps, handling LIST sweeps correctly.
+
+2006-08-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* valuelist.cpp: Added new function which can be used to
+	concatenate two valuelists.
+
+	* scan_mdl.l, parse_mdl.y, check_mdl.cpp: Implemented scanner,
+	parser and checker for the IC-CAP MDL file format.  The checker
+	works, but there is yet something to do...
+
+	* dataset.cpp (load_mdl): Included a static function to load
+	a IC-CAP MDL file as an dataset.
+
+2006-08-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* parasweep.cpp: Fixed a bug occurring with multi-dimensional
+	s-parameter sweeps which require a prior dc analysis.  Now the
+	data dependency tracking works again.
+
+	* net.cpp: New function returning the children in the last
+	order sweep.
+
+	* evaluate.cpp (__RETV): Using an extra macro for returning
+	default values (non-argument macros).  Some compilers complained
+	about these (FreeBSD4).
+
+2006-07-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* nasolution.h (class nasolution): Implemented a storage
+	class for a nodal analysis solution.  Used by the transient
+	solver.
+
+	* vector.cpp: Each two-vector operation, e.g. +, -, polar, *,
+	/, %, arctan2 and pow can now be performed on vectors with
+	unequal length as long as the size of the longer vector is
+	a multiple of the shorter vector.
+
+	* valuelist.cpp: Added new clear() function.
+
+	* trsolver.cpp: Dealing with new property 'initialDC'
+	indicating whether an initial DC analysis should be performed
+	or not.  The results of this DC analysis are now also used
+	as starting values for the successive transient analyses.
+	This was meant to be implemented, but did not work.
+
+	* property.h (class property): New functions setDefault() and
+	isDefault indicating a property's default value.
+
+	* parse_netlist.y: The netlist parser can now skip empty
+	properties, e.g. k="", and handles it as if it was not
+	given at all.
+
+	* object.cpp: Each object can now indicate whether one of its
+	properties was actually given in the netlist or if has got its
+	default value.  The addProperty() functions now return the
+	created property instance.
+
+	* nasolver.cpp: Implemented a store/recall mechanismen for
+	solutions.
+
+	* input.cpp: Marking properties which were not given in the
+	netlist as default values.
+
+2006-07-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_dataset.y (YYMAXDEPTH): Increased stack size for *very*
+	big dataset files.
+
+2006-07-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_zvr.l, parse_zvr.y, check_zvr.cpp: Implemented scanner,
+	parser and checker for the ZVR data file format.
+
+	* dataset.cpp: New functions: delDependency() and load_zvr().
+
+2006-07-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* matvec.cpp, matrix.cpp: Added scalar additions and
+	subtractions.
+
+	* evaluate.cpp: Added scalar additions and subtractions for
+	matrices and matrix vectors.
+
+	* eqnsys.cpp: Replaced set/get syntax wherever possible to
+	read A() instead of A->get()/set().
+
+2006-06-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* trsolver.cpp, dcsolver.cpp: Allowing 'GolubSVD' as solver.
+
+	* eqnsys.cpp: Reworked the QR decomposition code.  Also added the
+	first working version of the SVD (both real and complex).  More
+	to come about this code...
+
+	* vector.cpp, evaluate.cpp, complex.cpp: Renamed sign() into
+	signum() and added slightly different sign() function which
+	returns 1 with zero arguments.
+
+2006-06-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_touchstone.y: Raised stack limit of parser.
+
+	* check_netlist.cpp: Fixed a segfault bug if there is an
+	wrongly referenced subcircuit.
+
+2006-06-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_citi.y, scan_citi.l, check_citi.cpp, check_citi.h:
+	New files implementing the parser, lexer and checker for
+	CITIfiles.
+
+	* dataset.cpp (load_citi): New function which is able to load
+	a CITIfile into a dataset.
+
+	* check_touchstone.cpp: Added touchstone_init() and 
+	touchstone_destroy() functions for use in the converter.
+
+2006-05-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* fourier.cpp: Fixed wrapper functions fft_1d() and dft_1d().
+
+	* evaluate.cpp: Added Time2Freq and Freq2Time implementation.
+	Fixed those of fft, ifft, dft and idft.
+
+	* applications.h: Added new definitions of fft, ifft, dft, idft,
+	Time2Freq and Freq2Time.
+
+2006-05-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* complex.cpp: Finally fixed the complex arccos() function.
+
+2006-05-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* hbsolver.cpp: Added TODO list for the HB solver.
+
+2006-05-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsdefs.h (qucs_definition_available): Allow diode's 'M'
+	parameter in the range 0..2.
+
+2006-05-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* hbsolver.cpp: Fixed calculation of the requested number
+	of harmonics.
+	Excitation sources must be shunted by a 100 Ohm resistor in
+	parallel, not just shunting the ports of the sources to ground.
+	Dividing constant excitation currents by 2 (except DC), 
+	multiplying balanced current by 2 (except DC) for the final
+	solution.
+	The FFT values must be physically interpreted for discrete
+	frequencies, those divided by the number of complex samples.  The
+	IFFT value are left as is.
+
+	* dcsolver.cpp: Running restartDC() for each non-linear circuit
+	if a fallback algorithm is used to solve the netlist.
+
+	* circuit.h (class circuit): Allow non-linear circuits to
+	re-initialize their DC iteration properly by a restartDC()
+	callback.
+
+2006-04-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* hbsolver.cpp: Tried and applied yet another algorithm to
+	find the final solution of the balanced network.  Seems like
+	working now.  Using an extended MNA matrix with the excitation
+	voltage sources in the matrix as well.
+
+	* trsolver.cpp: Activated the 'relaxTSR' option.  Can be set to
+	relax the exact breakpoint (for the requested time step raster)
+	targeting.
+
+2006-04-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* hbsolver.cpp: Tried to fix the final solution after
+	balancing correctly.  Not yet working...
+
+	* fourier.cpp: Fixed a bug in the FFT routine.  Also added
+	a 1d-FFT and 1d-IFFT for two real valued vectors handled in
+	a single FFT run.
+
+2006-04-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* tvector.cpp: Added '*=' and '/=' operators for scalar
+	arguments.
+
+	* hbsolver.cpp: Non-linear equations system is now smoothly
+	converging for our simple Vac-R-R-Diode example.
+
+2006-04-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* hbsolver.cpp: Re-implemented the FFT of a matrix using the
+	block-diagonal property of Jacobians in the time domain.
+	Extended the termination criteria using the iteration voltages.
+
+	* parse_netlist.y: Fixed a small bug occurring when an instance
+	of a (1) component, (2) action, (3) equation and (4) subcircuit
+	or (5) a reference to one of these in a property is named like
+	a physical unit or scale, e.g. V, Hz, A or T.
+
+2006-04-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* tvector.cpp: New functions: contains() as well as '+=' and '-='
+	operators.
+
+	* tmatrix.cpp: New functions: setCol(), getCol(), setRow(),
+	getRow(), set(val) as well as '+=' and '-=' operators.
+
+	* hbsolver.cpp: Implemented non-linear part of the harmonic
+	balance as far as possible.  All parts of the algorithm addressed
+	but not yet working...
+
+2006-04-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* devstates.h (class devstates): New class going to be used
+	by all non-linear components.  Thus it is possible to re-use
+	a single instance of a non-linear component class for
+	each required HB frequency.
+
+	* hbsolver.cpp: Started to implement the non-linear
+	functionality in the HB solver.
+
+	* circuit.cpp: Prepared matrix and vector entries for
+	HB analysis.
+
+2006-04-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* fourier.cpp: Implemented multi-dimensional Fast Fourier
+	Transformation (also IFFT).
+
+2006-04-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* hbsolver.cpp: Linear HB seems to work now.  Tests needed...
+
+	* parse_netlist.y: Also allow scales and units as node
+	identifiers.
+
+2006-03-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* strlist.cpp, ptrlist.cpp: Added a default constructor.
+
+	* hbsolver.cpp: Some more work on the linear solver for
+	harmonic balance done...
+
+2006-03-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* strlist.h (class strlistiterator): New iterator class.
+
+	* ptrlist.h (class ptrlistiterator): New iterator class.
+
+	* hbsolver.cpp: Implemented large parts of the linear
+	network handling.
+
+2006-03-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* strlist.h (class strlist): New functions: last() and
+	first().
+
+	* input.cpp: Handle zero-length value lists properly.
+
+	* equation.cpp: Handle drop/prep dependencies properly.
+	Fixed a bug due to improved passing of these dependencies.
+	Detect errors during evaluation of generated variables.
+
+	* check_netlist.cpp: Allow zero-length value lists in
+	properties.  For lists 'value' and '[value; ...]' and '[]'
+	are possible handled correctly now.
+
+2006-03-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* complex.cpp: Fixed arccos() implementation.
+
+	* hbsolver.cpp: Collecting the harmonics works now, also
+	splitting the network into linear and non-linear part.  Now
+	having nodes of linear and non-linear parts as well as the
+	nodes which need to be balanced.
+
+2006-03-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Fixed rad2deg() and deg2rad() for complex
+	arguments.  Using asin() and acos() from math library.
+
+	* equation.cpp: Fixed segfault bug when not all equations
+	can be solved.
+
+2006-03-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: New function: kbd (Kaiser-Bessel derived
+	window).
+
+	* precision.c (precinit): Added core's idea of NaN.
+
+	* evaluate.cpp: Added erfcinv() function.
+
+	* applications.h: Renamed yn to bessely, jn to besselj and
+	i0 to besseli0.
+
+2006-03-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* Makefile.am (libqucsator_a_SOURCES): Moved 'precision.c'
+	into the libqucsator library.
+
+	* evaluate.cpp: Added erfinv(), i0() and one-argument dbm()
+	functions to the equation solver.
+
+2006-03-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* fspecial.h: Implementation of fallback functions for
+	erf, erfc and round (Win32).  Also added some elliptic
+	integral functions.
+
+	* applications.h: Again many new functions for equation
+	solver added.
+
+2006-03-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Loads of new functions in the equation solver.
+
+2006-03-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_dataset.l: Allow matrix entry spcecification, e.g.
+	S[1,1], as data variable identifiers.
+
+	* parse_dataset.y (YYMAXDEPTH): Increased stack size for large
+	datasets.
+
+2006-02-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* trsolver.cpp: Fixed some memory leaks in the transient
+	analysis solver.
+
+2006-02-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* history.cpp: Using interpolation on request.  This means
+	some more effort while getting values from the history, but
+	speeds up simulation because of better convergence.
+
+	* spline.h (class spline): Made spline class ready to use for
+	tvectors as well.
+
+2006-02-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Fixed return value of max_r() in case of an
+	error.
+
+	* equation.cpp: Implemented some data dependency functionality
+	for intermediate values in equations.
+
+2006-02-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* circuit.cpp: Implemented history lookup functions for
+	node voltages and branch currents.
+
+	* trsolver.cpp: Added history for components which require
+	it during transient analysis.
+
+	* history.h (class history): New class implementing a history
+	of values for the transient analysis.
+
+2006-02-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* Many changes for g++-4.1 errors (-ffriend-injections). 
+
+2006-02-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_netlist.y: Allowing real expressions in range
+	specifications.
+
+	* scan_netlist.l: Had to revert acceptance of signed real
+	values.  Grammar wouldn't even work for "1+1"... Now implemented
+	ranges in the right way.
+
+2006-02-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* nasolver.cpp: Implemented possibility to save probe data
+	into the current dataset.
+
+	* dataset.cpp (load_touchstone): Fixed segfault bug when two
+	or more S-parameter touchstone file containers are to be
+	simulated.
+
+	* scan_netlist.l: Accepting signed real values in equations.
+	This saves some computation effort.
+
+	* parse_netlist.y: The equation parser (part of netlist
+	parser) now creates an appropriate range instance.
+
+	* range.h (class range): New class implementing a value
+	range including upper and lower boundary specifications.
+
+	* evaluate.cpp: Implemented new functions: xvalue(), yvalue()
+	and min(), max() and avg() using range specification.
+
+	* equation.cpp: Added new function returning a data vector
+	from th dataset according to the given name.
+
+2006-01-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Moved saveVariable() to analysis class.
+	(saveCharacteristics): Saving characteristic values into
+	dataset.  New properties: saveCVs, saveAll.
+
+	* object.cpp: getScaledProperty() falls back to
+	getPropertyDouble() if there is no such scaled property.
+
+	* nasolver.cpp: Moved saveVariable() to analysis class.
+
+	* circuit.cpp: Implemented necessary functions for the
+	characteristic values.
+
+	* characteristic.h (class characteristic): New class for
+	storing characteristic values (very likely operating points).
+
+	* analysis.cpp (saveVariable): Moved this function from the
+	nasolver and spsolver class here.
+
+2006-01-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* pair.h (class pair): New class implementing a key/value
+	pair.
+
+	* operatingpoint.cpp: Simplified the operating point class
+	accordingly.
+
+	* circuit.cpp: Using the new valuelist class to manage
+	operating points of components.
+
+	* valuelist.h (class valuelist): New template class
+	implementing a key/value list.
+
+2005-12-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsdefs.h (qucs_definition_available): Added temperature
+	and area parameters for jfet, bjt and mosfet devices.
+
+2005-12-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* object.cpp: Introduced getScaledProperty() and
+	setScaledProperty() functions for scalability of device
+	models.
+
+	* ucs.cpp (main): New command line option --gui enabling
+	the special progressbar for the GUI.
+
+	* logging.c: Implemented new progressbar for GUI.
+
+	* check_touchstone.cpp (ZREF): Removed dependency from
+	circuit class.
+
+	* hash.h (class hashiterator): Implemented hash iterator
+	class.  Also made the hash and hashiterator classes templates.
+
+2005-12-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp: Using the 'gperf' output function in order to
+	lookup evaluator functions and return types.  This improves the
+	speed about a factor thousand for our 400 functions implemented
+	up to now.  I really like gperf.
+
+2005-12-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* hash.h (class hash): Implemented a simple hash functionality
+	for use within the simulator.
+
+	* Makefile.am (gperfappgen_SOURCES): Added rules for perfect
+	hash functionality of evaluator applications.
+
+2005-11-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* precision.c (precinit): New file containing initialization
+	of math constants.
+
+2005-10-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_netlist.cpp: Skip range test if a property is assigned
+	by a (sweep) variable.
+
+	* precision.h: Improved --enable-double behaviour by
+	introducing double representation dependent precision
+	constants.
+
+2005-10-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_netlist.y: Fixed smaller memory leaks in the netlist
+	parser.
+
+	* vector.cpp, equation.cpp, evaluate.cpp, net.cpp: Fixed loads
+	of memory leaks.
+
+	* environment.cpp: Fixed memory leak (deleting substrates
+	and constants).
+
+	* dataset.cpp (load_touchstone), check_touchstone.cpp: Fixed
+	scanner memory leak.
+
+	* check_netlist.cpp (netlist_destroy): Calling
+	netlist_lex_destroy() fixes a memory leak in the netlist
+	scanner.
+
+2005-10-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* vector.cpp: New constructor taking size and content (constant
+	value).  Implemented rtoy() and ytor() functions.
+
+	* trsolver.cpp: Implemented delta correction in order to hit
+	exact breakpoint if possible.
+
+	* matvec.cpp: Implemented stos() functionality.  Allow passing
+	reference impedance vectors to stoz(), ztos(), stoy() and ytos()
+	functions as well as to	stos().
+
+	* matrix.cpp: Allow passing reference impedance vectors to
+	stoz(), ztos(),	stoy() and ytos() functions as well as to
+	stos().  Fixed calculation formulas for complex reference
+	impedances according to the manual.
+
+	* evaluate.cpp: Implemented ytor() and rtoy() functions.  Added
+	optional reference impedances for ztor(), rtoz(), ytor() and
+	rtoy() functions.  Allow additional argument for stoz(), ztos(),
+	stoy() and ytos() functions.  Employ stos() functionality.
+
+	* complex.cpp: Added ytor() and rtoy() functions with complex
+	reference impedances.  Allow complex reference impedances in
+	ztor() and rtoz() functions.
+
+2005-10-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Added dft() and idft() functions to the
+	equation solver.
+
+	* fourier.cpp: Implemented (inversve) discrete fourier
+	transformations.
+
+	* acsolver.cpp: Always output absolute noise value (no
+	negative noise currents/voltages).
+
+	* parse_touchstone.y: Accept and warn about a missing trailing
+	end-of-line character in touchstone file.
+
+2005-10-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp: Implemented inheritance of 'dropdeps' property
+	and the 'prepdeps' entries.  Also allowing the use of auto-
+	generated variables in equations, e.g. 'Frequency.0001'.
+
+	* fourier.h (class fourier): Implemented 1-dimensional fast
+	fourier	transformation.
+
+	* evaluate.cpp: Added 'fft' (Fast Fourier Transformation)
+	function.
+
+	* spline.cpp: Completed periodic cubic spline calculations.
+
+2005-10-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* nasolver.cpp: Fixed noise correlation matrix entry
+	collector (buggy due to new correlation sources).
+
+2005-10-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_netlist.cpp: Property range specification now also
+	including interval boundary conditions.
+
+2005-09-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* transient.cpp, trsolver.cpp: Fixed forward/backward Euler
+	method remarks.
+
+2005-07-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsdefs.h (qucs_definition_available): Allowing negative
+	length of ideal transmission line.
+
+2005-07-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_netlist.cpp: Fixed a bug occurring when S-parameter
+	file container is used in subcircuits.
+
+2005-06-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* tvector.cpp: Added setData() function in order to assign
+	external data (sub)vector to a tvector.
+
+2005-06-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* tridiag.h (class tridiag): New class implementing solution of
+	tridiagonal (symmetric/non-symmetric and cyclic/non-cyclic)
+	equation systems.  The cyclic matrices are going to be used for
+	periodic cubic splines.
+
+2005-06-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* vector.cpp: New unwrap() function implemented.
+
+	* evaluate.cpp: Added unwrap(), rad2deg() and deg2rad()
+	functions.
+
+2005-05-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* spline.h (class spline): Cubic spline class.  Generates
+	spline coeeficients from data vectors.  Very useful for
+	interpolations.
+
+	* poly.h (class poly): New polynom class defined by function
+	value and the derivatives.
+
+	* evaluate.cpp: Added interpolation functions.
+
+2005-05-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Fixed circle formulas (off by one index
+	errors).
+
+	* nasolver.cpp: Fixed left-over bug in AC noise matrix
+	creation (indexing, off by one).
+
+2005-05-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_netlist.l: Removed 'unistd' option from all scanners
+	files (scan_*.l).
+
+2005-05-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* tvector.cpp: Improved norm() calculation.
+
+	* qucsdefs.h (qucs_definition_available): Fixed number of
+	ports for coplanar open and short.
+
+	* matrix.cpp: Made twoport() transformations work on matrices
+	with >= (2,2) dimensions.
+
+	* evaluate.cpp: Fixed PlotVs() implementations.
+
+2005-04-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* matrix.cpp, tmatrix.cpp: Fixed yet another memory leak.
+	Thanks to Brendan for pointing this out.
+
+	* eqnsys.cpp: Fixed memory leaks as well as ANSI-C++ compile
+	warning of Borland C.
+
+2005-04-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* vector.h (class vector), matrix.h (class matrix): Added the
+	'()' accessors.
+
+	* dcsolver.cpp (saveOperatingPoints): Calling the function
+	for non-linear circuits.
+
+	* circuit.h (class circuit): New virtual function for saving
+	the DC operating points (branch currents and node voltages).
+
+2005-04-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* complex.cpp: Using xhypot() in abs() calculation for better
+	numerical stability.
+
+2005-04-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Added convenience functions for all the
+	circle functionality: GaCircle(S,Ga[,Arcs]) - Ga can be
+	either vector or number, Arcs can be vector (angles in
+	degree), number (number of equally spaced circle segments)
+	or be omitted (the number defaults to 64).
+
+	* sweep.cpp: Using the linspace/logspace functions of the
+	vector class.
+
+	* vector.cpp (logspace, linspace): Added these functions
+	for convenience here.
+
+	* matvec.cpp, matrix.cpp (rollet): Moved these functions from
+	the equation solver to the matrix and matvec class.
+
+	* evaluate.cpp: Speed up noise circle calculations.  Added
+	gain circle and PlotVs() applications.
+
+	* equation.cpp: It's now possible to generate independent
+	data vectors on the fly.  Useful for circle functions and
+	PlotVs().
+
+2005-04-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* matvec.cpp, matrix.cpp (twoport): Check size of matrices
+	to be at least >= 2 for twoport operations instead of
+	exactly 2.
+
+	* evaluate.cpp: Improved some error messages.
+
+	* eqnsys.cpp: Reduced memory consumption of LU substitution
+	routines (Doolittle and Crout) by using in-place code.
+	(substitute_qr_householder_ls): Improved numeric stability of
+	QR solver.  Now it's possible to use both the QR and LQ solver
+	for equation systems.
+
+	* check_netlist.cpp: Added 'Solver' property to transient and
+	dc analysis.
+
+2005-04-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* eqnsys.cpp (substitute_qr_householder_ls): Implemented least
+	square solution of under-determined equation systems using
+	QR decomposition.
+
+2005-04-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* tvector.h (class tvector), tmatrix.h (class tmatrix):
+	Added the () accessors for better readability of the code.
+
+	* logging.c: For performance's sake optimizing progressbar
+	output for simulations with large amount of points.
+
+	* eqnsys.cpp: Avoid numerous allocations/deallocations if the
+	matrices' size does not change.
+	(euclidiaCol): Using an algorithm without destructive underflow
+	or overflow.
+	(solve_qr): Having now two working variants of the QR
+	decomposition solver.  Both now using column pivoting and working
+	for real and complex equation systems.
+
+	* complex.cpp: Implemented xhypot() functions for complex and
+	real arguments using an algorithm without destructive underflow
+	or overflow.
+
+	* check_netlist.cpp: Improved error message.
+
+2005-04-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* eqnsys.cpp: Added Doolittle's LU factorization.  Just for
+	completeness. Implemented new preliminary QR solver.  The
+	functionality is given (really solves equation systems), but
+	pivoting, numerical over/underflow and solution of singular
+	matrices is still missing...
+
+	* consts.h (M_SQRT1_2): Added 'M_SQRT1_2' constant.
+
+2005-03-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* eqnsys.cpp: Split LU factorization from LU solver and also
+	fixed a bug in the LU decomposition.  Using implicit pivoting.
+
+	* acsolver.cpp (solve_noise): Using LU factorization only
+	instead of full LU solver for initial transposed matrix
+	decomposition.
+
+2005-03-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* vector.cpp: New functions: contains() and sort().
+
+	* qucsdefs.h (qucs_definition_available): Added HB item.
+
+	* complex.cpp: Added < and > operators.
+
+	* hbsolver.h, hbsolver.cpp: Started to implement the
+	harmonic balance solver.  Not yet working at all, just
+	some preparations.
+
+2005-03-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* Makefile.am: Avoid re-generation of flex/bison files
+	when not in maintainer mode.
+
+2005-03-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* net.cpp: Fixed a bug occurring when the users specifies
+	a setup requiring an extra DC analysis in the main sweep.
+
+	* ptrlist.cpp: New template class for lists of pointers.
+
+2005-03-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* strlist.cpp: New helper functions to add/append whole
+	string lists.
+
+	* qucsdefs.h (qucs_definition_available): Added optional
+	'Temp' parameter to the 'Pac' and 'MCOUPLED' components.
+
+	* evaluate.cpp: Implemented a 'linspace' function as well
+	as stability circles and noise circles.
+
+	* equation.cpp: Evaluators can now add new data dependencies
+	to their results.
+
+2005-02-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp (THROW_MATH_EXCEPTION): Made this macro
+	compatible with non-ISOC99 compilers.
+
+2005-02-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* acsolver.cpp (solve_noise): Hopefully fixed AC noise
+	analysis. Nase voll, Faxen dicke, jetze.
+
+2005-02-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* trsolver.cpp: The transient solver can now tell its
+	integrators to be in certain states.  Thus its initial
+	run can be indicated.  Also the initial conditions (nodesets)
+	are now correctly evaluated.
+
+	* integrator.cpp (integrate): New integration wrapper
+	able to evaluate a state flag.  Currently used for initial
+	transient analysis run.
+
+2005-02-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcsolver.cpp: If a preferred convergence algorithm is
+	requested skip this one in the fallback list.
+
+2005-02-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp (applications): Added stability factor equations.
+	Available as Rollet(), Mu() and Mu2().
+
+2005-02-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* nasolver.cpp: New function able to reorder vectors according
+	to the pivot exchange table during LU decomposition.
+	Also enhanced the creation of the noise current correlation
+	matrix to work with additional noise voltage sources.
+
+	* circuit.cpp: Enhanced noise matrices to work with
+	additional (augmented) MNA matrices.
+
+	* acsolver.cpp (solve_noise): Made voltage sources working
+	with the AC noise algorithm.  Possible we get noise currents
+	correctly now?
+
+2005-02-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* acsolver.cpp (solve_noise): Finally made the AC noise
+	analysis work using the Doolittle substitutions of the
+	transposed Crout LU matrix.
+
+	* eqnsys.cpp: Two new functions performing the forward and
+	backward substitutions of an LU decomposed matrix (Crout and
+	Doolittle definitions).
+
+2005-02-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* Made loads of tiny changes for compatibility with the
+	M$ Visual C++ compiler.
+
+2005-01-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* nasolver.cpp: Fixed a bug in the nasolver.  If the solver
+	object changed its number of nodes or voltage sources the
+	matrices are now adjusted appropriately.
+
+	* eqnsys.cpp: The equation system solver now works on a
+	reference of the given matrix.  Thus the nasolver can modify
+	the matrix from the outside (needed during AC noise analysis).
+	Also the change saves a lot of memory.
+
+2005-01-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* acsolver.cpp (solve_noise): Fixed bug invalidating the usual
+	AC results when computing the AC noise results.
+	(solve_noise): Ensuring real values during noise voltage
+	computation.
+
+2005-01-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* tvector.cpp: Some new 'set()' functionality added.  Computation
+	of scalar product of two vectors added.  New 'conj()' operation.
+
+	* tmatrix.cpp: New 'vector * matrix' function.  New transpose()
+	function.
+
+	* nasolver.cpp: Added functionality for the creation of a noise
+	correlation matrix.  New function returning the number voltage
+	sources.  Saving of node voltages (or branch currents) only if a
+	valid postfix is given.
+
+	* acsolver.cpp (solve_noise): Implemented preliminary AC noise
+	analyses.  To be tested...
+
+2005-01-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_netlist.y: Also allow scales and units in parameter
+	list values.
+
+	* circuit.h (class circuit): Prepared AC noise analysis
+	callbacks.  Changed all callers.
+
+	* check_netlist.cpp: Evaluating scales in parameter list
+	values.
+
+2004-12-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Introduced two more speed/memory
+	optimizations: Usage of cross connectors and dedicated ground
+	circuits.  The cross connectors reduce the number of necessary
+	tees and the grounds reduce the ground network (consisting
+	of lots of tees and crosses).
+
+	* nodelist.cpp: Fixed sorting criteria functions for sorted
+	S-parameter nodelist.
+
+2004-12-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsdefs.h (qucs_definition_available): Added the CLIN
+	(coplanar line) component to the list of available components.
+	Also added 'Bv' and 'Ibv' properties to diode model.
+
+2004-12-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsdefs.h (qucs_definition_available): Added new device
+	parameter for the MOSFET: capModel.
+
+2004-12-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsdefs.h (qucs_definition_available): Permitted zero
+	impedance for AC power source.
+
+	* equation.cpp: Fixed null pointer bug in dataset vector length
+	computation.
+
+	* scan_netlist.l: Added special tokens for the new list of
+	values.
+
+	* qucsdefs.h (qucs_definition_available): Added 'Values' to
+	optional properties of 'AC', 'SP' and 'SW' actions.
+
+	* property.cpp: A property can now also be a vector of values.
+
+	* parse_netlist.y: Accept value lists as property values.
+	Also removed 'node_root' and 'pair_root' helpers (not necessary
+	anymore).
+
+	* object.cpp: New function returning a vector being property
+	of an object.
+
+	* input.cpp: Added possibility to pass vectors as properties
+	to analysis objects.
+
+	* check_netlist.cpp: Implemented checks for the new sweep types
+	'list' and 'const'.  Allowing these types in parameter sweeps,
+	ac-analysis and s-parameter analysis.
+
+	* analysis.cpp (createSweep): New function creating a sweep
+	object depending on the analysis's properties.  Changed all
+	possible callers (spsolver, acsolver, parasweep and trsolver)
+	to use this functionality.
+
+2004-12-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* net.cpp: Added new function returning the number of non-linear
+	circuits within the netlist.
+
+	* nasolver.cpp: Implemented new convergence helper: the source-
+	stepper.  New function added returning a textual description of
+	the currently used convergence helper.
+	Fixed yet another BIG bug in the MNA solver template occurring
+	when e.g. two or more nodes of a component are connected to each
+	other.
+
+	* dcsolver.cpp: Added new solver property 'convHelper'
+	determining the preferred convergence helper.
+	Using the linear solver if the applied circuit description
+	consists of linear components only.
+
+2004-11-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_dataset.l: Fixed identifier expression to adapt the
+	dataset loader to new variables containing one or more '.'.
+
+	* nodelist.cpp: Fixed detection of internal nodes.  If *any*
+	of the nodes in a nodelist entry is marked internal, then the
+	node is made internal.
+
+	* check_dataset.cpp (dataset_check): Fixed variable data size
+	computation for multiple dependencies.
+
+2004-11-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp: Allowing multiple types of arguments which must
+	be checked by the actual evaluation function.
+
+	* strlist.cpp: New function del() which deletes the each entry
+	in the given string list from the string list object.
+
+	* parse_netlist.y: Allowing array/vector indices specifying
+	whole ranges of identifiers, e.g. 'array[:,1]'.
+
+	* nasolver.cpp: Implemented optional gMin-stepper as
+	convergence helper for non-linear networks.
+
+	* matvec.cpp: Implemented the following new operations:
+	matvec/matrix plus, matvec/matrix minus, unary minus, scaling
+	with doubles and vectors, matvec/matrix multiplication, det(),
+	inverse(), conj(), abs(), arg(), real(), imag(), adjoint().
+
+	* matrix.cpp: Added the following operations: unary minus,
+	abs(), arg(), real() and imag().
+
+	* evaluate.cpp (THROW_MATH_EXCEPTION): The evaluator functions
+	can now throw math exceptions.
+	(MAKE_FUNC_DEFINITION_1): Added new macro simplifying another
+	type of functions.
+	Added more basic operations like '*', '+', '-' for the matrix
+	and matrix vector types.
+	Added conj(), phase(), arg(), inverse(), transpose(), det(),
+	eye() and adjoint() functionality for matrices and matrix
+	vectors	to the list of available functions.
+
+	* equation.h: New constant tag 'RANGE' added.
+
+	* equation.cpp: The evaluation function can now throw math
+	exceptions which are appropriately handled.
+	Added some more functionality to the equation solver allowing
+	to calculate the data entry lengths of equation nodes.
+	During export of the dataset it is now possible to remove
+	data dependencies from output vectors.
+
+	* complex.cpp: Added convenience function imag() for double
+	values.
+
+	* check_netlist.cpp: Implemented checks for the nodeset
+	functionality detecting duplicate and useless nodesets.
+
+2004-11-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcsolver.cpp: Implemented fallback variants for the
+	non-linear DC analysis which fail initially.
+
+	* circuit.cpp: Made all of the MNA matrices of dynamic size.
+	Thus with a small overhead of code memory consumption is much
+	better.  Changed all callers/users (i.e. each component).
+
+	* ucs.cpp (main): New command line option --check which
+	can be used to verify an input netlist to be checked but
+	not evaluated (simulated).
+
+	* parse_netlist.y: Fixed bug in netlist parser caused by
+	empty lines in subcircuit definitions.
+	(YYMAXDEPTH): Increased maximum parser stack size.
+
+2004-11-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* input.cpp: The netlist factory now removes the definitions
+	its output was based upon immediately.  Thus it is possible to
+	handle even large netlists on systems with 'limited' memory.
+
+	* check_netlist.cpp: Implemented a new function which is
+	able to	unchain and destroy a definition from the list of
+	definitions.
+
+2004-11-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* qucsdefs.h (qucs_definition_available): Made the OpAmp a
+	non-linear component.  Changed diameter parameter of MVIA from
+	'd' to 'D'.
+
+	* input.cpp: Enabled opamp and amplifier in the component
+	creator.
+
+2004-10-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* netdefs.h, qucsdefs.h: Two new files generalizing netlist
+	handling (for new converter program).
+
+2004-10-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* nasolver.cpp: New 'steepest descent' convergence helper
+	implemented.  Seems like working fine...
+
+	* tvector.cpp: Implemented new element-wise *, scalar +/-,
+	comparisons and sum() operators.
+
+	* complex.cpp: Added <= and >= operators.
+
+2004-10-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcsolver.cpp, trsolver.cpp: Using new nodeset functionality.
+
+	* net.cpp: Added the appropriate nodeset functionality.
+
+	* nasolver.cpp: Added function which can save the nodeset list
+	of the netlist into the component nodes.
+
+	* input.cpp: Creating nodesets in the component factory and
+	adding them to the netlist.
+
+	* nodeset.h (class nodeset): Implemented base class for
+	nodeset functionality.
+
+	* tmatrix.cpp: New function isFinite() implemented.
+
+	* nodelist.cpp: Created array of nodes for faster access
+	to enumerated nodes.
+
+	* nasolver.cpp: Fixpoint iterations possible.
+
+	* eqnsys.cpp: Implemented code for consecutive solutions
+	of equation systems using LU decomposition.
+
+2004-10-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* matvec.cpp: Fixed bug in copy constructor.
+
+2004-10-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* tmatrix.h (class tmatrix), tvector.h (class tvector): Fixed
+	template functionality to be ISO C++ compliant.
+
+	* trsolver.cpp: Using line search fallback if the initial DC
+	analysis failed to converge.
+
+	* matvec.cpp: Fixed compiler (gcc 3.4.2) error in constructor
+	and copy constructor.
+
+2004-10-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* circuit.cpp (transientCapacitance): Fixed compiler warning.
+
+2004-10-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* trsolver.cpp: Run inititialization routine also for created
+	circuits.
+
+2004-10-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* circuit.cpp (transientCapacitance): Readjusted the code for
+	a single integration step for controlled capacitances.
+
+2004-10-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* tvector.cpp: New function isFinite() implemented.
+
+	* trsolver.cpp: Now transient analysis also uses variable order
+	step control.
+	Checking for singularity of Jacobian matrix.
+
+	* nasolver.cpp: Yet another bug fix in the line searcher.
+
+	* eqnsys.cpp: Using a macro LU_FAILURE to control exception
+	behaviour.
+
+2004-10-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* tvector.cpp: New function maxnorm() implemented.
+
+	* nasolver.cpp (applyAttenuation): Using new tvector abilities.
+	Fixed lineSearch algorithm.
+
+	* evaluate.cpp: New sign() and sinc() functions.  Also
+	simplified some function definitions using a macro.
+
+	* vector.cpp, complex.cpp: Added sign() and sinc() functions.
+
+2004-10-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.cpp: Added sec(), cosec(), sech() an cosech()
+	functions.
+
+	* vector.cpp: Found out that class& return values create
+	memory leaks.  That is why classes changed: vector, matrix,
+	matvec, tmatrix and *all* the callers.
+
+	* tvector.h (class tvector): New class implementing a simple
+	vector template.  This change speeds up equation system
+	solvers and thereby DC, AC and transient simulation.  Changed
+	all callers.
+
+	* trsolver.cpp: Tried to optimize non-convergence handling.
+
+2004-10-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* trsolver.cpp: Fixed all predictors (off-by-one indexing into
+	the array of time-steps).
+
+2004-10-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* trsolver.cpp: Respond to non-convergence problems by
+	starting damped NR iterations.
+
+	* nasolver.cpp: Started to implement damped Newton-Raphson
+	algorithms (limiting schemes).
+
+2004-10-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* nasolver.cpp: Fixed a bug occurring when ports of a
+	component with built-in voltage sources were shorted.
+
+	* trsolver.cpp: Collecting some statistical data for evaluating
+	various integration methods, i.e. rejected time-steps, average
+	time-step and average Newton-Raphson iterations per step.
+	Consider convergence failure for each taken step (reduce step
+	then).
+	Implemented explicit Gear predictor integration method.
+
+	* transient.cpp: Implemented variable-step explicit Gear
+	coefficients.  Fixed error constants for explicit Gear method.
+
+2004-10-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* transient.cpp: Implemented variable-step Gear coefficients.
+
+	* trsolver.cpp: Implemented predictive integration methods,
+	i.e Adams-Bashford and backward Euler.
+	Using Milne's estimate formula for the local truncation error
+	controlling the current time-step.
+	Using 'LTEreltol', 'LTEabstol' and 'LTEfactor' properties for
+	the acceptable local truncation error.
+
+	* transient.cpp: Implemented some functionality regarding the
+	predictor types and orders.  Also added the error constants for
+	each integration method.
+
+2004-10-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_netlist.l: Added string and character constant tokens
+	for the parser.
+
+	* property.cpp: If a property is a variable it may now also
+	contain a reference to a string which is now also properly
+	returned.
+
+	* parse_netlist.y: Allowing string and character constants
+	within equations.
+
+	* evaluate.cpp: Implemented basic string operations like
+	indexing a certain character and concatenation.  Also
+	added the twoport() functionality.
+
+	* equation.cpp: Allowing characters and strings to be equation
+	variables.
+
+2004-10-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* nasolver.cpp: Using circuit flags in order to determine
+	real voltage and current sources.
+
+	* circuit.h (class circuit): Put some of the integers
+	representing flags only into a single integer.
+
+2004-09-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp: Speed optimization for generating vector
+	string representation.
+
+2004-09-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* circuit.cpp (transientCapacitance): Implemented transient
+	analysis helper for voltage controlled capacitances.
+
+2004-09-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* eqnsys.cpp: Pass singular matrix to the nasolver via
+	exception but insert a virtual resistance and continue.
+
+2004-09-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* states.cpp (saveState): New function saving a certain state
+	into given pointer location.
+
+2004-09-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* transient.cpp: Implemented Adams-Moulton (corrector)
+	integration method and computation of Adams-Bashford (predictor)
+	coefficients.
+	(integratorType): Using now numerical identifiers for the
+	integration methods.  Changed all callers.
+
+2004-09-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* trsolver.cpp: Just enabled the timestep algorithm... seems
+	to work now.
+	
+	* trsolver.cpp: Added predictor/corrector functionality.  The
+	transient analysis works now for simple RCL networks with
+	constant timesteps.
+
+	* nasolver.h (class nasolver): Added a real calculate()
+	callback in order to allow simulation types derived from
+	the nasolver class to switch the calculator.  Changed
+	callers dcsolver, acsolver and trsolver.
+
+2004-09-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* trsolver.cpp: Tried to fix timestep adaption... not yet
+	successfully.
+
+2004-09-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* nasolver.cpp: Now also saving currents through voltage
+	sources into each circuit.
+
+	* circuit.cpp: Made solutions of branch currents (J-MNA matrix)
+	available to circuit components.
+
+2004-09-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* states.h (class states): New class to reuse save-state
+	variables in the transient solver itself.
+
+	* trsolver.cpp (checkDelta): Started to implement the timestep
+	adjuster for the transient analysis.
+
+	* integrator.h (class integrator): New class containing all
+	of the integration specific things of a circuit object.  The
+	circuit object now also inherits the integrator class.
+
+	* circuit.h (class circuit): Removed the analysis argument
+	of the init() functionality of each type of analysis.  Changed
+	all circuit objects.
+
+2004-09-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* trsolver.cpp: Started to implement the actual solver.  For
+	now only linear components are supported and no integration
+	step adaption is made.
+
+	* check_netlist.cpp (definition_available): Added the transient
+	analysis to the list of known netlist definitions.
+
+	* circuit.h (class circuit): Added the functionality necessary
+	for the transient analysis.  These are save-state variables and
+	the integration methods.
+
+	* transient.cpp: Implemented Gear, Euler and trapezoidal
+	integration methods.
+
+	* transient.h (class transient): New class implementing some
+	transient analysis helpers.
+
+2004-09-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* trsolver.h, trsolver.cpp (class trsolver): New files.  Some
+	basic preparations for the transient simulation.
+
+2004-09-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcsolver.cpp: New simulation property 'saveAll' used to
+	prevent saving all nodes and operating points when subcircuits
+	are in place.
+
+2004-09-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* circuit.cpp (voltageSource): New helper function setting
+	up an internal voltage source for the MNA.
+
+2004-09-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* acsolver.h (class acsolver): New class implementing
+	the AC simulation.
+
+	* eqnsys.h (class eqnsys): Made this class a template
+	using the tmatrix template.  Thus the DC analysis runs
+	twice as fast (using <nr_double_t> instead of <complex>
+	values) and the solvers can also used by other types of
+	simulations.
+
+	* complex.h (class complex): Added abs(), norm() and real()
+	for real arguments as well.  Thus they can be used by the
+	tmatrix template.
+
+	* circuit.cpp: Bigger code cleanups and better documentation
+	for some basic circuit functionality.
+
+	* nasolver.h (class nasolver): New class implementing the
+	modified nodal analysis code.  Thus it may be used by other
+	simulation (e.g. AC and transient) as well.
+
+	* dcsolver.cpp: Cleaned up the DC solver code using the new
+	nasolver class.
+
+2004-09-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* vector.cpp: Implemented numerical differentiation of
+	vectors.
+
+2004-08-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* ucs.cpp (main): Fixed bug when using the '-b' command
+	line parameter.  Added help text concerning the option.
+
+2004-08-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* eqnsys.cpp: Including 'ieeefp.h' if necessary.
+
+2004-08-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* consts.h: New file.  Split 'constants.h' into 'constants.h'
+	and 'consts.h'.  Moved these file up one directory.
+
+	* ucs.cpp (main): Checking for command line option '-b'
+	which enables progress bar functionality.
+
+	* spsolver.cpp: Using progress bar if requested.
+
+	* scan_netlist.l: Using strrchr() instead of rindex() for 
+	compatibility with native Win32.
+
+	* matvec.cpp: Using strchr() instead of index() for 
+	compatibility with native Win32.
+
+	* logging.c: Implemented text based progress bar
+	functionality.
+
+	* eqnsys.cpp (finite): Ensure MinGW knows about that macro.
+
+2004-08-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* nodelist.cpp: Improved memory management for nodelist
+	entries.
+
+	* sweep.cpp: Fixed error due to numerical problems in a
+	linear sweep containing a real zero point.
+
+2004-08-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* matvec.cpp: Added matrix conversion routines to matrix
+	vector class.
+
+	* evaluate.cpp: Added functionality converting S, Y, and Z
+	matrices and matrix vectors into each other.
+
+	* equation.cpp: Fixed bug when exporting matrix vectors into
+	the resulting dataset.
+
+2004-08-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: The SP solver can now use a sorted nodelist.
+	This save at least N^2 circuit list traversion.
+
+	* nodelist.cpp: Made a big effort to implement a sorted
+	nodelist which can be used by the SP solver in order to
+	increase speed while looking for possible connections.
+
+	* dcsolver.cpp: Moved nodelist creation from the DC solver
+	class into the nodelist class itself.
+
+	* check_netlist.cpp: New function printing the content of the
+	current netlist in short form.
+
+2004-08-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* eqnsys.cpp: Fixed Schmidt and v. Mises convergence
+	criteria.
+	Implemented 'successive over relaxation' for solving linear
+	equation systems.
+
+2004-08-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* object.cpp (propertyList): Avoid string buffer overflow.
+
+	* eqnsys.cpp: New equation systems solvers using Jacobi and
+	Gauss-Seidel algorithm.  Implemented algorithm to ensure
+	non-zero diagonal elements for these new methods to work
+	properly.
+
+	* dcsolver.cpp: Avoid buffer overflow for long node names.
+	Changed all callers.
+
+	* circuit.cpp: Avoid buffer overflow for long voltage/current
+	nodes (occur when subcircuits are involved).
+
+2004-08-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Using input port impedance of noise
+	analysis for calculating Rn.
+
+	* check_netlist.cpp: Fixed yet another bug caused by nested
+	subcircuit definitions.
+	Checking for substrate definitions of all known microstrip
+	components properly.
+	Search for non-linearities within subcircuit definitions in
+	order to verify that DC simulation is required.
+
+2004-08-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Renamed Gopt into Sopt.  Changed all
+	referees.
+
+2004-08-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_netlist.cpp: Fixed a bug when nested subcircuits
+	occurred within the netlist.
+
+	* strlist.cpp (toString): The function takes an (optional)
+	argument which specifies the concatenating string.
+
+	* eqnsys.cpp: Finally got the iterative Jacobi's method
+	for solving linear equation systems working.
+
+	* matrix.cpp: New functionality.  Converting S to G and G to
+	S twoport parameters possible.
+
+	* check_touchstone.cpp (touchstone_check): Fixed a mini bug
+	causing multiport definitions to fail loading.
+
+2004-07-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_netlist.cpp: Checking for non-equal variables in same
+	order sweeps (with the same simulation instance to sweep).
+
+	* eqnsys.cpp: Fixed Gauss-Jordan algorithm.
+
+	* dcsolver.cpp: Fixed a bug.  Now really using DC analysis
+	properties for convergence tolerances.
+
+	* eqnsys.cpp: Started to implement the Jacobi's method for
+	solving linear equation systems.  Not yet working...
+
+2004-07-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* net.cpp: When inserting and removing a circuit from the
+	netlist, then set the enabled property of the circuit.
+
+	* circuit.cpp: Each circuit object knows whether it is
+	'enabled' meaning that it is within the currently processed
+	netlist.
+
+	* net.cpp: Defining the 'Pac' as S-parameter port only if
+	it was not defined within a subcircuit.
+
+	* circuit.cpp: Added new property to the circuit object.  The
+	subcircuit reference is used to remember to which subcircuit (if
+	any) the component belongs.
+
+	* check_netlist.cpp: Added a check for duplicate port number
+	entries for the S-parameter analysis.
+
+2004-07-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Avoiding second singularity when two full
+	reflective ports get interconnected.  Done for both
+	S-parameter and noise analysis.
+
+2004-07-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Avoiding same singularity for noise matrices
+	as already fixed for S-parameters.
+	Fixed calculation of noise parameters.
+
+2004-07-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* matrix.cpp: Added noise correlation matrix transformations
+	for Y-, Z- and S-parameter representations.
+
+	* check_netlist.cpp (definition_available): Added noise
+	model parameters to junction FET properties.
+
+2004-07-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* circuit.cpp: New functions getMatrixS(), setMatrixS(),
+	getMatrixN() and setMatrixS() for convenience when playing
+	with S-parameters and noise correlation matrices.
+
+	* check_netlist.cpp (definition_available): Added optional
+	'Temp' property to S-parameter file component.
+
+	* vector.cpp: New assignment constructor for convenience.
+
+	* vector.h (class vector): Added additional '+' and '*'
+	operators for convenience and changed all 'friend' return
+	values to be 'vector&' instead of 'vector*'.  Changed all
+	callers.
+
+	* vector.cpp: Two new constructors create an unnamed or named
+	instance with a given initial size.
+
+	* spsolver.cpp: Running calcNoise() for each circuit if
+	requested by the noise analysis.
+
+	* circuit.h (class circuit): Added extra virtual function
+	calcNoise() for noise analysis.
+
+	* check_touchstone.cpp: Fixed re-normalizing functionality
+	of of Y-, Z-, H- and G-parameters and those for the noise
+	parameters as well.
+
+2004-07-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_touchstone.cpp: Support for noise parameters in
+	touchstone files.
+
+2004-07-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Running 'initSP()' on every circuit before
+	simulating.  Using 'matvec::createMatrixString()' for creating
+	the vector names.
+
+	* scan_netlist.l: Allowing "{File}" token in order to pass
+	file references to component properties.
+
+	* matvec.cpp: Two new functions: createMatrixString() and
+	isMatrixVector().  Moved from 'equation.cpp'.
+
+	* input.cpp: Changing the number of ports when creating a 
+	S-parameter file component.
+
+	* equation.cpp:  Using 'matvec::createMatrixString()'
+	for creating the vector names and 'matvec::isMatrixVector()'
+	to detect matrix vectors.
+
+	* dataset.cpp: New functions returning the number of dataset
+	vectors (variables and dependencies).
+
+	* circuit.cpp: Size (number of ports) can now be changed by
+	calling 'setSize()'.
+
+	* check_touchstone.cpp: Using 'matvec::createMatrixString()'
+	for creating the vector names.
+
+	* check_netlist.cpp (definition_available): Added 'SPfile' as
+	new available component.
+	Checking range for both required *and* optional properties.
+
+2004-07-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* matrix.cpp: Implemented stos() functionality converting
+	reference impedances of scattering parameters.
+
+	* check_touchstone.cpp: Implemented re-normalizing the impedance
+	within touchstone files.
+
+2004-07-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_netlist.l: Added additional tokens for subcircuit
+	definitions.
+
+	* parse_netlist.y: Scribbled down the grammar for subcircuit
+	definitions.  Also saving the line number for component lines.
+
+	* check_netlist.cpp: Added the functionality used to provide
+	subcircuits in netlists.  This includes checking the subcircuits
+	itself, expanding them into the global netlist and checking
+	their context validity.
+	Also giving the offending line number for checker errors when
+	possible.
+
+2004-07-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Avoiding singularity when two full reflective
+	ports of two different circuits are connected.
+	Saving linear 'F' and 'Fmin' instead of logarithmic.
+
+2004-07-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Running the init() function before
+	insertConnections() to give components a chance to add new
+	circuits to the netlist.
+
+	* net.cpp: removeCircuit() has now an additional argument
+	'dropping' indicating whether the the circuit to be removed
+	should go into the drop list or not.  New function
+	containsCircuit() which checks whether a given circuit is in
+	the netlist or not.  New function checkCircuitChain() checking
+	the the double chain of the netlist (programmers helper
+	function).
+
+2004-07-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* property.cpp (toString): New function returning text
+	representation of a property.  The properties are now typified
+	and can be modified using set().
+
+	* object.cpp: Added some functionality in order to modify an
+	objects properties.  New function returning a string 
+	representation of the property list.
+
+2004-07-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Removed some of the noise debug messages and
+	optimized 'sqr (abs (x))' to be 'norm (x)'.
+
+	* equation.cpp: Exporting simple matrices as well.
+
+2004-07-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_netlist.l: Changed the scanner appropriately for the
+	new parser functionality.
+
+	* parse_netlist.y: New application 'array' implemented which
+	can do indexing array-like structures.
+
+	* exception.h, exceptionstack.h: Put exception and 
+	exceptionstack classes into the qucs:: namespace to avoid name
+	clashes with standard C++ classes.  Changed all callers.
+
+	* evaluate.cpp: Implemented 'array' functionality for
+	indexing vectors, matrices and matrix vectors.
+
+	* equation.cpp: Implemented usage of matrices.  Also added
+	support for matrix, vector and matrix vector indices.
+	Fixed a bug when accessing results in argument lists (the
+	expression lists).  Exporting matrix vectors correctly now.
+
+2004-07-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* matvec.cpp: When get()'ting a vector from a matrix vector
+	it gets named as well based on the matrix vectors name and the
+	appropriate indices.
+
+	* equation.cpp: Matrix vectors can now also be exported into
+	the dataset.
+
+	* dataset.cpp: Added some functionality which allows the
+	programmer to pass chains of data vectors to the dataset.
+
+	* spsolver.cpp: Remove unnecessary local variables.
+
+	* evaluate.cpp: Implemented example matrix vector operation
+	for testing.
+
+	* equation.cpp: Added some functionality which is able to
+	detect matrix vectors in datasets.  These matrix vectors will
+	be available in the equations set.  Still something to do...
+
+	* matvec.h (class matvec): Added some basic operations on
+	matrix vectors.
+
+2004-07-03  Michael Margraf <michael.margraf@alumni.tu-berlin.de>
+
+	* fixed all bugs in s-parameter noise analysis.
+
+2004-07-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_netlist.l: Fixed bug when writing simply 'j' or 'i' with
+	no trailing number.
+
+	* equation.cpp (equation_constants): New function which adds
+	some equation constants (e.g. pi) to the list of equations.
+
+	* matvec.h (class matvec): New class implementing a vector
+	of matrices.  Still a lot to do...
+
+	* nodelist.cpp: Additional function which returns a text
+	representation of the circuit names connected to the given
+	node number.
+
+	* matrix.cpp: Fixed a bug in H to S matrix transformation.
+
+	* eqnsys.cpp (solve_lu): Throwing exception if equation system
+	cannot be solved with LU decomposition.
+
+	* dcsolver.cpp: Using new exception stack code to throw and
+	catch possible error conditions.
+
+	* exception.h (class exception): New class implementing
+	an exception which can be put onto the exception stack.
+
+	* exceptionstack.h (class exceptionstack): New class 
+	implementing a simple exception stack.
+
+2004-07-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp (createSP): S-parameter solver outputs its
+	results in 'S[a,b]' notation, was 'Sab'.
+
+	* check_netlist.cpp: Netlist checker now also checks whether
+	properties are integers or real numbers.
+
+2004-06-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* sweep.cpp: Fixed bug in logarithmic sweep creation.
+
+	* check_netlist.cpp: Allowing the new properties of the '.SP'
+	analysis to be part of the netlist.
+	Checking whether required string properties are identifiers
+	in fact.
+	Fixed bug: First evaluating unit scale, then checking for range.
+
+	* spsolver.cpp: Now also uses the 'Type', 'Start', 'Stop' and
+	'Points' properties to generate frequency sweeps using the new
+	sweep class.
+
+	* complex.cpp: Added printing functionality for debugging.
+
+	* matrix.cpp (twoport): Implemented all kinds of matrix 
+	conversions.
+
+	* complex.cpp: Using 'pivotising' for '/' operator on complex
+	numbers to avoid numerical overflow and underrun on a low level.
+
+2004-06-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* parasweep.cpp: Using the new sweep classes for the parameter
+	sweep values.
+
+	* vector.cpp: Fixed a bug in the unary '-' operator which caused
+	the given vector to be modified.  Now it returns a new vector.
+
+	* equation.cpp: Allowing the special 'Export' equation
+	indicating whether the variables defined within the same equation
+	instance are output into the dataset or not.
+
+	* parse_netlist.y: Saving the equation instance name for the
+	new 'Export' equation.
+
+	* scan_netlist.l: Allowing 'x.x' and 'x[a,b]' syntax for 
+	identifiers when scanning equations.
+
+	* dcsolver.cpp: Implemented usage of DC simulation options:
+	MaxIter (maximum iteration), saveOPs (save operating points),
+	reltol (relative tolerance for convergence), abstol (absolute
+	tolerance for current) and vntol (absolute tolerance for 
+	voltage).
+	(createI): Save only current through real voltage sources and
+	explicit current probes if 'saveOPs' is not given.
+	Changed naming scheme of dataset output variables.  It is now:
+	for node voltages: 'node.V', for currents: 'component.I', for
+	operating points: 'component.xx'.
+
+	* check_netlist.cpp (definition_available): Added 'DispModel'
+	(i.e dispersion model) to microstrip components.
+
+2004-06-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Started to implemented noise analysis.
+	Using normalized correlation matrices.
+
+	* check_netlist.cpp (definition_available): Added Noise, NoiseIP
+	and NoiseOP to S-parameter simulation properties.
+
+2004-06-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Additionally computing noise wave correlation
+	matrices.  To be verified and tested...
+
+	* input.cpp: Assigning default values to component properties
+	which are optional and not given in the netlist.
+
+	* circuit.cpp: Circuit contains a new property indicating
+	whether it is non-linear or not.
+	Added noise wave correlation matrix to circuit.
+
+	* check_netlist.cpp (definition_available): Component
+	definitions now also include allowed ranges and default values.
+	Property values are checked for their value range.
+
+2004-06-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* sweep.cpp: Implemented list, constant, linear and logarithmic
+	sweep definitions.
+
+	* sweep.h (class sweep): New class being the base class for
+	linear, logarithmic, constant, etc. sweeps.
+
+	* ucs.cpp (main): Implemented help message when passing -h or
+	--help options to the main program.
+
+	* spsolver.cpp (dropConnections): Removing inserted circuits
+	in the correct order (indicated by those time stamps).  This
+	fixes a bug in s-parameter analysis causing wrong kind of nodes
+	in the netlist.
+
+	* net.cpp (insertedCircuit): Saving 'time stamp' of inserted
+	circuit for s-parameter analysis.
+
+	* circuit.h (class circuit): New private variable saving the
+	'time stamp' of an inserted circuit.
+
+	* check_netlist.cpp: New generic function checking special
+	identifiers in component properties, e.g. Type="nfet" in the
+	JFET component.
+	Allowing 'Type' property in JFET component.
+
+2004-06-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* circuit.cpp (copyMatrixS): New function copying S-parameter
+	matrix elements to the circuit.
+
+2004-06-16  Michael Margraf  <michael.margraf@alumni.tu-berlin.de>
+
+	* check_netlist.cpp: Added parameter "Symbol" to "Resistor".
+
+2004-06-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_netlist.cpp: Renamed some diode parameters.
+
+2004-06-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* nodelist.cpp: Also saves the internal flag of each node
+	added to the nodelist.
+
+	* node.cpp: Node have now an internal flag.
+
+	* dcsolver.cpp: When solving DC networks initDC() is now 
+	called before setting up the node list and the voltage source
+	list.
+	(assignVoltageSources): New function re-assigning the voltage
+	source numbers.
+	When saving node voltages and branch current into the dataset
+	it is checked whether these are internal or not.
+
+	* circuit.h (class circuit): The initDC() function takes
+	now an argument containing the actual DC analysis object.
+	(class circuit): A built in DC voltage can be marked as
+	internal as well.
+
+	* circuit.cpp: It is now possible to mark circuit nodes to
+	be for internal use only (series resistances of non-linear
+	devices).
+	(createInternal): Returns name for internal nodes/circuits.
+
+	* check_netlist.cpp: Added optional Rs parameter to diode
+	model.
+
+2004-06-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_dataset.l, scan_netlist.l, scan_touchstone.l: Included
+	<io.h> for MinGW32 platform (native Win32).
+
+2004-05-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* circuit.cpp: Fixed assertion bug when s-parameter analysis
+	uses arbitrary circuits with more than maximum number of ports
+	allowed during dc analysis.
+
+2004-05-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* circuit.cpp: Swapped B matrix indices and changed all DC
+	model callers (attenuator, biastee, cccs, ccvs, circulator, 
+	dcfeed,	inductor, isolator, strafo, trafo, vac, vccs, vcvs,
+	vdc, gyrator) and of course the dcsolver.
+
+2004-05-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp: Fixed a bug which occurred when a function
+	like max() or avg() is used to create a value from a dataset.
+	This kind of function produces now an independent dataset.
+
+	* circuit.h (MAX_CIR_VSRCS): Raised the maximum number of
+	builtin voltage sources (for circulator).
+
+	* circuit.cpp: Checking for maximum number of circuit nodes
+	(ports) and maximum number of builtin voltage sources.
+
+2004-05-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* matrix.cpp: Optimized copy constructors.
+	new functions: detGauss() and inverseGaussJordan().  These
+	functions compute determinant and inverse of a matrix using
+	Gauss based algorithms.
+
+	* eqnsys.cpp: Fixed and improved Gauss and Gauss-Jordan 
+	algorithm for solving equations systems.
+
+2004-05-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_netlist.cpp: Check for duplicate parameter names in 
+	parameter sweeps, but allow them in same order sweeps.
+
+	* strlist.cpp: New function index() returning the position of
+	the first occurrence of the given string.
+
+	* check_netlist.cpp: Checking for duplicate definitions in 
+	equations and parameter sweep variables.
+
+	* dataset.cpp: Fixed dataset output for single DC analyses.
+
+	* parasweep.cpp: Fixed assignment of variable dataset
+	dependencies.
+
+2004-05-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp: Fixed a bug occurring when solution of equations
+	appear to be plain reference vectors.
+	Made equations depending on independent data vectors of the dataset
+	dependent vectors.
+
+2004-05-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_netlist.cpp: Checking presence and necessity of DC
+	analysis.
+
+2004-05-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* net.cpp: Implemented implicit dependencies of analyses.
+
+	* analysis.cpp (delAnalysis): Implemented counterpart of
+	addAnalysis().
+
+	* check_netlist.cpp: Appended some more required model
+	parameters to the diode model.
+
+	* spsolver.cpp: Implemented a function which restores the 
+	original netlist.  Modifications were necessary because of the
+	actual analysis algorithm.
+
+2004-05-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* vector.cpp: Fixed copy constructor.
+
+2004-04-28  Michael Margraf  <michael.margraf@alumni.tu-berlin.de>
+
+	* class complex: sin(), cos(), tan(), cot(), arcsin(), arccos(),
+	arctan(), arccot(), sinh(), cosh(), tanh(), coth(), arsinh(),
+	arcosh(), artanh(), arcoth(), log2()
+	* class vector: sin(), cos(), tan(), cot(), arcsin(), arccos(),
+	arctan(), arccot(), sinh(), cosh(), tanh(), coth(), arsinh(),
+	arcosh(), artanh(), arcoth(), max(), min(), sum(), prod(), avg(),
+	log2()
+	* class evaluate: sin(), cos(), tan(), cot(), arcsin(), arccos(),
+	arctan(), arccot(), sinh(), cosh(), tanh(), coth(), arsinh(),
+	arcosh(), artanh(), arcoth(), max(), min(), sum(), prod(), avg(),
+	log2()
+	* fixed many bugs in class evaluate/complex
+
+2004-04-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* matrix.cpp: Implemented all remaining matrix conversions not
+	limited	to two-port parameters (ytos, ztos, ytoz, ztoy).
+
+2004-04-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* complex.cpp: Added remaining modulo '%' operators.
+
+	* dcsolver.cpp: Fixed memory leak when re-using a DC analysis.
+
+	* net.cpp: Fixed same order parameter sweep definitions.
+
+2004-04-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* input.cpp: Putting substrate definitions into an environment
+	and assigning these to the appropriate components.
+	(createSubstrate): New function creating substrate instances.
+
+	* check_netlist.cpp: Added substrate and microstrip line
+	to the list of available netlist definitions.  Allowing 
+	variables in microstrip elements.
+
+	* variable.h (class variable): Changed variable content
+	within environments.
+
+	* property.cpp (getDouble): Returning changed variable content.
+
+	* parasweep.cpp: Using parameter sweep variable as now
+	defined in the environment.
+
+	* input.cpp: Putting correct parameter sweep variable into
+	environment.
+
+	* check_netlist.cpp: Validating parameter sweeps.  Detecting 
+	cyclic definitions.
+
+2004-04-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* vector.cpp: Replaced 'module()' functions by '%' operator.
+
+	* scan_netlist.l: Passing '%' character to parser.
+
+	* parse_netlist.y: Added '%' operator.
+
+	* evaluate.cpp: Fixed unary minus and sqrt functions.
+
+	* equation.cpp: Checking return type of evaluators.  Displaying
+	the '%' operator like '+' and alike operators.  Giving notice
+	for undefined variables if necessary.
+
+	* complex.cpp: Defined '%' operator instead of 'modulo()'
+	function.
+
+2004-04-18  Michael Margraf  <michael.margraf@alumni.tu-berlin.de>
+
+	* class complex: dB(), sqrt(), exp(), ln(), log10(),
+	floor(), modulo(), 3x pow()
+	* class vector:  set(), dB(), sqrt(), exp(), ln(), log10(),
+	3x modulo(), 3x pow(), operator - (), operator  = ()
+	* class evaluate: plus, minus, times, over, modulo, power,
+	real, imag, abs, conj, norm, phase, arg, dB, sqrt, exp, ln,
+	log10
+
+2004-04-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Adding (independent) frequency vector only once
+	to output dataset.
+
+	* parasweep.cpp: Fixed variable dependency assignments.
+
+	* net.cpp: Reordering analysis runtime correctly.
+
+	* dcsolver.cpp: Removed unnecessary frequency vector in output
+	dataset.
+
+	* dataset.cpp: New helper functions.
+
+	* check_netlist.cpp: New required parameter for variable sweep
+	definitions "Sim".
+
+	* analysis.cpp (addAnalysis): New function.  Adds a sub analysis
+	to the analysis object.
+
+2004-04-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* logging.c: Check whether logging is possible.
+
+	* dcsolver.cpp: Using complete representation of the D-MNA matrix
+	including off-diagonal elements.  Changed all callers.
+
+2004-03-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* vector.cpp: Fixed a bug in the copy constructor.
+
+	* ucs.cpp (main): Calling the global equation solver.
+
+	* property.cpp: Fixed an uninitialized value bug.
+
+	* logging.c: Fixed a buffer overrun bug.
+
+	* evaluate.cpp: Added some examples for the application
+	implementations.
+
+	* equation.cpp: Added the final evaluate() function to each
+	type of equation node.
+	(equation_solver): This new function is called in order to
+	run the global equation solver.
+
+	* equation.cpp: Added toString() function to each type of
+	equation node.
+
+2004-03-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* evaluate.h (class evaluate): New class implementing the
+	actual evaluation function (applications) for the equations
+	in Qucs.
+
+	* equation.cpp (reorderEquations): The function reorders 
+	equations and determines whether they can be evaluated or not
+	in this new order.
+	(applyTypes): Type checking function implemented.
+
+2004-03-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* strlist.cpp (toString, join): Two new functions.  One for
+	returning a string representation of a string list and the
+	other for joining two string lists.
+
+	* equation.cpp (detectCycles, findDuplicate): New functions
+	determining whether there are or duplicate cyclic equations.
+
+2004-03-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* equation.cpp: Started to implement the equation checker.
+
+2004-03-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_netlist.l: Introduced new EQN state for parsing 
+	equations in netlists.  The parser+scanner is now working 
+	correctly.
+
+2004-03-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_netlist.y: Added parser and scanner rules for 
+	equations inside netlists.
+
+2004-02-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* eqnsys.cpp (solve_lu): New equation system solver implemented
+	using so called LU decomposition.
+
+2004-02-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* eqnsys.cpp (solve_gauss_jordan): New solution method for
+	linear equation systems implemented.
+
+	* Makefile.am (libqucsator_a_SOURCES): The libqucsator library
+	can be used by the Qucs GUI in order to handle datasets.  The
+	header 'libqucsator.h' must be included.
+
+2004-02-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* operatingpoint.cpp: New class representing an operating
+	point of a non-linear component.
+
+	* circuit.cpp: Added the functionality in order to handle
+	the operating point of non-linear components.
+
+	* object.cpp (hasProperty): New function checking whether an
+	object has a certain property or not.
+
+	* dcsolver.cpp: Generalized the G matrix creation to apply
+	also to components with more than two ports.
+
+	* circuit.cpp (setY, getY): Made these functions depending on
+	the specified port numbers.
+
+2004-02-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* matrix.cpp (exchange): New function for swapping two rows
+	of a matrix object.  Used during Gaussian elimination.
+
+	* eqnsys.cpp: New class implementing a linear equation system
+	solver with different kind of algorithms.
+
+2004-02-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* vector.cpp: Vectors do have an arbitrary origin.  Used
+	to identify analysis results.
+
+	* variable.cpp: Added loads of operations regarding double
+	values.
+
+	* ucs.cpp (main): Creating root environment and passing
+	it down to analyses.
+
+	* property.cpp, object.cpp: Properties can now also be variables.
+
+	* net.cpp: Ordering analysis for additional parameter sweeps
+	implemented.
+
+	* input.cpp: Handling variables correctly.  Creating variables
+	in a certain environment and using them later works somehow.
+
+	* dcsolver.cpp: Temporarily removed the frequency vector
+	from the DC dataset result (must be fixed).
+
+	* dataset.cpp: It's now possible to assign dependencies to
+	variable vectors in a dataset originated by some analysis (or
+	something else).
+
+	* check_netlist.c: The '.SW' definition is now accepted by
+	the netlist parser.  Variables can now be resolved by parameter
+	sweep definitions.
+
+	* analysis.cpp: Added type identifier, environment and
+	sub analysis.
+
+	* Makefile.am (qucsator_SOURCES): Added the new source files.
+
+	* parasweep.cpp, parasweep.h: Parameter sweep implementation.
+
+	* environment.cpp, environment.h: New class implementing
+	a variable name space.
+
+2004-02-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcsolver.cpp: Additionally saving the reference node voltage
+	value into the components's nodes.
+
+	* check_netlist.c, input.cpp: Incorporated the new DC current
+	probe.
+	
+	* check_netlist.c: Allowing the new parameter 'n' (ideality
+	coefficient of the saturation current).
+
+	* variable.cpp, variable.h: New files.  The variable class
+	is going to be the big calculator merging all kinds of math
+	types.  Also it will be the base object for calculation
+	environments and global variables.
+
+2004-02-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcsolver.cpp: Non-linear DC circuit analysis is somewhat
+	working now.
+
+2004-02-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcsolver.cpp: First attempt to implement nonlinear
+	DC analysis.  Not yet working.
+
+	* matrix.cpp: Fixed determinant result for empty matrices.
+
+2004-01-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcsolver.cpp: It's now possible to simulate circuits with
+	more than a single built in voltage source.
+
+	* circuit.cpp: Applied changes for circuits with more than a
+	single built in voltage source.
+
+2004-01-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcsolver.cpp: Generalized the creation of the B, C, D, E and
+	I matrices for dependent sources like VCCS, CCCS, etc.
+
+	* circuit.h (class circuit): Renamed 'G' functionality into
+	'Y' preparing it for use in AC analysis.  Also added some more
+	functionality regarding the MNA.
+
+2004-01-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* circuit.h (class circuit): Added microstrip substrate 
+	property to basic circuit class.
+
+2004-01-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_dataset.y: Fixed reduce/reduce conflict.
+
+	* scan_dataset.l: Added explicit rule for complex number.
+
+2003-12-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* spsolver.cpp: Now running calcS() instead of calc().
+
+	* net.cpp: Now counts the DC voltage sources in a circuit 
+	list.
+
+	* matrix.cpp: Fixed bug in matrix multiplication.
+
+	* circuit.cpp: Each circuit has now 'type' field containing
+	a circuit identifier.  Renamed calc() to calcS() and added a
+	virtual calcG() method.  Changed all components.
+
+	* check_netlist.c: Applied changes for DC analysis.
+
+	* dcsolver.cpp, dcsolver.h, nodelist.cpp, nodelist.h: New 
+	files implementing the DC analysis for passive elements for
+	now.
+
+2003-12-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* analysis.cpp, analysis.h, spsolver.cpp, spsolver.h: New files.
+	Reorganized the source code in order to prepare it for other
+	analysis types.
+
+2003-12-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* input.cpp (createCircuit): Added 'Vdc', 'Idc' and 'Vac'
+	components to the list of available components.
+
+2003-12-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_netlist.c: Made modifications regarding the
+	symmetrical transformer.
+
+	* input.cpp (createCircuit): Added 'sTr' component to the
+	list of available circuit components.
+
+2003-12-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* matrix.cpp (stoy, stoz): New matrix conversion routines.
+
+2003-12-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* net.cpp: Added support for differential s parameter 
+	ports.
+
+2003-11-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* check_netlist.c: Checking the number of .SP actions and
+	the number of Pac definitions.
+
+2003-11-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* matrix.cpp, matrix.h: Added new matrix computation class.
+	Implemented all function necessary for port impedance
+	transformations (add, sub, mul, inverse, etc.).
+
+2003-11-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* parse_touchstone.y: New parser grammar for the touchstone file
+	format implemented.
+
+	* scan_touchstone.l: New scanner (lexer) for the touchstone file
+	format added.  Adjusted Makefile rule.
+
+	* vector.cpp: The 'add()' method can now also join the vector
+	object data with another vector.
+
+	* dataset.cpp (load_touchstone): Added import functionality for
+	the touchstone file format.
+
+	* strlist.cpp: Two new function 'contains()' and 'get()'
+	implemented.
+
+	* scan_dataset.l: Allow dataset values to be normal integers.
+
+2003-11-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* checker.c: Fixed bug in available component list.
+
+2003-11-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* scan_dataset.l, parse_dataset.y, check_dataset.cpp: Scanner,
+	parser and checker functionality needed for the dataset::load()
+	functionality.  Makefile rules added.
+
+	* dataset.cpp (load): New function.  Can be uses to read a
+	dataset from a file.
+
+	* vector.cpp: New function reverse(), added dependency list
+	and original request size.
+
+	* strlist.cpp, strlist.h: New class representing a list
+	of strings.  Added those files to 'Makefile.am'.
+
+2003-11-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* logging.c: Documented this file's functions.

@@ -1,0 +1,10 @@
+parsing netlist...
+checking netlist...
+netlist content
+      1 AC instances
+      1 C instances
+      1 L instances
+      1 R instances
+      1 SW instances
+      1 Vac instances
+creating netlist...

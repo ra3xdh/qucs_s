@@ -1,0 +1,1565 @@
+2011-04-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* strafo.cpp, trafo.cpp: Using AC model for transient simulation
+	of (symmetrical) trafo.
+
+2011-03-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* hybrid.cpp: Replaced sqrt(2) by M_SQRT2.
+
+	* devices/tunneldiode.cpp: New tunnel diode model implemented.
+
+	* hybrid.cpp: Hybrid model added.
+
+	* ctline.cpp: New ideal coupled transmission line model
+	implemented.
+
+2011-03-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* strafo.cpp, trafo.cpp: Fixed DC model of transformers.
+
+2011-03-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* coaxline.cpp: Fixed factor of 2 in conductor loss calculation.
+
+2010-03-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* amplifier.cpp: Fixed noise implementation of amplifier.  Input
+	deferred noise now independent from gain.
+
+2009-11-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* spfile.cpp: Using new interpolator class functionality for
+	S-parameter and noise parameter interpolations.
+
+	* spfile.h (class spfile_vector): Put the former structure into a
+	real class for easier use.
+
+2009-11-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* ifile.cpp, vfile.cpp: Using new interpolator class for sample
+	interpolation.
+
+2009-05-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* coaxline.cpp: Fixed computation of cut-off frequencies.
+
+2009-04-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* digital/digital.cpp: Added transfer function scaling factor
+	property to digital models.
+
+2009-04-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/bjt.cpp (cirdef): Allowing negative 'Xtb' values.
+
+2009-04-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msgap.cpp: Fixed property fetching bug for the gap
+	width.
+
+2009-04-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* rlcg.cpp: Added new transmission line defined by RLCG loads.
+
+2009-03-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* relais.cpp: Fixed on resistance value.  Same bug as in the time
+	switch previously.
+
+2009-03-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msrstub.cpp: New component: microstrip radial stub.
+
+2008-11-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* digital/buffer.cpp: Added new digital buffer component.
+
+2008-11-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* tswitch.cpp: Fixed severe bug in time switch.  Thanks to Arne
+	Woerner for reporting it!
+
+2008-10-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/jfet.cpp (cirdef): Adjusted property range for 'Vt0tc'
+	and 'Betatce' parameters to have no limitations.
+
+2008-10-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* rectline.cpp (cirdef): Added 'Material' parameter.
+
+2008-10-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* rectline.cpp: Applied temperature dependent waveguide model
+	provided by Andrea Zonca.  Thanks a lot.
+
+2008-07-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* vprobe.cpp: Fixed bug in the S-parameters of this component.
+
+2008-06-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* rectline.cpp: Added new rectangular waveguide component provided
+	by Bastien.
+
+2008-06-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* amplifier.cpp: Implemented noise figure 'NF' property.
+
+2008-03-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/thyristor.cpp, devices/triac.cpp, devices/diac.cpp:
+	Improved convergence during transient simulation. Thanks to
+	Michael.
+
+2008-02-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* rfedd.cpp: Implemented T-parameters.
+
+2008-02-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* rfedd.cpp: Implemented H-, G- and A- parameters.
+
+2008-02-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* rfedd.cpp: Using extended MNA entries for AC analysis when
+	specifying S- or Z-parameters.  Allowing zero-frequency evaluation
+	for DC analysis.
+
+2008-02-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* rfedd.cpp: Obtaining the real equation variable reference name
+	instead of constructing the equation name ourselves.
+
+2008-02-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* rfedd.cpp: Added preliminary implementation of an equation
+	defined RF device.
+
+2008-01-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/thyristor.cpp, devices/triac.cpp: Small fixes in
+	implementation.
+
+2008-01-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/thyristor.cpp, devices/triac.cpp: Added preliminary
+	implementations of thyristor and triac.
+
+2008-01-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diac.cpp: Fixed memory leak by using new
+	setInternalNode() function of the circuit class.
+
+2008-01-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diac.cpp: Parameterized the Diac a bit more.  Added some
+	properties.
+
+2008-01-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diac.cpp: Fixed implementation of Diac.  Works now also
+	for transient simulation.
+
+2008-01-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diac.h (class diac): Added preliminary diac
+	implementation.
+
+2007-10-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* ifile.h (class ifile): Added new file based current source.
+
+2007-10-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* vfile.cpp: Implemented new voltage gain (G) and delay time (T)
+	properties.
+
+2007-09-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/eqndefined.cpp: Fixed result interpretation for non-real
+	valued equation results (i.e. complex when e.g. using sqrt).
+
+2007-09-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/eqndefined.cpp: Reducing number of equation evaluations
+	using the new 'skip' feature of the equation solver on the one
+	hand and by avoiding running the equation evaluations of the EDD
+	twice for a single simulation step.
+
+2007-08-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/eqndefined.cpp: Fixed a bug due to use of several
+	subcircuits of the same type including EDDs.  Equation results in
+	environment depending on subcircuit parameters passed into the EDD
+	equations are now updated correctly.
+
+2007-08-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* vfile.cpp: Allowing both to be used as file formats: native
+	qucsdata and CSV.
+
+2007-08-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* vfile.cpp: Some minor code cleanups.
+
+2007-08-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* vfile.h (class vfile): New component: file based voltage source.
+	Thanks a lot to Gunther!
+
+2007-06-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/eqndefined.cpp: Fixed a bug leading to wrong values in
+	the equations when there are multiple instances of a equation
+	defined device.  It only showed up when equations use local
+	variables or subcircuit parameters.
+
+2007-05-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* mutualx.cpp: Finally fixed S-parameter calculation.
+
+2007-05-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* mutualx.cpp: Tried to fix the Z-matrix representation.
+
+2007-05-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* mutualx.cpp: Finished implementation of multiple mutual inductor
+	component (S-parameter callback).
+
+2007-05-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* mutualx.h (class mutualx): New component.  General multiple
+	mutual inductances.  TODO: S-parameters.
+
+2007-05-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/eqndefined.cpp: Fixed bug occurring when there are
+	multiple instances of an EDD enclosed in a sub-circuit.  These
+	reuse the equations in the environment.
+
+2007-04-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/eqndefined.cpp: Allowing I1, I2, etc. in charge
+	equations for now.  Some more bug fixes.
+
+2007-04-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/eqndefined.cpp: Fixed bug when using the EDD in a
+	subcircuit.
+
+2007-04-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/eqndefined.cpp (calcHB): Added HB callbacks.  Fixed
+	bug in DC calculations.
+
+2007-04-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/eqndefined.h (class eqndefined): Added the equation
+	defined device (i.e. explicit equations for I(V) and Q(V)).
+
+2007-04-15  Stefan Jahn  <stefan@lkcc.org>
+
+	* vexp.h (class vexp), iexp.h (class iexp): New components:
+	exponential voltage and current pulse sources.
+
+2007-03-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* vac.cpp, iac.cpp: Adjusted time dependency of damping
+	factor.
+
+	* microstrip/mscross.cpp: Compute omega only once.
+
+	* microstrip/bondwire.cpp: Fixed some typos in the doxygen
+	documentation/comments.
+
+2007-03-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* twistedpair.cpp: Again fixed attenuation model.  Added
+	an appropriate DC model.
+
+2007-03-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* twistedpair.cpp: Added preliminary loss model as well as
+	the noise models for AC and SP due to the losses.
+
+2007-03-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diode.cpp: Fixed derivative for knee current.
+
+2007-02-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diode.cpp: Implemented knee current parameter Ikf.
+
+2007-02-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* tline4p.cpp: Implemented transient simulation model of
+	the 4-terminal transmission line.
+
+2007-02-18  Michael Margraf  <michael.margraf@alumni.tu-berlin.de>
+
+	* microstrip/mscross.cpp: fixed bug in calcCap() equation
+
+2007-02-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msstep.cpp: Fixed Z-parameter matrix calculation.
+	Thanks <c.peschke@gsi.de> for pointing out this bug.
+
+2007-02-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/mscross.cpp: Hopefully finally fixed the
+	microstrip cross junction model.
+
+2007-02-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/mscross.cpp: Applied asymmetric corrections for
+	the microstrip cross junction model.  There is still an open
+	issue about the formulas...
+
+2007-02-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/mscross.cpp: Started to implement the microstrip
+	cross.  Testing needed.  Also extension for asymmetric cross
+	need some extra lines, yet.
+
+2007-02-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* vprobe.cpp: Saving both real and imaginary part of the
+	voltage across of the voltage probe.  Fixes the values
+	given during AC analysis.
+
+2007-01-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* tline4p.cpp, twistedpair.cpp: Fixed S-parameter calculation.
+
+2007-01-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/bondwire.cpp: Fixed some bugs in the bondwire
+	model.
+
+2007-01-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* twistedpair.h (class twistedpair): New component: twisted
+	pair transmission line.
+
+	* tline4p.h (class tline4p): New component: ideal differential
+	transmission line.
+
+2007-01-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/bondwire.cpp: Fixed segfault in bondwire model.
+
+2006-12-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/bondwire.h (class bondwire): New bondwire model
+	implementation.  Thanks to Bastien.
+
+2006-12-16  Michael Margraf  <michael.margraf@alumni.tu-berlin.de>
+
+	* devices/mosfet.cpp: allow Nsub = 0 without warning
+
+2006-09-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* vrect.cpp, vpulse.cpp, vac.cpp, irect.cpp, ipulse.cpp,
+	iac.cpp: Consider source factor (for source stepping) during
+	transient analysis.
+
+2006-09-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/bjt.cpp: Implemented the excess phase Ptf during
+	transient analysis and also fixed the AC implementation of this
+	model parameter for !defined (NEWSGP).
+
+2006-09-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/bjt.cpp: Fixed implementation of transcapacitance
+	dQbe/dVbc.  Also fixed NEWSGP model implementation.
+
+2006-08-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* vrect.cpp, irect.cpp: Added delay, fall and rise times
+	as properties.
+
+2006-07-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* capacitor.cpp, inductor.cpp: Use initil condition only if
+	it is really given in the netlist.
+
+2006-07-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* inductor.cpp:  Added initial condition 'I' (current through
+	inductor) for transient	analysis.
+
+	* capacitor.cpp: Added initial condition 'V' (voltage across
+	capacitor) for transient analysis.
+
+2006-05-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* tline.cpp: Damping factor now in 1/m and not Neper anymore.
+
+	* vac.cpp, iac.cpp: Normalization of 'Theta' property regarding
+	frequency.
+
+2006-05-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* spfile.cpp: Implemented 'shortall' and 'short'.  One including
+	and the other excluding the reference node.
+
+2006-05-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diode.cpp: Give a warning for probably unphysical
+	model parameter 'M'.
+
+	* devices/bjt.cpp: Give a warning for probably unphysical
+	model parameters 'Nf' and 'Nr'.
+
+2006-05-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/mosfet.cpp, devices/jfet.cpp, devices/diode.cpp,
+	devices/bjt.cpp: Implemented restartDC() callback.
+
+2006-04-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* spfile.cpp: Implemented new 'duringDC' property.  The
+	component represents now either an open (default) or a short
+	during a DC simulation.
+
+2006-04-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diode.cpp: Finished HB callbacks.
+
+	* devices/bjt.cpp: New function loadOperatingPoints()
+	implemented, thus difference between exact operating
+	points and those used for next iteration possible.
+
+2006-04-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/bjt.cpp: Fixed a bug during transient analysis due
+	to wrong Cbcx computation.
+
+2006-04-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diode.cpp (calcHB): Setup callbacks for the HB
+	analysis.  First non-linear element to be implemented...
+
+2006-04-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* short.h (class ashort): A new helper component.  Probably
+	helpful during HB analysis.
+
+	* devices/bjt.cpp: Fixed a segfault bug caused by the extra
+	Cbcx capacitor and an successive SP or AC noise analysis.
+
+2006-03-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* vac.cpp, pac.cpp: Implemented HB callbacks.
+
+2006-03-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* resistor.cpp, inductor.cpp, capacitor.cpp: Implemented HB
+	callbacks.
+
+2006-03-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* tswitch.cpp: Fixed 'time' property handling.  Even number
+	of values means repetition of switches, odd a finite sequence.
+
+2006-03-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* digital/digital.cpp: Fixed minor bug.
+
+2006-03-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* digital/digital.cpp (calcTR): Implemented delay times of
+	digital components during transient analysis.
+
+2006-03-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* vpm.h (class vpm), vam.h (class vam), tswitch.h (class tswitch),
+	relais.h (class relais): Added four new components.
+
+	* tline.cpp: Transmission line transient analysis implemented.
+	Also noise due to losses implemented.
+
+2006-02-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* ccvs.cpp, vcvs.cpp, cccs.cpp, vccs.cpp: Fixed history memory
+	leak which appeared when sweeping transient analyses.
+
+2006-02-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* ccvs.cpp, vcvs.cpp, cccs.cpp: Implemented delay time for
+	transient analysis.
+
+2006-02-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* tline.cpp: Implemented constant 'Alpha' loss for AC and S-
+	parameter analysis.
+
+	* iac.cpp, vac.cpp: Implemented 'Theta' damping factor during
+	transient analysis.
+
+2006-02-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* vccs.cpp: Implemented delay time for transient analysis.
+	Don't know (yet) why, but seems like working...
+
+	* resistor.cpp: Fixed AC noise calculation with zero resistance
+	applied.
+
+2006-02-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* vccs.cpp, vcvs.cpp, ccvs.cpp, cccs.cpp: Implemented
+	preliminary support for transient response without time delay.
+
+2006-02-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* vprobe.h (class vprobe): New component: voltage probe for
+	measuring differential voltages.
+
+2006-01-29  Stefan Jahn  <stefan@lkcc.org>
+
+	* resistor.cpp: Implemented temperature dependencies of the
+	resistor.  New properties: Tc1, Tc2 and Tnom.  Now some bandgaps
+	can be designed...
+
+	* devices/diode.cpp, devices/bjt.cpp, devices/jfet.cpp,
+	devices/mosfet.cpp: Tell external resistors to be controlled
+	from this device.
+
+	* devices/bjt.cpp: Fixed a segfault bug.
+
+	* coaxline.cpp, microstrip/cpwline.cpp, microstrip/msline.cpp,
+	microstrip/mscoupled.cpp: Saving some characteristic values.
+
+2006-01-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* coaxline.h (class coaxline): Implemented new component:
+	coaxial cable.
+
+2006-01-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/cpwline.cpp (isinf): Fixed isinf() declaration
+	for solaris9 systems.
+
+2006-01-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* digital/xnor.cpp, digital/xor.cpp, digital/inverter.cpp: 
+	Using exact versions of the below functions.
+
+	* digital/digital.cpp: Using two versions of calcTransfer()
+	and calcDerivative().  One exact and one slightly modified 
+	multiplied by (1 - GMin).
+
+2006-01-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* coupler.h (class coupler): Implemented new component: ideal
+	coupler.
+
+2005-12-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/device.h (class device): Documented device
+	functions in the header file.  Simplified the split
+	functionality for devices.  Changed all callers.
+
+2005-12-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* digital/digital.cpp: Fixed wrong derivative of digital
+	components.
+
+	* devices/mosfet.cpp: Implemented temperature model.
+
+	* devices/jfet.cpp: Implemented area and temperature model.
+
+	* devices/device.cpp: Added some temperature functions for
+	device models.
+
+	* devices/bjt.cpp: Implemented area and temperature model.
+
+2005-12-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/device.cpp (intrinsicDensity, Egap): Added functions
+	for temperature dependencies of energy bandgap and intrinsic
+	density.
+
+	* devices/diode.cpp: Implemented temperature and area
+	dependencies of the diode model.
+
+	* digital/digital.cpp: Fixed numerical problems of non-linear
+	digital components during transient simlation.  Also fixed
+	bug in AC and SP simulations.
+
+2005-12-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* digital/digisource.h (class digisource): Added new component:
+	the analog model of the digital source.
+
+2005-11-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* digital/and.h (class logicand): Prefixed and, nand, or, nor,
+	xor and xnor with 'logic' to avoid clash with ISO C++ reserved
+	words.
+
+2005-11-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* digital/xnor.h, digital/xor.h, digital/nand.h, digital/and.h,
+	digital/nor.h, digital/or.h, digital/inverter.h: New files
+	implementing the analog models of the digital components.
+
+	* digital/digital.h (class digital): Implemented base class
+	for multiple digital input circuits.
+
+2005-11-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* mutual2.cpp: Fixed bug in three mutual inductors.  Inductor
+	two and three were interchanged during transient analysis.
+
+2005-10-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* resistor.cpp: Allow negative noise for negative resistors
+	for deembedding purposes.
+
+2005-10-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* spfile.cpp: Added cubic spline interpolation.  New
+	componenent property 'Interpolator'.
+
+2005-10-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* ivnoise.h (class ivnoise), vvnoise.h (class vvnoise): New
+	components: correlated noise current-voltage and voltage-
+	voltage sources.
+
+2005-10-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* mutual.h (class mutual), mutual2.h (class mutual2): New
+	components: two and three mutual inductors.
+
+	* iinoise.h (class iinoise): New component: correlated current
+	sources.
+
+2005-08-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diode.cpp, devices/jfet.cpp, devices/mosfet.cpp,
+	devices/bjt.cpp: Fixed noise calculation formulas.
+
+2005-06-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* opamp.cpp: Fixed non-linear DC equations of operational
+	amplifier.
+
+2005-05-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Don't calculate noise for strip
+	lengths less than zero.
+
+	* microstrip/mstee.cpp: Fixed AC noise initialization of
+	accompanied microstrip lines.
+
+2005-05-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/cpwstep.cpp: Added correct S-parameter calculation.
+
+2005-05-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/cpwstep.h (class cpwstep): Added new coplanar
+	waveguide impedance step implementation.  S-parameters still
+	missing.
+
+	* microstrip/mscorner.cpp, microstrip/msmbend.cpp,
+	microstrip/msstep.cpp: Fixed DC voltage source.
+
+2005-05-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/cpwgap.h (class cpwgap): Implemented coplanar
+	waveguide series gap discontinuity.
+
+2005-04-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/cpwline.cpp: Added static analyseQuasiStatic()
+	and analyseDispersion() function for use by other coplanar
+	components.
+
+	* devices/device.cpp: New pnJunctionBIP() function for
+	calculating current and conductance of bipolar pn-junction.
+
+	* microstrip/cpwopen.h (class cpwopen):  Implemented AC, DC
+	and S-parameter calculation for coplanar waveguide open	circuit.
+
+	* microstrip/cpwshort.h (class cpwshort): Implemented AC, DC
+	and S-parameter calculation for coplanar waveguide short
+	circuit.
+
+2005-04-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* biastee.cpp, dcblock.cpp, dcfeed.cpp: Implemented transient
+	models of these components using L and C equivalents.
+
+2005-04-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* strafo.cpp: Fixed S-parameter calculation.  Thanks to Vincent
+	for pointing out the misbehaviour and to Michael for fixing it.
+
+	* devices/mosfet.cpp, devices/jfet.cpp, devices/diode.cpp,
+	devices/bjt.cpp: Implemented new saveOperatingPoints() function.
+
+2005-04-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/cpwline.cpp: Fixed strip thickness calculation and
+	impedance of coplanar waveguide.
+
+	* devices/device.cpp: Fixed computation of pn charge.
+
+2005-04-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/mosfet.cpp: Using the new pnJunctionMOS() function.
+
+	* devices/device.cpp: New function computing the current and
+	conductance of a MOS pn-junction.
+	(pnCharge): More stable implementation of this computation.
+
+2005-04-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/cpwline.cpp: Fixed bug in conductor loss
+	calculation if the metalization thickness appears to be zero.
+
+2005-04-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msvia.cpp: Fixed yet another typo in the
+	microstrip via implementation.
+
+	* microstrip/cpwline.cpp: Introduced new parameter 'Approx'
+	allowing to switch between approximated (fast) and exact (slow)
+	K/K' expression.
+
+2005-03-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msvia.cpp: Fixed noise calculations as well as
+	static resistance computation.
+
+2005-03-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp, microstrip/mscoupled.cpp: Fixed
+	strip thickness	corrections and conductor losses.
+
+	* devices/mosfet.cpp: Fixed small bug.  Better convergence
+	achieved.
+
+2005-03-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* pac.cpp, microstrip/msline.cpp, microstrip/mscoupled.cpp,
+	microstrip/cpwline.cpp: Implemented AC and S-parameter noise
+	calculation using Bosma's theorem.
+
+	* devices/bjt.cpp: Fixed small signal equivalent circuit for
+	AC and S-parameter analysis.
+
+2005-02-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diode.cpp: Fixed bug in AC admittance calculation.
+
+2005-02-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/cpwline.cpp: Replaced '120 * M_PI' by Z0.
+
+2005-02-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* vnoise.cpp: Implemented AC noise callback.
+
+	* microstrip/mstee.cpp: Fixed small bug causing the
+	S-parameter results to get NaN values.
+
+2005-02-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* spfile.cpp: Fixed return value of void function.
+
+	* microstrip/mstee.cpp: Fixed computation of fpa and fpb.
+
+2005-02-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp, microstrip/msvia.cpp, spfile.cpp,
+	devices/jfet.cpp, devices/bjt.cpp, devices/mosfet.cpp:
+	Implemented AC noise calculations.
+
+	* microstrip/cpwline.cpp: Added simple transient analysis
+	callback.
+
+2005-01-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/mstee.cpp: Implemented AC and SP model of the
+	microstrip t-junction.
+
+2005-01-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* vccs.cpp, gyrator.cpp: Pivotised MNA stamp, saving some
+	rows/columns in the final MNA matrix.
+
+	* devices/diode.cpp, inoise.cpp, attenuator.cpp, isolator.cpp,
+	resistor.cpp: Added computation of noise current correlation
+	matrix.
+
+2004-12-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/cpwline.cpp: Fixed bug in loss computation.
+
+2004-12-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/cpwline.cpp: Applied Vincent's preliminary
+	implementation of the coplanar line with back-metalization.
+
+	* devices/diode.cpp: Implemented breakdown voltage/current
+	parameters and smoothed the iv-curve.
+
+	* devices/device.cpp: Improved pn-junction voltage delimiter.
+
+2004-12-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/bjt.cpp: Fixed a bug in the BJT model occurring when
+	forward current is zero (successive nan value).
+
+	* devices/mosfet.cpp (transientChargeSR): Implemented Simpson's
+	numerical integration rule for the MOS charges.
+
+2004-12-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* pac.cpp: Using available power for current calculation
+	instead of rms values.
+
+2004-12-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* idc.cpp, vdc.cpp: Using the source factor for the
+	source-stepping convergence helper.
+
+2004-11-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/cpline.cpp (ellipke): Fixed detection of infinite
+	arguments.
+
+2004-11-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/cpline.cpp (ellipke): Implemented computation of
+	complete elliptic integral functions of first and second kind.
+
+	* microstrip/cpwline.h (class cpwline), microstrip/cpwline.h
+	(class cpwline): Added template files for the implementations
+	of the coplanar and coplanar waveguide line.
+
+2004-11-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* opamp.cpp: Fixed the non-linear DC analysis for the
+	operational amplifier.
+
+2004-11-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msvia.cpp: Changed diameter parameter from 'd'
+	to 'D'.
+
+	* opamp.cpp: Implemented AC and S-parameter model of the
+	operational amplifier.
+
+2004-11-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* opamp.h (class opamp): New component.  Not yet implemented.
+
+	* amplifier.h (class amplifier): New component added.
+
+2004-10-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/jfet.cpp, devices/diode.cpp, devices/mosfet.cpp,
+	devices/bjt.cpp: Don't initialize node voltages within the
+	component itself.  Now done by the nodesetter.
+
+	* microstrip/msvia.h (class msvia): New component added:
+	microstrip via hole to ground.
+
+	* devices/bjt.cpp: Fixed numerical bug in BJT model.
+
+2004-10-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/mosfet.cpp: Fixed tiny bug in calculation of threshold
+	voltage (requested by default value 0).
+
+2004-10-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/mosfet.cpp: Applied trapezoidal rule to Meyer
+	charges in MOSFET model.
+	(transientCharge): Simplified Meyer charge handling a bit.
+
+2004-10-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/device.cpp: Simplified charge computation for
+	pn-junction added with no linearization coefficient given.
+
+	* devices/bjt.cpp: Computing external base-collector capacitance
+	appropriately during transient analysis.
+
+	* capacitor.cpp: Do not run the transient code for a constant
+	capacitance if it reveals to be a controlled capacitance.
+
+2004-10-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/mscoupled.cpp: Removed some debug code.
+	Y-parameters are now working correctly.
+
+	* devices/device.cpp: New function implemented which calculates
+	the charge of a pn-junction.  Used by all non-linear devices.
+
+	* devices/*.cpp: Fixed transient models of all non-linear
+	devices.  Now computing the real charge of each pn-junction.
+
+2004-10-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/mscoupled.cpp: Added preliminary direct
+	computation of Y-parameters.
+
+2004-10-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* vac.cpp: Considering 'Phase' parameter of Vac and Iac during
+	AC simulation.
+
+2004-10-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* cross.cpp, tee.cpp, gyrator.cpp, circulator.cpp,
+	isolator.cpp, attenuator.cpp, biastee.cpp, dcfeed.cpp,
+	dcblock.cpp: Implemented transient analysis functionality.
+
+2004-10-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diode.cpp, devices/jfet.cpp, devices/bjt.cpp,
+	devices/mosfet.cpp: Fixed AC models.
+
+	* iac.cpp, vac.cpp: Implemented optional 'Phase' parameter for
+	both components.
+
+	* strafo.cpp, trafo.cpp, devices/mosfet.cpp: Implemented transient
+	analysis functionality.
+
+2004-10-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* irect.h (class irect), vrect.h (class vrect): Two new
+	components added:  periodic rectangular pulse generators.
+
+2004-09-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/bjt.cpp: Implemented preliminary transient model
+	for bipolar transistor (SGP).  TODO:  Parameter 'Ptf'.
+
+2004-09-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* cross.cpp, tee.cpp: Implemented AC and DC functionality.
+
+	* microstrip/mscross.h (class mscross): New class implementing
+	an ideal cross-junction for now.
+
+	* microstrip/mstee.h (class mstee): New class implementing
+	an ideal t-junction for now.
+
+	* microstrip/mscoupled.cpp: Fixed bug in S-parameter
+	computation and implemented preliminary AC functionality.
+
+	* microstrip/msstep.cpp, microstrip/msopen.cpp,
+	microstrip/msmbend.cpp, microstrip/msline.cpp,
+	microstrip/msgap.cpp, microstrip/mscorner.cpp: Implemented AC
+	functionality.
+
+2004-09-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* vnoise.cpp: Implemented AC and transient analysis
+	functionality.
+
+	* phaseshifter.cpp: Allow zero phase shift during AC
+	analysis.
+
+	* devices/mosfet.cpp, vcvs.cpp, vccs.cpp, trafo.cpp, strafo.cpp,
+	spfile.cpp, ccvs.cpp, cccs.cpp: Implemented AC functionality.
+
+	* attenuator.cpp: Allow no attenuation during DC analysis.
+
+	* devices/jfet.cpp, devices/diode.cpp: Implemented AC and
+	transient analysis functionality.
+
+2004-09-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* vpulse.h (class vpulse), ipulse.h (class ipulse): New
+	components.  Implemented DC, AC, Transient and S-Parameter
+	analysis functions.
+
+	* tline.cpp, phaseshifter.cpp: Implemented AC callbacks.
+
+2004-09-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* gyrator.cpp, circulator.cpp, isolator.cpp, attenuator.cpp,
+	biastee.cpp, dcblock.cpp, dcfeed.cpp, devices/bjt.cpp:
+	Implemented AC analysis	callbacks.
+
+2004-09-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* inductor.cpp (calcTR): Implemented callbacks for transient
+	analysis.
+
+2004-09-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* idc.cpp, pac.cpp, iprobe.cpp: Implemented callbacks for
+	the transient analysis.
+
+2004-09-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* vdc.cpp, vac.cpp, resistor.cpp, iac.cpp, capacitor.cpp:
+	Implemented callbacks for the transient	analysis.
+
+2004-09-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Added wave guide impedance model
+	for dispersion of characteristic impedance of a single
+	microstrip line by M.V. Schneider.
+
+2004-09-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Implemented Schneider formulae
+	correctly.
+
+	* tee.cpp: Implemented DC model of ideal tee junction.
+
+2004-09-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Moved dispersion formulas by
+	Kirschning into separate function because they are used by
+	coupled microstrips as well.
+
+	* microstrip/mscoupled.cpp: Implemented dispersion formulas
+	for dispersion of characteristic impedances of even and odd
+	ode according to Kirschning.
+
+2004-09-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* capacitor.cpp, inductor.cpp: Fixed MNA entries for AC
+	analysis.  Now also L=0 possible for the inductor.
+
+2004-09-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* vac.cpp, resistor.cpp, iprobe.cpp, inductor.cpp,
+	capacitor.cpp, iac.cpp, pac.cpp: Implemented AC analysis
+	callbacks.
+
+2004-09-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Added dispersion model of
+	characteristic impedance by Pramanick.
+
+2004-09-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msopen.cpp: Implemented microstrip open end
+	model by Alexopoulos.
+
+	* microstrip/mscoupled.cpp: Fixed bug in microstrip coupled
+	characteristic impedances computation.
+
+2004-09-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Put some more Hammerstad equations
+	into extra functions because used in single as well as coupled
+	microstrip models.
+
+	* microstrip/mscoupled.cpp: Implemented quasi-static model by
+	Kirschning and Jansen.  Also implemented dispersion models for
+	dielectric constants.  Dispersion for characteristic impedances
+	still missing...
+
+2004-08-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Fixed a bug in Hammerstad model.
+
+2004-08-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/mscorner.cpp, microstrip/msmbend.cpp: Fixed
+	frequency limitations.
+
+2004-08-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Implemented noise calculation.
+
+	* attenuator.cpp, isolator.cpp: 'Temp' property added for noise
+	analysis.
+
+	* microstrip/msline.cpp: Fixed quasi-static formulas when
+	metal thickness turns out to be zero.
+
+2004-08-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/mscoupled.cpp: Implemented DC model of microstrip
+	coupled lines.
+
+	* microstrip/msline.cpp: Implemented DC model of microstrip
+	line.
+
+2004-08-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Moved loss calculations into an
+	extra function of the microstrip line class.
+
+	* microstrip/mscoupled.h (class mscoupled): Implemented
+	parallel coupled microstrip model by Hammerstad and Jensen.
+
+	* microstrip/msopen.cpp: Fixed DC model.
+
+	* microstrip/msline.cpp: Implemented DC short for now.
+
+2004-08-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msstep.cpp: Fixed apparent bug in microstrip
+	impedance step implementation (log10 instead of log).
+	Also  renamed 'Model' into 'MSModel' and 'DispModel' into
+	'MSDispModel'.
+
+	* microstrip/msline.cpp (analyseDispersion): Removed some
+	debug messages.
+
+	* microstrip/msgap.cpp: Revisited microstrip gap
+	implementation and renamed 'Model' into 'MSModel' and
+	'DispModel' into 'MSDispModel'.
+
+2004-08-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msopen.cpp: Fixed formulas for open end and
+	added 'Model' parameter.
+
+2004-08-16  Stefan Jahn  <jahn@mwt.ee.tu-berlin.de>
+
+	* devices/bjt.cpp: Implemented excess phase parameter of
+	BJT model.
+
+2004-08-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diode.cpp: Adjusted invalid backward current for
+	noise calculation.
+
+	* devices/mosfet.cpp: Bugfix in small signal Y-parameter
+	computation.
+
+	* devices/device.cpp (fetCapacitanceMeyer): Fixed bug in
+	distributed gate-oxid capacitance model.
+
+2004-08-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/mscorner.cpp: Fixed bug in frequency range
+	detection and brushed up the code a bit.
+
+2004-08-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* constants.h (cubic): Fixed a severe macro bug.  cubic() did
+	not work for negative arguments.
+
+2004-08-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diode.cpp: Fixed noise calculation.  Both field and
+	diffusion current contribute independently.
+
+2004-08-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/mosfet.cpp: Implemented sidewall capacitances at the
+	perimeter of the drain and source junctions.
+
+2004-08-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/mosfet.cpp: Added and implemented some more
+	component properties.
+
+	* devices/mosfet.h (class mosfet): New device.  This mosfet
+	implementation is 'level 1'.  Added wherever necessary. To be
+	tested...
+
+	* devices/jfet.cpp: Fixed bug in gds computation in forward
+	saturation region.
+
+	* devices/device.cpp: Added some helper functionality for FET
+	models.  This includes convergence helpers as well as Meyer's
+	capacitances formulas.
+
+2004-08-02  Michael Margraf  <michael.margraf@alumni.tu-berlin.de>
+
+	* added microstrip component msstep, msopen and msgap
+
+2004-08-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diode.cpp: Implemented 'Isr', 'Nr' and 'Fc' and 'Cp'
+	diode model parameters.
+
+	* spfile.cpp: Converting different kind of multi-port
+	parameters to S-parameters if necessary.
+
+2004-07-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msmbend.cpp, microstrip/mscorner.cpp: Simplified
+	generation of S-parameters.
+
+	* devices/diode.cpp: Additionally using flicker noise
+	parameters for noise calculation.
+
+2004-07-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.h (class msline): Both the quasi-static
+	and dispersion analysing function are now static function of
+	the class msline.  Thus they can be used by other microstrip
+	components as well.
+
+	* pac.cpp: Calculate S-parameter of the AC power source. 
+	This is now necessary because of subcircuit definitions where
+	the component is not used as S-parameter port.
+
+2004-07-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/bjt.cpp: Added noise calculation to BJT model.
+
+2004-07-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msmbend.cpp: Fixed typo.
+
+	* devices/jfet.cpp: Using helper functionality from device
+	class where possible. 
+
+	* devices/diode.cpp: Tried to fix noise calculation.
+
+2004-07-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/bjt.cpp: Considering polarity of BJT in device model
+	equations.
+
+	* devices/jfet.cpp: Added preliminary noise calculation.
+
+	* spfile.cpp: Some code cleanups.  Noise correlation matrix
+	expansion not yet working...
+
+2004-07-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diode.cpp: Added noise calculation function.
+
+	* tline.cpp: Added DC model being an ideal short.
+
+	* spfile.cpp: Adding an additional reference port using
+	S-parameter matrix transformations.
+
+	* resistor.cpp: Moved noise calculation to calcNoise().
+
+	* attenuator.cpp, isolator.cpp: Added noise calculation
+	function.
+
+2004-07-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* inoise.h (class inoise): New component: current noise source.
+
+	* vnoise.h (class vnoise): Added noise voltage source component
+	and made appropriate changes in the netlist checker and factory.
+
+2004-07-21  Stefan Jahn  <stefan@lkcc.org>
+
+	* spfile.cpp (interpolate_lin): Renamed 'rect' into
+	'rectangular' for the 'Data' property.
+
+	* spfile.h (class spfile): New class representing a S-parameter
+	file (e.g. touchstone) component.  During S-parameter simulation
+	the values stored in the file are interpolated if necessary.
+
+2004-07-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Fixed strip thickness effect
+	formulas by Hammerstad and Jensen.
+
+2004-07-12  Stefan Jahn  <stefan@lkcc.org>
+
+	* constants.h (quadr): Renamed quad() to quadr() to avoid
+	name clash with some platforms defining quad as data type.
+
+2004-07-11  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/diode.cpp: Simplified computation of S-parameters.
+	Code cleanups using the new helper functionality in device
+	class.
+
+	* devices/device.cpp: Removed applyResistance() function.
+	Now using a real resistor circuit for additional external
+	resistances of non-linear devices.  Changed all callers.
+	New functions splitCapacitance() and disableCapacitance()
+	which can be used to add an additional capacitance to the
+	netlist.
+	(pnCriticalVoltage): New function calculating the critical
+	voltage of a pn-junction (often used in DC analysis).
+
+	* devices/bjt.cpp: Partly implemented the small signal
+	model.  Needs some testing...
+
+	* resistor.cpp (calcDC): Also compute the MNA matrix
+	entries in calcDC().  This is useful if a resistor circuits
+	resistance is controlled by another circuit.
+
+	* capacitor.cpp: Using admittance to for the S-parameter
+	matrix instead the impedance.
+
+2004-07-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/device.cpp: Made all public functions 'friend'.
+	Added pnCurrent(), pnConductance() and pnCapacitance()
+	functionality because this is used very often in non-linear
+	devices.  Changed all callers of new 'friend' functions.
+
+	* devices/bjt.cpp: Corrected DC model of SGP BJT device.  
+	Approved that the implemented model is equivalent to the
+	Spice model.  Interpreting zero as infinity for those
+	model parameters having an infinity default.  Setting up
+	operating points for S-parameter analysis.
+
+2004-07-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/bjt.cpp: Implemented some of the operating points
+	of the SGP model.
+
+2004-07-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/bjt.cpp: Started to implement the DC model of the
+	standard SGP (Spice Gummel Poon) model for BJTs.
+	Fixed the Rbb model of SGP.
+
+2004-07-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* resistor.cpp: Using new 'Temp' property for noise parameter
+	simulation.
+
+2004-06-27  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Using 'DispModel' and 'Model' 
+	properties correctly.
+
+2004-06-26  Michael Margraf  <michael.margraf@alumni.tu-berlin.de>
+
+	* added DC model to phaseshifter.cpp/.h
+
+2004-06-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* constants.h: Globally defined sqr, cubic, quad, coth, sech
+	and cosech functions.
+
+	* resistor.cpp: Added noise wave correlation matrix.
+
+2004-06-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/jfet.cpp: Using 'Type' property for model polarity,
+	i.e. n-channel or p-channel junction fet.
+
+2004-06-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/jfet.cpp: Implemented non-ideal saturation current
+	parameters of gate-source and gate-drain diodes.
+	Also prepared JFET model for n- and p-type devices.
+
+2004-06-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* devices/device.h (class device): New class containing some
+	arbitrary routines for non-linear devices.
+
+	* devices/jfet.cpp: Implemented junction capacitances using
+	the model parameter Fc.
+
+2004-06-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* jfet.cpp: Implemented S-parameters and operating points of
+	junction FET.
+
+2004-06-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* diode.cpp: Using symbolic names for anode and cathode node.
+	Incorporated transit time 'Tt' parameter into operating point
+	information.
+
+2004-06-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* jfet.cpp: Corrections in the jfet Shichman-Hodges equations
+	and derivatives.
+
+	* diode.cpp: Fixed a bug in splitting and disabling resistances
+	from devices.
+
+2004-06-05  Stefan Jahn  <stefan@lkcc.org>
+
+	* jfet.h (class jfet): Started to implement the DC model of
+	a simple junction FET.
+
+2004-06-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* resistor.cpp: It is now possible to set R=0.  In this case
+	the actual resistor is replaced by a voltage source with U=0.
+
+	* diode.cpp: Implemented series resistance 'Rs' by creating
+	and new circuit and re-arranging the node names.
+
+2004-05-22  Stefan Jahn  <stefan@lkcc.org>
+
+	* biastee.cpp: Fixed Bias-T DC model.
+
+	* iac.h (class iac):  Implemented DC model as zero current
+	source.
+
+	* vac.cpp: Implemented DC model of AC voltage source as zero
+	voltage source.
+
+2004-05-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Including <string.h> for strcmp().
+	This was necessary on a Sarge-Debian installation.
+
+	* diode.cpp: Improved DC convergence of diode model.
+
+2004-05-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcfeed.cpp: Implemented DC model (zero voltage source).
+
+	* dcblock.h (class dcblock):  Implemented DC model as
+	zero current source.
+
+	* capacitor.h (class capacitor): Implemented DC model as
+	zero current source.
+
+	* inductor.cpp: Implemented DC model (zero voltage source).
+
+2004-05-16  Michael Margraf  <michael.margraf@alumni.tu-berlin.de>
+
+	* add #include <string.h> in msline.cpp
+
+2004-05-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Implemented influence of finite strip
+	thickness 't' on quasi-static impedance and effective relative
+	dielectric constant for Wheeler and Hammerstad equations.
+
+2004-05-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: Added dispersion terms, dielectric
+	and conductor losses for the microstrip line.
+
+2004-05-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp (analyseZ0): Implemented a function
+	which calculates the impedance of a microstrip line based on
+	the lines and substrates geometry.
+
+2004-05-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* diode.cpp: Improved convergence in backward region of
+	the pn-junction.
+
+2004-04-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* circulator.cpp: Implemented DC analysis for circulator.
+
+2004-04-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.cpp: The file can be used as template
+	for microstrip components.
+
+	* component.h: Including microstrip component headers.
+
+2004-04-04  Stefan Jahn  <stefan@lkcc.org>
+
+	* attenuator.cpp, isolator.cpp: Implemented DC calculation.
+
+2004-02-18  Stefan Jahn  <stefan@lkcc.org>
+
+	* constants.h: Adjusted natural constants to correspond
+	with the NIST.
+
+2004-02-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* iac.cpp (iac): New component representing the AC current
+	source.
+
+	* pac.cpp: Implemented DC calculation.
+
+2004-02-16  Stefan Jahn  <stefan@lkcc.org>
+
+	* diode.cpp, resistor.cpp: Changed Y matrix (G-MNA) entries.
+	Added S-parameter calculation to diode model including the 
+	operating point computation.
+
+2004-02-14  Stefan Jahn  <stefan@at66hft.ee.tu-berlin.de>
+
+	* gyrator.cpp: Fixed MNA matrices for gyrator.
+
+	* strafo.cpp: Fixed MNA matrices for symmetrical transformer.
+
+	* trafo.cpp: Fixed the A matrix of the ideal transformer.
+
+2004-02-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* ccvs.cpp, cccs.cpp: Fixed MNA stamps for DC analysis.
+
+2004-02-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* diode.cpp: New parameter 'n' representing the ideality
+	coefficient of the saturation current.
+
+	* iprobe.cpp (iprobe): New component.  The DC current probe
+	can be used for measuring DC currents.  It is simply based on
+	the DC voltage source with a voltage of zero volts.
+
+2004-02-03  Stefan Jahn  <stefan@lkcc.org>
+
+	* diode.cpp: Fixed iterative implementation of the simple diode
+	component.
+
+2004-02-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* diode.cpp: New component.
+
+2004-01-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* gyrator.cpp: Implemented MNA matrix values for DC simulation.
+
+2004-01-30  Stefan Jahn  <stefan@lkcc.org>
+
+	* ccvs.cpp, strafo.cpp, trafo.cpp: Implemented MNA matrix 
+	values for DC simulation.
+
+2004-01-28  Stefan Jahn  <stefan@lkcc.org>
+
+	* cccs.cpp, idc.cpp, vccs.cpp, vcvs.cpp, vdc.cpp: Applied
+	new scheme necessary for the MNA matrices.
+
+2004-01-24  Stefan Jahn  <stefan@lkcc.org>
+
+	* microstrip/msline.h (class msline): New class being a 
+	template for the microstrip library components.
+
+	* microstrip/substrate.h (class substrate): New class 
+	representing a microstrip substrate.
+
+2004-01-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* tline.cpp, gyrator.cpp, phaseshifter.cpp: New components.
+	Made appropriate changes in netlist input parser and 
+	Makefiles.
+
+2003-12-26  Stefan Jahn  <stefan@lkcc.org>
+
+	* resistor.cpp: Implemented calcG() method for DC analysis.
+
+	* component_id.h: New file containing the circuit identifiers
+	for each know circuit.
+
+2003-12-20  Stefan Jahn  <stefan@lkcc.org>
+
+	* vdc.cpp, idc.cpp, vac.cpp: New components.
+
+	* itrafo.cpp: Using a port impedance dependent turns ratio
+	the component is now used to allow other port impedances than
+	50 Ohms.
+
+2003-12-07  Stefan Jahn  <stefan@lkcc.org>
+
+	* strafo.cpp: New component.  Symmetrical 6-port 
+	transformer.
+
+2003-12-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* itrafo.cpp, itrafo.h: New component.  The ideal 3-port 
+	transformer is for allowing differential s parameter ports 
+	only.

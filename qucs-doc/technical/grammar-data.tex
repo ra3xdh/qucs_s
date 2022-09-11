@@ -1,0 +1,71 @@
+%
+% This document contains the qucs dataset grammar.
+%
+% Copyright (C) 2005 Raimund Jacob <raimi@lkcc.org>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+\section{Qucs dataset grammar}
+\label{sec:datasetgrammar}
+
+%
+% Syntax: Beginning
+%
+\def\lt{$<$}% Just a kludge for the tabbing environment
+\def\gt{$>$}% Just a kludge for the tabbing environment
+\begin{grammar}
+\heading{Syntactic structure}
+
+\produces{Input}{VersionLine \rep{Variable}}
+
+\produces{VersionLine}{\tok{\lt Qucs Dataset }
+                           \ntok{Num} \tok{.}
+                           \ntok{Num} \tok{.}
+                           \ntok{Num} \tok{\gt} \ntok{Eol}}
+\end{grammar}
+
+The file consists of a header line indicating the software version and
+a number of variables.
+
+%
+% Data
+%
+\begin{grammar}
+\heading{Data}
+
+\produces{Variable}{\tok{\lt dep} \ntok{Identifier} \rep{\ntok{Identifier}}
+                    \tok{\gt} \rep{Float} \tok{\lt /dep\gt}}
+\orproduces{\tok{\lt indep} \ntok{Identifier} \ntok{Integer}
+                    \tok{\gt} \rep{Float} \tok{\lt /indep\gt}}
+\orproduces{\tok{\#} \group{\em Entire line is comment} \ntok{Eol}}
+\end{grammar}
+
+The \ntok{Float} values itself may be scattered over several lines.
+An independent variable denotes a list of real or complex values.  The
+dependent variables denote lists of real or complex values depending
+on independent variables, i.e. a function of some other variable,
+a $f(x,\ldots )$ in mathematical terms.
+
+%
+% Lexical structure
+%
+\begin{grammar}
+\heading{Lexical structure}
+
+\produces{\ntok{Float}}{Real}
+\orproduces{Imag}
+\orproduces{Complex}
+\produces{Real}{\REplusminus{} \opt{\ntok{Num}} \tok{.}
+     \ntok{Num} \opt{\group{\tok{e} \alt{} \tok{E}} \REplusminus{} \ntok{Num}}}
+\produces{Imag}{\REplusminus{} \group{\tok{i} \alt{} \tok{j}}
+    \opt{\ntok{Num}} \tok{.}
+    \ntok{Num} \opt{\group{\tok{e} \alt{} \tok{E}} \REplusminus{} \ntok{Num}}}
+\produces{Complex}{Real Imag}
+\produces{\ntok{Num}}{Digit \rep{Digit}}
+\produces{Digit}{\tok{0}~\dots~\tok{9}}
+\produces{\ntok{Integer}}{\REplusminus{} \ntok{Num}}
+\produces{\ntok{Eol}}{\opt{\bsl{r}} \bsl{n}}
+\end{grammar}

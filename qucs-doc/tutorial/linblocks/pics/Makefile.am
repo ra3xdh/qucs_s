@@ -1,0 +1,39 @@
+## Process this file with automake to produce Makefile.in
+#
+# tutorial/linblocks/pics/Makefile.am
+#
+# Automake input file.
+#
+# Copyright (C) 2019 Romano Giannetti <romano.giannetti@gmail.com>
+#
+# This is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+#
+# This software is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this package; see the file COPYING.  If not, write to
+# the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
+# Boston, MA 02110-1301, USA.
+#
+
+EXTRA_DIST = $(PNGS) $(PDFS)
+
+PNGS = step001.png step002.png step003.png step004.png \
+       step005.png step006.png step007.png step008.png \
+       step009.png step010.png step011.png step012.png \
+       step013.png step014.png step015.png step016.png \
+       step017.png step018.png step019.png step020.png \
+       step021.png step022.png step023.png step024.png \
+       step025.png step026.png step027.png step028.png \
+       step029.png
+
+PDFS = ampliBW.pdf
+
+CLEANFILES = *~ *.orig *.rej *-eps-converted-to.pdf
+MAINTAINERCLEANFILES = Makefile.in

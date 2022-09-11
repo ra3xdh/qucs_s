@@ -1,0 +1,59 @@
+2008-10-25  Stefan Jahn  <stefan@lkcc.org>
+
+	* photodiode/content.tex: Added new report about the photodiode
+	model implemented in Qucs.  Thanks to Mike Brinson!
+
+2008-10-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* EKV26/content.tex: Updated the report about EKV model.
+
+2008-06-14  Stefan Jahn  <stefan@lkcc.org>
+
+	* EKV26/content.tex: New report about EPFL-EKV v2.6 models added.
+	Thanks to Mike Brinson!
+
+2008-04-01  Stefan Jahn  <stefan@lkcc.org>
+
+	* mesfet/content.tex: New report about Verilog-A MESFET models.
+	Thanks a lot to Mike Brinson!
+
+2008-02-08  Stefan Jahn  <stefan@lkcc.org>
+
+	* potentiometer/content.tex: New report about potentiometer model.
+	Thanks to Mike Brinson!
+
+2008-01-31  Stefan Jahn  <stefan@lkcc.org>
+
+	* verilog/content.tex: Clarified the word "source tree".  Also
+	fixed a small typo.
+
+2008-01-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* log_amp/log_amp.tex: New report: Verilog-A Logarithmic Amplifier
+	Macromodel.  Thanks to Mike Brinson!
+
+2007-12-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* mod_amp/content.tex: New report: Verilog-A Modular Macromodel
+	for Operational Amplifiers.  Thanks a lot to Mike Brinson!
+
+2007-06-02  Stefan Jahn  <stefan@lkcc.org>
+
+	* curtice/curtice.tex: New report: MEFEST Curtice Level 1 model
+	using EDD devices.
+
+2007-04-23  Stefan Jahn  <stefan@lkcc.org>
+
+	* StoQ_test5/StoQ_test5.tex: Added new chapter about inductors and
+	mutual inductors to the reportbook.  Thanks to Mike.
+
+2007-04-10  Stefan Jahn  <stefan@lkcc.org>
+
+	* verilog/content.tex: Fixed some typos in the Verilog-AMS
+	descriptions and wrote an end note.
+
+2007-04-09  Stefan Jahn  <stefan@lkcc.org>
+
+	* reportbook.tex: Started new "Report Book".  Added Verilog-AMS
+	interface descriptions as well as SPICE to Qucs conversion test
+	files.

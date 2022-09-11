@@ -1,0 +1,68 @@
+// RFresPCB.va  RF resistor (Thin film resistor, axial type, PCB mounting)
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, April 2014.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+//
+//  Verilog-A module statement.
+//
+module RFresPCB(RT1, RT2);
+inout RT1, RT2;              // Module external interface nodes.
+electrical RT1, RT2; 
+electrical n1, n2, n3, nx, ny, nz;          // Internal nodes.
+//
+`define attr(txt) (*txt*) 
+parameter real Rs = 50         from [1e-20 : inf)   `attr(info="RF resistance" unit="Ohms");
+parameter real Cp = 0.3e-12    from [0 : inf)       `attr(info="Resistor shunt capacitance" unit="F");
+parameter real Ls = 8.5e-9     from [1e-20 : inf)   `attr(info="Series induuctance" unit="H");
+parameter real Llead = 0.1e-9  from [1e-20 : inf)   `attr(info="Parasitic lead induuctance" unit="H");
+parameter real Cshunt = 1e-10  from [1e-20 : inf)   `attr(info="Parasitic shunt capacitance" unit="F"); 
+parameter real Tc1 = 0.0       from [-100  : 100]   `attr(info="First order temperature coefficient" unit ="Ohm/Celsius");
+parameter real Tc2 = 0.0       from [-100  : 100]   `attr(info="Second order temperature coefficient" unit ="(Ohm/Celsius)^2");
+parameter real Tnom  = 26.85   from [-273.15 : 300] `attr(info="Parameter extraction temperature" unit="Celsus");      
+parameter real Temp  = 26.85   from [-273.15 : 300] `attr(info="Simulation temperature" unit="Celsus");
+//
+branch (RT1, n1)  bRT1n1;
+branch (n1, n2)   bn1n2;
+branch (n1, n3)   bn1n3;
+branch (n2, n3)   bn2n3;
+branch (n3, RT2)  bn3RT2;
+real Rst, FourKT, n, Tdiff, Rn;
+//
+analog begin
+@(initial_model)
+ begin
+   Tdiff = Temp-Tnom;
+   FourKT =4.0*`P_K*Temp;
+   Rst = Rs*(1.0+Tc1*Tdiff+Tc2*Tdiff*Tdiff);
+   Rn     = FourKT/Rst;
+ end
+
+ I(n1)     <+ ddt(Cshunt*V(n1));
+ I(bn1n2)  <+ V(bn1n2)/Rst;
+ I(bn1n3)  <+ ddt(Cp*V(bn1n3));
+ I(n3)     <+ ddt(Cshunt*V(n3));
+// Llead
+ I(bRT1n1)  <+ -V(nx);
+ I(nx)      <+ V(bRT1n1);
+ I(nx)      <+ ddt(Llead*V(nx));
+// Ls
+ I(bn2n3)   <+ -V(ny);
+ I(ny)      <+ V(bn2n3);
+ I(ny)      <+ ddt(Ls*V(ny));
+// Llead
+ I(bn3RT2)  <+ -V(nz);
+ I(nz)      <+ V(bn3RT2);
+ I(nz)      <+ ddt(Llead*V(nz));
+//
+// Noise contribution
+I(bn1n2)    <+ white_noise(Rn, "thermal");
+//
+end
+endmodule

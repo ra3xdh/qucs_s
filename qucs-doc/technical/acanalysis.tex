@@ -1,0 +1,43 @@
+%
+% This document contains the chapter about AC analysis.
+%
+% Copyright (C) 2003, 2004, 2005, 2006 Stefan Jahn <stefan@lkcc.org>
+% Copyright (C) 2004, 2006 Michael Margraf <Michael.Margraf@alumni.TU-Berlin.DE>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+\chapter{AC Analysis}
+%\addcontentsline{toc}{chapter}{AC Analysis}
+\label{sec:acMNA}
+
+The AC analysis is a small signal analysis in the frequency domain.
+Basically this type of simulation uses the same algorithms as the DC
+analysis (section \ref{sec:MNA} on page \pageref{sec:MNA}).  The AC
+analysis is a linear modified nodal analysis.  Thus no iterative
+process is necessary.  With the Y-matrix of the components, i.e. now a
+complex matrix, and the appropriate extensions it is necessary to
+solve the equation system \eqref{eq:acMNA} similar to the (linear) DC
+analysis.
+\begin{equation}
+\label{eq:acMNA}
+\left[A\right] \cdot \left[x\right] = \left[z\right]
+\;\;\;\; \textrm{ with } \;\;\;\;
+A =
+\begin{bmatrix}
+Y & B\\
+C & D
+\end{bmatrix}
+\end{equation}
+
+Non-linear components have to be linearized at the DC bias point.
+That is, before an AC simulation with non-linear components can
+be performed, a DC simulation must be completed successfully.
+Then, the MNA stamp of the non-linear components equals their
+entries of the Jacobian matrix, which was already computed
+during the DC simulation. In addition to this real-valued elements,
+a further stamp has to be applied: The Jacobian matrix of the
+non-linear charges multiplied by $j\omega$ (see also section
+\ref{sec:eqn_def_models}).

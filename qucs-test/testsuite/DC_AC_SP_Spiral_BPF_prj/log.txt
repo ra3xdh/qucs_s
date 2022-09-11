@@ -1,0 +1,48 @@
+project location: 
+modules to load: 0
+factorycreate.size() is 0
+factorycreate has registered:
+parsing netlist...
+checking netlist...
+checker notice, variable `S' in equation `S21_dB' not yet defined
+checker notice, variable `S' in equation `S11_dB' not yet defined
+subcircuit root
+  C:C1 gnd _net0 C="1.95e-13F"
+  SPIRALIND:SPIRALIND1 _net0 _net1 Subst="Subst1" Geometry="Circular" W="2.5e-05m" Di="9.1e-05m" S="2.5e-05m" N="2" Temp="26.85"
+  C:C2 _net0 _net1 C="1.55e-13F"
+  SUBST:Subst1 er="4.5" h="0.0008m" t="3.5e-05m" tand="0.0002" rho="2.2e-08" D="1.5e-07"
+  C:C3 gnd _net1 C="3.2e-13F"
+  C:C5 gnd out C="8.2e-14F"
+  CIRCULARLOOP:CIRCULARLOOP1 _net1 out Subst="Subst1" W="2.5e-05m" a="0.000195m" Temp="26.85"
+  C:C4 _net1 out C="6e-13F"
+  SP:SP1 Type="log" Start="1e+09Hz" Stop="1e+11Hz" Points="403" Noise="yes" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+  AC:AC1 Type="log" Start="1e+09Hz" Stop="1e+11Hz" Points="403" Noise="yes"
+  DC:DC1 Temp="26.85" reltol="0.001" abstol="1e-12A" vntol="1e-06V" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+  Pac:P2 out gnd Num="2" Z="50Ohm" P="0W" f="1e+09Hz" Temp="-273.15"
+  Pac:P1 _net0 _net2 Num="1" Z="50Ohm" P="0.001" f="1e+09Hz" Temp="-273.15"
+  Vdc:V1 _net2 gnd U="1.1V"
+netlist content
+      1 SPIRALIND instances
+      1 CIRCULARLOOP instances
+      1 AC instances
+      5 C instances
+      1 DC instances
+      2 Pac instances
+      1 SUBST instances
+      1 Vdc instances
+      1 SP instances
+creating netlist...
+checker notice, variable `S' in equation `S21_dB' not yet defined
+checker notice, variable `S' in equation `S11_dB' not yet defined
+NOTIFY: DC1: creating node list for DC analysis
+NOTIFY: DC1: solving DC netlist
+checker notice, variable `S' in equation `S21_dB' not yet defined
+checker notice, variable `S' in equation `S11_dB' not yet defined
+NOTIFY: AC1: creating node list for AC analysis
+NOTIFY: AC1: solving AC netlist
+checker notice, variable `S' in equation `S21_dB' not yet defined
+checker notice, variable `S' in equation `S11_dB' not yet defined
+NOTIFY: SP1: preparing circuit for analysis
+NOTIFY: SP1: inserted 1 tees, 3 crosses, 0 opens and 5 grounds
+NOTIFY: SP1: creating sorted nodelist for SP analysis
+NOTIFY: SP1: solving SP netlist

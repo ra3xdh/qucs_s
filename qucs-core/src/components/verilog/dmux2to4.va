@@ -1,0 +1,67 @@
+//   Qucs analogue dmux2to4 model
+//   The structure and theoretical background to the dmux2to4
+//   Verilog-a model are presented in the Qucs digital tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, December 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module dmux2to4 (EN, A, B, Y3, Y2, Y1, Y0); 
+ inout EN, A, B, Y3, Y2, Y1, Y0;
+ electrical EN, A, B, Y3, Y2, Y1, Y0;
+ electrical Y0n1, Y0n2, Y1n1, Y1n2, Y2n1, Y2n2, Y3n1, Y3n2;
+//
+ `define attr(txt) (*txt*)
+ parameter real TR=6 from [1.0:20.0] `attr(info="transfer function high scaling factor");
+ parameter real Delay = 1n from [0: inf] `attr(info="output delay" unit="s");
+//
+ real Rd, Cd, VENI, VAI, VBI, IY0, IY1, IY2, IY3;
+//
+analog begin
+@(initial_model)
+  begin
+    Rd = 1e3;
+    Cd= Delay*1.43/Rd;
+  end
+VENI = 1-V(EN);
+VAI  = 1-V(A);
+VBI  = 1-V(B);
+//
+IY0 = VENI*VBI*VAI;
+I(Y0n1) <+ -0.5*(1+tanh(TR*(IY0-0.5)));
+I(Y0n1) <+ V(Y0n1);
+I(Y0n1, Y0n2) <+ V(Y0n1,Y0n2)/Rd;
+I(Y0n2) <+ ddt(Cd*V(Y0n2));
+I(Y0)  <+ -V(Y0n2);
+I(Y0) <+ V(Y0);
+//
+IY1 = VENI*VBI*V(A);
+I(Y1n1) <+ -0.5*(1+tanh(TR*(IY1-0.5)));
+I(Y1n1) <+ V(Y1n1);
+I(Y1n1, Y1n2) <+ V(Y1n1,Y1n2)/Rd;
+I(Y1n2) <+ ddt(Cd*V(Y1n2));
+I(Y1)  <+ -V(Y1n2);
+I(Y1) <+ V(Y1);
+//
+IY2= VENI*V(B)*VAI;
+I(Y2n1) <+ -0.5*(1+tanh(TR*(IY2-0.5)));
+I(Y2n1) <+ V(Y2n1);
+I(Y2n1, Y2n2) <+ V(Y2n1,Y2n2)/Rd;
+I(Y2n2) <+ ddt(Cd*V(Y2n2));
+I(Y2)  <+ -V(Y2n2);
+I(Y2) <+ V(Y2);
+//
+IY3 = VENI*V(B)*V(A);
+I(Y3n1) <+ -0.5*(1+tanh(TR*(IY3-0.5)));
+I(Y3n1) <+ V(Y3n1);
+I(Y3n1, Y3n2) <+ V(Y3n1,Y3n2)/Rd;
+I(Y3n2) <+ ddt(Cd*V(Y3n2));
+I(Y3)  <+ -V(Y3n2);
+I(Y3) <+ V(Y3);
+end
+endmodule

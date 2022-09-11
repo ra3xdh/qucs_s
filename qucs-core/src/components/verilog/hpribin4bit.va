@@ -1,0 +1,58 @@
+//   Qucs analogue hpribin4bit model
+//   The structure and theoretical background to the hpribin4bit
+//   Verilog-a model are presented in the Qucs digital tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, January 2009.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module hpribin4bit (A, B, C, D, V, Y, X);
+ inout  A, B, C, D, V, Y, X;
+ electrical  A, B, C, D, V, Y, X;
+ electrical Xn1, Xn2, Yn1, Yn2, Vn1, Vn2;
+//
+ `define attr(txt) (*txt*)
+ parameter real TR=6 from [1.0:20.0] `attr(info="transfer function scaling factor");
+ parameter real Delay = 1e-9 from [0: inf] `attr(info="output delay" unit="s");
+//
+ real Rd, Cd;
+ real mX, mY, mV;
+//
+analog begin
+@(initial_model)
+  begin
+    Rd = 1e3;
+    Cd= Delay*1.43/Rd;
+  end
+//
+mX = V(D)+V(C);
+mY = V(D)+(1-V(C))*V(B);
+mV = V(D)+V(C)+V(B)+V(A);
+I(Xn1) <+ -0.5*(1+tanh(TR*(mX-0.5)));
+I(Xn1) <+ V(Xn1);
+I(Xn1, Xn2) <+ V(Xn1,Xn2)/Rd;
+I(Xn2) <+ ddt(Cd*V(Xn2));
+I(X)  <+ -V(Xn2);
+I(X) <+ V(X);
+//
+I(Yn1) <+ -0.5*(1+tanh(TR*(mY-0.5)));
+I(Yn1) <+ V(Yn1);
+I(Yn1, Yn2) <+ V(Yn1,Yn2)/Rd;
+I(Yn2) <+ ddt(Cd*V(Yn2));
+I(Y)  <+ -V(Yn2);
+I(Y) <+ V(Y);
+//
+I(Vn1) <+ -0.5*(1+tanh(TR*(mV-0.5)));
+I(Vn1) <+ V(Vn1);
+I(Vn1, Vn2) <+ V(Vn1,Vn2)/Rd;
+I(Vn2) <+ ddt(Cd*V(Vn2));
+I(V)  <+ -V(Vn2);
+I(V) <+ V(V);
+//
+end
+endmodule

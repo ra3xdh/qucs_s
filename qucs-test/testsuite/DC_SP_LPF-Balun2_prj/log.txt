@@ -1,0 +1,18 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `S' in equation `dBS21' not yet defined
+checker notice, variable `S' in equation `dBS11' not yet defined
+netlist content
+      2 sTr instances
+      2 C instances
+      1 DC instances
+      6 L instances
+      1 VProbe instances
+      2 Pac instances
+      1 Vdc instances
+      1 SP instances
+creating netlist...
+checker notice, variable `S' in equation `dBS21' not yet defined
+checker notice, variable `S' in equation `dBS11' not yet defined
+checker notice, variable `S' in equation `dBS21' not yet defined
+checker notice, variable `S' in equation `dBS11' not yet defined

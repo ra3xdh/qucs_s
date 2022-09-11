@@ -1,0 +1,12 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/SP_SmithChartTest_prj/SmithChartTest.sch
+
+Pac:P1 _net0 gnd Num="1" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+L:L1 gnd _net0 L="196.6nH" I=""
+C:C1 gnd _net0 C="644.1pF" V=""
+L:L2 _net1 _net2 L="791.1nH" I=""
+C:C2 _net0 _net1 C="160.1pF" V=""
+L:L3 gnd _net2 L="196.6nH" I=""
+C:C3 gnd _net2 C="644.1pF" V=""
+Pac:P2 _net2 gnd Num="2" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+.SP:SP2 Type="log" Start="1MHz" Stop="80MHz" Points="461" Noise="no" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+Eqn:Eqn3 dBS21="dB(S[2,1])" ZofS22="rtoz(S[2,2])" Export="yes"

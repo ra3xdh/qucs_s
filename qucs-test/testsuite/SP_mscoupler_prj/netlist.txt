@@ -1,0 +1,10 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/SP_mscoupler_prj/mscoupler.sch
+
+Pac:P1 _net0 gnd Num="1" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Pac:P2 _net1 gnd Num="2" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Pac:P3 _net2 gnd Num="3" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Pac:P4 _net3 gnd Num="4" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+SUBST:SubstTC1 er="9.8" h="0.635 mm" t="17.5 um" tand="0.0001" rho="2.43902e-08" D="1.5e-07"
+.SP:SPTC1 Type="lin" Start="0.2 GHz" Stop="4.2 GHz" Points="101" Noise="no" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+MCOUPLED:MSTC1 _net0 _net1 _net2 _net3 Subst="SubstTC1" W="0.518 mm" L="14.94 mm" S="0.185 mm" Model="Kirschning" DispModel="Kirschning" Temp="26.85"
+Eqn:Eqn1 reflect="dB(S[1,1])" isolated="dB(S[3,1])" through="dB(S[2,1])" coupled="dB(S[4,1])" Export="yes"

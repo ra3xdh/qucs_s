@@ -1,0 +1,64 @@
+//   Qucs analogue binarytogrey4bit model
+//   The structure and theoretical background to the binarytogrey4bit
+//   Verilog-a model are presented in the Qucs digital tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, December 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module binarytogrey4bit (B0, B1, B2, B3, G3, G2, G1, G0 );
+ inout B0, B1, B2, B3, G3, G2, G1, G0 ;
+ electrical B0, B1, B2, B3, G3, G2, G1, G0 ;
+ electrical G0n1, G0n2, G1n1, G1n2, G2n1, G2n2, G3n1, G3n2;
+//
+ `define attr(txt) (*txt*)
+ parameter real TR=6 from [1.0:20.0] `attr(info="transfer function scaling factor");
+ parameter real Delay = 1e-9 from [0: inf] `attr(info="output delay" unit="s");
+//
+ real Rd, Cd;
+ real m0, m1, m2, m3;
+//
+analog begin
+@(initial_model)
+  begin
+    Rd = 1e3;
+    Cd= Delay*1.43/Rd;
+  end
+m0 = V(B0)*(1-V(B1))+(1-V(B0))*V(B1);
+m1 = V(B1)*(1-V(B2))+(1-V(B1))*V(B2);
+m2 = V(B2)*(1-V(B3))+(1-V(B2))*V(B3);
+m3 = V(B3);
+I(G0n1) <+ -0.5*(1+tanh(TR*(m0-0.5)));
+I(G0n1) <+ V(G0n1);
+I(G0n1, G0n2) <+ V(G0n1,G0n2)/Rd;
+I(G0n2) <+ ddt(Cd*V(G0n2));
+I(G0)  <+ -V(G0n2);
+I(G0) <+ V(G0);
+//
+I(G1n1) <+ -0.5*(1+tanh(TR*(m1-0.5)));
+I(G1n1) <+ V(G1n1);
+I(G1n1, G1n2) <+ V(G1n1,G1n2)/Rd;
+I(G1n2) <+ ddt(Cd*V(G1n2));
+I(G1)  <+ -V(G1n2);
+I(G1) <+ V(G1);
+//
+I(G2n1) <+ -0.5*(1+tanh(TR*(m2-0.5)));
+I(G2n1) <+ V(G2n1);
+I(G2n1, G2n2) <+ V(G2n1,G2n2)/Rd;
+I(G2n2) <+ ddt(Cd*V(G2n2));
+I(G2)  <+ -V(G2n2);
+I(G2) <+ V(G2);
+//
+I(G3n1) <+ -0.5*(1+tanh(TR*(m3-0.5)));
+I(G3n1) <+ V(G3n1);
+I(G3n1, G3n2) <+ V(G3n1,G3n2)/Rd;
+I(G3n2) <+ ddt(Cd*V(G3n2));
+I(G3)  <+ -V(G3n2);
+I(G3) <+ V(G3);
+end
+endmodule

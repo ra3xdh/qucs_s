@@ -1,0 +1,9 @@
+# Qucs 0.0.15  /tmp/test.sch
+
+IProbe:I _net0 _net1
+VProbe:V _net2 gnd
+Vac:V1 _net0 gnd U="1 V" f="1 GHz" Phase="0" Theta="0"
+C:C1 _net2 gnd C="C" V=""
+.AC:AC1 Type="log" Start="1 Hz" Stop="10 GHz" Points="100" Noise="yes"
+R:R1 _net1 _net2 R="R" Temp="TC" Tc1="0.0" Tc2="0.0" Tnom="TC"
+Eqn:Eqn1 R="1" C="1e-6" TC="25" T="TC+273.15" noiseR2="4*1.3806488e-23*T*R" tol="1e-10" Vc="1/(1+j*2*pi*acfrequency*C*R)" diffV="V.v-Vc" assertV="assert(abs(diffV)<tol)" Vcn="sqrt(((abs(1/(1+j*2*pi*acfrequency*C*R)))^2)*noiseR2)" diffVn="V.vn-Vcn" assertVn="assert(abs(diffVn)<tol)" Ic="((1-1/(1+j*2*pi*acfrequency*C*R))/R)" diffI="I.i-Ic" assertI="assert(abs(diffI)<tol)" Export="yes"

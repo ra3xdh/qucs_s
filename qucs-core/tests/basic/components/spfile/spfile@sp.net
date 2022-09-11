@@ -1,0 +1,9 @@
+# Qucs 0.0.15  /home/bastien/.qucs/test_prj/test.sch
+
+.SP:SP1 Type="log" Start="1 Hz" Stop="10 GHz" Points="101" Noise="yes" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+R:R1 _net0 _net1 R="50 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C1 _net1 gnd C="1 pF" V=""
+Pac:P1 _net0 gnd Num="1" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Pac:P2 _net2 gnd Num="2" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+SPfile:X1 _net2 gnd File="{./R50C1pF.s1p}" Data="rectangular" Interpolator="linear" duringDC="open"
+Eqn:Eqn1 assert="assert(abs(diff)<1e-6)" diff="S[1,1]-S[2,2]" Export="yes"

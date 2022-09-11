@@ -1,0 +1,63 @@
+//   Qucs analogue half adder fa2b model
+//   The structure and theoretical background to the fa2b
+//   Verilog-a model are presented in the Qucs mixed-mode tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, December 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module fa2b (D, C, B, A, CI, CO, S1, S0); 
+ inout D, C, B, A, CI, CO, S1, S0;
+ electrical D, C, B, A, CI, CO, S1, S0;
+ electrical S0n1, S0n2, S1n1, S1n2, COn1, COn2;
+//
+ `define attr(txt) (*txt*)
+ parameter real TR=6 from [1.0:20.0] `attr(info="transfer function high scaling factor");
+ parameter real Delay = 1e-9 from [0: inf] `attr(info="output delay" unit="s");
+//
+ real Rd, Cd, mS0a, mS0b, mS0, mS1a, mS1b, mS1, mCO;
+//
+analog begin
+@(initial_model)
+  begin
+    Rd = 1e3;
+    Cd= Delay*1.43/Rd;
+  end
+//
+mS0a = V(B)*(1-V(D))+(1-V(B))*V(D);
+mS0  = V(CI)*(1-mS0a)+(1-V(CI))*mS0a;
+mS1a = V(B)*V(D)+V(CI)*V(B)+V(CI)*V(D);
+mS1b = V(A)*(1-V(C))+(1-V(A))*V(C);
+mS1  = mS1a*(1-mS1b)+(1-mS1a)*mS1b;
+mCO  = V(A)*V(C)+(V(A)+V(C))*mS1a;
+//
+if (mS0 >= 0.5) mS0 = 1; else mS0 = 0;
+if (mS1 >= 0.5) mS1 = 1; else mS1 = 0;
+if (mCO >= 0.5) mCO = 1; else mCO = 0;
+I(S0n1) <+ -0.5*(1+tanh(TR*(mS0-0.5)));
+I(S0n1) <+ V(S0n1);
+I(S0n1, S0n2) <+ V(S0n1,S0n2)/Rd;
+I(S0n2) <+ ddt(Cd*V(S0n2));
+I(S0)  <+ -V(S0n2);
+I(S0) <+ V(S0);
+//
+I(S1n1) <+ -0.5*(1+tanh(TR*(mS1-0.5)));
+I(S1n1) <+ V(S1n1);
+I(S1n1, S1n2) <+ V(S1n1,S1n2)/Rd;
+I(S1n2) <+ ddt(Cd*V(S1n2));
+I(S1)  <+ -V(S1n2);
+I(S1) <+ V(S1);
+//
+I(COn1) <+ -0.5*(1+tanh(TR*(mCO-0.5)));
+I(COn1) <+ V(COn1);
+I(COn1, COn2) <+ V(COn1,COn2)/Rd;
+I(COn2) <+ ddt(Cd*V(COn2));
+I(CO)  <+ -V(COn2);
+I(CO) <+ V(CO);
+end
+endmodule

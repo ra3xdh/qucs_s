@@ -1,0 +1,6 @@
+# Qucs 0.0.15  /tmp/test.sch
+
+Pac:P1 _net0 gnd Num="1" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+R:R1 _net0 gnd R="50 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.SP:SP1 Type="log" Start="1 Hz" Stop="10 GHz" Points="101" Noise="no" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+Eqn:Eqn1 assert="assert(abs(S[1,1])<1e-6)" Export="yes"

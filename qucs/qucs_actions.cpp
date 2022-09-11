@@ -814,7 +814,8 @@ void QucsApp::slotCallActiveFilter()
 // Is called to start the transmission line calculation program.
 void QucsApp::slotCallLine()
 {
-  launchTool(QUCS_NAME "trans", "line calculation",QStringList(),true);
+//  launchTool(QUCS_NAME "trans", "line calculation",QStringList(),true);
+  launchTool(QUCS_NAME "trans", "line calculation");
 }
 
 // ------------------------------------------------------------------------
@@ -836,7 +837,23 @@ void QucsApp::slotCallMatch()
 // Is called to start the attenuator calculation program.
 void QucsApp::slotCallAtt()
 {
-  launchTool(QUCS_NAME "attenuator", "attenuator calculation",QStringList(),true);
+//  launchTool(QUCS_NAME "attenuator", "attenuator calculation",QStringList(),true);
+  launchTool(QUCS_NAME "attenuator", "attenuator calculation");
+}
+
+// ------------------------------------------------------------------------
+// Is called to start the resistor color code calculation program.
+void QucsApp::slotCallRes()
+{
+//  launchTool(QUCS_NAME "rescodes", "resistor color code calculation",QStringList(),true);
+  launchTool(QUCS_NAME "rescodes", "resistor color code calculation");
+}
+
+//-------------------------------------------------------------------
+// It starts the power combining synthesis tool
+void QucsApp::slotCallPowerComb()
+{
+  launchTool(QUCS_NAME "powercombining", "Power combiner synthesis");
 }
 
 /*!

@@ -1,0 +1,13 @@
+parsing netlist...
+checking netlist...
+checker notice, value of `f' (variable `Vfreq') could be out of range `[0,0.' in `Vac:V1'
+checker notice, value of `Stop' (variable `Tmax') could be out of range `[0,0.' in `TR:TR1'
+netlist content
+      1 sTr instances
+      2 Diode instances
+      1 R instances
+      1 Vac instances
+      1 TR instances
+creating netlist...
+NOTIFY: TR1: average time-step 4.18848e-05, 264 rejections
+NOTIFY: TR1: average NR-iterations 3.3267, 0 non-convergences

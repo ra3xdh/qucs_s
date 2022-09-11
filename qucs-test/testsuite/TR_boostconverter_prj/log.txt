@@ -1,0 +1,19 @@
+parsing netlist...
+checking netlist...
+checker notice, value of `Stop' (variable `Tmax') could be out of range `[0,0.' in `TR:TR1'
+checker notice, value of `MinStep' (variable `Tstep') could be out of range `[0,0.' in `TR:TR1'
+checker notice, value of `MaxStep' (variable `Tstep') could be out of range `[0,0.' in `TR:TR1'
+checker notice, value of `TH' (variable `Ton') could be out of range `[0,0.' in `Vrect:V1'
+checker notice, value of `TL' (variable `Toff') could be out of range `[0,0.' in `Vrect:V1'
+netlist content
+      1 Diode instances
+      1 C instances
+      1 L instances
+      1 R instances
+      1 Relais instances
+      1 Vrect instances
+      1 Vdc instances
+      1 TR instances
+creating netlist...
+NOTIFY: TR1: average time-step 2.49965e-08, 0 rejections
+NOTIFY: TR1: average NR-iterations 2.03624, 0 non-convergences

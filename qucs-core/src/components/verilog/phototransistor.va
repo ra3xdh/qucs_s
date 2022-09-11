@@ -1,0 +1,105 @@
+//   Qucs compact phototransistor model
+//   The structure and theoretical background to the phototransistor
+//   Verilog-A model are given in the COMON meeting demonstration
+//   at link http://www.mos-ak.org/frankfurt_o/papers/M_Brinson_Qucs_COMON_April_2_2009_final.pdf.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, March 2009.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module phototransistor (Collector, Base, Emitter, Power, Wavelength); 
+ inout Collector, Base, Emitter, Power, Wavelength;
+ electrical Collector, Base, Emitter, Power, Wavelength;
+ electrical CI, BI, BI2, EI;
+ `define attr(txt) (*txt*)
+//
+ parameter real Bf=100 from [1:inf]               `attr(info="forward beta");
+ parameter real Br=0.1 from [1e-6:inf]            `attr(info="reverse beta");
+ parameter real Is=1e-10 from [1e-30:inf]         `attr(info="dark current" unit="A" );
+ parameter real Nf=1 from [1e-30:inf]             `attr(info="forward emission coefficient");
+ parameter real Nr=1 from [1e-30:inf]             `attr(info="reverse emission coefficient");
+ parameter real Vaf=100 from [1e-6:inf]           `attr(info="forward early voltage" unit="V");
+ parameter real Var=100 from [1e-6:inf]           `attr(info="reverse early voltage" unit="V");
+ parameter real Mje=0.33 from [1e-6:inf]          `attr(info="base-emitter junction exponential factor");
+ parameter real Vje=0.75 from [1e-6:inf]          `attr(info="base-emitter junction built-in potential" unit="V");
+ parameter real Cje=1e-12 from [0:inf]            `attr(info="base-emitter zero-bias depletion capacitance" unit="F");
+ parameter real Mjc=0.33 from [1e-6:inf]          `attr(info="base-collector junction exponential factor");
+ parameter real Vjc=0.75 from [1e-6:inf]          `attr(info="base-collector junction built-in potential" unit="V" );
+ parameter real Cjc=2e-12 from [0:inf]            `attr(info="base-collector zero-bias depletion capacitance" unit="F");
+ parameter real Tr=100n  from [1e-15:inf]         `attr(info="ideal reverse transit time" unit="s");
+ parameter real Tf=0.1n  from [1e-15:inf]         `attr(info="ideal forward transit time" unit="s");
+ parameter real Ikf=10 from [1e-20:inf]           `attr(info="high current corner for forward beta" unit="A");
+ parameter real Ikr=10 from [1e-20:inf]           `attr(info="high current corner for reverse beta" unit="A");
+ parameter real Rc=10 from [1e-9:inf]             `attr(info="collector series resistance" unit="Ohm");
+ parameter real Re=1 from [1e-9:inf]              `attr(info="emitter series resistance" unit="Ohm");
+ parameter real Rb=100 from [1e-9:inf]            `attr(info="base series resistance" unit="Ohm");
+ parameter real Kf=1e-12 from [0:inf]             `attr(info="flicker noise coefficient");
+ parameter real Ffe=1 from [0:inf]                `attr(info="flicker noise coefficient");
+ parameter real Af=1 from [0:inf]                 `attr(info="flicker noise exponent"); 
+ parameter real Responsivity=1.5 from [1e-30:inf] `attr(info="responsivity at relative selectivity=100%" unit="A/W");
+ parameter real P0=2.6122e3   from[-inf:inf]      `attr(info="relative selectivity polynomial coefficient" );
+ parameter real P1=-1.489e1   from[-inf:inf]      `attr(info="relative selectivity polynomial coefficient" );
+ parameter real P2=3.0332e-2  from[-inf:inf]      `attr(info="relative selectivity polynomial coefficient" );
+ parameter real P3=-2.5708e-5 from[-inf:inf]      `attr(info="relative selectivity polynomial coefficient" );
+ parameter real P4=7.6923e-9  from[-inf:inf]      `attr(info="relative selectivity polynomial coefficient" );
+//
+real VT, con1, con2, con3, con4, con5, con6, con7, con8, con9, con10;
+real TwoQ, FourKT, GMIN;
+real ICC, IEC, q1, q2, IB, IC, IE, Q1, RelSensitivity;
+//
+ analog begin
+ @(initial_step)
+  begin
+   VT = `P_K*300/`P_Q; // VT = vt(300)
+   con1=1/(Nf*VT);
+   con2=1/(Nr*VT);
+   con3=1-Mje;
+   con4=1-Mjc;
+   con5=pow(2, Mje);
+   con6=pow(2, Mjc);
+   con7=Rb/2;
+   con8=2/Rb;
+   con9=1/Rc;
+   con10=1/Re;
+   TwoQ=2*`P_Q;  // TwoQ = 2*q
+   FourKT=4*`P_K*$temperature;  // FourKT = 4*K*T
+   GMIN=1e-12;
+  end;
+// Model quantity equations and current contributions
+  ICC=Is*(limexp(V(BI,EI)*con1)-1);
+  IEC=Is*(limexp(V(BI,CI)*con2)-1);
+  q1=1+V(BI,CI)/Vaf + V(BI,EI)/Var;
+  q2=(ICC/Ikf) + (IEC/Ikr);
+  IB=V(BI2,BI)*con8;
+  IC=V(Collector,CI)*con9;
+  IE=V(EI,Emitter)*con10;
+  I(Collector,CI) <+ IC;
+  I(Base,BI2) <+ V(Base, BI2)*con8;
+  I(BI2, BI) <+ IB;
+  I(EI, Emitter) <+ IE;
+  I(BI,CI) <+ (IEC/Br) + GMIN*V(BI,CI);
+  I(BI,EI) <+ (ICC/Bf) + GMIN*V(BI,EI);
+  I(CI,EI) <+ (ICC-IEC)/(1e-20+(q1/2)*(1+sqrt(1+4*q2)));
+  Q1=(V(BI,CI) >Vjc/2) ? Tr*IEC+Cjc*con6*(Mjc*V(BI,CI)*V(BI,CI)/Vjc+con4*V(BI,CI))
+                       : Tr*IEC+Cjc*((Vjc/con4)*(1-pow((1-V(BI,CI)),con4)));
+  I(BI,CI) <+ ddt(Q1);
+  Q1=(V(BI,EI) >Vje/2) ? Tf*ICC+Cje*con5*(Mje*V(BI,EI)*V(BI,EI)/Vje+con3*V(BI,EI))
+                       : Tf*ICC+Cje*((Vje/con3)*(1-pow((1-V(BI,EI)),con3)));
+  I(BI,EI) <+ ddt(Q1);
+  RelSensitivity = P0+P1*V(Wavelength)+P2*pow(V(Wavelength),2.0)+P3*pow(V(Wavelength),3.0)+P4*pow(V(Wavelength),4.0);
+  I(CI,BI2) <+ ( (Responsivity*RelSensitivity)/(Bf*100) )*V(Power);
+// Noise contributions
+  I(Collector,CI)  <+ white_noise(FourKT*con9, "thermal");
+  I(Base,BI2) <+ white_noise(FourKT*con8, "thermal");
+  I(BI2, BI)  <+ white_noise(FourKT*con8, "thermal");
+  I(EI,Emitter) <+ white_noise(FourKT*con10, "thermal");
+  I(CI,EI) <+ white_noise(TwoQ*IC, "shot");
+  I(BI,EI) <+ white_noise(TwoQ*IB, "shot");
+  I(BI,EI) <+ flicker_noise(Kf*pow(IB, Af), Ffe, "flicker");
+ end
+endmodule

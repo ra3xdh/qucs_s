@@ -1,0 +1,21 @@
+project location: 
+modules to load: 0
+factorycreate.size() is 0
+factorycreate has registered:
+parsing netlist...
+checking netlist...
+checker notice, variable `neg.Vt' in equation `Vout' not yet defined
+checker notice, variable `pos.Vt' in equation `Vout' not yet defined
+checker notice, variable `time' in equation `Spectrum' not yet defined
+netlist content
+      3 MOSFET instances
+      2 R instances
+      2 Vdc instances
+      2 Vac instances
+      1 TR instances
+creating netlist...
+checker notice, variable `neg.Vt' in equation `Vout' not yet defined
+checker notice, variable `pos.Vt' in equation `Vout' not yet defined
+checker notice, variable `time' in equation `Spectrum' not yet defined
+NOTIFY: TR1: average time-step 1.27632e-09, 151 rejections
+NOTIFY: TR1: average NR-iterations 3.17932, 0 non-convergences

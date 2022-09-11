@@ -1,0 +1,117 @@
+//   Qucs resistive potentiometer model:
+//   This model can be used to construct working lin, log and inverse log
+//   potentiometers, or other devices with designer specified resistive taper functions.
+//   All required parameters can be extracted directly from
+//   manufacturers data sheets.
+//
+//   The structure and theoretical background to the potentiometer
+//   Verilog-a model are presented in the Qucs potentiometer report.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, February 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+// 
+ module potentiometer (B, M, T);
+ inout B, M, T;
+//
+ electrical B, M, T;
+//
+// Internal nodes
+//
+ electrical n1;
+//
+//   
+ `define attr(txt) (*txt*)
+//
+ parameter real R_pot = 1e4 from [1e-6 : inf]
+  `attr(info="nominal device resistance" unit = "Ohm");
+ parameter real Rotation = 120 from [0 : inf]
+  `attr(info="shaft/wiper arm rotation" unit = "degrees");
+ parameter real Taper_Coeff = 0 from [0 : inf]
+  `attr(info="resistive law taper coefficient" );
+ parameter integer LEVEL = 1 from [1 : 3]
+  `attr(info="device type selector" );
+ parameter real Max_Rotation = 240.0 from [0 : inf]
+  `attr(info="maximum shaft/wiper rotation" unit = "degrees");
+ parameter real Conformity = 0.2 from [-inf : inf]
+  `attr(info="conformity error" unit = "%");
+ parameter real Linearity = 0.2 from [-inf : inf]
+  `attr(info="linearity error" unit = "%");
+ parameter real Contact_Res = 1 from [1e-6 : inf]
+  `attr(info="wiper arm contact resistance" unit = "Ohm");
+ parameter real Temp_Coeff = 100 from [0 : inf]
+  `attr(info="resistance temperature coefficient" unit = "PPM/Celsius");
+ parameter real Tnom = 26.85 from [-273 : inf]
+  `attr(info="parameter measurement temperature" unit = "Celsius");
+//
+real Rad_Angle, R_pot_Temp, Rtop, Rbot, Tpcoeff, Rcontact;
+real RTB, RTT, error_term;
+real fourkt;
+//
+analog begin
+//
+// Model equations
+//
+//
+Rcontact=Contact_Res+1e-6;
+Rad_Angle=Rotation*`M_PI/180;
+R_pot_Temp=(R_pot+1e-6)*(1+Temp_Coeff*($temperature-Tnom)/1e6);
+Tpcoeff=Taper_Coeff+(Conformity+Linearity*sin(Rad_Angle))/100;
+error_term=(1+(Conformity+Linearity*sin(Rad_Angle))/100);
+//
+case (LEVEL)
+   2: begin
+	RTB=R_pot_Temp*Tpcoeff;
+	RTT=1e15;
+        Rtop=(1.000001-(Rotation/(Max_Rotation+1e-20)))*R_pot_Temp;
+        Rbot=(0.000001+(Rotation/(Max_Rotation+1e-20)))*R_pot_Temp;
+      end
+   3: begin
+	RTB=1e15;
+	RTT=R_pot_Temp*Tpcoeff;
+        Rtop=(1.000001-(Rotation/(Max_Rotation+1e-20)))*R_pot_Temp;
+        Rbot=(0.000001+(Rotation/(Max_Rotation+1e-20)))*R_pot_Temp;
+
+      end
+  default:begin
+        RTB=1e15;
+        RTT=1e15;
+        Rtop=(1.000001-(Rotation/(Max_Rotation+1e-20)))*R_pot_Temp*error_term;
+        Rbot=(0.000001+(Rotation/(Max_Rotation+1e-20)))*R_pot_Temp*error_term;
+
+      end
+endcase
+//
+if (Taper_Coeff == 0.0) begin 
+			 RTB=1e15;
+			 RTT=1e15;
+                         Rtop=(1.000001-(Rotation/(Max_Rotation+1e-20)))*R_pot_Temp*error_term;
+                         Rbot=(0.000001+(Rotation/(Max_Rotation+1e-20)))*R_pot_Temp*error_term;
+			end
+//
+// Macromodel
+//
+I(T, n1) <+ V(T, n1)/Rtop;
+I(T, n1) <+ V(T, n1)/RTT;
+I(B, n1) <+ V(B, n1)/Rbot;
+I(B, n1) <+ V(B, n1)/RTB;
+I(M, n1) <+ V(M, n1)/Rcontact;
+//
+// Noise contributions
+//
+fourkt=4.0*`P_K*$temperature;
+I(T, n1) <+ white_noise(fourkt/Rtop, "thermal");
+I(T, n1) <+ white_noise(fourkt/RTT, "thermal");
+I(B, n1) <+ white_noise(fourkt/Rbot, "thermal");
+I(B, n1) <+ white_noise(fourkt/RTB, "thermal");
+I(M, n1) <+ white_noise(fourkt/Rcontact, "thermal");
+
+//
+end
+endmodule

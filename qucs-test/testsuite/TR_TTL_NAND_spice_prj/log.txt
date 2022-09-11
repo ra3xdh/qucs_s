@@ -1,0 +1,56 @@
+project location: 
+modules to load: 0
+factorycreate.size() is 0
+factorycreate has registered:
+parsing netlist...
+checking netlist...
+subcircuit root
+  BJT:NAND.X1.X1.Q5 NAND.X1.X1._netE3 out gnd gnd Type="npn" Is="2e-15" Bf="50" Br="1" Vaf="50" Cje="2e-12F" Cjc="2e-12F" Nf="1" Nr="1" Ikf="0" Ikr="0" Var="0" Ise="0" Ne="1.5" Isc="0" Nc="2" Rbm="0" Irb="0" Vje="0.75" Mje="0.33" Vjc="0.75" Mjc="0.33" Xcjc="1" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Vtf="0" Tf="0" Xtf="0" Itf="0" Tr="0"
+  Diode:NAND.X1.X1.D3 out NAND.X1.X1._netE4 Is="1e-15" Cj0="1e-12" Bv="8" N="1" M="0.5" Vj="0.7"
+  BJT:NAND.X1.X1.Q4 NAND.X1.X1._netC3 NAND.X1.X1._netC4 NAND.X1.X1._netE4 gnd Type="npn" Is="2e-15" Bf="50" Br="1" Vaf="50" Cje="2e-12F" Cjc="2e-12F" Nf="1" Nr="1" Ikf="0" Ikr="0" Var="0" Ise="0" Ne="1.5" Isc="0" Nc="2" Rbm="0" Irb="0" Vje="0.75" Mje="0.33" Vjc="0.75" Mjc="0.33" Xcjc="1" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Vtf="0" Tf="0" Xtf="0" Itf="0" Tr="0"
+  R:NAND.X1.X1.R5 _net0 NAND.X1.X1._netC4 R="130"
+  R:NAND.X1.X1.R4 NAND.X1.X1._netE3 gnd R="1000"
+  BJT:NAND.X1.X1.Q3 NAND.X1.X1._netB3 NAND.X1.X1._netC3 NAND.X1.X1._netE3 gnd Type="npn" Is="2e-15" Bf="50" Br="1" Vaf="50" Cje="2e-12F" Cjc="2e-12F" Nf="1" Nr="1" Ikf="0" Ikr="0" Var="0" Ise="0" Ne="1.5" Isc="0" Nc="2" Rbm="0" Irb="0" Vje="0.75" Mje="0.33" Vjc="0.75" Mjc="0.33" Xcjc="1" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Vtf="0" Tf="0" Xtf="0" Itf="0" Tr="0"
+  R:NAND.X1.X1.R3 _net0 NAND.X1.X1._netC3 R="1600"
+  BJT:NAND.X1.X1.Q2 NAND.X1.X1._netB2 NAND.X1.X1._netB3 B gnd Type="npn" Is="2e-15" Bf="50" Br="1" Vaf="50" Cje="2e-12F" Cjc="2e-12F" Nf="1" Nr="1" Ikf="0" Ikr="0" Var="0" Ise="0" Ne="1.5" Isc="0" Nc="2" Rbm="0" Irb="0" Vje="0.75" Mje="0.33" Vjc="0.75" Mjc="0.33" Xcjc="1" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Vtf="0" Tf="0" Xtf="0" Itf="0" Tr="0"
+  R:NAND.X1.X1.R2 _net0 NAND.X1.X1._netB2 R="4000"
+  BJT:NAND.X1.X1.Q1 NAND.X1.X1._netB1 NAND.X1.X1._netB3 A gnd Type="npn" Is="2e-15" Bf="50" Br="1" Vaf="50" Cje="2e-12F" Cjc="2e-12F" Nf="1" Nr="1" Ikf="0" Ikr="0" Var="0" Ise="0" Ne="1.5" Isc="0" Nc="2" Rbm="0" Irb="0" Vje="0.75" Mje="0.33" Vjc="0.75" Mjc="0.33" Xcjc="1" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Vtf="0" Tf="0" Xtf="0" Itf="0" Tr="0"
+  R:NAND.X1.X1.R1 _net0 NAND.X1.X1._netB1 R="4000"
+  Diode:NAND.X1.X1.D2 B gnd Is="1e-15" Cj0="1e-12" Bv="8" N="1" M="0.5" Vj="0.7"
+  Diode:NAND.X1.X1.D1 A gnd Is="1e-15" Cj0="1e-12" Bv="8" N="1" M="0.5" Vj="0.7"
+  C:C1 gnd out C="5e-12F"
+  TR:TR1 Type="lin" Start="0" Stop="0.005s" Points="101" IntegrationMethod="Gear" Order="2" InitialStep="1e-09s" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1e-12A" vntol="1e-06V" Temp="26.85" LTEreltol="0.001" LTEabstol="1e-06" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"
+  Vrect:VA A gnd U="5V" TH="0.001s" TL="0.001s" Tr="1e-08s" Tf="1e-08s" Td="0.001s"
+  Vrect:VA1 B gnd U="5V" TH="0.0013s" TL="0.0013s" Tr="1e-08s" Tf="1e-08s" Td="0.001s"
+  Vdc:V1 _net0 gnd U="5V"
+subcircuit NAND_GATE_cir
+  Sub:X1 _ref _netA _netB _netY _netVCC Type="NAND"
+subcircuit NAND
+  Diode:D1 _netA _ref Is="1e-15" Cj0="1e-12" Bv="8" N="1" M="0.5" Vj="0.7"
+  Diode:D2 _netB _ref Is="1e-15" Cj0="1e-12" Bv="8" N="1" M="0.5" Vj="0.7"
+  R:R1 _netVCC _netB1 R="4000"
+  BJT:Q1 _netB1 _netB3 _netA _ref Type="npn" Is="2e-15" Bf="50" Br="1" Vaf="50" Cje="2e-12F" Cjc="2e-12F" Nf="1" Nr="1" Ikf="0" Ikr="0" Var="0" Ise="0" Ne="1.5" Isc="0" Nc="2" Rbm="0" Irb="0" Vje="0.75" Mje="0.33" Vjc="0.75" Mjc="0.33" Xcjc="1" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Vtf="0" Tf="0" Xtf="0" Itf="0" Tr="0"
+  R:R2 _netVCC _netB2 R="4000"
+  BJT:Q2 _netB2 _netB3 _netB _ref Type="npn" Is="2e-15" Bf="50" Br="1" Vaf="50" Cje="2e-12F" Cjc="2e-12F" Nf="1" Nr="1" Ikf="0" Ikr="0" Var="0" Ise="0" Ne="1.5" Isc="0" Nc="2" Rbm="0" Irb="0" Vje="0.75" Mje="0.33" Vjc="0.75" Mjc="0.33" Xcjc="1" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Vtf="0" Tf="0" Xtf="0" Itf="0" Tr="0"
+  R:R3 _netVCC _netC3 R="1600"
+  BJT:Q3 _netB3 _netC3 _netE3 _ref Type="npn" Is="2e-15" Bf="50" Br="1" Vaf="50" Cje="2e-12F" Cjc="2e-12F" Nf="1" Nr="1" Ikf="0" Ikr="0" Var="0" Ise="0" Ne="1.5" Isc="0" Nc="2" Rbm="0" Irb="0" Vje="0.75" Mje="0.33" Vjc="0.75" Mjc="0.33" Xcjc="1" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Vtf="0" Tf="0" Xtf="0" Itf="0" Tr="0"
+  R:R4 _netE3 _ref R="1000"
+  R:R5 _netVCC _netC4 R="130"
+  BJT:Q4 _netC3 _netC4 _netE4 _ref Type="npn" Is="2e-15" Bf="50" Br="1" Vaf="50" Cje="2e-12F" Cjc="2e-12F" Nf="1" Nr="1" Ikf="0" Ikr="0" Var="0" Ise="0" Ne="1.5" Isc="0" Nc="2" Rbm="0" Irb="0" Vje="0.75" Mje="0.33" Vjc="0.75" Mjc="0.33" Xcjc="1" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Vtf="0" Tf="0" Xtf="0" Itf="0" Tr="0"
+  Diode:D3 _netY _netE4 Is="1e-15" Cj0="1e-12" Bv="8" N="1" M="0.5" Vj="0.7"
+  BJT:Q5 _netE3 _netY _ref _ref Type="npn" Is="2e-15" Bf="50" Br="1" Vaf="50" Cje="2e-12F" Cjc="2e-12F" Nf="1" Nr="1" Ikf="0" Ikr="0" Var="0" Ise="0" Ne="1.5" Isc="0" Nc="2" Rbm="0" Irb="0" Vje="0.75" Mje="0.33" Vjc="0.75" Mjc="0.33" Xcjc="1" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Vtf="0" Tf="0" Xtf="0" Itf="0" Tr="0"
+netlist content
+      3 Diode instances
+      1 C instances
+      5 BJT instances
+      5 R instances
+      2 Vrect instances
+      1 Vdc instances
+      1 TR instances
+creating netlist...
+NOTIFY: TR1: creating node list for initial DC analysis
+NOTIFY: TR1: solving initial DC netlist
+NOTIFY: TR1: creating node list for transient analysis
+NOTIFY: TR1: solving transient netlist
+NOTIFY: TR1: average time-step 3.34672e-06, 357 rejections
+NOTIFY: TR1: average NR-iterations 3.5261, 0 non-convergences

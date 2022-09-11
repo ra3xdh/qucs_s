@@ -1,0 +1,50 @@
+//   Qucs analogue mux8to1 model
+//   The structure and theoretical background to the mux8to1
+//   Verilog-a model are presented in the Qucs digital tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, December 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module mux8to1 (EN, A, B, C, D0, D1, D2, D3, D4, D5, D6, D7, Y); 
+ inout EN, A, B, C, D0, D1, D2, D3, D4, D5, D6, D7, Y;
+ electrical EN, A, B, C, D0, D1, D2, D3, D4, D5, D6, D7, Y;
+ electrical n1, n2;
+//
+ `define attr(txt) (*txt*)
+ parameter real TR=6 from [1.0:20.0] `attr(info="transfer function high scaling factor");
+ parameter real Delay = 1e-9 from [0: inf] `attr(info="output delay" unit="s");
+//
+ real Rd, Cd, In1, VAI, VBI, VCI, m0, m1, m2, m3, m4, m5, m6, m7;
+//
+analog begin
+@(initial_model)
+  begin
+    Rd = 1e3;
+    Cd= Delay*1.43/Rd;
+  end
+VAI = 1-V(A);
+VBI = 1-V(B);
+VCI = 1-V(C);
+m0 = V(D0)*VCI*VBI*VAI;
+m1 = V(D1)*VCI*VBI*V(A);
+m2 = V(D2)*VCI*V(B)*VAI;
+m3 = V(D3)*VCI*V(B)*V(A);
+m4 = V(D4)*V(C)*VBI*VAI;
+m5 = V(D5)*V(C)*VBI*V(A);
+m6 = V(D6)*V(C)*V(B)*VAI;
+m7 = V(D7)*V(C)*V(B)*V(A);
+In1 = (1-V(EN))*(m0+m1+m2+m3+m4+m5+m6+m7);
+I(n1) <+ -0.5*(1+tanh(TR*(In1-0.5)));
+I(n1) <+ V(n1);
+I(n1, n2) <+ V(n1,n2)/Rd;
+I(n2) <+ ddt(Cd*V(n2));
+I(Y)  <+ -V(n2);
+I(Y) <+ V(Y);
+end
+endmodule

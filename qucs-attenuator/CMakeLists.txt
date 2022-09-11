@@ -81,7 +81,9 @@ ADD_EXECUTABLE( ${QUCS_NAME}attenuator MACOSX_BUNDLE WIN32
 
 TARGET_LINK_LIBRARIES( ${QUCS_NAME}attenuator ${QT_LIBRARIES} )
 
-#INSTALL (TARGETS ${QUCS_NAME}attenuator DESTINATION bin)
+# man pages
+INSTALL(FILES qucsattenuator.1 DESTINATION share/man/man1)
+
 #
 # Prepare the installation
 #
@@ -98,15 +100,10 @@ IF(WIN32)
   SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}.exe")
 ENDIF(WIN32)
 
-#
-# Install the Qucs application, on Apple, the bundle is
-# installed as on other platforms it'll go into the bin directory.
-#
 INSTALL(TARGETS ${QUCS_NAME}attenuator
     BUNDLE DESTINATION bin COMPONENT Runtime
     RUNTIME DESTINATION bin COMPONENT Runtime
     )
-
 
 #
 # Install needed Qt plugins by copying directories from the qt installation
@@ -148,5 +145,4 @@ INSTALL(CODE "
     fixup_bundle(\"${APPS}\" \"\${QTPLUGINS}\" \"${DIRS}\")
     " COMPONENT Runtime)
 ENDIF()
-
 

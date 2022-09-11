@@ -26,6 +26,8 @@ set(PROJECT_COPYRIGHT_YEAR "2014")
 set(PROJECT_DOMAIN_FIRST "qucs")
 set(PROJECT_DOMAIN_SECOND "org")
 
+#
+set(CMAKE_BUILD_TYPE Debug)
 
 # If Git hash not defined, try to define it
 IF(NOT GIT)
@@ -67,8 +69,7 @@ INCLUDE_DIRECTORIES(
       )
 
 # bug, the find package does not seem to set the QT_LIBRARIES, do it manually
-SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5Script_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} )
-
+SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5Script_LIBRARIES} ${Qt5PrintSupport_LIBRARIES})
 
 
 #MESSAGE("QT_INCLUDES=[${QT_INCLUDES}]")
@@ -100,11 +101,34 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra ") # enable warning level
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ") # enable C++11
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC ") # enable C++11
 
+# flag not available in mingw 4.8.2, MSVC10
+if(NOT WIN32)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-register ")
+endif()
+
+# For some reason, on Windows QT_LIBRARIES point to static(?) .a libs which do
+# not provide the needed symbols. They are found on the .dll libraries.
+if(WIN32)
+  link_directories("${QT_BINARY_DIR}")
+
+  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(QT_LIBRARIES Qt5Cored Qt5Guid Qt5Svgd Qt5Xmld Qt5Scriptd)
+  else()
+    set(QT_LIBRARIES Qt5Core Qt5Gui Qt5Svg Qt5Xml Qt5Script)
+  endif()
+endif(WIN32)
+
+#
+# Set position independed code PIC
+#
+if(UNIX AND NOT APPLE)
+  if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+  endif()
+endif()
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-# For some reason, on Windows QT_LIBRARIES point to static(?) .a libs
-# which do not provide the needed symbols. They are found on
-# the .dll libraries.
+
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 INCLUDE_DIRECTORIES(
@@ -129,37 +153,50 @@ ADD_SUBDIRECTORY( extsimkernels )
 ADD_SUBDIRECTORY( spicecomponents )
 
 SET(QUCS_SRCS
-  element.cpp	octave_window.cpp	qucsdoc.cpp
-  textdoc.cpp  main.cpp	schematic.cpp
-  mnemo.cpp	qucs.cpp	viewpainter.cpp
-  module.cpp	schematic_element.cpp	wire.cpp
-  mouseactions.cpp qucs_actions.cpp	schematic_file.cpp
-  wirelabel.cpp node.cpp qucs_init.cpp
-  syntax.cpp misc.cpp messagedock.cpp
-  imagewriter.cpp printerwriter.cpp projectView.cpp
-  symbolwidget.cpp
-)
+  element.cpp
+  octave_window.cpp
+  qucsdoc.cpp
+  textdoc.cpp
+  schematic.cpp
+  mnemo.cpp
+  qucs.cpp
+  viewpainter.cpp
+  module.cpp
+  schematic_element.cpp
+  wire.cpp
+  mouseactions.cpp
+  qucs_actions.cpp
+  schematic_file.cpp
+  wirelabel.cpp
+  node.cpp
+  qucs_init.cpp
+  syntax.cpp
+  misc.cpp
+  messagedock.cpp
+  imagewriter.cpp
+  printerwriter.cpp
+  projectView.cpp
+  symbolwidget.cpp)
 
 SET(QUCS_HDRS
-element.h
-main.h
-messagedock.h
-misc.h
-mnemo.h
-module.h
-mouseactions.h
-node.h
-octave_window.h
-qucs.h
-qucsdoc.h
-schematic.h
-syntax.h
-symbolwidget.h
-textdoc.h
-viewpainter.h
-wire.h
-wirelabel.h
-)
+  element.h
+  main.h
+  messagedock.h
+  misc.h
+  mnemo.h
+  module.h
+  mouseactions.h
+  node.h
+  octave_window.h
+  qucs.h
+  qucsdoc.h
+  schematic.h
+  syntax.h
+  symbolwidget.h
+  textdoc.h
+  viewpainter.h
+  wire.h
+  wirelabel.h)
 
 #
 # files that have Q_OBJECT need to be MOC'ed
@@ -171,8 +208,7 @@ SET(QUCS_MOC_HDRS
   textdoc.h
   messagedock.h
   projectView.h
-  symbolwidget.h
-)
+  symbolwidget.h)
 
 #
 # headers that need to be moc'ed
@@ -185,7 +221,7 @@ QT5_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
 SET(RESOURCES qucs.qrc)
 QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
 
-if(UNIX AND NOT APPLE)
+IF(UNIX AND NOT APPLE)
 
     SET(ICON16 bitmaps/hicolor/16x16/apps/${QUCS_NAME}.png )
     SET(ICON22 bitmaps/hicolor/22x22/apps/${QUCS_NAME}.png )
@@ -209,10 +245,7 @@ if(UNIX AND NOT APPLE)
 
     SET(DESKTOP ${QUCS_NAME}.desktop )
     INSTALL( FILES ${DESKTOP} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
-endif()
-
-
-
+ENDIF()
 
 #
 # configure Apple bundle information
@@ -239,20 +272,45 @@ IF(APPLE)
   #SET(RESOURCES_SRCS ${RESOURCES_SRCS} ${LANG_SRCS})
 ENDIF(APPLE)
 
+#
+# Set up RPATH for the project
+#
+option(ENABLE_RPATH "Enable rpath support on Linux and Mac" ON)
+IF(NOT CMAKE_INSTALL_RPATH)
+  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+ENDIF()
+IF(APPLE AND NOT CMAKE_INSTALL_NAME_DIR)
+  set(CMAKE_INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+ENDIF()
+IF(UNIX AND ENABLE_RPATH)
+  set(CMAKE_SKIP_BUILD_RPATH FALSE)
+  set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+  set(CMAKE_MACOSX_RPATH TRUE)
+ENDIF()
+
+# schematic library
+add_library(coreSchematic OBJECT ${QUCS_SRCS} ${QUCS_MOC_SRCS})
+
+# create shared library
+add_library(
+  qucsschematic SHARED
+  $<TARGET_OBJECTS:coreSchematic> $<TARGET_OBJECTS:components>
+  $<TARGET_OBJECTS:diagrams> $<TARGET_OBJECTS:dialogs>
+  $<TARGET_OBJECTS:paintings>)
+
+# link system libraries
+target_link_libraries(qucsschematic ${QT_LIBRARIES} ${CMAKE_DL_LIBS})
 
 #
 #  CMake's way of creating an executable
 #
-ADD_EXECUTABLE( ${QUCS_NAME} MACOSX_BUNDLE WIN32
-  ${QUCS_HDRS}
-  ${QUCS_SRCS}
-  ${QUCS_MOC_SRCS}
-  ${RESOURCES_SRCS} )
+ADD_EXECUTABLE( ${QUCS_NAME} MACOSX_BUNDLE WIN32 main.cpp ${RESOURCES_SRCS})
 
 #
 # Tell CMake which libraries we need to link our executable against.
 #
-TARGET_LINK_LIBRARIES( ${QUCS_NAME}  components diagrams dialogs paintings extsimkernels spicecomponents qt3_compat ${QT_LIBRARIES} )
+TARGET_LINK_LIBRARIES( ${QUCS_NAME} qucsschematic extsimkernels spicecomponents qt3_compat )
 
 #
 # Prepare the installation
@@ -275,16 +333,26 @@ ENDIF(WIN32)
 # installed as on other platforms it'll go into the bin directory.
 #
 INSTALL(TARGETS ${QUCS_NAME}
-    BUNDLE DESTINATION bin COMPONENT Runtime
-    RUNTIME DESTINATION bin COMPONENT Runtime
-    )
+  BUNDLE DESTINATION bin COMPONENT Runtime
+  RUNTIME DESTINATION bin COMPONENT Runtime)
+
+# set Windows runtime location for libqucschematic See:
+# http://www.cmake.org/pipermail/cmake/2010-June/037461.html
+install(
+  TARGETS qucsschematic
+  RUNTIME DESTINATION bin COMPONENT runtime
+  ARCHIVE DESTINATION lib COMPONENT devel
+  LIBRARY DESTINATION lib COMPONENT library)
 
 #
 # Install needed Qt plugins by copying directories from the qt installation
 # One can cull what gets copied by using 'REGEX "..." EXCLUDE'
 #
 IF(APPLE)
-  INSTALL(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION bin/${plugin_dest_dir}/plugins COMPONENT Runtime)
+  INSTALL(
+  DIRECTORY "${QT_PLUGINS_DIR}/imageformats"
+  DESTINATION bin/${plugin_dest_dir}/plugins
+  COMPONENT Runtime)
 ENDIF()
 #
 # install a qt.conf file
@@ -320,6 +388,12 @@ INSTALL(CODE "
     " COMPONENT Runtime)
 ENDIF()
 
+# Install wrapper scripts
+if(WIN32)
+  set(SCRIPTS qucsdigi.bat qucsveri.bat qucsdigilib.bat)
+else()
+  set(SCRIPTS qucsdigi qucsveri qucsdigilib)
+endif()
 INSTALL( FILES ${SCRIPTS} DESTINATION bin/ )
 
 INSTALL( FILES ${QUCS_NAME}.1 DESTINATION share/man/man1 )
@@ -329,6 +403,4 @@ INSTALL( FILES ${QUCS_NAME}.1 DESTINATION share/man/man1 )
 # And then there's ways to customize this as well
 #set(CPACK_BINARY_DRAGNDROP ON)
 #include(CPack)
-
-
 

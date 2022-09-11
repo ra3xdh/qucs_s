@@ -1,0 +1,25 @@
+//   Qucs analogue logic zero model.
+//   The structure and theoretical background to the logic-0
+//   Verilog-a model are presented in the Qucs mixed mode 
+//   simulation tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, November 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module logic_0 (L0); 
+ inout L0;
+ electrical L0;
+ `define attr(txt) (*txt*)
+ parameter real LEVEL=0 from [-inf:inf] `attr(info= "logic 0 voltage level" unit="V");
+//
+analog begin
+I(L0) <+ -LEVEL;
+I(L0) <+ V(L0);
+end
+endmodule

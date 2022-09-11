@@ -1,0 +1,21 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `neg.Vt' in equation `Output' not yet defined
+checker notice, variable `pos.Vt' in equation `Output' not yet defined
+netlist content
+      1 Iac instances
+      1 Idc instances
+      3 BJT instances
+      1 DC instances
+      5 R instances
+      1 Tr instances
+      1 Vdc instances
+      1 Vac instances
+      1 TR instances
+creating netlist...
+checker notice, variable `neg.Vt' in equation `Output' not yet defined
+checker notice, variable `pos.Vt' in equation `Output' not yet defined
+checker notice, variable `neg.Vt' in equation `Output' not yet defined
+checker notice, variable `pos.Vt' in equation `Output' not yet defined
+NOTIFY: TR1: average time-step 9.82318e-07, 34 rejections
+NOTIFY: TR1: average NR-iterations 3.54126, 0 non-convergences

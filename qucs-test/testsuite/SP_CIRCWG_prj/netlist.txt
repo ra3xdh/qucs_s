@@ -1,0 +1,11 @@
+# Qucs 0.0.19  /home/andresmmera/.qucs/SP_CIRCWG_prj/CIRCWG.sch
+
+Pac:P1 _net0 gnd Num="1" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Pac:P2 _net1 gnd Num="2" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Eqn:EqnTC1 A="twoport(S,'S','A')" S11m="abs(S[1,1])" S21m="abs(S[2,1])" S11a="(180/pi)*angle(S[1,1])" S21a="(180/pi)*angle(S[2,1])" ZL="real(sqrt(A[1,2]/A[2,1]))" Export="yes"
+CIRCLINE:Line1 _net0 _net1 a="Radius" L="Length" er="Er" mur="1" tand="0" rho="RsCopper" Temp="26.85" Material="unspecified"
+Eqn:Eqn1 CondCopper="5.96e7" RsCopper="1/CondCopper" Export="yes"
+Eqn:Eqn3 Radius="5e-3" Length="50e-3" Er="3" p11="1.841" Export="yes"
+Eqn:Eqn4 freq_cf="p11/(2*pi*Radius*sqrt(mu*e0*Er))" mu="4*pi*1e-7" e0="8.854187817e-12" Export="yes"
+Eqn:Eqn2 S21_dB="dB(S[2,1])" S11_dB="dB(S[1,1])" Export="yes"
+.SP:SPTC1 Type="lin" Start="9 GHz" Stop="13GHz" Points="1701" Noise="no" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"

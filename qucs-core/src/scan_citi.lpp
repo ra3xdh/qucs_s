@@ -1,0 +1,144 @@
+/* -*-c-*- */
+
+%{
+/*
+ * scan_citi.l - scanner for CITIfiles
+ *
+ * Copyright (C) 2006 Stefan Jahn <stefan@lkcc.org>
+ *
+ * This is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this package; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
+ * Boston, MA 02110-1301, USA.
+ *
+ * $Id$
+ *
+ */
+
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-register"
+#endif
+
+#if HAVE_CONFIG_H
+# include <config.h>
+#endif
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#ifdef __MINGW32__
+#include <io.h>
+#endif
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#include "logging.h"
+#include "complex.h"
+#include "object.h"
+#include "vector.h"
+#include "dataset.h"
+#include "check_citi.h"
+#include "parse_citi.hpp"
+
+using namespace qucs;
+
+%}
+
+WS       [ \t\n\r]
+ID       [a-zA-Z_][a-zA-Z0-9_\.]*
+DIGIT    [0-9]
+EXPONENT [Ee][+-]?{DIGIT}+
+INT      [+-]?{DIGIT}+
+FLOAT1   [+-]?{DIGIT}+{EXPONENT}
+FLOAT2   [+-]?{DIGIT}*"."{DIGIT}+({EXPONENT})?
+SPACE    [ \t]
+EOL      \r?\n
+
+%x COMMENTS FLOATS LISTS DATAS VALUES
+%option yylineno noyywrap nounput noinput prefix="citi_"
+
+%%
+
+<INITIAL,FLOATS,LISTS>{EOL}+ { /* detect end of line */ return Eol; }
+
+<*>{SPACE} /* skip spaces */
+
+<INITIAL,DATAS>{INT} { /* identify integer */
+    citi_lval.d = strtol (citi_text, NULL, 10);
+    return Integer;
+  }
+
+<INITIAL>[a-zA-Z]"."{DIGIT}+"."{DIGIT}+ {
+    return Version;
+  }
+
+<INITIAL,DATAS>("RI"|"MAG"|"MAGANGLE"|"DBANGLE") {
+    citi_lval.ident = strdup (citi_text);
+    return VarType;
+  }
+
+<INITIAL>^"CITIFILE" { return CITIFILE; }
+<INITIAL>^"VAR"      { return VAR; }
+<INITIAL>^"DATA"     { BEGIN(DATAS); return DATA; }
+<INITIAL>^"NAME"     { return NAME; }
+<INITIAL>^"BEGIN"    { BEGIN(FLOATS); return Begin; }
+<INITIAL>^"CONSTANT" { BEGIN(VALUES); return CONSTANT; }
+<INITIAL>^"COMMENT"  { BEGIN(COMMENTS); }
+
+<INITIAL>^"SEG_LIST_BEGIN" { BEGIN(LISTS); return SegListBegin; }
+<INITIAL>^"VAR_LIST_BEGIN" { BEGIN(LISTS); return VarListBegin; }
+<LISTS>^"SEG_LIST_END" { BEGIN(INITIAL); return SegListEnd; }
+<LISTS>^"VAR_LIST_END" { BEGIN(INITIAL); return VarListEnd; }
+<LISTS>^"SEG" { return SEG; }
+
+<INITIAL,DATAS,VALUES>{ID} { /* identify identifier */
+    citi_lval.ident = strdup (citi_text);
+    return Identifier;
+  }
+
+<FLOATS,LISTS,VALUES>({FLOAT1}|{FLOAT2}|{INT}) { /* identify float */
+    citi_lval.f = strtod (citi_text, NULL);
+    return Float;
+  }
+
+<VALUES>{EOL}+ { BEGIN(INITIAL); return Eol; }
+
+<DATAS>"," { /* pass the ',' to the parser */ return ','; }
+<DATAS>"[" { /* pass the '[' to the parser */ return '['; }
+<DATAS>"]" { /* pass the ']' to the parser */ BEGIN(INITIAL); return ']'; }
+<DATAS>{EOL}+ { BEGIN(INITIAL); return Eol; }
+
+<FLOATS>"," { /* pass the ',' to the parser */ return ','; }
+
+<FLOATS>^"END" { BEGIN(INITIAL); return End; }
+
+<INITIAL>^"#" { /* leave these characters */
+    BEGIN(COMMENTS);
+  }
+
+<COMMENTS>.      { /* skip any character in here */ }
+<COMMENTS>{EOL}+ { BEGIN(INITIAL); /* skipping ends here */ }
+
+<*>. { /* any other character in invalid */
+    logprint (LOG_ERROR,
+	      "line %d: syntax error, unrecognized character: `%s'\n",
+	      citi_lineno, citi_text);
+    return InvalidCharacter;
+  }
+
+%%

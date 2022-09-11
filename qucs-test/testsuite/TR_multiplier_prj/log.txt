@@ -1,0 +1,11 @@
+parsing netlist...
+checking netlist...
+netlist content
+      4 Diode instances
+      4 C instances
+      2 R instances
+      1 Vac instances
+      1 TR instances
+creating netlist...
+NOTIFY: TR1: average time-step 5.54939e-06, 879 rejections
+NOTIFY: TR1: average NR-iterations 3.08657, 0 non-convergences

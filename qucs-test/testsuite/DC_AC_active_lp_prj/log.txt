@@ -1,0 +1,16 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `Output.v' in equation `Ampl' not yet defined
+checker notice, variable `Output.v' in equation `Phase' not yet defined
+netlist content
+      1 AC instances
+      6 C instances
+      1 DC instances
+      6 R instances
+      3 OpAmp instances
+      1 Vac instances
+creating netlist...
+checker notice, variable `Output.v' in equation `Ampl' not yet defined
+checker notice, variable `Output.v' in equation `Phase' not yet defined
+checker notice, variable `Output.v' in equation `Ampl' not yet defined
+checker notice, variable `Output.v' in equation `Phase' not yet defined

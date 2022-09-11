@@ -1,0 +1,16 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `S' in equation `reflect' not yet defined
+checker notice, variable `S' in equation `isolated' not yet defined
+checker notice, variable `S' in equation `through' not yet defined
+checker notice, variable `S' in equation `coupled' not yet defined
+netlist content
+      1 MCOUPLED instances
+      4 Pac instances
+      1 SUBST instances
+      1 SP instances
+creating netlist...
+checker notice, variable `S' in equation `reflect' not yet defined
+checker notice, variable `S' in equation `isolated' not yet defined
+checker notice, variable `S' in equation `through' not yet defined
+checker notice, variable `S' in equation `coupled' not yet defined

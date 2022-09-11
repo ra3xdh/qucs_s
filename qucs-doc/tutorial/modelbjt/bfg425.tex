@@ -1,0 +1,31 @@
+\begin{verbatim}
+.SUBCKT BFG425W 1 2 3 
+L1   2 5 1.1E-09
+L2   1 4 1.1E-09
+L3   3 6 0.25E-09
+Ccb  4 5 2.0E-15
+Cbe  5 6 80.0E-15
+Cce  4 6 80.0E-15
+Cbpb 5 7 1.45E-13 
+Cbpc 4 8 1.45E-13 
+Rsb1 6 7 25 
+Rsb2 6 8 19 
+Q1 4 5 6 6 NPN 
+
+.MODEL NPN NPN 
++ IS = 4.717E-17 	+ BF = 145    + NF = 0.9934 
++ VAF = 31.12 		+ IKF = 0.304 + ISE = 3.002E-13 
++ NE = 3 			+ BR = 11.37 	+ NR = 0.985 
++ VAR = 1.874 		+ IKR = 0.121 	+ ISC = 4.848E-16 
++ NC = 1.546 		+ RB = 14.41	+ IRB = 0 
++ RBM = 6.175 		+ RE = 0.1779 	+ RC = 1.780
++ CJE = 3.109E-13 	+ VJE = 0.9 	+ MJE = 0.3456 
++ CJC = 1.377E-13 + VJC = 0.5569 + MJC = 0.2079 
++ CJS = 6.675E-13 + VJS = 0.4183 + MJS = 0.2391 
++ XCJC = 0.5 		+ TR = 0.0 	+ TF = 4.122E-12 
++ XTF = 68.2 		+ VTF = 2.004 	+ ITF = 1.525 
++ PTF = 0 			+ FC = 0.5501 	+ EG = 1.11 
++ XTI = 3 			+ XTB = 1.5 
+.ENDS
+
+\end{verbatim}

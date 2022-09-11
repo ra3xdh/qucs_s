@@ -1,0 +1,11 @@
+parsing netlist...
+checking netlist...
+netlist content
+      1 MOSFET instances
+      1 C instances
+      1 R instances
+      3 Vac instances
+      1 TR instances
+creating netlist...
+NOTIFY: TR1: average time-step 8.14996e-10, 264 rejections
+NOTIFY: TR1: average NR-iterations 3.09698, 0 non-convergences

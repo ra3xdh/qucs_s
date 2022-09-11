@@ -1,0 +1,415 @@
+//   Qucs EPFL-EKV 2.6 MOS model:
+//
+//   The structure and theoretical background to the EKV 2.6
+//   Verilog-a model is presented in the Qucs EPFL-EKV 2.6 report.
+//   Typical parameters are for 0.5um CMOS (C) EPLFL-LEG 1999.
+//   Geometry range: Short channel W >= 0.8um, L >= 0.5um
+//                   Long channel  W >= 2um,   L >= 2um
+//   Voltage range:  |Vgb| < 3.3V, |Vdb| < 3.3V, |Vsb| < 2V
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, May 2008.
+//
+
+`include "disciplines.vams"
+`include "constants.vams"
+
+`ifdef insideADMS
+ `define P(p) (*p*)
+ `define PGIVEN(p)	$given(p)
+ `define INITIAL_MODEL	@(initial_model)
+`else
+ `define P(p)
+ `define PGIVEN(p)	p
+ `define INITIAL_MODEL	@(initial_step)
+`endif
+
+`define NMOS	+1
+`define PMOS	-1
+
+// 
+ module EKV26MOS (Drain, Gate, Source, Bulk);
+ inout Drain, Gate, Source, Bulk;
+electrical Drain, Gate, Source, Bulk;
+// Internal nodes
+electrical Drain_int, Source_int;
+`define attr(txt) (*txt*)
+// Device dimension parameters
+ parameter real LEVEL = 1 from [1 : 2]                `attr(info="long = 1, short = 2");
+ parameter real L = 0.5e-6 from [0.0 : inf]           `attr(info="length parameter" unit = "m" );
+ parameter real W = 10e-6 from [0.0 : inf]            `attr(info="Width parameter" unit = "m"); 
+ parameter real Np = 1.0 from [1.0 : inf]             `attr(info="parallel multiple device number");
+ parameter real Ns = 1.0 from [1.0 : inf]             `attr(info="series multiple device number"); 
+// Process parameters
+ parameter real Cox = 3.45e-3 from [0 : inf]         `attr(info="gate oxide capacitance per unit area" unit = "F/m**2" );
+ parameter real Xj = 0.15e-6 from [0.01e-6 : 1.0e-6] `attr(info="metallurgical junction depth" unit = "m");
+ parameter real Dw = -0.02e-6 from [-inf : 0.0]      `attr(info="channel width correction" unit = "m");
+ parameter real Dl = -0.05e-6 from [-inf : 0.0]      `attr(info="channel length correction" unit = "m");
+// Basic intrinsic model parameters
+ parameter real Vto = 0.6 from [-inf : inf]         `attr(info="long channel threshold voltage" unit="V" );
+ parameter real Gamma = 0.71 from [0.0 : 2.0]       `attr(info="body effect parameter" unit="V**(1/2)");
+ parameter real Phi = 0.97 from [0.3 : 2.0]         `attr(info="bulk Fermi potential" unit="V");
+ parameter real Kp = 150e-6 from [10e-6 : inf]      `attr(info="transconductance parameter" unit = "A/V**2");
+ parameter real Theta = 50e-3 from [0.0 : inf]      `attr(info="mobility reduction coefficient" unit = "1/V");
+ parameter real EO = 88.0e6 from [1.0e6 : inf]      `attr(info="mobility coefficient" unit="V/m");
+ parameter real Ucrit = 4.5e6 from [2.0e6 : 25.0e6] `attr(info="longitudinal critical field" unit="V/m");
+// Channel length and charge sharing parameters
+ parameter real Lambda = 0.23 from [0.1 : inf]      `attr(info="depletion length coefficient");
+ parameter real Weta = 0.05 from [0.0 : inf]        `attr(info="narrow-channel effect coefficient");
+ parameter real Leta = 0.28 from [0.0 : inf]        `attr(info="longitudinal critical field");
+// Reverse short channel effect parameters
+ parameter real Q0 = 280e-6 from [0.0 : inf]        `attr(info="reverse short channel charge density" unit="A*s/m**2");
+ parameter real Lk = 0.5e-6 from [0.0 : inf]        `attr(info="characteristic length" unit="m");
+// Intrinsic model temperature parameters
+ parameter real Tcv = 1.5e-3   `attr(info="threshold voltage temperature coefficient" unit="V/K");
+ parameter real Bex = -1.5     `attr(info="mobility temperature coefficient");
+ parameter real Ucex = 1.7     `attr(info="Longitudinal critical field temperature exponent");
+ parameter real Ibbt = 0.0     `attr(info="Ibb temperature coefficient"  unit="1/K");
+// Series resistance calculation parameters
+ parameter real Hdif = 0.9e-6 from [0.0 :inf]  `attr(info="heavily doped diffusion length" unit = "m");
+ parameter real Rsh = 510.0 from [0.0 : inf]   `attr(info="drain/source diffusion sheet resistance" unit="Ohm/square");
+ parameter real Rsc = 0.0 from [0.0 : inf]     `attr(info="source contact resistance" unit="Ohm");
+ parameter real Rdc = 0.0 from [0.0 : inf]     `attr(info="drain contact resistance" unit="Ohm");
+// Gate overlap capacitances
+ parameter real Cgso = 1.5e-10 from [0.0 :inf]  `attr(info="gate to source overlap capacitance" unit = "F/m");
+ parameter real Cgdo = 1.5e-10 from [0.0 : inf] `attr(info="gate to drain overlap capacitance"  unit=  "F/m");
+ parameter real Cgbo = 4.0e-10 from [0.0 : inf] `attr(info="gate to bulk overlap capacitance"   unit=  "F/m");
+// Impact ionization related parameters
+ parameter real Iba = 2e8 from [0.0 :inf]        `attr(info="first impact ionization coefficient" unit = "1/m");
+ parameter real Ibb = 3.5e8 from [1.0e8 : inf]   `attr(info="second impact ionization coefficient" unit="V/m");
+ parameter real Ibn = 1.0 from [0.1 : inf]       `attr(info="saturation voltage factor for impact ionization");
+// Flicker noise parameters
+ parameter real Kf = 1.0e-27 from [0.0 :inf]   `attr(info="flicker noise coefficient");
+ parameter real Af = 1.0 from [0.0 : inf]      `attr(info="flicker noise exponent" );
+// Matching parameters
+ parameter real Avto = 0.0 from [0.0 :inf]     `attr(info="area related threshold voltage mismatch parameter" unit = "V*m");
+ parameter real Akp = 0.0 from [0.0 : inf]     `attr(info="area related gain mismatch parameter" unit="m");
+ parameter real Agamma = 0.0 from [0.0 : inf]  `attr(info="area related body effect mismatch parameter" unit="sqrt(V)*m");
+// Diode parameters
+ parameter real N=1.0 from [1e-6:inf]          `attr(info="emission coefficient");
+ parameter real Is=1e-14 from [1e-20:inf]      `attr(info="saturation current" unit="A" );
+ parameter real Bv=100 from [1e-6:inf]        `attr(info="reverse breakdown voltage" unit="V");
+ parameter real Ibv=1e-3 from [1e-6:inf]       `attr(info="current at reverse breakdown voltage" unit="A");
+ parameter real Vj=1.0 from [1e-6:inf]         `attr(info="junction potential" unit="V");
+ parameter real Cj0=300e-15 from [0:inf]         `attr(info="zero-bias junction capacitance" unit="F");
+ parameter real M=0.5 from [1e-6:inf]          `attr(info="grading coefficient");
+ parameter real Area=1.0 from [1e-3:inf]       `attr(info="diode relative area");
+ parameter real Fc=0.5 from [1e-6:inf]         `attr(info="forward-bias depletion capacitance coefficient");
+ parameter real Tt=0.1e-9 from [1e-20:inf]     `attr(info="transit time" unit="s" );
+ parameter real Xti=3.0 from [1e-6:inf]        `attr(info="saturation current temperature exponent");
+ // Charge partition parameter
+ parameter real Xpart=0.4 from[0.0 : 1.0]      `attr(info="charge partition parameter"); 
+// Temperature parameters
+ parameter real Tnom = 26.85                   `attr(info="parameter measurement temperature" unit = "Celsius");
+// Transistor type
+ parameter integer nmos=1 from [0:1]           `attr(info="model type flag for nmos");
+ parameter integer pmos=0 from [0:1]           `attr(info="model type flag for pmos");
+
+// Local variables
+real epsilonsi, epsilonox, Tnomk, T2, Tratio, Vto_T, Ucrit_T, Egnom, Eg, Phi_T;
+real Weff, Leff, RDeff, RSeff, con1, con2, Vtoa, Kpa,Kpa_T,Gammaa, C_epsilon, xi;
+real nnn, deltaV_RSCE, Vg, Vs, Vd, Vgs, Vgd, Vds, Vdso2, VG, VS, VD;
+real VGprime, VP0, VSprime, VDprime, Gamma0, Gammaprime, Vp;
+real n, X1, iff, X2, ir, Vc, Vdss, Vdssprime, deltaV, Vip;
+real Lc, DeltaL, Lprime, Lmin, Leq, X3, irprime, Beta0, eta;
+real Qb0, Beta0prime, nq, Xf, Xr, qD, qS, qI, qB, Beta, Ispecific, Ids, Vib, Idb, Ibb_T;
+real A, B, Vt_T2, Eg_T1, Eg_T2, Vj_T2, Cj0_T2, F1, F2, F3, Is_T2, GMIN;
+real Id1, Id2, Id3, Id4, Is1, Is2, Is3, Is4, V1, V2, Ib_d, Ib_s, Qd, Qs, Qd1, Qd2, Qs1, Qs2;
+real qb, qg, qgso, qgdo, qgbo, fourkt, Sthermal, gm, Sflicker, StoDswap, p_n_MOS;
+real T_1, Area1, Area2, Area3, DP1, DP2, DP3, DP4;
+real con3, con4, con5, con6, con7, con8, con9, con10, con11, con12, con13, con14, con15, con16;
+real con17, con18, con19, con20, con21, con22, con23, con24, Spart,con25, con26, con27, con28;
+real con29, con30, con31, con32, con33;
+//
+analog begin
+// Equation initialization
+@(initial_model)
+begin
+  if (`PGIVEN(nmos))
+    p_n_MOS = `NMOS;
+  else if (`PGIVEN(pmos))
+    p_n_MOS = `PMOS;
+  else
+    p_n_MOS = `NMOS;
+  A=7.02e-4;
+  B=1108.0;
+  epsilonsi = 1.0359e-10;     // Eqn 4
+  epsilonox = 3.453143e-11;   // Eqn 5
+  Tnomk = Tnom+273.15;              // Eqn 6
+  T2=$temperature;
+  Tratio = T2/Tnomk;
+  Vto_T = p_n_MOS*(Vto-Tcv*(T2-Tnomk));
+  Egnom = 1.16-0.000702*Tnomk*Tnomk/(Tnomk+1108);
+  Eg =    1.16-0.000702*T2*T2/(T2+1108);
+  Phi_T = Phi*Tratio - 3.0*$vt*ln(Tratio)-Egnom*Tratio+Eg;
+  Ibb_T = Ibb*(1.0+Ibbt*(T2 -Tnomk));
+  Weff = W + Dw;   // Eqn 25
+  Leff = L + Dl;   // Eqn 26
+  RDeff = ( (Hdif*Rsh)/Weff)/Np + Rdc+1e-9;
+  RSeff = ( (Hdif*Rsh)/Weff)/Np + Rsc+1e-9;
+  con1 = sqrt(Np*Weff*Ns*Leff);
+  Vt_T2=`P_K*T2/`P_Q;
+  Eg_T1=Eg-A*Tnomk*Tnomk/(B+Tnomk);
+  Eg_T2=Eg-A*T2*T2/(B+T2);
+  Vj_T2=(T2/Tnomk)*Vj-(2*Vt_T2)*ln(pow((T2/Tnomk),1.5))-((T2/Tnomk)*Eg_T1-Eg_T2);
+  Cj0_T2=Cj0*(1+M*(400e-6*(T2-Tnomk)-(Vj_T2-Vj)/Vj));
+  F1=(Vj/(1-M))*(1-pow((1-Fc),(1-M)));
+  F2=pow((1-Fc), (1+M));
+  F3=1-Fc*(1+M);
+  Is_T2=Is*pow( (T2/Tnomk), (Xti/N))*limexp((-Eg_T1/Vt_T2)*(1-T2/Tnomk));
+  GMIN = 1e-12;
+  con2 = (Cox*Ns*Np*Weff*Leff);
+  fourkt = 4.0*`P_K*T2;
+  Area1 = Area*(Cj0_T2*Vj_T2/(1-M));
+  Area2 = Area*Is_T2;
+  Area3 = Area*Cj0_T2;
+  DP1 = Fc*Fc*Vj_T2*Vj_T2;
+  DP2 = (M/(2.0*Vj_T2));
+  DP3 = Fc*Vj_T2;
+  DP4 = F1+(1/F2);
+  con4 = -Vto_T+Phi_T;
+  con7 = Gamma/2.0;
+  con8 = con7*con7;
+  con9 = 16.0 *$vt*$vt;
+  con10 = epsilonsi/Cox;
+  con12 = 0.1*$vt;
+  con14 = 4.0*$vt;
+  con22 = Kp*(Weff/Leff);
+  con23 = Kf/con2;
+  con24 = con2*$vt;
+  Spart = 1.0-Xpart;
+  con25 = fourkt/RDeff;
+  con26 = fourkt/RSeff;
+  con27 = Cgso*Weff*Np;
+  con28 = Cgdo*Weff*Np;
+  con29 = Cgbo*Leff*Np;
+  con30 = 4.0/3.0;
+  con31 = 1.0/(N*Vt_T2);
+  con32 = 5.0*N*$vt;
+  con33 = Fc*Vj;
+//
+  if (LEVEL == 2)
+   begin
+    Ucrit_T = Ucrit*pow(Tratio, Ucex);
+    Vtoa = p_n_MOS*Vto+Avto/con1;      // Eqn 27
+    Kpa = Kp*(1.0+Akp/con1);           // Eqn 28
+    Kpa_T = Kpa*pow( Tratio, Bex);     // Eqn 18
+    Gammaa = Gamma+Agamma/con1;        // Eqn 29
+    C_epsilon = 4.0*pow(22e-3, 2.0);     // Eqn 30
+    xi = 0.028*(10.0*(Leff/Lk)-1.0);   // Eqn 31
+    nnn = 1.0+0.5*(xi+ sqrt(pow(xi,2.0) + C_epsilon));
+    deltaV_RSCE = (2.0*Q0/Cox)*(1.0/pow(nnn,2.0)); // Eqn 32
+    con3 = -Vto_T-deltaV_RSCE+Phi_T;
+    con5 = Gammaa/2.0;
+    con6 = con5*con5;
+    con11 = Leta/Leff;
+    con13 = 3.0*Weta/Weff;
+    Vc = Ucrit_T*Ns*Leff;  // Eqn 45
+    con15 = $vt*(ln(Vc/(2.0*$vt)) - 0.6);
+    con16 = 1.0/64.0;
+    Lc = sqrt( (epsilonsi/Cox)*Xj);  // Eqn 51
+    Lmin = Ns*Leff/10.0;  // Eqn 54
+    eta = (p_n_MOS == `NMOS) ? 0.5 : 1/3;  // Eqn 59
+    Qb0 = Gammaa*sqrt(Phi_T);  // Eqn 60;
+    con17 = (1.0 +(Cox/(EO*epsilonsi))*Qb0);
+    con18 = Lambda*Lc;
+    con19 = 1.0/(Lc*Ucrit_T);
+    con20 = Ns*Leff;
+    con21 = (Cox/ (EO*epsilonsi))*$vt;
+   end
+end
+//
+// Model branch and node voltages
+//
+
+Vg = p_n_MOS*V(Gate, Bulk); 
+Vs = p_n_MOS*V(Source_int, Bulk);
+Vd = p_n_MOS*V(Drain_int, Bulk);
+VG=Vg;        // Eqn 22
+if ( (Vd-Vs) >= 0.0)
+	begin
+          StoDswap = 1.0;
+	  VS=Vs;   // Eqn 23
+          VD=Vd;   // Eqn 24
+	end
+else
+	begin
+          StoDswap = -1.0;
+	  VD=Vs;
+	  VS=Vd;
+	end
+if (LEVEL == 2)
+    VGprime=VG+con3+Gammaa*sqrt(Phi_T);  // Eqn 33  nMOS equation
+else
+    VGprime=VG+con4+Gamma*sqrt(Phi_T);
+
+//
+if (LEVEL == 2)
+ begin
+  if (VGprime > 0)
+	VP0=VGprime-Phi_T-Gammaa*(sqrt(VGprime+con6)-con5);  // Eqn 34
+  else
+	VP0 = -Phi_T;
+  VSprime=0.5*(VS+Phi_T+sqrt((VS+Phi_T)*(VS+Phi_T) + con9));  // Eqn 35
+  VDprime=0.5*(VD+Phi_T+sqrt((VD+Phi_T)*(VD+Phi_T) + con9));  // Eqn 35
+  Gamma0=Gammaa-con10*(con11*(sqrt(VSprime)+sqrt(VDprime))-con13*sqrt(VP0+Phi_T));  // Eqn 36
+  Gammaprime = 0.5*(Gamma0+sqrt(Gamma0*Gamma0 +con12 ));  // Eqn 37 
+  if (VGprime > 0.0 )
+           Vp = VGprime-Phi_T-Gammaprime*(sqrt(VGprime+0.25*Gammaprime*Gammaprime) - 0.5*Gammaprime); // Eqn 38
+  else
+        Vp = -Phi_T;
+  n = 1.0 +Gammaa/(2.0*sqrt(Vp+Phi_T+con14));  // Eqn 39
+ end
+else
+  begin
+   if (VGprime > 0)
+	Vp=VGprime-Phi_T-Gamma*(sqrt(VGprime+con8)-con7);  // Eqn 34
+   else
+	Vp = -Phi_T;
+   n = 1.0 +Gamma/(2.0*sqrt(Vp+Phi_T+con14));  // Eqn 39
+end
+//
+X1 = (Vp-VS)/$vt;
+T_1 = ln(1.0+limexp(X1/2.0));
+iff = T_1*T_1;   // Eqn 44
+X2 = (Vp-VD)/$vt;
+T_1 = ln(1.0+limexp(X2/2.0));
+ir = T_1*T_1;    // Eqn 57
+//
+if (LEVEL == 2)
+ begin
+   Vdss = Vc*(sqrt( 0.25 + (($vt/(Vc))*sqrt(iff)))-0.5);  // Eqn 46;
+   Vdssprime = Vc*(sqrt( 0.25 + ($vt/Vc)*(sqrt(iff)-0.75*ln(iff))) - 0.5)+ con15 ; // Eqn 47
+   if (Lambda*(sqrt(iff) > (Vdss/$vt) ) )
+          deltaV = con14*sqrt(Lambda*(sqrt(iff) -(Vdss/$vt)) + con16 );  // Eqn 48
+   else   
+          deltaV = con16;
+   Vdso2 = 0.5*(VD-VS);        // Eqn 49
+   Vip = sqrt(Vdss*Vdss+deltaV*deltaV) - sqrt((Vdso2-Vdss)*(Vdso2-Vdss)+deltaV*deltaV);  // Eqn 50
+   DeltaL = con18*ln(1.0+((Vdso2-Vip)*con19));  // Eqn 52
+   Lprime = con20 - DeltaL + ( (Vdso2+Vip)/Ucrit_T); // Eqn 53 
+   Leq = 0.5*(Lprime + sqrt(Lprime*Lprime + Lmin*Lmin));   // Eqn 55
+   X3 = (Vp-Vdso2-VS-sqrt(Vdssprime*Vdssprime+deltaV*deltaV) + sqrt((Vdso2-Vdssprime)*(Vdso2-Vdssprime)+deltaV*deltaV))/$vt;
+   T_1 = ln(1.0+limexp(X3/2.0));
+   irprime = T_1*T_1;  // Eqn 56
+   Beta0 = Kpa_T*(Np*Weff/Leq);     // Eqn 58
+   Beta0prime = Beta0*con17;  // Eqn 61
+   nq = 1.0 +Gammaa/(2.0*sqrt(Vp+Phi_T+1e-6));          // Eqn 69
+ end
+else
+ nq = 1.0 +Gamma/(2.0*sqrt(Vp+Phi_T+1e-6));          // Eqn 69
+//
+Xf = sqrt(0.25+iff);    // Eqn 70
+Xr = sqrt(0.25+ir);     // Eqn 71
+qI = -nq*(con30*(Xf*Xf+Xf*Xr+Xr*Xr)/(Xf+Xr)-1.0);    // Eqn 74
+if (LEVEL == 2)
+  if (VGprime > 0)
+  	qB = -Gammaa*sqrt(Vp+Phi_T+1e-6)/$vt - qI*(nq-1.0)/nq;  // Eqn 75
+  else
+	qB = -VGprime/$vt;
+else 
+    if (VGprime > 0)
+  	qB = -Gamma*sqrt(Vp+Phi_T+1e-6)/$vt - qI*(nq-1.0)/nq;  // Eqn 75
+  else
+	qB = -VGprime/$vt;
+//
+if (LEVEL == 2)
+   Beta = Beta0prime/(1.0 + con21*abs(qB+eta*qI));      // Eqn 62
+else
+   Beta = con22/(1+Theta*Vp);
+//
+Ispecific = 2.0*n*Beta*$vt*$vt;    // Eqn 65
+//
+if (LEVEL == 2)
+  begin
+   Ids = Ispecific*(iff-irprime);          // Eqn 66
+   Vib = VD-VS-Ibn*2.0*Vdss;               // Eqn 67
+   if ( Vib > 0.0)
+    Idb = Ids*(Iba/Ibb_T)*Vib*exp( (-Ibb_T*Lc)/Vib);   // Eqn 68
+   else
+   Idb = 0.0;
+  end
+else
+   Ids = Ispecific*(iff-ir);          // Eqn 66
+//
+Sthermal = fourkt*Beta*abs(qI);
+T_1 = 4.0/Ispecific;
+gm = Beta*$vt*(sqrt(T_1*iff +1.0) - sqrt(T_1*ir + 1.0) );
+Sflicker = con23*gm*gm;
+//
+qb = con24*qB;
+qg = con24*(-qI-qB);
+qgso = con27*(VG-VS);
+qgdo = con28*(VG-VD);
+qgbo = con29*VG;
+// Drain and source diodes
+if (StoDswap > 0.0)
+     begin
+        V1=p_n_MOS*V(Bulk, Drain_int);
+        V2=p_n_MOS*V(Bulk, Source_int);
+     end
+else
+     begin
+        V2=p_n_MOS*V(Bulk, Drain_int);
+        V1=p_n_MOS*V(Bulk, Source_int);
+     end
+Id1= (V1>-con32) ? Area2*(limexp(V1*con31)-1.0)+GMIN*V1 : 0;
+Qd1=(V1<con33)? Tt*Id1+Area1*(1-pow((1-V1/Vj_T2),(1-M))):0;
+Id2=(V1<=-con32) ? -Area2 + GMIN*V1: 0;
+Qd2=(V1>=con33)? Tt*Id1+Area3*(DP4*(F3*(V1-DP3)+DP2*(V1*V1-DP1))):0;
+//
+Is1= (V2>-con32) ? Area2*(limexp(V2*con31)-1.0)+GMIN*V2 : 0;
+Qs1=(V2<con33)? Tt*Is1+Area1*(1-pow((1-V2/Vj_T2),(1-M))):0;
+Is2=(V2<=-con32) ? -Area2 + GMIN*V2: 0;
+Qs2=(V2>=con33)? Tt*Is1+Area3*(DP4*(F3*(V2-DP3)+DP2*(V2*V2-DP1))):0;
+// Current and noise contributions
+if ( StoDswap > 0.0)
+ begin
+   I(Drain, Drain_int)      <+ V(Drain, Drain_int)/RDeff;
+   I(Source, Source_int)    <+ V(Source, Source_int)/RSeff;
+   I(Drain_int, Source_int) <+ p_n_MOS*Ids;
+   if (LEVEL == 2)   I(Drain_int, Bulk) <+ p_n_MOS*Idb;
+   I(Gate, Drain_int)       <+ p_n_MOS*Xpart*ddt(qg);
+   I(Gate, Source_int)      <+ p_n_MOS*Spart*ddt(qg);
+   I(Drain_int, Bulk)       <+ p_n_MOS*Xpart*ddt(qb);
+   I(Source_int, Bulk)      <+ p_n_MOS*Spart*ddt(qb);
+   I(Gate, Source_int)      <+ p_n_MOS*ddt(qgso);
+   I(Gate, Drain_int)       <+ p_n_MOS*ddt(qgdo);
+   I(Gate, Bulk)            <+ p_n_MOS*ddt(qgbo);
+   I(Bulk, Drain_int)       <+ p_n_MOS*(Id1+Id2);
+   I(Bulk, Drain_int)       <+ p_n_MOS*ddt(Qd1+Qd2);
+   I(Bulk, Source_int)      <+ p_n_MOS*(Is1+Is2);
+   I(Bulk, Source_int)      <+ p_n_MOS*ddt(Qs1+Qs2);
+   I(Drain_int, Source_int) <+ white_noise(Sthermal,"thermal");
+   I(Drain_int, Source_int) <+ flicker_noise(Sflicker, Af, "flicker");
+   I(Drain, Drain_int)      <+ white_noise(con25, "thermal");
+   I(Source, Source_int)    <+ white_noise(con26, "thermal");
+end
+else
+ begin
+   I(Drain, Drain_int)       <+ V(Drain, Drain_int)/RSeff;
+   I(Source, Source_int)     <+ V(Source, Source_int)/RDeff;
+   I( Source_int, Drain_int) <+ p_n_MOS*Ids;
+   if (LEVEL == 2)  I(Source_int, Bulk) <+ p_n_MOS*Idb;
+   I( Gate, Source_int)      <+ p_n_MOS*Xpart*ddt(qg);
+   I( Gate, Drain_int)       <+ p_n_MOS*Spart*ddt(qg);
+   I( Source_int, Bulk)      <+ p_n_MOS*Xpart*ddt(qb);
+   I( Drain_int, Bulk)       <+ p_n_MOS*Spart*ddt(qb);
+   I( Gate, Drain_int)       <+ p_n_MOS*ddt(qgso);
+   I( Gate, Source_int)      <+ p_n_MOS*ddt(qgdo);
+   I( Gate, Bulk)            <+ p_n_MOS*ddt(qgbo);
+   I( Bulk, Source_int)      <+ p_n_MOS*(Id1+Id2);
+   I( Bulk, Source_int)      <+ p_n_MOS*ddt(Qd1+Qd2);
+   I( Bulk, Drain_int)       <+ p_n_MOS*(Is1+Is2);
+   I( Bulk, Drain_int)       <+ p_n_MOS*ddt(Qs1+Qs2);
+   I( Source_int, Drain_int) <+ white_noise(Sthermal,"thermal");
+   I( Source_int, Drain_int) <+ flicker_noise(Sflicker, Af, "flicker");
+   I( Source_int, Source)    <+ white_noise(con25, "thermal");
+   I( Drain_int, Drain)      <+ white_noise(con26, "thermal");
+ end
+end
+endmodule

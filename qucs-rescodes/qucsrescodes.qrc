@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>bitmaps/big.qucs.xpm</file>
+        <file>bitmaps/next.png</file>
+        <file>bitmaps/previous.png</file>
+    </qresource>
+</RCC>

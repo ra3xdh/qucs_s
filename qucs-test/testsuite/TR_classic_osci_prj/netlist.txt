@@ -1,0 +1,12 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/TR_classic_osci_prj/classic_osci.sch
+
+C:C1 _net0 _net1 C="1 nF" V=""
+L:L1 _net0 _net1 L="100 uH" I=""
+Tr:Tr1 _net2 _net1 _net0 _net3 T="1"
+Vdc:V1 _net1 gnd U="10 V"
+BJT:T1 _net2 _net0 gnd _net0 Type="npn" Is="1e-16" Nf="1" Nr="1" Ikf="0" Ikr="0" Vaf="0" Var="0" Ise="0" Ne="1.5" Isc="0" Nc="2" Bf="200" Br="1" Rbm="0" Irb="0" Rc="0" Re="0" Rb="0" Cje="0" Vje="0.75" Mje="0.33" Cjc="0" Vjc="0.75" Mjc="0.33" Xcjc="1.0" Cjs="0" Vjs="0.75" Mjs="0" Fc="0.5" Tf="0.0" Xtf="0.0" Vtf="0.0" Itf="0.0" Tr="0.0" Temp="26.85" Kf="0.0" Af="1.0" Ffe="1.0" Kb="0.0" Ab="1.0" Fb="1.0" Ptf="0.0" Xtb="0.0" Xti="3.0" Eg="1.11" Tnom="26.85" Area="1.0"
+R:R1 _net0 _net1 R="500 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net3 _net1 R="120 kOhm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R3 gnd Output R="600 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+C:C3 _net0 Output C="5 nF" V=""
+.TR:TR1 Type="lin" Start="0" Stop="30 us" Points="200" IntegrationMethod="Trapezoidal" Order="2" InitialStep="1 ns" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1 pA" vntol="1 uV" Temp="26.85" LTEreltol="1e-3" LTEabstol="1e-6" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"

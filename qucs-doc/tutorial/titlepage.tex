@@ -1,0 +1,92 @@
+%
+% This document contains a generic title page for tutorials.
+%
+% Copyright (C) 2005, 2006 Stefan Jahn <stefan@lkcc.org>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+% Title page definitions.
+\newcommand{\tuttitlepage}{%
+  \makeatletter
+  \begin{titlepage}
+    \setlength{\parindent}{0pt}
+    \vspace*{3cm}
+    \begin{flushleft}
+      \textbf{\begin{huge} Qucs \end{huge}}
+    \end{flushleft}
+    \hrule height 3pt
+    \begin{flushright}
+      \begin{LARGE} \tuttitle\\ \end{LARGE}
+      \if\empty\tutsubtitle\else
+        \vspace*{12pt}
+        \begin{Large} \tutsubtitle \end{Large}
+      \fi
+    \end{flushright}
+    \vfill
+    \begin{flushright}
+      \begin{Large} \tutauthor \end{Large}
+    \end{flushright}
+    \hrule height 3pt
+    \vspace*{24pt} \tutcopyright \vspace*{12pt}
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation.  A copy
+of the license is included in the section entitled "GNU Free
+Documentation License".
+
+    \vspace*{1cm}
+  \end{titlepage}
+  \setcounter{footnote}{0}
+  \makeatother
+}
+
+% Extra command for tutorial definitions.
+\newcommand{\tutauthor}[1]{\def\tutauthor{#1}}
+\newcommand{\tutcopyright}[1]{\def\tutcopyright{#1}}
+\newcommand{\tuttitle}[1]{\def\tuttitle{#1}}
+\newcommand{\tutsubtitle}[1]{\def\tutsubtitle{#1}}
+
+% WorkBook conditional.
+\newif\iftutbook
+\tutbookfalse
+
+% Section redefinitions.
+\newcommand{\tutsection}[1]{%
+  \iftutbook
+    \section{#1}
+  \else
+    \section*{#1}
+  \fi
+}
+\newcommand{\tutsubsection}[1]{%
+  \iftutbook
+    \subsection{#1}
+  \else
+    \subsection*{#1}
+  \fi
+}
+\newcommand{\tutsubsubsection}[1]{%
+  \iftutbook
+    \subsubsection{#1}
+  \else
+    \subsubsection*{#1}
+  \fi
+}
+\newcommand{\tutparagraph}[1]{%
+  \iftutbook
+    \paragraph{#1}
+  \else
+    \paragraph*{#1}
+  \fi
+}
+\newcommand{\tutsubparagraph}[1]{%
+  \iftutbook
+    \subparagraph{#1}
+  \else
+    \subparagraph*{#1}
+  \fi
+}

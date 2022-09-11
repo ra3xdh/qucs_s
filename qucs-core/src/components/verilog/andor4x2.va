@@ -1,0 +1,46 @@
+//   Qucs analogue andor4x2 model
+//   The structure and theoretical background to the andor4x2
+//   Verilog-a model are presented in the Qucs digital tutorial.
+//
+//   This is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2, or (at your option)
+//   any later version.
+// 
+//   Copyright (C), Mike Brinson, mbrin72043@yahoo.co.uk, December 2008.
+//
+`include "disciplines.vams"
+`include "constants.vams"
+module andor4x2 (A11, A12, A21, A22, A31, A32, A41, A42, Y); 
+ inout A11, A12, A21, A22, A31, A32, A41, A42, Y;
+ electrical A11, A12, A21, A22, A31, A32, A41, A42, Y;
+ electrical n1, n2;
+//
+ `define attr(txt) (*txt*)
+ parameter real TR=6 from [1.0:20.0] `attr(info="transfer function high scaling factor");
+ parameter real Delay = 1e-9 from [0: inf] `attr(info="output delay" unit="s");
+//
+ real Rd, Cd, Iand;
+ real m1, m2, m3, m4;
+//
+analog begin
+@(initial_model)
+  begin
+    Rd = 1e3;
+    Cd= Delay*1.43/Rd;
+  end
+m1 = V(A11)*V(A12);
+m2 = V(A21)*V(A22);
+m3 = V(A31)*V(A32);
+m4 = V(A41)*V(A42);
+Iand = m1+m2+m3+m4;
+if (Iand > 0.5) Iand = 1;
+else Iand = 0;
+I(n1) <+ -0.5*(1+tanh(TR*(Iand-0.5)));
+I(n1) <+ V(n1);
+I(n1, n2) <+ V(n1,n2)/Rd;
+I(n2) <+ ddt(Cd*V(n2));
+I(Y)  <+ -V(n2);
+I(Y) <+ V(Y);
+end
+endmodule

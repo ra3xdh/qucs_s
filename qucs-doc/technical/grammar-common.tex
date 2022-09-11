@@ -1,0 +1,81 @@
+%
+% This document contains an introduction to the grammars and some tex.
+%
+% Copyright (C) 2005 Raimund Jacob <raimi@lkcc.org>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+\chapter{Qucs file formats}
+\label{sec:qucsfiles}
+
+%
+% Grammar environment based on Martin Grabmueller's original one
+%
+\newcommand\tok[1]{`{\bf #1}'}  % Literal token
+\newcommand\ntok[1]{{\bf #1}}   % Composed token
+\newcommand\bsl[1]{\tok{$\backslash$#1}}
+\newenvironment{grammar}%
+  {\newcommand\produces[2]{##1 \> $\rightarrow$ \> ##2 \\}
+   \newcommand\orproduces[1]{\> \> \makebox[0pt][r]{$|$ }##1 \\}
+   \newcommand\opt[1]{[ ##1 ]}
+   \newcommand\rep[1]{\{ ##1 \}}
+   \newcommand\alt[0]{$|$}
+   \newcommand\group[1]{( ##1 )}
+   \newcommand\emptyprod{{$\varepsilon$}}
+   \newcommand\heading[1]{\rule{\linewidth}{1pt} \\{\bf ##1}\\[2ex]}
+   \newcommand\separator{\rule{\linewidth}{1pt} \\}
+   \begin{tabbing}
+   \qquad\qquad\qquad\qquad \= \qquad \= \kill}
+  {\end{tabbing}}
+
+\def\REalpha{\tok{a} \alt{}~\dots~\alt{} \tok{z} \alt{}
+             \tok{A} \alt{}~\dots~\alt{} \tok{Z}}
+\def\REalnum{\REalpha \alt{} \tok{0}~\dots~\tok{9} \alt{} \tok{\_}}
+\def\REplusminus{\opt{\tok{+} \alt{} \tok{-}}}
+
+%
+% How the grammar works
+%
+Qucs uses plain-text (ASCII) files as its input and transfer format for
+netlists and data. This appendix explains the file formats by
+describing the grammars of the languages used. The files are generally
+line-oriented but arbitrary whitespace between the token is
+allowed. You can also use the backslash ($\backslash$) to continue a
+line on the next line. This works almost everywhere but in
+comment lines.
+
+\addvspace{12pt}
+
+The grammars are presented using a version of the Extended Backus-Naur
+Form (EBNF) which works as follows:
+
+\vskip0.5em
+\begin{tabular}{ll}
+$A \rightarrow B$&
+Nonterminal $A$ produces sentential form $B$.\\
+
+$B | C$&
+Produces $B$ or $C$.\\
+
+$\{ A \}$&
+Arbitrary repetition of form $A$. No repetition is allowed as well
+(``Kleene operator'').\\
+
+[ $A$ ]&
+Form $A$ is optional.\\
+
+$(A)$&
+Grouping, stands for $A$ itself.\\
+
+%Not needed (yet): $\varepsilon$& The empty form.\\
+\end{tabular}
+\vskip0.5em
+
+Nonterminal symbols are set in normal font, terminal symbols are in
+bold font. Terminal symbols in single quotes are literally found in
+the input while the other terminal symbols are compositions. See below
+for definition of composed terminal symbols.
+

@@ -1,0 +1,637 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Bold symbol macro for standard LaTeX users
+\providecommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
+
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+This chapter introduces the basic syntax of the function descriptions
+and contains a categorical list of all available functions.
+
+\tutsubsection{Functions Reference Format}
+
+\char`\"{}Qucs\char`\"{} provides a rich set of functions, which can
+be used to generate and display new datasets by function based evaluation
+of simulation results. Beside a large number of mathematical standard
+functions such as square root (sqrt), exponential function (exp),
+absolute value (abs), functions especially useful for calculation
+and transformation of electronic values are implemented. Examples
+for the latter would be the conversion from Watts to dBm, the generation
+of noise circles in an amplifier design, or the conversion from S-parameters
+to Y-parameters.
+
+
+\tutsubsubsection{Functions Reference Format}
+
+In the subsequent two chapters, each function is described using the
+following structure: 
+
+\begin{description}
+\item [<Function~Name>]~
+\end{description}
+Outlines briefly the functionality of the function.
+
+\begin{description}
+\item [Syntax]~
+\end{description}
+Defines the general syntax of this function.
+
+\begin{description}
+\item [Arguments]~
+\end{description}
+Name, type, definition range and whether the argument is optional,
+are tabulated here. In case of an optional parameter the default value
+is specified. {}``Type'' is a list defining the arguments allowed
+and may contain the following symbols:
+\medskip{}
+
+\begin{tabular}{|c|c|}
+\hline 
+Symbol&
+Description\tabularnewline
+\hline
+\hline 
+$\mathbb{R}$&
+Real number\tabularnewline
+\hline 
+$\mathbb{C}$&
+Complex number\tabularnewline
+\hline 
+$\mathbb{R}^{n}$&
+Vector consisting of \textit{n} real elements\tabularnewline
+\hline 
+$\mathbb{C}^{n}$&
+Vector consisting of \textit{n} complex elements\tabularnewline
+\hline
+$\mathbb{R}^{m\times n}$&
+Real matrix consisting of \textit{m} rows and \textit{n} columns\tabularnewline
+\hline
+$\mathbb{\mathbb{C}}^{m\times n}$&
+Complex matrix consisting of \textit{m} rows and \textit{n} columns\tabularnewline
+\hline
+$\mathbb{R}^{m\times n\times p}$&
+Vector of \textit{p} real $m\times n$ matrices\tabularnewline
+\hline
+$\mathbb{\mathbb{C}}^{m\times n\times p}$&
+Vector of \textit{p} complex $m\times n$ matrices\tabularnewline
+\hline
+\end{tabular}
+
+\medskip{}
+{}``Definition range'' specifies the allowed range. Each range is
+introduced by a bracket, either {}``$\left[\right.$'' or {}``$\left]\right.$'',
+meaning that the following start value of the range is either included
+or excluded. The start value is separated from the end value by a
+comma. Then the end value follows, finished by a bracket again, either
+{}``$\left[\right.$'' or {}``$\left]\right.$''. The first bracket
+mentioned means {}``excluding the end value'', the second means
+{}``including''.
+\vspace{12pt}
+
+If a range is given for a complex number, this specifies the real
+or imaginary value of that number. If a range is given for a real
+or complex vector or matrix, this specifies the real or imaginary
+value of each element of that vector or matrix. The symbols mean {}``includes
+listed value'' and {}``excludes listed value''.
+
+\begin{description}
+\item [Description]~
+\end{description}
+Gives a more detailed description on what the function does and what
+it returns. In case some background knowledge is presented.
+
+\begin{description}
+\item [Examples]~
+\end{description}
+Shows an application of the function by one or several simple examples.
+
+\begin{description}
+\item [See~also]~
+\end{description}
+Shows links to related functions. A mouse click onto the desired link
+leads to an immediate jump to that function.
+
+
+\tutsubsection{Functions Listed by Category}
+
+This compilation shows all {}``Qucs'' functions sorted by category (an alphabetical list is given in the \hyperlink{chapter:appendix}{appendix}). 
+Please click on the desired function to go to its detailed description.
+
+
+\tutsubsubsection{Math Functions}
+
+
+\subsubsection*{\nameref{sec:Vectors-and-Matrices}: \nameref{sub:Creation}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{eye}{eye()}}&
+...&
+ \begin{NoHyper} \nameref{par:identity} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{linspace}{linspace()}}&
+...&
+ \begin{NoHyper} \nameref{par:linspace} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{logspace}{logspace()}}&
+...&
+ \begin{NoHyper} \nameref{par:logspace} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Vectors-and-Matrices}: \nameref{sub:Basic-Matrix-Functions}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{adjoint}{adjoint()}}&
+...&
+ \begin{NoHyper} \nameref{par:Adjoint-matrix.} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{array}{array()}}&
+...&
+ \begin{NoHyper} \nameref{par:array} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{det}{det()}}&
+...&
+ \begin{NoHyper} \nameref{par:Determinant} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{inverse}{inverse()}}&
+...&
+ \begin{NoHyper} \nameref{par:Matrix-inverse} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{transpose}{transpose()}}&
+...&
+ \begin{NoHyper} \nameref{par:Matrix-transpose} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{length}{length()}}&
+...&
+ \begin{NoHyper} \nameref{par:Vector-length} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Elementary-Mathematical-Functions}: \nameref{sub:Basic-Real-and}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{abs}{abs()}}&
+...&
+ \begin{NoHyper} \nameref{par:Absolute-value} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{angle}{angle()}}&
+...&
+ \begin{NoHyper} \nameref{par:angle} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{arg}{arg()}}&
+...&
+ \begin{NoHyper} \nameref{par:arg} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{conj}{conj()}}&
+...&
+ \begin{NoHyper} \nameref{par:Conjugate} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{deg2rad}{deg2rad()}}&
+...&
+ \begin{NoHyper} \nameref{par:deg2rad} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{hypot}{hypot()}}&
+...&
+ \begin{NoHyper} \nameref{par:hypot} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{imag}{imag()}}&
+...&
+ \begin{NoHyper} \nameref{par:Imag} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{mag}{mag()}}&
+...&
+ \begin{NoHyper} \nameref{par:Magnitude} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{norm}{norm()}}&
+...&
+ \begin{NoHyper} \nameref{par:norm} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{phase}{phase()}}&
+...&
+ \begin{NoHyper} \nameref{par:Phase} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{polar}{polar()}}&
+...&
+ \begin{NoHyper} \nameref{par:polar} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{rad2deg}{rad2deg()}}&
+...&
+ \begin{NoHyper} \nameref{par:rad2deg} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{real}{real()}}&
+...&
+ \begin{NoHyper} \nameref{par:Real} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{signum}{signum()}}&
+...&
+ \begin{NoHyper} \nameref{par:Signum} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{sign}{sign()}}&
+...&
+ \begin{NoHyper} \nameref{par:Sign} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{sqr}{sqr()}}&
+...&
+ \begin{NoHyper} \nameref{par:Square} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{sqrt}{sqrt()}}&
+...&
+ \begin{NoHyper} \nameref{par:Square-root} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{unwrap}{unwrap()}}&
+...&
+ \begin{NoHyper} \nameref{par:Unwrap} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Elementary-Mathematical-Functions}: \nameref{sub:Exponential-and-Logarithmic}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{exp}{exp()}}&
+...&
+ \begin{NoHyper} \nameref{par:Exponential-function} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{limexp}{limexp()}}&
+...&
+ \begin{NoHyper} \nameref{par:Limited-Exponential-function} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{log10}{log10()}}&
+...&
+ \begin{NoHyper} \nameref{par:Decimal-logarithm} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{log2}{log2()}}&
+...&
+ \begin{NoHyper} \nameref{par:Binary-logarithm} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{ln}{ln()}}&
+...&
+ \begin{NoHyper} \nameref{par:Natural-logarithm} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Elementary-Mathematical-Functions}: \nameref{sub:Trigonometry}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{cos}{cos()}}&
+...&
+ \begin{NoHyper} \nameref{par:Cosine} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{cosec}{cosec()}}&
+...&
+ \begin{NoHyper} \nameref{par:Cosecant} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{cot}{cot()}}&
+...&
+ \begin{NoHyper} \nameref{par:Cotangent} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{sec}{sec()}}&
+...&
+ \begin{NoHyper} \nameref{par:Secant} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{sin}{sin()}}&
+...&
+ \begin{NoHyper} \nameref{par:Sine} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{tan}{tan()}}&
+...&
+ \begin{NoHyper} \nameref{par:Tangent} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Elementary-Mathematical-Functions}: \nameref{sub:Inverse-Trigonometric-Functions}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{arccos}{arccos()}}&
+...&
+ \begin{NoHyper} \nameref{par:Arc-cosine} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{arccosec}{arccosec()}}&
+...&
+ \begin{NoHyper} \nameref{par:Arc-cosec} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{arccot}{arccot()}}&
+...&
+ \begin{NoHyper} \nameref{par:Arc-cotangent} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{arcsec}{arcsec()}}&
+...&
+ \begin{NoHyper} \nameref{par:Arc-sec} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{arcsin}{arcsin()}}&
+...&
+ \begin{NoHyper} \nameref{par:Arc-sine} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{arctan}{arctan()}}&
+...&
+ \begin{NoHyper} \nameref{par:Arc-tangent} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Elementary-Mathematical-Functions}: \nameref{sub:Hyperbolic-Functions}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{cosh}{cosh()}}&
+...&
+ \begin{NoHyper} \nameref{par:Hyperbolic-cosine} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{cosech}{cosech()}}&
+...&
+ \begin{NoHyper} \nameref{par:Hyperbolic-cosecant} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{coth}{coth()}}&
+...&
+ \begin{NoHyper} \nameref{par:Hyperbolic-cotangent} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{sech}{sech()}}&
+...&
+ \begin{NoHyper} \nameref{par:Hyperbolic-secant} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{sinh}{sinh()}}&
+...&
+ \begin{NoHyper} \nameref{par:Hyperbolic-sine} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{tanh}{tanh()}}&
+...&
+ \begin{NoHyper} \nameref{par:Hyperbolic-tangent} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Elementary-Mathematical-Functions}: \nameref{sub:Inverse-Hyperbolic-Functions}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{arcosh}{arcosh()}}&
+...&
+ \begin{NoHyper} \nameref{par:Hyperbolic-area-cosine} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{arcosech}{arcosech()}}&
+...&
+ \begin{NoHyper} \nameref{par:Hyperbolic-area-cosec} \end{NoHyper}\tabularnewline 
+\textcolor{blue}{\hyperlink{arcoth}{arcoth()}}&
+...&
+ \begin{NoHyper} \nameref{par:Hyperbolic-area-cotangent} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{arsech}{arsech()}}&
+...&
+ \begin{NoHyper} \nameref{par:Hyperbolic-area-sec} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{arsinh}{arsinh()}}&
+...&
+ \begin{NoHyper} \nameref{par:Hyperbolic-area-sine} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{artanh}{artanh()}}&
+...&
+ \begin{NoHyper} \nameref{par:Hyperbolic-area-tangent} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Elementary-Mathematical-Functions}: \nameref{sub:Rounding}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{ceil}{ceil()}}&
+...&
+ \begin{NoHyper} \nameref{par:ceil} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{fix}{fix()}}&
+...&
+ \begin{NoHyper} \nameref{par:fix} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{floor}{floor()}}&
+...&
+ \begin{NoHyper} \nameref{par:floor} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{round}{round()}}&
+...&
+ \begin{NoHyper} \nameref{par:round} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Elementary-Mathematical-Functions}: \nameref{sub:Special-Mathematical-Functions}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{besseli0}{besseli0()}}&
+...&
+ \begin{NoHyper} \nameref{par:Modified-Bessel-function} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{besselj}{besselj()}}&
+...&
+ \begin{NoHyper} \nameref{par:Bessel-function} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{bessely}{bessely()}}&
+...&
+ \begin{NoHyper} \nameref{par:Bessel2-function} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{erf}{erf()}}&
+...&
+ \begin{NoHyper} \nameref{par:Error-function} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{erfc}{erfc()}}&
+...&
+ \begin{NoHyper} \nameref{par:Complementary-error-function} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{erfinv}{erfinv()}}&
+...&
+ \begin{NoHyper} \nameref{par:Inverse-error-function} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{erfcinv}{erfcinv()}}&
+...&
+ \begin{NoHyper} \nameref{par:Inverse-complementary-error} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{sinc}{sinc()}}&
+...&
+ \begin{NoHyper} \nameref{par:Sinc-function} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{step}{step()}}&
+...&
+ \begin{NoHyper} \nameref{par:Step-function} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Data-Analysis}: \nameref{sub:Basic-Statistics}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{avg}{avg()}}&
+...&
+ \begin{NoHyper} \nameref{par:Average} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{cumavg}{cumavg()}}&
+...&
+ \begin{NoHyper} \nameref{par:Cumulative-average} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{max}{max()}}&
+...&
+ \begin{NoHyper} \nameref{par:Maximum} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{min}{min()}}&
+...&
+ \begin{NoHyper} \nameref{par:Minimum} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{rms}{rms()}}&
+...&
+ \begin{NoHyper} \nameref{par:rms} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{runavg}{runavg()}}&
+...&
+ \begin{NoHyper} \nameref{par:Running-average} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{stddev}{stddev()}}&
+...&
+ \begin{NoHyper} \nameref{par:Standard-deviation} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{variance}{variance()}}&
+...&
+ \begin{NoHyper} \nameref{par:Variance} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{random}{random()}}&
+...&
+ \begin{NoHyper} \nameref{par:random} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{srandom}{srandom()}}&
+...&
+ \begin{NoHyper} \nameref{par:srandom} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Data-Analysis}: \nameref{sub:Basic-Operation}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}b{3cm}>{\centering}b{0.5cm}>{\raggedright}b{12cm}}
+\textcolor{blue}{\hyperlink{cumprod}{cumprod()}}&
+...&
+ \begin{NoHyper} \nameref{par:Cumulative-product} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{cumsum}{cumsum()}}&
+...&
+ \begin{NoHyper} \nameref{par:Cumulative-sum} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{interpolate}{interpolate()}}&
+...&
+ \begin{NoHyper} \nameref{par:spline-interpolation} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{prod}{prod()}}&
+...&
+ \begin{NoHyper} \nameref{par:Prod} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{sum}{sum()}}&
+...&
+ \begin{NoHyper} \nameref{par:Sum} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{xvalue}{xvalue()}}
+
+\textcolor{blue}{~}&
+...
+
+\textcolor{blue}{~}&
+ \begin{NoHyper} \nameref{par:xvalue} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{yvalue}{yvalue()}}
+
+\textcolor{blue}{~}&
+...
+
+\textcolor{blue}{~}&
+ \begin{NoHyper} \nameref{par:yvalue} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Data-Analysis}: \nameref{sub:Differentiation-Integration-and-Smoothing}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{ddx}{ddx()}}&
+...&
+ \begin{NoHyper} \nameref{par:Differentiate-Symbolicly} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{diff}{diff()}}&
+...&
+ \begin{NoHyper} \nameref{par:Differentiate} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{integrate}{integrate()}}&
+...&
+ \begin{NoHyper} \nameref{par:Integrate} \end{NoHyper}\tabularnewline
+ \textcolor{blue}{\hyperlink{smooth}{smooth()}}&
+...&
+ \begin{NoHyper} \nameref{par:Smooth} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Data-Analysis}: \nameref{sub:Signal-Processing}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{dft}{dft()}}&
+...&
+ \begin{NoHyper} \nameref{par:Discrete-Fourier-Transform} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{fft}{fft()}}&
+...&
+ \begin{NoHyper} \nameref{par:Fast-Fourier-Transform} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{idft}{idft()}}&
+...&
+ \begin{NoHyper} \nameref{par:Inverse-Discrete-Fourier} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{ifft}{ifft()}}&
+...&
+ \begin{NoHyper} \nameref{par:Inverse-Fast-Fourier} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{fftshift}{fftshift()}}&
+...&
+ \begin{NoHyper} \nameref{par:fftshift} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{Time2Freq}{Time2Freq()}}&
+...&
+ \begin{NoHyper} \nameref{par:Interpreted-Discrete-Fourier-Transform} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{Freq2Time}{Freq2Time()}}&
+...&
+ \begin{NoHyper} \nameref{par:Interpreted-Inverse-Discrete-Fourier} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{kbd}{kbd()}}&
+...&
+ \begin{NoHyper} \nameref{par:Kaiser-Bessel-window} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{groupdelay}{groupdelay()}}&
+...&
+ \begin{NoHyper} \nameref{par:groupdelay} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\tutsubsubsection{Electronics Functions}
+
+
+\subsubsection*{\nameref{sec:Unit-Conversion}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{dB}{dB()}}&
+...&
+ \begin{NoHyper} \nameref{par:dB} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{dbm}{dbm()}}&
+...&
+ \begin{NoHyper} \nameref{par:dbm} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{dbm2w}{dbm2w()}}&
+...&
+ \begin{NoHyper} \nameref{par:dbm2w} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{w2dbm}{w2dbm()}}&
+...&
+ \begin{NoHyper} \nameref{par:w2dbm} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Reflection-Coefficients-and}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}p{3cm}>{\centering}p{0.5cm}l}
+\textcolor{blue}{\hyperlink{rtoswr}{rtoswr()}}&
+...&
+ \begin{NoHyper} \nameref{par:rtoswr} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{rtoy}{rtoy()}}&
+...&
+ \begin{NoHyper} \nameref{par:rtoy} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{rtoz}{rtoz()}}&
+...&
+ \begin{NoHyper} \nameref{par:rtoz} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{ytor}{ytor()}}&
+...&
+ \begin{NoHyper} \nameref{par:ytor} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{ztor}{ztor()}}&
+...&
+ \begin{NoHyper} \nameref{par:ztor} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:N-Port-Matrix-Conversions}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}b{3cm}>{\centering}b{0.5cm}>{\raggedright}b{12cm}}
+\textcolor{blue}{\hyperlink{stos}{stos()}}
+
+\textcolor{blue}{~}&
+...
+
+\textcolor{blue}{~}&
+ \begin{NoHyper} \nameref{par:stos} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{stoy}{stoy()}}&
+...&
+ \begin{NoHyper} \nameref{par:stoy} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{stoz}{stoz()}}&
+...&
+ \begin{NoHyper} \nameref{par:stoz} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{twoport}{twoport()}}&
+...&
+ \begin{NoHyper} \nameref{par:twoport} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{ytos}{ytos()}}&
+...&
+ \begin{NoHyper} \nameref{par:ytos} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{ytoz}{ytoz()}}&
+...&
+ \begin{NoHyper} \nameref{par:ytoz} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{ztos}{ztos()}}&
+...&
+ \begin{NoHyper} \nameref{par:ztos} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{ztoy}{ztoy()}}&
+...&
+ \begin{NoHyper} \nameref{par:ztoy} \end{NoHyper}\tabularnewline
+\end{tabular}
+
+
+\subsubsection*{\nameref{sec:Amplifiers}}
+
+\textcolor{blue}{}\begin{tabular}{>{\raggedleft}b{3cm}>{\centering}b{0.5cm}>{\raggedright}b{12cm}}
+\textcolor{blue}{\hyperlink{GaCircle}{GaCircle()}}&
+...&
+ \begin{NoHyper} \nameref{par:GaCircle} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{GpCircle}{GpCircle()}}&
+...&
+ \begin{NoHyper} \nameref{par:GpCircle} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{Mu}{Mu()}}&
+...&
+ \begin{NoHyper} \nameref{par:Mu-stability-factor} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{Mu2}{Mu2()}}&
+...&
+ \begin{NoHyper} \nameref{par:Mu2-stability-factor} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{NoiseCircle}{NoiseCircle()}}&
+...&
+ \begin{NoHyper} \nameref{par:NoiseCircle} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{PlotVs}{PlotVs()}}
+
+\textcolor{blue}{~}&
+...
+
+\textcolor{blue}{~}&
+ \begin{NoHyper} \nameref{par:PlotVs} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{Rollet}{Rollet()}}&
+...&
+ \begin{NoHyper} \nameref{par:Rollet-stability-factor} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{StabCircleL}{StabCircleL()}}&
+...&
+ \begin{NoHyper} \nameref{par:StabCircleL} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{StabCircleS}{StabCircleS()}}&
+...&
+ \begin{NoHyper} \nameref{par:StabCircleS} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{StabFactor}{StabFactor()}}
+
+\textcolor{blue}{~}&
+...
+
+\textcolor{blue}{~}&
+ \begin{NoHyper} \nameref{par:StabFactor} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{StabMeasure}{StabMeasure()}}&
+...&
+ \begin{NoHyper} \nameref{par:StabMeasure} \end{NoHyper}\tabularnewline
+\textcolor{blue}{\hyperlink{vt}{vt()}}&
+...&
+ \begin{NoHyper} \nameref{par:vt} \end{NoHyper}\tabularnewline
+\end{tabular}
+% \end{document}

@@ -1,0 +1,140 @@
+%
+% Tutorial -- The Work Book
+%
+% Copyright (C) 2005, 2006, 2007 Stefan Jahn <stefan@lkcc.org>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+\documentclass[headsepline,a4paper,twoside,12pt]{scrreprt}
+
+\usepackage[latin1]{inputenc}
+
+% Include basic and title page definitions.
+\include{basics}
+\include{titlepage}
+
+\tuttitle{
+  Work Book}
+\tutsubtitle{
+  }
+\tutauthor{
+  Chris Pitcher\\
+  Clemens Novak\\
+  Gunther Kraut\\
+  Mike Brinson\\
+  Thierry Scordilis\\
+  Stefan Jahn\vspace*{6pt}}
+\tutcopyright{
+  Copyright \copyright{} 2016 Gerald Oberschmidt
+  \textless info@ibdrigo.com\textgreater\\
+  Copyright \copyright{} 2014 Vadim Kuznetsov
+  \textless ra3xdh@gmail.com\textgreater\\
+  Copyright \copyright{} 2013 Clemens Novak
+  \textless clemens@familie-novak.net\textgreater\\
+  Copyright \copyright{} 2006, 2007, 2014 Mike Brinson
+  \textless mbrin72043@yahoo.co.uk\textgreater\\
+  Copyright \copyright{} 2006, 2009 Gunther Kraut
+  \textless gn.kraut@online.de\textgreater\\
+  Copyright \copyright{} 2005 Thierry Scordilis
+  \textless thierry.scordilis@free.fr\textgreater\\
+  Copyright \copyright{} 2005 Chris Pitcher
+  \textless ozjp@chariot.net.au\textgreater\\
+  Copyright \copyright{} 2005, 2006, 2007 Stefan Jahn
+  \textless stefan@lkcc.org\textgreater}
+\tutbooktrue
+
+\tutstartup{Tutorial Collection}{%
+  Chris Pitcher, Clemens Novak, Gunther Kraut, Mike Brinson, Thierry Scordilis, and Stefan Jahn}
+\usepackage{keystroke}
+
+% Here finally starts everything.
+\tutbegin
+
+\tableofcontents
+\newpage
+
+\chapter*{Introduction}
+\input{intro}
+
+\chapter{General Design Flow}
+\input{general}
+
+\chapter{Getting started with Qucs}
+\graphicspath{{getstarted/pics/}}
+\input{getstarted/content}
+
+\chapter{Understanding RF Data Sheet Parameters}
+\input{datasheet}
+
+\chapter{DC Analysis, Parameter Sweep and Device Models}
+\graphicspath{{dcstatic/pics/}}
+\input{dcstatic/content}
+
+\chapter{Getting Started with Digital Circuit Simulation}
+\graphicspath{{digital/pics/}}
+\input{digital/content}
+
+\chapter{Transient Domain Flip-Flop Models for Mixed-Mode Simulation}
+\graphicspath{{ffmodels/pics/}}
+\input{ffmodels/content}
+
+\chapter{Modelling Operational Amplifiers}
+\graphicspath{{opamp/pics/}}
+\input{opamp/content}
+
+\chapter{Modelling the 555 Timer}
+\graphicspath{{timer555/pics/}}
+\input{timer555/content}
+
+\chapter{Qucs Simulation of SPICE Netlists}
+\graphicspath{{spicetoqucs/pics/}}
+\input{spicetoqucs/content}
+
+\chapter{Biasing a BJT Transistor}
+\graphicspath{{bjtbias/pics/}}
+\input{bjtbias/content}
+
+\chapter{BJT Modeling and Verification}
+\graphicspath{{modelbjt/pics/}}
+\input{modelbjt/content}
+
+\chapter{Power Amplifier Design}
+\graphicspath{{poweramp/pics/}}
+\input{poweramp/content}
+
+\chapter{Low Noise Amplifier Design}
+\graphicspath{{lna/pics/}}
+\input{lna/content}
+
+\chapter{Design of RF amplifiers using S-Parameters}
+\graphicspath{{sparameteramp/pics/}}
+\input{sparameteramp/content}
+
+\chapter{Microstrip Design}
+\graphicspath{{coupler/pics/}}
+\input{coupler/content}
+
+\chapter{Measurement Expressions Reference Manual}
+\graphicspath{{functions/pics/}}
+\input{functions/content}
+
+\chapter{Component, compact device and circuit modelling using symbolic equations}
+\graphicspath{{equations/pics/}}
+\input{equations/content}
+
+\chapter{Subcircuit and Verilog-A RF Circuit Simulation Models for Axial and Surface Mounted Resistors}
+\graphicspath{{RFResModels/pics/}}
+\input{RFResModels/content}
+
+\chapter{Using Qucs in Textmode}
+\graphicspath{{textmode/pics/}}
+\input{textmode/content}
+
+\chapter{Active Filters Design with Qucs and Qucsactivefilter}
+\graphicspath{{activefilter/pics/}}
+\input{activefilter/content}
+
+\tutend

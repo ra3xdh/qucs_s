@@ -1,0 +1,51 @@
+.TH QucsPowerCombiningTool "1" "September 2018" "Debian/GNU Linux" "User Commands"
+.SH NAME
+QucsPowerCombiningTool \- A power combiner synthesis tool.
+.SH SYNOPSIS
+.B qucspowercombining
+[\fIOPTION\fR] ...
+.SH DESCRIPTION
+
+\fBQucs\fR is an integrated circuit simulator which means you are able
+to setup a circuit with a graphical user interface (GUI) and simulate
+the large-signal, small-signal and noise behaviour of the circuit.
+After that simulation has finished you can view the simulation results
+on a presentation page or window.
+
+The software aims to support all kinds of circuit simulation types,
+e.g. DC, AC, S-parameter, harmonic balance analysis, noise analysis,
+etc.
+
+\fBQucsPowerCombiningTool\fR is a synthesis tool focused on the design of power
+combiners/dividers which is integrated into the \fBQucs\fR environment.
+The GUI consists of a dialog which includes the design parameters of the combiner and
+a graphical description of the combiner type in the dialog. After the synthesis is done,
+the schematic is copied into the system-wide clipboard. In order to run a simulation, please create
+a new schematic in \fBQucs\fR and then press CTRL-V (paste from clipboard). The schematic will be
+inserted in \fBQucs\fR and ready for simulation.
+
+The available power combiner types are: 
+Wilkinson,
+Multistage Wilkinson,
+T-junction,
+Branchline,
+Double-box Branchline,
+Bagley,
+Gysel,
+Travelling wave combiner
+and Tree combiner
+
+.SH AVAILABILITY
+The latest version of Qucs can always be obtained from
+\fB\fR
+.SH "REPORTING BUGS"
+Known bugs are documented within the BUGS file.  Report bugs to
+\fB\fR
+
+.SH COPYRIGHT
+Copyright \(co 2018 Qucs Team
+.PP
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+

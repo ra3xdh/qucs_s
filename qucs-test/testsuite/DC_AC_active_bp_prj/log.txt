@@ -1,0 +1,10 @@
+parsing netlist...
+checking netlist...
+netlist content
+      1 AC instances
+      2 C instances
+      1 DC instances
+      3 R instances
+      1 OpAmp instances
+      1 Vac instances
+creating netlist...

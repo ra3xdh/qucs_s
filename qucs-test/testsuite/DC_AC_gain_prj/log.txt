@@ -1,0 +1,24 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `Input.v' in equation `Gain' not yet defined
+checker notice, variable `Output.v' in equation `Gain' not yet defined
+checker notice, variable `Input.v' in equation `Phase' not yet defined
+checker notice, variable `Output.v' in equation `Phase' not yet defined
+netlist content
+      8 MOSFET instances
+      1 Idc instances
+      1 AC instances
+      1 C instances
+      1 DC instances
+      4 R instances
+      2 Vdc instances
+      1 Vac instances
+creating netlist...
+checker notice, variable `Input.v' in equation `Gain' not yet defined
+checker notice, variable `Output.v' in equation `Gain' not yet defined
+checker notice, variable `Input.v' in equation `Phase' not yet defined
+checker notice, variable `Output.v' in equation `Phase' not yet defined
+checker notice, variable `Input.v' in equation `Gain' not yet defined
+checker notice, variable `Output.v' in equation `Gain' not yet defined
+checker notice, variable `Input.v' in equation `Phase' not yet defined
+checker notice, variable `Output.v' in equation `Phase' not yet defined

@@ -1,0 +1,116 @@
+%
+% This document contains a generic preamble for tutorials.
+%
+% Copyright (C) 2005 Stefan Jahn <stefan@lkcc.org>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+% Load some packages.
+\newcommand{\tutpackages}{%
+  \usepackage{savesym}
+  \usepackage{geometry}
+  \usepackage[T1]{fontenc}
+  \usepackage{longtable}
+  \usepackage{ae,aecompl}
+  \usepackage{url}
+  \usepackage{epsfig}
+  \usepackage{array}
+  \usepackage{subfigure}
+  \usepackage{amsmath}
+  \usepackage{amsfonts}
+  \savesymbol{iint}
+  \usepackage{stmaryrd}
+  \usepackage{wasysym}
+  \restoresymbol{WASY}{iint}
+  \usepackage{pifont}
+  \usepackage[amssymb]{SIunits}
+  \usepackage{graphics}
+  \usepackage{psfrag}
+  \usepackage{relsize}
+  \usepackage[section]{placeins}
+  \usepackage{listings}
+  \iftutbook
+  \else
+    \usepackage{makeidx}
+    \makeindex
+  \fi
+}
+
+% Compatibility code for LaTeX and pdfTeX.
+\newcommand{\tutcompat}{%
+  \newif\ifpdf
+  \ifx\pdfoutput\undefined
+    \pdffalse
+  \else
+    \pdfoutput=1
+    \pdftrue
+  \fi
+}
+
+% Only evaluated if run using pdfTeX.
+\newcommand{\tutheader}[2]{%
+  \ifpdf
+    \usepackage[pdftex,
+	a4paper,
+	backref,
+	\iftutbook
+	  anchorcolor=black,
+	  filecolor=black,
+	  menucolor=black,
+	  pagecolor=black,
+	  bookmarks=true,
+	  bookmarksopen=true,
+	  bookmarksnumbered=true,
+	  pdfpagemode=UseOutlines,
+	\else
+	  bookmarks=false,
+	  bookmarksopen=false,
+	  bookmarksnumbered=true,
+	  pdfpagemode=UseNone,
+	\fi
+	baseurl={http://qucs.sourceforge.net},
+	pdfstartview=FitH,
+	pdftitle={Qucs - \tuttitle},
+	pdfauthor={#2},
+	pdfsubject={#1},
+	colorlinks,
+	linkcolor=black,
+	urlcolor=black,
+	citecolor=black,
+	backref=false,
+	plainpages=false,
+	pagebackref=false]{hyperref}
+    \DeclareGraphicsExtensions{.pdf,.png}
+    \pdfcompresslevel 9
+    \pdfinfo {
+      /Title   (Qucs - \tuttitle)
+      /Subject (#1)
+      /Author  (#2)
+    }
+  \else
+    \DeclareGraphicsExtensions{.eps}
+  \fi
+  \graphicspath{{pics/}}
+}
+
+% Generic tutorial startup code.
+\newcommand{\tutstartup}[2]{%
+  \tutpackages
+  \tutcompat
+  \tutheader{#1}{#2}
+}
+
+% Begin document.
+\newcommand{\tutbegin}{%
+  \begin{document}
+  \tuttitlepage
+  \setlength{\parindent}{0pt}
+}
+
+% End document.
+\newcommand{\tutend}{%
+  \end{document}
+}

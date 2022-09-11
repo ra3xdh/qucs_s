@@ -1,0 +1,13 @@
+# Qucs 0.0.15  /tmp/tr.sch
+
+Vac:V1 _net0 gnd U="1 V" f="1 Hz" Phase="0" Theta="0"
+R:R1 _net0 _net1 R="Rsweep" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+VProbe:Uin _net0 gnd
+R:R2 _net2 _net3 R="1 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+IProbe:current _net3 _net4
+R:R4 _net1 _net2 R="1e12" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+CCVS:SRC1 _net1 _net2 _net4 gnd G="Rsweep" T="0"
+R:R3 gnd _net4 R="1e12" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.SW:SW1 Sim="AC1" Type="lin" Param="Rsweep" Start="1 Ohm" Stop="10 Ohm" Points="10"
+.AC:AC1 Type="log" Start="1 Hz" Stop="1 GHz" Points="91" Noise="yes"
+Eqn:Eqn1 crashif="assert(diff < 1e-6)" diff="(abs(current.i-1.0))" Export="yes"

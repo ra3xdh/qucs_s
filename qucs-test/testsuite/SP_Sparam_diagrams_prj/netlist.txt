@@ -1,0 +1,11 @@
+# Qucs 0.0.18  /Users/guitorri/git/qucs-test/testsuite/SP_Sparam_diagrams_prj/Sparam_diagrams.sch
+
+Pac:P1 _net0 gnd Num="1" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+C:C1 gnd _net0 C="6.796pF" V=""
+L:L1 _net0 _net1 L="8.683nH" I=""
+C:C2 gnd _net1 C="9.552pF" V=""
+L:L2 _net1 _net2 L="8.683nH" I=""
+Pac:P2 _net2 gnd Num="2" Z="50 Ohm" P="0 dBm" f="1 GHz" Temp="26.85"
+Eqn:Eqn1 dBS21="dB(S[2,1])" dBS11="dB(S[1,1])" Export="yes"
+.SP:SP1 Type="log" Start="100MHz" Stop="2GHz" Points="601" Noise="no" NoiseIP="1" NoiseOP="2" saveCVs="no" saveAll="no"
+C:C3 gnd _net2 C="6.796pF" V=""

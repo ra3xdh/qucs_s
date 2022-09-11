@@ -1,0 +1,21 @@
+2007-03-17  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcstatic.tex: Moved the AC tutorial to another location.
+	Reversed patch from 4 days before.
+
+2007-03-13  Stefan Jahn  <stefan@lkcc.org>
+
+	* content.tex: Added small AC tutorial part provided by
+	Juan Carlos Borrás.
+
+2005-07-06  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcstatic.tex (section*{When Things Vary}): Fixed description
+	of parameter sweep as well as some typos.
+
+2005-06-19  Stefan Jahn  <stefan@lkcc.org>
+
+	* dcstatic.tex: Using 'savesym' package for duplicate symbols
+	in wasysym and amsmath.
+
+	* ChangeLog: Created this file.

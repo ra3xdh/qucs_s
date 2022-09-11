@@ -1,0 +1,11 @@
+% sty.file for makeinde - redefines:
+quote ’+’
+headings_flag 1
+heading_prefix "{\\bf "
+heading_suffix "}\\nopagebreak%\n \\indexspace\\nopagebreak%"
+delim_0 "\\dotfill "
+delim_1 "\\dotfill "
+delim_2 "\\dotfill "
+delim_r "~--~"
+suffix_2p "\\,f."
+suffix_3p "\\,ff."

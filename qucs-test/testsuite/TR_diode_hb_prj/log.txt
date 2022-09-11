@@ -1,0 +1,20 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `time' in equation `Spectrum' not yet defined
+checker notice, variable `Node3.Vt' in equation `Spectrum' not yet defined
+netlist content
+      1 Diode instances
+      2 R instances
+      1 HB instances
+      1 Vac instances
+      1 TR instances
+creating netlist...
+checker notice, variable `time' in equation `Spectrum' not yet defined
+checker notice, variable `Node3.Vt' in equation `Spectrum' not yet defined
+NOTIFY: TR1: average time-step 4.41014e-12, 254 rejections
+NOTIFY: TR1: average NR-iterations 3.76295, 0 non-convergences
+checker notice, variable `time' in equation `Spectrum' not yet defined
+checker notice, variable `Node3.Vt' in equation `Spectrum' not yet defined
+NOTIFY: HB1: solving for 9 frequencies
+NOTIFY: HB1: balancing at 1 nodes
+HB1: convergence reached after 11 iterations

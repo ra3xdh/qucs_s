@@ -1,0 +1,545 @@
+%
+% This document contains the chapter about harmonic balance analysis.
+%
+% Copyright (C) 2005, 2006 Stefan Jahn <stefan@lkcc.org>
+% Copyright (C) 2005, 2006, 2007
+%               Michael Margraf <Michael.Margraf@alumni.TU-Berlin.DE>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+\chapter{Harmonic Balance Analysis}
+\label{sec:hb_analysis}
+
+Harmonic balance is a non-linear, frequency-domain, steady-state
+simulation.  The voltage and current sources create discrete
+frequencies resulting in a spectrum of discrete frequencies at every
+node in the circuit. Linear circuit components are solely modeled in
+frequency domain. Non-linear components are modeled in time domain and
+Fourier-transformed before each solving step.  The informations in
+this chapter are taken from \cite{Maas1} (chapter 3) which is a very
+nice and well-written publication on this topic.
+
+\addvspace{12pt}
+
+The harmonic balance simulation is ideal for situations where
+transient simulation methods are problematic. These are:
+\begin{itemize}
+\item components modeled in frequency domain, for instance (dispersive)
+      transmission lines
+\item circuit time constants large compared to period of simulation
+      frequency
+\item circuits with lots of reactive components
+\end{itemize}
+Harmonic balance methods, therefore, are the best choice for most microwave
+circuits excited with sinusoidal signals (e.g. mixers, power amplifiers).
+
+
+\section{The Basic Concept}
+
+As the non-linear elements are still modeled in time domain, the circuit
+first must be separated into a linear and a non-linear part. The
+internal impedances $Z_i$ of the voltage sources are put into the
+linear part as well. Figure \ref{fig:hb_concept} illustrates the
+concept. Let us define the following symbols:
+\begin{description}
+\item[] M = number of (independent) voltage sources
+\item[] N = number of connections between linear and non-linear subcircuit
+\item[] K = number of calculated harmonics
+\item[] L = number of nodes in linear subcircuit
+\end{description}
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=9cm]{hb_concept}
+\end{center}
+\caption{circuit partitioning in harmonic balance}
+\label{fig:hb_concept}
+\end{figure}
+\FloatBarrier
+
+The linear circuit is modeled by two transadmittance matrices:
+The first one $\tilde{\boldsymbol{Y}}$
+relates the source voltages $v_{S,1}...v_{S,M}$ to the interconnection
+currents $i_1...i_N$ and the second one $\hat{\boldsymbol{Y}}$
+relates the interconnection
+voltages $v_1...v_N$ to the interconnection currents $i_1...i_N$.
+Taking both, we can express the current flowing through the
+interconnections between linear and non-linear subcircuit:
+
+\begin{equation}
+\label{eqn:HBlin}
+\boldsymbol{I}
+  = \boldsymbol{\tilde{Y}}_{N\times M}\cdot \boldsymbol{V}_S +
+    \boldsymbol{\hat{Y}}_{N\times N}\cdot \boldsymbol{V}
+  = \boldsymbol{I}_S + \boldsymbol{\hat{Y}}\cdot \boldsymbol{V}
+\end{equation}
+Because $\boldsymbol{V}_S$ is known and constant, the first term
+can already be computed to give $\boldsymbol{I}_S$. Taking the
+whole linear network as one block is called the "piecewise"
+harmonic balance technique.
+
+\addvspace{12pt}
+
+The non-linear circuit is modeled by its current function
+$i(t) = f_g(v_1, ..., v_P)$
+and by the charge of its capacitances
+$q(t) = f_q(v_1, ..., v_Q)$.
+These functions must be Fourier-transformed to give the
+frequency-domain vectors $\boldsymbol{Q}$ and $\boldsymbol{I}_G$,
+respectively.
+
+\addvspace{12pt}
+
+A simulation result is found if the currents through the
+interconnections are the same for the linear and the non-linear
+subcircuit. This principle actually gave the harmonic balance
+simulation its name, because through the interconnections the
+currents of the linear and non-linear subcircuits have to be
+\textit{balanced} at every \textit{harmonic} frequency. To
+be precise the described method is called Kirchhoff's current
+law harmonic balance (KCL-HB). Theoretically, it would also be
+possible to use an algorithm that tries to balance the voltages
+at the subcircuit interconnections. But then the Z matrix (linear
+subcircuit) and current-dependend voltage laws (non-linear
+subcircuit) have to be used. That doesn't fit the need (see other
+simulation types).
+
+\addvspace{12pt}
+
+So, the non-linear equation system that needs to be solved writes:
+\begin{equation}
+\label{eqn:HBeqn}
+\textbf{F}(\textbf{V})
+  = \underbrace{(\boldsymbol{I}_S) + (\boldsymbol{\hat{Y}})\cdot (\boldsymbol{V})}_{\text{linear}}
+  + \underbrace{j\cdot \boldsymbol{\Omega}\cdot \boldsymbol{Q} + \boldsymbol{I}_G}_{\text{non-linear}}
+  = \boldsymbol{0}
+\end{equation}
+where matrix $\boldsymbol{\Omega}$ contains the angular frequencies
+on the first main diagonal and zeros anywhere else, $\boldsymbol{0}$
+is the zero vector.
+
+\addvspace{12pt}
+
+After each iteration step, the inverse Fourier transformation must
+be applied to the voltage vector $\boldsymbol{V}$. Then the time domain
+voltages $v_{0,1}...v_{K,N}$ are put into $i(t) = f_g(v_1, ..., v_P)$
+and $q(t) = f_q(v_1, ..., v_Q)$ again. Now, a Fourier transformation
+gives the vectors $\boldsymbol{Q}$ and $\boldsymbol{I}_G$ for the
+next iteration step. After repeating this several times, a simulation
+result has hopefully be found.
+
+\addvspace{12pt}
+
+Having found this result means having got the voltages $v_1...v_N$ at
+the interconnections of the two subcircuits. With these values the
+voltages at all nodes can be calculated: Forget about the non-linear
+subcircuit, put current sources at the former interconnections (using
+the calculated values) and perform a normal AC simulation. After that
+the simulation is complete.
+
+\addvspace{12pt}
+
+A short note to the construction of the quantities: One big difference
+between the HB and the conventional simulation types like a DC or an
+AC simulation is the structure of the matrices and vectors. A vector
+used in a conventional simulation contains one value for each node.
+In an HB simulation there are many harmonics and thus, a vector contains
+$K$ values for each node. This means that within a matrix, there is a
+$K \times K$ diagonal submatrix for each node. Using this structure,
+all equations can be written in the usual way, i.e. without paying
+attention to the special matrix and vector structure. In a computer
+program, however, a special matrix class is needed in order to not
+waste memory for the off-diagonal zeros.
+
+
+\section{Going through each Step}
+
+\subsection{Creating Transadmittance Matrix}
+
+It needs several steps to get the transadmittance matrices $[\tilde{Y}]$
+and $[\hat{Y}]$ mentioned in equation \eqref{eqn:HBlin}. First the MNA
+matrix of the linear subcircuit (figure \ref{fig:hb_concept}) is created
+(chapter \ref{sec:MNA}) without the voltage sources $S_1$...$S_M$ and
+without the non-linear components. Note that all nodes must appear in the
+matrix, even those where only non-linear components are connected. Then
+the transimpedance matrix is derived by
+exciting one by one the port nodes of the MNA matrix with unity current.
+After that the transadmittance matrix is calculated by inverting the
+transimpedance matrix. Finally the matrices $[\tilde{Y}]$ and $[\hat{Y}]$
+are filled with the corresponding elements of the overall transadmittance
+matrix.
+
+\addvspace{12pt}
+
+Note: The MNA matrix of the linear subcircuit has $L$ nodes.
+Every node, that is connected to the non-linear subcircuit or/and is
+connected to a voltage source, is called "port" in the following text.
+So, there are $M+N$ ports. All these ports need to be differential
+ones, i.e. without ground reference. Otherwise problemes may occur
+due to singular matrices when calculating $[\tilde{Y}]$ or $[\hat{Y}]$.
+
+\addvspace{12pt}
+
+Now this should be described in more detail: By use of the MNA matrix
+$[A]$, the $n$-th column of the transimpedance matrix $[Z]$ should be
+calculated. The voltage source at port $n$ is connected to node $i$
+(positive terminal) and to node $j$ (negative terminal). This results
+in the following equation. (If port $n$ is referenced to ground, the
+-1 is simply omitted.)
+\begin{equation}
+\label{eqn:HBtrans}
+[A]\cdot
+\begin{bmatrix}
+V_1\\
+\vdots\\
+V_L\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\
+\vdots\\
+1\\
+\vdots\\
+-1\\
+\vdots\\
+0\\
+\end{bmatrix}
+\begin{matrix}
+ \\
+ \\
+\leftarrow i\text{-th row}\\
+ \\
+\leftarrow j\text{-th row}\\
+ \\
+ \\
+\end{matrix}
+\end{equation}
+After having solved it, $Z_{1,n}$...$Z_{N+M,n}$ are obtained
+simply by subtraction of the node voltages:
+\begin{equation}
+Z_{m,n} = V_k - V_l
+\end{equation}
+Here the voltage source at port $m$ is connected to node $k$
+(positive terminal) and to node $l$ (negative terminal).
+
+\addvspace{12pt}
+
+The next column of $[Z]$ is obtained by changing the right-hand
+side of equation \eqref{eqn:HBtrans} appropriately. As this has to
+be done $N+M$ times, it is strongly recommended to use LU
+decomposition.
+
+\addvspace{12pt}
+
+As $[\tilde{Y}]$ is not square, problems encounter by trying to
+build its inverse matrix. Therefore, the following procedure is
+recommended:
+\begin{itemize}
+\item Create the transimpedance matrix for all ports (sources
+  and interconnections).
+\item Compute the inverse matrix (transadmittance matrix).
+\item The upper left and upper right corner contains $[\tilde{Y}]$
+  and $[\hat{Y}]$.
+\item The lower left and lower right corner contains the transadmittance
+  matrices to calculate the currents through the sources. They
+  can be used to simplify the AC simulation at the very end.
+\end{itemize}
+
+
+\addvspace{12pt}
+
+One further thing must be mentioned: Because the non-linear
+components and the sources are missing in the linear MNA matrix,
+there are often components that are completely disconnected from
+the rest of the circuit. The resulting MNA matrix cannot be
+solved. To avoid this problem, shunt each port with a $100\Omega$
+resistor, i.e. place a resistor in parallel to each non-linear
+component and to each source. The effect of these resistors can
+be easily removed by subtracting 10mS from the first main diagonal
+of the transadmittance matrix.
+
+
+\subsection{Starting Values}
+
+A difficult question is how to find appropriate start values for the
+harmonic balance simulation. It is recommended to first perform a DC
+analysis and start the algorithm with this result. In many situation
+(perhaps always) an even better starting point can be achieved by
+also using the result of a linear AC simulation. However with a large
+signal strength and strong non-linearities, convergence may still
+fail. Then, the following procedure might succeed: Perform HB
+simulation by applying half of the desired signal levels. If convergence
+is reached, the result can be used as start values for the simulation
+with the full signal levels. Otherwise the amplitude of the signals can
+be further decreased in order to repeat the above-mentioned procedure.
+
+
+\subsection{Solution algorithm}
+
+To perform a HB simulation, the multi-dimensional, non-linear function
+\ref{eqn:HBeqn} has to be solved. One of the best possibilities to
+do so is the Newton method:
+\begin{equation}
+\textbf{V}_{n+1} = \textbf{V}_n - \textbf{J}_F (\textbf{V}_n)^{-1}
+                   \cdot \textbf{F} (\textbf{V}_n)
+\end{equation}
+\begin{equation}
+\label{eqn:HBnewton}
+\Rightarrow \qquad \textbf{J}_F (\textbf{V}_n) \cdot \textbf{V}_{n+1}
+    = \textbf{J}_F (\textbf{V}_n) \cdot \textbf{V}_n - \textbf{F} (\textbf{V}_n)
+\end{equation}
+with $\textbf{J}_F$ being the Jacobian matrix. DC and transient
+simulation also use this technique, but here a problem appears:
+The derivatives of the component models are not given in frequency
+domain. Thus, the Jacobian must be calculated starting at the HB
+equation \ref{eqn:HBeqn}:
+\begin{equation}
+\label{eqn:HBjacobi}
+\boldsymbol{J}_F (\boldsymbol{V}_n) = \frac{d\boldsymbol{F} (\boldsymbol{V})}{d\boldsymbol{V}}
+    = \boldsymbol{\hat{Y}}_{N \times N} + \frac{\partial \boldsymbol{I}_G}{\partial \boldsymbol{V}}
+     + j\cdot \boldsymbol{\Omega}\frac{\partial \boldsymbol{Q}}{\partial \boldsymbol{V}}
+    = \boldsymbol{\hat{Y}}_{N \times N} + \boldsymbol{J}_{F,G}
+     + j\cdot \boldsymbol{\Omega}\cdot\boldsymbol{J}_{F,Q}
+\end{equation}
+So, two Jacobian matrices have to be built, one for the current
+$\boldsymbol{I}_G$ and one for the charge $\boldsymbol{Q}$. Both resulted
+from a Fourier Transformation. The two operations (Fourier Transformation
+and differentiation) are linear and thus, can be exchanged. Hence, the
+Jacobian matrices
+are built in time domain and transformed into frequency domain afterwards.
+
+\addvspace{12pt}
+
+To obtain a practical algorithm of this procedure, the DFT is best written
+as matrix equation. By having a look at equation \ref{eqn:DFT} and
+\ref{eqn:IDFT}, it becomes clear how this works. The harmonic factors
+$\exp(j\omega_k t_n)$ build the matrix $\boldsymbol{\Gamma}$:
+\begin{align}
+\text{DFT:}  \qquad & \boldsymbol{U}(j\omega) = \boldsymbol{\Gamma}\cdot \boldsymbol{u}(t) \\
+\text{IDFT:} \qquad & \boldsymbol{u}(t) = \boldsymbol{\Gamma}^{-1}\cdot \boldsymbol{U}(j\omega)
+\end{align}
+with $\boldsymbol{u}$ and $\boldsymbol{U}$ being the vectors of the time
+and frequency values, respectively. Now, it is possible to transform the
+desired Jacobian matrix into frequency domain:
+\begin{equation}
+\label{eqn:HB_jacobi}
+\boldsymbol{J}_{F,G}
+  = \frac{\partial\boldsymbol{I}_G}{\partial\boldsymbol{V}}
+  = \frac{\partial(\boldsymbol{\Gamma}\cdot\boldsymbol{i})}
+         {\partial(\boldsymbol{\Gamma}\cdot\boldsymbol{v})}
+  = \boldsymbol{\Gamma}\cdot\frac{\partial\boldsymbol{i}}{\partial\boldsymbol{v}}
+    \cdot\boldsymbol{\Gamma}^{-1}
+\end{equation}
+Here $\boldsymbol{i}$ is a vector with length $K\cdot N$, i.e. first all
+time values of the first node are inserted, then all time values of the
+second node etc. The Jacobi matrix of $\boldsymbol{i}$ is defined as:
+\begin{equation}
+\boldsymbol{J}_{F,G}(\boldsymbol{u}) =
+\begin{bmatrix}
+\dfrac{\partial i_1}{\partial u_1} & \hdots & \dfrac{\partial i_1}{\partial u_n} \\
+\vdots & \ddots & \vdots\\
+\dfrac{\partial i_n}{\partial u_1} & \hdots & \dfrac{\partial i_n}{\partial u_n} \\
+\end{bmatrix}
+\end{equation}
+Hence this matrix consists of
+$K \times K$ blocks (one for each node) that are diagonal matrices with
+time values of the derivatives in it. (Components exists that create
+non-diagonal blocks, but these are so special ones that they do not appear
+in this document.)
+
+\addvspace{12pt}
+
+The formula \ref{eqn:HB_jacobi} seems to be quite clear, but it has to be pointed out how
+this works with FFT algorithm. With
+$\boldsymbol{\Gamma}^{-1} = (\boldsymbol{\Gamma}^{-1})^T$
+(see equation \ref{eqn:IDFT}) and
+$(\boldsymbol{A}\cdot\boldsymbol{B})^T = \boldsymbol{B}^T\cdot \boldsymbol{A}^T$,
+it follows:
+\begin{equation}
+\boldsymbol{J}_{F,G}
+  = \boldsymbol{\Gamma}\cdot\frac{\partial\boldsymbol{i}}{\partial\boldsymbol{v}}
+    \cdot\boldsymbol{\Gamma}^{-1}
+  = \left( \boldsymbol{\Gamma}^{-1}\cdot \left( \boldsymbol{\Gamma} \cdot
+    \frac{\partial\boldsymbol{i}}{\partial\boldsymbol{v}} \right)^T \right)^T
+\end{equation}
+So, there are two steps to perform an FFT-based transformation of the time
+domain Jacobian matrix into the frequency domain Jacobian:
+\begin{enumerate}
+\item Perform an FFT on every column of the Jacobian and build a new matrix
+      $\boldsymbol{A}$ with this result, i.e. the first column of
+      $\boldsymbol{A}$ is the FFTed first column of the Jacobian and so on.
+\item Perform an IFFT on every row of the matrix $\boldsymbol{A}$ and build
+      a new matrix $\boldsymbol{B}$ with this result, i.e. the first row of
+      $\boldsymbol{B}$ is the IFFTed first row of $\boldsymbol{A}$ and so on.
+\end{enumerate}
+As the Fourier transformation has to be applied to diagonal sub-matrices,
+the whole above-mentioned process can be performed by one single FFT. This
+is done by taking the $\partial\boldsymbol{i} / \partial\boldsymbol{v}$
+values in a vector $\boldsymbol{J}_i$ and calculating:
+\begin{equation}
+\label{eqn:sMatFFT}
+\dfrac{1}{K}\cdot\text{FFT}\left(\boldsymbol{J}_i\right)
+\end{equation}
+The result is the first column of $\boldsymbol{J}_{F,G}$. The second column
+equals the first one rotated down by one element. The third column is the
+second one rotated down by one element etc. A matrix obeying this structure
+is called Toeplitz matrix.
+
+\addvspace{12pt}
+
+So, finally the complete HB Newton iteration step can be written down.
+Putting \ref{eqn:HBeqn} and \ref{eqn:HBjacobi} into  \ref{eqn:HBnewton}
+leads to
+\begin{equation}
+\textbf{J}_F (\textbf{V}_n) \cdot \textbf{V}_{n+1}
+  = \textbf{J}_{F,G} \cdot \textbf{V}_n - \textbf{I}_G +
+    j\cdot \boldsymbol{\Omega}\cdot (\textbf{J}_{F,Q}\cdot\textbf{V}_n - \textbf{Q}) -
+    \textbf{I}_S
+\end{equation}
+This is important to notice, because many non-linear components
+cannot be processed at every bias point (see figure \ref{fig:NewtonBad}).
+These components create a new voltage estimate across their nodes,
+whereas the new estimated absolute voltages at their nodes are not
+known. Thus, the term $\textbf{J}_{F,G} \cdot \textbf{V}_n$ can
+only be created in one single step, leading to the vector
+$\textbf{I}_{G,J}$. Luckily, this procedure also saves computation
+time, as the matrix multiplication need not to be performed.
+The same is true for the term $\textbf{J}_{F,Q}\cdot\textbf{V}_n$,
+leading to the vector $\textbf{Q}_J$. So it is:
+\begin{equation}
+\textbf{J}_F \cdot \textbf{V}_{n+1}
+  = \textbf{I}_{G,J} - \textbf{I}_G +
+    j\cdot \boldsymbol{\Omega}\cdot (\textbf{Q}_J - \textbf{Q}) -
+    \textbf{I}_S
+\end{equation}
+
+
+\subsection{Termination Criteria}
+
+Frequency components with very different magnitude appear in harmonic
+balance simulation. In order to detect when the solver has found an
+accurate solution, an absolute as well as relative criteria must be
+used on all nodes and at all frequencies. The analysis is regarded as
+finished if one of the criteria is satisfied.
+
+\addvspace{12pt}
+
+The absolute and relative criteria write as follows:
+\begin{align}
+\left| \tilde{I}_{n,k} + \hat{I}_{n,k} \right| &< \varepsilon_{abs}
+   &\forall \quad n, k\\
+2\cdot \left| \frac{\tilde{I}_{n,k} + \hat{I}_{n,k}}
+                   {\tilde{I}_{n,k} - \hat{I}_{n,k}} \right|
+  &< \varepsilon_{rel}  &\forall \quad n, k
+\end{align}
+where $\tilde{I}_{n,k}$ is the current of the linear circuit
+partition for node $n$ and frequency $k$ and $\hat{I}_{n,k}$
+is the current of the non-linear circuit partition.
+
+
+\section{A Symbolic HB Algorithm}
+
+In this final section, a harmonic balance algorithm in symbolic language is
+presented.
+
+\addvspace{12pt}
+
+\begin{lstlisting}[language=C++,
+    caption={symbolic HB algorithm},
+    basicstyle=\small,
+    frame=single,
+    mathescape=true,
+    fontadjust]
+ init();                    // separate linear and non-linear devices
+ Y = calcTransMatrix();     // transadmittance matrix of linear circuit
+ Is = calcSourceCurrent();  // source current of linear subcircuit
+ (v, i, q) = calculateDC(); // DC simulation as initial HB estimate
+ V = FFT(v);                // transform voltage into frequency domain
+
+ loop:
+   I = FFT(i);                       // current into frequency domain
+   Q = FFT(q);                       // charge into frequency domain
+   E = Is + Y*V + j*$\Omega$*Q + I;          // HB equation
+   if (abs(E) < Eterm) break;       // convergence reached ?
+   JG = mFFT(GJacobian(v));          // create Jacobians and transform...
+   JQ = mFFT(QJacobian(v));          // ... them into frequency domain
+   J = Y + j*$\Omega$*JQ + JG;               // calculate overall Jacobian
+   V = V - invert(J) * E;            // Newton Raphson iteration step
+   v = IFFT(V);                      // voltage into time domain
+   i = nonlinearCurrent(v);          // use component models to get...
+   q = nonlinearCharge(v);           // ... values for next iteration
+   goto loop;
+
+ Va = invert(Ya) * Ia;               // AC simulation to get all voltages
+\end{lstlisting}
+
+\section{Large-Signal S-Parameter Simulation}
+
+Using harmonic balance techniques, it is also possible to perform
+an S-parameter simulation in the large-signal regime. This is called
+LSSP (large-signal s-parameter). Figure \ref{fig:lssp} shows the
+principle. The port $n$ excites the circuit with the simulation
+frequency $f_0$; meanwhile the power of all other ports is set to
+zero. Having voltage and current of the fundamental frequency $f_0$
+at the ports, the S-parameters can be calculated:
+
+\begin{equation}
+\label{eqn:ui2s}
+\underline{S}_{mn} = \frac{\underline{U}_m(f_0) - \underline{I}_m(f_0)\cdot Z_m}
+                          {\underline{U}_n(f_0) + \underline{I}_n(f_0)\cdot Z_n}
+		\cdot \sqrt{\frac{Z_n}{Z_m}}
+\end{equation}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=7cm]{lssp}
+\end{center}
+\caption{S-parameter from AC voltages and currents}
+\label{fig:lssp}
+\end{figure}
+\FloatBarrier
+
+An algorithm in symbolic language should describe the whole LSSP:
+
+\addvspace{12pt}
+
+\begin{lstlisting}[language=C++,
+    caption={symbolic HB algorithm},
+    basicstyle=\small,
+    frame=single,
+    mathescape=true,
+    fontadjust]
+for n=1 to $NumberOfPorts$ {
+  Set power of port $n$ to $P_n$.
+  Set power of ports $\ne n$ to 0.
+  Perform Harmonic Balance.
+
+  for m=1 to $NumberOfPorts$
+    Calculate $\underline{S}_{mn}$ according to above-mentioned equation.
+}
+\end{lstlisting}
+
+
+\section{Autonomous Harmonic Balance}
+
+Up to here, only forced circuits were dealt with. That is, the
+above-mentioned methods can analyse circuits that are driven by
+signal sources, but do not create a signal by themselves. The
+typical examples are amplifiers and mixers. However, harmonic
+balance techniques are also capable of simulating autonomous
+circuits like oscillators.\\
+This is mostly done in the following way:
+\begin{enumerate}
+\item The user enters an approximate frequency, where the oscillation
+  is expected. (An ac simulation can be performed to get an idea about
+  that.)
+\item The user enters a frequency interval. Somewhere within this
+  interval the oscillation must appear.
+\item The user specifies a circuit node where the oscillation voltage
+  can best be measured.
+\item The simulator performs several harmonic balance analyses with
+  different fundamental frequencies in search for the oscillation.
+\end{enumerate}

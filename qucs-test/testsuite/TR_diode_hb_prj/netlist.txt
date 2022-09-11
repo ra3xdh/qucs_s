@@ -1,0 +1,9 @@
+# Qucs 0.0.18  /Users/guilherme/git/qucs-test/testsuite/TR_diode_hb_prj/diode_hb.sch
+
+Vac:V1 Node1 gnd U="10 V" f="1 GHz" Phase="0" Theta="0"
+Diode:D1 gnd Node3 Is="1e-15 A" N="1" Cj0="0 fF" M="0.5" Vj="0.7 V" Fc="0.5" Cp="0.0 fF" Isr="0.0" Nr="2.0" Rs="0.0 Ohm" Tt="0.0 ps" Ikf="0" Kf="0.0" Af="1.0" Ffe="1.0" Bv="0.7" Ibv="1 mA" Temp="26.85" Xti="3.0" Eg="1.11" Tbv="0.0" Trs="0.0" Ttt1="0.0" Ttt2="0.0" Tm1="0.0" Tm2="0.0" Tnom="26.85" Area="1.0"
+R:R1 Node1 Node2 R="100" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 Node2 Node3 R="100" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.HB:HB1 f="1 GHz" n="8" iabstol="1 pA" vabstol="1 uV" reltol="0.001" MaxIter="150"
+Eqn:Eqn1 Spectrum="Time2Freq(Node3.Vt, time)" Export="yes"
+.TR:TR1 Type="lin" Start="0" Stop="4 ns" Points="256" IntegrationMethod="Trapezoidal" Order="2" InitialStep="1 ns" MinStep="1e-16" MaxIter="150" reltol="0.001" abstol="1 pA" vntol="1 uV" Temp="26.85" LTEreltol="1e-3" LTEabstol="1e-6" LTEfactor="1" Solver="CroutLU" relaxTSR="no" initialDC="yes" MaxStep="0"

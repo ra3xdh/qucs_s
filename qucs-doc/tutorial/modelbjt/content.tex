@@ -1,0 +1,242 @@
+%
+% Tutorial -- BJT Modeling and Verification
+%
+% Copyright (C) 2005 Thierry Scordilis <thierry.scordilis@free.fr>
+%
+% Permission is granted to copy, distribute and/or modify this document
+% under the terms of the GNU Free Documentation License, Version 1.1
+% or any later version published by the Free Software Foundation.
+%
+
+\section*{warning}
+
+\textit{
+This chapter will describe an RF design issue using QUCS. The author assume that the basic manipulation of qucs is known. You will find herein mainly a MacOsX description that is close to a linux or unices architecture.
+}
+
+
+%-------------------------------------------------------------------------
+\tutsection{choice of transistor}
+
+The choice has been made to choose among the Philips RF wideband transistor library. These components are easy to find, with resonnable prices.
+
+This list could be found at \texttt{http://www.semiconductors.philips.com/}.
+
+A resume of these transistors can be found in the figure \ref{design:pa:toTable}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=90,scale=0.7]{philipsTable}
+\caption{transistor table from philips semiconductor}
+\label{design:pa:toTable}
+\end{center}
+\end{figure}
+
+I will not discuss herein, the reason \footnote{regarding current, $F_t$ , $V_{ce}$ , power dissipation, etc \ldots} why of the final choice, but the $BFG425w$ is the candidate. It offers high gain, with low figure noise ( if LNA consideration )  high transistion frequency ( 25 GHz ), its emitter is thermal lead, low feedback capacitance. This device could be used in RF front end, analog or digital cellular, radar detectors, pagers, SATV, oscillators. It is in a SOT343R package suitable for small integration.
+
+The maximum acheivable gain is 20 dB with 25 mA, $V_{ce} = 2$ V at 2 GHz and $25^\circ C$. The third order intercept point in these conditions is typically $22 dBm$.
+
+These parameter should be compatible with our need. Here are the spice parameter of the device.
+
+\bigskip
+
+
+\input{modelbjt/bfg425}
+
+Since the model used in SPICE and in QUCS rely on a gummel-poon modelisation, and since the level of modelisation is the same, some quite direct conversion could be used to create the library for QUCS.
+
+To use directly this file, you will need to store the file in an other directory from the project one ( a small bug taken into account ). Then it should work but some there are still some issues on the parameters itselves, This is the reason why we will proceed in an other way.
+
+The data sheet could be found on the philips web site. 
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[scale=0.7]{spice_bfg425}
+\caption{spice parameter extract from philips data sheet}
+\label{design:pa:spiceDatasheet}
+\end{center}
+\end{figure}
+
+%-------------------------------------------------------------------------
+
+\tutsection{library creation}
+
+Remember that when creating a device, it is almost always mandatory to read of have a look at on how the model is done is the technical documentation. It is very to understand the limitation, and how we can correct some data if needed. The mian pity is that a lot of commercial software are quite obscure on the real model they use and their limitation ; QUCS is quite exceptionnal  on this point this the complete modeling is explain theoretically in a special technical paper.
+
+\bigskip
+
+In order to conduct these test, we need to create a model of our component. To perform this you should create the file that contain all the libraries, this file is stored under 
+
+\begin{verbatim}
+/usr/local/share/qucs/library/philips_RF_widebande_npn.lib
+\end{verbatim}
+
+You can edit this file with \texttt{vi}. You need to add the following line :
+\begin{verbatim}
+<Qucs Library 0.0.7 "philips RF wideBand">
+
+<Component BFG425W>
+  <Description>
+    RF wideband NPN 25GHz 
+    2V, 25mA, 20dB , 2000MHz
+    Manufacturer: Philips Inc.
+    NPN complement: BFG425W
+    --------------------------
+    based on spice parameter from philips
+    --------------------------
+    sept 2005  thierry
+  </Description>
+  <Model>
+<_BJT T_BFG425W_ 1 480 280 8 -26 0 0 "npn" 1 "47.17e-10" 
+1 "1" 1 "1" 1 "0.304" 1 "0.121" 1 "31.12" 1 "1.874" 0 
+"300.2e-15" 1 "3" 1 "484.8e-10" 1 "1.546" 1 "145" 1 "11.37"
+1 "6.175" 1 "0" 1 "1.78" 1 "0177.9e-3" 1 "014.41" 1 "310.9e-15"
+1 "0.900" 1 "0.346" 1 "137.7e-15" 1 "0.5569" 1 "0.207" 1 "0.500"
+1 "667.5e-15" 1 "0.4183" 1 "0.239" 1 "0.550" 1 "4.122e-12" 1
+"68.2" 1 "2.004" 1 "1.525" 1 "0.0" 1 "26.85" 1 "0.0" 0 "1.0" 0 
+"1.0" 0 "0.0" 0 "1.0" 0 "1.0" 0 "0.0" 0>
+  </Model>
+</Component>
+\end{verbatim}
+
+You can replace the $1$ by $0$, this will remove the visible checkbox, the fact to place a $1$ first enable the user to change and or view the parameters that are being used.
+
+A trick to provide all the required syntax is to fill a NPN into the schematics, perform a copy on the device, you should then have the model in the clipboard, just paste into to file and add the description and the markup language boundaries. The syntaxe is explained in the help at the topic \textit{description of the qucs file formats}.
+
+
+Then the device is visible in the \texttt{Component Library Tool} as mentionned in figure \ref{design:pa:componentTool}.
+
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[scale=0.5]{componentLibrary}
+	\caption{QUCS Component Library showing the new component}
+	\label{design:pa:componentTool}
+\end{center}
+\end{figure}
+
+
+By doing this you haved the possibility to reuse the device as much as you want, and you can debug devices in a more easy way.
+
+\underline{\textbf{Warning}} : in this section we have only describe the die of the device, for the parasitic from the package, we will be obliged to describe this circuit, but later on.
+
+\tutsection{device library verification}
+
+The first step, before using the device in a application, is to verify the model you use. Especially since this model has been created by the user. In order to proceed, you need to rely on exact data : that is to say the official datasheet. 
+
+it this step, you will need to create a project especially for the device verification. It is good to keep a trace of the device verification, since you could have different use of this device, so it is good to be able to redo some simulation around the model itself.
+
+The created project should look that the figure \ref{design:pa:model:project}.
+
+\begin{verbatim}
+project name : 		model_verif_bfg425w
+project location :		$HOME/.qucs/ 
+\end{verbatim}
+
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[scale=0.5,angle=90]{modelVerifProject}
+	\caption{QUCS project for model verification}
+	\label{design:pa:model:project}
+\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[scale=0.5,angle=90]{model_dc_temp}
+	\caption{DC validation and temperature}
+	\label{design:pa:model:dcTemp}
+\end{center}
+\end{figure}
+
+For the validation we will need to use a specific bias of the device : $I_c$ should be $25 mA$, therefore $I_b$ should be $300 \mu A$
+
+\tutsection{parasitic description of the package}
+
+In order to simulate properly the device, you need to used the correct package, that is to say the $SOT343R$ in our case, as mentionned on the philips web site ( see fig. \ref{design:pa:model:sotDesc}).
+
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[scale=0.6]{sot343R}
+	\caption{$SOT343R$ package description}
+	\label{design:pa:model:sotDesc}
+\end{center}
+\end{figure}
+
+Eventhough the device has two emitter, the model used has only one emitter. The parasitic of this model are shoyn in the spice netlist described in the choice of the transistor and reproduced in a schematic (see fig. \ref{design:pa:model:parasitSch}). These parameter are always critical to extract, either you have the knowledge to do it or then you should rely on the piece of information given by the device manucfacturer. It is also very difficult to figure out what have to be changed in such description of the device. Some fitting have been performed using 3D electromagnetic software in the time domain based on MOM methods to verify these parameters.
+
+Philips’  fifth  generation double poly silicon wideband technology uses a steep emitter doped profile resulting in transition frequencies over 20 GHz, and with poly base contacts a low base resistance is obtained. Via the buried layer, the collector contact is brought out at the top of the die. The substrate is connected directly to the emitter package lead, resulting in improved thermal performance ( see fig \ref{design:pa:model:fifthGen}).
+
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[scale=0.2]{fifthGen}
+	\includegraphics[scale=0.3]{silicium}
+	\caption{die connection if the fifth generation transistor from philips}
+	\label{design:pa:model:fifthGen}
+\end{center}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[scale=0.8]{bfg425Sch}
+	\caption{$bfg425W$ in $sot343R$ package description}
+	\label{design:pa:model:parasitSch}
+\end{center}
+\end{figure}
+
+From this schematics you can edit the symbol that could be used in the next simulation file. To proceed type $F3$ or edit circuit symbol from the file menu. Simply drw a npn transistor and come back to the schematic by re-pressing $F3$.
+
+\tutsection{small signal S parameter verification}
+
+In this section we will need to redraw a new schematics using the model we have created, plus some extra components to place the measurements ports \footnote{We will another method when we will use the device in a real project}.
+
+You should have a schematics like the one mentionned in fig\ref{design:pa:model:spSch}.
+
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[scale=0.5]{model_spSch}
+	\caption{schematics used for S parameters simulation}
+	\label{design:pa:model:spSch}
+\end{center}
+\end{figure}
+
+The components used to verify the model could be strange ( inductor of $1H$ and capacitor of $1F$ ) It is normal since we need to have a very wide band response on the circuit, and since we want to caracterize only the active device, and compare with the datasheet. An other way is to use DC bloc or DC feed or bias Tee to provide the power supply to the component. This is the right way to do it. 
+
+you should then create a display to visualize the S parameters : generally $s_{11}$ and $s_{22}$ are in the smith and $s_{12}$ and $s_{21}$ are in polar
+
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[scale=0.7]{model_sp}
+	\caption{S parameters simulation for model verification}
+	\label{design:pa:model:sp}
+\end{center}
+\end{figure}
+
+We have now to compare these results with the measured parameters from philips :
+
+\input{modelbjt/bfg425s2p}
+
+Using these parameter, we shoul compare on the sample display the modelised results and the measurements results, or directly show the error using equations. First we compare the results.
+
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[scale=0.7]{model_mesureSch}
+	\caption{schematics used for S parameters from manufacturer}
+	\label{design:pa:model:spMeasSch}
+\end{center}
+\end{figure}
+
+In the display that is used for the S parameters that we have simulated from our modelisation, you can add the results from the meaurements files by adding a measurement of $S_{i,j}$ using the right dataset with the combo box. You should obtain the difference between the two.
+
+By doing this, you should obtain the results presented in the figure \ref{design:pa:model:mesureSp}.
+
+\begin{figure}[htbp]
+\begin{center}
+	\includegraphics[scale=0.7]{model_mesureSp}
+	\caption{Results from model and from meaures compared together}
+	\label{design:pa:model:mesureSp}
+\end{center}
+\end{figure}
+
+\bigskip
+
+\textbf{IMPORTANT NOTE : }The differences, you should obtain are still on investigation for now.

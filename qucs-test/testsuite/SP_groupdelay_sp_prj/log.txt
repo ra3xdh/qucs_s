@@ -1,0 +1,14 @@
+parsing netlist...
+checking netlist...
+checker notice, variable `S' in equation `dBS21_3rd' not yet defined
+checker notice, variable `S' in equation `gain_phase' not yet defined
+checker notice, variable `frequency' in equation `group_delay' not yet defined
+netlist content
+      2 C instances
+      1 L instances
+      2 Pac instances
+      1 SP instances
+creating netlist...
+checker notice, variable `S' in equation `dBS21_3rd' not yet defined
+checker notice, variable `S' in equation `gain_phase' not yet defined
+checker notice, variable `frequency' in equation `group_delay' not yet defined

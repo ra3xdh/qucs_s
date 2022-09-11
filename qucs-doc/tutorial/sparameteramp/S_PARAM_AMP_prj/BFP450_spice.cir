@@ -1,0 +1,94 @@
+***************************************************************
+*	Infineon	Technologies	AG
+*	GUMMEL-POON	MODEL	IN	SPICE	2G6	SYNTAX
+*	VALID	UP	TO	15	GHZ
+*	>>>	BFP450	<<<
+*	(C)	2010	Infineon	Technologies	AG
+*	Version 1.0	November	2010
+***************************************************************
+* - Please use the global SPICE parameter TEMP to set the junction
+*   temperature of this device in your circuit to get correct DC
+*   simulation results.
+* - TEMP is calculated by TEMP=TA+P*(RthJS+RthSA). The junction
+*   temperature TEMP is the sum of the ambient temperature TA and
+*   the increment of temperature caused by the dissipated power
+*   P=VCE*IC (IC collector current, VCE collector-emitter voltage).
+* - RthJS is the thermal resistance between the junction and the
+*   soldering point. RthJS for this device is 450 K/W. RthSA is the
+*   thermal resistance of the PCB, from the soldering point to the
+*   ambient. For determination of RthSA please refer to Infineon's
+*   Application Note "Thermal Resistance Calculation" AN077.
+* - The model has been verified in the junction temperature range
+*   -25°C to +125°C.
+* - TNOM=25 °C is the nominal ambient temperature.
+*   Please do not change this value.
+****************************************************************
+.OPTION TNOM=25, GMIN= 1.00e-12
+*BFP450FESD C B E
+.SUBCKT BFP450 1 2 3
+
+
+CBEPAR 22 33 1.20132E-013
+CBCPAR 22 11 3.02378E-013
+CCEPAR 11 33 3.69684E-017
+LB    22 20 9.04235E-010
+LE   33 30 2.03283E-010
+LC   11 10  2.12462E-010
+CBEPCK 20 30  1.10618E-014
+CBCPCK 20 10  2.51536E-014
+CCEPCK 10 30  2.24704E-013
+LBX    20 2 1.18397E-012
+LEX   30 3 2.31137E-013
+LCX   10 1  7.74176E-010
+RSUB 30 44 260
+
+
+Q1 11 22 33 44 M_BFP450
+
+
+
+.MODEL 	M_BFP450	NPN(
++	IS	=	1.21E-016
++	BF	=	112.3
++	NF	=	1
++	VAF	=	46.19
++	IKF	=	1.005
++	ISE	=	2.427E-014
++	NE	=	2
++	BR	=	4.66
++	NR	=	1
++	VAR	=	3.604
++	IKR	=	0.1924
++	ISC	=	3.85E-015
++	NC	=	1.5
++	RB	=	3.193
++	IRB	=	0
++	RBM	=	2.725
++	RE	=	0.09391
++	RC	=	1.578
++	XTB	=	0.04525
++	EG	=	1.12
++	XTI	=	4.267
++	CJE	=	1.777E-012
++	VJE	=	0.7811
++	MJE	=	0.39
++	TF	=	4.125E-012
++	XTF	=	8.008
++	VTF	=	4.189
++	ITF	=	1.889
++	PTF	=	0.1
++	CJC	=	5.069E-013
++	VJC	=	0.6403
++	MJC	=	0.31
++	XCJC	=	0.7031
++	TR	=	4.163E-009
++	CJS	=	1.66361E-012
++	MJS	=	0.154738
++   VJS =   0.2526
++	FC	=	0.5
++	KF	=	5.5e-12
++	AF	=	1.99)
+***************************************************************
+
+
+.ENDS BFP450
