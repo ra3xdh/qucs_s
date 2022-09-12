@@ -2,6 +2,7 @@
 SET(COMPLIBS
 AnalogueCM.lib
 Bridges.lib
+Cores.lib
 Diodes.lib
 Ideal.lib
 JFETs.lib
