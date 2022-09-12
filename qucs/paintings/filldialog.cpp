@@ -78,18 +78,18 @@ if(show) {
 
   CheckFilled = new QCheckBox(tr("enable filling"),Tab2);
   connect(CheckFilled, SIGNAL(toggled(bool)), SLOT(slotCheckFilled(bool)));
-  gp2->addWidget(CheckFilled, 0,0,0,1);
+  gp2->addWidget(CheckFilled, 0, 0);
 
 
   FillLabel1 = new QLabel(tr("Fill Color: "), Tab2);
-  gp2->addWidget(FillLabel1, 1,0);
+  gp2->addWidget(FillLabel1,1,0);
   FillColorButt = new QPushButton("        ", Tab2);
   misc::setPickerColor(FillColorButt,QColor(0,0,0));
   connect(FillColorButt, SIGNAL(clicked()), SLOT(slotSetFillColor()));
-  gp2->addWidget(FillColorButt, 1,1);
+  gp2->addWidget(FillColorButt,1,1);
 
   FillLabel2 = new QLabel(tr("Fill Style: "), Tab2);
-  gp2->addWidget(FillLabel2, 2,0);
+  gp2->addWidget(FillLabel2,2,0);
   FillStyleBox = new QComboBox(Tab2);
   FillStyleBox->addItem(tr("no filling"));
   FillStyleBox->addItem(tr("solid"));
@@ -106,7 +106,7 @@ if(show) {
   FillStyleBox->addItem(tr("hatched backwards"));
   FillStyleBox->addItem(tr("hatched forwards"));
   FillStyleBox->addItem(tr("diagonal crossed"));
-  gp2->addWidget(FillStyleBox, 2,1);
+  gp2->addWidget(FillStyleBox,2,1);
 
 
   t->addTab(Tab2, tr("Filling Style"));
