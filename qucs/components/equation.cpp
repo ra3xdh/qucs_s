@@ -209,6 +209,8 @@ QString Equation::getNgspiceScript()
 
     QString s;
     s.clear();
+    if (isActive != COMP_IS_ACTIVE) return QString("");
+
     for (unsigned int i=0;i<Props.count()-1;i++) {
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
