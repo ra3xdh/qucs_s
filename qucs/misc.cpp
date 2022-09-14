@@ -464,14 +464,8 @@ bool misc::Verilog_Time(QString& t, const QString& Name)
 // #########################################################################
 bool misc::checkVersion(QString& Line)
 {
-  QStringList sl = QString(PACKAGE_VERSION).split('.');
-  QStringList ll = Line.split('.');
-  if (ll.count() != 3 || sl.count() != 3)
-    return false;
-  int sv = (int)sl.at(1).toLongLong()*10000+sl.at(2).toLongLong()*100;
-  int lv = (int)ll.at(1).toLongLong()*10000+ll.at(2).toLongLong()*100;
-  if(lv > sv) // wrong version number ? (only backward compatible)
-    return false;
+  VersionTriplet SchVersion(Line);
+  if (SchVersion > QucsVersion) return false;
   return true;
 }
 
