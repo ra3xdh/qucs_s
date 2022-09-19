@@ -128,7 +128,7 @@ void spicecompat::splitEqn(QString &eqn, QStringList &tokens)
     tokens.clear();
     QString tok = "";
     for (QString::iterator it=eqn.begin();it!=eqn.end();it++) {
-        QString delim = "=()*/+-^<>:?";
+        QString delim = "=()*/+-^<>:?&>=%!|";
         if (it->isSpace()) continue;
         if (delim.contains(*it)) {
             if (!tok.isEmpty()) tokens.append(tok);
