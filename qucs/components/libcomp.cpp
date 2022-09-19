@@ -107,8 +107,11 @@ int LibComp::loadSection(const QString& Name, QString& Section,
   if(End < 15) return -3;
   QString Line = Section.mid(14, End-14); // extract version string
   VersionTriplet LibVersion = VersionTriplet(Line);
-  if (LibVersion > QucsVersion) // wrong version number ?
-    return -3;
+  if (LibVersion > QucsVersion) {// wrong version number ?
+      if (!QucsSettings.IgnoreFutureVersion) {
+          return -3;
+      }
+  }
 
   if(Name == "Symbol") {
     Start = Section.indexOf("\n<", 14); // library has default symbol
