@@ -1201,16 +1201,18 @@ void DiagramDialog::slotApply()
         Diag->engineeringNotation = notation;
     }
 
-    auto yUnit = Diag->yAxis.Units;
-    if (yUnit != LogUnitsY->currentIndex()) {
-        Diag->yAxis.Units = LogUnitsY->currentIndex();
-        changed = true;
-    }
+    if((Diag->Name.left(4) == "Rect") || (Diag->Name == "Curve")) {
+        auto yUnit = Diag->yAxis.Units;
+        if (yUnit != LogUnitsY->currentIndex()) {
+            Diag->yAxis.Units = LogUnitsY->currentIndex();
+            changed = true;
+        }
 
-    auto zUnit = Diag->zAxis.Units;
-    if (zUnit != LogUnitsZ->currentIndex()) {
-        Diag->zAxis.Units = LogUnitsZ->currentIndex();
-        changed = true;
+        auto zUnit = Diag->zAxis.Units;
+        if (zUnit != LogUnitsZ->currentIndex()) {
+            Diag->zAxis.Units = LogUnitsZ->currentIndex();
+            changed = true;
+        }
     }
     
     if(GridOn) if(Diag->xAxis.GridOn != GridOn->isChecked()) {
