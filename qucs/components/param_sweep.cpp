@@ -133,11 +133,15 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
         points *= fac;
 
         if(type == "lin") {
-            step = (stop-start)/points;
-            for (; start <= stop; start += step) {
-                s += QString("%1 ").arg(start);
+            // start and stop may be both negative and start < stop
+            double start_act = std::min(start,stop);
+            double stop_act = std::max(start,stop);
+            step = (stop_act-start_act)/points;
+            for (; start_act <= stop_act; start_act += step) {
+                s += QString("%1 ").arg(start_act);
             }
         } else {
+            // for log step negative start and stop values are not allowed
             start = log10(start);
             stop = log10(stop);
             step = (stop - start)/points;
