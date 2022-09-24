@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>bitmaps/big.qucs.xpm</file>
-        <file>bitmaps/home.png</file>
-    </qresource>
-</RCC>

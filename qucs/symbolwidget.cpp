@@ -24,7 +24,7 @@
 
 #include "symbolwidget.h"
 #include "main.h"
-#include "../qucs-lib/qucslib_common.h"
+#include "qucslib_common.h"
 
 /*!
  * \file symbolwidget.cpp
