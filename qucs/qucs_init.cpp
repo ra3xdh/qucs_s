@@ -540,22 +540,15 @@ void QucsApp::initActions()
 		tr("Line calculation\n\nStarts transmission line calculator"));
   connect(callLine, SIGNAL(triggered()), SLOT(slotCallLine()));
 
-  callLib = new QAction(tr("Component Library"), this);
-  callLib->setShortcut(Qt::CTRL+Qt::Key_5);
-  callLib->setStatusTip(tr("Starts QucsLib"));
-  callLib->setWhatsThis(
-		tr("Component Library\n\nStarts component library program"));
-  connect(callLib, SIGNAL(triggered()), SLOT(slotCallLibrary()));
-
   callMatch = new QAction(tr("Matching Circuit"), this);
-  callMatch->setShortcut(Qt::CTRL+Qt::Key_6);
+  callMatch->setShortcut(Qt::CTRL+Qt::Key_5);
   callMatch->setStatusTip(tr("Creates Matching Circuit"));
   callMatch->setWhatsThis(
 	tr("Matching Circuit\n\nDialog for Creating Matching Circuit"));
   connect(callMatch, SIGNAL(triggered()), SLOT(slotCallMatch()));
 
   callAtt = new QAction(tr("Attenuator synthesis"), this);
-  callAtt->setShortcut(Qt::CTRL+Qt::Key_7);
+  callAtt->setShortcut(Qt::CTRL+Qt::Key_6);
   callAtt->setStatusTip(tr("Starts QucsAttenuator"));
   callAtt->setWhatsThis(
 	tr("Attenuator synthesis\n\nStarts attenuator calculation program"));
@@ -779,7 +772,6 @@ void QucsApp::initMenuBar()
   toolMenu->addAction(callFilter);
   toolMenu->addAction(callActiveFilter);
   toolMenu->addAction(callLine);
-  toolMenu->addAction(callLib);
   if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
       toolMenu->addAction(callMatch);
   toolMenu->addAction(callAtt);

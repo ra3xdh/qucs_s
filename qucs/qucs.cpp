@@ -76,7 +76,7 @@
 #include "octave_window.h"
 #include "printerwriter.h"
 #include "imagewriter.h"
-#include "../qucs-lib/qucslib_common.h"
+#include "qucslib_common.h"
 #include "misc.h"
 #include "extsimkernels/verilogawriter.h"
 #include "extsimkernels/simsettingsdialog.h"

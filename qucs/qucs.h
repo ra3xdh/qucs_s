@@ -333,7 +333,7 @@ public:
           *editActivate, *wire, *editDelete, *setMarker, *onGrid, *moveText,
           *helpIndex, *helpGetStart, *callEditor, *callFilter, *callLine, *callActiveFilter,
           *showMsg, *showNet, *alignTop, *alignBottom, *alignLeft, *alignRight,
-          *distrHor, *distrVert, *selectAll, *callLib, *callMatch, *changeProps,
+          *distrHor, *distrVert, *selectAll, *callMatch, *changeProps,
           *addToProj, *editFind, *insEntity, *selectMarker,
           *createLib, *importData, *graph2csv, *createPkg, *extractPkg,
           *callAtt, *centerHor, *centerVert, *loadModule, *buildModule;
@@ -382,7 +382,6 @@ public slots:
   void slotCallFilter();
   void slotCallActiveFilter();
   void slotCallLine();
-  void slotCallLibrary();
   void slotCallMatch();
   void slotCallAtt();
   void slotHelpIndex();       // shows a HTML docu: Help Index

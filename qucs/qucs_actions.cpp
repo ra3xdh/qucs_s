@@ -817,13 +817,6 @@ void QucsApp::slotCallLine()
   launchTool(QUCS_NAME "trans", "line calculation",QStringList(),true);
 }
 
-// ------------------------------------------------------------------------
-// Is called to start the component library program.
-void QucsApp::slotCallLibrary()
-{
-  launchTool(QUCS_NAME "lib", "library");
-}
-
 // --------------------------------------------------------------
 // Is called to show a dialog for creating matching circuits.
 void QucsApp::slotCallMatch()
