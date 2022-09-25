@@ -554,6 +554,13 @@ void QucsApp::initActions()
 	tr("Attenuator synthesis\n\nStarts attenuator calculation program"));
   connect(callAtt, SIGNAL(triggered()), SLOT(slotCallAtt()));
 
+  callPwrComb = new QAction(tr("Power combining"), this);
+  callPwrComb->setShortcut(Qt::CTRL+Qt::Key_7);
+  callPwrComb->setStatusTip(tr("Starts QucsPowerCombining"));
+  callPwrComb->setWhatsThis(
+    tr("Power combining\n\nStarts power combining calculation program"));
+  connect(callPwrComb, SIGNAL(triggered()), SLOT(slotCallPwrComb()));
+
   simulate = new QAction(QIcon((":/bitmaps/gear.png")), tr("Simulate"), this);
   simulate->setShortcut(Qt::Key_F2);
   simulate->setStatusTip(tr("Simulates the current schematic"));
@@ -775,6 +782,7 @@ void QucsApp::initMenuBar()
   if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
       toolMenu->addAction(callMatch);
   toolMenu->addAction(callAtt);
+  toolMenu->addAction(callPwrComb);
   toolMenu->addSeparator();
 
   cmMenu = new QMenu(tr("Compact modelling"));

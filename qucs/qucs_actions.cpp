@@ -832,6 +832,12 @@ void QucsApp::slotCallAtt()
   launchTool(QUCS_NAME "attenuator", "attenuator calculation",QStringList(),true);
 }
 
+void QucsApp::slotCallPwrComb()
+{
+  launchTool(QUCS_NAME "powercombining", "power combining calculation",QStringList(),true);
+}
+
+
 /*!
  * \brief launch an external application passing arguments
  *
