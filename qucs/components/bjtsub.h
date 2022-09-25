@@ -36,6 +36,7 @@ public:
   static Element* info_pnp(QString&, char* &, bool getNewOne=false);
 
 protected:
+  QString spice_netlist(bool isXyce);
   void createSymbol();
 };
 

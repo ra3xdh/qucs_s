@@ -16,6 +16,8 @@
  ***************************************************************************/
 
 #include "bjtsub.h"
+#include "node.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Basic_BJT::Basic_BJT()
@@ -128,6 +130,7 @@ BJTsub::BJTsub()
   tx = x2+4;
   ty = y1+4;
   Model = "BJT";
+  SpiceModel ="Q";
 }
 
 // -------------------------------------------------------
@@ -193,4 +196,29 @@ void BJTsub::createSymbol()
 
   x1 = -30; y1 = -30;
   x2 =  30; y2 =  30;
+}
+
+QString BJTsub::spice_netlist(bool)
+{
+    QString s = spicecompat::check_refdes(Name,SpiceModel);
+    QList<int> pin_seq;
+    pin_seq<<1<<0<<2<<3; // Pin sequence: CBE
+    // output all node names
+    foreach(int pin, pin_seq) {
+        QString nam = Ports.at(pin)->Connection->Name;
+        if (nam=="gnd") nam = "0";
+        s += " "+ nam;   // node names
+    }
+
+    QStringList spice_incompat,spice_tr;
+    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"Kb"<<"Ab"<<"Fb"; // spice-incompatible parameters
+    spice_tr.clear(); // parameters that need convertion of names
+
+    QString par_str = form_spice_param_list(spice_incompat,spice_tr);
+
+    s += QString(" QMOD_%1 AREA=%2 TEMP=%3\n").arg(Name).arg(getProperty("Area")->Value)
+            .arg(getProperty("Temp")->Value);
+    s += QString(".MODEL QMOD_%1 %2 (%3)\n").arg(Name).arg(getProperty("Type")->Value).arg(par_str);
+
+    return s;
 }
