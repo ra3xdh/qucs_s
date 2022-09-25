@@ -201,6 +201,15 @@ QString SpiceFile::getSubcircuitFile()
             // which case we use this one
             QFileInfo schematicFileInfo = containingSchematic->getFileInfo ();
 
+            QString native_ext = FileInfo.suffix();
+            if (!native_ext.isEmpty()) {
+                QFileInfo localFileInfo (schematicFileInfo.canonicalPath ()
+                                         + "/" + baseName + "." + native_ext);
+                if (localFileInfo.exists()) {
+                    return localFileInfo.absoluteFilePath();
+                }
+            }
+            // if no extension given guess default extension
             for (int i = 0; i < QucsSettings.spiceExtensions.count (); i++)
             {
                 QString extension = QucsSettings.spiceExtensions[i];
