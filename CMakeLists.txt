@@ -38,6 +38,7 @@ ADD_SUBDIRECTORY( qucs-attenuator )
 ADD_SUBDIRECTORY( qucs-filter )
 ADD_SUBDIRECTORY( library )
 ADD_SUBDIRECTORY( qucs-transcalc )
+ADD_SUBDIRECTORY( qucs-powercombining )
 #ADD_SUBDIRECTORY( examples )
 ADD_SUBDIRECTORY( translations )
 

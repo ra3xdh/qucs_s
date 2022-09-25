@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>bitmaps/Wilkinson_idealTL.svg</file>
+        <file>bitmaps/Wilkinson_microstrip.svg</file>
+        <file>bitmaps/WilkinsonLC.svg</file>
+        <file>bitmaps/MultistageWilkinson_idealTL.svg</file>
+        <file>bitmaps/MultistageWilkinson_microstrip.svg</file>
+        <file>bitmaps/MultistageWilkinsonLC.svg</file>
+        <file>bitmaps/Tree_idealTL.svg</file>
+        <file>bitmaps/Tree_microstrip.svg</file>
+        <file>bitmaps/TravellingWave_idealTL.svg</file>
+        <file>bitmaps/TravellingWave_microstrip.svg</file>
+        <file>bitmaps/Branchline_idealTL.svg</file>
+        <file>bitmaps/Branchline_microstrip.svg</file>
+        <file>bitmaps/DoubleBoxBranchline_idealTL.svg</file>
+        <file>bitmaps/DoubleBoxBranchline_microstrip.svg</file>
+        <file>bitmaps/Bagley_idealTL.svg</file>
+        <file>bitmaps/Bagley_microstrip.svg</file>
+        <file>bitmaps/Gysel_idealTL.svg</file>
+        <file>bitmaps/Gysel_microstrip.svg</file>
+        <file>bitmaps/Tee_idealTL.svg</file>
+        <file>bitmaps/Tee_microstrip.svg</file>
+        <file>bitmaps/big.qucs.xpm</file>
+    </qresource>
+</RCC>

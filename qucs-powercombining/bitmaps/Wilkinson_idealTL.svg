@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="500"
+   height="380"
+   version="1.2"
+   id="svg3289"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="Wilkinson.svg">
+  <metadata
+     id="metadata3479">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="713"
+     id="namedview3477"
+     showgrid="false"
+     inkscape:zoom="0.81853908"
+     inkscape:cx="331.42988"
+     inkscape:cy="155.33941"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g3397" />
+  <title
+     id="title3291">Qt Svg Document</title>
+  <desc
+     id="desc3293">Generated with Qt</desc>
+  <defs
+     id="defs3295" />
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:none;stroke:#000080;stroke-width:2;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3303"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <polyline
+       style="fill:none"
+       id="polyline3305"
+       points="205,105 265,105 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3307"
+       points="207,112 263,112 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3309"
+       points="207,119 214,112 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3311"
+       points="214,119 221,112 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3313"
+       points="221,119 228,112 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3315"
+       points="228,119 235,112 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3317"
+       points="235,119 242,112 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3319"
+       points="242,119 249,112 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3321"
+       points="249,119 256,112 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3323"
+       points="256,119 263,112 "
+       vector-effect="none" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:none;stroke:#000080;stroke-width:2;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3325"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="translate(0,55.000092)" />
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:none;stroke:#000080;stroke-width:2;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3327"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <polyline
+       style="fill:none"
+       id="polyline3329"
+       points="315,145 315,157 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3331"
+       points="315,157 322,160 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3333"
+       points="322,160 308,166 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3335"
+       points="308,166 322,172 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3337"
+       points="322,172 308,178 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3339"
+       points="308,178 322,184 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3341"
+       points="322,184 308,190 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3343"
+       points="308,190 315,193 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3345"
+       points="315,193 315,205 "
+       vector-effect="none" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:none;stroke:#000080;stroke-width:2;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3347"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="translate(0,55.000092)" />
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:none;stroke:#000080;stroke-width:2;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3349"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <polyline
+       style="fill:none"
+       id="polyline3351"
+       points="205,225 265,225 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3353"
+       points="207,232 263,232 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3355"
+       points="207,239 214,232 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3357"
+       points="214,239 221,232 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3359"
+       points="221,239 228,232 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3361"
+       points="228,239 235,232 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3363"
+       points="235,239 242,232 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3365"
+       points="242,239 249,232 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3367"
+       points="249,239 256,232 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3369"
+       points="256,239 263,232 "
+       vector-effect="none" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:none;stroke:#000080;stroke-width:2;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3371"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="translate(0,55.000092)" />
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:none;stroke:#000080;stroke-width:2;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3373"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <polyline
+       style="fill:none"
+       id="polyline3375"
+       points="75,165 135,165 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3377"
+       points="77,172 133,172 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3379"
+       points="77,179 84,172 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3381"
+       points="84,179 91,172 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3383"
+       points="91,179 98,172 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3385"
+       points="98,179 105,172 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3387"
+       points="105,179 112,172 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3389"
+       points="112,179 119,172 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3391"
+       points="119,179 126,172 "
+       vector-effect="none" />
+    <polyline
+       style="fill:none"
+       id="polyline3393"
+       points="126,179 133,172 "
+       vector-effect="none" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:none;stroke:#000080;stroke-width:2;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3395"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="translate(0,55.000092)" />
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:none;stroke:#000080;stroke-width:2;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3397"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="translate(0,55.000092)">
+    <polyline
+       style="fill:none"
+       id="polyline3399"
+       points="165,105 165,165 "
+       vector-effect="none"
+       transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,-46.494367)" />
+    <polyline
+       style="fill:none"
+       id="polyline3401"
+       points="165,225 205,225 "
+       vector-effect="none"
+       transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,-46.494367)" />
+    <polyline
+       style="fill:none"
+       id="polyline3403"
+       points="165,105 205,105 "
+       vector-effect="none"
+       transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,-46.494367)" />
+    <polyline
+       style="fill:none"
+       id="polyline3405"
+       points="265,225 315,225 "
+       vector-effect="none"
+       transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,-46.494367)" />
+    <polyline
+       style="fill:none"
+       id="polyline3407"
+       points="315,205 315,225 "
+       vector-effect="none"
+       transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,-46.494367)" />
+    <polyline
+       style="fill:none"
+       id="polyline3409"
+       points="265,105 315,105 "
+       vector-effect="none"
+       transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,-46.494367)" />
+    <polyline
+       style="fill:none"
+       id="polyline3411"
+       points="315,105 315,145 "
+       vector-effect="none"
+       transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,-46.494367)" />
+    <polyline
+       style="fill:none"
+       id="polyline3413"
+       points="315,225 415,225 "
+       vector-effect="none"
+       transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,-46.494367)" />
+    <polyline
+       style="fill:none"
+       id="polyline3415"
+       points="315,105 415,105 "
+       vector-effect="none"
+       transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,-46.494367)" />
+    <polyline
+       style="fill:none"
+       id="polyline3417"
+       points="165,165 165,225 "
+       vector-effect="none"
+       transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,-46.494367)" />
+    <polyline
+       style="fill:none"
+       id="polyline3419"
+       points="135,165 165,165 "
+       vector-effect="none"
+       transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,-46.494367)" />
+    <polyline
+       style="fill:none"
+       id="polyline3421"
+       points="15,165 75,165 "
+       vector-effect="none"
+       transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,-46.494367)" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:none;font-family:Helvetica"
+     id="g3423"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <path
+       style="fill-rule:evenodd"
+       inkscape:connector-curvature="0"
+       id="path3425"
+       d="m 203,223 4,0 0,4 -4,0 0,-4"
+       vector-effect="non-scaling-stroke" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:none;font-family:Helvetica"
+     id="g3427"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <path
+       style="fill-rule:evenodd"
+       inkscape:connector-curvature="0"
+       id="path3429"
+       d="m 263,223 4,0 0,4 -4,0 0,-4"
+       vector-effect="non-scaling-stroke" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:none;font-family:Helvetica"
+     id="g3431"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <path
+       style="fill-rule:evenodd"
+       inkscape:connector-curvature="0"
+       id="path3433"
+       d="m 203,103 4,0 0,4 -4,0 0,-4"
+       vector-effect="non-scaling-stroke" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:none;font-family:Helvetica"
+     id="g3435"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <path
+       style="fill-rule:evenodd"
+       inkscape:connector-curvature="0"
+       id="path3437"
+       d="m 263,103 4,0 0,4 -4,0 0,-4"
+       vector-effect="non-scaling-stroke" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:none;font-family:Helvetica"
+     id="g3439"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <path
+       style="fill-rule:evenodd"
+       inkscape:connector-curvature="0"
+       id="path3441"
+       d="m 313,143 4,0 0,4 -4,0 0,-4"
+       vector-effect="non-scaling-stroke" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:none;font-family:Helvetica"
+     id="g3443"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <path
+       style="fill-rule:evenodd"
+       inkscape:connector-curvature="0"
+       id="path3445"
+       d="m 313,203 4,0 0,4 -4,0 0,-4"
+       vector-effect="non-scaling-stroke" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3447"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <path
+       style="fill-rule:evenodd"
+       inkscape:connector-curvature="0"
+       id="path3449"
+       d="m 318,225 c 0,1.657 -1.343,3 -3,3 -1.657,0 -3,-1.343 -3,-3 0,-1.657 1.343,-3 3,-3 1.657,0 3,1.343 3,3"
+       vector-effect="none" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3451"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <path
+       style="fill-rule:evenodd"
+       inkscape:connector-curvature="0"
+       id="path3453"
+       d="m 318,105 c 0,1.657 -1.343,3 -3,3 -1.657,0 -3,-1.343 -3,-3 0,-1.657 1.343,-3 3,-3 1.657,0 3,1.343 3,3"
+       vector-effect="none" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:none;stroke:#ff0000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3455"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <path
+       inkscape:connector-curvature="0"
+       id="path3457"
+       d="m 419,225 c 0,2.209 -1.791,4 -4,4 -2.209,0 -4,-1.791 -4,-4 0,-2.209 1.791,-4 4,-4 2.209,0 4,1.791 4,4"
+       vector-effect="none" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3459"
+       d="m 419,105 c 0,2.209 -1.791,4 -4,4 -2.209,0 -4,-1.791 -4,-4 0,-2.209 1.791,-4 4,-4 2.209,0 4,1.791 4,4"
+       vector-effect="none" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:none;font-family:Helvetica"
+     id="g3461"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <path
+       style="fill-rule:evenodd"
+       inkscape:connector-curvature="0"
+       id="path3463"
+       d="m 73,163 4,0 0,4 -4,0 0,-4"
+       vector-effect="non-scaling-stroke" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:none;font-family:Helvetica"
+     id="g3465"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <path
+       style="fill-rule:evenodd"
+       inkscape:connector-curvature="0"
+       id="path3467"
+       d="m 133,163 4,0 0,4 -4,0 0,-4"
+       vector-effect="non-scaling-stroke" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3469"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <path
+       style="fill-rule:evenodd"
+       inkscape:connector-curvature="0"
+       id="path3471"
+       d="m 168,165 c 0,1.657 -1.343,3 -3,3 -1.657,0 -3,-1.343 -3,-3 0,-1.657 1.343,-3 3,-3 1.657,0 3,1.343 3,3"
+       vector-effect="none" />
+  </g>
+  <g
+     style="font-size:12px;font-style:normal;font-weight:400;fill:none;stroke:#ff0000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;font-family:Helvetica"
+     id="g3473"
+     font-style="normal"
+     font-weight="400"
+     font-size="12"
+     transform="matrix(1.1344156,0,0,1.1344156,-6.2981189,8.5057246)">
+    <path
+       inkscape:connector-curvature="0"
+       id="path3475"
+       d="m 19,165 c 0,2.209 -1.7909,4 -4,4 -2.2091,0 -4,-1.791 -4,-4 0,-2.209 1.7909,-4 4,-4 2.2091,0 4,1.791 4,4"
+       vector-effect="none" />
+  </g>
+</svg>

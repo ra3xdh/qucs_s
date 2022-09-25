@@ -1,0 +1,96 @@
+PROJECT(qucspowercombining CXX C)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+cmake_policy(VERSION 3.0)
+
+SET(QUCS_NAME "qucs-s")
+
+# use top VERSION file
+file (STRINGS ${PROJECT_SOURCE_DIR}/../VERSION QUCS_VERSION)
+message(STATUS "Configuring ${PROJECT_NAME} (GUI): VERSION ${QUCS_VERSION}")
+
+set(PROJECT_VERSION "${QUCS_VERSION}")
+
+set(PROJECT_VENDOR "Qucs team. This program is licensed under the GNU GPL")
+set(PROJECT_COPYRIGHT_YEAR "2016")
+set(PROJECT_DOMAIN_FIRST "qucs")
+set(PROJECT_DOMAIN_SECOND "org")
+
+#SET(CMAKE_BUILD_TYPE Debug)
+
+ADD_DEFINITIONS( -DHAVE_CONFIG_H )
+
+# configure the header config.h
+CONFIGURE_FILE (
+    "${PROJECT_SOURCE_DIR}/../config.h.cmake"
+    "${PROJECT_BINARY_DIR}/config.h"
+)
+
+INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
+
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ") # enable warning level
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ") # enable C++11
+
+# flag not available in mingw 4.8.2, MSVC10
+FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets Svg REQUIRED)
+
+INCLUDE_DIRECTORIES(
+      ${Qt5Core_INCLUDE_DIRS}
+      ${Qt5Widgets_INCLUDE_DIRS}
+      ${Qt5Svg_INCLUDE_DIRS}
+      )
+
+# bug, the find package does not seem to set the QT_LIBRARIES, do it manually
+SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES}  )
+
+ADD_DEFINITIONS(${QT_DEFINITIONS})
+
+SET(QUCS-POWCOMB_SRCS
+  qucspowercombiningtool.cpp
+  main.cpp
+)
+
+SET(QUCS-POWCOMB_HDRS
+  qucspowercombiningtool.h
+)
+
+SET(QUCS-POWCOMB_MOC_HDRS
+  qucspowercombiningtool.h
+)
+
+QT5_WRAP_CPP(QUCS-POWCOMB_MOC_SRCS ${QUCS-POWCOMB_MOC_HDRS})
+
+SET(RESOURCES qucspowercombining.qrc)
+QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
+
+
+IF(APPLE)
+  # set information on Info.plist file
+	SET(MACOSX_BUNDLE_INFO_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
+  SET(MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_NAME} ${PROJECT_VERSION}")
+  SET(MACOSX_BUNDLE_LONG_VERSION_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
+  SET(MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
+  SET(MACOSX_BUNDLE_COPYRIGHT "${PROJECT_COPYRIGHT_YEAR} ${PROJECT_VENDOR}")
+  SET(MACOSX_BUNDLE_GUI_IDENTIFIER "${PROJECT_DOMAIN_SECOND}.${PROJECT_DOMAIN_FIRST}")
+  SET(MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}")
+  SET(MACOSX_BUNDLE_ICON_FILE qucspowercombining.icns)
+
+  # set where in the bundle to put the icns file
+  SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_SOURCE_DIR}/../qucs/bitmaps/qucspowercombining.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+  # include the icns file in the target
+  SET(QUCS-POWCOMB_SRCS ${QUCS-POWCOMB_SRCS} ${CMAKE_CURRENT_SOURCE_DIR}/../qucs/bitmaps/qucspowercombining.icns)
+
+ENDIF(APPLE)
+
+ADD_EXECUTABLE(${QUCS_NAME}powercombining MACOSX_BUNDLE WIN32
+  ${QUCS-POWCOMB_SRCS}
+  ${QUCS-POWCOMB_HDRS}
+  ${QUCS-POWCOMB_MOC_SRCS}
+  ${RESOURCES_SRCS} )
+
+TARGET_LINK_LIBRARIES(${QUCS_NAME}powercombining ${QT_LIBRARIES})
+
+INSTALL(TARGETS ${QUCS_NAME}powercombining
+    BUNDLE DESTINATION bin COMPONENT Runtime
+    RUNTIME DESTINATION bin COMPONENT Runtime
+    )
+
