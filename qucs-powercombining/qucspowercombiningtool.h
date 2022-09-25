@@ -112,6 +112,7 @@ private:
     QString ConvertLengthFromM(double);
     QString RoundVariablePrecision(double);
     QString num2str(double);
+    QString getSPEquationString(int x, int y);
     void UpdateImage();
     QString CalculateWilkinson(double Z0, double K);
     int Wilkinson(double Z0, double Freq, double K, bool SP_block, bool microcheck, tSubstrate Substrate, double Alpha, bool LumpedElements);

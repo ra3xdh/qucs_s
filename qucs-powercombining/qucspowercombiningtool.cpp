@@ -65,6 +65,17 @@ QucsPowerCombiningTool::QucsPowerCombiningTool()
   hboxImpl1->addWidget(TopoCombo);
   VboxImplementation->addLayout(hboxImpl1);
 
+  // microstrip circuits cannot be implemented with SPICE
+  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+      QStandardItemModel *model =
+            qobject_cast<QStandardItemModel *>(TopoCombo->model());
+      Q_ASSERT(model != nullptr);
+      for (int i = 2; i < TopoCombo->count(); i++) {
+          QStandardItem *itm = model->item(i);
+          itm->setFlags(itm->flags() & ~Qt::ItemIsEnabled);
+      }
+  }
+
   //Number of outputs
   QHBoxLayout *hboxImpl2 = new QHBoxLayout();
   NLabel  =new QLabel("Number of outputs");
@@ -181,7 +192,6 @@ QucsPowerCombiningTool::QucsPowerCombiningTool()
   hboxImpl7->addWidget(ImplementationgroupBox);
   VboxImplementation->addLayout(hboxImpl7);
 
-
   //Go! Button
   QHBoxLayout *hboxImpl8 = new QHBoxLayout();
   GenerateButton = new QPushButton("Generate schematic");
@@ -292,6 +302,13 @@ QucsPowerCombiningTool::QucsPowerCombiningTool()
   connect(MicrostripradioButton, SIGNAL(clicked()), SLOT(on_MicrostripradioButton_clicked()));
   connect(LumpedElementsradioButton, SIGNAL(clicked()), SLOT(on_LCRadioButton_clicked()));
   connect(IdealTLradioButton, SIGNAL(clicked()), SLOT(on_IdealTLRadioButton_clicked()));
+
+  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+      IdealTLradioButton->setEnabled(false);
+      MicrostripradioButton->setEnabled(false);
+      LumpedElementsradioButton->setChecked(true);
+      on_LCRadioButton_clicked();
+  }
 }
 
 //------------------------------------------------
@@ -632,7 +649,7 @@ int QucsPowerCombiningTool::Wilkinson(double Z0, double Freq, double K, bool SP_
         QString freq_start = QString("%1%2").arg(0.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
         QString freq_stop = QString("%1%2").arg(1.5*FreqlineEdit->text().toDouble()).arg(FreqScaleCombo->currentText());
         s += QString("<.SP SP1 1 200 200 0 67 0 0 \"lin\" 1 \"%2\" 1 \"%3\" 1 \"300\" 1 \"no\" 0 \"1\" 0 \"2\" 0>\n").arg((freq_start)).arg((freq_stop));
-        s += QString("<Eqn Eqn1 1 50 200 -28 15 0 0 \"S11_dB=dB(S[1,1])\" 1 \"S21_dB=dB(S[2,1])\" 1  \"S31_dB=dB(S[3,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"S33_dB=dB(S[3,3])\" 1 \"yes\" 0>\n");
+        s += getSPEquationString(50,200);
         if (microcheck)s += QString("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
     }
 
@@ -917,7 +934,7 @@ int QucsPowerCombiningTool::MultistageWilkinson(double Z0, double Freq, int NSta
         str += QString("\"S33_dB=dB(S[3,3])\" 1 ");
         str += QString("\"S21_dB=dB(S[2,1])\" 1 ");
         str +=QString("\"S31_dB=dB(S[3,1])\" 1 ");
-        s += QString("<Eqn Eqn1 1 50 200 -28 15 0 0 ") + str + QString("\"yes\" 0>\n");
+        s += getSPEquationString(50,200);
         if (microcheck)s += QString("<SUBST Sub1 1 400 200 -30 24 0 0 \"%1\" 1 \"%2mm\" 1 \"%3um\" 1 \"%4\" 1 \"%5\" 1 \"%6\" 1>\n").arg(Substrate.er).arg(Substrate.height*1e3).arg(Substrate.thickness*1e6).arg(Substrate.tand).arg(Substrate.resistivity).arg(Substrate.roughness);
 
     }
@@ -2083,3 +2100,16 @@ QString QucsPowerCombiningTool::num2str(double Num)
   return Str;
 }
  // Image
+
+QString QucsPowerCombiningTool::getSPEquationString(int x, int y)
+{
+    QString s;
+    if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+        s = QString("<Eqn Eqn1 1 %1 %2 -28 15 0 0 \"S11_dB=dB(S[1,1])\" 1 \"S21_dB=dB(S[2,1])\" 1"
+                     "  \"S31_dB=dB(S[3,1])\" 1 \"S22_dB=dB(S[2,2])\" 1 \"S33_dB=dB(S[3,3])\" 1 \"yes\" 0>\n").arg(x).arg(y);
+    } else if (QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
+        s = QString("<NutmegEq NutmegEq1 1 %1 %2 -28 15 0 0 \"sp\" 1 \"S11_dB=dB(S_1_1)\" 1 \"S21_dB=dB(S_2_1)\" 1"
+                     "  \"S31_dB=dB(S_3_1)\" 1 \"S22_dB=dB(S_2_2)\" 1 \"S33_dB=dB(S_3_3)\" 1>\n").arg(x).arg(y);
+    }
+    return s;
+}
