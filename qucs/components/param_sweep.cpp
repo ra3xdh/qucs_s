@@ -20,7 +20,6 @@
 #include "schematic.h"
 #include "misc.h"
 
-
 Param_Sweep::Param_Sweep()
 {
   Description = QObject::tr("Parameter sweep");
@@ -104,10 +103,10 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
     if (isActive != COMP_IS_ACTIVE) return QString("");
 
     QString s,unit;
-    QString par = getProperty("Param")->Value.toLower();
+    QStringList parameter_list = getProperty("Param")->Value.split( this->param_split_str );
+    QStringList::const_iterator constListIterator;
     QString type = getProperty("Type")->Value;
-    QString step_var = par;
-    step_var.remove(QRegExp("[\\.\\[\\]@:]"));
+    QString step_var = parameter_list.begin()->toLower();// use first element name as variable name
 
     s = QString("let number_%1 = 0\n").arg(step_var);
     if (lvl==0) s += QString("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res\n").arg(sim).arg(step_var).arg(sim);
@@ -133,15 +132,11 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
         points *= fac;
 
         if(type == "lin") {
-            // start and stop may be both negative and start < stop
-            double start_act = std::min(start,stop);
-            double stop_act = std::max(start,stop);
-            step = (stop_act-start_act)/points;
-            for (; start_act <= stop_act; start_act += step) {
-                s += QString("%1 ").arg(start_act);
+            step = (stop-start)/points;
+            for (; start <= stop; start += step) {
+                s += QString("%1 ").arg(start);
             }
         } else {
-            // for log step negative start and stop values are not allowed
             start = log10(start);
             stop = log10(stop);
             step = (stop - start)/points;
@@ -155,34 +150,37 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
             }
         }
     }
-    s += "\n";
+    s += "\n"; // newline after step listing
+    QString nline_char('\n');
+    for(constListIterator=parameter_list.begin(); constListIterator!=parameter_list.end();++constListIterator)
+    {
+        QString par = *constListIterator;
 
-    bool modelsweep = false; // Find component and its modelstring 
-    QString mod,mod_par;
+        bool modelsweep = false; // Find component and its modelstring
+        QString mod,mod_par;
 
-    if (!par.contains('@')) {
-        QStringList par_lst = getProperty("Param")->Value
-                .split('.',qucs::SkipEmptyParts);
-        if (par_lst.count()>1) {
-            mod_par = par_lst.at(1);
-            // Schematic *sch = (Schematic *) QucsMain->DocumentTab->currentPage();
-            Schematic *sch = getSchematic();
-            Component *pc = sch->getComponentByName(par_lst.at(0));
-            if (pc != NULL) {
-                mod = pc->getSpiceNetlist().section('\n',1,1,QString::SectionSkipEmpty)
-                                           .section(' ',1,1,QString::SectionSkipEmpty);
-                if (!mod.isEmpty()) modelsweep = true;
+        if (!par.contains('@')) {
+            QStringList par_lst = par.split('.',qucs::SkipEmptyParts);
+            if (par_lst.count()>1) {
+                mod_par = par_lst.at(1);
+                // Schematic *sch = (Schematic *) QucsMain->DocumentTab->currentPage();
+                Schematic *sch = getSchematic();
+                Component *pc = sch->getComponentByName(par_lst.at(0));
+                if (pc != NULL) {
+                    mod = pc->getSpiceNetlist().section('\n',1,1,QString::SectionSkipEmpty)
+                                            .section(' ',1,1,QString::SectionSkipEmpty);
+                    if (!mod.isEmpty()) modelsweep = true;
+                }
             }
         }
-    }
-
-    if (modelsweep) { // Model parameter sweep
-        s += QString("altermod %1 %2 = $%3_act\n").arg(mod).arg(mod_par).arg(step_var);
-    } else {
-        QString mswp = getProperty("SweepModel")->Value;
-        if (mswp == "true")
-            s += QString("altermod %1 = $%2_act\n").arg(par).arg(step_var);
-        else s += QString("alter %1 = $%2_act\n").arg(par).arg(step_var);
+        if (modelsweep) { // Model parameter sweep
+            s += QString("altermod %1 %2 = $%3_act%4").arg(mod).arg(mod_par).arg(step_var).arg(nline_char);
+        } else {
+            QString mswp = getProperty("SweepModel")->Value;
+            if (mswp == "true")
+                s += QString("altermod %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
+            else s += QString("alter %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
+        }
     }
     return s;
 }
@@ -192,7 +190,8 @@ QString Param_Sweep::getNgspiceAfterSim(QString sim, int lvl)
     if (isActive != COMP_IS_ACTIVE) return QString("");
 
     QString s;
-    QString par = getProperty("Param")->Value.toLower();
+    QStringList parameter_list = getProperty("Param")->Value.split( this->param_split_str );
+    QString par = parameter_list.begin()->toLower();
     QString type = getProperty("Type")->Value;
     par.remove(QRegExp("[\\.\\[\\]@:]"));
 
