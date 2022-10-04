@@ -16,11 +16,14 @@
  ***************************************************************************/
 
 #include "logical_nand.h"
+#include "node.h"
+#include "extsimkernels/spicecompat.h"
 
 Logical_NAND::Logical_NAND()
 {
   Description = QObject::tr("logical NAND");
   Model = "NAND";
+  SpiceModel = "A";
 
   createSymbol();
   tx = x1+4;
@@ -47,4 +50,22 @@ Element* Logical_NAND::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new Logical_NAND();
   return 0;
+}
+
+QString Logical_NAND::spice_netlist(bool isXyce)
+{
+    if (isXyce) return QString("");
+
+    QString s = SpiceModel + Name;
+    QString tmp_model = "model_" + Name;
+    QString td = spicecompat::normalize_value(getProperty("t")->Value);
+    s += " [";
+    for (int i = Ports.count(); i >= 2; i--) {
+        s += " "  + Ports.at(i-1)->Connection->Name;
+    }
+    s += "] " + Ports.at(0)->Connection->Name;
+    s += " " + tmp_model + "\n";
+    s += QString(".model %1 d_nand(rise_delay=%2 fall_delay=%2 input_load=5e-13)\n")
+            .arg(tmp_model).arg(td);
+    return s;
 }

@@ -443,11 +443,9 @@ void Module::registerModules (void) {
 
       // digital components
       REGISTER_DIGITAL_1 (Digi_Source);
-      REGISTER_DIGITAL_1 (Logical_Inv);
       REGISTER_DIGITAL_1 (Logical_OR);
       REGISTER_DIGITAL_1 (Logical_NOR);
       REGISTER_DIGITAL_1 (Logical_AND);
-      REGISTER_DIGITAL_1 (Logical_NAND);
       REGISTER_DIGITAL_1 (Logical_XOR);
       REGISTER_DIGITAL_1 (Logical_XNOR);
       REGISTER_DIGITAL_1 (Logical_Buf);
@@ -488,6 +486,8 @@ void Module::registerModules (void) {
       REGISTER_DIGITAL_1 (Digi_Sim);
   }
 
+  REGISTER_DIGITAL_1 (Logical_Inv);
+  REGISTER_DIGITAL_1 (Logical_NAND);
 
   // file components
   REGISTER_FILE_1 (SpiceFile);
