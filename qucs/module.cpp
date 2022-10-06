@@ -443,7 +443,6 @@ void Module::registerModules (void) {
 
       // digital components
       REGISTER_DIGITAL_1 (Digi_Source);
-      REGISTER_DIGITAL_1 (Logical_Buf);
       REGISTER_DIGITAL_1 (andor4x2);
       REGISTER_DIGITAL_1 (andor4x3);
       REGISTER_DIGITAL_1 (andor4x4);
@@ -483,6 +482,7 @@ void Module::registerModules (void) {
 
   if (QucsSettings.DefaultSimulator == spicecompat::simNgspice ||
           QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+      REGISTER_DIGITAL_1 (Logical_Buf);
       REGISTER_DIGITAL_1 (Logical_Inv);
       REGISTER_DIGITAL_1 (Logical_NAND);
       REGISTER_DIGITAL_1 (Logical_OR);
