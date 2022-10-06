@@ -21,6 +21,7 @@ Logical_OR::Logical_OR()
 {
   Description = QObject::tr("logical OR");
   Model = "OR";
+  SpiceModel = "A";
 
   createSymbol();
   tx = x1+4;

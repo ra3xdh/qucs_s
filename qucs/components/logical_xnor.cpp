@@ -21,6 +21,7 @@ Logical_XNOR::Logical_XNOR()
 {
   Description = QObject::tr("logical XNOR");
   Model = "XNOR";
+  SpiceModel = "A";
 
   createSymbol();
   tx = x1+4;

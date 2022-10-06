@@ -21,6 +21,7 @@ Logical_AND::Logical_AND()
 {
   Description = QObject::tr("logical AND");
   Model = "AND";
+  SpiceModel = "A";
 
   createSymbol();
   tx = x1+4;

@@ -443,11 +443,6 @@ void Module::registerModules (void) {
 
       // digital components
       REGISTER_DIGITAL_1 (Digi_Source);
-      REGISTER_DIGITAL_1 (Logical_OR);
-      REGISTER_DIGITAL_1 (Logical_NOR);
-      REGISTER_DIGITAL_1 (Logical_AND);
-      REGISTER_DIGITAL_1 (Logical_XOR);
-      REGISTER_DIGITAL_1 (Logical_XNOR);
       REGISTER_DIGITAL_1 (Logical_Buf);
       REGISTER_DIGITAL_1 (andor4x2);
       REGISTER_DIGITAL_1 (andor4x3);
@@ -486,8 +481,16 @@ void Module::registerModules (void) {
       REGISTER_DIGITAL_1 (Digi_Sim);
   }
 
-  REGISTER_DIGITAL_1 (Logical_Inv);
-  REGISTER_DIGITAL_1 (Logical_NAND);
+  if (QucsSettings.DefaultSimulator == spicecompat::simNgspice ||
+          QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+      REGISTER_DIGITAL_1 (Logical_Inv);
+      REGISTER_DIGITAL_1 (Logical_NAND);
+      REGISTER_DIGITAL_1 (Logical_OR);
+      REGISTER_DIGITAL_1 (Logical_NOR);
+      REGISTER_DIGITAL_1 (Logical_AND);
+      REGISTER_DIGITAL_1 (Logical_XOR);
+      REGISTER_DIGITAL_1 (Logical_XNOR);
+  }
 
   // file components
   REGISTER_FILE_1 (SpiceFile);

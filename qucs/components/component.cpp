@@ -1473,22 +1473,24 @@ QString GateComponent::netlist()
   return s;
 }
 
-QString GateComponent::spice_netlist(bool)
+QString GateComponent::spice_netlist(bool isXyce)
 {
-  QString s = Model+Name;
+    if (isXyce) return QString("");
 
-  // output all node names
-  foreach(Port *pp, Ports)
-    s += " "+pp->Connection->Name;   // node names
-
-  // output all properties
-  Property *p = Props.at(1);
-  s += " " + p->Name + "=\"" + p->Value + "\"";
-  p = Props.next();
-  s += " " + p->Name + "=\"" + p->Value + "\"";
-  p = Props.next();
-  s += " " + p->Name + "=\"" + p->Value + "\"\n";
-  return s;
+    QString s = SpiceModel + Name;
+    QString tmp_model = "model_" + Name;
+    QString type = "d_" + Model;
+    type = type.toLower();
+    QString td = spicecompat::normalize_value(getProperty("t")->Value);
+    s += " [";
+    for (int i = Ports.count(); i >= 2; i--) {
+        s += " "  + Ports.at(i-1)->Connection->Name;
+    }
+    s += "] " + Ports.at(0)->Connection->Name;
+    s += " " + tmp_model + "\n";
+    s += QString(".model %1 %2(rise_delay=%3 fall_delay=%3 input_load=5e-13)\n")
+            .arg(tmp_model).arg(type).arg(td);
+    return s;
 }
 
 // -------------------------------------------------------

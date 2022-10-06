@@ -132,7 +132,7 @@ class GateComponent : public MultiViewComponent {
 public:
   GateComponent();
   QString netlist();
-  QString spice_netlist(bool);
+  QString spice_netlist(bool isXyce);
   QString vhdlCode(int);
   QString verilogCode(int);
 
