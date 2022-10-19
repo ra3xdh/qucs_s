@@ -1,10 +1,10 @@
-<Qucs Schematic 0.0.19>
+<Qucs Schematic 0.0.24>
 <Properties>
-  <View=0,-251,922,588,1,0,0>
+  <View=0,-251,1032,588,1,0,0>
   <Grid=10,10,1>
   <DataSet=EDD-Q-test.dat>
   <DataDisplay=EDD-Q-test.dpl>
-  <OpenDisplay=1>
+  <OpenDisplay=0>
   <Script=EDD-Q-test.m>
   <RunScript=0>
   <showFrame=0>
@@ -33,11 +33,11 @@
   <100 130 150 130 "" 0 0 0 "">
 </Wires>
 <Diagrams>
-  <Rect 476 138 369 225 3 #c0c0c0 1 10 1 1 1 10000 1 -0.0749954 0.5 1.09772 1 -1 0.5 1 315 0 225 "" "" "">
+  <Rect 616 138 369 225 3 #c0c0c0 1 10 1 1 1 10000 1 -0.0749954 0.5 1.09772 1 -1 0.5 1 315 0 225 "" "" "">
 	<"out.v" #0000ff 0 3 0 0 0>
 	<"xyce/ac.V(OUT)" #ff0000 0 3 0 0 0>
   </Rect>
-  <Rect 488 490 350 211 3 #c0c0c0 1 10 1 0 1 0 1 -1 0.5 1 1 -1 0.5 1 315 0 225 "" "" "">
+  <Rect 618 490 350 211 3 #c0c0c0 1 10 1 0 1 0 1 -1 0.5 1 1 -1 0.5 1 315 0 225 "" "" "">
 	<"ngspice/ac.v(out)" #0000ff 0 3 0 0 0>
 	<"xyce/ac.V(OUT)" #ff0000 0 3 0 0 0>
   </Rect>

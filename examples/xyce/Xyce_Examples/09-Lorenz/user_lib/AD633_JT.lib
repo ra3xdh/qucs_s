@@ -1,0 +1,45 @@
+***********************************************************************************
+**** SPICE MODELING by JIM THOMPSON, http://www.analog-innovations.com/ © 2014 ****
+***********************************************************************************
+***** Rudimentary Behavioral Model of Analog Devices AD633 Analog Multiplier ******
+***** Noise, CMRR and Feed-Thru are not modeled
+***********************************************************************************
+*** Per Pin Name X1 X2 Y1 Y2 -VS Z  W +VS ***
+***              |  |  |  |   |  |  |  |  ***
+*.SUBCKT AD633_JT 1  2  3  4   5  6  7  8 
+
+*** PINS REORDERED FOR QUCS
+*** Per Pin Name X1  +VS X2  W Y1  Z Y2 -VS
+***               |   |   |  |  |  |  |  | 
+.SUBCKT AD633_JT  1   8   2  7  3  6  4  5
+G_GX1        1 5 VALUE { (1+TANH(22*(V(1,5)-2)))/2*V(ITEMP) }
+G_GX2        2 5 VALUE { (1+TANH(22*(V(2,5)-2)))/2*V(ITEMP) }
+G_GY1        3 5 VALUE { (1+TANH(22*(V(3,5)-2)))/2*V(ITEMP) }
+G_GY2        4 5 VALUE { (1+TANH(22*(V(4,5)-2)))/2*V(ITEMP) }
+G_GZ         6 5 VALUE { (1+TANH(22*(V(6,5)-2)))/2*V(ITEMP) }
+RCON_TAG3    7 0 1G
+E_E1         ITEMP 0 VALUE { 1nA*(489.9-2.0842*TEMP+4.3472m*TEMP*TEMP) }
+G_G1         N_1 7 VALUE { 30mA*TANH(450*V(N_2, 7))*V(BOUNDS) }
+C_C1         N_2 0  100pF 
+G_GIQ        8 5 VALUE { (1+TANH(22*(V(8,5)-2)))/2*4mA }
+R_RNOF2      7 5  1G 
+C_COUT       7 5  5pF 
+E_E3         BOUNDS 0 VALUE {
++  (1+TANH(25*(V(8,7)-2.2)))*(1+TANH(25*(V(7,5)-2.2)))/4 }
+R_R1         WINT N_2  1.59155K 
+E_E2         WINT 0 VALUE { V(1,2)*V(3,4)/10+V(6) }
+.MODEL       D D
+D_D1         N_3 N_4 D 
+F_F1         N_3 8 VF_F1 1
+VF_F1        8 N_1 0
+D_D2         8 N_3 D 
+R_RNOF1      8 7  1G 
+F_F2         8 5 VF_F2 1
+VF_F2        N_4 8 0
+C_C2         6 5  4pF 
+C_C3         4 5  4pF 
+C_C4         3 5  4pF 
+C_C5         2 5  4pF 
+C_C6         1 5  4pF 
+.ENDS   AD633_JT
+***********************************************************************************

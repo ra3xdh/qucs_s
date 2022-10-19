@@ -1,6 +1,6 @@
-<Qucs Schematic 0.0.19> 
+<Qucs Schematic 1.0.0>
 <Properties>
-  <View=0,0,800,800,1,0,0>
+  <View=-120,0,946,800,1,0,0>
   <Grid=10,10,1>
   <DataSet=single_phase_transformer.dat>
   <DataDisplay=single_phase_transformer.dpl>
@@ -78,17 +78,17 @@
   <.PortSym -40 -50 1 0>
 </Symbol>
 <Components>
-  <Port P3 1 440 140 -10 -53 0 3 "3" 0 "analog" 0>
-  <Port P5 1 440 230 4 -29 0 2 "5" 0 "analog" 0>
-  <Port P4 1 440 320 -10 35 0 1 "4" 0 "analog" 0>
-  <Port P2 1 390 320 -11 33 0 1 "2" 0 "analog" 0>
-  <Port P1 1 390 140 -10 -51 0 3 "1" 0 "analog" 0>
-  <L_SPICE L1 1 390 230 -118 -22 1 3 "L1=L1" 1 "=" 0 "=" 0 "=" 0 "=" 0>
-  <L_SPICE L2 1 440 170 10 -26 1 3 "L2=L2" 1 "=" 0 "=" 0 "=" 0 "=" 0>
-  <L_SPICE L3 1 440 290 10 -26 1 3 "L3=L3" 1 "=" 0 "=" 0 "=" 0 "=" 0>
-  <K_SPICE K13 1 410 400 -26 17 0 0 "L1=L1" 1 "L3=L3" 1 "K13" 1>
-  <K_SPICE K12 1 330 400 -26 17 0 0 "L1=L1" 1 "L2=L2" 1 "K12" 1>
-  <K_SPICE K23 1 480 400 -26 17 0 0 "L2=L2" 1 "L3=L3" 1 "K23" 1>
+  <Port P3 1 440 140 -10 -53 0 3 "3" 0 "analog" 0 "v" 0 "" 0>
+  <Port P5 1 440 230 4 -29 0 2 "5" 0 "analog" 0 "v" 0 "" 0>
+  <Port P4 1 440 320 -10 35 0 1 "4" 0 "analog" 0 "v" 0 "" 0>
+  <Port P2 1 390 320 -11 33 0 1 "2" 0 "analog" 0 "v" 0 "" 0>
+  <Port P1 1 390 140 -10 -51 0 3 "1" 0 "analog" 0 "v" 0 "" 0>
+  <K_SPICE K13 1 410 400 -14 16 0 0 "L1" 1 "L3" 1 "K13" 1>
+  <K_SPICE K23 1 490 400 -15 15 0 0 "L2" 1 "L3" 1 "K23" 1>
+  <K_SPICE K12 1 350 400 -29 17 0 0 "L1" 1 "L2" 1 "K12" 1>
+  <L_SPICE L1 1 390 230 -54 -16 1 3 "L1" 1 "=" 0 "=" 0 "=" 0 "=" 0>
+  <L_SPICE L3 1 440 290 14 -19 1 3 "L3" 1 "=" 0 "=" 0 "=" 0 "=" 0>
+  <L_SPICE L2 1 440 170 14 -21 1 3 "L2" 1 "=" 0 "=" 0 "=" 0 "=" 0>
 </Components>
 <Wires>
   <440 200 440 230 "" 0 0 0 "">
@@ -99,4 +99,6 @@
 <Diagrams>
 </Diagrams>
 <Paintings>
+  <Text -10 110 16 #000000 0 "Subcircuit originally had errors\nL=L1=L1 should be L=L1 ...etc">
+  <Arrow 210 170 100 60 20 8 #ff0000 2 1 0>
 </Paintings>

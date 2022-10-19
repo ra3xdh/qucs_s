@@ -1,10 +1,10 @@
-<Qucs Schematic 0.0.19>
+<Qucs Schematic 0.0.24>
 <Properties>
-  <View=-336,-430,1160,1500,1,0,900>
+  <View=-336,-305,1160,1375,1,0,0>
   <Grid=10,10,1>
   <DataSet=testCombLogic1.dat>
   <DataDisplay=testCombLogic1.dpl>
-  <OpenDisplay=1>
+  <OpenDisplay=0>
   <Script=testCombLogic1.m>
   <RunScript=0>
   <showFrame=0>
@@ -16,20 +16,20 @@
 <Symbol>
 </Symbol>
 <Components>
-  <SpLib X1 1 440 180 -64 -212 0 0 "/home/mike/S4QC30SEPT2016/work/share/qucs/library/XyceDigital.lib" 0 "AND4" 1 "auto" 1 "ScaleFactor=5" 1>
-  <SpLib X2 1 440 310 -52 66 0 0 "/home/mike/S4QC30SEPT2016/work/share/qucs/library/XyceDigital.lib" 0 "AND4" 1 "auto" 1 "ScaleFactor=5" 1>
-  <SpLib X5 1 260 200 -59 -213 0 0 "/home/mike/S4QC30SEPT2016/work/share/qucs/library/XyceDigital.lib" 0 "D2ABRIDGEX4" 1 "auto" 1 "ScaleFactor=5" 1>
-  <SpLib X6 1 260 330 -74 35 0 0 "/home/mike/S4QC30SEPT2016/work/share/qucs/library/XyceDigital.lib" 0 "D2ABRIDGEX4" 1 "auto" 1 "ScaleFactor=5" 1>
-  <SpLib X3 1 590 260 -29 -164 0 0 "/home/mike/S4QC30SEPT2016/work/share/qucs/library/XyceDigital.lib" 0 "OR2" 1 "auto" 1 "ScaleFactor=5" 1>
-  <SpLib X4 1 730 290 -72 49 0 0 "/home/mike/S4QC30SEPT2016/work/share/qucs/library/XyceDigital.lib" 0 "D2ABRIDGE" 1 "auto" 1 "ScaleFactor=5" 1>
   <GND * 1 790 290 0 0 0 0>
   <R_SPICE R1 1 790 260 15 -26 0 1 "47k" 1 "" 0 "" 0 "" 0 "" 0>
-  <SpLib X7 1 0 180 -186 -35 0 0 "/home/mike/S4QC30SEPT2016/work/share/qucs/library/XyceDigital.lib" 0 "LOGIC1" 1 "auto" 1 "ScaleFactor=5" 1>
-  <SpLib X9 1 100 140 -286 -113 0 0 "/home/mike/S4QC30SEPT2016/work/share/qucs/library/XyceDigital.lib" 0 "PATGENX4" 1 "auto" 1 "PulseFreq=1000 ScaleFactor=5" 1>
-  <SpLib X8 1 0 310 -187 -35 0 0 "/home/mike/S4QC30SEPT2016/work/share/qucs/library/XyceDigital.lib" 0 "LOGIC1" 1 "auto" 1 "ScaleFactor=5" 1>
-  <SpLib X10 1 100 270 -289 105 0 0 "/home/mike/S4QC30SEPT2016/work/share/qucs/library/XyceDigital.lib" 0 "PATGENX4" 1 "auto" 1 "PulseFreq=5000 ScaleFactor=5" 1>
   <SpiceModel SpiceModel1 1 -130 -160 -29 17 0 0 ".model DMOD DIG ( RLOAD=1000 CLOAD=1e-12 DELAY=20e-9 CLO=1e-12 CHI=1e-12" 1 "+  S0RLO=5 S0RHI=5 S0TSW=5e-9 S0VLO=-1 S0VHI=0.16 S1RLO=200 S1RHI=5 S1TSW=5e-9 " 1 "+  S1VLO=0.52 S1VHI=1 )" 1 "" 0 "Line_5=" 0>
   <.TR TR1 1 700 -70 0 84 0 0 "lin" 1 "0" 1 "1 ms" 1 "101" 0 "Trapezoidal" 0 "2" 0 "1 ns" 0 "1e-16" 0 "150" 0 "0.001" 0 "1 pA" 0 "1 uV" 0 "26.85" 0 "1e-3" 0 "1e-6" 0 "1" 0 "CroutLU" 0 "no" 0 "yes" 0 "0" 0>
+  <SpLib X7 1 0 180 -170 -15 0 0 "C:/Program Files (x86)/Qucs-S/share/qucs-s/library/XyceDigital.lib" 0 "LOGIC1" 1 "auto" 1 "ScaleFactor=5" 1>
+  <SpLib X9 1 100 140 -310 -113 0 0 "C:/Program Files (x86)/Qucs-S/share/qucs-s/library/XyceDigital.lib" 0 "PATGENX4" 1 "auto" 1 "PulseFreq=1000 ScaleFactor=5" 1>
+  <SpLib X10 1 100 270 -313 142 0 0 "C:/Program Files (x86)/Qucs-S/share/qucs-s/library/XyceDigital.lib" 0 "PATGENX4" 1 "auto" 1 "PulseFreq=5000 ScaleFactor=5" 1>
+  <SpLib X8 1 0 310 -171 -15 0 0 "C:/Program Files (x86)/Qucs-S/share/qucs-s/library/XyceDigital.lib" 0 "LOGIC1" 1 "auto" 1 "ScaleFactor=5" 1>
+  <SpLib X5 1 260 200 -159 -176 0 0 "C:/Program Files (x86)/Qucs-S/share/qucs-s/library/XyceDigital.lib" 0 "D2ABRIDGEX4" 1 "auto" 1 "ScaleFactor=5" 1>
+  <SpLib X6 1 260 330 -108 32 0 0 "C:/Program Files (x86)/Qucs-S/share/qucs-s/library/XyceDigital.lib" 0 "D2ABRIDGEX4" 1 "auto" 1 "ScaleFactor=5" 1>
+  <SpLib X1 1 440 180 -141 -157 0 0 "C:/Program Files (x86)/Qucs-S/share/qucs-s/library/XyceDigital.lib" 0 "AND4" 1 "auto" 1 "ScaleFactor=5" 1>
+  <SpLib X2 1 440 310 -63 65 0 0 "C:/Program Files (x86)/Qucs-S/share/qucs-s/library/XyceDigital.lib" 0 "AND4" 1 "auto" 1 "ScaleFactor=5" 1>
+  <SpLib X3 1 590 260 -85 -235 0 0 "C:/Program Files (x86)/Qucs-S/share/qucs-s/library/XyceDigital.lib" 0 "OR2" 1 "auto" 1 "ScaleFactor=5" 1>
+  <SpLib X4 1 730 290 -131 -12 0 0 "C:/Program Files (x86)/Qucs-S/share/qucs-s/library/XyceDigital.lib" 0 "D2ABRIDGE" 1 "auto" 1 "ScaleFactor=5" 1>
 </Components>
 <Wires>
   <320 200 380 200 "nD3" 320 180 25 "">
@@ -53,17 +53,17 @@
   <140 310 200 310 "nA6" 170 290 34 "">
   <140 290 200 290 "nA5" 170 270 33 "">
   <140 270 200 270 "nA4" 170 250 35 "">
-  <500 170 500 170 "nDI1" 490 120 0 "">
-  <500 300 500 300 "nDI2" 510 310 0 "">
-  <200 140 200 140 "nA0" 160 120 0 "">
-  <200 160 200 160 "nA1" 160 140 0 "">
-  <200 180 200 180 "nA2" 160 160 0 "">
-  <200 200 200 200 "nA3" 160 180 0 "">
-  <630 230 630 230 "nDout" 630 190 0 "">
   <790 230 790 230 "nAout" 780 190 0 "">
+  <630 230 630 230 "nDout" 630 190 0 "">
+  <500 300 500 300 "nDI2" 510 310 0 "">
+  <500 170 500 170 "nDI1" 490 120 0 "">
+  <200 200 200 200 "nA3" 160 180 0 "">
+  <200 180 200 180 "nA2" 160 160 0 "">
+  <200 160 200 160 "nA1" 160 140 0 "">
+  <200 140 200 140 "nA0" 160 120 0 "">
 </Wires>
 <Diagrams>
-  <Time -190 839 1248 350 3 #c0c0c0 1 00 1 1678 1 11 1 0 1 1 1 0 1 2006 315 0 225 "" "" "">
+  <Time -190 839 1248 350 3 #c0c0c0 1 00 1 1678 1 15 1 0 1 1 1 0 1 2006 315 0 225 "" "" "">
 	<"xyce/tran.V(NA0)" #0000ff 0 3 0 0 0>
 	<"xyce/tran.V(NA1)" #ff0000 0 3 0 0 0>
 	<"xyce/tran.V(NA2)" #ff00ff 0 3 0 0 0>

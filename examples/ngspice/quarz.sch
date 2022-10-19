@@ -1,4 +1,4 @@
-<Qucs Schematic 0.0.19>
+<Qucs Schematic 1.0.0>
 <Properties>
   <View=0,-13,800,569,1,0,0>
   <Grid=10,10,1>
@@ -14,19 +14,19 @@
   <FrameText3=Версия:>
 </Properties>
 <Symbol>
-  <Line 10 0 30 0 #000000 0 1>
-  <Line -40 0 30 0 #000000 0 1>
+  <Line 10 0 30 0 #000000 2 1>
   <.PortSym -40 0 1 0>
   <.PortSym 40 0 2 180>
-  <Line -10 -20 0 40 #000000 0 1>
-  <Line 10 -20 0 40 #000000 0 1>
-  <Rectangle -5 -30 10 60 #000000 0 1 #c0c0c0 1 0>
-  <.ID -40 34 ZQ "1=f=8863k=Crystal Frequency=" "1=Lq=0.01406=Crystal Inductance=" "1=Cs=6.5p=Crystal Capacitance=">
+  <Line -10 -20 0 40 #000000 2 1>
+  <Line 10 -20 0 40 #000000 2 1>
+  <Rectangle -5 -30 10 60 #000000 2 1 #c0c0c0 1 0>
+  <Line -40 0 30 0 #000000 2 1>
+  <.ID -40 44 ZQ "1=f=8863k=Crystal Frequency=" "1=Lq=0.01406=Crystal Inductance=" "1=Cs=6.5p=Crystal Capacitance=">
 </Symbol>
 <Components>
   <R R1 1 320 280 -26 15 0 0 "50 MOhm" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "european" 0>
-  <Port P1 1 170 140 -23 12 0 0 "1" 1 "analog" 0>
-  <Port P2 1 510 140 4 12 1 2 "2" 1 "analog" 0>
+  <Port P1 1 170 140 -23 12 0 0 "1" 1 "analog" 0 "v" 0 "" 0>
+  <Port P2 1 510 140 4 12 1 2 "2" 1 "analog" 0 "v" 0 "" 0>
   <C C2 1 310 190 -26 17 0 0 "Cs" 1 "" 0 "neutral" 0>
   <R R2 1 380 90 -26 15 0 0 "2 Ohm" 1 "26.85" 0 "0.0" 0 "0.0" 0 "26.85" 0 "european" 0>
   <L L1 1 320 90 -26 -52 1 0 "Lq" 1 "" 0>

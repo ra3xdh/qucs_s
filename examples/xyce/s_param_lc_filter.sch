@@ -1,10 +1,10 @@
-<Qucs Schematic 0.0.23>
+<Qucs Schematic 0.0.24>
 <Properties>
-  <View=0,40,1573,1092,1,8,0>
+  <View=0,44,1573,972,1,8,0>
   <Grid=10,10,1>
   <DataSet=s_param_lc_filter.dat>
   <DataDisplay=s_param_lc_filter.dpl>
-  <OpenDisplay=1>
+  <OpenDisplay=0>
   <Script=s_param_lc_filter.m>
   <RunScript=0>
   <showFrame=0>
@@ -46,16 +46,16 @@
   <500 290 500 320 "" 0 0 0 "">
 </Wires>
 <Diagrams>
-  <Rect 217 740 384 306 3 #c0c0c0 1 00 1 0 2e+7 1e+8 1 -55.9848 10 5.07603 1 -1 0.5 1 315 0 225 "" "" "">
+  <Rect 217 740 384 306 3 #c0c0c0 1 00 1 0 2e+07 1e+08 1 -55.9848 10 5.07603 1 -1 0.5 1 315 0 225 "" "" "">
 	<"xyce/SDB(2,1)" #0000ff 0 3 0 0 0>
-	  <Mkr 3.46737e+7 153 -380 3 0 0>
+	  <Mkr 3.46737e+07 153 -380 3 0 0>
   </Rect>
   <Rect 680 762 409 332 3 #c0c0c0 1 00 1 0 0.2 1 1 -0.1 0.5 1.1 1 -0.1 0.5 1.1 315 0 225 "" "" "">
 	<"xyce/S(2,1)" #0000ff 0 3 0 0 0>
   </Rect>
   <Smith 664 396 332 332 3 #c0c0c0 1 00 1 0 1 1 1 0 4 1 1 0 1 1 315 0 225 "" "" "">
 	<"xyce/S(1,1)" #0000ff 0 3 0 0 0>
-	  <Mkr 4.0738e+7 164 -308 3 0 0>
+	  <Mkr 4.0738e+07 164 -308 3 0 0>
   </Smith>
 </Diagrams>
 <Paintings>

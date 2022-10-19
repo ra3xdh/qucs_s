@@ -1,10 +1,10 @@
-<Qucs Schematic 0.0.19>
+<Qucs Schematic 0.0.24>
 <Properties>
-  <View=-40,-390,1866,1040,1,0,0>
+  <View=-40,-110,1866,1040,1,0,0>
   <Grid=10,10,1>
   <DataSet=testPATGENX1.dat>
   <DataDisplay=testPATGENX1.dpl>
-  <OpenDisplay=1>
+  <OpenDisplay=0>
   <Script=testPATGENX1.m>
   <RunScript=0>
   <showFrame=0>
@@ -19,9 +19,9 @@
   <GND * 1 550 270 0 0 0 0>
   <R_SPICE R1 1 550 230 15 -26 0 1 "4.7k" 1 "" 0 "" 0 "" 0 "" 0>
   <.TR TR1 1 750 100 0 77 0 0 "lin" 1 "0" 1 "5 ms" 1 "101" 0 "Trapezoidal" 0 "2" 0 "1 ns" 0 "1e-16" 0 "150" 0 "0.001" 0 "1 pA" 0 "1 uV" 0 "26.85" 0 "1e-3" 0 "1e-6" 0 "1" 0 "CroutLU" 0 "no" 0 "yes" 0 "0" 0>
-  <SpLib X5 1 210 260 -61 -31 0 0 "/home/mike/S4QC27SEPT2016/share/qucs/library/XyceDigital.lib" 0 "A2DBRIDGE" 1 "auto" 1 "ScaleFactor=5" 1>
-  <SpLib X4 1 80 200 -29 -164 0 0 "/home/mike/S4QC27SEPT2016/share/qucs/library/XyceDigital.lib" 0 "PATGENX1" 1 "auto" 1 "PulseFreq=1k ScaleFactor=5" 1>
-  <SpLib X6 1 420 260 -29 -164 0 0 "/home/mike/S4QC27SEPT2016/share/qucs/library/XyceDigital.lib" 0 "D2ABRIDGE" 1 "auto" 1 "ScaleFactor=5" 1>
+  <SpLib X4 1 80 200 -97 -148 0 0 "C:/Program Files (x86)/Qucs-S/share/qucs-s/library/XyceDigital.lib" 0 "PATGENX1" 1 "auto" 1 "PulseFreq=1k ScaleFactor=5" 1>
+  <SpLib X5 1 210 260 -58 -30 0 0 "C:/Program Files (x86)/Qucs-S/share/qucs-s/library/XyceDigital.lib" 0 "A2DBRIDGE" 1 "auto" 1 "ScaleFactor=5" 1>
+  <SpLib X6 1 420 260 -34 -207 0 0 "C:/Program Files (x86)/Qucs-S/share/qucs-s/library/XyceDigital.lib" 0 "D2ABRIDGE" 1 "auto" 1 "ScaleFactor=5" 1>
 </Components>
 <Wires>
   <270 200 360 200 "" 0 0 0 "">

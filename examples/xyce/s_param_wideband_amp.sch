@@ -1,10 +1,10 @@
-<Qucs Schematic 0.0.23>
+<Qucs Schematic 0.0.24>
 <Properties>
-  <View=0,61,2198,1535,1,234,0>
+  <View=0,61,2198,1271,1,234,240>
   <Grid=10,10,1>
   <DataSet=s_param_wideband_amp.dat>
   <DataDisplay=s_param_wideband_amp.dpl>
-  <OpenDisplay=1>
+  <OpenDisplay=0>
   <Script=s_param_wideband_amp.m>
   <RunScript=0>
   <showFrame=0>
@@ -83,19 +83,19 @@
   <830 220 830 250 "" 0 0 0 "">
 </Wires>
 <Diagrams>
-  <Rect 450 1431 343 181 3 #c0c0c0 1 00 1 0 5e+6 3e+7 1 8.76988 2 14.3857 1 -1 0.5 1 315 0 225 "" "" "">
-	<"xyce/S(2,1)" #0000ff 0 3 0 0 0>
-	<"ngspice/ac.v(s_2_1)" #ff0000 0 3 0 0 0>
-  </Rect>
   <Rect 1000 673 322 253 3 #c0c0c0 1 00 1 0 0.2 1 1 -0.1 0.5 1.1 1 -0.1 0.5 1.1 315 0 225 "" "" "">
 	<"xyce/S(2,1)" #0000ff 0 3 0 0 0>
   </Rect>
   <Smith 401 993 282 282 3 #c0c0c0 1 00 1 0 1 1 1 0 4 1 1 0 1 1 315 0 225 "" "" "">
 	<"xyce/S(1,1)" #0000ff 0 3 0 0 0>
-	  <Mkr 8.32265e+6 186 -179 3 0 0>
+	  <Mkr 8.32265e+06 186 -179 3 0 0>
 	<"xyce/S(2,2)" #ff0000 0 3 0 0 0>
-	  <Mkr 8.20641e+6 145 -273 3 0 0>
+	  <Mkr 8.20641e+06 145 -273 3 0 0>
   </Smith>
+  <Rect 990 961 343 181 3 #c0c0c0 1 00 1 0 5e+06 3e+07 1 8.76988 2 14.3857 1 -1 0.5 1 315 0 225 "" "" "">
+	<"xyce/S(2,1)" #0000ff 0 3 0 0 0>
+	<"ngspice/ac.v(s_2_1)" #ff0000 0 3 0 0 0>
+  </Rect>
 </Diagrams>
 <Paintings>
   <Text 250 160 12 #000000 0 "This example illustrates S-parameter\nanalysis of the active circuit using Xyce">
