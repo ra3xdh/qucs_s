@@ -1,3 +1,39 @@
+# Qucs-S 1.0.0
+
+## New features
+
+* Added basic support for logic gates simulation (Ngspice >= 38) required #97
+* Added possibility to set engineering notation (like 1k, 1M, etc.) for numbers on diagrams #92
+* Added symbol preview and search feature for component library in main windows #135
+* Backported qucs-attenuator, qucs-transcalc and qucs-powercombining from Qucs-0.0.20 #142
+* Added possibility to set dB units for Y-axis on digrams from the diagram properties dialog #92
+* Backported advanced features for projects tree from Qucs-0.0.20 #95
+* Show warning if schematic file name changed, but dataset/display file name are not updated #111
+* Revised examples tree (by Tom Hajjar @tomhajjar); legacy Ngspice-incompatible examples 
+  moved to `examples/qucsator` subdirectory
+
+## Component library
+
+* Qucs-lib tool has been removed from the application; all its features are
+  availbale now from the main window left panel #139
+* Fixed Tubes.lib and LEDs.lib libraries (by @tomhajjar)
+
+## General improvements
+
+* Fixed numerous bug reports. Thanks @tomhajjar and @Zergud for testing.
+
+## Windows
+
+* Added 32-bit Windows portable package
+
+## Known issues
+
+* Parameter sweep doesn't work when using the Fourier simulation with XYCE backend #73
+* Netlister may produce duplicate .SUBCKT entry when using the same component from user and system library #82
+* Auto-scaling on diagram may fail on some conditions for Windows 64-bit platform #133 Other platforms are not affected
+* The 1-point AC simulation produce a set of 1x1 plot if ParameterSweep instead of smooth curve is attached #156
+
+
 # Qucs-S 0.0.24
 
 ## New simulation types
