@@ -27,13 +27,13 @@ Use CMake to build Qucs-S. Install all necessary dependencies: GCC, Qt, and SPIC
 #### Ubuntu
 
 ~~~
-sudo apt-get install ngspice build-essential git cmake qtbase5-dev qttools5-dev qtscript5-dev libqt5svg5-dev
+sudo apt-get install ngspice build-essential git cmake qtbase5-dev qttools5-dev libqt5svg5-dev
 ~~~
 
 #### OpenSUSE Tumbleweed
 
 ~~~
-sudo zypper install ngspice git cmake libqt5-qtbase-devel libqt5-qttools-devel libqt5-qtscript-devel libqt5-qtsvg-devel
+sudo zypper install ngspice git cmake libqt5-qtbase-devel libqt5-qttools-devel libqt5-qtsvg-devel
 ~~~
 
 ### Compiling
