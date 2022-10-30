@@ -21,6 +21,7 @@ Logical_XOR::Logical_XOR()
 {
   Description = QObject::tr("logical XOR");
   Model = "XOR";
+  SpiceModel = "A";
 
   createSymbol();
   tx = x1+4;

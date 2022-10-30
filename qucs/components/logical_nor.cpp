@@ -21,6 +21,7 @@ Logical_NOR::Logical_NOR()
 {
   Description = QObject::tr("logical NOR");
   Model = "NOR";
+  SpiceModel = "A";
 
   createSymbol();
   tx = x1+4;

@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "logical_nand.h"
+#include "node.h"
 
 Logical_NAND::Logical_NAND()
 {
   Description = QObject::tr("logical NAND");
   Model = "NAND";
+  SpiceModel = "A";
 
   createSymbol();
   tx = x1+4;

@@ -18,6 +18,7 @@
 #include "schematic.h"
 #include "node.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Logical_Inv::Logical_Inv()
@@ -42,6 +43,7 @@ Logical_Inv::Logical_Inv()
   ty = y2+4;
   Model = "Inv";
   Name  = "Y";
+  SpiceModel = "A";
 }
 
 // -------------------------------------------------------
@@ -149,4 +151,19 @@ Element* Logical_Inv::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new Logical_Inv();
   return 0;
+}
+
+QString Logical_Inv::spice_netlist(bool isXyce)
+{
+    if (isXyce) return QString("");
+
+    QString s = SpiceModel + Name;
+    QString tmp_model = "model_" + Name;
+    QString td = spicecompat::normalize_value(getProperty("t")->Value);
+    s += " " + Ports.at(1)->Connection->Name;
+    s += " " + Ports.at(0)->Connection->Name;
+    s += " " + tmp_model + "\n";
+    s += QString(".model %1 d_inverter(rise_delay=%2 fall_delay=%2 input_load=5e-13)\n")
+            .arg(tmp_model).arg(td);
+    return s;
 }
