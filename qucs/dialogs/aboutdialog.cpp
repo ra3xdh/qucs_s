@@ -55,6 +55,7 @@ AboutDialog::AboutDialog(QWidget *parent)
      "Vadim Kuznetsov - " + tr("project maintainer, simuator interface and GUI design"),
      "Mike Brinson - " + tr("component models, documentation"),
      "Tom Russo - " + tr("Xyce integration"),
+     "Tom Hajjar - " + tr("Testing, examples"),
      "Maria Dubinina - " + tr("testing, general bugfixes")
   }};
   currAuths = {{
@@ -68,7 +69,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     "Felix Salfelder - " + tr("refactoring, modularity"),
     "Andr&#xe9;s Mart&#xed;nez Mera - " + tr("RF design tools")
   }};
-  
+
   prevDevs = {{
       "Michael Margraf - " + tr("founder of the project, GUI programmer"),
       "Stefan Jahn - " + tr("Programmer of simulator"),
@@ -104,7 +105,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     tr("Arabic by") + " Chabane Noureddine",
     tr("Kazakh by") + " Erbol Keshubaev"
   }};
-  
+
   std::shuffle(currAuths.begin(), currAuths.end(), rng);
 
   QLabel *lbl;
@@ -124,7 +125,7 @@ AboutDialog::AboutDialog(QWidget *parent)
 
   hl->addWidget(iconLabel);
   all->addWidget(hbox);
- 
+
   QWidget *vbox = new QWidget();
   QVBoxLayout *vl = new QVBoxLayout(vbox);
   //vl->setContentsMargins(0,0,0,0);
@@ -210,12 +211,12 @@ void AboutDialog::currentChangedSlot(int index) {
     std::shuffle(trAuths.begin(), trAuths.end(), rng);
     setTrText();
   }
-  
+
   prevTab = index;
 }
 
 void AboutDialog::setAuthorsText() {
- 
+
   QString authorsText;
   authorsText = tr("Qucs-S project team:");
   authorsText += "<ul>";
@@ -225,7 +226,7 @@ void AboutDialog::setAuthorsText() {
   authorsText += "</ul>";
 
   authorsText += tr("Based on Qucs project developed by:") + "<ul>";
-  
+
   for(QString& tStr : currAuths) {
     authorsText += ("<li>" + tStr + "</li>");
   }
@@ -235,8 +236,8 @@ void AboutDialog::setAuthorsText() {
     authorsText += ("<li>" + tStr + "</li>");
   }
   authorsText += "</ul>";
-  
-  authorsBrowser->setHtml(authorsText);	
+
+  authorsBrowser->setHtml(authorsText);
 }
 
 void AboutDialog::setTrText() {
@@ -246,14 +247,14 @@ void AboutDialog::setTrText() {
     trText += ("<li>" + tStr + "</li>");
   }
   trText += "</ul>";
-  
-  trBrowser->setHtml(trText);	
+
+  trBrowser->setHtml(trText);
 }
 
 // event filter to remove the Ctrl-Wheel (text zoom) event
 bool AboutDialog::eventFilter(QObject *obj, QEvent *event) {
   if ((event->type() == QEvent::Wheel) &&
-      (QApplication::keyboardModifiers() & Qt::ControlModifier )) {    
+      (QApplication::keyboardModifiers() & Qt::ControlModifier )) {
     return true; // eat Ctrl-Wheel event
   } else {
     // pass the event on to the parent class
