@@ -91,7 +91,7 @@ bool OctaveWindow::startOctave()
 
   QString OctavePath = QDir::toNativeSeparators(QucsSettings.OctaveExecutable);
 
-  // Override Octave path by enviroment variable if it is set
+  // Override Octave path by environment variable if it is set
   if (QucsSettings.QucsOctave.isEmpty()) Program = OctavePath;
   else Program = QucsSettings.QucsOctave;
 
@@ -108,7 +108,7 @@ bool OctaveWindow::startOctave()
   QString sep(":");
 #endif
 
-  // append process PATH, othewise Octave does not find gnuplot
+  // append process PATH, otherwise Octave does not find gnuplot
   QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
   env.insert("PATH", env.value("PATH") + sep + QucsSettings.BinDir );
   octProcess.setProcessEnvironment(env);

@@ -40,7 +40,7 @@
 
 /*!
  * \brief AbstractSpiceKernel::AbstractSpiceKernel class constructor
- * \param sch_ Schematic that schould be simualted with Spice-comaptibele
+ * \param sch_ Schematic that should be simulated with Spice-compatible
  *        simulator
  * \param parent Parent object
  */
@@ -308,8 +308,8 @@ void AbstractSpiceKernel::slotSimulate()
  *        or Complex) from output.
  * \param ngspice_file Spice output file name
  * \param sim_points 2D array in which simulation points should be extracted
- * \param var_list This list is filled by simualtion variables. There is a list of dependent
- *        and independent varibales. An independent variable is the first in list.
+ * \param var_list This list is filled by simulation variables. There is a list of dependent
+ *        and independent variables. An independent variable is the first in list.
  * \param isComplex Type of variables. True if complex. False if real.
  */
 void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QList<double> > &sim_points,QStringList &var_list, bool &isComplex)
@@ -387,8 +387,8 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
  * \brief AbstractSpiceKernel::parseHBOutput Parse Xyce Harmonic balance (HB) simulation output.
  * \param ngspice_file Spice output file name
  * \param sim_points 2D array in which simulation points should be extracted
- * \param var_list This list is filled by simualtion variables. There is a list of dependent
- *        varibales. Independent hbfrequency variable is always the first in this list.
+ * \param var_list This list is filled by simulation variables. There is a list of dependent
+ *        variables. Independent hbfrequency variable is always the first in this list.
  * \param hasParSweep[out] Set to true if dataset contains parameter sweep output.
  */
 void AbstractSpiceKernel::parseHBOutput(QString ngspice_file, QList<QList<double> > &sim_points,
@@ -439,8 +439,8 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file, QList<QList<double
  * \brief AbstractSpiceKernel::parseFourierOutput Parse output of fourier simulation.
  * \param ngspice_file[in] Spice output file name
  * \param sim_points[out] 2D array in which simulation points should be extracted
- * \param var_list[out] This list is filled by simualtion variables. There is a list of dependent
- *        and independent varibales. An independent variable is the first in list.
+ * \param var_list[out] This list is filled by simulation variables. There is a list of dependent
+ *        and independent variables. An independent variable is the first in list.
  */
 void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<double> > &sim_points,
                                              QStringList &var_list)
@@ -507,8 +507,8 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
  * \param[in] ngspice_file Spice output file name
  * \param[out] sim_points 2D array in which simulation points should be extracted. All simulation
  *        points from all sweep variable steps are extracted in a single array
- * \param[out] var_list This list is filled by simualtion variables. There is a list of dependent
- *        and independent varibales. An independent variable is the first in list.
+ * \param[out] var_list This list is filled by simulation variables. There is a list of dependent
+ *        and independent variables. An independent variable is the first in list.
  * \param[out] ParSwp Set to true if there was parameter sweep
  */
 void AbstractSpiceKernel::parseNoiseOutput(QString ngspice_file, QList<QList<double> > &sim_points,
@@ -581,12 +581,12 @@ void AbstractSpiceKernel::parsePZOutput(QString ngspice_file, QList<QList<double
 }
 
 /*!
- * \brief AbstractSpiceKernel::parseSENSOutput Parse output after DC sensitivity anlysis.
+ * \brief AbstractSpiceKernel::parseSENSOutput Parse output after DC sensitivity analysis.
  * \param[in] ngspice_file Spice output file name
  * \param[out] sim_points 2D array in which simulation points should be extracted. All simulation
  *        points from all sweep variable steps are extracted in a single array
- * \param[out] var_list This list is filled by simualtion variables. There is a list of dependent
- *        and independent varibales. An independent variable is the first in list.
+ * \param[out] var_list This list is filled by simulation variables. There is a list of dependent
+ *        and independent variables. An independent variable is the first in list.
  */
 void AbstractSpiceKernel::parseSENSOutput(QString ngspice_file, QList<QList<double> > &sim_points,
                                           QStringList &var_list)
@@ -696,8 +696,8 @@ void AbstractSpiceKernel::parseDC_OPoutputXY(QString xyce_file)
  * \param ngspice_file Spice output file name
  * \param sim_points 2D array in which simulation points should be extracted. All simulation
  *        points from all sweep variable steps are extracted in a single array
- * \param var_list This list is filled by simualtion variables. There is a list of dependent
- *        and independent varibales. An independent variable is the first in list.
+ * \param var_list This list is filled by simulation variables. There is a list of dependent
+ *        and independent variables. An independent variable is the first in list.
  * \param isComplex Type of variables. True if complex. False if real.
  */
 void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
@@ -846,8 +846,8 @@ bool AbstractSpiceKernel::extractASCIISamples(QString &lin, QTextStream &ngsp_da
  * \brief AbstractSpiceKernel::parseXYCESTDOutput
  * \param std_file[in] XYCE STD output file name
  * \param sim_points[out] 2D array in which simulation points should be extracted
- * \param var_list[out] This list is filled by simualtion variables. There is a list of dependent
- *        and independent varibales. An independent variable is the first in list.
+ * \param var_list[out] This list is filled by simulation variables. There is a list of dependent
+ *        and independent variables. An independent variable is the first in list.
  * \param isComplex[out] Type of variables. True if complex. False if real.
  */
 void AbstractSpiceKernel::parseXYCESTDOutput(QString std_file, QList<QList<double> > &sim_points,
@@ -1162,7 +1162,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             default: break;
             }
         }
-        if (var_list.isEmpty()) continue; // notning to convert
+        if (var_list.isEmpty()) continue; // nothing to convert
         normalizeVarsNames(var_list);
 
         QString indep = var_list.first();

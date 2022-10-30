@@ -1900,7 +1900,7 @@ void Schematic::contentsWheelEvent(QWheelEvent *Event)
   }
   // ...................................................................
   else if(Event->modifiers() & Qt::ControlModifier) {  // use mouse wheel to zoom ?
-      // zoom factor scaled according to the wheel delta, to accomodate
+      // zoom factor scaled according to the wheel delta, to accommodate
       //  values different from 60 (slower or faster zoom)
       int delta = Event->angleDelta().y();
       float Scaling = pow(1.1, delta/60.0);

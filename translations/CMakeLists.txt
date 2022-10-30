@@ -32,7 +32,7 @@ ENDIF (UPDATE_TRANSLATIONS)
 #FILE(GLOB QtTRANSLATIONS qtgeneric_*.ts)
 
 #
-# install tranlations
+# install translations
 INSTALL( FILES ${QM_FILES} DESTINATION share/${QUCS_NAME}/lang)
 
 # prevent the generated files from being deleted during make clean

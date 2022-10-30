@@ -30,7 +30,7 @@ Distribution process:
   - Make sure INSTALL, THANKS and README files are up to date.
 
 * Test build and packaging.
-  - Maintainance currently requires the following software packages:
+  - Maintenance currently requires the following software packages:
      + Autoconf version 2.57 (at least)
      + GNU automake 1.7.0 (at least)
      + Qt installation >= version 4.6 (by Digia)

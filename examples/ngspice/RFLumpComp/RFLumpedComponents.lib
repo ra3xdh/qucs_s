@@ -11,7 +11,7 @@ l1; Lead parasitic inductance (H); 1.5n
 ls; Resistance serial inductance;  5n
 l2;  Lead parasitic inductance (H); 1.5n
 Cp;  Resistor serial parasitic capacitance; 0.35p
-Cpad; Resistor parallel parastic; 5p
+Cpad; Resistor parallel parasitic; 5p
 
 Test examples: (1) Test_RATF_EquivalentCircuitD.sch
 

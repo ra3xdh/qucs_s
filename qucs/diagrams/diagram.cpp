@@ -361,7 +361,7 @@ void Diagram::rectClip(Graph::iterator &p) const
 
   int code1 = regionCode(x_1, y_1);
   int code2 = regionCode(x_2, y_2);
-  if((code1 | code2) == 0)  return;  // line completly inside ?
+  if((code1 | code2) == 0)  return;  // line completely inside ?
 
   if(code1 != 0) if((p-3)->isPt()) {
     p++;
@@ -378,7 +378,7 @@ void Diagram::rectClip(Graph::iterator &p) const
 
 
   for(;;) {
-    if((code1 | code2) == 0) break;  // line completly inside ?
+    if((code1 | code2) == 0) break;  // line completely inside ?
 
     if(code1)  code = code1;
     else  code = code2;
@@ -439,7 +439,7 @@ void Diagram::clip(Graph::iterator &p) const
   float dt2 = dt1 - x_2*x_2 - y_2*y_2;
   dt1 -= x_1*x_1 + y_1*y_1;
 
-  if(dt1 >= 0.0) if(dt2 >= 0.0)  return;  // line completly inside ?
+  if(dt1 >= 0.0) if(dt2 >= 0.0)  return;  // line completely inside ?
 
   if(dt1 < 0.0) if((p-3)->isPt()) { // is there already a line end flag ?
     p++;
@@ -713,7 +713,7 @@ void Diagram::loadGraphData(const QString& defaultDataSet)
 
     xAxis.min = xmin; yAxis.min = ymin; zAxis.min = zmin;
     xAxis.max = xmax; yAxis.max = ymax; zAxis.max = zmax;
-    return;    // -> no update neccessary
+    return;    // -> no update necessary
   }
 
   if(xAxis.min > xAxis.max)
@@ -832,7 +832,7 @@ int Graph::loadDatFile(const QString& fileName)
   Info.setFile(file);
   if(g->lastLoaded.isValid())
     if(g->lastLoaded > Info.lastModified())
-      return 1;    // dataset unchanged -> no update neccessary
+      return 1;    // dataset unchanged -> no update necessary
 
   g->countY = 0;
   g->mutable_axes().clear(); // HACK
@@ -902,7 +902,7 @@ int Graph::loadDatFile(const QString& fileName)
     tmp = Line.section(' ', pos, pos);
     while(!tmp.isEmpty()) {
       if (hasExplIndep)g->mutable_axes().push_back(new DataX(ExplIndep));
-      else g->mutable_axes().push_back(new DataX(tmp));  // name of independet variable
+      else g->mutable_axes().push_back(new DataX(tmp));  // name of independent variable
       pos++;
       tmp = Line.section(' ', pos, pos);
     }
@@ -1005,7 +1005,7 @@ if(Variable.right(3) != ".X ") { // not "digital"
       }
     }
 
-#if 0 // this is not location curce code.
+#if 0 // this is not location curve code.
     else {   // location curve needs different treatment
       if(std::isfinite(x)) {
         if(x > xAxis.max) xAxis.max = x;
@@ -1758,7 +1758,7 @@ if(Axis->autoScale) {
   numGrids += corr;     // correct rounding faults
 
 
-  // upper y boundery ...........................
+  // upper y boundary ...........................
   zD = fabs(fmod(Axis->up, GridStep));// expand grid to upper diagram edge ?
   GridNum = zD/GridStep;
   if((1.0-GridNum) < 1e-10) GridNum = 0.0;  // fix rounding errors
@@ -1771,7 +1771,7 @@ if(Axis->autoScale) {
 		 Axis->up += 0.3*GridStep;  // beauty correction
 
 
-  // lower y boundery ...........................
+  // lower y boundary ...........................
   zD = fabs(fmod(Axis->low, GridStep));// expand grid to lower diagram edge ?
   GridNum = zD/GridStep;
   if((1.0-GridNum) < 1e-10) zD = GridNum = 0.0;  // fix rounding errors

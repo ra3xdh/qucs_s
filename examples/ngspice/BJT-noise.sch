@@ -66,5 +66,5 @@
   </Rect>
 </Diagrams>
 <Paintings>
-  <Text 50 -40 12 #000000 0 "Here is a noise analysis exmple. This is BJT \none-stage amplifier. Simulate this circuit and plot\nonoise _ total and inoise _ total variables to obtain\ndependencies of total noise vs. collector resistance.\nNOTE: This Example could be run only with Ngspice">
+  <Text 50 -40 12 #000000 0 "Here is a noise analysis example. This is BJT \none-stage amplifier. Simulate this circuit and plot\nonoise _ total and inoise _ total variables to obtain\ndependencies of total noise vs. collector resistance.\nNOTE: This Example could be run only with Ngspice">
 </Paintings>

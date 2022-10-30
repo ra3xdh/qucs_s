@@ -116,7 +116,7 @@ QString Equation::getVAExpressions()
 }
 
 /*!
- * \brief Equation::getExpression Extract equations that don't contain simualtion variables
+ * \brief Equation::getExpression Extract equations that don't contain simulation variables
  *        (voltages/cureents) in .PARAM section of spice netlist
  * \param isXyce True if Xyce is used.
  * \return .PARAM section of spice netlist as a single string.

@@ -283,8 +283,8 @@ bool saveApplSettings()
  * \param msg Message
  *
  * The message handler is used to get control of the messages.
- * Particulary on Windows, as the messages are sent to the debugger and do not
- * show on the terminal. The handler could aslo be extended to create a log
+ * Particularly on Windows, as the messages are sent to the debugger and do not
+ * show on the terminal. The handler could also be extended to create a log
  * mechanism.
  * <http://qt-project.org/doc/qt-4.8/debug.html#warning-and-debugging-messages>
  * <http://qt-project.org/doc/qt-4.8/qtglobal.html#qInstallMsgHandler>
@@ -675,7 +675,7 @@ void createDocData() {
     char * File;
     QString Name;
 
-    int num = 0; // compoment id inside category
+    int num = 0; // component id inside category
 
     foreach (Module *Mod, Comps) {
         num += 1;
@@ -818,7 +818,9 @@ int main(int argc, char *argv[])
   QucsSettings.dy = h*3/4;
 
   // default
-  QucsSettings.QucsHomeDir.setPath(QDir::homePath()+QDir::toNativeSeparators ("/.qucs"));
+  QString QucsWorkdirPath = QDir::homePath()+QDir::toNativeSeparators ("/.qucs");
+  QDir().mkpath(QucsWorkdirPath);
+  QucsSettings.QucsHomeDir.setPath(QucsWorkdirPath);
   QucsSettings.QucsWorkDir.setPath(QucsSettings.QucsHomeDir.canonicalPath());
 
   // load existing settings (if any)
@@ -943,7 +945,7 @@ int main(int argc, char *argv[])
   tor.load( QString("qucs_") + lang, QucsSettings.LangDir);
   a.installTranslator( &tor );
 
-  // This seems to be neccessary on a few system to make strtod()
+  // This seems to be necessary on a few system to make strtod()
   // work properly !???!
   setlocale (LC_NUMERIC, "C");
 

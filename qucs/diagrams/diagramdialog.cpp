@@ -155,7 +155,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   }
 
   
-  all = new QVBoxLayout(this); // to provide neccessary size
+  all = new QVBoxLayout(this); // to provide necessary size
   QTabWidget *t = new QTabWidget();
   all->addWidget(t);
 

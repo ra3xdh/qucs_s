@@ -109,11 +109,11 @@ QString JFET::spice_netlist(bool isXyce)
         spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"
                      <<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce"<<"Vt0tc";
                                   // spice-incompatible parameters
-        spice_tr<<"Vt0"<<"VtO"; // parameters that need convertion of names
+        spice_tr<<"Vt0"<<"VtO"; // parameters that need conversion of names
     } else {
         spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"<<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce";
                                   // spice-incompatible parameters
-        spice_tr<<"Vt0tc"<<"Tcv"; // parameters that need convertion of names
+        spice_tr<<"Vt0tc"<<"Tcv"; // parameters that need conversion of names
     }
 
 

@@ -43,7 +43,7 @@ public:
     bool needCompile();
     void cleanCModelTree();
     void createCModelTree(QString &output);
-    void compileCMlib(QString &ouptut);
+    void compileCMlib(QString &output);
     void getModIfsFileList(QStringList &files);
 
 protected:

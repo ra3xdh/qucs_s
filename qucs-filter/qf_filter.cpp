@@ -348,7 +348,7 @@ std::string qf_filter::to_qucs (void) {
 	  res << "10";
 	res << " 0 0";
 
-	// value of commponent
+	// value of component
 	res << " \"" << num2str(Comp[b].val).c_str();
 	switch (Comp[b].comp) {
 	case CAP: res << "F"; break;

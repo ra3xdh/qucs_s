@@ -64,7 +64,7 @@ TextBoxDialog::TextBoxDialog(const char* window_title, Component *pc, QWidget *p
 }
 
 /*!
- * \brief CustomSimDialog::slotApply Aplly changes of component properties.
+ * \brief CustomSimDialog::slotApply Apply changes of component properties.
  */
 void TextBoxDialog::slotApply()
 {
@@ -81,7 +81,7 @@ void TextBoxDialog::slotOK()
 }
 
 /*!
- * \brief CustomSimDialog::slotCancel Close dialog without apply chages.
+ * \brief CustomSimDialog::slotCancel Close dialog without applying changes.
  */
 void TextBoxDialog::slotCancel()
 {

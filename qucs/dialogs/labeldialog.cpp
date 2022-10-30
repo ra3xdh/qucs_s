@@ -117,7 +117,7 @@ void LabelDialog::slotOk()
           QMessageBox::warning(this,tr("SPICE checker"),
                                QString(tr("Node name \"%1\" is Nutmeg reserved keyword!\n"
                                           "Please select another node name!\n"
-                                          "Node name will not be chenged.")).arg(nod),
+                                          "Node name will not be changed.")).arg(nod),
                                QMessageBox::Ok);
           slotCancel();
           return;

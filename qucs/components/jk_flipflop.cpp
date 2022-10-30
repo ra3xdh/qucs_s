@@ -23,7 +23,7 @@
 JK_FlipFlop::JK_FlipFlop()
 {
   Type = isDigitalComponent;
-  Description = QObject::tr("JK flip flop with asynchron set and reset");
+  Description = QObject::tr("JK flip flop with asynchronous set and reset");
 
   Props.append(new Property("t", "0", false, QObject::tr("delay time")));
 

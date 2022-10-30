@@ -33,7 +33,7 @@
 
 /*!
  * \brief The CustomSimDialog class is responsible for editing properties
- *        of Ngspice Custom Simualtion component. You can edit multiline
+ *        of Ngspice Custom Simulation component. You can edit multiline
  *        component properties with it.
  */
 class CustomSimDialog : public QDialog

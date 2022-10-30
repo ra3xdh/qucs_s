@@ -38,7 +38,7 @@
 
 /*!
  * \brief Ngspice::Ngspice Class constructor
- * \param sch_ Schematic that need to be simualted with Ngspice.
+ * \param sch_ Schematic that need to be simulated with Ngspice.
  * \param parent Parent object
  */
 Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
@@ -73,7 +73,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
     if (DC_OP_only) {
         stream<<".control\n"  // Execute only DC OP analysis
-              <<"set filetype=ascii\n" // Ingnore all other simulations
+              <<"set filetype=ascii\n" // Ignore all other simulations
               <<"op\n"
               <<"print all > spice4qucs.cir.dc_op\n"
               <<"destroy all\n"
@@ -426,7 +426,7 @@ QString Ngspice::getParentSWPscript(Component *pc_swp, QString sim, bool before,
 }
 
 /*!
- * \brief Ngspice::slotSimulate Create netlist and execute Ngspice simualtor. Netlist
+ * \brief Ngspice::slotSimulate Create netlist and execute Ngspice simulator. Netlist
  *        is saved at $HOME/.qucs/spice4qucs/spice4qucs.cir
  */
 void Ngspice::slotSimulate()
@@ -575,7 +575,7 @@ bool Ngspice::findMathFuncInc(QString &mathf_inc)
 }
 
 /*!
- * \brief Ngspice::slotProcessOutput Process Ngspice output and report completetion
+ * \brief Ngspice::slotProcessOutput Process Ngspice output and report completion
  *        percentage.
  */
 void Ngspice::slotProcessOutput()
@@ -609,6 +609,12 @@ void Ngspice::SaveNetlist(QString filename)
         QTextStream stream(&spice_file);
         createNetlist(stream,num,sims,vars,output_files);
         spice_file.close();
+    }
+    else
+    {
+        QString msg=QString("Tried to save netlist \nin %1\n(could not open for writing!)").arg(filename);
+        QString final_msg=QString("%1\n This could be an error in the QSettings settings file\n(usually in ~/.config/qucs/qucs_s.conf)\nThe value for S4Q_workdir (default:/spice4qucs) needs to be writeable!\nFor a Simulation Simulation will raise error! (most likely S4Q_workdir does not exists)").arg(msg);
+        QMessageBox::critical(nullptr,tr("Problem with SaveNetlist"),final_msg,QMessageBox::Ok);
     }
 }
 

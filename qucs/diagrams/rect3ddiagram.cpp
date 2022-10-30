@@ -251,7 +251,7 @@ bool Rect3DDiagram::isHidden(int x, int y, tBound *Bounds, char *zBuffer)
 }
 
 // --------------------------------------------------------------
-// Enlarge memory block if neccessary.
+// Enlarge memory block if necessary.
 void Rect3DDiagram::enlargeMemoryBlock(tPoint3D* &MemEnd)
 {
   if(pMem >= MemEnd) {
@@ -341,7 +341,7 @@ void Rect3DDiagram::calcLine(tPoint3D* &p, tPoint3D* &MemEnd,
         pMem++;
 
         Pos_ = p - Mem;
-        // Enlarge memory block if neccessary.
+        // Enlarge memory block if necessary.
         enlargeMemoryBlock(MemEnd);   // this may make "p" invalid (realloc)
         p = Mem + Pos_;  // rebuild "p"
     }
@@ -472,7 +472,7 @@ void Rect3DDiagram::removeHiddenLines(char *zBuffer, tBound *Bounds)
     // ..........................................
     // Calculate the z-coordinate of all polygons by building the
     // sum of the z-coordinates of all of its 4 corners.
-    // After this, each point represents one polygon. The unneccessary
+    // After this, each point represents one polygon. The unnecessary
     // points are filled with "-FLTMAX".
     zp = zp_tmp;
     // "dx" and "dy" are still unchanged !

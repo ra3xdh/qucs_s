@@ -1045,7 +1045,7 @@ void QucsApp::slotViewStatusBar(bool toggle)
 }
 
 // ----------------------------------------------------------
-// turn Brwose Dock Window on or off
+// turn Browse Dock Window on or off
 void QucsApp::slotViewBrowseDock(bool toggle)
 {
   dock->setVisible(toggle);

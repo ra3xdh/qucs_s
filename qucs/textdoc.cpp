@@ -95,7 +95,7 @@ TextDoc::~TextDoc()
 /*!
  * \brief TextDoc::setLanguage(const QString&)
  * \param FileName Text document file name
- * Extract the file name suffix and assing a language_type to it.
+ * Extract the file name suffix and assign a language_type to it.
  */
 void TextDoc::setLanguage (const QString& FileName)
 {
@@ -116,7 +116,7 @@ void TextDoc::setLanguage (const QString& FileName)
 /*!
  * \brief TextDoc::setLanguage(int)
  * \param lang is a language_type
- * Assing value to text document object language variable
+ * Assign value to text document object language variable
  */
 void TextDoc::setLanguage (int lang)
 {

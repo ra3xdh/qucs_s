@@ -5,8 +5,8 @@
 Author: Mike Brinson <mbrin72043@yahoo.co.uk>; 24 Nov. 2015
 
 A two winding transformer with fringing inductance and resistive losses.
-Lmo is the primary winding inductance with the secondary winding OPEN circut.
-Lmf  is the primary winding inductance with the secondary winding SHORT circut.
+Lmo is the primary winding inductance with the secondary winding OPEN circuit.
+Lmf  is the primary winding inductance with the secondary winding SHORT circuit.
 Rp is the primary winding DC resistance.
 Rs is the secondary winding DC resistance.
 Np = number of turns in primary winding.

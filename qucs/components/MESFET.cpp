@@ -130,7 +130,7 @@ MESFET::MESFET()
     QObject::tr ("source resistance temperature coefficient")
     +" ("+QObject::tr ("1/Celsius")+")"));
   Props.append (new Property ("Ibv", "1e-3", false,
-    QObject::tr ("gate reverse breakdown currrent")
+    QObject::tr ("gate reverse breakdown current")
     +" ("+QObject::tr ("A")+")"));
   Props.append (new Property ("Rf", "10", false,
     QObject::tr ("forward bias slope resistance")

@@ -963,7 +963,7 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
   MAx1 = int(fX);
   MAy1 = int(fY);
   focusElement = Doc->selectElement(fX, fY, Ctrl, &No);
-  isMoveEqual = false;   // moving not neccessarily square
+  isMoveEqual = false;   // moving not necessarily square
 
   if(focusElement)
     // print define value in hex, see element.h
@@ -1033,7 +1033,7 @@ void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, fl
           QucsMain->MouseDoubleClickAction = 0;
           Doc->grabKeyboard();  // no keyboard inputs during move actions
 
-          // Remember inital scroll bar position.
+          // Remember initial scroll bar position.
           MAx2 = int(((TabDiagram*)focusElement)->xAxis.limit_min);
           // Update matching wire label highlighting
           Doc->highlightWireLabels ();
@@ -1303,7 +1303,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
       default: ;   // avoids compiler warnings
     }
 //    qDebug() << "   => selElem = Comp;" << Comp->Name;
-    // comp it geting empty
+    // comp it getting empty
     selElem = Comp;
     return;
 

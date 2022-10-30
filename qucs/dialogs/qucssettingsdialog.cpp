@@ -144,13 +144,13 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
 
     appSettingsGrid->addWidget(new QLabel(tr("Draw diagrams with anti-aliasing feature:")));
     checkAntiAliasing = new QCheckBox(appSettingsTab);
-    checkAntiAliasing->setToolTip(tr("Use anti-aliasing for graphs for a smoother appereance."));
+    checkAntiAliasing->setToolTip(tr("Use anti-aliasing for graphs for a smoother appearance."));
     appSettingsGrid->addWidget(checkAntiAliasing,9,1);
     checkAntiAliasing->setChecked(QucsSettings.GraphAntiAliasing);
 
     appSettingsGrid->addWidget(new QLabel(tr("Draw text with anti-aliasing feature:")));
     checkTextAntiAliasing = new QCheckBox(appSettingsTab);
-    checkTextAntiAliasing->setToolTip(tr("Use anti-aliasing for text for a smoother appereance."));
+    checkTextAntiAliasing->setToolTip(tr("Use anti-aliasing for text for a smoother appearance."));
     appSettingsGrid->addWidget(checkTextAntiAliasing,10,1);
     checkTextAntiAliasing->setChecked(QucsSettings.TextAntiAliasing);
 

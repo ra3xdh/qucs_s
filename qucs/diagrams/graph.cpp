@@ -276,7 +276,7 @@ std::pair<double,double> Graph::findSample(std::vector<double>& VarPos) const
   for(unsigned ii=0; (pD=axis(ii)); ++ii) {
     double* pp = pD->Points;
     double v = VarPos[nVarPos];
-    for(unsigned i=pD->count; i>1; i--) {  // find appropiate marker position
+    for(unsigned i=pD->count; i>1; i--) {  // find appropriate marker position
       if(fabs(v-(*pp)) < fabs(v-(*(pp+1)))) break;
       pp++;
       n += m;

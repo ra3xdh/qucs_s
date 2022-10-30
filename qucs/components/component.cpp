@@ -770,14 +770,14 @@ QString Component::getSpiceModel()
 
 QString Component::getNgspiceBeforeSim(QString sim, int lvl)
 {
-    Q_UNUSED(sim); // To supress warning
+    Q_UNUSED(sim); // To suppress warning
     Q_UNUSED(lvl);
     return QString("");
 }
 
 QString Component::getNgspiceAfterSim(QString sim, int lvl)
 {
-    Q_UNUSED(sim); // To supress warning
+    Q_UNUSED(sim); // To suppress warning
     Q_UNUSED(lvl);
     return QString("");
 }
@@ -939,7 +939,7 @@ bool Component::load(const QString& _s)
     n  = s.section(' ',8,8);    // rotated
     tmp = n.toInt(&ok);
     if(!ok) return false;
-    if(rotated > tmp)  // neccessary because of historical flaw in ...
+    if(rotated > tmp)  // necessary because of historical flaw in ...
       tmp += 4;        // ... components like "volt_dc"
     for(int z=rotated; z<tmp; z++) rotate();
 

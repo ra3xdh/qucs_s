@@ -61,7 +61,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   numVal = new QDoubleValidator(this);
   intVal = new QIntValidator(this);
 
-  all = new QVBoxLayout(); // to provide the neccessary size
+  all = new QVBoxLayout(); // to provide the necessary size
   QTabWidget *t = new QTabWidget();
   all->addWidget(t);
   this->setLayout(all);
