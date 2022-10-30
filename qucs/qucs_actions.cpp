@@ -814,7 +814,7 @@ void QucsApp::slotCallActiveFilter()
 // Is called to start the transmission line calculation program.
 void QucsApp::slotCallLine()
 {
-  launchTool(QUCS_NAME "trans", "line calculation",QStringList(),true);
+  launchTool(QUCS_NAME "trans", "line calculation",QStringList());
 }
 
 // --------------------------------------------------------------
@@ -829,12 +829,12 @@ void QucsApp::slotCallMatch()
 // Is called to start the attenuator calculation program.
 void QucsApp::slotCallAtt()
 {
-  launchTool(QUCS_NAME "attenuator", "attenuator calculation",QStringList(),true);
+  launchTool(QUCS_NAME "attenuator", "attenuator calculation",QStringList());
 }
 
 void QucsApp::slotCallPwrComb()
 {
-  launchTool(QUCS_NAME "powercombining", "power combining calculation",QStringList(),true);
+  launchTool(QUCS_NAME "powercombining", "power combining calculation",QStringList());
 }
 
 
