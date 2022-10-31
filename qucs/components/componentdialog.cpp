@@ -87,7 +87,7 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
 
     int row=1;
     editParam = new QLineEdit(Tab1);
-    editParam->setValidator(ValRestrict);
+    if (Comp->Model != ".SW") editParam->setValidator(ValRestrict);
     connect(editParam, SIGNAL(returnPressed()), SLOT(slotParamEntered()));
     checkParam = new QCheckBox(tr("display in schematic"), Tab1);
 
