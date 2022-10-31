@@ -159,6 +159,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         for(unsigned int i=0;i<Sch->DocComps.count();i++) {
             Component *pc = Sch->DocComps.at(i);
             QString sim_typ = pc->Model;
+            if (!pc->isActive) continue;
             if (sim_typ==".SW") {
                 QString SwpSim = pc->Props.at(0)->Value;
                 QString s = pc->getNgspiceBeforeSim(sim);
@@ -347,6 +348,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
 
         for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
             QString sim_typ = pc->Model;
+            if (!pc->isActive) continue;
             if (sim_typ==".SW") {
                 QString s = pc->getNgspiceAfterSim(sim);
                 QString SwpSim = pc->Props.at(0)->Value;
