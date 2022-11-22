@@ -333,8 +333,8 @@ int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1,
   int i = 0;
 
   while (Text.length()>i) {
-    if ((Text[i].toLatin1() == '_' || Text[i].toLatin1() == '^') &&
-	!Text[i+1].isNull()) {
+    if ((Text[i].toLatin1() == '_' || Text[i].toLatin1() == '^')) {
+      if ((i+1) >= Text.length()) break;
       bool is_sub = Text[i++].toLatin1() == '_';
       int len = 0;
 
