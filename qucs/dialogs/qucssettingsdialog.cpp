@@ -154,18 +154,24 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     appSettingsGrid->addWidget(checkTextAntiAliasing,10,1);
     checkTextAntiAliasing->setChecked(QucsSettings.TextAntiAliasing);
 
+    appSettingsGrid->addWidget(new QLabel(tr("Show trace name prefix on diagrams:")));
+    checkFullTraceNames = new QCheckBox(appSettingsTab);
+    checkFullTraceNames->setToolTip(tr("Show prefixes for trace names on diagrams like \"ngspice/\""));
+    appSettingsGrid->addWidget(checkFullTraceNames,11,1);
+    checkFullTraceNames->setChecked(QucsSettings.fullTraceName);
+
     QStringList lst_icons;
     lst_icons<<"Automatic"<<"Light"<<"Dark";
     PanelIconsCombo = new QComboBox;
     PanelIconsCombo->addItems(lst_icons);
     PanelIconsCombo->setCurrentIndex(QucsSettings.panelIconsTheme);
-    appSettingsGrid->addWidget(new QLabel(tr("Panel icons theme (set after reload):"),appSettingsTab),11,0);
-    appSettingsGrid->addWidget(PanelIconsCombo,11,1);
+    appSettingsGrid->addWidget(new QLabel(tr("Panel icons theme (set after reload):"),appSettingsTab),12,0);
+    appSettingsGrid->addWidget(PanelIconsCombo,12,1);
     CompIconsCombo = new QComboBox;
     CompIconsCombo->addItems(lst_icons);
     CompIconsCombo->setCurrentIndex(QucsSettings.compIconsTheme);
-    appSettingsGrid->addWidget(new QLabel(tr("Components icons theme (set after reload):"),appSettingsTab),12,0);
-    appSettingsGrid->addWidget(CompIconsCombo,12,1);
+    appSettingsGrid->addWidget(new QLabel(tr("Components icons theme (set after reload):"),appSettingsTab),13,0);
+    appSettingsGrid->addWidget(CompIconsCombo,13,1);
 
     t->addTab(appSettingsTab, tr("Settings"));
 
@@ -663,6 +669,12 @@ void QucsSettingsDialog::slotApply()
       changed = true;
     }
 
+    if (QucsSettings.fullTraceName != checkFullTraceNames->isChecked())
+    {
+      QucsSettings.fullTraceName = checkFullTraceNames->isChecked();
+      changed = true;
+    }
+
     // use toDouble() as it can interpret the string according to the current locale
     if (QucsSettings.largeFontSize != LargeFontSizeEdit->text().toDouble(&ok))
     {
@@ -794,6 +806,7 @@ void QucsSettingsDialog::slotDefaultValues()
     checkLoadFromFutureVersions->setChecked(false);
     checkAntiAliasing->setChecked(false);
     checkTextAntiAliasing->setChecked(true);
+    checkFullTraceNames->setChecked(false);
 }
 
 // -----------------------------------------------------------
