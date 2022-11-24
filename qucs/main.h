@@ -104,6 +104,7 @@ struct tQucsSettings {
   bool TextAntiAliasing;
 
   bool hasDarkTheme;
+  bool fullTraceName;
 };
 
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used

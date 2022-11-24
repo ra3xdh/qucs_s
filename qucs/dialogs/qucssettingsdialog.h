@@ -80,7 +80,8 @@ public:
     QFont Font;
     QFont AppFont;
     QCheckBox *checkWiring, *checkLoadFromFutureVersions,
-              *checkAntiAliasing, *checkTextAntiAliasing;
+              *checkAntiAliasing, *checkTextAntiAliasing,
+              *checkFullTraceNames;
     QComboBox *LanguageCombo;
     QComboBox *PanelIconsCombo, *CompIconsCombo;
     QPushButton *FontButton, *AppFontButton, *BGColorButton;

@@ -242,13 +242,15 @@ void Diagram::createAxisLabels()
       if(pg->yAxisNo != 0)  continue;
       if(pg->cPointsY) {
     QString var_name = pg->Var;
-    if (used_kernels.count() == 1) {
-        auto p = var_name.indexOf('/');
-        var_name = var_name.mid(p+1);
-    }
-    if (used_simulations.count() == 1) {
-        auto p = var_name.indexOf('.');
-        var_name = var_name.mid(p+1);
+    if (!QucsSettings.fullTraceName) {
+        if (used_kernels.count() == 1) {
+            auto p = var_name.indexOf('/');
+            var_name = var_name.mid(p+1);
+        }
+        if (used_simulations.count() == 1) {
+            auto p = var_name.indexOf('.');
+            var_name = var_name.mid(p+1);
+        }
     }
 	if(Name[0] != 'C') {   // location curve ?
           w = metrics.boundingRect(var_name).width() >> 1;

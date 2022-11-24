@@ -181,6 +181,9 @@ bool loadSettings()
     if (settings.contains("TextAntiAliasing")) QucsSettings.TextAntiAliasing = settings.value("TextAntiAliasing").toBool();
     else QucsSettings.TextAntiAliasing = false;
 
+    if (settings.contains("fullTraceName")) QucsSettings.fullTraceName = settings.value("fullTraceName").toBool();
+    else QucsSettings.fullTraceName = false;
+
     QucsSettings.RecentDocs = settings.value("RecentDocs").toString().split("*",qucs::SkipEmptyParts);
     QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
 
@@ -258,6 +261,7 @@ bool saveApplSettings()
     settings.setValue("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
     settings.setValue("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
     settings.setValue("TextAntiAliasing", QucsSettings.TextAntiAliasing);
+    settings.setValue("fullTraceName",QucsSettings.fullTraceName);
     settings.setValue("panelIconsTheme",QucsSettings.panelIconsTheme);
     settings.setValue("compIconsTheme",QucsSettings.compIconsTheme);
 
