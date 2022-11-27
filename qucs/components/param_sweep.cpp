@@ -158,6 +158,7 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
         QString par = *constListIterator;
 
         bool modelsweep = false; // Find component and its modelstring
+        bool compfound = false;
         QString mod,mod_par;
 
         if (!par.contains('@')) {
@@ -174,13 +175,20 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
                 }
             }
         }
+
+        Schematic *sch = getSchematic();
+        Component *pc = sch->getComponentByName(getProperty("Param")->Value);
+        if (pc != NULL) compfound = true;
+        else compfound = false;
+
         if (modelsweep) { // Model parameter sweep
             s += QString("altermod %1 %2 = $%3_act%4").arg(mod).arg(mod_par).arg(step_var).arg(nline_char);
         } else {
             QString mswp = getProperty("SweepModel")->Value;
             if (mswp == "true")
                 s += QString("altermod %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
-            else s += QString("alter %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
+            else if (compfound) s += QString("alter %1 = $%2_act%3").arg(par).arg(step_var).arg(nline_char);
+            else s += QString("alterparam %1 = $%2_act%3reset%3").arg(par).arg(step_var).arg(nline_char);
         }
     }
     return s;
