@@ -49,11 +49,11 @@ SP_Sim::SP_Sim()
   // The index of the first 4 properties must not changed. Used in recreate().
   Props.append(new Property("Type", "lin", true,
 	QObject::tr("sweep type")+" [lin, log, list, const]"));
-  Props.append(new Property("Start", "1 GHz", true,
+  Props.append(new Property("Start", "1 MHz", true,
 	QObject::tr("start frequency in Hertz")));
-  Props.append(new Property("Stop", "10 GHz", true,
+  Props.append(new Property("Stop", "100 MHz", true,
 	QObject::tr("stop frequency in Hertz")));
-  Props.append(new Property("Points", "19", true,
+  Props.append(new Property("Points", "200", true,
 	QObject::tr("number of simulation steps")));
   Props.append(new Property("Noise", "no", false,
 	QObject::tr("calculate noise parameters")+

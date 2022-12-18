@@ -44,7 +44,7 @@ Inductor::Inductor()
   Name  = "L";
   SpiceModel = "L";
 
-  Props.append(new Property("L", "1 nH", true,
+  Props.append(new Property("L", "1 mH", true,
 		QObject::tr("inductance in Henry")));
   Props.append(new Property("I", "", false,
 		QObject::tr("initial current for transient simulation")));

@@ -25,7 +25,7 @@ Resistor::Resistor(bool european)
 {
   Description = QObject::tr("resistor");
 
-  Props.append(new Property("R", "50 Ohm", true,
+  Props.append(new Property("R", "1 kOhm", true,
     QObject::tr("ohmic resistance in Ohms")));
   Props.append(new Property("Temp", "26.85", false,
     QObject::tr("simulation temperature in degree Celsius")));

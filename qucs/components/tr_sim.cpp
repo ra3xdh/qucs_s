@@ -49,7 +49,7 @@ TR_Sim::TR_Sim()
 	QObject::tr("start time in seconds")));
   Props.append(new Property("Stop", "1 ms", true,
 	QObject::tr("stop time in seconds")));
-  Props.append(new Property("Points", "11", false,
+  Props.append(new Property("Points", "200", false,
 	QObject::tr("number of simulation time steps")));
   Props.append(new Property("IntegrationMethod", "Trapezoidal", false,
 	QObject::tr("integration method")+

@@ -26,7 +26,7 @@ Capacitor::Capacitor()
 {
   Description = QObject::tr("capacitor");
 
-  Props.append(new Property("C", "1 pF", true,
+  Props.append(new Property("C", "1 nF", true,
 		QObject::tr("capacitance in Farad")));
   Props.append(new Property("V", "", false,
 		QObject::tr("initial voltage for transient simulation")));

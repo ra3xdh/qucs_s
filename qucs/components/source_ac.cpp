@@ -65,7 +65,7 @@ Source_ac::Source_ac()
 		QObject::tr("port impedance")));
   Props.append(new Property("P", "0 dBm", false,
 		QObject::tr("(available) ac power in Watts")));
-  Props.append(new Property("f", "1 GHz", false,
+  Props.append(new Property("f", "1 MHz", false,
 		QObject::tr("frequency in Hertz")));
   Props.append(new Property("Temp", "26.85", false,
 	QObject::tr("simulation temperature in degree Celsius")));
