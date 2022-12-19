@@ -767,7 +767,8 @@ void QucsApp::initMenuBar()
   projMenu->addAction(importData);
   projMenu->addAction(graph2csv);
   // TODO only enable if document is VA file
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator ||
+      QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
       // There is no VA-modules builder available for Ngspice etc.
       projMenu->addSeparator();
       projMenu->addAction(buildModule);
