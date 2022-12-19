@@ -41,6 +41,7 @@ class vacomponent : public Component
   protected:
     void createSymbol(QJsonObject json);
     void parseJson(QJsonObject json);
+    QString spice_netlist(bool isXyce);
 
 };
 

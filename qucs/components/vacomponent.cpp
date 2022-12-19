@@ -26,6 +26,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+#include "node.h"
+
 
 /*!
  * \file vacomponent.cpp
@@ -87,6 +89,7 @@ void vacomponent::parseJson(QJsonObject json)
 
     Model = getString(json, "Model");
     Name  = getString(json, "SymName");
+    SpiceModel = "N";
 
     /// TODO adjust location of text
     tx = x1+100;
@@ -291,6 +294,28 @@ void vacomponent::createSymbol(QJsonObject json)
     y2 = getDouble(json, "y2");
 }
 
+
+QString vacomponent::spice_netlist(bool isXyce)
+{
+    if (isXyce) return QString("");
+
+    QString s = SpiceModel + Name + " ";
+    for(const auto pp: Ports) {
+        s += pp->Connection->Name + " ";
+    }
+    QString tmp_model = QString("mod_%1_%2").arg(Model).arg(Name);
+    s += tmp_model + "\n";
+    QString par_str;
+    for(unsigned int i = 0; i < Props.count(); i++) {
+        par_str += QString("%1=%2 ")
+                .arg(Props.at(i)->Name)
+                .arg(Props.at(i)->Value);
+    }
+    s += QString(".MODEL %1 %2(%3)\n").arg(tmp_model)
+                                      .arg(Model)
+                                      .arg(par_str);
+    return s;
+}
 
 // Move this elsewhere?
 
