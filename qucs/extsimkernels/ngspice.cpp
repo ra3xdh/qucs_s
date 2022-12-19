@@ -137,6 +137,22 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
           <<"echo \"\" > spice4qucs.cir.noise\n"
           <<"echo \"\" > spice4qucs.cir.pz\n";
 
+    bool load_osdi = false;
+    for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (pc->SpiceModel == "N") load_osdi = true;
+    }
+
+    if (load_osdi) {
+        QStringList osdi_ext;
+        osdi_ext<<"*.osdi";
+        QStringList osdi_files = QucsSettings.QucsWorkDir.entryList(osdi_ext,QDir::Files);
+        for(const auto &file : osdi_files) {
+            QString abs_file = QucsSettings.QucsWorkDir.absolutePath() +
+                               QDir::separator() + file;
+            stream<<QString("pre_osdi %1\n").arg(abs_file);
+        }
+    }
+
     QString sim;
     outputs.clear();
 
