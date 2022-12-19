@@ -165,6 +165,11 @@ bool loadSettings()
                     QDir::separator() + "octave" + QString(executableSuffix);
         } else QucsSettings.OctaveExecutable = "octave" + QString(executableSuffix);
     }
+    if(settings.contains("OpenVAFExecutable")) {
+        QucsSettings.OpenVAFExecutable = settings.value("OpenVAFExecutable").toString();
+    } else {
+        QucsSettings.OpenVAFExecutable = "openvaf" + QString(executableSuffix);
+    }
     if(settings.contains("QucsHomeDir"))
       if(settings.value("QucsHomeDir").toString() != "")
          QucsSettings.QucsHomeDir.setPath(settings.value("QucsHomeDir").toString());
@@ -257,6 +262,7 @@ bool saveApplSettings()
     settings.setValue("SimParameters",QucsSettings.SimParameters);
     // settings.setValue("OctaveBinDir", QucsSettings.OctaveBinDir.canonicalPath());
     settings.setValue("OctaveExecutable",QucsSettings.OctaveExecutable);
+    settings.setValue("OpenVAFExecutable",QucsSettings.OpenVAFExecutable);
     settings.setValue("QucsHomeDir", QucsSettings.QucsHomeDir.canonicalPath());
     settings.setValue("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
     settings.setValue("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);

@@ -362,6 +362,13 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     locationsGrid->addWidget(OctaveButt, 4, 2);
     connect(OctaveButt, SIGNAL(clicked()), SLOT(slotOctaveDirBrowse()));
 
+    locationsGrid->addWidget(new QLabel(tr("OpenVAF Path:"), locationsTab) ,5,0);
+    OpenVAFEdit = new QLineEdit(locationsTab);
+    locationsGrid->addWidget(OpenVAFEdit,5,1);
+    QPushButton *OpenVAFButt = new QPushButton("Browse");
+    locationsGrid->addWidget(OpenVAFButt, 5, 2);
+    connect(OpenVAFButt, SIGNAL(clicked()), SLOT(slotOpenVAFDirBrowse()));
+
 
     // the pathsTableWidget displays the path list
     pathsTableWidget = new QTableWidget(locationsTab);
@@ -382,20 +389,20 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     pathsTableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(pathsTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotPathTableClicked(int,int)));
     connect(pathsTableWidget, SIGNAL(itemSelectionChanged()), SLOT(slotPathSelectionChanged()));
-    locationsGrid->addWidget(pathsTableWidget,5,0,3,2);
+    locationsGrid->addWidget(pathsTableWidget,6,0,3,2);
 
     QPushButton *AddPathButt = new QPushButton("Add Path");
-    locationsGrid->addWidget(AddPathButt, 5, 2);
+    locationsGrid->addWidget(AddPathButt, 6, 2);
     connect(AddPathButt, SIGNAL(clicked()), SLOT(slotAddPath()));
 
     QPushButton *AddPathSubFolButt = new QPushButton("Add Path With SubFolders");
-    locationsGrid->addWidget(AddPathSubFolButt, 6, 2);
+    locationsGrid->addWidget(AddPathSubFolButt, 7, 2);
     connect(AddPathSubFolButt, SIGNAL(clicked()), SLOT(slotAddPathWithSubFolders()));
 
     RemovePathButt = new QPushButton("Remove Path");
     // disable button if no paths in the table are selected
     RemovePathButt->setEnabled(false);
-    locationsGrid->addWidget(RemovePathButt , 7, 2);
+    locationsGrid->addWidget(RemovePathButt , 8, 2);
     connect(RemovePathButt, SIGNAL(clicked()), SLOT(slotRemovePath()));
 
     // create a copy of the current global path list
@@ -453,6 +460,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     admsXmlEdit->setText(QucsSettings.AdmsXmlBinDir.canonicalPath());
     ascoEdit->setText(QucsSettings.AscoBinDir.canonicalPath());
     octaveEdit->setText(QucsSettings.OctaveExecutable);
+    OpenVAFEdit->setText(QucsSettings.OpenVAFExecutable);
 
 
     resize(300, 200);
@@ -650,6 +658,7 @@ void QucsSettingsDialog::slotApply()
     QucsSettings.AdmsXmlBinDir.setPath(admsXmlEdit->text());
     QucsSettings.AscoBinDir.setPath(ascoEdit->text());
     QucsSettings.OctaveExecutable = octaveEdit->text();
+    QucsSettings.OpenVAFExecutable = OpenVAFEdit->text();
 
     if (QucsSettings.IgnoreFutureVersion != checkLoadFromFutureVersions->isChecked())
     {
@@ -976,6 +985,15 @@ void QucsSettingsDialog::slotOctaveDirBrowse()
 
   if(!d.isEmpty())
     octaveEdit->setText(d);
+}
+
+void QucsSettingsDialog::slotOpenVAFDirBrowse()
+{
+  QString d = QFileDialog::getOpenFileName(this, tr("Select the OpenVAF executable"),
+                                           octaveEdit->text(), "All files (*)");
+
+  if(!d.isEmpty())
+    OpenVAFEdit->setText(d);
 }
 
 /*! \brief (seems unused at present)
