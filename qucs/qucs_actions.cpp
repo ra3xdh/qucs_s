@@ -1496,6 +1496,11 @@ void QucsApp::slotBuildModule()
     // reset message dock on entry
     messageDock->reset();
 
+    if (QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
+        buildWithOpenVAF();
+        return;
+    }
+
     messageDock->builderTabs->setTabIcon(0,QPixmap());
     messageDock->builderTabs->setTabText(0,tr("admsXml"));
     messageDock->builderTabs->setTabIcon(1,QPixmap());
@@ -1601,6 +1606,60 @@ void QucsApp::slotBuildModule()
     // shot the message docks
     messageDock->msgDock->show();
 
+}
+
+
+void QucsApp::buildWithOpenVAF()
+{
+    messageDock->builderTabs->setTabIcon(0,QPixmap());
+    messageDock->builderTabs->setTabText(0,tr("OpenVAF"));
+    messageDock->msgDock->setWindowTitle(tr("OpenVAF Dock"));
+
+
+    QString workDir = QucsSettings.QucsWorkDir.absolutePath();
+    QDir::setCurrent(workDir);
+
+    QProcess *builder = new QProcess();
+    builder->setProcessChannelMode(QProcess::MergedChannels);
+    // get current va document
+    QucsDoc *Doc = getDoc();
+    QString vaModule = Doc->DocName;
+
+    QString openVAF = QucsSettings.OpenVAFExecutable;
+
+    // admsXml emits C++
+    QStringList Arguments;
+    Arguments<<vaModule;
+
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    env.insert("PATH", env.value("PATH") );
+    builder->setProcessEnvironment(env);
+
+    // prepend command to log
+    QString cmdString = QString("%1 %2\n").arg(openVAF, Arguments.join(" "));
+    messageDock->admsOutput->appendPlainText(cmdString);
+
+    qDebug() << "Command :" << openVAF << Arguments.join(" ");
+    builder->start(openVAF, Arguments);
+
+    // admsXml seems to communicate all via stdout, or is it because of make?
+    QString vaStatus;
+    if (!builder->waitForFinished()) {
+        vaStatus = builder->errorString();
+        qDebug() << "OpenVAF failed:" << vaStatus;
+    }
+    else {
+        vaStatus = builder->readAll();
+        qDebug() << "OpenVAF stdout"  << vaStatus;
+    }
+
+    delete builder;
+
+    // push make output to message dock
+    messageDock->admsOutput->appendPlainText(vaStatus);
+
+    // shot the message docks
+    messageDock->msgDock->show();
 }
 
 // ----------------------------------------------------------
