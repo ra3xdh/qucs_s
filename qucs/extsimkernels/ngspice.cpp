@@ -149,7 +149,7 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         for(const auto &file : osdi_files) {
             QString abs_file = QucsSettings.QucsWorkDir.absolutePath() +
                                QDir::separator() + file;
-            stream<<QString("pre_osdi %1\n").arg(abs_file);
+            stream<<QString("pre_osdi '%1'\n").arg(abs_file);
         }
     }
 
