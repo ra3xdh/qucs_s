@@ -252,6 +252,79 @@ int Schematic::saveSymbolCpp (void)
   return 0;
 }
 
+int Schematic::savePropsJSON()
+{
+    QFileInfo info (DocName);
+    QString jsonfile = info.absolutePath () + QDir::separator()
+                     + info.baseName() + "_props.json";
+    QString vafilename = info.absolutePath () + QDir::separator()
+                     + info.baseName() + ".va";
+
+    QFile vafile(vafilename);
+    if (!vafile.open (QIODevice::ReadOnly)) {
+      QMessageBox::critical (0, QObject::tr("Error"),
+             QObject::tr("Cannot open Verilog-A file \"%1\"!").arg(vafilename));
+      return -1;
+    }
+
+    QString module;
+    QStringList prop_name;
+    QStringList prop_val;
+    QTextStream vastream (&vafile);
+    while(!vastream.atEnd()) {
+        QString line = vastream.readLine();
+        line = line.toLower();
+        if (line.contains("module")) {
+            auto tokens = line.split(QRegularExpression("[\\s()]"));
+            if (tokens.count() > 1) module = tokens.at(1);
+            module = module.trimmed();
+            continue;
+        }
+        if (line.contains("parameter")) {
+            auto tokens = line.split(QRegularExpression("[\\s=;]"),qucs::SkipEmptyParts);
+            if (tokens.count() >= 4) {
+               prop_name.append(tokens.at(2));
+               prop_val.append(tokens.at(3));
+            }
+        }
+    }
+    vafile.close();
+
+
+    QFile file (jsonfile);
+
+    if (!file.open (QIODevice::WriteOnly)) {
+      QMessageBox::critical (0, QObject::tr("Error"),
+             QObject::tr("Cannot save JSON props file \"%1\"!").arg(jsonfile));
+      return -1;
+    }
+
+    QTextStream stream (&file);
+
+    stream << "{\n";
+
+    stream << QString("  \"description\" : \"%1 verilog device\",\n").arg(module);
+    stream << "  \"property\" : [\n";
+    auto name = prop_name.begin();
+    auto val = prop_val.begin();
+    for(; name != prop_name.end(); name++,val++) {
+        stream << QString("    { \"name\" : \"%1\", \"value\" : \"%2\", \"display\" : \"false\", \"desc\" : \"-\"},\n")
+                  .arg(*name,*val);
+    }
+    stream << "  ],\n\n";
+    stream << "  \"tx\" : 4,\n";
+    stream << "  \"ty\" : 4,\n";
+    stream << QString("  \"Model\" : \"%1\",\n").arg(module);
+    stream << "  \"NetName\" : \"T\",\n\n\n";
+    stream << QString("  \"SymName\" : \"%1\",\n").arg(module);
+    stream << QString("  \"BitmapFile\" : \"%1\",\n").arg(module);
+
+    stream << "}";
+
+    file.close ();
+    return 0;
+}
+
 // save symbol paintings in JSON format
 int Schematic::saveSymbolJSON()
 {
@@ -420,76 +493,81 @@ int Schematic::saveDocument()
     if (fileSuffix (DataDisplay) == "va") {
       saveSymbolCpp ();
       saveSymbolJSON ();
+      if (QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
+          savePropsJSON();
+      } else if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+          // TODO slit this into another method, or merge into saveSymbolJSON
+          // handle errors in separate
+          qDebug() << "  -> Run adms for symbol";
 
-      // TODO slit this into another method, or merge into saveSymbolJSON
-      // handle errors in separate
-      qDebug() << "  -> Run adms for symbol";
+          QString vaFile;
 
-      QString vaFile;
+    //      QDir prefix = QDir(QucsSettings.BinDir);
 
-//      QDir prefix = QDir(QucsSettings.BinDir);
+          QFileInfo inf(QucsSettings.Qucsator);
+          QString QucsatorPath = inf.path()+QDir::separator();
+          QDir include = QDir(QucsatorPath+"../include/qucs-core");
 
-      QFileInfo inf(QucsSettings.Qucsator);
-      QString QucsatorPath = inf.path()+QDir::separator();
-      QDir include = QDir(QucsatorPath+"../include/qucs-core");
+          //pick admsXml from settings
+          QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
 
-      //pick admsXml from settings
-      QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
+    #ifdef __MINGW32__
+          admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml.exe");
+    #else
+          admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml");
+    #endif
 
-#ifdef __MINGW32__
-      admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml.exe");
-#else
-      admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml");
-#endif
+          QString workDir = QucsSettings.QucsWorkDir.absolutePath();
 
-      QString workDir = QucsSettings.QucsWorkDir.absolutePath();
+          qDebug() << "App path : " << qApp->applicationDirPath();
+          qDebug() << "workdir"  << workDir;
+          qDebug() << "homedir"  << QucsSettings.QucsHomeDir.absolutePath();
 
-      qDebug() << "App path : " << qApp->applicationDirPath();
-      qDebug() << "workdir"  << workDir;
-      qDebug() << "homedir"  << QucsSettings.QucsHomeDir.absolutePath();
+          vaFile = QucsSettings.QucsWorkDir.filePath(fileBase()+".va");
 
-      vaFile = QucsSettings.QucsWorkDir.filePath(fileBase()+".va");
+          QStringList Arguments;
+          Arguments << QDir::toNativeSeparators(vaFile)
+                    << "-I" << QDir::toNativeSeparators(include.absolutePath())
+                    << "-e" << QDir::toNativeSeparators(include.absoluteFilePath("qucsMODULEguiJSONsymbol.xml"))
+                    << "-A" << "dyload";
 
-      QStringList Arguments;
-      Arguments << QDir::toNativeSeparators(vaFile)
-                << "-I" << QDir::toNativeSeparators(include.absolutePath())
-                << "-e" << QDir::toNativeSeparators(include.absoluteFilePath("qucsMODULEguiJSONsymbol.xml"))
-                << "-A" << "dyload";
+    //      QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    //      env.insert("PATH", env.value("PATH") );
 
-//      QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-//      env.insert("PATH", env.value("PATH") );
+          QFile file(admsXml);
+          if ( !file.exists() ){
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("Program admsXml not found: %1\n\n"
+                                      "Set the admsXml location on the application settings.").arg(admsXml));
+            return -1;
+          }
 
-      QFile file(admsXml);
-      if ( !file.exists() ){
-        QMessageBox::critical(this, tr("Error"),
-                              tr("Program admsXml not found: %1\n\n"
-                                  "Set the admsXml location on the application settings.").arg(admsXml));
-        return -1;
+          qDebug() << "Command: " << admsXml << Arguments.join(" ");
+
+          // need to cd into project to run admsXml?
+          QDir::setCurrent(workDir);
+
+          QProcess builder;
+          builder.setProcessChannelMode(QProcess::MergedChannels);
+
+          builder.start(admsXml, Arguments);
+
+
+          // how to capture [warning]? need to modify admsXml?
+          // TODO put stdout, stderr into a dock window, not messagebox
+          if (!builder.waitForFinished()) {
+            QString cmdString = QString("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
+            cmdString = cmdString + builder.errorString();
+            QMessageBox::critical(this, tr("Error"), cmdString);
+          }
+          else {
+            QString cmdString = QString("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
+            cmdString = cmdString + builder.readAll();
+            QMessageBox::information(this, tr("Status"), cmdString);
+          }
       }
 
-      qDebug() << "Command: " << admsXml << Arguments.join(" ");
 
-      // need to cd into project to run admsXml?
-      QDir::setCurrent(workDir);
-
-      QProcess builder;
-      builder.setProcessChannelMode(QProcess::MergedChannels);
-
-      builder.start(admsXml, Arguments);
-
-
-      // how to capture [warning]? need to modify admsXml?
-      // TODO put stdout, stderr into a dock window, not messagebox
-      if (!builder.waitForFinished()) {
-        QString cmdString = QString("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
-        cmdString = cmdString + builder.errorString();
-        QMessageBox::critical(this, tr("Error"), cmdString);
-      }
-      else {
-        QString cmdString = QString("%1 %2\n\n").arg(admsXml, Arguments.join(" "));
-        cmdString = cmdString + builder.readAll();
-        QMessageBox::information(this, tr("Status"), cmdString);
-      }
 
       // Append _sym.json into _props.json, save into _symbol.json
       QFile f1(QucsSettings.QucsWorkDir.filePath(fileBase()+"_props.json"));
