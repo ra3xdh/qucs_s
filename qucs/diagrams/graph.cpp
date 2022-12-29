@@ -16,8 +16,9 @@
  ***************************************************************************/
 #include "graph.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <iostream>
+#include <cmath>
 
 #include <QPainter>
 #include <QDebug>
@@ -319,28 +320,30 @@ bool Graph::ScrPt::isGraphEnd() const{return ScrX<=GRAPHEND;}
  * eg. between calcCoordinate and clip.
  * (negative values are reserved for control.)
  */
-void Graph::ScrPt::setScrX(float x)
-{
-  if(x<0){
-    std::cerr << "dangerous: negative screen coordinate" << x;
-  }
-  if(ScrX<0){
-    std::cerr << "dangerous: (maybe) overwriting control token" << x;
-  }
-  ScrX = x;
+void Graph::ScrPt::setScrX(float x) {
+    if (x < 0) {
+        qDebug() << "dangerous: negative screen coordinate" << x;
+    }
+    if (ScrX < 0) {
+        qDebug() << "dangerous: (maybe) overwriting control token" << x;
+    }
+    ScrX = x;
 }
-void Graph::ScrPt::setScrY(float x)
-{
-  if(x<0){ // need to investigate...
-    qDebug() << "setting negative screen coordinate" << x << "at" << ScrX;
-  }
-  ScrY = x;
+
+void Graph::ScrPt::setScrY(float y) {
+    if (y < 0) { // need to investigate...
+        qDebug() << "setting negative screen coordinate" << y << "at" << ScrY;
+    }
+    ScrY = y;
 }
-void Graph::ScrPt::setScr(float x, float y)
-{
-  setScrX(x);
-  setScrY(y);
+
+void Graph::ScrPt::setScr(float x, float y) {
+    x = fmaxf(x, 0); // avoid negative coordinates
+    y = fmaxf(y, 0);
+    setScrX(x);
+    setScrY(y);
 }
+
 void Graph::ScrPt::setIndep(double x)
 {
   assert(ScrX>=0);
