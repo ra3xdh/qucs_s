@@ -299,32 +299,29 @@ bool saveApplSettings()
  * <http://qt-project.org/doc/qt-4.8/debug.html#warning-and-debugging-messages>
  * <http://qt-project.org/doc/qt-4.8/qtglobal.html#qInstallMsgHandler>
  */
-void qucsMessageOutput(QtMsgType type, const QMessageLogContext &, const QString &str)
+void qucsMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-  const char *msg = str.toUtf8().data();
-  switch (type) {
-  case QtDebugMsg:
-    fprintf(stderr, "Debug: %s\n", msg);
-    break;
-  case QtWarningMsg:
-    fprintf(stderr, "Warning: %s\n", msg);
-    break;
-  case QtCriticalMsg:
-    fprintf(stderr, "Critical: %s\n", msg);
-    break;
-  case QtFatalMsg:
-    fprintf(stderr, "Fatal: %s\n", msg);
-    break;
-  case QtInfoMsg:
-    fprintf(stderr,"Info %s\n", msg);
-    break;
-  default:
-    fprintf(stderr,"%s\n", msg);
-  }
-
-#ifdef _WIN32
-  OutputDebugStringA(msg);
-#endif
+    QByteArray localMsg = msg.toLocal8Bit();
+    const char *file = context.file ? context.file : "";
+    const char *function = context.function ? context.function : "";
+    switch (type) {
+        case QtDebugMsg:
+            fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+            break;
+        case QtInfoMsg:
+            fprintf(stderr, "Info: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+            break;
+        case QtWarningMsg:
+            fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+            break;
+        case QtCriticalMsg:
+            fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+            break;
+        case QtFatalMsg:
+            fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+            break;
+    }
+    fflush(stderr);
 }
 
 Schematic *openSchematic(QString schematic)
