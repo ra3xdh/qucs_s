@@ -1,5 +1,4 @@
 *.moc.o
-*.moc.o
 *.moc.cpp
 ui_*.h
 *.o
@@ -51,3 +50,4 @@ qrc_*.cpp
 *.dat.ngspice
 *.dat.xyce
 *.dat.spopus
+.idea/
