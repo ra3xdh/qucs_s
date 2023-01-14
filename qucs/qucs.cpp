@@ -466,7 +466,7 @@ void QucsApp::fillLibrariesTreeView ()
     QDir LibDir(QucsSettings.LibDir);
     LibFiles = LibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
     QStringList blacklist = getBlacklistedLibraries(QucsSettings.LibDir);
-    foreach(QString ss, blacklist) { // exclude blacklisted files
+    for (const QString& ss: blacklist) { // exclude blacklisted files
         LibFiles.removeAll(ss);
     }
 
@@ -483,18 +483,18 @@ void QucsApp::fillLibrariesTreeView ()
         nameAndFileName.append (parsedlibrary.name);
         nameAndFileName.append (QucsSettings.LibDir + *it);
 
-        QTreeWidgetItem* newlibitem = new QTreeWidgetItem((QTreeWidget*)0, nameAndFileName);
+        QTreeWidgetItem* newlibitem = new QTreeWidgetItem((QTreeWidget*)nullptr, nameAndFileName);
 
         switch (result)
         {
             case QUCS_COMP_LIB_IO_ERROR:
             {
                 QString filename = getLibAbsPath(libPath);
-                QMessageBox::critical(0, tr ("Error"), tr("Cannot open \"%1\".").arg (filename));
+                QMessageBox::critical(nullptr, tr ("Error"), tr("Cannot open \"%1\".").arg (filename));
                 return;
             }
             case QUCS_COMP_LIB_CORRUPT:
-                QMessageBox::critical(0, tr("Error"), tr("Library is corrupt."));
+                QMessageBox::critical(nullptr, tr("Error"), tr("Library is corrupt."));
                 return;
             default:
                 break;
@@ -539,7 +539,7 @@ void QucsApp::fillLibrariesTreeView ()
     const QDir& UsrLibDir(UserLibDir);
     LibFiles = UsrLibDir.entryList(QStringList("*.lib"), QDir::Files, QDir::Name);
     blacklist = getBlacklistedLibraries(QucsSettings.LibDir);
-    foreach(QString ss, blacklist) { // exclude blacklisted files
+    for (const QString& ss : blacklist) { // exclude blacklisted files
         LibFiles.removeAll(ss);
     }
     int UserLibCount = LibFiles.count();
@@ -669,7 +669,7 @@ void QucsApp::fillComboBox (bool setAll)
     CompChoose->insertItem(CompChoose->count(), QObject::tr("paintings"));
   } else {
     QStringList cats = Category::getCategories ();
-    foreach (QString it, cats) {
+    for (const QString& it : cats) {
       CompChoose->insertItem(CompChoose->count(), it);
     }
   }
@@ -803,12 +803,12 @@ void QucsApp::slotSearchComponent(const QString &searchText)
     QString Name;
     char * File;
     QList<Module *> Comps;
-    iconCompInfoStruct iconCompInfo;
+    iconCompInfoStruct iconCompInfo{};
     QVariant v;
 
     QStringList cats = Category::getCategories ();
     int catIdx = 0;
-    foreach(QString it, cats) {
+    for (const QString& it : cats) {
       // this will go also over the "verilog-a user devices" category, if present
       //   but since modules there have no 'info' function it won't handle them
       Comps = Category::getModules(it);
@@ -1356,31 +1356,7 @@ bool QucsApp::recurRemove(const QString &Path)
 {
   bool result = true;
   QDir projDir = QDir(Path);
-
-  if (projDir.exists(Path)) {
-    Q_FOREACH(QFileInfo info, 
-        projDir.entryInfoList(
-            QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::AllEntries, QDir::DirsFirst)) {
-      if (info.isDir()) {
-        result = recurRemove(info.absoluteFilePath());
-        if (!result) {
-          QMessageBox::information(this, tr("Info"),
-              tr("Cannot remove directory: %1").arg(Path));
-          return false;
-        }
-      }
-      else if(info.isFile()) {
-        result = QFile::remove(info.absoluteFilePath());
-        if (!result) {
-          QMessageBox::information(this, tr("Info"),
-              tr("Cannot delete file: %1").arg(info.fileName()));
-          return false;
-        }
-      }
-    }
-    result = projDir.rmdir(Path);
-  }
-  return result;
+  return projDir.removeRecursively();
 }
 
 // ----------------------------------------------------------
@@ -2854,13 +2830,13 @@ void QucsApp::updateSchNameHash(void)
     // clear out any existing hash table entries
     schNameHash.clear();
 
-    foreach (QString qucspath, qucsPathList) {
+    for (const QString& qucspath : qucsPathList) {
         QDir thispath(qucspath);
         // get all the schematic files in the directory
         QFileInfoList schfilesList = thispath.entryInfoList( nameFilter, QDir::Files );
         // put each one in the hash table with the unique key the base name of
         // the file, note this will overwrite the value if the key already exists
-        foreach (QFileInfo schfile, schfilesList) {
+        for (const QFileInfo& schfile : schfilesList) {
             QString bn = schfile.completeBaseName();
             schNameHash[schfile.completeBaseName()] = schfile.absoluteFilePath();
         }
@@ -2871,7 +2847,7 @@ void QucsApp::updateSchNameHash(void)
     QFileInfoList schfilesList = thispath.entryInfoList( nameFilter, QDir::Files );
     // put each one in the hash table with the unique key the base name of
     // the file, note this will overwrite the value if the key already exists
-    foreach (QFileInfo schfile, schfilesList) {
+    for (const QFileInfo& schfile : schfilesList) {
         schNameHash[schfile.completeBaseName()] = schfile.absoluteFilePath();
     }
 }
@@ -2879,7 +2855,7 @@ void QucsApp::updateSchNameHash(void)
 // -----------------------------------------------------------
 // Searches the qucs path list for all spice files and creates
 // a hash for lookup later
-void QucsApp::updateSpiceNameHash(void)
+void QucsApp::updateSpiceNameHash()
 {
     // update the list of paths to search in qucsPathList, this
     // removes nonexisting entries
@@ -2895,13 +2871,13 @@ void QucsApp::updateSpiceNameHash(void)
     // clear out any existing hash table entries
     spiceNameHash.clear();
 
-    foreach (QString qucspath, qucsPathList) {
+    for (const QString& qucspath : qucsPathList) {
         QDir thispath(qucspath);
         // get all the schematic files in the directory
         QFileInfoList spicefilesList = thispath.entryInfoList( QucsSettings.spiceExtensions, QDir::Files );
         // put each one in the hash table with the unique key the base name of
         // the file, note this will overwrite the value if the key already exists
-        foreach (QFileInfo spicefile, spicefilesList) {
+        for (const QFileInfo& spicefile : spicefilesList) {
             QString bn = spicefile.completeBaseName();
             schNameHash[spicefile.completeBaseName()] = spicefile.absoluteFilePath();
         }
@@ -2912,14 +2888,14 @@ void QucsApp::updateSpiceNameHash(void)
     QFileInfoList spicefilesList = thispath.entryInfoList( QucsSettings.spiceExtensions, QDir::Files );
     // put each one in the hash table with the unique key the base name of
     // the file, note this will overwrite the value if the key already exists
-    foreach (QFileInfo spicefile, spicefilesList) {
+    for (const QFileInfo& spicefile : spicefilesList) {
         spiceNameHash[spicefile.completeBaseName()] = spicefile.absoluteFilePath();
     }
 }
 
 // -----------------------------------------------------------
 // update the list of paths, pruning non-existing paths
-void QucsApp::updatePathList(void)
+void QucsApp::updatePathList()
 {
     // check each path actually exists, if not remove it
     QMutableListIterator<QString> i(qucsPathList);
@@ -2941,7 +2917,7 @@ void QucsApp::updatePathList(QStringList newPathList)
     qucsPathList.clear();
 
     // copy the new path into the path list
-    foreach(QString path, newPathList)
+    for (const QString& path : newPathList)
     {
         qucsPathList.append(path);
     }

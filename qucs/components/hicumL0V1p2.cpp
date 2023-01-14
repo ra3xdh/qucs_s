@@ -365,7 +365,7 @@ QString hicumL0V1p2::netlist()
   QString s = "hicumL0V1p2:"+Name;
 
   // output all node names
-  foreach(Port *pp, Ports)
+  for (Port *pp : Ports)
     s += " "+pp->Connection->Name;   // node names
 
   // output type npn/pnp property

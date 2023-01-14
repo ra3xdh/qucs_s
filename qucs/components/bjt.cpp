@@ -46,7 +46,7 @@ QString BJT::spice_netlist(bool)
     QList<int> pin_seq;
     pin_seq<<1<<0<<2; // Pin sequence: CBE
     // output all node names
-    foreach(int pin, pin_seq) {
+    for (int pin : pin_seq) {
         QString nam = Ports.at(pin)->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
@@ -123,12 +123,12 @@ QString BJT::netlist()
   QString s = "BJT:"+Name;
 
   // output all node names
-  foreach(Port *p1, Ports)
+  for (Port *p1 : Ports)
     s += " "+p1->Connection->Name;   // node names
   s += " "+Ports.at(1)->Connection->Name;  // connect substrate to collector
 
   // output all properties
-  for(Property *p2 = Props.first(); p2 != 0; p2 = Props.next())
+  for(Property *p2 = Props.first(); p2 != nullptr; p2 = Props.next())
     s += " "+p2->Name+"=\""+p2->Value+"\"";
 
   return s + '\n';

@@ -57,7 +57,7 @@ private:
     void ExtractModIfsFiles(QStringList &objects, QStringList &lst_entries,
                             const QString &prefix, QString &output);
     bool ModIfsPairProcessed(const QString &mod, const QString &ifs);
-    QString getNgspiceRoot();
+    static QString getNgspiceRoot();
 };
 
 #endif // XSPICE_CMBUILDER_H

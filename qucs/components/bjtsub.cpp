@@ -204,7 +204,7 @@ QString BJTsub::spice_netlist(bool)
     QList<int> pin_seq;
     pin_seq<<1<<0<<2<<3; // Pin sequence: CBE
     // output all node names
-    foreach(int pin, pin_seq) {
+    for (int pin : pin_seq) {
         QString nam = Ports.at(pin)->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names

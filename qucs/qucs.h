@@ -254,7 +254,7 @@ private:
   void switchSchematicDoc(bool);
   void switchEditMode(bool);
   void changeSchematicSymbolMode(Schematic*);
-  bool recurRemove(const QString &);
+  static bool recurRemove(const QString &);
   void closeFile(int);
 
   void updateRecentFilesList(QString s);

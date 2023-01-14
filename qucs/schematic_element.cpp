@@ -1135,10 +1135,10 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
     for(Diagram *pd = Diagrams->last(); pd != 0; pd = Diagrams->prev())
     {
 
-        foreach(Graph *pg, pd->Graphs)
+        for (Graph *pg : pd->Graphs)
         {
             // test markers of graphs
-            foreach(Marker *pm, pg->Markers)
+            for (Marker *pm : pg->Markers)
             {
                 if(pm->getSelected(x-pd->cx, y-pd->cy))
                 {
@@ -1202,7 +1202,7 @@ Element* Schematic::selectElement(float fX, float fY, bool flag, int *index)
             }
 
             // test graphs of diagram
-            foreach(Graph *pg, pd->Graphs)
+            for (Graph *pg : pd->Graphs)
             {
                 if(pg->getSelected(x-pd->cx, pd->cy-y) >= 0)
                 {
@@ -1458,12 +1458,12 @@ void Schematic::deselectElements(Element *e)
         if(e != pd)  pd->isSelected = false;
 
         // test graphs of diagram
-        foreach(Graph *pg, pd->Graphs)
+        for (Graph *pg : pd->Graphs)
         {
             if(e != pg) pg->isSelected = false;
 
             // test markers of graph
-            foreach(Marker *pm, pg->Markers)
+            for (Marker *pm : pg->Markers)
                 if(e != pm) pm->isSelected = false;
         }
 
@@ -1476,7 +1476,7 @@ void Schematic::deselectElements(Element *e)
 
 // ---------------------------------------------------
 // Selects elements that lie within the rectangle x1/y1, x2/y2.
-int Schematic::selectElements(int x1, int y1, int x2, int y2, bool flag)
+int Schematic::selectElements(int x1, int y1, int x2, int y2, bool flag) const
 {
     int  z=0;   // counts selected elements
     int  cx1, cy1, cx2, cy2;
@@ -1492,7 +1492,7 @@ int Schematic::selectElements(int x1, int y1, int x2, int y2, bool flag)
     y2 = cy2;
 
     // test all components
-    for(Component *pc = Components->first(); pc != 0; pc = Components->next())
+    for(Component *pc = Components->first(); pc != nullptr; pc = Components->next())
     {
         pc->Bounding(cx1, cy1, cx2, cy2);
         if(cx1 >= x1) if(cx2 <= x2) if(cy1 >= y1) if(cy2 <= y2)
@@ -1506,21 +1506,23 @@ int Schematic::selectElements(int x1, int y1, int x2, int y2, bool flag)
 
 
     Wire *pw;
-    for(pw = Wires->first(); pw != 0; pw = Wires->next())   // test all wires
+    for (pw = Wires->first(); pw != nullptr; pw = Wires->next())   // test all wires
     {
-        if(pw->x1 >= x1) if(pw->x2 <= x2) if(pw->y1 >= y1) if(pw->y2 <= y2)
-                    {
+        if (pw->x1 >= x1)
+            if (pw->x2 <= x2)
+                if (pw->y1 >= y1)
+                    if (pw->y2 <= y2) {
                         pw->isSelected = true;
                         z++;
                         continue;
                     }
-        if(pw->isSelected &= flag) z++;
+        if (pw->isSelected &= flag) z++;
     }
 
 
     // test all wire labels *********************************
-    WireLabel *pl=0;
-    for(pw = Wires->first(); pw != 0; pw = Wires->next())
+    WireLabel *pl=nullptr;
+    for(pw = Wires->first(); pw != nullptr; pw = Wires->next())
     {
         if(pw->Label)
         {
@@ -1559,12 +1561,12 @@ int Schematic::selectElements(int x1, int y1, int x2, int y2, bool flag)
     for(Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
     {
         // test graphs of diagram
-        foreach(Graph *pg, pd->Graphs)
+        for (Graph *pg : pd->Graphs)
         {
             if(pg->isSelected &= flag) z++;
 
             // test markers of graph
-            foreach(Marker *pm, pg->Markers)
+            for (Marker *pm : pg->Markers)
             {
                 pm->Bounding(cx1, cy1, cx2, cy2);
                 if(cx1 >= x1) if(cx2 <= x2) if(cy1 >= y1) if(cy2 <= y2)
@@ -1606,11 +1608,11 @@ int Schematic::selectElements(int x1, int y1, int x2, int y2, bool flag)
 
 // ---------------------------------------------------
 // Selects all markers.
-void Schematic::selectMarkers()
+void Schematic::selectMarkers() const
 {
     for(Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
-        foreach(Graph *pg, pd->Graphs)
-            foreach(Marker *pm, pg->Markers)
+        for (Graph *pg : pd->Graphs)
+            for (Marker *pm : pg->Markers)
                 pm->isSelected = true;
 }
 
@@ -1618,7 +1620,7 @@ void Schematic::selectMarkers()
 // For moving elements: If the moving element is connected to a not
 // moving element, insert two wires. If the connected element is already
 // a wire, use this wire. Otherwise create new wire.
-void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
+void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos) const
 {
     Element *pe;
 
@@ -1641,7 +1643,7 @@ void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
 
         // .................................................
         long  mask = 1, invMask = 3;
-        Wire *pw2=0, *pw = (Wire*)pe;
+        Wire *pw2=nullptr, *pw = (Wire*)pe;
 
         Node *pn2 = pw->Port1;
         if(pn2 == pn) pn2 = pw->Port2;
@@ -1667,7 +1669,7 @@ void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
 
         if(pw->isHorizontal()) mask = 2;
 
-        if(pw2 == 0)    // place new wire between component and old wire
+        if(pw2 == nullptr)    // place new wire between component and old wire
         {
             pn = pn2;
             mask ^= 3;
@@ -1692,7 +1694,7 @@ void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
         invMask ^= 3;
         // .................................................
         // create new wire ?
-        if(pw2 == 0)
+        if(pw2 == nullptr)
         {
             if(pw->Port1 != (Node*)(uintptr_t)mask)
                 p->insert(pos,
@@ -1715,7 +1717,7 @@ void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
 
         if(pw2->Port1 != pn2)
         {
-            pw2->Port1 = (Node*)0;
+            pw2->Port1 = (Node*)nullptr;
             pw2->Port2->State |= mask;
             pw2->Port2 = (Node*)(uintptr_t)mask;
         }
@@ -1723,7 +1725,7 @@ void Schematic::newMovingWires(Q3PtrList<Element> *p, Node *pn, int pos)
         {
             pw2->Port1->State |= mask;
             pw2->Port1 = (Node*)(uintptr_t)mask;
-            pw2->Port2 = (Node*)0;
+            pw2->Port2 = (Node*)nullptr;
         }
         return;
     }
@@ -1752,14 +1754,14 @@ int Schematic::copySelectedElements(Q3PtrList<Element> *p)
 
     // test all components *********************************
     // Insert components before wires in order to prevent short-cut removal.
-    for(pc = Components->first(); pc != 0; )
+    for(pc = Components->first(); pc != nullptr; )
         if(pc->isSelected)
         {
             p->append(pc);
             count++;
 
             // delete all port connections
-            foreach(Port *pp, pc->Ports)
+            for (Port *pp : pc->Ports)
             {
                 pp->Connection->Connections.removeRef((Element*)pc);
                 pp->Connection->State = 4;
@@ -1771,7 +1773,7 @@ int Schematic::copySelectedElements(Q3PtrList<Element> *p)
         else pc = Components->next();
 
     // test all wires and wire labels ***********************
-    for(pw = Wires->first(); pw != 0; )
+    for(pw = Wires->first(); pw != nullptr; )
     {
         if(pw->Label) if(pw->Label->isSelected)
                 p->append(pw->Label);
@@ -1797,18 +1799,18 @@ int Schematic::copySelectedElements(Q3PtrList<Element> *p)
     pc = (Component*)p->first();
     for(i=0; i<count; i++)
     {
-        foreach(Port *pp, pc->Ports)
+        for (Port *pp : pc->Ports)
             newMovingWires(p, pp->Connection, count);
 
         p->findRef(pc);   // back to the real current pointer
         pc = (Component*)p->next();
     }
 
-    for(pe = (Element*)pc; pe != 0; pe = p->next())  // new wires
+    for(pe = (Element*)pc; pe != nullptr; pe = p->next())  // new wires
         if(pe->isSelected)
             break;
 
-    for(pw = (Wire*)pe; pw != 0; pw = (Wire*)p->next())
+    for(pw = (Wire*)pe; pw != nullptr; pw = (Wire*)p->next())
         if(pw->Type == isWire)    // not working on labels
         {
             newMovingWires(p, pw->Port1, count);
@@ -1878,7 +1880,7 @@ int Schematic::copySelectedElements(Q3PtrList<Element> *p)
         }
         else
         {
-            foreach(Graph *pg, pd->Graphs)
+            for (Graph *pg : pd->Graphs)
             {
                 QMutableListIterator<Marker *> im(pg->Markers);
                 Marker *pm;
@@ -2484,7 +2486,7 @@ void Schematic::insertComponentNodes(Component *c, bool noOptimize)
     if (c->Ports.empty()) return;
 
     // connect every node of the component to corresponding schematic node
-    foreach(Port *pp, c->Ports)
+    for (Port *pp : c->Ports)
         pp->Connection = insertNode(pp->x+c->cx, pp->y+c->cy, c);
 
     if(noOptimize)  return;
@@ -2550,7 +2552,7 @@ void Schematic::recreateComponent(Component *Comp)
         // Save the labels whose node is not connected to somewhere else.
         // Otherwise the label would be deleted.
         pl = plMem = (WireLabel**)malloc(PortCount * sizeof(WireLabel*));
-        foreach(Port *pp, Comp->Ports)
+        for (Port *pp : Comp->Ports)
             if(pp->Connection->Connections.count() < 2)
             {
                 *(pl++) = pp->Connection->Label;
@@ -2581,7 +2583,7 @@ void Schematic::recreateComponent(Component *Comp)
     {
         // restore node labels
         pl = plMem;
-        foreach(Port *pp, Comp->Ports)
+        for (Port *pp : Comp->Ports)
         {
             if(*pl != 0)
             {
@@ -2754,7 +2756,7 @@ void Schematic::setCompPorts(Component *pc)
     WireLabel *pl;
     Q3PtrList<WireLabel> LabelCache;
 
-    foreach(Port *pp, pc->Ports)
+    for (Port *pp : pc->Ports)
     {
         pp->Connection->Connections.removeRef((Element*)pc);// delete connections
         switch(pp->Connection->Connections.count())
@@ -2778,7 +2780,7 @@ void Schematic::setCompPorts(Component *pc)
 
     // Re-connect component node to schematic node. This must be done completely
     // after the first loop in order to avoid problems with node labels.
-    foreach(Port *pp, pc->Ports)
+    for (Port *pp : pc->Ports)
         pp->Connection = insertNode(pp->x+pc->cx, pp->y+pc->cy, pc);
 
     for(pl = LabelCache.first(); pl != 0; pl = LabelCache.next())
@@ -2787,7 +2789,7 @@ void Schematic::setCompPorts(Component *pc)
 
 // ---------------------------------------------------
 // Returns a pointer of the component on whose text x/y points.
-Component* Schematic::selectCompText(int x_, int y_, int& w, int& h)
+Component* Schematic::selectCompText(int x_, int y_, int& w, int& h) const
 {
     int a, b, dx, dy;
     for(Component *pc = Components->first(); pc != 0; pc = Components->next())
@@ -2843,11 +2845,11 @@ Component* Schematic::selectedComponent(int x, int y)
 void Schematic::deleteComp(Component *c)
 {
     // delete all port connections
-    foreach(Port *pn, c->Ports)
+    for (Port *pn : c->Ports)
         switch(pn->Connection->Connections.count())
         {
         case 1  :
-            if(pn->Connection->Label) delete pn->Connection->Label;
+            delete pn->Connection->Label;
             Nodes->removeRef(pn->Connection);  // delete open nodes
             pn->Connection = 0;		  //  (auto-delete)
             break;
@@ -2863,12 +2865,12 @@ void Schematic::deleteComp(Component *c)
     Components->removeRef(c);   // delete component
 }
 
-Component* Schematic::getComponentByName(QString compname)
+Component* Schematic::getComponentByName(const QString& compname)
 {
-    for(Component *pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
+    for(Component *pc = DocComps.first(); pc != nullptr; pc = DocComps.next()) {
         if (pc->Name == compname) return pc;
     }
-    return NULL;
+    return nullptr;
 }
 
 // ---------------------------------------------------
@@ -2892,7 +2894,7 @@ int Schematic::copyComponents(int& x1, int& y1, int& x2, int& y2,
             ElementCache->append(pc);
 
             // rescue non-selected node labels
-            foreach(Port *pp, pc->Ports)
+            for (Port *pp : pc->Ports)
                 if(pp->Connection->Label)
                     if(pp->Connection->Connections.count() < 2)
                     {
@@ -2934,7 +2936,7 @@ void Schematic::copyComponents2(int& x1, int& y1, int& x2, int& y2,
             ElementCache->append(pc);
 
             // rescue non-selected node labels
-            foreach(Port *pp, pc->Ports)
+            for (Port *pp : pc->Ports)
                 if(pp->Connection->Label)
                     if(pp->Connection->Connections.count() < 2)
                     {

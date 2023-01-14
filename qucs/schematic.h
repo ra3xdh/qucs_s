@@ -227,9 +227,9 @@ public:
 
   Element* selectElement(float, float, bool, int *index=0);
   void     deselectElements(Element*);
-  int      selectElements(int, int, int, int, bool);
-  void     selectMarkers();
-  void     newMovingWires(Q3PtrList<Element>*, Node*, int);
+  int      selectElements(int, int, int, int, bool) const;
+  void     selectMarkers() const;
+  void     newMovingWires(Q3PtrList<Element>*, Node*, int) const;
   int      copySelectedElements(Q3PtrList<Element>*);
   bool     deleteElements();
   bool     aligning(int);
@@ -244,11 +244,11 @@ public:
   bool       activateSpecifiedComponent(int, int);
   bool       activateSelectedComponents();
   void       setCompPorts(Component*);
-  Component* selectCompText(int, int, int&, int&);
+  Component* selectCompText(int, int, int&, int&) const;
   Component* searchSelSubcircuit();
   Component* selectedComponent(int, int);
   void       deleteComp(Component*);
-  Component* getComponentByName(QString compname);
+  Component* getComponentByName(const QString& compname);
 
   void     oneLabel(Node*);
   int      placeNodeLabel(WireLabel*);

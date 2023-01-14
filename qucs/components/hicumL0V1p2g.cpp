@@ -371,24 +371,23 @@ void hicumL0V1p2g::createSymbol()
   x2 =  30; y2 =  30;
 }
 
-QString hicumL0V1p2g::netlist()
-{
-  QString s = "hicumL0V1p2g:"+Name;
+QString hicumL0V1p2g::netlist() {
+    QString s = "hicumL0V1p2g:" + Name;
 
-  // output all node names
-  foreach(Port *pp, Ports)
-    s += " "+pp->Connection->Name;   // node names
+    // output all node names
+    for (Port *pp: Ports)
+        s += " " + pp->Connection->Name;   // node names
 
-  // output type npn/pnp property
-  Property *p2 = Props.first();
-  if(p2->Value == "npn")
-    s += " npn=\"1\"";
-  else
-    s += " pnp=\"1\"";
+    // output type npn/pnp property
+    Property *p2 = Props.first();
+    if (p2->Value == "npn")
+        s += " npn=\"1\"";
+    else
+        s += " pnp=\"1\"";
 
-  // output all remaining properties
-  for(p2 = Props.next(); p2 != 0; p2 = Props.next())
-    s += " "+p2->Name+"=\""+p2->Value+"\"";
+    // output all remaining properties
+    for (p2 = Props.next(); p2 != 0; p2 = Props.next())
+        s += " " + p2->Name + "=\"" + p2->Value + "\"";
 
-  return s + '\n';
+    return s + '\n';
 }

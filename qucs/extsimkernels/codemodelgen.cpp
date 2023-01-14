@@ -169,7 +169,7 @@ bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Compone
     stream<<QString("Spice_Model_Name: %1\n").arg(base.toLower());
     stream<<"Description: \" \"\n\n";
 
-    foreach(QString pp,ports) {
+    for(const QString& pp : ports) {
         stream<<"\nPORT_TABLE:\n";
         stream<<QString("Port_Name: %1\n").arg(pp);
         stream<<"Description: \" \"\n";
@@ -192,7 +192,7 @@ bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Compone
         spicecompat::splitEqn(Ieqn,tokens);
         spicecompat::splitEqn(Qeqn,tokens1);
         tokens.append(tokens1);
-        foreach(QString tok,tokens){
+        for(QString& tok : tokens){
             bool isNum = true;
             tok.toFloat(&isNum);
             QRegExp inp_pattern("[IV][0-9]+");
@@ -206,7 +206,7 @@ bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Compone
     scanEquations(sch,pars,dummy1,dummy2); // Recursively extract all parameter from Eqns.
 
     // Form parameter table
-    foreach(QString par,pars) {
+    for (const QString& par : pars) {
         stream<<"PARAMETER_TABLE:\n";
         stream<<QString("Parameter_Name: %1\n").arg(par.toLower());
         stream<<"Description: \"  \"\n"
@@ -260,7 +260,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     stream<<"{\n";
 
     QStringList pars,init_pars,Ieqns,Qeqns,InitEqns,inputs;
-    foreach(QString port,ports) {
+    for (const QString& port : ports) {
         QString Ieqn,Qeqn;
         for(int i=0;i<Nbranch;i++) {
             QString net1 = pc->Ports.at(2*i)->Connection->Name;
@@ -281,7 +281,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
         spicecompat::splitEqn(Ieqn,tokens);
         spicecompat::splitEqn(Qeqn,tokens1);
         tokens.append(tokens1);
-        foreach(QString tok,tokens){
+        for (QString& tok : tokens){
             bool isNum = true;
             tok.toFloat(&isNum);
             QRegExp inp_pattern("[IV][0-9]+");
@@ -295,7 +295,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     scanEquations(sch,pars,init_pars,InitEqns);
 
     QStringList inputs_old; // Variables for charge eqns.
-    foreach(QString inp,inputs) {
+    for (const QString& inp : inputs) {
         inputs_old.append(inp+"_old");
     }
 
@@ -337,7 +337,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     stream<<"\tdouble delta_t;\n\n";
 
     stream<<"\tif(INIT) {\n";
-    foreach (QString par, pars) {
+    for (const QString& par : pars) {
         stream<<"\t\t"+ par + " = PARAM(" + par.toLower() + ");\n";
     }
     auto it_ip=init_pars.begin();
@@ -353,10 +353,10 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     stream<<"\tif (ANALYSIS != AC) {\n";
     stream<<"\tif (TIME == 0) {\n";
     //QStringList::iterator it1 = inputs.begin();
-    for(auto it1 = inputs.begin();it1!=inputs.end();it1++) {
-        QString vv = *it1; // Get input voltage number
+    for(auto & input : inputs) {
+        QString vv = input; // Get input voltage number
         int vn = vv.remove(0,1).toInt()-1;
-        stream<<QString("\t\t%1_old = %1 = INPUT(%2);\n").arg(*it1).arg(ports.at(vn));
+        stream<<QString("\t\t%1_old = %1 = INPUT(%2);\n").arg(input).arg(ports.at(vn));
     }
     for (int i=0;i<ports.count();i++) {
         stream<<QString("\t\tQ%1=0.0;\n").arg(i);
@@ -365,10 +365,10 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
     stream<<"\t} else {\n";
     // Get input voltages
     //QStringList::iterator it = inputs.begin();
-    for(auto it = inputs.begin();it!=inputs.end();it++) {
-        QString vv = *it; // Get input voltage number
+    for(auto & input : inputs) {
+        QString vv = input; // Get input voltage number
         int vn = vv.remove(0,1).toInt()-1;
-        stream<<QString("\t\t%1 = INPUT(%2);\n").arg(*it).arg(ports.at(vn));
+        stream<<QString("\t\t%1 = INPUT(%2);\n").arg(input).arg(ports.at(vn));
     }
     // Time variable for charge eqns.
     stream<<"\t\tdelta_t=TIME-T(1);\n";
@@ -386,7 +386,7 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
             stream<<QString("\t\tcQ%1 = (%2)/(delta_t+1e-20);\n").arg(i).arg(rCeq);
         }
     }
-    foreach(QString inp,inputs) {
+    for (const QString& inp : inputs) {
         stream<<QString("\t\t%1_old = %1;\n").arg(inp);
     }
     stream<<"\t}\n";
@@ -584,7 +584,7 @@ void CodeModelGen::scanEquations(Schematic *sch,QStringList &pars,
                                  QStringList &init_pars, QStringList &InitEqns)
 {
     bool found = false;
-    for(Component *pc=sch->DocComps.first();pc!=0;pc=sch->DocComps.next()) {
+    for(Component *pc=sch->DocComps.first();pc!=nullptr;pc=sch->DocComps.next()) {
         if(pc->Model=="Eqn") {
             int Np = pc->Props.count();
             for(int i=0;i<Np-1;i++) {
@@ -603,7 +603,7 @@ void CodeModelGen::scanEquations(Schematic *sch,QStringList &pars,
                         GinacConvToC(InitEqn,res);
                         InitEqn = res;
                         InitEqns.append(InitEqn);
-                        foreach(QString tok,tokens) {
+                        for (QString& tok : tokens) {
                             bool isNum = true;
                             tok.toFloat(&isNum);
                             if ((!isGinacFunc(tok))&&(!isNum))

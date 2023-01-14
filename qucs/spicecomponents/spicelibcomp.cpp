@@ -215,7 +215,7 @@ int SpiceLibComp::loadSymbol(const QString& DocName)
 QString SpiceLibComp::spice_netlist(bool)
 {
     QString s = QString("X%1 ").arg(Name);
-    foreach(Port *p1, Ports) {
+    for (Port *p1 : Ports) {
         s += " " + spicecompat::normalize_node_name(p1->Connection->Name);
     }
     s += QString(" %1 %2\n").arg(Props.at(1)->Value).arg(Props.at(3)->Value);
@@ -236,7 +236,7 @@ void SpiceLibComp::getSymbolPatternsList(QStringList &symbols)
     QString dir_name = QucsSettings.BinDir + "/../share/" QUCS_NAME "/symbols/";
     QDir sym_dir(dir_name);
     QStringList sym_files = sym_dir.entryList(QDir::Files);
-    foreach (QString file,sym_files) {
+    for (const QString& file : sym_files) {
         QFileInfo inf(file);
         symbols.append(inf.baseName());
     }

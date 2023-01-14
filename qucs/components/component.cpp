@@ -210,7 +210,7 @@ void Component::paint(ViewPainter *p)
 
     a = b = 0;
     QRect r, t;
-    foreach(Text *pt, Texts) {
+    for (Text *pt : Texts) {
       t.setRect(x, y+b, 0, 0);
       p->Painter->drawText(t, Qt::AlignLeft|Qt::TextDontClip, pt->s, &r);
       b += r.height();
@@ -234,26 +234,26 @@ void Component::paint(ViewPainter *p)
   else {    // normal components go here
 
     // paint all lines
-    foreach(qucs::Line *p1, Lines) {
+    for (qucs::Line *p1 : Lines) {
       p->Painter->setPen(p1->style);
       p->drawLine(cx+p1->x1, cy+p1->y1, cx+p1->x2, cy+p1->y2);
     }
 
     // paint all arcs
-    foreach(qucs::Arc *p3, Arcs) {
+    for (qucs::Arc *p3 : Arcs) {
       p->Painter->setPen(p3->style);
       p->drawArc(cx+p3->x, cy+p3->y, p3->w, p3->h, p3->angle, p3->arclen);
     }
 
     // paint all rectangles
-    foreach(qucs::Area *pa, Rects) {
+    for (qucs::Area *pa : Rects) {
       p->Painter->setPen(pa->Pen);
       p->Painter->setBrush(pa->Brush);
       p->drawRect(cx+pa->x, cy+pa->y, pa->w, pa->h);
     }
 
     // paint all ellipses
-    foreach(qucs::Area *pa, Ellips) {
+    for (qucs::Area *pa : Ellips) {
       p->Painter->setPen(pa->Pen);
       p->Painter->setBrush(pa->Brush);
       p->drawEllipse(cx+pa->x, cy+pa->y, pa->w, pa->h);
@@ -267,7 +267,7 @@ void Component::paint(ViewPainter *p)
 
     QTransform wm = p->Painter->worldTransform();
     // write all text
-    foreach(Text *pt, Texts) {
+    for (Text *pt : Texts) {
       p->Painter->setWorldTransform(
           QTransform(pt->mCos, -pt->mSin, pt->mSin, pt->mCos,
                    p->DX + float(cx+pt->x) * p->Scale,
@@ -277,13 +277,10 @@ void Component::paint(ViewPainter *p)
       newFont.setUnderline(pt->under);
       p->Painter->setFont(newFont);
       p->Painter->setPen(pt->Color);
-      if (0) {
-	p->Painter->drawText(0, 0, 0, 0, Qt::AlignLeft|Qt::TextDontClip, pt->s);
-      } else {
-	int w, h;
-	w = p->drawTextMapped (pt->s, 0, 0, &h);
-    Q_UNUSED(w);
-      }
+      int w, h;
+      w = p->drawTextMapped(pt->s, 0, 0, &h);
+      Q_UNUSED(w);
+      Q_UNUSED(w)
     }
     p->Painter->setWorldTransform(wm);
     p->Painter->setWorldMatrixEnabled(false);
@@ -344,7 +341,7 @@ void Component::paintScheme(Schematic *p)
 
     a = b = 0;
     QSize r;
-    foreach(Text *pt, Texts) {
+    for (Text *pt : Texts) {
       r = metrics.size(0, pt->s);
       b += r.height();
       if(a < r.width())  a = r.width();
@@ -365,21 +362,21 @@ void Component::paintScheme(Schematic *p)
   }
 
   // paint all lines
-  foreach(qucs::Line *p1, Lines)
+  for(qucs::Line *p1 : Lines)
     p->PostPaintEvent(_Line,cx+p1->x1, cy+p1->y1, cx+p1->x2, cy+p1->y2);
 
   // paint all ports
-  foreach(Port *p2, Ports)
+  for (Port *p2 : Ports)
     if(p2->avail) p->PostPaintEvent(_Ellipse,cx+p2->x-4, cy+p2->y-4, 8, 8);
 
-  foreach(qucs::Arc *p3, Arcs)   // paint all arcs
+  for (qucs::Arc *p3 : Arcs)   // paint all arcs
     p->PostPaintEvent(_Arc,cx+p3->x, cy+p3->y, p3->w, p3->h, p3->angle, p3->arclen);
 
 
-  foreach(qucs::Area *pa, Rects) // paint all rectangles
+  for (qucs::Area *pa : Rects) // paint all rectangles
     p->PostPaintEvent(_Rect,cx+pa->x, cy+pa->y, pa->w, pa->h);
 
-  foreach(qucs::Area *pa, Ellips) // paint all ellipses
+  for (qucs::Area *pa : Ellips) // paint all ellipses
     p->PostPaintEvent(_Ellipse,cx+pa->x, cy+pa->y, pa->w, pa->h);
 }
 
@@ -387,12 +384,12 @@ void Component::paintScheme(Schematic *p)
 // For output on a printer device.
 void Component::print(ViewPainter *p, float FontScale)
 {
-  foreach(Text *pt, Texts)
+  for (Text *pt : Texts)
     pt->Size *= FontScale;
 
   paint(p);
 
- foreach(Text *pt, Texts)
+ for (Text *pt : Texts)
     pt->Size /= FontScale;
 }
 
@@ -407,7 +404,7 @@ void Component::rotate()
   int tmp, dx, dy;
 
   // rotate all lines
-  foreach(qucs::Line *p1, Lines) {
+  for (qucs::Line *p1 : Lines) {
     tmp = -p1->x1;
     p1->x1 = p1->y1;
     p1->y1 = tmp;
@@ -417,14 +414,14 @@ void Component::rotate()
   }
 
   // rotate all ports
-  foreach(Port *p2, Ports) {
+  for (Port *p2 : Ports) {
     tmp = -p2->x;
     p2->x = p2->y;
     p2->y = tmp;
   }
 
   // rotate all arcs
-  foreach(qucs::Arc *p3, Arcs) {
+  for (qucs::Arc *p3 : Arcs) {
     tmp = -p3->x;
     p3->x = p3->y;
     p3->y = tmp - p3->w;
@@ -436,7 +433,7 @@ void Component::rotate()
   }
 
   // rotate all rectangles
-  foreach(qucs::Area *pa, Rects) {
+  for(qucs::Area *pa : Rects) {
     tmp = -pa->x;
     pa->x = pa->y;
     pa->y = tmp - pa->w;
@@ -446,7 +443,7 @@ void Component::rotate()
   }
 
   // rotate all ellipses
-  foreach(qucs::Area *pa, Ellips) {
+  for (qucs::Area *pa : Ellips) {
     tmp = -pa->x;
     pa->x = pa->y;
     pa->y = tmp - pa->w;
@@ -457,7 +454,7 @@ void Component::rotate()
 
   // rotate all text
   float ftmp;
-  foreach(Text *pt, Texts) {
+  for (Text *pt : Texts) {
     tmp = -pt->x;
     pt->x = pt->y;
     pt->y = tmp;
@@ -507,17 +504,17 @@ void Component::mirrorX()
     if(Ports.count() < 1) return;  // do not rotate components without ports
 
   // mirror all lines
-  foreach(qucs::Line *p1, Lines) {
+  for (qucs::Line *p1 : Lines) {
     p1->y1 = -p1->y1;
     p1->y2 = -p1->y2;
   }
 
   // mirror all ports
-  foreach(Port *p2, Ports)
+  for (Port *p2 : Ports)
     p2->y = -p2->y;
 
   // mirror all arcs
-  foreach(qucs::Arc *p3, Arcs) {
+  for (qucs::Arc *p3 : Arcs) {
     p3->y = -p3->y - p3->h;
     if(p3->angle > 16*180) p3->angle -= 16*360;
     p3->angle  = -p3->angle;    // mirror
@@ -526,16 +523,16 @@ void Component::mirrorX()
   }
 
   // mirror all rectangles
-  foreach(qucs::Area *pa, Rects)
+  for (qucs::Area *pa : Rects)
     pa->y = -pa->y - pa->h;
 
   // mirror all ellipses
-  foreach(qucs::Area *pa, Ellips)
+  for (qucs::Area *pa : Ellips)
     pa->y = -pa->y - pa->h;
 
   QFont f = QucsSettings.font;
   // mirror all text
-  foreach(Text *pt, Texts) {
+  for (Text *pt : Texts) {
     f.setPointSizeF(pt->Size);
     // use the screen-compatible metric
     QFontMetrics  smallMetrics(f, 0);
@@ -546,11 +543,11 @@ void Component::mirrorX()
   int tmp = y1;
   y1  = -y2; y2 = -tmp;   // mirror boundings
   // use the screen-compatible metric
-  QFontMetrics  metrics(QucsSettings.font, 0);   // get size of text
+  QFontMetrics  metrics(QucsSettings.font, nullptr);   // get size of text
   int dy = 0;
   if(showName)
     dy = metrics.lineSpacing();   // for "Name"
-  for(Property *pp = Props.first(); pp != 0; pp = Props.next())
+  for(Property *pp = Props.first(); pp != nullptr; pp = Props.next())
     if(pp->display)  dy += metrics.lineSpacing();
   if((tx > x1) && (tx < x2)) ty = -ty-dy;     // mirror text position
   else ty = y1+ty+y2;
@@ -570,34 +567,34 @@ void Component::mirrorY()
     if(Ports.count() < 1) return;  // do not rotate components without ports
 
   // mirror all lines
-  foreach(qucs::Line *p1, Lines) {
+  for (qucs::Line *p1 : Lines) {
     p1->x1 = -p1->x1;
     p1->x2 = -p1->x2;
   }
 
   // mirror all ports
-  foreach(Port *p2, Ports)
+  for (Port *p2 : Ports)
     p2->x = -p2->x;
 
   // mirror all arcs
-  foreach(qucs::Arc *p3, Arcs) {
+  for (qucs::Arc *p3 : Arcs) {
     p3->x = -p3->x - p3->w;
     p3->angle = 16*180 - p3->angle - p3->arclen;  // mirror
     if(p3->angle < 0) p3->angle += 16*360;   // angle has to be > 0
   }
 
   // mirror all rectangles
-  foreach(qucs::Area *pa, Rects)
+  for (qucs::Area *pa : Rects)
     pa->x = -pa->x - pa->w;
 
   // mirror all ellipses
-  foreach(qucs::Area *pa, Ellips)
+  for (qucs::Area *pa : Ellips)
     pa->x = -pa->x - pa->w;
 
   int tmp;
   QFont f = QucsSettings.font;
   // mirror all text
-  foreach(Text *pt, Texts) {
+  for (Text *pt : Texts) {
     f.setPointSizeF(pt->Size);
     // use the screen-compatible metric
     QFontMetrics  smallMetrics(f, 0);
@@ -633,11 +630,11 @@ QString Component::netlist()
   QString s = Model+":"+Name;
 
   // output all node names
-  foreach(Port *p1, Ports)
+  for (Port *p1 : Ports)
     s += " "+p1->Connection->Name;   // node names
 
   // output all properties
-  for(Property *p2 = Props.first(); p2 != 0; p2 = Props.next())
+  for(Property *p2 = Props.first(); p2 != nullptr; p2 = Props.next())
     if(p2->Name != "Symbol")
       s += " "+p2->Name+"=\""+p2->Value+"\"";
 
@@ -1460,7 +1457,7 @@ QString GateComponent::netlist()
   QString s = Model+":"+Name;
 
   // output all node names
-  foreach(Port *pp, Ports)
+  for (Port *pp : Ports)
     s += " "+pp->Connection->Name;   // node names
 
   // output all properties
@@ -1475,7 +1472,7 @@ QString GateComponent::netlist()
 
 QString GateComponent::spice_netlist(bool isXyce)
 {
-    if (isXyce) return QString("");
+    if (isXyce) return {""};
 
     QString s = SpiceModel + Name;
     QString tmp_model = "model_" + Name;

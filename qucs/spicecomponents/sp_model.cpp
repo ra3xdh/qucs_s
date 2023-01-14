@@ -80,7 +80,7 @@ QString S4Q_Model::getSpiceModel()
 
     QString s;
     s.clear();
-    foreach (Property *pp, Props) {
+    for (Property *pp : Props) {
         if (!pp->Value.isEmpty())
             s += pp->Value + "\n";
     }

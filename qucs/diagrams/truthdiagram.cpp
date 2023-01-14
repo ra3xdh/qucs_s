@@ -154,7 +154,7 @@ int TruthDiagram::calcDiagram()
   firstGraph = g;
   // ................................................
   // all dependent variables
-  foreach(Graph *g ,Graphs) {
+  for (Graph *g : Graphs) {
     y = y2-tHeight-5;
 
     Str = g->Var;

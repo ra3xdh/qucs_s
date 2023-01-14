@@ -250,7 +250,7 @@ void Equation::getNgnutmegVars(QStringList &vars, QStringList &sims)
             }
         }
     }
-    foreach (QString var,vars) {
+    for (const QString& var : vars) {
         QString sim;
         int idx = vars.indexOf(var);
         if (idx>=0) sim = sims.at(idx);
@@ -258,7 +258,7 @@ void Equation::getNgnutmegVars(QStringList &vars, QStringList &sims)
             QString eqn = getProperty(var)->Value;
             QStringList tokens;
             spicecompat::splitEqn(eqn,tokens);
-            foreach (QString tok,tokens) {
+            for (const QString& tok : tokens) {
                 int idx1 = vars.indexOf(tok);
                 if ((idx1>=0)&&(sims[idx1]!="all")) sims[idx]=sims[idx1];
             }

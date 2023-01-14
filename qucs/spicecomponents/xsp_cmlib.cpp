@@ -76,7 +76,7 @@ QString XSP_CMlib::getSpiceInit()
 {
     QString s;
     s.clear();
-    foreach (Property *pp,Props) {
+    for (Property *pp : Props) {
         if (!pp->Value.isEmpty()) {
             QString f = spicecompat::convert_relative_filename(pp->Value);
             s += "codemodel " + f + "\n";

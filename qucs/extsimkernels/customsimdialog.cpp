@@ -161,7 +161,7 @@ void CustomSimDialog::slotFindVars()
 
 
     QStringList strings = edtCode->toPlainText().split('\n');
-    foreach(QString line,strings) {
+    for (const QString& line : strings) {
         QRegExp let_pattern("^\\s*let\\s+[A-Za-z]+\\w*\\s*\\=\\s*[A-Za-z]+.*$");
         if (let_pattern.exactMatch(line)) {
             QString var = line.section('=',0,0);
@@ -181,7 +181,7 @@ void CustomSimDialog::slotFindOutputs()
     if (isXyceScr) {
         QRegExp print_ex("^\\s*\\.print\\s.*");
         print_ex.setCaseSensitivity(Qt::CaseInsensitive);
-        foreach(QString line,strings) {
+        for (const QString& line : strings) {
             if (print_ex.exactMatch(line)) {
                 QRegExp file_ex("\\s*file\\s*=\\s*");
                 file_ex.setCaseSensitivity(Qt::CaseInsensitive);
@@ -195,7 +195,7 @@ void CustomSimDialog::slotFindOutputs()
     } else {
         QRegExp write_ex("^\\s*write\\s.*");
         write_ex.setCaseSensitivity(Qt::CaseInsensitive);
-        foreach(QString line,strings) {
+        for (const QString& line : strings) {
             if (write_ex.exactMatch(line)) {
                 outps.append(line.section(QRegExp("\\s"),1,1,QString::SectionSkipEmpty));
             }

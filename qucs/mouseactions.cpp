@@ -49,8 +49,8 @@
 #include <QLineEdit>
 #include <QDebug>
 
-#include <limits.h>
-#include <stdlib.h>
+#include <climits>
+#include <cstdlib>
 
 
 #define  DOC_X_POS(x)  (int(float(x)/Doc->Scale) + Doc->ViewX1)
@@ -933,9 +933,8 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent*, float fX, float fY)
     if(Name.isEmpty()) return;
 */
     if(pe) {
-      if(((Conductor*)pe)->Label)
-        delete ((Conductor*)pe)->Label; // delete old name
-      ((Conductor*)pe)->Label = 0;
+      delete ((Conductor*)pe)->Label; // delete old name
+      ((Conductor*)pe)->Label = nullptr;
     }
 
     int xl = x+30;
@@ -1670,8 +1669,8 @@ void MouseActions::MReleaseResizeDiagram(Schematic *Doc, QMouseEvent *Event)
 
   Diagram *pd = (Diagram*)focusElement;
   pd->updateGraphData();
-  foreach(Graph *pg, pd->Graphs)
-    foreach(Marker *pm, pg->Markers) {
+  for (Graph *pg : pd->Graphs)
+    for(Marker *pm : pg->Markers) {
       pm->x1 += MAx3;      // correct changes due to move of diagram corner
       pm->y1 += MAy3;
     }
@@ -1680,7 +1679,7 @@ void MouseActions::MReleaseResizeDiagram(Schematic *Doc, QMouseEvent *Event)
   pd->Bounding(x1, x2, y1, y2);
   Doc->enlargeView(x1, x2, y1, y2);
 
-  QucsMain->MouseMoveAction = 0;
+  QucsMain->MouseMoveAction = nullptr;
   QucsMain->MousePressAction = &MouseActions::MPressSelect;
   QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
   QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;

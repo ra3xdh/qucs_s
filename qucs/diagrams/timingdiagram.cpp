@@ -54,14 +54,14 @@ void TimingDiagram::paint(ViewPainter *p)
 void TimingDiagram::paintDiagram(ViewPainter *p)
 {
   // paint all lines
-  foreach(qucs::Line *pl, Lines) {
+  for(qucs::Line *pl : Lines) {
     p->Painter->setPen(pl->style);
     p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
   }
 
   p->Painter->setPen(Qt::black);
   // write whole text
-  foreach(Text *pt, Texts)
+  for(Text *pt : Texts)
     p->drawText(pt->s, cx+pt->x, cy-pt->y);
 
 
@@ -187,7 +187,7 @@ int TimingDiagram::calcDiagram()
 
   // First check the maximum bit number of all vectors.
   colWidth = 0;
-  foreach(Graph *g, Graphs)
+  for (Graph *g : Graphs)
     if(g->cPointsY) {
       if(g->Var.right(2) == ".X") {
         z = strlen((char*)g->cPointsY);
@@ -228,7 +228,7 @@ if(!firstGraph->isEmpty()) {
 
   y -= 5;
   // write all dependent variable names to get width of first column
-  foreach(Graph *g, Graphs) {
+  for (Graph *g : Graphs) {
     if(y < tHeight)  break;
     Str = g->Var;
     colWidth = checkColumnWidth(Str, metrics, colWidth, x, y);
@@ -276,7 +276,7 @@ if(!firstGraph->isEmpty()) {
   QPen Pen;
   int  yLast, yNow;
   y = y2-tHeight-9;
-  foreach(Graph *g, Graphs) {
+  for (Graph *g : Graphs) {
     if(y < tHeight) {
       // mark lack of space with a small arrow
       Lines.append(new qucs::Line(4, 6, 4, -7, QPen(Qt::red,2)));

@@ -31,20 +31,20 @@
 
 namespace qucs2spice
 {
-   QString convert_rcl(QString line);
+   QString convert_rcl(const QString& line);
    QString convert_header(QString line);
    QString convert_diode(QString line,bool xyce=false);
    QString convert_jfet(QString line, bool xyce=false);
    QString convert_mosfet(QString line, bool xyce=false);
    QString convert_bjt(QString line);
-   QString convert_cccs(QString line);
-   QString convert_ccvs(QString line);
-   QString convert_ccs(QString line, bool voltage);
-   QString convert_vccs(QString line);
-   QString convert_vcvs(QString line);
-   QString convert_vcs(QString line, bool voltage);
-   QString convert_dc_src(QString line);
-   QString convert_edd(QString line, QStringList &EqnsAndVars);
+   QString convert_cccs(const QString& line);
+   QString convert_ccvs(const QString& line);
+   QString convert_ccs(const QString& line, bool voltage);
+   QString convert_vccs(const QString& line);
+   QString convert_vcvs(const QString& line);
+   QString convert_vcs(const QString& line, bool voltage);
+   QString convert_dc_src(const QString& line);
+   QString convert_edd(const QString& line, QStringList &EqnsAndVars);
    QString convert_subckt(QString line);
    QString convert_gyrator(QString line);
 
@@ -85,7 +85,7 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
 
     QStringList EqnsAndVars;
 
-    foreach(QString line,net_lst) {  // Find equations
+    for (QString line : net_lst) {  // Find equations
         if (eqn_pattern.exactMatch(line)) {
             line.remove(QRegExp("^[ \t]*Eqn:[A-Za-z]+\\w+\\s+"));
             ExtractVarsAndValues(line,EqnsAndVars);
@@ -96,7 +96,7 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
     EqnsAndVars.removeAll("yes");
 
 
-    foreach(QString line,net_lst) {
+    for (QString& line : net_lst) {
         if (subckt_head_pattern.exactMatch(line)) {
             if (ends_pattern.exactMatch(line)) s += ".ENDS\n";
             else s += convert_header(line);
@@ -122,7 +122,7 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
     return s;
 }
 
-QString qucs2spice::convert_rcl(QString line)
+QString qucs2spice::convert_rcl(const QString& line)
 {
     QString s="";
     QStringList lst = line.split(" ",qucs::SkipEmptyParts);
@@ -256,14 +256,14 @@ QString qucs2spice::convert_bjt(QString line)
     QStringList spice_incompat; // spice incompatibel parameters;
     spice_incompat<<"Type="<<"Area="<<"Temp="<<"Ffe="<<"Kb="<<"Ab="<<"Fb=";
     for(int i=0;i<lst.count();i++) {
-        QString s1 = lst.at(i);
+        const QString& s1 = lst.at(i);
         if (s1.startsWith("Type=\"npn\"")) {
             Typ = "NPN";
         } else if (s1.startsWith("Type=\"pnp\"")) {
             Typ = "PNP";
         } else {
             bool is_incompat = false;
-            foreach (QString incompat,spice_incompat) {
+            for (const QString& incompat : spice_incompat) {
                if (s1.startsWith(incompat)) {
                    is_incompat = true;
                    break;
@@ -279,17 +279,17 @@ QString qucs2spice::convert_bjt(QString line)
     return s;
 }
 
-QString qucs2spice::convert_cccs(QString line)
+QString qucs2spice::convert_cccs(const QString& line)
 {
     return convert_ccs(line,false);
 }
 
-QString qucs2spice::convert_ccvs(QString line)
+QString qucs2spice::convert_ccvs(const QString& line)
 {
     return convert_ccs(line,true);
 }
 
-QString qucs2spice::convert_ccs(QString line, bool voltage)
+QString qucs2spice::convert_ccs(const QString& line, bool voltage)
 {
     QStringList lst = line.split(" ",qucs::SkipEmptyParts);
     QString name = lst.takeFirst();
@@ -311,17 +311,17 @@ QString qucs2spice::convert_ccs(QString line, bool voltage)
     return s;
 }
 
-QString qucs2spice::convert_vccs(QString line)
+QString qucs2spice::convert_vccs(const QString& line)
 {
     return convert_vcs(line,false);
 }
 
-QString qucs2spice::convert_vcvs(QString line)
+QString qucs2spice::convert_vcvs(const QString& line)
 {
     return convert_vcs(line,true);
 }
 
-QString qucs2spice::convert_vcs(QString line,bool voltage)
+QString qucs2spice::convert_vcs(const QString& line,bool voltage)
 {
     QStringList lst = line.split(" ",qucs::SkipEmptyParts);
     QString name = lst.takeFirst();
@@ -343,7 +343,7 @@ QString qucs2spice::convert_vcs(QString line,bool voltage)
     return s;
 }
 
-QString qucs2spice::convert_dc_src(QString line)
+QString qucs2spice::convert_dc_src(const QString& line)
 {
     QString s="";
     QStringList lst = line.split(" ",qucs::SkipEmptyParts);
@@ -358,14 +358,14 @@ QString qucs2spice::convert_dc_src(QString line)
     return s;
 }
 
-QString qucs2spice::convert_edd(QString line, QStringList &EqnsAndVars)
+QString qucs2spice::convert_edd(const QString& line, QStringList &EqnsAndVars)
 {
     QString s="";
     QStringList lst = line.split(" ",qucs::SkipEmptyParts);
     QStringList nods;
     QString nam = lst.takeFirst().remove(':');
 
-    foreach (QString str,lst) {
+    for (const QString& str : lst) {
         if (!str.contains('=')) {
             //str.replace("gnd","0");
             nods.append(str);

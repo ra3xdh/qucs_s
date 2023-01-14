@@ -153,10 +153,9 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
         }
     }
 
-    QString sim;
     outputs.clear();
 
-    foreach(sim, simulations) {
+    for (const QString& sim : simulations) {
 
         bool hasParSWP = false;
         bool hasDblSWP = false;
@@ -298,10 +297,9 @@ void Ngspice::createNetlist(QTextStream &stream, int ,
             continue;
         }
 
-        QString nod;
         QString nods;
         nods.clear();
-        foreach (nod,vars) {
+        for (const QString& nod : vars) {
             if (!nod.endsWith("#branch")) {
                 nods += QString("v(%1) ").arg(nod);
             } else {

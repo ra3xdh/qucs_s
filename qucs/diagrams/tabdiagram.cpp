@@ -55,7 +55,7 @@ void TabDiagram::paint(ViewPainter *p)
 void TabDiagram::paintDiagram(ViewPainter *p)
 {
   // paint all lines
-  foreach(qucs::Line *pl, Lines) {
+  for (qucs::Line *pl : Lines) {
     p->Painter->setPen(pl->style);
     p->drawLine(cx+pl->x1, cy-pl->y1, cx+pl->x2, cy-pl->y2);
   }
@@ -109,7 +109,7 @@ void TabDiagram::paintDiagram(ViewPainter *p)
 
   p->Painter->setPen(Qt::black);
   // write whole text
-  foreach(Text *pt, Texts)
+  for (Text *pt : Texts)
     p->drawText(pt->s, cx+pt->x, cy-pt->y);
 
 
@@ -243,7 +243,7 @@ int TabDiagram::calcDiagram()
   firstGraph = g;
   // ................................................
   // all dependent variables
-  foreach(Graph *g, Graphs) {
+  for (Graph *g : Graphs) {
     y = y2-tHeight-5;
     colWidth = 0;
 

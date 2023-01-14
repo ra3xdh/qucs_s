@@ -792,7 +792,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   // ...........................................................
   // put all graphs into the ListBox
   Row = 0;
-  foreach(Graph *pg, Diag->Graphs) {
+  for (Graph *pg : Diag->Graphs) {
     GraphList->insertItem(Row, pg->Var);
     if(pg == currentGraph) {
       GraphList->setCurrentRow(Row);   // select current graph
@@ -1486,7 +1486,7 @@ void DiagramDialog::slotSetGraphStyle(int style)
 */
 void DiagramDialog::copyDiagramGraphs()
 {
-  foreach(Graph *pg, Diag->Graphs)
+  for (Graph *pg : Diag->Graphs)
     Graphs.append(pg->sameNewOne());
 }
 

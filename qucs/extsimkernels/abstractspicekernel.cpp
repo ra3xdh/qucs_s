@@ -264,16 +264,15 @@ void AbstractSpiceKernel::createSubNetlsit(QTextStream &stream, bool lib)
         }
     }
     std::sort(ports.begin(), ports.end());
-    QPair<int,QString> pp;
     if (lib) header += " gnd "; // Ground node forwarding for Library
-    foreach(pp,ports) {
+    for (const auto& pp : ports) {
         header += pp.second + " ";
     }
 
-    Painting *pi;
-    for(pi = Sch->SymbolPaints.first(); pi != 0; pi = Sch->SymbolPaints.next())
-      if(pi->Name == ".ID ") {
-        ID_Text *pid = (ID_Text*)pi;
+    Painting *pai;
+    for(pai = Sch->SymbolPaints.first(); pai != 0; pai = Sch->SymbolPaints.next())
+      if(pai->Name == ".ID ") {
+        ID_Text *pid = (ID_Text*)pai;
         QList<SubParameter *>::const_iterator it;
         for(it = pid->Parameter.constBegin(); it != pid->Parameter.constEnd(); it++) {
             header += (*it)->Name + " "; // keep 'Name' unchanged
@@ -413,7 +412,7 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file, QList<QList<double
                     vars1.removeFirst();
                     vars1.removeFirst();
                     QStringList norm_vars;
-                    foreach(QString v, vars1) { // Normalize variables
+                    for (const QString& v : vars1) { // Normalize variables
                         QString nv = v;
                         nv.remove(0,3).chop(1); // extract variable between "Re|Im(" and ")"
                         if (!norm_vars.contains(nv))
@@ -459,9 +458,12 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
             if (lin.isEmpty()) continue;
             if (lin.contains("Fourier analysis for")) {
                 QStringList tokens = lin.split(sep,qucs::SkipEmptyParts);
-                QString var;
-                foreach(var,tokens) {
-                    if (var.contains('(')&&var.contains(')')) break;
+                QString var; // TODO chech
+                for (const QString& var1 : tokens) {
+                    if (var1.contains('(')&&var1.contains(')')) {
+                        var = var1;
+                        break;
+                    }
                 }
 
                 if (var.endsWith(':')) var.chop(1);
@@ -561,7 +563,7 @@ void AbstractSpiceKernel::parsePZOutput(QString ngspice_file, QList<QList<double
 
         if (lines.count("PZ analysis")>1) ParSwp = true;
 
-        foreach (QString lin, lines) {  // Extract poles
+        for (const QString& lin : lines) {  // Extract poles
             if (lin.contains(var + "(")) {
                 if (!var_list.contains(var)) {
                     var_list.append(var+"_number");
@@ -637,7 +639,7 @@ void AbstractSpiceKernel::parseDC_OPoutput(QString ngspice_file)
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream ngsp_data(&ofile);
         QStringList lines = ngsp_data.readAll().split("\n");
-        foreach (QString lin,lines) {
+        for (const QString& lin : lines) {
             if (lin.contains('=')) {
                 QString nod = lin.section('=',0,0).remove(' ');
                 double val = lin.section('=',1,1).toDouble();
@@ -1044,10 +1046,12 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
 {
     if (DC_OP_only) { // Don't touch existing datasets when only DC was simulated
         // It's need to show DC bias on schematic only
-        foreach(QString output,output_files) {
-            QString full_outfile = workdir+QDir::separator()+output;
-            if (output.endsWith(".dc_op")) parseDC_OPoutput(full_outfile);
-            else if (output.endsWith(".dc_op_xyce")) parseDC_OPoutputXY(full_outfile);
+        for (const QString& outputfile : output_files) {
+            QString full_outfile = workdir+QDir::separator()+outputfile;
+            if (outputfile.endsWith(".dc_op")) {
+                parseDC_OPoutput(full_outfile);
+            } else if (outputfile.endsWith(".dc_op_xyce")) {
+                parseDC_OPoutputXY(full_outfile); }
         }
         return;
     }
@@ -1061,8 +1065,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
     QString sim,indep;
     QStringList indep_vars;
 
-    QString ngspice_output_filename;
-    foreach(ngspice_output_filename,output_files) { // For every simulation convert results to Qucs dataset
+    for (const QString& ngspice_output_filename : output_files) { // For every simulation convert results to Qucs dataset
         QList< QList<double> > sim_points;
         QStringList var_list;
         QString swp_var,swp_var2;
@@ -1166,7 +1169,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         normalizeVarsNames(var_list);
 
         QString indep = var_list.first();
-        QList<double> sim_point;
+        //QList<double> sim_point;
 
 
         if (hasParSweep) {
@@ -1184,7 +1187,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             }
 
             ds_stream<<QString("<indep %1 %2>\n").arg(swp_var).arg(swp_var_val.count());
-            foreach (QString val,swp_var_val) {
+            for (const QString& val : swp_var_val) {
                 ds_stream<<val<<"\n";
             }
             ds_stream<<"</indep>\n";
@@ -1192,7 +1195,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             else indep += " " + swp_var;
             if (hasDblParSweep) {
                 ds_stream<<QString("<indep %1 %2>\n").arg(swp_var2).arg(swp_var2_val.count());
-                foreach (QString val,swp_var2_val) {
+                for (const QString& val : swp_var2_val) {
                     ds_stream<<val<<"\n";
                 }
                 ds_stream<<"</indep>\n";
@@ -1200,7 +1203,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             }
         } else if (!indep.isEmpty()) {
             ds_stream<<QString("<indep %1 %2>\n").arg(indep).arg(sim_points.count()); // output indep var: TODO: parameter sweep
-            foreach (sim_point,sim_points) {
+            for (auto& sim_point : sim_points) {
                 ds_stream<<QString::number(sim_point.at(0),'e',12)<<"\n";
             }
             ds_stream<<"</indep>\n";
@@ -1209,7 +1212,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         for(int i=1;i<var_list.count();i++) { // output dep var
             if (indep.isEmpty()) ds_stream<<QString("<indep %1 %2>\n").arg(var_list.at(i)).arg(sim_points.count());
             else ds_stream<<QString("<dep %1 %2>\n").arg(var_list.at(i)).arg(indep);
-            foreach (sim_point,sim_points) {
+            for (auto& sim_point : sim_points) {
                 if (isComplex) {
                     double re=sim_point.at(2*(i-1)+1);
                     double im = sim_point.at(2*i);
@@ -1245,7 +1248,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
  */
 void AbstractSpiceKernel::removeAllSimulatorOutputs()
 {
-    foreach(QString output_filename,output_files) {
+    for (const QString& output_filename : output_files) {
         QString full_outfile = workdir+QDir::separator()+output_filename;
         QFile::remove(full_outfile);
     }
@@ -1274,8 +1277,8 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
         HB = true;
     }
 
-    for(auto it = var_list.begin();it!=var_list.end();it++) { // For subcircuit nodes output i.e. v(X1:n1)
-        (*it).replace(":","_");         // colon symbol is reserved in Qucs as dataset specifier
+    for(auto & it : var_list) { // For subcircuit nodes output i.e. v(X1:n1)
+        it.replace(":","_");         // colon symbol is reserved in Qucs as dataset specifier
     }
 
     QStringList::iterator it=var_list.begin();

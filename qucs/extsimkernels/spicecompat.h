@@ -21,8 +21,8 @@ namespace spicecompat {
      QString normalize_node_name(QString nod);
      QString convert_relative_filename(QString filename);
      int getPins(const QString &file, const QString &compname, QStringList &pin_names);
-     QString getSubcktName(QString subfilename);
-     QString convert_sweep_type(QString sweep);
+     QString getSubcktName(const QString& subfilename);
+     QString convert_sweep_type(const QString& sweep);
      bool check_nodename(QString &node);
      QString getDefaultSimulatorName();
 

@@ -78,7 +78,7 @@ QString S4Q_Include::getSpiceModel()
     QString s;
     s.clear();
 
-    foreach (Property *pp, Props) {
+    for (Property *pp : Props) {
         QString val = pp->Value;
         if (!val.isEmpty()) {
             val = spicecompat::convert_relative_filename(val);

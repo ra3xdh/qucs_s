@@ -276,7 +276,7 @@ bool saveApplSettings()
     settings.remove("Paths");
     settings.beginWriteArray("Paths");
     int i = 0;
-    foreach(QString path, qucsPathList) {
+    for (QString& path: qucsPathList) {
          settings.setArrayIndex(i);
          settings.setValue("path", path);
          i++;
@@ -530,7 +530,7 @@ void createIcons() {
   Module::registerModules ();
   QStringList cats = Category::getCategories ();
 
-  foreach(QString category, cats) {
+  for (const QString& category: cats) {
 
     QList<Module *> Comps;
     Comps = Category::getModules(category);
@@ -541,7 +541,7 @@ void createIcons() {
     char * File;
     QString Name;
 
-    foreach (Module *Mod, Comps) {
+    for (Module *Mod: Comps) {
       if (Mod->info) {
 
         Element *e = (Mod->info) (Name, File, true);
@@ -557,11 +557,11 @@ void createIcons() {
 
         QGraphicsScene *scene = new QGraphicsScene();
 
-        foreach (qucs::Line *l, Lines) {
+        for (qucs::Line *l : Lines) {
           scene->addLine(l->x1, l->y1, l->x2, l->y2, l->style);
         }
 
-        foreach(struct qucs::Arc *a, Arcs) {
+        for (struct qucs::Arc *a: Arcs) {
           // we need an open item here; QGraphisEllipseItem draws a filled ellipse and doesn't do the job here...
           QPainterPath *path = new QPainterPath();
           // the components do not contain the angles in degrees but in 1/16th degrees -> conversion needed
@@ -570,19 +570,19 @@ void createIcons() {
           scene->addPath(*path);
         }
 
-        foreach(qucs::Area *a, Rects) {
+        for(qucs::Area *a: Rects) {
           scene->addRect(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
         }
 
-        foreach(qucs::Area *a, Ellips) {
+        for(qucs::Area *a: Ellips) {
           scene->addEllipse(a->x, a->y, a->w, a->h, a->Pen, a->Brush);
         }
 
-        foreach(Port *p, Ports) {
+        for(Port *p: Ports) {
           scene->addEllipse(p->x-4, p->y-4, 8, 8, QPen(Qt::red));
         }
 
-        foreach(Text *t, Texts) {
+        for(Text *t: Texts) {
           QFont myFont;
           myFont.setPointSize(10);
           QGraphicsTextItem* item  = new QGraphicsTextItem(t->s);
@@ -664,7 +664,7 @@ void createDocData() {
   int nComps = 0;
 
   // table for quick reference, schematic and netlist entry
-  foreach(QString category, cats) {
+  for (const QString& category: cats) {
 
     QList<Module *> Comps;
     Comps = Category::getModules(category);
@@ -684,7 +684,7 @@ void createDocData() {
 
     int num = 0; // component id inside category
 
-    foreach (Module *Mod, Comps) {
+    for (Module *Mod: Comps) {
         num += 1;
 
         nComps += 1;
@@ -720,7 +720,7 @@ void createDocData() {
         QStringList compProps;
         compProps << "# Note: auto-generated file (changes will be lost on update)";
         compProps << QString("# %1; %2; %3; %4").arg(  "Name", "Value", "Display", "Description");
-        foreach(Property *prop, c->Props) {
+        for (Property *prop : c->Props) {
           compProps << QString("%1; \"%2\"; %3; \"%4\"").arg(
                          prop->Name,
                          prop->Value,
@@ -755,7 +755,7 @@ void createListComponentEntry(){
   Module::registerModules ();
   QStringList cats = Category::getCategories ();
   // table for quick reference, schematic and netlist entry
-  foreach(QString category, cats) {
+  for (QString category: cats) {
 
     QList<Module *> Comps;
     Comps = Category::getModules(category);
@@ -766,7 +766,7 @@ void createListComponentEntry(){
     char * File;
     QString Name;
 
-    foreach (Module *Mod, Comps) {
+    for (Module *Mod: Comps) {
       Element *e = (Mod->info) (Name, File, true);
       Component *c = (Component* ) e;
 
@@ -775,7 +775,7 @@ void createListComponentEntry(){
 
       // add dummy ports/wires, avoid segfault
       int port = 0;
-      foreach (Port *p, c->Ports) {
+      for (Port *p: c->Ports) {
         Node *n = new Node(0,0);
         n->Name="_net"+QString::number(port);
         p->Connection = n;

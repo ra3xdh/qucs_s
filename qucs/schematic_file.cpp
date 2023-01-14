@@ -676,7 +676,7 @@ void Schematic::simpleInsertComponent(Component *c)
   Node *pn;
   int x, y;
   // connect every node of component
-  foreach(Port *pp, c->Ports) {
+  for (Port *pp : c->Ports) {
     x = pp->x+c->cx;
     y = pp->y+c->cy;
 
@@ -692,7 +692,7 @@ void Schematic::simpleInsertComponent(Component *c)
 	break;
       }
 
-    if(pn == 0) { // create new node, if no existing one lies at this position
+    if(pn == nullptr) { // create new node, if no existing one lies at this position
       pn = new Node(x, y);
       DocNodes.append(pn);
     }
@@ -1330,7 +1330,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
         {
           i = 0;
           // apply in/out signal types of subcircuit
-          foreach(Port *pp, pc->Ports)
+          for (Port *pp : pc->Ports)
           {
             pp->Type = it.value().PortTypes[i];
             pp->Connection->DType = pp->Type;
@@ -1368,7 +1368,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
       {
         i = 0;
         // save in/out signal types of subcircuit
-        foreach(Port *pp, pc->Ports)
+        for (Port *pp : pc->Ports)
         {
             //if(i>=d->PortTypes.count())break;
             pp->Type = d->PortTypes[i];

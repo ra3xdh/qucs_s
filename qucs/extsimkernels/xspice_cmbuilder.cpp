@@ -189,7 +189,7 @@ void XSPICE_CMbuilder::createCModelTree(QString &output)
  */
 bool XSPICE_CMbuilder::ModIfsPairProcessed(const QString &mod, const QString &ifs)
 {
-    foreach (QStringList lst, mod_ifs_pairs) {
+    for (QStringList lst : mod_ifs_pairs) {
         if ((lst.at(0)==mod)&&(lst.at(1)==ifs)) return true;
     }
     return false;
@@ -383,8 +383,8 @@ QString XSPICE_CMbuilder::getNgspiceRoot()
     if (!inf.exists()) { // It may be in $PATH
         char *p = getenv("PATH");
         QStringList paths;
-        if (p!=NULL) paths = QString(p).split(':');
-        foreach (QString pp,paths) {
+        if (p!=nullptr) paths = QString(p).split(':');
+        for (const QString& pp : paths) {
             inf.setFile(pp+QDir::separator()+QucsSettings.NgspiceExecutable);
             if (inf.exists()) s = inf.canonicalPath();
         }
@@ -395,24 +395,6 @@ QString XSPICE_CMbuilder::getNgspiceRoot()
 
 bool XSPICE_CMbuilder::removeDir(const QString &dirName)
 {
-    bool result = true;
     QDir dir(dirName);
-
-    if (dir.exists(dirName)) {
-        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
-            if (info.isDir()) {
-                result = removeDir(info.absoluteFilePath());
-            }
-            else {
-                result = QFile::remove(info.absoluteFilePath());
-            }
-
-            if (!result) {
-                return result;
-            }
-        }
-        result = dir.rmdir(dirName);
-    }
-
-    return result;
+    return dir.removeRecursively();
 }

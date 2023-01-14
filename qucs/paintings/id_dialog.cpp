@@ -296,7 +296,7 @@ void ID_Dialog::slotOk()
   if(changed)
       idText->Parameter.swap(scratch);
 
-  foreach(SubParameter *p, scratch) {
+  for (SubParameter *p : scratch) {
       delete p;
   }
 

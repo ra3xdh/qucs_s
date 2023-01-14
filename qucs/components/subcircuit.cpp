@@ -209,7 +209,7 @@ QString Subcircuit::netlist()
   QString s = Model+":"+Name;
 
   // output all node names
-  foreach(Port *p1, Ports)
+  for (Port *p1 : Ports)
     s += " "+p1->Connection->Name;   // node names
 
   // type for subcircuit
@@ -227,7 +227,7 @@ QString Subcircuit::spice_netlist(bool)
     QString s;
     QString f = misc::properFileName(Props.first()->Value);
     s += spicecompat::check_refdes(Name,SpiceModel);
-    foreach(Port *p1, Ports) {
+    for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+nam;   // node names

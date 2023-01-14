@@ -103,7 +103,7 @@ QString Graph::save()
 	      " "+QString::number(numMode)+" "+QString::number(Style)+
 	      " "+QString::number(yAxisNo)+">";
 
-  foreach(Marker *pm, Markers)
+  for (Marker *pm : Markers)
     s += "\n\t  "+pm->save();
 
   return s;
@@ -258,7 +258,7 @@ Graph* Graph::sameNewOne()
   pg->numMode   = numMode;
   pg->yAxisNo   = yAxisNo;
 
-  foreach(Marker *pm, Markers)
+  for (Marker *pm : Markers)
     pg->Markers.append(pm->sameNewOne(pg));
 
   return pg;

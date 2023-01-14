@@ -162,7 +162,7 @@ bool VerilogAwriter::createVA_module(QTextStream &stream, Schematic *sch)
             QString s = pc->Ports.first()->Connection->Name;
             if (!ports.contains(s)) ports.append(s);
         } else {
-            foreach(Port *pp,pc->Ports) { // Find all signals
+            for (Port *pp : pc->Ports) { // Find all signals
                 QString s = pp->Connection->Name;
                 if (!nodes.contains(s)) nodes.append(s);
             }

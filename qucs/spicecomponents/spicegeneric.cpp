@@ -121,7 +121,7 @@ void SpiceGeneric::createSymbol()
   fHeight = metrics.lineSpacing();
   tx = x1+4;
   ty = y1 - fHeight - 4;
-  foreach(Property *pp,Props) {
+  for (Property *pp : Props) {
       if (pp->display) ty -= fHeight;
   }
   changed = true;
@@ -137,7 +137,7 @@ QString SpiceGeneric::spice_netlist(bool)
 {
     // form RefDes from unique device letter and device name
     QString s = Props.at(1)->Value + Name;
-    foreach(Port *pp, Ports) {
+    for (Port *pp : Ports) {
         s += " " + spicecompat::normalize_node_name(pp->Connection->Name);
     }
 

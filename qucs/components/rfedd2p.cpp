@@ -81,7 +81,7 @@ QString RFedd2P::netlist()
   QString n, p;
 
   // output all node names
-  foreach(Port *p1, Ports)
+  for (Port *p1 : Ports)
     s += " "+p1->Connection->Name;   // node names
 
   // output all properties

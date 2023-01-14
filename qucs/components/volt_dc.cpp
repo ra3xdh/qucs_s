@@ -63,7 +63,7 @@ Component* Volt_dc::newOne()
 QString Volt_dc::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
-    foreach(Port *p1, Ports) {
+    for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names

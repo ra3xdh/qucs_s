@@ -73,7 +73,7 @@ QString SpiceParam::getExpression(bool)
 
     QString s;
     s.clear();
-    foreach (Property *pp, Props) {
+    for (Property *pp : Props) {
         s += QString(".PARAM %1 = %2\n").arg(pp->Name).arg(pp->Value);
     }
     return s;

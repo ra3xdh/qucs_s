@@ -47,10 +47,9 @@ TransferFuncDialog::TransferFuncDialog(QVector<long double> &a, QVector<long dou
     tblA->setFixedWidth(150);
 
     if (!a.isEmpty()) {
-        long double num;
         int i = a.count()-1;
 
-        foreach (num,a) {
+        for (auto& num : a) {
             QTableWidgetItem *it = new QTableWidgetItem(QString::number((double)num));
             tblA->setItem(i,0,it);
             i--;
@@ -68,10 +67,9 @@ TransferFuncDialog::TransferFuncDialog(QVector<long double> &a, QVector<long dou
     tblB->setFixedWidth(150);
 
     if (!b.isEmpty()) {
-        long double num;
         int i = b.count()-1;
 
-        foreach (num,b) {
+        for (auto& num :b) {
             QTableWidgetItem *it = new QTableWidgetItem(QString::number((double)num));
             tblB->setItem(i,0,it);
             i--;

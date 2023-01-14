@@ -90,7 +90,7 @@ QString Relais::spice_netlist(bool isXyce)
     QList<int> seq; // nodes sequence
     seq<<1<<2<<0<<3;
     // output all node names
-    foreach(int i, seq) {
+    for (int i : seq) {
         QString nam = Ports.at(i)->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names

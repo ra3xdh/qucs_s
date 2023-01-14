@@ -157,7 +157,7 @@ QString SpiceFile::netlist()
     return QString("");  // no ports, no subcircuit instance
 
   QString s = "Sub:"+Name;   // SPICE netlist is subcircuit
-  foreach(Port *pp, Ports)
+  for (Port *pp : Ports)
     s += " "+pp->Connection->Name;   // output all node names
 
   QString f = misc::properFileName(Props.first()->Value);
@@ -583,8 +583,8 @@ void SpiceFile::slotExited()
 QString SpiceFile::spice_netlist(bool)
 {
     QStringList ports_lst = Props.at(1)->Value.split(",");
-    for (QStringList::iterator it = ports_lst.begin();it != ports_lst.end();it++) {
-        if (it->startsWith("_net")) (*it).remove(0,4);
+    for (auto & it : ports_lst) {
+        if (it.startsWith("_net")) it.remove(0,4);
     }
     QStringList nod_lst;
     QString compname = spicecompat::getSubcktName(getSubcircuitFile());
@@ -598,7 +598,7 @@ QString SpiceFile::spice_netlist(bool)
 
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     //foreach(Port *p1, Ports) {
-    foreach(int i,seq) {
+    for (int i : seq) {
         s += " "+Ports.at(i)->Connection->Name;   // node names
     }
 

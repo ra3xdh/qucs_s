@@ -182,7 +182,7 @@ bool spicecompat::containNodes(QStringList &tokens, QStringList &vars)
     QStringList system_vars;
     system_vars.clear();
     system_vars<<"frequency"<<"acfrequency"<<"time"<<"hbfrequncy";
-    foreach (QString tok,tokens) {
+    for (const QString& tok : tokens) {
         if (var_pattern.exactMatch(tok)) return true;
         if (disto_var.exactMatch(tok)) return true;
         if (system_vars.contains(tok)) return true;
@@ -303,14 +303,14 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
  * \param subfilename file containing subcircuit definition
  * \return .SUBCKT entry name
  */
-QString spicecompat::getSubcktName(QString subfilename)
+QString spicecompat::getSubcktName(const QString& subfilename)
 {
     QString s = "";
 
     QFile sub_file(subfilename);
     if (sub_file.open(QIODevice::ReadOnly)) {
         QStringList lst = QString(sub_file.readAll()).split("\n");
-        foreach (QString str, lst) {
+        for (const QString& str : lst) {
             QRegExp subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
             if (subckt_header.exactMatch(str)) {
                 QRegExp sep("\\s");
@@ -329,7 +329,7 @@ QString spicecompat::getSubcktName(QString subfilename)
  * \param sweep Sweep designation in Qucs notation
  * \return Sweep designation in SPICE notation
  */
-QString spicecompat::convert_sweep_type(QString sweep)
+QString spicecompat::convert_sweep_type(const QString& sweep)
 {
     if (sweep=="lin") return QString("lin");
     if (sweep=="log") return QString("dec");

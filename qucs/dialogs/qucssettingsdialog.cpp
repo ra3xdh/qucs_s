@@ -1076,7 +1076,7 @@ void QucsSettingsDialog::slotRemovePath()
     // get the selected items from the table
     QList<QTableWidgetItem *> selectedPaths = pathsTableWidget->selectedItems();
 
-    foreach (QTableWidgetItem * item, selectedPaths)
+    for (QTableWidgetItem * item : selectedPaths)
     {
         QString path = item->text();
         //removedPaths.append(path);
@@ -1101,7 +1101,7 @@ void QucsSettingsDialog::makePathTable()
     pathsTableWidget->setRowCount(0);
 
     // fill listview with the list of paths
-    foreach (QString pathstr, currentPaths)
+    for (const QString& pathstr : currentPaths)
     {
         int row = pathsTableWidget->rowCount();
         pathsTableWidget->setRowCount(row+1);

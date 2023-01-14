@@ -507,12 +507,12 @@ void LibraryDialog::slotSave()
         XSPICE_CMbuilder *bld = new XSPICE_CMbuilder(Doc);
         QStringList srcs,dsts;
         bld->getModIfsFileList(srcs);
-        foreach(QString ifl,srcs) {
+        for (QString& ifl : srcs) {
             QString ofl=ifl;
             intoFile(ifl,ofl,dsts);
         }
         QString s = "<SpiceAttach ";
-        foreach (QString f,dsts) {
+        for (const QString& f : dsts) {
             s += " \"" + f + "\"";
         }
         s += ">\n";

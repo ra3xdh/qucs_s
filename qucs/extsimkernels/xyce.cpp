@@ -137,9 +137,9 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     QFileInfo inf(Sch->DocName);
     QString basenam = inf.baseName();
 
-    QString nod,nods;
+    QString nods;
     nods.clear();
-    foreach (nod,vars) {
+    for (auto& nod :vars) {
         if (!nod.startsWith("I(")) {
             nods += QString("v(%1) ").arg(nod);
         } else {
@@ -311,7 +311,7 @@ void Xyce::slotSimulate()
     QFile::remove(workdir+"spice4qucs.sens_tr.cir.SENS.prn");
     QFile::remove(workdir+"spice4qucs.sens_tr.cir.TRADJ.prn");
 
-    foreach(QString sim,simulationsQueue) {
+    for (const QString& sim : simulationsQueue) {
         QStringList sim_lst;
         sim_lst.clear();
         sim_lst.append(sim);

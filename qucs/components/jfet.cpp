@@ -97,7 +97,7 @@ QString JFET::spice_netlist(bool isXyce)
     QList<int> pin_seq;
     pin_seq<<1<<0<<2; // Pin sequence: DGS
     // output all node names
-    foreach(int pin, pin_seq) {
+    for (int pin : pin_seq) {
         QString nam = Ports.at(pin)->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names

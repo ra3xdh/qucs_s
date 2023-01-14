@@ -78,7 +78,7 @@ void XspiceGeneric::createSymbol()
   QStringList t_ports = Props.at(0)->Value.split(',');
   QStringList n_ports;
   int k=0;
-  foreach (QString t_port, t_ports) {
+  for (QString t_port : t_ports) {
       t_port.remove(']').remove('[');
       if ((t_port.remove(' ').endsWith('d'))&&
           (t_port!="d")) {
@@ -152,7 +152,7 @@ QString XspiceGeneric::spice_netlist(bool)
     QStringList t_ports = Props.at(0)->Value.split(',');
 
     int i=0;
-    foreach(QString t_port,t_ports) {
+    for(QString t_port : t_ports) {
         QString nod =  spicecompat::normalize_node_name(Ports.at(i)->Connection->Name);
 
         if (t_port.contains('[')) { // Process array ports

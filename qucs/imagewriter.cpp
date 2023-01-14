@@ -38,9 +38,9 @@ ImageWriter::~ImageWriter()
 }
 
 void
-ImageWriter::noGuiPrint(QWidget *doc, QString printFile, QString color)
+ImageWriter::noGuiPrint(QWidget *doc, const QString& printFile, const QString& color)
 {
-  Schematic *sch = static_cast<Schematic*>(doc);
+  Schematic *sch = dynamic_cast<Schematic*>(doc);
   const int bourder = 30;
   int w,h,wsel,hsel,
       xmin, ymin, xmin_sel, ymin_sel;
@@ -131,7 +131,7 @@ QString ImageWriter::getLastSavedFile()
 // FIXME: should check if filename exists and not silently overwrite
 int ImageWriter::print(QWidget *doc)
 {
-  Schematic *sch = static_cast<Schematic*>(doc);
+  Schematic *sch = dynamic_cast<Schematic*>(doc);
   const int border = 30;
 
   int w,h,wsel,hsel,
@@ -328,7 +328,7 @@ void ImageWriter::getSelAreaWidthAndHeight(Schematic *sch, int &wsel, int &hsel,
          }
     }
 
-    for(Wire *pw = sch->Wires->first(); pw != 0; pw = sch->Wires->next()) {
+    for(Wire *pw = sch->Wires->first(); pw != nullptr; pw = sch->Wires->next()) {
 
         if (pw->isSelected) {
             if(pw->x1 < xmin) xmin = pw->x1;
@@ -348,7 +348,7 @@ void ImageWriter::getSelAreaWidthAndHeight(Schematic *sch, int &wsel, int &hsel,
         }
     }
 
-    for(Node *pn = sch->Nodes->first(); pn != 0; pn = sch->Nodes->next()) {
+    for(Node *pn = sch->Nodes->first(); pn != nullptr; pn = sch->Nodes->next()) {
         WireLabel *pl = pn->Label;
         if(pl) {     // check position of node label
             if (pl->isSelected) {
@@ -362,19 +362,16 @@ void ImageWriter::getSelAreaWidthAndHeight(Schematic *sch, int &wsel, int &hsel,
         }
     }
 
-    for(Diagram *pd = sch->Diagrams->first(); pd != 0; pd =sch-> Diagrams->next()) {
-
-
-
+    for(Diagram *pd = sch->Diagrams->first(); pd != nullptr; pd =sch-> Diagrams->next()) {
         if (pd->isSelected) {
             int x1,y1,x2,y2;
             pd->Bounding(x1,y1,x2,y2);
             updateMinMax(xmin,xmax,ymin,ymax,x1,x2,y1,y2);
 
-            foreach (Graph *pg, pd->Graphs) {
-                foreach (Marker *pm, pg->Markers) {
+            for (auto& pg: qAsConst(pd->Graphs)) {
+                for (auto& pm: qAsConst(pg->Markers)) {
                     if (pm->isSelected) {
-                        int x1,y1,x2,y2;
+                        //int x1,y1,x2,y2;
                         pm->Bounding(x1,y1,x2,y2);
                         updateMinMax(xmin,xmax,ymin,ymax,x1,x2,y1,y2);
                     }
@@ -383,7 +380,7 @@ void ImageWriter::getSelAreaWidthAndHeight(Schematic *sch, int &wsel, int &hsel,
         }
     }
 
-    for(Painting *pp = sch->Paintings->first(); pp != 0; pp = sch->Paintings->next()) {
+    for(Painting *pp = sch->Paintings->first(); pp != nullptr; pp = sch->Paintings->next()) {
 
        if (pp->isSelected) {
            int x1,y1,x2,y2;

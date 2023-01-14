@@ -95,7 +95,7 @@ Element* Source_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString Source_ac::ngspice_netlist()
 {
     QString s = QString("V%1").arg(Name);
-    foreach(Port *p1, Ports) {
+    for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
@@ -117,7 +117,7 @@ QString Source_ac::ngspice_netlist()
 QString Source_ac::xyce_netlist()
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
-    foreach(Port *p1, Ports) {
+    for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names

@@ -317,7 +317,7 @@ QString LibComp::netlist()
   QString s = "Sub:"+Name;   // output as subcircuit
 
   // output all node names
-  foreach(Port *p1, Ports)
+  for (Port *p1 : Ports)
     s += " "+p1->Connection->Name;   // node names
 
   // output property
@@ -369,7 +369,7 @@ QString LibComp::vhdlCode(int)
 QString LibComp::spice_netlist(bool)
 {
     QString s = SpiceModel + Name + " 0 "; // connect ground of subckt to circuit ground
-    foreach(Port *p1, Ports)
+    for (Port *p1 : Ports)
       s += " "+p1->Connection->Name;   // node names
     s += " " + createType();
 
@@ -391,7 +391,7 @@ QStringList LibComp::getAttachedIFS()
 
     int r = loadSection("Spice",content,&includes,&attach);
     if (r<0) return ifs_lst;
-    foreach(QString file,attach) {
+    for (const QString& file : attach) {
         if (file.endsWith(".ifs")) ifs_lst.append(getSubcircuitFile()+'/'+file);
     }
     return ifs_lst;
@@ -405,7 +405,7 @@ QStringList LibComp::getAttachedMOD()
 
     int r = loadSection("Spice",content,&includes,&attach);
     if (r<0) return mod_lst;
-    foreach(QString file,attach) {
+    for (const QString& file : attach) {
         if (file.endsWith(".mod")) mod_lst.append(getSubcircuitFile()+'/'+file);
     }
     return mod_lst;

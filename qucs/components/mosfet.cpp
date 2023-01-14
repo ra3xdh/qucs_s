@@ -127,7 +127,7 @@ QString MOSFET::netlist()
   QString s = "MOSFET:"+Name;
 
   // output all node names
-  foreach(Port *p1, Ports)
+  for (Port *p1 : Ports)
     s += " "+p1->Connection->Name;   // node names
   s += " "+Ports.at(2)->Connection->Name;  // connect substrate to source
 
@@ -144,7 +144,7 @@ QString MOSFET::spice_netlist(bool isXyce)
     QList<int> pin_seq;
     pin_seq<<1<<0<<2<<2; // Pin sequence: DGS; coonect substrate to source
     // output all node names
-    foreach(int pin, pin_seq) {
+    for (int pin : pin_seq) {
         QString nam = Ports.at(pin)->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
@@ -164,7 +164,7 @@ QString MOSFET::spice_netlist(bool isXyce)
     QStringList check_defaults_list;
     QString unit;
     check_defaults_list<<"Nsub"<<"Nss";
-    foreach (QString parnam,check_defaults_list) { // Check some parameters for default value (zero)
+    for (const QString& parnam : check_defaults_list) { // Check some parameters for default value (zero)
         double val,fac;   // And reduce parameter list
         misc::str2num(getProperty(parnam)->Value,val,unit,fac);
         if ((val *= fac)==0.0) {

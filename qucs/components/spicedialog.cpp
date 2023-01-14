@@ -473,7 +473,7 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
   {
     PortsList->clear();
     QStringList ports = pp->Value.split(',');
-    foreach(QString port, ports) {
+    for (const QString& port : ports) {
       PortsList->addItem(port);
     }
   }
