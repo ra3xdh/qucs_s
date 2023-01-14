@@ -67,13 +67,13 @@ void ViewPainter::init(QPainter *p, float Scale_, int DX_, int DY_,
 }
 
 // -------------------------------------------------------------
-void ViewPainter::map(int x1, int y1, int& x, int& y)
+void ViewPainter::map(int x1, int y1, int& x, int& y) const
 {
   float z;
   z = float(x1)*Scale + DX;
-  x = TO_INT(z);
+  x = lround(z);
   z = float(y1)*Scale + DY;
-  y = TO_INT(z);
+  y = lround(z);
 }
 
 // -------------------------------------------------------------
@@ -316,14 +316,13 @@ int ViewPainter::drawText(const QString& Text, int x1i, int y1i, int *Height)
   rf = Painter->boundingRect(QRectF(x1, y1, 0, 0), Qt::TextDontClip, Text);
   Painter->drawText(QRectF(x1, y1, 0, 0), Qt::TextDontClip, Text);
 
-  if(Height)  *Height = TO_INT(rf.height());
-  return TO_INT(rf.width());
+  if(Height)  *Height = lround(rf.height());
+  return lround(rf.width());
 }
 
 // -------------------------------------------------------------
 // Returns width of text (and height if pointer is not null).
-int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1,
-				int *Height)
+int ViewPainter::drawTextMapped(const QString& Text, int x1, int y1, int *Height)
 {
   QRectF rf;
   float y = 0.0;

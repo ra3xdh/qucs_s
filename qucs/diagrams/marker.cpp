@@ -402,7 +402,7 @@ void Marker::paint(ViewPainter *p, int x0, int y0)
   float fx2, fy2;
   fx2 = (float(x0)+fCX)*p->Scale + p->DX;
   fy2 = (float(y0)-fCY)*p->Scale + p->DY;
-  p->Painter->drawLine(x1_, y1_, TO_INT(fx2), TO_INT(fy2));
+  p->Painter->drawLine(x1_, y1_, lround(fx2), lround(fy2));
 
   if(isSelected) {
     p->Painter->setPen(QPen(Qt::darkGray,3));

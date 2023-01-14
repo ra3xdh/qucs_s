@@ -56,7 +56,7 @@ class Category
 {
  public:
   Category ();
-  Category (const QString);
+  Category (QString);
   ~Category ();
 
  public:

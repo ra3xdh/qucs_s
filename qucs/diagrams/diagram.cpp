@@ -30,15 +30,15 @@
 
 #endif
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <cmath>
-#include <float.h>
+#include <cfloat>
 
 #if HAVE_IEEEFP_H
 # include <ieeefp.h>
 #endif
 
-#include <locale.h>
+#include <clocale>
 
 #include "diagram.h"
 #include "main.h"
@@ -149,7 +149,7 @@ void Diagram::paintDiagram(ViewPainter *p) {
         fy_ = float(y2) * p->Scale + 10;
 
         p->Painter->setPen(QPen(Qt::darkGray, 3));
-        p->Painter->drawRect(x_ - 5, y_ - 5, TO_INT(fx_), TO_INT(fy_));
+        p->Painter->drawRect(x_ - 5, y_ - 5, lround(fx_), lround(fy_));
         p->Painter->setPen(QPen(Qt::darkRed, 2));
         p->drawResizeRect(cx, cy - y2);  // markers for changing the size
         p->drawResizeRect(cx, cy);
@@ -179,7 +179,7 @@ void Diagram::createAxisLabels() {
     int x, y, w, wmax = 0;
     QString Str;
     // get size of text using the screen-compatible metric
-    QFontMetrics metrics(QucsSettings.font, 0);
+    QFontMetrics metrics(QucsSettings.font, nullptr);
     int LineSpacing = metrics.lineSpacing();
 
 
@@ -476,7 +476,7 @@ void Diagram::clip(Graph::iterator &p) const {
     }
 
     int code = 0;
-    R = sqrt(F);
+    R = std::sqrt(F);
     dt1 = C - R;
     if ((dt1 > 0.0) && (dt1 < D)) { // intersection outside start/end point ?
         (p - 2)->setScr(x_1 - x * dt1 / D, y_1 - y * dt1 / D);
@@ -1479,7 +1479,7 @@ void Diagram::createSmithChart(Axis *Axis, int Mode) {
     double rMAXq = Axis->up * Axis->up;
     int theta, beta, phi, len, m, x, y;
 
-    int R1 = int(x2 / Axis->up + 0.5);
+    int R1 = lround(x2 / Axis->up);
     // ....................................................
     // draw arcs with im(z)=const
     for (m = 1; m < GridY; m++) {
@@ -1487,7 +1487,7 @@ void Diagram::createSmithChart(Axis *Axis, int Mode) {
         n_cos = cos(n_sin);
         n_sin = sin(n_sin);
         im = (1.0 - n_cos) / n_sin * pow(Axis->up, 0.7); // up^0.7 is beauty correction
-        y = int(im / Axis->up * x2 + 0.5);  // diameter
+        y = lround(im / Axis->up * x2);  // diameter
 
         if (Axis->up <= 1.0) {       // Smith chart with |r|=1
             beta = int(16.0 * 180.0 * atan2(n_sin - im, n_cos - 1.0) / pi - 0.5);
@@ -1547,7 +1547,7 @@ void Diagram::createSmithChart(Axis *Axis, int Mode) {
 
     for (m = 1; m < GridX; m++) {
         im = m * (Axis->up + 1.0) / GridX - Axis->up;
-        y = int((1.0 - im) / Axis->up * double(dx2) + 0.5);  // diameter
+        y = lround((1.0 - im) / Axis->up * double(dx2));  // diameter
 
         if (Zplane)
             x = ((x2 + R1) >> 1) - y;
@@ -1583,7 +1583,7 @@ void Diagram::createSmithChart(Axis *Axis, int Mode) {
 
         // vertical line Re(r)=1 (visible only if |r|>1)
         if (Zplane) x = y;
-        y = int(sqrt(rMAXq - 1) / Axis->up * dx2 + 0.5);
+        y = lround(sqrt(rMAXq - 1) / Axis->up * dx2);
         if (Above) m = y;
         else m = 0;
         if (!Below) y = 0;
@@ -1911,7 +1911,7 @@ bool Diagram::calcAxisLogScale(Axis *Axis, int &z, double &zD,
         if (zD > 9.5 * zDstep) zDstep *= 10.0;
 
         corr = double(len) / log10(Axis->up / Axis->low);
-        z = int(corr * log10(zD / Axis->low) + 0.5); // int(..) implies floor(..)
+        z = lround(corr * log10(zD / Axis->low)); // int(..) implies floor(..)
 
         if (mirror2) {   // set back values ?
             tmp = Axis->low;
@@ -1982,10 +1982,10 @@ bool Diagram::calcYAxis(Axis *Axis, int x0) {
             zD += zDstep;
             if (zD > 9.5 * zDstep) zDstep *= 10.0;
             if (back) {
-                z = int(corr * log10(zD / fabs(Axis->up)) + 0.5); // int() implies floor()
+                z = lround(corr * log10(zD / fabs(Axis->up))); // int() implies floor()
                 z = y2 - z;
             } else
-                z = int(corr * log10(zD / fabs(Axis->low)) + 0.5);// int() implies floor()
+                z = lround(corr * log10(zD / fabs(Axis->low)));// int() implies floor()
         }
     } else {  // not logarithmical
         back = calcAxisScale(Axis, GridNum, zD, zDstep, GridStep, double(y2));

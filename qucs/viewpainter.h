@@ -39,7 +39,7 @@ public:
 
   void init(QPainter*, float, int, int, int, int, 
 	    float FontScale_=0.0, float PrintScale_=1.0);
-  void map(int, int, int&, int&);
+  void map(int, int, int&, int&) const;
   void drawPoint(int, int);
   void drawLine (int, int, int, int);
   void drawRect (int, int, int, int);
