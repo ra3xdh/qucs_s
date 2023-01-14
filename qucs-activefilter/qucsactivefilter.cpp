@@ -47,7 +47,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
     QMenu *fileMenu = new QMenu(tr("&File"));
 
     QAction * fileQuit = new QAction(tr("E&xit"), this);
-    fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
+    fileQuit->setShortcut(QKeySequence::Quit);
     connect(fileQuit, SIGNAL(triggered(bool)), SLOT(close()));
 
     fileMenu->addAction(fileQuit);

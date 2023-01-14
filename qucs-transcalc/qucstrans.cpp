@@ -289,26 +289,26 @@ QucsTranscalc::QucsTranscalc() {
   QMenu *fileMenu = new QMenu(tr("&File"));
 
   QAction *fileLoad = new QAction(tr("&Load"), this);
-  fileLoad->setShortcut(Qt::CTRL+Qt::Key_L);
+  fileLoad->setShortcut(tr("Ctrl+L"));
   fileMenu->addAction(fileLoad);
   connect(fileLoad, SIGNAL(triggered(bool)), SLOT(slotFileLoad()));
 
   QAction *fileSave = new QAction (tr("&Save"), this);
-  fileSave->setShortcut(Qt::CTRL+Qt::Key_S);
+  fileSave->setShortcut(tr("Ctrl+S"));
   fileMenu->addAction(fileSave);
   connect(fileSave, SIGNAL(triggered(bool)), SLOT(slotFileSave()));
 
   fileMenu->addSeparator();
 
   QAction *fileOption = new QAction (tr("&Options"), this);
-  fileOption->setShortcut(Qt::CTRL+Qt::Key_O);
+  fileOption->setShortcut(tr("Ctrl+O"));
   fileMenu->addAction(fileOption);
   connect(fileOption, SIGNAL(triggered(bool)), SLOT(slotOptions()));
 
   fileMenu->addSeparator();
 
   QAction *fileQuit = new QAction (tr("&Quit"), this);
-  fileQuit->setShortcut(Qt::CTRL+Qt::Key_Q);
+  fileQuit->setShortcut(QKeySequence::Quit);
   fileMenu->addAction(fileQuit);
   connect(fileQuit, SIGNAL(triggered(bool)), SLOT(slotQuit()));
 
