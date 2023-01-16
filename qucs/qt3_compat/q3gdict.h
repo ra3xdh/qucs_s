@@ -43,6 +43,7 @@
 #define Q3GDICT_H
 
 #include "q3ptrcollection.h"
+#include <QString>
 
 class Q3GDictIterator;
 class Q3GDItList;
