@@ -239,8 +239,22 @@ void LoadDialog::loadSelected()
     QListWidgetItem* item = fileView->item(i);
 
     if (item->checkState() == Qt::Checked){
+
+        bool json_found = true;
+        QJsonObject json;
+        try {
+            json = getJsonObject(projDir.filePath(item->text()));
+        } catch (const std::runtime_error& ex) {
+            json_found = false;
+        }
+
         QString key = item->text().split("_symbol.json").at(0);
         QString value = projDir.absoluteFilePath(item->text());
+
+        if (json_found) {
+            QString Name = getString(json, "Model");
+            if (!Name.isEmpty()) key = Name;
+        }
 
         qDebug() << "key" << key;
         qDebug() << "file " << value;
