@@ -54,20 +54,20 @@ endif()
 #
 ADD_DEFINITIONS( -DHAVE_CONFIG_H )
 
-FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets Svg Xml PrintSupport REQUIRED)
+FIND_PACKAGE( Qt6 COMPONENTS Core Gui Widgets Svg Xml PrintSupport REQUIRED)
 #INCLUDE( ${QT_USE_FILE} )
 
 INCLUDE_DIRECTORIES(
-      ${Qt5Core_INCLUDE_DIRS}
-      ${Qt5Widgets_INCLUDE_DIRS}
-      ${Qt5Svg_INCLUDE_DIRS}
-      ${Qt5Xml_INCLUDE_DIRS}
-      ${Qt5Script_INCLUDE_DIRS}
-      ${Qt5PrintSupport_INCLUDE_DIRS}
+      ${Qt6Core_INCLUDE_DIRS}
+      ${Qt6Widgets_INCLUDE_DIRS}
+      ${Qt6Svg_INCLUDE_DIRS}
+      ${Qt6Xml_INCLUDE_DIRS}
+      ${Qt6Script_INCLUDE_DIRS}
+      ${Qt6PrintSupport_INCLUDE_DIRS}
       )
 
 # bug, the find package does not seem to set the QT_LIBRARIES, do it manually
-SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5Script_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} )
+SET(QT_LIBRARIES  ${Qt6Core_LIBRARIES} ${Qt6Widgets_LIBRARIES} ${Qt6Svg_LIBRARIES} ${Qt6Script_LIBRARIES} ${Qt6PrintSupport_LIBRARIES} )
 
 
 
@@ -97,11 +97,11 @@ INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR} )
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra ") # enable warning level
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ") # enable C++11
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 ") # enable C++11 c++0x
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC ") # enable C++11
 
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt6Widgets_EXECUTABLE_COMPILE_FLAGS}")
 # For some reason, on Windows QT_LIBRARIES point to static(?) .a libs
 # which do not provide the needed symbols. They are found on
 # the .dll libraries.
@@ -177,13 +177,13 @@ SET(QUCS_MOC_HDRS
 #
 # headers that need to be moc'ed
 #
-QT5_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
+Qt6_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
 
 #
 # generate rules for building source files from bitmap resources
 #
 SET(RESOURCES qucs.qrc)
-QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
+Qt6_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
 
 if(UNIX AND NOT APPLE)
 
