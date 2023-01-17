@@ -180,11 +180,8 @@ void CustomSimDialog::slotFindOutputs()
     QStringList outps;
     QStringList strings = edtCode->toPlainText().split('\n');
     if (isXyceScr) {
-        QRegularExpression print_ex("^\\s*\\.print\\s.*");
-        print_ex.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
-        QRegularExpression file_ex("\\s*file\\s*=\\s*");
-        file_ex.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
-
+        QRegularExpression print_ex("^\\s*\\.print\\s.*", QRegularExpression::CaseInsensitiveOption);
+        QRegularExpression file_ex("\\s*file\\s*=\\s*", QRegularExpression::CaseInsensitiveOption);
         for (const QString& line : strings) {
             if (print_ex.match(line).hasMatch()) {
                 //file_ex.setCaseSensitivity(Qt::CaseInsensitive);

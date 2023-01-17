@@ -249,11 +249,9 @@ void SyntaxHighlighter::highlightBlock(const QString &text) {
     for (const HighlightingRule &rule : highlightingRules) {
         QRegularExpression expression(rule.pattern);
         QRegularExpressionMatch match = expression.match(text);
-        //int index = expression.indexIn(text);
-        while (match.hasMatch()) {
+        for (const QRegularExpressionMatch &match : expression.globalMatch(text)) {
             int length = match.capturedLength();
             setFormat(match.capturedStart(), length, rule.format);
-            //index = expression.indexIn(text, index + length);
         }
     }
 }

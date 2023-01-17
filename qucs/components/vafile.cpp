@@ -61,7 +61,7 @@ VerilogA_File_Info::VerilogA_File_Info (QString File, bool isfile)
       File.remove(i, j-i+2);
   }
 
-  QRegularExpression Expr,Expr1;
+  QRegularExpression Expr;//,Expr1;
   //Expr.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
   //Expr1.setPatternOptions(Qt::CaseSensitive);
   k--;
