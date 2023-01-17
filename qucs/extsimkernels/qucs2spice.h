@@ -21,6 +21,7 @@
 #define QUCS2SPICE_H
 
 #include <QString>
+#include <QRegularExpression>
 
 /*!
   \file qucs2spice.h

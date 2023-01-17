@@ -126,7 +126,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   toTake = false;   // double-clicked variable be inserted into graph list ?
 
   Expr.setPattern("[^\"]+");
-  Validator  = new QRegExpValidator(Expr, this);
+  Validator  = new QRegularExpressionValidator(Expr, this);
   ValInteger = new QIntValidator(0, 360, this);
   ValDouble  = new QDoubleValidator(-1e200, 1e200, 6, this);
 
@@ -742,7 +742,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   QWidget *Butts = new QWidget();
   QHBoxLayout *ButtsLayout = new QHBoxLayout();
   ButtsLayout->setSpacing(5);
-  ButtsLayout->setMargin(5);
+  ButtsLayout->setContentsMargins(5, 5, 5, 5);
   Butts->setLayout(ButtsLayout);
   all->addWidget(Butts);
 
@@ -1639,7 +1639,7 @@ void DiagramDialog::slotEditRotZ(const QString& Text)
 void DiagramDialog::slotPlotVs(int)
 {
     QString s = GraphInput->text();
-    s.remove(QRegExp("@.*$")); // remove all after "@" symbol
+    s.remove(QRegularExpression("@.*$")); // remove all after "@" symbol
     if (ChooseXVar->currentIndex()!=0) {
         s += "@" + ChooseXVar->currentText();
     }

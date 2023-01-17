@@ -21,7 +21,7 @@
 #include "misc.h"
 
 #include <QTextStream>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QFileInfo>
 
 
@@ -280,8 +280,8 @@ VHDL_File_Info::VHDL_File_Info(QString File, bool isfile)
       File.remove(i, j-i);
   }
 
-  QRegExp Expr;
-  Expr.setCaseSensitivity(Qt::CaseInsensitive); 
+  QRegularExpression Expr;
+  Expr.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
   for(;;) {
     k--;
     Expr.setPattern("\\bentity\\b");  // start of last entity
@@ -325,8 +325,8 @@ VHDL_File_Info::VHDL_File_Info(QString File, bool isfile)
 // -------------------------------------------------------
 QString VHDL_File_Info::parsePorts(QString s, int j)
 {
-  QRegExp Expr;
-  Expr.setCaseSensitivity(Qt::CaseInsensitive);
+  QRegularExpression Expr;
+  Expr.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
   int i, p, l, k;
 
   Expr.setPattern("\\bport\\b");  // start of interface definition
@@ -388,8 +388,8 @@ QString VHDL_File_Info::parsePorts(QString s, int j)
 // -------------------------------------------------------
 QString VHDL_File_Info::parseGenerics(QString s, int j)
 {
-  QRegExp Expr;
-  Expr.setCaseSensitivity(Qt::CaseInsensitive);
+  QRegularExpression Expr;
+  Expr.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
   int i, p, l, k, n;
 
   Expr.setPattern("\\bgeneric\\b");

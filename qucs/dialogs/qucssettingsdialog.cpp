@@ -63,7 +63,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     setWindowTitle(tr("Edit Qucs Properties"));
 
     Expr.setPattern("[\\w_]+");
-    Validator  = new QRegExpValidator(Expr, this);
+    Validator  = new QRegularExpressionValidator(Expr, this);
 
     all = new QVBoxLayout(this); // to provide the necessary size
     QTabWidget *t = new QTabWidget();
@@ -416,7 +416,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
 
     QHBoxLayout *Butts = new QHBoxLayout();
     Butts->setSpacing(3);
-    Butts->setMargin(3);
+    Butts->setContentsMargins(3,3,3,3);
     all->addLayout(Butts);
 
     QPushButton *OkButt = new QPushButton(tr("OK"));

@@ -23,7 +23,8 @@
 
 #include <QDialog>
 #include <QFont>
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 #include <QVBoxLayout>
 
 class QLineEdit;
@@ -99,8 +100,8 @@ public:
     QVBoxLayout *all;
     QIntValidator *val50;
     QIntValidator *val200;
-    QRegExp Expr;
-    QRegExpValidator *Validator;
+    QRegularExpression Expr;
+    QRegularExpressionValidator *Validator;
 
 private:
     QStringList currentPaths;

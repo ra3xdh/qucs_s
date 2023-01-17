@@ -208,37 +208,37 @@ void SyntaxHighlighter::setLanguage(int lang)
     }
 
   for (const QString &pattern : reservedWordPattern) {
-    rule.pattern = QRegExp(pattern);
+    rule.pattern = QRegularExpression(pattern);
     rule.format = reservedWordFormat;
     highlightingRules.append(rule);
   }
 
   for (const QString &pattern : unitPattern) {
-    rule.pattern = QRegExp(pattern);
+    rule.pattern = QRegularExpression(pattern);
     rule.format = unitFormat;
     highlightingRules.append(rule);
   }
 
   for (const QString &pattern : datatypePattern) {
-    rule.pattern = QRegExp(pattern);
+    rule.pattern = QRegularExpression(pattern);
     rule.format = datatypeFormat;
     highlightingRules.append(rule);
   }
 
   for (const QString &pattern : directivePattern) {
-    rule.pattern = QRegExp(pattern);
+    rule.pattern = QRegularExpression(pattern);
     rule.format = directiveFormat;
     highlightingRules.append(rule);
   }
 
   for (const QString &pattern : functionPattern) {
-    rule.pattern = QRegExp(pattern);
+    rule.pattern = QRegularExpression(pattern);
     rule.format = functionFormat;
     highlightingRules.append(rule);
   }
 
   for (const QString &pattern : commentPattern) {
-    rule.pattern = QRegExp(pattern);
+    rule.pattern = QRegularExpression(pattern);
     rule.format = commentFormat;
     highlightingRules.append(rule);
   }
@@ -247,12 +247,13 @@ void SyntaxHighlighter::setLanguage(int lang)
 // ---------------------------------------------------
 void SyntaxHighlighter::highlightBlock(const QString &text) {
     for (const HighlightingRule &rule : highlightingRules) {
-        QRegExp expression(rule.pattern);
-        int index = expression.indexIn(text);
-        while (index >= 0) {
-            int length = expression.matchedLength();
-            setFormat(index, length, rule.format);
-            index = expression.indexIn(text, index + length);
+        QRegularExpression expression(rule.pattern);
+        QRegularExpressionMatch match = expression.match(text);
+        //int index = expression.indexIn(text);
+        while (match.hasMatch()) {
+            int length = match.capturedLength();
+            setFormat(match.capturedStart(), length, rule.format);
+            //index = expression.indexIn(text, index + length);
         }
     }
 }

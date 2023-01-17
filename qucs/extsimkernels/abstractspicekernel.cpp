@@ -331,7 +331,7 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
     bool start_values_sec = false;
     int NumVars=0; // Number of dep. and indep.variables
     while (!ngsp_data.atEnd()) { // Parse header;
-        QRegExp sep("[ \t,]");
+        QRegularExpression sep("[ \t,]");
         QString lin = ngsp_data.readLine();
         if (lin.isEmpty()) continue;
         if (lin.contains("Flags")&&lin.contains("complex")) { // output consists of
@@ -420,7 +420,7 @@ void AbstractSpiceKernel::parseHBOutput(QString ngspice_file, QList<QList<double
                     }
                     var_list.append(norm_vars);
             }
-            if ((lin.contains(QRegExp("\\d*\\.\\d+[+-]*[eE]*[\\d]*")))) { // CSV dataline
+            if ((lin.contains(QRegularExpression("\\d*\\.\\d+[+-]*[eE]*[\\d]*")))) { // CSV dataline
                 QStringList vals = lin.split(" ",qucs::SkipEmptyParts);
                 QList <double> sim_point;
                 sim_point.clear();
@@ -452,8 +452,8 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
         var_list.append("fourierfreq");
         int Nharm; // number of harmonics
         bool firstgroup = false;
+        QRegularExpression sep("[ \t,]");
         while (!ngsp_data.atEnd()) {
-            QRegExp sep("[ \t,]");
             QString lin = ngsp_data.readLine();
             if (lin.isEmpty()) continue;
             if (lin.contains("Fourier analysis for")) {
@@ -477,7 +477,7 @@ void AbstractSpiceKernel::parseFourierOutput(QString ngspice_file, QList<QList<d
                 QString ss = lin.section(sep,2,2,QString::SectionSkipEmpty);
                 if (ss.endsWith(',')) ss.chop(1);
                 Nharm = ss.toInt();
-                while (!ngsp_data.readLine().contains(QRegExp("Harmonic\\s+Frequency")));
+                while (!ngsp_data.readLine().contains(QRegularExpression("Harmonic\\s+Frequency")));
                 if (!(QucsSettings.DefaultSimulator == spicecompat::simXyceSer||
                       QucsSettings.DefaultSimulator == spicecompat::simXycePar)) lin = ngsp_data.readLine(); // dummy line
                 for (int i=0;i<Nharm;i++) {
@@ -669,8 +669,8 @@ void AbstractSpiceKernel::parseDC_OPoutputXY(QString xyce_file)
         QTextStream ngsp_data(&ofile);
         QStringList lines = ngsp_data.readAll().split("\n");
         if (lines.count()>=2) {
-            QStringList nods = lines.at(0).split(QRegExp("\\s"),qucs::SkipEmptyParts);
-            QStringList vals = lines.at(1).split(QRegExp("\\s"),qucs::SkipEmptyParts);
+            QStringList nods = lines.at(0).split(QRegularExpression("\\s"),qucs::SkipEmptyParts);
+            QStringList vals = lines.at(1).split(QRegularExpression("\\s"),qucs::SkipEmptyParts);
             QStringList::iterator n,v;
             for(n = nods.begin(),v = vals.begin();n!=nods.end()||v!=vals.end();n++,v++) {
                 if ((*n).startsWith("I(")) {
@@ -724,7 +724,7 @@ void AbstractSpiceKernel::parseSTEPOutput(QString ngspice_file,
     int NumVars=0; // Number of dep. and indep.variables
     int NumPoints=0; // Number of simulation points
     while (!ngsp_data.atEnd()) {
-        QRegExp sep("[ \t,]");
+        QRegularExpression sep("[ \t,]");
         QString lin = ngsp_data.readLine();
         if (lin.isEmpty()) continue;
         if (lin.contains("Plotname:")&&  // skip operating point
@@ -817,11 +817,11 @@ void AbstractSpiceKernel::extractBinSamples(QDataStream &dbl, QList<QList<double
 bool AbstractSpiceKernel::extractASCIISamples(QString &lin, QTextStream &ngsp_data,
                                               QList<QList<double> > &sim_points, int NumVars, bool isComplex)
 {
-    QRegExp sep("[ \t,]");
+    QRegularExpression sep("[ \t,]");
     QList<double> sim_point;
     bool ok = false;
-    QRegExp dataline_patter("^ *[0-9]+[ \t]+.*");
-    if (!dataline_patter.exactMatch(lin)) return false;
+    QRegularExpression dataline_patter("^ *[0-9]+[ \t]+.*");
+    if (!dataline_patter.match(lin).hasMatch()) return false;
     double indep_val = lin.section(sep,1,1,QString::SectionSkipEmpty).toDouble(&ok);
     //double indep_val = lin.split(sep,QString::SkipEmptyParts).at(1).toDouble(&ok); // only real indep vars
     if (!ok) return false;
@@ -978,15 +978,15 @@ void AbstractSpiceKernel::parseResFile(QString resfile, QString &var, QStringLis
     QFile ofile(resfile);
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream swp_data(&ofile);
+        QRegularExpression point_pattern("^\\s*[0-9]+ .*");
+        QRegularExpression var_pattern("^STEP\\s+.*");
+        QRegularExpression sep("\\s");
         while (!swp_data.atEnd()) {
-            QRegExp point_pattern("^\\s*[0-9]+ .*");
-            QRegExp var_pattern("^STEP\\s+.*");
-            QRegExp sep("\\s");
             QString lin = swp_data.readLine();
-            if (var_pattern.exactMatch(lin)) {
+            if (var_pattern.match(lin).hasMatch()) {
                 var = lin.split(sep,qucs::SkipEmptyParts).last();
             }
-            if (point_pattern.exactMatch(lin)) {
+            if (point_pattern.match(lin).hasMatch()) {
                 values.append(lin.split(sep,qucs::SkipEmptyParts).last());
             }
         }
@@ -1011,6 +1011,7 @@ int AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &value
     bool isXyce = false;
     if (ofile.open(QFile::ReadOnly)) {
         QTextStream ngsp_data(&ofile);
+        QRegularExpression rx("^0\\s+[0-9].*"); // Zero index pattern
         while (!ngsp_data.atEnd()) {
             QString lin = ngsp_data.readLine();
             if (lin.startsWith("Plotname: ")) {
@@ -1018,8 +1019,7 @@ int AbstractSpiceKernel::checkRawOutupt(QString ngspice_file, QStringList &value
                 values.append(QString::number(plots_cnt));
             }
             if (lin.startsWith("End of Xyce(TM)")) isXyce = true;
-            QRegExp rx("^0\\s+[0-9].*"); // Zero index pattern
-            if (rx.exactMatch(lin)) {
+            if (rx.match(lin).hasMatch()) {
                 zeroindex_cnt++;
                 values.append(QString::number(zeroindex_cnt));
             }
@@ -1074,7 +1074,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         bool hasParSweep = false;
         bool hasDblParSweep = false;
 
-        QRegExp four_rx(".*\\.four[0-9]+$");
+        QRegularExpression four_rx(".*\\.four[0-9]+$");
         QString full_outfile = workdir+QDir::separator()+ngspice_output_filename;
         if (ngspice_output_filename.endsWith("HB.FD.prn")) {
             //parseHBOutput(full_outfile,sim_points,var_list,hasParSweep);
@@ -1086,7 +1086,7 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 parseResFile(res_file,swp_var,swp_var_val);
             }
         } else if (ngspice_output_filename.endsWith(".four") ||
-                   four_rx.exactMatch(ngspice_output_filename)) {
+                   four_rx.match(ngspice_output_filename).hasMatch()) {
             isComplex=false;
             parseFourierOutput(full_outfile,sim_points,var_list);
         } else if (ngspice_output_filename.endsWith(".ngspice.sens.dc.prn")) {
@@ -1283,6 +1283,10 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
 
     QStringList::iterator it=var_list.begin();
 
+    QRegularExpression iprobe_pattern("^[Vv][Pp][Rr][0-9]+.*");
+    QRegularExpression ivprobe_pattern("^[Vv][Pp][Rr][0-9]+.*");
+    QRegularExpression ivprobe_pattern_ngspice("^(ac\\.|tran\\.)[Vv][Pp][Rr][0-9]+.*");
+
     for (it++;it!=var_list.end();it++) {
         if ((!(it->startsWith(prefix)||it->startsWith(iprefix)))||(HB)) {
             if (HB) {
@@ -1294,20 +1298,19 @@ void AbstractSpiceKernel::normalizeVarsNames(QStringList &var_list)
                 *it = it->right(cnt-idx-1);
                 it->remove(')');
                 *it += suffix;
-                QRegExp iprobe_pattern("^[Vv][Pp][Rr][0-9]+.*");
-                if (iprobe_pattern.exactMatch(*it)) (*it).remove(0,1);
+
+                if (iprobe_pattern.match(*it).hasMatch()) (*it).remove(0,1);
             } else {
                 *it = prefix + *it;
             }
         }
         QStringList lst = it->split('(');
         if (lst.count()>1) {
-            QRegExp ivprobe_pattern("^[Vv][Pp][Rr][0-9]+.*");
-            QRegExp ivprobe_pattern_ngspice("^(ac\\.|tran\\.)[Vv][Pp][Rr][0-9]+.*");
-            if (ivprobe_pattern.exactMatch(lst.at(1))) {
+
+            if (ivprobe_pattern.match(lst.at(1)).hasMatch()) {
                 lst[1].remove(0,1);
                 *it = lst.join("(");
-            } else if (ivprobe_pattern_ngspice.exactMatch(lst.at(1))) {
+            } else if (ivprobe_pattern_ngspice.match(lst.at(1)).hasMatch()) {
                 lst[1].replace(".v",".",Qt::CaseInsensitive);
                 *it = lst.join("(");
             }

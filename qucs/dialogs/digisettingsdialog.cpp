@@ -39,10 +39,10 @@ DigiSettingsDialog::DigiSettingsDialog(TextDoc *Doc_)
   setWindowTitle(tr("Document Settings"));
 
   Expr.setPattern("[0-9][0-9a-zA-Z ]+"); // valid expression for LineEdit
-  Validator = new QRegExpValidator(Expr, this);
+  Validator = new QRegularExpressionValidator(Expr, this);
 
   QVBoxLayout *all = new QVBoxLayout(this);
-  all->setMargin(5);
+  all->setContentsMargins(5,5,5,5);
 
   QGroupBox *setGroup = new QGroupBox(tr("Digital Simulation Settings"));
   all->addWidget(setGroup);

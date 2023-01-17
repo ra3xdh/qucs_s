@@ -20,6 +20,7 @@
 
 #include <QDialog>
 #include <QVBoxLayout>
+#include <QRegularExpressionValidator>
 
 class Schematic;
 class QLineEdit;
@@ -56,7 +57,7 @@ public:
   QCheckBox *Check_OpenDpl, *Check_GridOn, *Check_RunScript;
 
   QVBoxLayout *all;
-  QRegExpValidator *valExpr;
+  QRegularExpressionValidator *valExpr;
 };
 
 class AuxFilesDialog : public QDialog {

@@ -23,7 +23,7 @@
 #include <QString>
 #include <QStringList>
 #include <QList>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QFontMetrics>
 
 #include <QFileInfo>
@@ -202,9 +202,9 @@ QString EqnDefined::va_code()
  */
 void EqnDefined::subsVoltages(QStringList &tokens, int Nbranch)
 {
-    QRegExp volt_pattern("^V[0-9]+$");
+    QRegularExpression volt_pattern("^V[0-9]+$");
     for (QStringList::iterator it = tokens.begin();it != tokens.end();it++) {
-        if (volt_pattern.exactMatch(*it)) {
+        if (volt_pattern.match(*it).hasMatch()) {
             QString volt = *it;
             volt.remove('V');
             int branch = volt.toInt();
@@ -226,9 +226,9 @@ void EqnDefined::subsVoltages(QStringList &tokens, int Nbranch)
  */
 void EqnDefined::findCurrents(QStringList &tokens, QList<int> &branches)
 {
-    QRegExp curr_pattern("^I[0-9]+$");
+    QRegularExpression curr_pattern("^I[0-9]+$");
     for (QStringList::iterator it = tokens.begin();it != tokens.end();it++) {
-        if (curr_pattern.exactMatch(*it)) {
+        if (curr_pattern.match(*it).hasMatch()) {
             QString curr = *it;
             int num = curr.remove(0,1).toInt();
             if (!branches.contains(num)) branches.append(num-1);
@@ -243,9 +243,9 @@ void EqnDefined::findCurrents(QStringList &tokens, QList<int> &branches)
  */
 void EqnDefined::subsCurrents(QStringList &tokens)
 {
-    QRegExp curr_pattern("^I[0-9]+$");
+    QRegularExpression curr_pattern("^I[0-9]+$");
     for (QStringList::iterator it = tokens.begin();it != tokens.end();it++) {
-        if (curr_pattern.exactMatch(*it)) {
+        if (curr_pattern.match(*it).hasMatch()) {
             QString curr = *it;
             int branch = curr.remove('I').toInt();
             *it = QString("i(V_%1sens_%2)").arg(Name).arg(branch-1);

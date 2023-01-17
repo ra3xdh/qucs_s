@@ -77,7 +77,7 @@ inline bool getSection(QString section, QString &list, QString &content)
             return false;
         }
         content = list.mid(Start, End-Start);
-        content.replace(QRegExp("\\n\\x20+"), "\n").remove(0, 1);
+        content.replace(QRegularExpression("\\n\\x20+"), "\n").remove(0, 1);
     }
     return true;
 }
@@ -237,7 +237,7 @@ inline int parseQucsComponentLibrary (QString libPath, ComponentLibrary &library
     QString LibraryString = ReadWhole.readAll();
     file.close();
 
-    LibraryString.replace(QRegExp("\\r\\n"), "\n");
+    LibraryString.replace(QRegularExpression("\\r\\n"), "\n");
 
     // The libraries have a header statement like the following:
     //
@@ -392,7 +392,7 @@ inline int parseSPICEComponentLibrary (QString libPath, ComponentLibrary &librar
                     idx--;
                     while (lin.at(idx).isSpace()) idx--;
                     while (lin.at(idx).isLetterOrNumber()) idx--;
-                } else idx = lin.lastIndexOf(QRegExp("[ \t]"),idx);
+                } else idx = lin.lastIndexOf(QRegularExpression("[ \t]"),idx);
                 pars = lin.mid(idx);
             } else pars = "";
 

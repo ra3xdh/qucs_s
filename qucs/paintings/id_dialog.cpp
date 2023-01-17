@@ -39,14 +39,14 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
 
   all = new QVBoxLayout;
   all->setSpacing(5);
-  all->setMargin(5);
+  all->setContentsMargins(5,5,5,5);
 
   QHBoxLayout *htop = new QHBoxLayout;
   htop->setSpacing(5);
   all->addLayout(htop);
 
   Expr.setPattern("[A-Za-z][A-Za-z0-9_]*");
-  SubVal = new QRegExpValidator(Expr, this);
+  SubVal = new QRegularExpressionValidator(Expr, this);
   Prefix = new QLineEdit(idText->Prefix);
   Prefix->setValidator(SubVal);
 
@@ -109,22 +109,22 @@ ID_Dialog::ID_Dialog(ID_Text *idText_)
   paramEditLayout->addWidget(new QLabel(tr("Type:")), 3, 0);
 
   Expr.setPattern("[\\w_]+");
-  NameVal = new QRegExpValidator(Expr, this);
+  NameVal = new QRegularExpressionValidator(Expr, this);
   ParamNameEdit = new QLineEdit;
   ParamNameEdit->setValidator(NameVal);
 
   Expr.setPattern("[^\"=]*");
-  ValueVal = new QRegExpValidator(Expr, this);
+  ValueVal = new QRegularExpressionValidator(Expr, this);
   ValueEdit = new QLineEdit;
   ValueEdit->setValidator(ValueVal);
 
   Expr.setPattern("[^\"=\\x005B\\x005D]*");
-  DescrVal = new QRegExpValidator(Expr, this);
+  DescrVal = new QRegularExpressionValidator(Expr, this);
   DescriptionEdit = new QLineEdit;
   DescriptionEdit->setValidator(DescrVal);
 
   Expr.setPattern("[\\w_]+");
-  TypeVal = new QRegExpValidator(Expr, this);
+  TypeVal = new QRegularExpressionValidator(Expr, this);
   TypeEdit = new QLineEdit;
   TypeEdit->setValidator(TypeVal);
 

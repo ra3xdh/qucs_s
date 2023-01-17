@@ -107,7 +107,7 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
     QStringList::const_iterator constListIterator;
     QString type = getProperty("Type")->Value;
     QString step_var = parameter_list.begin()->toLower();// use first element name as variable name
-    step_var.remove(QRegExp("[\\.\\[\\]@:]"));
+    step_var.remove(QRegularExpression("[\\.\\[\\]@:]"));
 	
     s = QString("let number_%1 = 0\n").arg(step_var);
     if (lvl==0) s += QString("echo \"STEP %1.%2\" > spice4qucs.%3.cir.res\n").arg(sim).arg(step_var).arg(sim);
@@ -120,7 +120,7 @@ QString Param_Sweep::getNgspiceBeforeSim(QString sim, int lvl)
         List = getProperty("Values")->Value.split(";");
 
         for(int i = 0; i < List.length(); i++) {
-            List[i].remove(QRegExp("[A-Z a-z [\\] s/' '//g]"));
+            List[i].remove(QRegularExpression("[A-Z a-z [\\] s/' '//g]"));
             s += QString("%1 ").arg(List[i]);
         }
     } else {
@@ -202,7 +202,7 @@ QString Param_Sweep::getNgspiceAfterSim(QString sim, int lvl)
     QStringList parameter_list = getProperty("Param")->Value.split( this->param_split_str );
     QString par = parameter_list.begin()->toLower();
     QString type = getProperty("Type")->Value;
-    par.remove(QRegExp("[\\.\\[\\]@:]"));
+    par.remove(QRegularExpression("[\\.\\[\\]@:]"));
 
     s = "set appendwrite\n";
 
@@ -218,7 +218,7 @@ QString Param_Sweep::getNgspiceAfterSim(QString sim, int lvl)
 QString Param_Sweep::getCounterVar()
 {
     QString par = getProperty("Param")->Value;
-    par.remove(QRegExp("[\\.\\[\\]@:]"));
+    par.remove(QRegularExpression("[\\.\\[\\]@:]"));
     QString s = QString("number_%1").arg(par);
     return s;
 }

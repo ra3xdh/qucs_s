@@ -23,7 +23,8 @@
 #define ID_DIALOG_H
 
 #include <QDialog>
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 class ID_Text;
 class QTableWidget;
@@ -51,8 +52,8 @@ private:
   QCheckBox *showCheck;
   QLineEdit *ParamNameEdit, *ValueEdit, *DescriptionEdit, *TypeEdit;
 
-  QRegExp Expr;
-  QRegExpValidator *SubVal, *NameVal, *ValueVal, *DescrVal, *TypeVal;
+  QRegularExpression Expr;
+  QRegularExpressionValidator *SubVal, *NameVal, *ValueVal, *DescrVal, *TypeVal;
 
 private slots:
   void slotOk();

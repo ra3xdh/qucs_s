@@ -62,32 +62,32 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
 {
     QStringList net_lst=netlist.split("\n");
 
-    QRegExp res_pattern("^[ \t]*R:[A-Za-z]+.*");
-    QRegExp cap_pattern("^[ \t]*C:[A-Za-z]+.*");
-    QRegExp ind_pattern("^[ \t]*L:[A-Za-z]+.*");
-    QRegExp diode_pattern("^[ \t]*Diode:[A-Za-z]+.*");
-    QRegExp mosfet_pattern("^[ \t]*MOSFET:[A-Za-z]+.*");
-    QRegExp jfet_pattern("^[ \t]*JFET:[A-Za-z]+.*");
-    QRegExp bjt_pattern("^[ \t]*BJT:[A-Za-z]+.*");
-    QRegExp ccvs_pattern("^[ \t]*CCVS:[A-Za-z]+.*");
-    QRegExp cccs_pattern("^[ \t]*CCCS:[A-Za-z]+.*");
-    QRegExp vcvs_pattern("^[ \t]*VCVS:[A-Za-z]+.*");
-    QRegExp vccs_pattern("^[ \t]*VCCS:[A-Za-z]+.*");
-    QRegExp subckt_head_pattern("^[ \t]*\\.Def:[A-Za-z]+.*");
-    QRegExp ends_pattern("^[ \t]*\\.Def:End[ \t]*$");
-    QRegExp dc_pattern("^[ \t]*[VI]dc:[A-Za-z]+.*");
-    QRegExp edd_pattern("^[ \t]*EDD:[A-Za-z]+.*");
-    QRegExp eqn_pattern("^[ \t]*Eqn:[A-Za-z]+.*");
-    QRegExp subckt_pattern("^[ \t]*Sub:[A-Za-z]+.*");
-    QRegExp gyrator_pattern("^[ \t]*Gyrator:[A-Za-z]+.*");
+    QRegularExpression res_pattern("^[ \t]*R:[A-Za-z]+.*");
+    QRegularExpression cap_pattern("^[ \t]*C:[A-Za-z]+.*");
+    QRegularExpression ind_pattern("^[ \t]*L:[A-Za-z]+.*");
+    QRegularExpression diode_pattern("^[ \t]*Diode:[A-Za-z]+.*");
+    QRegularExpression mosfet_pattern("^[ \t]*MOSFET:[A-Za-z]+.*");
+    QRegularExpression jfet_pattern("^[ \t]*JFET:[A-Za-z]+.*");
+    QRegularExpression bjt_pattern("^[ \t]*BJT:[A-Za-z]+.*");
+    QRegularExpression ccvs_pattern("^[ \t]*CCVS:[A-Za-z]+.*");
+    QRegularExpression cccs_pattern("^[ \t]*CCCS:[A-Za-z]+.*");
+    QRegularExpression vcvs_pattern("^[ \t]*VCVS:[A-Za-z]+.*");
+    QRegularExpression vccs_pattern("^[ \t]*VCCS:[A-Za-z]+.*");
+    QRegularExpression subckt_head_pattern("^[ \t]*\\.Def:[A-Za-z]+.*");
+    QRegularExpression ends_pattern("^[ \t]*\\.Def:End[ \t]*$");
+    QRegularExpression dc_pattern("^[ \t]*[VI]dc:[A-Za-z]+.*");
+    QRegularExpression edd_pattern("^[ \t]*EDD:[A-Za-z]+.*");
+    QRegularExpression eqn_pattern("^[ \t]*Eqn:[A-Za-z]+.*");
+    QRegularExpression subckt_pattern("^[ \t]*Sub:[A-Za-z]+.*");
+    QRegularExpression gyrator_pattern("^[ \t]*Gyrator:[A-Za-z]+.*");
 
     QString s="";
 
     QStringList EqnsAndVars;
 
     for (QString line : net_lst) {  // Find equations
-        if (eqn_pattern.exactMatch(line)) {
-            line.remove(QRegExp("^[ \t]*Eqn:[A-Za-z]+\\w+\\s+"));
+        if (eqn_pattern.match(line).hasMatch()) {
+            line.remove(QRegularExpression("^[ \t]*Eqn:[A-Za-z]+\\w+\\s+"));
             ExtractVarsAndValues(line,EqnsAndVars);
         }
     }
@@ -97,25 +97,25 @@ QString qucs2spice::convert_netlist(QString netlist, bool xyce)
 
 
     for (QString& line : net_lst) {
-        if (subckt_head_pattern.exactMatch(line)) {
-            if (ends_pattern.exactMatch(line)) s += ".ENDS\n";
+        if (subckt_head_pattern.match(line).hasMatch()) {
+            if (ends_pattern.match(line).hasMatch()) s += ".ENDS\n";
             else s += convert_header(line);
         }
-        if (res_pattern.exactMatch(line)) s += convert_rcl(line);
-        if (cap_pattern.exactMatch(line)) s += convert_rcl(line);
-        if (ind_pattern.exactMatch(line)) s += convert_rcl(line);
-        if (diode_pattern.exactMatch(line)) s += convert_diode(line,xyce);
-        if (mosfet_pattern.exactMatch(line)) s += convert_mosfet(line,xyce);
-        if (jfet_pattern.exactMatch(line)) s += convert_jfet(line,xyce);
-        if (bjt_pattern.exactMatch(line)) s += convert_bjt(line);
-        if (vccs_pattern.exactMatch(line)) s += convert_vccs(line);
-        if (vcvs_pattern.exactMatch(line)) s += convert_vcvs(line);
-        if (cccs_pattern.exactMatch(line)) s+= convert_cccs(line);
-        if (ccvs_pattern.exactMatch(line)) s+= convert_ccvs(line);
-        if (dc_pattern.exactMatch(line)) s += convert_dc_src(line);
-        if (edd_pattern.exactMatch(line)) s += convert_edd(line,EqnsAndVars);
-        if (subckt_pattern.exactMatch(line)) s+= convert_subckt(line);
-        if (gyrator_pattern.exactMatch(line)) s+= convert_gyrator(line);
+        if (res_pattern.match(line).hasMatch()) s += convert_rcl(line);
+        if (cap_pattern.match(line).hasMatch()) s += convert_rcl(line);
+        if (ind_pattern.match(line).hasMatch()) s += convert_rcl(line);
+        if (diode_pattern.match(line).hasMatch()) s += convert_diode(line,xyce);
+        if (mosfet_pattern.match(line).hasMatch()) s += convert_mosfet(line,xyce);
+        if (jfet_pattern.match(line).hasMatch()) s += convert_jfet(line,xyce);
+        if (bjt_pattern.match(line).hasMatch()) s += convert_bjt(line);
+        if (vccs_pattern.match(line).hasMatch()) s += convert_vccs(line);
+        if (vcvs_pattern.match(line).hasMatch()) s += convert_vcvs(line);
+        if (cccs_pattern.match(line).hasMatch()) s+= convert_cccs(line);
+        if (ccvs_pattern.match(line).hasMatch()) s+= convert_ccvs(line);
+        if (dc_pattern.match(line).hasMatch()) s += convert_dc_src(line);
+        if (edd_pattern.match(line).hasMatch()) s += convert_edd(line,EqnsAndVars);
+        if (subckt_pattern.match(line).hasMatch()) s+= convert_subckt(line);
+        if (gyrator_pattern.match(line).hasMatch()) s+= convert_gyrator(line);
     }
 
     //s.replace(" gnd "," 0 ");
@@ -391,8 +391,8 @@ QString qucs2spice::convert_edd(const QString& line, QStringList &EqnsAndVars)
         QString Qvar = line.section('"',2*i+3,2*i+3,QString::SectionSkipEmpty);
         QString Qeqn = EqnsAndVars.at(EqnsAndVars.indexOf(Qvar)+1);
         Qeqn.remove(' ');
-        QRegExp zero_pattern("0+(\\.*0+|)");
-        if (!zero_pattern.exactMatch(Qeqn)) {
+        QRegularExpression zero_pattern("0+(\\.*0+|)");
+        if (!zero_pattern.match(Qeqn).hasMatch()) {
             s += QString("G%1Q%2 %3 %4 n%1Q%2 %4 1.0\n").arg(nam).arg(i).arg(plus).arg(minus);
             s += QString("L%1Q%2 n%1Q%2 %3 1.0\n").arg(nam).arg(i).arg(minus);
             s += QString("B%1Q%2 n%1Q%2 %3 I=-(%4)\n").arg(nam).arg(i).arg(minus).arg(Qeqn);
@@ -479,9 +479,9 @@ void qucs2spice::ExtractVarsAndValues(QString line,QStringList& VarsAndVals)
 
 void qucs2spice::subsVoltages(QStringList &tokens, QStringList& nods)
 {
-    QRegExp volt_pattern("^V[0-9]+$");
+    QRegularExpression volt_pattern("^V[0-9]+$");
     for (QStringList::iterator it = tokens.begin();it != tokens.end();it++) {
-        if (volt_pattern.exactMatch(*it)) {
+        if (volt_pattern.match(*it).hasMatch()) {
             QString volt = *it;
             volt.remove('V').remove(' ');
             int i = volt.toInt();

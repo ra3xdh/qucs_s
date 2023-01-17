@@ -130,6 +130,13 @@ QString Equation::getExpression(bool isXyce)
 
     QString s;
     s.clear();
+
+    QRegularExpression fp_pattern("^[\\+\\-]*\\d*\\.\\d+$"); // float
+    QRegularExpression fp_exp_pattern("^[\\+\\-]*\\d*\\.*\\d+e[\\+\\-]*\\d+$"); // float with exp
+    QRegularExpression dec_pattern("^[\\+\\-]*\\d+$"); // integer
+    QRegularExpression spicefp_pattern("^[\\+\\-]*\\d*\\.\\d+[A-Za-z]{,3}$"); // float and scaling suffix
+    QRegularExpression spicedec_pattern("^[\\+\\-]*\\d+[A-Za-z]{,3}$"); // decimal and scaling suffix
+
     for (unsigned int i=0;i<Props.count()-1;i++) {
         QStringList tokens;
         QString eqn = Props.at(i)->Value;
@@ -138,16 +145,12 @@ QString Equation::getExpression(bool isXyce)
         eqn = tokens.join("");
         if (isXyce) {
             eqn.replace("^","**");
-            QRegExp fp_pattern("^[\\+\\-]*\\d*\\.\\d+$"); // float
-            QRegExp fp_exp_pattern("^[\\+\\-]*\\d*\\.*\\d+e[\\+\\-]*\\d+$"); // float with exp
-            QRegExp dec_pattern("^[\\+\\-]*\\d+$"); // integer
-            QRegExp spicefp_pattern("^[\\+\\-]*\\d*\\.\\d+[A-Za-z]{,3}$"); // float and scaling suffix
-            QRegExp spicedec_pattern("^[\\+\\-]*\\d+[A-Za-z]{,3}$"); // decimal and scaling suffix
-            if (!(fp_pattern.exactMatch(eqn)||
-                  dec_pattern.exactMatch(eqn)||
-                  fp_exp_pattern.exactMatch(eqn)||
-                  spicefp_pattern.exactMatch(eqn)||
-                  spicedec_pattern.exactMatch(eqn))) eqn = "{" + eqn + "}"; // wrap equation if it contains vars
+
+            if (!(fp_pattern.match(eqn).hasMatch()||
+                  dec_pattern.match(eqn).hasMatch()||
+                  fp_exp_pattern.match(eqn).hasMatch()||
+                  spicefp_pattern.match(eqn).hasMatch()||
+                  spicedec_pattern.match(eqn).hasMatch())) eqn = "{" + eqn + "}"; // wrap equation if it contains vars
         }
 
         if (!spicecompat::containNodes(tokens,ng_vars)) {

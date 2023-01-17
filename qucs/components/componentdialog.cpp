@@ -56,11 +56,11 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   ValInteger = new QIntValidator(1, 1000000, this);
 
   Expr.setPattern("[^\"=]*");  // valid expression for property 'edit'
-  Validator = new QRegExpValidator(Expr, this);
+  Validator = new QRegularExpressionValidator(Expr, this);
   Expr.setPattern("[^\"]*");   // valid expression for property 'edit'
-  Validator2 = new QRegExpValidator(Expr, this);
+  Validator2 = new QRegularExpressionValidator(Expr, this);
   Expr.setPattern("[\\w_\\.\\(\\) @:\\[\\]]+");  // valid expression for property 'NameEdit'. Space to enable Spice-style par sweep
-  ValRestrict = new QRegExpValidator(Expr, this);
+  ValRestrict = new QRegularExpressionValidator(Expr, this);
 
   checkSim  = 0;  comboSim  = 0;  comboType  = 0;  checkParam = 0;
   editStart = 0;  editStop = 0;  editNumber = 0;
@@ -661,7 +661,7 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
     int e = desc.lastIndexOf(']');
     if (e-b > 2) {
       QString str = desc.mid(b+1, e-b-1);
-      str.replace( QRegExp("[^a-zA-Z0-9_,]"), "" );
+      str.replace( QRegularExpression("[^a-zA-Z0-9_,]"), "" );
       List = str.split(',');
       qDebug() << "List = " << List;
     }

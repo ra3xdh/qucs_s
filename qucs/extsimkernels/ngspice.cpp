@@ -597,13 +597,13 @@ bool Ngspice::findMathFuncInc(QString &mathf_inc)
 void Ngspice::slotProcessOutput()
 {
     QString s = SimProcess->readAllStandardOutput();
-    QRegExp percentage_pattern("^%\\d\\d*\\.\\d\\d.*$");
-    if (percentage_pattern.exactMatch(s)) {
+    QRegularExpression percentage_pattern("^%\\d\\d*\\.\\d\\d.*$");
+    if (percentage_pattern.match(s).hasMatch()) {
         int percent = round(s.mid(1,5).toFloat());
         emit progress(percent);
     } else {
-        s.remove(QRegExp("%\\d\\d*\\.\\d\\d")); // Remove percentage from logs
-        s.remove(QRegExp("\010+")); // Large amount of datar from percentage reports
+        s.remove(QRegularExpression("%\\d\\d*\\.\\d\\d")); // Remove percentage from logs
+        s.remove(QRegularExpression("\010+")); // Large amount of datar from percentage reports
                                     // can freeze QTextEdit for over 100k simulation points
         output += s;
     }
@@ -636,7 +636,7 @@ void Ngspice::SaveNetlist(QString filename)
 
 void Ngspice::setSimulatorCmd(QString cmd)
 {
-    if (cmd.contains(QRegExp("spiceopus(....|)$"))) {
+    if (cmd.contains(QRegularExpression("spiceopus(....|)$"))) {
         // spiceopus needs English locale to produce correct decimal point (dot symbol)
         QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
         env.remove("LANG");

@@ -230,7 +230,7 @@ void Xyce::createNetlist(QTextStream &stream, int , QStringList &simulations,
     QString filename;
     if (hasParSweep) filename = QString("%1_%2_swp.txt").arg(basenam).arg(sim);
     else filename = QString("%1_%2.txt").arg(basenam).arg(sim);
-    filename.remove(QRegExp("\\s")); // XYCE don't support spaces and quotes
+    filename.remove(QRegularExpression("\\s")); // XYCE don't support spaces and quotes
     QString write_str;
     if (sim=="hb") {
         // write_str = QString(".PRINT  %1 file=%2 %3\n").arg(sim).arg(filename).arg(nods);

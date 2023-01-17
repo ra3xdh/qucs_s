@@ -18,6 +18,7 @@
 #include "main.h"
 #include "misc.h"
 #include "extsimkernels/spicecompat.h"
+#include <QRegularExpression>
 
 
 HB_Sim::HB_Sim()
@@ -79,7 +80,7 @@ QString HB_Sim::spice_netlist(bool isXyce)
     QString s="";
     if (isXyce) {  // Only in Xyce
         s += QString(".options hbint numfreq=%1 STARTUPPERIODS=2\n").arg(Props.at(1)->Value);
-        QStringList freqs = Props.at(0)->Value.split(QRegExp("\\s+(?=[0-9])"));
+        QStringList freqs = Props.at(0)->Value.split(QRegularExpression("\\s+(?=[0-9])"));
         // split frequencyes list by space before digit
         for (QStringList::iterator it = freqs.begin();it != freqs.end(); it++) {
             (*it) = spicecompat::normalize_value(*it);

@@ -19,7 +19,8 @@
 #define DIGISETTINGSDIALOG_H
 
 #include <QDialog>
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 #include <QLabel>
 
 class TextDoc;
@@ -47,8 +48,8 @@ private slots:
 
 private:
   TextDoc *Doc;
-  QRegExp Expr;
-  QRegExpValidator *Validator;
+  QRegularExpression Expr;
+  QRegularExpressionValidator *Validator;
 };
 
 #endif

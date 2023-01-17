@@ -235,7 +235,7 @@ void SimSettingsDialog::slotSetWorkdir()
 {
     QFileDialog dlg( this, tr("Select directory to store netlist and simulator output"), edtWorkdir->text() );
     dlg.setAcceptMode(QFileDialog::AcceptOpen);
-    dlg.setFileMode(QFileDialog::DirectoryOnly);
+    dlg.setFileMode(QFileDialog::Directory);
     if (dlg.exec()) {
         QString s = dlg.selectedFiles().first();
         if (!s.isEmpty()) edtWorkdir->setText(s);

@@ -81,27 +81,27 @@ QString vacompat::normalize_current(QString &plus, QString &minus, bool left_sid
  */
 QString vacompat::normalize_value(QString Value)
 {
-    QRegExp r_pattern("^[0-9]+.*Ohm$");
-    QRegExp c_pattern("^[0-9]+.*F$");
-    QRegExp l_pattern("^[0-9]+.*H$");
-    QRegExp v_pattern("^[0-9]+.*V$");
-    QRegExp hz_pattern("^[0-9]+.*Hz$");
-    QRegExp s_pattern("^[0-9]+.*S$");
+    QRegularExpression r_pattern("^[0-9]+.*Ohm$");
+    QRegularExpression c_pattern("^[0-9]+.*F$");
+    QRegularExpression l_pattern("^[0-9]+.*H$");
+    QRegularExpression v_pattern("^[0-9]+.*V$");
+    QRegularExpression hz_pattern("^[0-9]+.*Hz$");
+    QRegularExpression s_pattern("^[0-9]+.*S$");
 
     QString s = Value.remove(' ');
     if (s.startsWith('\'')&&s.endsWith('\'')) return Value.remove('\''); // Expression detected
 
-    if (r_pattern.exactMatch(s)) { // Component value
+    if (r_pattern.match(s).hasMatch()) { // Component value
         s.remove("Ohm");
-    } else if (c_pattern.exactMatch(s)) {
+    } else if (c_pattern.match(s).hasMatch()) {
         s.remove("F");
-    } else if (l_pattern.exactMatch(s)) {
+    } else if (l_pattern.match(s).hasMatch()) {
         s.remove("H");
-    } else if (v_pattern.exactMatch(s)) {
+    } else if (v_pattern.match(s).hasMatch()) {
         s.remove("V");
-    } else if (hz_pattern.exactMatch(s)) {
+    } else if (hz_pattern.match(s).hasMatch()) {
         s.remove("Hz");
-    } else if (s_pattern.exactMatch(s)) {
+    } else if (s_pattern.match(s).hasMatch()) {
         s.remove("S");
     }
 

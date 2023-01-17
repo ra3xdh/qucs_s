@@ -27,6 +27,7 @@
 #include <QStringList>
 #include <QTextStream>
 #include <schematic.h>
+#include <QRegularExpression>
 
 /*!
   \file verilogawriter.h

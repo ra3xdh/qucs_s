@@ -30,11 +30,11 @@
 #include <QApplication>
 #include <QString>
 #include <QStringList>
-#include <QTextCodec>
+//#include <QTextCodec>
 #include <QTranslator>
 #include <QFile>
 #include <QMessageBox>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QtSvg>
 
 #include "qucs.h"
@@ -813,12 +813,13 @@ int main(int argc, char *argv[])
 
   // initially center the application
   QApplication a(argc, argv);
-  QDesktopWidget *d = a.desktop();
+  //QDesktopWidget *d = a.desktop();
   QucsSettings.font = QApplication::font();
   QucsSettings.appFont = QApplication::font();
   QucsSettings.font.setPointSize(12);
-  int w = d->width();
-  int h = d->height();
+  QSize size = QGuiApplication::primaryScreen()->size();
+  int w = size.width();
+  int h = size.height();
   QucsSettings.x = w/8;
   QucsSettings.y = h/8;
   QucsSettings.dx = w*3/4;
@@ -939,7 +940,7 @@ int main(int argc, char *argv[])
   a.setFont(QucsSettings.appFont);
 
   // set codecs
-  QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+  //QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 //  QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 
   QTranslator tor( 0 );

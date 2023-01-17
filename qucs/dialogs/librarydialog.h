@@ -24,7 +24,8 @@
 #ifndef LIBRARYDIALOG_H
 #define LIBRARYDIALOG_H
 
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 #include <QList>
 #include <QStringList>
@@ -47,7 +48,7 @@ class QTreeWidgetItem;
 class QGroupBox;
 class QRegExpValidator;
 class QStackedWidget;
-class QStringList;
+//class QStringList;
 class QListWidget;
 
 
@@ -96,8 +97,8 @@ private:
 
   QFile LibFile;
   QDir LibDir;
-  QRegExp Expr;
-  QRegExpValidator *Validator;
+  QRegularExpression Expr;
+  QRegularExpressionValidator *Validator;
 };
 
 #endif

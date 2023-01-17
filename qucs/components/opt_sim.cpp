@@ -17,7 +17,7 @@
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QString>
 #include <QStringList>
 
@@ -235,7 +235,7 @@ bool Optimize_Sim::createASCOnetlist()
       }
       else
       {
-          QRegExp reg = QRegExp("=\"(" + *it + ")\"");
+          QRegularExpression reg = QRegularExpression("=\"(" + *it + ")\"");
           Line.replace(reg, "=\"#\\1#\"");
       }
 

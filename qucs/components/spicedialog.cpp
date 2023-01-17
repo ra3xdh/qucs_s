@@ -54,9 +54,9 @@ SpiceDialog::SpiceDialog(QucsApp* App_, SpiceFile *c, Schematic *d)
   QWidget *myParent = this;
 
   Expr.setPattern("[^\"=]+");  // valid expression for property 'edit' etc
-  Validator = new QRegExpValidator(Expr, this);
+  Validator = new QRegularExpressionValidator(Expr, this);
   Expr.setPattern("[\\w_]+");  // valid expression for property 'NameEdit' etc
-  ValRestrict = new QRegExpValidator(Expr, this);
+  ValRestrict = new QRegularExpressionValidator(Expr, this);
 
   // ...........................................................
   QGridLayout *topGrid = new QGridLayout;

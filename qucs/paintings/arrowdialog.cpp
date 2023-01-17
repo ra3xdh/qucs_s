@@ -37,7 +37,7 @@ ArrowDialog::ArrowDialog(QWidget *parent, const char *name)
   val100 = new QIntValidator(0, 100, this);
 
   all = new QGridLayout(this);
-  all->setMargin(3);
+  all->setContentsMargins(3,3,3,3);
 
 
 

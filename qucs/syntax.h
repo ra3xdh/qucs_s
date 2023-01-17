@@ -20,6 +20,7 @@
 
 #include "textdoc.h"
 #include <QSyntaxHighlighter>
+#include <QRegularExpression>
 
 enum language_type {
   LANG_NONE = 0,
@@ -48,7 +49,7 @@ private:
 
   struct HighlightingRule
      {
-         QRegExp pattern;
+         QRegularExpression pattern;
          QTextCharFormat format;
      };
   

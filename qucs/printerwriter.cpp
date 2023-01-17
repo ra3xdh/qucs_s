@@ -95,7 +95,7 @@ PrinterWriter::print(QWidget *doc)
 {
   QPrintDialog *dialog = new QPrintDialog(Printer, 0);
   dialog->setWindowTitle(QObject::tr("Print Document"));
-  dialog->addEnabledOption(QAbstractPrintDialog::PrintSelection);
+  dialog->setOption(QAbstractPrintDialog::PrintSelection);
 
   if (QucsApp::isTextDocument(doc))
   {

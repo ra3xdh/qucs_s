@@ -19,7 +19,8 @@
 #define LABELDIALOG_H
 
 #include <QDialog>
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 #include <QGridLayout>
 #include <QLabel>
 
@@ -47,8 +48,8 @@ private slots:
 private:
   QPushButton *ButtonOk, *ButtonCancel, *ButtonMore;
   QGridLayout *gbox;
-  QRegExpValidator *Validator1, *Validator2;
-  QRegExp      Expr1, Expr2;
+  QRegularExpressionValidator *Validator1, *Validator2;
+  QRegularExpression      Expr1, Expr2;
   QLabel      *Label2;
 
   WireLabel *pLabel;
