@@ -248,8 +248,9 @@ void SyntaxHighlighter::setLanguage(int lang)
 void SyntaxHighlighter::highlightBlock(const QString &text) {
     for (const HighlightingRule &rule : highlightingRules) {
         QRegularExpression expression(rule.pattern);
-        QRegularExpressionMatch match = expression.match(text);
-        for (const QRegularExpressionMatch &match : expression.globalMatch(text)) {
+        QRegularExpressionMatchIterator iter = expression.globalMatch(text);
+        while (iter.hasNext()) {
+            QRegularExpressionMatch match = iter.next();
             int length = match.capturedLength();
             setFormat(match.capturedStart(), length, rule.format);
         }
