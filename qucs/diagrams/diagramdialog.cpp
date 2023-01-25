@@ -896,7 +896,8 @@ void DiagramDialog::slotReadVars(int)
   if(i > 0)
   do {
     j = FileString.indexOf('>', i);
-    for(int k=0;k<j-i;k++) Line[k]=FileString[k+i];
+    Line.resize(j-i);
+    for(int k=0;k<j-i;k++) Line[k]=(FileString[k+i]);
     Line.truncate(j-i);
     i = FileString.indexOf('<', j)+1;
 
