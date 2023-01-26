@@ -14,6 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#include "misc.h"
 #include "changedialog.h"
 #include "node.h"
 #include "schematic.h"
@@ -129,7 +130,11 @@ void ChangeDialog::slotButtReplace()
 {
   //Expr.setPatternSyntax(QRegExp::Wildcard);  // switch into wildcard mode
   //Expr.setPattern(CompNameEdit->text());
+#if QT_VERSION >= 0x050f00
   Expr = QRegularExpression(QRegularExpression::wildcardToRegularExpression(CompNameEdit->text()));
+#else
+  Expr = QRegularExpression(misc::wildcardToRegularExpression(CompNameEdit->text(),false));
+#endif
   if(!Expr.isValid()) {
     QMessageBox::critical(this, tr("Error"),
 	  tr("Regular expression for component name is invalid."));
