@@ -46,7 +46,7 @@ HelpDialog::HelpDialog(QWidget *parent)
   resize(350, 230);
 
   vLayout = new QVBoxLayout(this);
-  vLayout->setMargin(3);
+  vLayout->setContentsMargins(3,3,3,3);
   vLayout->setSpacing(3);
 
   Text = new QTextEdit(s, this);
