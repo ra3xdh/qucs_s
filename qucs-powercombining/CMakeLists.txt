@@ -31,14 +31,15 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ") # enable warning level
 
 IF(WITH_QT6)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 ") # enable C++17
-FIND_PACKAGE( Qt6 COMPONENTS Core Gui Widgets Svg REQUIRED)
+FIND_PACKAGE( Qt6 COMPONENTS Core Gui Widgets Svg SvgWidgets REQUIRED)
 INCLUDE_DIRECTORIES(
       ${Qt6Core_INCLUDE_DIRS}
       ${Qt6Widgets_INCLUDE_DIRS}
       ${Qt6Svg_INCLUDE_DIRS}
+      ${Qt6SvgWidgets_INCLUDE_DIRS}
       )
 # bug, the find package does not seem to set the QT_LIBRARIES, do it manually
-SET(QT_LIBRARIES  ${Qt6Core_LIBRARIES} ${Qt6Widgets_LIBRARIES} ${Qt6Svg_LIBRARIES}  )
+SET(QT_LIBRARIES  ${Qt6Core_LIBRARIES} ${Qt6Widgets_LIBRARIES} ${Qt6Svg_LIBRARIES} ${Qt6SvgWidgets_LIBRARIES}  )
 ELSE(WITH_QT6)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ") # enable C++11
 FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets Svg REQUIRED)
