@@ -15,7 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "qucsactivefilter.h"
 #include "sallenkey.h"
 #include "mfbfilter.h"
@@ -25,7 +24,6 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#include <QTextCodec>
 
 
 QucsActiveFilter::QucsActiveFilter(QWidget *parent)
