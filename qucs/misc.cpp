@@ -30,7 +30,7 @@
 #include <cstdio>
 #include <QString>
 #include <QStringList>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QFileInfo>
 #include <QDir>
 
@@ -41,7 +41,7 @@ bool misc::isDarkTheme()
 {
     QLabel *lbl = new QLabel("check dark");
     int text_hsv = lbl->palette().color(QPalette::WindowText).value();
-    int bg_hsv = lbl->palette().color(QPalette::Background).value();
+    int bg_hsv = lbl->palette().color(QPalette::Window).value();
     bool is_dark_theme = text_hsv > bg_hsv;
     return is_dark_theme;
 }
@@ -205,7 +205,7 @@ void misc::str2num(const QString& s_, double& Number, QString& Unit, double& Fac
     }
   }*/
 
-  QRegExp Expr( QRegExp("[^0-9\\x2E\\x2D\\x2B]") );
+  QRegularExpression Expr( QRegularExpression("[^0-9\\x2E\\x2D\\x2B]") );
   int i = str.indexOf( Expr );
   if(i >= 0)
     if((str.at(i).toLatin1() | 0x20) == 'e') {
@@ -342,7 +342,7 @@ QString misc::properName(const QString& Name)
     s.chop(4);
   if(s.at(0) <= '9') if(s.at(0) >= '0')
     s = 'n' + s;
-  s.replace(QRegExp("\\W"), "_"); // none [a-zA-Z0-9] into "_"
+  s.replace(QRegularExpression("\\W"), "_"); // none [a-zA-Z0-9] into "_"
   s.replace("__", "_");  // '__' not allowed in VHDL
   if(s.at(0) == '_')
     s = 'n' + s;
@@ -520,6 +520,104 @@ QStringList misc::parseCmdArgs(const QString &program)
         args += tmp;
     return args;
 }
+
+
+QString misc::wildcardToRegularExpression(const QString &wc_str, const bool enableEscaping)
+{
+    const int wclen = wc_str.length();
+    QString rx;
+    int i = 0;
+    bool isEscaping = false; // the previous character is '\'
+    const QChar *wc = wc_str.unicode();
+
+    while (i < wclen) {
+        const QChar c = wc[i++];
+        switch (c.unicode()) {
+        case '\\':
+            if (enableEscaping) {
+                if (isEscaping) {
+                    rx += QLatin1String("\\\\");
+                } // we insert the \\ later if necessary
+                if (i+1 == wclen) { // the end
+                    rx += QLatin1String("\\\\");
+                }
+            } else {
+                rx += QLatin1String("\\\\");
+            }
+            isEscaping = true;
+            break;
+        case '*':
+            if (isEscaping) {
+                rx += QLatin1String("\\*");
+                isEscaping = false;
+            } else {
+                rx += QLatin1String(".*");
+            }
+            break;
+        case '?':
+            if (isEscaping) {
+                rx += QLatin1String("\\?");
+                isEscaping = false;
+            } else {
+                rx += QLatin1Char('.');
+            }
+
+            break;
+        case '$':
+        case '(':
+        case ')':
+        case '+':
+        case '.':
+        case '^':
+        case '{':
+        case '|':
+        case '}':
+            if (isEscaping) {
+                isEscaping = false;
+                rx += QLatin1String("\\\\");
+            }
+            rx += QLatin1Char('\\');
+            rx += c;
+            break;
+         case '[':
+            if (isEscaping) {
+                isEscaping = false;
+                rx += QLatin1String("\\[");
+            } else {
+                rx += c;
+                if (wc[i] == QLatin1Char('^'))
+                    rx += wc[i++];
+                if (i < wclen) {
+                    if (rx[i] == QLatin1Char(']'))
+                        rx += wc[i++];
+                    while (i < wclen && wc[i] != QLatin1Char(']')) {
+                        if (wc[i] == QLatin1Char('\\'))
+                            rx += QLatin1Char('\\');
+                        rx += wc[i++];
+                    }
+                }
+            }
+             break;
+
+        case ']':
+            if(isEscaping){
+                isEscaping = false;
+                rx += QLatin1String("\\");
+            }
+            rx += c;
+            break;
+
+        default:
+            if(isEscaping){
+                isEscaping = false;
+                rx += QLatin1String("\\\\");
+            }
+            rx += c;
+        }
+    }
+    return rx;
+}
+
 
 VersionTriplet::VersionTriplet(){
   major = minor = patch = 0;

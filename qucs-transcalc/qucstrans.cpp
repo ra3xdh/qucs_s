@@ -43,7 +43,7 @@
 #include <QDir>
 #include <QButtonGroup>
 #include <QStackedWidget>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QValidator>
 #include <QClipboard>
 #include <QApplication>

@@ -34,7 +34,7 @@ DisplayDialog::DisplayDialog(QWidget *parent, QString Text, QString SpiceText)
     : QDialog(parent)
 {
   vLayout = new QVBoxLayout(this);
-  vLayout->setMargin(3);
+  vLayout->setContentsMargins(3,3,3,3);
 
   QGroupBox *Spice = new QGroupBox (tr("SPICE"), this);
   QVBoxLayout *SpiceLayout = new QVBoxLayout();

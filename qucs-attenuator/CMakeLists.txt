@@ -28,19 +28,25 @@ CONFIGURE_FILE (
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ") # enable warning level
+IF(WITH_QT6)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 ") # enable C++11
+FIND_PACKAGE( Qt6 COMPONENTS Core Gui Widgets REQUIRED )
+INCLUDE_DIRECTORIES(
+      ${Qt6Core_INCLUDE_DIRS}
+      ${Qt6Widgets_INCLUDE_DIRS}
+       )
+# bug, the find package does not seem to set the QT_LIBRARIES, do it manually
+SET(QT_LIBRARIES  ${Qt6Core_LIBRARIES} ${Qt6Widgets_LIBRARIES}  )
+ELSE(WITH_QT6)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ") # enable C++11
-
-
 FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets REQUIRED )
-#SET( QT_USE_QTGUI TRUE )
-
 INCLUDE_DIRECTORIES(
       ${Qt5Core_INCLUDE_DIRS}
       ${Qt5Widgets_INCLUDE_DIRS}
        )
-
 # bug, the find package does not seem to set the QT_LIBRARIES, do it manually
 SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES}  )
+ENDIF(WITH_QT6)
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
@@ -50,11 +56,15 @@ SET( attenuator_sources attenuatorfunc.cpp main.cpp qucsattenuator.cpp )
 
 SET( attenuator_moc_headers qucsattenuator.h )
 
-QT5_WRAP_CPP( attenuator_moc_sources ${attenuator_moc_headers} )
-
 SET(RESOURCES qucsattenuator.qrc)
 
+IF(WITH_QT6)
+QT6_WRAP_CPP( attenuator_moc_sources ${attenuator_moc_headers} )
+QT6_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
+ELSE(WITH_QT6)
+QT5_WRAP_CPP( attenuator_moc_sources ${attenuator_moc_headers} )
 QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
+ENDIF(WITH_QT6)
 
 IF(APPLE)
   # set information on Info.plist file

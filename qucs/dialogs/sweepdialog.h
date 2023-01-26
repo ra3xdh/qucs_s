@@ -19,7 +19,7 @@
 #define SWEEPDIALOG_H
 
 #include <QDialog>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QList>
 
 #include <QSpinBox>

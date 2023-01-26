@@ -37,7 +37,7 @@ OptionsDialog::OptionsDialog(QWidget *parent)
 
   // --------  create dialog widgets  ------------
   vLayout = new QVBoxLayout(this);
-  vLayout->setMargin(3);
+  vLayout->setContentsMargins(3,3,3,3);
   vLayout->setSpacing(3);
 
   QGroupBox * unitsGroup = new QGroupBox(tr("Units"));

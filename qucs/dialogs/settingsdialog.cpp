@@ -29,7 +29,8 @@
 #include <QLabel>
 #include <QWidget>
 #include <QLayout>
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QCheckBox>
@@ -97,7 +98,7 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
     Check_GridOn = new QCheckBox(tr("show Grid"), Tab2);
     gp2->addWidget(Check_GridOn,0,0,1,1);
 
-    valExpr = new QRegExpValidator(QRegExp("[1-9]\\d{0,2}"), this);
+    valExpr = new QRegularExpressionValidator(QRegularExpression("[1-9]\\d{0,2}"), this);
 
     QLabel *l3 = new QLabel(tr("horizontal Grid:"), Tab2);
     gp2->addWidget(l3,1,0);
@@ -146,7 +147,7 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
     // buttons on the bottom of the dialog (independent of the TabWidget)
     QHBoxLayout *Butts = new QHBoxLayout();
     Butts->setSpacing(5);
-    Butts->setMargin(5);
+    Butts->setContentsMargins(5,5,5,5);
     all->addLayout(Butts);
 
     QPushButton *OkButt = new QPushButton(tr("OK"));
@@ -352,7 +353,7 @@ AuxFilesDialog::AuxFilesDialog(QWidget *parent, const QString &filter) :QDialog(
   // buttons at the bottom of the dialog
   QHBoxLayout *Btns = new QHBoxLayout();
   Btns->setSpacing(5);
-  Btns->setMargin(5);
+  Btns->setContentsMargins(5,5,5,5);
   layout->addLayout(Btns);
   
   Btns->addStretch();

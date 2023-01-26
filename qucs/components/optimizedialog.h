@@ -19,7 +19,8 @@
 #define OPTIMIZEDIALOG_H
 
 #include <QDialog>
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 class Schematic;
 class Optimize_Sim;
@@ -80,8 +81,8 @@ public:
   QComboBox *SimEdit, *GoalTypeCombo, *MethodCombo, *VarTypeCombo;
   QTableWidget *VarTable, *GoalTable;
 
-  QRegExp Expr;
-  QRegExpValidator *Validator;
+  QRegularExpression Expr;
+  QRegularExpressionValidator *Validator;
   QDoubleValidator *numVal;
   QIntValidator *intVal;
 };

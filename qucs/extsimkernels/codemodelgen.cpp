@@ -195,8 +195,8 @@ bool CodeModelGen::createIFSfromEDD(QTextStream &stream, Schematic *sch, Compone
         for(QString& tok : tokens){
             bool isNum = true;
             tok.toFloat(&isNum);
-            QRegExp inp_pattern("[IV][0-9]+");
-            bool isInput = inp_pattern.exactMatch(tok);
+            QRegularExpression inp_pattern("[IV][0-9]+");
+            bool isInput = inp_pattern.match(tok).hasMatch();
             if ((!isGinacFunc(tok))&&(!isNum)&&(!isInput))
                 if(!pars.contains(tok)) pars.append(tok);
         }
@@ -284,8 +284,8 @@ bool CodeModelGen::createMODfromEDD(QTextStream &stream, Schematic *sch, Compone
         for (QString& tok : tokens){
             bool isNum = true;
             tok.toFloat(&isNum);
-            QRegExp inp_pattern("[IV][0-9]+");
-            bool isInput = inp_pattern.exactMatch(tok);
+            QRegularExpression inp_pattern("[IV][0-9]+");
+            bool isInput = inp_pattern.match(tok).hasMatch();
             if ((isInput)&&(!inputs.contains(tok))) inputs.append(tok);
             if ((!isGinacFunc(tok))&&(!isNum)&&(!isInput))
                 if(!pars.contains(tok)) pars.append(tok);
@@ -487,7 +487,7 @@ bool CodeModelGen::GinacDiffTernaryOp(QString &eq, QString &var, QString &res)
     bool r = false;
     QStringList::iterator subeq = tokens.begin();
     for(;subeq!=tokens.end();subeq++) {
-        if (!(*subeq).contains(QRegExp("[?:<>=]"))) {
+        if (!(*subeq).contains(QRegularExpression("[?:<>=]"))) {
             QString subres;
             r = GinacDiff(*subeq,var,subres);
             if (!r) return false;
@@ -512,7 +512,7 @@ bool CodeModelGen::GinacConvToCTernaryOp(QString &eq, QString &res)
     bool r = false;
     QStringList::iterator subeq = tokens.begin();
     for(;subeq!=tokens.end();subeq++) {
-        if (!(*subeq).contains(QRegExp("[?:<>=]"))) {
+        if (!(*subeq).contains(QRegularExpression("[?:<>=]"))) {
             QString subres;
             r = GinacConvToC(*subeq,subres);
             if (!r) return false;

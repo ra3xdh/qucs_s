@@ -18,7 +18,7 @@
 #if HAVE_UNISTD_H
 # include <unistd.h>
 #endif
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QProcess>
 #include <QString>
 #include <QStringList>

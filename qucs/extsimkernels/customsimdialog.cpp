@@ -161,9 +161,10 @@ void CustomSimDialog::slotFindVars()
 
 
     QStringList strings = edtCode->toPlainText().split('\n');
+    QRegularExpression let_pattern("^\\s*let\\s+[A-Za-z]+\\w*\\s*\\=\\s*[A-Za-z]+.*$");
+
     for (const QString& line : strings) {
-        QRegExp let_pattern("^\\s*let\\s+[A-Za-z]+\\w*\\s*\\=\\s*[A-Za-z]+.*$");
-        if (let_pattern.exactMatch(line)) {
+        if (let_pattern.match(line).hasMatch()) {
             QString var = line.section('=',0,0);
             var.remove("let ");
             var.remove(' ');
@@ -179,12 +180,11 @@ void CustomSimDialog::slotFindOutputs()
     QStringList outps;
     QStringList strings = edtCode->toPlainText().split('\n');
     if (isXyceScr) {
-        QRegExp print_ex("^\\s*\\.print\\s.*");
-        print_ex.setCaseSensitivity(Qt::CaseInsensitive);
+        QRegularExpression print_ex("^\\s*\\.print\\s.*", QRegularExpression::CaseInsensitiveOption);
+        QRegularExpression file_ex("\\s*file\\s*=\\s*", QRegularExpression::CaseInsensitiveOption);
         for (const QString& line : strings) {
-            if (print_ex.exactMatch(line)) {
-                QRegExp file_ex("\\s*file\\s*=\\s*");
-                file_ex.setCaseSensitivity(Qt::CaseInsensitive);
+            if (print_ex.match(line).hasMatch()) {
+                //file_ex.setCaseSensitivity(Qt::CaseInsensitive);
                 int p = line.indexOf(file_ex);
                 p = line.indexOf('=',p);
                 int l = line.size()-(p+1);
@@ -193,11 +193,11 @@ void CustomSimDialog::slotFindOutputs()
             }
         }
     } else {
-        QRegExp write_ex("^\\s*write\\s.*");
-        write_ex.setCaseSensitivity(Qt::CaseInsensitive);
+        QRegularExpression write_ex("^\\s*write\\s.*");
+        write_ex.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
         for (const QString& line : strings) {
-            if (write_ex.exactMatch(line)) {
-                outps.append(line.section(QRegExp("\\s"),1,1,QString::SectionSkipEmpty));
+            if (write_ex.match(line).hasMatch()) {
+                outps.append(line.section(QRegularExpression("\\s"),1,1,QString::SectionSkipEmpty));
             }
         }
     }

@@ -14,6 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#include "misc.h"
 #include "changedialog.h"
 #include "node.h"
 #include "schematic.h"
@@ -41,14 +42,14 @@ ChangeDialog::ChangeDialog(Schematic *Doc_)
   setWindowTitle(tr("Change Component Properties"));
 
   Expr.setPattern("[^\"=]+");  // valid expression for property value
-  Validator = new QRegExpValidator(Expr, this);
+  Validator = new QRegularExpressionValidator(Expr, this);
   Expr.setPattern("[\\w_]+");  // valid expression for property name
-  ValRestrict = new QRegExpValidator(Expr, this);
+  ValRestrict = new QRegularExpressionValidator(Expr, this);
 
 
   // ...........................................................
   all = new QGridLayout(this);//, 6,2,3,3);
-  all->setMargin(5);
+  all->setContentsMargins(5, 5, 5, 5);
 
   all->addWidget(new QLabel(tr("Components:"), this), 0,0);
   CompTypeEdit = new QComboBox(this);
@@ -127,8 +128,13 @@ bool ChangeDialog::matches(const QString& CompModel)
 // Is called if the "Replace"-button is pressed.
 void ChangeDialog::slotButtReplace()
 {
-  Expr.setPatternSyntax(QRegExp::Wildcard);  // switch into wildcard mode
-  Expr.setPattern(CompNameEdit->text());
+  //Expr.setPatternSyntax(QRegExp::Wildcard);  // switch into wildcard mode
+  //Expr.setPattern(CompNameEdit->text());
+#if QT_VERSION >= 0x050f00
+  Expr = QRegularExpression(QRegularExpression::wildcardToRegularExpression(CompNameEdit->text()));
+#else
+  Expr = QRegularExpression(misc::wildcardToRegularExpression(CompNameEdit->text(),false));
+#endif
   if(!Expr.isValid()) {
     QMessageBox::critical(this, tr("Error"),
 	  tr("Regular expression for component name is invalid."));
@@ -140,7 +146,7 @@ void ChangeDialog::slotButtReplace()
   Dia->setWindowTitle(tr("Found Components"));
   QVBoxLayout *Dia_All = new QVBoxLayout(Dia);
   Dia_All->setSpacing(3);
-  Dia_All->setMargin(5);
+  Dia_All->setContentsMargins(5, 5, 5, 5);
   
   QScrollArea *Dia_Scroll = new QScrollArea(Dia);
   //Dia_Scroll->setMargin(5);
@@ -172,7 +178,8 @@ void ChangeDialog::slotButtReplace()
   // search through all components
   for(pc = Doc->Components->first(); pc!=0; pc = Doc->Components->next()) {
     if(matches(pc->Model)) {
-      if(Expr.indexIn(pc->Name) >= 0)
+      QRegularExpressionMatch match = Expr.match(pc->Name);
+      if(match.hasMatch())
         for(Property *pp = pc->Props.first(); pp!=0; pp = pc->Props.next())
           if(pp->Name == PropNameEdit->currentText()) {
             pb = new QCheckBox(pc->Name);
@@ -185,7 +192,7 @@ void ChangeDialog::slotButtReplace()
             i2 = pp->Description.lastIndexOf(']');
             if(i2-i1 < 2)  break;
             str = pp->Description.mid(i1+1, i2-i1-1);
-            str.replace( QRegExp("[^a-zA-Z0-9_,]"), "" );
+            str.replace( QRegularExpression("[^a-zA-Z0-9_,]"), "" );
             List = str.split(',');
             if(List.lastIndexOf(NewValueEdit->text()) >= 0)
               break;    // property value is okay

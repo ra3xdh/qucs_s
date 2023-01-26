@@ -19,6 +19,7 @@
 #define MOUSEACTIONS_H
 
 #include "element.h"
+#include <QAction>
 
 #include <qt3_compat/qt_compat.h>
 

@@ -59,7 +59,7 @@ void LoadDialog::setApp(QucsApp *a)
 void LoadDialog::initDialog()
 {
    QVBoxLayout *all = new QVBoxLayout(this);
-   all->setMargin(5);
+   all->setContentsMargins(5,5,5,5);
    all->setSpacing(6);
 
    // hold group of files / group icon and checkboxes

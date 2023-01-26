@@ -25,7 +25,8 @@
 #endif*/
 
 #include <QDialog>
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 #include "qt3_compat/qt_compat.h"
 
 class QVBoxLayout;
@@ -99,10 +100,10 @@ private:
   Diagram *Diag;
   QString defaultDataSet;
 
-  QRegExp Expr;
+  QRegularExpression Expr;
   QDoubleValidator *ValDouble;
   QIntValidator    *ValInteger;
-  QRegExpValidator *Validator;
+  QRegularExpressionValidator *Validator;
 
   QLabel *lblSim;
   QLabel *lblPlotVs;

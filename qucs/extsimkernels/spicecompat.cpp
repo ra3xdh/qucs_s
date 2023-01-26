@@ -30,43 +30,43 @@ QString spicecompat::check_refdes(QString &Name,QString &SpiceModel)
  */
 QString spicecompat::normalize_value(QString Value)
 {
-    QRegExp r_pattern("^[0-9]+.*Ohm$");
-    QRegExp p_pattern("^[+-]*[0-9]+.*dBm$");
-    QRegExp c_pattern("^[0-9]+.*F$");
-    QRegExp l_pattern("^[0-9]+.*H$");
-    QRegExp v_pattern("^[0-9]+.*V$");
-    QRegExp hz_pattern("^[0-9]+.*Hz$");
-    QRegExp s_pattern("^[0-9]+.*S$");
-    QRegExp sec_pattern("^[0-9]+.*s$");
-    QRegExp var_pattern("^[A-Za-z].*$");
+    QRegularExpression r_pattern("^[0-9]+.*Ohm$");
+    QRegularExpression p_pattern("^[+-]*[0-9]+.*dBm$");
+    QRegularExpression c_pattern("^[0-9]+.*F$");
+    QRegularExpression l_pattern("^[0-9]+.*H$");
+    QRegularExpression v_pattern("^[0-9]+.*V$");
+    QRegularExpression hz_pattern("^[0-9]+.*Hz$");
+    QRegularExpression s_pattern("^[0-9]+.*S$");
+    QRegularExpression sec_pattern("^[0-9]+.*s$");
+    QRegularExpression var_pattern("^[A-Za-z].*$");
 
     QString s = Value.remove(' ');
     if (s.startsWith('\'')&&s.endsWith('\'')) return Value; // Expression detected
 
-    if (r_pattern.exactMatch(s)) { // Component value
+    if (r_pattern.match(s).hasMatch()) { // Component value
         s.remove("Ohm");
         s.replace("M","Meg");
-    } else if (c_pattern.exactMatch(s)) {
+    } else if (c_pattern.match(s).hasMatch()) {
         s.remove("F");
         s.replace("M","Meg");
-    } else if (l_pattern.exactMatch(s)) {
+    } else if (l_pattern.match(s).hasMatch()) {
         s.remove("H");
         s.replace("M","Meg");
-    } else if (v_pattern.exactMatch(s)) {
+    } else if (v_pattern.match(s).hasMatch()) {
         s.remove("V");
         s.replace("M","Meg");
-    } else if (hz_pattern.exactMatch(s)) {
+    } else if (hz_pattern.match(s).hasMatch()) {
         s.remove("Hz");
         s.replace("M","Meg");
-    } else if (s_pattern.exactMatch(s)) {
+    } else if (s_pattern.match(s).hasMatch()) {
         s.remove("S");
         s.replace("M","Meg");
-    } else if (sec_pattern.exactMatch(s)) {
+    } else if (sec_pattern.match(s).hasMatch()) {
         s.remove("s");
         s.replace("M","Meg");
-    } else if (p_pattern.exactMatch(s)) {
+    } else if (p_pattern.match(s).hasMatch()) {
         s.remove("dBm");
-    } else if (var_pattern.exactMatch(s)) {
+    } else if (var_pattern.match(s).hasMatch()) {
         s = "{" + s + "}";
     }
 
@@ -139,13 +139,14 @@ void spicecompat::splitEqn(QString &eqn, QStringList &tokens)
         tok += *it;
     }
     if (!tok.isEmpty()) tokens.append(tok);
-
+    QRegularExpression fpn("[0-9]+\\.[0-9]+[eE]"); // first part of float number
+    QRegularExpression dn("[0-9]+[eE]");
+    QRegularExpression intn("[0-9]+");
     // Reassemble floating point numbers such as [+-]1.2e[+-]02 , etc.
     for(auto t = tokens.begin();t != tokens.end();t++) {
-        QRegExp fpn("[0-9]+\\.[0-9]+[eE]"); // first part of float number
-        QRegExp dn("[0-9]+[eE]");
+
         qDebug()<<*t;
-        if (dn.exactMatch(*t)||fpn.exactMatch(*t)) {
+        if (dn.match(*t).hasMatch()||fpn.match(*t).hasMatch()) {
             auto t1 = t;
             t1++;
             if (t1!=tokens.end()) {
@@ -156,8 +157,8 @@ void spicecompat::splitEqn(QString &eqn, QStringList &tokens)
             } else break;
             t1++;
             if (t1!=tokens.end()) {
-                QRegExp intn("[0-9]+");
-                if (intn.exactMatch(*t1)) {
+
+                if (intn.match(*t1).hasMatch()) {
                     (*t) += (*t1);
                     *t1 = "";
                 }
@@ -177,14 +178,14 @@ void spicecompat::splitEqn(QString &eqn, QStringList &tokens)
  */
 bool spicecompat::containNodes(QStringList &tokens, QStringList &vars)
 {
-    QRegExp var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
-    QRegExp disto_var("^[Dd][Ii][Ss][Tt][Oo][0-9]\\.[Vv]$");
+    QRegularExpression var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
+    QRegularExpression disto_var("^[Dd][Ii][Ss][Tt][Oo][0-9]\\.[Vv]$");
     QStringList system_vars;
     system_vars.clear();
     system_vars<<"frequency"<<"acfrequency"<<"time"<<"hbfrequncy";
     for (const QString& tok : tokens) {
-        if (var_pattern.exactMatch(tok)) return true;
-        if (disto_var.exactMatch(tok)) return true;
+        if (var_pattern.match(tok).hasMatch()) return true;
+        if (disto_var.match(tok).hasMatch()) return true;
         if (system_vars.contains(tok)) return true;
         if (tok.endsWith("#branch")) return true;
         if (vars.contains(tok)) return true;
@@ -212,17 +213,17 @@ bool spicecompat::containNodes(QStringList &tokens, QStringList &vars)
  */
 void spicecompat::convertNodeNames(QStringList &tokens, QString &sim)
 {
-    QRegExp var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
-    QRegExp disto_var("^[Dd][Ii][Ss][Tt][Oo][0-9]\\.[Vv]$");
+    QRegularExpression var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
+    QRegularExpression disto_var("^[Dd][Ii][Ss][Tt][Oo][0-9]\\.[Vv]$");
     for (QStringList::iterator it=tokens.begin();it!=tokens.end();it++) {
         if ((*it).endsWith("#branch")) sim="all";
         if ((*it).toUpper()=="V") {
             it++;
             if ((*it)=="(") sim="all";
         }
-        if (disto_var.exactMatch(*it)) sim = "disto";
-        if (var_pattern.exactMatch(*it))  {
-            if (!disto_var.exactMatch(*it)) {
+        if (disto_var.match(*it).hasMatch()) sim = "disto";
+        if (var_pattern.match(*it).hasMatch())  {
+            if (!disto_var.match(*it).hasMatch()) {
                 if ((it->endsWith(".v"))||(it->endsWith(".i"))) sim = "ac";
                 if ((it->endsWith(".Vt"))||(it->endsWith(".It"))) sim = "tran";
                 if ((it->endsWith(".V"))||(it->endsWith(".I"))) sim = "dc";
@@ -271,12 +272,15 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
         f.close();
     } else return 0;
 
+    QRegularExpression subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
+    QRegularExpression sep("\\s");
+
     QTextStream stream(&content,QIODevice::ReadOnly);
     while (!stream.atEnd()) {
         QString lin = stream.readLine();
-        QRegExp subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
-        if (subckt_header.exactMatch(lin)) {
-            QRegExp sep("\\s");
+
+        if (subckt_header.match(lin).hasMatch()) {
+
             QStringList lst2 = lin.split(sep,qucs::SkipEmptyParts);
             QString name = lin.section(sep,1,1,QString::SectionSkipEmpty).toLower();
             QString refname = compname.toLower();
@@ -309,11 +313,11 @@ QString spicecompat::getSubcktName(const QString& subfilename)
 
     QFile sub_file(subfilename);
     if (sub_file.open(QIODevice::ReadOnly)) {
+        QRegularExpression subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
+        QRegularExpression sep("\\s");
         QStringList lst = QString(sub_file.readAll()).split("\n");
-        for (const QString& str : lst) {
-            QRegExp subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
-            if (subckt_header.exactMatch(str)) {
-                QRegExp sep("\\s");
+        for (const QString& str : lst) {            
+            if (subckt_header.match(str).hasMatch()) {
                 s = str.section(sep,1,1,QString::SectionSkipEmpty);
                 break;
             }

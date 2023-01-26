@@ -49,10 +49,10 @@ SymbolWidget::SymbolWidget(QWidget *parent) : QWidget(parent)
   PaintText = tr("Symbol:");
   setFont(QucsSettings.font);
   QFontMetrics  metrics(QucsSettings.font, 0); // use the the screen-compatible metric
-  TextWidth = metrics.width(PaintText) + 4;    // get size of text
+  TextWidth = metrics.size(0,PaintText).width() + 4;    // get size of text
 
   DragNDropText = tr("! Drag n'Drop me !");
-  DragNDropWidth = metrics.width(DragNDropText);    // get size of text
+  DragNDropWidth = metrics.size(0,DragNDropText).width();    // get size of text
   TextHeight = metrics.lineSpacing();
 
   ///setPaletteBackgroundColor(Qt::white);

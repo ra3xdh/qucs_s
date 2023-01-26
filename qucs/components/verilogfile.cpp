@@ -22,7 +22,7 @@
 #include "misc.h"
 
 #include <QTextStream>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QFileInfo>
 
 
@@ -241,9 +241,9 @@ Verilog_File_Info::Verilog_File_Info(QString File, bool isfile)
       File.remove(i, j-i+2);
   }
 
-  QRegExp Expr,Expr1;
-  Expr.setCaseSensitivity(Qt::CaseSensitive);
-  Expr1.setCaseSensitivity(Qt::CaseSensitive);
+  QRegularExpression Expr,Expr1;
+  //Expr.setCaseSensitivity(Qt::CaseSensitive);
+  //Expr1.setCaseSensitivity(Qt::CaseSensitive);
   k--;
   Expr.setPattern("\\bmodule\\b");  // start of last module
   k = File.lastIndexOf(Expr, k);
@@ -281,9 +281,9 @@ Verilog_File_Info::Verilog_File_Info(QString File, bool isfile)
 // -------------------------------------------------------
 QString Verilog_File_Info::parsePorts(QString s, int i)
 {
-  QRegExp Expr,Expr1;
-  Expr.setCaseSensitivity(Qt::CaseSensitive);
-  Expr1.setCaseSensitivity(Qt::CaseSensitive);
+  QRegularExpression Expr,Expr1;
+  //Expr.setCaseSensitivity(Qt::CaseSensitive);
+  //Expr1.setCaseSensitivity(Qt::CaseSensitive);
 
   int j;
   i = 0;    // remove all Verilog identifiers (e.g. "input")

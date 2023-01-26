@@ -45,7 +45,7 @@ VASettingsDialog::VASettingsDialog (TextDoc * Doc_)
   QString Module = Doc->getModuleName ();
 
   Expr.setPattern("[0-9a-zA-Z /\\]+"); // valid expression for IconEdit
-  Validator = new QRegExpValidator (Expr, this);
+  Validator = new QRegularExpressionValidator (Expr, this);
 
   vLayout = new QVBoxLayout(this);
   

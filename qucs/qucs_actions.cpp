@@ -27,7 +27,7 @@
 
 #include <QProcess>
 #include <qt3_compat/q3ptrlist.h>
-#include <QRegExpValidator>
+#include <QRegularExpressionValidator>
 #include <QLineEdit>
 #include <QAction>
 #include <QStatusBar>
@@ -69,8 +69,8 @@
 #endif
 
 // for editing component name on schematic
-QRegExp  Expr_CompProp;
-QRegExpValidator Val_CompProp(Expr_CompProp, 0);
+QRegularExpression  Expr_CompProp;
+QRegularExpressionValidator Val_CompProp(Expr_CompProp, 0);
 
 // -----------------------------------------------------------------------
 // This function is called from all toggle actions.
@@ -1207,7 +1207,7 @@ void QucsApp::slotApplyCompText()
   }
   else   // it is the component name
     Expr_CompProp.setPattern("[\\w_]+");
-  Val_CompProp.setRegExp(Expr_CompProp);
+  Val_CompProp.setRegularExpression(Expr_CompProp);
   editText->setValidator(&Val_CompProp);
 
   z = editText->fontMetrics().lineSpacing();

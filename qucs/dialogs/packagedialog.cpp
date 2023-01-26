@@ -53,7 +53,7 @@ PackageDialog::PackageDialog(QWidget *parent_, bool create_)
 			: QDialog(parent_) 
 {
   all = new QVBoxLayout(this);
-  all->setMargin(5);
+  all->setContentsMargins(5,5,5,5);
   all->setSpacing(6);
 
   QHBoxLayout *h2 = new QHBoxLayout();

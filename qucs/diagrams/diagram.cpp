@@ -50,7 +50,7 @@
 
 #include <QTextStream>
 #include <QMessageBox>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QDateTime>
 #include <QPainter>
 #include <QDebug>

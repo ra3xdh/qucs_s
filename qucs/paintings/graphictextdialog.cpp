@@ -39,7 +39,7 @@ GraphicTextDialog::GraphicTextDialog(QWidget *parent, const char *name)
   setWindowTitle(tr("Edit Text Properties"));
 
   vert = new QVBoxLayout(this);
-  vert->setMargin(3);
+  vert->setContentsMargins(3,3,3,3);
   vert->setSpacing(3);
 
   vert->addWidget(

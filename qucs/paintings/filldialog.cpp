@@ -116,7 +116,7 @@ if(show) {
   QHBoxLayout *ButtsLayout = new QHBoxLayout();
 
   ButtsLayout->setSpacing(5);
-  ButtsLayout->setMargin(5);
+  ButtsLayout->setContentsMargins(5,5,5,5);
 
   QPushButton *ButtOK = new QPushButton(tr("OK"));
   ButtsLayout->addWidget(ButtOK);

@@ -58,13 +58,13 @@ LibraryDialog::LibraryDialog(QWidget *parent)
   setWindowTitle(tr("Create Library"));
 
   Expr.setPattern("[\\w_]+");
-  Validator = new QRegExpValidator(Expr, this);
+  Validator = new QRegularExpressionValidator(Expr, this);
 
   curDescr = 0; // description counter, prev, next
 
  // ...........................................................
   all = new QVBoxLayout(this);
-  all->setMargin(5);
+  all->setContentsMargins(5,5,5,5);
   all->setSpacing(6);
 
   stackedWidgets = new QStackedWidget(this);

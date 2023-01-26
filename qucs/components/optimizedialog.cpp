@@ -57,7 +57,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   setWindowTitle(tr("Edit Optimization Properties"));
 
   Expr.setPattern("[\\w_]+");
-  Validator = new QRegExpValidator(Expr, this);
+  Validator = new QRegularExpressionValidator(Expr, this);
   numVal = new QDoubleValidator(this);
   intVal = new QIntValidator(this);
 
@@ -327,7 +327,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   // buttons on the bottom of the dialog (independent of the TabWidget)
   QHBoxLayout *Butts = new QHBoxLayout();
   Butts->setSpacing(3);
-  Butts->setMargin(3);
+  Butts->setContentsMargins(3, 3, 3, 3);
 
   QPushButton *OkButt = new QPushButton(tr("OK"));
   connect(OkButt, SIGNAL(clicked()), SLOT(slotOK()));

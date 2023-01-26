@@ -38,6 +38,8 @@ sudo zypper install ngspice git cmake libqt5-qtbase-devel libqt5-qttools-devel l
 
 ### Compiling
 
+#### Qt5
+
 Then clone this git repository and execute in the top directory:
 
 ~~~
@@ -52,6 +54,15 @@ Where `/your_install_prefix/` is desired installation directory. Substitute any
 desire path (for example `$HOME/qucs-s`) here. You may omit this option and
 installation steps. Default installation directory will be `/usr/local` if
 `CMAKE_INSTALL_PREFIX` is not defined.
+
+#### Qt6
+
+Since v1.0.1 Qucs-S supports build with Qt6. Add `WITH_QT6` flag to Cmake arguments
+to activate this mode.
+
+~~~
+cmake ..  -DCMAKE_INSTALL_PREFIX=/your_install_prefix/ -DWITH_QT6=ON
+~~~ 
 
 ### Running
 

@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <QRegularExpression>
 
 /*!
   \brief spicecompat namespace contains definitions responsible

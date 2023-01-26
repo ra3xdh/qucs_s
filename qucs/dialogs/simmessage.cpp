@@ -30,7 +30,8 @@ using namespace std;
 #include <QPushButton>
 #include <QPlainTextEdit>
 #include <QDateTime>
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 #include <QTextStream>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -84,7 +85,7 @@ SimMessage::SimMessage(QWidget *w, QWidget *parent)
 
   all = new QVBoxLayout(this);
   all->setSpacing(5);
-  all->setMargin(5);
+  all->setContentsMargins(5,5,5,5);
   QGroupBox *Group1 = new QGroupBox(tr("Progress:"));
   all->addWidget(Group1);
   QVBoxLayout *vbox1 = new QVBoxLayout();
