@@ -28,19 +28,30 @@ CONFIGURE_FILE (
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ") # enable warning level
+
+IF(WITH_QT6)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 ") # enable C++17
+FIND_PACKAGE( Qt6 COMPONENTS Core Gui Widgets Svg SvgWidgets REQUIRED)
+INCLUDE_DIRECTORIES(
+      ${Qt6Core_INCLUDE_DIRS}
+      ${Qt6Widgets_INCLUDE_DIRS}
+      ${Qt6Svg_INCLUDE_DIRS}
+      ${Qt6SvgWidgets_INCLUDE_DIRS}
+      )
+# bug, the find package does not seem to set the QT_LIBRARIES, do it manually
+SET(QT_LIBRARIES  ${Qt6Core_LIBRARIES} ${Qt6Widgets_LIBRARIES} ${Qt6Svg_LIBRARIES} ${Qt6SvgWidgets_LIBRARIES}  )
+ELSE(WITH_QT6)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ") # enable C++11
-
-# flag not available in mingw 4.8.2, MSVC10
 FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets Svg REQUIRED)
-
 INCLUDE_DIRECTORIES(
       ${Qt5Core_INCLUDE_DIRS}
       ${Qt5Widgets_INCLUDE_DIRS}
       ${Qt5Svg_INCLUDE_DIRS}
       )
-
 # bug, the find package does not seem to set the QT_LIBRARIES, do it manually
 SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES}  )
+ENDIF(WITH_QT6)
+
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
@@ -57,11 +68,14 @@ SET(QUCS-POWCOMB_MOC_HDRS
   qucspowercombiningtool.h
 )
 
-QT5_WRAP_CPP(QUCS-POWCOMB_MOC_SRCS ${QUCS-POWCOMB_MOC_HDRS})
-
 SET(RESOURCES qucspowercombining.qrc)
+IF(WITH_QT6)
+QT6_WRAP_CPP(QUCS-POWCOMB_MOC_SRCS ${QUCS-POWCOMB_MOC_HDRS})
+QT6_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
+ELSE(WITH_QT6)
+QT5_WRAP_CPP(QUCS-POWCOMB_MOC_SRCS ${QUCS-POWCOMB_MOC_HDRS})
 QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
-
+ENDIF(WITH_QT6)
 
 IF(APPLE)
   # set information on Info.plist file

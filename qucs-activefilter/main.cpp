@@ -21,6 +21,8 @@
 
 #include <stdlib.h>
 #include <QtCore>
+#include <QtWidgets> 
+#include <QSvgWidget> 
 #include <QApplication>
 
 #include "qucsactivefilter.h"

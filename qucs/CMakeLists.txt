@@ -54,38 +54,37 @@ endif()
 #
 ADD_DEFINITIONS( -DHAVE_CONFIG_H )
 
+IF(WITH_QT6)
 FIND_PACKAGE( Qt6 COMPONENTS Core Gui Widgets Svg Xml PrintSupport REQUIRED)
-#INCLUDE( ${QT_USE_FILE} )
 
 INCLUDE_DIRECTORIES(
       ${Qt6Core_INCLUDE_DIRS}
       ${Qt6Widgets_INCLUDE_DIRS}
       ${Qt6Svg_INCLUDE_DIRS}
       ${Qt6Xml_INCLUDE_DIRS}
-      ${Qt6Script_INCLUDE_DIRS}
       ${Qt6PrintSupport_INCLUDE_DIRS}
       )
 
 # bug, the find package does not seem to set the QT_LIBRARIES, do it manually
-SET(QT_LIBRARIES  ${Qt6Core_LIBRARIES} ${Qt6Widgets_LIBRARIES} ${Qt6Svg_LIBRARIES} ${Qt6Script_LIBRARIES} ${Qt6PrintSupport_LIBRARIES} )
+SET(QT_LIBRARIES  ${Qt6Core_LIBRARIES} ${Qt6Widgets_LIBRARIES} ${Qt6Svg_LIBRARIES} ${Qt6PrintSupport_LIBRARIES} )
+ELSE(WITH_QT6)
+FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets Svg Xml PrintSupport REQUIRED)
 
+INCLUDE_DIRECTORIES(
+      ${Qt5Core_INCLUDE_DIRS}
+      ${Qt5Widgets_INCLUDE_DIRS}
+      ${Qt5Svg_INCLUDE_DIRS}
+      ${Qt5Xml_INCLUDE_DIRS}
+      ${Qt5PrintSupport_INCLUDE_DIRS}
+      )
+
+# bug, the find package does not seem to set the QT_LIBRARIES, do it manually
+SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} )
+ENDIF(WITH_QT6)
 
 
 #MESSAGE("QT_INCLUDES=[${QT_INCLUDES}]")
 #MESSAGE("QT_LIBRARIES=[${QT_LIBRARIES}]")
-
-# Check whether the Qt QTabWidget::setMovable() function exists.
-# This function was added in Qt 4.5.
-# * Maybe use CMake CheckCXXSourceCompiles in the future?
-#TRY_COMPILE( HAVE_QTABWIDGET_SETMOVABLE
-#        ${CMAKE_BINARY_DIR}
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/QTabWidget_setMovable.cpp
-#        CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${QT_INCLUDES}"
-#        LINK_LIBRARIES ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
-#        OUTPUT_VARIABLE TRY_OUT )
-#IF(NOT HAVE_QTABWIDGET_SETMOVABLE)
-#  MESSAGE("QTabWidget::setMovable() not available, feature disabled.")
-#ENDIF()
 
 # configure the header config.h
 CONFIGURE_FILE (
@@ -97,7 +96,11 @@ INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR} )
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra ") # enable warning level
+IF(WITH_QT6)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 ") # enable C++11 c++0x
+ELSE()
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ") # enable C++11 c++0x
+ENDIF()
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC ") # enable C++11
 
 
@@ -174,16 +177,16 @@ SET(QUCS_MOC_HDRS
   symbolwidget.h
 )
 
-#
 # headers that need to be moc'ed
-#
-Qt6_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
-
-#
 # generate rules for building source files from bitmap resources
-#
 SET(RESOURCES qucs.qrc)
+IF(WITH_QT6)
+Qt6_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
 Qt6_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
+ELSE(WITH_QT6)
+Qt5_WRAP_CPP( QUCS_MOC_SRCS ${QUCS_MOC_HDRS} )
+Qt5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
+ENDIF(WITH_QT6)
 
 if(UNIX AND NOT APPLE)
 

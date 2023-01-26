@@ -25,8 +25,9 @@
 #endif
 #include <complex>
 #include <QtSvg>
+#include <QtWidgets>
+#include <QSvgWidget>
 #include <QDebug>
-#include <QDesktopWidget>
 
 namespace spicecompat {
     enum Simulator {simNgspice = 0, simXyceSer = 1, simXycePar = 2, simSpiceOpus = 3, simQucsator = 4, simNotSpecified=10};

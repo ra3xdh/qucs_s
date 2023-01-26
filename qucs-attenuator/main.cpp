@@ -18,7 +18,6 @@
 
 #include <QApplication>
 #include <QString>
-#include <QTextCodec>
 #include <QTranslator>
 #include <QFile>
 #include <QTextStream>

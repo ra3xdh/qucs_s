@@ -21,6 +21,11 @@
 #include <QtGui>
 #include <QtSvg>
 #include <QMainWindow>
+
+#include <QtCore>
+#include <QtWidgets>
+#include <QSvgWidget>
+
 #include <complex>
 #include "filter.h"
 
