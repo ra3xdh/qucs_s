@@ -18,6 +18,8 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
+#include <QtCore>
+
 #include "qt3_compat/qt_compat.h"
 
 #include "element.h"
