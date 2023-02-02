@@ -1,0 +1,22 @@
+{
+  "description" : "tunnel verilog device",
+  "property" : [
+    { "name" : "is", "value" : "1e-12", "display" : "false", "desc" : "-"},
+    { "name" : "ip", "value" : "1e-5", "display" : "false", "desc" : "-"},
+    { "name" : "iv", "value" : "1e-6", "display" : "false", "desc" : "-"},
+    { "name" : "vp", "value" : "0.1", "display" : "false", "desc" : "-"},
+    { "name" : "vv", "value" : "0.4", "display" : "false", "desc" : "-"},
+    { "name" : "k1", "value" : "5", "display" : "false", "desc" : "-"},
+    { "name" : "c", "value" : "0.01p", "display" : "false", "desc" : "-"},
+    { "name" : "temp0", "value" : "300", "display" : "false", "desc" : "-"},
+  ],
+
+  "tx" : 4,
+  "ty" : 4,
+  "Model" : "tunnel",
+  "NetName" : "T",
+
+
+  "SymName" : "tunnel",
+  "BitmapFile" : "tunnel",
+}

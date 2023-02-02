@@ -1,0 +1,20 @@
+{
+"paintings" : [
+  {"type" : "line", "x1" : 20, "y1" : -20, "x2" : 20, "y2" : 20, "color" : "#000080", "thick" : 2, "style" : "Qt::SolidLine"},
+  {"type" : "line", "x1" : 20, "y1" : 0, "x2" : 30, "y2" : 0, "color" : "#000080", "thick" : 2, "style" : "Qt::SolidLine"},
+  {"type" : "line", "x1" : -20, "y1" : -20, "x2" : 20, "y2" : 0, "color" : "#000080", "thick" : 2, "style" : "Qt::SolidLine"},
+  {"type" : "line", "x1" : -20, "y1" : 20, "x2" : 20, "y2" : 0, "color" : "#000080", "thick" : 2, "style" : "Qt::SolidLine"},
+  {"type" : "line", "x1" : 20, "y1" : -20, "x2" : 10, "y2" : -20, "color" : "#00007f", "thick" : 2, "style" : "Qt::SolidLine"},
+  {"type" : "line", "x1" : 20, "y1" : 20, "x2" : 10, "y2" : 20, "color" : "#00007f", "thick" : 2, "style" : "Qt::SolidLine"},
+  {"type" : "line", "x1" : -30, "y1" : 0, "x2" : -20, "y2" : 0, "color" : "#000080", "thick" : 2, "style" : "Qt::SolidLine"},
+  {"type" : "line", "x1" : -20, "y1" : -20, "x2" : -20, "y2" : 20, "color" : "#000080", "thick" : 2, "style" : "Qt::SolidLine"},
+  {"type" : "portsymbol", "x" : 30, "y" : 0},
+  {"type" : "portsymbol", "x" : -30, "y" : 0},
+],
+  "x1" : -30,
+  "y1" : -20,
+  "x2" : 30,
+  "y2" : 20,
+  "tx" : -30,
+  "ty" : 24,
+}

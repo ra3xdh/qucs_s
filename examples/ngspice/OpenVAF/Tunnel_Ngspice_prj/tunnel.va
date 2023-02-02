@@ -1,0 +1,25 @@
+`include "disciplines.vams"
+`include "constants.vams"
+module tunnel(Ka, An);
+inout Ka, An;
+electrical An, Ka;
+parameter real Is=1e-12;
+parameter real Ip=1e-5;
+parameter real Iv=1e-6;
+parameter real Vp=0.1;
+parameter real Vv=0.4;
+parameter real K1=5;
+parameter real C=0.01p;
+parameter real Temp0=300;
+real VT;
+analog begin 
+//@(initial_model)
+//begin 
+VT=(`P_K*Temp0)/`P_Q;
+//end
+I(An,Ka) <+ Is*(exp(V(An,Ka)/VT)-1.0);
+I(An,Ka) <+ ddt(C*V(An,Ka));
+I(An,Ka) <+ Iv*exp(K1*(V(An,Ka)-Vv));
+I(An,Ka) <+ Ip*(V(An,Ka)/Vp)*exp((Vp-V(An,Ka))/Vp);
+end
+endmodule
