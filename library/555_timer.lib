@@ -539,3 +539,119 @@ X2 _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4 TLC555
   </Symbol>
 </Component>
 
+<Component NE555_bipolar>
+  <Description>
+555 timer bipolar model. 
+See https://forum.kicad.info/t/simulation-of-555-timer-circuit-in-kicad/21697/7 for more info
+  </Description>
+  <Model>
+.Def:n555_timer_NE555_bipolar _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4
+Sub:X1 _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4 gnd Type="NE555_lib"
+.Def:End
+  </Model>
+  <ModelIncludes "NE555.lib.lst">
+  <Spice>* Qucs 1.0.1  555_timer_NE555_bipolar.sch
+
+.subckt NE555 1 2 3 4 5 6 7 8
+* NE555 Single Precision Timer
+* 1 = GND
+* 2 = TRIGGER
+* 3 = OUTPUT
+* 4 = RESET
+* 5 = CONTROL VOLTAGE
+* 6 = THRESHOLD
+* 7 = DISCHARGE
+* 8 = VCC
+Q1 N002 N010 N012 0 NP
+Q2 N002 6 N010 0 NP
+Q3 N003 N011 N012 0 NP
+Q4 N003 5 N011 0 NP
+R1 N012 1 10K
+Q5 N003 N003 8 0 PN
+Q6 N006 N003 8 0 PN
+Q7 N002 N002 8 0 PN
+Q8 N008 N002 8 0 PN
+Q9 N013 N004 N001 0 PN
+R2 8 N001 1K
+Q10 N023 N017 N013 0 PN
+Q11 1 N019 N017 0 PN
+Q12 N022 N016 N013 0 PN
+Q13 1 2 N016 0 PN
+Q14 N022 N023 1 0 NP
+Q15 N023 N023 1 0 NP
+R3 8 5 5K
+R4 5 N019 5K
+R5 N019 1 5K
+Q16 N008 N006 1 0 NP
+Q17 N006 N006 1 0 NP
+Q18 N014 N022 1 0 NP
+Q19 N018 N014 1 0 NP
+Q20 N015 N018 1 0 NP
+Q21 N009 N008 N014 0 NP
+Q22 N009 N009 N018 0 NP
+Q23 N004 N004 8 0 PN
+Q24 N004 N004 8 0 PN
+Q25 N015 N004 8 0 PN
+R6 N004 N009 7.5K
+R7 N015 N014 4.7K
+Q26 N024 4 N009 0 PN
+Q27 7 N024 1 0 NP
+Q28 N005 N015 N020 0 NP
+R8 8 N005 6.2K
+R9 N020 N024 100
+R10 N020 1 3.3K
+R11 N021 N020 120
+Q29 3 N021 1 0 NP
+Q30 8 N007 3 0 NP
+Q31 8 N005 N007 0 NP
+R12 N007 3 3.9K
+Q32 1 N005 3 0 PN
+.model NP NPN(BF=125 Cje=.5p Cjc=.5p Rb=500)
+.model PN PNP(BF=25 Cje=.3p Cjc=1.5p Rb=250)
+.ends
+
+
+.SUBCKT n555_timer_NE555_bipolar  gnd _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4 
+X1 _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4 NE555
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Rectangle -60 -100 120 200 #000000 1 1 #c0c0c0 1 0>
+    <Line 0 100 0 20 #000000 2 1>
+    <.ID 70 -96 SUB>
+    <Line -20 -120 0 20 #000000 2 1>
+    <Line -60 -60 -20 0 #000000 2 1>
+    <Line 60 0 20 0 #000000 2 1>
+    <Line -60 20 -20 0 #000000 2 1>
+    <Line -60 60 -20 0 #000000 2 1>
+    <Line 80 60 -20 0 #000000 2 1>
+    <Text -55 -70 12 #000000 0 "DIS">
+    <Text -55 10 12 #000000 0 "THR">
+    <Text -55 50 12 #000000 0 "TRG">
+    <Text 30 50 12 #000000 0 "CTL">
+    <Text 25 -10 12 #000000 0 "OUT">
+    <Text -15 80 12 #000000 0 "GND">
+    <Text 5 -100 12 #000000 0 "VCC">
+    <Text -35 -100 12 #000000 0 "RST">
+    <Line 20 -120 0 20 #000000 2 1>
+    <Text -75 40 12 #000000 0 "2">
+    <Text 5 100 12 #000000 0 "1">
+    <Text 65 -20 12 #000000 0 "3">
+    <Text -35 -120 12 #000000 0 "4">
+    <Text 25 -120 12 #000000 0 "8">
+    <Text -75 -80 12 #000000 0 "7">
+    <Text -75 0 12 #000000 0 "6">
+    <Text 65 40 12 #000000 0 "5">
+    <.PortSym -20 -120 4 0>
+    <.PortSym 0 120 1 0>
+    <.PortSym -80 60 2 0>
+    <.PortSym 80 0 3 180>
+    <.PortSym -80 20 6 0>
+    <.PortSym 20 -120 8 180>
+    <.PortSym 80 60 5 180>
+    <.PortSym -80 -60 7 0>
+    <Text -40 -40 12 #000000 0 "555bipolar">
+  </Symbol>
+</Component>
+
