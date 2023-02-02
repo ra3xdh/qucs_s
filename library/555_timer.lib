@@ -1,0 +1,541 @@
+<Qucs Library 1.0.0 "555_timer">
+
+<Component TLC555ng>
+  <Description>
+555 timer modified for Ngspice by Holger Vogt. 
+See https://sourceforge.net/p/ngspice/discussion/ngspice-tips/thread/d2048be2/ for more info. 
+  </Description>
+  <Model>
+.Def:n555_timer_TLC555ng _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4
+Sub:X2 _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4 gnd Type="TLC555ng_LIB"
+.Def:End
+  </Model>
+  <ModelIncludes "TLC555ng.LIB.lst">
+  <Spice>* Qucs 1.0.0  555_timer_TLC555ng.sch
+
+* TLC555
+* http://www.ti.com/product/TLC555/toolssoftware
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TLC555
+* Date: 13JUN2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SLFS043F - SEPTEMBER 1983 - REVISED FEBRUARY 2005
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+*
+* THIS MODEL IS APPLICABLE FOR TLC555 & TLC556
+*
+*****************************************************************************
+* Modified for ngspice use
+* by Holger Vogt, 12 2017
+* ngspice maintainer
+*
+* PSPICE to ngspice
+* replace IF by ternary_fcn
+* add .param VT = 0.026
+* replace 
+* S1 D S DG GND SWN
+* .MODEL SWN VSWITCH ( VON = {0.55} VOFF = {0.49} RON={1/(2*M*(W/LE)*(KPN/2)*10)}  ROFF={1G} )
+* by
+* a1 %v(DG) %gd(D S) swa
+* .MODEL SWA aswitch(cntl_off=0.49 cntl_on=0.55 r_off=1G
+* + r_on={1/(2*M*(W/LE)*(KPN/2)*10)} log=TRUE)
+
+* replace & by &&
+* replace | by ||
+* add .func LIMIT(x,a,b) {min(max(x, a), b)}
+
+* not yet done:
+* removing L, and W in .model statements
+* These are instance parameters only, not model
+* parameters in LEVEL=3 MOS (and others) in ngspice
+* removing LAMBDA from LEVEL=3 MOS .model statements
+* LAMBDA is not a MOS LEVEL=3 parameter
+
+.SUBCKT TLC555 THRES CONT TRIG RESET OUT DISC VCC GND
+XD8          GND RESI   D_Z18V
+XD7          GND RESET   D_Z18V
+XR2          RESET RESI   TLC55X_RWELL
++ PARAMS: W=50u L=20u 
+XD2          GND TRGI   D_Z18V
+XD1          GND TRIG   D_Z18V
+XR3          TRIG TRGI   TLC55X_RWELL
++ PARAMS: W=50u L=20u 
+XD4          GND THRI   D_Z18V
+XD3          GND THRES   D_Z18V
+XR2_2        THRES THRI   TLC55X_RWELL
++ PARAMS: W=50u L=20u 
+XD6          GND CONTI   D_Z18V
+XD5          GND CONT   D_Z18V
+XR2_3        CONT CONTI   TLC55X_RWELL
++ PARAMS: W=50u L=20u 
+XMN15        GOUT GND QFF GND   MDSWN
++ PARAMS: W=100U L=10U M=7
+XMP15        GOUT VCC QFF GND   MDSWP
++ PARAMS: W=195U L=10U M=9
+XMN3         GND TRGO 23   IIMIRRN
++ PARAMS: W1=170U L1=18U M1=1 W2=170U L2=18U M2=1 IDIN=1U 
+XMN5         GND THRS 25   IIMIRRN
++ PARAMS: W1=13U L1=26U M1=1 W2=52U L2=13U M2=2 IDIN=50N 
+XMp9         VCC RESO 15 GND   IMIRRP
++ PARAMS: W=112U L=15U M=2 IO=2U 
+XMp6         VCC 25 15 GND   IMIRRP
++ PARAMS: W=18U L=26U M=1 IO=100n 
+XMp5         VCC TRGS 15 GND   IMIRRP
++ PARAMS: W=112U L=15U M=2 IO=2U 
+XMp1         VCC THRO 29   IIMIRRP
++ PARAMS: W1=172U L1=15U M1=1 W2=172U L2=15U M2=1 IDIN=1U 
+XIB          VCC GND 15   IBIAS
+XRSFF        TRGO THRO RESO QFF 30 VCC GND   RR1SFF
++ PARAMS: VOUTH=1 VOUTL=0 RIN=1E12 DELAY=30N ROUT=10
+XMN9         TRGO RESO GND   MSWN
++ PARAMS: W=100U L=10U M=1 
+XMN17        DISC GOUT GND GND   TLC55X_NMOS_HV
++ PARAMS: W=350U L=10U M=20 
+XMN16        OUT GOUT GND GND   TLC55X_NMOS_HV
++ PARAMS: W=175U L=10U M=20 
+XMP16        OUT GOUT VCC VCC   TLC55X_PMOS_HV
++ PARAMS: W=270u L=10u M=7 
+XMN10        RESO RESI GND GND   TLC55X_NMOS_HV_L1
++ PARAMS: W=100u L=10u M=1 
+XMN2         THRO THRI THRS GND   TLC55X_NMOS_MV
++ PARAMS: W=170u L=18u M=2 
+XMP4         TRGO TRGI TRGS VCC   TLC55X_PMOS_MV
++ PARAMS: W=172u L=15u M=2 
+XMP3         23 TRGC TRGS VCC   TLC55X_PMOS_MV
++ PARAMS: W=172u L=15u M=2 
+XMPR1F       GND GND 32 TRGC   TLC55X_PMOS_LV
++ PARAMS: W=20U L=15U M=1
+XMPR1E       32 32 TRGC TRGC   TLC55X_PMOS_LV
++ PARAMS: W=20U L=15U M=1
+XMPR1D       TRGC TRGC 33 CONTI   TLC55X_PMOS_LV
++ PARAMS: W=20U L=15U M=1
+XMPR1C       33 33 CONTI CONTI   TLC55X_PMOS_LV
++ PARAMS: W=20U L=15U M=1
+XMPR1B       CONTI CONTI 34 VCC   TLC55X_PMOS_LV
++ PARAMS: W=20u L=15u M=1 
+XMPR1A       34 34 VCC VCC   TLC55X_PMOS_LV
++ PARAMS: W=20u L=15u M=1 
+XMN1         29 CONTI THRS GND   TLC55X_NMOS_MV
++ PARAMS: W=170u L=18u M=2 
+.ENDS TLC555
+
+.SUBCKT TLC55X_NMOS_HV  D G S B PARAMS: W = 100U L = 10U M = 1
+M1 D G S B TLC55X_NMOSD_HV W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+.SUBCKT TLC55X_NMOS_HV_L1  D G S B PARAMS: W = 100U L = 10U M = 1
+M1 D G S B TLC55X_NMOSD_HV_L1 W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+.SUBCKT TLC55X_NMOS_MV  D G S B PARAMS: W = 100U L = 10U M = 1
+M1 D G S B TLC55X_NMOSD_MV W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+.SUBCKT TLC55X_NMOS_LV  D G S B PARAMS: W = 100U L = 10U M = 1
+M1 D G S B TLC55X_NMOSD_LV W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+.MODEL TLC55X_NMOSD_HV NMOS LEVEL=3 L=10U W=100U KP={KPN} VTO={VTOHN} LAMBDA=2E-3 THETA=1.8E-01
++ CJ={CJN} CJSW={CJSWN} CGSO={CGSON} CGDO={CGDON} RSH= 10 PB=0.65 LD= 70N TOX={TOX}
+*$
+.MODEL TLC55X_NMOSD_HV_L1 NMOS LEVEL=1 L=10U W=100U KP={KPN} VTO={VTOHN} LAMBDA=2E-3 
++ CJ={CJN} CJSW={CJSWN} CGSO={CGSON} CGDO={CGDON} RSH= 10 PB=0.65 LD= 70N TOX={TOX}
+*$
+.MODEL TLC55X_NMOSD_MV NMOS LEVEL=1 L=10U W=100U KP={KPN} VTO={VTOMN} LAMBDA=2E-3 
++ CJ={CJNCG} CJSW={CJSWNCG} CGSO={CGSONCG} CGDO={CGDONCG} PB=0.65 LD= 70N TOX={TOXCG}
+*+ RSH= 10
+*$
+.MODEL TLC55X_NMOSD_LV NMOS LEVEL=1 L=10U W=100U KP={KPN} VTO={VTON} LAMBDA=2E-3 
++ CJ={CJN} CJSW={CJSWN} CGSO={CGSON} CGDO={CGDON} PB=0.65 LD= 300N TOX={TOX}
+*+ RSH= 10
+*$
+.SUBCKT TLC55X_PMOS_HV  D G S B PARAMS: W = 100U L = 10U M = 1
+M1 D G S B TLC55X_PMOSD_HV W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+.SUBCKT TLC55X_PMOS_MV  D G S B PARAMS: W = 100U L = 10U M = 1
+M1 D G S B TLC55X_PMOSD_MV W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+.SUBCKT TLC55X_PMOS_LV  D G S B PARAMS: W = 100U L = 10U M = 1
+M1 D G S B TLC55X_PMOSD_LV W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+.MODEL TLC55X_PMOSD_HV PMOS LEVEL=3 L=10U W=100U KP={KPP} VTO={-VTOHP} LAMBDA=2E-3 THETA=2.2E-01
++ CJ={CJP} CJSW={CJSWP} CGSO={CGSOP} CGDO={CGDOP} RSH=10 PB=0.65 LD=70N TOX={TOX}
+*$
+.MODEL TLC55X_PMOSD_MV PMOS LEVEL=1 L=10U W=100U KP={KPP} VTO={-VTOMP} LAMBDA=2E-3 
+*+ CJ={CJP} CJSW={CJSWP} CGSO={CGSOP} CGDO={CGDOP} PB=0.65 LD=70N TOX={TOX}
++ CJ={CJNCG} CJSW={CJSWNCG} CGSO={CGSONCG} CGDO={CGDONCG} PB=0.65 LD= 70N TOX={TOXCG}
+*+ RSH= 10
+*$
+.MODEL TLC55X_PMOSD_LV PMOS LEVEL=1 L=10U W=100U KP={KPP} VTO={-VTOP} LAMBDA=2E-3 
++ CJ={CJP} CJSW={CJSWP} CGSO={CGSOP} CGDO={CGDOP}  PB=0.65 LD=300N TOX={TOX}
+*+ RSH= 10
+*$
+.SUBCKT TLC55X_RWELL  1 2 PARAMS: W = 10U L = 100U
+XR1 1 2 TLC55X_RWELLD PARAMS: W = {W} L = {L} 
+.ENDS
+*$
+.SUBCKT TLC55X_RWELLD  1 2 PARAMS: W = 10U L = 100U
+R1 1 2 {RSW*L/W}
+.ENDS
+*$
+.SUBCKT TLC55X_RNSD  1 2 PARAMS: W = 10U L = 100U
+XR1 1 2 TLC55X_RNSD_D PARAMS: W = {W} L = {L} 
+.ENDS
+*$
+.SUBCKT TLC55X_RNSD_D  1 2 PARAMS: W = 10U L = 100U
+R1 1 2 {RSN*L/W}
+.ENDS
+*$
+.SUBCKT TLC55X_RC  1 2 PARAMS: WW = 10U LW = 100U WNSD = 10U LNSD = 100U
+XR1 1 2 TLC55X_RC_D PARAMS: WW = {WW} LW = {LW}  WNSD = {WNSD}  LNSD = {LNSD} 
+.ENDS
+*$
+.SUBCKT TLC55X_RC_D  1 2 PARAMS:  WW = 10U LW = 100U WNSD = 10U LNSD = 100U
+R1 1 2 {RSW*LW/WW + RSN*LNSD/WNSD}
+.ENDS
+*
+.SUBCKT IBIAS VCC GND VIB
+*
+.PARAM M1 = 8
+.PARAM M2 = 5
+.PARAM MP = 1
+.PARAM WP = 13U
+.PARAM WN = 130U
+.PARAM LPE = {36U - LDP}
+.PARAM LNE = {13U - LDN}
+.PARAM BP = {MP*(WP/LPE)*(KPP/2)}
+.PARAM WW = 13U
+.PARAM LW = 213U
+.PARAM WNN = 25U
+.PARAM LNN = 87U
+.PARAM R1 = {(RSW*LW/WW + RSN*LNN/WNN)}
+.PARAM K2 = {M2*(WN/LNE)*(KPN/2)}
+.PARAM MR = {M2/M1}
+*
+.func LIMIT(x,a,b) {min(max(x, a), b)}
+R1 VIB GND {VBMUL}
+GB  VCC VIB  VALUE = {LIMIT( ternary_fcn ( V(VCC,GND) > VTOHP, BP*PWR(V(VCC,GND)-VTOHP, 2), 0), 
++ (1 + 1*LAMBDA*(V(VCC,GND) - VTOHN))*PWR(( 1 - SQRT(MR/(1+2*LAMBDA*(V(VCC,GND) - VTOHP))) )/R1, 2)/K2, 0)}
+R2 VIB VCC {RPAR}
+.ENDS
+
+.SUBCKT IMIRRP VCC IO VIB GND PARAMS: W = 100U L = 10U M = 1 IO = 1U
+*
+.param VT = 0.026
+.PARAM MP = 1
+.PARAM WP = 13U
+.PARAM LPE = {36U - LDP}
+.PARAM LE = {L - LDP}
+.PARAM MR = { M*W/LE/(MP*WP/LPE)/VBMUL }
+.PARAM B1 = { (KPP/2*MP*WP/LPE)*VBMUL }
+.PARAM IS = 1E-12
+.PARAM N = {VTOHP/(VT*Log(1 + IO/IS))}
+*
+GB VCC IO VIB GND {MR}
+R1 VCC IO {RPAR}
+C1 VCC IO {M*(CBDJ*CJP*LS*W + CBDS*CJSWP*(2*LS + W))}
+V1 VCC 10 {VTOHP}
+D1 IO  10  DMOD1
+.MODEL DMOD1 D (IS={IS} N={N} )
+.ENDS
+
+.SUBCKT IIMIRRP VCC IO II PARAMS: W1 = 100U L1 = 10U M1 = 1 W2 = 100U L2= 10U M2 = 2 IDIN = 1U
+*
+.param VT = 0.026
+.PARAM L1E = {L1 - LDP}
+.PARAM L2E = {L2 - LDP}
+.PARAM B1 = {M1*(W1/L1)*(KPP/2)}
+.PARAM MR = {M2*W2/L2E/(M1*W1/L1E)}
+.PARAM RDS = {1/(2*SQRT(M2*(W2/L2E)*(KPP/2)*IDIN))}
+.PARAM IS = 1E-12
+.PARAM NP = {VTOP/(VT*Log(1 + IDIN/IS))}
+*
+FB VCC IO V1 {MR}
+R1 VCC IO {RPAR}
+C1 VCC IO {M2*(CBDJ*CJP*LS*W2 + CBDS*CJSWP*(2*LS + W2))}
+D1 IO  10  DMODP
+V1 VCC 10 {VTOP}
+R2 II 10  {RDS}
+C2 VCC II {M1*(CBDJ*CJP*LS*W1 + CBDS*CJSWP*(2*LS + W1)) + 2/3*COX*(M1*W1*L1E + M2*W2*L2E) + M1*CGSOP*W1}
+C3 II IO {CGDOP*W2}
+.MODEL DMODP D (IS={IS} N={NP} )
+.ENDS
+
+.SUBCKT IIMIRRN GND IO II PARAMS: W1 = 100U L1 = 10U M1 = 1 W2 = 100U L2= 10U M2 = 2 IDIN = 1U
+*
+.param VT = 0.026
+.PARAM L1E = {L1 - LDN}
+.PARAM L2E = {L2 - LDN}
+.PARAM B1 = {M1*(W1/L1)*(KPN/2)}
+.PARAM MR = { M2*W2/L2E/(M1*W1/L1E) }
+.PARAM RDS = {1/(2*SQRT(M2*(W2/L2E)*(KPN/2)*IDIN))}
+.PARAM IS = 1E-12
+.PARAM NN = {VTON/(VT*Log(1 + IDIN/IS))}
+*
+FB IO GND V1 {MR}
+R1 IO GND {RPAR}
+C1 IO GND {M2*(CBDJ*CJN*LS*W2 + CBDS*CJSWN*(2*LS + W2))}
+D1 10 IO  DMODN
+V1 10 GND {VTON}
+R2 II 10  {RDS}
+C2 II GND {M1*(CBDJ*CJN*LS*W1 + CBDS*CJSWN*(2*LS + W1)) + 2/3*COX*(M1*W1*L1E + M2*W2*L2E) + M1*CGSON*W1}
+C3 II IO {M2*CGDON*W2}
+.MODEL DMODN D (IS={IS} N={NN} ) 
+.ENDS
+
+.SUBCKT MDSWP D S DG GND PARAMS: W = 100U L = 10U M = 1
+*
+.PARAM LE = {L - LDP}
+*
+*S1 D S DG GND SWN
+a1 %v(DG) %gd(D S) swa
+.MODEL SWA aswitch(cntl_off=0.55 cntl_on=0.49 r_off=1G
++ r_on={1/(2*M*(W/LE)*(KPP/2)*10)} log=TRUE)
+
+C1 D S {M*(CBDJ*CJP*LS*W + CBDS*CJSWP*(2*LS + W))} 
+*D B
+*.MODEL SWN VSWITCH ( VON = {0.49} VOFF = {0.55} RON={1/(2*M*(W/LE)*(KPP/2)*10)} ROFF={1G} )
+.ENDS
+
+.SUBCKT MDSWN D S DG GND PARAMS: W = 100U L = 10U M = 1
+*
+.PARAM LE = {L - LDN}
+*
+*S1 D S DG GND SWN
+a1 %v(DG) %gd(D S) swa
+.MODEL SWA aswitch(cntl_off=0.49 cntl_on=0.55 r_off=1G
++ r_on={1/(2*M*(W/LE)*(KPN/2)*10)} log=TRUE)
+C1 D S {M*(CBDJ*CJN*LS*W + CBDS*CJSWN*(2*LS + W))} 
+*D B
+*.MODEL SWN VSWITCH ( VON = {0.55} VOFF = {0.49} RON={1/(2*M*(W/LE)*(KPN/2)*10)} ROFF={1G} )
+.ENDS
+
+.SUBCKT MSWN D G S PARAMS: W = 100U L = 10U M = 1
+*
+.PARAM LE = {L - LDN}
+*
+*C1 D S {M*(CBDJ*CJN*LS*W + CBDS*CJSWN*(2*LS + W))} 
+*D B
+*C2 G S {M*2/3*COX*(W*LE) + CGSON*W}
+*C3 G D {CGDON*W}
+*S1 D S G S SWN
+a1 %vd(G S) %gd(D S) swa
+.MODEL SWA aswitch(cntl_off={VTON} cntl_on={VTON+1} r_off=1G
++ r_on={1/(2*M*(W/L)*(KPN/2)*10)} log=TRUE)
+
+*.MODEL SWN VSWITCH ( VON = {VTON+1} VOFF = {VTON} RON={1/(2*M*(W/L)*(KPN/2)*10)} ROFF={1G} )
+.ENDS
+*
+* CONNECTIONS:   A
+*                |    C
+*                |    |
+.SUBCKT D_Z18V   1    2
+D1 1 2  DZ_18V
+.ENDS 
+
+.param VT = 0.026
+.PARAM ISZ = 5P
+.PARAM NZ = {0.3/(VT*Log(1 + 5.0M/ISZ))}
+.MODEL DZ_18V D( IS={ISz} N={Nz} BV=18.0 IBV=5.0M EG={8*Nz*VT})
+
+.SUBCKT RR1SFF S R R1 Q  Q_ VCC GND
++ PARAMS: VOUTH=5.0 VOUTL=0 RIN=1E12 DELAY=10N ROUT=10
+.PARAM W1 = 100U 
+.PARAM L1 = 10U 
+.PARAM W2 = 100U 
+.PARAM L2= 10U 
+.PARAM W3 = 10U 
+.PARAM L3 = 25U 
+.PARAM W4 = 10U 
+.PARAM L4= 100U 
+*
+XU1     Q GND S GND Q_ GND   COMP2INPNORSD
++ PARAMS: ROUT={ROUT} DELAYLH={1N} DELAYHL={1N} VOUTH={VOUTH} VOUTL={VOUTL} 
++ VTHRES1={0.5*(VOUTH-VOUTL)} VTHRES2={VTOCN}
+XU2     VCC R R1 GND Q_ GND Q VCC GND   COMP3INPNORSD
++ PARAMS: ROUT={ROUT} DELAYLH={15N} DELAYHL={1N} VOUTH={VOUTH} VOUTL={VOUTL} 
++ VTHRES1={VTOCP} VTHRES2={VTOCN} VTHRES3={0.49*(VOUTH-VOUTL)}
+*C1 S GND {0.5*COX*(W1*L1) + CGSON*W1}
+*C2 R VCC {0.5*COX*(W2*L2) + CGSOP*W2}
+*C3 R1 GND {0.5*COX*(W3*L3) + CGSON*W3}
+*C4 R1 VCC {0.5*COX*(W4*L4) + CGSOP*W4}
+.ENDS
+
+.SUBCKT COMP2INPNORSD IN1+ IN1- IN2+ IN2- OUT GND
++ PARAMS: ROUT=0 DELAYLH=0 DELAYHL=0 VOUTH=0 VOUTL=0 VTHRES1=0 VTHRES2=0
+*
+.PARAM TDELLH = {ternary_fcn ( (DELAYLH < 1E-9) , 1E-9, DELAYLH ) } 
+.PARAM TDELHL = {ternary_fcn ( (DELAYHL < 1E-9) , 1E-9, DELAYHL ) } 
+.PARAM RO = {ternary_fcn ( (TDEL > 1E-15) && (ROUT < 1), 1, ROUT ) } 
+.PARAM TDEL = {(TDELLH+TDELHL)/2}
+.PARAM COUT={TDEL/(0.693*(RO+1U))}
+.PARAM RDELLH = {TDELLH/(0.693*(COUT+1F))}
+.PARAM RDELHL = {TDELHL/(0.693*(COUT+1F))}
+
+EOUT OUT GND VALUE= { ternary_fcn ( (V(IN1+,IN1-) > {VTHRES1}) || (V(IN2+,IN2-) > {VTHRES2}), 
++ VOUTL + RDELLH*I(EOUT), VOUTH + RDELHL*I(EOUT) ) }
+COUT OUT GND {COUT}
+.ENDS COMP2INPNORSD
+
+.SUBCKT COMP3INPNORSD IN1+ IN1- IN2+ IN2- IN3+ IN3- OUT VCC GND
++ PARAMS: ROUT=0 DELAYLH=0 DELAYHL=0 VOUTH=0 VOUTL=0 VTHRES1=0 VHYST1=0 VTHRES2=0 VHYST2=0 VTHRES3=0 VHYST3=0  
+*
+.PARAM TDELLH = {ternary_fcn ( (DELAYLH < 1E-9) , 1E-9, DELAYLH ) } 
+.PARAM TDELHL = {ternary_fcn ( (DELAYHL < 1E-9) , 1E-9, DELAYHL ) } 
+.PARAM RO = {ternary_fcn ( (TDEL > 1E-15) && (ROUT < 1), 1, ROUT ) } 
+.PARAM TDEL = {(TDELLH+TDELHL)/2}
+.PARAM COUT={TDEL/(0.693*(RO+1U))}
+.PARAM VREFN = {(15-VTOHN)}
+.PARAM VREFP = {(15-VTOHP)}
+.PARAM RDELLH = {TDELLH/(0.693*(COUT+1F))*VREFP}
+.PARAM RDELHL = {TDELHL/(0.693*(COUT+1F))*VREFN}
+*
+EOUT OUT GND VALUE= { ternary_fcn ( (V(IN1+,IN1-) > {VTHRES1}) || (V(IN2+,IN2-) > {VTHRES2}) || (V(IN3+,IN3-) > {VTHRES3}), 
++ VOUTL + RDELLH*I(EOUT)*V(1,GND), VOUTH + RDELHL*I(EOUT)*V(1,GND) ) }
+E1 1 GND VALUE= { ternary_fcn ( (V(VCC,GND) > {VTOHP+0.01}), 1/(V(VCC,GND)-VTOHP), 100 ) }
+COUT OUT GND {COUT}
+.ENDS COMP3INPNORSD
+
+.SUBCKT 1N4148 1 2
+D1          1 2  D_1N4148_1
+.MODEL D_1N4148_1 D( IS=1N N=1.7 BV=75 IBV=5U RS=2M 
++      CJO=4P VJ=750M M=330M FC=500M TT=25.9N 
++      EG=1.11 XTI=3 KF=0 AF=1 )
+.ENDS
+
+.PARAM LS = 1.0U
+.PARAM VTOP_ = 0.31
+.PARAM VTOP = 0.14
+.PARAM VTON = 0.14
+.PARAM VTOMP = 0.6
+.PARAM VTOMN = 0.55
+.PARAM VTOHP = 0.85
+.PARAM VTOHN = 0.80
+.PARAM LAMBDA = 2M
+.PARAM KPN = 6.0E-05
+.PARAM KPP = 3.0E-05
+.PARAM LDN = 0.07U
+.PARAM LDP = 0.07U
+.PARAM RSW = 1810
+.PARAM RSN = 1.41
+.PARAM VBMUL = 1E6
+.PARAM RPAR = 1T
+.PARAM CBDJ = 1 
+.PARAM CBDS = 1 
+.PARAM CN = 0.8
+*0.8U
+.PARAM CJN = {CN*180U}
+.PARAM CJP = {CN*300U} 
+.PARAM CJSWN = {CN*1N}
+.PARAM CJSWP = {CN*2.2N}
+.PARAM XJN = 0.2U
+.PARAM CGSON = {CN*0.6 * XJN * COX} 
+.PARAM CGDON = {CGSON}
+.PARAM XJP = 0.3U
+.PARAM CGSOP = {CN*0.6 * XJN * COX} 
+.PARAM CGDOP = {CGSOP}
+.PARAM EPSSIO2 = {3.9*8.854214871E-12}
+.PARAM TOX = 1000E-10
+.PARAM COX = {EPSSIO2/TOX}
+.PARAM EC = 1.5E6
+.PARAM VTOCP = {VTOHP+0.05}
+.PARAM VTOCN = {VTOHN+0.05}
+*CG
+.PARAM CCG = 0.2
+.PARAM CJNCG = {CCG*180U}
+.PARAM CJPCG = {CCG*300U} 
+.PARAM CJSWNCG = {CCG*1N}
+.PARAM CJSWPCG = {CCG*2.2N}
+.PARAM XJNCG = 0.2U
+.PARAM CGSONCG = {CCG*0.6 * XJNCG * COXCG} 
+.PARAM CGDONCG = {CGSONCG}
+.PARAM XJPCG = 0.3U
+.PARAM CGSOPCG = {CCG*0.6 * XJNCG * COXCG} 
+.PARAM CGDOPCG = {CGSOPCG}
+.PARAM TOXCG = 1000E-10
+.PARAM COXCG = {EPSSIO2/TOXCG}
+
+.SUBCKT n555_timer_TLC555ng  gnd _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4 
+X2 _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4 TLC555
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Rectangle -60 -100 120 200 #000000 1 1 #c0c0c0 1 0>
+    <Line 0 100 0 20 #000000 2 1>
+    <.ID 70 -96 SUB>
+    <Text -20 -50 12 #000000 0 "555ng">
+    <Line -20 -120 0 20 #000000 2 1>
+    <Line -60 -60 -20 0 #000000 2 1>
+    <Line 60 0 20 0 #000000 2 1>
+    <Line -60 20 -20 0 #000000 2 1>
+    <Line -60 60 -20 0 #000000 2 1>
+    <Line 80 60 -20 0 #000000 2 1>
+    <Text -55 -70 12 #000000 0 "DIS">
+    <Text -55 10 12 #000000 0 "THR">
+    <Text -55 50 12 #000000 0 "TRG">
+    <Text 30 50 12 #000000 0 "CTL">
+    <Text 25 -10 12 #000000 0 "OUT">
+    <Text -15 80 12 #000000 0 "GND">
+    <Text 5 -100 12 #000000 0 "VCC">
+    <Text -35 -100 12 #000000 0 "RST">
+    <Line 20 -120 0 20 #000000 2 1>
+    <Text -75 40 12 #000000 0 "2">
+    <Text 5 100 12 #000000 0 "1">
+    <Text 65 -20 12 #000000 0 "3">
+    <Text -35 -120 12 #000000 0 "4">
+    <Text 25 -120 12 #000000 0 "8">
+    <Text -75 -80 12 #000000 0 "7">
+    <Text -75 0 12 #000000 0 "6">
+    <Text 65 40 12 #000000 0 "5">
+    <.PortSym -80 20 1 0>
+    <.PortSym 80 60 2 180>
+    <.PortSym -80 60 3 0>
+    <.PortSym -20 -120 4 0>
+    <.PortSym 80 0 5 180>
+    <.PortSym -80 -60 6 0>
+    <.PortSym 20 -120 7 180>
+    <.PortSym 0 120 8 0>
+  </Symbol>
+</Component>
+
