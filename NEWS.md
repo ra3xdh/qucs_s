@@ -1,3 +1,28 @@
+# Qucs-S 1.0.1
+
+## New features
+
+* Added support for Verilog-A defined devices using Ngspice+OpenVAF #197. Old Qucsator+ADMS
+  workflow is marked as deprecated. Ngspice >=39 is required to support OpenVAF.
+* Implemented variable parameter sweep analysis #189
+* Added possibility to build Qucs-S with Qt6 #190 The -DWITH=QT6=ON option for cmake is required. 
+  The source code of the Qucs-S is Qt6 compatible now. Thanks @Zergud !
+* Simulator prefixes like "ngspice/" are not show anymore on plot traces if the plot contains data 
+  from only one simulator #178 
+
+
+## Component library
+
+* Added TL071/TL072 opamp models
+* Added 555_timer.lib library containing the 555 timer model
+* Added extended BJT exteneded and Schottky diodes libraries
+
+## Bugfix and general improvements
+
+* Change default RCL device values and simulation settings to prevent convergence error when putting 
+  together device with default values #195
+* Fixed auto-scaling issue on Windows 64-bit platform #133
+
 # Qucs-S 1.0.0
 
 ## New features
