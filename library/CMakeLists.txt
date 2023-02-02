@@ -3,9 +3,11 @@ SET(COMPLIBS
 555_timer.lib
 AnalogueCM.lib
 Bridges.lib
+BJT_Extended.lib
 Cores.lib
 Crystal.lib
 Diodes.lib
+DiodesSchottky.lib
 Ideal.lib
 JFETs.lib
 LEDs.lib
