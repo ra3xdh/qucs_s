@@ -325,7 +325,7 @@ void QucsApp::initActions()
   connect(createLib, SIGNAL(triggered()), SLOT(slotCreateLib()));
 
   createPkg = new QAction(tr("Create &Package..."), this);
-  createPkg->setShortcut(tr("Ctrl+Shift+Z"));
+  createPkg->setShortcut(tr("Ctrl+Shift+Y"));
   createPkg->setStatusTip(tr("Create compressed Package from Projects"));
   createPkg->setWhatsThis(tr("Create Package\n\nCreate compressed Package from complete Projects"));
   connect(createPkg, SIGNAL(triggered()), SLOT(slotCreatePackage()));
