@@ -139,15 +139,15 @@ ADD_SUBDIRECTORY( examples )
 #
 SET(plugin_dest_dir bin)
 SET(qtconf_dest_dir bin)
-SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}")
+SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${QUCS_NAME}trans")
 IF(APPLE)
-  SET(plugin_dest_dir ${PROJECT_NAME}.app/Contents/MacOS)
-  SET(qtconf_dest_dir ${PROJECT_NAME}.app/Contents/Resources)
-  SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}.app")
+  SET(plugin_dest_dir ${QUCS_NAME}trans.app/Contents/MacOS)
+  SET(qtconf_dest_dir ${QUCS_NAME}trans.app/Contents/Resources)
+  SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${QUCS_NAME}trans.app")
 ENDIF(APPLE)
 
 IF(WIN32)
-  SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}.exe")
+  SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${QUCS_NAME}trans.exe")
 ENDIF(WIN32)
 
 #
