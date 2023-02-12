@@ -285,7 +285,7 @@ INSTALL(TARGETS ${QUCS_NAME}
 # Install needed Qt plugins by copying directories from the qt installation
 # One can cull what gets copied by using 'REGEX "..." EXCLUDE'
 #
-IF(APPLE)
+IF(APPLE AND QT_PLUGINS_DIR)
   INSTALL(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION bin/${plugin_dest_dir}/plugins COMPONENT Runtime)
 ENDIF()
 #
