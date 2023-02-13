@@ -17,7 +17,7 @@ set(PROJECT_DOMAIN_SECOND "org")
 
 SET(CMAKE_BUILD_TYPE Debug)
 
-ADD_DEFINITIONS( -DHAVE_CONFIG_H )
+add_compile_definitions(HAVE_CONFIG_H)
 
 # configure the header config.h
 CONFIGURE_FILE (
@@ -27,9 +27,24 @@ CONFIGURE_FILE (
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ") # enable warning level
+
+
 IF(WITH_QT6)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 ") # enable C++11
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ELSE()
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ENDIF()
+
+if (MSVC)
+
+else()
+    # additional warnings
+    add_compile_options(-Wall -Wextra)
+endif()
+
+IF(WITH_QT6)
 FIND_PACKAGE( Qt6 COMPONENTS Core Gui Widgets REQUIRED )
 INCLUDE_DIRECTORIES(
       ${Qt6Core_INCLUDE_DIRS}
@@ -38,7 +53,6 @@ INCLUDE_DIRECTORIES(
 # bug, the find package does not seem to set the QT_LIBRARIES, do it manually
 SET(QT_LIBRARIES  ${Qt6Core_LIBRARIES} ${Qt6Widgets_LIBRARIES}  )
 ELSE(WITH_QT6)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ") # enable C++11
 FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets REQUIRED )
 INCLUDE_DIRECTORIES(
       ${Qt5Core_INCLUDE_DIRS}
