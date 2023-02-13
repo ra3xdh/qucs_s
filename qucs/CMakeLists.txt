@@ -10,8 +10,8 @@
 # By default, the prefix is "/usr/local"
 
 PROJECT(qucs-s CXX)
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
-cmake_policy(VERSION 3.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.18)
+cmake_policy(VERSION 3.18)
 
 SET(QUCS_NAME "${PROJECT_NAME}")
 
@@ -25,7 +25,6 @@ set(PROJECT_VENDOR "Qucs team. This program is licensed under the GNU GPL")
 set(PROJECT_COPYRIGHT_YEAR "2014")
 set(PROJECT_DOMAIN_FIRST "qucs")
 set(PROJECT_DOMAIN_SECOND "org")
-
 
 # If Git hash not defined, try to define it
 IF(NOT GIT)
@@ -53,40 +52,21 @@ endif()
 
 #
 add_compile_definitions(HAVE_CONFIG_H)
-SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-IF(WITH_QT6)
-FIND_PACKAGE( Qt6 COMPONENTS Core Gui Widgets Svg Xml PrintSupport REQUIRED)
-
-INCLUDE_DIRECTORIES(
-      ${Qt6Core_INCLUDE_DIRS}
-      ${Qt6Widgets_INCLUDE_DIRS}
-      ${Qt6Svg_INCLUDE_DIRS}
-      ${Qt6Xml_INCLUDE_DIRS}
-      ${Qt6PrintSupport_INCLUDE_DIRS}
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Gui Widgets Svg Xml PrintSupport)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets Svg Xml PrintSupport)
+include_directories(
+      ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
+      ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
+      ${Qt${QT_VERSION_MAJOR}Svg_INCLUDE_DIRS}
+      ${Qt${QT_VERSION_MAJOR}Xml_INCLUDE_DIRS}
+      ${Qt${QT_VERSION_MAJOR}PrintSupport_INCLUDE_DIRS}
       )
-
-# bug, the find package does not seem to set the QT_LIBRARIES, do it manually
-SET(QT_LIBRARIES  ${Qt6Core_LIBRARIES} ${Qt6Widgets_LIBRARIES} ${Qt6Svg_LIBRARIES} ${Qt6PrintSupport_LIBRARIES} )
-ELSE(WITH_QT6)
-FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets Svg Xml PrintSupport REQUIRED)
-
-INCLUDE_DIRECTORIES(
-      ${Qt5Core_INCLUDE_DIRS}
-      ${Qt5Widgets_INCLUDE_DIRS}
-      ${Qt5Svg_INCLUDE_DIRS}
-      ${Qt5Xml_INCLUDE_DIRS}
-      ${Qt5PrintSupport_INCLUDE_DIRS}
-      )
-
-# bug, the find package does not seem to set the QT_LIBRARIES, do it manually
-SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} )
-ENDIF(WITH_QT6)
 
 
 #MESSAGE("QT_INCLUDES=[${QT_INCLUDES}]")
 #MESSAGE("QT_LIBRARIES=[${QT_LIBRARIES}]")
-
 # configure the header config.h
 CONFIGURE_FILE (
     "${PROJECT_SOURCE_DIR}/../config.h.cmake"
@@ -95,7 +75,7 @@ CONFIGURE_FILE (
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
-IF(WITH_QT6)
+IF(QT_VERSION_MAJOR EQUAL 6)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -112,13 +92,6 @@ else()
     # additional warnings
     add_compile_options(-Wall -Wextra)
 endif()
-
-
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt6Widgets_EXECUTABLE_COMPILE_FLAGS}")
-# For some reason, on Windows QT_LIBRARIES point to static(?) .a libs
-# which do not provide the needed symbols. They are found on
-# the .dll libraries.
-ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 INCLUDE_DIRECTORIES(
   ${PROJECT_SOURCE_DIR}
@@ -265,7 +238,10 @@ ADD_EXECUTABLE( ${QUCS_NAME} MACOSX_BUNDLE WIN32
 #
 # Tell CMake which libraries we need to link our executable against.
 #
-TARGET_LINK_LIBRARIES( ${QUCS_NAME}  components diagrams dialogs paintings extsimkernels spicecomponents qt3_compat ${QT_LIBRARIES} )
+TARGET_LINK_LIBRARIES( ${QUCS_NAME}
+    components diagrams dialogs paintings extsimkernels spicecomponents qt3_compat
+    Qt${QT_VERSION_MAJOR}::Core  Qt${QT_VERSION_MAJOR}::Gui  Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Svg  Qt${QT_VERSION_MAJOR}::Xml  Qt${QT_VERSION_MAJOR}::PrintSupport )
 
 #
 # Prepare the installation
