@@ -21,9 +21,6 @@
  *
  */
 
-#include <stdlib.h>
-#include <iostream>
-using namespace std;
 #include <QLabel>
 #include <QGroupBox>
 #include <QTimer>
