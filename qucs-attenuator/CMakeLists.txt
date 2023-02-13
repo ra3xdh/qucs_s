@@ -15,9 +15,9 @@ set(PROJECT_COPYRIGHT_YEAR "2014")
 set(PROJECT_DOMAIN_FIRST "qucs")
 set(PROJECT_DOMAIN_SECOND "org")
 
-SET(CMAKE_BUILD_TYPE Debug)
 
 add_compile_definitions(HAVE_CONFIG_H)
+SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # configure the header config.h
 CONFIGURE_FILE (

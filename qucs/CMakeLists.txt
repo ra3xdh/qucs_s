@@ -53,6 +53,7 @@ endif()
 
 #
 add_compile_definitions(HAVE_CONFIG_H)
+SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 IF(WITH_QT6)
 FIND_PACKAGE( Qt6 COMPONENTS Core Gui Widgets Svg Xml PrintSupport REQUIRED)
