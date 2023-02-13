@@ -2012,7 +2012,11 @@ int QucsApp::addDocumentTab(QFrame* widget, const QString& title)
 // --------------------------------------------------------------
 void QucsApp::setDocumentTabChanged(int index, bool changed)
 {
+#ifdef __APPLE__
   ((QLabel *)DocumentTab->tabBar()->tabButton(index, QTabBar::RightSide))->setText(changed ? "\u26AB" : " ");
+#else
+  DocumentTab->setTabIcon(index,QPixmap((changed)? smallsave_xpm : empty_xpm));
+#endif
 }
 
 // --------------------------------------------------------------
