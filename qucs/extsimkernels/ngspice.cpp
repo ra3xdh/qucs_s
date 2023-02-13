@@ -44,7 +44,11 @@
 Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
     AbstractSpiceKernel(sch_, parent)
 {
-    simulator_cmd = QucsSettings.NgspiceExecutable;
+    if (QFileInfo(QucsSettings.NgspiceExecutable).isRelative()) {
+        simulator_cmd = QFileInfo(QucsSettings.BinDir + QucsSettings.NgspiceExecutable).absoluteFilePath();
+    } else {
+        simulator_cmd = QFileInfo(QucsSettings.NgspiceExecutable).absoluteFilePath();
+    }
     simulator_parameters = "";
 }
 

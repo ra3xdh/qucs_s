@@ -93,7 +93,6 @@ CONFIGURE_FILE (
 )
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
-INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR} )
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra ") # enable warning level
 IF(WITH_QT6)
@@ -286,7 +285,7 @@ INSTALL(TARGETS ${QUCS_NAME}
 # Install needed Qt plugins by copying directories from the qt installation
 # One can cull what gets copied by using 'REGEX "..." EXCLUDE'
 #
-IF(APPLE)
+IF(APPLE AND QT_PLUGINS_DIR)
   INSTALL(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION bin/${plugin_dest_dir}/plugins COMPONENT Runtime)
 ENDIF()
 #

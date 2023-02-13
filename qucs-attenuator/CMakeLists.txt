@@ -97,15 +97,15 @@ TARGET_LINK_LIBRARIES( ${QUCS_NAME}attenuator ${QT_LIBRARIES} )
 #
 SET(plugin_dest_dir bin)
 SET(qtconf_dest_dir bin)
-SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}")
+SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${QUCS_NAME}attenuator")
 IF(APPLE)
-  SET(plugin_dest_dir ${PROJECT_NAME}.app/Contents/MacOS)
-  SET(qtconf_dest_dir ${PROJECT_NAME}.app/Contents/Resources)
-  SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}.app")
+  SET(plugin_dest_dir ${QUCS_NAME}attenuator.app/Contents/MacOS)
+  SET(qtconf_dest_dir ${QUCS_NAME}attenuator.app/Contents/Resources)
+  SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${QUCS_NAME}attenuator.app")
 ENDIF(APPLE)
 
 IF(WIN32)
-  SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}.exe")
+  SET(APPS "${CMAKE_INSTALL_PREFIX}/bin/${QUCS_NAME}attenuator.exe")
 ENDIF(WIN32)
 
 #
@@ -122,7 +122,7 @@ INSTALL(TARGETS ${QUCS_NAME}attenuator
 # Install needed Qt plugins by copying directories from the qt installation
 # One can cull what gets copied by using 'REGEX "..." EXCLUDE'
 #
-IF(APPLE)
+IF(APPLE AND QT_PLUGINS_DIR)
   INSTALL(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION bin/${plugin_dest_dir}/plugins COMPONENT Runtime)
 ENDIF()
 #

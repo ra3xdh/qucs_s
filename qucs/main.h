@@ -106,6 +106,11 @@ struct tQucsSettings {
 
   bool hasDarkTheme;
   bool fullTraceName;
+
+  bool FileToolbar;
+  bool EditToolbar;
+  bool ViewToolbar;
+  bool WorkToolbar;
 };
 
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used

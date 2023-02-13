@@ -461,49 +461,33 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
   for(int i=0;i<PostedPaintEvents.size();i++)
   {
     PostedPaintEvent p = PostedPaintEvents[i];
-    QPainter painter2(viewport());
+    // QPainter painter2(viewport()); for if(p.PaintOnViewport)
 
     switch(p.pe)
     {
       case _NotRop:
-        if(p.PaintOnViewport)
-          painter2.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
-        else
-          Painter.Painter->setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+        Painter.Painter->setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
         break;
       case _Rect:
-        if(p.PaintOnViewport)
-          painter2.drawRect(p.x1, p.y1, p.x2, p.y2);
-        else
-          Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
+        Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
         break;
       case _Line:
-        if(p.PaintOnViewport)
-          painter2.drawLine(p.x1, p.y1, p.x2, p.y2);
-        else
-          Painter.drawLine(p.x1, p.y1, p.x2, p.y2);
+        Painter.drawLine(p.x1, p.y1, p.x2, p.y2);
         break;
       case _Ellipse:
-        if(p.PaintOnViewport)
-          painter2.drawEllipse(p.x1, p.y1, p.x2, p.y2);
-        else
-          Painter.drawEllipse(p.x1, p.y1, p.x2, p.y2);
+        Painter.drawEllipse(p.x1, p.y1, p.x2, p.y2);
         break;
       case _Arc:
-        if(p.PaintOnViewport)
-          painter2.drawArc(p.x1, p.y1, p.x2, p.y2, p.a, p.b);
-        else
-          Painter.drawArc(p.x1, p.y1, p.x2, p.y2, p.a, p.b);
+        Painter.drawArc(p.x1, p.y1, p.x2, p.y2, p.a, p.b);
         break;
       case _DotLine:
         Painter.Painter->setPen(Qt::DotLine);
         break;
       case _Translate:
-
-        painter2.translate(p.x1, p.y1);
+        ;//painter2.translate(p.x1, p.y1);
         break;
       case _Scale:
-        painter2.scale(p.x1,p.y1);
+        ;//painter2.scale(p.x1,p.y1);
         break;
     }
 

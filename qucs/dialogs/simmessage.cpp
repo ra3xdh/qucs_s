@@ -539,8 +539,13 @@ void SimMessage::startSimulator()
                   << "-o" << "asco_out";
       }
       else {
-        if (QucsSettings.QucsatorVar.isEmpty()) Program = QucsSettings.Qucsator;
-        else Program = QucsSettings.QucsatorVar;
+        if (QucsSettings.QucsatorVar.isEmpty()) {
+          if (QFileInfo(QucsSettings.Qucsator).isRelative()) {
+            Program = QFileInfo(QucsSettings.BinDir + QucsSettings.Qucsator).absoluteFilePath();
+          } else {
+            Program = QFileInfo(QucsSettings.Qucsator).absoluteFilePath();
+          }
+        } else Program = QucsSettings.QucsatorVar;
         Arguments << "-b" << "-g" << "-i"
                   << QucsSettings.QucsHomeDir.filePath("netlist.txt")
                   << "-o" << DataSet;

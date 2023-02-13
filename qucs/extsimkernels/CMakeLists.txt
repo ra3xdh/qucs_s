@@ -1,8 +1,7 @@
 # qucs/extsimkernels library
 # Classes and GUI for external simulation kernels (ngspice, xyce, etc.) interfacing
 
-INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR}
-                     ${CMAKE_CURRENT_SOURCE_DIR}
+INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR}
                      ${CMAKE_CURRENT_BINARY_DIR} )
 
 #INCLUDES = $(X11_INCLUDES) $(QT_INCLUDES) -I$(top_srcdir)/qucs

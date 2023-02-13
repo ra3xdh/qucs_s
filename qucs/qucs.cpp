@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "qlabel.h"
+#include "qtabbar.h"
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -174,12 +176,17 @@ QucsApp::QucsApp()
   initCursorMenu();
   Module::registerModules ();
 
+  fileToolbar->setVisible(QucsSettings.FileToolbar);
+  editToolbar->setVisible(QucsSettings.EditToolbar);
+  viewToolbar->setVisible(QucsSettings.ViewToolbar);
+  workToolbar->setVisible(QucsSettings.WorkToolbar);
+
   // instance of small text search dialog
   SearchDia = new SearchDialog(this);
 
   // creates a document called "untitled"
   Schematic *d = new Schematic(this, "");
-  int i = DocumentTab->addTab(d, QPixmap(empty_xpm), QObject::tr("untitled"));
+  int i = addDocumentTab(d);
   DocumentTab->setCurrentIndex(i);
 
   select->setChecked(true);  // switch on the 'select' action
@@ -227,15 +234,19 @@ QucsApp::~QucsApp()
  */
 void QucsApp::initView()
 {
-
-
   // set application icon
   // APPLE sets the QApplication icon with Info.plist
 #ifndef __APPLE__
   setWindowIcon (QPixmap(":/bitmaps/big.qucs.xpm"));
+#else
+  // setUnifiedTitleAndToolBarOnMac(true);
+  setStyleSheet("QToolButton { padding: 0px; }");
 #endif
 
   DocumentTab = new QTabWidget(this);
+#if __APPLE__
+  DocumentTab->setDocumentMode(true);
+#endif
   setCentralWidget(DocumentTab);
 
   connect(DocumentTab,
@@ -254,6 +265,9 @@ void QucsApp::initView()
   dock = new QDockWidget(tr("Main Dock"),this);
   TabView = new QTabWidget(dock);
   TabView->setTabPosition(QTabWidget::West);
+#if __APPLE__
+  TabView->setDocumentMode(true);
+#endif
 
   connect(dock, SIGNAL(visibilityChanged(bool)), SLOT(slotToggleDock(bool)));
 
@@ -289,6 +303,13 @@ void QucsApp::initView()
   ProjButtsLayout->addWidget(ProjOpen);
   ProjButtsLayout->addWidget(ProjDel);
   ProjButts->setLayout(ProjButtsLayout);
+
+#if __APPLE__
+  ProjGroupLayout->setContentsMargins(0, 0, 0, 0);
+  ProjGroupLayout->setSpacing(0);
+  ProjButtsLayout->setContentsMargins(5, 0, 5, 0);
+  ProjButtsLayout->setSpacing(5);
+#endif
 
   ProjGroupLayout->addWidget(ProjButts);
 
@@ -340,6 +361,13 @@ void QucsApp::initView()
   CompSearchLayout->addWidget(CompSearchClear);
   CompGroup->setLayout(CompGroupLayout);
 
+#if __APPLE__
+  CompGroupLayout->setContentsMargins(0, 0, 0, 0);
+  CompGroupLayout->setSpacing(0);
+  CompSearchLayout->setContentsMargins(5, 0, 5, 0);
+  CompSearchLayout->setSpacing(5);
+#endif
+
   TabView->addTab(CompGroup,tr("Components"));
   TabView->setTabToolTip(TabView->indexOf(CompGroup), tr("components and diagrams"));
   fillComboBox(true);
@@ -366,6 +394,13 @@ void QucsApp::initView()
   LibCompSearchLayout->addWidget(LibCompSearch);
   LibCompSearchLayout->addWidget(LibCompSearchClear);
   LibGroupLayout->addLayout(LibCompSearchLayout);
+
+#if __APPLE__
+  LibGroupLayout->setContentsMargins(0, 0, 0, 0);
+  LibGroupLayout->setSpacing(0);
+  LibCompSearchLayout->setContentsMargins(5, 0, 5, 0);
+  LibCompSearchLayout->setSpacing(5);
+#endif
 
   libTreeWidget = new QTreeWidget (this);
   libTreeWidget->setColumnCount (1);
@@ -404,6 +439,13 @@ void QucsApp::initView()
   dock->setAllowedAreas(Qt::LeftDockWidgetArea);
   this->addDockWidget(Qt::LeftDockWidgetArea, dock);
   TabView->setCurrentIndex(2);
+
+#if __APPLE__
+  QWidgetList widgets = TabView->findChildren<QWidget*>();
+  foreach(QWidget* widget, widgets) {
+    widget->setAttribute(Qt::WA_MacShowFocusRect, false);
+  }
+#endif
 
   // ----------------------------------------------------------
   // Octave docking window
@@ -1262,7 +1304,7 @@ void QucsApp::openProject(const QString& Path)
 
   if(!closeAllFiles()) return;   // close files and ask for saving them
   Schematic *d = new Schematic(this, "");
-  int i = DocumentTab->addTab(d, QPixmap(empty_xpm), QObject::tr("untitled"));
+  int i = addDocumentTab(d);
   DocumentTab->setCurrentIndex(i);
 
   view->drawn = false;
@@ -1335,7 +1377,7 @@ void QucsApp::slotMenuProjClose()
 
   if(!closeAllFiles()) return;   // close files and ask for saving them
   Schematic *d = new Schematic(this, "");
-  int i = DocumentTab->addTab(d, QPixmap(empty_xpm), QObject::tr("untitled"));
+  int i = addDocumentTab(d);
   DocumentTab->setCurrentIndex(i);
 
   view->drawn = false;
@@ -1434,7 +1476,7 @@ void QucsApp::slotFileNew()
   slotHideEdit(); // disable text edit of component property
 
   Schematic *d = new Schematic(this, "");
-  int i = DocumentTab->addTab(d, QPixmap(empty_xpm), QObject::tr("untitled"));
+  int i = addDocumentTab(d);
   DocumentTab->setCurrentIndex(i);
 
   statusBar()->showMessage(tr("Ready."));
@@ -1446,7 +1488,7 @@ void QucsApp::slotTextNew()
   statusBar()->showMessage(tr("Creating new text editor..."));
   slotHideEdit(); // disable text edit of component property
   TextDoc *d = new TextDoc(this, "");
-  int i = DocumentTab->addTab(d, QPixmap(empty_xpm), QObject::tr("untitled"));
+  int i = addDocumentTab(d);
   DocumentTab->setCurrentIndex(i);
 
   statusBar()->showMessage(tr("Ready."));
@@ -1473,12 +1515,12 @@ bool QucsApp::gotoPage(const QString& Name)
   if(Info.suffix() == "sch" || Info.suffix() == "dpl" ||
      Info.suffix() == "sym") {
     d = new Schematic(this, Name);
-    i = DocumentTab->addTab((Schematic *)d, QPixmap(empty_xpm), Info.fileName());
+    i = addDocumentTab((Schematic *)d, Info.fileName());
     is_sch = true;
   }
   else {
     d = new TextDoc(this, Name);
-    i = DocumentTab->addTab((TextDoc *)d, QPixmap(empty_xpm), Info.fileName());
+    i = addDocumentTab((TextDoc *)d, Info.fileName());
   }
   DocumentTab->setCurrentIndex(i);
 
@@ -1687,7 +1729,7 @@ void QucsApp::slotFileSaveAll()
     if(Doc->DocName.isEmpty())  // make document the current ?
       DocumentTab->setCurrentIndex(No-1);
     if (saveFile(Doc)) { // Hack! TODO: Maybe it's better to let slotFileChanged()
-        DocumentTab->setTabIcon(No-1,QPixmap(empty_xpm)); // know about Tab number?
+      setDocumentTabChanged(No-1, false); // know about Tab number?
     }
   }
 
@@ -1750,7 +1792,7 @@ void QucsApp::closeFile(int index)
 
     if(DocumentTab->count() < 1) { // if no document left, create an untitled
       Schematic *d = new Schematic(this, "");
-      DocumentTab->addTab(d, QPixmap(empty_xpm), QObject::tr("untitled")); 
+      addDocumentTab(d); 
       DocumentTab->setCurrentIndex(0);
     }
 
@@ -1953,6 +1995,29 @@ void QucsApp::updatePortNumber(QucsDoc *currDoc, int No)
   }
 }
 
+// --------------------------------------------------------------
+int QucsApp::addDocumentTab(QFrame* widget, const QString& title)
+{
+  int index = DocumentTab->addTab(widget, title.isEmpty() ? tr("untitled") : title);
+#if __APPLE__
+  widget->setFrameStyle(QFrame::NoFrame);
+#endif
+  QTabBar* tabBar = DocumentTab->tabBar();
+  QLabel* modifiedLabel = new QLabel(" ", tabBar);
+  modifiedLabel->setFixedWidth(10);
+  tabBar->setTabButton(index, QTabBar::RightSide, modifiedLabel);
+  return index;
+}
+
+// --------------------------------------------------------------
+void QucsApp::setDocumentTabChanged(int index, bool changed)
+{
+#ifdef __APPLE__
+  ((QLabel *)DocumentTab->tabBar()->tabButton(index, QTabBar::RightSide))->setText(changed ? "\u26AB" : " ");
+#else
+  DocumentTab->setTabIcon(index,QPixmap((changed)? smallsave_xpm : empty_xpm));
+#endif
+}
 
 // --------------------------------------------------------------
 // printCurrentDocument: call printerwriter to print document
@@ -1990,15 +2055,11 @@ void QucsApp::slotFileQuit()
   statusBar()->showMessage(tr("Exiting application..."));
   slotHideEdit(); // disable text edit of component property
 
-  int exit = QMessageBox::information(this,
-      tr("Quit..."), tr("Do you really want to quit?"),
-      tr("Yes"), tr("No"));
-
-  if(exit == 0)
-    if(closeAllFiles()) {
-      emit signalKillEmAll();   // kill all subprocesses
-      qApp->quit();
-    }
+  saveSettings();
+  if(closeAllFiles()) {
+    emit signalKillEmAll();   // kill all subprocesses
+    qApp->quit();
+  }
 
   statusBar()->showMessage(tr("Ready."));
 }
@@ -2007,14 +2068,7 @@ void QucsApp::slotFileQuit()
 // To get all close events.
 void QucsApp::closeEvent(QCloseEvent* Event)
 {
-    qDebug()<<"x"<<pos().x()<<" ,y"<<pos().y();
-    qDebug()<<"dx"<<size().width()<<" ,dy"<<size().height();
-    QucsSettings.x=pos().x();
-    QucsSettings.y=pos().y();
-    QucsSettings.dx=size().width();
-    QucsSettings.dy=size().height();
-    saveApplSettings();
-
+   saveSettings();
    if(closeAllFiles()) {
       emit signalKillEmAll();   // kill all subprocesses
       Event->accept();
@@ -2022,6 +2076,23 @@ void QucsApp::closeEvent(QCloseEvent* Event)
    }
    else
       Event->ignore();
+}
+
+//-----------------------------------------------------------------
+// Saves settings
+void QucsApp::saveSettings()
+{
+  qDebug()<<"x"<<pos().x()<<" ,y"<<pos().y();
+  qDebug()<<"dx"<<size().width()<<" ,dy"<<size().height();
+  QucsSettings.x=pos().x();
+  QucsSettings.y=pos().y();
+  QucsSettings.dx=size().width();
+  QucsSettings.dy=size().height();
+  QucsSettings.FileToolbar = fileToolbar->isVisible();
+  QucsSettings.EditToolbar = editToolbar->isVisible();
+  QucsSettings.ViewToolbar = viewToolbar->isVisible();
+  QucsSettings.WorkToolbar = workToolbar->isVisible();
+  saveApplSettings();
 }
 
 // --------------------------------------------------------------------
@@ -2235,11 +2306,11 @@ void QucsApp::slotChangePage(QString& DocName, QString& DataDisplay)
     if (ext != "vhd" && ext != "vhdl" && ext != "v" && ext != "va" &&
 	ext != "oct" && ext != "m") {
       d = new Schematic(this, Name);
-      i = DocumentTab->addTab((Schematic *)d, QPixmap(empty_xpm), DataDisplay);
+      i = addDocumentTab((Schematic *)d, DataDisplay);
     }
     else {
       d = new TextDoc(this, Name);
-      i = DocumentTab->addTab((TextDoc *)d, QPixmap(empty_xpm), DataDisplay);
+      i = addDocumentTab((TextDoc *)d, DataDisplay);
     }
     DocumentTab->setCurrentIndex(i);
 
@@ -2797,8 +2868,7 @@ void QucsApp::slotHideEdit()
 // set document tab icon to smallsave_xpm or empty_xpm
 void QucsApp::slotFileChanged(bool changed)
 {
-  DocumentTab->setTabIcon(DocumentTab->currentIndex(),
-      QPixmap((changed)? smallsave_xpm : empty_xpm));
+  setDocumentTabChanged(DocumentTab->currentIndex(), changed);
 }
 
 // -----------------------------------------------------------
