@@ -86,7 +86,7 @@ Element* MOSFET::info_depl(QString& Name, char* &BitmapFile, bool getNewOne)
 // -------------------------------------------------------
 void MOSFET::createSymbol()
 {
-  Lines.append(new qucs::Line(-14,-13,-14, 13,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-14,-13,-14, 13,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));
 
   Lines.append(new qucs::Line(-10,-11,  0,-11,QPen(Qt::darkBlue,2)));
@@ -95,8 +95,8 @@ void MOSFET::createSymbol()
   Lines.append(new qucs::Line(  0,  0,  0, 30,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-10,  0,  0,  0,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new qucs::Line(-10,-16,-10, -7,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(-10,  7,-10, 16,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-10,-16,-10, -7,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-10,  7,-10, 16,QPen(Qt::darkBlue,2)));
 
   if(Props.first()->Value == "nfet") {
     Lines.append(new qucs::Line( -9,  0, -4, -5,QPen(Qt::darkBlue,2)));
@@ -109,9 +109,9 @@ void MOSFET::createSymbol()
 
   if((Props.next()->Value.trimmed().at(0) == '-') ==
      (Props.first()->Value == "nfet"))
-    Lines.append(new qucs::Line(-10, -8,-10,  8,QPen(Qt::darkBlue,3)));
+    Lines.append(new qucs::Line(-10, -8,-10,  8,QPen(Qt::darkBlue,2)));
   else
-    Lines.append(new qucs::Line(-10, -4,-10,  4,QPen(Qt::darkBlue,3)));
+    Lines.append(new qucs::Line(-10, -4,-10,  4,QPen(Qt::darkBlue,2)));
   
   Ports.append(new Port(-30,  0));
   Ports.append(new Port(  0,-30));

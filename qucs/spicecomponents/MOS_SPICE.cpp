@@ -179,24 +179,24 @@ QString MOS_SPICE::netlist()
 
 void MOS_SPICE::createSymbol()
 {
-    Lines.append(new qucs::Line(-14,-13,-14, 13,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-14,-13,-14, 13,QPen(Qt::darkRed,2)));
 
-    Lines.append(new qucs::Line(-30,  0,-20,  0,QPen(Qt::darkBlue,3)));
-    Lines.append(new qucs::Line(-20,  0,-14,  0,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-30,  0,-20,  0,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-20,  0,-14,  0,QPen(Qt::darkRed,2)));
 
-    Lines.append(new qucs::Line(-10,-11,  0,-11,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-10,-11,  0,-11,QPen(Qt::darkRed,2)));
 
-    Lines.append(new qucs::Line(  0,-11,  0,-20,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
+    Lines.append(new qucs::Line(  0,-11,  0,-20,QPen(Qt::darkRed,2)));
+    Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,2)));
 
-    Lines.append(new qucs::Line(-10, 11,  0, 11,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line(  0, 11,  0, 20,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));
+    Lines.append(new qucs::Line(-10, 11,  0, 11,QPen(Qt::darkRed,2)));
+    Lines.append(new qucs::Line(  0, 11,  0, 20,QPen(Qt::darkRed,2)));
+    Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,2)));
 
-    Lines.append(new qucs::Line(-10,-16,-10, -7,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line(-10,  7,-10, 16,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-10,-16,-10, -7,QPen(Qt::darkRed,2)));
+    Lines.append(new qucs::Line(-10,  7,-10, 16,QPen(Qt::darkRed,2)));
 
-    Lines.append(new qucs::Line(-10, -8,-10,  8,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-10, -8,-10,  8,QPen(Qt::darkRed,2)));
     Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkRed,2)));
 
     Ports.append(new Port(  0,-30)); //D
@@ -204,19 +204,19 @@ void MOS_SPICE::createSymbol()
     Ports.append(new Port(  0, 30)); //S
     if (Props.at(1)->Value=="4") {
         Ports.append(new Port( 20,  0)); //B
-        Lines.append(new qucs::Line( 10,  0, 20,  0,QPen(Qt::darkBlue,3)));
-        Lines.append(new qucs::Line(-10,  0, 10,  0,QPen(Qt::darkRed,3)));
+        Lines.append(new qucs::Line( 10,  0, 20,  0,QPen(Qt::darkBlue,2)));
+        Lines.append(new qucs::Line(-10,  0, 10,  0,QPen(Qt::darkRed,2)));
     } else {
-        Lines.append(new qucs::Line(-10,  0, 0,  0,QPen(Qt::darkRed,3)));
-        Lines.append(new qucs::Line(0,  0, 0,  10,QPen(Qt::darkRed,3)));
+        Lines.append(new qucs::Line(-10,  0, 0,  0,QPen(Qt::darkRed,2)));
+        Lines.append(new qucs::Line(0,  0, 0,  10,QPen(Qt::darkRed,2)));
     }
 
     if (Props.at(2)->Value=="nmos") {
-        Lines.append(new qucs::Line( -9,  0, -4, -5,QPen(Qt::darkRed,3)));
-        Lines.append(new qucs::Line( -9,  0, -4,  5,QPen(Qt::darkRed,3)));
+        Lines.append(new qucs::Line( -9,  0, -4, -5,QPen(Qt::darkRed,2)));
+        Lines.append(new qucs::Line( -9,  0, -4,  5,QPen(Qt::darkRed,2)));
     } else {
-        Lines.append(new qucs::Line( -1,  0, -6, -5,QPen(Qt::darkRed,3)));
-        Lines.append(new qucs::Line( -1,  0, -6,  5,QPen(Qt::darkRed,3)));
+        Lines.append(new qucs::Line( -1,  0, -6, -5,QPen(Qt::darkRed,2)));
+        Lines.append(new qucs::Line( -1,  0, -6,  5,QPen(Qt::darkRed,2)));
     }
 }
 

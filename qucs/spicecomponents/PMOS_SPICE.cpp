@@ -28,30 +28,30 @@ PMOS_SPICE::PMOS_SPICE()
 {
     Description = QObject::tr("M(PMOS) MOS:\nMultiple line ngspice or Xyce M model specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
 
-  Lines.append(new qucs::Line(-14,-13,-14, 13,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(-14,-13,-14, 13,QPen(Qt::darkRed,2)));
 
-  Lines.append(new qucs::Line(-30,  0,-20,  0,QPen(Qt::darkBlue,3)));
-  Lines.append(new qucs::Line(-20,  0,-14,  0,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(-30,  0,-20,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new qucs::Line(-20,  0,-14,  0,QPen(Qt::darkRed,2)));
   
-  Lines.append(new qucs::Line(-10,-11,  0,-11,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(-10,-11,  0,-11,QPen(Qt::darkRed,2)));
 
-  Lines.append(new qucs::Line(  0,-11,  0,-20,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(  0,-11,  0,-20,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line(  0,-20,  0,-30,QPen(Qt::darkBlue,2)));
 
-  Lines.append(new qucs::Line(-10, 11,  0, 11,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line(  0, 11,  0, 20,QPen(Qt::darkRed,3))); 
-  Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-10, 11,  0, 11,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line(  0, 11,  0, 20,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line(  0, 20,  0, 30,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new qucs::Line(-10,  0, 10,  0,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line( 10,  0, 20,  0,QPen(Qt::darkBlue,3)));
+  Lines.append(new qucs::Line(-10,  0, 10,  0,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line( 10,  0, 20,  0,QPen(Qt::darkBlue,2)));
   
-  Lines.append(new qucs::Line(-10,-16,-10, -7,QPen(Qt::darkRed,3)));
-  Lines.append(new qucs::Line(-10,  7,-10, 16,QPen(Qt::darkRed,3)));
+  Lines.append(new qucs::Line(-10,-16,-10, -7,QPen(Qt::darkRed,2)));
+  Lines.append(new qucs::Line(-10,  7,-10, 16,QPen(Qt::darkRed,2)));
 
-    Lines.append(new qucs::Line( -1,  0, -6, -5,QPen(Qt::darkRed,3)));
-    Lines.append(new qucs::Line( -1,  0, -6,  5,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line( -1,  0, -6, -5,QPen(Qt::darkRed,2)));
+    Lines.append(new qucs::Line( -1,  0, -6,  5,QPen(Qt::darkRed,2)));
   
-    Lines.append(new qucs::Line(-10, -8,-10,  8,QPen(Qt::darkRed,3)));
+    Lines.append(new qucs::Line(-10, -8,-10,  8,QPen(Qt::darkRed,2)));
     Lines.append(new qucs::Line( -4, 24,  4, 20,QPen(Qt::darkRed,2)));
     
     //Texts.append(new Text(30,12,"PMOS",Qt::darkRed,10.0,0.0,-1.0));
