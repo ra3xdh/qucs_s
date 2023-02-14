@@ -242,7 +242,7 @@ TARGET_LINK_LIBRARIES( ${QUCS_NAME}
     components diagrams dialogs paintings extsimkernels spicecomponents qt3_compat
     Qt${QT_VERSION_MAJOR}::Core  Qt${QT_VERSION_MAJOR}::Gui  Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Svg  Qt${QT_VERSION_MAJOR}::Xml  Qt${QT_VERSION_MAJOR}::PrintSupport )
-
+SET_TARGET_PROPERTIES(${QUCS_NAME} PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 #
 # Prepare the installation
 #

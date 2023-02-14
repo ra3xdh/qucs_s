@@ -28,15 +28,24 @@ CONFIGURE_FILE (
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Gui Widgets Svg SvgWidgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets Svg SvgWidgets)
-include_directories(
-      ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
-      ${Qt${QT_VERSION_MAJOR}Gui_INCLUDE_DIRS}
-      ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
-      ${Qt${QT_VERSION_MAJOR}Svg_INCLUDE_DIRS}
-      ${Qt${QT_VERSION_MAJOR}SvgWidgets_INCLUDE_DIRS}
-      )
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
+if(QT_VERSION_MAJOR EQUAL 6)
+    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core  Widgets Svg SvgWidgets)
+    include_directories(
+        ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
+        ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
+        ${Qt${QT_VERSION_MAJOR}Svg_INCLUDE_DIRS}
+        ${Qt${QT_VERSION_MAJOR}SvgWidgets_INCLUDE_DIRS}
+        )
+else()
+    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core  Widgets Svg)
+    include_directories(
+        ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
+        ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
+        ${Qt${QT_VERSION_MAJOR}Svg_INCLUDE_DIRS}
+        )
+endif()
+
 
 
 IF(QT_VERSION_MAJOR EQUAL 6)
@@ -102,8 +111,15 @@ ADD_EXECUTABLE(${QUCS_NAME}powercombining MACOSX_BUNDLE WIN32
   ${QUCS-POWCOMB_MOC_SRCS}
   ${RESOURCES_SRCS} )
 
-TARGET_LINK_LIBRARIES(${QUCS_NAME}powercombining Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui
-    Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Svg Qt${QT_VERSION_MAJOR}::SvgWidgets)
+if(QT_VERSION_MAJOR EQUAL 6)
+    TARGET_LINK_LIBRARIES(${QUCS_NAME}powercombining Qt${QT_VERSION_MAJOR}::Core
+        Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Svg Qt${QT_VERSION_MAJOR}::SvgWidgets)
+else()
+    TARGET_LINK_LIBRARIES(${QUCS_NAME}powercombining Qt${QT_VERSION_MAJOR}::Core
+        Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Svg )
+endif()
+
+SET_TARGET_PROPERTIES(${QUCS_NAME}powercombining PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 
 INSTALL(TARGETS ${QUCS_NAME}powercombining
     BUNDLE DESTINATION bin COMPONENT Runtime
