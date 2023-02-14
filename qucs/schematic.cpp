@@ -463,6 +463,7 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
     PostedPaintEvent p = PostedPaintEvents[i];
     // QPainter painter2(viewport()); for if(p.PaintOnViewport)
 
+    Painter.Painter->setPen(Qt::black);
     switch(p.pe)
     {
       case _NotRop:
