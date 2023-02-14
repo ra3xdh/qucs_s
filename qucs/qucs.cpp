@@ -2001,11 +2001,11 @@ int QucsApp::addDocumentTab(QFrame* widget, const QString& title)
   int index = DocumentTab->addTab(widget, title.isEmpty() ? tr("untitled") : title);
 #if __APPLE__
   widget->setFrameStyle(QFrame::NoFrame);
-#endif
   QTabBar* tabBar = DocumentTab->tabBar();
   QLabel* modifiedLabel = new QLabel(" ", tabBar);
   modifiedLabel->setFixedWidth(10);
   tabBar->setTabButton(index, QTabBar::RightSide, modifiedLabel);
+#endif
   return index;
 }
 
