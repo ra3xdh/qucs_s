@@ -31,8 +31,10 @@ endif()
 
 message(STATUS "${PROJECT_NAME} ${CMAKE_INSTALL_PREFIX} ${qucs-suite_BINARY_DIR}" )
 
+set(QT_DEFAULT_MAJOR_VERSION 6)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Gui Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets LinguistTools)
+message(STATUS "QT Major Version: " ${QT_VERSION_MAJOR})
 
 add_definitions(${QT_DEFINITIONS})
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
