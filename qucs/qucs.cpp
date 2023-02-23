@@ -1524,6 +1524,14 @@ bool QucsApp::gotoPage(const QString& Name)
   }
   DocumentTab->setCurrentIndex(i);
 
+  if (!Info.isWritable()) {
+      QMessageBox::warning(this,tr("Open file"),
+                           tr("Document opened in read-only mode! "
+                           "Simulation will not work. Please copy the document "
+                           "to the directory where you have write permission!"));
+      statusBar()->showMessage("Read only");
+  }
+
   if(!d->load()) {    // load document if possible
     delete d;
     DocumentTab->setCurrentIndex(No);
