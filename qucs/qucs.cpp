@@ -3047,6 +3047,14 @@ void QucsApp::slotSimulateWithSpice()
     if (!isTextDocument(DocumentTab->currentWidget())) {
         Schematic *sch = (Schematic*)DocumentTab->currentWidget();
 
+        if (sch->DocName.isEmpty()) {
+            auto biasState = sch->showBias;
+            QMessageBox::warning(this,tr("Simulate schematic"),
+                    tr("Schematic not saved! Simulation of unsaved schematic "
+                       "not possible. Save schematic first!"));
+            slotFileSaveAs();
+            sch->showBias = biasState;
+        }
         ExternSimDialog *SimDlg = new ExternSimDialog(sch);
         connect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
         connect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
