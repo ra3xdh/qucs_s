@@ -180,6 +180,7 @@ private slots:
   void slotFileChanged(bool);
   void slotSimSettings();
   void slotSimulateWithSpice();
+  void slotSaveNetlist();
   void slotAfterSpiceSimulation();
   void slotBuildVAModule();
   void slotBuildXSPICEIfs(int mode = 0);
@@ -212,7 +213,7 @@ public:
           *fileSaveAll, *fileClose, *fileExamples, *fileSettings, *filePrint, *fileQuit,
           *projNew, *projOpen, *projDel, *projClose, *applSettings, *refreshSchPath,
           *editCut, *editCopy, *magAll, *magOne, *magMinus, *filePrintFit,
-          *symEdit, *intoH, *popH, *simulate, *dpl_sch, *undo, *redo, *dcbias;
+          *symEdit, *intoH, *popH, *simulate, *save_netlist, *dpl_sch, *undo, *redo, *dcbias;
 
   QAction *exportAsImage;
 

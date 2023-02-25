@@ -3069,6 +3069,21 @@ void QucsApp::slotSimulateWithSpice()
     }
 }
 
+void QucsApp::slotSaveNetlist()
+{
+    if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+        QMessageBox::information(this,tr("Save netlist"),
+                                 tr("This action is supported only for SPICE simulators!"));
+        return;
+    }
+    if (!isTextDocument(DocumentTab->currentWidget())) {
+        Schematic *sch = (Schematic*)DocumentTab->currentWidget();
+        ExternSimDialog *SimDlg = new ExternSimDialog(sch,this,true);
+        SimDlg->slotSaveNetlist();
+        delete SimDlg;
+    }
+}
+
 void QucsApp::slotAfterSpiceSimulation()
 {
     Schematic *sch = (Schematic*)DocumentTab->currentWidget();
