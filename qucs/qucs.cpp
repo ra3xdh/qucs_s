@@ -349,6 +349,11 @@ void QucsApp::initView()
   CompComps->setViewMode(QListView::IconMode);
   CompComps->setGridSize(QSize(110,90));
   CompComps->setAcceptDrops(false);
+  
+  #ifdef _MSC_VER
+    CompComps->setDragEnabled(false);
+  #endif
+
   CompSearch = new QLineEdit(this);
   CompSearch->setPlaceholderText(tr("Search Components"));
   CompSearchClear = new QPushButton(tr("Clear"));
