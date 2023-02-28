@@ -1,6 +1,6 @@
 PROJECT(qucsactivefilter CXX C)
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
-cmake_policy(VERSION 3.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.18)
+cmake_policy(VERSION 3.18)
 
 SET(QUCS_NAME "qucs-s")
 
@@ -20,22 +20,6 @@ set(PROJECT_DOMAIN_SECOND "org")
 add_compile_definitions(HAVE_CONFIG_H)
 SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-IF(WITH_QT6)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-ELSE()
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-ENDIF()
-
-if (MSVC)
-
-else()
-    # additional warnings
-    add_compile_options(-Wall -Wextra)
-endif()
-
-
 #configure the header config.h
 CONFIGURE_FILE (
     "${PROJECT_SOURCE_DIR}/../config.h.cmake"
@@ -44,30 +28,41 @@ CONFIGURE_FILE (
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
-IF(WITH_QT6)
-	FIND_PACKAGE( Qt6 COMPONENTS Core Gui Widgets Svg SvgWidgets REQUIRED)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 
-INCLUDE_DIRECTORIES(
-      ${Qt6Core_INCLUDE_DIRS}
-      ${Qt6Widgets_INCLUDE_DIRS}
-      ${Qt6Svg_INCLUDE_DIRS}
-      ${Qt6SvgWidgets_INCLUDE_DIRS}
+if(QT_VERSION_MAJOR EQUAL 6)
+  find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core  Widgets Svg SvgWidgets)
+  include_directories(
+      ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
+      ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
+      ${Qt${QT_VERSION_MAJOR}Svg_INCLUDE_DIRS}
+      ${Qt${QT_VERSION_MAJOR}SvgWidgets_INCLUDE_DIRS}
       )
-
-# bug, the find package does not seem to set the QT_LIBRARIES, do it manually
-SET(QT_LIBRARIES  ${Qt6Core_LIBRARIES} ${Qt6Widgets_LIBRARIES} ${Qt6Svg_LIBRARIES} ${Qt6SvgWidgets_LIBRARIES}  )
-ELSE(WITH_QT6)
-FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets Svg REQUIRED)
-
-INCLUDE_DIRECTORIES(
-      ${Qt5Core_INCLUDE_DIRS}
-      ${Qt5Widgets_INCLUDE_DIRS}
-      ${Qt5Svg_INCLUDE_DIRS}
+else()
+  find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core  Widgets Svg)
+  include_directories(
+      ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
+      ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
+      ${Qt${QT_VERSION_MAJOR}Svg_INCLUDE_DIRS}
       )
+endif()
 
-# bug, the find package does not seem to set the QT_LIBRARIES, do it manually
-SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES}  )
-ENDIF(WITH_QT6)	
+
+
+IF(QT_VERSION_MAJOR EQUAL 6)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ELSE()
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ENDIF()
+
+if (MSVC)
+  add_compile_options(/Zc:__cplusplus /permissive- /MP /Zc:preprocessor)
+else()
+  # additional warnings
+  add_compile_options(-Wall -Wextra)
+endif()
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
@@ -90,13 +85,13 @@ helpdialog.h
 )
 
 SET(RESOURCES qucsactivefilter.qrc)
-IF(WITH_QT6)
+IF(QT_VERSION_MAJOR EQUAL 6)
 QT6_WRAP_CPP(QUCS-ACTIVE-FILTER_MOC_SRCS ${QUCS-ACTIVE-FILTER_MOC_HDRS})
 QT6_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
-ELSE(WITH_QT6)
+ELSE()
 QT5_WRAP_CPP(QUCS-ACTIVE-FILTER_MOC_SRCS ${QUCS-ACTIVE-FILTER_MOC_HDRS})
 QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
-ENDIF(WITH_QT6)
+ENDIF()
 
 
 
@@ -123,7 +118,17 @@ ADD_EXECUTABLE(${QUCS_NAME}activefilter MACOSX_BUNDLE WIN32
   ${QUCS-ACTIVE-FILTER_MOC_SRCS}
   ${RESOURCES_SRCS} )
 
-TARGET_LINK_LIBRARIES(${QUCS_NAME}activefilter ${QT_LIBRARIES})
+
+if(QT_VERSION_MAJOR EQUAL 6)
+    TARGET_LINK_LIBRARIES(${QUCS_NAME}activefilter Qt${QT_VERSION_MAJOR}::Core
+        Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Svg Qt${QT_VERSION_MAJOR}::SvgWidgets)
+else()
+    TARGET_LINK_LIBRARIES(${QUCS_NAME}activefilter Qt${QT_VERSION_MAJOR}::Core
+        Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Svg )
+endif()
+
+
+SET_TARGET_PROPERTIES(${QUCS_NAME}activefilter PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 
 INSTALL(TARGETS ${QUCS_NAME}activefilter
     BUNDLE DESTINATION bin COMPONENT Runtime

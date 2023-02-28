@@ -1,6 +1,6 @@
 PROJECT(qucsfilter CXX C)
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
-cmake_policy(VERSION 3.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.18)
+cmake_policy(VERSION 3.18)
 
 SET(QUCS_NAME "qucs-s")
 
@@ -28,8 +28,16 @@ CONFIGURE_FILE (
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Gui Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets)
+include_directories(
+      ${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}
+      ${Qt${QT_VERSION_MAJOR}Gui_INCLUDE_DIRS}
+      ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
+      )
 
-IF(WITH_QT6)
+
+IF(QT_VERSION_MAJOR EQUAL 6)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 ELSE()
@@ -38,30 +46,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 ENDIF()
 
 if (MSVC)
-
+  add_compile_options(/Zc:__cplusplus /permissive- /MP /Zc:preprocessor)
 else()
-    # additional warnings
-    add_compile_options(-Wall -Wextra)
+  # additional warnings
+  add_compile_options(-Wall -Wextra)
 endif()
-
-
-IF(WITH_QT6)
-FIND_PACKAGE( Qt6 COMPONENTS Core Gui Widgets REQUIRED)
-INCLUDE_DIRECTORIES(
-      ${Qt6Core_INCLUDE_DIRS}
-      ${Qt6Widgets_INCLUDE_DIRS}
-      )
-# bug, the find package does not seem to set the QT_LIBRARIES, do it manually
-SET(QT_LIBRARIES  ${Qt6Core_LIBRARIES} ${Qt6Widgets_LIBRARIES}  )
-ELSE(WITH_QT6)
-FIND_PACKAGE( Qt5 COMPONENTS Core Gui Widgets REQUIRED)
-INCLUDE_DIRECTORIES(
-      ${Qt5Core_INCLUDE_DIRS}
-      ${Qt5Widgets_INCLUDE_DIRS}
-      )
-# bug, the find package does not seem to set the QT_LIBRARIES, do it manually
-SET(QT_LIBRARIES  ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES}  )
-ENDIF(WITH_QT6)
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
@@ -105,13 +94,13 @@ SET(QUCS-FILTER_MOC_HDRS
 
 SET(RESOURCES qucsfilter.qrc)
 
-IF(WITH_QT6)
+if(QT_VERSION_MAJOR EQUAL 6)
 QT6_WRAP_CPP(QUCS-FILTER_MOC_SRCS ${QUCS-FILTER_MOC_HDRS})
 QT6_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
-ELSE(WITH_QT6)
+else()
 QT5_WRAP_CPP(QUCS-FILTER_MOC_SRCS ${QUCS-FILTER_MOC_HDRS})
 QT5_ADD_RESOURCES(RESOURCES_SRCS ${RESOURCES})
-ENDIF(WITH_QT6)
+endif()
 
 IF(APPLE)
   # set information on Info.plist file
@@ -137,7 +126,8 @@ ADD_EXECUTABLE(${QUCS_NAME}filter MACOSX_BUNDLE WIN32
   ${QUCS-FILTER_MOC_SRCS}
   ${RESOURCES_SRCS} )
 
-TARGET_LINK_LIBRARIES(${QUCS_NAME}filter ${QT_LIBRARIES})
+TARGET_LINK_LIBRARIES(${QUCS_NAME}filter Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Widgets)
+SET_TARGET_PROPERTIES(${QUCS_NAME}filter PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 
 INSTALL(TARGETS ${QUCS_NAME}filter
     BUNDLE DESTINATION bin COMPONENT Runtime

@@ -794,7 +794,7 @@ QString QucsPowerCombiningTool::calcChebyLines(double RL, double Z0, double gamm
     //double sec_theta_m = cosh((1/(1.*N))*acosh(fabs(log(RL/Z0)/(2*gamma))) );
     (fabs(log(RL/Z0)/(2*gamma)) < 1) ? sec_theta_m = 0 : sec_theta_m = cosh((1/(1.*N))*acosh(fabs(log(RL/Z0)/(2*gamma))) );
 
-    double w[N];
+    double w[7]; // for msvc predefined size.
 
     switch(N)//The weights are calculated by equating the reflection coeffient formula to the N-th Chebyshev polinomial
     {
@@ -885,7 +885,9 @@ int QucsPowerCombiningTool::MultistageWilkinson(double Z0, double Freq, int NSta
     double lambda = SPEED_OF_LIGHT/(Freq);
     double lambda4=lambda/4, W;
     double alpha;
-    double C[NStages], L[NStages];
+
+    auto C  = new double[NStages];
+    auto L = new double[NStages];
     if (LumpedElements)//CLC pi equivalent calculation
     {
         double w = 2*M_PI*Freq;
@@ -896,7 +898,6 @@ int QucsPowerCombiningTool::MultistageWilkinson(double Z0, double Freq, int NSta
             L[j] = Zi/w;
             C[j] = 1./(L[j]*w*w);
         }
-
     }
 
 

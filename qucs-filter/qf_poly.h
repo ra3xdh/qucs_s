@@ -54,8 +54,8 @@ class qf_poly
 
  public:
   qf_poly ();
-  qf_poly (unsigned);		// id with d°
-  qf_poly (qf_double_t, qf_double_t, qf_double_t, unsigned); // Up to d°=2    
+  qf_poly (unsigned);		// id with dÂ°
+  qf_poly (qf_double_t, qf_double_t, qf_double_t, unsigned); // Up to dÂ°=2    
   qf_poly (int, const qf_double_t[]);	// Id, with inst.
   qf_poly (int, qf_double_t, const qf_double_t[]);
   qf_poly (const qf_poly &);	// Copy

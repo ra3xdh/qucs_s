@@ -308,7 +308,7 @@ void qf_cauer::xfer (void) {
 
 #ifdef _QF_CAUER_DEBUG
   std::cerr << "Computing filter of order " << ord << " with ";
-  std::cerr << "rho = " << rho << " and theta = " << ASIND (th) << "°\n";
+  std::cerr << "rho = " << rho << " and theta = " << ASIND (th) << "Â°\n";
   std::cerr << "k = " << k << '\n';
 #endif
 
