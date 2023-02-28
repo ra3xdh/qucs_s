@@ -23,7 +23,7 @@
 #include "simsettingsdialog.h"
 #include "main.h"
 
-ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
+ExternSimDialog::ExternSimDialog(Schematic *sch, QWidget *parent, bool netlist_mode) :
     QDialog(parent)
 {
     Sch = sch;
@@ -85,7 +85,8 @@ ExternSimDialog::ExternSimDialog(Schematic *sch,QWidget *parent) :
     this->setWindowTitle(tr("Simulate with external simulator"));
 
     slotSetSimulator();
-    buttonSimulate->click(); // Start simulation
+    if (!netlist_mode)
+        buttonSimulate->click(); // Start simulation
 
 }
 

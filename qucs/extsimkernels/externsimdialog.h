@@ -47,7 +47,8 @@ private:
     Xyce *xyce;
 
 public:
-    explicit ExternSimDialog(Schematic *sch,QWidget *parent = 0);
+    explicit ExternSimDialog(Schematic *sch, QWidget *parent = 0,
+                             bool netlist_mode = false);
     ~ExternSimDialog();
 
     bool wasSimulated;
@@ -61,6 +62,7 @@ signals:
     void success();
     
 public slots:
+    void slotSaveNetlist();
 
 private slots:
     void slotProcessOutput();
@@ -70,7 +72,6 @@ private slots:
     void slotStart();
     void slotStop();
     void slotSetSimulator();
-    void slotSaveNetlist();
     
 };
 

@@ -549,6 +549,11 @@ void QucsApp::initActions()
   dcbias->setWhatsThis(tr("Calculate DC bias\n\nCalculates DC bias and shows it"));
   connect(dcbias, SIGNAL(triggered()), SLOT(slotDCbias()));
 
+  save_netlist = new QAction(tr("Save netlist"), this);
+  save_netlist->setStatusTip(tr("Save netlist"));
+  save_netlist->setWhatsThis(tr("Save netlist to file"));
+  connect(save_netlist, SIGNAL(triggered()), SLOT(slotSaveNetlist()));
+
   setMarker = new QAction(QIcon((":/bitmaps/marker.png")),	tr("Set Marker on Graph"), this);
   setMarker->setShortcut(Qt::CTRL+Qt::Key_B);
   setMarker->setStatusTip(tr("Sets a marker on a diagram's graph"));
@@ -759,6 +764,7 @@ void QucsApp::initMenuBar()
   simMenu->addAction(dcbias);
   simMenu->addAction(showMsg);
   simMenu->addAction(showNet);
+  simMenu->addAction(save_netlist);
   simMenu->addAction(simSettings);
 
 

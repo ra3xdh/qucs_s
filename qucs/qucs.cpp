@@ -1524,6 +1524,14 @@ bool QucsApp::gotoPage(const QString& Name)
   }
   DocumentTab->setCurrentIndex(i);
 
+  if (!Info.isWritable()) {
+      QMessageBox::warning(this,tr("Open file"),
+                           tr("Document opened in read-only mode! "
+                           "Simulation will not work. Please copy the document "
+                           "to the directory where you have write permission!"));
+      statusBar()->showMessage("Read only");
+  }
+
   if(!d->load()) {    // load document if possible
     delete d;
     DocumentTab->setCurrentIndex(No);
@@ -3039,6 +3047,14 @@ void QucsApp::slotSimulateWithSpice()
     if (!isTextDocument(DocumentTab->currentWidget())) {
         Schematic *sch = (Schematic*)DocumentTab->currentWidget();
 
+        if (sch->DocName.isEmpty()) {
+            auto biasState = sch->showBias;
+            QMessageBox::warning(this,tr("Simulate schematic"),
+                    tr("Schematic not saved! Simulation of unsaved schematic "
+                       "not possible. Save schematic first!"));
+            slotFileSaveAs();
+            sch->showBias = biasState;
+        }
         ExternSimDialog *SimDlg = new ExternSimDialog(sch);
         connect(SimDlg,SIGNAL(simulated()),this,SLOT(slotAfterSpiceSimulation()));
         connect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
@@ -3049,6 +3065,21 @@ void QucsApp::slotSimulateWithSpice()
         disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
         if (SimDlg->wasSimulated && sch->SimOpenDpl)
             if (sch->showBias < 1) slotChangePage(sch->DocName,sch->DataDisplay);
+        delete SimDlg;
+    }
+}
+
+void QucsApp::slotSaveNetlist()
+{
+    if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+        QMessageBox::information(this,tr("Save netlist"),
+                                 tr("This action is supported only for SPICE simulators!"));
+        return;
+    }
+    if (!isTextDocument(DocumentTab->currentWidget())) {
+        Schematic *sch = (Schematic*)DocumentTab->currentWidget();
+        ExternSimDialog *SimDlg = new ExternSimDialog(sch,this,true);
+        SimDlg->slotSaveNetlist();
         delete SimDlg;
     }
 }
