@@ -27,12 +27,20 @@
 #include <QTreeView>
 #include <QString>
 
-#define APPEND_ROW(parent, data) \
+/*#define APPEND_ROW(parent, data) \
 ({ \
   QList<QStandardItem*> c; \
   c.append(new QStandardItem(data)); \
   parent->appendRow(c); \
-})
+})*/
+
+
+#define APPEND_ROW(parent, data) \
+if(1){ \
+    QList<QStandardItem*> c; \
+    c.append(new QStandardItem(data)); \
+    parent->appendRow(c); \
+}
 
 class QStandardItemModel;
 
