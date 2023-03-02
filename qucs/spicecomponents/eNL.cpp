@@ -85,14 +85,14 @@ QString eNL::spice_netlist(bool)
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
+        s += " "+ nam+" ";   // node names
     }
     QString E = Props.at(0)->Value;
     QString Line_2 = Props.at(1)->Value; 
     QString Line_3 = Props.at(2)->Value;
     QString Line_4 = Props.at(3)->Value;
     QString Line_5 = Props.at(4)->Value;
- 
+
     
     if(  E.length()  > 0)        s += QString("%1").arg(E);
     if(  Line_2.length() > 0 )   s += QString("\n%1").arg(Line_2);
