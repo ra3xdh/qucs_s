@@ -20,6 +20,10 @@
 *
 *
 */
+
+#include "node.h"
+#include "extsimkernels/spicecompat.h"
+
 #include "indq.h"
 
 
@@ -57,6 +61,7 @@ IndQ::IndQ()
   tx = x1+4;
   ty = y2+4;
   Model = "INDQ";
+  SpiceModel = "L";
   Name  = "INDQ";
 
   Props.append(new Property("L", "1 nH", true,
@@ -87,4 +92,37 @@ Element* IndQ::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new IndQ();
   return 0;
+}
+
+QString IndQ::spice_netlist(bool isXyce)
+{
+    Q_UNUSED(isXyce);
+    QString s;
+    QString pin1 = Ports.at(0)->Connection->Name;
+    QString pin2 = Ports.at(1)->Connection->Name;
+    QString pin_int = QString("_net_%1").arg(Name);
+    QString Lname = "L" + Name;
+    QString Rname = "R" + Name;
+
+    QString L = getProperty("L")->Value;
+    L = spicecompat::normalize_value(L);
+    QString Q = getProperty("Q")->Value;
+    QString f0 = getProperty("f")->Value;
+    f0 = spicecompat::normalize_value(f0);
+
+    QString res_eq;
+    QString double_pi = "8*atan(1)";
+    QString mode = getProperty("Mode")->Value;
+    if (mode == "Constant") {
+        res_eq = QString("%1*(%2)*hertz/(%3)").arg(double_pi).arg(L).arg(Q);
+    } else if (mode == "Linear") {
+        res_eq = QString("%1*(%2)*(%3)/(%4)").arg(double_pi).arg(L).arg(f0).arg(Q);
+    } else if (mode == "SquareRoot") {
+        res_eq = QString("%1*(%2)*sqrt(hertz*(%3))/(%4)").arg(double_pi).arg(L).arg(f0).arg(Q);
+    }
+
+    s = QString("%1 %2 %3 L='(%4)'\n").arg(Lname).arg(pin1).arg(pin_int).arg(L);
+    s += QString("%1 %2 %3 R='%4'\n").arg(Rname).arg(pin_int).arg(pin2).arg(res_eq);
+
+    return s;
 }

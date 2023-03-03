@@ -20,6 +20,9 @@
 *
 *
 */
+#include "node.h"
+#include "extsimkernels/spicecompat.h"
+
 #include "capq.h"
 
 
@@ -57,6 +60,7 @@ CapQ::CapQ()
   tx = x1+4;
   ty = y2+4;
   Model = "CAPQ";
+  SpiceModel = "C";
   Name  = "CAPQ";
 
   Props.append(new Property("C", "1 pF", true,
@@ -87,4 +91,36 @@ Element* CapQ::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new CapQ();
   return 0;
+}
+
+QString CapQ::spice_netlist(bool isXyce)
+{
+    Q_UNUSED(isXyce);
+    QString s;
+    QString pin1 = Ports.at(0)->Connection->Name;
+    QString pin2 = Ports.at(1)->Connection->Name;
+    QString Cname = "C" + Name;
+    QString Rname = "R" + Name;
+
+    QString C = getProperty("C")->Value;
+    C = spicecompat::normalize_value(C);
+    QString Q = getProperty("Q")->Value;
+    QString f0 = getProperty("f")->Value;
+    f0 = spicecompat::normalize_value(f0);
+
+    QString res_eq;
+    QString double_pi = "8*atan(1)";
+    QString mode = getProperty("Mode")->Value;
+    if (mode == "Constant") {
+        res_eq = QString("%1*(%2)*hertz/(%3)").arg(double_pi).arg(C).arg(Q);
+    } else if (mode == "Linear") {
+        res_eq = QString("%1*(%2)*(%3)/(%4)").arg(double_pi).arg(C).arg(f0).arg(Q);
+    } else if (mode == "SquareRoot") {
+        res_eq = QString("%1*(%2)*sqrt(hertz*(%3))/(%4)").arg(double_pi).arg(C).arg(f0).arg(Q);
+    }
+
+    s = QString("%1 %2 %3 C='(%4)'\n").arg(Cname).arg(pin1).arg(pin2).arg(C);
+    s += QString("%1 %2 %3 R='1/((%4)+1e-8)'\n").arg(Rname).arg(pin1).arg(pin2).arg(res_eq);
+
+    return s;
 }
