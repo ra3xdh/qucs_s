@@ -244,6 +244,8 @@ void Module::registerModules (void) {
   REGISTER_LUMPED_2 (Resistor, info, info_us);
   REGISTER_LUMPED_1 (Capacitor);
   REGISTER_LUMPED_1 (Inductor);
+  REGISTER_LUMPED_1 (IndQ);
+  REGISTER_LUMPED_1 (CapQ);
   // lumped components
   if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       REGISTER_LUMPED_1 (R_SPICE);

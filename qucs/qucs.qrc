@@ -20,6 +20,7 @@
         <file>bitmaps/bottom.png</file>
         <file>bitmaps/buffer.png</file>
         <file>bitmaps/capacitor.png</file>
+        <file>bitmaps/capq.png</file>
         <file>bitmaps/cccs.png</file>
         <file>bitmaps/ccvs.png</file>
         <file>bitmaps/circulator.png</file>
@@ -89,6 +90,7 @@
         <file>bitmaps/iexp.png</file>
         <file>bitmaps/ifile.png</file>
         <file>bitmaps/inductor.png</file>
+        <file>bitmaps/indq.png</file>
         <file>bitmaps/inverter.png</file>
         <file>bitmaps/iprobe.png</file>
         <file>bitmaps/ipulse.png</file>

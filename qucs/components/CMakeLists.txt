@@ -55,6 +55,8 @@ dcfeed.cpp		logical_and.cpp		pm_modulator.cpp
 vcresistor.cpp
 vacomponent.cpp
 mutualx.cpp
+indq.cpp
+capq.cpp
 
 # SPICE devices
 
@@ -91,6 +93,7 @@ bjt.h
 bjtsub.h
 bondwire.h
 capacitor.h
+capq.h
 cccs.h
 ccvs.h
 circulator.h
@@ -139,6 +142,7 @@ hpribin4bit.h
 hybrid.h
 iexp.h
 ifile.h
+indq.h
 inductor.h
 iprobe.h
 ipulse.h
