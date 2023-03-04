@@ -44,10 +44,13 @@
 Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
     AbstractSpiceKernel(sch_, parent)
 {
-    if (QFileInfo(QucsSettings.NgspiceExecutable).isRelative()) {
+    if (QFileInfo(QucsSettings.NgspiceExecutable).isRelative()) { // this check is related to MacOS
         simulator_cmd = QFileInfo(QucsSettings.BinDir + QucsSettings.NgspiceExecutable).absoluteFilePath();
     } else {
         simulator_cmd = QFileInfo(QucsSettings.NgspiceExecutable).absoluteFilePath();
+    }
+    if (!QFileInfo::exists(simulator_cmd)) {
+        simulator_cmd = QucsSettings.NgspiceExecutable; //rely on $PATH
     }
     simulator_parameters = "";
 }

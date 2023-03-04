@@ -105,12 +105,16 @@ void ExternSimDialog::slotSetSimulator()
         connect(ngspice,SIGNAL(errors(QProcess::ProcessError)),this,SLOT(slotNgspiceStartError(QProcess::ProcessError)));
         connect(buttonSimulate,SIGNAL(clicked()),ngspice,SLOT(slotSimulate()));
         QString cmd;
-        if (QFileInfo(QucsSettings.NgspiceExecutable).isRelative()) {
+        if (QFileInfo(QucsSettings.NgspiceExecutable).isRelative()) { // this check is related to MacOS
             cmd = QFileInfo(QucsSettings.BinDir + QucsSettings.NgspiceExecutable).absoluteFilePath();
         } else {
             cmd = QFileInfo(QucsSettings.NgspiceExecutable).absoluteFilePath();
         }
-        ngspice->setSimulatorCmd(cmd);
+        if (QFileInfo::exists(cmd)) {
+            ngspice->setSimulatorCmd(cmd);
+        } else {
+            ngspice->setSimulatorCmd(QucsSettings.NgspiceExecutable); //rely on $PATH
+        }
         ngspice->setSimulatorParameters(QucsSettings.SimParameters);
     }
         break;
