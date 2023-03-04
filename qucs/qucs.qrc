@@ -265,6 +265,10 @@
         <file>bitmaps/DIODE_SPICE.png</file>
         <file>bitmaps/NPN_SPICE.png</file>
         <file>bitmaps/PNP_SPICE.png</file>
+        <file>bitmaps/NPN4_SPICE.png</file>
+        <file>bitmaps/PNP4_SPICE.png</file>
+        <file>bitmaps/NPN5_SPICE.png</file>
+        <file>bitmaps/PNP5_SPICE.png</file>
         <file>bitmaps/NJF_SPICE.png</file>
         <file>bitmaps/PJF_SPICE.png</file>
         <file>bitmaps/NMOS_SPICE.png</file>

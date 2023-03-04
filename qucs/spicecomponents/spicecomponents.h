@@ -49,6 +49,7 @@
 #include "DIODE_SPICE.h"
 #include "NPN_SPICE.h"
 #include "PNP_SPICE.h"
+#include "BJT_SPICE.h"
 #include "NJF_SPICE.h"
 #include "PJF_SPICE.h"
 #include "NMOS_SPICE.h"
