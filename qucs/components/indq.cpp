@@ -121,7 +121,7 @@ QString IndQ::spice_netlist(bool isXyce)
         res_eq = QString("%1*(%2)*sqrt(hertz*(%3))/(%4)").arg(double_pi).arg(L).arg(f0).arg(Q);
     }
 
-    s = QString("%1 %2 %3 L='(%4)'\n").arg(Lname).arg(pin1).arg(pin_int).arg(L);
+    s = QString("%1 %2 %3 L='%4'\n").arg(Lname).arg(pin1).arg(pin_int).arg(L);
     s += QString("%1 %2 %3 R='%4'\n").arg(Rname).arg(pin_int).arg(pin2).arg(res_eq);
 
     return s;

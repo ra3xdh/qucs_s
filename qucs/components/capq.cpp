@@ -119,7 +119,7 @@ QString CapQ::spice_netlist(bool isXyce)
         res_eq = QString("%1*(%2)*sqrt(hertz*(%3))/(%4)").arg(double_pi).arg(C).arg(f0).arg(Q);
     }
 
-    s = QString("%1 %2 %3 C='(%4)'\n").arg(Cname).arg(pin1).arg(pin2).arg(C);
+    s = QString("%1 %2 %3 C='%4'\n").arg(Cname).arg(pin1).arg(pin2).arg(C);
     s += QString("%1 %2 %3 R='1/((%4)+1e-8)'\n").arg(Rname).arg(pin1).arg(pin2).arg(res_eq);
 
     return s;
