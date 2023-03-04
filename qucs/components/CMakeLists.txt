@@ -7,7 +7,7 @@ INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR} )
 SET(COMPONENTS_SRCS
 DLS_1ton.cpp		dff_SR.cpp		logical_buf.cpp		potentiometer.cpp
 DLS_nto1.cpp		diac.cpp		logical_inv.cpp		rectline.cpp
-EKV26MOS.cpp		digi_sim.cpp		logical_nand.cpp	relais.cpp
+digi_sim.cpp		logical_nand.cpp	relais.cpp
 digi_source.cpp		logical_nor.cpp		resistor.cpp
 MESFET.cpp		diode.cpp		logical_or.cpp		rfedd.cpp
 ac_sim.cpp		dmux2to4.cpp		logical_xnor.cpp	rfedd2p.cpp
@@ -57,23 +57,6 @@ vacomponent.cpp
 mutualx.cpp
 indq.cpp
 capq.cpp
-
-# SPICE devices
-
-bsim3v34nMOS.cpp
-bsim3v34pMOS.cpp
-bsim4v30nMOS.cpp
-bsim4v30pMOS.cpp
-hic0_full.cpp
-hic2_full.cpp
-hicumL0V1p2.cpp
-hicumL0V1p2g.cpp
-hicumL0V1p3.cpp
-hicumL2V2p1.cpp
-hicumL2V2p23.cpp
-hicumL2V2p24.cpp
-hicumL2V2p31n.cpp
-HBT_X.cpp
 )
 
 SET(COMPONENTS_HDRS
@@ -126,7 +109,6 @@ dmux2to4.h
 dmux3to8.h
 dmux4to16.h
 ecvs.h
-EKV26MOS.h
 eqndefined.h
 equation.h
 etr_sim.h
@@ -241,23 +223,6 @@ volt_noise.h
 vprobe.h
 vpulse.h
 vrect.h
-
-# SPICE devices
-
-bsim3v34nMOS.h
-bsim3v34pMOS.h
-bsim4v30nMOS.h
-bsim4v30pMOS.h
-hic0_full.h
-hic2_full.h
-hicumL0V1p2.h
-hicumL0V1p2g.h
-hicumL0V1p3.h
-hicumL2V2p1.h
-hicumL2V2p23.h
-hicumL2V2p24.h
-hicumL2V2p31n.h
-HBT_X.h
 )
 
 

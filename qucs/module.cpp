@@ -428,22 +428,10 @@ void Module::registerModules (void) {
       REGISTER_VERILOGA_1 (log_amp);
       REGISTER_VERILOGA_1 (potentiometer);
       REGISTER_VERILOGA_1 (MESFET);
-      REGISTER_VERILOGA_2 (EKV26MOS, info, info_pmos);
       REGISTER_VERILOGA_1 (photodiode);
       REGISTER_VERILOGA_1 (phototransistor);
       REGISTER_VERILOGA_1 (nigbt);
       REGISTER_VERILOGA_1 (vcresistor);
-      REGISTER_VERILOGA_1 (bsim3v34nMOS);
-      REGISTER_VERILOGA_1 (bsim3v34pMOS);
-      REGISTER_VERILOGA_1 (bsim4v30nMOS);
-      REGISTER_VERILOGA_1 (bsim4v30pMOS);
-      REGISTER_VERILOGA_2 (hicumL0V1p2, info, info_pnp);
-      REGISTER_VERILOGA_2 (hicumL0V1p2g, info, info_pnp);
-      REGISTER_VERILOGA_2 (hicumL0V1p3, info, info_pnp);
-      REGISTER_VERILOGA_1 (hicumL2V2p23);
-      REGISTER_VERILOGA_1 (hicumL2V2p24);
-      REGISTER_VERILOGA_1 (hicumL2V2p31n);
-      REGISTER_VERILOGA_1 (HBT_X);
 
       // digital components
       REGISTER_DIGITAL_1 (Digi_Source);
