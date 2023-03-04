@@ -85,7 +85,7 @@ QString gNL::spice_netlist(bool)
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
+        s += " "+ nam+" ";   // node names
     }
     QString G= Props.at(0)->Value;
     QString Line_2 = Props.at(1)->Value; 
