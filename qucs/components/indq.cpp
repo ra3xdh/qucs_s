@@ -99,7 +99,9 @@ QString IndQ::spice_netlist(bool isXyce)
     Q_UNUSED(isXyce);
     QString s;
     QString pin1 = Ports.at(0)->Connection->Name;
+    pin1 = spicecompat::normalize_node_name(pin1);
     QString pin2 = Ports.at(1)->Connection->Name;
+    pin2 = spicecompat::normalize_node_name(pin2);
     QString pin_int = QString("_net_%1").arg(Name);
     QString Lname = "L" + Name;
     QString Rname = "R" + Name;

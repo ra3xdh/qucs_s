@@ -98,7 +98,9 @@ QString CapQ::spice_netlist(bool isXyce)
     Q_UNUSED(isXyce);
     QString s;
     QString pin1 = Ports.at(0)->Connection->Name;
+    pin1 = spicecompat::normalize_node_name(pin1);
     QString pin2 = Ports.at(1)->Connection->Name;
+    pin2 = spicecompat::normalize_node_name(pin2);
     QString Cname = "C" + Name;
     QString Rname = "R" + Name;
 
