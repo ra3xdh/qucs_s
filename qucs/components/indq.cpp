@@ -62,7 +62,7 @@ IndQ::IndQ()
   ty = y2+4;
   Model = "INDQ";
   SpiceModel = "L";
-  Name  = "INDQ";
+  Name  = "LQ";
 
   Props.append(new Property("L", "1 nH", true,
 		QObject::tr("Inductance")));
@@ -103,7 +103,7 @@ QString IndQ::spice_netlist(bool isXyce)
     QString pin2 = Ports.at(1)->Connection->Name;
     pin2 = spicecompat::normalize_node_name(pin2);
     QString pin_int = QString("_net_%1").arg(Name);
-    QString Lname = "L" + Name;
+    QString Lname = spicecompat::check_refdes(Name, SpiceModel);
     QString Rname = "R" + Name;
 
     QString L = getProperty("L")->Value;
