@@ -53,7 +53,7 @@ private slots:
   void slotApplyState(int State);
   void slotBrowseFile();
   void slotEditFile();
-  void slotApplyChange(const QString& Text);
+  void slotApplyChange(int idx);
   void slotApplyProperty();
   void slotApplyPropName();
 

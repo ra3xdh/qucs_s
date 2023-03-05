@@ -358,8 +358,8 @@ ComponentDialog::ComponentDialog(Component *c, Schematic *d)
   v1->addWidget(ComboEdit);
   ComboEdit->setVisible(false);
   ComboEdit->installEventFilter(this); // to catch Enter keypress
-  connect(ComboEdit, SIGNAL(activated(const QString&)),
-	  SLOT(slotApplyChange(const QString&)));
+  connect(ComboEdit, SIGNAL(activated(int)),
+      SLOT(slotApplyChange(int)));
 
   QHBoxLayout *h3 = new QHBoxLayout;
   v1->addLayout(h3);
@@ -700,7 +700,7 @@ void ComponentDialog::slotSelectProperty(QTableWidgetItem *item)
 }
 
 // -------------------------------------------------------------------------
-void ComponentDialog::slotApplyChange(const QString& Text)
+void ComponentDialog::slotApplyChange(int idx)
 {
   /// \bug what if the table have no items?
   // pick selected row
@@ -710,6 +710,7 @@ void ComponentDialog::slotApplyChange(const QString& Text)
   
   int row = item->row();
   
+  auto Text = ComboEdit->itemText(idx);
   edit->setText(Text);
   // apply edit line
   prop->item(row, 1)->setText(Text);

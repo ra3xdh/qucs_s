@@ -55,10 +55,10 @@ private slots:
   void slotChangeVarInit(const QString&);
   void slotChangeVarMin(const QString&);
   void slotChangeVarMax(const QString&);
-  void slotChangeVarType(const QString&);
+  void slotChangeVarType(int);
   void slotChangeGoalName(const QString&);
   void slotChangeGoalNum(const QString&);
-  void slotChangeGoalType(const QString&);
+  void slotChangeGoalType(int);
   void slotCreateEqn();
   void slotSetPrecision(const QPoint&);
 

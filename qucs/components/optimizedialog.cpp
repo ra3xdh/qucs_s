@@ -237,8 +237,8 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   VarTypeCombo->insertItem(8, tr("E48 series"));
   VarTypeCombo->insertItem(9, tr("E96 series"));
   VarTypeCombo->insertItem(10, tr("E192 series"));
-  connect(VarTypeCombo, SIGNAL(activated(const QString&)),
-          SLOT(slotChangeVarType(const QString&)));
+  connect(VarTypeCombo, SIGNAL(activated(int)),
+          SLOT(slotChangeVarType(int)));
 
   QPushButton *AddVar_Butt = new QPushButton(tr("Add"));
   connect(AddVar_Butt, SIGNAL(clicked()), SLOT(slotAddVariable()));
@@ -305,8 +305,8 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   GoalTypeCombo->insertItem(3, tr("greater"));
   GoalTypeCombo->insertItem(4, tr("equal"));
   GoalTypeCombo->insertItem(5, tr("monitor"));
-  connect(GoalTypeCombo, SIGNAL(activated(const QString&)),
-          SLOT(slotChangeGoalType(const QString&)));
+  connect(GoalTypeCombo, SIGNAL(activated(int)),
+          SLOT(slotChangeGoalType(int)));
   gp4->addWidget(GoalTypeCombo,2,2);
 
   QPushButton *AddGoal_Butt = new QPushButton(tr("Add"));
@@ -607,8 +607,9 @@ void OptimizeDialog::slotChangeVarMax(const QString& Text)
 }
 
 // -----------------------------------------------------------
-void OptimizeDialog::slotChangeVarType(const QString& Text)
+void OptimizeDialog::slotChangeVarType(int idx)
 {
+  auto Text = VarTypeCombo->itemText(idx);
   int selectedrow = VarTable->currentRow();
   QTableWidgetItem *item = VarTable->item(selectedrow, 5);
   if (item) {
@@ -690,8 +691,9 @@ void OptimizeDialog::slotChangeGoalName(const QString&)
 }
 
 // -----------------------------------------------------------
-void OptimizeDialog::slotChangeGoalType(const QString& Text)
+void OptimizeDialog::slotChangeGoalType(int idx)
 {
+  auto Text = GoalTypeCombo->itemText(idx);
   int selectedrow = GoalTable->currentRow();
   QTableWidgetItem *item = GoalTable->item(selectedrow, 1);
   if (item) {
