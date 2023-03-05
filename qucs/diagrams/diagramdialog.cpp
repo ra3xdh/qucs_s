@@ -296,7 +296,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   QHBoxLayout *hb1 = new QHBoxLayout;
   ChooseSimulator = new QComboBox;
   QStringList lst_sim;
-  lst_sim<<"Qucsator (built-in)"<<"Ngspice"<<"Xyce"<<"SpiceOpus";
+  lst_sim<<"Qucsator"<<"Ngspice"<<"Xyce"<<"SpiceOpus";
   ChooseSimulator->addItems(lst_sim);
   connect(ChooseSimulator,SIGNAL(currentIndexChanged(int)),this,SLOT(slotReadVars(int)));
   lblSim = new QLabel(tr("Data from simulator:"));
@@ -828,7 +828,7 @@ void DiagramDialog::slotReadVarsAndSetSimulator(int)
 
     QString curr_sim;
     switch (QucsSettings.DefaultSimulator) {
-    case spicecompat::simQucsator: curr_sim = "Qucsator (built-in)";
+    case spicecompat::simQucsator: curr_sim = "Qucsator";
         break;
     case spicecompat::simNgspice: curr_sim = "Ngspice";
         break;
@@ -845,7 +845,7 @@ void DiagramDialog::slotReadVarsAndSetSimulator(int)
     ChooseSimulator->blockSignals(true); // Lock signals firing
     ChooseSimulator->clear();
     Info.setFile(Info.absolutePath() + QDir::separator() + DocName);
-    if (Info.exists()) ChooseSimulator->addItem("Qucsator (built-in)");
+    if (Info.exists()) ChooseSimulator->addItem("Qucsator");
     Info.setFile(Info.absolutePath() + QDir::separator() + DocName + ".ngspice");
     if (Info.exists()) ChooseSimulator->addItem("Ngspice");
     Info.setFile(Info.absolutePath() + QDir::separator() + DocName + ".xyce");
