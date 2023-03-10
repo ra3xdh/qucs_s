@@ -73,6 +73,7 @@
 #include "sp_ic.h"
 #include "sp_model.h"
 #include "sp_include.h"
+#include "sp_lib.h"
 #include "sp_func.h"
 #include "sp_spiceinit.h"
 #include "incl_script.h"

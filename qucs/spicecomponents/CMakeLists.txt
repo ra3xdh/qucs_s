@@ -17,6 +17,7 @@ sp_ic.cpp
 sp_nodeset.cpp
 sp_model.cpp
 sp_include.cpp
+sp_lib.cpp
 sp_func.cpp
 sp_spiceinit.cpp
 incl_script.cpp
@@ -111,6 +112,7 @@ sp_ic.h
 sp_nodeset.h
 sp_model.h
 sp_include.h
+sp_lib.h
 sp_func.h
 sp_spiceinit.h
 incl_script.h
