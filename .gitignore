@@ -51,3 +51,4 @@ qrc_*.cpp
 *.dat.xyce
 *.dat.spopus
 .idea/
+__pycache__
