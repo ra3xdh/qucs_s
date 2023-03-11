@@ -608,11 +608,11 @@ void Ngspice::slotProcessOutput()
     if (percentage_pattern.match(s).hasMatch()) {
         int percent = round(s.mid(1,5).toFloat());
         emit progress(percent);
-    } else {
-        s.remove(QRegularExpression("%\\d\\d*\\.\\d\\d")); // Remove percentage from logs
-        s.remove(QRegularExpression("\010+")); // Large amount of datar from percentage reports
-                                    // can freeze QTextEdit for over 100k simulation points
-        output += s;
+    }
+    output += s;
+    if (console != nullptr) {
+        console->insertPlainText(s);
+        console->moveCursor(QTextCursor::End);
     }
 }
 

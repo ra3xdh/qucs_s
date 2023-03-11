@@ -398,7 +398,10 @@ void Xyce::slotProcessOutput()
         emit progress(percent);
     }
     output += s;
-
+    if (console != nullptr) {
+        console->insertPlainText(s);
+        console->moveCursor(QTextCursor::End);
+    }
 }
 
 /*!

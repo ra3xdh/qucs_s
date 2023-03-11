@@ -319,6 +319,7 @@ void AbstractSpiceKernel::parseNgSpiceSimOutput(QString ngspice_file,QList< QLis
     int NumPoints = 0;
     int bin_offset = 0;
     QByteArray content;
+    console = nullptr;
 
     QFile ofile(ngspice_file);
     if (ofile.open(QFile::ReadOnly)) {

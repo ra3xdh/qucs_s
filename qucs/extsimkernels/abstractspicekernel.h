@@ -29,6 +29,8 @@
 
 #include "schematic.h"
 
+class QPlainTextEdit;
+
 /*!
   \file abstractspicekernel.h
   \brief Implementation of the AbstractSpiceKernel class
@@ -58,6 +60,7 @@ protected:
             simulator_parameters, output;
     QProcess *SimProcess;
 
+    QPlainTextEdit *console;
     QStringList sims,vars,output_files;
 
     bool DC_OP_only; // only calculate operating point to show DC bias
@@ -112,6 +115,7 @@ public:
     void setWorkdir(QString path);
     virtual void SaveNetlist(QString filename);
     virtual bool waitEndOfSimulation();
+    void setConsole(QPlainTextEdit *console_) { console = console_; }
     
 signals:
     void started();

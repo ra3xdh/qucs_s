@@ -67,6 +67,8 @@ ExternSimDialog::ExternSimDialog(Schematic *sch, QWidget *parent, bool netlist_m
     editSimConsole->setReadOnly(true);
     vbl1->addWidget(editSimConsole);
     grp_1->setLayout(vbl1);
+    ngspice->setConsole(editSimConsole);
+    xyce->setConsole(editSimConsole);
 
     simProgress = new QProgressBar(this);
     connect(ngspice,SIGNAL(progress(int)),simProgress,SLOT(setValue(int)));
@@ -189,8 +191,8 @@ void ExternSimDialog::slotProcessOutput()
         emit warnings();
     } else emit success();
     //editSimConsole->clear();
-    editSimConsole->insertPlainText(out);
-    editSimConsole->moveCursor(QTextCursor::End);
+    /*editSimConsole->insertPlainText(out);
+    editSimConsole->moveCursor(QTextCursor::End);*/
     saveLog();
     editSimConsole->insertPlainText("Simulation finished\n");
 
