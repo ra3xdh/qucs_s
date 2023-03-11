@@ -40,11 +40,12 @@ BJT_SPICE::BJT_SPICE()
 
     Props.append(new Property("Pins", "4", true,"[3,4,5] Pins count"));
     Props.append(new Property("type", "npn", true,"[npn,pnp] BJT type"));
-    Props.append(new Property("Q", "", true,"Param list and\n .model spec."));
-    Props.append(new Property("Q_Line 2", "", false,"+ continuation line 1"));
-    Props.append(new Property("Q_Line 3", "", false,"+ continuation line 2"));
-    Props.append(new Property("Q_Line 4", "", false,"+ continuation line 3"));
-    Props.append(new Property("Q_Line 5", "", false,"+ continuation line 4"));
+    Props.append(new Property("Letter", "Q", true,"[npn,pnp] BJT type"));
+    Props.append(new Property("Model", "", true,"Param list and\n .model spec."));
+    Props.append(new Property("Model_Line 2", "", false,"+ continuation line 1"));
+    Props.append(new Property("Model_Line 3", "", false,"+ continuation line 2"));
+    Props.append(new Property("Model_Line 4", "", false,"+ continuation line 3"));
+    Props.append(new Property("Model_Line 5", "", false,"+ continuation line 4"));
 
     createSymbol();
 
@@ -183,18 +184,19 @@ QString BJT_SPICE::netlist()
 
 QString BJT_SPICE::spice_netlist(bool)
 {
-    QString s = spicecompat::check_refdes(Name,SpiceModel);
+    QString ltr =getProperty("Letter")->Value;
+    QString s = spicecompat::check_refdes(Name,ltr);
     for (Port *p1 : Ports) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }
  
-    QString Q= Props.at(0)->Value;
-    QString Q_Line_2= Props.at(1)->Value;
-    QString Q_Line_3= Props.at(2)->Value;
-    QString Q_Line_4= Props.at(3)->Value;
-    QString Q_Line_5= Props.at(4)->Value;
+    QString Q= Props.at(2)->Value;
+    QString Q_Line_2= Props.at(3)->Value;
+    QString Q_Line_3= Props.at(4)->Value;
+    QString Q_Line_4= Props.at(5)->Value;
+    QString Q_Line_5= Props.at(6)->Value;
 
     if(  Q.length()  > 0)          s += QString("%1").arg(Q);
     if(  Q_Line_2.length() > 0 )   s += QString("\n%1").arg(Q_Line_2);
