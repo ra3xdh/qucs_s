@@ -80,11 +80,12 @@ Element* Ampere_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString Ampere_ac::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
-        QString nam = p1->Connection->Name;
-        if (nam=="gnd") nam = "0";
-        s += " "+ nam;   // node names
-    }
+
+    QString plus = Ports.at(1)->Connection->Name;
+    if (plus=="gnd") plus = "0";
+    QString minus = Ports.at(0)->Connection->Name;
+    if (minus=="gnd") minus = "0";
+    s += QString(" %1 %2 ").arg(plus).arg(minus);
 
     QString amperes = spicecompat::normalize_value(Props.at(0)->Value);
     QString freq = spicecompat::normalize_value(Props.at(1)->Value);
