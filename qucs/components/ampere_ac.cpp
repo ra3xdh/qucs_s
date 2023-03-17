@@ -81,10 +81,8 @@ QString Ampere_ac::spice_netlist(bool)
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
-    QString plus = Ports.at(1)->Connection->Name;
-    if (plus=="gnd") plus = "0";
-    QString minus = Ports.at(0)->Connection->Name;
-    if (minus=="gnd") minus = "0";
+    QString plus = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+    QString minus = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
     s += QString(" %1 %2 ").arg(plus).arg(minus);
 
     QString amperes = spicecompat::normalize_value(Props.at(0)->Value);
