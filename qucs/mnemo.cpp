@@ -18,6 +18,8 @@
 #include "mnemo.h"
 #include <QString>
 
+#include <array>
+
 typedef struct {
   const char *Mnemonic;
   unsigned short Unicode;
