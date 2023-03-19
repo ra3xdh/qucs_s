@@ -555,7 +555,7 @@ void QucsApp::initActions()
   connect(save_netlist, SIGNAL(triggered()), SLOT(slotSaveNetlist()));
 
   setMarker = new QAction(QIcon((":/bitmaps/marker.png")),	tr("Set Marker on Graph"), this);
-  setMarker->setShortcut(Qt::CTRL+Qt::Key_B);
+  setMarker->setShortcut(Qt::CTRL|Qt::Key_B);
   setMarker->setStatusTip(tr("Sets a marker on a diagram's graph"));
   setMarker->setWhatsThis(tr("Set Marker\n\nSets a marker on a diagram's graph"));
   setMarker->setCheckable(true);
