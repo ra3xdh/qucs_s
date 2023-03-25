@@ -107,6 +107,7 @@ QucsAttenuator::QucsAttenuator()
   inGrid->setSpacing(1);
 
   DoubleVal = new QDoubleValidator(this);
+  DoubleVal->setLocale(QLocale::C);
   DoubleVal->setBottom(0);
 
   LabelAtten = new QLabel(tr("Attenuation:"), InputGroup);

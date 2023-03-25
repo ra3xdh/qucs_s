@@ -47,7 +47,9 @@ MarkerDialog::MarkerDialog(Marker *pm_, QWidget *parent)
       XPosition->setText("0");
       XPosition->setEnabled(false);
   }
-  XPosition->setValidator(new QDoubleValidator(this));
+  QDoubleValidator *dblVal = new QDoubleValidator(this);
+  dblVal->setLocale(QLocale::C);
+  XPosition->setValidator(dblVal);
 
   g->addWidget(new QLabel(tr("Precision: ")), 0, 0);
   g->addWidget(Precision, 0, 1);

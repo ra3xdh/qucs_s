@@ -129,6 +129,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   Validator  = new QRegularExpressionValidator(Expr, this);
   ValInteger = new QIntValidator(0, 360, this);
   ValDouble  = new QDoubleValidator(-1e200, 1e200, 6, this);
+  ValDouble->setLocale(QLocale::C);
 
   QString NameY, NameZ;
   if((Diag->Name == "Rect") || (Diag->Name == "Curve")) {

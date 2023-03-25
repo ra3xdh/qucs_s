@@ -50,6 +50,7 @@ MatchDialog::MatchDialog(QWidget *parent)
 {
   setWindowTitle(tr("Create Matching Circuit"));
   DoubleVal = new QDoubleValidator(this);
+  DoubleVal->setLocale(QLocale::C);
 
   all = new QVBoxLayout(this);
 

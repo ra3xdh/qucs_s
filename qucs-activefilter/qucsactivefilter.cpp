@@ -95,6 +95,7 @@ QucsActiveFilter::QucsActiveFilter(QWidget *parent)
 
     edtA1 = new QLineEdit("3");
     QDoubleValidator *val1 = new QDoubleValidator(0,100000,3);
+    val1->setLocale(QLocale::C);
     edtA1->setValidator(val1);
     edtA2 = new QLineEdit("20");
     edtA2->setValidator(val1);

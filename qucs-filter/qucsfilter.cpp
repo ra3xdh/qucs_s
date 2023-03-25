@@ -148,6 +148,7 @@ QucsFilter::QucsFilter()
 
   IntVal = new QIntValidator(1, 200, this);
   DoubleVal = new QDoubleValidator(this);
+  DoubleVal->setLocale(QLocale::C);
 
   LabelOrder = new QLabel(tr("Order:"), this);
   gbox1->addWidget(LabelOrder, 3,0);

@@ -59,6 +59,7 @@ OptimizeDialog::OptimizeDialog(Optimize_Sim *c_, Schematic *d_)
   Expr.setPattern("[\\w_]+");
   Validator = new QRegularExpressionValidator(Expr, this);
   numVal = new QDoubleValidator(this);
+  numVal->setLocale(QLocale::C);
   intVal = new QIntValidator(this);
 
   all = new QVBoxLayout(); // to provide the necessary size

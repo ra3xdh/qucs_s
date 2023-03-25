@@ -631,6 +631,7 @@ void QucsTranscalc::createPropItem (QGridLayout * parentGrid, TransValue * val,
   QLineEdit * e;
   QComboBox * c;
   QDoubleValidator * v = new QDoubleValidator (this);
+  v->setLocale(QLocale::C);
 
   // name label
   l = new QLabel (val->name);

@@ -67,6 +67,7 @@ ExportDialog::ExportDialog(int w, int h, int wsel, int hsel, QString filename_, 
     editResolutionY->setEnabled(false);
     editScale = new QLineEdit(QString::number(1.0));
     QDoubleValidator *val1 = new QDoubleValidator(0,20.0,2,this);
+    val1->setLocale(QLocale::C);
     editScale->setValidator(val1);
 
     cbxImgType = new QComboBox(this);
