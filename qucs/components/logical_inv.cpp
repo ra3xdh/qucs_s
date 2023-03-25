@@ -29,7 +29,7 @@ Logical_Inv::Logical_Inv()
   // the list order must be preserved !!!
   Props.append(new Property("V", "1 V", false,
 		QObject::tr("voltage of high level")));
-  Props.append(new Property("t", "0", false,
+  Props.append(new Property("t", "1e-9", false,
 		QObject::tr("delay time")));
   Props.append(new Property("TR", "10", false,
 		QObject::tr("transfer function scaling factor")));
