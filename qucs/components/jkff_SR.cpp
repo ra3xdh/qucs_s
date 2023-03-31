@@ -18,6 +18,7 @@
 #include "jkff_SR.h"
 #include "node.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 jkff_SR::jkff_SR()
 {
@@ -37,6 +38,7 @@ jkff_SR::jkff_SR()
   ty = y2 + 4;
   Model = "jkff_SR";
   Name  = "Y";
+  SpiceModel = "A";
 }
 
 Component * jkff_SR::newOne()
@@ -182,4 +184,24 @@ QString jkff_SR::verilogCode( int )
       "    "+QBR+" <="+td+" ~"+ST+";\n"+
       "  end\n";
   return l;
+}
+
+QString jkff_SR::spice_netlist(bool isXyce)
+{
+    if (isXyce) return QString("");
+
+    QString s = SpiceModel + Name;
+    QString tmp_model = "model_" + Name;
+    QString td = spicecompat::normalize_value(getProperty("Delay")->Value);
+    s += " " + Ports.at(1)->Connection->Name;
+    s += " " + Ports.at(3)->Connection->Name;
+    s += " " + Ports.at(2)->Connection->Name;
+    s += " " + Ports.at(0)->Connection->Name;
+    s += " " + Ports.at(4)->Connection->Name;
+    s += " " + Ports.at(6)->Connection->Name;
+    s += " " + Ports.at(5)->Connection->Name;
+    s += " " + tmp_model + "\n";
+    s += QString(".model %1 d_jkff(clk_delay=%2 set_delay=%2 reset_delay=%2 rise_delay=%2 fall_delay=%2)\n")
+            .arg(tmp_model).arg(td);
+    return s;
 }

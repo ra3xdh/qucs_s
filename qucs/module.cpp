@@ -451,7 +451,6 @@ void Module::registerModules (void) {
       REGISTER_DIGITAL_1 (D_FlipFlop);
       REGISTER_DIGITAL_1 (dff_SR);
       REGISTER_DIGITAL_1 (JK_FlipFlop);
-      REGISTER_DIGITAL_1 (jkff_SR);
       REGISTER_DIGITAL_1 (tff_SR);
       REGISTER_DIGITAL_1 (gatedDlatch);
       REGISTER_DIGITAL_1 (logic_0);
@@ -482,6 +481,7 @@ void Module::registerModules (void) {
       REGISTER_DIGITAL_1 (Logical_AND);
       REGISTER_DIGITAL_1 (Logical_XOR);
       REGISTER_DIGITAL_1 (Logical_XNOR);
+      REGISTER_DIGITAL_1 (jkff_SR);
   }
 
   // file components
