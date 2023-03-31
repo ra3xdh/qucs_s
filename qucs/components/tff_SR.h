@@ -24,6 +24,7 @@ class tff_SR : public Component
     void createSymbol();
     QString vhdlCode(int);
     QString verilogCode(int);
+    QString spice_netlist(bool isXyce);
 };
 
 #endif /* tff_SR_H */
