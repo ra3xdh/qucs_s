@@ -449,7 +449,6 @@ void Module::registerModules (void) {
       REGISTER_DIGITAL_1 (fa2b);
       REGISTER_DIGITAL_1 (RS_FlipFlop);
       REGISTER_DIGITAL_1 (D_FlipFlop);
-      REGISTER_DIGITAL_1 (dff_SR);
       REGISTER_DIGITAL_1 (JK_FlipFlop);
       REGISTER_DIGITAL_1 (tff_SR);
       REGISTER_DIGITAL_1 (gatedDlatch);
@@ -481,6 +480,7 @@ void Module::registerModules (void) {
       REGISTER_DIGITAL_1 (Logical_AND);
       REGISTER_DIGITAL_1 (Logical_XOR);
       REGISTER_DIGITAL_1 (Logical_XNOR);
+      REGISTER_DIGITAL_1 (dff_SR);
       REGISTER_DIGITAL_1 (jkff_SR);
   }
 
