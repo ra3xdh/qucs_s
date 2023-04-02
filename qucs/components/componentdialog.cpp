@@ -798,6 +798,7 @@ void ComponentDialog::slotApplyPropName()
 void ComponentDialog::slotApplyState(int State)
 {
   // pick selected row
+  if (prop->rowCount() == 0) return;
   QTableWidgetItem *item = prop->selectedItems()[0];
   int row = item->row();
 
