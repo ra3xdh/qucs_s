@@ -82,7 +82,7 @@ TR_Sim::TR_Sim()
   Props.append(new Property("relaxTSR", "no", false,
 	QObject::tr("relax time step raster")+" [no, yes]"));
   Props.append(new Property("initialDC", "yes", false,
-	QObject::tr("perform an initial DC analysis")+" [yes, no]"));
+    QObject::tr("perform initial DC (set \"no\" to activate UIC)")+" [yes, no]"));
   Props.append(new Property("MaxStep", "0", false,
 	QObject::tr("maximum step size in seconds")));
 }
