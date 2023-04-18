@@ -322,11 +322,10 @@ void Module::registerModules (void) {
 
   REGISTER_SOURCE_1 (iExp);
   REGISTER_SOURCE_1 (vExp);
+  REGISTER_SOURCE_1 (vFile);
+  REGISTER_SOURCE_1 (iFile);
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-      REGISTER_SOURCE_1 (vFile);
-      REGISTER_SOURCE_1 (iFile);
-  } else {
+  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       REGISTER_SOURCE_1 (S4Q_V);
       REGISTER_SOURCE_1 (S4Q_I);
       REGISTER_SOURCE_1 (Src_eqndef);

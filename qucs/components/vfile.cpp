@@ -19,6 +19,8 @@
 #include "schematic.h"
 #include "misc.h"
 
+#include "extsimkernels/spicecompat.h"
+
 vFile::vFile()
 {
   Description = QObject::tr("file based voltage source");
@@ -50,11 +52,12 @@ vFile::vFile()
   ty = y2+4;
   Model = "Vfile";
   Name  = "V";
+  SpiceModel = "A";
 
   Props.append(new Property("File", "vfile.dat", true,
 		QObject::tr("name of the sample file")));
   Props.append(new Property("Interpolator", "linear", false,
-		QObject::tr("interpolation type")+" [hold, linear, cubic]"));
+        QObject::tr("interpolation type")+" [hold, linear]"));
   Props.append(new Property("Repeat", "no", false,
 		QObject::tr("repeat waveform")+" [no, yes]"));
   Props.append(new Property("G", "1", false, QObject::tr("voltage gain")));
@@ -107,4 +110,24 @@ QString vFile::netlist()
     s += " "+p2->Name+"=\""+p2->Value+"\"";
 
   return s + "\n";
+}
+
+QString vFile::spice_netlist(bool isXyce)
+{
+    Q_UNUSED(isXyce);
+    QString s = SpiceModel + Name;
+    QString modname = "mod_" + Model + Name;
+    QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+    QString p2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+    s += QString(" %vd([%1 %2]) %3\n").arg(p1).arg(p2).arg(modname);
+    QString file = getSubcircuitFile();
+    QString sc = getProperty("G")->Value;
+    QString step = "false";
+    QString delay = getProperty("T")->Value;
+    if (getProperty("Interpolator")->Value != "linear") step = "true";
+    s += QString(".MODEL %1 filesource (file=\"%2\" amplscale=[%3] amplstep=%4 "
+                 "amploffset=[0] timeoffset=%5 timescale=1)\n")
+            .arg(modname).arg(file).arg(sc).arg(step).arg(delay);
+
+    return s;
 }
