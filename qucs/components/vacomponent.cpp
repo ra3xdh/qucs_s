@@ -311,7 +311,7 @@ QString vacomponent::spice_netlist(bool isXyce)
                 .arg(Props.at(i)->Name)
                 .arg(Props.at(i)->Value);
     }
-    s += QString(".MODEL %1 %2(%3)\n").arg(tmp_model)
+    s += QString(".MODEL %1 %2 %3\n").arg(tmp_model)
                                       .arg(Model)
                                       .arg(par_str);
     return s;
