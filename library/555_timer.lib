@@ -655,3 +655,154 @@ X1 _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4 NE555
   </Symbol>
 </Component>
 
+
+<Component 555_XSPICE>
+  <Description>
+Behavioral 555 timer model developed by Clyde from Ngspice forum. See https://sourceforge.net/p/ngspice/discussion/ngspice-tips/thread/f535c0f1b9/ for more details.
+  </Description>
+  <Model>
+.Def:n555timer_555_XSPICE _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4
+Sub:X1 _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4 gnd Type="n555_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "555.cir.lst">
+  <Spice>* Qucs 1.0.1  555timer_555_XSPICE.sch
+
+* 555 Timer behavioral model -- 555.cir
+* 3/31/23 created by Clyde R. Shappee
+* https://sourceforge.net/p/ngspice/discussion/ngspice-tips/thread/f535c0f1b9/
+* Version 2 using generic OpAmp model from the forum.
+*    Now supports output voltage set by Vcc Pin.
+*    This is mostly a timing model and may not be DC
+*    accurate in all cases.
+*
+*           Ground
+*           | Trigger
+*           | | Output
+*           | | | Reset
+*           | | | | Control
+*           | | | | | Threshold
+*           | | | | | | Discharge
+*           | | | | | | | Vcc
+*           | | | | | | | |
+.subckt 555xspice 1 2 3 4 5 6 7 8 
+
+R1  8  5 5000
+R2  5 10 5000
+R3 10  1 5000
+
+X1  6 5   22  comparator5  ; the reset comparator
+X2 10 2   21  comparator5  ; the set comparator
+
+a0 z1 pulldown1            ; pull-down for unused clock and data
+
+*  data  clock set reset q   qbar
+a1  z1    z1   21   25   23   24  flop1  ; the flip flop
+
+
+abridge1 [24] [13] dac1    ; bridge qbar to discharge timing cap, turn on Q1
+abridge2 [24] [26] dac1    ; bridge qbar  to pseudo tristate driver
+
+Q1 7  13 1 N               ; the discharge transistor
+
+
+* Here is the active low master reset function from pin 4.
+
+abridge3 [4] [30] adc_buff ; bridge pin 4 to the digital domain
+
+a2 30 31 inv1
+
+a3 [22 31] 25 or1          ; Reset when the external resit is assered or the comparitor trips.
+*
+* Make the Q output of the flip-flop drive to Vcc when driven
+*
+R4 3 8 100                
+Q2 3 26 0 N
+*
+* Models
+*
+.model adc_buff adc_bridge(in_low = 0.7 in_high = 3.0)  ; 0.7 V threshold per NE555 data sheet
+
+.model flop1 d_dff(clk_delay = 13.0e-9 set_delay = 25.0e-9
++ reset_delay = 27.0e-9 ic = 0 rise_delay = 10.0e-9
++ fall_delay = 3e-9)
+
+.model pulldown1 d_pulldown(load = 20.0e-12)
+
+.model dac1 dac_bridge(out_low = 0.1 out_high = 1.0 out_undef = 2.2
++ input_load = 5.0e-12 t_rise = 50e-9
++ t_fall = 20e-9)
+
+.model N NPN
+
+.model inv1 d_inverter(rise_delay = 0.5e-9 fall_delay = 0.3e-9
++ input_load = 0.5e-12)
+
+.model or1 d_or(rise_delay = 0.5e-9 fall_delay = 0.3e-9
++ input_load = 0.5e-12)
+
+.ends
+
+* Simple comparitor with logic output
+*
+.subckt comparator5 1 2 5
+a0 [1  2] 3 sum1
+a1  3  4    limit5
+a2 [4][5]   adc_buff
+
+*
+* Models
+*
+.model  adc_buff adc_bridge(in_low = 0.1 in_high = 1.0)
+
+.model sum1 summer(in_gain=[1.0 -1.0] out_gain=1E6)
+
+.model limit5 limit(out_lower_limit=-5.0 out_upper_limit=5.0 limit_range=0.10 fraction=FALSE)
+
+.ends
+
+.SUBCKT n555_timer_555_XSPICE  gnd _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4 
+X1 _net0 _net1 _net5 _net2 _net6 _net3 _net7 _net4 555xspice
+.ENDS
+  </Spice>
+<SpiceAttach >
+  <Symbol>
+    <Rectangle -60 -100 120 200 #000000 1 1 #c0c0c0 1 0>
+    <Line 0 100 0 20 #000000 2 1>
+    <.ID 70 -96 SUB>
+    <Line -20 -120 0 20 #000000 2 1>
+    <Line -60 -60 -20 0 #000000 2 1>
+    <Line 60 0 20 0 #000000 2 1>
+    <Line -60 20 -20 0 #000000 2 1>
+    <Line -60 60 -20 0 #000000 2 1>
+    <Line 80 60 -20 0 #000000 2 1>
+    <Text -55 -70 12 #000000 0 "DIS">
+    <Text -55 10 12 #000000 0 "THR">
+    <Text -55 50 12 #000000 0 "TRG">
+    <Text 30 50 12 #000000 0 "CTL">
+    <Text 25 -10 12 #000000 0 "OUT">
+    <Text -15 80 12 #000000 0 "GND">
+    <Text 5 -100 12 #000000 0 "VCC">
+    <Text -35 -100 12 #000000 0 "RST">
+    <Line 20 -120 0 20 #000000 2 1>
+    <Text -75 40 12 #000000 0 "2">
+    <Text 5 100 12 #000000 0 "1">
+    <Text 65 -20 12 #000000 0 "3">
+    <Text -35 -120 12 #000000 0 "4">
+    <Text 25 -120 12 #000000 0 "8">
+    <Text -75 -80 12 #000000 0 "7">
+    <Text -75 0 12 #000000 0 "6">
+    <Text 65 40 12 #000000 0 "5">
+    <.PortSym -20 -120 4 0>
+    <.PortSym 0 120 1 0>
+    <.PortSym -80 60 2 0>
+    <.PortSym 80 0 3 180>
+    <.PortSym -80 20 6 0>
+    <.PortSym 20 -120 8 180>
+    <.PortSym 80 60 5 180>
+    <.PortSym -80 -60 7 0>
+    <Text -40 -40 12 #000000 0 "555 Xspice">
+  </Symbol>
+</Component>
+
+
