@@ -32,6 +32,7 @@ protected:
   QString netlist();
   QString vhdlCode(int);
   QString verilogCode(int);
+  QString spice_netlist(bool isXyce = false);
 };
 
 #endif

@@ -17,7 +17,8 @@
 #include "digi_source.h"
 #include "node.h"
 #include "misc.h"
-
+#include "extsimkernels/spicecompat.h"
+#include <QDebug>
 
 Digi_Source::Digi_Source()
 {
@@ -46,6 +47,7 @@ Digi_Source::Digi_Source()
   ty = y2+2;
   Model = "DigiSource";
   Name  = "S";
+  SpiceModel = "V";
 
   // This property must stay in this order !
   Props.append(new Property("Num", "1", true,
@@ -184,5 +186,94 @@ QString Digi_Source::verilogCode(int NumPorts)
   }
 
   s += "  end\n";
+  return s;
+}
+
+QString Digi_Source::spice_netlist(bool)
+{
+  QString s    = SpiceModel + Name;
+  QString port = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+  s += " " + port + " 0 "; // node names
+
+  QString V    = spicecompat::normalize_value(getProperty("V")->Value);
+  QString init = spicecompat::normalize_value(getProperty("init")->Value);
+
+  QString times = spicecompat::normalize_value(getProperty("times")->Value);
+  QStringList timesList = times.split(";");
+
+  double time = 0;
+  double fallingTime = 0;
+  double risingTime = 0;
+
+  double fac, timeValue;
+  double changingTime;
+  QString unit;
+  misc::str2num(timesList[0].toLower(),changingTime,unit,fac);
+  changingTime *= fac / 100; // rise and fall times
+
+  QString oddValue, evenValue;
+  if (init == "{LOW}") {
+    oddValue = V;
+    evenValue = "0";
+  } else {
+    oddValue = "0";
+    evenValue = V;
+  }
+
+  s += QString("DC %1 PWL(0 ").arg(evenValue);
+  s += evenValue;
+
+  for (int i = 0; i < timesList.size(); i++) {
+    QString timeStep = timesList[i].toLower();
+    misc::str2num(timeStep,timeValue,unit,fac);
+    timeValue *= fac;
+
+    if (i == 0) {
+      // first time step
+      s += QString(" %1 %2").arg(timeValue).arg(evenValue);
+      time += timeValue;
+
+    } else {
+      if (i % 2 == 1) {
+        // times of odd time step
+        risingTime = time + changingTime;
+        time += timeValue;
+
+        s += QString(" %1 %2 %3 %2")
+                      .arg(risingTime)
+                      .arg(oddValue)
+                      .arg(time)
+                      .toUpper();
+        // last time step
+        if (timeStep == timesList.last().toLower()) {
+            fallingTime = time + changingTime;
+            s += QString(" %1 0 %2 0")
+                          .arg(fallingTime)
+                          .arg(fallingTime + changingTime)
+                          .toUpper();
+        }
+      } else {
+        // times of even time step
+        fallingTime = time + changingTime;
+        time += timeValue;
+        s += QString(" %1 %2 %3 %2")
+                      .arg(fallingTime)
+                      .arg(evenValue)
+                      .arg(time)
+                      .toUpper();
+        // last time step
+        if (timeStep == timesList.last().toLower()) {
+            fallingTime = time + changingTime;
+            s += QString(" %1 0 %2 0")
+                     .arg(fallingTime)
+                     .arg(fallingTime + changingTime)
+                     .toUpper();
+        }
+      }
+    }
+  }
+
+  s += ")\n";
+
   return s;
 }
