@@ -17,10 +17,11 @@
 #include "d_flipflop.h"
 #include "node.h"
 #include "misc.h"
+#include "extsimkernels/spicecompat.h"
 
 D_FlipFlop::D_FlipFlop()
 {
-  Type = isDigitalComponent;
+  Type = isComponent;
   Description = QObject::tr("D flip flop with asynchronous reset");
 
   Props.append(new Property("t", "0", false, QObject::tr("delay time")));
@@ -52,6 +53,7 @@ D_FlipFlop::D_FlipFlop()
   ty = y2+4;
   Model = "DFF";
   Name  = "Y";
+  SpiceModel = "A";
 }
 
 // -------------------------------------------------------
@@ -118,4 +120,29 @@ Element* D_FlipFlop::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
   if(getNewOne)  return new D_FlipFlop();
   return 0;
+}
+
+QString D_FlipFlop::spice_netlist(bool isXyce)
+{
+    if (isXyce) return QString("");
+
+    QString s = SpiceModel + Name;
+    QString tmp_model = "model_" + Name;
+    QString td = spicecompat::normalize_value(getProperty("t")->Value);
+
+    QString SET   = "0";
+    QString QB    = "QB_" + Name;
+    QString D     = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+    QString CLK   = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+    QString Q     = spicecompat::normalize_node_name(Ports.at(2)->Connection->Name);
+    QString RESET = spicecompat::normalize_node_name(Ports.at(3)->Connection->Name);
+
+    s += " " + D + " " + CLK + " " + SET + " " + RESET + " " + Q + " " + QB;
+
+    s += " " + tmp_model + "\n";
+    s += QString(".model %1 d_dff(clk_delay=%2 set_delay=%2 reset_delay=%2 rise_delay=%2 fall_delay=%2)\n")
+            .arg(tmp_model).arg(td);
+    s += QString("C%1 QB_%1 0 1e-9 \n").arg(Name); // capacitor load for unused QB pin
+
+    return s;
 }
