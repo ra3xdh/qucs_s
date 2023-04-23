@@ -2,7 +2,7 @@
 
 ## New features
 
-* Added XSPICE flip-flop digital devices #262
+* Added XSPICE flip-flop digital devices #262 (thanks @Radvall)
 * Added INDQ and CAPQ devices representing inductor and capacitor with Q-factor #143
 * Added .LIB directive support #242
 * Added SPICE entries for I and V file sources #254
