@@ -1,3 +1,24 @@
+# Qucs-S 1.0.2
+
+## New features
+
+* Added XSPICE flip-flop digital devices #262
+* Added INDQ and CAPQ devices representing inductor and capacitor with Q-factor #143
+* Added .LIB directive support #242
+* Added SPICE entries for I and V file sources #254
+
+## Component library
+
+* Added behavioral XSPICE 555 timer model #252
+
+## General improvements
+
+* Added option to save SPICE netlist without simulation #225
+* Improved Qt6 compatibility (thanks @Zergud)
+* Improved MacOS compatibility (thanks @nanoant) #214
+* CMake build system update to bring features of the modern CMake (thanks @dsm) #216
+
+
 # Qucs-S 1.0.1
 
 ## New features
