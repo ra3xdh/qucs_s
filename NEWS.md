@@ -6,6 +6,7 @@
 * Added INDQ and CAPQ devices representing inductor and capacitor with Q-factor #143
 * Added .LIB directive support #242
 * Added SPICE entries for I and V file sources #254
+* Added symbols for 4 and 5 terminal BJT device #198
 
 ## Component library
 
