@@ -461,14 +461,13 @@ void Ngspice::slotSimulate()
         output.append("[Warning!] " + mathf_inc + " file not found!\n");
     }
 
+    bool checker_error = false;
     QStringList incompat;
     if (!checkSchematic(incompat)) {
         QString s = incompat.join("; ");
         output.append("There were SPICE-incompatible components. Simulator cannot proceed.");
         output.append("Incompatible components are: " + s + "\n");
-        emit finished();
-        emit errors(QProcess::FailedToStart);
-        return;
+        checker_error = true;
     }
 
     if (!checkGround()) {
@@ -480,23 +479,24 @@ void Ngspice::slotSimulate()
 
     if (!checkSimulations()) {
         output.append("No simulation found. Please add at least one simulation!\n");
-        emit finished();
-        emit errors(QProcess::FailedToStart);
-        return;
+        checker_error = true;
     }
 
     if (!checkDCSimulation()) {
         output.append("Only DC simulation found in the schematic. It has no effect!"
                       " Add TRAN, AC, or Sweep simulation to proceed.\n");
-        emit finished();
-        emit errors(QProcess::FailedToStart);
-        return;
+        checker_error = true;
     }
 
     if (!checkNodeNames(incompat)) {
         QString s = incompat.join("; ");
         output.append("There were Nutmeg-incompatible node names. Simulator cannot proceed.\n");
         output.append("Incompatible node names are: " + s + "\n");
+        checker_error = true;
+    }
+
+    if (checker_error) {
+        console->insertPlainText(output);
         emit finished();
         emit errors(QProcess::FailedToStart);
         return;
