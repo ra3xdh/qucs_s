@@ -2175,7 +2175,13 @@ void QucsApp::slotZoomOut()
 void QucsApp::slotSimulate()
 {
 
-  if (QucsSettings.DefaultSimulator!=spicecompat::simQucsator) {
+  QWidget *w = DocumentTab->currentWidget();
+
+  //Check is schematic digital
+  Schematic* schematicPtr = (Schematic*)w;
+  bool isDigital = schematicPtr->isDigitalCircuit();
+
+  if (QucsSettings.DefaultSimulator!=spicecompat::simQucsator & isDigital==false) {
       slotSimulateWithSpice();
       return;
   }
@@ -2183,7 +2189,7 @@ void QucsApp::slotSimulate()
   slotHideEdit(); // disable text edit of component property
 
   QucsDoc *Doc;
-  QWidget *w = DocumentTab->currentWidget();
+
   if(isTextDocument (w)) {
     Doc = (QucsDoc*)((TextDoc*)w);
     if(Doc->SimTime.isEmpty() && ((TextDoc*)Doc)->simulation) {

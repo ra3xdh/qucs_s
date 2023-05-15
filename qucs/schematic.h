@@ -282,6 +282,7 @@ public:
   void createSubNetlistPlain(QTextStream*, QPlainTextEdit*, int);
   int  prepareNetlist(QTextStream&, QStringList&, QPlainTextEdit*);
   QString createNetlist(QTextStream&, int);
+  bool isDigitalCircuit();
   bool loadDocument();
   void highlightWireLabels (void);
   void clearSignalsAndFileList();

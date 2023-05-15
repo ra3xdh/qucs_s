@@ -1896,6 +1896,19 @@ bool Schematic::createSubNetlist(QTextStream *stream, int& countInit,
 }
 
 // ---------------------------------------------------
+// Detect simulation domain (analog/digital) by looking at component types.
+bool Schematic::isDigitalCircuit()
+{
+  for(Component *pc = DocComps.first(); pc != 0; pc = DocComps.next()) {
+      if(pc->isActive == COMP_IS_OPEN) continue;
+      if(pc->Model.at(0) == '.' && pc->Model == ".Digi") {
+          return true;  // Verilog simulation detected
+      }
+  }
+  return false;  // Verilog simulation not found
+}
+
+// ---------------------------------------------------
 // Determines the node names and writes subcircuits into netlist file.
 int Schematic::prepareNetlist(QTextStream& stream, QStringList& Collect,
                               QPlainTextEdit *ErrText)
