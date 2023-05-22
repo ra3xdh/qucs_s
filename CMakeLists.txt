@@ -44,6 +44,7 @@ if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif()
 
 add_subdirectory( qucs )
+add_subdirectory( converter )
 add_subdirectory( qucs-activefilter )
 add_subdirectory( qucs-attenuator )
 #add_subdirectory( qucs-doc )
