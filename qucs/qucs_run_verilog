@@ -65,5 +65,5 @@ vvp $NAME -vcd
 wait $!
 
 echo -n "running VCD conversion..."
-$BINDIR/qucsconv $OPTION -if vcd -of qucsdata -i $NAME.vcd -o "$NAMEOUT"
+$BINDIR/vcd2qucsdat $OPTION -if vcd -of qucsdata -i $NAME.vcd -o "$NAMEOUT"
 echo " done."
