@@ -52,10 +52,12 @@ AboutDialog::AboutDialog(QWidget *parent)
     : QDialog(parent)
 {
   qucs_sDevs = {{
-     "Vadim Kuznetsov - " + tr("project maintainer, simuator interface and GUI design"),
+     "Vadim Kuznetsov - " + tr("project maintainer, simulator interface and GUI design"),
      "Mike Brinson - " + tr("component models, documentation"),
      "Tom Russo - " + tr("Xyce integration"),
      "Tom Hajjar - " + tr("Testing, examples"),
+     "Sergey Krasilnikov - " + tr("Qt6 support"),
+     "Sergey Ryzhov - " + tr("Digital simulation, general improvements"),
      "Maria Dubinina - " + tr("testing, general bugfixes")
   }};
   currAuths = {{
