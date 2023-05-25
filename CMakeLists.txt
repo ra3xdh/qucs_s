@@ -1,6 +1,6 @@
 PROJECT(qucs-suite CXX)
-cmake_minimum_required(VERSION 3.18)
-cmake_policy(VERSION 3.18)
+cmake_minimum_required(VERSION 3.10)
+cmake_policy(VERSION 3.10)
 
 set(QUCS_NAME "qucs-s")
 

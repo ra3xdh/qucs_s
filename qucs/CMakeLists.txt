@@ -10,8 +10,8 @@
 # By default, the prefix is "/usr/local"
 
 PROJECT(qucs-s CXX)
-CMAKE_MINIMUM_REQUIRED(VERSION 3.18)
-cmake_policy(VERSION 3.18)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
+cmake_policy(VERSION 3.10)
 
 SET(QUCS_NAME "${PROJECT_NAME}")
 
