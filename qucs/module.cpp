@@ -431,57 +431,53 @@ void Module::registerModules (void) {
       REGISTER_VERILOGA_1 (phototransistor);
       REGISTER_VERILOGA_1 (nigbt);
       REGISTER_VERILOGA_1 (vcresistor);
-
-      // digital components
-      REGISTER_DIGITAL_1 (andor4x2);
-      REGISTER_DIGITAL_1 (andor4x3);
-      REGISTER_DIGITAL_1 (andor4x4);
-      REGISTER_DIGITAL_1 (mux2to1);
-      REGISTER_DIGITAL_1 (mux4to1);
-      REGISTER_DIGITAL_1 (mux8to1);
-      REGISTER_DIGITAL_1 (dmux2to4);
-      REGISTER_DIGITAL_1 (dmux3to8);
-      REGISTER_DIGITAL_1 (dmux4to16);
-      REGISTER_DIGITAL_1 (ha1b);
-      REGISTER_DIGITAL_1 (fa1b);
-      REGISTER_DIGITAL_1 (fa2b);
-      REGISTER_DIGITAL_1 (RS_FlipFlop);
-      REGISTER_DIGITAL_1 (JK_FlipFlop);
-      REGISTER_DIGITAL_1 (gatedDlatch);
-      REGISTER_DIGITAL_1 (logic_0);
-      REGISTER_DIGITAL_1 (logic_1);
-      REGISTER_DIGITAL_1 (pad2bit);
-      REGISTER_DIGITAL_1 (pad3bit);
-      REGISTER_DIGITAL_1 (pad4bit);
-      REGISTER_DIGITAL_1 (DLS_nto1);
-      REGISTER_DIGITAL_1 (DLS_1ton);
-      REGISTER_DIGITAL_1 (binarytogrey4bit);
-      REGISTER_DIGITAL_1 (greytobinary4bit);
-      REGISTER_DIGITAL_1 (comp_1bit);
-      REGISTER_DIGITAL_1 (comp_2bit);
-      REGISTER_DIGITAL_1 (comp_4bit);
-      REGISTER_DIGITAL_1 (hpribin4bit);
-      REGISTER_DIGITAL_1 (VHDL_File);
-      REGISTER_DIGITAL_1 (Verilog_File);
-      REGISTER_DIGITAL_1 (Digi_Sim);
   }
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simNgspice ||
-          QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-      REGISTER_DIGITAL_1 (Digi_Source);
-      REGISTER_DIGITAL_1 (Logical_Buf);
-      REGISTER_DIGITAL_1 (Logical_Inv);
-      REGISTER_DIGITAL_1 (Logical_NAND);
-      REGISTER_DIGITAL_1 (Logical_OR);
-      REGISTER_DIGITAL_1 (Logical_NOR);
-      REGISTER_DIGITAL_1 (Logical_AND);
-      REGISTER_DIGITAL_1 (Logical_XOR);
-      REGISTER_DIGITAL_1 (Logical_XNOR);
-      REGISTER_DIGITAL_1 (D_FlipFlop);
-      REGISTER_DIGITAL_1 (dff_SR);
-      REGISTER_DIGITAL_1 (jkff_SR);
-      REGISTER_DIGITAL_1 (tff_SR);
-  }
+  // digital components
+  REGISTER_DIGITAL_1 (Digi_Sim);
+  REGISTER_DIGITAL_1 (Digi_Source);
+  REGISTER_DIGITAL_1 (Logical_Buf);
+  REGISTER_DIGITAL_1 (Logical_Inv);
+  REGISTER_DIGITAL_1 (Logical_NAND);
+  REGISTER_DIGITAL_1 (Logical_OR);
+  REGISTER_DIGITAL_1 (Logical_NOR);
+  REGISTER_DIGITAL_1 (Logical_AND);
+  REGISTER_DIGITAL_1 (Logical_XOR);
+  REGISTER_DIGITAL_1 (Logical_XNOR);
+  REGISTER_DIGITAL_1 (D_FlipFlop);
+  REGISTER_DIGITAL_1 (dff_SR);
+  REGISTER_DIGITAL_1 (jkff_SR);
+  REGISTER_DIGITAL_1 (tff_SR);
+  REGISTER_DIGITAL_1 (andor4x2);
+  REGISTER_DIGITAL_1 (andor4x3);
+  REGISTER_DIGITAL_1 (andor4x4);
+  REGISTER_DIGITAL_1 (mux2to1);
+  REGISTER_DIGITAL_1 (mux4to1);
+  REGISTER_DIGITAL_1 (mux8to1);
+  REGISTER_DIGITAL_1 (dmux2to4);
+  REGISTER_DIGITAL_1 (dmux3to8);
+  REGISTER_DIGITAL_1 (dmux4to16);
+  REGISTER_DIGITAL_1 (ha1b);
+  REGISTER_DIGITAL_1 (fa1b);
+  REGISTER_DIGITAL_1 (fa2b);
+  REGISTER_DIGITAL_1 (RS_FlipFlop);
+  REGISTER_DIGITAL_1 (JK_FlipFlop);
+  REGISTER_DIGITAL_1 (gatedDlatch);
+  REGISTER_DIGITAL_1 (logic_0);
+  REGISTER_DIGITAL_1 (logic_1);
+  REGISTER_DIGITAL_1 (pad2bit);
+  REGISTER_DIGITAL_1 (pad3bit);
+  REGISTER_DIGITAL_1 (pad4bit);
+  REGISTER_DIGITAL_1 (DLS_nto1);
+  REGISTER_DIGITAL_1 (DLS_1ton);
+  REGISTER_DIGITAL_1 (binarytogrey4bit);
+  REGISTER_DIGITAL_1 (greytobinary4bit);
+  REGISTER_DIGITAL_1 (comp_1bit);
+  REGISTER_DIGITAL_1 (comp_2bit);
+  REGISTER_DIGITAL_1 (comp_4bit);
+  REGISTER_DIGITAL_1 (hpribin4bit);
+  REGISTER_DIGITAL_1 (VHDL_File);
+  REGISTER_DIGITAL_1 (Verilog_File);
 
   // file components
   REGISTER_FILE_1 (SpiceFile);
