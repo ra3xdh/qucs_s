@@ -350,13 +350,13 @@ void SimMessage::startSimulator()
   QStringList Arguments;
   QString SimPath = QDir::toNativeSeparators(QucsSettings.QucsHomeDir.absolutePath());
 #ifdef __MINGW32__
-  QString QucsDigiLib = "qucsdigilib.bat";
-  QString QucsDigi = "qucsdigi.bat";
-  QString QucsVeri = "qucsveri.bat";
+  QString QucsDigiLib = "qucs_mkdigilib.bat";
+  QString QucsDigi = "qucs_run_hdl.bat";
+  QString QucsVeri = "qucs_run_verilog.bat";
 #else
-  QString QucsDigiLib = "qucsdigilib";
-  QString QucsDigi = "qucsdigi";
-  QString QucsVeri = "qucsveri";
+  QString QucsDigiLib = "qucs_mkdigilib";
+  QString QucsDigi = "qucs_run_hdl";
+  QString QucsVeri = "qucs_run_verilog";
 #endif
   SimOpt = NULL;
   bool isVerilog = false;

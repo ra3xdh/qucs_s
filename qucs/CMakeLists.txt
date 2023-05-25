@@ -313,6 +313,16 @@ INSTALL( FILES ${SCRIPTS} DESTINATION bin/ )
 
 INSTALL( FILES ${QUCS_NAME}.1 DESTINATION share/man/man1 )
 
+# Install wrapper scripts
+IF(WIN32)
+  SET(SCRIPTS qucs_run_hdl.bat qucs_run_verilog.bat qucs_mkdigilib.bat)
+ELSE()
+  SET(SCRIPTS qucs_run_hdl qucs_run_verilog qucs_mkdigilib)
+ENDIF()
+INSTALL( FILES ${SCRIPTS} PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+    GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ DESTINATION bin/ )
+
+
 # To Create a package, one can run "cpack -G DragNDrop CPackConfig.cmake" on Mac OS X
 # where CPackConfig.cmake is created by including CPack
 # And then there's ways to customize this as well
