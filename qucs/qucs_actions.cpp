@@ -752,9 +752,11 @@ void QucsApp::slotShowLastNetlist()
 {
     QStringList netlists;
     QStringList sim_lst;
+
+    QWidget *w = DocumentTab->currentWidget();
+
     if (QucsSettings.DefaultSimulator == spicecompat::simXycePar ||
             QucsSettings.DefaultSimulator == spicecompat::simXyceSer) {
-        QWidget *w = DocumentTab->currentWidget();
         if (isTextDocument(w)) {
             QMessageBox::information(this, tr("Show netlist"),
                                      tr("Not a schematic tab!"));
@@ -786,6 +788,15 @@ void QucsApp::slotShowLastNetlist()
         break;
     default: break;
     }
+
+    if (!isTextDocument(w)) {
+        Schematic *sch = (Schematic *) w;
+        if (sch->isDigitalCircuit()) {
+            netlists.clear();
+            netlists.append(QucsSettings.QucsHomeDir.filePath("netlist.txt"));
+        }
+    }
+
     for(const auto &netlist: netlists) {
         editFile(netlist);
     }
