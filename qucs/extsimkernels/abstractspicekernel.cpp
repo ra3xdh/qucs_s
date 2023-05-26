@@ -52,6 +52,11 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *sch_, QObject *parent) :
     if (Sch->showBias == 0) DC_OP_only = true;
     else DC_OP_only = false;
 
+    if (!checkDCSimulation()) { // Run Show bias mode automatically
+        DC_OP_only = true;      // If schematic contains DC simulation only
+        Sch->showBias = 0;
+    }
+
     workdir = QucsSettings.S4Qworkdir;
     QFileInfo inf(workdir);
     if (!inf.exists()) {
@@ -157,6 +162,7 @@ bool AbstractSpiceKernel::checkDCSimulation()
     if (DC_OP_only) return true;
     bool r = false;
     for(Component *pc = Sch->DocComps.first(); pc != 0; pc = Sch->DocComps.next()) {
+        if (!pc->isActive) continue;
         if (pc->isSimulation && pc->Model != ".DC") {
             r = true;
             break;
