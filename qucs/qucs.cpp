@@ -2178,10 +2178,20 @@ void QucsApp::slotSimulate()
   QWidget *w = DocumentTab->currentWidget();
 
   //Check is schematic digital
-  Schematic* schematicPtr = (Schematic*)w;
-  bool isDigital = schematicPtr->isDigitalCircuit();
+  bool isDigital = false;
+  if (!isTextDocument(w)) {
+      Schematic* schematicPtr = (Schematic*)w;
+      isDigital = schematicPtr->isDigitalCircuit();
 
-  if (QucsSettings.DefaultSimulator!=spicecompat::simQucsator & isDigital==false) {
+      if (isDigital && schematicPtr->showBias == 0) {
+          QMessageBox::warning(this,tr("Simulate schematic"),
+                                    tr("DC bias simulation mode is not supported "
+                                       "for digital schematic!"));
+          return;
+      }
+  }
+
+  if (QucsSettings.DefaultSimulator!=spicecompat::simQucsator && !isDigital) {
       slotSimulateWithSpice();
       return;
   }
