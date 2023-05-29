@@ -1,7 +1,6 @@
 
 SET(COMPLIBS
 555_timer.lib
-AnalogueCM.lib
 Bridges.lib
 BJT_Extended.lib
 Cores.lib
