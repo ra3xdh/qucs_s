@@ -3087,6 +3087,9 @@ void QucsApp::slotSimulateWithSpice()
         if (SimDlg->wasSimulated && sch->SimOpenDpl)
             if (sch->showBias < 1) slotChangePage(sch->DocName,sch->DataDisplay);
         delete SimDlg;
+    } else {
+        QMessageBox::warning(this,tr("Simulate schematic"),
+                             tr("Simulation of text document is not possible!"));
     }
 }
 
