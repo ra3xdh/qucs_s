@@ -493,8 +493,8 @@ void Module::registerModules (void) {
   if ((QucsSettings.DefaultSimulator == spicecompat::simNgspice)||
       (QucsSettings.DefaultSimulator == spicecompat::simSpiceOpus)) {
       REGISTER_FILE_1 (XspiceGeneric);
-      REGISTER_FILE_1 (XSP_CMlib);
-      REGISTER_FILE_1 (XSP_CodeModel);
+      //REGISTER_FILE_1 (XSP_CMlib);
+      //REGISTER_FILE_1 (XSP_CodeModel);
   }
 
   // simulations
@@ -564,8 +564,8 @@ void Module::registerModules (void) {
 
       // XSPICE file devices
       REGISTER_XSPICE_1 (XspiceGeneric);
-      REGISTER_XSPICE_1 (XSP_CMlib);
-      REGISTER_XSPICE_1 (XSP_CodeModel);
+      //REGISTER_XSPICE_1 (XSP_CMlib);
+      //REGISTER_XSPICE_1 (XSP_CodeModel);
 
       // specific sections of spice netlists
       REGISTER_SPICE_SEC_1 (SpiceParam);

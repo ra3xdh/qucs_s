@@ -93,8 +93,8 @@
 
 // XSpice file components
 #include "xspicegeneric.h"
-#include "xsp_cmlib.h"
-#include "xsp_codemodel.h"
+//#include "xsp_cmlib.h"
+//#include "xsp_codemodel.h"
 
 // SPICE file devices
 #include "spicegeneric.h"
