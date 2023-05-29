@@ -345,7 +345,7 @@ public:
 
   QAction *helpQucsIndex;
   QAction *simSettings;
-  QAction *buildVAModule, *buildIFS;
+  QAction *buildVAModule;
 
 public slots:
   void slotEditRotate(bool);  // rotate the selected items
