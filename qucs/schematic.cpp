@@ -518,6 +518,7 @@ void Schematic::contentsMouseMoveEvent(QMouseEvent *Event)
 void Schematic::contentsMousePressEvent(QMouseEvent *Event)
 {
   App->editText->setHidden(true); // disable text edit of component property
+  this->setFocus();
   if(App->MouseReleaseAction == &MouseActions::MReleasePaste)
     return;
 
