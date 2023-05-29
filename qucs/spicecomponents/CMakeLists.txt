@@ -90,8 +90,8 @@ XAPWL.cpp
 
 #XSPICE CodeModel
 xspicegeneric.cpp
-xsp_cmlib.cpp
-xsp_codemodel.cpp
+#xsp_cmlib.cpp
+#xsp_codemodel.cpp
 
 #SPICE file devices
 spicegeneric.cpp
@@ -182,8 +182,8 @@ XAPWL.h
 #XSPICE codemodel
 
 xspicegeneric.h
-xsp_cmlib.h
-xsp_codemodel.h
+#xsp_cmlib.h
+#xsp_codemodel.h
 
 #SPICE file devices
 spicegeneric.h

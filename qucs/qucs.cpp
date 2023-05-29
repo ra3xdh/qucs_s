@@ -82,7 +82,7 @@
 #include "misc.h"
 #include "extsimkernels/verilogawriter.h"
 #include "extsimkernels/simsettingsdialog.h"
-#include "extsimkernels/codemodelgen.h"
+//#include "extsimkernels/codemodelgen.h"
 #include "symbolwidget.h"
 
 // icon for unsaved files (diskette)
@@ -3150,7 +3150,7 @@ void QucsApp::slotBuildVAModule()
 }
 
 
-void QucsApp::slotBuildXSPICEIfs(int mode)
+/*void QucsApp::slotBuildXSPICEIfs(int mode)
 {
     if (!isTextDocument(DocumentTab->currentWidget())) {
         Schematic *Sch = (Schematic*)DocumentTab->currentWidget();
@@ -3235,7 +3235,7 @@ void QucsApp::slotEDDtoIFS()
 void QucsApp::slotEDDtoMOD()
 {
     slotBuildXSPICEIfs(spicecompat::cmgenEDDmod);
-}
+}*/
 
 void QucsApp::slotShowModel()
 {

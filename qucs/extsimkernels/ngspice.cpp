@@ -53,6 +53,7 @@ Ngspice::Ngspice(Schematic *sch_, QObject *parent) :
         simulator_cmd = QucsSettings.NgspiceExecutable; //rely on $PATH
     }
     simulator_parameters = "";
+    spinit_name = QDir::toNativeSeparators(QucsSettings.S4Qworkdir+"/.spiceinit");
 }
 
 /*!
@@ -508,15 +509,17 @@ void Ngspice::slotSimulate()
 
     removeAllSimulatorOutputs();
 
-    XSPICE_CMbuilder *CMbuilder = new XSPICE_CMbuilder(Sch);
+    /*XSPICE_CMbuilder *CMbuilder = new XSPICE_CMbuilder(Sch);
     CMbuilder->cleanSpiceinit();
-    CMbuilder->createSpiceinit(/*initial_spiceinit=*/collectSpiceinit(Sch));
+    CMbuilder->createSpiceinit(collectSpiceinit(Sch));
     if (CMbuilder->needCompile()) {
         CMbuilder->cleanCModelTree();
         CMbuilder->createCModelTree(output);
         CMbuilder->compileCMlib(output);
     }
-    delete CMbuilder;
+    delete CMbuilder;*/
+    cleanSpiceinit();
+    createSpiceinit(/*initial_spiceinit=*/collectSpiceinit(Sch));
 
     //startNgSpice(tmp_path);
     SimProcess->setWorkingDirectory(workdir);
@@ -661,4 +664,23 @@ void Ngspice::setSimulatorCmd(QString cmd)
 void Ngspice::setSimulatorParameters(QString parameters)
 {
     simulator_parameters = parameters;
+}
+
+void Ngspice::cleanSpiceinit()
+{
+    QFileInfo inf(spinit_name);
+    if (inf.exists()) QFile::remove(spinit_name);
+}
+
+void Ngspice::createSpiceinit(const QString &initial_spiceinit)
+{
+    if (initial_spiceinit.isEmpty()) return;
+    QFile spinit(spinit_name);
+    if (spinit.open(QIODevice::WriteOnly)) {
+        QTextStream stream(&spinit);
+        if (!initial_spiceinit.isEmpty()) {
+          stream << initial_spiceinit << '\n';
+        }
+        spinit.close();
+    }
 }

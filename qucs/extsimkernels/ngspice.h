@@ -38,11 +38,15 @@ class Ngspice : public AbstractSpiceKernel
     Q_OBJECT
 private:
 
+    QString spinit_name;
+
     bool checkNodeNames(QStringList &incompat);
     static QString collectSpiceinit(Schematic *sch);
     bool findMathFuncInc(QString &mathf_inc);
     QString getParentSWPscript(Component *pc_swp, QString sim, bool before, bool &hasDblSWP);
     QString getParentSWPCntVar(Component *pc_swp, QString sim);
+    void cleanSpiceinit();
+    void createSpiceinit(const QString &initial_spiceinit);
 
 public:
     explicit Ngspice(Schematic *sch_, QObject *parent = 0);

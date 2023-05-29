@@ -814,7 +814,7 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
         QObject::connect(actExport,SIGNAL(triggered(bool)),QucsMain,SLOT(slotSaveDiagramToGraphicsFile()));
         ComponentMenu->addAction(actExport);
       }
-      if (focusElement->Type & isComponent) {
+      /*if (focusElement->Type & isComponent) {
           Component *pc = (Component *)focusElement;
           if (pc->Model == "EDD") {
               QAction *actEDDtoIFS = new QAction(QObject::tr("Create XSPICE IFS"), QucsMain);
@@ -824,7 +824,7 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
               QObject::connect(actEDDtoMOD,SIGNAL(triggered(bool)),QucsMain,SLOT(slotEDDtoMOD()));
               ComponentMenu->addAction(actEDDtoMOD);
           }
-      }
+      }*/
     }
     break;
   }

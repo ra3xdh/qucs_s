@@ -577,8 +577,8 @@ void QucsApp::initActions()
   connect(simSettings,SIGNAL(triggered()),SLOT(slotSimSettings()));
   buildVAModule = new QAction(tr("Build Verilog-A module from subcircuit"),this);
   connect(buildVAModule,SIGNAL(triggered()),SLOT(slotBuildVAModule()));
-  buildIFS = new QAction(tr("Build XSPICE IFS file from subcircuit"),this);
-  connect(buildIFS,SIGNAL(triggered()),SLOT(slotBuildXSPICEIfs()));
+  //buildIFS = new QAction(tr("Build XSPICE IFS file from subcircuit"),this);
+  //connect(buildIFS,SIGNAL(triggered()),SLOT(slotBuildXSPICEIfs()));
 
 
   viewToolBar = new QAction(tr("Tool&bar"), this);
@@ -753,7 +753,7 @@ void QucsApp::initMenuBar()
 
   cmMenu = new QMenu(tr("Compact modelling"));
   cmMenu->addAction(buildVAModule);
-  cmMenu->addAction(buildIFS);
+  //cmMenu->addAction(buildIFS);
   toolMenu->addMenu(cmMenu);
 
 

@@ -183,9 +183,9 @@ private slots:
   void slotSaveNetlist();
   void slotAfterSpiceSimulation();
   void slotBuildVAModule();
-  void slotBuildXSPICEIfs(int mode = 0);
+  /*void slotBuildXSPICEIfs(int mode = 0);
   void slotEDDtoIFS();
-  void slotEDDtoMOD();
+  void slotEDDtoMOD();*/
   void slotShowModel();
   void slotSearchLibComponent(const QString &);
   void slotSearchLibClear();
@@ -345,7 +345,7 @@ public:
 
   QAction *helpQucsIndex;
   QAction *simSettings;
-  QAction *buildVAModule, *buildIFS;
+  QAction *buildVAModule;
 
 public slots:
   void slotEditRotate(bool);  // rotate the selected items
