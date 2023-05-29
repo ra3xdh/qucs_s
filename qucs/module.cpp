@@ -468,8 +468,8 @@ void Module::registerModules (void) {
   REGISTER_DIGITAL_1 (pad2bit);
   REGISTER_DIGITAL_1 (pad3bit);
   REGISTER_DIGITAL_1 (pad4bit);
-  REGISTER_DIGITAL_1 (DLS_nto1);
-  REGISTER_DIGITAL_1 (DLS_1ton);
+  //REGISTER_DIGITAL_1 (DLS_nto1);
+  //REGISTER_DIGITAL_1 (DLS_1ton);
   REGISTER_DIGITAL_1 (binarytogrey4bit);
   REGISTER_DIGITAL_1 (greytobinary4bit);
   REGISTER_DIGITAL_1 (comp_1bit);
