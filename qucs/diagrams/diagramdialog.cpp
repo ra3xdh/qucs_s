@@ -419,7 +419,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     gp->addWidget(NotationLabel,Row,0);
     NotationBox = new QComboBox(Tab2);
     NotationBox->addItem(tr("scientific notation"));
-    NotationBox->addItem(tr("engineerign notation"));
+    NotationBox->addItem(tr("engineering notation"));
     if (Diag->engineeringNotation) NotationBox->setCurrentIndex(1);
     else NotationBox->setCurrentIndex(0);
     gp->addWidget(NotationBox,Row,1);
@@ -431,14 +431,14 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     if(yrLabel)  yrLabel->setText(Diag->zAxis.Label);
 
     if((Diag->Name.left(4) == "Rect") || (Diag->Name == "Curve")) {
-      GridLogX = new QCheckBox(tr("logarithmical X Axis Grid"), Tab2);
+      GridLogX = new QCheckBox(tr("logarithmic X Axis Grid"), Tab2);
       gp->addWidget(GridLogX, Row,0);
       Row++;
 
       QStringList units_name;
       units_name<<"No units"<<"dB"<<"dBuV"<<"dBm";
 
-      GridLogY = new QCheckBox(tr("logarithmical")+" "+NameY+" "+tr("Grid"), Tab2);
+      GridLogY = new QCheckBox(tr("logarithmic")+" "+NameY+" "+tr("Grid"), Tab2);
       gp->addWidget(GridLogY, Row,0);
       LogUnitsY = new QComboBox(Tab2);
       LogUnitsY->addItems(units_name);
@@ -449,7 +449,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       gp->addWidget(LogUnitsY, Row, 1);
       Row++;
 
-      GridLogZ = new QCheckBox(tr("logarithmical")+" "+NameZ+" "+tr("Grid"), Tab2);
+      GridLogZ = new QCheckBox(tr("logarithmic")+" "+NameZ+" "+tr("Grid"), Tab2);
       gp->addWidget(GridLogZ, Row,0);
       LogUnitsZ = new QComboBox(Tab2);
       LogUnitsZ->addItems(units_name);
