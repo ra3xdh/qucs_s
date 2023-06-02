@@ -52,11 +52,13 @@ void vacompat::convert_functions(QStringList &tokens)
 
 }
 
-QString vacompat::normalize_voltage(QString &plus, QString &minus)
+QString vacompat::normalize_voltage(QString &plus, QString &minus, bool left_side)
 {
     QString s;
-    if (plus=="gnd") s = QString("(-V(%1))").arg(minus);
-    else if (minus=="gnd") s = QString("V(%1)").arg(plus);
+    if (plus=="gnd") {
+        if (left_side) s = QString("V(%1)").arg(minus);
+        else s = QString("(-V(%1))").arg(minus);
+    } else if (minus=="gnd") s = QString("V(%1)").arg(plus);
     else s = QString("V(%1,%2)").arg(plus).arg(minus);
     return s;
 }

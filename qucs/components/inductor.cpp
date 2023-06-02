@@ -84,13 +84,10 @@ QString Inductor::va_code()
     QString val = vacompat::normalize_value(Props.at(0)->Value);
     QString plus = Ports.at(0)->Connection->Name;
     QString minus = Ports.at(1)->Connection->Name;
-    QString tmpnod = "_net0" + Name;
     QString s = "";
-    QString Vpm = vacompat::normalize_voltage(plus,minus);
-    QString Ipm = vacompat::normalize_current(plus,minus,true); 
-    s +=  QString("I(%1) <+ ddt(V(%1));\nI(%1) <+ %2;\n").arg(tmpnod).arg(Vpm);
-    s +=  QString("%1 <+ V(%2)/(%3+1e-20);\n").arg(Ipm).arg(tmpnod).arg(val);
-    
+    QString Vpm = vacompat::normalize_voltage(plus,minus,true);
+    QString Ipm = vacompat::normalize_current(plus,minus);
+    s += QString("%1  <+ ddt( %2 *  %3  );\n").arg(Vpm).arg(Ipm).arg(val);
     return s;
 
 }
