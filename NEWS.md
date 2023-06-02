@@ -1,3 +1,22 @@
+# Qucs-S 1.0.3
+
+## New features
+
+* Qucs-S supports digital simulation mode using IcarusVerilog or FreeHDL backends #97
+* Added analog model for digital source #265
+* Qucs-S runs DC bias simulation mode if schematic contains DC simulation only #271
+
+## Deprecated features
+
+* XSPICE CodeModel synthesiszer has been deprected since v1.0.3. The precompiled CM libraries
+  are still supported using *spiceinit* virtual device. See #204 
+
+## Known issues of digital simulation
+
+* Digital buses are not supported;
+* Digital simulation represents its state as of Qucs-0.0.20-RC1; No new features added
+
+
 # Qucs-S 1.0.2
 
 ## New features
