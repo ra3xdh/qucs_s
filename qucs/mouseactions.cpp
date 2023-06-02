@@ -291,7 +291,7 @@ void MouseActions::MMoveElement(Schematic *Doc, QMouseEvent *Event)
   setPainter(Doc);
 
   if(selElem->Type == isPainting) {
-    Doc->PostPaintEvent (_NotRop, 0,0,0,0);
+    Doc->PostPaintEvent (_NotRop, 0, 0, 0, 0);
     x -= Doc->contentsX();
     y -= Doc->contentsY();
     ((Painting*)selElem)->MouseMoving(Doc, x, y, gx, gy,
@@ -403,19 +403,17 @@ void MouseActions::MMoveWire1(Schematic *Doc, QMouseEvent *Event)
  * @param Doc
  * @param Event
  */
-void MouseActions::MMoveSelect(Schematic *Doc, QMouseEvent *Event)
-{
-  //qDebug() << "MMoveSelect " << "select area";
-  MAx2 = DOC_X_POS(Event->pos().x()) - MAx1;
-  MAy2 = DOC_Y_POS(Event->pos().y()) - MAy1;
-  if(isMoveEqual) {    // x and y size must be equal ?
-    if(abs(MAx2) > abs(MAy2)) {
-      if(MAx2<0) MAx2 = -abs(MAy2); else MAx2 = abs(MAy2);
+void MouseActions::MMoveSelect(Schematic *Doc, QMouseEvent *Event) {
+    //qDebug() << "MMoveSelect " << "select area";
+    MAx2 = DOC_X_POS(Event->pos().x()) - MAx1;
+    MAy2 = DOC_Y_POS(Event->pos().y()) - MAy1;
+    if (isMoveEqual) {    // x and y size must be equal ?
+        if (abs(MAx2) > abs(MAy2)) {
+            if (MAx2 < 0) MAx2 = -abs(MAy2); else MAx2 = abs(MAy2);
+        } else { if (MAy2 < 0) MAy2 = -abs(MAx2); else MAy2 = abs(MAx2); }
     }
-    else { if(MAy2<0) MAy2 = -abs(MAx2); else MAy2 = abs(MAx2); }
-  }
 
-  Doc->PostPaintEvent (_Rect, MAx1, MAy1, MAx2, MAy2);
+    Doc->PostPaintEvent(_SelectionRect, MAx1, MAy1, MAx2, MAy2);
 }
 
 // -----------------------------------------------------------
@@ -675,7 +673,7 @@ void MouseActions::MMoveActivate(Schematic *Doc, QMouseEvent *Event)
   MAx3  = DOC_X_POS(Event->pos().x());
   MAy3  = DOC_Y_POS(Event->pos().y());
 
-  Doc->PostPaintEvent (_Rect, MAx3, MAy3-9, 14, 10);
+  Doc->PostPaintEvent (_Rect, MAx3, MAy3 - 9, 14, 10);
   Doc->PostPaintEvent (_Line, MAx3, MAy3-9, MAx3+13, MAy3);
   Doc->PostPaintEvent (_Line, MAx3, MAy3, MAx3+13, MAy3-9);
 }
@@ -1358,7 +1356,7 @@ void MouseActions::MPressElement(Schematic *Doc, QMouseEvent *Event, float, floa
 void MouseActions::MPressWire1(Schematic *Doc, QMouseEvent*, float fX, float fY)
 {
   //Doc->PostPaintEvent (_DotLine);
-  //Doc->PostPaintEvent (_NotRop);
+  //Doc->PostPaintEvent (PPENotRop);
   //if(drawn) {
 #if 0  //ALYS - it draws some garbage, not deleted because of possible questions
 	Doc->PostPaintEvent (_Line, 0, MAy3, MAx2, MAy3); // erase old mouse cross
@@ -1588,12 +1586,11 @@ void MouseActions::MReleaseSelect2(Schematic *Doc, QMouseEvent *Event)
 {
   if(Event->button() != Qt::LeftButton) return;
 
-  bool Ctrl;
-  if(Event->modifiers().testFlag(Qt::ControlModifier)) Ctrl = true;
-  else Ctrl = false;
+  bool IsCtrl = Event->modifiers().testFlag(Qt::ControlModifier);
+  bool IsShift = Event->modifiers().testFlag(Qt::ShiftModifier);
 
   // selects all elements within the rectangle
-  Doc->selectElements(MAx1, MAy1, MAx1+MAx2, MAy1+MAy2, Ctrl);
+  Doc->selectElements(MAx1, MAy1, MAx1+MAx2, MAy1+MAy2, IsCtrl, !IsShift);
 
   Doc->releaseKeyboard();  // allow keyboard inputs again
   QucsMain->MouseMoveAction = 0;
@@ -1601,6 +1598,7 @@ void MouseActions::MReleaseSelect2(Schematic *Doc, QMouseEvent *Event)
   QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
   QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
   Doc->highlightWireLabels ();
+  Doc->PostedPaintEvents.clear();
   Doc->viewport()->update();
   drawn = false;
 }
@@ -1695,7 +1693,7 @@ void MouseActions::MReleaseResizePainting(Schematic *Doc, QMouseEvent *Event)
 {
   if(Event->button() != Qt::LeftButton) return;
 
-  QucsMain->MouseMoveAction = 0;
+  QucsMain->MouseMoveAction = nullptr;
   QucsMain->MousePressAction = &MouseActions::MPressSelect;
   QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
   QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
@@ -1710,7 +1708,7 @@ void MouseActions::MReleaseResizePainting(Schematic *Doc, QMouseEvent *Event)
 void MouseActions::paintElementsScheme(Schematic *p)
 {
   Element *pe;
-  for(pe = movingElements.first(); pe != 0; pe = movingElements.next())
+  for(pe = movingElements.first(); pe != nullptr; pe = movingElements.next())
     pe->paintScheme(p);
 }
 
