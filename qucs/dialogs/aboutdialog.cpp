@@ -56,7 +56,7 @@ AboutDialog::AboutDialog(QWidget *parent)
      "Mike Brinson - " + tr("component models, documentation"),
      "Tom Russo - " + tr("Xyce integration"),
      "Tom Hajjar - " + tr("Testing, examples"),
-     "Sergey Krasilnikov - " + tr("Qt6 support"),
+     "Sergey Krasilnikov - " + tr("Qt6 support, general improvements"),
      "Sergey Ryzhov - " + tr("Digital simulation, general improvements"),
      "Maria Dubinina - " + tr("testing, general bugfixes")
   }};
