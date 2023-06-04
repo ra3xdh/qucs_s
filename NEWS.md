@@ -5,6 +5,7 @@
 * Qucs-S supports digital simulation mode using IcarusVerilog or FreeHDL backends #97
 * Added analog model for digital source #265
 * Qucs-S runs DC bias simulation mode if schematic contains DC simulation only #271
+* Selection rectangle update #276
 
 ## Deprecated features
 

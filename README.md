@@ -1,8 +1,8 @@
 ## Qucs-S: Quite universal circuit simulator with SPICE
 
 Qucs-S provides a fancy graphical user interface for a number of popular circuit simulation
-engines. Qucs-S contains libraries for schematic capture, visualization and components. The following
-simulation kernels are supported:
+engines. Qucs-S contains instruments for schematic capture, visualization and provides differents 
+passive and active components including device library. The following simulation kernels are supported:
 
 * Ngspice (recommended)
 * Xyce
@@ -19,7 +19,7 @@ Qucs-S accepts donation using Boosty platform: https://boosty.to/qucs_s
 
 ## Build instructions
 
-Use CMake to build Qucs-S. Install all necessary dependencies: GCC, Qt, and SPICE
+Use CMake to build Qucs-S. Install all necessary dependencies: GCC, Qt, Flex, Bison and SPICE
 (optional). Install `ngspice` that is not needed for build, but serves as the simulation kernel.
 
 ### Dependencies
@@ -27,13 +27,13 @@ Use CMake to build Qucs-S. Install all necessary dependencies: GCC, Qt, and SPIC
 #### Ubuntu
 
 ~~~
-sudo apt-get install ngspice build-essential git cmake qtbase5-dev qttools5-dev libqt5svg5-dev
+sudo apt-get install ngspice build-essential git cmake qtbase5-dev qttools5-dev libqt5svg5-dev flex bison
 ~~~
 
 #### OpenSUSE Tumbleweed
 
 ~~~
-sudo zypper install ngspice git cmake libqt5-qtbase-devel libqt5-qttools-devel libqt5-qtsvg-devel
+sudo zypper install ngspice git cmake libqt5-qtbase-devel libqt5-qttools-devel libqt5-qtsvg-devel flex bison
 ~~~
 
 ### Compiling
