@@ -458,11 +458,10 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
    * Paint actions can only be called from within the paint event, so they
    * are put into a QList (PostedPaintEvents) and processed here
    */
-  for(int i=0;i<PostedPaintEvents.size();i++)
+  for(auto p : PostedPaintEvents)
   {
-    PostedPaintEvent p = PostedPaintEvents[i];
     // QPainter painter2(viewport()); for if(p.PaintOnViewport)
-
+    QPen pen(Qt::black);
     Painter.Painter->setPen(Qt::black);
     switch(p.pe)
     {
@@ -470,6 +469,13 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
         Painter.Painter->setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
         break;
       case _Rect:
+        Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
+        break;
+      case _SelectionRect:
+        pen.setStyle(Qt::DashLine);
+        pen.setColor(QColor(50, 50, 50, 100));
+        Painter.Painter->setPen(pen);
+        Painter.fillRect(p.x1, p.y1, p.x2, p.y2, QColor(200,220,240,100));
         Painter.drawRect(p.x1, p.y1, p.x2, p.y2);
         break;
       case _Line:

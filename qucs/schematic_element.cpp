@@ -1435,7 +1435,7 @@ void Schematic::highlightWireLabels ()
 
 // ---------------------------------------------------
 // Deselects all elements except 'e'.
-void Schematic::deselectElements(Element *e)
+void Schematic::deselectElements(Element *e) const
 {
     // test all components
     for(Component *pc = Components->first(); pc != 0; pc = Components->next())
@@ -1476,131 +1476,126 @@ void Schematic::deselectElements(Element *e)
 
 // ---------------------------------------------------
 // Selects elements that lie within the rectangle x1/y1, x2/y2.
-int Schematic::selectElements(int x1, int y1, int x2, int y2, bool flag) const
-{
-    int  z=0;   // counts selected elements
-    int  cx1, cy1, cx2, cy2;
+int Schematic::selectElements(int x1, int y1, int x2, int y2, bool append, bool entirely) const {
+    int z = 0;   // counts selected elements
+    int cx1, cy1, cx2, cy2;
 
     // exchange rectangle coordinates to obtain x1 < x2 and y1 < y2
     cx1 = (x1 < x2) ? x1 : x2;
-    cx2 = (x1 > x2) ? x1 : x2;
+    cx2 = (x1 >= x2) ? x1 : x2;
     cy1 = (y1 < y2) ? y1 : y2;
-    cy2 = (y1 > y2) ? y1 : y2;
+    cy2 = (y1 >= y2) ? y1 : y2;
     x1 = cx1;
     x2 = cx2;
     y1 = cy1;
     y2 = cy2;
 
+    QRect selectionRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
+
     // test all components
-    for(Component *pc = Components->first(); pc != nullptr; pc = Components->next())
-    {
+    for (Component *pc = Components->first(); pc != nullptr; pc = Components->next()) {
         pc->Bounding(cx1, cy1, cx2, cy2);
-        if(cx1 >= x1) if(cx2 <= x2) if(cy1 >= y1) if(cy2 <= y2)
-                    {
-                        pc->isSelected = true;
-                        z++;
-                        continue;
-                    }
-        if(pc->isSelected &= flag) z++;
+        QRect componentRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
+        if ((entirely && selectionRect.contains(componentRect)) ||
+            (!entirely && selectionRect.intersects(componentRect))) {
+            pc->isSelected = true;
+            z++;
+            continue;
+        }
+        if (pc->isSelected &= append) z++;
     }
 
 
     Wire *pw;
     for (pw = Wires->first(); pw != nullptr; pw = Wires->next())   // test all wires
     {
-        if (pw->x1 >= x1)
-            if (pw->x2 <= x2)
-                if (pw->y1 >= y1)
-                    if (pw->y2 <= y2) {
-                        pw->isSelected = true;
-                        z++;
-                        continue;
-                    }
-        if (pw->isSelected &= flag) z++;
+        QRect componentRect(pw->x1, pw->y1, pw->x2 - pw->x1, pw->y2 - pw->y1);
+        if ((entirely && selectionRect.contains(componentRect)) ||
+            (!entirely && selectionRect.intersects(componentRect))) {
+            pw->isSelected = true;
+            z++;
+            continue;
+        }
+        if (pw->isSelected &= append) z++;
     }
 
 
     // test all wire labels *********************************
-    WireLabel *pl=nullptr;
-    for(pw = Wires->first(); pw != nullptr; pw = Wires->next())
-    {
-        if(pw->Label)
-        {
+    WireLabel *pl = nullptr;
+    for (pw = Wires->first(); pw != nullptr; pw = Wires->next()) {
+        if (pw->Label) {
             pl = pw->Label;
-            if(pl->x1 >= x1) if((pl->x1+pl->x2) <= x2)
-                    if(pl->y1 >= y1) if((pl->y1+pl->y2) <= y2)
-                        {
-                            pl->isSelected = true;
-                            z++;
-                            continue;
-                        }
-            if(pl->isSelected &= flag) z++;
+            QRect componentRect(pl->x1, pl->y1, pl->x2 - pl->x1, pl->y2 - pl->y1);
+            if ((entirely && selectionRect.contains(componentRect)) ||
+                (!entirely && selectionRect.intersects(componentRect))) {
+                pl->isSelected = true;
+                z++;
+                continue;
+            }
+            if (pl->isSelected &= append) z++;
         }
     }
 
 
     // test all node labels *************************************
-    for(Node *pn = Nodes->first(); pn != 0; pn = Nodes->next())
-    {
+    for (Node *pn = Nodes->first(); pn != nullptr; pn = Nodes->next()) {
         pl = pn->Label;
-        if(pl)
-        {
-            if(pl->x1 >= x1) if((pl->x1+pl->x2) <= x2)
-                    if((pl->y1-pl->y2) >= y1) if(pl->y1 <= y2)
-                        {
-                            pl->isSelected = true;
-                            z++;
-                            continue;
-                        }
-            if(pl->isSelected &= flag) z++;
+        if (pl) {
+            QRect componentRect(pl->x1, pl->y1, pl->x2 - pl->x1, pl->y2 - pl->y1);
+            if ((entirely && selectionRect.contains(componentRect)) ||
+                (!entirely && selectionRect.intersects(componentRect))) {
+                pl->isSelected = true;
+                z++;
+                continue;
+            }
+            if (pl->isSelected &= append) z++;
         }
     }
 
 
     // test all diagrams *******************************************
-    for(Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next())
-    {
+    for (Diagram *pd = Diagrams->first(); pd != 0; pd = Diagrams->next()) {
         // test graphs of diagram
-        for (Graph *pg : pd->Graphs)
-        {
-            if(pg->isSelected &= flag) z++;
+        for (Graph *pg: pd->Graphs) {
+            if (pg->isSelected &= append) z++;
 
             // test markers of graph
-            for (Marker *pm : pg->Markers)
-            {
+            for (Marker *pm: pg->Markers) {
                 pm->Bounding(cx1, cy1, cx2, cy2);
-                if(cx1 >= x1) if(cx2 <= x2) if(cy1 >= y1) if(cy2 <= y2)
-                            {
-                                pm->isSelected = true;
-                                z++;
-                                continue;
-                            }
-                if(pm->isSelected &= flag) z++;
+                QRect componentRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
+                if ((entirely && selectionRect.contains(componentRect)) ||
+                    (!entirely && selectionRect.intersects(componentRect))) {
+                    pm->isSelected = true;
+                    z++;
+                    continue;
+                }
+                if (pm->isSelected &= append) z++;
             }
         }
 
         // test diagram itself
         pd->Bounding(cx1, cy1, cx2, cy2);
-        if(cx1 >= x1) if(cx2 <= x2) if(cy1 >= y1) if(cy2 <= y2)
-                    {
-                        pd->isSelected = true;
-                        z++;
-                        continue;
-                    }
-        if(pd->isSelected &= flag) z++;
+        QRect componentRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
+        if ((entirely && selectionRect.contains(componentRect)) ||
+            (!entirely && selectionRect.intersects(componentRect))) {
+            pd->isSelected = true;
+            z++;
+            continue;
+        }
+        if (pd->isSelected &= append) z++;
     }
 
     // test all paintings *******************************************
-    for(Painting *pp = Paintings->first(); pp != 0; pp = Paintings->next())
-    {
+    for (Painting *pp = Paintings->first(); pp != 0; pp = Paintings->next()) {
         pp->Bounding(cx1, cy1, cx2, cy2);
-        if(cx1 >= x1) if(cx2 <= x2) if(cy1 >= y1) if(cy2 <= y2)
-                    {
-                        pp->isSelected = true;
-                        z++;
-                        continue;
-                    }
-        if(pp->isSelected &= flag) z++;
+        QRect componentRect(cx1, cy1, cx2 - cx1, cy2 - cy1);
+        if ((entirely && selectionRect.contains(componentRect)) ||
+            (!entirely && selectionRect.intersects(componentRect))) {
+            pp->isSelected = true;
+            z++;
+            continue;
+        }
+        if (pp->isSelected &= append) z++;
     }
 
     return z;
