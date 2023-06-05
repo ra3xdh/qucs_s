@@ -30,15 +30,15 @@ QString spicecompat::check_refdes(QString &Name,QString &SpiceModel)
  */
 QString spicecompat::normalize_value(QString Value)
 {
-    QRegularExpression r_pattern("^[0-9]+.*Ohm$");
-    QRegularExpression p_pattern("^[+-]*[0-9]+.*dBm$");
-    QRegularExpression c_pattern("^[0-9]+.*F$");
-    QRegularExpression l_pattern("^[0-9]+.*H$");
-    QRegularExpression v_pattern("^[0-9]+.*V$");
-    QRegularExpression hz_pattern("^[0-9]+.*Hz$");
-    QRegularExpression s_pattern("^[0-9]+.*S$");
-    QRegularExpression sec_pattern("^[0-9]+.*s$");
-    QRegularExpression var_pattern("^[A-Za-z].*$");
+    const QRegularExpression r_pattern("^[0-9]+.*Ohm$");
+    const QRegularExpression p_pattern("^[+-]*[0-9]+.*dBm$");
+    const QRegularExpression c_pattern("^[0-9]+.*F$");
+    const QRegularExpression l_pattern("^[0-9]+.*H$");
+    const QRegularExpression v_pattern("^[0-9]+.*V$");
+    const QRegularExpression hz_pattern("^[0-9]+.*Hz$");
+    const QRegularExpression s_pattern("^[0-9]+.*S$");
+    const QRegularExpression sec_pattern("^[0-9]+.*s$");
+    const QRegularExpression var_pattern("^[A-Za-z].*$");
 
     QString s = Value.remove(' ');
     if (s.startsWith('\'')&&s.endsWith('\'')) return Value; // Expression detected
@@ -70,7 +70,6 @@ QString spicecompat::normalize_value(QString Value)
         s = "{" + s + "}";
     }
 
-
     return s.toUpper();
 }
 
@@ -83,13 +82,19 @@ QString spicecompat::normalize_value(QString Value)
  */
 QString spicecompat::convert_function(QString tok, bool isXyce)
 {
-    QStringList conv_list_ngspice; // Put here functions need to be converted
-    conv_list_ngspice<<"q"<<"1.6021765e-19"
-            <<"kB"<<"1.38065e-23"
-            <<"pi"<<"3.1415926539"
-            <<"step"<<"stp"
-            <<"sign"<<"sgn"
-            <<"log10"<<"log";
+    const QStringList conv_list_ngspice = {"q","1.6021765e-19",
+                                           "kB","1.38065e-23",
+                                           "pi","3.1415926539",
+                                           "step","stp",
+                                           "sign","sgn",
+                                           "log10","log"};
+    // Put here functions need to be converted
+//    conv_list_ngspice<<"q"<<"1.6021765e-19"
+//            <<"kB"<<"1.38065e-23"
+//            <<"pi"<<"3.1415926539"
+//            <<"step"<<"stp"
+//            <<"sign"<<"sgn"
+//            <<"log10"<<"log";
     QStringList conv_list_xyce = conv_list_ngspice;
 
     QStringList conv_list;
@@ -100,7 +105,6 @@ QString spicecompat::convert_function(QString tok, bool isXyce)
         if (conv_list.at(i)==tok)
             return conv_list.at(i+1);
     }
-
     return tok;
 }
 
@@ -127,8 +131,8 @@ void spicecompat::splitEqn(QString &eqn, QStringList &tokens)
 {
     tokens.clear();
     QString tok = "";
+    const QString delim = "=()*/+-^<>:?&>=%!|";
     for (QString::iterator it=eqn.begin();it!=eqn.end();it++) {
-        QString delim = "=()*/+-^<>:?&>=%!|";
         if (it->isSpace()) continue;
         if (delim.contains(*it)) {
             if (!tok.isEmpty()) tokens.append(tok);
@@ -139,9 +143,9 @@ void spicecompat::splitEqn(QString &eqn, QStringList &tokens)
         tok += *it;
     }
     if (!tok.isEmpty()) tokens.append(tok);
-    QRegularExpression fpn("[0-9]+\\.[0-9]+[eE]"); // first part of float number
-    QRegularExpression dn("[0-9]+[eE]");
-    QRegularExpression intn("[0-9]+");
+    const QRegularExpression fpn("[0-9]+\\.[0-9]+[eE]"); // first part of float number
+    const QRegularExpression dn("[0-9]+[eE]");
+    const QRegularExpression intn("[0-9]+");
     // Reassemble floating point numbers such as [+-]1.2e[+-]02 , etc.
     for(auto t = tokens.begin();t != tokens.end();t++) {
 
@@ -178,8 +182,8 @@ void spicecompat::splitEqn(QString &eqn, QStringList &tokens)
  */
 bool spicecompat::containNodes(QStringList &tokens, QStringList &vars)
 {
-    QRegularExpression var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
-    QRegularExpression disto_var("^[Dd][Ii][Ss][Tt][Oo][0-9]\\.[Vv]$");
+    const QRegularExpression var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
+    const QRegularExpression disto_var("^[Dd][Ii][Ss][Tt][Oo][0-9]\\.[Vv]$");
     QStringList system_vars;
     system_vars.clear();
     system_vars<<"frequency"<<"acfrequency"<<"time"<<"hbfrequncy";
@@ -213,8 +217,8 @@ bool spicecompat::containNodes(QStringList &tokens, QStringList &vars)
  */
 void spicecompat::convertNodeNames(QStringList &tokens, QString &sim)
 {
-    QRegularExpression var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
-    QRegularExpression disto_var("^[Dd][Ii][Ss][Tt][Oo][0-9]\\.[Vv]$");
+    const QRegularExpression var_pattern("^[\\w]+\\.([IV]t|[iv]|vn|Vb|[IV])$");
+    const QRegularExpression disto_var("^[Dd][Ii][Ss][Tt][Oo][0-9]\\.[Vv]$");
     for (QStringList::iterator it=tokens.begin();it!=tokens.end();it++) {
         if ((*it).endsWith("#branch")) sim="all";
         if ((*it).toUpper()=="V") {
@@ -243,10 +247,8 @@ void spicecompat::convertNodeNames(QStringList &tokens, QString &sim)
     }
 }
 
-QString spicecompat::normalize_node_name(QString nod)
-{
-    if (nod=="gnd") return QString("0");
-    else return nod;
+QString spicecompat::normalize_node_name(QString nod) {
+    return (nod == "gnd") ? QString("0") : nod;
 }
 
 QString spicecompat::convert_relative_filename(QString filename)
@@ -256,8 +258,7 @@ QString spicecompat::convert_relative_filename(QString filename)
 
     QString s = QucsSettings.QucsWorkDir.absolutePath() + QDir::separator() + filename;
     inf.setFile(s);
-    if (inf.exists()) return s;
-    else return filename;
+    return inf.exists() ? s : filename;
 }
 
 int spicecompat::getPins(const QString &file, const QString &compname, QStringList &pin_names)
@@ -272,8 +273,8 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
         f.close();
     } else return 0;
 
-    QRegularExpression subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
-    QRegularExpression sep("\\s");
+    const QRegularExpression subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
+    const QRegularExpression sep("\\s");
 
     QTextStream stream(&content,QIODevice::ReadOnly);
     while (!stream.atEnd()) {
@@ -313,8 +314,8 @@ QString spicecompat::getSubcktName(const QString& subfilename)
 
     QFile sub_file(subfilename);
     if (sub_file.open(QIODevice::ReadOnly)) {
-        QRegularExpression subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
-        QRegularExpression sep("\\s");
+        const QRegularExpression subckt_header("^\\s*\\.(S|s)(U|u)(B|b)(C|c)(K|k)(T|t)\\s.*");
+        const QRegularExpression sep("\\s");
         QStringList lst = QString(sub_file.readAll()).split("\n");
         for (const QString& str : lst) {            
             if (subckt_header.match(str).hasMatch()) {
@@ -347,11 +348,10 @@ QString spicecompat::convert_sweep_type(const QString& sweep)
  */
 bool spicecompat::check_nodename(QString &node)
 {
-    QStringList nutmeg_keywords;
+    static QStringList nutmeg_keywords = {"gt","lt","ge","ne","le","and","not","or","eq"};
     // logical operations (case sensitive)
-    nutmeg_keywords<<"gt"<<"lt"<<"ge"<<"ne"<<"le"<<"and"<<"not"<<"or"<<"eq";
-    if (nutmeg_keywords.contains(node)) return false;
-    else return true;
+    //nutmeg_keywords<<"gt"<<"lt"<<"ge"<<"ne"<<"le"<<"and"<<"not"<<"or"<<"eq";
+    return !nutmeg_keywords.contains(node);
 }
 
 QString spicecompat::getDefaultSimulatorName()
