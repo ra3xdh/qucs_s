@@ -354,22 +354,25 @@ bool spicecompat::check_nodename(QString &node)
     return !nutmeg_keywords.contains(node);
 }
 
-QString spicecompat::getDefaultSimulatorName()
+QString spicecompat::getDefaultSimulatorName(int simulator)
 {
-    QString sim_lbl;
-    switch (QucsSettings.DefaultSimulator) {
-    case spicecompat::simQucsator: sim_lbl = QObject::tr("Qucsator");
-        break;
-    case spicecompat::simNgspice: sim_lbl = QObject::tr("Ngspice");
-        break;
-    case spicecompat::simSpiceOpus: sim_lbl = QObject::tr("SpiceOpus");
-        break;
-    case spicecompat::simXyceSer: sim_lbl = QObject::tr("Xyce (Serial)");
-        break;
-    case spicecompat::simXycePar: sim_lbl = QObject::tr("Xyce (Parallel)");
-        break;
-    default: sim_lbl = QObject::tr("Qucsator");
-        break;
+    QString result;
+    switch (simulator) {
+        case spicecompat::simQucsator:
+            result = QObject::tr("Qucsator");
+            break;
+        case spicecompat::simNgspice:
+            result = QObject::tr("Ngspice");
+            break;
+        case spicecompat::simSpiceOpus:
+            result = QObject::tr("SpiceOpus");
+            break;
+        case spicecompat::simXyce:
+            result = QObject::tr("Xyce");
+            break;
+        default:
+            result = QObject::tr("Qucsator");
+            break;
     }
-    return sim_lbl;
+    return result;
 }

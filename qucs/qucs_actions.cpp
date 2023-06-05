@@ -755,8 +755,7 @@ void QucsApp::slotShowLastNetlist()
 
     QWidget *w = DocumentTab->currentWidget();
 
-    if (QucsSettings.DefaultSimulator == spicecompat::simXycePar ||
-            QucsSettings.DefaultSimulator == spicecompat::simXyceSer) {
+    if (QucsSettings.DefaultSimulator == spicecompat::simXyce) {
         if (isTextDocument(w)) {
             QMessageBox::information(this, tr("Show netlist"),
                                      tr("Not a schematic tab!"));
@@ -778,8 +777,7 @@ void QucsApp::slotShowLastNetlist()
         netlists.append(QDir::toNativeSeparators(QucsSettings.S4Qworkdir
                                                  + "/spice4qucs.cir"));
         break;
-    case spicecompat::simXycePar: // Xyce generates one netlist for
-    case spicecompat::simXyceSer: // every simulation
+    case spicecompat::simXyce: // Xyce generates one netlist for every simulation
         for(const auto &sim : sim_lst) {
             netlists.append(QDir::toNativeSeparators(QucsSettings.S4Qworkdir
                                                      + "/spice4qucs."

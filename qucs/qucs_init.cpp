@@ -926,7 +926,7 @@ void QucsApp::initToolBar()
 void QucsApp::initStatusBar()
 {
   // To reserve enough space, insert the longest text and rewrite it afterwards.
-  SimulatorLabel = new QLabel(spicecompat::getDefaultSimulatorName());
+  SimulatorLabel = new QLabel(spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator));
   statusBar()->addPermanentWidget(SimulatorLabel, 0);
 
   WarningLabel = new QLabel(tr("no warnings"), statusBar());

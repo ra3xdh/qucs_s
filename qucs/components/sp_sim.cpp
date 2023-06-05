@@ -125,13 +125,12 @@ int SP_Sim::getSPortsNumber()
 QStringList SP_Sim::getExtraVariables()
 {
     switch (QucsSettings.DefaultSimulator) {
-    case spicecompat::simNgspice:
-        return getNgspiceExtraVariables();
-    case spicecompat::simXycePar:
-    case spicecompat::simXyceSer:
-        return getXyceExtraVariables();
-    default:
-        return QStringList();
+        case spicecompat::simNgspice:
+            return getNgspiceExtraVariables();
+        case spicecompat::simXyce:
+            return getXyceExtraVariables();
+        default:
+            return QStringList();
     }
 }
 

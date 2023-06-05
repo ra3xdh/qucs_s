@@ -503,8 +503,7 @@ inline QStringList getBlacklistedLibraries(QString dir)
     switch (QucsSettings.DefaultSimulator) {
     case spicecompat::simQucsator : filename = dir + QDir::separator()+ "qucs.blacklist";
         break;
-    case spicecompat::simXycePar:
-    case spicecompat::simXyceSer: filename = dir + QDir::separator()+ "xyce.blacklist";
+    case spicecompat::simXyce: filename = dir + QDir::separator()+ "xyce.blacklist"; //TODO ZERGUD
         break;
     case spicecompat::simNgspice:
     case spicecompat::simSpiceOpus: filename = dir + QDir::separator() + "ngspice.blacklist";

@@ -444,7 +444,7 @@ int runNgspice(QString schematic, QString dataset)
 
 int runXyce(QString schematic, QString dataset)
 {
-    QucsSettings.DefaultSimulator = spicecompat::simXyceSer;
+    QucsSettings.DefaultSimulator = spicecompat::simXyce;
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;
@@ -482,7 +482,7 @@ int doNgspiceNetlist(QString schematic, QString netlist)
 
 int doXyceNetlist(QString schematic, QString netlist)
 {
-    QucsSettings.DefaultSimulator = spicecompat::simXyceSer;
+    QucsSettings.DefaultSimulator = spicecompat::simXyce;
     Schematic *sch = openSchematic(schematic);
     if (sch == NULL) {
       return 1;
