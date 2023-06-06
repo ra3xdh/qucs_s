@@ -667,7 +667,7 @@ extern QString lastDirOpenSave; // to remember last directory and file
 // component edit dialog.
 void QucsApp::editFile(const QString& File)
 {
-    if ((QucsSettings.Editor.toLower() == "qucs") | QucsSettings.Editor.isEmpty())
+    if ((QucsSettings.Editor.toLower() == "qucs") || QucsSettings.Editor.isEmpty())
     {
         // The Editor is 'qucs' or empty, open a net document tab
         if (File.isEmpty()) {

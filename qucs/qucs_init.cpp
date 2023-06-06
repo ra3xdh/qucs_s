@@ -915,11 +915,14 @@ void QucsApp::initToolBar()
   workToolbar->addAction(insEquation);
   workToolbar->addAction(insGround);
   workToolbar->addAction(insPort);
-  workToolbar->addAction(simulate);
-  workToolbar->addAction(dpl_sch);
-  workToolbar->addAction(setMarker);
-  workToolbar->addSeparator();    // <<<=======================
+  //workToolbar->addSeparator();    // <<<=======================
 
+  simulateToolbar = new QToolBar(tr("Simulate"));
+  this->addToolBar(simulateToolbar);
+  simulateToolbar->addWidget(reinterpret_cast<QWidget *>(simulatorsCombobox));
+  simulateToolbar->addAction(simulate);
+  simulateToolbar->addAction(dpl_sch);
+  simulateToolbar->addAction(setMarker);
 }
 
 // ----------------------------------------------------------
@@ -1004,6 +1007,7 @@ void QucsApp::slotViewToolBar(bool toggle)
   editToolbar->setVisible(toggle);
   viewToolbar->setVisible(toggle);
   workToolbar->setVisible(toggle);
+  simulateToolbar->setVisible(toggle);
 }
 
 // ----------------------------------------------------------

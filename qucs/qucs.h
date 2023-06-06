@@ -168,6 +168,7 @@ private slots:
   void slotSelectLibComponent(QTreeWidgetItem*);
   void slotOpenContent(const QModelIndex &);
   void slotSetCompView(int);
+  void slotChangeSimulator(int);
   void slotButtonProjNew();
   void slotButtonProjOpen();
   void slotButtonProjDel();
@@ -255,6 +256,7 @@ private:
   bool deleteProject(const QString &);
   void updatePortNumber(QucsDoc*, int);
   void fillComboBox(bool);
+  void fillSimulatorsComboBox();
   void switchSchematicDoc(bool);
   void switchEditMode(bool);
   void changeSchematicSymbolMode(Schematic*);
@@ -314,7 +316,8 @@ private:
   // submenus for the PDF documents
   QMenu *helpTechnical, *helpReport, *helpTutorial;
 
-  QToolBar *fileToolbar, *editToolbar, *viewToolbar, *workToolbar;
+  QComboBox *simulatorsCombobox;
+  QToolBar *fileToolbar, *editToolbar, *viewToolbar, *workToolbar, *simulateToolbar;
 
   // Shortcuts for scrolling schematic / TextEdit
   // This is rather cumbersome -> Make this with a QScrollView instead??

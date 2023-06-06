@@ -26,35 +26,39 @@
 SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     QDialog(parent)
 {
-    lblSimulator = new QLabel(tr("Default simulator"));
+    //lblSimulator = new QLabel(tr("Default simulator"));
     lblNgspice = new QLabel(tr("Ngspice executable location"));
     lblXyce = new QLabel(tr("Xyce executable location"));
-    lblXycePar = new QLabel(tr("Xyce Parallel executable location (openMPI installed required)"));
+    //lblXycePar = new QLabel(tr("Xyce Parallel executable location (openMPI installed required)"));
     lblSpiceOpus = new QLabel(tr("SpiceOpus executable location"));
     lblQucsator = new QLabel(tr("Qucsator executable location"));
-    lblNprocs = new QLabel(tr("Number of processors in a system:"));
+    //lblNprocs = new QLabel(tr("Number of processors in a system:"));
     lblWorkdir = new QLabel(tr("Directory to store netlist and simulator output"));
     lblSimParam = new QLabel(tr("Extra simulator parameters"));
 
-    cbxSimulator = new QComboBox(this);
-    QStringList items;
-    items<<"Ngspice"<<"Xyce (Serial)"<<"Xyce (Parallel)"<<"SpiceOpus"<<"Qucsator";
-    cbxSimulator->addItems(items);
+//    cbxSimulator = new QComboBox(this);
+//    cbxSimulator->addItem("Ngspice", 1);
+//    cbxSimulator->addItem("Xyce", 2);
+//    cbxSimulator->addItem("SpiceOpus", 4);
+//    cbxSimulator->addItem("Qucsator", 8);
+    //QStringList items;
+    //items<<"Ngspice"<<"Xyce (Serial)"<<"Xyce (Parallel)"<<"SpiceOpus"<<"Qucsator";
+    //cbxSimulator->addItems(items);
     qDebug()<<QucsSettings.DefaultSimulator;
-    cbxSimulator->setCurrentIndex(QucsSettings.DefaultSimulator);
-    if (QucsSettings.DefaultSimulator==spicecompat::simNotSpecified)
-        cbxSimulator->setCurrentIndex(spicecompat::simNgspice);
+//    cbxSimulator->setCurrentIndex(QucsSettings.DefaultSimulator);
+//    if (QucsSettings.DefaultSimulator==spicecompat::simNotSpecified)
+//        cbxSimulator->setCurrentIndex(spicecompat::simNgspice);
 
     edtNgspice = new QLineEdit(QucsSettings.NgspiceExecutable);
     edtXyce = new QLineEdit(QucsSettings.XyceExecutable);
-    edtXycePar = new QLineEdit(QucsSettings.XyceParExecutable);
+    //edtXycePar = new QLineEdit(QucsSettings.XyceParExecutable);
     edtSpiceOpus = new QLineEdit(QucsSettings.SpiceOpusExecutable);
     edtQucsator = new QLineEdit(QucsSettings.Qucsator);
-    spbNprocs = new QSpinBox(this);
-    spbNprocs->setMinimum(1);
-    spbNprocs->setMaximum(256);
-    spbNprocs->setValue(1);
-    spbNprocs->setValue(QucsSettings.NProcs);
+//    spbNprocs = new QSpinBox(this);
+//    spbNprocs->setMinimum(1);
+//    spbNprocs->setMaximum(256);
+//    spbNprocs->setValue(1);
+//    spbNprocs->setValue(QucsSettings.NProcs);
     edtWorkdir = new QLineEdit(QucsSettings.S4Qworkdir);
     edtSimParam = new QLineEdit(QucsSettings.SimParameters);
 
@@ -67,8 +71,8 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     connect(btnSetNgspice,SIGNAL(clicked()),this,SLOT(slotSetNgspice()));
     btnSetXyce = new QPushButton(tr("Select ..."));
     connect(btnSetXyce,SIGNAL(clicked()),this,SLOT(slotSetXyce()));
-    btnSetXycePar = new QPushButton(tr("Select ..."));
-    connect(btnSetXycePar,SIGNAL(clicked()),this,SLOT(slotSetXycePar()));
+    //btnSetXycePar = new QPushButton(tr("Select ..."));
+    //connect(btnSetXycePar,SIGNAL(clicked()),this,SLOT(slotSetXycePar()));
     btnSetSpOpus = new QPushButton(tr("Select ..."));
     connect(btnSetSpOpus,SIGNAL(clicked()),this,SLOT(slotSetSpiceOpus()));
     btnSetQucsator = new QPushButton(tr("Select ..."));
@@ -78,10 +82,10 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
 
     QVBoxLayout *top = new QVBoxLayout;
 
-    QHBoxLayout *h8 = new QHBoxLayout;
-    h8->addWidget(lblSimulator,1);
-    h8->addWidget(cbxSimulator,3);
-    top->addLayout(h8);
+//    QHBoxLayout *h8 = new QHBoxLayout;
+//    h8->addWidget(lblSimulator,1);
+//    h8->addWidget(cbxSimulator,3);
+//    top->addLayout(h8);
 
     QGroupBox *gbp1 = new QGroupBox(this);
     gbp1->setTitle(tr("SPICE settings"));
@@ -98,16 +102,16 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     h2->addWidget(btnSetXyce,1);
     top2->addLayout(h2);
 
-    top2->addWidget(lblXycePar);
-    QHBoxLayout *h4 = new QHBoxLayout;
-    h4->addWidget(edtXycePar,3);
-    h4->addWidget(btnSetXycePar,1);
-    top2->addLayout(h4);
-
-    QHBoxLayout *h5 = new QHBoxLayout;
-    h5->addWidget(lblNprocs);
-    h5->addWidget(spbNprocs);
-    top2->addLayout(h5);
+//    top2->addWidget(lblXycePar);
+//    QHBoxLayout *h4 = new QHBoxLayout;
+//    h4->addWidget(edtXycePar,3);
+//    h4->addWidget(btnSetXycePar,1);
+//    top2->addLayout(h4);
+//
+//    QHBoxLayout *h5 = new QHBoxLayout;
+//    h5->addWidget(lblNprocs);
+//    h5->addWidget(spbNprocs);
+//    top2->addLayout(h5);
 
     top2->addWidget(lblSpiceOpus);
     QHBoxLayout *h7 = new QHBoxLayout;
@@ -154,10 +158,10 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
 
 #ifndef Q_OS_UNIX
     // Only Unix supports Xyce-parallel
-    edtXycePar->setDisabled(true);
-    lblXycePar->setDisabled(true);
-    lblNprocs->setDisabled(true);
-    spbNprocs->setDisabled(true);
+//    edtXycePar->setDisabled(true);
+//    lblXycePar->setDisabled(true);
+//    lblNprocs->setDisabled(true);
+//    spbNprocs->setDisabled(true);
 #endif
 
 }
@@ -167,18 +171,18 @@ void SimSettingsDialog::slotApply()
 {
     QucsSettings.NgspiceExecutable = edtNgspice->text();
     QucsSettings.XyceExecutable = edtXyce->text();
-    QucsSettings.XyceParExecutable = edtXycePar->text();
+    //QucsSettings.XyceParExecutable = edtXycePar->text();
     QucsSettings.SpiceOpusExecutable = edtSpiceOpus->text();
     QucsSettings.Qucsator = edtQucsator->text();
-    QucsSettings.NProcs = spbNprocs->value();
+    //QucsSettings.NProcs = spbNprocs->value();
     QucsSettings.S4Qworkdir = edtWorkdir->text();
     QucsSettings.SimParameters = edtSimParam->text();
-    if ((QucsSettings.DefaultSimulator != cbxSimulator->currentIndex())&&
-        (QucsSettings.DefaultSimulator != spicecompat::simNotSpecified)) {
-        QMessageBox::warning(this,tr("Simulator settings"),tr("Default simulator engine was changed!\n"
-                                                              "Please restart Qucs to affect changes!"));
-    }
-    QucsSettings.DefaultSimulator = cbxSimulator->currentIndex();
+//    if ((QucsSettings.DefaultSimulator != cbxSimulator->currentIndex())&&
+//        (QucsSettings.DefaultSimulator != spicecompat::simNotSpecified)) {
+//        QMessageBox::warning(this,tr("Simulator settings"),tr("Default simulator engine was changed!\n"
+//                                                              "Please restart Qucs to affect changes!"));
+//    }
+//    QucsSettings.DefaultSimulator = cbxSimulator->currentIndex();
     accept();
     saveApplSettings();
   }
@@ -206,13 +210,13 @@ void SimSettingsDialog::slotSetXyce()
     }
 }
 
-void SimSettingsDialog::slotSetXycePar()
+void SimSettingsDialog::slotSetXycePar() // TODO ZERGUD
 {
-    QString s = QFileDialog::getOpenFileName(this,tr("Select Xyce Parallel executable location"),edtXycePar->text(),"All files (*)");
-    if (!s.isEmpty()) {
-        if (s.endsWith("xmpirun")) s += " -np %p";
-        edtXycePar->setText(s);
-    }
+//    QString s = QFileDialog::getOpenFileName(this,tr("Select Xyce Parallel executable location"),edtXycePar->text(),"All files (*)");
+//    if (!s.isEmpty()) {
+//        if (s.endsWith("xmpirun")) s += " -np %p";
+//        edtXycePar->setText(s);
+//    }
 }
 
 void SimSettingsDialog::slotSetSpiceOpus()

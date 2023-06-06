@@ -166,6 +166,7 @@ QucsApp::QucsApp()
   initView();
   initActions();
   initMenuBar();
+  fillSimulatorsComboBox();
   initToolBar();
   initStatusBar();
   viewToolBar->setChecked(true);
@@ -180,6 +181,7 @@ QucsApp::QucsApp()
   editToolbar->setVisible(QucsSettings.EditToolbar);
   viewToolbar->setVisible(QucsSettings.ViewToolbar);
   workToolbar->setVisible(QucsSettings.WorkToolbar);
+  simulateToolbar->setVisible(QucsSettings.SimulateToolbar);
 
   // instance of small text search dialog
   SearchDia = new SearchDialog(this);
@@ -343,6 +345,9 @@ void QucsApp::initView()
   QWidget *CompGroup  = new QWidget();
   QVBoxLayout *CompGroupLayout = new QVBoxLayout();
   QHBoxLayout *CompSearchLayout = new QHBoxLayout();
+
+  simulatorsCombobox = new QComboBox(this);
+  connect(simulatorsCombobox, SIGNAL(activated(int)), SLOT(slotChangeSimulator(int)));
 
   CompChoose = new QComboBox(this);
   CompComps = new QListWidget(this);
@@ -720,6 +725,60 @@ void QucsApp::fillComboBox (bool setAll)
       CompChoose->insertItem(CompChoose->count(), it);
     }
   }
+}
+
+void QucsApp::fillSimulatorsComboBox() {
+
+    simulatorsCombobox->clear();
+    simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simNotSpecified), 0);
+
+    if (QFile::exists(QucsSettings.NgspiceExecutable)) {
+        simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simNgspice), 1);
+    }
+    if (QFile::exists(QucsSettings.XyceExecutable)) {
+        simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simXyce), 2);
+    }
+    if (QFile::exists(QucsSettings.SpiceOpusExecutable)) {
+        simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simSpiceOpus), 4);
+    }
+    if (QFile::exists(QucsSettings.Qucsator)) {
+        simulatorsCombobox->addItem(spicecompat::getDefaultSimulatorName(spicecompat::simQucsator), 8);
+    }
+
+    QString current = spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator);
+    int idx = simulatorsCombobox->findText(current);
+    simulatorsCombobox->setCurrentIndex(idx < 0 ? 0 : idx);
+
+    simulate->setEnabled(simulatorsCombobox->currentIndex() != 0);
+}
+
+
+void QucsApp::slotChangeSimulator(int index) {
+    int simu = spicecompat::simNotSpecified;
+    int idx = simulatorsCombobox->itemData(index).toInt();
+    switch (idx) {
+        case 1:
+            simu = spicecompat::simNgspice;
+            break;
+        case 2:
+            simu = spicecompat::simXyce;
+            break;
+        case 3:
+            simu = spicecompat::simSpiceOpus;
+            break;
+        case 5:
+            simu = spicecompat::simQucsator;
+            break;
+        default:
+            simu = spicecompat::simNotSpecified;
+            break;
+    }
+
+    QucsSettings.DefaultSimulator = simu;
+    saveApplSettings();
+
+    simulate->setEnabled(simulatorsCombobox->currentIndex() != 0);
+    SimulatorLabel->setText(spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator));
 }
 
 // ----------------------------------------------------------
@@ -2105,6 +2164,7 @@ void QucsApp::saveSettings()
   QucsSettings.EditToolbar = editToolbar->isVisible();
   QucsSettings.ViewToolbar = viewToolbar->isVisible();
   QucsSettings.WorkToolbar = workToolbar->isVisible();
+  QucsSettings.SimulateToolbar = simulateToolbar->isVisible();
   saveApplSettings();
 }
 
@@ -3060,7 +3120,7 @@ void QucsApp::slotSimSettings()
     SimSettingsDialog *SetDlg = new SimSettingsDialog(this);
     SetDlg->exec();
     delete SetDlg;
-    SimulatorLabel->setText(spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator));
+    fillSimulatorsComboBox();
 }
 
 void QucsApp::slotSimulateWithSpice()

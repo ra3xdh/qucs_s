@@ -358,6 +358,9 @@ QString spicecompat::getDefaultSimulatorName(int simulator)
 {
     QString result;
     switch (simulator) {
+        case spicecompat::simNotSpecified:
+            result = QObject::tr("Not Specified");
+            break;
         case spicecompat::simQucsator:
             result = QObject::tr("Qucsator");
             break;

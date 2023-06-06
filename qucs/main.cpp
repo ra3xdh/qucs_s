@@ -189,10 +189,11 @@ bool loadSettings()
     if (settings.contains("fullTraceName")) QucsSettings.fullTraceName = settings.value("fullTraceName").toBool();
     else QucsSettings.fullTraceName = false;
 
-    QucsSettings.FileToolbar = settings.contains("FileToolbar") ? settings.value("FileToolbar").toBool() : true;
-    QucsSettings.EditToolbar = settings.contains("EditToolbar") ? settings.value("EditToolbar").toBool() : true;
-    QucsSettings.ViewToolbar = settings.contains("ViewToolbar") ? settings.value("ViewToolbar").toBool() : true;
-    QucsSettings.WorkToolbar = settings.contains("WorkToolbar") ? settings.value("WorkToolbar").toBool() : true;
+    QucsSettings.FileToolbar = !settings.contains("FileToolbar") || settings.value("FileToolbar").toBool();
+    QucsSettings.EditToolbar = !settings.contains("EditToolbar") || settings.value("EditToolbar").toBool();
+    QucsSettings.ViewToolbar = !settings.contains("ViewToolbar") || settings.value("ViewToolbar").toBool();
+    QucsSettings.WorkToolbar = !settings.contains("WorkToolbar") || settings.value("WorkToolbar").toBool();
+    QucsSettings.SimulateToolbar = !settings.contains("SimulateToolbar") || settings.value("SimulateToolbar").toBool();
 
     QucsSettings.RecentDocs = settings.value("RecentDocs").toString().split("*",qucs::SkipEmptyParts);
     QucsSettings.numRecentDocs = QucsSettings.RecentDocs.count();
@@ -279,6 +280,7 @@ bool saveApplSettings()
     settings.setValue("EditToolbar", QucsSettings.EditToolbar);
     settings.setValue("ViewToolbar", QucsSettings.ViewToolbar);
     settings.setValue("WorkToolbar", QucsSettings.WorkToolbar);
+    settings.setValue("SimulateToolbar", QucsSettings.SimulateToolbar);
 
     // Copy the list of directory paths in which Qucs should
     // search for subcircuit schematics from qucsPathList
@@ -842,6 +844,7 @@ int main(int argc, char *argv[])
 
   // load existing settings (if any)
   loadSettings();
+
 
   // continue to set up overrides or default settings (some are saved on exit)
 
