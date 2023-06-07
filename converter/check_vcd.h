@@ -8,16 +8,16 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this package; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
- * Boston, MA 02110-1301, USA.  
+ * Boston, MA 02110-1301, USA.
  *
  * $Id$
  *
@@ -25,6 +25,8 @@
 
 #ifndef __CHECK_VCD_H__
 #define __CHECK_VCD_H__
+
+#include <sys/cdefs.h>
 
 /* Externalize variables used by the scanner and parser. */
 extern int vcd_lineno;
@@ -123,7 +125,7 @@ struct vcd_change {
 // A full set of VCD value changes.
 struct vcd_changeset {
   double t;                    // time stamp
-  struct vcd_change * changes; // list of VCD changes 
+  struct vcd_change * changes; // list of VCD changes
 #ifndef VCD_FAST
   int done;                    // flag for the checker
 #endif
