@@ -2,9 +2,9 @@ name: CMake
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master","current" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master","current" ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -26,7 +26,7 @@ jobs:
     - name: InstallQt5
       run: |
           sudo apt-get update
-          sudo apt-get install -y qtbase5-dev qttools5-dev qtscript5-dev libqt5svg5-dev
+          sudo apt-get install -y qtbase5-dev qttools5-dev qtscript5-dev libqt5svg5-dev flex bison
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
