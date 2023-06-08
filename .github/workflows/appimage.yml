@@ -1,0 +1,61 @@
+name: AppImage
+
+on:
+  push:
+    branches: [ "AppImage" ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+
+  
+          
+  build:
+    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
+    # You can convert this to a matrix build if you need cross-platform coverage.
+    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+    runs-on: ubuntu-20.04
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: InstallQt5
+      run: |
+          sudo apt-get update
+          sudo apt-get install -y qtbase5-dev qttools5-dev qtscript5-dev libqt5svg5-dev flex bison
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_INSTALL_PREFIX=/usr
+
+    - name: Build
+      # Build your program with the given configuration
+      run: |
+          cmake --build ${{github.workspace}}/build -j`nproc` --config ${{env.BUILD_TYPE}}
+          make -C ${{github.workspace}}/build install DESTDIR=${{github.workspace}}/AppDir
+
+      
+    - name: Install linuxdeploy
+      run: |
+          wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          wget https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+          sudo apt-get install fuse libfuse2
+          chmod +x linuxdeploy-x86_64.AppImage
+          chmod +x linuxdeploy-plugin-qt-x86_64.AppImage
+    
+    - name: 'Create AppImage'
+      run: |
+             ./linuxdeploy-x86_64.AppImage --appdir ${{github.workspace}}/AppDir --desktop-file=${{github.workspace}}/AppDir/usr/share/applications/qucs-s.desktop --icon-file=${{github.workspace}}/AppDir/usr/share/icons/hicolor/256x256/apps/qucs-s.png --plugin=qt --output appimage
+             rm linuxdeploy-x86_64.AppImage
+             rm linuxdeploy-plugin-qt-x86_64.AppImage
+             mv *.AppImage Qucs-S-x86_64-Linux.AppImage
+
+    - name: 'Upload artifact: AppImage'
+      uses: actions/upload-artifact@v2
+      with:
+          name: Qucs-S-x86_64-Linux.AppImage
+          path: Qucs-S-x86_64-Linux.AppImage
+                
+     
