@@ -10,6 +10,14 @@ CONFIGURE_FILE (
 add_compile_definitions(HAVE_CONFIG_H)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if (MSVC)
+    add_compile_options(/Zc:__cplusplus /permissive- /MP /Zc:preprocessor)
+else()
+    # additional warnings
+    add_compile_options(-Wall -Wextra)
+endif()
+
 #
 # Need Flex
 #

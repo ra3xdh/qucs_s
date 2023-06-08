@@ -237,11 +237,7 @@ nr_double_t xhypot (const nr_double_t a, const nr_double_t b) {
 //
 
 nr_double_t erf( nr_double_t arg) {
-#ifdef HAVE_STD_ERF
   return std::erf (arg); // c++11
-#elif HAVE_ERF
-  return ::erf (arg);
-#endif
 }
 
 
@@ -480,6 +476,7 @@ nr_double_t real (const nr_double_t r) {
    \return Imaginary part of r
 */
 nr_double_t imag (const nr_double_t r) {
+  (void) r; // supress unused warning
   return 0.0;
 }
 
