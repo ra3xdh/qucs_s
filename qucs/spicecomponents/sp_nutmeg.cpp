@@ -24,6 +24,7 @@ NutmegEquation::NutmegEquation()
   isEquation = true;
   Type = isComponent; // Analogue and digital component.
   Description = QObject::tr("Nutmeg equation");
+  Simulator = spicecompat::simSpice;
 
   QFont f = QucsSettings.font;
   f.setWeight(QFont::Light);

@@ -27,6 +27,7 @@
 L_SPICE::L_SPICE()
 {
     Description = QObject::tr("SPICE L:\nMultiple line ngspice or Xyce L specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
+    Simulator = spicecompat::simSpice;
 
     Arcs.append(new qucs::Arc(-18, -6, 12, 12,  0, 16*180,QPen(Qt::darkRed,3)));
     Arcs.append(new qucs::Arc( -6, -6, 12, 12,  0, 16*180,QPen(Qt::darkRed,3)));

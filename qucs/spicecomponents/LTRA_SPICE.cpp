@@ -27,6 +27,7 @@
 LTRA_SPICE::LTRA_SPICE()
 {
   Description = QObject::tr("SPICE O(LTRA):");
+  Simulator = spicecompat::simSpice;
 
   Lines.append(new qucs::Line(-60,  -20,-45,  -20,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-45,  -20, 45,  -20,QPen(Qt::darkRed,4))); 

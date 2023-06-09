@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "mscoupled.h"
+#include "extsimkernels/spicecompat.h"
 
 
 MScoupled::MScoupled()
 {
   Description = QObject::tr("coupled microstrip line");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(-30,-12,-16,-12,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30,-30,-30,-12,QPen(Qt::darkBlue,2)));

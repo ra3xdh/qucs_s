@@ -20,11 +20,13 @@
 
 #include "mutualx.h"
 #include "node.h"
+#include "extsimkernels/spicecompat.h"
 #include <cmath>
 
 MutualX::MutualX()
 {
   Description = QObject::tr("several mutual inductors");
+  Simulator = spicecompat::simQucsator;
 
   Model = "MUTX";
   Name  = "Tr";

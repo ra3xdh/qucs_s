@@ -21,6 +21,7 @@ SpiceSpiceinit::SpiceSpiceinit()
   isEquation = true;
   Type = isComponent;  // Analogue and digital component.
   Description = QObject::tr(".spiceinit file");
+  Simulator = spicecompat::simSpice;
 
   QFont f = QucsSettings.font;
   f.setWeight(QFont::Light);

@@ -26,6 +26,7 @@ S4Q_Model::S4Q_Model()
   Description = QObject::tr(".MODEL section\n"
                             "Multiple line ngspice or Xyce .MODEL allowed using \"+\" continuation lines.\n"
                             "Leave continuation lines blank when NOT in use.");
+  Simulator = spicecompat::simSpice;
 
   QFont f = QucsSettings.font;
   f.setWeight(QFont::Light);

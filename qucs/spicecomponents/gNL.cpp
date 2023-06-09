@@ -25,6 +25,7 @@
 gNL::gNL()
 {
   Description = QObject::tr("SPICE G (VOL, VALUE, TABLE, POLY):\nMultiple line ngspice non-linear G specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
+  Simulator = spicecompat::simSpice;
   // Value, Table and POLY forms are allowed: should work with ngspice and Xyce.
 
   Arcs.append(new qucs::Arc(-14,-14, 28, 28,     0, 16*360,QPen(Qt::blue,3)));

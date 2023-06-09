@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "cpwgap.h"
+#include "extsimkernels/spicecompat.h"
 
 
 CPWgap::CPWgap()
 {
   Description = QObject::tr("coplanar gap");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));

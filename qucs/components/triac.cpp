@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "triac.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Triac::Triac()
 {
   Description = QObject::tr("triac (bidirectional thyristor)");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(  0,-30,  0, -6,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(  0, 30,  0,  6,QPen(Qt::darkBlue,2)));

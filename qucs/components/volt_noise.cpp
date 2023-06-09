@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "volt_noise.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Volt_noise::Volt_noise()
 {
   Description = QObject::tr("noise voltage source");
+  Simulator = spicecompat::simQucsator;
 
   Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));

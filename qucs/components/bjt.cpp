@@ -24,6 +24,7 @@ BJT::BJT()
 {
   // properties obtained from "Basic_BJT" in bjtsub.cpp
   Description = QObject::tr("bipolar junction transistor");
+  Simulator = spicecompat::simQucsator;
   createSymbol();
   tx = x2+4;
   ty = y1+4;

@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "msmbend.h"
+#include "extsimkernels/spicecompat.h"
 
 
 MSmbend::MSmbend()
 {
   Description = QObject::tr("microstrip mitered bend");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(  0, 18,  0, 30,QPen(Qt::darkBlue,2)));

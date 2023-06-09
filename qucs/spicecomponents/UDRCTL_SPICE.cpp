@@ -27,6 +27,7 @@
 UDRCTL_SPICE::UDRCTL_SPICE()
 {
   Description = QObject::tr("SPICE U(URC):\nMultiple line ngspice or Xyce U specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.");
+  Simulator = spicecompat::simSpice;
 
    
   Lines.append(new qucs::Line(  -60,  0, -45,   0,QPen(Qt::darkBlue,2))); 

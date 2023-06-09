@@ -23,6 +23,7 @@ SpiceCustomSim::SpiceCustomSim()
 {
   isSimulation = true;
   Description = QObject::tr("Nutmeg script");
+  Simulator = spicecompat::simNgspice + spicecompat::simSpiceOpus;
 
   Texts.append(new Text(0, 0, Description, Qt::darkRed, QucsSettings.largeFontSize));
 

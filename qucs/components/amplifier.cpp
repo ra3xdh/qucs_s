@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "amplifier.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Amplifier::Amplifier()
 {
   Description = QObject::tr("ideal amplifier");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(-16,-20,-16, 20,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-16,-20, 16,  0,QPen(Qt::darkBlue,2)));

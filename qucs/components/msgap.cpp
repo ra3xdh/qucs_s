@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "msgap.h"
+#include "extsimkernels/spicecompat.h"
 
 
 MSgap::MSgap()
 {
   Description = QObject::tr("microstrip gap");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));

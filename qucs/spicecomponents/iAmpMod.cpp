@@ -27,6 +27,7 @@
 iAmpMod::iAmpMod()
 {
   Description = QObject::tr("SPICE I(AM): ngspice only.");
+  Simulator = spicecompat::simSpice;
 
   // normal current source symbol
   Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::blue,3)));

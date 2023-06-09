@@ -22,7 +22,9 @@
 
 JFET::JFET()
 {
-  Description = QObject::tr("junction field-effect transistor");
+    Description = QObject::tr("junction field-effect transistor");
+    Simulator = spicecompat::simQucsator;
+
 
   // this must be the first property in the list !!!
   Props.append(new Property("Type", "nfet", true,

@@ -24,6 +24,7 @@ S4Q_Include::S4Q_Include()
   isEquation = false;
   Type = isComponent; // Analogue and digital component.
   Description = QObject::tr(".INCLUDE statement\n");
+  Simulator = spicecompat::simSpice;
 
   QFont f = QucsSettings.font;
   f.setWeight(QFont::Light);

@@ -15,11 +15,13 @@
  ***************************************************************************/
 
 #include "rectline.h"
+#include "extsimkernels/spicecompat.h"
 
 
 RectLine::RectLine()
 {
   Description = QObject::tr("Rectangular Waveguide");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(-30,  0,-17,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));

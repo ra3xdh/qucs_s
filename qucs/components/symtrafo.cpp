@@ -17,6 +17,7 @@
 
 #include "main.h"
 #include "symtrafo.h"
+#include "extsimkernels/spicecompat.h"
 
 #include<QFontMetrics>
 
@@ -24,6 +25,7 @@
 symTrafo::symTrafo()
 {
   Description = QObject::tr("ideal symmetrical transformer");
+  Simulator = spicecompat::simQucsator;
 
   QFont Font(QucsSettings.font); // default application font
   // symbol text is smaller (10 pt default)

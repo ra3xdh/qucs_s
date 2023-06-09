@@ -24,6 +24,7 @@ S4Q_Lib::S4Q_Lib()
   isEquation = false;
   Type = isComponent; // Analogue and digital component.
   Description = QObject::tr(".LIB directive\n");
+  Simulator = spicecompat::simSpice;
 
   QFont f = QucsSettings.font;
   f.setWeight(QFont::Light);

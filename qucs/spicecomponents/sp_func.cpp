@@ -24,6 +24,7 @@ SpiceFunc::SpiceFunc()
   isEquation = false;
   Type = isComponent; // Analogue and digital component.
   Description = QObject::tr(".FUNC new function definition");
+  Simulator = spicecompat::simSpice;
 
   QFont f = QucsSettings.font;
   f.setWeight(QFont::Light);

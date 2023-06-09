@@ -13,10 +13,12 @@
  ***************************************************************************/
 
 #include "ctline.h"
+#include "extsimkernels/spicecompat.h"
 
 CoupledTLine::CoupledTLine()
 {
   Description = QObject::tr("coupled transmission lines");
+  Simulator = spicecompat::simQucsator;
 
   Arcs.append(new qucs::Arc(-28,-40, 18, 38,16*232, 16*33,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc(-28,  2, 18, 38, 16*95, 16*33,QPen(Qt::darkBlue,2)));

@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "am_modulator.h"
+#include "extsimkernels/spicecompat.h"
 
 
 AM_Modulator::AM_Modulator()
 {
   Description = QObject::tr("ac voltage source with amplitude modulator");
+  Simulator = spicecompat::simQucsator;
 
   Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc( -7, -4,  7,  7,     0, 16*180,QPen(Qt::darkBlue,2)));

@@ -9,10 +9,12 @@
  */
 
 #include "MESFET.h"
+#include "extsimkernels/spicecompat.h"
 
 MESFET::MESFET()
 {
   Description = QObject::tr ("MESFET verilog device");
+  Simulator = spicecompat::simQucsator;
 
   Props.append (new Property ("LEVEL", "1", false,
     QObject::tr ("model selector")));

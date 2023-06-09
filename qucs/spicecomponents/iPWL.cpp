@@ -26,7 +26,8 @@
 
 iPWL::iPWL()
 {
-		  Description = QObject::tr("SPICE I(PWL):\nMultiple line ngspice or Xyce I specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use. ");
+    Description = QObject::tr("SPICE I(PWL):\nMultiple line ngspice or Xyce I specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use. ");
+    Simulator = spicecompat::simSpice;
 
   // normal voltage source symbol
   Arcs.append(new qucs::Arc(-12,-12, 24, 24, 0, 16*360,QPen(Qt::darkRed,3)));

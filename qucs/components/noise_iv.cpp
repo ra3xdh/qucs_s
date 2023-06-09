@@ -16,11 +16,13 @@
  ***************************************************************************/
 
 #include "noise_iv.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Noise_iv::Noise_iv()
 {
   Description = QObject::tr("correlated current sources");
+  Simulator = spicecompat::simQucsator;
 
   // left noise source
   Arcs.append(new qucs::Arc(-42,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));

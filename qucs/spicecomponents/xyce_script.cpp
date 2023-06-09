@@ -23,6 +23,7 @@ XyceScript::XyceScript()
 {
   isSimulation = true;
   Description = QObject::tr("XYCE script");
+  Simulator = spicecompat::simXyce;
 
   Texts.append(new Text(0, 0, Description, Qt::darkRed, QucsSettings.largeFontSize));
 

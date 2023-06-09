@@ -67,6 +67,11 @@ void Module::registerComponent (QString category, pInfoFunc info) {
   QString Name, Model;
   char * File;
   Component * c = (Component *) info (Name, File, true);
+
+  if ((c->Simulator & QucsSettings.DefaultSimulator) == 0) {
+      return;
+  }
+
   Model = c->Model;
   delete c;
 
@@ -240,6 +245,7 @@ void Module::intoCategory (Module * m) {
 // registers every component available in the application.  Put here
 // any new component.
 void Module::registerModules (void) {
+  unregisterModules();
 
   REGISTER_LUMPED_2 (Resistor, info, info_us);
   REGISTER_LUMPED_1 (Capacitor);
@@ -247,16 +253,16 @@ void Module::registerModules (void) {
   REGISTER_LUMPED_1 (IndQ);
   REGISTER_LUMPED_1 (CapQ);
   // lumped components
-  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       REGISTER_LUMPED_1 (R_SPICE);
       REGISTER_LUMPED_1 (C_SPICE);
       REGISTER_LUMPED_1 (L_SPICE);
       REGISTER_LUMPED_1 (K_SPICE);
-  }
+  //}
   REGISTER_LUMPED_1 (Ground);
   REGISTER_LUMPED_1 (SubCirPort);
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       REGISTER_LUMPED_1 (Transformer);
       REGISTER_LUMPED_1 (symTrafo);
       REGISTER_LUMPED_1 (dcBlock);
@@ -270,28 +276,28 @@ void Module::registerModules (void) {
       REGISTER_LUMPED_1 (Phaseshifter);
       REGISTER_LUMPED_1 (Coupler);
       REGISTER_LUMPED_1 (Hybrid);
-  }
+  //}
 
 
   REGISTER_LUMPED_1 (iProbe);
   REGISTER_LUMPED_1 (vProbe);
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       REGISTER_LUMPED_1 (Mutual);
       REGISTER_LUMPED_1 (Mutual2);
       REGISTER_LUMPED_1 (MutualX);
       REGISTER_LUMPED_1 (Switch);
-  } else {
+  //} else {
       REGISTER_LUMPED_1 (S4Q_S);
       REGISTER_LUMPED_1 (S4Q_W);
-  }
+  //}
 
   REGISTER_LUMPED_1 (Relais);
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       REGISTER_LUMPED_1 (RFedd);
       REGISTER_LUMPED_1 (RFedd2P);
-  }
+  //}
 
   // sources
   REGISTER_SOURCE_1 (Volt_dc);
@@ -299,10 +305,10 @@ void Module::registerModules (void) {
   REGISTER_SOURCE_1 (Volt_ac);
   REGISTER_SOURCE_1 (Ampere_ac);
   REGISTER_SOURCE_1 (Source_ac);
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       REGISTER_SOURCE_1 (Volt_noise);
       REGISTER_SOURCE_1 (Ampere_noise);
-  }
+  //}
   REGISTER_SOURCE_1 (VCCS);
   REGISTER_SOURCE_1 (CCCS);
   REGISTER_SOURCE_1 (VCVS);
@@ -312,20 +318,20 @@ void Module::registerModules (void) {
   REGISTER_SOURCE_1 (vRect);
   REGISTER_SOURCE_1 (iRect);
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       REGISTER_SOURCE_1 (Noise_ii);
       REGISTER_SOURCE_1 (Noise_vv);
       REGISTER_SOURCE_1 (Noise_iv);
       REGISTER_SOURCE_1 (AM_Modulator);
       REGISTER_SOURCE_1 (PM_Modulator);
-  }
+  //}
 
   REGISTER_SOURCE_1 (iExp);
   REGISTER_SOURCE_1 (vExp);
   REGISTER_SOURCE_1 (vFile);
   REGISTER_SOURCE_1 (iFile);
 
-  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       REGISTER_SOURCE_1 (S4Q_V);
       REGISTER_SOURCE_1 (S4Q_I);
       REGISTER_SOURCE_1 (Src_eqndef);
@@ -342,14 +348,14 @@ void Module::registerModules (void) {
       REGISTER_SOURCE_1 (iTRNOISE);
       REGISTER_SOURCE_1 (vTRRANDOM);
       REGISTER_SOURCE_1 (Vac_SPICE);
-  }
+  //}
 
   // probes
   REGISTER_PROBE_1 (iProbe);
   REGISTER_PROBE_1 (vProbe);
 
   // transmission lines
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       REGISTER_TRANS_1 (TLine);
       REGISTER_TRANS_1 (TLine_4Port);
       REGISTER_TRANS_1 (CoupledTLine);
@@ -376,22 +382,22 @@ void Module::registerModules (void) {
       REGISTER_TRANS_1 (CPWgap);
       REGISTER_TRANS_1 (CPWstep);
       REGISTER_TRANS_1 (BondWire);
-  } else {
+  //} else {
       REGISTER_TRANS_1 (LTL_SPICE);
       REGISTER_TRANS_1 (LTRA_SPICE);
       REGISTER_TRANS_1 (UDRCTL_SPICE);
-  }
+  //}
 
 
   // nonlinear components
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       REGISTER_NONLINEAR_1 (Diode);
       REGISTER_NONLINEAR_2 (BJT, info, info_pnp);
       REGISTER_NONLINEAR_2 (BJTsub, info, info_pnp);
       REGISTER_NONLINEAR_2 (JFET, info, info_p);
       REGISTER_NONLINEAR_3 (MOSFET, info, info_p, info_depl);
       REGISTER_NONLINEAR_3 (MOSFET_sub, info, info_p, info_depl);
-  } else {
+  //} else {
       REGISTER_NONLINEAR_1 (DIODE_SPICE);
       REGISTER_NONLINEAR_1 (NPN_SPICE);
       REGISTER_NONLINEAR_1 (PNP_SPICE);
@@ -408,20 +414,20 @@ void Module::registerModules (void) {
       REGISTER_NONLINEAR_1 (PMF_MESFET_SPICE);
       REGISTER_NONLINEAR_1 (S4Q_Ieqndef);
       REGISTER_NONLINEAR_1 (Src_eqndef);
-  }
+  //}
 
   REGISTER_NONLINEAR_1 (OpAmp);
   REGISTER_NONLINEAR_1 (EqnDefined);
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       REGISTER_NONLINEAR_1 (Diac);
       REGISTER_NONLINEAR_1 (Triac);
       REGISTER_NONLINEAR_1 (Thyristor);
       REGISTER_NONLINEAR_1 (TunnelDiode);
-  }
+  //}
 
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       // verilog-a devices
       REGISTER_VERILOGA_1 (mod_amp);
       REGISTER_VERILOGA_1 (log_amp);
@@ -431,7 +437,7 @@ void Module::registerModules (void) {
       REGISTER_VERILOGA_1 (phototransistor);
       REGISTER_VERILOGA_1 (nigbt);
       REGISTER_VERILOGA_1 (vcresistor);
-  }
+  //}
 
   // digital components
   REGISTER_DIGITAL_1 (Digi_Sim);
@@ -481,54 +487,51 @@ void Module::registerModules (void) {
 
   // file components
   REGISTER_FILE_1 (SpiceFile);
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       REGISTER_FILE_3 (SParamFile, info1, info2, info);
-  }
+  //}
   REGISTER_FILE_1 (Subcircuit);
-  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       REGISTER_FILE_1 (SpiceGeneric);
       REGISTER_FILE_1 (SpiceLibComp);
-  }
+  //}
 
-  if ((QucsSettings.DefaultSimulator == spicecompat::simNgspice)||
-      (QucsSettings.DefaultSimulator == spicecompat::simSpiceOpus)) {
+  //if ((QucsSettings.DefaultSimulator == spicecompat::simNgspice)|| (QucsSettings.DefaultSimulator == spicecompat::simSpiceOpus)) {
       REGISTER_FILE_1 (XspiceGeneric);
       //REGISTER_FILE_1 (XSP_CMlib);
       //REGISTER_FILE_1 (XSP_CodeModel);
-  }
+  //}
 
   // simulations
   REGISTER_SIMULATION_1 (DC_Sim);
   REGISTER_SIMULATION_1 (TR_Sim);
   REGISTER_SIMULATION_1 (AC_Sim);
   REGISTER_SIMULATION_1 (SP_Sim);
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator||
-      QucsSettings.DefaultSimulator == spicecompat::simXyce) {
+  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator|| QucsSettings.DefaultSimulator == spicecompat::simXyce) {
       REGISTER_SIMULATION_1 (HB_Sim);
-  }
+  //}
   REGISTER_SIMULATION_1 (Param_Sweep);
   REGISTER_SIMULATION_1 (Digi_Sim);
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
+  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
       REGISTER_SIMULATION_1 (Optimize_Sim);
-  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       REGISTER_SIMULATION_1 (SpiceFourier);
       REGISTER_SIMULATION_1 (SpiceNoise);
-  }
-  if (QucsSettings.DefaultSimulator == spicecompat::simNgspice ||
-      QucsSettings.DefaultSimulator == spicecompat::simSpiceOpus) {
+  //}
+  //if (QucsSettings.DefaultSimulator == spicecompat::simNgspice || QucsSettings.DefaultSimulator == spicecompat::simSpiceOpus) {
       REGISTER_SIMULATION_1 (SpiceFFT);
       REGISTER_SIMULATION_1 (SpiceDisto);
       REGISTER_SIMULATION_1 (SpiceCustomSim);
       REGISTER_SIMULATION_1 (SpicePZ);
       REGISTER_SIMULATION_1 (SpiceSENS);
       REGISTER_SIMULATION_1 (SpiceSENS_AC);
-  }
+  //}
 
-  if (QucsSettings.DefaultSimulator == spicecompat::simXyce) {
+  //if (QucsSettings.DefaultSimulator == spicecompat::simXyce) {
       REGISTER_SIMULATION_1 (XyceScript);
       REGISTER_SIMULATION_1 (SpiceSENS_Xyce);
       REGISTER_SIMULATION_1 (SpiceSENS_TR_Xyce);
-  }
+  //}
 
   // diagrams
   REGISTER_DIAGRAM_1 (RectDiagram);
@@ -548,12 +551,12 @@ void Module::registerModules (void) {
   REGISTER_EQUATION_1 (Equation);
 
   // external simulation
-  if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
       REGISTER_EXTERNAL_1 (ETR_Sim);
       REGISTER_EXTERNAL_1 (ecvs);
-  }
+  //}
 
-  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
+  //if (QucsSettings.DefaultSimulator != spicecompat::simQucsator) {
       // XSPICE analogue component blocks
       REGISTER_XSPICE_1 (Icouple);
       REGISTER_XSPICE_1 (core);
@@ -581,16 +584,16 @@ void Module::registerModules (void) {
 
 
       // Qucs legacy devices
-      REGISTER_QUCS_2 (Resistor, info, info_us);
-      REGISTER_QUCS_1 (Capacitor);
-      REGISTER_QUCS_1 (Inductor);
-      REGISTER_QUCS_1 (Diode);
-      REGISTER_QUCS_2 (BJT, info, info_pnp);
-      REGISTER_QUCS_2 (BJTsub, info, info_pnp);
-      REGISTER_QUCS_2 (JFET, info, info_p);
-      REGISTER_QUCS_3 (MOSFET, info, info_p, info_depl);
-      REGISTER_QUCS_3 (MOSFET_sub, info, info_p, info_depl);
-  }
+//      REGISTER_QUCS_2 (Resistor, info, info_us);
+//      REGISTER_QUCS_1 (Capacitor);
+//      REGISTER_QUCS_1 (Inductor);
+//      REGISTER_QUCS_1 (Diode);
+//      REGISTER_QUCS_2 (BJT, info, info_pnp);
+//      REGISTER_QUCS_2 (BJTsub, info, info_pnp);
+//      REGISTER_QUCS_2 (JFET, info, info_p);
+//      REGISTER_QUCS_3 (MOSFET, info, info_p, info_depl);
+//      REGISTER_QUCS_3 (MOSFET_sub, info, info_p, info_depl);
+  //}
 
   // paintings
   REGISTER_PAINT_1 (GraphicLine);
@@ -609,12 +612,21 @@ void Module::unregisterModules (void) {
     delete Category::Categories.takeFirst();
   }
 
-  //remove all modules by iterator, require in qhash
-  QHashIterator<QString, Module *> it( Modules );
-  while(it.hasNext()) {
-    it.next();
-    delete it.value();
-  }
+    QHash<QString, Module *>::iterator i = Modules.begin();
+    while (i != Modules.end()) {
+        if (i.value() == 0) {         // test here
+            i = Modules.erase(i);
+        } else {
+            ++i;
+        }
+    }
+
+//remove all modules by iterator, require in qhash
+//  QHashIterator<QString, Module *> it( Modules );
+//  while(it.hasNext()) {
+//    it.next();
+//    delete it.value();
+//  }
   Modules.clear ();
 }
 

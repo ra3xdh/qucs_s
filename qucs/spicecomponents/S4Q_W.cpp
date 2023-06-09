@@ -27,6 +27,7 @@
 S4Q_W::S4Q_W()
 {
     Description = QObject::tr("SPICE W:\nMultiple line ngspice or Xyce W specifications allowed using \"+\" continuation lines.\nLeave continuation lines blank when NOT in use.  ");
+    Simulator = spicecompat::simSpice;
 
     Lines.append(new qucs::Line(-15, -15, -15, 15,QPen(Qt::darkRed,3)));
     Lines.append(new qucs::Line(-15,  15,  15, 15,QPen(Qt::darkRed,3)));

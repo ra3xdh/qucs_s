@@ -13,10 +13,12 @@
  ***************************************************************************/
 
 #include "hybrid.h"
+#include "extsimkernels/spicecompat.h"
 
 Hybrid::Hybrid()
 {
   Description = QObject::tr("hybrid (unsymmetrical 3dB coupler)");
+  Simulator = spicecompat::simQucsator;
 
   Lines.append(new qucs::Line(-14,-14, 14,-14,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-14, 14, 14, 14,QPen(Qt::darkBlue,2)));

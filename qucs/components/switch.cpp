@@ -17,11 +17,13 @@
 #include "switch.h"
 #include "node.h"
 #include "schematic.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Switch::Switch()
 {
   Description = QObject::tr("switch (time controlled)");
+  Simulator = spicecompat::simQucsator;
 
   Props.append(new Property("init", "off", false,
 		QObject::tr("initial state")+" [on, off]"));

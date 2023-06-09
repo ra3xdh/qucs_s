@@ -16,11 +16,12 @@
  ***************************************************************************/
 
 #include "dcfeed.h"
-
+#include "extsimkernels/spicecompat.h"
 
 dcFeed::dcFeed()
 {
   Description = QObject::tr("dc feed");
+  Simulator = spicecompat::simQucsator;
 
   Arcs.append(new qucs::Arc(-17, -6, 12, 12,  0, 16*180,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc( -6, -6, 12, 12,  0, 16*180,QPen(Qt::darkBlue,2)));

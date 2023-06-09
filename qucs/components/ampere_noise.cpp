@@ -18,11 +18,13 @@
 #include "ampere_noise.h"
 #include "node.h"
 #include "extsimkernels/verilogawriter.h"
+#include "extsimkernels/spicecompat.h"
 
 
 Ampere_noise::Ampere_noise()
 {
   Description = QObject::tr("noise current source");
+  Simulator = spicecompat::simQucsator;
 
   Arcs.append(new qucs::Arc(-12,-12, 24, 24,  0, 16*360,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30,  0,-12,  0,QPen(Qt::darkBlue,2)));

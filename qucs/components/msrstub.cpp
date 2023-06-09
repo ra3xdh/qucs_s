@@ -16,10 +16,12 @@
  ***************************************************************************/
 
 #include "msrstub.h"
+#include "extsimkernels/spicecompat.h"
 
 MSrstub::MSrstub()
 {
   Description = QObject::tr("microstrip radial stub");
+  Simulator = spicecompat::simQucsator;
 
   Arcs.append(new qucs::Arc( -26, -26, 52, 52,16*45, 16*90,QPen(Qt::darkBlue,2)));
 

@@ -25,6 +25,7 @@
 SDTF::SDTF()
 {
   Description = QObject::tr("S domain transfer function block:\nSeven line XSPICE specification. ");
+  Simulator = spicecompat::simSpice;
 
 
   Lines.append(new qucs::Line(-80,  0,-70,  0,QPen(Qt::darkBlue,2)));

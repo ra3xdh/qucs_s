@@ -24,6 +24,7 @@ InclScript::InclScript()
     isEquation = false;
     Type = isComponent; // Analogue and digital component.
     Description = QObject::tr("Include script before simulation");
+    Simulator = spicecompat::simSpice;
 
     QFont f = QucsSettings.font;
     f.setWeight(QFont::Light);

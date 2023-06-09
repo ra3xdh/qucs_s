@@ -45,6 +45,7 @@
 Component::Component()
 {
   Type = isAnalogComponent;
+  Simulator = spicecompat::simAll;
 
   SpiceModel = "";
   isSimulation = false;

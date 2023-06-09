@@ -21,6 +21,7 @@
 Circulator::Circulator()
 {
   Description = QObject::tr("circulator");
+  Simulator = spicecompat::simQucsator;
 
   Arcs.append(new qucs::Arc(-14,-14, 28, 28,  0,16*360,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line(-30,  0,-14,  0,QPen(Qt::darkBlue,2)));

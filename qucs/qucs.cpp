@@ -714,8 +714,12 @@ QucsDoc * QucsApp::findDoc (QString File, int * Pos)
 void QucsApp::fillComboBox (bool setAll)
 {
   //CompChoose->setMaxVisibleItems (13); // Increase this if you add items below.
-  CompChoose->clear ();
+  auto currentText = CompChoose->currentText();
+
+  CompChoose->clear();
   CompSearch->clear(); // clear the search box, in case search was active...
+
+  Module::registerModules ();
 
   if (!setAll) {
     CompChoose->insertItem(CompChoose->count(), QObject::tr("paintings"));
@@ -724,6 +728,8 @@ void QucsApp::fillComboBox (bool setAll)
     for (const QString& it : cats) {
       CompChoose->insertItem(CompChoose->count(), it);
     }
+    int idx = CompChoose->findText(currentText);
+    CompChoose->setCurrentIndex(idx = -1 ? 0 : idx);
   }
 }
 
@@ -763,10 +769,10 @@ void QucsApp::slotChangeSimulator(int index) {
         case 2:
             simu = spicecompat::simXyce;
             break;
-        case 3:
+        case 4:
             simu = spicecompat::simSpiceOpus;
             break;
-        case 5:
+        case 8:
             simu = spicecompat::simQucsator;
             break;
         default:
@@ -776,6 +782,9 @@ void QucsApp::slotChangeSimulator(int index) {
 
     QucsSettings.DefaultSimulator = simu;
     saveApplSettings();
+
+    fillComboBox(true);
+    slotSetCompView(0);
 
     simulate->setEnabled(simulatorsCombobox->currentIndex() != 0);
     SimulatorLabel->setText(spicecompat::getDefaultSimulatorName(QucsSettings.DefaultSimulator));

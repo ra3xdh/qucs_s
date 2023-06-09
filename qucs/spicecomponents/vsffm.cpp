@@ -27,6 +27,7 @@
 vSffm::vSffm()
 {
   Description = QObject::tr("SPICE V(SFFM):");
+  Simulator = spicecompat::simSpice;
 
   // normal voltage source symbol
   Arcs.append(new qucs::Arc(-12,-12, 24, 24,     0, 16*360,QPen(Qt::darkRed,3)));
