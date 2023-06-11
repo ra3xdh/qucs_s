@@ -207,6 +207,36 @@ QucsApp::QucsApp()
     }
   }
 
+  if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) { // try to find Ngspice
+#ifdef Q_OS_WIN
+      QString ngspice_exe1 = QucsSettings.BinDir + QDir::separator() + "ngspice_con.exe";
+      QString ngspice_exe2 = "C:\\Spice64\\bin\\ngspice_con.exe";
+#else
+      QString ngspice_exe1 = QucsSettings.BinDir + QDir::separator() + "ngspice";
+#endif
+      QString ngspice_exe;
+      bool found = false;
+      if (QFile::exists(ngspice_exe1)) {
+          found = true;
+          ngspice_exe = ngspice_exe1;
+      }
+#ifdef Q_OS_WIN
+      if (!found && QFile::exists(ngspice_exe2)) {
+          found = true;
+          ngspice_exe = ngspice_exe2;
+      }
+#endif
+      ngspice_exe = QDir::toNativeSeparators(ngspice_exe);
+      if (found) {
+          QMessageBox::information(nullptr,tr("Set simulator"),
+                                   tr("Ngspice found at: ") + ngspice_exe + "\n" +
+                                   tr("You can specify another location later"
+                                      " using Simulation->Select default simulator"));
+          QucsSettings.DefaultSimulator = spicecompat::simNgspice;
+          QucsSettings.NgspiceExecutable = ngspice_exe;
+      }
+  }
+
   if (QucsSettings.DefaultSimulator == spicecompat::simNotSpecified) {
       QMessageBox::information(this,tr("Qucs"),tr("Default simulator is not specified yet.\n"
                                          "Please setup it in the next dialog window.\n"
