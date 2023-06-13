@@ -306,8 +306,7 @@ void TextDoc::replace(const QString &str, const QString &str2, bool needConfirme
     if (needConfirmed) {
       i = QMessageBox::information(this,
           tr("Replace..."), tr("Replace occurrence ?"),
-          QMessageBox::Yes | QMessageBox::Default,
-          QMessageBox::No | QMessageBox::Escape);
+          QMessageBox::Yes|QMessageBox::No);
     }
     if(i == QMessageBox::Yes) {
       insertPlainText(str2);

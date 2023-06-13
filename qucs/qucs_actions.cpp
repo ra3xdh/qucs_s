@@ -667,7 +667,7 @@ extern QString lastDirOpenSave; // to remember last directory and file
 // component edit dialog.
 void QucsApp::editFile(const QString& File)
 {
-    if ((QucsSettings.Editor.toLower() == "qucs") | QucsSettings.Editor.isEmpty())
+    if ((QucsSettings.Editor.toLower() == "qucs") || QucsSettings.Editor.isEmpty())
     {
         // The Editor is 'qucs' or empty, open a net document tab
         if (File.isEmpty()) {
@@ -977,8 +977,8 @@ void QucsApp::slotAddToProject()
 
     if(destFile.exists())
       if(QMessageBox::information(this, tr("Overwrite"),
-           tr("File \"%1\" already exists.\nOverwrite ?").arg(*it), QMessageBox::Yes,
-           QMessageBox::No|QMessageBox::Default|QMessageBox::Escape)
+           tr("File \"%1\" already exists.\nOverwrite ?").arg(*it),
+           QMessageBox::Yes|QMessageBox::No)
          != QMessageBox::Yes) {
         origFile.close();
         it++;
@@ -1306,7 +1306,7 @@ void QucsApp::slotExportGraphAsCsv()
   if(File.exists())
     if(QMessageBox::information(this, tr("Info"),
           tr("Output file already exists!")+"\n"+tr("Overwrite it?"),
-          tr("&Yes"), tr("&No"), 0,1,1))
+          QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
       return;
 
   if(!File.open(QIODevice::WriteOnly)) {

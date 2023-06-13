@@ -373,10 +373,9 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
       connect(SpicePrep, SIGNAL(readyReadStandardError()), SLOT(slotGetPrepErr()));
     }
 
-    QMessageBox *MBox = new QMessageBox(tr("Info"),
+    QMessageBox *MBox = new QMessageBox(QMessageBox::NoIcon, tr("Info"),
                                         tr("Preprocessing SPICE file \"%1\".").arg(FileInfo.filePath()),
-                                        QMessageBox::NoIcon, QMessageBox::Abort,
-                                        QMessageBox::NoButton, QMessageBox::NoButton, this);
+                                        QMessageBox::Abort, this);
 
     connect(SpicePrep, SIGNAL(finished(int, QProcess::ExitStatus)), MBox, SLOT(close()));
 
@@ -440,10 +439,9 @@ bool SpiceDialog::loadSpiceNetList(const QString& s)
       connect(QucsConv, SIGNAL(readyReadStandardError()), SLOT(slotGetError()));
 
 
-      QMessageBox *MBox = new QMessageBox(tr("Info"),
+      QMessageBox *MBox = new QMessageBox(QMessageBox::NoIcon, tr("Info"),
                                           tr("Converting SPICE file \"%1\".").arg(FileInfo.filePath()),
-                                          QMessageBox::NoIcon, QMessageBox::Abort,
-                                          QMessageBox::NoButton, QMessageBox::NoButton, this);
+                                          QMessageBox::Abort, this);
 
       connect(QucsConv, SIGNAL(finished(int, QProcess::ExitStatus)), MBox, SLOT(close()));
 

@@ -876,7 +876,11 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
   } while(false);
 
   //*focusMEvent = *Event;  // remember event for "edit component" action
+#if QT_VERSION >= 0x060000
+  ComponentMenu->popup(Event->globalPosition().toPoint());
+#else
   ComponentMenu->popup(Event->globalPos());
+#endif
   Doc->viewport()->update();
   drawn = false;
 }

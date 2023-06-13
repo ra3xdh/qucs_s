@@ -2088,10 +2088,15 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
   }
 
 
-  QMouseEvent e(QEvent::MouseButtonPress, Event->pos(),
+#if QT_VERSION >= 0x060000
+  auto ev_pos = Event->position();
+#else
+  auto ev_pos = Event->pos();
+#endif
+  QMouseEvent e(QEvent::MouseButtonPress, ev_pos,
                 Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
-  int x = int(Event->pos().x()/Scale) + ViewX1;
-  int y = int(Event->pos().y()/Scale) + ViewY1;
+  int x = int(ev_pos.x()/Scale) + ViewX1;
+  int y = int(ev_pos.y()/Scale) + ViewY1;
 
   App->view->MPressElement(this, &e, x, y);
 
@@ -2179,8 +2184,13 @@ void Schematic::contentsDragMoveEvent(QDragMoveEvent *Event)
       return;
     }
 
-    QMouseEvent e(QEvent::MouseMove, Event->pos(), Qt::NoButton, 
+#if QT_VERSION >= 0x060000
+    QMouseEvent e(QEvent::MouseMove, Event->position(), Qt::NoButton,
 		  Qt::NoButton, Qt::NoModifier);
+#else
+    QMouseEvent e(QEvent::MouseMove, Event->pos(), Qt::NoButton,
+          Qt::NoButton, Qt::NoModifier);
+#endif
     App->view->MMoveElement(this, &e);
   }
 
